@@ -4,9 +4,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.stackable.Things;
 
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.lang.Lang;
+import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
@@ -122,15 +125,55 @@ public class PaintUtil {
     return readNbt(itemStack.getTagCompound());
   }
 
+  public static void setPaintSource(@Nonnull ItemStack itemStack, @Nonnull ItemStack paintSource) {
+    paintSource = paintSource.copy();
+    paintSource.setCount(1);
+    NbtValue.PAINT_SOURCE.setStack(itemStack, paintSource);
+  }
+
+  public static @Nonnull ItemStack getPaintSource(@Nonnull ItemStack itemStack) {
+    return NbtValue.PAINT_SOURCE.getStack(itemStack);
+  }
+
+  public static void setOriginalStack(@Nonnull ItemStack itemStack, @Nonnull ItemStack originalStack) {
+    originalStack = originalStack.copy();
+    originalStack.setCount(1);
+    NbtValue.ORIGINAL_STACK.setStack(itemStack, originalStack);
+  }
+
+  public static @Nonnull ItemStack getOriginalStack(@Nonnull ItemStack itemStack) {
+    if (NbtValue.ORIGINAL_STACK.hasTag(itemStack)) {
+      return NbtValue.ORIGINAL_STACK.getStack(itemStack);
+    } else if (hasPaintSource(itemStack)) {
+      return NbtValue.PAINT_SOURCE.removeTag(BLOCKSTATE.removeTagCopy(itemStack));
+    }
+    return Prep.getEmpty();
+  }
+
+  public static boolean hasPaintSource(@Nonnull ItemStack itemStack) {
+    return NbtValue.PAINT_SOURCE.hasTag(itemStack);
+  }
+
   public static void setSourceBlock(@Nonnull ItemStack itemStack, IBlockState paintSource) {
     if (Prep.isInvalid(itemStack)) {
       return;
     }
-    if (paintSource == null || paintSource == Blocks.AIR) {
+    if (paintSource == null || paintSource.getBlock() == Blocks.AIR) {
       BLOCKSTATE.removeTag(itemStack);
       return;
     } else {
-      BLOCKSTATE.setTag(itemStack, NBTUtil.writeBlockState(new NBTTagCompound(), paintSource));
+      try {
+        BLOCKSTATE.setTag(itemStack, NBTUtil.writeBlockState(new NBTTagCompound(), paintSource));
+      } catch (Exception e) {
+        String s;
+        try {
+          s = "" + Block.REGISTRY.getNameForObject(paintSource.getBlock());
+        } catch (Exception e1) {
+          s = e1.getMessage();
+        }
+        throw new RuntimeException("Failed to write blockstate to nbt. blockstate=" + paintSource + " registry name=" + s + " block=" + paintSource.getBlock(),
+            e);
+      }
     }
   }
 
@@ -196,11 +239,23 @@ public class PaintUtil {
   public static Block getBlockFromItem(Item itemIn) {
     if (itemIn != null) {
       if (itemIn instanceof ItemBlock) {
-        return ((ItemBlock) itemIn).getBlock();
+        final Block block = ((ItemBlock) itemIn).getBlock();
+        if (NullHelper.untrust(block) == null) {
+          Log.warn("ItemBlock " + itemIn + " returned null from getBlock(). This is a major bug in the mod that item belongs to.");
+        } else if (NullHelper.untrust(Block.REGISTRY.getNameForObject(block)) == null) {
+          throw new RuntimeException(
+              "ItemBlock " + itemIn + " returned an unregistered block from getBlock(). This is a major bug in the mod that item belongs to.");
+        }
+        return block;
       }
       FluidStack fluidStack = FluidUtil.getFluidTypeFromItem(new ItemStack(itemIn));
-      if (fluidStack != null) {
-        return fluidStack.getFluid().getBlock();
+      if (fluidStack != null && fluidStack.getFluid() != null) {
+        final Block block = fluidStack.getFluid().getBlock();
+        if (block != null && NullHelper.untrust(Block.REGISTRY.getNameForObject(block)) == null) {
+          throw new RuntimeException("Fluid " + fluidStack.getFluid() + " (" + fluidStack.getFluid().getName() + ", " + fluidStack.getFluid().getClass()
+              + ") from item " + itemIn + " returned an unregistered block from getBlock(). This is a major bug in the mod that fluid belongs to.");
+        }
+        return block;
       }
     }
     return null;
@@ -209,11 +264,23 @@ public class PaintUtil {
   public static Block getBlockFromItem(@Nonnull ItemStack itemStack) {
     if (Prep.isValid(itemStack)) {
       if (itemStack.getItem() instanceof ItemBlock) {
-        return ((ItemBlock) itemStack.getItem()).getBlock();
+        final Block block = ((ItemBlock) itemStack.getItem()).getBlock();
+        if (NullHelper.untrust(block) == null) {
+          Log.warn("ItemBlock " + itemStack + " returned null from getBlock(). This is a major bug in the mod that item belongs to.");
+        } else if (NullHelper.untrust(Block.REGISTRY.getNameForObject(block)) == null) {
+          throw new RuntimeException(
+              "ItemBlock " + itemStack + " returned an unregistered block from getBlock(). This is a major bug in the mod that item belongs to.");
+        }
+        return block;
       }
       FluidStack fluidStack = FluidUtil.getFluidTypeFromItem(itemStack);
       if (fluidStack != null && fluidStack.getFluid() != null) {
-        return fluidStack.getFluid().getBlock();
+        final Block block = fluidStack.getFluid().getBlock();
+        if (block != null && NullHelper.untrust(Block.REGISTRY.getNameForObject(block)) == null) {
+          throw new RuntimeException("Fluid " + fluidStack.getFluid() + " (" + fluidStack.getFluid().getName() + ", " + fluidStack.getFluid().getClass()
+              + ") from item " + itemStack + " returned an unregistered block from getBlock(). This is a major bug in the mod that fluid belongs to.");
+        }
+        return block;
       }
     }
     return null;
@@ -237,7 +304,19 @@ public class PaintUtil {
       // Vanilla bug. ItemPiston returns an invalid block meta.
       return paintBlock.getDefaultState();
     }
-    return paintBlock.getStateFromMeta(paintSource.getItem().getMetadata(paintSource.getMetadata()));
+    final IBlockState stateFromMeta = paintBlock.getStateFromMeta(paintSource.getItem().getMetadata(paintSource.getMetadata()));
+    if (NullHelper.untrust(stateFromMeta) == null) {
+      throw new RuntimeException("Block " + paintBlock + " (" + paintBlock.getClass() + ") belonging to item " + paintSource
+          + " returned null from getStateFromMeta(). This is a major bug in the mod that block belongs to.");
+    } else if (NullHelper.untrust(stateFromMeta.getBlock()) == null) {
+      throw new RuntimeException("Block " + paintBlock + " (" + paintBlock.getClass() + ") belonging to item " + paintSource + " returned a blockstate ("
+          + stateFromMeta + ") without block from getStateFromMeta(). This is a major bug in the mod that block belongs to.");
+    } else if (NullHelper.untrust(Block.REGISTRY.getNameForObject(stateFromMeta.getBlock())) == null) {
+      throw new RuntimeException("Block " + paintBlock + " (" + paintBlock.getClass() + ") belonging to item " + paintSource + " returned a blockstate ("
+          + stateFromMeta + ") that belongs to an unregistered block " + stateFromMeta.getBlock()
+          + " from getStateFromMeta(). This is a major bug in the mod that block belongs to.");
+    }
+    return stateFromMeta;
   }
 
   /**

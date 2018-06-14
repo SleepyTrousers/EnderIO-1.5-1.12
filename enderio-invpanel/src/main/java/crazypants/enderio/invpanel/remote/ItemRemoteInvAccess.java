@@ -70,7 +70,7 @@ public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvide
   }
 
   protected ItemRemoteInvAccess(@Nonnull IModObject modObject) {
-    setCreativeTab(EnderIOTab.tabEnderIOItems);
+    setCreativeTab(EnderIOTab.tabEnderIOInvpanel);
     setHasSubtypes(true);
     setMaxDamage(0);
     setMaxStackSize(1);
@@ -95,12 +95,14 @@ public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvide
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
-    for (ItemRemoteInvAccessType type : ItemRemoteInvAccessType.values()) {
-      if (type.isVisible()) {
-        par3List.add(new ItemStack(this, 1, type.toMetadata()));
-        ItemStack full = new ItemStack(this, 1, type.toMetadata());
-        setFull(full);
-        par3List.add(full);
+    if (par2CreativeTabs.equals(EnderIOTab.tabEnderIOInvpanel)) {
+      for (ItemRemoteInvAccessType type : ItemRemoteInvAccessType.values()) {
+        if (type.isVisible()) {
+          par3List.add(new ItemStack(this, 1, type.toMetadata()));
+          ItemStack full = new ItemStack(this, 1, type.toMetadata());
+          setFull(full);
+          par3List.add(full);
+        }
       }
     }
   }

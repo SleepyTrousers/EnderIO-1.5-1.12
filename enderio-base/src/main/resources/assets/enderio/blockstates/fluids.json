@@ -65,6 +65,10 @@
             "model": "forge:fluid",
             "custom": { "fluid": "dark_steel" }
         },
+        "end_steel": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "end_steel" }
+        },
         "soularium": {
             "model": "forge:fluid",
             "custom": { "fluid": "soularium" }

@@ -12,6 +12,8 @@ itemGroup.enderio.items=EnderIO Items
 itemGroup.enderio.materials=EnderIO Materials
 itemGroup.enderio.main=EnderIO Blocks
 itemGroup.enderio.mobs=EnderIO Souls
+itemGroup.enderio.conduits=EnderIO Conduits
+itemGroup.enderio.invpanel=EnderIO Inventory Panel
 
 item.item_alloy_ingot_conductive_iron.name=Conductive Iron Ingot
 item.item_alloy_ingot_dark_steel.name=Dark Steel Ingot
@@ -109,7 +111,7 @@ item.item_dark_steel_shears.tooltip.multiHarvest=Shears multiple blocks/sheep wh
 
 item.item_dark_steel_bow.name=Dark Bow
 
-item.item_dark_steel_armor.tooltip.line1=%sDiamond level protection when powered
+item.item_dark_steel_armor.tooltip.line1=%sBetter protection when powered
 item.item_dark_steel_armor.tooltip.levelcost.line1=%s%s:
 item.item_dark_steel_armor.tooltip.levelcost.line2=%s%s  %s + %s levels
 
@@ -121,6 +123,15 @@ item.item_dark_steel_chestplate.name=Dark Plate
 item.item_dark_steel_helmet.name=Dark Helm
 
 item.item_dark_steel_leggings.name=Dark Leggings
+
+item.item_end_steel_boots.name=Ender Boots
+item.item_end_steel_boots.tooltip.line1=Fall damage negated when powered
+
+item.item_end_steel_chestplate.name=Ender Plate
+
+item.item_end_steel_helmet.name=Ender Helm
+
+item.item_end_steel_leggings.name=Ender Leggings
 
 item.item_ender_food.enderios.name="Enderios"
 item.item_ender_food.enderios.tooltip.common.line1=Part of a balanced breakfast!
@@ -217,7 +228,7 @@ item.item_material.soul_machine_dye.name=Soul Attuned Powder Coating
 item.item_material.soul_machine_dye.tooltip.detailed.line1=Industrially produced dye with organic and inorganic components. Not biodegradable. May contain traces of ectoplasm.
 item.item_material.soul_machine_dye.tooltip.detailed.line2=§7Not edible. Avoid contact with eyes. In case of contact with eyes, rinse immediately with holy water and seek religous advice.
 item.item_material.enhanced_machine_chassi.name=Enhanced Machine Chassis
-item.item_material.enhanced_machine_chassi.tooltip.detailed.line1=A reinforced structure for constructing sturdier machinery
+item.item_material.enhanced_machine_chassi.tooltip.detailed.line1=A reinforced chassis for constructing sturdier machinery
 item.item_material.unsouled_machine_chassi.name=Soulless Machine Chassis
 item.item_material.unsouled_machine_chassi.tooltip.detailed.line1=An advanced frame for machinery, but it seems to be missing something...
 item.item_material.grinding_ball_signalum.name=Signalum Grinding Ball
@@ -228,6 +239,13 @@ item.item_material.confusing_dust.name=Confusing Powder
 item.item_material.ender_fragment.name=Ender Fragment
 item.item_material.withering_dust.name=Withering Dust
 item.item_material.remote_awareness_upgrade.name=Remote Awareness Upgrade
+item.item_material.dish.name=Wireless Energy Transmitter Dish Assembly
+item.item_material.end_steel_machine_chassi.name=End Steel Chassis
+item.item_material.enhanced_machine_dye.name=Enhanced Machine Coating
+item.item_material.enhanced_machine_dye.tooltip.detailed.line1=Industrially produced dye with magical and inorganic components.
+item.item_material.enhanced_machine_dye.tooltip.detailed.line2=§7Warning: May contain traces of diamond. Please chew carefully before swallowing. Not gluten free. 
+item.item_material.simple_chassi_parts.name=Simple Machine Parts
+item.item_material.enhanced_chassi_parts.name=Enhanced Machine Parts
 
 item.item_rod_of_return.name=Rod of Return
 item.item_rod_of_return.tooltip.detailed.line1=Returns the user to a Telepad
@@ -302,6 +320,8 @@ tile.block_dark_fused_glass.name=Dark Clear Glass
 tile.block_dark_fused_quartz.name=Dark Fused Quartz
 
 tile.block_dark_iron_bars.name=Dark Iron Bars
+
+tile.block_end_iron_bars.name=End Steel Bars
 
 tile.block_dark_steel_anvil.name=Dark Steel Anvil
 tile.block_dark_steel_anvil.tooltip.common.line1=Damage Resistant

@@ -13,10 +13,12 @@ import com.enderio.core.common.fluid.SmartTankFluidHandler;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
+import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
@@ -37,6 +39,9 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_VAT_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_VAT_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_VAT_POWER_USE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_INTAKE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.VAT_POWER_USE;
@@ -57,12 +62,30 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
   Fluid currentTaskInputFluid;
   Fluid currentTaskOutputFluid;
 
-  public TileVat() {
-    super(new SlotDefinition(2, 0, 1), VAT_POWER_INTAKE, VAT_POWER_BUFFER, VAT_POWER_USE);
+  public static class Enhanced extends TileVat {
+
+    public Enhanced() {
+      super(new SlotDefinition(2, 0, 1), ENHANCED_VAT_POWER_INTAKE, ENHANCED_VAT_POWER_BUFFER, ENHANCED_VAT_POWER_USE);
+    }
+
+    @Override
+    public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
+      return (faceHit != EnumFacing.UP || mode == IoMode.NONE) && super.supportsMode(faceHit, mode);
+    }
+
+  }
+
+  public TileVat(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
+      @Nonnull ICapacitorKey maxEnergyUsed) {
+    super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
     inputTank.setTileEntity(this);
     inputTank.setCanDrain(false);
     outputTank.setTileEntity(this);
     outputTank.setCanFill(false);
+  }
+
+  public TileVat() {
+    this(new SlotDefinition(2, 0, 1), VAT_POWER_INTAKE, VAT_POWER_BUFFER, VAT_POWER_USE);
   }
 
   @Override

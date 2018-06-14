@@ -2,6 +2,74 @@
 #
 # Please wait until the en_us lang file has been completed before translating.
 #
+enderio.advancement.conduits.advanced_filter.desc=
+#                                             en: Craft an Advanced Item Filter
+enderio.advancement.conduits.advanced_filter.name=
+#                                             en: Maximum Control
+enderio.advancement.conduits.all_conduits.desc=
+#                                          en: Craft all of the core conduit types
+enderio.advancement.conduits.all_conduits.name=
+#                                          en: Jack of All Trades
+enderio.advancement.conduits.all_filters.desc=
+#                                         en: Craft all of the core filter types
+enderio.advancement.conduits.all_filters.name=
+#                                         en: Getting Specific
+enderio.advancement.conduits.basic_filter.desc=
+#                                          en: Craft a Basic Item Filter
+enderio.advancement.conduits.basic_filter.name=
+#                                          en: Filtering For Dummies
+enderio.advancement.conduits.big_advanced_filter.desc=
+#                                                 en: Craft a Big Advanced Item Filter
+enderio.advancement.conduits.big_advanced_filter.name=
+#                                                 en: One Filter to Rule Them All
+enderio.advancement.conduits.big_filter.desc=
+#                                        en: Craft a Big Item Filter
+enderio.advancement.conduits.big_filter.name=
+#                                        en: Maximum Size
+enderio.advancement.conduits.binder_composite.desc=
+#                                              en: Craft some Binder Composite
+enderio.advancement.conduits.binder_composite.name=
+#                                              en: I Am Not Grout!
+enderio.advancement.conduits.conduit_binder.desc=
+#                                            en: Smelt some Conduit Binder
+enderio.advancement.conduits.conduit_binder.name=
+#                                            en: Universal Binder
+enderio.advancement.conduits.energy_conduit.basic.desc=
+#                                                  en: Craft some Energy Conduits
+enderio.advancement.conduits.energy_conduit.basic.name=
+#                                                  en: Basic Energy
+enderio.advancement.conduits.energy_conduit.ender.desc=
+#                                                  en: Craft some Ender Energy Conduits
+enderio.advancement.conduits.energy_conduit.ender.name=
+#                                                  en: Ender Energy
+enderio.advancement.conduits.energy_conduit.enhanced.desc=
+#                                                     en: Craft some Enhanced Energy Conduits
+enderio.advancement.conduits.energy_conduit.enhanced.name=
+#                                                     en: Enhanced Energy
+enderio.advancement.conduits.fluid_conduit.basic.desc=
+#                                                 en: Craft some Fluid Conduits
+enderio.advancement.conduits.fluid_conduit.basic.name=
+#                                                 en: Basic Fluid
+enderio.advancement.conduits.fluid_conduit.ender.desc=
+#                                                 en: Craft some Ender Fluid Conduits
+enderio.advancement.conduits.fluid_conduit.ender.name=
+#                                                 en: Instant Fluids, Just Add Ender
+enderio.advancement.conduits.fluid_conduit.pressurized.desc=
+#                                                       en: Craft some Pressurized Fluid Conduits
+enderio.advancement.conduits.fluid_conduit.pressurized.name=
+#                                                       en: Under Pressure
+enderio.advancement.conduits.item_conduit.desc=
+#                                          en: Craft some Item Conduits
+enderio.advancement.conduits.item_conduit.name=
+#                                          en: Item Transfer
+enderio.advancement.conduits.redstone_conduit.desc=
+#                                              en: Craft some Redstone Conduits
+enderio.advancement.conduits.redstone_conduit.name=
+#                                              en: Redstone Transfer
+enderio.advancement.conduits.root.desc=
+#                                  en: How many pipes in one block?
+enderio.advancement.conduits.root.name=
+#                                  en: Ender IO Conduits
 enderio.block_conduit_bundle=Связка труб
 #                        en: Conduit Bundle
 enderio.capbank.change=Вход/выход
@@ -22,6 +90,18 @@ enderio.capbank.max_io=Макс. вход/выход
 #                  en: Max I/O
 enderio.capbank.max_out=Макс. выход
 #                   en: Max Output
+enderio.config.capbank=Блок конденсаторов
+#                  en: Capacitor Bank
+enderio.config.condit.energy=
+#                        en: Energy Conduits
+enderio.config.condit.fluid=
+#                       en: Fluid Conduits
+enderio.config.condit.item=
+#                      en: Item Conduits
+enderio.config.condit.redstone=
+#                          en: Redstone Conduits
+enderio.config.condit=
+#                 en: Conduits
 enderio.fluid.millibuckets_tick=мВ/тик
 #                           en: mB/t
 enderio.gui.cap_bank.input_mode=Вход
@@ -38,28 +118,84 @@ enderio.gui.cap_bank.output_mode=Выход
 #                            en: Output
 enderio.gui.cap_bank.output_rs=Режим красного камня на выходе
 #                          en: Output Redstone Mode
-enderio.gui.conduit.fluid.auto_extract=Авто-извлечение
-#                                  en: Auto Extract
-enderio.gui.conduit.fluid.blacklist=Чёрный список
-#                               en: Blacklist
-enderio.gui.conduit.fluid.filter=Фильтр
-#                            en: Filter
-enderio.gui.conduit.fluid.whitelist=Белый список
-#                               en: Whitelist
-enderio.gui.conduit.io_mode=Режим
-#                       en: Mode
-enderio.gui.conduit.redstone.color=Цвет
-#                              en: Color
-enderio.gui.conduit.redstone.signal_color=Цвет сигнала
-#                                     en: Signal Color
-enderio.gui.conduit.redstone.signal_strengh.tooltip=Испускает сильный сигнал красного камня
-#                                               en: Output a strong redstone signal
-enderio.gui.conduit.redstone.signal_strengh=Сильный сигнал
-#                                       en: Strong Signal
-enderio.gui.conduit.redstone.signal_strength.tooltip=Испускает сильный сигнал красного камня
-#                                                en: Output a strong redstone signal
-enderio.gui.conduit.redstone.signal_strength=Сильный сигнал
-#                                        en: Strong Signal
+enderio.gui.conduit_bundle_full=
+#                           en: Bundle Full
+enderio.gui.conduit_channel=Канал
+#                       en: Channel
+enderio.gui.conduit_disabled_mode=Отключен
+#                             en: Disabled
+enderio.gui.conduit_enabled_mode=Включено
+#                            en: Enabled
+enderio.gui.conduit_energy.header=Энергетическая труба
+#                             en: Energy Conduit
+enderio.gui.conduit_extract_mode=Извлечение
+#                            en: Extract
+enderio.gui.conduit_fluid.header=Жидкостная труба
+#                            en: Fluid Conduit
+enderio.gui.conduit_insert_mode=Помещение
+#                           en: Insert
+enderio.gui.conduit_item.header=Предметная труба
+#                           en: Item Conduit
+enderio.gui.conduit_probe.conduit_buffer=Встроенный буфер
+#                                    en: Internal Buffer
+enderio.gui.conduit_probe.connection_dir=
+#                                    en: connection to:
+enderio.gui.conduit_probe.current_request=Текущее потребление
+#                                     en: Current request
+enderio.gui.conduit_probe.extracted_item=Предмет
+#                                    en: Item
+enderio.gui.conduit_probe.extracted_items=Экспортируемые предметы
+#                                     en: Extracted items
+enderio.gui.conduit_probe.inserted_into=будет направлен:
+#                                   en: will be inserted into:
+enderio.gui.conduit_probe.item_heading=Предметная труба
+#                                  en: Item Conduit
+enderio.gui.conduit_probe.item_no_connections=не имеет внешних соединений
+#                                         en: has no external connections
+enderio.gui.conduit_probe.network_heading=Силовая сеть
+#                                     en: Power Network
+enderio.gui.conduit_probe.no_item=Не может получать
+#                             en: Can not receive
+enderio.gui.conduit_probe.no_items=Не получает предметов.
+#                              en: Receives no items.
+enderio.gui.conduit_probe.no_outputs=нет доступных выходов
+#                                en: has no valid outputs
+enderio.gui.conduit_probe.no_power_from_side=не может получать энергию с этой стороны
+#                                        en: cannot receive power from this side
+enderio.gui.conduit_probe.receive_item1=Может получать
+#                                   en: Can receive
+enderio.gui.conduit_probe.receive_item2=от:
+#                                   en: from:
+enderio.gui.conduit_probe.receive_items=Может получать предметы от:
+#                                   en: Can receive items from:
+enderio.gui.conduit_probe.request_range=Диапазон запросов за тик
+#                                   en: Per tick request range
+enderio.gui.conduit_redstone.header=
+#                               en: Redstone Conduit
+enderio.gui.item_filter_upgrade=
+#                           en: Filter Upgrade
+enderio.gui.item_function_upgrade2=
+#                              en: Max Speed Upgrades is 15
+enderio.gui.item_function_upgrade3=
+#                              en: Max Speed Downgrades is 1
+enderio.gui.item_function_upgrade=
+#                             en: Function Upgrade
+enderio.gui.liquid_auto_extract=Авто-извлечение
+#                           en: Auto Extract
+enderio.gui.liquid_blacklist=Чёрный список
+#                        en: Blacklist
+enderio.gui.liquid_filter=Фильтр
+#                     en: Filter
+enderio.gui.liquid_whitelist=Белый список
+#                        en: Whitelist
+enderio.gui.power_monitor.average_input=Средний вход за 5 секунд
+#                                   en: Average input over 5 seconds
+enderio.gui.power_monitor.average_output=Средний выход за 5 секунд
+#                                    en: Average output over 5 seconds
+enderio.gui.power_monitor.capbank_storage=Энергия в блоке конденсаторов
+#                                     en: Capacitor Bank Storage
+enderio.gui.power_monitor.conduit_storage=Энергия в трубе
+#                                     en: Conduit Storage
 enderio.gui.power_monitor.emit=Подавать сигнал
 #                          en: Emit
 enderio.gui.power_monitor.engine_control=Управление двигателем
@@ -74,20 +210,30 @@ enderio.gui.power_monitor.engine_section4=Остановиться, если х�
 #                                     en: Stop when storage greater than
 enderio.gui.power_monitor.engine_section5=или точно
 #                                     en: or equal to
-enderio.gui.power_monitor.mon_heading1=Энергия в трубе
-#                                  en: Conduit Storage
-enderio.gui.power_monitor.mon_heading2=Энергия в блоке конденсаторов
-#                                  en: Capacitor Bank Storage
-enderio.gui.power_monitor.mon_heading3=Энергия в механизме
-#                                  en: Machine Buffers
-enderio.gui.power_monitor.mon_heading4=Средний выход за 5 секунд
-#                                  en: Average output over 5 seconds
-enderio.gui.power_monitor.mon_heading5=Средний вход за 5 секунд
-#                                  en: Average input over 5 seconds
+enderio.gui.power_monitor.machine_buffer=Энергия в механизме
+#                                    en: Machine Buffers
 enderio.gui.power_monitor.no_network_error=Нет соединения с сетью. Индикатор мощности должен быть подключён к сети для считывания информации.
 #                                      en: No conduit network attached. The Power Monitor needs to be attached to a conduit network to read data from.
 enderio.gui.power_monitor.of=на
 #                        en: of
+enderio.gui.priority=Приоритет
+#                en: Priority
+enderio.gui.redstone_conduit_input_mode=Вход
+#                                   en: Input
+enderio.gui.redstone_conduit_output_mode=Выход
+#                                    en: Output
+enderio.gui.redstone_signal_strength=Сильный сигнал
+#                                en: Strong Signal
+enderio.gui.round_robin_disabled=Цикл отключен
+#                            en: Round Robin Disabled
+enderio.gui.round_robin_enabled=Цикл включён
+#                           en: Round Robin Enabled
+enderio.gui.self_feed_disabled=Авто-подача отключена
+#                          en: Self Feed Disabled
+enderio.gui.self_feed_enabled=Авто-подача активна
+#                         en: Self Feed Enabled
+enderio.gui.signal_color=Цвет сигнала
+#                    en: Signal Color
 enderio.item_item_conduit.name=Предметная труба
 #                          en: Item Conduit
 enderio.item_liquid_conduit.locked_type=Тип жидкости установлен на
@@ -96,12 +242,10 @@ enderio.item_liquid_conduit.locked_waila=Установленная жидкос
 #                                    en: Locked to
 enderio.item_liquid_conduit.name=Жидкостная труба
 #                            en: Fluid Conduit
-enderio.item_liquid_conduit.tooltip.detailed.line1=Жидкости не будут течь вверх
-#                                              en: Fluid flow respects gravity
-enderio.item_liquid_conduit.tooltip.detailed.line2=Скорость потока зависит от
-#                                              en: Flow rate dependent on fluid
-enderio.item_liquid_conduit.tooltip.detailed.line3=вязкости жидкости
-#                                              en: viscosity
+enderio.item_liquid_conduit.tooltip.detailed.line1=
+#                                              en: Fluid flow respects gravity.
+enderio.item_liquid_conduit.tooltip.detailed.line2=
+#                                              en: Flow rate dependent on fluid viscosity.
 enderio.item_liquid_conduit.tooltip.max_extract=Макс. извлечение:
 #                                           en: Max Extract:
 enderio.item_liquid_conduit.tooltip.max_io=Макс. IO:
@@ -112,12 +256,10 @@ enderio.item_liquid_conduit_advanced.name=Жидкостная труба выс
 #                                     en: Pressurized Fluid Conduit
 enderio.item_liquid_conduit_ender.name=Жидкостная Эндер-труба
 #                                  en: Ender Fluid Conduit
-enderio.item_liquid_conduit_ender.tooltip.detailed.line1=Мгновенная телепортация жидкости
-#                                                    en: Instant fluid teleportation
-enderio.item_liquid_conduit_ender.tooltip.detailed.line2=позволяет нескольким жидкостям
-#                                                    en: allows multiple fluids to be
-enderio.item_liquid_conduit_ender.tooltip.detailed.line3=проходить по одной линии
-#                                                    en: transported on the same line
+enderio.item_liquid_conduit_ender.tooltip.detailed.line1=
+#                                                    en: Instant fluid teleportation.
+enderio.item_liquid_conduit_ender.tooltip.detailed.line2=
+#                                                    en: Allows multiple fluids to be transported on the same line.
 enderio.item_power_conduit.name=Энергетическая труба
 #                           en: Energy Conduit
 enderio.item_power_conduit_ender.name=Энергетическая Эндер-труба
@@ -128,20 +270,20 @@ enderio.item_redstone_conduit_insulated.name=
 #                                        en: Redstone Conduit
 enderio.power.max_output=Макс. выход
 #                    en: Max Output
+item.item_extract_speed_downgrade.name=
+#                                  en: Extract Speed Downgrade
+item.item_extract_speed_upgrade.name=
+#                                en: Extract Speed Upgrade
+item.item_inventory_panel_upgrade.name=
+#                                  en: Inventory Panel Upgrade
 tile.block_advanced_power_monitor.name=Графический монитор мощности
 #                                  en: Graphical Power Monitor
-tile.block_advanced_power_monitor.tooltip.detailed.line1=Displays details of power use and
-#                                                    en: Displays details of power use and
-tile.block_advanced_power_monitor.tooltip.detailed.line2=storage
-#                                                    en: storage
-tile.block_advanced_power_monitor.tooltip.detailed.line3=Can be used to emit redstone
-#                                                    en: Can be used to emit redstone
-tile.block_advanced_power_monitor.tooltip.detailed.line4=based on stored power levels
-#                                                    en: based on stored power levels
-tile.block_advanced_power_monitor.tooltip.detailed.line5=Must be attached to an EnderIO
-#                                                    en: Must be attached to an EnderIO
-tile.block_advanced_power_monitor.tooltip.detailed.line6=conduit
-#                                                    en: conduit
+tile.block_advanced_power_monitor.tooltip.detailed.line1=
+#                                                    en: Displays details of power use and storage.
+tile.block_advanced_power_monitor.tooltip.detailed.line3=
+#                                                    en: Can be used to emit redstone based on stored power levels.
+tile.block_advanced_power_monitor.tooltip.detailed.line5=
+#                                                    en: Must be attached to an EnderIO energy conduit.
 tile.block_cap_bank.activated.name=Блок конденсаторов
 #                              en: Capacitor Bank
 tile.block_cap_bank.creative.name=Творческий блок конденсаторов
@@ -150,47 +292,27 @@ tile.block_cap_bank.simple.name=Основной блок конденсатор
 #                           en: Basic Capacitor Bank
 tile.block_cap_bank.tooltip.detailed.line1=Мульти-блок для хранения энергии.
 #                                      en: Multi-block energy storage.
-tile.block_cap_bank.tooltip.detailed.line2=Может заряжать RF-предметы.
-#                                      en: Can charge RF powered items.
+tile.block_cap_bank.tooltip.detailed.line2=
+#                                      en: Can charge RF powered items. (to be removed)
 tile.block_cap_bank.tooltip.detailed.line3=Shift-ПКМ, по экрану пустой рукой,
 #                                      en: Shift-R-Click on a face with an empty hand
 tile.block_cap_bank.tooltip.detailed.line4=чтобы изменить отображаемую информацию
 #                                      en: to change information display
-tile.block_cap_bank.tooltip.has_items=Предметов в инвентаре: {0,number,integer} {0,choice,1#item|1<items}
-#                                 en: {0,number,integer} {0,choice,1#item|1<items} in inventory
-tile.block_cap_bank.tooltip_prefix=Содержит
-#                              en: Contains
+tile.block_cap_bank.tooltip.has_items=
+#                                 en: §6Contains §4{0,number,integer}§6 {0,choice,1#item|1<items} in inventory
 tile.block_cap_bank.vibrant.name=Вибрирующий блок конденсаторов
 #                            en: Vibrant Capacitor Bank
-tile.block_capacitor_bank.creative.name=Творческий блок конденсаторов (Устаревший)
-#                                   en: Creative Capacitor Bank (Deprecated)
-tile.block_capacitor_bank.name=Блок конденсаторов (Устаревший)
-#                          en: Capacitor Bank (Deprecated)
-tile.block_capacitor_bank.tooltip.detailed.line1=Переделайте в новый блок, положив
-#                                            en: Convert to new block by placing
-tile.block_capacitor_bank.tooltip.detailed.line2=в сетку создания.
-#                                            en: in a crafting grid
-tile.block_capacitor_bank.tooltip_prefix=Содержит
-#                                    en: Contains
 tile.block_conduit_bundle.name=Коннектор для труб
 #                          en: Conduit Connector
-tile.block_gauge.name=Измеритель RF
-#                 en: RF Gauge
-tile.block_gauge.tooltip.detailed.line1=Показывает уровень RF в
-#                                   en: Displays RF levels of adjacent
-tile.block_gauge.tooltip.detailed.line2=прилегающих блоках.
-#                                   en: blocks.
+tile.block_gauge.name=
+#                 en: Energy Gauge
+tile.block_gauge.tooltip.detailed.line1=
+#                                   en: Displays energy levels of adjacent blocks.
 tile.block_power_monitor.name=Индикатор мощности
 #                         en: Power Monitor
-tile.block_power_monitor.tooltip.detailed.line1=Displays details of power use and
-#                                           en: Displays details of power use and
-tile.block_power_monitor.tooltip.detailed.line2=storage
-#                                           en: storage
-tile.block_power_monitor.tooltip.detailed.line3=Can be used to emit redstone
-#                                           en: Can be used to emit redstone
-tile.block_power_monitor.tooltip.detailed.line4=based on stored power levels
-#                                           en: based on stored power levels
-tile.block_power_monitor.tooltip.detailed.line5=Must be attached to an EnderIO
-#                                           en: Must be attached to an EnderIO
-tile.block_power_monitor.tooltip.detailed.line6=conduit
-#                                           en: conduit
+tile.block_power_monitor.tooltip.detailed.line1=
+#                                           en: Displays details of power use and storage.
+tile.block_power_monitor.tooltip.detailed.line3=
+#                                           en: Can be used to emit redstone based on stored power levels-
+tile.block_power_monitor.tooltip.detailed.line5=
+#                                           en: Must be attached to an EnderIO energy conduit.

@@ -4,10 +4,48 @@
 #
 container.chestDouble=
 #                 en: Double Chest
-description.enchantment.enderio.soulBound=
+description.enchantment.enderio.soulbound=
 #                                     en: Prevents item from being lost on death
-enchantment.soulBound=
-#                 en: Soulbound
+enchantment.enderio.soulbound=
+#                         en: Soulbound
+enchantment.enderio.witherarrow=
+#                           en: Withering
+enchantment.enderio.witherweapon=
+#                            en: Decay
+enderio.activated.name=이중 축전지
+#                  en: Double-Layer Capacitor
+enderio.advancement.gear.g2_stone_gear.desc=
+#                                       en: Craft a Stone Gear
+enderio.advancement.gear.g2_stone_gear.name=
+#                                       en: Geologically Mechanical
+enderio.advancement.gear.g3_iron_gear.desc=
+#                                      en: Craft an Iron Gear
+enderio.advancement.gear.g3_iron_gear.name=
+#                                      en: Ferrously Mechanical
+enderio.advancement.gear.g4_energized_gear.desc=
+#                                           en: Craft an Energized Bimetal Gear
+enderio.advancement.gear.g4_energized_gear.name=
+#                                           en: Luminously Mechanical
+enderio.advancement.gear.g5_vibrant_gear.desc=
+#                                         en: Craft a Vibrant Bimetal Gear
+enderio.advancement.gear.g5_vibrant_gear.name=
+#                                         en: Mystically Mechanical
+enderio.advancement.gears.g1_wooden_gear.desc=
+#                                         en: Craft a Wooden Gear
+enderio.advancement.gears.g1_wooden_gear.name=
+#                                         en: Arboreally Mechanical
+enderio.advancement.root.desc=
+#                         en: A step closer to infinity
+enderio.advancement.root.name=
+#                         en: Ender IO Basics
+enderio.advancement.start.1_infinity_powder_get.desc=
+#                                                en: Light Bedrock on fire and get a reward
+enderio.advancement.start.1_infinity_powder_get.name=
+#                                                en: Collect the Infinite
+enderio.advancement.start.2_simple_chassis_get.desc=
+#                                               en: Make your first Machine Chassis
+enderio.advancement.start.2_simple_chassis_get.name=
+#                                               en: The Third 'S' is Silent
 enderio.block.tooltip.blastResistant=폭발 저항
 #                                en: Blast Resistant
 enderio.block.tooltip.isBeaconBase=신호기에 사용 가능
@@ -58,42 +96,74 @@ enderio.config.aesthetic=Aesthetic Settings
 #                    en: Aesthetic Settings
 enderio.config.anchor.tooltip=Anchors away!
 #                         en: Anchors away!
-enderio.config.anchor=Anchor Settings
-#                 en: Anchor Settings
-enderio.config.attractor=
-#                    en: Attraction Obelisk Settings
+enderio.config.anchor=여행자의 닻
+#                 en: Travel Anchor
+enderio.config.blocks.charges.concussion=
+#                                    en: Concussion Charge
+enderio.config.blocks.charges.confusion=
+#                                   en: Confusion Charge
+enderio.config.blocks.charges.ender=
+#                               en: Ender Charge
+enderio.config.blocks.charges=
+#                         en: Charges
+enderio.config.blocks=
+#                 en: Blocks
+enderio.config.brokenspawner=부서진 스포너
+#                        en: Broken Spawner
 enderio.config.capacitor=
-#                    en: Capacitor Settings
+#                    en: Capacitor Values
 enderio.config.darksteel.tooltip=It's not just regular steel, it's §odark§r§e steel.
 #                            en: It's not just regular steel, it's §odark§r§e steel.
 enderio.config.darksteel=Dark Steel
 #                    en: Dark Steel
+enderio.config.diagnostics.tooltip=
+#                              en: Use with care!
+enderio.config.diagnostics=
+#                      en: Diagnostic Settings
 enderio.config.efficiency.tooltip=Where do the numbers end?
 #                             en: Where do the numbers end?
 enderio.config.efficiency=Efficiency Settings
 #                     en: Efficiency Settings
 enderio.config.enchanter=
-#                    en: Enchanter Settings
+#                    en: Enchanter
 enderio.config.enchantments=
-#                       en: Enchantment Settings
+#                       en: Enchantments
 enderio.config.fluid.tooltip=Pure liquid energy!
 #                        en: Pure liquid energy!
 enderio.config.fluid=Fluid Settings
-#                en: Fluid Settings
+#                en: Fluids
 enderio.config.hoes=
 #               en: Hoes for Farming Station
-enderio.config.infinitypowder=
-#                         en: Infinity Powder Settings
 enderio.config.item.tooltip=If you don't like some of my amazing items :(
 #                       en: If you don't like some of my amazing items :(
 enderio.config.item=Item Enabling
 #               en: Item Settings
-enderio.config.killerjoe=
-#                    en: Killer Joe Settings
+enderio.config.items.darksteel.axe=
+#                              en: Axe
+enderio.config.items.darksteel.coldfire=
+#                                   en: Cold Fire Igniter
+enderio.config.items.darksteel.pickaxe=
+#                                  en: Pickaxe
+enderio.config.items.darksteel.sword=디 엔더
+#                                en: The Ender
+enderio.config.items.darksteel.tooltip=It's not just regular steel, it's §odark§r§e steel.
+#                                  en: It's not just regular steel, it's §odark§r§e steel.
+enderio.config.items.darksteel.upgrades.explosive=
+#                                             en: Explosive Upgrade
+enderio.config.items.darksteel.upgrades.speed=
+#                                         en: Speed Upgrade
+enderio.config.items.darksteel.upgrades=
+#                                   en: Dark Steel Upgrades
+enderio.config.items.darksteel=
+#                          en: Dark Steel Items
+enderio.config.items.infinitypowder=
+#                               en: Infinity Powder
+enderio.config.items=
+#                en: Items
 enderio.config.magnet.tooltip=How do they work?
 #                         en: How do they work?
-enderio.config.magnet=Magnet Settings
-#                 en: Magnet Settings
+enderio.config.magnet=전자석
+#                 en: Electromagnet
 enderio.config.misc=
 #               en: Other Settings
 enderio.config.personal.tooltip=I won't tell anyone, I promise.
@@ -104,28 +174,30 @@ enderio.config.power.tooltip=So many numbers to change...
 #                        en: So many numbers to change...
 enderio.config.power=Power Settings
 #                en: Power Settings
+enderio.config.recipe.alloy=
+#                       en: Alloy Smelter Recipes
+enderio.config.recipe.painter=
+#                         en: Painter Recipes
 enderio.config.recipe.tooltip=Config ALL the things!
 #                         en: Config ALL the things!
 enderio.config.recipe=Recipe Settings
 #                 en: Recipe Settings
 enderio.config.rod=
-#              en: Rod of Return Settings
+#              en: Rod of Return
 enderio.config.soulbinder=
-#                     en: Soulbinder Settings
-enderio.config.soulvial=
-#                   en: Soal Vial Settings
+#                     en: Soulbinder Recipes
+enderio.config.soulvial=영혼 병
+#                   en: Soul Vial
 enderio.config.staff.tooltip=Be careful with that thing, you'll teleport your face off.
 #                        en: Be careful with that thing, you'll teleport your face off.
-enderio.config.staff=Staff Settings
-#                en: Staff Settings
+enderio.config.staff=여행자의 지팡이
+#                en: Staff of Traveling
 enderio.config.title=Ender IO Configuration
 #                en: Ender IO Configuration
 enderio.config.top=
-#              en: The One Probe Integration Settings
-enderio.config.upgrades=
-#                   en: Dark Steel Upgrade Settings
-enderio.config.wireless=
-#                   en: Wireless Charger Settings
+#              en: The One Probe Integration
+enderio.config.wireless=무선 충전기
+#                   en: Wireless Charger
 enderio.coolant.tooltip.degreesPerBucket=
 #                                    en: %s°C per bucket
 enderio.coolant.tooltip.heading=Coolant
@@ -180,6 +252,10 @@ enderio.darksteel.upgrade.gogglesOfRevealing.name=Revealing
 #                                             en: Revealing
 enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Vis Discount: 5%
 #                                                               en: Vis Discount: 5%
+enderio.darksteel.upgrade.hoe.name=
+#                              en: Fork
+enderio.darksteel.upgrade.hoe.tooltip.detailed.line1=
+#                                                en: Who needs a hoe when you have a fork...
 enderio.darksteel.upgrade.jump.disabled=
 #                                   en: Jump Disabled
 enderio.darksteel.upgrade.jump.enabled=
@@ -240,6 +316,18 @@ enderio.darksteel.upgrade.stepAssist.enabled=Step Assist Active
 #                                        en: Step Assist Active
 enderio.darksteel.upgrade.swim.name=Flippers
 #                               en: Flippers
+enderio.darksteel.upgrade.thaumaturge_robes.chest.name=
+#                                                  en: Thaumaturge's Robe
+enderio.darksteel.upgrade.thaumaturge_robes.chest.tooltip.detailed.line1=
+#                                                                    en: Vis Discount: 3%
+enderio.darksteel.upgrade.thaumaturge_robes.feet.name=
+#                                                 en: Thaumaturge's Boots
+enderio.darksteel.upgrade.thaumaturge_robes.feet.tooltip.detailed.line1=
+#                                                                   en: Vis Discount: 2%
+enderio.darksteel.upgrade.thaumaturge_robes.legs.name=
+#                                                 en: Thaumaturge's Leggings
+enderio.darksteel.upgrade.thaumaturge_robes.legs.tooltip.detailed.line1=
+#                                                                   en: Vis Discount: 3%
 enderio.darksteel.upgrade.tnt.name=
 #                              en: Explosive
 enderio.darksteel.upgrade.tnt.tooltip.detailed.line1=
@@ -254,6 +342,8 @@ enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Hold shift and R-Click t
 #                                                   en: Hold shift and R-Click to teleport or activate a travel anchor or Ender IO
 enderio.easteregg.piginabottle=
 #                          en: Bacon in a Bottle
+enderio.ender.name=
+#              en: Ocatadic Capacitor
 enderio.entity_action.block_attractor_obelisk.action=
 #                                                en: Attracts
 enderio.entity_action.block_aversion_obelisk.action=
@@ -276,8 +366,6 @@ enderio.farm.note.noTreetap=
 #                       en: No Treetap
 enderio.farm.note.outputFull=인벤토리 꽉 참
 #                        en: Output Full
-enderio.filterUpgradeSpecies.name=
-#                             en: Forestry Species Item Filter
 enderio.fluid.millibucket.format.name=
 #                                 en: %s mB of %s
 enderio.fluid.millibucket.format.of=
@@ -306,6 +394,14 @@ enderio.grindingball.tooltip.line3=
 #                              en: %sBonus Output %s
 enderio.grindingball.tooltip.line4=
 #                              en: %sPower Use %s
+enderio.gui.advanced_item_filter=고급 아이템 필터
+#                            en: Advanced Item Filter
+enderio.gui.basic_item_filter=기본 아이템 필터
+#                         en: Basic Item Filter
+enderio.gui.big_advanced_item_filter=Filter
+#                                en: Filter
+enderio.gui.big_item_filter=
+#                       en: Big Item Filter
 enderio.gui.conduit.io_mode.disabled=Disabled
 #                                en: Disabled
 enderio.gui.conduit.io_mode.in_out=In / Out
@@ -316,6 +412,28 @@ enderio.gui.conduit.io_mode.not_set=Default
 #                               en: Default
 enderio.gui.conduit.io_mode.output=Insert
 #                              en: Insert
+enderio.gui.edit_item_filter=
+#                        en: Edit Filter Settings
+enderio.gui.existing.item_filter.clear2=
+#                                   en: Clear the snapshot
+enderio.gui.existing.item_filter.clear=
+#                                  en: Clear
+enderio.gui.existing.item_filter.merge2=
+#                                   en: Merge the current snapshot with a new one
+enderio.gui.existing.item_filter.merge=
+#                                  en: Merge
+enderio.gui.existing.item_filter.show2=
+#                                  en: Show the current snapshot
+enderio.gui.existing.item_filter.show=
+#                                 en: Show
+enderio.gui.existing.item_filter.snapshot2=
+#                                      en: Optional: If no snapshot is set, the inventory content will be used as filter
+enderio.gui.existing.item_filter.snapshot=
+#                                     en: Snapshot
+enderio.gui.existing_item_filter=사용중인 아이템 필터
+#                            en: Existing Item Filter
+enderio.gui.fluid_filter=
+#                    en: Fluid Filter
 enderio.gui.generic.ioMode.overlay.tooltip.visible.line1=입출력 설정
 #                                                    en: Configure IO
 enderio.gui.generic.ioMode.overlay.tooltip.visible.line2=
@@ -334,6 +452,58 @@ enderio.gui.generic.nocap.line3=
 #                           en: this machine can work!
 enderio.gui.generic.progress=
 #                        en: Progress %s%%
+enderio.gui.infinity_recipe_dimensions=
+#                                  en: Overworld Only
+enderio.gui.item_filter.blacklist=
+#                             en: Blacklist
+enderio.gui.item_filter.close2=
+#                          en: Go back to previous inventory
+enderio.gui.item_filter.close=
+#                         en: Close Filter
+enderio.gui.item_filter.damage.damage_00_00=
+#                                       en: Not Damaged
+enderio.gui.item_filter.damage.damage_00_25=
+#                                       en: Up to 25% Damaged
+enderio.gui.item_filter.damage.damage_00_50=
+#                                       en: Up to 50% Damaged
+enderio.gui.item_filter.damage.damage_00_75=
+#                                       en: Up to 75% Damaged
+enderio.gui.item_filter.damage.damage_01_00=
+#                                       en: Damaged
+enderio.gui.item_filter.damage.damage_25_00=
+#                                       en: More than 25% Damaged
+enderio.gui.item_filter.damage.damage_50_00=
+#                                       en: More than 50% Damaged
+enderio.gui.item_filter.damage.damage_75_00=
+#                                       en: More than 75% Damaged
+enderio.gui.item_filter.damage.damage_not=
+#                                     en: Cannot be Damaged
+enderio.gui.item_filter.damage.damage_yes=
+#                                     en: Can be Damaged
+enderio.gui.item_filter.damage.disabled=
+#                                   en: Ignore Damage
+enderio.gui.item_filter.ignore_meta=
+#                               en: Ignore Metadata
+enderio.gui.item_filter.ignore_nbt=
+#                              en: Ignore NBT
+enderio.gui.item_filter.match_meta=
+#                              en: Match Metadata
+enderio.gui.item_filter.match_nbt=
+#                             en: Match NBT
+enderio.gui.item_filter.ore_dic_disabled=Ore Dictionary Disabled
+#                                    en: Ore Dictionary Disabled
+enderio.gui.item_filter.ore_dic_enabled=Ore Dictionary Enabled
+#                                   en: Ore Dictionary Enabled
+enderio.gui.item_filter.sticky_disabled=Sticky Mode Disabled
+#                                   en: Sticky Mode Disabled
+enderio.gui.item_filter.sticky_enabled2=
+#                                   en: Selected items will only be sent to this or other sticky outputs
+enderio.gui.item_filter.sticky_enabled=
+#                                  en: Sticky Mode Enabled
+enderio.gui.item_filter.whitelist=
+#                             en: Whitelist
+enderio.gui.limited_item_filter=
+#                           en: Limited Item Filter
 enderio.gui.machine.ioMode.disabled.colored=
 #                                       en: §cDisabled
 enderio.gui.machine.ioMode.disabled=Disabled
@@ -354,8 +524,48 @@ enderio.gui.machine.ioMode.push.colored=
 #                                   en: §6Push
 enderio.gui.machine.ioMode.push=Push
 #                           en: Push
+enderio.gui.mod.item_filter.delete=
+#                              en: Delete
+enderio.gui.mod.item_filter.slot=
+#                            en: Input Slot
+enderio.gui.mod_item_filter=아이템 필터 모드
+#                       en: Mod Item Filter
 enderio.gui.permission.denied=
 #                         en: Permission denied
+enderio.gui.power.item_filter.compare=
+#                                 en: Comparison Mode
+enderio.gui.power.item_filter.percent=
+#                                 en: Power Percentage
+enderio.gui.power_item_filter=
+#                         en: Power Item Filter
+enderio.gui.probe.copied=
+#                    en: Copied conduit settings
+enderio.gui.redstone_filter.and=
+#                           en: Redstone AND Filter
+enderio.gui.redstone_filter.count=
+#                             en: Count
+enderio.gui.redstone_filter.counting=
+#                                en: Redstone Counting Filter
+enderio.gui.redstone_filter.input_signal=
+#                                    en: Input Signal
+enderio.gui.redstone_filter.nand=
+#                            en: Redstone NAND Filter
+enderio.gui.redstone_filter.nor=
+#                           en: Redstone NOR Filter
+enderio.gui.redstone_filter.or=
+#                          en: Redstone OR Filter
+enderio.gui.redstone_filter.signal_color=
+#                                    en: Redstone Signal Color
+enderio.gui.redstone_filter.time=
+#                            en: Time
+enderio.gui.redstone_filter.timer=
+#                             en: Redstone Timer Filter
+enderio.gui.redstone_filter.xnor=
+#                            en: Redstone XNOR Filter
+enderio.gui.redstone_filter.xor=
+#                           en: Redstone XOR Filter
+enderio.gui.species_item_filter=
+#                           en: Species Item Filter
 enderio.gui.tooltip.redstoneControlMode.ignore=언제나 활성화
 #                                          en: Always active
 enderio.gui.tooltip.redstoneControlMode.never=비활성화
@@ -366,13 +576,17 @@ enderio.gui.tooltip.redstoneControlMode.on=신호가 있으면 활성화
 #                                      en: Active with signal
 enderio.gui.tooltip.redstoneControlMode=레드스톤 모드
 #                                   en: Redstone Mode
-enderio.itemConduitFilterUpgrade.clearConfigMethod=조합창에 올려놓아 설정을 초기화할 수 있습니다.
-#                                              en: %sPlace in crafting grid to clear
-enderio.itemConduitFilterUpgrade.clearConfigWarning=모든 필터 설정이 초기화됩니다!
-#                                               en: %sThis will clear all stored filter settings!
-enderio.itemConduitFilterUpgrade.configured=설정
+enderio.item.item_existing_item_filter.filter_not_updated=
+#                                                     en: Filter not updated
+enderio.item.item_existing_item_filter.filter_updated=
+#                                                 en: Filter updated
+enderio.item_item_filter_upgrade.clear_config_method=
+#                                                en: %sPlace in crafting grid to clear
+enderio.item_item_filter_upgrade.clear_config_warning=
+#                                                 en: %sThis will clear all stored filter settings!
+enderio.item_item_filter_upgrade.configured=
 #                                       en: %sConfigured
-enderio.itemConduitFilterUpgrade=아이템 컨두잇용 업그레이드
+enderio.item_item_filter_upgrade=아이템 컨두잇용 업그레이드
 #                            en: Upgrade for item conduits
 enderio.keybind.fovminus=
 #                    en: Camera: Zoom in
@@ -508,6 +722,12 @@ enderio.machine.tooltip.upgrade.tooltip.detailed.line1=기계의 에너지 저�
 #                                                  en: Increases energy storage and speed / range of machines
 enderio.machine.tooltip.upgrade=기계 업그레이드
 #                           en: Machine Upgrade
+enderio.owlegg.no_owl=
+#                 en: No Owl found (install Ender IO Zoo!)
+enderio.power.format.details=
+#                        en: A unit of energy
+enderio.power.format.name=
+#                     en: Micro Infinity (%s)
 enderio.power.format.of=
 #                   en: %s / %s µI
 enderio.power.format.pertick=
@@ -620,26 +840,20 @@ enderio.top.tank.header.storage.pre=
 #                               en: §f
 enderio.wrench.permission.denied=
 #                            en: Permission §cdenied§r!
+entity.enderio.enderio.owl_egg.name=
+#                               en: Owl Egg
+entity.enderio.enderio.primed_charge.name=
+#                                     en: Primed Charge
+entity.enderio.owl_egg.name=
+#                       en: Owl Egg
+entity.enderio.primed_charge.name=
+#                             en: Primed Charge
 fluid.cloud_seed=
 #            en: Cloud Seed
 fluid.cloud_seed_concentrated=
 #                         en: Concentrated Cloud Seed
-fluid.conductive_iron=
-#                 en: Molten Conductive Iron
-fluid.dark_steel=
-#            en: Molten Dark Steel
-fluid.electrical_steel=
-#                  en: Molten Electrical Steel
 fluid.ender_distillation=
 #                    en: Dew of the Void
-fluid.enderio.ender=
-#               en: Liquefied Ender Pearls
-fluid.enderio.glowstone=
-#                   en: Glowgas
-fluid.enderio.redstone=
-#                  en: Molten Redstone
-fluid.energetic_alloy=
-#                 en: Molten Energetic Alloy
 fluid.fire_water=화염수
 #            en: Fire Water
 fluid.hootch=독주
@@ -648,28 +862,44 @@ fluid.liquid_sunshine=
 #                 en: Liquid Sunshine
 fluid.nutrient_distillation=근처의 몹을 죽여줍니다.
 #                       en: Nutrient Distillation
-fluid.pulsating_iron=
-#                en: Molten Pulsating Iron
-fluid.redstone_alloy=
-#                en: Molten Redstone Alloy
 fluid.rocket_fuel=로켓 연료
 #             en: Rocket Fuel
-fluid.soularium=
-#           en: Molten Soularium
 fluid.vapor_of_levity=
 #                 en: Vapor of Levity
-fluid.vibrant_alloy=
-#               en: Molten Vibrant Alloy
 fluid.xpjuice=액체 XP
 #         en: Liquid XP
 item.block_dark_steel_door.name=
 #                           en: Dark Steel Door
+item.item_advanced_item_filter.name=고급 아이템 필터
+#                               en: Advanced Item Filter
+item.item_advanced_item_filter.tooltip.detailed.line1=
+#                                                 en: Filters items with advanced configuration options
+item.item_alloy_ball_conductive_iron.name=
+#                                     en: Conductive Iron Grinding Ball
+item.item_alloy_ball_dark_steel.name=
+#                                en: Dark Steel Grinding Ball
+item.item_alloy_ball_electrical_steel.name=
+#                                      en: Electrical Steel Grinding Ball
+item.item_alloy_ball_end_steel.name=
+#                               en: End Steel Grinding Ball
+item.item_alloy_ball_energetic_alloy.name=
+#                                     en: Energetic Alloy Grinding Ball
+item.item_alloy_ball_pulsating_iron.name=
+#                                    en: Pulsating Iron Grinding Ball
+item.item_alloy_ball_redstone_alloy.name=
+#                                    en: Redstone Alloy Grinding Ball
+item.item_alloy_ball_soularium.name=
+#                               en: Soularium Grinding Ball
+item.item_alloy_ball_vibrant_alloy.name=
+#                                   en: Vibrant Alloy Grinding Ball
 item.item_alloy_ingot_conductive_iron.name=
 #                                      en: Conductive Iron Ingot
 item.item_alloy_ingot_dark_steel.name=
 #                                 en: Dark Steel Ingot
 item.item_alloy_ingot_electrical_steel.name=
 #                                       en: Electrical Steel Ingot
+item.item_alloy_ingot_end_steel.name=
+#                                en: End Steel Ingot
 item.item_alloy_ingot_energetic_alloy.name=
 #                                      en: Energetic Alloy Ingot
 item.item_alloy_ingot_pulsating_iron.name=
@@ -686,6 +916,8 @@ item.item_alloy_nugget_dark_steel.name=
 #                                  en: Dark Steel Nugget
 item.item_alloy_nugget_electrical_steel.name=
 #                                        en: Electrical Steel Nugget
+item.item_alloy_nugget_end_steel.name=
+#                                 en: End Steel Nugget
 item.item_alloy_nugget_energetic_alloy.name=
 #                                       en: Energetic Alloy Nugget
 item.item_alloy_nugget_pulsating_iron.name=
@@ -702,6 +934,20 @@ item.item_basic_capacitor.basic.name=기본 축전지
 #                                en: Basic Capacitor
 item.item_basic_capacitor.ender.name=팔중 축전지
 #                                en: Octadic Capacitor
+item.item_basic_item_filter.name=기본 아이템 필터
+#                            en: Basic Item Filter
+item.item_basic_item_filter.tooltip.detailed.line1=
+#                                              en: Filters items with whitelist and match metadata options
+item.item_big_advanced_item_filter.name=
+#                                   en: Advanced Big Item Filter
+item.item_big_advanced_item_filter.tooltip.detailed.line1=
+#                                                     en: Filters even more items with
+item.item_big_advanced_item_filter.tooltip.detailed.line2=
+#                                                     en: advanced configuration options
+item.item_big_item_filter.name=
+#                          en: Big Item Filter
+item.item_big_item_filter.tooltip.detailed.line1=
+#                                            en: Filters even more items
 item.item_broken_spawner.name=부서진 스포너
 #                         en: Broken Spawner
 item.item_broken_spawner.tooltip.detailed.line1=모루에서 전동 스포너와 합쳐
@@ -773,13 +1019,13 @@ item.item_dark_steel_armor.tooltip.levelcost.line1=
 item.item_dark_steel_armor.tooltip.levelcost.line2=
 #                                              en: %s%s  %s + %s levels
 item.item_dark_steel_armor.tooltip.line1=
-#                                    en: %sDiamond level protection when powered
+#                                    en: %sBetter protection when powered
 item.item_dark_steel_axe.name=암흑의 도끼
 #                         en: Dark Axe
 item.item_dark_steel_axe.tooltip.effPowered=
 #                                       en: %sEfficiency when powered: %s
-item.item_dark_steel_axe.tooltip.multiHarvest=앉아서 사용하면 원목 여러 개를 채굴 가능합니다.
-#                                         en: Sneak to harvest multiple logs
+item.item_dark_steel_axe.tooltip.multiHarvest=
+#                                         en: Harvests full trees when powered (sneak to prevent this)
 item.item_dark_steel_boots.name=암흑의 전투화
 #                           en: Dark Boots
 item.item_dark_steel_boots.tooltip.line1=
@@ -812,6 +1058,16 @@ item.item_dark_steel_sword.tooltip.detailed.line1=몹의 머리와 엔더 진주
 #                                             en: Increased skull and ender pearl drops
 item.item_dark_steel_sword.tooltip.detailed.line2=
 #                                             en: When powered: Endermen can't teleport once hit, extra Damage and Speed
+item.item_end_steel_boots.name=
+#                          en: Ender Boots
+item.item_end_steel_boots.tooltip.line1=
+#                                   en: Fall damage negated when powered
+item.item_end_steel_chestplate.name=
+#                               en: Ender Plate
+item.item_end_steel_helmet.name=
+#                           en: Ender Helm
+item.item_end_steel_leggings.name=
+#                             en: Ender Leggings
 item.item_ender_food.enderios.name=
 #                              en: "Enderios"
 item.item_ender_food.enderios.tooltip.common.line1=
@@ -820,26 +1076,24 @@ item.item_ender_food.enderios.tooltip.detailed.line1=
 #                                                en: Not actually healthy. Contains 253g of sugar, 53g of fat, and 394g of ender dust.
 item.item_ender_food.enderios.tooltip.detailed.line2=
 #                                                en: Side effects of ender dust include: nausea, dizziness, confusion, and random teleporting.
+item.item_enderface.name=엔더 얼굴
+#                    en: Enderface
 item.item_existing_item_filter.name=사용중인 아이템 필터
 #                               en: Existing Item Filter
-item.item_existing_item_filter.tooltip.basic.line1=아이템 컨두잇용 업그레이드
-#                                              en: Upgrade for item conduits
-item.item_existing_item_filter.tooltip.detailed.line1=이미 인벤토리에 있는
-#                                                 en: Selects only items already
-item.item_existing_item_filter.tooltip.detailed.line2=아이템만을 설정합니다.
-#                                                 en: in the inventory
-item.item_existing_item_filter.tooltip.detailed.line3=
-#                                                 en: Right click while sneaking
-item.item_existing_item_filter.tooltip.detailed.line4=
-#                                                 en: on an inventory to add the
-item.item_existing_item_filter.tooltip.detailed.line5=
-#                                                 en: content to the snapshot
-item.item_item_filter_filterUpgradeAdvanced.name=고급 아이템 필터
-#                                            en: Advanced Item Filter
-item.item_item_filter_filterUpgradeBasic.name=기본 아이템 필터
-#                                         en: Basic Item Filter
-item.item_item_filter_filterUpgradeLimited.name=
-#                                           en: Counting Item Filter
+item.item_existing_item_filter.tooltip.detailed.line1=
+#                                                 en: Filters items based on a snapshot
+item.item_existing_item_filter.tooltip.detailed.line2=
+#                                                 en: of the connected inventory
+item.item_fluid_filter.name=
+#                       en: Fluid Filter
+item.item_fluid_filter.tooltip.detailed.line1=
+#                                         en: Filters fluids with whitelist options
+item.item_limited_item_filter.name=
+#                              en: Limited Item Filter
+item.item_limited_item_filter.tooltip.detailed.line1=
+#                                                en: Filters items based on their stack size in
+item.item_limited_item_filter.tooltip.detailed.line2=
+#                                                en: addition to the features of the advanced item filter
 item.item_location_printout.chat.addTarget=
 #                                      en: Added target
 item.item_location_printout.chat.noPaper=
@@ -880,18 +1134,24 @@ item.item_material.chassi_parts.name=기계 부품
 #                                en: Machine Parts
 item.item_material.conduit_binder.name=컨두잇 접합제
 #                                  en: Conduit Binder
-item.item_material.dark_grinding_ball.name=흑강 공
-#                                      en: Dark Steel Ball
+item.item_material.confusing_dust.name=
+#                                  en: Confusing Powder
 item.item_material.dust_wheat.name=
 #                              en: Flour
 item.item_material.ender_crystal.name=엔더 수정
 #                                 en: Ender Crystal
 item.item_material.ender_crystal_powder.name=
 #                                        en: Grains of the End
+item.item_material.ender_fragment.name=
+#                                  en: Ender Fragment
+item.item_material.enhanced_machine_chassi.name=
+#                                           en: Enhanced Machine Chassis
+item.item_material.enhanced_machine_chassi.tooltip.detailed.line1=
+#                                                             en: A reinforced structure for constructing sturdier machinery
 item.item_material.gear_energized.name=
 #                                  en: Energized Bimetal Gear
 item.item_material.gear_iron.name=
-#                             en: Iron Gear
+#                             en: Infinity Bimetal Gear
 item.item_material.gear_stone.name=
 #                              en: Stone Compound Gear
 item.item_material.gear_vibrant.name=
@@ -904,12 +1164,18 @@ item.item_material.glider_wings.name=Glider Wings
 #                                en: Glider Wings
 item.item_material.glider_wings.tooltip.detailed.line1=
 #                                                  en: Upgrade for Dark Steel chestplate
+item.item_material.grinding_ball_enderium.name=
+#                                          en: Enderium Grinding Ball
+item.item_material.grinding_ball_lumium.name=
+#                                        en: Lumium Grinding Ball
+item.item_material.grinding_ball_signalum.name=
+#                                          en: Signalum Grinding Ball
 item.item_material.ingot_enderium_base.name=
 #                                       en: Enderium Base
-item.item_material.machine_chassi.name=기계 틀
-#                                  en: Machine Chassis
+item.item_material.machine_chassi.name=
+#                                  en: Industrial Machine Chassis
 item.item_material.machine_dye.name=
-#                               en: Organic Machine Powder Coating
+#                               en: Industrial Powder Coating
 item.item_material.machine_dye.tooltip.detailed.line1=
 #                                                 en: Industrially produced dye with organic and inorganic components. Not biodegradable.
 item.item_material.machine_dye.tooltip.detailed.line2=
@@ -974,6 +1240,10 @@ item.item_material.pulsating_crystal.name=맥동성 수정
 #                                     en: Pulsating Crystal
 item.item_material.pulsating_powder.name=
 #                                    en: Grains of Piezallity
+item.item_material.redstone_filter_base.name=
+#                                        en: Redstone Filter Base
+item.item_material.remote_awareness_upgrade.name=
+#                                            en: Remote Awareness Upgrade
 item.item_material.silicon.name=실리콘
 #                           en: Silicon
 item.item_material.simple_machine_chassi.name=
@@ -984,6 +1254,8 @@ item.item_material.simple_machine_chassi.tooltip.detailed.line2=
 #                                                           en: §7Not stainless. Keep away from moisture. Made in town of Gemany, China.
 item.item_material.skull_ender_resonator.name=엔더 공명기
 #                                         en: Ender Resonator
+item.item_material.skull_guardian_diode.name=
+#                                        en: Guardian Diode
 item.item_material.skull_sentient_ender.name=
 #                                        en: Sentient Ender
 item.item_material.skull_skeletal_contractor.name=
@@ -994,28 +1266,62 @@ item.item_material.skull_zombie_electrode.name=좀비 전극
 #                                          en: Zombie Electrode
 item.item_material.skull_zombie_frankenstien.name=프랑켄 좀비
 #                                             en: Frank'N'Zombie
+item.item_material.soul_machine_chassi.name=
+#                                       en: Soul Machine Chassis
+item.item_material.soul_machine_chassi.tooltip.detailed.line1=
+#                                                         en: A complex framework combining the strength of steel with the elasticity of a soul
+item.item_material.soul_machine_chassi.tooltip.detailed.line2=
+#                                                         en: §7If your machine begins making screaming sounds, please call GHAST BUSTERS on 1800 GHASTS
+item.item_material.soul_machine_dye.name=
+#                                    en: Soul Attuned Powder Coating
+item.item_material.soul_machine_dye.tooltip.detailed.line1=
+#                                                      en: Industrially produced dye with organic and inorganic components. Not biodegradable. May contain traces of ectoplasm.
+item.item_material.soul_machine_dye.tooltip.detailed.line2=
+#                                                      en: §7Not edible. Avoid contact with eyes. In case of contact with eyes, rinse immediately with holy water and seek religous advice.
+item.item_material.unsouled_machine_chassi.name=
+#                                           en: Soulless Machine Chassis
+item.item_material.unsouled_machine_chassi.tooltip.detailed.line1=
+#                                                             en: An advanced frame for machinery, but it seems to be missing something...
 item.item_material.vibrant_crystal.name=진동성 수정
 #                                   en: Vibrant Crystal
 item.item_material.vibrant_powder.name=
 #                                  en: Grains of Vibrancy
 item.item_material.weather_crystal.name=
 #                                   en: Weather Crystal
+item.item_material.withering_dust.name=
+#                                  en: Withering Dust
 item.item_mod_item_filter.name=아이템 필터 모드
 #                          en: Mod Item Filter
-item.item_mod_item_filter.tooltip.basic.line1=아이템 컨두잇용 업그레이드
-#                                         en: Upgrade for item conduits
-item.item_mod_item_filter.tooltip.detailed.line1=특정한 모드의
-#                                            en: Selects only items for a specified
-item.item_mod_item_filter.tooltip.detailed.line2=아이템만을 설정합니다.
-#                                            en: mod/s
+item.item_mod_item_filter.tooltip.detailed.line1=
+#                                            en: Filters items based on the mod they come from
+item.item_owl_egg.name=
+#                  en: Owl Egg
 item.item_power_item_filter.name=
-#                            en: Chargeable Item Filter
-item.item_power_item_filter.tooltip.basic.line1=아이템 컨두잇용 업그레이드
-#                                           en: Upgrade for item conduits
+#                            en: Power Item Filter
 item.item_power_item_filter.tooltip.detailed.line1=
-#                                              en: Filters chargeable items based on
-item.item_power_item_filter.tooltip.detailed.line2=
-#                                              en: how much RF they have stored
+#                                              en: Filters items based on their current energy
+item.item_redstone_and_filter.name=
+#                              en: Redstone AND Filter
+item.item_redstone_counting_filter.name=
+#                                   en: Redstone Counting Filter
+item.item_redstone_nand_filter.name=
+#                               en: Redstone NAND Filter
+item.item_redstone_nor_filter.name=
+#                              en: Redstone NOR Filter
+item.item_redstone_not_filter.name=
+#                              en: Redstone NOT Filter
+item.item_redstone_or_filter.name=
+#                             en: Redstone OR Filter
+item.item_redstone_sensor_filter.name=
+#                                 en: Redstone Sensor Filter
+item.item_redstone_timer_filter.name=
+#                                en: Redstone Timer Filter
+item.item_redstone_toggle_filter.name=
+#                                 en: Redstone Toggle Latch Filter
+item.item_redstone_xnor_filter.name=
+#                               en: Redstone XNOR Filter
+item.item_redstone_xor_filter.name=
+#                              en: Redstone XOR Filter
 item.item_rod_of_return.chat.notEnoughFluid=
 #                                       en: %sNot enough fluid
 item.item_rod_of_return.chat.notEnoughPower=
@@ -1033,7 +1339,7 @@ item.item_rod_of_return.tooltip.detailed.line1=
 item.item_rod_of_return.tooltip.detailed.line2=
 #                                          en: Sync with a Telepad using Shift-R-Click
 item.item_rod_of_return.tooltip.detailed.line3=
-#                                          en: Requires RF and %s
+#                                          en: Requires energy and %s
 item.item_rod_of_return.tooltip.fluid=
 #                                 en: %s
 item.item_rod_of_return.tooltip.power=
@@ -1052,6 +1358,12 @@ item.item_soul_vial.tooltip.fluidname=
 #                                 en: Fluid Name: %s
 item.item_soul_vial.tooltip.health=
 #                              en: Health: %s
+item.item_staff_of_levity.name=
+#                          en: Staff of Levity
+item.item_staff_of_levity.tooltip.detailed.line1=
+#                                            en: Applies anti-gravity to the
+item.item_staff_of_levity.tooltip.detailed.line2=
+#                                            en: player with Shift-R-Click
 item.item_travel_staff.chat.notEnoughPower=전력이 모자랍니다!
 #                                      en: Not enough power
 item.item_travel_staff.name=여행자의 지팡이
@@ -1097,13 +1409,33 @@ itemGroup.enderio.items=
 itemGroup.enderio.machines=
 #                      en: EnderIO Machines
 itemGroup.enderio.main=
-#                  en: EnderIO Main
+#                  en: EnderIO Blocks
 itemGroup.enderio.materials=
 #                       en: EnderIO Materials
+itemGroup.enderio.mobs=
+#                  en: EnderIO Souls
 key.category.darksteelarmor=
 #                       en: Dark Steel Armor
 key.category.tools=
 #              en: Tools
+lingering_potion.effect.enderio.confusion=
+#                                     en: Lingering Potion of Confusion
+lingering_potion.effect.enderio.floating=
+#                                    en: Lingering Potion of Rising
+lingering_potion.effect.enderio.withering=
+#                                     en: Lingering Potion of Decay
+potion.effect.enderio.confusion=
+#                           en: Potion of Confusion
+potion.effect.enderio.floating=
+#                          en: Potion of Rising
+potion.effect.enderio.withering=
+#                           en: Potion of Decay
+splash_potion.effect.enderio.confusion=
+#                                  en: Splash Potion of Confusion
+splash_potion.effect.enderio.floating=
+#                                 en: Splash Potion of Rising
+splash_potion.effect.enderio.withering=
+#                                  en: Splash Potion of Decay
 subtitles.entity.enderman.teleport=
 #                              en: Something teleports
 tile.block_alloy.conductive_iron.name=전도성 철 블럭
@@ -1112,6 +1444,8 @@ tile.block_alloy.dark_steel.name=흑강 블럭
 #                            en: Dark Steel Block
 tile.block_alloy.electrical_steel.name=전기강 블럭
 #                                  en: Electrical Steel Block
+tile.block_alloy.end_steel.name=
+#                           en: End Steel Block
 tile.block_alloy.energetic_alloy.name=활동성 합금 블럭
 #                                 en: Energetic Alloy Block
 tile.block_alloy.name=
@@ -1126,6 +1460,10 @@ tile.block_alloy.vibrant_alloy.name=
 #                               en: Vibrant Alloy Block
 tile.block_cold_fire.name=
 #                     en: Cold Fire
+tile.block_concussion_charge.name=
+#                             en: Concussion Charge
+tile.block_confusion_charge.name=
+#                            en: Confusion Charge
 tile.block_dark_fused_glass.name=
 #                            en: Dark Clear Glass
 tile.block_dark_fused_quartz.name=
@@ -1258,6 +1596,8 @@ tile.block_detector_block.name=
 #                          en: Block Detector
 tile.block_detector_block_silent.name=
 #                                 en: Block Detector (Silent)
+tile.block_ender_charge.name=
+#                        en: Ender Charge
 tile.block_enderman_skull.base.name=엔더맨 머리
 #                               en: Enderman Head
 tile.block_enderman_skull.name=엔더맨 머리
@@ -1278,6 +1618,10 @@ tile.block_fused_glass.name=투명한 유리
 #                       en: Quite Clear Glass
 tile.block_fused_quartz.name=재결정 석영
 #                        en: Fused Quartz
+tile.block_industrial_insulation.name=
+#                                 en: Industrial Insulation
+tile.block_industrial_insulation.tooltip.common.line1=
+#                                                 en: Absorbs nearby fluids like a sponge
 tile.block_infinity_fog.name=
 #                        en: Infinity Dust
 tile.block_infinity_fog.tooltip.common.line1=
@@ -1294,6 +1638,8 @@ tile.block_machine_io.name=
 #                      en: (technical block)
 tile.block_painted_carpet.name=채색된 카펫
 #                          en: Painted Carpet
+tile.block_painted_dark_steel_door.name=
+#                                   en: Painted Dark Steel Door
 tile.block_painted_dark_steel_trapdoor.name=
 #                                       en: Painted Dark Steel Trapdoor
 tile.block_painted_double_slab.name=채색된 반 블럭
@@ -1308,6 +1654,8 @@ tile.block_painted_glowstone.name=
 #                             en: Painted Glowstone
 tile.block_painted_glowstone_solid.name=
 #                                   en: Painted Glowstone
+tile.block_painted_iron_door.name=
+#                             en: Painted Iron Door
 tile.block_painted_iron_trapdoor.name=
 #                                 en: Painted Iron Trapdoor
 tile.block_painted_pressure_plate.darksteel.name=
@@ -1422,6 +1770,8 @@ tile.block_painted_stone_stair.name=
 #                               en: Painted Stone Stairs
 tile.block_painted_wall.name=채색된 담장
 #                        en: Painted Wall
+tile.block_painted_wooden_door.name=
+#                               en: Painted Wooden Door
 tile.block_painted_wooden_trapdoor.name=
 #                                   en: Painted Wooden Trapdoor
 tile.block_reinforced_obsidian.name=강화 흑요석
@@ -1442,22 +1792,8 @@ tile.fluid.cloud_seed.name=
 #                      en: Cloud Seed
 tile.fluid.cloud_seed_concentrated.name=
 #                                   en: Concentrated Cloud Seed
-tile.fluid.conductive_iron.name=
-#                           en: Molten Conductive Iron
-tile.fluid.dark_steel.name=
-#                      en: Molten Dark Steel
-tile.fluid.electrical_steel.name=
-#                            en: Molten Electrical Steel
 tile.fluid.ender_distillation.name=
 #                              en: Dew of the Void
-tile.fluid.enderio.ender.name=
-#                         en: Liquefied Ender Pearls
-tile.fluid.enderio.glowstone.name=
-#                             en: Glowgas
-tile.fluid.enderio.redstone.name=
-#                            en: Molten Redstone
-tile.fluid.energetic_alloy.name=
-#                           en: Molten Energetic Alloy
 tile.fluid.fire_water.name=화염수
 #                      en: Fire Water
 tile.fluid.hootch.name=독주
@@ -1466,17 +1802,15 @@ tile.fluid.liquid_sunshine.name=
 #                           en: Liquid Sunshine
 tile.fluid.nutrient_distillation.name=근처의 몹을 죽여줍니다.
 #                                 en: Nutrient Distillation
-tile.fluid.pulsating_iron.name=
-#                          en: Molten Pulsating Iron
-tile.fluid.redstone_alloy.name=
-#                          en: Molten Redstone Alloy
 tile.fluid.rocket_fuel.name=로켓 연료
 #                       en: Rocket Fuel
-tile.fluid.soularium.name=
-#                     en: Molten Soularium
-tile.fluid.vibrant_alloy.name=
-#                         en: Molten Vibrant Alloy
 tile.fluid.xpjuice.name=액체 XP
 #                   en: Liquid XP
 tile.vapor_of_levity.name=
 #                     en: Vapor of Levity
+tipped_arrow.effect.enderio.confusion=
+#                                 en: Arrow of Confusion
+tipped_arrow.effect.enderio.floating=
+#                                en: Arrow of Rising
+tipped_arrow.effect.enderio.withering=
+#                                 en: Arrow of Decay

@@ -1,0 +1,99 @@
+{
+	"credit": "Made with Blockbench",
+	"elements": [
+		{
+			"name": "Box1",
+			"from": [0.5, 0.5, 14.75],
+			"to": [15.5, 5, 15.75],
+			"faces": {
+				"south": {"uv": [0.5, 11, 15.5, 15.5], "texture": "#front"},
+				"up": {"uv": [0.5, 11, 15.5, 12], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box2",
+			"from": [0.5, 11, 14.75],
+			"to": [15.5, 15.5, 15.75],
+			"faces": {
+				"south": {"uv": [0.5, 0.5, 15.5, 5], "texture": "#front"},
+				"down": {"uv": [0.5, 4, 15.5, 5], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box3",
+			"from": [0.5, 5, 14.75],
+			"to": [3, 11, 15.75],
+			"faces": {
+				"east": {"uv": [2, 5, 3, 11], "texture": "#front"},
+				"south": {"uv": [0.5, 5, 3, 11], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box4",
+			"from": [13, 5, 14.75],
+			"to": [15.5, 11, 15.75],
+			"faces": {
+				"south": {"uv": [13, 5, 15.5, 11], "texture": "#front"},
+				"west": {"uv": [13, 5, 14, 11], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box5",
+			"from": [5.5, 5, 14.75],
+			"to": [6.5, 11, 15.75],
+			"faces": {
+				"east": {"uv": [6, 5, 6.5, 11], "texture": "#front"},
+				"south": {"uv": [5.5, 5, 6.5, 11], "texture": "#front"},
+				"west": {"uv": [5.5, 5, 6, 11], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box6",
+			"from": [9.5, 5, 14.75],
+			"to": [10.5, 11, 15.75],
+			"faces": {
+				"east": {"uv": [10, 5, 10.5, 11], "texture": "#front"},
+				"south": {"uv": [9.5, 5, 10.5, 11], "texture": "#front"},
+				"west": {"uv": [9.5, 5, 10, 11], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box7",
+			"from": [1, 1, 13.75],
+			"to": [15, 15, 14.75],
+			"faces": {
+				"south": {"uv": [1, 1, 15, 15], "texture": "#front"}
+			}
+		},
+		{
+			"from": [3, 9, 14.25],
+			"to": [13, 10, 15.25],
+			"faces": {
+				"south": {"uv": [3, 6, 13, 7], "texture": "#front"},
+				"up": {"uv": [3, 6, 13, 6.5], "texture": "#front"},
+				"down": {"uv": [3, 6.5, 13, 7], "texture": "#front"}
+			}
+		},
+		{
+			"from": [3, 6, 14.25],
+			"to": [13, 7, 15.25],
+			"faces": {
+				"south": {"uv": [3, 9, 13, 10], "texture": "#front"},
+				"up": {"uv": [3, 9, 13, 9.5], "texture": "#front"},
+				"down": {"uv": [3, 9.5, 13, 10], "texture": "#front"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "block_simple_sag_mill",
+			"isOpen": true,
+			"shade": true,
+			"display": {
+				"visibility": true,
+				"autouv": true
+			},
+			"children": [0, 1, 2, 3, 4, 5, 6, 7, 8]
+		}
+	]
+}

@@ -169,8 +169,12 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
     Attackera atackera = getAttackera();
     if (atackera.getTicksSinceLastSwing() < atackera.getCooldownPeriod()) {
+      // System.out.println("Cannot attack yet, it's only been " + atackera.getTicksSinceLastSwing() + " tick(s) but the cooldown is "
+      // + atackera.getCooldownPeriod() + " ticks. The attack would be limited to " + attackera.getCooledAttackStrength(0.5F) + " effectiveness.");
       return false;
     }
+    // System.out.println("Can attack now, it's been " + atackera.getTicksSinceLastSwing() + " tick(s) and the cooldown is " + atackera.getCooldownPeriod()
+    // + " ticks. The attack will be limited to " + attackera.getCooledAttackStrength(0.5F) + " effectiveness.");
 
     List<EntityLivingBase> entsInBounds = world.getEntitiesWithinAABB(EntityLivingBase.class, getKillBounds());
     for (EntityLivingBase ent : entsInBounds) {

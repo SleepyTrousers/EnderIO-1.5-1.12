@@ -148,6 +148,11 @@ tile.block_alloy_smelter.tooltip.detailed.line3=Upgrade with capacitors to incre
 tile.block_simple_alloy_smelter.name=Simple Alloy Smelter
 tile.block_simple_alloy_smelter.tooltip.detailed.line1=Used to create EnderIO alloys
 
+tile.block_enhanced_alloy_smelter.name=Enhanced Alloy Smelter
+tile.block_enhanced_alloy_smelter.tooltip.detailed.line1=Used to create EnderIO alloys
+tile.block_enhanced_alloy_smelter.tooltip.detailed.line2=Can also be used as a powered furnace
+tile.block_enhanced_alloy_smelter.tooltip.detailed.line3=Upgrade with capacitors to increase speed and energy storage
+
 tile.block_buffer.item.name=Item Buffer
 tile.block_buffer.power.name=Power Buffer
 tile.block_buffer.omni.name=Omni Buffer
@@ -239,6 +244,11 @@ tile.block_sag_mill.tooltip.detailed.line3=Upgrade with capacitors to increase s
 tile.block_simple_sag_mill.name=Simple SAG Mill
 tile.block_simple_sag_mill.tooltip.detailed.line1=Grinds ore and other items
 
+tile.block_enhanced_sag_mill.name=Enhanced SAG Mill
+tile.block_enhanced_sag_mill.tooltip.detailed.line1=Grinds ore and other items
+tile.block_enhanced_sag_mill.tooltip.detailed.line2=Add grinding balls to increase output and efficiency
+tile.block_enhanced_sag_mill.tooltip.detailed.line3=Upgrade with capacitors to increase speed and energy storage
+
 tile.block_slice_and_splice.name=Slice'N'Splice
 tile.block_slice_and_splice.tooltip.detailed.line1=Slices heads and splices in all sorts of useful things
 
@@ -297,8 +307,14 @@ tile.block_xp_vacuum.tooltip.detailed.line2=Needs to be activated with liquid XP
 tile.block_vat.name=The Vat
 tile.block_vat.tooltip.detailed.line1=Used to brew EnderIO fluids
 
+tile.block_enhanced_vat.name=The Enhanced Vat
+tile.block_enhanced_vat.tooltip.detailed.line1=Used to brew EnderIO fluids
+
 tile.block_wired_charger.name=Wired Charger
 tile.block_wired_charger.tooltip.detailed.line1=Charges items with µI
+
+tile.block_enhanced_wired_charger.name=Enhanced Wired Charger
+tile.block_enhanced_wired_charger.tooltip.detailed.line1=Charges items with µI
 
 tile.block_wireless_charger.name=Wireless Charger
 tile.block_wireless_charger.tooltip.detailed.line1=Charges items in nearby players inventories. Has a small range, but can be painted and hidden.

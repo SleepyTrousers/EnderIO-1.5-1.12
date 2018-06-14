@@ -31,6 +31,10 @@ public enum CapacitorKey implements ICapacitorKey {
   ALLOY_SMELTER_POWER_BUFFER(MachineObject.block_alloy_smelter, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   ALLOY_SMELTER_POWER_USE(MachineObject.block_alloy_smelter, CapacitorKeyType.ENERGY_USE, "use"),
 
+  ENHANCED_ALLOY_SMELTER_POWER_INTAKE(MachineObject.block_enhanced_alloy_smelter, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  ENHANCED_ALLOY_SMELTER_POWER_BUFFER(MachineObject.block_enhanced_alloy_smelter, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  ENHANCED_ALLOY_SMELTER_POWER_USE(MachineObject.block_enhanced_alloy_smelter, CapacitorKeyType.ENERGY_USE, "use"),
+
   CREATIVE_BUFFER_POWER_INTAKE(MachineObject.block_buffer, CapacitorKeyType.ENERGY_INTAKE, "intake_creative"),
   CREATIVE_BUFFER_POWER_BUFFER(MachineObject.block_buffer, CapacitorKeyType.ENERGY_BUFFER, "buffer_creative"),
   CREATIVE_BUFFER_POWER_USE(MachineObject.block_buffer, CapacitorKeyType.ENERGY_USE, "use_creative"),
@@ -105,6 +109,10 @@ public enum CapacitorKey implements ICapacitorKey {
   SIMPLE_SAG_MILL_POWER_USE(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_USE, "use"),
   SIMPLE_SAG_MILL_POWER_LOSS(MachineObject.block_simple_sag_mill, CapacitorKeyType.ENERGY_LOSS, "loss"),
 
+  ENHANCED_SAG_MILL_POWER_INTAKE(MachineObject.block_enhanced_sag_mill, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  ENHANCED_SAG_MILL_POWER_BUFFER(MachineObject.block_enhanced_sag_mill, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  ENHANCED_SAG_MILL_POWER_USE(MachineObject.block_enhanced_sag_mill, CapacitorKeyType.ENERGY_USE, "use"),
+
   SLICE_POWER_INTAKE(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   SLICE_POWER_BUFFER(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   SLICE_POWER_USE(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_USE, "use"),
@@ -127,9 +135,17 @@ public enum CapacitorKey implements ICapacitorKey {
   VAT_POWER_BUFFER(MachineObject.block_vat, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   VAT_POWER_USE(MachineObject.block_vat, CapacitorKeyType.ENERGY_USE, "use"),
 
+  ENHANCED_VAT_POWER_INTAKE(MachineObject.block_enhanced_vat, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  ENHANCED_VAT_POWER_BUFFER(MachineObject.block_enhanced_vat, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  ENHANCED_VAT_POWER_USE(MachineObject.block_enhanced_vat, CapacitorKeyType.ENERGY_USE, "use"),
+
   WIRED_POWER_INTAKE(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   WIRED_POWER_BUFFER(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   WIRED_POWER_CHARGE(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_USE, "charge"),
+
+  ENHANCED_WIRED_POWER_INTAKE(MachineObject.block_enhanced_wired_charger, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  ENHANCED_WIRED_POWER_BUFFER(MachineObject.block_enhanced_wired_charger, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  ENHANCED_WIRED_POWER_CHARGE(MachineObject.block_enhanced_wired_charger, CapacitorKeyType.ENERGY_USE, "charge"),
 
   WIRELESS_POWER_INTAKE(MachineObject.block_wireless_charger, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   WIRELESS_POWER_BUFFER(MachineObject.block_wireless_charger, CapacitorKeyType.ENERGY_BUFFER, "buffer"),

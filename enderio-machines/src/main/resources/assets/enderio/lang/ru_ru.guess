@@ -2,6 +2,70 @@
 #
 # Please wait until the en_us lang file has been completed before translating.
 #
+enderio.advancement.alloy.1_alloy_smelter_get.desc=
+#                                              en: Craft a Simple Alloy Smelter
+enderio.advancement.alloy.1_alloy_smelter_get.name=
+#                                              en: Alloys and Enemies
+enderio.advancement.alloy.2_energetic_alloy_get.desc=
+#                                                en: Combine gold, redstone, and glowstone
+enderio.advancement.alloy.2_energetic_alloy_get.name=
+#                                                en: Energized Metal
+enderio.advancement.alloy.machine_chassis_get.desc=
+#                                              en: Craft a Machine Chassis
+enderio.advancement.alloy.machine_chassis_get.name=
+#                                              en: The Culmination
+enderio.advancement.challenge.1_all_simple_get.desc=
+#                                               en: Craft all simple machines
+enderio.advancement.challenge.1_all_simple_get.name=
+#                                               en: Start at the Beginning
+enderio.advancement.machines.root.desc=
+#                                  en: Begin your automation adventure
+enderio.advancement.machines.root.name=
+#                                  en: Ender IO Machines
+enderio.advancement.sagmill.1_sagmill_get.desc=
+#                                          en: Craft a simple SAG Mill
+enderio.advancement.sagmill.1_sagmill_get.name=
+#                                          en: Semi-Autogenous Grinding
+enderio.advancement.sagmill.2_sagmill_flowers.desc=
+#                                              en: Grind down some plant matter
+enderio.advancement.sagmill.2_sagmill_flowers.name=
+#                                              en: Destroy Something Beautiful
+enderio.advancement.sagmill.3_sagmill_bushes.desc=
+#                                             en: Grind down a dead bush
+enderio.advancement.sagmill.3_sagmill_bushes.name=
+#                                             en: Useful in Death
+enderio.advancement.sagmill.4_brown.desc=
+#                                    en: Combine some twigs and organic matter into dye
+enderio.advancement.sagmill.4_brown.name=
+#                                    en: Who Needs Jungles?
+enderio.advancement.sagmill.5_green.desc=
+#                                    en: Combine some plant matter and animal products into dye
+enderio.advancement.sagmill.5_green.name=
+#                                    en: Caution: Do Not Eat
+enderio.advancement.sagmill.6_coal.desc=
+#                                   en: Grind down some coal
+enderio.advancement.sagmill.6_coal.name=
+#                                   en: Chewing Dead Wood
+enderio.advancement.sagmill.7_black.desc=
+#                                    en: Combine some coal dust and animal products into dye
+enderio.advancement.sagmill.7_black.name=
+#                                    en: Who Needs Squid?
+enderio.advancement.sagmill.8_blue.desc=
+#                                   en: Grind down some Lapis Lazuli
+enderio.advancement.sagmill.8_blue.name=
+#                                   en: Bejeweled
+enderio.advancement.sagmill.9_white.desc=
+#                                    en: Grind down some Quartz
+enderio.advancement.sagmill.9_white.name=
+#                                    en: Bejeweled 2
+enderio.advancement.sagmill.a_powder_coating.desc=
+#                                             en: Craft some Organic Machine Powder Coating
+enderio.advancement.sagmill.a_powder_coating.name=
+#                                             en: Classic Color
+enderio.advancement.stirling.1_stirling_generator_get.desc=
+#                                                      en: Craft a Simple Stirling Generator
+enderio.advancement.stirling.1_stirling_generator_get.name=
+#                                                      en: Harness the Heat
 enderio.block_powered_spawner.note.areaFull=
 #                                       en: Too many mobs
 enderio.block_powered_spawner.note.badSoul=
@@ -27,33 +91,45 @@ enderio.chat.vat.dump.active=Не удалось сбросить, невозм�
 enderio.chat.vat.dump.fail=Не удалось сбросить, выход чана заполнен
 #                      en: Dumping failed, output tank is not empty
 enderio.config.capacitor=
-#                    en: Capacitor Settings
+#                    en: Capacitor Values
 enderio.config.client=
 #                 en: Client Settings
-enderio.config.combustiongenerator=
-#                              en: Combustion Generator Settings
+enderio.config.experience=Обелиск опыта
+#                     en: Experience Obelisk
 enderio.config.farm.tooltip="Коммуна - это на всю жизнь!"
 #                       en: "The commune is for life!"
-enderio.config.farm=Настройки ферм
-#               en: Farm Settings
-enderio.config.killerjoe=
-#                    en: Killer Joe Settings
-enderio.config.solar=
-#                en: Solar Panel Settings
+enderio.config.farm=Фермерская станция
+#               en: Farming Station
+enderio.config.generator.combustion=Генератор внутреннего сгорания
+#                               en: Combustion Generator
+enderio.config.generator.solar=
+#                          en: Solar Panels
+enderio.config.generator.zombie=Зомби генератор
+#                           en: Zombie Generator
+enderio.config.generator=
+#                    en: Generators
+enderio.config.inhibitor=Обелиск замедления
+#                    en: Inhibitor Obelisk
+enderio.config.killerjoe=Киллер Джо
+#                    en: Killer Joe
 enderio.config.soulbinder=
-#                     en: Soulbinder Settings
+#                     en: Soulbinder
 enderio.config.spawner.tooltip=У меня закончились остроумные подсказки.
 #                          en: I ran out of witty tooltips.
-enderio.config.spawner=Настройки электрического спаунера
-#                  en: Powered Spawner Settings
+enderio.config.spawner=Электрический спаунер
+#                  en: Powered Spawner
+enderio.config.tank=Резервуар
+#               en: Tank
 enderio.config.telepad=
-#                  en: TelePad Settings
+#                  en: TelePad
+enderio.config.tranceiver=
+#                     en: Tranceiver
 enderio.config.vacuum=
-#                 en: Vacuum Chest/XP Vacuum Settings
-enderio.config.vat=
-#              en: Vat Settings
-enderio.config.zombiegenerator=
-#                          en: Zombie Generator Settings
+#                 en: Vacuum Chest/XP Vacuum
+enderio.config.vat=Чан
+#              en: Vat
+enderio.config.weather=Погодный обелиск
+#                  en: Weather Obelisk
 enderio.darksteel.upgrade.solar_1.name=Солнечная батарея I
 #                                  en: Solar I
 enderio.darksteel.upgrade.solar_1.tooltip.detailed.line1=Генерирует энергию от солнца.
@@ -77,7 +153,7 @@ enderio.gui.alloy.mode.heading=Режим печи
 enderio.gui.buffer.in=Макс. вход:
 #                 en: Max In:
 enderio.gui.buffer.maxio=
-#                    en: In/Out Max: %d
+#                    en: In/Out Max: %s
 enderio.gui.buffer.out=Макс. выход:
 #                  en: Max Out:
 enderio.gui.combustion_generator.coolantTank.empty=Охладитель
@@ -90,8 +166,18 @@ enderio.gui.combustion_generator.fuelTank=
 #                                     en: Fuel: %s
 enderio.gui.combustion_generator.output=
 #                                   en: Generating: %s
+enderio.gui.crafter.buffering_single=
+#                                en: Buffering Single Items
+enderio.gui.crafter.buffering_stack=
+#                               en: Buffering Item Stacks
 enderio.gui.farm.baseUse=
 #                    en: Base Use: %s
+enderio.gui.impulse_hopper.locked.tooltip=
+#                                     en: Stops the impulse hopper from sorting items into the output slots if there are items in there already.
+enderio.gui.impulse_hopper.locked=
+#                             en: Output Locked
+enderio.gui.impulse_hopper.unlocked=
+#                               en: Output Unlocked
 enderio.gui.killerJoe.fluid.minReq=Для активации требуется: %s
 #                              en: %s Required for activation
 enderio.gui.killerJoe.fuelTank=Питательный резервуар
@@ -150,6 +236,12 @@ enderio.gui.telepad.tank=
 #                    en: Reagent Tank
 enderio.gui.telepad.teleport=Телепортироваться!
 #                        en: Teleport!
+enderio.gui.telepad.unnamed_location=
+#                                en: Unnamed
+enderio.gui.telepad_travel_settings.close2=
+#                                      en: Go back to previous inventory
+enderio.gui.telepad_travel_settings.close=
+#                                     en: Close Travel Settings
 enderio.gui.trans.addChannel=Добавить канал
 #                        en: Add Channel
 enderio.gui.trans.available=Доступно
@@ -190,14 +282,22 @@ enderio.gui.travel_accessable.protected=Защищённый
 #                                   en: Protected
 enderio.gui.travel_accessable.public=Общедоступный
 #                                en: Public
+enderio.gui.travel_accessable.visible.line1=
+#                                       en: Visibility
+enderio.gui.travel_accessable.visible.line2=
+#                                       en: When on, this block can be seen when holding a Staff of Traveling or standing on a Travel Anchor
 enderio.gui.vacuum.header.chest=Вакуумный сундук
 #                           en: Vacuum Chest
 enderio.gui.vacuum.header.filter=Предметный фильтр
 #                            en: Item Filter
 enderio.gui.vacuum.header.range=Дальность
 #                           en: Range
+enderio.gui.vacuum.prime=
+#                    en: To activate, right click the XP Vacuum with a bucket of Liquid XP.
 enderio.gui.vacuum.range=Сила всасывания
 #                    en: Suction Strength
+enderio.gui.vacuum.xp.header=
+#                        en: XP Vacuum
 enderio.gui.vat.dump=Сбросить вход чана в выход чана
 #                en: Dump Input Tank Into Output Tank
 enderio.gui.vat.inputTank=Вход чана
@@ -244,6 +344,10 @@ enderio.gui.zombie_generator.fuelTank=Питательный резервуар
 #                                 en: Nutrient Tank
 enderio.gui.zombie_generator.output=
 #                               en: Generating: %s
+enderio.jei.alloy_smelter.notSimple.line1=
+#                                     en: This recipe cannot be made in
+enderio.jei.alloy_smelter.notSimple.line2=
+#                                     en: Simple Alloy Smelter
 enderio.jei.combustion_generator.range.line1=
 #                                        en: Depending on capacitor and generator model
 enderio.jei.combustion_generator.range.line2=
@@ -252,14 +356,20 @@ enderio.jei.combustion_generator.range.line3=
 #                                        en: Better model gives more output at same fuel cost.
 enderio.jei.combustion_generator.range.line4=
 #                                        en: Some ancient capacitors that can be found in the world can give even better results than shown here.
+enderio.jei.grinding_ball.bonus.line1=
+#                                 en: Increases the chances of any random outputs, but will not bring them above 100%%
+enderio.jei.grinding_ball.bonus.line2=
+#                                 en: Calculated as original chance * bonus chance.
+enderio.jei.grinding_ball.main.line1=
+#                                en: Adds a chance to double all outputs
+enderio.jei.grinding_ball.power.line1=
+#                                 en: Affects the power used per operation, speeding up or slowing down the machine
 enderio.jei.sagmill.outputchance=Шанс: {0,choice,0#'<1'|0<{0,number}}%
 #                            en: Chance: {0,choice,0#'<1'|0<{0,number}}%
 enderio.jei.solar_panel.output=
 #                          en: Generating up to
 enderio.jei.solar_panel.range.line1=
-#                               en: Actual power generated depends on
-enderio.jei.solar_panel.range.line2=
-#                               en: the weather and the angle of Sun
+#                               en: Actual power generated depends on the weather and the angle of sun
 enderio.jei.stirling_generator.notSimple.line1=
 #                                          en: This fuel cannot be used in
 enderio.jei.stirling_generator.notSimple.line2=
@@ -298,30 +408,20 @@ tile.block_alloy_smelter.name=Завод сплавов
 #                         en: Alloy Smelter
 tile.block_alloy_smelter.tooltip.detailed.line1=Используется для создания сплавов EnderIO
 #                                           en: Used to create EnderIO alloys
-tile.block_alloy_smelter.tooltip.detailed.line2=Может также использоваться как печь,
-#                                           en: Can also be used as a powered
-tile.block_alloy_smelter.tooltip.detailed.line3=питающаяся энергией
-#                                           en: furnace
-tile.block_alloy_smelter.tooltip.detailed.line4=Добавьте конденсаторы, чтобы увеличить
-#                                           en: Upgrade with capacitors to increase
-tile.block_alloy_smelter.tooltip.detailed.line5=скорость и хранилище энергии
-#                                           en: speed and energy storage
+tile.block_alloy_smelter.tooltip.detailed.line2=
+#                                           en: Can also be used as a powered furnace
+tile.block_alloy_smelter.tooltip.detailed.line3=
+#                                           en: Upgrade with capacitors to increase speed and energy storage
 tile.block_attractor_obelisk.name=Притягивающий обелиск
 #                             en: Attractor Obelisk
 tile.block_attractor_obelisk.tooltip.detailed.line1=Притягивает мобов к себе
 #                                               en: Draws mobs towards it
-tile.block_attractor_obelisk.tooltip.detailed.line2=Укажите мобов для притягивания,
-#                                               en: Specify the mobs to effect
-tile.block_attractor_obelisk.tooltip.detailed.line3=положив их души
-#                                               en: by placing their souls
-tile.block_attractor_obelisk.tooltip.detailed.line4=внутрь механизма
-#                                               en: within the device
+tile.block_attractor_obelisk.tooltip.detailed.line2=
+#                                               en: Specify the mobs to effect by placing their souls within the device
 tile.block_aversion_obelisk.name=Обелиск отвращения
 #                            en: Aversion Obelisk
-tile.block_aversion_obelisk.tooltip.detailed.line1=Запрещает мобам появляться
-#                                              en: Prevents mobs from spawning
-tile.block_aversion_obelisk.tooltip.detailed.line2=в пределах действия обелиска
-#                                              en: within its area of effect
+tile.block_aversion_obelisk.tooltip.detailed.line1=
+#                                              en: Prevents mobs from spawning within its area of effect
 tile.block_buffer.creative.name=Творческий буфер
 #                           en: Creative Buffer
 tile.block_buffer.item.name=Предметный буфер
@@ -340,14 +440,6 @@ tile.block_combustion_generator.tooltip.detailed.line3=Выход зависит
 #                                                  en: Output dependent on fuel
 tile.block_crafter.name=Создатель
 #                   en: Crafter
-tile.block_crafter.tooltip.detailed.line1=Электрический авто-создатель
-#                                     en: A powered auto-crafter
-tile.block_crafter.tooltip.detailed.line2=Потребляет энергию за операцию
-#                                     en: Consumes power per operation
-tile.block_crafter.tooltip.detailed.line3=Может быть улучшен, чтобы увеличить скорость
-#                                     en: Can be upgraded to increase speed
-tile.block_crafter.tooltip.detailed.line4=и хранилище энергии с помощью конденсаторов
-#                                     en: and energy storage with capacitors
 tile.block_dialing_device.name=
 #                          en: Dialing Device
 tile.block_dialing_device.tooltip.detailed.line1=
@@ -368,106 +460,84 @@ tile.block_electric_light.wireless.name=
 #                                   en: Wireless Light
 tile.block_enchanter.name=Зачарователь
 #                     en: Enchanter
-tile.block_enchanter.tooltip.detailed.line1=Использует опыт, чтобы объединять
-#                                       en: Uses XP to combine items
-tile.block_enchanter.tooltip.detailed.line2=
-#                                       en: and a §6book and quill§r to
-tile.block_enchanter.tooltip.detailed.line3=
-#                                       en: create enchanted books
+tile.block_enchanter.tooltip.detailed.line1=
+#                                       en: Uses XP to combine items and a §6book and quill§r to create enchanted books
 tile.block_enhanced_combustion_generator.name=
 #                                         en: Enhanced Combustion Generator
+tile.block_enhanced_wireless_charger.name=
+#                                     en: Enhanced Wireless Charging Antenna
+tile.block_enhanced_wireless_charger.tooltip.detailed.line1=
+#                                                       en: Charges items in nearby players inventories. Has twice the range of the Wireless Charging Antenna.
 tile.block_experience_obelisk.name=Обелиск опыта
 #                              en: Experience Obelisk
 tile.block_experience_obelisk.tooltip.detailed.line1=Содержит опыт
 #                                                en: Stores Experience
-tile.block_experience_obelisk.tooltip.detailed.line2=Может отдавать жидкий опыт
-#                                                en: Can output liquid XP to
-tile.block_experience_obelisk.tooltip.detailed.line3=присоединённым резервуарам
-#                                                en: adjacent tanks
+tile.block_experience_obelisk.tooltip.detailed.line2=
+#                                                en: Can output liquid XP to adjacent tanks
 tile.block_farm_station.name=Фермерская станция
 #                        en: Farming Station
 tile.block_farm_station.tooltip.detailed.line1=Сажает и собирает растения
 #                                          en: Plants and harvests crops
-tile.block_farm_station.tooltip.detailed.line2=Требует энергию и
-#                                          en: Requires power and
-tile.block_farm_station.tooltip.detailed.line3=надлежащие инструменты (мотыгу, топор)
-#                                          en: appropriate tools (hoe, axe)
-tile.block_farm_station.tooltip.detailed.line4=Добыча/удача на инструментах
-#                                          en: Looting / fortune on tools
-tile.block_farm_station.tooltip.detailed.line5=применяется при сборе урожая
-#                                          en: applied when harvesting
-tile.block_farm_station.tooltip.detailed.line6=Добавьте конденсаторы, чтобы увеличить
-#                                          en: Upgrade with capacitors to increase
-tile.block_farm_station.tooltip.detailed.line7=дальность, улучшение также повышает потребление энергии
-#                                          en: range, upgrade also increases power use
+tile.block_farm_station.tooltip.detailed.line2=
+#                                          en: Requires power and appropriate tools (hoe, axe, shears, treetap)
+tile.block_farm_station.tooltip.detailed.line3=
+#                                          en: Looting / fortune on tools applied when harvesting
+tile.block_farm_station.tooltip.detailed.line4=
+#                                          en: Upgrade with capacitors to increase range, upgrade also increases power use
+tile.block_impulse_hopper.name=
+#                          en: Impulse Hopper
+tile.block_impulse_hopper.tooltip.detailed.line1=
+#                                            en: Takes inputed items and only outputs them if there is a full set of required items in the input.
 tile.block_inhibitor_obelisk.name=Обелиск замедления
 #                             en: Inhibitor Obelisk
-tile.block_inhibitor_obelisk.tooltip.detailed.line1=Запрещает телепортироваться
-#                                               en: Prevents teleporting within
-tile.block_inhibitor_obelisk.tooltip.detailed.line2=в пределах действия обелиска
-#                                               en: its area of effect
+tile.block_inhibitor_obelisk.tooltip.detailed.line1=
+#                                               en: Prevents teleporting within  its area of effect
 tile.block_killer_joe.name=Киллер Джо
 #                      en: Killer Joe
-tile.block_killer_joe.tooltip.detailed.line1=Атакует ближайших существ, если
-#                                        en: Attacks nearby creatures when
-tile.block_killer_joe.tooltip.detailed.line2=снабжён мечом и
-#                                        en: supplied with a sword and
-tile.block_killer_joe.tooltip.detailed.line3=питательным дистиллятом
-#                                        en: Nutrient Distillation
+tile.block_killer_joe.tooltip.detailed.line1=
+#                                        en: Attacks nearby creatures when supplied with a sword and Nutrient Distillation
+tile.block_normal_wireless_charger.name=
+#                                   en: Wireless Charging Antenna
+tile.block_normal_wireless_charger.tooltip.detailed.line1=
+#                                                     en: Charges items in nearby players inventories.
 tile.block_painter.name=Покрасочный механизм
 #                   en: Painting Machine
-tile.block_powered_spawner.empty.tooltip.detailed.line1=Объедините со сломанным
-#                                                   en: Combine with a broken
-tile.block_powered_spawner.empty.tooltip.detailed.line2=спаунером в наковальне
-#                                                   en: spawner in an anvil
+tile.block_powered_spawner.empty.tooltip.detailed.line1=
+#                                                   en: Combine with a broken spawner in an anvil
 tile.block_powered_spawner.name=Электрический спаунер
 #                           en: Powered Spawner
-tile.block_powered_spawner.tooltip.detailed.line1=Подайте питание, чтобы
-#                                             en: Supply with power to
-tile.block_powered_spawner.tooltip.detailed.line2=активировать
-#                                             en: activate
-tile.block_powered_spawner.tooltip.detailed.line3=Добавьте конденсаторы, чтобы увеличить
-#                                             en: Upgrade with capacitors to increase
-tile.block_powered_spawner.tooltip.detailed.line4=скорость и хранилище энергии
-#                                             en: speed and energy storage
+tile.block_powered_spawner.tooltip.detailed.line1=
+#                                             en: Supply with power to activate
+tile.block_powered_spawner.tooltip.detailed.line2=
+#                                             en: Upgrade with capacitors to increase speed and energy storage
 tile.block_relocator_obelisk.name=Обелиск релокации
 #                             en: Relocator Obelisk
-tile.block_relocator_obelisk.tooltip.detailed.line1=Перемещает мобов, появившихся
-#                                               en: Relocates mobs that spawn
-tile.block_relocator_obelisk.tooltip.detailed.line2=в пределах действия обелиска
-#                                               en: within its area of effect
+tile.block_relocator_obelisk.tooltip.detailed.line1=
+#                                               en: Relocates mobs that spawn within its area of effect
 tile.block_reservoir.name=Резервуар
 #                     en: Reservoir
 tile.block_reservoir.tooltip.detailed.line1=При подключении с другим резервуаром:
 #                                       en: When connected with other Reservoirs:
-tile.block_reservoir.tooltip.detailed.line2=Добавьте два ведра воды для
-#                                       en: Add two buckets of water for
-tile.block_reservoir.tooltip.detailed.line3=бесконечного источника воды
-#                                       en: an infinite water source.
-tile.block_reservoir.tooltip.detailed.line4=Производит одно ведро в секунду
+tile.block_reservoir.tooltip.detailed.line2=
+#                                       en: Add two buckets of water for an infinite water source.
+tile.block_reservoir.tooltip.detailed.line3=Производит одно ведро в секунду
 #                                       en: Produces one bucket per second
-tile.block_reservoir.tooltip.detailed.line5=ПКМ с гаечным ключом, чтобы
-#                                       en: R-Click with a wrench to
-tile.block_reservoir.tooltip.detailed.line6=включить авто-выход
-#                                       en: enable auto-output
+tile.block_reservoir.tooltip.detailed.line4=
+#                                       en: Right-Click with a wrench to enable auto-output
 tile.block_sag_mill.name=Дробитель
 #                    en: SAG Mill
 tile.block_sag_mill.tooltip.detailed.line1=Дробит руду и другие предметы
 #                                      en: Grinds ore and other items
-tile.block_sag_mill.tooltip.detailed.line2=Добавьте измельчающие шарики, чтобы увеличить
-#                                      en: Add grinding balls to increase output
-tile.block_sag_mill.tooltip.detailed.line3=выход и эффективность
-#                                      en: and efficiency
-tile.block_sag_mill.tooltip.detailed.line4=Добавьте конденсаторы, чтобы увеличить
-#                                      en: Upgrade with capacitors to increase
-tile.block_sag_mill.tooltip.detailed.line5=скорость и хранилище энергии
-#                                      en: speed and energy storage
-tile.block_sag_mill.tooltipPrefix=Содержит
-#                             en: Contains
+tile.block_sag_mill.tooltip.detailed.line2=
+#                                      en: Add grinding balls to increase output and efficiency
+tile.block_sag_mill.tooltip.detailed.line3=
+#                                      en: Upgrade with capacitors to increase speed and energy storage
 tile.block_simple_alloy_smelter.name=
 #                                en: Simple Alloy Smelter
 tile.block_simple_alloy_smelter.tooltip.detailed.line1=Используется для создания сплавов EnderIO
 #                                                  en: Used to create EnderIO alloys
+tile.block_simple_crafter.name=
+#                          en: Simple Crafter
 tile.block_simple_sag_mill.name=
 #                           en: Simple SAG Mill
 tile.block_simple_sag_mill.tooltip.detailed.line1=Дробит руду и другие предметы
@@ -476,10 +546,8 @@ tile.block_simple_stirling_generator.name=
 #                                     en: Simple Stirling Generator
 tile.block_slice_and_splice.name=«Отрубатель и сращиватель»
 #                            en: Slice'N'Splice
-tile.block_slice_and_splice.tooltip.detailed.line1=Отрубает головы и превращает их
-#                                              en: Slices heads and splices in
-tile.block_slice_and_splice.tooltip.detailed.line2=во всякие полезные вещи
-#                                              en: all sorts of useful things
+tile.block_slice_and_splice.tooltip.detailed.line1=
+#                                              en: Slices heads and splices in all sorts of useful things
 tile.block_solar_panel.advanced.name=Продвинутая фотовольтовая ячейка
 #                                en: Advanced Photovoltaic Cell
 tile.block_solar_panel.name=Фотовольтовая ячейка
@@ -490,72 +558,52 @@ tile.block_solar_panel.tooltip.common.line1=Солнечная энергия!
 #                                       en: Solar Power!
 tile.block_solar_panel.tooltip.detailed.line1=Производит энергию в светлое время суток
 #                                         en: Produces power during daylight hours
-tile.block_solar_panel.tooltip.detailed.line2=Должна иметь чистое пространство
-#                                         en: Must have a clear line of sight to
-tile.block_solar_panel.tooltip.detailed.line3=к небу
-#                                         en: the sky
+tile.block_solar_panel.tooltip.detailed.line2=
+#                                         en: Must have a clear line of sight to the sky
 tile.block_solar_panel.vibrant.name=Вибрирующая фотовольтовая ячейка
 #                               en: Vibrant Photovoltaic Cell
 tile.block_soul_binder.name=Связыватель душ
 #                       en: Soul Binder
-tile.block_soul_binder.tooltip.detailed.line1=Используется для преобразования
-#                                         en: Used to convert the type of
-tile.block_soul_binder.tooltip.detailed.line2=типа сломанного спаунера
-#                                         en: a broken spawner
+tile.block_soul_binder.tooltip.detailed.line1=
+#                                         en: Used to convert the type of a broken spawner
 tile.block_stirling_generator.name=Генератор Стирлинга
 #                              en: Stirling Generator
 tile.block_stirling_generator.tooltip.detailed.line1=Сжигает твёрдое топливо для производства энергии
 #                                                en: Burns solid fuel to generate power
-tile.block_stirling_generator.tooltip.detailed.line2=Может быть улучшен, чтобы увеличить выход
-#                                                en: Can be upgraded to increase output
-tile.block_stirling_generator.tooltip.detailed.line3=и эффективность
-#                                                en: and efficiency with capacitors
+tile.block_stirling_generator.tooltip.detailed.line2=
+#                                                en: Can be upgraded to increase output and efficiency with capacitors
 tile.block_tank.advanced.name=Жидкостный резервуар под давлением
 #                         en: Pressurized Fluid Tank
 tile.block_tank.name=Жидкостный резервуар
 #                en: Fluid Tank
 tile.block_tank.tooltip.detailed.line1=Переносной жидкостный резервуар
 #                                  en: Portable fluid tank
-tile.block_tank.tooltip.detailed.line2=Может быть использован для опустошения и
-#                                  en: Can be used to empty and
-tile.block_tank.tooltip.detailed.line3=заполнения жидкостных контейнеров
-#                                  en: fill fluid containers
+tile.block_tank.tooltip.detailed.line2=
+#                                  en: Can be used to empty and fill fluid containers
 tile.block_tele_pad.name=Блок телепорта
 #                    en: Telepad Block
-tile.block_tele_pad.tooltip.detailed.line1=Использует энергию для телепортации
-#                                      en: Uses power to teleport entities
-tile.block_tele_pad.tooltip.detailed.line2=сущностей в указанную позицию и измерение.
-#                                      en: to a specific position and dimension.
-tile.block_tele_pad.tooltip.detailed.line3=Должен быть размещён в виде мультиблока 3x1x3.
+tile.block_tele_pad.tooltip.detailed.line1=
+#                                      en: Uses power to teleport entities to a specific position and dimension.
+tile.block_tele_pad.tooltip.detailed.line2=Должен быть размещён в виде мультиблока 3x1x3.
 #                                      en: Must be placed in a 3x1x3 multiblock.
 tile.block_transceiver.name=Пространственный приёмопередатчик
 #                       en: Dimensional Transceiver
-tile.block_transceiver.tooltip.detailed.line1=Переносит предметы, жидкости и энергию
-#                                         en: Transports items, fluids and power
-tile.block_transceiver.tooltip.detailed.line2=без проводов на любое расстояние и
-#                                         en: wirelessly across any distance and
-tile.block_transceiver.tooltip.detailed.line3=между измерениями
-#                                         en: between dimensions
+tile.block_transceiver.tooltip.detailed.line1=
+#                                         en: Transports items, fluids and power wirelessly across any distance and between dimensions
 tile.block_travel_anchor.name=Якорь путешествия
 #                         en: Travel Anchor
 tile.block_travel_anchor.tooltip.detailed.line1=Позволяет телепортироваться между якорями
 #                                           en: Allows teleportation between anchors
-tile.block_travel_anchor.tooltip.detailed.line2=Встаньте на один якорь, посмотрите
-#                                           en: Stand on one Anchor, look at
-tile.block_travel_anchor.tooltip.detailed.line3=на другой и прыгните для путешествия
-#                                           en: another and jump to travel
-tile.block_travel_anchor.tooltip.detailed.line4=Может также использоваться с посохом
-#                                           en: Can also be used with the Staff
-tile.block_travel_anchor.tooltip.detailed.line5=путешествия
-#                                           en: of Travel
+tile.block_travel_anchor.tooltip.detailed.line2=
+#                                           en: Stand on one Anchor, look at another and jump to travel
+tile.block_travel_anchor.tooltip.detailed.line4=
+#                                           en: Can also be used with the Staff of Travel
 tile.block_travel_anchor.tooltip.detailed.line6=Может быть покрашен в покрасочном механизме
 #                                           en: Can be painted in the Painting Machine
 tile.block_vacuum_chest.name=Вакуумный сундук
 #                        en: Vacuum Chest
-tile.block_vacuum_chest.tooltip.detailed.line1=Втягивает ближайшие предметы
-#                                          en: Pulls nearby items
-tile.block_vacuum_chest.tooltip.detailed.line2=в свой инвентарь
-#                                          en: into its inventory
+tile.block_vacuum_chest.tooltip.detailed.line1=
+#                                          en: Pulls nearby items into its inventory
 tile.block_vat.name=Чан
 #               en: The Vat
 tile.block_vat.tooltip.detailed.line1=Используется для варки жидкостей EnderIO
@@ -564,31 +612,27 @@ tile.block_weather_obelisk.name=Погодный обелиск
 #                           en: Weather Obelisk
 tile.block_weather_obelisk.tooltip.detailed.line1=Изменяет текущую погоду
 #                                             en: Changes the current weather
-tile.block_weather_obelisk.tooltip.detailed.line2=Требует много энергии и
-#                                             en: Requires a lot of power and
-tile.block_weather_obelisk.tooltip.detailed.line3=предмет в качестве катализатора
-#                                             en: a catalyst item
+tile.block_weather_obelisk.tooltip.detailed.line2=
+#                                             en: Requires a lot of power and a catalyst fluid
 tile.block_wired_charger.name=
 #                         en: Wired Charger
 tile.block_wired_charger.tooltip.detailed.line1=
 #                                           en: Charges items with µI
 tile.block_wireless_charger.name=Беспроводной зарядник
 #                            en: Wireless Charger
-tile.block_wireless_charger.tooltip.detailed.line1=Заряжает ближайшие предметы
-#                                              en: Charges items in nearby
-tile.block_wireless_charger.tooltip.detailed.line2=в инвентарях игроков
-#                                              en: players inventories
+tile.block_wireless_charger.tooltip.detailed.line1=
+#                                              en: Charges items in nearby players inventories. Has a small range, but can be painted and hidden.
+tile.block_wireless_charger_extension.name=
+#                                      en: Wireless Charging Antenna Extension
+tile.block_wireless_charger_extension.tooltip.detailed.line1=
+#                                                        en: Doubles the range of the Enhanced Wireless Charging Antenna in one direction.
 tile.block_xp_vacuum.name=
 #                     en: XP Vacuum
 tile.block_xp_vacuum.tooltip.detailed.line1=
-#                                       en: Pulls nearby XP orbs and pushes
+#                                       en: Pulls nearby XP orbs and pushes them into adjacent tanks/conduits.
 tile.block_xp_vacuum.tooltip.detailed.line2=
-#                                       en: them into adjacent tanks/conduits.
-tile.block_xp_vacuum.tooltip.detailed.line3=
 #                                       en: Needs to be activated with liquid XP.
 tile.block_zombie_generator.name=Зомби генератор
 #                            en: Zombie Generator
-tile.block_zombie_generator.tooltip.detailed.line1=Потребляет питательный дистиллят
-#                                              en: Consumes Nutrient Distillation
-tile.block_zombie_generator.tooltip.detailed.line2=для производства энергии
-#                                              en: to generate power
+tile.block_zombie_generator.tooltip.detailed.line1=
+#                                              en: Consumes Nutrient Distillation to generate power

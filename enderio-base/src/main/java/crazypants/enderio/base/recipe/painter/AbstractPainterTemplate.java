@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.config.config.RecipeConfig;
+import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
@@ -30,7 +31,7 @@ public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
 
   public abstract boolean isValidTarget(@Nonnull ItemStack target);
 
-  public abstract @Nonnull ResultStack[] getCompletedResult(@Nonnull ItemStack paintSource, @Nonnull ItemStack target);
+  protected abstract @Nonnull ResultStack[] produceCompletedResult(@Nonnull ItemStack paintSource, @Nonnull ItemStack target);
 
   public abstract boolean isRecipe(@Nonnull ItemStack paintSource, @Nonnull ItemStack target);
 
@@ -61,7 +62,31 @@ public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
 
   @Override
   public final @Nonnull ResultStack[] getCompletedResult(long nextSeed, float chanceMultiplier, @Nonnull NNList<MachineRecipeInput> inputs) {
-    return getCompletedResult(getPaintSource(inputs), getTarget(inputs));
+    final ItemStack target = getTarget(inputs);
+    final ItemStack paintSource = getPaintSource(inputs);
+    final ResultStack[] result = produceCompletedResult(paintSource, target);
+    applyExtraTags(target, paintSource, result);
+    return result;
+  }
+
+  private void applyExtraTags(final @Nonnull ItemStack target, @Nonnull final ItemStack paintSource, final @Nonnull ResultStack[] result) {
+    for (ResultStack resultStack : result) {
+      if (PaintUtil.isPainted(resultStack.item)) {
+        PaintUtil.setPaintSource(resultStack.item, paintSource);
+        if (target.getItem() != resultStack.item.getItem()) {
+          PaintUtil.setOriginalStack(resultStack.item, target);
+        }
+      }
+    }
+  }
+
+  /**
+   * Get the result in a direct way. Used by the JEI recipes
+   */
+  public final @Nonnull ItemStack getCompletedResult(@Nonnull ItemStack paintSource, @Nonnull ItemStack target) {
+    final ResultStack[] result = produceCompletedResult(paintSource, target);
+    applyExtraTags(target, paintSource, result);
+    return result.length > 0 ? result[0].item : Prep.getEmpty();
   }
 
   @Override

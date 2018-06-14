@@ -3,9 +3,12 @@ package crazypants.enderio.zoo.entity.ai;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
+import crazypants.enderio.base.config.factory.IValue;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -14,9 +17,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 
 public class EntityAINearestAttackableTargetBounded<T extends EntityLivingBase> extends EntityAINearestAttackableTarget<T> {
 
-  private double distanceOverride = -1;
+  private IValue<Double> distanceOverride = null;
   private final int targetChance;
-  private double vertDistOverride = -1;
+  private IValue<Double> vertDistOverride = null;
 
   public EntityAINearestAttackableTargetBounded(EntityCreature creature, Class<T> classTarget, boolean checkSight) {
     this(creature, classTarget, checkSight, false);
@@ -32,55 +35,49 @@ public class EntityAINearestAttackableTargetBounded<T extends EntityLivingBase> 
     targetChance = chance;
   }
 
-  public double getMaxDistanceToTarget() {
-    return distanceOverride;
-  }
-
-  public void setMaxDistanceToTarget(double distance) {
+  public @Nonnull EntityAINearestAttackableTargetBounded<T> setMaxDistanceToTarget(@Nonnull IValue<Double> distance) {
     this.distanceOverride = distance;
-  }
-  
-  public double getMaxVerticalDistanceToTarget() {
-    return distanceOverride;
+    return this;
   }
 
-  public void setMaxVerticalDistanceToTarget(double vertDist) {
-    vertDistOverride = vertDist; 
+  public @Nonnull EntityAINearestAttackableTargetBounded<T> setMaxVerticalDistanceToTarget(@Nonnull IValue<Double> vertDist) {
+    vertDistOverride = vertDist;
+    return this;
   }
 
   @Override
   protected double getTargetDistance() {
-    if (distanceOverride > 0) {
-      return distanceOverride;
+    if (distanceOverride != null) {
+      return distanceOverride.get();
     }
     return super.getTargetDistance();
   }
 
   @Override
   public boolean shouldExecute() {
-    if (targetChance > 0 && taskOwner.getRNG().nextInt(targetChance) != 0) {
-      return false;
-    } else {
+    if (getTargetDistance() > 0 && (targetChance <= 0 || taskOwner.getRNG().nextInt(targetChance) == 0)) {
       double horizDist = getTargetDistance();
       double vertDist = getVerticalDistance();
-      
+
       AxisAlignedBB bb = taskOwner.getEntityBoundingBox().expand(horizDist, vertDist, horizDist);
       List<T> list = taskOwner.getEntityWorld().<T> getEntitiesWithinAABB(targetClass, bb,
           Predicates.<T> and(targetEntitySelector, EntitySelectors.NOT_SPECTATING));
       Collections.sort(list, sorter);
 
-      if (list.isEmpty()) {
-        return false;
-      } else {
-        this.targetEntity = list.get(0);
-        return true;
+      if (!list.isEmpty()) {
+        final T t = list.get(0);
+        if (t != null) {
+          this.targetEntity = t;
+          return true;
+        }
       }
     }
+    return false;
   }
 
   private double getVerticalDistance() {
-    if(vertDistOverride > 0) {
-      return vertDistOverride;
+    if (vertDistOverride != null) {
+      return vertDistOverride.get();
     }
     return 4;
   }

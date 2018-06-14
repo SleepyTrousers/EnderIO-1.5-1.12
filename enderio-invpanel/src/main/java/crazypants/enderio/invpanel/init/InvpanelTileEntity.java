@@ -21,8 +21,18 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public enum InvpanelTileEntity implements IModTileEntity {
 
   TileInventoryPanel(TileInventoryPanel.class),
-  TileInventoryChest(TileInventoryChest.class),
   TileInventoryPanelSensor(TileInventoryPanelSensor.class),
+
+  // Warehouses
+  TileInventoryChestTiny(TileInventoryChest.Tiny.class),
+  TileInventoryChestSmall(TileInventoryChest.Small.class),
+  TileInventoryChestMedium(TileInventoryChest.Medium.class),
+  TileInventoryChestBig(TileInventoryChest.Big.class),
+  TileInventoryChestLarge(TileInventoryChest.Large.class),
+  TileInventoryChestHuge(TileInventoryChest.Huge.class),
+  TileInventoryChestEnormous(TileInventoryChest.Enormous.class),
+  TileInventoryChestWarehouse(TileInventoryChest.Warehouse.class),
+  TileInventoryChestWarehouse13(TileInventoryChest.Warehouse13.class),
 
   ;
 

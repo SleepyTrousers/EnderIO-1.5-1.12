@@ -30,6 +30,8 @@ public enum NbtValue { // TODO: DONE111
   ENERGY_BUFFER("MaxEnergy"),
   FLUIDAMOUNT("famount"),
   BLOCKSTATE("paint"),
+  ORIGINAL_STACK("original"),
+  PAINT_SOURCE("paintsrc"),
   DISPLAYMODE("displaymode"),
   MAGNET_ACTIVE("magnetActive"),
   LAST_USED_TICK("lastUsedAt"),
@@ -410,6 +412,29 @@ public enum NbtValue { // TODO: DONE111
 
   public @Nullable NBTTagCompound setStackCopy(@Nullable NBTTagCompound tag, @Nonnull ItemStack value) {
     return tag != null ? setStack(tag.copy(), value) : null;
+  }
+
+  // /////////////////////////////////////////////////////////////////////////////////////////////////////
+  // ITEMSTACK ITEMSTACK
+  // /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  public @Nonnull ItemStack getStack(@Nonnull ItemStack stack, @Nonnull ItemStack _default) {
+    if (hasTag(stack)) {
+      return new ItemStack(getTag(stack));
+    }
+    return _default;
+  }
+
+  public @Nonnull ItemStack getStack(@Nonnull ItemStack stack) {
+    return getStack(stack, Prep.getEmpty());
+  }
+
+  public @Nonnull ItemStack setStack(@Nonnull ItemStack stack, @Nonnull ItemStack value) {
+    return setTag(stack, value.writeToNBT(new NBTTagCompound()));
+  }
+
+  public @Nonnull ItemStack setStackCopy(@Nonnull ItemStack stack, @Nonnull ItemStack value) {
+    return setStack(stack.copy(), value);
   }
 
   // /////////////////////////////////////////////////////////////////////////////////////////////////////

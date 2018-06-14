@@ -1,138 +1,98 @@
 package crazypants.enderio.invpanel.chest;
 
-import java.util.EnumMap;
-import java.util.Map;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.InventorySlot;
 
+import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.invpanel.capacitor.CapacitorKey;
-import crazypants.enderio.invpanel.init.InvpanelObject;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
-import info.loenwind.autosave.annotations.Store;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 @Storable
 public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachineEntity implements IPaintable.IPaintableTileEntity {
 
-  private static final Map<EnumChestSize, Class<? extends TileInventoryChest>> CLASSES = new EnumMap<EnumChestSize, Class<? extends TileInventoryChest>>(
-      EnumChestSize.class);
-
   @Storable
-  public static class Meta0 extends TileInventoryChest {
-    public Meta0() {
+  public static class Tiny extends TileInventoryChest {
+    public Tiny() {
       super(EnumChestSize.TINY);
     }
   }
 
   @Storable
-  public static class Meta1 extends TileInventoryChest {
-    public Meta1() {
+  public static class Small extends TileInventoryChest {
+    public Small() {
       super(EnumChestSize.SMALL);
     }
   }
 
   @Storable
-  public static class Meta2 extends TileInventoryChest {
-    public Meta2() {
+  public static class Medium extends TileInventoryChest {
+    public Medium() {
       super(EnumChestSize.MEDIUM);
     }
   }
 
   @Storable
-  public static class Meta3 extends TileInventoryChest {
-    public Meta3() {
+  public static class Big extends TileInventoryChest {
+    public Big() {
       super(EnumChestSize.BIG);
     }
   }
 
   @Storable
-  public static class Meta4 extends TileInventoryChest {
-    public Meta4() {
+  public static class Large extends TileInventoryChest {
+    public Large() {
       super(EnumChestSize.LARGE);
     }
   }
 
   @Storable
-  public static class Meta5 extends TileInventoryChest {
-    public Meta5() {
+  public static class Huge extends TileInventoryChest {
+    public Huge() {
       super(EnumChestSize.HUGE);
     }
   }
 
   @Storable
-  public static class Meta6 extends TileInventoryChest {
-    public Meta6() {
+  public static class Enormous extends TileInventoryChest {
+    public Enormous() {
       super(EnumChestSize.ENORMOUS);
     }
   }
 
   @Storable
-  public static class Meta7 extends TileInventoryChest {
-    public Meta7() {
+  public static class Warehouse extends TileInventoryChest {
+    public Warehouse() {
       super(EnumChestSize.WAREHOUSE);
     }
   }
 
   @Storable
-  public static class Meta8 extends TileInventoryChest {
-    public Meta8() {
+  public static class Warehouse13 extends TileInventoryChest {
+    public Warehouse13() {
       super(EnumChestSize.WAREHOUSE13);
-    }
-  }
-
-  public static void create() {
-    CLASSES.put(EnumChestSize.TINY, Meta0.class);
-    CLASSES.put(EnumChestSize.SMALL, Meta1.class);
-    CLASSES.put(EnumChestSize.MEDIUM, Meta2.class);
-    CLASSES.put(EnumChestSize.BIG, Meta3.class);
-    CLASSES.put(EnumChestSize.LARGE, Meta4.class);
-    CLASSES.put(EnumChestSize.HUGE, Meta5.class);
-    CLASSES.put(EnumChestSize.ENORMOUS, Meta6.class);
-    CLASSES.put(EnumChestSize.WAREHOUSE, Meta7.class);
-    CLASSES.put(EnumChestSize.WAREHOUSE13, Meta8.class);
-
-    for (EnumChestSize size : EnumChestSize.values()) {
-      GameRegistry.registerTileEntity(CLASSES.get(size), InvpanelObject.blockInventoryChest.getUnlocalisedName() + size.getName() + "TileEntity");
-    }
-  }
-
-  public static TileInventoryChest create(@Nonnull EnumChestSize size) {
-    try {
-      return CLASSES.get(size).newInstance();
-    } catch (Throwable e) {
-      throw new RuntimeException(e);
     }
   }
 
   private final EnumChestSize size;
 
-  @Store({ NBTAction.SAVE, NBTAction.ITEM })
-  private final EnderInventory chestInventory;
-
-  // called by our block
   private TileInventoryChest(@Nonnull EnumChestSize size) {
-    super(new EnderInventory(), CapacitorKey.INV_CHEST_ENERGY_INTAKE, CapacitorKey.INV_CHEST_ENERGY_BUFFER, CapacitorKey.INV_CHEST_ENERGY_USE);
-    chestInventory = getInventory();
+    super(null, CapacitorKey.INV_CHEST_ENERGY_INTAKE, CapacitorKey.INV_CHEST_ENERGY_BUFFER, CapacitorKey.INV_CHEST_ENERGY_USE);
     this.size = size;
     for (int i = 0; i < size.getSlots(); i++) {
       getInventory().add(EnderInventory.Type.INOUT, "slot" + i, new InventorySlot());
     }
-  }
-
-  @Override
-  public @Nonnull String getMachineName() {
-    return InvpanelObject.blockInventoryChest.getUnlocalisedName();
+    getInventory().getSlot(CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
   }
 
   @Override

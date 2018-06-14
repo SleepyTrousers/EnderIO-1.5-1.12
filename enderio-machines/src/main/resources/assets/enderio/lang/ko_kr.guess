@@ -2,6 +2,70 @@
 #
 # Please wait until the en_us lang file has been completed before translating.
 #
+enderio.advancement.alloy.1_alloy_smelter_get.desc=
+#                                              en: Craft a Simple Alloy Smelter
+enderio.advancement.alloy.1_alloy_smelter_get.name=
+#                                              en: Alloys and Enemies
+enderio.advancement.alloy.2_energetic_alloy_get.desc=
+#                                                en: Combine gold, redstone, and glowstone
+enderio.advancement.alloy.2_energetic_alloy_get.name=
+#                                                en: Energized Metal
+enderio.advancement.alloy.machine_chassis_get.desc=
+#                                              en: Craft a Machine Chassis
+enderio.advancement.alloy.machine_chassis_get.name=
+#                                              en: The Culmination
+enderio.advancement.challenge.1_all_simple_get.desc=
+#                                               en: Craft all simple machines
+enderio.advancement.challenge.1_all_simple_get.name=
+#                                               en: Start at the Beginning
+enderio.advancement.machines.root.desc=
+#                                  en: Begin your automation adventure
+enderio.advancement.machines.root.name=
+#                                  en: Ender IO Machines
+enderio.advancement.sagmill.1_sagmill_get.desc=
+#                                          en: Craft a simple SAG Mill
+enderio.advancement.sagmill.1_sagmill_get.name=
+#                                          en: Semi-Autogenous Grinding
+enderio.advancement.sagmill.2_sagmill_flowers.desc=
+#                                              en: Grind down some plant matter
+enderio.advancement.sagmill.2_sagmill_flowers.name=
+#                                              en: Destroy Something Beautiful
+enderio.advancement.sagmill.3_sagmill_bushes.desc=
+#                                             en: Grind down a dead bush
+enderio.advancement.sagmill.3_sagmill_bushes.name=
+#                                             en: Useful in Death
+enderio.advancement.sagmill.4_brown.desc=
+#                                    en: Combine some twigs and organic matter into dye
+enderio.advancement.sagmill.4_brown.name=
+#                                    en: Who Needs Jungles?
+enderio.advancement.sagmill.5_green.desc=
+#                                    en: Combine some plant matter and animal products into dye
+enderio.advancement.sagmill.5_green.name=
+#                                    en: Caution: Do Not Eat
+enderio.advancement.sagmill.6_coal.desc=
+#                                   en: Grind down some coal
+enderio.advancement.sagmill.6_coal.name=
+#                                   en: Chewing Dead Wood
+enderio.advancement.sagmill.7_black.desc=
+#                                    en: Combine some coal dust and animal products into dye
+enderio.advancement.sagmill.7_black.name=
+#                                    en: Who Needs Squid?
+enderio.advancement.sagmill.8_blue.desc=
+#                                   en: Grind down some Lapis Lazuli
+enderio.advancement.sagmill.8_blue.name=
+#                                   en: Bejeweled
+enderio.advancement.sagmill.9_white.desc=
+#                                    en: Grind down some Quartz
+enderio.advancement.sagmill.9_white.name=
+#                                    en: Bejeweled 2
+enderio.advancement.sagmill.a_powder_coating.desc=
+#                                             en: Craft some Organic Machine Powder Coating
+enderio.advancement.sagmill.a_powder_coating.name=
+#                                             en: Classic Color
+enderio.advancement.stirling.1_stirling_generator_get.desc=
+#                                                      en: Craft a Simple Stirling Generator
+enderio.advancement.stirling.1_stirling_generator_get.name=
+#                                                      en: Harness the Heat
 enderio.block_powered_spawner.note.areaFull=
 #                                       en: Too many mobs
 enderio.block_powered_spawner.note.badSoul=
@@ -27,33 +91,45 @@ enderio.chat.vat.dump.active=
 enderio.chat.vat.dump.fail=
 #                      en: Dumping failed, output tank is not empty
 enderio.config.capacitor=
-#                    en: Capacitor Settings
+#                    en: Capacitor Values
 enderio.config.client=
 #                 en: Client Settings
-enderio.config.combustiongenerator=
-#                              en: Combustion Generator Settings
+enderio.config.experience=경험의 오벨리스크
+#                     en: Experience Obelisk
 enderio.config.farm.tooltip="The commune is for life!"
 #                       en: "The commune is for life!"
-enderio.config.farm=Farm Settings
-#               en: Farm Settings
-enderio.config.killerjoe=
-#                    en: Killer Joe Settings
-enderio.config.solar=
-#                en: Solar Panel Settings
+enderio.config.farm=농장 운영소
+#               en: Farming Station
+enderio.config.generator.combustion=연소 발전기
+#                               en: Combustion Generator
+enderio.config.generator.solar=
+#                          en: Solar Panels
+enderio.config.generator.zombie=좀비 발전기
+#                           en: Zombie Generator
+enderio.config.generator=
+#                    en: Generators
+enderio.config.inhibitor=
+#                    en: Inhibitor Obelisk
+enderio.config.killerjoe=킬러 조
+#                    en: Killer Joe
 enderio.config.soulbinder=
-#                     en: Soulbinder Settings
+#                     en: Soulbinder
 enderio.config.spawner.tooltip=I ran out of witty tooltips.
 #                          en: I ran out of witty tooltips.
-enderio.config.spawner=PoweredSpawner Settings
-#                  en: Powered Spawner Settings
+enderio.config.spawner=전동 스포너
+#                  en: Powered Spawner
+enderio.config.tank=탱크
+#               en: Tank
 enderio.config.telepad=
-#                  en: TelePad Settings
+#                  en: TelePad
+enderio.config.tranceiver=
+#                     en: Tranceiver
 enderio.config.vacuum=
-#                 en: Vacuum Chest/XP Vacuum Settings
+#                 en: Vacuum Chest/XP Vacuum
 enderio.config.vat=
-#              en: Vat Settings
-enderio.config.zombiegenerator=
-#                          en: Zombie Generator Settings
+#              en: Vat
+enderio.config.weather=
+#                  en: Weather Obelisk
 enderio.darksteel.upgrade.solar_1.name=
 #                                  en: Solar I
 enderio.darksteel.upgrade.solar_1.tooltip.detailed.line1=
@@ -77,7 +153,7 @@ enderio.gui.alloy.mode.heading=Furnace Mode
 enderio.gui.buffer.in=
 #                 en: Max In:
 enderio.gui.buffer.maxio=
-#                    en: In/Out Max: %d
+#                    en: In/Out Max: %s
 enderio.gui.buffer.out=
 #                  en: Max Out:
 enderio.gui.combustion_generator.coolantTank.empty=Coolant
@@ -90,8 +166,18 @@ enderio.gui.combustion_generator.fuelTank=
 #                                     en: Fuel: %s
 enderio.gui.combustion_generator.output=
 #                                   en: Generating: %s
+enderio.gui.crafter.buffering_single=
+#                                en: Buffering Single Items
+enderio.gui.crafter.buffering_stack=
+#                               en: Buffering Item Stacks
 enderio.gui.farm.baseUse=
 #                    en: Base Use: %s
+enderio.gui.impulse_hopper.locked.tooltip=
+#                                     en: Stops the impulse hopper from sorting items into the output slots if there are items in there already.
+enderio.gui.impulse_hopper.locked=
+#                             en: Output Locked
+enderio.gui.impulse_hopper.unlocked=
+#                               en: Output Unlocked
 enderio.gui.killerJoe.fluid.minReq=
 #                              en: %s Required for activation
 enderio.gui.killerJoe.fuelTank=
@@ -150,6 +236,12 @@ enderio.gui.telepad.tank=
 #                    en: Reagent Tank
 enderio.gui.telepad.teleport=
 #                        en: Teleport!
+enderio.gui.telepad.unnamed_location=
+#                                en: Unnamed
+enderio.gui.telepad_travel_settings.close2=
+#                                      en: Go back to previous inventory
+enderio.gui.telepad_travel_settings.close=
+#                                     en: Close Travel Settings
 enderio.gui.trans.addChannel=Add Channel
 #                        en: Add Channel
 enderio.gui.trans.available=
@@ -190,14 +282,22 @@ enderio.gui.travel_accessable.protected=Protected
 #                                   en: Protected
 enderio.gui.travel_accessable.public=Public
 #                                en: Public
+enderio.gui.travel_accessable.visible.line1=
+#                                       en: Visibility
+enderio.gui.travel_accessable.visible.line2=
+#                                       en: When on, this block can be seen when holding a Staff of Traveling or standing on a Travel Anchor
 enderio.gui.vacuum.header.chest=
 #                           en: Vacuum Chest
 enderio.gui.vacuum.header.filter=
 #                            en: Item Filter
 enderio.gui.vacuum.header.range=
 #                           en: Range
+enderio.gui.vacuum.prime=
+#                    en: To activate, right click the XP Vacuum with a bucket of Liquid XP.
 enderio.gui.vacuum.range=
 #                    en: Suction Strength
+enderio.gui.vacuum.xp.header=
+#                        en: XP Vacuum
 enderio.gui.vat.dump=Dump Input Tank
 #                en: Dump Input Tank Into Output Tank
 enderio.gui.vat.inputTank=Input Tank
@@ -244,6 +344,10 @@ enderio.gui.zombie_generator.fuelTank=
 #                                 en: Nutrient Tank
 enderio.gui.zombie_generator.output=
 #                               en: Generating: %s
+enderio.jei.alloy_smelter.notSimple.line1=
+#                                     en: This recipe cannot be made in
+enderio.jei.alloy_smelter.notSimple.line2=
+#                                     en: Simple Alloy Smelter
 enderio.jei.combustion_generator.range.line1=
 #                                        en: Depending on capacitor and generator model
 enderio.jei.combustion_generator.range.line2=
@@ -252,14 +356,20 @@ enderio.jei.combustion_generator.range.line3=
 #                                        en: Better model gives more output at same fuel cost.
 enderio.jei.combustion_generator.range.line4=
 #                                        en: Some ancient capacitors that can be found in the world can give even better results than shown here.
+enderio.jei.grinding_ball.bonus.line1=
+#                                 en: Increases the chances of any random outputs, but will not bring them above 100%%
+enderio.jei.grinding_ball.bonus.line2=
+#                                 en: Calculated as original chance * bonus chance.
+enderio.jei.grinding_ball.main.line1=
+#                                en: Adds a chance to double all outputs
+enderio.jei.grinding_ball.power.line1=
+#                                 en: Affects the power used per operation, speeding up or slowing down the machine
 enderio.jei.sagmill.outputchance=
 #                            en: Chance: {0,choice,0#'<1'|0<{0,number}}%
 enderio.jei.solar_panel.output=
 #                          en: Generating up to
 enderio.jei.solar_panel.range.line1=
-#                               en: Actual power generated depends on
-enderio.jei.solar_panel.range.line2=
-#                               en: the weather and the angle of Sun
+#                               en: Actual power generated depends on the weather and the angle of sun
 enderio.jei.stirling_generator.notSimple.line1=
 #                                          en: This fuel cannot be used in
 enderio.jei.stirling_generator.notSimple.line2=
@@ -298,30 +408,20 @@ tile.block_alloy_smelter.name=
 #                         en: Alloy Smelter
 tile.block_alloy_smelter.tooltip.detailed.line1=엔더 IO의 합금들을
 #                                           en: Used to create EnderIO alloys
-tile.block_alloy_smelter.tooltip.detailed.line2=만들기 위한 제련기입니다.
-#                                           en: Can also be used as a powered
-tile.block_alloy_smelter.tooltip.detailed.line3=또한 전기 화로로도 사용 가능합니다.
-#                                           en: furnace
-tile.block_alloy_smelter.tooltip.detailed.line4=축전지를 넣어 작업속도를 높이고
-#                                           en: Upgrade with capacitors to increase
-tile.block_alloy_smelter.tooltip.detailed.line5=내부 전력 저장량을 늘릴 수 있습니다.
-#                                           en: speed and energy storage
+tile.block_alloy_smelter.tooltip.detailed.line2=
+#                                           en: Can also be used as a powered furnace
+tile.block_alloy_smelter.tooltip.detailed.line3=
+#                                           en: Upgrade with capacitors to increase speed and energy storage
 tile.block_attractor_obelisk.name=매혹의 오벨리스크
 #                             en: Attractor Obelisk
 tile.block_attractor_obelisk.tooltip.detailed.line1=몹을 가까이로 끌어당깁니다.
 #                                               en: Draws mobs towards it
-tile.block_attractor_obelisk.tooltip.detailed.line2=장치 안에 영혼을 넣어서
-#                                               en: Specify the mobs to effect
-tile.block_attractor_obelisk.tooltip.detailed.line3=그 영혼과 같은 몹을
-#                                               en: by placing their souls
-tile.block_attractor_obelisk.tooltip.detailed.line4=끌어당기도록 지시하세요.
-#                                               en: within the device
+tile.block_attractor_obelisk.tooltip.detailed.line2=
+#                                               en: Specify the mobs to effect by placing their souls within the device
 tile.block_aversion_obelisk.name=혐오의 오벨리스크
 #                            en: Aversion Obelisk
-tile.block_aversion_obelisk.tooltip.detailed.line1=작동 범위 안에서
-#                                              en: Prevents mobs from spawning
-tile.block_aversion_obelisk.tooltip.detailed.line2=
-#                                              en: within its area of effect
+tile.block_aversion_obelisk.tooltip.detailed.line1=
+#                                              en: Prevents mobs from spawning within its area of effect
 tile.block_buffer.creative.name=
 #                           en: Creative Buffer
 tile.block_buffer.item.name=
@@ -340,14 +440,6 @@ tile.block_combustion_generator.tooltip.detailed.line3=연료 종류에 따라 �
 #                                                  en: Output dependent on fuel
 tile.block_crafter.name=조합기
 #                   en: Crafter
-tile.block_crafter.tooltip.detailed.line1=전력을 소모하는 자동 조합대입니다.
-#                                     en: A powered auto-crafter
-tile.block_crafter.tooltip.detailed.line2=조합 시마다 전력을 소모합니다.
-#                                     en: Consumes power per operation
-tile.block_crafter.tooltip.detailed.line3=축전지를 넣어 작업속도를 높이고
-#                                     en: Can be upgraded to increase speed
-tile.block_crafter.tooltip.detailed.line4=내부 전력 저장량을 늘릴 수 있습니다.
-#                                     en: and energy storage with capacitors
 tile.block_dialing_device.name=
 #                          en: Dialing Device
 tile.block_dialing_device.tooltip.detailed.line1=
@@ -368,106 +460,84 @@ tile.block_electric_light.wireless.name=
 #                                   en: Wireless Light
 tile.block_enchanter.name=
 #                     en: Enchanter
-tile.block_enchanter.tooltip.detailed.line1=액체 경헙치로 아이템을 합치고
-#                                       en: Uses XP to combine items
-tile.block_enchanter.tooltip.detailed.line2=
-#                                       en: and a §6book and quill§r to
-tile.block_enchanter.tooltip.detailed.line3=
-#                                       en: create enchanted books
+tile.block_enchanter.tooltip.detailed.line1=
+#                                       en: Uses XP to combine items and a §6book and quill§r to create enchanted books
 tile.block_enhanced_combustion_generator.name=
 #                                         en: Enhanced Combustion Generator
+tile.block_enhanced_wireless_charger.name=
+#                                     en: Enhanced Wireless Charging Antenna
+tile.block_enhanced_wireless_charger.tooltip.detailed.line1=
+#                                                       en: Charges items in nearby players inventories. Has twice the range of the Wireless Charging Antenna.
 tile.block_experience_obelisk.name=경험의 오벨리스크
 #                              en: Experience Obelisk
 tile.block_experience_obelisk.tooltip.detailed.line1=유체 탱크 위에 설치할 시
 #                                                en: Stores Experience
-tile.block_experience_obelisk.tooltip.detailed.line2=우클릭으로 저장된 경험치를 꺼낼 수 있습니다.
-#                                                en: Can output liquid XP to
-tile.block_experience_obelisk.tooltip.detailed.line3=빈 손으로 앉아서 우클릭해
-#                                                en: adjacent tanks
+tile.block_experience_obelisk.tooltip.detailed.line2=
+#                                                en: Can output liquid XP to adjacent tanks
 tile.block_farm_station.name=농장 운영소
 #                        en: Farming Station
 tile.block_farm_station.tooltip.detailed.line1=작물을 심고 수확합니다.
 #                                          en: Plants and harvests crops
-tile.block_farm_station.tooltip.detailed.line2=작동하기 위하여 전력과
-#                                          en: Requires power and
-tile.block_farm_station.tooltip.detailed.line3=도구(도끼, 괭이)를 요구합니다.
-#                                          en: appropriate tools (hoe, axe)
-tile.block_farm_station.tooltip.detailed.line4=도구에 부여된 약탈/행운 마법은
-#                                          en: Looting / fortune on tools
-tile.block_farm_station.tooltip.detailed.line5=수확 시 반형됩니다.
-#                                          en: applied when harvesting
-tile.block_farm_station.tooltip.detailed.line6=축전지를 넣어 작업속도를 높이고
-#                                          en: Upgrade with capacitors to increase
-tile.block_farm_station.tooltip.detailed.line7=전력 소모량을 늘릴 수 있습니다.
-#                                          en: range, upgrade also increases power use
+tile.block_farm_station.tooltip.detailed.line2=
+#                                          en: Requires power and appropriate tools (hoe, axe, shears, treetap)
+tile.block_farm_station.tooltip.detailed.line3=
+#                                          en: Looting / fortune on tools applied when harvesting
+tile.block_farm_station.tooltip.detailed.line4=
+#                                          en: Upgrade with capacitors to increase range, upgrade also increases power use
+tile.block_impulse_hopper.name=
+#                          en: Impulse Hopper
+tile.block_impulse_hopper.tooltip.detailed.line1=
+#                                            en: Takes inputed items and only outputs them if there is a full set of required items in the input.
 tile.block_inhibitor_obelisk.name=
 #                             en: Inhibitor Obelisk
 tile.block_inhibitor_obelisk.tooltip.detailed.line1=
-#                                               en: Prevents teleporting within
-tile.block_inhibitor_obelisk.tooltip.detailed.line2=
-#                                               en: its area of effect
+#                                               en: Prevents teleporting within  its area of effect
 tile.block_killer_joe.name=킬러 조
 #                      en: Killer Joe
-tile.block_killer_joe.tooltip.detailed.line1=검을 넣어주고
-#                                        en: Attacks nearby creatures when
-tile.block_killer_joe.tooltip.detailed.line2=영양 증류액을 공급하면
-#                                        en: supplied with a sword and
-tile.block_killer_joe.tooltip.detailed.line3=근처의 몹을 죽여줍니다.
-#                                        en: Nutrient Distillation
+tile.block_killer_joe.tooltip.detailed.line1=
+#                                        en: Attacks nearby creatures when supplied with a sword and Nutrient Distillation
+tile.block_normal_wireless_charger.name=
+#                                   en: Wireless Charging Antenna
+tile.block_normal_wireless_charger.tooltip.detailed.line1=
+#                                                     en: Charges items in nearby players inventories.
 tile.block_painter.name=채색기
 #                   en: Painting Machine
-tile.block_powered_spawner.empty.tooltip.detailed.line1=모루를 사용해서
-#                                                   en: Combine with a broken
-tile.block_powered_spawner.empty.tooltip.detailed.line2=부서진 스포너와 합치세요.
-#                                                   en: spawner in an anvil
+tile.block_powered_spawner.empty.tooltip.detailed.line1=
+#                                                   en: Combine with a broken spawner in an anvil
 tile.block_powered_spawner.name=전동 스포너
 #                           en: Powered Spawner
-tile.block_powered_spawner.tooltip.detailed.line1=전력을 공급해
-#                                             en: Supply with power to
-tile.block_powered_spawner.tooltip.detailed.line2=작동시키세요.
-#                                             en: activate
-tile.block_powered_spawner.tooltip.detailed.line3=축전지를 넣어 작업속도를 높이고
-#                                             en: Upgrade with capacitors to increase
-tile.block_powered_spawner.tooltip.detailed.line4=내부 전력 저장량을 늘릴 수 있습니다.
-#                                             en: speed and energy storage
+tile.block_powered_spawner.tooltip.detailed.line1=
+#                                             en: Supply with power to activate
+tile.block_powered_spawner.tooltip.detailed.line2=
+#                                             en: Upgrade with capacitors to increase speed and energy storage
 tile.block_relocator_obelisk.name=
 #                             en: Relocator Obelisk
 tile.block_relocator_obelisk.tooltip.detailed.line1=
-#                                               en: Relocates mobs that spawn
-tile.block_relocator_obelisk.tooltip.detailed.line2=
-#                                               en: within its area of effect
+#                                               en: Relocates mobs that spawn within its area of effect
 tile.block_reservoir.name=저수지
 #                     en: Reservoir
 tile.block_reservoir.tooltip.detailed.line1=2X2X1로 놓아 놓은 뒤
 #                                       en: When connected with other Reservoirs:
-tile.block_reservoir.tooltip.detailed.line2=물 두 양동이를 넣으면
-#                                       en: Add two buckets of water for
-tile.block_reservoir.tooltip.detailed.line3=무한 물이 됩니다.
-#                                       en: an infinite water source.
-tile.block_reservoir.tooltip.detailed.line4=초당 한 양동이의 물을 만들어냅니다.
+tile.block_reservoir.tooltip.detailed.line2=
+#                                       en: Add two buckets of water for an infinite water source.
+tile.block_reservoir.tooltip.detailed.line3=초당 한 양동이의 물을 만들어냅니다.
 #                                       en: Produces one bucket per second
-tile.block_reservoir.tooltip.detailed.line5=렌치로 우클릭하면
-#                                       en: R-Click with a wrench to
-tile.block_reservoir.tooltip.detailed.line6=물을 자동적으로 방출합니다.
-#                                       en: enable auto-output
+tile.block_reservoir.tooltip.detailed.line4=
+#                                       en: Right-Click with a wrench to enable auto-output
 tile.block_sag_mill.name=
 #                    en: SAG Mill
 tile.block_sag_mill.tooltip.detailed.line1=광석과 기타 아이템들을 분쇄합니다.
 #                                      en: Grinds ore and other items
-tile.block_sag_mill.tooltip.detailed.line2=제분용 공을 넣어 분쇄 결과물과
-#                                      en: Add grinding balls to increase output
-tile.block_sag_mill.tooltip.detailed.line3=효율을 증가시킬 수 있습니다.
-#                                      en: and efficiency
-tile.block_sag_mill.tooltip.detailed.line4=축전지를 넣어 작업속도를 높이고
-#                                      en: Upgrade with capacitors to increase
-tile.block_sag_mill.tooltip.detailed.line5=내부 전력 저장량을 늘릴 수 있습니다.
-#                                      en: speed and energy storage
-tile.block_sag_mill.tooltipPrefix=내용물:
-#                             en: Contains
+tile.block_sag_mill.tooltip.detailed.line2=
+#                                      en: Add grinding balls to increase output and efficiency
+tile.block_sag_mill.tooltip.detailed.line3=
+#                                      en: Upgrade with capacitors to increase speed and energy storage
 tile.block_simple_alloy_smelter.name=
 #                                en: Simple Alloy Smelter
 tile.block_simple_alloy_smelter.tooltip.detailed.line1=엔더 IO의 합금들을
 #                                                  en: Used to create EnderIO alloys
+tile.block_simple_crafter.name=
+#                          en: Simple Crafter
 tile.block_simple_sag_mill.name=
 #                           en: Simple SAG Mill
 tile.block_simple_sag_mill.tooltip.detailed.line1=광석과 기타 아이템들을 분쇄합니다.
@@ -476,10 +546,8 @@ tile.block_simple_stirling_generator.name=
 #                                     en: Simple Stirling Generator
 tile.block_slice_and_splice.name=
 #                            en: Slice'N'Splice
-tile.block_slice_and_splice.tooltip.detailed.line1=머리를 이용해
-#                                              en: Slices heads and splices in
-tile.block_slice_and_splice.tooltip.detailed.line2=온갖 유용한 것들을 만듭니다.
-#                                              en: all sorts of useful things
+tile.block_slice_and_splice.tooltip.detailed.line1=
+#                                              en: Slices heads and splices in all sorts of useful things
 tile.block_solar_panel.advanced.name=고급 태양광 전지
 #                                en: Advanced Photovoltaic Cell
 tile.block_solar_panel.name=태양광 전지
@@ -490,72 +558,52 @@ tile.block_solar_panel.tooltip.common.line1=
 #                                       en: Solar Power!
 tile.block_solar_panel.tooltip.detailed.line1=해가 비칠 때(낮, 맑은 날씨)
 #                                         en: Produces power during daylight hours
-tile.block_solar_panel.tooltip.detailed.line2=전력을 생산해냅니다.
-#                                         en: Must have a clear line of sight to
-tile.block_solar_panel.tooltip.detailed.line3=하늘까지 일직선으로 공간이 뚫려 있어야 합니다.
-#                                         en: the sky
+tile.block_solar_panel.tooltip.detailed.line2=
+#                                         en: Must have a clear line of sight to the sky
 tile.block_solar_panel.vibrant.name=
 #                               en: Vibrant Photovoltaic Cell
 tile.block_soul_binder.name=
 #                       en: Soul Binder
-tile.block_soul_binder.tooltip.detailed.line1=전력을 소모하여
-#                                         en: Used to convert the type of
-tile.block_soul_binder.tooltip.detailed.line2=부서진 스포너의 종류를 바꿉니다.
-#                                         en: a broken spawner
+tile.block_soul_binder.tooltip.detailed.line1=
+#                                         en: Used to convert the type of a broken spawner
 tile.block_stirling_generator.name=스털링식 화력 발전기
 #                              en: Stirling Generator
 tile.block_stirling_generator.tooltip.detailed.line1=고체 연료를 태와 전력을 만들어냅니다.
 #                                                en: Burns solid fuel to generate power
-tile.block_stirling_generator.tooltip.detailed.line2=축전기를 넣어 효율을 높이고
-#                                                en: Can be upgraded to increase output
-tile.block_stirling_generator.tooltip.detailed.line3=출력량을 증가시킬 수 있습니다.
-#                                                en: and efficiency with capacitors
+tile.block_stirling_generator.tooltip.detailed.line2=
+#                                                en: Can be upgraded to increase output and efficiency with capacitors
 tile.block_tank.advanced.name=공압 유체 탱크
 #                         en: Pressurized Fluid Tank
 tile.block_tank.name=유체 탱크
 #                en: Fluid Tank
 tile.block_tank.tooltip.detailed.line1=휴대용 유체 탱크
 #                                  en: Portable fluid tank
-tile.block_tank.tooltip.detailed.line2=유체 저장고를 비우거나
-#                                  en: Can be used to empty and
-tile.block_tank.tooltip.detailed.line3=채울 때 쓸 수 있습니다.
-#                                  en: fill fluid containers
+tile.block_tank.tooltip.detailed.line2=
+#                                  en: Can be used to empty and fill fluid containers
 tile.block_tele_pad.name=
 #                    en: Telepad Block
 tile.block_tele_pad.tooltip.detailed.line1=
-#                                      en: Uses power to teleport entities
+#                                      en: Uses power to teleport entities to a specific position and dimension.
 tile.block_tele_pad.tooltip.detailed.line2=
-#                                      en: to a specific position and dimension.
-tile.block_tele_pad.tooltip.detailed.line3=
 #                                      en: Must be placed in a 3x1x3 multiblock.
 tile.block_transceiver.name=차원 송수신기
 #                       en: Dimensional Transceiver
-tile.block_transceiver.tooltip.detailed.line1=아이템, 유체, 전력을
-#                                         en: Transports items, fluids and power
-tile.block_transceiver.tooltip.detailed.line2=차원, 거리에 상관 없이
-#                                         en: wirelessly across any distance and
-tile.block_transceiver.tooltip.detailed.line3=무선으로 이동시킵니다.
-#                                         en: between dimensions
+tile.block_transceiver.tooltip.detailed.line1=
+#                                         en: Transports items, fluids and power wirelessly across any distance and between dimensions
 tile.block_travel_anchor.name=여행자의 닻
 #                         en: Travel Anchor
 tile.block_travel_anchor.tooltip.detailed.line1=근처에 있는 다른 여행자의 닻으로 텔레포트 가능합니다.
 #                                           en: Allows teleportation between anchors
-tile.block_travel_anchor.tooltip.detailed.line2=한 개의 닻에 서서 다른 닻을 보고
-#                                           en: Stand on one Anchor, look at
-tile.block_travel_anchor.tooltip.detailed.line3=점프하면 텔레포트됩니다.
-#                                           en: another and jump to travel
-tile.block_travel_anchor.tooltip.detailed.line4=여행자의 지팡이로도
-#                                           en: Can also be used with the Staff
-tile.block_travel_anchor.tooltip.detailed.line5=사용 가능합니다.
-#                                           en: of Travel
+tile.block_travel_anchor.tooltip.detailed.line2=
+#                                           en: Stand on one Anchor, look at another and jump to travel
+tile.block_travel_anchor.tooltip.detailed.line4=
+#                                           en: Can also be used with the Staff of Travel
 tile.block_travel_anchor.tooltip.detailed.line6=채색기에서 채색할 수 있습니다.
 #                                           en: Can be painted in the Painting Machine
 tile.block_vacuum_chest.name=
 #                        en: Vacuum Chest
-tile.block_vacuum_chest.tooltip.detailed.line1=근처에 떨어진 아이템을 빨아들여
-#                                          en: Pulls nearby items
-tile.block_vacuum_chest.tooltip.detailed.line2=자신에 인벤토리로 집어넣습니다.
-#                                          en: into its inventory
+tile.block_vacuum_chest.tooltip.detailed.line1=
+#                                          en: Pulls nearby items into its inventory
 tile.block_vat.name=엔더 양조기
 #               en: The Vat
 tile.block_vat.tooltip.detailed.line1=엔더 IO 유체들을 양조하기 위한 기계입니다.
@@ -565,30 +613,26 @@ tile.block_weather_obelisk.name=
 tile.block_weather_obelisk.tooltip.detailed.line1=
 #                                             en: Changes the current weather
 tile.block_weather_obelisk.tooltip.detailed.line2=
-#                                             en: Requires a lot of power and
-tile.block_weather_obelisk.tooltip.detailed.line3=
-#                                             en: a catalyst item
+#                                             en: Requires a lot of power and a catalyst fluid
 tile.block_wired_charger.name=
 #                         en: Wired Charger
 tile.block_wired_charger.tooltip.detailed.line1=
 #                                           en: Charges items with µI
 tile.block_wireless_charger.name=무선 충전기
 #                            en: Wireless Charger
-tile.block_wireless_charger.tooltip.detailed.line1=근처에 있는 플레이어의 인벤토리에
-#                                              en: Charges items in nearby
-tile.block_wireless_charger.tooltip.detailed.line2=있는 아이템들을 충전합니다.
-#                                              en: players inventories
+tile.block_wireless_charger.tooltip.detailed.line1=
+#                                              en: Charges items in nearby players inventories. Has a small range, but can be painted and hidden.
+tile.block_wireless_charger_extension.name=
+#                                      en: Wireless Charging Antenna Extension
+tile.block_wireless_charger_extension.tooltip.detailed.line1=
+#                                                        en: Doubles the range of the Enhanced Wireless Charging Antenna in one direction.
 tile.block_xp_vacuum.name=
 #                     en: XP Vacuum
 tile.block_xp_vacuum.tooltip.detailed.line1=
-#                                       en: Pulls nearby XP orbs and pushes
+#                                       en: Pulls nearby XP orbs and pushes them into adjacent tanks/conduits.
 tile.block_xp_vacuum.tooltip.detailed.line2=
-#                                       en: them into adjacent tanks/conduits.
-tile.block_xp_vacuum.tooltip.detailed.line3=
 #                                       en: Needs to be activated with liquid XP.
 tile.block_zombie_generator.name=좀비 발전기
 #                            en: Zombie Generator
-tile.block_zombie_generator.tooltip.detailed.line1=영양 증류액을 사용해서
-#                                              en: Consumes Nutrient Distillation
-tile.block_zombie_generator.tooltip.detailed.line2=전력을 만들어냅니다.
-#                                              en: to generate power
+tile.block_zombie_generator.tooltip.detailed.line1=
+#                                              en: Consumes Nutrient Distillation to generate power

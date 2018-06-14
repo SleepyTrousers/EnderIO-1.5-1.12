@@ -1,10 +1,10 @@
 {
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
-        "particle": "enderio:blocks/block_machine_bottom",
-        "0": "enderio:blocks/block_machine_bottom",
+        "particle": "enderio:blocks/block_soul_machine_bottom",
+        "0": "enderio:blocks/block_soul_machine_bottom",
         "1": "enderio:blocks/block_powered_spawner",
-        "2": "enderio:blocks/block_machine_top"
+        "2": "enderio:blocks/block_soul_machine_top"
     },
     "elements": [
         {

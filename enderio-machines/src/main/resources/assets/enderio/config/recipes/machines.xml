@@ -3,15 +3,17 @@
 
 <!-- 
 
-These are the build-in recipes. You cannot change this file, it is a
+These are the built-in recipes. You cannot change this file, it is a
 reference for you only and will be generated every time the game starts.
 
 To make changes to the recipes, copy the recipes you want to change to
 a file in the 'user' folder. To disable a recipe, add an attribute "disabled"
 and set it to true, e.g.: <recipe name="Gear" disabled="true" />
 
-You can also disabled all build in recipes, so that only your files in the
-'user' folder will be loaded.
+You can also disable all built-in recipes with the setting "loadCoreRecipes"
+in the Ender IO config file, so that only your files in the 'user' folder will
+be loaded. Please be advised that a number of recipes are absolutely needed,
+so you will have to copy those over into a 'user' file for the game to load.
 
 Item specifications can reference an alias, an ore dictionary name, a
 block or an item. You can force the type by prefixing the value with
@@ -23,7 +25,6 @@ More information on the syntax can be found in the recipes.xsd file. An
 XML editor will display that as tooltips when editing this file.
 
  -->
-
 
   <recipe name="Simple Stirling Generator" required="true">
     <crafting>
@@ -73,7 +74,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" />
-        <item name="EnderIO:block_tank:1" /><item name="CHASSIS" /><item name="EnderIO:block_tank:1" />
+        <item name="EnderIO:block_tank:1" /><item name="ENHANCED_CHASSIS" /><item name="EnderIO:block_tank:1" />
         <item name="GEAR_VIBRANT" /><item name="minecraft:piston" /><item name="GEAR_VIBRANT" />
       </grid>
       <output name="enderio:block_enhanced_combustion_generator" />
@@ -82,8 +83,9 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Enhanced Combustion Generator, Upgrade" required="true">
     <crafting upgrade="true">
-      <grid size="3x2">
-        <item name="EnderIO:block_tank:1" /><item name="enderio:block_combustion_generator" /><item name="EnderIO:block_tank:1" />
+      <grid size="3x3">
+        <item /><item name="enderio:block_combustion_generator" /><item />
+        <item name="EnderIO:block_tank:1" /><item name="ENHANCED_CHASSIS" /><item name="EnderIO:block_tank:1" />
         <item name="GEAR_VIBRANT" /><item /><item name="GEAR_VIBRANT" />
       </grid>
       <output name="enderio:block_enhanced_combustion_generator" />
@@ -123,14 +125,102 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Enhanced Wired Charger" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="END_STEEL" /><item name="ELECTRICAL_STEEL" />
+        <item name="ELECTRICAL_STEEL" /><item name="ENHANCED_CHASSIS" /><item name="ELECTRICAL_STEEL" />
+        <item name="GEAR_VIBRANT" /><item name="ELECTRICAL_STEEL" /><item name="GEAR_VIBRANT" />
+      </grid>
+      <output name="enderio:block_enhanced_wired_charger" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Enhanced Wired Charger, Upgrade" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="END_STEEL" /><item />
+        <item /><item name="ENHANCED_CHASSIS" /><item />
+        <item name="GEAR_VIBRANT" /><item name="enderio:block_wired_charger" /><item name="GEAR_VIBRANT" />
+      </grid>
+      <output name="enderio:block_enhanced_wired_charger" />
+    </crafting>
+  </recipe>
+
   <recipe name="Wireless Charger" required="true">
     <crafting>
       <grid size="3x3">
         <item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" />
         <item name="ELECTRICAL_STEEL" /><item name="ENDER_RESONATOR" /><item name="ELECTRICAL_STEEL" />
-        <item name="ELECTRICAL_STEEL" /><item name="CAPACITOR3" /><item name="ELECTRICAL_STEEL" />
+        <item name="ELECTRICAL_STEEL" /><item name="CAPACITOR1" /><item name="ELECTRICAL_STEEL" />
       </grid>
       <output name="enderio:block_wireless_charger" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Wireless Charger (Antenna)" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="itemWirelessDish" /><item name="ENDER_RESONATOR" /><item name="itemWirelessDish" />
+        <item name="itemWirelessDish" /><item name="CHASSIS" /><item name="itemWirelessDish" />
+        <item /><item name="CAPACITOR2" /><item />
+      </grid>
+      <output name="enderio:block_normal_wireless_charger" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Wireless Charger (Antenna), Upgrade" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="itemWirelessDish" /><item name="enderio:block_wireless_charger" /><item name="itemWirelessDish" />
+        <item name="itemWirelessDish" /><item name="CHASSIS" /><item name="itemWirelessDish" />
+        <item /><item name="CAPACITOR2" /><item />
+      </grid>
+      <output name="enderio:block_normal_wireless_charger" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Wireless Charger (Antenna, enhanced)" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="itemWirelessDish" /><item name="ENDER_RESONATOR" /><item name="itemWirelessDish" />
+        <item name="itemWirelessDish" /><item name="ENHANCED_CHASSIS" /><item name="itemWirelessDish" />
+        <item /><item name="CAPACITOR3" /><item />
+      </grid>
+      <output name="enderio:block_enhanced_wireless_charger" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Wireless Charger (Antenna, enhanced), Upgrade 1" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="itemWirelessDish" /><item name="enderio:block_wireless_charger" /><item name="itemWirelessDish" />
+        <item name="itemWirelessDish" /><item name="ENHANCED_CHASSIS" /><item name="itemWirelessDish" />
+        <item /><item name="CAPACITOR3" /><item />
+      </grid>
+      <output name="enderio:block_enhanced_wireless_charger" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Wireless Charger (Antenna, enhanced), Upgrade 2" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="enderio:block_normal_wireless_charger" /><item />
+        <item /><item name="ENHANCED_CHASSIS" /><item />
+        <item /><item name="CAPACITOR3" /><item />
+      </grid>
+      <output name="enderio:block_enhanced_wireless_charger" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Wireless Charger (Antenna, extension" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="itemWirelessDish" /><item />
+        <item name="itemWirelessDish" /><item name="END_STEEL" /><item name="itemWirelessDish" />
+        <item /><item name="itemWirelessDish" /><item />
+      </grid>
+      <output name="enderio:block_wireless_charger_extension" />
     </crafting>
   </recipe>
 
@@ -138,7 +228,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item name="ELECTRICAL_STEEL" /><item name="itemSkull" /><item name="ELECTRICAL_STEEL" />
-        <item name="ELECTRICAL_STEEL" /><item name="CHASSIS" /><item name="ELECTRICAL_STEEL" />
+        <item name="ELECTRICAL_STEEL" /><item name="SOUL_CHASSIS" /><item name="ELECTRICAL_STEEL" />
         <item name="VIBRANT_CRYSTAL" /><item name="ZOMBIE_CONTROLLER" /><item name="VIBRANT_CRYSTAL" />
       </grid>
       <output name="enderio:block_powered_spawner" />
@@ -211,6 +301,28 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Enhanced Alloy Smelter" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotIron" /><item name="minecraft:furnace" /><item name="ingotIron" />
+        <item name="minecraft:furnace" /><item name="ENHANCED_CHASSIS" /><item name="minecraft:furnace" />
+        <item name="GEAR_VIBRANT" /><item name="item:minecraft:cauldron" /><item name="GEAR_VIBRANT" />
+      </grid>
+      <output name="enderio:block_enhanced_alloy_smelter" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Enhanced Alloy Smelter, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="3x3">
+        <item /><item name="enderio:block_alloy_smelter" /><item />
+        <item /><item name="ENHANCED_CHASSIS" /><item />
+        <item name="GEAR_VIBRANT" /><item name="item:minecraft:cauldron" /><item name="GEAR_VIBRANT" />
+      </grid>
+      <output name="enderio:block_enhanced_alloy_smelter" />
+    </crafting>
+  </recipe>
+
   <recipe name="The Vat" required="true">
     <crafting>
       <grid size="3x3">
@@ -219,6 +331,28 @@ XML editor will display that as tooltips when editing this file.
         <item name="ELECTRICAL_STEEL" /><item name="minecraft:furnace" /><item name="ELECTRICAL_STEEL" />
       </grid>
       <output name="enderio:block_vat" />
+    </crafting>
+  </recipe>
+
+  <recipe name="The Enhanced Vat" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="item:minecraft:cauldron" /><item name="ELECTRICAL_STEEL" />
+        <item name="enderio:block_tank:0" /><item name="ENHANCED_CHASSIS" /><item name="enderio:block_tank:0" />
+        <item name="ELECTRICAL_STEEL" /><item name="minecraft:furnace" /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="enderio:block_enhanced_vat" />
+    </crafting>
+  </recipe>
+
+  <recipe name="The Enhanced Vat, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="3x3">
+        <item /><item name="enderio:block_vat" /><item />
+        <item /><item name="ENHANCED_CHASSIS" /><item />
+        <item name="enderio:block_tank:0" /><item name="minecraft:furnace" /><item name="enderio:block_tank:0" />
+      </grid>
+      <output name="enderio:block_enhanced_vat" />
     </crafting>
   </recipe>
 
@@ -236,9 +370,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Farming Station" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="ELECTRICAL_STEEL" /><item name="minecraft:diamond_hoe" /><item name="ELECTRICAL_STEEL" />
-        <item name="ingotIron" /><item name="CHASSIS" /><item name="ingotIron" />
-        <item name="GEAR_ENERGIZED" /><item name="minecraft:diamond_axe" /><item name="GEAR_ENERGIZED" />
+        <item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" />
+        <item name="minecraft:diamond_axe" /><item name="SOUL_CHASSIS" /><item name="minecraft:diamond_hoe" />
+        <item name="GEAR_ENERGIZED" /><item name="ZOMBIE_CONTROLLER" /><item name="GEAR_ENERGIZED" />
       </grid>
       <output name="enderio:block_farm_station" />
     </crafting>

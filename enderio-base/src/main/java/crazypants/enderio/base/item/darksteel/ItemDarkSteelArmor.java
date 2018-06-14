@@ -15,13 +15,13 @@ import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNMap;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.OreDictionaryHelper;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
 import crazypants.enderio.api.upgrades.IRenderUpgrade;
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
@@ -32,6 +32,7 @@ import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.enderio.base.integration.thaumcraft.ThaumaturgeRobesUpgrade;
+import crazypants.enderio.base.item.darksteel.attributes.ArmorData;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
@@ -40,7 +41,6 @@ import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.nightvision.NightVisionUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.sound.SoundDetectorUpgrade;
 import crazypants.enderio.base.lang.Lang;
-import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.PaintUtil.IWithPaintName;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
@@ -85,58 +85,100 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     IWithPaintName, IElytraFlyingProvider, IArmorApiarist, IArmorNaturalist, IVisDiscountGear {
   // IGoggles, IRevealer, IVisDiscountGear {
 
+  // ============================================================================================================
+  // Item creation
+  // ============================================================================================================
+
   public static ItemDarkSteelArmor createDarkSteelBoots(@Nonnull IModObject modObject) {
-    return create(modObject, EntityEquipmentSlot.FEET);
+    return new ItemDarkSteelArmor(ArmorData.DARK_STEEL, modObject, EntityEquipmentSlot.FEET);
   }
 
   public static ItemDarkSteelArmor createDarkSteelLeggings(@Nonnull IModObject modObject) {
-    return create(modObject, EntityEquipmentSlot.LEGS);
+    return new ItemDarkSteelArmor(ArmorData.DARK_STEEL, modObject, EntityEquipmentSlot.LEGS);
   }
 
   public static ItemDarkSteelArmor createDarkSteelChestplate(@Nonnull IModObject modObject) {
-    return create(modObject, EntityEquipmentSlot.CHEST);
+    return new ItemDarkSteelArmor(ArmorData.DARK_STEEL, modObject, EntityEquipmentSlot.CHEST);
   }
 
   public static ItemDarkSteelArmor createDarkSteelHelmet(@Nonnull IModObject modObject) {
-    final ItemDarkSteelArmor helmet = create(modObject, EntityEquipmentSlot.HEAD);
+    final ItemDarkSteelArmor helmet = new ItemDarkSteelArmor(ArmorData.DARK_STEEL, modObject, EntityEquipmentSlot.HEAD);
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new HelmetPainterTemplate(helmet));
     return helmet;
   }
 
-  public static @Nonnull ItemDarkSteelArmor create(@Nonnull IModObject modObject, @Nonnull EntityEquipmentSlot armorType) {
-    return new ItemDarkSteelArmor(modObject, armorType);
+  public static ItemDarkSteelArmor createEndSteelBoots(@Nonnull IModObject modObject) {
+    return new ItemDarkSteelArmor(ArmorData.END_STEEL, modObject, EntityEquipmentSlot.FEET);
   }
 
-  public static final ArmorMaterial MATERIAL = createMaterial();
-
-  private static ArmorMaterial createMaterial() {
-    Class<?>[] params = new Class<?>[] { String.class, int.class, int[].class, int.class, SoundEvent.class, float.class };
-    return EnumHelper.addEnum(ArmorMaterial.class, "darkSteel", params, "darkSteel", 35, new int[] { 2, 5, 6, 2 }, 15, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0f);
+  public static ItemDarkSteelArmor createEndSteelLeggings(@Nonnull IModObject modObject) {
+    return new ItemDarkSteelArmor(ArmorData.END_STEEL, modObject, EntityEquipmentSlot.LEGS);
   }
 
-  boolean gogglesUgradeActive = true;
-
-  public static int getPoweredProtectionIncrease(int armorType) {
-    switch (armorType) {
-    case 0:
-      return 1;
-    case 1:
-      return 2;
-    case 2:
-    case 3:
-      return 1;
-    }
-    return 0;
+  public static ItemDarkSteelArmor createEndSteelChestplate(@Nonnull IModObject modObject) {
+    return new ItemDarkSteelArmor(ArmorData.END_STEEL, modObject, EntityEquipmentSlot.CHEST);
   }
 
+  public static ItemDarkSteelArmor createEndSteelHelmet(@Nonnull IModObject modObject) {
+    final ItemDarkSteelArmor helmet = new ItemDarkSteelArmor(ArmorData.END_STEEL, modObject, EntityEquipmentSlot.HEAD);
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new HelmetPainterTemplate(helmet));
+    return helmet;
+  }
+
+  // ============================================================================================================
+  // Materials
+  // ============================================================================================================
+
+  public static final @Nonnull ArmorMaterial MATERIAL_END_STEEL = NullHelper.notnullF(//
+      EnumHelper.addEnum(ArmorMaterial.class, "darkSteel", //
+          new Class<?>[] { String.class, int.class, int[].class, int.class, SoundEvent.class, float.class }, //
+          "endSteel", 50, new int[] { 3, 6, 8, 3 }, 25, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 3.0f),
+      "Failed to create armor material");
+
+  public static final @Nonnull ArmorMaterial MATERIAL_END_STEEL_EMPOWERED = NullHelper.notnullF(//
+      EnumHelper.addEnum(ArmorMaterial.class, "darkSteelEmpowered", //
+          new Class<?>[] { String.class, int.class, int[].class, int.class, SoundEvent.class, float.class }, //
+          "endSteelEmpowered", 50, new int[] { 4, 7, 10, 4 }, 25, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 4.0f),
+      "Failed to create armor material");
+
+  // ============================================================================================================
+  // Fields
+  // ============================================================================================================
+
+  /**
+   * The amount of energy that is needed to mitigate one point of armor damage
+   */
   private final int powerPerDamagePoint;
+  private final @Nonnull ArmorData data;
 
-  protected ItemDarkSteelArmor(@Nonnull IModObject modObject, @Nonnull EntityEquipmentSlot armorType) {
-    super(MATERIAL, 0, armorType);
+  // ============================================================================================================
+  // Constructor
+  // ============================================================================================================
+
+  protected ItemDarkSteelArmor(@Nonnull ArmorData data, @Nonnull IModObject modObject, @Nonnull EntityEquipmentSlot armorType) {
+    super(data.getMaterial(), 0, armorType);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
-    powerPerDamagePoint = Config.darkSteelPowerStorageBase / MATERIAL.getDurability(armorType);
+    powerPerDamagePoint = Config.darkSteelPowerStorageBase / data.getMaterial().getDurability(armorType);
+    this.data = data;
   }
+
+  // ============================================================================================================
+  // Additional armor value calculation
+  // ============================================================================================================
+
+  protected @Nonnull ArmorMaterial getMaterial(@Nonnull ItemStack stack) {
+    return EnergyUpgradeManager.getEnergyStored(stack) > 0 ? data.getMaterialEmpowered() : getArmorMaterial();
+  }
+
+  @Override
+  public int getItemEnchantability(@Nonnull ItemStack stack) {
+    return getMaterial(stack).getEnchantability();
+  }
+
+  // ============================================================================================================
+  // Creative menu
+  // ============================================================================================================
 
   @Override
   @SideOnly(Side.CLIENT)
@@ -174,6 +216,18 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     }
   }
 
+  // ============================================================================================================
+  // Repairing
+  // ============================================================================================================
+
+  /**
+   * Don't allow vanilla repairing
+   */
+  @Override
+  public boolean getIsRepairable(@Nonnull ItemStack i1, @Nonnull ItemStack i2) {
+    return false;
+  }
+
   @Override
   public int getIngotsRequiredForFullRepair() {
     switch (armorType) {
@@ -188,6 +242,15 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
       return 4;
     }
   }
+
+  @Override
+  public boolean isItemForRepair(@Nonnull ItemStack right) {
+    return OreDictionaryHelper.hasName(right, data.getRepairIngotOredict());
+  }
+
+  // ============================================================================================================
+  // Tooltips
+  // ============================================================================================================
 
   @Override
   public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
@@ -210,7 +273,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     }
     if (EnergyUpgradeManager.itemHasAnyPowerUpgrade(itemstack)) {
       list.addAll(Lang.DARK_STEEL_POWERED.getLines(TextFormatting.WHITE));
-      if (itemstack.getItem() == ModObject.itemDarkSteelBoots.getItemNN()) {
+      if (armorType == EntityEquipmentSlot.FEET) {
         list.addAll(Lang.DARK_BOOTS_POWERED.getLines(TextFormatting.WHITE));
       }
     }
@@ -218,32 +281,57 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   }
 
   @Override
+  public String getPaintName(@Nonnull ItemStack itemStack) {
+    final NBTTagCompound subCompound = itemStack.getSubCompound("DSPAINT");
+    if (subCompound != null) {
+      ItemStack paintSource = new ItemStack(subCompound);
+      if (Prep.isValid(paintSource)) {
+        return paintSource.getDisplayName();
+      }
+    }
+    return null;
+  }
+
+  // ============================================================================================================
+  // Rendering
+  // ============================================================================================================
+
+  @Override
   public String getArmorTexture(@Nonnull ItemStack itemStack, @Nonnull Entity entity, @Nonnull EntityEquipmentSlot slot, @Nonnull String layer) {
     if (armorType == EntityEquipmentSlot.LEGS || (armorType == EntityEquipmentSlot.HEAD && !NightVisionUpgrade.INSTANCE.hasUpgrade(itemStack)
         && !SoundDetectorUpgrade.INSTANCE.hasUpgrade(itemStack))) {
       // LEGS and HELMET without faceplate
-      return EnderIO.DOMAIN + ":textures/models/armor/dark_steel_layer_2.png";
+      return data.getTexture2();
     }
     // BOOTS, HELMET with faceplate, CHEST
-    return EnderIO.DOMAIN + ":textures/models/armor/dark_steel_layer_1.png";
+    return data.getTexture1();
   }
 
   @Override
-  public ArmorProperties getProperties(EntityLivingBase player, @Nonnull ItemStack armor, DamageSource source, double damage, int slot) {
-    if (source.isUnblockable()) {
-      return new ArmorProperties(0, 0, armor.getMaxDamage() + 1 - armor.getItemDamage());
+  @SideOnly(Side.CLIENT)
+  public ModelBiped getArmorModel(@Nonnull EntityLivingBase entityLiving, @Nonnull ItemStack itemStack, @Nonnull EntityEquipmentSlot armorSlot,
+      @Nonnull ModelBiped _default) {
+    if (armorType == EntityEquipmentSlot.HEAD && itemStack.getSubCompound("DSPAINT") != null) {
+      // Don't render the armor model of the helmet if it is painted. The paint will be rendered by the PaintedHelmetLayer.
+      return PaintedHelmetLayer.no_render;
     }
-    double damageRatio = damageReduceAmount + (EnergyUpgradeManager.getEnergyStored(armor) > 0 ? getPoweredProtectionIncrease(3 - slot) : 0);
-    damageRatio /= 25D;
-    ArmorProperties ap = new ArmorProperties(0, damageRatio, armor.getMaxDamage() + 1 - armor.getItemDamage());
-    return ap;
+    return null;
   }
 
   @Override
-  public int getArmorDisplay(EntityPlayer player, @Nonnull ItemStack armor, int slot) {
-    int powerBonus = EnergyUpgradeManager.getEnergyStored(armor) > 0 ? getPoweredProtectionIncrease(3 - slot) : 0;
-    return getArmorMaterial().getDamageReductionAmount(armorType) + powerBonus;
+  @SideOnly(Side.CLIENT)
+  public @Nonnull IRenderUpgrade getRender() {
+    return armorType == EntityEquipmentSlot.HEAD ? PaintedHelmetLayer.instance : PaintedHelmetLayer.not_an_helmet;
   }
+
+  @Override
+  public void renderItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
+    PowerBarOverlayRenderHelper.instance_upgradeable.render(stack, xPosition, yPosition);
+  }
+
+  // ============================================================================================================
+  // Applying armor
+  // ============================================================================================================
 
   private static final NNMap<EntityEquipmentSlot, UUID> ARMOR_MODIFIERS = new NNMap.Brutal<>();
   static {
@@ -255,40 +343,107 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 
   @Override
   public @Nonnull Multimap<String, AttributeModifier> getAttributeModifiers(@Nonnull EntityEquipmentSlot equipmentSlot, @Nonnull ItemStack stack) {
-    Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(equipmentSlot);
+    Multimap<String, AttributeModifier> multimap = HashMultimap.<String, AttributeModifier> create();
 
     if (equipmentSlot == this.armorType) {
-      boolean isPowered = EnergyUpgradeManager.getEnergyStored(stack) > 0;
-      if (isPowered) {
-        int toughnessBonus = 1;
-        multimap.removeAll(SharedMonsterAttributes.ARMOR_TOUGHNESS.getName());
-        multimap.put(SharedMonsterAttributes.ARMOR_TOUGHNESS.getName(),
-            new AttributeModifier(ARMOR_MODIFIERS.get(equipmentSlot), "Armor toughness", toughness + toughnessBonus, 0));
-        int powerBonus = getPoweredProtectionIncrease(3 - equipmentSlot.getIndex());
-        multimap.removeAll(SharedMonsterAttributes.ARMOR.getName());
-        multimap.put(SharedMonsterAttributes.ARMOR.getName(),
-            new AttributeModifier(ARMOR_MODIFIERS.get(equipmentSlot), "Armor modifier", damageReduceAmount + powerBonus, 0));
-      }
+      ArmorMaterial armorMaterial = getMaterial(stack);
+      multimap.put(SharedMonsterAttributes.ARMOR.getName(),
+          new AttributeModifier(ARMOR_MODIFIERS.get(equipmentSlot), "Armor modifier", armorMaterial.getDamageReductionAmount(equipmentSlot), 0));
+      multimap.put(SharedMonsterAttributes.ARMOR_TOUGHNESS.getName(),
+          new AttributeModifier(ARMOR_MODIFIERS.get(equipmentSlot), "Armor toughness", armorMaterial.getToughness(), 0));
     }
 
     return multimap;
   }
 
+  // ============================================================================================================
+  // ISpecialArmor
+  // ============================================================================================================
+
+  @Override
+  public ArmorProperties getProperties(EntityLivingBase player, @Nonnull ItemStack armor, DamageSource source, double damage, int slot) {
+    double ratio = 0d; // percentage of damage that is removed before normal armor calculations are done. This is actually bad for armor with a high
+                       // toughness...
+    if (!source.isUnblockable()) {
+      ArmorMaterial armorMaterial = getMaterial(armor);
+      int damageReductionAmount = armorMaterial.getDamageReductionAmount(armorType) - ArmorMaterial.DIAMOND.getDamageReductionAmount(armorType);
+      if (damageReductionAmount > 0) {
+        // Reduce the damage by 5% for each point of armor we have more than diamond
+        ratio = damageReductionAmount * .05d;
+        // This is just to counter the maximum effective armor (80%) vanilla enforces for normal armor calculations
+      }
+    }
+    return new ArmorProperties(0, ratio, Integer.MAX_VALUE);
+  }
+
+  @Override
+  public int getArmorDisplay(EntityPlayer player, @Nonnull ItemStack armor, int slot) {
+    // This is added to the UI display in addition to the normal value from SharedMonsterAttributes.ARMOR
+    return 0;
+  }
+
   @Override
   public void damageArmor(EntityLivingBase entity, @Nonnull ItemStack stack, DamageSource source, int damage, int slot) {
+    if (entity != null) {
+      stack.damageItem(damage, entity);
+    }
+  }
+
+  // ============================================================================================================
+  // Item damage mitigation when powered
+  // ============================================================================================================
+
+  @Override
+  public void setDamage(@Nonnull ItemStack stack, int damageNew) {
+    int damage = damageNew - getDamage(stack);
+
     EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
     if (eu != null && eu.getUpgrade().isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(damage * powerPerDamagePoint, false);
       eu.writeToItem(stack, this);
     } else {
-      stack.damageItem(damage, NullHelper.notnullF(entity, "damageArmor() needs an entity"));
+      super.setDamage(stack, damageNew);
     }
   }
 
+  // ============================================================================================================
+  // Elytra flight upgrade
+  // ============================================================================================================
+
   @Override
-  public boolean getIsRepairable(@Nonnull ItemStack i1, @Nonnull ItemStack i2) {
-    return false;
+  public boolean isElytraFlying(@Nonnull EntityLivingBase entity, @Nonnull ItemStack itemstack, boolean shouldStop) {
+    if (entity instanceof EntityPlayer && DarkSteelController.isElytraUpgradeEquipped(itemstack) && DarkSteelController.isElytraActive((EntityPlayer) entity)) {
+      if (shouldStop && !entity.world.isRemote) {
+        DarkSteelController.setActive((EntityPlayer) entity, Type.ELYTRA, false);
+        PacketHandler.INSTANCE.sendToDimension(new PacketUpgradeState(Type.ELYTRA, false, entity.getEntityId()), entity.world.provider.getDimension());
+      }
+      return true;
+    } else {
+      return false;
+    }
   }
+
+  // ============================================================================================================
+  // Dark Steel Upgrades
+  // ============================================================================================================
+
+  @Override
+  public boolean isForSlot(@Nonnull EntityEquipmentSlot slot) {
+    return slot == armorType;
+  }
+
+  @Override
+  public boolean hasUpgradeCallbacks(@Nonnull IDarkSteelUpgrade upgrade) {
+    return upgrade == FORESTRY_FEET || upgrade == FORESTRY_LEGS || upgrade == FORESTRY_CHEST || upgrade == FORESTRY_HEAD || upgrade == FORESTRY_EYES
+        || upgrade == ElytraUpgrade.INSTANCE || upgrade == GogglesOfRevealingUpgrade.INSTANCE || upgrade == ThaumaturgeRobesUpgrade.BOOTS
+        || upgrade == ThaumaturgeRobesUpgrade.LEGS || upgrade == ThaumaturgeRobesUpgrade.CHEST;
+  }
+
+  // ============================================================================================================
+  // THAUMCRAFT
+  // ============================================================================================================
+
+  boolean gogglesUgradeActive = true;
 
   // TODO: Mod Thaumcraft - Should we re add goggles upgrade?
   //
@@ -339,57 +494,9 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     this.gogglesUgradeActive = gogglesUgradeActive;
   }
 
-  @Override
-  public void renderItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
-    PowerBarOverlayRenderHelper.instance_upgradeable.render(stack, xPosition, yPosition);
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public @Nonnull IRenderUpgrade getRender() {
-    return armorType == EntityEquipmentSlot.HEAD ? PaintedHelmetLayer.instance : PaintedHelmetLayer.not_an_helmet;
-  }
-
-  @SuppressWarnings("null")
-  @Override
-  @SideOnly(Side.CLIENT)
-  public ModelBiped getArmorModel(@Nonnull EntityLivingBase entityLiving, @Nonnull ItemStack itemStack, @Nonnull EntityEquipmentSlot armorSlot,
-      @Nonnull ModelBiped _default) {
-    if (armorType == EntityEquipmentSlot.HEAD && Prep.isValid(itemStack) && itemStack.hasTagCompound() && itemStack.getTagCompound().hasKey("DSPAINT")) {
-      // Don't render the armor model of the helmet if it is painted. The paint will be rendered by the PaintedHelmetLayer.
-      return new ModelBiped() {
-        @Override
-        public void render(@Nonnull Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        }
-      };
-    }
-    return null;
-  }
-
-  @Override
-  public String getPaintName(@Nonnull ItemStack itemStack) {
-    final NBTTagCompound subCompound = itemStack.getSubCompound("DSPAINT");
-    if (subCompound != null) {
-      ItemStack paintSource = new ItemStack(subCompound);
-      if (Prep.isValid(paintSource)) {
-        return paintSource.getDisplayName();
-      }
-    }
-    return null;
-  }
-
-  @Override
-  public boolean isElytraFlying(@Nonnull EntityLivingBase entity, @Nonnull ItemStack itemstack, boolean shouldStop) {
-    if (entity instanceof EntityPlayer && DarkSteelController.isElytraUpgradeEquipped(itemstack) && DarkSteelController.isElytraActive((EntityPlayer) entity)) {
-      if (shouldStop && !entity.world.isRemote) {
-        DarkSteelController.setActive((EntityPlayer) entity, Type.ELYTRA, false);
-        PacketHandler.INSTANCE.sendToDimension(new PacketUpgradeState(Type.ELYTRA, false, entity.getEntityId()), entity.world.provider.getDimension());
-      }
-      return true;
-    } else {
-      return false;
-    }
-  }
+  // ============================================================================================================
+  // FORESTRY
+  // ============================================================================================================
 
   @ObjectHolder("enderiointegrationforestry:apiarist_armor_feet")
   public static final IDarkSteelUpgrade FORESTRY_FEET = null;
@@ -417,23 +524,5 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     return (FORESTRY_HEAD != null && FORESTRY_HEAD.hasUpgrade(armor)) || (FORESTRY_CHEST != null && FORESTRY_CHEST.hasUpgrade(armor))
         || (FORESTRY_FEET != null && FORESTRY_FEET.hasUpgrade(armor)) || (FORESTRY_LEGS != null && FORESTRY_LEGS.hasUpgrade(armor));
   }
-
-  @Override
-  public boolean isItemForRepair(@Nonnull ItemStack right) {
-    return OreDictionaryHelper.hasName(right, Alloy.DARK_STEEL.getOreIngot());
-  }
-
-  @Override
-  public boolean isForSlot(@Nonnull EntityEquipmentSlot slot) {
-    return slot == armorType;
-  }
-
-  @Override
-  public boolean hasUpgradeCallbacks(@Nonnull IDarkSteelUpgrade upgrade) {
-    return upgrade == FORESTRY_FEET || upgrade == FORESTRY_LEGS || upgrade == FORESTRY_CHEST || upgrade == FORESTRY_HEAD || upgrade == FORESTRY_EYES
-        || upgrade == ElytraUpgrade.INSTANCE || upgrade == GogglesOfRevealingUpgrade.INSTANCE || upgrade == ThaumaturgeRobesUpgrade.BOOTS
-        || upgrade == ThaumaturgeRobesUpgrade.LEGS || upgrade == ThaumaturgeRobesUpgrade.CHEST;
-  }
-
 
 }

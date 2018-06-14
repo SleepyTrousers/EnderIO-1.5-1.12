@@ -390,6 +390,44 @@
         "textures": {
             "layer0": "enderio:items/item_material_remote_awareness_upgrade"
         }
+      },
+      "dish": {
+        "model": "enderio:item_dish",
+        "textures": {
+          "dish1": "enderio:blocks/dish1",
+          "dish2": "enderio:blocks/dish2"
+        }
+      },
+      "end_steel_machine_chassi": {
+        "model": "enderio:machine_body",
+        "submodel": {
+          "front": {
+            "model": "enderio:machine_front"
+          }
+        },
+        "textures": {
+          "top": "enderio:items/item_end_steel_machine_chassi",
+          "bottom": "enderio:items/item_end_steel_machine_chassi",
+          "side": "enderio:items/item_end_steel_machine_chassi",
+          "back": "enderio:items/item_end_steel_machine_chassi",
+          "frontframe": "enderio:items/item_end_steel_machine_chassi",
+          "front": "enderio:items/item_end_steel_machine_chassi"
+        }
+      },
+      "enhanced_machine_dye":    {
+        "textures": {
+            "layer0": "enderio:items/item_material_enhanced_machine_dye"
+        }
+      },
+      "simple_chassi_parts": {
+        "textures": {
+          "layer0": "enderio:items/item_material_simple_chassi_parts"
+        }
+      },
+      "enhanced_chassi_parts": {
+        "textures": {
+          "layer0": "enderio:items/item_material_enhanced_chassi_parts"
+        }
       }
     }
   }

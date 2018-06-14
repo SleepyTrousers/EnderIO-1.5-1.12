@@ -31,6 +31,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 
+import static crazypants.enderio.machines.init.MachineObject.block_enhanced_sag_mill;
 import static crazypants.enderio.machines.init.MachineObject.block_sag_mill;
 import static crazypants.enderio.machines.init.MachineObject.block_simple_sag_mill;
 import static crazypants.enderio.machines.machine.sagmill.ContainerSagMill.FIRST_INVENTORY_SLOT;
@@ -49,6 +50,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagRecipe> implem
     registry.addRecipeClickArea(GuiSagMill.class, 155, 42, 16, 16, SagMillRecipeCategory.UID);
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_sag_mill.getBlockNN()), SagMillRecipeCategory.UID);
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_simple_sag_mill.getBlockNN()), SagMillRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(block_enhanced_sag_mill.getBlockNN()), SagMillRecipeCategory.UID);
 
     registry.addRecipes(SagMillRecipeManager.getInstance().getRecipes(), UID);
 

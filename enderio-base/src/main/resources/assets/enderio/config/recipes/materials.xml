@@ -3,15 +3,17 @@
 
 <!-- 
 
-These are the build-in recipes. You cannot change this file, it is a
+These are the built-in recipes. You cannot change this file, it is a
 reference for you only and will be generated every time the game starts.
 
 To make changes to the recipes, copy the recipes you want to change to
 a file in the 'user' folder. To disable a recipe, add an attribute "disabled"
 and set it to true, e.g.: <recipe name="Gear" disabled="true" />
 
-You can also disabled all build in recipes, so that only your files in the
-'user' folder will be loaded.
+You can also disable all built-in recipes with the setting "loadCoreRecipes"
+in the Ender IO config file, so that only your files in the 'user' folder will
+be loaded. Please be advised that a number of recipes are absolutely needed,
+so you will have to copy those over into a 'user' file for the game to load.
 
 Item specifications can reference an alias, an ore dictionary name, a
 block or an item. You can force the type by prefixing the value with
@@ -190,6 +192,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="End Iron Bars" required="true">
+    <crafting>
+      <grid size="3x2">
+        <item name="END_STEEL"/><item name="END_STEEL"/><item name="END_STEEL"/>
+        <item name="END_STEEL"/><item name="END_STEEL"/><item name="END_STEEL"/>
+      </grid>
+      <output name="enderio:block_end_iron_bars" amount="16"/>
+    </crafting>
+  </recipe>
+
   <recipe name="Simple Chassis" required="true">
     <crafting>
       <grid>
@@ -209,6 +221,14 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
+  <recipe name="Enhanced Chassis">
+    <alloying energy="3600" exp="1">
+      <input name="END_STEEL_CHASSIS"/>
+      <input name="dyeEnhancedMachine"/>
+      <output name="ENHANCED_CHASSIS"/>
+    </alloying>
+  </recipe>
+
   <recipe name="Soul Chassis">
     <alloying energy="3600" exp="1">
       <input name="SIMPLE_CHASSIS"/>
@@ -217,14 +237,14 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
-  <recipe name="Enhanced Chassis" required="true">
+  <recipe name="End Steel Chassis" required="true">
     <crafting>
       <grid>
-        <item name="enderio:block_dark_iron_bars"/><item name="ingotEndSteel"/><item name="enderio:block_dark_iron_bars"/>
+        <item name="enderio:block_end_iron_bars"/><item name="ingotEndSteel"/><item name="enderio:block_end_iron_bars"/>
         <item name="ingotEndSteel"/><item name="CHASSIS"/><item name="ingotEndSteel"/>
-        <item name="enderio:block_dark_iron_bars"/><item name="ingotEndSteel"/><item name="enderio:block_dark_iron_bars"/>
+        <item name="enderio:block_end_iron_bars"/><item name="ingotEndSteel"/><item name="enderio:block_end_iron_bars"/>
       </grid>
-      <output name="ENHANCED_CHASSIS"/>
+      <output name="END_STEEL_CHASSIS"/>
     </crafting>
   </recipe>
 
@@ -247,6 +267,17 @@ XML editor will display that as tooltips when editing this file.
         <item name="ORGANIC_GREEN_DYE"/><item name="POWDER_QUARTZ"/><item name="dustLapis"/>
       </grid>
       <output name="dyeMachine" amount="6"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Enhanced Machine Dye">
+    <crafting>
+      <grid>
+        <item name="POWDER_PULSATING"/><item name="POWDER_QUARTZ"/><item name="POWDER_PULSATING"/>
+        <item name="POWDER_QUARTZ"/><item name="ORGANIC_BLACK_DYE"/><item name="POWDER_QUARTZ"/>
+        <item name="POWDER_PULSATING"/><item name="POWDER_QUARTZ"/><item name="POWDER_PULSATING"/>
+      </grid>
+      <output name="dyeEnhancedMachine" amount="4"/>
     </crafting>
   </recipe>
 
@@ -572,6 +603,28 @@ XML editor will display that as tooltips when editing this file.
         <item name="ingotIron"/><item name="ingotIron"/><item name="ingotIron"/>
       </grid>
       <output name="CHASSIPARTS" amount="16"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Simple Chassis Parts" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotIron"/><item name="ingotIron"/><item name="ingotIron"/>
+        <item name="ingotIron"/><item name="SIMPLE_CHASSIS"/><item name="ingotIron"/>
+        <item name="ingotIron"/><item name="ingotIron"/><item name="ingotIron"/>
+      </grid>
+      <output name="SIMPLE_CHASSIPARTS" amount="16"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Enhanced Chassis Parts" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotIron"/><item name="ingotIron"/><item name="ingotIron"/>
+        <item name="ingotIron"/><item name="ENHANCED_CHASSIS"/><item name="ingotIron"/>
+        <item name="ingotIron"/><item name="ingotIron"/><item name="ingotIron"/>
+      </grid>
+      <output name="ENHANCED_CHASSIPARTS" amount="16"/>
     </crafting>
   </recipe>
 
@@ -1085,6 +1138,17 @@ XML editor will display that as tooltips when editing this file.
         <item name="CONDUIT_BINDER" /><item name="ELECTRICAL_STEEL" /><item name="CONDUIT_BINDER" />
       </grid>
       <output name="REMOTE_AWARENESS_UPGRADE" amount="3" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Wireless Energy Transmitter Dish Assembly" required="true">
+    <crafting>
+      <grid>
+        <item name="dyeWhite"/><item name="ELECTRICAL_STEEL"/><item />
+        <item /><item name="dyeWhite"/><item name="ELECTRICAL_STEEL"/>
+        <item name="dyeWhite"/><item name="ELECTRICAL_STEEL"/><item />
+      </grid>
+      <output name="itemWirelessDish"/>
     </crafting>
   </recipe>
 

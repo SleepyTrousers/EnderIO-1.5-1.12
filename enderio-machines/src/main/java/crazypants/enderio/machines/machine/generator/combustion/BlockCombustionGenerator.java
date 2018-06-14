@@ -22,7 +22,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
@@ -37,8 +36,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockCombustionGenerator<T extends TileCombustionGenerator> extends AbstractGeneratorBlock<T>
     implements IPaintable.INonSolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
-
-  protected boolean isEnhanced = false;
 
   public static BlockCombustionGenerator<TileCombustionGenerator> create(@Nonnull IModObject modObject) {
     BlockCombustionGenerator<TileCombustionGenerator> gen = new BlockCombustionGenerator<>(modObject);
@@ -169,33 +166,9 @@ public class BlockCombustionGenerator<T extends TileCombustionGenerator> extends
     blockStateWrapper.addCacheKey(tileEntity.getFacing()).addCacheKey(tileEntity.isActive());
   }
 
+  @Nullable
   @Override
-  public boolean canPlaceBlockAt(@Nonnull World world, @Nonnull BlockPos pos) {
-    return super.canPlaceBlockAt(world, pos) && (!isEnhanced || (pos.getY() < 255 && super.canPlaceBlockAt(world, pos.up())));
+  public Block getEnhancedExtensionBlock() {
+    return MachineObject.block_enhanced_combustion_generator_top.getBlockNN();
   }
-
-  @Override
-  public void onBlockPlaced(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityLivingBase player, @Nonnull T te) {
-    super.onBlockPlaced(world, pos, state, player, te);
-    if (isEnhanced) {
-      world.setBlockState(pos.up(), MachineObject.block_enhanced_combustion_generator_top.getBlockNN().getDefaultState());
-    }
-  }
-
-  @Override
-  public void neighborChanged(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block blockIn, @Nonnull BlockPos fromPos) {
-    if (isEnhanced) {
-      if (world.getBlockState(pos.up()).getBlock() != MachineObject.block_enhanced_combustion_generator_top.getBlockNN()) {
-        if (super.canPlaceBlockAt(world, pos.up())) {
-          world.setBlockState(pos.up(), MachineObject.block_enhanced_combustion_generator_top.getBlockNN().getDefaultState());
-        } else {
-          // impossible error state a.k.a. someone ripped the machine apart. And what do combustion engines that are ripped apart do? They combust. Violently.
-          world.createExplosion(null, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, 3f, true); // 3 == normal Creeper
-        }
-      }
-    }
-
-    super.neighborChanged(state, world, pos, blockIn, fromPos);
-  }
-
 }

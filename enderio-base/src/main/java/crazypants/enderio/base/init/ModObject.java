@@ -11,6 +11,7 @@ import crazypants.enderio.base.block.charge.BlockEnderCharge;
 import crazypants.enderio.base.block.coldfire.BlockColdFire;
 import crazypants.enderio.base.block.darksteel.anvil.BlockDarkSteelAnvil;
 import crazypants.enderio.base.block.darksteel.bars.BlockDarkIronBars;
+import crazypants.enderio.base.block.darksteel.bars.BlockEndIronBars;
 import crazypants.enderio.base.block.darksteel.door.BlockDarkSteelDoor;
 import crazypants.enderio.base.block.darksteel.ladder.BlockDarkSteelLadder;
 import crazypants.enderio.base.block.darksteel.obsidian.BlockReinforcedObsidian;
@@ -117,6 +118,7 @@ public enum ModObject implements IModObject.Registerable {
   blockDecoration2(BlockDecorationFacing.class),
   blockDecoration3(BlockDecorationFacing.class, "create2"),
   blockIndustrialInsulation(BlockIndustrialInsulation.class),
+  blockEndIronBars(BlockEndIronBars.class),
 
   // Charges
   blockConfusionCharge(BlockConfusionCharge.class),
@@ -210,6 +212,12 @@ public enum ModObject implements IModObject.Registerable {
   itemDarkSteelAxe(ItemDarkSteelAxe.class),
   itemDarkSteelBow(ItemDarkSteelBow.class),
   itemDarkSteelShears(ItemDarkSteelShears.class),
+
+  itemEndSteelHelmet(ItemDarkSteelArmor.class, "createEndSteelHelmet"),
+  itemEndSteelChestplate(ItemDarkSteelArmor.class, "createEndSteelChestplate"),
+  itemEndSteelLeggings(ItemDarkSteelArmor.class, "createEndSteelLeggings"),
+  itemEndSteelBoots(ItemDarkSteelArmor.class, "createEndSteelBoots"),
+
   itemStaffOfLevity(ItemStaffOfLevity.class),
 
   item_owl_egg(ItemOwlEgg.class),

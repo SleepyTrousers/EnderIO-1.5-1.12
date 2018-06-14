@@ -3,15 +3,16 @@
 
 <!-- 
 
-These are the build-in recipes. You cannot change this file, it is a
+These are the built-in capacitor definitions. You cannot change this file, it is a
 reference for you only and will be generated every time the game starts.
 
-To make changes to the recipes, copy the recipes you want to change to
-a file in the 'user' folder. To disable a recipe, add an attribute "disabled"
-and set it to true, e.g.: <recipe name="Gear" disabled="true" />
+To make changes to the capacitor definitions, copy the capacitors you want to change to
+a file in the 'user' folder.
 
-You can also disabled all build in recipes, so that only your files in the
-'user' folder will be loaded.
+You can also disable all built-in recipes with the setting "loadCoreRecipes"
+in the Ender IO config file, so that only your files in the 'user' folder will
+be loaded. Please be advised that all capacitor definitions are absolutely needed,
+so you will have to copy those over into a 'user' file for the game to load.
 
 More information on the syntax can be found in the recipes.xsd file. An
 XML editor will display that as tooltips when editing this file.
@@ -26,6 +27,10 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_alloy_smelter/intake" base="80" scaler="POWER" />
   <capacitor key="enderio:block_alloy_smelter/buffer" base="100000" scaler="POWER" />
   <capacitor key="enderio:block_alloy_smelter/use" base="20" scaler="POWER" />
+
+  <capacitor key="enderio:block_enhanced_alloy_smelter/intake" base="320" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_alloy_smelter/buffer" base="1000000" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_alloy_smelter/use" base="40" scaler="POWER" />
   
   <capacitor key="enderio:block_buffer/intake_creative" base="100000" scaler="FIXED" />
   <capacitor key="enderio:block_buffer/buffer_creative" base="1000000" scaler="FIXED" />
@@ -100,6 +105,10 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_simple_sag_mill/buffer" base="1000" scaler="FIXED" />
   <capacitor key="enderio:block_simple_sag_mill/use" base="10" scaler="FIXED" />
   <capacitor key="enderio:block_simple_sag_mill/loss" base="1" scaler="FIXED" />
+
+  <capacitor key="enderio:block_enhanced_sag_mill/intake" base="320" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_sag_mill/buffer" base="1000000" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_sag_mill/use" base="40" scaler="POWER" />
   
   <capacitor key="enderio:block_slice_and_splice/intake" base="160" scaler="QUADRATIC" />
   <capacitor key="enderio:block_slice_and_splice/buffer" base="100000" scaler="POWER" />
@@ -122,10 +131,18 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_vat/intake" base="80" scaler="POWER" />
   <capacitor key="enderio:block_vat/buffer" base="100000" scaler="POWER" />
   <capacitor key="enderio:block_vat/use" base="20" scaler="CHEMICAL" />
+
+  <capacitor key="enderio:block_enhanced_vat/intake" base="320" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_vat/buffer" base="1000000" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_vat/use" base="40" scaler="CHEMICAL" />
   
   <capacitor key="enderio:block_wired_charger/intake" base="10000" scaler="POWER" />
   <capacitor key="enderio:block_wired_charger/buffer" base="100000" scaler="POWER" />
   <capacitor key="enderio:block_wired_charger/charge" base="1" scaler="CHARGE" />
+
+  <capacitor key="enderio:block_enhanced_wired_charger/intake" base="20000" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_wired_charger/buffer" base="10000000" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_wired_charger/charge" base="1" scaler="CHARGE" />
   
   <capacitor key="enderio:block_wireless_charger/intake" base="10000" scaler="FIXED" />
   <capacitor key="enderio:block_wireless_charger/buffer" base="200000" scaler="FIXED" />

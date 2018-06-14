@@ -3,6 +3,7 @@ package crazypants.enderio.zoo.entity.ai;
 import javax.annotation.Nonnull;
 import javax.vecmath.Point3i;
 
+import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.zoo.entity.EntityUtil;
 import crazypants.enderio.zoo.entity.SpawnUtil;
 import net.minecraft.entity.EntityLiving;
@@ -21,26 +22,25 @@ public class EntityAIMountedArrowAttack extends EntityAIBase {
 
   private final @Nonnull IRangedAttackMob rangedAttackEntityHost;
   private EntityLivingBase attackTarget;
-  private double entityMoveSpeed;
-  private double mountedEntityMoveSpeed;
+  private IValue<Double> entityMoveSpeed;
+  private IValue<Double> mountedEntityMoveSpeed;
 
   private int timeUntilNextAttack;
   private int timeTargetVisible;
 
-  private int minRangedAttackTime;
-  private int maxRangedAttackTime;
+  private IValue<Integer> minRangedAttackTime;
+  private IValue<Integer> maxRangedAttackTime;
 
-  private float attackRange;
-  private float attackRangeSq;
+  private IValue<Float> attackRange;
 
   private int runAwayTimer = 0;
 
   private PathPoint runningAwayTo;
 
-  private boolean useRunAwayTactic;
+  private IValue<Boolean> useRunAwayTactic;
 
-  public EntityAIMountedArrowAttack(@Nonnull IRangedAttackMob host, double moveSpeed, double mountedEntityMoveSpeed, int minAttackTime, int maxAttackTime,
-      float attackRange, boolean useRunAwayTactic) {
+  public EntityAIMountedArrowAttack(@Nonnull IRangedAttackMob host, IValue<Double> moveSpeed, IValue<Double> mountedEntityMoveSpeed,
+      IValue<Integer> minAttackTime, IValue<Integer> maxAttackTime, IValue<Float> attackRange, IValue<Boolean> useRunAwayTactic) {
     timeUntilNextAttack = -1;
     rangedAttackEntityHost = host;
     entityHost = (EntityLiving) host;
@@ -49,7 +49,6 @@ public class EntityAIMountedArrowAttack extends EntityAIBase {
     minRangedAttackTime = minAttackTime;
     maxRangedAttackTime = maxAttackTime;
     this.attackRange = attackRange;
-    attackRangeSq = attackRange * attackRange;
     this.useRunAwayTactic = useRunAwayTactic;
     setMutexBits(3);
   }
@@ -98,6 +97,8 @@ public class EntityAIMountedArrowAttack extends EntityAIBase {
       runAwayTimer--;
     }
 
+    float attackRangeSq = attackRange.get() * attackRange.get();
+
     if (!runningAway && distToTargetSq <= attackRangeSq && timeTargetVisible >= 20) {
       getNavigator().clearPath();
     } else if (distToTargetSq > (attackRangeSq * 0.9)) {
@@ -120,13 +121,13 @@ public class EntityAIMountedArrowAttack extends EntityAIBase {
       if (distToTargetSq > attackRangeSq || !canSeeTarget) {
         return;
       }
-      float rangeRatio = MathHelper.sqrt(distToTargetSq) / attackRange;
+      float rangeRatio = MathHelper.sqrt(distToTargetSq) / attackRange.get();
       rangeRatio = MathHelper.clamp(rangeRatio, 0.1f, 1);
       rangedAttackEntityHost.attackEntityWithRangedAttack(attackTarget, rangeRatio);
-      timeUntilNextAttack = MathHelper.floor(rangeRatio * (maxRangedAttackTime - minRangedAttackTime) + minRangedAttackTime);
+      timeUntilNextAttack = MathHelper.floor(rangeRatio * (maxRangedAttackTime.get() - minRangedAttackTime.get()) + minRangedAttackTime.get());
     } else if (timeUntilNextAttack < 0) {
-      float rangeRatio = MathHelper.sqrt(distToTargetSq) / attackRange;
-      timeUntilNextAttack = MathHelper.floor(rangeRatio * (maxRangedAttackTime - minRangedAttackTime) + minRangedAttackTime);
+      float rangeRatio = MathHelper.sqrt(distToTargetSq) / attackRange.get();
+      timeUntilNextAttack = MathHelper.floor(rangeRatio * (maxRangedAttackTime.get() - minRangedAttackTime.get()) + minRangedAttackTime.get());
     }
   }
 
@@ -144,7 +145,7 @@ public class EntityAIMountedArrowAttack extends EntityAIBase {
   }
 
   private boolean runAway() {
-    if (!useRunAwayTactic) {
+    if (!useRunAwayTactic.get()) {
       return false;
     }
 
@@ -155,7 +156,7 @@ public class EntityAIMountedArrowAttack extends EntityAIBase {
     targetDir = VecUtil.scale(targetDir, -1);
     targetDir = targetDir.normalize();
 
-    double distance = attackRange * 0.9;
+    double distance = attackRange.get() * 0.9;
     targetDir = VecUtil.scale(targetDir, distance);
     targetDir = VecUtil.add(targetDir, entityPos);
 
@@ -178,10 +179,7 @@ public class EntityAIMountedArrowAttack extends EntityAIBase {
   }
 
   private double getMoveSpeed() {
-    if (entityHost.isRiding()) {
-      return mountedEntityMoveSpeed;
-    }
-    return entityMoveSpeed;
+    return (entityHost.isRiding() ? mountedEntityMoveSpeed : entityMoveSpeed).get();
   }
 
   protected PathNavigate getNavigator() {
