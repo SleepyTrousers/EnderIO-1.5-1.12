@@ -103,6 +103,8 @@ public enum Material {
   ENHANCED_CHASSIPARTS("enhancedChassiParts"),
   SIMPLE_CHASSIPARTS("simpleChassiParts"),
 
+  CAKE_BASE("cakeBase"),
+
   ;
 
   public final boolean hasEffect;

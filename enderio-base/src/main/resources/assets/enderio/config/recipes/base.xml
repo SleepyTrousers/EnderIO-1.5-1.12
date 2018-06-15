@@ -265,6 +265,32 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
+  <recipe name="Alloy: Cookie" required="true">
+    <alloying energy="2000">
+      <input name="FLOUR"/>
+      <input name="minecraft:dye:3"/>
+      <output name="minecraft:cookie" amount="8"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Cake" required="true">
+    <alloying energy="2000">
+      <input name="FLOUR" amount="3"/>
+      <input name="oredict:egg" />
+      <output name="itemCakeBase" amount="2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Cake" required="true">
+    <crafting>
+      <grid size="3x2">
+        <item name="minecraft:milk_bucket" /><item name="minecraft:milk_bucket" /><item name="minecraft:milk_bucket" />
+        <item name="minecraft:sugar"/><item name="itemCakeBase"/><item name="minecraft:sugar"/>
+      </grid>
+      <output name="item:minecraft:cake" />
+    </crafting>
+  </recipe>
+
   <recipe name="Photovoltaic Powder" required="true">
     <crafting>
       <shapeless>

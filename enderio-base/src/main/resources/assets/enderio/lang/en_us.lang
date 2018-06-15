@@ -246,6 +246,7 @@ item.item_material.enhanced_machine_dye.tooltip.detailed.line1=Industrially prod
 item.item_material.enhanced_machine_dye.tooltip.detailed.line2=§7Warning: May contain traces of diamond. Please chew carefully before swallowing. Not gluten free. 
 item.item_material.simple_chassi_parts.name=Simple Machine Parts
 item.item_material.enhanced_chassi_parts.name=Enhanced Machine Parts
+item.item_material.cake_base.name=Cake Base
 
 item.item_rod_of_return.name=Rod of Return
 item.item_rod_of_return.tooltip.detailed.line1=Returns the user to a Telepad
