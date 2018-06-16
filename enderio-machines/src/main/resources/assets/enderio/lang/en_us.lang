@@ -230,11 +230,12 @@ tile.block_experience_obelisk.tooltip.detailed.line2=Can output liquid XP to adj
 # no description
 tile.block_painter.name=Painting Machine
 
-tile.block_reservoir.name=Reservoir
-tile.block_reservoir.tooltip.detailed.line1=When connected with other Reservoirs:
-tile.block_reservoir.tooltip.detailed.line2=Add two buckets of water for an infinite water source.
-tile.block_reservoir.tooltip.detailed.line3=Produces one bucket per second
-tile.block_reservoir.tooltip.detailed.line4=Right-Click with a wrench to enable auto-output
+tile.block_reservoir.name=Endervoir
+tile.block_reservoir.tooltip.detailed.line1=An infinite reservoir for water.
+tile.block_reservoir.tooltip.detailed.line2=When connected with other Endervoirs:
+tile.block_reservoir.tooltip.detailed.line3=- Add two buckets of water for an infinite water source
+tile.block_reservoir.tooltip.detailed.line4=- Produces one bucket per second
+tile.block_reservoir.tooltip.detailed.line5=- Right-Click with a wrench to enable auto-output
 
 tile.block_sag_mill.name=SAG Mill
 tile.block_sag_mill.tooltip.detailed.line1=Grinds ore and other items
