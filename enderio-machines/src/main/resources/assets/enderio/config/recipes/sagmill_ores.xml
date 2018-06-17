@@ -2672,7 +2672,7 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Sagmill: Resonate End Stone" required="false">
     <sagmilling energy="5000">
-      <input name="oreFluidEnder" />
+      <input name="oreClathrateEnder" />
       <output name="crystalEnder" amount="2" />
       <output name="crystalEnder" amount="2" chance="0.25" />
       <output name="minecraft:end_stone" chance="0.15" />
@@ -2681,17 +2681,27 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Sagmill: Oil Sand" required="false">
     <sagmilling energy="2000">
-      <input name="oreFluidCrudeOilSand" />
+      <input name="thermalfoundation:ore_fluid" />
       <output name="crystalCrudeOil" amount="2" />
       <output name="crystalCrudeOil" amount="2" chance="0.25" />
       <output name="thermalfoundation:material:833" amount="1" chance="0.15"/>
       <output name="minecraft:sand" chance="0.15" />
     </sagmilling>
   </recipe>
+ 
+  <recipe name="Sagmill: Oil Red Sand" required="false">
+    <sagmilling energy="2000">
+      <input name="thermalfoundation:ore_fluid:5" />
+      <output name="crystalCrudeOil" amount="2" />
+      <output name="crystalCrudeOil" amount="2" chance="0.25" />
+      <output name="thermalfoundation:material:833" amount="1" chance="0.15"/>
+      <output name="minecraft:sand:1" chance="0.15" />
+    </sagmilling>
+  </recipe>
 
   <recipe name="Sagmill: Oil Shale" required="false">
     <sagmilling energy="2000">
-      <input name="oreFluidCrudeOilShale" />
+      <input name="oreClathrateOilShale" />
       <output name="crystalCrudeOil" amount="2" />
       <output name="crystalCrudeOil" amount="2" chance="0.25" />
       <output name="minecraft:flint" amount="1" chance="0.15"/>
@@ -2701,7 +2711,7 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Sagmill: Destabilized Redstone Ore" required="false">
     <sagmilling energy="3600">
-      <input name="oreFluidRedstone" />
+      <input name="oreClathrateRedstone" />
       <output name="crystalRedstone" amount="2" />
       <output name="crystalRedstone" amount="2" chance="0.25" />
       <output name="itemCinnabar" amount="1" chance="0.5"/>
@@ -2711,7 +2721,7 @@ XML editor will display that as tooltips when editing this file.
   
   <recipe name="Sagmill: Energized Glowstone Ore" required="false">
     <sagmilling energy="2000">
-      <input name="oreFluidGlowstone" />
+      <input name="oreClathrateGlowstone" />
       <output name="crystalGlowstone" amount="2" />
       <output name="crystalGlowstone" amount="2" chance="0.25" />
       <output name="dustSulfer" amount="1" chance="0.5"/>
