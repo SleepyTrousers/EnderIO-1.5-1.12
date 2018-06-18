@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -45,9 +46,14 @@ public class EnchantmentWitherArrow extends Enchantment {
     return 1;
   }
 
+  /**
+   * Original: "Called whenever a mob is damaged with an item that has this enchantment on it."
+   * <p>
+   * Correct: "Called whenever a mob is damaged and an item that has this enchantment on it is in the main hand, the off hand or any armor slot." (MC-131637)
+   */
   @Override
   public void onEntityDamaged(@Nonnull EntityLivingBase user, @Nonnull Entity entityHit, int level) {
-    if (entityHit instanceof EntityLivingBase) {
+    if (entityHit instanceof EntityLivingBase && EnchantmentHelper.getEnchantmentLevel(this, user.getHeldItemMainhand()) > 0) {
       ((EntityLivingBase) entityHit).addPotionEffect(new PotionEffect(MobEffects.WITHER, 200));
     }
   }
