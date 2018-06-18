@@ -172,7 +172,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
   <recipe name="Enchanter: minecraft:infinity" required="true" disabled="false">
     <enchanting>
-      <input name="minecraft:ender_pearl" amount="1"/>
+      <input name="POWDER_INFINITY" amount="4"/>
       <enchantment name="minecraft:infinity" costMultiplier="1"/>
     </enchanting>
   </recipe>
@@ -210,6 +210,12 @@ XML editor will display that as tooltips when editing this file.
     <enchanting>
       <input name="itemWitheringDust" amount="4"/>
       <enchantment name="enderio:witherweapon" costMultiplier="1"/>
+    </enchanting>
+  </recipe>
+  <recipe name="Enchanter: enderio:repellent" required="true" disabled="false">
+    <enchanting>
+      <input name="minecraft:ender_pearl" amount="4"/>
+      <enchantment name="enderio:repellent" costMultiplier="2"/>
     </enchanting>
   </recipe>
 
