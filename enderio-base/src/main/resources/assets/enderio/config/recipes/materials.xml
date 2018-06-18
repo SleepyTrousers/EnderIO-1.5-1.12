@@ -546,7 +546,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Bread" required="true">
     <smelting exp="0.35">
       <input name="FLOUR"/>
-      <output name="minecraft:bread"/>
+      <output name="minecraft:bread" amount="1"/>
     </smelting>
   </recipe>
 

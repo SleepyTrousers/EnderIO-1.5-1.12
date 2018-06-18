@@ -428,6 +428,11 @@
         "textures": {
           "layer0": "enderio:items/item_material_enhanced_chassi_parts"
         }
+      },
+      "cake_base": {
+        "textures": {
+          "layer0": "enderio:items/item_material_cake_base"
+        }
       }
     }
   }
