@@ -589,9 +589,13 @@ enderio.config.blocks.charges.ender=Ender Charge
 
 
 enchantment.enderio.soulbound=Soulbound
-description.enchantment.enderio.soulbound=Prevents item from being lost on death
+description.enchantment.enderio.soulbound=Prevents item from being lost on death|Note: Most gravestone mods are stupid and prevent this from working!
 enchantment.enderio.witherarrow=Withering
+description.enchantment.enderio.witherarrow=Applies withering to the target|Applies to bows
 enchantment.enderio.witherweapon=Decay
+description.enchantment.enderio.witherweapon=Applies withering to the target|Applies to melee weapons
+enchantment.enderio.repellent=Repellent
+description.enchantment.enderio.repellent=Chance to teleport attackers away|Higher levels teleport more often and farther
 
 potion.effect.enderio.withering=Potion of Decay
 splash_potion.effect.enderio.withering=Splash Potion of Decay

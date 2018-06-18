@@ -2,6 +2,8 @@ package crazypants.enderio.base.enchantment;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.api.common.enchant.IAdvancedEnchant;
+
 import crazypants.enderio.base.EnderIO;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -16,7 +18,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
-public class EnchantmentWitherWeapon extends Enchantment {
+public class EnchantmentWitherWeapon extends Enchantment implements IAdvancedEnchant {
 
   private static final @Nonnull String NAME = "witherweapon";
 

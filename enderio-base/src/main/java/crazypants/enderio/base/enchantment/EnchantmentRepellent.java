@@ -5,58 +5,54 @@ import javax.annotation.Nonnull;
 import com.enderio.core.api.common.enchant.IAdvancedEnchant;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.teleport.RandomTeleportUtil;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.MobEffects;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
-public class EnchantmentWitherArrow extends Enchantment implements IAdvancedEnchant {
+public class EnchantmentRepellent extends Enchantment implements IAdvancedEnchant {
 
-  private static final @Nonnull String NAME = "witherarrow";
+  private static final @Nonnull String NAME = "repellent";
 
   @SubscribeEvent
   public static void register(Register<Enchantment> event) {
-    event.getRegistry().register(new EnchantmentWitherArrow());
+    event.getRegistry().register(new EnchantmentRepellent());
   }
 
-  public EnchantmentWitherArrow() {
-    super(Rarity.UNCOMMON, EnumEnchantmentType.BOW, new EntityEquipmentSlot[] { EntityEquipmentSlot.MAINHAND });
+  public EnchantmentRepellent() {
+    super(Rarity.VERY_RARE, EnumEnchantmentType.ARMOR,
+        new EntityEquipmentSlot[] { EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET });
     setName(EnderIO.DOMAIN + "." + NAME);
     setRegistryName(EnderIO.DOMAIN, NAME);
   }
 
   @Override
   public int getMinEnchantability(int enchantmentLevel) {
-    return 20;
+    return 10 + 5 * enchantmentLevel;
   }
 
   @Override
   public int getMaxEnchantability(int enchantmentLevel) {
-    return 50;
+    return 10 + 10 * enchantmentLevel;
   }
 
   @Override
   public int getMaxLevel() {
-    return 1;
+    return 4;
   }
 
-  /**
-   * Original: "Called whenever a mob is damaged with an item that has this enchantment on it."
-   * <p>
-   * Correct: "Called whenever a mob is damaged and an item that has this enchantment on it is in the main hand, the off hand or any armor slot." (MC-131637)
-   */
   @Override
-  public void onEntityDamaged(@Nonnull EntityLivingBase user, @Nonnull Entity entityHit, int level) {
-    if (entityHit instanceof EntityLivingBase && EnchantmentHelper.getEnchantmentLevel(this, user.getHeldItemMainhand()) > 0) {
-      ((EntityLivingBase) entityHit).addPotionEffect(new PotionEffect(MobEffects.WITHER, 200));
+  public void onUserHurt(@Nonnull EntityLivingBase user, @Nonnull Entity attacker, int level) {
+    if (attacker instanceof EntityLivingBase && !EnchantmentHelper.getEnchantedItem(this, user).isEmpty() && user.getRNG().nextFloat() < (.5f + .1f * level)) {
+      RandomTeleportUtil.teleportEntity(attacker.world, attacker, false, attacker instanceof EntityPlayer || user.getRNG().nextFloat() < .75f, 16 * level);
     }
   }
 

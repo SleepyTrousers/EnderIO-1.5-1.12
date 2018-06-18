@@ -41,7 +41,6 @@ public enum Lang implements ILang {
   BLOCK_LIGHT_EMITTER(".block.tooltip.lightEmitter"),
   BLOCK_LIGHT_BLOCKER(".block.tooltip.lightBlocker"),
   MACHINE_UPGRADE(".machine.tooltip.upgrade"),
-  ENCHANT_SOULBOUND("description.enchantment.enderio.soulbound"),
   FLUID_TICKPER(".fluid.millibucket.format.tickper"),
   FLUID_AMOUNT(".fluid.millibucket.format"),
   FLUID_LEVEL(".fluid.millibucket.format.of"),
