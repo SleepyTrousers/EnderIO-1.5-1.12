@@ -2681,7 +2681,7 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Sagmill: Oil Sand" required="false">
     <sagmilling energy="2000">
-      <input name="thermalfoundation:ore_fluid" />
+      <input name="thermalfoundation:ore_fluid:0" />
       <output name="crystalCrudeOil" amount="2" />
       <output name="crystalCrudeOil" amount="2" chance="0.25" />
       <output name="thermalfoundation:material:833" amount="1" chance="0.15"/>
