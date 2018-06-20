@@ -1,5 +1,7 @@
 package crazypants.enderio.conduits.oc.conduit;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.conduit.IClientConduit;
@@ -16,8 +18,8 @@ public interface IOCConduit extends IClientConduit, IServerConduit, Environment,
 
   public static final String COLOR_CONTROLLER_ID = "ColorController";
 
-  public abstract void setSignalColor(EnumFacing dir, DyeColor col);
+  public abstract void setSignalColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col);
 
-  public abstract DyeColor getSignalColor(EnumFacing dir);
+  public abstract @Nonnull DyeColor getSignalColor(@Nonnull EnumFacing dir);
 
 }

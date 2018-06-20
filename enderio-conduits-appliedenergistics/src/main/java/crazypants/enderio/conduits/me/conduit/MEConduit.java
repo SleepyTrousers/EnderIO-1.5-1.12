@@ -236,15 +236,13 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   public void connectionsChanged() {
     super.connectionsChanged();
     BlockPos pos = getBundle().getLocation();
-    if (pos != null) {
-      onNodeChanged(pos);
-      IGridNode node = getNode();
-      if (node != null) {
-        node.updateState();
-        World world = node.getWorld();
-        if (!world.isRemote && world instanceof WorldServer)
-          ((WorldServer) world).getPlayerChunkMap().markBlockForUpdate(pos);
-      }
+    onNodeChanged(pos);
+    IGridNode node = getNode();
+    if (node != null) {
+      node.updateState();
+      World world = node.getWorld();
+      if (!world.isRemote && world instanceof WorldServer)
+        ((WorldServer) world).getPlayerChunkMap().markBlockForUpdate(pos);
     }
   }
 
@@ -252,7 +250,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   public boolean onBlockActivated(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, @Nonnull RaytraceResult res, @Nonnull List<RaytraceResult> all) {
     if (ToolUtil.isToolEquipped(player, hand)) {
       if (!getBundle().getEntity().getWorld().isRemote) {
-        if (res != null && res.component != null) {
+        if (res.component != null) {
           EnumFacing connDir = res.component.dir;
           EnumFacing faceHit = res.movingObjectPosition.sideHit;
           if (connDir == null || connDir == faceHit) {
@@ -278,7 +276,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   private void onNodeChanged(@Nonnull BlockPos pos) {
     for (EnumFacing dir : EnumFacing.VALUES) {
       TileEntity te = getBundle().getEntity();
-      if (te != null && te instanceof IGridHost && !(te instanceof IConduitBundle)) {
+      if (te instanceof IGridHost && !(te instanceof IConduitBundle)) {
         IGridNode node = ((IGridHost) te).getGridNode(AEPartLocation.INTERNAL);
         if (node == null) {
           node = ((IGridHost) te).getGridNode(AEPartLocation.fromFacing(dir.getOpposite()));
@@ -339,7 +337,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     EnumSet<EnumFacing> cons = EnumSet.noneOf(EnumFacing.class);
     cons.addAll(getConduitConnections());
     for (EnumFacing dir : getExternalConnections()) {
-      if (getConnectionMode(dir) != ConnectionMode.DISABLED) {
+      if (dir != null && getConnectionMode(dir) != ConnectionMode.DISABLED) {
         cons.add(dir);
       }
     }
@@ -386,6 +384,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
   @Override
   public void clearNetwork() {
+    this.network = null;
   }
 
   @Override

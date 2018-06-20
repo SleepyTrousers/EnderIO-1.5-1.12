@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.conduit.ConduitUtil;
@@ -63,9 +64,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
 
   private final Map<EnumFacing, DyeColor> signalColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
 
-  private static final TextureSupplier coreTextureS = TextureRegistry.registerTexture("blocks/oc_conduit_core");
   private static final TextureSupplier coreTextureA = TextureRegistry.registerTexture("blocks/oc_conduit_core_anim");
-  private static final TextureSupplier longTextureS = TextureRegistry.registerTexture("blocks/oc_conduit");
   private static final TextureSupplier longTextureA = TextureRegistry.registerTexture("blocks/oc_conduit_anim");
 
   public OCConduit() {
@@ -78,7 +77,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
 
   @Override
   protected void readTypeSettings(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
-    setSignalColor(dir, DyeColor.values()[dataRoot.getShort("signalColor")]);
+    setSignalColor(dir, NullHelper.first(DyeColor.values()[dataRoot.getShort("signalColor")], DyeColor.SILVER));
   }
 
   @Override
@@ -87,7 +86,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   }
 
   @Override
-  public DyeColor getSignalColor(EnumFacing dir) {
+  public @Nonnull DyeColor getSignalColor(@Nonnull EnumFacing dir) {
     DyeColor res = signalColors.get(dir);
     if (res == null) {
       return DyeColor.SILVER;
@@ -99,12 +98,13 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   @Nonnull
   public Collection<CollidableComponent> createCollidables(@Nonnull CacheKey key) {
     Collection<CollidableComponent> baseCollidables = super.createCollidables(key);
-    if (key.dir == null) {
+    final EnumFacing keydir = key.dir;
+    if (keydir == null) {
       return baseCollidables;
     }
 
-    BoundingBox bb = ConduitGeometryUtil.instance.createBoundsForConnectionController(key.dir, key.offset);
-    CollidableComponent cc = new CollidableComponent(IOCConduit.class, bb, key.dir, COLOR_CONTROLLER_ID);
+    BoundingBox bb = ConduitGeometryUtil.instance.createBoundsForConnectionController(keydir, key.offset);
+    CollidableComponent cc = new CollidableComponent(IOCConduit.class, bb, keydir, COLOR_CONTROLLER_ID);
 
     List<CollidableComponent> result = new ArrayList<CollidableComponent>();
     result.addAll(baseCollidables);
@@ -137,7 +137,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
     super.readFromNBT(nbtRoot);
     signalColors.clear();
     byte[] cols = nbtRoot.getByteArray("signalColors");
-    if (cols != null && cols.length == 6) {
+    if (cols.length == 6) {
       int i = 0;
       for (EnumFacing dir : EnumFacing.values()) {
         if (cols[i] >= 0) {
@@ -149,7 +149,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   }
 
   @Override
-  public void setSignalColor(EnumFacing dir, DyeColor col) {
+  public void setSignalColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col) {
     if (signalColors.get(dir) == col) {
       return;
     }
@@ -198,7 +198,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
     return host.getClass().getName().replaceFirst("^.*\\.", "") + at;
   }
 
-  private static TextFormatting dye2chat(DyeColor dyeColor) {
+  private static @Nonnull TextFormatting dye2chat(@Nonnull DyeColor dyeColor) {
     switch (dyeColor) {
     case BLACK:
       return TextFormatting.BLACK;
@@ -234,7 +234,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
     case YELLOW:
       return TextFormatting.YELLOW;
     default:
-      return null;
+      throw new RuntimeException("Unknown 17th DyeColor " + dyeColor);
     }
   }
 
@@ -273,10 +273,10 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
       return true;
     } else if (ToolUtil.isToolEquipped(player, hand)) {
       if (!getBundle().getEntity().getWorld().isRemote) {
-        if (res != null && res.component != null) {
+        if (res.component != null) {
           EnumFacing connDir = res.component.dir;
           EnumFacing faceHit = res.movingObjectPosition.sideHit;
-          if (all != null && containsExternalConnection(connDir)) {
+          if (connDir != null && containsExternalConnection(connDir)) {
             for (RaytraceResult rtr : all) {
               if (rtr != null && rtr.component != null && COLOR_CONTROLLER_ID.equals(rtr.component.data)) {
                 setSignalColor(connDir, DyeColor.getNext(getSignalColor(connDir)));
@@ -319,14 +319,13 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   }
 
   private void addMissingNodeConnections() {
-    BlockPos loc = getBundle().getLocation();
-    if (loc != null && network != null) {
+    if (network != null) {
       World world = getBundle().getBundleworld();
       EnumSet<EnumFacing> conns = getConnections();
       for (DyeColor color : DyeColor.values()) {
         Set<Node> should = new HashSet<Node>();
         for (EnumFacing direction : conns) {
-          if (getSignalColor(direction) == color) {
+          if (direction != null && getSignalColor(direction) == color) {
             TileEntity te = world.getTileEntity(getBundle().getLocation().offset(direction));
             Node other = null;
             if (te instanceof SidedEnvironment) {
@@ -396,7 +395,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
       toCheck.add(otherTe);
     } else {
       for (EnumFacing direction : conns) {
-        if (getSignalColor(direction) == color) {
+        if (direction != null && getSignalColor(direction) == color) {
           TileEntity te = world.getTileEntity(getBundle().getLocation().offset(direction));
           Node other2 = null;
           if (te instanceof SidedEnvironment) {
@@ -414,7 +413,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
     boolean stayConnected = false;
     for (TileEntity otherTe : toCheck) {
       for (EnumFacing direction : EnumFacing.values()) {
-        if (!stayConnected) {
+        if (direction != null && !stayConnected) {
           boolean checkThisSide = true;
           if (otherHost instanceof SidedEnvironment) {
             checkThisSide = ((SidedEnvironment) otherHost).sidedNode(direction) != null;
@@ -443,7 +442,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
     EnumSet<EnumFacing> cons = EnumSet.noneOf(EnumFacing.class);
     cons.addAll(getConduitConnections());
     for (EnumFacing dir : getExternalConnections()) {
-      if (getConnectionMode(dir) != ConnectionMode.DISABLED) {
+      if (dir != null && getConnectionMode(dir) != ConnectionMode.DISABLED) {
         cons.add(dir);
       }
     }
@@ -508,14 +507,14 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   @Override
   @Method(modid = "opencomputersapi|network")
   public Node sidedNode(EnumFacing side) {
-    return getConnections().contains(side) ? node(getSignalColor(side)) : null;
+    return side != null && getConnections().contains(side) ? node(getSignalColor(side)) : null;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   @Method(modid = "opencomputersapi|network")
   public boolean canConnect(EnumFacing side) {
-    return getConnections().contains(side);
+    return side != null && getConnections().contains(side);
   }
 
   @Override
@@ -585,8 +584,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
 
   @Override
   public void clearNetwork() {
-    // TODO Auto-generated method stub
-
+    this.network = null;
   }
 
   @Override

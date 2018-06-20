@@ -37,13 +37,13 @@ public class OCConduitNetwork extends AbstractConduitNetwork<IOCConduit, IOCCond
 
   @Override
   @Method(modid = "opencomputersapi|network")
-  public void onConnect(Node node) {
+  public void onConnect(Node nodeIn) {
 
   }
 
   @Override
   @Method(modid = "opencomputersapi|network")
-  public void onDisconnect(Node node) {
+  public void onDisconnect(Node nodeIn) {
 
   }
 
