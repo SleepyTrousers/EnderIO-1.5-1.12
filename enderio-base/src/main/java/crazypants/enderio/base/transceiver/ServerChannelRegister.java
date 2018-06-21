@@ -11,7 +11,6 @@ import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -31,11 +30,9 @@ public class ServerChannelRegister extends ChannelRegister implements ICapabilit
 
   private final static @Nonnull ResourceLocation CAP_KEY = new ResourceLocation(EnderIO.DOMAIN, "channels");
 
-  private long gen = 0;
-
   @SubscribeEvent
   public static void onWorldCaps(AttachCapabilitiesEvent<World> event) {
-    if (SERVER_REGISTER != null) {
+    if (SERVER_REGISTER != null && !event.getObject().isRemote) {
       event.addCapability(CAP_KEY, instance);
     }
   }
@@ -80,17 +77,17 @@ public class ServerChannelRegister extends ChannelRegister implements ICapabilit
     NBTTagCompound nbt = new NBTTagCompound();
     NBTTagList list = new NBTTagList();
 
-    long genOut = MinecraftServer.getCurrentTimeMillis();
-    nbt.setLong("gen", genOut);
+    Log.debug("Saving ServerChannelRegister with gen=" + getGeneration());
+    nbt.setLong("gen", getGeneration());
 
-    for (Channel chan : channels.values()) {
+    for (Channel channel : channels.values()) {
+      Log.debug("ServerChannelRegister: Saving channel " + channel.getName());
       NBTTagCompound tag = new NBTTagCompound();
-      chan.writeToNBT(tag);
+      channel.writeToNBT(tag);
       list.appendTag(tag);
     }
     nbt.setTag("list", list);
 
-    Log.debug("Saving ServerChannelRegister with gen=" + genOut);
     return nbt;
   }
 
@@ -99,16 +96,19 @@ public class ServerChannelRegister extends ChannelRegister implements ICapabilit
     if (nbtIn instanceof NBTTagCompound) {
       NBTTagCompound nbt = (NBTTagCompound) nbtIn;
       long genIn = nbt.getLong("gen");
-      if (genIn > gen) {
+      if (genIn > getGeneration()) {
         Log.debug("Reading ServerChannelRegister with gen=" + genIn);
         reset();
-        gen = genIn;
+        setGeneration(genIn);
         NBTTagList list = nbt.getTagList("list", nbt.getId());
         for (int i = 0; i < list.tagCount(); i++) {
           NBTTagCompound tag = list.getCompoundTagAt(i);
           Channel channel = Channel.readFromNBT(tag);
           if (channel != null) {
+            Log.debug("ServerChannelRegister: Reading channel " + channel.getName());
             addChannel(channel);
+          } else {
+            Log.warn("ServerChannelRegister: Invalid channel NBT: " + tag);
           }
         }
       } else {
@@ -116,12 +116,6 @@ public class ServerChannelRegister extends ChannelRegister implements ICapabilit
       }
     }
 
-  }
-
-  @Override
-  public void reset() {
-    super.reset();
-    gen = 0;
   }
 
 }

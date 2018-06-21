@@ -3,6 +3,8 @@ package crazypants.enderio.base.transceiver;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.network.NetworkUtil;
 
 import io.netty.buffer.ByteBuf;
@@ -14,18 +16,13 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketChannelList implements IMessage {
 
-  private List<Channel> channels;
+  private final @Nonnull List<Channel> channels = new ArrayList<Channel>();
 
   public PacketChannelList() {
   }
 
   public PacketChannelList(ChannelRegister register) {
-    channels = new ArrayList<Channel>();
-    for (ChannelType type : ChannelType.values()) {
-      for (Channel channel : register.getChannelsForType(type)) {
-        channels.add(channel);
-      }
-    }
+    channels.addAll(register.getAllChannels());
   }
 
   @Override
@@ -45,7 +42,6 @@ public class PacketChannelList implements IMessage {
   public void fromBytes(ByteBuf buf) {
     NBTTagCompound root = NetworkUtil.readNBTTagCompound(buf);
     NBTTagList tagList = (NBTTagList) root.getTag("chanList");
-    channels = new ArrayList<Channel>();
     for (int i = 0; i < tagList.tagCount(); i++) {
       NBTTagCompound tag = tagList.getCompoundTagAt(i);
       Channel chan = Channel.readFromNBT(tag);
@@ -60,6 +56,7 @@ public class PacketChannelList implements IMessage {
 
     @Override
     public IMessage onMessage(PacketChannelList message, MessageContext ctx) {
+      ClientChannelRegister.instance.reset();
       for (Channel channel : message.channels) {
         ClientChannelRegister.instance.addChannel(channel);
       }

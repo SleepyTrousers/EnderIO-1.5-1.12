@@ -14,13 +14,10 @@ import net.minecraft.nbt.NBTTagCompound;
 public class Channel {
 
   public static Channel readFromNBT(NBTTagCompound root) {
-    if (!root.hasKey("name")) {
-      return null;
-    }
     String name = root.getString("name");
     UserIdent user = UserIdent.readfromNbt(root, "user");
     ChannelType type = NullHelper.notnullJ(ChannelType.values()[root.getShort("type")], "Enum.values()");
-    return new Channel(name, user, type);
+    return name.isEmpty() ? null : new Channel(name, user, type);
   }
 
   @Store
@@ -30,22 +27,18 @@ public class Channel {
   @Store
   private final @Nonnull ChannelType type;
 
-  public Channel(@Nonnull String name, @Nonnull GameProfile profile, @Nonnull ChannelType type) {
-    this.name = name.trim();
-    this.user = UserIdent.create(profile);
-    this.type = type;
-  }
-
   public Channel(@Nonnull String name, @Nonnull UserIdent user, @Nonnull ChannelType type) {
-    this.name = name.trim();
+    this.name = NullHelper.first(name.trim(), "");
     this.user = user;
     this.type = type;
   }
 
+  public Channel(@Nonnull String name, @Nonnull GameProfile profile, @Nonnull ChannelType type) {
+    this(name, UserIdent.create(profile), type);
+  }
+
   public Channel(@Nonnull String name, @Nonnull ChannelType type) {
-    this.name = name.trim();
-    this.user = UserIdent.NOBODY;
-    this.type = type;
+    this(name, UserIdent.NOBODY, type);
   }
 
   public boolean isPublic() {

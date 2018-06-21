@@ -58,7 +58,7 @@ public class ChannelTab implements ITabPanel {
   final @Nonnull ListSelectionListener<Channel> selectionListener;
   final @Nonnull TileTransceiver transceiver;
 
-  final @Nonnull Predicate predicate;
+  final @Nonnull SendReceivePredicate predicate;
 
   public ChannelTab(@Nonnull GuiTransceiver guiTransceiver, @Nonnull ChannelType type) {
     parent = guiTransceiver;

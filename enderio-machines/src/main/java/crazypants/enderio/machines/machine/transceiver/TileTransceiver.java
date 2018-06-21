@@ -15,7 +15,6 @@ import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.FluidUtil;
 
-import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
