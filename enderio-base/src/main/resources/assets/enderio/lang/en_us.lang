@@ -483,6 +483,7 @@ tile.block_painted_stone_slab.name=Painted Stone Slab
 tile.block_painted_stone_stair.name=Painted Stone Stairs
 tile.block_painted_wall.name=Painted Wall
 tile.block_painted_wooden_trapdoor.name=Painted Wooden Trapdoor
+tile.block_painted_workbench.name=Painted Crafting Table
 
 tile.block_painted_wooden_door.name=Painted Wooden Door
 tile.block_painted_iron_door.name=Painted Iron Door

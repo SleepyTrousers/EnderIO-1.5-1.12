@@ -34,6 +34,7 @@ import crazypants.enderio.base.block.painted.BlockPaintedStairs;
 import crazypants.enderio.base.block.painted.BlockPaintedStone;
 import crazypants.enderio.base.block.painted.BlockPaintedTrapDoor;
 import crazypants.enderio.base.block.painted.BlockPaintedWall;
+import crazypants.enderio.base.block.painted.BlockPaintedWorkbench;
 import crazypants.enderio.base.block.rail.BlockExitRail;
 import crazypants.enderio.base.block.skull.BlockEndermanSkull;
 import crazypants.enderio.base.capacitor.ItemCapacitor;
@@ -149,6 +150,7 @@ public enum ModObject implements IModObject.Registerable {
   blockPaintedWoodenDoor(BlockPaintedDoor.class, "create_wooden", ModTileEntity.TileEntityPaintedBlock),
   blockPaintedIronDoor(BlockPaintedDoor.class, "create_iron", ModTileEntity.TileEntityPaintedBlock),
   blockPaintedDarkSteelDoor(BlockPaintedDoor.class, "create_dark", ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedWorkbench(BlockPaintedWorkbench.class, ModTileEntity.TileEntityPaintedBlock),
 
   blockExitRail(BlockExitRail.class),
 
