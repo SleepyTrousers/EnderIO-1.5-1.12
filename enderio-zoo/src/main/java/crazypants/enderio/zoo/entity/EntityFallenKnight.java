@@ -49,7 +49,7 @@ public class EntityFallenKnight extends EntitySkeleton implements IEnderZooMob {
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
-    IEnderZooMob.register(event, NAME, EntityFallenKnight.class, EGG_BG_COL, EGG_FG_COL, 815);
+    IEnderZooMob.register(event, NAME, EntityFallenKnight.class, EGG_BG_COL, EGG_FG_COL, MobID.FKNIGHT);
   }
 
   @SubscribeEvent
@@ -144,7 +144,7 @@ public class EntityFallenKnight extends EntitySkeleton implements IEnderZooMob {
     final EntityLivingBase attackTarget = getAttackTarget();
     if (isRidingMount()) {
       EntityLiving entLiving = ((EntityLiving) getRidingEntity());
-      if (lastAttackTarget != attackTarget || knightFirstUpdate) {
+      if (entLiving != null && (lastAttackTarget != attackTarget || knightFirstUpdate)) {
         EntityUtil.cancelCurrentTasks(entLiving);
         lastAttackTarget = attackTarget;
       }
@@ -222,15 +222,17 @@ public class EntityFallenKnight extends EntitySkeleton implements IEnderZooMob {
     chancePerPiece *= (1 + occupiedDiffcultyMultiplier); // If we have the max occupied factor, double the chance of improved armor
 
     for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
-      ItemStack itemStack = getItemStackFromSlot(slot);
-      if (itemStack.isEmpty() && rand.nextFloat() <= chancePerPiece) {
-        Item item = EntityLiving.getArmorByChance(slot, armorLevel);
-        if (item != null) {
-          ItemStack stack = new ItemStack(item);
-          if (armorLevel == 0) {
-            ((ItemArmor) item).setColor(stack, 0);
+      if (slot != null) {
+        ItemStack itemStack = getItemStackFromSlot(slot);
+        if (itemStack.isEmpty() && rand.nextFloat() <= chancePerPiece) {
+          Item item = EntityLiving.getArmorByChance(slot, armorLevel);
+          if (item != null) {
+            ItemStack stack = new ItemStack(item);
+            if (armorLevel == 0) {
+              ((ItemArmor) item).setColor(stack, 0);
+            }
+            setItemStackToSlot(slot, stack);
           }
-          setItemStackToSlot(slot, stack);
         }
       }
     }

@@ -61,7 +61,7 @@ public class EntityEnderminy extends EntityMob implements IEnderZooMob {
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
-    IEnderZooMob.register(event, NAME, EntityEnderminy.class, EGG_BG_COL, EGG_FG_COL, 314);
+    IEnderZooMob.register(event, NAME, EntityEnderminy.class, EGG_BG_COL, EGG_FG_COL, MobID.EMINIY);
   }
 
   @SubscribeEvent

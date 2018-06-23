@@ -1,9 +1,12 @@
 package crazypants.enderio.zoo.entity;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.zoo.EnderZoo;
-import crazypants.enderio.zoo.config.Config;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
+import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.zoo.EnderIOZoo;
+import crazypants.enderio.zoo.config.ZooConfig;
 import crazypants.enderio.zoo.entity.ai.EntityAIFlyingAttackOnCollide;
 import crazypants.enderio.zoo.entity.ai.EntityAIFlyingFindPerch;
 import crazypants.enderio.zoo.entity.ai.EntityAIFlyingLand;
@@ -12,6 +15,7 @@ import crazypants.enderio.zoo.entity.ai.EntityAIFlyingShortWander;
 import crazypants.enderio.zoo.entity.ai.EntityAINearestAttackableTargetBounded;
 import crazypants.enderio.zoo.entity.navigate.FlyingMoveHelper;
 import crazypants.enderio.zoo.entity.navigate.FlyingPathNavigate;
+import crazypants.enderio.zoo.entity.render.RenderOwl;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -25,7 +29,6 @@ import net.minecraft.entity.ai.EntityAIMate;
 import net.minecraft.entity.ai.EntityAITempt;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -42,17 +45,36 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent.Register;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@EventBusSubscriber(modid = EnderIOZoo.MODID)
 public class EntityOwl extends EntityAnimal implements IFlyingMob {
 
-  public static final String NAME = "owl";
+  @SubscribeEvent
+  public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
+    IEnderZooMob.register(event, NAME, EntityOwl.class, EGG_BG_COL, EGG_FG_COL, MobID.OWL);
+  }
+
+  @SubscribeEvent
+  @SideOnly(Side.CLIENT)
+  public static void onPreInit(EnderIOLifecycleEvent.PreInit event) {
+    RenderingRegistry.registerEntityRenderingHandler(EntityOwl.class, RenderOwl.FACTORY);
+  }
+
+  public static final @Nonnull String NAME = "owl";
   public static final int EGG_BG_COL = 0xC17949;
   public static final int EGG_FG_COL = 0xFFDDC6;
 
-  public static final SoundEvent SND_HOOT;
-  public static final SoundEvent SND_HOOT2;
-  public static final SoundEvent SND_HURT;
-  
+  public static final @Nonnull SoundEvent SND_HOOT;
+  public static final @Nonnull SoundEvent SND_HOOT2;
+  public static final @Nonnull SoundEvent SND_HURT;
+
   static {
     SND_HOOT = new SoundEvent(new ResourceLocation("enderzoo", "owl.hootSingle"));
     SND_HOOT.setRegistryName("enderzoo:owl.hootSingle");
@@ -61,7 +83,6 @@ public class EntityOwl extends EntityAnimal implements IFlyingMob {
     SND_HURT = new SoundEvent(new ResourceLocation("enderzoo", "owl.hurt"));
     SND_HURT.setRegistryName("owl.hurt");
   }
-  
 
   private float wingRotation;
   private float prevWingRotation;
@@ -78,17 +99,16 @@ public class EntityOwl extends EntityAnimal implements IFlyingMob {
   private float climbRate = 0.25f;
   private float turnRate = 30;
 
-  public int timeUntilNextEgg;;
+  public int timeUntilNextEgg;
 
   public EntityOwl(World worldIn) {
     super(worldIn);
     setSize(0.4F, 0.85F);
     stepHeight = 1.0F;
 
-    
     int pri = 0;
     tasks.addTask(++pri, new EntityAIFlyingPanic(this, 2));
-    tasks.addTask(++pri, new EntityAIFlyingAttackOnCollide(this, 2.5, false));    
+    tasks.addTask(++pri, new EntityAIFlyingAttackOnCollide(this, 2.5, false));
     tasks.addTask(++pri, new EntityAIMate(this, 1.0));
     tasks.addTask(++pri, new EntityAITempt(this, 1.0D, Items.SPIDER_EYE, false));
     tasks.addTask(++pri, new EntityAIFollowParent(this, 1.5));
@@ -101,8 +121,8 @@ public class EntityOwl extends EntityAnimal implements IFlyingMob {
 
     EntityAINearestAttackableTargetBounded<EntitySpider> targetSpiders = new EntityAINearestAttackableTargetBounded<EntitySpider>(this, EntitySpider.class,
         true, true);
-    targetSpiders.setMaxDistanceToTarget(12);
-    targetSpiders.setMaxVerticalDistanceToTarget(24);
+    targetSpiders.setMaxDistanceToTarget(ZooConfig.owlAggressionRange);
+    targetSpiders.setMaxVerticalDistanceToTarget(ZooConfig.owlAggressionRangeVertical);
     targetTasks.addTask(0, targetSpiders);
 
     moveHelper = new FlyingMoveHelper(this);
@@ -116,11 +136,11 @@ public class EntityOwl extends EntityAnimal implements IFlyingMob {
     getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D);
     getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
     MobInfo.OWL.applyAttributes(this);
-    
+
   }
 
   @Override
-  protected PathNavigate createNavigator(World worldIn) {
+  protected @Nonnull PathNavigate createNavigator(@Nonnull World worldIn) {
     return new FlyingPathNavigate(this, worldIn);
   }
 
@@ -130,17 +150,17 @@ public class EntityOwl extends EntityAnimal implements IFlyingMob {
   }
 
   @Override
-  public float getBlockPathWeight(BlockPos pos) {
+  public float getBlockPathWeight(@Nonnull BlockPos pos) {
     IBlockState bs = world.getBlockState(pos.down());
     return bs.getMaterial() == Material.LEAVES ? 10.0F : 0;
   }
 
   @Override
-  public boolean attackEntityAsMob(Entity entityIn) {
+  public boolean attackEntityAsMob(@Nonnull Entity entityIn) {
     super.attackEntityAsMob(entityIn);
     float attackDamage = (float) getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
     if (entityIn instanceof EntitySpider) {
-      attackDamage *= Config.owlSpiderDamageMultiplier;
+      attackDamage *= ZooConfig.owlSpiderDamageMultiplier.get();
     }
     return entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), attackDamage);
   }
@@ -167,18 +187,15 @@ public class EntityOwl extends EntityAnimal implements IFlyingMob {
       flapSpeed *= yDelta;
     }
     wingRotation += wingRotDelta * flapSpeed;
-     
 
     if (!world.isRemote && !isChild() && --timeUntilNextEgg <= 0) {
       if (isOnLeaves()) {
         playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
-        dropItem(EnderZoo.itemOwlEgg, 1);        
+        dropItem(ModObject.item_owl_egg.getItemNN(), 1);
       }
       timeUntilNextEgg = getNextLayingTime();
     }
 
-    
-    
     AxisAlignedBB movedBB = getEntityBoundingBox().offset(0, motionY, 0);
     BlockPos ep = getPosition();
     BlockPos pos = new BlockPos(ep.getX(), movedBB.maxY, ep.getZ());
@@ -194,73 +211,45 @@ public class EntityOwl extends EntityAnimal implements IFlyingMob {
         }
       }
     }
-    
 
     if (onGround) {
       motionX *= groundSpeedRatio;
       motionZ *= groundSpeedRatio;
     }
   }
-  
+
   private boolean isOnLeaves() {
-    IBlockState bs = world.getBlockState(getPosition().down());    
+    IBlockState bs = world.getBlockState(getPosition().down());
     return bs.getMaterial() == Material.LEAVES;
   }
-/*
- //this ONLY fires serverside. however motionX only affects things clientside. so i moved the collision detection to the udptae
-  @Override
-  public void moveEntityWithHeading(float strafe, float forward) {
-
-    System.out.println("isRemote"+this.world.isRemote);//always false so always server
-    System.out.println("!!strafe"+strafe);
-    System.out.println("!!forward"+forward);
-    moveRelative(strafe, forward, 0.1f);
-
-    // Dont fly up inot things
-    AxisAlignedBB movedBB = getEntityBoundingBox().offset(0, motionY, 0);
-    BlockPos ep = getPosition();
-    BlockPos pos = new BlockPos(ep.getX(), movedBB.maxY, ep.getZ());
-    IBlockState bs = world.getBlockState(pos);
-    Block block = bs.getBlock();
-    if (block.getMaterial(bs) != Material.AIR) {
-      AxisAlignedBB bb = block.getCollisionBoundingBox(bs, world, pos);
-      if (bb != null) {
-        double ouch = movedBB.maxY - bb.minY;
-        if (ouch == 0) {
-          motionY = -0.1;
-        } else {
-          motionY = 0;
-        }
-      }
-    }
-
-  
-    // drag
-    motionX *= 0.8;
-    motionY *= 0.8;
-    motionZ *= 0.8;
-
-    onGround = EntityUtil.isOnGround(this);
-
-    isAirBorne = !onGround;
-
-    if (onGround) {
-      motionX *= groundSpeedRatio;
-      motionZ *= groundSpeedRatio;
-    }
-
-    addVelocity(motionX, motionY, motionZ);//moveEntity
-    prevLimbSwingAmount = limbSwingAmount;
-    double deltaX = posX - prevPosX;
-    double deltaZ = posZ - prevPosZ;
-    float f7 = MathHelper.sqrt(deltaX * deltaX + deltaZ * deltaZ) * 4.0F;
-    if (f7 > 1.0F) {
-      f7 = 1.0F;
-    }
-    limbSwingAmount += (f7 - limbSwingAmount) * 0.4F;
-    limbSwing += limbSwingAmount;
-    
-  }*/
+  /*
+   * //this ONLY fires serverside. however motionX only affects things clientside. so i moved the collision detection to the udptae
+   * 
+   * @Override public void moveEntityWithHeading(float strafe, float forward) {
+   * 
+   * System.out.println("isRemote"+this.world.isRemote);//always false so always server System.out.println("!!strafe"+strafe);
+   * System.out.println("!!forward"+forward); moveRelative(strafe, forward, 0.1f);
+   * 
+   * // Dont fly up inot things AxisAlignedBB movedBB = getEntityBoundingBox().offset(0, motionY, 0); BlockPos ep = getPosition(); BlockPos pos = new
+   * BlockPos(ep.getX(), movedBB.maxY, ep.getZ()); IBlockState bs = world.getBlockState(pos); Block block = bs.getBlock(); if (block.getMaterial(bs) !=
+   * Material.AIR) { AxisAlignedBB bb = block.getCollisionBoundingBox(bs, world, pos); if (bb != null) { double ouch = movedBB.maxY - bb.minY; if (ouch == 0) {
+   * motionY = -0.1; } else { motionY = 0; } } }
+   * 
+   * 
+   * // drag motionX *= 0.8; motionY *= 0.8; motionZ *= 0.8;
+   * 
+   * onGround = EntityUtil.isOnGround(this);
+   * 
+   * isAirBorne = !onGround;
+   * 
+   * if (onGround) { motionX *= groundSpeedRatio; motionZ *= groundSpeedRatio; }
+   * 
+   * addVelocity(motionX, motionY, motionZ);//moveEntity prevLimbSwingAmount = limbSwingAmount; double deltaX = posX - prevPosX; double deltaZ = posZ -
+   * prevPosZ; float f7 = MathHelper.sqrt(deltaX * deltaX + deltaZ * deltaZ) * 4.0F; if (f7 > 1.0F) { f7 = 1.0F; } limbSwingAmount += (f7 - limbSwingAmount) *
+   * 0.4F; limbSwing += limbSwingAmount;
+   * 
+   * }
+   */
 
   @Override
   public boolean isEntityInsideOpaqueBlock() {
@@ -350,33 +339,25 @@ public class EntityOwl extends EntityAnimal implements IFlyingMob {
   }
 
   @Override
-  protected void updateFallState(double y, boolean onGroundIn, IBlockState blockIn, BlockPos pos) {
+  protected void updateFallState(double y, boolean onGroundIn, @Nonnull IBlockState blockIn, @Nonnull BlockPos pos) {
   }
 
   @Override
   public int getTalkInterval() {
-    return Config.owlHootInterval;
+    return ZooConfig.owlHootInterval.get();
   }
 
   @Override
   public void playLivingSound() {
-    SoundEvent snd = getAmbientSound();
-    if (snd == null) {
+    if (!world.isRemote || world.isDaytime() || getAttackTarget() != null) {
       return;
     }
 
-    if (world != null && !world.isRemote && (world.isDaytime() || getAttackTarget() != null)) {
-      return;
-    }
-
-    float volume = getSoundVolume() * Config.owlHootVolumeMult;
-    float pitch = 0.8f * getSoundPitch();
-    playSound(snd, volume, pitch);
-
+    playSound(getAmbientSound(), getSoundVolume() * ZooConfig.owlHootVolumeMultiplier.get(), 0.8f * getSoundPitch());
   }
 
   @Override
-  protected SoundEvent getAmbientSound() {
+  protected @Nonnull SoundEvent getAmbientSound() {
     if (world.rand.nextBoolean()) {
       return SND_HOOT2;
     } else {
@@ -385,7 +366,7 @@ public class EntityOwl extends EntityAnimal implements IFlyingMob {
   }
 
   @Override
-  protected SoundEvent getHurtSound(DamageSource source) {    
+  protected SoundEvent getHurtSound(@Nonnull DamageSource source) {
     return SND_HURT;
   }
 
@@ -395,17 +376,17 @@ public class EntityOwl extends EntityAnimal implements IFlyingMob {
   }
 
   @Override
-  public EntityOwl createChild(EntityAgeable ageable) {
+  public EntityOwl createChild(@Nonnull EntityAgeable ageable) {
     return new EntityOwl(world);
   }
 
   @Override
-  public boolean isBreedingItem(ItemStack stack) {
-    return stack != null && stack.getItem() == Items.SPIDER_EYE;
+  public boolean isBreedingItem(@Nonnull ItemStack stack) {
+    return stack.getItem() == Items.SPIDER_EYE;
   }
 
   @Override
-  protected void playStepSound(BlockPos pos, Block blockIn) {
+  protected void playStepSound(@Nonnull BlockPos pos, @Nonnull Block blockIn) {
     playSound(SoundEvents.ENTITY_CHICKEN_STEP, 0.15F, 1.0F);
   }
 
@@ -436,12 +417,12 @@ public class EntityOwl extends EntityAnimal implements IFlyingMob {
   }
 
   private int getNextLayingTime() {
-    int dif = Config.owlTimeBetweenEggsMax - Config.owlTimeBetweenEggsMin;
-    return Config.owlTimeBetweenEggsMin + rand.nextInt(dif);    
+    int dif = ZooConfig.owlTimeBetweenEggsMax.get() - ZooConfig.owlTimeBetweenEggsMin.get();
+    return ZooConfig.owlTimeBetweenEggsMin.get() + rand.nextInt(dif);
   }
 
   @Override
-  public void readEntityFromNBT(NBTTagCompound tagCompund) {
+  public void readEntityFromNBT(@Nonnull NBTTagCompound tagCompund) {
     super.readEntityFromNBT(tagCompund);
     if (tagCompund.hasKey("EggLayTime")) {
       this.timeUntilNextEgg = tagCompund.getInteger("EggLayTime");
@@ -449,14 +430,13 @@ public class EntityOwl extends EntityAnimal implements IFlyingMob {
   }
 
   @Override
-  public void writeEntityToNBT(NBTTagCompound tagCompound) {
+  public void writeEntityToNBT(@Nonnull NBTTagCompound tagCompound) {
     super.writeEntityToNBT(tagCompound);
     tagCompound.setInteger("EggLayTime", this.timeUntilNextEgg);
   }
-  
+
   @Override
-  public boolean canBeLeashedTo(EntityPlayer player){
-    boolean ret = !this.getLeashed() && (this instanceof IMob);
-    return ret;
+  public boolean canBeLeashedTo(@Nonnull EntityPlayer player) {
+    return !this.getLeashed();
   }
 }

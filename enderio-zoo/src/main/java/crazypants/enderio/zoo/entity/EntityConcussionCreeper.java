@@ -39,7 +39,7 @@ public class EntityConcussionCreeper extends EntityCreeper implements IEnderZooM
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
-    IEnderZooMob.register(event, NAME, EntityConcussionCreeper.class, EGG_BG_COL, EGG_FG_COL, 14);
+    IEnderZooMob.register(event, NAME, EntityConcussionCreeper.class, EGG_BG_COL, EGG_FG_COL, MobID.CCREEPER);
   }
 
   @SubscribeEvent

@@ -49,7 +49,7 @@ public class EntityDireWolf extends EntityMob implements IEnderZooMob {
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
-    IEnderZooMob.register(event, NAME, EntityDireWolf.class, EGG_BG_COL, EGG_FG_COL, 9653);
+    IEnderZooMob.register(event, NAME, EntityDireWolf.class, EGG_BG_COL, EGG_FG_COL, MobID.DWOLF);
   }
 
   @SubscribeEvent

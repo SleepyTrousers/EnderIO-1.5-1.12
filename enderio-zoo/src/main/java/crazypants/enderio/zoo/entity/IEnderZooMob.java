@@ -16,13 +16,37 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
  */
 public interface IEnderZooMob extends IMob {
 
-  static void register(@Nonnull Register<EntityEntry> event, @Nonnull String name, @Nonnull Class<? extends Entity> clazz, int eggBgCol, int eggFgCol, int id) {
+  static void register(@Nonnull Register<EntityEntry> event, @Nonnull String name, @Nonnull Class<? extends Entity> clazz, int eggBgCol, int eggFgCol,
+      IMobID id) {
     ResourceLocation rl = new ResourceLocation(EnderIOZoo.MODID, name);
     EntityEntry entry = new EntityEntry(clazz, EnderIOZoo.MODID + "." + name);
     entry.setEgg(new EntityEggInfo(rl, eggBgCol, eggFgCol));
     event.getRegistry().register(entry.setRegistryName(rl));
 
-    EntityRegistry.registerModEntity(entry.getRegistryName(), entry.getEntityClass(), entry.getName(), id, EnderIOZoo.MODID, 64, 3, true);
+    EntityRegistry.registerModEntity(entry.getRegistryName(), entry.getEntityClass(), entry.getName(), id.getID(), EnderIOZoo.MODID, 64, 3, true);
   }
 
+  public static interface IMobID {
+
+    int getID();
+
+  }
+
+  public static enum MobID implements IMobID {
+    CCREEPER,
+    DLIME,
+    DWOLF,
+    EMINIY,
+    FKNIGHT,
+    FMOUNT,
+    OWL,
+    WCAT,
+    WWITCH;
+
+    @Override
+    public int getID() {
+      return ordinal();
+    }
+
+  }
 }

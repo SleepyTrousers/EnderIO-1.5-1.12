@@ -2,9 +2,15 @@ package crazypants.enderio.zoo.entity;
 
 import java.util.UUID;
 
-import crazypants.enderio.zoo.config.Config;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
+import crazypants.enderio.zoo.EnderIOZoo;
+import crazypants.enderio.zoo.config.ZooConfig;
 import crazypants.enderio.zoo.entity.ai.EntityAIAttackOnCollideOwned;
 import crazypants.enderio.zoo.entity.ai.EntityAIFollowOwner;
+import crazypants.enderio.zoo.entity.render.RenderWitherCat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.EntityLivingBase;
@@ -30,8 +36,27 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent.Register;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@EventBusSubscriber(modid = EnderIOZoo.MODID)
 public class EntityWitherCat extends EntityMob implements IOwnable<EntityWitherCat, EntityWitherWitch>, IEnderZooMob {
+
+  @SubscribeEvent
+  public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
+    IEnderZooMob.register(event, NAME, EntityWitherCat.class, EGG_BG_COL, EGG_FG_COL, MobID.OWL);
+  }
+
+  @SubscribeEvent
+  @SideOnly(Side.CLIENT)
+  public static void onPreInit(EnderIOLifecycleEvent.PreInit event) {
+    RenderingRegistry.registerEntityRenderingHandler(EntityWitherCat.class, RenderWitherCat.FACTORY);
+  }
 
   public enum GrowthMode {
     NONE,
@@ -39,27 +64,25 @@ public class EntityWitherCat extends EntityMob implements IOwnable<EntityWitherC
     SHRINK
   };
 
-  public static final String NAME = "withercat";
+  public static final @Nonnull String NAME = "withercat";
   public static final int EGG_BG_COL = 0x303030;
   public static final int EGG_FG_COL = 0xFFFFFF;
 
   private static final float DEF_HEIGHT = 0.8F;
   private static final float DEF_WIDTH = 0.6F;
 
-//  private static final int SCALE_INDEX = 20;
-//  private static final int GROWTH_MODE_INDEX = 21;
-  private static final DataParameter<Float> SCALE_INDEX = EntityDataManager.<Float>createKey(EntityWitherCat.class, DataSerializers.FLOAT);
-  private static final DataParameter<Integer> GROWTH_MODE_INDEX = EntityDataManager.<Integer>createKey(EntityWitherCat.class, DataSerializers.VARINT);
+  private static final @Nonnull DataParameter<Float> SCALE_INDEX = EntityDataManager.<Float> createKey(EntityWitherCat.class, DataSerializers.FLOAT);
+  private static final @Nonnull DataParameter<Integer> GROWTH_MODE_INDEX = EntityDataManager.<Integer> createKey(EntityWitherCat.class, DataSerializers.VARINT);
 
   private static final float ANGRY_SCALE = 2;
   private static final float SCALE_INC = 0.05f;
 
-  private static final UUID ATTACK_BOOST_MOD_UID = UUID.fromString("B9662B59-9566-4402-BC1F-2ED2B276D846");
-  private static final UUID HEALTH_BOOST_MOD_UID = UUID.fromString("B9662B29-9467-3302-1D1A-2ED2B276D846");
+  private static final @Nonnull UUID ATTACK_BOOST_MOD_UID = UUID.fromString("B9662B59-9566-4402-BC1F-2ED2B276D846");
+  private static final @Nonnull UUID HEALTH_BOOST_MOD_UID = UUID.fromString("B9662B29-9467-3302-1D1A-2ED2B276D846");
 
   private float lastScale = 1f;
   private EntityWitherWitch owner;
-  private EntityAIFollowOwner followTask;
+  private final @Nonnull EntityAIFollowOwner followTask;
 
   private boolean attackTargetChanged = false;
 
@@ -84,8 +107,8 @@ public class EntityWitherCat extends EntityMob implements IOwnable<EntityWitherC
   protected void entityInit() {
     super.entityInit();
 
-    dataManager.register(SCALE_INDEX, Float.valueOf(1));
-    dataManager.register(GROWTH_MODE_INDEX, Integer.valueOf(GrowthMode.NONE.ordinal()));
+    dataManager.register(SCALE_INDEX, 1f);
+    dataManager.register(GROWTH_MODE_INDEX, GrowthMode.NONE.ordinal());
   }
 
   @Override
@@ -99,7 +122,7 @@ public class EntityWitherCat extends EntityMob implements IOwnable<EntityWitherC
   }
 
   @Override
-  public EntityWitherCat asEntity() {
+  public @Nonnull EntityWitherCat asEntity() {
     return this;
   }
 
@@ -136,7 +159,7 @@ public class EntityWitherCat extends EntityMob implements IOwnable<EntityWitherC
   }
 
   @Override
-  public void setAttackTarget(EntityLivingBase target) {
+  public void setAttackTarget(@Nullable EntityLivingBase target) {
     if (getAttackTarget() != target) {
       attackTargetChanged = true;
     }
@@ -151,12 +174,12 @@ public class EntityWitherCat extends EntityMob implements IOwnable<EntityWitherC
   }
 
   @Override
-  public boolean isPotionApplicable(PotionEffect potion) {
+  public boolean isPotionApplicable(@Nonnull PotionEffect potion) {
     return potion.getPotion() != MobEffects.WITHER && super.isPotionApplicable(potion);
   }
 
   @Override
-  public boolean attackEntityFrom(DamageSource source, float amount) {
+  public boolean attackEntityFrom(@Nonnull DamageSource source, float amount) {
     if (owner != null && source.getTrueSource() == owner) {
       return false;
     }
@@ -251,11 +274,11 @@ public class EntityWitherCat extends EntityMob implements IOwnable<EntityWitherC
 
   protected void updateAttackDamage(float growthRatio) {
     IAttributeInstance att = EntityUtil.removeModifier(this, SharedMonsterAttributes.ATTACK_DAMAGE, ATTACK_BOOST_MOD_UID);
-    if (growthRatio == 0) {
+    if (growthRatio == 0 || att == null) {
       return;
     }
-    double damageInc = EntityUtil.isHardDifficulty(world) ? Config.witherCatAngryAttackDamageHardModifier : 0;
-    double attackDif = (damageInc + Config.witherCatAngryAttackDamage) - Config.witherCatAttackDamage;
+    double damageInc = EntityUtil.isHardDifficulty(world) ? ZooConfig.witherCatAttackDamageBonusHard.get() : 0;
+    double attackDif = damageInc + ZooConfig.witherCatAttackDamageBonusAngry.get();
     double toAdd = attackDif * growthRatio;
     AttributeModifier mod = new AttributeModifier(ATTACK_BOOST_MOD_UID, "Transformed Attack Modifier", toAdd, 0);
     att.applyModifier(mod);
@@ -263,11 +286,11 @@ public class EntityWitherCat extends EntityMob implements IOwnable<EntityWitherC
 
   protected void updateHealth(float growthRatio) {
     IAttributeInstance att = EntityUtil.removeModifier(this, SharedMonsterAttributes.MAX_HEALTH, HEALTH_BOOST_MOD_UID);
-    if (growthRatio == 0) {
+    if (growthRatio == 0 || att == null) {
       return;
     }
     double currentRatio = getHealth() / getMaxHealth();
-    double healthDif = Config.witherCatAngryHealth - Config.witherCatHealth;
+    double healthDif = ZooConfig.witherCatHealthBonusAngry.get();
     double toAdd = healthDif * growthRatio;
     AttributeModifier mod = new AttributeModifier(HEALTH_BOOST_MOD_UID, "Transformed Attack Modifier", toAdd, 0);
     att.applyModifier(mod);
@@ -289,7 +312,7 @@ public class EntityWitherCat extends EntityMob implements IOwnable<EntityWitherC
       Particle fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.SPELL.getParticleID(), startX + xOffset, startY + yOffset,
           startZ + zOffset, 0.0D, 0.0D, 0.0D);
       if (fx != null) {
-        fx.setRBGColorF(0.8f, 0.2f, 0.2f);       
+        fx.setRBGColorF(0.8f, 0.2f, 0.2f);
       }
     }
   }
@@ -330,17 +353,17 @@ public class EntityWitherCat extends EntityMob implements IOwnable<EntityWitherC
   }
 
   @Override
-  protected SoundEvent getHurtSound(DamageSource source) {
+  protected @Nonnull SoundEvent getHurtSound(@Nonnull DamageSource source) {
     return SoundEvents.ENTITY_CAT_HURT;
   }
 
   @Override
-  protected SoundEvent getDeathSound() {
+  protected @Nonnull SoundEvent getDeathSound() {
     return SoundEvents.ENTITY_CAT_DEATH;
   }
 
   @Override
-  public boolean writeToNBTOptional(NBTTagCompound root) {
+  public boolean writeToNBTOptional(@Nonnull NBTTagCompound root) {
     if (getOwner() == null) {
       return super.writeToNBTOptional(root);
     }
@@ -348,14 +371,14 @@ public class EntityWitherCat extends EntityMob implements IOwnable<EntityWitherC
   }
 
   @Override
-  public void writeEntityToNBT(NBTTagCompound root) {
+  public void writeEntityToNBT(@Nonnull NBTTagCompound root) {
     super.writeEntityToNBT(root);
     root.setFloat("scale", getScale());
     root.setByte("growthMode", (byte) getGrowthMode().ordinal());
   }
 
   @Override
-  public void readEntityFromNBT(NBTTagCompound root) {
+  public void readEntityFromNBT(@Nonnull NBTTagCompound root) {
     super.readEntityFromNBT(root);
     if (root.hasKey("scale")) {
       setScale(root.getFloat("scale"));

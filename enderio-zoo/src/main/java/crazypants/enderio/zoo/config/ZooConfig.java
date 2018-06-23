@@ -110,6 +110,48 @@ public final class ZooConfig {
 
   public static final IValue<Double> fallenMountChargeSpeed = MOUNT.make("chargeSpeed", 2.5, //
       "The speed at which a mount will charge its target. 0 to disable.").setRange(0, 10).sync();
+  public static final IValue<Double> fallenMountHealth = MOUNT.make("health", 30d, //
+      "Base health of the mount.").setRange(1, 200).sync();
+  public static final IValue<Float> fallenMountChanceArmored = MOUNT.make("chanceArmored", .5f, //
+      "The chance a spawned mount will be armored.").setRange(0, 1).sync();
+  public static final IValue<Float> fallenMountChanceArmoredHard = MOUNT.make("chanceArmoredHard", .9f, //
+      "The chance a spawned mount will be armored when difficulty is set to hard.").setRange(0, 1).sync();
+  public static final IValue<Float> fallenMountChanceArmorUpgrade = MOUNT.make("chanceArmorUpgrade", .01f, //
+      "The chance the type of armor equipped will be improved.").setRange(0, 1).sync();
+  public static final IValue<Float> fallenMountChanceArmorUpgradeHard = MOUNT.make("chanceArmorUpgradeHard", .05f, //
+      "The chance the type of armor equipped will be improved when difficulty is set to hard.").setRange(0, 1).sync();
+  public static final IValue<Boolean> fallenMountShadedByRider = MOUNT.make("shadedByRider", true, //
+      "When true a mount will not burn in the sun unless its rider is").sync();
+
+  public static final IValueFactory OWL = F0.section(".owl");
+
+  public static final IValue<Double> owlAggressionRange = OWL.make("aggressionRange", 12d, //
+      "If a spider gets within this range (horizontal) they will be attacked.").setRange(0, 32).sync();
+  public static final IValue<Double> owlAggressionRangeVertical = OWL.make("aggressionRangeVertical", 24d, //
+      "If a spider gets within this range (vertical) they will be attacked.").setRange(0, 32).sync();
+  public static final IValue<Float> owlSpiderDamageMultiplier = OWL.make("spiderDamageMultiplier", 2f, //
+      "Damage multiplier against spiders.").setRange(0, 10).sync();
+  public static final IValue<Float> owlHootVolumeMultiplier = OWL.make("hootVolumeMultiplier", .8f, //
+      "Adjusts the owls' hoot volume. Higher value is louder.").setRange(0, 2);
+  public static final IValue<Integer> owlHootInterval = OWL.make("hootInterval", 1000, //
+      "Aprox. number of ticks between hoots.").setMin(1);
+  public static final IValue<Integer> owlTimeBetweenEggsMin = OWL.make("timeBetweenEggsMin", 12000, //
+      "Min ticks between egg laying.").setMin(1).sync();
+  public static final IValue<Integer> owlTimeBetweenEggsMax = OWL.make("timeBetweenEggsMax", 24000, //
+      "Max ticks between egg laying.").setMin(1).sync();
+
+  public static final IValueFactory CAT = F0.section(".wither_cat");
+
+  public static final IValue<Double> witherCatHealth = CAT.make("health", 12d, //
+      "Base health of the wither cat.").setRange(1, 200).sync();
+  public static final IValue<Double> witherCatHealthBonusAngry = CAT.make("healthBonusAngry", 18d, //
+      "Health bonus for an angry wither cat.").setRange(0, 200).sync();
+  public static final IValue<Double> witherCatAttackDamage = CAT.make("attackDamage", 3d, //
+      "Base attack damage of the wither cat.").setRange(1, 200).sync();
+  public static final IValue<Double> witherCatAttackDamageBonusAngry = CAT.make("attackDamageBonusAngry", 6d, //
+      "Attack damage bonus for an angry wither cat.").setRange(0, 200).sync();
+  public static final IValue<Double> witherCatAttackDamageBonusHard = CAT.make("attackDamageBonusHard", 2d, //
+      "Attack damage bonus for a wither cat when difficulty is set to hard.").setRange(0, 200).sync();
 
   //
   //

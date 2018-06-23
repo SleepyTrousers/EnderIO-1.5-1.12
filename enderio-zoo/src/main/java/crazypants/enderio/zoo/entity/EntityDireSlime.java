@@ -36,7 +36,7 @@ public class EntityDireSlime extends EntityMagmaCube implements IEnderZooMob {
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
-    IEnderZooMob.register(event, NAME, EntityDireSlime.class, EGG_BG_COL, EGG_FG_COL, 42);
+    IEnderZooMob.register(event, NAME, EntityDireSlime.class, EGG_BG_COL, EGG_FG_COL, MobID.DLIME);
   }
 
   @SubscribeEvent
