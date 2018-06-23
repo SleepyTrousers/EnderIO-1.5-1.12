@@ -52,8 +52,21 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvancedTooltipProvider, IOverlayRenderAware {
 
   private float damageBonus = Config.darkSteelBowDamageBonus;
+  private @Nonnull double[] fovMultipliers = Config.darkSteelBowFovMultipliers;
+  private @Nonnull double[] forceMultipliers = Config.darkSteelBowForceMultipliers;
+  private @Nonnull int[] drawSpeeds = Config.darkSteelBowDrawSpeeds;
 
-  public static ItemDarkSteelBow create(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelBow createEndSteel(@Nonnull IModObject modObject) {
+    ItemDarkSteelBow res = new ItemDarkSteelBow(modObject);
+    MinecraftForge.EVENT_BUS.register(res);
+    res.damageBonus = Config.endSteelBowDamageBonus;
+    res.forceMultipliers = Config.endSteelBowForceMultipliers;
+    res.fovMultipliers = Config.endSteelBowFovMultipliers;
+    res.drawSpeeds = Config.endSteelBowDrawSpeeds;
+    return res;
+  }
+
+  public static ItemDarkSteelBow createDarkSteel(@Nonnull IModObject modObject) {
     ItemDarkSteelBow res = new ItemDarkSteelBow(modObject);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
@@ -267,10 +280,10 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
       ratio *= ratio;
     }
 
-    float mult = (float) Config.darkSteelBowFovMultipliers[0];
+    float mult = (float) fovMultipliers[0];
     EnergyUpgradeHolder upgrade = EnergyUpgradeManager.loadFromItem(currentItem);
     if (upgrade != null && upgrade.getEnergy() > 0) {
-      mult = (float) Config.darkSteelBowFovMultipliers[upgrade.getUpgrade().getLevel() + 1];
+      mult = (float) fovMultipliers[upgrade.getUpgrade().getLevel() + 1];
     }
     fovEvt.setNewfov((1.0F - ratio * mult));
   }
@@ -281,18 +294,18 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
 
   public int getDrawTime(EnergyUpgradeHolder upgrade) {
     if (upgrade == null) {
-      return Config.darkSteelBowDrawSpeeds[0];
+      return drawSpeeds[0];
     }
     if (upgrade.getEnergy() >= Config.darkSteelBowPowerUsePerDraw) {
-      return Config.darkSteelBowDrawSpeeds[upgrade.getUpgrade().getLevel() + 1];
+      return drawSpeeds[upgrade.getUpgrade().getLevel() + 1];
     }
-    return Config.darkSteelBowDrawSpeeds[0];
+    return drawSpeeds[0];
   }
 
   private float getForceMultiplier(EnergyUpgradeHolder upgrade) {
-    float res = (float) Config.darkSteelBowForceMultipliers[0];
+    float res = (float) forceMultipliers[0];
     if (upgrade != null && upgrade.getEnergy() >= 0) {
-      res = (float) Config.darkSteelBowForceMultipliers[upgrade.getUpgrade().getLevel() + 1];
+      res = (float) forceMultipliers[upgrade.getUpgrade().getLevel() + 1];
     }
     return res;
   }

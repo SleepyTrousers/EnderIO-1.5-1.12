@@ -140,6 +140,11 @@ public final class Config {
   public static int darkSteelBowPowerUsePerDraw = 750;
   public static int darkSteelBowPowerUsePerTickDrawn = 5;
 
+  public static float endSteelBowDamageBonus = 0f;
+  public static double[] endSteelBowForceMultipliers = { 1.25f, 1.35f, 1.45f, 1.55f, 1.65f };
+  public static int[] endSteelBowDrawSpeeds = { 20, 15, 12, 11, 10 };
+  public static double[] endSteelBowFovMultipliers = { 0.25, 0.275, 0.3, 0.35, 0.4 };
+
   public static int darkSteelPickEffeciencyObsidian = 50;
   public static int darkSteelPickPowerUseObsidian = 10000;
   public static float darkSteelPickApplyObsidianEffeciencyAtHardess = 40;

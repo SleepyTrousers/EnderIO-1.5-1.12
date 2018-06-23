@@ -315,6 +315,17 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_bow" />
     </crafting>
   </recipe>
+
+  <recipe name="Ender Bow" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="itemInfinityRod" /><item name="string"/>
+        <item name="SKELETAL_CONTRACTOR"/><item/><item name="string"/>
+        <item /><item name="itemInfinityRod"/><item name="string"/>
+      </grid>
+      <output name="enderio:item_end_steel_bow" />
+    </crafting>
+  </recipe>
   
   <recipe name="Conduit Facade" required="true">
     <crafting>
