@@ -49,7 +49,7 @@ public class FuelUtil {
     case "empoweredoil":
       FluidFuelRegister.instance.addFuel(event.getFluidName(), 140, 5000);
       break;
-    case "bio.ethanol ":
+    case "bio.ethanol":
       FluidFuelRegister.instance.addFuel(event.getFluidName(), 160, 3125);
       break;
     case "biodiesel":
