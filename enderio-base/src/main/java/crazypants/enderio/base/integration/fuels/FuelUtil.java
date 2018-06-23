@@ -31,6 +31,12 @@ public class FuelUtil {
     case "refined_fuel":
       FluidFuelRegister.instance.addFuel(event.getFluidName(), 200, 10000);
       break;
+    case "seed_oil":
+      FluidFuelRegister.instance.addFuel(event.getFluidName(), 20, 4000);
+      break;
+    case "refined_biofuel":
+      FluidFuelRegister.instance.addFuel(event.getFluidName(), 125, 6400);
+      break;
     case "canolaoil":
       FluidFuelRegister.instance.addFuel(event.getFluidName(), 20, 4000);
       break;
