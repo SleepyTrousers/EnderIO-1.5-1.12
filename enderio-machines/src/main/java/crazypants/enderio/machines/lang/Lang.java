@@ -2,6 +2,8 @@ package crazypants.enderio.machines.lang;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.base.lang.ILang;
 import crazypants.enderio.machines.EnderIOMachines;
 
@@ -120,6 +122,7 @@ public enum Lang implements ILang {
   GUI_BUFFERING_SINGLE(".gui.crafter.buffering_single"),
   GUI_VACUUM_XP_HEADER(".gui.vacuum.xp.header"),
   GUI_VACUUM_PRIME_TOOLTIP(".gui.vacuum.prime"),
+  STATUS_SPAWNER_UNBOUND(".status.powered_spawner.unbound"),
 
   ;
 
@@ -127,7 +130,7 @@ public enum Lang implements ILang {
 
   private Lang(@Nonnull String key) {
     if (key.startsWith(".")) {
-      this.key = getLang().addPrefix(key.substring(1));
+      this.key = getLang().addPrefix(NullHelper.notnullJ(key.substring(1), "String.substring()"));
     } else {
       this.key = key;
     }

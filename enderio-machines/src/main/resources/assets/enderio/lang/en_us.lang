@@ -70,6 +70,7 @@ enderio.block_powered_spawner.note.noLocationFound=No space found
 enderio.block_powered_spawner.note.noLocationAtAll=No viable space
 enderio.block_powered_spawner.note.badSoul=Bad soul, cannot create entity
 enderio.block_powered_spawner.note.noPlayer=No player in range
+enderio.status.powered_spawner.unbound=§4Cannot spawn "nothing"
 
 enderio.gui.tank.tank=Tank
 enderio.gui.tank.void.slot=Void Slot

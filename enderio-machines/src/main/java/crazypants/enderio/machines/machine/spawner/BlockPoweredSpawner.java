@@ -36,8 +36,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -171,6 +175,24 @@ public class BlockPoweredSpawner extends AbstractPoweredTaskBlock<TilePoweredSpa
     }
   }
 
+  @Override
+  @Nullable
+  public Item createBlockItem(@Nonnull IModObject modObject) {
+    return modObject.apply(new ItemBlock(this) {
+      @Override
+      public @Nonnull EnumActionResult onItemUse(@Nonnull EntityPlayer player, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull EnumHand hand,
+          @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ) {
+        ItemStack itemstack = player.getHeldItem(hand);
+        if (CapturedMob.containsSoul(itemstack)) {
+          return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+        } else {
+          player.sendStatusMessage(Lang.STATUS_SPAWNER_UNBOUND.toChatServer(), true);
+          return EnumActionResult.FAIL;
+        }
+      }
+    });
+  };
+
   @SuppressWarnings("null")
   @Override
   @SideOnly(Side.CLIENT)
@@ -179,7 +201,7 @@ public class BlockPoweredSpawner extends AbstractPoweredTaskBlock<TilePoweredSpa
     if (SpawnerConfig.poweredSpawnerAddAllMobsCreative.get()) {
       CapturedMob.getAllSouls().apply(new Callback<CapturedMob>() {
         @Override
-        public void apply(CapturedMob mob) {
+        public void apply(@Nonnull CapturedMob mob) {
           list.add(mob.toStack(BlockPoweredSpawner.this, 0, 1));
         }
       });
@@ -195,13 +217,13 @@ public class BlockPoweredSpawner extends AbstractPoweredTaskBlock<TilePoweredSpa
   @Override
   @SideOnly(Side.CLIENT)
   public @Nonnull IItemRenderMapper getItemRenderMapper() {
-    return RenderMappers.FRONT_MAPPER;
+    return RenderMappers.SOUL_MAPPER;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
-    return RenderMappers.FRONT_MAPPER;
+    return RenderMappers.SOUL_MAPPER;
   }
 
   @Override
