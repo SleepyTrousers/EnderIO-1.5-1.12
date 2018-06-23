@@ -22,7 +22,6 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.tic.TicUtil;
 import crazypants.enderio.base.item.darksteel.attributes.DarkSteelAttributeModifiers;
 import crazypants.enderio.base.item.darksteel.attributes.ToolData;
@@ -76,7 +75,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
 
   public static boolean isEquipped(EntityPlayer player) {
-    return player != null && player.getHeldItemMainhand().getItem() == ModObject.itemDarkSteelSword.getItem();
+    return player != null && player.getHeldItemMainhand().getItem() instanceof ItemDarkSteelSword;
   }
 
   public static boolean isEquippedAndPowered(EntityPlayer player, int requiredPower) {
@@ -396,7 +395,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   private boolean isTravelUpgradeActive(@Nonnull EntityPlayer ep, @Nonnull ItemStack equipped) {
-    return isEquipped(ep) && ep.isSneaking() && TravelUpgrade.INSTANCE.hasUpgrade(equipped);
+    return ep.isSneaking() && TravelUpgrade.INSTANCE.hasUpgrade(equipped);
   }
 
   @Override

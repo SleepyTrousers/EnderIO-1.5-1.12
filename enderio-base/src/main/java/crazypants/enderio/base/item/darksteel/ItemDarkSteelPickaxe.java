@@ -28,7 +28,6 @@ import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.attributes.ToolData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
@@ -73,10 +72,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel, IOverlayRenderAware {
-
-  public static boolean isEquipped(EntityPlayer player, @Nonnull EnumHand hand) {
-    return player != null && player.getHeldItem(hand).getItem() == ModObject.itemDarkSteelPickaxe.getItem();
-  }
 
   public static int getStoredPower(EntityPlayer player) {
     return EnergyUpgradeManager.getEnergyStored(player.getHeldItemMainhand());
@@ -330,7 +325,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   }
 
   private boolean isTravelUpgradeActive(@Nonnull EntityPlayer ep, @Nonnull ItemStack equipped, @Nonnull EnumHand hand) {
-    return isEquipped(ep, hand) && ep.isSneaking() && TravelUpgrade.INSTANCE.hasUpgrade(equipped);
+    return ep.isSneaking() && TravelUpgrade.INSTANCE.hasUpgrade(equipped);
   }
 
   @Override
