@@ -124,7 +124,7 @@ public class TreeFarmer extends AbstractFarmerJoe {
   }
 
   protected boolean plant(@Nonnull IFarmer farm, @Nonnull World world, @Nonnull BlockPos bc, @Nonnull ItemStack sapling) {
-    if (canPlant(world, bc, sapling)) {
+    if (canPlant(world, bc, sapling) && farm.checkAction(FarmingAction.PLANT, FarmingTool.HOE)) {
       world.setBlockToAir(bc);
       final Item item = sapling.getItem();
       final IBlockState state = Block.getBlockFromItem(item).getStateFromMeta(item.getMetadata(sapling.getMetadata()));
@@ -172,8 +172,9 @@ public class TreeFarmer extends AbstractFarmerJoe {
 
     for (int i = 0; i < res.getHarvestedBlocks().size() && hasAxe; i++) {
       final BlockPos coord = res.getHarvestedBlocks().get(i);
-      harvestSingleBlock(farm, world, res, coord);
-      actualHarvests.add(coord);
+      if (harvestSingleBlock(farm, world, res, coord)) {
+        actualHarvests.add(coord);
+      }
     }
 
     res.getHarvestedBlocks().clear();
@@ -196,13 +197,16 @@ public class TreeFarmer extends AbstractFarmerJoe {
    * @param harvestPos
    *          The {@link BlockPos} to get the drops for. It <em>must</em> be part of the {@link HarvestResult}'s harvested blocks list!
    */
-  void harvestSingleBlock(@Nonnull IFarmer farm, final @Nonnull World world, final @Nonnull HarvestResult result, final @Nonnull BlockPos harvestPos) {
+  boolean harvestSingleBlock(@Nonnull IFarmer farm, final @Nonnull World world, final @Nonnull HarvestResult result, final @Nonnull BlockPos harvestPos) {
     float chance = 1.0F;
     NNList<ItemStack> drops = new NNList<>();
     final IBlockState state = farm.getBlockState(harvestPos);
     final Block blk = state.getBlock();
 
     if (blk instanceof IShearable && hasShears && ((shearCount / result.getHarvestedBlocks().size() + noShearingPercentage) < 100)) {
+      if (!farm.checkAction(FarmingAction.HARVEST, FarmingTool.SHEARS)) {
+        return false;
+      }
       drops.addAll(((IShearable) blk).onSheared(farm.getTool(FarmingTool.SHEARS), world, harvestPos, 0));
       shearCount += 100;
       farm.registerAction(FarmingAction.HARVEST, FarmingTool.SHEARS, state, harvestPos);
@@ -212,6 +216,9 @@ public class TreeFarmer extends AbstractFarmerJoe {
       }
     } else {
       FarmingTool tool = isWood(blk) || !hasHoe ? FarmingTool.AXE : FarmingTool.HOE;
+      if (!farm.checkAction(FarmingAction.HARVEST, tool)) {
+        return false;
+      }
       blk.getDrops(drops, world, harvestPos, state, fortune);
       EntityPlayerMP joe = farm.startUsingItem(tool);
       chance = ForgeEventFactory.fireBlockHarvesting(drops, joe.world, harvestPos, state, fortune, chance, false, joe);
@@ -243,6 +250,7 @@ public class TreeFarmer extends AbstractFarmerJoe {
     }
 
     farm.getWorld().setBlockToAir(harvestPos);
+    return true;
   }
 
   protected void tryReplanting(@Nonnull IFarmer farm, @Nonnull World world, @Nonnull BlockPos bc, @Nonnull HarvestResult res) {

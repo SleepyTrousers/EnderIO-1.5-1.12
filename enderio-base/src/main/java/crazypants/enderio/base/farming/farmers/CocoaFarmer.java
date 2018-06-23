@@ -41,7 +41,7 @@ public class CocoaFarmer extends CustomSeedFarmer {
       return false;
     }
     IBlockState iBlockState = getPlantedBlock().getDefaultState().withProperty(FACING, dir);
-    if (world.setBlockState(bc, iBlockState, 1 | 2)) {
+    if (farm.checkAction(FarmingAction.PLANT, FarmingTool.HAND) && world.setBlockState(bc, iBlockState, 1 | 2)) {
       farm.registerAction(FarmingAction.PLANT, FarmingTool.HAND, iBlockState, bc);
       return true;
     }

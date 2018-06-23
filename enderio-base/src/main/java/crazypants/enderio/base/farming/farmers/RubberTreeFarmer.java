@@ -76,8 +76,10 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
       if (isWood(state.getBlock())) {
         if (canHarvest(world, pos)) {
           if (farm.hasTool(FarmingTool.TREETAP)) {
-            harvest(res, world, pos);
-            farm.registerAction(FarmingAction.HARVEST, FarmingTool.TREETAP, state, pos);
+            if (farm.checkAction(FarmingAction.HARVEST, FarmingTool.TREETAP)) {
+              harvest(res, world, pos);
+              farm.registerAction(FarmingAction.HARVEST, FarmingTool.TREETAP, state, pos);
+            }
           } else {
             farm.setNotification(FarmNotification.NO_TREETAP);
           }
@@ -96,9 +98,10 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
   private void harvestLeavesBlock(@Nonnull final IFarmer farm, @Nonnull final HarvestResult res, final @Nonnull World world, final @Nonnull BlockPos pos) {
     IBlockState state = world.getBlockState(pos);
     if (IHarvestingTarget.isDefaultLeaves(state)) {
-      res.getHarvestedBlocks().add(pos);
-      harvestSingleBlock(farm, world, res, pos);
-      harvestLeavesAround(farm, world, res, pos);
+      if (harvestSingleBlock(farm, world, res, pos)) {
+        res.getHarvestedBlocks().add(pos);
+        harvestLeavesAround(farm, world, res, pos);
+      }
     }
   }
 

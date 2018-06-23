@@ -118,7 +118,7 @@ public class PlantableFarmer extends AbstractFarmerJoe {
   protected boolean plant(@Nonnull IFarmer farm, @Nonnull World world, @Nonnull BlockPos bc, @Nonnull IPlantable plantable) {
     world.setBlockState(bc, Blocks.AIR.getDefaultState(), 1 | 2);
     IBlockState target = getPlant(farm, plantable);
-    if (target == null) {
+    if (target == null || !farm.checkAction(FarmingAction.PLANT, FarmingTool.HOE)) {
       return false;
     }
     world.setBlockState(bc, target, 1 | 2);
@@ -148,7 +148,7 @@ public class PlantableFarmer extends AbstractFarmerJoe {
 
   @Override
   public IHarvestResult harvestBlock(@Nonnull IFarmer farm, final @Nonnull BlockPos pos, @Nonnull IBlockState state) {
-    if (!canHarvest(farm, pos, state)) {
+    if (!canHarvest(farm, pos, state) || !farm.checkAction(FarmingAction.HARVEST, FarmingTool.HOE)) {
       return null;
     }
     if (!farm.hasTool(FarmingTool.HOE)) {

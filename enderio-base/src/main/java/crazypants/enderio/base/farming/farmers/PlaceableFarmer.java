@@ -76,7 +76,7 @@ public class PlaceableFarmer extends AbstractFarmerJoe {
 
   protected boolean plant(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
     final ItemStack seedStack = farm.takeSeedFromSupplies(bc);
-    if (Prep.isValid(seedStack)) {
+    if (Prep.isValid(seedStack) && farm.checkAction(FarmingAction.PLANT, FarmingTool.HOE)) {
       EntityPlayerMP joe = farm.startUsingItem(seedStack);
       EnumActionResult res = seedStack.getItem().onItemUse(joe, joe.world, bc.down(), EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
       farm.handleExtraItems(farm.endUsingItem(FarmingTool.HOE), bc);

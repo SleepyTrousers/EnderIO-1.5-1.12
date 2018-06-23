@@ -36,7 +36,7 @@ public class PickableFarmer extends CustomSeedFarmer {
 
   @Override
   public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull final BlockPos pos, @Nonnull IBlockState state) {
-    if (!canHarvest(farm, pos, state)) {
+    if (!canHarvest(farm, pos, state) || !farm.checkAction(FarmingAction.HARVEST, FarmingTool.HOE)) {
       return null;
     }
     if (!farm.hasTool(FarmingTool.HOE)) {

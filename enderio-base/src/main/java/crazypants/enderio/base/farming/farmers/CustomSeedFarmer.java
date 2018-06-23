@@ -152,7 +152,7 @@ public class CustomSeedFarmer extends AbstractFarmerJoe {
   @Override
   public IHarvestResult harvestBlock(@Nonnull IFarmer farm, @Nonnull final BlockPos pos, @Nonnull IBlockState state) {
 
-    if (!canHarvest(farm, pos, state)) {
+    if (!canHarvest(farm, pos, state) || !farm.checkAction(FarmingAction.HARVEST, getHarvestTool())) {
       return null;
     }
     if (!farm.hasTool(getHarvestTool())) {
@@ -222,7 +222,7 @@ public class CustomSeedFarmer extends AbstractFarmerJoe {
 
   protected boolean plant(@Nonnull IFarmer farm, @Nonnull World world, @Nonnull BlockPos bc) {
     world.setBlockState(bc, Blocks.AIR.getDefaultState(), 1 | 2);
-    if (canPlant(farm, world, bc)) {
+    if (canPlant(farm, world, bc) && farm.checkAction(FarmingAction.PLANT, FarmingTool.HOE)) {
       world.setBlockState(bc, getPlantedBlock().getStateFromMeta(getPlantedBlockMeta()), 1 | 2);
       farm.registerAction(FarmingAction.PLANT, FarmingTool.HOE, Blocks.AIR.getDefaultState(), bc);
       return true;

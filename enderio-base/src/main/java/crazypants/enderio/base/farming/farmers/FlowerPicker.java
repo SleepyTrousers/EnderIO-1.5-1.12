@@ -63,11 +63,17 @@ public class FlowerPicker extends AbstractFarmerJoe {
       if (!((IShearable) state.getBlock()).isShearable(shears, world, pos)) {
         return null;
       }
+      if (!farm.checkAction(FarmingAction.HARVEST, FarmingTool.SHEARS)) {
+        return null;
+      }
       drops.addAll(((IShearable) state.getBlock()).onSheared(shears, world, pos, farm.getLootingValue(FarmingTool.SHEARS)));
       farm.registerAction(FarmingAction.HARVEST, FarmingTool.SHEARS, state, pos);
     } else {
       if (!farm.hasTool(FarmingTool.HOE)) {
         farm.setNotification(FarmNotification.NO_HOE);
+        return null;
+      }
+      if (!farm.checkAction(FarmingAction.HARVEST, FarmingTool.HOE)) {
         return null;
       }
       state.getBlock().getDrops(drops, world, pos, state, farm.getLootingValue(FarmingTool.HOE));

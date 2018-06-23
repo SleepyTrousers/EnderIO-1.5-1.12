@@ -53,7 +53,7 @@ public class StemFarmer extends CustomSeedFarmer {
   @Override
   public IHarvestResult harvestBlock(@Nonnull final IFarmer farm, @Nonnull final BlockPos pos, @Nonnull IBlockState state) {
     boolean hasHoe = farm.hasTool(FarmingTool.HOE);
-    if (!hasHoe) {
+    if (!hasHoe || !farm.checkAction(FarmingAction.HARVEST, FarmingTool.HOE)) {
       return new HarvestResult();
     }
     final World world = farm.getWorld();
