@@ -13,7 +13,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class CombustionMath {
 
-  public static float HEAT_PER_RF = 0.00023F;
+  public static final double HEAT_PER_RF = 0.00023F / 2f;
 
   private final int ticksPerCoolant;
   private final int ticksPerFuel;
@@ -25,11 +25,11 @@ public class CombustionMath {
     } else {
       energyPerTick = Math.round(fuel.getPowerPerCycle() * capQuality * machineQuality);
 
-      float cooling = coolant.getDegreesCoolingPerMB(100);
-      double toCool = 1d / (HEAT_PER_RF * energyPerTick * capQuality * machineQuality);
-      ticksPerCoolant = (int) Math.round(toCool / (cooling * 1000));
+      double cooling = coolant.getDegreesCoolingPerMB(); // heat absorbed per mB
+      double toCool = HEAT_PER_RF * energyPerTick * machineQuality; // heat per tick
+      ticksPerCoolant = Math.max((int) Math.round(cooling / toCool), 1);
 
-      ticksPerFuel = (int) (fuel.getTotalBurningTime() / capQuality / 1000);
+      ticksPerFuel = Math.max((int) (fuel.getTotalBurningTime() / capQuality / 1000), 1);
     }
   }
 

@@ -185,7 +185,7 @@ public class FluidFuelRegister implements IFluidRegister {
     }
 
     @Override
-    public float getDegreesCoolingPerMB(float heat) {
+    public double getDegreesCoolingPerMBPerK() {
       return degreesCoolingPerMB;
     }
   }

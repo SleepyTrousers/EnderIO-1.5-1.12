@@ -44,7 +44,7 @@ public class TooltipHandlerFluid implements ITooltipCallback {
         IFluidCoolant coolant = FluidFuelRegister.instance.getCoolant(fluid);
         if (coolant != null) {
           list.add(Lang.COOLANT_HEADING.get());
-          list.add(TextFormatting.ITALIC + " " + Lang.COOLANT_DEGREES.get(LangPower.format(coolant.getDegreesCoolingPerMB(100) * 1000)));
+          list.add(TextFormatting.ITALIC + " " + Lang.COOLANT_DEGREES.get(LangPower.format((long) (coolant.getDegreesCoolingPerMBPerK() * 1000))));
         }
       }
     }

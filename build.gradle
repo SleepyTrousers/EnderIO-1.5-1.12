@@ -13,6 +13,7 @@ buildscript {
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
         classpath "gradle.plugin.net.intellisun:modDependencies:1.0.1-alpha.2" // https://github.com/IntelliSun-MC/modDependencies
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.3'
     }
 }
 
@@ -38,6 +39,7 @@ if (ext.user != null) {
 allprojects {
     apply plugin: 'net.minecraftforge.gradle.forge'
     apply plugin: 'net.intellisun.moddependencies'
+    apply plugin: 'org.junit.platform.gradle.plugin'
 
     // Import mod dependencies and execute
     if (file('dependencies.gradle').exists())
@@ -105,7 +107,12 @@ allprojects {
         }
         mavenLocal()
     }
-    
+
+    junitPlatform {
+      platformVersion '1.0.3'
+      enableStandardTestTask true
+    }
+
     def localEnderCore = project.hasProperty('use_local_ender_core') && project.getProperty('use_local_ender_core').equalsIgnoreCase('true')
 
     // Common dependencies for all modules
@@ -120,6 +127,11 @@ allprojects {
 
         // All jars in the '<root>/lib' directory
         compile fileTree(dir: "${project.rootDir}/lib", include: '*.jar')
+
+        testImplementation     "org.junit.jupiter:junit-jupiter-api:5.2.0"
+        testCompile("org.junit.jupiter:junit-jupiter-api:5.2.0")
+        testCompile("org.junit.platform:junit-platform-launcher:1.1.0")
+        testRuntime("org.junit.jupiter:junit-jupiter-engine:5.2.0")
     }
 
     // Process resources to inject dynamic metadata
