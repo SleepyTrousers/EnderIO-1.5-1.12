@@ -37,6 +37,7 @@ import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.PaintSourceValidator;
 import crazypants.enderio.base.power.CapInjectHandler;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
+import crazypants.enderio.base.recipe.mapomatic.MapOMaticRecipeManager;
 import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
 import crazypants.enderio.base.recipe.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.base.recipe.soul.SoulBinderRecipeManager;
@@ -172,6 +173,7 @@ public class EnderIO implements IEnderIOAddon {
     VatRecipeManager.getInstance().create();
     SoulBinderRecipeManager.getInstance().addDefaultRecipes();
     PaintSourceValidator.instance.loadConfig();
+    MapOMaticRecipeManager.getInstance().create();
 
     BuildcraftIntegration.init(event);
     // TEUtil.init(event);

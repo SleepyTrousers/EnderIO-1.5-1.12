@@ -17,8 +17,10 @@ import com.enderio.core.common.util.ItemUtil;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
+import crazypants.enderio.base.material.food.EnderFood;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.sound.SoundHelper;
 import crazypants.enderio.base.sound.SoundRegistry;
@@ -50,15 +52,13 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
 
   private static int IO_MB_TICK = 100;
 
-  @Store
-  protected final @Nonnull SmartTank tank;
+  @Store protected final @Nonnull SmartTank tank;
   protected int lastUpdateLevel = -1;
 
   private boolean tankDirty = false;
   private int lastFluidLuminosity = 0;
 
-  @Store
-  private @Nonnull VoidMode voidMode = VoidMode.NEVER;
+  @Store private @Nonnull VoidMode voidMode = VoidMode.NEVER;
 
   public TileTank(EnumTankType tankType) {
     super(new SlotDefinition(0, 2, 3, 4, -1, -1));
@@ -120,7 +120,17 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     return stack.getItem() == Items.EXPERIENCE_BOTTLE && FluidUtil.getFluidTypeFromItem(stack) == null;
   }
 
-  public @Nonnull VoidMode getVoidMode() {
+  public boolean isNutritous(@Nonnull ItemStack stack) {
+    return stack.getItem() == ModObject.itemEnderFood.getItemNN() && stack.getItemDamage() == EnderFood.MASH_POTATO.ordinal();
+  }
+
+  public boolean canEatNutrients() {
+    final FluidStack fluid = tank.getFluid();
+    return fluid == null || (fluid.getFluid() == Fluids.NUTRIENT_DISTILLATION.getFluid() && tank.getAvailableSpace() >= 200);
+  }
+
+  public @Nonnull
+  VoidMode getVoidMode() {
     return voidMode;
   }
 
@@ -136,7 +146,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     if (i == 0) {
       return (FluidUtil.getFluidTypeFromItem(item) != null) || (isXpBottle(item) && canEatXP());
     } else if (i == 1) {
-      return FluidUtil.hasEmptyCapacity(item) || canBeMended(item);
+      return FluidUtil.hasEmptyCapacity(item) || canBeMended(item) || (isNutritous(item) && canEatNutrients());
     } else if (i == 2 && canVoidItems()) {
       return voidMode == VoidMode.ALWAYS || (voidMode == VoidMode.NEVER ? false : !FluidUtil.isFluidContainer(item));
     }
@@ -222,12 +232,34 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
       SoundHelper.playSound(world, pos, SoundHelper.BLOCK_CENTER, SoundRegistry.ITEM_BURN, 0.05F, 2.0F + world.rand.nextFloat() * 0.4F);
       markDirty();
     }
-    return drainFullContainer() || fillEmptyContainer() || mendItem();
+    return drainFullContainer() || fillEmptyContainer() || mendItem() || fluidCraft();
   }
 
   private boolean canBeMended(@Nonnull ItemStack stack) {
-    return Prep.isValid(stack) && stack.isItemDamaged() && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, stack) > 0
-        && tank.hasFluid(Fluids.XP_JUICE.getFluid());
+    return Prep.isValid(stack) && stack.isItemDamaged() && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, stack) > 0 && tank
+        .hasFluid(Fluids.XP_JUICE.getFluid());
+  }
+
+  private boolean fluidCraft() {
+    final int output = getSlotDefinition().getMaxOutputSlot();
+    final int input = getSlotDefinition().getMinInputSlot() + 1;
+
+    if (!isNutritous(getStackInSlot(input)) || !getStackInSlot(output).isItemEqual(getStackInSlot(input))) {
+      return false;
+    }
+
+    ItemStack stack = getStackInSlot(input);
+
+    if (stack.getItem() == ModObject.itemEnderFood.getItemNN() && stack.getItemDamage() == EnderFood.MASH_POTATO.ordinal()) {
+      tank.drainInternal(200, true);
+      stack.shrink(1);
+      if (getStackInSlot(output).isEmpty()) {
+        setInventorySlotContents(output, new ItemStack(stack.getItem(), 1, EnderFood.MASH_POTATO_AND_GRAVY.ordinal()));
+      } else {
+        getStackInSlot(output).grow(1);
+      }
+    }
+    return false;
   }
 
   private boolean mendItem() {
@@ -354,7 +386,8 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   }
 
   @Override
-  public @Nonnull FluidTank[] getOutputTanks() {
+  public @Nonnull
+  FluidTank[] getOutputTanks() {
     return new FluidTank[] { tank };
   }
 
@@ -375,7 +408,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   @Override
   @Nonnull
   public List<ITankData> getTankDisplayData() {
-    return Collections.<ITankData> singletonList(new ITankData() {
+    return Collections.<ITankData>singletonList(new ITankData() {
 
       @Override
       @Nonnull

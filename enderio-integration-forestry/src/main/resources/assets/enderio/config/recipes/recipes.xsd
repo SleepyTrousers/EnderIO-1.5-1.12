@@ -587,6 +587,79 @@
                       </attribute>
                     </complexType>
                   </element>
+                  <element minOccurs="1" maxOccurs="unbounded" name="mapomatic">
+                    <annotation>
+                      <documentation>MapOMatic recipes used to create maps to structures.</documentation>
+                    </annotation>
+                    <complexType>
+                      <sequence>
+                        <element minOccurs="0" maxOccurs="unbounded" name="config" type="enderio:configComplexType">
+                          <annotation>
+                            <documentation>
+                              Restricts this variant to only be used if the given config value has the given value.
+                            </documentation>
+                          </annotation>
+                        </element>
+                        <element minOccurs="0" maxOccurs="unbounded" name="dependency" type="enderio:dependencyComplexType">
+                          <annotation>
+                            <documentation>
+                              Restricts this variant to only be used if the given game element can (not) be found in the game.
+                            </documentation>
+                          </annotation>
+                        </element>
+                        <element minOccurs="1" maxOccurs="2" name="input">
+                          <complexType>
+                            <attribute use="required" name="name" type="string" />
+                            <attribute name="amount" use="optional">
+                              <annotation>
+                                <documentation>Number of input items needed.</documentation>
+                              </annotation>
+                              <simpleType>
+                                <restriction base="int">
+                                  <maxInclusive value="64" />
+                                  <minInclusive value="1" />
+                                </restriction>
+                              </simpleType>
+                            </attribute>
+                          </complexType>
+                        </element>
+                        <element minOccurs="1" maxOccurs="1" name="structure">
+                          <annotation>
+                            <documentation>The string name of the structure to map to.</documentation>
+                          </annotation>
+                          <complexType>
+                            <sequence>
+                              <element minOccurs="0" maxOccurs="unbounded" name="config" type="enderio:configComplexType">
+                                <annotation>
+                                  <documentation>
+                                    Restricts this output to only be used if the given config value has the given value.
+                                  </documentation>
+                                </annotation>
+                              </element>
+                              <element minOccurs="0" maxOccurs="unbounded" name="dependency" type="enderio:dependencyComplexType">
+                                <annotation>
+                                  <documentation>
+                                    Restricts this output to only be used if the given game element can (not) be found in the game.
+                                  </documentation>
+                                </annotation>
+                              </element>
+                            </sequence>
+                            <attribute use="required" name="name" type="string" />
+                          </complexType>
+                        </element>
+                      </sequence>
+                      <attribute name="energy" use="required">
+                        <annotation>
+                          <documentation>The amount of energy running this recipe takes.</documentation>
+                        </annotation>
+                        <simpleType>
+                          <restriction base="float">
+                            <minExclusive value="0" />
+                          </restriction>
+                        </simpleType>
+                      </attribute>
+                    </complexType>
+                  </element>
                   <element name="sagmilling" maxOccurs="unbounded" minOccurs="1">
                     <annotation>
                       <documentation>Sagmilling recipes are used in a Sag Mill.</documentation>
@@ -743,12 +816,14 @@
   <complexType name="dependencyComplexType">
     <attribute use="required" name="item" type="string"></attribute>
     <attribute use="optional" name="reverse" type="boolean"></attribute>
-  </complexType>
+  </complexType>
+
 
   <complexType name="slicingType">
     <sequence>
       <element name="config" type="enderio:configComplexType" maxOccurs="unbounded" minOccurs="0"></element>
-      <element name="dependency" type="enderio:dependencyComplexType" maxOccurs="unbounded" minOccurs="0"></element>
+      <element name="dependency" type="enderio:dependencyComplexType" maxOccurs="unbounded" minOccurs="0"></element>
+
       <element name="input" minOccurs="6" maxOccurs="6">
         <complexType>
           <attribute use="required" name="name" type="string" />
@@ -770,7 +845,8 @@
                                     Restricts this output to only be used if the given game element can (not) be found in the game.
                                   </documentation>
                                 </annotation>
-                              </element>
+                              </element>
+
                             </sequence>
                             <attribute use="required" name="name" type="string" />
       </complexType></element>

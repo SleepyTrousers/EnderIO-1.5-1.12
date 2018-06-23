@@ -19,6 +19,7 @@ import crazypants.enderio.machines.machine.ihopper.TileImpulseHopper;
 import crazypants.enderio.machines.machine.killera.TileKillerJoe;
 import crazypants.enderio.machines.machine.light.TileElectricLight;
 import crazypants.enderio.machines.machine.light.TileLightNode;
+import crazypants.enderio.machines.machine.mapomatic.TileMapOMatic;
 import crazypants.enderio.machines.machine.obelisk.attractor.TileAttractor;
 import crazypants.enderio.machines.machine.obelisk.aversion.TileAversionObelisk;
 import crazypants.enderio.machines.machine.obelisk.inhibitor.TileInhibitorObelisk;
@@ -100,6 +101,7 @@ public enum MachineTileEntity implements IModTileEntity {
   TileImpulseHopper(TileImpulseHopper.class),
   TileCrafter(TileCrafter.class),
   TileSimpleCrafter(TileCrafter.Simple.class),
+  TileMapOMatic(TileMapOMatic.class),
 
   ;
 

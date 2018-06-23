@@ -176,4 +176,8 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_tele_pad/buffer" base="100000" scaler="FIXED" />
   <capacitor key="enderio:block_tele_pad/use" base="4000" scaler="FIXED" />
 
+  <capacitor key="enderio:block_map_o_matic/intake" base="80" scaler="POWER" />
+  <capacitor key="enderio:block_map_o_matic/buffer" base="100000" scaler="POWER" />
+  <capacitor key="enderio:block_map_o_matic/use" base="20" scaler="POWER" />
+
 </enderio:recipes>
