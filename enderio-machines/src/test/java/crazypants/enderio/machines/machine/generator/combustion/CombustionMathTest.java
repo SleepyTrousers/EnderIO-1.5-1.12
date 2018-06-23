@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.fluid.IFluidCoolant;
 import crazypants.enderio.base.fluid.IFluidFuel;
-import crazypants.enderio.machines.machine.generator.combustion.CombustionMath;
 import net.minecraftforge.fluids.Fluid;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -82,6 +81,8 @@ class CombustionMathTest {
 
   private final MockCoolant WATER = new MockCoolant(0.0023f, 300);
   private final MockCoolant CRYO = new MockCoolant(0.0276f, 50);
+  private final MockCoolant VAPOR = new MockCoolant(0.0314f, 5);
+
   private final MockFuel HOOTCH = new MockFuel(Config.hootchPowerPerCycleRF, Config.hootchPowerTotalBurnTime);
 
   @BeforeEach
@@ -232,6 +233,81 @@ class CombustionMathTest {
     assertTrue(cc.getEnergyPerTick() >= cm.getEnergyPerTick(), "CRYO+HOOTCH >= WATER+HOOTCH getEnergyPerTick");
     assertTrue(cc.getTicksPerCoolant() >= cm.getTicksPerCoolant(), "CRYO+HOOTCH >= WATER+HOOTCH getTicksPerCoolant");
     assertTrue(cc.getTicksPerFuel() >= cm.getTicksPerFuel(), "CRYO+HOOTCH >= WATER+HOOTCH getTicksPerFuel");
+  }
+
+  @Test
+  void testVaporRelative() {
+    CombustionMath cm = new CombustionMath(CRYO, HOOTCH, 1f, 1f);
+    CombustionMath cc = new CombustionMath(VAPOR, HOOTCH, 1f, 1f);
+    assertTrue(cc.getEnergyPerTick() >= cm.getEnergyPerTick(), "VAPOR+HOOTCH >= CRYO+HOOTCH getEnergyPerTick");
+    assertTrue(cc.getTicksPerCoolant() >= cm.getTicksPerCoolant(), "VAPOR+HOOTCH >= CRYO+HOOTCH getTicksPerCoolant");
+    assertTrue(cc.getTicksPerFuel() >= cm.getTicksPerFuel(), "VAPOR+HOOTCH >= CRYO+HOOTCH getTicksPerFuel");
+  }
+
+  // Vapor of Levity
+
+  @Test
+  void testVapor_cap1_n() {
+    CombustionMath cm = new CombustionMath(VAPOR, HOOTCH, 1f, 1f);
+    assertEquals(60, cm.getEnergyPerTick(), "VAPOR+HOOTCH getEnergyPerTick");
+    assertEquals(1676, cm.getTicksPerCoolant(), "VAPOR+HOOTCH getTicksPerCoolant");
+    assertEquals(6, cm.getTicksPerFuel(), "VAPOR+HOOTCH getTicksPerFuel");
+  }
+
+  @Test
+  void testVapor_cap1_e() {
+    CombustionMath cm = new CombustionMath(VAPOR, HOOTCH, 1f, 1.5f);
+    assertEquals(90, cm.getEnergyPerTick(), "VAPOR+HOOTCH getEnergyPerTick");
+    assertEquals(745, cm.getTicksPerCoolant(), "VAPOR+HOOTCH getTicksPerCoolant");
+    assertEquals(6, cm.getTicksPerFuel(), "VAPOR+HOOTCH getTicksPerFuel");
+  }
+
+  @Test
+  void testVapor_cap2_n() {
+    CombustionMath cm = new CombustionMath(VAPOR, HOOTCH, 2f, 1f);
+    assertEquals(120, cm.getEnergyPerTick(), "VAPOR+HOOTCH getEnergyPerTick");
+    assertEquals(838, cm.getTicksPerCoolant(), "VAPOR+HOOTCH getTicksPerCoolant");
+    assertEquals(3, cm.getTicksPerFuel(), "VAPOR+HOOTCH getTicksPerFuel");
+  }
+
+  @Test
+  void testVapor_cap2_e() {
+    CombustionMath cm = new CombustionMath(VAPOR, HOOTCH, 2f, 1.5f);
+    assertEquals(180, cm.getEnergyPerTick(), "VAPOR+HOOTCH getEnergyPerTick");
+    assertEquals(372, cm.getTicksPerCoolant(), "VAPOR+HOOTCH getTicksPerCoolant");
+    assertEquals(3, cm.getTicksPerFuel(), "VAPOR+HOOTCH getTicksPerFuel");
+  }
+
+  @Test
+  void testVapor_cap3_n() {
+    CombustionMath cm = new CombustionMath(VAPOR, HOOTCH, 3f, 1f);
+    assertEquals(180, cm.getEnergyPerTick(), "VAPOR+HOOTCH getEnergyPerTick");
+    assertEquals(559, cm.getTicksPerCoolant(), "VAPOR+HOOTCH getTicksPerCoolant");
+    assertEquals(2, cm.getTicksPerFuel(), "VAPOR+HOOTCH getTicksPerFuel");
+  }
+
+  @Test
+  void testVapor_cap3_e() {
+    CombustionMath cm = new CombustionMath(VAPOR, HOOTCH, 3f, 1.5f);
+    assertEquals(270, cm.getEnergyPerTick(), "VAPOR+HOOTCH getEnergyPerTick");
+    assertEquals(248, cm.getTicksPerCoolant(), "VAPOR+HOOTCH getTicksPerCoolant");
+    assertEquals(2, cm.getTicksPerFuel(), "VAPOR+HOOTCH getTicksPerFuel");
+  }
+
+  @Test
+  void testVapor_cap5_n() {
+    CombustionMath cm = new CombustionMath(VAPOR, HOOTCH, 5f, 1f);
+    assertEquals(300, cm.getEnergyPerTick(), "VAPOR+HOOTCH getEnergyPerTick");
+    assertEquals(335, cm.getTicksPerCoolant(), "VAPOR+HOOTCH getTicksPerCoolant");
+    assertEquals(1, cm.getTicksPerFuel(), "VAPOR+HOOTCH getTicksPerFuel");
+  }
+
+  @Test
+  void testVapor_cap5_e() {
+    CombustionMath cm = new CombustionMath(VAPOR, HOOTCH, 5f, 1.5f);
+    assertEquals(450, cm.getEnergyPerTick(), "VAPOR+HOOTCH getEnergyPerTick");
+    assertEquals(149, cm.getTicksPerCoolant(), "VAPOR+HOOTCH getTicksPerCoolant");
+    assertEquals(1, cm.getTicksPerFuel(), "VAPOR+HOOTCH getTicksPerFuel");
   }
 
 }

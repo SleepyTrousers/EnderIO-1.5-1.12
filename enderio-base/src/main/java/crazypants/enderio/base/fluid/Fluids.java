@@ -245,6 +245,7 @@ public enum Fluids {
     FluidFuelRegister.instance.addFuel(HOOTCH.getFluid(), Config.hootchPowerPerCycleRF, Config.hootchPowerTotalBurnTime);
     FluidFuelRegister.instance.addFuel(ROCKET_FUEL.getFluid(), Config.rocketFuelPowerPerCycleRF, Config.rocketFuelPowerTotalBurnTime);
     FluidFuelRegister.instance.addFuel(FIRE_WATER.getFluid(), Config.fireWaterPowerPerCycleRF, Config.fireWaterPowerTotalBurnTime);
+    FluidFuelRegister.instance.addCoolant(VAPOR_OF_LEVITY.getFluid(), 0.0314f);
 
     RailcraftUtil.registerFuels();
   }
