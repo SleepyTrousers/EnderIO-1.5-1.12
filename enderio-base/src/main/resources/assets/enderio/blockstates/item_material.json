@@ -433,6 +433,11 @@
         "textures": {
           "layer0": "enderio:items/item_material_cake_base"
         }
+      },
+      "infinity_rod": {
+        "textures": {
+          "layer0": "enderio:items/item_material_infinity_rod"
+        }
       }
     }
   }

@@ -250,6 +250,17 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="End Steel Sword" required="true">
+    <crafting>
+      <grid size="1x3">
+        <item name="END_STEEL" />
+        <item name="END_STEEL" />
+        <item name="itemInfinityRod" />
+      </grid>
+      <output name="enderio:item_end_steel_sword" />
+    </crafting>
+  </recipe>
+
   <recipe name="Dark Pickaxe" required="true">
     <crafting>
       <grid size="3x3">
@@ -269,6 +280,28 @@ XML editor will display that as tooltips when editing this file.
         <item /><item name="stickWood" />
       </grid>
       <output name="enderio:item_dark_steel_axe" />
+    </crafting>
+  </recipe>
+
+  <recipe name="End Pickaxe" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="END_STEEL" /><item name="END_STEEL" /><item name="END_STEEL" />
+        <item /><item name="itemInfinityRod" /><item />
+        <item /><item name="itemInfinityRod" /><item />
+      </grid>
+      <output name="enderio:item_end_steel_pickaxe" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="End Axe" required="true">
+    <crafting>
+      <grid size="2x3">
+        <item name="END_STEEL" /><item name="END_STEEL" />
+        <item name="END_STEEL" /><item name="itemInfinityRod" />
+        <item /><item name="itemInfinityRod" />
+      </grid>
+      <output name="enderio:item_end_steel_axe" />
     </crafting>
   </recipe>
   

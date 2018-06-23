@@ -133,6 +133,10 @@ item.item_end_steel_helmet.name=Ender Helm
 
 item.item_end_steel_leggings.name=Ender Leggings
 
+item.item_end_steel_sword.name=The Ender Mk2
+item.item_end_steel_pickaxe.name=Ender Pickaxe
+item.item_end_steel_axe.name=Ender Axe
+
 item.item_ender_food.enderios.name="Enderios"
 item.item_ender_food.enderios.tooltip.common.line1=Part of a balanced breakfast!
 item.item_ender_food.enderios.tooltip.detailed.line1=Not actually healthy. Contains 253g of sugar, 53g of fat, and 394g of ender dust.
@@ -247,6 +251,7 @@ item.item_material.enhanced_machine_dye.tooltip.detailed.line2=§7Warning: May c
 item.item_material.simple_chassi_parts.name=Simple Machine Parts
 item.item_material.enhanced_chassi_parts.name=Enhanced Machine Parts
 item.item_material.cake_base.name=Cake Base
+item.item_material.infinity_rod.name=Infinity Rod
 
 item.item_rod_of_return.name=Rod of Return
 item.item_rod_of_return.tooltip.detailed.line1=Returns the user to a Telepad

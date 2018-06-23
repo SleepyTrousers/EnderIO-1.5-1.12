@@ -9,7 +9,6 @@ import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
-import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.OreDictionaryHelper;
 import com.enderio.core.common.util.Util;
 import com.google.common.collect.Multimap;
@@ -26,6 +25,7 @@ import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.tic.TicUtil;
 import crazypants.enderio.base.item.darksteel.attributes.DarkSteelAttributeModifiers;
+import crazypants.enderio.base.item.darksteel.attributes.ToolData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -58,7 +58,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -75,9 +74,6 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   private static final @Nonnull ResourceLocation ENDERZOO_ENDERMINY = new ResourceLocation("enderzoo", "enderminy");
 
-  static final @Nonnull ToolMaterial MATERIAL = NullHelper
-      .notnull(EnumHelper.addToolMaterial("darkSteel", Config.darkSteelPickMinesTiCArdite ? 5 : 3, 2000, 8, 3.0001f, 25), "failed to add tool material");
-  // 3.0001f = more desirable for mobs (i.e. they'll pick it up even if they already have diamond)
 
   public static boolean isEquipped(EntityPlayer player) {
     return player != null && player.getHeldItemMainhand().getItem() == ModObject.itemDarkSteelSword.getItem();
@@ -91,17 +87,23 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     return EnergyUpgradeManager.getEnergyStored(player.getHeldItemMainhand());
   }
 
-  public static ItemDarkSteelSword create(@Nonnull IModObject modObject) {
-    ItemDarkSteelSword res = new ItemDarkSteelSword(modObject);
+  public static ItemDarkSteelSword createEndSteel(@Nonnull IModObject modObject) {
+    ItemDarkSteelSword res = new ItemDarkSteelSword(modObject, ToolData.MATERIAL_END_STEEL);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
-  private final int powerPerDamagePoint = Config.darkSteelPowerStorageBase / MATERIAL.getMaxUses();
+  public static ItemDarkSteelSword createDarkSteel(@Nonnull IModObject modObject) {
+    ItemDarkSteelSword res = new ItemDarkSteelSword(modObject, ToolData.MATERIAL_DARK_STEEL);
+    MinecraftForge.EVENT_BUS.register(res);
+    return res;
+  }
+
+  private final int powerPerDamagePoint = Config.darkSteelPowerStorageBase / ToolData.MATERIAL_DARK_STEEL.getMaxUses();
   private long lastBlickTick = -1;
 
-  public ItemDarkSteelSword(@Nonnull IModObject modObject) {
-    super(MATERIAL);
+  public ItemDarkSteelSword(@Nonnull IModObject modObject, @Nonnull ToolMaterial material) {
+    super(material);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
   }
@@ -301,7 +303,8 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   @Override
-  public @Nonnull Multimap<String, AttributeModifier> getAttributeModifiers(@Nonnull EntityEquipmentSlot equipmentSlot, @Nonnull ItemStack stack) {
+  @Nonnull
+  public Multimap<String, AttributeModifier> getAttributeModifiers(@Nonnull EntityEquipmentSlot equipmentSlot, @Nonnull ItemStack stack) {
     Multimap<String, AttributeModifier> res = super.getItemAttributeModifiers(equipmentSlot);
     if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
       if (Config.darkSteelSwordPowerUsePerHit <= 0 || EnergyUpgradeManager.getEnergyStored(stack) >= Config.darkSteelSwordPowerUsePerHit) {
@@ -397,7 +400,8 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   @Override
-  public @Nonnull ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
+  @Nonnull
+  public ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
     if (hand == EnumHand.MAIN_HAND) {
       ItemStack stack = player.getHeldItem(hand);
       if (isTravelUpgradeActive(player, stack)) {

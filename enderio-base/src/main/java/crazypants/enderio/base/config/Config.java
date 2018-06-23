@@ -146,6 +146,7 @@ public final class Config {
   public static int darkSteelPickPowerUsePerDamagePoint = 750;
   public static float darkSteelPickEffeciencyBoostWhenPowered = 2;
   public static boolean darkSteelPickMinesTiCArdite = true;
+  public static boolean endSteelPickMinesTiCArdite = true;
 
   public static int darkSteelAxePowerUsePerDamagePoint = 750;
   public static int darkSteelAxePowerUsePerDamagePointMultiHarvest = 1500;

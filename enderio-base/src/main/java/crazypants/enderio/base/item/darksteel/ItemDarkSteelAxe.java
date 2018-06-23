@@ -27,6 +27,7 @@ import crazypants.enderio.base.farming.harvesters.TreeHarvester;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.item.darksteel.attributes.ToolData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -78,16 +79,22 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
     return EnergyUpgradeManager.getEnergyStored(player.getHeldItemMainhand());
   }
 
-  public static @Nonnull ItemDarkSteelAxe create(@Nonnull IModObject modObject) {
-    ItemDarkSteelAxe res = new ItemDarkSteelAxe(modObject);
+  public static @Nonnull ItemDarkSteelAxe createEndSteel(@Nonnull IModObject modObject) {
+    ItemDarkSteelAxe res = new ItemDarkSteelAxe(modObject, ToolData.MATERIAL_END_STEEL);
+    MinecraftForge.EVENT_BUS.register(res);
+    return res;
+  }
+
+  public static @Nonnull ItemDarkSteelAxe createDarkSteel(@Nonnull IModObject modObject) {
+    ItemDarkSteelAxe res = new ItemDarkSteelAxe(modObject, ToolData.MATERIAL_DARK_STEEL);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
   private final MultiHarvestComparator harvestComparator = new MultiHarvestComparator();
 
-  protected ItemDarkSteelAxe(@Nonnull IModObject modObject) {
-    super(ItemDarkSteelSword.MATERIAL, 8, -3);
+  protected ItemDarkSteelAxe(@Nonnull IModObject modObject, @Nonnull ToolMaterial material) {
+    super(material, 8, -3);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
   }

@@ -29,6 +29,7 @@ import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.item.darksteel.attributes.ToolData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -81,16 +82,22 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     return EnergyUpgradeManager.getEnergyStored(player.getHeldItemMainhand());
   }
 
-  public static ItemDarkSteelPickaxe create(@Nonnull IModObject modObject) {
-    ItemDarkSteelPickaxe res = new ItemDarkSteelPickaxe(modObject);
+  public static ItemDarkSteelPickaxe createEndSteel(@Nonnull IModObject modObject) {
+    ItemDarkSteelPickaxe res = new ItemDarkSteelPickaxe(modObject, ToolData.MATERIAL_END_STEEL);
+    MinecraftForge.EVENT_BUS.register(res);
+    return res;
+  }
+
+  public static ItemDarkSteelPickaxe createDarkSteel(@Nonnull IModObject modObject) {
+    ItemDarkSteelPickaxe res = new ItemDarkSteelPickaxe(modObject, ToolData.MATERIAL_DARK_STEEL);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
   private long lastBlickTick = -1;
 
-  public ItemDarkSteelPickaxe(@Nonnull IModObject modObject) {
-    super(ItemDarkSteelSword.MATERIAL);
+  public ItemDarkSteelPickaxe(@Nonnull IModObject modObject, @Nonnull ToolMaterial material) {
+    super(material);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
   }

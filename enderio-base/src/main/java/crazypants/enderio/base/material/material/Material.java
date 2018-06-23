@@ -104,6 +104,7 @@ public enum Material {
   SIMPLE_CHASSIPARTS("simpleChassiParts"),
 
   CAKE_BASE("cakeBase"),
+  INFINITY_ROD("infinityRod"),
 
   ;
 

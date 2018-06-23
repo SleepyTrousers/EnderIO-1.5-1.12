@@ -1152,4 +1152,15 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Infinity Rod" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="DARK_STEEL_NUGGET"/><item name="POWDER_INFINITY"/>
+        <item name="DARK_STEEL_NUGGET"/><item name="stickWood"/><item name="DARK_STEEL_NUGGET"/>
+        <item name="POWDER_INFINITY"/><item name="DARK_STEEL_NUGGET"/><item />
+      </grid>
+      <output name="itemInfinityRod"/>
+    </crafting>
+  </recipe>
+
 </enderio:recipes>
