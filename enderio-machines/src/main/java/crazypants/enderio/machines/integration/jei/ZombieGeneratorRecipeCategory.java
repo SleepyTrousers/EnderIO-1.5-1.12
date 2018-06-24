@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
@@ -49,19 +50,24 @@ public class ZombieGeneratorRecipeCategory extends BlankRecipeCategory<ZombieGen
     public void getIngredients(@Nonnull IIngredients ingredients) {
       ingredients.setInput(FluidStack.class,
           new FluidStack(Fluids.NUTRIENT_DISTILLATION.getFluid(), Math.round(ZombieGenConfig.minimumTankLevel.get() * tankCapacity)));
-      ingredients.setOutput(EnergyIngredient.class,
-          new EnergyIngredient(Math.round(CapacitorKey.ZOMBIE_POWER_GEN.getFloat(DefaultCapacitorData.BASIC_CAPACITOR)), true));
+      ingredients.setOutputs(EnergyIngredient.class,
+          new NNList<>(new EnergyIngredient(Math.round(CapacitorKey.ZOMBIE_POWER_GEN.get(DefaultCapacitorData.BASIC_CAPACITOR)), true),
+              new EnergyIngredient(Math.round(CapacitorKey.ZOMBIE_POWER_GEN.get(DefaultCapacitorData.ENDER_CAPACITOR)), true)));
     }
 
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
       FontRenderer fr = minecraft.fontRenderer;
       String txt = Lang.GUI_ZOMBGEN_OUTPUT.get("");
-      fr.drawStringWithShadow(txt, 10, 3, ColorUtil.getRGB(Color.WHITE));
+      int sw = fr.getStringWidth(txt);
+      fr.drawStringWithShadow(txt, 89 - sw / 2 - xOff, 0 - yOff, ColorUtil.getRGB(Color.WHITE));
+      txt = "-";
+      sw = fr.getStringWidth(txt);
+      fr.drawStringWithShadow("-", 89 - sw / 2 - xOff, 10 - yOff, ColorUtil.getRGB(Color.WHITE));
 
       txt = LangFluid.tMB(ZombieGenConfig.ticksPerBucketOfFuel.get() / 1000);
-      int sw = fr.getStringWidth(txt);
-      fr.drawStringWithShadow(txt, recipeWidth / 2 - sw / 2, 14 + 47 + fr.FONT_HEIGHT / 2, ColorUtil.getRGB(Color.WHITE));
+      sw = fr.getStringWidth(txt);
+      fr.drawStringWithShadow(txt, recipeWidth / 2 - sw / 2, 4 + 57 + fr.FONT_HEIGHT / 2, ColorUtil.getRGB(Color.WHITE));
 
       GlStateManager.color(1, 1, 1, 1);
     }
@@ -72,6 +78,7 @@ public class ZombieGeneratorRecipeCategory extends BlankRecipeCategory<ZombieGen
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
     registry.addRecipeCategories(new ZombieGeneratorRecipeCategory(guiHelper));
     registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_zombie_generator.getBlockNN(), 1, 0), ZombieGeneratorRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_frank_n_zombie_generator.getBlockNN(), 1, 0), ZombieGeneratorRecipeCategory.UID);
     registry.addRecipeClickArea(GuiZombieGenerator.class, 155, 42, 16, 16, ZombieGeneratorRecipeCategory.UID);
     registry.addRecipes(Collections.singletonList(new ZombieGeneratorRecipeWrapper()), UID);
   }
@@ -88,7 +95,7 @@ public class ZombieGeneratorRecipeCategory extends BlankRecipeCategory<ZombieGen
 
   public ZombieGeneratorRecipeCategory(IGuiHelper guiHelper) {
     ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("zombie_generator");
-    background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, xSize, 75);
+    background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, xSize, 70);
   }
 
   @Override
@@ -123,7 +130,8 @@ public class ZombieGeneratorRecipeCategory extends BlankRecipeCategory<ZombieGen
       }
     });
 
-    group.init(1, false, EnergyIngredientRenderer.INSTANCE, 75, 3, 40, 10, 0, 0);
+    group.init(1, false, EnergyIngredientRenderer.INSTANCE, 37 - xOff, 11 - yOff, 40, 10, 0, 0);
+    group.init(2, false, EnergyIngredientRenderer.INSTANCE, 54 + 47 - xOff, 11 - yOff, 40, 10, 0, 0);
 
     guiFluidStacks.set(ingredients);
     group.set(ingredients);
