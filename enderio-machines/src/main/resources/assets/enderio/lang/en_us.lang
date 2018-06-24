@@ -202,6 +202,9 @@ tile.block_stirling_generator.tooltip.detailed.line2=Can be upgraded to increase
 tile.block_zombie_generator.name=Zombie Generator
 tile.block_zombie_generator.tooltip.detailed.line1=Consumes Nutrient Distillation to generate power
 
+tile.block_frank_n_zombie_generator.name=Frank'n'Zombie Generator
+tile.block_frank_n_zombie_generator.tooltip.detailed.line1=Consumes Nutrient Distillation to generate even more power
+
 tile.block_killer_joe.name=Killer Joe
 tile.block_killer_joe.tooltip.detailed.line1=Attacks nearby creatures when supplied with a sword and Nutrient Distillation
 

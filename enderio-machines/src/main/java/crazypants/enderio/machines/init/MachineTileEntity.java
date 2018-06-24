@@ -58,6 +58,7 @@ public enum MachineTileEntity implements IModTileEntity {
   TileBufferOmni(TileBuffer.TileBufferOmni.class),
   TileBufferCreative(TileBuffer.TileBufferCreative.class),
   TileZombieGenerator(TileZombieGenerator.class),
+  TileFrankNZombieGenerator(crazypants.enderio.machines.machine.generator.zombie.TileZombieGenerator.TileFrankNZombieGenerator.class),
   TileExperienceObelisk(TileExperienceObelisk.class),
   TileWeatherObelisk(TileWeatherObelisk.class),
   TileAttractor(TileAttractor.class),

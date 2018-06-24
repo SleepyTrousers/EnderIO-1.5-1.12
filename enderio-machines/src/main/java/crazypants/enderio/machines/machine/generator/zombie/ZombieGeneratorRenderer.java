@@ -4,9 +4,9 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.ManagedTESR;
 
-import crazypants.enderio.base.render.util.TankRenderHelper;
 import crazypants.enderio.base.render.util.HalfBakedQuad.HalfBakedList;
-import crazypants.enderio.machines.init.MachineObject;
+import crazypants.enderio.base.render.util.TankRenderHelper;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -14,8 +14,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ZombieGeneratorRenderer extends ManagedTESR<TileZombieGenerator> {
 
-  public ZombieGeneratorRenderer() {
-    super(MachineObject.block_zombie_generator.getBlock());
+  public ZombieGeneratorRenderer(@Nonnull Block block) {
+    super(block);
   }
 
   @Override

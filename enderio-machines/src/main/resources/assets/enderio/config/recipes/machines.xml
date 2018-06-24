@@ -114,6 +114,28 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Frank'n'Zombie Generator" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="END_STEEL" /><item name="END_STEEL" /><item name="END_STEEL" />
+        <item name="FUSED_QUARTZ" /><item name="FRANKEN_ZOMBIE" /><item name="FUSED_QUARTZ" />
+        <item name="FUSED_QUARTZ" /><item name="FUSED_QUARTZ" /><item name="FUSED_QUARTZ" />
+      </grid>
+      <output name="enderio:block_frank_n_zombie_generator" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Frank'n'Zombie Generator, Upgrade" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="END_STEEL" /><item name="END_STEEL" /><item name="END_STEEL" />
+        <item /><item name="FRANKEN_ZOMBIE" /><item />
+        <item /><item name="enderio:block_zombie_generator" /><item />
+      </grid>
+      <output name="enderio:block_frank_n_zombie_generator" />
+    </crafting>
+  </recipe>
+
   <recipe name="Wired Charger" required="true">
     <crafting>
       <grid size="3x3">

@@ -70,6 +70,7 @@ public enum MachineObject implements IModObject.Registerable {
   block_simple_stirling_generator(BlockStirlingGenerator.class, "create_simple", MachineTileEntity.TileStirlingGeneratorSimple),
   block_stirling_generator(BlockStirlingGenerator.class, MachineTileEntity.TileStirlingGenerator),
   block_zombie_generator(BlockZombieGenerator.class, MachineTileEntity.TileZombieGenerator),
+  block_frank_n_zombie_generator(BlockZombieGenerator.class, "create_frankn", MachineTileEntity.TileFrankNZombieGenerator),
 
   block_killer_joe(BlockKillerJoe.class, MachineTileEntity.TileKillerJoe),
   block_electric_light(BlockElectricLight.class, MachineTileEntity.TileElectricLight),

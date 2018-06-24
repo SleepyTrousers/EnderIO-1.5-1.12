@@ -14,12 +14,14 @@ import com.enderio.core.common.fluid.SmartTankFluidHandler;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.baselegacy.AbstractGeneratorEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.power.PowerDistributor;
+import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.config.config.ZombieGenConfig;
 import crazypants.enderio.machines.network.PacketHandler;
 import info.loenwind.autosave.annotations.Storable;
@@ -36,30 +38,41 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
-import static crazypants.enderio.machines.capacitor.CapacitorKey.ZOMBIE_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.ZOMBIE_POWER_GEN;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.FRANK_N_ZOMBIE_POWER_LOSS;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ZOMBIE_POWER_LOSS;
 
 @Storable
 public class TileZombieGenerator extends AbstractGeneratorEntity implements ITankAccess.IExtendedTankAccess, IHasNutrientTank {
 
+  public static class TileFrankNZombieGenerator extends TileZombieGenerator {
+
+    public TileFrankNZombieGenerator() {
+      super(new SlotDefinition(0, 0, 1), CapacitorKey.FRANK_N_ZOMBIE_POWER_BUFFER, CapacitorKey.FRANK_N_ZOMBIE_POWER_GEN);
+      setEnergyLoss(FRANK_N_ZOMBIE_POWER_LOSS);
+    }
+  }
+
   private static int IO_MB_TICK = 250;
 
   @Store
-  final SmartTank tank = new SmartTank(Fluids.NUTRIENT_DISTILLATION.getFluid(), Fluid.BUCKET_VOLUME * 2);
+  @Nonnull
+  final SmartTank tank;
 
   private boolean tanksDirty;
-  @Store(NBTAction.CLIENT)
-  private boolean active = false;
+  @Store(NBTAction.CLIENT) private boolean active = false;
   private PowerDistributor powerDis;
 
-  @Store
-  private float ticksRemaingFuel;
+  @Store private float ticksRemaingFuel;
   private boolean inPause;
 
   public TileZombieGenerator() {
-    super(new SlotDefinition(0, 0, 1), ZOMBIE_POWER_BUFFER, ZOMBIE_POWER_GEN);
+    this(new SlotDefinition(0, 0, 1), CapacitorKey.ZOMBIE_POWER_BUFFER, CapacitorKey.ZOMBIE_POWER_GEN);
     setEnergyLoss(ZOMBIE_POWER_LOSS);
+  }
+
+  protected TileZombieGenerator(@Nonnull SlotDefinition slotDef, @Nonnull ICapacitorKey buffer, @Nonnull ICapacitorKey gen) {
+    super(slotDef, buffer, gen);
+    tank = new SmartTank(getFluidType(), Fluid.BUCKET_VOLUME * 2);
     tank.setTileEntity(this);
     tank.setCanDrain(false);
   }
@@ -231,7 +244,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   @Override
   @Nonnull
   public List<ITankData> getTankDisplayData() {
-    return Collections.<ITankData> singletonList(new ITankData() {
+    return Collections.<ITankData>singletonList(new ITankData() {
 
       @Override
       @Nonnull
@@ -268,5 +281,14 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
       return (T) getSmartTankFluidHandler().get(facingIn);
     }
     return super.getCapability(capability, facingIn);
+  }
+
+  /**
+   * Used to get different fluid types for different generators of a similar style
+   * @return Fluid type for the tank to use
+   */
+  @Nonnull
+  protected Fluid getFluidType() {
+    return Fluids.NUTRIENT_DISTILLATION.getFluid();
   }
 }

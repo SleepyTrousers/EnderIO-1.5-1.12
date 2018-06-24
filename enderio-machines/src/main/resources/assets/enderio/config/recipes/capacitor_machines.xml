@@ -68,6 +68,10 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_zombie_generator/buffer" base="100000" scaler="POWER" />
   <capacitor key="enderio:block_zombie_generator/gen" base="80" scaler="CHEMICAL" />
 
+  <capacitor key="enderio:block_frank_n_zombie_generator/loss" base="0" scaler="FIXED" />
+  <capacitor key="enderio:block_frank_n_zombie_generator/buffer" base="200000" scaler="POWER" />
+  <capacitor key="enderio:block_frank_n_zombie_generator/gen" base="120" scaler="CHEMICAL" />
+
   <capacitor key="enderio:block_attractor_obelisk/intake" base="80" scaler="QUADRATIC" />
   <capacitor key="enderio:block_attractor_obelisk/buffer" base="100000" scaler="POWER" />
   <capacitor key="enderio:block_attractor_obelisk/use" base="20" scaler="QUADRATIC" />
