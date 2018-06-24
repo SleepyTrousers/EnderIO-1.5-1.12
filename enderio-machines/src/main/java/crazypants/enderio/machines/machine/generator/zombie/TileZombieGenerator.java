@@ -22,6 +22,7 @@ import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.power.PowerDistributor;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
+import crazypants.enderio.machines.config.config.EnderGenConfig;
 import crazypants.enderio.machines.config.config.ZombieGenConfig;
 import crazypants.enderio.machines.network.PacketHandler;
 import info.loenwind.autosave.annotations.Storable;
@@ -58,6 +59,8 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
     public TileEnderGenerator() {
       super(new SlotDefinition(0, 0, 1), CapacitorKey.ENDER_POWER_BUFFER, CapacitorKey.ENDER_POWER_GEN);
       setEnergyLoss(ENDER_POWER_LOSS);
+      ticksPerBucketOfFuel = EnderGenConfig.ticksPerBucketOfFuel.get();
+      minimumTankLevel = EnderGenConfig.minimumTankLevel.get();
     }
 
     @Nonnull
@@ -66,6 +69,9 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
       return Fluids.ENDER_DISTILLATION.getFluid();
     }
   }
+
+  protected int ticksPerBucketOfFuel = ZombieGenConfig.ticksPerBucketOfFuel.get();
+  protected float minimumTankLevel = ZombieGenConfig.minimumTankLevel.get();
 
   private static int IO_MB_TICK = 250;
 
@@ -190,7 +196,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
     // eat more fuel and add ticks
     while (ticksRemaingFuel < 1f && tank.getFluidAmount() > 0) {
       tank.removeFluidAmount(1);
-      ticksRemaingFuel += ZombieGenConfig.ticksPerBucketOfFuel.get() / 1000f;
+      ticksRemaingFuel += ticksPerBucketOfFuel / 1000f;
     }
 
     // check that we didn't run out of fuel without even gathering enough for 1 tick...
@@ -208,7 +214,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   }
 
   int getActivationAmount() {
-    return (int) (tank.getCapacity() * ZombieGenConfig.minimumTankLevel.get());
+    return (int) (tank.getCapacity() * minimumTankLevel);
   }
 
   private boolean transmitEnergy() {
@@ -305,5 +311,10 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   @Nonnull
   protected Fluid getFluidType() {
     return Fluids.NUTRIENT_DISTILLATION.getFluid();
+  }
+
+  @Nonnull
+  public int getTicksPerBucketOfFuel() {
+    return ticksPerBucketOfFuel;
   }
 }
