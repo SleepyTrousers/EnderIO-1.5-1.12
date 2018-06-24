@@ -71,9 +71,13 @@ public enum CapacitorKey implements ICapacitorKey {
   ZOMBIE_POWER_BUFFER(MachineObject.block_zombie_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   ZOMBIE_POWER_GEN(MachineObject.block_zombie_generator, CapacitorKeyType.ENERGY_GEN, "gen"),
 
-  FRANK_N_ZOMBIE_POWER_LOSS(MachineObject.block_frank_n_zombie_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),
-  FRANK_N_ZOMBIE_POWER_BUFFER(MachineObject.block_frank_n_zombie_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
-  FRANK_N_ZOMBIE_POWER_GEN(MachineObject.block_frank_n_zombie_generator, CapacitorKeyType.ENERGY_GEN, "gen"),
+  FRANK_N_ZOMBIE_POWER_LOSS(MachineObject.block_franken_zombie_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),
+  FRANK_N_ZOMBIE_POWER_BUFFER(MachineObject.block_franken_zombie_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  FRANK_N_ZOMBIE_POWER_GEN(MachineObject.block_franken_zombie_generator, CapacitorKeyType.ENERGY_GEN, "gen"),
+
+  ENDER_POWER_LOSS(MachineObject.block_ender_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),
+  ENDER_POWER_BUFFER(MachineObject.block_ender_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  ENDER_POWER_GEN(MachineObject.block_ender_generator, CapacitorKeyType.ENERGY_GEN, "gen"),
 
   ATTRACTOR_POWER_INTAKE(MachineObject.block_attractor_obelisk, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   ATTRACTOR_POWER_BUFFER(MachineObject.block_attractor_obelisk, CapacitorKeyType.ENERGY_BUFFER, "buffer"),

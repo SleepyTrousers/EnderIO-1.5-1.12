@@ -56,6 +56,9 @@ public class KillerJoeRenderMapper extends MachineRenderMapper
   @Nonnull
   public static final KillerJoeRenderMapper zombieGen = new KillerJoeRenderMapper(BlockZombieGenerator.textureHead1, BlockZombieGenerator.textureHead2);
 
+  @Nonnull
+  public static final KillerJoeRenderMapper enderGen = new KillerJoeRenderMapper(BlockZombieGenerator.textureHeadEnder1, BlockZombieGenerator.textureHeadEnder2);
+
   protected KillerJoeRenderMapper(TextureSupplier head1, TextureSupplier head2) {
     super(null);
     this.head1 = head1;

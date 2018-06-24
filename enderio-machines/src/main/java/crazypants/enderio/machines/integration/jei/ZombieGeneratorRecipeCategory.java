@@ -78,7 +78,7 @@ public class ZombieGeneratorRecipeCategory extends BlankRecipeCategory<ZombieGen
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
     registry.addRecipeCategories(new ZombieGeneratorRecipeCategory(guiHelper));
     registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_zombie_generator.getBlockNN(), 1, 0), ZombieGeneratorRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_frank_n_zombie_generator.getBlockNN(), 1, 0), ZombieGeneratorRecipeCategory.UID);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_franken_zombie_generator.getBlockNN(), 1, 0), ZombieGeneratorRecipeCategory.UID);
     registry.addRecipeClickArea(GuiZombieGenerator.class, 155, 42, 16, 16, ZombieGeneratorRecipeCategory.UID);
     registry.addRecipes(Collections.singletonList(new ZombieGeneratorRecipeWrapper()), UID);
   }

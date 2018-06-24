@@ -38,17 +38,32 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENDER_POWER_LOSS;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.FRANK_N_ZOMBIE_POWER_LOSS;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ZOMBIE_POWER_LOSS;
 
 @Storable
 public class TileZombieGenerator extends AbstractGeneratorEntity implements ITankAccess.IExtendedTankAccess, IHasNutrientTank {
 
-  public static class TileFrankNZombieGenerator extends TileZombieGenerator {
+  public static class TileFrankenZombieGenerator extends TileZombieGenerator {
 
-    public TileFrankNZombieGenerator() {
+    public TileFrankenZombieGenerator() {
       super(new SlotDefinition(0, 0, 1), CapacitorKey.FRANK_N_ZOMBIE_POWER_BUFFER, CapacitorKey.FRANK_N_ZOMBIE_POWER_GEN);
       setEnergyLoss(FRANK_N_ZOMBIE_POWER_LOSS);
+    }
+  }
+
+  public static class TileEnderGenerator extends TileZombieGenerator {
+
+    public TileEnderGenerator() {
+      super(new SlotDefinition(0, 0, 1), CapacitorKey.ENDER_POWER_BUFFER, CapacitorKey.ENDER_POWER_GEN);
+      setEnergyLoss(ENDER_POWER_LOSS);
+    }
+
+    @Nonnull
+    @Override
+    protected Fluid getFluidType() {
+      return Fluids.ENDER_DISTILLATION.getFluid();
     }
   }
 
@@ -219,7 +234,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
 
   @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
-    if (forFluidType != null && forFluidType.getFluid() == Fluids.NUTRIENT_DISTILLATION.getFluid()) {
+    if (forFluidType != null && forFluidType.getFluid() == getFluidType()) {
       return tank;
     }
     return null;

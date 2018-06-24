@@ -205,6 +205,9 @@ tile.block_zombie_generator.tooltip.detailed.line1=Consumes Nutrient Distillatio
 tile.block_frank_n_zombie_generator.name=Frank'n'Zombie Generator
 tile.block_frank_n_zombie_generator.tooltip.detailed.line1=Consumes Nutrient Distillation to generate even more power
 
+tile.block_ender_generator.name=Ender Generator
+tile.block_ender_generator.tooltip.detailed.line1=Consumes Dew of The Void to generate power
+
 tile.block_killer_joe.name=Killer Joe
 tile.block_killer_joe.tooltip.detailed.line1=Attacks nearby creatures when supplied with a sword and Nutrient Distillation
 

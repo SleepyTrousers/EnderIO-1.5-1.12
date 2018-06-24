@@ -2,9 +2,9 @@
     "forge_marker":1,
     "defaults":{
         "textures":{
-            "particle":"enderio:blocks/frank_n_zombie_gen_body",
-            "body":"enderio:blocks/frank_n_zombie_gen_body",
-            "lid":"enderio:blocks/frank_n_zombie_gen_lid",
+            "particle":"enderio:blocks/franken_zombie_gen_body",
+            "body":"enderio:blocks/franken_zombie_gen_body",
+            "lid":"enderio:blocks/franken_zombie_gen_lid",
             "glass":"enderio:blocks/telepad/glass"
         }
     },

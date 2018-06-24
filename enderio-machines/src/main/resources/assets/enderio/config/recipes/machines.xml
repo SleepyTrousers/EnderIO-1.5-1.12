@@ -121,7 +121,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="FUSED_QUARTZ" /><item name="FRANKEN_ZOMBIE" /><item name="FUSED_QUARTZ" />
         <item name="FUSED_QUARTZ" /><item name="FUSED_QUARTZ" /><item name="FUSED_QUARTZ" />
       </grid>
-      <output name="enderio:block_frank_n_zombie_generator" />
+      <output name="enderio:block_franken_zombie_generator" />
     </crafting>
   </recipe>
 
@@ -132,7 +132,7 @@ XML editor will display that as tooltips when editing this file.
         <item /><item name="FRANKEN_ZOMBIE" /><item />
         <item /><item name="enderio:block_zombie_generator" /><item />
       </grid>
-      <output name="enderio:block_frank_n_zombie_generator" />
+      <output name="enderio:block_franken_zombie_generator" />
     </crafting>
   </recipe>
 
