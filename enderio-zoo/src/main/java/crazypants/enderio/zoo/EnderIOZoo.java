@@ -45,9 +45,9 @@ public class EnderIOZoo implements IEnderIOAddon {
     return modList.keySet().contains(MODID) && VERSION.equals(modList.get(MODID));
   }
 
-  public static final @Nonnull String MODID = "enderzoo";
+  public static final @Nonnull String MODID = "enderiozoo";
   public static final @Nonnull String DOMAIN = "enderio";
-  public static final @Nonnull String MOD_NAME = "Ender Zoo";
+  public static final @Nonnull String MOD_NAME = "Ender IO Zoo";
   public static final @Nonnull String VERSION = "@VERSION@";
 
   private static final @Nonnull String DEFAULT_DEPENDENCIES = "after:" + crazypants.enderio.base.EnderIO.MODID;
@@ -81,7 +81,7 @@ public class EnderIOZoo implements IEnderIOAddon {
   @Override
   @Nonnull
   public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
-    return new NNList<>(Triple.of(2, null, "enderzoo"));
+    return NNList.emptyList(); // new NNList<>(Triple.of(2, null, "enderzoo"));
   }
 
 }

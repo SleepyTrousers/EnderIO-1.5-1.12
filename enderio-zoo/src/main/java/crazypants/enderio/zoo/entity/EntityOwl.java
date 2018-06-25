@@ -135,8 +135,7 @@ public class EntityOwl extends EntityAnimal implements IFlyingMob {
     super.applyEntityAttributes();
     getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(4.0D);
     getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-    MobInfo.OWL.applyAttributes(this);
-
+    applyAttributes(this, ZooConfig.owlHealth, ZooConfig.OwlDamage);
   }
 
   @Override

@@ -84,7 +84,7 @@ public class EntityFallenMount extends EntityHorse implements IEnderZooMob {
   protected void applyEntityAttributes() {
     super.applyEntityAttributes();
     getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-    MobInfo.FALLEN_MOUNT.applyAttributes(this);
+    applyAttributes(this, ZooConfig.fallenMountHealth, ZooConfig.fallenMountAttackDamage);
   }
 
   @Override

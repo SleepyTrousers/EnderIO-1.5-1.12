@@ -14,24 +14,7 @@ import net.minecraft.util.math.MathHelper;
  */
 public class ModelOwl extends ModelBase {
 
-  public ModelRenderer body;
-  public ModelRenderer head;
-  public ModelRenderer legL;
-  public ModelRenderer legR;
-  public ModelRenderer tailBase;
-  public ModelRenderer footL;
-  public ModelRenderer footR;
-  public ModelRenderer wingR;
-  public ModelRenderer wingL;
-  public ModelRenderer earL;
-  public ModelRenderer earR;
-  public ModelRenderer beak;
-
-  public ModelRenderer tail1;
-  public ModelRenderer tail2;
-  public ModelRenderer tail3;
-
-  private boolean useEars = true;
+  public final @Nonnull ModelRenderer body, head, legL, legR, tailBase, footL, footR, wingR, wingL, earL, earR, beak, tail1, tail2, tail3;
 
   public ModelOwl() {
 
@@ -47,11 +30,9 @@ public class ModelOwl extends ModelBase {
     tail1.setRotationPoint(0.0F, 0.0F, 0.0F);
     tail1.addBox(0.0F, 2.0F, -1.7F, 2, 3, 1, 0.0F);
     setRotateAngle(tail1, 0.0F, 0.0F, 0.9599310885968813F);
-    if (useEars) {
-      earR = new ModelRenderer(this, 27, 29);
-      earR.setRotationPoint(0.0F, 0.0F, 0.0F);
-      earR.addBox(-5.0F, -8.0F, -3.0F, 3, 2, 1, 0.0F);
-    }
+    earR = new ModelRenderer(this, 27, 29);
+    earR.setRotationPoint(0.0F, 0.0F, 0.0F);
+    earR.addBox(-5.0F, -8.0F, -3.0F, 3, 2, 1, 0.0F);
     tailBase = new ModelRenderer(this, 56, 0);
     tailBase.setRotationPoint(0.0F, 3.5F, 2.2F);
     tailBase.addBox(-1.5F, 1.0F, -1.8F, 3, 3, 1, 0.0F);
@@ -81,12 +62,10 @@ public class ModelOwl extends ModelBase {
     footL = new ModelRenderer(this, 28, 11);
     footL.setRotationPoint(0.0F, 1.0F, 0.0F);
     footL.addBox(-1.0F, 0.0F, -2.0F, 2, 1, 3, 0.0F);
-    if (useEars) {
-      earL = new ModelRenderer(this, 27, 29);
-      earL.mirror = true;
-      earL.setRotationPoint(0.0F, 0.0F, 0.0F);
-      earL.addBox(2.0F, -8.0F, -3.0F, 3, 2, 1, 0.0F);
-    }
+    earL = new ModelRenderer(this, 27, 29);
+    earL.mirror = true;
+    earL.setRotationPoint(0.0F, 0.0F, 0.0F);
+    earL.addBox(2.0F, -8.0F, -3.0F, 3, 2, 1, 0.0F);
     beak = new ModelRenderer(this, 36, 29);
     beak.setRotationPoint(-0.5F, -2.3F, -0.4F);
     beak.addBox(0.0F, -0.8F, -4.0F, 1, 1, 2, 0.0F);
@@ -97,10 +76,8 @@ public class ModelOwl extends ModelBase {
     body.addChild(wingR);
     body.addChild(legL);
     tailBase.addChild(tail1);
-    if (useEars) {
-      head.addChild(earR);
-      head.addChild(earL);
-    }
+    head.addChild(earR);
+    head.addChild(earL);
     body.addChild(tailBase);
     legR.addChild(footR);
     body.addChild(wingL);

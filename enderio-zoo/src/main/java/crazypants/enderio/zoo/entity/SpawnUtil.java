@@ -1,109 +1,96 @@
 package crazypants.enderio.zoo.entity;
 
-import java.util.List;
+import javax.annotation.Nonnull;
 
-import crazypants.enderio.zoo.vec.Point3i;
-import crazypants.enderio.zoo.vec.VecUtil;
-import net.minecraft.block.state.IBlockState;
+import com.enderio.core.common.util.blockiterators.PlanarBlockIterator;
+import com.enderio.core.common.util.blockiterators.PlanarBlockIterator.Orientation;
+
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.world.World;
 
 public class SpawnUtil {
 
-  public static boolean findClearGround(World world, Point3i startingLocation, Point3i clearLocation) {
-    return findClearGround(world, startingLocation, clearLocation, 2, 10, false);
+  public static BlockPos findClearGround(@Nonnull World world, @Nonnull BlockPos startingLocation) {
+    return findClearGround(world, startingLocation, 2, 10, false);
   }
-  
-  public static boolean findClearGround(World world, Point3i startingLocation, Point3i clearLocation, int horizRange, int vertRange,
+
+  public static BlockPos findClearGround(@Nonnull World world, @Nonnull BlockPos startingLocation, int horizRange, int vertRange,
       boolean checkForLivingEntities) {
-    //first find some air in the y
-    boolean foundTargetSpace = false;
-    for (int xOff = -horizRange; xOff <= horizRange && !foundTargetSpace; xOff++) {
-      clearLocation.x = startingLocation.x + xOff;
-      for (int zOff = -horizRange; zOff <= horizRange && !foundTargetSpace; zOff++) {
-        clearLocation.z = startingLocation.z + zOff;
-        foundTargetSpace = SpawnUtil.seachYForClearGround(clearLocation, world, vertRange, checkForLivingEntities);
-        if(!foundTargetSpace) {
-          clearLocation.y = startingLocation.y;
-        }
+    for (PlanarBlockIterator itr = new PlanarBlockIterator(startingLocation, Orientation.EAST_WEST, horizRange); itr.hasNext();) {
+      BlockPos location = SpawnUtil.seachYForClearGround(itr.next(), world, vertRange, checkForLivingEntities);
+      if (location != null) {
+        return location;
       }
     }
-    return foundTargetSpace;
+    return null;
   }
-  
-  public static boolean seachYForClearGround(Point3i target, World world) {
+
+  public static BlockPos seachYForClearGround(@Nonnull BlockPos target, @Nonnull World world) {
     return seachYForClearGround(target, world, 10, false);
   }
-  
-  public static boolean seachYForClearGround(Point3i target, World world, int searchRange, boolean checkForLivingEntities) {
-    boolean foundY = false;
-    for (int i = 0; i < searchRange && !foundY; i++) {
-      if(world.isAirBlock(VecUtil.bpos(target.x, target.y, target.z))) {
-        foundY = true;
-      } else {
-        target.y++;
+
+  public static BlockPos seachYForClearGround(@Nonnull BlockPos startingLocation, @Nonnull World world, int searchRange, boolean checkForLivingEntities) {
+    MutableBlockPos pos = new MutableBlockPos(startingLocation);
+    while (!world.isAirBlock(pos)) {
+      pos.move(EnumFacing.UP);
+      if (pos.getY() > 255 || pos.distanceSq(startingLocation) > searchRange * searchRange) {
+        return null;
       }
     }
-    boolean onGround = false;
-    if(foundY) {
-      for (int i = 0; i < searchRange && !onGround; i++) {
-        onGround = !world.isAirBlock(VecUtil.bpos(target.x, target.y - 1, target.z)) && !isLiquid(world, target.x, target.y - 1, target.z);
-        if(!onGround) {
-          target.y--;
-        } else if(checkForLivingEntities && containsLiving(world, target)) {
-          return false;
-        }
+    while (world.isAirBlock(pos.down()) || isLiquid(world, pos.down())) {
+      pos.move(EnumFacing.DOWN);
+      if (pos.getY() < 0 || pos.distanceSq(startingLocation) > searchRange * searchRange) {
+        return null;
       }
     }
-    return foundY && onGround;
+    if (checkForLivingEntities && containsLiving(world, pos)) {
+      return null;
+    }
+    return pos.toImmutable();
+
   }
 
-  public static boolean containsLiving(World world, Point3i blockCoord) {
-    AxisAlignedBB bb = new AxisAlignedBB(blockCoord.x, blockCoord.y, blockCoord.z, blockCoord.x + 1, blockCoord.y + 1, blockCoord.z + 1);
-    List<?> ents = world.getEntitiesWithinAABB(EntityLivingBase.class, bb);
-    return ents != null && !ents.isEmpty();
+  public static boolean containsLiving(@Nonnull World world, @Nonnull BlockPos pos) {
+    return !world.checkNoEntityCollision(new AxisAlignedBB(pos));
   }
 
-  public static boolean isLiquid(World world, int x, int y, int z) {
-	IBlockState bs = world.getBlockState(VecUtil.bpos(x, y, z));
-	if(bs == null || bs.getBlock() == null) {
-		return false;
-	}
-    if(bs.getMaterial().isLiquid()) {
-      return true;
-    }
-    return false;
+  public static boolean isLiquid(@Nonnull World world, @Nonnull BlockPos pos) {
+    return world.getBlockState(pos).getMaterial().isLiquid();
   }
 
-  public static boolean isSpaceAvailableForSpawn(World worldObj, EntityLiving entity, EntityCreature asCreature, boolean checkEntityCollisions, boolean canSpawnInLiquid) {
-    if(asCreature != null && asCreature.getBlockPathWeight(entity.getPosition()) < 0) {
+  public static boolean isSpaceAvailableForSpawn(World worldObj, EntityLiving entity, EntityCreature asCreature, boolean checkEntityCollisions,
+      boolean canSpawnInLiquid) {
+    if (asCreature != null && asCreature.getBlockPathWeight(entity.getPosition()) < 0) {
       return false;
     }
-    if(checkEntityCollisions && !worldObj.checkNoEntityCollision(entity.getEntityBoundingBox())) {
+    if (checkEntityCollisions && !worldObj.checkNoEntityCollision(entity.getEntityBoundingBox())) {
       return false;
     }
-    if(!worldObj.getCollisionBoxes(entity, entity.getEntityBoundingBox()).isEmpty()) {
+    if (!worldObj.getCollisionBoxes(entity, entity.getEntityBoundingBox()).isEmpty()) {
       return false;
-    }    
-    if(!canSpawnInLiquid && worldObj.containsAnyLiquid(entity.getEntityBoundingBox())) {
+    }
+    if (!canSpawnInLiquid && worldObj.containsAnyLiquid(entity.getEntityBoundingBox())) {
       return false;
-    }    
+    }
     return true;
   }
 
   public static boolean isSpaceAvailableForSpawn(World worldObj, EntityCreature entityCreature, boolean checkEntityCollisions, boolean canSpawnInLiquid) {
     return isSpaceAvailableForSpawn(worldObj, entityCreature, entityCreature, checkEntityCollisions, false);
   }
+
   public static boolean isSpaceAvailableForSpawn(World worldObj, EntityLiving entity, boolean checkEntityCollisions, boolean canSpawnInLiquid) {
-    return isSpaceAvailableForSpawn(worldObj, entity, entity instanceof EntityCreature ? ((EntityCreature)entity) : null, checkEntityCollisions, canSpawnInLiquid);
+    return isSpaceAvailableForSpawn(worldObj, entity, entity instanceof EntityCreature ? ((EntityCreature) entity) : null, checkEntityCollisions,
+        canSpawnInLiquid);
   }
-  
+
   public static boolean isSpaceAvailableForSpawn(World worldObj, EntityLiving spawn, boolean checkEntityCollisions) {
     return isSpaceAvailableForSpawn(worldObj, spawn, checkEntityCollisions, false);
   }
 
-  
 }

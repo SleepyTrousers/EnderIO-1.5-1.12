@@ -16,6 +16,8 @@ public final class ZooConfig {
       "Sets the max range entites can be telported when the creeper explodes.").setRange(1, 160).sync();
   public static final IValue<Integer> confusionDuration = CREEPER.make("confusionDuration", 100, //
       "Sets the durtaion in ticks of the confusion effect applied on explosion.").setRange(20 * 1, 20 * 30).sync();
+  public static final IValue<Double> creeperHealth = CREEPER.make("health", 20d, //
+      "Health of Concussion Creeper.").setRange(1, 200).sync();
 
   public static final IValueFactory SLIME = F0.section(".dire_slime");
 
@@ -56,6 +58,10 @@ public final class ZooConfig {
       "The chance that when a dire wolf howls, nearby dire wolves will \"join in\" to a pack howl.").setRange(0, 1);
   public static final IValue<Double> wolfAggressionRange = WOLF.make("aggressionRange", 3d, //
       "If a player gets within this range they will be attacked.").setRange(0, 32).sync();
+  public static final IValue<Double> wolfHealth = WOLF.make("health", 20d, //
+      "Health of Dire Wolves.").setRange(1, 200).sync();
+  public static final IValue<Double> wolfAttackDamage = WOLF.make("attackDamage", 10d, //
+      "Base attack damage of Dire Wolves.").setRange(1, 200).sync();
 
   public static final IValueFactory MINI = F0.section(".endermini");
 
@@ -71,6 +77,10 @@ public final class ZooConfig {
       "The minimum Y level at which enderminies will spawn.").setRange(0, 255).sync();
   public static final IValue<Boolean> miniPackAttackEnabled = MINI.make("packAttackEnabled", true, //
       "When true attacking one Enderminy will cause other Enderminies who witness the attack to attack the player as well.").sync();
+  public static final IValue<Double> miniHealth = MINI.make("health", 20d, //
+      "Health of Enderminies.").setRange(1, 200).sync();
+  public static final IValue<Double> miniAttackDamage = MINI.make("attackDamage", 10d, //
+      "Base attack damage of Enderminies.").setRange(1, 200).sync();
 
   public static final IValueFactory KNIGHT = F0.section(".fallen_knight");
 
@@ -106,12 +116,19 @@ public final class ZooConfig {
   public static final IValue<Float> fallenKnightChanceArmorUpgradeHard = KNIGHT.make("chanceArmorUpgradeHard", .4f, //
       "The chance the type of armor equipped will be improved when difficulty is set to hard.").setRange(0, 1).sync();
 
+  public static final IValue<Double> fallenKnightHealth = KNIGHT.make("health", 20d, //
+      "Health of Fallen Knights.").setRange(1, 200).sync();
+  public static final IValue<Double> fallenKnightAttackDamage = KNIGHT.make("attackDamage", 4d, //
+      "Base attack damage of Fallen Knights.").setRange(1, 200).sync();
+
   public static final IValueFactory MOUNT = F0.section(".fallen_mount");
 
   public static final IValue<Double> fallenMountChargeSpeed = MOUNT.make("chargeSpeed", 2.5, //
       "The speed at which a mount will charge its target. 0 to disable.").setRange(0, 10).sync();
   public static final IValue<Double> fallenMountHealth = MOUNT.make("health", 30d, //
       "Base health of the mount.").setRange(1, 200).sync();
+  public static final IValue<Double> fallenMountAttackDamage = MOUNT.make("attackDamage", 4d, //
+      "Base attack damage of Fallen Mounts.").setRange(1, 200).sync();
   public static final IValue<Float> fallenMountChanceArmored = MOUNT.make("chanceArmored", .5f, //
       "The chance a spawned mount will be armored.").setRange(0, 1).sync();
   public static final IValue<Float> fallenMountChanceArmoredHard = MOUNT.make("chanceArmoredHard", .9f, //
@@ -121,7 +138,7 @@ public final class ZooConfig {
   public static final IValue<Float> fallenMountChanceArmorUpgradeHard = MOUNT.make("chanceArmorUpgradeHard", .05f, //
       "The chance the type of armor equipped will be improved when difficulty is set to hard.").setRange(0, 1).sync();
   public static final IValue<Boolean> fallenMountShadedByRider = MOUNT.make("shadedByRider", true, //
-      "When true a mount will not burn in the sun unless its rider is").sync();
+      "When true a mount will not burn in the sun unless its rider is.").sync();
 
   public static final IValueFactory OWL = F0.section(".owl");
 
@@ -140,6 +157,11 @@ public final class ZooConfig {
   public static final IValue<Integer> owlTimeBetweenEggsMax = OWL.make("timeBetweenEggsMax", 24000, //
       "Max ticks between egg laying.").setMin(1).sync();
 
+  public static final IValue<Double> owlHealth = OWL.make("health", 10d, //
+      "Health of Owls.").setRange(1, 200).sync();
+  public static final IValue<Double> OwlDamage = OWL.make("attackDamage", 4d, //
+      "Base attack damage of Owls.").setRange(1, 200).sync();
+
   public static final IValueFactory CAT = F0.section(".wither_cat");
 
   public static final IValue<Double> witherCatHealth = CAT.make("health", 12d, //
@@ -152,6 +174,18 @@ public final class ZooConfig {
       "Attack damage bonus for an angry wither cat.").setRange(0, 200).sync();
   public static final IValue<Double> witherCatAttackDamageBonusHard = CAT.make("attackDamageBonusHard", 2d, //
       "Attack damage bonus for a wither cat when difficulty is set to hard.").setRange(0, 200).sync();
+
+  public static final IValueFactory WITCH = F0.section(".wither_witch");
+
+  public static final IValue<Boolean> witherCatEnabled = WITCH.make("spawnWitherCats", true, //
+      "Should Wither Cats spawn for Wither Witches?").sync();
+  public static final IValue<Integer> witherCatMinimum = WITCH.make("spawnWitherCatsMin", 1, //
+      "How many Wither Cats should a Wither Witche at least have?").sync();
+  public static final IValue<Integer> witherCatMaximum = WITCH.make("spawnWitherCatsMax", 2, //
+      "How many Wither Cats should a Wither Witche at most have?").sync();
+
+  public static final IValue<Double> witherWitchHealth = WITCH.make("health", 30d, //
+      "Health of Wither Witches.").setRange(1, 200).sync();
 
   //
   //

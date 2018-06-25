@@ -118,7 +118,7 @@ public class EntityEnderminy extends EntityMob implements IEnderZooMob {
   protected void applyEntityAttributes() {
     super.applyEntityAttributes();
     getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3);
-    MobInfo.ENDERMINY.applyAttributes(this);
+    applyAttributes(this, ZooConfig.miniHealth, ZooConfig.miniAttackDamage);
   }
 
   @Override

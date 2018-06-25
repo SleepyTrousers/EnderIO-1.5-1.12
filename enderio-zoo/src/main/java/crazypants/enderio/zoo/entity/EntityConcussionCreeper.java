@@ -68,7 +68,7 @@ public class EntityConcussionCreeper extends EntityCreeper implements IEnderZooM
   @Override
   protected void applyEntityAttributes() {
     super.applyEntityAttributes();
-    MobInfo.CONCUSSION_CREEPER.applyAttributes(this);
+    applyAttributes(this, ZooConfig.creeperHealth, NO_ATTACK);
   }
 
   @Override

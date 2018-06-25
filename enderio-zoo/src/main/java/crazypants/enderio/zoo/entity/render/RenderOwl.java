@@ -2,6 +2,7 @@ package crazypants.enderio.zoo.entity.render;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.entity.EntityOwl;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -13,7 +14,7 @@ public class RenderOwl extends RenderLiving<EntityOwl> {
 
   public static final Factory FACTORY = new Factory();
 
-  private static final @Nonnull ResourceLocation TEX = new ResourceLocation("enderzoo:entity/owl.png");
+  private static final @Nonnull ResourceLocation TEX = new ResourceLocation(EnderIOZoo.DOMAIN, "entity/owl.png");
 
   private int debug1 = 0;
   private int debug2 = 1;

@@ -59,6 +59,18 @@ public class PotionUtil {
     return res;
   }
 
+  public static @Nonnull ItemStack createFloatingPotion(boolean isProlonged, boolean isAugmented, boolean isSplash) {
+    ItemStack res = getEmptyPotion(isSplash);
+    if (isAugmented) {
+      PotionUtils.addPotionToItemStack(res, PotionFloating.getFloatingstrong());
+    } else if (isProlonged) {
+      PotionUtils.addPotionToItemStack(res, PotionFloating.getFloatinglong());
+    } else {
+      PotionUtils.addPotionToItemStack(res, PotionFloating.getFloating());
+    }
+    return res;
+  }
+
   public static @Nonnull ItemStack createSwiftnessPotion(boolean isProlonged, boolean isSplash) {
     ItemStack res = getEmptyPotion(isSplash);
     if (isProlonged) {

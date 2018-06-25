@@ -2,6 +2,7 @@ package crazypants.enderio.zoo.entity.render;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.zoo.EnderIOZoo;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderCreeper;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -13,7 +14,7 @@ public class RenderConcussionCreeper extends RenderCreeper {
 
   public static final Factory FACTORY = new Factory();
 
-  private static final @Nonnull ResourceLocation creeperTextures = new ResourceLocation("enderzoo:" + "entity/concussionCreeper.png");
+  private static final @Nonnull ResourceLocation creeperTextures = new ResourceLocation(EnderIOZoo.DOMAIN, "entity/concussionCreeper.png");
 
   public RenderConcussionCreeper(RenderManager p_i46186_1_) {
     super(p_i46186_1_);

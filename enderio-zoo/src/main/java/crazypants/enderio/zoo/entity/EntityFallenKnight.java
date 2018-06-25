@@ -3,6 +3,8 @@ package crazypants.enderio.zoo.entity;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.zoo.EnderIOZoo;
@@ -62,8 +64,11 @@ public class EntityFallenKnight extends EntitySkeleton implements IEnderZooMob {
   public static final int EGG_FG_COL = 0x365A25;
   public static final int EGG_BG_COL = 0xA0A0A0;
 
-  private final @Nonnull EntityAIMountedArrowAttack aiArrowAttack;
-  private final @Nonnull EntityAIMountedAttackOnCollide aiAttackOnCollide;
+  private final @Nonnull EntityAIMountedArrowAttack aiArrowAttack = new EntityAIMountedArrowAttack(this, ZooConfig.fallenKnightChargeSpeed,
+      ZooConfig.fallenMountChargeSpeed, ZooConfig.fallenKnightRangedMinAttackPause, ZooConfig.fallenKnightRangedMaxAttackPause,
+      ZooConfig.fallenKnightRangedMaxRange, ZooConfig.fallKnightMountedArchersMaintainDistance);
+  private final @Nonnull EntityAIMountedAttackOnCollide aiAttackOnCollide = new EntityAIMountedAttackOnCollide(this, EntityPlayer.class,
+      ZooConfig.fallenKnightChargeSpeed, ZooConfig.fallenMountChargeSpeed, false);
 
   private final @Nonnull EntityAIBreakDoor breakDoorAI = new EntityAIBreakDoor(this);
   private boolean canBreakDoors = false;
@@ -76,20 +81,16 @@ public class EntityFallenKnight extends EntitySkeleton implements IEnderZooMob {
 
   public EntityFallenKnight(World world) {
     super(world);
+    setCombatTaskReal();
     targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityVillager>(this, EntityVillager.class, false));
     targetTasks.addTask(2, new EntityAINearestAttackableTarget<AbstractIllager>(this, AbstractIllager.class, false));
-    aiArrowAttack = new EntityAIMountedArrowAttack(this, ZooConfig.fallenKnightChargeSpeed, ZooConfig.fallenMountChargeSpeed,
-        ZooConfig.fallenKnightRangedMinAttackPause, ZooConfig.fallenKnightRangedMaxAttackPause, ZooConfig.fallenKnightRangedMaxRange,
-        ZooConfig.fallKnightMountedArchersMaintainDistance);
-    aiAttackOnCollide = new EntityAIMountedAttackOnCollide(this, EntityPlayer.class, ZooConfig.fallenKnightChargeSpeed, ZooConfig.fallenMountChargeSpeed,
-        false);
   }
 
   @Override
   protected void applyEntityAttributes() {
     super.applyEntityAttributes();
     getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(ZooConfig.fallenKnightFollowRange.get());
-    MobInfo.FALLEN_KNIGHT.applyAttributes(this);
+    applyAttributes(this, ZooConfig.fallenKnightHealth, ZooConfig.fallenKnightAttackDamage);
   }
 
   // private float getAttackRange() {
@@ -99,8 +100,12 @@ public class EntityFallenKnight extends EntitySkeleton implements IEnderZooMob {
   // return 2;
   // }
 
+  // This is called from the super constructor and so is completely useless
   @Override
   public void setCombatTask() {
+  }
+
+  public void setCombatTaskReal() {
     tasks.removeTask(getAiAttackOnCollide());
     tasks.removeTask(getAiArrowAttack());
     if (isRanged()) {
@@ -108,6 +113,12 @@ public class EntityFallenKnight extends EntitySkeleton implements IEnderZooMob {
     } else {
       tasks.addTask(4, getAiAttackOnCollide());
     }
+  }
+
+  @Override
+  public void setItemStackToSlot(@Nonnull EntityEquipmentSlot slotIn, @Nonnull ItemStack stack) {
+    super.setItemStackToSlot(slotIn, stack);
+    setCombatTaskReal();
   }
 
   public @Nonnull EntityAIMountedArrowAttack getAiArrowAttack() {
@@ -158,7 +169,7 @@ public class EntityFallenKnight extends EntitySkeleton implements IEnderZooMob {
       isMounted = isRidingMount();
     }
     if (isBurning() && isRidingMount()) {
-      getRidingEntity().setFire(8);
+      getRidingEntityNN().setFire(8);
     }
     if (ZooConfig.fallenKnightArchersSwitchToMelee.get() && (!isMounted || !ZooConfig.fallKnightMountedArchersMaintainDistance.get()) && attackTarget != null
         && isRanged() && getDistanceSq(attackTarget) < 5) {
@@ -167,7 +178,11 @@ public class EntityFallenKnight extends EntitySkeleton implements IEnderZooMob {
   }
 
   private boolean isRidingMount() {
-    return isRiding() && getRidingEntity().getClass() == EntityFallenMount.class;
+    return isRiding() && getRidingEntityNN().getClass() == EntityFallenMount.class;
+  }
+
+  public @Nonnull Entity getRidingEntityNN() {
+    return NullHelper.notnullM(getRidingEntity(), "getRidingEntity()");
   }
 
   @Override
@@ -323,6 +338,7 @@ public class EntityFallenKnight extends EntitySkeleton implements IEnderZooMob {
 
     // From base entity living class
     getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(new AttributeModifier("Random spawn bonus", rand.nextGaussian() * 0.05D, 1));
+    setCombatTaskReal();
     addRandomArmor();
     setEnchantmentBasedOnDifficulty(di);
 
@@ -344,6 +360,7 @@ public class EntityFallenKnight extends EntitySkeleton implements IEnderZooMob {
   public void readEntityFromNBT(@Nonnull NBTTagCompound root) {
     super.readEntityFromNBT(root);
     setCanBreakDoors(root.getBoolean("canBreakDoors"));
+    setCombatTaskReal();
   }
 
   private void setCanBreakDoors(boolean val) {

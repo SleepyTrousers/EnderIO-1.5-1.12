@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
 
+import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.entity.EntityDireSlime;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -19,7 +20,7 @@ public class RenderDireSlime extends RenderLiving<EntityDireSlime> {
 
   public static final Factory FACTORY = new Factory();
 
-  private static final ResourceLocation magmaCubeTextures = new ResourceLocation("enderzoo:entity/direslime.png");
+  private static final ResourceLocation magmaCubeTextures = new ResourceLocation(EnderIOZoo.DOMAIN, "entity/direslime.png");
 
   public RenderDireSlime(RenderManager p_i46186_1_) {
     super(p_i46186_1_, new ModelDireSlime(), 0.25F);

@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import crazypants.enderio.zoo.EnderZoo;
-import crazypants.enderio.zoo.Log;
+import crazypants.enderio.base.Log;
+import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.config.Config;
-import crazypants.enderio.zoo.config.SpawnConfig;
-import crazypants.enderio.zoo.entity.MobInfo;
 import crazypants.enderio.zoo.spawn.impl.SpawnEntry;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -45,26 +43,21 @@ public final class MobSpawns {
     if (entry == null) {
       return;
     }
-    
+
     spawnEntries.add(entry);
 
-    String mobname = entry.getMobName().replace("EnderZoo.","").toLowerCase();//To fix legacy config files that werent updated, for existing installs
-    //but the config xml also has been updated too
+    String mobname = entry.getMobName().replace("EnderZoo.", "").toLowerCase();// To fix legacy config files that werent updated, for existing installs
+    // but the config xml also has been updated too
     @SuppressWarnings("unchecked")
-    Class<? extends EntityLiving> clz = (Class<? extends EntityLiving>) EntityList.getClass(new ResourceLocation(EnderZoo.MODID,mobname));
+    Class<? extends EntityLiving> clz = (Class<? extends EntityLiving>) EntityList.getClass(new ResourceLocation(EnderIOZoo.MODID, mobname));
     if (clz == null) {
       Log.warn("Skipping spawn entry " + entry.getId() + " as mob " + entry.getMobName() + " is not registered");
       return;
     }
-    
-    if(MobInfo.isDisabled(clz)) {
-      Log.info(entry.getMobName() + " is disabled");
-      return;
-    }
-    
+
     if (entry.isRemove()) {
       if (PRINT_DETAIL) {
-        //yeah, I know I could print them as debug messages but that is more painful to change...
+        // yeah, I know I could print them as debug messages but that is more painful to change...
         Log.info("EnderIO.MobSpawns.addSpawn: Removing spawns defined in entry: " + entry + " for biomes: ");
         System.out.print(" - ");
       }

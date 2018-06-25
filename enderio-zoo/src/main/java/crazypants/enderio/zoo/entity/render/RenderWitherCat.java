@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 
+import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.entity.EntityWitherCat;
 import crazypants.enderio.zoo.entity.EntityWitherCat.GrowthMode;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -19,8 +20,8 @@ public class RenderWitherCat extends RenderLiving<EntityWitherCat> {
 
   public static final Factory FACTORY = new Factory();
 
-  private @Nonnull ResourceLocation texture = new ResourceLocation("enderzoo:entity/wither_cat.png");
-  private @Nonnull ResourceLocation angryTexture = new ResourceLocation("enderzoo:entity/wither_cat_angry.png");
+  private @Nonnull ResourceLocation texture = new ResourceLocation(EnderIOZoo.DOMAIN, "entity/wither_cat.png");
+  private @Nonnull ResourceLocation angryTexture = new ResourceLocation(EnderIOZoo.DOMAIN, "entity/wither_cat_angry.png");
 
   public RenderWitherCat(RenderManager rm) {
     super(rm, new ModelWitherCat(), 0.4F);

@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
 
+import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.entity.EntityEnderminy;
 import net.minecraft.client.model.ModelEnderman;
 import net.minecraft.client.renderer.GlStateManager;
@@ -21,8 +22,8 @@ public class RenderEnderminy extends RenderLiving<EntityEnderminy> {
 
   public static final Factory FACTORY = new Factory();
 
-  private static final @Nonnull ResourceLocation endermanEyesTexture = new ResourceLocation("enderzoo:" + "entity/enderminy_eyes.png");
-  private static final @Nonnull ResourceLocation endermanTextures = new ResourceLocation("enderzoo:" + "entity/enderminy.png");
+  private static final @Nonnull ResourceLocation endermanEyesTexture = new ResourceLocation(EnderIOZoo.DOMAIN, "entity/enderminy_eyes.png");
+  private static final @Nonnull ResourceLocation endermanTextures = new ResourceLocation(EnderIOZoo.DOMAIN, "entity/enderminy.png");
 
   private ModelEnderman endermanModel;
   private Random rnd = new Random();

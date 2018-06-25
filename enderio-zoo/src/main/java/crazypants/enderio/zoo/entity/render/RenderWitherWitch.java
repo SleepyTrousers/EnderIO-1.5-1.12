@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import org.lwjgl.opengl.GL11;
 
 import crazypants.enderio.util.Prep;
+import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.entity.EntityWitherWitch;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelWitch;
@@ -26,7 +27,7 @@ public class RenderWitherWitch extends RenderLiving<EntityWitherWitch> {
 
   public static final Factory FACTORY = new Factory();
 
-  private static final ResourceLocation witchTextures = new ResourceLocation("enderzoo:entity/wither_witch.png");
+  private static final ResourceLocation witchTextures = new ResourceLocation(EnderIOZoo.DOMAIN, "entity/wither_witch.png");
   private final ModelWitch witchModel;
 
   public RenderWitherWitch(RenderManager rm) {

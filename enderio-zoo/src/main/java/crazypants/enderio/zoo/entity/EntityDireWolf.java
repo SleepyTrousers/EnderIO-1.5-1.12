@@ -123,7 +123,7 @@ public class EntityDireWolf extends EntityMob implements IEnderZooMob {
     super.applyEntityAttributes();
     getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
     getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(40.0D);
-    MobInfo.DIRE_WOLF.applyAttributes(this);
+    applyAttributes(this, ZooConfig.wolfHealth, ZooConfig.wolfAttackDamage);
   }
 
   @Override

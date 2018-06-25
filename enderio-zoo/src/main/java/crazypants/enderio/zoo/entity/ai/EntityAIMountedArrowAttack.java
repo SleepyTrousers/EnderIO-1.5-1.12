@@ -1,7 +1,6 @@
 package crazypants.enderio.zoo.entity.ai;
 
 import javax.annotation.Nonnull;
-import javax.vecmath.Point3i;
 
 import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.zoo.entity.EntityUtil;
@@ -12,6 +11,7 @@ import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathPoint;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -152,24 +152,19 @@ public class EntityAIMountedArrowAttack extends EntityAIBase {
     runAwayTimer = 40;
     Vec3d targetDir = new Vec3d(attackTarget.posX, attackTarget.getEntityBoundingBox().minY, attackTarget.posZ);
     Vec3d entityPos = EntityUtil.getEntityPosition(entityHost);
-    targetDir = VecUtil.subtract(targetDir, entityPos);
-    targetDir = VecUtil.scale(targetDir, -1);
-    targetDir = targetDir.normalize();
 
-    double distance = attackRange.get() * 0.9;
-    targetDir = VecUtil.scale(targetDir, distance);
-    targetDir = VecUtil.add(targetDir, entityPos);
+    targetDir = entityPos.subtract(targetDir).normalize().scale(attackRange.get() * 0.9).add(entityPos);
 
-    Point3i probePoint = new Point3i((int) Math.round(targetDir.x), (int) Math.round(entityHost.posY), (int) Math.round(targetDir.z));
-    Point3i target = new Point3i(probePoint);
+    BlockPos probePoint = new BlockPos((int) Math.round(targetDir.x), (int) Math.round(entityHost.posY), (int) Math.round(targetDir.z));
 
     World world = entityHost.getEntityWorld();
 
-    if (!SpawnUtil.findClearGround(world, target, probePoint)) {
+    BlockPos clearGround = SpawnUtil.findClearGround(world, probePoint);
+    if (clearGround == null) {
       return false;
     }
 
-    boolean res = getNavigator().tryMoveToXYZ(probePoint.x, probePoint.y, probePoint.z, mountedEntityMoveSpeed);
+    boolean res = getNavigator().tryMoveToXYZ(clearGround.getX() + .5, clearGround.getY(), clearGround.getZ() + .5, mountedEntityMoveSpeed.get());
     if (getNavigator().noPath()) {
       runningAwayTo = null;
     } else {

@@ -49,7 +49,7 @@ public class EntityWitherCat extends EntityMob implements IOwnable<EntityWitherC
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
-    IEnderZooMob.register(event, NAME, EntityWitherCat.class, EGG_BG_COL, EGG_FG_COL, MobID.OWL);
+    IEnderZooMob.register(event, NAME, EntityWitherCat.class, EGG_BG_COL, EGG_FG_COL, MobID.WCAT);
   }
 
   @SubscribeEvent
@@ -82,14 +82,13 @@ public class EntityWitherCat extends EntityMob implements IOwnable<EntityWitherC
 
   private float lastScale = 1f;
   private EntityWitherWitch owner;
-  private final @Nonnull EntityAIFollowOwner followTask;
+  private final @Nonnull EntityAIFollowOwner followTask = new EntityAIFollowOwner(this, 2.5, 5, 1);
 
   private boolean attackTargetChanged = false;
 
   public EntityWitherCat(World world) {
     super(world);
 
-    followTask = new EntityAIFollowOwner(this, 2.5, 5, 1);
     EntityAIFollowOwner retreatTask = new EntityAIFollowOwner(this, 2.5, 5, 2.5);
 
     tasks.addTask(1, new EntityAISwimming(this));
@@ -170,7 +169,7 @@ public class EntityWitherCat extends EntityMob implements IOwnable<EntityWitherC
   protected void applyEntityAttributes() {
     super.applyEntityAttributes();
     getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-    MobInfo.WITHER_CAT.applyAttributes(this);
+    applyAttributes(this, ZooConfig.witherCatHealth, ZooConfig.witherCatAttackDamage);
   }
 
   @Override

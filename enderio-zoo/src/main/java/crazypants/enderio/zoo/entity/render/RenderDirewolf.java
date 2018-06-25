@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
 
+import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.entity.EntityDireWolf;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -15,7 +16,7 @@ public class RenderDirewolf extends RenderLiving<EntityDireWolf> {
 
   public static final Factory FACTORY = new Factory();
 
-  private ResourceLocation wolfTextures = new ResourceLocation("enderzoo:entity/dire_wolf.png");
+  private ResourceLocation wolfTextures = new ResourceLocation(EnderIOZoo.DOMAIN, "entity/dire_wolf.png");
 
   private int debugCounter = 0;
 
