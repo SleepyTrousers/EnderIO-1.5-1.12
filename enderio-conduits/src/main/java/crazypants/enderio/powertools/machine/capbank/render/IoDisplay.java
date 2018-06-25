@@ -191,6 +191,7 @@ public class IoDisplay implements IInfoRenderer {
   }
 
   private float drawText(HeadingText heading, @Nonnull String text, float offset, float scale, float size, FontRenderer fr) {
+    GlStateManager.disableRescaleNormal(); // some stuff leaks this, so we need to force disable it
     GlStateManager.pushMatrix();
     GlStateManager.translate(0, offset, 0);
     GlStateManager.scale(scale, scale, scale);
