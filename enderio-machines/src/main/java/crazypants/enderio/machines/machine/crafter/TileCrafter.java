@@ -20,6 +20,7 @@ import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineE
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
+import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.minecraft.HandleItemStack;
@@ -30,8 +31,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
+import net.minecraftforge.common.ForgeHooks;
 
 @Storable
 public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implements IPaintable.IPaintableTileEntity {
@@ -106,31 +106,28 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
     ticksSinceLastCraft++;
-    if (!redstoneCheck || !craftingGrid.hasValidRecipe() || !canMergeOutput() || !hasRequiredPower()) {
-      return false;
-    }
-    int ticksPerCraft = getTicksPerCraft();
-    if (ticksSinceLastCraft <= ticksPerCraft) {
-      return false;
-    }
-    ticksSinceLastCraft = 0;
 
     // process buffered container items
     if (!containerItems.isEmpty()) {
-      NNIterator<ItemStack> iter = containerItems.iterator();
-      while (iter.hasNext()) {
-        ItemStack stack = iter.next();
-        InventorySlot outSlot = getInventory().getSlot(OUTPUT_SLOT);
-        if (outSlot.get().isEmpty()) {
-          outSlot.set(stack);
+      for (NNIterator<ItemStack> iter = containerItems.iterator(); iter.hasNext();) {
+        if (mergeOutput(iter.next())) {
           iter.remove();
         }
       }
-      return false;
-    }
-
-    if (craftRecipe()) {
-      getEnergy().extractEnergy(getPowerUsePerCraft(), false);
+      ticksSinceLastCraft = 0;
+    } else if (ticksSinceLastCraft > getTicksPerCraft()) {
+      if (!craftingGrid.hasValidRecipe()) {
+        for (int i = 0; i < 9; i++) {
+          ItemStack stack = getInventory().getSlot(INPUT_SLOT + i).get();
+          if (Prep.isValid(stack)) {
+            containerItems.add(stack);
+            getInventory().getSlot(INPUT_SLOT + i).clear();
+          }
+        }
+      } else if (redstoneCheck && hasRequiredPower() && canMergeOutput() && canCraft() && craftRecipe()) {
+        ticksSinceLastCraft = 0;
+        getEnergy().extractEnergy(getPowerUsePerCraft(), false);
+      }
     }
     return false;
   }
@@ -164,6 +161,26 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
   private static final UUID uuid = UUID.fromString("9b381cae-3c95-4a64-b958-1e25b0a4c790");
   private static final GameProfile DUMMY_PROFILE = new GameProfile(uuid, "[EioCrafter]");
 
+  private boolean canCraft() {
+    int[] used = new int[9];
+    int found = 0, required = 0;
+    for (int j = 0; j < 9; j++) {
+      ItemStack req = craftingGrid.getStackInSlot(j);
+      if (!req.isEmpty()) {
+        required++;
+        for (int i = 0; i < 9; i++) {
+          ItemStack stack = getInventory().getSlot(INPUT_SLOT + i).get();
+          if (stack.getCount() > used[i] && compareDamageable(stack, req)) {
+            found++;
+            used[i]++;
+            break;
+          }
+        }
+      }
+    }
+    return found == required;
+  }
+
   private boolean craftRecipe() {
 
     // (1) Find the items to craft with and put a copy into a temp crafting grid;
@@ -175,121 +192,73 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
       }
     }, 3, 3);
 
-    int[] usedItems = new int[9];
-
     for (int j = 0; j < 9; j++) {
       ItemStack req = craftingGrid.getStackInSlot(j);
-      if (!req.isEmpty()) {
+      if (req.isEmpty()) {
+        inv.setInventorySlotContents(j, req);
+      } else {
         for (int i = 0; i < 9; i++) {
           ItemStack stack = getInventory().getSlot(INPUT_SLOT + i).get();
-          if (!stack.isEmpty() && stack.getCount() > usedItems[i] && compareDamageable(stack, req)) {
-            req = ItemStack.EMPTY;
-            usedItems[i]++;
-            ItemStack craftingItem = stack.copy();
-            craftingItem.setCount(1);
-            inv.setInventorySlotContents(j, craftingItem);
+          if (compareDamageable(stack, req)) {
+            inv.setInventorySlotContents(j, stack.splitStack(1));
             break;
           }
         }
-        if (!req.isEmpty()) {
-          return false;
-        }
       }
+      // Note: This need to be protected by canCraft() always!
     }
 
-    // (2) Try to craft with the temp grid
-    ItemStack output = ItemStack.EMPTY;
+    if (playerInst == null) {
+      playerInst = new FakePlayerEIO(world, getLocation(), DUMMY_PROFILE);
+      playerInst.setOwner(getOwner());
+    }
+
+    // (2) Find a recipe
     IRecipe recipe = CraftingManager.findMatchingRecipe(inv, world);
-    if (recipe != null) {
-      output = recipe.getRecipeOutput();
+    if (recipe == null) {
+      return false;
     }
 
-    // (3) If we got a result, ...
-    if (!output.isEmpty()) {
-      if (playerInst == null) {
-        playerInst = new FakePlayerEIO(world, getLocation(), DUMMY_PROFILE);
-        playerInst.setOwner(getOwner());
-      }
-      MinecraftForge.EVENT_BUS.post(new ItemCraftedEvent(playerInst, output, inv));
+    // (3) Craft
+    ForgeHooks.setCraftingPlayer(playerInst);
+    ItemStack output = recipe.getCraftingResult(inv);
+    output.onCrafting(world, playerInst, 1);
+    NonNullList<ItemStack> remaining = CraftingManager.getRemainingItems(inv, world);
+    ForgeHooks.setCraftingPlayer(null);
 
-      NonNullList<ItemStack> remaining = CraftingManager.getRemainingItems(inv, world);
-
-      // (3a) ... remove the used up items and ...
-      for (int i = 0; i < 9; i++) {
-        ItemStack stack = getInventory().getSlot(INPUT_SLOT + i).get();
-        for (int j = 0; j < usedItems[i] && !stack.isEmpty(); j++) {
-          getInventory().getSlot(INPUT_SLOT + i).set(eatOneItemForCrafting(i, stack.copy(), remaining, usedItems[i]));
-        }
+    // (4a) ... remove the used up items and ...
+    for (int j = 0; j < 9; j++) {
+      inv.getStackInSlot(j).shrink(1);
+      if (!inv.getStackInSlot(j).isEmpty()) {
+        containerItems.add(inv.getStackInSlot(j));
       }
-
-      for (ItemStack stack : remaining) {
-        if (!stack.isEmpty()) {
-          containerItems.add(stack.copy());
-        }
-      }
-
-      // (3b) ... put the result into its slot
-      ItemStack oldOutput = getInventory().getSlot(OUTPUT_SLOT).get();
-      if (oldOutput.isEmpty()) {
-        getInventory().getSlot(OUTPUT_SLOT).set(output);
-      } else if (ItemUtil.areStackMergable(oldOutput, output)) {
-        ItemStack cur = oldOutput.copy();
-        cur.grow(output.getCount());
-        if (cur.getCount() > cur.getMaxStackSize()) {
-          // we check beforehand that there is enough free space, but some mod may return different
-          // amounts based on the nbt of the input items (e.g. magical wood)
-          ItemStack overflow = cur.copy();
-          overflow.setCount(cur.getCount() - cur.getMaxStackSize());
-          cur.setCount(cur.getMaxStackSize());
-          containerItems.add(overflow);
-        }
-        getInventory().getSlot(OUTPUT_SLOT).set(cur);
-      } else {
-        // some mod may return different nbt based on the nbt of the input items (e.g. TE machines?)
-        containerItems.add(output);
-      }
-    } else {
-      // Crafting failed. This is not supposed to happen, but if a recipe is nbt-sensitive, it can.
-      // To avoid being stuck in a dead loop, we flush the non-working input items.
-      for (int j = 0; j < 9; j++) {
-        ItemStack stack = getInventory().getSlot(INPUT_SLOT + j).get();
-        if (usedItems[j] > 0 && !stack.isEmpty()) {
-          ItemStack rejected = stack.copy();
-          rejected.setCount(Math.min(stack.getCount(), usedItems[j]));
-          containerItems.add(rejected);
-          if (stack.getCount() <= usedItems[j]) {
-            this.getInventory().insertItem(j, ItemStack.EMPTY, false);
-          } else {
-            stack.shrink(usedItems[j]);
-          }
-        }
+    }
+    // (4b) ... and the remains and ...
+    for (ItemStack stack : remaining) {
+      if (!stack.isEmpty()) {
+        containerItems.add(stack.copy());
       }
     }
 
-    getEnergy().useEnergy(CapacitorKey.CRAFTER_POWER_CRAFT);
+    // (5) ... put the result into its slot
+    if (!mergeOutput(output)) {
+      containerItems.add(output);
+    }
+
     return true;
   }
 
-  @Nonnull
-  private ItemStack eatOneItemForCrafting(int slot, @Nonnull ItemStack avail, NonNullList<ItemStack> remaining, int usedItems) {
-    // if one of the remaining items is the container item for the input, place the remaining item in the same grid
-    if (remaining != null && remaining.size() > 0 && avail.getItem().hasContainerItem(avail)) {
-      ItemStack used = avail.getItem().getContainerItem(avail);
-      if (!used.isEmpty()) {
-        for (int i = 0; i < remaining.size(); i++) {
-          ItemStack s = remaining.get(i);
-          if (!s.isEmpty() && s.isItemEqualIgnoreDurability(used)) {
-            remaining.set(i, ItemStack.EMPTY);
-            return s;
-          }
-        }
-      }
+  private boolean mergeOutput(@Nonnull ItemStack stack) {
+    ItemStack oldOutput = getInventory().getSlot(OUTPUT_SLOT).get();
+    if (oldOutput.isEmpty()) {
+      getInventory().getSlot(OUTPUT_SLOT).set(stack);
+      return true;
+    } else if (ItemUtil.areStackMergable(oldOutput, stack)) {
+      oldOutput.grow(stack.splitStack(Math.min(oldOutput.getMaxStackSize() - oldOutput.getCount(), stack.getCount())).getCount());
+      getInventory().getSlot(OUTPUT_SLOT).set(oldOutput);
+      return stack.isEmpty();
     }
-    avail.shrink(usedItems);
-    if (avail.getCount() == 0) {
-      avail = ItemStack.EMPTY;
-    }
-    return avail;
+    return false;
   }
 
   private boolean canMergeOutput() {
