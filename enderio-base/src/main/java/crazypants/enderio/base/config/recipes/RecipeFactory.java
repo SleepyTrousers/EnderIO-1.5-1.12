@@ -76,7 +76,7 @@ public class RecipeFactory {
     return new NNList<>(new File(configDirectory, pathName).listFiles(new FilenameFilter() {
       @Override
       public final boolean accept(File dir, String name) {
-        return name.endsWith(".xml");
+        return name.endsWith(".xml") && !"sagmill_oresalleasy.xml".equals(name);
       }
     }));
   }
