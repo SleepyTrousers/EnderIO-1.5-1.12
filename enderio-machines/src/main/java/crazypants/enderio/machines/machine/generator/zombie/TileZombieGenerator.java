@@ -80,10 +80,12 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   final SmartTank tank;
 
   private boolean tanksDirty;
-  @Store(NBTAction.CLIENT) private boolean active = false;
+  @Store(NBTAction.CLIENT)
+  private boolean active = false;
   private PowerDistributor powerDis;
 
-  @Store private float ticksRemaingFuel;
+  @Store
+  private float ticksRemaingFuel;
   private boolean inPause;
 
   public TileZombieGenerator() {
@@ -265,7 +267,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   @Override
   @Nonnull
   public List<ITankData> getTankDisplayData() {
-    return Collections.<ITankData>singletonList(new ITankData() {
+    return Collections.<ITankData> singletonList(new ITankData() {
 
       @Override
       @Nonnull
@@ -306,6 +308,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
 
   /**
    * Used to get different fluid types for different generators of a similar style
+   * 
    * @return Fluid type for the tank to use
    */
   @Nonnull
@@ -313,7 +316,6 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
     return Fluids.NUTRIENT_DISTILLATION.getFluid();
   }
 
-  @Nonnull
   public int getTicksPerBucketOfFuel() {
     return ticksPerBucketOfFuel;
   }
