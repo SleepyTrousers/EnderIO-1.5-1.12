@@ -33,7 +33,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 public class TileReservoir extends TileEntityEio implements ITankAccess.IExtendedTankAccess {
 
   @Store({ NBTAction.CLIENT, NBTAction.SAVE })
-  final @Nonnull SmartTank tank = new SmartTank(FluidRegistry.WATER, Fluid.BUCKET_VOLUME);
+  final @Nonnull SmartTank tank;
   public boolean canRefill = false;
 
   @Store({ NBTAction.CLIENT, NBTAction.SAVE })
@@ -41,8 +41,24 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
 
   private boolean tankDirty = false;
 
+  public static class TileOmniReservoir extends TileReservoir {
+
+    public TileOmniReservoir() {
+      super(null);
+    }
+  }
+
   public TileReservoir() {
+    this(FluidRegistry.WATER);
+  }
+
+  private TileReservoir(@Nullable Fluid fluid) {
     super();
+    if (fluid != null) {
+      tank = new SmartTank(fluid, Fluid.BUCKET_VOLUME);
+    } else {
+      tank = new SmartTank(Fluid.BUCKET_VOLUME);
+    }
     tank.setTileEntity(this);
   }
 
@@ -110,7 +126,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
     TileEntity tileEntity = world.getTileEntity(otherPos);
     if (tileEntity instanceof TileReservoir) {
       final TileReservoir otherTe = (TileReservoir) tileEntity;
-      if (!otherTe.tank.isFull()) {
+      if (!otherTe.tank.isFull() && otherTe.tank.canFillFluidType(tank.getFluidNN())) {
         FluidStack canDrain = tank.drainInternal(otherTe.tank.getAvailableSpace(), false);
         if (canDrain != null && canDrain.amount > 0) {
           int fill = otherTe.tank.fill(canDrain, true);
@@ -155,10 +171,10 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
     }
 
     if (shouldDoWorkThisTick(10)) {
-      if (tankDirty || !tank.isFull() || !canRefill) {
+      if (!(this instanceof TileOmniReservoir) && (tankDirty || !tank.isFull() || !canRefill)) {
         canRefill = hasEnoughLiquid();
       }
-    } else if (canRefill && !tank.isFull() && shouldDoWorkThisTick(10, -1)) {
+    } else if (canRefill && !tank.isFull() && shouldDoWorkThisTick(10, -1) && tank.getFluid() != null) {
       tank.addFluidAmount(Fluid.BUCKET_VOLUME / 2);
       setTanksDirty();
     }
@@ -169,7 +185,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
         doEqualize();
       }
     }
-    if (autoEject && canRefill) {
+    if (autoEject && (canRefill || this instanceof TileOmniReservoir)) {
       doPush();
     }
 
@@ -194,7 +210,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
 
   @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
-    if (forFluidType != null && forFluidType.getFluid() == FluidRegistry.WATER) {
+    if (forFluidType != null && tank.canFillFluidType(forFluidType)) {
       return tank;
     }
     return null;
@@ -256,7 +272,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
 
         @Override
         protected boolean canDrain(@Nonnull EnumFacing from) {
-          return TileReservoir.this.canRefill;
+          return TileReservoir.this instanceof TileOmniReservoir || TileReservoir.this.canRefill;
         }
 
         @Override

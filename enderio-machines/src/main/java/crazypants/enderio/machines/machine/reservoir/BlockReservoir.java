@@ -1,6 +1,7 @@
 package crazypants.enderio.machines.machine.reservoir;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.FluidUtil;
@@ -32,10 +33,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.machines.init.MachineObject.block_omni_reservoir;
 import static crazypants.enderio.machines.init.MachineObject.block_reservoir;
 
 public class BlockReservoir extends BlockEio<TileReservoir> implements IResourceTooltipProvider, ISmartRenderAwareBlock, IHaveTESR {
@@ -43,13 +46,41 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   @SideOnly(Side.CLIENT)
   private static ReservoirItemRenderMapper RENDER_MAPPER;
 
+  private @Nullable Fluid acceptedFluid = null;
+  private int volume = Fluid.BUCKET_VOLUME;
+
+  public static BlockOmniReservoir create_omni(@Nonnull IModObject modObject) {
+    BlockOmniReservoir res = new BlockOmniReservoir(modObject);
+    res.init();
+    return res;
+  }
+
   public static BlockReservoir create(@Nonnull IModObject modObject) {
     BlockReservoir result = new BlockReservoir(modObject);
     result.init();
+    result.acceptedFluid = FluidRegistry.WATER;
     return result;
   }
 
-  private BlockReservoir(@Nonnull IModObject modObject) {
+  private static class BlockOmniReservoir extends  BlockReservoir {
+
+    public BlockOmniReservoir(@Nonnull IModObject modObject) {
+      super(modObject);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void bindTileEntitySpecialRenderer() {
+      ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer((BlockReservoir) block_omni_reservoir.getBlockNN()));
+    }
+
+    @Override
+    public @Nonnull TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState metadata) {
+      return new TileReservoir.TileOmniReservoir();
+    }
+  }
+
+  protected BlockReservoir(@Nonnull IModObject modObject) {
     super(modObject, new Material(MapColor.WATER) {
 
       @Override
@@ -168,7 +199,7 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   @Override
   @SideOnly(Side.CLIENT)
   public void bindTileEntitySpecialRenderer() {
-    ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer((BlockReservoir) block_reservoir.getBlock()));
+    ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer((BlockReservoir) block_reservoir.getBlockNN()));
   }
 
 }

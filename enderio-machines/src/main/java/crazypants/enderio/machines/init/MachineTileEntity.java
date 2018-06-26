@@ -68,6 +68,7 @@ public enum MachineTileEntity implements IModTileEntity {
   TileElectricLight(TileElectricLight.class),
   TileLightNode(TileLightNode.class),
   TileReservoir(TileReservoir.class),
+  TileOmniReservoir(TileReservoir.TileOmniReservoir.class),
   TileInhibitorObelisk(TileInhibitorObelisk.class),
   TileRelocatorObelisk(TileRelocatorObelisk.class),
   TileKillerJoe(TileKillerJoe.class),

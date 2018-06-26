@@ -244,6 +244,10 @@ tile.block_reservoir.tooltip.detailed.line3=- Add two buckets of water for an in
 tile.block_reservoir.tooltip.detailed.line4=- Produces one bucket per second
 tile.block_reservoir.tooltip.detailed.line5=- Right-Click with a wrench to enable auto-output
 
+tile.block_omni_reservoir.name=Omnivoir
+tile.block_omni_reservoir.tooltip.detailed.line1=A reservoir for any liquid.
+tile.block_omni_reservoir.tooltip.detailed.line5=- Right-Click with a wrench to enable auto-output
+
 tile.block_sag_mill.name=SAG Mill
 tile.block_sag_mill.tooltip.detailed.line1=Grinds ore and other items
 tile.block_sag_mill.tooltip.detailed.line2=Add grinding balls to increase output and efficiency
