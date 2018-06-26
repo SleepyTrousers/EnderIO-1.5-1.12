@@ -62,7 +62,7 @@ public class ChunkTicket {
   public static void onPreInit(EnderIOLifecycleEvent.PreInit event) {
     // must register something, but the code that read that back is null-safe---in which case tickets are silently discarded on world load. Which is perfect of
     // the teleport tickets
-    ForgeChunkManager.setForcedChunkLoadingCallback(EnderIO.MODID, null);
+    ForgeChunkManager.setForcedChunkLoadingCallback(EnderIO.instance, null);
   }
 
   @SubscribeEvent
