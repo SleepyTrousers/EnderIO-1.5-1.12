@@ -2,7 +2,7 @@
     "forge_marker":1,
     "defaults":{
         "textures":{
-            "particle":"enderio:blocks/block_enhanced_vat"
+            "particle":"enderio:blocks/block_enhanced_machine_bottom"
         }
     },
     "variants":{
