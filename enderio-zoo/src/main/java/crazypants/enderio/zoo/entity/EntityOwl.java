@@ -76,12 +76,12 @@ public class EntityOwl extends EntityAnimal implements IFlyingMob {
   public static final @Nonnull SoundEvent SND_HURT;
 
   static {
-    SND_HOOT = new SoundEvent(new ResourceLocation("enderzoo", "owl.hootSingle"));
-    SND_HOOT.setRegistryName("enderzoo:owl.hootSingle");
-    SND_HOOT2 = new SoundEvent(new ResourceLocation("enderzoo", "owl.hootDouble"));
-    SND_HOOT2.setRegistryName("owl.hootDouble");
-    SND_HURT = new SoundEvent(new ResourceLocation("enderzoo", "owl.hurt"));
-    SND_HURT.setRegistryName("owl.hurt");
+    SND_HOOT = new SoundEvent(new ResourceLocation(EnderIOZoo.DOMAIN, "owl.hootSingle"));
+    SND_HOOT.setRegistryName(EnderIOZoo.DOMAIN, "owl.hootSingle");
+    SND_HOOT2 = new SoundEvent(new ResourceLocation(EnderIOZoo.DOMAIN, "owl.hootDouble"));
+    SND_HOOT2.setRegistryName(EnderIOZoo.DOMAIN, "owl.hootDouble");
+    SND_HURT = new SoundEvent(new ResourceLocation(EnderIOZoo.DOMAIN, "owl.hurt"));
+    SND_HURT.setRegistryName(EnderIOZoo.DOMAIN, "owl.hurt");
   }
 
   private float wingRotation;

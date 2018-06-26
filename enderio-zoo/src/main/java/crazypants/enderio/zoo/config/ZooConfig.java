@@ -7,7 +7,7 @@ public final class ZooConfig {
 
   public static final IValueFactory F = Config.F.section("zoo");
 
-  public static final IValueFactory F0 = Config.F.section(".mobs");
+  public static final IValueFactory F0 = F.section(".mobs");
   public static final IValueFactory CREEPER = F0.section(".concussion_creeper");
 
   public static final IValue<Integer> explosionRange = CREEPER.make("explosionRange", 5, //

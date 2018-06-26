@@ -62,10 +62,10 @@ public class EntityDireWolf extends EntityMob implements IEnderZooMob {
   public static final int EGG_BG_COL = 0x606060;
   public static final int EGG_FG_COL = 0xA0A0A0;
 
-  private static final @Nonnull SoundEvent SND_HURT = new SoundEvent(new ResourceLocation("enderzoo:direwolf.hurt"));
-  private static final @Nonnull SoundEvent SND_HOWL = new SoundEvent(new ResourceLocation("enderzoo:direwolf.howl"));
-  private static final @Nonnull SoundEvent SND_GROWL = new SoundEvent(new ResourceLocation("enderzoo:direwolf.growl"));
-  private static final @Nonnull SoundEvent SND_DEATH = new SoundEvent(new ResourceLocation("enderzoo:direwolf.death"));
+  private static final @Nonnull SoundEvent SND_HURT = new SoundEvent(new ResourceLocation(EnderIOZoo.DOMAIN, "direwolf.hurt"));
+  private static final @Nonnull SoundEvent SND_HOWL = new SoundEvent(new ResourceLocation(EnderIOZoo.DOMAIN, "direwolf.howl"));
+  private static final @Nonnull SoundEvent SND_GROWL = new SoundEvent(new ResourceLocation(EnderIOZoo.DOMAIN, "direwolf.growl"));
+  private static final @Nonnull SoundEvent SND_DEATH = new SoundEvent(new ResourceLocation(EnderIOZoo.DOMAIN, "direwolf.death"));
 
   private static final @Nonnull DataParameter<Boolean> ANGRY_INDEX = EntityDataManager.<Boolean> createKey(EntityDireWolf.class, DataSerializers.BOOLEAN);
 
