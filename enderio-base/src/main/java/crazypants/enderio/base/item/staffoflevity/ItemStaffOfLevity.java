@@ -37,6 +37,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -102,6 +103,11 @@ public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider,
       }
     }
     return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+  }
+
+  @Override
+  public boolean canDestroyBlockInCreative(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
+    return false;
   }
 
   @Override

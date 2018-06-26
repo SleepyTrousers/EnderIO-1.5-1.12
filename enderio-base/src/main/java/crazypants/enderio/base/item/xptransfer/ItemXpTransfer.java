@@ -61,6 +61,11 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
     return EnumActionResult.PASS;
   }
 
+  @Override
+  public boolean canDestroyBlockInCreative(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
+    return false;
+  }
+
   public static void sendXPUpdate(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, boolean swing) {
     PacketHandler.INSTANCE.sendTo(new PacketXpTransferEffects(swing, pos), (EntityPlayerMP) player);
     world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 0.1F,

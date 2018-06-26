@@ -107,6 +107,11 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
   }
 
   @Override
+  public boolean canDestroyBlockInCreative(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
+    return false;
+  }
+
+  @Override
   public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack stack) {
     return getUnlocalizedName();
   }

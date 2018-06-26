@@ -204,6 +204,11 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   }
 
   @Override
+  public boolean canDestroyBlockInCreative(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
+    return false;
+  }
+
+  @Override
   public boolean shouldCauseReequipAnimation(@Nonnull ItemStack oldS, @Nonnull ItemStack newS, boolean slotChanged) {
     return slotChanged || oldS.getItem() != newS.getItem();
   }

@@ -52,6 +52,11 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
     return super.onItemRightClick(world, player, hand);
   }
 
+  @Override
+  public boolean canDestroyBlockInCreative(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
+    return false;
+  }
+
   private boolean printCoords(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull EntityPlayer player) {
 
     Vector3d headVec = Util.getEyePositionEio(player);

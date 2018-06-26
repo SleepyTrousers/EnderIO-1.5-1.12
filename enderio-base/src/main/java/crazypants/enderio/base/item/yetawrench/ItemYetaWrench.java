@@ -135,6 +135,11 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   }
 
   @Override
+  public boolean canDestroyBlockInCreative(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
+    return false;
+  }
+
+  @Override
   public boolean shouldCauseReequipAnimation(@Nonnull ItemStack oldStack, @Nonnull ItemStack newStack, boolean slotChanged) {
     return !ItemStack.areItemsEqual(oldStack, newStack); // Ignore NBT
   }
