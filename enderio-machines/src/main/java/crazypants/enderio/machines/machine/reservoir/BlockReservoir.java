@@ -71,7 +71,7 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
     @Override
     @SideOnly(Side.CLIENT)
     public void bindTileEntitySpecialRenderer() {
-      ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer((BlockReservoir) block_omni_reservoir.getBlockNN()));
+      ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.TileOmniReservoir.class, new ReservoirRenderer((BlockReservoir) block_omni_reservoir.getBlockNN()));
     }
 
     @Override
