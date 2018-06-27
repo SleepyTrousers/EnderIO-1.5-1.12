@@ -74,7 +74,7 @@ XML editor will display that as tooltips when editing this file.
 
   <capacitor key="enderio:block_ender_generator/loss" base="0" scaler="FIXED" />
   <capacitor key="enderio:block_ender_generator/buffer" base="500000" scaler="POWER" />
-  <capacitor key="enderio:block_ender_generator/gen" base="160" scaler="CHEMICAL" />
+  <capacitor key="enderio:block_ender_generator/gen" base="160" scaler="LINEAR_0_8" />
 
   <capacitor key="enderio:block_attractor_obelisk/intake" base="80" scaler="QUADRATIC" />
   <capacitor key="enderio:block_attractor_obelisk/buffer" base="100000" scaler="POWER" />

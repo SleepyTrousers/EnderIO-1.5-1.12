@@ -68,7 +68,7 @@ XML editor will display that as tooltips when editing this file.
       <entity name="minecraft:vex"                 costMultiplier="1.0" disabled="false"/> <!-- Vex -->
       <entity name="minecraft:villager"            costMultiplier="1.0" disabled="true"/> <!-- Villager -->
       <entity name="minecraft:villager_golem"      costMultiplier="10"  disabled="true"/> <!-- Iron Golem -->
-      <entity name="minecraft:vindication_illager" costMultiplier="30"  disabled="false"/> <!-- Vindicator -->
+      <entity name="minecraft:vindication_illager" costMultiplier="15"  disabled="false"/> <!-- Vindicator -->
       <entity name="minecraft:witch"               costMultiplier="5.0" disabled="false"/> <!-- Witch -->
       <entity name="minecraft:wither"              costMultiplier="50"  disabled="true"/> <!-- Wither -->
       <entity name="minecraft:wither_skeleton"     costMultiplier="20"  disabled="false"/> <!-- Wither Skeleton -->
@@ -81,6 +81,7 @@ XML editor will display that as tooltips when editing this file.
     </spawning>
   </recipe>
 
+<!-- TODO: Move this to using enderio-zoo -->
   <recipe name="Spawner, Ender Zoo" required="false">
     <spawning>
       <entity name="enderzoo:concussioncreeper"    costMultiplier="1.5" disabled="false"/>
