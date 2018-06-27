@@ -603,6 +603,8 @@ enchantment.enderio.witherweapon=Decay
 description.enchantment.enderio.witherweapon=Applies withering to the target|Applies to melee weapons
 enchantment.enderio.repellent=Repellent
 description.enchantment.enderio.repellent=Chance to teleport attackers away|Higher levels teleport more often and farther
+enchantment.enderio.shimmer=Shimmer
+description.enchantment.enderio.shimmer=Makes the item shimmer as if it was enchanted.|That's all.|Really.|Nothing more.|Yes, it is useless.|I know.
 
 potion.effect.enderio.withering=Potion of Decay
 splash_potion.effect.enderio.withering=Splash Potion of Decay
