@@ -552,6 +552,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     super.drawHoveringText(list, mouseX, mouseY, font);
   }
 
+  @Nonnull
   public InventoryPanelContainer getContainer() {
     return (InventoryPanelContainer) inventorySlots;
   }

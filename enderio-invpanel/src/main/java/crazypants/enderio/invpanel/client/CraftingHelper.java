@@ -1,6 +1,14 @@
 package crazypants.enderio.invpanel.client;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.invpanel.invpanel.GuiInventoryPanel;
@@ -10,35 +18,31 @@ import crazypants.enderio.invpanel.util.StoredCraftingRecipe;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
 public class CraftingHelper {
-  final ItemStack[][] ingredients;
+  final @Nonnull NNList<ItemStack>[] ingredients;
 
-  public CraftingHelper(ItemStack[][] ingredients) {
+  public CraftingHelper(@Nonnull NNList<ItemStack>[] ingredients) {
     this.ingredients = ingredients;
   }
 
+  @Nonnull
   public static CraftingHelper createFromRecipe(StoredCraftingRecipe recipe) {
-    ItemStack[][] ingredients = new ItemStack[9][];
+    NNList<ItemStack>[] ingredients = new NNList[9];
     for (int idx = 0; idx < 9; idx++) {
       ItemStack stack = recipe.get(idx);
-      if(stack != null) {
-        ingredients[idx] = new ItemStack[] { stack };
+      if(!stack.isEmpty()) {
+        ingredients[idx] = new NNList<ItemStack>(stack);
       }
     }
-    return new CraftingHelperNEI(ingredients);
+    return new CraftingHelper(ingredients);
   }
 
+  @Nullable
   public static CraftingHelper createFromSlots(List<Slot> slots) {
     if (slots.size() != 9) {
       return null;
     }
-    ItemStack[][] ingredients = new ItemStack[9][];
+    NNList<ItemStack>[] ingredients = new NNList[9];
     int count = 0;
     for (int idx = 0; idx < 9; idx++) {
       Slot slot = slots.get(idx);
@@ -46,12 +50,12 @@ public class CraftingHelper {
       if(!stack.isEmpty()) {
         stack = stack.copy();
         stack.setCount(1);
-        ingredients[idx] = new ItemStack[] { stack };
+        ingredients[idx] = new NNList<ItemStack>(stack);
         count++;
       }
     }
     if (count > 0) {
-      return new CraftingHelperNEI(ingredients);
+      return new CraftingHelper(ingredients);
     }
     return null;
   }
@@ -62,12 +66,12 @@ public class CraftingHelper {
   public void remove() {
   }
 
-  public void refill(GuiInventoryPanel gui, int amount) {
+  public void refill(@Nonnull GuiInventoryPanel gui, int amount) {
     InventoryPanelContainer container = gui.getContainer();
     refill(container, amount);
   }
 
-  public void refill(InventoryPanelContainer container, int amount) {
+  public void refill(@Nonnull InventoryPanelContainer container, int amount) {
     InventoryDatabaseClient db = container.getTe().getDatabaseClient();
     if (db == null) {
       return;
@@ -80,7 +84,7 @@ public class CraftingHelper {
       Candidate[] candidates = new Candidate[9];
       for (int idx = 0; idx < 9; idx++) {
         if ((slotsToProcess & (1 << idx)) != 0) {
-          ItemStack[] pstack = ingredients[idx];
+          NNList<ItemStack> pstack = ingredients[idx];
           Slot slot = craftingGrid.get(idx);
           ItemStack stack = slot.getStack();
           if (pstack == null) {
@@ -153,12 +157,12 @@ public class CraftingHelper {
     } while (madeProgress && slotsToProcess != 0);
   }
 
-  private static int getSlotStackSize(Slot slot) {
+  private static int getSlotStackSize(@Nonnull Slot slot) {
     ItemStack stack = slot.getStack();
     return stack.getCount();
   }
 
-  private static boolean isStackCompatible(ItemStack[] pstack, @Nonnull ItemStack stack) {
+  private static boolean isStackCompatible(@Nonnull NNList<ItemStack> pstack, @Nonnull ItemStack stack) {
     for (ItemStack istack : pstack) {
       if (ItemUtil.areStackMergable(stack, istack)) {
         return true;
@@ -166,8 +170,8 @@ public class CraftingHelper {
     }
     return false;
   }
-
-  private Candidate findAllCandidates(ItemStack[] pstack, InventoryPanelContainer container, InventoryDatabaseClient db, Candidate[] candidates) {
+  @Nullable
+  private Candidate findAllCandidates(@Nonnull NNList<ItemStack> pstack, @Nonnull InventoryPanelContainer container, @Nonnull InventoryDatabaseClient db, @Nonnull Candidate[] candidates) {
     Candidate bestInventory = null;
     Candidate bestNetwork = null;
     for (ItemStack istack : pstack) {
@@ -190,7 +194,8 @@ public class CraftingHelper {
     }
   }
 
-  private Candidate findCandidates(@Nonnull ItemStack stack, InventoryPanelContainer container, InventoryDatabaseClient db, Candidate[] candidates) {
+  @Nonnull
+  private Candidate findCandidates(@Nonnull ItemStack stack, @Nonnull InventoryPanelContainer container, @Nonnull InventoryDatabaseClient db, @Nonnull Candidate[] candidates) {
     for (Candidate candidate : candidates) {
       if (candidate != null && ItemUtil.areStackMergable(candidate.stack, stack)) {
         return candidate;
@@ -211,7 +216,7 @@ public class CraftingHelper {
     return candidate;
   }
 
-  private void findCandidates(Candidate candidates, @Nonnull ItemStack stack, Collection<Slot> slots) {
+  private void findCandidates(@Nonnull Candidate candidates, @Nonnull ItemStack stack, @Nonnull Collection<Slot> slots) {
     for (Slot slot : slots) {
       ItemStack slotStack = slot.getStack();
       if (ItemUtil.areStackMergable(slotStack, stack)) {
