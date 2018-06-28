@@ -636,14 +636,16 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   protected void readTypeSettings(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
-    setInputSignalColor(dir, DyeColor.values()[dataRoot.getShort("signalColor")]);
+    forceConnectionMode(dir, ConnectionMode.values()[dataRoot.getShort("connectionMode")]);
+    setInputSignalColor(dir, DyeColor.values()[dataRoot.getShort("inputSignalColor")]);
     setOutputSignalColor(dir, DyeColor.values()[dataRoot.getShort("outputSignalColor")]);
     setOutputStrength(dir, dataRoot.getBoolean("signalStrong"));
   }
 
   @Override
   protected void writeTypeSettingsToNbt(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
-    dataRoot.setShort("signalColor", (short) getInputSignalColor(dir).ordinal());
+    dataRoot.setShort("connectionMode", (short) forcedConnections.get(dir).ordinal());
+    dataRoot.setShort("inputSignalColor", (short) getInputSignalColor(dir).ordinal());
     dataRoot.setShort("outputSignalColor", (short) getOutputSignalColor(dir).ordinal());
     dataRoot.setBoolean("signalStrong", isOutputStrong(dir));
   }

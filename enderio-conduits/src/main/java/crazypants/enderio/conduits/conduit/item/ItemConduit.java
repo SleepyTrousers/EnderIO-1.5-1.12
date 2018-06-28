@@ -123,6 +123,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   @Override
   protected void readTypeSettings(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
+    setConnectionMode(dir, ConnectionMode.values()[dataRoot.getShort("connectionMode")]);
     setExtractionSignalColor(dir, DyeColor.values()[dataRoot.getShort("extractionSignalColor")]);
     setExtractionRedstoneMode(RedstoneControlMode.values()[dataRoot.getShort("extractionRedstoneMode")], dir);
     setInputColor(dir, DyeColor.values()[dataRoot.getShort("inputColor")]);
@@ -134,6 +135,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   @Override
   protected void writeTypeSettingsToNbt(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
+    dataRoot.setShort("connectionMode", (short) getConnectionMode(dir).ordinal());
     dataRoot.setShort("extractionSignalColor", (short) getExtractionSignalColor(dir).ordinal());
     dataRoot.setShort("extractionRedstoneMode", (short) getExtractionRedstoneMode(dir).ordinal());
     dataRoot.setShort("inputColor", (short) getInputColor(dir).ordinal());

@@ -266,12 +266,14 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
 
   @Override
   protected void readTypeSettings(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
+    setConnectionMode(dir, ConnectionMode.values()[dataRoot.getShort("connectionMode")]);
     setExtractionSignalColor(dir, DyeColor.values()[dataRoot.getShort("extractionSignalColor")]);
     setExtractionRedstoneMode(RedstoneControlMode.values()[dataRoot.getShort("extractionRedstoneMode")], dir);
   }
 
   @Override
   protected void writeTypeSettingsToNbt(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
+    dataRoot.setShort("connectionMode", (short) getConnectionMode(dir).ordinal());
     dataRoot.setShort("extractionSignalColor", (short) getExtractionSignalColor(dir).ordinal());
     dataRoot.setShort("extractionRedstoneMode", (short) getExtractionRedstoneMode(dir).ordinal());
   }

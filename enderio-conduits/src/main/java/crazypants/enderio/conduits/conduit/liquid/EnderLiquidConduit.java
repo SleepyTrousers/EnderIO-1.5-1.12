@@ -392,33 +392,27 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   @Override
   protected void readTypeSettings(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
     super.readTypeSettings(dir, dataRoot);
-    if (dataRoot.hasKey("outputFilters")) {
-      FluidFilter out = new FluidFilter();
-      out.readFromNBT(dataRoot.getCompoundTag("outputFilters"));
-      outputFilters.put(dir, out);
-    }
-    if (dataRoot.hasKey("inputFilters")) {
-      FluidFilter in = new FluidFilter();
-      in.readFromNBT(dataRoot.getCompoundTag("inputFilters"));
-      inputFilters.put(dir, in);
-    }
+    setConnectionMode(dir, ConnectionMode.values()[dataRoot.getShort("connectionMode")]);
+    setExtractionSignalColor(dir, DyeColor.values()[dataRoot.getShort("extractionSignalColor")]);
+    setExtractionRedstoneMode(RedstoneControlMode.values()[dataRoot.getShort("extractionRedstoneMode")], dir);
+    setInputColor(dir, DyeColor.values()[dataRoot.getShort("inputColor")]);
+    setOutputColor(dir, DyeColor.values()[dataRoot.getShort("outputColor")]);
+    setSelfFeedEnabled(dir, dataRoot.getBoolean("selfFeed"));
+    setRoundRobinEnabled(dir, dataRoot.getBoolean("roundRobin"));
+    setOutputPriority(dir, dataRoot.getInteger("outputPriority"));
   }
 
   @Override
   protected void writeTypeSettingsToNbt(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
     super.writeTypeSettingsToNbt(dir, dataRoot);
-    IFluidFilter out = outputFilters.get(dir);
-    if (out != null) {
-      NBTTagCompound outTag = new NBTTagCompound();
-      out.writeToNBT(outTag);
-      dataRoot.setTag("outputFilters", outTag);
-    }
-    IFluidFilter in = inputFilters.get(dir);
-    if (in != null) {
-      NBTTagCompound inTag = new NBTTagCompound();
-      in.writeToNBT(inTag);
-      dataRoot.setTag("inputFilters", inTag);
-    }
+    dataRoot.setShort("connectionMode", (short) getConnectionMode(dir).ordinal());
+    dataRoot.setShort("extractionSignalColor", (short) getExtractionSignalColor(dir).ordinal());
+    dataRoot.setShort("extractionRedstoneMode", (short) getExtractionRedstoneMode(dir).ordinal());
+    dataRoot.setShort("inputColor", (short) getInputColor(dir).ordinal());
+    dataRoot.setShort("outputColor", (short) getOutputColor(dir).ordinal());
+    dataRoot.setBoolean("selfFeed", isSelfFeedEnabled(dir));
+    dataRoot.setBoolean("roundRobin", isRoundRobinEnabled(dir));
+    dataRoot.setInteger("outputPriority", getOutputPriority(dir));
   }
 
   private boolean isDefault(IFluidFilter f) {

@@ -59,21 +59,26 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
 
     boolean performedAction = false;
     Collection<IServerConduit> conduits = bundle.getServerConduits();
+
+    NBTTagCompound nbt;
+    if (isCopy) {
+      nbt = new NBTTagCompound();
+    } else {
+      nbt = stack.getTagCompound();
+    }
     for (IServerConduit conduit : conduits) {
       if (conduit.getExternalConnections().contains(dir)) {
         if (isCopy && !clearedData) {
           clearedData = true;
         }
         if (isCopy) {
-          NBTTagCompound nbt = new NBTTagCompound();
           performedAction |= conduit.writeConnectionSettingsToNBT(dir, nbt);
-          stack.setTagCompound(nbt);
         } else {
-          NBTTagCompound nbt = stack.getTagCompound();
           performedAction |= nbt != null && conduit.readConduitSettingsFromNBT(dir, nbt);
         }
       }
     }
+    stack.setTagCompound(nbt);
 
     if (isCopy && performedAction) {
       player.sendStatusMessage(Lang.GUI_PROBE_COPIED.toChatServer(), true);
