@@ -89,7 +89,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO implements IDialingDev
       }
     });
 
-    addDrawingElement(new PowerBar(te.getEnergy(), this, powerX, powerY, 10, powerScale));
+    addDrawingElement(new PowerBar(te.getEnergy(), this, powerX, powerY, powerScale));
   }
 
   @Override
