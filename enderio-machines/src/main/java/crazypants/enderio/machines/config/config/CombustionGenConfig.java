@@ -9,7 +9,7 @@ public final class CombustionGenConfig {
   public static final IValueFactory F = Config.F.section("generator.combustion");
 
   public static final IValue<Float> enahancedCombGenQuality = F
-      .make("enhancedCombGenQuality", 1.5f,
+      .make("enhancedCombGenQuality", 2.0f,
           "How much better than the normal combustion generator is the enhanced one? This effects the tank size and the energy generated per tick.")
       .setRange(1, 10).sync();
 

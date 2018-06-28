@@ -52,7 +52,7 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_combustion_generator/gen" base="1" scaler="CHEMICAL" />
 
   <capacitor key="enderio:block_enhanced_combustion_generator/loss" base="0" scaler="FIXED" />
-  <capacitor key="enderio:block_enhanced_combustion_generator/buffer" base="200000" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_combustion_generator/buffer" base="500000" scaler="POWER" />
   <capacitor key="enderio:block_enhanced_combustion_generator/gen" base="1" scaler="CHEMICAL" />
   
   <capacitor key="enderio:block_stirling_generator/loss" base="0" scaler="FIXED" />
