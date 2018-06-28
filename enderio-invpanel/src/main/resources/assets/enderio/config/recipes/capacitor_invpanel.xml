@@ -22,4 +22,8 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_inventory_chest_tiny/buffer" base="100000" scaler="POWER" />
   <capacitor key="enderio:block_inventory_chest_tiny/use" base="20" scaler="POWER" />
 
+  <capacitor key="enderio:block_inventory_panel_sensor/intake" base="20" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_panel_sensor/buffer" base="10000" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_panel_sensor/use" base="2" scaler="FIXED" />
+
 </enderio:recipes>

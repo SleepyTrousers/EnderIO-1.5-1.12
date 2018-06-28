@@ -24,6 +24,10 @@ public enum CapacitorKey implements ICapacitorKey {
   INV_CHEST_ENERGY_BUFFER(InvpanelObject.blockInventoryChestTiny, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   INV_CHEST_ENERGY_USE(InvpanelObject.blockInventoryChestTiny, CapacitorKeyType.ENERGY_USE, "use"),
 
+  INV_SENSOR_ENERGY_INTAKE(InvpanelObject.blockInventoryPanelSensor, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  INV_SENSOR_ENERGY_BUFFER(InvpanelObject.blockInventoryPanelSensor, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  INV_SENSOR_ENERGY_USE(InvpanelObject.blockInventoryPanelSensor, CapacitorKeyType.ENERGY_USE, "use"),
+
   ;
 
   // /////////////////////////////////////////////////////////////////// //

@@ -7,6 +7,7 @@ import com.enderio.core.client.gui.widget.TextFieldEnder;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.machine.gui.GuiMachineBase;
+import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.invpanel.network.PacketHandler;
 import crazypants.enderio.invpanel.network.sensor.PacketItemCount;
 import net.minecraft.client.Minecraft;
@@ -16,17 +17,17 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
 public class GuiSensor extends GuiMachineBase<TileInventoryPanelSensor> {
-  
+
   private TextFieldEnder startTF;
   private TextFieldEnder stopTF;
-  
+
   public GuiSensor(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileInventoryPanelSensor te) {
     super(te, new ContainerSensor(par1InventoryPlayer, te), "inv_panel_sensor");
-    
+
     recipeButton.setYOrigin(recipeButton.getBounds().y + 19);
     redstoneButton.setIsVisible(false);
     configB.setYOrigin(5);
-    
+
     int tfWidth = 42;
     int tfHeight = 14;
     int tfX = xSize - tfWidth - 6 - 20;
@@ -44,7 +45,8 @@ public class GuiSensor extends GuiMachineBase<TileInventoryPanelSensor> {
     stopTF.setText(te.getStopCount() + "");
     stopTF.setCharFilter(TextFieldEnder.FILTER_NUMERIC);
     textFields.add(stopTF);
-      
+
+    addDrawingElement(new PowerBar(te, this, 15, 14,57));
   }
 
   @Override
@@ -68,11 +70,11 @@ public class GuiSensor extends GuiMachineBase<TileInventoryPanelSensor> {
     super.mouseClickMove(mouseX, mouseY, button, par4);
   }
 
-//  @Override
-//  protected int getPowerBarHeight() {
-//    return 57;
-//  }
-  
+  //  @Override
+  //  protected int getPowerBarHeight() {
+  //    return 57;
+  //  }
+
   @Override
   protected boolean showRecipeButton() {
     return false;
@@ -86,34 +88,32 @@ public class GuiSensor extends GuiMachineBase<TileInventoryPanelSensor> {
     int sy = (height - ySize) / 2;
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-    
+
     String txt = EnderIO.lang.localize("gui.inventorySensor.control1").trim();
     FontRenderer fr = getFontRenderer();
     fr.drawString(txt, startTF.x - 3 - fr.getStringWidth(txt), startTF.y + 3, 0x000000);
     txt = EnderIO.lang.localize("gui.inventorySensor.control2").trim();
     fr.drawString(txt, stopTF.x - 3 - fr.getStringWidth(txt), stopTF.y + 3, 0x000000);
-    
+
     checkForTextChange();
   }
-  
+
   private void checkForTextChange() {
     boolean dirty = false;
     TileInventoryPanelSensor te = getTileEntity();
     Integer val = startTF.getInteger();
-    if(val != null && val.intValue() > 0 && val.intValue() != te.getStartCount()) {
+    if (val != null && val.intValue() > 0 && val.intValue() != te.getStartCount()) {
       te.setStartCount(val);
       dirty = true;
     }
     val = stopTF.getInteger();
-    if(val != null && val.intValue() > 0 && val.intValue() != te.getStopCount()) {
+    if (val != null && val.intValue() > 0 && val.intValue() != te.getStopCount()) {
       te.setStopCount(val);
       dirty = true;
     }
-    if(dirty) {
+    if (dirty) {
       PacketHandler.INSTANCE.sendToServer(new PacketItemCount(te));
     }
   }
-
-  
 
 }

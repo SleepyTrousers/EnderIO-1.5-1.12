@@ -107,7 +107,7 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
         setCurrentSignal(0);
       }
     } else {
-      if (invHasCount <= startCount) {
+      if (invHasCount < startCount) {
         setCurrentSignal(15);
       }
     }
