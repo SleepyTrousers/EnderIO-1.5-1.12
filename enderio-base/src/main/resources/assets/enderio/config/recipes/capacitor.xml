@@ -19,9 +19,6 @@ XML editor will display that as tooltips when editing this file.
 
  -->
 
-  <!-- This is a stand-in that is used for machines that don't use/take power. Do Not Change! -->
-  <capacitor key="enderio:block_machine_base/no_power" base="0" scaler="FIXED" />
-
   <!-- These are used during development for new machines and by those few that don't have their
        own keys yet. -->
   <capacitor key="enderio:block_machine_base/legacy_intake" base="80" scaler="POWER" />

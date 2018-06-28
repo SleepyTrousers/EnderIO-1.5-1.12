@@ -43,13 +43,11 @@ public class EntityPrimedCharge extends EntityTNTPrimed {
 
   public EntityPrimedCharge(World world) {
     super(world);
-    System.out.println("???");
   }
 
   public EntityPrimedCharge(ICharge charge, World world, double x, double y, double z, EntityLivingBase placedBy) {
     super(world, x, y, z, placedBy);
     setCharge(charge);
-    System.out.println(charge);
   }
 
   @Override
@@ -61,12 +59,10 @@ public class EntityPrimedCharge extends EntityTNTPrimed {
   @Override
   public void onUpdate() {
     super.onUpdate();
-    System.out.println(getFuse());
     if (getFuse() <= 1) {
       this.setDead();
       if (!this.world.isRemote) {
         charge.explode(this);
-        System.out.println("BOOM");
       }
     }
   }

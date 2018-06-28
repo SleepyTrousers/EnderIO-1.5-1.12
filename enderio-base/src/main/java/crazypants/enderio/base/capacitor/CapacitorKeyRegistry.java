@@ -25,7 +25,7 @@ public class CapacitorKeyRegistry {
   public static void setScaler(@Nonnull ResourceLocation name, @Nonnull Scaler scaler) {
     ICapacitorKey key = REGISTRY.getValue(name);
     if (key == null) {
-      throw new RuntimeException("Trying to configure non-exsitent key " + name);
+      throw new RuntimeException("Trying to configure non-exsistant key " + name);
     }
     key.setScaler(scaler);
   }
@@ -33,7 +33,7 @@ public class CapacitorKeyRegistry {
   public static void setBaseValue(@Nonnull ResourceLocation name, int baseValue) {
     ICapacitorKey key = REGISTRY.getValue(name);
     if (key == null) {
-      throw new RuntimeException("Trying to configure non-exsitent key " + name);
+      throw new RuntimeException("Trying to configure non-exsistant key " + name);
     }
     key.setBaseValue(baseValue);
   }

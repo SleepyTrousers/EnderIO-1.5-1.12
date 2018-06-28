@@ -110,6 +110,9 @@ public enum CapacitorKey implements ICapacitorKey {
       event.getRegistry().register(key);
       Log.debug("<capacitor key=\"", key.getRegistryName() + "\" base=\"\" scaler=\"\" />");
     }
+
+    CapacitorKeyRegistry.setScaler(NO_POWER.getRegistryName(), Scaler.Factory.FIXED);
+    CapacitorKeyRegistry.setBaseValue(NO_POWER.getRegistryName(), 0);
   }
 
 }
