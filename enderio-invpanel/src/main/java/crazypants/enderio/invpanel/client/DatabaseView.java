@@ -1,15 +1,20 @@
 package crazypants.enderio.invpanel.client;
 
-import net.minecraft.client.Minecraft;
-
 import java.text.Collator;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.Locale;
+
+import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.filter.item.IItemFilter;
+import net.minecraft.client.Minecraft;
 
 public class DatabaseView {
 
-  public static final Locale LOCALE;
+  public static final @Nonnull Locale LOCALE;
 
   static {
     String languageCode = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
@@ -23,17 +28,17 @@ public class DatabaseView {
     }
   }
 
-  private final ArrayList<ItemEntry> filteredItems;
+  private final @Nonnull ArrayList<ItemEntry> filteredItems;
 
   private InventoryDatabaseClient database;
   private int dbItemsChangeCount;
   private int dbCountChangeCount;
 
-  private SortOrder order = SortOrder.NAME;
+  private @Nonnull SortOrder order = SortOrder.NAME;
   private boolean invertSortOrder;
   private boolean needsSorting;
   private IItemFilter itemFilter;
-  private String currentFilter;
+  private @Nonnull String currentFilter;
   private boolean needsFiltering;
   private boolean needsNewFiltering;
 
@@ -58,7 +63,7 @@ public class DatabaseView {
     }
   }
 
-  public void setSortOrder(SortOrder order, boolean invert) {
+  public void setSortOrder(@Nonnull SortOrder order, boolean invert) {
     if(this.order != order || this.invertSortOrder != invert) {
       this.order = order;
       this.invertSortOrder = invert;
@@ -66,7 +71,7 @@ public class DatabaseView {
     }
   }
 
-  public void setItemFilter(IItemFilter itemFilter) {
+  public void setItemFilter(@Nonnull IItemFilter itemFilter) {
     if(this.itemFilter != itemFilter) {
       this.itemFilter = itemFilter;
       needsNewFiltering = true;
@@ -74,7 +79,7 @@ public class DatabaseView {
     }
   }
 
-  public void updateFilter(String newFilter) {
+  public void updateFilter(@Nonnull String newFilter) {
     newFilter = newFilter.trim();
 
     if(!currentFilter.equals(newFilter)) {
@@ -87,6 +92,7 @@ public class DatabaseView {
     }
   }
 
+  @Nonnull
   public SortOrder getSortOrder() {
     return order;
   }
@@ -123,7 +129,7 @@ public class DatabaseView {
         needsSorting = true;
       }
 
-      ItemFilter filter = ItemFilter.parse(currentFilter, LOCALE, itemFilter);
+      AbstractItemEntryFilter filter = AbstractItemEntryFilter.parse(currentFilter, LOCALE, itemFilter);
       if(filter != null) {
         Iterator<ItemEntry> iter = filteredItems.iterator();
         while(iter.hasNext()) {

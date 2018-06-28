@@ -38,7 +38,7 @@ public class CraftingHelper {
   }
 
   @Nullable
-  public static CraftingHelper createFromSlots(List<Slot> slots) {
+  public static CraftingHelper createFromSlots(@Nonnull List<Slot> slots) {
     if (slots.size() != 9) {
       return null;
     }

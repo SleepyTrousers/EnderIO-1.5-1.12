@@ -1,20 +1,23 @@
 package crazypants.enderio.invpanel.client;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.network.CompressedDataInput;
 
 import crazypants.enderio.invpanel.database.InventoryDatabase;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
 public class InventoryDatabaseClient extends InventoryDatabase<ItemEntry> {
 
-  private final ArrayList<ItemEntry> clientItems;
-  private final HashSet<Integer> requestedItems;
+  private final @Nonnull ArrayList<ItemEntry> clientItems;
+  private final @Nonnull HashSet<Integer> requestedItems;
 
   private int itemsChangeCount;
   private int countChangeCount;
@@ -33,11 +36,11 @@ public class InventoryDatabaseClient extends InventoryDatabase<ItemEntry> {
     return countChangeCount;
   }
 
-  public void getItems(List<ItemEntry> outList) {
+  public void getItems(@Nonnull List<ItemEntry> outList) {
     outList.addAll(clientItems);
   }
 
-  public void readCompressedItems(byte[] compressed) throws IOException {
+  public void readCompressedItems(@Nonnull byte[] compressed) throws IOException {
     CompressedDataInput cdi = new CompressedDataInput(compressed);
     try {
       int numEntries = cdi.readVariable();
@@ -75,7 +78,8 @@ public class InventoryDatabaseClient extends InventoryDatabase<ItemEntry> {
     }
   }
 
-  public List<Integer> readCompressedItemList(byte[] compressed) throws IOException {
+  @Nullable
+  public List<Integer> readCompressedItemList(@Nonnull byte[] compressed) throws IOException {
     CompressedDataInput cdi = new CompressedDataInput(compressed);
     try {
       List<Integer> missingItems = null;
@@ -132,7 +136,7 @@ public class InventoryDatabaseClient extends InventoryDatabase<ItemEntry> {
     }
   }
 
-  private void setItemCount(ItemEntry entry, int count) {
+  private void setItemCount(@Nonnull ItemEntry entry, int count) {
     if(entry.getCount() == 0 && count > 0) {
       clientItems.add(entry);
       itemsChangeCount++;
@@ -143,7 +147,8 @@ public class InventoryDatabaseClient extends InventoryDatabase<ItemEntry> {
     entry.setCount(count);
   }
 
-  private List<Integer> addMissingItems(List<Integer> list, Integer dbId) {
+  @Nullable
+  private List<Integer> addMissingItems(@Nullable List<Integer> list, @Nonnull Integer dbId) {
     if(!requestedItems.contains(dbId)) {
       if(list == null) {
         list = new ArrayList<Integer>();
