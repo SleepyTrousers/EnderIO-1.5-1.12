@@ -26,7 +26,17 @@ XML editor will display that as tooltips when editing this file.
 
  -->
 
-  <recipe name="Conduit, ME Conduit" required="true">
+<!-- 
+
+ATTENTION!
+
+If both Fluix and Pure Fluix or Quartz Fibres are disabled, this file will be IGNORED.
+
+You need to add custom recipes yourself then!
+
+ -->
+
+  <recipe name="Conduit, ME Conduit" required="false">
     <crafting>
       <grid>
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
@@ -38,7 +48,7 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <recipe name="Conduit, ME Conduit (Pure)" required="true">
+  <recipe name="Conduit, ME Conduit (Pure)" required="false">
     <crafting>
       <grid>
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />

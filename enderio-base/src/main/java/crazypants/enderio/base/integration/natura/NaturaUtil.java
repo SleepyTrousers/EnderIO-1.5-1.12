@@ -61,7 +61,7 @@ public class NaturaUtil {
         new PlantableFarmer().addHarvestExlude(berryBlock);
         PickableFarmer farmer = new NaturaBerryFarmer(berryBlock, 0, 3, new ItemStack(berryItem, 1, 0));
         farmer.setRequiresTilling(false);
-        event.getRegistry().register(farmer.setRegistryName("natura", "berries"));
+        event.getRegistry().register(farmer.setRegistryName("natura", berry));
         IHarvestingTarget.addLeavesExcemption(berryBlock); // berry bushes are leaves, idiotic...
         count++;
       }

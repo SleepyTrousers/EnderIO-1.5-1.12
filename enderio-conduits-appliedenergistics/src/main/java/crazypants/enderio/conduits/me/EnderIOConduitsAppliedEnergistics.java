@@ -89,7 +89,12 @@ public class EnderIOConduitsAppliedEnergistics implements IEnderIOAddon {
   @Nonnull
   public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
     if (MEUtil.isMEEnabled()) {
-      return new NNList<>(Triple.of(2, null, "conduits-applied-energistics"));
+      if (MeUtil2.isFluixEnabled()) {
+        return new NNList<>(Triple.of(2, null, "conduits-applied-energistics"));
+      } else {
+        Log.error("[" + MOD_NAME
+            + "]: AE2 Fluix and Pure Fluix or Quartz Fibres are disabled. There will be no way to craft ME conduits unless YOU add a custom recipe.");
+      }
     }
     return NNList.emptyList();
   }
