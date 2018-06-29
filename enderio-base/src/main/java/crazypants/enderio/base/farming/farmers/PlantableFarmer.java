@@ -109,8 +109,9 @@ public class PlantableFarmer extends AbstractFarmerJoe {
 
   protected boolean plantFromInventory(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IPlantable plantable) {
     World world = farm.getWorld();
-    if (canPlant(farm, world, bc, plantable) && Prep.isValid(farm.takeSeedFromSupplies(bc))) {
-      return plant(farm, world, bc, plantable);
+    if (canPlant(farm, world, bc, plantable) && Prep.isValid(farm.takeSeedFromSupplies(bc, true)) && plant(farm, world, bc, plantable)) {
+      farm.takeSeedFromSupplies(bc, false);
+      return true;
     }
     return false;
   }

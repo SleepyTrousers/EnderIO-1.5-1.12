@@ -146,12 +146,16 @@ public class FarmLogic implements IFarmer {
 
   @Override
   @Nonnull
-  public ItemStack takeSeedFromSupplies(@Nonnull BlockPos pos) {
+  public ItemStack takeSeedFromSupplies(@Nonnull BlockPos pos, boolean simulate) {
     FarmSlots slot = mapBlockPosToSeedSlot(pos);
     ItemStack inv = slot.get(owner);
     if (inv.getCount() > 1 || !owner.isSlotLocked(slot)) {
-      owner.markDirty();
-      return inv.splitStack(1);
+      if (simulate) {
+        return inv.copy().splitStack(1);
+      } else {
+        owner.markDirty();
+        return inv.splitStack(1);
+      }
     }
     return Prep.getEmpty();
   }

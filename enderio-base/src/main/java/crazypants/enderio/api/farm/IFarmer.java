@@ -54,7 +54,11 @@ public interface IFarmer {
    * @return An itemstack with a size of one or an empty itemstack.
    */
   @Nonnull
-  ItemStack takeSeedFromSupplies(@Nonnull BlockPos pos);
+  ItemStack takeSeedFromSupplies(@Nonnull BlockPos pos, boolean simulate);
+
+  default @Nonnull ItemStack takeSeedFromSupplies(@Nonnull BlockPos pos) {
+    return takeSeedFromSupplies(pos, false);
+  }
 
   /**
    * Checks if the Farming Station has a usable tool of that type.

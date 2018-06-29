@@ -95,9 +95,10 @@ public class TreeFarmer extends AbstractFarmerJoe {
     World world = farm.getWorld();
     final ItemStack currentSapling = farm.getSeedTypeInSuppliesFor(bc);
     if (canPlant(world, bc, currentSapling)) {
-      ItemStack seed = farm.takeSeedFromSupplies(bc);
-      if (Prep.isValid(seed)) {
-        return plant(farm, world, bc, seed);
+      ItemStack seed = farm.takeSeedFromSupplies(bc, true);
+      if (Prep.isValid(seed) && plant(farm, world, bc, seed)) {
+        farm.takeSeedFromSupplies(bc, false);
+        return true;
       }
     }
     return false;

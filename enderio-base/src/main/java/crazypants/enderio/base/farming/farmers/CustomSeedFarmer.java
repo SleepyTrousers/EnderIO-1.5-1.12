@@ -135,8 +135,9 @@ public class CustomSeedFarmer extends AbstractFarmerJoe {
 
   protected boolean plantFromInventory(@Nonnull IFarmer farm, @Nonnull BlockPos bc) {
     World world = farm.getWorld();
-    if (canPlant(farm, world, bc) && Prep.isValid(farm.takeSeedFromSupplies(bc))) {
-      return plant(farm, world, bc);
+    if (canPlant(farm, world, bc) && Prep.isValid(farm.takeSeedFromSupplies(bc, true)) && plant(farm, world, bc)) {
+      farm.takeSeedFromSupplies(bc, false);
+      return true;
     }
     return false;
   }
