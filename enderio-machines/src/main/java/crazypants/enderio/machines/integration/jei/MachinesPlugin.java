@@ -39,5 +39,6 @@ public class MachinesPlugin implements IModPlugin {
     WiredChargerRecipeCategory.register(registry, guiHelper);
     WeatherObeliskRecipeCategory.register(registry, guiHelper);
     ZombieGeneratorRecipeCategory.register(registry, guiHelper);
+    EnderGeneratorRecipeCategory.register(registry, guiHelper);
   }
 }
