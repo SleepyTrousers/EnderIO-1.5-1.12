@@ -40,9 +40,11 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_EFFICIENCY;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_GEN;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_LOSS;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_EFFICIENCY;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_GEN;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_LOSS;
 
@@ -58,7 +60,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
 
     @Override
     protected float getMachineQuality() {
-      return CombustionGenConfig.enahancedCombGenQuality.get();
+      return ENHANCED_COMBUSTION_POWER_EFFICIENCY.get(getCapacitorData());
     }
 
     @Override
@@ -98,7 +100,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
   private IFluidCoolant curCoolant;
 
   protected float getMachineQuality() {
-    return 1f;
+    return COMBUSTION_POWER_EFFICIENCY.get(getCapacitorData());
   }
 
   public TileCombustionGenerator() {

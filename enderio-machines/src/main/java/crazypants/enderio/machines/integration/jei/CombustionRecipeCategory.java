@@ -21,7 +21,6 @@ import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
-import crazypants.enderio.machines.config.config.CombustionGenConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.generator.combustion.CombustionMath;
@@ -127,9 +126,10 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
         for (Fluid fluid2 : fluids.values()) {
           IFluidFuel fuel = CombustionMath.toFuel(fluid2);
           if (fuel != null) {
-            CombustionMath mathMin = new CombustionMath(coolant, fuel, CapacitorKey.COMBUSTION_POWER_GEN.getFloat(DefaultCapacitorData.BASIC_CAPACITOR), 1f);
+            CombustionMath mathMin = new CombustionMath(coolant, fuel, CapacitorKey.COMBUSTION_POWER_GEN.getFloat(DefaultCapacitorData.BASIC_CAPACITOR),
+                CapacitorKey.COMBUSTION_POWER_EFFICIENCY.get(DefaultCapacitorData.BASIC_CAPACITOR));
             CombustionMath mathmax = new CombustionMath(coolant, fuel, CapacitorKey.COMBUSTION_POWER_GEN.getFloat(DefaultCapacitorData.ENDER_CAPACITOR),
-                CombustionGenConfig.enahancedCombGenQuality.get());
+                CapacitorKey.ENHANCED_COMBUSTION_POWER_EFFICIENCY.get(DefaultCapacitorData.ENDER_CAPACITOR));
             result.add(new CombustionRecipeWrapper(new FluidStack(fluid1, 1000), new FluidStack(fluid2, 1000), mathMin, mathmax));
           }
         }
