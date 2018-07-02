@@ -369,15 +369,16 @@ curseforge {
             optionalLibrary 'tinkers-construct'
         }
 
-        buildprojects.each { subproject ->
-            addArtifact subproject.jar
+        // TODO: Make each subproject upload to its own curseforge project
+        // buildprojects.each { subproject ->
+        //     addArtifact subproject.jar
 
-            if (resolveOption(subproject, 'publish_api'))
-                addArtifact subproject.apiJar
+        //     if (resolveOption(subproject, 'publish_api'))
+        //         addArtifact subproject.apiJar
 
-            if (resolveOption(subproject, 'publish_source'))
-                addArtifact subproject.sourceJar
-        }
+        //     if (resolveOption(subproject, 'publish_source'))
+        //         addArtifact subproject.sourceJar
+        // }
     }
 }
 
