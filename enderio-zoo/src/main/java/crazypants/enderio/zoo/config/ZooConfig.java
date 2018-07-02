@@ -21,6 +21,11 @@ public final class ZooConfig {
 
   public static final IValueFactory SLIME = F0.section(".dire_slime");
 
+  public static final IValue<Boolean> direSlimeEnabled = SLIME.make("spawnDireSlimes", true, //
+      "Should Dire Slimes be spawned when breaking a dirt block with the wrong tool?").sync();
+  public static final IValue<Boolean> direSlimeEnabledHand = SLIME.make("spawnDireSlimesEmptyHand", false, //
+      "Should Dire Slimes be spawned when breaking a dirt block with an empty hand?").sync();
+
   public static final IValue<Float> direSlime1Health = SLIME.make("direSlime1Health", 4f, //
       "Base health of the Dire Slime (small).").setRange(1, 99).sync();
   public static final IValue<Float> direSlime2Health = SLIME.make("direSlime2Health", 8f, //

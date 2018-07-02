@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.List;
 
 import crazypants.enderio.base.Log;
-import crazypants.enderio.zoo.EnderIOZoo;
-import crazypants.enderio.zoo.config.Config;
 import crazypants.enderio.zoo.spawn.impl.SpawnEntry;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -15,8 +13,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 public final class MobSpawns {
-
-  private static final boolean PRINT_DETAIL = Config.spawnConfigPrintDetailedOutput;
 
   public static final MobSpawns instance = new MobSpawns();
 
@@ -46,47 +42,34 @@ public final class MobSpawns {
 
     spawnEntries.add(entry);
 
-    String mobname = entry.getMobName().replace("EnderZoo.", "").toLowerCase();// To fix legacy config files that werent updated, for existing installs
-    // but the config xml also has been updated too
+    String mobname = entry.getMobName();
+    if (mobname == null) {
+      Log.warn("Skipping spawn entry " + entry.getId() + " as mob name is null");
+      return;
+    }
+
     @SuppressWarnings("unchecked")
-    Class<? extends EntityLiving> clz = (Class<? extends EntityLiving>) EntityList.getClass(new ResourceLocation(EnderIOZoo.MODID, mobname));
+    Class<? extends EntityLiving> clz = (Class<? extends EntityLiving>) EntityList.getClass(new ResourceLocation(mobname));
     if (clz == null) {
       Log.warn("Skipping spawn entry " + entry.getId() + " as mob " + entry.getMobName() + " is not registered");
       return;
     }
 
     if (entry.isRemove()) {
-      if (PRINT_DETAIL) {
-        // yeah, I know I could print them as debug messages but that is more painful to change...
-        Log.info("EnderIO.MobSpawns.addSpawn: Removing spawns defined in entry: " + entry + " for biomes: ");
-        System.out.print(" - ");
-      }
+      Log.debug("EnderIO.MobSpawns.addSpawn: Removing spawns defined in entry: ", entry, " for biomes: ");
       for (IBiomeFilter filter : entry.getFilters()) {
         Biome[] biomes = filter.getMatchedBiomes();
-        if (PRINT_DETAIL) {
-          printBiomeNames(biomes);
-        }
+        printBiomeNames(biomes);
         EntityRegistry.removeSpawn(clz, entry.getCreatureType(), biomes);
-      }
-      if (PRINT_DETAIL) {
-        System.out.println();
       }
       return;
     }
 
-    if (PRINT_DETAIL) {
-      Log.info("MobSpawns.addSpawn: Adding spawns defined in entry: " + entry + " for biomes: ");
-      System.out.print(" - ");
-    }
+    Log.debug("MobSpawns.addSpawn: Adding spawns defined in entry: ", entry, " for biomes: ");
     for (IBiomeFilter filter : entry.getFilters()) {
       Biome[] biomes = filter.getMatchedBiomes();
-      if (PRINT_DETAIL) {
-        printBiomeNames(biomes);
-      }
+      printBiomeNames(biomes);
       EntityRegistry.addSpawn(clz, entry.getRate(), entry.getMinGroupSize(), entry.getMaxGroupSize(), entry.getCreatureType(), biomes);
-    }
-    if (PRINT_DETAIL) {
-      System.out.println();
     }
 
   }
@@ -94,9 +77,9 @@ public final class MobSpawns {
   protected static void printBiomeNames(Biome[] biomes) {
     for (Biome biome : biomes) {
       if (biome != null) {
-        System.out.print(biome.getBiomeName() + ", ");
+        Log.debug(" - ", biome.getBiomeName());
       } else {
-        System.out.print("null, ");
+        Log.debug(" - null");
       }
     }
   }

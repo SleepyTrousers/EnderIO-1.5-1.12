@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 
 public class FlyingPathNavigate extends PathNavigateGround {
 
-  private int totalTicks;
+  private int totalTicksLocal;
   private int ticksAtLastPos;
   private @Nonnull Vec3d lastPosCheck = new Vec3d(0.0D, 0.0D, 0.0D);
 
@@ -77,7 +77,7 @@ public class FlyingPathNavigate extends PathNavigateGround {
       // str += " [" + pp + "]";
       // }
       // Log.info(str);
-      ticksAtLastPos = totalTicks;
+      ticksAtLastPos = totalTicksLocal;
       lastPosCheck = getEntityPosition();
       this.forceFlying = forceFlying;
       return true;
@@ -92,12 +92,12 @@ public class FlyingPathNavigate extends PathNavigateGround {
 
   @Override
   public void onUpdateNavigation() {
-    ++totalTicks;
+    ++totalTicksLocal;
     if (!noPath()) { // if we have a path
       // theEntity.onGround = false;
       // theEntity.isAirBorne = true;
       pathFollow(); // follow it
-      if (!noPath()) { // if we haven't finished, then set the new move point
+      if (!noPath() && currentPath != null) { // if we haven't finished, then set the new move point
         Vec3d targetPos = currentPath.getPosition(entity);
         double y = targetPos.y;
         if (forceFlying) {
@@ -117,24 +117,28 @@ public class FlyingPathNavigate extends PathNavigateGround {
 
     Vec3d entPos = getEntityPosition();
     float entWidthSq = entity.width * entity.width;
-    if (currentPath.getCurrentPathIndex() == currentPath.getCurrentPathLength() - 1 && entity.onGround) {
+    final Path currentPath2 = currentPath;
+    if (currentPath2 == null) {
+      return;
+    }
+    if (currentPath2.getCurrentPathIndex() == currentPath2.getCurrentPathLength() - 1 && entity.onGround) {
       entWidthSq = 0.01f; // we need to be right on top of the last point if on
                           // the ground so we don't hang on ledges
     }
 
-    Vec3d targetPos = currentPath.getVectorFromIndex(entity, currentPath.getCurrentPathIndex());
+    Vec3d targetPos = currentPath2.getVectorFromIndex(entity, currentPath2.getCurrentPathIndex());
 
     double distToCurrTargSq = entPos.squareDistanceTo(targetPos);
     if (distToCurrTargSq < entWidthSq) {
-      currentPath.incrementPathIndex();
+      currentPath2.incrementPathIndex();
     }
     // starting six points ahead (or the end point) see if we can go directly
     // there
     int i = 6;
-    for (int j = Math.min(currentPath.getCurrentPathIndex() + i, currentPath.getCurrentPathLength() - 1); j > currentPath.getCurrentPathIndex(); --j) {
-      targetPos = currentPath.getVectorFromIndex(entity, j);
+    for (int j = Math.min(currentPath2.getCurrentPathIndex() + i, currentPath2.getCurrentPathLength() - 1); j > currentPath2.getCurrentPathIndex(); --j) {
+      targetPos = currentPath2.getVectorFromIndex(entity, j);
       if (targetPos.squareDistanceTo(entPos) <= 36.0D && isDirectPathBetweenPoints(entPos, targetPos, 0, 0, 0)) {
-        currentPath.setCurrentPathIndex(j);
+        currentPath2.setCurrentPathIndex(j);
         break;
       }
     }
@@ -165,19 +169,19 @@ public class FlyingPathNavigate extends PathNavigateGround {
   @Override
   protected void checkForStuck(@Nonnull Vec3d positionVec3) {
 
-    if (totalTicks - ticksAtLastPos > 10 && positionVec3.squareDistanceTo(lastPosCheck) < 0.0625) {
+    if (totalTicksLocal - ticksAtLastPos > 10 && positionVec3.squareDistanceTo(lastPosCheck) < 0.0625) {
       clearPath();
-      ticksAtLastPos = totalTicks;
+      ticksAtLastPos = totalTicksLocal;
       lastPosCheck = positionVec3;
       return;
     }
 
-    if (totalTicks - ticksAtLastPos > 50) {
+    if (totalTicksLocal - ticksAtLastPos > 50) {
       if (positionVec3.squareDistanceTo(lastPosCheck) < 2.25D) {
         clearPath();
       }
 
-      ticksAtLastPos = totalTicks;
+      ticksAtLastPos = totalTicksLocal;
       lastPosCheck = positionVec3;
     }
   }

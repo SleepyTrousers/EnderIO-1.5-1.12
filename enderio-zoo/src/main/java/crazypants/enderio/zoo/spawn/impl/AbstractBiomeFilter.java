@@ -3,7 +3,7 @@ package crazypants.enderio.zoo.spawn.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import crazypants.enderio.zoo.config.Config;
+import crazypants.enderio.base.Log;
 import crazypants.enderio.zoo.spawn.IBiomeDescriptor;
 import crazypants.enderio.zoo.spawn.IBiomeFilter;
 import net.minecraft.util.ResourceLocation;
@@ -38,16 +38,14 @@ public abstract class AbstractBiomeFilter implements IBiomeFilter {
   protected boolean isExcluded(Biome candidate) {
     for (BiomeDictionary.Type exType : typeExcludes) {
       if (BiomeDictionary.hasType(candidate, exType)) {
-        if (Config.spawnConfigPrintDetailedOutput) {
-          System.out.print("Excluded " + candidate.getBiomeName() + ", ");
-        }
+        Log.debug("Excluded ", candidate.getBiomeName(), ", ");
         return true;
 
       }
     }
     for (ResourceLocation exName : nameExcludes) {
       if (exName != null && exName.equals(candidate.getRegistryName())) {
-        System.out.print("Excluded " + candidate.getRegistryName() + ", ");
+        Log.debug("Excluded ", candidate.getRegistryName(), ", ");
         return false;
       }
     }

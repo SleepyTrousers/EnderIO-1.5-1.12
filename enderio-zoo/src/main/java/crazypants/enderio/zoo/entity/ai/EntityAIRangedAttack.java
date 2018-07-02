@@ -1,5 +1,7 @@
 package crazypants.enderio.zoo.entity.ai;
 
+import com.enderio.core.common.util.NullHelper;
+
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
@@ -63,7 +65,7 @@ public class EntityAIRangedAttack extends EntityAIBase {
 
   protected double getTargetDistance() {
     IAttributeInstance iattributeinstance = entityHost.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
-    return iattributeinstance == null ? 16.0D : iattributeinstance.getAttributeValue();
+    return NullHelper.untrust(iattributeinstance) == null ? 16.0D : iattributeinstance.getAttributeValue();
   }
 
   @Override
@@ -75,8 +77,12 @@ public class EntityAIRangedAttack extends EntityAIBase {
 
   @Override
   public void updateTask() {
-    double distToTargetSq = entityHost.getDistanceSq(attackTarget.posX, attackTarget.getEntityBoundingBox().minY, attackTarget.posZ);
-    boolean canSee = entityHost.getEntitySenses().canSee(attackTarget);
+    final EntityLivingBase attackTarget2 = attackTarget;
+    if (attackTarget2 == null) {
+      return;
+    }
+    double distToTargetSq = entityHost.getDistanceSq(attackTarget.posX, attackTarget2.getEntityBoundingBox().minY, attackTarget.posZ);
+    boolean canSee = entityHost.getEntitySenses().canSee(attackTarget2);
 
     if (canSee) {
       ++timeTargetVisible;
@@ -87,9 +93,9 @@ public class EntityAIRangedAttack extends EntityAIBase {
     if (distToTargetSq <= attackRangeSq && timeTargetVisible >= 20) {
       entityHost.getNavigator().clearPath();
     } else if (timeTargetHidden < 100) {
-      entityHost.getNavigator().tryMoveToEntityLiving(attackTarget, entityMoveSpeed);
+      entityHost.getNavigator().tryMoveToEntityLiving(attackTarget2, entityMoveSpeed);
     }
-    entityHost.getLookHelper().setLookPositionWithEntity(attackTarget, 30.0F, 30.0F);
+    entityHost.getLookHelper().setLookPositionWithEntity(attackTarget2, 30.0F, 30.0F);
 
     if (--timeUntilNextAttack <= 0) {
       if (distToTargetSq > attackRangeSq || !canSee) {
@@ -101,11 +107,11 @@ public class EntityAIRangedAttack extends EntityAIBase {
       } else if (rangeRatio > 1.0F) {
         rangeRatio = 1.0F;
       }
-      rangedAttackEntityHost.attackEntityWithRangedAttack(attackTarget, rangeRatio);
+      rangedAttackEntityHost.attackEntityWithRangedAttack(attackTarget2, rangeRatio);
       timeUntilNextAttack = MathHelper.floor(rangeRatio * (maxRangedAttackTime - minRangedAttackTime) + minRangedAttackTime);
 
     } else if (timeUntilNextAttack < 0) {
-      entityHost.setAttackTarget(attackTarget);
+      entityHost.setAttackTarget(attackTarget2);
       float rangeRatio = MathHelper.sqrt(distToTargetSq) / attackRange;
       timeUntilNextAttack = MathHelper.floor(rangeRatio * (maxRangedAttackTime - minRangedAttackTime) + minRangedAttackTime);
     }

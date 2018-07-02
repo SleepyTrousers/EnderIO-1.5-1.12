@@ -7,13 +7,13 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Triple;
 
-import com.enderio.core.common.Lang;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.zoo.config.ConfigHandler;
 import crazypants.enderio.zoo.init.CommonProxy;
+import crazypants.enderio.zoo.spawn.MobSpawns;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -68,9 +68,8 @@ public class EnderIOZoo implements IEnderIOAddon {
 
   @EventHandler
   public static void init(FMLPostInitializationEvent event) {
+    MobSpawns.instance.loadSpawnConfig();
   }
-
-  public static final @Nonnull Lang lang = new Lang(DOMAIN);
 
   @Override
   @Nullable
