@@ -38,6 +38,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import static crazypants.enderio.machines.init.MachineObject.block_omni_reservoir;
 import static crazypants.enderio.machines.init.MachineObject.block_reservoir;
 
 public class BlockReservoir extends BlockEio<TileReservoir> implements IResourceTooltipProvider, ISmartRenderAwareBlock, IHaveTESR {
@@ -70,7 +71,7 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
     @Override
     @SideOnly(Side.CLIENT)
     public void bindTileEntitySpecialRenderer() {
-//      ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.TileOmniReservoir.class, new ReservoirRenderer((BlockReservoir) block_omni_reservoir.getBlockNN()));
+      ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.TileOmniReservoir.class, new ReservoirRenderer((BlockReservoir) block_omni_reservoir.getBlockNN()));
     }
 
     @Override
