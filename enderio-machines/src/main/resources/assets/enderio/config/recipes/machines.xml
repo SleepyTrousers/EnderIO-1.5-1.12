@@ -268,7 +268,7 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <recipe name="Omni Reservoir" required="false">
+  <recipe name="Omni Reservoir" required="true">
     <crafting>
       <grid size="3x3">
         <item name="blockGlass" /><item name="FUSED_QUARTZ" /><item name="blockGlass" />
