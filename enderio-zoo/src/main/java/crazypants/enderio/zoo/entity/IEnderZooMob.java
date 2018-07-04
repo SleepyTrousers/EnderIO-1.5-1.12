@@ -64,7 +64,8 @@ public interface IEnderZooMob extends IMob {
     FMOUNT,
     OWL,
     WCAT,
-    WWITCH;
+    WWITCH,
+    LCHILD;
 
     @Override
     public int getID() {

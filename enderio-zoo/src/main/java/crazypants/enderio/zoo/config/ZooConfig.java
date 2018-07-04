@@ -92,7 +92,7 @@ public final class ZooConfig {
   public static final IValue<Double> fallenKnightChargeSpeed = KNIGHT.make("chargeSpeed", 1.2, //
       "The speed at which a knight will charge its target.").setRange(0, 10).sync();
   public static final IValue<Double> fallenKnightFollowRange = KNIGHT.make("followRange", 40.0, //
-      "Follow range of a knight.").setRange(0, 10).sync();
+      "Follow range of a knight.").setRange(1, 100).sync();
   public static final IValue<Integer> fallenKnightRangedMinAttackPause = KNIGHT.make("rangedMinAttackPause", 20, //
       "The min number of ticks between ranged attacks.").setRange(1, 200).sync();
   public static final IValue<Integer> fallenKnightRangedMaxAttackPause = KNIGHT.make("rangedMaxAttackPause", 60, //
@@ -191,6 +191,25 @@ public final class ZooConfig {
 
   public static final IValue<Double> witherWitchHealth = WITCH.make("health", 30d, //
       "Health of Wither Witches.").setRange(1, 200).sync();
+
+  public static final IValueFactory LOVE = F0.section(".dire_wolf");
+
+  public static final IValue<Float> attackTeleportChance = LOVE.make("attackTeleportChance", .05f, //
+      "The chance a Love Child will teleport an attacker away.").setRange(0, 1);
+  public static final IValue<Float> attackTeleportDistance = LOVE.make("attackTeleportDistance", 5f, //
+      "The maximum distance a Love Child will teleport an attacker away.").setRange(0.5, 64);
+  public static final IValue<Float> defendTeleportChance = LOVE.make("defendTeleportChance", .05f, //
+      "The chance a Love Child will teleport away when attacked.").setRange(0, 1);
+  public static final IValue<Float> defendTeleportDistance = LOVE.make("defendTeleportDistance", 5f, //
+      "The maximum distance a Love Child will teleport away when attacked.").setRange(0.5, 64);
+  public static final IValue<Double> loveChildHealth = LOVE.make("health", 25d, //
+      "Health of Love Children.").setRange(1, 200).sync();
+  public static final IValue<Double> loveChildAttackDamage = LOVE.make("attackDamage", 10d, //
+      "Base attack damage of Love Children.").setRange(1, 200).sync();
+  public static final IValue<Double> loveChildSpeed = LOVE.make("speed", 0.2d, //
+      "Movement speeds of Love Children. (Zombie: 0.23)").setRange(0.02, 2).sync();
+  public static final IValue<Double> loveChildArmor = LOVE.make("armor", 3d, //
+      "Armor of Love Children. (Zombie: 2)").setRange(0, 20).sync();
 
   //
   //
