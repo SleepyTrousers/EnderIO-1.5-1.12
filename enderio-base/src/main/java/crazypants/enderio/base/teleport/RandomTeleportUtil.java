@@ -16,6 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 
 public class RandomTeleportUtil {
@@ -46,6 +47,10 @@ public class RandomTeleportUtil {
   }
 
   public static void teleportEntity(@Nonnull World world, @Nonnull Entity entity, boolean isItem, boolean dropToGround, float range) {
+    if (entity instanceof FakePlayer) {
+      // don't even bother...
+      return;
+    }
     double origX = entity.posX, origY = entity.posY, origZ = entity.posZ;
     for (int i = 0; i < 15; i++) {
       double targetX = origX + rand.nextGaussian() * range;
