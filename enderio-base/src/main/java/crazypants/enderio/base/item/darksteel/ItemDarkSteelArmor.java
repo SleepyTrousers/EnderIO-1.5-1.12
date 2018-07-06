@@ -90,37 +90,37 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   // ============================================================================================================
 
   public static ItemDarkSteelArmor createDarkSteelBoots(@Nonnull IModObject modObject) {
-    return new ItemDarkSteelArmor(ArmorData.DARK_STEEL, modObject, EntityEquipmentSlot.FEET);
+    return new ItemDarkSteelArmor(ArmorData.DARK_STEEL, modObject, EntityEquipmentSlot.FEET, 1);
   }
 
   public static ItemDarkSteelArmor createDarkSteelLeggings(@Nonnull IModObject modObject) {
-    return new ItemDarkSteelArmor(ArmorData.DARK_STEEL, modObject, EntityEquipmentSlot.LEGS);
+    return new ItemDarkSteelArmor(ArmorData.DARK_STEEL, modObject, EntityEquipmentSlot.LEGS, 1);
   }
 
   public static ItemDarkSteelArmor createDarkSteelChestplate(@Nonnull IModObject modObject) {
-    return new ItemDarkSteelArmor(ArmorData.DARK_STEEL, modObject, EntityEquipmentSlot.CHEST);
+    return new ItemDarkSteelArmor(ArmorData.DARK_STEEL, modObject, EntityEquipmentSlot.CHEST, 1);
   }
 
   public static ItemDarkSteelArmor createDarkSteelHelmet(@Nonnull IModObject modObject) {
-    final ItemDarkSteelArmor helmet = new ItemDarkSteelArmor(ArmorData.DARK_STEEL, modObject, EntityEquipmentSlot.HEAD);
+    final ItemDarkSteelArmor helmet = new ItemDarkSteelArmor(ArmorData.DARK_STEEL, modObject, EntityEquipmentSlot.HEAD, 1);
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new HelmetPainterTemplate(helmet));
     return helmet;
   }
 
   public static ItemDarkSteelArmor createEndSteelBoots(@Nonnull IModObject modObject) {
-    return new ItemDarkSteelArmor(ArmorData.END_STEEL, modObject, EntityEquipmentSlot.FEET);
+    return new ItemDarkSteelArmor(ArmorData.END_STEEL, modObject, EntityEquipmentSlot.FEET, 2);
   }
 
   public static ItemDarkSteelArmor createEndSteelLeggings(@Nonnull IModObject modObject) {
-    return new ItemDarkSteelArmor(ArmorData.END_STEEL, modObject, EntityEquipmentSlot.LEGS);
+    return new ItemDarkSteelArmor(ArmorData.END_STEEL, modObject, EntityEquipmentSlot.LEGS, 2);
   }
 
   public static ItemDarkSteelArmor createEndSteelChestplate(@Nonnull IModObject modObject) {
-    return new ItemDarkSteelArmor(ArmorData.END_STEEL, modObject, EntityEquipmentSlot.CHEST);
+    return new ItemDarkSteelArmor(ArmorData.END_STEEL, modObject, EntityEquipmentSlot.CHEST, 2);
   }
 
   public static ItemDarkSteelArmor createEndSteelHelmet(@Nonnull IModObject modObject) {
-    final ItemDarkSteelArmor helmet = new ItemDarkSteelArmor(ArmorData.END_STEEL, modObject, EntityEquipmentSlot.HEAD);
+    final ItemDarkSteelArmor helmet = new ItemDarkSteelArmor(ArmorData.END_STEEL, modObject, EntityEquipmentSlot.HEAD, 2);
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new HelmetPainterTemplate(helmet));
     return helmet;
   }
@@ -150,17 +150,19 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
    */
   private final int powerPerDamagePoint;
   private final @Nonnull ArmorData data;
+  private final @Nonnull Integer tier;
 
   // ============================================================================================================
   // Constructor
   // ============================================================================================================
 
-  protected ItemDarkSteelArmor(@Nonnull ArmorData data, @Nonnull IModObject modObject, @Nonnull EntityEquipmentSlot armorType) {
+  protected ItemDarkSteelArmor(@Nonnull ArmorData data, @Nonnull IModObject modObject, @Nonnull EntityEquipmentSlot armorType, @Nonnull Integer tier) {
     super(data.getMaterial(), 0, armorType);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
     powerPerDamagePoint = Config.darkSteelPowerStorageBase / data.getMaterial().getDurability(armorType);
     this.data = data;
+    this.tier = tier;
   }
 
   // ============================================================================================================
@@ -523,6 +525,11 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   public boolean protectEntity(@Nonnull EntityLivingBase entity, @Nonnull ItemStack armor, @Nullable String cause, boolean doProtect) {
     return (FORESTRY_HEAD != null && FORESTRY_HEAD.hasUpgrade(armor)) || (FORESTRY_CHEST != null && FORESTRY_CHEST.hasUpgrade(armor))
         || (FORESTRY_FEET != null && FORESTRY_FEET.hasUpgrade(armor)) || (FORESTRY_LEGS != null && FORESTRY_LEGS.hasUpgrade(armor));
+  }
+
+  @Override
+  public boolean isEndSteel(){
+	return tier == 2;
   }
 
 }

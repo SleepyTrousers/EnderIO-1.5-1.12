@@ -73,6 +73,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   private static final @Nonnull ResourceLocation ENDERZOO_ENDERMINY = new ResourceLocation("enderzoo", "enderminy");
 
+  private final @Nonnull Integer tier;
 
   public static boolean isEquipped(EntityPlayer player) {
     return player != null && player.getHeldItemMainhand().getItem() instanceof ItemDarkSteelSword;
@@ -87,13 +88,13 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   public static ItemDarkSteelSword createEndSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelSword res = new ItemDarkSteelSword(modObject, ToolData.MATERIAL_END_STEEL);
+    ItemDarkSteelSword res = new ItemDarkSteelSword(modObject, ToolData.MATERIAL_END_STEEL, 2);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
   public static ItemDarkSteelSword createDarkSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelSword res = new ItemDarkSteelSword(modObject, ToolData.MATERIAL_DARK_STEEL);
+    ItemDarkSteelSword res = new ItemDarkSteelSword(modObject, ToolData.MATERIAL_DARK_STEEL, 1);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
@@ -101,10 +102,11 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   private final int powerPerDamagePoint = Config.darkSteelPowerStorageBase / ToolData.MATERIAL_DARK_STEEL.getMaxUses();
   private long lastBlickTick = -1;
 
-  public ItemDarkSteelSword(@Nonnull IModObject modObject, @Nonnull ToolMaterial material) {
+  public ItemDarkSteelSword(@Nonnull IModObject modObject, @Nonnull ToolMaterial material, @Nonnull Integer tier) {
     super(material);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
+    this.tier = tier;
   }
 
   @Override
@@ -446,6 +448,11 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   @Override
   public boolean hasUpgradeCallbacks(@Nonnull IDarkSteelUpgrade upgrade) {
     return upgrade == TravelUpgrade.INSTANCE;
+  }
+
+  @Override
+  public boolean isEndSteel(){
+  	return tier == 2;
   }
 
 }

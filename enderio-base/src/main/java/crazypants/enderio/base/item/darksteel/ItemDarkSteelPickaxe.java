@@ -73,28 +73,31 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel, IOverlayRenderAware {
 
+  private final @Nonnull Integer tier;
+
   public static int getStoredPower(EntityPlayer player) {
     return EnergyUpgradeManager.getEnergyStored(player.getHeldItemMainhand());
   }
 
   public static ItemDarkSteelPickaxe createEndSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelPickaxe res = new ItemDarkSteelPickaxe(modObject, ToolData.MATERIAL_END_STEEL);
+    ItemDarkSteelPickaxe res = new ItemDarkSteelPickaxe(modObject, ToolData.MATERIAL_END_STEEL, 2);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
   public static ItemDarkSteelPickaxe createDarkSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelPickaxe res = new ItemDarkSteelPickaxe(modObject, ToolData.MATERIAL_DARK_STEEL);
+    ItemDarkSteelPickaxe res = new ItemDarkSteelPickaxe(modObject, ToolData.MATERIAL_DARK_STEEL, 1);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
   private long lastBlickTick = -1;
 
-  public ItemDarkSteelPickaxe(@Nonnull IModObject modObject, @Nonnull ToolMaterial material) {
+  public ItemDarkSteelPickaxe(@Nonnull IModObject modObject, @Nonnull ToolMaterial material, @Nonnull Integer tier) {
     super(material);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
+    this.tier = tier;
   }
 
   @Override
@@ -460,4 +463,8 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     return upgrade == ExplosiveUpgrade.INSTANCE || upgrade == SpoonUpgrade.INSTANCE || upgrade == TravelUpgrade.INSTANCE;
   }
 
+  @Override
+  public boolean isEndSteel(){
+  	return tier == 2;
+  }
 }

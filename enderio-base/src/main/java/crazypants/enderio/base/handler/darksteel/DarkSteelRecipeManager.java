@@ -54,6 +54,7 @@ public class DarkSteelRecipeManager {
     registry.register(EnergyUpgrade.EMPOWERED_TWO);
     registry.register(EnergyUpgrade.EMPOWERED_THREE);
     registry.register(EnergyUpgrade.EMPOWERED_FOUR);
+    registry.register(EnergyUpgrade.EMPOWERED_FIVE);
     registry.register(JumpUpgrade.JUMP_ONE);
     registry.register(JumpUpgrade.JUMP_TWO);
     registry.register(JumpUpgrade.JUMP_THREE);

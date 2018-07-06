@@ -55,9 +55,10 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
   private @Nonnull double[] fovMultipliers = Config.darkSteelBowFovMultipliers;
   private @Nonnull double[] forceMultipliers = Config.darkSteelBowForceMultipliers;
   private @Nonnull int[] drawSpeeds = Config.darkSteelBowDrawSpeeds;
+  private final @Nonnull Integer tier;
 
   public static ItemDarkSteelBow createEndSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelBow res = new ItemDarkSteelBow(modObject);
+    ItemDarkSteelBow res = new ItemDarkSteelBow(modObject, 2);
     MinecraftForge.EVENT_BUS.register(res);
     res.damageBonus = Config.endSteelBowDamageBonus;
     res.forceMultipliers = Config.endSteelBowForceMultipliers;
@@ -67,16 +68,17 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
   }
 
   public static ItemDarkSteelBow createDarkSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelBow res = new ItemDarkSteelBow(modObject);
+    ItemDarkSteelBow res = new ItemDarkSteelBow(modObject, 1);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
-  protected ItemDarkSteelBow(@Nonnull IModObject modObject) {
+  protected ItemDarkSteelBow(@Nonnull IModObject modObject, @Nonnull Integer tier) {
     modObject.apply(this);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     setMaxDamage(300);
     setHasSubtypes(false);
+    this.tier = tier;
 
     addPropertyOverride(new ResourceLocation("pull"), new IItemPropertyGetter() {
       @Override
@@ -396,4 +398,8 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
     return slot == EntityEquipmentSlot.MAINHAND;
   }
 
+  @Override
+  public boolean isEndSteel(){
+  	return tier == 2;
+  }
 }

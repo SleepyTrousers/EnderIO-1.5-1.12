@@ -668,6 +668,10 @@ enderio.darksteel.upgrade.empowered_four.name=Empowered IV
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Power: $P
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D% damage absorbed by power
 
+enderio.darksteel.upgrade.empowered_five.name=Empowered V
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line1=Power: $P
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line2=$D% damage absorbed by power
+
 enderio.darksteel.upgrade.travel.name=Travel
 enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Hold shift and R-Click to teleport or activate a travel anchor or Ender IO
 

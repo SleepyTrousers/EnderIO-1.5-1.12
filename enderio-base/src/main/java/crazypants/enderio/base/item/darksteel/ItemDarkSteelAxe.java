@@ -67,6 +67,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
 
+  private final @Nonnull Integer tier;
+
   public static boolean isEquipped(EntityPlayer player) {
     return player != null && player.getHeldItemMainhand().getItem() == ModObject.itemDarkSteelAxe.getItem();
   }
@@ -80,23 +82,24 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   }
 
   public static @Nonnull ItemDarkSteelAxe createEndSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelAxe res = new ItemDarkSteelAxe(modObject, ToolData.MATERIAL_END_STEEL);
+    ItemDarkSteelAxe res = new ItemDarkSteelAxe(modObject, ToolData.MATERIAL_END_STEEL, 2);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
   public static @Nonnull ItemDarkSteelAxe createDarkSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelAxe res = new ItemDarkSteelAxe(modObject, ToolData.MATERIAL_DARK_STEEL);
+    ItemDarkSteelAxe res = new ItemDarkSteelAxe(modObject, ToolData.MATERIAL_DARK_STEEL, 1);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
   private final MultiHarvestComparator harvestComparator = new MultiHarvestComparator();
 
-  protected ItemDarkSteelAxe(@Nonnull IModObject modObject, @Nonnull ToolMaterial material) {
+  protected ItemDarkSteelAxe(@Nonnull IModObject modObject, @Nonnull ToolMaterial material, @Nonnull Integer tier) {
     super(material, 8, -3);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
+    this.tier = tier;
   }
 
   @Override
@@ -348,6 +351,11 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   @Override
   public boolean hasUpgradeCallbacks(@Nonnull IDarkSteelUpgrade upgrade) {
     return upgrade == HoeUpgrade.INSTANCE;
+  }
+
+  @Override
+  public boolean isEndSteel(){
+  	return tier == 2;
   }
 
 }

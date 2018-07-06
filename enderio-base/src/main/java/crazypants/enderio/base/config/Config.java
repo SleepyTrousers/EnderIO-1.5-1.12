@@ -95,11 +95,12 @@ public final class Config {
 
   public static float travelAnchorZoomScale = 0.2f;
 
-  public static double[] darkSteelPowerDamgeAbsorptionRatios = { 0.5, 0.6, 0.7, 0.85 };
+  public static double[] darkSteelPowerDamgeAbsorptionRatios = { 0.5, 0.6, 0.7, 0.85, 0.95 };
   public static int darkSteelPowerStorageBase = 100000;
   public static int darkSteelPowerStorageLevelOne = 150000;
   public static int darkSteelPowerStorageLevelTwo = 250000;
   public static int darkSteelPowerStorageLevelThree = 1000000;
+  public static int darkSteelPowerStorageLevelFour = 2500000;
 
   public static int darkSteelSpeedOneCost = 4;
   public static int darkSteelSpeedTwoCost = 6;
@@ -134,16 +135,16 @@ public final class Config {
 
   public static float darkSteelBowDamageBonus = 0f;
   public static double[] darkSteelBowForceMultipliers = { 1.1f, 1.2f, 1.3f, 1.4f, 1.5f };
-  public static int[] darkSteelBowDrawSpeeds = { 30, 20, 18, 16, 14 };
+  public static int[] darkSteelBowDrawSpeeds = { 30, 20, 18, 16, 14, 12 };
   public static double[] darkSteelBowFovMultipliers = { 0.25, 0.3, 0.35, 0.4, 0.45 };
   public static int darkSteelBowPowerUsePerDamagePoint = 1000;
   public static int darkSteelBowPowerUsePerDraw = 750;
   public static int darkSteelBowPowerUsePerTickDrawn = 5;
 
   public static float endSteelBowDamageBonus = 0f;
-  public static double[] endSteelBowForceMultipliers = { 1.25f, 1.35f, 1.45f, 1.55f, 1.65f };
-  public static int[] endSteelBowDrawSpeeds = { 20, 15, 12, 11, 10 };
-  public static double[] endSteelBowFovMultipliers = { 0.25, 0.275, 0.3, 0.35, 0.4 };
+  public static double[] endSteelBowForceMultipliers = { 1.25f, 1.35f, 1.45f, 1.55f, 1.65f, 1.75f };
+  public static int[] endSteelBowDrawSpeeds = { 20, 15, 12, 11, 10, 9 };
+  public static double[] endSteelBowFovMultipliers = { 0.25, 0.275, 0.3, 0.35, 0.4, 0.45 };
 
   public static int darkSteelPickEffeciencyObsidian = 50;
   public static int darkSteelPickPowerUseObsidian = 10000;
@@ -168,6 +169,7 @@ public final class Config {
   public static int darkSteelUpgradePowerOneCost = 6;
   public static int darkSteelUpgradePowerTwoCost = 8;
   public static int darkSteelUpgradePowerThreeCost = 12;
+  public static int darkSteelUpgradePowerFourCost = 15;
 
   public static int darkSteelGliderCost = 4;
   public static double darkSteelGliderHorizontalSpeed = 0.03;
@@ -444,6 +446,8 @@ public final class Config {
         "Amount of power stored by dark steel items with a level 2 upgrade.").getInt(darkSteelPowerStorageLevelTwo);
     darkSteelPowerStorageLevelThree = config.get(sectionDarkSteel.name, "darkSteelPowerStorageLevelThree", darkSteelPowerStorageLevelThree,
         "Amount of power stored by dark steel items with a level 3 upgrade.").getInt(darkSteelPowerStorageLevelThree);
+    darkSteelPowerStorageLevelFour = config.get(sectionDarkSteel.name, "darkSteelPowerStorageLevelFour", darkSteelPowerStorageLevelFour,
+		    "Amount of power stored by dark steel items with a level 4 upgrade.").getInt(darkSteelPowerStorageLevelFour);
 
     darkSteelUpgradeVibrantCost = config
         .get(sectionDarkSteel.name, "darkSteelUpgradeVibrantCost", darkSteelUpgradeVibrantCost, "Number of levels required for the 'Empowered.")
@@ -834,8 +838,8 @@ public final class Config {
   }
 
   public static void init(FMLPostInitializationEvent event) {
-    if (darkSteelPowerDamgeAbsorptionRatios == null || darkSteelPowerDamgeAbsorptionRatios.length != 4) {
-      throw new IllegalArgumentException("Ender IO config value darkSteelPowerDamgeAbsorptionRatios must have exactly 4 values");
+    if (darkSteelPowerDamgeAbsorptionRatios == null || darkSteelPowerDamgeAbsorptionRatios.length != 5) {
+      throw new IllegalArgumentException("Ender IO config value darkSteelPowerDamgeAbsorptionRatios must have exactly 5 values");
     }
     if (darkSteelBowForceMultipliers == null || darkSteelBowForceMultipliers.length != 5) {
       throw new IllegalArgumentException("Ender IO config value darkSteelBowForceMultipliers must have exactly 5 values");

@@ -92,7 +92,14 @@ public class EnergyUpgrade extends AbstractUpgrade {
       Config.darkSteelUpgradePowerThreeCost, new ItemStack(itemBasicCapacitor.getItemNN(), 1, 2), Config.darkSteelPowerStorageLevelThree,
       Config.darkSteelPowerStorageLevelThree / 100);
 
+	public static final @Nonnull EnergyUpgrade EMPOWERED_FIVE = new EnergyUpgrade(4, "enderio.darksteel.upgrade.empowered_five",
+			Config.darkSteelUpgradePowerFourCost, new ItemStack(itemMaterial.getItemNN(), 1, Material.ENDER_CRYSTAL.ordinal()), Config.darkSteelPowerStorageLevelFour,
+			Config.darkSteelPowerStorageLevelFour / 100);
+
   public static EnergyUpgrade loadAnyFromItem(@Nonnull ItemStack stack) {
+    if (EMPOWERED_FIVE.hasUpgrade(stack)) {
+	  return EMPOWERED_FIVE;
+    }
     if (EMPOWERED_FOUR.hasUpgrade(stack)) {
       return EMPOWERED_FOUR;
     }
@@ -126,6 +133,9 @@ public class EnergyUpgrade extends AbstractUpgrade {
     AbstractUpgrade up = EnergyUpgradeManager.next(loadAnyFromItem(stack));
     if (up == null) {
       return false;
+    }
+    if(this == EMPOWERED_FIVE && !item.isEndSteel()){
+    	return false;
     }
     return up.getUnlocalizedName().equals(unlocName);
   }

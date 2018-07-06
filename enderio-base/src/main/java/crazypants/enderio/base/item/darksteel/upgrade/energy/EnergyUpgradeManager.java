@@ -45,7 +45,9 @@ public abstract class EnergyUpgradeManager {
       return EnergyUpgrade.EMPOWERED_THREE;
     } else if (upgrade == EnergyUpgrade.EMPOWERED_THREE) {
       return EnergyUpgrade.EMPOWERED_FOUR;
-    }
+    } else if (upgrade == EnergyUpgrade.EMPOWERED_FOUR) {
+		return EnergyUpgrade.EMPOWERED_FIVE;
+	}
     return null;
   }
 
