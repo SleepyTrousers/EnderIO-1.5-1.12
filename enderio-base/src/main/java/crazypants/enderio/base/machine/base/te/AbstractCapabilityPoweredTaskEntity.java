@@ -39,7 +39,7 @@ public abstract class AbstractCapabilityPoweredTaskEntity extends AbstractCapabi
     super(maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
   }
 
-  protected AbstractCapabilityPoweredTaskEntity(@Nonnull EnderInventory inv, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
+  protected AbstractCapabilityPoweredTaskEntity(@Nullable EnderInventory inv, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
       @Nonnull ICapacitorKey maxEnergyUsed) {
     super(inv, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
   }
@@ -130,7 +130,9 @@ public abstract class AbstractCapabilityPoweredTaskEntity extends AbstractCapabi
       return false;
     }
     if (redstoneChecksPassed && !currentTask.isComplete()) {
-      getEnergy().useEnergy();
+      if (getEnergy().useEnergy()) {
+        currentTask.update(getEnergy().getMaxUsage());
+      }
       if (shouldDoubleTick(currentTask, getEnergy().getMaxUsage())) {
         getEnergy().useEnergy();
       }
@@ -168,7 +170,7 @@ public abstract class AbstractCapabilityPoweredTaskEntity extends AbstractCapabi
         if (!stack.isEmpty()) {
           stack = stack.copy();
         }
-        outputStacks.add(stack);
+        outputStacks.set(i, stack);
       }
 
       for (ResultStack result : results) {

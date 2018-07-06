@@ -39,6 +39,7 @@ import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.PaintSourceValidator;
 import crazypants.enderio.base.power.CapInjectHandler;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
+import crazypants.enderio.base.recipe.basin.BasinRecipeManager;
 import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
 import crazypants.enderio.base.recipe.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.base.recipe.soul.SoulBinderRecipeManager;
@@ -196,6 +197,7 @@ public class EnderIO implements IEnderIOAddon {
     AlloyRecipeManager.getInstance().create();
     SliceAndSpliceRecipeManager.getInstance().create();
     VatRecipeManager.getInstance().create();
+    BasinRecipeManager.getInstance().create();
     SoulBinderRecipeManager.getInstance().addDefaultRecipes();
     PaintSourceValidator.instance.loadConfig();
 

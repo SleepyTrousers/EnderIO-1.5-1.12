@@ -205,6 +205,10 @@ public enum CapacitorKey implements ICapacitorKey {
   TELEPAD_POWER_INTAKE(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   TELEPAD_POWER_BUFFER(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   TELEPAD_POWER_USE(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_USE, "use"),
+  
+  BASIN_POWER_INTAKE(MachineObject.block_basin, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  BASIN_POWER_BUFFER(MachineObject.block_basin, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  BASIN_POWER_USE(MachineObject.block_basin, CapacitorKeyType.ENERGY_USE, "use"),
 
   //
   ;

@@ -868,6 +868,15 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:block_crafter" />
     </crafting>
   </recipe>
+  
+  <recipe name="Basin, Test" required="true" disabled="false">
+    <basin energy="100">
+      <inputfluid name="water" amount="0" />
+      <inputfluid name="lava" amount="0" />
+      <orientation name="horizontal" />
+      <output name="minecraft:cobblestone" />
+    </basin>
+  </recipe>
 
   <recipe name="Lava Generator" required="true">
     <crafting>
