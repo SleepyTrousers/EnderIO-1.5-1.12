@@ -39,6 +39,7 @@ public class GuiHelper {
         return openGui(world, entityPlayer, getID(mo), pos, side, param, 0, 0);
       } else {
         entityPlayer.sendStatusMessage(Lang.GUI_PERMISSION_DENIED.toChatServer(), true);
+        entityPlayer.closeScreen();
         return false;
       }
     } else {
@@ -52,6 +53,7 @@ public class GuiHelper {
         return openGui(world, entityPlayer, getID(mo), null, null, a, b, c);
       } else {
         entityPlayer.sendStatusMessage(Lang.GUI_PERMISSION_DENIED.toChatServer(), true);
+        entityPlayer.closeScreen();
         return false;
       }
     } else {

@@ -53,6 +53,7 @@ class GuiHandler implements IGuiHandler {
       return guiElement;
     } else {
       Log.error("Failed to open GUI ", id, " because ", mo, " is no GUI handler");
+      player.closeScreen();
       return null;
     }
   }
