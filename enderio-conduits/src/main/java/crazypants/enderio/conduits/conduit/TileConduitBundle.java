@@ -69,6 +69,10 @@ import net.minecraftforge.items.IItemHandler;
 @Storable
 public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent.IConduitComponentProvider, ITileFilterContainer {
 
+  static {
+    new RuntimeException().printStackTrace();
+  }
+
   // TODO Fix duct-tape
   // TODO Check store
   @Store(handler = ConduitHandler.ConduitCopyOnWriteArrayListHandler.class)
