@@ -13,7 +13,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.init.IModObject.Registerable;
+import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.paint.IPaintable.IBlockPaintableBlock;
@@ -71,7 +71,7 @@ public class EnderItemOverrideList extends ItemOverrideList {
     }
     Block block = Block.getBlockFromItem(stack.getItem());
     if (block == Blocks.AIR) {
-      Registerable modObject = ModObjectRegistry.getModObject(stack.getItem());
+      IModObject modObject = ModObjectRegistry.getModObject(stack.getItem());
       if (modObject != null) {
         block = modObject.getBlock();
       }

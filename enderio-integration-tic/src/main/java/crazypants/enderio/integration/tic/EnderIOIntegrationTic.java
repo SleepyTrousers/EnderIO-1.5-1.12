@@ -9,12 +9,11 @@ import com.enderio.core.common.Lang;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.init.ModObjectRegistry;
+import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.integration.tic.init.TicObject;
 import net.minecraft.block.Block;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -101,9 +100,9 @@ public class EnderIOIntegrationTic implements IEnderIOAddon {
   static boolean enableBook = false; // TODO: Move book to its own submod that only depends on Mantle
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
-  public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
+  public static void registerBlocksEarly(@Nonnull RegisterModObject event) {
     if (enableBook && isLoaded()) {
-      ModObjectRegistry.addModObjects(TicObject.class);
+      event.register(TicObject.class);
     }
   }
 

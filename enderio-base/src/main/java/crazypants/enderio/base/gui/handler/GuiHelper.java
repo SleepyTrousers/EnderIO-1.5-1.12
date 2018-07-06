@@ -3,12 +3,9 @@ package crazypants.enderio.base.gui.handler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.util.NNList;
-
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.init.IModObject.Registerable;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.lang.Lang;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,9 +22,7 @@ import net.minecraftforge.server.permission.context.PlayerContext;
 public class GuiHelper {
 
   public static void init(@Nonnull FMLInitializationEvent event) {
-    NNList<Registerable> objects = ModObjectRegistry.getObjects();
-    for (int i = 0; i < objects.size(); i++) {
-      IModObject mo = objects.get(i);
+    for (IModObject mo : ModObjectRegistry.getRegistry()) {
       if (mo.getBlock() instanceof IEioGuiHandler.WithServerComponent || mo.getItem() instanceof IEioGuiHandler.WithServerComponent) {
         Log.info("Registered permission ", PermissionAPI.registerNode(getPermission(mo), DefaultPermissionLevel.ALL,
             "Permission to open the GUI(s) of Ender IO's " + mo.getUnlocalisedName()));
@@ -100,24 +95,20 @@ public class GuiHelper {
     return true;
   }
 
-  // TODO: This ID depends on the order the modObjects were registered, which depends on the order the RegistryEvent.Register<Block> was executed and the
-  // content of the IModObject enums. Those should be the same on server and client side for the same builds, but there's still a small risk they are not. Can
-  // we find a better ID that is more stable (and fits into 24 bits) without hardcoding it? (Note: Hardcoding is bad because there could be conflicts between
-  // third-party submods.)
   protected static int getID(@Nonnull IModObject mo) {
-    final int id = ModObjectRegistry.getObjects().indexOf(mo);
+    int id = ModObjectRegistry.getRegistry().getID(mo);
     if (id < 0) {
       throw new RuntimeException("Cannot open GUI for object " + mo + " because it is not registered.");
     }
     return id & 0x00FFFFFF;
   }
 
-  protected static Registerable getFromID(int id) {
-    final NNList<Registerable> objects = ModObjectRegistry.getObjects();
-    if (id < 0 || id >= objects.size()) {
+  protected static @Nonnull IModObject getFromID(int id) {
+    IModObject modObject = ModObjectRegistry.getRegistry().getValue(id);
+    if (modObject == null) {
       throw new RuntimeException("Failed to open GUI " + id + "---not a valid ID");
     }
-    return objects.get(id);
+    return modObject;
   }
 
   protected static @Nonnull String getPermission(@Nonnull IModObject mo) {

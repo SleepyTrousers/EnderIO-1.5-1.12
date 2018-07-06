@@ -9,6 +9,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.IModTileEntity;
 import crazypants.enderio.base.init.ModObjectRegistry;
+import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.invpanel.EnderIOInvPanel;
 import crazypants.enderio.invpanel.chest.BlockInventoryChest;
 import crazypants.enderio.invpanel.conduit.data.ItemDataConduit;
@@ -18,13 +19,11 @@ import crazypants.enderio.invpanel.sensor.BlockInventoryPanelSensor;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIOInvPanel.MODID)
-public enum InvpanelObject implements IModObject.Registerable {
+public enum InvpanelObject implements IModObject {
 
   blockInventoryPanel(BlockInventoryPanel.class, InvpanelTileEntity.TileInventoryPanel),
   blockInventoryPanelSensor(BlockInventoryPanelSensor.class, InvpanelTileEntity.TileInventoryPanelSensor),
@@ -48,9 +47,9 @@ public enum InvpanelObject implements IModObject.Registerable {
 
   ;
 
-  @SubscribeEvent(priority = EventPriority.HIGHEST)
-  public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
-    ModObjectRegistry.addModObjects(InvpanelObject.class);
+  @SubscribeEvent
+  public static void registerBlocksEarly(@Nonnull RegisterModObject event) {
+    event.register(InvpanelObject.class);
   }
 
   final @Nonnull String unlocalisedName;

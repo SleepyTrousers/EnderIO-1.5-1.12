@@ -3,7 +3,6 @@ package crazypants.enderio.base.init;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -18,10 +17,11 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.init.IModObject.Registerable;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.common.Loader;
@@ -32,18 +32,25 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.ForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryBuilder;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class ModObjectRegistry {
 
-  private static final NNList<IModObject.Registerable> objects = new NNList<IModObject.Registerable>();
-  private static final NNList<IModObject.Registerable> wrappedObjects = NNList.wrap(Collections.unmodifiableList(objects));
-  private static final Map<Object, IModObject.Registerable> reverseMapping = new IdentityHashMap<>();
+  private static final @Nonnull ResourceLocation NAME = new ResourceLocation(EnderIO.DOMAIN, "modobject");
+  private static IForgeRegistry<IModObject> REGISTRY = null;
 
-  public static <T extends Enum<T> & IModObject.Registerable> void addModObjects(Class<T> enumClass) {
-    objects.addAll(Arrays.asList(enumClass.getEnumConstants()));
+  @SubscribeEvent
+  public static void registerRegistry(@Nonnull RegistryEvent.NewRegistry event) {
+    REGISTRY = new RegistryBuilder<IModObject>().setName(NAME).setType(IModObject.class).setIDRange(0, 0x00FFFFFF).create();
+    MinecraftForge.EVENT_BUS.post(new RegisterModObject(NAME, NullHelper.notnullF(REGISTRY, "RegistryBuilder.create()")));
   }
 
+  // ---
+
+  private static final Map<Object, IModObject> reverseMapping = new IdentityHashMap<>();
   private static final NNList<IModTileEntity> tileEntities = new NNList<>();
 
   public static <T extends Enum<T> & IModTileEntity> void addModTileEntities(Class<T> enumClass) {
@@ -51,19 +58,16 @@ public class ModObjectRegistry {
   }
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
-  public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
-    addModObjects(ModObject.class);
+  public static void registerBlocksEarly(@Nonnull RegisterModObject event) {
+    event.register(ModObject.class);
   }
 
   @SubscribeEvent(priority = EventPriority.NORMAL)
   public static void registerBlocks(@Nonnull RegistryEvent.Register<Block> event) {
-    for (IModObject elem : objects) {
-      if (elem instanceof IModObject.Registerable) {
-        IModObject.Registerable mo = (IModObject.Registerable) elem;
-        final String blockMethodName = mo.getBlockMethodName();
-        if (blockMethodName != null) {
-          createBlock(mo, blockMethodName, event);
-        }
+    for (IModObject mo : REGISTRY) {
+      final String blockMethodName = mo.getBlockMethodName();
+      if (blockMethodName != null) {
+        createBlock(mo, blockMethodName, event);
       }
     }
   }
@@ -85,27 +89,23 @@ public class ModObjectRegistry {
 
   @SubscribeEvent
   public static void registerItems(@Nonnull RegistryEvent.Register<Item> event) {
-    for (IModObject elem : objects) {
-      if (elem instanceof IModObject.Registerable) {
-        IModObject.Registerable mo = (IModObject.Registerable) elem;
-
-        final String itemMethodName = mo.getItemMethodName();
-        if (itemMethodName != null) {
-          createItem(mo, itemMethodName, event);
-        } else {
-          createBlockItem(mo, event);
-        }
+    for (IModObject mo : REGISTRY) {
+      final String itemMethodName = mo.getItemMethodName();
+      if (itemMethodName != null) {
+        createItem(mo, itemMethodName, event);
+      } else {
+        createBlockItem(mo, event);
       }
     }
   }
 
   @SubscribeEvent(priority = EventPriority.LOWEST)
   public static void registerOredict(@Nonnull RegistryEvent.Register<Item> event) {
-    // oredict registration gos here
+    // oredict registration goes here
   }
 
   public static void init(@Nonnull FMLInitializationEvent event) {
-    for (IModObject mo : objects) {
+    for (IModObject mo : REGISTRY) {
       final Block block = mo.getBlock();
       if (block instanceof IModObject.LifecycleInit) {
         ((IModObject.LifecycleInit) block).init(mo, event);
@@ -118,7 +118,7 @@ public class ModObjectRegistry {
   }
 
   public static void init(@Nonnull FMLPostInitializationEvent event) {
-    for (IModObject mo : objects) {
+    for (IModObject mo : REGISTRY) {
       final Block block = mo.getBlock();
       if (block instanceof IModObject.LifecyclePostInit) {
         ((IModObject.LifecyclePostInit) block).init(mo, event);
@@ -133,11 +133,11 @@ public class ModObjectRegistry {
   private static void registerTeClasses() {
     for (IModTileEntity te : tileEntities) {
       Log.debug("Registering TileEntity " + te.getUnlocalisedName() + " as " + te.getRegistryName().toString());
-      GameRegistry.registerTileEntity(te.getTileEntityClass(), te.getRegistryName().toString());
+      GameRegistry.registerTileEntity(te.getTileEntityClass(), te.getRegistryName());
     }
   }
 
-  private static RuntimeException throwCreationError(@Nonnull IModObject.Registerable mo, @Nonnull String blockMethodName, @Nullable Object ex) {
+  private static RuntimeException throwCreationError(@Nonnull IModObject mo, @Nonnull String blockMethodName, @Nullable Object ex) {
     String str = "ModObject:create: Could not create instance for " + mo.getClazz() + " using method " + blockMethodName;
     Log.error(str + (ex instanceof Throwable ? " Exception: " : " Object: ") + Objects.toString(ex));
     if (ex instanceof Throwable) {
@@ -148,7 +148,7 @@ public class ModObjectRegistry {
     }
   }
 
-  private static Object createObject(@Nonnull IModObject.Registerable mo, @Nonnull String methodName) {
+  private static Object createObject(@Nonnull IModObject mo, @Nonnull String methodName) {
     Object obj;
     try {
       obj = mo.getClazz().getDeclaredMethod(methodName, new Class<?>[] { IModObject.class }).invoke(null, new Object[] { mo });
@@ -158,7 +158,7 @@ public class ModObjectRegistry {
     return obj;
   }
 
-  private static void disectClass(IModObject.Registerable mo) {
+  private static void disectClass(IModObject mo) {
     try {
       Log.debug("Modobject class is " + mo.getClazz());
       Method[] declaredMethods = mo.getClazz().getDeclaredMethods();
@@ -173,7 +173,7 @@ public class ModObjectRegistry {
     }
   }
 
-  private static void createBlock(@Nonnull IModObject.Registerable mo, @Nonnull String blockMethodName, @Nonnull Register<Block> event) {
+  private static void createBlock(@Nonnull IModObject mo, @Nonnull String blockMethodName, @Nonnull Register<Block> event) {
     Object obj = createObject(mo, blockMethodName);
 
     if (obj instanceof Block) {
@@ -185,7 +185,7 @@ public class ModObjectRegistry {
     }
   }
 
-  private static void createItem(@Nonnull IModObject.Registerable mo, @Nonnull String itemMethodName, @Nonnull Register<Item> event) {
+  private static void createItem(@Nonnull IModObject mo, @Nonnull String itemMethodName, @Nonnull Register<Item> event) {
     Object obj = createObject(mo, itemMethodName);
 
     if (obj instanceof Item) {
@@ -197,7 +197,7 @@ public class ModObjectRegistry {
     }
   }
 
-  private static void createBlockItem(Registerable mo, @Nonnull Register<Item> event) {
+  private static void createBlockItem(IModObject mo, @Nonnull Register<Item> event) {
     Block block = mo.getBlock();
     if (block instanceof IModObject.WithBlockItem) {
       final Item item = ((IModObject.WithBlockItem) block).createBlockItem(mo);
@@ -221,24 +221,24 @@ public class ModObjectRegistry {
     return name.replaceAll("([A-Z])", "_$0").replaceFirst("^_", "").toLowerCase(Locale.ENGLISH);
   }
 
-  public static NNList<IModObject.Registerable> getObjects() {
-    return wrappedObjects;
-  }
-
-  public static @Nullable IModObject.Registerable getModObject(@Nonnull Block forBlock) {
+  public static @Nullable IModObject getModObject(@Nonnull Block forBlock) {
     return reverseMapping.get(forBlock);
   }
 
-  public static @Nonnull IModObject.Registerable getModObjectNN(@Nonnull Block forBlock) {
+  public static @Nonnull IModObject getModObjectNN(@Nonnull Block forBlock) {
     return NullHelper.notnull(reverseMapping.get(forBlock), "missing modObject");
   }
 
-  public static @Nullable IModObject.Registerable getModObject(@Nonnull Item forItem) {
+  public static @Nullable IModObject getModObject(@Nonnull Item forItem) {
     return reverseMapping.get(forItem);
   }
 
-  public static @Nonnull IModObject.Registerable getModObjectNN(@Nonnull Item forItem) {
+  public static @Nonnull IModObject getModObjectNN(@Nonnull Item forItem) {
     return NullHelper.notnull(reverseMapping.get(forItem), "missing modObject");
+  }
+
+  public static @Nonnull ForgeRegistry<IModObject> getRegistry() {
+    return (ForgeRegistry<IModObject>) NullHelper.notnull(REGISTRY, "accessing modobject registry too early");
   }
 
 }

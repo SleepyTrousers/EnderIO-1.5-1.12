@@ -12,7 +12,7 @@ import crazypants.enderio.integration.tic.book.ItemEioBook;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
-public enum TicObject implements IModObject.Registerable {
+public enum TicObject implements IModObject {
 
   item_eio_book(ItemEioBook.class),
 

@@ -9,20 +9,20 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.IModTileEntity;
 import crazypants.enderio.base.init.ModObjectRegistry;
+import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.integration.forestry.filters.ItemSpeciesItemFilter;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
 
-public enum ForestryIntegrationObject implements IModObject.Registerable {
+public enum ForestryIntegrationObject implements IModObject {
 
   itemSpeciesItemFilter(ItemSpeciesItemFilter.class),
 
   ;
 
-  public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
-    ModObjectRegistry.addModObjects(ForestryIntegrationObject.class);
+  public static void registerBlocksEarly(@Nonnull RegisterModObject event) {
+    event.register(ForestryIntegrationObject.class);
   }
 
   final @Nonnull String unlocalisedName;

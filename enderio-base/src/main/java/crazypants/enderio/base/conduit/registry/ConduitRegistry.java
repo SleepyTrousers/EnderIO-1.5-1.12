@@ -167,7 +167,7 @@ public class ConduitRegistry {
     }
   };
 
-  private static IModObject.Registerable conduitBlock = null;
+  private static IModObject conduitBlock = null;
 
   /**
    * Returns the conduit block if it exists.
@@ -179,18 +179,18 @@ public class ConduitRegistry {
   /**
    * Returns the conduit block if it exists.
    */
-  public static @Nullable IModObject.Registerable getConduitModObject() {
+  public static @Nullable IModObject getConduitModObject() {
     return conduitBlock;
   }
 
-  public static @Nonnull IModObject.Registerable getConduitModObjectNN() {
+  public static @Nonnull IModObject getConduitModObjectNN() {
     return NullHelper.notnull(conduitBlock, "Cannot use conduits unless conduits submod is installed");
   }
 
   /**
    * Sets the conduit block. For internal use by the conduit module only!
    */
-  public static void registerConduitBlock(@Nonnull IModObject.Registerable block) {
+  public static void registerConduitBlock(@Nonnull IModObject block) {
     conduitBlock = block;
   }
 

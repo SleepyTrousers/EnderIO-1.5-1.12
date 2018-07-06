@@ -18,14 +18,26 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public interface IModObject extends IProducer {
+public interface IModObject extends IProducer, IForgeRegistryEntry<IModObject> {
 
   @Nonnull
   String getUnlocalisedName();
 
+  @Override
+  default IModObject setRegistryName(ResourceLocation name) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
   default @Nonnull ResourceLocation getRegistryName() {
     return new ResourceLocation(EnderIO.DOMAIN, getUnlocalisedName());
+  }
+
+  @Override
+  default Class<IModObject> getRegistryType() {
+    return IModObject.class;
   }
 
   default @Nonnull <B extends Block> B apply(@Nonnull B block) {
@@ -41,57 +53,51 @@ public interface IModObject extends IProducer {
   }
 
   default @Nullable Class<? extends TileEntity> getTEClass() {
-    if (this instanceof Registerable) {
-      IModTileEntity tileEntity = ((Registerable) this).getTileEntity();
-      if (tileEntity != null) {
-        return tileEntity.getTileEntityClass();
-      }
+    IModTileEntity tileEntity = getTileEntity();
+    if (tileEntity != null) {
+      return tileEntity.getTileEntityClass();
     }
     return null;
   }
 
-  public static interface Registerable extends IModObject {
+  @Nonnull
+  Class<?> getClazz();
 
-    @Nonnull
-    Class<?> getClazz();
+  @Nullable
+  String getBlockMethodName();
 
-    @Nullable
-    String getBlockMethodName();
+  @Nullable
+  String getItemMethodName();
 
-    @Nullable
-    String getItemMethodName();
+  @Nullable
+  IModTileEntity getTileEntity();
 
-    @Nullable
-    IModTileEntity getTileEntity();
+  void setItem(@Nullable Item obj);
 
-    void setItem(@Nullable Item obj);
+  void setBlock(@Nullable Block obj);
 
-    void setBlock(@Nullable Block obj);
+  default boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer) {
+    return openGui(world, pos, entityPlayer, null, 0);
+  }
 
-    default boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer) {
-      return openGui(world, pos, entityPlayer, null, 0);
-    }
+  default boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nullable EnumFacing side) {
+    return openGui(world, pos, entityPlayer, side, 0);
+  }
 
-    default boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nullable EnumFacing side) {
-      return openGui(world, pos, entityPlayer, side, 0);
-    }
+  default boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nullable EnumFacing side, int param) {
+    return GuiHelper.openGui(this, world, pos, entityPlayer, side, param);
+  }
 
-    default boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nullable EnumFacing side, int param) {
-      return GuiHelper.openGui(this, world, pos, entityPlayer, side, param);
-    }
+  default boolean openGui(@Nonnull World world, @Nonnull EntityPlayer entityPlayer, int a, int b, int c) {
+    return GuiHelper.openGui(this, world, entityPlayer, a, b, c);
+  }
 
-    default boolean openGui(@Nonnull World world, @Nonnull EntityPlayer entityPlayer, int a, int b, int c) {
-      return GuiHelper.openGui(this, world, entityPlayer, a, b, c);
-    }
+  default boolean openClientGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nullable EnumFacing side, int param) {
+    return GuiHelper.openClientGui(this, world, pos, entityPlayer, side, param);
+  }
 
-    default boolean openClientGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nullable EnumFacing side, int param) {
-      return GuiHelper.openClientGui(this, world, pos, entityPlayer, side, param);
-    }
-
-    default boolean openClientGui(@Nonnull World world, @Nonnull EntityPlayer entityPlayer, int a, int b, int c) {
-      return GuiHelper.openClientGui(this, world, entityPlayer, a, b, c);
-    }
-
+  default boolean openClientGui(@Nonnull World world, @Nonnull EntityPlayer entityPlayer, int a, int b, int c) {
+    return GuiHelper.openClientGui(this, world, entityPlayer, a, b, c);
   }
 
   /**

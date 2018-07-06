@@ -81,7 +81,7 @@ import crazypants.enderio.base.render.dummy.BlockMachineIO;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
-public enum ModObject implements IModObject.Registerable {
+public enum ModObject implements IModObject {
 
   // Dummies
   block_machine_io(BlockMachineIO.class),

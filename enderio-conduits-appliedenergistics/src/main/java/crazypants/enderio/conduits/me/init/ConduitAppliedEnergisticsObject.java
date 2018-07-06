@@ -9,20 +9,20 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.IModTileEntity;
 import crazypants.enderio.base.init.ModObjectRegistry;
+import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.conduits.me.conduit.ItemMEConduit;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
 
-public enum ConduitAppliedEnergisticsObject implements IModObject.Registerable {
+public enum ConduitAppliedEnergisticsObject implements IModObject {
 
   item_me_conduit(ItemMEConduit.class);
 
   ;
 
-  public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
-    ModObjectRegistry.addModObjects(ConduitAppliedEnergisticsObject.class);
+  public static void registerBlocksEarly(@Nonnull RegisterModObject event) {
+    event.register(ConduitAppliedEnergisticsObject.class);
   }
 
   final @Nonnull String unlocalisedName;

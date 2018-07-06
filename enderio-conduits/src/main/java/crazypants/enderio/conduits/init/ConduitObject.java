@@ -10,6 +10,7 @@ import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.IModTileEntity;
 import crazypants.enderio.base.init.ModObjectRegistry;
+import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.base.registry.Registry;
 import crazypants.enderio.conduits.EnderIOConduits;
 import crazypants.enderio.conduits.conduit.BlockConduitBundle;
@@ -20,13 +21,11 @@ import crazypants.enderio.conduits.conduit.redstone.ItemRedstoneConduit;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIOConduits.MODID)
-public enum ConduitObject implements IModObject.Registerable {
+public enum ConduitObject implements IModObject {
 
   // Conduits
   block_conduit_bundle(BlockConduitBundle.class, ConduitTileEntity.TileConduitBundle),
@@ -42,10 +41,10 @@ public enum ConduitObject implements IModObject.Registerable {
 
   ;
 
-  @SubscribeEvent(priority = EventPriority.HIGHEST)
-  public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
+  @SubscribeEvent
+  public static void registerBlocksEarly(@Nonnull RegisterModObject event) {
     Registry.registerConduitBlock(block_conduit_bundle);
-    ModObjectRegistry.addModObjects(ConduitObject.class);
+    event.register(ConduitObject.class);
   }
 
   final @Nonnull String unlocalisedName;

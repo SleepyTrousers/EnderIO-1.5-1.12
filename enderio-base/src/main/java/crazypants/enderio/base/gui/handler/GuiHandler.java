@@ -3,7 +3,7 @@ package crazypants.enderio.base.gui.handler;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.init.IModObject.Registerable;
+import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.network.IRemoteExec;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
@@ -40,7 +40,7 @@ class GuiHandler implements IGuiHandler {
     BlockPos pos = BlockPos.fromLong(posl);
     int param2 = b, param3 = c, param1 = d;
 
-    Registerable mo = GuiHelper.getFromID(id);
+    IModObject mo = GuiHelper.getFromID(id);
     IEioGuiHandler handler = mo.getBlock() instanceof IEioGuiHandler ? (IEioGuiHandler) mo.getBlock()
         : mo.getItem() instanceof IEioGuiHandler ? (IEioGuiHandler) mo.getItem() : null;
     if (handler != null) {

@@ -24,7 +24,7 @@ public final class Registry {
     return ConduitRegistry.getConduitBlock();
   }
 
-  public static void registerConduitBlock(@Nonnull IModObject.Registerable block) {
+  public static void registerConduitBlock(@Nonnull IModObject block) {
     ConduitRegistry.registerConduitBlock(block);
   }
 
