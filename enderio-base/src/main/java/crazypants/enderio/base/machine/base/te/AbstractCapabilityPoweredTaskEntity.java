@@ -124,17 +124,21 @@ public abstract class AbstractCapabilityPoweredTaskEntity extends AbstractCapabi
 
     return requiresClientSync;
   }
+  
+  private void useEnergy() {
+    if (getEnergy().useEnergy()) {
+      currentTask.update(getEnergy().getMaxUsage());
+    }
+  }
 
   protected boolean checkProgress(boolean redstoneChecksPassed) {
     if (currentTask == null || !hasPower()) {
       return false;
     }
     if (redstoneChecksPassed && !currentTask.isComplete()) {
-      if (getEnergy().useEnergy()) {
-        currentTask.update(getEnergy().getMaxUsage());
-      }
+      useEnergy();
       if (shouldDoubleTick(currentTask, getEnergy().getMaxUsage())) {
-        getEnergy().useEnergy();
+        useEnergy();
       }
     }
     // then check if we are done
