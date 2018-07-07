@@ -17,6 +17,7 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -45,6 +46,10 @@ public class ModObjectRegistry {
   @SubscribeEvent
   public static void registerRegistry(@Nonnull RegistryEvent.NewRegistry event) {
     REGISTRY = new RegistryBuilder<IModObject>().setName(NAME).setType(IModObject.class).setIDRange(0, 0x00FFFFFF).create();
+  }
+
+  @SubscribeEvent
+  public static void registerRegistry(@Nonnull EnderIOLifecycleEvent.PreInit event) {
     MinecraftForge.EVENT_BUS.post(new RegisterModObject(NAME, NullHelper.notnullF(REGISTRY, "RegistryBuilder.create()")));
   }
 
