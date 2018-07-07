@@ -42,9 +42,9 @@ public final class DarkSteelConfig {
       "The increase in attack speed when the sword is empowered IV and has energy.").setRange(0, 2).sync();
 
   public static final IValue<Float> darkSteelSwordDamageBonusEmpowered4 = F.make("damageBonusEmpowered5", 5f, //
-	  "The extra damage dealt when the sword is empowered V and has energy.").setRange(0, 32).sync();
+      "The extra damage dealt when the sword is empowered V and has energy.").setRange(0, 32).sync();
   public static final IValue<Float> darkSteelSwordSpeedBonusEmpowered4 = F.make("speedBonusEmpowered5", 0.6f, //
-   	  "The increase in attack speed when the sword is empowered V and has energy.").setRange(0, 2).sync();
+      "The increase in attack speed when the sword is empowered V and has energy.").setRange(0, 2).sync();
 
   public static final IValueFactory F_UPGRADES = F_DARK_STEEL.section(".upgrades");
 
@@ -74,7 +74,7 @@ public final class DarkSteelConfig {
   public static final IValue<Float> darkSteelSpeedBonusEmpowered3 = F1.make("empoweredBonus4", 2.00f, //
       "The extra effectiveness of the speed upgrade when the Leggings are empowered IV and have energy.").setRange(0, 2).sync();
   public static final IValue<Float> darkSteelSpeedBonusEmpowered4 = F1.make("empoweredBonus5", 2.50f, //
-	  "The extra effectiveness of the speed upgrade when the Leggings are empowered V and have energy.").setRange(0, 2).sync();
+      "The extra effectiveness of the speed upgrade when the Leggings are empowered V and have energy.").setRange(0, 2).sync();
 
   public static final IValueFactory F2 = F_UPGRADES.section(".explosive");
 

@@ -75,8 +75,8 @@ public enum EquipmentData {
         "Failed to create armor material");
     this.armorMaterialEmpowered = NullHelper.notnullF(EnumHelper.addArmorMaterial(name() + "_EMPOWERED", name() + "_EMPOWERED", maxDamageFactor,
         damageReductionEmpowered, armorEnchantability, soundEvent, toughnessEmpowered), "Failed to create armor material");
-    this.toolMaterial = NullHelper
-            .notnullF(EnumHelper.addToolMaterial(toolMaterialName, harvestLevel, maxUses, efficiency, damage, toolEnchanability), "failed to add tool material dark steel");
+    this.toolMaterial = NullHelper.notnullF(EnumHelper.addToolMaterial(toolMaterialName, harvestLevel, maxUses, efficiency, damage, toolEnchanability),
+        "failed to add tool material dark steel");
     this.repairIngotOredict = repairIngotOredict;
     this.texture1 = EnderIO.DOMAIN + ":textures/models/armor/" + texture1;
     this.texture2 = EnderIO.DOMAIN + ":textures/models/armor/" + texture2;

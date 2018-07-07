@@ -78,12 +78,12 @@ public interface IDarkSteelItem {
     return false;
   }
 
-	/**
-	 * Checks if this item is the End Steel tier
-	 * <p>
-	 * Used by upgrades to determine if they can be applied to an item
-	 */
+  /**
+   * Checks if this item is the End Steel tier
+   * <p>
+   * Used by upgrades to determine if they can be applied to an item
+   */
   default int getTier(){
-  	return 1;
+    return 1;
   }
 }

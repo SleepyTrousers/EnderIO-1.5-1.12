@@ -447,7 +447,7 @@ public final class Config {
     darkSteelPowerStorageLevelThree = config.get(sectionDarkSteel.name, "darkSteelPowerStorageLevelThree", darkSteelPowerStorageLevelThree,
         "Amount of power stored by dark steel items with a level 3 upgrade.").getInt(darkSteelPowerStorageLevelThree);
     darkSteelPowerStorageLevelFour = config.get(sectionDarkSteel.name, "darkSteelPowerStorageLevelFour", darkSteelPowerStorageLevelFour,
-		    "Amount of power stored by dark steel items with a level 4 upgrade.").getInt(darkSteelPowerStorageLevelFour);
+        "Amount of power stored by dark steel items with a level 4 upgrade.").getInt(darkSteelPowerStorageLevelFour);
 
     darkSteelUpgradeVibrantCost = config
         .get(sectionDarkSteel.name, "darkSteelUpgradeVibrantCost", darkSteelUpgradeVibrantCost, "Number of levels required for the 'Empowered.")
