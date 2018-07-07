@@ -1,13 +1,6 @@
 package crazypants.enderio.base.item.darksteel.upgrade.energy;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
-
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.Config;
@@ -21,6 +14,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 import static crazypants.enderio.base.init.ModObject.itemBasicCapacitor;
 import static crazypants.enderio.base.init.ModObject.itemMaterial;
@@ -134,7 +132,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
     if (up == null) {
       return false;
     }
-    if(this == EMPOWERED_FIVE && !item.isEndSteel()){
+    if(this == EMPOWERED_FIVE && item.getTier() != 2){
     	return false;
     }
     return up.getUnlocalizedName().equals(unlocName);

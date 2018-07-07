@@ -1,13 +1,5 @@
 package crazypants.enderio.base.item.darksteel;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
@@ -17,7 +9,6 @@ import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.OreDictionaryHelper;
 import com.enderio.core.common.util.stackable.Things;
-
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
@@ -28,7 +19,7 @@ import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.item.darksteel.attributes.ToolData;
+import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -37,7 +28,6 @@ import crazypants.enderio.base.item.darksteel.upgrade.spoon.SpoonUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.travel.TravelUpgrade;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.lang.LangPower;
-import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.base.network.PacketSpawnParticles;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.base.teleport.TravelController;
@@ -55,12 +45,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
@@ -71,33 +56,39 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel, IOverlayRenderAware {
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-  private final @Nonnull Integer tier;
+public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel, IOverlayRenderAware {
 
   public static int getStoredPower(EntityPlayer player) {
     return EnergyUpgradeManager.getEnergyStored(player.getHeldItemMainhand());
   }
 
   public static ItemDarkSteelPickaxe createEndSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelPickaxe res = new ItemDarkSteelPickaxe(modObject, ToolData.MATERIAL_END_STEEL, 2);
+    ItemDarkSteelPickaxe res = new ItemDarkSteelPickaxe(modObject, EquipmentData.END_STEEL);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
   public static ItemDarkSteelPickaxe createDarkSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelPickaxe res = new ItemDarkSteelPickaxe(modObject, ToolData.MATERIAL_DARK_STEEL, 1);
+    ItemDarkSteelPickaxe res = new ItemDarkSteelPickaxe(modObject, EquipmentData.DARK_STEEL);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
   private long lastBlickTick = -1;
+  private final @Nonnull EquipmentData data;
 
-  public ItemDarkSteelPickaxe(@Nonnull IModObject modObject, @Nonnull ToolMaterial material, @Nonnull Integer tier) {
-    super(material);
+  public ItemDarkSteelPickaxe(@Nonnull IModObject modObject, @Nonnull EquipmentData data) {
+    super(data.getToolMaterial());
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
-    this.tier = tier;
+    this.data = data;
   }
 
   @Override
@@ -125,7 +116,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 
   @Override
   public boolean isItemForRepair(@Nonnull ItemStack right) {
-    return OreDictionaryHelper.hasName(right, Alloy.DARK_STEEL.getOreIngot());
+    return OreDictionaryHelper.hasName(right, data.getRepairIngotOredict());
   }
 
   @Override
@@ -464,7 +455,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   }
 
   @Override
-  public boolean isEndSteel(){
-  	return tier == 2;
+  public int getTier(){
+    return data.getTier();
   }
 }

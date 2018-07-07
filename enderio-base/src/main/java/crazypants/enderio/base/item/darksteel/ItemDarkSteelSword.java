@@ -1,10 +1,5 @@
 package crazypants.enderio.base.item.darksteel;
 
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
@@ -12,7 +7,6 @@ import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.OreDictionaryHelper;
 import com.enderio.core.common.util.Util;
 import com.google.common.collect.Multimap;
-
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
@@ -24,12 +18,11 @@ import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.integration.tic.TicUtil;
 import crazypants.enderio.base.item.darksteel.attributes.DarkSteelAttributeModifiers;
-import crazypants.enderio.base.item.darksteel.attributes.ToolData;
+import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.item.darksteel.upgrade.travel.TravelUpgrade;
-import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.base.teleport.TravelController;
 import net.minecraft.creativetab.CreativeTabs;
@@ -39,22 +32,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntityWitherSkeleton;
-import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.monster.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
@@ -65,6 +50,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.List;
+
 import static crazypants.enderio.base.init.ModObject.blockEndermanSkull;
 
 public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel, IOverlayRenderAware {
@@ -73,7 +62,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   private static final @Nonnull ResourceLocation ENDERZOO_ENDERMINY = new ResourceLocation("enderzoo", "enderminy");
 
-  private final @Nonnull Integer tier;
+
 
   public static boolean isEquipped(EntityPlayer player) {
     return player != null && player.getHeldItemMainhand().getItem() instanceof ItemDarkSteelSword;
@@ -88,25 +77,26 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   public static ItemDarkSteelSword createEndSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelSword res = new ItemDarkSteelSword(modObject, ToolData.MATERIAL_END_STEEL, 2);
+    ItemDarkSteelSword res = new ItemDarkSteelSword(modObject, EquipmentData.END_STEEL);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
   public static ItemDarkSteelSword createDarkSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelSword res = new ItemDarkSteelSword(modObject, ToolData.MATERIAL_DARK_STEEL, 1);
+    ItemDarkSteelSword res = new ItemDarkSteelSword(modObject, EquipmentData.DARK_STEEL);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
-  private final int powerPerDamagePoint = Config.darkSteelPowerStorageBase / ToolData.MATERIAL_DARK_STEEL.getMaxUses();
+  private final int powerPerDamagePoint = Config.darkSteelPowerStorageBase / EquipmentData.DARK_STEEL.getToolMaterial().getMaxUses();
   private long lastBlickTick = -1;
+  private final @Nonnull EquipmentData data;
 
-  public ItemDarkSteelSword(@Nonnull IModObject modObject, @Nonnull ToolMaterial material, @Nonnull Integer tier) {
-    super(material);
+  public ItemDarkSteelSword(@Nonnull IModObject modObject, @Nonnull EquipmentData data) {
+    super(data.getToolMaterial());
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
-    this.tier = tier;
+    this.data = data;
   }
 
   @Override
@@ -131,7 +121,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   @Override
   public boolean isItemForRepair(@Nonnull ItemStack right) {
-    return OreDictionaryHelper.hasName(right, Alloy.DARK_STEEL.getOreIngot());
+    return OreDictionaryHelper.hasName(right, data.getRepairIngotOredict());
   }
 
   @SubscribeEvent
@@ -451,8 +441,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   @Override
-  public boolean isEndSteel(){
-  	return tier == 2;
+  public int getTier(){
+    return data.getTier();
   }
-
 }

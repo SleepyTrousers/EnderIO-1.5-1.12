@@ -1,19 +1,11 @@
 package crazypants.enderio.base.item.darksteel;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.OreDictionaryHelper;
-
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIOTab;
@@ -27,7 +19,7 @@ import crazypants.enderio.base.farming.harvesters.TreeHarvester;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
-import crazypants.enderio.base.item.darksteel.attributes.ToolData;
+import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -50,11 +42,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -65,9 +53,13 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
-  private final @Nonnull Integer tier;
+public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
 
   public static boolean isEquipped(EntityPlayer player) {
     return player != null && player.getHeldItemMainhand().getItem() == ModObject.itemDarkSteelAxe.getItem();
@@ -82,24 +74,25 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   }
 
   public static @Nonnull ItemDarkSteelAxe createEndSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelAxe res = new ItemDarkSteelAxe(modObject, ToolData.MATERIAL_END_STEEL, 2);
+    ItemDarkSteelAxe res = new ItemDarkSteelAxe(modObject, EquipmentData.END_STEEL);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
   public static @Nonnull ItemDarkSteelAxe createDarkSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelAxe res = new ItemDarkSteelAxe(modObject, ToolData.MATERIAL_DARK_STEEL, 1);
+    ItemDarkSteelAxe res = new ItemDarkSteelAxe(modObject, EquipmentData.DARK_STEEL);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
   private final MultiHarvestComparator harvestComparator = new MultiHarvestComparator();
+  private final @Nonnull EquipmentData data;
 
-  protected ItemDarkSteelAxe(@Nonnull IModObject modObject, @Nonnull ToolMaterial material, @Nonnull Integer tier) {
-    super(material, 8, -3);
+  protected ItemDarkSteelAxe(@Nonnull IModObject modObject, @Nonnull EquipmentData data) {
+    super(data.getToolMaterial(), 8, -3);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
-    this.tier = tier;
+    this.data = data;
   }
 
   @Override
@@ -354,8 +347,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   }
 
   @Override
-  public boolean isEndSteel(){
-  	return tier == 2;
+  public int getTier(){
+    return data.getTier();
   }
-
 }

@@ -83,8 +83,7 @@ public interface IDarkSteelItem {
 	 * <p>
 	 * Used by upgrades to determine if they can be applied to an item
 	 */
-  default boolean isEndSteel(){
-  	return false;
+  default int getTier(){
+  	return 1;
   }
-
 }
