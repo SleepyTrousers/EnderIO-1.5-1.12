@@ -3,6 +3,7 @@ package crazypants.enderio.base.item.darksteel.upgrade.energy;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.block.skull.SkullType;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.travelstaff.ItemTravelStaff;
@@ -20,6 +21,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static crazypants.enderio.base.init.ModObject.blockEndermanSkull;
 import static crazypants.enderio.base.init.ModObject.itemBasicCapacitor;
 import static crazypants.enderio.base.init.ModObject.itemMaterial;
 
@@ -91,7 +93,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
       Config.darkSteelPowerStorageLevelThree / 100);
 
 	public static final @Nonnull EnergyUpgrade EMPOWERED_FIVE = new EnergyUpgrade(4, "enderio.darksteel.upgrade.empowered_five",
-			Config.darkSteelUpgradePowerFourCost, new ItemStack(itemMaterial.getItemNN(), 1, Material.ENDER_CRYSTAL.ordinal()), Config.darkSteelPowerStorageLevelFour,
+			Config.darkSteelUpgradePowerFourCost, new ItemStack(blockEndermanSkull.getBlockNN(), 1, SkullType.TORMENTED.ordinal()), Config.darkSteelPowerStorageLevelFour,
 			Config.darkSteelPowerStorageLevelFour / 100);
 
   public static EnergyUpgrade loadAnyFromItem(@Nonnull ItemStack stack) {
