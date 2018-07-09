@@ -95,6 +95,7 @@ public final class Config {
 
   public static float travelAnchorZoomScale = 0.2f;
 
+  public static double[] darkSteelPowerDamgeAbsorptionRatiosDefaults = { 0.5, 0.6, 0.7, 0.85, 0.95 };
   public static double[] darkSteelPowerDamgeAbsorptionRatios = { 0.5, 0.6, 0.7, 0.85, 0.95 };
   public static int darkSteelPowerStorageBase = 100000;
   public static int darkSteelPowerStorageLevelOne = 150000;
@@ -839,7 +840,8 @@ public final class Config {
 
   public static void init(FMLPostInitializationEvent event) {
     if (darkSteelPowerDamgeAbsorptionRatios == null || darkSteelPowerDamgeAbsorptionRatios.length != 5) {
-      throw new IllegalArgumentException("Ender IO config value darkSteelPowerDamgeAbsorptionRatios must have exactly 5 values");
+      darkSteelPowerDamgeAbsorptionRatios = darkSteelPowerDamgeAbsorptionRatiosDefaults;
+      Log.error("Ender IO config value darkSteelPowerDamgeAbsorptionRatios must have exactly 5 values. Resetting to defaults.");
     }
     if (darkSteelBowForceMultipliers == null || darkSteelBowForceMultipliers.length != 5) {
       throw new IllegalArgumentException("Ender IO config value darkSteelBowForceMultipliers must have exactly 5 values");

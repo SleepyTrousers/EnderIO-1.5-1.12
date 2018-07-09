@@ -79,11 +79,11 @@ public interface IDarkSteelItem {
   }
 
   /**
-   * Checks what tier this item is.
+   * Returns an {@link IEquipmentData} that describes the item.
    * <p>
    * Used by upgrades to determine if they can be applied to an item
    */
-  default int getTier(){
-    return 1;
-  }
+  @Nonnull
+  IEquipmentData getEquipmentData();
+
 }

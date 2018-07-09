@@ -1,5 +1,12 @@
 package crazypants.enderio.base.item.darksteel;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.transform.EnderCoreMethods.IElytraFlyingProvider;
@@ -9,8 +16,10 @@ import com.enderio.core.common.util.NNMap;
 import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
+import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
 import crazypants.enderio.api.upgrades.IRenderUpgrade;
 import crazypants.enderio.base.EnderIOTab;
@@ -62,12 +71,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import thaumcraft.api.items.IVisDiscountGear;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
 
 @InterfaceList({
     // @Interface(iface = "thaumcraft.api.items.IGoggles", modid = "thaumcraft"),
@@ -127,14 +130,13 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
    * The amount of energy that is needed to mitigate one point of armor damage
    */
   private final int powerPerDamagePoint;
-  private final @Nonnull EquipmentData data;
-
+  private final @Nonnull IEquipmentData data;
 
   // ============================================================================================================
   // Constructor
   // ============================================================================================================
 
-  protected ItemDarkSteelArmor(@Nonnull EquipmentData data, @Nonnull IModObject modObject, @Nonnull EntityEquipmentSlot armorType, @Nonnull Integer tier) {
+  protected ItemDarkSteelArmor(@Nonnull IEquipmentData data, @Nonnull IModObject modObject, @Nonnull EntityEquipmentSlot armorType, @Nonnull Integer tier) {
     super(data.getArmorMaterial(), 0, armorType);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
@@ -505,7 +507,8 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   }
 
   @Override
-  public int getTier(){
-    return data.getTier();
+  public @Nonnull IEquipmentData getEquipmentData() {
+    return data;
   }
+
 }

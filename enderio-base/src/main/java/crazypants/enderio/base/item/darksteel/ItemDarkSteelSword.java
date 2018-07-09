@@ -1,5 +1,10 @@
 package crazypants.enderio.base.item.darksteel;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
@@ -7,10 +12,12 @@ import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.OreDictionaryHelper;
 import com.enderio.core.common.util.Util;
 import com.google.common.collect.Multimap;
+
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
+import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
@@ -32,14 +39,22 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.*;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityWitherSkeleton;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
@@ -50,10 +65,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.List;
-
 import static crazypants.enderio.base.init.ModObject.blockEndermanSkull;
 
 public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel, IOverlayRenderAware {
@@ -61,8 +72,6 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   private static final @Nonnull String HIT_BY_DARK_STEEL_SWORD = "hitByDarkSteelSword";
 
   private static final @Nonnull ResourceLocation ENDERZOO_ENDERMINY = new ResourceLocation("enderzoo", "enderminy");
-
-
 
   public static boolean isEquipped(EntityPlayer player) {
     return player != null && player.getHeldItemMainhand().getItem() instanceof ItemDarkSteelSword;
@@ -90,9 +99,9 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   private final int powerPerDamagePoint = Config.darkSteelPowerStorageBase / EquipmentData.DARK_STEEL.getToolMaterial().getMaxUses();
   private long lastBlickTick = -1;
-  private final @Nonnull EquipmentData data;
+  private final @Nonnull IEquipmentData data;
 
-  public ItemDarkSteelSword(@Nonnull IModObject modObject, @Nonnull EquipmentData data) {
+  public ItemDarkSteelSword(@Nonnull IModObject modObject, @Nonnull IEquipmentData data) {
     super(data.getToolMaterial());
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
@@ -441,7 +450,8 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   @Override
-  public int getTier(){
-    return data.getTier();
+  public @Nonnull IEquipmentData getEquipmentData() {
+    return data;
   }
+
 }
