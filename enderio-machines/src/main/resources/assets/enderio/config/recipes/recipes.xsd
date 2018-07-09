@@ -53,7 +53,7 @@
               </documentation>
             </annotation>
             <complexType>
-              <sequence>
+              <sequence minOccurs="0" maxOccurs="1">
                 <element minOccurs="0" maxOccurs="unbounded" name="config" type="enderio:configComplexType">
                   <annotation>
                     <documentation>
