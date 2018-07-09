@@ -78,4 +78,12 @@ public interface IDarkSteelItem {
     return false;
   }
 
+  /**
+   * Checks what tier this item is.
+   * <p>
+   * Used by upgrades to determine if they can be applied to an item
+   */
+  default int getTier(){
+    return 1;
+  }
 }

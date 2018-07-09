@@ -1,23 +1,14 @@
 package crazypants.enderio.base.item.darksteel;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.transform.EnderCoreMethods.IElytraFlyingProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNMap;
-import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
@@ -32,7 +23,7 @@ import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.enderio.base.integration.thaumcraft.ThaumaturgeRobesUpgrade;
-import crazypants.enderio.base.item.darksteel.attributes.ArmorData;
+import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
@@ -56,17 +47,14 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.ISpecialArmor;
-import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Optional.Interface;
 import net.minecraftforge.fml.common.Optional.InterfaceList;
 import net.minecraftforge.fml.common.Optional.Method;
@@ -74,6 +62,12 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import thaumcraft.api.items.IVisDiscountGear;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
 
 @InterfaceList({
     // @Interface(iface = "thaumcraft.api.items.IGoggles", modid = "thaumcraft"),
@@ -90,56 +84,40 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   // ============================================================================================================
 
   public static ItemDarkSteelArmor createDarkSteelBoots(@Nonnull IModObject modObject) {
-    return new ItemDarkSteelArmor(ArmorData.DARK_STEEL, modObject, EntityEquipmentSlot.FEET);
+    return new ItemDarkSteelArmor(EquipmentData.DARK_STEEL, modObject, EntityEquipmentSlot.FEET, 1);
   }
 
   public static ItemDarkSteelArmor createDarkSteelLeggings(@Nonnull IModObject modObject) {
-    return new ItemDarkSteelArmor(ArmorData.DARK_STEEL, modObject, EntityEquipmentSlot.LEGS);
+    return new ItemDarkSteelArmor(EquipmentData.DARK_STEEL, modObject, EntityEquipmentSlot.LEGS, 1);
   }
 
   public static ItemDarkSteelArmor createDarkSteelChestplate(@Nonnull IModObject modObject) {
-    return new ItemDarkSteelArmor(ArmorData.DARK_STEEL, modObject, EntityEquipmentSlot.CHEST);
+    return new ItemDarkSteelArmor(EquipmentData.DARK_STEEL, modObject, EntityEquipmentSlot.CHEST, 1);
   }
 
   public static ItemDarkSteelArmor createDarkSteelHelmet(@Nonnull IModObject modObject) {
-    final ItemDarkSteelArmor helmet = new ItemDarkSteelArmor(ArmorData.DARK_STEEL, modObject, EntityEquipmentSlot.HEAD);
+    final ItemDarkSteelArmor helmet = new ItemDarkSteelArmor(EquipmentData.DARK_STEEL, modObject, EntityEquipmentSlot.HEAD, 1);
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new HelmetPainterTemplate(helmet));
     return helmet;
   }
 
   public static ItemDarkSteelArmor createEndSteelBoots(@Nonnull IModObject modObject) {
-    return new ItemDarkSteelArmor(ArmorData.END_STEEL, modObject, EntityEquipmentSlot.FEET);
+    return new ItemDarkSteelArmor(EquipmentData.END_STEEL, modObject, EntityEquipmentSlot.FEET, 2);
   }
 
   public static ItemDarkSteelArmor createEndSteelLeggings(@Nonnull IModObject modObject) {
-    return new ItemDarkSteelArmor(ArmorData.END_STEEL, modObject, EntityEquipmentSlot.LEGS);
+    return new ItemDarkSteelArmor(EquipmentData.END_STEEL, modObject, EntityEquipmentSlot.LEGS, 2);
   }
 
   public static ItemDarkSteelArmor createEndSteelChestplate(@Nonnull IModObject modObject) {
-    return new ItemDarkSteelArmor(ArmorData.END_STEEL, modObject, EntityEquipmentSlot.CHEST);
+    return new ItemDarkSteelArmor(EquipmentData.END_STEEL, modObject, EntityEquipmentSlot.CHEST, 2);
   }
 
   public static ItemDarkSteelArmor createEndSteelHelmet(@Nonnull IModObject modObject) {
-    final ItemDarkSteelArmor helmet = new ItemDarkSteelArmor(ArmorData.END_STEEL, modObject, EntityEquipmentSlot.HEAD);
+    final ItemDarkSteelArmor helmet = new ItemDarkSteelArmor(EquipmentData.END_STEEL, modObject, EntityEquipmentSlot.HEAD, 2);
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new HelmetPainterTemplate(helmet));
     return helmet;
   }
-
-  // ============================================================================================================
-  // Materials
-  // ============================================================================================================
-
-  public static final @Nonnull ArmorMaterial MATERIAL_END_STEEL = NullHelper.notnullF(//
-      EnumHelper.addEnum(ArmorMaterial.class, "darkSteel", //
-          new Class<?>[] { String.class, int.class, int[].class, int.class, SoundEvent.class, float.class }, //
-          "endSteel", 50, new int[] { 3, 6, 8, 3 }, 25, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 3.0f),
-      "Failed to create armor material");
-
-  public static final @Nonnull ArmorMaterial MATERIAL_END_STEEL_EMPOWERED = NullHelper.notnullF(//
-      EnumHelper.addEnum(ArmorMaterial.class, "darkSteelEmpowered", //
-          new Class<?>[] { String.class, int.class, int[].class, int.class, SoundEvent.class, float.class }, //
-          "endSteelEmpowered", 50, new int[] { 4, 7, 10, 4 }, 25, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 4.0f),
-      "Failed to create armor material");
 
   // ============================================================================================================
   // Fields
@@ -149,17 +127,18 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
    * The amount of energy that is needed to mitigate one point of armor damage
    */
   private final int powerPerDamagePoint;
-  private final @Nonnull ArmorData data;
+  private final @Nonnull EquipmentData data;
+
 
   // ============================================================================================================
   // Constructor
   // ============================================================================================================
 
-  protected ItemDarkSteelArmor(@Nonnull ArmorData data, @Nonnull IModObject modObject, @Nonnull EntityEquipmentSlot armorType) {
-    super(data.getMaterial(), 0, armorType);
+  protected ItemDarkSteelArmor(@Nonnull EquipmentData data, @Nonnull IModObject modObject, @Nonnull EntityEquipmentSlot armorType, @Nonnull Integer tier) {
+    super(data.getArmorMaterial(), 0, armorType);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
-    powerPerDamagePoint = Config.darkSteelPowerStorageBase / data.getMaterial().getDurability(armorType);
+    powerPerDamagePoint = Config.darkSteelPowerStorageBase / data.getArmorMaterial().getDurability(armorType);
     this.data = data;
   }
 
@@ -168,7 +147,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   // ============================================================================================================
 
   protected @Nonnull ArmorMaterial getMaterial(@Nonnull ItemStack stack) {
-    return EnergyUpgradeManager.getEnergyStored(stack) > 0 ? data.getMaterialEmpowered() : getArmorMaterial();
+    return EnergyUpgradeManager.getEnergyStored(stack) > 0 ? data.getArmorMaterialEmpowered() : getArmorMaterial();
   }
 
   @Override
@@ -525,4 +504,8 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
         || (FORESTRY_FEET != null && FORESTRY_FEET.hasUpgrade(armor)) || (FORESTRY_LEGS != null && FORESTRY_LEGS.hasUpgrade(armor));
   }
 
+  @Override
+  public int getTier(){
+    return data.getTier();
+  }
 }

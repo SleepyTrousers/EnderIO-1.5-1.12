@@ -1,13 +1,5 @@
 package crazypants.enderio.base.item.darksteel;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
@@ -15,14 +7,13 @@ import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.base.Predicate;
-
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
-import crazypants.enderio.base.item.darksteel.attributes.ToolData;
+import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -49,6 +40,13 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
 
@@ -233,7 +231,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
 
   @Override
   public int getItemEnchantability() {
-    return ToolData.MATERIAL_DARK_STEEL.getEnchantability();
+    return EquipmentData.DARK_STEEL.getToolMaterial().getEnchantability();
   }
 
   @Override

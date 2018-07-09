@@ -1,21 +1,16 @@
 package crazypants.enderio.base.item.darksteel;
 
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.OreDictionaryHelper;
-
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -31,11 +26,7 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.IItemPropertyGetter;
-import net.minecraft.item.ItemArrow;
-import net.minecraft.item.ItemBow;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
@@ -49,15 +40,21 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.List;
+
 public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvancedTooltipProvider, IOverlayRenderAware {
 
   private float damageBonus = Config.darkSteelBowDamageBonus;
   private @Nonnull double[] fovMultipliers = Config.darkSteelBowFovMultipliers;
   private @Nonnull double[] forceMultipliers = Config.darkSteelBowForceMultipliers;
   private @Nonnull int[] drawSpeeds = Config.darkSteelBowDrawSpeeds;
+  private final @Nonnull EquipmentData data;
+
 
   public static ItemDarkSteelBow createEndSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelBow res = new ItemDarkSteelBow(modObject);
+    ItemDarkSteelBow res = new ItemDarkSteelBow(modObject, EquipmentData.END_STEEL);
     MinecraftForge.EVENT_BUS.register(res);
     res.damageBonus = Config.endSteelBowDamageBonus;
     res.forceMultipliers = Config.endSteelBowForceMultipliers;
@@ -67,16 +64,17 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
   }
 
   public static ItemDarkSteelBow createDarkSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelBow res = new ItemDarkSteelBow(modObject);
+    ItemDarkSteelBow res = new ItemDarkSteelBow(modObject, EquipmentData.DARK_STEEL);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
-  protected ItemDarkSteelBow(@Nonnull IModObject modObject) {
+  protected ItemDarkSteelBow(@Nonnull IModObject modObject, @Nonnull EquipmentData data) {
     modObject.apply(this);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     setMaxDamage(300);
     setHasSubtypes(false);
+    this.data = data;
 
     addPropertyOverride(new ResourceLocation("pull"), new IItemPropertyGetter() {
       @Override
@@ -355,7 +353,13 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
 
   @Override
   public boolean isItemForRepair(@Nonnull ItemStack right) {
-    return OreDictionaryHelper.hasName(right, Material.NUTRITIOUS_STICK.getOreDict());
+    // special-cased, because bows don't conform to the normal repair material
+    if(data == EquipmentData.DARK_STEEL){
+      return OreDictionaryHelper.hasName(right, Material.NUTRITIOUS_STICK.getOreDict());
+    }
+    else {
+      return OreDictionaryHelper.hasName(right, Material.INFINITY_ROD.getOreDict());
+    }
   }
 
   @Override
@@ -396,4 +400,8 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
     return slot == EntityEquipmentSlot.MAINHAND;
   }
 
+  @Override
+  public int getTier(){
+    return data.getTier();
+  }
 }
