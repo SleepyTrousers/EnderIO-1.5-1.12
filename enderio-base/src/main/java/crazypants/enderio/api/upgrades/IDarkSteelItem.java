@@ -79,7 +79,7 @@ public interface IDarkSteelItem {
   }
 
   /**
-   * Checks if this item is the End Steel tier
+   * Checks what tier this item is.
    * <p>
    * Used by upgrades to determine if they can be applied to an item
    */
