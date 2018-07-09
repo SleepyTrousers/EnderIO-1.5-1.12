@@ -438,6 +438,11 @@
         "textures": {
           "layer0": "enderio:items/item_material_infinity_rod"
         }
+      },
+      "glazed_nether_brick": {
+        "textures": {
+          "layer0": "enderio:items/item_material_glazed_nether_brick"
+        }
       }
     }
   }

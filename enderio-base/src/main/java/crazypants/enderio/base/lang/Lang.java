@@ -69,6 +69,7 @@ public enum Lang implements ILang {
   POWER_NAME(".power.format.name"),
   POWER_DETAILS(".power.format.details"),
   GUI_GENERIC_MAX(".gui.generic.max"),
+  GUI_GENERIC_LOSS(".gui.generic.loss"),
   GUI_GENERIC_PROGRESS(".gui.generic.progress"),
   GUI_GENERIC_OVERLAY(".gui.generic.ioMode.overlay.tooltip"),
   GUI_GENERIC_OVERLAY_ON(".gui.generic.ioMode.overlay.tooltip.visible"),

@@ -15,10 +15,13 @@ public final class LangPower {
 
   public static final @Nonnull NumberFormat INT_NF = NumberFormat.getIntegerInstance();
   public static final @Nonnull NumberFormat FLOAT_NF = NumberFormat.getInstance();
+  public static final @Nonnull NumberFormat FLOAT_NF2 = NumberFormat.getInstance();
 
   static {
     LangPower.FLOAT_NF.setMinimumFractionDigits(1);
     LangPower.FLOAT_NF.setMaximumFractionDigits(1);
+    LangPower.FLOAT_NF2.setMinimumFractionDigits(2);
+    LangPower.FLOAT_NF2.setMaximumFractionDigits(2);
   }
 
   @Deprecated // use RFt()
@@ -34,15 +37,19 @@ public final class LangPower {
   public static @Nonnull String RFt(int amountPerTick) {
     return POWER_PERTICK.get(format(amountPerTick));
   }
-  
+
   public static @Nonnull String RFt(float amountPerTick) {
     return POWER_PERTICK.get(format(amountPerTick));
+  }
+
+  public static @Nonnull String RFt2(float amountPerTick) {
+    return POWER_PERTICK.get(format2(amountPerTick));
   }
 
   public static @Nonnull String RF(int amount, int capacity) {
     return POWER_OF.get(format(amount), format(capacity));
   }
-  
+
   public static @Nonnull String RF(long amount, long capacity) {
     return POWER_OF.get(format(amount), format(capacity));
   }
@@ -73,6 +80,10 @@ public final class LangPower {
 
   public static @Nonnull String format(float amount) {
     return LangPower.FLOAT_NF.format(amount);
+  }
+
+  public static @Nonnull String format2(float amount) {
+    return LangPower.FLOAT_NF2.format(amount);
   }
 
   @Deprecated // use RF()

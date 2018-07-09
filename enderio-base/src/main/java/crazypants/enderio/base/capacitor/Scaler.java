@@ -123,6 +123,12 @@ public interface Scaler {
       }
     }),
     DROPOFF(new IndexedScaler(1f, 1, 2, 2.5f, 3.5f, 4.75f)), // Add half the previous value
+    CENT(new Scaler() { // 0.01-0.01-0.01 (used for power loss)
+      @Override
+      public float scaleValue(float idx) {
+        return 0.01f;
+      }
+    }),
 
     ;
 

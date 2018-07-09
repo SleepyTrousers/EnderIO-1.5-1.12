@@ -500,6 +500,15 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
+  <recipe name="Alloy: Nethercotta" required="true">
+    <alloying energy="20000" exp="1">
+      <input name="ingotBrickNether"/>
+      <input name="cropNetherWart" amount="4" />
+      <input name="oredict:itemClay" amount="6" />
+      <output name="ingotBrickNetherGlazed"/>
+    </alloying>
+  </recipe>
+
   <recipe name="Dark Steel Anvil" required="true">
     <crafting>
       <grid>

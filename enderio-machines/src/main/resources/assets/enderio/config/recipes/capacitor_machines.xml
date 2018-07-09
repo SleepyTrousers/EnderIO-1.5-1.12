@@ -22,7 +22,7 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_simple_alloy_smelter/intake" base="20" scaler="FIXED" />
   <capacitor key="enderio:block_simple_alloy_smelter/buffer" base="1000" scaler="FIXED" />
   <capacitor key="enderio:block_simple_alloy_smelter/use" base="10" scaler="FIXED" />
-  <capacitor key="enderio:block_simple_alloy_smelter/loss" base="1" scaler="FIXED" />
+  <capacitor key="enderio:block_simple_alloy_smelter/loss" base="5" scaler="CENT" />
 
   <capacitor key="enderio:block_alloy_smelter/intake" base="80" scaler="POWER" />
   <capacitor key="enderio:block_alloy_smelter/buffer" base="100000" scaler="POWER" />
@@ -47,34 +47,34 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_farm_station/bonus_size" base="2" scaler="IDENTITY" />
   <capacitor key="enderio:block_farm_station/stacksize_limit" base="16" scaler="QUADRATIC" />
   
-  <capacitor key="enderio:block_combustion_generator/loss" base="0" scaler="FIXED" />
+  <capacitor key="enderio:block_combustion_generator/loss" base="0" scaler="CENT" />
   <capacitor key="enderio:block_combustion_generator/buffer" base="100000" scaler="POWER" />
   <capacitor key="enderio:block_combustion_generator/gen" base="1" scaler="CHEMICAL" />
   <capacitor key="enderio:block_combustion_generator/efficiency" base="1" scaler="FIXED" />
 
-  <capacitor key="enderio:block_enhanced_combustion_generator/loss" base="0" scaler="FIXED" />
+  <capacitor key="enderio:block_enhanced_combustion_generator/loss" base="0" scaler="CENT" />
   <capacitor key="enderio:block_enhanced_combustion_generator/buffer" base="500000" scaler="POWER" />
   <capacitor key="enderio:block_enhanced_combustion_generator/gen" base="1" scaler="CHEMICAL" />
   <capacitor key="enderio:block_enhanced_combustion_generator/efficiency" base="2" scaler="FIXED" />
   
-  <capacitor key="enderio:block_stirling_generator/loss" base="0" scaler="FIXED" />
+  <capacitor key="enderio:block_stirling_generator/loss" base="0" scaler="CENT" />
   <capacitor key="enderio:block_stirling_generator/buffer" base="100000" scaler="POWER" />
   <capacitor key="enderio:block_stirling_generator/gen" base="40" scaler="DROPOFF" />
   <capacitor key="enderio:block_stirling_generator/burntime" base="1" scaler="BURNTIME" />
   
-  <capacitor key="enderio:block_simple_stirling_generator/loss" base="1" scaler="FIXED" />
+  <capacitor key="enderio:block_simple_stirling_generator/loss" base="10" scaler="CENT" />
   <capacitor key="enderio:block_simple_stirling_generator/buffer" base="1000" scaler="FIXED" />
   <capacitor key="enderio:block_simple_stirling_generator/gen" base="20" scaler="FIXED" />
   
-  <capacitor key="enderio:block_zombie_generator/loss" base="0" scaler="FIXED" />
+  <capacitor key="enderio:block_zombie_generator/loss" base="0" scaler="CENT" />
   <capacitor key="enderio:block_zombie_generator/buffer" base="100000" scaler="POWER" />
   <capacitor key="enderio:block_zombie_generator/gen" base="80" scaler="CHEMICAL" />
 
-  <capacitor key="enderio:block_franken_zombie_generator/loss" base="0" scaler="FIXED" />
+  <capacitor key="enderio:block_franken_zombie_generator/loss" base="0" scaler="CENT" />
   <capacitor key="enderio:block_franken_zombie_generator/buffer" base="200000" scaler="POWER" />
   <capacitor key="enderio:block_franken_zombie_generator/gen" base="120" scaler="CHEMICAL" />
 
-  <capacitor key="enderio:block_ender_generator/loss" base="0" scaler="FIXED" />
+  <capacitor key="enderio:block_ender_generator/loss" base="0" scaler="CENT" />
   <capacitor key="enderio:block_ender_generator/buffer" base="500000" scaler="POWER" />
   <capacitor key="enderio:block_ender_generator/gen" base="240" scaler="CHEMICAL" />
 
@@ -114,7 +114,7 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_simple_sag_mill/intake" base="20" scaler="FIXED" />
   <capacitor key="enderio:block_simple_sag_mill/buffer" base="1000" scaler="FIXED" />
   <capacitor key="enderio:block_simple_sag_mill/use" base="10" scaler="FIXED" />
-  <capacitor key="enderio:block_simple_sag_mill/loss" base="1" scaler="FIXED" />
+  <capacitor key="enderio:block_simple_sag_mill/loss" base="5" scaler="CENT" />
 
   <capacitor key="enderio:block_enhanced_sag_mill/intake" base="320" scaler="POWER" />
   <capacitor key="enderio:block_enhanced_sag_mill/buffer" base="1000000" scaler="POWER" />

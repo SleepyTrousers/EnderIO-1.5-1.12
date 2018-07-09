@@ -50,6 +50,10 @@ public class PowerBar implements IDrawingElement {
         text.addAll(Lang.GUI_NOCAP.getLines());
       } else {
         text.add(getPowerOutputLabel(LangPower.RFt(tank.getMaxUsage())));
+        float powerLossPerTick = tank.getPowerLossPerTick();
+        if (powerLossPerTick > 0) {
+          text.add(getPowerLossLabel(LangPower.RFt2(powerLossPerTick)));
+        }
         text.add(LangPower.RF(tank.getEnergyStored(), tank.getMaxEnergyStored()));
       }
     }
@@ -93,6 +97,10 @@ public class PowerBar implements IDrawingElement {
 
   protected String getPowerOutputLabel(@Nonnull String rft) {
     return Lang.GUI_GENERIC_MAX.get(rft);
+  }
+
+  protected String getPowerLossLabel(@Nonnull String rft) {
+    return Lang.GUI_GENERIC_LOSS.get(rft);
   }
 
   @Override

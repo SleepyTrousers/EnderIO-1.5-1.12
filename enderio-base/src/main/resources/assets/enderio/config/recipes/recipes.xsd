@@ -946,6 +946,7 @@
                   <enumeration value="BURNTIME"></enumeration>
                   <enumeration value="CHEMICAL"></enumeration>
                   <enumeration value="DROPOFF"></enumeration>
+                  <enumeration value="CENT"></enumeration>
                 </restriction>
   </simpleType>
 </schema>

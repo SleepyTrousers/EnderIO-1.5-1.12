@@ -253,6 +253,7 @@ item.item_material.simple_chassi_parts.name=Simple Machine Parts
 item.item_material.enhanced_chassi_parts.name=Enhanced Machine Parts
 item.item_material.cake_base.name=Cake Base
 item.item_material.infinity_rod.name=Infinity Rod
+item.item_material.glazed_nether_brick.name=Nethercotta
 
 item.item_rod_of_return.name=Rod of Return
 item.item_rod_of_return.tooltip.detailed.line1=Returns the user to a Telepad
@@ -853,6 +854,7 @@ enderio.item_item_filter_upgrade.clear_config_method=%sPlace in crafting grid to
 enderio.item_item_filter_upgrade.clear_config_warning=%sThis will clear all stored filter settings!
 
 enderio.gui.generic.max=Max: %s
+enderio.gui.generic.loss=Leakage: %s
 enderio.gui.generic.progress=Progress %s%%
 enderio.gui.generic.ioMode.overlay.tooltip=Configure IO
 enderio.gui.generic.ioMode.overlay.tooltip.visible.line1=Configure IO
