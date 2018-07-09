@@ -189,6 +189,7 @@ enderio.gui.obelisk.no_vials=
 enderio.gui.powered_spawner.capture=
 #                               en: Capture
 enderio.gui.powered_spawner.spawn=Invoca
+#                             OR: Spawn
 #                             en: Spawn
 enderio.gui.ranged.hideRange=
 #                        en: Hide Range

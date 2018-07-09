@@ -1331,7 +1331,7 @@ item.item_material.vibrant_powder.name=
 #                                  en: Grains of Vibrancy
 item.item_material.weather_crystal.name=
 #                                   en: Weather Crystal
-item.item_material.withering_dust.name=
+item.item_material.withering_dust.name=Pó de Decomposição
 #                                  en: Withering Dust
 item.item_mod_item_filter.name=Filtro de Itens de Mod
 #                          en: Mod Item Filter

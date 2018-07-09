@@ -18,15 +18,15 @@ enchantment.enderio.shimmer=
 #                       en: Shimmer
 enchantment.enderio.soulbound=Печать души
 #                         en: Soulbound
-enchantment.enderio.witherarrow=
+enchantment.enderio.witherarrow=Иссушение
 #                           en: Withering
-enchantment.enderio.witherweapon=
+enchantment.enderio.witherweapon=Разложение
 #                            en: Decay
-enderio.config.blocks.charges.concussion=
+enderio.config.blocks.charges.concussion=Оглушающий заряд
 #                                    en: Concussion Charge
 enderio.config.blocks.charges.confusion=
 #                                   en: Confusion Charge
-enderio.config.blocks.charges.ender=
+enderio.config.blocks.charges.ender=Заряд Края
 #                               en: Ender Charge
 enderio.config.blocks.charges=
 #                         en: Charges
@@ -116,13 +116,13 @@ item.item_fluid_filter.tooltip.detailed.line1=
 #                                         en: Filters fluids with whitelist options
 item.item_material.cake_base.name=
 #                             en: Cake Base
-item.item_material.confusing_dust.name=
+item.item_material.confusing_dust.name=Порошок заблуждения
 #                                  en: Confusing Powder
 item.item_material.dish.name=
 #                        en: Wireless Energy Transmitter Dish Assembly
 item.item_material.end_steel_machine_chassi.name=
 #                                            en: End Steel Chassis
-item.item_material.ender_fragment.name=
+item.item_material.ender_fragment.name=Фрагмент Края
 #                                  en: Ender Fragment
 item.item_material.enhanced_chassi_parts.name=
 #                                         en: Enhanced Machine Parts
@@ -168,7 +168,7 @@ item.item_material.unsouled_machine_chassi.name=
 #                                           en: Soulless Machine Chassis
 item.item_material.unsouled_machine_chassi.tooltip.detailed.line1=
 #                                                             en: An advanced frame for machinery, but it seems to be missing something...
-item.item_material.withering_dust.name=
+item.item_material.withering_dust.name=Иссушающая пыль
 #                                  en: Withering Dust
 item.item_owl_egg.name=
 #                  en: Owl Egg
@@ -224,13 +224,13 @@ splash_potion.effect.enderio.withering=
 #                                  en: Splash Potion of Decay
 tile.block_alloy.end_steel.name=
 #                           en: End Steel Block
-tile.block_concussion_charge.name=
+tile.block_concussion_charge.name=Оглушающий заряд
 #                             en: Concussion Charge
 tile.block_confusion_charge.name=
 #                            en: Confusion Charge
 tile.block_end_iron_bars.name=
 #                         en: End Steel Bars
-tile.block_ender_charge.name=
+tile.block_ender_charge.name=Заряд Края
 #                        en: Ender Charge
 tile.block_industrial_insulation.name=
 #                                 en: Industrial Insulation

@@ -14,7 +14,9 @@ import org.apache.commons.io.FileUtils;
 
 public class LangParser {
 
-  private static final String[] EIO_OLD_PATHS = { "F:/github/manual/EnderIO", "C:/github/EnderIO_110", "C:/github/EnderIO_1710" };
+  private static final String[] EIO_OLD_PATHS = { "F:/github/manual/EnderIO/resources/assets/enderio/lang/",
+      "C:/github/EnderIO_110/resources/assets/enderio/lang/", "C:/github/EnderIO_1710/resources/assets/enderio/lang/",
+      "C:/github/EnderZoo/resources/assets/enderzoo/lang/", "C:/github/EnderZoo_1710/resources/assets/enderzoo/lang/" };
 
   private static String[] submods = { "enderio-base", "enderio-conduits", "enderio-integration-forestry",
       // "enderio-integration-ftbl",
@@ -33,7 +35,7 @@ public class LangParser {
 
         for (String path : EIO_OLD_PATHS) {
 
-          File f = new File(path + "/resources/assets/enderio/lang/");
+          File f = new File(path);
 
           if (f.exists()) {
 
@@ -41,6 +43,7 @@ public class LangParser {
 
             for (File file : files) {
               if (file.getName().endsWith(".lang")) {
+                // System.out.println(file);
                 String lang = file.getName().replaceAll("\\..*$", "").toLowerCase(Locale.ENGLISH);
 
                 if (!byVal.containsKey(lang)) {
@@ -56,6 +59,7 @@ public class LangParser {
                     String key = split[0].trim();
                     String val = split[1].trim();
                     if (!val.isEmpty()) {
+                      // System.out.println("-->" + key + "<-->" + val + "<--");
                       if (!byKey.containsKey(key)) {
                         byKey.put(key, new HashMap<>());
                       }
@@ -65,12 +69,12 @@ public class LangParser {
                       }
                       byVal.get(lang).get(val).add(key);
                       vals++;
+                    }
                   }
                 }
-              }
 
+              }
             }
-          }
 
           }
         }
@@ -87,6 +91,8 @@ public class LangParser {
           }
         }
 
+        System.out.println(byVal.get("en_us").get("Withering Dust"));
+
         File f2 = new File(submod + "/src/main/resources/assets/enderio/lang/en_us.lang");
 
         List<String> lines = FileUtils.readLines(f2, "UTF-8");
@@ -100,6 +106,9 @@ public class LangParser {
                 key.length() - 4);
 
             for (String lang : result.keySet()) {
+
+              // System.out.println(byKey.get(byVal.get("en_us").get("Withering Dust").iterator().next()).get(lang));
+
               Set<String> guessValue = new HashSet<>();
               String comment = "#" + offset + "en: " + val;
               // (1) we have a direct key match from the old file
@@ -107,14 +116,14 @@ public class LangParser {
                 guessValue.add(byKey.get(key).get(lang));
               }
 
-                // (2) we have a value match
-                if (byVal.get("en_us").containsKey(val)) {
-                  for (String possibleKey : byVal.get("en_us").get(val)) {
-                    if (byKey.containsKey(possibleKey) && byKey.get(possibleKey).containsKey(lang)) {
+              // (2) we have a value match
+              if (byVal.get("en_us").containsKey(val)) {
+                for (String possibleKey : byVal.get("en_us").get(val)) {
+                  if (byKey.containsKey(possibleKey) && byKey.get(possibleKey).containsKey(lang)) {
                     guessValue.add(byKey.get(possibleKey).get(lang));
-                    }
                   }
                 }
+              }
 
               // (3) No matches at all
               if (guessValue.isEmpty()) {

@@ -18,13 +18,13 @@ enchantment.enderio.repellent=
 #                         en: Repellent
 enchantment.enderio.shimmer=
 #                       en: Shimmer
-enchantment.enderio.soulbound=灵魂绑定
+enchantment.enderio.soulbound=
 #                         en: Soulbound
-enchantment.enderio.witherarrow=凋零
+enchantment.enderio.witherarrow=Décomposition (flèche)
 #                           en: Withering
-enchantment.enderio.witherweapon=腐朽
+enchantment.enderio.witherweapon=Décomposition (arme)
 #                            en: Decay
-enderio.activated.name=双层电容
+enderio.activated.name=
 #                  en: Double-Layer Capacitor
 enderio.advancement.gear.g2_stone_gear.desc=
 #                                       en: Craft a Stone Gear
@@ -58,99 +58,97 @@ enderio.advancement.start.2_simple_chassis_get.desc=
 #                                               en: Make your first Machine Chassis
 enderio.advancement.start.2_simple_chassis_get.name=
 #                                               en: The Third 'S' is Silent
-enderio.block.tooltip.blastResistant=防爆
+enderio.block.tooltip.blastResistant=
 #                                en: Blast Resistant
-enderio.block.tooltip.isBeaconBase=可用于当作信标底座
+enderio.block.tooltip.isBeaconBase=
 #                              en: Can be used as beacon base
-enderio.block.tooltip.lightBlocker=挡光
+enderio.block.tooltip.lightBlocker=
 #                              en: Blocks Light
-enderio.block.tooltip.lightEmitter=发光
+enderio.block.tooltip.lightEmitter=
 #                              en: Emits Light
-enderio.color.black=黑
+enderio.color.black=
 #               en: Black
-enderio.color.blue=蓝
+enderio.color.blue=
 #              en: Blue
-enderio.color.brown=棕
+enderio.color.brown=
 #               en: Brown
-enderio.color.cyan=青
+enderio.color.cyan=
 #              en: Cyan
-enderio.color.gray=灰
+enderio.color.gray=
 #              en: Gray
-enderio.color.green=绿
+enderio.color.green=
 #               en: Green
-enderio.color.lightBlue=淡蓝
+enderio.color.lightBlue=
 #                   en: Light Blue
-enderio.color.lime=黄绿
+enderio.color.lime=
 #              en: Lime
-enderio.color.magenta=品红
+enderio.color.magenta=
 #                 en: Magenta
-enderio.color.orange=橙
+enderio.color.orange=
 #                en: Orange
-enderio.color.pink=粉
+enderio.color.pink=
 #              en: Pink
-enderio.color.purple=紫
+enderio.color.purple=
 #                en: Purple
-enderio.color.red=红
+enderio.color.red=
 #             en: Red
-enderio.color.silver=淡灰
+enderio.color.silver=
 #                en: Light Gray
-enderio.color.white=白
+enderio.color.white=
 #               en: White
-enderio.color.yellow=黄
+enderio.color.yellow=
 #                en: Yellow
-enderio.config.advanced.tooltip=为那些觉得设置不够多的人而准备.
+enderio.config.advanced.tooltip=
 #                           en: For those who can't have enough configs.
-enderio.config.advanced=高级设置
+enderio.config.advanced=
 #                   en: Advanced Settings
-enderio.config.aesthetic.tooltip=哦,啊哼,漂亮.
+enderio.config.aesthetic.tooltip=
 #                            en: Oooh, ahhh, pretty.
-enderio.config.aesthetic=外观设置
+enderio.config.aesthetic=
 #                    en: Aesthetic Settings
-enderio.config.anchor.tooltip=船锚一边去!
+enderio.config.anchor.tooltip=
 #                         en: Anchors away!
-enderio.config.anchor=锚设置
-#                 OR: 旅行锚
+enderio.config.anchor=
 #                 en: Travel Anchor
-enderio.config.blocks.charges.concussion=震荡炸药
+enderio.config.blocks.charges.concussion=Charge de secousse
 #                                    en: Concussion Charge
 enderio.config.blocks.charges.confusion=
 #                                   en: Confusion Charge
-enderio.config.blocks.charges.ender=末影炸药
+enderio.config.blocks.charges.ender=Charge des limbes
 #                               en: Ender Charge
 enderio.config.blocks.charges=
 #                         en: Charges
 enderio.config.blocks=
 #                 en: Blocks
-enderio.config.brokenspawner=破损的刷怪笼
+enderio.config.brokenspawner=
 #                        en: Broken Spawner
 enderio.config.capacitor=
 #                    en: Capacitor Values
-enderio.config.darksteel.tooltip=这不是一般的钢铁, 这是§o深色§r§e 钢铁.
+enderio.config.darksteel.tooltip=
 #                            en: It's not just regular steel, it's §odark§r§e steel.
-enderio.config.darksteel=玄钢
-#                    OR: 玄钢锭
+enderio.config.darksteel=
 #                    en: Dark Steel
 enderio.config.diagnostics.tooltip=
 #                              en: Use with care!
 enderio.config.diagnostics=
 #                      en: Diagnostic Settings
-enderio.config.efficiency.tooltip=这些数字上限是多少?
+enderio.config.efficiency.tooltip=
 #                             en: Where do the numbers end?
-enderio.config.efficiency=效率设置
+enderio.config.efficiency=
 #                     en: Efficiency Settings
-enderio.config.enchanter=附魔器
+enderio.config.enchanter=
 #                    en: Enchanter
 enderio.config.enchantments=
 #                       en: Enchantments
-enderio.config.fluid.tooltip=纯净的液态能量!
+enderio.config.fluid.tooltip=
 #                        en: Pure liquid energy!
-enderio.config.fluid=流体设置
+enderio.config.fluid=
 #                en: Fluids
 enderio.config.hoes=
 #               en: Hoes for Farming Station
-enderio.config.item.tooltip=如果你不喜欢我的一些惊奇的物品 :(
+enderio.config.item.tooltip=
 #                       en: If you don't like some of my amazing items :(
-enderio.config.item=物品授权
+enderio.config.item=
 #               en: Item Settings
 enderio.config.items.darksteel.axe=
 #                              en: Axe
@@ -158,9 +156,9 @@ enderio.config.items.darksteel.coldfire=
 #                                   en: Cold Fire Igniter
 enderio.config.items.darksteel.pickaxe=
 #                                  en: Pickaxe
-enderio.config.items.darksteel.sword=终结之剑
+enderio.config.items.darksteel.sword=
 #                                en: The Ender
-enderio.config.items.darksteel.tooltip=这不是一般的钢铁, 这是§o深色§r§e 钢铁.
+enderio.config.items.darksteel.tooltip=
 #                                  en: It's not just regular steel, it's §odark§r§e steel.
 enderio.config.items.darksteel.upgrades.explosive=
 #                                             en: Explosive Upgrade
@@ -174,163 +172,161 @@ enderio.config.items.infinitypowder=
 #                               en: Infinity Powder
 enderio.config.items=
 #                en: Items
-enderio.config.magnet.tooltip=它们怎么运作?
+enderio.config.magnet.tooltip=
 #                         en: How do they work?
-enderio.config.magnet=电磁铁
-#                 OR: 电磁铁设置
+enderio.config.magnet=
 #                 en: Electromagnet
 enderio.config.misc=
 #               en: Other Settings
-enderio.config.personal.tooltip=我绝不会告诉任何人, 我发誓.
+enderio.config.personal.tooltip=
 #                           en: I won't tell anyone, I promise.
-enderio.config.personal=个人设置
+enderio.config.personal=
 #                   en: Personal Settings
-enderio.config.power.tooltip=太多数字要修改了...
+enderio.config.power.tooltip=
 #                        en: So many numbers to change...
-enderio.config.power=能量设置
+enderio.config.power=
 #                en: Power Settings
 enderio.config.recipe.alloy=
 #                       en: Alloy Smelter Recipes
 enderio.config.recipe.painter=
 #                         en: Painter Recipes
-enderio.config.recipe.tooltip=配置所有东西!
+enderio.config.recipe.tooltip=
 #                         en: Config ALL the things!
-enderio.config.recipe=配方设置
+enderio.config.recipe=
 #                 en: Recipe Settings
-enderio.config.rod=折返权杖
+enderio.config.rod=
 #              en: Rod of Return
 enderio.config.soulbinder=
 #                     en: Soulbinder Recipes
-enderio.config.soulvial=灵魂瓶
+enderio.config.soulvial=
 #                   en: Soul Vial
-enderio.config.staff.tooltip=小心点,传送时别撞到脸.
+enderio.config.staff.tooltip=
 #                        en: Be careful with that thing, you'll teleport your face off.
-enderio.config.staff=权杖设置
-#                OR: 旅行权杖
+enderio.config.staff=
 #                en: Staff of Traveling
-enderio.config.title=末影接口配置文件
+enderio.config.title=
 #                en: Ender IO Configuration
 enderio.config.top=
 #              en: The One Probe Integration
-enderio.config.wireless=无线充能器
+enderio.config.wireless=
 #                   en: Wireless Charger
-enderio.coolant.tooltip.degreesPerBucket=度每桶
+enderio.coolant.tooltip.degreesPerBucket=
 #                                    en: %s°C per bucket
-enderio.coolant.tooltip.heading=冷却剂
+enderio.coolant.tooltip.heading=
 #                           en: Coolant
-enderio.darksteel.upgrade.elytra.disabled=禁用鞘翅
+enderio.darksteel.upgrade.elytra.disabled=
 #                                     en: Elytra Disabled
-enderio.darksteel.upgrade.elytra.enabled=启用鞘翅
+enderio.darksteel.upgrade.elytra.enabled=
 #                                    en: Elytra Active
-enderio.darksteel.upgrade.elytra.name=鞘翅
+enderio.darksteel.upgrade.elytra.name=
 #                                 en: Elytra
-enderio.darksteel.upgrade.elytra.tooltip.detailed.line1=启用飞行功能
+enderio.darksteel.upgrade.elytra.tooltip.detailed.line1=
 #                                                   en: Makes armor work as Elytra
 enderio.darksteel.upgrade.elytra.tooltip.detailed.line2=
 #                                                   en: §4(That means flying as if an Elytra was equipped, NOT "creative" flight!)
-enderio.darksteel.upgrade.empowered_four.name=注能 IV
+enderio.darksteel.upgrade.empowered_four.name=
 #                                         en: Empowered IV
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=能量: $P
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=
 #                                                           en: Power: $P
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=能量将抵消
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=
 #                                                           en: $D% damage absorbed by power
-enderio.darksteel.upgrade.empowered_one.name=注能
+enderio.darksteel.upgrade.empowered_one.name=
 #                                        en: Empowered
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=能量: $P
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=
 #                                                          en: Power: $P
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=能量将抵消
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=
 #                                                          en: $D% damage absorbed by power
-enderio.darksteel.upgrade.empowered_three.name=注能 III
+enderio.darksteel.upgrade.empowered_three.name=
 #                                          en: Empowered III
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=能量: $P
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=
 #                                                            en: Power: $P
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=能量将抵消
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=
 #                                                            en: $D% damage absorbed by power
-enderio.darksteel.upgrade.empowered_two.name=注能 II
+enderio.darksteel.upgrade.empowered_two.name=
 #                                        en: Empowered II
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=能量: $P
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=
 #                                                          en: Power: $P
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=能量将抵消
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=
 #                                                          en: $D% damage absorbed by power
-enderio.darksteel.upgrade.glider.disabled=滑翔禁用
+enderio.darksteel.upgrade.glider.disabled=
 #                                     en: Glider Disabled
-enderio.darksteel.upgrade.glider.enabled=滑翔激活
+enderio.darksteel.upgrade.glider.enabled=
 #                                    en: Glider Active
-enderio.darksteel.upgrade.glider.name=滑翔
+enderio.darksteel.upgrade.glider.name=
 #                                 en: Glider
-enderio.darksteel.upgrade.glider.tooltip.detailed.line1=启用滑翔
+enderio.darksteel.upgrade.glider.tooltip.detailed.line1=
 #                                                   en: Enables gliding
-enderio.darksteel.upgrade.gogglesOfRevealing.disabled=魔法隐藏在了普通视野当中
+enderio.darksteel.upgrade.gogglesOfRevealing.disabled=
 #                                                 en: Magic is hidden from plain sight
-enderio.darksteel.upgrade.gogglesOfRevealing.enabled=魔法已经显现出来
+enderio.darksteel.upgrade.gogglesOfRevealing.enabled=
 #                                                en: Magic is being revealed
-enderio.darksteel.upgrade.gogglesOfRevealing.name=揭示
+enderio.darksteel.upgrade.gogglesOfRevealing.name=
 #                                             en: Revealing
-enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=要素减免: 5%
+enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=
 #                                                               en: Vis Discount: 5%
 enderio.darksteel.upgrade.hoe.name=
 #                              en: Fork
 enderio.darksteel.upgrade.hoe.tooltip.detailed.line1=
 #                                                en: Who needs a hoe when you have a fork...
-enderio.darksteel.upgrade.jump.disabled=跳跃禁用
+enderio.darksteel.upgrade.jump.disabled=
 #                                   en: Jump Disabled
-enderio.darksteel.upgrade.jump.enabled=跳跃启用
+enderio.darksteel.upgrade.jump.enabled=
 #                                  en: Jump Enabled
-enderio.darksteel.upgrade.jump_one.name=跳跃
+enderio.darksteel.upgrade.jump_one.name=
 #                                   en: Jump
-enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=增加步行与跳跃高度
+enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=
 #                                                     en: Increases step and jump height
-enderio.darksteel.upgrade.jump_three.name=跳跃 III
+enderio.darksteel.upgrade.jump_three.name=
 #                                     en: Jump III
-enderio.darksteel.upgrade.jump_three.tooltip.detailed.line1=增加步行与跳跃高度
+enderio.darksteel.upgrade.jump_three.tooltip.detailed.line1=
 #                                                       en: Increases step and jump height
-enderio.darksteel.upgrade.jump_three.tooltip.detailed.line2=允许三重跳跃
+enderio.darksteel.upgrade.jump_three.tooltip.detailed.line2=
 #                                                       en: Allows triple jumps
-enderio.darksteel.upgrade.jump_two.name=跳跃 II
+enderio.darksteel.upgrade.jump_two.name=
 #                                   en: Jump II
-enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=增加步行与跳跃高度
+enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=
 #                                                     en: Increases step and jump height
-enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=允许两重跳跃
+enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=
 #                                                     en: Allows double jumps
-enderio.darksteel.upgrade.nightVision.disabled=夜视已禁用
+enderio.darksteel.upgrade.nightVision.disabled=
 #                                          en: Night Vision Disabled
-enderio.darksteel.upgrade.nightVision.enabled=夜视已启用
+enderio.darksteel.upgrade.nightVision.enabled=
 #                                         en: Night Vision Enabled
-enderio.darksteel.upgrade.nightVision.name=夜视
+enderio.darksteel.upgrade.nightVision.name=
 #                                      en: Night Vision
-enderio.darksteel.upgrade.sound.disabled=声波定位禁用
+enderio.darksteel.upgrade.sound.disabled=
 #                                    en: Sound Locator Disabled
-enderio.darksteel.upgrade.sound.enabled=声波定位激活
+enderio.darksteel.upgrade.sound.enabled=
 #                                   en: Sound Locator Active
-enderio.darksteel.upgrade.sound.name=声波定位
+enderio.darksteel.upgrade.sound.name=
 #                                en: Sound Locator
-enderio.darksteel.upgrade.sound.tooltip.detailed.line1=显示附近声源
+enderio.darksteel.upgrade.sound.tooltip.detailed.line1=
 #                                                  en: Displays the location of nearby sounds
-enderio.darksteel.upgrade.speed.disabled=Speed Disabled
+enderio.darksteel.upgrade.speed.disabled=
 #                                    en: Speed Disabled
-enderio.darksteel.upgrade.speed.enabled=Speed Active
+enderio.darksteel.upgrade.speed.enabled=
 #                                   en: Speed Active
-enderio.darksteel.upgrade.speed_one.name=速度
+enderio.darksteel.upgrade.speed_one.name=
 #                                    en: Speed
-enderio.darksteel.upgrade.speed_one.tooltip.detailed.line1=增加移动速度
+enderio.darksteel.upgrade.speed_one.tooltip.detailed.line1=
 #                                                      en: Increases movement speed
-enderio.darksteel.upgrade.speed_three.name=速度 III
+enderio.darksteel.upgrade.speed_three.name=
 #                                      en: Speed III
-enderio.darksteel.upgrade.speed_three.tooltip.detailed.line1=增加移动速度
+enderio.darksteel.upgrade.speed_three.tooltip.detailed.line1=
 #                                                        en: Increases movement speed
-enderio.darksteel.upgrade.speed_two.name=速度 II
+enderio.darksteel.upgrade.speed_two.name=
 #                                    en: Speed II
-enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=增加移动速度
+enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=
 #                                                      en: Increases movement speed
-enderio.darksteel.upgrade.spoon.name=勺子
+enderio.darksteel.upgrade.spoon.name=
 #                                en: Spoon
-enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=有了勺子
+enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=
 #                                                  en: Who needs a shovel when you have a spoon...
-enderio.darksteel.upgrade.stepAssist.disabled=关闭步行辅助
+enderio.darksteel.upgrade.stepAssist.disabled=
 #                                         en: Step Assist Disabled
-enderio.darksteel.upgrade.stepAssist.enabled=激活步行辅助
+enderio.darksteel.upgrade.stepAssist.enabled=
 #                                        en: Step Assist Active
-enderio.darksteel.upgrade.swim.name=脚蹼
+enderio.darksteel.upgrade.swim.name=
 #                               en: Flippers
 enderio.darksteel.upgrade.thaumaturge_robes.chest.name=
 #                                                  en: Thaumaturge's Robe
@@ -350,38 +346,37 @@ enderio.darksteel.upgrade.tnt.tooltip.detailed.line1=
 #                                                en: Adds explosive power to the pickaxe, damaging surrounding blocks while mining.
 enderio.darksteel.upgrade.tnt.tooltip.detailed.line2=
 #                                                en: For problems that look like nails.
-enderio.darksteel.upgrade.top.name=检测器No.1
+enderio.darksteel.upgrade.top.name=
 #                              en: The One Probe
-enderio.darksteel.upgrade.travel.name=旅行
+enderio.darksteel.upgrade.travel.name=
 #                                 en: Travel
-enderio.darksteel.upgrade.travel.tooltip.detailed.line1=按住shift右击来传送或
+enderio.darksteel.upgrade.travel.tooltip.detailed.line1=
 #                                                   en: Hold shift and R-Click to teleport or activate a travel anchor or Ender IO
-enderio.easteregg.piginabottle=瓶装培根
+enderio.easteregg.piginabottle=
 #                          en: Bacon in a Bottle
 enderio.ender.name=
 #              en: Ocatadic Capacitor
-enderio.entity_action.block_attractor_obelisk.action=吸引
+enderio.entity_action.block_attractor_obelisk.action=
 #                                                en: Attracts
-enderio.entity_action.block_aversion_obelisk.action=阻止生物刷新
+enderio.entity_action.block_aversion_obelisk.action=
 #                                               en: Prevents spawning
 enderio.entity_action.block_powered_spawner.action=
 #                                              en: Spawns
-enderio.entity_action.block_relocator_obelisk.action=重定向
+enderio.entity_action.block_relocator_obelisk.action=
 #                                                en: Relocates
-enderio.farm.note.noAxe=无斧子
+enderio.farm.note.noAxe=
 #                   en: No Axe
-enderio.farm.note.noHoe=无锄头
+enderio.farm.note.noHoe=
 #                   en: No Hoe
-enderio.farm.note.noPower=能量不足
-#                     OR: 没有能量
+enderio.farm.note.noPower=
 #                     en: No Power
-enderio.farm.note.noSeeds=无种子
+enderio.farm.note.noSeeds=
 #                     en: No Seeds
-enderio.farm.note.noShears=无剪刀
+enderio.farm.note.noShears=
 #                      en: No Shears
-enderio.farm.note.noTreetap=无树龙头
+enderio.farm.note.noTreetap=
 #                       en: No Treetap
-enderio.farm.note.outputFull=输出已满
+enderio.farm.note.outputFull=
 #                        en: Output Full
 enderio.fluid.millibucket.format.name=
 #                                 en: %s mB of %s
@@ -393,15 +388,15 @@ enderio.fluid.millibucket.format.tickper=
 #                                    en: %s t/mB
 enderio.fluid.millibucket.format=
 #                            en: %s mB
-enderio.fuel.tooltip.burnTime=燃烧时间 {0,number}
+enderio.fuel.tooltip.burnTime=
 #                         en: Burn time %s ticks
 enderio.fuel.tooltip.generates=
 #                          en: Generates %s at %s
-enderio.fuel.tooltip.heading=燃料详情
+enderio.fuel.tooltip.heading=
 #                        en: Fuel Details
-enderio.generic.tooltip.paintedWith=喷涂:
+enderio.generic.tooltip.paintedWith=
 #                               en: Painted with: %s
-enderio.generic.tooltip.unpainted=未喷涂
+enderio.generic.tooltip.unpainted=
 #                             en: Not painted
 enderio.grindingball.tooltip.line1=
 #                              en: %sSAG Mill Grinding Ball
@@ -411,56 +406,53 @@ enderio.grindingball.tooltip.line3=
 #                              en: %sBonus Output %s
 enderio.grindingball.tooltip.line4=
 #                              en: %sPower Use %s
-enderio.gui.advanced_item_filter=高级物品过滤器
+enderio.gui.advanced_item_filter=
 #                            en: Advanced Item Filter
-enderio.gui.basic_item_filter=基础物品过滤器
+enderio.gui.basic_item_filter=
 #                         en: Basic Item Filter
-enderio.gui.big_advanced_item_filter=过滤器
+enderio.gui.big_advanced_item_filter=
 #                                en: Filter
 enderio.gui.big_item_filter=
 #                       en: Big Item Filter
-enderio.gui.conduit.io_mode.disabled=关闭
-#                                OR: 禁用
+enderio.gui.conduit.io_mode.disabled=
 #                                en: Disabled
-enderio.gui.conduit.io_mode.in_out=输入图/输出
+enderio.gui.conduit.io_mode.in_out=
 #                              en: In / Out
-enderio.gui.conduit.io_mode.input=提取物品过滤
-#                             OR: 提取
+enderio.gui.conduit.io_mode.input=
 #                             en: Extract
-enderio.gui.conduit.io_mode.not_set=默认
+enderio.gui.conduit.io_mode.not_set=
 #                               en: Default
-enderio.gui.conduit.io_mode.output=加入物品过滤
-#                              OR: 加入
+enderio.gui.conduit.io_mode.output=
 #                              en: Insert
 enderio.gui.edit_item_filter=
 #                        en: Edit Filter Settings
 enderio.gui.existing.item_filter.clear2=
 #                                   en: Clear the snapshot
-enderio.gui.existing.item_filter.clear=清空
+enderio.gui.existing.item_filter.clear=
 #                                  en: Clear
 enderio.gui.existing.item_filter.merge2=
 #                                   en: Merge the current snapshot with a new one
-enderio.gui.existing.item_filter.merge=合并
+enderio.gui.existing.item_filter.merge=
 #                                  en: Merge
 enderio.gui.existing.item_filter.show2=
 #                                  en: Show the current snapshot
-enderio.gui.existing.item_filter.show=显示
+enderio.gui.existing.item_filter.show=
 #                                 en: Show
 enderio.gui.existing.item_filter.snapshot2=
 #                                      en: Optional: If no snapshot is set, the inventory content will be used as filter
-enderio.gui.existing.item_filter.snapshot=快照
+enderio.gui.existing.item_filter.snapshot=
 #                                     en: Snapshot
-enderio.gui.existing_item_filter=现有物品过滤器
+enderio.gui.existing_item_filter=
 #                            en: Existing Item Filter
 enderio.gui.fluid_filter=
 #                    en: Fluid Filter
-enderio.gui.generic.ioMode.overlay.tooltip.visible.line1=配置IO
+enderio.gui.generic.ioMode.overlay.tooltip.visible.line1=
 #                                                    en: Configure IO
-enderio.gui.generic.ioMode.overlay.tooltip.visible.line2=Shift点击会重置各面
+enderio.gui.generic.ioMode.overlay.tooltip.visible.line2=
 #                                                    en: Shift click to reset all sides
-enderio.gui.generic.ioMode.overlay.tooltip.visible.line3=至默认设置
+enderio.gui.generic.ioMode.overlay.tooltip.visible.line3=
 #                                                    en: to their default setting
-enderio.gui.generic.ioMode.overlay.tooltip=配置IO
+enderio.gui.generic.ioMode.overlay.tooltip=
 #                                      en: Configure IO
 enderio.gui.generic.max=
 #                   en: Max: %s
@@ -474,7 +466,7 @@ enderio.gui.generic.progress=
 #                        en: Progress %s%%
 enderio.gui.infinity_recipe_dimensions=
 #                                  en: Overworld Only
-enderio.gui.item_filter.blacklist=黑名单
+enderio.gui.item_filter.blacklist=
 #                             en: Blacklist
 enderio.gui.item_filter.close2=
 #                          en: Go back to previous inventory
@@ -510,47 +502,45 @@ enderio.gui.item_filter.match_meta=
 #                              en: Match Metadata
 enderio.gui.item_filter.match_nbt=
 #                             en: Match NBT
-enderio.gui.item_filter.ore_dic_disabled=关闭矿石检索
+enderio.gui.item_filter.ore_dic_disabled=
 #                                    en: Ore Dictionary Disabled
-enderio.gui.item_filter.ore_dic_enabled=开启矿石检索
+enderio.gui.item_filter.ore_dic_enabled=
 #                                   en: Ore Dictionary Enabled
-enderio.gui.item_filter.sticky_disabled=粘滞模式关闭
+enderio.gui.item_filter.sticky_disabled=
 #                                   en: Sticky Mode Disabled
 enderio.gui.item_filter.sticky_enabled2=
 #                                   en: Selected items will only be sent to this or other sticky outputs
 enderio.gui.item_filter.sticky_enabled=
 #                                  en: Sticky Mode Enabled
-enderio.gui.item_filter.whitelist=白名单
+enderio.gui.item_filter.whitelist=
 #                             en: Whitelist
 enderio.gui.limited_item_filter=
 #                           en: Limited Item Filter
 enderio.gui.machine.ioMode.disabled.colored=
 #                                       en: §cDisabled
-enderio.gui.machine.ioMode.disabled=关闭
-#                               OR: 禁用
+enderio.gui.machine.ioMode.disabled=
 #                               en: Disabled
 enderio.gui.machine.ioMode.none.colored=
 #                                   en: §7None
-enderio.gui.machine.ioMode.none=无
-#                           OR: 空
+enderio.gui.machine.ioMode.none=
 #                           en: None
 enderio.gui.machine.ioMode.pull.colored=
 #                                   en: §bPull
-enderio.gui.machine.ioMode.pull=拉
+enderio.gui.machine.ioMode.pull=
 #                           en: Pull
-enderio.gui.machine.ioMode.pullPush.colored=%s推 %s/ %s拉
+enderio.gui.machine.ioMode.pullPush.colored=
 #                                       en: §6Push §f/ §bPull
-enderio.gui.machine.ioMode.pullPush=推 / 拉
+enderio.gui.machine.ioMode.pullPush=
 #                               en: Push / Pull
 enderio.gui.machine.ioMode.push.colored=
 #                                   en: §6Push
-enderio.gui.machine.ioMode.push=推
+enderio.gui.machine.ioMode.push=
 #                           en: Push
 enderio.gui.mod.item_filter.delete=
 #                              en: Delete
 enderio.gui.mod.item_filter.slot=
 #                            en: Input Slot
-enderio.gui.mod_item_filter=模组物品过滤器
+enderio.gui.mod_item_filter=
 #                       en: Mod Item Filter
 enderio.gui.permission.denied=
 #                         en: Permission denied
@@ -588,15 +578,15 @@ enderio.gui.redstone_filter.xor=
 #                           en: Redstone XOR Filter
 enderio.gui.species_item_filter=
 #                           en: Species Item Filter
-enderio.gui.tooltip.redstoneControlMode.ignore=始终工作
+enderio.gui.tooltip.redstoneControlMode.ignore=
 #                                          en: Always active
-enderio.gui.tooltip.redstoneControlMode.never=从不工作
+enderio.gui.tooltip.redstoneControlMode.never=
 #                                         en: Never active
-enderio.gui.tooltip.redstoneControlMode.off=收到信号不工作
+enderio.gui.tooltip.redstoneControlMode.off=
 #                                       en: Active without signal
-enderio.gui.tooltip.redstoneControlMode.on=收到信号工作
+enderio.gui.tooltip.redstoneControlMode.on=
 #                                      en: Active with signal
-enderio.gui.tooltip.redstoneControlMode=红石模式
+enderio.gui.tooltip.redstoneControlMode=
 #                                   en: Redstone Mode
 enderio.item.item_existing_item_filter.filter_not_updated=
 #                                                     en: Filter not updated
@@ -608,106 +598,101 @@ enderio.item_item_filter_upgrade.clear_config_warning=
 #                                                 en: %sThis will clear all stored filter settings!
 enderio.item_item_filter_upgrade.configured=
 #                                       en: %sConfigured
-enderio.item_item_filter_upgrade=给物品导管使用的升级
-#                            OR: 物品导管的升级
-#                            OR: 物品导管升级
+enderio.item_item_filter_upgrade=
 #                            en: Upgrade for item conduits
-enderio.keybind.fovminus=缩进镜头(创造模式专用)
+enderio.keybind.fovminus=
 #                    en: Camera: Zoom in
-enderio.keybind.fovminusfast=快速缩进镜头(创造模式专用)
+enderio.keybind.fovminusfast=
 #                        en: Camera: Zoom in fast
-enderio.keybind.fovplus=拉远镜头(创造模式专用)
+enderio.keybind.fovplus=
 #                   en: Camera: Zoom out
-enderio.keybind.fovplusfast=快速拉远镜头(创造模式专用)
+enderio.keybind.fovplusfast=
 #                       en: Camera: Zoom out fast
-enderio.keybind.fovreset=重置镜头(创造模式专用)
+enderio.keybind.fovreset=
 #                    en: Camera: Reset Zoom
-enderio.keybind.glidertoggle=滑翔开关
+enderio.keybind.glidertoggle=
 #                        en: Glider/Elytra Toggle
-enderio.keybind.gogglesofrevealing=揭示护目镜
+enderio.keybind.gogglesofrevealing=
 #                              en: Goggles of Revealing
-enderio.keybind.jump=跳跃
+enderio.keybind.jump=
 #                en: Jump
-enderio.keybind.magnet=电磁铁
+enderio.keybind.magnet=
 #                  en: Toggle Electromagnet
-enderio.keybind.nightvision=夜视
+enderio.keybind.nightvision=
 #                       en: Night Vision
-enderio.keybind.soundlocator=声波定位
+enderio.keybind.soundlocator=
 #                        en: Sound Locator
-enderio.keybind.speed=速度
+enderio.keybind.speed=
 #                 en: Speed
-enderio.keybind.stepassist=步行辅助
+enderio.keybind.stepassist=
 #                      en: Step Assist
-enderio.keybind.top=开启检测器No.1(头盔升级)
+enderio.keybind.top=
 #               en: Toggle The One Probe (Helmet Upgrade)
-enderio.keybind.yetawrenchmode=以太扳手模式
+enderio.keybind.yetawrenchmode=
 #                          en: Yeta Wrench Mode
-enderio.loot.capacitor.baselevel.10=不中用的%s
+enderio.loot.capacitor.baselevel.10=
 #                               en: %s Dud
-enderio.loot.capacitor.baselevel.15=%s
-#                               OR: 平凡的%s
+enderio.loot.capacitor.baselevel.15=
 #                               en: %s
-enderio.loot.capacitor.baselevel.25=有魔力的%s
-#                               OR: 增强的%s
+enderio.loot.capacitor.baselevel.25=
 #                               en: Enhanced %s
-enderio.loot.capacitor.baselevel.35=奇妙的%s
+enderio.loot.capacitor.baselevel.35=
 #                               en: Wonder %s
-enderio.loot.capacitor.baselevel.45=不可能存在的%s
+enderio.loot.capacitor.baselevel.45=
 #                               en: Impossible %s
-enderio.loot.capacitor.buffer=不满的%s
+enderio.loot.capacitor.buffer=
 #                         en: Insatiable %s
-enderio.loot.capacitor.entry.0=它上面贴了个纸条，写着"%s"
+enderio.loot.capacitor.entry.0=
 #                          en: An attached note describes this as "%s"
-enderio.loot.capacitor.entry.1=你破译成功的古代符文的意思大概是"%s"。都是些什么鬼...
+enderio.loot.capacitor.entry.1=
 #                          en: You can decipher ancient runes that translate roughly as "%s". Odd...
-enderio.loot.capacitor.entry.2=啊！感谢末影头颅的力量！终于拥有了%s！
+enderio.loot.capacitor.entry.2=
 #                          en: By the power of Enderskull, I have the %s!
-enderio.loot.capacitor.entry.3=其实嘛"%s"这名字挺不错的。
+enderio.loot.capacitor.entry.3=
 #                          en: If you had to describe this, "%s" would be a good name.
-enderio.loot.capacitor.entry.4=恕我直言，"%s"这名字不好。
+enderio.loot.capacitor.entry.4=
 #                          en: If you had to describe this, "%s" would be a bad name.
 enderio.loot.capacitor.entry.5=
 #                          en: This "%s" is the property of Randalf the Tinkerer. Unauthorized removal is unauthorized!
 enderio.loot.capacitor.entry.6=
 #                          en: This "%s" is the property of Randalf the Ex-Tinkerer. Unauthorized removal is welcome!
-enderio.loot.capacitor.entry.7=您的“%s”现可免费升级为“电容器一号”。按下ok键可开始升级，也可选择取消操作。
+enderio.loot.capacitor.entry.7=
 #                          en: Your "%s" can now be upgraded free of charge to "Capacitor 1". Press ok or abort to do so.
 enderio.loot.capacitor.entry.8=
 #                          en: Put this "%s" into different machines to find out what it does. Or ask aunt Google.
-enderio.loot.capacitor.entry.count=8
+enderio.loot.capacitor.entry.count=
 #                              en: 9
-enderio.loot.capacitor.intake=饥饿的%s
+enderio.loot.capacitor.intake=
 #                         en: Hungry %s
-enderio.loot.capacitor.level.10=次级的%s
+enderio.loot.capacitor.level.10=
 #                           en: Failed %s
-enderio.loot.capacitor.level.15=简易的%s
+enderio.loot.capacitor.level.15=
 #                           en: Simple %s
-enderio.loot.capacitor.level.25=上好的%s
+enderio.loot.capacitor.level.25=
 #                           en: Nice %s
-enderio.loot.capacitor.level.30=优质的%s
+enderio.loot.capacitor.level.30=
 #                           en: Good %s
-enderio.loot.capacitor.level.35=有魔力的%s
-#                           OR: 增强的%s
+enderio.loot.capacitor.level.35=
 #                           en: Enhanced %s
-enderio.loot.capacitor.level.40=至尊的%s
+enderio.loot.capacitor.level.40=
 #                           en: Premium %s
-enderio.loot.capacitor.level.42=精妙的%s
+enderio.loot.capacitor.level.42=
 #                           en: Incredibly %s
-enderio.loot.capacitor.level.45=不稳的%s
+enderio.loot.capacitor.level.45=
 #                           en: Unstable %s
-enderio.loot.capacitor.name=电容
+enderio.loot.capacitor.name=
 #                       en: Capacitor
-enderio.loot.capacitor.title.0=引人注目的电容
+enderio.loot.capacitor.title.0=
 #                          en: Remarkable Capacitor
-enderio.loot.capacitor.title.10=锡箔包裹的不明物体
+enderio.loot.capacitor.title.10=
 #                           en: A Mystery wrapped in tin foil
-enderio.loot.capacitor.title.11=好东西
+enderio.loot.capacitor.title.11=
 #                           en: Something wonderful
-enderio.loot.capacitor.title.12=电容？
+enderio.loot.capacitor.title.12=
 #                           en: A Capacitor. Maybe
-enderio.loot.capacitor.title.13=天堂陨落电容
+enderio.loot.capacitor.title.13=
 #                           en: Heaven Cent
-enderio.loot.capacitor.title.14=报废电容
+enderio.loot.capacitor.title.14=
 #                           en: Don't turn it on, take it apart!
 enderio.loot.capacitor.title.15=
 #                           en: Not blue. Not a box.
@@ -719,35 +704,35 @@ enderio.loot.capacitor.title.18=
 #                           en: Unnamed Thing
 enderio.loot.capacitor.title.19=
 #                           en: Thing
-enderio.loot.capacitor.title.1=普普通通的电容
+enderio.loot.capacitor.title.1=
 #                          en: Unremarkable Capacitor
 enderio.loot.capacitor.title.20=
 #                           en: Something
 enderio.loot.capacitor.title.21=
 #                           en: Nothing
-enderio.loot.capacitor.title.2=以前丢的电容
+enderio.loot.capacitor.title.2=
 #                          en: Found Capacitor
-enderio.loot.capacitor.title.3=失落的电容
+enderio.loot.capacitor.title.3=
 #                          en: Lost Capacitor
-enderio.loot.capacitor.title.4=古代电容
+enderio.loot.capacitor.title.4=
 #                          en: Ancient Capacitor
-enderio.loot.capacitor.title.5=魔法电容
+enderio.loot.capacitor.title.5=
 #                          en: Magic Capacitor
-enderio.loot.capacitor.title.6=能Hold住的电容
+enderio.loot.capacitor.title.6=
 #                          en: Capacitor of Holding
-enderio.loot.capacitor.title.7=南风电容
+enderio.loot.capacitor.title.7=
 #                          en: Capacitor of the Southern Winds
-enderio.loot.capacitor.title.8=不明所以的电容
+enderio.loot.capacitor.title.8=
 #                          en: Capacitor of What is This Doing Here
-enderio.loot.capacitor.title.9=改装过的储能设备
+enderio.loot.capacitor.title.9=
 #                          en: Modified Power Holding Device
-enderio.loot.capacitor.title.count=15
+enderio.loot.capacitor.title.count=
 #                              en: 22
-enderio.machine.tooltip.configured=(已配置)
+enderio.machine.tooltip.configured=
 #                              en: %s (Configured)
-enderio.machine.tooltip.upgrade.tooltip.detailed.line1=增加机器能量存储与
+enderio.machine.tooltip.upgrade.tooltip.detailed.line1=
 #                                                  en: Increases energy storage and speed / range of machines
-enderio.machine.tooltip.upgrade=机器升级
+enderio.machine.tooltip.upgrade=
 #                           en: Machine Upgrade
 enderio.owlegg.no_owl=
 #                 en: No Owl found (install Ender IO Zoo!)
@@ -773,59 +758,59 @@ enderio.soulvial.owned.denied=
 #                         en: Permission §cdenied§r - only owners may pick up owned animals
 enderio.soulvial.player.denied=
 #                          en: §cNo!$r How would you feel if you had to play this game from inside a bottle?
-enderio.tooltip.anvilupgrades=铁砧升级:
+enderio.tooltip.anvilupgrades=
 #                         en: Anvil Upgrades:
 enderio.top.action.header.post=
 #                          en: :
 enderio.top.action.header.pre=
 #                         en: §e
-enderio.top.action.none=无
+enderio.top.action.none=
 #                   en: §4nothing
-enderio.top.machine.active=启用
+enderio.top.machine.active=
 #                      en: active
-enderio.top.machine.idle=闲置
+enderio.top.machine.idle=
 #                    en: idle
 enderio.top.machine.ioMode.post=
 #                           en: 
 enderio.top.machine.ioMode.pre=
 #                          en: §eMode: §f
-enderio.top.machine.outofpower=没有能量
+enderio.top.machine.outofpower=
 #                          en: §4No Power
-enderio.top.machine.side.down=下
+enderio.top.machine.side.down=
 #                         en: Down
-enderio.top.machine.side.east=东
+enderio.top.machine.side.east=
 #                         en: East
-enderio.top.machine.side.north=北
+enderio.top.machine.side.north=
 #                          en: North
 enderio.top.machine.side.post=
 #                         en: 
 enderio.top.machine.side.pre=
 #                        en: §eSide: §f
-enderio.top.machine.side.south=南
+enderio.top.machine.side.south=
 #                          en: South
-enderio.top.machine.side.up=上
+enderio.top.machine.side.up=
 #                       en: Up
-enderio.top.machine.side.west=西
+enderio.top.machine.side.west=
 #                         en: West
 enderio.top.owner.header=
 #                    en: §eOwner:
 enderio.top.paint.header=
 #                    en: §ePainted with:
-enderio.top.progress.outofpower=能量耗尽
+enderio.top.progress.outofpower=
 #                           en: §4Out of Power
 enderio.top.range.header.post=
 #                         en: 
 enderio.top.range.header.pre=
 #                        en: §eRange: §f
-enderio.top.range=%sx%sx%s
+enderio.top.range=
 #             en: %sx%sx%s
-enderio.top.redstone.false=关
+enderio.top.redstone.false=
 #                      en: Off
 enderio.top.redstone.header.post=
 #                            en: 
 enderio.top.redstone.header.pre=
 #                           en: §eCurrently: §f
-enderio.top.redstone.true=开
+enderio.top.redstone.true=
 #                     en: On
 enderio.top.rf.header.avg=
 #                     en: §eI/O:
@@ -841,11 +826,11 @@ enderio.top.suffix.items=
 #                    en: \u0020Items
 enderio.top.suffix.levels=
 #                     en: \u0020Levels
-enderio.top.suffix.percent=%
+enderio.top.suffix.percent=
 #                      en: \u0020%
-enderio.top.suffix.rf=RF
+enderio.top.suffix.rf=
 #                 en: \u0020µI
-enderio.top.tank.content.empty=空
+enderio.top.tank.content.empty=
 #                          en: Empty
 enderio.top.tank.content.middle=
 #                           en: /
@@ -875,30 +860,29 @@ entity.enderio.owl_egg.name=
 #                       en: Owl Egg
 entity.enderio.primed_charge.name=
 #                             en: Primed Charge
-fluid.cloud_seed=云之精华
+fluid.cloud_seed=
 #            en: Cloud Seed
-fluid.cloud_seed_concentrated=浓缩云之精华
+fluid.cloud_seed_concentrated=
 #                         en: Concentrated Cloud Seed
-fluid.ender_distillation=深渊露水
+fluid.ender_distillation=
 #                    en: Dew of the Void
-fluid.fire_water=火焰水
+fluid.fire_water=
 #            en: Fire Water
-fluid.hootch=烈酒
+fluid.hootch=
 #        en: Hootch
-fluid.liquid_sunshine=液态阳光
+fluid.liquid_sunshine=
 #                 en: Liquid Sunshine
-fluid.nutrient_distillation=营养精华液
-#                       OR: 击附近的生物
+fluid.nutrient_distillation=
 #                       en: Nutrient Distillation
-fluid.rocket_fuel=火箭燃料
+fluid.rocket_fuel=
 #             en: Rocket Fuel
 fluid.vapor_of_levity=
 #                 en: Vapor of Levity
-fluid.xpjuice=液态XP
+fluid.xpjuice=
 #         en: Liquid XP
 item.block_dark_steel_door.name=
 #                           en: Dark Steel Door
-item.item_advanced_item_filter.name=高级物品过滤器
+item.item_advanced_item_filter.name=
 #                               en: Advanced Item Filter
 item.item_advanced_item_filter.tooltip.detailed.line1=
 #                                                 en: Filters items with advanced configuration options
@@ -948,21 +932,21 @@ item.item_alloy_nugget_end_steel.name=
 #                                 en: End Steel Nugget
 item.item_alloy_nugget_energetic_alloy.name=
 #                                       en: Energetic Alloy Nugget
-item.item_alloy_nugget_pulsating_iron.name=脉冲铁粒
+item.item_alloy_nugget_pulsating_iron.name=
 #                                      en: Pulsating Iron Nugget
 item.item_alloy_nugget_redstone_alloy.name=
 #                                      en: Redstone Alloy Nugget
 item.item_alloy_nugget_soularium.name=
 #                                 en: Soularium Nugget
-item.item_alloy_nugget_vibrant_alloy.name=脉冲合金粒
+item.item_alloy_nugget_vibrant_alloy.name=
 #                                     en: Vibrant Alloy Nugget
-item.item_basic_capacitor.activated.name=双层电容
+item.item_basic_capacitor.activated.name=
 #                                    en: Double-Layer Capacitor
-item.item_basic_capacitor.basic.name=基础电容
+item.item_basic_capacitor.basic.name=
 #                                en: Basic Capacitor
-item.item_basic_capacitor.ender.name=八位电容
+item.item_basic_capacitor.ender.name=
 #                                en: Octadic Capacitor
-item.item_basic_item_filter.name=基础物品过滤器
+item.item_basic_item_filter.name=
 #                            en: Basic Item Filter
 item.item_basic_item_filter.tooltip.detailed.line1=
 #                                              en: Filters items with whitelist and match metadata options
@@ -976,11 +960,11 @@ item.item_big_item_filter.name=
 #                          en: Big Item Filter
 item.item_big_item_filter.tooltip.detailed.line1=
 #                                            en: Filters even more items
-item.item_broken_spawner.name=破损的刷怪笼
+item.item_broken_spawner.name=
 #                         en: Broken Spawner
-item.item_broken_spawner.tooltip.detailed.line1=与电动刷怪笼在铁砧
+item.item_broken_spawner.tooltip.detailed.line1=
 #                                           en: Combine with a Powered Spawner
-item.item_broken_spawner.tooltip.detailed.line2=里结合设置刷怪类型
+item.item_broken_spawner.tooltip.detailed.line2=
 #                                           en: in an Anvil to set spawn type
 item.item_cold_fire_igniter.chat.outoffluid=
 #                                       en: ERROR: Out of %s
@@ -990,57 +974,57 @@ item.item_cold_fire_igniter.tooltip.detailed.line1=
 #                                              en: Allows to place Cold Fire.
 item.item_cold_fire_igniter.tooltip.detailed.line2=
 #                                              en: Cold Fire will not spread to other blocks.
-item.item_conduit_facade.hardened.name=硬化导管框架
+item.item_conduit_facade.hardened.name=
 #                                  en: Hardened Conduit Facade
-item.item_conduit_facade.hardened.tooltip.detailed.line1=硬化: 抵抗破坏以及爆炸
+item.item_conduit_facade.hardened.tooltip.detailed.line1=
 #                                                    en: Hardened: Resists breaking and explosions
-item.item_conduit_facade.name=导管框架
+item.item_conduit_facade.name=
 #                         en: Conduit Facade
-item.item_conduit_facade.tooltip.detailed.line1=可放入喷涂机喷涂
+item.item_conduit_facade.tooltip.detailed.line1=
 #                                           en: Painted in the Painting Machine
-item.item_conduit_facade.tooltip.detailed.line2=右击一个导管可放置
+item.item_conduit_facade.tooltip.detailed.line2=
 #                                           en: R-Click on a conduit to place
-item.item_conduit_facade.tooltip.detailed.line3=当手里拿着一个扳手或者导管时
+item.item_conduit_facade.tooltip.detailed.line3=
 #                                           en: Hidden when a wrench or conduit
-item.item_conduit_facade.tooltip.detailed.line4=导管框架隐藏
+item.item_conduit_facade.tooltip.detailed.line4=
 #                                           en: is equipped
 item.item_conduit_facade.transparent.hardened.name=
 #                                              en: Transparent Hardened Conduit Facade
 item.item_conduit_facade.transparent.hardened.tooltip.detailed.line1=
 #                                                                en: Transparent: Hides the conduits when painted with a non-solid block
-item.item_conduit_facade.transparent.hardened.tooltip.detailed.line2=硬化: 抵抗破坏以及爆炸
+item.item_conduit_facade.transparent.hardened.tooltip.detailed.line2=
 #                                                                en: Hardened: Resists breaking and explosions
 item.item_conduit_facade.transparent.name=
 #                                     en: Transparent Conduit Facade
 item.item_conduit_facade.transparent.tooltip.detailed.line1=
 #                                                       en: Transparent: Hides the conduits when painted with a non-solid block
-item.item_conduit_probe.name=导管探测器
+item.item_conduit_probe.name=
 #                        en: Conduit Probe
-item.item_conduit_probe.tooltip.detailed.line1=探测模式下右击导管
+item.item_conduit_probe.tooltip.detailed.line1=
 #                                          en: In probe mode R-Click on a conduit
-item.item_conduit_probe.tooltip.detailed.line2=显示其网络的详情
+item.item_conduit_probe.tooltip.detailed.line2=
 #                                          en: to display details about its network
-item.item_conduit_probe.tooltip.detailed.line3=复制/粘贴模式下shift右击
+item.item_conduit_probe.tooltip.detailed.line3=
 #                                          en: In copy/paste mode Shift-R-Click to
-item.item_conduit_probe.tooltip.detailed.line4=复制导管的连接设置
+item.item_conduit_probe.tooltip.detailed.line4=
 #                                          en: copy a conduit bundles connection settings
-item.item_conduit_probe.tooltip.detailed.line5=右击以粘贴
+item.item_conduit_probe.tooltip.detailed.line5=
 #                                          en: R-Click to paste them
-item.item_conduit_probe.tooltip.detailed.line6=使用shift加鼠标滚轮或Y键切换模式
+item.item_conduit_probe.tooltip.detailed.line6=
 #                                          en: Use Shift-Mouse Wheel or 'Y' to change mode
-item.item_coord_selector.name=坐标记录仪
+item.item_coord_selector.name=
 #                         en: Coordinate Selector
-item.item_coord_selector.tooltip.detailed.line1=记录一个方块的坐标.
+item.item_coord_selector.tooltip.detailed.line1=
 #                                           en: Prints coordinates of a block.
-item.item_coord_selector.tooltip.detailed.line2=右键方块选取
+item.item_coord_selector.tooltip.detailed.line2=
 #                                           en: Right click at block to select
-item.item_coord_selector.tooltip.detailed.line3=侧面邻近的方块.
+item.item_coord_selector.tooltip.detailed.line3=
 #                                           en: the block adjacent on that side.
-item.item_coord_selector.tooltip.detailed.line4=Shift右键方块来
+item.item_coord_selector.tooltip.detailed.line4=
 #                                           en: Shift right click at a block to
-item.item_coord_selector.tooltip.detailed.line5=选取特定方块.
+item.item_coord_selector.tooltip.detailed.line5=
 #                                           en: select that specific block.
-item.item_coord_selector.tooltip.detailed.line6=可以在远处选取.
+item.item_coord_selector.tooltip.detailed.line6=
 #                                           en: Can select from a distance.
 item.item_dark_steel_armor.tooltip.levelcost.line1=
 #                                              en: %s%s:
@@ -1048,25 +1032,25 @@ item.item_dark_steel_armor.tooltip.levelcost.line2=
 #                                              en: %s%s  %s + %s levels
 item.item_dark_steel_armor.tooltip.line1=
 #                                    en: %sBetter protection when powered
-item.item_dark_steel_axe.name=玄钢斧
+item.item_dark_steel_axe.name=
 #                         en: Dark Axe
 item.item_dark_steel_axe.tooltip.effPowered=
 #                                       en: %sEfficiency when powered: %s
 item.item_dark_steel_axe.tooltip.multiHarvest=
 #                                         en: Harvests full trees when powered (sneak to prevent this)
-item.item_dark_steel_boots.name=玄钢靴子
+item.item_dark_steel_boots.name=
 #                           en: Dark Boots
 item.item_dark_steel_boots.tooltip.line1=
 #                                    en: Fall damage negated when powered
 item.item_dark_steel_bow.name=
 #                         en: Dark Bow
-item.item_dark_steel_chestplate.name=玄钢胸甲
+item.item_dark_steel_chestplate.name=
 #                                en: Dark Plate
-item.item_dark_steel_helmet.name=玄钢头盔
+item.item_dark_steel_helmet.name=
 #                            en: Dark Helm
-item.item_dark_steel_leggings.name=玄钢护腿
+item.item_dark_steel_leggings.name=
 #                              en: Dark Leggings
-item.item_dark_steel_pickaxe.name=玄钢镐
+item.item_dark_steel_pickaxe.name=
 #                             en: Dark Pick
 item.item_dark_steel_pickaxe.tooltip.cost=
 #                                     en: %s     (cost %s)
@@ -1074,15 +1058,15 @@ item.item_dark_steel_pickaxe.tooltip.effObs=
 #                                       en: %s+%s Efficiency breaking obsidian
 item.item_dark_steel_pickaxe.tooltip.effPowered=
 #                                           en: %s+%s Efficiency when powered
-item.item_dark_steel_shears.name=玄钢剪
+item.item_dark_steel_shears.name=
 #                            en: Dark Shears
 item.item_dark_steel_shears.tooltip.effPowered=
 #                                          en: %sEfficiency when powered: %s
-item.item_dark_steel_shears.tooltip.multiHarvest=激活后修剪多个方块/羊
+item.item_dark_steel_shears.tooltip.multiHarvest=
 #                                            en: Shears multiple blocks/sheep when empowered
-item.item_dark_steel_sword.name=终结之剑
+item.item_dark_steel_sword.name=
 #                           en: The Ender
-item.item_dark_steel_sword.tooltip.detailed.line1=增加头颅与末影珍珠的掉落
+item.item_dark_steel_sword.tooltip.detailed.line1=
 #                                             en: Increased skull and ender pearl drops
 item.item_dark_steel_sword.tooltip.detailed.line2=
 #                                             en: When powered: Endermen can't teleport once hit, extra Damage and Speed
@@ -1104,17 +1088,17 @@ item.item_end_steel_pickaxe.name=
 #                            en: Ender Pickaxe
 item.item_end_steel_sword.name=
 #                          en: The Ender Mk2
-item.item_ender_food.enderios.name="末影麦片"
+item.item_ender_food.enderios.name=
 #                              en: "Enderios"
-item.item_ender_food.enderios.tooltip.common.line1=健康早餐的一部分!
+item.item_ender_food.enderios.tooltip.common.line1=
 #                                              en: Part of a balanced breakfast!
 item.item_ender_food.enderios.tooltip.detailed.line1=
 #                                                en: Not actually healthy. Contains 253g of sugar, 53g of fat, and 394g of ender dust.
 item.item_ender_food.enderios.tooltip.detailed.line2=
 #                                                en: Side effects of ender dust include: nausea, dizziness, confusion, and random teleporting.
-item.item_enderface.name=末影面板
+item.item_enderface.name=
 #                    en: Enderface
-item.item_existing_item_filter.name=现有物品过滤器
+item.item_existing_item_filter.name=
 #                               en: Existing Item Filter
 item.item_existing_item_filter.tooltip.detailed.line1=
 #                                                 en: Filters items based on a snapshot
@@ -1138,55 +1122,53 @@ item.item_location_printout.chat.privateBlock=
 #                                         en: Only %s may access this block
 item.item_location_printout.chat.setTarget=
 #                                      en: Target set to
-item.item_location_printout.name=坐标记录仪
+item.item_location_printout.name=
 #                            en: Location Printout
-item.item_location_printout.tooltip.detailed.line1=使用坐标记录仪制作
+item.item_location_printout.tooltip.detailed.line1=
 #                                              en: Created using the Coordinate Selector
-item.item_location_printout.tooltip.detailed.line2=可为传送台添加坐标
+item.item_location_printout.tooltip.detailed.line2=
 #                                              en: Used to add destinations to a Telepad
-item.item_magnet.everywhere.tooltip.detailed.line1=吸引附近的物品
+item.item_magnet.everywhere.tooltip.detailed.line1=
 #                                              en: Pulls nearby item towards you
-item.item_magnet.everywhere.tooltip.detailed.line2=Shift+R+右击启用/禁用
-#                                              OR: Shift+右击启用/禁用
+item.item_magnet.everywhere.tooltip.detailed.line2=
 #                                              en: Shift-R-Click to enable / disable
-item.item_magnet.everywhere.tooltip.detailed.line3=必须被充能, 激活
+item.item_magnet.everywhere.tooltip.detailed.line3=
 #                                              en: Must be powered, active and in the
-item.item_magnet.everywhere.tooltip.detailed.line4=并放在物品栏或首饰栏才能起效
+item.item_magnet.everywhere.tooltip.detailed.line4=
 #                                              en: inventory (or a Baubles slot) to function
-item.item_magnet.name=电磁铁
+item.item_magnet.name=
 #                 en: Electromagnet
-item.item_magnet.tooltip.detailed.line1=吸引附近的物品
+item.item_magnet.tooltip.detailed.line1=
 #                                   en: Pulls nearby item towards you
-item.item_magnet.tooltip.detailed.line2=Shift+R+右击启用/禁用
-#                                   OR: Shift+右击启用/禁用
+item.item_magnet.tooltip.detailed.line2=
 #                                   en: Shift-R-Click to enable / disable
-item.item_magnet.tooltip.detailed.line3=必须被充能, 激活
+item.item_magnet.tooltip.detailed.line3=
 #                                   en: Must be powered, active and in the
-item.item_magnet.tooltip.detailed.line4=并放在快捷栏才能起效
+item.item_magnet.tooltip.detailed.line4=
 #                                   en: hot bar (or a Baubles slot) to function
-item.item_material.attractor_crystal.name=诱引晶体
+item.item_material.attractor_crystal.name=
 #                                     en: Enticing Crystal
-item.item_material.binder_composite.name=粘合胚料
+item.item_material.binder_composite.name=
 #                                    en: Binder Composite
 item.item_material.cake_base.name=
 #                             en: Cake Base
-item.item_material.chassi_parts.name=机器零件
+item.item_material.chassi_parts.name=
 #                                en: Machine Parts
-item.item_material.conduit_binder.name=导管粘合剂
+item.item_material.conduit_binder.name=
 #                                  en: Conduit Binder
-item.item_material.confusing_dust.name=混乱粉末
+item.item_material.confusing_dust.name=Poudre de confusion
 #                                  en: Confusing Powder
 item.item_material.dish.name=
 #                        en: Wireless Energy Transmitter Dish Assembly
-item.item_material.dust_wheat.name=面粉
+item.item_material.dust_wheat.name=
 #                              en: Flour
 item.item_material.end_steel_machine_chassi.name=
 #                                            en: End Steel Chassis
-item.item_material.ender_crystal.name=末影晶体
+item.item_material.ender_crystal.name=
 #                                 en: Ender Crystal
-item.item_material.ender_crystal_powder.name=末影晶体粉末
+item.item_material.ender_crystal_powder.name=
 #                                        en: Grains of the End
-item.item_material.ender_fragment.name=末影碎片
+item.item_material.ender_fragment.name=Fragment des limbes
 #                                  en: Ender Fragment
 item.item_material.enhanced_chassi_parts.name=
 #                                         en: Enhanced Machine Parts
@@ -1210,9 +1192,9 @@ item.item_material.gear_vibrant.name=
 #                                en: Vibrant Bimetal Gear
 item.item_material.gear_wood.name=
 #                             en: Wooden Gear
-item.item_material.glider_wing.name=滑翔翼
+item.item_material.glider_wing.name=
 #                               en: Glider Wing
-item.item_material.glider_wings.name=滑翔翼
+item.item_material.glider_wings.name=
 #                                en: Glider Wings
 item.item_material.glider_wings.tooltip.detailed.line1=
 #                                                  en: Upgrade for Dark Steel chestplate
@@ -1224,7 +1206,7 @@ item.item_material.grinding_ball_signalum.name=
 #                                          en: Signalum Grinding Ball
 item.item_material.infinity_rod.name=
 #                                en: Infinity Rod
-item.item_material.ingot_enderium_base.name=末影锭粗胚
+item.item_material.ingot_enderium_base.name=
 #                                       en: Enderium Base
 item.item_material.machine_chassi.name=
 #                                  en: Industrial Machine Chassis
@@ -1262,43 +1244,43 @@ item.item_material.plate_photovoltaic.name=
 #                                      en: Photovoltaic Plate
 item.item_material.powder_ardite.name=
 #                                 en: Ardite Powder
-item.item_material.powder_coal.name=煤粉
+item.item_material.powder_coal.name=
 #                               en: Coal Powder
 item.item_material.powder_cobalt.name=
 #                                 en: Cobalt Powder
-item.item_material.powder_copper.name=铜粉
+item.item_material.powder_copper.name=
 #                                 en: Copper Powder
-item.item_material.powder_ender.name=末影珍珠粉
+item.item_material.powder_ender.name=
 #                                en: Ender Pearl Powder
-item.item_material.powder_gold.name=金粉
+item.item_material.powder_gold.name=
 #                               en: Gold Powder
 item.item_material.powder_infinity.name=
 #                                   en: Grains of Infinity
-item.item_material.powder_iron.name=铁粉
+item.item_material.powder_iron.name=
 #                               en: Iron Powder
 item.item_material.powder_lapis_lazuli.name=
 #                                       en: Lapis Lazuli Powder
-item.item_material.powder_obsidian.name=黑曜石粉
+item.item_material.powder_obsidian.name=
 #                                   en: Obsidian Powder
 item.item_material.powder_photovoltaic.name=
 #                                       en: Photovoltaic Composite
 item.item_material.powder_quartz.name=
 #                                 en: Quartz Powder
-item.item_material.powder_tin.name=锡粉
+item.item_material.powder_tin.name=
 #                              en: Tin Powder
 item.item_material.precient_crystal.name=
 #                                    en: Precient Crystal
 item.item_material.precient_powder.name=
 #                                   en: Grains of Prescience
-item.item_material.pulsating_crystal.name=脉冲晶体
+item.item_material.pulsating_crystal.name=
 #                                     en: Pulsating Crystal
-item.item_material.pulsating_powder.name=脉冲晶体粉末
+item.item_material.pulsating_powder.name=
 #                                    en: Grains of Piezallity
 item.item_material.redstone_filter_base.name=
 #                                        en: Redstone Filter Base
-item.item_material.remote_awareness_upgrade.name=远程接入升级
+item.item_material.remote_awareness_upgrade.name=
 #                                            en: Remote Awareness Upgrade
-item.item_material.silicon.name=硅
+item.item_material.silicon.name=
 #                           en: Silicon
 item.item_material.simple_chassi_parts.name=
 #                                       en: Simple Machine Parts
@@ -1308,19 +1290,19 @@ item.item_material.simple_machine_chassi.tooltip.detailed.line1=
 #                                                           en: High quality enclose toolkit for building your own machines. Made in Germany! High Uality, my friend!
 item.item_material.simple_machine_chassi.tooltip.detailed.line2=
 #                                                           en: §7Not stainless. Keep away from moisture. Made in town of Gemany, China.
-item.item_material.skull_ender_resonator.name=末影谐振器
+item.item_material.skull_ender_resonator.name=
 #                                         en: Ender Resonator
 item.item_material.skull_guardian_diode.name=
 #                                        en: Guardian Diode
-item.item_material.skull_sentient_ender.name=意识末影谐振器
+item.item_material.skull_sentient_ender.name=
 #                                        en: Sentient Ender
 item.item_material.skull_skeletal_contractor.name=
 #                                             en: Skeletal Contractor
-item.item_material.skull_zombie_controller.name=Z-逻辑控制器
+item.item_material.skull_zombie_controller.name=
 #                                           en: Z-Logic Controller
-item.item_material.skull_zombie_electrode.name=僵尸电极
+item.item_material.skull_zombie_electrode.name=
 #                                          en: Zombie Electrode
-item.item_material.skull_zombie_frankenstien.name=人造僵尸
+item.item_material.skull_zombie_frankenstien.name=
 #                                             en: Frank'N'Zombie
 item.item_material.soul_machine_chassi.name=
 #                                       en: Soul Machine Chassis
@@ -1338,15 +1320,15 @@ item.item_material.unsouled_machine_chassi.name=
 #                                           en: Soulless Machine Chassis
 item.item_material.unsouled_machine_chassi.tooltip.detailed.line1=
 #                                                             en: An advanced frame for machinery, but it seems to be missing something...
-item.item_material.vibrant_crystal.name=充能晶体
+item.item_material.vibrant_crystal.name=
 #                                   en: Vibrant Crystal
 item.item_material.vibrant_powder.name=
 #                                  en: Grains of Vibrancy
-item.item_material.weather_crystal.name=天气晶体
+item.item_material.weather_crystal.name=
 #                                   en: Weather Crystal
-item.item_material.withering_dust.name=凋零粉末
+item.item_material.withering_dust.name=Poudre décomposée
 #                                  en: Withering Dust
-item.item_mod_item_filter.name=模组物品过滤器
+item.item_mod_item_filter.name=
 #                          en: Mod Item Filter
 item.item_mod_item_filter.tooltip.detailed.line1=
 #                                            en: Filters items based on the mod they come from
@@ -1384,33 +1366,31 @@ item.item_rod_of_return.chat.notEnoughPower=
 #                                       en: %sNot enough power
 item.item_rod_of_return.chat.sync.telepad=
 #                                     en: Synchronised with Telepad
-item.item_rod_of_return.chat.sync=与传送台同步成功
+item.item_rod_of_return.chat.sync=
 #                             en: Synchronised with location
 item.item_rod_of_return.chat.targetNotSet=
 #                                     en: %sNo destination set
-item.item_rod_of_return.name=折返权杖
+item.item_rod_of_return.name=
 #                        en: Rod of Return
-item.item_rod_of_return.tooltip.detailed.line1=将使用者传送回传送台
+item.item_rod_of_return.tooltip.detailed.line1=
 #                                          en: Returns the user to a Telepad
-item.item_rod_of_return.tooltip.detailed.line2=需Shift+R+右击与传送台同步
+item.item_rod_of_return.tooltip.detailed.line2=
 #                                          en: Sync with a Telepad using Shift-R-Click
 item.item_rod_of_return.tooltip.detailed.line3=
 #                                          en: Requires energy and %s
-item.item_rod_of_return.tooltip.fluid=%s
-#                                 OR: 平凡的%s
+item.item_rod_of_return.tooltip.fluid=
 #                                 en: %s
-item.item_rod_of_return.tooltip.power=%s
-#                                 OR: 平凡的%s
+item.item_rod_of_return.tooltip.power=
 #                                 en: %s
-item.item_soul_vial.name=灵魂瓶
+item.item_soul_vial.name=
 #                    en: Soul Vial
 item.item_soul_vial.tooltip.color=
 #                             en: Color: %s
 item.item_soul_vial.tooltip.detailed.line1=
 #                                      en: R-Click on a mob to capture its soul
-item.item_soul_vial.tooltip.detailed.line2=再次右击则释放
+item.item_soul_vial.tooltip.detailed.line2=
 #                                      en: R-Click again to release it
-item.item_soul_vial.tooltip.empty=空
+item.item_soul_vial.tooltip.empty=
 #                             en: Empty
 item.item_soul_vial.tooltip.fluidname=
 #                                 en: Fluid Name: %s
@@ -1422,45 +1402,45 @@ item.item_staff_of_levity.tooltip.detailed.line1=
 #                                            en: Applies anti-gravity to the
 item.item_staff_of_levity.tooltip.detailed.line2=
 #                                            en: player with Shift-R-Click
-item.item_travel_staff.chat.notEnoughPower=能量不足
+item.item_travel_staff.chat.notEnoughPower=
 #                                      en: Not enough power
-item.item_travel_staff.name=旅行权杖
+item.item_travel_staff.name=
 #                       en: Staff of Traveling
-item.item_travel_staff.tooltip.detailed.line1=手持旅行锚与末影接口时
+item.item_travel_staff.tooltip.detailed.line1=
 #                                         en: When held Travel Anchors and EnderIO
-item.item_travel_staff.tooltip.detailed.line2=可以透视锚点,并通过
+item.item_travel_staff.tooltip.detailed.line2=
 #                                         en: blocks become visible and can be
-item.item_travel_staff.tooltip.detailed.line3=<右击>直接传送
+item.item_travel_staff.tooltip.detailed.line3=
 #                                         en: activated by R-Click
-item.item_travel_staff.tooltip.detailed.line4=<shift><右击>
+item.item_travel_staff.tooltip.detailed.line4=
 #                                         en: Shift-R-Click will teleport the
-item.item_travel_staff.tooltip.detailed.line5=可短距离传送玩家
+item.item_travel_staff.tooltip.detailed.line5=
 #                                         en: player a short distance
-item.item_xp_transfer.name=经验棒
+item.item_xp_transfer.name=
 #                      en: Experience Rod
-item.item_xp_transfer.tooltip.detailed.line1=右击装有液态XP的
+item.item_xp_transfer.tooltip.detailed.line1=
 #                                        en: R-Click on a fluid tank containing
-item.item_xp_transfer.tooltip.detailed.line2=流体箱获取经验
+item.item_xp_transfer.tooltip.detailed.line2=
 #                                        en: liquid XP to gain levels
-item.item_xp_transfer.tooltip.detailed.line3=Shift右击将经验
+item.item_xp_transfer.tooltip.detailed.line3=
 #                                        en: Shift-R-Click to transfer levels to
-item.item_xp_transfer.tooltip.detailed.line4=灌入其中
+item.item_xp_transfer.tooltip.detailed.line4=
 #                                        en: the tank
-item.item_yeta_wrench.name=以太扳手
+item.item_yeta_wrench.name=
 #                      en: Yeta Wrench
-item.item_yeta_wrench.tooltip.detailed.line1=手持时隐藏导管框架
+item.item_yeta_wrench.tooltip.detailed.line1=
 #                                        en: Hides conduit facades when held
-item.item_yeta_wrench.tooltip.detailed.line2=右击可立即
+item.item_yeta_wrench.tooltip.detailed.line2=
 #                                        en: Shift-R-Click to break machines
-item.item_yeta_wrench.tooltip.detailed.line3=拆除机器与管道
+item.item_yeta_wrench.tooltip.detailed.line3=
 #                                        en: and conduits instantly
-item.item_yeta_wrench.tooltip.detailed.line4=Shift左击一个导管
+item.item_yeta_wrench.tooltip.detailed.line4=
 #                                        en: Shift-L-Click on a conduit to
-item.item_yeta_wrench.tooltip.detailed.line5=可打开导管设置GUI
+item.item_yeta_wrench.tooltip.detailed.line5=
 #                                        en: open conduit settings GUI
-item.item_yeta_wrench.tooltip.detailed.line6=使用Shift鼠标滚轮或者按
+item.item_yeta_wrench.tooltip.detailed.line6=
 #                                        en: Use Shift-Mouse Wheel or '%s' to
-item.item_yeta_wrench.tooltip.detailed.line7='Y'键可渲染单种类型导管
+item.item_yeta_wrench.tooltip.detailed.line7=
 #                                        en: render a single conduit type
 itemGroup.enderio.conduits=
 #                      en: EnderIO Conduits
@@ -1476,9 +1456,9 @@ itemGroup.enderio.materials=
 #                       en: EnderIO Materials
 itemGroup.enderio.mobs=
 #                  en: EnderIO Souls
-key.category.darksteelarmor=玄铁护甲
+key.category.darksteelarmor=
 #                       en: Dark Steel Armor
-key.category.tools=工具
+key.category.tools=
 #              en: Tools
 lingering_potion.effect.enderio.confusion=
 #                                     en: Lingering Potion of Confusion
@@ -1500,53 +1480,53 @@ splash_potion.effect.enderio.withering=
 #                                  en: Splash Potion of Decay
 subtitles.entity.enderman.teleport=
 #                              en: Something teleports
-tile.block_alloy.conductive_iron.name=导电铁块
+tile.block_alloy.conductive_iron.name=
 #                                 en: Conductive Iron Block
-tile.block_alloy.dark_steel.name=玄钢块
+tile.block_alloy.dark_steel.name=
 #                            en: Dark Steel Block
-tile.block_alloy.electrical_steel.name=磁钢块
+tile.block_alloy.electrical_steel.name=
 #                                  en: Electrical Steel Block
 tile.block_alloy.end_steel.name=
 #                           en: End Steel Block
-tile.block_alloy.energetic_alloy.name=充能合金块
+tile.block_alloy.energetic_alloy.name=
 #                                 en: Energetic Alloy Block
 tile.block_alloy.name=
 #                 en: Alloy Block
-tile.block_alloy.pulsating_iron.name=脉冲铁块
+tile.block_alloy.pulsating_iron.name=
 #                                en: Pulsating Iron Block
-tile.block_alloy.redstone_alloy.name=红石合金块
+tile.block_alloy.redstone_alloy.name=
 #                                en: Redstone Alloy Block
-tile.block_alloy.soularium.name=魂金块
+tile.block_alloy.soularium.name=
 #                           en: Soularium Block
-tile.block_alloy.vibrant_alloy.name=脉冲合金块
+tile.block_alloy.vibrant_alloy.name=
 #                               en: Vibrant Alloy Block
 tile.block_cold_fire.name=
 #                     en: Cold Fire
-tile.block_concussion_charge.name=震荡炸药
+tile.block_concussion_charge.name=Charge de secousse
 #                             en: Concussion Charge
 tile.block_confusion_charge.name=
 #                            en: Confusion Charge
-tile.block_dark_fused_glass.name=黑暗纯净玻璃
+tile.block_dark_fused_glass.name=
 #                            en: Dark Clear Glass
-tile.block_dark_fused_quartz.name=黑暗石英玻璃
+tile.block_dark_fused_quartz.name=
 #                             en: Dark Fused Quartz
-tile.block_dark_iron_bars.name=玄铁栅栏
+tile.block_dark_iron_bars.name=
 #                          en: Dark Iron Bars
-tile.block_dark_steel_anvil.intact.name=玄铁砧
+tile.block_dark_steel_anvil.intact.name=
 #                                   en: Dark Steel Anvil
-tile.block_dark_steel_anvil.name=玄铁砧
+tile.block_dark_steel_anvil.name=
 #                            en: Dark Steel Anvil
-tile.block_dark_steel_anvil.slightlyDamaged.name=轻微破损的玄铁砧
+tile.block_dark_steel_anvil.slightlyDamaged.name=
 #                                            en: Slightly Damaged Dark Steel Anvil
-tile.block_dark_steel_anvil.tooltip.common.line1=经久耐用
+tile.block_dark_steel_anvil.tooltip.common.line1=
 #                                            en: Damage Resistant
 tile.block_dark_steel_anvil.tooltip.detailed.line1=
 #                                              en: Lasts much longer than the vanilla anvil
-tile.block_dark_steel_anvil.veryDamaged.name=严重破损的玄铁砧
+tile.block_dark_steel_anvil.veryDamaged.name=
 #                                        en: Very Damaged Dark Steel Anvil
-tile.block_dark_steel_ladder.name=玄铁梯子
+tile.block_dark_steel_ladder.name=
 #                             en: Dark Steel Ladder
-tile.block_dark_steel_ladder.tooltip.common.line1=比普通的梯子更易攀爬
+tile.block_dark_steel_ladder.tooltip.common.line1=
 #                                             en: Faster than regular ladders
 tile.block_dark_steel_trapdoor.name=
 #                               en: Dark Steel Trapdoor
@@ -1660,27 +1640,27 @@ tile.block_detector_block_silent.name=
 #                                 en: Block Detector (Silent)
 tile.block_end_iron_bars.name=
 #                         en: End Steel Bars
-tile.block_ender_charge.name=末影炸药
+tile.block_ender_charge.name=Charge des limbes
 #                        en: Ender Charge
-tile.block_enderman_skull.base.name=末影人头
+tile.block_enderman_skull.base.name=
 #                               en: Enderman Head
-tile.block_enderman_skull.name=末影人头颅
+tile.block_enderman_skull.name=
 #                          en: Enderman Skull
-tile.block_enderman_skull.reanimated.name=复苏末影人头
+tile.block_enderman_skull.reanimated.name=
 #                                     en: Reanimated Enderman Head
 tile.block_enderman_skull.reanimated_tormented.name=
 #                                               en: Reanimated Tormented Enderman Head
-tile.block_enderman_skull.tormented.name=禁锢末影人头
+tile.block_enderman_skull.tormented.name=
 #                                    en: Tormented Enderman Head
-tile.block_enlightened_fused_glass.name=萤光纯净玻璃
+tile.block_enlightened_fused_glass.name=
 #                                   en: Enlightened Clear Glass
-tile.block_enlightened_fused_quartz.name=萤光石英玻璃
+tile.block_enlightened_fused_quartz.name=
 #                                    en: Enlightened Fused Quartz
 tile.block_exit_rail.name=
 #                     en: Exit Rail
-tile.block_fused_glass.name=纯净玻璃
+tile.block_fused_glass.name=
 #                       en: Quite Clear Glass
-tile.block_fused_quartz.name=石英玻璃
+tile.block_fused_quartz.name=
 #                        en: Fused Quartz
 tile.block_industrial_insulation.name=
 #                                 en: Industrial Insulation
@@ -1700,31 +1680,31 @@ tile.block_machine_base.name=
 #                        en: (technical block)
 tile.block_machine_io.name=
 #                      en: (technical block)
-tile.block_painted_carpet.name=喷涂地毯
+tile.block_painted_carpet.name=
 #                          en: Painted Carpet
 tile.block_painted_dark_steel_door.name=
 #                                   en: Painted Dark Steel Door
 tile.block_painted_dark_steel_trapdoor.name=
 #                                       en: Painted Dark Steel Trapdoor
-tile.block_painted_double_slab.name=喷涂台阶
+tile.block_painted_double_slab.name=
 #                               en: Painted Slab
-tile.block_painted_fence.name=喷涂栅栏
+tile.block_painted_fence.name=
 #                         en: Painted Fence
-tile.block_painted_fence_gate.name=喷涂门
+tile.block_painted_fence_gate.name=
 #                              en: Painted Gate
 tile.block_painted_fused_quartz.name=
 #                                en: Painted Fused Quartz
-tile.block_painted_glowstone.name=喷涂萤石
+tile.block_painted_glowstone.name=
 #                             en: Painted Glowstone
-tile.block_painted_glowstone_solid.name=喷涂萤石
+tile.block_painted_glowstone_solid.name=
 #                                   en: Painted Glowstone
 tile.block_painted_iron_door.name=
 #                             en: Painted Iron Door
 tile.block_painted_iron_trapdoor.name=
 #                                 en: Painted Iron Trapdoor
-tile.block_painted_pressure_plate.darksteel.name=玄钢压力板
+tile.block_painted_pressure_plate.darksteel.name=
 #                                            en: Dark Pressure Plate
-tile.block_painted_pressure_plate.darksteel.silent.name=玄钢压力板(无声)
+tile.block_painted_pressure_plate.darksteel.silent.name=
 #                                                   en: Dark Pressure Plate (Silent)
 tile.block_painted_pressure_plate.darksteel.silent.tooltip.detailed.line1=
 #                                                                     en: Only activated by players.
@@ -1734,105 +1714,105 @@ tile.block_painted_pressure_plate.darksteel.tooltip.detailed.line1=
 #                                                              en: Only activated by players.
 tile.block_painted_pressure_plate.darksteel.tooltip.detailed.line2=
 #                                                              en: Can be painted in painting machine, invisible when painted with Quite Clear Glass
-tile.block_painted_pressure_plate.gold.name=轻质测重压力板
+tile.block_painted_pressure_plate.gold.name=
 #                                       en: Weighted Pressure Plate (Light)
-tile.block_painted_pressure_plate.gold.silent.name=轻质测重压力板 (无声)
+tile.block_painted_pressure_plate.gold.silent.name=
 #                                              en: Weighted Pressure Plate (Light) (Silent)
-tile.block_painted_pressure_plate.gold.silent.tooltip.detailed.line1=可变信号输出: 1物品可增加1信号强度
+tile.block_painted_pressure_plate.gold.silent.tooltip.detailed.line1=
 #                                                                en: Variable Redstone Output: One per item.
 tile.block_painted_pressure_plate.gold.silent.tooltip.detailed.line2=
 #                                                                en: Can be painted in painting machine, invisible when painted with Quite Clear Glass
-tile.block_painted_pressure_plate.gold.tooltip.detailed.line1=可变信号输出: 1物品可增加1信号强度
+tile.block_painted_pressure_plate.gold.tooltip.detailed.line1=
 #                                                         en: Variable Redstone Output: One per item.
 tile.block_painted_pressure_plate.gold.tooltip.detailed.line2=
 #                                                         en: Can be painted in painting machine, invisible when painted with Quite Clear Glass
-tile.block_painted_pressure_plate.iron.name=测重压力板
+tile.block_painted_pressure_plate.iron.name=
 #                                       en: Weighted Pressure Plate (Heavy)
-tile.block_painted_pressure_plate.iron.silent.name=测重压力板 (无声)
+tile.block_painted_pressure_plate.iron.silent.name=
 #                                              en: Weighted Pressure Plate (Heavy) (Silent)
-tile.block_painted_pressure_plate.iron.silent.tooltip.detailed.line1=可变信号输出: 1实体可增加1信号强度
+tile.block_painted_pressure_plate.iron.silent.tooltip.detailed.line1=
 #                                                                en: Variable Redstone Output: One per entity.
 tile.block_painted_pressure_plate.iron.silent.tooltip.detailed.line2=
 #                                                                en: Can be painted in painting machine, invisible when painted with Quite Clear Glass
-tile.block_painted_pressure_plate.iron.tooltip.detailed.line1=可变信号输出: 1实体可增加1信号强度
+tile.block_painted_pressure_plate.iron.tooltip.detailed.line1=
 #                                                         en: Variable Redstone Output: One per entity.
 tile.block_painted_pressure_plate.iron.tooltip.detailed.line2=
 #                                                         en: Can be painted in painting machine, invisible when painted with Quite Clear Glass
 tile.block_painted_pressure_plate.name=
 #                                  en: Painted Pressure Plate
-tile.block_painted_pressure_plate.soularium.name=魂金压力板
+tile.block_painted_pressure_plate.soularium.name=
 #                                            en: Soularium Pressure Plate
-tile.block_painted_pressure_plate.soularium.silent.name=魂金压力板(无声)
+tile.block_painted_pressure_plate.soularium.silent.name=
 #                                                   en: Soularium Pressure Plate (Silent)
-tile.block_painted_pressure_plate.soularium.silent.tooltip.detailed.line1=只能被敌对生物激活
+tile.block_painted_pressure_plate.soularium.silent.tooltip.detailed.line1=
 #                                                                     en: Only activated by hostile mobs.
 tile.block_painted_pressure_plate.soularium.silent.tooltip.detailed.line2=
 #                                                                     en: Can be painted in painting machine, invisible when painted with Quite Clear Glass
-tile.block_painted_pressure_plate.soularium.silent.tooltip.detailed.line3=可在灵魂绑定器中调整设定.
+tile.block_painted_pressure_plate.soularium.silent.tooltip.detailed.line3=
 #                                                                     en: Can be tuned in Soul Binder.
-tile.block_painted_pressure_plate.soularium.tooltip.detailed.line1=只能被敌对生物激活
+tile.block_painted_pressure_plate.soularium.tooltip.detailed.line1=
 #                                                              en: Only activated by hostile mobs.
 tile.block_painted_pressure_plate.soularium.tooltip.detailed.line2=
 #                                                              en: Can be painted in painting machine, invisible when painted with Quite Clear Glass
-tile.block_painted_pressure_plate.soularium.tooltip.detailed.line3=可在灵魂绑定器中调整设定.
+tile.block_painted_pressure_plate.soularium.tooltip.detailed.line3=
 #                                                              en: Can be tuned in Soul Binder.
-tile.block_painted_pressure_plate.stone.name=石质压力板
+tile.block_painted_pressure_plate.stone.name=
 #                                        en: Stone Pressure Plate
-tile.block_painted_pressure_plate.stone.silent.name=石质压力板 (无声)
+tile.block_painted_pressure_plate.stone.silent.name=
 #                                               en: Stone Pressure Plate (Silent)
-tile.block_painted_pressure_plate.stone.silent.tooltip.detailed.line1=只能被生物和玩家激活
+tile.block_painted_pressure_plate.stone.silent.tooltip.detailed.line1=
 #                                                                 en: Only activated by mobs and players.
 tile.block_painted_pressure_plate.stone.silent.tooltip.detailed.line2=
 #                                                                 en: Can be painted in painting machine, invisible when painted with Quite Clear Glass
-tile.block_painted_pressure_plate.stone.tooltip.detailed.line1=只能被生物和玩家激活
+tile.block_painted_pressure_plate.stone.tooltip.detailed.line1=
 #                                                          en: Only activated by mobs and players.
 tile.block_painted_pressure_plate.stone.tooltip.detailed.line2=
 #                                                          en: Can be painted in painting machine, invisible when painted with Quite Clear Glass
-tile.block_painted_pressure_plate.tuned.name=魂金压力板
+tile.block_painted_pressure_plate.tuned.name=
 #                                        en: Soularium Pressure Plate (Tuned)
-tile.block_painted_pressure_plate.tuned.silent.name=魂金压力板(无声)
+tile.block_painted_pressure_plate.tuned.silent.name=
 #                                               en: Soularium Pressure Plate (Tuned) (Silent)
-tile.block_painted_pressure_plate.tuned.silent.tooltip.detailed.line1=只能被指定敌对生物激活
+tile.block_painted_pressure_plate.tuned.silent.tooltip.detailed.line1=
 #                                                                 en: Only activated by specific mobs.
 tile.block_painted_pressure_plate.tuned.silent.tooltip.detailed.line2=
 #                                                                 en: Can be painted in painting machine, invisible when painted with Quite Clear Glass
-tile.block_painted_pressure_plate.tuned.silent.tooltip.detailed.line3=可在灵魂绑定器中调整设定.
+tile.block_painted_pressure_plate.tuned.silent.tooltip.detailed.line3=
 #                                                                 en: Can be tuned in Soul Binder.
-tile.block_painted_pressure_plate.tuned.tooltip.detailed.line1=只能被指定敌对生物激活
+tile.block_painted_pressure_plate.tuned.tooltip.detailed.line1=
 #                                                          en: Only activated by specific mobs.
 tile.block_painted_pressure_plate.tuned.tooltip.detailed.line2=
 #                                                          en: Can be painted in painting machine, invisible when painted with Quite Clear Glass
-tile.block_painted_pressure_plate.tuned.tooltip.detailed.line3=可在灵魂绑定器中调整设定.
+tile.block_painted_pressure_plate.tuned.tooltip.detailed.line3=
 #                                                          en: Can be tuned in Soul Binder.
-tile.block_painted_pressure_plate.tuned.tooltip=调频至：%s
+tile.block_painted_pressure_plate.tuned.tooltip=
 #                                           en: Tuned to: %s
-tile.block_painted_pressure_plate.wood.name=木质压力板
+tile.block_painted_pressure_plate.wood.name=
 #                                       en: Wooden Pressure Plate
-tile.block_painted_pressure_plate.wood.silent.name=木质压力板 (无声)
+tile.block_painted_pressure_plate.wood.silent.name=
 #                                              en: Wooden Pressure Plate (Silent)
 tile.block_painted_pressure_plate.wood.silent.tooltip.detailed.line1=
 #                                                                en: Can be painted in painting machine, invisible when painted with Quite Clear Glass
 tile.block_painted_pressure_plate.wood.tooltip.detailed.line1=
 #                                                         en: Can be painted in painting machine, invisible when painted with Quite Clear Glass
-tile.block_painted_redstone.name=喷涂红石
+tile.block_painted_redstone.name=
 #                            en: Painted Redstone
-tile.block_painted_redstone_solid.name=喷涂红石
+tile.block_painted_redstone_solid.name=
 #                                  en: Painted Redstone
-tile.block_painted_slab.name=喷涂台阶
+tile.block_painted_slab.name=
 #                        en: Painted Slab
-tile.block_painted_stair.name=喷涂楼梯
+tile.block_painted_stair.name=
 #                         en: Painted Stairs
 tile.block_painted_stone.name=
 #                         en: Painted Cobblestone
-tile.block_painted_stone_double_slab.name=喷涂石台阶
+tile.block_painted_stone_double_slab.name=
 #                                     en: Painted Stone Slab
-tile.block_painted_stone_fence.name=喷涂石栅栏
+tile.block_painted_stone_fence.name=
 #                               en: Painted Stone Fence
-tile.block_painted_stone_slab.name=喷涂石台阶
+tile.block_painted_stone_slab.name=
 #                              en: Painted Stone Slab
-tile.block_painted_stone_stair.name=喷涂石楼梯
+tile.block_painted_stone_stair.name=
 #                               en: Painted Stone Stairs
-tile.block_painted_wall.name=喷涂墙
+tile.block_painted_wall.name=
 #                        en: Painted Wall
 tile.block_painted_wooden_door.name=
 #                               en: Painted Wooden Door
@@ -1840,9 +1820,9 @@ tile.block_painted_wooden_trapdoor.name=
 #                                   en: Painted Wooden Trapdoor
 tile.block_painted_workbench.name=
 #                             en: Painted Crafting Table
-tile.block_reinforced_obsidian.name=强化黑曜石
+tile.block_reinforced_obsidian.name=
 #                               en: Reinforced Obsidian
-tile.block_reinforced_obsidian.tooltip.common.line1=能抵挡凋零
+tile.block_reinforced_obsidian.tooltip.common.line1=
 #                                               en: Wither Proof
 tile.block_self_resetting_lever10.name=
 #                                  en: Self-resetting Lever (10 seconds)
@@ -1854,24 +1834,23 @@ tile.block_self_resetting_lever5.name=
 #                                 en: Self-resetting Lever (5 seconds)
 tile.block_self_resetting_lever60.name=
 #                                  en: Self-resetting Lever (1 Minute)
-tile.fluid.cloud_seed.name=云之精华
+tile.fluid.cloud_seed.name=
 #                      en: Cloud Seed
-tile.fluid.cloud_seed_concentrated.name=浓缩云之精华
+tile.fluid.cloud_seed_concentrated.name=
 #                                   en: Concentrated Cloud Seed
-tile.fluid.ender_distillation.name=深渊露水
+tile.fluid.ender_distillation.name=
 #                              en: Dew of the Void
-tile.fluid.fire_water.name=火焰水
+tile.fluid.fire_water.name=
 #                      en: Fire Water
-tile.fluid.hootch.name=烈酒
+tile.fluid.hootch.name=
 #                  en: Hootch
-tile.fluid.liquid_sunshine.name=液态阳光
+tile.fluid.liquid_sunshine.name=
 #                           en: Liquid Sunshine
-tile.fluid.nutrient_distillation.name=营养精华液
-#                                 OR: 击附近的生物
+tile.fluid.nutrient_distillation.name=
 #                                 en: Nutrient Distillation
-tile.fluid.rocket_fuel.name=火箭燃料
+tile.fluid.rocket_fuel.name=
 #                       en: Rocket Fuel
-tile.fluid.xpjuice.name=液态XP
+tile.fluid.xpjuice.name=
 #                   en: Liquid XP
 tile.vapor_of_levity.name=
 #                     en: Vapor of Levity

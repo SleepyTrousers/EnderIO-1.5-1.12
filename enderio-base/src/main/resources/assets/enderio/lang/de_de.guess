@@ -20,9 +20,9 @@ enchantment.enderio.shimmer=
 #                       en: Shimmer
 enchantment.enderio.soulbound=Seelengebunden
 #                         en: Soulbound
-enchantment.enderio.witherarrow=
+enchantment.enderio.witherarrow=Zerfall
 #                           en: Withering
-enchantment.enderio.witherweapon=
+enchantment.enderio.witherweapon=Verfall
 #                            en: Decay
 enderio.activated.name=Doppelschichtkondensator
 #                  en: Double-Layer Capacitor
@@ -111,11 +111,11 @@ enderio.config.anchor.tooltip=Anker los! Setzt die Segel!
 enderio.config.anchor=Reiseanker
 #                 OR: Ankereinstellungen
 #                 en: Travel Anchor
-enderio.config.blocks.charges.concussion=
+enderio.config.blocks.charges.concussion=Erschütterungsladung
 #                                    en: Concussion Charge
 enderio.config.blocks.charges.confusion=
 #                                   en: Confusion Charge
-enderio.config.blocks.charges.ender=
+enderio.config.blocks.charges.ender=Enderladung
 #                               en: Ender Charge
 enderio.config.blocks.charges=
 #                         en: Charges
@@ -1167,7 +1167,7 @@ item.item_material.chassi_parts.name=Maschinenteile
 #                                en: Machine Parts
 item.item_material.conduit_binder.name=Leitungsbinder
 #                                  en: Conduit Binder
-item.item_material.confusing_dust.name=
+item.item_material.confusing_dust.name=Verwirrpulver
 #                                  en: Confusing Powder
 item.item_material.dish.name=
 #                        en: Wireless Energy Transmitter Dish Assembly
@@ -1179,7 +1179,7 @@ item.item_material.ender_crystal.name=Enderkristall
 #                                 en: Ender Crystal
 item.item_material.ender_crystal_powder.name=
 #                                        en: Grains of the End
-item.item_material.ender_fragment.name=
+item.item_material.ender_fragment.name=Enderfragment
 #                                  en: Ender Fragment
 item.item_material.enhanced_chassi_parts.name=
 #                                         en: Enhanced Machine Parts
@@ -1337,7 +1337,7 @@ item.item_material.vibrant_powder.name=
 #                                  en: Grains of Vibrancy
 item.item_material.weather_crystal.name=Wetterkristall
 #                                   en: Weather Crystal
-item.item_material.withering_dust.name=
+item.item_material.withering_dust.name=Verfallener Staub
 #                                  en: Withering Dust
 item.item_mod_item_filter.name=Mod-Item-Filter
 #                          en: Mod Item Filter
@@ -1513,7 +1513,7 @@ tile.block_alloy.vibrant_alloy.name=Block aus Dynamischer Legierung
 #                               en: Vibrant Alloy Block
 tile.block_cold_fire.name=
 #                     en: Cold Fire
-tile.block_concussion_charge.name=
+tile.block_concussion_charge.name=Erschütterungsladung
 #                             en: Concussion Charge
 tile.block_confusion_charge.name=
 #                            en: Confusion Charge
@@ -1651,7 +1651,7 @@ tile.block_detector_block_silent.name=
 #                                 en: Block Detector (Silent)
 tile.block_end_iron_bars.name=
 #                         en: End Steel Bars
-tile.block_ender_charge.name=
+tile.block_ender_charge.name=Enderladung
 #                        en: Ender Charge
 tile.block_enderman_skull.base.name=Enderman-Kopf
 #                               en: Enderman Head
