@@ -29,6 +29,7 @@ public enum Lang implements ILang {
   GRINDING_BALL_2(".grindingball.tooltip.line2"),
   GRINDING_BALL_3(".grindingball.tooltip.line3"),
   GRINDING_BALL_4(".grindingball.tooltip.line4"),
+  GRINDING_BALL_DURABILITY(".grindingball.gui.durability"),
   STAFF_NO_POWER("item.item_travel_staff.chat.notEnoughPower"),
   COLD_FIRE_NO_FLUID("item.item_cold_fire_igniter.chat.outoffluid"),
   DARK_STEEL_POWERED("item.item_dark_steel_armor.tooltip"),

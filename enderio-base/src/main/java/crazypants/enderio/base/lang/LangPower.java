@@ -91,4 +91,8 @@ public final class LangPower {
     return EnderIO.lang.localize("power.rf");
   }
 
+  public static @Nonnull String toPercent(float fl) {
+    return "" + Math.round(fl * 100);
+  }
+
 }
