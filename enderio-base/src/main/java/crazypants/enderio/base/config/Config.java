@@ -267,7 +267,7 @@ public final class Config {
       configDirectory.mkdir();
     }
 
-    File configFile = new File(configDirectory, "EnderIO.cfg");
+    File configFile = new File(configDirectory, EnderIO.MODID + ".cfg");
     config = new Configuration(configFile);
     syncConfig(false);
   }
