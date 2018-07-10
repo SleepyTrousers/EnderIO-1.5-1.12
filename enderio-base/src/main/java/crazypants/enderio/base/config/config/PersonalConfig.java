@@ -84,4 +84,38 @@ public final class PersonalConfig {
   public static final IValue<Boolean> animatedEnderArmorEnabled = F.make("animatedEnderArmorEnabled", true, //
       "Should the Ender Armor texture be animated?");
 
+  // Item Hiding
+
+  public static final IValueFactory H = F.section(".hiding");
+
+  public static final IValue<Boolean> disableHiding = H.make("disableHiding", false, //
+      "If true, nothing will be hidden in JEI regardless of the rest of the 'hide...' settings.");
+
+  public static final IValue<Boolean> hideConduits = H.make("hideConduits", true, //
+      "Should conduit-related items be hidden in JEI if the conduits module is not installed?");
+
+  public static final IValue<Boolean> hideMachineParts = H.make("hideMachineParts", true, //
+      "Should machine part items be hidden in JEI if the machines module is not installed?");
+
+  public static final IValue<Boolean> hideMaterials = H.make("hideMaterials", true, //
+      "Should material items that need machines to be crafted be hidden in JEI if the machines module is not installed?");
+
+  public static final IValue<Boolean> hideMaterialBlocks = H.make("hideMaterialBlocks", true, //
+      "Should blocks made from materials that need machines to be crafted be hidden in JEI if the machines module is not installed?");
+
+  public static final IValue<Boolean> hideMobDrops = H.make("hideMobDrops", true, //
+      "Should mob drop items (and items crafted with those) be hidden in JEI if the zoo module is not installed?");
+
+  public static final IValue<Boolean> hideToolsAndArmor = H.make("hideToolsAndArmor", true, //
+      "Should tool and armor items be hidden in JEI if the machines module is not installed?");
+
+  public static final IValue<Boolean> hideInfinity = H.make("hideInfinity", true, //
+      "Should grains of infinity be hidden in JEI if the in-world crafting is disabled?");
+
+  public static final IValue<Boolean> hideTEMaterials = H.make("hideTEMaterials", true, //
+      "Should compatibility items for Thermal Foundation be hidden in JEI if it is not installed?");
+
+  public static final IValue<Boolean> hideTiCMaterials = H.make("hideTiCMaterials", true, //
+      "Should compatibility items for Tinkers Construct be hidden in JEI if it is not installed?");
+
 }
