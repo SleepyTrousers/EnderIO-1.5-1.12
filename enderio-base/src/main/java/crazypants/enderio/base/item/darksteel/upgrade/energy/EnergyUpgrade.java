@@ -11,7 +11,8 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.block.skull.SkullType;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
+import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.travelstaff.ItemTravelStaff;
 import crazypants.enderio.base.lang.LangPower;
@@ -25,7 +26,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.base.init.ModObject.blockEndermanSkull;
 import static crazypants.enderio.base.init.ModObject.itemBasicCapacitor;
-import static crazypants.enderio.base.init.ModObject.itemMaterial;
 
 public class EnergyUpgrade extends AbstractUpgrade {
 
@@ -45,11 +45,11 @@ public class EnergyUpgrade extends AbstractUpgrade {
     }
 
     public void setEnergy(int energy) {
-      this.energy = MathHelper.clamp(energy, 0, capacity);
+      this.energy = MathHelper.clamp(energy, 0, capacity.get());
     }
 
     public int receiveEnergy(int maxRF, boolean simulate) {
-      int energyReceived = Math.max(0, Math.min(capacity - energy, Math.min(maxInRF, maxRF)));
+      int energyReceived = Math.max(0, Math.min(capacity.get() - energy, Math.min(maxInRF.get(), maxRF)));
       if (!simulate) {
         energy += energyReceived;
       }
@@ -57,7 +57,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
     }
 
     public int extractEnergy(int maxExtract, boolean simulate) {
-      int energyExtracted = Math.max(0, Math.min(energy, Math.min(maxOutRF, maxExtract)));
+      int energyExtracted = Math.max(0, Math.min(energy, Math.min(maxOutRF.get(), maxExtract)));
       if (!simulate) {
         energy -= energyExtracted;
       }
@@ -74,29 +74,34 @@ public class EnergyUpgrade extends AbstractUpgrade {
     }
 
     public int getCapacity() {
-      return capacity;
+      return capacity.get();
     }
 
   }
 
-  public static final @Nonnull EnergyUpgrade EMPOWERED = new EnergyUpgrade(0, "enderio.darksteel.upgrade.empowered_one", Config.darkSteelUpgradeVibrantCost,
-      new ItemStack(itemMaterial.getItemNN(), 1, Material.VIBRANT_CYSTAL.ordinal()), Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase / 100);
+  public static final @Nonnull EnergyUpgrade EMPOWERED = new EnergyUpgrade(0, "enderio.darksteel.upgrade.empowered_one",
+      DarkSteelConfig.energyUpgradeLevelCostEmpowered0, Material.VIBRANT_CYSTAL.getStack(), DarkSteelConfig.energyUpgradePowerStorageEmpowered0,
+      DarkSteelConfig.energyUpgradePowerTransferEmpowered0, DarkSteelConfig.energyUpgradeAbsorptionRatioEmpowered0);
 
   public static final @Nonnull EnergyUpgrade EMPOWERED_TWO = new EnergyUpgrade(1, "enderio.darksteel.upgrade.empowered_two",
-      Config.darkSteelUpgradePowerOneCost, new ItemStack(itemBasicCapacitor.getItemNN(), 1, 0), Config.darkSteelPowerStorageLevelOne,
-      Config.darkSteelPowerStorageLevelOne / 100);
+      DarkSteelConfig.energyUpgradeLevelCostEmpowered1, new ItemStack(itemBasicCapacitor.getItemNN(), 1, 0),
+      DarkSteelConfig.energyUpgradePowerStorageEmpowered1, DarkSteelConfig.energyUpgradePowerTransferEmpowered1,
+      DarkSteelConfig.energyUpgradeAbsorptionRatioEmpowered1);
 
   public static final @Nonnull EnergyUpgrade EMPOWERED_THREE = new EnergyUpgrade(2, "enderio.darksteel.upgrade.empowered_three",
-      Config.darkSteelUpgradePowerTwoCost, new ItemStack(itemBasicCapacitor.getItemNN(), 1, 1), Config.darkSteelPowerStorageLevelTwo,
-      Config.darkSteelPowerStorageLevelTwo / 100);
+      DarkSteelConfig.energyUpgradeLevelCostEmpowered2, new ItemStack(itemBasicCapacitor.getItemNN(), 1, 1),
+      DarkSteelConfig.energyUpgradePowerStorageEmpowered2, DarkSteelConfig.energyUpgradePowerTransferEmpowered2,
+      DarkSteelConfig.energyUpgradeAbsorptionRatioEmpowered2);
 
   public static final @Nonnull EnergyUpgrade EMPOWERED_FOUR = new EnergyUpgrade(3, "enderio.darksteel.upgrade.empowered_four",
-      Config.darkSteelUpgradePowerThreeCost, new ItemStack(itemBasicCapacitor.getItemNN(), 1, 2), Config.darkSteelPowerStorageLevelThree,
-      Config.darkSteelPowerStorageLevelThree / 100);
+      DarkSteelConfig.energyUpgradeLevelCostEmpowered3, new ItemStack(itemBasicCapacitor.getItemNN(), 1, 2),
+      DarkSteelConfig.energyUpgradePowerStorageEmpowered3, DarkSteelConfig.energyUpgradePowerTransferEmpowered3,
+      DarkSteelConfig.energyUpgradeAbsorptionRatioEmpowered3);
 
   public static final @Nonnull EnergyUpgrade EMPOWERED_FIVE = new EnergyUpgrade(4, "enderio.darksteel.upgrade.empowered_five",
-      Config.darkSteelUpgradePowerFourCost, new ItemStack(blockEndermanSkull.getBlockNN(), 1, SkullType.TORMENTED.ordinal()),
-      Config.darkSteelPowerStorageLevelFour, Config.darkSteelPowerStorageLevelFour / 100);
+      DarkSteelConfig.energyUpgradeLevelCostEmpowered4, new ItemStack(blockEndermanSkull.getBlockNN(), 1, SkullType.TORMENTED.ordinal()),
+      DarkSteelConfig.energyUpgradePowerStorageEmpowered4, DarkSteelConfig.energyUpgradePowerTransferEmpowered4,
+      DarkSteelConfig.energyUpgradeAbsorptionRatioEmpowered4);
 
   public static EnergyUpgrade loadAnyFromItem(@Nonnull ItemStack stack) {
     if (EMPOWERED_FIVE.hasUpgrade(stack)) {
@@ -117,17 +122,20 @@ public class EnergyUpgrade extends AbstractUpgrade {
     return null;
   }
 
-  protected final int capacity;
+  protected final @Nonnull IValue<Integer> capacity;
   protected final int level;
-  protected final int maxInRF;
-  protected final int maxOutRF;
+  protected final @Nonnull IValue<Integer> maxInRF;
+  protected final @Nonnull IValue<Integer> maxOutRF;
+  protected final @Nonnull IValue<Double> absorptionRatio;
 
-  public EnergyUpgrade(int level, @Nonnull String name, int levels, @Nonnull ItemStack upgradeItem, int capacity, int maxReceiveIO) {
+  public EnergyUpgrade(int level, @Nonnull String name, @Nonnull IValue<Integer> levels, @Nonnull ItemStack upgradeItem, @Nonnull IValue<Integer> capacity,
+      @Nonnull IValue<Integer> maxReceiveIO, @Nonnull IValue<Double> absorptionRatio) {
     super(EnergyUpgradeManager.UPGRADE_NAME, level, name, upgradeItem, levels);
     this.level = level;
     this.capacity = capacity;
     maxInRF = maxReceiveIO;
     maxOutRF = maxReceiveIO;
+    this.absorptionRatio = absorptionRatio;
   }
 
   @Override
@@ -151,7 +159,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
       SpecialTooltipHandler.addDetailedTooltipFromResources(upgradeStr, getUnlocalizedName());
 
       String percDamage = (int) Math.round(getAbsorptionRatio() * 100) + "";
-      String capString = LangPower.RF(capacity);
+      String capString = LangPower.RF(capacity.get());
       for (int i = 0; i < upgradeStr.size(); i++) {
         String str = upgradeStr.get(i);
         str = str.replaceAll("\\$P", capString);
@@ -167,11 +175,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
   }
 
   private double getAbsorptionRatio() {
-    int val = level;
-    if (val >= Config.darkSteelPowerDamgeAbsorptionRatios.length) {
-      val = 0;
-    }
-    return Config.darkSteelPowerDamgeAbsorptionRatios[val];
+    return absorptionRatio.get();
   }
 
   public int getLevel() {

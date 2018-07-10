@@ -95,14 +95,6 @@ public final class Config {
 
   public static float travelAnchorZoomScale = 0.2f;
 
-  public static double[] darkSteelPowerDamgeAbsorptionRatiosDefaults = { 0.5, 0.6, 0.7, 0.85, 0.95 };
-  public static double[] darkSteelPowerDamgeAbsorptionRatios = { 0.5, 0.6, 0.7, 0.85, 0.95 };
-  public static int darkSteelPowerStorageBase = 100000;
-  public static int darkSteelPowerStorageLevelOne = 150000;
-  public static int darkSteelPowerStorageLevelTwo = 250000;
-  public static int darkSteelPowerStorageLevelThree = 1000000;
-  public static int darkSteelPowerStorageLevelFour = 2500000;
-
   public static int darkSteelSpeedOneCost = 4;
   public static int darkSteelSpeedTwoCost = 6;
   public static int darkSteelSpeedThreeCost = 8;
@@ -114,8 +106,6 @@ public final class Config {
 
   public static boolean slotZeroPlacesEight = true;
 
-  public static int darkSteelWalkPowerCost = darkSteelPowerStorageLevelTwo / 3000;
-  public static int darkSteelSprintPowerCost = darkSteelWalkPowerCost * 4;
   public static boolean darkSteelDrainPowerFromInventory = false;
   public static int darkSteelBootsJumpPowerCost = 150;
   public static int darkSteelFallDistanceCost = 75;
@@ -133,19 +123,6 @@ public final class Config {
   public static int darkSteelSwordPowerUsePerHit = 750;
   public static double darkSteelSwordEnderPearlDropChance = 1.05;
   public static double darkSteelSwordEnderPearlDropChancePerLooting = 0.5;
-
-  public static float darkSteelBowDamageBonus = 0f;
-  public static double[] darkSteelBowForceMultipliers = { 1.1f, 1.2f, 1.3f, 1.4f, 1.5f };
-  public static int[] darkSteelBowDrawSpeeds = { 30, 20, 18, 16, 14, 12 };
-  public static double[] darkSteelBowFovMultipliers = { 0.25, 0.3, 0.35, 0.4, 0.45 };
-  public static int darkSteelBowPowerUsePerDamagePoint = 1000;
-  public static int darkSteelBowPowerUsePerDraw = 750;
-  public static int darkSteelBowPowerUsePerTickDrawn = 5;
-
-  public static float endSteelBowDamageBonus = 0f;
-  public static double[] endSteelBowForceMultipliers = { 1.25f, 1.35f, 1.45f, 1.55f, 1.65f, 1.75f };
-  public static int[] endSteelBowDrawSpeeds = { 20, 15, 12, 11, 10, 9 };
-  public static double[] endSteelBowFovMultipliers = { 0.25, 0.275, 0.3, 0.35, 0.4, 0.45 };
 
   public static int darkSteelPickEffeciencyObsidian = 50;
   public static int darkSteelPickPowerUseObsidian = 10000;
@@ -165,12 +142,6 @@ public final class Config {
   public static float darkSteelShearsEffeciencyBoostWhenPowered = 2.0f;
   public static int darkSteelShearsBlockAreaBoostWhenPowered = 4;
   public static float darkSteelShearsEntityAreaBoostWhenPowered = 5.0f;
-
-  public static int darkSteelUpgradeVibrantCost = 4;
-  public static int darkSteelUpgradePowerOneCost = 6;
-  public static int darkSteelUpgradePowerTwoCost = 8;
-  public static int darkSteelUpgradePowerThreeCost = 12;
-  public static int darkSteelUpgradePowerFourCost = 15;
 
   public static int darkSteelGliderCost = 4;
   public static double darkSteelGliderHorizontalSpeed = 0.03;
@@ -435,34 +406,6 @@ public final class Config {
         .getInt(rodOfReturnFluidUsePerTeleport);
     rodOfReturnFluidType = config.getString("rodOfReturnFluidType", sectionRod.name, rodOfReturnFluidType, "The type of fluid used by the rod.");
 
-    darkSteelPowerDamgeAbsorptionRatios = config.get(sectionDarkSteel.name, "darkSteelPowerDamgeAbsorptionRatios", darkSteelPowerDamgeAbsorptionRatios,
-        "A list of the amount of durability damage absorbed when items are powered. In order of upgrade level. 1=100% so items take no durability damage when powered.")
-        .getDoubleList();
-    darkSteelPowerStorageBase = config
-        .get(sectionDarkSteel.name, "darkSteelPowerStorageBase", darkSteelPowerStorageBase, "Base amount of power stored by dark steel items.")
-        .getInt(darkSteelPowerStorageBase);
-    darkSteelPowerStorageLevelOne = config.get(sectionDarkSteel.name, "darkSteelPowerStorageLevelOne", darkSteelPowerStorageLevelOne,
-        "Amount of power stored by dark steel items with a level 1 upgrade.").getInt(darkSteelPowerStorageLevelOne);
-    darkSteelPowerStorageLevelTwo = config.get(sectionDarkSteel.name, "darkSteelPowerStorageLevelTwo", darkSteelPowerStorageLevelTwo,
-        "Amount of power stored by dark steel items with a level 2 upgrade.").getInt(darkSteelPowerStorageLevelTwo);
-    darkSteelPowerStorageLevelThree = config.get(sectionDarkSteel.name, "darkSteelPowerStorageLevelThree", darkSteelPowerStorageLevelThree,
-        "Amount of power stored by dark steel items with a level 3 upgrade.").getInt(darkSteelPowerStorageLevelThree);
-    darkSteelPowerStorageLevelFour = config.get(sectionDarkSteel.name, "darkSteelPowerStorageLevelFour", darkSteelPowerStorageLevelFour,
-        "Amount of power stored by dark steel items with a level 4 upgrade.").getInt(darkSteelPowerStorageLevelFour);
-
-    darkSteelUpgradeVibrantCost = config
-        .get(sectionDarkSteel.name, "darkSteelUpgradeVibrantCost", darkSteelUpgradeVibrantCost, "Number of levels required for the 'Empowered.")
-        .getInt(darkSteelUpgradeVibrantCost);
-    darkSteelUpgradePowerOneCost = config
-        .get(sectionDarkSteel.name, "darkSteelUpgradePowerOneCost", darkSteelUpgradePowerOneCost, "Number of levels required for the 'Power 1.")
-        .getInt(darkSteelUpgradePowerOneCost);
-    darkSteelUpgradePowerTwoCost = config
-        .get(sectionDarkSteel.name, "darkSteelUpgradePowerTwoCost", darkSteelUpgradePowerTwoCost, "Number of levels required for the 'Power 2.")
-        .getInt(darkSteelUpgradePowerTwoCost);
-    darkSteelUpgradePowerThreeCost = config
-        .get(sectionDarkSteel.name, "darkSteelUpgradePowerThreeCost", darkSteelUpgradePowerThreeCost, "Number of levels required for the 'Power 3' upgrade.")
-        .getInt(darkSteelUpgradePowerThreeCost);
-
     darkSteelJumpOneCost = config
         .get(sectionDarkSteel.name, "darkSteelJumpOneCost", darkSteelJumpOneCost, "Number of levels required for the 'Jump 1' upgrade.")
         .getInt(darkSteelJumpOneCost);
@@ -491,10 +434,6 @@ public final class Config {
     darkSteelBootsJumpModifier = config.get(sectionDarkSteel.name, "darkSteelBootsJumpModifier", darkSteelBootsJumpModifier,
         "Jump height modifier applied when jumping with Dark Steel Boots equipped").getDouble(darkSteelBootsJumpModifier);
 
-    darkSteelWalkPowerCost = config.get(sectionDarkSteel.name, "darkSteelWalkPowerCost", darkSteelWalkPowerCost,
-        "Amount of power stored energy per block walked when wearing the dark steel boots.").getInt(darkSteelWalkPowerCost);
-    darkSteelSprintPowerCost = config.get(sectionDarkSteel.name, "darkSteelSprintPowerCost", darkSteelWalkPowerCost,
-        "Amount of power stored energy per block walked when wearing the dark steel boots.").getInt(darkSteelSprintPowerCost);
     darkSteelDrainPowerFromInventory = config
         .get(sectionDarkSteel.name, "darkSteelDrainPowerFromInventory", darkSteelDrainPowerFromInventory,
             "If true, dark steel armor will drain power stored energy in power containers in the players inventory.")
@@ -602,25 +541,6 @@ public final class Config {
         .get(sectionDarkSteel.name, "darkSteelSwordEnderPearlDropChancePerLooting", darkSteelSwordEnderPearlDropChancePerLooting,
             "The chance for each looting level that an additional ender pearl will be dropped when using a dark steel sword (0 = no chance, 1 = 100% chance)")
         .getDouble(darkSteelSwordEnderPearlDropChancePerLooting);
-
-    darkSteelBowDamageBonus = (float) config
-        .get(sectionDarkSteel.name, "darkSteelBowDamageBonus", darkSteelBowDamageBonus, "The damage bonus applied to arrows fire from the bow.")
-        .getDouble(darkSteelBowDamageBonus);
-    darkSteelBowForceMultipliers = config.get(sectionDarkSteel.name, "darkSteelBowForceMultipliers", darkSteelBowForceMultipliers,
-        "Multiplier that effects the speed with which arrows leave the bow.").getDoubleList();
-    darkSteelBowFovMultipliers = config.get(sectionDarkSteel.name, "darkSteelBowFovMultiplier", darkSteelBowFovMultipliers,
-        "The reduction in FOV when the bow is fullen drawn (the zoom level). A 'vanilla' bow has a value of 0.15").getDoubleList();
-    darkSteelBowPowerUsePerDamagePoint = config
-        .get(sectionDarkSteel.name, "darkSteelBowPowerUsePerDamagePoint", darkSteelBowPowerUsePerDamagePoint, "The amount of energy used per hit.")
-        .getInt(darkSteelBowPowerUsePerDamagePoint);
-    darkSteelBowDrawSpeeds = config.get(sectionDarkSteel.name, "darkSteelBowDrawSpeeds", darkSteelBowDrawSpeeds,
-        "A list of the amount of draw speeds at the different upgrade levels. A vanilla bow draw speed is 20").getIntList();
-    darkSteelBowPowerUsePerDraw = config
-        .get(sectionDarkSteel.name, "darkSteelBowPowerUsePerDraw", darkSteelBowPowerUsePerDraw, "The power used to fully draw the bow")
-        .getInt(darkSteelBowPowerUsePerDraw);
-    darkSteelBowPowerUsePerTickDrawn = config
-        .get(sectionDarkSteel.name, "darkSteelBowPowerUsePerTickDrawn", darkSteelBowPowerUsePerTickDrawn, "The power used per tick to hold the boy fully drawn")
-        .getInt(darkSteelBowPowerUsePerTickDrawn);
 
     darkSteelPickPowerUseObsidian = config
         .get(sectionDarkSteel.name, "darkSteelPickPowerUseObsidian", darkSteelPickPowerUseObsidian, "The amount of energy used to break an obsidian block.")
@@ -839,19 +759,6 @@ public final class Config {
   }
 
   public static void init(FMLPostInitializationEvent event) {
-    if (darkSteelPowerDamgeAbsorptionRatios == null || darkSteelPowerDamgeAbsorptionRatios.length != 5) {
-      darkSteelPowerDamgeAbsorptionRatios = darkSteelPowerDamgeAbsorptionRatiosDefaults;
-      Log.error("Ender IO config value darkSteelPowerDamgeAbsorptionRatios must have exactly 5 values. Resetting to defaults.");
-    }
-    if (darkSteelBowForceMultipliers == null || darkSteelBowForceMultipliers.length != 5) {
-      throw new IllegalArgumentException("Ender IO config value darkSteelBowForceMultipliers must have exactly 5 values");
-    }
-    if (darkSteelBowDrawSpeeds == null || darkSteelBowDrawSpeeds.length != 5) {
-      throw new IllegalArgumentException("Ender IO config value darkSteelBowDrawSpeeds must have exactly 5 values");
-    }
-    if (darkSteelBowFovMultipliers == null || darkSteelBowFovMultipliers.length != 5) {
-      throw new IllegalArgumentException("Ender IO config value darkSteelBowFovMultipliers must have exactly 5 values");
-    }
   }
 
   private Config() {

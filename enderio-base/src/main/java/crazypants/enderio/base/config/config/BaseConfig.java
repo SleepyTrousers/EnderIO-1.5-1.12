@@ -11,7 +11,7 @@ public final class BaseConfig {
     ChargerConfig.F.getClass();
     DiagnosticsConfig.F.getClass();
     PersonalConfig.F.getClass();
-    DarkSteelConfig.F.getClass();
+    DarkSteelConfig.F_DARK_STEEL.getClass();
     EnchanterConfig.F.getClass();
     InfinityConfig.F.getClass();
     RecipeConfig.F.getClass();

@@ -23,7 +23,7 @@ import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
 import crazypants.enderio.api.upgrades.IRenderUpgrade;
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState;
@@ -140,7 +140,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     super(data.getArmorMaterial(), 0, armorType);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
-    powerPerDamagePoint = Config.darkSteelPowerStorageBase / data.getArmorMaterial().getDurability(armorType);
+    powerPerDamagePoint = DarkSteelConfig.energyUpgradePowerStorageEmpowered0.get() / data.getArmorMaterial().getDurability(armorType);
     this.data = data;
   }
 

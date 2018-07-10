@@ -9,12 +9,14 @@ import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.OreDictionaryHelper;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
+import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
@@ -52,34 +54,37 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvancedTooltipProvider, IOverlayRenderAware {
 
-  private float damageBonus = Config.darkSteelBowDamageBonus;
-  private @Nonnull double[] fovMultipliers = Config.darkSteelBowFovMultipliers;
-  private @Nonnull double[] forceMultipliers = Config.darkSteelBowForceMultipliers;
-  private @Nonnull int[] drawSpeeds = Config.darkSteelBowDrawSpeeds;
+  private final @Nonnull NNList<IValue<Double>> damageBonus;
+  private final @Nonnull NNList<IValue<Float>> fovMultipliers;
+  private final @Nonnull NNList<IValue<Float>> forceMultipliers;
+  private final @Nonnull NNList<IValue<Integer>> drawSpeeds;
   private final @Nonnull IEquipmentData data;
 
   public static ItemDarkSteelBow createEndSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelBow res = new ItemDarkSteelBow(modObject, EquipmentData.END_STEEL);
+    ItemDarkSteelBow res = new ItemDarkSteelBow(modObject, EquipmentData.END_STEEL, DarkSteelConfig.endBowDrawSpeed, DarkSteelConfig.endBowForceMultipliers,
+        DarkSteelConfig.endBowFOVMultipliers, DarkSteelConfig.endBowDamageBonus);
     MinecraftForge.EVENT_BUS.register(res);
-    res.damageBonus = Config.endSteelBowDamageBonus;
-    res.forceMultipliers = Config.endSteelBowForceMultipliers;
-    res.fovMultipliers = Config.endSteelBowFovMultipliers;
-    res.drawSpeeds = Config.endSteelBowDrawSpeeds;
     return res;
   }
 
   public static ItemDarkSteelBow createDarkSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelBow res = new ItemDarkSteelBow(modObject, EquipmentData.DARK_STEEL);
+    ItemDarkSteelBow res = new ItemDarkSteelBow(modObject, EquipmentData.DARK_STEEL, DarkSteelConfig.darkBowDrawSpeed, DarkSteelConfig.darkBowForceMultipliers,
+        DarkSteelConfig.darkBowFOVMultipliers, DarkSteelConfig.darkBowDamageBonus);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
-  protected ItemDarkSteelBow(@Nonnull IModObject modObject, @Nonnull IEquipmentData data) {
+  protected ItemDarkSteelBow(@Nonnull IModObject modObject, @Nonnull IEquipmentData data, @Nonnull NNList<IValue<Integer>> drawSpeeds,
+      @Nonnull NNList<IValue<Float>> forceMultipliers, @Nonnull NNList<IValue<Float>> fovMultipliers, @Nonnull NNList<IValue<Double>> damageBonus) {
     modObject.apply(this);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     setMaxDamage(300);
     setHasSubtypes(false);
     this.data = data;
+    this.drawSpeeds = drawSpeeds;
+    this.forceMultipliers = forceMultipliers;
+    this.fovMultipliers = fovMultipliers;
+    this.damageBonus = damageBonus;
 
     addPropertyOverride(new ResourceLocation("pull"), new IItemPropertyGetter() {
       @Override
@@ -184,7 +189,7 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
           entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
         }
 
-        entityarrow.setDamage(entityarrow.getDamage() + damageBonus);
+        entityarrow.setDamage(entityarrow.getDamage() + getDamageBonus(upgrade));
 
         worldIn.spawnEntity(entityarrow);
 
@@ -218,9 +223,9 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
     }
     int drawTime = getDrawTime(upgrade);
     float ratio = Math.min(1, drawDuration / (float) drawTime);
-    int powerRequired = (int) Math.ceil(Config.darkSteelBowPowerUsePerDraw * ratio);
+    int powerRequired = (int) Math.ceil(DarkSteelConfig.bowPowerUsePerDraw.get() * ratio);
     if (drawDuration > drawTime) {
-      powerRequired += (drawDuration - drawTime) * Config.darkSteelBowPowerUsePerTickDrawn;
+      powerRequired += (drawDuration - drawTime) * DarkSteelConfig.bowPowerUsePerHoldTick.get();
     }
     return powerRequired;
   }
@@ -233,9 +238,9 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
     int drawDuration = getMaxItemUseDuration(stack) - entity.getItemInUseCount();
     // int drawTime = getDrawTime(entity, upgrade, stack);
     float ratio = Math.min(1, drawDuration / (float) drawTime);
-    powerRequired = (int) Math.ceil(Config.darkSteelBowPowerUsePerDraw * ratio);
+    powerRequired = (int) Math.ceil(DarkSteelConfig.bowPowerUsePerDraw.get() * ratio);
     if (drawDuration > drawTime) {
-      powerRequired += (drawDuration - drawTime) * Config.darkSteelBowPowerUsePerTickDrawn;
+      powerRequired += (drawDuration - drawTime) * DarkSteelConfig.bowPowerUsePerHoldTick.get();
     }
     return powerRequired;
   }
@@ -283,11 +288,7 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
       ratio *= ratio;
     }
 
-    float mult = (float) fovMultipliers[0];
-    EnergyUpgradeHolder upgrade = EnergyUpgradeManager.loadFromItem(currentItem);
-    if (upgrade != null && upgrade.getEnergy() > 0) {
-      mult = (float) fovMultipliers[upgrade.getUpgrade().getLevel() + 1];
-    }
+    float mult = getFOVMultiplier(EnergyUpgradeManager.loadFromItem(currentItem));
     fovEvt.setNewfov((1.0F - ratio * mult));
   }
 
@@ -296,21 +297,31 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
   }
 
   public int getDrawTime(EnergyUpgradeHolder upgrade) {
-    if (upgrade == null) {
-      return drawSpeeds[0];
+    if (upgrade != null && upgrade.getEnergy() >= DarkSteelConfig.bowPowerUsePerDraw.get()) {
+      return drawSpeeds.get(upgrade.getUpgrade().getLevel() + 1).get();
     }
-    if (upgrade.getEnergy() >= Config.darkSteelBowPowerUsePerDraw) {
-      return drawSpeeds[upgrade.getUpgrade().getLevel() + 1];
-    }
-    return drawSpeeds[0];
+    return drawSpeeds.get(0).get();
   }
 
   private float getForceMultiplier(EnergyUpgradeHolder upgrade) {
-    float res = (float) forceMultipliers[0];
-    if (upgrade != null && upgrade.getEnergy() >= 0) {
-      res = (float) forceMultipliers[upgrade.getUpgrade().getLevel() + 1];
+    if (upgrade != null && upgrade.getEnergy() >= DarkSteelConfig.bowPowerUsePerDraw.get()) {
+      return forceMultipliers.get(upgrade.getUpgrade().getLevel() + 1).get();
     }
-    return res;
+    return forceMultipliers.get(0).get();
+  }
+
+  private float getFOVMultiplier(EnergyUpgradeHolder upgrade) {
+    if (upgrade != null && upgrade.getEnergy() >= DarkSteelConfig.bowPowerUsePerDraw.get()) {
+      return fovMultipliers.get(upgrade.getUpgrade().getLevel() + 1).get();
+    }
+    return fovMultipliers.get(0).get();
+  }
+
+  private double getDamageBonus(EnergyUpgradeHolder upgrade) {
+    if (upgrade != null && upgrade.getEnergy() >= DarkSteelConfig.bowPowerUsePerDraw.get()) {
+      return damageBonus.get(upgrade.getUpgrade().getLevel() + 1).get();
+    }
+    return damageBonus.get(0).get();
   }
 
   @Override
@@ -320,7 +331,7 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
       super.setDamage(stack, newDamage);
     } else {
       int damage = newDamage - oldDamage;
-      if (!absorbDamageWithEnergy(stack, damage * Config.darkSteelBowPowerUsePerDamagePoint)) {
+      if (!absorbDamageWithEnergy(stack, damage * DarkSteelConfig.bowPowerUsePerDamagePoint.get())) {
         super.setDamage(stack, newDamage);
       }
     }

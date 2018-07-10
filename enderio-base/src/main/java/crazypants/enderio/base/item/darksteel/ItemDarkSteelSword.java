@@ -21,6 +21,7 @@ import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.integration.tic.TicUtil;
@@ -97,7 +98,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     return res;
   }
 
-  private final int powerPerDamagePoint = Config.darkSteelPowerStorageBase / EquipmentData.DARK_STEEL.getToolMaterial().getMaxUses();
+  private final int powerPerDamagePoint;
   private long lastBlickTick = -1;
   private final @Nonnull IEquipmentData data;
 
@@ -106,6 +107,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
     this.data = data;
+    powerPerDamagePoint = DarkSteelConfig.energyUpgradePowerStorageEmpowered0.get() / data.getToolMaterial().getMaxUses();
   }
 
   @Override
