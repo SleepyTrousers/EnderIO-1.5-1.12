@@ -41,6 +41,11 @@ public class MaterialRecipes {
         registry.register(new ShapedOreRecipe(null, new ItemStack(type.getBlock(), 8, color.getMetadata()), "GGG", "CGG", "GGG", 'G', type.getOreDictName(),
             'C', "dye" + MaterialOredicts.dyes[color.getDyeDamage()])
                 .setRegistryName(Crafting.mkRL("Auto: Coloring " + type.getName() + " with " + color.getUnlocalizedName())));
+        if (color != EnumDyeColor.WHITE) {
+          registry.register(new ShapedOreRecipe(null, new ItemStack(type.getBlock(), 8, color.getMetadata()), "GGG", "CGG", "GGG", 'G',
+              new ItemStack(type.getBlock(), 1, EnumDyeColor.WHITE.getMetadata()), 'C', "dye" + MaterialOredicts.dyes[color.getDyeDamage()])
+                  .setRegistryName(Crafting.mkRL("Auto: Easy Lookup for coloring " + type.getName() + " with " + color.getUnlocalizedName())));
+        }
       }
     }
 
