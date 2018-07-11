@@ -253,6 +253,7 @@ item.item_material.simple_chassi_parts.name=Simple Machine Parts
 item.item_material.enhanced_chassi_parts.name=Enhanced Machine Parts
 item.item_material.cake_base.name=Cake Base
 item.item_material.infinity_rod.name=Infinity Rod
+item.item_material.glazed_nether_brick.name=Nethercotta
 
 item.item_rod_of_return.name=Rod of Return
 item.item_rod_of_return.tooltip.detailed.line1=Returns the user to a Telepad
@@ -518,9 +519,10 @@ enderio.block.tooltip.lightBlocker=Blocks Light
 
 
 enderio.grindingball.tooltip.line1=%sSAG Mill Grinding Ball
-enderio.grindingball.tooltip.line2=%sMain Output %s
-enderio.grindingball.tooltip.line3=%sBonus Output %s
-enderio.grindingball.tooltip.line4=%sPower Use %s
+enderio.grindingball.tooltip.line2=%sMain Output %s%%
+enderio.grindingball.tooltip.line3=%sBonus Output %s%%
+enderio.grindingball.tooltip.line4=%sPower Use %s%%
+enderio.grindingball.gui.durability=Remaining: %s %%
 
 enderio.gui.permission.denied=Permission denied
 
@@ -667,6 +669,10 @@ enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=$D% damage abso
 enderio.darksteel.upgrade.empowered_four.name=Empowered IV
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Power: $P
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D% damage absorbed by power
+
+enderio.darksteel.upgrade.empowered_five.name=Empowered V
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line1=Power: $P
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line2=$D% damage absorbed by power
 
 enderio.darksteel.upgrade.travel.name=Travel
 enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Hold shift and R-Click to teleport or activate a travel anchor or Ender IO
@@ -853,6 +859,7 @@ enderio.item_item_filter_upgrade.clear_config_method=%sPlace in crafting grid to
 enderio.item_item_filter_upgrade.clear_config_warning=%sThis will clear all stored filter settings!
 
 enderio.gui.generic.max=Max: %s
+enderio.gui.generic.loss=Leakage: %s
 enderio.gui.generic.progress=Progress %s%%
 enderio.gui.generic.ioMode.overlay.tooltip=Configure IO
 enderio.gui.generic.ioMode.overlay.tooltip.visible.line1=Configure IO

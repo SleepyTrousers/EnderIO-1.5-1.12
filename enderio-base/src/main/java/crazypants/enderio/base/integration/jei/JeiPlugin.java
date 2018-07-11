@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.config.config.InfinityConfig;
 import crazypants.enderio.base.filter.gui.AbstractFilterGui;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
@@ -40,14 +41,18 @@ public class JeiPlugin implements IModPlugin {
     IJeiHelpers jeiHelpers = registry.getJeiHelpers();
     IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-    registry.addRecipeCategories(new InfinityRecipeCategory(guiHelper));
+    if (InfinityConfig.inWorldCraftingEnabled.get()) {
+      registry.addRecipeCategories(new InfinityRecipeCategory(guiHelper));
+    }
   }
 
   @Override
   public void register(@Nonnull IModRegistry registry) {
     DarkSteelUpgradeRecipeCategory.register(registry);
     DescriptionRecipeCategory.register(registry);
-    InfinityRecipeCategory.registerExtras(registry);
+    if (InfinityConfig.inWorldCraftingEnabled.get()) {
+      InfinityRecipeCategory.registerExtras(registry);
+    }
 
     registry.addAdvancedGuiHandlers(new AdvancedGuiHandlerEnderIO());
     registry.addGhostIngredientHandler(AbstractFilterGui.class, new GhostIngredientHandlerEnderIO());
@@ -59,6 +64,8 @@ public class JeiPlugin implements IModPlugin {
     }
 
     registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ModObject.itemEnderface.getItemNN()));
+
+    ItemHidingHelper.hide(registry);
   }
 
   @Override

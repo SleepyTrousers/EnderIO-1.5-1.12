@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+This is an example for legacy (Minecraft 1.10 and below) recipes. Copy this 
+file into the enderio/config/recipes/user folder to activate it.
+
+While workarounds have been added, access to new content is not guaranteed. 
+-->
+
+  <alias name="POWDER_INFINITY" item="dustRedstone" />
+
+<!-- base.xml -->
+
+  <recipe name="Photovoltaic Powder" disabled="true" />
+  <recipe name="Alloy: Photovoltaic Plate" disabled="true" />
+  
+<!-- items.xml -->
+
+  <recipe name="Conduit Probe" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="enderio:item_power_conduit:0" /><item name="ELECTRICAL_STEEL" />
+        <item name="oredict:paneGlass" /><item name="item:minecraft:comparator" /><item name="oredict:paneGlass" />
+        <item name="SILICON" /><item name="enderio:item_power_conduit:0" /><item name="SILICON" />
+      </grid>
+      <output name="CONDUIT_PROBE" />
+    </crafting>
+  </recipe>
+  
+<!-- machines.xml -->
+  
+  <recipe name="Simple Stirling Generator" disabled="true" />
+  <recipe name="Stirling Generator, Upgrade" disabled="true" />
+  <recipe name="Simple Alloy Smelter" disabled="true" />
+  <recipe name="Alloy Smelter, Upgrade" disabled="true" />
+  <recipe name="SimpleCrafter" disabled="true" />
+  <recipe name="Crafter, Upgrade" disabled="true" />
+  <recipe name="Solar Panel 2, Upgrade" disabled="true" />
+  <recipe name="Solar Panel 3, Upgrade" disabled="true" />
+  <recipe name="Solar Panel 4, Upgrade" disabled="true" />
+  
+  <recipe name="Stirling Generator" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="minecraft:stonebrick:0" /><item name="minecraft:stonebrick:0" /><item name="minecraft:stonebrick:0" />
+        <item name="minecraft:stonebrick:0" /><item name="minecraft:furnace" /><item name="minecraft:stonebrick:0" />
+        <item name="GEAR_STONE" /><item name="minecraft:piston" /><item name="GEAR_STONE" />
+      </grid>
+      <output name="enderio:block_stirling_generator" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Combustion Generator" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" />
+        <item name="EnderIO:block_tank:0" /><item name="CHASSIS" /><item name="EnderIO:block_tank:0" />
+        <item name="GEAR_STONE" /><item name="minecraft:piston" /><item name="GEAR_STONE" />
+      </grid>
+      <output name="enderio:block_combustion_generator" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Wireless Charger" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" />
+        <item name="ELECTRICAL_STEEL" /><item name="ENDER_RESONATOR" /><item name="ELECTRICAL_STEEL" />
+        <item name="ELECTRICAL_STEEL" /><item name="CAPACITOR3" /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="enderio:block_wired_charger" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Powered Spawner" required="true"> <!-- Soul Chassis -->
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="itemSkull" /><item name="ELECTRICAL_STEEL" />
+        <item name="ELECTRICAL_STEEL" /><item name="CHASSIS" /><item name="ELECTRICAL_STEEL" />
+        <item name="VIBRANT_CRYSTAL" /><item name="ZOMBIE_CONTROLLER" /><item name="VIBRANT_CRYSTAL" />
+      </grid>
+      <output name="enderio:block_powered_spawner" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Alloy Smelter" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotIron" /><item name="minecraft:furnace" /><item name="ingotIron" />
+        <item name="minecraft:furnace" /><item name="CHASSIS" /><item name="minecraft:furnace" />
+        <item name="ingotIron" /><item name="item:minecraft:cauldron" /><item name="ingotIron" />
+      </grid>
+      <output name="enderio:block_alloy_smelter" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Painter" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="gemQuartz" /><item name="gemDiamond" /><item name="gemQuartz" />
+        <item name="ELECTRICAL_STEEL" /><item name="CHASSIS" /><item name="ELECTRICAL_STEEL" />
+        <item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="enderio:block_painter" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Farming Station" required="true">  <!-- Soul Chassis -->
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="minecraft:diamond_hoe" /><item name="ELECTRICAL_STEEL" />
+        <item name="ELECTRICAL_STEEL" /><item name="CHASSIS" /><item name="ELECTRICAL_STEEL" />
+        <item name="PULSATING_CRYSTAL" /><item name="ZOMBIE_CONTROLLER" /><item name="PULSATING_CRYSTAL" />
+      </grid>
+      <output name="enderio:block_farm_station" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Solar Panel 1" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="FUSED_GLASS" /><item name="ELECTRICAL_STEEL" />
+        <item name="ENERGETIC_ALLOY" /><item name="FUSED_GLASS" /><item name="ENERGETIC_ALLOY" />
+        <item name="dustRedstone" /><item name="minecraft:daylight_detector" /><item name="dustRedstone" />
+      </grid>
+      <output name="SOLAR_1" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Solar Panel 2" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ENERGETIC_ALLOY" /><item name="blockGlassHardened" /><item name="ENERGETIC_ALLOY" />
+        <item name="VIBRANT_ALLOY" /><item name="blockGlassHardened" /><item name="VIBRANT_ALLOY" />
+        <item name="CAPACITOR1" /><item name="minecraft:daylight_detector" /><item name="CAPACITOR1" />
+      </grid>
+      <output name="SOLAR_2" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Solar Panel 3" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="PULSATING_IRON" /><item name="ENLIGHTED_QUARTZ" /><item name="PULSATING_IRON" />
+        <item name="VIBRANT_ALLOY" /><item name="ENLIGHTED_QUARTZ" /><item name="VIBRANT_ALLOY" />
+        <item name="CAPACITOR2" /><item name="minecraft:daylight_detector" /><item name="CAPACITOR2" />
+      </grid>
+      <output name="SOLAR_3" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Solar Panel 4" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="SOULARIUM" /><item name="DARK_QUARTZ" /><item name="SOULARIUM" />
+        <item name="CAPACITOR3" /><item name="ENDER_CRYSTAL" /><item name="CAPACITOR3" />
+        <item name="SOLAR_3" /><item name="SOLAR_3" /><item name="SOLAR_3" />
+      </grid>
+      <output name="SOLAR_4" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Soul Binder" required="true"> <!-- Soul Chassis -->
+    <crafting>
+      <grid size="3x3">
+        <item name="SOULARIUM" /><item name="HEAD_ENDERMAN" /><item name="SOULARIUM" />
+        <item name="HEAD_ZOMBIE" /><item name="CHASSIS" /><item name="HEAD_CREEPER" />
+        <item name="SOULARIUM" /><item name="HEAD_SKELETON" /><item name="SOULARIUM" />
+      </grid>
+      <output name="enderio:block_soul_binder" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Attractor Obelisk" required="true"> <!-- Soul Chassis -->
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="ATTRACTOR_CRYSTAL" /><item />
+        <item name="ENERGETIC_ALLOY" /><item name="SOULARIUM" /><item name="ENERGETIC_ALLOY" />
+        <item name="SOULARIUM" /><item name="CHASSIS" /><item name="SOULARIUM" />
+      </grid>
+      <output name="enderio:block_attractor_obelisk" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Aversion Obelisk" required="true"> <!-- Soul Chassis -->
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="HEAD_ENDERMAN_TORMENTED" /><item />
+        <item name="ENERGETIC_ALLOY" /><item name="SOULARIUM" /><item name="ENERGETIC_ALLOY" />
+        <item name="SOULARIUM" /><item name="CHASSIS" /><item name="SOULARIUM" />
+      </grid>
+      <output name="enderio:block_aversion_obelisk" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Relocator Obelisk" required="true"> <!-- Soul Chassis -->
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="blockPrismarine" /><item />
+        <item name="blockPrismarine" /><item name="enderio:block_aversion_obelisk" /><item name="blockPrismarine" />
+        <item /><item name="blockPrismarine" /><item />
+      </grid>
+      <output name="enderio:block_relocator_obelisk" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inhibitor Obelisk" required="true"> <!-- Soul Chassis -->
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="ENDER_CRYSTAL" /><item />
+        <item /><item name="SOULARIUM" /><item />
+        <item name="SOULARIUM" /><item name="CHASSIS" /><item name="SOULARIUM" />
+      </grid>
+      <output name="enderio:block_inhibitor_obelisk" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Experience Obelisk" required="true"> <!-- Soul Chassis -->
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="enderio:item_xp_transfer" /><item />
+        <item /><item name="SOULARIUM" /><item />
+        <item name="SOULARIUM" /><item name="CHASSIS" /><item name="SOULARIUM" />
+      </grid>
+      <output name="enderio:block_experience_obelisk" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Weather Obelisk" required="true"> <!-- Soul Chassis -->
+    <crafting>
+      <grid size="3x3">
+        <item /><item name="WEATHER_CRYSTAL" /><item />
+        <item name="ENERGETIC_ALLOY" /><item name="SOULARIUM" /><item name="ENERGETIC_ALLOY" />
+        <item name="SOULARIUM" /><item name="CAP_BANK_1" /><item name="SOULARIUM" />
+      </grid>
+      <output name="enderio:block_weather_obelisk" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Slice'N'Splice" required="true"> <!-- Soul Chassis -->
+    <crafting>
+      <grid size="3x3">
+        <item name="SOULARIUM" /><item name="itemSkull" /><item name="SOULARIUM" />
+        <item name="minecraft:iron_axe" /><item name="CHASSIS" /><item name="minecraft:shears" />
+        <item name="SOULARIUM" /><item name="SOULARIUM" /><item name="SOULARIUM" />
+      </grid>
+      <output name="enderio:block_slice_and_splice" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Slice'N'Splice, mirrored" required="true"> <!-- Soul Chassis -->
+    <crafting>
+      <grid size="3x3">
+        <item name="SOULARIUM" /><item name="itemSkull" /><item name="SOULARIUM" />
+        <item name="minecraft:shears" /><item name="CHASSIS" /><item name="minecraft:iron_axe" />
+        <item name="SOULARIUM" /><item name="SOULARIUM" /><item name="SOULARIUM" />
+      </grid>
+      <output name="enderio:block_slice_and_splice" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="TelePad" required="true" disabled="false">
+    <crafting>
+      <grid size="3x3">
+        <item name="FUSED_QUARTZ" /><item name="ENDER_CRYSTAL" /><item name="FUSED_QUARTZ" />
+        <item name="DARK_STEEL" /><item name="enderio:block_travel_anchor" /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item name="CAPACITOR3" /><item name="DARK_STEEL" />
+      </grid>
+      <output name="enderio:block_tele_pad" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="ImpulseHopper" required="true" disabled="false">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL"/><item name="ingotIron" /><item name="ELECTRICAL_STEEL"/>
+        <item name="minecraft:hopper"/><item name="CHASSIS" /><item name="minecraft:redstone_torch"/>
+        <item name="minecraft:redstone_torch" /><item name="ZOMBIE_CONTROLLER" /><item name="minecraft:hopper" />
+      </grid>
+      <output name="enderio:block_impulse_hopper" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Crafter" required="true" disabled="false">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotIron"/><item name="oredict:workbench" /><item name="ingotIron"/>
+        <item name="ingotIron"/><item name="CHASSIS" /><item name="ingotIron"/>
+        <item name="ingotIron" /><item name="ZOMBIE_CONTROLLER" /><item name="ingotIron" />
+      </grid>
+      <output name="enderio:block_crafter" />
+    </crafting>
+  </recipe>
+  
+<!-- materials.xml -->
+
+  <recipe name="Machine Dye" disabled="true" />
+  <recipe name="Enhanced Machine Dye" disabled="true" />
+  <recipe name="Soul Machine Dye" disabled="true" />
+  
+  <recipe name="Chassis" required="true">
+    <crafting>
+      <grid>
+        <item name="barsIron"/><item name="ingotIron"/><item name="barsIron"/>
+        <item name="ingotIron"/><item name="CAPACITOR1"/><item name="ingotIron"/>
+        <item name="barsIron"/><item name="ingotIron"/><item name="barsIron"/>
+      </grid>
+      <output name="CHASSIS"/>
+    </crafting>
+  </recipe>
+  
+  <recipe name="Soul Chassis" required="true">
+    <crafting>
+      <grid>
+        <item name="barsIron"/><item name="SOULARIUM"/><item name="barsIron"/>
+        <item name="SOULARIUM"/><item name="CAPACITOR1"/><item name="SOULARIUM"/>
+        <item name="barsIron"/><item name="SOULARIUM"/><item name="barsIron"/>
+      </grid>
+      <output name="SOUL_CHASSIS"/>
+    </crafting>
+  </recipe>
+  
+  <recipe name="Enhanced Chassis" required="true">
+    <crafting>
+      <grid>
+        <item name="barsIron"/><item name="POWDER_PULSATING"/><item name="barsIron"/>
+        <item name="POWDER_PULSATING"/><item name="CAPACITOR3"/><item name="POWDER_PULSATING"/>
+        <item name="barsIron"/><item name="POWDER_PULSATING"/><item name="barsIron"/>
+      </grid>
+      <output name="ENHANCED_CHASSIS"/>
+    </crafting>
+  </recipe>
+  
+  <alias name="CAPACITOR_METAL" item="ingotCopper">
+    <dependency item="ingotCopper" reverse="false"/>
+  </alias>
+  <alias name="CAPACITOR_METAL" item="nuggetGold">
+    <dependency item="ingotCopper" reverse="true"/>
+  </alias>
+  
+  <recipe name="Capacitor 1" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="nuggetGold"/><item name="dustRedstone"/>
+        <item name="nuggetGold"/><item name="CAPACITOR_METAL"/><item name="nuggetGold"/>
+        <item name="dustRedstone"/><item name="nuggetGold"/><item />
+      </grid>
+      <output name="CAPACITOR1"/>
+    </crafting>
+  </recipe>
+  
+  <recipe name="Reinforced Obsidian" required="true">
+    <crafting>
+      <grid>
+        <item name="DARK_STEEL"/><item name="enderio:block_dark_iron_bars"/><item name="DARK_STEEL"/>
+        <item name="enderio:block_dark_iron_bars"/><item name="oredict:obsidian"/><item name="enderio:block_dark_iron_bars"/>
+        <item name="DARK_STEEL"/><item name="enderio:block_dark_iron_bars"/><item name="DARK_STEEL"/>
+      </grid>
+      <output name="enderio:block_reinforced_obsidian"/>
+    </crafting>
+  </recipe>
+
+<!-- sagmill.xml -->
+
+  <recipe name="Simple SAG Mill" disabled="true" />
+  <recipe name="SAG Mill, Upgrade" disabled="true" />
+  
+  <recipe name="SAG Mill" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="itemFlint" /><item name="itemFlint" /><item name="itemFlint" />
+        <item name="ingotIron" /><item name="CHASSIS" /><item name="ingotIron" />
+        <item name="ingotIron" /><item name="minecraft:piston" /><item name="ingotIron" />
+      </grid>
+      <output name="enderio:block_sag_mill" />
+    </crafting>
+  </recipe>
+
+</enderio:recipes>

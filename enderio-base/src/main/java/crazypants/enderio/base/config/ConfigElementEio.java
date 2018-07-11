@@ -152,7 +152,7 @@ public class ConfigElementEio implements IConfigElement {
 
   protected boolean isSynced() {
     // we cheat a bit here and assume that when Ender IO has server overrides, all submod have them
-    return isProperty && DarkSteelConfig.F.isServerOverrideInPlace() && prop.getComment().contains(FactoryManager.SERVER_OVERRIDE);
+    return isProperty && DarkSteelConfig.F_SWORD.isServerOverrideInPlace() && prop.getComment().contains(FactoryManager.SERVER_OVERRIDE);
   }
 
   @Override

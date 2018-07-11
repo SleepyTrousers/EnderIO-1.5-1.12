@@ -17,12 +17,13 @@ import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.base.Predicate;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
-import crazypants.enderio.base.item.darksteel.attributes.ToolData;
+import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -233,7 +234,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
 
   @Override
   public int getItemEnchantability() {
-    return ToolData.MATERIAL_DARK_STEEL.getEnchantability();
+    return EquipmentData.DARK_STEEL.getToolMaterial().getEnchantability();
   }
 
   @Override
@@ -316,6 +317,11 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
   @Override
   public boolean isForSlot(@Nonnull EntityEquipmentSlot slot) {
     return slot == EntityEquipmentSlot.MAINHAND;
+  }
+
+  @Override
+  public @Nonnull IEquipmentData getEquipmentData() {
+    return EquipmentData.DARK_STEEL;
   }
 
 }

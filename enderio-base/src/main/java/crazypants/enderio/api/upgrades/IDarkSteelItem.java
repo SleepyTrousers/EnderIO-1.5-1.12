@@ -78,4 +78,12 @@ public interface IDarkSteelItem {
     return false;
   }
 
+  /**
+   * Returns an {@link IEquipmentData} that describes the item.
+   * <p>
+   * Used by upgrades to determine if they can be applied to an item
+   */
+  @Nonnull
+  IEquipmentData getEquipmentData();
+
 }

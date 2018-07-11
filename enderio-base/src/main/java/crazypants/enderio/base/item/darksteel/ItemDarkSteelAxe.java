@@ -16,6 +16,7 @@ import com.enderio.core.common.util.OreDictionaryHelper;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
+import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
@@ -27,7 +28,7 @@ import crazypants.enderio.base.farming.harvesters.TreeHarvester;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
-import crazypants.enderio.base.item.darksteel.attributes.ToolData;
+import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -80,23 +81,25 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   }
 
   public static @Nonnull ItemDarkSteelAxe createEndSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelAxe res = new ItemDarkSteelAxe(modObject, ToolData.MATERIAL_END_STEEL);
+    ItemDarkSteelAxe res = new ItemDarkSteelAxe(modObject, EquipmentData.END_STEEL);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
   public static @Nonnull ItemDarkSteelAxe createDarkSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelAxe res = new ItemDarkSteelAxe(modObject, ToolData.MATERIAL_DARK_STEEL);
+    ItemDarkSteelAxe res = new ItemDarkSteelAxe(modObject, EquipmentData.DARK_STEEL);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
   private final MultiHarvestComparator harvestComparator = new MultiHarvestComparator();
+  private final @Nonnull IEquipmentData data;
 
-  protected ItemDarkSteelAxe(@Nonnull IModObject modObject, @Nonnull ToolMaterial material) {
-    super(material, 8, -3);
+  protected ItemDarkSteelAxe(@Nonnull IModObject modObject, @Nonnull IEquipmentData data) {
+    super(data.getToolMaterial(), 8, -3);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
+    this.data = data;
   }
 
   @Override
@@ -348,6 +351,11 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   @Override
   public boolean hasUpgradeCallbacks(@Nonnull IDarkSteelUpgrade upgrade) {
     return upgrade == HoeUpgrade.INSTANCE;
+  }
+
+  @Override
+  public @Nonnull IEquipmentData getEquipmentData() {
+    return data;
   }
 
 }

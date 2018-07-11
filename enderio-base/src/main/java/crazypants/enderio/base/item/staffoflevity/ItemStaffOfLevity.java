@@ -15,12 +15,14 @@ import com.enderio.core.common.util.Log;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
@@ -288,6 +290,11 @@ public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider,
     public ItemStack getContainer() {
       return container;
     }
+  }
+
+  @Override
+  public @Nonnull IEquipmentData getEquipmentData() {
+    return EquipmentData.IRON;
   }
 
 }

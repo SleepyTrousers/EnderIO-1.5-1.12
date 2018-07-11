@@ -49,19 +49,13 @@ public class SagMillGrindingBallCategory extends BlankRecipeCategory<SagMillGrin
       ingredients.setOutput(ItemStack.class, ball.getInput());
     }
 
-    private String toPercent(float fl) {
-      fl = fl * 100;
-      int per = Math.round(fl);
-      return " " + per + "%";
-    }
-
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
       FontRenderer fr = minecraft.fontRenderer;
 
-      fr.drawString(Lang.GRINDING_BALL_2.get("", toPercent(ball.getGrindingMultiplier())), 48, 4, 0x404040);
-      fr.drawString(Lang.GRINDING_BALL_3.get("", toPercent(ball.getChanceMultiplier())), 48, 16, 0x404040);
-      fr.drawString(Lang.GRINDING_BALL_4.get("", toPercent(ball.getPowerMultiplier())), 48, 28, 0x404040);
+      fr.drawString(Lang.GRINDING_BALL_2.get("", LangPower.toPercent(ball.getGrindingMultiplier())), 48, 4, 0x404040);
+      fr.drawString(Lang.GRINDING_BALL_3.get("", LangPower.toPercent(ball.getChanceMultiplier())), 48, 16, 0x404040);
+      fr.drawString(Lang.GRINDING_BALL_4.get("", LangPower.toPercent(ball.getPowerMultiplier())), 48, 28, 0x404040);
 
       int dura = ball.getDurability();
       int usedDura = (timer.getValue() * 400) % dura;

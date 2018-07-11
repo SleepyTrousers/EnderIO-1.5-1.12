@@ -15,4 +15,8 @@ public interface IPowerBarData {
 
   int getMaxUsage();
 
+  default float getPowerLossPerTick() {
+    return 0;
+  }
+
 }

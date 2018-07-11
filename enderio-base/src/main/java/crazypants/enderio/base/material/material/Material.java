@@ -106,6 +106,8 @@ public enum Material {
   CAKE_BASE("cakeBase"),
   INFINITY_ROD("infinityRod"),
 
+  BRICK_GLAZED_NETHER("glazedNetherBrick", "ingotBrickNetherGlazed"),
+
   ;
 
   public final boolean hasEffect;
