@@ -38,7 +38,7 @@ public abstract class AbstractBiomeFilter implements IBiomeFilter {
   protected boolean isExcluded(Biome candidate) {
     for (BiomeDictionary.Type exType : typeExcludes) {
       if (BiomeDictionary.hasType(candidate, exType)) {
-        Log.debug("Excluded ", candidate.getBiomeName(), ", ");
+        Log.debug("Excluded ", candidate.getRegistryName(), ", ");
         return true;
 
       }
