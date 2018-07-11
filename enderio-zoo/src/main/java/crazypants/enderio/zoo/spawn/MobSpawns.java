@@ -77,7 +77,7 @@ public final class MobSpawns {
   protected static void printBiomeNames(Biome[] biomes) {
     for (Biome biome : biomes) {
       if (biome != null) {
-        Log.debug(" - ", biome.getBiomeName());
+        Log.debug(" - ", biome.getRegistryName());
       } else {
         Log.debug(" - null");
       }
