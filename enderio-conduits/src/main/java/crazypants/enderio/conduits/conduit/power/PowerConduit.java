@@ -88,10 +88,10 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   public static final float WIDTH = 0.075f;
   public static final float HEIGHT = 0.075f;
 
-  public static final Vector3d MIN = new Vector3d(0.5f - WIDTH, 0.5 - HEIGHT, 0.5 - WIDTH);
-  public static final Vector3d MAX = new Vector3d(MIN.x + WIDTH, MIN.y + HEIGHT, MIN.z + WIDTH);
+  public static final @Nonnull Vector3d MIN = new Vector3d(0.5f - WIDTH, 0.5 - HEIGHT, 0.5 - WIDTH);
+  public static final @Nonnull Vector3d MAX = new Vector3d(MIN.x + WIDTH, MIN.y + HEIGHT, MIN.z + WIDTH);
 
-  public static final BoundingBox BOUNDS = new BoundingBox(MIN, MAX);
+  public static final @Nonnull BoundingBox BOUNDS = new BoundingBox(MIN, MAX);
 
   protected PowerConduitNetwork network;
 
@@ -483,7 +483,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   public void externalConnectionAdded(@Nonnull EnumFacing direction) {
     super.externalConnectionAdded(direction);
     if (network != null) {
-      TileEntity te = bundle.getEntity();
+      TileEntity te = getBundle().getEntity();
       BlockPos p = te.getPos().offset(direction);
       network.powerReceptorAdded(this, direction, p.getX(), p.getY(), p.getZ(), getExternalPowerReceptor(direction));
     }
@@ -493,7 +493,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   public void externalConnectionRemoved(@Nonnull EnumFacing direction) {
     super.externalConnectionRemoved(direction);
     if (network != null) {
-      TileEntity te = bundle.getEntity();
+      TileEntity te = getBundle().getEntity();
       BlockPos p = te.getPos().offset(direction);
       network.powerReceptorRemoved(p.getX(), p.getY(), p.getZ());
     }
@@ -501,7 +501,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
 
   @Override
   public IPowerInterface getExternalPowerReceptor(@Nonnull EnumFacing direction) {
-    TileEntity te = bundle.getEntity();
+    TileEntity te = getBundle().getEntity();
     World world = te.getWorld();
     TileEntity test = world.getTileEntity(te.getPos().offset(direction));
     if (test == null) {
@@ -549,13 +549,13 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   }
 
   @Override
-  public TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
+  public @Nonnull TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
     return null;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
+  public @Nonnull Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
     return null;
   }
 
@@ -589,7 +589,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   }
 
   @Override
-  public PowerConduitNetwork createNetworkForType() {
+  public @Nonnull PowerConduitNetwork createNetworkForType() {
     return new PowerConduitNetwork();
   }
 
@@ -642,14 +642,14 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
    */
   public class ConnectionSide implements IEnergyStorage {
 
-    private EnumFacing side;
+    private final @Nonnull EnumFacing side;
 
-    public ConnectionSide(EnumFacing side) {
+    public ConnectionSide(@Nonnull EnumFacing side) {
       this.side = side;
     }
 
     private boolean recievedRfThisTick() {
-      if (recievedTicks == null || side == null || recievedTicks.get(side) == null || getBundle() == null || getBundle().getBundleworld() == null) {
+      if (recievedTicks == null || recievedTicks.get(side) == null || bundle == null) {
         return false;
       }
 
@@ -691,7 +691,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
     public int receiveEnergy(int maxReceive, boolean simulate) {
       if (isReceive()) {
         int energyFinal = PowerConduit.this.receiveEnergy(maxReceive, simulate);
-        if (getBundle() != null) {
+        if (bundle != null) {
           if (recievedTicks == null) {
             recievedTicks = new EnumMap<EnumFacing, Long>(EnumFacing.class);
           }
