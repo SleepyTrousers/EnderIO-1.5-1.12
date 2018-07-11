@@ -232,7 +232,7 @@ public class TicRegistration {
       NNList<ItemStack> itemStacks = item.getItemStacks();
       for (NNIterator<ItemStack> itr = itemStacks.fastIterator(); itr.hasNext();) {
         FluidStack fluidStack = getFluidForItems(itr.next());
-        if (fluidStack != null && !fluidStack.getFluid().getName().equals("glass")) {
+        if (fluidStack != null) {
           return fluidStack;
         }
       }
