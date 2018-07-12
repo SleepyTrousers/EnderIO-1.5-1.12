@@ -192,7 +192,7 @@ public final class ZooConfig {
   public static final IValue<Double> witherWitchHealth = WITCH.make("health", 30d, //
       "Health of Wither Witches.").setRange(1, 200).sync();
 
-  public static final IValueFactory LOVE = F0.section(".dire_wolf");
+  public static final IValueFactory LOVE = F0.section(".love_child");
 
   public static final IValue<Float> attackTeleportChance = LOVE.make("attackTeleportChance", .05f, //
       "The chance a Love Child will teleport an attacker away.").setRange(0, 1);
@@ -210,6 +210,13 @@ public final class ZooConfig {
       "Movement speeds of Love Children. (Zombie: 0.23)").setRange(0.02, 2).sync();
   public static final IValue<Double> loveChildArmor = LOVE.make("armor", 3d, //
       "Armor of Love Children. (Zombie: 2)").setRange(0, 20).sync();
+
+  public static final IValueFactory SQUID = F0.section(".epic_squid");
+
+  public static final IValue<Double> epicSquidHealth = SQUID.make("health", 50d, //
+      "Health of Epic Squids.").setRange(1, 200).sync();
+  public static final IValue<Double> epicSquidAttackDamage = SQUID.make("attackDamage", 10d, //
+      "Base attack damage of Epic Squids.").setRange(1, 200).sync();
 
   //
   //

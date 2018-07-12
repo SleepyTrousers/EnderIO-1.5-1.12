@@ -65,7 +65,8 @@ public interface IEnderZooMob extends IMob {
     OWL,
     WCAT,
     WWITCH,
-    LCHILD;
+    LCHILD,
+    ESQUID;
 
     @Override
     public int getID() {

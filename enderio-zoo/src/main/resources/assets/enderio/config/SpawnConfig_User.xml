@@ -1,6 +1,6 @@
 <SpawnConfig>
 <!-- Enabling this section will stop all slime spawns
-  <entry id="Slime" mobName="slime" creatureType="MONSTER" rate="80" remove="true">
+  <entry id="Slime" mobName="minecraft:slime" creatureType="MONSTER" rate="80" remove="true">
     <biomeFilter type="any">
       <biome type="BASE_LAND_TYPES" />
     </biomeFilter>
@@ -9,7 +9,7 @@
 
 <!-- Enabling this section will remove the default wither witch spawn config and replace it with
      a new config with a higher spawn rate
- <entry id="WitherWitch" mobName="witherwitch" rate="5" remove="true">
+ <entry id="WitherWitch" mobName="enderiozoo:witherwitch" rate="5" remove="true">
     <biomeFilter type="any">
       <biome type="FOREST" />
       <biome type="SWAMP" />
@@ -22,7 +22,7 @@
     <dimensionExclude name="Twilight Forest"/>
   </entry>
 
-   <entry id="WitherWitch" mobName="witherwitch" rate="20" minGroupSize="1" maxGroupSize="1">
+   <entry id="WitherWitch" mobName="enderiozoo:witherwitch" rate="20" minGroupSize="1" maxGroupSize="1">
     <biomeFilter type="any">
       <biome type="FOREST" />
       <biome type="SWAMP" />
