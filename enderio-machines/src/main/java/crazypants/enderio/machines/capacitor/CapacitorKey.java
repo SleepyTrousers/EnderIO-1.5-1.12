@@ -34,6 +34,7 @@ public enum CapacitorKey implements ICapacitorKey {
   ENHANCED_ALLOY_SMELTER_POWER_INTAKE(MachineObject.block_enhanced_alloy_smelter, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   ENHANCED_ALLOY_SMELTER_POWER_BUFFER(MachineObject.block_enhanced_alloy_smelter, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   ENHANCED_ALLOY_SMELTER_POWER_USE(MachineObject.block_enhanced_alloy_smelter, CapacitorKeyType.ENERGY_USE, "use"),
+  ENHANCED_ALLOY_SMELTER_POWER_EFFICIENCY(MachineObject.block_enhanced_alloy_smelter, CapacitorKeyType.ENERGY_BUFFER, "efficiency"),
 
   CREATIVE_BUFFER_POWER_INTAKE(MachineObject.block_buffer, CapacitorKeyType.ENERGY_INTAKE, "intake_creative"),
   CREATIVE_BUFFER_POWER_BUFFER(MachineObject.block_buffer, CapacitorKeyType.ENERGY_BUFFER, "buffer_creative"),
@@ -122,6 +123,7 @@ public enum CapacitorKey implements ICapacitorKey {
   ENHANCED_SAG_MILL_POWER_INTAKE(MachineObject.block_enhanced_sag_mill, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   ENHANCED_SAG_MILL_POWER_BUFFER(MachineObject.block_enhanced_sag_mill, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   ENHANCED_SAG_MILL_POWER_USE(MachineObject.block_enhanced_sag_mill, CapacitorKeyType.ENERGY_USE, "use"),
+  ENHANCED_SAG_MILL_POWER_EFFICIENCY(MachineObject.block_enhanced_sag_mill, CapacitorKeyType.ENERGY_EFFICIENCY, "efficiency"),
 
   SLICE_POWER_INTAKE(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   SLICE_POWER_BUFFER(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
@@ -148,6 +150,7 @@ public enum CapacitorKey implements ICapacitorKey {
   ENHANCED_VAT_POWER_INTAKE(MachineObject.block_enhanced_vat, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   ENHANCED_VAT_POWER_BUFFER(MachineObject.block_enhanced_vat, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   ENHANCED_VAT_POWER_USE(MachineObject.block_enhanced_vat, CapacitorKeyType.ENERGY_USE, "use"),
+  ENHANCED_VAT_POWER_EFFICIENCY(MachineObject.block_enhanced_vat, CapacitorKeyType.ENERGY_EFFICIENCY, "efficiency"),
 
   WIRED_POWER_INTAKE(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   WIRED_POWER_BUFFER(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_BUFFER, "buffer"),

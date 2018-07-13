@@ -29,6 +29,7 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.ALLOY_SMELTER_P
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_INTAKE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_USE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_ALLOY_SMELTER_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_ALLOY_SMELTER_POWER_EFFICIENCY;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_ALLOY_SMELTER_POWER_INTAKE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_ALLOY_SMELTER_POWER_USE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_ALLOY_SMELTER_POWER_BUFFER;
@@ -57,6 +58,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
   public static class Enhanced extends TileAlloySmelter {
     public Enhanced() {
       super(new SlotDefinition(3, 1, 1), ENHANCED_ALLOY_SMELTER_POWER_INTAKE, ENHANCED_ALLOY_SMELTER_POWER_BUFFER, ENHANCED_ALLOY_SMELTER_POWER_USE);
+      setEfficiencyMultiplier(ENHANCED_ALLOY_SMELTER_POWER_EFFICIENCY);
     }
 
     @Override

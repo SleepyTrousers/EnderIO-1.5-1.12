@@ -21,6 +21,7 @@ public enum CapacitorKey implements ICapacitorKey {
   LEGACY_ENERGY_INTAKE(ModObject.block_machine_base, CapacitorKeyType.ENERGY_INTAKE, "legacy_intake"),
   LEGACY_ENERGY_BUFFER(ModObject.block_machine_base, CapacitorKeyType.ENERGY_BUFFER, "legacy_buffer"),
   LEGACY_ENERGY_USE(ModObject.block_machine_base, CapacitorKeyType.ENERGY_USE, "legacy_use"),
+  LEGACY_ENERGY_EFFICIENCY(ModObject.block_machine_base, CapacitorKeyType.ENERGY_EFFICIENCY, "legacy_efficiency"),
 
   ;
 

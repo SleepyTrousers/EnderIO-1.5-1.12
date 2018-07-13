@@ -26,6 +26,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_SAG_MILL_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_SAG_MILL_POWER_EFFICIENCY;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_SAG_MILL_POWER_INTAKE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_SAG_MILL_POWER_USE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SAG_MILL_POWER_BUFFER;
@@ -64,6 +65,7 @@ public abstract class TileSagMill extends AbstractPoweredTaskEntity implements I
   public static class Enhanced extends TileSagMill {
     public Enhanced() {
       super(new SlotDefinition(2, 4), ENHANCED_SAG_MILL_POWER_INTAKE, ENHANCED_SAG_MILL_POWER_BUFFER, ENHANCED_SAG_MILL_POWER_USE);
+      setEfficiencyMultiplier(ENHANCED_SAG_MILL_POWER_EFFICIENCY);
     }
 
     @Override
