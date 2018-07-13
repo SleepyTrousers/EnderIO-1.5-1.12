@@ -1,7 +1,6 @@
 package crazypants.enderio.machines.machine.sagmill;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.capacitor.CapacitorHelper;
@@ -10,7 +9,6 @@ import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
-import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.task.PoweredTask;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.IMachineRecipe;
@@ -23,7 +21,6 @@ import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
@@ -83,11 +80,6 @@ public abstract class TileSagMill extends AbstractPoweredTaskEntity implements I
         return true;
       }
       return super.shouldDoubleTick(task, usedEnergy);
-    }
-
-    @Override
-    public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
-      return (faceHit != EnumFacing.UP || mode == IoMode.NONE) && super.supportsMode(faceHit, mode);
     }
 
   }

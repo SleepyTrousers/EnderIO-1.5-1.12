@@ -8,15 +8,12 @@ import javax.annotation.Nullable;
 import com.enderio.core.client.ClientUtil;
 
 import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.machine.base.block.BlockMachineExtension;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
-import crazypants.enderio.machines.init.MachineObject;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -27,7 +24,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -44,13 +40,8 @@ public class BlockVat<T extends TileVat> extends AbstractPoweredTaskBlock<T> imp
 
   public static BlockVat<TileVat.Enhanced> create_enhanced(@Nonnull IModObject modObject) {
     BlockVat<TileVat.Enhanced> res = new BlockVat<TileVat.Enhanced>(modObject);
-    res.isEnhanced = true;
     res.init();
     return res;
-  }
-
-  public static BlockMachineExtension create_extension(@Nonnull IModObject modObject) {
-    return new BlockMachineExtension(modObject, MachineObject.block_enhanced_vat, new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 11D / 16D, 1.0D));
   }
 
   public BlockVat(@Nonnull IModObject modObject) {
@@ -131,11 +122,5 @@ public class BlockVat<T extends TileVat> extends AbstractPoweredTaskBlock<T> imp
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileVat tileEntity) {
     blockStateWrapper.addCacheKey(tileEntity.getFacing()).addCacheKey(tileEntity.isActive());
-  }
-
-  @Nullable
-  @Override
-  public Block getEnhancedExtensionBlock() {
-    return MachineObject.block_enhanced_vat_top.getBlockNN();
   }
 }

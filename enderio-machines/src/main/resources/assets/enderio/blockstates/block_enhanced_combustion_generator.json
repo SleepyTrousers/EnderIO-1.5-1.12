@@ -15,14 +15,14 @@
         "render":{
             "defaults":{ "model":"enderio:transform/block" },
             "auto":{ "model":"enderio:null" },
-            "front":{          "submodel":{ "front":{ "model":"enderio:block_enhanced_combustion_generator" } }, "y":180 },
-            "front_east":{     "submodel":{ "front":{ "model":"enderio:block_enhanced_combustion_generator" } }, "y":270 },
-            "front_south":{    "submodel":{ "front":{ "model":"enderio:block_enhanced_combustion_generator" } }, "y":0 },
-            "front_west":{     "submodel":{ "front":{ "model":"enderio:block_enhanced_combustion_generator" } }, "y":90 },
-            "front_on":{       "submodel":{ "front":{ "model":"enderio:block_enhanced_combustion_generator" } }, "y":180, "textures": { "frontonoff": "enderio:blocks/enhanced_combustion_gen_front_active" } },
-            "front_on_east":{  "submodel":{ "front":{ "model":"enderio:block_enhanced_combustion_generator" } }, "y":270, "textures": { "frontonoff": "enderio:blocks/enhanced_combustion_gen_front_active" } },
-            "front_on_south":{ "submodel":{ "front":{ "model":"enderio:block_enhanced_combustion_generator" } }, "y":0,   "textures": { "frontonoff": "enderio:blocks/enhanced_combustion_gen_front_active" } },
-            "front_on_west":{  "submodel":{ "front":{ "model":"enderio:block_enhanced_combustion_generator" } }, "y":90,  "textures": { "frontonoff": "enderio:blocks/enhanced_combustion_gen_front_active" } }
+            "front":{          "submodel":{ "front":{ "model":"enderio:block_combustion_generator" } }, "y":180 },
+            "front_east":{     "submodel":{ "front":{ "model":"enderio:block_combustion_generator" } }, "y":270 },
+            "front_south":{    "submodel":{ "front":{ "model":"enderio:block_combustion_generator" } }, "y":0 },
+            "front_west":{     "submodel":{ "front":{ "model":"enderio:block_combustion_generator" } }, "y":90 },
+            "front_on":{       "submodel":{ "front":{ "model":"enderio:block_combustion_generator" } }, "y":180, "textures": { "frontonoff": "enderio:blocks/enhanced_combustion_gen_front_active" } },
+            "front_on_east":{  "submodel":{ "front":{ "model":"enderio:block_combustion_generator" } }, "y":270, "textures": { "frontonoff": "enderio:blocks/enhanced_combustion_gen_front_active" } },
+            "front_on_south":{ "submodel":{ "front":{ "model":"enderio:block_combustion_generator" } }, "y":0,   "textures": { "frontonoff": "enderio:blocks/enhanced_combustion_gen_front_active" } },
+            "front_on_west":{  "submodel":{ "front":{ "model":"enderio:block_combustion_generator" } }, "y":90,  "textures": { "frontonoff": "enderio:blocks/enhanced_combustion_gen_front_active" } }
         }
     }
 }

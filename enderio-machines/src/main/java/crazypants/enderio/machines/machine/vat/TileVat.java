@@ -20,7 +20,6 @@ import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
-import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
@@ -74,11 +73,6 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
     @Override
     public ICapacitorData getCapacitorData() {
       return CapacitorHelper.increaseCapacitorLevel(super.getCapacitorData(), 1f);
-    }
-
-    @Override
-    public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
-      return (faceHit != EnumFacing.UP || mode == IoMode.NONE) && super.supportsMode(faceHit, mode);
     }
 
   }

@@ -1,15 +1,15 @@
 package crazypants.enderio.machines.machine.wired;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.NBTAction;
 
+import crazypants.enderio.base.capacitor.CapacitorHelper;
+import crazypants.enderio.base.capacitor.ICapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
-import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.power.PowerHandlerUtil;
@@ -19,7 +19,6 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -44,9 +43,10 @@ public class TileWiredCharger extends AbstractPowerConsumerEntity implements ILe
       super(new SlotDefinition(1, 1, 1), ENHANCED_WIRED_POWER_INTAKE, ENHANCED_WIRED_POWER_BUFFER);
     }
 
+    @Nonnull
     @Override
-    public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
-      return (faceHit != EnumFacing.UP || mode == IoMode.NONE) && super.supportsMode(faceHit, mode);
+    public ICapacitorData getCapacitorData() {
+      return CapacitorHelper.increaseCapacitorLevel(super.getCapacitorData(), 1f);
     }
 
   }

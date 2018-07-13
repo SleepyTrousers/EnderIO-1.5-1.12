@@ -66,11 +66,6 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
       return CapacitorHelper.increaseCapacitorLevel(super.getCapacitorData(), 1f);
     }
 
-    @Override
-    public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
-      return (faceHit != EnumFacing.UP || mode == IoMode.NONE) && super.supportsMode(faceHit, mode);
-    }
-
   }
 
   @Store
