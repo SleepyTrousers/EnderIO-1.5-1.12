@@ -61,7 +61,7 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
   @Override
   public boolean chargeItems(NonNullList<ItemStack> items) {
     boolean chargedItem = false;
-    int available = Math.min(CapacitorKey.WIRELESS_POWER_OUTPUT.get(DefaultCapacitorData.BASIC_CAPACITOR), storedEnergyRF);
+    int available = Math.min(CapacitorKey.WIRELESS_POWER_OUTPUT.getBaseValue(), storedEnergyRF);
     for (int i = 0, end = items.size(); i < end && available > 0; i++) {
       ItemStack item = items.get(i);
       if (!item.isEmpty()) {
@@ -86,7 +86,7 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
 
   @Override
   public int getMaxEnergyRecieved(EnumFacing dir) {
-    return CapacitorKey.WIRELESS_POWER_INTAKE.get(DefaultCapacitorData.BASIC_CAPACITOR);
+    return CapacitorKey.WIRELESS_POWER_INTAKE.getBaseValue();
   }
 
   @Override
@@ -96,7 +96,7 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
 
   @Override
   public int getMaxEnergyStored() {
-    return CapacitorKey.WIRELESS_POWER_BUFFER.get(DefaultCapacitorData.BASIC_CAPACITOR);
+    return CapacitorKey.WIRELESS_POWER_BUFFER.getBaseValue();
   }
 
   @Override

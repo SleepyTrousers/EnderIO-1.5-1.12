@@ -51,7 +51,7 @@ public class EnderGeneratorRecipeCategory extends BlankRecipeCategory<EnderGener
       ingredients.setInput(FluidStack.class,
           new FluidStack(Fluids.ENDER_DISTILLATION.getFluid(), Math.round(EnderGenConfig.minimumTankLevel.get() * tankCapacity)));
       ingredients.setOutputs(EnergyIngredient.class,
-          new NNList<>(new EnergyIngredient(Math.round(CapacitorKey.ENDER_POWER_GEN.get(DefaultCapacitorData.BASIC_CAPACITOR)), true),
+          new NNList<>(new EnergyIngredient(Math.round(CapacitorKey.ENDER_POWER_GEN.getBaseValue()), true),
               new EnergyIngredient(Math.round(CapacitorKey.ENDER_POWER_GEN.get(DefaultCapacitorData.ENDER_CAPACITOR)), true)));
     }
 

@@ -36,7 +36,7 @@ public enum CapacitorKey implements ICapacitorKey {
   private final @Nonnull CapacitorKeyType valueType;
 
   private @Nonnull Scaler scaler = Scaler.Factory.INVALID;
-  private int baseValue = Integer.MIN_VALUE;
+  private float baseValue = Float.NaN;
 
   private CapacitorKey(@Nonnull IModObject owner, @Nonnull CapacitorKeyType valueType, @Nonnull String shortname) {
     this.owner = owner;
@@ -46,13 +46,8 @@ public enum CapacitorKey implements ICapacitorKey {
   }
 
   @Override
-  public int get(@Nonnull ICapacitorData capacitor) {
-    return (int) (baseValue * scaler.scaleValue(capacitor.getUnscaledValue(this)));
-  }
-
-  @Override
-  public float getFloat(@Nonnull ICapacitorData capacitor) {
-    return baseValue * scaler.scaleValue(capacitor.getUnscaledValue(this));
+  public float getFloat(float level) {
+    return baseValue * scaler.scaleValue(level);
   }
 
   @Override
@@ -82,7 +77,7 @@ public enum CapacitorKey implements ICapacitorKey {
 
   @Override
   public void validate() {
-    if (scaler == Scaler.Factory.INVALID || baseValue == Integer.MIN_VALUE) {
+    if (scaler == Scaler.Factory.INVALID || Float.isNaN(baseValue)) {
       throw new RuntimeException(
           "CapacitorKey " + getRegistryName() + " has not been configured. This should not be possible and may be caused by a 3rd-party addon mod.");
     }

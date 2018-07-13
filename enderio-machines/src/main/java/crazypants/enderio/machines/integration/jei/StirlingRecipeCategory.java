@@ -82,9 +82,9 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
       double maxEnergyProducedPerTick = CapacitorKey.STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.ENDER_CAPACITOR);
 
       double minEnergyProduced = minEnergyProducedPerTick * TileStirlingGenerator.getBurnTimeGeneric(solidFuel.get(0))
-          * TileStirlingGenerator.getBurnEfficiency(DefaultCapacitorData.BASIC_CAPACITOR);
+          * TileStirlingGenerator.getEfficiencyKey().getFloat(DefaultCapacitorData.BASIC_CAPACITOR);
       double maxEnergyProduced = maxEnergyProducedPerTick * TileStirlingGenerator.getBurnTimeGeneric(solidFuel.get(0))
-          * TileStirlingGenerator.getBurnEfficiency(DefaultCapacitorData.ENDER_CAPACITOR);
+          * TileStirlingGenerator.getEfficiencyKey().getFloat(DefaultCapacitorData.ENDER_CAPACITOR);
 
       ingredients.setOutputs(EnergyIngredient.class,
           new NNList<>(new EnergyIngredient((int) Math.round(minEnergyProducedPerTick), true),

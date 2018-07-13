@@ -40,12 +40,12 @@ public class BlockItemBuffer extends PoweredBlockItem {
 
   @Override
   public int getMaxEnergyStored(@Nonnull ItemStack stack) {
-    return getType(stack).isCreative ? CapacitorKey.CREATIVE_BUFFER_POWER_BUFFER.get(DefaultCapacitorData.BASIC_CAPACITOR) : super.getMaxEnergyStored(stack);
+    return getType(stack).isCreative ? CapacitorKey.CREATIVE_BUFFER_POWER_BUFFER.getBaseValue() : super.getMaxEnergyStored(stack);
   }
 
   @Override
   public int getMaxInput(@Nonnull ItemStack stack) {
-    return CapacitorKey.BUFFER_POWER_INTAKE.get(DefaultCapacitorData.BASIC_CAPACITOR);
+    return CapacitorKey.BUFFER_POWER_INTAKE.getBaseValue();
   }
 
   @Override

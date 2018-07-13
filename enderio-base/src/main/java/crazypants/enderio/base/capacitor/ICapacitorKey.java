@@ -16,13 +16,27 @@ public interface ICapacitorKey extends IForgeRegistryEntry<ICapacitorKey> {
    * The capacitor level is a 1, 2 and 3 for the basic capacitors. Custom ones may have any non-zero, positive level. The scalers are expected to only map to
    * halfway reasonable output levels. Capacitors can choose to report different levels for each and any CapacitorKey.
    */
-  int get(@Nonnull ICapacitorData capacitor);
+  default int get(float level) {
+    return (int) getFloat(level);
+  }
+  
+  default int get(@Nonnull ICapacitorData data) {
+    return (int) getFloat(data);
+  }
 
   /**
    * See {@link ICapacitorKey#get(ICapacitorData)}, but this method will return the value as a float. Depending on the scaler and capacitor level, this may make
    * a difference.
    */
-  float getFloat(@Nonnull ICapacitorData capacitor);
+  float getFloat(float level);
+  
+  default float getFloat(@Nonnull ICapacitorData data) {
+    return getFloat(data.getUnscaledValue(this));
+  }
+  
+  default int getBaseValue() {
+    return get(1);
+  }
 
   @Nonnull
   IModObject getOwner();

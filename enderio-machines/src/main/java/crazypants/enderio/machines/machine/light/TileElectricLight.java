@@ -347,7 +347,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
     if (!requiresPower()) {
       return 0;
     }
-    return LEGACY_ENERGY_INTAKE.get(DefaultCapacitorData.BASIC_CAPACITOR);
+    return LEGACY_ENERGY_INTAKE.getBaseValue();
   }
 
   @Override

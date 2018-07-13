@@ -6,12 +6,14 @@ import java.awt.Rectangle;
 import java.text.MessageFormat;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorData;
+import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
@@ -58,12 +60,13 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiIn
     ((ContainerStirlingGenerator<?>) inventorySlots).addGhostslots(getGhostSlotHandler().getGhostSlots());
   }
 
-  private static float getFactor(@Nonnull ICapacitorData upgrade) {
-    return TileStirlingGenerator.getBurnEfficiency(upgrade);
+  private static float getFactor(@Nullable ICapacitorData upgrade) {
+    ICapacitorKey key = TileStirlingGenerator.getEfficiencyKey();
+    return upgrade == null ? key.getBaseValue() : key.getFloat(upgrade);
   }
 
   private static String formatUpgrade(@Nonnull MessageFormat fmt, @Nonnull ICapacitorData upgrade) {
-    float efficiency = getFactor(upgrade) / getFactor(DefaultCapacitorData.BASIC_CAPACITOR);
+    float efficiency = getFactor(upgrade) / getFactor(null);
     Object[] args = new Object[] { upgrade.getLocalizedName(), efficiency, TextFormatting.WHITE, TextFormatting.GRAY };
     return fmt.format(args, new StringBuffer(), null).toString();
   }
@@ -112,7 +115,7 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiIn
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));
 
     txt = Lang.GUI_STIRGEN_EFFICIENCY
-        .get(Math.round(getTileEntity().getBurnEfficiency() / TileStirlingGenerator.getBurnEfficiency(DefaultCapacitorData.BASIC_CAPACITOR) * 100));
+        .get(Math.round(getTileEntity().getBurnEfficiency() / getFactor(null) * 100));
     sw = fr.getStringWidth(txt);
     y += fr.FONT_HEIGHT + 3;
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));
