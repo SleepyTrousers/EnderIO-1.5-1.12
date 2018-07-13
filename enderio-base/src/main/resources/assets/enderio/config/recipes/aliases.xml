@@ -40,6 +40,7 @@ XML editor will display that as tooltips when editing this file.
   <alias name="GEAR_IRON" item="gearIronInfinity" />
   <alias name="GEAR_ENERGIZED" item="gearEnergized" />
   <alias name="GEAR_VIBRANT" item="gearVibrant" />
+  <alias name="GEAR_DARKSTEEL" item="gearDark" />
 
   <alias name="GLIDER_WING" item="itemGliderWing" />
   <alias name="GLIDER_WINGS" item="itemGliderWings" />

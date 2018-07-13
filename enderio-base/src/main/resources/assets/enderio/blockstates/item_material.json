@@ -236,6 +236,11 @@
           "layer0": "enderio:items/item_material_gear_wood"
         }
       },
+      "gear_darksteel": {
+        "textures": {
+          "layer0": "enderio:items/item_material_gear_darksteel"
+        }
+      },
       "organic_green_dye": {
         "textures": {
           "layer0": "enderio:items/item_material_organic_green_dye"

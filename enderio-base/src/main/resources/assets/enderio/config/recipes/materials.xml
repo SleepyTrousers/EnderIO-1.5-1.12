@@ -386,7 +386,26 @@ XML editor will display that as tooltips when editing this file.
       <output name="GEAR_VIBRANT"/>
     </casting>
   </recipe>
+  
+  <recipe name="Gear, Dark" required="true">
+    <crafting>
+      <grid>
+        <item name="DARK_STEEL_NUGGET"/><item name="DARK_STEEL_NUGGET"/><item name="DARK_STEEL_NUGGET"/>
+        <item name="DARK_STEEL_NUGGET"/><item name="GEAR_IRON"/><item name="DARK_STEEL_NUGGET"/>
+        <item name="DARK_STEEL_NUGGET"/><item name="DARK_STEEL_NUGGET"/><item name="DARK_STEEL_NUGGET"/>
+      </grid>
+      <output name="GEAR_DARKSTEEL"/>
+    </crafting>
+  </recipe>
 
+  <recipe name="Gear, Dark, Casting">
+    <casting>
+      <input name="DARK_STEEL_NUGGET" amount="8"/>
+      <cast name="GEAR_IRON" consumed="true"/>
+      <output name="GEAR_DARKSTEEL"/>
+    </casting>
+  </recipe>
+  
   <alias name="CAPACITOR_METAL" item="ingotCopper">
     <dependency item="ingotCopper" reverse="false"/>
   </alias>

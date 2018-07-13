@@ -173,6 +173,7 @@ item.item_material.gear_iron.name=Infinity Bimetal Gear
 item.item_material.gear_stone.name=Stone Compound Gear
 item.item_material.gear_vibrant.name=Vibrant Bimetal Gear
 item.item_material.gear_wood.name=Wooden Gear
+item.item_material.gear_darksteel.name=Dark Bimetal Gear
 item.item_material.glider_wing.name=Glider Wing
 item.item_material.glider_wings.name=Glider Wings
 item.item_material.glider_wings.tooltip.detailed.line1=Upgrade for Dark Steel chestplate
