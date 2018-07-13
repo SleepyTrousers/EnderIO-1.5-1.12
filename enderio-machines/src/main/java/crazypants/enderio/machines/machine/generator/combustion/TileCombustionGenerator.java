@@ -12,6 +12,8 @@ import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 
+import crazypants.enderio.base.capacitor.CapacitorHelper;
+import crazypants.enderio.base.capacitor.ICapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.fluid.IFluidCoolant;
@@ -56,6 +58,12 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
       super(new SlotDefinition(0, 0, 1), ENHANCED_COMBUSTION_POWER_BUFFER, ENHANCED_COMBUSTION_POWER_GEN);
       setEnergyLoss(ENHANCED_COMBUSTION_POWER_LOSS);
       setEfficiencyMultiplier(ENHANCED_COMBUSTION_POWER_EFFICIENCY);
+    }
+
+    @Nonnull
+    @Override
+    public ICapacitorData getCapacitorData() {
+      return CapacitorHelper.increaseCapacitorLevel(super.getCapacitorData(), 1f);
     }
 
     @Override

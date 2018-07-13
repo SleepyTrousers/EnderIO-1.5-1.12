@@ -7,6 +7,8 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.capacitor.CapacitorHelper;
+import crazypants.enderio.base.capacitor.ICapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
@@ -59,6 +61,12 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     public Enhanced() {
       super(new SlotDefinition(3, 1, 1), ENHANCED_ALLOY_SMELTER_POWER_INTAKE, ENHANCED_ALLOY_SMELTER_POWER_BUFFER, ENHANCED_ALLOY_SMELTER_POWER_USE);
       setEfficiencyMultiplier(ENHANCED_ALLOY_SMELTER_POWER_EFFICIENCY);
+    }
+
+    @Nonnull
+    @Override
+    public ICapacitorData getCapacitorData() {
+      return CapacitorHelper.increaseCapacitorLevel(super.getCapacitorData(), 1f);
     }
 
     @Override

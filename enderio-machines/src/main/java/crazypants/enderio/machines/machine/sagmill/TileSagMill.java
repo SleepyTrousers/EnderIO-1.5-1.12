@@ -4,6 +4,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.capacitor.CapacitorHelper;
+import crazypants.enderio.base.capacitor.ICapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
@@ -66,6 +68,12 @@ public abstract class TileSagMill extends AbstractPoweredTaskEntity implements I
     public Enhanced() {
       super(new SlotDefinition(2, 4), ENHANCED_SAG_MILL_POWER_INTAKE, ENHANCED_SAG_MILL_POWER_BUFFER, ENHANCED_SAG_MILL_POWER_USE);
       setEfficiencyMultiplier(ENHANCED_SAG_MILL_POWER_EFFICIENCY);
+    }
+
+    @Nonnull
+    @Override
+    public ICapacitorData getCapacitorData() {
+      return CapacitorHelper.increaseCapacitorLevel(super.getCapacitorData(), 1f);
     }
 
     @Override

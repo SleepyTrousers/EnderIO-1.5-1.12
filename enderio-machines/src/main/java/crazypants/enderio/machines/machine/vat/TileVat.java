@@ -13,6 +13,8 @@ import com.enderio.core.common.fluid.SmartTankFluidHandler;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.capacitor.CapacitorHelper;
+import crazypants.enderio.base.capacitor.ICapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
@@ -66,6 +68,12 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
 
     public Enhanced() {
       super(new SlotDefinition(2, 0, 1), ENHANCED_VAT_POWER_INTAKE, ENHANCED_VAT_POWER_BUFFER, ENHANCED_VAT_POWER_USE);
+    }
+
+    @Nonnull
+    @Override
+    public ICapacitorData getCapacitorData() {
+      return CapacitorHelper.increaseCapacitorLevel(super.getCapacitorData(), 1f);
     }
 
     @Override
