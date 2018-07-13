@@ -56,6 +56,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @EventBusSubscriber(modid = EnderIOMachines.MODID)
 public enum MachineObject implements IModObject {
 
+  block_simple_furnace(BlockAlloySmelter.class, "create_furnace", MachineTileEntity.TileAlloySmelterFurnace),
   block_simple_alloy_smelter(BlockAlloySmelter.class, "create_simple", MachineTileEntity.TileAlloySmelterSimple),
   block_alloy_smelter(BlockAlloySmelter.class, MachineTileEntity.TileAlloySmelter),
   block_enhanced_alloy_smelter(BlockAlloySmelter.class, "create_enhanced", MachineTileEntity.TileAlloySmelterEnhanced),

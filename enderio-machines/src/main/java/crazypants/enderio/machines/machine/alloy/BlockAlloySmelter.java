@@ -49,6 +49,24 @@ public class BlockAlloySmelter<T extends TileAlloySmelter> extends AbstractPower
     return res;
   }
 
+  public static BlockAlloySmelter<TileAlloySmelter.Furnace> create_furnace(@Nonnull IModObject modObject) {
+    BlockAlloySmelter<TileAlloySmelter.Furnace> res = new BlockAlloySmelter<TileAlloySmelter.Furnace>(modObject) {
+      @Override
+      @SideOnly(Side.CLIENT)
+      public @Nonnull IRenderMapper.IItemRenderMapper getItemRenderMapper() {
+        return RenderMappers.SIMPLE_BODY_MAPPER;
+      }
+
+      @Override
+      @SideOnly(Side.CLIENT)
+      public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
+        return RenderMappers.SIMPLE_BODY_MAPPER;
+      }
+    };
+    res.init();
+    return res;
+  }
+
   public static BlockAlloySmelter<TileAlloySmelter> create_enhanced(@Nonnull IModObject modObject) {
     BlockAlloySmelter<TileAlloySmelter> res = new BlockAlloySmelter<TileAlloySmelter>(modObject) {
       @Override

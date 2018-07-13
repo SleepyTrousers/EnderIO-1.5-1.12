@@ -35,6 +35,7 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_ALLOY_SM
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_ALLOY_SMELTER_POWER_INTAKE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_ALLOY_SMELTER_POWER_LOSS;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_ALLOY_SMELTER_POWER_USE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_STIRLING_POWER_LOSS;
 
 @Storable
 public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
@@ -52,6 +53,21 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
       return Mode.ALLOY;
     }
 
+  }
+
+  public static class Furnace extends TileAlloySmelter {
+
+    public Furnace() {
+      super(new SlotDefinition(3, 1, 0), SIMPLE_ALLOY_SMELTER_POWER_INTAKE, SIMPLE_ALLOY_SMELTER_POWER_BUFFER, SIMPLE_ALLOY_SMELTER_POWER_USE);
+      setEnergyLoss(SIMPLE_STIRLING_POWER_LOSS);
+      mode = Mode.FURNACE;
+    }
+
+    @Nonnull
+    @Override
+    public Mode getMode() {
+      return Mode.FURNACE;
+    }
   }
 
   public static class Enhanced extends TileAlloySmelter {
