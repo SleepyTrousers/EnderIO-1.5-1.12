@@ -97,6 +97,7 @@ public enum MachineObject implements IModObject {
   block_enhanced_vat(BlockVat.class, "create_enhanced", MachineTileEntity.TileVatEnhanced),
   block_wired_charger(BlockWiredCharger.class, MachineTileEntity.TileWiredCharger),
   block_enhanced_wired_charger(BlockWiredCharger.class, "create_enhanced", MachineTileEntity.TileWiredChargerEnhanced),
+  block_simple_wired_charger(BlockWiredCharger.class, "create_simple", MachineTileEntity.TileWiredChargerSimple),
   block_wireless_charger(BlockWirelessCharger.class, MachineTileEntity.TileWirelessCharger),
   block_normal_wireless_charger(BlockNormalWirelessCharger.class, MachineTileEntity.TileWirelessCharger),
   block_enhanced_wireless_charger(BlockEnhancedWirelessCharger.class, MachineTileEntity.TileWirelessCharger),

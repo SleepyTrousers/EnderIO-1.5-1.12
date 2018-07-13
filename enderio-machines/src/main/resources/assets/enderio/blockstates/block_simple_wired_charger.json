@@ -1,0 +1,24 @@
+{
+    "forge_marker":1,
+    "defaults":{
+        "textures":{
+            "particle":"enderio:blocks/block_simple_wired_charger",
+            "front":"enderio:blocks/block_simple_wired_charger",
+            "fronton":"enderio:blocks/block_simple_wired_charger"
+        }
+    },
+    "variants":{
+        "render":{
+			"defaults":{ "model":"enderio:transform/block" },
+			"auto":{ "model":"enderio:null" },
+            "front":{                                             "submodel":{ "front":{ "model":"enderio:block_wired_charger", "y":180 } } },
+            "front_east":{                                        "submodel":{ "front":{ "model":"enderio:block_wired_charger", "y":270 } } },
+            "front_south":{                                       "submodel":{ "front":{ "model":"enderio:block_wired_charger", "y":0   } } },
+            "front_west":{                                        "submodel":{ "front":{ "model":"enderio:block_wired_charger", "y":90  } } },
+            "front_on":{       "textures":{ "front":"#fronton" }, "submodel":{ "front":{ "model":"enderio:block_wired_charger", "y":180 } } },
+            "front_on_east":{  "textures":{ "front":"#fronton" }, "submodel":{ "front":{ "model":"enderio:block_wired_charger", "y":270 } } },
+            "front_on_south":{ "textures":{ "front":"#fronton" }, "submodel":{ "front":{ "model":"enderio:block_wired_charger", "y":0   } } },
+            "front_on_west":{  "textures":{ "front":"#fronton" }, "submodel":{ "front":{ "model":"enderio:block_wired_charger", "y":90  } } }
+        }
+    }
+}

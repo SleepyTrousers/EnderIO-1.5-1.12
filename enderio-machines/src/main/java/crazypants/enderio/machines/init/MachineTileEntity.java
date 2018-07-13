@@ -77,6 +77,7 @@ public enum MachineTileEntity implements IModTileEntity {
   TileEnchanter(TileEnchanter.class),
   TileWiredCharger(TileWiredCharger.class),
   TileWiredChargerEnhanced(TileWiredCharger.Enhanced.class),
+  TileWiredChargerSimple(TileWiredCharger.Simple.class),
   TileAlloySmelter(TileAlloySmelter.class),
   TileAlloySmelterSimple(TileAlloySmelter.Simple.class),
   TileAlloySmelterFurnace(TileAlloySmelter.Furnace.class),

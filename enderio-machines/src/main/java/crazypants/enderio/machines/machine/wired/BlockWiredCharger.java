@@ -51,6 +51,24 @@ public class BlockWiredCharger<T extends TileWiredCharger> extends AbstractPower
     return res;
   }
 
+  public static BlockWiredCharger<TileWiredCharger.Simple> create_simple(@Nonnull IModObject modObject) {
+    BlockWiredCharger<TileWiredCharger.Simple> res = new BlockWiredCharger<TileWiredCharger.Simple>(modObject){
+      @Override
+      @SideOnly(Side.CLIENT)
+      public @Nonnull IRenderMapper.IItemRenderMapper getItemRenderMapper() {
+        return RenderMappers.SIMPLE_BODY_MAPPER;
+      }
+
+      @Override
+      @SideOnly(Side.CLIENT)
+      public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
+        return RenderMappers.SIMPLE_BODY_MAPPER;
+      }
+    };
+    res.init();
+    return res;
+  }
+
   private BlockWiredCharger(@Nonnull IModObject modObject) {
     super(modObject);
     setShape(mkShape(BlockFaceShape.SOLID, BlockFaceShape.SOLID, BlockFaceShape.UNDEFINED, BlockFaceShape.SOLID));
