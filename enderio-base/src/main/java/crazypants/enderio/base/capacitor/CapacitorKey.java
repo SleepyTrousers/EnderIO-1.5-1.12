@@ -44,13 +44,13 @@ public enum CapacitorKey implements ICapacitorKey {
   }
 
   @Override
-  public int get(float level) {
-    return (int) (baseValue * scaler.scaleValue(level));
-  }
-
-  @Override
   public float getFloat(float level) {
     return baseValue * scaler.scaleValue(level);
+  }
+  
+  @Override
+  public int getBaseValue() {
+    return baseValue;
   }
 
   @Override

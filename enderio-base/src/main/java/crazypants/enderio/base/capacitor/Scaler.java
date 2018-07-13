@@ -115,7 +115,12 @@ public interface Scaler {
       }
     }),
     SPAWNER(new IndexedScaler(1f, 0, 1, 5, 10, 20)),
-    BURNTIME(new IndexedScaler(1f, 0.8f, 1f, 1.25f, 1.5f, 1.5f, 2f)),
+    BURNTIME(new IndexedScaler(1f, 0.8f, 1f, 1.25f, 1.5f, 1.5f, 2f) {
+      @Override
+      public float scaleValue(float idx) {
+        return super.scaleValue(idx) / 100f; // Convert from percentage
+      }
+    }),
     CHEMICAL(new Scaler() { // (.75)-1-1.25-1.5-1.75-2...
       @Override
       public float scaleValue(float idx) {

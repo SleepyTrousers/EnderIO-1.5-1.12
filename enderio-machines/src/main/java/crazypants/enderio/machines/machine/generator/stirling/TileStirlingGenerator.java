@@ -32,6 +32,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_STIRLING_POWER_BUFFER;
@@ -128,11 +129,22 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
   }
 
   public static int getBurnTimeGeneric(@Nonnull ItemStack item) {
-    return TileEntityFurnace.getItemBurnTime(item) / 4;
+    return TileEntityFurnace.getItemBurnTime(item);
+  }
+  
+  public static int getBurnTime(@Nonnull ItemStack item, @Nonnull ICapacitorKey maxUsage, @Nonnull ICapacitorData data) {
+    float base = (getBurnTimeGeneric(item) / (maxUsage.get(data) / maxUsage.getDefaultFloat())) * getBurnEfficiency(data);
+    if (item.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
+      // Lava and other fluid buckets are nerfed, prefer combustion engine for those
+      base /= 5;
+    }
+    // The vanilla burn time results in 24,000FE for a piece of coal at 15FE/t output.
+    // So we hardcode 15 as a baseline to keep that density consistent
+    return Math.round(base /= maxUsage.getDefaultFloat() / 15);
   }
 
   public int getBurnTime(@Nonnull ItemStack item) {
-    return MathHelper.floor((getBurnTimeGeneric(item) / (getMaxUsage() / maxEnergyUsed.getFloat(DefaultCapacitorData.BASIC_CAPACITOR))) * getBurnEfficiency());
+    return getBurnTime(item, maxEnergyUsed, getCapacitorData());
   }
   
   @Override
@@ -179,11 +191,11 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
   }
 
   public static float getEnergyMultiplier(@Nonnull ICapacitorData capacitorType) {
-    return STIRLING_POWER_GEN.get(capacitorType) / STIRLING_POWER_GEN.get(DefaultCapacitorData.BASIC_CAPACITOR);
+    return STIRLING_POWER_GEN.get(capacitorType) / STIRLING_POWER_GEN.getDefaultFloat();
   }
 
-  public static float getBurnEfficiency(@Nonnull ICapacitorData capacitorType) {
-    return STIRLING_POWER_EFFICIENCY.getFloat(capacitorType);
+  public static float getBurnEfficiency(@Nullable ICapacitorData data) {
+    return (data == null ? STIRLING_POWER_EFFICIENCY.getDefaultFloat() : STIRLING_POWER_EFFICIENCY.getFloat(data));
   }
 
   public float getBurnEfficiency() {

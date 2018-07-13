@@ -84,20 +84,20 @@ public class WeatherObeliskRecipeCategory extends BlankRecipeCategory<WeatherObe
 
     result.add(new WeatherObeliskRecipeWrapper(new ItemStack(Items.FIREWORKS),
         new FluidStack(Fluids.LIQUID_SUNSHINE.getFluid(), WeatherConfig.weatherObeliskClearFluid.get()),
-        WeatherConfig.weatherObeliskClearFluid.get() / CapacitorKey.WEATHER_POWER_FLUID_USE.getBaseValue()
-            * CapacitorKey.WEATHER_POWER_USE.getBaseValue(),
+        WeatherConfig.weatherObeliskClearFluid.get() / CapacitorKey.WEATHER_POWER_FLUID_USE.getDefault()
+            * CapacitorKey.WEATHER_POWER_USE.getDefault(),
         "weather_sun", guiHelper));
 
     result.add(new WeatherObeliskRecipeWrapper(new ItemStack(Items.FIREWORKS),
         new FluidStack(Fluids.CLOUD_SEED.getFluid(), WeatherConfig.weatherObeliskRainFluid.get()),
-        WeatherConfig.weatherObeliskRainFluid.get() / CapacitorKey.WEATHER_POWER_FLUID_USE.getBaseValue()
-            * CapacitorKey.WEATHER_POWER_USE.getBaseValue(),
+        WeatherConfig.weatherObeliskRainFluid.get() / CapacitorKey.WEATHER_POWER_FLUID_USE.getDefault()
+            * CapacitorKey.WEATHER_POWER_USE.getDefault(),
         "weather_rain", guiHelper));
 
     result.add(new WeatherObeliskRecipeWrapper(new ItemStack(Items.FIREWORKS),
         new FluidStack(Fluids.CLOUD_SEED_CONCENTRATED.getFluid(), WeatherConfig.weatherObeliskThunderFluid.get()),
-        WeatherConfig.weatherObeliskThunderFluid.get() / CapacitorKey.WEATHER_POWER_FLUID_USE.getBaseValue()
-            * CapacitorKey.WEATHER_POWER_USE.getBaseValue(),
+        WeatherConfig.weatherObeliskThunderFluid.get() / CapacitorKey.WEATHER_POWER_FLUID_USE.getDefault()
+            * CapacitorKey.WEATHER_POWER_USE.getDefault(),
         "weather_thunder", guiHelper));
 
     long end = System.nanoTime();

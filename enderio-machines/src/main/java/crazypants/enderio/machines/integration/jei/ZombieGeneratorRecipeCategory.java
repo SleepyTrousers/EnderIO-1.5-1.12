@@ -51,7 +51,7 @@ public class ZombieGeneratorRecipeCategory extends BlankRecipeCategory<ZombieGen
       ingredients.setInput(FluidStack.class,
           new FluidStack(Fluids.NUTRIENT_DISTILLATION.getFluid(), Math.round(ZombieGenConfig.minimumTankLevel.get() * tankCapacity)));
       ingredients.setOutputs(EnergyIngredient.class,
-          new NNList<>(new EnergyIngredient(Math.round(CapacitorKey.ZOMBIE_POWER_GEN.getBaseValue()), true),
+          new NNList<>(new EnergyIngredient(Math.round(CapacitorKey.ZOMBIE_POWER_GEN.getDefaultFloat()), true),
               new EnergyIngredient(Math.round(CapacitorKey.ZOMBIE_POWER_GEN.get(DefaultCapacitorData.ENDER_CAPACITOR)), true)));
     }
 

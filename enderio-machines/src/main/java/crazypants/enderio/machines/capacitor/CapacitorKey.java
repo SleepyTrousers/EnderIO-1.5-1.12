@@ -222,6 +222,11 @@ public enum CapacitorKey implements ICapacitorKey {
   public float getFloat(float level) {
     return baseValue * scaler.scaleValue(level);
   }
+  
+  @Override
+  public int getBaseValue() {
+    return baseValue;
+  }
 
   @Override
   public @Nonnull IModObject getOwner() {

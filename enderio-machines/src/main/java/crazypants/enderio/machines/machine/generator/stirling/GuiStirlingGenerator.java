@@ -61,8 +61,7 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiIn
   }
 
   private static float getFactor(@Nullable ICapacitorData upgrade) {
-    ICapacitorKey key = TileStirlingGenerator.getEfficiencyKey();
-    return upgrade == null ? key.getBaseValue() : key.getFloat(upgrade);
+    return TileStirlingGenerator.getBurnEfficiency(upgrade);
   }
 
   private static String formatUpgrade(@Nonnull MessageFormat fmt, @Nonnull ICapacitorData upgrade) {
@@ -115,7 +114,7 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiIn
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));
 
     txt = Lang.GUI_STIRGEN_EFFICIENCY
-        .get(Math.round(getTileEntity().getBurnEfficiency() / getFactor(null) * 100));
+        .get(Math.round(getTileEntity().getBurnEfficiency() * 100));
     sw = fr.getStringWidth(txt);
     y += fr.FONT_HEIGHT + 3;
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));

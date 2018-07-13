@@ -16,6 +16,7 @@ import com.enderio.core.common.util.NNMap;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
@@ -76,15 +77,14 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
       List<List<ItemStack>> list = new NNList<>();
       list.add(solidFuel);
       ingredients.setInputLists(ItemStack.class, list);
+      
+      ICapacitorKey minKey = simpleFuel(solidFuel.get(0)) ? CapacitorKey.SIMPLE_STIRLING_POWER_GEN : CapacitorKey.STIRLING_POWER_GEN;
 
-      double minEnergyProducedPerTick = simpleFuel(solidFuel.get(0)) ? CapacitorKey.SIMPLE_STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.BASIC_CAPACITOR)
-          : CapacitorKey.STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.BASIC_CAPACITOR);
+      double minEnergyProducedPerTick = minKey.getFloat(DefaultCapacitorData.BASIC_CAPACITOR);
       double maxEnergyProducedPerTick = CapacitorKey.STIRLING_POWER_GEN.getFloat(DefaultCapacitorData.ENDER_CAPACITOR);
 
-      double minEnergyProduced = minEnergyProducedPerTick * TileStirlingGenerator.getBurnTimeGeneric(solidFuel.get(0))
-          * TileStirlingGenerator.getEfficiencyKey().getFloat(DefaultCapacitorData.BASIC_CAPACITOR);
-      double maxEnergyProduced = maxEnergyProducedPerTick * TileStirlingGenerator.getBurnTimeGeneric(solidFuel.get(0))
-          * TileStirlingGenerator.getEfficiencyKey().getFloat(DefaultCapacitorData.ENDER_CAPACITOR);
+      double minEnergyProduced = minEnergyProducedPerTick * TileStirlingGenerator.getBurnTime(solidFuel.get(0), minKey, DefaultCapacitorData.BASIC_CAPACITOR);
+      double maxEnergyProduced = maxEnergyProducedPerTick * TileStirlingGenerator.getBurnTime(solidFuel.get(0), CapacitorKey.STIRLING_POWER_GEN, DefaultCapacitorData.ENDER_CAPACITOR);
 
       ingredients.setOutputs(EnergyIngredient.class,
           new NNList<>(new EnergyIngredient((int) Math.round(minEnergyProducedPerTick), true),
