@@ -359,7 +359,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item name="ingotEndSteel" /><item name="minecraft:furnace" /><item name="ingotEndSteel" />
-        <item /><item name="ENHANCED_CHASSIS" /><item />
+        <item name="minecraft:furnace" /><item name="ENHANCED_CHASSIS" /><item name="minecraft:furnace" />
         <item name="GEAR_VIBRANT" /><item name="item:minecraft:cauldron" /><item name="GEAR_VIBRANT" />
       </grid>
       <output name="enderio:block_enhanced_alloy_smelter" />
