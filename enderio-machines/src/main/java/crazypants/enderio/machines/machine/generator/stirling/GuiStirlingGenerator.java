@@ -59,7 +59,7 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiIn
   }
 
   private static float getFactor(@Nonnull ICapacitorData upgrade) {
-    return TileStirlingGenerator.getEnergyMultiplier(upgrade) * TileStirlingGenerator.getBurnTimeMultiplier(upgrade);
+    return TileStirlingGenerator.getBurnEfficiency(upgrade);
   }
 
   private static String formatUpgrade(@Nonnull MessageFormat fmt, @Nonnull ICapacitorData upgrade) {
@@ -72,7 +72,7 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiIn
   protected String formatProgressTooltip(int scaledProgress, float remaining) {
     int totalBurnTime = getTileEntity().totalBurnTime;
     int remainingTicks = (int) (remaining * totalBurnTime);
-    int remainingSecs = remainingTicks / 20;
+    int remainingSecs = (remainingTicks / 20) + 1;
     int remainingPower = getTileEntity().getPowerUsePerTick() * remainingTicks;
     Object[] objects = { remaining, remainingSecs / 60, remainingSecs % 60, remainingPower };
     return MessageFormat.format(Lang.GUI_STIRGEN_REMAINING.get(), objects);
@@ -111,8 +111,8 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiIn
     int sw = fr.getStringWidth(txt);
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));
 
-    txt = Lang.GUI_STIRGEN_RATE
-        .get(Math.round(getTileEntity().getBurnTimeMultiplier() / TileStirlingGenerator.getBurnTimeMultiplier(DefaultCapacitorData.BASIC_CAPACITOR) * 100));
+    txt = Lang.GUI_STIRGEN_EFFICIENCY
+        .get(Math.round(getTileEntity().getBurnEfficiency() / TileStirlingGenerator.getBurnEfficiency(DefaultCapacitorData.BASIC_CAPACITOR) * 100));
     sw = fr.getStringWidth(txt);
     y += fr.FONT_HEIGHT + 3;
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));

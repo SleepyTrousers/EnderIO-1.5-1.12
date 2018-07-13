@@ -140,7 +140,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   }
 
   public int getPowerUsePerTick() {
-    return maxEnergyUsed.get(getCapacitorData());
+    return getMaxUsage(maxEnergyUsed);
   }
 
   @Override

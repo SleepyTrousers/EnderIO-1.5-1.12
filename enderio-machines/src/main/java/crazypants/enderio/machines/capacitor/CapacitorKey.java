@@ -64,7 +64,7 @@ public enum CapacitorKey implements ICapacitorKey {
   STIRLING_POWER_LOSS(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),
   STIRLING_POWER_BUFFER(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   STIRLING_POWER_GEN(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_GEN, "gen"),
-  STIRLING_POWER_TIME(MachineObject.block_stirling_generator, CapacitorKeyType.SPEED, "burntime"),
+  STIRLING_POWER_EFFICIENCY(MachineObject.block_stirling_generator, CapacitorKeyType.SPEED, "efficiency"),
 
   SIMPLE_STIRLING_POWER_LOSS(MachineObject.block_simple_stirling_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),
   SIMPLE_STIRLING_POWER_BUFFER(MachineObject.block_simple_stirling_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),

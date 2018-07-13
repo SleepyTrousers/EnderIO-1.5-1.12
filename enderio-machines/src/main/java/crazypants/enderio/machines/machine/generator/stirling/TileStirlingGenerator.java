@@ -29,6 +29,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -39,7 +40,7 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_STIRLING
 import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_GEN;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_LOSS;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_TIME;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_EFFICIENCY;
 
 @Storable
 public class TileStirlingGenerator extends AbstractGeneratorEntity implements IProgressTile, IPaintable.IPaintableTileEntity {
@@ -127,13 +128,13 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
   }
 
   public static int getBurnTimeGeneric(@Nonnull ItemStack item) {
-    return Math.round(TileEntityFurnace.getItemBurnTime(item));
+    return TileEntityFurnace.getItemBurnTime(item) / 4;
   }
 
   public int getBurnTime(@Nonnull ItemStack item) {
-    return Math.round(TileEntityFurnace.getItemBurnTime(item) * getBurnTimeMultiplier());
+    return MathHelper.floor((getBurnTimeGeneric(item) / (getMaxUsage() / maxEnergyUsed.getFloat(DefaultCapacitorData.BASIC_CAPACITOR))) * getBurnEfficiency());
   }
-
+  
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
     boolean needsUpdate = false;
@@ -181,12 +182,12 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
     return STIRLING_POWER_GEN.get(capacitorType) / STIRLING_POWER_GEN.get(DefaultCapacitorData.BASIC_CAPACITOR);
   }
 
-  public static float getBurnTimeMultiplier(@Nonnull ICapacitorData capacitorType) {
-    return STIRLING_POWER_TIME.getFloat(capacitorType);
+  public static float getBurnEfficiency(@Nonnull ICapacitorData capacitorType) {
+    return STIRLING_POWER_EFFICIENCY.getFloat(capacitorType);
   }
 
-  public float getBurnTimeMultiplier() {
-    return getBurnTimeMultiplier(getCapacitorData());
+  public float getBurnEfficiency() {
+    return getBurnEfficiency(getCapacitorData());
   }
 
   private boolean transmitEnergy() {
