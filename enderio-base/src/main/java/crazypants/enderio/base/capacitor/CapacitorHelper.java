@@ -137,7 +137,7 @@ public class CapacitorHelper {
     return new ICapacitorData() {
       @Override
       public float getUnscaledValue(@Nonnull ICapacitorKey key) {
-        return data.getUnscaledValue(key) + level;
+        return data.getUnscaledValue(key) > 0 ? data.getUnscaledValue(key) + level : 0;
       }
 
       @Nonnull
