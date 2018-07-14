@@ -141,6 +141,11 @@
           "layer0": "enderio:items/item_material_powder_tin"
         }
       },
+      "powder_soul": {
+        "textures": {
+          "layer0": "enderio:items/item_material_powder_soul"
+        }
+      },
       "precient_crystal": {
         "textures": {
           "layer0": "enderio:items/item_material_precient_crystal"

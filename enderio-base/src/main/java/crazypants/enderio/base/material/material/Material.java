@@ -109,6 +109,7 @@ public enum Material {
   BRICK_GLAZED_NETHER("glazedNetherBrick", "ingotBrickNetherGlazed"),
   
   GEAR_DARKSTEEL("gear_darksteel", "gearDark"),
+  POWDER_SOUL("powder_soul", "dustSoularium"),
 
   ;
 

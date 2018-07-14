@@ -249,9 +249,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Soul Machine Dye">
     <crafting>
       <grid>
-        <item name="dustLapis"/><item name="POWDER_QUARTZ"/><item name="ORGANIC_BROWN_DYE"/>
+        <item name="dustSoularium"/><item name="POWDER_QUARTZ"/><item name="ORGANIC_BROWN_DYE"/>
         <item name="POWDER_QUARTZ"/><item name="ORGANIC_BLACK_DYE"/><item name="POWDER_QUARTZ"/>
-        <item name="ORGANIC_BROWN_DYE"/><item name="POWDER_QUARTZ"/><item name="dustLapis"/>
+        <item name="ORGANIC_BROWN_DYE"/><item name="POWDER_QUARTZ"/><item name="dustSoularium"/>
       </grid>
       <output name="dyeSoulMachine" amount="6"/>
     </crafting>
