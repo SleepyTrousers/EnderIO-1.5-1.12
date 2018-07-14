@@ -82,7 +82,6 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IEioGuiHandle
 
   protected BlockCapBank(@Nonnull IModObject modObject) {
     super(modObject);
-    setCreativeTab(EnderIOTab.tabEnderIOMachines);
     setHardness(2.0F);
     setLightOpacity(255);
     setDefaultState(getBlockState().getBaseState().withProperty(EnumMergingBlockRenderMode.RENDER, EnumMergingBlockRenderMode.AUTO)

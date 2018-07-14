@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.IModTileEntity;
 import crazypants.enderio.base.init.ModObjectRegistry;
@@ -156,6 +157,13 @@ public enum MachineObject implements IModObject {
       throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
     }
     this.modTileEntity = modTileEntity;
+  }
+  
+  @Override
+  @Nonnull
+  public <B extends Block> B apply(@Nonnull B block) {
+    block.setCreativeTab(EnderIOTab.tabEnderIOMachines);
+    return IModObject.super.apply(block);
   }
 
   @Override
