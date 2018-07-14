@@ -18,6 +18,7 @@ import crazypants.enderio.base.integration.jei.GhostSlotTarget;
 import crazypants.enderio.base.lang.Lang;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 public class BasicItemFilterGui extends AbstractFilterGui {
@@ -200,10 +201,10 @@ public class BasicItemFilterGui extends AbstractFilterGui {
   }
 
   @Override
-  public @Nonnull <I> List<GhostSlotTarget<I>> getTargetSlots() {
-    List<GhostSlotTarget<I>> targets = new ArrayList<>();
+  public @Nonnull List<GhostSlotTarget<?>> getGhostTargets() {
+    List<GhostSlotTarget<?>> targets = new ArrayList<>();
     for (GhostSlot slot : getGhostSlotHandler().getGhostSlots()) {
-      targets.add(new GhostSlotTarget<I>(filter, slot, getGuiLeft(), getGuiTop(), this));
+      targets.add(new GhostSlotTarget<>(filter, slot, getGuiLeft(), getGuiTop(), this));
     }
     return targets;
   }

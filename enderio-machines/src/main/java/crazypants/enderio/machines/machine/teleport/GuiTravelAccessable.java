@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.gui.button.CheckBox;
 import com.enderio.core.client.gui.button.ToggleButton;
+import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.ColorUtil;
 
@@ -16,7 +17,9 @@ import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.ITravelAccessable.AccessMode;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.integration.jei.IHaveGhostTargets;
 import crazypants.enderio.machines.lang.Lang;
+import crazypants.enderio.machines.machine.teleport.ContainerTravelAccessable.CtaGhostSlot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -25,7 +28,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> extends GuiContainerBaseEIO implements ITravelAccessableRemoteExec.GUI {
+public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> extends GuiContainerBaseEIO implements IHaveGhostTargets<GuiTravelAccessable<T>>, ITravelAccessableRemoteExec.GUI {
 
   private static final int ID_PUBLIC = 0;
   private static final int ID_PRIVATE = 1;
@@ -230,6 +233,11 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
 
   protected int getGuiOffset() {
     return 0;
+  }
+  
+  @Override
+  public boolean isSlotTarget(GhostSlot slot) {
+    return protectedCB.isSelected() || !((CtaGhostSlot)slot).isAuth;
   }
 
 }

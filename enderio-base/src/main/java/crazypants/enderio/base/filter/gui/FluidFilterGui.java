@@ -121,10 +121,10 @@ public class FluidFilterGui extends AbstractFilterGui {
   }
 
   @Override
-  public @Nonnull <I> List<GhostSlotTarget<I>> getTargetSlots() {
-    List<GhostSlotTarget<I>> targets = new ArrayList<>();
+  public @Nonnull List<GhostSlotTarget<?>> getGhostTargets() {
+    List<GhostSlotTarget<?>> targets = new ArrayList<>();
     for (GhostSlot slot : getGhostSlotHandler().getGhostSlots()) {
-      targets.add(new GhostSlotTarget<I>(filter, slot, getGuiLeft(), getGuiTop(), this));
+      targets.add(new GhostSlotTarget<>(filter, slot, getGuiLeft(), getGuiTop(), this));
     }
     return targets;
   }

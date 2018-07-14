@@ -151,10 +151,10 @@ public class ModItemFilterGui extends AbstractFilterGui {
   }
 
   @Override
-  public @Nonnull <I> List<GhostSlotTarget<I>> getTargetSlots() {
-    List<GhostSlotTarget<I>> targets = new ArrayList<>();
+  public @Nonnull List<GhostSlotTarget<?>> getGhostTargets() {
+    List<GhostSlotTarget<?>> targets = new ArrayList<>();
     for (int i = 0; i < inputBounds.length; i++) {
-      targets.add(new GhostSlotTarget<I>(filter, i, getGuiLeft(), getGuiTop(), inputBounds[i].x, inputBounds[i].y, this));
+      targets.add(new GhostSlotTarget<>(filter, i, getGuiLeft(), getGuiTop(), inputBounds[i].x, inputBounds[i].y, this));
     }
     return targets;
   }
