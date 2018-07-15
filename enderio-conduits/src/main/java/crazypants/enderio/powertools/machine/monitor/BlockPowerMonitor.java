@@ -53,7 +53,6 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor>
   public BlockPowerMonitor(@Nonnull IModObject mo, boolean advanced) {
     super(mo);
     this.advanced = advanced;
-    setCreativeTab(EnderIOTab.tabEnderIOMachines);
     setShape(mkShape(BlockFaceShape.SOLID));
   }
 

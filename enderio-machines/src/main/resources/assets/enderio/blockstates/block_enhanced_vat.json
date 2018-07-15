@@ -2,21 +2,26 @@
     "forge_marker":1,
     "defaults":{
         "textures":{
-            "particle":"enderio:blocks/block_enhanced_machine_bottom"
+            "0": "enderio:blocks/vat/enhanced_base",
+            "1": "enderio:blocks/block_enhanced_machine_bottom",
+            "2": "enderio:blocks/vat/enhanced_tank_top_front",
+            "3": "enderio:blocks/vat/enhanced_tank_side",
+            "4": "enderio:blocks/vat/enhanced_other_bits",
+            "particle": "enderio:blocks/block_enhanced_machine_bottom"
         }
     },
     "variants":{
         "render":{
 			"defaults":{ "model":"enderio:transform/block" },
 			"auto":{ "model":"enderio:null" },
-            "front":{          "submodel":{ "front":{ "model":"enderio:enhanced_vat" } }, "y":0 },
-            "front_east":{     "submodel":{ "front":{ "model":"enderio:enhanced_vat" } }, "y":90 },
-            "front_south":{    "submodel":{ "front":{ "model":"enderio:enhanced_vat" } }, "y":180 },
-            "front_west":{     "submodel":{ "front":{ "model":"enderio:enhanced_vat" } }, "y":270 },
-            "front_on":{       "submodel":{ "front":{ "model":"enderio:enhanced_vat" } }, "y":0 },
-            "front_on_east":{  "submodel":{ "front":{ "model":"enderio:enhanced_vat" } }, "y":90 },
-            "front_on_south":{ "submodel":{ "front":{ "model":"enderio:enhanced_vat" } }, "y":180 },
-            "front_on_west":{  "submodel":{ "front":{ "model":"enderio:enhanced_vat" } }, "y":270 }            
+            "front":{          "submodel":{ "front":{ "model":"enderio:vat" } }, "y":0 },
+            "front_east":{     "submodel":{ "front":{ "model":"enderio:vat" } }, "y":90 },
+            "front_south":{    "submodel":{ "front":{ "model":"enderio:vat" } }, "y":180 },
+            "front_west":{     "submodel":{ "front":{ "model":"enderio:vat" } }, "y":270 },
+            "front_on":{       "submodel":{ "front":{ "model":"enderio:vat" } }, "y":0 },
+            "front_on_east":{  "submodel":{ "front":{ "model":"enderio:vat" } }, "y":90 },
+            "front_on_south":{ "submodel":{ "front":{ "model":"enderio:vat" } }, "y":180 },
+            "front_on_west":{  "submodel":{ "front":{ "model":"enderio:vat" } }, "y":270 }            
         }
     }
 }

@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.IModTileEntity;
 import crazypants.enderio.base.init.ModObjectRegistry;
@@ -56,16 +57,15 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @EventBusSubscriber(modid = EnderIOMachines.MODID)
 public enum MachineObject implements IModObject {
 
+  block_simple_furnace(BlockAlloySmelter.class, "create_furnace", MachineTileEntity.TileAlloySmelterFurnace),
   block_simple_alloy_smelter(BlockAlloySmelter.class, "create_simple", MachineTileEntity.TileAlloySmelterSimple),
   block_alloy_smelter(BlockAlloySmelter.class, MachineTileEntity.TileAlloySmelter),
   block_enhanced_alloy_smelter(BlockAlloySmelter.class, "create_enhanced", MachineTileEntity.TileAlloySmelterEnhanced),
-  block_enhanced_alloy_smelter_top(BlockAlloySmelter.class, "create_extension"),
   block_buffer(BlockBuffer.class, MachineTileEntity.TileBufferAbstract),
   block_enchanter(BlockEnchanter.class, MachineTileEntity.TileEnchanter),
   block_farm_station(BlockFarmStation.class, MachineTileEntity.TileFarmStation),
   block_combustion_generator(BlockCombustionGenerator.class, MachineTileEntity.TileCombustionGenerator),
   block_enhanced_combustion_generator(BlockCombustionGenerator.class, "create_enhanced", MachineTileEntity.TileCombustionGeneratorEnhanced),
-  block_enhanced_combustion_generator_top(BlockCombustionGenerator.class, "create_extension"),
   block_simple_stirling_generator(BlockStirlingGenerator.class, "create_simple", MachineTileEntity.TileStirlingGeneratorSimple),
   block_stirling_generator(BlockStirlingGenerator.class, MachineTileEntity.TileStirlingGenerator),
   block_zombie_generator(BlockZombieGenerator.class, MachineTileEntity.TileZombieGenerator),
@@ -90,17 +90,15 @@ public enum MachineObject implements IModObject {
   block_simple_sag_mill(BlockSagMill.class, "create_simple", MachineTileEntity.TileSagMillSimple),
   block_sag_mill(BlockSagMill.class, MachineTileEntity.TileSagMill),
   block_enhanced_sag_mill(BlockSagMill.class, "create_enhanced", MachineTileEntity.TileSagMillEnhanced),
-  block_enhanced_sag_mill_top(BlockSagMill.class, "create_extension"),
   block_slice_and_splice(BlockSliceAndSplice.class, MachineTileEntity.TileSliceAndSplice),
   block_solar_panel(BlockSolarPanel.class, MachineTileEntity.TileSolarPanel),
   block_soul_binder(BlockSoulBinder.class, MachineTileEntity.TileSoulBinder),
   block_powered_spawner(BlockPoweredSpawner.class, MachineTileEntity.TilePoweredSpawner),
   block_vat(BlockVat.class, MachineTileEntity.TileVat),
   block_enhanced_vat(BlockVat.class, "create_enhanced", MachineTileEntity.TileVatEnhanced),
-  block_enhanced_vat_top(BlockVat.class, "create_extension"),
   block_wired_charger(BlockWiredCharger.class, MachineTileEntity.TileWiredCharger),
   block_enhanced_wired_charger(BlockWiredCharger.class, "create_enhanced", MachineTileEntity.TileWiredChargerEnhanced),
-  block_enhanced_wired_charger_top(BlockWiredCharger.class, "create_extension", MachineTileEntity.TileWiredChargerEnhanced),
+  block_simple_wired_charger(BlockWiredCharger.class, "create_simple", MachineTileEntity.TileWiredChargerSimple),
   block_wireless_charger(BlockWirelessCharger.class, MachineTileEntity.TileWirelessCharger),
   block_normal_wireless_charger(BlockNormalWirelessCharger.class, MachineTileEntity.TileWirelessCharger),
   block_enhanced_wireless_charger(BlockEnhancedWirelessCharger.class, MachineTileEntity.TileWirelessCharger),
@@ -159,6 +157,13 @@ public enum MachineObject implements IModObject {
       throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
     }
     this.modTileEntity = modTileEntity;
+  }
+  
+  @Override
+  @Nonnull
+  public <B extends Block> B apply(@Nonnull B block) {
+    block.setCreativeTab(EnderIOTab.tabEnderIOMachines);
+    return IModObject.super.apply(block);
   }
 
   @Override

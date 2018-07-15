@@ -141,6 +141,11 @@
           "layer0": "enderio:items/item_material_powder_tin"
         }
       },
+      "powder_soul": {
+        "textures": {
+          "layer0": "enderio:items/item_material_powder_soul"
+        }
+      },
       "precient_crystal": {
         "textures": {
           "layer0": "enderio:items/item_material_precient_crystal"
@@ -234,6 +239,11 @@
       "gear_wood": {
         "textures": {
           "layer0": "enderio:items/item_material_gear_wood"
+        }
+      },
+      "gear_darksteel": {
+        "textures": {
+          "layer0": "enderio:items/item_material_gear_darksteel"
         }
       },
       "organic_green_dye": {

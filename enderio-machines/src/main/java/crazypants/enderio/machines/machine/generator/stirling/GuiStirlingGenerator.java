@@ -6,12 +6,14 @@ import java.awt.Rectangle;
 import java.text.MessageFormat;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorData;
+import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
@@ -58,12 +60,12 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiIn
     ((ContainerStirlingGenerator<?>) inventorySlots).addGhostslots(getGhostSlotHandler().getGhostSlots());
   }
 
-  private static float getFactor(@Nonnull ICapacitorData upgrade) {
-    return TileStirlingGenerator.getEnergyMultiplier(upgrade) * TileStirlingGenerator.getBurnTimeMultiplier(upgrade);
+  private static float getFactor(@Nullable ICapacitorData upgrade) {
+    return TileStirlingGenerator.getBurnEfficiency(upgrade);
   }
 
   private static String formatUpgrade(@Nonnull MessageFormat fmt, @Nonnull ICapacitorData upgrade) {
-    float efficiency = getFactor(upgrade) / getFactor(DefaultCapacitorData.BASIC_CAPACITOR);
+    float efficiency = getFactor(upgrade) / getFactor(null);
     Object[] args = new Object[] { upgrade.getLocalizedName(), efficiency, TextFormatting.WHITE, TextFormatting.GRAY };
     return fmt.format(args, new StringBuffer(), null).toString();
   }
@@ -72,7 +74,7 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiIn
   protected String formatProgressTooltip(int scaledProgress, float remaining) {
     int totalBurnTime = getTileEntity().totalBurnTime;
     int remainingTicks = (int) (remaining * totalBurnTime);
-    int remainingSecs = remainingTicks / 20;
+    int remainingSecs = (remainingTicks / 20) + 1;
     int remainingPower = getTileEntity().getPowerUsePerTick() * remainingTicks;
     Object[] objects = { remaining, remainingSecs / 60, remainingSecs % 60, remainingPower };
     return MessageFormat.format(Lang.GUI_STIRGEN_REMAINING.get(), objects);
@@ -111,8 +113,8 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiIn
     int sw = fr.getStringWidth(txt);
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));
 
-    txt = Lang.GUI_STIRGEN_RATE
-        .get(Math.round(getTileEntity().getBurnTimeMultiplier() / TileStirlingGenerator.getBurnTimeMultiplier(DefaultCapacitorData.BASIC_CAPACITOR) * 100));
+    txt = Lang.GUI_STIRGEN_EFFICIENCY
+        .get(Math.round(getTileEntity().getBurnEfficiency() * 100));
     sw = fr.getStringWidth(txt);
     y += fr.FONT_HEIGHT + 3;
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));

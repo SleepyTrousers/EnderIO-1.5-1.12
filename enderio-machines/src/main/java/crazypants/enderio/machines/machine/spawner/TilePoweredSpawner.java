@@ -4,6 +4,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.NBTAction;
@@ -220,7 +221,9 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
       this.mobRotation = (this.mobRotation + 1000.0F / ((1F - getProgress()) * 800F + 200.0F)) % 360.0D;
       if (cachedEntity == null && hasEntity()) {
         cachedEntity = capturedMob.getEntity(world, pos, null, false);
-        cachedEntity.setDead();
+        if (cachedEntity != null) {
+          cachedEntity.setDead();
+        }
       }
     }
     super.updateEntityClient();
@@ -254,8 +257,14 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
     return spaceClear;
   }
 
+  @Nullable
   Entity createEntity(DifficultyInstance difficulty, boolean forceAlive) {
     Entity ent = capturedMob.getEntity(world, pos, difficulty, false);
+    if (ent == null) {
+      // Entity must have been removed from this save or is otherwise missing, so revert to blank spawner
+      capturedMob = null;
+      return ent;
+    }
     if (forceAlive && SpawnerConfig.poweredSpawnerMaxPlayerDistance.get() <= 0 && SpawnerConfig.poweredSpawnerDespawnTimeSeconds.get() > 0
         && ent instanceof EntityLiving) {
       ent.getEntityData().setLong(BlockPoweredSpawner.KEY_SPAWNED_BY_POWERED_SPAWNER, world.getTotalWorldTime());

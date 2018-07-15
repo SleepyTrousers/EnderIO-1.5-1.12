@@ -43,8 +43,8 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item name="itemFlint" /><item name="itemFlint" /><item name="itemFlint" />
-        <item name="ingotIron" /><item name="CHASSIS" /><item name="ingotIron" />
-        <item name="GEAR_ENERGIZED" /><item name="minecraft:piston" /><item name="GEAR_ENERGIZED" />
+        <item name="ingotDarkSteel" /><item name="CHASSIS" /><item name="ingotDarkSteel" />
+        <item name="GEAR_DARKSTEEL" /><item name="minecraft:piston" /><item name="GEAR_DARKSTEEL" />
       </grid>
       <output name="enderio:block_sag_mill" />
     </crafting>
@@ -52,10 +52,9 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="SAG Mill, Upgrade" required="true">
     <crafting upgrade="true">
-      <grid size="3x3">
-        <item /><item name="enderio:block_simple_sag_mill" /><item />
-        <item /><item name="CHASSIS" /><item />
-        <item name="GEAR_ENERGIZED" /><item /><item name="GEAR_ENERGIZED" />
+      <grid size="3x2">
+        <item name="ingotDarkSteel" /><item name="enderio:block_simple_sag_mill" /><item name="ingotDarkSteel" />
+        <item name="GEAR_DARKSTEEL" /><item name="CHASSIS" /><item name="GEAR_DARKSTEEL" />
       </grid>
       <output name="enderio:block_sag_mill" />
     </crafting>
@@ -65,7 +64,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item name="itemFlint" /><item name="itemFlint" /><item name="itemFlint" />
-        <item name="ingotIron" /><item name="ENHANCED_CHASSIS" /><item name="ingotIron" />
+        <item name="ingotEndSteel" /><item name="ENHANCED_CHASSIS" /><item name="ingotEndSteel" />
         <item name="GEAR_VIBRANT" /><item name="minecraft:piston" /><item name="GEAR_VIBRANT" />
       </grid>
       <output name="enderio:block_enhanced_sag_mill" />
@@ -74,10 +73,9 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Enhanced SAG Mill, Upgrade" required="true">
     <crafting upgrade="true">
-      <grid size="3x3">
-        <item /><item name="enderio:block_sag_mill" /><item />
-        <item /><item name="ENHANCED_CHASSIS" /><item />
-        <item name="GEAR_VIBRANT" /><item /><item name="GEAR_VIBRANT" />
+      <grid size="3x2">
+        <item name="ingotEndSteel"/><item name="enderio:block_sag_mill" /><item name="ingotEndSteel" />
+        <item name="GEAR_VIBRANT" /><item name="ENHANCED_CHASSIS" /><item name="GEAR_VIBRANT" />
       </grid>
       <output name="enderio:block_enhanced_sag_mill" />
     </crafting>

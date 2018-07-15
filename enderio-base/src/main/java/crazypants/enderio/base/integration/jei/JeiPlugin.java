@@ -4,11 +4,13 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.config.InfinityConfig;
 import crazypants.enderio.base.filter.gui.AbstractFilterGui;
+import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientHelper;
@@ -55,7 +57,7 @@ public class JeiPlugin implements IModPlugin {
     }
 
     registry.addAdvancedGuiHandlers(new AdvancedGuiHandlerEnderIO());
-    registry.addGhostIngredientHandler(AbstractFilterGui.class, new GhostIngredientHandlerEnderIO());
+    registry.addGhostIngredientHandler(GuiContainerBaseEIO.class, new GhostIngredientHandlerEnderIO());
 
     if (!JeiAccessor.ALTERNATIVES.isEmpty()) {
       // These are lookups for the outputs, the real recipes with the same input create a different oredicted variant of the output item.

@@ -158,7 +158,7 @@ public class ContainerCrafter<T extends TileCrafter> extends ContainerEnderCap<E
   }
 
   public class DummySlot extends GhostSlot {
-    private final int slotIndex;
+    final int slotIndex;
 
     public DummySlot(int slotIndex, int x, int y) {
       this.slotIndex = slotIndex;

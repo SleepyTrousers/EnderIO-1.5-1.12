@@ -10,7 +10,7 @@ import crazypants.enderio.machines.EnderIOMachines;
 public enum Lang implements ILang {
 
   GUI_STIRGEN_OUTPUT(".gui.stirling_generator.output"),
-  GUI_STIRGEN_RATE(".gui.stirling_generator.burnRate"),
+  GUI_STIRGEN_EFFICIENCY(".gui.stirling_generator.efficiency"),
   GUI_STIRGEN_SLOT(".gui.stirling_generator.upgradeslot"),
   GUI_STIRGEN_UPGRADES(".gui.stirling_generator.upgrades"),
   GUI_STIRGEN_REMAINING(".gui.stirling_generator.remaining"),

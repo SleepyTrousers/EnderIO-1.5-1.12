@@ -9,6 +9,7 @@ import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
 import crazypants.enderio.base.capacitor.CapacitorHelper;
+import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
@@ -29,6 +30,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   private @Nonnull ICapacitorData capacitorData = DefaultCapacitorData.NONE;
   protected final @Nonnull ICapacitorKey maxEnergyRecieved, maxEnergyStored, maxEnergyUsed;
   private ICapacitorKey energyLoss = null;
+  private @Nonnull ICapacitorKey energyEfficiency = CapacitorKey.LEGACY_ENERGY_EFFICIENCY;
 
   @Store({ NBTAction.SAVE, NBTAction.CLIENT })
   // Not NBTAction.ITEM to keep the storedEnergy tag out in the open
@@ -138,7 +140,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   }
 
   public int getPowerUsePerTick() {
-    return maxEnergyUsed.get(getCapacitorData());
+    return getMaxUsage(maxEnergyUsed);
   }
 
   @Override
@@ -258,6 +260,14 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
 
   public int getMaxUsage(@Nonnull ICapacitorKey key) {
     return key.get(capacitorData);
+  }
+
+  protected int getEfficiencyMultiplier() {
+    return energyEfficiency.get(getCapacitorData());
+  }
+
+  protected void setEfficiencyMultiplier(@Nonnull ICapacitorKey key) {
+    energyEfficiency = key;
   }
 
 }

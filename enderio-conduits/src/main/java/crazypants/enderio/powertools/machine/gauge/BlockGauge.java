@@ -53,7 +53,6 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
     super(modObject, Material.GLASS);
     setLightOpacity(255);
     useNeighborBrightness = true;
-    setCreativeTab(EnderIOTab.tabEnderIOMachines);
     setShape(mkShape(BlockFaceShape.UNDEFINED));
   }
 

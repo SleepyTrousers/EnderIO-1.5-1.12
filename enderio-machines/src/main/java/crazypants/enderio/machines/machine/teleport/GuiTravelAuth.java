@@ -8,6 +8,7 @@ import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
+import crazypants.enderio.base.integration.jei.IHaveGhostTargets;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -15,7 +16,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
-public class GuiTravelAuth extends GuiContainerBaseEIO {
+public class GuiTravelAuth extends GuiContainerBaseEIO implements IHaveGhostTargets<GuiTravelAuth> {
 
   private final @Nonnull String title;
   private final @Nonnull ITravelAccessable ta;

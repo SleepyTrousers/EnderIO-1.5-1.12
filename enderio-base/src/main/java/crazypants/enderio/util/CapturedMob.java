@@ -247,7 +247,6 @@ public class CapturedMob { // TODO: DONE111
     return getEntity(world, null, null, clone);
   }
 
-  @SuppressWarnings("null")
   public @Nullable Entity getEntity(@Nullable World world, @Nullable BlockPos pos, @Nullable DifficultyInstance difficulty, boolean clone) {
     if (world == null) {
       return null;

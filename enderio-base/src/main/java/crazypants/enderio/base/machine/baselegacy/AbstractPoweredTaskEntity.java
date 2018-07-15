@@ -146,7 +146,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   protected int usePower(int wantToUse) {
     int used = super.usePower(wantToUse);
     if (currentTask != null) {
-      currentTask.update(used);
+      currentTask.update(used * getEfficiencyMultiplier());
     }
     return used;
   }

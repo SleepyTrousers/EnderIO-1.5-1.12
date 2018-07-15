@@ -115,14 +115,19 @@ public interface Scaler {
       }
     }),
     SPAWNER(new IndexedScaler(1f, 0, 1, 5, 10, 20)),
-    BURNTIME(new IndexedScaler(1f, 0.5f, 1f / 2f, 1f / 1.5f, 1f / 1.5f, 1f / 1.25f, 1f / 1f)),
+    BURNTIME(new IndexedScaler(1f, 0.8f, 1f, 1.25f, 1.5f, 1.5f, 2f) {
+      @Override
+      public float scaleValue(float idx) {
+        return super.scaleValue(idx) / 100f; // Convert from percentage
+      }
+    }),
     CHEMICAL(new Scaler() { // (.75)-1-1.25-1.5-1.75-2...
       @Override
       public float scaleValue(float idx) {
         return 1 + (idx - 1f) * 0.25f;
       }
     }),
-    DROPOFF(new IndexedScaler(1f, 1, 2, 2.5f, 3.5f, 4.75f)), // Add half the previous value
+    DROPOFF(new IndexedScaler(1f, 1, 1, 4 / 3f, 2, 2.5f, 3f)), // Special case for stirling gen 
     CENT(new Scaler() { // 0.01-0.01-0.01 (used for power loss)
       @Override
       public float scaleValue(float idx) {

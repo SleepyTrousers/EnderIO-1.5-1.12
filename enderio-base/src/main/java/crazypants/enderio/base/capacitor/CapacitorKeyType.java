@@ -10,6 +10,7 @@ public enum CapacitorKeyType {
   ENERGY_USE,
   ENERGY_LOSS,
   ENERGY_GEN,
+  ENERGY_EFFICIENCY,
   SPEED,
   AREA,
   AMOUNT,;

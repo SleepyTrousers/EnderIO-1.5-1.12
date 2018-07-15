@@ -10,18 +10,20 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
+import crazypants.enderio.base.integration.jei.IHaveGhostTargets;
 import crazypants.enderio.base.machine.gui.GuiButtonIoConfig;
 import crazypants.enderio.base.machine.gui.GuiOverlayIoConfig;
 import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.machines.lang.Lang;
+import crazypants.enderio.machines.machine.crafter.ContainerCrafter.DummySlot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
-public class GuiCrafter<T extends TileCrafter> extends GuiContainerBaseEIO {
+public class GuiCrafter<T extends TileCrafter> extends GuiContainerBaseEIO implements IHaveGhostTargets<GuiCrafter<T>> {
 
   private static final int ID_REDSTONE_BUTTON = 139;
   private static final int ID_IO_MODE_BUTTON = 140;
@@ -122,4 +124,9 @@ public class GuiCrafter<T extends TileCrafter> extends GuiContainerBaseEIO {
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
 
+  @SuppressWarnings("unchecked")
+  @Override
+  public boolean isSlotTarget(GhostSlot slot) {
+    return ((ContainerCrafter<T>.DummySlot)slot).slotIndex < 9;
+  }
 }
