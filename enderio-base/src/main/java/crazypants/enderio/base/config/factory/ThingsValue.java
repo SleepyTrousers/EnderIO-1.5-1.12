@@ -5,9 +5,6 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.stackable.Things;
 
-import crazypants.enderio.base.Log;
-import io.netty.buffer.ByteBuf;
-
 public class ThingsValue extends AbstractValue<Things> {
 
   protected ThingsValue(@Nonnull IValueFactory owner, @Nonnull String section, @Nonnull String keyname, @Nonnull Things defaultValue, @Nonnull String text) {
@@ -21,11 +18,7 @@ public class ThingsValue extends AbstractValue<Things> {
 
   @Override
   protected ByteBufHelper getDataType() {
-    return ByteBufHelper.NONE;
+    return ByteBufHelper.THINGS;
   }
 
-  @Override
-  public void save(ByteBuf buf) {
-    Log.warn("StringList config options cannot be synced to the client. This is a coding error.");
-  }
 }

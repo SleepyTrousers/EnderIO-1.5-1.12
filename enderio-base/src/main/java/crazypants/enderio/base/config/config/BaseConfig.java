@@ -14,6 +14,7 @@ public final class BaseConfig {
     DarkSteelConfig.F_DARK_STEEL.getClass();
     EnchanterConfig.F.getClass();
     InfinityConfig.F.getClass();
+    ItemConfig.F.getClass();
     RecipeConfig.F.getClass();
     BrokenSpawnerConfig.F.getClass();
     TopConfig.F.getClass();

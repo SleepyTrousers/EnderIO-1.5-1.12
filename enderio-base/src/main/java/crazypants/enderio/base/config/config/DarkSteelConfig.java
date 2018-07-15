@@ -8,7 +8,7 @@ import net.minecraftforge.fluids.Fluid;
 
 public final class DarkSteelConfig {
 
-  public static final IValueFactory F_DARK_STEEL = BaseConfig.F.section("items.darksteel");
+  public static final IValueFactory F_DARK_STEEL = ItemConfig.F.section(".darksteel");
 
   public static final IValueFactory F_PICKAXE = F_DARK_STEEL.section(".pickaxe");
 

@@ -13,7 +13,7 @@ import baubles.api.IBauble;
 import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
 import crazypants.enderio.api.upgrades.IRenderUpgrade;
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.ItemConfig;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.lang.LangPower;
@@ -36,7 +36,6 @@ import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.base.config.Config.magnetAllowInMainInventory;
 import static crazypants.enderio.util.NbtValue.MAGNET_ACTIVE;
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles|API")
@@ -47,7 +46,7 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
   }
 
   protected ItemMagnet(@Nonnull IModObject modObject) {
-    super(Config.magnetPowerCapacityRF, Config.magnetPowerCapacityRF / 100, 0);
+    super(ItemConfig.magnetPowerCapacity.get(), ItemConfig.magnetPowerCapacity.get() / 100, 0);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
     setMaxStackSize(1);
@@ -68,11 +67,11 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
 
   public static boolean hasPower(@Nonnull ItemStack itemStack) {
     int energyStored = itemStack.getItem() instanceof IInternalPoweredItem ? ((IInternalPoweredItem) itemStack.getItem()).getEnergyStored(itemStack) : 0;
-    return energyStored > 0 && energyStored >= Config.magnetPowerUsePerSecondRF;
+    return energyStored > 0 && energyStored >= ItemConfig.magnetPowerUsePerSecond.get();
   }
 
   public void drainPerSecondPower(@Nonnull ItemStack itemStack) {
-    extractEnergyInternal(itemStack, Config.magnetPowerUsePerSecondRF);
+    extractEnergyInternal(itemStack, ItemConfig.magnetPowerUsePerSecond.get());
   }
 
   @Override
@@ -92,7 +91,7 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
   @SideOnly(Side.CLIENT)
   public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
     super.addInformation(stack, worldIn, tooltip, flagIn);
-    tooltip.add(LangPower.RF(getEnergyStored(stack), Config.magnetPowerCapacityRF));
+    tooltip.add(LangPower.RF(getEnergyStored(stack), ItemConfig.magnetPowerCapacity.get()));
   }
 
   @Override
@@ -127,7 +126,7 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
 
   @Override
   public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack stack) {
-    return getUnlocalizedName() + (magnetAllowInMainInventory ? ".everywhere" : "");
+    return getUnlocalizedName() + (ItemConfig.magnetAllowInMainInventory.get() ? ".everywhere" : "");
   }
 
   @Override
@@ -135,7 +134,7 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
   public BaubleType getBaubleType(ItemStack itemstack) {
     BaubleType t = null;
     try {
-      t = BaubleType.valueOf(Config.magnetBaublesType);
+      t = BaubleType.valueOf(ItemConfig.magnetBaublesType.get());
     } catch (Exception e) {
       // NOP
     }
@@ -182,7 +181,7 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
     if (itemstack == null || player == null) {
       return false;
     }
-    return Config.magnetAllowInBaublesSlot && (Config.magnetAllowDeactivatedInBaublesSlot || isActive(itemstack));
+    return ItemConfig.magnetAllowInBaublesSlot.get() && (ItemConfig.magnetAllowDeactivatedInBaublesSlot.get() || isActive(itemstack));
   }
 
   @Override

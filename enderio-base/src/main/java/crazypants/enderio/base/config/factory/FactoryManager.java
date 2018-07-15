@@ -34,8 +34,10 @@ public class FactoryManager {
   @SubscribeEvent
   public static void onPlayerLoggon(final PlayerLoggedInEvent evt) {
     for (IValueFactory factory : factories.values()) {
-      PacketHandler.sendTo(new PacketConfigSyncNew(factory), (EntityPlayerMP) evt.player);
-      Log.debug("Sent config to player " + evt.player.getDisplayNameString() + " for " + factory.getModid() + " (" + factory.getSection() + ")");
+      if (factory.needsSyncing()) {
+        PacketHandler.sendTo(new PacketConfigSyncNew(factory), (EntityPlayerMP) evt.player);
+        Log.debug("Sent config to player " + evt.player.getDisplayNameString() + " for " + factory.getModid() + " (" + factory.getSection() + ")");
+      }
     }
   }
 

@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.MagnetUtil;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.ItemConfig;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.item.magnet.PacketMagnetState.SlotType;
@@ -20,11 +20,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ClassInheritanceMultiMap;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -60,7 +58,7 @@ public class MagnetController {
 
   public static ActiveMagnet getMagnet(EntityPlayer player, boolean activeOnly) {
     NonNullList<ItemStack> inv = player.inventory.mainInventory;
-    int maxSlot = Config.magnetAllowInMainInventory ? inv.size() : InventoryPlayer.getHotbarSize();
+    int maxSlot = ItemConfig.magnetAllowInMainInventory.get() ? inv.size() : InventoryPlayer.getHotbarSize();
     for (int i = 0; i < maxSlot; i++) {
       final ItemStack item = inv.get(i);
       if (ItemMagnet.isMagnet(item) && (!activeOnly || (ItemMagnet.isActive(item) && ItemMagnet.hasPower(item)))) {
@@ -79,13 +77,9 @@ public class MagnetController {
   private static final double speed4 = speed * 4;
 
   public static void doHoover(EntityPlayer player) {
-
-    if (blacklist == null) {
-      initBlacklist();
-    }
-
-    AxisAlignedBB aabb = new AxisAlignedBB(player.posX - Config.magnetRange, player.posY - Config.magnetRange, player.posZ - Config.magnetRange,
-        player.posX + Config.magnetRange, player.posY + Config.magnetRange, player.posZ + Config.magnetRange);
+    Integer range = ItemConfig.magnetRange.get();
+    AxisAlignedBB aabb = new AxisAlignedBB(player.posX - range, player.posY - range, player.posZ - range, player.posX + range, player.posY + range,
+        player.posZ + range);
 
     List<Entity> interestingItems = selectEntitiesWithinAABB(player.world, aabb);
 
@@ -112,33 +106,14 @@ public class MagnetController {
     }
   }
 
-  private static List<Item> blacklist = null;
-
-  private static void initBlacklist() {
-    blacklist = new ArrayList<Item>();
-    for (String name : Config.magnetBlacklist) {
-      if (name != null && !name.isEmpty()) {
-        Item item = Item.REGISTRY.getObject(new ResourceLocation(name));
-        if (item != null) {
-          blacklist.add(item);
-        }
-      }
-    }
-  }
-
   private static boolean isBlackListed(EntityItem entity) {
-    for (Item blacklisted : blacklist) {
-      if (blacklisted == entity.getItem().getItem()) {
-        return true;
-      }
-    }
-    return false;
+    return ItemConfig.magnetBlacklist.get().contains(entity.getItem());
   }
 
   private static List<Entity> selectEntitiesWithinAABB(World world, AxisAlignedBB bb) {
     List<Entity> arraylist = null;
 
-    int itemsRemaining = Config.magnetMaxItems;
+    int itemsRemaining = ItemConfig.magnetMaxItems.get();
     if (itemsRemaining <= 0) {
       itemsRemaining = Integer.MAX_VALUE;
     }
@@ -170,7 +145,7 @@ public class MagnetController {
               isValidTarget = isValidTarget && !MagnetUtil.isReserved(entity);
               if (isValidTarget) {
                 if (arraylist == null) {
-                  arraylist = new ArrayList<Entity>(Config.magnetMaxItems > 0 ? Config.magnetMaxItems : 20);
+                  arraylist = new ArrayList<Entity>(ItemConfig.magnetMaxItems.get() > 0 ? ItemConfig.magnetMaxItems.get() : 20);
                 }
                 arraylist.add(entity);
                 if (itemsRemaining-- <= 0) {
@@ -228,7 +203,7 @@ public class MagnetController {
     if (stack.getItem() != ModObject.itemMagnet.getItem() || ItemMagnet.isActive(stack) == isActive) {
       return;
     }
-    if (!Config.magnetAllowDeactivatedInBaublesSlot && type == SlotType.BAUBLES && !isActive) {
+    if (!ItemConfig.magnetAllowDeactivatedInBaublesSlot.get() && type == SlotType.BAUBLES && !isActive) {
       dropOff = player.inventory.getFirstEmptyStack();
       if (dropOff < 0) {
         return;

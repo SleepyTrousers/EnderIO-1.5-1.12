@@ -114,6 +114,11 @@ public class SlaveFactory implements IValueFactory {
   }
 
   @Override
+  public boolean needsSyncing() {
+    return !syncValues.isEmpty();
+  }
+
+  @Override
   public void save(final ByteBuf buf) {
     for (AbstractValue<?> value : syncValues) {
       value.save(buf);

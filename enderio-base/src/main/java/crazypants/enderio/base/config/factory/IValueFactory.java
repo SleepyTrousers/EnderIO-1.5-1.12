@@ -49,6 +49,8 @@ public interface IValueFactory extends IRootFactory {
 
   Map<String, Object> getServerConfig();
 
+  boolean needsSyncing();
+
   void save(final ByteBuf buf);
 
   int read(final ByteBuf buf);

@@ -7,7 +7,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.ItemConfig;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.base.teleport.RandomTeleportUtil;
@@ -96,8 +96,8 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider,
   @Override
   protected void onFoodEaten(@Nonnull ItemStack stack, @Nonnull World worldIn, @Nonnull EntityPlayer player) {
     super.onFoodEaten(stack, worldIn, player);
-    if (!worldIn.isRemote && EnderFood.get(stack).doesTeleport() && worldIn.rand.nextFloat() < Config.teleportEffectProbability) {
-      RandomTeleportUtil.teleportEntity(worldIn, player, true, false, 16);
+    if (!worldIn.isRemote && EnderFood.get(stack).doesTeleport() && worldIn.rand.nextFloat() < ItemConfig.enderiosTeleportChance.get()) {
+      RandomTeleportUtil.teleportEntity(worldIn, player, true, false, ItemConfig.enderiosTeleportRange.get());
     }
   }
 

@@ -553,8 +553,8 @@ enderio.config.aesthetic=Aesthetic Settings
 enderio.config.aesthetic.tooltip=Oooh, ahhh, pretty.
 enderio.config.advanced=Advanced Settings
 enderio.config.advanced.tooltip=For those who can't have enough configs.
-enderio.config.magnet=Electromagnet
-enderio.config.magnet.tooltip=How do they work?
+enderio.config.items.magnet=Electromagnet
+enderio.config.items.magnet.tooltip=How do they work?
 enderio.config.fluid=Fluids
 enderio.config.fluid.tooltip=Pure liquid energy!
 
