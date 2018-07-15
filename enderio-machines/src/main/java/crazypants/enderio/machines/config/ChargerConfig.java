@@ -1,11 +1,11 @@
-package crazypants.enderio.base.config.config;
+package crazypants.enderio.machines.config;
 
 import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.config.factory.IValueFactory;
 
 public final class ChargerConfig {
 
-  public static final IValueFactory F = BaseConfig.F.section("wireless");
+  public static final IValueFactory F = Config.F.section("wireless");
 
   public static final IValue<Integer> wirelessRange = F.make("wirelessRange", 16, //
       "The range of wireless chargers (block version).").setRange(1, 160).sync();

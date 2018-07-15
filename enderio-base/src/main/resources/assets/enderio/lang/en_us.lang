@@ -539,8 +539,6 @@ enderio.config.power=Power Settings
 enderio.config.power.tooltip=So many numbers to change...
 enderio.config.item=Item Settings
 enderio.config.item.tooltip=If you don't like some of my amazing items :(
-enderio.config.efficiency=Efficiency Settings
-enderio.config.efficiency.tooltip=Where do the numbers end?
 enderio.config.personal=Personal Settings
 enderio.config.personal.tooltip=I won't tell anyone, I promise.
 enderio.config.anchor=Travel Anchor
@@ -558,7 +556,6 @@ enderio.config.magnet.tooltip=How do they work?
 enderio.config.fluid=Fluids
 enderio.config.fluid.tooltip=Pure liquid energy!
 
-enderio.config.capacitor=Capacitor Values
 enderio.config.enchanter=Enchanter
 enderio.config.enchantments=Enchantments
 enderio.config.hoes=Hoes for Farming Station

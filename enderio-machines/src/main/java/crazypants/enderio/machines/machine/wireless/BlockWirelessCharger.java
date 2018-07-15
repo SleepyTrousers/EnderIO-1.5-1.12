@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.BoundingBox;
 
-import crazypants.enderio.base.config.config.ChargerConfig;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.render.PaintHelper;
@@ -15,6 +14,7 @@ import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
+import crazypants.enderio.machines.config.ChargerConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.properties.IProperty;

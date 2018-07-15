@@ -44,9 +44,7 @@ public final class Config {
   public static Configuration config;
 
   public static final @Nonnull Section sectionPower = new Section("Power Settings", "power");
-  public static final @Nonnull Section sectionRecipe = new Section("Recipe Settings", "recipe");
   public static final @Nonnull Section sectionItems = new Section("Item Enabling", "item");
-  public static final @Nonnull Section sectionEfficiency = new Section("Efficiency Settings", "efficiency");
   public static final @Nonnull Section sectionAnchor = new Section("Anchor Settings", "anchor");
   public static final @Nonnull Section sectionStaff = new Section("Staff Settings", "staff");
   public static final @Nonnull Section sectionRod = new Section("Rod of Return Settings", "rod");
@@ -56,9 +54,7 @@ public final class Config {
   public static final @Nonnull Section sectionFluid = new Section("Fluid Settings", "fluid");
   public static final @Nonnull Section sectionSoulBinder = new Section("Soul Binder Settings", "soulBinder");
   public static final @Nonnull Section sectionSoulVial = new Section("", "soulvial");
-  public static final @Nonnull Section sectionEnchantments = new Section("Enchantments", "enchantments");
   public static final @Nonnull Section sectionMisc = new Section("Misc", "misc");
-  public static final @Nonnull Section sectionCapacitor = new Section("Capacitor Values", "capacitor");
   public static final @Nonnull Section sectionHoes = new Section("Farm Settings.Hoes", "hoes");
 
   public static final int DEFAULT_CONDUIT_PIXELS = 3;
@@ -258,7 +254,7 @@ public final class Config {
 
   public static int maxMobsAttracted = 20;
 
-  public static double teleportEffectProbability = 0.03f;
+  public static double teleportEffectProbability = 0.03f; // TODO: This is too low
 
   public static void init(FMLPreInitializationEvent event) {
     MinecraftForge.EVENT_BUS.register(new Config());

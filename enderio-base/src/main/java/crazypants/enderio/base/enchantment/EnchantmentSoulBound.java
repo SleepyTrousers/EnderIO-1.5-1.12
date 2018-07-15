@@ -3,8 +3,10 @@ package crazypants.enderio.base.enchantment;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.api.common.enchant.IAdvancedEnchant;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.config.EnchantmentConfig;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -13,7 +15,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
-public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchant {
+public class EnchantmentSoulBound extends EnchantmentBase {
 
   private static final @Nonnull String NAME = "soulbound";
 
@@ -23,19 +25,18 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
   }
 
   private EnchantmentSoulBound() {
-    super(Rarity.VERY_RARE, EnumEnchantmentType.ALL, EntityEquipmentSlot.values());
-    setName(EnderIO.DOMAIN + "." + NAME);
-    setRegistryName(EnderIO.DOMAIN, NAME);
-  }
-
-  @Override
-  public int getMaxEnchantability(int level) {
-    return 60;
+    super(NAME, EnchantmentConfig.soulboundRarity, NullHelper.first(IAdvancedEnchant.ALL, EnumEnchantmentType.ALL), EntityEquipmentSlot.values(),
+        EnchantmentConfig.soulboundEnabled);
   }
 
   @Override
   public int getMinEnchantability(int level) {
-    return 16;
+    return EnchantmentConfig.soulboundMinEnchantability.get();
+  }
+
+  @Override
+  public int getMaxEnchantability(int level) {
+    return EnchantmentConfig.soulboundMaxEnchantability.get();
   }
 
   @Override

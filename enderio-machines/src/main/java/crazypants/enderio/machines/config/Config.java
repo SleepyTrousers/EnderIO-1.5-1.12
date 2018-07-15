@@ -59,6 +59,7 @@ public final class Config {
     VacuumConfig.F.getClass();
     VatConfig.F.getClass();
     WeatherConfig.F.getClass();
+    ChargerConfig.F.getClass();
     ZombieGenConfig.F.getClass();
   }
 }

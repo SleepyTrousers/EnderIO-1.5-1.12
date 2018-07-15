@@ -2,9 +2,8 @@ package crazypants.enderio.base.enchantment;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.api.common.enchant.IAdvancedEnchant;
-
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.config.EnchantmentConfig;
 import crazypants.enderio.base.teleport.RandomTeleportUtil;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -18,7 +17,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
-public class EnchantmentRepellent extends Enchantment implements IAdvancedEnchant {
+public class EnchantmentRepellent extends EnchantmentBase {
 
   private static final @Nonnull String NAME = "repellent";
 
@@ -28,20 +27,18 @@ public class EnchantmentRepellent extends Enchantment implements IAdvancedEnchan
   }
 
   public EnchantmentRepellent() {
-    super(Rarity.VERY_RARE, EnumEnchantmentType.ARMOR,
-        new EntityEquipmentSlot[] { EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET });
-    setName(EnderIO.DOMAIN + "." + NAME);
-    setRegistryName(EnderIO.DOMAIN, NAME);
+    super(NAME, EnchantmentConfig.repellentRarity, EnumEnchantmentType.ARMOR,
+        new EntityEquipmentSlot[] { EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET }, EnchantmentConfig.repellentEnabled);
   }
 
   @Override
   public int getMinEnchantability(int enchantmentLevel) {
-    return 10 + 5 * enchantmentLevel;
+    return EnchantmentConfig.repellentMinEnchantabilityBase.get() + EnchantmentConfig.repellentMinEnchantabilityPerLevel.get() * enchantmentLevel;
   }
 
   @Override
   public int getMaxEnchantability(int enchantmentLevel) {
-    return 10 + 10 * enchantmentLevel;
+    return EnchantmentConfig.repellentMaxEnchantabilityBase.get() + EnchantmentConfig.repellentMaxEnchantabilityPerLevel.get() * enchantmentLevel;
   }
 
   @Override
