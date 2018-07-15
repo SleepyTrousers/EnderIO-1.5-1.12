@@ -109,7 +109,7 @@ public class ContainerCrafter<T extends TileCrafter> extends ContainerEnderCap<E
     return new Point(30, 84);
   }
 
-  public List<DummySlot> getDummySlots() {
+  public List<? extends GhostSlot> getDummySlots() {
     return dummySlots;
   }
 

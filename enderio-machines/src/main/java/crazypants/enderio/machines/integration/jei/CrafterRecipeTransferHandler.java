@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NullHelper;
 
@@ -63,7 +64,7 @@ public abstract class CrafterRecipeTransferHandler<E extends ContainerCrafter<?>
       return null;
     }
 
-    List<ContainerCrafter<?>.DummySlot> dummySlots = crafter.getDummySlots();
+    List<? extends GhostSlot> dummySlots = crafter.getDummySlots();
 
     IGuiItemStackGroup itemStacks = recipeLayout.getItemStacks();
 
