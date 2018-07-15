@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.machine.base.block.BlockMachineExtension;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.AbstractGeneratorBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
@@ -13,6 +14,8 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.machines.init.MachineObject;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -24,6 +27,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -42,7 +46,12 @@ public class BlockCombustionGenerator<T extends TileCombustionGenerator> extends
   public static BlockCombustionGenerator<TileCombustionGenerator.Enhanced> create_enhanced(@Nonnull IModObject modObject) {
     BlockCombustionGenerator<TileCombustionGenerator.Enhanced> gen = new BlockCombustionGenerator<>(modObject);
     gen.init();
+    gen.isEnhanced = true;
     return gen;
+  }
+
+  public static BlockMachineExtension create_extension(@Nonnull IModObject modObject) {
+    return new BlockMachineExtension(modObject, MachineObject.block_enhanced_combustion_generator, new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 11D / 16D, 1.0D));
   }
 
   protected BlockCombustionGenerator(@Nonnull IModObject modObject) {
@@ -155,5 +164,11 @@ public class BlockCombustionGenerator<T extends TileCombustionGenerator> extends
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileCombustionGenerator tileEntity) {
     blockStateWrapper.addCacheKey(tileEntity.getFacing()).addCacheKey(tileEntity.isActive());
+  }
+
+  @Nullable
+  @Override
+  public Block getEnhancedExtensionBlock() {
+    return MachineObject.block_enhanced_combustion_generator_top.getBlockNN();
   }
 }

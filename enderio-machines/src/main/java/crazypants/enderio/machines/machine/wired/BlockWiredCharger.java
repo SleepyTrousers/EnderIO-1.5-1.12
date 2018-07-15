@@ -5,18 +5,22 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
+import crazypants.enderio.base.machine.base.block.BlockMachineExtension;
 import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.IRenderMapper;
+import crazypants.enderio.machines.init.MachineObject;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -47,6 +51,7 @@ public class BlockWiredCharger<T extends TileWiredCharger> extends AbstractPower
         return RenderMappers.ENHANCED_BODY_MAPPER;
       }
     };
+    res.isEnhanced = true;
     res.init();
     return res;
   }
@@ -67,6 +72,10 @@ public class BlockWiredCharger<T extends TileWiredCharger> extends AbstractPower
     };
     res.init();
     return res;
+  }
+
+  public static BlockMachineExtension create_extension(@Nonnull IModObject modObject) {
+    return new BlockMachineExtension(modObject, MachineObject.block_enhanced_wired_charger, new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 11D / 16D, 1.0D));
   }
 
   private BlockWiredCharger(@Nonnull IModObject modObject) {
@@ -109,6 +118,12 @@ public class BlockWiredCharger<T extends TileWiredCharger> extends AbstractPower
     } else {
       return 0;
     }
+  }
+
+  @Nullable
+  @Override
+  public Block getEnhancedExtensionBlock() {
+    return MachineObject.block_enhanced_wired_charger_top.getBlockNN();
   }
 
 }

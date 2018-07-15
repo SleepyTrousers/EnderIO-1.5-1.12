@@ -1,6 +1,7 @@
 package crazypants.enderio.machines.machine.alloy;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
@@ -12,6 +13,7 @@ import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
+import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
@@ -23,6 +25,7 @@ import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_INTAKE;
@@ -89,6 +92,11 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
         return true;
       }
       return super.shouldDoubleTick(task, usedEnergy);
+    }
+
+    @Override
+    public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode modeIn) {
+      return (faceHit != EnumFacing.UP || modeIn == IoMode.NONE) && super.supportsMode(faceHit, modeIn);
     }
 
   }

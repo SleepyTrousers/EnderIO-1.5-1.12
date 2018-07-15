@@ -1,6 +1,14 @@
 {
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
+	"textures": {
+		"0": "enderio:blocks/vat/base",
+		"1": "enderio:blocks/block_machine_bottom",
+		"2": "enderio:blocks/vat/tank_top_front",
+		"3": "enderio:blocks/vat/tank_side",
+		"4": "enderio:blocks/vat/other_bits",
+		"particle": "enderio:blocks/block_machine_bottom"
+	},
 	"elements": [
 		{
 			"name": "base",
