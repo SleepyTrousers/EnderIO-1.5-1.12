@@ -71,11 +71,11 @@ public class ContainerCrafter<T extends TileCrafter> extends ContainerEnderCap<E
       for (int col = 0; col < 3; ++col) {
         int x = leftX + col * 18;
         int y = topY + row * 18;
-        addSlotToContainer(new InputSlot(getOwner().getInventory().getView(Type.INPUT), "INPUT" + index, x, y));
+        addSlotToContainer(new InputSlot(getTileEntityNN().getInventory().getView(Type.INPUT), "INPUT" + index, x, y));
         index++;
       }
     }
-    addSlotToContainer(new EnderSlot(getOwner().getInventory().getView(Type.OUTPUT), "OUTPUT", 172, 34) {
+    addSlotToContainer(new EnderSlot(getTileEntityNN().getInventory().getView(Type.OUTPUT), "OUTPUT", 172, 34) {
       @Override
       public boolean isItemValid(@Nullable ItemStack itemStack) {
         return false;
@@ -113,15 +113,11 @@ public class ContainerCrafter<T extends TileCrafter> extends ContainerEnderCap<E
     return dummySlots;
   }
 
-  private TileCrafter getOwner() {
-    return getTileEntity();
-  }
-
   @Override
   public IMessage networkExec(int id, GuiPacket message) {
     switch (id) {
     case EXEC_SET_BUFFER:
-      getOwner().setBufferStacks(message.getBoolean(0));
+      getTileEntityNN().setBufferStacks(message.getBoolean(0));
       break;
     default:
       break;
@@ -149,7 +145,7 @@ public class ContainerCrafter<T extends TileCrafter> extends ContainerEnderCap<E
 
     @Override
     public boolean isItemValid(@Nonnull ItemStack itemStack) {
-      ItemStack refStack = getOwner().craftingGrid.getStackInSlot(slotNumber);
+      ItemStack refStack = getTileEntityNN().craftingGrid.getStackInSlot(slotNumber);
       if (refStack.isEmpty() || itemStack.isEmpty()) {
         return false;
       }
@@ -169,11 +165,11 @@ public class ContainerCrafter<T extends TileCrafter> extends ContainerEnderCap<E
     @Override
     @Nonnull
     public ItemStack getStack() {
-      return getOwner().craftingGrid.getStackInSlot(slotIndex);
+      return getTileEntityNN().craftingGrid.getStackInSlot(slotIndex);
     }
 
     @Override
-    public void putStack(@Nonnull ItemStack stack, int slot) {
+    public void putStack(@Nonnull ItemStack stack, int realsize) {
       if (slotIndex >= 9) {
         return;
       }
@@ -181,7 +177,7 @@ public class ContainerCrafter<T extends TileCrafter> extends ContainerEnderCap<E
         stack = stack.copy();
         stack.setCount(1);
       }
-      PacketHandler.INSTANCE.sendToServer(PacketCrafter.setSlot(getOwner(), slotIndex, stack));
+      PacketHandler.INSTANCE.sendToServer(PacketCrafter.setSlot(getTileEntityNN(), slotIndex, stack));
     }
   }
 

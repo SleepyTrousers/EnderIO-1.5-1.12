@@ -65,7 +65,7 @@ public class BlockCrafter<T extends TileCrafter> extends AbstractMachineBlock<T>
   @Nullable
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1,
       @Nonnull T te) {
-    return new GuiCrafter<T>(player.inventory, te);
+    return new GuiCrafter(player.inventory, te);
   }
 
   @Override

@@ -7,78 +7,49 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
-import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.base.integration.jei.IHaveGhostTargets;
-import crazypants.enderio.base.machine.gui.GuiButtonIoConfig;
-import crazypants.enderio.base.machine.gui.GuiOverlayIoConfig;
+import crazypants.enderio.base.machine.gui.GuiCapMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.machines.lang.Lang;
-import crazypants.enderio.machines.machine.crafter.ContainerCrafter.DummySlot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
-public class GuiCrafter<T extends TileCrafter> extends GuiContainerBaseEIO implements IHaveGhostTargets<GuiCrafter<T>> {
-
-  private static final int ID_REDSTONE_BUTTON = 139;
-  private static final int ID_IO_MODE_BUTTON = 140;
-  private static final int ID_BUFFER_BUTTON = 141;
+public class GuiCrafter extends GuiCapMachineBase<TileCrafter> implements IHaveGhostTargets<GuiCrafter> {
 
   private static final int POWERX = 10;
   private static final int POWERY = 14;
   private static final int POWER_HEIGHT = 42;
 
-  private final @Nonnull RedstoneModeButton<TileCrafter> rsB;
-  private final @Nonnull GuiOverlayIoConfig<TileCrafter> configOverlay;
-  private final @Nonnull GuiButtonIoConfig<TileCrafter> configB;
-
-  private final @Nonnull TileCrafter te;
-
   private final @Nonnull ToggleButton bufferSizeB;
 
   private final boolean isSimple;
 
-  public GuiCrafter(@Nonnull InventoryPlayer playerInv, @Nonnull T te) {
-    super(ContainerCrafter.create(playerInv, te), "crafter", "simple_crafter");
-    this.te = te;
+  public GuiCrafter(@Nonnull InventoryPlayer playerInv, @Nonnull TileCrafter te) {
+    super(te, ContainerCrafter.create(playerInv, te), "crafter", "simple_crafter");
     isSimple = te instanceof TileCrafter.Simple;
     xSize = getXSize();
 
-    int x = getXSize() - 7 - 16;
-    int y = 14;
+    redstoneButton.setIsVisible(!isSimple);
 
-    rsB = new RedstoneModeButton<TileCrafter>(this, ID_REDSTONE_BUTTON, x, y, te);
-    rsB.setIsVisible(!isSimple);
-
-    y += 20;
-    configOverlay = new GuiOverlayIoConfig<TileCrafter>(te);
-    addOverlay(configOverlay);
-
-    configB = new GuiButtonIoConfig<TileCrafter>(this, ID_IO_MODE_BUTTON, x, y, te, configOverlay);
-
-    y += 20;
-    bufferSizeB = new ToggleButton(this, ID_BUFFER_BUTTON, x, y, IconEIO.ITEM_SINGLE, IconEIO.ITEM_STACK);
+    bufferSizeB = new ToggleButton(this, -1, recipeButton.x, recipeButton.y + 19, IconEIO.ITEM_SINGLE, IconEIO.ITEM_STACK);
     bufferSizeB.setSelectedToolTip(Lang.GUI_BUFFERING_STACK.get());
     bufferSizeB.setUnselectedToolTip(Lang.GUI_BUFFERING_SINGLE.get());
     bufferSizeB.setSelected(te.isBufferStacks());
     bufferSizeB.setIsVisible(!isSimple);
 
     addDrawingElement(new PowerBar(te.getEnergy(), this, POWERX, POWERY, POWER_HEIGHT));
-    // recipeButton.setYOrigin(recipeButton.getBounds().y + 19);
   }
 
   @Override
   public void initGui() {
     super.initGui();
     bufferSizeB.onGuiInit();
-    rsB.onGuiInit();
-    configB.onGuiInit();
-    ((ContainerCrafter) inventorySlots).addCrafterSlots(getGhostSlotHandler());
+    ((ContainerCrafter<?>) getInventory()).addCrafterSlots(getGhostSlotHandler());
   }
 
   @Override
@@ -103,10 +74,6 @@ public class GuiCrafter<T extends TileCrafter> extends GuiContainerBaseEIO imple
     }
   }
 
-  private TileCrafter getTileEntity() {
-    return te;
-  }
-
   @Override
   public final int getXSize() {
     return 220;
@@ -127,6 +94,6 @@ public class GuiCrafter<T extends TileCrafter> extends GuiContainerBaseEIO imple
   @SuppressWarnings("unchecked")
   @Override
   public boolean isSlotTarget(GhostSlot slot) {
-    return ((ContainerCrafter<T>.DummySlot)slot).slotIndex < 9;
+    return ((ContainerCrafter<?>.DummySlot) slot).slotIndex < 9;
   }
 }
