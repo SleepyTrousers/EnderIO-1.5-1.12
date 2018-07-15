@@ -13,7 +13,7 @@ public final class ZooConfig {
   public static final IValue<Integer> explosionRange = CREEPER.make("explosionRange", 5, //
       "The range of the 'teleport explosion'.").setRange(1, 99).sync();
   public static final IValue<Float> teleportRange = CREEPER.make("teleportRange", 32f, //
-      "Sets the max range entites can be telported when the creeper explodes.").setRange(1, 160).sync();
+      "Sets the max range entites can be telported when the creeper explodes.").setRange(1.5, 160).sync();
   public static final IValue<Integer> confusionDuration = CREEPER.make("confusionDuration", 100, //
       "Sets the durtaion in ticks of the confusion effect applied on explosion.").setRange(20 * 1, 20 * 30).sync();
   public static final IValue<Double> creeperHealth = CREEPER.make("health", 20d, //
@@ -197,11 +197,11 @@ public final class ZooConfig {
   public static final IValue<Float> attackTeleportChance = LOVE.make("attackTeleportChance", .05f, //
       "The chance a Love Child will teleport an attacker away.").setRange(0, 1);
   public static final IValue<Float> attackTeleportDistance = LOVE.make("attackTeleportDistance", 5f, //
-      "The maximum distance a Love Child will teleport an attacker away.").setRange(0.5, 64);
+      "The maximum distance a Love Child will teleport an attacker away.").setRange(1.5, 64);
   public static final IValue<Float> defendTeleportChance = LOVE.make("defendTeleportChance", .05f, //
       "The chance a Love Child will teleport away when attacked.").setRange(0, 1);
   public static final IValue<Float> defendTeleportDistance = LOVE.make("defendTeleportDistance", 5f, //
-      "The maximum distance a Love Child will teleport away when attacked.").setRange(0.5, 64);
+      "The maximum distance a Love Child will teleport away when attacked.").setRange(1.5, 64);
   public static final IValue<Double> loveChildHealth = LOVE.make("health", 25d, //
       "Health of Love Children.").setRange(1, 200).sync();
   public static final IValue<Double> loveChildAttackDamage = LOVE.make("attackDamage", 10d, //

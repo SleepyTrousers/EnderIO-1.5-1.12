@@ -14,7 +14,7 @@ public class ItemConfig {
   public static final IValue<Float> enderiosTeleportChance = FOOD.make("enderiosTeleportChance", .3f, //
       "The probability that Enderios do what they promise.").setRange(0, 1).sync();
   public static final IValue<Float> enderiosTeleportRange = FOOD.make("enderiosTeleportRange", 16f, //
-      "The maximum range of a cerial-induced location change.").setRange(1, 128).sync();
+      "The maximum range of a cerial-induced location change.").setRange(1.5, 128).sync();
 
   public static final IValueFactory MAG = F.section(".magnet");
 
