@@ -114,7 +114,7 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagRecipe> implem
     guiItemStacks.init(3, false, 90 - xOff, 58 - yOff);
     guiItemStacks.init(4, false, 111 - xOff, 58 - yOff);
     guiItemStacks.init(5, true, 121 - xOff, 22 - yOff);
-    group.init(6, true, EnergyIngredientRenderer.INSTANCE, 134 - xOff, 58 - yOff, 60, 10, 0, 0);
+    group.init(6, true, EnergyIngredientRenderer.INSTANCE, 100 - xOff, 44 - yOff, 60, 10, 0, 0);
 
     guiItemStacks.addTooltipCallback(new ITooltipCallback<ItemStack>() {
       @Override

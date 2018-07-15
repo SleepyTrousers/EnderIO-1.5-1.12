@@ -116,19 +116,25 @@ public class EnchanterRecipe implements IMachineRecipe {
     result.add(new MachineRecipeInput(2, slot2));
     return result;
   }
-
+  
   public NNList<NNList<MachineRecipeInput>> getVariants() {
+    return getVariants(-1);
+  }
+
+  public NNList<NNList<MachineRecipeInput>> getVariants(int levelFilter) {
     NNList<NNList<MachineRecipeInput>> result = new NNList<>();
     for (int level = 1; level <= enchantment.getMaxLevel(); level++) {
-      for (ItemStack item : input.getItemStacks()) {
-        item = item.copy();
-        for (ItemStack lapis : LAPIS.getItemStacks()) {
-          lapis = lapis.copy();
-          item.setCount(stackSizePerLevel * level);
-          lapis.setCount(getLapizForLevel(level));
-          if (item.getCount() <= item.getMaxStackSize() && lapis.getCount() <= lapis.getMaxStackSize()) {
-            result.add(getQuantitiesConsumed(
-                new NNList<>(new MachineRecipeInput(0, BOOK.getItemStacks().get(0)), new MachineRecipeInput(1, item), new MachineRecipeInput(2, lapis))));
+      if (levelFilter < 0 || level == levelFilter) {
+        for (ItemStack item : input.getItemStacks()) {
+          item = item.copy();
+          for (ItemStack lapis : LAPIS.getItemStacks()) {
+            lapis = lapis.copy();
+            item.setCount(stackSizePerLevel * level);
+            lapis.setCount(getLapizForLevel(level));
+            if (item.getCount() <= item.getMaxStackSize() && lapis.getCount() <= lapis.getMaxStackSize()) {
+              result.add(getQuantitiesConsumed(
+                  new NNList<>(new MachineRecipeInput(0, BOOK.getItemStacks().get(0)), new MachineRecipeInput(1, item), new MachineRecipeInput(2, lapis))));
+            }
           }
         }
       }

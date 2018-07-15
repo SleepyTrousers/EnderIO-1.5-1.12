@@ -78,21 +78,21 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
 
       String txt = Lang.GUI_COMBGEN_OUTPUT.get("");
       int sw = fr.getStringWidth(txt);
-      fr.drawStringWithShadow(txt, 89 - sw / 2 - xOff, 0 - yOff, ColorUtil.getRGB(Color.WHITE));
+      fr.drawStringWithShadow(txt, 89 - sw / 2 - xOff, -1, ColorUtil.getRGB(Color.WHITE));
       txt = "-";
       sw = fr.getStringWidth(txt);
-      fr.drawStringWithShadow("-", 89 - sw / 2 - xOff, 10 - yOff, ColorUtil.getRGB(Color.WHITE));
+      fr.drawStringWithShadow(txt, 89 - sw / 2 - xOff, 12 - yOff, ColorUtil.getRGB(Color.WHITE));
 
       int y = 21 - yOff - 2;
       int x = 114 - xOff;
       txt = mathMax.getTicksPerCoolant() + "-" + LangFluid.tMB(mathMin.getTicksPerCoolant());
       sw = fr.getStringWidth(txt);
-      fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 47, ColorUtil.getRGB(Color.WHITE));
+      fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 50, ColorUtil.getRGB(Color.WHITE));
 
       x = 48 - xOff;
       txt = mathMax.getTicksPerFuel() + "-" + LangFluid.tMB(mathMin.getTicksPerFuel());
       sw = fr.getStringWidth(txt);
-      fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 47, ColorUtil.getRGB(Color.WHITE));
+      fr.drawStringWithShadow(txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 50, ColorUtil.getRGB(Color.WHITE));
 
       GlStateManager.color(1, 1, 1, 1);
     }
@@ -127,7 +127,7 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
           IFluidFuel fuel = CombustionMath.toFuel(fluid2);
           if (fuel != null) {
             CombustionMath mathMin = new CombustionMath(coolant, fuel, CapacitorKey.COMBUSTION_POWER_GEN.getFloat(DefaultCapacitorData.BASIC_CAPACITOR),
-                CapacitorKey.COMBUSTION_POWER_EFFICIENCY.get(DefaultCapacitorData.BASIC_CAPACITOR));
+                CapacitorKey.COMBUSTION_POWER_EFFICIENCY.getDefaultFloat());
             CombustionMath mathmax = new CombustionMath(coolant, fuel, CapacitorKey.COMBUSTION_POWER_GEN.getFloat(DefaultCapacitorData.ENDER_CAPACITOR),
                 CapacitorKey.ENHANCED_COMBUSTION_POWER_EFFICIENCY.get(DefaultCapacitorData.ENDER_CAPACITOR));
             result.add(new CombustionRecipeWrapper(new FluidStack(fluid1, 1000), new FluidStack(fluid2, 1000), mathMin, mathmax));
@@ -148,15 +148,15 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
   // Offsets from full size gui, makes it much easier to get the location
   // correct
   static int xOff = 25 + 3;
-  static int yOff = 7;
-  static int xSize = 136 - 3;
+  static int yOff = 3;
+  static int xSize = 125 - 3;
 
   @Nonnull
   private final IDrawable background;
 
   public CombustionRecipeCategory(IGuiHelper guiHelper) {
     ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("combustion_gen");
-    background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, xSize, 70);
+    background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, xSize, 80);
   }
 
   @Override
@@ -185,10 +185,9 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
     fluidStacks.set(ingredients);
 
     IGuiIngredientGroup<EnergyIngredient> group = recipeLayout.getIngredientsGroup(EnergyIngredient.class);
-    group.init(2, false, EnergyIngredientRenderer.INSTANCE, 37 - xOff, 9 - yOff, 40, 10, 0, 0);
-    group.init(3, false, EnergyIngredientRenderer.INSTANCE, 54 + 47 - xOff, 9 - yOff, 40, 10, 0, 0);
+    group.init(2, false, EnergyIngredientRenderer.INSTANCE, 37 - xOff, 11 - yOff, 40, 10, 0, 0);
+    group.init(3, false, EnergyIngredientRenderer.INSTANCE, 54 + 47 - xOff, 11 - yOff, 40, 10, 0, 0);
     group.set(ingredients);
-
   }
 
   @Override
