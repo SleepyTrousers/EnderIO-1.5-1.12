@@ -174,7 +174,10 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
           worldIn.setBlockState(pos.up(), block.getDefaultState());
         } else {
           // impossible error state a.k.a. someone ripped the machine apart. And what do machines that are ripped apart do? They explode. Violently.
-          worldIn.createExplosion(null, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, 3f, true); // 3 == normal Creeper
+          // TODO: very soon: re-add
+          // worldIn.createExplosion(null, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, 3f, true); // 3 == normal Creeper
+          dropBlockAsItem(worldIn, pos, state, 0);
+          worldIn.setBlockToAir(pos);
         }
       }
     }
