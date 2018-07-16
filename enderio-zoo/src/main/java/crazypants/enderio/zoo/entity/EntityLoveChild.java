@@ -21,6 +21,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -34,6 +35,7 @@ public class EntityLoveChild extends EntityZombie implements IEnderZooMob {
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
+    LootTableList.register(new ResourceLocation(EnderIOZoo.DOMAIN, NAME));
     IEnderZooMob.register(event, NAME, EntityLoveChild.class, EGG_BG_COL, EGG_FG_COL, MobID.LCHILD);
   }
 
@@ -96,7 +98,7 @@ public class EntityLoveChild extends EntityZombie implements IEnderZooMob {
   @Override
   @Nullable
   protected ResourceLocation getLootTable() {
-    return null;
+    return new ResourceLocation(EnderIOZoo.DOMAIN, NAME);
   }
 
   @Override
