@@ -1,0 +1,52 @@
+# Tool Material Names
+material.dark_steel.name=Тёмная сталь
+material.conductive_iron.name=Проводящее железо
+material.electrical_steel.name=Наэлектризованная сталь
+material.energetic_alloy.name=Энергетический сплав
+material.pulsating_iron.name=Пульсирующее железо
+material.redstone_alloy.name=Сплав из красного камня
+material.soularium.name=Соуларий
+material.vibrant_alloy.name=Вибрирующий сплав
+material.end_steel.name=Сталь Края
+
+material.dark_steel.prefix=Тёмная %s
+material.conductive_iron.prefix=Проводящее %s
+material.electrical_steel.prefix=Наэлектризованная %s
+material.energetic_alloy.prefix=Энергетический %s
+material.pulsating_iron.prefix=Пульсирующее %s
+material.redstone_alloy.prefix=Красный %s
+material.soularium.prefix=Душа %s
+material.vibrant_alloy.prefix=Вибрирующий %s
+material.end_steel.prefix=%s из Края
+
+modifier.enderport.name=Исчезающий
+modifier.enderport.desc=§oПрочь с моего пути!§r\nШанс телепортировать врагов.
+
+modifier.enderpickup.name=Прямой
+modifier.enderpickup.desc=§oОна моя, вся моя!§r\nТелепорты добывают вещи прямо в ваш инвентарь.
+
+fluid.electrical_steel=Расплавленная наэлектризованная сталь
+tile.fluid.electrical_steel.name=Расплавленная наэлектризованная сталь
+fluid.energetic_alloy=Расплавленный энергетический сплав
+tile.fluid.energetic_alloy.name=Расплавленный энергетический сплав
+fluid.vibrant_alloy=Расплавленный вибрирующий сплав
+tile.fluid.vibrant_alloy.name=Расплавленный вибрирующий сплав
+fluid.redstone_alloy=Расплавленный сплав из красного камня
+tile.fluid.redstone_alloy.name=Расплавленный сплав из красного камня
+fluid.conductive_iron=Расплавленное проводящее железо
+tile.fluid.conductive_iron.name=Расплавленное проводящее железо
+fluid.pulsating_iron=Расплавленное пульсирующее железо
+tile.fluid.pulsating_iron.name=Расплавленное пульсирующее железо
+fluid.dark_steel=Расплавленная тёмная сталь
+tile.fluid.dark_steel.name=Расплавленная тёмная сталь
+fluid.soularium=Расплавленный соуларий
+tile.fluid.soularium.name=Расплавленный соуларий
+fluid.end_steel=Расплавленная сталь Края
+tile.fluid.end_steel.name=Расплавленная сталь Края
+
+fluid.enderio.glowstone=Световой газ
+tile.fluid.enderio.glowstone.name=Световой газ
+fluid.enderio.redstone=Расплавленный редстоун
+tile.fluid.enderio.redstone.name=Расплавленный редстоун
+fluid.enderio.ender=Расплавленный жемчуг Края
+tile.fluid.enderio.ender.name=Расплавленный жемчуг Края
