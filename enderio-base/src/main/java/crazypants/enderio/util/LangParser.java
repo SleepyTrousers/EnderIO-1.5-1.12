@@ -14,9 +14,21 @@ import org.apache.commons.io.FileUtils;
 
 public class LangParser {
 
-  private static final String[] EIO_OLD_PATHS = { "F:/github/manual/EnderIO/resources/assets/enderio/lang/",
-      "C:/github/EnderIO_110/resources/assets/enderio/lang/", "C:/github/EnderIO_1710/resources/assets/enderio/lang/",
-      "C:/github/EnderZoo/resources/assets/enderzoo/lang/", "C:/github/EnderZoo_1710/resources/assets/enderzoo/lang/" };
+  private static final String[] EIO_OLD_PATHS = {
+
+      "F:/github/manual/EnderIO_1102/resources/assets/enderio/lang/", //
+      "C:/github/EnderIO_110/resources/assets/enderio/lang/", //
+
+      "F:/github/manual/EnderIO_1710/resources/assets/enderio/lang/", //
+      "C:/github/EnderIO_1710/resources/assets/enderio/lang/", //
+
+      "F:/github/manual/EnderZoo_1122/resources/assets/enderzoo/lang/", //
+      "C:/github/EnderZoo/resources/assets/enderzoo/lang/", //
+
+      "F:/github/manual/EnderZoo/resources/assets/enderzoo/lang/", //
+      "C:/github/EnderZoo_1710/resources/assets/enderzoo/lang/" //
+
+  };
 
   private static String[] submods = { "enderio-base", "enderio-conduits", "enderio-integration-forestry",
       // "enderio-integration-ftbl",

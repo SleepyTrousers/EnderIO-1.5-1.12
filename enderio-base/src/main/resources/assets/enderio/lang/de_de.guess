@@ -123,8 +123,6 @@ enderio.config.blocks=
 #                 en: Blocks
 enderio.config.brokenspawner=Zerstörter Spawner
 #                        en: Broken Spawner
-enderio.config.capacitor=
-#                    en: Capacitor Values
 enderio.config.darksteel.tooltip=Es ist nicht nur gewöhnlicher Stahl, es ist §oDunkel§r§estahl.
 #                            en: It's not just regular steel, it's §odark§r§e steel.
 enderio.config.darksteel=Dunkelstahl
@@ -133,10 +131,6 @@ enderio.config.diagnostics.tooltip=
 #                              en: Use with care!
 enderio.config.diagnostics=
 #                      en: Diagnostic Settings
-enderio.config.efficiency.tooltip=Wo hören die Zahlen auf?
-#                             en: Where do the numbers end?
-enderio.config.efficiency=Effizienzeinstellungen
-#                     en: Efficiency Settings
 enderio.config.enchanter=Verzauberer
 #                    en: Enchanter
 enderio.config.enchantments=
@@ -171,13 +165,12 @@ enderio.config.items.darksteel=
 #                          en: Dark Steel Items
 enderio.config.items.infinitypowder=
 #                               en: Infinity Powder
+enderio.config.items.magnet.tooltip=Wie funktionieren die?
+#                               en: How do they work?
+enderio.config.items.magnet=Elektromagnet
+#                       en: Electromagnet
 enderio.config.items=
 #                en: Items
-enderio.config.magnet.tooltip=Wie funktionieren die?
-#                         en: How do they work?
-enderio.config.magnet=Magneteinstellungen
-#                 OR: Elektromagnet
-#                 en: Electromagnet
 enderio.config.misc=
 #               en: Other Settings
 enderio.config.personal.tooltip=Ich verspreche, ich werde niemandem davon erzählen.
@@ -227,6 +220,12 @@ enderio.darksteel.upgrade.elytra.tooltip.detailed.line1=
 #                                                   en: Makes armor work as Elytra
 enderio.darksteel.upgrade.elytra.tooltip.detailed.line2=
 #                                                   en: §4(That means flying as if an Elytra was equipped, NOT "creative" flight!)
+enderio.darksteel.upgrade.empowered_five.name=
+#                                         en: Empowered V
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line1=Energie: $P
+#                                                           en: Power: $P
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line2=
+#                                                           en: $D% damage absorbed by power
 enderio.darksteel.upgrade.empowered_four.name=Verstärkt IV
 #                                         en: Empowered IV
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Energie: $P
@@ -405,14 +404,16 @@ enderio.generic.tooltip.paintedWith=Bemalt mit:
 #                               en: Painted with: %s
 enderio.generic.tooltip.unpainted=
 #                             en: Not painted
+enderio.grindingball.gui.durability=
+#                               en: Remaining: %s %%
 enderio.grindingball.tooltip.line1=
 #                              en: %sSAG Mill Grinding Ball
 enderio.grindingball.tooltip.line2=
-#                              en: %sMain Output %s
+#                              en: %sMain Output %s%%
 enderio.grindingball.tooltip.line3=
-#                              en: %sBonus Output %s
+#                              en: %sBonus Output %s%%
 enderio.grindingball.tooltip.line4=
-#                              en: %sPower Use %s
+#                              en: %sPower Use %s%%
 enderio.gui.advanced_item_filter=Erweiterter Item-Filter
 #                            en: Advanced Item Filter
 enderio.gui.basic_item_filter=Einfacher Item-Filter
@@ -463,6 +464,8 @@ enderio.gui.generic.ioMode.overlay.tooltip.visible.line3=Ausgangszustand zurück
 #                                                    en: to their default setting
 enderio.gui.generic.ioMode.overlay.tooltip=IO Konfigurieren
 #                                      en: Configure IO
+enderio.gui.generic.loss=
+#                    en: Leakage: %s
 enderio.gui.generic.max=
 #                   en: Max: %s
 enderio.gui.generic.nocap.line1=
@@ -1159,8 +1162,8 @@ item.item_magnet.tooltip.detailed.line4=in der Hotbar sein, um zu funktionieren
 #                                   en: hot bar (or a Baubles slot) to function
 item.item_material.attractor_crystal.name=Anziehender Kristall
 #                                     en: Enticing Crystal
-item.item_material.binder_composite.name=Bindegemisch
-#                                    en: Binder Composite
+item.item_material.binder_composite.name=
+#                                    en: Conduit Binder Composite
 item.item_material.cake_base.name=
 #                             en: Cake Base
 item.item_material.chassi_parts.name=Maschinenteile
@@ -1188,11 +1191,13 @@ item.item_material.enhanced_machine_chassi.name=
 item.item_material.enhanced_machine_chassi.tooltip.detailed.line1=
 #                                                             en: A reinforced chassis for constructing sturdier machinery
 item.item_material.enhanced_machine_dye.name=
-#                                        en: Enhanced Machine Coating
+#                                        en: Enhanced Dye Blend
 item.item_material.enhanced_machine_dye.tooltip.detailed.line1=
 #                                                          en: Industrially produced dye with magical and inorganic components.
 item.item_material.enhanced_machine_dye.tooltip.detailed.line2=
 #                                                          en: §7Warning: May contain traces of diamond. Please chew carefully before swallowing. Not gluten free.
+item.item_material.gear_darksteel.name=
+#                                  en: Dark Bimetal Gear
 item.item_material.gear_energized.name=
 #                                  en: Energized Bimetal Gear
 item.item_material.gear_iron.name=
@@ -1203,6 +1208,8 @@ item.item_material.gear_vibrant.name=
 #                                en: Vibrant Bimetal Gear
 item.item_material.gear_wood.name=
 #                             en: Wooden Gear
+item.item_material.glazed_nether_brick.name=
+#                                       en: Nethercotta
 item.item_material.glider_wing.name=Gleiterflügel
 #                               en: Glider Wing
 item.item_material.glider_wings.name=Gleiterflügelpaar
@@ -1222,7 +1229,7 @@ item.item_material.ingot_enderium_base.name=Enderium-Basis
 item.item_material.machine_chassi.name=
 #                                  en: Industrial Machine Chassis
 item.item_material.machine_dye.name=
-#                               en: Industrial Powder Coating
+#                               en: Industrial Dye Blend
 item.item_material.machine_dye.tooltip.detailed.line1=
 #                                                 en: Industrially produced dye with organic and inorganic components. Not biodegradable.
 item.item_material.machine_dye.tooltip.detailed.line2=
@@ -1277,6 +1284,8 @@ item.item_material.powder_photovoltaic.name=
 #                                       en: Photovoltaic Composite
 item.item_material.powder_quartz.name=
 #                                 en: Quartz Powder
+item.item_material.powder_soul.name=
+#                               en: Soul Powder
 item.item_material.powder_tin.name=Zinnpulver
 #                              en: Tin Powder
 item.item_material.precient_crystal.name=
@@ -1322,7 +1331,7 @@ item.item_material.soul_machine_chassi.tooltip.detailed.line1=
 item.item_material.soul_machine_chassi.tooltip.detailed.line2=
 #                                                         en: §7If your machine begins making screaming sounds, please call GHAST BUSTERS on 1800 GHASTS
 item.item_material.soul_machine_dye.name=
-#                                    en: Soul Attuned Powder Coating
+#                                    en: Soul Attuned Dye Blend
 item.item_material.soul_machine_dye.tooltip.detailed.line1=
 #                                                      en: Industrially produced dye with organic and inorganic components. Not biodegradable. May contain traces of ectoplasm.
 item.item_material.soul_machine_dye.tooltip.detailed.line2=
@@ -1345,6 +1354,8 @@ item.item_mod_item_filter.tooltip.detailed.line1=
 #                                            en: Filters items based on the mod they come from
 item.item_owl_egg.name=
 #                  en: Owl Egg
+item.item_photo_wrench.name=Yeta-Schraubenschlüssel
+#                       en: Yeta Wrench
 item.item_power_item_filter.name=
 #                            en: Power Item Filter
 item.item_power_item_filter.tooltip.detailed.line1=
@@ -1437,8 +1448,6 @@ item.item_xp_transfer.tooltip.detailed.line3=Shift-Rechts-Klick um Level in den
 #                                        en: Shift-R-Click to transfer levels to
 item.item_xp_transfer.tooltip.detailed.line4=Tank zu befördern
 #                                        en: the tank
-item.item_yeta_wrench.name=Yeta-Schraubenschlüssel
-#                      en: Yeta Wrench
 item.item_yeta_wrench.tooltip.detailed.line1=Versteckt Leitungsverkleidungen, wenn gehalten
 #                                        en: Hides conduit facades when held
 item.item_yeta_wrench.tooltip.detailed.line2=Shift-klicke, um Maschinen und Leitungen

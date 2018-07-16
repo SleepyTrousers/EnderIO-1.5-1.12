@@ -2,6 +2,9 @@
 #
 # Edit the .lang file instead. You may have to create it first.
 #
+# enderio.gui.stirling_generator.burnRate= <-- extra unused key
+enderio.gui.stirling_generator.efficiency=
+#                                     en: Efficiency: %s%%
 enderio.status.powered_spawner.unbound=
 #                                  en: §4Cannot spawn "nothing"
 tile.block_ender_generator.name=
@@ -24,6 +27,8 @@ tile.block_enhanced_wired_charger.name=
 #                                  en: Enhanced Wired Charger
 tile.block_enhanced_wired_charger.tooltip.detailed.line1=
 #                                                    en: Charges items with µI
+tile.block_enhanced_wired_charger.tooltip.detailed.line2=
+#                                                    en: Scales with the size of the item's energy storage
 tile.block_franken_zombie_generator.name=
 #                                    en: Frank'n'Zombie Generator
 tile.block_franken_zombie_generator.tooltip.detailed.line1=
@@ -36,3 +41,13 @@ tile.block_omni_reservoir.tooltip.detailed.line5=
 #                                            en: - Right-Click with a wrench to enable auto-output
 tile.block_reservoir.tooltip.detailed.line5=
 #                                       en: - Right-Click with a wrench to enable auto-output
+tile.block_simple_furnace.name=
+#                          en: Simple Powered Furnace
+tile.block_simple_furnace.tooltip.detailed.line1=
+#                                            en: Smelts items with energy
+tile.block_simple_wired_charger.name=
+#                                en: Simple Wired Charger
+tile.block_simple_wired_charger.tooltip.detailed.line2=
+#                                                  en: Charges items with µI
+tile.block_wired_charger.tooltip.detailed.line2=
+#                                           en: Scales with the size of the item's energy storage

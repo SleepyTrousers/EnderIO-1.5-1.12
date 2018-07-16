@@ -3,6 +3,12 @@
 # Edit the .lang file instead. You may have to create it first.
 #
 # enchantment.soulbound= <-- extra unused key
+# enderio.config.capacitor= <-- extra unused key
+# enderio.config.efficiency.tooltip= <-- extra unused key
+# enderio.config.efficiency= <-- extra unused key
+# enderio.config.magnet.tooltip= <-- extra unused key
+# enderio.config.magnet= <-- extra unused key
+# item.item_yeta_wrench.name= <-- extra unused key
 # tile.fluid.vapor_of_levity.name= <-- extra unused key
 description.enchantment.enderio.repellent=
 #                                     en: Chance to teleport attackers away|Higher levels teleport more often and farther
@@ -32,6 +38,16 @@ enderio.config.blocks.charges=
 #                         en: Charges
 enderio.config.blocks=
 #                 en: Blocks
+enderio.config.items.magnet.tooltip=Как они работают?
+#                               en: How do they work?
+enderio.config.items.magnet=Электромагнит
+#                       en: Electromagnet
+enderio.darksteel.upgrade.empowered_five.name=
+#                                         en: Empowered V
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line1=Энергия: $P
+#                                                           en: Power: $P
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line2=
+#                                                           en: $D% damage absorbed by power
 enderio.darksteel.upgrade.hoe.name=
 #                              en: Fork
 enderio.darksteel.upgrade.hoe.tooltip.detailed.line1=
@@ -48,8 +64,12 @@ enderio.darksteel.upgrade.thaumaturge_robes.legs.name=
 #                                                 en: Thaumaturge's Leggings
 enderio.darksteel.upgrade.thaumaturge_robes.legs.tooltip.detailed.line1=
 #                                                                   en: Vis Discount: 3%
+enderio.grindingball.gui.durability=
+#                               en: Remaining: %s %%
 enderio.gui.fluid_filter=
 #                    en: Fluid Filter
+enderio.gui.generic.loss=
+#                    en: Leakage: %s
 enderio.gui.infinity_recipe_dimensions=
 #                                  en: Overworld Only
 enderio.gui.redstone_filter.and=
@@ -131,11 +151,15 @@ item.item_material.enhanced_machine_chassi.name=
 item.item_material.enhanced_machine_chassi.tooltip.detailed.line1=
 #                                                             en: A reinforced chassis for constructing sturdier machinery
 item.item_material.enhanced_machine_dye.name=
-#                                        en: Enhanced Machine Coating
+#                                        en: Enhanced Dye Blend
 item.item_material.enhanced_machine_dye.tooltip.detailed.line1=
 #                                                          en: Industrially produced dye with magical and inorganic components.
 item.item_material.enhanced_machine_dye.tooltip.detailed.line2=
 #                                                          en: §7Warning: May contain traces of diamond. Please chew carefully before swallowing. Not gluten free.
+item.item_material.gear_darksteel.name=
+#                                  en: Dark Bimetal Gear
+item.item_material.glazed_nether_brick.name=
+#                                       en: Nethercotta
 item.item_material.grinding_ball_enderium.name=
 #                                          en: Enderium Grinding Ball
 item.item_material.grinding_ball_lumium.name=
@@ -144,6 +168,8 @@ item.item_material.grinding_ball_signalum.name=
 #                                          en: Signalum Grinding Ball
 item.item_material.infinity_rod.name=
 #                                en: Infinity Rod
+item.item_material.powder_soul.name=
+#                               en: Soul Powder
 item.item_material.redstone_filter_base.name=
 #                                        en: Redstone Filter Base
 item.item_material.remote_awareness_upgrade.name=Улучшение дистанционной осведомлённости
@@ -159,7 +185,7 @@ item.item_material.soul_machine_chassi.tooltip.detailed.line1=
 item.item_material.soul_machine_chassi.tooltip.detailed.line2=
 #                                                         en: §7If your machine begins making screaming sounds, please call GHAST BUSTERS on 1800 GHASTS
 item.item_material.soul_machine_dye.name=
-#                                    en: Soul Attuned Powder Coating
+#                                    en: Soul Attuned Dye Blend
 item.item_material.soul_machine_dye.tooltip.detailed.line1=
 #                                                      en: Industrially produced dye with organic and inorganic components. Not biodegradable. May contain traces of ectoplasm.
 item.item_material.soul_machine_dye.tooltip.detailed.line2=
@@ -172,6 +198,8 @@ item.item_material.withering_dust.name=Иссушающая пыль
 #                                  en: Withering Dust
 item.item_owl_egg.name=
 #                  en: Owl Egg
+item.item_photo_wrench.name=Гаечный ключ Yeta
+#                       en: Yeta Wrench
 item.item_redstone_and_filter.name=
 #                              en: Redstone AND Filter
 item.item_redstone_counting_filter.name=

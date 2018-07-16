@@ -2,6 +2,12 @@
 #
 # Edit the .lang file instead. You may have to create it first.
 #
+# enderio.config.capacitor= <-- extra unused key
+# enderio.config.efficiency.tooltip= <-- extra unused key
+# enderio.config.efficiency= <-- extra unused key
+# enderio.config.magnet.tooltip= <-- extra unused key
+# enderio.config.magnet= <-- extra unused key
+# item.item_yeta_wrench.name= <-- extra unused key
 description.enchantment.enderio.repellent=
 #                                     en: Chance to teleport attackers away|Higher levels teleport more often and farther
 description.enchantment.enderio.shimmer=
@@ -14,6 +20,20 @@ enchantment.enderio.repellent=
 #                         en: Repellent
 enchantment.enderio.shimmer=
 #                       en: Shimmer
+enderio.config.items.magnet.tooltip=
+#                               en: How do they work?
+enderio.config.items.magnet=
+#                       en: Electromagnet
+enderio.darksteel.upgrade.empowered_five.name=
+#                                         en: Empowered V
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line1=
+#                                                           en: Power: $P
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line2=
+#                                                           en: $D% damage absorbed by power
+enderio.grindingball.gui.durability=
+#                               en: Remaining: %s %%
+enderio.gui.generic.loss=
+#                    en: Leakage: %s
 item.item_end_steel_axe.name=
 #                        en: Ender Axe
 item.item_end_steel_bow.name=
@@ -26,10 +46,18 @@ item.item_material.cake_base.name=
 #                             en: Cake Base
 item.item_material.enhanced_chassi_parts.name=
 #                                         en: Enhanced Machine Parts
+item.item_material.gear_darksteel.name=
+#                                  en: Dark Bimetal Gear
+item.item_material.glazed_nether_brick.name=
+#                                       en: Nethercotta
 item.item_material.infinity_rod.name=
 #                                en: Infinity Rod
+item.item_material.powder_soul.name=
+#                               en: Soul Powder
 item.item_material.simple_chassi_parts.name=
 #                                       en: Simple Machine Parts
+item.item_photo_wrench.name=
+#                       en: Yeta Wrench
 itemGroup.enderio.conduits=
 #                      en: EnderIO Conduits
 itemGroup.enderio.invpanel=

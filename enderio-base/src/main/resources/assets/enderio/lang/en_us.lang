@@ -295,7 +295,7 @@ item.item_xp_transfer.tooltip.detailed.line2=liquid XP to gain levels
 item.item_xp_transfer.tooltip.detailed.line3=Shift-R-Click to transfer levels to
 item.item_xp_transfer.tooltip.detailed.line4=the tank
 
-item.item_yeta_wrench.name=Yeta Wrench
+item.item_photo_wrench.name=Yeta Wrench
 item.item_yeta_wrench.tooltip.detailed.line1=Hides conduit facades when held
 item.item_yeta_wrench.tooltip.detailed.line2=Shift-R-Click to break machines
 item.item_yeta_wrench.tooltip.detailed.line3=and conduits instantly

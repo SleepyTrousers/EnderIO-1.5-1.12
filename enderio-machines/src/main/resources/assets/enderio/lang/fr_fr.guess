@@ -190,7 +190,6 @@ enderio.gui.obelisk.no_vials=
 enderio.gui.powered_spawner.capture=Capturer
 #                               en: Capture
 enderio.gui.powered_spawner.spawn=Faire apparaître
-#                             OR: Invoquer
 #                             OR: Générer
 #                             en: Spawn
 enderio.gui.ranged.hideRange=
@@ -201,8 +200,8 @@ enderio.gui.ranged.showRange=Montrer la Portée
 #                        en: Show Range
 enderio.gui.soul_binder.useplayerxp=
 #                               en: Use Player XP
-enderio.gui.stirling_generator.burnRate=
-#                                   en: Burn Rate: %s%%
+enderio.gui.stirling_generator.efficiency=
+#                                     en: Efficiency: %s%%
 enderio.gui.stirling_generator.output=
 #                                 en: Generating: %s
 enderio.gui.stirling_generator.remaining=
@@ -500,6 +499,8 @@ tile.block_enhanced_wired_charger.name=
 #                                  en: Enhanced Wired Charger
 tile.block_enhanced_wired_charger.tooltip.detailed.line1=
 #                                                    en: Charges items with µI
+tile.block_enhanced_wired_charger.tooltip.detailed.line2=
+#                                                    en: Scales with the size of the item's energy storage
 tile.block_enhanced_wireless_charger.name=
 #                                     en: Enhanced Wireless Charging Antenna
 tile.block_enhanced_wireless_charger.tooltip.detailed.line1=
@@ -586,12 +587,20 @@ tile.block_simple_alloy_smelter.tooltip.detailed.line1=Utilisée pour créer les
 #                                                  en: Used to create EnderIO alloys
 tile.block_simple_crafter.name=
 #                          en: Simple Crafter
+tile.block_simple_furnace.name=
+#                          en: Simple Powered Furnace
+tile.block_simple_furnace.tooltip.detailed.line1=
+#                                            en: Smelts items with energy
 tile.block_simple_sag_mill.name=
 #                           en: Simple SAG Mill
 tile.block_simple_sag_mill.tooltip.detailed.line1=Broie les minerais et autres objets
 #                                             en: Grinds ore and other items
 tile.block_simple_stirling_generator.name=
 #                                     en: Simple Stirling Generator
+tile.block_simple_wired_charger.name=
+#                                en: Simple Wired Charger
+tile.block_simple_wired_charger.tooltip.detailed.line2=
+#                                                  en: Charges items with µI
 tile.block_slice_and_splice.name=Couper&Coller
 #                            en: Slice'N'Splice
 tile.block_slice_and_splice.tooltip.detailed.line1=
@@ -666,6 +675,8 @@ tile.block_wired_charger.name=
 #                         en: Wired Charger
 tile.block_wired_charger.tooltip.detailed.line1=
 #                                           en: Charges items with µI
+tile.block_wired_charger.tooltip.detailed.line2=
+#                                           en: Scales with the size of the item's energy storage
 tile.block_wireless_charger.name=Chargeur sans-fil
 #                            en: Wireless Charger
 tile.block_wireless_charger.tooltip.detailed.line1=
