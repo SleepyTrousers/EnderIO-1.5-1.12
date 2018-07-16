@@ -103,8 +103,6 @@ public class LangParser {
           }
         }
 
-        System.out.println(byVal.get("en_us").get("Withering Dust"));
-
         File f2 = new File(submod + "/src/main/resources/assets/enderio/lang/en_us.lang");
 
         List<String> lines = FileUtils.readLines(f2, "UTF-8");
@@ -118,8 +116,6 @@ public class LangParser {
                 key.length() - 4);
 
             for (String lang : result.keySet()) {
-
-              // System.out.println(byKey.get(byVal.get("en_us").get("Withering Dust").iterator().next()).get(lang));
 
               Set<String> guessValue = new HashSet<>();
               String comment = "#" + offset + "en: " + val;
@@ -143,6 +139,10 @@ public class LangParser {
               } else {
                 result.get(lang).put(key, String.join("\n#" + offset + "OR: ", guessValue) + "\n" + comment);
               }
+
+              if ("en_us".equals(lang)) {
+                result.get(lang).put(key, val);
+              }
             }
           }
         }
@@ -151,13 +151,17 @@ public class LangParser {
           if (file.getName().endsWith(".lang")) {
             String lang = file.getName().replaceAll("\\..*$", "").toLowerCase(Locale.ENGLISH);
 
-            for (String line : FileUtils.readLines(file, "UTF-8")) {
-              line = line.trim();
-              if (!line.startsWith("/") && !line.startsWith("#") && !line.startsWith(";") && line.contains("=")) {
-                String[] split = line.split("=", 2);
-                String key = split[0].trim();
-                if (result.get(lang).remove(key) == null) {
-                  result.get(lang).put("# " + key, " <-- extra unused key");
+            if (!"en_us".equals(lang)) {
+              for (String line : FileUtils.readLines(file, "UTF-8")) {
+                line = line.trim();
+                if (!line.startsWith("/") && !line.startsWith("#") && !line.startsWith(";") && line.contains("=")) {
+                  String[] split = line.split("=", 2);
+                  String key = split[0].trim();
+                  if (result.get(lang).remove(key) == null) {
+                    result.get(lang).put("# " + key, " <-- extra unused key");
+                  } else if (placeholders(split[1]) != placeholders(result.get("en_us").get(key))) {
+                    result.get(lang).put("# " + key, " <-- different number of %s\n#  ('" + split[1] + "' vs '" + result.get("en_us").get(key) + "')");
+                  }
                 }
               }
             }
@@ -186,6 +190,10 @@ public class LangParser {
         e.printStackTrace();
       }
     }
+  }
+
+  private static int placeholders(String s) {
+    return s.replaceAll("[^%]", "").length();
   }
 
 }

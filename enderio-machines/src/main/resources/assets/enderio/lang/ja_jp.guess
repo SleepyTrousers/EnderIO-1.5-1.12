@@ -2,6 +2,8 @@
 #
 # Edit the .lang file instead. You may have to create it first.
 #
+# enderio.gui.buffer.maxio= <-- different number of %s
+#  ('最大入出力：s' vs 'In/Out Max: %s')
 # enderio.gui.stirling_generator.burnRate= <-- extra unused key
 enderio.gui.stirling_generator.efficiency=
 #                                     en: Efficiency: %s%%
