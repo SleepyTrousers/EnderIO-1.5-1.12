@@ -16,8 +16,6 @@ import crazypants.enderio.base.config.recipes.StaxFactory;
 
 public class Recipes implements RecipeRoot {
 
-  private List<Alias> aliases;
-
   private final @Nonnull List<AbstractConditional> recipes = new ArrayList<AbstractConditional>();
 
   @Override
@@ -27,7 +25,7 @@ public class Recipes implements RecipeRoot {
 
   @Override
   public boolean isValid() {
-    return !recipes.isEmpty() || aliases != null;
+    return true;
   }
 
   @Override
@@ -48,30 +46,27 @@ public class Recipes implements RecipeRoot {
   @Override
   public <T extends RecipeRoot> T addRecipes(RecipeRoot other, boolean allowOverrides) throws InvalidRecipeConfigException {
     if (other instanceof Recipes) {
-      if (!isValid()) {
+      if (recipes.isEmpty()) {
         return (T) other;
       }
 
       if (((Recipes) other).recipes.isEmpty()) {
-        // NOP
-      } else if (!recipes.isEmpty()) {
-        Set<String> recipeNames = new HashSet<String>();
-        for (AbstractConditional recipe : recipes) {
-          recipeNames.add(recipe.getName());
-        }
-
-        for (AbstractConditional recipe : ((Recipes) other).recipes) {
-          if (!recipeNames.contains(recipe.getName())) {
-            recipes.add(recipe);
-          } else if (!allowOverrides) {
-            throw new InvalidRecipeConfigException("Duplicate recipe '" + recipe.getName() + "'");
-          }
-        }
-      } else {
-        recipes.addAll(((Recipes) other).recipes);
+        return (T) this;
       }
 
-      // ignore aliases, they auto-register as soon as they are loaded
+      Set<String> recipeNames = new HashSet<String>();
+      for (AbstractConditional recipe : recipes) {
+        recipeNames.add(recipe.getName());
+      }
+
+      for (AbstractConditional recipe : ((Recipes) other).recipes) {
+        if (!recipeNames.contains(recipe.getName())) {
+          recipes.add(recipe);
+        } else if (!allowOverrides) {
+          throw new InvalidRecipeConfigException("Duplicate recipe '" + recipe.getName() + "'");
+        }
+      }
+
     }
     return (T) this;
   }
@@ -94,10 +89,7 @@ public class Recipes implements RecipeRoot {
   @Override
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("alias".equals(name)) {
-      if (aliases == null) {
-        aliases = new ArrayList<Alias>();
-      }
-      aliases.add(factory.read(new Alias(), startElement));
+      factory.skip(startElement);
       return true;
     }
     if ("recipe".equals(name)) {
@@ -131,21 +123,6 @@ public class Recipes implements RecipeRoot {
   public void enforceValidity() throws InvalidRecipeConfigException {
     for (AbstractConditional recipe : recipes) {
       recipe.enforceValidity();
-    }
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T extends RecipeRoot> T copy(T in) {
-    if (in instanceof Recipes) {
-      Recipes result = new Recipes();
-      if (this.aliases != null) {
-        result.aliases = new ArrayList<Alias>(this.aliases);
-      }
-      result.recipes.addAll(this.recipes);
-      return (T) result;
-    } else {
-      return null;
     }
   }
 

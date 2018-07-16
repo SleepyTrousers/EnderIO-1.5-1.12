@@ -2,11 +2,11 @@ package crazypants.enderio.base.config.recipes.xml;
 
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.StartElement;
 
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.stackable.Things;
 
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 
@@ -30,6 +30,7 @@ public class Alias extends AbstractConditional {
     }
     if (isActive()) {
       Things.addAlias(name, item);
+      Log.debug("Added alias '" + name + "' => '" + item + "'");
     }
     return this;
   }
@@ -49,11 +50,6 @@ public class Alias extends AbstractConditional {
       return true;
     }
     return super.setAttribute(factory, name, value);
-  }
-
-  @Override
-  public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
-    return super.setElement(factory, name, startElement);
   }
 
   @Override
