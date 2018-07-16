@@ -2,8 +2,6 @@ package crazypants.enderio.machines.machine.basin;
 
 import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 
-import java.util.stream.Stream;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -16,7 +14,10 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredTaskEntity;
+import crazypants.enderio.base.recipe.IMachineRecipe;
+import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
+import crazypants.enderio.base.recipe.basin.BasinMachineRecipe;
 import crazypants.enderio.base.recipe.basin.BasinRecipe;
 import crazypants.enderio.base.recipe.basin.BasinRecipeManager;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
@@ -35,7 +36,7 @@ public class TileBasin extends AbstractCapabilityPoweredTaskEntity implements IT
     private final int index;
     
     BasinTank(Plane orientation, int index) {
-      super(4000);
+      super(1000);
       this.orientation = orientation;
       this.index = index;
       setCanDrain(false);
@@ -107,6 +108,23 @@ public class TileBasin extends AbstractCapabilityPoweredTaskEntity implements IT
     } else {
       return new NNList<>(new MachineRecipeInput(0, tankU.getFluid()), new MachineRecipeInput(1, tankD.getFluid()));
     }
+  }
+  
+  @Override
+  @Nullable
+  protected IMachineRecipe canStartNextTask(long nextSeed) {
+    IMachineRecipe ret = super.canStartNextTask(nextSeed);
+    if (ret != null) {
+      IRecipe recipe = ((BasinMachineRecipe)ret).getRecipeForInputs(getRecipeInputs());
+      if (recipe != null) {
+        if (((BasinRecipe)recipe).getOrientation() == Plane.VERTICAL) {
+          return tankU.isFull() && tankD.isFull() ? ret : null;
+        } else {
+          return tankL.isFull() && tankR.isFull() ? ret : null;
+        }
+      }
+    }
+    return ret;
   }
 
   @Override
