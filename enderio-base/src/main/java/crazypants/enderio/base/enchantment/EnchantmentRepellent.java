@@ -48,7 +48,8 @@ public class EnchantmentRepellent extends EnchantmentBase {
 
   @Override
   public void onUserHurt(@Nonnull EntityLivingBase user, @Nonnull Entity attacker, int level) {
-    if (attacker instanceof EntityLivingBase && !EnchantmentHelper.getEnchantedItem(this, user).isEmpty() && user.getRNG().nextFloat() < (.5f + .1f * level)) {
+    if (user instanceof EntityPlayer && attacker instanceof EntityLivingBase && !EnchantmentHelper.getEnchantedItem(this, user).isEmpty()
+        && user.getRNG().nextFloat() < (.5f + .1f * level)) {
       RandomTeleportUtil.teleportEntity(attacker.world, attacker, false, attacker instanceof EntityPlayer || user.getRNG().nextFloat() < .75f, 16 * level);
     }
   }
