@@ -19,11 +19,13 @@ import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.util.Prep;
+import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
+@Storable
 public abstract class AbstractCapabilityPoweredTaskEntity extends AbstractCapabilityPoweredMachineEntity implements IProgressTile {
 
   @Store({ NBTAction.SAVE, NBTAction.ITEM }) protected IPoweredTask currentTask = null;

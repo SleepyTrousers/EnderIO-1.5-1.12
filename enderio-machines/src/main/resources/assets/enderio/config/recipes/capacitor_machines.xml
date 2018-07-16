@@ -220,8 +220,8 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_tele_pad/buffer" base="100000" scaler="FIXED" />
   <capacitor key="enderio:block_tele_pad/use" base="4000" scaler="FIXED" />
   
-  <capacitor key="enderio:block_basin/intake" base="10" scaler="FIXED" />
-  <capacitor key="enderio:block_basin/buffer" base="1000" scaler="FIXED" />
-  <capacitor key="enderio:block_basin/use" base="5" scaler="FIXED" />
+  <capacitor key="enderio:block_basin/intake" base="10" scaler="POWER" />
+  <capacitor key="enderio:block_basin/buffer" base="1000" scaler="POWER" />
+  <capacitor key="enderio:block_basin/use" base="5" scaler="POWER" />
 
 </enderio:recipes>

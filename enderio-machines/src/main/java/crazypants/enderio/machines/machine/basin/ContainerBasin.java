@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.basin;
 
+import java.awt.Point;
+
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.inventory.EnderInventory.Type;
@@ -16,7 +18,16 @@ public class ContainerBasin extends AbstractCapabilityMachineContainer<TileBasin
 
   @Override
   protected void addMachineSlots() {
-    addSlotToContainer(new EnderSlot(Type.OUTPUT, getItemHandler(), "OUTPUT", 50, 50));
+    addSlotToContainer(new EnderSlot(Type.OUTPUT, getItemHandler(), "OUTPUT", 81, 41));
   }
 
+  @Override
+  public @Nonnull Point getPlayerInventoryOffset() {
+    return new Point(8, 99);
+  }
+
+  @Override
+  public @Nonnull Point getUpgradeOffset() {
+    return new Point(8, 75);
+  }
 }

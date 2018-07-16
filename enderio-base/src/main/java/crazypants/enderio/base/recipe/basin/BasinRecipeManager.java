@@ -35,7 +35,7 @@ public class BasinRecipeManager {
 
   public BasinRecipe getRecipeMatchingInput(@Nonnull NNList<FluidStack> inputs) {
     if (inputs.size() != 2) {
-      throw new IllegalArgumentException("Inputs must be of size 2.");
+      return null;
     }
     return getRecipeMatchingInput(inputs.get(0), inputs.get(1));
   }
