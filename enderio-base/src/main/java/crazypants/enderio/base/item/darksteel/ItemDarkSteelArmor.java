@@ -450,21 +450,14 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   @Override
   @Method(modid = "thaumcraft")
   public int getVisDiscount(ItemStack stack, EntityPlayer player) {
-    if (!stack.isEmpty()) {
-      if (stack.getItem() == ModObject.itemDarkSteelBoots.getItemNN()) {
-        return ThaumaturgeRobesUpgrade.BOOTS.hasUpgrade(stack) ? 2 : 0;
-      }
-      if (stack.getItem() == ModObject.itemDarkSteelLeggings.getItemNN()) {
-        return ThaumaturgeRobesUpgrade.LEGS.hasUpgrade(stack) ? 3 : 0;
-      }
-      if (stack.getItem() == ModObject.itemDarkSteelChestplate.getItemNN()) {
-        return ThaumaturgeRobesUpgrade.CHEST.hasUpgrade(stack) ? 3 : 0;
-      }
-      // if (stack.getItem() == ModObject.itemDarkSteelHelmet.getItemNN()) {
-      // return GogglesOfRevealingUpgrade.INSTANCE.hasUpgrade(stack) ? 5 : 0;
-      // }
+    if (stack == null) {
+      return -100; // Garbage in, garbage out
     }
-    return 0;
+    return ThaumaturgeRobesUpgrade.BOOTS.hasUpgrade(stack) ? 2
+        : ThaumaturgeRobesUpgrade.LEGS.hasUpgrade(stack) ? 3 : ThaumaturgeRobesUpgrade.CHEST.hasUpgrade(stack) ? 3 : 0;
+    // if (stack.getItem() == ModObject.itemDarkSteelHelmet.getItemNN()) {
+    // return GogglesOfRevealingUpgrade.INSTANCE.hasUpgrade(stack) ? 5 : 0;
+    // }
   }
 
   public boolean isGogglesUgradeActive() {
