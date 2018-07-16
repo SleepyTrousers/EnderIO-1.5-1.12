@@ -1,6 +1,13 @@
 package crazypants.enderio.machines.integration.jei;
 
+import static crazypants.enderio.machines.init.MachineObject.block_enchanter;
+import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.FIRST_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.FIRST_RECIPE_SLOT;
+import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.NUM_INVENTORY_SLOT;
+import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.NUM_RECIPE_SLOT;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +17,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
-import com.google.common.collect.Lists;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
@@ -18,16 +24,15 @@ import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.enchanter.EnchanterRecipe;
 import crazypants.enderio.machines.EnderIOMachines;
+import crazypants.enderio.machines.init.MachineObject;
+import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.enchanter.ContainerEnchanter;
 import crazypants.enderio.machines.machine.enchanter.GuiEnchanter;
-import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiIngredient;
 import mezz.jei.api.gui.IGuiIngredientGroup;
-import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
@@ -39,16 +44,11 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
-
-import static crazypants.enderio.machines.init.MachineObject.block_enchanter;
-import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.FIRST_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.FIRST_RECIPE_SLOT;
-import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.NUM_INVENTORY_SLOT;
-import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.NUM_RECIPE_SLOT;
 
 public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipeCategory.EnchanterRecipeWrapper> {
 
@@ -71,6 +71,8 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
     public boolean isValid() {
       return rec != null;
     }
+    
+    private int currentCost;
 
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
@@ -112,17 +114,25 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
         final ItemStack slot1 = in1.getDisplayedIngredient();
         final ItemStack slot2 = in2.getDisplayedIngredient();
         if (slot0 != null && slot1 != null && slot2 != null) {
-          int xpCost = rec.getXPCost(new NNList<>(new MachineRecipeInput(0, slot0), new MachineRecipeInput(1, slot1), new MachineRecipeInput(1, slot2)));
-          if (xpCost != 0) {
+          currentCost = rec.getXPCost(new NNList<>(new MachineRecipeInput(0, slot0), new MachineRecipeInput(1, slot1), new MachineRecipeInput(1, slot2)));
+          if (currentCost != 0) {
 
             minecraft.getTextureManager().bindTexture(XP_ORB_TEXTURE);
             GlStateManager.color(0x80 / 255f, 0xFF / 255f, 0x20 / 255f);
-            Gui.drawScaledCustomSizeModalRect(-4, 26, 0, 0, 16, 16, 16, 16, 64, 64);
+            Gui.drawScaledCustomSizeModalRect(-4, 27, 0, 0, 16, 16, 16, 16, 64, 64);
 
-            minecraft.fontRenderer.drawString("" + xpCost, 9, 31, 0x404040);
+            minecraft.fontRenderer.drawString("" + currentCost, 9, 32, 0x404040);
           }
         }
       }
+    }
+    
+    @Override
+    public List<String> getTooltipStrings(int mouseX, int mouseY) {
+      if (currentCost > 0 && mouseX < 21 && mouseY > 30 && mouseY < 40) {
+        return Collections.singletonList(Lang.JEI_ENCHANTER_LEVELS.get(TextFormatting.GREEN, currentCost, TextFormatting.WHITE));
+      }
+      return Collections.emptyList();
     }
 
     // copy of Enchantment.getTranslatedName()
@@ -156,37 +166,19 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
     
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
-      getIngredients(ingredients, -1);
-    }
-
-    void getIngredients(@Nonnull IIngredients ingredients, int level) {
-      List<ItemStack> bookInputs = new ArrayList<>();
-      List<ItemStack> itemInputs = new ArrayList<>();
-      List<ItemStack> lapizInputs = new ArrayList<>();
+      List<List<ItemStack>> inputs = Arrays.asList(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
       List<ItemStack> itemOutputs = new ArrayList<>();
 
-      NNList<NNList<MachineRecipeInput>> variants = rec.getVariants(level);
+      NNList<NNList<MachineRecipeInput>> variants = rec.getVariants(-1);
       for (NNList<MachineRecipeInput> variant : variants) {
-        for (MachineRecipeInput machineRecipeInput : variant) {
-          if (machineRecipeInput.slotNumber == 0) {
-            bookInputs.add(machineRecipeInput.item);
-          } else if (machineRecipeInput.slotNumber == 1) {
-            itemInputs.add(machineRecipeInput.item);
-          } else if (machineRecipeInput.slotNumber == 2) {
-            lapizInputs.add(machineRecipeInput.item);
-          }
+        for (MachineRecipeInput input : variant) {
+          List<ItemStack> slot = inputs.get(input.slotNumber);
+          slot.add(input.item);
         }
-        ResultStack[] completedResult = rec.getCompletedResult(0, 1F, NullHelper.notnullM(variant, "NNList iterated to null"));
-        itemOutputs.add(completedResult[0].item);
+        itemOutputs.add(rec.getCompletedResult(0, 1, NullHelper.notnull(variant, "NNList iterated to null"))[0].item);
       }
-
-      List<List<ItemStack>> inputs = new ArrayList<>();
-      inputs.add(bookInputs);
-      inputs.add(itemInputs);
-      inputs.add(lapizInputs);
-
       ingredients.setInputLists(ItemStack.class, inputs);
-      ingredients.setOutputLists(ItemStack.class, NullHelper.notnullJ(Collections.singletonList(itemOutputs), "Collections.singletonList()"));
+      ingredients.setOutputLists(ItemStack.class, Collections.singletonList(itemOutputs));
     }
 
   }
@@ -209,8 +201,8 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
 
   // Offsets from full size gui, makes it much easier to get the location
   // correct
-  private int xOff = 15;
-  private int yOff = 24;
+  static final int xOff = 15;
+  static final int yOff = 24;
 
   @Nonnull
   private final IDrawable background;
@@ -219,7 +211,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
 
   public EnchanterRecipeCategory(IGuiHelper guiHelper) {
     ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("enchanter");
-    background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 146, 48);
+    background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 146, 40);
   }
 
   @Override
@@ -255,15 +247,52 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
     guiItemStacks.init(3, false, 144 - xOff - 1, 34 - yOff);
     
     IFocus<?> focus = recipeLayout.getFocus();
-    ItemStack focusStack = focus == null || focus.getMode() != Mode.OUTPUT ? null : (ItemStack) focus.getValue();
+    ItemStack focusStack = focus == null ? null : (ItemStack) focus.getValue();
     
-    if (focusStack != null) {
-      recipeWrapper.getIngredients(ingredients, EnchantmentHelper.getEnchantments(focusStack).get(recipeWrapper.rec.getEnchantment()));
-    } else {
-      recipeWrapper.getIngredients(ingredients);
+    List<ItemStack> bookInputs = new ArrayList<>();
+    List<ItemStack> itemInputs = new ArrayList<>();
+    List<ItemStack> lapizInputs = new ArrayList<>();
+    List<ItemStack> itemOutputs = new ArrayList<>();
+    
+    EnchanterRecipe rec = recipeWrapper.rec;
+    int level = focus == null || focusStack == null || focus.getMode() != Mode.OUTPUT ? -1 : 
+      EnchantmentHelper.getEnchantments(focusStack).get(recipeWrapper.rec.getEnchantment());
+
+    NNList<NNList<MachineRecipeInput>> variants = rec.getVariants(level);
+    variants_loop: 
+    for (NNList<MachineRecipeInput> variant : variants) {
+      ItemStack[] inputs = new ItemStack[3];
+      for (MachineRecipeInput machineRecipeInput : variant) {
+        inputs[machineRecipeInput.slotNumber] = machineRecipeInput.item;
+      }
+      
+      // Player heads are blacklisted in JEI and screw up our list sizes, so blacklist them
+      for (ItemStack input : inputs) {
+        if (input.getItem() == Items.SKULL && input.getItemDamage() == 3) {
+          continue variants_loop;
+        }
+      }
+      
+      // Filter out recipes that don't have the focused input, if it exists ----- Apparently focusing the machine isn't a special case, so ignore those
+      if (focus != null && focusStack != null && focus.getMode() == Mode.INPUT && focusStack.getItem() != MachineObject.block_enchanter.getItem()) {
+        // If no inputs to this recipe match the focus, skip it
+        if (Arrays.stream(inputs).filter(s -> s.isItemEqual(focusStack)).count() == 0) {
+          continue variants_loop;
+        }
+      }
+      
+      bookInputs.add(inputs[0]);
+      itemInputs.add(inputs[1]);
+      lapizInputs.add(inputs[2]);
+      
+      ResultStack[] completedResult = rec.getCompletedResult(0, 1F, NullHelper.notnullM(variant, "NNList iterated to null"));
+      itemOutputs.add(completedResult[0].item);
     }
 
-    guiItemStacks.set(ingredients);
+    guiItemStacks.set(0, bookInputs);
+    guiItemStacks.set(1, itemInputs);
+    guiItemStacks.set(2, lapizInputs);
+    guiItemStacks.set(3, itemOutputs);
   }
 
   @Override
