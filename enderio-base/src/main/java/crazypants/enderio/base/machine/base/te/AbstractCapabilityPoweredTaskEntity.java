@@ -312,7 +312,7 @@ public abstract class AbstractCapabilityPoweredTaskEntity extends AbstractCapabi
         } else {
           allFull = false;
         }
-        outputStacks.add(stack);
+        outputStacks.set(i, stack);
       }
       if (allFull) {
         return false;

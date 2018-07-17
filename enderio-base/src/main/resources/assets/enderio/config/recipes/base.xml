@@ -317,24 +317,17 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
-  <recipe name="Alloy: Fused Quartz" required="true">
-    <alloying energy="5000" exp="0.5">
-      <input name="gemQuartz" amount="4"/>
-      <output name="enderio:block_fused_quartz:0"/>
-    </alloying>
-  </recipe>
-
-  <recipe name="Alloy: Fused Quartz from Block" required="true">
-    <alloying energy="5000" exp="0.5">
-      <input name="blockQuartz"/>
-      <output name="enderio:block_fused_quartz:0"/>
-    </alloying>
-  </recipe>
-
   <recipe name="Alloy: Fused Glass" required="true">
     <alloying energy="2500" exp="0.1">
       <input name="minecraft:glass"/><!-- don't oredict this one -->
       <output name="enderio:block_fused_glass:0"/>
+    </alloying>
+  </recipe>
+  
+  <recipe name="Alloy: Fused Quartz" required="true">
+    <alloying energy="5000" exp="0.5">
+      <input name="gemQuartz" amount="4"/>
+      <output name="enderio:block_fused_quartz:0"/>
     </alloying>
   </recipe>
 
@@ -343,6 +336,13 @@ XML editor will display that as tooltips when editing this file.
       <input name="gemQuartz" amount="4"/>
       <input name="dustGlowstone" amount="4"/>
       <output name="enderio:block_enlightened_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Fused Quartz from Block" required="true">
+    <alloying energy="5000" exp="0.5">
+      <input name="blockQuartz"/>
+      <output name="enderio:block_fused_quartz:0"/>
     </alloying>
   </recipe>
 

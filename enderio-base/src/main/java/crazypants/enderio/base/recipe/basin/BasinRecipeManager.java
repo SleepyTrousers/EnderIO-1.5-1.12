@@ -1,9 +1,11 @@
 package crazypants.enderio.base.recipe.basin;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
 
@@ -33,18 +35,26 @@ public class BasinRecipeManager {
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.BASIN, new BasinMachineRecipe());
   }
 
-  public BasinRecipe getRecipeMatchingInput(@Nonnull NNList<FluidStack> inputs) {
-    if (inputs.size() != 2) {
+  public BasinRecipe getRecipeMatchingInput(@Nonnull List<FluidStack> inputs) {
+    if (inputs.size() != 4) {
       return null;
     }
-    return getRecipeMatchingInput(inputs.get(0), inputs.get(1));
+    return getRecipeMatchingInput(inputs.get(0), inputs.get(1), inputs.get(2), inputs.get(3));
   }
 
-  public BasinRecipe getRecipeMatchingInput(@Nonnull FluidStack inputA, @Nonnull FluidStack inputB) {
+  public BasinRecipe getRecipeMatchingInput(@Nullable FluidStack inputU, @Nullable FluidStack inputD, @Nullable FluidStack inputL, @Nullable FluidStack inputR) {
     final NNList<MachineRecipeInput> machineRecipeInput = new NNList<>(
-        new MachineRecipeInput(0, inputA), new MachineRecipeInput(1, inputB));
+        new MachineRecipeInput(0, inputU), new MachineRecipeInput(1, inputD),
+        new MachineRecipeInput(2, inputL), new MachineRecipeInput(3, inputR));
+    return getRecipeMatchingInput(machineRecipeInput);
+  }
+  
+  public BasinRecipe getRecipeMatchingInput(NNList<MachineRecipeInput> inputs) {
+    if (inputs.size() != 4) {
+      return null;
+    }
     for (BasinRecipe recipe : recipes) {
-      if (recipe.isInputForRecipe(machineRecipeInput)) {
+      if (recipe.isInputForRecipe(inputs)) {
         return recipe;
       }
     }
@@ -70,7 +80,8 @@ public class BasinRecipeManager {
   }
 
   public boolean isValidInput(MachineRecipeInput input) {
-    return getRecipeForInput(input.fluid) != null;
+    FluidStack fluid = input.fluid;
+    return fluid != null && getRecipeForInput(fluid) != null;
   }
 
   public void addRecipe(@Nonnull BasinRecipe recipe) {

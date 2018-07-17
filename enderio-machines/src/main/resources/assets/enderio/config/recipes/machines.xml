@@ -869,12 +869,59 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
   
-  <recipe name="Basin, Test" required="true" disabled="false">
+  <recipe name="Basin" required="true" disabled="false">
+    <crafting>
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item name="enderio:block_omni_reservoir" /><item name="ELECTRICAL_STEEL" />
+        <item name="enderio:block_omni_reservoir" /><item name="CHASSIS" /><item name="enderio:block_omni_reservoir" />
+        <item name="ELECTRICAL_STEEL" /><item name="enderio:block_omni_reservoir" /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="enderio:block_basin" />
+    </crafting>
+  </recipe>
+  
+  <recipe name="Basin, Cobblestone" required="true" disabled="false">
     <basin energy="100">
       <inputfluid name="water" amount="0" />
       <inputfluid name="lava" amount="0" />
       <orientation name="horizontal" />
       <output name="minecraft:cobblestone" />
+    </basin>
+  </recipe>
+  
+  <recipe name="Basin, Stone" required="true" disabled="false">
+    <basin energy="500">
+      <inputfluid name="lava" amount="0" />
+      <inputfluid name="water" amount="1000" />
+      <orientation name="vertical" />
+      <output name="minecraft:stone" />
+    </basin>
+  </recipe>
+  
+  <recipe name="Basin, Obsidian" required="true" disabled="false">
+    <basin energy="1000">
+      <inputfluid name="water" amount="0" />
+      <inputfluid name="lava" amount="1000" />
+      <orientation name="vertical" />
+      <output name="minecraft:obsidian" />
+    </basin>
+  </recipe>
+  
+  <recipe name="Basin, Starlight + Lava" required="false" disabled="false">
+    <basin energy="200">
+      <inputfluid name="astralsorcery.liquidstarlight" amount="0" />
+      <inputfluid name="lava" amount="0" />
+      <orientation name="horizontal" />
+      <output name="minecraft:sand" />
+    </basin>
+  </recipe>
+  
+  <recipe name="Basin, Starlight + Water" required="false" disabled="false">
+    <basin energy="200">
+      <inputfluid name="astralsorcery.liquidstarlight" amount="0" />
+      <inputfluid name="water" amount="0" />
+      <orientation name="horizontal" />
+      <output name="minecraft:ice" />
     </basin>
   </recipe>
 

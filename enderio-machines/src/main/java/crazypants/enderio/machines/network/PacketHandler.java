@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
 import crazypants.enderio.machines.EnderIOMachines;
+import crazypants.enderio.machines.machine.basin.PacketBasinProgress;
 import crazypants.enderio.machines.machine.buffer.PacketBufferIO;
 import crazypants.enderio.machines.machine.crafter.PacketCrafter;
 import crazypants.enderio.machines.machine.farm.PacketFarmAction;
@@ -95,7 +96,7 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketItemFilter.Handler.class, PacketItemFilter.class, PacketHandler.nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketSwing.Handler.class, PacketSwing.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketCrafter.Handler.class, PacketCrafter.class, PacketHandler.nextID(), Side.SERVER);
-
+    INSTANCE.registerMessage(PacketBasinProgress.Handler.class, PacketBasinProgress.class, PacketHandler.nextID(), Side.CLIENT);
   }
 
 }

@@ -1,8 +1,5 @@
 package crazypants.enderio.base.recipe.basin;
 
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
@@ -32,7 +29,7 @@ public class BasinMachineRecipe extends AbstractMachineRecipe {
 
   @Override
   public IRecipe getRecipeForInputs(@Nonnull NNList<MachineRecipeInput> inputs) {
-    return BasinRecipeManager.getInstance().getRecipeMatchingInput(inputs.stream().map(i -> i.fluid).filter(Objects::nonNull).collect(Collectors.toCollection(NNList::new)));
+    return BasinRecipeManager.getInstance().getRecipeMatchingInput(inputs);
   }
 
 }

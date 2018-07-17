@@ -9,11 +9,14 @@ import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 import com.enderio.core.common.inventory.EnderInventory.Type;
+import com.enderio.core.common.inventory.Filters;
 import com.enderio.core.common.inventory.InventorySlot;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredTaskEntity;
+import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
+import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
@@ -24,9 +27,12 @@ import crazypants.enderio.machines.capacitor.CapacitorKey;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Plane;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class TileBasin extends AbstractCapabilityPoweredTaskEntity implements ITankAccess {
   
@@ -50,24 +56,30 @@ public class TileBasin extends AbstractCapabilityPoweredTaskEntity implements IT
       }
       BasinRecipe recipe = BasinRecipeManager.getInstance().getRecipeForInput(resource, orientation);
       if (recipe != null) {
-        if (orientation == Plane.HORIZONTAL) {
-          return true;
-        } else {
-          return recipe.getInputFluidStacks().get(index).getFluid() == resource.getFluid();
-        }
+        return recipe.getInputFluidStacks().get(index).getFluid() == resource.getFluid();
       }
       return false;
     }
     
   }
   
+  public enum Slots {
+    OUTPUT,
+    TOOL
+  }
+  
   @Nonnull
   @Store
   final SmartTank tankU, tankD, tankL, tankR;
+  
+  // Clientside rendering information
+  Plane orientation;
+  FluidStack inputA, inputB;
 
   public TileBasin() {
     super(null, CapacitorKey.BASIN_POWER_INTAKE, CapacitorKey.BASIN_POWER_BUFFER, CapacitorKey.BASIN_POWER_USE);
-    getInventory().add(Type.OUTPUT, "OUTPUT", new InventorySlot());
+    getInventory().add(Type.OUTPUT, Slots.OUTPUT, new InventorySlot(Filters.ALWAYS_FALSE, Filters.ALWAYS_TRUE));
+    getInventory().add(Type.INPUT, Slots.TOOL, new InventorySlot());
     tankU = new BasinTank(Plane.VERTICAL, 0);
     tankD = new BasinTank(Plane.VERTICAL, 1);
     tankL = new BasinTank(Plane.HORIZONTAL, 0);
@@ -103,11 +115,63 @@ public class TileBasin extends AbstractCapabilityPoweredTaskEntity implements IT
   @Override
   @Nonnull
   protected NNList<MachineRecipeInput> getRecipeInputs() {
-    if (tankU.isEmpty() && tankD.isEmpty()) {
-      return new NNList<>(new MachineRecipeInput(0, tankL.getFluid()), new MachineRecipeInput(1, tankR.getFluid()));
-    } else {
-      return new NNList<>(new MachineRecipeInput(0, tankU.getFluid()), new MachineRecipeInput(1, tankD.getFluid()));
+    return new NNList<>(
+        new MachineRecipeInput(0, tankU.getFluid()), new MachineRecipeInput(1, tankD.getFluid()),
+        new MachineRecipeInput(2, tankL.getFluid()), new MachineRecipeInput(3, tankR.getFluid()));
+  }
+  
+  @Override
+  protected void drainInputFluid(@Nonnull MachineRecipeInput fluid) {
+    super.drainInputFluid(fluid);
+    switch (fluid.slotNumber) {
+    case 0:
+      drainInputFluid(fluid.fluid, tankU);
+      break;
+    case 1:
+      drainInputFluid(fluid.fluid, tankD);
+      break;
+    case 2:
+      drainInputFluid(fluid.fluid, tankL);
+      break;
+    case 3:
+      drainInputFluid(fluid.fluid, tankR);
+      break;
+    default: break;
     }
+  }
+  
+  private void drainInputFluid(@Nullable FluidStack stack, @Nonnull SmartTank tank) {
+    if (stack != null) {
+      tank.removeFluidAmount(stack.amount);
+    }
+  }
+  
+  @Override
+  protected void taskComplete() {
+    super.taskComplete();
+    
+    getInventory().getSlot(Slots.TOOL).get().damageItem(1, FakePlayerFactory.getMinecraft((WorldServer) getWorld()));
+  }
+  
+  @Override
+  public @Nonnull IMessage getProgressPacket() {
+    return new PacketBasinProgress(this);
+  }
+  
+  @Override
+  @Nullable
+  protected IPoweredTask createTask(@Nonnull IMachineRecipe nextRecipe, long nextSeed) {
+    IPoweredTask task = super.createTask(nextRecipe, nextSeed);
+    if (task != null) {
+      // PoweredTask filters out inputs that have no item or fluid, we need to keep those for our recipe checking semantics
+      task.getInputs().clear();
+      task.getInputs().addAll(getRecipeInputs());
+    }
+    return task;
+  }
+  
+  void setClientTask(IPoweredTask currentTask) {
+    this.currentTask = currentTask;
   }
   
   @Override
@@ -136,12 +200,30 @@ public class TileBasin extends AbstractCapabilityPoweredTaskEntity implements IT
   @Override
   @Nullable
   public FluidTank getInputTank(FluidStack forFluidType) {
-    BasinRecipe recipe = BasinRecipeManager.getInstance().getRecipeForInput(forFluidType);
+    if (forFluidType == null) {
+      return null;
+    }
+    BasinRecipe recipe;
+    Plane orientation = null;
+    if (!tankU.isEmpty() || !tankD.isEmpty()) {
+      orientation = Plane.VERTICAL;
+    } else if (!tankL.isEmpty() || !tankR.isEmpty()) {
+      orientation = Plane.HORIZONTAL;
+    }
+    if (orientation == null) {
+      recipe = BasinRecipeManager.getInstance().getRecipeForInput(forFluidType);
+    } else {
+      recipe = BasinRecipeManager.getInstance().getRecipeForInput(forFluidType, orientation);
+    }
     if (recipe != null) {
-      if (recipe.getOrientation() == Plane.HORIZONTAL) {
-        return tankU.isEmpty() || (!tankU.isFull() && tankU.getFluidNN().getFluid() == forFluidType.getFluid()) ? tankU : tankD;
+      SmartTank tank;
+      if (recipe.getOrientation() == Plane.VERTICAL) {
+        tank = tankU.isEmpty() || (!tankU.isFull() && tankU.getFluidNN().getFluid() == forFluidType.getFluid()) ? tankU : tankD;
       } else {
-        return tankL.isEmpty() || (!tankL.isFull() && tankL.getFluidNN().getFluid() == forFluidType.getFluid()) ? tankL : tankR;
+        tank = tankL.isEmpty() || (!tankL.isFull() && tankL.getFluidNN().getFluid() == forFluidType.getFluid()) ? tankL : tankR;
+      }
+      if (tank.canFillFluidType(forFluidType)) {
+        return tank;
       }
     }
     return null;

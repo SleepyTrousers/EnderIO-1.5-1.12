@@ -11,11 +11,10 @@ import com.enderio.core.common.fluid.SmartTank;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.machine.gui.GuiCapMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
-import crazypants.enderio.base.machine.interfaces.IPoweredTask;
-import crazypants.enderio.base.recipe.basin.BasinRecipe;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.util.EnumFacing.Plane;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -26,7 +25,7 @@ public class GuiBasin extends GuiCapMachineBase<TileBasin> {
     
     private final SmartTank tank;
     
-    TooltipTank(Rectangle bounds, SmartTank tank) {
+    TooltipTank(@Nonnull Rectangle bounds, SmartTank tank) {
       super(bounds);
       this.tank = tank;
     }
@@ -65,6 +64,13 @@ public class GuiBasin extends GuiCapMachineBase<TileBasin> {
   }
   
   @Override
+  public void initGui() {
+    super.initGui();
+    
+    ((ContainerBasin) inventorySlots).createGhostSlots(getGhostSlotHandler());
+  }
+  
+  @Override
   public int getYSize() {
     return 181;
   }
@@ -89,20 +95,42 @@ public class GuiBasin extends GuiCapMachineBase<TileBasin> {
     drawTank(getTileEntity().tankR, RECT_TANK_RIGHT);
 
     if (shouldRenderProgress()) {
-      if (!getTileEntity().tankU.isEmpty()) {
-        FluidStack stack = getTileEntity().tankU.getFluidNN();
-        drawTank(stack, stack.amount, RECT_TRANSFER_UP);
-        stack = getTileEntity().tankD.getFluidNN();
-        drawTank(stack, stack.amount, RECT_TRANSFER_DOWN);
+      Plane orientation = getTileEntity().orientation;
+      if (orientation == Plane.VERTICAL) {
+        drawTransfer(getTileEntity().inputA, orientation, true);
+        drawTransfer(getTileEntity().inputB, orientation, false);
       } else {
-        FluidStack stack = getTileEntity().tankL.getFluidNN();
-        drawTank(stack, stack.amount, RECT_TRANSFER_LEFT);
-        stack = getTileEntity().tankR.getFluidNN();
-        drawTank(stack, stack.amount, RECT_TRANSFER_RIGHT);
+        drawTransfer(getTileEntity().inputA, orientation, true);
+        drawTransfer(getTileEntity().inputB, orientation, false);
       }
     }
     
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+  }
+  
+  private void drawTransfer(FluidStack stack, Plane orientation, boolean first) {
+    if (stack != null) {
+      Rectangle rect = orientation == Plane.VERTICAL ? 
+          first ? RECT_TRANSFER_UP : RECT_TRANSFER_DOWN :
+          first ? RECT_TRANSFER_LEFT : RECT_TRANSFER_RIGHT;
+      
+      drawTank(stack, stack.amount, rect);
+      
+      Slot outputSlot = inventorySlots.getSlot(0);
+      rect = new Rectangle(outputSlot.xPos, outputSlot.yPos, 16, 16);
+      if (orientation == Plane.VERTICAL) {
+        rect.height /= 2;
+        if (!first) {
+          rect.y += rect.height;
+        }
+      } else {
+        rect.width /= 2;
+        if (!first) {
+          rect.x += rect.width;
+        }
+      }
+      drawTank(stack, stack.amount, rect);
+    }
   }
 
 }

@@ -39,6 +39,11 @@ public class Basin extends AbstractCrafting {
     inputA.enforceValidity();
     inputB.enforceValidity();
   }
+  
+  @Override
+  public boolean isValid() {
+    return super.isValid() && inputA.isValid() && inputB.isValid();
+  }
 
   @Override
   public void register(@Nonnull String recipeName) {
