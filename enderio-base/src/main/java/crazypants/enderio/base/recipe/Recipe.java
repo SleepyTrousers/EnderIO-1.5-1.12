@@ -55,6 +55,28 @@ public class Recipe implements IRecipe {
       }
     }
 
+    if (needsExactMatch()) {
+      if (requiredInputs.size() != machineInputs.size()) {
+        return false;
+      }
+      for (int i = 0; i < requiredInputs.size(); i++) {
+        IRecipeInput input = requiredInputs.get(i);
+        MachineRecipeInput machineInput = machineInputs.get(i);
+        // If these inputs are not of the same kind, fail
+        if (input.isFluid() != machineInput.isFluid()) {
+          return false;
+        }
+        // If the fluids are different, or there is not enough, fail
+        if (input.isFluid() && (!input.getFluidInput().isFluidEqual(machineInput.fluid) || input.getFluidInput().amount > machineInput.fluid.amount)) {
+          return false;
+        // If the items are different, or there is not enough, fail
+        } else if (!input.isFluid() && (!input.getInput().isItemEqual(machineInput.item) || input.getInput().getCount() > machineInput.item.getCount())) {
+          return false;
+        }
+      }
+      return true;
+    }
+
     for (MachineRecipeInput input : machineInputs) {
       if (input != null && input.isFluid()) {
         Iterator<IRecipeInput> iterator = requiredInputs.iterator();
@@ -100,6 +122,15 @@ public class Recipe implements IRecipe {
       return false;
     }
     return true;
+  }
+
+  /**
+   * If this returns true, the inputs must exactly match that of the recipe. i.e
+   * A recipe with two inputs X and Y is only a match when it is checked against
+   * exactly two inputs which are identical to X and Y.
+   */
+  protected boolean needsExactMatch() {
+    return false;
   }
 
   private boolean isAnyInput(@Nonnull MachineRecipeInput realInput) {

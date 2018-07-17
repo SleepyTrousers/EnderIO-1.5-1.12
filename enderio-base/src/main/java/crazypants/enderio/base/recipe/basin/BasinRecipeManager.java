@@ -61,27 +61,22 @@ public class BasinRecipeManager {
     return null;
   }
   
-  public BasinRecipe getRecipeForInput(@Nonnull FluidStack input, Plane orientation) {
-    for (BasinRecipe recipe : recipes) {
-      if (recipe.isValidInput(input) && recipe.getOrientation() == orientation) {
-        return recipe;
-      }
-    }
-    return null;
+  public NNList<BasinRecipe> getRecipesForInput(@Nonnull FluidStack input, Plane orientation) {
+    return recipes.stream()
+        .filter(r -> r.isValidInput(input))
+        .filter(r -> r.getOrientation() == orientation)
+        .collect(NNList.collector());
   }
   
-  public BasinRecipe getRecipeForInput(@Nonnull FluidStack input) {
-    for (BasinRecipe recipe : recipes) {
-      if (recipe.isValidInput(input)) {
-        return recipe;
-      }
-    }
-    return null;
+  public NNList<BasinRecipe> getRecipesForInput(@Nonnull FluidStack input) {
+    return recipes.stream()
+        .filter(r -> r.isValidInput(input))
+        .collect(NNList.collector());
   }
 
   public boolean isValidInput(MachineRecipeInput input) {
     FluidStack fluid = input.fluid;
-    return fluid != null && getRecipeForInput(fluid) != null;
+    return fluid != null && !getRecipesForInput(fluid).isEmpty();
   }
 
   public void addRecipe(@Nonnull BasinRecipe recipe) {

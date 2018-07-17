@@ -37,4 +37,9 @@ public class BasinRecipe extends Recipe {
     }
     return super.isInputForRecipe(inputs);
   }
+  
+  @Override
+  protected boolean needsExactMatch() {
+    return true;
+  }
 }

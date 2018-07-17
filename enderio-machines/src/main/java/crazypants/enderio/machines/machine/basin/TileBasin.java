@@ -54,11 +54,9 @@ public class TileBasin extends AbstractCapabilityPoweredTaskEntity implements IT
       if (resource == null) {
         return false;
       }
-      BasinRecipe recipe = BasinRecipeManager.getInstance().getRecipeForInput(resource, orientation);
-      if (recipe != null) {
-        return recipe.getInputFluidStacks().get(index).getFluid() == resource.getFluid();
-      }
-      return false;
+      NNList<BasinRecipe> recipes = BasinRecipeManager.getInstance().getRecipesForInput(resource, orientation);
+      return recipes.stream()
+          .anyMatch(recipe -> recipe.getInputFluidStacks().get(index).getFluid() == resource.getFluid());
     }
     
   }
@@ -203,7 +201,7 @@ public class TileBasin extends AbstractCapabilityPoweredTaskEntity implements IT
     if (forFluidType == null) {
       return null;
     }
-    BasinRecipe recipe;
+    NNList<BasinRecipe> recipes;
     Plane orientation = null;
     if (!tankU.isEmpty() || !tankD.isEmpty()) {
       orientation = Plane.VERTICAL;
@@ -211,13 +209,13 @@ public class TileBasin extends AbstractCapabilityPoweredTaskEntity implements IT
       orientation = Plane.HORIZONTAL;
     }
     if (orientation == null) {
-      recipe = BasinRecipeManager.getInstance().getRecipeForInput(forFluidType);
+      recipes = BasinRecipeManager.getInstance().getRecipesForInput(forFluidType);
     } else {
-      recipe = BasinRecipeManager.getInstance().getRecipeForInput(forFluidType, orientation);
+      recipes = BasinRecipeManager.getInstance().getRecipesForInput(forFluidType, orientation);
     }
-    if (recipe != null) {
+    if (!recipes.isEmpty()) {
       SmartTank tank;
-      if (recipe.getOrientation() == Plane.VERTICAL) {
+      if (recipes.get(0).getOrientation() == Plane.VERTICAL) {
         tank = tankU.isEmpty() || (!tankU.isFull() && tankU.getFluidNN().getFluid() == forFluidType.getFluid()) ? tankU : tankD;
       } else {
         tank = tankL.isEmpty() || (!tankL.isFull() && tankL.getFluidNN().getFluid() == forFluidType.getFluid()) ? tankL : tankR;
