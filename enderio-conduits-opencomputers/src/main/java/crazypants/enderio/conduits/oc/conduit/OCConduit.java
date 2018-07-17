@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.client.render.BoundingBox;
@@ -51,7 +50,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -592,17 +590,6 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   public String getConduitProbeInfo(@Nonnull EntityPlayer player) {
     // TODO Auto-generated method stub
     return "";
-  }
-
-  @Override
-  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-    return false;
-  }
-
-  @Override
-  @Nullable
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-    return null;
   }
 
 }

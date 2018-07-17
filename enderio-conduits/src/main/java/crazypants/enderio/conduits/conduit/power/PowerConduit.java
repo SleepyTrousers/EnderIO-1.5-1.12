@@ -268,7 +268,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   protected void readTypeSettings(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
     setConnectionMode(dir, ConnectionMode.values()[dataRoot.getShort("connectionMode")]);
     setExtractionSignalColor(dir, DyeColor.values()[dataRoot.getShort("extractionSignalColor")]);
-    setExtractionRedstoneMode(RedstoneControlMode.values()[dataRoot.getShort("extractionRedstoneMode")], dir);
+    setExtractionRedstoneMode(RedstoneControlMode.fromOrdinal(dataRoot.getShort("extractionRedstoneMode")), dir);
   }
 
   @Override
@@ -695,9 +695,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
           if (recievedTicks == null) {
             recievedTicks = new EnumMap<EnumFacing, Long>(EnumFacing.class);
           }
-          if (side != null) {
-            recievedTicks.put(side, getBundle().getBundleworld().getTotalWorldTime());
-          }
+          recievedTicks.put(side, getBundle().getBundleworld().getTotalWorldTime());
         }
         return energyFinal;
       }

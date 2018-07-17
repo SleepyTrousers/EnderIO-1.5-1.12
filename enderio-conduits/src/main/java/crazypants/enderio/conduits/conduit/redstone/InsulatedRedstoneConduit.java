@@ -886,20 +886,20 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   // ----------------- CAPABILITIES ------------
 
   @Override
-  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+  public boolean hasInternalCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
     if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY) {
       return true;
     }
-    return false;
+    return super.hasInternalCapability(capability, facing);
   }
 
-  @Nullable
   @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+  @Nullable
+  public <T> T getInternalCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
     if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY) {
-      return (T) this;
+      return CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY.cast(this);
     }
-    return null;
+    return super.getInternalCapability(capability, facing);
   }
 
   @Override

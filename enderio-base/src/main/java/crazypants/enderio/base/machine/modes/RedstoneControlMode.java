@@ -8,12 +8,14 @@ import javax.annotation.Nonnull;
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.CycleButton.ICycleEnum;
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.gui.IconEIO;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.MathHelper;
 
 public enum RedstoneControlMode {
   IGNORE,
@@ -108,6 +110,10 @@ public enum RedstoneControlMode {
 
   public @Nonnull RedstoneControlMode previous() {
     return NNList.<RedstoneControlMode> of(RedstoneControlMode.class).prev(this);
+  }
+
+  public static @Nonnull RedstoneControlMode fromOrdinal(int ordinal) {
+    return NullHelper.first(values()[MathHelper.clamp(ordinal, 0, values().length - 1)], IGNORE);
   }
 
 }

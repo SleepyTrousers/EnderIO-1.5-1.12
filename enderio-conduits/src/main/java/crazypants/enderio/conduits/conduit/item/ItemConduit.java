@@ -849,7 +849,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   // Only uses the Filter and Upgrade Capabilities, since conduits don't have an inventory
   @Override
-  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+  public boolean hasInternalCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
     if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY
         || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY && getExternalConnections().contains(facing)) {
       return true;
@@ -860,7 +860,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @SuppressWarnings("unchecked")
   @Nullable
   @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+  public <T> T getInternalCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
     if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY) {
       return (T) this;
     }

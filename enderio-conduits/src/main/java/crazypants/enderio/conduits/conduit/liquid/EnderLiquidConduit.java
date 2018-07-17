@@ -596,12 +596,12 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   }
 
   @Override
-  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+  public boolean hasInternalCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
     if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY
         || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY && containsExternalConnection(facing)) {
       return true;
     }
-    return super.hasCapability(capability, facing);
+    return false;
   }
 
   // FILTERS
@@ -731,11 +731,19 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   @SuppressWarnings("unchecked")
   @Nullable
   @Override
+  public <T> T getInternalCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+    if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY) {
+      return (T) this;
+    }
+    return null;
+  }
+
+  @SuppressWarnings("unchecked")
+  @Nullable
+  @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
       return (T) new ConnectionEnderLiquidSide(facing);
-    } else if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY) {
-      return (T) this;
     }
     return null;
   }

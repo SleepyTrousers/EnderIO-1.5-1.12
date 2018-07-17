@@ -77,8 +77,8 @@ public class PacketEnderLiquidConduit extends PacketConduitFilter<EnderLiquidCon
     }
 
     private void applyFilter(EnumFacing dir, IConduit conduit, IFilter filter, boolean isInput) {
-      if (conduit.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir)) {
-        IFilterHolder<IFilter> filterHolder = conduit.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
+      if (conduit.hasInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir)) {
+        IFilterHolder<IFilter> filterHolder = conduit.getInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
         if (isInput) {
           filterHolder.setFilter(filterHolder.getInputFilterIndex(), dir.ordinal(), filter);
         } else {

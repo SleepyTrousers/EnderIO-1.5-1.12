@@ -125,6 +125,23 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   }
 
   @Override
+  public boolean hasClientCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+    if (capability == RSHelper.NETWORK_NODE_PROXY_CAPABILITY) {
+      return true;
+    }
+    return false;
+  }
+
+  @Override
+  @Nullable
+  public <T> T getClientCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+    if (capability == RSHelper.NETWORK_NODE_PROXY_CAPABILITY) {
+      return RSHelper.NETWORK_NODE_PROXY_CAPABILITY.cast(this);
+    }
+    return null;
+  }
+
+  @Override
   @Nonnull
   public RefinedStorageConduitNetwork createNetworkForType() {
     return new RefinedStorageConduitNetwork();

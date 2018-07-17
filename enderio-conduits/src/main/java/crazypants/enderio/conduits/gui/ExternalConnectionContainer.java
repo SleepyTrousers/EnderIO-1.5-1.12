@@ -40,10 +40,6 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
   private int speedUpgradeSlotLimit = 15;
 
-  private static final int outputFilterSlot = 36;
-  private static final int inputFilterSlot = 37;
-  private static final int functionUpgradeSlot = 38;
-
   private Slot slotFunctionUpgrade;
   private Slot slotInputFilter;
   private Slot slotOutputFilter;
@@ -133,7 +129,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
       return;
     }
 
-    World world = getTileEntity().getBundleworld();
+    World world = getTileEntityNN().getBundleworld();
 
     boolean hasFilterHolder = false;
     boolean hasUpgradeHolder = false;
@@ -141,14 +137,14 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
     if (filterVisible || upgradeVisible) {
 
-      hasFilterHolder = conduit.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
-      hasUpgradeHolder = conduit.hasCapability(CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY, dir);
+      hasFilterHolder = conduit.hasInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
+      hasUpgradeHolder = conduit.hasInternalCapability(CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY, dir);
 
       if (hasFilterHolder) {
-        getItemHandler().setFilterHolder(conduit.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir));
+        getItemHandler().setFilterHolder(conduit.getInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir));
       }
       if (hasUpgradeHolder) {
-        getItemHandler().setUpgradeHolder(conduit.getCapability(CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY, dir));
+        getItemHandler().setUpgradeHolder(conduit.getInternalCapability(CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY, dir));
       }
     }
 
@@ -211,21 +207,21 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
   @Override
   public IMessage doOpenFilterGui(int filterIndex) {
-    if (currentCon.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir)) {
-      IFilterHolder<?> filterHolder = currentCon.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
+    if (currentCon.hasInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir)) {
+      IFilterHolder<?> filterHolder = currentCon.getInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
       int param1 = dir.ordinal();
       if (filterHolder != null) {
-        filterHolder.getFilter(filterIndex, param1).openGui(player, filterHolder.getFilterStack(filterIndex, param1), getTileEntity().getBundleworld(),
-            getTileEntity().getPos(), dir, filterIndex);
+        filterHolder.getFilter(filterIndex, param1).openGui(player, filterHolder.getFilterStack(filterIndex, param1), getTileEntityNN().getBundleworld(),
+            getTileEntityNN().getPos(), dir, filterIndex);
       }
     }
     return null;
   }
 
   @Override
-  public IFilter getFilter(int filterIndex) {
-    if (currentCon.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir)) {
-      IFilterHolder<?> filterHolder = currentCon.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
+  public @Nonnull IFilter getFilter(int filterIndex) {
+    if (currentCon.hasInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir)) {
+      IFilterHolder<?> filterHolder = currentCon.getInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
       int param1 = dir.ordinal();
       if (filterHolder != null) {
         return filterHolder.getFilter(filterIndex, param1);
