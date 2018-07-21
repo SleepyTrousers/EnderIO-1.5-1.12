@@ -3,7 +3,9 @@ package crazypants.enderio.zoo.entity;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
+import crazypants.enderio.base.handler.darksteel.SwordHandler;
 import crazypants.enderio.base.teleport.RandomTeleportUtil;
 import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.config.ZooConfig;
@@ -12,11 +14,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -115,6 +119,10 @@ public class EntityLoveChild extends EntityZombie implements IEnderZooMob {
   @Override
   public boolean attackEntityFrom(@Nonnull DamageSource source, float amount) {
     if (!isEntityInvulnerable(source) && super.attackEntityFrom(source, amount)) {
+      if (source instanceof EntityDamageSource && source.getTrueSource() instanceof EntityPlayer
+          && SwordHandler.isEquippedAndPowered((EntityPlayer) source.getTrueSource(), Config.darkSteelSwordPowerUsePerHit)) {
+        return true;
+      }
       if (rand.nextFloat() < ZooConfig.defendTeleportChance.get()) {
         RandomTeleportUtil.teleportEntity(world, this, false, true, ZooConfig.defendTeleportDistance.get());
         getNavigator().clearPath();

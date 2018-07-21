@@ -339,13 +339,12 @@ public class EntityEnderminy extends EntityMob implements IEnderZooMob {
     }
 
     boolean res = super.attackEntityFrom(damageSource, p_70097_2_);
-    if (damageSource instanceof EntityDamageSource && damageSource.getTrueSource() instanceof EntityPlayer && getHealth() > 0
-    // && !ItemDarkSteelSword.isEquippedAndPowered((EntityPlayer) damageSource.getEntity(), 1)) {
-    ) {
+    if (damageSource instanceof EntityDamageSource && damageSource.getTrueSource() instanceof EntityPlayer && getHealth() > 0) {
+      boolean skipTeleport = SwordHandler.isEquippedAndPowered((EntityPlayer) damageSource.getTrueSource(), Config.darkSteelSwordPowerUsePerHit);
       isAggressive = true;
       if (rand.nextInt(3) == 0) {
         for (int i = 0; i < 64; ++i) {
-          if (teleportRandomly(16)) {
+          if (skipTeleport || teleportRandomly(16)) {
             setAttackTarget((EntityPlayer) damageSource.getTrueSource());
             doGroupArgo();
             return true;
