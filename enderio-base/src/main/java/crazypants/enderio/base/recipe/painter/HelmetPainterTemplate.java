@@ -3,6 +3,7 @@ package crazypants.enderio.base.recipe.painter;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelArmor;
+import crazypants.enderio.base.paint.PaintSourceValidator;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.util.Prep;
@@ -16,6 +17,7 @@ public class HelmetPainterTemplate extends AbstractPainterTemplate<ItemDarkSteel
 
   public HelmetPainterTemplate(@Nonnull ItemDarkSteelArmor helmet) {
     this.helmet = helmet;
+    PaintUtil.registerPaintable(helmet);
   }
 
   @Override
@@ -32,18 +34,18 @@ public class HelmetPainterTemplate extends AbstractPainterTemplate<ItemDarkSteel
       ItemStack result = target.copy();
       NBTTagCompound tagCompound = result.getTagCompound();
       if (tagCompound != null) {
-        tagCompound.removeTag("DSPAINT");
+        tagCompound.removeTag("DSPAINT"); // TODO 1.13 remove
       }
+      PaintUtil.setPaintSource(result, Prep.getEmpty());
       return new ResultStack[] { new ResultStack(result) };
     }
     if (paintSource.getItem() instanceof ItemBlock) {
       ItemStack result = target.copy();
       NBTTagCompound tagCompound = result.getTagCompound();
-      if (tagCompound == null) {
-        tagCompound = new NBTTagCompound();
-        result.setTagCompound(tagCompound);
+      if (tagCompound != null) {
+        tagCompound.removeTag("DSPAINT"); // TODO 1.13 remove
       }
-      tagCompound.setTag("DSPAINT", paintSource.writeToNBT(tagCompound.getCompoundTag("DSPAINT")));
+      PaintUtil.setPaintSource(result, paintSource);
       return new ResultStack[] { new ResultStack(result) };
     }
     return new ResultStack[0];
@@ -66,7 +68,8 @@ public class HelmetPainterTemplate extends AbstractPainterTemplate<ItemDarkSteel
   }
 
   protected boolean isValidPaint(@Nonnull ItemStack paintSource) {
-    return Prep.isValid(paintSource) && (paintSource.getItem() instanceof ItemBlock || isValidTarget(paintSource));
+    return Prep.isValid(paintSource)
+        && ((paintSource.getItem() instanceof ItemBlock && PaintSourceValidator.instance.isValidSourceDefault(paintSource)) || isValidTarget(paintSource));
   }
 
   @Override
@@ -82,7 +85,6 @@ public class HelmetPainterTemplate extends AbstractPainterTemplate<ItemDarkSteel
 
   @Override
   protected void registerTargetsWithTooltipProvider() {
-    PaintUtil.registerPaintable(helmet);
   }
 
 }

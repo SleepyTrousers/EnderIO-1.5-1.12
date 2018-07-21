@@ -3,6 +3,7 @@ package crazypants.enderio.base.item.darksteel;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.upgrades.IRenderUpgrade;
+import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.util.Prep;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -49,13 +50,16 @@ public class PaintedHelmetLayer implements IRenderUpgrade {
     }
 
     ItemStack itemstack = entitylivingbaseIn.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-    if (!itemstack.hasTagCompound() || !itemstack.getTagCompound().hasKey("DSPAINT")) {
-      return;
-    }
+    ItemStack paintSource = PaintUtil.getPaintSource(itemstack);
+    if (Prep.isInvalid(paintSource)) { // TODO 1.13 remove
+      if (!itemstack.hasTagCompound() || !itemstack.getTagCompound().hasKey("DSPAINT")) {
+        return;
+      }
 
-    ItemStack paintSource = new ItemStack(itemstack.getTagCompound().getCompoundTag("DSPAINT"));
-    if (Prep.isInvalid(paintSource)) {
-      return;
+      paintSource = new ItemStack(itemstack.getTagCompound().getCompoundTag("DSPAINT"));
+      if (Prep.isInvalid(paintSource)) {
+        return;
+      }
     }
 
     GlStateManager.pushMatrix();

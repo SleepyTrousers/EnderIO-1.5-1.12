@@ -42,6 +42,7 @@ import crazypants.enderio.base.item.darksteel.upgrade.nightvision.NightVisionUpg
 import crazypants.enderio.base.item.darksteel.upgrade.sound.SoundDetectorUpgrade;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.PaintUtil.IWithPaintName;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.HelmetPainterTemplate;
@@ -263,12 +264,15 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 
   @Override
   public String getPaintName(@Nonnull ItemStack itemStack) {
-    final NBTTagCompound subCompound = itemStack.getSubCompound("DSPAINT");
-    if (subCompound != null) {
-      ItemStack paintSource = new ItemStack(subCompound);
-      if (Prep.isValid(paintSource)) {
-        return paintSource.getDisplayName();
+    ItemStack paintSource = PaintUtil.getPaintSource(itemStack);
+    if (Prep.isValid(paintSource)) {
+      final NBTTagCompound subCompound = itemStack.getSubCompound("DSPAINT"); // TODO 1.13 remove
+      if (subCompound != null) {
+        paintSource = new ItemStack(subCompound);
       }
+    }
+    if (Prep.isValid(paintSource)) {
+      return paintSource.getDisplayName();
     }
     return null;
   }
@@ -292,7 +296,8 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   @SideOnly(Side.CLIENT)
   public ModelBiped getArmorModel(@Nonnull EntityLivingBase entityLiving, @Nonnull ItemStack itemStack, @Nonnull EntityEquipmentSlot armorSlot,
       @Nonnull ModelBiped _default) {
-    if (armorType == EntityEquipmentSlot.HEAD && itemStack.getSubCompound("DSPAINT") != null) {
+    if (armorType == EntityEquipmentSlot.HEAD && (PaintUtil.hasPaintSource(itemStack) || itemStack.getSubCompound("DSPAINT") != null)) { // TODO 1.13 remove
+                                                                                                                                         // DSPAINT
       // Don't render the armor model of the helmet if it is painted. The paint will be rendered by the PaintedHelmetLayer.
       return PaintedHelmetLayer.no_render;
     }

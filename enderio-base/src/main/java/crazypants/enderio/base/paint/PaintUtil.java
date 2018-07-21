@@ -126,9 +126,13 @@ public class PaintUtil {
   }
 
   public static void setPaintSource(@Nonnull ItemStack itemStack, @Nonnull ItemStack paintSource) {
-    paintSource = paintSource.copy();
-    paintSource.setCount(1);
-    NbtValue.PAINT_SOURCE.setStack(itemStack, paintSource);
+    if (Prep.isInvalid(paintSource)) {
+      NbtValue.PAINT_SOURCE.removeTag(itemStack);
+    } else {
+      paintSource = paintSource.copy();
+      paintSource.setCount(1);
+      NbtValue.PAINT_SOURCE.setStack(itemStack, paintSource);
+    }
   }
 
   public static @Nonnull ItemStack getPaintSource(@Nonnull ItemStack itemStack) {
