@@ -8,7 +8,7 @@ public class EndermanAttractionHandler extends AIAttractionHandler {
 
   @Override
   public boolean canAttract(TileAttractor attractor, EntityLiving entity) {
-    return entity instanceof EntityEnderman;
+    return entity instanceof EntityEnderman && findAITask(null, entity) == null;
   }
 
   @Override
