@@ -103,9 +103,7 @@ public class RandomTeleportUtil {
       entity.dismountRidingEntity();
     }
     if (entity.isBeingRidden()) {
-      for (Entity passenger : entity.getPassengers()) {
-        passenger.dismountRidingEntity();
-      }
+      entity.removePassengers();
     }
 
     entity.setPositionAndRotation(targetX, targetY, targetZ, entity.rotationYaw, entity.rotationPitch);
@@ -130,9 +128,7 @@ public class RandomTeleportUtil {
         entity.dismountRidingEntity();
       }
       if (entity.isBeingRidden()) {
-        for (Entity passenger : entity.getPassengers()) {
-          passenger.dismountRidingEntity();
-        }
+        entity.removePassengers();
       }
 
       if (entity instanceof EntityPlayerMP) {
