@@ -694,7 +694,7 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
  
-  <recipe name="Alloy: FerroBoron (Ingots) (Nuclearcraft)" required="false">
+  <recipe name="Alloy: FerroBoron (Nuclearcraft)" required="false">
     <alloying energy="4000" exp="0">
       <input name="ingotSteel"/>
       <input name="ingotBoron"/>
@@ -702,7 +702,7 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
  
-  <recipe name="Alloy: Tough Alloy (Ingots) (Nuclearcraft)" required="false">
+  <recipe name="Alloy: Tough Alloy (Nuclearcraft)" required="false">
     <alloying energy="4000" exp="0">
       <input name="ingotFerroboron"/>
       <input name="ingotLithium"/>
@@ -710,7 +710,7 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
  
-  <recipe name="Alloy: Hard Carbon (Ingots) (Nuclearcraft)" required="false">
+  <recipe name="Alloy: Hard Carbon (Nuclearcraft)" required="false">
     <alloying energy="4000" exp="0">
       <input name="ingotGraphite"/>
       <input name="gemDiamond"/>
@@ -718,7 +718,7 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
  
-  <recipe name="Alloy: Magnesium Diboride Alloy (Ingots) (Nuclearcraft)" required="false">
+  <recipe name="Alloy: Magnesium Diboride Alloy (Nuclearcraft)" required="false">
     <alloying energy="4000" exp="0">
       <input name="ingotMagnesium"/>
       <input name="ingotBoron" amount="2"/>
@@ -726,7 +726,7 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
-   <recipe name="Alloy: Lithium Manganese Alloy (Ingots) (Nuclearcraft)" required="false">
+   <recipe name="Alloy: Lithium Manganese Alloy (Nuclearcraft)" required="false">
     <alloying energy="4000" exp="0">
       <input name="ingotManganeseDioxide"/>
       <input name="ingotLithium"/>
