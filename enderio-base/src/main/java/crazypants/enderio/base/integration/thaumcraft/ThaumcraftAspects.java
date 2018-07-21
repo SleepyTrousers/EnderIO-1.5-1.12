@@ -22,29 +22,44 @@ public class ThaumcraftAspects {
 
   static void loadAspects() {
 
+    // workaround for not knowing whether azanor's code has built aspects yet
+    AspectList coal = new AspectList().add(Aspect.FIRE, 10).add(Aspect.ENERGY, 10);
+    AspectList glowstoneDust = new AspectList().add(Aspect.LIGHT, 10).add(Aspect.SENSES, 5);
+    AspectList ironIngot = new AspectList().add(Aspect.METAL, 10);
+    AspectList redstone = new AspectList().add(Aspect.ENERGY, 10);
+    AspectList goldIngot = new AspectList().add(Aspect.METAL, 10).add(Aspect.DESIRE, 10);
+    AspectList enderPearl = new AspectList().add(Aspect.MOTION, 15).add(Aspect.ELDRITCH, 10);
+    AspectList skull = new AspectList().add(Aspect.UNDEAD, 10).add(Aspect.DEATH, 10).add(Aspect.SOUL, 10);
+    AspectList potion = new AspectList().add(Aspect.WATER, 5).add(Aspect.ALCHEMY, 3).add(Aspect.METAL, 3).add(Aspect.DESIRE, 3);
+    AspectList emerald = new AspectList().add(Aspect.CRYSTAL, 15).add(Aspect.DESIRE, 10);
+    AspectList quartz = new AspectList().add(Aspect.CRYSTAL, 5);
+    AspectList obsidian = new AspectList().add(Aspect.EARTH, 5).add(Aspect.FIRE, 5).add(Aspect.DARKNESS, 5);
+    AspectList soulSand = new AspectList().add(Aspect.EARTH, 3).add(Aspect.SOUL, 3).add(Aspect.TRAP, 3);
+
+
     // TODO: Mod Thaumcraft
-    ThaumcraftApi.registerObjectTag("dustCoal", new AspectList().add(getAspects(Items.COAL)));
+    ThaumcraftApi.registerObjectTag("dustCoal", new AspectList().add(coal));
     ThaumcraftApi.registerObjectTag("itemSilicon", new AspectList().add(Aspect.FIRE, 1).add(Aspect.ORDER, 1).add(Aspect.SENSES, 1));
 
     ThaumcraftApi.registerObjectTag(Alloy.ELECTRICAL_STEEL.getOreIngot(),
-        new AspectList().add(getAspects("dustCoal")).add(getAspects(Items.IRON_INGOT)).add(getAspects("itemSilicon")));
+        new AspectList().add(getAspects("dustCoal")).add(ironIngot).add(getAspects("itemSilicon")));
 
     ThaumcraftApi.registerObjectTag(Alloy.ENERGETIC_ALLOY.getOreIngot(),
-        new AspectList().add(getAspects(Items.GLOWSTONE_DUST)).add(getAspects(Items.REDSTONE)).add(getAspects(Items.GOLD_INGOT)));
+        new AspectList().add(glowstoneDust).add(redstone).add(goldIngot));
 
     ThaumcraftApi.registerObjectTag(Alloy.VIBRANT_ALLOY.getOreIngot(),
-        new AspectList().add(getAspects(Items.ENDER_PEARL)).add(getAspects("ingotEnergeticAlloy")));
+        new AspectList().add(enderPearl).add(getAspects("ingotEnergeticAlloy")));
 
-    ThaumcraftApi.registerObjectTag(Alloy.REDSTONE_ALLOY.getOreIngot(), new AspectList().add(getAspects(Items.REDSTONE)).add(getAspects("itemSilicon")));
+    ThaumcraftApi.registerObjectTag(Alloy.REDSTONE_ALLOY.getOreIngot(), new AspectList().add(redstone).add(getAspects("itemSilicon")));
 
-    ThaumcraftApi.registerObjectTag(Alloy.CONDUCTIVE_IRON.getOreIngot(), new AspectList().add(getAspects(Items.REDSTONE)).add(getAspects(Items.IRON_INGOT)));
+    ThaumcraftApi.registerObjectTag(Alloy.CONDUCTIVE_IRON.getOreIngot(), new AspectList().add(redstone).add(ironIngot));
 
-    ThaumcraftApi.registerObjectTag(Alloy.PULSATING_IRON.getOreIngot(), new AspectList().add(getAspects(Items.ENDER_PEARL)).add(getAspects(Items.IRON_INGOT)));
+    ThaumcraftApi.registerObjectTag(Alloy.PULSATING_IRON.getOreIngot(), new AspectList().add(enderPearl).add(ironIngot));
 
     ThaumcraftApi.registerObjectTag(Alloy.DARK_STEEL.getOreIngot(),
-        new AspectList().add(getAspects(Items.IRON_INGOT)).add(getAspects("dustCoal")).add(getAspects(Blocks.OBSIDIAN)));
+        new AspectList().add(ironIngot).add(getAspects("dustCoal")).add(obsidian));
 
-    ThaumcraftApi.registerObjectTag(Alloy.SOULARIUM.getOreIngot(), new AspectList().add(getAspects(Blocks.SOUL_SAND)).add(getAspects(Items.GOLD_INGOT)));
+    ThaumcraftApi.registerObjectTag(Alloy.SOULARIUM.getOreIngot(), new AspectList().add(soulSand).add(goldIngot));
 
     // ThaumcraftApi.registerObjectTag(new ItemStack(EnderIO.blockEndermanSkull), new AspectList()
     // .add(Aspect.MAGIC, 3)
@@ -52,17 +67,17 @@ public class ThaumcraftAspects {
     // .add(Aspect.ELDRITCH, 4));
 
     ThaumcraftApi.registerObjectTag(new ItemStack(ModObject.blockEndermanSkull.getBlockNN(), 1, SkullType.TORMENTED.ordinal()),
-        new AspectList().add(getAspects(ModObject.blockEndermanSkull.getBlockNN())).add(getAspects(Items.POTIONITEM)).add(getAspects(Items.POTIONITEM))
+        new AspectList().add(getAspects(ModObject.blockEndermanSkull.getBlockNN())).add(potion).add(potion)
             .add(getAspects(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, 0))).add(getAspects(Alloy.SOULARIUM.getOreIngot()))
             .add(getAspects(Alloy.SOULARIUM.getOreIngot())));
 
     ThaumcraftApi.registerObjectTag(new ItemStack(ModObject.itemMaterial.getItemNN(), 1, Material.FRANKEN_ZOMBIE.ordinal()),
-        new AspectList().add(getAspects(new ItemStack(Items.SKULL, 1, 2))).add(getAspects("itemSilicon")).add(getAspects("itemSilicon"))
+        new AspectList().add(skull).add(skull).add(getAspects("itemSilicon")).add(getAspects("itemSilicon"))
             .add(getAspects(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, 0))).add(getAspects(Alloy.ENERGETIC_ALLOY.getOreIngot()))
             .add(getAspects(Alloy.ENERGETIC_ALLOY.getOreIngot())));
 
     ThaumcraftApi.registerObjectTag(new ItemStack(ModObject.itemMaterial.getItemNN(), 1, Material.FRANKEN_ZOMBIE.ordinal()),
-        new AspectList().add(getAspects(new ItemStack(Items.SKULL, 1, 2))).add(getAspects("itemSilicon")).add(getAspects("itemSilicon"))
+        new AspectList().add(skull).add(skull).add(getAspects("itemSilicon")).add(getAspects("itemSilicon"))
             .add(getAspects(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, 0))).add(getAspects(Alloy.SOULARIUM.getOreIngot()))
             .add(getAspects(Alloy.SOULARIUM.getOreIngot())));
 
@@ -77,18 +92,18 @@ public class ThaumcraftAspects {
     ThaumcraftApi.registerObjectTag(new ItemStack(ModObject.itemMaterial.getItemNN(), 1, Material.ENDER_CRYSTAL.ordinal()),
         new AspectList().add(Aspect.AIR, 2).add(Aspect.ELDRITCH, 4)
             // .add(Aspect.TRAVEL, 2)
-            .add(getAspects(Items.EMERALD)));
+            .add(emerald));
 
     ThaumcraftApi.registerObjectTag(new ItemStack(ModObject.itemMaterial.getItemNN(), 1, Material.ATTRACTOR_CRYSTAL.ordinal()), new AspectList()
         .add(Aspect.AIR, 2).add(Aspect.MAN, 3).add(getAspects(new ItemStack(ModObject.itemMaterial.getItemNN(), 1, Material.VIBRANT_CYSTAL.ordinal()))));
 
     ThaumcraftApi.registerObjectTag(new ItemStack(ModObject.blockFusedQuartz.getBlockNN(), 1),
-        new AspectList().add(getAspects(new ItemStack(Items.QUARTZ, 4))).add(Aspect.CRYSTAL, 1));
+        new AspectList().add(quartz).add(quartz).add(quartz).add(quartz).add(Aspect.CRYSTAL, 1));
 
     ThaumcraftApi.registerObjectTag(new ItemStack(ModObject.blockFusedGlass.getBlockNN(), 1), new AspectList().add(Aspect.CRYSTAL, 2));
 
     ThaumcraftApi.registerObjectTag(new ItemStack(ModObject.blockEnlightenedFusedQuartz.getBlockNN(), 1),
-        new AspectList().add(getAspects(new ItemStack(Items.QUARTZ, 4))).add(Aspect.LIGHT, 8).add(Aspect.SENSES, 2));
+        new AspectList().add(quartz).add(quartz).add(quartz).add(quartz).add(Aspect.LIGHT, 8).add(Aspect.SENSES, 2));
 
     ThaumcraftApi.registerObjectTag(new ItemStack(ModObject.blockEnlightenedFusedGlass.getBlockNN(), 1),
         new AspectList().add(Aspect.CRYSTAL, 2).add(Aspect.LIGHT, 8).add(Aspect.SENSES, 2));
