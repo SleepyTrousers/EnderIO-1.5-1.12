@@ -182,6 +182,8 @@ public class EnderIO implements IEnderIOAddon {
 
     Config.init(event);
 
+    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.PostInit.Pre());
+
     ModObjectRegistry.init(event);
 
     LootManager.init(event);
@@ -200,6 +202,8 @@ public class EnderIO implements IEnderIOAddon {
 
     Celeb.init(event);
     Scheduler.instance.start();
+
+    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.PostInit.Post());
 
     Log.debug("PHASE POST-INIT END");
   }
