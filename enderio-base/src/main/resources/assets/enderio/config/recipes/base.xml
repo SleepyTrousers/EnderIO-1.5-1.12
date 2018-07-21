@@ -702,26 +702,10 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
  
-  <recipe name="Alloy: FerroBoron (Dusts) (Nuclearcraft)" required="false">
-    <alloying energy="4000" exp="0">
-      <input name="dustSteel"/>
-      <input name="dustBoron"/>
-      <output name="ingotFerroboron" amount="2"/>
-    </alloying>
-  </recipe>
- 
   <recipe name="Alloy: Tough Alloy (Ingots) (Nuclearcraft)" required="false">
     <alloying energy="4000" exp="0">
       <input name="ingotFerroboron"/>
       <input name="ingotLithium"/>
-      <output name="ingotTough" amount="2"/>
-    </alloying>
-  </recipe>
- 
-  <recipe name="Alloy: Tough Alloy (Dusts) (Nuclearcraft)" required="false">
-    <alloying energy="4000" exp="0">
-      <input name="ingotFerroboron"/>
-      <input name="dustLithium"/>
       <output name="ingotTough" amount="2"/>
     </alloying>
   </recipe>
@@ -734,14 +718,6 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
  
-  <recipe name="Alloy: Hard Carbon (Dusts) (Nuclearcraft)" required="false">
-    <alloying energy="4000" exp="0">
-      <input name="dustGraphite"/>
-      <input name="dustDiamond"/>
-      <output name="ingotHardCarbon" amount="2"/>
-    </alloying>
-  </recipe>
- 
   <recipe name="Alloy: Magnesium Diboride Alloy (Ingots) (Nuclearcraft)" required="false">
     <alloying energy="4000" exp="0">
       <input name="ingotMagnesium"/>
@@ -749,27 +725,11 @@ XML editor will display that as tooltips when editing this file.
       <output name="ingotMagnesiumDiboride" amount="3"/>
     </alloying>
   </recipe>
- 
-  <recipe name="Alloy: Magnesium Diboride Alloy (Dusts) (Nuclearcraft)" required="false">
-    <alloying energy="4000" exp="0">
-      <input name="dustMagnesium"/>
-      <input name="dustBoron" amount="2"/>
-      <output name="ingotMagnesiumDiboride" amount="3"/>
-    </alloying>
-  </recipe>
- 
+
    <recipe name="Alloy: Lithium Manganese Alloy (Ingots) (Nuclearcraft)" required="false">
     <alloying energy="4000" exp="0">
       <input name="ingotManganeseDioxide"/>
       <input name="ingotLithium"/>
-      <output name="ingotMagnesiumDiboride" amount="2"/>
-    </alloying>
-  </recipe>
- 
-   <recipe name="Alloy: Lithium Manganese Alloy (Dusts) (Nuclearcraft)" required="false">
-    <alloying energy="4000" exp="0">
-      <input name="ingotManganeseDioxide"/>
-      <input name="dustLithium"/>
       <output name="ingotMagnesiumDiboride" amount="2"/>
     </alloying>
   </recipe>
