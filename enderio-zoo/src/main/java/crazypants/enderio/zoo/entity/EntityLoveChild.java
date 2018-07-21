@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.handler.darksteel.SwordHandler;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.teleport.RandomTeleportUtil;
 import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.config.ZooConfig;
@@ -135,12 +136,21 @@ public class EntityLoveChild extends EntityZombie implements IEnderZooMob {
 
   @Override
   protected @Nonnull Item getDropItem() {
+    // unused, see loot table
     return Items.ENDER_PEARL;
   }
 
   @Override
   protected @Nonnull ItemStack getSkullDrop() {
-    return ItemStack.EMPTY;
+    switch (ZooConfig.loveSkullDrop.get()) {
+    case ENDERMAN:
+      return new ItemStack(ModObject.blockEndermanSkull.getBlockNN());
+    case ZOMBIE:
+      return super.getSkullDrop();
+    case NONE:
+    default:
+      return ItemStack.EMPTY;
+    }
   }
 
   @Override

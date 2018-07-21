@@ -35,8 +35,14 @@
         {
           "entryName": "35c6dd84-2086-42ea-b9b8-df7d3208a1aa",
           "type": "item",
-          "name": "minecraft:ender_pearl",
-          "weight": 20
+          "name": "enderio:item_material",
+          "weight": 20,
+          "functions": [
+            {
+              "function": "minecraft:set_data",
+              "data": 62
+            }
+          ]
         },
         {
           "entryName": "265a3743-8033-4e01-a4e9-a4b91b74bf3f",

@@ -196,11 +196,11 @@ public final class ZooConfig {
 
   public static final IValue<Float> attackTeleportChance = LOVE.make("attackTeleportChance", .05f, //
       "The chance a Love Child will teleport an attacker away.").setRange(0, 1);
-  public static final IValue<Float> attackTeleportDistance = LOVE.make("attackTeleportDistance", 5f, //
+  public static final IValue<Float> attackTeleportDistance = LOVE.make("attackTeleportDistance", 8f, //
       "The maximum distance a Love Child will teleport an attacker away.").setRange(1.5, 64);
-  public static final IValue<Float> defendTeleportChance = LOVE.make("defendTeleportChance", .05f, //
+  public static final IValue<Float> defendTeleportChance = LOVE.make("defendTeleportChance", .25f, //
       "The chance a Love Child will teleport away when attacked.").setRange(0, 1);
-  public static final IValue<Float> defendTeleportDistance = LOVE.make("defendTeleportDistance", 5f, //
+  public static final IValue<Float> defendTeleportDistance = LOVE.make("defendTeleportDistance", 8f, //
       "The maximum distance a Love Child will teleport away when attacked.").setRange(1.5, 64);
   public static final IValue<Double> loveChildHealth = LOVE.make("health", 25d, //
       "Health of Love Children.").setRange(1, 200).sync();
@@ -210,6 +210,15 @@ public final class ZooConfig {
       "Movement speeds of Love Children. (Zombie: 0.23)").setRange(0.02, 2).sync();
   public static final IValue<Double> loveChildArmor = LOVE.make("armor", 3d, //
       "Armor of Love Children. (Zombie: 2)").setRange(0, 20).sync();
+
+  public static final IValue<SkullDrop> loveSkullDrop = LOVE.make("skullDrop", SkullDrop.ZOMBIE, //
+      "Type of skull Love Children should drop (ZOMBIE/ENDERMAN/NONE). Note that there is an additional Enderman skull in the loot table.").sync();
+
+  public static enum SkullDrop {
+    NONE,
+    ZOMBIE,
+    ENDERMAN;
+  }
 
   public static final IValueFactory SQUID = F0.section(".epic_squid");
 
