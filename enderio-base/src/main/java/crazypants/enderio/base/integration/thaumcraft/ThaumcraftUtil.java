@@ -16,7 +16,7 @@ public class ThaumcraftUtil {
 
   public static void create() {
     if (Loader.isModLoaded("thaumcraft")) {
-      ThaumcraftAspects.loadAspects();
+      //ThaumcraftAspects.loadAspects();
     }
   }
 
