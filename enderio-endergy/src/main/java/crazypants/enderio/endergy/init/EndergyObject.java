@@ -11,6 +11,7 @@ import crazypants.enderio.base.init.IModTileEntity;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.endergy.EnderIOEndergy;
+import crazypants.enderio.endergy.alloy.ItemEndergyAlloy;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -19,6 +20,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIOEndergy.MODID)
 public enum EndergyObject implements IModObject {
+
+  itemEndergyAlloy(ItemEndergyAlloy.class),
 
   ;
 

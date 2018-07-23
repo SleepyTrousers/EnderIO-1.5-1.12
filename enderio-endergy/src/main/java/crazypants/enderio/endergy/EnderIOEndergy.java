@@ -5,7 +5,12 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.tuple.Triple;
+
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.api.addon.IEnderIOAddon;
+import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.endergy.config.ConfigHandler;
 import crazypants.enderio.endergy.init.CommonProxy;
 import net.minecraftforge.common.config.Configuration;
@@ -68,6 +73,13 @@ public class EnderIOEndergy implements IEnderIOAddon {
   @Nullable
   public Configuration getConfiguration() {
     return ConfigHandler.config;
+  }
+
+
+  @Override
+  @Nonnull
+  public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
+    return new NNList<>(Triple.of(2, null, "endergy"));
   }
 
 }
