@@ -22,7 +22,7 @@ ____
 
 - EnderIO:
 - EnderCore:
-- Minecraft: 1.7.10
+- Minecraft:
 - Forge:
 
 #### Your most recent log file where the issue was present: 
