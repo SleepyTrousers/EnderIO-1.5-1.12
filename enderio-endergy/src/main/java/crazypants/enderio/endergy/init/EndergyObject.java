@@ -12,6 +12,7 @@ import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.endergy.EnderIOEndergy;
 import crazypants.enderio.endergy.alloy.ItemEndergyAlloy;
+import crazypants.enderio.endergy.capacitor.ItemEndergyCapacitor;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -22,6 +23,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public enum EndergyObject implements IModObject {
 
   itemEndergyAlloy(ItemEndergyAlloy.class),
+  itemCapacitorGrainy(ItemEndergyCapacitor.class),
 
   ;
 
