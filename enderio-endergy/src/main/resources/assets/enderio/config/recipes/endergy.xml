@@ -68,4 +68,47 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
+  <recipe name="Capacitor Crystalline" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="enderio:item_endergy_alloy:2"/><item />
+        <item name="CAPACITOR3"/><item name="dustPrismarine"/><item name="CAPACITOR3"/>
+        <item /><item name="enderio:item_endergy_alloy:2"/><item />
+      </grid>
+      <output name="enderio:item_capacitor_crystalline"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor Melodic" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="enderio:item_endergy_alloy:3"/><item />
+        <item name="enderio:item_capacitor_crystalline"/><item name="END_STEEL"/><item name="enderio:item_capacitor_crystalline"/>
+        <item /><item name="enderio:item_endergy_alloy:3"/><item />
+      </grid>
+      <output name="enderio:item_capacitor_melodic"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor Stellar" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="enderio:item_endergy_alloy:4"/><item />
+        <item name="enderio:item_capacitor_melodic"/><item name="minecraft:shulker_shell"/><item name="enderio:item_capacitor_melodic"/>
+        <item /><item name="enderio:item_endergy_alloy:4"/><item />
+      </grid>
+      <output name="enderio:item_capacitor_stellar"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor Grainy" required="true">
+    <crafting>
+      <grid size="2x3">
+        <item /><item name="POWDER_INFINITY"/><item />
+        <item name="nuggetIron"/><item /><item name="nuggetIron"/>
+      </grid>
+      <output name="enderio:item_capacitor_grainy"/>
+    </crafting>
+  </recipe>
+
 </enderio:recipes>
