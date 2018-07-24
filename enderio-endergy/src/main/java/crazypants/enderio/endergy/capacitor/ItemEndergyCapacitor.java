@@ -41,16 +41,33 @@ public class ItemEndergyCapacitor extends Item {
 
   private ICapacitorData data;
 
-  public static ItemEndergyCapacitor create(@Nonnull IModObject modObject) {
-    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.GRAINY_CAPACITOR);
+  public static ItemEndergyCapacitor create_grainy(@Nonnull IModObject modObject) {
+    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.GRAINY_CAPACITOR, 100);
+  }
+
+  public static ItemEndergyCapacitor create_crystalline(@Nonnull IModObject modObject) {
+    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.CRYSTALLINE_CAPACITOR);
+  }
+
+  public static ItemEndergyCapacitor create_melodic(@Nonnull IModObject modObject) {
+    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.MELODIC_CAPACITOR);
+  }
+
+  public static ItemEndergyCapacitor create_stellar(@Nonnull IModObject modObject) {
+    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.STELLAR_CAPACITOR);
   }
 
   protected ItemEndergyCapacitor(@Nonnull IModObject modObject, @Nonnull ICapacitorData data) {
+    this (modObject, data, 0);
+  }
+
+  protected ItemEndergyCapacitor(@Nonnull IModObject modObject, @Nonnull ICapacitorData data, int damage) {
     setCreativeTab(EnderIOTab.tabEnderIOMaterials);
     modObject.apply(this);
-    setHasSubtypes(true);
-    setMaxDamage(0);
-    setMaxStackSize(64);
+    if (damage <= 0) {
+      setMaxStackSize(64);
+    }
+    setMaxDamage(damage >= 0 ? damage : 0);
     this.data = data;
   }
 

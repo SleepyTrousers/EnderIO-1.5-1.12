@@ -8,10 +8,10 @@ import crazypants.enderio.base.capacitor.ICapacitorKey;
 
 public enum EndergyCapacitorData implements ICapacitorData {
 
-  GRAINY_CAPACITOR("grains", 0.5f),
+  GRAINY_CAPACITOR("grains", 1.0f),
   CRYSTALLINE_CAPACITOR("crystalline", 3.5f),
-  MELODIC_CAPACITOR("melodic", 4f),
-  STELLAR_CAPACITOR("stellar", 5f),
+  MELODIC_CAPACITOR("melodic", 4.0f),
+  STELLAR_CAPACITOR("stellar", 5.0f),
 
   ;
 

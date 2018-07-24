@@ -23,7 +23,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public enum EndergyObject implements IModObject {
 
   itemEndergyAlloy(ItemEndergyAlloy.class),
-  itemCapacitorGrainy(ItemEndergyCapacitor.class),
+  itemCapacitorGrainy(ItemEndergyCapacitor.class, "create_grainy"),
+  itemCapacitorCrystalline(ItemEndergyCapacitor.class, "create_crystalline"),
+  itemCapacitorMelodic(ItemEndergyCapacitor.class, "create_melodic"),
+  itemCapacitorStellar(ItemEndergyCapacitor.class, "create_stellar"),
 
   ;
 
