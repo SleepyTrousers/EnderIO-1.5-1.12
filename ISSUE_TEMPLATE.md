@@ -1,5 +1,6 @@
 #### Issue Description:
-Note: If this bug occurs in a modpack, please report this to the modpack author. Otherwise, delete this line and add your description here. If you are using an unreleased version of Ender IO (e.g. for 1.8.9), please don't open an issue for features that have not been announced as "finished" or "working".
+
+Delete this line after reading it: If this bug occurs in a modpack, please report this to the modpack author first. If you are using an unreleased version of Ender IO (a.k.a development/nightly version), please don't open an issue for features that have not been announced as "finished" or "working". Expect to be ignored if you ignore this template.
 
 
 #### What happens:
@@ -24,6 +25,9 @@ ____
 - EnderCore:
 - Minecraft:
 - Forge:
+- SpongeForge? yes/no
+- Optifine? yes/no
+- Single Player and/or Server?
 
 #### Your most recent log file where the issue was present: 
 
