@@ -118,4 +118,7 @@ public final class PersonalConfig {
   public static final IValue<Boolean> hideTiCMaterials = H.make("hideTiCMaterials", true, //
       "Should compatibility items for Tinkers Construct be hidden in JEI if it is not installed?");
 
+  public static final IValue<Boolean> hideTreetap = H.make("hideTreetap", true, //
+      "Should the treetap be hidden in JEI if no mods with rubber trees are installed?");
+
 }

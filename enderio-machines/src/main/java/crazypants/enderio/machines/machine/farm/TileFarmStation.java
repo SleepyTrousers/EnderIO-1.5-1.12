@@ -235,8 +235,15 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     IBlockState bs = world.getBlockState(farmingPos);
 
     if (isOpen(farmingPos, bs)) {
-      Commune.instance.prepareBlock(getFarmer(), farmingPos, bs);
-      bs = world.getBlockState(farmingPos);
+      switch (Commune.instance.tryPrepareBlock(getFarmer(), farmingPos, bs)) {
+      case ACTION:
+        PacketHandler.sendToAllAround(new PacketFarmAction(farmingPos), this);
+      case CLAIM:
+        return;
+      case NEXT:
+      default:
+        break;
+      }
     }
 
     if (isOpen(farmingPos, bs) || !executeHarvest(farmingPos, bs)) {

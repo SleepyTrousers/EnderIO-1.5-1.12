@@ -71,6 +71,7 @@ public enum ItemHidingHelper {
       Material.GRINDING_BALL_LUMIUM, Material.REDSTONE_FILTER_BASE, Material.DISH, Material.END_STEEL_MACHINE_CHASSIS, Material.DYE_ENHANCED_MACHINE,
       Material.ENHANCED_CHASSIPARTS, Material.SIMPLE_CHASSIPARTS, Material.CAKE_BASE, Material.BRICK_GLAZED_NETHER),
   ZOO2(mod("enderiozoo", PersonalConfig.hideMobDrops), Material.POWDER_CONFUSION, Material.SHARD_ENDER, Material.POWDER_WITHERING),
+  TAP(mod("ic2", PersonalConfig.hideTreetap).and(mod("techreborn", PersonalConfig.hideTreetap)), ModObject.itemDarkSteelTreetap),
 
   ;
 

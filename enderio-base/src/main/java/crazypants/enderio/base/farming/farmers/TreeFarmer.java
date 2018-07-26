@@ -38,7 +38,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 public class TreeFarmer extends AbstractFarmerJoe {
 
-  private static final @Nonnull HeightComparator comp = new HeightComparator();
+  static final @Nonnull protected HeightComparator comp = new HeightComparator();
 
   protected final @Nonnull Things saplings;
   protected final @Nonnull Things woods;
@@ -138,8 +138,8 @@ public class TreeFarmer extends AbstractFarmerJoe {
   }
 
   // these will be using during harvesting
-  boolean hasAxe, hasShears, hasHoe;
-  int fortune, noShearingPercentage, shearCount;
+  protected boolean hasAxe, hasShears, hasHoe;
+  protected int fortune, noShearingPercentage, shearCount;
 
   protected void setupHarvesting(@Nonnull IFarmer farm, @Nonnull BlockPos harvestLocation) {
     hasAxe = farm.hasTool(FarmingTool.AXE);

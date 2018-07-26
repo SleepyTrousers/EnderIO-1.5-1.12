@@ -233,4 +233,11 @@ public final class DarkSteelConfig {
       F_EBOW.make("damage4", 0.0, "Damage bonus of the End Steel Bow when 'Empowered IV' and it has energy.").setRange(0, 30).sync(), //
       F_EBOW.make("damage5", 0.0, "Damage bonus of the End Steel Bow when 'Empowered V' and it has energy.").setRange(0, 30).sync());
 
+  public static final IValueFactory F_TAP = F_DARK_STEEL.section(".treetap");
+
+  public static final IValue<Integer> tapDurability = F_TAP.make("durability", 2000, //
+      "Durability of the Dark Steel Tree Tap.").setRange(1, 99999999).sync();
+  public static final IValue<Integer> tapEnergyPerDamage = F_TAP.make("energyPerDamage", 750, //
+      "Energy use per damage/durability point avoided.").setRange(1, 99999999).sync();
+
 }

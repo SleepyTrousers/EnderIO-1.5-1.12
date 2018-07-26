@@ -109,6 +109,9 @@ item.item_dark_steel_shears.name=Dark Shears
 item.item_dark_steel_shears.tooltip.effPowered=%sEfficiency when powered: %s
 item.item_dark_steel_shears.tooltip.multiHarvest=Shears multiple blocks/sheep when empowered
 
+item.item_dark_steel_treetap.name=Dark Treetap
+item.item_dark_steel_treetap.tooltip.common.line1=Farming Station Use Only!
+
 item.item_dark_steel_bow.name=Dark Bow
 item.item_end_steel_bow.name=Ender Bow
 
