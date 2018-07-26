@@ -1,13 +1,11 @@
 package crazypants.enderio.base.item.staffoflevity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.CompoundCapabilityProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.FluidUtil;
@@ -130,9 +128,6 @@ public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider,
 
   @Override
   public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    List<String> entries = new ArrayList<String>();
-    SpecialTooltipHandler.addDetailedTooltipFromResources(entries, getUnlocalizedName());
-    list.addAll(entries);
     DarkSteelRecipeManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 

@@ -96,7 +96,6 @@ public class ItemDarkSteelTreetap extends Item implements IAdvancedTooltipProvid
 
   @Override
   public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    SpecialTooltipHandler.addCommonTooltipFromResources(list, getUnlocalizedName());
     DarkSteelRecipeManager.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
