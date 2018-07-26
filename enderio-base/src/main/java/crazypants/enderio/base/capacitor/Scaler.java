@@ -103,19 +103,19 @@ public interface Scaler {
       }
     }),
     OCTADIC_1_8(new IndexedScaler(.5f, 0, .5f, 1, 3, 2, 4, 8, 10, 16)),
-    POWER(new IndexedScaler(1f, 0, 1, 3, 5, 8, 13)),
+    POWER(new IndexedScaler(1f, 0, 1, 3, 5, 8, 13, 18)),
     CHARGE(new IndexedScaler(1f, 1000, 100, 60, 20, 10, 1)),
     SPEED(new IndexedScaler(1f, 100, 20, 10, 2, 1)),
-    POWER10(new IndexedScaler(1f, 0, 1, 2, 10, 20)),
-    RANGE(new IndexedScaler(1f, 0, 4, 6, 10, 17)),
+    POWER10(new IndexedScaler(1f, 0, 1, 2, 10, 20, 40)),
+    RANGE(new IndexedScaler(1f, 0, 4, 6, 10, 17, 24)),
     FIXED(new Scaler() { // 1-1-1
       @Override
       public float scaleValue(float idx) {
         return 1;
       }
     }),
-    SPAWNER(new IndexedScaler(1f, 0, 1, 5, 10, 20)),
-    BURNTIME(new IndexedScaler(1f, 0.8f, 1f, 1.25f, 1.5f, 1.5f, 2f) {
+    SPAWNER(new IndexedScaler(1f, 0, 1, 5, 10, 20, 40)),
+    BURNTIME(new IndexedScaler(1f, 0.8f, 1f, 1.25f, 1.5f, 1.5f, 2f, 2.5f) {
       @Override
       public float scaleValue(float idx) {
         return super.scaleValue(idx) / 100f; // Convert from percentage
@@ -127,7 +127,7 @@ public interface Scaler {
         return 1 + (idx - 1f) * 0.25f;
       }
     }),
-    DROPOFF(new IndexedScaler(1f, 1, 1, 4 / 3f, 2, 2.5f, 3f)), // Special case for stirling gen 
+    DROPOFF(new IndexedScaler(1f, 1, 1, 4 / 3f, 2, 2.5f, 3f, 3.25f)), // Special case for stirling gen
     CENT(new Scaler() { // 0.01-0.01-0.01 (used for power loss)
       @Override
       public float scaleValue(float idx) {

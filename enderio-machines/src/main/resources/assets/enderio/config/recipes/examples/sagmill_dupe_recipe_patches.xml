@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+  <!-- Recipes to remove sagmill duplication chance -->
+  <recipe name="Sagmill: BlazeRod" required="true">
+    <sagmilling energy="2400" bonus="none">
+      <input name="minecraft:blaze_rod"/>
+      <output name="minecraft:blaze_powder" amount="4" />
+      <output name="dustSulfur" chance="0.5" required="false" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Quartz Dust">
+    <sagmilling energy="2400" bonus="none">
+      <input name="gemQuartz"/>
+      <output name="POWDER_QUARTZ"/>
+      <output name="POWDER_QUARTZ" chance=".1"/>
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Charcoal" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="minecraft:coal:1"/>
+      <output name="dustCharcoal" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Charcoal Block" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="blockCharcoal"/>
+      <output name="dustCharcoal" amount="9"/>
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Coal" required="true">
+    <sagmilling energy="2400" bonus="none">
+      <input name="minecraft:coal:0"/>
+      <output name="dustCoal" />
+      <output name="dustCoal" chance="0.1" />
+      <output name="dustSulfur" chance="0.1" required="false" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Coal Block" required="true">
+    <sagmilling energy="2400" bonus="none">
+      <input name="blockCoal"/>
+      <output name="dustCoal" amount="9" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: GlowStone" required="true">
+    <sagmilling energy="2400" bonus="none">
+      <input name="oredict:glowstone"/>
+      <output name="dustGlowstone" amount="3" />
+      <output name="dustGlowstone" chance="0.8" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: ClayBlock" required="true">
+    <sagmilling energy="2400" bonus="none">
+      <input name="minecraft:clay"/>
+      <output name="minecraft:clay_ball" amount="2" />
+      <output name="minecraft:clay_ball" chance="0.1" />
+      <output name="itemSilicon" amount="2" chance="0.8" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Wool" required="true">
+    <sagmilling energy="1200" bonus="none">
+      <input name="minecraft:wool:*"/>
+      <output name="minecraft:string" amount="3" />
+      <output name="minecraft:string" chance="0.1" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Blizz Powder" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="rodBlizz" />
+      <output name="dustBlizz" amount="4"/>
+      <output name="minecraft:snowball" chance="0.5"/>
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Basalz Powder" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="rodBasalz" />
+      <output name="dustBasalz" amount="4"/>
+      <output name="dustObsidian" chance="0.5"/>
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Blitz Powder" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="rodBlitz" />
+      <output name="dustBlitz" amount="4"/>
+      <output name="dustSaltpeter" chance="0.5"/>
+    </sagmilling>
+  </recipe>
+
+</enderio:recipes>

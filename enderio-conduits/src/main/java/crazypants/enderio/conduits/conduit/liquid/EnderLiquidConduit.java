@@ -569,6 +569,8 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
       if (nbtRoot.hasKey(key)) {
         boolean val = nbtRoot.getBoolean(key);
         roundRobin.put(dir, val);
+      } else {
+        roundRobin.remove(dir);
       }
 
       key = "selfFeed." + dir.name();

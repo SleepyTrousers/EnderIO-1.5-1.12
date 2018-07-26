@@ -231,12 +231,12 @@ public class LiquidSettings extends BaseSettingsPanel {
 
   @Override
   protected boolean hasFilters() {
-    return true;
+    return isEnder;
   }
 
   @Override
   protected boolean hasUpgrades() {
-    return true;
+    return isEnder;
   }
 
 }
