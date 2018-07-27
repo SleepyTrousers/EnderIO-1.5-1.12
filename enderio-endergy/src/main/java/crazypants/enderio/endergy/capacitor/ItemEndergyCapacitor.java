@@ -15,6 +15,7 @@ import crazypants.enderio.base.capacitor.ICapacitorData;
 import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.lang.Lang;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -69,6 +70,14 @@ public class ItemEndergyCapacitor extends Item {
     } else {
       SpecialTooltipHandler.addShowDetailsTooltip(tooltip);
     }
+  }
+
+  @Override
+  public boolean canApplyAtEnchantingTable(@Nonnull ItemStack stack, @Nonnull Enchantment enchantment) {
+    if (!(stack.getItem() instanceof ItemTotemicCapacitor)) {
+      return false;
+    }
+    return super.canApplyAtEnchantingTable(stack, enchantment);
   }
 
   @Override
