@@ -136,6 +136,13 @@ XML editor will display that as tooltips when editing this file.
     </sagmilling>
   </recipe>
 
+  <recipe name="Sagmill: Vibrant Powder" required="true">
+    <sagmilling energy="1600" bonus="none">
+      <input name="itemVibrantCrystal"/>
+      <output name="itemVibrantPowder" />
+    </sagmilling>
+  </recipe>
+
   <recipe name="Sagmill: EnderCrystal Powder" required="true">
     <sagmilling energy="1600" bonus="none">
       <input name="itemEnderCrystal"/>
