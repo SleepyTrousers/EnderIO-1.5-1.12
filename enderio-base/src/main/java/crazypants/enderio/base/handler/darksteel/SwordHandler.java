@@ -9,7 +9,7 @@ import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.Config;
-import crazypants.enderio.base.integration.tic.TicUtil;
+import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelSword;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.material.material.Material;
@@ -132,10 +132,9 @@ public class SwordHandler {
       return false;
     }
 
-    int beheading = TicUtil.getModifier(tagCompound, TicUtil.BEHEADING);
-    int cleaver = TicUtil.getModifier(tagCompound, TicUtil.CLEAVER);
+    int beheading = TicProxy.getBehadingLevel(equipped);
 
-    if (beheading == 0 && cleaver == 0) {
+    if (beheading == 0) {
       // Use default behavior if it is not a cleaver and doesn't have beheading
       return false;
     }
@@ -146,7 +145,7 @@ public class SwordHandler {
       return true;
     }
 
-    float chance = Math.max(Config.vanillaSwordSkullChance, cleaver * Config.ticCleaverSkullDropChance) + (Config.ticBeheadingSkullModifier * beheading);
+    float chance = Math.max(Config.vanillaSwordSkullChance, Config.ticBeheadingSkullModifier * beheading);
     if (player instanceof FakePlayer) {
       chance *= Config.fakePlayerSkullChance;
     }

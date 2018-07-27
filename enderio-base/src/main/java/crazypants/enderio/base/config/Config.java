@@ -111,7 +111,6 @@ public final class Config {
   public static float darkSteelSwordSkullLootingModifier = 0.075f;
   public static float vanillaSwordSkullLootingModifier = 0.05f;
   public static float vanillaSwordSkullChance = 0.05f;
-  public static float ticCleaverSkullDropChance = 0.1f;
   public static float ticBeheadingSkullModifier = 0.075f;
   public static float fakePlayerSkullChance = 0.5f;
 
@@ -505,8 +504,6 @@ public final class Config {
             "The chance per looting level that a skull will be dropped when using a non-dark steel sword (0 = no chance, 1 = 100% chance)")
         .getDouble(vanillaSwordSkullLootingModifier);
 
-    ticCleaverSkullDropChance = (float) config.get(sectionDarkSteel.name, "ticCleaverSkullDropChance", ticCleaverSkullDropChance,
-        "The base chance that an Enderman Skull will be dropped when using TiC Cleaver").getDouble(ticCleaverSkullDropChance);
     ticBeheadingSkullModifier = (float) config.get(sectionDarkSteel.name, "ticBeheadingSkullModifier", ticBeheadingSkullModifier,
         "The chance per level of Beheading that a skull will be dropped when using a TiC weapon").getDouble(ticBeheadingSkullModifier);
 

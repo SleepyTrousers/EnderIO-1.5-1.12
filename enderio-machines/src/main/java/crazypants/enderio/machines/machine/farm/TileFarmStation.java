@@ -27,6 +27,7 @@ import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.farming.FarmingTool;
 import crazypants.enderio.base.farming.fertilizer.Fertilizer;
 import crazypants.enderio.base.farming.registry.Commune;
+import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.interfaces.INotifier;
@@ -134,7 +135,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     }
     if (i <= maxToolSlot) {
       IFarmingTool toolType = FarmingTool.getToolType(stack);
-      if (toolType != FarmingTool.NONE && !FarmingTool.isBrokenTinkerTool(stack) && !FarmingTool.isDryRfTool(stack)) {
+      if (toolType != FarmingTool.NONE && !TicProxy.isBroken(stack) && !FarmingTool.isDryRfTool(stack)) {
         return getSlotForTool(toolType) == null;
       }
       return false;

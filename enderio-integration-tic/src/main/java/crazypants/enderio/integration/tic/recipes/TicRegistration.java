@@ -19,7 +19,7 @@ import crazypants.enderio.integration.tic.queues.BasinQueue;
 import crazypants.enderio.integration.tic.queues.CastQueue;
 import crazypants.enderio.integration.tic.queues.SmeltQueue;
 import crazypants.enderio.integration.tic.queues.TiCQueues;
-import crazypants.enderio.integration.tic.queues.TicHandler;
+import crazypants.enderio.integration.tic.queues.TicRecipeHandler;
 import crazypants.enderio.util.Prep;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -84,9 +84,9 @@ public class TicRegistration {
     }
 
     if (a != null) {
-      TicHandler.instance.registerBasinCasting(result, input1, a.getFluid(), a.amount);
+      TicRecipeHandler.instance.registerBasinCasting(result, input1, a.getFluid(), a.amount);
     } else if (b != null) {
-      TicHandler.instance.registerBasinCasting(result, input0, b.getFluid(), b.amount);
+      TicRecipeHandler.instance.registerBasinCasting(result, input0, b.getFluid(), b.amount);
     }
   }
 

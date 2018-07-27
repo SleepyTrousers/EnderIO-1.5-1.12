@@ -74,12 +74,6 @@ public enum FarmingTool implements IFarmingTool {
     return things;
   }
 
-  @SuppressWarnings("null")
-  public static boolean isBrokenTinkerTool(@Nonnull ItemStack item) {
-    return Prep.isValid(item) && item.hasTagCompound() && item.getTagCompound().hasKey("Stats")
-        && item.getTagCompound().getCompoundTag("Stats").getBoolean("Broken");
-  }
-
   protected boolean match(@Nonnull ItemStack item) {
     return things.contains(item);
   }
