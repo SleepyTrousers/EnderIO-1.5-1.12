@@ -7,7 +7,7 @@ import com.enderio.core.common.util.stackable.Things;
 
 import net.minecraftforge.fluids.Fluid;
 
-public interface ITicHandler {
+public interface ITicRecipeHandler {
 
   void registerTableCast(@Nonnull Things output, @Nonnull Things cast, Fluid fluid, float amount, boolean consumeCast);
 

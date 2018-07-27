@@ -5,7 +5,7 @@ import com.enderio.core.common.util.stackable.Things;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.integration.tic.TicProxy;
-import crazypants.enderio.integration.tic.queues.TicHandler;
+import crazypants.enderio.integration.tic.queues.TicRecipeHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -62,9 +62,9 @@ public class Glowstone {
     Fluid f = FluidRegistry.getFluid(TicProxy.GLOWSTONE_FLUID_NAME);
     if (f != null) {
       // Note: We match the old TE amounts
-      TicHandler.instance.registerSmelterySmelting(new Things().add(Items.GLOWSTONE_DUST), f, 250);
-      TicHandler.instance.registerSmelterySmelting(new Things().add(Blocks.GLOWSTONE), f, 1000);
-      TicHandler.instance.registerBasinCasting(new Things().add(Blocks.GLOWSTONE), new Things(), f, 1000);
+      TicRecipeHandler.instance.registerSmelterySmelting(new Things().add(Items.GLOWSTONE_DUST), f, 250);
+      TicRecipeHandler.instance.registerSmelterySmelting(new Things().add(Blocks.GLOWSTONE), f, 1000);
+      TicRecipeHandler.instance.registerBasinCasting(new Things().add(Blocks.GLOWSTONE), new Things(), f, 1000);
     }
   }
 

@@ -7,12 +7,12 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.stackable.Things;
 
-import crazypants.enderio.base.integration.tic.ITicHandler;
+import crazypants.enderio.base.integration.tic.ITicRecipeHandler;
 import net.minecraftforge.fluids.Fluid;
 
-public class TicHandler implements ITicHandler {
+public class TicRecipeHandler implements ITicRecipeHandler {
 
-  public static final @Nonnull TicHandler instance = new TicHandler();
+  public static final @Nonnull TicRecipeHandler instance = new TicRecipeHandler();
 
   @Override
   public void registerTableCast(@Nonnull Things output, @Nonnull Things cast, Fluid fluid, float amount, boolean consumeCast) {

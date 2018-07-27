@@ -18,6 +18,7 @@ import crazypants.enderio.api.farm.IFarmer;
 import crazypants.enderio.api.farm.IFarmingTool;
 import crazypants.enderio.base.farming.FarmingTool;
 import crazypants.enderio.base.farming.PickupWorld;
+import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.machines.config.config.FarmConfig;
 import crazypants.enderio.machines.network.PacketHandler;
@@ -220,7 +221,7 @@ public class FarmLogic implements IFarmer {
     FarmSlots slot = owner.getSlotForTool(tool);
     if (slot != null) {
       ItemStack stack = slot.get(owner);
-      if (FarmingTool.isBrokenTinkerTool(stack) || FarmingTool.isDryRfTool(stack)) {
+      if (TicProxy.isBroken(stack) || FarmingTool.isDryRfTool(stack)) {
         if (!joeInUse) {
           handleExtraItem(stack, null);
         }
@@ -333,7 +334,7 @@ public class FarmLogic implements IFarmer {
     removeJoesTool();
     final NNList<ItemStack> items = endUsingItem(false);
     ItemStack toolStack = getTool(tool);
-    if (FarmingTool.isBrokenTinkerTool(toolStack) || FarmingTool.isDryRfTool(toolStack)) {
+    if (TicProxy.isBroken(toolStack) || FarmingTool.isDryRfTool(toolStack)) {
       handleExtraItem(toolStack, null);
     }
     return items;
