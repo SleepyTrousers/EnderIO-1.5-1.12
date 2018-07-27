@@ -213,6 +213,8 @@ public final class Config {
   public static int soulBinderAttractorCystalLevels = 4;
   public static int soulBinderTunedPressurePlateLevels = 2;
   public static int soulBinderTunedPressurePlateRF = 250000;
+  public static int soulBinderVibrantCystalRF = 200000;
+  public static int soulBinderVibrantCystalLevels = 8;
 
   public static float slicenspliceToolDamageChance = 0.01f;
 

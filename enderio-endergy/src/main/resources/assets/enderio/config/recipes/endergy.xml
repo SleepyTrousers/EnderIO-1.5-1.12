@@ -110,4 +110,12 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Totemic Capacitor">
+    <slicing energy="20000">
+      <input name="SOULARIUM"/><input name="minecraft:totem_of_undying"/><input name="SOULARIUM"/>
+      <input name="itemVibrantPowder"/><input name="enderio:item_capacitor_crystalline"/><input name="itemVibrantPowder"/>
+      <output name="enderio:item_capacitor_totemic"/>
+    </slicing>
+  </recipe>
+
 </enderio:recipes>
