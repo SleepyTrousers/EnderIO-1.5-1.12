@@ -80,7 +80,7 @@ public class RandomTeleportUtil {
     try {
       entity.setPosition(targetX, targetY, targetZ);
       boolean result = world.checkNoEntityCollision(entity.getEntityBoundingBox(), entity)
-          && world.getCollisionBoxes(entity, entity.getEntityBoundingBox()).isEmpty();
+          && world.getCollisionBoxes(entity, entity.getEntityBoundingBox()).isEmpty() && !world.containsAnyLiquid(entity.getEntityBoundingBox());
       return result;
     } finally {
       entity.setPosition(origX, origY, origZ);
