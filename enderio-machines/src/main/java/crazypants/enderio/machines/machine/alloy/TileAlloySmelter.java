@@ -30,6 +30,7 @@ import net.minecraft.util.EnumFacing;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_INTAKE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ALLOY_SMELTER_POWER_USE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_ALLOY_SMELTER_DOUBLE_OP_CHANCE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_ALLOY_SMELTER_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_ALLOY_SMELTER_POWER_EFFICIENCY;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_ALLOY_SMELTER_POWER_INTAKE;
@@ -87,7 +88,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
 
     @Override
     protected boolean shouldDoubleTick(@Nonnull IPoweredTask task, int usedEnergy) {
-      double chance = 3 * (usedEnergy / task.getRequiredEnergy());
+      double chance = getCapacitorData().getUnscaledValue(ENHANCED_ALLOY_SMELTER_DOUBLE_OP_CHANCE) * (usedEnergy / task.getRequiredEnergy());
       if (random.nextDouble() < chance) {
         return true;
       }

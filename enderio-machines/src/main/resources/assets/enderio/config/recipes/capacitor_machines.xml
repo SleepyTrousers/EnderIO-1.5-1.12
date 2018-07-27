@@ -28,13 +28,14 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_alloy_smelter/buffer" base="100000" scaler="POWER" />
   <capacitor key="enderio:block_alloy_smelter/use" base="30" scaler="POWER" />
 
-  <capacitor key="enderio:block_enhanced_alloy_smelter/intake" base="400" scaler="POWER" />
-  <capacitor key="enderio:block_enhanced_alloy_smelter/buffer" base="1000000" scaler="POWER" />
-  <capacitor key="enderio:block_enhanced_alloy_smelter/use" base="60" scaler="POWER" />
-  <capacitor key="enderio:block_enhanced_alloy_smelter/efficiency" base="1" scaler="FIXED" />
+  <capacitor key="enderio:block_enhanced_alloy_smelter/intake" base="180" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_alloy_smelter/buffer" base="500000" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_alloy_smelter/use" base="45" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_alloy_smelter/efficiency" base="150" scaler="CENT" />
+  <capacitor key="enderio:block_enhanced_alloy_smelter/double_op_chance" base="1" scaler="QUADRATIC" />
   
   <capacitor key="enderio:block_buffer/intake_creative" base="100000" scaler="FIXED" />
-  <capacitor key="enderio:block_buffer/buffer_creative" base="1000000" scaler="FIXED" />
+  <capacitor key="enderio:block_buffer/buffer_creative" base="500000" scaler="FIXED" />
   <capacitor key="enderio:block_buffer/use_creative" base="0" scaler="FIXED" />
   
   <capacitor key="enderio:block_buffer/intake" base="2500" scaler="CUBIC" />
@@ -56,7 +57,7 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_enhanced_combustion_generator/loss" base="0" scaler="CENT" />
   <capacitor key="enderio:block_enhanced_combustion_generator/buffer" base="500000" scaler="POWER" />
   <capacitor key="enderio:block_enhanced_combustion_generator/gen" base="1" scaler="CHEMICAL" />
-  <capacitor key="enderio:block_enhanced_combustion_generator/efficiency" base="2" scaler="FIXED" />
+  <capacitor key="enderio:block_enhanced_combustion_generator/efficiency" base="200" scaler="CENT" />
   
   <capacitor key="enderio:block_stirling_generator/loss" base="0" scaler="CENT" />
   <capacitor key="enderio:block_stirling_generator/buffer" base="100000" scaler="POWER" />
@@ -117,10 +118,11 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_simple_sag_mill/use" base="15" scaler="FIXED" />
   <capacitor key="enderio:block_simple_sag_mill/loss" base="5" scaler="CENT" />
 
-  <capacitor key="enderio:block_enhanced_sag_mill/intake" base="400" scaler="POWER" />
-  <capacitor key="enderio:block_enhanced_sag_mill/buffer" base="1000000" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_sag_mill/intake" base="240" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_sag_mill/buffer" base="500000" scaler="POWER" />
   <capacitor key="enderio:block_enhanced_sag_mill/use" base="60" scaler="POWER" />
-  <capacitor key="enderio:block_enhanced_sag_mill/efficiency" base="1" scaler="FIXED" />
+  <capacitor key="enderio:block_enhanced_sag_mill/efficiency" base="150" scaler="CENT" />
+  <capacitor key="enderio:block_enhanced_sag_mill/double_op_chance" base="1" scaler="QUADRATIC" />
   
   <capacitor key="enderio:block_slice_and_splice/intake" base="160" scaler="QUADRATIC" />
   <capacitor key="enderio:block_slice_and_splice/buffer" base="100000" scaler="POWER" />
@@ -144,10 +146,11 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_vat/buffer" base="100000" scaler="POWER" />
   <capacitor key="enderio:block_vat/use" base="30" scaler="CHEMICAL" />
 
-  <capacitor key="enderio:block_enhanced_vat/intake" base="400" scaler="POWER" />
-  <capacitor key="enderio:block_enhanced_vat/buffer" base="1000000" scaler="POWER" />
-  <capacitor key="enderio:block_enhanced_vat/use" base="60" scaler="CHEMICAL" />
-  <capacitor key="enderio:block_enhanced_vat/efficiency" base="1" scaler="FIXED" />
+  <capacitor key="enderio:block_enhanced_vat/intake" base="180" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_vat/buffer" base="500000" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_vat/use" base="45" scaler="CHEMICAL" />
+  <capacitor key="enderio:block_enhanced_vat/efficiency" base="150" scaler="CENT" />
+  <capacitor key="enderio:block_enhanced_vat/double_op_chance" base="1" scaler="QUADRATIC" />
   
   <capacitor key="enderio:block_wired_charger/intake" base="10000" scaler="POWER" />
   <capacitor key="enderio:block_wired_charger/buffer" base="100000" scaler="POWER" />

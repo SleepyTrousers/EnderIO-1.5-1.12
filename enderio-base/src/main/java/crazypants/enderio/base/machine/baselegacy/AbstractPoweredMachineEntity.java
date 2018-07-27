@@ -262,8 +262,8 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
     return key.get(capacitorData);
   }
 
-  protected int getEfficiencyMultiplier() {
-    return energyEfficiency.get(getCapacitorData());
+  protected float getEfficiencyMultiplier() {
+    return energyEfficiency.getFloat(getCapacitorData());
   }
 
   protected void setEfficiencyMultiplier(@Nonnull ICapacitorKey key) {

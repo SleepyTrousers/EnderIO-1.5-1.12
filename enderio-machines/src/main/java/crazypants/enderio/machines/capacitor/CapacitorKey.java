@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capacitor.CapacitorHelper.SetType;
 import crazypants.enderio.base.capacitor.CapacitorKeyType;
-import crazypants.enderio.base.capacitor.ICapacitorData;
 import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.Scaler;
 import crazypants.enderio.base.init.IModObject;
@@ -35,6 +34,7 @@ public enum CapacitorKey implements ICapacitorKey {
   ENHANCED_ALLOY_SMELTER_POWER_BUFFER(MachineObject.block_enhanced_alloy_smelter, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   ENHANCED_ALLOY_SMELTER_POWER_USE(MachineObject.block_enhanced_alloy_smelter, CapacitorKeyType.ENERGY_USE, "use"),
   ENHANCED_ALLOY_SMELTER_POWER_EFFICIENCY(MachineObject.block_enhanced_alloy_smelter, CapacitorKeyType.ENERGY_BUFFER, "efficiency"),
+  ENHANCED_ALLOY_SMELTER_DOUBLE_OP_CHANCE(MachineObject.block_enhanced_alloy_smelter, CapacitorKeyType.AMOUNT, "double_op_chance"),
 
   CREATIVE_BUFFER_POWER_INTAKE(MachineObject.block_buffer, CapacitorKeyType.ENERGY_INTAKE, "intake_creative"),
   CREATIVE_BUFFER_POWER_BUFFER(MachineObject.block_buffer, CapacitorKeyType.ENERGY_BUFFER, "buffer_creative"),
@@ -59,7 +59,7 @@ public enum CapacitorKey implements ICapacitorKey {
   ENHANCED_COMBUSTION_POWER_LOSS(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),
   ENHANCED_COMBUSTION_POWER_BUFFER(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   ENHANCED_COMBUSTION_POWER_GEN(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_GEN, "gen"),
-  ENHANCED_COMBUSTION_POWER_EFFICIENCY(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.AMOUNT, "efficiency"),
+  ENHANCED_COMBUSTION_POWER_EFFICIENCY(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_EFFICIENCY, "efficiency"),
 
   STIRLING_POWER_LOSS(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),
   STIRLING_POWER_BUFFER(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
@@ -124,6 +124,7 @@ public enum CapacitorKey implements ICapacitorKey {
   ENHANCED_SAG_MILL_POWER_BUFFER(MachineObject.block_enhanced_sag_mill, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   ENHANCED_SAG_MILL_POWER_USE(MachineObject.block_enhanced_sag_mill, CapacitorKeyType.ENERGY_USE, "use"),
   ENHANCED_SAG_MILL_POWER_EFFICIENCY(MachineObject.block_enhanced_sag_mill, CapacitorKeyType.ENERGY_EFFICIENCY, "efficiency"),
+  ENHANCED_SAG_MILL_DOUBLE_OP_CHANCE(MachineObject.block_enhanced_sag_mill, CapacitorKeyType.AMOUNT, "double_op_chance"),
 
   SLICE_POWER_INTAKE(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   SLICE_POWER_BUFFER(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
@@ -151,6 +152,7 @@ public enum CapacitorKey implements ICapacitorKey {
   ENHANCED_VAT_POWER_BUFFER(MachineObject.block_enhanced_vat, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   ENHANCED_VAT_POWER_USE(MachineObject.block_enhanced_vat, CapacitorKeyType.ENERGY_USE, "use"),
   ENHANCED_VAT_POWER_EFFICIENCY(MachineObject.block_enhanced_vat, CapacitorKeyType.ENERGY_EFFICIENCY, "efficiency"),
+  ENHANCED_VAT_DOUBLE_OP_CHANCE(MachineObject.block_enhanced_vat, CapacitorKeyType.AMOUNT, "double_op_chance"),
 
   WIRED_POWER_INTAKE(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   WIRED_POWER_BUFFER(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_BUFFER, "buffer"),

@@ -41,6 +41,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_VAT_DOUBLE_OP_CHANCE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_VAT_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_VAT_POWER_INTAKE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_VAT_POWER_USE;
@@ -79,6 +80,15 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
     @Override
     public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
       return (faceHit != EnumFacing.UP || mode == IoMode.NONE) && super.supportsMode(faceHit, mode);
+    }
+
+    @Override
+    protected boolean shouldDoubleTick(@Nonnull IPoweredTask task, int usedEnergy) {
+      double chance = getCapacitorData().getUnscaledValue(ENHANCED_VAT_DOUBLE_OP_CHANCE) * (usedEnergy / task.getRequiredEnergy());
+      if (random.nextDouble() < chance) {
+        return true;
+      }
+      return super.shouldDoubleTick(task, usedEnergy);
     }
 
   }
