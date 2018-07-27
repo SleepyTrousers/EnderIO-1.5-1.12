@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -29,7 +28,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneConduit, IRedstoneConduit> {
@@ -119,16 +117,16 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     Signal signal = con.getNetworkInput(dir);
     bundledSignal.addSignal(con.getInputSignalColor(dir), signal);
 
-    if (Loader.isModLoaded("computercraft")) {
-      Map<DyeColor, Signal> ccSignals = con.getComputerCraftSignals(dir);
-
-      if (!ccSignals.isEmpty()) {
-        for (DyeColor color : ccSignals.keySet()) {
-          Signal ccSig = ccSignals.get(color);
-          bundledSignal.addSignal(color, ccSig);
-        }
-      }
-    }
+//    if (Loader.isModLoaded("computercraft")) {
+//      Map<DyeColor, Signal> ccSignals = con.getComputerCraftSignals(dir);
+//
+//      if (!ccSignals.isEmpty()) {
+//        for (DyeColor color : ccSignals.keySet()) {
+//          Signal ccSig = ccSignals.get(color);
+//          bundledSignal.addSignal(color, ccSig);
+//        }
+//      }
+//    }
 
     updatingNetwork = false;
   }
