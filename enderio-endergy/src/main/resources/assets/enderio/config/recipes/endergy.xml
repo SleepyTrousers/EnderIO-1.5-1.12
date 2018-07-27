@@ -61,10 +61,9 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Alloy: Endergy Stellar Alloy" required="true">
     <alloying energy="20000" exp="0.5">
-      <input name="enderio:item_endergy_alloy:2"/>
       <input name="minecraft:nether_star"/>
       <input name="enderio:item_endergy_alloy:3"/>
-      <output name="enderio:item_endergy_alloy:4"/>
+      <output name="enderio:item_endergy_alloy:4" amount="2"/>
     </alloying>
   </recipe>
 
