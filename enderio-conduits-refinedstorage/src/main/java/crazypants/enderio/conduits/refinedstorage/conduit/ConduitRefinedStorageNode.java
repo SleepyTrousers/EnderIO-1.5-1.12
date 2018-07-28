@@ -1,20 +1,30 @@
 package crazypants.enderio.conduits.refinedstorage.conduit;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.raoulvdberge.refinedstorage.api.network.INetwork;
 import com.raoulvdberge.refinedstorage.api.network.INetworkNodeVisitor;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNode;
+import com.raoulvdberge.refinedstorage.api.util.Action;
+import com.raoulvdberge.refinedstorage.api.util.IComparer;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.conduits.refinedstorage.RSHelper;
 import crazypants.enderio.conduits.refinedstorage.init.ConduitRefinedStorageObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisitor {
 
@@ -25,11 +35,21 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
   protected @Nonnull World world;
   protected @Nonnull BlockPos pos;
   protected @Nonnull IRefinedStorageConduit con;
+  protected int compare = IComparer.COMPARE_DAMAGE;
+
+  private int tickCount = 0;
+  private @Nonnull Queue<EnumFacing> dirsToCheck;
 
   public ConduitRefinedStorageNode(@Nonnull IRefinedStorageConduit con) {
     this.con = con;
     this.world = con.getBundle().getBundleworld();
     this.pos = con.getBundle().getLocation();
+
+    dirsToCheck = new LinkedList<>();
+
+    for (EnumFacing dir : EnumFacing.values()) {
+      dirsToCheck.offer(dir);
+    }
   }
 
   @Override
@@ -66,7 +86,52 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
 
   @Override
   public void update() {
+    tickCount++;
+    if (rsNetwork != null && canUpdate() && tickCount > 3) {
+      tickCount = 0;
 
+      for (int i = 0; i < dirsToCheck.size(); i++) {
+        EnumFacing dir = dirsToCheck.poll();
+        dirsToCheck.offer(dir);
+
+        if (con.containsExternalConnection(dir) && updateDir(dir)) {
+          break;
+        }
+      }
+    }
+  }
+
+  private boolean updateDir(@Nonnull EnumFacing dir) {
+
+    TileEntity te = world.getTileEntity(pos.offset(dir));
+    if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, dir.getOpposite())) {
+
+      IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, dir.getOpposite());
+
+      if (handler != null) {
+
+        ItemStack slot = new ItemStack(ModObject.itemMaterial.getItemNN());
+
+        if (!slot.isEmpty()) {
+          ItemStack took = rsNetwork.extractItem(slot, Math.min(slot.getMaxStackSize(), 4), compare, Action.SIMULATE);
+
+          if (took == null) {
+            //            if (upgrades.hasUpgrade(ItemUpgrade.TYPE_CRAFTING)) {
+            //              rsNetwork.getCraftingManager().request(slot, stackSize);
+            //            }
+            return false;
+          } else if (ItemHandlerHelper.insertItem(handler, took, true).isEmpty()) {
+            took = rsNetwork.extractItem(slot, Math.min(slot.getMaxStackSize(), 4), compare, Action.PERFORM);
+
+            if (took != null) {
+              ItemHandlerHelper.insertItem(handler, took, false);
+              return true;
+            }
+          }
+        }
+      }
+    }
+    return false;
   }
 
   @Override

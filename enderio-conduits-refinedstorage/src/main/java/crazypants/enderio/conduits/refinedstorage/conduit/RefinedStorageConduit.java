@@ -38,6 +38,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 public class RefinedStorageConduit extends AbstractConduit implements IRefinedStorageConduit {
 
@@ -63,7 +64,8 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
     if (test == null) {
       return false;
     }
-    if (test.hasCapability(RSHelper.NETWORK_NODE_PROXY_CAPABILITY, direction.getOpposite())) {
+    if (test.hasCapability(RSHelper.NETWORK_NODE_PROXY_CAPABILITY, direction.getOpposite()) || test
+        .hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction.getOpposite())) {
       return true;
     }
 
@@ -251,7 +253,8 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   }
 
   @Override
-  public @Nonnull ConnectionMode getNextConnectionMode(@Nonnull EnumFacing dir) {
+  public @Nonnull
+  ConnectionMode getNextConnectionMode(@Nonnull EnumFacing dir) {
     ConnectionMode mode = getConnectionMode(dir);
     mode = mode == ConnectionMode.IN_OUT ? ConnectionMode.DISABLED : ConnectionMode.IN_OUT;
     return mode;
