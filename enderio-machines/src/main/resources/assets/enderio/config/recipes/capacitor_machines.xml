@@ -118,9 +118,9 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_simple_sag_mill/use" base="15" scaler="FIXED" />
   <capacitor key="enderio:block_simple_sag_mill/loss" base="5" scaler="CENT" />
 
-  <capacitor key="enderio:block_enhanced_sag_mill/intake" base="240" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_sag_mill/intake" base="180" scaler="POWER" />
   <capacitor key="enderio:block_enhanced_sag_mill/buffer" base="500000" scaler="POWER" />
-  <capacitor key="enderio:block_enhanced_sag_mill/use" base="60" scaler="POWER" />
+  <capacitor key="enderio:block_enhanced_sag_mill/use" base="45" scaler="POWER" />
   <capacitor key="enderio:block_enhanced_sag_mill/efficiency" base="150" scaler="CENT" />
   <capacitor key="enderio:block_enhanced_sag_mill/double_op_chance" base="1" scaler="QUADRATIC" />
   
