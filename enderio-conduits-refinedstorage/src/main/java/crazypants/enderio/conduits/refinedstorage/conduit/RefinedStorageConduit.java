@@ -1,5 +1,6 @@
 package crazypants.enderio.conduits.refinedstorage.conduit;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,8 @@ import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
+import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
+import crazypants.enderio.conduits.capability.IUpgradeHolder;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.refinedstorage.RSHelper;
 import crazypants.enderio.conduits.refinedstorage.conduit.gui.RefinedStorageSettings;
@@ -40,7 +43,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-public class RefinedStorageConduit extends AbstractConduit implements IRefinedStorageConduit {
+public class RefinedStorageConduit extends AbstractConduit implements IRefinedStorageConduit, IUpgradeHolder {
 
   static final Map<String, TextureSupplier> ICONS = new HashMap<>();
 
@@ -49,11 +52,15 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
     ICONS.put(ICON_CORE_KEY, TextureRegistry.registerTexture(ICON_CORE_KEY));
   }
 
+  private Map<EnumFacing, ItemStack> upgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
   private ConduitRefinedStorageNode clientSideNode;
 
   protected RefinedStorageConduitNetwork network;
 
   public RefinedStorageConduit() {
+    for (EnumFacing dir : EnumFacing.VALUES) {
+      upgrades.put(dir, ItemStack.EMPTY);
+    }
   }
 
   @Override
@@ -119,6 +126,7 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
 
   @Override
   @Nullable
+  @SuppressWarnings("unchecked")
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
     if (capability == RSHelper.NETWORK_NODE_PROXY_CAPABILITY) {
       return RSHelper.NETWORK_NODE_PROXY_CAPABILITY.cast(this);
@@ -139,6 +147,23 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   public <T> T getClientCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
     if (capability == RSHelper.NETWORK_NODE_PROXY_CAPABILITY) {
       return RSHelper.NETWORK_NODE_PROXY_CAPABILITY.cast(this);
+    }
+    return null;
+  }
+
+  @Override
+  public boolean hasInternalCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+    if (capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY) {
+      return true;
+    }
+    return false;
+  }
+
+  @Nullable
+  @Override
+  public <T> T getInternalCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+    if (capability ==CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY) {
+      return (T) this;
     }
     return null;
   }
@@ -284,4 +309,16 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
     return null;
   }
 
+  // Upgrade Capability
+
+  @Nonnull
+  @Override
+  public ItemStack getUpgradeStack(int param1) {
+    return upgrades.get(EnumFacing.getFront(param1));
+  }
+
+  @Override
+  public void setUpgradeStack(int param1, @Nonnull ItemStack stack) {
+    upgrades.put(EnumFacing.getFront(param1), stack);
+  }
 }
