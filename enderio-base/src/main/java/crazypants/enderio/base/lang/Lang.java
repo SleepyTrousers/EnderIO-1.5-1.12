@@ -147,7 +147,10 @@ public enum Lang implements ILang {
   GUI_REDSTONE_FILTER_COUNT(".gui.redstone_filter.count"),
   GUI_REDSTONE_FILTER_TIME(".gui.redstone_filter.time"),
 
-  OWL_NO_OWL(".owlegg.no_owl")
+  OWL_NO_OWL(".owlegg.no_owl"),
+  INVCHARGER_NEEDUPGRADE(".tooltip.inventory_charger.need_upgrade"),
+  INVCHARGER_ENABLED(".tooltip.inventory_charger.enabled"),
+  INVCHARGER_DISABLED(".tooltip.inventory_charger.disabled"),
 
   ;
 

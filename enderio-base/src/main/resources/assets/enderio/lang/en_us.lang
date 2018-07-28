@@ -1152,3 +1152,9 @@ entity.enderio.enderio.owl_egg.name=Owl Egg
 
 entity.enderio.primed_charge.name=Primed Charge
 entity.enderio.enderio.primed_charge.name=Primed Charge
+
+enderio.tooltip.inventory_charger.need_upgrade=§4No energy storage installed!
+enderio.tooltip.inventory_charger.enabled=Inventory Charger enabled
+enderio.tooltip.inventory_charger.disabled=Inventory Charger disabled
+item.item_inventory_charger.name=Inventory Charger
+item.item_inventory_charger.tooltip.detailed.line1=Charges items in your inventory. Right-click to enable/disable.

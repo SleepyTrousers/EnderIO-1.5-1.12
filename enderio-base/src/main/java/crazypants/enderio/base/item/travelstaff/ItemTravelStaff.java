@@ -56,8 +56,8 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
   @Override
   @Nullable
   public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
-    if (!EnergyUpgrade.EMPOWERED.hasAnyUpgradeVariant(stack)) {
-      EnergyUpgrade.EMPOWERED.addToItem(stack, this);
+    if (!EnergyUpgrade.UPGRADES.get(0).hasAnyUpgradeVariant(stack)) {
+      EnergyUpgrade.UPGRADES.get(0).addToItem(stack, this);
     }
     return super.initCapabilities(stack, nbt);
   }
@@ -120,7 +120,7 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
       list.add(is);
 
       is = new ItemStack(this);
-      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is, this);
+      EnergyUpgrade.UPGRADES.get(3).addToItem(is, this);
       EnergyUpgradeManager.setPowerFull(is, this);
       list.add(is);
     }

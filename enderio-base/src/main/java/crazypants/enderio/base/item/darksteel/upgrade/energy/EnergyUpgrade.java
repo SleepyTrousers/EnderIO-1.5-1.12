@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.EnderIO;
@@ -14,6 +15,7 @@ import crazypants.enderio.base.block.skull.SkullType;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
+import crazypants.enderio.base.item.darksteel.ItemInventoryCharger;
 import crazypants.enderio.base.item.travelstaff.ItemTravelStaff;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.material.material.Material;
@@ -79,47 +81,64 @@ public class EnergyUpgrade extends AbstractUpgrade {
 
   }
 
-  public static final @Nonnull EnergyUpgrade EMPOWERED = new EnergyUpgrade(0, "enderio.darksteel.upgrade.empowered_one",
-      DarkSteelConfig.energyUpgradeLevelCostEmpowered0, Material.VIBRANT_CYSTAL.getStack(), DarkSteelConfig.energyUpgradePowerStorageEmpowered0,
-      DarkSteelConfig.energyUpgradePowerTransferEmpowered0, DarkSteelConfig.energyUpgradeAbsorptionRatioEmpowered0);
+  public static final @Nonnull NNList<EnergyUpgrade> UPGRADES = new NNList<>(
+      new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 0, "enderio.darksteel.upgrade.empowered_one", DarkSteelConfig.energyUpgradeLevelCostEmpowered0,
+          Material.VIBRANT_CYSTAL.getStack(), DarkSteelConfig.energyUpgradePowerStorageEmpowered.get(0),
+          DarkSteelConfig.energyUpgradePowerTransferEmpowered.get(0), DarkSteelConfig.energyUpgradeAbsorptionRatioEmpowered0),
+      new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 1, "enderio.darksteel.upgrade.empowered_two", DarkSteelConfig.energyUpgradeLevelCostEmpowered1,
+          new ItemStack(itemBasicCapacitor.getItemNN(), 1, 0), DarkSteelConfig.energyUpgradePowerStorageEmpowered.get(1),
+          DarkSteelConfig.energyUpgradePowerTransferEmpowered.get(1), DarkSteelConfig.energyUpgradeAbsorptionRatioEmpowered1),
+      new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 2, "enderio.darksteel.upgrade.empowered_three", DarkSteelConfig.energyUpgradeLevelCostEmpowered2,
+          new ItemStack(itemBasicCapacitor.getItemNN(), 1, 1), DarkSteelConfig.energyUpgradePowerStorageEmpowered.get(2),
+          DarkSteelConfig.energyUpgradePowerTransferEmpowered.get(2), DarkSteelConfig.energyUpgradeAbsorptionRatioEmpowered2),
+      new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 3, "enderio.darksteel.upgrade.empowered_four", DarkSteelConfig.energyUpgradeLevelCostEmpowered3,
+          new ItemStack(itemBasicCapacitor.getItemNN(), 1, 2), DarkSteelConfig.energyUpgradePowerStorageEmpowered.get(3),
+          DarkSteelConfig.energyUpgradePowerTransferEmpowered.get(3), DarkSteelConfig.energyUpgradeAbsorptionRatioEmpowered3),
+      new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 4, "enderio.darksteel.upgrade.empowered_five", DarkSteelConfig.energyUpgradeLevelCostEmpowered4,
+          new ItemStack(blockEndermanSkull.getBlockNN(), 1, SkullType.TORMENTED.ordinal()), DarkSteelConfig.energyUpgradePowerStorageEmpowered.get(4),
+          DarkSteelConfig.energyUpgradePowerTransferEmpowered.get(4), DarkSteelConfig.energyUpgradeAbsorptionRatioEmpowered4));
 
-  public static final @Nonnull EnergyUpgrade EMPOWERED_TWO = new EnergyUpgrade(1, "enderio.darksteel.upgrade.empowered_two",
-      DarkSteelConfig.energyUpgradeLevelCostEmpowered1, new ItemStack(itemBasicCapacitor.getItemNN(), 1, 0),
-      DarkSteelConfig.energyUpgradePowerStorageEmpowered1, DarkSteelConfig.energyUpgradePowerTransferEmpowered1,
-      DarkSteelConfig.energyUpgradeAbsorptionRatioEmpowered1);
+  public static final @Nonnull NNList<EnergyUpgrade> HIGHUPGRADES = new NNList<>(
+      new EnergyUpgrade(EnergyUpgradeManager.HIGH_UPGRADE_NAME, 0, "enderio.darksteel.upgrade.empowered_one", DarkSteelConfig.energyUpgradeLevelCostEmpowered0,
+          Material.VIBRANT_CYSTAL.getStack(), DarkSteelConfig.energyUpgradePowerStorageBattery.get(0), DarkSteelConfig.energyUpgradePowerTransferBattery.get(0),
+          DarkSteelConfig.energyUpgradeAbsorptionRatioEmpowered0),
+      new EnergyUpgrade(EnergyUpgradeManager.HIGH_UPGRADE_NAME, 1, "enderio.darksteel.upgrade.empowered_two", DarkSteelConfig.energyUpgradeLevelCostEmpowered1,
+          new ItemStack(itemBasicCapacitor.getItemNN(), 1, 0), DarkSteelConfig.energyUpgradePowerStorageBattery.get(1),
+          DarkSteelConfig.energyUpgradePowerTransferBattery.get(1), DarkSteelConfig.energyUpgradeAbsorptionRatioEmpowered1),
+      new EnergyUpgrade(EnergyUpgradeManager.HIGH_UPGRADE_NAME, 2, "enderio.darksteel.upgrade.empowered_three",
+          DarkSteelConfig.energyUpgradeLevelCostEmpowered2, new ItemStack(itemBasicCapacitor.getItemNN(), 1, 1),
+          DarkSteelConfig.energyUpgradePowerStorageBattery.get(2), DarkSteelConfig.energyUpgradePowerTransferBattery.get(2),
+          DarkSteelConfig.energyUpgradeAbsorptionRatioEmpowered2),
+      new EnergyUpgrade(EnergyUpgradeManager.HIGH_UPGRADE_NAME, 3, "enderio.darksteel.upgrade.empowered_four", DarkSteelConfig.energyUpgradeLevelCostEmpowered3,
+          new ItemStack(itemBasicCapacitor.getItemNN(), 1, 2), DarkSteelConfig.energyUpgradePowerStorageBattery.get(3),
+          DarkSteelConfig.energyUpgradePowerTransferBattery.get(3), DarkSteelConfig.energyUpgradeAbsorptionRatioEmpowered3));
 
-  public static final @Nonnull EnergyUpgrade EMPOWERED_THREE = new EnergyUpgrade(2, "enderio.darksteel.upgrade.empowered_three",
-      DarkSteelConfig.energyUpgradeLevelCostEmpowered2, new ItemStack(itemBasicCapacitor.getItemNN(), 1, 1),
-      DarkSteelConfig.energyUpgradePowerStorageEmpowered2, DarkSteelConfig.energyUpgradePowerTransferEmpowered2,
-      DarkSteelConfig.energyUpgradeAbsorptionRatioEmpowered2);
-
-  public static final @Nonnull EnergyUpgrade EMPOWERED_FOUR = new EnergyUpgrade(3, "enderio.darksteel.upgrade.empowered_four",
-      DarkSteelConfig.energyUpgradeLevelCostEmpowered3, new ItemStack(itemBasicCapacitor.getItemNN(), 1, 2),
-      DarkSteelConfig.energyUpgradePowerStorageEmpowered3, DarkSteelConfig.energyUpgradePowerTransferEmpowered3,
-      DarkSteelConfig.energyUpgradeAbsorptionRatioEmpowered3);
-
-  public static final @Nonnull EnergyUpgrade EMPOWERED_FIVE = new EnergyUpgrade(4, "enderio.darksteel.upgrade.empowered_five",
-      DarkSteelConfig.energyUpgradeLevelCostEmpowered4, new ItemStack(blockEndermanSkull.getBlockNN(), 1, SkullType.TORMENTED.ordinal()),
-      DarkSteelConfig.energyUpgradePowerStorageEmpowered4, DarkSteelConfig.energyUpgradePowerTransferEmpowered4,
-      DarkSteelConfig.energyUpgradeAbsorptionRatioEmpowered4);
+  public static final @Nonnull NNList<EnergyUpgrade> ALLUPGRADES = new NNList<>();
+  static {
+    ALLUPGRADES.addAll(UPGRADES);
+    ALLUPGRADES.addAll(HIGHUPGRADES);
+  }
 
   public static EnergyUpgrade loadAnyFromItem(@Nonnull ItemStack stack) {
-    if (EMPOWERED_FIVE.hasUpgrade(stack)) {
-      return EMPOWERED_FIVE;
+    for (EnergyUpgrade energyUpgrade : ALLUPGRADES) {
+      if (energyUpgrade.hasUpgrade(stack)) {
+        return energyUpgrade;
+      }
     }
-    if (EMPOWERED_FOUR.hasUpgrade(stack)) {
-      return EMPOWERED_FOUR;
-    }
-    if (EMPOWERED_THREE.hasUpgrade(stack)) {
-      return EMPOWERED_THREE;
-    }
-    if (EMPOWERED_TWO.hasUpgrade(stack)) {
-      return EMPOWERED_TWO;
-    }
-    if (EMPOWERED.hasUpgrade(stack) || stack.getItem() instanceof ItemTravelStaff) {
-      return EMPOWERED;
+    if (stack.getItem() instanceof ItemTravelStaff) {
+      return UPGRADES.get(0);
     }
     return null;
+  }
+
+  public static EnergyUpgrade next(EnergyUpgrade upgrade) {
+    int next = upgrade == null ? 0 : (upgrade.level + 1);
+    return next >= UPGRADES.size() ? null : UPGRADES.get(next);
+  }
+
+  public static EnergyUpgrade nextHigh(EnergyUpgrade upgrade) {
+    int next = upgrade == null ? 0 : (upgrade.level + 1);
+    return next >= HIGHUPGRADES.size() ? null : HIGHUPGRADES.get(next);
   }
 
   protected final @Nonnull IValue<Integer> capacity;
@@ -128,9 +147,9 @@ public class EnergyUpgrade extends AbstractUpgrade {
   protected final @Nonnull IValue<Integer> maxOutRF;
   protected final @Nonnull IValue<Double> absorptionRatio;
 
-  public EnergyUpgrade(int level, @Nonnull String name, @Nonnull IValue<Integer> levels, @Nonnull ItemStack upgradeItem, @Nonnull IValue<Integer> capacity,
-      @Nonnull IValue<Integer> maxReceiveIO, @Nonnull IValue<Double> absorptionRatio) {
-    super(EnergyUpgradeManager.UPGRADE_NAME, level, name, upgradeItem, levels);
+  public EnergyUpgrade(@Nonnull String id, int level, @Nonnull String name, @Nonnull IValue<Integer> levels, @Nonnull ItemStack upgradeItem,
+      @Nonnull IValue<Integer> capacity, @Nonnull IValue<Integer> maxReceiveIO, @Nonnull IValue<Double> absorptionRatio) {
+    super(id, level, name, upgradeItem, levels);
     this.level = level;
     this.capacity = capacity;
     maxInRF = maxReceiveIO;
@@ -140,14 +159,9 @@ public class EnergyUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
-    AbstractUpgrade up = EnergyUpgradeManager.next(loadAnyFromItem(stack));
-    if (up == null) {
-      return false;
-    }
-    if (this == EMPOWERED_FIVE && item.getEquipmentData().getTier() < 2) {
-      return false;
-    }
-    return up.getUnlocalizedName().equals(unlocName);
+    final EnergyUpgrade existing = loadAnyFromItem(stack);
+    EnergyUpgrade up = stack.getItem() instanceof ItemInventoryCharger ? nextHigh(existing) : next(existing);
+    return up != null && up.id.equals(id) && up.level == this.level && (this.level != 4 || item.getEquipmentData().getTier() >= 2);
   }
 
   @Override

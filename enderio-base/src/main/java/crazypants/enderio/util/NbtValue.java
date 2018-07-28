@@ -49,6 +49,7 @@ public enum NbtValue { // TODO: DONE111
   CONTENTCOUNT("contentCount"),
   DATAROOT("data"),
   FILTER_BIG("isBig"),
+  ENABLED("enabled"),
 
   ;
 

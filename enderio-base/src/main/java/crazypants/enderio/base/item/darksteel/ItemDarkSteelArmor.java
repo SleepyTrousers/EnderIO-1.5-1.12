@@ -141,7 +141,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     super(data.getArmorMaterial(), 0, armorType);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
-    powerPerDamagePoint = DarkSteelConfig.energyUpgradePowerStorageEmpowered0.get() / data.getArmorMaterial().getDurability(armorType);
+    powerPerDamagePoint = DarkSteelConfig.energyUpgradePowerStorageEmpowered.get(0).get() / data.getArmorMaterial().getDurability(armorType);
     this.data = data;
   }
 
@@ -171,7 +171,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
       par3List.add(is);
 
       is = new ItemStack(this);
-      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is, this);
+      EnergyUpgrade.UPGRADES.get(3).addToItem(is, this);
       EnergyUpgradeManager.setPowerFull(is, this);
 
       Iterator<IDarkSteelUpgrade> iter = DarkSteelRecipeManager.recipeIterator();

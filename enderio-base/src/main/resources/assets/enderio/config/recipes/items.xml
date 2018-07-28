@@ -92,6 +92,17 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Inventory Charger" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="DARK_STEEL" /><item name="ELECTRICAL_STEEL" /><item name="DARK_STEEL" />
+        <item name="itemWirelessDish" /><item name="ENDER_RESONATOR" /><item name="itemWirelessDish" />
+        <item name="DARK_STEEL" /><item name="ELECTRICAL_STEEL" /><item name="DARK_STEEL" />
+      </grid>
+      <output name="enderio:item_inventory_charger" />
+    </crafting>
+  </recipe>
+
   <recipe name="Dark Steel Helmet" required="true">
     <crafting>
       <grid size="3x2">

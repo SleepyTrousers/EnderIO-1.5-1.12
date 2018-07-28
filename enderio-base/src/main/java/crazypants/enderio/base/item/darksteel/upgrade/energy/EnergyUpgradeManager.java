@@ -5,7 +5,6 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
-import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.util.NbtComparer;
@@ -15,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public abstract class EnergyUpgradeManager {
 
   protected static final @Nonnull String UPGRADE_NAME = "energyUpgrade";
+  protected static final @Nonnull String HIGH_UPGRADE_NAME = "batteryUpgrade";
   protected static final @Nonnull String KEY_ENERGY = "energy";
   protected static final @Nonnull Random RANDOM = new Random();
 
@@ -34,21 +34,6 @@ public abstract class EnergyUpgradeManager {
 
   public static boolean itemHasAnyPowerUpgrade(@Nonnull ItemStack itemstack) {
     return EnergyUpgrade.loadAnyFromItem(itemstack) != null;
-  }
-
-  public static AbstractUpgrade next(AbstractUpgrade upgrade) {
-    if (upgrade == null) {
-      return EnergyUpgrade.EMPOWERED;
-    } else if (upgrade == EnergyUpgrade.EMPOWERED) {
-      return EnergyUpgrade.EMPOWERED_TWO;
-    } else if (upgrade == EnergyUpgrade.EMPOWERED_TWO) {
-      return EnergyUpgrade.EMPOWERED_THREE;
-    } else if (upgrade == EnergyUpgrade.EMPOWERED_THREE) {
-      return EnergyUpgrade.EMPOWERED_FOUR;
-    } else if (upgrade == EnergyUpgrade.EMPOWERED_FOUR) {
-		return EnergyUpgrade.EMPOWERED_FIVE;
-	}
-    return null;
   }
 
   public static int extractEnergy(@Nonnull ItemStack container, int maxExtract, boolean simulate) {

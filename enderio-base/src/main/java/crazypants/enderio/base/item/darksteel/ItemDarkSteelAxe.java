@@ -121,7 +121,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
       list.add(is);
 
       is = new ItemStack(this);
-      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is, this);
+      EnergyUpgrade.UPGRADES.get(3).addToItem(is, this);
       EnergyUpgradeManager.setPowerFull(is, this);
       HoeUpgrade.INSTANCE.addToItem(is, this);
       list.add(is);

@@ -123,27 +123,44 @@ public final class DarkSteelConfig {
   public static final IValue<Integer> energyUpgradeLevelCostEmpowered4 = F_ENERGY.make("upgradeCost5", 20, //
       "Cost for the 'Empowered V' upgrade in levels.").setRange(1, 99).sync();
 
-  public static final IValue<Integer> energyUpgradePowerStorageEmpowered0 = F_ENERGY.make("powerStorage1", 100000, //
-      "Size of the internal energy storage of the 'Empowered I' upgrade.").setRange(1000, 99999999).sync();
-  public static final IValue<Integer> energyUpgradePowerStorageEmpowered1 = F_ENERGY.make("powerStorage2", 150000, //
-      "Size of the internal energy storage of the 'Empowered II' upgrade.").setRange(1000, 99999999).sync();
-  public static final IValue<Integer> energyUpgradePowerStorageEmpowered2 = F_ENERGY.make("powerStorage3", 250000, //
-      "Size of the internal energy storage of the 'Empowered III' upgrade.").setRange(1000, 99999999).sync();
-  public static final IValue<Integer> energyUpgradePowerStorageEmpowered3 = F_ENERGY.make("powerStorage4", 1000000, //
-      "Size of the internal energy storage of the 'Empowered IV' upgrade.").setRange(1000, 99999999).sync();
-  public static final IValue<Integer> energyUpgradePowerStorageEmpowered4 = F_ENERGY.make("powerStorage5", 2500000, //
-      "Size of the internal energy storage of the 'Empowered V' upgrade.").setRange(1000, 99999999).sync();
+  public static final NNList<IValue<Integer>> energyUpgradePowerStorageEmpowered = new NNList<>( //
+      F_ENERGY.make("powerStorage1", 100000, //
+          "Size of the internal energy storage of the 'Empowered I' upgrade.").setRange(1000, 99999999).sync(), //
+      F_ENERGY.make("powerStorage2", 150000, //
+          "Size of the internal energy storage of the 'Empowered II' upgrade.").setRange(1000, 99999999).sync(), //
+      F_ENERGY.make("powerStorage3", 250000, //
+          "Size of the internal energy storage of the 'Empowered III' upgrade.").setRange(1000, 99999999).sync(), //
+      F_ENERGY.make("powerStorage4", 1000000, //
+          "Size of the internal energy storage of the 'Empowered IV' upgrade.").setRange(1000, 99999999).sync(), //
+      F_ENERGY.make("powerStorage5", 2500000, //
+          "Size of the internal energy storage of the 'Empowered V' upgrade.").setRange(1000, 99999999).sync());
 
-  public static final IValue<Integer> energyUpgradePowerTransferEmpowered0 = F_ENERGY.make("powerTransfer1", 1000, //
-      "Maximum energy input/output of the 'Empowered I' upgrade.").setRange(10, 99999999).sync();
-  public static final IValue<Integer> energyUpgradePowerTransferEmpowered1 = F_ENERGY.make("powerTransfer2", 1500, //
-      "Maximum energy input/output of the 'Empowered II' upgrade.").setRange(10, 99999999).sync();
-  public static final IValue<Integer> energyUpgradePowerTransferEmpowered2 = F_ENERGY.make("powerTransfer3", 2500, //
-      "Maximum energy input/output of the 'Empowered III' upgrade.").setRange(10, 99999999).sync();
-  public static final IValue<Integer> energyUpgradePowerTransferEmpowered3 = F_ENERGY.make("powerTransfer4", 10000, //
-      "Maximum energy input/output of the 'Empowered IV' upgrade.").setRange(10, 99999999).sync();
-  public static final IValue<Integer> energyUpgradePowerTransferEmpowered4 = F_ENERGY.make("powerTransfer5", 25000, //
-      "Maximum energy input/output of the 'Empowered V' upgrade.").setRange(10, 99999999).sync();
+  public static final NNList<IValue<Integer>> energyUpgradePowerStorageBattery = new NNList<>( //
+      F_ENERGY.make("powerStorageBattery1", 2500000, //
+          "Size of the internal energy storage of the 'Empowered I' upgrade for battery-type items.").setRange(1000, 99999999).sync(), //
+      F_ENERGY.make("powerStorageBattery2", 5000000, //
+          "Size of the internal energy storage of the 'Empowered II' upgrade for battery-type items.").setRange(1000, 99999999).sync(), //
+      F_ENERGY.make("powerStorageBattery3", 10000000, //
+          "Size of the internal energy storage of the 'Empowered III' upgrade for battery-type items.").setRange(1000, 99999999).sync(), //
+      F_ENERGY.make("powerStorageBattery4", 25000000, //
+          "Size of the internal energy storage of the 'Empowered IV' upgrade for battery-type items.").setRange(1000, 99999999).sync());
+
+  public static final NNList<IValue<Integer>> energyUpgradePowerTransferEmpowered = new NNList<>( //
+      F_ENERGY.make("powerTransfer1", 1000, "Maximum energy input/output of the 'Empowered I' upgrade.").setRange(10, 99999999).sync(), //
+      F_ENERGY.make("powerTransfer2", 1500, "Maximum energy input/output of the 'Empowered II' upgrade.").setRange(10, 99999999).sync(), //
+      F_ENERGY.make("powerTransfer3", 2500, "Maximum energy input/output of the 'Empowered III' upgrade.").setRange(10, 99999999).sync(), //
+      F_ENERGY.make("powerTransfer4", 10000, "Maximum energy input/output of the 'Empowered IV' upgrade.").setRange(10, 99999999).sync(), //
+      F_ENERGY.make("powerTransfer5", 25000, "Maximum energy input/output of the 'Empowered V' upgrade.").setRange(10, 99999999).sync());
+
+  public static final NNList<IValue<Integer>> energyUpgradePowerTransferBattery = new NNList<>( //
+      F_ENERGY.make("powerTransferBattery1", 10000, "Maximum energy input/output of the 'Empowered I' upgrade for battery-type items.").setRange(10, 99999999)
+          .sync(), //
+      F_ENERGY.make("powerTransferBattery2", 15000, "Maximum energy input/output of the 'Empowered II' upgrade for battery-type items.").setRange(10, 99999999)
+          .sync(), //
+      F_ENERGY.make("powerTransferBattery3", 25000, "Maximum energy input/output of the 'Empowered III' upgrad for battery-type itemse.").setRange(10, 99999999)
+          .sync(), //
+      F_ENERGY.make("powerTransferBattery4", 100000, "Maximum energy input/output of the 'Empowered IV' upgrade for battery-type items.").setRange(10, 99999999)
+          .sync());
 
   public static final IValue<Double> energyUpgradeAbsorptionRatioEmpowered0 = F_ENERGY.make("absorptionRatio1", .5, //
       "Ratio of damage absorbed by energy of the 'Empowered I' upgrade. (0=none, 1=all)").setRange(0, 1).sync();

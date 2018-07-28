@@ -69,7 +69,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
     this.data = data;
-    powerPerDamagePoint = DarkSteelConfig.energyUpgradePowerStorageEmpowered0.get() / data.getToolMaterial().getMaxUses();
+    powerPerDamagePoint = DarkSteelConfig.energyUpgradePowerStorageEmpowered.get(0).get() / data.getToolMaterial().getMaxUses();
   }
 
   @Override
@@ -80,10 +80,10 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
       list.add(is);
 
       is = new ItemStack(this);
-      if (EnergyUpgrade.EMPOWERED_FIVE.canAddToItem(is, this)) {
-        EnergyUpgrade.EMPOWERED_FIVE.addToItem(is, this);
+      if (EnergyUpgrade.UPGRADES.get(4).canAddToItem(is, this)) {
+        EnergyUpgrade.UPGRADES.get(4).addToItem(is, this);
       } else {
-        EnergyUpgrade.EMPOWERED_FOUR.addToItem(is, this);
+        EnergyUpgrade.UPGRADES.get(3).addToItem(is, this);
       }
       EnergyUpgradeManager.setPowerFull(is, this);
       TravelUpgrade.INSTANCE.addToItem(is, this);

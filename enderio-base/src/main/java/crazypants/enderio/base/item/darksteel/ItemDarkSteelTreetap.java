@@ -63,7 +63,7 @@ public class ItemDarkSteelTreetap extends Item implements IAdvancedTooltipProvid
       list.add(is);
 
       is = new ItemStack(this);
-      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is, this);
+      EnergyUpgrade.UPGRADES.get(3).addToItem(is, this);
       EnergyUpgradeManager.setPowerFull(is, this);
       list.add(is);
     }
