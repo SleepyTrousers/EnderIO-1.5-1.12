@@ -21,7 +21,11 @@ public enum FunctionUpgrade {
     public int getMaximumExtracted(int stackSize) {
       return 1;
     }
-  };
+  },
+
+  RS_EXPORT_UPGRADE("rs_export_upgrade", "item.item_rs_export_upgrade", 1)
+
+  ;
 
   public static final int BASE_MAX_EXTRACTED = 4;
   public static final int LIQUID_MAX_EXTRACTED_SCALER = 2;

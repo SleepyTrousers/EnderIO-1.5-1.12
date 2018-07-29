@@ -25,7 +25,6 @@ import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
-import crazypants.enderio.conduits.capability.IUpgradeHolder;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.refinedstorage.RSHelper;
 import crazypants.enderio.conduits.refinedstorage.conduit.gui.RefinedStorageSettings;
@@ -43,7 +42,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-public class RefinedStorageConduit extends AbstractConduit implements IRefinedStorageConduit, IUpgradeHolder {
+public class RefinedStorageConduit extends AbstractConduit implements IRefinedStorageConduit {
 
   static final Map<String, TextureSupplier> ICONS = new HashMap<>();
 

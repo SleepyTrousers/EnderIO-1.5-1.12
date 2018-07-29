@@ -361,6 +361,15 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
     oreIds.set(index, null);
   }
 
+  @Nonnull
+  @Override
+  public ItemStack getInventorySlotContents(int slot) {
+    if (slot < 0 || slot >= items.size()) {
+      return ItemStack.EMPTY;
+    }
+    return items.get(slot);
+  }
+
   @Override
   public @Nonnull ItemStack removeStackFromSlot(int index) {
     if (index < 0 || index >= items.size()) {

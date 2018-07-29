@@ -13,9 +13,10 @@ import com.raoulvdberge.refinedstorage.api.util.Action;
 import com.raoulvdberge.refinedstorage.api.util.IComparer;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
-import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.conduits.refinedstorage.RSHelper;
 import crazypants.enderio.conduits.refinedstorage.init.ConduitRefinedStorageObject;
+import crazypants.enderio.conduits.refinedstorage.upgrades.ItemRSFilterUpgrade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -87,7 +88,7 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
   @Override
   public void update() {
     tickCount++;
-    if (rsNetwork != null && canUpdate() && tickCount > 3) {
+    if (rsNetwork != null && canUpdate() && tickCount > 4) {
       tickCount = 0;
 
       for (int i = 0; i < dirsToCheck.size(); i++) {
@@ -110,22 +111,32 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
 
       if (handler != null) {
 
-        ItemStack slot = new ItemStack(ModObject.itemMaterial.getItemNN());
+        ItemStack upgrade = con.getUpgradeStack(dir.ordinal());
 
-        if (!slot.isEmpty()) {
-          ItemStack took = rsNetwork.extractItem(slot, Math.min(slot.getMaxStackSize(), 4), compare, Action.SIMULATE);
+        if (!upgrade.isEmpty()) {
 
-          if (took == null) {
-            //            if (upgrades.hasUpgrade(ItemUpgrade.TYPE_CRAFTING)) {
-            //              rsNetwork.getCraftingManager().request(slot, stackSize);
-            //            }
-            return false;
-          } else if (ItemHandlerHelper.insertItem(handler, took, true).isEmpty()) {
-            took = rsNetwork.extractItem(slot, Math.min(slot.getMaxStackSize(), 4), compare, Action.PERFORM);
+          IItemFilter filter = ((ItemRSFilterUpgrade) upgrade.getItem()).createFilterFromStack(upgrade);
 
-            if (took != null) {
-              ItemHandlerHelper.insertItem(handler, took, false);
-              return true;
+          if (filter != null) {
+
+            ItemStack slot = filter.getInventorySlotContents(0);
+
+            if (!slot.isEmpty()) {
+              ItemStack took = rsNetwork.extractItem(slot, Math.min(slot.getMaxStackSize(), 4), compare, Action.SIMULATE);
+
+              if (took == null) {
+                //            if (upgrades.hasUpgrade(ItemUpgrade.TYPE_CRAFTING)) {
+                //              rsNetwork.getCraftingManager().request(slot, stackSize);
+                //            }
+                return false;
+              } else if (ItemHandlerHelper.insertItem(handler, took, true).isEmpty()) {
+                took = rsNetwork.extractItem(slot, Math.min(slot.getMaxStackSize(), 4), compare, Action.PERFORM);
+
+                if (took != null) {
+                  ItemHandlerHelper.insertItem(handler, took, false);
+                  return true;
+                }
+              }
             }
           }
         }

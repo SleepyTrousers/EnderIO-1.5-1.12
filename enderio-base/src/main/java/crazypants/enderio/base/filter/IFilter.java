@@ -37,6 +37,11 @@ public interface IFilter {
   default void setInventorySlotContents(int slot, @Nonnull ItemStack stack) {
   }
 
+  @Nonnull
+  default ItemStack getInventorySlotContents(int slot) {
+    return ItemStack.EMPTY;
+  }
+
   default boolean hasGui() {
     return true;
   }
