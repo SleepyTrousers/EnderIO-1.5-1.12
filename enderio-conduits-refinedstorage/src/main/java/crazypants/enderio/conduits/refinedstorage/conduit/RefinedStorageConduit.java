@@ -4,6 +4,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -32,6 +33,7 @@ import crazypants.enderio.conduits.refinedstorage.init.ConduitRefinedStorageObje
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -217,6 +219,7 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
 
   @Override
   public void onAfterRemovedFromBundle() {
+    super.onAfterRemovedFromBundle();
     BlockPos pos = getBundle().getLocation();
 
     INetworkNodeManager manager = RSHelper.API.getNetworkNodeManager(getBundle().getBundleworld());
@@ -230,7 +233,6 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
       node.getNetwork().getNodeGraph().rebuild();
     }
 
-    super.onAfterRemovedFromBundle();
   }
 
   @Override
@@ -282,6 +284,34 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
     ConnectionMode mode = getConnectionMode(dir);
     mode = mode == ConnectionMode.IN_OUT ? ConnectionMode.DISABLED : ConnectionMode.IN_OUT;
     return mode;
+  }
+
+  @Override
+  public void writeToNBT(@Nonnull NBTTagCompound nbtRoot) {
+    super.writeToNBT(nbtRoot);
+
+    for (Entry<EnumFacing, ItemStack> entry : upgrades.entrySet()) {
+      if (entry.getValue() != null) {
+        ItemStack up = entry.getValue();
+        NBTTagCompound itemRoot = new NBTTagCompound();
+        up.writeToNBT(itemRoot);
+        nbtRoot.setTag("upgrades." + entry.getKey().name(), itemRoot);
+      }
+    }
+  }
+
+  @Override
+  public void readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
+    super.readFromNBT(nbtRoot);
+
+    for (EnumFacing dir : EnumFacing.VALUES) {
+      String key = "upgrades." + dir.name();
+      if (nbtRoot.hasKey(key)) {
+        NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
+        ItemStack ups = new ItemStack(upTag);
+        upgrades.put(dir, ups);
+      }
+    }
   }
 
   // ---------------------------------------------------------

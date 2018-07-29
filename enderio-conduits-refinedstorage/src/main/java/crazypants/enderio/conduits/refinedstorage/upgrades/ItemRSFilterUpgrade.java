@@ -43,8 +43,12 @@ public class ItemRSFilterUpgrade extends ItemFunctionUpgrade implements IItemFil
 
   protected @Nonnull BasicFilterTypes filterType;
 
-  public static ItemRSFilterUpgrade create(@Nonnull IModObject modObject) {
+  public static ItemRSFilterUpgrade create_export(@Nonnull IModObject modObject) {
     return new ItemRSFilterUpgrade(modObject, BasicFilterTypes.filterUpgradeBasic, FunctionUpgrade.RS_EXPORT_UPGRADE);
+  }
+
+  public static ItemRSFilterUpgrade create_import(@Nonnull IModObject modObject) {
+    return new ItemRSFilterUpgrade(modObject, BasicFilterTypes.filterUpgradeBasic, FunctionUpgrade.RS_IMPORT_UPGRADE);
   }
 
   protected ItemRSFilterUpgrade(@Nonnull IModObject modObject, @Nonnull BasicFilterTypes filterType, @Nonnull FunctionUpgrade upgrade) {

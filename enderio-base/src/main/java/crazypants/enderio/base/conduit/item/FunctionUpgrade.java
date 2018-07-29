@@ -23,7 +23,8 @@ public enum FunctionUpgrade {
     }
   },
 
-  RS_EXPORT_UPGRADE("rs_export_upgrade", "item.item_rs_export_upgrade", 1)
+  RS_EXPORT_UPGRADE("rs_export_upgrade", "item.item_rs_export_upgrade", 1),
+  RS_IMPORT_UPGRADE("rs_import_upgrade", "item.item_rs_import_upgrade", 1)
 
   ;
 

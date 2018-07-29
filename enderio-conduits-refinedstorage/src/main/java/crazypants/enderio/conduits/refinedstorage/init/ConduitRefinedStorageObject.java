@@ -20,7 +20,8 @@ public enum ConduitRefinedStorageObject implements IModObject {
 
   item_refined_storage_conduit(ItemRefinedStorageConduit.class),
 
-  item_export_upgrade(ItemRSFilterUpgrade.class),
+  item_export_upgrade(ItemRSFilterUpgrade.class, "create_export"),
+  item_import_upgrade(ItemRSFilterUpgrade.class, "create_import"),
 
   ;
 

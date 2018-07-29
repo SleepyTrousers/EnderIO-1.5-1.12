@@ -13,6 +13,7 @@ import com.raoulvdberge.refinedstorage.api.util.Action;
 import com.raoulvdberge.refinedstorage.api.util.IComparer;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.item.FunctionUpgrade;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.conduits.refinedstorage.RSHelper;
 import crazypants.enderio.conduits.refinedstorage.init.ConduitRefinedStorageObject;
@@ -31,15 +32,17 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
 
   public static final @Nonnull String ID = "rs_conduit";
 
-  @Nullable
-  protected INetwork rsNetwork;
+  @Nullable protected INetwork rsNetwork;
   protected @Nonnull World world;
   protected @Nonnull BlockPos pos;
   protected @Nonnull IRefinedStorageConduit con;
   protected int compare = IComparer.COMPARE_DAMAGE;
 
   private int tickCount = 0;
+  private static int itemsPerTick = 4;
   private @Nonnull Queue<EnumFacing> dirsToCheck;
+
+  private int currentSlot;
 
   public ConduitRefinedStorageNode(@Nonnull IRefinedStorageConduit con) {
     this.con = con;
@@ -119,10 +122,19 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
 
           if (filter != null) {
 
+            boolean all = true;
+            for (int i = 0; i < filter.getSlotCount(); i++) {
+              if (!filter.getInventorySlotContents(i).isEmpty()) {
+                all = false;
+                break;
+              }
+            }
+
             ItemStack slot = filter.getInventorySlotContents(0);
 
-            if (!slot.isEmpty()) {
-              ItemStack took = rsNetwork.extractItem(slot, Math.min(slot.getMaxStackSize(), 4), compare, Action.SIMULATE);
+            // EXPORTING
+            if (!slot.isEmpty() && ((ItemRSFilterUpgrade) upgrade.getItem()).getFunctionUpgrade() == FunctionUpgrade.RS_EXPORT_UPGRADE) {
+              ItemStack took = rsNetwork.extractItem(slot, Math.min(slot.getMaxStackSize(), itemsPerTick), compare, Action.SIMULATE);
 
               if (took == null) {
                 //            if (upgrades.hasUpgrade(ItemUpgrade.TYPE_CRAFTING)) {
@@ -130,12 +142,41 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
                 //            }
                 return false;
               } else if (ItemHandlerHelper.insertItem(handler, took, true).isEmpty()) {
-                took = rsNetwork.extractItem(slot, Math.min(slot.getMaxStackSize(), 4), compare, Action.PERFORM);
+                took = rsNetwork.extractItem(slot, Math.min(slot.getMaxStackSize(), itemsPerTick), compare, Action.PERFORM);
 
                 if (took != null) {
                   ItemHandlerHelper.insertItem(handler, took, false);
                   return true;
                 }
+              }
+
+              // IMPORTING
+            } else if ((all || !slot.isEmpty()) &&((ItemRSFilterUpgrade) upgrade.getItem()).getFunctionUpgrade() == FunctionUpgrade.RS_IMPORT_UPGRADE) {
+
+              if (currentSlot >= handler.getSlots()) {
+                currentSlot = 0;
+              }
+
+              if (handler.getSlots() > 0) {
+                while (currentSlot + 1 < handler.getSlots() && (handler.getStackInSlot(currentSlot).isEmpty() || (!all && !handler.getStackInSlot(currentSlot)
+                    .isItemEqual(filter.getInventorySlotContents(0))))) {
+                  currentSlot++;
+                }
+
+                ItemStack stack = handler.getStackInSlot(currentSlot);
+
+                ItemStack result = handler.extractItem(currentSlot, itemsPerTick, true);
+
+                if (!result.isEmpty() && rsNetwork.insertItem(result, result.getCount(), Action.SIMULATE) == null) {
+                  result = handler.extractItem(currentSlot, itemsPerTick, false);
+
+                  if (!result.isEmpty()) {
+                    rsNetwork.insertItemTracked(result, result.getCount());
+                  }
+                } else {
+                  currentSlot++;
+                }
+
               }
             }
           }
