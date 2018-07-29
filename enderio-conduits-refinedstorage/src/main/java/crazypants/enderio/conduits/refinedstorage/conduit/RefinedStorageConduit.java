@@ -216,7 +216,7 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   }
 
   @Override
-  public void onBeforeRemovedFromBundle() {
+  public void onAfterRemovedFromBundle() {
     BlockPos pos = getBundle().getLocation();
 
     INetworkNodeManager manager = RSHelper.API.getNetworkNodeManager(getBundle().getBundleworld());
@@ -230,7 +230,7 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
       node.getNetwork().getNodeGraph().rebuild();
     }
 
-    super.onBeforeRemovedFromBundle();
+    super.onAfterRemovedFromBundle();
   }
 
   @Override
