@@ -718,17 +718,18 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
         }
       }
     }
-
-    for (IServerConduit conduit : getServerConduits()) {
-      if (conduit.hasCapability(capability, facing)) {
-        return true;
-      }
-    }
-
-    if (world.isRemote) {
-      for (IClientConduit conduit : this.getClientConduits()) {
-        if (conduit.hasClientCapability(capability, facing)) {
+    if (facing != null) {
+      for (IServerConduit conduit : getServerConduits()) {
+        if (conduit.getExternalConnections().contains(facing) && conduit.hasCapability(capability, facing)) {
           return true;
+        }
+      }
+
+      if (world.isRemote) {
+        for (IClientConduit conduit : this.getClientConduits()) {
+          if (conduit.getExternalConnections().contains(facing) && conduit.hasClientCapability(capability, facing)) {
+            return true;
+          }
         }
       }
     }
@@ -745,15 +746,17 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       }
     }
 
-    for (IServerConduit conduit : getServerConduits()) {
-      if (conduit.hasCapability(capability, facing))
-        return conduit.getCapability(capability, facing);
-    }
+    if (facing != null) {
+      for (IServerConduit conduit : getServerConduits()) {
+        if (conduit.getExternalConnections().contains(facing) && conduit.hasCapability(capability, facing))
+          return conduit.getCapability(capability, facing);
+      }
 
-    if (world.isRemote) {
-      for (IClientConduit conduit : this.getClientConduits()) {
-        if (conduit.hasClientCapability(capability, facing)) {
-          return conduit.getClientCapability(capability, facing);
+      if (world.isRemote) {
+        for (IClientConduit conduit : this.getClientConduits()) {
+          if (conduit.getExternalConnections().contains(facing) && conduit.hasClientCapability(capability, facing)) {
+            return conduit.getClientCapability(capability, facing);
+          }
         }
       }
     }
