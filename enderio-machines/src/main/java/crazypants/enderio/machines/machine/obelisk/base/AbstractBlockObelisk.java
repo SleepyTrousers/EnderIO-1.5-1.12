@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.ClientUtil;
 
-import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineBlock;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.render.IBlockStateWrapper;

@@ -5,9 +5,9 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.IModTileEntity;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.init.IModTileEntity;
+import crazypants.enderio.base.init.IModObjectBase;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.endergy.EnderIOEndergy;
@@ -21,7 +21,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIOEndergy.MODID)
-public enum EndergyObject implements IModObject {
+public enum EndergyObject implements IModObjectBase {
 
   itemEndergyAlloy(ItemEndergyAlloy.class),
   itemCapacitorGrainy(ItemEndergyCapacitor.class, "create_grainy"),

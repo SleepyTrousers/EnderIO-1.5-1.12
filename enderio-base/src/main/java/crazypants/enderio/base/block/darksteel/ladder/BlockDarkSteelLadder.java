@@ -4,9 +4,9 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IDefaultRenderers;
 import net.minecraft.block.BlockLadder;
 import net.minecraft.block.SoundType;

@@ -17,18 +17,19 @@ import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
+import crazypants.enderio.api.IModObject;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
 import crazypants.enderio.api.upgrades.IRenderUpgrade;
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.config.config.DarkSteelConfig;
+import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.enderio.base.integration.thaumcraft.ThaumaturgeRobesUpgrade;
@@ -130,7 +131,6 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   /**
    * The amount of energy that is needed to mitigate one point of armor damage
    */
-  private final int powerPerDamagePoint;
   private final @Nonnull IEquipmentData data;
 
   // ============================================================================================================
@@ -141,13 +141,21 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     super(data.getArmorMaterial(), 0, armorType);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
-    powerPerDamagePoint = DarkSteelConfig.energyUpgradePowerStorageEmpowered.get(0).get() / data.getArmorMaterial().getDurability(armorType);
     this.data = data;
   }
 
   // ============================================================================================================
   // Additional armor value calculation
   // ============================================================================================================
+
+  protected int getPowerPerDamagePoint(@Nonnull ItemStack stack) {
+    EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
+    if (eu != null) {
+      return eu.getCapacity() / data.getArmorMaterial().getDurability(armorType);
+    } else {
+      return 1;
+    }
+  }
 
   protected @Nonnull ArmorMaterial getMaterial(@Nonnull ItemStack stack) {
     return EnergyUpgradeManager.getEnergyStored(stack) > 0 ? data.getArmorMaterialEmpowered() : getArmorMaterial();
@@ -384,9 +392,9 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     int damage = damageNew - getDamage(stack);
 
     EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
-    if (eu != null && eu.getUpgrade().isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
-      eu.extractEnergy(damage * powerPerDamagePoint, false);
-      eu.writeToItem(stack, this);
+    if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+      eu.extractEnergy(damage * getPowerPerDamagePoint(stack), false);
+      eu.writeToItem();
     } else {
       super.setDamage(stack, damageNew);
     }
@@ -507,6 +515,26 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   @Override
   public @Nonnull IEquipmentData getEquipmentData() {
     return data;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyStorageKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_ARMOR_ENERGY_BUFFER;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyInputKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_ARMOR_ENERGY_INPUT;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyUseKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_ARMOR_ENERGY_USE;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getAbsorptionRatioKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_ARMOR_ABSORPTION_RATIO;
   }
 
 }

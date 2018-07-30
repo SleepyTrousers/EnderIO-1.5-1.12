@@ -8,11 +8,11 @@ import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
+import crazypants.enderio.api.capacitor.ICapacitorData;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.CapacitorHelper;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
-import crazypants.enderio.base.capacitor.ICapacitorData;
-import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.gui.IPowerBarData;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.ILegacyPoweredTile;

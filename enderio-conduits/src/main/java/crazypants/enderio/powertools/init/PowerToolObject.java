@@ -5,10 +5,10 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.IModTileEntity;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.init.IModTileEntity;
+import crazypants.enderio.base.init.IModObjectBase;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.powertools.EnderIOPowerTools;
@@ -22,7 +22,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIOPowerTools.MODID)
-public enum PowerToolObject implements IModObject {
+public enum PowerToolObject implements IModObjectBase {
 
   block_cap_bank(BlockCapBank.class, PowerToolTileEntity.TileCapBank),
   block_gauge(BlockGauge.class, PowerToolTileEntity.TileGauge),
@@ -132,7 +132,7 @@ public enum PowerToolObject implements IModObject {
   @Override
   public final @Nonnull <B extends Block> B apply(@Nonnull B blockIn) {
     blockIn.setCreativeTab(EnderIOTab.tabEnderIOConduits);
-    return IModObject.super.apply(blockIn);
+    return IModObjectBase.super.apply(blockIn);
   }
 
   @Override

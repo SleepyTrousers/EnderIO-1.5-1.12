@@ -11,7 +11,7 @@ import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
-import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineBlock;
 import crazypants.enderio.base.paint.IPaintable;

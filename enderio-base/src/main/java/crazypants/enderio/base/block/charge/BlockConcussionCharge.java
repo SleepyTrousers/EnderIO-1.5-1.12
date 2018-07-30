@@ -2,7 +2,7 @@ package crazypants.enderio.base.block.charge;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.api.IModObject;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

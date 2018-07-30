@@ -5,9 +5,9 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.BlockEnder;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;

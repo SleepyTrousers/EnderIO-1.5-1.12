@@ -2,6 +2,7 @@ package crazypants.enderio.base.init;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.IModObject;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.eventhandler.GenericEvent;
 import net.minecraftforge.fml.common.eventhandler.IContextSetter;

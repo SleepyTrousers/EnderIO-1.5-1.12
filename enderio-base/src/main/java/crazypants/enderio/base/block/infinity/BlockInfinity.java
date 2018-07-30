@@ -10,12 +10,12 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.vecmath.Vector4f;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.block.painted.BlockItemPaintedBlock;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IDefaultRenderers;
 import crazypants.enderio.base.render.ranged.InfinityParticle;
 import crazypants.enderio.util.CapturedMob;

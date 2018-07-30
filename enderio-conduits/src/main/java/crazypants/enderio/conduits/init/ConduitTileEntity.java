@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.init.IModTileEntity;
+import crazypants.enderio.base.init.IModTileEntityBase;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.conduits.EnderIOConduits;
 import crazypants.enderio.conduits.conduit.TileConduitBundle;
@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIOConduits.MODID)
-public enum ConduitTileEntity implements IModTileEntity {
+public enum ConduitTileEntity implements IModTileEntityBase {
 
   TileConduitBundle(TileConduitBundle.class),
   ;

@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.IModTileEntity;
 import crazypants.enderio.base.block.charge.BlockConcussionCharge;
 import crazypants.enderio.base.block.charge.BlockConfusionCharge;
 import crazypants.enderio.base.block.charge.BlockEnderCharge;
@@ -83,7 +84,7 @@ import crazypants.enderio.base.render.dummy.BlockMachineIO;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
-public enum ModObject implements IModObject {
+public enum ModObject implements IModObjectBase {
 
   // Dummies
   block_machine_io(BlockMachineIO.class),

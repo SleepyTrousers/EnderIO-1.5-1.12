@@ -8,15 +8,17 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
+import crazypants.enderio.api.IModObject;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -155,6 +157,26 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
   @Override
   public @Nonnull IEquipmentData getEquipmentData() {
     return EquipmentData.IRON;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyStorageKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_TRAVEL_ENERGY_BUFFER;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyInputKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_TRAVEL_ENERGY_INPUT;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyUseKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_TRAVEL_ENERGY_USE;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getAbsorptionRatioKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.NO_POWER;
   }
 
 }

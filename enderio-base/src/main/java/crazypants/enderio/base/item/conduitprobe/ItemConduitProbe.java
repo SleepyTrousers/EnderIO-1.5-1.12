@@ -7,11 +7,11 @@ import javax.annotation.Nonnull;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.TileEntityBase;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.tool.IHideFacades;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IServerConduit;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.render.IHaveRenderers;

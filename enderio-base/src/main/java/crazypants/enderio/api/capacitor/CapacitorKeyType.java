@@ -1,4 +1,4 @@
-package crazypants.enderio.base.capacitor;
+package crazypants.enderio.api.capacitor;
 
 import java.util.Locale;
 
@@ -13,7 +13,10 @@ public enum CapacitorKeyType {
   ENERGY_EFFICIENCY,
   SPEED,
   AREA,
-  AMOUNT,;
+  AMOUNT,
+  ABSORPTION
+
+  ;
 
   public @Nonnull String getName() {
     return name().toLowerCase(Locale.ENGLISH);

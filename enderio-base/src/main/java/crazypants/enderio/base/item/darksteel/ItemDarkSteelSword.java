@@ -12,6 +12,8 @@ import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.collect.Multimap;
 
+import crazypants.enderio.api.IModObject;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
@@ -19,11 +21,10 @@ import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.Config;
-import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.SwordHandler;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.item.darksteel.attributes.DarkSteelAttributeModifiers;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
@@ -60,7 +61,6 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     return res;
   }
 
-  private final int powerPerDamagePoint;
   private long lastBlickTick = -1;
   private final @Nonnull IEquipmentData data;
 
@@ -69,7 +69,15 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
     this.data = data;
-    powerPerDamagePoint = DarkSteelConfig.energyUpgradePowerStorageEmpowered.get(0).get() / data.getToolMaterial().getMaxUses();
+  }
+
+  protected int getPowerPerDamagePoint(@Nonnull ItemStack stack) {
+    EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
+    if (eu != null) {
+      return eu.getCapacity() / data.getToolMaterial().getMaxUses();
+    } else {
+      return 1;
+    }
   }
 
   @Override
@@ -122,12 +130,11 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     if (playerEntity instanceof EntityPlayer) {
 
       EntityPlayer player = (EntityPlayer) playerEntity;
-      ItemStack sword = player.getHeldItemMainhand();
 
       // Durability damage
       EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
-      if (eu != null && eu.getUpgrade().isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
-        eu.extractEnergy(powerPerDamagePoint, false);
+      if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+        eu.extractEnergy(getPowerPerDamagePoint(stack), false);
 
       } else {
         super.hitEntity(stack, entity, playerEntity);
@@ -135,7 +142,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
       // sword hit
       if (eu != null) {
-        eu.writeToItem(sword, this);
+        eu.writeToItem();
 
         if (eu.getEnergy() >= Config.darkSteelSwordPowerUsePerHit) {
           extractInternal(player.getHeldItemMainhand(), Config.darkSteelSwordPowerUsePerHit);
@@ -247,6 +254,26 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   @Override
   public @Nonnull IEquipmentData getEquipmentData() {
     return data;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyStorageKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_SWORD_ENERGY_BUFFER;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyInputKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_SWORD_ENERGY_INPUT;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyUseKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_SWORD_ENERGY_USE;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getAbsorptionRatioKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_SWORD_ABSORPTION_RATIO;
   }
 
 }

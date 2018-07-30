@@ -1,6 +1,6 @@
 package crazypants.enderio.base.teleport.packet;
 
-import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.math.BlockPos;

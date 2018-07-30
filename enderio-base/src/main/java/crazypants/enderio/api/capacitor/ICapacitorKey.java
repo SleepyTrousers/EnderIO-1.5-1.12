@@ -1,8 +1,8 @@
-package crazypants.enderio.base.capacitor;
+package crazypants.enderio.api.capacitor;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.api.IModObject;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 

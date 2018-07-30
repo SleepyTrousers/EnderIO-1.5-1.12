@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.ItemUtil;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.IConduit;
@@ -11,7 +12,6 @@ import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitItem;
 import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.conduits.lang.Lang;
 import crazypants.enderio.util.ClientUtil;

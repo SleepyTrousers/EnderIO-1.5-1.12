@@ -8,8 +8,8 @@ import javax.annotation.Nullable;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.itemoverlay.MobNameOverlayRenderHelper;
 import crazypants.enderio.util.CapturedMob;
 import net.minecraft.client.util.ITooltipFlag;

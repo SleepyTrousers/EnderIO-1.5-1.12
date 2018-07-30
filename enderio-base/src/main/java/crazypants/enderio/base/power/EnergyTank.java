@@ -5,11 +5,11 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.inventory.InventorySlot;
 
+import crazypants.enderio.api.capacitor.ICapacitorData;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.CapacitorHelper;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
-import crazypants.enderio.base.capacitor.ICapacitorData;
-import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.machine.gui.IPowerBarData;
 import crazypants.enderio.util.Prep;

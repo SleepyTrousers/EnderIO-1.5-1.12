@@ -2,7 +2,7 @@ package crazypants.enderio.machines.machine.obelisk.base;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.capacitor.ICapacitorKey;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import info.loenwind.autosave.annotations.Storable;
 

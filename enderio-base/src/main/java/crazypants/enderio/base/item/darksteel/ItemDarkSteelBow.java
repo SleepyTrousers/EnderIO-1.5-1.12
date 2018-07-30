@@ -12,13 +12,15 @@ import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.OreDictionaryHelper;
 
+import crazypants.enderio.api.IModObject;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
@@ -196,7 +198,7 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
         int used = getRequiredPower(draw, upgrade);
         if (used > 0) {
           upgrade.setEnergy(upgrade.getEnergy() - used);
-          upgrade.writeToItem(stack, this);
+          upgrade.writeToItem();
         }
 
       }
@@ -339,9 +341,9 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
 
   private boolean absorbDamageWithEnergy(@Nonnull ItemStack stack, int amount) {
     EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
-    if (eu != null && eu.getUpgrade().isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+    if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(amount, false);
-      eu.writeToItem(stack, this);
+      eu.writeToItem();
       return true;
     }
     return false;
@@ -413,6 +415,26 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
   @Override
   public @Nonnull IEquipmentData getEquipmentData() {
     return data;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyStorageKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_BOW_ENERGY_BUFFER;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyInputKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_BOW_ENERGY_INPUT;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyUseKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_BOW_ENERGY_USE;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getAbsorptionRatioKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_BOW_ABSORPTION_RATIO;
   }
 
 }

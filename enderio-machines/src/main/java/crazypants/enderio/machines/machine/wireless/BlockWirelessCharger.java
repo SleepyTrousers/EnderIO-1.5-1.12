@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.BoundingBox;
 
-import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.render.PaintHelper;
 import crazypants.enderio.base.render.IBlockStateWrapper;

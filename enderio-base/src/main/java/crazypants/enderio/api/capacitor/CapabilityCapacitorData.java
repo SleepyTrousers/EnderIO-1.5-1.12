@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
-import crazypants.enderio.base.capacitor.ICapacitorData;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;

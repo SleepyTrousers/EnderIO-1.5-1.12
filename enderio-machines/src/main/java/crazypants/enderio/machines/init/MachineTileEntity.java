@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.init.IModTileEntity;
+import crazypants.enderio.base.init.IModTileEntityBase;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.machine.alloy.TileAlloySmelter;
@@ -50,7 +50,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIOMachines.MODID)
-public enum MachineTileEntity implements IModTileEntity {
+public enum MachineTileEntity implements IModTileEntityBase {
 
   TileBufferAbstract(TileBuffer.class),
   TileBufferItem(TileBuffer.TileBufferItem.class),

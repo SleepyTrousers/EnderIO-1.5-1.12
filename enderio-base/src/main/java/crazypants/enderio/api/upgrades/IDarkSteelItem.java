@@ -2,6 +2,7 @@ package crazypants.enderio.api.upgrades;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -85,5 +86,24 @@ public interface IDarkSteelItem {
    */
   @Nonnull
   IEquipmentData getEquipmentData();
+
+  @Nonnull
+  ICapacitorKey getEnergyStorageKey(@Nonnull ItemStack stack);
+
+  @Nonnull
+  ICapacitorKey getEnergyInputKey(@Nonnull ItemStack stack);
+
+  // This is used when extracting energy, limiting the amount that can be extracted at once
+  @Nonnull
+  ICapacitorKey getEnergyUseKey(@Nonnull ItemStack stack);
+
+  @Nonnull
+  ICapacitorKey getAbsorptionRatioKey(@Nonnull ItemStack stack);
+
+  default int getMaxEmpoweredLevel(@Nonnull ItemStack stack) {
+    return getEquipmentData().getTier() >= 2 ? 4 : 3;
+    // 3: "Empowered IV", max for Dark Steel
+    // 4: "Empowered V", max for End Steel
+  }
 
 }

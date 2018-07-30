@@ -12,8 +12,8 @@ import com.enderio.core.common.util.NullHelper;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.paint.IPaintable.IBlockPaintableBlock;

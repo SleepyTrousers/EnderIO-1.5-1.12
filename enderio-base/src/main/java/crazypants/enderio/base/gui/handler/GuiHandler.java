@@ -2,8 +2,8 @@ package crazypants.enderio.base.gui.handler;
 
 import javax.annotation.Nullable;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.network.IRemoteExec;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;

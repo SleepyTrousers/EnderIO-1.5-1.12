@@ -5,22 +5,19 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.IModTileEntity;
 import crazypants.enderio.base.EnderIO;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-public interface IModTileEntity {
+public interface IModTileEntityBase extends IModTileEntity {
 
-  @Nonnull
-  String getUnlocalisedName();
-
+  @Override
   default @Nonnull ResourceLocation getRegistryName() {
     return new ResourceLocation(EnderIO.DOMAIN, getUnlocalisedName());
   }
 
-  @Nonnull
-  Class<? extends TileEntity> getTileEntityClass();
-
+  @Override
   default @Nullable TileEntity getTileEntity() {
     try {
       return getTileEntityClass().newInstance();
@@ -29,6 +26,7 @@ public interface IModTileEntity {
     }
   }
 
+  @Override
   default @Nonnull TileEntity getTileEntityNN() {
     return NullHelper.notnull(getTileEntity(), "TileEntity " + this + " is unexpectedly missing");
   }

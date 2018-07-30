@@ -6,7 +6,7 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
-import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import mezz.jei.api.IModRegistry;
 import net.minecraft.creativetab.CreativeTabs;

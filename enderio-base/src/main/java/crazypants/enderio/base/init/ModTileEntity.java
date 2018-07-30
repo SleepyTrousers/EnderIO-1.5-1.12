@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
-public enum ModTileEntity implements IModTileEntity {
+public enum ModTileEntity implements IModTileEntityBase {
   TileEntityTwicePaintedBlock(TileEntityTwicePaintedBlock.class),
   TileEntityPaintedBlock(TileEntityPaintedBlock.class),
   TilePaintedPressurePlate(TilePaintedPressurePlate.class),

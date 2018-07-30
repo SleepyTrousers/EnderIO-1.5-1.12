@@ -6,8 +6,8 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.capacitor.CapacitorHelper.SetType;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.CapacitorKey;
-import crazypants.enderio.base.capacitor.ICapacitorKey;
 import net.minecraft.util.WeightedRandom;
 
 public class WeightedUpgrade {

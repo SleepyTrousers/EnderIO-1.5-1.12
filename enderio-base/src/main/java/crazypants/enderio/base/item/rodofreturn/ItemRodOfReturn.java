@@ -17,6 +17,7 @@ import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector3d;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.teleport.ITelePad;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.base.EnderIO;
@@ -24,7 +25,6 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.fluid.Fluids;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.lang.LangFluid;

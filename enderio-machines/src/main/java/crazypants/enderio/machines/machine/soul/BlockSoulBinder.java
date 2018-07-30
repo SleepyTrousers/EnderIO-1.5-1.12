@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.client.ClientUtil;
 
-import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskBlock;
 import crazypants.enderio.base.machine.render.SoulBinderBlockRenderMapper;
 import crazypants.enderio.base.paint.IPaintable;

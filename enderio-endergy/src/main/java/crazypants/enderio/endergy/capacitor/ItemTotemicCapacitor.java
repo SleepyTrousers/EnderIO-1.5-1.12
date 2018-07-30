@@ -6,10 +6,10 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.CompoundCapabilityProvider;
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.capacitor.CapabilityCapacitorData;
+import crazypants.enderio.api.capacitor.ICapacitorData;
 import crazypants.enderio.base.capacitor.CapacitorHelper;
-import crazypants.enderio.base.capacitor.ICapacitorData;
-import crazypants.enderio.base.init.IModObject;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

@@ -8,8 +8,8 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;

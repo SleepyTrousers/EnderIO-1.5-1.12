@@ -10,8 +10,8 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.NullHelper;
 import com.google.common.collect.Maps;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.machines.machine.obelisk.base.AbstractBlockRangedObelisk;
 import crazypants.enderio.machines.machine.obelisk.base.GuiRangedObelisk;
 import net.minecraft.client.gui.GuiScreen;

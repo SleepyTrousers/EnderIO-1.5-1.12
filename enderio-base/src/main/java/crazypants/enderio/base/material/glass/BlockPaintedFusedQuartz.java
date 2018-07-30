@@ -6,8 +6,8 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 
 import crazypants.enderio.base.block.painted.BlockItemPaintedBlock.INamedSubBlocks;
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.block.painted.TileEntityPaintedBlock;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.render.PaintHelper;
