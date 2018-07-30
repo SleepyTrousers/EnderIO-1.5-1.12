@@ -46,6 +46,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -87,7 +88,8 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
       return false;
     }
     if (test.hasCapability(RSHelper.NETWORK_NODE_PROXY_CAPABILITY, direction.getOpposite()) || test
-        .hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction.getOpposite())) {
+        .hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction.getOpposite()) || test
+        .hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction.getOpposite())) {
       return true;
     }
 
@@ -470,10 +472,10 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   @Override
   @Nullable
   public IItemHandler getInventoryForSnapshot(int filterId, int param1) {
-//    ItemConduitNetwork icn = getNetwork();
-//    if (icn != null) {
-//      return icn.getInventory(this, EnumFacing.getFront(param1)).getInventory();
-//    }
+    //    ItemConduitNetwork icn = getNetwork();
+    //    if (icn != null) {
+    //      return icn.getInventory(this, EnumFacing.getFront(param1)).getInventory();
+    //    }
     return null;
   }
 

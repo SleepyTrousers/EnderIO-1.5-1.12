@@ -15,6 +15,8 @@ import com.raoulvdberge.refinedstorage.api.util.IComparer;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.item.FunctionUpgrade;
 import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
+import crazypants.enderio.base.filter.IFilter;
+import crazypants.enderio.base.filter.fluid.IFluidFilter;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.conduits.refinedstorage.RSHelper;
 import crazypants.enderio.conduits.refinedstorage.init.ConduitRefinedStorageObject;
@@ -24,6 +26,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -106,9 +112,95 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
   }
 
   private boolean updateDir(@Nonnull EnumFacing dir) {
-
     TileEntity te = world.getTileEntity(pos.offset(dir));
-    if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, dir.getOpposite())) {
+
+    boolean done = false;
+
+    if (te != null) {
+      done = updateDirItems(dir, te);
+      done = done || updateDirFluids(dir, te);
+    }
+
+    return done;
+  }
+
+  private boolean updateDirFluids(@Nonnull EnumFacing dir, @Nonnull TileEntity te) {
+    if (te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, dir.getOpposite())) {
+
+      IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, dir.getOpposite());
+
+      if (handler != null) {
+
+        // Export
+        IFilter outFilt = con.getInputFilter(dir);
+        if (outFilt instanceof IFluidFilter) {
+
+          IFluidFilter exportFilter = (IFluidFilter) outFilt;
+          FluidStack stack = exportFilter.getFluidStackAt(0);
+
+          if (stack != null) {
+            int toExtract = Fluid.BUCKET_VOLUME;
+
+            FluidStack stackInStorage = rsNetwork.getFluidStorageCache().getList().get(stack, compare);
+
+            if (stackInStorage != null) {
+              toExtract = Math.min(toExtract, stackInStorage.amount);
+
+              FluidStack took = rsNetwork.extractFluid(stack, toExtract, compare, Action.SIMULATE);
+
+              if (took != null) {
+                int filled = handler.fill(took, false);
+
+                if (filled > 0) {
+                  took = rsNetwork.extractFluid(stack, filled, compare, Action.PERFORM);
+
+                  handler.fill(took, true);
+                }
+              }
+            }
+//            else if (upgrades.hasUpgrade(ItemUpgrade.TYPE_CRAFTING)) {
+//              network.getCraftingManager().request(stack, toExtract);
+//            }
+          }
+        }
+
+        // Importing
+        IFilter inFilt = con.getOutputFilter(dir);
+        if (inFilt instanceof IFluidFilter) {
+
+          IFluidFilter importFilter = (IFluidFilter) inFilt;
+
+          boolean all = true;
+          for (int i = 0; i < importFilter.getSlotCount(); i++) {
+            if (importFilter.getFluidStackAt(i) != null) {
+              all = false;
+              break;
+            }
+          }
+
+          FluidStack slot = importFilter.getFluidStackAt(0);
+          FluidStack toDrain = handler.drain(Fluid.BUCKET_VOLUME, false);
+
+          if (all || (slot != null && toDrain != null && slot.isFluidEqual(toDrain))) {
+
+            if (toDrain != null) {
+              FluidStack remainder = rsNetwork.insertFluid(toDrain, toDrain.amount, Action.PERFORM);
+              if (remainder != null) {
+                toDrain.amount -= remainder.amount;
+              }
+
+              handler.drain(toDrain, true);
+            }
+          }
+        }
+      }
+    }
+
+    return false;
+  }
+
+  private boolean updateDirItems(@Nonnull EnumFacing dir, @Nonnull TileEntity te) {
+    if (te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, dir.getOpposite())) {
 
       IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, dir.getOpposite());
 
@@ -124,10 +216,10 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
         }
 
         // Exporting
+        IFilter outFilt = con.getInputFilter(dir);
+        if (outFilt instanceof IItemFilter) {
 
-        IItemFilter exportFilter = (IItemFilter) con.getInputFilter(dir);
-
-        if (exportFilter != null) {
+          IItemFilter exportFilter = (IItemFilter) outFilt;
           ItemStack slot = exportFilter.getInventorySlotContents(0);
 
           if (!slot.isEmpty()) {
@@ -150,9 +242,11 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
         }
 
         // Importing
-        IItemFilter importFilter = (IItemFilter) con.getOutputFilter(dir);
+        IFilter inFilt = con.getOutputFilter(dir);
+        if (inFilt instanceof IItemFilter) {
 
-        if (importFilter != null) {
+          IItemFilter importFilter = (IItemFilter) inFilt;
+
           boolean all = true;
           for (int i = 0; i < importFilter.getSlotCount(); i++) {
             if (!importFilter.getInventorySlotContents(i).isEmpty()) {
@@ -170,7 +264,8 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
             }
 
             if (handler.getSlots() > 0) {
-              while (currentSlot + 1 < handler.getSlots() && (handler.getStackInSlot(currentSlot).isEmpty() || (!all && !handler.getStackInSlot(currentSlot).isItemEqual(importFilter.getInventorySlotContents(0))))) {
+              while (currentSlot + 1 < handler.getSlots() && (handler.getStackInSlot(currentSlot).isEmpty() || (!all && !handler.getStackInSlot(currentSlot)
+                  .isItemEqual(importFilter.getInventorySlotContents(0))))) {
                 currentSlot++;
               }
 
@@ -187,9 +282,7 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
               } else {
                 currentSlot++;
               }
-
             }
-
           }
         }
       }

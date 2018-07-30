@@ -11,7 +11,6 @@ import crazypants.enderio.base.init.IModTileEntity;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.conduits.refinedstorage.conduit.ItemRefinedStorageConduit;
-import crazypants.enderio.conduits.refinedstorage.upgrades.ItemRSFilterUpgrade;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -19,9 +18,6 @@ import net.minecraft.util.ResourceLocation;
 public enum ConduitRefinedStorageObject implements IModObject {
 
   item_refined_storage_conduit(ItemRefinedStorageConduit.class),
-
-  item_export_upgrade(ItemRSFilterUpgrade.class, "create_export"),
-  item_import_upgrade(ItemRSFilterUpgrade.class, "create_import"),
 
   ;
 
