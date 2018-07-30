@@ -140,7 +140,7 @@ public enum ConduitObject implements IModObjectBase {
   @Override
   public final @Nonnull <B extends Block> B apply(@Nonnull B blockIn) {
     blockIn.setCreativeTab(EnderIOTab.tabEnderIOConduits);
-    return IModObject.super.apply(blockIn);
+    return IModObjectBase.super.apply(blockIn);
   }
 
   @Override
