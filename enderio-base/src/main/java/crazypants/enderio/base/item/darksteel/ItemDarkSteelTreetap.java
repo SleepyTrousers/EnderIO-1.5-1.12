@@ -85,9 +85,9 @@ public class ItemDarkSteelTreetap extends Item implements IAdvancedTooltipProvid
 
   private boolean absorbDamageWithEnergy(@Nonnull ItemStack stack, int amount) {
     EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
-    if (eu != null && eu.getUpgrade().isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+    if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(amount, false);
-      eu.writeToItem(stack, this);
+      eu.writeToItem();
       return true;
     } else {
       return false;

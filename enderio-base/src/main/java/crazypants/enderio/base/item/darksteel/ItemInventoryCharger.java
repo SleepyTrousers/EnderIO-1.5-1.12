@@ -61,11 +61,11 @@ public class ItemInventoryCharger extends Item implements IAdvancedTooltipProvid
       list.add(is);
 
       is = new ItemStack(this);
-      EnergyUpgrade.HIGHUPGRADES.get(0).addToItem(is, this);
+      EnergyUpgrade.UPGRADES.get(0).addToItem(is, this);
       list.add(is);
 
       is = new ItemStack(this);
-      EnergyUpgrade.HIGHUPGRADES.get(3).addToItem(is, this);
+      EnergyUpgrade.UPGRADES.get(3).addToItem(is, this);
       EnergyUpgradeManager.setPowerFull(is, this);
       list.add(is);
     }
@@ -98,7 +98,7 @@ public class ItemInventoryCharger extends Item implements IAdvancedTooltipProvid
               int added = cap.receiveEnergy(eu.extractEnergy(eu.getEnergy(), true), false);
               if (added > 0) {
                 eu.extractEnergy(added, false);
-                eu.writeToItem(stack, this);
+                eu.writeToItem();
                 if (eu.getEnergy() <= 0) {
                   return;
                 }

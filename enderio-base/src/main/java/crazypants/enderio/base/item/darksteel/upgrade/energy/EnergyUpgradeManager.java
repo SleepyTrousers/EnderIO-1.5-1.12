@@ -28,8 +28,13 @@ public abstract class EnergyUpgradeManager {
   }
 
   public static EnergyUpgrade.EnergyUpgradeHolder loadFromItem(@Nonnull ItemStack stack) {
+    if (stack.getItem() instanceof IDarkSteelItem) {
+      IDarkSteelItem item = (IDarkSteelItem) stack.getItem();
     EnergyUpgrade energyUpgrade = EnergyUpgrade.loadAnyFromItem(stack);
-    return energyUpgrade != null ? energyUpgrade.getEnergyUpgradeHolder(stack) : null;
+      return energyUpgrade != null ? energyUpgrade.getEnergyUpgradeHolder(stack, item) : null;
+    } else {
+      return null;
+    }
   }
 
   public static boolean itemHasAnyPowerUpgrade(@Nonnull ItemStack itemstack) {
@@ -50,7 +55,7 @@ public abstract class EnergyUpgradeManager {
     }
     int res = eu.extractEnergy(maxExtract, simulate);
     if (!simulate && res > 0) {
-      eu.writeToItem(container, item);
+      eu.writeToItem();
     }
     return res;
   }
@@ -69,7 +74,7 @@ public abstract class EnergyUpgradeManager {
     }
     int res = eu.receiveEnergy(maxReceive, simulate);
     if (!simulate && res > 0) {
-      eu.writeToItem(container, item);
+      eu.writeToItem();
     }
     return res;
   }
@@ -80,7 +85,7 @@ public abstract class EnergyUpgradeManager {
     }
     EnergyUpgradeHolder eu = loadFromItem(container);
     eu.setEnergy(eu.getCapacity());
-    eu.writeToItem(container, item);
+    eu.writeToItem();
   }
 
   public static String getStoredEnergyString(@Nonnull ItemStack itemstack) {

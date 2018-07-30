@@ -20,7 +20,6 @@ import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.Config;
-import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.SwordHandler;
 import crazypants.enderio.base.init.IModObject;
@@ -60,7 +59,6 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     return res;
   }
 
-  private final int powerPerDamagePoint;
   private long lastBlickTick = -1;
   private final @Nonnull IEquipmentData data;
 
@@ -69,7 +67,15 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
     this.data = data;
-    powerPerDamagePoint = DarkSteelConfig.energyUpgradePowerStorageEmpowered.get(0).get() / data.getToolMaterial().getMaxUses();
+  }
+
+  protected int getPowerPerDamagePoint(@Nonnull ItemStack stack) {
+    EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
+    if (eu != null) {
+      return eu.getCapacity() / data.getToolMaterial().getMaxUses();
+    } else {
+      return 1;
+    }
   }
 
   @Override
@@ -122,12 +128,11 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     if (playerEntity instanceof EntityPlayer) {
 
       EntityPlayer player = (EntityPlayer) playerEntity;
-      ItemStack sword = player.getHeldItemMainhand();
 
       // Durability damage
       EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
-      if (eu != null && eu.getUpgrade().isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
-        eu.extractEnergy(powerPerDamagePoint, false);
+      if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+        eu.extractEnergy(getPowerPerDamagePoint(stack), false);
 
       } else {
         super.hitEntity(stack, entity, playerEntity);
@@ -135,7 +140,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
       // sword hit
       if (eu != null) {
-        eu.writeToItem(sword, this);
+        eu.writeToItem();
 
         if (eu.getEnergy() >= Config.darkSteelSwordPowerUsePerHit) {
           extractInternal(player.getHeldItemMainhand(), Config.darkSteelSwordPowerUsePerHit);

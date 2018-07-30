@@ -23,6 +23,11 @@ public enum CapacitorKey implements ICapacitorKey {
   LEGACY_ENERGY_USE(ModObject.block_machine_base, CapacitorKeyType.ENERGY_USE, "legacy_use"),
   LEGACY_ENERGY_EFFICIENCY(ModObject.block_machine_base, CapacitorKeyType.ENERGY_EFFICIENCY, "legacy_efficiency"),
 
+  DARK_STEEL_ENERGY_BUFFER(ModObject.itemDarkSteelSword, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_ENERGY_INPUT(ModObject.itemDarkSteelSword, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_ENERGY_USE(ModObject.itemDarkSteelSword, CapacitorKeyType.ENERGY_USE),
+  DARK_STEEL_ABSORBTION_RATIO(ModObject.itemDarkSteelSword, CapacitorKeyType.AMOUNT),
+
   ;
 
   // /////////////////////////////////////////////////////////////////// //
@@ -41,6 +46,10 @@ public enum CapacitorKey implements ICapacitorKey {
     this.valueType = valueType;
     this.registryName = new ResourceLocation(owner.getRegistryName().getResourceDomain(),
         owner.getRegistryName().getResourcePath() + "/" + shortname.toLowerCase(Locale.ENGLISH));
+  }
+
+  private CapacitorKey(@Nonnull IModObject owner, @Nonnull CapacitorKeyType valueType) {
+    this(owner, valueType, valueType.name().toLowerCase(Locale.ENGLISH));
   }
 
   @Override

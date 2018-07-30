@@ -217,13 +217,13 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
     int damage = newDamage - oldDamage;
 
     EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
-    if (eu != null && eu.getUpgrade().isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+    if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(damage * Config.darkSteelShearsPowerUsePerDamagePoint, false);
     } else {
       super.setDamage(stack, newDamage);
     }
     if (eu != null) {
-      eu.writeToItem(stack, this);
+      eu.writeToItem();
     }
   }
 

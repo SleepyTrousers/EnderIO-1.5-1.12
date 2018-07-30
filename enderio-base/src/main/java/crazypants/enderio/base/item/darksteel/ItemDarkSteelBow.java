@@ -196,7 +196,7 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
         int used = getRequiredPower(draw, upgrade);
         if (used > 0) {
           upgrade.setEnergy(upgrade.getEnergy() - used);
-          upgrade.writeToItem(stack, this);
+          upgrade.writeToItem();
         }
 
       }
@@ -339,9 +339,9 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
 
   private boolean absorbDamageWithEnergy(@Nonnull ItemStack stack, int amount) {
     EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
-    if (eu != null && eu.getUpgrade().isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+    if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(amount, false);
-      eu.writeToItem(stack, this);
+      eu.writeToItem();
       return true;
     }
     return false;

@@ -51,7 +51,7 @@ public class DarkSteelRecipeManager {
   @SubscribeEvent(priority = EventPriority.HIGH)
   public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
     final IForgeRegistry<IDarkSteelUpgrade> registry = event.getRegistry();
-    for (EnergyUpgrade energyUpgrade : EnergyUpgrade.ALLUPGRADES) {
+    for (EnergyUpgrade energyUpgrade : EnergyUpgrade.UPGRADES) {
       registry.register(energyUpgrade);
     }
     registry.register(JumpUpgrade.JUMP_ONE);
