@@ -87,6 +87,7 @@ public enum Lang implements ILang {
   CONFIG_TITLE(".config.title"),
   GUI_NOCAP(".gui.generic.nocap"),
   GUI_PROBE_COPIED(".gui.probe.copied"),
+  GUI_PROBE_PASTED(".gui.probe.pasted"),
 
   // FILTERS
   GUI_EDIT_ITEM_FILTER(".gui.edit_item_filter"),

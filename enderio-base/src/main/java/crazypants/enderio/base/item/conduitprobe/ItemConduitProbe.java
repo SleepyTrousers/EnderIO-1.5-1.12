@@ -1,7 +1,5 @@
 package crazypants.enderio.base.item.conduitprobe;
 
-import java.util.Collection;
-
 import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
@@ -50,41 +48,52 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
       return true;
     }
 
-    boolean isCopy = player.isSneaking();
-    boolean clearedData = false;
+    if (player.isSneaking()) {
+      return copySettings(player, stack, bundle, dir);
+    } else {
+      return pasteSettings(player, stack, bundle, dir);
+    }
+  }
 
-    if (!isCopy && !stack.hasTagCompound()) {
+  public static boolean pasteSettings(@Nonnull EntityPlayer player, @Nonnull ItemStack stack, @Nonnull IConduitBundle bundle, @Nonnull EnumFacing dir) {
+    NBTTagCompound nbt = stack.getTagCompound();
+    if (nbt == null || nbt.hasNoTags()) {
       return false;
     }
 
     boolean performedAction = false;
-    Collection<IServerConduit> conduits = bundle.getServerConduits();
 
-    NBTTagCompound nbt;
-    if (isCopy) {
-      nbt = new NBTTagCompound();
-    } else {
-      nbt = stack.getTagCompound();
-    }
-    for (IServerConduit conduit : conduits) {
+    for (IServerConduit conduit : bundle.getServerConduits()) {
       if (conduit.getExternalConnections().contains(dir)) {
-        if (isCopy && !clearedData) {
-          clearedData = true;
-        }
-        if (isCopy) {
-          performedAction |= conduit.writeConnectionSettingsToNBT(dir, nbt);
-        } else {
-          performedAction |= nbt != null && conduit.readConduitSettingsFromNBT(dir, nbt);
+        if (conduit.readConduitSettingsFromNBT(dir, nbt)) {
+          performedAction = true;
         }
       }
     }
-    stack.setTagCompound(nbt);
 
-    if (isCopy && performedAction) {
-      player.sendStatusMessage(Lang.GUI_PROBE_COPIED.toChatServer(), true);
+    if (performedAction) {
+      player.sendStatusMessage(Lang.GUI_PROBE_PASTED.toChatServer(), true);
     }
 
     return performedAction;
+  }
+
+  public static boolean copySettings(@Nonnull EntityPlayer player, @Nonnull ItemStack stack, @Nonnull IConduitBundle bundle, @Nonnull EnumFacing dir) {
+    NBTTagCompound nbt = new NBTTagCompound();
+
+    for (IServerConduit conduit : bundle.getServerConduits()) {
+      if (conduit.getExternalConnections().contains(dir)) {
+        conduit.writeConnectionSettingsToNBT(dir, nbt);
+      }
+    }
+
+    if (!nbt.hasNoTags()) {
+      stack.setTagCompound(nbt);
+      player.sendStatusMessage(Lang.GUI_PROBE_COPIED.toChatServer(), true);
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @Override

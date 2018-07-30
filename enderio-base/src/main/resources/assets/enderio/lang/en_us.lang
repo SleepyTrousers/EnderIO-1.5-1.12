@@ -1011,6 +1011,7 @@ key.category.darksteelarmor=Dark Steel Armor
 key.category.tools=Tools
 
 enderio.gui.probe.copied=Copied conduit settings
+enderio.gui.probe.pasted=Pasted conduit settings
 
 # unless we want to copy the sound, it will always show this subtitle.
 subtitles.entity.enderman.teleport=Something teleports
