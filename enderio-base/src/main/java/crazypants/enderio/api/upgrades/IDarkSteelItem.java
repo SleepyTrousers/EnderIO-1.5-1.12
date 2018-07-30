@@ -88,16 +88,22 @@ public interface IDarkSteelItem {
   IEquipmentData getEquipmentData();
 
   @Nonnull
-  ICapacitorKey getEnergyStorageKey();
+  ICapacitorKey getEnergyStorageKey(@Nonnull ItemStack stack);
 
   @Nonnull
-  ICapacitorKey getEnergyInputKey();
+  ICapacitorKey getEnergyInputKey(@Nonnull ItemStack stack);
 
   // This is used when extracting energy, limiting the amount that can be extracted at once
   @Nonnull
-  ICapacitorKey getEnergyUseKey();
+  ICapacitorKey getEnergyUseKey(@Nonnull ItemStack stack);
 
   @Nonnull
-  ICapacitorKey getAbsorptionRatioKey();
+  ICapacitorKey getAbsorptionRatioKey(@Nonnull ItemStack stack);
+
+  default int getMaxEmpoweredLevel(@Nonnull ItemStack stack) {
+    return getEquipmentData().getTier() >= 2 ? 4 : 3;
+    // 3: "Empowered IV", max for Dark Steel
+    // 4: "Empowered V", max for End Steel
+  }
 
 }

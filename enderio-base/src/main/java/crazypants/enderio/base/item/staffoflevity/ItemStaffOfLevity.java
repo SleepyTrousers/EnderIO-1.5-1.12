@@ -295,22 +295,22 @@ public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider,
   }
 
   @Override
-  public @Nonnull ICapacitorKey getEnergyStorageKey() {
+  public @Nonnull ICapacitorKey getEnergyStorageKey(@Nonnull ItemStack stack) {
     return CapacitorKey.DARK_STEEL_LEVITY_ENERGY_BUFFER;
   }
 
   @Override
-  public @Nonnull ICapacitorKey getEnergyInputKey() {
+  public @Nonnull ICapacitorKey getEnergyInputKey(@Nonnull ItemStack stack) {
     return CapacitorKey.DARK_STEEL_LEVITY_ENERGY_INPUT;
   }
 
   @Override
-  public @Nonnull ICapacitorKey getEnergyUseKey() {
+  public @Nonnull ICapacitorKey getEnergyUseKey(@Nonnull ItemStack stack) {
     return CapacitorKey.DARK_STEEL_LEVITY_ENERGY_USE;
   }
 
   @Override
-  public @Nonnull ICapacitorKey getAbsorptionRatioKey() {
+  public @Nonnull ICapacitorKey getAbsorptionRatioKey(@Nonnull ItemStack stack) {
     return CapacitorKey.NO_POWER;
   }
 

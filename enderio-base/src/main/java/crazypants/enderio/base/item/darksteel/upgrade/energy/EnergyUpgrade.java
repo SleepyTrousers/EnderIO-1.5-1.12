@@ -77,19 +77,19 @@ public class EnergyUpgrade extends AbstractUpgrade {
     }
 
     public int getCapacity() {
-      return item.getEnergyStorageKey().get(capData);
+      return item.getEnergyStorageKey(stack).get(capData);
     }
 
     public int getMaxInput() {
-      return item.getEnergyInputKey().get(capData);
+      return item.getEnergyInputKey(stack).get(capData);
     }
 
     public int getMaxOutput() {
-      return item.getEnergyUseKey().get(capData);
+      return item.getEnergyUseKey(stack).get(capData);
     }
 
     public float getAbsorptionRatio() {
-      return item.getAbsorptionRatioKey().getFloat(capData);
+      return item.getAbsorptionRatioKey(stack).getFloat(capData);
     }
 
     public boolean isAbsorbDamageWithPower() {
@@ -158,7 +158,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
   public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     final EnergyUpgrade existing = loadAnyFromItem(stack);
     EnergyUpgrade up = next(existing);
-    return up != null && up.id.equals(id) && up.level == this.level && (this.level != 4 || item.getEquipmentData().getTier() >= 2);
+    return up != null && up.id.equals(id) && up.level == this.level && item.getMaxEmpoweredLevel(stack) >= level;
   }
 
   @Override
