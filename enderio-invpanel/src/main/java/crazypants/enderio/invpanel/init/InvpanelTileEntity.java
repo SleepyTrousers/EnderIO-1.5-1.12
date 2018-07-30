@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.init.IModTileEntity;
+import crazypants.enderio.base.init.IModTileEntityBase;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.invpanel.EnderIOInvPanel;
 import crazypants.enderio.invpanel.chest.TileInventoryChest;
@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIOInvPanel.MODID)
-public enum InvpanelTileEntity implements IModTileEntity {
+public enum InvpanelTileEntity implements IModTileEntityBase {
 
   TileInventoryPanel(TileInventoryPanel.class),
   TileInventoryPanelSensor(TileInventoryPanelSensor.class),

@@ -5,8 +5,8 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.machine.obelisk.base.AbstractBlockObelisk;
 import net.minecraft.block.Block;

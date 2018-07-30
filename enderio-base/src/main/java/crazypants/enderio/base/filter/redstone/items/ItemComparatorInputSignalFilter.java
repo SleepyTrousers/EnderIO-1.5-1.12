@@ -3,9 +3,9 @@ package crazypants.enderio.base.filter.redstone.items;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.filter.redstone.ComparatorInputSignalFilter;
 import crazypants.enderio.base.filter.redstone.IInputSignalFilter;
-import crazypants.enderio.base.init.IModObject;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

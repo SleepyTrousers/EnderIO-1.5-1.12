@@ -3,7 +3,7 @@ package crazypants.enderio.base.item.enderface;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.util.Prep;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;

@@ -8,7 +8,7 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.machines.config.ChargerConfig;
 import crazypants.enderio.machines.init.MachineObject;

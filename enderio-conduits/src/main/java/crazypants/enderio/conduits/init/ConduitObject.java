@@ -5,11 +5,11 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.IModTileEntity;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
-import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.init.IModTileEntity;
+import crazypants.enderio.base.init.IModObjectBase;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.base.registry.Registry;
@@ -26,7 +26,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIOConduits.MODID)
-public enum ConduitObject implements IModObject {
+public enum ConduitObject implements IModObjectBase {
 
   // Conduits
   block_conduit_bundle(BlockConduitBundle.class, ConduitTileEntity.TileConduitBundle),

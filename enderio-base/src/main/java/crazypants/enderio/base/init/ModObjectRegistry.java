@@ -14,6 +14,8 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.IModObject;
+import crazypants.enderio.api.IModTileEntity;
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;

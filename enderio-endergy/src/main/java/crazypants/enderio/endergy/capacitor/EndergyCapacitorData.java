@@ -2,9 +2,9 @@ package crazypants.enderio.endergy.capacitor;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.capacitor.ICapacitorData;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.capacitor.ICapacitorData;
-import crazypants.enderio.base.capacitor.ICapacitorKey;
 
 public enum EndergyCapacitorData implements ICapacitorData {
 

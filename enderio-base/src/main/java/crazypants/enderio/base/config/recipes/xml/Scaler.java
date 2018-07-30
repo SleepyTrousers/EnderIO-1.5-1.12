@@ -3,6 +3,7 @@ package crazypants.enderio.base.config.recipes.xml;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
+import crazypants.enderio.base.capacitor.ScalerFactory;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.RecipeConfigElement;
 import crazypants.enderio.base.config.recipes.StaxFactory;
@@ -11,7 +12,7 @@ public class Scaler implements RecipeConfigElement {
 
   private String name;
 
-  protected crazypants.enderio.base.capacitor.Scaler scaler;
+  protected crazypants.enderio.api.capacitor.Scaler scaler;
 
   public Scaler() {
   }
@@ -23,7 +24,7 @@ public class Scaler implements RecipeConfigElement {
   @Override
   public Scaler readResolve() throws InvalidRecipeConfigException, XMLStreamException {
     try {
-      scaler = crazypants.enderio.base.capacitor.Scaler.Factory.fromString(name);
+      scaler = crazypants.enderio.base.capacitor.ScalerFactory.fromString(name);
 
       if (scaler == null) {
         throw new InvalidRecipeConfigException("'name' '" + name + "' is invalid");
@@ -58,7 +59,7 @@ public class Scaler implements RecipeConfigElement {
     return false;
   }
 
-  public crazypants.enderio.base.capacitor.Scaler getScaler() {
+  public crazypants.enderio.api.capacitor.Scaler getScaler() {
     return scaler;
   }
 

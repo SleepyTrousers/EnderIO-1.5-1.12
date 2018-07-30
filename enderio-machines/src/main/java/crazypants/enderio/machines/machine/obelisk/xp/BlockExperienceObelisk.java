@@ -5,7 +5,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.machines.machine.obelisk.base.AbstractBlockObelisk;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;

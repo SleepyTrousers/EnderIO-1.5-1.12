@@ -4,8 +4,8 @@ import java.util.Locale;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.machines.machine.obelisk.attractor.handlers.EndermanFixer;
 import crazypants.enderio.machines.machine.obelisk.base.AbstractBlockRangedObelisk;
 import net.minecraftforge.common.MinecraftForge;

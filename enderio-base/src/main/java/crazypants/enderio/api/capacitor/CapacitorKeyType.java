@@ -1,4 +1,4 @@
-package crazypants.enderio.base.capacitor;
+package crazypants.enderio.api.capacitor;
 
 import java.util.Locale;
 

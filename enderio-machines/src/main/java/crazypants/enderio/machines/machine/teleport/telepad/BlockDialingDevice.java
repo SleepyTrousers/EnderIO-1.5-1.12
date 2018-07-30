@@ -5,9 +5,9 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.machines.machine.teleport.telepad.gui.ContainerDialingDevice;
 import crazypants.enderio.machines.machine.teleport.telepad.gui.GuiDialingDevice;

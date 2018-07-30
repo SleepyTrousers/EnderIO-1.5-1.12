@@ -10,11 +10,11 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
 import crazypants.enderio.api.upgrades.IRenderUpgrade;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.config.ItemConfig;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.power.AbstractPoweredItem;

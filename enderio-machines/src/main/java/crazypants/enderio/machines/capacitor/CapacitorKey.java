@@ -4,12 +4,13 @@ import java.util.Locale;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.IModObject;
+import crazypants.enderio.api.capacitor.CapacitorKeyType;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
+import crazypants.enderio.api.capacitor.Scaler;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capacitor.CapacitorHelper.SetType;
-import crazypants.enderio.base.capacitor.CapacitorKeyType;
-import crazypants.enderio.base.capacitor.ICapacitorKey;
-import crazypants.enderio.base.capacitor.Scaler;
-import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.capacitor.ScalerFactory;
 import crazypants.enderio.base.loot.WeightedUpgrade;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.init.MachineObject;
@@ -210,7 +211,7 @@ public enum CapacitorKey implements ICapacitorKey {
   private final @Nonnull IModObject owner;
   private final @Nonnull CapacitorKeyType valueType;
 
-  private @Nonnull Scaler scaler = Scaler.Factory.INVALID;
+  private @Nonnull Scaler scaler = ScalerFactory.INVALID;
   private int baseValue = Integer.MIN_VALUE;
 
   private CapacitorKey(@Nonnull IModObject owner, @Nonnull CapacitorKeyType valueType, @Nonnull String shortname) {
@@ -257,7 +258,7 @@ public enum CapacitorKey implements ICapacitorKey {
 
   @Override
   public void validate() {
-    if (scaler == Scaler.Factory.INVALID || baseValue == Integer.MIN_VALUE) {
+    if (scaler == ScalerFactory.INVALID || baseValue == Integer.MIN_VALUE) {
       throw new RuntimeException(
           "CapacitorKey " + getRegistryName() + " has not been configured. This should not be possible and may be caused by a 3rd-party addon mod.");
     }

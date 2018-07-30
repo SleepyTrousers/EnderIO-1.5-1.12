@@ -2,7 +2,7 @@ package crazypants.enderio.base.machine.baselegacy;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.api.IModObject;
 import net.minecraft.block.material.Material;
 
 public abstract class AbstractPoweredTaskBlock<T extends AbstractPoweredTaskEntity> extends AbstractPowerConsumerBlock<T> {

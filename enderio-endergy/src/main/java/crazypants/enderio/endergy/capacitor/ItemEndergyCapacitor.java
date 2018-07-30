@@ -9,10 +9,10 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.CompoundCapabilityProvider;
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.capacitor.CapabilityCapacitorData;
+import crazypants.enderio.api.capacitor.ICapacitorData;
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.capacitor.ICapacitorData;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.lang.Lang;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;

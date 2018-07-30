@@ -8,10 +8,10 @@ import javax.annotation.Nonnull;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.google.common.collect.Lists;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.TileEntityEio;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IDefaultRenderers;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;

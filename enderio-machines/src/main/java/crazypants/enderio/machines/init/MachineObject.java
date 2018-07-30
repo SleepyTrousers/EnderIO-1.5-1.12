@@ -5,9 +5,9 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.IModTileEntity;
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.init.IModTileEntity;
+import crazypants.enderio.base.init.IModObjectBase;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.machines.EnderIOMachines;
@@ -55,7 +55,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIOMachines.MODID)
-public enum MachineObject implements IModObject {
+public enum MachineObject implements IModObjectBase {
 
   block_simple_furnace(BlockAlloySmelter.class, "create_furnace", MachineTileEntity.TileAlloySmelterFurnace),
   block_simple_alloy_smelter(BlockAlloySmelter.class, "create_simple", MachineTileEntity.TileAlloySmelterSimple),
@@ -168,7 +168,7 @@ public enum MachineObject implements IModObject {
   @Nonnull
   public <B extends Block> B apply(@Nonnull B block) {
     block.setCreativeTab(EnderIOTab.tabEnderIOMachines);
-    return IModObject.super.apply(block);
+    return IModObjectBase.super.apply(block);
   }
 
   @Override

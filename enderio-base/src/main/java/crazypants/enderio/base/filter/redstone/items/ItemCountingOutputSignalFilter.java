@@ -5,13 +5,13 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.TileEntityBase;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilterContainer;
 import crazypants.enderio.base.filter.gui.ContainerFilter;
 import crazypants.enderio.base.filter.gui.IncrementingValueFilterGui;
 import crazypants.enderio.base.filter.redstone.CountingOutputSignalFilter;
 import crazypants.enderio.base.filter.redstone.IOutputSignalFilter;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
