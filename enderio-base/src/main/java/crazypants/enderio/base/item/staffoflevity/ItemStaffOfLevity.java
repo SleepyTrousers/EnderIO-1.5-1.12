@@ -13,10 +13,12 @@ import com.enderio.core.common.util.Log;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
@@ -290,6 +292,26 @@ public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider,
   @Override
   public @Nonnull IEquipmentData getEquipmentData() {
     return EquipmentData.IRON;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyStorageKey() {
+    return CapacitorKey.DARK_STEEL_LEVITY_ENERGY_BUFFER;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyInputKey() {
+    return CapacitorKey.DARK_STEEL_LEVITY_ENERGY_INPUT;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyUseKey() {
+    return CapacitorKey.DARK_STEEL_LEVITY_ENERGY_USE;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getAbsorptionRatioKey() {
+    return CapacitorKey.NO_POWER;
   }
 
 }

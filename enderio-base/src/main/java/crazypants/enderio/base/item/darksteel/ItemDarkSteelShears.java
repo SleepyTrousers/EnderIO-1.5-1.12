@@ -17,9 +17,11 @@ import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.base.Predicate;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.ModObject;
@@ -322,6 +324,26 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
   @Override
   public @Nonnull IEquipmentData getEquipmentData() {
     return EquipmentData.DARK_STEEL;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyStorageKey() {
+    return CapacitorKey.DARK_STEEL_SHEARS_ENERGY_BUFFER;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyInputKey() {
+    return CapacitorKey.DARK_STEEL_SHEARS_ENERGY_INPUT;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyUseKey() {
+    return CapacitorKey.DARK_STEEL_SHEARS_ENERGY_USE;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getAbsorptionRatioKey() {
+    return CapacitorKey.DARK_STEEL_SHEARS_ABSORPTION_RATIO;
   }
 
 }

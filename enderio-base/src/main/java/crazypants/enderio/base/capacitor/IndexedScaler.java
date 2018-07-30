@@ -23,8 +23,9 @@ public class IndexedScaler implements Scaler {
 
   public @Nonnull String store() {
     StringBuffer sb = new StringBuffer();
-    sb.append("idx:");
+    sb.append("idx(");
     sb.append(scale);
+    sb.append(")");
     for (float f : keyValues) {
       sb.append(":");
       sb.append(f);

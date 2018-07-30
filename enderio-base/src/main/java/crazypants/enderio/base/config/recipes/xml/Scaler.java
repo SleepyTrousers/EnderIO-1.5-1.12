@@ -24,7 +24,7 @@ public class Scaler implements RecipeConfigElement {
   @Override
   public Scaler readResolve() throws InvalidRecipeConfigException, XMLStreamException {
     try {
-      scaler = crazypants.enderio.base.capacitor.ScalerFactory.fromString(name);
+      scaler = ScalerFactory.fromString(name);
 
       if (scaler == null) {
         throw new InvalidRecipeConfigException("'name' '" + name + "' is invalid");

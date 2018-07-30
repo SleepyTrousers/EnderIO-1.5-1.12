@@ -28,4 +28,70 @@ XML editor will display that as tooltips when editing this file.
   <!-- Defines the base effciency of all machiens that don't have their own efficiency value -->
   <capacitor key="enderio:block_machine_base/legacy_efficiency" base="1" scaler="FIXED" />
 
+  <!-- 
+  
+  Dark Steel Items - This includes all items that take energy upgrades in the anvil.
+  
+  Capacitor level is the level of the energy upgrade (from 1 for "Empowered" to 4 for "Empowered IV").
+  
+  "buffer" is the size of the energy buffer.
+  
+  "intake" is the maximum charge the item takes per tick.
+  
+  "use" limits the amount of energy that is used per operation. Please note that an operation that takes more
+  energy than this attribute permits will still succeed-if there is enough energy in the item for the whole
+  operation.
+  
+  "absorption" is the probability that incoming damage will use energy instead of damaging the item. 
+  
+   -->
+
+  <capacitor key="enderio:item_dark_steel_sword/energy_buffer" base="100000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_sword/energy_intake" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_sword/energy_use" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_sword/absorption" base="1" scaler="idx(1)0:0.5:0.6:0.7:0.85:0.95" />
+
+  <capacitor key="enderio:item_dark_steel_chestplate/energy_buffer" base="100000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_chestplate/energy_intake" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_chestplate/energy_use" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_chestplate/absorption" base="1" scaler="idx(1)0:0.5:0.6:0.7:0.85:0.95" />
+
+  <capacitor key="enderio:item_dark_steel_axe/energy_buffer" base="100000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_axe/energy_intake" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_axe/energy_use" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_axe/absorption" base="1" scaler="idx(1)0:0.5:0.6:0.7:0.85:0.95" />
+
+  <capacitor key="enderio:item_dark_steel_bow/energy_buffer" base="100000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_bow/energy_intake" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_bow/energy_use" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_bow/absorption" base="1" scaler="idx(1)0:0.5:0.6:0.7:0.85:0.95" />
+
+  <capacitor key="enderio:item_dark_steel_pickaxe/energy_buffer" base="100000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_pickaxe/energy_intake" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_pickaxe/energy_use" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_pickaxe/absorption" base="1" scaler="idx(1)0:0.5:0.6:0.7:0.85:0.95" />
+
+  <capacitor key="enderio:item_dark_steel_shears/energy_buffer" base="100000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_shears/energy_intake" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_shears/energy_use" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_shears/absorption" base="1" scaler="idx(1)0:0.5:0.6:0.7:0.85:0.95" />
+
+  <capacitor key="enderio:item_dark_steel_treetap/energy_buffer" base="100000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_treetap/energy_intake" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_treetap/energy_use" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_treetap/absorption" base="1" scaler="idx(1)0:0.5:0.6:0.7:0.85:0.95" />
+
+  <capacitor key="enderio:item_inventory_charger/energy_buffer" base="1000000" scaler="idx(1)0:1:2.5:10:25" />
+  <capacitor key="enderio:item_inventory_charger/energy_intake" base="10000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <!-- For the charger the "use" is the amount it can charge other items with (per operation). -->
+  <capacitor key="enderio:item_inventory_charger/energy_use" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+
+  <capacitor key="enderio:item_staff_of_levity/energy_buffer" base="100000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_staff_of_levity/energy_intake" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_staff_of_levity/energy_use" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+
+  <capacitor key="enderio:item_travel_staff/energy_buffer" base="100000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_travel_staff/energy_intake" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_travel_staff/energy_use" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+
 </enderio:recipes>

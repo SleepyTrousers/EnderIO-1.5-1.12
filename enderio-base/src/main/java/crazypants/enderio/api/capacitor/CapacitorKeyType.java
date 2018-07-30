@@ -13,7 +13,10 @@ public enum CapacitorKeyType {
   ENERGY_EFFICIENCY,
   SPEED,
   AREA,
-  AMOUNT,;
+  AMOUNT,
+  ABSORPTION
+
+  ;
 
   public @Nonnull String getName() {
     return name().toLowerCase(Locale.ENGLISH);

@@ -26,10 +26,52 @@ public enum CapacitorKey implements ICapacitorKey {
   LEGACY_ENERGY_USE(ModObject.block_machine_base, CapacitorKeyType.ENERGY_USE, "legacy_use"),
   LEGACY_ENERGY_EFFICIENCY(ModObject.block_machine_base, CapacitorKeyType.ENERGY_EFFICIENCY, "legacy_efficiency"),
 
-  DARK_STEEL_ENERGY_BUFFER(ModObject.itemDarkSteelSword, CapacitorKeyType.ENERGY_BUFFER),
-  DARK_STEEL_ENERGY_INPUT(ModObject.itemDarkSteelSword, CapacitorKeyType.ENERGY_INTAKE),
-  DARK_STEEL_ENERGY_USE(ModObject.itemDarkSteelSword, CapacitorKeyType.ENERGY_USE),
-  DARK_STEEL_ABSORBTION_RATIO(ModObject.itemDarkSteelSword, CapacitorKeyType.AMOUNT),
+  DARK_STEEL_SWORD_ENERGY_BUFFER(ModObject.itemDarkSteelSword, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_SWORD_ENERGY_INPUT(ModObject.itemDarkSteelSword, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_SWORD_ENERGY_USE(ModObject.itemDarkSteelSword, CapacitorKeyType.ENERGY_USE),
+  DARK_STEEL_SWORD_ABSORPTION_RATIO(ModObject.itemDarkSteelSword, CapacitorKeyType.ABSORPTION),
+
+  DARK_STEEL_ARMOR_ENERGY_BUFFER(ModObject.itemDarkSteelChestplate, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_ARMOR_ENERGY_INPUT(ModObject.itemDarkSteelChestplate, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_ARMOR_ENERGY_USE(ModObject.itemDarkSteelChestplate, CapacitorKeyType.ENERGY_USE),
+  DARK_STEEL_ARMOR_ABSORPTION_RATIO(ModObject.itemDarkSteelChestplate, CapacitorKeyType.ABSORPTION),
+
+  DARK_STEEL_AXE_ENERGY_BUFFER(ModObject.itemDarkSteelAxe, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_AXE_ENERGY_INPUT(ModObject.itemDarkSteelAxe, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_AXE_ENERGY_USE(ModObject.itemDarkSteelAxe, CapacitorKeyType.ENERGY_USE),
+  DARK_STEEL_AXE_ABSORPTION_RATIO(ModObject.itemDarkSteelAxe, CapacitorKeyType.ABSORPTION),
+
+  DARK_STEEL_BOW_ENERGY_BUFFER(ModObject.itemDarkSteelBow, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_BOW_ENERGY_INPUT(ModObject.itemDarkSteelBow, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_BOW_ENERGY_USE(ModObject.itemDarkSteelBow, CapacitorKeyType.ENERGY_USE),
+  DARK_STEEL_BOW_ABSORPTION_RATIO(ModObject.itemDarkSteelBow, CapacitorKeyType.ABSORPTION),
+
+  DARK_STEEL_PICKAXE_ENERGY_BUFFER(ModObject.itemDarkSteelPickaxe, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_PICKAXE_ENERGY_INPUT(ModObject.itemDarkSteelPickaxe, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_PICKAXE_ENERGY_USE(ModObject.itemDarkSteelPickaxe, CapacitorKeyType.ENERGY_USE),
+  DARK_STEEL_PICKAXE_ABSORPTION_RATIO(ModObject.itemDarkSteelPickaxe, CapacitorKeyType.ABSORPTION),
+
+  DARK_STEEL_SHEARS_ENERGY_BUFFER(ModObject.itemDarkSteelShears, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_SHEARS_ENERGY_INPUT(ModObject.itemDarkSteelShears, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_SHEARS_ENERGY_USE(ModObject.itemDarkSteelShears, CapacitorKeyType.ENERGY_USE),
+  DARK_STEEL_SHEARS_ABSORPTION_RATIO(ModObject.itemDarkSteelShears, CapacitorKeyType.ABSORPTION),
+
+  DARK_STEEL_TREETAP_ENERGY_BUFFER(ModObject.itemDarkSteelTreetap, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_TREETAP_ENERGY_INPUT(ModObject.itemDarkSteelTreetap, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_TREETAP_ENERGY_USE(ModObject.itemDarkSteelTreetap, CapacitorKeyType.ENERGY_USE),
+  DARK_STEEL_TREETAP_ABSORPTION_RATIO(ModObject.itemDarkSteelTreetap, CapacitorKeyType.ABSORPTION),
+
+  DARK_STEEL_CHARGER_ENERGY_BUFFER(ModObject.itemInventoryCharger, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_CHARGER_ENERGY_INPUT(ModObject.itemInventoryCharger, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_CHARGER_ENERGY_USE(ModObject.itemInventoryCharger, CapacitorKeyType.ENERGY_USE),
+
+  DARK_STEEL_LEVITY_ENERGY_BUFFER(ModObject.itemStaffOfLevity, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_LEVITY_ENERGY_INPUT(ModObject.itemStaffOfLevity, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_LEVITY_ENERGY_USE(ModObject.itemStaffOfLevity, CapacitorKeyType.ENERGY_USE),
+
+  DARK_STEEL_TRAVEL_ENERGY_BUFFER(ModObject.itemTravelStaff, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_TRAVEL_ENERGY_INPUT(ModObject.itemTravelStaff, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_TRAVEL_ENERGY_USE(ModObject.itemTravelStaff, CapacitorKeyType.ENERGY_USE),
 
   ;
 

@@ -108,6 +108,9 @@ public enum ScalerFactory implements Scaler {
     if (s == null) {
       return null;
     }
+    if (s.startsWith("idx(")) {
+      s = s.replace('(', ':').replace(')', ':').replaceAll("::", ":");
+    }
     if (s.startsWith("idx:")) {
       try {
         String[] split = s.split(":");

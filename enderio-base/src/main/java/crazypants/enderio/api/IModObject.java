@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -21,6 +22,10 @@ public interface IModObject extends IProducer, IForgeRegistryEntry<IModObject> {
 
   @Nonnull
   String getUnlocalisedName();
+
+  @Override
+  @Nonnull
+  ResourceLocation getRegistryName();
 
   @Nonnull
   <B extends Block> B apply(@Nonnull B block);

@@ -3,7 +3,6 @@ package crazypants.enderio.api.upgrades;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.capacitor.ICapacitorKey;
-import crazypants.enderio.base.capacitor.CapacitorKey;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -88,21 +87,17 @@ public interface IDarkSteelItem {
   @Nonnull
   IEquipmentData getEquipmentData();
 
-  default @Nonnull ICapacitorKey getEnergyStorageKey() {
-    return CapacitorKey.DARK_STEEL_ENERGY_BUFFER; // TODO remove default impl
-  }
+  @Nonnull
+  ICapacitorKey getEnergyStorageKey();
 
-  default @Nonnull ICapacitorKey getEnergyInputKey() {
-    return CapacitorKey.DARK_STEEL_ENERGY_INPUT; // TODO remove default impl
-  }
+  @Nonnull
+  ICapacitorKey getEnergyInputKey();
 
   // This is used when extracting energy, limiting the amount that can be extracted at once
-  default @Nonnull ICapacitorKey getEnergyUseKey() {
-    return CapacitorKey.DARK_STEEL_ENERGY_USE; // TODO remove default impl
-  }
+  @Nonnull
+  ICapacitorKey getEnergyUseKey();
 
-  default @Nonnull ICapacitorKey getAbsobtionRatioKey() {
-    return CapacitorKey.DARK_STEEL_ABSORBTION_RATIO; // TODO remove default impl
-  }
+  @Nonnull
+  ICapacitorKey getAbsorptionRatioKey();
 
 }

@@ -899,7 +899,11 @@
       <choice minOccurs="0" maxOccurs="1">
         <element name="scaler" minOccurs="1" maxOccurs="1">
           <complexType>
-            <attribute name="name" use="required" type="enderio:ScalerString"></attribute>
+            <attribute name="name" use="required">
+              <simpleType>
+                <restriction base="enderio:ScalerString" />
+              </simpleType>
+            </attribute>
           </complexType>
         </element>
         <element name="indexed" minOccurs="1" maxOccurs="1">
@@ -930,23 +934,25 @@
   </complexType>
   <simpleType name="ScalerString">
     <restriction base="string">
-                  <enumeration value="IDENTITY"></enumeration>
-                  <enumeration value="LINEAR_0_8"></enumeration>
-                  <enumeration value="QUADRATIC"></enumeration>
-                  <enumeration value="QUADRATIC_1_8"></enumeration>
-                  <enumeration value="CUBIC"></enumeration>
-                  <enumeration value="OCTADIC_1_8"></enumeration>
-                  <enumeration value="POWER"></enumeration>
-                  <enumeration value="CHARGE"></enumeration>
-                  <enumeration value="SPEED"></enumeration>
-                  <enumeration value="POWER10"></enumeration>
-                  <enumeration value="RANGE"></enumeration>
-                  <enumeration value="FIXED"></enumeration>
-                  <enumeration value="SPAWNER"></enumeration>
-                  <enumeration value="BURNTIME"></enumeration>
-                  <enumeration value="CHEMICAL"></enumeration>
-                  <enumeration value="DROPOFF"></enumeration>
-                  <enumeration value="CENT"></enumeration>
+                  <pattern value="IDENTITY"></pattern>
+                  <pattern value="LINEAR_0_8"></pattern>
+                  <pattern value="QUADRATIC"></pattern>
+                  <pattern value="QUADRATIC_1_8"></pattern>
+                  <pattern value="CUBIC"></pattern>
+                  <pattern value="OCTADIC_1_8"></pattern>
+                  <pattern value="POWER"></pattern>
+                  <pattern value="CHARGE"></pattern>
+                  <pattern value="SPEED"></pattern>
+                  <pattern value="POWER10"></pattern>
+                  <pattern value="RANGE"></pattern>
+                  <pattern value="FIXED"></pattern>
+                  <pattern value="SPAWNER"></pattern>
+                  <pattern value="BURNTIME"></pattern>
+                  <pattern value="CHEMICAL"></pattern>
+                  <pattern value="DROPOFF"></pattern>
+                  <pattern value="CENT"></pattern>
+                  <pattern value="idx:([1-9]\d*(\.\d+)?|0\.\d+)(:([1-9]\d*|0)(\.\d+)?)+"></pattern>
+                  <pattern value="idx\(([1-9]\d*(\.\d+)?|0\.\d+)\)(:?([1-9]\d*|0)(\.\d+)?)(:([1-9]\d*|0)(\.\d+)?)*"></pattern>
                 </restriction>
   </simpleType>
 </schema>

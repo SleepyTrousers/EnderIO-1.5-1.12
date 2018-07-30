@@ -89,7 +89,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
     }
 
     public float getAbsorptionRatio() {
-      return item.getAbsobtionRatioKey().getFloat(capData);
+      return item.getAbsorptionRatioKey().getFloat(capData);
     }
 
     public boolean isAbsorbDamageWithPower() {
@@ -137,7 +137,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
 
       @Override
       public float getUnscaledValue(@Nonnull ICapacitorKey key) {
-        return level;
+        return level + 1; // 1...5
       }
 
       @Override
