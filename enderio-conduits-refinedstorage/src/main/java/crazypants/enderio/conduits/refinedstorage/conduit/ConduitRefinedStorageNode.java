@@ -13,6 +13,8 @@ import com.raoulvdberge.refinedstorage.api.util.Action;
 import com.raoulvdberge.refinedstorage.api.util.IComparer;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.item.FunctionUpgrade;
+import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.conduits.refinedstorage.RSHelper;
 import crazypants.enderio.conduits.refinedstorage.init.ConduitRefinedStorageObject;
@@ -37,7 +39,7 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
   protected int compare = IComparer.COMPARE_DAMAGE;
 
   private int tickCount = 0;
-  private static int itemsPerTick = 4;
+  private int itemsPerTick = 4;
   private @Nonnull Queue<EnumFacing> dirsToCheck;
 
   private int currentSlot;
@@ -112,6 +114,17 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
 
       if (handler != null) {
 
+        ItemStack upgrade = con.getUpgradeStack(dir.ordinal());
+
+        if (!upgrade.isEmpty()) {
+          FunctionUpgrade up = ((ItemFunctionUpgrade) upgrade.getItem()).getFunctionUpgrade();
+          itemsPerTick = up.getMaximumExtracted(64);
+        } else {
+          itemsPerTick = 4;
+        }
+
+        // Exporting
+
         IItemFilter exportFilter = (IItemFilter) con.getInputFilter(dir);
 
         if (exportFilter != null) {
@@ -135,6 +148,7 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
             }
           }
         }
+
         // Importing
         IItemFilter importFilter = (IItemFilter) con.getOutputFilter(dir);
 
