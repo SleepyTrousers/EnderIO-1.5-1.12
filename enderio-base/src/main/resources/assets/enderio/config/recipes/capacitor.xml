@@ -81,11 +81,6 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:item_dark_steel_treetap/energy_use" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
   <capacitor key="enderio:item_dark_steel_treetap/absorption" base="1" scaler="idx(1)0:0.5:0.6:0.7:0.85:0.95" />
 
-  <capacitor key="enderio:item_inventory_charger/energy_buffer" base="1000000" scaler="idx(1)0:1:2.5:10:25" />
-  <capacitor key="enderio:item_inventory_charger/energy_intake" base="10000" scaler="idx(1)0:1:1.5:2.5:10:25" />
-  <!-- For the charger the "use" is the amount it can charge other items with (per operation). -->
-  <capacitor key="enderio:item_inventory_charger/energy_use" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
-
   <capacitor key="enderio:item_staff_of_levity/energy_buffer" base="100000" scaler="idx(1)0:1:1.5:2.5:10:25" />
   <capacitor key="enderio:item_staff_of_levity/energy_intake" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
   <capacitor key="enderio:item_staff_of_levity/energy_use" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
@@ -93,5 +88,29 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:item_travel_staff/energy_buffer" base="100000" scaler="idx(1)0:1:1.5:2.5:10:25" />
   <capacitor key="enderio:item_travel_staff/energy_intake" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
   <capacitor key="enderio:item_travel_staff/energy_use" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+
+  <!-- 
+  
+  Inventory Chargers
+  
+  For them the "use" is the amount it can charge other items with (per operation).
+  
+   -->
+
+  <capacitor key="enderio:item_inventory_charger_simple/energy_buffer" base="100000" scaler="idx(1)0:1:1.5:2.5:5" />
+  <capacitor key="enderio:item_inventory_charger_simple/energy_intake" base="200" scaler="idx(1)0:1:1.5:2.5:5" />
+  <capacitor key="enderio:item_inventory_charger_simple/energy_use" base="50" scaler="idx(1)0:1:1.5:2.5:5" />
+
+  <capacitor key="enderio:item_inventory_charger_basic/energy_buffer" base="1000000" scaler="idx(1)0:1:1.5:2.5:5" />
+  <capacitor key="enderio:item_inventory_charger_basic/energy_intake" base="1000" scaler="idx(1)0:1:1.5:2.5:5" />
+  <capacitor key="enderio:item_inventory_charger_basic/energy_use" base="200" scaler="idx(1)0:1:1.5:2.5:5" />
+
+  <capacitor key="enderio:item_inventory_charger/energy_buffer" base="5000000" scaler="idx(1)0:1:1.5:2.5:5" />
+  <capacitor key="enderio:item_inventory_charger/energy_intake" base="5000" scaler="idx(1)0:1:1.5:2.5:5" />
+  <capacitor key="enderio:item_inventory_charger/energy_use" base="1000" scaler="idx(1)0:1:1.5:2.5:5" />
+
+  <capacitor key="enderio:item_inventory_charger_vibrant/energy_buffer" base="25000000" scaler="idx(1)0:1:1.5:2.5:5" />
+  <capacitor key="enderio:item_inventory_charger_vibrant/energy_intake" base="25000" scaler="idx(1)0:1:1.5:2.5:5" />
+  <capacitor key="enderio:item_inventory_charger_vibrant/energy_use" base="5000" scaler="idx(1)0:1:1.5:2.5:5" />
 
 </enderio:recipes>

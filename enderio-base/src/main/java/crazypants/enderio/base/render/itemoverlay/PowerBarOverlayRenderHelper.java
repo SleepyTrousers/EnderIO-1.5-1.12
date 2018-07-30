@@ -60,6 +60,8 @@ public class PowerBarOverlayRenderHelper {
    */
   public static final @Nonnull PowerBarOverlayRenderHelper instance_upgradeable = new PowerBarOverlayRenderHelper(true);
 
+  public static final @Nonnull PowerBarOverlayRenderHelper instance_upgradeable_vert = new VertPowerBarOverlayRenderHelper(true);
+
   /**
    * Instance for machine items
    */
@@ -147,21 +149,21 @@ public class PowerBarOverlayRenderHelper {
     GlStateManager.enableDepth();
   }
 
-  protected void drawGrad(BufferBuilder renderer, int x, int y, double width, int height, Vector4i colorL, Vector4i colorR) {
+  protected void drawGrad(BufferBuilder renderer, int x, int y, double width, double height, Vector4i colorL, Vector4i colorR) {
     renderer.pos(x + 0, y + 0, 0.0D).color(colorL.x, colorL.y, colorL.z, colorL.w).endVertex();
     renderer.pos(x + 0, y + height, 0.0D).color(colorL.x, colorL.y, colorL.z, colorL.w).endVertex();
     renderer.pos(x + width, y + height, 0.0D).color(colorR.x, colorR.y, colorR.z, colorR.w).endVertex();
     renderer.pos(x + width, y + 0, 0.0D).color(colorR.x, colorR.y, colorR.z, colorR.w).endVertex();
   }
 
-  protected void drawPlain(BufferBuilder renderer, int x, int y, double width, int height, Vector4i color) {
+  protected void drawPlain(BufferBuilder renderer, int x, int y, double width, double height, Vector4i color) {
     renderer.pos(x + 0, y + 0, 0.0D).color(color.x, color.y, color.z, color.w).endVertex();
     renderer.pos(x + 0, y + height, 0.0D).color(color.x, color.y, color.z, color.w).endVertex();
     renderer.pos(x + width, y + height, 0.0D).color(color.x, color.y, color.z, color.w).endVertex();
     renderer.pos(x + width, y + 0, 0.0D).color(color.x, color.y, color.z, color.w).endVertex();
   }
 
-  protected void drawRight(BufferBuilder renderer, int x, int y, double width, int height, Vector4i color) {
+  protected void drawRight(BufferBuilder renderer, int x, int y, double width, double height, Vector4i color) {
     renderer.pos(x - width, y + 0, 0.0D).color(color.x, color.y, color.z, color.w).endVertex();
     renderer.pos(x - width, y + height, 0.0D).color(color.x, color.y, color.z, color.w).endVertex();
     renderer.pos(x, y + height, 0.0D).color(color.x, color.y, color.z, color.w).endVertex();
@@ -231,4 +233,51 @@ public class PowerBarOverlayRenderHelper {
 
   }
 
+  public static class VertPowerBarOverlayRenderHelper extends PowerBarOverlayRenderHelper {
+
+    protected VertPowerBarOverlayRenderHelper(boolean isUpgradeableItem) {
+      super(isUpgradeableItem);
+    }
+
+    @Override
+    protected void overpaintVanillaRenderBug(int xPosition, int yPosition) {
+    }
+
+    private static final double BAR_H = 14d;
+
+    @Override
+    public void render(double level, int xPosition, int yPosition, int ignored, boolean ignored2) {
+      double height = level * BAR_H;
+      GlStateManager.enableLighting();
+      GlStateManager.disableLighting();
+      GlStateManager.disableDepth();
+      GlStateManager.disableTexture2D();
+      GlStateManager.disableAlpha();
+      GlStateManager.disableBlend();
+      GlStateManager.shadeModel(GL11.GL_SMOOTH);
+      Tessellator tessellator = Tessellator.getInstance();
+      BufferBuilder worldrenderer = tessellator.getBuffer();
+      worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+      // Note: No shadow below the bar as our gradient fades to black and it'd look wrong
+      this.drawPlain(worldrenderer, xPosition + 13, yPosition + 1, 2, BAR_H, colorShadow);
+      // Note: witdh=1.4 --- we render a bit wider than correct to avoid "1 pixel bar, 2 pixel shadow" with some screen scales
+      this.drawGrad(worldrenderer, xPosition + 13, yPosition + 1, 1.4, BAR_H, colorBarRight, colorBarLeft);
+      this.drawPlain(worldrenderer, xPosition + 13, yPosition + 1, 1.4, BAR_H - height, colorBG);
+      tessellator.draw();
+      GlStateManager.shadeModel(GL11.GL_FLAT);
+      GlStateManager.enableAlpha();
+      GlStateManager.enableTexture2D();
+      GlStateManager.enableLighting();
+      GlStateManager.enableDepth();
+    }
+
+    @Override
+    protected void drawGrad(BufferBuilder renderer, int x, int y, double width, double height, Vector4i colorL, Vector4i colorR) {
+      renderer.pos(x + 0, y + 0, 0.0D).color(colorL.x, colorL.y, colorL.z, colorL.w).endVertex();
+      renderer.pos(x + 0, y + height, 0.0D).color(colorR.x, colorR.y, colorR.z, colorR.w).endVertex();
+      renderer.pos(x + width, y + height, 0.0D).color(colorR.x, colorR.y, colorR.z, colorR.w).endVertex();
+      renderer.pos(x + width, y + 0, 0.0D).color(colorR.x, colorR.y, colorR.z, colorR.w).endVertex();
+    }
+
+  }
 }

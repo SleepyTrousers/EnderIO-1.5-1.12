@@ -38,6 +38,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -45,14 +46,39 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class ItemInventoryCharger extends Item implements IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
 
-  public static ItemInventoryCharger create(@Nonnull IModObject modObject) {
-    ItemInventoryCharger res = new ItemInventoryCharger(modObject);
+  public static ItemInventoryCharger createSimple(@Nonnull IModObject modObject) {
+    ItemInventoryCharger res = new ItemInventoryCharger(modObject, CapacitorKey.DARK_STEEL_CHARGER_SIMPLE_ENERGY_BUFFER,
+        CapacitorKey.DARK_STEEL_CHARGER_SIMPLE_ENERGY_INPUT, CapacitorKey.DARK_STEEL_CHARGER_SIMPLE_ENERGY_USE);
     return res;
   }
 
-  protected ItemInventoryCharger(@Nonnull IModObject modObject) {
-    setCreativeTab(EnderIOTab.tabEnderIOItems);
+  public static ItemInventoryCharger createBasic(@Nonnull IModObject modObject) {
+    ItemInventoryCharger res = new ItemInventoryCharger(modObject, CapacitorKey.DARK_STEEL_CHARGER_BASIC_ENERGY_BUFFER,
+        CapacitorKey.DARK_STEEL_CHARGER_BASIC_ENERGY_INPUT, CapacitorKey.DARK_STEEL_CHARGER_BASIC_ENERGY_USE);
+    return res;
+  }
+
+  public static ItemInventoryCharger create(@Nonnull IModObject modObject) {
+    ItemInventoryCharger res = new ItemInventoryCharger(modObject, CapacitorKey.DARK_STEEL_CHARGER_ENERGY_BUFFER, CapacitorKey.DARK_STEEL_CHARGER_ENERGY_INPUT,
+        CapacitorKey.DARK_STEEL_CHARGER_ENERGY_USE);
+    return res;
+  }
+
+  public static ItemInventoryCharger createVibrant(@Nonnull IModObject modObject) {
+    ItemInventoryCharger res = new ItemInventoryCharger(modObject, CapacitorKey.DARK_STEEL_CHARGER_VIBRANT_ENERGY_BUFFER,
+        CapacitorKey.DARK_STEEL_CHARGER_VIBRANT_ENERGY_INPUT, CapacitorKey.DARK_STEEL_CHARGER_VIBRANT_ENERGY_USE);
+    return res;
+  }
+
+  private final @Nonnull ICapacitorKey energyStorageKey, energyInputKey, energyUseKey;
+
+  protected ItemInventoryCharger(@Nonnull IModObject modObject, @Nonnull ICapacitorKey energyStorageKey, @Nonnull ICapacitorKey energyInputKey,
+      @Nonnull ICapacitorKey energyUseKey) {
+    this.energyStorageKey = energyStorageKey;
+    this.energyInputKey = energyInputKey;
+    this.energyUseKey = energyUseKey;
     modObject.apply(this);
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
   }
 
   @Override
@@ -75,7 +101,7 @@ public class ItemInventoryCharger extends Item implements IAdvancedTooltipProvid
 
   @SubscribeEvent
   public static void onTick(PlayerTickEvent event) {
-    if (EnderIO.proxy.getServerTickCount() % (20 * 1) == 0) {
+    if (event.side == Side.SERVER && event.phase == Phase.END && EnderIO.proxy.getServerTickCount() % (20 * 1) == 0) {
       final EntityPlayer player = event.player;
       if (player != null) {
         for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
@@ -154,7 +180,7 @@ public class ItemInventoryCharger extends Item implements IAdvancedTooltipProvid
 
   @Override
   public void renderItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
-    PowerBarOverlayRenderHelper.instance_upgradeable.render(stack, xPosition, yPosition);
+    PowerBarOverlayRenderHelper.instance_upgradeable_vert.render(stack, xPosition, yPosition);
   }
 
   @Override
@@ -169,17 +195,17 @@ public class ItemInventoryCharger extends Item implements IAdvancedTooltipProvid
 
   @Override
   public @Nonnull ICapacitorKey getEnergyStorageKey(@Nonnull ItemStack stack) {
-    return CapacitorKey.DARK_STEEL_CHARGER_ENERGY_BUFFER;
+    return energyStorageKey;
   }
 
   @Override
   public @Nonnull ICapacitorKey getEnergyInputKey(@Nonnull ItemStack stack) {
-    return CapacitorKey.DARK_STEEL_CHARGER_ENERGY_INPUT;
+    return energyInputKey;
   }
 
   @Override
   public @Nonnull ICapacitorKey getEnergyUseKey(@Nonnull ItemStack stack) {
-    return CapacitorKey.DARK_STEEL_CHARGER_ENERGY_USE;
+    return energyUseKey;
   }
 
   @Override

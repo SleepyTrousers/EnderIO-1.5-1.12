@@ -61,10 +61,6 @@ public enum CapacitorKey implements ICapacitorKey {
   DARK_STEEL_TREETAP_ENERGY_USE(ModObject.itemDarkSteelTreetap, CapacitorKeyType.ENERGY_USE),
   DARK_STEEL_TREETAP_ABSORPTION_RATIO(ModObject.itemDarkSteelTreetap, CapacitorKeyType.ABSORPTION),
 
-  DARK_STEEL_CHARGER_ENERGY_BUFFER(ModObject.itemInventoryCharger, CapacitorKeyType.ENERGY_BUFFER),
-  DARK_STEEL_CHARGER_ENERGY_INPUT(ModObject.itemInventoryCharger, CapacitorKeyType.ENERGY_INTAKE),
-  DARK_STEEL_CHARGER_ENERGY_USE(ModObject.itemInventoryCharger, CapacitorKeyType.ENERGY_USE),
-
   DARK_STEEL_LEVITY_ENERGY_BUFFER(ModObject.itemStaffOfLevity, CapacitorKeyType.ENERGY_BUFFER),
   DARK_STEEL_LEVITY_ENERGY_INPUT(ModObject.itemStaffOfLevity, CapacitorKeyType.ENERGY_INTAKE),
   DARK_STEEL_LEVITY_ENERGY_USE(ModObject.itemStaffOfLevity, CapacitorKeyType.ENERGY_USE),
@@ -72,6 +68,22 @@ public enum CapacitorKey implements ICapacitorKey {
   DARK_STEEL_TRAVEL_ENERGY_BUFFER(ModObject.itemTravelStaff, CapacitorKeyType.ENERGY_BUFFER),
   DARK_STEEL_TRAVEL_ENERGY_INPUT(ModObject.itemTravelStaff, CapacitorKeyType.ENERGY_INTAKE),
   DARK_STEEL_TRAVEL_ENERGY_USE(ModObject.itemTravelStaff, CapacitorKeyType.ENERGY_USE),
+
+  DARK_STEEL_CHARGER_SIMPLE_ENERGY_BUFFER(ModObject.itemInventoryChargerSimple, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_CHARGER_SIMPLE_ENERGY_INPUT(ModObject.itemInventoryChargerSimple, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_CHARGER_SIMPLE_ENERGY_USE(ModObject.itemInventoryChargerSimple, CapacitorKeyType.ENERGY_USE),
+
+  DARK_STEEL_CHARGER_BASIC_ENERGY_BUFFER(ModObject.itemInventoryChargerBasic, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_CHARGER_BASIC_ENERGY_INPUT(ModObject.itemInventoryChargerBasic, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_CHARGER_BASIC_ENERGY_USE(ModObject.itemInventoryChargerBasic, CapacitorKeyType.ENERGY_USE),
+
+  DARK_STEEL_CHARGER_ENERGY_BUFFER(ModObject.itemInventoryCharger, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_CHARGER_ENERGY_INPUT(ModObject.itemInventoryCharger, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_CHARGER_ENERGY_USE(ModObject.itemInventoryCharger, CapacitorKeyType.ENERGY_USE),
+
+  DARK_STEEL_CHARGER_VIBRANT_ENERGY_BUFFER(ModObject.itemInventoryChargerVibrant, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_CHARGER_VIBRANT_ENERGY_INPUT(ModObject.itemInventoryChargerVibrant, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_CHARGER_VIBRANT_ENERGY_USE(ModObject.itemInventoryChargerVibrant, CapacitorKeyType.ENERGY_USE),
 
   ;
 
@@ -101,7 +113,7 @@ public enum CapacitorKey implements ICapacitorKey {
   public float getFloat(float level) {
     return baseValue * scaler.scaleValue(level);
   }
-  
+
   @Override
   public int getBaseValue() {
     return baseValue;
