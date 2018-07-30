@@ -104,7 +104,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
       new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 1, "enderio.darksteel.upgrade.empowered_two", DarkSteelConfig.energyUpgradeLevelCostEmpowered1,
           new ItemStack(itemBasicCapacitor.getItemNN(), 1, 0)),
       new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 2, "enderio.darksteel.upgrade.empowered_three", DarkSteelConfig.energyUpgradeLevelCostEmpowered2,
-          new ItemStack(itemBasicCapacitor.getItemNN())),
+          new ItemStack(itemBasicCapacitor.getItemNN(), 1, 1)),
       new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 3, "enderio.darksteel.upgrade.empowered_four", DarkSteelConfig.energyUpgradeLevelCostEmpowered3,
           new ItemStack(itemBasicCapacitor.getItemNN(), 1, 2)),
       new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 4, "enderio.darksteel.upgrade.empowered_five", DarkSteelConfig.energyUpgradeLevelCostEmpowered4,
