@@ -50,6 +50,9 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
 
   private int currentSlot;
 
+  private int importFilterSlot;
+  private int exportFilterSlot;
+
   public ConduitRefinedStorageNode(@Nonnull IRefinedStorageConduit con) {
     this.con = con;
     this.world = con.getBundle().getBundleworld();
@@ -136,7 +139,15 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
         if (outFilt instanceof IFluidFilter) {
 
           IFluidFilter exportFilter = (IFluidFilter) outFilt;
-          FluidStack stack = exportFilter.getFluidStackAt(0);
+          FluidStack stack;
+
+          do {
+            stack = exportFilter.getFluidStackAt(exportFilterSlot > exportFilter.getSlotCount() ? exportFilterSlot = 0 : exportFilterSlot);
+
+            if (stack == null) {
+              exportFilterSlot++;
+            }
+          } while (stack == null);
 
           if (stack != null) {
             int toExtract = Fluid.BUCKET_VOLUME;
@@ -155,12 +166,14 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
                   took = rsNetwork.extractFluid(stack, filled, compare, Action.PERFORM);
 
                   handler.fill(took, true);
+                  exportFilterSlot++;
+                  return true;
                 }
               }
             }
-//            else if (upgrades.hasUpgrade(ItemUpgrade.TYPE_CRAFTING)) {
-//              network.getCraftingManager().request(stack, toExtract);
-//            }
+            //            else if (upgrades.hasUpgrade(ItemUpgrade.TYPE_CRAFTING)) {
+            //              network.getCraftingManager().request(stack, toExtract);
+            //            }
           }
         }
 
@@ -177,11 +190,19 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
               break;
             }
           }
-
-          FluidStack slot = importFilter.getFluidStackAt(0);
           FluidStack toDrain = handler.drain(Fluid.BUCKET_VOLUME, false);
 
-          if (all || (slot != null && toDrain != null && slot.isFluidEqual(toDrain))) {
+          FluidStack stack;
+
+          do {
+            stack = importFilter.getFluidStackAt(importFilterSlot > importFilter.getSlotCount() ? importFilterSlot = 0 : importFilterSlot);
+
+            if (stack == null) {
+              importFilterSlot++;
+            }
+          } while (stack == null);
+
+          if (all || (stack != null && toDrain != null && stack.isFluidEqual(toDrain))) {
 
             if (toDrain != null) {
               FluidStack remainder = rsNetwork.insertFluid(toDrain, toDrain.amount, Action.PERFORM);
@@ -190,6 +211,8 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
               }
 
               handler.drain(toDrain, true);
+              importFilterSlot++;
+              return true;
             }
           }
         }
@@ -220,7 +243,16 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
         if (outFilt instanceof IItemFilter) {
 
           IItemFilter exportFilter = (IItemFilter) outFilt;
-          ItemStack slot = exportFilter.getInventorySlotContents(0);
+
+          ItemStack slot;
+
+          do {
+            slot = exportFilter.getInventorySlotContents(exportFilterSlot >= exportFilter.getSlotCount() ? exportFilterSlot = 0 : exportFilterSlot);
+
+            if (slot.isEmpty()) {
+              exportFilterSlot++;
+            }
+          } while (slot.isEmpty());
 
           if (!slot.isEmpty()) {
             ItemStack took = rsNetwork.extractItem(slot, Math.min(slot.getMaxStackSize(), itemsPerTick), compare, Action.SIMULATE);
@@ -229,12 +261,14 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
               //            if (upgrades.hasUpgrade(ItemUpgrade.TYPE_CRAFTING)) {
               //              rsNetwork.getCraftingManager().request(slot, stackSize);
               //            }
+              exportFilterSlot++;
               return false;
             } else if (ItemHandlerHelper.insertItem(handler, took, true).isEmpty()) {
               took = rsNetwork.extractItem(slot, Math.min(slot.getMaxStackSize(), itemsPerTick), compare, Action.PERFORM);
 
               if (took != null) {
                 ItemHandlerHelper.insertItem(handler, took, false);
+                exportFilterSlot++;
                 return true;
               }
             }
@@ -255,7 +289,14 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
             }
           }
 
-          ItemStack slot = importFilter.getInventorySlotContents(0);
+          ItemStack slot;
+          do {
+            slot = importFilter.getInventorySlotContents(importFilterSlot >= importFilter.getSlotCount() ? importFilterSlot = 0 : importFilterSlot);
+
+            if (slot.isEmpty()) {
+              importFilterSlot++;
+            }
+          } while (slot.isEmpty());
 
           if (all || !slot.isEmpty()) {
 
@@ -278,6 +319,7 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
 
                 if (!result.isEmpty()) {
                   rsNetwork.insertItemTracked(result, result.getCount());
+                  importFilterSlot++;
                 }
               } else {
                 currentSlot++;
