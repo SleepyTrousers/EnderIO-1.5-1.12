@@ -14,7 +14,7 @@ public class RefinedStorageSettings extends BaseSettingsPanel {
   private IRefinedStorageConduit rsCon;
 
   public RefinedStorageSettings(@Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con) {
-    super(IconEIO.WRENCH_OVERLAY_RS, ConduitRefinedStorageObject.item_refined_storage_conduit.getUnlocalisedName(), gui, con, "upgrade_settings");
+    super(IconEIO.WRENCH_OVERLAY_RS, ConduitRefinedStorageObject.item_refined_storage_conduit.getUnlocalisedName(), gui, con, "filter_upgrade_settings");
 
     rsCon = (IRefinedStorageConduit) con;
   }
@@ -30,7 +30,14 @@ public class RefinedStorageSettings extends BaseSettingsPanel {
   }
 
   @Override
+  protected boolean hasFilters() {
+    return true;
+  }
+
+  @Override
   protected void initCustomOptions() {
-    gui.getContainer().setInOutSlotsVisible(false, true, rsCon);
+    gui.getContainer().setInOutSlotsVisible(true, true, rsCon);
+
+    filtersChanged();
   }
 }

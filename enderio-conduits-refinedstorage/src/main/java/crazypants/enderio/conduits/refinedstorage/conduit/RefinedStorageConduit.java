@@ -22,6 +22,12 @@ import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
+import crazypants.enderio.base.filter.FilterRegistry;
+import crazypants.enderio.base.filter.IFilter;
+import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
+import crazypants.enderio.base.filter.gui.FilterGuiUtil;
+import crazypants.enderio.base.filter.item.IItemFilter;
+import crazypants.enderio.base.filter.item.ItemFilter;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
@@ -43,6 +49,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class RefinedStorageConduit extends AbstractConduit implements IRefinedStorageConduit {
 
@@ -54,6 +61,11 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   }
 
   private Map<EnumFacing, ItemStack> upgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
+  protected final EnumMap<EnumFacing, IFilter> outputFilters = new EnumMap<>(EnumFacing.class);
+  protected final EnumMap<EnumFacing, IFilter> inputFilters = new EnumMap<>(EnumFacing.class);
+  protected final EnumMap<EnumFacing, ItemStack> outputFilterUpgrades = new EnumMap<>(EnumFacing.class);
+  protected final EnumMap<EnumFacing, ItemStack> inputFilterUpgrades = new EnumMap<>(EnumFacing.class);
+
   private ConduitRefinedStorageNode clientSideNode;
 
   protected RefinedStorageConduitNetwork network;
@@ -61,6 +73,8 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   public RefinedStorageConduit() {
     for (EnumFacing dir : EnumFacing.VALUES) {
       upgrades.put(dir, ItemStack.EMPTY);
+      outputFilterUpgrades.put(dir, ItemStack.EMPTY);
+      inputFilterUpgrades.put(dir, ItemStack.EMPTY);
     }
   }
 
@@ -154,7 +168,7 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
 
   @Override
   public boolean hasInternalCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-    if (capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY) {
+    if (capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY || capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY) {
       return true;
     }
     return false;
@@ -163,7 +177,7 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   @Nullable
   @Override
   public <T> T getInternalCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-    if (capability ==CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY) {
+    if (capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY || capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY) {
       return (T) this;
     }
     return null;
@@ -298,6 +312,60 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
         nbtRoot.setTag("upgrades." + entry.getKey().name(), itemRoot);
       }
     }
+
+    for (Entry<EnumFacing, IFilter> entry : inputFilters.entrySet()) {
+      if (entry.getValue() != null) {
+        IFilter f = entry.getValue();
+        if (!isDefault(f)) {
+          NBTTagCompound itemRoot = new NBTTagCompound();
+          FilterRegistry.writeFilterToNbt(f, itemRoot);
+          nbtRoot.setTag("inFilts." + entry.getKey().name(), itemRoot);
+        }
+      }
+    }
+
+    for (Entry<EnumFacing, IFilter> entry : outputFilters.entrySet()) {
+      if (entry.getValue() != null) {
+        IFilter f = entry.getValue();
+        if (!isDefault(f)) {
+          NBTTagCompound itemRoot = new NBTTagCompound();
+          FilterRegistry.writeFilterToNbt(f, itemRoot);
+          nbtRoot.setTag("outFilts." + entry.getKey().name(), itemRoot);
+        }
+      }
+    }
+
+    for (Entry<EnumFacing, ItemStack> entry : inputFilterUpgrades.entrySet()) {
+      if (entry.getValue() != null) {
+        ItemStack up = entry.getValue();
+        IFilter filter = getInputFilter(entry.getKey());
+        FilterRegistry.writeFilterToStack(filter, up);
+
+        NBTTagCompound itemRoot = new NBTTagCompound();
+        up.writeToNBT(itemRoot);
+        nbtRoot.setTag("inputFilterUpgrades." + entry.getKey().name(), itemRoot);
+      }
+    }
+
+    for (Entry<EnumFacing, ItemStack> entry : outputFilterUpgrades.entrySet()) {
+      if (entry.getValue() != null) {
+        ItemStack up = entry.getValue();
+        IFilter filter = getOutputFilter(entry.getKey());
+        FilterRegistry.writeFilterToStack(filter, up);
+
+        NBTTagCompound itemRoot = new NBTTagCompound();
+        up.writeToNBT(itemRoot);
+        nbtRoot.setTag("outputFilterUpgrades." + entry.getKey().name(), itemRoot);
+      }
+
+    }
+  }
+
+  private boolean isDefault(IFilter f) {
+    if (f instanceof ItemFilter) {
+      return ((ItemFilter) f).isDefault();
+    }
+    return false;
   }
 
   @Override
@@ -310,6 +378,34 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
         NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
         ItemStack ups = new ItemStack(upTag);
         upgrades.put(dir, ups);
+      }
+
+      key = "inFilts." + dir.name();
+      if (nbtRoot.hasKey(key)) {
+        NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
+        IFilter filter = FilterRegistry.loadFilterFromNbt(filterTag);
+        inputFilters.put(dir, filter);
+      }
+
+      key = "inputFilterUpgrades." + dir.name();
+      if (nbtRoot.hasKey(key)) {
+        NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
+        ItemStack ups = new ItemStack(upTag);
+        inputFilterUpgrades.put(dir, ups);
+      }
+
+      key = "outputFilterUpgrades." + dir.name();
+      if (nbtRoot.hasKey(key)) {
+        NBTTagCompound upTag = (NBTTagCompound) nbtRoot.getTag(key);
+        ItemStack ups = new ItemStack(upTag);
+        outputFilterUpgrades.put(dir, ups);
+      }
+
+      key = "outFilts." + dir.name();
+      if (nbtRoot.hasKey(key)) {
+        NBTTagCompound filterTag = (NBTTagCompound) nbtRoot.getTag(key);
+        IFilter filter = FilterRegistry.loadFilterFromNbt(filterTag);
+        outputFilters.put(dir, filter);
       }
     }
   }
@@ -349,5 +445,113 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   @Override
   public void setUpgradeStack(int param1, @Nonnull ItemStack stack) {
     upgrades.put(EnumFacing.getFront(param1), stack);
+  }
+
+  // Filter Capability
+  @Override
+  public IFilter getFilter(int filterId, int param1) {
+    if (filterId == FilterGuiUtil.INDEX_INPUT_ITEM) {
+      return getInputFilter(EnumFacing.getFront(param1));
+    } else if (filterId == FilterGuiUtil.INDEX_OUTPUT_ITEM) {
+      return getOutputFilter(EnumFacing.getFront(param1));
+    }
+    return null;
+  }
+
+  @Override
+  public void setFilter(int filterId, int param1, @Nonnull IFilter filter) {
+    if (filterId == FilterGuiUtil.INDEX_INPUT_ITEM) {
+      setInputFilter(EnumFacing.getFront(param1), filter);
+    } else if (filterId == FilterGuiUtil.INDEX_OUTPUT_ITEM) {
+      setOutputFilter(EnumFacing.getFront(param1), filter);
+    }
+  }
+
+  @Override
+  @Nullable
+  public IItemHandler getInventoryForSnapshot(int filterId, int param1) {
+//    ItemConduitNetwork icn = getNetwork();
+//    if (icn != null) {
+//      return icn.getInventory(this, EnumFacing.getFront(param1)).getInventory();
+//    }
+    return null;
+  }
+
+  @Override
+  @Nonnull
+  public ItemStack getFilterStack(int filterIndex, int param1) {
+    if (filterIndex == FilterGuiUtil.INDEX_INPUT_ITEM) {
+      return getInputFilterUpgrade(EnumFacing.getFront(param1));
+    } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT_ITEM) {
+      return getOutputFilterUpgrade(EnumFacing.getFront(param1));
+    }
+    return ItemStack.EMPTY;
+  }
+
+  @Override
+  public void setFilterStack(int filterIndex, int param1, @Nonnull ItemStack stack) {
+    if (filterIndex == FilterGuiUtil.INDEX_INPUT_ITEM) {
+      setInputFilterUpgrade(EnumFacing.getFront(param1), stack);
+    } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT_ITEM) {
+      setOutputFilterUpgrade(EnumFacing.getFront(param1), stack);
+    }
+  }
+
+  @Override
+  public void setInputFilter(@Nonnull EnumFacing dir, @Nonnull IFilter filter) {
+    inputFilters.put(dir, filter);
+    setClientStateDirty();
+  }
+
+  @Override
+  public void setOutputFilter(@Nonnull EnumFacing dir, @Nonnull IFilter filter) {
+    outputFilters.put(dir, filter);
+    setClientStateDirty();
+  }
+
+  @Override
+  public IFilter getInputFilter(@Nonnull EnumFacing dir) {
+    return inputFilters.get(dir);
+  }
+
+  @Override
+  public IFilter getOutputFilter(@Nonnull EnumFacing dir) {
+    return outputFilters.get(dir);
+  }
+
+  @Override
+  public void setInputFilterUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack stack) {
+    inputFilterUpgrades.put(dir, stack);
+    setInputFilter(dir, FilterRegistry.<IItemFilter>getFilterForUpgrade(stack));
+    setClientStateDirty();
+  }
+
+  @Override
+  public void setOutputFilterUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack stack) {
+    outputFilterUpgrades.put(dir, stack);
+    setOutputFilter(dir, FilterRegistry.<IItemFilter>getFilterForUpgrade(stack));
+    setClientStateDirty();
+  }
+
+  @Override
+  @Nonnull
+  public ItemStack getInputFilterUpgrade(@Nonnull EnumFacing dir) {
+    return inputFilterUpgrades.get(dir);
+  }
+
+  @Override
+  @Nonnull
+  public ItemStack getOutputFilterUpgrade(@Nonnull EnumFacing dir) {
+    return outputFilterUpgrades.get(dir);
+  }
+
+  @Override
+  public int getInputFilterIndex() {
+    return FilterGuiUtil.INDEX_INPUT_ITEM;
+  }
+
+  @Override
+  public int getOutputFilterIndex() {
+    return FilterGuiUtil.INDEX_OUTPUT_ITEM;
   }
 }
