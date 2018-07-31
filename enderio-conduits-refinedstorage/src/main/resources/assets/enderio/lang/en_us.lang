@@ -1,2 +1,5 @@
 # Conduits
 enderio.item_refined_storage_conduit.name=Refined Storage Conduit
+item.item_rs_crafting_upgrade.name=Refined Storage Crafting Upgrade
+item.item_rs_crafting_speed_upgrade.name=Refined Storage Crafting Speed Upgrade
+item.item_rs_crafting_speed_downgrade.name=Refined Storage Crafting Speed Downgrade

@@ -235,9 +235,10 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
       if (handler != null) {
 
         ItemStack upgrade = con.getUpgradeStack(dir.ordinal());
+        FunctionUpgrade up = null;
 
         if (!upgrade.isEmpty()) {
-          FunctionUpgrade up = ((ItemFunctionUpgrade) upgrade.getItem()).getFunctionUpgrade();
+          up = ((ItemFunctionUpgrade) upgrade.getItem()).getFunctionUpgrade();
           itemsPerTick = up.getMaximumExtracted(64);
         } else {
           itemsPerTick = 4;
@@ -263,10 +264,11 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
             ItemStack took = rsNetwork.extractItem(slot, Math.min(slot.getMaxStackSize(), itemsPerTick), compare, Action.SIMULATE);
 
             if (took == null) {
-              //            if (upgrades.hasUpgrade(ItemUpgrade.TYPE_CRAFTING)) {
-              //              rsNetwork.getCraftingManager().request(slot, stackSize);
-              //            }
-              exportFilterSlot++;
+              if (up != null && isCraftingUpgrade(up)) {
+                rsNetwork.getCraftingManager().request(slot, itemsPerTick);
+              } else {
+                exportFilterSlot++;
+              }
               return false;
             } else if (ItemHandlerHelper.insertItem(handler, took, true).isEmpty()) {
               took = rsNetwork.extractItem(slot, Math.min(slot.getMaxStackSize(), itemsPerTick), compare, Action.PERFORM);
@@ -340,6 +342,11 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
       }
     }
     return false;
+  }
+
+  private boolean isCraftingUpgrade(@Nonnull FunctionUpgrade functionUpgrade) {
+    return functionUpgrade == FunctionUpgrade.RS_CRAFTING_UPGRADE || functionUpgrade == FunctionUpgrade.RS_CRAFTING_SPEED_UPGRADE
+        || functionUpgrade == FunctionUpgrade.RS_CRAFTING_SPEED_DOWNGRADE;
   }
 
   @Override
