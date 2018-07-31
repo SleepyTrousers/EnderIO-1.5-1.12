@@ -306,8 +306,9 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
 
             if (handler.getSlots() > 0) {
               while (currentSlot + 1 < handler.getSlots() && (handler.getStackInSlot(currentSlot).isEmpty() || (!all && !handler.getStackInSlot(currentSlot)
-                  .isItemEqual(importFilter.getInventorySlotContents(0))))) {
+                  .isItemEqual(importFilter.getInventorySlotContents(importFilterSlot))))) {
                 currentSlot++;
+                importFilterSlot++;
               }
 
               ItemStack stack = handler.getStackInSlot(currentSlot);
@@ -319,7 +320,6 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
 
                 if (!result.isEmpty()) {
                   rsNetwork.insertItemTracked(result, result.getCount());
-                  importFilterSlot++;
                 }
               } else {
                 currentSlot++;
