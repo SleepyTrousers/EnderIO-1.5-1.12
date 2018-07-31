@@ -80,6 +80,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
     }
   }
 
+  @Override
   public float getPowerLossPerTick() {
     return energyLoss != null ? energyLoss.getFloat(getCapacitorData()) : 0;
   }

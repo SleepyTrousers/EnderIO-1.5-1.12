@@ -633,6 +633,7 @@ enderio.farm.note.noHoe=No Hoe
 enderio.farm.note.noShears=No Shears
 enderio.farm.note.noTreetap=No Treetap
 enderio.farm.note.noPower=No Power
+enderio.farm.note.noCapacitor=No Capacitor
 
 enderio.power.symbol=µI
 enderio.power.format=%s µI
