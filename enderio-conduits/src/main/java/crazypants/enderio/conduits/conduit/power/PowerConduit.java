@@ -398,10 +398,11 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
    *          side for the capability
    * @return returns the connection with reference to the relevant side
    */
+  @Nullable
   private IEnergyStorage getEnergyDir(EnumFacing dir) {
     if (dir != null)
       return new ConnectionSide(dir);
-    return this;
+    return null;
   }
 
   private boolean isRedstoneEnabled(@Nonnull EnumFacing dir) {
@@ -624,7 +625,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
     if (capability == CapabilityEnergy.ENERGY)
-      return facing == null || getExternalConnections().contains(facing);
+      return getExternalConnections().contains(facing);
     return false;
   }
 

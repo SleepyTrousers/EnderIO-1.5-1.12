@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import com.raoulvdberge.refinedstorage.api.network.INetwork;
 import com.raoulvdberge.refinedstorage.api.network.INetworkNodeVisitor;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNode;
+import com.raoulvdberge.refinedstorage.api.storage.IStorageProvider;
 import com.raoulvdberge.refinedstorage.api.util.Action;
 import com.raoulvdberge.refinedstorage.api.util.IComparer;
 
@@ -88,7 +89,7 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
 
   @Override
   public boolean canUpdate() {
-    return true;
+    return con.hasExternalConnections();
   }
 
   @Nullable
@@ -99,16 +100,18 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
 
   @Override
   public void update() {
-    tickCount++;
-    if (rsNetwork != null && canUpdate() && tickCount > 4) {
-      tickCount = 0;
+    if (canUpdate()) {
+      tickCount++;
+      if (rsNetwork != null && tickCount > 4) {
+        tickCount = 0;
 
-      for (int i = 0; i < dirsToCheck.size(); i++) {
-        EnumFacing dir = dirsToCheck.poll();
-        dirsToCheck.offer(dir);
+        for (int i = 0; i < dirsToCheck.size(); i++) {
+          EnumFacing dir = dirsToCheck.poll();
+          dirsToCheck.offer(dir);
 
-        if (con.containsExternalConnection(dir) && updateDir(dir)) {
-          break;
+          if (con.containsExternalConnection(dir) && updateDir(dir)) {
+            break;
+          }
         }
       }
     }
@@ -119,7 +122,7 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
 
     boolean done = false;
 
-    if (te != null) {
+    if (te != null && !(te instanceof IStorageProvider)) {
       done = updateDirItems(dir, te);
       done = done || updateDirFluids(dir, te);
     }
