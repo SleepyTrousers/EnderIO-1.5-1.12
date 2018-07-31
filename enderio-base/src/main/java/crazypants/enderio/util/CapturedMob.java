@@ -42,6 +42,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 
 import static crazypants.enderio.base.init.ModObject.itemSoulVial;
 
@@ -252,8 +253,9 @@ public class CapturedMob { // TODO: DONE111
       return null;
     }
 
-    if (entityNbt != null && (clone || isUnspawnable(entityId))) {
-      final Entity entity = EntityList.createEntityFromNBT(entityNbt, world);
+    final NBTTagCompound entityNbt_nullchecked = entityNbt;
+    if (entityNbt_nullchecked != null && (clone || isUnspawnable(entityId))) {
+      final Entity entity = EntityList.createEntityFromNBT(entityNbt_nullchecked, world);
       if (!clone && entity != null) {
         // The caller doesn't expect a clone, but we return one. Give it a unique/new ID to avoid problems with duplicate entities.
         entity.setUniqueId(MathHelper.getRandomUUID(world.rand));
@@ -275,6 +277,7 @@ public class CapturedMob { // TODO: DONE111
         difficulty = world.getDifficultyForLocation(pos);
       }
       if (difficulty != null) {
+        if (pos == null || !ForgeEventFactory.doSpecialSpawn((EntityLiving) entity, world, pos.getX(), pos.getY(), pos.getZ(), null))
         ((EntityLiving) entity).onInitialSpawn(difficulty, null);
       }
     }

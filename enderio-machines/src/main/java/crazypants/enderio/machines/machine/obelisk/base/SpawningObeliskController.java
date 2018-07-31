@@ -48,7 +48,7 @@ public class SpawningObeliskController {
   // Note: This is called even if spawning mechanics (e.g. light levels) will prevent the entity from being spawned later
   @SubscribeEvent
   public void onEntitySpawn(LivingSpawnEvent.CheckSpawn evt) {
-    if (evt.getResult() == Result.DENY) {
+    if (evt.getResult() == Result.DENY || evt.isSpawner()) {
       return;
     }
 
