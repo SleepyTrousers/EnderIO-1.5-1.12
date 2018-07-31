@@ -209,7 +209,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return facing == null || getExternalConnections().contains(facing);
+      return getExternalConnections().contains(facing);
     }
     return false;
   }
@@ -225,11 +225,12 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   @Override
+  @Nullable
   public IFluidHandler getFluidDir(@Nullable EnumFacing dir) {
     if (dir != null) {
       return new ConnectionLiquidSide(dir);
     }
-    return this;
+    return null;
   }
 
   @Override

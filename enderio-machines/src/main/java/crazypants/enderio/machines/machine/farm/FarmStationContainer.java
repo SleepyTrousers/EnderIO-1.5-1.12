@@ -66,12 +66,12 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
       addSlotToContainer(p.s = new Slot(getInv(), slot, p.x, p.y) {
         @Override
         public boolean isItemValid(@Nonnull ItemStack itemStack) {
-          return getInv().isItemValidForSlot(slot, itemStack);
+          return getTe().isItemValidForSlot(slot, itemStack);
         }
 
         @Override
         public int getSlotStackLimit() {
-          return getInv().getInventoryStackLimit();
+          return getTe().getInventoryStackLimit(slot);
         }
       });
     }

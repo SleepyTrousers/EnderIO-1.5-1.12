@@ -2,6 +2,7 @@ package crazypants.enderio.machines.machine.farm;
 
 import java.util.EnumMap;
 import java.util.EnumSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -99,6 +100,16 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     return (int) (FARM_BASE_SIZE.getFloat(getCapacitorData()) + FARM_BONUS_SIZE.getFloat(getCapacitorData()));
   }
 
+  public void setSingleNotification(@Nonnull FarmNotification note) {
+    setNotification(note);
+    for (Iterator<FarmNotification> itr = notification.iterator(); itr.hasNext();) {
+      if (itr.next() != note) {
+        itr.remove();
+        sendNotification = true;
+      }
+    }
+  }
+
   public void setNotification(@Nonnull FarmNotification note) {
     if (!notification.contains(note)) {
       notification.add(note);
@@ -112,10 +123,19 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     }
   }
 
-  public void clearNotification() {
+  public void clearNotification(boolean all) {
     if (hasNotification()) {
+      if (all) {
       getNotification().clear();
       sendNotification = true;
+      } else {
+        for (Iterator<FarmNotification> itr = notification.iterator(); itr.hasNext();) {
+          if (itr.next().isAutoCleanup()) {
+            itr.remove();
+            sendNotification = true;
+          }
+        }
+      }
     }
   }
 
@@ -185,12 +205,14 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   @Override
   protected boolean checkProgress(boolean redstoneChecksPassed) {
     if (shouldDoWorkThisTick(1 * 60 * 20)) {
-      clearNotification();
+      clearNotification(false);
     }
     if (redstoneChecksPassed) {
-      if (tryToUsePower()) {
+      if (getCapacitorData() == DefaultCapacitorData.NONE) {
+        setSingleNotification(FarmNotification.NO_CAP);
+      } else if (tryToUsePower()) {
         removeNotification(FarmNotification.NO_POWER);
-        if (shouldDoWorkThisTick(2)) {
+        if (shouldDoWorkThisTick(10 - getEnergyStoredScaled(8))) {
           if (isOutputFull()) {
             setNotification(FarmNotification.OUTPUT_FULL);
           } else {
@@ -199,7 +221,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
           }
         }
       } else {
-        setNotification(FarmNotification.NO_POWER);
+        setSingleNotification(FarmNotification.NO_POWER);
       }
     }
     if (sendNotification) {
@@ -403,6 +425,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
   @Override
   public int getInventoryStackLimit(int slot) {
+    if (slot >= minToolSlot && slot <= maxToolSlot) {
+      return 1;
+    }
     if (slot >= minSupSlot && slot <= maxSupSlot) {
       return getCapacitorData() == DefaultCapacitorData.NONE ? 0 : Math.min(FARM_STACK_LIMIT.get(getCapacitorData()), 64);
     }

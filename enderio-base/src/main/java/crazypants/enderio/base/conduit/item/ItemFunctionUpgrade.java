@@ -21,6 +21,18 @@ public class ItemFunctionUpgrade extends Item implements IResourceTooltipProvide
     return new ItemFunctionUpgrade(modObject, FunctionUpgrade.EXTRACT_SPEED_DOWNGRADE);
   }
 
+  public static ItemFunctionUpgrade createRSCraftingUpgrade(@Nonnull IModObject modObject) {
+    return new ItemFunctionUpgrade(modObject, FunctionUpgrade.RS_CRAFTING_UPGRADE);
+  }
+
+  public static ItemFunctionUpgrade createRSCraftingSpeedUpgrade(@Nonnull IModObject modObject) {
+    return new ItemFunctionUpgrade(modObject, FunctionUpgrade.RS_CRAFTING_SPEED_UPGRADE);
+  }
+
+  public static ItemFunctionUpgrade createRSCraftingSpeedDowngrade(@Nonnull IModObject modObject) {
+    return new ItemFunctionUpgrade(modObject, FunctionUpgrade.RS_CRAFTING_SPEED_DOWNGRADE);
+  }
+
   protected ItemFunctionUpgrade(@Nonnull IModObject modObject, FunctionUpgrade upgradeType) {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
