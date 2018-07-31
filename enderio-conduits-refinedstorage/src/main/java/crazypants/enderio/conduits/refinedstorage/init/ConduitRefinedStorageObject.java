@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 
 public enum ConduitRefinedStorageObject implements IModObjectBase {
 
-  item_refined_storage_conduit(ItemRefinedStorageConduit.class);
+  item_refined_storage_conduit(ItemRefinedStorageConduit.class),
 
   ;
 

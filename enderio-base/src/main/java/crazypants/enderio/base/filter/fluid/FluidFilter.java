@@ -189,6 +189,10 @@ public class FluidFilter implements IFluidFilter {
     }
   }
 
+  public int getSlotCount() {
+    return fluids.length;
+  }
+
   class FluidFilterGhostSlot extends GhostSlot {
     private final Runnable cb;
 
