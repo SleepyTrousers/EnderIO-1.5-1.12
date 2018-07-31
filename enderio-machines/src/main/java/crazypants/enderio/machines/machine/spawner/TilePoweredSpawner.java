@@ -34,7 +34,6 @@ import info.loenwind.autosave.annotations.Store;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EntitySelectors;
@@ -44,6 +43,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -247,14 +248,13 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity implements IPa
   }
 
   protected boolean canSpawnEntity(EntityLiving entityliving) {
-    boolean spaceClear = world.checkNoEntityCollision(entityliving.getEntityBoundingBox())
-        && world.getCollisionBoxes(entityliving, entityliving.getEntityBoundingBox()).isEmpty()
-        && (!world.containsAnyLiquid(entityliving.getEntityBoundingBox()) || entityliving.isCreatureType(EnumCreatureType.WATER_CREATURE, false));
-    if (spaceClear && SpawnerConfig.poweredSpawnerUseVanillaSpawChecks.get()) {
-      // Full checks for lighting, dimension etc
-      spaceClear = entityliving.getCanSpawnHere();
+    if (SpawnerConfig.poweredSpawnerUseVanillaSpawChecks.get()) {
+      return ForgeEventFactory.canEntitySpawnSpawner(entityliving, entityliving.world, (float) entityliving.posX, (float) entityliving.posY,
+          (float) entityliving.posZ);
+    } else {
+      return entityliving.isNotColliding() && ForgeEventFactory.canEntitySpawn(entityliving, entityliving.world, (float) entityliving.posX,
+          (float) entityliving.posY, (float) entityliving.posZ, true) != Result.DENY;
     }
-    return spaceClear;
   }
 
   @Nullable
