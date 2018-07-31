@@ -25,8 +25,10 @@ import net.minecraftforge.fml.common.network.NetworkCheckHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Mod(modid = EnderIOConduitsRefinedStorage.MODID, name = EnderIOConduitsRefinedStorage.MOD_NAME, version = EnderIOConduitsRefinedStorage.VERSION, dependencies = EnderIOConduitsRefinedStorage.DEPENDENCIES)
-@EventBusSubscriber
+import static crazypants.enderio.conduits.refinedstorage.EnderIOConduitsRefinedStorage.MODID;
+
+@Mod(modid = MODID, name = EnderIOConduitsRefinedStorage.MOD_NAME, version = EnderIOConduitsRefinedStorage.VERSION, dependencies = EnderIOConduitsRefinedStorage.DEPENDENCIES)
+@EventBusSubscriber(modid = MODID)
 public class EnderIOConduitsRefinedStorage implements IEnderIOAddon {
 
   @NetworkCheckHandler
@@ -74,7 +76,7 @@ public class EnderIOConduitsRefinedStorage implements IEnderIOAddon {
   }
 
   @SubscribeEvent
-  public static void registerConduits(@Nonnull RegisterModObject event) {
+  public static void registerBlocksEarly(@Nonnull RegisterModObject event) {
     if (isLoaded()) {
       ConduitRefinedStorageObject.registerBlocksEarly(event);
     }
