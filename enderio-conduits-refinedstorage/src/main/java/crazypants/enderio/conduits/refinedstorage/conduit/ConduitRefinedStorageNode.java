@@ -54,6 +54,8 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
   private int importFilterSlot;
   private int exportFilterSlot;
 
+  private int slotsToCheck;
+
   public ConduitRefinedStorageNode(@Nonnull IRefinedStorageConduit con) {
     this.con = con;
     this.world = con.getBundle().getBundleworld();
@@ -298,6 +300,7 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
 
             if (slot.isEmpty()) {
               importFilterSlot++;
+              slotsToCheck = 0;
             }
           } while (slot.isEmpty());
 
@@ -311,7 +314,11 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
               while (currentSlot + 1 < handler.getSlots() && (handler.getStackInSlot(currentSlot).isEmpty() || (!all && !handler.getStackInSlot(currentSlot)
                   .isItemEqual(importFilter.getInventorySlotContents(importFilterSlot))))) {
                 currentSlot++;
-                importFilterSlot++;
+                slotsToCheck++;
+
+                if (slotsToCheck >= handler.getSlots()) {
+                  importFilterSlot++;
+                }
               }
 
               ItemStack stack = handler.getStackInSlot(currentSlot);
