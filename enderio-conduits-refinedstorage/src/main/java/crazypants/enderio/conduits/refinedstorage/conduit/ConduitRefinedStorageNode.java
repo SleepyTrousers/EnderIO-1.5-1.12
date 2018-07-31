@@ -147,12 +147,19 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
           FluidStack stack;
 
           do {
-            stack = exportFilter.getFluidStackAt(exportFilterSlot > exportFilter.getSlotCount() ? exportFilterSlot = 0 : exportFilterSlot);
+            stack = exportFilter.getFluidStackAt(exportFilterSlot >= exportFilter.getSlotCount() ? exportFilterSlot = 0 : exportFilterSlot);
 
             if (stack == null) {
               exportFilterSlot++;
             }
           } while (stack == null);
+
+          ItemStack upgrade = con.getUpgradeStack(dir.ordinal());
+          FunctionUpgrade up = null;
+
+          if (!upgrade.isEmpty()) {
+            up = ((ItemFunctionUpgrade) upgrade.getItem()).getFunctionUpgrade();
+          }
 
           if (stack != null) {
             int toExtract = Fluid.BUCKET_VOLUME;
@@ -175,10 +182,9 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
                   return true;
                 }
               }
+            } else if (up != null && isCraftingUpgrade(up)) {
+              rsNetwork.getCraftingManager().request(stack, toExtract);
             }
-            //            else if (upgrades.hasUpgrade(ItemUpgrade.TYPE_CRAFTING)) {
-            //              network.getCraftingManager().request(stack, toExtract);
-            //            }
           }
         }
 
@@ -197,20 +203,22 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
           }
           FluidStack toDrain = handler.drain(Fluid.BUCKET_VOLUME, false);
 
-          FluidStack stack;
+          FluidStack stack = null;
 
-          do {
-            stack = importFilter.getFluidStackAt(importFilterSlot > importFilter.getSlotCount() ? importFilterSlot = 0 : importFilterSlot);
+          if (!all) {
+            do {
+              stack = importFilter.getFluidStackAt(importFilterSlot >= importFilter.getSlotCount() ? importFilterSlot = 0 : importFilterSlot);
 
-            if (stack == null) {
-              importFilterSlot++;
-            }
-          } while (stack == null);
+              if (stack == null) {
+                importFilterSlot++;
+              }
+            } while (stack == null);
+          }
 
           if (all || (stack != null && toDrain != null && stack.isFluidEqual(toDrain))) {
 
             if (toDrain != null) {
-              FluidStack remainder = rsNetwork.insertFluid(toDrain, toDrain.amount, Action.PERFORM);
+              FluidStack remainder = rsNetwork.insertFluidTracked(toDrain, toDrain.amount);
               if (remainder != null) {
                 toDrain.amount -= remainder.amount;
               }
@@ -296,15 +304,18 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
             }
           }
 
-          ItemStack slot;
-          do {
-            slot = importFilter.getInventorySlotContents(importFilterSlot >= importFilter.getSlotCount() ? importFilterSlot = 0 : importFilterSlot);
+          ItemStack slot = ItemStack.EMPTY;
 
-            if (slot.isEmpty()) {
-              importFilterSlot++;
-              slotsToCheck = 0;
-            }
-          } while (slot.isEmpty());
+          if (!all) {
+            do {
+              slot = importFilter.getInventorySlotContents(importFilterSlot >= importFilter.getSlotCount() ? importFilterSlot = 0 : importFilterSlot);
+
+              if (slot.isEmpty()) {
+                importFilterSlot++;
+                slotsToCheck = 0;
+              }
+            } while (slot.isEmpty());
+          }
 
           if (all || !slot.isEmpty()) {
 
