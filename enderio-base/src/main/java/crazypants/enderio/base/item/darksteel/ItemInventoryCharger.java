@@ -48,35 +48,37 @@ public class ItemInventoryCharger extends Item implements IAdvancedTooltipProvid
 
   public static ItemInventoryCharger createSimple(@Nonnull IModObject modObject) {
     ItemInventoryCharger res = new ItemInventoryCharger(modObject, CapacitorKey.DARK_STEEL_CHARGER_SIMPLE_ENERGY_BUFFER,
-        CapacitorKey.DARK_STEEL_CHARGER_SIMPLE_ENERGY_INPUT, CapacitorKey.DARK_STEEL_CHARGER_SIMPLE_ENERGY_USE);
+        CapacitorKey.DARK_STEEL_CHARGER_SIMPLE_ENERGY_INPUT, CapacitorKey.DARK_STEEL_CHARGER_SIMPLE_ENERGY_USE, true);
     return res;
   }
 
   public static ItemInventoryCharger createBasic(@Nonnull IModObject modObject) {
     ItemInventoryCharger res = new ItemInventoryCharger(modObject, CapacitorKey.DARK_STEEL_CHARGER_BASIC_ENERGY_BUFFER,
-        CapacitorKey.DARK_STEEL_CHARGER_BASIC_ENERGY_INPUT, CapacitorKey.DARK_STEEL_CHARGER_BASIC_ENERGY_USE);
+        CapacitorKey.DARK_STEEL_CHARGER_BASIC_ENERGY_INPUT, CapacitorKey.DARK_STEEL_CHARGER_BASIC_ENERGY_USE, false);
     return res;
   }
 
   public static ItemInventoryCharger create(@Nonnull IModObject modObject) {
     ItemInventoryCharger res = new ItemInventoryCharger(modObject, CapacitorKey.DARK_STEEL_CHARGER_ENERGY_BUFFER, CapacitorKey.DARK_STEEL_CHARGER_ENERGY_INPUT,
-        CapacitorKey.DARK_STEEL_CHARGER_ENERGY_USE);
+        CapacitorKey.DARK_STEEL_CHARGER_ENERGY_USE, false);
     return res;
   }
 
   public static ItemInventoryCharger createVibrant(@Nonnull IModObject modObject) {
     ItemInventoryCharger res = new ItemInventoryCharger(modObject, CapacitorKey.DARK_STEEL_CHARGER_VIBRANT_ENERGY_BUFFER,
-        CapacitorKey.DARK_STEEL_CHARGER_VIBRANT_ENERGY_INPUT, CapacitorKey.DARK_STEEL_CHARGER_VIBRANT_ENERGY_USE);
+        CapacitorKey.DARK_STEEL_CHARGER_VIBRANT_ENERGY_INPUT, CapacitorKey.DARK_STEEL_CHARGER_VIBRANT_ENERGY_USE, false);
     return res;
   }
 
   private final @Nonnull ICapacitorKey energyStorageKey, energyInputKey, energyUseKey;
+  private final boolean rangeLimited;
 
   protected ItemInventoryCharger(@Nonnull IModObject modObject, @Nonnull ICapacitorKey energyStorageKey, @Nonnull ICapacitorKey energyInputKey,
-      @Nonnull ICapacitorKey energyUseKey) {
+      @Nonnull ICapacitorKey energyUseKey, boolean rangeLimited) {
     this.energyStorageKey = energyStorageKey;
     this.energyInputKey = energyInputKey;
     this.energyUseKey = energyUseKey;
+    this.rangeLimited = rangeLimited;
     modObject.apply(this);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
   }
@@ -107,18 +109,19 @@ public class ItemInventoryCharger extends Item implements IAdvancedTooltipProvid
         for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
           ItemStack stackInSlot = player.inventory.getStackInSlot(i);
           if (stackInSlot.getItem() instanceof ItemInventoryCharger) {
-            ((ItemInventoryCharger) stackInSlot.getItem()).charge(player, stackInSlot);
+            ((ItemInventoryCharger) stackInSlot.getItem()).charge(player, stackInSlot, i);
           }
         }
       }
     }
   }
 
-  public void charge(@Nonnull EntityPlayer player, @Nonnull ItemStack stack) {
+  public void charge(@Nonnull EntityPlayer player, @Nonnull ItemStack stack, int slot) {
     if (NbtValue.ENABLED.getBoolean(stack)) {
       EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
       if (eu != null && eu.getEnergy() > 0) {
-        for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+        for (int i : rangeLimited ? SlotNeighborHelper.getSlotNeighors(slot) : SlotNeighborHelper.getAllSlots()) {
+          // for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
           ItemStack stackInSlot = player.inventory.getStackInSlot(i);
           if (!(stackInSlot.getItem() instanceof ItemInventoryCharger) && Prep.isValid(stackInSlot)) {
             IEnergyStorage cap = PowerHandlerUtil.getCapability(stackInSlot, null);
