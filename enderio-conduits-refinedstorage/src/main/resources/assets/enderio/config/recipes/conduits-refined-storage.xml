@@ -37,6 +37,18 @@ XML editor will display that as tooltips when editing this file.
       </output>
     </crafting>
   </recipe>
+
+  <recipe name="Upgrade, Conduit, Refined Storage" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="refinedstorage:cable" /><item name="CONDUIT_BINDER" />
+        <item name="refinedstorage:cable" /><item name="refinedstorage:processor:4" /><item name="refinedstorage:cable" />
+        <item name="CONDUIT_BINDER" /><item name="refinedstorage:cable" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_refined_storage_conduit" amount="8">
+      </output>
+    </crafting>
+  </recipe>
   
   <recipe name="Refined Storage Crafting Upgrade" required="true">
     <crafting>
