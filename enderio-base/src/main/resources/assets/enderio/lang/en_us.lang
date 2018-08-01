@@ -1160,10 +1160,10 @@ enderio.tooltip.inventory_charger.enabled=Inventory Charger enabled
 enderio.tooltip.inventory_charger.disabled=Inventory Charger disabled
 
 item.item_inventory_charger_simple.name=Simple Inventory Charger
-item.item_inventory_charger_simple.tooltip.detailed.line1=Charges items in your inventory. Right-click to enable/disable.
+item.item_inventory_charger_simple.tooltip.detailed.line1=Charges neighboring items in your inventory. Right-click to enable/disable.
 item.item_inventory_charger_basic.name=Basic Inventory Charger
-item.item_inventory_charger_basic.tooltip.detailed.line1=Charges items in your inventory. Right-click to enable/disable.
+item.item_inventory_charger_basic.tooltip.detailed.line1=Charges all items in your inventory. Right-click to enable/disable.
 item.item_inventory_charger.name=Inventory Charger
-item.item_inventory_charger.tooltip.detailed.line1=Charges items in your inventory. Right-click to enable/disable.
+item.item_inventory_charger.tooltip.detailed.line1=Charges all items in your inventory. Right-click to enable/disable.
 item.item_inventory_charger_vibrant.name=Vibrant Inventory Charger
-item.item_inventory_charger_vibrant.tooltip.detailed.line1=Charges items in your inventory. Right-click to enable/disable.
+item.item_inventory_charger_vibrant.tooltip.detailed.line1=Charges all items in your inventory. Right-click to enable/disable.

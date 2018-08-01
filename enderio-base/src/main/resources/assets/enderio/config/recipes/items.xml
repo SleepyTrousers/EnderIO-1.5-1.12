@@ -95,9 +95,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Inventory Charger, Simple" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="DARK_STEEL" /><item name="ELECTRICAL_STEEL" /><item name="DARK_STEEL" />
-        <item name="itemWirelessDish" /><item name="ENDER_RESONATOR" /><item name="itemWirelessDish" />
-        <item name="DARK_STEEL" /><item name="ELECTRICAL_STEEL" /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL_NUGGET" /><item name="CONDUCTIVE_IRON" /><item name="DARK_STEEL_NUGGET" />
+        <item name="CONDUCTIVE_IRON" /><item name="CAPACITOR1" /><item name="CONDUCTIVE_IRON" />
+        <item name="DARK_STEEL_NUGGET" /><item name="CONDUCTIVE_IRON" /><item name="DARK_STEEL_NUGGET" />
       </grid>
       <output name="enderio:item_inventory_charger_simple" />
     </crafting>

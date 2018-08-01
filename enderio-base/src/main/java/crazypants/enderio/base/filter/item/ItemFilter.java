@@ -122,7 +122,7 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
         ItemStack filterStack = items.get(i);
         if (Prep.isValid(filterStack)) {
           if (item.getItem() == filterStack.getItem()) {
-            if (!matchMeta || !item.getHasSubtypes() || item.getMetadata() == filterStack.getMetadata()) {
+            if (!matchMeta || !item.getHasSubtypes() || item.getItemDamage() == filterStack.getItemDamage()) {
               if (!matchNBT || isNBTMatch(item, filterStack)) {
                 return new FilterResult(filterStack.getCount());
               }
