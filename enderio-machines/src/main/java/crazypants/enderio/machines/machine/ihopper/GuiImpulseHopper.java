@@ -64,6 +64,11 @@ public class GuiImpulseHopper extends GuiCapMachineBase<TileImpulseHopper> imple
   }
 
   @Override
+  protected boolean showRecipeButton() {
+    return false;
+  }
+
+  @Override
   public void actionPerformed(@Nonnull GuiButton guiButton) {
     if (guiButton.id == ID_LOCK_OUTPUT_BUTTON) {
       doOpenFilterGui(lockOutputB.isSelected());
