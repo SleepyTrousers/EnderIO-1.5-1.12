@@ -30,8 +30,8 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item /><item /><item name="ENDER_CRYSTAL" />
-        <item /><item name="DARK_STEEL" /><item />
-        <item name="DARK_STEEL" /><item /><item />
+        <item /><item name="itemInfinityRod" /><item />
+        <item name="itemInfinityRod" /><item /><item />
       </grid>
       <output name="enderio:item_travel_staff" />
     </crafting>
@@ -41,8 +41,8 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item /><item /><item name="PRECIENT_CRYSTAL" />
-        <item /><item name="DARK_STEEL" /><item />
-        <item name="DARK_STEEL" /><item /><item />
+        <item /><item name="itemInfinityRod" /><item />
+        <item name="itemInfinityRod" /><item /><item />
       </grid>
       <output name="enderio:item_staff_of_levity" />
     </crafting>
@@ -52,8 +52,8 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item /><item name="PULSATING_CRYSTAL"/><item name="ENDER_CRYSTAL" />
-        <item /><item name="ELECTRICAL_STEEL" /><item name="PULSATING_CRYSTAL"/>
-        <item name="ELECTRICAL_STEEL" /><item /><item />
+        <item /><item name="itemInfinityRod" /><item name="PULSATING_CRYSTAL"/>
+        <item name="itemInfinityRod" /><item /><item />
       </grid>
       <output name="enderio:item_rod_of_return" />
     </crafting>
