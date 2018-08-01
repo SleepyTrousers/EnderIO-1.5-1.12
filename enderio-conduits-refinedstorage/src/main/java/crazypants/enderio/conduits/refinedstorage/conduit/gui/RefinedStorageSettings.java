@@ -14,8 +14,10 @@ import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.conduits.gui.BaseSettingsPanel;
 import crazypants.enderio.conduits.init.ConduitObject;
 import crazypants.enderio.conduits.refinedstorage.conduit.IRefinedStorageConduit;
+import crazypants.enderio.conduits.refinedstorage.conduit.RefinedStorageConduit;
 import crazypants.enderio.conduits.refinedstorage.init.ConduitRefinedStorageObject;
 import crazypants.enderio.conduits.refinedstorage.lang.Lang;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.item.ItemStack;
 
 public class RefinedStorageSettings extends BaseSettingsPanel {
@@ -57,6 +59,18 @@ public class RefinedStorageSettings extends BaseSettingsPanel {
   @Override
   protected boolean hasFilters() {
     return true;
+  }
+
+  @Override
+  public void actionPerformed(@Nonnull GuiButton guiButton) {
+    super.actionPerformed(guiButton);
+    if (guiButton.id == ID_INSERT_FILTER_OPTIONS) {
+      doOpenFilterGui(RefinedStorageConduit.INDEX_OUTPUT_REFINED_STROAGE);
+      return;
+    } else if (guiButton.id == ID_EXTRACT_FILTER_OPTIONS) {
+      doOpenFilterGui(RefinedStorageConduit.INDEX_INPUT_REFINED_STORAGE);
+      return;
+    }
   }
 
   @Override

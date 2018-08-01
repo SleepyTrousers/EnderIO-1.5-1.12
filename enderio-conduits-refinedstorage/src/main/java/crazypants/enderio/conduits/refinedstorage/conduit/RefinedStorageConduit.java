@@ -25,7 +25,6 @@ import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
-import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.ItemFilter;
 import crazypants.enderio.base.render.registry.TextureRegistry;
@@ -452,9 +451,9 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   // Filter Capability
   @Override
   public IFilter getFilter(int filterId, int param1) {
-    if (filterId == FilterGuiUtil.INDEX_INPUT_ITEM) {
+    if (filterId == getInputFilterIndex()) {
       return getInputFilter(EnumFacing.getFront(param1));
-    } else if (filterId == FilterGuiUtil.INDEX_OUTPUT_ITEM) {
+    } else if (filterId == getOutputFilterIndex()) {
       return getOutputFilter(EnumFacing.getFront(param1));
     }
     return null;
@@ -462,9 +461,9 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
 
   @Override
   public void setFilter(int filterId, int param1, @Nonnull IFilter filter) {
-    if (filterId == FilterGuiUtil.INDEX_INPUT_ITEM) {
+    if (filterId == getInputFilterIndex()) {
       setInputFilter(EnumFacing.getFront(param1), filter);
-    } else if (filterId == FilterGuiUtil.INDEX_OUTPUT_ITEM) {
+    } else if (filterId == getOutputFilterIndex()) {
       setOutputFilter(EnumFacing.getFront(param1), filter);
     }
   }
@@ -482,9 +481,9 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   @Override
   @Nonnull
   public ItemStack getFilterStack(int filterIndex, int param1) {
-    if (filterIndex == FilterGuiUtil.INDEX_INPUT_ITEM) {
+    if (filterIndex == getInputFilterIndex()) {
       return getInputFilterUpgrade(EnumFacing.getFront(param1));
-    } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT_ITEM) {
+    } else if (filterIndex == getOutputFilterIndex()) {
       return getOutputFilterUpgrade(EnumFacing.getFront(param1));
     }
     return ItemStack.EMPTY;
@@ -492,9 +491,9 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
 
   @Override
   public void setFilterStack(int filterIndex, int param1, @Nonnull ItemStack stack) {
-    if (filterIndex == FilterGuiUtil.INDEX_INPUT_ITEM) {
+    if (filterIndex == getInputFilterIndex()) {
       setInputFilterUpgrade(EnumFacing.getFront(param1), stack);
-    } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT_ITEM) {
+    } else if (filterIndex == getOutputFilterIndex()) {
       setOutputFilterUpgrade(EnumFacing.getFront(param1), stack);
     }
   }
@@ -549,11 +548,11 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
 
   @Override
   public int getInputFilterIndex() {
-    return FilterGuiUtil.INDEX_INPUT_ITEM;
+    return INDEX_INPUT_REFINED_STORAGE;
   }
 
   @Override
   public int getOutputFilterIndex() {
-    return FilterGuiUtil.INDEX_OUTPUT_ITEM;
+    return INDEX_OUTPUT_REFINED_STROAGE;
   }
 }
