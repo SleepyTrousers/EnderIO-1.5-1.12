@@ -140,4 +140,9 @@ public class ModItemFilter implements IItemFilter {
     NBTTagCompound tag = NetworkUtil.readNBTTagCompound(buf);
     readFromNBT(tag);
   }
+
+  @Override
+  public boolean isEmpty() {
+    return true;
+  }
 }

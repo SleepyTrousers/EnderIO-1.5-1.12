@@ -566,7 +566,12 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
 
   @Override
   public boolean isEmpty() {
-    return false;
+    for (ItemStack s : items) {
+      if (!s.isEmpty()) {
+        return false;
+      }
+    }
+    return true;
   }
 
   @Override

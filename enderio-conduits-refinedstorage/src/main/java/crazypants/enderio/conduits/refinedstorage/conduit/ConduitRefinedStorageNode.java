@@ -144,15 +144,18 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
         if (outFilt instanceof IFluidFilter) {
 
           IFluidFilter exportFilter = (IFluidFilter) outFilt;
-          FluidStack stack;
 
-          do {
-            stack = exportFilter.getFluidStackAt(exportFilterSlot >= exportFilter.getSlotCount() ? exportFilterSlot = 0 : exportFilterSlot);
+          FluidStack stack = null;
 
-            if (stack == null) {
-              exportFilterSlot++;
-            }
-          } while (stack == null);
+          if (!exportFilter.isEmpty()) {
+            do {
+              stack = exportFilter.getFluidStackAt(exportFilterSlot >= exportFilter.getSlotCount() ? exportFilterSlot = 0 : exportFilterSlot);
+
+              if (stack == null) {
+                exportFilterSlot++;
+              }
+            } while (stack == null);
+          }
 
           ItemStack upgrade = con.getUpgradeStack(dir.ordinal());
           FunctionUpgrade up = null;
@@ -194,13 +197,8 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
 
           IFluidFilter importFilter = (IFluidFilter) inFilt;
 
-          boolean all = true;
-          for (int i = 0; i < importFilter.getSlotCount(); i++) {
-            if (importFilter.getFluidStackAt(i) != null) {
-              all = false;
-              break;
-            }
-          }
+          boolean all = importFilter.isEmpty();
+
           FluidStack toDrain = handler.drain(Fluid.BUCKET_VOLUME, false);
 
           FluidStack stack = null;
@@ -258,15 +256,17 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
 
           IItemFilter exportFilter = (IItemFilter) outFilt;
 
-          ItemStack slot;
+          ItemStack slot = ItemStack.EMPTY;
 
-          do {
-            slot = exportFilter.getInventorySlotContents(exportFilterSlot >= exportFilter.getSlotCount() ? exportFilterSlot = 0 : exportFilterSlot);
+          if (!exportFilter.isEmpty()) {
+            do {
+              slot = exportFilter.getInventorySlotContents(exportFilterSlot >= exportFilter.getSlotCount() ? exportFilterSlot = 0 : exportFilterSlot);
 
-            if (slot.isEmpty()) {
-              exportFilterSlot++;
-            }
-          } while (slot.isEmpty());
+              if (slot.isEmpty()) {
+                exportFilterSlot++;
+              }
+            } while (slot.isEmpty());
+          }
 
           if (!slot.isEmpty()) {
             ItemStack took = rsNetwork.extractItem(slot, Math.min(slot.getMaxStackSize(), itemsPerTick), compare, Action.SIMULATE);
@@ -296,13 +296,7 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
 
           IItemFilter importFilter = (IItemFilter) inFilt;
 
-          boolean all = true;
-          for (int i = 0; i < importFilter.getSlotCount(); i++) {
-            if (!importFilter.getInventorySlotContents(i).isEmpty()) {
-              all = false;
-              break;
-            }
-          }
+          boolean all = importFilter.isEmpty();
 
           ItemStack slot = ItemStack.EMPTY;
 

@@ -132,4 +132,9 @@ public class PowerItemFilter implements IItemFilter {
     NBTTagCompound settingsTag = NetworkUtil.readNBTTagCompound(buf);
     readSettingsFromNBT(settingsTag);
   }
+
+  @Override
+  public boolean isEmpty() {
+    return true;
+  }
 }

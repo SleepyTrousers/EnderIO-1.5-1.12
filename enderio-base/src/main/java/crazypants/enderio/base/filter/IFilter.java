@@ -46,4 +46,6 @@ public interface IFilter {
     return true;
   }
 
+  boolean isEmpty();
+
 }

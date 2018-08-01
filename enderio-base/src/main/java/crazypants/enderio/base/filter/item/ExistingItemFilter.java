@@ -274,4 +274,13 @@ public class ExistingItemFilter implements IItemFilter {
 
   }
 
+  @Override
+  public boolean isEmpty() {
+    for (ItemStack s : snapshot) {
+      if (!s.isEmpty()) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
