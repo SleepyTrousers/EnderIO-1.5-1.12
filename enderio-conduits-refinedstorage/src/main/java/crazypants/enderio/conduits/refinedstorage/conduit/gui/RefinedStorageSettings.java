@@ -29,16 +29,16 @@ public class RefinedStorageSettings extends BaseSettingsPanel {
 
     rsCon = (IRefinedStorageConduit) con;
 
-    filterExtractUpgradeTooltip = new GuiToolTip(new Rectangle(rightColumn, 70, 18, 18), Lang.GUI_RS_FILTER_UPGRADE_OUT.get(),
-        Lang.GUI_RS_FILTER_UPGRADE_OUT_2.get(), Lang.GUI_RS_FILTER_UPGRADE_OUT_3.get()) {
+    filterExtractUpgradeTooltip = new GuiToolTip(new Rectangle(rightColumn, 70, 18, 18), Lang.GUI_RS_FILTER_UPGRADE_IN.get(),
+        Lang.GUI_RS_FILTER_UPGRADE_IN_2.get(), Lang.GUI_RS_FILTER_UPGRADE_IN_3.get()) {
       @Override
       public boolean shouldDraw() {
         return !gui.getContainer().hasFilter(false) && super.shouldDraw();
       }
     };
 
-    filterInsertUpgradeTooltip = new GuiToolTip(new Rectangle(leftColumn, 70, 18, 18), Lang.GUI_RS_FILTER_UPGRADE_IN.get(),
-        Lang.GUI_RS_FILTER_UPGRADE_IN_2.get(), Lang.GUI_RS_FILTER_UPGRADE_IN_3.get()) {
+    filterInsertUpgradeTooltip = new GuiToolTip(new Rectangle(leftColumn, 70, 18, 18), Lang.GUI_RS_FILTER_UPGRADE_OUT.get(),
+        Lang.GUI_RS_FILTER_UPGRADE_OUT_2.get(), Lang.GUI_RS_FILTER_UPGRADE_OUT_3.get()) {
       @Override
       public boolean shouldDraw() {
         return !gui.getContainer().hasFilter(true) && super.shouldDraw();
