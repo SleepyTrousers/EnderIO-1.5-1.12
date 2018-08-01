@@ -47,7 +47,7 @@ public interface IFilter {
   }
 
   default boolean isEmpty() {
-    return false;
+    return true;
   }
 
 }
