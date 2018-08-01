@@ -5,7 +5,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.render.BoundingBox;
 
 import crazypants.enderio.base.TileEntityEio;
-import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.power.ILegacyPowerReceiver;

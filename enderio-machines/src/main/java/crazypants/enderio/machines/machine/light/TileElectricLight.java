@@ -13,7 +13,6 @@ import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.base.TileEntityEio;
-import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.base.power.wireless.WirelessChargedLocation;

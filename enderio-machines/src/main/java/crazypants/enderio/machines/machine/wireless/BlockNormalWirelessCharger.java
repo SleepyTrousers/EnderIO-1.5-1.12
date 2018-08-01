@@ -7,6 +7,7 @@ import com.enderio.core.client.render.BoundingBox;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
+import crazypants.enderio.base.machine.interfaces.IClearableConfiguration;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.machines.config.ChargerConfig;
 import crazypants.enderio.machines.init.MachineObject;
@@ -19,7 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
-public class BlockNormalWirelessCharger extends BlockEio<TileWirelessCharger> implements IResourceTooltipProvider, IHaveRenderers {
+public class BlockNormalWirelessCharger extends BlockEio<TileWirelessCharger> implements IResourceTooltipProvider, IHaveRenderers, IClearableConfiguration {
 
   public static BlockNormalWirelessCharger create(@Nonnull IModObject modObject) {
     BlockNormalWirelessCharger res = new BlockNormalWirelessCharger(modObject);

@@ -9,6 +9,7 @@ import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.machine.interfaces.IClearableConfiguration;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.inventory.InventoryCrafting;
@@ -84,11 +85,12 @@ public class ClearConfigRecipe extends IForgeRegistryEntry.Impl<IRecipe> impleme
   @SubscribeEvent
   @SideOnly(Side.CLIENT)
   public void onTooltip(ItemTooltipEvent event) {
-    if (event.getEntityPlayer() != null
-        && ((event.getEntityPlayer().openContainer instanceof ContainerWorkbench
-            && ((ContainerWorkbench) event.getEntityPlayer().openContainer).craftResult.getStackInSlot(0) == event.getItemStack())
-            || (event.getEntityPlayer().openContainer instanceof ContainerPlayer
-                && ((ContainerPlayer) event.getEntityPlayer().openContainer).craftResult.getStackInSlot(0) == event.getItemStack()))
+    final EntityPlayer player = event.getEntityPlayer();
+    if (player != null
+        && ((player.openContainer instanceof ContainerWorkbench
+            && ((ContainerWorkbench) player.openContainer).craftResult.getStackInSlot(0) == event.getItemStack())
+            || (player.openContainer instanceof ContainerPlayer
+                && ((ContainerPlayer) player.openContainer).craftResult.getStackInSlot(0) == event.getItemStack()))
         && ItemStack.areItemStacksEqual(lastOutput, event.getItemStack())) {
       event.getToolTip().add(Lang.RECIPE_CLEAR.get());
     }

@@ -14,8 +14,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiImpulseHopper extends GuiCapMachineBase<TileImpulseHopper> implements ImpulseHopperRemoteExec.GUI {
 
-  private static final int ID_REDSTONE_BUTTON = 139;
-  private static final int ID_IO_MODE_BUTTON = 140;
   private static final int ID_LOCK_OUTPUT_BUTTON = 141;
 
   private static final int REDSTONE_MODE_LEFT = 153;
