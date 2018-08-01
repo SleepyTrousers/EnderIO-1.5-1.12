@@ -140,7 +140,7 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
       if (handler != null) {
 
         // Export
-        IFilter outFilt = con.getInputFilter(dir);
+        IFilter outFilt = con.getOutputFilter(dir);
         if (outFilt instanceof IFluidFilter) {
 
           IFluidFilter exportFilter = (IFluidFilter) outFilt;
@@ -192,7 +192,7 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
         }
 
         // Importing
-        IFilter inFilt = con.getOutputFilter(dir);
+        IFilter inFilt = con.getInputFilter(dir);
         if (inFilt instanceof IFluidFilter) {
 
           IFluidFilter importFilter = (IFluidFilter) inFilt;
@@ -251,7 +251,7 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
         }
 
         // Exporting
-        IFilter outFilt = con.getInputFilter(dir);
+        IFilter outFilt = con.getOutputFilter(dir);
         if (outFilt instanceof IItemFilter) {
 
           IItemFilter exportFilter = (IItemFilter) outFilt;
@@ -291,7 +291,7 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
         }
 
         // Importing
-        IFilter inFilt = con.getOutputFilter(dir);
+        IFilter inFilt = con.getInputFilter(dir);
         if (inFilt instanceof IItemFilter) {
 
           IItemFilter importFilter = (IItemFilter) inFilt;
