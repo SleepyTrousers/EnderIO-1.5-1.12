@@ -48,6 +48,7 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_farm_station/base_size" base="1" scaler="FIXED" />
   <capacitor key="enderio:block_farm_station/bonus_size" base="2" scaler="IDENTITY" />
   <capacitor key="enderio:block_farm_station/stacksize_limit" base="16" scaler="QUADRATIC" />
+  <capacitor key="enderio:block_farm_station/boost" base="1" scaler="IDENTITY" />
   
   <capacitor key="enderio:block_combustion_generator/loss" base="0" scaler="CENT" />
   <capacitor key="enderio:block_combustion_generator/buffer" base="100000" scaler="POWER" />

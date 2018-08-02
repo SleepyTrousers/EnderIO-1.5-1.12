@@ -1,8 +1,10 @@
 package crazypants.enderio.machines.machine.farm;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -13,9 +15,11 @@ import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.blockiterators.PlanarBlockIterator;
 import com.enderio.core.common.util.blockiterators.PlanarBlockIterator.Orientation;
 import com.enderio.core.common.vecmath.Vector4f;
+import com.google.common.collect.Iterators;
 
 import crazypants.enderio.api.farm.FarmNotification;
 import crazypants.enderio.api.farm.FarmingAction;
@@ -39,12 +43,14 @@ import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.render.ranged.IRanged;
 import crazypants.enderio.base.render.ranged.RangeParticle;
+import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.config.config.FarmConfig;
 import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.minecraft.HandleItemStack.HandleItemStackNNList;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
@@ -220,6 +226,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
             doTick();
           }
         }
+        doBoost();
       } else {
         setSingleNotification(FarmNotification.NO_POWER);
       }
@@ -377,6 +384,33 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
       blockIterator = new PlanarBlockIterator(getPos(), Orientation.HORIZONTAL, getFarmSize());
     }
     return blockIterator.next();
+  }
+
+  private final @Nonnull List<BlockPos> boostCoords = new ArrayList<>();
+
+  private @Nonnull BlockPos getNextBoostCoord() {
+    if (boostCoords.isEmpty()) {
+      Iterators.addAll(boostCoords, new PlanarBlockIterator(getPos(), Orientation.HORIZONTAL, getFarmSize()));
+    }
+    return boostCoords.isEmpty() ? pos : NullHelper.first(boostCoords.remove(boostCoords.size() - 1), pos);
+  }
+
+  private void doBoost() {
+    float boost = CapacitorKey.FARM_BOOST.getFloat(getCapacitorData());
+    while (boost > 0) {
+      if (boost >= 1 || random.nextFloat() < boost) {
+        boost--;
+        BlockPos boostPos = getNextBoostCoord();
+        if (world.isBlockLoaded(boostPos)) {
+          IBlockState blockState = world.getBlockState(boostPos);
+          Block block = blockState.getBlock();
+
+          if (block.getTickRandomly()) {
+            block.randomTick(world, boostPos, blockState, world.rand);
+          }
+        }
+      }
+    }
   }
 
   public void toggleLockedState(int slot) {

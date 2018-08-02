@@ -51,6 +51,7 @@ public enum CapacitorKey implements ICapacitorKey {
   FARM_BASE_SIZE(MachineObject.block_farm_station, CapacitorKeyType.AREA, "base_size"),
   FARM_BONUS_SIZE(MachineObject.block_farm_station, CapacitorKeyType.AREA, "bonus_size"),
   FARM_STACK_LIMIT(MachineObject.block_farm_station, CapacitorKeyType.AMOUNT, "stacksize_limit"),
+  FARM_BOOST(MachineObject.block_farm_station, CapacitorKeyType.AMOUNT, "boost"),
 
   COMBUSTION_POWER_LOSS(MachineObject.block_combustion_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),
   COMBUSTION_POWER_BUFFER(MachineObject.block_combustion_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
