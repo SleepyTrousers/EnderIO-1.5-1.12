@@ -50,6 +50,9 @@ public final class FarmConfig {
       "Disable the notification text above the farm block.");
 
   public static final IValue<Boolean> useOutputQueue = F.make("useOutputQueue", true, //
-      "If enabled, output overflow will be queued, otherwise it will spill.");
+      "If enabled, output overflow will be queued, otherwise it will spill.").sync();
+
+  public static final IValue<Boolean> enableCarefulCare = F.make("enableCarefulCare", true, //
+      "If enabled, the farming area will receive some additional growth ticks. Disabling this can improve performance on budy servers").sync();
 
 }

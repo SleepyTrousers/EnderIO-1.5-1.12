@@ -132,8 +132,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   public void clearNotification(boolean all) {
     if (hasNotification()) {
       if (all) {
-      getNotification().clear();
-      sendNotification = true;
+        getNotification().clear();
+        sendNotification = true;
       } else {
         for (Iterator<FarmNotification> itr = notification.iterator(); itr.hasNext();) {
           if (itr.next().isAutoCleanup()) {
@@ -396,17 +396,19 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   private void doBoost() {
-    float boost = CapacitorKey.FARM_BOOST.getFloat(getCapacitorData());
-    while (boost > 0) {
-      if (boost >= 1 || random.nextFloat() < boost) {
-        boost--;
-        BlockPos boostPos = getNextBoostCoord();
-        if (world.isBlockLoaded(boostPos)) {
-          IBlockState blockState = world.getBlockState(boostPos);
-          Block block = blockState.getBlock();
+    if (FarmConfig.enableCarefulCare.get()) {
+      float boost = CapacitorKey.FARM_BOOST.getFloat(getCapacitorData());
+      while (boost > 0) {
+        if (boost >= 1 || random.nextFloat() < boost) {
+          boost--;
+          BlockPos boostPos = getNextBoostCoord();
+          if (world.isBlockLoaded(boostPos)) {
+            IBlockState blockState = world.getBlockState(boostPos);
+            Block block = blockState.getBlock();
 
-          if (block.getTickRandomly()) {
-            block.randomTick(world, boostPos, blockState, world.rand);
+            if (block.getTickRandomly()) {
+              block.randomTick(world, boostPos, blockState, world.rand);
+            }
           }
         }
       }
