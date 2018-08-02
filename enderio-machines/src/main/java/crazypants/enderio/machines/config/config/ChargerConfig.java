@@ -1,7 +1,8 @@
-package crazypants.enderio.machines.config;
+package crazypants.enderio.machines.config.config;
 
 import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.config.factory.IValueFactory;
+import crazypants.enderio.machines.config.Config;
 
 public final class ChargerConfig {
 

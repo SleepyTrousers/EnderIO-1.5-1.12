@@ -10,7 +10,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.render.IHaveRenderers;
-import crazypants.enderio.machines.config.ChargerConfig;
+import crazypants.enderio.machines.config.config.ChargerConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.properties.IProperty;

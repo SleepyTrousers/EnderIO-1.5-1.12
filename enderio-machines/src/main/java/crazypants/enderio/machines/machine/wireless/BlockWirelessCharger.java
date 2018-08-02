@@ -14,7 +14,7 @@ import crazypants.enderio.base.render.ISmartRenderAwareBlock;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
-import crazypants.enderio.machines.config.ChargerConfig;
+import crazypants.enderio.machines.config.config.ChargerConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.util.ClientUtil;
 import net.minecraft.block.properties.IProperty;
