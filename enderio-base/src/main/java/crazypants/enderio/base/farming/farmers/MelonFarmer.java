@@ -21,14 +21,14 @@ public class MelonFarmer extends CustomSeedFarmer {
   }
 
   @Override
-  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState meta) {
+  public Result tryPrepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
     int xVal = farm.getLocation().getX() & 1;
     int zVal = farm.getLocation().getZ() & 1;
-    if (((bc.getX() & 1) != xVal) ^ ((bc.getZ() & 1) != zVal)) {
+    if (((pos.getX() & 1) != xVal) ^ ((pos.getZ() & 1) != zVal)) {
       // if we have melon seeds, we still want to return true here so they are not planted by the default plantable handlers
-      return canPlant(farm.getSeedTypeInSuppliesFor(bc));
+      return canPlant(farm.getSeedTypeInSuppliesFor(pos)) ? Result.CLAIM : Result.NEXT;
     }
-    return super.prepareBlock(farm, bc, meta);
+    return super.tryPrepareBlock(farm, pos, state);
   }
 
   @Override
