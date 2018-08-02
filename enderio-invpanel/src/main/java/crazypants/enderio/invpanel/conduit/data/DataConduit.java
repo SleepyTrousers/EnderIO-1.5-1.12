@@ -104,7 +104,7 @@ public class DataConduit extends AbstractConduit implements IDataConduit {
 
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-    if (capability == CapabilityDatabaseHandler.DATABASE_HANDLER_CAPABILITY) {
+    if (capability == CapabilityDatabaseHandler.DATABASE_HANDLER_CAPABILITY && externalConnections.contains(facing)) {
       return true;
     }
     return false;

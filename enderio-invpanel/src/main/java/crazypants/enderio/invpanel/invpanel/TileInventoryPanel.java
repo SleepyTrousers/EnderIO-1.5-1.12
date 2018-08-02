@@ -187,8 +187,8 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
     TileEntity te = world.getTileEntity(p);
     IDatabaseHandler dbHandler = null;
 
-    if (te != null && te.hasCapability(CapabilityDatabaseHandler.DATABASE_HANDLER_CAPABILITY, null)) {
-      dbHandler = te.getCapability(CapabilityDatabaseHandler.DATABASE_HANDLER_CAPABILITY, null);
+    if (te != null && te.hasCapability(CapabilityDatabaseHandler.DATABASE_HANDLER_CAPABILITY, facingDir)) {
+      dbHandler = te.getCapability(CapabilityDatabaseHandler.DATABASE_HANDLER_CAPABILITY, facingDir);
     }
 
     if (dbHandler != null) {
