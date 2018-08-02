@@ -59,11 +59,13 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
     super.addConduit(con);
     Set<EnumFacing> externalDirs = con.getExternalConnections();
     for (EnumFacing dir : externalDirs) {
-      IPowerInterface pr = con.getExternalPowerReceptor(dir);
-      if (pr != null) {
-        TileEntity te = con.getBundle().getEntity();
-        BlockPos p = te.getPos().offset(dir);
-        powerReceptorAdded(con, dir, p.getX(), p.getY(), p.getZ(), pr);
+      if (dir != null) {
+        IPowerInterface pr = con.getExternalPowerReceptor(dir);
+        if (pr != null) {
+          TileEntity te = con.getBundle().getEntity();
+          BlockPos p = te.getPos().offset(dir);
+          powerReceptorAdded(con, dir, p.getX(), p.getY(), p.getZ(), pr);
+        }
       }
     }
     if (powerManager != null) {
@@ -73,9 +75,6 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
 
   public void powerReceptorAdded(@Nonnull IPowerConduit powerConduit, @Nonnull EnumFacing direction, int x, int y, int z,
       @Nonnull IPowerInterface powerReceptor) {
-    if (powerReceptor == null) {
-      return;
-    }
     BlockPos pos = new BlockPos(x, y, z);
     ReceptorKey key = new ReceptorKey(pos, direction);
     ReceptorEntry re = powerReceptors.get(key);
@@ -113,9 +112,9 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
 
   public static class ReceptorEntry {
 
-    IPowerConduit emmiter;
-    BlockPos pos;
-    EnumFacing direction;
+    final @Nonnull IPowerConduit emmiter;
+    final @Nonnull BlockPos pos;
+    final @Nonnull EnumFacing direction;
 
     IPowerInterface powerInterface;
 

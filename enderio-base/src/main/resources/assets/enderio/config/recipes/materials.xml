@@ -35,37 +35,11 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <recipe name="Compatibility: End Crystal" required="false">
-    <crafting>
-      <grid>
-        <item name="blockGlassColorless"/><item name="blockGlassColorless"/><item name="blockGlassColorless"/>
-        <item name="blockGlassColorless"/><item name="pearlEnderEye"/><item name="blockGlassColorless"/>
-        <item name="blockGlassColorless"/><item name="itemGhastTear"/><item name="blockGlassColorless"/>
-      </grid>
-      <output name="minecraft:end_crystal"/>
-    </crafting>
-  </recipe>
+  <recipe name="Compatibility: End Crystal" disabled="true" />
 
-  <recipe name="Compatibility: Beacon" required="false">
-    <crafting>
-      <grid>
-        <item name="blockGlassColorless"/><item name="blockGlassColorless"/><item name="blockGlassColorless"/>
-        <item name="blockGlassColorless"/><item name="netherStar"/><item name="blockGlassColorless"/>
-        <item name="oredict:obsidian"/><item name="oredict:obsidian"/><item name="oredict:obsidian"/>
-      </grid>
-      <output name="minecraft:beacon"/>
-    </crafting>
-  </recipe>
+  <recipe name="Compatibility: Beacon" disabled="true" />
 
-  <recipe name="Compatibility: Bottle" required="false">
-    <crafting>
-      <grid size="3x2">
-        <item name="blockGlassColorless"/><item /><item name="blockGlassColorless"/>
-        <item /><item name="blockGlassColorless"/><item />
-      </grid>
-      <output name="minecraft:glass_bottle" amount="3"/>
-    </crafting>
-  </recipe>
+  <recipe name="Compatibility: Bottle" disabled="true" />
 
   <recipe name="Compatibility: Glass Pane" required="false">
     <crafting>
@@ -77,16 +51,7 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <recipe name="Compatibility: Daylight Sensor" required="false">
-    <crafting>
-      <grid>
-        <item name="blockGlassColorless"/><item name="blockGlassColorless"/><item name="blockGlassColorless"/>
-        <item name="gemQuartz"/><item name="gemQuartz"/><item name="gemQuartz"/>
-        <item name="slabWood"/><item name="slabWood"/><item name="slabWood"/>
-      </grid>
-      <output name="minecraft:daylight_detector"/>
-    </crafting>
-  </recipe>
+  <recipe name="Compatibility: Daylight Sensor" disabled="true" />
 
   <recipe name="Binder Composite" required="true">
     <crafting>
@@ -241,7 +206,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid>
         <item name="enderio:block_end_iron_bars"/><item name="ingotEndSteel"/><item name="enderio:block_end_iron_bars"/>
-        <item name="ingotEndSteel"/><item name="CHASSIS"/><item name="ingotEndSteel"/>
+        <item name="ingotEndSteel"/><item name="POWDER_INFINITY"/><item name="ingotEndSteel"/>
         <item name="enderio:block_end_iron_bars"/><item name="ingotEndSteel"/><item name="enderio:block_end_iron_bars"/>
       </grid>
       <output name="END_STEEL_CHASSIS"/>
@@ -284,9 +249,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Soul Machine Dye">
     <crafting>
       <grid>
-        <item name="dustLapis"/><item name="POWDER_QUARTZ"/><item name="ORGANIC_BROWN_DYE"/>
+        <item name="dustSoularium"/><item name="POWDER_QUARTZ"/><item name="ORGANIC_BROWN_DYE"/>
         <item name="POWDER_QUARTZ"/><item name="ORGANIC_BLACK_DYE"/><item name="POWDER_QUARTZ"/>
-        <item name="ORGANIC_BROWN_DYE"/><item name="POWDER_QUARTZ"/><item name="dustLapis"/>
+        <item name="ORGANIC_BROWN_DYE"/><item name="POWDER_QUARTZ"/><item name="dustSoularium"/>
       </grid>
       <output name="dyeSoulMachine" amount="6"/>
     </crafting>
@@ -421,7 +386,26 @@ XML editor will display that as tooltips when editing this file.
       <output name="GEAR_VIBRANT"/>
     </casting>
   </recipe>
+  
+  <recipe name="Gear, Dark" required="true">
+    <crafting>
+      <grid>
+        <item name="DARK_STEEL_NUGGET"/><item name="DARK_STEEL_NUGGET"/><item name="DARK_STEEL_NUGGET"/>
+        <item name="DARK_STEEL_NUGGET"/><item name="GEAR_IRON"/><item name="DARK_STEEL_NUGGET"/>
+        <item name="DARK_STEEL_NUGGET"/><item name="DARK_STEEL_NUGGET"/><item name="DARK_STEEL_NUGGET"/>
+      </grid>
+      <output name="GEAR_DARKSTEEL"/>
+    </crafting>
+  </recipe>
 
+  <recipe name="Gear, Dark, Casting">
+    <casting>
+      <input name="DARK_STEEL_NUGGET" amount="8"/>
+      <cast name="GEAR_IRON" consumed="true"/>
+      <output name="GEAR_DARKSTEEL"/>
+    </casting>
+  </recipe>
+  
   <alias name="CAPACITOR_METAL" item="ingotCopper">
     <dependency item="ingotCopper" reverse="false"/>
   </alias>
@@ -497,6 +481,15 @@ XML editor will display that as tooltips when editing this file.
       <input name="minecraft:wool"/>
       <input name="INSULATION_METAL"/>
       <output name="INDUSTRIAL_INSULATION"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Nethercotta" required="true">
+    <alloying energy="20000" exp="1">
+      <input name="ingotBrickNether"/>
+      <input name="cropNetherWart" amount="4" />
+      <input name="oredict:itemClay" amount="6" />
+      <output name="ingotBrickNetherGlazed"/>
     </alloying>
   </recipe>
 

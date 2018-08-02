@@ -9,8 +9,6 @@ cache:
 before_cache:
     - rm -f $HOME/.gradle/caches/*/*.lock
 install:
-    - ./gradlew :enderio-base:assemble
-    - ./gradlew :enderio-machines:assemble
+    - ./gradlew assemble
 script:
-    - ./gradlew :enderio-base:check
-    - ./gradlew :enderio-machines:check
+    - ./gradlew check

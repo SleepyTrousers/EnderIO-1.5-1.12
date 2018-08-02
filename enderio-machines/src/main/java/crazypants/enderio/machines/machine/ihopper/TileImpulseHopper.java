@@ -16,6 +16,7 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.handlers.minecraft.HandleItemStack;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 
 @Storable
 public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity {
@@ -23,7 +24,7 @@ public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity {
   public static final String OUTPUT_SLOT = "OUTPUT";
   public static final String INPUT_SLOT = "INPUT";
   public static final int SLOTS = 6;
-  public static final int BASE_TICK_RATE = 20;
+  public static final double BASE_TICK_RATE = 20D;
 
   @Store
   private boolean isOutputLocked = false;
@@ -178,7 +179,7 @@ public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity {
   private boolean shouldDoWorkThisTick() {
     int impulseHopperSpeedScaled = CapacitorKey.IMPULSE_HOPPER_SPEED.get(getCapacitorData());
     if (impulseHopperSpeedScaled > 0) {
-      return shouldDoWorkThisTick(BASE_TICK_RATE / impulseHopperSpeedScaled);
+      return shouldDoWorkThisTick(MathHelper.ceil(BASE_TICK_RATE / impulseHopperSpeedScaled));
     }
     return false;
   }

@@ -188,10 +188,12 @@ public class DarkSteelController {
     }
   }
 
+  private static final float MAGIC_STEP_HEIGHT = 1.0023f;
+
   private static void updateStepHeightAndFallDistance(EntityPlayer player) {
-    if (!player.isSneaking() && JumpUpgrade.isEquipped(player) && isStepAssistActive(player)) {
-      player.stepHeight = 1.0023F;
-    } else if (player.stepHeight == 1.0023F) {
+    if (player.stepHeight < MAGIC_STEP_HEIGHT && !player.isSneaking() && JumpUpgrade.isEquipped(player) && isStepAssistActive(player)) {
+      player.stepHeight = MAGIC_STEP_HEIGHT;
+    } else if (player.stepHeight == MAGIC_STEP_HEIGHT) {
       player.stepHeight = 0.6F;
     }
   }

@@ -30,8 +30,8 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item /><item /><item name="ENDER_CRYSTAL" />
-        <item /><item name="DARK_STEEL" /><item />
-        <item name="DARK_STEEL" /><item /><item />
+        <item /><item name="itemInfinityRod" /><item />
+        <item name="itemInfinityRod" /><item /><item />
       </grid>
       <output name="enderio:item_travel_staff" />
     </crafting>
@@ -41,8 +41,8 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item /><item /><item name="PRECIENT_CRYSTAL" />
-        <item /><item name="DARK_STEEL" /><item />
-        <item name="DARK_STEEL" /><item /><item />
+        <item /><item name="itemInfinityRod" /><item />
+        <item name="itemInfinityRod" /><item /><item />
       </grid>
       <output name="enderio:item_staff_of_levity" />
     </crafting>
@@ -52,8 +52,8 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item /><item name="PULSATING_CRYSTAL"/><item name="ENDER_CRYSTAL" />
-        <item /><item name="ELECTRICAL_STEEL" /><item name="PULSATING_CRYSTAL"/>
-        <item name="ELECTRICAL_STEEL" /><item /><item />
+        <item /><item name="itemInfinityRod" /><item name="PULSATING_CRYSTAL"/>
+        <item name="itemInfinityRod" /><item /><item />
       </grid>
       <output name="enderio:item_rod_of_return" />
     </crafting>
@@ -91,6 +91,19 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_magnet" />
     </crafting>
   </recipe>
+
+  <recipe name="Inventory Charger, Simple" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="DARK_STEEL_NUGGET" /><item name="CONDUCTIVE_IRON" /><item name="DARK_STEEL_NUGGET" />
+        <item name="CONDUCTIVE_IRON" /><item name="CAPACITOR1" /><item name="CONDUCTIVE_IRON" />
+        <item name="DARK_STEEL_NUGGET" /><item name="CONDUCTIVE_IRON" /><item name="DARK_STEEL_NUGGET" />
+      </grid>
+      <output name="enderio:item_inventory_charger_simple" />
+    </crafting>
+  </recipe>
+  
+  <!-- The other inventory changers are in powertools.xml -->
 
   <recipe name="Dark Steel Helmet" required="true">
     <crafting>
@@ -204,6 +217,28 @@ XML editor will display that as tooltips when editing this file.
         <item name="DARK_STEEL" /><item />
       </grid>
       <output name="enderio:item_dark_steel_shears" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Treetap, IC2" required="false">
+    <crafting>
+      <grid>
+        <item /><item name="GEAR_DARKSTEEL" /><item />
+        <item name="DARK_STEEL" /><item name="ic2:treetap" /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL_NUGGET" /><item /><item name="DARK_STEEL_NUGGET" />
+      </grid>
+      <output name="enderio:item_dark_steel_treetap" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Treetap, TR" required="false">
+    <crafting>
+      <grid>
+        <item /><item name="GEAR_DARKSTEEL" /><item />
+        <item name="DARK_STEEL" /><item name="techreborn:treetap" /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL_NUGGET" /><item /><item name="DARK_STEEL_NUGGET" />
+      </grid>
+      <output name="enderio:item_dark_steel_treetap" />
     </crafting>
   </recipe>
 

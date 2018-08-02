@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.Path;
@@ -13,7 +14,7 @@ import net.minecraft.world.World;
 public class EntityAIAttackOnCollideAggressive extends EntityAIBase {
 
   World worldObj;
-  EntityCreature attacker;
+  EntityLiving attacker;
 
   int ticksToNextAttack;
   double speedTowardsTarget;
@@ -29,12 +30,12 @@ public class EntityAIAttackOnCollideAggressive extends EntityAIBase {
 
   private int attackFrequency = 20;
 
-  public EntityAIAttackOnCollideAggressive(EntityCreature attacker, Class<?> targetClass, double attackSpeed, boolean longMemory) {
+  public EntityAIAttackOnCollideAggressive(EntityLiving attacker, Class<?> targetClass, double attackSpeed, boolean longMemory) {
     this(attacker, attackSpeed, longMemory);
     classTarget = targetClass;
   }
 
-  public EntityAIAttackOnCollideAggressive(EntityCreature attacker, double attackSpeed, boolean longMemory) {
+  public EntityAIAttackOnCollideAggressive(EntityLiving attacker, double attackSpeed, boolean longMemory) {
     this.attacker = attacker;
     worldObj = attacker.world;
     speedTowardsTarget = attackSpeed;
@@ -82,7 +83,9 @@ public class EntityAIAttackOnCollideAggressive extends EntityAIBase {
   public boolean shouldContinueExecuting() {
     EntityLivingBase entitylivingbase = attacker.getAttackTarget();
     return entitylivingbase == null ? false
-        : (!entitylivingbase.isEntityAlive() ? false : (!longMemory ? !attacker.getNavigator().noPath() : attacker.isWithinHomeDistanceCurrentPosition()));
+        : (!entitylivingbase.isEntityAlive() ? false
+            : (!longMemory ? !attacker.getNavigator().noPath()
+                : attacker instanceof EntityCreature ? ((EntityCreature) attacker).isWithinHomeDistanceCurrentPosition() : true));
   }
 
   @Override

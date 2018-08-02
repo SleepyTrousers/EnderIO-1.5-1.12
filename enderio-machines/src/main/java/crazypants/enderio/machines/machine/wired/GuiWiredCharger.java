@@ -16,8 +16,13 @@ public class GuiWiredCharger extends GuiInventoryMachineBase<TileWiredCharger> {
 
   public static final @Nonnull ResourceLocation baublesBackground = new ResourceLocation("baubles", "textures/gui/expanded_inventory.png");
 
+  private final boolean isSimple;
+
   public GuiWiredCharger(@Nonnull InventoryPlayer playerInv, @Nonnull TileWiredCharger te, int baubleSlots) {
-    super(te, ContainerWiredCharger.create(playerInv, te, baubleSlots), "wired_charger", "wired_charger_baubles");
+    super(te, ContainerWiredCharger.create(playerInv, te, baubleSlots), "wired_charger", "wired_charger_baubles", "wired_charger_simple",
+        "wired_charger_simple_baubles");
+
+    isSimple = te instanceof TileWiredCharger.Simple;
 
     xSize = 218;
 
@@ -40,9 +45,9 @@ public class GuiWiredCharger extends GuiInventoryMachineBase<TileWiredCharger> {
     int sy = (height - ySize) / 2;
 
     if (container.hasBaublesSlots()) {
-      bindGuiTexture(1);
+      bindGuiTexture(1 + (isSimple ? 2 : 0));
     } else {
-      bindGuiTexture();
+      bindGuiTexture(isSimple ? 2 : 0);
     }
 
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);

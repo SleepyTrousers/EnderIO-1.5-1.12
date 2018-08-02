@@ -4,13 +4,13 @@ import java.util.Locale;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.IModObject;
+import crazypants.enderio.api.capacitor.CapacitorKeyType;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
+import crazypants.enderio.api.capacitor.Scaler;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capacitor.CapacitorHelper.SetType;
-import crazypants.enderio.base.capacitor.CapacitorKeyType;
-import crazypants.enderio.base.capacitor.ICapacitorData;
-import crazypants.enderio.base.capacitor.ICapacitorKey;
-import crazypants.enderio.base.capacitor.Scaler;
-import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.base.capacitor.ScalerFactory;
 import crazypants.enderio.base.loot.WeightedUpgrade;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.init.MachineObject;
@@ -34,6 +34,8 @@ public enum CapacitorKey implements ICapacitorKey {
   ENHANCED_ALLOY_SMELTER_POWER_INTAKE(MachineObject.block_enhanced_alloy_smelter, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   ENHANCED_ALLOY_SMELTER_POWER_BUFFER(MachineObject.block_enhanced_alloy_smelter, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   ENHANCED_ALLOY_SMELTER_POWER_USE(MachineObject.block_enhanced_alloy_smelter, CapacitorKeyType.ENERGY_USE, "use"),
+  ENHANCED_ALLOY_SMELTER_POWER_EFFICIENCY(MachineObject.block_enhanced_alloy_smelter, CapacitorKeyType.ENERGY_BUFFER, "efficiency"),
+  ENHANCED_ALLOY_SMELTER_DOUBLE_OP_CHANCE(MachineObject.block_enhanced_alloy_smelter, CapacitorKeyType.AMOUNT, "double_op_chance"),
 
   CREATIVE_BUFFER_POWER_INTAKE(MachineObject.block_buffer, CapacitorKeyType.ENERGY_INTAKE, "intake_creative"),
   CREATIVE_BUFFER_POWER_BUFFER(MachineObject.block_buffer, CapacitorKeyType.ENERGY_BUFFER, "buffer_creative"),
@@ -49,6 +51,7 @@ public enum CapacitorKey implements ICapacitorKey {
   FARM_BASE_SIZE(MachineObject.block_farm_station, CapacitorKeyType.AREA, "base_size"),
   FARM_BONUS_SIZE(MachineObject.block_farm_station, CapacitorKeyType.AREA, "bonus_size"),
   FARM_STACK_LIMIT(MachineObject.block_farm_station, CapacitorKeyType.AMOUNT, "stacksize_limit"),
+  FARM_BOOST(MachineObject.block_farm_station, CapacitorKeyType.AMOUNT, "boost"),
 
   COMBUSTION_POWER_LOSS(MachineObject.block_combustion_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),
   COMBUSTION_POWER_BUFFER(MachineObject.block_combustion_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
@@ -58,12 +61,12 @@ public enum CapacitorKey implements ICapacitorKey {
   ENHANCED_COMBUSTION_POWER_LOSS(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),
   ENHANCED_COMBUSTION_POWER_BUFFER(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   ENHANCED_COMBUSTION_POWER_GEN(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_GEN, "gen"),
-  ENHANCED_COMBUSTION_POWER_EFFICIENCY(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.AMOUNT, "efficiency"),
+  ENHANCED_COMBUSTION_POWER_EFFICIENCY(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_EFFICIENCY, "efficiency"),
 
   STIRLING_POWER_LOSS(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),
   STIRLING_POWER_BUFFER(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   STIRLING_POWER_GEN(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_GEN, "gen"),
-  STIRLING_POWER_TIME(MachineObject.block_stirling_generator, CapacitorKeyType.SPEED, "burntime"),
+  STIRLING_POWER_EFFICIENCY(MachineObject.block_stirling_generator, CapacitorKeyType.SPEED, "efficiency"),
 
   SIMPLE_STIRLING_POWER_LOSS(MachineObject.block_simple_stirling_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),
   SIMPLE_STIRLING_POWER_BUFFER(MachineObject.block_simple_stirling_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
@@ -122,6 +125,8 @@ public enum CapacitorKey implements ICapacitorKey {
   ENHANCED_SAG_MILL_POWER_INTAKE(MachineObject.block_enhanced_sag_mill, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   ENHANCED_SAG_MILL_POWER_BUFFER(MachineObject.block_enhanced_sag_mill, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   ENHANCED_SAG_MILL_POWER_USE(MachineObject.block_enhanced_sag_mill, CapacitorKeyType.ENERGY_USE, "use"),
+  ENHANCED_SAG_MILL_POWER_EFFICIENCY(MachineObject.block_enhanced_sag_mill, CapacitorKeyType.ENERGY_EFFICIENCY, "efficiency"),
+  ENHANCED_SAG_MILL_DOUBLE_OP_CHANCE(MachineObject.block_enhanced_sag_mill, CapacitorKeyType.AMOUNT, "double_op_chance"),
 
   SLICE_POWER_INTAKE(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   SLICE_POWER_BUFFER(MachineObject.block_slice_and_splice, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
@@ -148,6 +153,8 @@ public enum CapacitorKey implements ICapacitorKey {
   ENHANCED_VAT_POWER_INTAKE(MachineObject.block_enhanced_vat, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   ENHANCED_VAT_POWER_BUFFER(MachineObject.block_enhanced_vat, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   ENHANCED_VAT_POWER_USE(MachineObject.block_enhanced_vat, CapacitorKeyType.ENERGY_USE, "use"),
+  ENHANCED_VAT_POWER_EFFICIENCY(MachineObject.block_enhanced_vat, CapacitorKeyType.ENERGY_EFFICIENCY, "efficiency"),
+  ENHANCED_VAT_DOUBLE_OP_CHANCE(MachineObject.block_enhanced_vat, CapacitorKeyType.AMOUNT, "double_op_chance"),
 
   WIRED_POWER_INTAKE(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   WIRED_POWER_BUFFER(MachineObject.block_wired_charger, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
@@ -156,6 +163,11 @@ public enum CapacitorKey implements ICapacitorKey {
   ENHANCED_WIRED_POWER_INTAKE(MachineObject.block_enhanced_wired_charger, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   ENHANCED_WIRED_POWER_BUFFER(MachineObject.block_enhanced_wired_charger, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   ENHANCED_WIRED_POWER_CHARGE(MachineObject.block_enhanced_wired_charger, CapacitorKeyType.ENERGY_USE, "charge"),
+
+  SIMPLE_WIRED_POWER_INTAKE(MachineObject.block_simple_wired_charger, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  SIMPLE_WIRED_POWER_BUFFER(MachineObject.block_simple_wired_charger, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  SIMPLE_WIRED_POWER_USE(MachineObject.block_simple_wired_charger, CapacitorKeyType.ENERGY_USE, "use"),
+  SIMPLE_WIRED_POWER_LOSS(MachineObject.block_simple_wired_charger, CapacitorKeyType.ENERGY_LOSS, "loss"),
 
   WIRELESS_POWER_INTAKE(MachineObject.block_wireless_charger, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   WIRELESS_POWER_BUFFER(MachineObject.block_wireless_charger, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
@@ -200,7 +212,7 @@ public enum CapacitorKey implements ICapacitorKey {
   private final @Nonnull IModObject owner;
   private final @Nonnull CapacitorKeyType valueType;
 
-  private @Nonnull Scaler scaler = Scaler.Factory.INVALID;
+  private @Nonnull Scaler scaler = ScalerFactory.INVALID;
   private int baseValue = Integer.MIN_VALUE;
 
   private CapacitorKey(@Nonnull IModObject owner, @Nonnull CapacitorKeyType valueType, @Nonnull String shortname) {
@@ -211,13 +223,13 @@ public enum CapacitorKey implements ICapacitorKey {
   }
 
   @Override
-  public int get(@Nonnull ICapacitorData capacitor) {
-    return (int) (baseValue * scaler.scaleValue(capacitor.getUnscaledValue(this)));
+  public float getFloat(float level) {
+    return baseValue * scaler.scaleValue(level);
   }
-
+  
   @Override
-  public float getFloat(@Nonnull ICapacitorData capacitor) {
-    return baseValue * scaler.scaleValue(capacitor.getUnscaledValue(this));
+  public int getBaseValue() {
+    return baseValue;
   }
 
   @Override
@@ -247,7 +259,7 @@ public enum CapacitorKey implements ICapacitorKey {
 
   @Override
   public void validate() {
-    if (scaler == Scaler.Factory.INVALID || baseValue == Integer.MIN_VALUE) {
+    if (scaler == ScalerFactory.INVALID || baseValue == Integer.MIN_VALUE) {
       throw new RuntimeException(
           "CapacitorKey " + getRegistryName() + " has not been configured. This should not be possible and may be caused by a 3rd-party addon mod.");
     }

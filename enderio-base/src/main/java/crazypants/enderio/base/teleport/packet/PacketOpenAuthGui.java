@@ -1,6 +1,6 @@
 package crazypants.enderio.base.teleport.packet;
 
-import crazypants.enderio.base.init.IModObject.Registerable;
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.math.BlockPos;
@@ -35,7 +35,7 @@ public class PacketOpenAuthGui implements IMessage {
 
     @Override
     public IMessage onMessage(PacketOpenAuthGui message, MessageContext ctx) {
-      Registerable mo = ModObjectRegistry.getModObject(ctx.getServerHandler().player.world.getBlockState(BlockPos.fromLong(message.pos)).getBlock());
+      IModObject mo = ModObjectRegistry.getModObject(ctx.getServerHandler().player.world.getBlockState(BlockPos.fromLong(message.pos)).getBlock());
       if (mo != null) {
         mo.openGui(ctx.getServerHandler().player.world, BlockPos.fromLong(message.pos), ctx.getServerHandler().player, null, GUI_ID_TRAVEL_AUTH);
       }

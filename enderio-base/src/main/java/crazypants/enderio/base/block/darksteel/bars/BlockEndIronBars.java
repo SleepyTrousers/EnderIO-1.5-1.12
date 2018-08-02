@@ -2,8 +2,8 @@ package crazypants.enderio.base.block.darksteel.bars;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IDefaultRenderers;
 import net.minecraft.block.BlockPane;
 import net.minecraft.block.SoundType;

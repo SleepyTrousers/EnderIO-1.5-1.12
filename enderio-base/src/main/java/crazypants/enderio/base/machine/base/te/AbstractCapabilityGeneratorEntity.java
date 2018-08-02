@@ -4,8 +4,8 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.inventory.EnderInventory;
 
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.CapacitorKey;
-import crazypants.enderio.base.capacitor.ICapacitorKey;
 
 public abstract class AbstractCapabilityGeneratorEntity extends AbstractCapabilityPoweredMachineEntity {
 

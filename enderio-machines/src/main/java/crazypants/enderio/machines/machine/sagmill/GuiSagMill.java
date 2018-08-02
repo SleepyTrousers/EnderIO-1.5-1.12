@@ -7,11 +7,15 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.common.vecmath.Vector4f;
 
+import crazypants.enderio.base.lang.Lang;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
+import crazypants.enderio.base.recipe.sagmill.IGrindingMultiplier;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.util.text.TextFormatting;
 
 public class GuiSagMill extends GuiInventoryMachineBase<TileSagMill> {
 
@@ -26,7 +30,14 @@ public class GuiSagMill extends GuiInventoryMachineBase<TileSagMill> {
         @Override
         protected void updateText() {
           text.clear();
-          text.add(getTileEntity().getBallDurationScaled(100) + "%");
+          final IGrindingMultiplier ball = getTileEntity().grindingBall;
+          if (ball != null) {
+            text.add(Lang.GRINDING_BALL_DURABILITY.get(getTileEntity().getBallDurationScaled(100)));
+            text.add(Lang.GRINDING_BALL_1.get(TextFormatting.BLUE));
+            text.add(Lang.GRINDING_BALL_2.get(TextFormatting.GRAY, LangPower.toPercent(ball.getGrindingMultiplier())));
+            text.add(Lang.GRINDING_BALL_3.get(TextFormatting.GRAY, LangPower.toPercent(ball.getChanceMultiplier())));
+            text.add(Lang.GRINDING_BALL_4.get(TextFormatting.GRAY, LangPower.toPercent(ball.getPowerMultiplier())));
+          }
         }
       });
     }

@@ -6,8 +6,9 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
-import crazypants.enderio.base.material.material.Material;
+import crazypants.enderio.base.handler.darksteel.SwordHandler;
 import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.config.ZooConfig;
 import crazypants.enderio.zoo.entity.ai.AIFindPlayer;
@@ -46,6 +47,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
@@ -61,6 +63,7 @@ public class EntityEnderminy extends EntityMob implements IEnderZooMob {
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
+    LootTableList.register(new ResourceLocation(EnderIOZoo.DOMAIN, NAME));
     IEnderZooMob.register(event, NAME, EntityEnderminy.class, EGG_BG_COL, EGG_FG_COL, MobID.EMINIY);
   }
 
@@ -289,31 +292,14 @@ public class EntityEnderminy extends EntityMob implements IEnderZooMob {
 
   @Override
   protected Item getDropItem() {
+    // unused, see loot table
     return Items.ENDER_PEARL;
   }
 
   @Override
   @Nullable
   protected ResourceLocation getLootTable() {
-    return null; // use getDropItem() instead
-  }
-
-  @Override
-  protected void dropFewItems(boolean hitByPlayer, int looting) {
-    Item item = getDropItem();
-    if (item != null) {
-      int numItems = rand.nextInt(2 + looting);
-      for (int i = 0; i < numItems; ++i) {
-        if (rand.nextFloat() <= 0.5) {
-          entityDropItem(getDropItemStack(), 0);
-        }
-        dropItem(item, 1);
-      }
-    }
-  }
-
-  protected @Nonnull ItemStack getDropItemStack() {
-    return Material.SHARD_ENDER.getStack();
+    return new ResourceLocation(EnderIOZoo.DOMAIN, NAME);
   }
 
   /**
@@ -339,13 +325,12 @@ public class EntityEnderminy extends EntityMob implements IEnderZooMob {
     }
 
     boolean res = super.attackEntityFrom(damageSource, p_70097_2_);
-    if (damageSource instanceof EntityDamageSource && damageSource.getTrueSource() instanceof EntityPlayer && getHealth() > 0
-    // && !ItemDarkSteelSword.isEquippedAndPowered((EntityPlayer) damageSource.getEntity(), 1)) {
-    ) {
+    if (damageSource instanceof EntityDamageSource && damageSource.getTrueSource() instanceof EntityPlayer && getHealth() > 0) {
+      boolean skipTeleport = SwordHandler.isEquippedAndPowered((EntityPlayer) damageSource.getTrueSource(), Config.darkSteelSwordPowerUsePerHit);
       isAggressive = true;
       if (rand.nextInt(3) == 0) {
         for (int i = 0; i < 64; ++i) {
-          if (teleportRandomly(16)) {
+          if (skipTeleport || teleportRandomly(16)) {
             setAttackTarget((EntityPlayer) damageSource.getTrueSource());
             doGroupArgo();
             return true;

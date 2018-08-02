@@ -8,10 +8,11 @@ import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
+import crazypants.enderio.api.capacitor.ICapacitorData;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.CapacitorHelper;
+import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
-import crazypants.enderio.base.capacitor.ICapacitorData;
-import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.gui.IPowerBarData;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.ILegacyPoweredTile;
@@ -29,10 +30,12 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   private @Nonnull ICapacitorData capacitorData = DefaultCapacitorData.NONE;
   protected final @Nonnull ICapacitorKey maxEnergyRecieved, maxEnergyStored, maxEnergyUsed;
   private ICapacitorKey energyLoss = null;
+  private @Nonnull ICapacitorKey energyEfficiency = CapacitorKey.LEGACY_ENERGY_EFFICIENCY;
 
   @Store({ NBTAction.SAVE, NBTAction.CLIENT })
   // Not NBTAction.ITEM to keep the storedEnergy tag out in the open
   private int storedEnergyRF;
+  private float partialEnergyLoss = 0f; // no need to store this
   protected float lastSyncPowerStored = -1;
 
   @Store({ NBTAction.SAVE, NBTAction.CLIENT })
@@ -77,8 +80,9 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
     }
   }
 
-  public int getPowerLossPerTick() {
-    return energyLoss != null ? energyLoss.get(getCapacitorData()) : 0;
+  @Override
+  public float getPowerLossPerTick() {
+    return energyLoss != null ? energyLoss.getFloat(getCapacitorData()) : 0;
   }
 
   // RF API Power
@@ -137,7 +141,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   }
 
   public int getPowerUsePerTick() {
-    return maxEnergyUsed.get(getCapacitorData());
+    return getMaxUsage(maxEnergyUsed);
   }
 
   @Override
@@ -220,9 +224,25 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
   }
 
   // extra method because task machines use usePower() to advance their tasks
-  protected int losePower(int wantToUse) {
-    int used = Math.min(getEnergyStored(), wantToUse);
-    setEnergyStored(Math.max(0, getEnergyStored() - used));
+  protected float losePower(float wantToUse) {
+    if (wantToUse < 1) {
+      if (partialEnergyLoss < wantToUse) {
+        if (getEnergyStored() > 0) {
+          setEnergyStored(Math.max(0, getEnergyStored() - 1));
+          partialEnergyLoss++;
+        } else {
+          partialEnergyLoss = 0;
+          return 0;
+        }
+      }
+      partialEnergyLoss -= wantToUse;
+      return wantToUse;
+    }
+
+    int used = (int) Math.min(getEnergyStored(), wantToUse);
+    if (used > 0) {
+      setEnergyStored(Math.max(0, getEnergyStored() - used));
+    }
     return used;
   }
 
@@ -241,6 +261,14 @@ public abstract class AbstractPoweredMachineEntity extends AbstractInventoryMach
 
   public int getMaxUsage(@Nonnull ICapacitorKey key) {
     return key.get(capacitorData);
+  }
+
+  protected float getEfficiencyMultiplier() {
+    return energyEfficiency.getFloat(getCapacitorData());
+  }
+
+  protected void setEfficiencyMultiplier(@Nonnull ICapacitorKey key) {
+    energyEfficiency = key;
   }
 
 }

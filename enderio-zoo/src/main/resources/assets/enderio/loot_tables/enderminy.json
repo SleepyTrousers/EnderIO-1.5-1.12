@@ -1,0 +1,55 @@
+{
+  "pools": [
+    {
+      "name": "ecc8eb78-190b-49cd-b0dc-f02504c73564",
+      "rolls": 1,
+      "entries": [
+        {
+          "entryName": "c36c59cd-3b81-4e23-9dad-c96c1f2ab16d",
+          "type": "item",
+          "name": "enderio:item_material",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 2
+              }
+            },
+            {
+              "function": "looting_enchant",
+              "count": {
+                "min": 0,
+                "max": 2
+              }
+            },
+            {
+              "function": "minecraft:set_data",
+              "data": 62
+            }
+          ]
+        },
+        {
+          "entryName": "3449798f-53d2-4355-aad4-5ddd45684d87",
+          "type": "item",
+          "name": "minecraft:ender_pearl",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            },
+            {
+              "function": "looting_enchant",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

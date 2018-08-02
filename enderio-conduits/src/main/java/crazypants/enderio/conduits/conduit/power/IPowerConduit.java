@@ -12,11 +12,11 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public interface IPowerConduit extends IEnergyStorage, IExtractor, IServerConduit, IClientConduit {
 
-  public static final String ICON_KEY = "blocks/power_conduit";
-  public static final String ICON_KEY_INPUT = "blocks/power_conduit_input";
-  public static final String ICON_KEY_OUTPUT = "blocks/power_conduit_output";
-  public static final String ICON_CORE_KEY = "blocks/power_conduit_core";
-  public static final String ICON_TRANSMISSION_KEY = "blocks/power_conduit_transmission";
+  public static final @Nonnull String ICON_KEY = "blocks/power_conduit";
+  public static final @Nonnull String ICON_KEY_INPUT = "blocks/power_conduit_input";
+  public static final @Nonnull String ICON_KEY_OUTPUT = "blocks/power_conduit_output";
+  public static final @Nonnull String ICON_CORE_KEY = "blocks/power_conduit_core";
+  public static final @Nonnull String ICON_TRANSMISSION_KEY = "blocks/power_conduit_transmission";
 
   public static final String COLOR_CONTROLLER_ID = "ColorController";
 

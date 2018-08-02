@@ -3,7 +3,7 @@ package crazypants.enderio.machines.machine.crafter;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
@@ -65,7 +65,7 @@ public class BlockCrafter<T extends TileCrafter> extends AbstractMachineBlock<T>
   @Nullable
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1,
       @Nonnull T te) {
-    return new GuiCrafter<T>(player.inventory, te);
+    return new GuiCrafter(player.inventory, te);
   }
 
   @Override

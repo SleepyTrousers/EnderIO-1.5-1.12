@@ -1,2 +1,13 @@
 # Conduits
 enderio.item_refined_storage_conduit.name=Refined Storage Conduit
+item.item_rs_crafting_upgrade.name=Refined Storage Crafting Upgrade
+item.item_rs_crafting_speed_upgrade.name=Refined Storage Crafting Speed Upgrade
+item.item_rs_crafting_speed_downgrade.name=Refined Storage Crafting Speed Downgrade
+
+enderio.gui.rs_filter_upgrade_in=Importer Filter
+enderio.gui.rs_filter_upgrade_in2=Place a filter in this slot to
+enderio.gui.rs_filter_upgrade_in3=enable importing to Refined Storage
+
+enderio.gui.rs_filter_upgrade_out=Exporter Filter
+enderio.gui.rs_filter_upgrade_out2=Place a filter in this slot to
+enderio.gui.rs_filter_upgrade_out3=enable exporting from Refined Storage

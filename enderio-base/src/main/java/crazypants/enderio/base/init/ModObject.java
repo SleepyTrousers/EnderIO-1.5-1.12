@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.IModTileEntity;
 import crazypants.enderio.base.block.charge.BlockConcussionCharge;
 import crazypants.enderio.base.block.charge.BlockConfusionCharge;
 import crazypants.enderio.base.block.charge.BlockEnderCharge;
@@ -60,6 +61,8 @@ import crazypants.enderio.base.item.darksteel.ItemDarkSteelBow;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelPickaxe;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelShears;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelSword;
+import crazypants.enderio.base.item.darksteel.ItemDarkSteelTreetap;
+import crazypants.enderio.base.item.darksteel.ItemInventoryCharger;
 import crazypants.enderio.base.item.eggs.ItemOwlEgg;
 import crazypants.enderio.base.item.enderface.ItemEnderface;
 import crazypants.enderio.base.item.magnet.ItemMagnet;
@@ -81,7 +84,7 @@ import crazypants.enderio.base.render.dummy.BlockMachineIO;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
-public enum ModObject implements IModObject.Registerable {
+public enum ModObject implements IModObjectBase {
 
   // Dummies
   block_machine_io(BlockMachineIO.class),
@@ -214,6 +217,11 @@ public enum ModObject implements IModObject.Registerable {
   itemDarkSteelAxe(ItemDarkSteelAxe.class, "createDarkSteel"),
   itemDarkSteelBow(ItemDarkSteelBow.class, "createDarkSteel"),
   itemDarkSteelShears(ItemDarkSteelShears.class),
+  itemDarkSteelTreetap(ItemDarkSteelTreetap.class),
+  itemInventoryChargerSimple(ItemInventoryCharger.class, "createSimple"),
+  itemInventoryChargerBasic(ItemInventoryCharger.class, "createBasic"),
+  itemInventoryCharger(ItemInventoryCharger.class),
+  itemInventoryChargerVibrant(ItemInventoryCharger.class, "createVibrant"),
   itemEndSteelSword(ItemDarkSteelSword.class, "createEndSteel"),
   itemEndSteelPickaxe(ItemDarkSteelPickaxe.class, "createEndSteel"),
   itemEndSteelAxe(ItemDarkSteelAxe.class, "createEndSteel"),

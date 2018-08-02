@@ -10,9 +10,9 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.init.IModObject.Registerable;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.ICustomItemResourceLocation;
@@ -101,7 +101,7 @@ public class SmartModelAttacher {
   public static void registerBlockItemModels() {
     for (RegistrationHolder<?, ?> holder : blocks) {
       Block block = holder.block;
-      Registerable modObject = ModObjectRegistry.getModObject(holder.block);
+      IModObject modObject = ModObjectRegistry.getModObject(holder.block);
       if (modObject == null) {
         Log.debug("Block " + block + " has no modObject. What?");
       } else {

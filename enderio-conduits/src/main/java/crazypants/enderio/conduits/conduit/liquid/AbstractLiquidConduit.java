@@ -19,7 +19,6 @@ import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
-import crazypants.enderio.conduits.gui.GuiExternalConnection;
 import crazypants.enderio.conduits.gui.LiquidSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -134,7 +133,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   @Override
   protected void readTypeSettings(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
     setExtractionSignalColor(dir, DyeColor.values()[dataRoot.getShort("extractionSignalColor")]);
-    setExtractionRedstoneMode(RedstoneControlMode.values()[dataRoot.getShort("extractionRedstoneMode")], dir);
+    setExtractionRedstoneMode(RedstoneControlMode.fromOrdinal(dataRoot.getShort("extractionRedstoneMode")), dir);
   }
 
   @Override
@@ -189,7 +188,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   @Nonnull
   @Override
   public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con) {
-    return new LiquidSettings((GuiExternalConnection) gui, con);
+    return new LiquidSettings(gui, con);
   }
 
   @Override
@@ -210,7 +209,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return facing == null || getExternalConnections().contains(facing);
+      return getExternalConnections().contains(facing);
     }
     return false;
   }
@@ -226,11 +225,12 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   @Override
+  @Nullable
   public IFluidHandler getFluidDir(@Nullable EnumFacing dir) {
     if (dir != null) {
       return new ConnectionLiquidSide(dir);
     }
-    return this;
+    return null;
   }
 
   @Override

@@ -11,9 +11,8 @@ import com.enderio.core.common.util.NNList;
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
+import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.conduits.refinedstorage.init.ConduitRefinedStorageObject;
-import net.minecraft.block.Block;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -21,14 +20,15 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkCheckHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Mod(modid = EnderIOConduitsRefinedStorage.MODID, name = EnderIOConduitsRefinedStorage.MOD_NAME, version = EnderIOConduitsRefinedStorage.VERSION, dependencies = EnderIOConduitsRefinedStorage.DEPENDENCIES)
-@EventBusSubscriber
+import static crazypants.enderio.conduits.refinedstorage.EnderIOConduitsRefinedStorage.MODID;
+
+@Mod(modid = MODID, name = EnderIOConduitsRefinedStorage.MOD_NAME, version = EnderIOConduitsRefinedStorage.VERSION, dependencies = EnderIOConduitsRefinedStorage.DEPENDENCIES)
+@EventBusSubscriber(modid = MODID)
 public class EnderIOConduitsRefinedStorage implements IEnderIOAddon {
 
   @NetworkCheckHandler
@@ -75,8 +75,8 @@ public class EnderIOConduitsRefinedStorage implements IEnderIOAddon {
     }
   }
 
-  @SubscribeEvent(priority = EventPriority.HIGHEST)
-  public static void registerConduits(@Nonnull RegistryEvent.Register<Block> event) {
+  @SubscribeEvent
+  public static void registerBlocksEarly(@Nonnull RegisterModObject event) {
     if (isLoaded()) {
       ConduitRefinedStorageObject.registerBlocksEarly(event);
     }

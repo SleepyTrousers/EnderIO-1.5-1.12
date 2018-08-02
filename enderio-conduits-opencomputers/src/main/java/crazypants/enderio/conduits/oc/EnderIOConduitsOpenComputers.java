@@ -11,19 +11,17 @@ import com.enderio.core.common.util.NNList;
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
+import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.conduits.conduit.TileConduitBundle;
 import crazypants.enderio.conduits.oc.init.ConduitOpenComputersObject;
 import crazypants.enderio.conduits.oc.network.PacketHandler;
 import li.cil.oc.api.network.Environment;
-import net.minecraft.block.Block;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkCheckHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -80,8 +78,8 @@ public class EnderIOConduitsOpenComputers implements IEnderIOAddon {
     }
   }
 
-  @SubscribeEvent(priority = EventPriority.HIGHEST)
-  public static void registerConduits(@Nonnull RegistryEvent.Register<Block> event) {
+  @SubscribeEvent
+  public static void registerConduits(@Nonnull RegisterModObject event) {
     if (OCUtil.isOCEnabled()) {
       ConduitOpenComputersObject.registerBlocksEarly(event);
     }

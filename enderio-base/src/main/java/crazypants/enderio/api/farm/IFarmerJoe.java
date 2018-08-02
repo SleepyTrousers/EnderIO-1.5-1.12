@@ -32,6 +32,11 @@ public interface IFarmerJoe extends IForgeRegistryEntry<IFarmerJoe> {
    */
   boolean canPlant(@Nonnull ItemStack stack);
 
+  @Deprecated // TODO 1.13: remove
+  default boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+    return tryPrepareBlock(farm, pos, state) != IFarmerJoe.Result.NEXT;
+  }
+
   /**
    * This will be called whenever the Farming Station encounters a block that is empty (air or replaceable).
    * <p>
@@ -43,10 +48,27 @@ public interface IFarmerJoe extends IForgeRegistryEntry<IFarmerJoe> {
    *          The location to work on.
    * @param state
    *          The blockstate at that location.
-   * @return True if this handler wants to handle this location. Doesn't mean that it actually did something, just that no other handler will get the chance to
-   *         do so.
+   * @return ACTION if this handler wants to handle this location. CLAIM if it didn't actually do something, just wants no other handler to mess with this
+   *         location. NEXT to give the next handler a try.
    */
-  boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull IBlockState state);
+  default IFarmerJoe.Result tryPrepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+    return prepareBlock(farm, pos, state) ? IFarmerJoe.Result.ACTION : IFarmerJoe.Result.NEXT;
+  }
+
+  public enum Result {
+    /**
+     * The Handler did something. Fire particle effects etc.
+     */
+    ACTION,
+    /**
+     * The Handler claims that location. Skip all other handlers.
+     */
+    CLAIM,
+    /**
+     * The Handler won't handle that location, skip to the next one.
+     */
+    NEXT;
+  }
 
   /**
    * This will be called whenever the Farming Station encounters a block that is not empty.

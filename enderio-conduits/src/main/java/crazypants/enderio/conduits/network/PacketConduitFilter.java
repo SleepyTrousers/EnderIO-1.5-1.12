@@ -28,8 +28,8 @@ public class PacketConduitFilter<T extends IConduit> extends AbstractConduitPack
     super(con);
     this.dir = dir;
 
-    if (con.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir)) {
-      IFilterHolder<IFilter> filterHolder = con.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
+    if (con.hasInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir)) {
+      IFilterHolder<IFilter> filterHolder = con.getInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
       inputFilter = filterHolder.getFilter(filterHolder.getInputFilterIndex(), dir.ordinal());
       outputFilter = filterHolder.getFilter(filterHolder.getOutputFilterIndex(), dir.ordinal());
     }
@@ -76,8 +76,8 @@ public class PacketConduitFilter<T extends IConduit> extends AbstractConduitPack
     }
 
     private void applyFilter(EnumFacing dir, IConduit conduit, IFilter filter, boolean isInput) {
-      if (conduit.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir)) {
-        IFilterHolder<IFilter> filterHolder = conduit.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
+      if (conduit.hasInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir)) {
+        IFilterHolder<IFilter> filterHolder = conduit.getInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
         if (isInput) {
           filterHolder.setFilter(filterHolder.getInputFilterIndex(), dir.ordinal(), filter);
         } else {

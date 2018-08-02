@@ -15,8 +15,9 @@ import crazypants.enderio.integration.tic.fluids.Ender;
 import crazypants.enderio.integration.tic.fluids.Glowstone;
 import crazypants.enderio.integration.tic.fluids.Metal;
 import crazypants.enderio.integration.tic.fluids.Redstone;
+import crazypants.enderio.integration.tic.modifiers.TicModifierHandler;
 import crazypants.enderio.integration.tic.modifiers.TicModifiers;
-import crazypants.enderio.integration.tic.queues.TicHandler;
+import crazypants.enderio.integration.tic.queues.TicRecipeHandler;
 import crazypants.enderio.integration.tic.recipes.TicRegistration;
 import net.minecraft.block.Block;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -45,7 +46,7 @@ public class TicControl {
   }
 
   public static void preInitBeforeTic(FMLPreInitializationEvent event) {
-    TicProxy.register(TicHandler.instance);
+    TicProxy.register(TicRecipeHandler.instance, TicModifierHandler.instance);
     if (doFluids()) {
       Glowstone.createFluid();
       Redstone.createFluid();

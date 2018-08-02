@@ -9,8 +9,8 @@ import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ChatUtil;
 import com.enderio.core.common.util.UserIdent;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.Prep;

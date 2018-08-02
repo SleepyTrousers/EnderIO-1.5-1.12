@@ -1,7 +1,9 @@
 package crazypants.enderio.integration.tic.recipes;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
@@ -17,7 +19,7 @@ import crazypants.enderio.integration.tic.queues.BasinQueue;
 import crazypants.enderio.integration.tic.queues.CastQueue;
 import crazypants.enderio.integration.tic.queues.SmeltQueue;
 import crazypants.enderio.integration.tic.queues.TiCQueues;
-import crazypants.enderio.integration.tic.queues.TicHandler;
+import crazypants.enderio.integration.tic.queues.TicRecipeHandler;
 import crazypants.enderio.util.Prep;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -42,12 +44,16 @@ public class TicRegistration {
       return;
     }
 
+    Set<String> used = new HashSet<>();
+    used.add(fluidResult.getFluid().getName());
     FluidStack[] fluids = new FluidStack[input.size()];
     List<String> debug = new ArrayList<>();
     for (int i = 0; i < input.size(); i++) {
-      if ((fluids[i] = getFluidForItems(NullHelper.notnull(input.get(i), "missing input item stack in alloy recipe"))) == null) {
+      if ((fluids[i] = getFluidForItems(NullHelper.notnull(input.get(i), "missing input item stack in alloy recipe"))) == null
+          || used.contains(fluids[i].getFluid().getName())) {
         return;
       }
+      used.add(fluids[i].getFluid().getName());
       debug.add(toString(fluids[i]));
     }
 
@@ -78,9 +84,9 @@ public class TicRegistration {
     }
 
     if (a != null) {
-      TicHandler.instance.registerBasinCasting(result, input1, a.getFluid(), a.amount);
+      TicRecipeHandler.instance.registerBasinCasting(result, input1, a.getFluid(), a.amount);
     } else if (b != null) {
-      TicHandler.instance.registerBasinCasting(result, input0, b.getFluid(), b.amount);
+      TicRecipeHandler.instance.registerBasinCasting(result, input0, b.getFluid(), b.amount);
     }
   }
 

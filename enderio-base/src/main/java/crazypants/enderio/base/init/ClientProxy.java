@@ -9,6 +9,7 @@ import com.enderio.core.EnderCore;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.vecmath.Vector4f;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.block.coldfire.ColdFireStateMapper;
@@ -103,7 +104,7 @@ public class ClientProxy extends CommonProxy {
      * 
      * Items that do _not_ belong to a block are handled here by either having the item implement IHaveRenderers or by registering the default renderer.
      */
-    for (IModObject mo : ModObjectRegistry.getObjects()) {
+    for (IModObject mo : ModObjectRegistry.getRegistry()) {
       final Block block = mo.getBlock();
       if (block instanceof ICustomSubItems) {
         // NOP, handled by SmartModelAttacher

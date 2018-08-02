@@ -16,13 +16,16 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.base.Predicate;
 
+import crazypants.enderio.api.IModObject;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
-import crazypants.enderio.base.item.darksteel.attributes.ToolData;
+import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -97,7 +100,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
       list.add(is);
 
       is = new ItemStack(this);
-      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is, this);
+      EnergyUpgrade.UPGRADES.get(3).addToItem(is, this);
       EnergyUpgradeManager.setPowerFull(is, this);
       list.add(is);
     }
@@ -216,13 +219,13 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
     int damage = newDamage - oldDamage;
 
     EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
-    if (eu != null && eu.getUpgrade().isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+    if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(damage * Config.darkSteelShearsPowerUsePerDamagePoint, false);
     } else {
       super.setDamage(stack, newDamage);
     }
     if (eu != null) {
-      eu.writeToItem(stack, this);
+      eu.writeToItem();
     }
   }
 
@@ -233,7 +236,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
 
   @Override
   public int getItemEnchantability() {
-    return ToolData.MATERIAL_DARK_STEEL.getEnchantability();
+    return EquipmentData.DARK_STEEL.getToolMaterial().getEnchantability();
   }
 
   @Override
@@ -316,6 +319,31 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
   @Override
   public boolean isForSlot(@Nonnull EntityEquipmentSlot slot) {
     return slot == EntityEquipmentSlot.MAINHAND;
+  }
+
+  @Override
+  public @Nonnull IEquipmentData getEquipmentData() {
+    return EquipmentData.DARK_STEEL;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyStorageKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_SHEARS_ENERGY_BUFFER;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyInputKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_SHEARS_ENERGY_INPUT;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyUseKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_SHEARS_ENERGY_USE;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getAbsorptionRatioKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_SHEARS_ABSORPTION_RATIO;
   }
 
 }

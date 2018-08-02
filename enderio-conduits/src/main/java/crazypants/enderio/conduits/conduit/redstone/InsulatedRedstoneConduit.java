@@ -50,7 +50,6 @@ import crazypants.enderio.conduits.conduit.IConduitComponent;
 import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.conduits.gui.RedstoneSettings;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
-import dan200.computercraft.api.ComputerCraftAPI;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.state.IBlockState;
@@ -64,7 +63,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -469,35 +467,35 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     return res;
   }
 
-  @Optional.Method(modid = "computercraft")
-  @Override
-  @Nonnull
-  public Map<DyeColor, Signal> getComputerCraftSignals(@Nonnull EnumFacing side) {
-    Map<DyeColor, Signal> ccSignals = new EnumMap<DyeColor, Signal>(DyeColor.class);
+//  @Optional.Method(modid = "computercraft")
+//  @Override
+//  @Nonnull
+//  public Map<DyeColor, Signal> getComputerCraftSignals(@Nonnull EnumFacing side) {
+//    Map<DyeColor, Signal> ccSignals = new EnumMap<DyeColor, Signal>(DyeColor.class);
+//
+//    int bundledInput = getComputerCraftBundledPowerLevel(side);
+//    if (bundledInput >= 0) {
+//      for (int i = 0; i < 16; i++) {
+//        int color = bundledInput >>> i & 1;
+//        Signal signal = new Signal(color == 1 ? 16 : 0, signalIdBase + side.ordinal());
+//        ccSignals.put(DyeColor.fromIndex(Math.max(0, 15 - i)), signal);
+//      }
+//    }
+//
+//    return ccSignals;
+//  }
 
-    int bundledInput = getComputerCraftBundledPowerLevel(side);
-    if (bundledInput >= 0) {
-      for (int i = 0; i < 16; i++) {
-        int color = bundledInput >>> i & 1;
-        Signal signal = new Signal(color == 1 ? 16 : 0, signalIdBase + side.ordinal());
-        ccSignals.put(DyeColor.fromIndex(Math.max(0, 15 - i)), signal);
-      }
-    }
-
-    return ccSignals;
-  }
-
-  @Optional.Method(modid = "computercraft")
-  private int getComputerCraftBundledPowerLevel(EnumFacing dir) {
-    World world = getBundle().getBundleworld();
-    BlockPos pos = getBundle().getLocation().offset(dir);
-
-    if (world.isBlockLoaded(pos)) {
-      return ComputerCraftAPI.getBundledRedstoneOutput(world, pos, dir.getOpposite());
-    } else {
-      return -1;
-    }
-  }
+//  @Optional.Method(modid = "computercraft")
+//  private int getComputerCraftBundledPowerLevel(EnumFacing dir) {
+//    World world = getBundle().getBundleworld();
+//    BlockPos pos = getBundle().getLocation().offset(dir);
+//
+//    if (world.isBlockLoaded(pos)) {
+//      return ComputerCraftAPI.getBundledRedstoneOutput(world, pos, dir.getOpposite());
+//    } else {
+//      return -1;
+//    }
+//  }
 
   @Override
   @Nonnull
@@ -886,20 +884,20 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   // ----------------- CAPABILITIES ------------
 
   @Override
-  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+  public boolean hasInternalCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
     if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY) {
       return true;
     }
-    return false;
+    return super.hasInternalCapability(capability, facing);
   }
 
-  @Nullable
   @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+  @Nullable
+  public <T> T getInternalCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
     if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY) {
-      return (T) this;
+      return CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY.cast(this);
     }
-    return null;
+    return super.getInternalCapability(capability, facing);
   }
 
   @Override

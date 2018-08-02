@@ -74,8 +74,8 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
   protected int customTop = 0;
 
   private final @Nonnull GuiToolTip functionUpgradeTooltip;
-  private final @Nonnull GuiToolTip filterExtractUpgradeTooltip;
-  private final @Nonnull GuiToolTip filterInsertUpgradeTooltip;
+  protected @Nonnull GuiToolTip filterExtractUpgradeTooltip;
+  protected @Nonnull GuiToolTip filterInsertUpgradeTooltip;
 
   protected BaseSettingsPanel(@Nonnull IWidgetIcon icon, @Nonnull String typeName, @Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con,
       @Nonnull String texture) {

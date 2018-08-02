@@ -8,7 +8,7 @@ import com.enderio.core.common.util.Log;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.item.darksteel.attributes.DarkSteelAttributeModifiers;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
@@ -49,7 +49,7 @@ public class SpeedController {
     }
 
     double horzMovement = Math.abs(player.distanceWalkedModified - player.prevDistanceWalkedModified);
-    double costModifier = player.isSprinting() ? Config.darkSteelSprintPowerCost : Config.darkSteelWalkPowerCost;
+    int costModifier = (player.isSprinting() ? DarkSteelConfig.darkSteelSpeedSprintEnergyCost : DarkSteelConfig.darkSteelSpeedWalkEnergyCost).get();
     int cost = (int) (horzMovement * costModifier);
     setModifiers(player);
     DarkSteelController.usePlayerEnergy(player, EntityEquipmentSlot.LEGS, cost);

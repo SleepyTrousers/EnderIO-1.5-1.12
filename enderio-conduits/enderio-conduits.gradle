@@ -1,4 +1,3 @@
 dependencies {
 	compile project(":enderio-base")
-	compile "dan200.computercraft:ComputerCraft:${computercraft_version}"
 }

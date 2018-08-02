@@ -154,6 +154,9 @@ enderio.gui.liquid_blacklist=Blacklist
 
 enderio.gui.redstone_signal_strength=Strong Signal
 
+enderio.gui.enabled=Enabled
+enderio.gui.disabled=Disabled
+
 # Advancements
 
 enderio.advancement.conduits.root.name=Ender IO Conduits

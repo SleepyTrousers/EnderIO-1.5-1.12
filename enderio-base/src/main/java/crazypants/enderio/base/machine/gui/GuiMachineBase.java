@@ -194,7 +194,7 @@ public abstract class GuiMachineBase<T extends AbstractInventoryMachineEntity> e
   protected boolean shouldRenderProgress() {
     if (tileEntity instanceof IProgressTile) {
       float progress = ((IProgressTile) tileEntity).getProgress();
-      if (progress > 0 && progress < 1) {
+      if (progress >= 0 && progress < 1) {
         updateProgressTooltips(scaleProgressForTooltip(progress), progress);
         return true;
       } else {

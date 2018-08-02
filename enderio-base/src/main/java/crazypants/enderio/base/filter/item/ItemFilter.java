@@ -122,7 +122,7 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
         ItemStack filterStack = items.get(i);
         if (Prep.isValid(filterStack)) {
           if (item.getItem() == filterStack.getItem()) {
-            if (!matchMeta || !item.getHasSubtypes() || item.getMetadata() == filterStack.getMetadata()) {
+            if (!matchMeta || !item.getHasSubtypes() || item.getItemDamage() == filterStack.getItemDamage()) {
               if (!matchNBT || isNBTMatch(item, filterStack)) {
                 return new FilterResult(filterStack.getCount());
               }
@@ -361,6 +361,15 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
     oreIds.set(index, null);
   }
 
+  @Nonnull
+  @Override
+  public ItemStack getInventorySlotContents(int slot) {
+    if (slot < 0 || slot >= items.size()) {
+      return ItemStack.EMPTY;
+    }
+    return items.get(slot);
+  }
+
   @Override
   public @Nonnull ItemStack removeStackFromSlot(int index) {
     if (index < 0 || index >= items.size()) {
@@ -557,7 +566,12 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
 
   @Override
   public boolean isEmpty() {
-    return false;
+    for (ItemStack s : items) {
+      if (!s.isEmpty()) {
+        return false;
+      }
+    }
+    return true;
   }
 
   @Override

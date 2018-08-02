@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.inventory.EnderInventory;
 
-import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

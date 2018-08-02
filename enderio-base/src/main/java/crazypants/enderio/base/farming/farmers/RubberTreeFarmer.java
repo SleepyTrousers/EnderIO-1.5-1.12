@@ -1,10 +1,11 @@
 package crazypants.enderio.base.farming.farmers;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
-
-import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.farm.FarmNotification;
 import crazypants.enderio.api.farm.FarmingAction;
@@ -12,14 +13,15 @@ import crazypants.enderio.api.farm.IFarmer;
 import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.FarmingTool;
+import crazypants.enderio.base.farming.harvesters.FarmHarvestingTarget;
 import crazypants.enderio.base.farming.harvesters.IHarvestingTarget;
+import crazypants.enderio.base.farming.harvesters.TreeHarvester;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -39,91 +41,99 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
   }
 
   @Override
-  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState meta) {
-    if (canPlant(farm.getSeedTypeInSuppliesFor(bc))) {
+  public Result tryPrepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+    if (canPlant(farm.getSeedTypeInSuppliesFor(pos))) {
       // we'll lose some spots in the center, but we can plant in the outer ring, which gives a net gain
-      if (Math.abs(farm.getLocation().getX() - bc.getX()) % 2 == 0) {
-        return true;
+      if (Math.abs(farm.getLocation().getX() - pos.getX()) % 2 == 0) {
+        return Result.CLAIM;
       }
-      if (Math.abs(farm.getLocation().getZ() - bc.getZ()) % 2 == 0) {
-        return true;
+      if (Math.abs(farm.getLocation().getZ() - pos.getZ()) % 2 == 0) {
+        return Result.CLAIM;
       }
       final World world = farm.getWorld();
       for (int x = -1; x < 2; x++) {
         for (int z = -1; z < 2; z++) {
-          final BlockPos pos = bc.add(x, 0, z);
-          final IBlockState state = world.getBlockState(pos);
-          final Block block = state.getBlock();
-          if (!(block.isLeaves(state, world, pos) || block.isAir(state, world, pos) || block.canBeReplacedByLeaves(state, world, pos))) {
-            return true;
+          final BlockPos pos2 = pos.add(x, 0, z);
+          final IBlockState state2 = world.getBlockState(pos2);
+          final Block block = state2.getBlock();
+          if (!(block.isLeaves(state2, world, pos2) || block.isAir(state2, world, pos2) || block.canBeReplacedByLeaves(state2, world, pos2))) {
+            return Result.CLAIM;
           }
         }
       }
-      return super.prepareBlock(farm, bc, meta);
+      return super.tryPrepareBlock(farm, pos, state);
     }
-    return false;
+    return Result.NEXT;
+  }
+
+  protected boolean hasTap;
+
+  @Override
+  protected void setupHarvesting(@Nonnull IFarmer farm, @Nonnull BlockPos harvestLocation) {
+    hasTap = farm.hasTool(FarmingTool.TREETAP);
+    if (hasTap) {
+      hasAxe = farm.hasTool(FarmingTool.AXE);
+      fortune = farm.getLootingValue(FarmingTool.AXE);
+      hasShears = farm.hasTool(FarmingTool.SHEARS);
+      hasHoe = farm.hasTool(FarmingTool.HOE);
+      noShearingPercentage = farm.isLowOnSaplings(harvestLocation);
+      shearCount = 0;
+    }
   }
 
   @Override
-  public IHarvestResult harvestBlock(@Nonnull final IFarmer farm, @Nonnull BlockPos pos, @Nonnull IBlockState meta) {
-    final HarvestResult res = new HarvestResult();
+  public IHarvestResult harvestBlock(@Nonnull final IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState meta) {
+    setupHarvesting(farm, bc);
+
+    if (!hasTap) {
+      farm.setNotification(FarmNotification.NO_TREETAP);
+      return null;
+    }
+
     final World world = farm.getWorld();
+    final HarvestResult res = new HarvestResult();
 
-    setupHarvesting(farm, pos);
+    final IHarvestingTarget target = new FarmHarvestingTarget(this, farm);
+    TreeHarvester.harvest(world, bc, res, target);
+    Collections.sort(res.getHarvestedBlocks(), comp);
 
-    while (pos.getY() <= 255) {
+    List<BlockPos> actualHarvests = new ArrayList<BlockPos>();
+    boolean harvesting = true;
+
+    for (int i = 0; i < res.getHarvestedBlocks().size() && harvesting; i++) {
+      final BlockPos pos = res.getHarvestedBlocks().get(i);
       IBlockState state = world.getBlockState(pos);
+
       if (isWood(state.getBlock())) {
-        if (canHarvest(world, pos)) {
-          if (farm.hasTool(FarmingTool.TREETAP)) {
-            if (farm.checkAction(FarmingAction.HARVEST, FarmingTool.TREETAP)) {
-              harvest(res, world, pos);
-              farm.registerAction(FarmingAction.HARVEST, FarmingTool.TREETAP, state, pos);
-            }
+        if (hasResin(state)) {
+          if (farm.checkAction(FarmingAction.HARVEST, FarmingTool.TREETAP)) {
+            harvest(res, world, pos, state);
+            actualHarvests.add(pos);
+            farm.registerAction(FarmingAction.HARVEST, FarmingTool.TREETAP, state, pos);
           } else {
-            farm.setNotification(FarmNotification.NO_TREETAP);
+            harvesting = false;
           }
         }
-        harvestLeavesAround(farm, world, res, pos);
       } else if (IHarvestingTarget.isDefaultLeaves(state)) {
-        harvestLeavesBlock(farm, res, world, pos);
-      } else {
-        return res;
+        if (harvestSingleBlock(farm, world, res, pos)) {
+          actualHarvests.add(pos);
+        } else {
+          harvesting = false;
+        }
       }
-      pos = pos.up();
     }
+
+    res.getHarvestedBlocks().clear();
+    res.getHarvestedBlocks().addAll(actualHarvests);
+
     return res;
   }
 
-  private void harvestLeavesBlock(@Nonnull final IFarmer farm, @Nonnull final HarvestResult res, final @Nonnull World world, final @Nonnull BlockPos pos) {
-    IBlockState state = world.getBlockState(pos);
-    if (IHarvestingTarget.isDefaultLeaves(state)) {
-      if (harvestSingleBlock(farm, world, res, pos)) {
-        res.getHarvestedBlocks().add(pos);
-        harvestLeavesAround(farm, world, res, pos);
-      }
-    }
-  }
-
-  void harvestLeavesAround(final @Nonnull IFarmer farm, final @Nonnull World world, final @Nonnull HarvestResult res, final @Nonnull BlockPos pos) {
-    NNList.FACING_HORIZONTAL.apply(new NNList.Callback<EnumFacing>() {
-      @Override
-      public void apply(@Nonnull EnumFacing face) {
-        harvestLeavesBlock(farm, res, world, pos.offset(face));
-      }
-    });
-  }
-
-  private boolean canHarvest(@Nonnull World world, @Nonnull BlockPos pos) {
-    return hasResin(world.getBlockState(pos));
-  }
-
-  private void harvest(@Nonnull HarvestResult res, @Nonnull World world, @Nonnull BlockPos pos) {
-    world.setBlockState(pos, removeResin(world.getBlockState(pos)), 3);
+  private void harvest(@Nonnull HarvestResult res, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+    world.setBlockState(pos, removeResin(state), 3);
     ItemStack drop = makeResin(world.rand);
     EntityItem dropEnt = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, drop);
     res.getDrops().add(dropEnt);
-    res.getHarvestedBlocks().add(pos);
   }
 
   protected @Nonnull ItemStack makeResin(@Nonnull Random rand) {

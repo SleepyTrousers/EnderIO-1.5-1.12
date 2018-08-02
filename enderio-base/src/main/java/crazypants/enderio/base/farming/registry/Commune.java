@@ -47,6 +47,7 @@ public class Commune implements IFarmerJoe {
   }
 
   @Override
+  @Deprecated
   public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
     return Registry.foreach(new Callback<Boolean>() {
       @Override
@@ -54,6 +55,18 @@ public class Commune implements IFarmerJoe {
         return joe.prepareBlock(farm, bc, state) ? Boolean.TRUE : null;
       }
     }) != null;
+  }
+
+  @Override
+  public Result tryPrepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+    final Result result = Registry.foreach(new Callback<Result>() {
+      @Override
+      public Result run(@Nonnull IFarmerJoe joe) {
+        final Result result2 = joe.tryPrepareBlock(farm, pos, state);
+        return result2 != Result.NEXT ? result2 : null;
+      }
+    });
+    return result != null ? result : Result.NEXT;
   }
 
   @Override

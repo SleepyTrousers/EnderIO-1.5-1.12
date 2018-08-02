@@ -4,8 +4,8 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.init.IModObject;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -19,6 +19,18 @@ public class ItemFunctionUpgrade extends Item implements IResourceTooltipProvide
 
   public static ItemFunctionUpgrade createDowngrade(@Nonnull IModObject modObject) {
     return new ItemFunctionUpgrade(modObject, FunctionUpgrade.EXTRACT_SPEED_DOWNGRADE);
+  }
+
+  public static ItemFunctionUpgrade createRSCraftingUpgrade(@Nonnull IModObject modObject) {
+    return new ItemFunctionUpgrade(modObject, FunctionUpgrade.RS_CRAFTING_UPGRADE);
+  }
+
+  public static ItemFunctionUpgrade createRSCraftingSpeedUpgrade(@Nonnull IModObject modObject) {
+    return new ItemFunctionUpgrade(modObject, FunctionUpgrade.RS_CRAFTING_SPEED_UPGRADE);
+  }
+
+  public static ItemFunctionUpgrade createRSCraftingSpeedDowngrade(@Nonnull IModObject modObject) {
+    return new ItemFunctionUpgrade(modObject, FunctionUpgrade.RS_CRAFTING_SPEED_DOWNGRADE);
   }
 
   protected ItemFunctionUpgrade(@Nonnull IModObject modObject, FunctionUpgrade upgradeType) {

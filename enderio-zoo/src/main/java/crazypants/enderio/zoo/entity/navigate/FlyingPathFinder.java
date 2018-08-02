@@ -158,20 +158,22 @@ public class FlyingPathFinder extends PathFinder {
 
       for (int j = 0; j < numPathOptions; ++j) {
         PathPoint cadidatePoint = pathOptions[j];
-        float newTotalDistance = PPUtil.getTotalPathDistance(dequeued) + dequeued.distanceToSquared(cadidatePoint);
-        if (newTotalDistance < maxDistance * 2.0F && (!cadidatePoint.isAssigned() || newTotalDistance < PPUtil.getTotalPathDistance(cadidatePoint))) {
-          // cadidatePoint.previous = dequeued;
-          PPUtil.setPrevious(cadidatePoint, dequeued);
-          // cadidatePoint.totalPathDistance = newTotalDistance;
-          PPUtil.setTotalPathDistance(cadidatePoint, newTotalDistance);
-          // cadidatePoint.distanceToNext = cadidatePoint.distanceToSquared(pathpointEnd);
-          PPUtil.setDistanceToNext(cadidatePoint, cadidatePoint.distanceToSquared(pathpointEnd));
-          if (cadidatePoint.isAssigned()) {
-            // path.changeDistance(cadidatePoint, cadidatePoint.totalPathDistance + cadidatePoint.distanceToNext);
-            path.changeDistance(cadidatePoint, PPUtil.getTotalPathDistance(cadidatePoint) + PPUtil.getDistanceToNext(cadidatePoint));
-          } else {
-            PPUtil.setDistanceToTarget(cadidatePoint, PPUtil.getTotalPathDistance(cadidatePoint) + PPUtil.getDistanceToNext(cadidatePoint));
-            path.addPoint(cadidatePoint);
+        if (cadidatePoint != null) {
+          float newTotalDistance = PPUtil.getTotalPathDistance(dequeued) + dequeued.distanceToSquared(cadidatePoint);
+          if (newTotalDistance < maxDistance * 2.0F && (!cadidatePoint.isAssigned() || newTotalDistance < PPUtil.getTotalPathDistance(cadidatePoint))) {
+            // cadidatePoint.previous = dequeued;
+            PPUtil.setPrevious(cadidatePoint, dequeued);
+            // cadidatePoint.totalPathDistance = newTotalDistance;
+            PPUtil.setTotalPathDistance(cadidatePoint, newTotalDistance);
+            // cadidatePoint.distanceToNext = cadidatePoint.distanceToSquared(pathpointEnd);
+            PPUtil.setDistanceToNext(cadidatePoint, cadidatePoint.distanceToSquared(pathpointEnd));
+            if (cadidatePoint.isAssigned()) {
+              // path.changeDistance(cadidatePoint, cadidatePoint.totalPathDistance + cadidatePoint.distanceToNext);
+              path.changeDistance(cadidatePoint, PPUtil.getTotalPathDistance(cadidatePoint) + PPUtil.getDistanceToNext(cadidatePoint));
+            } else {
+              PPUtil.setDistanceToTarget(cadidatePoint, PPUtil.getTotalPathDistance(cadidatePoint) + PPUtil.getDistanceToNext(cadidatePoint));
+              path.addPoint(cadidatePoint);
+            }
           }
         }
       }
@@ -222,14 +224,14 @@ public class FlyingPathFinder extends PathFinder {
   private static PathPoint[] createEntityPath(PathPoint start, PathPoint end) {
     int i = 1;
 
-    for (PathPoint pathpoint = end; PPUtil.getPrevious(pathpoint) != null; pathpoint = PPUtil.getPrevious(pathpoint)) {
+    for (PathPoint pathpoint = end; pathpoint != null && PPUtil.getPrevious(pathpoint) != null; pathpoint = PPUtil.getPrevious(pathpoint)) {
       ++i;
     }
 
     PathPoint[] apathpoint = new PathPoint[i];
     PathPoint pathpoint1 = end;
     --i;
-    for (apathpoint[i] = end; PPUtil.getPrevious(pathpoint1) != null; apathpoint[i] = pathpoint1) {
+    for (apathpoint[i] = end; pathpoint1 != null && PPUtil.getPrevious(pathpoint1) != null; apathpoint[i] = pathpoint1) {
       pathpoint1 = PPUtil.getPrevious(pathpoint1);
       --i;
     }

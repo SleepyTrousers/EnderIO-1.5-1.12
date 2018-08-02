@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+
+These are the built-in recipes. You cannot change this file, it is a
+reference for you only and will be generated every time the game starts.
+
+To make changes to the recipes, copy the recipes you want to change to
+a file in the 'user' folder.
+
+You can also disable all built-in recipes with the setting "loadCoreRecipes"
+in the Ender IO config file, so that only your files in the 'user' folder will
+be loaded. Please be advised that a number of recipes are absolutely needed,
+so you will have to copy those over into a 'user' file for the game to load.
+
+More information on the syntax can be found in the recipes.xsd file. An
+XML editor will display that as tooltips when editing this file.
+
+ -->
+
+  <recipe name="Spawner, Ender IO Zoo" required="true">
+    <spawning>
+      <entity name="enderiozoo:concussioncreeper"    costMultiplier="1.5" disabled="false"/>
+      <entity name="enderiozoo:direslime"            costMultiplier="0.9" disabled="false"/>
+      <entity name="enderiozoo:direwolf"             costMultiplier="1.5" disabled="false"/>
+      <entity name="enderiozoo:enderminy"            costMultiplier="7.0" disabled="false"/>
+      <entity name="enderiozoo:fallenknight"         costMultiplier="1.0" disabled="false"/>
+      <entity name="enderiozoo:fallenmount"          costMultiplier="1.5" disabled="false"/>
+      <entity name="enderiozoo:owl"                  costMultiplier="1.0" disabled="false"/>
+      <entity name="enderiozoo:withercat"            costMultiplier="1.0" disabled="false"/>
+      <entity name="enderiozoo:witherwitch"          costMultiplier="3.0" disabled="false"/>
+      <entity name="enderiozoo:lovechild"            costMultiplier="8.5" disabled="false"/>
+      <entity name="enderiozoo:epicsquid"            costMultiplier="319" disabled="false"/>
+    </spawning>
+  </recipe>
+
+</enderio:recipes>

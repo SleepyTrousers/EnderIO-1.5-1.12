@@ -1,0 +1,474 @@
+#PARSE_ESCAPES
+# ^ having this in the first line allows us to use "\uXXXX" escapes in this file
+
+#***  Ender IO Machines *****#
+
+# Translators, check your ".guess" file to see which keys your
+# language is missing and which keys it has that do not exist anymore.
+
+enderio.gui.combustion_generator.output=Генерирует: %s
+enderio.gui.combustion_generator.coolantTank.empty=Хладагент
+enderio.gui.combustion_generator.coolantTank=Хладагент: %s
+enderio.gui.combustion_generator.fuelTank.empty=Топливо
+enderio.gui.combustion_generator.fuelTank=Топливо: %s
+
+enderio.gui.alloy.mode.heading=Режим печи
+enderio.gui.alloy.mode.all=Выплавка всех материалов
+enderio.gui.alloy.mode.alloy=Только сплавы
+enderio.gui.alloy.mode.furnace=Только обычные рецепты
+
+enderio.gui.buffer.in=Макс. вход:
+enderio.gui.buffer.out=Макс. выход:
+enderio.gui.buffer.maxio=Макс. вход/выход: %s
+
+enderio.gui.farm.baseUse=Базовое использование: %s
+
+enderio.gui.ranged.showRange=Показать дальность
+enderio.gui.ranged.hideRange=Скрыть дальность
+enderio.gui.ranged.range=Дальность: %s
+
+enderio.gui.stirling_generator.output=Генерирует: %s
+enderio.gui.stirling_generator.burnRate=Скорость сгорания: %s%%
+enderio.gui.stirling_generator.upgradeslot=Слот улучшения
+enderio.gui.stirling_generator.upgrades={0} даёт {2}{1,number,#.#}x{3} эффективности
+enderio.gui.stirling_generator.remaining=Осталось {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} µI
+
+enderio.gui.zombie_generator.output=Генерирует: %s
+enderio.gui.zombie_generator.fuelTank=Питательный резервуар
+enderio.gui.zombie_generator.fluid.minReq=Для активации требуется: %s
+
+enderio.gui.killerJoe.fuelTank=Питательный резервуар
+enderio.gui.killerJoe.fluid.minReq=Для активации требуется: %s
+
+enderio.gui.weather_obelisk.fuelTank=Барометрический флаксовый резервуар
+
+enderio.gui.xp_obelisk.button.store.1.line1=Отдать 1
+enderio.gui.xp_obelisk.button.store.1.line2=уровень опыта игрока
+enderio.gui.xp_obelisk.button.store.10.line1=Отдать 10
+enderio.gui.xp_obelisk.button.store.10.line2=уровней опыта игрока
+enderio.gui.xp_obelisk.button.store.all.line1=Отдать весь
+enderio.gui.xp_obelisk.button.store.all.line2=опыт игрока
+enderio.gui.xp_obelisk.button.retrieve.1.line1=Забрать 1
+enderio.gui.xp_obelisk.button.retrieve.1.line2=уровень опыта игрока
+enderio.gui.xp_obelisk.button.retrieve.10.line1=Забрать 10
+enderio.gui.xp_obelisk.button.retrieve.10.line2=уровней опыта игрока
+enderio.gui.xp_obelisk.button.retrieve.all.line1=Забрать все
+enderio.gui.xp_obelisk.button.retrieve.all.line2=уровни опыта игрока
+enderio.gui.xp_obelisk.button.retrieve.all.line3=§aДоходит до уровня %d
+enderio.gui.xp_obelisk.button.retrieve.empty=§4Обелиск опыта пуст
+enderio.gui.xp_obelisk.button.store.empty=§4У вас нет опыта
+
+enderio.block_solar_panel.tooltip.maxoutput=Макс. выход: %s
+
+enderio.gui.soul_binder.useplayerxp=Использовать опыт игрока
+
+enderio.block_powered_spawner.tooltip.empty=Пусто
+enderio.gui.powered_spawner.capture=Захватить
+enderio.gui.powered_spawner.spawn=Призывать
+enderio.block_powered_spawner.note.areaFull=Слишком много мобов
+enderio.block_powered_spawner.note.noLocationFound=Не найдено места
+enderio.block_powered_spawner.note.noLocationAtAll=Нет жизнеспособного пространства
+enderio.block_powered_spawner.note.badSoul=Плохая душа, невозможно создать сущность
+enderio.block_powered_spawner.note.noPlayer=Нет игрока в диапазоне
+
+
+enderio.gui.tank.tank=Резервуар
+enderio.gui.tank.void.slot=Слот пустоты
+enderio.gui.tank.void.mode=Режим пустоты
+enderio.gui.tank.void.mode.always=Всегда
+enderio.gui.tank.void.mode.always.desc=Слот пустоты принимает все предметы
+enderio.gui.tank.void.mode.if_not_container=Если не контейнер
+enderio.gui.tank.void.mode.if_not_container.desc=Слот пустоты принимает все предметы, не являющиеся жидкостными контейнерами
+enderio.gui.tank.void.mode.never=Никогда
+enderio.gui.tank.void.mode.never.desc=Слот пустоты не принимает предметы
+
+enderio.gui.vat.inputTank=Вход чана
+enderio.gui.vat.outputTank=Выход чана
+enderio.gui.vat.dump=Сбросить вход резервуара в выход резервуара
+enderio.gui.vat.void=Пустотный выход резервуара
+enderio.chat.vat.dump.fail=Сброс провалился, выходной резервуар не пуст
+enderio.chat.vat.dump.active=Сброс провалился, невозможно поместить жидкость в выход резервуара пока чан работает
+
+enderio.gui.vacuum.range=Сила всасывания
+enderio.gui.vacuum.header.chest=Вакуумный сундук
+enderio.gui.vacuum.header.filter=Предметный фильтр
+enderio.gui.vacuum.header.range=Дальность
+
+
+
+enderio.gui.trans.publicChannel=Общественный канал
+enderio.gui.trans.privateChannel=Частный канал
+enderio.gui.trans.addChannel=Добавить канал
+enderio.gui.trans.deleteChannel=Удалить канал
+enderio.gui.trans.available=Доступный
+enderio.gui.trans.receive=Получать
+enderio.gui.trans.send=Отправлять
+enderio.gui.trans.buffer.local=Локальный буфер
+enderio.gui.trans.buffer.local.upkeep=Содержание: %s
+enderio.gui.trans.buffer.shared=Отправлять и получать буфер
+enderio.gui.trans.buffer.shared.maxIo=Макс. вход/выход: %s
+enderio.gui.trans.buffer.item.stacks=Принять стаки предметов
+enderio.gui.trans.buffer.item.single=Ограничение на отдельные предметы
+enderio.gui.trans.channel.receive=Получать
+enderio.gui.trans.channel.send=Отправлять
+
+enderio.gui.travel_accessable.public=Общественный
+enderio.gui.travel_accessable.private=Частный
+enderio.gui.travel_accessable.protected=Защищённый
+enderio.gui.travel_accessable.prompt=Требуется код доступа
+enderio.gui.travel_accessable.promp.login=Авторизироваться
+enderio.chat.travel_accessable.error.private=Только §4%s §fможет изменить настройки этого блока.
+enderio.chat.travel_accessable.error.harvest=Только §4%s §fможет собрать этот блок.
+enderio.gui.travel_accessable.visible.line1=Видимость
+enderio.gui.travel_accessable.visible.line2=Когда дальше, этот блок можно увидеть держа посох путешествия или стоять на якорь путешествия
+
+enderio.chat.telepad.noFluid=Недостаточно %s для телепортации!
+enderio.gui.telepad.configure.travel=Настройки путешествия
+enderio.gui.telepad.configure.telepad=Настройки блока телепорта
+enderio.gui.telepad.blocked=Телепорт заблокирован!
+enderio.gui.telepad.teleport=Телепортироваться!
+enderio.gui.telepad.tank=Резервуар реагента
+enderio.gui.telepad.max=Макс.: %s
+enderio.status.telepad.unformed=§4Блок телепорта должен быть структурой 3x3
+enderio.gui.telepad.unnamed_location=Неназванный
+enderio.gui.telepad_travel_settings.close=Закрыть настройки путешествия
+enderio.gui.telepad_travel_settings.close2=Вернуться к предыдущему инвентарю
+
+enderio.gui.impulse_hopper.locked=Выход заблокирован
+enderio.gui.impulse_hopper.unlocked=Выход разблокирован
+enderio.gui.impulse_hopper.locked.tooltip=Останавливает импульс воронки от сортировки предметов в выходные слоты, если там уже есть предметы.
+
+
+
+
+tile.block_alloy_smelter.name=Завод сплавов
+tile.block_alloy_smelter.tooltip.detailed.line1=Используется для создания сплавов EnderIO
+tile.block_alloy_smelter.tooltip.detailed.line2=Также может использоваться как электрическая печь
+tile.block_alloy_smelter.tooltip.detailed.line3=Обновление с конденсаторами увеличит скорость и накопление энергии
+
+tile.block_simple_alloy_smelter.name=Простой завод сплавов
+tile.block_simple_alloy_smelter.tooltip.detailed.line1=Используется для создания сплавов EnderIO
+
+
+
+
+
+
+
+
+
+tile.block_buffer.item.name=Предметный буфер
+tile.block_buffer.power.name=Энергобуфер
+tile.block_buffer.omni.name=Универсальный буфер
+tile.block_buffer.creative.name=Творческий буфер
+
+tile.block_enchanter.name=Зачарователь
+tile.block_enchanter.tooltip.detailed.line1=Использует опыт для комбинирования предметов, §6книги и пера§r для создания зачарованных книг
+
+tile.block_farm_station.name=Фермерская станция
+tile.block_farm_station.tooltip.detailed.line1=Сажает и собирает растения
+tile.block_farm_station.tooltip.detailed.line2=Требуется энергия и соответствующие инструменты (мотыга, топор, ножницы, краник)
+tile.block_farm_station.tooltip.detailed.line3=Добыча / Удача на инструментах применяется при сборе урожая
+tile.block_farm_station.tooltip.detailed.line4=Добавьте конденсаторы, чтобы увеличить дальность, улучшение также повышает потребление энергии
+
+enderio.gui.obelisk.no_vials=Нужны флаконы для душ!
+
+#lights
+
+tile.block_electric_light.electric.name=Электрический светильник
+
+tile.block_electric_light.electric.inverted.name=Электрический светильник (перевернутый)
+
+tile.block_electric_light.name=Светильник
+
+tile.block_electric_light.inverted.name=Светильник (перевернутый)
+
+tile.block_electric_light.wireless.name=Беспроводной электрический светильник
+
+tile.block_electric_light.wireless.inverted.name=Беспроводной электрический светильник (перевернутый)
+
+#generators
+
+tile.block_enhanced_combustion_generator.name=Улучшенный генератор внутреннего сгорания
+
+tile.block_combustion_generator.name=Генератор внутреннего сгорания
+tile.block_combustion_generator.tooltip.detailed.line1=Сжигает жидкое топливо для производства энергии
+tile.block_combustion_generator.tooltip.detailed.line2=Требует охладитель (например вода)
+tile.block_combustion_generator.tooltip.detailed.line3=Выход зависит от топлива
+
+tile.block_simple_stirling_generator.name=Простой генератор Стирлинга
+
+tile.block_stirling_generator.name=Генератор Стирлинга
+tile.block_stirling_generator.tooltip.detailed.line1=Сжигает твёрдое топливо для производства энергии
+tile.block_stirling_generator.tooltip.detailed.line2=Может быть модернизирован, чтобы увеличить производство и эффективность с конденсаторами
+
+tile.block_zombie_generator.name=Зомби генератор
+tile.block_zombie_generator.tooltip.detailed.line1=Потребляет питательный дистиллят для производства энергии
+
+tile.block_killer_joe.name=Киллер Джо
+tile.block_killer_joe.tooltip.detailed.line1=Атакует ближайших существ, если снабжён мечом и питательным дистиллятом
+
+
+
+
+
+
+
+#Obelisks
+
+tile.block_attractor_obelisk.name=Притягивающий обелиск
+tile.block_attractor_obelisk.tooltip.detailed.line1=Притягивает мобов к себе
+tile.block_attractor_obelisk.tooltip.detailed.line2=Укажите мобов для притягивания, положив их души внутрь механизма
+
+tile.block_aversion_obelisk.name=Обелиск отвращения
+tile.block_aversion_obelisk.tooltip.detailed.line1=Запрещает мобам появляться в пределах действия обелиска
+
+tile.block_inhibitor_obelisk.name=Обелиск замедлителя
+tile.block_inhibitor_obelisk.tooltip.detailed.line1=Предотвращает телепортацию в зоне действия
+
+tile.block_relocator_obelisk.name=Обелиск перемещения
+tile.block_relocator_obelisk.tooltip.detailed.line1=Перемещает мобов, которые появляются в зоне действия
+
+tile.block_weather_obelisk.name=Погодный обелиск
+tile.block_weather_obelisk.tooltip.detailed.line1=Изменяет текущую погоду
+tile.block_weather_obelisk.tooltip.detailed.line2=Требует много энергии и жидкости катализатора
+
+tile.block_experience_obelisk.name=Обелиск опыта
+tile.block_experience_obelisk.tooltip.detailed.line1=Содержит опыт
+tile.block_experience_obelisk.tooltip.detailed.line2=Может отдавать жидкий опыт присоединённым резервуарам
+
+# no description
+tile.block_painter.name=Покрасочный механизм
+
+tile.block_reservoir.name=Резервуар
+tile.block_reservoir.tooltip.detailed.line1=Формируется при размещении 2x2x1
+tile.block_reservoir.tooltip.detailed.line2=Добавьте два ведра воды для бесконечного источника воды
+tile.block_reservoir.tooltip.detailed.line3=Производит одно ведро в секунду
+tile.block_reservoir.tooltip.detailed.line4=ПКМ с гаечным ключом, чтобы включить авто-выход
+
+
+
+
+
+
+tile.block_sag_mill.name=Дробитель
+tile.block_sag_mill.tooltip.detailed.line1=Дробит руду и другие предметы
+tile.block_sag_mill.tooltip.detailed.line2=Добавьте измельчающие шарики, чтобы увеличить выход и эффективность
+tile.block_sag_mill.tooltip.detailed.line3=Добавьте конденсаторы, чтобы увеличить скорость и хранилище энергии
+
+tile.block_simple_sag_mill.name=Простой дробитель
+tile.block_simple_sag_mill.tooltip.detailed.line1=Дробит руду и другие предметы
+
+tile.block_slice_and_splice.name="Отрубатель и сращиватель"
+tile.block_slice_and_splice.tooltip.detailed.line1=Отрубает головы и превращает их во всякие полезные вещи
+
+
+
+
+
+
+tile.block_solar_panel.simple.name=Простая фотовольтовая ячейка
+tile.block_solar_panel.name=Фотовольтовая ячейка
+tile.block_solar_panel.advanced.name=Продвинутая фотовольтовая ячейка
+tile.block_solar_panel.vibrant.name=Вибрирующая фотовольтовая ячейка
+tile.block_solar_panel.tooltip.common.line1=Солнечная энергия!
+tile.block_solar_panel.tooltip.detailed.line1=Производит энергию в светлое время суток
+tile.block_solar_panel.tooltip.detailed.line2=Должна иметь чистое пространство к небу
+enderio.jei.solar_panel.output=Генерирует до
+enderio.jei.solar_panel.range.line1=Фактическая генерируемая мощность зависит от погоды и угла солнца
+
+tile.block_soul_binder.name=Связыватель душ
+tile.block_soul_binder.tooltip.detailed.line1=Используется для преобразования типа сломанного спаунера
+
+tile.block_powered_spawner.name=Электрический спаунер
+
+tile.block_powered_spawner.empty.tooltip.detailed.line1=Объедините со сломанным спаунером в наковальне
+tile.block_powered_spawner.tooltip.detailed.line1=Подайте питание, чтобы активировать
+tile.block_powered_spawner.tooltip.detailed.line2=Добавьте конденсаторы, чтобы увеличить скорость и хранилище энергии
+
+tile.block_tank.name=Жидкостный резервуар
+tile.block_tank.advanced.name=Жидкостный резервуар под давлением
+tile.block_tank.tooltip.detailed.line1=Переносной жидкостный резервуар
+tile.block_tank.tooltip.detailed.line2=Может быть использован для опустошения и заполнения жидкостных контейнеров
+
+#Travel
+tile.block_travel_anchor.name=Якорь путешествия
+tile.block_travel_anchor.tooltip.detailed.line1=Позволяет телепортироваться между якорями
+tile.block_travel_anchor.tooltip.detailed.line2=Встаньте на один якорь, посмотрите на другой и прыгните для путешествия
+tile.block_travel_anchor.tooltip.detailed.line4=Может также использоваться с посохом путешествия
+tile.block_travel_anchor.tooltip.detailed.line6=Может быть покрашен в покрасочном механизме
+
+
+tile.block_tele_pad.name=Блок телепорта
+tile.block_tele_pad.tooltip.detailed.line1=Использует энергию для телепортации сущностей в указанную позицию и измерение.
+tile.block_tele_pad.tooltip.detailed.line2=Должен быть размещён в виде мультиблока 3x1x3.
+
+tile.block_dialing_device.name=Устройство вызова
+tile.block_dialing_device.tooltip.detailed.line1=Разместите рядом с блоком телепорта
+tile.block_dialing_device.tooltip.detailed.line2=Сохраняет и устанавливает назначения.
+
+
+tile.block_transceiver.name=Пространственный приёмопередатчик
+tile.block_transceiver.tooltip.detailed.line1=Переносит предметы, жидкости и энергию без проводов на любое расстояние и между измерениями
+
+tile.block_vacuum_chest.name=Вакуумный сундук
+tile.block_vacuum_chest.tooltip.detailed.line1=Втягивает ближайшие предметы в свой инвентарь
+
+
+tile.block_xp_vacuum.name=Вакуумный опыт
+tile.block_xp_vacuum.tooltip.detailed.line1=Тянет близлежащие шары опыта и толкает их в соседние резервуары/трубы.
+tile.block_xp_vacuum.tooltip.detailed.line2=Должен быть активирован с жидким опытом.
+
+tile.block_vat.name=Чан
+tile.block_vat.tooltip.detailed.line1=Используется для варки жидкостей EnderIO
+
+
+
+
+tile.block_wired_charger.name=Проводной зарядник
+tile.block_wired_charger.tooltip.detailed.line1=Заряжает предметы с µI
+
+
+
+
+
+
+
+
+
+tile.block_wireless_charger.name=Беспроводной зарядник
+tile.block_wireless_charger.tooltip.detailed.line1=Заряжает предметы в ближайших инвентарях игроков
+
+
+
+
+
+
+
+
+
+
+tile.block_impulse_hopper.name=Импульсная воронка
+tile.block_impulse_hopper.tooltip.detailed.line1=Принимает введенные предметы и выводит их только в том случае, если во входных данных имеется полный набор необходимых предметов.
+
+
+
+
+
+# Types. smelting=Alloy Smelter Speed,
+# area=all machines "area" attribute (e.g. farm),
+# green=Farming Station area, red=Stirling Generator power generation, mobby=spawner speedup,
+# crushed=sag mill speed, cleancut=slice'n'splice speed, tight=soul binder speed, aa=painter,
+# wet=vat, kaboom=combustion gen power gen, fatman=codename for the atomic bomb that was
+# detonated over Nagasaki 
+enderio.loot.capacitor.smelting=Плавленный %s
+enderio.loot.capacitor.area=Большой %s
+enderio.loot.capacitor.green=Посаженный %s
+enderio.loot.capacitor.red=Горячий %s
+enderio.loot.capacitor.mobby=Злодейский %s
+enderio.loot.capacitor.crushed=Измельченный %s
+enderio.loot.capacitor.cleancut=Чистовырезанный %s
+enderio.loot.capacitor.tight=Плотный %s
+enderio.loot.capacitor.aa=Скрытый %s
+enderio.loot.capacitor.wet=Приготовленный %s
+enderio.loot.capacitor.kaboom=Взрывной %s
+enderio.loot.capacitor.fatman=Атомный %s
+
+enderio.jei.sagmill.outputchance=Шанс: {0,choice,0#'<1'|0<{0,number}}%
+enderio.jei.combustion_generator.range.line1=В зависимости от модели конденсатора и генератора
+enderio.jei.combustion_generator.range.line2=Более лучший конденсатор дает более высокий выход на более высокой стоимости топлива.
+enderio.jei.combustion_generator.range.line3=Более лучшая модель дает больше выхода на таких же топливных затратах.
+enderio.jei.combustion_generator.range.line4=Некоторые древние конденсаторы, которые можно найти в мире, могут дать даже лучшие результаты, чем показано здесь.
+enderio.jei.stirling_generator.range.line1=Фактическая генерируемая мощность зависит
+enderio.jei.stirling_generator.range.line2=от конденсатора и модели генератора.
+enderio.jei.stirling_generator.notSimple.line1=Это топливо не может использоваться в
+enderio.jei.stirling_generator.notSimple.line2=простом генераторе Стирлинга
+enderio.jei.alloy_smelter.notSimple.line1=Этот рецепт нельзя сделать внутри
+enderio.jei.alloy_smelter.notSimple.line2=простого завода сплавов
+
+
+
+
+
+
+enderio.darksteel.upgrade.solar_1.name=Солнце I
+enderio.darksteel.upgrade.solar_1.tooltip.detailed.line1=Генерирует энергию от солнца.
+
+enderio.darksteel.upgrade.solar_2.name=Солнце II
+enderio.darksteel.upgrade.solar_2.tooltip.detailed.line1=Генерирует энергию от солнца.
+
+enderio.darksteel.upgrade.solar_3.name=Солнце III
+enderio.darksteel.upgrade.solar_3.tooltip.detailed.line1=Генерирует энергию от солнца.
+
+enderio.config.capacitor=Значения конденсатора
+enderio.config.client=Настройки клиента
+
+enderio.config.soulbinder=Связыватель душ
+enderio.config.spawner=Электрический спаунер
+enderio.config.spawner.tooltip=У меня закончились остроумные подсказки.
+enderio.config.vacuum=Вакуумный сундук/Вакуумный опыт
+enderio.config.vat=Чан
+enderio.config.telepad=Блок телепорта
+enderio.config.weather=Погодный обелиск
+enderio.config.farm=Фермерская станция
+enderio.config.farm.tooltip="Коммуна на всю жизнь!"
+enderio.config.inhibitor=Обелиск замедлителя
+enderio.config.killerjoe=Киллер Джо
+enderio.config.experience=Обелиск опыта
+enderio.config.tank=Резервуар
+enderio.config.tranceiver=Приёмопередатчик
+
+enderio.config.generator=Генераторы
+enderio.config.generator.combustion=Генератор внутреннего сгорания
+enderio.config.generator.zombie=Зомби генератор
+enderio.config.generator.solar=Солнечные панели
+
+# Achie...um...Advancements
+
+enderio.advancement.alloy.1_alloy_smelter_get.name=Сплавы и враги
+enderio.advancement.alloy.1_alloy_smelter_get.desc=Создайте простой плавильный цех
+
+enderio.advancement.alloy.2_energetic_alloy_get.name=Энергетический металл
+enderio.advancement.alloy.2_energetic_alloy_get.desc=Объедините золото, редстоун и светящуюся пыль
+
+enderio.advancement.alloy.machine_chassis_get.name=Кульминация
+enderio.advancement.alloy.machine_chassis_get.desc=Создайте корпус механизма
+
+enderio.advancement.challenge.1_all_simple_get.name=Начало в начале
+enderio.advancement.challenge.1_all_simple_get.desc=Создайте все простые механизмы
+
+enderio.advancement.sagmill.1_sagmill_get.name=Полуавтоматическое дробление
+enderio.advancement.sagmill.1_sagmill_get.desc=Создаайте простой дроббитель
+
+enderio.advancement.sagmill.2_sagmill_flowers.name=Уничтожить что-то красивое
+enderio.advancement.sagmill.2_sagmill_flowers.desc=Измельчить некоторые растительные вещества
+
+enderio.advancement.sagmill.3_sagmill_bushes.name=Полезно в смерти
+enderio.advancement.sagmill.3_sagmill_bushes.desc=Измельчите мертвый куст
+
+enderio.advancement.sagmill.4_brown.name=Кому нужны джунгли?
+enderio.advancement.sagmill.4_brown.desc=Объедините несколько веток и органического вещества в краситель
+
+enderio.advancement.sagmill.5_green.name=Внимание: не ешьте
+enderio.advancement.sagmill.5_green.desc=Объединить некоторые растительные вещества и продукты животного происхождения в краситель
+
+enderio.advancement.sagmill.6_coal.name=Жевательная мертвая древесина
+enderio.advancement.sagmill.6_coal.desc=Измельчить немного угля
+
+enderio.advancement.sagmill.7_black.name=Кому нужен кальмар?
+enderio.advancement.sagmill.7_black.desc=Объединить угольную пыль и продукты животного происхождения в краситель
+
+enderio.advancement.sagmill.8_blue.name=Bejeweled
+enderio.advancement.sagmill.8_blue.desc=Измельчите немного лазурита
+
+enderio.advancement.sagmill.9_white.name=Bejeweled 2
+enderio.advancement.sagmill.9_white.desc=Измельчите немного кварца
+
+enderio.advancement.sagmill.a_powder_coating.name=Классический цвет
+enderio.advancement.sagmill.a_powder_coating.desc=Произведите немного органически покрытого порошка
+
+enderio.advancement.stirling.1_stirling_generator_get.name=Использовать тепло
+enderio.advancement.stirling.1_stirling_generator_get.desc=Создайте простой генератор Стирлишнга
+
+enderio.advancement.machines.root.name=Механизмы Ender IO
+enderio.advancement.machines.root.desc=Начните свое приключение автоматизации

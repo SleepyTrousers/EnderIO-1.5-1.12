@@ -2,9 +2,8 @@ package crazypants.enderio.base.enchantment;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.api.common.enchant.IAdvancedEnchant;
-
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.config.EnchantmentConfig;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnumEnchantmentType;
@@ -18,7 +17,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
-public class EnchantmentWitherWeapon extends Enchantment implements IAdvancedEnchant {
+public class EnchantmentWitherWeapon extends EnchantmentBase {
 
   private static final @Nonnull String NAME = "witherweapon";
 
@@ -28,19 +27,18 @@ public class EnchantmentWitherWeapon extends Enchantment implements IAdvancedEnc
   }
 
   public EnchantmentWitherWeapon() {
-    super(Rarity.UNCOMMON, EnumEnchantmentType.WEAPON, new EntityEquipmentSlot[] { EntityEquipmentSlot.MAINHAND, EntityEquipmentSlot.OFFHAND });
-    setName(EnderIO.DOMAIN + "." + NAME);
-    setRegistryName(EnderIO.DOMAIN, NAME);
+    super(NAME, EnchantmentConfig.witherWeaponRarity, EnumEnchantmentType.WEAPON,
+        new EntityEquipmentSlot[] { EntityEquipmentSlot.MAINHAND, EntityEquipmentSlot.OFFHAND }, EnchantmentConfig.witherWeaponEnabled);
   }
 
   @Override
   public int getMinEnchantability(int p_77321_1_) {
-    return 20;
+    return EnchantmentConfig.witherWeaponMinEnchantability.get();
   }
 
   @Override
   public int getMaxEnchantability(int p_77317_1_) {
-    return 50;
+    return EnchantmentConfig.witherWeaponMaxEnchantability.get();
   }
 
   @Override

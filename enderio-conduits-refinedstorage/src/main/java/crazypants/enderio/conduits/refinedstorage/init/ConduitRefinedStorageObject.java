@@ -5,24 +5,29 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.IModTileEntity;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.init.IModTileEntity;
+import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
+import crazypants.enderio.base.init.IModObjectBase;
 import crazypants.enderio.base.init.ModObjectRegistry;
+import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.conduits.refinedstorage.conduit.ItemRefinedStorageConduit;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
 
-public enum ConduitRefinedStorageObject implements IModObject.Registerable {
+public enum ConduitRefinedStorageObject implements IModObjectBase {
 
-  item_refined_storage_conduit(ItemRefinedStorageConduit.class);
+  item_refined_storage_conduit(ItemRefinedStorageConduit.class),
+
+  item_rs_crafting_upgrade(ItemFunctionUpgrade.class, "createRSCraftingUpgrade"),
+  item_rs_crafting_speed_upgrade(ItemFunctionUpgrade.class, "createRSCraftingSpeedUpgrade"),
+  item_rs_crafting_speed_downgrade(ItemFunctionUpgrade.class, "createRSCraftingSpeedDowngrade"),
 
   ;
 
-  public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
-    ModObjectRegistry.addModObjects(ConduitRefinedStorageObject.class);
+  public static void registerBlocksEarly(@Nonnull RegisterModObject event) {
+    event.register(ConduitRefinedStorageObject.class);
   }
 
   final @Nonnull String unlocalisedName;

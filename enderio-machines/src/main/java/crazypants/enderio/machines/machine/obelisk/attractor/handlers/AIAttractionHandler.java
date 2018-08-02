@@ -29,7 +29,7 @@ public class AIAttractionHandler implements IMobAttractionHandler {
     entity.tasks.addTask(0, new AttractTask(entity, attractor.getTarget(), attractor.getPos()));
   }
 
-  private EntityAIBase findAITask(TileAttractor attractor, EntityLiving entity) {
+  protected EntityAIBase findAITask(TileAttractor attractor, EntityLiving entity) {
     for (EntityAITaskEntry entry : entity.tasks.taskEntries) {
       if (entry.action instanceof AttractTask) {
         AttractTask at = (AttractTask) entry.action;

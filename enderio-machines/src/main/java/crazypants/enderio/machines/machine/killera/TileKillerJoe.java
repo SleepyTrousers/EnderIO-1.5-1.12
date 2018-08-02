@@ -21,6 +21,7 @@ import com.enderio.core.common.vecmath.Vector4f;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.render.ranged.IRanged;
@@ -113,7 +114,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
   @Override
   public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
-    return itemstack.getItem() instanceof ItemSword || itemstack.getItem() instanceof ItemAxe || WEAPONS.contains(itemstack);
+    return (itemstack.getItem() instanceof ItemSword || itemstack.getItem() instanceof ItemAxe || WEAPONS.contains(itemstack)) && !TicProxy.isBroken(itemstack);
   }
 
   @Override
@@ -154,7 +155,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
       return false;
     }
 
-    if (!hasSword) {
+    if (!hasSword || TicProxy.isBroken(getWeapon())) {
       return false;
     }
 

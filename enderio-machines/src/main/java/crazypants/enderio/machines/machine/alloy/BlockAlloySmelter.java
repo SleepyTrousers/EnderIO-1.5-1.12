@@ -3,7 +3,7 @@ package crazypants.enderio.machines.machine.alloy;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.machine.base.block.BlockMachineExtension;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
@@ -37,6 +37,24 @@ public class BlockAlloySmelter<T extends TileAlloySmelter> extends AbstractPower
 
   public static BlockAlloySmelter<TileAlloySmelter.Simple> create_simple(@Nonnull IModObject modObject) {
     BlockAlloySmelter<TileAlloySmelter.Simple> res = new BlockAlloySmelter<TileAlloySmelter.Simple>(modObject) {
+      @Override
+      @SideOnly(Side.CLIENT)
+      public @Nonnull IRenderMapper.IItemRenderMapper getItemRenderMapper() {
+        return RenderMappers.SIMPLE_BODY_MAPPER;
+      }
+
+      @Override
+      @SideOnly(Side.CLIENT)
+      public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
+        return RenderMappers.SIMPLE_BODY_MAPPER;
+      }
+    };
+    res.init();
+    return res;
+  }
+
+  public static BlockAlloySmelter<TileAlloySmelter.Furnace> create_furnace(@Nonnull IModObject modObject) {
+    BlockAlloySmelter<TileAlloySmelter.Furnace> res = new BlockAlloySmelter<TileAlloySmelter.Furnace>(modObject) {
       @Override
       @SideOnly(Side.CLIENT)
       public @Nonnull IRenderMapper.IItemRenderMapper getItemRenderMapper() {

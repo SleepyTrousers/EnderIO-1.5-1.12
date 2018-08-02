@@ -1,7 +1,5 @@
 package crazypants.enderio.conduits.conduit.redstone;
 
-import java.util.Map;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -15,7 +13,6 @@ import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import crazypants.enderio.base.filter.redstone.IRedstoneSignalFilter;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.common.Optional;
 
 public interface IRedstoneConduit extends IServerConduit, IClientConduit {
 
@@ -78,9 +75,9 @@ public interface IRedstoneConduit extends IServerConduit, IClientConduit {
   @Nullable
   RedstoneConduitNetwork getNetwork() throws NullPointerException;
 
-  @Optional.Method(modid = "computercraft")
-  @Nonnull
-  public Map<DyeColor, Signal> getComputerCraftSignals(@Nonnull EnumFacing dir);
+//  @Optional.Method(modid = "computercraft")
+//  @Nonnull
+//  public Map<DyeColor, Signal> getComputerCraftSignals(@Nonnull EnumFacing dir);
 
   @Nonnull
   IRedstoneSignalFilter getSignalFilter(@Nonnull EnumFacing dir, boolean isOutput);

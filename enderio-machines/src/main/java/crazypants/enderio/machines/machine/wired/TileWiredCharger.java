@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.NBTAction;
 
-import crazypants.enderio.base.capacitor.ICapacitorKey;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
@@ -26,12 +26,20 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_WIRED_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_WIRED_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_WIRED_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_WIRED_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_WIRED_POWER_LOSS;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_WIRED_POWER_USE;
 
 @Storable
 public class TileWiredCharger extends AbstractPowerConsumerEntity implements ILegacyPowerReceiver, IPaintable.IPaintableTileEntity, IProgressTile {
 
+  protected TileWiredCharger(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
+    super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
+  }
+
   protected TileWiredCharger(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored) {
-    super(slotDefinition, maxEnergyRecieved, maxEnergyStored, crazypants.enderio.base.capacitor.CapacitorKey.NO_POWER);
+    this(slotDefinition, maxEnergyRecieved, maxEnergyStored, crazypants.enderio.base.capacitor.CapacitorKey.NO_POWER);
   }
 
   public TileWiredCharger() {
@@ -47,6 +55,15 @@ public class TileWiredCharger extends AbstractPowerConsumerEntity implements ILe
     @Override
     public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
       return (faceHit != EnumFacing.UP || mode == IoMode.NONE) && super.supportsMode(faceHit, mode);
+    }
+
+  }
+
+  public static class Simple extends TileWiredCharger {
+
+    public Simple() {
+      super(new SlotDefinition(1, 1, 0), SIMPLE_WIRED_POWER_INTAKE, SIMPLE_WIRED_POWER_BUFFER, SIMPLE_WIRED_POWER_USE);
+      setEnergyLoss(SIMPLE_WIRED_POWER_LOSS);
     }
 
   }
@@ -102,10 +119,12 @@ public class TileWiredCharger extends AbstractPowerConsumerEntity implements ILe
   }
 
   @Store(NBTAction.CLIENT)
-  private @Nonnull ItemStack itemForClient = Prep.getEmpty();
+  private @Nonnull
+  ItemStack itemForClient = Prep.getEmpty();
 
   @SideOnly(Side.CLIENT)
-  protected @Nonnull ItemStack getItemToRender() {
+  protected @Nonnull
+  ItemStack getItemToRender() {
     return itemForClient;
   }
 
@@ -139,12 +158,13 @@ public class TileWiredCharger extends AbstractPowerConsumerEntity implements ILe
 
   @Override
   public int getPowerUsePerTick() {
-    ItemStack stack = getStackInSlot(getSlotDefinition().maxInputSlot);
-    if (!stack.isEmpty()) {
-      IEnergyStorage chargable = PowerHandlerUtil.getCapability(stack, null);
-      return chargable.getMaxEnergyStored() / CapacitorKey.WIRED_POWER_CHARGE.get(getCapacitorData());
+    if (!(this instanceof Simple)) {
+      ItemStack stack = getStackInSlot(getSlotDefinition().maxInputSlot);
+      if (!stack.isEmpty()) {
+        IEnergyStorage chargable = PowerHandlerUtil.getCapability(stack, null);
+        return chargable.getMaxEnergyStored() / CapacitorKey.WIRED_POWER_CHARGE.get(getCapacitorData());
+      }
     }
     return super.getPowerUsePerTick();
   }
-
 }

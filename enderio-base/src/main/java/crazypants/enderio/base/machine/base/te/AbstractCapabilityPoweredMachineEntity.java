@@ -12,9 +12,9 @@ import com.enderio.core.common.inventory.EnderInventory.Type;
 import com.enderio.core.common.inventory.InventorySlot;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
+import crazypants.enderio.api.capacitor.ICapacitorData;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capability.Filters;
-import crazypants.enderio.base.capacitor.ICapacitorData;
-import crazypants.enderio.base.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.base.network.PacketPowerStorage;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.EnergyTank;

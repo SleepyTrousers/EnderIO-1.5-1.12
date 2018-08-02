@@ -5,14 +5,14 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.init.IModTileEntity;
+import crazypants.enderio.api.IModTileEntity;
+import crazypants.enderio.base.init.IModObjectBase;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.integration.tic.book.ItemEioBook;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
-public enum TicObject implements IModObject.Registerable {
+public enum TicObject implements IModObjectBase {
 
   item_eio_book(ItemEioBook.class),
 

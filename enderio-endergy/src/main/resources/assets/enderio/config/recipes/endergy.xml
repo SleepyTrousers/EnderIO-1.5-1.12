@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+
+These are the built-in recipes. You cannot change this file, it is a
+reference for you only and will be generated every time the game starts.
+
+To make changes to the recipes, copy the recipes you want to change to
+a file in the 'user' folder. To disable a recipe, add an attribute "disabled"
+and set it to true, e.g.: <recipe name="Gear" disabled="true" />
+
+You can also disable all built-in recipes with the setting "loadCoreRecipes"
+in the Ender IO config file, so that only your files in the 'user' folder will
+be loaded. Please be advised that a number of recipes are absolutely needed,
+so you will have to copy those over into a 'user' file for the game to load.
+
+Item specifications can reference an alias, an ore dictionary name, a
+block or an item. You can force the type by prefixing the value with
+"oredict:", "block:" or "item:". Recipes that have items that cannot be
+found in-game are either skipped or an error, depending on their "required"
+attribute.
+
+More information on the syntax can be found in the recipes.xsd file. An
+XML editor will display that as tooltips when editing this file.
+
+ -->
+
+  <recipe name="Alloy: Endergy Crude Steel" required="true">
+    <alloying energy="5000" exp="0.5">
+      <input name="oredict:gravel"/>
+      <input name="itemClay"/>
+      <input name="oredict:cobblestone"/>
+      <output name="enderio:item_endergy_alloy:1"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Endergy Combustive Metal" required="true">
+    <alloying energy="10000" exp="0.5">
+      <input name="minecraft:fire_charge"/>
+      <input name="ingotIron"/>
+      <output name="enderio:item_endergy_alloy:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Endergy Crystalline Alloy" required="true">
+    <alloying energy="10000" exp="0.5">
+      <input name="itemPulsatingPowder"/>
+      <input name="ingotGold"/>
+      <output name="enderio:item_endergy_alloy:2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Endergy Melodic Alloy" required="true">
+    <alloying energy="20000" exp="0.5">
+      <input name="minecraft:chorus_fruit_popped"/>
+      <input name="END_STEEL"/>
+      <output name="enderio:item_endergy_alloy:3"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Endergy Stellar Alloy" required="true">
+    <alloying energy="20000" exp="0.5">
+      <input name="minecraft:nether_star"/>
+      <input name="enderio:item_endergy_alloy:3"/>
+      <output name="enderio:item_endergy_alloy:4" amount="2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Capacitor Crystalline" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="enderio:item_endergy_alloy:2"/><item />
+        <item name="CAPACITOR3"/><item name="dustPrismarine"/><item name="CAPACITOR3"/>
+        <item /><item name="enderio:item_endergy_alloy:2"/><item />
+      </grid>
+      <output name="enderio:item_capacitor_crystalline"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor Melodic" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="enderio:item_endergy_alloy:3"/><item />
+        <item name="enderio:item_capacitor_crystalline"/><item name="END_STEEL"/><item name="enderio:item_capacitor_crystalline"/>
+        <item /><item name="enderio:item_endergy_alloy:3"/><item />
+      </grid>
+      <output name="enderio:item_capacitor_melodic"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor Stellar" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="enderio:item_endergy_alloy:4"/><item />
+        <item name="enderio:item_capacitor_melodic"/><item name="minecraft:shulker_shell"/><item name="enderio:item_capacitor_melodic"/>
+        <item /><item name="enderio:item_endergy_alloy:4"/><item />
+      </grid>
+      <output name="enderio:item_capacitor_stellar"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor Grainy" required="true">
+    <crafting>
+      <grid size="2x3">
+        <item /><item name="POWDER_INFINITY"/><item />
+        <item name="nuggetIron"/><item /><item name="nuggetIron"/>
+      </grid>
+      <output name="enderio:item_capacitor_grainy"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Totemic Capacitor">
+    <slicing energy="20000">
+      <input name="SOULARIUM"/><input name="minecraft:totem_of_undying"/><input name="SOULARIUM"/>
+      <input name="itemVibrantPowder"/><input name="enderio:item_capacitor_crystalline"/><input name="itemVibrantPowder"/>
+      <output name="enderio:item_capacitor_totemic"/>
+    </slicing>
+  </recipe>
+
+</enderio:recipes>

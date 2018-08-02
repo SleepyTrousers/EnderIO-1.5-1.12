@@ -6,8 +6,7 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
-import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.init.IModObject.Registerable;
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import mezz.jei.api.IModRegistry;
 import net.minecraft.creativetab.CreativeTabs;
@@ -19,18 +18,15 @@ public class DescriptionRecipeCategory {
 
   public static void register(IModRegistry registry) {
     NNList<ItemStack> items = new NNList<>();
-    ModObjectRegistry.getObjects().apply(new Callback<IModObject.Registerable>() {
-      @Override
-      public void apply(@Nonnull Registerable e) {
-        final Item item = e.getItem();
-        if (item != null) {
-          final CreativeTabs creativeTab = item.getCreativeTab();
-          if (creativeTab != null) {
-            item.getSubItems(creativeTab, items);
-          }
+    for (IModObject mo : ModObjectRegistry.getRegistry()) {
+      final Item item = mo.getItem();
+      if (item != null) {
+        final CreativeTabs creativeTab = item.getCreativeTab();
+        if (creativeTab != null) {
+          item.getSubItems(creativeTab, items);
         }
       }
-    });
+    }
     items.apply(new Callback<ItemStack>() {
       @Override
       public void apply(@Nonnull ItemStack itemStack) {

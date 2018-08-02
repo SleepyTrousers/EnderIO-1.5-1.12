@@ -36,7 +36,7 @@ public class IndexedScaler extends Scaler {
         throw new InvalidRecipeConfigException("no <data>");
       }
 
-      scaler = new crazypants.enderio.base.capacitor.Scaler.IndexedScaler(step, dataArray);
+      scaler = new crazypants.enderio.base.capacitor.IndexedScaler(step, dataArray);
     } catch (InvalidRecipeConfigException e) {
       throw new InvalidRecipeConfigException(e, "in <indexed>");
     }

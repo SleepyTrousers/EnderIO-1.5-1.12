@@ -2,6 +2,8 @@ package crazypants.enderio.base.capacitor;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.capacitor.ICapacitorData;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.EnderIO;
 import net.minecraft.nbt.NBTTagCompound;
 

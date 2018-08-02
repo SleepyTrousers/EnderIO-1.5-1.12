@@ -33,7 +33,7 @@ public class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInventoryMac
   public GuiAlloySmelter(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull T furnaceInventory) {
     super(furnaceInventory, ContainerAlloySmelter.create(par1InventoryPlayer, furnaceInventory), "alloy_smelter", "simple_alloy_smelter");
 
-    isSimple = furnaceInventory instanceof TileAlloySmelter.Simple;
+    isSimple = furnaceInventory instanceof TileAlloySmelter.Simple || furnaceInventory instanceof TileAlloySmelter.Furnace;
 
     vanillaFurnaceButton = new IIconButton(getFontRenderer(), SMELT_MODE_BUTTON_ID, 0, 0, null, RenderUtil.BLOCK_TEX);
     vanillaFurnaceButton.setSize(BUTTON_SIZE, BUTTON_SIZE);

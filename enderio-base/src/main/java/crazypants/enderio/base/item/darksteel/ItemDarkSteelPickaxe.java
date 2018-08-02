@@ -18,17 +18,20 @@ import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.OreDictionaryHelper;
 import com.enderio.core.common.util.stackable.Things;
 
+import crazypants.enderio.api.IModObject;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
+import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
-import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.item.darksteel.attributes.ToolData;
+import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -37,7 +40,6 @@ import crazypants.enderio.base.item.darksteel.upgrade.spoon.SpoonUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.travel.TravelUpgrade;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.lang.LangPower;
-import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.base.network.PacketSpawnParticles;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.base.teleport.TravelController;
@@ -78,23 +80,25 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   }
 
   public static ItemDarkSteelPickaxe createEndSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelPickaxe res = new ItemDarkSteelPickaxe(modObject, ToolData.MATERIAL_END_STEEL);
+    ItemDarkSteelPickaxe res = new ItemDarkSteelPickaxe(modObject, EquipmentData.END_STEEL);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
   public static ItemDarkSteelPickaxe createDarkSteel(@Nonnull IModObject modObject) {
-    ItemDarkSteelPickaxe res = new ItemDarkSteelPickaxe(modObject, ToolData.MATERIAL_DARK_STEEL);
+    ItemDarkSteelPickaxe res = new ItemDarkSteelPickaxe(modObject, EquipmentData.DARK_STEEL);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
   private long lastBlickTick = -1;
+  private final @Nonnull IEquipmentData data;
 
-  public ItemDarkSteelPickaxe(@Nonnull IModObject modObject, @Nonnull ToolMaterial material) {
-    super(material);
+  public ItemDarkSteelPickaxe(@Nonnull IModObject modObject, @Nonnull IEquipmentData data) {
+    super(data.getToolMaterial());
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
+    this.data = data;
   }
 
   @Override
@@ -106,7 +110,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       list.add(is);
 
       is = new ItemStack(this);
-      EnergyUpgrade.EMPOWERED_FOUR.addToItem(is, this);
+      EnergyUpgrade.UPGRADES.get(3).addToItem(is, this);
       EnergyUpgradeManager.setPowerFull(is, this);
       TravelUpgrade.INSTANCE.addToItem(is, this);
       SpoonUpgrade.INSTANCE.addToItem(is, this);
@@ -122,7 +126,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 
   @Override
   public boolean isItemForRepair(@Nonnull ItemStack right) {
-    return OreDictionaryHelper.hasName(right, Alloy.DARK_STEEL.getOreIngot());
+    return OreDictionaryHelper.hasName(right, data.getRepairIngotOredict());
   }
 
   @Override
@@ -195,9 +199,9 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 
   private boolean absorbDamageWithEnergy(@Nonnull ItemStack stack, int amount) {
     EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
-    if (eu != null && eu.getUpgrade().isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
+    if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
       eu.extractEnergy(amount, false);
-      eu.writeToItem(stack, this);
+      eu.writeToItem();
       return true;
     } else {
       return false;
@@ -458,6 +462,31 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   @Override
   public boolean hasUpgradeCallbacks(@Nonnull IDarkSteelUpgrade upgrade) {
     return upgrade == ExplosiveUpgrade.INSTANCE || upgrade == SpoonUpgrade.INSTANCE || upgrade == TravelUpgrade.INSTANCE;
+  }
+
+  @Override
+  public @Nonnull IEquipmentData getEquipmentData() {
+    return data;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyStorageKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_PICKAXE_ENERGY_BUFFER;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyInputKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_PICKAXE_ENERGY_INPUT;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getEnergyUseKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_PICKAXE_ENERGY_USE;
+  }
+
+  @Override
+  public @Nonnull ICapacitorKey getAbsorptionRatioKey(@Nonnull ItemStack stack) {
+    return CapacitorKey.DARK_STEEL_PICKAXE_ABSORPTION_RATIO;
   }
 
 }

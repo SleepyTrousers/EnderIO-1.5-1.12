@@ -18,7 +18,7 @@ buildscript {
 }
 
 plugins {
-    id 'com.matthewprenger.cursegradle' version "1.0.7"
+    id 'com.matthewprenger.cursegradle' version "1.0.11"
 }
 
 apply plugin: 'eclipse'

@@ -20,4 +20,16 @@ public abstract class EnderIOLifecycleEvent extends Event {
 
   }
 
+  public abstract static class PostInit extends EnderIOLifecycleEvent {
+
+    public static class Pre extends PostInit {
+
+    }
+
+    public static class Post extends PostInit {
+
+    }
+
+  }
+
 }

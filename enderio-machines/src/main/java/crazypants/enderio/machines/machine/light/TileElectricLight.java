@@ -13,7 +13,6 @@ import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.base.TileEntityEio;
-import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.base.power.wireless.WirelessChargedLocation;
@@ -347,7 +346,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
     if (!requiresPower()) {
       return 0;
     }
-    return LEGACY_ENERGY_INTAKE.get(DefaultCapacitorData.BASIC_CAPACITOR);
+    return LEGACY_ENERGY_INTAKE.getDefault();
   }
 
   @Override

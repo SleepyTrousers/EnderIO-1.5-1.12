@@ -19,9 +19,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-public interface IConduit extends ICapabilityProvider {
+public interface IConduit {
 
   // Base functionality
 
@@ -202,5 +203,19 @@ public interface IConduit extends ICapabilityProvider {
 
   @Nonnull
   String getConduitProbeInfo(@Nonnull EntityPlayer player);
+
+  /**
+   * See {@link ICapabilityProvider#hasCapability(Capability, EnumFacing)}.
+   */
+  default boolean hasInternalCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+    return false;
+  }
+
+  /**
+   * See {@link ICapabilityProvider#getCapability(Capability, EnumFacing)}.
+   */
+  default @Nullable <T> T getInternalCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+    return null;
+  }
 
 }

@@ -17,6 +17,7 @@ import crazypants.enderio.base.filter.network.PacketHeldFilterUpdate;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.integration.jei.GhostSlotTarget;
+import crazypants.enderio.base.integration.jei.IHaveGhostTargets;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.Minecraft;
@@ -24,9 +25,10 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public abstract class AbstractFilterGui extends GuiContainerBaseEIO implements ICloseFilterRemoteExec.GUI {
+public abstract class AbstractFilterGui extends GuiContainerBaseEIO implements IHaveGhostTargets<AbstractFilterGui>, ICloseFilterRemoteExec.GUI {
 
   private static final int ID_CLOSE_WINDOW_BUTTON = 12615;
 
@@ -111,7 +113,8 @@ public abstract class AbstractFilterGui extends GuiContainerBaseEIO implements I
     return filter;
   }
 
-  public @Nonnull <I> List<GhostSlotTarget<I>> getTargetSlots() {
+  @Override
+  public List<GhostSlotTarget<?>> getGhostTargets() {
     return new ArrayList<>();
   }
 

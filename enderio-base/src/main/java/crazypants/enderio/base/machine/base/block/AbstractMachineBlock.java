@@ -8,9 +8,9 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.Util;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.machine.interfaces.IClearableConfiguration;
 import crazypants.enderio.base.machine.modes.IoMode;
@@ -174,7 +174,10 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
           worldIn.setBlockState(pos.up(), block.getDefaultState());
         } else {
           // impossible error state a.k.a. someone ripped the machine apart. And what do machines that are ripped apart do? They explode. Violently.
-          worldIn.createExplosion(null, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, 3f, true); // 3 == normal Creeper
+          // TODO: very soon: re-add
+          // worldIn.createExplosion(null, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, 3f, true); // 3 == normal Creeper
+          dropBlockAsItem(worldIn, pos, state, 0);
+          worldIn.setBlockToAir(pos);
         }
       }
     }

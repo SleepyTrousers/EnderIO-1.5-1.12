@@ -21,7 +21,24 @@ public enum FunctionUpgrade {
     public int getMaximumExtracted(int stackSize) {
       return 1;
     }
-  };
+  },
+
+  RS_CRAFTING_UPGRADE("rs_crafting_upgrade", "item.item_rs_crafting_upgrade", 1),
+  RS_CRAFTING_SPEED_UPGRADE("rs_crafting_upgrade", "item.item_rs_crafting_upgrade", 15) {
+    @Override
+    public int getMaximumExtracted(int stackSize) {
+      return BASE_MAX_EXTRACTED + Math.min(stackSize, maxStackSize) * 4;
+    }
+  },
+  RS_CRAFTING_SPEED_DOWNGRADE("rs_crafting_speed_downgrade", "item.item_rs_crafting_speed_downgrade", 1) {
+    @Override
+    public int getMaximumExtracted(int stackSize) {
+      return 1;
+    }
+  },
+
+
+  ;
 
   public static final int BASE_MAX_EXTRACTED = 4;
   public static final int LIQUID_MAX_EXTRACTED_SCALER = 2;

@@ -3,7 +3,7 @@ package crazypants.enderio.machines.machine.wired;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.machine.base.block.BlockMachineExtension;
 import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerBlock;
@@ -52,6 +52,24 @@ public class BlockWiredCharger<T extends TileWiredCharger> extends AbstractPower
       }
     };
     res.isEnhanced = true;
+    res.init();
+    return res;
+  }
+
+  public static BlockWiredCharger<TileWiredCharger.Simple> create_simple(@Nonnull IModObject modObject) {
+    BlockWiredCharger<TileWiredCharger.Simple> res = new BlockWiredCharger<TileWiredCharger.Simple>(modObject){
+      @Override
+      @SideOnly(Side.CLIENT)
+      public @Nonnull IRenderMapper.IItemRenderMapper getItemRenderMapper() {
+        return RenderMappers.SIMPLE_BODY_MAPPER;
+      }
+
+      @Override
+      @SideOnly(Side.CLIENT)
+      public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
+        return RenderMappers.SIMPLE_BODY_MAPPER;
+      }
+    };
     res.init();
     return res;
   }

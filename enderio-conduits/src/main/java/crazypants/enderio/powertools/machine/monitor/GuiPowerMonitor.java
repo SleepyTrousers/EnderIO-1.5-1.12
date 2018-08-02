@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.client.gui.button.CheckBox;
 import com.enderio.core.client.gui.button.InvisibleButton;
@@ -107,6 +108,11 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
         if (tab == Tab.GRAPH) {
           super.drawGuiContainerBackgroundLayer(partialTicks, par2, par3);
         }
+      }
+
+      @Override
+      public @Nullable GuiToolTip getTooltip() {
+        return tab == Tab.GRAPH ? super.getTooltip() : null;
       }
     });
   }

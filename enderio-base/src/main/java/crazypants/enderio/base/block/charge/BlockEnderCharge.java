@@ -5,8 +5,8 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.config.config.ZooConfig;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.teleport.RandomTeleportUtil;
 import net.minecraft.client.Minecraft;

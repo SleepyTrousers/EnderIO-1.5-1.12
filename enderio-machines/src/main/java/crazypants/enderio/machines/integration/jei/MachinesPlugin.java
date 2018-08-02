@@ -26,6 +26,7 @@ public class MachinesPlugin implements IModPlugin {
 
     AlloyRecipeCategory.register(registry, guiHelper);
     CombustionRecipeCategory.register(registry, guiHelper);
+    CrafterRecipeTransferHandler.register(registry);
     EnchanterRecipeCategory.register(registry, guiHelper);
     PainterRecipeCategory.register(registry);
     SagMillRecipeCategory.register(registry, guiHelper);

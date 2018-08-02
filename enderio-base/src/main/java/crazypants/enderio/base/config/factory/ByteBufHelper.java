@@ -4,6 +4,10 @@ import java.nio.charset.Charset;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
+import com.enderio.core.common.util.stackable.Things;
+
 import io.netty.buffer.ByteBuf;
 
 enum ByteBufHelper {
@@ -120,6 +124,29 @@ enum ByteBufHelper {
     @Override
     protected Object readValue(ByteBuf buf) {
       return null;
+    }
+  },
+  THINGS {
+    @Override
+    protected void saveValue(ByteBuf buf, @Nonnull Object value) {
+      NNList<String> nameList = ((Things) value).getNameList();
+      if (nameList.size() > 0x7F) {
+        throw new RuntimeException("Thing too big");
+      }
+      buf.writeByte(nameList.size());
+      for (String string : nameList) {
+        STRING127.saveValue(buf, NullHelper.first(string, ""));
+      }
+    }
+
+    @Override
+    protected Object readValue(ByteBuf buf) {
+      Things result = new Things();
+      final int len = buf.readByte();
+      for (int i = 0; i < len; i++) {
+        result.add((String) STRING127.readValue(buf));
+      }
+      return result;
     }
   };
 

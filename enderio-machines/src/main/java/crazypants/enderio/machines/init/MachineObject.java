@@ -5,9 +5,11 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.init.IModTileEntity;
+import crazypants.enderio.api.IModTileEntity;
+import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.init.IModObjectBase;
 import crazypants.enderio.base.init.ModObjectRegistry;
+import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.machine.alloy.BlockAlloySmelter;
 import crazypants.enderio.machines.machine.buffer.BlockBuffer;
@@ -49,14 +51,13 @@ import crazypants.enderio.machines.machine.wireless.BlockNormalWirelessCharger;
 import crazypants.enderio.machines.machine.wireless.BlockWirelessCharger;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIOMachines.MODID)
-public enum MachineObject implements IModObject.Registerable {
+public enum MachineObject implements IModObjectBase {
 
+  block_simple_furnace(BlockAlloySmelter.class, "create_furnace", MachineTileEntity.TileAlloySmelterFurnace),
   block_simple_alloy_smelter(BlockAlloySmelter.class, "create_simple", MachineTileEntity.TileAlloySmelterSimple),
   block_alloy_smelter(BlockAlloySmelter.class, MachineTileEntity.TileAlloySmelter),
   block_enhanced_alloy_smelter(BlockAlloySmelter.class, "create_enhanced", MachineTileEntity.TileAlloySmelterEnhanced),
@@ -101,6 +102,7 @@ public enum MachineObject implements IModObject.Registerable {
   block_enhanced_vat_top(BlockVat.class, "create_extension"),
   block_wired_charger(BlockWiredCharger.class, MachineTileEntity.TileWiredCharger),
   block_enhanced_wired_charger(BlockWiredCharger.class, "create_enhanced", MachineTileEntity.TileWiredChargerEnhanced),
+  block_simple_wired_charger(BlockWiredCharger.class, "create_simple", MachineTileEntity.TileWiredChargerSimple),
   block_enhanced_wired_charger_top(BlockWiredCharger.class, "create_extension", MachineTileEntity.TileWiredChargerEnhanced),
   block_wireless_charger(BlockWirelessCharger.class, MachineTileEntity.TileWirelessCharger),
   block_normal_wireless_charger(BlockNormalWirelessCharger.class, MachineTileEntity.TileWirelessCharger),
@@ -121,9 +123,9 @@ public enum MachineObject implements IModObject.Registerable {
 
   ;
 
-  @SubscribeEvent(priority = EventPriority.HIGHEST)
-  public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
-    ModObjectRegistry.addModObjects(MachineObject.class);
+  @SubscribeEvent
+  public static void registerBlocksEarly(@Nonnull RegisterModObject event) {
+    event.register(MachineObject.class);
   }
 
   final @Nonnull String unlocalisedName;
@@ -160,6 +162,13 @@ public enum MachineObject implements IModObject.Registerable {
       throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
     }
     this.modTileEntity = modTileEntity;
+  }
+  
+  @Override
+  @Nonnull
+  public <B extends Block> B apply(@Nonnull B block) {
+    block.setCreativeTab(EnderIOTab.tabEnderIOMachines);
+    return IModObjectBase.super.apply(block);
   }
 
   @Override

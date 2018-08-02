@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.ILocalizable;
-import crazypants.enderio.base.capacitor.ICapacitorKey;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.interfaces.INotifier;
 import crazypants.enderio.base.machine.modes.EntityAction;

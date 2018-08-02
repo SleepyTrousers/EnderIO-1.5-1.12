@@ -4,6 +4,8 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.ItemUtil;
 
+import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.IConduit;
@@ -11,7 +13,6 @@ import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitItem;
 import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.conduits.lang.Lang;
 import crazypants.enderio.util.ClientUtil;
@@ -55,7 +56,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem, 
   @SideOnly(Side.CLIENT)
   public void registerRenderers(@Nonnull IModObject modObject) {
     for (int i = 0; i < subtypes.length; i++) {
-      ClientUtil.regRenderer(this, i, new ResourceLocation(subtypes[i].modelLocation));
+      ClientUtil.regRenderer(this, i, new ResourceLocation(subtypes[i].getModelLocation()));
     }
   }
 
@@ -127,11 +128,10 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem, 
     if (player.isSneaking()) {
       return EnumActionResult.PASS;
     }
-    TileEntity te = world.getTileEntity(pos);
-    if (te == null || !(te instanceof IConduitBundle)) {
+    IConduitBundle bundle = BlockEio.getAnyTileEntity(world, pos, IConduitBundle.class);
+    if (bundle == null) {
       return EnumActionResult.PASS;
     }
-    IConduitBundle bundle = (IConduitBundle) te;
     IConduit existingConduit = bundle.getConduit(getBaseConduitType());
     if (existingConduit == null) {
       return EnumActionResult.PASS;
@@ -143,18 +143,18 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem, 
         if (newConduit == null) {
           return EnumActionResult.PASS;
         }
-        bundle.removeConduit((IServerConduit) existingConduit);
+        bundle.removeConduit(existingConduit);
         bundle.addConduit(newConduit);
         if (!player.capabilities.isCreativeMode) {
           held.shrink(1);
           for (ItemStack drop : existingConduit.getDrops()) {
-            if (!player.inventory.addItemStackToInventory(drop)) {
+            if (drop != null && !player.inventory.addItemStackToInventory(drop)) {
               ItemUtil.spawnItemInWorldWithRandomMotion(world, drop, pos, hitX, hitY, hitZ, 1.1f);
             }
           }
           player.inventoryContainer.detectAndSendChanges();
         }
-        return EnumActionResult.FAIL;
+        return EnumActionResult.SUCCESS;
       } else {
         player.swingArm(hand);
       }
@@ -166,7 +166,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem, 
   @Nonnull
   public String getUnlocalizedName(@Nonnull ItemStack stack) {
     int i = MathHelper.clamp(stack.getItemDamage(), 0, subtypes.length - 1);
-    return subtypes[i].unlocalisedName;
+    return subtypes[i].getUnlocalisedName();
   }
 
   @Override

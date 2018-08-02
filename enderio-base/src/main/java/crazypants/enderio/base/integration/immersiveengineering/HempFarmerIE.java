@@ -38,8 +38,8 @@ public class HempFarmerIE extends AbstractFarmerJoe {
   }
 
   @Override
-  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
-    return seedFarmer.prepareBlock(farm, bc, state);
+  public Result tryPrepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+    return seedFarmer.tryPrepareBlock(farm, pos, state);
   }
 
   @Override

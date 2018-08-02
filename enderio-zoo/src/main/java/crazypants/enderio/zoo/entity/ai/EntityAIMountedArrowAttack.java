@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.math.BlockPos;
@@ -83,8 +84,12 @@ public class EntityAIMountedArrowAttack extends EntityAIBase {
    */
   @Override
   public void updateTask() {
-    double distToTargetSq = entityHost.getDistanceSq(attackTarget.posX, attackTarget.getEntityBoundingBox().minY, attackTarget.posZ);
-    boolean canSeeTarget = entityHost.getEntitySenses().canSee(attackTarget);
+    final EntityLivingBase attackTarget2 = attackTarget;
+    if (attackTarget2 == null) {
+      return;
+    }
+    double distToTargetSq = entityHost.getDistanceSq(attackTarget.posX, attackTarget2.getEntityBoundingBox().minY, attackTarget.posZ);
+    boolean canSeeTarget = entityHost.getEntitySenses().canSee(attackTarget2);
 
     if (canSeeTarget) {
       ++timeTargetVisible;
@@ -102,7 +107,7 @@ public class EntityAIMountedArrowAttack extends EntityAIBase {
     if (!runningAway && distToTargetSq <= attackRangeSq && timeTargetVisible >= 20) {
       getNavigator().clearPath();
     } else if (distToTargetSq > (attackRangeSq * 0.9)) {
-      getNavigator().tryMoveToEntityLiving(attackTarget, getMoveSpeed());
+      getNavigator().tryMoveToEntityLiving(attackTarget2, getMoveSpeed());
     }
 
     if (canSeeTarget && entityHost.isRiding() && distToTargetSq < 36 && runAwayTimer <= 0 && runAway()) {
@@ -115,7 +120,7 @@ public class EntityAIMountedArrowAttack extends EntityAIBase {
       return;
     }
 
-    entityHost.getLookHelper().setLookPositionWithEntity(attackTarget, 30.0F, 30.0F);
+    entityHost.getLookHelper().setLookPositionWithEntity(attackTarget2, 30.0F, 30.0F);
 
     if (--timeUntilNextAttack == 0) {
       if (distToTargetSq > attackRangeSq || !canSeeTarget) {
@@ -123,7 +128,7 @@ public class EntityAIMountedArrowAttack extends EntityAIBase {
       }
       float rangeRatio = MathHelper.sqrt(distToTargetSq) / attackRange.get();
       rangeRatio = MathHelper.clamp(rangeRatio, 0.1f, 1);
-      rangedAttackEntityHost.attackEntityWithRangedAttack(attackTarget, rangeRatio);
+      rangedAttackEntityHost.attackEntityWithRangedAttack(attackTarget2, rangeRatio);
       timeUntilNextAttack = MathHelper.floor(rangeRatio * (maxRangedAttackTime.get() - minRangedAttackTime.get()) + minRangedAttackTime.get());
     } else if (timeUntilNextAttack < 0) {
       float rangeRatio = MathHelper.sqrt(distToTargetSq) / attackRange.get();
@@ -140,8 +145,9 @@ public class EntityAIMountedArrowAttack extends EntityAIBase {
       runningAwayTo = null;
       return false;
     }
-    PathPoint dest = getNavigator().getPath().getFinalPathPoint();
-    return dest.equals(runningAwayTo);
+    final Path path = getNavigator().getPath();
+    PathPoint dest = path != null ? path.getFinalPathPoint() : null;
+    return dest != null && dest.equals(runningAwayTo);
   }
 
   private boolean runAway() {
@@ -168,7 +174,8 @@ public class EntityAIMountedArrowAttack extends EntityAIBase {
     if (getNavigator().noPath()) {
       runningAwayTo = null;
     } else {
-      runningAwayTo = getNavigator().getPath().getFinalPathPoint();
+      final Path path = getNavigator().getPath();
+      runningAwayTo = path != null ? path.getFinalPathPoint() : null;
     }
     return res;
   }

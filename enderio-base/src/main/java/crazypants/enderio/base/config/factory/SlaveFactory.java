@@ -71,6 +71,11 @@ public class SlaveFactory implements IValueFactory {
   }
 
   @Override
+  public @Nonnull IValue<String> make(@Nonnull String keyname, @Nonnull String defaultValue, @Nonnull String[] limit, @Nonnull String text) {
+    return new LimitedStringValue(this, section, keyname, defaultValue, limit, text).preload();
+  }
+
+  @Override
   public @Nonnull IValue<Boolean> make(@Nonnull String keyname, @Nonnull Boolean defaultValue, @Nonnull String text) {
     return new BooleanValue(this, section, keyname, defaultValue, text).preload();
   }
@@ -78,6 +83,11 @@ public class SlaveFactory implements IValueFactory {
   @Override
   public @Nonnull IValue<Things> make(@Nonnull String keyname, @Nonnull Things defaultValue, @Nonnull String text) {
     return new ThingsValue(this, section, keyname, defaultValue, text).preload();
+  }
+
+  @Override
+  public @Nonnull <E extends Enum<E>> IValue<E> make(@Nonnull String keyname, @Nonnull E defaultValue, @Nonnull String text) {
+    return new EnumValue<E>(this, section, keyname, defaultValue, text);
   }
 
   /**
@@ -101,6 +111,11 @@ public class SlaveFactory implements IValueFactory {
     serverConfig = result;
     generation++;
     return result.size();
+  }
+
+  @Override
+  public boolean needsSyncing() {
+    return !syncValues.isEmpty();
   }
 
   @Override

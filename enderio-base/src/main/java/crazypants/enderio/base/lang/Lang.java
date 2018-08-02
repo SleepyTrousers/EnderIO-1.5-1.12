@@ -29,6 +29,7 @@ public enum Lang implements ILang {
   GRINDING_BALL_2(".grindingball.tooltip.line2"),
   GRINDING_BALL_3(".grindingball.tooltip.line3"),
   GRINDING_BALL_4(".grindingball.tooltip.line4"),
+  GRINDING_BALL_DURABILITY(".grindingball.gui.durability"),
   STAFF_NO_POWER("item.item_travel_staff.chat.notEnoughPower"),
   COLD_FIRE_NO_FLUID("item.item_cold_fire_igniter.chat.outoffluid"),
   DARK_STEEL_POWERED("item.item_dark_steel_armor.tooltip"),
@@ -69,6 +70,7 @@ public enum Lang implements ILang {
   POWER_NAME(".power.format.name"),
   POWER_DETAILS(".power.format.details"),
   GUI_GENERIC_MAX(".gui.generic.max"),
+  GUI_GENERIC_LOSS(".gui.generic.loss"),
   GUI_GENERIC_PROGRESS(".gui.generic.progress"),
   GUI_GENERIC_OVERLAY(".gui.generic.ioMode.overlay.tooltip"),
   GUI_GENERIC_OVERLAY_ON(".gui.generic.ioMode.overlay.tooltip.visible"),
@@ -85,6 +87,7 @@ public enum Lang implements ILang {
   CONFIG_TITLE(".config.title"),
   GUI_NOCAP(".gui.generic.nocap"),
   GUI_PROBE_COPIED(".gui.probe.copied"),
+  GUI_PROBE_PASTED(".gui.probe.pasted"),
 
   // FILTERS
   GUI_EDIT_ITEM_FILTER(".gui.edit_item_filter"),
@@ -145,7 +148,10 @@ public enum Lang implements ILang {
   GUI_REDSTONE_FILTER_COUNT(".gui.redstone_filter.count"),
   GUI_REDSTONE_FILTER_TIME(".gui.redstone_filter.time"),
 
-  OWL_NO_OWL(".owlegg.no_owl")
+  OWL_NO_OWL(".owlegg.no_owl"),
+  INVCHARGER_NEEDUPGRADE(".tooltip.inventory_charger.need_upgrade"),
+  INVCHARGER_ENABLED(".tooltip.inventory_charger.enabled"),
+  INVCHARGER_DISABLED(".tooltip.inventory_charger.disabled"),
 
   ;
 

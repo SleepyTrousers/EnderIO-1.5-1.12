@@ -4,7 +4,6 @@ import java.util.EnumSet;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.common.vecmath.Vector4f;
@@ -41,7 +40,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -365,17 +363,6 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   @Override
   public int getGuiPanelTabOrder() {
     return 6;
-  }
-
-  @Override
-  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-    return false;
-  }
-
-  @Override
-  @Nullable
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-    return null;
   }
 
   private void setGridNode(IGridNode node) {

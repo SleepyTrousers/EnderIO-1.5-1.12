@@ -9,8 +9,10 @@ import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-public interface IServerConduit extends IConduit {
+public interface IServerConduit extends IConduit, ICapabilityProvider {
 
   /**
    * Creates a conduit network for the given type of conduit
@@ -165,4 +167,15 @@ public interface IServerConduit extends IConduit {
   boolean writeConnectionSettingsToNBT(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound nbt);
 
   boolean readConduitSettingsFromNBT(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound nbt);
+
+  @Override
+  default boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+    return false;
+  }
+
+  @Override
+  default @Nullable <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+    return null;
+  }
+
 }

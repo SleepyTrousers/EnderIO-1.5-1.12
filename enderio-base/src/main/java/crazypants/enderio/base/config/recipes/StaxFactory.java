@@ -64,4 +64,14 @@ public class StaxFactory {
     throw new InvalidRecipeConfigException("Unexpected end of document inside " + startElement.getName());
   }
 
+  public void skip(StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
+    while (eventReader.hasNext()) {
+      XMLEvent event = eventReader.nextEvent();
+      if (event.isEndElement() && event.asEndElement().getName().getLocalPart().equals(startElement.getName().getLocalPart())) {
+        return;
+      }
+    }
+    throw new InvalidRecipeConfigException("Unexpected end of document inside " + startElement.getName());
+  }
+
 }

@@ -5,10 +5,10 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.filter.IFilter;
-import crazypants.enderio.base.filter.IItemFilterUpgrade;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.filter.fluid.items.IItemFilterFluidUpgrade;
 import crazypants.enderio.base.filter.item.items.IItemFilterItemUpgrade;
+import crazypants.enderio.base.filter.item.items.ItemBasicItemFilter;
 import crazypants.enderio.base.filter.redstone.items.IItemInputSignalFilterUpgrade;
 import crazypants.enderio.base.filter.redstone.items.IItemOutputSignalFilterUpgrade;
 import crazypants.enderio.conduits.capability.IUpgradeHolder;
@@ -128,6 +128,7 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
     return false;
   }
 
+  // TODO make a way to do this based on the conduit
   private boolean isFilterUpgradeAccepted(@Nonnull ItemStack stack, IConduit con, boolean isInput) {
     if (con instanceof IItemConduit) {
       return stack.getItem() instanceof IItemFilterItemUpgrade;
@@ -140,7 +141,7 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
         return stack.getItem() instanceof IItemOutputSignalFilterUpgrade;
       }
     }
-    return stack.getItem() instanceof IItemFilterUpgrade;
+    return stack.getItem() instanceof IItemFilterFluidUpgrade || stack.getItem() instanceof ItemBasicItemFilter;
   }
 
   private boolean isFunctionUpgradeAccepted(@Nonnull ItemStack stack, IConduit con) {

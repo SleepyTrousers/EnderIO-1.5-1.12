@@ -11,6 +11,7 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import buildcraft.api.tools.IToolWrench;
 import cofh.api.item.IToolHammer;
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.base.BlockEio;
@@ -18,7 +19,6 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
 import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.handler.KeyTracker;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.machine.interfaces.IYetaAwareBlock;
 import crazypants.enderio.base.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.base.paint.PaintUtil;

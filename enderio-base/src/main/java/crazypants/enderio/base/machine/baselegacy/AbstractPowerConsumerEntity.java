@@ -2,7 +2,7 @@ package crazypants.enderio.base.machine.baselegacy;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.capacitor.ICapacitorKey;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import info.loenwind.autosave.annotations.Storable;

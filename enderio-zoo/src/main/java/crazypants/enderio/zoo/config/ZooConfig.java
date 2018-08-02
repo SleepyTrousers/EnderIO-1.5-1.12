@@ -13,13 +13,18 @@ public final class ZooConfig {
   public static final IValue<Integer> explosionRange = CREEPER.make("explosionRange", 5, //
       "The range of the 'teleport explosion'.").setRange(1, 99).sync();
   public static final IValue<Float> teleportRange = CREEPER.make("teleportRange", 32f, //
-      "Sets the max range entites can be telported when the creeper explodes.").setRange(1, 160).sync();
+      "Sets the max range entites can be telported when the creeper explodes.").setRange(1.5, 160).sync();
   public static final IValue<Integer> confusionDuration = CREEPER.make("confusionDuration", 100, //
       "Sets the durtaion in ticks of the confusion effect applied on explosion.").setRange(20 * 1, 20 * 30).sync();
   public static final IValue<Double> creeperHealth = CREEPER.make("health", 20d, //
       "Health of Concussion Creeper.").setRange(1, 200).sync();
 
   public static final IValueFactory SLIME = F0.section(".dire_slime");
+
+  public static final IValue<Boolean> direSlimeEnabled = SLIME.make("spawnDireSlimes", true, //
+      "Should Dire Slimes be spawned when breaking a dirt block with the wrong tool?").sync();
+  public static final IValue<Boolean> direSlimeEnabledHand = SLIME.make("spawnDireSlimesEmptyHand", false, //
+      "Should Dire Slimes be spawned when breaking a dirt block with an empty hand?").sync();
 
   public static final IValue<Float> direSlime1Health = SLIME.make("direSlime1Health", 4f, //
       "Base health of the Dire Slime (small).").setRange(1, 99).sync();
@@ -87,7 +92,7 @@ public final class ZooConfig {
   public static final IValue<Double> fallenKnightChargeSpeed = KNIGHT.make("chargeSpeed", 1.2, //
       "The speed at which a knight will charge its target.").setRange(0, 10).sync();
   public static final IValue<Double> fallenKnightFollowRange = KNIGHT.make("followRange", 40.0, //
-      "Follow range of a knight.").setRange(0, 10).sync();
+      "Follow range of a knight.").setRange(1, 100).sync();
   public static final IValue<Integer> fallenKnightRangedMinAttackPause = KNIGHT.make("rangedMinAttackPause", 20, //
       "The min number of ticks between ranged attacks.").setRange(1, 200).sync();
   public static final IValue<Integer> fallenKnightRangedMaxAttackPause = KNIGHT.make("rangedMaxAttackPause", 60, //
@@ -186,6 +191,41 @@ public final class ZooConfig {
 
   public static final IValue<Double> witherWitchHealth = WITCH.make("health", 30d, //
       "Health of Wither Witches.").setRange(1, 200).sync();
+
+  public static final IValueFactory LOVE = F0.section(".love_child");
+
+  public static final IValue<Float> attackTeleportChance = LOVE.make("attackTeleportChance", .05f, //
+      "The chance a Love Child will teleport an attacker away.").setRange(0, 1);
+  public static final IValue<Float> attackTeleportDistance = LOVE.make("attackTeleportDistance", 8f, //
+      "The maximum distance a Love Child will teleport an attacker away.").setRange(1.5, 64);
+  public static final IValue<Float> defendTeleportChance = LOVE.make("defendTeleportChance", .25f, //
+      "The chance a Love Child will teleport away when attacked.").setRange(0, 1);
+  public static final IValue<Float> defendTeleportDistance = LOVE.make("defendTeleportDistance", 8f, //
+      "The maximum distance a Love Child will teleport away when attacked.").setRange(1.5, 64);
+  public static final IValue<Double> loveChildHealth = LOVE.make("health", 25d, //
+      "Health of Love Children.").setRange(1, 200).sync();
+  public static final IValue<Double> loveChildAttackDamage = LOVE.make("attackDamage", 10d, //
+      "Base attack damage of Love Children.").setRange(1, 200).sync();
+  public static final IValue<Double> loveChildSpeed = LOVE.make("speed", 0.2d, //
+      "Movement speeds of Love Children. (Zombie: 0.23)").setRange(0.02, 2).sync();
+  public static final IValue<Double> loveChildArmor = LOVE.make("armor", 3d, //
+      "Armor of Love Children. (Zombie: 2)").setRange(0, 20).sync();
+
+  public static final IValue<SkullDrop> loveSkullDrop = LOVE.make("skullDrop", SkullDrop.ZOMBIE, //
+      "Type of skull Love Children should drop (ZOMBIE/ENDERMAN/NONE). Note that there is an additional Enderman skull in the loot table.").sync();
+
+  public static enum SkullDrop {
+    NONE,
+    ZOMBIE,
+    ENDERMAN;
+  }
+
+  public static final IValueFactory SQUID = F0.section(".epic_squid");
+
+  public static final IValue<Double> epicSquidHealth = SQUID.make("health", 50d, //
+      "Health of Epic Squids.").setRange(1, 200).sync();
+  public static final IValue<Double> epicSquidAttackDamage = SQUID.make("attackDamage", 10d, //
+      "Base attack damage of Epic Squids.").setRange(1, 200).sync();
 
   //
   //

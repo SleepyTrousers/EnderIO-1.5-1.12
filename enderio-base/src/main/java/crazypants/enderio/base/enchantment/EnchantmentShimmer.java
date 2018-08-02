@@ -2,9 +2,8 @@ package crazypants.enderio.base.enchantment;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.api.common.enchant.IAdvancedEnchant;
-
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.config.EnchantmentConfig;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -13,7 +12,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
-public class EnchantmentShimmer extends Enchantment implements IAdvancedEnchant {
+public class EnchantmentShimmer extends EnchantmentBase {
 
   private static final @Nonnull String NAME = "shimmer";
 
@@ -23,19 +22,17 @@ public class EnchantmentShimmer extends Enchantment implements IAdvancedEnchant 
   }
 
   public EnchantmentShimmer() {
-    super(Rarity.VERY_RARE, EnumEnchantmentType.ALL, EntityEquipmentSlot.values());
-    setName(EnderIO.DOMAIN + "." + NAME);
-    setRegistryName(EnderIO.DOMAIN, NAME);
+    super(NAME, EnchantmentConfig.shimmerRarity, EnumEnchantmentType.ALL, EntityEquipmentSlot.values(), EnchantmentConfig.shimmerEnabled);
   }
 
   @Override
   public int getMinEnchantability(int enchantmentLevel) {
-    return 1;
+    return EnchantmentConfig.shimmerMinEnchantability.get();
   }
 
   @Override
   public int getMaxEnchantability(int enchantmentLevel) {
-    return 100;
+    return EnchantmentConfig.shimmerMaxEnchantability.get();
   }
 
   @Override

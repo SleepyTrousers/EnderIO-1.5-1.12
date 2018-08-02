@@ -10,7 +10,7 @@ import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.base.capacitor.ICapacitorKey;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.machine.task.PoweredTask;
 import crazypants.enderio.base.machine.task.PoweredTaskProgress;
@@ -146,7 +146,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   protected int usePower(int wantToUse) {
     int used = super.usePower(wantToUse);
     if (currentTask != null) {
-      currentTask.update(used);
+      currentTask.update(used * getEfficiencyMultiplier());
     }
     return used;
   }

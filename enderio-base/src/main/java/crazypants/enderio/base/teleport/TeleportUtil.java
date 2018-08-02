@@ -21,11 +21,16 @@ import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class TeleportUtil {
 
   public static boolean doTeleport(@Nonnull Entity entityLiving, @Nonnull BlockPos pos, int targetDim, boolean conserveMotion, @Nonnull TravelSource source) {
+    if (entityLiving instanceof FakePlayer) {
+      // don't even bother...
+      return false;
+    }
     if (entityLiving.world.isRemote) {
       return checkClientTeleport(entityLiving, pos, targetDim, source);
     }
@@ -33,6 +38,10 @@ public class TeleportUtil {
   }
 
   public static boolean checkClientTeleport(@Nonnull Entity entityLiving, @Nonnull BlockPos pos, int targetDim, @Nonnull TravelSource source) {
+    if (entityLiving instanceof FakePlayer) {
+      // don't even bother...
+      return false;
+    }
     TeleportEntityEvent evt = new TeleportEntityEvent(entityLiving, source, pos, targetDim);
     if (MinecraftForge.EVENT_BUS.post(evt)) {
       return false;
@@ -41,6 +50,10 @@ public class TeleportUtil {
   }
 
   public static boolean serverTeleport(@Nonnull Entity entity, @Nonnull BlockPos pos, int targetDim, boolean conserveMotion, @Nonnull TravelSource source) {
+    if (entity instanceof FakePlayer) {
+      // don't even bother...
+      return false;
+    }
 
     TeleportEntityEvent evt = new TeleportEntityEvent(entity, source, pos, targetDim);
     if (MinecraftForge.EVENT_BUS.post(evt)) {

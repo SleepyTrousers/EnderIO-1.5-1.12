@@ -8,7 +8,6 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.diagnostics.EnderIOCrashCallable;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
-import crazypants.enderio.base.integration.thaumcraft.ThaumcraftUtil;
 import crazypants.enderio.base.integration.top.TOPUtil;
 import crazypants.enderio.base.invpanel.capability.CapabilityDatabaseHandler;
 import net.minecraft.creativetab.CreativeTabs;
@@ -56,7 +55,6 @@ public class CommonProxy {
   }
 
   public void init(@Nonnull FMLInitializationEvent event) {
-    ThaumcraftUtil.create();
     MinecraftForge.EVENT_BUS.register(tickTimer);
     // registerCommands(); // debug command disabled because it is not needed at the moment
   }

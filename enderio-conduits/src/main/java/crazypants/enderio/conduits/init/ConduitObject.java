@@ -5,11 +5,13 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.IModTileEntity;
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
-import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.init.IModTileEntity;
+import crazypants.enderio.base.init.IModObjectBase;
 import crazypants.enderio.base.init.ModObjectRegistry;
+import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.base.registry.Registry;
 import crazypants.enderio.conduits.EnderIOConduits;
 import crazypants.enderio.conduits.conduit.BlockConduitBundle;
@@ -20,13 +22,11 @@ import crazypants.enderio.conduits.conduit.redstone.ItemRedstoneConduit;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIOConduits.MODID)
-public enum ConduitObject implements IModObject.Registerable {
+public enum ConduitObject implements IModObjectBase {
 
   // Conduits
   block_conduit_bundle(BlockConduitBundle.class, ConduitTileEntity.TileConduitBundle),
@@ -42,10 +42,10 @@ public enum ConduitObject implements IModObject.Registerable {
 
   ;
 
-  @SubscribeEvent(priority = EventPriority.HIGHEST)
-  public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
+  @SubscribeEvent
+  public static void registerBlocksEarly(@Nonnull RegisterModObject event) {
     Registry.registerConduitBlock(block_conduit_bundle);
-    ModObjectRegistry.addModObjects(ConduitObject.class);
+    event.register(ConduitObject.class);
   }
 
   final @Nonnull String unlocalisedName;
@@ -139,16 +139,8 @@ public enum ConduitObject implements IModObject.Registerable {
 
   @Override
   public final @Nonnull <B extends Block> B apply(@Nonnull B blockIn) {
-    blockIn.setUnlocalizedName(getUnlocalisedName());
-    blockIn.setRegistryName(getRegistryName());
-    return blockIn;
-  }
-
-  @Override
-  public final @Nonnull <I extends Item> I apply(@Nonnull I itemIn) {
-    itemIn.setUnlocalizedName(getUnlocalisedName());
-    itemIn.setRegistryName(getRegistryName());
-    return itemIn;
+    blockIn.setCreativeTab(EnderIOTab.tabEnderIOConduits);
+    return IModObjectBase.super.apply(blockIn);
   }
 
   @Override

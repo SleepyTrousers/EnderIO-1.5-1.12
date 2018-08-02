@@ -1,0 +1,11 @@
+item.item_endergy_alloy_crude_steel.name=Crude Steel
+item.item_endergy_alloy_combustive_metal.name=Combustive Metal
+item.item_endergy_alloy_crystalline_alloy.name=Crystalline Alloy
+item.item_endergy_alloy_melodic_alloy.name=Melodic Alloy
+item.item_endergy_alloy_stellar_alloy.name=Stellar Alloy
+
+item.item_capacitor_grainy.name=Grainy Capacitor
+item.item_capacitor_crystalline.name=Crystalline Capacitor
+item.item_capacitor_melodic.name=Melodic Capacitor
+item.item_capacitor_stellar.name=Stellar Capacitor
+item.item_capacitor_totemic.name=Totemic Capacitor

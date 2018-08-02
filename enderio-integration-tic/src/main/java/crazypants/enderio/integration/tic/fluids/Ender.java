@@ -5,7 +5,7 @@ import com.enderio.core.common.util.stackable.Things;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.integration.tic.TicProxy;
-import crazypants.enderio.integration.tic.queues.TicHandler;
+import crazypants.enderio.integration.tic.queues.TicRecipeHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Items;
@@ -62,12 +62,12 @@ public class Ender {
     Fluid f = FluidRegistry.getFluid(TicProxy.ENDER_FLUID_NAME);
     if (f != null) {
       // Note: We match the old TE amounts
-      TicHandler.instance.registerSmelterySmelting(new Things().add(Items.ENDER_PEARL), f, 250);
+      TicRecipeHandler.instance.registerSmelterySmelting(new Things().add(Items.ENDER_PEARL), f, 250);
       // Need to do this late because of the cast
       Things cast = new Things("tconstruct:cast_custom:2");
-      TicHandler.instance.registerTableCast(new Things().add(Items.ENDER_PEARL), cast, f, 250, false);
+      TicRecipeHandler.instance.registerTableCast(new Things().add(Items.ENDER_PEARL), cast, f, 250, false);
     }
-    TicHandler.instance.registerSmelterySmelting(new Things().add(POWDER_ENDER.getStack()), f, 250 / 9);
+    TicRecipeHandler.instance.registerSmelterySmelting(new Things().add(POWDER_ENDER.getStack()), f, 250 / 9);
   }
 
 }

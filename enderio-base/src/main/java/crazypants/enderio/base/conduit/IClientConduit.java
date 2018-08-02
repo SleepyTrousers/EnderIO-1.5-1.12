@@ -1,12 +1,16 @@
 package crazypants.enderio.base.conduit;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -78,6 +82,20 @@ public interface IClientConduit extends IConduit {
     @SideOnly(Side.CLIENT)
     boolean shouldMirrorTexture();
 
+  }
+
+  /**
+   * See {@link ICapabilityProvider#hasCapability(Capability, EnumFacing)}.
+   */
+  default boolean hasClientCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+    return false;
+  }
+
+  /**
+   * See {@link ICapabilityProvider#getCapability(Capability, EnumFacing)}.
+   */
+  default @Nullable <T> T getClientCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+    return null;
   }
 
 }

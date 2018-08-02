@@ -5,27 +5,26 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.IModTileEntity;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.init.IModTileEntity;
+import crazypants.enderio.base.init.IModObjectBase;
 import crazypants.enderio.base.init.ModObjectRegistry;
+import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.zoo.EnderIOZoo;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIOZoo.MODID)
-public enum ZooObject implements IModObject.Registerable {
+public enum ZooObject implements IModObjectBase {
 
   ;
 
-  @SubscribeEvent(priority = EventPriority.HIGHEST)
-  public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
-    ModObjectRegistry.addModObjects(ZooObject.class);
+  @SubscribeEvent
+  public static void registerBlocksEarly(@Nonnull RegisterModObject event) {
+    event.register(ZooObject.class);
   }
 
   final @Nonnull String unlocalisedName;

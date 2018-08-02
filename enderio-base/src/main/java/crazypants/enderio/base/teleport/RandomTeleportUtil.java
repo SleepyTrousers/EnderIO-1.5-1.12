@@ -16,6 +16,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 
 public class RandomTeleportUtil {
@@ -28,7 +29,7 @@ public class RandomTeleportUtil {
   public static void teleportSpawnItem(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull ItemStack stack) {
     EntityItem entity = new EntityItem(world, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, stack);
     entity.setDefaultPickupDelay();
-    double origX = entity.posX, origY = entity.posY, origZ = entity.posZ;
+    double origX = entity.posX, origY = MathHelper.clamp(entity.posY, 1, 255), origZ = entity.posZ;
     for (int i = 0; i < 5; i++) {
       double targetX = origX + rand.nextGaussian() * 16f;
       double targetY = -1;
@@ -46,7 +47,11 @@ public class RandomTeleportUtil {
   }
 
   public static void teleportEntity(@Nonnull World world, @Nonnull Entity entity, boolean isItem, boolean dropToGround, float range) {
-    double origX = entity.posX, origY = entity.posY, origZ = entity.posZ;
+    if (entity instanceof FakePlayer) {
+      // don't even bother...
+      return;
+    }
+    double origX = entity.posX, origY = MathHelper.clamp(entity.posY, 1, 255), origZ = entity.posZ;
     for (int i = 0; i < 15; i++) {
       double targetX = origX + rand.nextGaussian() * range;
       double targetY = -1;
@@ -75,7 +80,7 @@ public class RandomTeleportUtil {
     try {
       entity.setPosition(targetX, targetY, targetZ);
       boolean result = world.checkNoEntityCollision(entity.getEntityBoundingBox(), entity)
-          && world.getCollisionBoxes(entity, entity.getEntityBoundingBox()).isEmpty();
+          && world.getCollisionBoxes(entity, entity.getEntityBoundingBox()).isEmpty() && !world.containsAnyLiquid(entity.getEntityBoundingBox());
       return result;
     } finally {
       entity.setPosition(origX, origY, origZ);
@@ -98,9 +103,7 @@ public class RandomTeleportUtil {
       entity.dismountRidingEntity();
     }
     if (entity.isBeingRidden()) {
-      for (Entity passenger : entity.getPassengers()) {
-        passenger.dismountRidingEntity();
-      }
+      entity.removePassengers();
     }
 
     entity.setPositionAndRotation(targetX, targetY, targetZ, entity.rotationYaw, entity.rotationPitch);
@@ -125,9 +128,7 @@ public class RandomTeleportUtil {
         entity.dismountRidingEntity();
       }
       if (entity.isBeingRidden()) {
-        for (Entity passenger : entity.getPassengers()) {
-          passenger.dismountRidingEntity();
-        }
+        entity.removePassengers();
       }
 
       if (entity instanceof EntityPlayerMP) {

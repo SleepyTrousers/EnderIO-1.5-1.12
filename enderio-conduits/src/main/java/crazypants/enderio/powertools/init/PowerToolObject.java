@@ -1,32 +1,28 @@
 package crazypants.enderio.powertools.init;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.IModTileEntity;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.init.IModObject;
-import crazypants.enderio.base.init.IModTileEntity;
+import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.init.IModObjectBase;
 import crazypants.enderio.base.init.ModObjectRegistry;
+import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.powertools.EnderIOPowerTools;
 import crazypants.enderio.powertools.machine.capbank.BlockCapBank;
 import crazypants.enderio.powertools.machine.gauge.BlockGauge;
 import crazypants.enderio.powertools.machine.monitor.BlockPowerMonitor;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIOPowerTools.MODID)
-public enum PowerToolObject implements IModObject.Registerable {
+public enum PowerToolObject implements IModObjectBase {
 
   block_cap_bank(BlockCapBank.class, PowerToolTileEntity.TileCapBank),
   block_gauge(BlockGauge.class, PowerToolTileEntity.TileGauge),
@@ -35,9 +31,9 @@ public enum PowerToolObject implements IModObject.Registerable {
 
   ;
 
-  @SubscribeEvent(priority = EventPriority.HIGHEST)
-  public static void registerBlocksEarly(@Nonnull RegistryEvent.Register<Block> event) {
-    ModObjectRegistry.addModObjects(PowerToolObject.class);
+  @SubscribeEvent
+  public static void registerBlocksEarly(@Nonnull RegisterModObject event) {
+    event.register(PowerToolObject.class);
   }
 
   final @Nonnull String unlocalisedName;
@@ -126,7 +122,7 @@ public enum PowerToolObject implements IModObject.Registerable {
   public Item getItem() {
     return item;
   }
-  
+
   @Override
   @Nullable
   public IModTileEntity getTileEntity() {
@@ -135,16 +131,8 @@ public enum PowerToolObject implements IModObject.Registerable {
 
   @Override
   public final @Nonnull <B extends Block> B apply(@Nonnull B blockIn) {
-    blockIn.setUnlocalizedName(getUnlocalisedName());
-    blockIn.setRegistryName(getRegistryName());
-    return blockIn;
-  }
-
-  @Override
-  public final @Nonnull <I extends Item> I apply(@Nonnull I itemIn) {
-    itemIn.setUnlocalizedName(getUnlocalisedName());
-    itemIn.setRegistryName(getRegistryName());
-    return itemIn;
+    blockIn.setCreativeTab(EnderIOTab.tabEnderIOConduits);
+    return IModObjectBase.super.apply(blockIn);
   }
 
   @Override

@@ -4,9 +4,12 @@ import java.util.Locale;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.api.IModObject;
+import crazypants.enderio.api.capacitor.CapacitorKeyType;
+import crazypants.enderio.api.capacitor.ICapacitorKey;
+import crazypants.enderio.api.capacitor.Scaler;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.init.IModObject;
 import crazypants.enderio.base.init.ModObject;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -21,6 +24,66 @@ public enum CapacitorKey implements ICapacitorKey {
   LEGACY_ENERGY_INTAKE(ModObject.block_machine_base, CapacitorKeyType.ENERGY_INTAKE, "legacy_intake"),
   LEGACY_ENERGY_BUFFER(ModObject.block_machine_base, CapacitorKeyType.ENERGY_BUFFER, "legacy_buffer"),
   LEGACY_ENERGY_USE(ModObject.block_machine_base, CapacitorKeyType.ENERGY_USE, "legacy_use"),
+  LEGACY_ENERGY_EFFICIENCY(ModObject.block_machine_base, CapacitorKeyType.ENERGY_EFFICIENCY, "legacy_efficiency"),
+
+  DARK_STEEL_SWORD_ENERGY_BUFFER(ModObject.itemDarkSteelSword, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_SWORD_ENERGY_INPUT(ModObject.itemDarkSteelSword, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_SWORD_ENERGY_USE(ModObject.itemDarkSteelSword, CapacitorKeyType.ENERGY_USE),
+  DARK_STEEL_SWORD_ABSORPTION_RATIO(ModObject.itemDarkSteelSword, CapacitorKeyType.ABSORPTION),
+
+  DARK_STEEL_ARMOR_ENERGY_BUFFER(ModObject.itemDarkSteelChestplate, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_ARMOR_ENERGY_INPUT(ModObject.itemDarkSteelChestplate, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_ARMOR_ENERGY_USE(ModObject.itemDarkSteelChestplate, CapacitorKeyType.ENERGY_USE),
+  DARK_STEEL_ARMOR_ABSORPTION_RATIO(ModObject.itemDarkSteelChestplate, CapacitorKeyType.ABSORPTION),
+
+  DARK_STEEL_AXE_ENERGY_BUFFER(ModObject.itemDarkSteelAxe, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_AXE_ENERGY_INPUT(ModObject.itemDarkSteelAxe, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_AXE_ENERGY_USE(ModObject.itemDarkSteelAxe, CapacitorKeyType.ENERGY_USE),
+  DARK_STEEL_AXE_ABSORPTION_RATIO(ModObject.itemDarkSteelAxe, CapacitorKeyType.ABSORPTION),
+
+  DARK_STEEL_BOW_ENERGY_BUFFER(ModObject.itemDarkSteelBow, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_BOW_ENERGY_INPUT(ModObject.itemDarkSteelBow, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_BOW_ENERGY_USE(ModObject.itemDarkSteelBow, CapacitorKeyType.ENERGY_USE),
+  DARK_STEEL_BOW_ABSORPTION_RATIO(ModObject.itemDarkSteelBow, CapacitorKeyType.ABSORPTION),
+
+  DARK_STEEL_PICKAXE_ENERGY_BUFFER(ModObject.itemDarkSteelPickaxe, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_PICKAXE_ENERGY_INPUT(ModObject.itemDarkSteelPickaxe, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_PICKAXE_ENERGY_USE(ModObject.itemDarkSteelPickaxe, CapacitorKeyType.ENERGY_USE),
+  DARK_STEEL_PICKAXE_ABSORPTION_RATIO(ModObject.itemDarkSteelPickaxe, CapacitorKeyType.ABSORPTION),
+
+  DARK_STEEL_SHEARS_ENERGY_BUFFER(ModObject.itemDarkSteelShears, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_SHEARS_ENERGY_INPUT(ModObject.itemDarkSteelShears, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_SHEARS_ENERGY_USE(ModObject.itemDarkSteelShears, CapacitorKeyType.ENERGY_USE),
+  DARK_STEEL_SHEARS_ABSORPTION_RATIO(ModObject.itemDarkSteelShears, CapacitorKeyType.ABSORPTION),
+
+  DARK_STEEL_TREETAP_ENERGY_BUFFER(ModObject.itemDarkSteelTreetap, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_TREETAP_ENERGY_INPUT(ModObject.itemDarkSteelTreetap, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_TREETAP_ENERGY_USE(ModObject.itemDarkSteelTreetap, CapacitorKeyType.ENERGY_USE),
+  DARK_STEEL_TREETAP_ABSORPTION_RATIO(ModObject.itemDarkSteelTreetap, CapacitorKeyType.ABSORPTION),
+
+  DARK_STEEL_LEVITY_ENERGY_BUFFER(ModObject.itemStaffOfLevity, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_LEVITY_ENERGY_INPUT(ModObject.itemStaffOfLevity, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_LEVITY_ENERGY_USE(ModObject.itemStaffOfLevity, CapacitorKeyType.ENERGY_USE),
+
+  DARK_STEEL_TRAVEL_ENERGY_BUFFER(ModObject.itemTravelStaff, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_TRAVEL_ENERGY_INPUT(ModObject.itemTravelStaff, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_TRAVEL_ENERGY_USE(ModObject.itemTravelStaff, CapacitorKeyType.ENERGY_USE),
+
+  DARK_STEEL_CHARGER_SIMPLE_ENERGY_BUFFER(ModObject.itemInventoryChargerSimple, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_CHARGER_SIMPLE_ENERGY_INPUT(ModObject.itemInventoryChargerSimple, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_CHARGER_SIMPLE_ENERGY_USE(ModObject.itemInventoryChargerSimple, CapacitorKeyType.ENERGY_USE),
+
+  DARK_STEEL_CHARGER_BASIC_ENERGY_BUFFER(ModObject.itemInventoryChargerBasic, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_CHARGER_BASIC_ENERGY_INPUT(ModObject.itemInventoryChargerBasic, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_CHARGER_BASIC_ENERGY_USE(ModObject.itemInventoryChargerBasic, CapacitorKeyType.ENERGY_USE),
+
+  DARK_STEEL_CHARGER_ENERGY_BUFFER(ModObject.itemInventoryCharger, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_CHARGER_ENERGY_INPUT(ModObject.itemInventoryCharger, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_CHARGER_ENERGY_USE(ModObject.itemInventoryCharger, CapacitorKeyType.ENERGY_USE),
+
+  DARK_STEEL_CHARGER_VIBRANT_ENERGY_BUFFER(ModObject.itemInventoryChargerVibrant, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_CHARGER_VIBRANT_ENERGY_INPUT(ModObject.itemInventoryChargerVibrant, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_CHARGER_VIBRANT_ENERGY_USE(ModObject.itemInventoryChargerVibrant, CapacitorKeyType.ENERGY_USE),
 
   ;
 
@@ -32,7 +95,7 @@ public enum CapacitorKey implements ICapacitorKey {
   private final @Nonnull IModObject owner;
   private final @Nonnull CapacitorKeyType valueType;
 
-  private @Nonnull Scaler scaler = Scaler.Factory.INVALID;
+  private @Nonnull Scaler scaler = ScalerFactory.INVALID;
   private int baseValue = Integer.MIN_VALUE;
 
   private CapacitorKey(@Nonnull IModObject owner, @Nonnull CapacitorKeyType valueType, @Nonnull String shortname) {
@@ -42,14 +105,18 @@ public enum CapacitorKey implements ICapacitorKey {
         owner.getRegistryName().getResourcePath() + "/" + shortname.toLowerCase(Locale.ENGLISH));
   }
 
-  @Override
-  public int get(@Nonnull ICapacitorData capacitor) {
-    return (int) (baseValue * scaler.scaleValue(capacitor.getUnscaledValue(this)));
+  private CapacitorKey(@Nonnull IModObject owner, @Nonnull CapacitorKeyType valueType) {
+    this(owner, valueType, valueType.name().toLowerCase(Locale.ENGLISH));
   }
 
   @Override
-  public float getFloat(@Nonnull ICapacitorData capacitor) {
-    return baseValue * scaler.scaleValue(capacitor.getUnscaledValue(this));
+  public float getFloat(float level) {
+    return baseValue * scaler.scaleValue(level);
+  }
+
+  @Override
+  public int getBaseValue() {
+    return baseValue;
   }
 
   @Override
@@ -79,7 +146,7 @@ public enum CapacitorKey implements ICapacitorKey {
 
   @Override
   public void validate() {
-    if (scaler == Scaler.Factory.INVALID || baseValue == Integer.MIN_VALUE) {
+    if (scaler == ScalerFactory.INVALID || baseValue == Integer.MIN_VALUE) {
       throw new RuntimeException(
           "CapacitorKey " + getRegistryName() + " has not been configured. This should not be possible and may be caused by a 3rd-party addon mod.");
     }
@@ -111,7 +178,7 @@ public enum CapacitorKey implements ICapacitorKey {
       Log.debug("<capacitor key=\"", key.getRegistryName() + "\" base=\"\" scaler=\"\" />");
     }
 
-    CapacitorKeyRegistry.setScaler(NO_POWER.getRegistryName(), Scaler.Factory.FIXED);
+    CapacitorKeyRegistry.setScaler(NO_POWER.getRegistryName(), ScalerFactory.FIXED);
     CapacitorKeyRegistry.setBaseValue(NO_POWER.getRegistryName(), 0);
   }
 

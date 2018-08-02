@@ -2,7 +2,7 @@ package crazypants.enderio.base.block.rail;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.render.IDefaultRenderers;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.properties.IProperty;
@@ -10,7 +10,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.entity.item.EntityMinecart.Type;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Mirror;
@@ -76,7 +75,7 @@ public class BlockExitRail extends BlockRailBase implements IDefaultRenderers, I
 
   @Override
   public void onMinecartPass(@Nonnull World world, @Nonnull EntityMinecart cart, @Nonnull BlockPos pos) {
-    if (cart.getType() == Type.RIDEABLE) {
+    if (cart.canBeRidden() && !cart.isPoweredCart()) { // && !cart.hasAnyOtherKindOfAttachment()
       if (cart.isBeingRidden()) {
         cart.removePassengers();
       }

@@ -71,7 +71,7 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> implem
     return ItemStack.EMPTY;
   }
 
-  private static class CtaGhostSlot extends GhostSlot {
+  static class CtaGhostSlot extends GhostSlot {
 
     private @Nonnull ITravelAccessable ta;
     boolean isAuth;
@@ -99,7 +99,7 @@ public class ContainerTravelAccessable extends ContainerEnder<IInventory> implem
     @Override
     public void putStack(@Nonnull ItemStack stack, int realsize) {
       if (isAuth) {
-        if (ta instanceof TileEntityBase) {
+        if (ta.getAccessMode() == AccessMode.PROTECTED && ta instanceof TileEntityBase) {
           PacketHandler.INSTANCE.sendToServer(PacketPassword.setPassword((TileEntityBase) ta, getSlot(), stack));
         }
       } else {

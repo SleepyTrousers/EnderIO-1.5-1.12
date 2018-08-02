@@ -7,6 +7,7 @@ import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.api.farm.IFarmingTool;
 import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.item.darksteel.ItemDarkSteelTreetap;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemShears;
@@ -27,7 +28,12 @@ public enum FarmingTool implements IFarmingTool {
       return item.getItem().getHarvestLevel(item, "axe", null, null) >= 0;
     }
   },
-  TREETAP,
+  TREETAP {
+    @Override
+    protected boolean match(@Nonnull ItemStack item) {
+      return super.match(item) || item.getItem() instanceof ItemDarkSteelTreetap;
+    }
+  },
   SHEARS {
     @Override
     protected boolean match(@Nonnull ItemStack item) {
@@ -66,12 +72,6 @@ public enum FarmingTool implements IFarmingTool {
 
   public final @Nonnull Things getThings() {
     return things;
-  }
-
-  @SuppressWarnings("null")
-  public static boolean isBrokenTinkerTool(@Nonnull ItemStack item) {
-    return Prep.isValid(item) && item.hasTagCompound() && item.getTagCompound().hasKey("Stats")
-        && item.getTagCompound().getCompoundTag("Stats").getBoolean("Broken");
   }
 
   protected boolean match(@Nonnull ItemStack item) {

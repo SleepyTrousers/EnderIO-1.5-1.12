@@ -7,6 +7,7 @@ import crazypants.enderio.base.config.Config.Section;
 import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.config.factory.ValueFactory;
 import crazypants.enderio.machines.EnderIOMachines;
+import crazypants.enderio.machines.config.config.ChargerConfig;
 import crazypants.enderio.machines.config.config.ClientConfig;
 import crazypants.enderio.machines.config.config.CombustionGenConfig;
 import crazypants.enderio.machines.config.config.ExperienceConfig;
@@ -59,6 +60,7 @@ public final class Config {
     VacuumConfig.F.getClass();
     VatConfig.F.getClass();
     WeatherConfig.F.getClass();
+    ChargerConfig.F.getClass();
     ZombieGenConfig.F.getClass();
   }
 }

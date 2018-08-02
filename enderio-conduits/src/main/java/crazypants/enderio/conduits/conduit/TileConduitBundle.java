@@ -713,22 +713,23 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
     if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY) {
       for (IConduit conduit : getConduits()) {
-        if (conduit.hasCapability(capability, facing)) {
+        if (conduit.hasInternalCapability(capability, facing)) {
           return true;
         }
       }
     }
-
-    for (IConduit conduit : getServerConduits()) {
-      if (conduit.hasCapability(capability, facing)) {
-        return true;
-      }
-    }
-
-    if (world.isRemote) {
-      for (IConduit conduit : this.getClientConduits()) {
+    if (facing != null) {
+      for (IServerConduit conduit : getServerConduits()) {
         if (conduit.hasCapability(capability, facing)) {
           return true;
+        }
+      }
+
+      if (world.isRemote) {
+        for (IClientConduit conduit : this.getClientConduits()) {
+          if (conduit.hasClientCapability(capability, facing)) {
+            return true;
+          }
         }
       }
     }
@@ -740,14 +741,24 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
     if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY) {
       for (IConduit conduit : getConduits()) {
-        if (conduit.hasCapability(capability, facing))
-          return conduit.getCapability(capability, facing);
+        if (conduit.hasInternalCapability(capability, facing))
+          return conduit.getInternalCapability(capability, facing);
       }
     }
 
-    for (IConduit conduit : getServerConduits()) {
-      if (conduit.hasCapability(capability, facing))
-        return conduit.getCapability(capability, facing);
+    if (facing != null) {
+      for (IServerConduit conduit : getServerConduits()) {
+        if (conduit.hasCapability(capability, facing))
+          return conduit.getCapability(capability, facing);
+      }
+
+      if (world.isRemote) {
+        for (IClientConduit conduit : this.getClientConduits()) {
+          if (conduit.hasClientCapability(capability, facing)) {
+            return conduit.getClientCapability(capability, facing);
+          }
+        }
+      }
     }
     return super.getCapability(capability, facing);
   }
@@ -805,10 +816,10 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   ////////////////////////////////////////////
 
   @Override
-  public void setFilter(int filterIndex, int param, IFilter filter) {
+  public void setFilter(int filterIndex, int param, @Nonnull IFilter filter) {
     for (IConduit conduit : getConduits()) {
-      if (conduit.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param))) {
-        IFilterHolder<IFilter> filterHolder = conduit.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param));
+      if (conduit.hasInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param))) {
+        IFilterHolder<IFilter> filterHolder = conduit.getInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param));
         if (filterHolder != null && (filterHolder.getInputFilterIndex() == filterIndex || filterHolder.getOutputFilterIndex() == filterIndex)) {
           filterHolder.setFilter(filterIndex, param, filter);
         }
@@ -819,8 +830,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   @Override
   public IFilter getFilter(int filterIndex, int param) {
     for (IConduit conduit : getConduits()) {
-      if (conduit.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param))) {
-        IFilterHolder<IFilter> filterHolder = conduit.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param));
+      if (conduit.hasInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param))) {
+        IFilterHolder<IFilter> filterHolder = conduit.getInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param));
         if (filterHolder != null && (filterHolder.getInputFilterIndex() == filterIndex || filterHolder.getOutputFilterIndex() == filterIndex)) {
           return filterHolder.getFilter(filterIndex, param);
         }
@@ -833,8 +844,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   @Nullable
   public IItemHandler getInventoryForSnapshot(int filterIndex, int param) {
     for (IConduit conduit : getConduits()) {
-      if (conduit.hasCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param))) {
-        IFilterHolder<IFilter> filterHolder = conduit.getCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param));
+      if (conduit.hasInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param))) {
+        IFilterHolder<IFilter> filterHolder = conduit.getInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param));
         if (filterHolder != null && (filterHolder.getInputFilterIndex() == filterIndex || filterHolder.getOutputFilterIndex() == filterIndex)) {
           return filterHolder.getInventoryForSnapshot(filterIndex, param);
         }
