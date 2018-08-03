@@ -36,6 +36,7 @@ import crazypants.enderio.machines.machine.slicensplice.BlockSliceAndSplice;
 import crazypants.enderio.machines.machine.solar.BlockSolarPanel;
 import crazypants.enderio.machines.machine.soul.BlockSoulBinder;
 import crazypants.enderio.machines.machine.spawner.BlockPoweredSpawner;
+import crazypants.enderio.machines.machine.spawner.creative.BlockCreativeSpawner;
 import crazypants.enderio.machines.machine.tank.BlockTank;
 import crazypants.enderio.machines.machine.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.machines.machine.teleport.telepad.BlockDialingDevice;
@@ -121,6 +122,8 @@ public enum MachineObject implements IModObjectBase {
   block_crafter(BlockCrafter.class, MachineTileEntity.TileCrafter),
   block_simple_crafter(BlockCrafter.class, "create_simple", MachineTileEntity.TileSimpleCrafter),
 
+  block_creative_spawner(BlockCreativeSpawner.class, MachineTileEntity.TileCreativeSpawner),
+
   ;
 
   @SubscribeEvent
@@ -163,7 +166,7 @@ public enum MachineObject implements IModObjectBase {
     }
     this.modTileEntity = modTileEntity;
   }
-  
+
   @Override
   @Nonnull
   public <B extends Block> B apply(@Nonnull B block) {

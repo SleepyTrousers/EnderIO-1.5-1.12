@@ -132,6 +132,8 @@ public class EnderIO implements IEnderIOAddon {
   public void load(@Nonnull FMLInitializationEvent event) {
     Log.debug("PHASE INIT START");
 
+    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Init.Pre());
+
     initCrashData(); // after blocks have been created
 
     Fluids.registerFuels();
@@ -147,6 +149,8 @@ public class EnderIO implements IEnderIOAddon {
     GuiHelper.init(event);
 
     proxy.init(event);
+
+    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Init.Pre());
 
     Log.debug("PHASE INIT END");
   }

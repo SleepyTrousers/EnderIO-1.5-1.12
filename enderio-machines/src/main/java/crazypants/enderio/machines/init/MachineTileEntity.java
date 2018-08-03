@@ -32,6 +32,7 @@ import crazypants.enderio.machines.machine.slicensplice.TileSliceAndSplice;
 import crazypants.enderio.machines.machine.solar.TileSolarPanel;
 import crazypants.enderio.machines.machine.soul.TileSoulBinder;
 import crazypants.enderio.machines.machine.spawner.TilePoweredSpawner;
+import crazypants.enderio.machines.machine.spawner.creative.TileCreativeSpawner;
 import crazypants.enderio.machines.machine.tank.TileTank;
 import crazypants.enderio.machines.machine.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.machines.machine.teleport.telepad.TileDialingDevice;
@@ -105,6 +106,7 @@ public enum MachineTileEntity implements IModTileEntityBase {
   TileImpulseHopper(TileImpulseHopper.class),
   TileCrafter(TileCrafter.class),
   TileSimpleCrafter(TileCrafter.Simple.class),
+  TileCreativeSpawner(TileCreativeSpawner.class),
 
   ;
 

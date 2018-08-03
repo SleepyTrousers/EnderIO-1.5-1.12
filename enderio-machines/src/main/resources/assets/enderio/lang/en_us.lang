@@ -286,6 +286,14 @@ tile.block_powered_spawner.empty.tooltip.detailed.line1=Combine with a broken sp
 tile.block_powered_spawner.tooltip.detailed.line1=Supply with power to activate
 tile.block_powered_spawner.tooltip.detailed.line2=Upgrade with capacitors to increase speed and energy storage
 
+tile.block_creative_spawner.name=Creative Spawner
+tile.block_creative_spawner.tooltip.common.line1=Creative mode/server admin mob spawner
+tile.block_creative_spawner.tooltip.detailed.line1=Admin: Put in a soul vial and optionally an item that will serve as payment for spawning mobs.
+tile.block_creative_spawner.tooltip.detailed.line2=User: Put in the payment to have mobs spawned (unless the spawner is free).
+enderio.block_creative_spawner.gui.vial=Soul
+enderio.block_creative_spawner.gui.template=Payment Template
+enderio.block_creative_spawner.gui.offering=Pay here
+
 tile.block_tank.name=Fluid Tank
 tile.block_tank.advanced.name=Pressurized Fluid Tank
 tile.block_tank.tooltip.detailed.line1=Portable fluid tank

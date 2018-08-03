@@ -123,6 +123,9 @@ public enum Lang implements ILang {
   GUI_VACUUM_XP_HEADER(".gui.vacuum.xp.header"),
   GUI_VACUUM_PRIME_TOOLTIP(".gui.vacuum.prime"),
   STATUS_SPAWNER_UNBOUND(".status.powered_spawner.unbound"),
+  GUI_CREATIVE_SPAWNER_SOUL(".block_creative_spawner.gui.vial"),
+  GUI_CREATIVE_SPAWNER_TEMPLATE(".block_creative_spawner.gui.template"),
+  GUI_CREATIVE_SPAWNER_OFFERING(".block_creative_spawner.gui.offering"),
 
   ;
 
