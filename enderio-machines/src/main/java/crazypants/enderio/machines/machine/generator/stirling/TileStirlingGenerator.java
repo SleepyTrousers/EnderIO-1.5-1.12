@@ -8,7 +8,6 @@ import com.enderio.core.api.common.util.IProgressTile;
 import crazypants.enderio.api.capacitor.ICapacitorData;
 import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.machine.baselegacy.AbstractGeneratorEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.paint.IPaintable;
@@ -29,7 +28,6 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -39,9 +37,9 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_STIRLING
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_STIRLING_POWER_GEN;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_STIRLING_POWER_LOSS;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_EFFICIENCY;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_GEN;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_LOSS;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_EFFICIENCY;
 
 @Storable
 public class TileStirlingGenerator extends AbstractGeneratorEntity implements IProgressTile, IPaintable.IPaintableTileEntity {
@@ -99,7 +97,7 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
   @Override
   public float getProgress() {
     if (totalBurnTime <= 0) {
-      return 0;
+      return -1;
     }
     return (float) burnTime / (float) totalBurnTime;
   }
