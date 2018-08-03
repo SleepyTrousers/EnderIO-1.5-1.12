@@ -366,6 +366,8 @@ enderio.entity_action.block_relocator_obelisk.action=
 #                                                en: Relocates
 enderio.farm.note.noAxe=
 #                   en: No Axe
+enderio.farm.note.noCapacitor=
+#                         en: No Capacitor
 enderio.farm.note.noHoe=
 #                   en: No Hoe
 enderio.farm.note.noPower=
@@ -556,6 +558,8 @@ enderio.gui.power_item_filter=
 #                         en: Power Item Filter
 enderio.gui.probe.copied=
 #                    en: Copied conduit settings
+enderio.gui.probe.pasted=
+#                    en: Pasted conduit settings
 enderio.gui.redstone_filter.and=
 #                           en: Redstone AND Filter
 enderio.gui.redstone_filter.count=
@@ -764,6 +768,12 @@ enderio.soulvial.player.denied=
 #                          en: §cNo!$r How would you feel if you had to play this game from inside a bottle?
 enderio.tooltip.anvilupgrades=
 #                         en: Anvil Upgrades:
+enderio.tooltip.inventory_charger.disabled=
+#                                      en: Inventory Charger disabled
+enderio.tooltip.inventory_charger.enabled=
+#                                     en: Inventory Charger enabled
+enderio.tooltip.inventory_charger.need_upgrade=
+#                                          en: §4No energy crystal installed!
 enderio.top.action.header.post=
 #                          en: :
 enderio.top.action.header.pre=
@@ -1074,6 +1084,10 @@ item.item_dark_steel_sword.tooltip.detailed.line1=
 #                                             en: Increased skull and ender pearl drops
 item.item_dark_steel_sword.tooltip.detailed.line2=
 #                                             en: When powered: Endermen can't teleport once hit, extra Damage and Speed
+item.item_dark_steel_treetap.name=
+#                             en: Dark Treetap
+item.item_dark_steel_treetap.tooltip.common.line1=
+#                                             en: Farming Station Use Only!
 item.item_end_steel_axe.name=
 #                        en: Ender Axe
 item.item_end_steel_boots.name=
@@ -1112,6 +1126,22 @@ item.item_fluid_filter.name=
 #                       en: Fluid Filter
 item.item_fluid_filter.tooltip.detailed.line1=
 #                                         en: Filters fluids with whitelist options
+item.item_inventory_charger.name=
+#                            en: Inventory Charger
+item.item_inventory_charger.tooltip.detailed.line1=
+#                                              en: Charges all items in your inventory. Right-click to enable/disable.
+item.item_inventory_charger_basic.name=
+#                                  en: Basic Inventory Charger
+item.item_inventory_charger_basic.tooltip.detailed.line1=
+#                                                    en: Charges all items in your inventory. Right-click to enable/disable.
+item.item_inventory_charger_simple.name=
+#                                   en: Simple Inventory Charger
+item.item_inventory_charger_simple.tooltip.detailed.line1=
+#                                                     en: Charges neighboring items in your inventory. Right-click to enable/disable.
+item.item_inventory_charger_vibrant.name=
+#                                    en: Vibrant Inventory Charger
+item.item_inventory_charger_vibrant.tooltip.detailed.line1=
+#                                                      en: Charges all items in your inventory. Right-click to enable/disable.
 item.item_limited_item_filter.name=
 #                              en: Limited Item Filter
 item.item_limited_item_filter.tooltip.detailed.line1=
@@ -1344,8 +1374,6 @@ item.item_mod_item_filter.tooltip.detailed.line1=
 #                                            en: Filters items based on the mod they come from
 item.item_owl_egg.name=
 #                  en: Owl Egg
-item.item_photo_wrench.name=
-#                       en: Yeta Wrench
 item.item_power_item_filter.name=
 #                            en: Power Item Filter
 item.item_power_item_filter.tooltip.detailed.line1=
@@ -1438,6 +1466,8 @@ item.item_xp_transfer.tooltip.detailed.line3=
 #                                        en: Shift-R-Click to transfer levels to
 item.item_xp_transfer.tooltip.detailed.line4=
 #                                        en: the tank
+item.item_yeta_wrench.name=
+#                      en: Yeta Wrench
 item.item_yeta_wrench.tooltip.detailed.line1=
 #                                        en: Hides conduit facades when held
 item.item_yeta_wrench.tooltip.detailed.line2=

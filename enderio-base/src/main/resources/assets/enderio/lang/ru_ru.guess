@@ -14,7 +14,6 @@
 #  ('%sБонусный выход %s' vs '%sBonus Output %s%%')
 # enderio.grindingball.tooltip.line4= <-- different number of %s
 #  ('%sИспользование энергии %s' vs '%sPower Use %s%%')
-# item.item_yeta_wrench.name= <-- extra unused key
 # tile.fluid.vapor_of_levity.name= <-- extra unused key
 description.enchantment.enderio.repellent=
 #                                     en: Chance to teleport attackers away|Higher levels teleport more often and farther
@@ -70,6 +69,8 @@ enderio.darksteel.upgrade.thaumaturge_robes.legs.name=
 #                                                 en: Thaumaturge's Leggings
 enderio.darksteel.upgrade.thaumaturge_robes.legs.tooltip.detailed.line1=
 #                                                                   en: Vis Discount: 3%
+enderio.farm.note.noCapacitor=
+#                         en: No Capacitor
 enderio.grindingball.gui.durability=
 #                               en: Remaining: %s %%
 enderio.gui.fluid_filter=
@@ -78,6 +79,8 @@ enderio.gui.generic.loss=
 #                    en: Leakage: %s
 enderio.gui.infinity_recipe_dimensions=
 #                                  en: Overworld Only
+enderio.gui.probe.pasted=
+#                    en: Pasted conduit settings
 enderio.gui.redstone_filter.and=
 #                           en: Redstone AND Filter
 enderio.gui.redstone_filter.count=
@@ -104,6 +107,12 @@ enderio.gui.redstone_filter.xor=
 #                           en: Redstone XOR Filter
 enderio.owlegg.no_owl=
 #                 en: No Owl found (install Ender IO Zoo!)
+enderio.tooltip.inventory_charger.disabled=
+#                                      en: Inventory Charger disabled
+enderio.tooltip.inventory_charger.enabled=
+#                                     en: Inventory Charger enabled
+enderio.tooltip.inventory_charger.need_upgrade=
+#                                          en: §4No energy crystal installed!
 entity.enderio.enderio.owl_egg.name=
 #                               en: Owl Egg
 entity.enderio.enderio.primed_charge.name=
@@ -118,6 +127,10 @@ item.item_alloy_ingot_end_steel.name=
 #                                en: End Steel Ingot
 item.item_alloy_nugget_end_steel.name=
 #                                 en: End Steel Nugget
+item.item_dark_steel_treetap.name=
+#                             en: Dark Treetap
+item.item_dark_steel_treetap.tooltip.common.line1=
+#                                             en: Farming Station Use Only!
 item.item_end_steel_axe.name=
 #                        en: Ender Axe
 item.item_end_steel_boots.name=
@@ -140,6 +153,22 @@ item.item_fluid_filter.name=
 #                       en: Fluid Filter
 item.item_fluid_filter.tooltip.detailed.line1=
 #                                         en: Filters fluids with whitelist options
+item.item_inventory_charger.name=
+#                            en: Inventory Charger
+item.item_inventory_charger.tooltip.detailed.line1=
+#                                              en: Charges all items in your inventory. Right-click to enable/disable.
+item.item_inventory_charger_basic.name=
+#                                  en: Basic Inventory Charger
+item.item_inventory_charger_basic.tooltip.detailed.line1=
+#                                                    en: Charges all items in your inventory. Right-click to enable/disable.
+item.item_inventory_charger_simple.name=
+#                                   en: Simple Inventory Charger
+item.item_inventory_charger_simple.tooltip.detailed.line1=
+#                                                     en: Charges neighboring items in your inventory. Right-click to enable/disable.
+item.item_inventory_charger_vibrant.name=
+#                                    en: Vibrant Inventory Charger
+item.item_inventory_charger_vibrant.tooltip.detailed.line1=
+#                                                      en: Charges all items in your inventory. Right-click to enable/disable.
 item.item_material.cake_base.name=
 #                             en: Cake Base
 item.item_material.confusing_dust.name=Порошок заблуждения
@@ -204,8 +233,6 @@ item.item_material.withering_dust.name=Иссушающая пыль
 #                                  en: Withering Dust
 item.item_owl_egg.name=
 #                  en: Owl Egg
-item.item_photo_wrench.name=Гаечный ключ Yeta
-#                       en: Yeta Wrench
 item.item_redstone_and_filter.name=
 #                              en: Redstone AND Filter
 item.item_redstone_counting_filter.name=
