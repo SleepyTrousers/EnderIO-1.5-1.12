@@ -6,7 +6,10 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
@@ -29,7 +32,7 @@ import net.minecraftforge.fml.common.ModContainer;
 
 public class RecipeLoader {
 
-  private static NNList<String> imcRecipes = new NNList<>();
+  private static Map<String, String> imcRecipes = new HashMap<>();
 
   private RecipeLoader() {
   }
@@ -135,21 +138,26 @@ public class RecipeLoader {
   }
 
   private static <T extends RecipeRoot> T handleIMCRecipes(T target, T config) {
-    for (String recipe : imcRecipes) {
-      try (InputStream is = IOUtils.toInputStream(recipe, Charset.forName("UTF-8"))) {
+    for (Entry<String, String> recipe : imcRecipes.entrySet()) {
+      try (InputStream is = IOUtils.toInputStream(recipe.getValue(), Charset.forName("UTF-8"))) {
         T recipes = RecipeFactory.readStax(target, "recipes", is);
         recipes.enforceValidity();
         config = recipes.addRecipes(config, true);
       } catch (InvalidRecipeConfigException e) {
-        recipeError(NullHelper.first(e.getFilename(), "IMC from other mod"), e.getMessage());
-      } catch (IOException e) {
-        Log.error("IO error while parsing string:");
+        Log.error("Invalied recipe while parsing IMC:");
         e.printStackTrace();
-        recipeError("IMC from other mod", "IO error while parsing string:" + e.getMessage());
+        Log.error("IMC message:\n" + recipe.getValue());
+        recipeError(NullHelper.first(e.getFilename(), "IMC from the mod '" + recipe.getKey() + "'"), e.getMessage());
+      } catch (IOException e) {
+        Log.error("IO error while parsing IMC:");
+        e.printStackTrace();
+        Log.error("IMC message:\n" + recipe.getValue());
+        recipeError("IMC from the mod '" + recipe.getKey() + "'", "IO error while parsing string:" + e.getMessage());
       } catch (XMLStreamException e) {
         Log.error("IMC has malformed XML:");
         e.printStackTrace();
-        recipeError("IMC from other mod", "IMC has malformed XML:" + e.getMessage());
+        Log.error("IMC message:\n" + recipe.getValue());
+        recipeError("IMC from the mod '" + recipe.getKey() + "'", "IMC has malformed XML:" + e.getMessage());
       }
     }
     return config;
@@ -202,9 +210,9 @@ public class RecipeLoader {
     return target;
   }
 
-  public static void addIMCRecipe(String recipe) throws XMLStreamException, IOException {
+  public static void addIMCRecipe(String sender, String recipe) throws XMLStreamException, IOException {
     if (imcRecipes != null) {
-      imcRecipes.add(recipe);
+      imcRecipes.put(sender, recipe);
     } else {
       try (InputStream is = IOUtils.toInputStream(recipe, Charset.forName("UTF-8"))) {
         Recipes recipes = RecipeFactory.readStax(new Recipes(), "recipes", is);
