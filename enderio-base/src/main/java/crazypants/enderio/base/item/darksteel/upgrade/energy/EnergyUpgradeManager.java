@@ -30,7 +30,7 @@ public abstract class EnergyUpgradeManager {
   public static EnergyUpgrade.EnergyUpgradeHolder loadFromItem(@Nonnull ItemStack stack) {
     if (stack.getItem() instanceof IDarkSteelItem) {
       IDarkSteelItem item = (IDarkSteelItem) stack.getItem();
-    EnergyUpgrade energyUpgrade = EnergyUpgrade.loadAnyFromItem(stack);
+      EnergyUpgrade energyUpgrade = EnergyUpgrade.loadAnyFromItem(stack);
       return energyUpgrade != null ? energyUpgrade.getEnergyUpgradeHolder(stack, item) : null;
     } else {
       return null;
