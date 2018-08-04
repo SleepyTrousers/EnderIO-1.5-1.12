@@ -70,7 +70,7 @@ enderio.block_powered_spawner.note.noLocationFound=Не найдено мест�
 enderio.block_powered_spawner.note.noLocationAtAll=Нет жизнеспособного пространства
 enderio.block_powered_spawner.note.badSoul=Плохая душа, невозможно создать сущность
 enderio.block_powered_spawner.note.noPlayer=Нет игрока в диапазоне
-
+enderio.status.powered_spawner.unbound=§4Невозможно заспавнить "ничего"
 
 enderio.gui.tank.tank=Резервуар
 enderio.gui.tank.void.slot=Слот пустоты
@@ -93,8 +93,8 @@ enderio.gui.vacuum.range=Сила всасывания
 enderio.gui.vacuum.header.chest=Вакуумный сундук
 enderio.gui.vacuum.header.filter=Предметный фильтр
 enderio.gui.vacuum.header.range=Дальность
-
-
+enderio.gui.vacuum.xp.header=XP вакуум
+enderio.gui.vacuum.prime=Чтобы активировать, щелкните ПКМ по XP Вакуумом ведром жидкого опыта.
 
 enderio.gui.trans.publicChannel=Общественный канал
 enderio.gui.trans.privateChannel=Частный канал
@@ -138,8 +138,8 @@ enderio.gui.impulse_hopper.locked=Выход заблокирован
 enderio.gui.impulse_hopper.unlocked=Выход разблокирован
 enderio.gui.impulse_hopper.locked.tooltip=Останавливает импульс воронки от сортировки предметов в выходные слоты, если там уже есть предметы.
 
-
-
+enderio.gui.crafter.buffering_stack=Буферизация стаков
+enderio.gui.crafter.buffering_single=Буферизация одиночных предметов
 
 tile.block_alloy_smelter.name=Завод сплавов
 tile.block_alloy_smelter.tooltip.detailed.line1=Используется для создания сплавов EnderIO
@@ -149,13 +149,13 @@ tile.block_alloy_smelter.tooltip.detailed.line3=Обновление с конд
 tile.block_simple_alloy_smelter.name=Простой завод сплавов
 tile.block_simple_alloy_smelter.tooltip.detailed.line1=Используется для создания сплавов EnderIO
 
+tile.block_simple_furnace.name=Простаяч электропечь
+tile.block_simple_furnace.tooltip.detailed.line1=Плавит предметы с помощью энергии
 
-
-
-
-
-
-
+tile.block_enhanced_alloy_smelter.name=Улучшенный завод сплавов
+tile.block_enhanced_alloy_smelter.tooltip.detailed.line1=Используется для создания сплавов EnderIO
+tile.block_enhanced_alloy_smelter.tooltip.detailed.line2=Может также использоваться как электрическая печь
+tile.block_enhanced_alloy_smelter.tooltip.detailed.line3=Обновление с конденсаторами увеличит скорость и накопление энергии
 
 tile.block_buffer.item.name=Предметный буфер
 tile.block_buffer.power.name=Энергобуфер
@@ -205,14 +205,14 @@ tile.block_stirling_generator.tooltip.detailed.line2=Может быть мод�
 tile.block_zombie_generator.name=Зомби генератор
 tile.block_zombie_generator.tooltip.detailed.line1=Потребляет питательный дистиллят для производства энергии
 
+tile.block_franken_zombie_generator.name=Франк-Зомби генератор
+tile.block_franken_zombie_generator.tooltip.detailed.line1=Потребляет питательный дистиллят для получения еще большей мощности
+
+tile.block_ender_generator.name=Генератор Края
+tile.block_ender_generator.tooltip.detailed.line1=Расходует росу пустоты для генерации энергии
+
 tile.block_killer_joe.name=Киллер Джо
 tile.block_killer_joe.tooltip.detailed.line1=Атакует ближайших существ, если снабжён мечом и питательным дистиллятом
-
-
-
-
-
-
 
 #Obelisks
 
@@ -240,16 +240,16 @@ tile.block_experience_obelisk.tooltip.detailed.line2=Может отдавать
 # no description
 tile.block_painter.name=Покрасочный механизм
 
-tile.block_reservoir.name=Резервуар
-tile.block_reservoir.tooltip.detailed.line1=Формируется при размещении 2x2x1
-tile.block_reservoir.tooltip.detailed.line2=Добавьте два ведра воды для бесконечного источника воды
-tile.block_reservoir.tooltip.detailed.line3=Производит одно ведро в секунду
-tile.block_reservoir.tooltip.detailed.line4=ПКМ с гаечным ключом, чтобы включить авто-выход
+tile.block_reservoir.name=Краерезервуар
+tile.block_reservoir.tooltip.detailed.line1=Бесконечный резервуар для воды.
+tile.block_reservoir.tooltip.detailed.line2=При подключении к другим резервуар Края:
+tile.block_reservoir.tooltip.detailed.line3=- Добавьте два ведра воды для бесконечного источника воды
+tile.block_reservoir.tooltip.detailed.line4=- Производит одно ведро в секунду
+tile.block_reservoir.tooltip.detailed.line5=- ПКМ с гаечным ключом, чтобы включить авто-выход
 
-
-
-
-
+tile.block_omni_reservoir.name=Всерезервуар
+tile.block_omni_reservoir.tooltip.detailed.line1=Резервуар для любой жидкости.
+tile.block_omni_reservoir.tooltip.detailed.line5=- ПКМ с гаечным ключом, чтобы включить авто-выход
 
 tile.block_sag_mill.name=Дробитель
 tile.block_sag_mill.tooltip.detailed.line1=Дробит руду и другие предметы
@@ -259,13 +259,13 @@ tile.block_sag_mill.tooltip.detailed.line3=Добавьте конденсато
 tile.block_simple_sag_mill.name=Простой дробитель
 tile.block_simple_sag_mill.tooltip.detailed.line1=Дробит руду и другие предметы
 
+tile.block_enhanced_sag_mill.name=Улучшенный дробитель
+tile.block_enhanced_sag_mill.tooltip.detailed.line1=Дробит руду и другие предметы
+tile.block_enhanced_sag_mill.tooltip.detailed.line2=Добавьте измельчающие шарики, чтобы увеличить выход и эффективность
+tile.block_enhanced_sag_mill.tooltip.detailed.line3=Добавьте конденсаторы, чтобы увеличить скорость и хранилище энергии
+
 tile.block_slice_and_splice.name="Отрубатель и сращиватель"
 tile.block_slice_and_splice.tooltip.detailed.line1=Отрубает головы и превращает их во всякие полезные вещи
-
-
-
-
-
 
 tile.block_solar_panel.simple.name=Простая фотовольтовая ячейка
 tile.block_solar_panel.name=Фотовольтовая ячейка
@@ -285,6 +285,14 @@ tile.block_powered_spawner.name=Электрический спаунер
 tile.block_powered_spawner.empty.tooltip.detailed.line1=Объедините со сломанным спаунером в наковальне
 tile.block_powered_spawner.tooltip.detailed.line1=Подайте питание, чтобы активировать
 tile.block_powered_spawner.tooltip.detailed.line2=Добавьте конденсаторы, чтобы увеличить скорость и хранилище энергии
+
+
+
+
+
+
+
+
 
 tile.block_tank.name=Жидкостный резервуар
 tile.block_tank.advanced.name=Жидкостный резервуар под давлением
@@ -322,38 +330,38 @@ tile.block_xp_vacuum.tooltip.detailed.line2=Должен быть активир
 tile.block_vat.name=Чан
 tile.block_vat.tooltip.detailed.line1=Используется для варки жидкостей EnderIO
 
-
-
+tile.block_enhanced_vat.name=Улучшенный чан
+tile.block_enhanced_vat.tooltip.detailed.line1=Используется для варки жидкостей EnderIO
 
 tile.block_wired_charger.name=Проводной зарядник
 tile.block_wired_charger.tooltip.detailed.line1=Заряжает предметы с µI
+tile.block_wired_charger.tooltip.detailed.line2=Шкала с размером накопителя энергии предметов
 
+tile.block_simple_wired_charger.name=Простое проводное зарядное устройство
+tile.block_simple_wired_charger.tooltip.detailed.line2=Заряжает предметы с µI
 
-
-
-
-
-
-
+tile.block_enhanced_wired_charger.name=Улучшенный проводной зарядник
+tile.block_enhanced_wired_charger.tooltip.detailed.line1=Заряжает предметы с µI
+tile.block_enhanced_wired_charger.tooltip.detailed.line2=Шкала с размером накопителя энергии предметов
 
 tile.block_wireless_charger.name=Беспроводной зарядник
 tile.block_wireless_charger.tooltip.detailed.line1=Заряжает предметы в ближайших инвентарях игроков
 
+tile.block_normal_wireless_charger.name=Беспроводная зарядная антенна
+tile.block_normal_wireless_charger.tooltip.detailed.line1=Заряжает предметы в ближайших инвентарях игроков
 
+tile.block_enhanced_wireless_charger.name=Улучшенная беспроводная зарядная антенна
+tile.block_enhanced_wireless_charger.tooltip.detailed.line1=Заряжает предметы в ближайших инвентарях игроков. Имеет двойной диапазон беспроводной зарядной антенны.
 
-
-
-
-
-
-
+tile.block_wireless_charger_extension.name=Расширение антенны беспроводной зарядки
+tile.block_wireless_charger_extension.tooltip.detailed.line1=Удваивает диапазон расширенной антенны беспроводной зарядки в одном направлении.
 
 tile.block_impulse_hopper.name=Импульсная воронка
 tile.block_impulse_hopper.tooltip.detailed.line1=Принимает введенные предметы и выводит их только в том случае, если во входных данных имеется полный набор необходимых предметов.
 
+tile.block_crafter.name=Создатель
 
-
-
+tile.block_simple_crafter.name=Простой создатель
 
 # Types. smelting=Alloy Smelter Speed,
 # area=all machines "area" attribute (e.g. farm),
@@ -385,10 +393,10 @@ enderio.jei.stirling_generator.notSimple.line1=Это топливо не мож
 enderio.jei.stirling_generator.notSimple.line2=простом генераторе Стирлинга
 enderio.jei.alloy_smelter.notSimple.line1=Этот рецепт нельзя сделать внутри
 enderio.jei.alloy_smelter.notSimple.line2=простого завода сплавов
-
-
-
-
+enderio.jei.grinding_ball.main.line1=Добавляет возможность удвоить все выходы
+enderio.jei.grinding_ball.bonus.line1=Увеличивает шансы на любые случайные выходы, но не приносит их выше 100%%
+enderio.jei.grinding_ball.bonus.line2=Рассчитан как оригинальный шанс * бонус шанс.
+enderio.jei.grinding_ball.power.line1=Влияет на мощность, используемую для каждой операции, ускоряя или замедляя работу машины
 
 
 enderio.darksteel.upgrade.solar_1.name=Солнце I
@@ -458,10 +466,10 @@ enderio.advancement.sagmill.6_coal.desc=Измельчить немного уг
 enderio.advancement.sagmill.7_black.name=Кому нужен кальмар?
 enderio.advancement.sagmill.7_black.desc=Объединить угольную пыль и продукты животного происхождения в краситель
 
-enderio.advancement.sagmill.8_blue.name=Bejeweled
+enderio.advancement.sagmill.8_blue.name=Украшенный драгоценными камнями
 enderio.advancement.sagmill.8_blue.desc=Измельчите немного лазурита
 
-enderio.advancement.sagmill.9_white.name=Bejeweled 2
+enderio.advancement.sagmill.9_white.name=Украшенный драгоценными камнями 2
 enderio.advancement.sagmill.9_white.desc=Измельчите немного кварца
 
 enderio.advancement.sagmill.a_powder_coating.name=Классический цвет
@@ -472,3 +480,4 @@ enderio.advancement.stirling.1_stirling_generator_get.desc=Создайте пр
 
 enderio.advancement.machines.root.name=Механизмы Ender IO
 enderio.advancement.machines.root.desc=Начните свое приключение автоматизации
+

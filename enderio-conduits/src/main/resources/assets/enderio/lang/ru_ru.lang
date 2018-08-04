@@ -1,0 +1,229 @@
+#PARSE_ESCAPES
+# ^ having this in the first line allows us to use "\uXXXX" escapes in this file
+
+#***  Ender IO Conduits *****#
+
+# Translators, check your ".guess" file to see which keys your
+# language is missing and which keys it has that do not exist anymore.
+
+# Conduits
+enderio.block_conduit_bundle=Связка труб
+tile.block_conduit_bundle.name=Коннектор для труб
+
+enderio.item_power_conduit.name=Энергетическая труба
+enderio.item_power_conduit_enhanced.name=Улучшенная энергетическая труба
+enderio.item_power_conduit_ender.name=Энергетическая труба Края
+enderio.power.max_output=Макс. выход
+
+enderio.item_redstone_conduit_insulated.name=Красная труба
+
+enderio.item_liquid_conduit.name=Жидкостная труба
+enderio.item_liquid_conduit_advanced.name=Жидкостная труба высокого давления
+enderio.item_liquid_conduit_ender.name=Жидкостная труба Края
+enderio.item_liquid_conduit.locked_type=Тип жидкости установлен на
+enderio.item_liquid_conduit.unlocked_type=Тип жидкости не установлен
+enderio.item_liquid_conduit.locked_waila=Установленная жидкость 
+
+enderio.fluid.millibuckets_tick=mB/тик
+enderio.item_liquid_conduit.tooltip.max_extract=Макс. извлечение:
+enderio.item_liquid_conduit.tooltip.max_io=Макс. вход/выход:
+enderio.item_liquid_conduit.tooltip.detailed.line1=Поток жидкости соответствует гравитации.
+enderio.item_liquid_conduit.tooltip.detailed.line2=Скорость потока зависит от вязкости жидкости.
+
+enderio.item_liquid_conduit_ender.tooltip.detailed.line1=Мгновенная телепортация жидкости.
+enderio.item_liquid_conduit_ender.tooltip.detailed.line2=Позволяет транспортировать несколько жидкостей по одной линии.
+
+enderio.item_item_conduit.name=Предметная труба
+
+# CapBanks
+tile.block_cap_bank.creative.name=Творческий блок конденсаторов
+tile.block_cap_bank.simple.name=Основной блок конденсаторов
+tile.block_cap_bank.activated.name=Блок конденсаторов
+tile.block_cap_bank.vibrant.name=Вибрирующий блок конденсаторов
+tile.block_cap_bank.tooltip.detailed.line1=Мульти-блок для хранения энергии.
+tile.block_cap_bank.tooltip.detailed.line2=Может заряжать RF-предметы. (*будет удалено)
+tile.block_cap_bank.tooltip.detailed.line3=Shift-ПКМ, по экрану пустой рукой,
+tile.block_cap_bank.tooltip.detailed.line4=чтобы изменить отображаемую информацию
+tile.block_cap_bank.tooltip.has_items=§6Содержит §4{0,number,integer}§6 {0,choice,1#item|1<items} в инвентаре
+
+# TODO dedupe these?
+enderio.capbank.max_io=Макс. вход/выход
+enderio.capbank.max_in=Макс. вход
+enderio.capbank.max_out=Макс. выход
+enderio.capbank.change=Вход/выход
+enderio.capbank.iodisplay.stable=Вход/выход
+enderio.capbank.iodisplay.gain=Вход
+enderio.capbank.iodisplay.loss=Выход
+enderio.capbank.iodisplay.input=Вход
+enderio.capbank.iodisplay.output=Выход
+
+enderio.gui.cap_bank.input_rs=Режим красного камня на входе
+enderio.gui.cap_bank.output_rs=Режим красного камня на выходе
+enderio.gui.cap_bank.max_io=Макс. вход/выход
+enderio.gui.cap_bank.max_input=Макс. вход
+enderio.gui.cap_bank.max_output=Макс. выход
+enderio.gui.cap_bank.input_mode=Вход
+enderio.gui.cap_bank.output_mode=Выход
+
+# Power Monitor
+tile.block_power_monitor.name=Индикатор мощности
+tile.block_power_monitor.tooltip.detailed.line1=Показывает сведения о затратах энергии и хранилище.
+tile.block_power_monitor.tooltip.detailed.line3=Может быть использован для излучения красного камня на основе хранимой энергии.
+tile.block_power_monitor.tooltip.detailed.line5=Должен быть присоединён к трубе EnderIO.
+
+tile.block_advanced_power_monitor.name=Графический индикатор мощности
+tile.block_advanced_power_monitor.tooltip.detailed.line1=Показывает сведения о затратах энергии и хранилище.
+tile.block_advanced_power_monitor.tooltip.detailed.line3=Может быть использован для излучения красного камня на основе хранимой энергии.
+tile.block_advanced_power_monitor.tooltip.detailed.line5=Должен быть присоединён к трубе EnderIO.
+
+enderio.gui.power_monitor.engine_control=Управление двигателем
+enderio.gui.power_monitor.emit=Подавать сигнал
+enderio.gui.power_monitor.engine_section1=Подать сигнал, если хранилище заполнено меньше
+enderio.gui.power_monitor.engine_section2=чем на
+enderio.gui.power_monitor.engine_section3=%.
+enderio.gui.power_monitor.engine_section4= Остановиться, если хранилище заполнено более
+enderio.gui.power_monitor.engine_section5=или точно
+enderio.gui.power_monitor.of=на
+enderio.gui.power_monitor.conduit_storage=Энергия в трубе
+enderio.gui.power_monitor.capbank_storage=Энергия в блоке конденсаторов
+enderio.gui.power_monitor.machine_buffer=Энергия в механизме
+enderio.gui.power_monitor.average_output=Средний выход за 5 секунд
+enderio.gui.power_monitor.average_input=Средний вход за 5 секунд
+enderio.gui.power_monitor.no_network_error=Нет соединения с сетью. Индикатор мощности должен быть подключён к сети для считывания информации.
+
+# Conduit Probe
+enderio.gui.conduit_probe.network_heading=Электрическая сеть
+enderio.gui.conduit_probe.conduit_buffer=Внутренний буфер
+enderio.gui.conduit_probe.request_range=Диапазон запросов на тик
+enderio.gui.conduit_probe.current_request=Текущие запросы
+enderio.gui.conduit_probe.item_heading=Предметная труба
+enderio.gui.conduit_probe.item_no_connections=не имеет внешних соединений
+enderio.gui.conduit_probe.no_power_from_side=не может получать питание с этой стороны
+enderio.gui.conduit_probe.connection_dir=подключен к:
+enderio.gui.conduit_probe.extracted_items=Извлеченные предметы
+enderio.gui.conduit_probe.extracted_item=Предмет
+enderio.gui.conduit_probe.no_outputs=имеет неверные выходы
+enderio.gui.conduit_probe.inserted_into=будет вставлен в:
+enderio.gui.conduit_probe.no_items=Не получать никаких предметов.
+enderio.gui.conduit_probe.no_item=Не может получать
+enderio.gui.conduit_probe.receive_items=Может получать предметы из:
+enderio.gui.conduit_probe.receive_item1=Может получать
+enderio.gui.conduit_probe.receive_item2=из:
+
+enderio.gui.conduit_energy.header=Энергетическая труба
+enderio.gui.conduit_item.header=Предметная труба
+enderio.gui.conduit_fluid.header=Жидкостная труба
+enderio.gui.conduit_redstone.header=Красная труба
+
+enderio.gui.conduit_bundle_full=Полный комплект
+
+# Gauge
+tile.block_gauge.name=Датчик энергии
+tile.block_gauge.tooltip.detailed.line1=Отображает энергетические уровни соседних блоков.
+
+
+enderio.config.capbank=Блок конденсаторов
+enderio.config.condit=Трубы
+enderio.config.condit.energy=Энергетические трубы
+enderio.config.condit.fluid=Жидкостные трубы
+enderio.config.condit.item=Предметные трубы
+enderio.config.condit.redstone=Красные трубы
+
+# Upgrades
+
+item.item_extract_speed_upgrade.name=Улучшение скорости извлечения
+item.item_extract_speed_downgrade.name=Понижение скорости извлечения
+item.item_inventory_panel_upgrade.name=Улучшение панели инвентаризации
+
+# GUI
+enderio.gui.conduit_insert_mode=Вставить
+enderio.gui.conduit_extract_mode=Извлечь
+enderio.gui.conduit_enabled_mode=Включено
+enderio.gui.conduit_disabled_mode=Отключено
+enderio.gui.redstone_conduit_input_mode=Вход
+enderio.gui.redstone_conduit_output_mode=Выход
+
+enderio.gui.conduit_channel=Канал
+enderio.gui.round_robin_enabled=Цикл включен
+enderio.gui.round_robin_disabled=Цикл отключен
+enderio.gui.self_feed_enabled=Авто-подача включена
+enderio.gui.self_feed_disabled=Авто-подача отключена
+enderio.gui.item_filter_upgrade=Обновление фильтра
+enderio.gui.item_function_upgrade=Обновление функции
+enderio.gui.item_function_upgrade2=Макс. кол-во улучшений 15
+enderio.gui.item_function_upgrade3=Макс. кол-во понижений 1
+enderio.gui.signal_color=Цвет сигнала
+enderio.gui.priority=Приоритет
+
+enderio.gui.liquid_auto_extract=Авто-извлечение
+enderio.gui.liquid_filter=Фильтр
+enderio.gui.liquid_whitelist=Белый список
+enderio.gui.liquid_blacklist=Черный список
+
+enderio.gui.redstone_signal_strength=Сильный сигнал
+
+enderio.gui.enabled=Включено
+enderio.gui.disabled=Отключено
+
+# Advancements
+
+enderio.advancement.conduits.root.name=Трубы Ender IO
+enderio.advancement.conduits.root.desc=Сколько труб в одном блоке?
+
+enderio.advancement.conduits.binder_composite.name=Я - не Грут
+enderio.advancement.conduits.binder_composite.desc=Создайте несколько связующих композитов
+
+# Temp?
+enderio.advancement.conduits.conduit_binder.name=Универсальное связующее
+enderio.advancement.conduits.conduit_binder.desc=Расплавьте несколько связующих элементов труб
+
+# Temp
+enderio.advancement.conduits.energy_conduit.basic.name=Основная энергия
+enderio.advancement.conduits.energy_conduit.basic.desc=Создайте несколько энергетических труб
+
+# Temp
+enderio.advancement.conduits.energy_conduit.enhanced.name=Улучшенная энергия
+enderio.advancement.conduits.energy_conduit.enhanced.desc=Создайте несколько улучшенных энергетических труб
+
+# Temp
+enderio.advancement.conduits.energy_conduit.ender.name=Энергия Края
+enderio.advancement.conduits.energy_conduit.ender.desc=Создайте несколько энергетических труб Края
+
+# Temp
+enderio.advancement.conduits.fluid_conduit.basic.name=Основная жидкость
+enderio.advancement.conduits.fluid_conduit.basic.desc=Создайте несколько жидкостных труб
+
+# Temp?
+enderio.advancement.conduits.fluid_conduit.pressurized.name=Под давлением
+enderio.advancement.conduits.fluid_conduit.pressurized.desc=Создайте несколько жидкостных труб высокого давления
+
+enderio.advancement.conduits.fluid_conduit.ender.name=Мгновенные жидкости, просто добавьте Край
+enderio.advancement.conduits.fluid_conduit.ender.desc=Создайте несколько жидкостных труб Края
+
+# Temp
+enderio.advancement.conduits.item_conduit.name=Перемещение предмета
+enderio.advancement.conduits.item_conduit.desc=Создайте несколько предметных труб
+
+enderio.advancement.conduits.basic_filter.name=Фильтрация для чайников
+enderio.advancement.conduits.basic_filter.desc=Создайте базовый предметный фильтр
+
+enderio.advancement.conduits.advanced_filter.name=Максимальный контроль
+enderio.advancement.conduits.advanced_filter.desc=Создайте расширенный предметный фильтр
+
+enderio.advancement.conduits.big_filter.name=Максимальный размер
+enderio.advancement.conduits.big_filter.desc=Создайте большой предметный фильтр
+
+enderio.advancement.conduits.big_advanced_filter.name=Один фильтр, чтобы управлять ими всеми
+enderio.advancement.conduits.big_advanced_filter.desc=Создайте большой расширенный предметный фильтр
+
+# Temp
+enderio.advancement.conduits.redstone_conduit.name=Редстоун передача
+enderio.advancement.conduits.redstone_conduit.desc=Создайте несколько красных труб
+
+# Temp?
+enderio.advancement.conduits.all_conduits.name=Мастер на все руки
+enderio.advancement.conduits.all_conduits.desc=Создайте все типы труб
+
+# Temp?
+enderio.advancement.conduits.all_filters.name=Получение конкретики
+enderio.advancement.conduits.all_filters.desc=Создайте все типы фильтров
