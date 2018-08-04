@@ -240,7 +240,7 @@ public class EnderIO implements IEnderIOAddon {
             return;
           }
           if (IMC.XML_RECIPE.equals(key)) {
-            RecipeLoader.addIMCRecipe(value);
+            RecipeLoader.addIMCRecipe(msg.getSender(), value);
           } else if (IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
             Config.TRAVEL_BLACKLIST.add(value);
           } else if (IMC.REDSTONE_CONNECTABLE_ADD.equals(key)) {

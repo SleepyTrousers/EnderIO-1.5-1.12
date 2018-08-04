@@ -186,7 +186,7 @@ enderio.gui.obelisk.no_vials=
 #                        en: Need Soul Vials!
 enderio.gui.powered_spawner.capture=
 #                               en: Capture
-enderio.gui.powered_spawner.spawn=
+enderio.gui.powered_spawner.spawn=Spawner un(e)
 #                             en: Spawn
 enderio.gui.ranged.hideRange=
 #                        en: Hide Range

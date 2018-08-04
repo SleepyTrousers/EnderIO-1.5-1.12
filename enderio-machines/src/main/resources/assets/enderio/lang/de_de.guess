@@ -193,7 +193,8 @@ enderio.gui.obelisk.no_vials=
 #                        en: Need Soul Vials!
 enderio.gui.powered_spawner.capture=Einfangen
 #                               en: Capture
-enderio.gui.powered_spawner.spawn=Spawn
+enderio.gui.powered_spawner.spawn=Erschaffe
+#                             OR: Spawn
 #                             en: Spawn
 enderio.gui.ranged.hideRange=Verberge Reichweite
 #                        en: Hide Range
