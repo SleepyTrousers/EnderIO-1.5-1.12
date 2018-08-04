@@ -6,20 +6,20 @@ import com.enderio.core.common.util.OreDictionaryHelper;
 import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.api.farm.IFarmingTool;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelTreetap;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.util.Prep;
+import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public enum FarmingTool implements IFarmingTool {
   HAND,
-  HOE(Config.farmHoes) {
+  HOE {
     @Override
     protected boolean match(@Nonnull ItemStack item) {
-      return super.match(item) || OreDictionaryHelper.hasName(item, "toolHoe");
+      return item.getItem() instanceof ItemHoe || OreDictionaryHelper.hasName(item, "toolHoe");
     }
   },
   AXE {
@@ -31,13 +31,13 @@ public enum FarmingTool implements IFarmingTool {
   TREETAP {
     @Override
     protected boolean match(@Nonnull ItemStack item) {
-      return super.match(item) || item.getItem() instanceof ItemDarkSteelTreetap;
+      return super.match(item) || item.getItem() instanceof ItemDarkSteelTreetap || OreDictionaryHelper.hasName(item, "toolTreetap");
     }
   },
   SHEARS {
     @Override
     protected boolean match(@Nonnull ItemStack item) {
-      return item.getItem() instanceof ItemShears;
+      return item.getItem() instanceof ItemShears || OreDictionaryHelper.hasName(item, "toolShears");
     }
   },
   NONE {

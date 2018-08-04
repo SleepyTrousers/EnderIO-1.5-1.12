@@ -7,6 +7,7 @@ import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.integration.tic.book.EioBook;
@@ -99,6 +100,8 @@ public class TicControl {
     if (!EnderIO.proxy.isDedicatedServer()) {
       EioBook.integrate();
     }
+
+    FarmersRegistry.registerHoes("tconstruct", "mattock");
   }
 
   public static void postInitBeforeTic(FMLPostInitializationEvent event) {

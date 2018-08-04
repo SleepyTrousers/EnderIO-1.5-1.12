@@ -6,6 +6,7 @@ import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
+import crazypants.enderio.base.farming.FarmersRegistry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -32,6 +33,11 @@ public class ThaumcraftUtil {
       // registry.register(GogglesOfRevealingUpgrade.INSTANCE);
       Log.info("Dark Steel Upgrades: Thaumcraft integration loaded");
     }
+  }
+
+  @SubscribeEvent
+  public static void registerHoes(@Nonnull EnderIOLifecycleEvent.Init.Pre event) {
+    FarmersRegistry.registerHoes("thaumcraft", "thaumium_hoe", "void_hoe", "elemental_hoe");
   }
 
 }
