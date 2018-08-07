@@ -11,13 +11,9 @@ public class BiomeFilterAny extends AbstractBiomeFilter {
 
   @Override
   public Biome[] getMatchedBiomes() {
-
-    if (types.isEmpty() && names.isEmpty()) {
-      return new Biome[0];
-    }
     Set<Biome> passedBiomes = new HashSet<Biome>();
     Iterator<Biome> it = Biome.REGISTRY.iterator();
-    while(it.hasNext()) {
+    while (it.hasNext()) {
       Biome candidate = it.next();
       if (candidate != null && isMatchingBiome(candidate)) {
         passedBiomes.add(candidate);
@@ -31,6 +27,9 @@ public class BiomeFilterAny extends AbstractBiomeFilter {
   public boolean isMatchingBiome(Biome biome) {
     if (isExcluded(biome)) {
       return false;
+    }
+    if (types.isEmpty() && names.isEmpty()) {
+      return true;
     }
     if (names.contains(biome.getRegistryName())) {
       return true;

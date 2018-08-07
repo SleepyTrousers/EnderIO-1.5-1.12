@@ -1,16 +1,24 @@
 package crazypants.enderio.zoo.spawn;
 
+import javax.annotation.Nonnull;
+
+import crazypants.enderio.base.Log;
 import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.config.ZooConfig;
 import crazypants.enderio.zoo.entity.EntityDireSlime;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockGrass;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent.CheckSpawn;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIOZoo.MODID)
@@ -62,6 +70,33 @@ public class MobSpawnEventHandler {
       }
     }
     return false;
+  }
+
+  @SubscribeEvent
+  public static void onCheckSpawn(@Nonnull CheckSpawn evt) {
+    if (evt.isSpawner()) {
+      return;
+    }
+    final EntityLivingBase entityLiving = evt.getEntityLiving();
+    if (entityLiving == null) {
+      return;
+    }
+    ResourceLocation resourceLocation = EntityList.getKey(entityLiving);
+    if (resourceLocation == null) {
+      return;
+    }
+    for (ISpawnEntry ent : MobSpawns.instance.getEntries()) {
+      if (resourceLocation.toString().equals(ent.getMobName())) {
+        if (!ent.canSpawnInDimension(evt.getWorld())) {
+          Log.debug(resourceLocation, " may not spawn in dimension ", evt.getWorld().provider.getDimensionType().getName());
+          evt.setResult(Result.DENY);
+          return;
+        } else {
+          Log.debug(resourceLocation, " is allowed to spawn in dimension ", evt.getWorld().provider.getDimensionType().getName());
+        }
+      }
+    }
+
   }
 
 }

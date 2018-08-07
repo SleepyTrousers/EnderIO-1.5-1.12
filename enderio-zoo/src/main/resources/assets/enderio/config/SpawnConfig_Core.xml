@@ -72,15 +72,34 @@ Each entry can include 0 or more dimension excludes. This will stop the mob spaw
 Dimension excludes can be defined in three ways: by name, by ID and by ID range            
 
 dimensionExclude attributes:
-- name: The name of the dimension, for example: "The End", "Nether", or "Overworld"                       
-         <dimensionExclude name="The End"/>
+- name: The name of the dimension, for example: "the_end", "the_nether", or "overworld"                       
+         <dimensionExclude name="the_end"/>
 - id: The ID of the dimension to be excluded         
          <dimensionExclude id="1"/>
 - idStart: The minimum ID to be excluded
 - idEnd: The maximum ID to be excluded.           
          <dimensionExclude idStart="2" idEnd="10"/>
          In this example the mob will not spawn in any dimension with an ID between 2 and 10 inclusive   
-              
+
+Dimension filters can be specified in 2 ways:
+
+- allow all dimensions but those that are listed
+- allow only the listed dimensions
+
+By default, the first one is used. Specify excluded dimensions with <dimensionExclude ...>.
+To get the second one, include an empty <dimensionExclude/>, then specify the allowed dimensions with <dimensionInclude ...>.
+
+Examples:
+
+1) Allow mobs only in modded dimensions:
+
+  <dimensionExclude idStart="-1" idEnd="1" />
+
+2) Allow mobs only in vanilla dimensions
+
+  <dimensionExclude />
+  <dimensionInclude idStart="-1" idEnd="1" />
+
  -->
 <SpawnConfig>
 
@@ -128,46 +147,44 @@ dimensionExclude attributes:
     </biomeFilter>
     <dimensionExclude name="Twilight Forest"/>
   </entry>
-  
+
   <entry id="DireWolf" mobName="enderiozoo:direwolf" rate="30" minGroupSize="2" maxGroupSize="6">
     <biomeFilter type="all">
       <biome type="SNOWY" />
-      <biome type="CONIFEROUS" />      
-      <biome type="NETHER" exclude="true" />
-      <biome type="END" exclude="true" />
-    </biomeFilter>
-  </entry>
-  
-   <entry id="Owl" mobName="enderiozoo:owl" rate="5" minGroupSize="1" maxGroupSize="1" creatureType="CREATURE">
-    <biomeFilter type="any">
-      <biome type="FOREST" />
-      <biome type="RIVER" />      
-      <biome type="WASTELAND" exclude="true" />
-      <biome type="JUNGLE" exclude="true" />
-      <biome type="SNOWY" exclude="true" />      
+      <biome type="CONIFEROUS" />
       <biome type="NETHER" exclude="true" />
       <biome type="END" exclude="true" />
     </biomeFilter>
   </entry>
 
-  <entry id="LoveChild" mobName="enderiozoo:lovechild" creatureType="MONSTER" rate="10"
-    minGroupSize="1" maxGroupSize="1" remove="false">
+   <entry id="Owl" mobName="enderiozoo:owl" rate="5" minGroupSize="1" maxGroupSize="1" creatureType="CREATURE">
+    <biomeFilter type="any">
+      <biome type="FOREST" />
+      <biome type="RIVER" />
+      <biome type="WASTELAND" exclude="true" />
+      <biome type="JUNGLE" exclude="true" />
+      <biome type="SNOWY" exclude="true" />
+      <biome type="NETHER" exclude="true" />
+      <biome type="END" exclude="true" />
+    </biomeFilter>
+  </entry>
+
+  <entry id="LoveChild" mobName="enderiozoo:lovechild" creatureType="MONSTER" rate="10" minGroupSize="1" maxGroupSize="1" remove="false">
     <biomeFilter type="any">
       <biome type="BASE_LAND_TYPES" />
       <biome type="NETHER" exclude="true" />
       <biome type="END" exclude="true" />
       <biome type="MUSHROOM" exclude="true" />
     </biomeFilter>
+    <dimensionExclude/>
+    <dimensionInclude name="overworld"/>
   </entry>
 
-  <entry id="EpicSquid" mobName="enderiozoo:epicsquid" creatureType="WATER_CREATURE" rate="1"
-    minGroupSize="1" maxGroupSize="1" remove="false">
-    <biomeFilter type="any">
-      <biome type="WATER" />
-      <biome type="NETHER" exclude="true" />
-      <biome type="END" exclude="true" />
-      <biome type="MUSHROOM" exclude="true" />
-    </biomeFilter>
+  <entry id="EpicSquid" mobName="enderiozoo:epicsquid" creatureType="WATER_CREATURE" rate="1" minGroupSize="1" maxGroupSize="1" remove="false">
+    <biomeFilter type="any" />
+    <dimensionExclude/>
+    <dimensionInclude name="overworld"/>
+    <dimensionInclude name="the_nether"/>
   </entry>
 
 </SpawnConfig>
