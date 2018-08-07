@@ -14,6 +14,7 @@ import crazypants.enderio.endergy.EnderIOEndergy;
 import crazypants.enderio.endergy.alloy.ItemEndergyAlloy;
 import crazypants.enderio.endergy.capacitor.ItemEndergyCapacitor;
 import crazypants.enderio.endergy.capacitor.ItemTotemicCapacitor;
+import crazypants.enderio.endergy.conduit.ItemEndergyConduit;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -29,6 +30,7 @@ public enum EndergyObject implements IModObjectBase {
   itemCapacitorMelodic(ItemEndergyCapacitor.class, "create_melodic"),
   itemCapacitorStellar(ItemEndergyCapacitor.class, "create_stellar"),
   itemCapacitorTotemic(ItemTotemicCapacitor.class),
+  itemEndergyConduit(ItemEndergyConduit.class),
 
   ;
 

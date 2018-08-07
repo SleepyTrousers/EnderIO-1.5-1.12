@@ -2,7 +2,6 @@ package crazypants.enderio.zoo.spawn;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.Log;
 import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.config.ZooConfig;
 import crazypants.enderio.zoo.entity.EntityDireSlime;
@@ -88,11 +87,11 @@ public class MobSpawnEventHandler {
     for (ISpawnEntry ent : MobSpawns.instance.getEntries()) {
       if (resourceLocation.toString().equals(ent.getMobName())) {
         if (!ent.canSpawnInDimension(evt.getWorld())) {
-          Log.debug(resourceLocation, " may not spawn in dimension ", evt.getWorld().provider.getDimensionType().getName());
+          // Log.debug(resourceLocation, " may not spawn in dimension ", evt.getWorld().provider.getDimensionType().getName());
           evt.setResult(Result.DENY);
           return;
         } else {
-          Log.debug(resourceLocation, " is allowed to spawn in dimension ", evt.getWorld().provider.getDimensionType().getName());
+          // Log.debug(resourceLocation, " is allowed to spawn in dimension ", evt.getWorld().provider.getDimensionType().getName());
         }
       }
     }
