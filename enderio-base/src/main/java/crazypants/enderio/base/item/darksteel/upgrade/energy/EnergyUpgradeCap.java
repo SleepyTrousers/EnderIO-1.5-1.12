@@ -3,6 +3,7 @@ package crazypants.enderio.base.item.darksteel.upgrade.energy;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -10,22 +11,22 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class EnergyUpgadeCap implements IEnergyStorage, ICapabilityProvider {
-  
+public class EnergyUpgradeCap implements IEnergyStorage, ICapabilityProvider {
+
   private final @Nonnull ItemStack container;
 
-  public EnergyUpgadeCap(@Nonnull ItemStack container) {
+  public EnergyUpgradeCap(@Nonnull ItemStack container) {
     this.container = container;
   }
 
   @Override
   public int receiveEnergy(int maxReceive, boolean simulate) {
-    return EnergyUpgradeManager.receiveEnergy(container, maxReceive, simulate);
+    return canReceive() ? EnergyUpgradeManager.receiveEnergy(container, maxReceive, simulate) : 0;
   }
 
   @Override
   public int extractEnergy(int maxExtract, boolean simulate) {
-    return EnergyUpgradeManager.extractEnergy(container, maxExtract, simulate);
+    return canExtract() ? EnergyUpgradeManager.extractEnergy(container, maxExtract, simulate) : 0;
   }
 
   @Override
@@ -40,14 +41,14 @@ public class EnergyUpgadeCap implements IEnergyStorage, ICapabilityProvider {
 
   @Override
   public boolean canExtract() {
-    return true;
+    return ((IDarkSteelItem) container.getItem()).allowExtractEnergy();
   }
 
   @Override
   public boolean canReceive() {
     return true;
   }
-  
+
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
     return capability == CapabilityEnergy.ENERGY;

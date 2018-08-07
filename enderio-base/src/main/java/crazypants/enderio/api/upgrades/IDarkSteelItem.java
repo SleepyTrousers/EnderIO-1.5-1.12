@@ -97,6 +97,10 @@ public interface IDarkSteelItem {
   @Nonnull
   ICapacitorKey getEnergyUseKey(@Nonnull ItemStack stack);
 
+  default boolean allowExtractEnergy() {
+    return false;
+  }
+
   @Nonnull
   ICapacitorKey getAbsorptionRatioKey(@Nonnull ItemStack stack);
 

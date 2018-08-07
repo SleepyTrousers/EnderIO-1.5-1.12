@@ -22,7 +22,7 @@ public class EnergyUpgradePowerAdapter {
     }
     final ItemStack stack = evt.getObject();
     if (stack != null && stack.getItem() instanceof IDarkSteelItem) {
-      EnergyUpgadeCap cap = new EnergyUpgadeCap(stack);
+      EnergyUpgradeCap cap = new EnergyUpgradeCap(stack);
       evt.addCapability(KEY, cap);
     }
 

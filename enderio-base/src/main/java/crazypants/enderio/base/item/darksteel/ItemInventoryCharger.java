@@ -216,4 +216,8 @@ public class ItemInventoryCharger extends Item implements IAdvancedTooltipProvid
     return CapacitorKey.NO_POWER;
   }
 
+  @Override
+  public boolean allowExtractEnergy() {
+    return true;
+  }
 }
