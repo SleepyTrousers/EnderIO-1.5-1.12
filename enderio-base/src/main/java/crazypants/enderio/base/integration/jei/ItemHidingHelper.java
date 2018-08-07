@@ -13,6 +13,7 @@ import crazypants.enderio.base.config.config.InfinityConfig;
 import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.base.material.material.Material;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ingredients.IIngredientBlacklist;
@@ -94,6 +95,16 @@ public enum ItemHidingHelper {
   private ItemHidingHelper(Predicate<IModRegistry> predicate, final @Nonnull Material... materials) {
     for (Material material : materials) {
       this.suppliers.add(() -> material.getStack());
+    }
+    this.predicate = NullHelper.notnull(predicate, "predicate fail");
+  }
+
+  private ItemHidingHelper(Predicate<IModRegistry> predicate, final @Nonnull Alloy... alloys) {
+    for (Alloy alloy : alloys) {
+      this.suppliers.add(() -> alloy.getStackBall());
+      this.suppliers.add(() -> alloy.getStackBlock());
+      this.suppliers.add(() -> alloy.getStackIngot());
+      this.suppliers.add(() -> alloy.getStackNugget());
     }
     this.predicate = NullHelper.notnull(predicate, "predicate fail");
   }
