@@ -14,19 +14,22 @@ public final class EndergyConfig {
   public static final IValueFactory FE = F.section(".energy");
 
   public static final NNList<IValue<Integer>> maxIO = new NNList<>( //
-      FE.make("tier1_maxIO", 20, "The maximum IO for the cobble endergy conduit.").setRange(1, MAXIO).sync(),
-      FE.make("tier2_maxIO", 40, "The maximum IO for the iron endergy conduit.").setRange(1, MAXIO).sync(),
-      FE.make("tier3_maxIO", 80, "The maximum IO for the gold endergy conduit.").setRange(1, MAXIO).sync(),
-      FE.make("tier4_maxIO", 160, "The maximum IO for the silver endergy conduit.").setRange(1, MAXIO).sync(),
-      FE.make("tier5_maxIO", 320, "The maximum IO for the electrum endergy conduit.").setRange(1, MAXIO).sync(),
-      // normal tier 1 here, 640
-      FE.make("tier6_maxIO", 1280, "The maximum IO for the aluminium endergy conduit.").setRange(1, MAXIO).sync(),
-      FE.make("tier7_maxIO", 2560, "The maximum IO for the copper endergy conduit.").setRange(1, MAXIO).sync(),
-      // normal tier 2 here, 5120
-      // normal tier 3 here, 20480
-      FE.make("tier8_maxIO", 40960, "The maximum IO for the crystalline endergy conduit.").setRange(1, MAXIO).sync(),
-      FE.make("tier9_maxIO", 256000, "The maximum IO for the melodic endergy conduit.").setRange(1, MAXIO).sync(),
-      FE.make("tier10_maxIO", MAXIO, "The maximum IO for the stellar endergy conduit.").setRange(1, MAXIO).sync()
+      FE.make("tier1", 20, "The maximum IO for the cobble endergy conduit.").setRange(1, MAXIO).sync(),
+      FE.make("tier2", 40, "The maximum IO for the iron endergy conduit.").setRange(1, MAXIO).sync(),
+      FE.make("tier3", 80, "The maximum IO for the aluminium endergy conduit.").setRange(1, MAXIO).sync(),
+      FE.make("tier4", 160, "The maximum IO for the gold endergy conduit.").setRange(1, MAXIO).sync(),
+      FE.make("tier5", 320, "The maximum IO for the copper endergy conduit.").setRange(1, MAXIO).sync(),
+      // normal tier1, 640, conductive iron
+      FE.make("tier6", 1280, "The maximum IO for the silver endergy conduit.").setRange(1, MAXIO).sync(),
+      FE.make("tier7", 2560, "The maximum IO for the electrum endergy conduit.").setRange(1, MAXIO).sync(),
+      // normal tier2, 5120, energetic alloy
+      // missing tier, 10240
+      // normal tier3, 20480, vibrant alloy
+      FE.make("tier8_max_io", 40960, "The maximum IO for the crystalline endergy conduit.").setRange(1, MAXIO).sync(),
+      FE.make("tier9_max_io", 256000, "The maximum IO for the melodic endergy conduit.").setRange(1, MAXIO).sync(),
+      FE.make("tier10_max_io", MAXIO, "The maximum IO for the stellar endergy conduit.").setRange(1, MAXIO).sync()
+
+  // tier 8 to 10 have temp key names so we can still change them without having to have users delete their configs
 
   );
 
