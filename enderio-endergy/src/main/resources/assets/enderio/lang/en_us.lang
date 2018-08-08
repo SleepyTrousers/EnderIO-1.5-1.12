@@ -9,3 +9,14 @@ item.item_capacitor_crystalline.name=Crystalline Capacitor
 item.item_capacitor_melodic.name=Melodic Capacitor
 item.item_capacitor_stellar.name=Stellar Capacitor
 item.item_capacitor_totemic.name=Totemic Capacitor
+
+enderio.item_endergy_conduit_cobble.name=Crude Energy Conduit
+enderio.item_endergy_conduit_iron.name=Iron Energy Conduit
+enderio.item_endergy_conduit_gold.name=Gold Energy Conduit
+enderio.item_endergy_conduit_silver.name=Silver Energy Conduit
+enderio.item_endergy_conduit_electrum.name=Electrum Energy Conduit
+enderio.item_endergy_conduit_alu.name=Aluminium Energy Conduit
+enderio.item_endergy_conduit_copper.name=Copper Energy Conduit
+enderio.item_endergy_conduit_crystalline.name=Crystalline Energy Conduit
+enderio.item_endergy_conduit_melodic.name=Melodic Energy Conduit
+enderio.item_endergy_conduit_stellar.name=Stellar Energy Conduit

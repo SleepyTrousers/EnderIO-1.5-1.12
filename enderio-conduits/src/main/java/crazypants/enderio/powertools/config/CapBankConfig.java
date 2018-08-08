@@ -10,7 +10,7 @@ public final class CapBankConfig {
 
   public static final IValueFactory F = Config.F.section("capbank");
 
-  public static final IValue<Integer> tierC_maxIO = F.make("tierC_maxIO", 50000, //
+  public static final IValue<Integer> tierC_maxIO = F.make("tierC_maxIO", 500000, //
       "The maximum IO per tick for a creative capacitor bank.").setRange(1, MAXIO).sync();
 
   public static final IValue<Integer> tierC_maxStorage = F.make("tierC_maxStorage", 100000000, //

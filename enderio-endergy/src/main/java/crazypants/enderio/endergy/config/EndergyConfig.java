@@ -24,7 +24,9 @@ public final class EndergyConfig {
       // normal tier 2 here, 5120
       FE.make("tier7_maxIO", 10240, "The maximum IO for the copper endergy conduit.").setRange(1, MAXIO).sync(),
       // normal tier 3 here, 20480
-      FE.make("tierX_maxIO", 1, "The maximum IO for the <add more here, epic> endergy conduit.").setRange(1, MAXIO).sync()
+      FE.make("tier8_maxIO", 40960, "The maximum IO for the crystalline endergy conduit.").setRange(1, MAXIO).sync(),
+      FE.make("tier9_maxIO", 256000, "The maximum IO for the melodic endergy conduit.").setRange(1, MAXIO).sync(),
+      FE.make("tier10_maxIO", MAXIO, "The maximum IO for the stellar endergy conduit.").setRange(1, MAXIO).sync()
 
   );
 

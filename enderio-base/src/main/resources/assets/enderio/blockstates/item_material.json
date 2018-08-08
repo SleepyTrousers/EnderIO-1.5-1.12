@@ -453,6 +453,11 @@
         "textures": {
           "layer0": "enderio:items/item_material_glazed_nether_brick"
         }
+      },
+      "infinity_goop": {
+        "textures": {
+          "layer0": "enderio:items/item_material_infinity_goop"
+        }
       }
     }
   }

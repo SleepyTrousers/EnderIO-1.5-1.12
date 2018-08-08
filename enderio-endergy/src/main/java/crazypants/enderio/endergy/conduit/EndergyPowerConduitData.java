@@ -36,7 +36,7 @@ public final class EndergyPowerConduitData implements IPowerConduitData {
    * 
    */
 
-  static final String[] POSTFIX = new String[] { "_cobble", "_iron", "_gold", "_silver", "_electrum", "_alu", "_copper" };
+  static final String[] POSTFIX = new String[] { "_cobble", "_iron", "_gold", "_silver", "_electrum", "_alu", "_copper", "_crystalline", "_melodic", "_stellar" };
 
   static final Map<String, TextureSupplier> ICONS = new HashMap<>();
 

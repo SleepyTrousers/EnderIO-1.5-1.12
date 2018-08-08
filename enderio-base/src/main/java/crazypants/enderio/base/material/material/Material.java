@@ -110,6 +110,7 @@ public enum Material {
   
   GEAR_DARKSTEEL("gear_darksteel", "gearDark"),
   POWDER_SOUL("powder_soul", "dustSoularium"),
+  INFINITY_GOOP("infinity_goop"),
 
   ;
 
