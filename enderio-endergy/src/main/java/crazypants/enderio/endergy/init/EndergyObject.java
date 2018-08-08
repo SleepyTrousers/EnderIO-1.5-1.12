@@ -31,6 +31,9 @@ public enum EndergyObject implements IModObjectBase {
   itemCapacitorStellar(ItemEndergyCapacitor.class, "create_stellar"),
   itemCapacitorTotemic(ItemTotemicCapacitor.class),
   itemEndergyConduit(ItemEndergyConduit.class),
+  itemCapacitorSilver(ItemEndergyCapacitor.class, "create_silver"),
+  itemCapacitorLead(ItemEndergyCapacitor.class, "create_lead"),
+  itemCapacitorElectrum(ItemEndergyCapacitor.class, "create_electrum"),
 
   ;
 

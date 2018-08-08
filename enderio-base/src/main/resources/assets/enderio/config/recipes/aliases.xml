@@ -56,7 +56,7 @@ XML editor will display that as tooltips when editing this file.
   <alias name="WEATHER_CRYSTAL" item="itemWeatherCrystal" />
   <alias name="PRECIENT_CRYSTAL" item="itemPrecientCrystal" />
   <alias name="PRECIENT_POWDER" item="itemPrecientPowder" />
-  <alias name="VIBRANT_POWDER" item="itemPulsatingPowder" />
+  <alias name="VIBRANT_POWDER" item="itemVibrantPowder" />
   <alias name="ENDER_CYSTAL_POWDER" item="itemEnderCrystalPowder" />
   <alias name="NUTRITIOUS_STICK" item="itemNutritiousStick" />
 

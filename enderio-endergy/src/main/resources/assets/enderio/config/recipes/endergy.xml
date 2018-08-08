@@ -79,6 +79,17 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Capacitor Crystalline, Alt" required="true">
+    <crafting>
+      <grid>
+        <item /><item name="enderio:item_endergy_alloy:2"/><item />
+        <item name="enderio:item_capacitor_electrum"/><item name="dustPrismarine"/><item name="enderio:item_capacitor_electrum"/>
+        <item /><item name="enderio:item_endergy_alloy:2"/><item />
+      </grid>
+      <output name="enderio:item_capacitor_crystalline"/>
+    </crafting>
+  </recipe>
+
   <recipe name="Capacitor Melodic" required="true">
     <crafting>
       <grid>
@@ -101,6 +112,39 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Capacitor Silver" required="false">
+    <crafting>
+      <grid>
+        <item /><item name="nuggetSilver"/><item name="POWDER_INFINITY" />
+        <item name="nuggetSilver"/><item name="gemQuartz"/><item name="nuggetSilver"/>
+        <item name="POWDER_INFINITY"/><item name="nuggetSilver"/><item />
+      </grid>
+      <output name="enderio:item_capacitor_silver"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor Lead" required="false">
+    <crafting>
+      <grid>
+        <item /><item name="ingotLead"/><item />
+        <item name="enderio:item_capacitor_silver"/><item name="blockRedstone"/><item name="enderio:item_capacitor_silver"/>
+        <item /><item name="ingotLead"/><item />
+      </grid>
+      <output name="enderio:item_capacitor_lead"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Capacitor Electrum" required="false">
+    <crafting>
+      <grid>
+        <item /><item name="ingotElectrum"/><item />
+        <item name="enderio:item_capacitor_lead"/><item name="VIBRANT_POWDER"/><item name="enderio:item_capacitor_lead"/>
+        <item /><item name="ingotElectrum"/><item />
+      </grid>
+      <output name="enderio:item_capacitor_electrum"/>
+    </crafting>
+  </recipe>
+
   <recipe name="Capacitor Grainy" required="true">
     <crafting>
       <grid size="2x3">
@@ -114,7 +158,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Totemic Capacitor">
     <slicing energy="20000">
       <input name="SOULARIUM"/><input name="minecraft:totem_of_undying"/><input name="SOULARIUM"/>
-      <input name="itemVibrantPowder"/><input name="enderio:item_capacitor_crystalline"/><input name="itemVibrantPowder"/>
+      <input name="VIBRANT_POWDER"/><input name="enderio:item_capacitor_crystalline"/><input name="VIBRANT_POWDER"/>
       <output name="enderio:item_capacitor_totemic"/>
     </slicing>
   </recipe>
