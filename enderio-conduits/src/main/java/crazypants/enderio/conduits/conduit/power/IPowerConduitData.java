@@ -7,10 +7,10 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
 
-import cofh.core.util.helpers.MathHelper;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
