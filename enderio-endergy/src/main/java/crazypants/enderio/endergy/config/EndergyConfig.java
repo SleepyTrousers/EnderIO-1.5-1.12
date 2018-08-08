@@ -23,11 +23,13 @@ public final class EndergyConfig {
       FE.make("tier6", 1280, "The maximum IO for the silver endergy conduit.").setRange(1, MAXIO).sync(),
       FE.make("tier7", 2560, "The maximum IO for the electrum endergy conduit.").setRange(1, MAXIO).sync(),
       // normal tier2, 5120, energetic alloy
-      // missing tier, 10240
+      FE.make("tier8", 10240, "The maximum IO for the energetic silver endergy conduit.").setRange(1, MAXIO).sync(),
       // normal tier3, 20480, vibrant alloy
-      FE.make("tier8_max_io", 40960, "The maximum IO for the crystalline endergy conduit.").setRange(1, MAXIO).sync(),
-      FE.make("tier9_max_io", 256000, "The maximum IO for the melodic endergy conduit.").setRange(1, MAXIO).sync(),
-      FE.make("tier10_max_io", MAXIO, "The maximum IO for the stellar endergy conduit.").setRange(1, MAXIO).sync()
+      FE.make("tier9", 40960, "The maximum IO for the crystalline endergy conduit.").setRange(1, MAXIO).sync(),
+      // missing tier, 81920
+      // missing tier, 163840
+      FE.make("tier12", 327680, "The maximum IO for the melodic endergy conduit.").setRange(1, MAXIO).sync(),
+      FE.make("tier13", MAXIO, "The maximum IO for the stellar endergy conduit.").setRange(1, MAXIO).sync()
 
   // tier 8 to 10 have temp key names so we can still change them without having to have users delete their configs
 

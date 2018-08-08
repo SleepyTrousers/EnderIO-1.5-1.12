@@ -107,10 +107,11 @@ public enum Material {
   INFINITY_ROD("infinityRod"),
 
   BRICK_GLAZED_NETHER("glazedNetherBrick", "ingotBrickNetherGlazed"),
-  
+
   GEAR_DARKSTEEL("gear_darksteel", "gearDark"),
   POWDER_SOUL("powder_soul", "dustSoularium"),
   INFINITY_GOOP("infinity_goop", "itemInfinityGoop"),
+  ENERGETIC_SILVER("ingot_energetic_silver", "ingotEnergeticSilver"),
 
   ;
 
