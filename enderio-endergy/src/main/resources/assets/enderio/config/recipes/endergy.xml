@@ -119,4 +119,124 @@ XML editor will display that as tooltips when editing this file.
     </slicing>
   </recipe>
 
+  <recipe name="Conduit, Endergy, Cobble" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="enderio:item_endergy_alloy:1" /><item name="enderio:item_endergy_alloy:1" /><item name="enderio:item_endergy_alloy:1" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_endergy_conduit:0" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Endergy, Iron" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="ingotIron" /><item name="INFINITY_GOOP" /><item name="ingotIron" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_endergy_conduit:1" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Endergy, Gold" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="ingotGold" /><item name="INFINITY_GOOP" /><item name="ingotGold" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_endergy_conduit:2" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Endergy, Silver" required="false">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="ingotSilver" /><item name="INFINITY_GOOP" /><item name="ingotSilver" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_endergy_conduit:3" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Endergy, Electrum" required="false">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="ingotElectrum" /><item name="INFINITY_GOOP" /><item name="ingotElectrum" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_endergy_conduit:4" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Endergy, Alu" required="false">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="ingotAluminum" /><item name="INFINITY_GOOP" /><item name="ingotAluminum" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_endergy_conduit:5" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Endergy, Copper" required="false">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="ingotCopper" /><item name="INFINITY_GOOP" /><item name="ingotCopper" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_endergy_conduit:6" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Endergy, Crystalline" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="enderio:item_endergy_alloy:2" /><item name="enderio:item_endergy_alloy:2" /><item name="enderio:item_endergy_alloy:2" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_endergy_conduit:7" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Endergy, Melodic" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="enderio:item_endergy_alloy:3" /><item name="enderio:item_endergy_alloy:3" /><item name="enderio:item_endergy_alloy:3" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_endergy_conduit:8" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Endergy, Stellar" required="true">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="INFINITY_GOOP" /><item name="enderio:item_endergy_alloy:4" /><item name="INFINITY_GOOP" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_endergy_conduit:9" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
 </enderio:recipes>
