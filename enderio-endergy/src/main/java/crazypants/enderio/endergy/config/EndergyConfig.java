@@ -31,8 +31,6 @@ public final class EndergyConfig {
       FE.make("tier12", 327680, "The maximum IO for the melodic endergy conduit.").setRange(1, MAXIO).sync(),
       FE.make("tier13", MAXIO, "The maximum IO for the stellar endergy conduit.").setRange(1, MAXIO).sync()
 
-  // tier 8 to 10 have temp key names so we can still change them without having to have users delete their configs
-
   );
 
 }
