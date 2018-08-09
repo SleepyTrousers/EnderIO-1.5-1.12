@@ -12,6 +12,7 @@ import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
+import crazypants.enderio.base.machine.entity.EntityFallingMachine;
 import crazypants.enderio.base.machine.interfaces.IClearableConfiguration;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.render.RenderMappers;
@@ -25,6 +26,7 @@ import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.base.render.property.IOMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFalling;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -52,7 +54,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     implements IEioGuiHandler.WithPos, IResourceTooltipProvider, ISmartRenderAwareBlock, IClearableConfiguration {
 
   protected final @Nonnull Random random;
-  protected boolean isEnhanced = false;
+  protected boolean isEnhanced = false, respectsGravity = false;
 
   protected AbstractMachineBlock(@Nonnull IModObject mo, @Nonnull Material mat) {
     super(mo, mat);
@@ -157,6 +159,9 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public void onBlockAdded(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
     super.onBlockAdded(world, pos, state);
     world.notifyBlockUpdate(pos, state, state, 3);
+    if (respectsGravity) {
+      world.scheduleUpdate(pos, this, tickRate(world));
+    }
   }
 
   @Override
@@ -178,8 +183,12 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
           // worldIn.createExplosion(null, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, 3f, true); // 3 == normal Creeper
           dropBlockAsItem(worldIn, pos, state, 0);
           worldIn.setBlockToAir(pos);
+          return;
         }
       }
+    }
+    if (respectsGravity) {
+      worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
     }
   }
 
@@ -336,4 +345,32 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public Block getEnhancedExtensionBlock() {
     return null;
   }
+
+  protected void checkFallable(@Nonnull World worldIn, @Nonnull BlockPos pos) {
+    if ((worldIn.isAirBlock(pos.down()) || BlockFalling.canFallThrough(worldIn.getBlockState(pos.down()))) && pos.getY() >= 0) {
+      if (!BlockFalling.fallInstantly && worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32))) {
+        worldIn.spawnEntity(new EntityFallingMachine(worldIn, pos, this));
+      } else {
+        IBlockState state = worldIn.getBlockState(pos);
+        worldIn.setBlockToAir(pos);
+        BlockPos blockpos;
+
+        for (blockpos = pos.down(); (worldIn.isAirBlock(blockpos) || BlockFalling.canFallThrough(worldIn.getBlockState(blockpos)))
+            && blockpos.getY() > 0; blockpos = blockpos.down()) {
+        }
+
+        if (blockpos.getY() > 0) {
+          worldIn.setBlockState(blockpos.up(), state);
+        }
+      }
+    }
+  }
+
+  @Override
+  public void updateTick(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Random rand) {
+    if (respectsGravity && !worldIn.isRemote) {
+      this.checkFallable(worldIn, pos);
+    }
+  }
+
 }
