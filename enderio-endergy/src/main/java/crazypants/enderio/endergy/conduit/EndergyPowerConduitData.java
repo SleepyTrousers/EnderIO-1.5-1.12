@@ -1,15 +1,14 @@
 package crazypants.enderio.endergy.conduit;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.IconUtil;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
+import crazypants.enderio.conduits.conduit.ItemConduitSubtype;
 import crazypants.enderio.conduits.conduit.power.IPowerConduit;
 import crazypants.enderio.conduits.conduit.power.IPowerConduitData;
 import crazypants.enderio.endergy.config.EndergyConfig;
@@ -39,15 +38,10 @@ public final class EndergyPowerConduitData implements IPowerConduitData {
   static final String[] POSTFIX = new String[] { "_cobble", "_iron", "_alu", "_gold", "_copper", "_silver", "_electrum", "_energetic_silver", "_crystalline",
       "_melodic", "_stellar" };
 
-  static final Map<String, TextureSupplier> ICONS = new HashMap<>();
-
   static {
     for (int i = 0; i < POSTFIX.length; i++) {
-      IPowerConduitData.Registry.register(new EndergyPowerConduitData(i));
-      ICONS.put(IPowerConduit.ICON_KEY + POSTFIX[i], TextureRegistry.registerTexture(IPowerConduit.ICON_KEY + POSTFIX[i]));
-      ICONS.put(IPowerConduit.ICON_KEY_INPUT + POSTFIX[i], TextureRegistry.registerTexture(IPowerConduit.ICON_KEY_INPUT + POSTFIX[i]));
-      ICONS.put(IPowerConduit.ICON_KEY_OUTPUT + POSTFIX[i], TextureRegistry.registerTexture(IPowerConduit.ICON_KEY_OUTPUT + POSTFIX[i]));
-      ICONS.put(IPowerConduit.ICON_CORE_KEY + POSTFIX[i], TextureRegistry.registerTexture(IPowerConduit.ICON_CORE_KEY + POSTFIX[i]));
+      IPowerConduitData.Registry.register(new EndergyPowerConduitData(i, TextureRegistry.registerTexture(IPowerConduit.ICON_KEY + POSTFIX[i]),
+          TextureRegistry.registerTexture(IPowerConduit.ICON_CORE_KEY + POSTFIX[i])));
     }
   }
 
@@ -55,10 +49,21 @@ public final class EndergyPowerConduitData implements IPowerConduitData {
     return dmg + OFFSET;
   }
 
-  private final int id;
+  static ItemConduitSubtype[] createSubTypes(IModObject modObject) {
+    ItemConduitSubtype[] types = new ItemConduitSubtype[POSTFIX.length];
+    for (int i = 0; i < POSTFIX.length; i++) {
+      types[i] = new ItemConduitSubtype(modObject.getUnlocalisedName() + POSTFIX[i], modObject.getRegistryName().toString() + POSTFIX[i]);
+    }
+    return types;
+  }
 
-  public EndergyPowerConduitData(int id) {
+  private final int id;
+  private final @Nonnull TextureSupplier icon, core;
+
+  public EndergyPowerConduitData(int id, @Nonnull TextureSupplier icon, @Nonnull TextureSupplier core) {
     this.id = OFFSET + id;
+    this.icon = icon;
+    this.core = core;
   }
 
   @Override
@@ -68,34 +73,28 @@ public final class EndergyPowerConduitData implements IPowerConduitData {
 
   @Override
   public @Nonnull ItemStack createItemStackForSubtype() {
-    return new ItemStack(EndergyObject.itemEndergyConduit.getItemNN(), 1, getID() - OFFSET);
+    return new ItemStack(EndergyObject.itemEndergyConduit.getItemNN(), 1, getIndex());
   }
 
   @Override
   public int getMaxEnergyIO() {
-    return EndergyConfig.maxIO.get(getID() - OFFSET).get();
+    return EndergyConfig.maxIO.get(getIndex()).get();
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
     if (component.dir == null) {
-      return ICONS.get(IPowerConduit.ICON_CORE_KEY + POSTFIX[getID() - OFFSET]).get(TextureAtlasSprite.class);
+      return core.get(TextureAtlasSprite.class);
     }
     if (IPowerConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
       return IconUtil.instance.whiteTexture;
     }
-    return ICONS.get(IPowerConduit.ICON_KEY + POSTFIX[getID() - OFFSET]).get(TextureAtlasSprite.class);
+    return icon.get(TextureAtlasSprite.class);
   }
 
-  @Override
-  public TextureAtlasSprite getTextureForInputMode() {
-    return ICONS.get(IPowerConduit.ICON_KEY_INPUT + POSTFIX[getID() - OFFSET]).get(TextureAtlasSprite.class);
-  }
-
-  @Override
-  public TextureAtlasSprite getTextureForOutputMode() {
-    return ICONS.get(IPowerConduit.ICON_KEY_OUTPUT + POSTFIX[getID() - OFFSET]).get(TextureAtlasSprite.class);
+  private int getIndex() {
+    return getID() - OFFSET;
   }
 
 }

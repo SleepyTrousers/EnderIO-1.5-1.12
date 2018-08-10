@@ -53,8 +53,4 @@ public interface IPowerConduitData {
   @SideOnly(Side.CLIENT)
   TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component);
 
-  TextureAtlasSprite getTextureForInputMode();
-
-  TextureAtlasSprite getTextureForOutputMode();
-
 }

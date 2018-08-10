@@ -55,13 +55,4 @@ public final class BasePowerConduitData implements IPowerConduitData {
     return PowerConduit.ICONS.get(PowerConduit.ICON_KEY + PowerConduit.POSTFIX[getID()]).get(TextureAtlasSprite.class);
   }
 
-  @Override
-  public TextureAtlasSprite getTextureForInputMode() {
-    return PowerConduit.ICONS.get(PowerConduit.ICON_KEY_INPUT + PowerConduit.POSTFIX[getID()]).get(TextureAtlasSprite.class);
-  }
-
-  @Override
-  public TextureAtlasSprite getTextureForOutputMode() {
-    return PowerConduit.ICONS.get(PowerConduit.ICON_KEY_OUTPUT + PowerConduit.POSTFIX[getID()]).get(TextureAtlasSprite.class);
-  }
 }
