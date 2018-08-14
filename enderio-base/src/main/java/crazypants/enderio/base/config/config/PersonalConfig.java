@@ -94,6 +94,9 @@ public final class PersonalConfig {
   public static final IValue<Boolean> hideConduits = H.make("hideConduits", true, //
       "Should conduit-related items be hidden in JEI if the conduits module is not installed?");
 
+  public static final IValue<Boolean> hideEndergy = H.make("hideEndergy", true, //
+      "Should endergy-related items be hidden in JEI if the conduits module is not installed?");
+
   public static final IValue<Boolean> hideMachineParts = H.make("hideMachineParts", true, //
       "Should machine part items be hidden in JEI if the machines module is not installed?");
 

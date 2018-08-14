@@ -194,7 +194,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="ingotGold" /><item name="INFINITY_GOOP" /><item name="ingotGold" />
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
-      <output name="enderio:item_endergy_conduit:2" amount="8">
+      <output name="enderio:item_endergy_conduit:3" amount="8">
       </output>
     </crafting>
   </recipe>
@@ -206,7 +206,30 @@ XML editor will display that as tooltips when editing this file.
         <item name="ingotSilver" /><item name="INFINITY_GOOP" /><item name="ingotSilver" />
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
-      <output name="enderio:item_endergy_conduit:3" amount="8">
+      <output name="enderio:item_endergy_conduit:5" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Alloy: Energetic Silver Alloy" required="false">
+    <!-- mirroring energetic alloy recipe -->
+    <alloying energy="10000" exp="0.7">
+      <input name="dustRedstone"/>
+      <input name="ingotSilver"/>
+      <input name="dustGlowstone"/>
+      <output name="ingotEnergeticSilver"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Conduit, Endergy, Energetic Silver" required="false">
+    <crafting>
+      <grid>
+        <!-- mirroring energetic alloy conduit recipe -->
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="ingotEnergeticSilver" /><item name="ingotEnergeticSilver" /><item name="ingotEnergeticSilver" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_endergy_conduit:7" amount="8">
       </output>
     </crafting>
   </recipe>
@@ -218,19 +241,31 @@ XML editor will display that as tooltips when editing this file.
         <item name="ingotElectrum" /><item name="INFINITY_GOOP" /><item name="ingotElectrum" />
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
-      <output name="enderio:item_endergy_conduit:4" amount="8">
+      <output name="enderio:item_endergy_conduit:6" amount="8">
       </output>
     </crafting>
   </recipe>
 
-  <recipe name="Conduit, Endergy, Alu" required="false">
+  <recipe name="Conduit, Endergy, Aluminum" required="false">
     <crafting>
       <grid>
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
         <item name="ingotAluminum" /><item name="INFINITY_GOOP" /><item name="ingotAluminum" />
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
-      <output name="enderio:item_endergy_conduit:5" amount="8">
+      <output name="enderio:item_endergy_conduit:2" amount="8">
+      </output>
+    </crafting>
+  </recipe>
+
+  <recipe name="Conduit, Endergy, Aluminium" required="false">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item name="ingotAluminium" /><item name="INFINITY_GOOP" /><item name="ingotAluminium" />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_endergy_conduit:2" amount="8">
       </output>
     </crafting>
   </recipe>
@@ -242,7 +277,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="ingotCopper" /><item name="INFINITY_GOOP" /><item name="ingotCopper" />
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
-      <output name="enderio:item_endergy_conduit:6" amount="8">
+      <output name="enderio:item_endergy_conduit:4" amount="8">
       </output>
     </crafting>
   </recipe>
@@ -254,7 +289,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="enderio:item_endergy_alloy:2" /><item name="enderio:item_endergy_alloy:2" /><item name="enderio:item_endergy_alloy:2" />
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
-      <output name="enderio:item_endergy_conduit:7" amount="8">
+      <output name="enderio:item_endergy_conduit:8" amount="8">
       </output>
     </crafting>
   </recipe>
@@ -266,7 +301,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="enderio:item_endergy_alloy:3" /><item name="enderio:item_endergy_alloy:3" /><item name="enderio:item_endergy_alloy:3" />
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
-      <output name="enderio:item_endergy_conduit:8" amount="8">
+      <output name="enderio:item_endergy_conduit:9" amount="8">
       </output>
     </crafting>
   </recipe>
@@ -278,7 +313,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="INFINITY_GOOP" /><item name="enderio:item_endergy_alloy:4" /><item name="INFINITY_GOOP" />
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
-      <output name="enderio:item_endergy_conduit:9" amount="8">
+      <output name="enderio:item_endergy_conduit:10" amount="8">
       </output>
     </crafting>
   </recipe>

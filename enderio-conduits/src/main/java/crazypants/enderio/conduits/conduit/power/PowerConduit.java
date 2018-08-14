@@ -70,10 +70,10 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   static {
     for (String pf : POSTFIX) {
       ICONS.put(ICON_KEY + pf, TextureRegistry.registerTexture(ICON_KEY + pf));
-      ICONS.put(ICON_KEY_INPUT + pf, TextureRegistry.registerTexture(ICON_KEY_INPUT + pf));
-      ICONS.put(ICON_KEY_OUTPUT + pf, TextureRegistry.registerTexture(ICON_KEY_OUTPUT + pf));
       ICONS.put(ICON_CORE_KEY + pf, TextureRegistry.registerTexture(ICON_CORE_KEY + pf));
     }
+    ICONS.put(ICON_KEY_INPUT, TextureRegistry.registerTexture(ICON_KEY_INPUT));
+    ICONS.put(ICON_KEY_OUTPUT, TextureRegistry.registerTexture(ICON_KEY_OUTPUT));
     ICONS.put(ICON_TRANSMISSION_KEY, TextureRegistry.registerTexture(ICON_TRANSMISSION_KEY));
   }
 
@@ -519,12 +519,12 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
 
   @Override
   public TextureAtlasSprite getTextureForInputMode() {
-    return subtype.getTextureForInputMode();
+    return ICONS.get(PowerConduit.ICON_KEY_INPUT).get(TextureAtlasSprite.class);
   }
 
   @Override
   public TextureAtlasSprite getTextureForOutputMode() {
-    return subtype.getTextureForOutputMode();
+    return ICONS.get(PowerConduit.ICON_KEY_OUTPUT).get(TextureAtlasSprite.class);
   }
 
   @Override

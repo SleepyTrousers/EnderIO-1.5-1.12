@@ -11,7 +11,6 @@ import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.conduits.conduit.AbstractItemConduit;
-import crazypants.enderio.conduits.conduit.ItemConduitSubtype;
 import crazypants.enderio.conduits.conduit.power.IPowerConduit;
 import crazypants.enderio.conduits.conduit.power.IPowerConduitData;
 import crazypants.enderio.conduits.conduit.power.PowerConduit;
@@ -22,21 +21,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.endergy.conduit.EndergyPowerConduitData.POSTFIX;
-
 public class ItemEndergyConduit extends AbstractItemConduit {
 
   public static ItemEndergyConduit create(@Nonnull IModObject modObject) {
-    ItemConduitSubtype[] types = new ItemConduitSubtype[POSTFIX.length];
-    for (int i = 0; i < POSTFIX.length; i++) {
-      types[i] = new ItemConduitSubtype(modObject.getUnlocalisedName() + POSTFIX[i], modObject.getRegistryName().toString() + POSTFIX[i]);
-    }
-    ItemEndergyConduit result = new ItemEndergyConduit(modObject, types);
-    return result;
+    return new ItemEndergyConduit(modObject);
   }
 
-  protected ItemEndergyConduit(@Nonnull IModObject modObject, ItemConduitSubtype... types) {
-    super(modObject, types);
+  protected ItemEndergyConduit(@Nonnull IModObject modObject) {
+    super(modObject, EndergyPowerConduitData.createSubTypes(modObject));
   }
 
   @Override
@@ -52,9 +44,9 @@ public class ItemEndergyConduit extends AbstractItemConduit {
   @Override
   @SideOnly(Side.CLIENT)
   public void addInformation(@Nonnull ItemStack itemStack, @Nullable World world, @Nonnull List<String> list, @Nonnull ITooltipFlag flag) {
-    String prefix = EnderIO.lang.localize("power.max_output") + " ";
     super.addInformation(itemStack, world, list, flag);
     int cap = PowerConduit.getMaxEnergyIO(IPowerConduitData.Registry.fromID(EndergyPowerConduitData.damage2id(itemStack.getItemDamage())));
+    String prefix = EnderIO.lang.localize("power.max_output") + " ";
     list.add(prefix + LangPower.RFt(cap));
   }
 
@@ -62,4 +54,5 @@ public class ItemEndergyConduit extends AbstractItemConduit {
   public boolean shouldHideFacades(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
     return true;
   }
+
 }

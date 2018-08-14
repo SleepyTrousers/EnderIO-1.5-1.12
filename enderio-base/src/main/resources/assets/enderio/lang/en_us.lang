@@ -262,6 +262,7 @@ item.item_material.glazed_nether_brick.name=Nethercotta
 item.item_material.infinity_goop.name=Infinity Goop
 item.item_material.infinity_goop.tooltip.detailed.line1=An infinitely sticky substance for conducting energy.
 item.item_material.infinity_goop.tooltip.detailed.line2=Randalf got some on him once, and was stuck to his staff of travelling for 6 months...
+item.item_material.ingot_energetic_silver.name=Energetic Silver Ingot
 
 item.item_rod_of_return.name=Rod of Return
 item.item_rod_of_return.tooltip.detailed.line1=Returns the user to a Telepad

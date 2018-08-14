@@ -458,6 +458,11 @@
         "textures": {
           "layer0": "enderio:items/item_material_infinity_goop"
         }
+      },
+      "ingot_energetic_silver": {
+        "textures": {
+          "layer0": "enderio:items/item_material_ingot_energetic_silver"
+        }
       }
     }
   }
