@@ -239,14 +239,14 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
 
     INetworkNodeManager manager = RSHelper.API.getNetworkNodeManager(world);
 
-    ConduitRefinedStorageNode node = (ConduitRefinedStorageNode) manager.getNode(pos);
+    INetworkNode node = manager.getNode(pos);
 
     if (node == null || !node.getId().equals(ConduitRefinedStorageNode.ID)) {
       manager.setNode(pos, node = new ConduitRefinedStorageNode(this));
       manager.markForSaving();
     }
 
-    return node;
+    return (ConduitRefinedStorageNode) node;
   }
 
   @Override
