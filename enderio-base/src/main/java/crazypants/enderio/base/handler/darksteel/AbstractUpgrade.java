@@ -127,6 +127,11 @@ public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements
     return tagCompound.hasKey(id) && tagCompound.getCompoundTag(id).hasKey(KEY_VARIANT);
   }
 
+  public int getUpgradeVariantLevel(@Nonnull ItemStack stack) {
+    final NBTTagCompound tagCompound = NbtValue.getReadOnlyRoot(stack);
+    return tagCompound.hasKey(id) && tagCompound.getCompoundTag(id).hasKey(KEY_VARIANT) ? tagCompound.getCompoundTag(id).getInteger(KEY_VARIANT) : -1;
+  }
+
   @Override
   public void addToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     getOrCreateUpgradeNBT(stack).setInteger(KEY_VARIANT, variant);

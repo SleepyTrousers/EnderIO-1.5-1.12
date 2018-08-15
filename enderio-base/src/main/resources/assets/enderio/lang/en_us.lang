@@ -690,9 +690,37 @@ enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=Who needs a shovel when y
 enderio.darksteel.upgrade.hoe.name=Fork
 enderio.darksteel.upgrade.hoe.tooltip.detailed.line1=Who needs a hoe when you have a fork...
 
-enderio.darksteel.upgrade.tnt.name=Explosive
-enderio.darksteel.upgrade.tnt.tooltip.detailed.line1=Adds explosive power to the pickaxe, damaging surrounding blocks while mining.
-enderio.darksteel.upgrade.tnt.tooltip.detailed.line2=For problems that look like nails.
+enderio.darksteel.upgrade.tnt.0.name=Explosive I
+enderio.darksteel.upgrade.tnt.0.tooltip.detailed.line1=Adds explosive power to the pickaxe, damaging surrounding blocks while mining.
+# translator note: "nail" is referencing Tinkers' hammer---"if all you have is a hammer, everything looks like a nail"
+enderio.darksteel.upgrade.tnt.0.tooltip.detailed.line2=For problems that look like nails.
+
+enderio.darksteel.upgrade.tnt.1.name=Explosive II
+enderio.darksteel.upgrade.tnt.1.tooltip.detailed.line1=Adds more explosive power to the pickaxe, damaging surrounding blocks while mining.
+enderio.darksteel.upgrade.tnt.1.tooltip.detailed.line2=For problems that look like nails.
+
+enderio.darksteel.upgrade.tnt.2.name=Explosive III
+enderio.darksteel.upgrade.tnt.2.tooltip.detailed.line1=Adds even more explosive power to the pickaxe, damaging surrounding blocks while mining.
+enderio.darksteel.upgrade.tnt.2.tooltip.detailed.line2=For problems that look like nails.
+
+enderio.darksteel.upgrade.tnt.3.name=Explosive IV
+enderio.darksteel.upgrade.tnt.3.tooltip.detailed.line1=Adds ridiculous explosive power to the pickaxe, damaging surrounding blocks while mining.
+enderio.darksteel.upgrade.tnt.3.tooltip.detailed.line2=For problems that look like combs.
+
+enderio.darksteel.upgrade.tnt.4.name=Explosive V
+enderio.darksteel.upgrade.tnt.4.tooltip.detailed.line1=Adds ludicrous explosive power to the pickaxe, damaging surrounding blocks while mining.
+# translator note: "ridiculous", "combs" and "ludicrous" are Spaceballs references, see video. 
+enderio.darksteel.upgrade.tnt.4.tooltip.detailed.line2=https://youtu.be/ygE01sOhzz0
+
+attribute.name.enderio.aoe.xz=Mining Range
+attribute.name.enderio.aoe.y=Mining Depth
+attribute.name.enderio.aoe.xyz=Mining Volume
+
+enderio.darksteel.upgrade.carpet.name=Carpeting
+enderio.darksteel.upgrade.carpet.tooltip.detailed.line1=Flattens the explosive force into a carpet.
+
+enderio.darksteel.upgrade.depth.name=Depth
+enderio.darksteel.upgrade.depth.tooltip.detailed.line1=Directs the explosive force away from the player.
 
 enderio.darksteel.upgrade.glider.name=Glider
 enderio.darksteel.upgrade.glider.tooltip.detailed.line1=Enables gliding

@@ -85,8 +85,12 @@ public final class DarkSteelConfig {
 
   public static final IValueFactory F_EXPLOSIVE = F_UPGRADES.section(".explosive");
 
-  public static final IValue<Integer> explosiveUpgradeCost = F_EXPLOSIVE.make("upgradeCost", 8, //
-      "Cost for the explosive upgrade in levels.").setRange(1, 99).sync();
+  public static final NNList<IValue<Integer>> explosiveUpgradeCost = new NNList<>( //
+      F_EXPLOSIVE.make("upgradeCost1", 8, "Cost for the explosive I upgrade in levels.").setRange(1, 99).sync(),
+      F_EXPLOSIVE.make("upgradeCost2", 12, "Cost for the explosive II upgrade in levels.").setRange(1, 99).sync(),
+      F_EXPLOSIVE.make("upgradeCost3", 18, "Cost for the explosive III upgrade in levels.").setRange(1, 99).sync(),
+      F_EXPLOSIVE.make("upgradeCost4", 26, "Cost for the explosive IV upgrade in levels.").setRange(1, 99).sync(),
+      F_EXPLOSIVE.make("upgradeCost5", 36, "Cost for the explosive V upgrade in levels.").setRange(1, 99).sync());
 
   public static final IValue<Integer> explosiveUpgradeEnergyPerBlock = F_EXPLOSIVE.make("energyPerBlock", 20, //
       "Extra energy the explosive upgrade uses to blow up blocks. This goes on top of the energy used to counteract durability loss.").setMin(0).sync();
@@ -98,6 +102,16 @@ public final class DarkSteelConfig {
       "Should the explosive upgrade blow up any kind of block the pickaxe can mine? If disabled, only a limited list of trash blocks will be blown up. "
           + "Enable this in modpacks that have a large number of modded stone or dirt in their worldgen.")
       .sync();
+
+  public static final IValueFactory F_CARPET = F_EXPLOSIVE.section(".carpet");
+
+  public static final IValue<Integer> explosiveCarpetUpgradeCost = F_CARPET.make("upgradeCost", 8, //
+      "Cost for the explosive carpet upgrade in levels.").setRange(1, 99).sync();
+
+  public static final IValueFactory F_DEPTH = F_EXPLOSIVE.section(".carpet");
+
+  public static final IValue<Integer> explosiveDepthUpgradeCost = F_DEPTH.make("upgradeCost", 8, //
+      "Cost for the explosive depth upgrade in levels.").setRange(1, 99).sync();
 
   public static final IValueFactory F_COLDFIRE = F_DARK_STEEL.section(".coldfire");
 

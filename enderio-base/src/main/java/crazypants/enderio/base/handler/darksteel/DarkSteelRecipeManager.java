@@ -21,7 +21,6 @@ import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
-import crazypants.enderio.base.item.darksteel.upgrade.explosive.ExplosiveUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.flippers.SwimUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.hoe.HoeUpgrade;
@@ -67,7 +66,6 @@ public class DarkSteelRecipeManager {
     registry.register(NightVisionUpgrade.INSTANCE);
     registry.register(TravelUpgrade.INSTANCE);
     registry.register(SpoonUpgrade.INSTANCE);
-    registry.register(ExplosiveUpgrade.INSTANCE);
     registry.register(HoeUpgrade.INSTANCE);
   }
 

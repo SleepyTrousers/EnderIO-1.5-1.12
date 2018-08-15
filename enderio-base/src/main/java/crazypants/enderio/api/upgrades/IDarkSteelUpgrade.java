@@ -2,7 +2,10 @@ package crazypants.enderio.api.upgrades;
 
 import javax.annotation.Nonnull;
 
+import com.google.common.collect.Multimap;
+
 import crazypants.enderio.base.handler.darksteel.PacketDarkSteelSFXPacket;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -129,6 +132,9 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
    */
   @SideOnly(Side.CLIENT)
   default void doMultiplayerSFX(@Nonnull EntityPlayer otherPlayer) {
+  }
+
+  default void addAttributeModifiers(@Nonnull EntityEquipmentSlot slot, @Nonnull ItemStack stack, @Nonnull Multimap<String, AttributeModifier> map) {
   }
 
 }
