@@ -23,7 +23,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -71,9 +70,8 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem, 
     if (placeAt != null) {
       if (!world.isRemote) {
         if (world.setBlockState(placeAt, ConduitRegistry.getConduitModObjectNN().getBlockNN().getDefaultState(), 1)) {
-          TileEntity te = world.getTileEntity(placeAt);
-          if (te instanceof IConduitBundle) {
-            IConduitBundle bundle = (IConduitBundle) te;
+          IConduitBundle bundle = BlockConduitBundle.getAnyTileEntity(world, placeAt, IConduitBundle.class);
+          if (bundle != null) {
             if (bundle.addConduit(createConduit(held, player))) {
               ConduitUtil.playBreakSound(SoundType.METAL, world, placeAt);
             } else {
@@ -91,9 +89,8 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem, 
 
       BlockPos place = pos.offset(side);
 
-      if (world.getBlockState(place).getBlock() == ConduitRegistry.getConduitModObjectNN().getBlock()) {
-
-        IConduitBundle bundle = (IConduitBundle) world.getTileEntity(place);
+      if (world.getBlockState(place).getBlock() == ConduitRegistry.getConduitModObjectNN().getBlockNN()) {
+        IConduitBundle bundle = BlockConduitBundle.getAnyTileEntity(world, place, IConduitBundle.class);
         if (bundle == null) {
           return EnumActionResult.PASS;
         }
