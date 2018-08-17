@@ -33,7 +33,6 @@ import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.integration.bigreactors.BRProxy;
 import crazypants.enderio.base.integration.buildcraft.BuildcraftIntegration;
 import crazypants.enderio.base.integration.chiselsandbits.CABIMC;
-import crazypants.enderio.base.loot.LootManager;
 import crazypants.enderio.base.material.recipes.MaterialOredicts;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.PaintSourceValidator;
@@ -189,8 +188,6 @@ public class EnderIO implements IEnderIOAddon {
     MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.PostInit.Pre());
 
     ModObjectRegistry.init(event);
-
-    LootManager.init(event);
 
     SagMillRecipeManager.getInstance().create();
     AlloyRecipeManager.getInstance().create();

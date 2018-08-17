@@ -1,0 +1,40 @@
+{
+  "pools": [
+    {
+      "name": "Ender IO",
+      "entries": [
+        {
+          "entryName": "item.forge.bucketFilled:0",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.05,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "data": 0.0,
+              "function": "minecraft:set_data"
+            },
+            {
+              "tag": "{FluidName:\"fire_water\",Amount:1000}",
+              "function": "minecraft:set_nbt"
+            }
+          ],
+          "name": "forge:bucketfilled"
+        }
+      ],
+      "rolls": {
+        "min": 1.0,
+        "max": 3.0
+      }
+    }
+  ]
+}

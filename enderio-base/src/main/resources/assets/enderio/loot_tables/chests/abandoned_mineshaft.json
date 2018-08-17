@@ -1,0 +1,187 @@
+{
+  "pools": [
+    {
+      "name": "Ender IO",
+      "entries": [
+        {
+          "entryName": "enderio:item_alloy_ingot:6",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.05,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "data": 6.0,
+              "function": "minecraft:set_data"
+            }
+          ],
+          "name": "enderio:item_alloy_ingot"
+        },
+        {
+          "entryName": "minecraft:ender_pearl:0",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.1,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "data": 0.0,
+              "function": "minecraft:set_data"
+            }
+          ],
+          "name": "minecraft:ender_pearl"
+        },
+        {
+          "entryName": "enderio:item_dark_steel_sword:0",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.2,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "damage": {
+                "min": 1.0,
+                "max": 2000.0
+              },
+              "function": "minecraft:set_damage"
+            },
+            {
+              "function": "enderio:set_random_dark_upgrade"
+            },
+            {
+              "function": "enderio:set_random_energy"
+            }
+          ],
+          "name": "enderio:item_dark_steel_sword"
+        },
+        {
+          "entryName": "enderio:item_material:9",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.5,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "data": 9.0,
+              "function": "minecraft:set_data"
+            }
+          ],
+          "name": "enderio:item_material"
+        },
+        {
+          "entryName": "item_basic_capacitor6",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.15,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "function": "enderio:set_capacitor"
+            },
+            {
+              "data": {
+                "min": 3.0,
+                "max": 4.0
+              },
+              "function": "minecraft:set_data"
+            }
+          ],
+          "name": "enderio:item_basic_capacitor"
+        },
+        {
+          "entryName": "item_basic_capacitor7",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.05,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "function": "enderio:set_capacitor"
+            },
+            {
+              "data": {
+                "min": 3.0,
+                "max": 4.0
+              },
+              "function": "minecraft:set_data"
+            }
+          ],
+          "name": "enderio:item_basic_capacitor"
+        },
+        {
+          "entryName": "enderio:block_exit_rail:0",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.15,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "data": 0.0,
+              "function": "minecraft:set_data"
+            }
+          ],
+          "name": "enderio:block_exit_rail"
+        }
+      ],
+      "rolls": {
+        "min": 1.0,
+        "max": 3.0
+      }
+    }
+  ]
+}

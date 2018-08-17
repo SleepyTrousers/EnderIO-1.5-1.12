@@ -1,0 +1,332 @@
+{
+  "pools": [
+    {
+      "name": "Ender IO",
+      "entries": [
+        {
+          "entryName": "enderio:item_alloy_ingot:0",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.2,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "count": 2.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "data": 0.0,
+              "function": "minecraft:set_data"
+            }
+          ],
+          "name": "enderio:item_alloy_ingot"
+        },
+        {
+          "entryName": "enderio:item_alloy_ingot:3",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.35,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "count": 3.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "data": 3.0,
+              "function": "minecraft:set_data"
+            }
+          ],
+          "name": "enderio:item_alloy_ingot"
+        },
+        {
+          "entryName": "enderio:item_alloy_ingot:6",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.35,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "count": 3.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "data": 6.0,
+              "function": "minecraft:set_data"
+            }
+          ],
+          "name": "enderio:item_alloy_ingot"
+        },
+        {
+          "entryName": "enderio:item_alloy_ingot:5",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.3,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "data": 5.0,
+              "function": "minecraft:set_data"
+            }
+          ],
+          "name": "enderio:item_alloy_ingot"
+        },
+        {
+          "entryName": "enderio:item_alloy_ingot:2",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.2,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "data": 2.0,
+              "function": "minecraft:set_data"
+            }
+          ],
+          "name": "enderio:item_alloy_ingot"
+        },
+        {
+          "entryName": "enderio:item_material:9",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.5,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "data": 9.0,
+              "function": "minecraft:set_data"
+            }
+          ],
+          "name": "enderio:item_material"
+        },
+        {
+          "entryName": "enderio:item_material:10",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.4,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "data": 10.0,
+              "function": "minecraft:set_data"
+            }
+          ],
+          "name": "enderio:item_material"
+        },
+        {
+          "entryName": "enderio:item_material:11",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.25,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "data": 11.0,
+              "function": "minecraft:set_data"
+            }
+          ],
+          "name": "enderio:item_material"
+        },
+        {
+          "entryName": "enderio:item_material:12",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.125,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "data": 12.0,
+              "function": "minecraft:set_data"
+            }
+          ],
+          "name": "enderio:item_material"
+        },
+        {
+          "entryName": "enderio:item_material:13",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.0625,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "data": 13.0,
+              "function": "minecraft:set_data"
+            }
+          ],
+          "name": "enderio:item_material"
+        },
+        {
+          "entryName": "enderio:item_dark_steel_sword:0",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.25,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "damage": {
+                "min": 1.0,
+                "max": 2000.0
+              },
+              "function": "minecraft:set_damage"
+            },
+            {
+              "function": "enderio:set_random_dark_upgrade"
+            },
+            {
+              "function": "enderio:set_random_energy"
+            }
+          ],
+          "name": "enderio:item_dark_steel_sword"
+        },
+        {
+          "entryName": "enderio:item_dark_steel_boots:0",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.25,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "damage": {
+                "min": 1.0,
+                "max": 455.0
+              },
+              "function": "minecraft:set_damage"
+            },
+            {
+              "function": "enderio:set_random_dark_upgrade"
+            },
+            {
+              "function": "enderio:set_random_energy"
+            }
+          ],
+          "name": "enderio:item_dark_steel_boots"
+        },
+        {
+          "entryName": "item_basic_capacitor11",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.1,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "function": "enderio:set_capacitor"
+            },
+            {
+              "data": {
+                "min": 3.0,
+                "max": 4.0
+              },
+              "function": "minecraft:set_data"
+            }
+          ],
+          "name": "enderio:item_basic_capacitor"
+        }
+      ],
+      "rolls": {
+        "min": 1.0,
+        "max": 3.0
+      }
+    }
+  ]
+}
