@@ -50,3 +50,5 @@ build\.sh
 enderio-machines/logs/
 
 enderio-zoo/src/main/resources/assets/enderio/entity/Corel Auto-Preserve/
+
+enderio-machines/src/main/resources/assets/enderio/textures/gui/40/Corel Auto-Preserve/

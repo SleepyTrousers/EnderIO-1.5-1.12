@@ -89,7 +89,8 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_simple_furnace.getBlockNN()), VanillaRecipeCategoryUid.SMELTING);
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_alloy_smelter.getBlockNN()), AlloyRecipeCategory.UID, VanillaRecipeCategoryUid.SMELTING);
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_simple_alloy_smelter.getBlockNN()), AlloyRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(block_enhanced_alloy_smelter.getBlockNN()), AlloyRecipeCategory.UID, VanillaRecipeCategoryUid.SMELTING);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(block_enhanced_alloy_smelter.getBlockNN()), AlloyRecipeCategory.UID,
+        VanillaRecipeCategoryUid.SMELTING);
 
     long start = System.nanoTime();
 
@@ -125,7 +126,7 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
   private final @Nonnull IDrawableAnimated flame;
 
   public AlloyRecipeCategory(IGuiHelper guiHelper) {
-    ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("alloy_smelter");
+    ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("alloy_smelter_auto");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 82, 78);
 
     IDrawableStatic flameDrawable = guiHelper.createDrawable(backgroundLocation, 176, 0, 14, 14);

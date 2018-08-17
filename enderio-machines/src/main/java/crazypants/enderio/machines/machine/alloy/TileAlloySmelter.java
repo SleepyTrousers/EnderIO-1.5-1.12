@@ -107,20 +107,22 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     ALLOY,
     FURNACE;
 
+    @Nonnull
     Mode next() {
       int nextOrd = ordinal() + 1;
       if (nextOrd >= values().length) {
         nextOrd = 0;
       }
-      return values()[nextOrd];
+      return NullHelper.first(values()[nextOrd], ALL);
     }
 
+    @Nonnull
     Mode prev() {
       int nextOrd = ordinal() - 1;
       if (nextOrd < 0) {
         nextOrd = values().length - 1;
       }
-      return values()[nextOrd];
+      return NullHelper.first(values()[nextOrd], ALL);
     }
   }
 
