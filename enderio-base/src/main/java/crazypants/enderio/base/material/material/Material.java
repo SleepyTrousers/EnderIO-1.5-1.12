@@ -112,6 +112,12 @@ public enum Material {
   POWDER_SOUL("powder_soul", "dustSoularium"),
   INFINITY_GOOP("infinity_goop", "itemInfinityGoop"),
   ENERGETIC_SILVER("ingot_energetic_silver", "ingotEnergeticSilver"),
+  COMBUSTIVE_METAL("ingot_combustive_metal", "ingotCombustiveMetal"),
+  CRUDE_STEEL("ingot_crude_steel", "ingotCrudeSteel"),
+  CRYSTALLINE_ALLOY("ingot_crystalline_alloy", "ingotCrystallineAlloy"),
+  MELODIC_ALLOY("ingot_melodic_alloy", "ingotMelodicAlloy"),
+  STELLAR_ALLOY("ingot_stellar_alloy", "ingotStellarAlloy"),
+  CRYSTAlLINE_PINK_SLIME("ingot_crystalline_pink_slime", "ingotCrystallinePinkSlime"),
 
   ;
 

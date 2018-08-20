@@ -26,7 +26,7 @@ public final class EndergyConfig {
       FE.make("tier8", 10240, "The maximum IO for the energetic silver endergy conduit.").setRange(1, MAX).sync(),
       // normal tier3, 20480, vibrant alloy
       FE.make("tier9", 40960, "The maximum IO for the crystalline endergy conduit.").setRange(1, MAX).sync(),
-      // missing tier, 81920
+      FE.make("tier10", 81920, "The maximum IO for the pink slime endergy conduit.").setRange(1, MAX).sync(),
       // missing tier, 163840
       FE.make("tier12", 327680, "The maximum IO for the melodic endergy conduit.").setRange(1, MAX).sync(),
       FE.make("tier13", MAX, "The maximum IO for the stellar endergy conduit.").setRange(1, MAX).sync()

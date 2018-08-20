@@ -36,7 +36,7 @@ public final class EndergyPowerConduitData implements IPowerConduitData {
    */
 
   static final String[] POSTFIX = new String[] { "_cobble", "_iron", "_alu", "_gold", "_copper", "_silver", "_electrum", "_energetic_silver", "_crystalline",
-      "_melodic", "_stellar" };
+      "_pink_slime", "_melodic", "_stellar" };
 
   static {
     for (int i = 0; i < POSTFIX.length; i++) {

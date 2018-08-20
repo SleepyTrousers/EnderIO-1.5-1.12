@@ -11,7 +11,6 @@ import crazypants.enderio.base.init.IModObjectBase;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.endergy.EnderIOEndergy;
-import crazypants.enderio.endergy.alloy.ItemEndergyAlloy;
 import crazypants.enderio.endergy.capacitor.ItemEndergyCapacitor;
 import crazypants.enderio.endergy.capacitor.ItemTotemicCapacitor;
 import crazypants.enderio.endergy.conduit.ItemEndergyConduit;
@@ -24,7 +23,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @EventBusSubscriber(modid = EnderIOEndergy.MODID)
 public enum EndergyObject implements IModObjectBase {
 
-  itemEndergyAlloy(ItemEndergyAlloy.class),
+//  itemEndergyAlloy(ItemEndergyAlloy.class),
   itemCapacitorGrainy(ItemEndergyCapacitor.class, "create_grainy"),
   itemCapacitorCrystalline(ItemEndergyCapacitor.class, "create_crystalline"),
   itemCapacitorMelodic(ItemEndergyCapacitor.class, "create_melodic"),
