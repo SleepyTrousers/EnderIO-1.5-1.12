@@ -51,6 +51,7 @@ import crazypants.enderio.base.filter.redstone.items.ItemCountingOutputSignalFil
 import crazypants.enderio.base.filter.redstone.items.ItemInvertingOutputSignalFilter;
 import crazypants.enderio.base.filter.redstone.items.ItemTimerInputSignalFilter;
 import crazypants.enderio.base.filter.redstone.items.ItemToggleOutputSignalFilter;
+import crazypants.enderio.base.init.ModObjectData.NamedParameter;
 import crazypants.enderio.base.item.coldfire.ItemColdFireIgniter;
 import crazypants.enderio.base.item.conduitprobe.ItemConduitProbe;
 import crazypants.enderio.base.item.coordselector.ItemCoordSelector;
@@ -83,6 +84,14 @@ import crazypants.enderio.base.render.dummy.BlockMachineBase;
 import crazypants.enderio.base.render.dummy.BlockMachineIO;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+
+import static crazypants.enderio.base.init.ModObjectData.blockMethod;
+import static crazypants.enderio.base.init.ModObjectData.clazz;
+import static crazypants.enderio.base.init.ModObjectData.itemMethod;
+import static crazypants.enderio.base.init.ModObjectData.method;
+import static crazypants.enderio.base.init.ModObjectData.tileEntity;
+import static crazypants.enderio.base.init.ModTileEntity.TileEntityPaintedBlock;
+import static crazypants.enderio.base.init.ModTileEntity.TileEntityTwicePaintedBlock;
 
 public enum ModObject implements IModObjectBase {
 
@@ -136,10 +145,10 @@ public enum ModObject implements IModObjectBase {
   blockPaintedWall(BlockPaintedWall.class, ModTileEntity.TileEntityPaintedBlock),
   blockPaintedStair(BlockPaintedStairs.class, ModTileEntity.TileEntityPaintedBlock),
   blockPaintedStoneStair(BlockPaintedStairs.class, "create_stone", ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedSlab(BlockPaintedSlabManager.class, "create_wood", "create_item", ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedDoubleSlab(BlockPaintedSlabManager.class, "create_wood_double", null, ModTileEntity.TileEntityTwicePaintedBlock),
-  blockPaintedStoneSlab(BlockPaintedSlabManager.class, "create_stone", "create_item", ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedStoneDoubleSlab(BlockPaintedSlabManager.class, "create_stone_double", null, ModTileEntity.TileEntityTwicePaintedBlock),
+  blockPaintedSlab(clazz(BlockPaintedSlabManager.class), blockMethod("create_wood"), itemMethod("create_item"), tileEntity(TileEntityPaintedBlock)),
+  blockPaintedDoubleSlab(clazz(BlockPaintedSlabManager.class), blockMethod("create_wood_double"), tileEntity(TileEntityTwicePaintedBlock)),
+  blockPaintedStoneSlab(clazz(BlockPaintedSlabManager.class), blockMethod("create_stone"), itemMethod("create_item"), tileEntity(TileEntityPaintedBlock)),
+  blockPaintedStoneDoubleSlab(clazz(BlockPaintedSlabManager.class), blockMethod("create_stone_double"), tileEntity(TileEntityTwicePaintedBlock)),
   blockPaintedGlowstone(BlockPaintedGlowstone.class, ModTileEntity.TileEntityPaintedBlock),
   blockPaintedGlowstoneSolid(BlockPaintedGlowstone.class, "create_solid", ModTileEntity.TileEntityPaintedBlock),
   blockPaintedCarpet(BlockPaintedCarpet.class, ModTileEntity.TileEntityPaintedBlock),
@@ -238,14 +247,10 @@ public enum ModObject implements IModObjectBase {
 
   ;
 
-  final @Nonnull String unlocalisedName;
-
   protected @Nullable Block block;
   protected @Nullable Item item;
 
-  protected final @Nonnull Class<?> clazz;
-  protected final @Nullable String blockMethodName, itemMethodName;
-  protected final @Nullable IModTileEntity modTileEntity;
+  protected final @Nonnull ModObjectData data;
 
   /*
    * A modObject can be defined in a couple of different ways.
@@ -268,36 +273,29 @@ public enum ModObject implements IModObjectBase {
    * together with the ModObject enum, which can cause weird errors. Implement the IModObject lifecycle interfaces on the block/item instead.
    */
 
-  private ModObject(@Nonnull Class<?> clazz) {
-    this(clazz, "create", null);
+  private ModObject(NamedParameter<?>... params) {
+    data = ModObjectData.create(ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()")), params);
   }
 
-  private ModObject(@Nonnull Class<?> clazz, @Nullable IModTileEntity modTileEntity) {
-    this(clazz, "create", modTileEntity);
+  private ModObject(@Nonnull Class<?> clazz) {
+    this(clazz(clazz), method("create"));
+  }
+
+  private ModObject(@Nonnull Class<?> clazz, @Nonnull IModTileEntity modTileEntity) {
+    this(clazz(clazz), method("create"), tileEntity(modTileEntity));
   }
 
   private ModObject(@Nonnull Class<?> clazz, @Nonnull String methodName) {
-    this(clazz, Block.class.isAssignableFrom(clazz) ? methodName : null, Item.class.isAssignableFrom(clazz) ? methodName : null, null);
+    this(clazz(clazz), method(methodName));
   }
 
-  private ModObject(@Nonnull Class<?> clazz, @Nonnull String methodName, @Nullable IModTileEntity modTileEntity) {
-    this(clazz, Block.class.isAssignableFrom(clazz) ? methodName : null, Item.class.isAssignableFrom(clazz) ? methodName : null, modTileEntity);
-  }
-
-  private ModObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, @Nullable IModTileEntity modTileEntity) {
-    this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
-    this.clazz = clazz;
-    this.blockMethodName = blockMethodName == null || blockMethodName.isEmpty() ? null : blockMethodName;
-    this.itemMethodName = itemMethodName == null || itemMethodName.isEmpty() ? null : itemMethodName;
-    if (blockMethodName == null && itemMethodName == null) {
-      throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
-    }
-    this.modTileEntity = modTileEntity;
+  private ModObject(@Nonnull Class<?> clazz, @Nonnull String methodName, @Nonnull IModTileEntity modTileEntity) {
+    this(clazz(clazz), method(methodName), tileEntity(modTileEntity));
   }
 
   @Override
   public final @Nonnull String getUnlocalisedName() {
-    return unlocalisedName;
+    return data.getUnlocalisedName();
   }
 
   @Override
@@ -312,17 +310,17 @@ public enum ModObject implements IModObjectBase {
 
   @Override
   public final @Nonnull Class<?> getClazz() {
-    return clazz;
+    return data.getClazz();
   }
 
   @Override
   public final String getBlockMethodName() {
-    return blockMethodName;
+    return data.getBlockMethodName();
   }
 
   @Override
   public final String getItemMethodName() {
-    return itemMethodName;
+    return data.getItemMethodName();
   }
 
   @Override
@@ -338,7 +336,7 @@ public enum ModObject implements IModObjectBase {
   @Override
   @Nullable
   public IModTileEntity getTileEntity() {
-    return modTileEntity;
+    return data.getModTileEntity();
   }
 
 }
