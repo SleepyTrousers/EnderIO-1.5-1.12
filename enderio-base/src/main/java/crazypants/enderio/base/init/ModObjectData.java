@@ -77,7 +77,7 @@ public class ModObjectData {
     return value;
   }
 
-  public static class NamedParameter<T> {
+  public abstract static class NamedParameter<T> {
     private final @Nonnull T value;
 
     @Nonnull
@@ -85,69 +85,69 @@ public class ModObjectData {
       return value;
     }
 
-    protected NamedParameter(@Nonnull T value) {
+    private NamedParameter(@Nonnull T value) {
       this.value = value;
     }
 
-    public static class UnlocName extends NamedParameter<String> {
-      protected UnlocName(@Nonnull String value) {
+    private static class UnlocName extends NamedParameter<String> {
+      UnlocName(@Nonnull String value) {
         super(value);
       }
     }
 
-    public static class Clazz extends NamedParameter<Class<?>> {
-      protected Clazz(@Nonnull Class<?> value) {
+    private static class Clazz extends NamedParameter<Class<?>> {
+      Clazz(@Nonnull Class<?> value) {
         super(value);
       }
     }
 
-    public static class AnyName extends NamedParameter<String> {
-      protected AnyName(@Nonnull String value) {
+    private static class AnyName extends NamedParameter<String> {
+      AnyName(@Nonnull String value) {
         super(value);
       }
     }
 
-    public static class BlockName extends NamedParameter<String> {
-      protected BlockName(@Nonnull String value) {
+    private static class BlockName extends NamedParameter<String> {
+      BlockName(@Nonnull String value) {
         super(value);
       }
     }
 
-    public static class ItemName extends NamedParameter<String> {
-      protected ItemName(@Nonnull String value) {
+    private static class ItemName extends NamedParameter<String> {
+      ItemName(@Nonnull String value) {
         super(value);
       }
     }
 
-    public static class TeObject extends NamedParameter<IModTileEntity> {
-      protected TeObject(@Nonnull IModTileEntity value) {
+    private static class TeObject extends NamedParameter<IModTileEntity> {
+      TeObject(@Nonnull IModTileEntity value) {
         super(value);
       }
     }
 
   }
 
-  static NamedParameter<?> unlocalizedName(@Nonnull String unlocalisedName) {
+  public static NamedParameter<?> unlocalizedName(@Nonnull String unlocalisedName) {
     return new NamedParameter.UnlocName(unlocalisedName);
   }
 
-  static NamedParameter<?> clazz(@Nonnull Class<?> clazz) {
+  public static NamedParameter<?> clazz(@Nonnull Class<?> clazz) {
     return new NamedParameter.Clazz(clazz);
   }
 
-  static NamedParameter<?> method(@Nonnull String methodName) {
+  public static NamedParameter<?> method(@Nonnull String methodName) {
     return new NamedParameter.AnyName(methodName);
   }
 
-  static NamedParameter<?> blockMethod(@Nonnull String blockMethodName) {
+  public static NamedParameter<?> blockMethod(@Nonnull String blockMethodName) {
     return new NamedParameter.BlockName(blockMethodName);
   }
 
-  static NamedParameter<?> itemMethod(@Nonnull String itemMethodName) {
+  public static NamedParameter<?> itemMethod(@Nonnull String itemMethodName) {
     return new NamedParameter.ItemName(itemMethodName);
   }
 
-  static NamedParameter<?> tileEntity(@Nonnull IModTileEntity modTileEntity) {
+  public static NamedParameter<?> tileEntity(@Nonnull IModTileEntity modTileEntity) {
     return new NamedParameter.TeObject(modTileEntity);
   }
 
