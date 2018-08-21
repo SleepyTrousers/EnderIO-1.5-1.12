@@ -8,21 +8,15 @@ import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.api.teleport.TravelSource;
-import crazypants.enderio.base.Log;
 import crazypants.enderio.base.sound.SoundHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketEntityVelocity;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.common.util.ITeleporter;
 
 public class TeleportUtil {
 
@@ -42,15 +36,11 @@ public class TeleportUtil {
       // don't even bother...
       return false;
     }
-    TeleportEntityEvent evt = new TeleportEntityEvent(entityLiving, source, pos, targetDim);
-    if (MinecraftForge.EVENT_BUS.post(evt)) {
-      return false;
-    }
-    return true;
+    return !MinecraftForge.EVENT_BUS.post(new TeleportEntityEvent(entityLiving, source, pos, targetDim));
   }
 
   public static boolean serverTeleport(@Nonnull Entity entity, @Nonnull BlockPos pos, int targetDim, boolean conserveMotion, @Nonnull TravelSource source) {
-    if (entity instanceof FakePlayer) {
+    if (entity instanceof FakePlayer || entity.isDead) {
       // don't even bother...
       return false;
     }
@@ -60,112 +50,87 @@ public class TeleportUtil {
       return false;
     }
 
-    EntityPlayerMP player = null;
     if (entity instanceof EntityPlayerMP) {
-      player = (EntityPlayerMP) entity;
-      ChunkTicket.loadChunk(player, player.world, BlockCoord.get(player));
-    }
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
-
-    int from = entity.dimension;
-    if (from != targetDim) {
-      MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-      WorldServer fromDim = server.getWorld(from);
-      WorldServer toDim = server.getWorld(targetDim);
-      Teleporter teleporter = new TeleporterEIO(toDim);
-      // play sound at the dimension we are leaving for others to hear
-      SoundHelper.playSound(server.getWorld(entity.dimension), entity, source.sound, 1.0F, 1.0F);
-      if (player != null) {
-        ChunkTicket.loadChunk(player, toDim, pos);
-
-        server.getPlayerList().transferPlayerToDimension(player, targetDim, teleporter);
-        if (from == 1 && entity.isEntityAlive()) { // get around vanilla End
-                                                   // hacks
-          toDim.spawnEntity(entity);
-          toDim.updateEntityWithOptionalForce(entity, false);
-        }
+      if (entity.dimension == targetDim) {
+        serverPlayerLocalTeleport((EntityPlayerMP) entity, pos, conserveMotion, source);
       } else {
-        NBTTagCompound tagCompound = new NBTTagCompound();
-        float rotationYaw = entity.rotationYaw;
-        float rotationPitch = entity.rotationPitch;
-        entity.writeToNBT(tagCompound);
-        Class<? extends Entity> entityClass = entity.getClass();
-        fromDim.removeEntity(entity);
-
-        try {
-          Entity newEntity = entityClass.getConstructor(World.class).newInstance(toDim);
-          newEntity.readFromNBT(tagCompound);
-          newEntity.setLocationAndAngles(x, y, z, rotationYaw, rotationPitch);
-          newEntity.forceSpawn = true;
-          toDim.spawnEntity(newEntity);
-          newEntity.forceSpawn = false; // necessary?
-        } catch (Exception e) {
-          // Throwables.propagate(e);
-          Log.error("serverTeleport: Error creating a entity to be created in new dimension.");
-          return false;
-        }
+        serverPlayerDimensionTeleport((EntityPlayerMP) entity, pos, targetDim, conserveMotion, source);
       }
-    } else if (player != null) {
-      ChunkTicket.loadChunk(player, player.world, pos);
-    }
-
-    // Force the chunk to load
-    if (!entity.world.isBlockLoaded(pos)) {
-      entity.world.getChunkFromBlockCoords(pos);
-    }
-
-    if (player != null) {
-      player.connection.setPlayerLocation(x + 0.5, y + 1.1, z + 0.5, player.rotationYaw, player.rotationPitch);
     } else {
-      entity.setPositionAndUpdate(x + 0.5, y + 1.1, z + 0.5);
-    }
-
-    entity.fallDistance = 0;
-    SoundHelper.playSound(entity.world, entity, source.sound, 1.0F, 1.0F);
-
-    if (player != null) {
-      if (conserveMotion) {
-        Vector3d velocityVex = Util.getLookVecEio(player);
-        SPacketEntityVelocity p = new SPacketEntityVelocity(entity.getEntityId(), velocityVex.x, velocityVex.y, velocityVex.z);
-        player.connection.sendPacket(p);
+      if (entity.dimension == targetDim) {
+        serverEntityLocalTeleport(entity, pos, source);
+      } else {
+        serverEntityDimensionTeleport(entity, pos, targetDim, source);
       }
     }
-
     return true;
   }
 
-  private static class TeleporterEIO extends Teleporter {
+  private static void serverEntityLocalTeleport(@Nonnull Entity entity, @Nonnull BlockPos pos, @Nonnull TravelSource source) {
+    SoundHelper.playSound(entity.world, entity, source.sound, 1.0F, 1.0F);
+    entity.world.getChunkFromBlockCoords(pos);
+    entity.setPositionAndUpdate(pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5);
+    entity.fallDistance = 0;
+    SoundHelper.playSound(entity.world, entity, source.sound, 1.0F, 1.0F);
+  }
 
-    public TeleporterEIO(WorldServer p_i1963_1_) {
-      super(p_i1963_1_);
+  private static void serverPlayerLocalTeleport(@Nonnull EntityPlayerMP player, @Nonnull BlockPos pos, boolean conserveMotion, @Nonnull TravelSource source) {
+
+    ChunkTicket.loadChunk(player, player.world, BlockCoord.get(player));
+    ChunkTicket.loadChunk(player, player.world, pos);
+
+    SoundHelper.playSound(player.world, player, source.sound, 1.0F, 1.0F);
+    player.connection.setPlayerLocation(pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, player.rotationYaw, player.rotationPitch);
+    player.fallDistance = 0;
+    SoundHelper.playSound(player.world, player, source.sound, 1.0F, 1.0F);
+
+    if (conserveMotion) {
+      Vector3d velocityVex = Util.getLookVecEio(player);
+      SPacketEntityVelocity p = new SPacketEntityVelocity(player.getEntityId(), velocityVex.x, velocityVex.y, velocityVex.z);
+      player.connection.sendPacket(p);
     }
+  }
 
-    @Override
-    public boolean makePortal(@Nonnull Entity p_makePortal_1_) {
-      return true;
-    }
+  private static void serverEntityDimensionTeleport(@Nonnull Entity entity, @Nonnull BlockPos pos, int targetDim, @Nonnull TravelSource source) {
 
-    @Override
-    public boolean placeInExistingPortal(@Nonnull Entity entityIn, float rotationYaw) {
-      return true;
-    }
+    SoundHelper.playSound(entity.world, entity, source.sound, 1.0F, 1.0F);
+    entity.changeDimension(targetDim, new ITeleporter() {
+      @Override
+      public void placeEntity(World world, Entity entity2, float yaw) {
+        entity2.setLocationAndAngles(pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, entity2.rotationYaw, entity2.rotationPitch);
+        entity2.motionX = 0;
+        entity2.motionY = 0;
+        entity2.motionZ = 0;
+        entity2.fallDistance = 0;
+      }
+    });
+    SoundHelper.playSound(entity.world, entity, source.sound, 1.0F, 1.0F);
+  }
 
-    @Override
-    public void placeInPortal(@Nonnull Entity entity, float rotationYaw) {
-      int x = MathHelper.floor(entity.posX);
-      int y = MathHelper.floor(entity.posY) - 1;
-      int z = MathHelper.floor(entity.posZ);
+  private static void serverPlayerDimensionTeleport(@Nonnull final EntityPlayerMP player, @Nonnull final BlockPos pos, final int targetDim,
+      final boolean conserveMotion, @Nonnull final TravelSource source) {
 
-      entity.setLocationAndAngles(x, y, z, entity.rotationPitch, entity.rotationYaw);
-      entity.motionX = 0;
-      entity.motionY = 0;
-      entity.motionZ = 0;
-    }
+    ChunkTicket.loadChunk(player, player.world, BlockCoord.get(player));
+    SoundHelper.playSound(player.world, player, source.sound, 1.0F, 1.0F);
 
-    @Override
-    public void removeStalePortalLocations(long p_removeStalePortalLocations_1_) {
+    player.mcServer.getPlayerList().transferPlayerToDimension(player, targetDim, new ITeleporter() {
+
+      @Override
+      public void placeEntity(World world, Entity entity, float yaw) {
+        entity.setLocationAndAngles(pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, entity.rotationYaw, entity.rotationPitch);
+        entity.motionX = 0;
+        entity.motionY = 0;
+        entity.motionZ = 0;
+        entity.fallDistance = 0;
+      }
+    });
+
+    SoundHelper.playSound(player.world, player, source.sound, 1.0F, 1.0F);
+    ChunkTicket.loadChunk(player, player.world, BlockCoord.get(player));
+
+    if (conserveMotion) {
+      Vector3d velocityVex = Util.getLookVecEio(player);
+      player.connection.sendPacket(new SPacketEntityVelocity(player.getEntityId(), velocityVex.x, velocityVex.y, velocityVex.z));
     }
 
   }
