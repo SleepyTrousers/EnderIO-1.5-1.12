@@ -278,9 +278,8 @@ public class PaintUtil {
         if (NullHelper.untrust(block) == null) {
           Log.warn("ItemBlock " + itemStack + " returned null from getBlock(). This is a major bug in the mod '" + block2Modname(itemStack.getItem()) + "'.");
         } else if (NullHelper.untrust(Block.REGISTRY.getNameForObject(block)) == null) {
-          throw new RuntimeException(
-              "ItemBlock " + itemStack + " returned an unregistered block from getBlock(). This is a major bug in the mod '"
-                  + block2Modname(itemStack.getItem()) + "'.");
+          throw new RuntimeException("ItemBlock " + itemStack + " returned an unregistered block from getBlock(). This is a major bug in the mod '"
+              + block2Modname(itemStack.getItem()) + "'.");
         }
         return block;
       }
@@ -330,13 +329,13 @@ public class PaintUtil {
           + stateFromMeta + ") without block from getStateFromMeta(). This is a major bug in the mod '" + block2Modname(paintBlock) + "'.");
     } else if (NullHelper.untrust(Block.REGISTRY.getNameForObject(stateFromMeta.getBlock())) == null) {
       throw new RuntimeException("Block " + paintBlock + " (" + paintBlock.getClass() + ") belonging to item " + paintSource + " returned a blockstate ("
-          + stateFromMeta + ") that belongs to an unregistered block " + stateFromMeta.getBlock()
-          + " from getStateFromMeta(). This is a major bug in the mod '" + block2Modname(paintBlock) + "'.");
+          + stateFromMeta + ") that belongs to an unregistered block " + stateFromMeta.getBlock() + " from getStateFromMeta(). This is a major bug in the mod '"
+          + block2Modname(paintBlock) + "'.");
     }
     return stateFromMeta;
   }
 
-  private static @Nonnull String block2Modname(IForgeRegistryEntry<?> block) {
+  public static @Nonnull String block2Modname(IForgeRegistryEntry<?> block) {
     if (block != null) {
       final ResourceLocation registryName = block.getRegistryName();
       if (registryName != null) {
