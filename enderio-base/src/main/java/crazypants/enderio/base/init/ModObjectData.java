@@ -32,13 +32,13 @@ public class ModObjectData {
     }
 
     public Builder unlocalisedName(@Nonnull String unlocalisedName) {
-      assertUnset(unlocalisedName, "unlocalisedName");
+      assertUnset(unlocalisedNameB, "unlocalisedName");
       this.unlocalisedNameB = unlocalisedName;
       return this;
     }
 
     public Builder clazz(@Nonnull Class<?> clazz) {
-      assertUnset(clazz, "clazz");
+      assertUnset(clazzB, "clazz");
       this.clazzB = clazz;
       return this;
     }
@@ -56,19 +56,19 @@ public class ModObjectData {
     }
 
     public Builder blockMethod(@Nonnull String blockMethodName) {
-      assertUnset(blockMethodName, "blockMethodName");
+      assertUnset(blockMethodNameB, "blockMethodName");
       this.blockMethodNameB = blockMethodName;
       return this;
     }
 
     public Builder itemMethod(@Nonnull String itemMethodName) {
-      assertUnset(itemMethodName, "itemMethodName");
+      assertUnset(itemMethodNameB, "itemMethodName");
       this.itemMethodNameB = itemMethodName;
       return this;
     }
 
     public Builder tileEntity(@Nonnull IModTileEntity modTileEntity) {
-      assertUnset(modTileEntity, "modTileEntity");
+      assertUnset(modTileEntityB, "modTileEntity");
       this.modTileEntityB = modTileEntity;
       return this;
     }
