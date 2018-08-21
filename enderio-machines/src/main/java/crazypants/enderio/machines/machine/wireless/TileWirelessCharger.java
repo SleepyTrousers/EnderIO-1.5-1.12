@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.BoundingBox;
 
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.YetaUtil;
@@ -144,8 +145,19 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
   @Override
   @Nonnull
   public BoundingBox getRange() {
+    if (this.isInvalid()) {
+      Log.error("TileEntity " + this + " at " + pos + " is invalid but was not invalidated. This should not be possible!");
+      return bb;
+    }
     IBlockState actualState = world.getBlockState(pos).getActualState(world, pos);
     if (actualState != blockState) {
+      if (!(actualState.getBlock() instanceof BlockNormalWirelessCharger)) {
+        Log.error("TileEntity " + this + " at " + pos + " is assigned to a wrong block (" + actualState
+            + "). This should not be possible unless the world was severly corrupted!");
+        world.removeTileEntity(pos);
+        world.createExplosion(null, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, 1, false);
+        return bb;
+      }
       blockState = actualState;
       bb = ((BlockNormalWirelessCharger) actualState.getBlock()).getChargingStrength(actualState, pos);
     }
