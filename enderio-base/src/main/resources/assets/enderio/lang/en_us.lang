@@ -267,9 +267,9 @@ item.item_material.ingot_crystalline_pink_slime.name=Crystalline Pink Slime Ingo
 item.item_material.ingot_crystalline_pink_slime.tooltip.detailed.line1=So this is what happens when you leave jello in the freezer too long...
 item.item_material.ingot_combustive_metal.name=Combustive Iron Ingot
 item.item_material.ingot_crude_steel.name=Crude Steel Ingot
-item.item_material.ingot_crystalline_alloy=Crystalline Alloy Ingot
-item.item_material.ingot_melodic_alloy=Melodic Alloy Ingot
-item.item_material.ingot_stellar_alloy=Stellar Alloy Ingot
+item.item_material.ingot_crystalline_alloy.name=Crystalline Alloy Ingot
+item.item_material.ingot_melodic_alloy.name=Melodic Alloy Ingot
+item.item_material.ingot_stellar_alloy.name=Stellar Alloy Ingot
 
 item.item_rod_of_return.name=Rod of Return
 item.item_rod_of_return.tooltip.detailed.line1=Returns the user to a Telepad
