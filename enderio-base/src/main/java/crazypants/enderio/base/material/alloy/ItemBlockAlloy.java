@@ -10,8 +10,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBlockAlloy extends ItemBlock {
 
@@ -32,7 +30,6 @@ public class ItemBlockAlloy extends ItemBlock {
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull final NonNullList<ItemStack> list) {
     if (isInCreativeTab(tab)) {
       NNList.of(Alloy.class).apply(new Callback<Alloy>() {

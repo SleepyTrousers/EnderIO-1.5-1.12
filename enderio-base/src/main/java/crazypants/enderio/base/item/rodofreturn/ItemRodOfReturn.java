@@ -247,7 +247,6 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     if (isInCreativeTab(tab)) {
       ItemStack is = new ItemStack(this);

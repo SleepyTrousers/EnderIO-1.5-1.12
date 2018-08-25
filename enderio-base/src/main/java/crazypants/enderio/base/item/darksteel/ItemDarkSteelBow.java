@@ -118,7 +118,6 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     if (isInCreativeTab(tab)) {
       ItemStack is = new ItemStack(this);

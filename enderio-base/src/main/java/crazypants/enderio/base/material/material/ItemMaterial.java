@@ -49,7 +49,6 @@ public class ItemMaterial extends Item implements IHaveRenderers, IResourceToolt
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull final NonNullList<ItemStack> list) {
     if (isInCreativeTab(tab)) {
       Material.getActiveMaterials().apply(new Callback<Material>() {

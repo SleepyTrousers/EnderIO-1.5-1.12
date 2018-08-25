@@ -12,8 +12,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemEnderface extends Item implements IHaveRenderers {
 
@@ -33,7 +31,6 @@ public class ItemEnderface extends Item implements IHaveRenderers {
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
   public void getSubItems(@Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> subItems) {
   }
 
@@ -47,7 +44,7 @@ public class ItemEnderface extends Item implements IHaveRenderers {
     registerVariant(modObject, 5, "conduits");
     registerVariant(modObject, 6, "invpanel");
   }
-  
+
   private void registerVariant(@Nonnull IModObject mo, int meta, String name) {
     ModelLoader.setCustomModelResourceLocation(this, meta, new ModelResourceLocation(mo.getRegistryName(), "variant=" + name));
     // Non-glint version

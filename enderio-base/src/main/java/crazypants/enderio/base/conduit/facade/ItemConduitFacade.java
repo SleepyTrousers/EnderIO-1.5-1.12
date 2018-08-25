@@ -144,7 +144,6 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     if (isInCreativeTab(tab)) {
       for (EnumFacadeType type : EnumFacadeType.values()) {

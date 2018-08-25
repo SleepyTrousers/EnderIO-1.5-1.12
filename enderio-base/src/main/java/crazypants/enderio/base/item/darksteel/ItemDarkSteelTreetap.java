@@ -31,8 +31,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemDarkSteelTreetap extends Item implements IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
 
@@ -58,7 +56,6 @@ public class ItemDarkSteelTreetap extends Item implements IAdvancedTooltipProvid
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     if (isInCreativeTab(tab)) {
       ItemStack is = new ItemStack(this);

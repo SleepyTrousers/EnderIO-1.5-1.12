@@ -78,7 +78,6 @@ public class ItemCapacitor extends Item implements IHaveRenderers {
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     if (isInCreativeTab(tab)) {
       for (DefaultCapacitorData dcd : DefaultCapacitorData.values()) {

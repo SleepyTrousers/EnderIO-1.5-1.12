@@ -171,7 +171,6 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   // ============================================================================================================
 
   @Override
-  @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> par3List) {
     if (isInCreativeTab(tab)) {
       @Nonnull
