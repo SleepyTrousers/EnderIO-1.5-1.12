@@ -30,10 +30,18 @@ public abstract class ContainerAlloySmelter<T extends TileAlloySmelter> extends 
     }
   }
 
+  public static class Furnace extends ContainerAlloySmelter<TileAlloySmelter.Furnace> {
+    public Furnace(@Nonnull InventoryPlayer playerInv, @Nonnull TileAlloySmelter.Furnace te) {
+      super(playerInv, te);
+    }
+  }
+
   @SuppressWarnings("unchecked")
   public static @Nonnull <E extends TileAlloySmelter> ContainerAlloySmelter<E> create(@Nonnull InventoryPlayer playerInv, @Nonnull E te) {
     if (te instanceof TileAlloySmelter.Simple) {
       return (ContainerAlloySmelter<E>) new Simple(playerInv, (TileAlloySmelter.Simple) te);
+    } else if (te instanceof TileAlloySmelter.Furnace) {
+      return (ContainerAlloySmelter<E>) new Furnace(playerInv, (TileAlloySmelter.Furnace) te);
     } else {
       return (ContainerAlloySmelter<E>) new Normal(playerInv, te);
     }

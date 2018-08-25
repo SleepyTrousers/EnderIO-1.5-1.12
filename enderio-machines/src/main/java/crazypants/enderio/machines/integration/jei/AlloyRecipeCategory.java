@@ -85,7 +85,9 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
   public static void register(IModRegistry registry, @Nonnull IGuiHelper guiHelper) {
 
     registry.addRecipeCategories(new AlloyRecipeCategory(guiHelper));
-    registry.addRecipeClickArea(GuiAlloySmelter.class, 155, 42, 16, 16, AlloyRecipeCategory.UID);
+    registry.addRecipeClickArea(GuiAlloySmelter.Normal.class, 155, 42, 16, 16, AlloyRecipeCategory.UID, VanillaRecipeCategoryUid.SMELTING);
+    registry.addRecipeClickArea(GuiAlloySmelter.Simple.class, 155, 42, 16, 16, AlloyRecipeCategory.UID);
+    registry.addRecipeClickArea(GuiAlloySmelter.Furnace.class, 155, 42, 16, 16, VanillaRecipeCategoryUid.SMELTING);
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_simple_furnace.getBlockNN()), VanillaRecipeCategoryUid.SMELTING);
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_alloy_smelter.getBlockNN()), AlloyRecipeCategory.UID, VanillaRecipeCategoryUid.SMELTING);
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_simple_alloy_smelter.getBlockNN()), AlloyRecipeCategory.UID);
@@ -113,6 +115,8 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
         NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT - 1, NUM_INVENTORY_SLOT);
     registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerAlloySmelter.Normal.class, VanillaRecipeCategoryUid.SMELTING, FIRST_RECIPE_SLOT,
         NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
+    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerAlloySmelter.Furnace.class, VanillaRecipeCategoryUid.SMELTING, FIRST_RECIPE_SLOT,
+        NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT - 1, NUM_INVENTORY_SLOT);
 
     Log.info(String.format("AlloyRecipeCategory: Added %d alloy smelter recipes to JEI in %.3f seconds.", result.size(), (end - start) / 1000000000d));
   }

@@ -113,7 +113,7 @@ public class BlockAlloySmelter<T extends TileAlloySmelter> extends AbstractPower
   @SideOnly(Side.CLIENT)
   public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
       int param1, @Nonnull T te) {
-    return new GuiAlloySmelter<T>(player.inventory, te);
+    return GuiAlloySmelter.create(player.inventory, te);
   }
 
   @Override

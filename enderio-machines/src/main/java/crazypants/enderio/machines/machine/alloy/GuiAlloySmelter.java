@@ -22,7 +22,36 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 
-public class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInventoryMachineBase<T> implements IAlloySmelterRemoteExec.GUI {
+public abstract class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInventoryMachineBase<T> implements IAlloySmelterRemoteExec.GUI {
+
+  @SuppressWarnings("unchecked")
+  public static @Nonnull <E extends TileAlloySmelter> GuiAlloySmelter<E> create(@Nonnull InventoryPlayer playerInv, @Nonnull E te) {
+    if (te instanceof TileAlloySmelter.Simple) {
+      return (GuiAlloySmelter<E>) new Simple(playerInv, (TileAlloySmelter.Simple) te);
+    } else if (te instanceof TileAlloySmelter.Furnace) {
+      return (GuiAlloySmelter<E>) new Furnace(playerInv, (TileAlloySmelter.Furnace) te);
+    } else {
+      return (GuiAlloySmelter<E>) new Normal(playerInv, te);
+    }
+  }
+
+  public static class Normal extends GuiAlloySmelter<TileAlloySmelter> {
+    public Normal(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileAlloySmelter furnaceInventory) {
+      super(par1InventoryPlayer, furnaceInventory, MODE.AUTO);
+    }
+  }
+
+  public static class Simple extends GuiAlloySmelter<TileAlloySmelter.Simple> {
+    public Simple(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileAlloySmelter.Simple furnaceInventory) {
+      super(par1InventoryPlayer, furnaceInventory, MODE.SIMPLE_ALLOY);
+    }
+  }
+
+  public static class Furnace extends GuiAlloySmelter<TileAlloySmelter.Furnace> {
+    public Furnace(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileAlloySmelter.Furnace furnaceInventory) {
+      super(par1InventoryPlayer, furnaceInventory, MODE.SIMPLE_FURNACE);
+    }
+  }
 
   static enum MODE {
     SIMPLE_ALLOY,
@@ -38,19 +67,15 @@ public class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInventoryMac
 
   private final @Nonnull IIconButton vanillaFurnaceButton;
   private final @Nonnull GuiToolTip vanillaFurnaceTooltip;
-  private @Nonnull MODE mode = MODE.AUTO;
+  protected @Nonnull MODE mode;
 
   protected static final int SMELT_MODE_BUTTON_ID = 76;
 
-  public GuiAlloySmelter(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull T furnaceInventory) {
+  public GuiAlloySmelter(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull T furnaceInventory, @Nonnull MODE mode) {
     super(furnaceInventory, ContainerAlloySmelter.create(par1InventoryPlayer, furnaceInventory), "simple_alloy_smelter", "simple_furnace",
         "alloy_smelter_alloy", "alloy_smelter_furnace", "alloy_smelter_auto");
 
-    if (furnaceInventory instanceof TileAlloySmelter.Furnace) {
-      mode = MODE.SIMPLE_FURNACE;
-    } else if (furnaceInventory instanceof TileAlloySmelter.Simple) {
-      mode = MODE.SIMPLE_ALLOY;
-    }
+    this.mode = mode;
 
     vanillaFurnaceButton = new IIconButton(getFontRenderer(), SMELT_MODE_BUTTON_ID, 0, 0, null, RenderUtil.BLOCK_TEX);
     vanillaFurnaceButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
