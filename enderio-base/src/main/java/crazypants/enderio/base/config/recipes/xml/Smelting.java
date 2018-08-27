@@ -4,10 +4,15 @@ import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
+import com.enderio.core.common.util.NNList.Callback;
+
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.util.Prep;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -63,7 +68,16 @@ public class Smelting extends AbstractCrafting {
   public void register(@Nonnull String recipeName) {
     if (isValid() && isActive()) {
       if (vanilla) {
-        GameRegistry.addSmelting(input.getItemStack(), getOutput().getItemStack(), exp);
+        input.getThing().getItemStacks().apply(new Callback<ItemStack>() {
+          @SuppressWarnings("null")
+          @Override
+          public void apply(@Nonnull ItemStack stack) {
+            if (!EnderIO.DOMAIN.equals(stack.getItem().getRegistryName().getResourceDomain())) {
+              Log.warn("Adding smelting recipes for non-EnderIO items is not recommended (" + stack + " => " + getOutput().getItemStack() + ")");
+            }
+            GameRegistry.addSmelting(stack, getOutput().getItemStack(), exp);
+          }
+        });
       }
       if (tinkers) {
         TicProxy.registerSmelterySmelting(input.getThing(), getOutput().getThing(), 1f / input.amount);
