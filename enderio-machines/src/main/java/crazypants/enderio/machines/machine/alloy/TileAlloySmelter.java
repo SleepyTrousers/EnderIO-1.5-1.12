@@ -252,9 +252,9 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
   private boolean isItemAlreadyInASlot(@Nonnull ItemStack itemstack) {
     ItemStack currentStackType = null;
     for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot() && currentStackType == null; i++) {
-      currentStackType = inventory[i];
-      if (currentStackType != null && currentStackType.isItemEqual(itemstack)) {
-        return true;
+      currentStackType = getStackInSlot(i);
+      if (Prep.isValid(currentStackType)) {
+        return currentStackType.isItemEqual(itemstack);
       }
     }
     return false;
