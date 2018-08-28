@@ -18,7 +18,6 @@ import com.enderio.core.common.util.NNList.NNIterator;
 import crazypants.enderio.base.TileEntityEio;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
@@ -29,73 +28,101 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 @Storable
-public class TileReservoir extends TileEntityEio implements ITankAccess.IExtendedTankAccess {
+public abstract class TileReservoirBase extends TileEntityEio implements ITankAccess.IExtendedTankAccess {
 
   @Store
-  private final @Nonnull SmartTank tank;
+  protected final @Nonnull SmartTank tank;
   @Store
-  private boolean autoEject = false;
+  protected boolean autoEject = false;
 
-  private boolean canRefill = false;
-  private boolean tankDirty = false;
+  protected boolean tankDirty = false;
 
-  public static class TileOmniReservoir extends TileReservoir {
+  public static class TileOmniReservoir extends TileReservoirBase {
 
     public TileOmniReservoir() {
       super(null);
     }
-  }
 
-  public TileReservoir() {
-    this(FluidRegistry.WATER);
-  }
-
-  private TileReservoir(@Nullable Fluid fluid) {
-    if (fluid != null) {
-      tank = new SmartTank(fluid, Fluid.BUCKET_VOLUME);
-    } else {
-      tank = new SmartTank(Fluid.BUCKET_VOLUME);
+    @Override
+    protected void doInfiniteSource() {
     }
-    tank.setTileEntity(this);
+
+    @Override
+    protected boolean allowExtracting() {
+      return true;
+    }
+
   }
 
-  private boolean hasEnoughLiquid() {
-    Set<TileReservoir> seen = new HashSet<TileReservoir>();
-    seen.add(this);
-    int got = tank.getFluidAmount();
-    for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
-      BlockPos pos1 = getPos().offset(itr.next());
-      TileEntity tileEntity = world.getTileEntity(pos1);
-      if (tileEntity instanceof TileReservoir && !seen.contains(tileEntity)) {
-        seen.add((TileReservoir) tileEntity);
-        got += ((TileReservoir) tileEntity).tank.getFluidAmount();
-        if (got >= Fluid.BUCKET_VOLUME * 2) {
-          return true;
+  public static class TileReservoir extends TileReservoirBase {
+
+    protected boolean canRefill = false;
+
+    public TileReservoir() {
+      super(FluidRegistry.WATER);
+    }
+
+    @Override
+    protected void doInfiniteSource() {
+      if (shouldDoWorkThisTick(WORK_TICKS * 2)) {
+        if (tankDirty || !tank.isFull() || !canRefill) {
+          canRefill = hasEnoughLiquid();
         }
-        for (NNIterator<EnumFacing> itr2 = NNList.FACING.fastIterator(); itr2.hasNext();) {
-          BlockPos pos2 = pos1.offset(itr2.next());
-          TileEntity tileEntity2 = world.getTileEntity(pos2);
-          if (tileEntity2 instanceof TileReservoir && !seen.contains(tileEntity2)) {
-            seen.add((TileReservoir) tileEntity2);
-            got += ((TileReservoir) tileEntity2).tank.getFluidAmount();
-            if (got >= Fluid.BUCKET_VOLUME * 2) {
-              return true;
+      } else if (canRefill && !tank.isFull() && shouldDoWorkThisTick(WORK_TICKS * 2, -1) && tank.getFluid() != null) {
+        tank.addFluidAmount(Fluid.BUCKET_VOLUME / 2);
+        setTanksDirty();
+      }
+    }
+
+    private boolean hasEnoughLiquid() {
+      Set<TileReservoirBase> seen = new HashSet<TileReservoirBase>();
+      seen.add(this);
+      int got = tank.getFluidAmount();
+      for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
+        BlockPos pos1 = getPos().offset(itr.next());
+        TileReservoirBase other = BlockReservoirBase.getAnyTileEntity(world, pos1, this.getClass());
+        if (other != null && !seen.contains(other)) {
+          seen.add(other);
+          got += other.tank.getFluidAmount();
+          if (got >= Fluid.BUCKET_VOLUME * 2) {
+            return true;
+          }
+          for (NNIterator<EnumFacing> itr2 = NNList.FACING.fastIterator(); itr2.hasNext();) {
+            BlockPos pos2 = pos1.offset(itr2.next());
+            TileReservoirBase other2 = BlockReservoirBase.getAnyTileEntity(world, pos2, this.getClass());
+            if (other2 != null && !seen.contains(other2)) {
+              seen.add(other2);
+              got += other2.tank.getFluidAmount();
+              if (got >= Fluid.BUCKET_VOLUME * 2) {
+                return true;
+              }
             }
           }
         }
       }
+      return false;
     }
-    return false;
+
+    @Override
+    protected boolean allowExtracting() {
+      return canRefill;
+    }
+
+  }
+
+  private TileReservoirBase(@Nullable Fluid fluid) {
+    tank = new SmartTank(fluid, Fluid.BUCKET_VOLUME);
+    tank.setTileEntity(this);
   }
 
   private static final int IO_MB_TICK = 100;
 
-  protected void doPush() {
+  protected void doPush(int ticks) {
     if (!tank.isEmpty()) {
       for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext() && !tank.isEmpty();) {
         final EnumFacing dir = itr.next();
         final BlockPos neighbor = getPos().offset(dir);
-        if (world.getBlockState(neighbor).getBlock() != blockType && FluidWrapper.transfer(tank, world, neighbor, dir.getOpposite(), IO_MB_TICK) > 0) {
+        if (world.getBlockState(neighbor).getBlock() != blockType && FluidWrapper.transfer(tank, world, neighbor, dir.getOpposite(), IO_MB_TICK * ticks) > 0) {
           setTanksDirty();
         }
       }
@@ -120,15 +147,14 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
    * @return true if the target block was a reservoir. False otherwise.
    */
   protected boolean doLeak(@Nonnull BlockPos otherPos) {
-    TileEntity tileEntity = world.getTileEntity(otherPos);
-    if (tileEntity instanceof TileReservoir) {
-      final TileReservoir otherTe = (TileReservoir) tileEntity;
-      if (!otherTe.tank.isFull() && otherTe.tank.canFillFluidType(tank.getFluidNN())) {
-        FluidStack canDrain = tank.drainInternal(otherTe.tank.getAvailableSpace(), false);
+    TileReservoirBase other = BlockReservoirBase.getAnyTileEntity(world, otherPos, this.getClass());
+    if (other != null) {
+      if (!other.tank.isFull() && other.tank.canFillFluidType(tank.getFluidNN())) {
+        FluidStack canDrain = tank.drainInternal(other.tank.getAvailableSpace(), false);
         if (canDrain != null && canDrain.amount > 0) {
-          int fill = otherTe.tank.fill(canDrain, true);
+          int fill = other.tank.fill(canDrain, true);
           tank.drainInternal(fill, true);
-          otherTe.setTanksDirty();
+          other.setTanksDirty();
           setTanksDirty();
         }
       }
@@ -143,16 +169,15 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
   protected void doEqualize() {
     for (NNIterator<EnumFacing> itr = NNList.FACING_HORIZONTAL.fastIterator(); itr.hasNext() && !tank.isEmpty();) {
       BlockPos pos1 = getPos().offset(itr.next());
-      TileEntity tileEntity = world.getTileEntity(pos1);
-      if (tileEntity instanceof TileReservoir) {
-        TileReservoir other = (TileReservoir) tileEntity;
+      TileReservoirBase other = BlockReservoirBase.getAnyTileEntity(world, pos1, this.getClass());
+      if (other != null) {
         int toMove = (tank.getFluidAmount() - other.tank.getFluidAmount()) / 2;
         if (toMove > 0) {
           FluidStack canDrain = tank.drainInternal(Math.min(toMove, IO_MB_TICK / 4), false);
           if (canDrain != null && canDrain.amount > 0) {
-            int fill = ((TileReservoir) tileEntity).tank.fill(canDrain, true);
+            int fill = other.tank.fill(canDrain, true);
             tank.drainInternal(fill, true);
-            ((TileReservoir) tileEntity).setTanksDirty();
+            other.setTanksDirty();
             setTanksDirty();
           }
         }
@@ -160,37 +185,38 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
     }
   }
 
+  protected static final int WORK_TICKS = 5;
+
   @Override
   public void doUpdate() {
     if (world.isRemote) {
-      super.doUpdate(); // disable ticking on the client
+      disableTicking();
       return;
     }
 
-    if (shouldDoWorkThisTick(10)) {
-      if (!(this instanceof TileOmniReservoir) && (tankDirty || !tank.isFull() || !canRefill)) {
-        canRefill = hasEnoughLiquid();
-      }
-    } else if (canRefill && !tank.isFull() && shouldDoWorkThisTick(10, -1) && tank.getFluid() != null) {
-      tank.addFluidAmount(Fluid.BUCKET_VOLUME / 2);
-      setTanksDirty();
-    }
+    doInfiniteSource();
 
-    if (shouldDoWorkThisTick(15, 1) && !tank.isEmpty()) {
+    if (shouldDoWorkThisTick(WORK_TICKS * 3, 1) && !tank.isEmpty()) {
       doLeak();
       if (!tank.isEmpty()) {
         doEqualize();
       }
     }
-    if (autoEject && (canRefill || this instanceof TileOmniReservoir)) {
-      doPush();
-    }
+    if (shouldDoWorkThisTick(WORK_TICKS)) {
+      if (autoEject && allowExtracting()) {
+        doPush(WORK_TICKS);
+      }
 
-    if (tankDirty && shouldDoWorkThisTick(5)) {
-      forceUpdatePlayers();
-      tankDirty = false;
+      if (tankDirty) {
+        forceUpdatePlayers();
+        tankDirty = false;
+      }
     }
   }
+
+  protected abstract void doInfiniteSource();
+
+  protected abstract boolean allowExtracting();
 
   public void setAutoEject(boolean autoEject) {
     this.autoEject = autoEject;
@@ -207,7 +233,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
 
   @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
-    if (forFluidType != null && tank.canFillFluidType(forFluidType)) {
+    if (tank.canFillFluidType(forFluidType)) {
       return tank;
     }
     return null;
@@ -269,7 +295,7 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
 
         @Override
         protected boolean canDrain(@Nonnull EnumFacing from) {
-          return TileReservoir.this instanceof TileOmniReservoir || TileReservoir.this.canRefill;
+          return allowExtracting();
         }
 
         @Override
@@ -301,6 +327,11 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
 
   protected @Nonnull SmartTank getTank() {
     return tank;
+  }
+
+  @Override
+  public boolean hasFastRenderer() {
+    return true;
   }
 
 }

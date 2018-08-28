@@ -36,7 +36,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class BlockReservoirBase extends BlockEio<TileReservoir> implements IResourceTooltipProvider, ISmartRenderAwareBlock, IHaveTESR {
+public abstract class BlockReservoirBase extends BlockEio<TileReservoirBase> implements IResourceTooltipProvider, ISmartRenderAwareBlock, IHaveTESR {
 
   @SideOnly(Side.CLIENT)
   private static ReservoirItemRenderMapper RENDER_MAPPER;
@@ -62,7 +62,7 @@ public abstract class BlockReservoirBase extends BlockEio<TileReservoir> impleme
     @Override
     @SideOnly(Side.CLIENT)
     public void bindTileEntitySpecialRenderer() {
-      ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.TileOmniReservoir.class, new ReservoirRenderer(this));
+      ClientRegistry.bindTileEntitySpecialRenderer(TileReservoirBase.TileOmniReservoir.class, new ReservoirRenderer(this));
     }
 
     @Override
@@ -80,14 +80,14 @@ public abstract class BlockReservoirBase extends BlockEio<TileReservoir> impleme
 
     @Override
     public @Nullable ItemStack getNBTDrop(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune,
-        @Nullable TileReservoir te) {
+        @Nullable TileReservoirBase te) {
       return new ItemStack(this, 1, damageDropped(state));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void bindTileEntitySpecialRenderer() {
-      ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer(this));
+      ClientRegistry.bindTileEntitySpecialRenderer(TileReservoirBase.class, new ReservoirRenderer(this));
     }
 
     @Override
@@ -168,7 +168,7 @@ public abstract class BlockReservoirBase extends BlockEio<TileReservoir> impleme
   public boolean onBlockActivated(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer entityPlayer,
       @Nonnull EnumHand hand, @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
     if (!entityPlayer.isSneaking()) {
-      TileReservoir tank = getTileEntity(world, pos);
+      TileReservoirBase tank = getTileEntity(world, pos);
       if (tank != null) {
         if (ToolUtil.isToolEquipped(entityPlayer, hand)) {
           tank.setAutoEject(!tank.isAutoEject());
@@ -202,7 +202,7 @@ public abstract class BlockReservoirBase extends BlockEio<TileReservoir> impleme
   @Override
   @SideOnly(Side.CLIENT)
   public boolean shouldSideBeRendered(@Nonnull IBlockState bs, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
-    return !(world.getBlockState(pos.offset(side)).getBlock() instanceof BlockReservoir)
+    return !(world.getBlockState(pos.offset(side)).getBlock() == this)
         && !world.getBlockState(pos.offset(side)).doesSideBlockRendering(world, pos.offset(side), side.getOpposite());
   }
 
