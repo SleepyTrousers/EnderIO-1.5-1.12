@@ -30,7 +30,7 @@ import crazypants.enderio.machines.machine.obelisk.relocator.BlockRelocatorObeli
 import crazypants.enderio.machines.machine.obelisk.weather.BlockWeatherObelisk;
 import crazypants.enderio.machines.machine.obelisk.xp.BlockExperienceObelisk;
 import crazypants.enderio.machines.machine.painter.BlockPainter;
-import crazypants.enderio.machines.machine.reservoir.BlockReservoir;
+import crazypants.enderio.machines.machine.reservoir.BlockReservoirBase;
 import crazypants.enderio.machines.machine.sagmill.BlockSagMill;
 import crazypants.enderio.machines.machine.slicensplice.BlockSliceAndSplice;
 import crazypants.enderio.machines.machine.solar.BlockSolarPanel;
@@ -88,8 +88,8 @@ public enum MachineObject implements IModObjectBase {
   block_experience_obelisk(BlockExperienceObelisk.class, MachineTileEntity.TileExperienceObelisk),
 
   block_painter(BlockPainter.class, MachineTileEntity.TileEntityPainter),
-  block_reservoir(BlockReservoir.class, MachineTileEntity.TileReservoir),
-  block_omni_reservoir(BlockReservoir.class, "create_omni", MachineTileEntity.TileOmniReservoir),
+  block_reservoir(BlockReservoirBase.class, MachineTileEntity.TileReservoir),
+  block_omni_reservoir(BlockReservoirBase.class, "create_omni", MachineTileEntity.TileOmniReservoir),
   block_simple_sag_mill(BlockSagMill.class, "create_simple", MachineTileEntity.TileSagMillSimple),
   block_sag_mill(BlockSagMill.class, MachineTileEntity.TileSagMill),
   block_enhanced_sag_mill(BlockSagMill.class, "create_enhanced", MachineTileEntity.TileSagMillEnhanced),
