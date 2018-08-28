@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
-import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
@@ -32,13 +31,12 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 @Storable
 public class TileReservoir extends TileEntityEio implements ITankAccess.IExtendedTankAccess {
 
-  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
-  final @Nonnull SmartTank tank;
-  public boolean canRefill = false;
+  @Store
+  private final @Nonnull SmartTank tank;
+  @Store
+  private boolean autoEject = false;
 
-  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
-  boolean autoEject = false;
-
+  private boolean canRefill = false;
   private boolean tankDirty = false;
 
   public static class TileOmniReservoir extends TileReservoir {
@@ -53,7 +51,6 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
   }
 
   private TileReservoir(@Nullable Fluid fluid) {
-    super();
     if (fluid != null) {
       tank = new SmartTank(fluid, Fluid.BUCKET_VOLUME);
     } else {
@@ -300,6 +297,10 @@ public class TileReservoir extends TileEntityEio implements ITankAccess.IExtende
       return (T) getSmartTankFluidHandler().get(facingIn);
     }
     return super.getCapability(capability, facingIn);
+  }
+
+  protected @Nonnull SmartTank getTank() {
+    return tank;
   }
 
 }

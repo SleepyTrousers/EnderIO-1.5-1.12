@@ -34,13 +34,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ReservoirRenderer extends ManagedTESR<TileReservoir> {
 
-  public ReservoirRenderer(BlockReservoir res) {
+  public ReservoirRenderer(BlockReservoirBase res) {
     super(res);
   }
 
   @Override
   protected boolean shouldRender(@Nonnull TileReservoir te, @Nonnull IBlockState blockState, int renderPass) {
-    return !te.tank.isEmpty();
+    return !te.getTank().isEmpty();
   }
 
   @Override
@@ -49,7 +49,7 @@ public class ReservoirRenderer extends ManagedTESR<TileReservoir> {
     BufferBuilder tes = tessellator.getBuffer();
     tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
     Set<EnumFacing> mergers = getMergers(te.getWorld(), te.getPos());
-    renderTankFluid(te.tank, mergers, te.getWorld(), te.getPos());
+    renderTankFluid(te.getTank(), mergers, te.getWorld(), te.getPos());
     tessellator.draw();
   }
 
@@ -212,7 +212,7 @@ public class ReservoirRenderer extends ManagedTESR<TileReservoir> {
             TileEntity tileEntity = world.getTileEntity(pos2);
             if (tileEntity instanceof TileReservoir) {
               TileReservoir res2 = (TileReservoir) tileEntity;
-              fullness2 = res2.tank.getFilledRatio();
+              fullness2 = res2.getTank().getFilledRatio();
             }
           }
           BoundingBox bb = mkFace(merge, dir, fullness, fullness2);

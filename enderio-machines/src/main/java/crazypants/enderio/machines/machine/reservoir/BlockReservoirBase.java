@@ -25,7 +25,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -33,21 +32,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.machines.init.MachineObject.block_omni_reservoir;
-import static crazypants.enderio.machines.init.MachineObject.block_reservoir;
-
-public class BlockReservoir extends BlockEio<TileReservoir> implements IResourceTooltipProvider, ISmartRenderAwareBlock, IHaveTESR {
+public abstract class BlockReservoirBase extends BlockEio<TileReservoir> implements IResourceTooltipProvider, ISmartRenderAwareBlock, IHaveTESR {
 
   @SideOnly(Side.CLIENT)
   private static ReservoirItemRenderMapper RENDER_MAPPER;
-
-  private @Nullable Fluid acceptedFluid = null;
-  private int volume = Fluid.BUCKET_VOLUME;
 
   public static BlockOmniReservoir create_omni(@Nonnull IModObject modObject) {
     BlockOmniReservoir res = new BlockOmniReservoir(modObject);
@@ -58,11 +50,10 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   public static BlockReservoir create(@Nonnull IModObject modObject) {
     BlockReservoir result = new BlockReservoir(modObject);
     result.init();
-    result.acceptedFluid = FluidRegistry.WATER;
     return result;
   }
 
-  private static class BlockOmniReservoir extends  BlockReservoir {
+  private static class BlockOmniReservoir extends BlockReservoirBase {
 
     public BlockOmniReservoir(@Nonnull IModObject modObject) {
       super(modObject);
@@ -71,16 +62,42 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
     @Override
     @SideOnly(Side.CLIENT)
     public void bindTileEntitySpecialRenderer() {
-      ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.TileOmniReservoir.class, new ReservoirRenderer((BlockReservoir) block_omni_reservoir.getBlockNN()));
+      ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.TileOmniReservoir.class, new ReservoirRenderer(this));
     }
 
     @Override
-    public @Nonnull TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState metadata) {
-      return new TileReservoir.TileOmniReservoir();
+    protected boolean allowFluidVoiding() {
+      return false;
     }
+
   }
 
-  protected BlockReservoir(@Nonnull IModObject modObject) {
+  private static class BlockReservoir extends BlockReservoirBase {
+
+    public BlockReservoir(@Nonnull IModObject modObject) {
+      super(modObject);
+    }
+
+    @Override
+    public @Nullable ItemStack getNBTDrop(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune,
+        @Nullable TileReservoir te) {
+      return new ItemStack(this, 1, damageDropped(state));
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void bindTileEntitySpecialRenderer() {
+      ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer(this));
+    }
+
+    @Override
+    protected boolean allowFluidVoiding() {
+      return true;
+    }
+
+  }
+
+  protected BlockReservoirBase(@Nonnull IModObject modObject) {
     super(modObject, new Material(MapColor.WATER) {
 
       @Override
@@ -158,10 +175,11 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
           world.notifyBlockUpdate(pos, state, state, 3);
           return true;
         }
-        if (tank.tank.getAvailableSpace() >= Fluid.BUCKET_VOLUME && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, hand, tank)) {
+        if (tank.getTank().getAvailableSpace() >= Fluid.BUCKET_VOLUME && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, hand, tank)) {
           return true;
-        } else if (!tank.tank.isFull()
-            && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, hand, new ReservoirTankWrapper(tank, world, pos))) {
+        }
+        if (!tank.getTank().isFull()
+            && FluidUtil.fillInternalTankFromPlayerHandItem(world, pos, entityPlayer, hand, new ReservoirTankWrapper(tank, world, pos, allowFluidVoiding()))) {
           return true;
         }
         if (FluidUtil.fillPlayerHandItemFromInternalTank(world, pos, entityPlayer, hand, tank)) {
@@ -174,14 +192,11 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
     return false; // super also has fluid transfer code, avoid that
   }
 
+  protected abstract boolean allowFluidVoiding();
+
   @Override
   public boolean isOpaqueCube(@Nonnull IBlockState bs) {
     return false;
-  }
-
-  @Override
-  public @Nonnull TileEntity createTileEntity(@Nonnull World world, @Nonnull IBlockState metadata) {
-    return new TileReservoir();
   }
 
   @Override
@@ -194,12 +209,6 @@ public class BlockReservoir extends BlockEio<TileReservoir> implements IResource
   @Override
   public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack stack) {
     return getUnlocalizedName();
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void bindTileEntitySpecialRenderer() {
-    ClientRegistry.bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer((BlockReservoir) block_reservoir.getBlockNN()));
   }
 
 }
