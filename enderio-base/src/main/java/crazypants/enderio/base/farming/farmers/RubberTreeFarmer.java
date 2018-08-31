@@ -113,6 +113,11 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
           } else {
             harvesting = false;
           }
+        } else if (!canHaveResin(state) && world.isAirBlock(pos.up())) {
+          // remove extra wood blocks that can never have resin on top of trees
+          if (harvestSingleBlock(farm, world, res, pos)) {
+            actualHarvests.add(pos);
+          }
         }
       } else if (IHarvestingTarget.isDefaultLeaves(state)) {
         if (harvestSingleBlock(farm, world, res, pos)) {
@@ -141,6 +146,10 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
   }
 
   protected abstract boolean hasResin(@Nonnull IBlockState state);
+
+  protected boolean canHaveResin(@Nonnull IBlockState state) {
+    return true;
+  }
 
   protected abstract @Nonnull IBlockState removeResin(@Nonnull IBlockState state);
 

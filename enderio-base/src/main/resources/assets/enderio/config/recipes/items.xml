@@ -231,6 +231,17 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Dark Treetap, IC2 classic" required="false">
+    <crafting>
+      <grid>
+        <item /><item name="GEAR_DARKSTEEL" /><item />
+        <item name="DARK_STEEL" /><item name="ic2:itemtreetap" /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL_NUGGET" /><item /><item name="DARK_STEEL_NUGGET" />
+      </grid>
+      <output name="enderio:item_dark_steel_treetap" />
+    </crafting>
+  </recipe>
+
   <recipe name="Dark Treetap, TR" required="false">
     <crafting>
       <grid>
