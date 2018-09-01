@@ -27,6 +27,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class ExplosiveUpgrade extends AbstractUpgrade {
 
   private static final @Nonnull String UPGRADE_NAME = "tnt";
+  private static final @Nonnull UUID UPGRADE_UUID = UUID.nameUUIDFromBytes(UPGRADE_NAME.getBytes(Charsets.UTF_8));
 
   public static final @Nonnull ExplosiveUpgrade INSTANCE = new ExplosiveUpgrade(0);
   public static final @Nonnull ExplosiveUpgrade INSTANCE2 = new ExplosiveUpgrade(1);
@@ -55,13 +56,10 @@ public class ExplosiveUpgrade extends AbstractUpgrade {
   }
 
   static final @Nonnull NNList<AttributeModifier> SIZE = new NNList<>( //
-      new AttributeModifier(UUID.nameUUIDFromBytes(UPGRADE_NAME.getBytes(Charsets.UTF_8)), UPGRADE_NAME, 0, 0),
-      new AttributeModifier(UUID.nameUUIDFromBytes(UPGRADE_NAME.getBytes(Charsets.UTF_8)), UPGRADE_NAME, 1, 0),
-      new AttributeModifier(UUID.nameUUIDFromBytes(UPGRADE_NAME.getBytes(Charsets.UTF_8)), UPGRADE_NAME, 2, 0),
-      new AttributeModifier(UUID.nameUUIDFromBytes(UPGRADE_NAME.getBytes(Charsets.UTF_8)), UPGRADE_NAME, 3, 0),
-      new AttributeModifier(UUID.nameUUIDFromBytes(UPGRADE_NAME.getBytes(Charsets.UTF_8)), UPGRADE_NAME, 4, 0),
-      new AttributeModifier(UUID.nameUUIDFromBytes(UPGRADE_NAME.getBytes(Charsets.UTF_8)), UPGRADE_NAME, 5, 0),
-      new AttributeModifier(UUID.nameUUIDFromBytes(UPGRADE_NAME.getBytes(Charsets.UTF_8)), UPGRADE_NAME, 6, 0));
+      new AttributeModifier(UPGRADE_UUID, UPGRADE_NAME, 0, 0), new AttributeModifier(UPGRADE_UUID, UPGRADE_NAME, 1, 0),
+      new AttributeModifier(UPGRADE_UUID, UPGRADE_NAME, 2, 0), new AttributeModifier(UPGRADE_UUID, UPGRADE_NAME, 3, 0),
+      new AttributeModifier(UPGRADE_UUID, UPGRADE_NAME, 4, 0), new AttributeModifier(UPGRADE_UUID, UPGRADE_NAME, 5, 0),
+      new AttributeModifier(UPGRADE_UUID, UPGRADE_NAME, 6, 0), new AttributeModifier(UPGRADE_UUID, UPGRADE_NAME, 7, 0));
 
   @Override
   public void addAttributeModifiers(@Nonnull EntityEquipmentSlot slot, @Nonnull ItemStack stack, @Nonnull Multimap<String, AttributeModifier> map) {
