@@ -290,9 +290,15 @@ sourceJar {
     }
 }
 
+// Copy all the jars to `libs`
+task copyJars(type: Copy, dependsOn: subprojects.tasks['signJar']) {
+    from buildprojects.collect { it.tasks.withType(Jar) }
+    into "$buildDir/libs"
+}
+
 // Combine all the API jars into a single jar
 task combApiJar(type: Jar) {
-    dependsOn combjarprojects.tasks['classes']
+    dependsOn copyJars
     classifier 'api'
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     combjarprojects.each { subproject ->
@@ -304,12 +310,7 @@ artifacts {
     archives combApiJar
 }
 
-// Finally copy all the jars to `libs`
-task copyJars(type: Copy, dependsOn: subprojects.tasks['signJar']) {
-    from buildprojects.collect { it.tasks.withType(Jar) }
-    into "$buildDir/libs"
-}
-build.dependsOn copyJars, sourceJar, combApiJar
+build.dependsOn sourceJar, combApiJar
 
 apply plugin: 'maven-publish'
 
