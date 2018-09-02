@@ -220,7 +220,6 @@ subprojects {
         classifier = 'api'
 
         from sourceSets.main.allSource
-        from sourceSets.main.output
 
         include 'crazypants/enderio/api/**/*'
     }
@@ -283,12 +282,21 @@ jar {
     }
 }
 
+sourceJar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    combjarprojects.each { subproject ->
+        from subproject.sourceSets.main.allSource
+        from subproject.sourceSets.main.output.resourcesDir
+    }
+}
+
 // Combine all the API jars into a single jar
 task combApiJar(type: Jar) {
     dependsOn combjarprojects.tasks['classes']
+    classifier 'api'
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    combjarprojects.each { subproject -> 
-        from subproject.apiJar
+    combjarprojects.each { subproject ->
+        from zipTree(subproject.apiJar.getArchivePath()).asFileTree
     }
 }
 
@@ -301,16 +309,36 @@ task copyJars(type: Copy, dependsOn: subprojects.tasks['signJar']) {
     from buildprojects.collect { it.tasks.withType(Jar) }
     into "$buildDir/libs"
 }
-build.dependsOn copyJars
+build.dependsOn copyJars, sourceJar, combApiJar
 
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
-uploadArchives {
+publishing {
+    tasks.publish.dependsOn 'build'
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            version minecraft_version + "-" + project.version
+            artifact sourceJar
+            artifact combApiJar
+        }
+    }
+
     repositories {
-        if (project.hasProperty('mavenDir')) {
-            mavenDeployer {
-                repository(url: mavenDir)
+        if (project.hasProperty('maven2_url')) {
+            if (project.hasProperty('maven2_user') && project.hasProperty('maven2_pass')) {
+                maven {
+                    url maven2_url
+                    credentials {
+                        username maven2_user
+                        password maven2_pass
+                    }
+                }
+            } else {
+                maven { url maven2_url }
             }
+        } else {
+            mavenLocal()
         }
     }
 }
