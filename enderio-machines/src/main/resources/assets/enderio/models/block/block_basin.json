@@ -1,0 +1,179 @@
+{
+	"credit": "Made with Blockbench",
+	"elements": [
+		{
+			"name": "Box1",
+			"from": [0.5, 0.5, 14.75],
+			"to": [15.5, 3, 15.75],
+			"faces": {
+				"south": {"uv": [0.5, 13, 15.5, 15.5], "texture": "#front"},
+				"up": {"uv": [0.5, 13, 15.5, 14], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box2",
+			"from": [0.5, 13, 14.75],
+			"to": [15.5, 15.5, 15.75],
+			"faces": {
+				"south": {"uv": [0.5, 0.5, 15.5, 3], "texture": "#front"},
+				"down": {"uv": [0.5, 2, 15.5, 3], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box3",
+			"from": [0.5, 3, 14.75],
+			"to": [3, 13, 15.75],
+			"faces": {
+				"east": {"uv": [2, 3, 3, 13], "texture": "#front"},
+				"south": {"uv": [0.5, 3, 3, 13], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box4",
+			"from": [13, 3, 14.75],
+			"to": [15.5, 13, 15.75],
+			"faces": {
+				"south": {"uv": [13, 3, 15.5, 13], "texture": "#front"},
+				"west": {"uv": [13, 3, 14, 13], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box5",
+			"from": [4, 3, 14.75],
+			"to": [5, 13, 15.25],
+			"faces": {
+				"east": {"uv": [4.5, 3, 5, 13], "texture": "#front"},
+				"south": {"uv": [4, 3, 5, 13], "texture": "#front"},
+				"west": {"uv": [4, 3, 4.5, 13], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box6",
+			"from": [9, 3, 14.75],
+			"to": [10, 13, 15.75],
+			"faces": {
+				"east": {"uv": [9, 3, 10, 13], "texture": "#front"},
+				"south": {"uv": [9, 3, 10, 13], "texture": "#front"},
+				"west": {"uv": [9, 3, 10, 13], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box7",
+			"from": [1, 1, 13.75],
+			"to": [15, 15, 14.75],
+			"faces": {
+				"south": {"uv": [1, 1, 15, 15], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box3",
+			"from": [7, 11, 14.75],
+			"to": [9, 13, 15.75],
+			"faces": {
+				"south": {"uv": [7, 3, 9, 5], "texture": "#front"},
+				"down": {"uv": [7, 4, 9, 5], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box2",
+			"from": [7, 3, 14.75],
+			"to": [9, 5, 15.75],
+			"faces": {
+				"south": {"uv": [7, 11, 9, 13], "texture": "#front"},
+				"up": {"uv": [7, 11, 9, 12], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box6",
+			"from": [6, 3, 14.75],
+			"to": [7, 13, 15.75],
+			"faces": {
+				"east": {"uv": [6, 3, 7, 13], "texture": "#front"},
+				"south": {"uv": [6, 3, 7, 13], "texture": "#front"},
+				"west": {"uv": [6, 3, 7, 13], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box6",
+			"from": [11, 3, 14.75],
+			"to": [12, 13, 15.25],
+			"faces": {
+				"east": {"uv": [11.5, 3, 12, 13], "texture": "#front"},
+				"south": {"uv": [11, 3, 12, 13], "texture": "#front"},
+				"west": {"uv": [11, 3, 11.5, 13], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box3",
+			"from": [5, 11, 14.75],
+			"to": [6, 12, 15.25],
+			"faces": {
+				"south": {"uv": [5, 4, 6, 5], "texture": "#front"},
+				"up": {"uv": [5, 4, 6, 4.5], "texture": "#front"},
+				"down": {"uv": [5, 4.5, 6, 5], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box4",
+			"from": [5, 4.5, 14.75],
+			"to": [6, 5.5, 15.25],
+			"faces": {
+				"south": {"uv": [5, 10.5, 6, 11.5], "texture": "#front"},
+				"up": {"uv": [5, 10.5, 6, 11], "texture": "#front"},
+				"down": {"uv": [5, 11, 6, 11.5], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box5",
+			"from": [3, 8.5, 14.75],
+			"to": [4, 9.5, 15.25],
+			"faces": {
+				"south": {"uv": [3, 6.5, 4, 7.5], "texture": "#front"},
+				"up": {"uv": [3, 6.5, 4, 7], "texture": "#front"},
+				"down": {"uv": [3, 7, 4, 7.5], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box4",
+			"from": [10, 11, 14.75],
+			"to": [11, 12, 15.25],
+			"faces": {
+				"south": {"uv": [10, 4, 11, 5], "texture": "#front"},
+				"up": {"uv": [10, 4, 11, 4.5], "texture": "#front"},
+				"down": {"uv": [10, 4.5, 11, 5], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box5",
+			"from": [10, 4.5, 14.75],
+			"to": [11, 5.5, 15.25],
+			"faces": {
+				"south": {"uv": [10, 10.5, 11, 11.5], "texture": "#front"},
+				"up": {"uv": [10, 10.5, 11, 11], "texture": "#front"},
+				"down": {"uv": [10, 11, 11, 11.5], "texture": "#front"}
+			}
+		},
+		{
+			"name": "Box6",
+			"from": [12, 6.5, 14.75],
+			"to": [13, 7, 15.25],
+			"faces": {
+				"south": {"uv": [12, 9, 13, 9.5], "texture": "#front"},
+				"up": {"uv": [12, 9, 13, 9.5], "texture": "#front"},
+				"down": {"uv": [12, 9, 13, 9.5], "texture": "#front"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "block_painter",
+			"isOpen": true,
+			"shade": true,
+			"display": {
+				"visibility": true,
+				"autouv": true
+			},
+			"children": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+		}
+	]
+}

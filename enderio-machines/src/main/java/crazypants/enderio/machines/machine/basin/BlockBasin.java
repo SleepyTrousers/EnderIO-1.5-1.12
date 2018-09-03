@@ -2,7 +2,7 @@ package crazypants.enderio.machines.machine.basin;
 
 import javax.annotation.Nullable;
 
-import crazypants.enderio.base.init.IModObject;
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.machine.base.block.AbstractCapabilityMachineBlock;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import net.minecraft.client.gui.GuiScreen;
@@ -17,6 +17,7 @@ public class BlockBasin extends AbstractCapabilityMachineBlock<TileBasin> {
 
   public static BlockBasin create(IModObject mo) {
     BlockBasin ret = new BlockBasin(mo);
+    ret.init();
     return ret;
   }
   
