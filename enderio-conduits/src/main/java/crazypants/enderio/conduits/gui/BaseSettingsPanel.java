@@ -15,7 +15,6 @@ import com.enderio.core.client.render.ColorUtil;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
-import crazypants.enderio.base.conduit.IFilterChangeListener;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.filter.network.IOpenFilterRemoteExec;
 import crazypants.enderio.base.gui.IconEIO;
@@ -116,14 +115,7 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
     extractFilterOptionsB = new IconButton(gui, ID_EXTRACT_FILTER_OPTIONS, x, y, IconEIO.GEAR_LIGHT);
     extractFilterOptionsB.setToolTip(crazypants.enderio.base.lang.Lang.GUI_EDIT_ITEM_FILTER.get());
 
-    if (hasFilters()) {
-      gui.getContainer().addFilterListener(new IFilterChangeListener() {
-        @Override
-        public void onFilterChanged() {
-          filtersChanged();
-        }
-      });
-    }
+    gui.getContainer().addFilterListener(this::filtersChanged);
 
     filterExtractUpgradeTooltip = new GuiToolTip(new Rectangle(rightColumn, 70, 18, 18), Lang.GUI_ITEM_FILTER_UPGRADE.get()) {
       @Override
@@ -313,7 +305,8 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
 
   }
 
-  protected @Nonnull String getTypeName() {
+  protected @Nonnull
+  String getTypeName() {
     return typeName;
   }
 
