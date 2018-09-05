@@ -147,4 +147,8 @@ public class TileCreativeSpawner extends AbstractCapabilityMachineEntity
     }
   }
 
+  @Override
+  public void resetCapturedMob() {
+  }
+
 }
