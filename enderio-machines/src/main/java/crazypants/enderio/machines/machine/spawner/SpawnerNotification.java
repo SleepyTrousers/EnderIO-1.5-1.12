@@ -11,7 +11,8 @@ public enum SpawnerNotification implements ILocalizable {
   NO_LOCATION_FOUND("noLocationFound"),
   NO_LOCATION_AT_ALL("noLocationAtAll"),
   BAD_SOUL("badSoul"),
-  NO_PLAYER("noPlayer");
+  NO_PLAYER("noPlayer"),
+  DENIED("denied");
 
   private final String langStr;
 

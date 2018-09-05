@@ -322,7 +322,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity
   // NOTIFICATION
 
   @Override
-  public void setNotification(SpawnerNotification note) {
+  public void setNotification(@Nonnull SpawnerNotification note) {
     if (!notification.contains(note)) {
       notification.add(note);
       sendNotification = true;
@@ -330,7 +330,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity
   }
 
   @Override
-  public void removeNotification(SpawnerNotification note) {
+  public void removeNotification(@Nonnull SpawnerNotification note) {
     if (getNotification().remove(note)) {
       sendNotification = true;
     }
@@ -395,6 +395,12 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity
   @Nonnull
   public BlockPos getSpawnerPos() {
     return pos;
+  }
+
+  @Override
+  public void resetCapturedMob() {
+    capturedMob = null;
+    markDirty();
   }
 
 }

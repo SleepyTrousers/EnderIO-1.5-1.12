@@ -44,6 +44,8 @@ public class SpawnerLogic {
     default void setHome(@Nonnull EntityCreature entity) {
     }
 
+    void resetCapturedMob();
+
   }
 
   private final @Nonnull ISpawnerCallback spawner;
@@ -194,7 +196,7 @@ public class SpawnerLogic {
     Entity ent = capturedMob.getEntity(spawner.getSpawnerWorld(), spawner.getSpawnerPos(), difficulty, false);
     if (ent == null) {
       // Entity must have been removed from this save or is otherwise missing, so revert to blank spawner
-      capturedMob = null;
+      spawner.resetCapturedMob();
       return null;
     }
     if (forceAlive && SpawnerConfig.poweredSpawnerMaxPlayerDistance.get() <= 0 && SpawnerConfig.poweredSpawnerDespawnTimeSeconds.get() > 0
@@ -206,12 +208,23 @@ public class SpawnerLogic {
   }
 
   protected boolean canSpawnEntity(EntityLiving entityliving) {
-    if (SpawnerConfig.poweredSpawnerUseVanillaSpawnChecks.get()) {
-      return ForgeEventFactory.canEntitySpawnSpawner(entityliving, entityliving.world, (float) entityliving.posX, (float) entityliving.posY,
-          (float) entityliving.posZ);
-    } else {
-      return entityliving.isNotColliding() && ForgeEventFactory.canEntitySpawn(entityliving, entityliving.world, (float) entityliving.posX,
-          (float) entityliving.posY, (float) entityliving.posZ, true) != Result.DENY;
+    // this is the logic from ForgeEventFactory.canEntitySpawnSpawner() with some additions
+    switch (SpawnerConfig.poweredSpawnerUseForgeSpawnChecks.get()
+        ? ForgeEventFactory.canEntitySpawn(entityliving, entityliving.world, (float) entityliving.posX, (float) entityliving.posY, (float) entityliving.posZ,
+            true)
+        : Result.DEFAULT) {
+    case ALLOW:
+      return true;
+    case DEFAULT:
+      if (SpawnerConfig.poweredSpawnerUseVanillaSpawnChecks.get()) {
+        return entityliving.getCanSpawnHere() && entityliving.isNotColliding(); // vanilla logic
+      } else {
+        return entityliving.isNotColliding();
+      }
+    case DENY:
+    default:
+      spawner.setNotification(SpawnerNotification.DENIED);
+      return false;
     }
   }
 
