@@ -206,7 +206,7 @@ public class SpawnerLogic {
   }
 
   protected boolean canSpawnEntity(EntityLiving entityliving) {
-    if (SpawnerConfig.poweredSpawnerUseVanillaSpawChecks.get()) {
+    if (SpawnerConfig.poweredSpawnerUseVanillaSpawnChecks.get()) {
       return ForgeEventFactory.canEntitySpawnSpawner(entityliving, entityliving.world, (float) entityliving.posX, (float) entityliving.posY,
           (float) entityliving.posZ);
     } else {

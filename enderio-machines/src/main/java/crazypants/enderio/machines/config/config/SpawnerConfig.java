@@ -31,7 +31,7 @@ public final class SpawnerConfig {
       "Max number of entities in the nearby area until no more are spawned. A zero value will remove this check").setMin(0).sync();
   public static final IValue<Integer> poweredSpawnerMaxSpawnTries = F.make("poweredSpawnerMaxSpawnTries", 3, //
       "Number of tries to find a suitable spawning location").setRange(1, 9).sync();
-  public static final IValue<Boolean> poweredSpawnerUseVanillaSpawChecks = F.make("poweredSpawnerUseVanillaSpawChecks", false, //
+  public static final IValue<Boolean> poweredSpawnerUseVanillaSpawnChecks = F.make("poweredSpawnerUseVanillaSpawnChecks", false, //
       "If true, regular spawn checks such as lighting level and dimension will be made before spawning mobs").sync();
 
   public static final IValue<Boolean> poweredSpawnerAddAllMobsCreative = F.make("poweredSpawnerAddAllMobsCreative", false, //
