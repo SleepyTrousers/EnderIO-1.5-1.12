@@ -397,6 +397,10 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   private static final Things DIRTS = new Things().add(Blocks.DIRT).add(Blocks.GRAVEL).add(Blocks.GRASS).add(Blocks.SOUL_SAND).add(Blocks.MYCELIUM)
       .add(Blocks.GRASS_PATH).add(Blocks.FARMLAND).add(Blocks.CLAY).add(Blocks.SAND);
 
+  private static final float notBedrock(float i) {
+    return i >= 0 ? i : Float.MAX_VALUE;
+  }
+
   private void doExplosiveAction(@Nonnull ItemStack item, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayerMP player) {
     boolean hasDoneSomething = false;
     float referenceHardness = world.getBlockState(pos).getBlockHardness(world, pos);
@@ -409,7 +413,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
         final IBlockState blockstate = world.getBlockState(target);
         final Block block = blockstate.getBlock();
         if ((DarkSteelConfig.explosiveUpgradeUnlimitedTargets.get() || STONES.contains(block) || (withSpoon && DIRTS.contains(block)))
-            && referenceHardness >= blockstate.getBlockHardness(world, target)
+            && referenceHardness >= notBedrock(blockstate.getBlockHardness(world, target))
             && (isToolEffective(blockstate, item) || ForgeHooks.canHarvestBlock(block, player, world, target))) {
           final int exp = ForgeHooks.onBlockBreakEvent(world, gameType, player, target);
           if (exp != -1 && block.canHarvestBlock(world, target, player)) {
