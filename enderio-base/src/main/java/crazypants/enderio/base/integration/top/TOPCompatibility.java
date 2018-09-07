@@ -19,6 +19,7 @@ import crazypants.enderio.base.fluid.ItemTankHelper;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.LangPower;
+import crazypants.enderio.base.machine.interfaces.ITEProxy;
 import crazypants.enderio.base.material.material.Material;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.util.CapturedMob;
@@ -81,7 +82,9 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     }
     if (probeInfo != null && world != null && blockState != null && hitData != null
         && (blockState.getBlock() instanceof BlockEio || blockState.getBlock() instanceof IPaintable)) {
-      TileEntity tileEntity = BlockEnder.getAnyTileEntitySafe(world, NullHelper.notnull(hitData.getPos(), "JEI wants it so"));
+      TileEntity tileEntity = blockState.getBlock() instanceof ITEProxy
+          ? ((ITEProxy) blockState.getBlock()).getParent(world, NullHelper.notnull(hitData.getPos(), "JEI wants it so"), blockState)
+          : BlockEnder.getAnyTileEntitySafe(world, NullHelper.notnull(hitData.getPos(), "JEI wants it so"));
       if (tileEntity != null) {
         EioBox eiobox = new EioBox(probeInfo);
 
