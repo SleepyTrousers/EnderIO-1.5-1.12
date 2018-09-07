@@ -6,6 +6,7 @@ import com.enderio.core.client.render.BoundingBox;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public interface IWirelessCharger {
@@ -26,4 +27,7 @@ public interface IWirelessCharger {
    * @return If this charger is "active". If the charger is not active it will not be attempted to be used.
    */
   boolean isActive();
+
+  @Nonnull
+  BlockPos getLocation();
 }
