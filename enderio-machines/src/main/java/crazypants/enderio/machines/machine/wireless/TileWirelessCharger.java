@@ -3,6 +3,7 @@ package crazypants.enderio.machines.machine.wireless;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.TileEntityEio;
@@ -13,10 +14,12 @@ import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.base.power.wireless.IWirelessCharger;
 import crazypants.enderio.base.power.wireless.WirelessChargerController;
 import crazypants.enderio.base.render.ranged.IRanged;
+import crazypants.enderio.base.render.ranged.RangeParticle;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
@@ -165,9 +168,19 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
     return bb;
   }
 
+  private boolean showingRange = false;
+  private final static Vector4f color = new Vector4f(0x6a / 255f, 0x3d / 255f, 0x7d / 255f, .4f);
+
+  protected void toggleRange() {
+    showingRange = !showingRange;
+    if (world.isRemote && showingRange) {
+      Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle<TileWirelessCharger>(this, color));
+    }
+  }
+
   @Override
   public boolean isShowingRange() {
-    return false;
+    return showingRange;
   }
 
   @Override

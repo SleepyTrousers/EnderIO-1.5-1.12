@@ -16,9 +16,13 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public class BlockNormalWirelessCharger extends BlockEio<TileWirelessCharger> implements IResourceTooltipProvider, IHaveRenderers, IClearableConfiguration {
 
@@ -83,6 +87,19 @@ public class BlockNormalWirelessCharger extends BlockEio<TileWirelessCharger> im
 
   protected boolean isAntenna() {
     return true;
+  }
+
+  @Override
+  public boolean onBlockActivated(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer entityPlayer,
+      @Nonnull EnumHand hand, @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
+    if (hand == EnumHand.MAIN_HAND && entityPlayer.getHeldItem(hand).isEmpty()) {
+      TileWirelessCharger te = getTileEntity(world, pos);
+      if (te != null) {
+        te.toggleRange();
+      }
+      return true;
+    }
+    return super.onBlockActivated(world, pos, state, entityPlayer, hand, side, hitX, hitY, hitZ);
   }
 
 }

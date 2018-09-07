@@ -19,9 +19,9 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -122,8 +122,21 @@ public class BlockAntenna extends BlockEio<TileEntityEio> implements IResourceTo
   }
 
   @Override
-  public TileEntity getParent(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+  public TileWirelessCharger getParent(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
     return getAnyTileEntity(world, pos.offset(state.getValue(BASE)), TileWirelessCharger.class);
+  }
+
+  @Override
+  public boolean onBlockActivated(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer entityPlayer,
+      @Nonnull EnumHand hand, @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
+    if (hand == EnumHand.MAIN_HAND && entityPlayer.getHeldItem(hand).isEmpty()) {
+      TileWirelessCharger te = getParent(world, pos, state);
+      if (te != null) {
+        te.toggleRange();
+      }
+      return true;
+    }
+    return super.onBlockActivated(world, pos, state, entityPlayer, hand, side, hitX, hitY, hitZ);
   }
 
 }
