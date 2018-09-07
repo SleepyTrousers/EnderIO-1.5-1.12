@@ -12,6 +12,7 @@ import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.base.power.wireless.IWirelessCharger;
 import crazypants.enderio.base.power.wireless.WirelessChargerController;
+import crazypants.enderio.base.render.ranged.IRanged;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -24,7 +25,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.energy.IEnergyStorage;
 
 @Storable
-public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerReceiver, IWirelessCharger, IPaintable.IPaintableTileEntity {
+public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerReceiver, IWirelessCharger, IPaintable.IPaintableTileEntity, IRanged {
 
   @Store
   private int storedEnergyRF;
@@ -162,6 +163,17 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
       bb = ((BlockNormalWirelessCharger) actualState.getBlock()).getChargingStrength(actualState, pos);
     }
     return bb;
+  }
+
+  @Override
+  public boolean isShowingRange() {
+    return false;
+  }
+
+  @Override
+  @Nonnull
+  public BoundingBox getBounds() {
+    return getRange();
   }
 
 }
