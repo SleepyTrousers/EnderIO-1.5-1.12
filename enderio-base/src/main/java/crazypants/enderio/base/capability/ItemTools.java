@@ -94,36 +94,42 @@ public class ItemTools {
     SOURCE_EMPTY;
   }
 
-  // private static void startProfiler(Profiler profiler, @Nonnull String section, String data) {
-  // if (profiler != null) {
-  // profiler.startSection("dummy1"); // the profiler ignore categories with less than 3 entries :-(
-  // profiler.endStartSection("dummy2");
-  // profiler.endStartSection(section + NullHelper.first(data, "(unknown)"));
-  // }
-  // }
-  //
-  // private static void endProfiler(Profiler profiler) {
-  // if (profiler != null) {
-  // profiler.endSection();
-  // }
-  // }
-  //
   public static MoveResult move(@Nonnull Limit limit, @Nonnull IBlockAccess world, @Nonnull BlockPos sourcePos, @Nonnull EnumFacing sourceFacing,
       @Nonnull BlockPos targetPos, @Nonnull EnumFacing targetFacing) {
+    return move(limit, world, null, sourcePos, sourceFacing, null, targetPos, targetFacing);
+  }
+
+  public static MoveResult move(@Nonnull Limit limit, @Nonnull IBlockAccess world, @Nonnull TileEntity sourceTE, @Nonnull EnumFacing sourceFacing,
+      @Nonnull BlockPos targetPos, @Nonnull EnumFacing targetFacing) {
+    return move(limit, world, sourceTE, sourceTE.getPos(), sourceFacing, null, targetPos, targetFacing);
+  }
+
+  public static MoveResult move(@Nonnull Limit limit, @Nonnull IBlockAccess world, @Nonnull BlockPos sourcePos, @Nonnull EnumFacing sourceFacing,
+      @Nonnull TileEntity targetTE, @Nonnull EnumFacing targetFacing) {
+    return move(limit, world, null, sourcePos, sourceFacing, targetTE, targetTE.getPos(), targetFacing);
+  }
+
+  public static MoveResult move(@Nonnull Limit limit, @Nonnull IBlockAccess world, @Nonnull TileEntity sourceTE, @Nonnull EnumFacing sourceFacing,
+      @Nonnull TileEntity targetTE, @Nonnull EnumFacing targetFacing) {
+    return move(limit, world, sourceTE, sourceTE.getPos(), sourceFacing, targetTE, targetTE.getPos(), targetFacing);
+  }
+
+  private static MoveResult move(@Nonnull Limit limit, @Nonnull IBlockAccess world, @Nullable TileEntity sourceTE, @Nonnull BlockPos sourcePos,
+      @Nonnull EnumFacing sourceFacing, @Nullable TileEntity targetTE, @Nonnull BlockPos targetPos, @Nonnull EnumFacing targetFacing) {
     if (!limit.canWork()) {
       return MoveResult.LIMITED;
     }
     Profiler profiler = world instanceof World ? ((World) world).profiler : null;
     boolean movedSomething = false;
-    TileEntity source = world.getTileEntity(sourcePos);
+    TileEntity source = sourceTE != null ? sourceTE : world.getTileEntity(sourcePos);
     if (source != null && source.hasWorld() && !source.getWorld().isRemote && canPullFrom(source, sourceFacing)) {
       Prof.start(profiler, "from_", source);
-      TileEntity target = world.getTileEntity(targetPos);
+      TileEntity target = targetTE != null ? targetTE : world.getTileEntity(targetPos);
       if (target != null && target.hasWorld() && canPutInto(target, targetFacing)) {
         Prof.start(profiler, "to_", target);
-        IItemHandler sourceHandler = getExternalInventory(world, sourcePos, sourceFacing);
+        IItemHandler sourceHandler = getExternalInventory(source, sourceFacing);
         if (sourceHandler != null && hasItems(sourceHandler)) {
-          IItemHandler targetHandler = getExternalInventory(world, targetPos, targetFacing);
+          IItemHandler targetHandler = getExternalInventory(target, targetFacing);
           if (targetHandler != null && hasFreeSpace(targetHandler)) {
             for (int i = 0; i < sourceHandler.getSlots(); i++) {
               ItemStack removable = sourceHandler.extractItem(i, limit.getItems(), true);
