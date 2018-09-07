@@ -1,58 +1,39 @@
 package crazypants.enderio.base.power.wireless;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import javax.annotation.Nonnull;
-
-import com.enderio.core.common.util.NNList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
 
-public class WirelessChargedLocation {
+public class WirelessChargedLocation implements Comparator<IWirelessCharger> {
 
   private final @Nonnull TileEntity te;
-  private int lastChangeCount;
-  private final @Nonnull NNList<IWirelessCharger> chargers;
+
+  @Override
+  public int compare(IWirelessCharger o1, IWirelessCharger o2) {
+    return Double.compare(o1.getLocation().distanceSq(te.getPos()), o2.getLocation().distanceSq(te.getPos()));
+  }
 
   public WirelessChargedLocation(@Nonnull TileEntity te) {
     this.te = te;
-    this.chargers = new NNList<IWirelessCharger>();
-    /*
-     * Set lastChangeCount to one less than the current change count so that the charger list is updated on first use (unless ~4B changes happen in between). Do
-     * this instead directly updating so that WirelessChargedLocation can be used while the TileEntity is still in construction (or loading).
-     */
-    this.lastChangeCount = WirelessChargerController.instance.getChangeCount() - 1;
   }
 
-  private void updateChargers() {
-    WirelessChargerController wcc = WirelessChargerController.instance;
-    chargers.clear();
-    lastChangeCount = wcc.getChangeCount();
-    final BlockPos bc = te.getPos();
-    wcc.getChargers(te.getWorld(), bc, chargers);
-    Collections.sort(chargers, new Comparator<IWirelessCharger>() {
-      @Override
-      public int compare(IWirelessCharger o1, IWirelessCharger o2) {
-        double dist1 = o1.getRange().getCenter().squareDistanceTo(bc.getX(), bc.getY(), bc.getZ());
-        double dist2 = o2.getRange().getCenter().squareDistanceTo(bc.getX(), bc.getY(), bc.getZ());
-        return Double.compare(dist1, dist2);
-      }
-    });
-  }
-
-  private void checkChangeCount() {
-    if (lastChangeCount != WirelessChargerController.instance.getChangeCount()) {
-      updateChargers();
+  private @Nonnull List<IWirelessCharger> getChargers() {
+    List<IWirelessCharger> chargers = new ArrayList<>();
+    WirelessChargerController.instance.getChargers(te.getWorld(), te.getPos(), chargers);
+    if (chargers.size() > 1) {
+      chargers.sort(this);
     }
+    return chargers;
   }
 
-  public boolean chargeItems(NonNullList<ItemStack> items) {
-    checkChangeCount();
-    for (IWirelessCharger wc : chargers) {
+  public boolean chargeItems(@Nonnull NonNullList<ItemStack> items) {
+    for (IWirelessCharger wc : getChargers()) {
       if (wc.chargeItems(items)) {
         return true;
       }
@@ -61,9 +42,8 @@ public class WirelessChargedLocation {
   }
 
   public int takeEnergy(int max) {
-    checkChangeCount();
     int charged = 0;
-    for (IWirelessCharger wc : chargers) {
+    for (IWirelessCharger wc : getChargers()) {
       charged += wc.takeEnergy(max - charged);
       if (charged >= max) {
         break;

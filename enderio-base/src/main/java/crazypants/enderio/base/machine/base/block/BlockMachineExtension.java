@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.TileEntityEio;
+import crazypants.enderio.base.machine.interfaces.ITEProxy;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -37,7 +38,7 @@ import net.minecraft.world.World;
  * generator's render is oversized), and it relays all interactions to the generator.
  *
  */
-public class BlockMachineExtension extends BlockEio<TileEntityEio> {
+public class BlockMachineExtension extends BlockEio<TileEntityEio> implements ITEProxy {
 
   private final @Nonnull AxisAlignedBB AABB;
   private final @Nonnull IModObject parent;
@@ -185,6 +186,12 @@ public class BlockMachineExtension extends BlockEio<TileEntityEio> {
   @Override
   public void getSubBlocks(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     // none
+  }
+
+  @Override
+  @Nullable
+  public TileEntity getParent(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+    return world.getTileEntity(getParentPos(pos));
   }
 
 }
