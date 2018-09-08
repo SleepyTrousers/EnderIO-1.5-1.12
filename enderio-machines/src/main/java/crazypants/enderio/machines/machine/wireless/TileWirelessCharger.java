@@ -26,6 +26,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
 public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerReceiver, IWirelessCharger, IPaintable.IPaintableTileEntity, IRanged {
@@ -174,10 +176,16 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
   protected void toggleRange() {
     showingRange = !showingRange;
     if (world.isRemote && showingRange) {
-      Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle<TileWirelessCharger>(this, color));
+      spawnRangeParticle();
     }
   }
+  
+  @SideOnly(Side.CLIENT)
+  private void spawnRangeParticle() {
+    Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle<TileWirelessCharger>(this, color));
+  }
 
+  @SideOnly(Side.CLIENT)
   @Override
   public boolean isShowingRange() {
     return showingRange;
