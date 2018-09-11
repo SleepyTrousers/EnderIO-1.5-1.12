@@ -19,7 +19,19 @@ public final class DarkSteelConfig {
 
   public static final IValue<Boolean> rightClickPlaceEnabled_axe = F_AXE.make("rightClickPlaceEnabled", false, //
       "If enabled, right clicking with the dark steel axe will place a block.");
-  public static final IValue<Integer> darkSteelHoeCost = F_AXE.make("darkSteelHoeCost", 4, "Number of levels required for the 'Hoe' upgrade.");
+
+  public static final IValueFactory F_CROOK = F_DARK_STEEL.section(".crook");
+
+  public static final IValue<Boolean> rightClickPlaceEnabled_crook = F_CROOK.make("rightClickPlaceEnabled", false, //
+      "If enabled, right clicking with the dark steel crook will place a block.");
+  public static final IValue<Integer> crookEnergyPerDamage = F_CROOK.make("energyPerDamage", 150, //
+      "Energy use per damage/durability point avoided.").setRange(1, 99999999).sync();
+  public static final IValue<Integer> crookEnergyPerDamageMulti = F_CROOK.make("energyPerDamageMulti", 150, //
+      "Energy per damage/durability point avoided when shift-harvesting multiple blocks.").setRange(1, 99999999).sync();
+  public static final IValue<Integer> crookExtraDropsUnpowered = F_CROOK.make("extraDropsUnpowered", 3, //
+      "Number of extra tries to get drops for an unpowered crook.").setRange(0, 32).sync();
+  public static final IValue<Integer> crookExtraDropsPowered = F_CROOK.make("extraDropsPowered", 5, //
+      "Number of extra tries to get drops for a powered crook.").setRange(0, 32).sync();
 
   public static final IValueFactory F_SWORD = F_DARK_STEEL.section(".sword");
 
@@ -49,6 +61,10 @@ public final class DarkSteelConfig {
       "The increase in attack speed when the sword is empowered V and has energy.").setRange(0, 2).sync();
 
   public static final IValueFactory F_UPGRADES = F_DARK_STEEL.section(".upgrades");
+
+  public static final IValueFactory F_HOE = F_UPGRADES.section(".hoe");
+
+  public static final IValue<Integer> darkSteelHoeCost = F_HOE.make("darkSteelHoeCost", 4, "Number of levels required for the 'Hoe' upgrade.");
 
   public static final IValueFactory F_SPEED = F_UPGRADES.section(".speed");
 

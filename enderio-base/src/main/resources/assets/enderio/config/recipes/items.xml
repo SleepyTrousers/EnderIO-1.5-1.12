@@ -317,7 +317,7 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_pickaxe" />
     </crafting>
   </recipe>
-  
+
   <recipe name="Dark Axe" required="true">
     <crafting>
       <grid size="2x3">
@@ -326,6 +326,17 @@ XML editor will display that as tooltips when editing this file.
         <item /><item name="stickWood" />
       </grid>
       <output name="enderio:item_dark_steel_axe" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Crook" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="DARK_STEEL" /><item name="DARK_STEEL" /><item name="stickWood" />
+        <item /><item /><item name="stickWood" />
+        <item /><item /><item name="stickWood" />
+      </grid>
+      <output name="enderio:item_dark_steel_crook" />
     </crafting>
   </recipe>
 

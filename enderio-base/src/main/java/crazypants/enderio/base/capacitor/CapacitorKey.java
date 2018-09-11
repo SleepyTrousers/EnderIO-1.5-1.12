@@ -41,6 +41,11 @@ public enum CapacitorKey implements ICapacitorKey {
   DARK_STEEL_AXE_ENERGY_USE(ModObject.itemDarkSteelAxe, CapacitorKeyType.ENERGY_USE),
   DARK_STEEL_AXE_ABSORPTION_RATIO(ModObject.itemDarkSteelAxe, CapacitorKeyType.ABSORPTION),
 
+  DARK_STEEL_CROOK_ENERGY_BUFFER(ModObject.itemDarkSteelCrook, CapacitorKeyType.ENERGY_BUFFER),
+  DARK_STEEL_CROOK_ENERGY_INPUT(ModObject.itemDarkSteelCrook, CapacitorKeyType.ENERGY_INTAKE),
+  DARK_STEEL_CROOK_ENERGY_USE(ModObject.itemDarkSteelCrook, CapacitorKeyType.ENERGY_USE),
+  DARK_STEEL_CROOK_ABSORPTION_RATIO(ModObject.itemDarkSteelCrook, CapacitorKeyType.ABSORPTION),
+
   DARK_STEEL_BOW_ENERGY_BUFFER(ModObject.itemDarkSteelBow, CapacitorKeyType.ENERGY_BUFFER),
   DARK_STEEL_BOW_ENERGY_INPUT(ModObject.itemDarkSteelBow, CapacitorKeyType.ENERGY_INTAKE),
   DARK_STEEL_BOW_ENERGY_USE(ModObject.itemDarkSteelBow, CapacitorKeyType.ENERGY_USE),
