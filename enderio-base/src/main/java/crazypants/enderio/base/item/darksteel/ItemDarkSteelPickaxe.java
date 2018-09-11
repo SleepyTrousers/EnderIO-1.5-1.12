@@ -96,6 +96,12 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     return res;
   }
 
+  public static ItemDarkSteelPickaxe createStellarAlloy(@Nonnull IModObject modObject) {
+    ItemDarkSteelPickaxe res = new ItemDarkSteelPickaxe(modObject, EquipmentData.STELLAR_ALLOY);
+    MinecraftForge.EVENT_BUS.register(res);
+    return res;
+  }
+
   private long lastBlickTick = -1;
   private final @Nonnull IEquipmentData data;
 

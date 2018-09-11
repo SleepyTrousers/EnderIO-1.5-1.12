@@ -10,6 +10,8 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObjectBase;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.init.RegisterModObject;
+import crazypants.enderio.base.item.darksteel.ItemDarkSteelPickaxe;
+import crazypants.enderio.base.item.darksteel.ItemDarkSteelSword;
 import crazypants.enderio.endergy.EnderIOEndergy;
 import crazypants.enderio.endergy.capacitor.ItemEndergyCapacitor;
 import crazypants.enderio.endergy.capacitor.ItemTotemicCapacitor;
@@ -33,6 +35,10 @@ public enum EndergyObject implements IModObjectBase {
   itemCapacitorSilver(ItemEndergyCapacitor.class, "create_silver"),
   itemCapacitorLead(ItemEndergyCapacitor.class, "create_lead"),
   itemCapacitorElectrum(ItemEndergyCapacitor.class, "create_electrum"),
+
+  // Tools and Armour
+  itemStellarAlloySword(ItemDarkSteelSword.class, "createStellarAlloy"),
+  itemStellarAlloyPickaxe(ItemDarkSteelPickaxe.class, "createStellarAlloy"),
 
   ;
 

@@ -59,6 +59,11 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     return res;
   }
 
+  public static ItemDarkSteelSword createStellarAlloy(@Nonnull IModObject modObject) {
+    ItemDarkSteelSword res = new ItemDarkSteelSword(modObject, EquipmentData.STELLAR_ALLOY);
+    return res;
+  }
+
   private long lastBlickTick = -1;
   private final @Nonnull IEquipmentData data;
 

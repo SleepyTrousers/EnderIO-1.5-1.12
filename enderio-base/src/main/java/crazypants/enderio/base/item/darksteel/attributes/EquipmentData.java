@@ -61,6 +61,10 @@ public enum EquipmentData implements IEquipmentData {
 
   },
 
+  STELLAR_ALLOY(75, new int[] { 8, 14, 18, 7 }, new int[] { 10, 15, 22, 10 }, 40, SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND, 7f, 9f, "stellarAlloy",
+      Config.endSteelPickMinesTiCArdite ? 5 : 3, 5000, 22, 11f, 40, Material.STELLAR_ALLOY.getOreDict(), Material.STELLAR_ALLOY.getOreDict(),
+      "stellar_alloy_layer_1", "stellar_alloy_layer_2", 4),
+
   // Note maximum total armor value that has any effect at toughness 4*4 for damage=20 is 24. End steel comes up to 25.
 
   // Or the other way around: End steel has maximum protection (80%) up to 30 damage.
