@@ -350,8 +350,7 @@ public class ItemDarkSteelCrook extends ItemTool implements IAdvancedTooltipProv
   @SubscribeEvent
   public static void onHarvest(@Nonnull BlockEvent.HarvestDropsEvent event) {
     final World world = event.getWorld();
-    if (world == null || world.isRemote || event.getHarvester() == null || event.isSilkTouching() || !isEquipped(event.getHarvester())
-        || Loader.isModLoaded("exnihilocreatio")) {
+    if (world == null || world.isRemote || event.getHarvester() == null || event.isSilkTouching() || !isEquipped(event.getHarvester())) {
       return;
     }
     final IBlockState state = event.getState();
@@ -359,9 +358,17 @@ public class ItemDarkSteelCrook extends ItemTool implements IAdvancedTooltipProv
       return;
     }
 
+    final boolean exnihilo = Loader.isModLoaded("exnihilocreatio");
+    final boolean powered = isPowered(event.getHarvester(), 1);
+
+    if (exnihilo && !powered) {
+      return; // ex nihilo already adds extra drops
+    }
+
     NNList<ItemStack> list = new NNList<>();
-    final int loops = (isPowered(event.getHarvester(), 1) ? DarkSteelConfig.crookExtraDropsPowered : DarkSteelConfig.crookExtraDropsUnpowered).get();
-    for (int i = 0; i < loops; i++) {
+    final int start = exnihilo ? DarkSteelConfig.crookExtraDropsUnpowered.get() : 0;
+    final int loops = (powered ? DarkSteelConfig.crookExtraDropsPowered : DarkSteelConfig.crookExtraDropsUnpowered).get();
+    for (int i = start; i < loops; i++) {
       state.getBlock().getDrops(list, world, event.getPos(), state, event.getFortuneLevel());
     }
     event.getDrops().addAll(list);
