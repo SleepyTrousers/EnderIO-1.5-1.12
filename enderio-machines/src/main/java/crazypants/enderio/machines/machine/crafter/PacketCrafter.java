@@ -27,7 +27,6 @@ public class PacketCrafter extends MessageTileEntity<TileCrafter> {
     PacketCrafter msg = new PacketCrafter(te);
     msg.slot = slot;
     msg.stack = stack;
-    msg.execute(te);
     return msg;
   }
 
