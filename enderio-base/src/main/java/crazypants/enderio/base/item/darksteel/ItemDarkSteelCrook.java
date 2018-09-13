@@ -358,7 +358,7 @@ public class ItemDarkSteelCrook extends ItemTool implements IAdvancedTooltipProv
       return;
     }
 
-    final boolean exnihilo = Loader.isModLoaded("exnihilocreatio");
+    final boolean exnihilo = hasExNihilo();
     final boolean powered = isPowered(event.getHarvester(), 1);
 
     if (exnihilo && !powered) {
@@ -367,7 +367,7 @@ public class ItemDarkSteelCrook extends ItemTool implements IAdvancedTooltipProv
 
     NNList<ItemStack> list = new NNList<>();
     final int start = exnihilo ? DarkSteelConfig.crookExtraDropsUnpowered.get() : 0;
-    final int loops = (powered ? DarkSteelConfig.crookExtraDropsPowered : DarkSteelConfig.crookExtraDropsUnpowered).get();
+    final int loops = Math.min(start, (powered ? DarkSteelConfig.crookExtraDropsPowered : DarkSteelConfig.crookExtraDropsUnpowered).get());
     for (int i = start; i < loops; i++) {
       state.getBlock().getDrops(list, world, event.getPos(), state, event.getFortuneLevel());
     }
@@ -376,7 +376,18 @@ public class ItemDarkSteelCrook extends ItemTool implements IAdvancedTooltipProv
 
   @Override
   public @Nonnull Set<String> getToolClasses(@Nonnull ItemStack stack) {
-    return Loader.isModLoaded("exnihilocreatio") ? ImmutableSet.of("crook") : super.getToolClasses(stack);
+    return hasExNihilo() ? CROOK : super.getToolClasses(stack);
+  }
+
+  private static final @Nonnull Set<String> CROOK = ImmutableSet.of("crook");
+
+  private static Boolean hasExNihilo = null;
+
+  private static boolean hasExNihilo() {
+    if (hasExNihilo != null) {
+      return hasExNihilo;
+    }
+    return hasExNihilo = Loader.isModLoaded("exnihilocreatio");
   }
 
 }
