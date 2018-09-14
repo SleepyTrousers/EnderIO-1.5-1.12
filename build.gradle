@@ -227,7 +227,7 @@ subprojects {
     // Assemble a source jar
     task sourcesJar(type: Jar) {
         classifier = 'sources'
-        from sourceSets.main.allSource
+        from sourceSets.main.java
     }
 }
 
@@ -285,7 +285,7 @@ jar {
 sourceJar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     combjarprojects.each { subproject ->
-        from subproject.sourceSets.main.allSource
+        from subproject.sourceSets.main.java
     }
 }
 
