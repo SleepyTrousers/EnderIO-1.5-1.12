@@ -219,8 +219,7 @@ subprojects {
     task apiJar(type: Jar) {
         classifier = 'api'
 
-        from sourceSets.main.allSource
-        from sourceSets.main.output
+        from sourceSets.main.output.classesDirs
 
         include 'crazypants/enderio/api/**/*'
     }
@@ -228,7 +227,7 @@ subprojects {
     // Assemble a source jar
     task sourcesJar(type: Jar) {
         classifier = 'sources'
-        from sourceSets.main.allSource
+        from sourceSets.main.java
     }
 }
 
@@ -283,12 +282,26 @@ jar {
     }
 }
 
+sourceJar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    combjarprojects.each { subproject ->
+        from subproject.sourceSets.main.java
+    }
+}
+
+// Copy all the jars to `libs`
+task copyJars(type: Copy, dependsOn: subprojects.tasks['signJar']) {
+    from buildprojects.collect { it.tasks.withType(Jar) }
+    into "$buildDir/libs"
+}
+
 // Combine all the API jars into a single jar
 task combApiJar(type: Jar) {
-    dependsOn combjarprojects.tasks['classes']
+    dependsOn copyJars
+    classifier 'api'
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    combjarprojects.each { subproject -> 
-        from subproject.apiJar
+    combjarprojects.each { subproject ->
+        from zipTree(subproject.apiJar.getArchivePath()).asFileTree
     }
 }
 
@@ -296,21 +309,53 @@ artifacts {
     archives combApiJar
 }
 
-// Finally copy all the jars to `libs`
-task copyJars(type: Copy, dependsOn: subprojects.tasks['signJar']) {
-    from buildprojects.collect { it.tasks.withType(Jar) }
-    into "$buildDir/libs"
-}
-build.dependsOn copyJars
+build.dependsOn sourceJar, combApiJar
 
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
-uploadArchives {
-    repositories {
-        if (project.hasProperty('mavenDir')) {
-            mavenDeployer {
-                repository(url: mavenDir)
+publishing {
+    tasks.publish.dependsOn 'build'
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java                                //Define the properties of the publication
+            version minecraft_version + "-" + project.version
+            artifact sourceJar
+            artifact combApiJar
+
+            pom.withXml { //Here we can add custom nodes to the pom file
+                def dependenciesNode = asNode().getAt("dependencies")[0]
+                if (dependenciesNode == null) {
+                    dependenciesNode = asNode().appendNode('dependencies')
+                }
+
+                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.compile.allDependencies.each {
+                    if (!it.name.equals("unspecified")) { //filter out the garbage
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
             }
+        }
+    }
+
+    repositories {
+        if (project.hasProperty('maven2_url')) {
+            if (project.hasProperty('maven2_user') && project.hasProperty('maven2_pass')) {
+                maven {
+                    url maven2_url
+                    credentials {
+                        username maven2_user
+                        password maven2_pass
+                    }
+                }
+            } else {
+                maven { url maven2_url }
+            }
+        } else {
+            mavenLocal()
         }
     }
 }
