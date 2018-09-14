@@ -10,5 +10,6 @@ public final class Config {
   //
 
   public static void load() {
+    EndergyConfig.F.getClass();
   }
 }

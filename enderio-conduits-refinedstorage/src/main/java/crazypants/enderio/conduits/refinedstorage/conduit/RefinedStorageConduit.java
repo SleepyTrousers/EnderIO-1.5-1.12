@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.ITabPanel;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNode;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNodeManager;
@@ -76,6 +77,22 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
       outputFilterUpgrades.put(dir, ItemStack.EMPTY);
       inputFilterUpgrades.put(dir, ItemStack.EMPTY);
     }
+  }
+
+  @Override
+  public @Nonnull
+  NNList<ItemStack> getDrops() {
+    NNList<ItemStack> res = super.getDrops();
+    for (ItemStack stack : upgrades.values()) {
+      res.add(stack);
+    }
+    for (ItemStack stack : inputFilterUpgrades.values()) {
+      res.add(stack);
+    }
+    for (ItemStack stack : outputFilterUpgrades.values()) {
+      res.add(stack);
+    }
+    return res;
   }
 
   @Override
@@ -222,14 +239,14 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
 
     INetworkNodeManager manager = RSHelper.API.getNetworkNodeManager(world);
 
-    ConduitRefinedStorageNode node = (ConduitRefinedStorageNode) manager.getNode(pos);
+    INetworkNode node = manager.getNode(pos);
 
     if (node == null || !node.getId().equals(ConduitRefinedStorageNode.ID)) {
       manager.setNode(pos, node = new ConduitRefinedStorageNode(this));
       manager.markForSaving();
     }
 
-    return node;
+    return (ConduitRefinedStorageNode) node;
   }
 
   @Override

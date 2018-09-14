@@ -107,20 +107,22 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     ALLOY,
     FURNACE;
 
+    @Nonnull
     Mode next() {
       int nextOrd = ordinal() + 1;
       if (nextOrd >= values().length) {
         nextOrd = 0;
       }
-      return values()[nextOrd];
+      return NullHelper.first(values()[nextOrd], ALL);
     }
 
+    @Nonnull
     Mode prev() {
       int nextOrd = ordinal() - 1;
       if (nextOrd < 0) {
         nextOrd = values().length - 1;
       }
-      return values()[nextOrd];
+      return NullHelper.first(values()[nextOrd], ALL);
     }
   }
 
@@ -250,9 +252,9 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
   private boolean isItemAlreadyInASlot(@Nonnull ItemStack itemstack) {
     ItemStack currentStackType = null;
     for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot() && currentStackType == null; i++) {
-      currentStackType = inventory[i];
-      if (currentStackType != null && currentStackType.isItemEqual(itemstack)) {
-        return true;
+      currentStackType = getStackInSlot(i);
+      if (Prep.isValid(currentStackType)) {
+        return currentStackType.isItemEqual(itemstack);
       }
     }
     return false;

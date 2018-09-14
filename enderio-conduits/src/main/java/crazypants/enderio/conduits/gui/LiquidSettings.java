@@ -196,6 +196,10 @@ public class LiquidSettings extends BaseSettingsPanel {
       loopB.onGuiInit();
       loopB.setSelected(eCon.isSelfFeedEnabled(gui.getDir()));
     }
+
+    if (isEnder) {
+      filtersChanged();
+    }
   }
 
   @Override

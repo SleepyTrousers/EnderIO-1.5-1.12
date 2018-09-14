@@ -41,7 +41,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class ItemInventoryCharger extends Item implements IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
@@ -84,7 +83,6 @@ public class ItemInventoryCharger extends Item implements IAdvancedTooltipProvid
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     if (isInCreativeTab(tab)) {
       ItemStack is = new ItemStack(this);
@@ -216,4 +214,8 @@ public class ItemInventoryCharger extends Item implements IAdvancedTooltipProvid
     return CapacitorKey.NO_POWER;
   }
 
+  @Override
+  public boolean allowExtractEnergy() {
+    return true;
+  }
 }

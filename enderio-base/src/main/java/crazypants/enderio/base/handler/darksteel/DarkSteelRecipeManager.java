@@ -21,7 +21,6 @@ import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
-import crazypants.enderio.base.item.darksteel.upgrade.explosive.ExplosiveUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.flippers.SwimUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.hoe.HoeUpgrade;
@@ -67,7 +66,6 @@ public class DarkSteelRecipeManager {
     registry.register(NightVisionUpgrade.INSTANCE);
     registry.register(TravelUpgrade.INSTANCE);
     registry.register(SpoonUpgrade.INSTANCE);
-    registry.register(ExplosiveUpgrade.INSTANCE);
     registry.register(HoeUpgrade.INSTANCE);
   }
 
@@ -90,26 +88,30 @@ public class DarkSteelRecipeManager {
   }
 
   private static void handleRepair(AnvilUpdateEvent evt, @Nonnull IDarkSteelItem item) {
-    ItemStack targetStack = evt.getLeft();
-    ItemStack ingots = evt.getRight();
+    final ItemStack targetStack = evt.getLeft();
+    final ItemStack ingots = evt.getRight();
 
     // repair event
-    int maxIngots = item.getIngotsRequiredForFullRepair();
+    final int maxIngots = item.getIngotsRequiredForFullRepair();
+    int ingouts = ingots.getCount();
+    final int damage = targetStack.getItemDamage();
+    final int maxDamage = targetStack.getMaxDamage();
 
-    double damPerc = (double) targetStack.getItemDamage() / targetStack.getMaxDamage();
+    final double damPerc = (double) damage / maxDamage;
     int requiredIngots = (int) Math.ceil(damPerc * maxIngots);
-    if (ingots.getCount() > requiredIngots) {
-      return;
+    if (ingouts > requiredIngots) {
+      ingouts = requiredIngots;
     }
 
-    int damageAddedPerIngot = (int) Math.ceil((double) targetStack.getMaxDamage() / maxIngots);
-    int totalDamageRemoved = damageAddedPerIngot * ingots.getCount();
+    final int damageAddedPerIngot = (int) Math.ceil((double) maxDamage / maxIngots);
+    final int totalDamageRemoved = damageAddedPerIngot * ingouts;
 
-    ItemStack resultStack = targetStack.copy();
-    resultStack.setItemDamage(Math.max(0, resultStack.getItemDamage() - totalDamageRemoved));
+    final ItemStack resultStack = targetStack.copy();
+    resultStack.setItemDamage(Math.max(0, damage - totalDamageRemoved));
 
     evt.setOutput(resultStack);
-    evt.setCost(ingots.getCount() + (int) Math.ceil(getEnchantmentRepairCost(resultStack) / 2));
+    evt.setCost(ingouts + (int) Math.ceil(getEnchantmentRepairCost(resultStack.copy()) / 2));
+    evt.setMaterialCost(ingouts);
   }
 
   private static void handleUpgrade(AnvilUpdateEvent evt, @Nonnull IDarkSteelItem item) {

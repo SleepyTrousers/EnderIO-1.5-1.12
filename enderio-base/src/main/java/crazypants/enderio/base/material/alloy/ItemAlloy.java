@@ -48,7 +48,6 @@ public class ItemAlloy extends Item implements IHaveRenderers {
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull final NonNullList<ItemStack> list) {
     if (isInCreativeTab(tab)) {
       NNList.of(Alloy.class).apply(new Callback<Alloy>() {

@@ -2,11 +2,11 @@ package crazypants.enderio.base.farming;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.api.farm.IFarmerJoe;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.farming.farmers.ChorusFarmer;
 import crazypants.enderio.base.farming.farmers.CocoaFarmer;
 import crazypants.enderio.base.farming.farmers.CustomSeedFarmer;
@@ -27,15 +27,16 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.oredict.OreDictionary;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
 public final class FarmersRegistry {
 
-  public static final @Nonnull Things slotItemsHoeTools = new Things().add(Items.WOODEN_HOE).add(Items.STONE_HOE).add(Items.IRON_HOE).add(Items.GOLDEN_HOE)
-      .add(Items.DIAMOND_HOE).add(Config.farmHoes);
+  public static final @Nonnull Things slotItemsHoeTools = new Things("toolHoe").add(Items.WOODEN_HOE).add(Items.STONE_HOE).add(Items.IRON_HOE)
+      .add(Items.GOLDEN_HOE).add(Items.DIAMOND_HOE);
   public static final @Nonnull Things slotItemsAxeTools = new Things().add(Items.WOODEN_AXE).add(Items.STONE_AXE).add(Items.IRON_AXE).add(Items.GOLDEN_AXE)
       .add(Items.DIAMOND_AXE).add(ModObject.itemDarkSteelAxe);
-  public static final @Nonnull Things slotItemsExtraTools = new Things().add(Items.SHEARS).add(ModObject.itemDarkSteelShears);
+  public static final @Nonnull Things slotItemsExtraTools = new Things("toolShears").add(Items.SHEARS).add(ModObject.itemDarkSteelShears).add("toolTreetap");
   public static final @Nonnull Things slotItemsSeeds = new Things("treeSapling").add(Items.WHEAT_SEEDS).add(Items.CARROT).add(Items.POTATO)
       .add(Blocks.RED_MUSHROOM).add(Blocks.BROWN_MUSHROOM).add(Items.NETHER_WART).add(Blocks.SAPLING).add(Items.REEDS).add(Items.MELON_SEEDS)
       .add(Items.PUMPKIN_SEEDS);
@@ -152,6 +153,27 @@ public final class FarmersRegistry {
   }
 
   private FarmersRegistry() {
+  }
+
+  /**
+   * Register the given items as hoes that can be used in the farming station. Ignores non-existing items.
+   * 
+   * @param modid
+   *          domain part of the item RL
+   * @param hoes
+   *          any number of item names
+   * @return The number of hoes found
+   */
+  public static int registerHoes(@Nonnull final String modid, final @Nonnull String... hoes) {
+    int count = 0;
+    for (String hoe : hoes) {
+      Item item = findItem(modid, NullHelper.first(hoe, ""));
+      if (item != null) {
+        OreDictionary.registerOre("toolHoe", new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE));
+        count++;
+      }
+    }
+    return count;
   }
 
 }

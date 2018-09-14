@@ -1,10 +1,14 @@
 package crazypants.enderio.base.loot;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.material.alloy.Alloy;
@@ -17,6 +21,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootEntry;
 import net.minecraft.world.storage.loot.LootEntryItem;
+import net.minecraft.world.storage.loot.LootEntryTable;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
@@ -28,31 +33,62 @@ import net.minecraft.world.storage.loot.functions.SetCount;
 import net.minecraft.world.storage.loot.functions.SetDamage;
 import net.minecraft.world.storage.loot.functions.SetMetadata;
 import net.minecraft.world.storage.loot.functions.SetNBT;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.LootTableLoadEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import static crazypants.enderio.base.init.ModObject.itemBasicCapacitor;
 import static crazypants.enderio.base.init.ModObject.itemConduitProbe;
 import static crazypants.enderio.base.init.ModObject.itemTravelStaff;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class LootManager {
 
   // Note: Testing code is on the capacitor item. Right-click a chest in creative mode to fill it with loot. Edit the code to select which loot table to use.
 
   private static final @Nonnull LootCondition[] NO_CONDITIONS = new LootCondition[0];
-  private static LootManager INSTANCE = new LootManager();
 
-  public static void init(@Nonnull FMLPostInitializationEvent event) {
-    MinecraftForge.EVENT_BUS.register(INSTANCE);
+  public static void init(@Nonnull EnderIOLifecycleEvent.Init.Post event) {
+    if (useTables) {
+      for (ResourceLocation resourceLocation : MC_TABLES) {
+        LootTableList.register(eio(resourceLocation));
+      }
+    }
   }
 
-  private LootManager() {
+  // to re-create the json tables from the code below, set this to false then run the game with https://minecraft.curseforge.com/projects/loottweaker and dump
+  // the tables with "/mt loottables all". Open the generated json files and remove the vanilla entries.
+  static boolean useTables = true;
+
+  private static final @Nonnull Set<ResourceLocation> MC_TABLES = new HashSet<>();
+  static {
+    MC_TABLES.add(LootTableList.CHESTS_SIMPLE_DUNGEON);
+    MC_TABLES.add(LootTableList.CHESTS_ABANDONED_MINESHAFT);
+    MC_TABLES.add(LootTableList.CHESTS_NETHER_BRIDGE);
+    MC_TABLES.add(LootTableList.CHESTS_IGLOO_CHEST);
+    MC_TABLES.add(LootTableList.CHESTS_JUNGLE_TEMPLE_DISPENSER);
+    MC_TABLES.add(LootTableList.CHESTS_VILLAGE_BLACKSMITH);
+    MC_TABLES.add(LootTableList.CHESTS_DESERT_PYRAMID);
+    MC_TABLES.add(LootTableList.CHESTS_JUNGLE_TEMPLE);
+    MC_TABLES.add(LootTableList.CHESTS_WOODLAND_MANSION);
+    MC_TABLES.add(LootTableList.CHESTS_END_CITY_TREASURE);
+  }
+
+  private static void injectTables(@Nonnull LootTableLoadEvent evt) {
+    if (MC_TABLES.contains(evt.getName())) {
+      LootPool lp = new LootPool(new LootEntry[0], NO_CONDITIONS, new RandomValueRange(1, 3), new RandomValueRange(0, 0), EnderIO.MOD_NAME);
+      addTable(lp, eio(evt.getName()));
+      evt.getTable().addPool(lp);
+    }
   }
 
   @SubscribeEvent
-  public void onLootTableLoad(@Nonnull LootTableLoadEvent evt) {
+  public static void onLootTableLoad(@Nonnull LootTableLoadEvent evt) {
+
+    if (useTables) {
+      injectTables(evt);
+      return;
+    }
 
     LootTable table = evt.getTable();
 
@@ -169,18 +205,22 @@ public class LootManager {
     table.addPool(lp);
   }
 
-  private @Nonnull LootEntry createLootEntry(@Nonnull Item item, float chance) {
+  private static void addTable(@Nonnull LootPool pool, @Nonnull ResourceLocation resourceLocation) {
+    pool.addEntry(new LootEntryTable(resourceLocation, 1, 1, NO_CONDITIONS, resourceLocation.toString()));
+  }
+
+  private @Nonnull static LootEntry createLootEntry(@Nonnull Item item, float chance) {
     return createLootEntry(item, 1, 1, chance);
   }
 
-  private @Nonnull LootEntry createLootEntry(@Nonnull Item item, int minSize, int maxSize, float chance) {
+  private @Nonnull static LootEntry createLootEntry(@Nonnull Item item, int minSize, int maxSize, float chance) {
     return createLootEntry(item, 0, minSize, maxSize, chance);
   }
 
   /*
    * All loot entries are given the same weight, the generation probabilities depend on the RandomChance condition.
    */
-  private @Nonnull LootEntry createLootEntry(@Nonnull Item item, int meta, int minStackSize, int maxStackSize, float chance) {
+  private @Nonnull static LootEntry createLootEntry(@Nonnull Item item, int meta, int minStackSize, int maxStackSize, float chance) {
     LootCondition[] chanceCond = new LootCondition[] { new RandomChance(chance) };
     final ResourceLocation registryName = NullHelper.notnull(item.getRegistryName(), "found unregistered item");
     if (item.isDamageable()) {
@@ -192,63 +232,67 @@ public class LootManager {
     }
   }
 
-  private @Nonnull LootEntry createLootEntry(@Nonnull ItemStack stack, int minStackSize, int maxStackSize, float chance) {
+  private @Nonnull static LootEntry createLootEntry(@Nonnull ItemStack stack, int minStackSize, int maxStackSize, float chance) {
     LootCondition[] chanceCond = new LootCondition[] { new RandomChance(chance) };
     final ResourceLocation registryName = NullHelper.notnull(stack.getItem().getRegistryName(), "found unregistered item");
     return new LootEntryItem(stack.getItem(), 1, 1, new LootFunction[] { setCount(minStackSize, maxStackSize), setMetadata(stack.getMetadata()) }, chanceCond,
         registryName.toString() + ":" + stack.getMetadata());
   }
 
-  private @Nonnull LootEntry createDarkSteelLootEntry(@Nonnull Item item, float chance) {
+  private @Nonnull static LootEntry createDarkSteelLootEntry(@Nonnull Item item, float chance) {
     return createDarkSteelLootEntry(item, 1, 1, chance);
   }
 
-  private @Nonnull LootEntry createDarkSteelLootEntry(@Nonnull Item item, int minSize, int maxSize, float chance) {
+  private @Nonnull static LootEntry createDarkSteelLootEntry(@Nonnull Item item, int minSize, int maxSize, float chance) {
     return createDarkSteelLootEntry(item, 0, minSize, maxSize, chance);
   }
 
-  private @Nonnull LootEntry createDarkSteelLootEntry(@Nonnull Item item, int meta, int minStackSize, int maxStackSize, float chance) {
+  private @Nonnull static LootEntry createDarkSteelLootEntry(@Nonnull Item item, int meta, int minStackSize, int maxStackSize, float chance) {
     LootCondition[] chanceCond = new LootCondition[] { new RandomChance(chance) };
     final ResourceLocation registryName = NullHelper.notnull(item.getRegistryName(), "found unregistered item");
     return new LootEntryItem(item, 1, 1, new LootFunction[] { setCount(minStackSize, maxStackSize), setDamage(item, meta), setUpgrades(), setEnergy() },
         chanceCond, registryName.toString() + ":" + meta);
   }
 
-  int capCount = 0; // Each loot entry in a pool must have a unique name
+  static int capCount = 0; // Each loot entry in a pool must have a unique name
 
-  private @Nonnull LootEntry createLootCapacitor(float chance) {
+  private @Nonnull static LootEntry createLootCapacitor(float chance) {
     capCount++;
     return new LootEntryItem(itemBasicCapacitor.getItemNN(), 1, 1, new LootFunction[] { ls, setMetadata(3, 4) },
         new LootCondition[] { new RandomChance(chance) }, itemBasicCapacitor.getUnlocalisedName() + capCount);
   }
 
-  private @Nonnull SetCount setCount(int min, int max) {
+  private @Nonnull static SetCount setCount(int min, int max) {
     return new SetCount(NO_CONDITIONS, new RandomValueRange(min, min));
   }
 
-  private @Nonnull SetDamage setDamage(Item item, int damage) {
+  private @Nonnull static SetDamage setDamage(Item item, int damage) {
     return new SetDamage(NO_CONDITIONS, new RandomValueRange(damage > 0 ? damage : 1, damage > 0 ? damage : item.getMaxDamage()));
   }
 
-  private @Nonnull SetMetadata setMetadata(int metaMin, int metaMax) {
+  private @Nonnull static SetMetadata setMetadata(int metaMin, int metaMax) {
     return new SetMetadata(NO_CONDITIONS, new RandomValueRange(metaMin, metaMax));
   }
 
-  private @Nonnull SetMetadata setMetadata(int meta) {
+  private @Nonnull static SetMetadata setMetadata(int meta) {
     return new SetMetadata(NO_CONDITIONS, new RandomValueRange(meta));
   }
 
-  private @Nonnull SetRandomEnergy setEnergy() {
+  private @Nonnull static SetRandomEnergy setEnergy() {
     return new SetRandomEnergy(NO_CONDITIONS);
   }
 
-  private @Nonnull SetRandomDarkUpgrade setUpgrades() {
+  private @Nonnull static SetRandomDarkUpgrade setUpgrades() {
     return new SetRandomDarkUpgrade(NO_CONDITIONS);
   }
 
-  private @Nonnull SetNBT setNBT(ItemStack stack) {
+  private @Nonnull static SetNBT setNBT(ItemStack stack) {
     return new SetNBT(NO_CONDITIONS, NullHelper.first(stack.getTagCompound(), new NBTTagCompound()));
   }
 
   private static final @Nonnull LootSelector ls = new LootSelector(NO_CONDITIONS);
+
+  private static @Nonnull ResourceLocation eio(ResourceLocation mc) {
+    return new ResourceLocation(EnderIO.DOMAIN, mc.getResourcePath());
+  }
 }

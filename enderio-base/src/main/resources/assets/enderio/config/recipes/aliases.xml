@@ -56,7 +56,7 @@ XML editor will display that as tooltips when editing this file.
   <alias name="WEATHER_CRYSTAL" item="itemWeatherCrystal" />
   <alias name="PRECIENT_CRYSTAL" item="itemPrecientCrystal" />
   <alias name="PRECIENT_POWDER" item="itemPrecientPowder" />
-  <alias name="VIBRANT_POWDER" item="itemPulsatingPowder" />
+  <alias name="VIBRANT_POWDER" item="itemVibrantPowder" />
   <alias name="ENDER_CYSTAL_POWDER" item="itemEnderCrystalPowder" />
   <alias name="NUTRITIOUS_STICK" item="itemNutritiousStick" />
 
@@ -198,4 +198,5 @@ XML editor will display that as tooltips when editing this file.
   <alias name="REDSTONE_FILTER_XNOR" item="enderio:item_redstone_xnor_filter" />
 
   <alias name="REMOTE_AWARENESS_UPGRADE" item="itemRemoteAwarenessUpgrade" />
+  <alias name="INFINITY_GOOP" item="itemInfinityGoop" />
 </enderio:recipes>

@@ -17,6 +17,7 @@ import com.enderio.core.common.util.ItemUtil;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
+import crazypants.enderio.base.integration.actuallyadditions.ActuallyadditionsUtil;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.paint.IPaintable;
@@ -117,7 +118,21 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   }
 
   public boolean isXpBottle(@Nonnull ItemStack stack) {
-    return stack.getItem() == Items.EXPERIENCE_BOTTLE && FluidUtil.getFluidTypeFromItem(stack) == null;
+    return FluidUtil.getFluidTypeFromItem(stack) == null && (isVanillaXpBottle(stack) || ActuallyadditionsUtil.isAAXpBottle(stack));
+  }
+
+  private boolean isVanillaXpBottle(@Nonnull ItemStack stack) {
+    return stack.getItem() == Items.EXPERIENCE_BOTTLE;
+  }
+
+  private int getXpFromBottle(@Nonnull ItemStack stack) {
+    if (isVanillaXpBottle(stack)) {
+      return 3 + world.rand.nextInt(5) + world.rand.nextInt(5);
+    } else if (ActuallyadditionsUtil.isAAXpBottle(stack)) {
+      return ActuallyadditionsUtil.getXpFromBottle(stack);
+    } else {
+      return 0;
+    }
   }
 
   public @Nonnull VoidMode getVoidMode() {
@@ -306,7 +321,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     final FluidAndStackResult fill = FluidUtil.tryDrainContainer(inputStack, this);
     if (fill.result.fluidStack == null) {
       if (isXpBottle(inputStack) && canEatXP()) {
-        if (tank.fill(new FluidStack(Fluids.XP_JUICE.getFluid(), XpUtil.experienceToLiquid(3 + world.rand.nextInt(5) + world.rand.nextInt(5))), true) > 0) {
+        if (tank.fill(new FluidStack(Fluids.XP_JUICE.getFluid(), XpUtil.experienceToLiquid(getXpFromBottle(inputStack))), true) > 0) {
           inputStack.shrink(1);
           setInventorySlotContents(input, inputStack);
           setTanksDirty();

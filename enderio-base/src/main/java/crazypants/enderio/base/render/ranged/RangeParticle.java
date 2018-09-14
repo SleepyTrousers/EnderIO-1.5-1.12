@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
@@ -14,6 +15,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 
 public class RangeParticle<T extends TileEntity & IRanged> extends Particle {
 
@@ -74,13 +76,28 @@ public class RangeParticle<T extends TileEntity & IRanged> extends Particle {
 
     GlStateManager.color(color.x, color.y, color.z, color.w);
 
-    RenderUtil.renderBoundingBox(owner.getBounds().scale(scale).expand(0.01, 0.01, 0.01), IconUtil.instance.whiteTexture);
+    RenderUtil.renderBoundingBox(scale(owner.getPos(), owner.getBounds(), scale).expand(0.01, 0.01, 0.01), IconUtil.instance.whiteTexture);
 
     GlStateManager.depthMask(true);
     GlStateManager.disableBlend();
     GlStateManager.enableCull();
     GlStateManager.enableLighting();
     GlStateManager.popMatrix();
+  }
+
+  private @Nonnull BoundingBox scale(final @Nonnull BlockPos source, final @Nonnull BoundingBox bounds, float scale) {
+    final double sourceX = source.getX() + .5, sourceY = source.getY() + .5, sourceZ = source.getZ() + .5;
+    return new BoundingBox( //
+        scale(sourceX, bounds.minX, scale), //
+        scale(sourceY, bounds.minY, scale), //
+        scale(sourceZ, bounds.minZ, scale), //
+        scale(sourceX, bounds.maxX, scale), //
+        scale(sourceY, bounds.maxY, scale), //
+        scale(sourceZ, bounds.maxZ, scale));
+  }
+
+  private double scale(double x0, double x1, double scale) {
+    return x0 * (1 - scale) + x1 * scale;
   }
 
 }

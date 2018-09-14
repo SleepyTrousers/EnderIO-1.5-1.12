@@ -32,7 +32,7 @@ public class ReservoirBlockRenderMapper extends ConnectedBlockRenderMapper {
   public EnumMap<EnumFacing, EnumIOMode> mapOverlayLayer(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       boolean isPainted) {
     TileEntity tileEntity = state.getTileEntity();
-    if ((tileEntity instanceof TileReservoir) && ((TileReservoir) tileEntity).isAutoEject()) {
+    if ((tileEntity instanceof TileReservoirBase) && ((TileReservoirBase) tileEntity).isAutoEject()) {
       EnumMap<EnumFacing, EnumIOMode> result = new EnumMap<EnumFacing, EnumIOMode>(EnumFacing.class);
       for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
         EnumFacing face = itr.next();

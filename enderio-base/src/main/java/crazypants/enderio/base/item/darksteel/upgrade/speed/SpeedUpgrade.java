@@ -10,6 +10,7 @@ import crazypants.enderio.base.potion.PotionUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionUtils;
 
 public class SpeedUpgrade extends AbstractUpgrade {
 
@@ -61,6 +62,11 @@ public class SpeedUpgrade extends AbstractUpgrade {
 
   public short getLevel() {
     return level;
+  }
+
+  @Override
+  public boolean isUpgradeItem(@Nonnull ItemStack stack) {
+    return super.isUpgradeItem(stack) && PotionUtils.getPotionFromItem(getUpgradeItem()).equals(PotionUtils.getPotionFromItem(stack));
   }
 
 }

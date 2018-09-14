@@ -18,6 +18,7 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.util.NbtValue;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -33,6 +34,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
@@ -78,7 +80,6 @@ public class ItemCapacitor extends Item implements IHaveRenderers {
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     if (isInCreativeTab(tab)) {
       for (DefaultCapacitorData dcd : DefaultCapacitorData.values()) {
@@ -156,6 +157,10 @@ public class ItemCapacitor extends Item implements IHaveRenderers {
       // LootTable loottable = world.getLootTableManager().getLootTableFromLocation(LootTableList.CHESTS_IGLOO_CHEST);
       loottable.fillInventory(chest, world.rand, lootcontext$builder.build());
       return EnumActionResult.PASS;
+    } else {
+      IBlockState blockState = world.getBlockState(pos);
+      int meta = blockState.getBlock().getMetaFromState(blockState);
+      player.sendMessage(new TextComponentString(blockState + " (" + meta + ")"));
     }
 
     return EnumActionResult.PASS;

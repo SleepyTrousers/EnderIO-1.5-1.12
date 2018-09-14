@@ -19,7 +19,19 @@ public final class DarkSteelConfig {
 
   public static final IValue<Boolean> rightClickPlaceEnabled_axe = F_AXE.make("rightClickPlaceEnabled", false, //
       "If enabled, right clicking with the dark steel axe will place a block.");
-  public static final IValue<Integer> darkSteelHoeCost = F_AXE.make("darkSteelHoeCost", 4, "Number of levels required for the 'Hoe' upgrade.");
+
+  public static final IValueFactory F_CROOK = F_DARK_STEEL.section(".crook");
+
+  public static final IValue<Boolean> rightClickPlaceEnabled_crook = F_CROOK.make("rightClickPlaceEnabled", false, //
+      "If enabled, right clicking with the dark steel crook will place a block.");
+  public static final IValue<Integer> crookEnergyPerDamage = F_CROOK.make("energyPerDamage", 150, //
+      "Energy use per damage/durability point avoided.").setRange(1, 99999999).sync();
+  public static final IValue<Integer> crookEnergyPerDamageMulti = F_CROOK.make("energyPerDamageMulti", 150, //
+      "Energy per damage/durability point avoided when shift-harvesting multiple blocks.").setRange(1, 99999999).sync();
+  public static final IValue<Integer> crookExtraDropsUnpowered = F_CROOK.make("extraDropsUnpowered", 3, //
+      "Number of extra tries to get drops for an unpowered crook.").setRange(0, 32).sync();
+  public static final IValue<Integer> crookExtraDropsPowered = F_CROOK.make("extraDropsPowered", 5, //
+      "Number of extra tries to get drops for a powered crook.").setRange(0, 32).sync();
 
   public static final IValueFactory F_SWORD = F_DARK_STEEL.section(".sword");
 
@@ -49,6 +61,10 @@ public final class DarkSteelConfig {
       "The increase in attack speed when the sword is empowered V and has energy.").setRange(0, 2).sync();
 
   public static final IValueFactory F_UPGRADES = F_DARK_STEEL.section(".upgrades");
+
+  public static final IValueFactory F_HOE = F_UPGRADES.section(".hoe");
+
+  public static final IValue<Integer> darkSteelHoeCost = F_HOE.make("darkSteelHoeCost", 4, "Number of levels required for the 'Hoe' upgrade.");
 
   public static final IValueFactory F_SPEED = F_UPGRADES.section(".speed");
 
@@ -85,8 +101,12 @@ public final class DarkSteelConfig {
 
   public static final IValueFactory F_EXPLOSIVE = F_UPGRADES.section(".explosive");
 
-  public static final IValue<Integer> explosiveUpgradeCost = F_EXPLOSIVE.make("upgradeCost", 8, //
-      "Cost for the explosive upgrade in levels.").setRange(1, 99).sync();
+  public static final NNList<IValue<Integer>> explosiveUpgradeCost = new NNList<>( //
+      F_EXPLOSIVE.make("upgradeCost1", 8, "Cost for the explosive I upgrade in levels.").setRange(1, 99).sync(),
+      F_EXPLOSIVE.make("upgradeCost2", 12, "Cost for the explosive II upgrade in levels.").setRange(1, 99).sync(),
+      F_EXPLOSIVE.make("upgradeCost3", 18, "Cost for the explosive III upgrade in levels.").setRange(1, 99).sync(),
+      F_EXPLOSIVE.make("upgradeCost4", 26, "Cost for the explosive IV upgrade in levels.").setRange(1, 99).sync(),
+      F_EXPLOSIVE.make("upgradeCost5", 36, "Cost for the explosive V upgrade in levels.").setRange(1, 99).sync());
 
   public static final IValue<Integer> explosiveUpgradeEnergyPerBlock = F_EXPLOSIVE.make("energyPerBlock", 20, //
       "Extra energy the explosive upgrade uses to blow up blocks. This goes on top of the energy used to counteract durability loss.").setMin(0).sync();
@@ -98,6 +118,16 @@ public final class DarkSteelConfig {
       "Should the explosive upgrade blow up any kind of block the pickaxe can mine? If disabled, only a limited list of trash blocks will be blown up. "
           + "Enable this in modpacks that have a large number of modded stone or dirt in their worldgen.")
       .sync();
+
+  public static final IValueFactory F_CARPET = F_EXPLOSIVE.section(".carpet");
+
+  public static final IValue<Integer> explosiveCarpetUpgradeCost = F_CARPET.make("upgradeCost", 8, //
+      "Cost for the explosive carpet upgrade in levels.").setRange(1, 99).sync();
+
+  public static final IValueFactory F_DEPTH = F_EXPLOSIVE.section(".carpet");
+
+  public static final IValue<Integer> explosiveDepthUpgradeCost = F_DEPTH.make("upgradeCost", 8, //
+      "Cost for the explosive depth upgrade in levels.").setRange(1, 99).sync();
 
   public static final IValueFactory F_COLDFIRE = F_DARK_STEEL.section(".coldfire");
 

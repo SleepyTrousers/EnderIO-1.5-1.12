@@ -79,7 +79,7 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
     if (dir == null || outputSlots.getSlots() <= 0 || !shouldDoWorkThisTick(20)) {
       return false;
     }
-    return ItemTools.move(getPushLimit(), world, getPos(), dir, getPos().offset(dir), dir.getOpposite()) == MoveResult.MOVED;
+    return ItemTools.move(getPushLimit(), world, this, dir, getPos().offset(dir), dir.getOpposite()) == MoveResult.MOVED;
   }
 
   @Override
@@ -87,7 +87,7 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
     if (dir == null || inputSlots.getSlots() <= 0 || !shouldDoWorkThisTick(20) || !hasSpaceToPull()) {
       return false;
     }
-    return ItemTools.move(getPullLimit(), world, getPos().offset(dir), dir.getOpposite(), getPos(), dir) == MoveResult.MOVED;
+    return ItemTools.move(getPullLimit(), world, getPos().offset(dir), dir.getOpposite(), this, dir) == MoveResult.MOVED;
   }
 
   protected boolean hasSpaceToPull() {

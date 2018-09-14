@@ -266,49 +266,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   public ItemStack getFunctionUpgrade(@Nonnull EnumFacing dir) {
     return functionUpgrades.get(dir);
   }
-  //
-  // @Override
-  // public void setFunctionUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack upgrade) {
-  // boolean hadIPU = hasInventoryPanelUpgrade(dir);
-  // if(!upgrade.isEmpty()) {
-  // functionUpgrades.put(dir, upgrade);
-  // } else {
-  // functionUpgrades.remove(dir);
-  // }
-  // setClientStateDirty();
-  // if(network != null && hadIPU != hasInventoryPanelUpgrade(dir)) {
-  // network.inventoryPanelSourcesChanged();
-  // }
-  // }
-  //
-  // @Override
-  // @Nonnull
-  // public ItemStack getFunctionUpgrade(@Nonnull EnumFacing dir) {
-  // return functionUpgrades.get(dir);
-  // }
-
-  // @Override
-  // public boolean hasInventoryPanelUpgrade(@Nonnull EnumFacing dir) {
-  // ItemStack upgrade = functionUpgrades.get(dir);
-  // return (!upgrade.isEmpty() && ItemFunctionUpgrade.getFunctionUpgrade(upgrade) == FunctionUpgrade.INVENTORY_PANEL) || isConnectedToNetworkAwareBlock(dir);
-  // }
-  //
-  // @Override
-  // public boolean isConnectedToNetworkAwareBlock(@Nonnull EnumFacing dir) {
-  // if (!externalConnections.contains(dir)) {
-  // return false;
-  // }
-  // World world = getBundle().getBundleworld();
-  // if (world == null) {
-  // return false;
-  // }
-  // BlockPos loc = getBundle().getLocation().offset(dir);
-  // if (!world.isBlockLoaded(loc)) {
-  // return false;
-  // }
-  // TileEntity tileEntity = world.getTileEntity(loc);
-  // return tileEntity instanceof TileInventoryChest;
-  // }
 
   @Override
   public int getMetaData() {
@@ -785,15 +742,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
     connectionsDirty = true;
   }
-
-  // TODO Inventory
-  // @Override
-  // public boolean onNeighborChange(@Nonnull BlockPos neighbourPos) {
-  // if (neighbourPos != null && network != null && network.hasDatabase()) {
-  // network.getDatabase().onNeighborChange(neighbourPos);
-  // }
-  // return super.onNeighborChange(neighbourPos);
-  // }
 
   @SideOnly(Side.CLIENT)
   @Override

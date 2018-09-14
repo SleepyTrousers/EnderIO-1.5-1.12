@@ -33,6 +33,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import static crazypants.enderio.util.NbtValue.BLOCKSTATE;
 
@@ -250,10 +251,10 @@ public class PaintUtil {
       if (itemIn instanceof ItemBlock) {
         final Block block = ((ItemBlock) itemIn).getBlock();
         if (NullHelper.untrust(block) == null) {
-          Log.warn("ItemBlock " + itemIn + " returned null from getBlock(). This is a major bug in the mod that item belongs to.");
+          Log.warn("ItemBlock " + itemIn + " returned null from getBlock(). This is a major bug in the mod '" + block2Modname(itemIn) + "'.");
         } else if (NullHelper.untrust(Block.REGISTRY.getNameForObject(block)) == null) {
           throw new RuntimeException(
-              "ItemBlock " + itemIn + " returned an unregistered block from getBlock(). This is a major bug in the mod that item belongs to.");
+              "ItemBlock " + itemIn + " returned an unregistered block from getBlock(). This is a major bug in the mod '" + block2Modname(itemIn) + "'.");
         }
         return block;
       }
@@ -275,10 +276,10 @@ public class PaintUtil {
       if (itemStack.getItem() instanceof ItemBlock) {
         final Block block = ((ItemBlock) itemStack.getItem()).getBlock();
         if (NullHelper.untrust(block) == null) {
-          Log.warn("ItemBlock " + itemStack + " returned null from getBlock(). This is a major bug in the mod that item belongs to.");
+          Log.warn("ItemBlock " + itemStack + " returned null from getBlock(). This is a major bug in the mod '" + block2Modname(itemStack.getItem()) + "'.");
         } else if (NullHelper.untrust(Block.REGISTRY.getNameForObject(block)) == null) {
-          throw new RuntimeException(
-              "ItemBlock " + itemStack + " returned an unregistered block from getBlock(). This is a major bug in the mod that item belongs to.");
+          throw new RuntimeException("ItemBlock " + itemStack + " returned an unregistered block from getBlock(). This is a major bug in the mod '"
+              + block2Modname(itemStack.getItem()) + "'.");
         }
         return block;
       }
@@ -328,13 +329,13 @@ public class PaintUtil {
           + stateFromMeta + ") without block from getStateFromMeta(). This is a major bug in the mod '" + block2Modname(paintBlock) + "'.");
     } else if (NullHelper.untrust(Block.REGISTRY.getNameForObject(stateFromMeta.getBlock())) == null) {
       throw new RuntimeException("Block " + paintBlock + " (" + paintBlock.getClass() + ") belonging to item " + paintSource + " returned a blockstate ("
-          + stateFromMeta + ") that belongs to an unregistered block " + stateFromMeta.getBlock()
-          + " from getStateFromMeta(). This is a major bug in the mod '" + block2Modname(paintBlock) + "'.");
+          + stateFromMeta + ") that belongs to an unregistered block " + stateFromMeta.getBlock() + " from getStateFromMeta(). This is a major bug in the mod '"
+          + block2Modname(paintBlock) + "'.");
     }
     return stateFromMeta;
   }
 
-  private static @Nonnull String block2Modname(Block block) {
+  public static @Nonnull String block2Modname(IForgeRegistryEntry<?> block) {
     if (block != null) {
       final ResourceLocation registryName = block.getRegistryName();
       if (registryName != null) {

@@ -1,0 +1,6 @@
+{
+    "parent": "enderio:item/item_conduit_base",
+    "textures": {        
+        "all": "enderio:blocks/power_conduit_core_stellar"
+    }
+}

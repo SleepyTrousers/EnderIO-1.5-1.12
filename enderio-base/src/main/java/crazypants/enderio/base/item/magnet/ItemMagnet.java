@@ -75,7 +75,6 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     if (isInCreativeTab(tab)) {
       ItemStack is = new ItemStack(this);

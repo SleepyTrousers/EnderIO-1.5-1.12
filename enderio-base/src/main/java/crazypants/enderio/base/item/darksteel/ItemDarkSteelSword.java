@@ -46,8 +46,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel, IOverlayRenderAware {
 
@@ -58,6 +56,11 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   public static ItemDarkSteelSword createDarkSteel(@Nonnull IModObject modObject) {
     ItemDarkSteelSword res = new ItemDarkSteelSword(modObject, EquipmentData.DARK_STEEL);
+    return res;
+  }
+
+  public static ItemDarkSteelSword createStellarAlloy(@Nonnull IModObject modObject) {
+    ItemDarkSteelSword res = new ItemDarkSteelSword(modObject, EquipmentData.STELLAR_ALLOY);
     return res;
   }
 
@@ -81,7 +84,6 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     if (isInCreativeTab(tab)) {
       ItemStack is = new ItemStack(this);

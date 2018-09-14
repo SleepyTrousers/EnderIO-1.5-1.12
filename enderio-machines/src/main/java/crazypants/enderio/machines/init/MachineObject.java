@@ -30,12 +30,13 @@ import crazypants.enderio.machines.machine.obelisk.relocator.BlockRelocatorObeli
 import crazypants.enderio.machines.machine.obelisk.weather.BlockWeatherObelisk;
 import crazypants.enderio.machines.machine.obelisk.xp.BlockExperienceObelisk;
 import crazypants.enderio.machines.machine.painter.BlockPainter;
-import crazypants.enderio.machines.machine.reservoir.BlockReservoir;
+import crazypants.enderio.machines.machine.reservoir.BlockReservoirBase;
 import crazypants.enderio.machines.machine.sagmill.BlockSagMill;
 import crazypants.enderio.machines.machine.slicensplice.BlockSliceAndSplice;
 import crazypants.enderio.machines.machine.solar.BlockSolarPanel;
 import crazypants.enderio.machines.machine.soul.BlockSoulBinder;
 import crazypants.enderio.machines.machine.spawner.BlockPoweredSpawner;
+import crazypants.enderio.machines.machine.spawner.creative.BlockCreativeSpawner;
 import crazypants.enderio.machines.machine.tank.BlockTank;
 import crazypants.enderio.machines.machine.teleport.anchor.BlockTravelAnchor;
 import crazypants.enderio.machines.machine.teleport.telepad.BlockDialingDevice;
@@ -87,8 +88,8 @@ public enum MachineObject implements IModObjectBase {
   block_experience_obelisk(BlockExperienceObelisk.class, MachineTileEntity.TileExperienceObelisk),
 
   block_painter(BlockPainter.class, MachineTileEntity.TileEntityPainter),
-  block_reservoir(BlockReservoir.class, MachineTileEntity.TileReservoir),
-  block_omni_reservoir(BlockReservoir.class, "create_omni", MachineTileEntity.TileOmniReservoir),
+  block_reservoir(BlockReservoirBase.class, MachineTileEntity.TileReservoir),
+  block_omni_reservoir(BlockReservoirBase.class, "create_omni", MachineTileEntity.TileOmniReservoir),
   block_simple_sag_mill(BlockSagMill.class, "create_simple", MachineTileEntity.TileSagMillSimple),
   block_sag_mill(BlockSagMill.class, MachineTileEntity.TileSagMill),
   block_enhanced_sag_mill(BlockSagMill.class, "create_enhanced", MachineTileEntity.TileSagMillEnhanced),
@@ -120,6 +121,8 @@ public enum MachineObject implements IModObjectBase {
   block_impulse_hopper(BlockImpulseHopper.class, MachineTileEntity.TileImpulseHopper),
   block_crafter(BlockCrafter.class, MachineTileEntity.TileCrafter),
   block_simple_crafter(BlockCrafter.class, "create_simple", MachineTileEntity.TileSimpleCrafter),
+
+  block_creative_spawner(BlockCreativeSpawner.class, MachineTileEntity.TileCreativeSpawner),
 
   ;
 
@@ -163,7 +166,7 @@ public enum MachineObject implements IModObjectBase {
     }
     this.modTileEntity = modTileEntity;
   }
-  
+
   @Override
   @Nonnull
   public <B extends Block> B apply(@Nonnull B block) {

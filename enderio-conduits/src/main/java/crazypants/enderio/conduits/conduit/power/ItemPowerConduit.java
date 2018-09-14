@@ -57,7 +57,7 @@ public class ItemPowerConduit extends AbstractItemConduit {
 
   @Override
   public IServerConduit createConduit(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
-    return new PowerConduit(stack.getItemDamage());
+    return new PowerConduit(IPowerConduitData.Registry.fromID(stack.getItemDamage()));
   }
 
   @Override
@@ -65,7 +65,7 @@ public class ItemPowerConduit extends AbstractItemConduit {
   public void addInformation(@Nonnull ItemStack itemStack, @Nullable World world, @Nonnull List<String> list, @Nonnull ITooltipFlag flag) {
     String prefix = EnderIO.lang.localize("power.max_output") + " ";
     super.addInformation(itemStack, world, list, flag);
-    int cap = PowerConduit.getMaxEnergyIO(itemStack.getMetadata());
+    int cap = PowerConduit.getMaxEnergyIO(IPowerConduitData.Registry.fromID(itemStack.getItemDamage()));
     list.add(prefix + LangPower.RFt(cap));
   }
 

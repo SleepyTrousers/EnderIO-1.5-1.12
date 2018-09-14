@@ -33,7 +33,6 @@ import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.integration.bigreactors.BRProxy;
 import crazypants.enderio.base.integration.buildcraft.BuildcraftIntegration;
 import crazypants.enderio.base.integration.chiselsandbits.CABIMC;
-import crazypants.enderio.base.loot.LootManager;
 import crazypants.enderio.base.material.recipes.MaterialOredicts;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.PaintSourceValidator;
@@ -132,6 +131,8 @@ public class EnderIO implements IEnderIOAddon {
   public void load(@Nonnull FMLInitializationEvent event) {
     Log.debug("PHASE INIT START");
 
+    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Init.Pre());
+
     initCrashData(); // after blocks have been created
 
     Fluids.registerFuels();
@@ -147,6 +148,8 @@ public class EnderIO implements IEnderIOAddon {
     GuiHelper.init(event);
 
     proxy.init(event);
+
+    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Init.Pre());
 
     Log.debug("PHASE INIT END");
   }
@@ -185,8 +188,6 @@ public class EnderIO implements IEnderIOAddon {
     MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.PostInit.Pre());
 
     ModObjectRegistry.init(event);
-
-    LootManager.init(event);
 
     SagMillRecipeManager.getInstance().create();
     AlloyRecipeManager.getInstance().create();

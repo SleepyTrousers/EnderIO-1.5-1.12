@@ -28,7 +28,7 @@ public interface IModTileEntityBase extends IModTileEntity {
 
   @Override
   default @Nonnull TileEntity getTileEntityNN() {
-    return NullHelper.notnull(getTileEntity(), "TileEntity " + this + " is unexpectedly missing");
+    return NullHelper.notnull(getTileEntity(), "TileEntity ", this, " is unexpectedly missing");
   }
 
 }

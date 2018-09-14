@@ -66,6 +66,12 @@ enderio.advancement.stirling.1_stirling_generator_get.desc=
 #                                                      en: Craft a Simple Stirling Generator
 enderio.advancement.stirling.1_stirling_generator_get.name=
 #                                                      en: Harness the Heat
+enderio.block_creative_spawner.gui.offering=
+#                                       en: Pay here
+enderio.block_creative_spawner.gui.template=
+#                                       en: Payment Template
+enderio.block_creative_spawner.gui.vial=
+#                                   en: Soul
 enderio.block_powered_spawner.note.areaFull=
 #                                       en: Too many mobs
 enderio.block_powered_spawner.note.badSoul=
@@ -446,6 +452,14 @@ tile.block_combustion_generator.tooltip.detailed.line3=Výstup se odvíjí od ty
 #                                                  en: Output dependent on fuel
 tile.block_crafter.name=Vyráběč
 #                   en: Crafter
+tile.block_creative_spawner.name=
+#                            en: Creative Spawner
+tile.block_creative_spawner.tooltip.common.line1=
+#                                            en: Creative mode/server admin mob spawner
+tile.block_creative_spawner.tooltip.detailed.line1=
+#                                              en: Admin: Put in a soul vial and optionally an item that will serve as payment for spawning mobs.
+tile.block_creative_spawner.tooltip.detailed.line2=
+#                                              en: User: Put in the payment to have mobs spawned (unless the spawner is free).
 tile.block_dialing_device.name=
 #                          en: Dialing Device
 tile.block_dialing_device.tooltip.detailed.line1=

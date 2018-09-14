@@ -1156,4 +1156,12 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Infinity Goop">
+    <alloying energy="5000">
+      <input name="POWDER_INFINITY"/>
+      <input name="itemClay"/>
+      <output name="INFINITY_GOOP"/>
+    </alloying>
+  </recipe>
+
 </enderio:recipes>

@@ -93,7 +93,6 @@ public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvide
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull CreativeTabs par2CreativeTabs, @Nonnull NonNullList<ItemStack> par3List) {
     if (par2CreativeTabs.equals(EnderIOTab.tabEnderIOInvpanel)) {
       for (ItemRemoteInvAccessType type : ItemRemoteInvAccessType.values()) {
@@ -238,15 +237,14 @@ public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvide
 
   @Override
   public void renderItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
-    PowerBarOverlayRenderHelper.instance_fluid
-        .render(stack, xPosition, yPosition, PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition) ? 1 : 0);
+    PowerBarOverlayRenderHelper.instance_fluid.render(stack, xPosition, yPosition,
+        PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition) ? 1 : 0);
   }
 
   @Override
   public boolean shouldCauseReequipAnimation(@Nonnull ItemStack oldStack, @Nonnull ItemStack newStack, boolean slotChanged) {
-    return slotChanged ?
-        super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) :
-        (oldStack.isEmpty() || newStack.isEmpty() || !ItemStack.areItemsEqual(oldStack, newStack));
+    return slotChanged ? super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged)
+        : (oldStack.isEmpty() || newStack.isEmpty() || !ItemStack.areItemsEqual(oldStack, newStack));
   }
 
   @Override

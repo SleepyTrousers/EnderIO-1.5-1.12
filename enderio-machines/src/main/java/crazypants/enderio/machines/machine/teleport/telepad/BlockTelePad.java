@@ -3,7 +3,10 @@ package crazypants.enderio.machines.machine.teleport.telepad;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.machine.interfaces.ITEProxy;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
@@ -30,6 +33,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -40,7 +44,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPaintable.ISolidBlockPaintableBlock {
+public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPaintable.ISolidBlockPaintableBlock, ITEProxy {
 
   public static final int GUI_ID_TELEPAD = 0;
   public static final int GUI_ID_TELEPAD_TRAVEL = 1;
@@ -274,6 +278,12 @@ public class BlockTelePad extends BlockTravelAnchor<TileTelePad> implements IPai
   @SideOnly(Side.CLIENT)
   public void bindTileEntitySpecialRenderer() {
     ClientRegistry.bindTileEntitySpecialRenderer(TileTelePad.class, new TelePadSpecialRenderer());
+  }
+
+  @Override
+  @Nullable
+  public TileEntity getParent(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+    return getTileEntity(world, NullHelper.first(state.getValue(BLOCK_TYPE).getLocationOfMaster(pos), pos));
   }
 
 }

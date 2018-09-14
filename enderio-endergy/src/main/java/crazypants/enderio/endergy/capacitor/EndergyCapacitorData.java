@@ -14,6 +14,10 @@ public enum EndergyCapacitorData implements ICapacitorData {
   STELLAR_CAPACITOR("stellar", 5.0f),
   TOTEMIC_CAPACITOR("totemic", 3.5f),
 
+  SILVER_CAPACITOR("silver", 1.5f),
+  LEAD_CAPACITOR("lead", 2.25f),
+  ELECTRUM_CAPACITOR("electrum", 3f),
+
   ;
 
   public static final @Nonnull ICapacitorData NONE = new ICapacitorData() {

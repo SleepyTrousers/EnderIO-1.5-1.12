@@ -135,7 +135,7 @@ public class CapacitorHelper {
     return tag.getFloat("level");
   }
 
-  public static ICapacitorData increaseCapacitorLevel(@Nonnull ICapacitorData data,  float level) {
+  public static @Nonnull ICapacitorData increaseCapacitorLevel(@Nonnull ICapacitorData data, float level) {
     return new ICapacitorData() {
       @Override
       public float getUnscaledValue(@Nonnull ICapacitorKey key) {

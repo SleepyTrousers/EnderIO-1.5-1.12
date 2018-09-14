@@ -85,11 +85,14 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
   public static void register(IModRegistry registry, @Nonnull IGuiHelper guiHelper) {
 
     registry.addRecipeCategories(new AlloyRecipeCategory(guiHelper));
-    registry.addRecipeClickArea(GuiAlloySmelter.class, 155, 42, 16, 16, AlloyRecipeCategory.UID);
+    registry.addRecipeClickArea(GuiAlloySmelter.Normal.class, 155, 42, 16, 16, AlloyRecipeCategory.UID, VanillaRecipeCategoryUid.SMELTING);
+    registry.addRecipeClickArea(GuiAlloySmelter.Simple.class, 155, 42, 16, 16, AlloyRecipeCategory.UID);
+    registry.addRecipeClickArea(GuiAlloySmelter.Furnace.class, 155, 42, 16, 16, VanillaRecipeCategoryUid.SMELTING);
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_simple_furnace.getBlockNN()), VanillaRecipeCategoryUid.SMELTING);
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_alloy_smelter.getBlockNN()), AlloyRecipeCategory.UID, VanillaRecipeCategoryUid.SMELTING);
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_simple_alloy_smelter.getBlockNN()), AlloyRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(block_enhanced_alloy_smelter.getBlockNN()), AlloyRecipeCategory.UID, VanillaRecipeCategoryUid.SMELTING);
+    registry.addRecipeCategoryCraftingItem(new ItemStack(block_enhanced_alloy_smelter.getBlockNN()), AlloyRecipeCategory.UID,
+        VanillaRecipeCategoryUid.SMELTING);
 
     long start = System.nanoTime();
 
@@ -112,6 +115,8 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
         NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT - 1, NUM_INVENTORY_SLOT);
     registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerAlloySmelter.Normal.class, VanillaRecipeCategoryUid.SMELTING, FIRST_RECIPE_SLOT,
         NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
+    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerAlloySmelter.Furnace.class, VanillaRecipeCategoryUid.SMELTING, FIRST_RECIPE_SLOT,
+        NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT - 1, NUM_INVENTORY_SLOT);
 
     Log.info(String.format("AlloyRecipeCategory: Added %d alloy smelter recipes to JEI in %.3f seconds.", result.size(), (end - start) / 1000000000d));
   }
@@ -125,7 +130,7 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
   private final @Nonnull IDrawableAnimated flame;
 
   public AlloyRecipeCategory(IGuiHelper guiHelper) {
-    ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("alloy_smelter");
+    ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("alloy_smelter_auto");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 82, 78);
 
     IDrawableStatic flameDrawable = guiHelper.createDrawable(backgroundLocation, 176, 0, 14, 14);

@@ -453,6 +453,46 @@
         "textures": {
           "layer0": "enderio:items/item_material_glazed_nether_brick"
         }
+      },
+      "infinity_goop": {
+        "textures": {
+          "layer0": "enderio:items/item_material_infinity_goop"
+        }
+      },
+      "ingot_energetic_silver": {
+        "textures": {
+          "layer0": "enderio:items/item_material_ingot_energetic_silver"
+        }
+      },
+      "ingot_crystalline_pink_slime": {
+        "textures": {
+          "layer0": "enderio:items/item_material_ingot_crystalline_pink_slime"
+        }
+      },
+      "ingot_combustive_metal": {
+        "textures": {
+          "layer0": "enderio:items/item_material_ingot_combustive_metal"
+        }
+      },
+      "ingot_crude_steel": {
+        "textures": {
+          "layer0": "enderio:items/item_material_ingot_crude_steel"
+        }
+      },
+      "ingot_crystalline_alloy": {
+        "textures": {
+          "layer0": "enderio:items/item_material_ingot_crystalline_alloy"
+        }
+      },
+      "ingot_melodic_alloy": {
+        "textures": {
+          "layer0": "enderio:items/item_material_ingot_melodic_alloy"
+        }
+      },
+      "ingot_stellar_alloy": {
+        "textures": {
+          "layer0": "enderio:items/item_material_ingot_stellar_alloy"
+        }
       }
     }
   }

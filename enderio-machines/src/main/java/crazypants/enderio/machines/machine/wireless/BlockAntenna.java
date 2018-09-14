@@ -8,6 +8,7 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.TileEntityEio;
+import crazypants.enderio.base.machine.interfaces.ITEProxy;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.util.ClientUtil;
@@ -18,14 +19,16 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockAntenna extends BlockEio<TileEntityEio> implements IResourceTooltipProvider, IHaveRenderers {
+public class BlockAntenna extends BlockEio<TileEntityEio> implements IResourceTooltipProvider, IHaveRenderers, ITEProxy {
 
   public static final @Nonnull PropertyEnum<EnumFacing> BASE = PropertyEnum.create("base", EnumFacing.class, EnumFacing.EAST, EnumFacing.WEST, EnumFacing.DOWN,
       EnumFacing.NORTH, EnumFacing.SOUTH);
@@ -116,6 +119,24 @@ public class BlockAntenna extends BlockEio<TileEntityEio> implements IResourceTo
   @Override
   public void registerRenderers(@Nonnull IModObject modObject) {
     ClientUtil.registerDefaultItemRenderer(MachineObject.block_wireless_charger_extension);
+  }
+
+  @Override
+  public TileWirelessCharger getParent(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+    return getAnyTileEntity(world, pos.offset(state.getValue(BASE)), TileWirelessCharger.class);
+  }
+
+  @Override
+  public boolean onBlockActivated(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer entityPlayer,
+      @Nonnull EnumHand hand, @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
+    if (hand == EnumHand.MAIN_HAND && entityPlayer.getHeldItem(hand).isEmpty()) {
+      TileWirelessCharger te = getParent(world, pos, state);
+      if (te != null) {
+        te.toggleRange();
+      }
+      return true;
+    }
+    return super.onBlockActivated(world, pos, state, entityPlayer, hand, side, hitX, hitY, hitZ);
   }
 
 }

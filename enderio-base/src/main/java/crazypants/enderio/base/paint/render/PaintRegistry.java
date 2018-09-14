@@ -9,6 +9,7 @@ import javax.vecmath.Vector3f;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.enderio.core.common.util.NullHelper;
 import com.google.common.base.Function;
 
 import crazypants.enderio.base.EnderIO;
@@ -62,6 +63,7 @@ public class PaintRegistry {
   }
 
   private static class PaintRegistryClient extends PaintRegistryServer {
+
     @SideOnly(Side.CLIENT)
     private ConcurrentMap<String, Pair<ResourceLocation, PaintMode>> modelLocations;
 
@@ -166,32 +168,55 @@ public class PaintRegistry {
       if (state == null) {
         state = sourceModel.getDefaultState();
       }
-      return sourceModel.bake(state, Attributes.DEFAULT_BAKED_FORMAT, new Function<ResourceLocation, TextureAtlasSprite>() {
-        @Override
-        public TextureAtlasSprite apply(@Nullable ResourceLocation location) {
-          String locationString = location == null ? "" : location.toString();
-          if (paintMode != PaintMode.TAGGED_TEXTURES || locationString.endsWith("PAINT")) {
-            if (paintSource == null) {
-              return Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
-            } else {
-              return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(paintSource);
-            }
-          } else {
-            return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(locationString);
-          }
-        }
-
-        @Override
-        public boolean equals(@Nullable Object obj) {
-          return super.equals(obj);
-        }
-
-        @Override
-        public int hashCode() {
-          return super.hashCode();
-        }
-      });
+      final TextureAtlasSprite missingSprite = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
+      final TextureAtlasSprite paintSprite = paintSource == null ? missingSprite
+          : NullHelper.first(Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(paintSource), missingSprite);
+      if (paintMode == PaintMode.ALL_TEXTURES) {
+        return sourceModel.bake(state, Attributes.DEFAULT_BAKED_FORMAT, new AllPainter(paintSprite));
+      } else {
+        return sourceModel.bake(state, Attributes.DEFAULT_BAKED_FORMAT, new TaggedPainter(paintSprite));
+      }
     }
+
+    private static class AllPainter implements Function<ResourceLocation, TextureAtlasSprite> {
+      private final TextureAtlasSprite paintSprite;
+
+      private AllPainter(TextureAtlasSprite paintSprite) {
+        this.paintSprite = paintSprite;
+      }
+
+      @Override
+      public TextureAtlasSprite apply(@Nullable ResourceLocation location) {
+        return paintSprite;
+      }
+
+      @Override
+      public boolean equals(@Nullable Object obj) {
+        return super.equals(obj);
+      }
+
+      @Override
+      public int hashCode() {
+        return super.hashCode();
+      }
+    }
+
+    private static class TaggedPainter extends AllPainter {
+      private TaggedPainter(TextureAtlasSprite paintSprite) {
+        super(paintSprite);
+      }
+
+      @Override
+      public TextureAtlasSprite apply(@Nullable ResourceLocation location) {
+        String locationString = location == null ? "" : location.toString();
+        if (locationString.endsWith("PAINT")) {
+          return super.apply(location);
+        } else {
+          return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(locationString);
+        }
+      }
+    }
+
 
     @SideOnly(Side.CLIENT)
     private IModelState combine(IModelState a, IModelState b) {

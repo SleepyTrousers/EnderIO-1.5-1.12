@@ -74,6 +74,7 @@ public class SpawnConfigParser extends DefaultHandler {
   public static final String ELEMENT_BIOME = "biome";
 
   public static final String ELEMENT_DIM_EXCLUDE = "dimensionExclude";
+  public static final String ELEMENT_DIM_INCLUDE = "dimensionInclude";
 
   public static final String ATT_ID = "id";
   public static final String ATT_ID_START = "idStart";
@@ -165,23 +166,46 @@ public class SpawnConfigParser extends DefaultHandler {
       } else if (currentEntry != null) {
         parseDimExclude(attributes);
       }
+    } else if (ELEMENT_DIM_INCLUDE.equals(localName)) {
+      if (!foundRoot) {
+        Log.warn("Element " + ELEMENT_DIM_INCLUDE + " found before " + ELEMENT_ROOT);
+      }
+      if (currentEntry == null && !invalidEntryElement) {
+        Log.warn(ELEMENT_DIM_INCLUDE + " found outside an " + ELEMENT_ENTRY + " and/or " + ELEMENT_FILTER + " element. It will be ignored");
+      } else if (currentEntry != null) {
+        parseDimInclude(attributes);
+      }
     }
   }
 
   private void parseDimExclude(Attributes attributes) {
     String name = getStringValue(ATT_NAME, attributes, null);
     if (name != null) {
-      currentEntry.addDimensionFilter(new DimensionFilter(name));
+      currentEntry.addDimensionFilter(new DimensionFilter(name, DimensionFilter.Type.BLACK));
       return;
     }
     int id = getIntValue(ATT_ID, attributes, Integer.MAX_VALUE);
     if (id != Integer.MAX_VALUE) {
-      currentEntry.addDimensionFilter(new DimensionFilter(id));
+      currentEntry.addDimensionFilter(new DimensionFilter(id, DimensionFilter.Type.BLACK));
       return;
     }
-    currentEntry.addDimensionFilter(
-        new DimensionFilter(getIntValue(ATT_ID_START, attributes, Integer.MAX_VALUE), getIntValue(ATT_ID_END, attributes, Integer.MAX_VALUE)));
+    currentEntry.addDimensionFilter(new DimensionFilter(getIntValue(ATT_ID_START, attributes, Integer.MIN_VALUE),
+        getIntValue(ATT_ID_END, attributes, Integer.MAX_VALUE), DimensionFilter.Type.BLACK));
+  }
 
+  private void parseDimInclude(Attributes attributes) {
+    String name = getStringValue(ATT_NAME, attributes, null);
+    if (name != null) {
+      currentEntry.addDimensionFilter(new DimensionFilter(name, DimensionFilter.Type.WHITE));
+      return;
+    }
+    int id = getIntValue(ATT_ID, attributes, Integer.MAX_VALUE);
+    if (id != Integer.MAX_VALUE) {
+      currentEntry.addDimensionFilter(new DimensionFilter(id, DimensionFilter.Type.WHITE));
+      return;
+    }
+    currentEntry.addDimensionFilter(new DimensionFilter(getIntValue(ATT_ID_START, attributes, Integer.MIN_VALUE),
+        getIntValue(ATT_ID_END, attributes, Integer.MAX_VALUE), DimensionFilter.Type.WHITE));
   }
 
   @Override

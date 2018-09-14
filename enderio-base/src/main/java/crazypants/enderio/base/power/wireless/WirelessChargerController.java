@@ -3,11 +3,14 @@ package crazypants.enderio.base.power.wireless;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
@@ -30,21 +33,19 @@ public class WirelessChargerController {
 
   public static @Nonnull WirelessChargerController instance = new WirelessChargerController();
 
-  private final @Nonnull Map<Integer, List<IWirelessCharger>> perWorldChargers = new HashMap<Integer, List<IWirelessCharger>>();
+  private final @Nonnull Map<Integer, Collection<BlockPos>> perWorldChargers = new HashMap<>();
   private int changeCount;
 
   private WirelessChargerController() {
   }
 
   public void registerCharger(@Nonnull IWirelessCharger charger) {
-    List<IWirelessCharger> chargers = getChargersForWorld(charger.getworld());
-    chargers.add(charger);
+    getChargersForWorld(charger.getworld()).add(charger.getLocation().toImmutable());
     changeCount++;
   }
 
   public void deregisterCharger(@Nonnull IWirelessCharger charger) {
-    List<IWirelessCharger> chargers = getChargersForWorld(charger.getworld());
-    chargers.remove(charger);
+    getChargersForWorld(charger.getworld()).remove(charger.getLocation());
     changeCount++;
   }
 
@@ -61,16 +62,24 @@ public class WirelessChargerController {
   }
 
   public void getChargers(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Collection<IWirelessCharger> res) {
-    List<IWirelessCharger> chargers = getChargersForWorld(world);
-    for (IWirelessCharger charger : chargers) {
-      if (charger.getRange().contains(pos)) {
+    final Collection<BlockPos> chargers = getChargersForWorld(world);
+    for (Iterator<BlockPos> iterator = chargers.iterator(); iterator.hasNext();) {
+      BlockPos chargerPos = iterator.next();
+      IWirelessCharger charger = chargerPos != null ? BlockEnder.getAnyTileEntitySafe(world, chargerPos, IWirelessCharger.class) : null;
+      if (charger != null) {
+        if (charger.getRange().contains(pos)) {
         res.add(charger);
+        }
+      } else {
+        iterator.remove();
+        changeCount++;
       }
     }
   }
 
   public void chargePlayersItems(@Nonnull EntityPlayer player) {
-    List<IWirelessCharger> chargers = getChargersForWorld(player.world);
+    List<IWirelessCharger> chargers = new ArrayList<>();
+    getChargers(player.world, new BlockPos(player), chargers);
     if (chargers.isEmpty()) {
       return;
     }
@@ -109,10 +118,10 @@ public class WirelessChargerController {
     return res;
   }
 
-  private @Nonnull List<IWirelessCharger> getChargersForWorld(@Nonnull World world) {
-    List<IWirelessCharger> res = perWorldChargers.get(world.provider.getDimension());
+  private @Nonnull Collection<BlockPos> getChargersForWorld(@Nonnull World world) {
+    Collection<BlockPos> res = perWorldChargers.get(world.provider.getDimension());
     if (res == null) {
-      res = new ArrayList<IWirelessCharger>();
+      res = new HashSet<BlockPos>();
       perWorldChargers.put(world.provider.getDimension(), res);
     }
     return res;

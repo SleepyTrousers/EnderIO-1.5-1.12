@@ -21,11 +21,13 @@ class ReservoirTankWrapper implements ITankAccess {
   private SmartTank tank;
   private final @Nonnull World world;
   private final @Nonnull BlockPos pos;
+  private final boolean allowFluidVoiding;
 
-  ReservoirTankWrapper(@Nonnull ITankAccess parent, @Nonnull World world, @Nonnull BlockPos pos) {
+  ReservoirTankWrapper(@Nonnull ITankAccess parent, @Nonnull World world, @Nonnull BlockPos pos, boolean allowFluidVoiding) {
     this.parents.add(parent);
     this.world = world;
     this.pos = pos;
+    this.allowFluidVoiding = allowFluidVoiding;
   }
 
   @Override
@@ -45,7 +47,7 @@ class ReservoirTankWrapper implements ITankAccess {
         }
       }
     }
-    if (free < Fluid.BUCKET_VOLUME) {
+    if (allowFluidVoiding && free < Fluid.BUCKET_VOLUME) {
       free = Fluid.BUCKET_VOLUME;
     }
     return tank = new SmartTank(parentTank.getFluid(), free);

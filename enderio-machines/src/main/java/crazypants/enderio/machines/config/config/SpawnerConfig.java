@@ -31,10 +31,23 @@ public final class SpawnerConfig {
       "Max number of entities in the nearby area until no more are spawned. A zero value will remove this check").setMin(0).sync();
   public static final IValue<Integer> poweredSpawnerMaxSpawnTries = F.make("poweredSpawnerMaxSpawnTries", 3, //
       "Number of tries to find a suitable spawning location").setRange(1, 9).sync();
-  public static final IValue<Boolean> poweredSpawnerUseVanillaSpawChecks = F.make("poweredSpawnerUseVanillaSpawChecks", false, //
+  public static final IValue<Boolean> poweredSpawnerUseVanillaSpawnChecks = F.make("poweredSpawnerUseVanillaSpawnChecks", false, //
       "If true, regular spawn checks such as lighting level and dimension will be made before spawning mobs").sync();
+  public static final IValue<Boolean> poweredSpawnerUseForgeSpawnChecks = F.make("poweredSpawnerUseForgeSpawnChecks", true, //
+      "If true, other mods can prevent spawning mobs").sync();
 
   public static final IValue<Boolean> poweredSpawnerAddAllMobsCreative = F.make("poweredSpawnerAddAllMobsCreative", false, //
       "If true, spawners for all mobs will be added to the creative menu. Otherwise only a handfull of samples are added. (Client setting.)");
+
+  public static final IValueFactory C = F.section(".creative");
+
+  public static final IValue<Boolean> homeZoneEnabled = F.make("homeZoneEnabled", true, //
+      "If true, creative spawners sill set the homezone on spawned creatures. Note that bats, ghast, slimes and squid are not creatures.").sync();
+  public static final IValue<Integer> homeZoneSize = F.make("homeZoneSize", 30, //
+      "The size of the homezone. Radius in blocks. No effect if homeZoneEnabled is off.").sync();
+  public static final IValue<Integer> homeZoneLimit = F.make("homeZoneLimit", 16, //
+      "The maximum number of mobs allowed in the homezone. When there are more, no new ones will be spawned. Radius in blocks. No effect if homeZoneEnabled is off. "
+          + "Note that poweredSpawnerMaxNearbyEntities still applies for mobs within the poweredSpawnerSpawnRange.")
+      .sync();
 
 }

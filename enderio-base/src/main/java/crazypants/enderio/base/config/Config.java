@@ -1,7 +1,6 @@
 package crazypants.enderio.base.config;
 
 import java.io.File;
-import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 
@@ -21,9 +20,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -174,22 +171,10 @@ public final class Config {
   public static int fireWaterPowerTotalBurnTime = 15000;
 
   /**
-   * Note: If someone asks you to include a hoe in this list, the correct answer is "No. Get the other mod author to oredict their hoe(s) as 'toolHoe'"
+   * Note: If someone asks you to include a hoe in this (no longer existing) list, the correct answer is:
+   * 
+   * "No. Get the other mod author to oredict their hoe(s) as 'toolHoe'"
    */
-  public static String[] hoeStrings = new String[] { "tconstruct:mattock", "thermalfoundation:tool.hoe_invar", "thermalfoundation:tool.hoe_copper",
-      "thermalfoundation:tool.hoe_bronze", "thermalfoundation:tool.hoe_silver", "thermalfoundation:tool.hoe_electrum", "thermalfoundation:tool.hoe_tin",
-      "thermalfoundation:tool.hoe_lead", "thermalfoundation:tool.hoe_nickel", "thermalfoundation:tool.hoe_platinum", "thermalfoundation:tool.hoe_aluminum",
-      "thermalfoundation:tool.hoe_steel", "thermalfoundation:tool.hoe_constantan", "basemetals:adamantine_hoe", "basemetals:aquarium_hoe",
-      "basemetals:brass_hoe", "basemetals:bronze_hoe", "basemetals:coldiron_hoe", "basemetals:copper_hoe", "basemetals:cupronickel_hoe",
-      "basemetals:electrum_hoe", "basemetals:invar_hoe", "basemetals:lead_hoe", "basemetals:mithril_hoe", "basemetals:nickel_hoe", "basemetals:platinum_hoe",
-      "basemetals:silver_hoe", "basemetals:starsteel_hoe", "basemetals:steel_hoe", "basemetals:tin_hoe", "actuallyadditions:item_hoe_quartz",
-      "actuallyadditions:item_hoe_emerald", "actuallyadditions:item_hoe_obsidian", "actuallyadditions:item_hoe_crystal_red",
-      "actuallyadditions:item_hoe_crystal_blue", "actuallyadditions:item_hoe_crystal_light_blue", "actuallyadditions:item_hoe_crystal_black",
-      "actuallyadditions:item_hoe_crystal_green", "actuallyadditions:item_hoe_crystal_white", "ic2:bronze_hoe" /* IC2exp 1.10 */,
-      "appliedenergistics2:nether_quartz_hoe", "appliedenergistics2:certus_quartz_hoe" /* AE2 1.10 */, "railcraft:tool_hoe_steel" /* Railcraft 1.10 */,
-      "mysticalagriculture:inferium_hoe", "mysticalagriculture:prudentium_hoe", "mysticalagriculture:intermedium_hoe", "mysticalagriculture:superium_hoe",
-      "mysticalagriculture:supremium_hoe" };
-  public static @Nonnull Things farmHoes = new Things();
 
   public static long nutrientFoodBoostDelay = 400;
   public static boolean rocketFuelIsExplosive = true;
@@ -588,24 +573,6 @@ public final class Config {
     fireWaterPowerTotalBurnTime = config
         .get(sectionPower.name, "fireWaterPowerTotalBurnTime", fireWaterPowerTotalBurnTime, "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000")
         .getInt(fireWaterPowerTotalBurnTime);
-
-    // START Hoes
-
-    ConfigCategory hoes = config.getCategory(sectionHoes.name);
-    hoes.setComment("Each value of this category is an item that could be a hoe. You can add more values.");
-
-    for (String hoe : hoeStrings) {
-      config.get(sectionHoes.name, hoe, true, "Is this item a hoe that can be used in the farming station?");
-    }
-
-    farmHoes = new Things();
-    for (Entry<String, Property> entry : hoes.entrySet()) {
-      if (entry.getValue().getBoolean()) {
-        farmHoes.add(entry.getKey());
-      }
-    }
-
-    // END Hoes
 
     nutrientFoodBoostDelay = config.get(sectionFluid.name, "nutrientFluidFoodBoostDelay", nutrientFoodBoostDelay,
         "The delay in ticks between when nutrient distillation boosts your food value.").getInt((int) nutrientFoodBoostDelay);

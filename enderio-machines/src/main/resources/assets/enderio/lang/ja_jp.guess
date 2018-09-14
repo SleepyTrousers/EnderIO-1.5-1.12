@@ -5,10 +5,24 @@
 # enderio.gui.buffer.maxio= <-- different number of %s
 #  ('最大入出力：s' vs 'In/Out Max: %s')
 # enderio.gui.stirling_generator.burnRate= <-- extra unused key
+enderio.block_creative_spawner.gui.offering=
+#                                       en: Pay here
+enderio.block_creative_spawner.gui.template=
+#                                       en: Payment Template
+enderio.block_creative_spawner.gui.vial=
+#                                   en: Soul
 enderio.gui.stirling_generator.efficiency=
 #                                     en: Efficiency: %s%%
 enderio.status.powered_spawner.unbound=
 #                                  en: §4Cannot spawn "nothing"
+tile.block_creative_spawner.name=
+#                            en: Creative Spawner
+tile.block_creative_spawner.tooltip.common.line1=
+#                                            en: Creative mode/server admin mob spawner
+tile.block_creative_spawner.tooltip.detailed.line1=
+#                                              en: Admin: Put in a soul vial and optionally an item that will serve as payment for spawning mobs.
+tile.block_creative_spawner.tooltip.detailed.line2=
+#                                              en: User: Put in the payment to have mobs spawned (unless the spawner is free).
 tile.block_ender_generator.name=
 #                           en: Ender Generator
 tile.block_ender_generator.tooltip.detailed.line1=

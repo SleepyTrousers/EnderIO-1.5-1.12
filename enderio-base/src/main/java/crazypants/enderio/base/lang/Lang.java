@@ -13,6 +13,7 @@ public enum Lang implements ILang {
   MACHINE_CONFIGURED(".machine.tooltip.configured"),
   AXE_MULTIHARVEST("item.item_dark_steel_axe.tooltip.multiHarvest"),
   AXE_POWERED("item.item_dark_steel_axe.tooltip.effPowered"),
+  CROOK_MULTIHARVEST("item.item_dark_steel_crook.tooltip.multiHarvest"),
   PICK_POWERED("item.item_dark_steel_pickaxe.tooltip.effPowered"),
   PICK_OBSIDIAN("item.item_dark_steel_pickaxe.tooltip.effObs"),
   PICK_OBSIDIAN_COST("item.item_dark_steel_pickaxe.tooltip.cost"),

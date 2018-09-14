@@ -26,12 +26,13 @@ import crazypants.enderio.machines.machine.obelisk.relocator.TileRelocatorObelis
 import crazypants.enderio.machines.machine.obelisk.weather.TileWeatherObelisk;
 import crazypants.enderio.machines.machine.obelisk.xp.TileExperienceObelisk;
 import crazypants.enderio.machines.machine.painter.TileEntityPainter;
-import crazypants.enderio.machines.machine.reservoir.TileReservoir;
+import crazypants.enderio.machines.machine.reservoir.TileReservoirBase;
 import crazypants.enderio.machines.machine.sagmill.TileSagMill;
 import crazypants.enderio.machines.machine.slicensplice.TileSliceAndSplice;
 import crazypants.enderio.machines.machine.solar.TileSolarPanel;
 import crazypants.enderio.machines.machine.soul.TileSoulBinder;
 import crazypants.enderio.machines.machine.spawner.TilePoweredSpawner;
+import crazypants.enderio.machines.machine.spawner.creative.TileCreativeSpawner;
 import crazypants.enderio.machines.machine.tank.TileTank;
 import crazypants.enderio.machines.machine.teleport.anchor.TileTravelAnchor;
 import crazypants.enderio.machines.machine.teleport.telepad.TileDialingDevice;
@@ -67,8 +68,8 @@ public enum MachineTileEntity implements IModTileEntityBase {
   TileDialingDevice(TileDialingDevice.class),
   TileElectricLight(TileElectricLight.class),
   TileLightNode(TileLightNode.class),
-  TileReservoir(TileReservoir.class),
-  TileOmniReservoir(TileReservoir.TileOmniReservoir.class),
+  TileReservoir(TileReservoirBase.TileReservoir.class),
+  TileOmniReservoir(TileReservoirBase.TileOmniReservoir.class),
   TileInhibitorObelisk(TileInhibitorObelisk.class),
   TileRelocatorObelisk(TileRelocatorObelisk.class),
   TileKillerJoe(TileKillerJoe.class),
@@ -105,6 +106,7 @@ public enum MachineTileEntity implements IModTileEntityBase {
   TileImpulseHopper(TileImpulseHopper.class),
   TileCrafter(TileCrafter.class),
   TileSimpleCrafter(TileCrafter.Simple.class),
+  TileCreativeSpawner(TileCreativeSpawner.class),
 
   ;
 

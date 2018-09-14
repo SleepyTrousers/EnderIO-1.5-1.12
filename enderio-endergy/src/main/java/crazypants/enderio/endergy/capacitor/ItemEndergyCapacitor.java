@@ -46,6 +46,18 @@ public class ItemEndergyCapacitor extends Item {
     return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.STELLAR_CAPACITOR);
   }
 
+  public static ItemEndergyCapacitor create_silver(@Nonnull IModObject modObject) {
+    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.SILVER_CAPACITOR);
+  }
+
+  public static ItemEndergyCapacitor create_lead(@Nonnull IModObject modObject) {
+    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.LEAD_CAPACITOR);
+  }
+
+  public static ItemEndergyCapacitor create_electrum(@Nonnull IModObject modObject) {
+    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.ELECTRUM_CAPACITOR);
+  }
+
   protected ItemEndergyCapacitor(@Nonnull IModObject modObject, @Nonnull ICapacitorData data) {
     this (modObject, data, 0);
   }

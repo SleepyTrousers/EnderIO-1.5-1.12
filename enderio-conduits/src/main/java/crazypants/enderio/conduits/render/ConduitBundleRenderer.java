@@ -36,6 +36,7 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -114,9 +115,10 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
   public @Nonnull List<BakedQuad> getGeneralQuads(@Nonnull IBlockStateWrapper state, BlockRenderLayer layer) {
 
     List<BakedQuad> result = new ArrayList<BakedQuad>();
-    IConduitBundle bundle = (IConduitBundle) state.getTileEntity();
+    TileEntity tileEntity = state.getTileEntity();
 
-    if (bundle != null) {
+    if (tileEntity instanceof TileConduitBundle) {
+      IConduitBundle bundle = (IConduitBundle) tileEntity;
       if (layer == null) {
         addBreakingQuads(bundle, result);
       } else {

@@ -9,8 +9,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemDoor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockItemDarkSteelDoor extends ItemDoor {
 
@@ -26,7 +24,6 @@ public class BlockItemDarkSteelDoor extends ItemDoor {
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
   public void getSubItems(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
     if (this.isInCreativeTab(tab)) {
       list.add(new ItemStack(this));

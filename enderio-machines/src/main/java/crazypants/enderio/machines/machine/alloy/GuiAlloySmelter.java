@@ -22,32 +22,90 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 
-public class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInventoryMachineBase<T> implements IAlloySmelterRemoteExec.GUI {
+public abstract class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInventoryMachineBase<T> implements IAlloySmelterRemoteExec.GUI {
+
+  @SuppressWarnings("unchecked")
+  public static @Nonnull <E extends TileAlloySmelter> GuiAlloySmelter<E> create(@Nonnull InventoryPlayer playerInv, @Nonnull E te) {
+    if (te instanceof TileAlloySmelter.Simple) {
+      return (GuiAlloySmelter<E>) new Simple(playerInv, (TileAlloySmelter.Simple) te);
+    } else if (te instanceof TileAlloySmelter.Furnace) {
+      return (GuiAlloySmelter<E>) new Furnace(playerInv, (TileAlloySmelter.Furnace) te);
+    } else {
+      return (GuiAlloySmelter<E>) new Normal(playerInv, te);
+    }
+  }
+
+  public static class Normal extends GuiAlloySmelter<TileAlloySmelter> {
+    public Normal(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileAlloySmelter furnaceInventory) {
+      super(par1InventoryPlayer, furnaceInventory, MODE.AUTO);
+    }
+  }
+
+  public static class Simple extends GuiAlloySmelter<TileAlloySmelter.Simple> {
+    public Simple(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileAlloySmelter.Simple furnaceInventory) {
+      super(par1InventoryPlayer, furnaceInventory, MODE.SIMPLE_ALLOY);
+    }
+  }
+
+  public static class Furnace extends GuiAlloySmelter<TileAlloySmelter.Furnace> {
+    public Furnace(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileAlloySmelter.Furnace furnaceInventory) {
+      super(par1InventoryPlayer, furnaceInventory, MODE.SIMPLE_FURNACE);
+    }
+  }
+
+  static enum MODE {
+    SIMPLE_ALLOY,
+    SIMPLE_FURNACE,
+    ALLOY,
+    FURNACE,
+    AUTO;
+
+    boolean isSimple() {
+      return this == MODE.SIMPLE_ALLOY || this == SIMPLE_FURNACE;
+    }
+  }
 
   private final @Nonnull IIconButton vanillaFurnaceButton;
   private final @Nonnull GuiToolTip vanillaFurnaceTooltip;
-  private final boolean isSimple;
+  protected @Nonnull MODE mode;
 
   protected static final int SMELT_MODE_BUTTON_ID = 76;
 
-  public GuiAlloySmelter(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull T furnaceInventory) {
-    super(furnaceInventory, ContainerAlloySmelter.create(par1InventoryPlayer, furnaceInventory), "alloy_smelter", "simple_alloy_smelter");
+  public GuiAlloySmelter(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull T furnaceInventory, @Nonnull MODE mode) {
+    super(furnaceInventory, ContainerAlloySmelter.create(par1InventoryPlayer, furnaceInventory), "simple_alloy_smelter", "simple_furnace",
+        "alloy_smelter_alloy", "alloy_smelter_furnace", "alloy_smelter_auto");
 
-    isSimple = furnaceInventory instanceof TileAlloySmelter.Simple || furnaceInventory instanceof TileAlloySmelter.Furnace;
+    this.mode = mode;
 
     vanillaFurnaceButton = new IIconButton(getFontRenderer(), SMELT_MODE_BUTTON_ID, 0, 0, null, RenderUtil.BLOCK_TEX);
     vanillaFurnaceButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
-    vanillaFurnaceButton.visible = !isSimple;
+    vanillaFurnaceButton.visible = !mode.isSimple();
 
     vanillaFurnaceTooltip = new GuiToolTip(new Rectangle(xSize - 5 - BUTTON_SIZE, 62, BUTTON_SIZE, BUTTON_SIZE), (String[]) null);
-    vanillaFurnaceTooltip.setIsVisible(!isSimple);
+    vanillaFurnaceTooltip.setIsVisible(!mode.isSimple());
 
-    redstoneButton.setIsVisible(!isSimple);
+    redstoneButton.setIsVisible(!mode.isSimple());
 
     addProgressTooltip(55, 35, 14, 14);
     addProgressTooltip(103, 35, 14, 14);
 
     addDrawingElement(new PowerBar(furnaceInventory, this));
+  }
+
+  private MODE getMode() {
+    if (mode.isSimple()) {
+      return mode;
+    }
+    switch (getTileEntity().getMode()) {
+    case ALL:
+      return MODE.AUTO;
+    case ALLOY:
+      return MODE.ALLOY;
+    case FURNACE:
+      return MODE.FURNACE;
+    default:
+      throw new RuntimeException("Just found out that black is smellier than the sound of hot!");
+    }
   }
 
   @Override
@@ -74,7 +132,7 @@ public class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInventoryMac
 
   @Override
   protected void mouseClicked(int x, int y, int button) throws IOException {
-    if (button == 1 && vanillaFurnaceButton.isMouseOver() && !isSimple) {
+    if (button == 1 && vanillaFurnaceButton.isMouseOver() && !mode.isSimple()) {
       // um, why do we need this?
       Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
       actionPerformed(vanillaFurnaceButton, 1);
@@ -89,9 +147,7 @@ public class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInventoryMac
 
   private void actionPerformed(GuiButton button, int mbutton) throws IOException {
     if (button.id == SMELT_MODE_BUTTON_ID) {
-      getTileEntity().setMode(mbutton == 0 ? getTileEntity().getMode().next() : getTileEntity().getMode().prev());
-      updateVanillaFurnaceButton();
-      doSetMode(getTileEntity().getMode());
+      doSetMode(mbutton == 0 ? getTileEntity().getMode().next() : getTileEntity().getMode().prev());
     } else {
       super.actionPerformed(button);
     }
@@ -113,8 +169,9 @@ public class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInventoryMac
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
+    updateVanillaFurnaceButton();
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-    bindGuiTexture(isSimple ? 1 : 0);
+    bindGuiTexture(getMode().ordinal());
     int sx = guiLeft;
     int sy = guiTop;
 

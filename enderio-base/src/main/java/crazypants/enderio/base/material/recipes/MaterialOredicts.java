@@ -101,6 +101,13 @@ public class MaterialOredicts {
 
     // Zoo
     OreDictionary.registerOre("egg", new ItemStack(ModObject.item_owl_egg.getItemNN()));
+
+    // Shears
+    OreDictionary.registerOre("toolShears", new ItemStack(Items.SHEARS, 1, OreDictionary.WILDCARD_VALUE));
+    OreDictionary.registerOre("toolShears", new ItemStack(ModObject.itemDarkSteelShears.getItemNN(), 1, OreDictionary.WILDCARD_VALUE));
+
+    // Treetap
+    OreDictionary.registerOre("toolTreetap", new ItemStack(ModObject.itemDarkSteelTreetap.getItemNN(), 1, OreDictionary.WILDCARD_VALUE));
   }
 
 }
