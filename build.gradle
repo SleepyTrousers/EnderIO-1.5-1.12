@@ -18,7 +18,7 @@ buildscript {
 }
 
 plugins {
-    id 'com.matthewprenger.cursegradle' version "1.0.11"
+    id 'com.matthewprenger.cursegradle' version "1.1.0"
 }
 
 apply plugin: 'eclipse'
@@ -389,12 +389,12 @@ curseforge {
         relations {
             requiredLibrary 'endercore'
 
-            optionalLibrary 'waila'
+//            optionalLibrary 'waila'
             optionalLibrary 'jei'
             optionalLibrary 'the-one-probe'
             optionalLibrary 'baubles'
             optionalLibrary 'chisel'
-            optionalLibrary 'hwyla'
+//            optionalLibrary 'hwyla'
             optionalLibrary 'opencomputers'
             optionalLibrary 'forestry'
             optionalLibrary 'ctm'
@@ -404,7 +404,7 @@ curseforge {
             optionalLibrary 'biomes-o-plenty'
             optionalLibrary 'botania'
             optionalLibrary 'buildcraft'
-            optionalLibrary 'chisels-bits'
+//            optionalLibrary 'chisels-bits'
             optionalLibrary 'computercraft'
             optionalLibrary 'extra-utilities'
             optionalLibrary 'immersive-engineering'
