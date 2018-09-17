@@ -197,7 +197,7 @@ public class EnderIO implements IEnderIOAddon {
     PaintSourceValidator.instance.loadConfig();
 
     BuildcraftIntegration.init(event);
-    // TEUtil.init(event);
+//    TEUtil.init(event);
 
     proxy.init(event);
 
