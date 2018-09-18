@@ -92,6 +92,12 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
     return res;
   }
 
+  public static @Nonnull ItemDarkSteelAxe createStellarAlloy(@Nonnull IModObject modObject) {
+    ItemDarkSteelAxe res = new ItemDarkSteelAxe(modObject, EquipmentData.STELLAR_ALLOY);
+    MinecraftForge.EVENT_BUS.register(res);
+    return res;
+  }
+
   private final MultiHarvestComparator harvestComparator = new MultiHarvestComparator();
   private final @Nonnull IEquipmentData data;
 
