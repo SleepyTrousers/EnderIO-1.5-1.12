@@ -712,7 +712,7 @@ XML editor will display that as tooltips when editing this file.
  
   <recipe name="Alloy: Hard Carbon (Nuclearcraft)" required="false">
     <alloying energy="4000" exp="0">
-      <input name="ingotGraphite"/>
+      <input name="ingotGraphite" amount="2"/>
       <input name="gemDiamond"/>
       <output name="ingotHardCarbon" amount="2"/>
     </alloying>
