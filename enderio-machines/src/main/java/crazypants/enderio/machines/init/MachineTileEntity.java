@@ -13,6 +13,7 @@ import crazypants.enderio.machines.machine.crafter.TileCrafter;
 import crazypants.enderio.machines.machine.enchanter.TileEnchanter;
 import crazypants.enderio.machines.machine.farm.TileFarmStation;
 import crazypants.enderio.machines.machine.generator.combustion.TileCombustionGenerator;
+import crazypants.enderio.machines.machine.generator.lava.TileLavaGenerator;
 import crazypants.enderio.machines.machine.generator.stirling.TileStirlingGenerator;
 import crazypants.enderio.machines.machine.generator.zombie.TileZombieGenerator;
 import crazypants.enderio.machines.machine.ihopper.TileImpulseHopper;
@@ -107,6 +108,7 @@ public enum MachineTileEntity implements IModTileEntityBase {
   TileCrafter(TileCrafter.class),
   TileSimpleCrafter(TileCrafter.Simple.class),
   TileCreativeSpawner(TileCreativeSpawner.class),
+  TileLavaGenerator(TileLavaGenerator.class),
 
   ;
 

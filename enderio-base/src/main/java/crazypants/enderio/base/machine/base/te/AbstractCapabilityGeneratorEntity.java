@@ -13,4 +13,8 @@ public abstract class AbstractCapabilityGeneratorEntity extends AbstractCapabili
     super(subclassInventory, CapacitorKey.NO_POWER, maxEnergyStored, maxEnergyUsed);
   }
 
+  protected AbstractCapabilityGeneratorEntity(@Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
+    super(CapacitorKey.NO_POWER, maxEnergyStored, maxEnergyUsed);
+  }
+
 }
