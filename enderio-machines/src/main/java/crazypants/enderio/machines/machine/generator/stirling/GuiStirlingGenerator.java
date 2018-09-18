@@ -74,7 +74,7 @@ public class GuiStirlingGenerator<T extends TileStirlingGenerator> extends GuiIn
   protected String formatProgressTooltip(int scaledProgress, float remaining) {
     int totalBurnTime = getTileEntity().totalBurnTime;
     int remainingTicks = (int) (remaining * totalBurnTime);
-    int remainingSecs = (remainingTicks / 20) + 1;
+    int remainingSecs = (remainingTicks / 20) + (int) Math.signum(remainingTicks % 20);
     int remainingPower = getTileEntity().getPowerUsePerTick() * remainingTicks;
     Object[] objects = { remaining, remainingSecs / 60, remainingSecs % 60, remainingPower };
     return MessageFormat.format(Lang.GUI_STIRGEN_REMAINING.get(), objects);

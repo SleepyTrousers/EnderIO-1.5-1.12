@@ -96,7 +96,7 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
 
   @Override
   public float getProgress() {
-    if (totalBurnTime <= 0) {
+    if (burnTime <= 0) {
       return -1;
     }
     return (float) burnTime / (float) totalBurnTime;
