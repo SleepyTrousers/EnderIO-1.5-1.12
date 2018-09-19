@@ -196,7 +196,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
       par3List.add(is);
 
       is = new ItemStack(this);
-      EnergyUpgrade.UPGRADES.get(3).addToItem(is, this);
+      EnergyUpgrade.UPGRADES.get(getMaxEmpoweredLevel(is)).addToItem(is, this);
       EnergyUpgradeManager.setPowerFull(is, this);
 
       Iterator<IDarkSteelUpgrade> iter = DarkSteelRecipeManager.recipeIterator();
