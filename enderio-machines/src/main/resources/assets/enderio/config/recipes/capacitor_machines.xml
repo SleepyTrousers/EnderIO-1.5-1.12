@@ -48,7 +48,10 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_farm_station/base_size" base="1" scaler="FIXED" />
   <capacitor key="enderio:block_farm_station/bonus_size" base="2" scaler="IDENTITY" />
   <capacitor key="enderio:block_farm_station/stacksize_limit" base="16" scaler="QUADRATIC" />
-  <capacitor key="enderio:block_farm_station/boost" base="1" scaler="IDENTITY" />
+  <!-- boost: result is the percent chance that a block gets a growth tick, so with the default there
+       is a 100% chance per capacitor level that one block is ticked, or in other words: one block
+       per capacitor level is ticked. -->
+  <capacitor key="enderio:block_farm_station/boost" base="100" scaler="IDENTITY" />
   
   <capacitor key="enderio:block_combustion_generator/loss" base="0" scaler="CENT" />
   <capacitor key="enderio:block_combustion_generator/buffer" base="100000" scaler="POWER" />

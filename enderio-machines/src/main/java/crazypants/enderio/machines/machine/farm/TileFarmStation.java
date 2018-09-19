@@ -1,6 +1,7 @@
 package crazypants.enderio.machines.machine.farm;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -225,8 +226,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
             removeNotification(FarmNotification.OUTPUT_FULL);
             doTick();
           }
+          doBoost();
         }
-        doBoost();
       } else {
         setSingleNotification(FarmNotification.NO_POWER);
       }
@@ -391,26 +392,26 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   private @Nonnull BlockPos getNextBoostCoord() {
     if (boostCoords.isEmpty()) {
       Iterators.addAll(boostCoords, new PlanarBlockIterator(getPos(), Orientation.HORIZONTAL, getFarmSize()));
+      Collections.shuffle(boostCoords);
     }
     return boostCoords.isEmpty() ? pos : NullHelper.first(boostCoords.remove(boostCoords.size() - 1), pos);
   }
 
   private void doBoost() {
     if (FarmConfig.enableCarefulCare.get()) {
-      float boost = CapacitorKey.FARM_BOOST.getFloat(getCapacitorData());
+      // capKey base is an int, so to give it a usable range, we scale it down by a factor of 100
+      float boost = CapacitorKey.FARM_BOOST.getFloat(getCapacitorData()) / 100f;
       while (boost > 0) {
-        if (boost >= 1 || random.nextFloat() < boost) {
-          boost--;
-          BlockPos boostPos = getNextBoostCoord();
-          if (world.isBlockLoaded(boostPos)) {
-            IBlockState blockState = world.getBlockState(boostPos);
-            Block block = blockState.getBlock();
+        BlockPos boostPos = getNextBoostCoord();
+        if ((boost >= 1 || random.nextFloat() < boost) && world.isBlockLoaded(boostPos)) {
+          IBlockState blockState = world.getBlockState(boostPos);
+          Block block = blockState.getBlock();
 
-            if (block.getTickRandomly()) {
-              block.randomTick(world, boostPos, blockState, world.rand);
-            }
+          if (block.getTickRandomly()) {
+            block.randomTick(world, boostPos, blockState, world.rand);
           }
         }
+        boost--;
       }
     }
   }
