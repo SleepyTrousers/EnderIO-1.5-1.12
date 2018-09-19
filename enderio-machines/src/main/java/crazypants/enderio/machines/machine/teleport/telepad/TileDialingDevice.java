@@ -17,7 +17,6 @@ import com.enderio.core.common.vecmath.Vector4f;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
-import crazypants.enderio.base.item.coordselector.TelepadTarget.TelepadTargetArrayListHandler;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.render.ranged.IRanged;
@@ -40,7 +39,7 @@ public class TileDialingDevice extends AbstractCapabilityPoweredMachineEntity im
   @Store
   private DialerFacing dialerFacing;
 
-  @Store(handler = TelepadTargetArrayListHandler.class)
+  @Store
   private final ArrayList<TelepadTarget> targets = new ArrayList<TelepadTarget>();
 
   public TileDialingDevice() {

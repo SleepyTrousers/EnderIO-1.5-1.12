@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.common.NBTAction;
+import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;

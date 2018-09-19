@@ -10,4 +10,6 @@ dependencies {
 		transitive = false // Why does TOP API pull in RF? The world may never know...
 	}
 	compile "com.mod-buildcraft:buildcraft-api:${buildcraft_version}"
+	
+	implementation "info.loenwind.autosave:AutoSave:${minecraft_version}-1.0.1"
 }

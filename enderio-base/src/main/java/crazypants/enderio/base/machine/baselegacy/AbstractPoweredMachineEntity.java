@@ -4,7 +4,7 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.NBTAction;
+import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.VecmathUtil;
 

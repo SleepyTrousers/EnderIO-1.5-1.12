@@ -6,12 +6,10 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.NBTAction;
-
-import crazypants.enderio.base.filter.item.IItemFilter;
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class FilterHandler implements IHandler<IFilter> {
@@ -21,8 +19,8 @@ public class FilterHandler implements IHandler<IFilter> {
   }
 
   @Override
-  public boolean canHandle(Class<?> clazz) {
-    return IItemFilter.class.isAssignableFrom(clazz);
+  public Class<?> getRootType() {
+    return IFilter.class;
   }
 
   @Override

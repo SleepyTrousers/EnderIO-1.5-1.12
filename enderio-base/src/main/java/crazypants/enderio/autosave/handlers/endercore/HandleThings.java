@@ -1,4 +1,4 @@
-package info.loenwind.autosave.handlers.endercore;
+package crazypants.enderio.autosave.handlers.endercore;
 
 import java.lang.reflect.Field;
 import java.util.Set;
@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.NBTAction;
+import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.util.stackable.Things;
 
@@ -23,8 +23,8 @@ public class HandleThings implements IHandler<Things> {
   }
 
   @Override
-  public boolean canHandle(Class<?> clazz) {
-    return Things.class.isAssignableFrom(clazz);
+  public Class<?> getRootType() {
+    return Things.class;
   }
 
   @Override
@@ -54,18 +54,4 @@ public class HandleThings implements IHandler<Things> {
 
     return object;
   }
-
-  public static class HandleThingsNNList extends HandleNNList<Things> {
-
-    public HandleThingsNNList() {
-      super(new HandleThings());
-    }
-
-    @Override
-    protected @Nonnull Things makeEmptyValueObject() {
-      return new Things();
-    }
-
-  }
-
 }

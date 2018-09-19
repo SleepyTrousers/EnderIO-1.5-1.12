@@ -1,4 +1,4 @@
-package info.loenwind.autosave.handlers.enderio;
+package crazypants.enderio.autosave.handlers.enderio;
 
 import java.lang.reflect.Field;
 import java.util.Set;
@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import info.loenwind.autosave.Registry;
-import com.enderio.core.common.NBTAction;
+import info.loenwind.autosave.util.NBTAction;
 
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
@@ -21,8 +21,8 @@ public class HandleIMachineRecipe implements IHandler<IMachineRecipe> {
   }
 
   @Override
-  public boolean canHandle(Class<?> clazz) {
-    return IMachineRecipe.class.isAssignableFrom(clazz);
+  public Class<?> getRootType() {
+    return IMachineRecipe.class;
   }
 
   @Override

@@ -1,4 +1,4 @@
-package info.loenwind.autosave.handlers.endercore;
+package crazypants.enderio.autosave.handlers.endercore;
 
 import java.lang.reflect.Field;
 import java.util.Set;
@@ -6,13 +6,12 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.NBTAction;
+import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.util.UserIdent;
 
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
-import info.loenwind.autosave.handlers.java.HandleArrayList;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class HandleUserIdent implements IHandler<UserIdent> {
@@ -21,8 +20,8 @@ public class HandleUserIdent implements IHandler<UserIdent> {
   }
 
   @Override
-  public boolean canHandle(Class<?> clazz) {
-    return UserIdent.class.isAssignableFrom(clazz);
+  public Class<?> getRootType() {
+    return UserIdent.class;
   }
 
   @Override
@@ -37,18 +36,4 @@ public class HandleUserIdent implements IHandler<UserIdent> {
       @Nullable UserIdent object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     return UserIdent.readfromNbt(nbt, name);
   }
-
-  public static class HandleUserIdentArrayList extends HandleArrayList<UserIdent> {
-
-    public HandleUserIdentArrayList() {
-      super(new HandleUserIdent());
-    }
-
-    @Override
-    protected @Nonnull UserIdent makeEmptyValueObject() {
-      return UserIdent.NOBODY;
-    }
-
-  }
-
 }

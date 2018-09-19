@@ -11,7 +11,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.common.NBTAction;
+import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
@@ -49,7 +49,6 @@ import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.handlers.minecraft.HandleItemStack.HandleItemStackNNList;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -91,7 +90,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   @Store
   private int lockedSlots = 0x00;
 
-  @Store(value = { NBTAction.SAVE, NBTAction.ITEM }, handler = HandleItemStackNNList.class)
+  @Store(value = { NBTAction.SAVE, NBTAction.ITEM })
   private @Nonnull NNList<ItemStack> overflowQueue = new NNList<>();
 
   private final @Nonnull Set<FarmNotification> notification = EnumSet.noneOf(FarmNotification.class);

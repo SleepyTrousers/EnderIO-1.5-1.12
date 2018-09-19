@@ -14,7 +14,7 @@ import crazypants.enderio.base.recipe.enchanter.EnchanterRecipe;
 import crazypants.enderio.machines.init.MachineObject;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.handlers.minecraft.HandleItemStack.HandleItemStackNNList;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -25,7 +25,7 @@ import net.minecraft.util.text.TextComponentString;
 @Storable
 public class TileEnchanter extends AbstractMachineEntity implements ISidedInventory { // TODO: caps not iinventory!
 
-  @Store(handler = HandleItemStackNNList.class)
+  @Store
   private NNList<ItemStack> inv = new NNList<>(4, ItemStack.EMPTY);
 
   @Override

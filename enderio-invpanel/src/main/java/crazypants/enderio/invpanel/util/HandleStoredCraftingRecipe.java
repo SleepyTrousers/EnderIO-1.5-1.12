@@ -6,12 +6,11 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.NBTAction;
+import info.loenwind.autosave.util.NBTAction;
 
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
-import info.loenwind.autosave.handlers.java.HandleArrayList;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class HandleStoredCraftingRecipe implements IHandler<StoredCraftingRecipe> {
@@ -20,8 +19,8 @@ public class HandleStoredCraftingRecipe implements IHandler<StoredCraftingRecipe
   }
 
   @Override
-  public boolean canHandle(Class<?> clazz) {
-    return StoredCraftingRecipe.class.isAssignableFrom(clazz);
+  public Class<?> getRootType() {
+    return StoredCraftingRecipe.class;
   }
 
   @Override
@@ -45,13 +44,4 @@ public class HandleStoredCraftingRecipe implements IHandler<StoredCraftingRecipe
     }
     return null;
   }
-
-  public static class HandleStoredCraftingRecipeArrayList extends HandleArrayList<StoredCraftingRecipe> {
-
-    public HandleStoredCraftingRecipeArrayList() {
-      super(new HandleStoredCraftingRecipe());
-    }
-
-  }
-
 }

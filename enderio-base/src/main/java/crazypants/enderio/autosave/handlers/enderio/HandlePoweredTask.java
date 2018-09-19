@@ -1,4 +1,4 @@
-package info.loenwind.autosave.handlers.enderio;
+package crazypants.enderio.autosave.handlers.enderio;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import info.loenwind.autosave.Registry;
-import com.enderio.core.common.NBTAction;
+import info.loenwind.autosave.util.NBTAction;
 
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
@@ -22,8 +22,8 @@ public class HandlePoweredTask implements IHandler<IPoweredTask> {
   }
 
   @Override
-  public boolean canHandle(Class<?> clazz) {
-    return IPoweredTask.class.isAssignableFrom(clazz);
+  public Class<?> getRootType() {
+    return IPoweredTask.class;
   }
 
   @Override

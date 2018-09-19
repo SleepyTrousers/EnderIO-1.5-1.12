@@ -8,7 +8,7 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.NBTAction;
+import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
 
@@ -37,7 +37,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
 
   private boolean init = true;
 
-  @Store(handler = HandleBlockPos.HandleBlockPosList.class, value = NBTAction.SAVE)
+  @Store(value = NBTAction.SAVE)
   private List<BlockPos> lightNodes;
 
   private boolean updatingLightNodes = false;

@@ -71,8 +71,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   // TODO Fix duct-tape
   // TODO Check store
-  @Store(handler = ConduitHandler.ConduitCopyOnWriteArrayListHandler.class)
-  private @Nonnull List<IConduit> conduits = new CopyOnWriteArrayList<IConduit>(); // <- duct-tape fix
+  @Store
+  private @Nonnull CopyOnWriteArrayList<IConduit> conduits = new CopyOnWriteArrayList<IConduit>(); // <- duct-tape fix
 
   /*
    * ^ this one is written to nbt and read from nbt

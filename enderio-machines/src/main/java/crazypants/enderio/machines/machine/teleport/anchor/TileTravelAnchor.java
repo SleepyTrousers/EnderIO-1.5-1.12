@@ -6,7 +6,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.NBTAction;
+import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.UserIdent;
 
@@ -20,8 +20,6 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.machines.integration.ftblib.FtblIntegration;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.handlers.endercore.HandleUserIdent;
-import info.loenwind.autosave.handlers.minecraft.HandleItemStack.HandleItemStackNNList;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -49,7 +47,7 @@ public class TileTravelAnchor extends AbstractCapabilityPoweredMachineEntity imp
   private AccessMode accessMode = AccessMode.PUBLIC;
 
   // TODO: Don't send this to all clients, but only to the owner. So the GUI has to request it with a request packet.
-  @Store(handler = HandleItemStackNNList.class)
+  @Store
   @Nonnull
   private NNList<ItemStack> password = new NNList<>(5, ItemStack.EMPTY);
 
@@ -60,7 +58,7 @@ public class TileTravelAnchor extends AbstractCapabilityPoweredMachineEntity imp
   @Store
   private String label;
 
-  @Store(handler = HandleUserIdent.HandleUserIdentArrayList.class)
+  @Store
   private List<UserIdent> authorisedUsers = new ArrayList<UserIdent>();
 
   @Store

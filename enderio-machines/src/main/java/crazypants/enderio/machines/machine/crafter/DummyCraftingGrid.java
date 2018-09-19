@@ -8,7 +8,6 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.handlers.minecraft.HandleItemStack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -18,7 +17,7 @@ import net.minecraft.util.text.TextComponentString;
 @Storable
 public class DummyCraftingGrid implements IInventory {
 
-  @Store(handler = HandleItemStack.HandleItemStackNNList.class)
+  @Store
   NNList<ItemStack> inv = new NNList<ItemStack>(10, ItemStack.EMPTY);
 
   public boolean hasValidRecipe() {

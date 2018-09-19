@@ -1,4 +1,4 @@
-package info.loenwind.autosave.handlers.enderio;
+package crazypants.enderio.autosave.handlers.enderio;
 
 import java.lang.reflect.Field;
 import java.util.Set;
@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import info.loenwind.autosave.Registry;
-import com.enderio.core.common.NBTAction;
+import info.loenwind.autosave.util.NBTAction;
 
 import crazypants.enderio.util.CapturedMob;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
@@ -20,8 +20,8 @@ public class HandleCapturedMob implements IHandler<CapturedMob> {
   }
 
   @Override
-  public boolean canHandle(Class<?> clazz) {
-    return CapturedMob.class.isAssignableFrom(clazz);
+  public Class<?> getRootType() {
+    return CapturedMob.class;
   }
 
   @Override

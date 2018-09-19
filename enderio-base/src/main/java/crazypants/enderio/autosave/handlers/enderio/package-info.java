@@ -1,0 +1,4 @@
+@ParametersAreNonnullByDefault
+package crazypants.enderio.autosave.handlers.enderio;
+
+import javax.annotation.ParametersAreNonnullByDefault;

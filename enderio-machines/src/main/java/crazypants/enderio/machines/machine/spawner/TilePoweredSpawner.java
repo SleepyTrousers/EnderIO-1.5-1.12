@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.common.NBTAction;
+import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.vecmath.Vector4f;
 

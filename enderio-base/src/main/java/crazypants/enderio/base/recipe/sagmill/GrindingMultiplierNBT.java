@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.NBTAction;
+import info.loenwind.autosave.util.NBTAction;
 
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
@@ -79,8 +79,8 @@ public class GrindingMultiplierNBT implements IGrindingMultiplier, IHandler<IGri
   }
 
   @Override
-  public boolean canHandle(Class<?> clazz) {
-    return IGrindingMultiplier.class.isAssignableFrom(clazz);
+  public Class<?> getRootType() {
+    return IGrindingMultiplier.class;
   }
 
   @Override

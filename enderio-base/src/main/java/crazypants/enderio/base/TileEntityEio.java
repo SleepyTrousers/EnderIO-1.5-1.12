@@ -3,9 +3,12 @@ package crazypants.enderio.base;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.NBTAction;
+import info.loenwind.autosave.util.NBTAction;
+
+import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.TileEntityBase;
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
@@ -19,6 +22,8 @@ import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -70,13 +75,83 @@ public abstract class TileEntityEio extends TileEntityBase {
     }
   }
 
+  /**
+   * SERVER: Called when being written to the save file.
+   */
   @Override
+  public final @Nonnull NBTTagCompound writeToNBT(@Nonnull NBTTagCompound root) {
+    super.writeToNBT(root);
+    writeCustomNBT(NBTAction.SAVE, root);
+    return root;
+  }
+
+  /**
+   * SERVER: Called when being read from the save file.
+   */
+  @Override
+  public final void readFromNBT(@Nonnull NBTTagCompound tag) {
+    super.readFromNBT(tag);
+    readCustomNBT(NBTAction.SAVE, tag);
+  }
+
+  /**
+   * Called when the chunk data is sent (client receiving chunks from server). Must have x/y/z tags.
+   */
+  @Override
+  public final @Nonnull NBTTagCompound getUpdateTag() {
+    NBTTagCompound tag = super.getUpdateTag();
+    writeCustomNBT(NBTAction.CLIENT, tag);
+    if (isProgressTile) {
+      // TODO: nicer way to do this? This is needed so players who enter a chunk get a correct progress.
+      tag.setFloat("tileprogress", ((IProgressTile) this).getProgress());
+    }
+    return tag;
+  }
+
+  /**
+   * CLIENT: Called when chunk data is received (client receiving chunks from server).
+   */
+  @Override
+  public final void handleUpdateTag(@Nonnull NBTTagCompound tag) {
+    super.handleUpdateTag(tag);
+    readCustomNBT(NBTAction.CLIENT, tag);
+    if (isProgressTile) {
+      // TODO: nicer way to do this? This is needed so players who enter a chunk get a correct progress.
+      ((IProgressTile) this).setProgress(tag.getFloat("tileprogress"));
+    }
+  }
+
+  /**
+   * SERVER: Called when block data is sent (client receiving blocks from server, via notifyBlockUpdate). No need for x/y/z tags.
+   */
+  @Override
+  public final SPacketUpdateTileEntity getUpdatePacket() {
+    NBTTagCompound tag = new NBTTagCompound();
+    writeCustomNBT(NBTAction.CLIENT, tag);
+    if (isProgressTile) {
+      // TODO: nicer way to do this? This is needed so players who enter a chunk get a correct progress.
+      tag.setFloat("tileprogress", ((IProgressTile) this).getProgress());
+    }
+    return new SPacketUpdateTileEntity(getPos(), 1, tag);
+  }
+
+  /**
+   * CLIENT: Called when block data is received (client receiving blocks from server, via notifyBlockUpdate).
+   */
+  @Override
+  public final void onDataPacket(@Nonnull NetworkManager net, @Nonnull SPacketUpdateTileEntity pkt) {
+    readCustomNBT(NBTAction.CLIENT, pkt.getNbtCompound());
+    if (isProgressTile) {
+      // TODO: nicer way to do this? This is needed so players who enter a chunk get a correct progress.
+      ((IProgressTile) this).setProgress(pkt.getNbtCompound().getFloat("tileprogress"));
+    }
+  }
+
   protected final void writeCustomNBT(@Nonnull NBTAction action, @Nonnull NBTTagCompound root) {
     onBeforeNbtWrite();
     Writer.write(action, root, this);
   }
 
-  @Override
   protected final void readCustomNBT(@Nonnull NBTAction action, @Nonnull NBTTagCompound root) {
     Reader.read(action, root, this);
     if (action == NBTAction.CLIENT) {

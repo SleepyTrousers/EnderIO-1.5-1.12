@@ -14,6 +14,7 @@ import com.google.common.collect.ImmutableList;
 
 import crazypants.enderio.api.IMC;
 import crazypants.enderio.api.addon.IEnderIOAddon;
+import crazypants.enderio.autosave.handlers.EIOHandlers;
 import crazypants.enderio.base.capacitor.CapacitorKeyRegistry;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.config.Config;
@@ -121,8 +122,10 @@ public class EnderIO implements IEnderIOAddon {
     MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Config.Post());
 
     MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.PreInit());
-
+    
     proxy.init(event);
+    
+    EIOHandlers.register();
 
     Log.debug("PHASE PRE-INIT END");
   }

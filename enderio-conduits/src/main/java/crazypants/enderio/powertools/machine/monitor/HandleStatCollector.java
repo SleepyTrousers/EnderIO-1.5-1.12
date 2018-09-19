@@ -6,19 +6,18 @@ import java.util.Set;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import com.enderio.core.common.NBTAction;
-
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.nbt.NBTTagCompound;
 
 @ParametersAreNonnullByDefault
 public class HandleStatCollector implements IHandler<StatCollector> {
 
   @Override
-  public boolean canHandle(@Nullable Class<?> clazz) {
-    return false;
+  public Class<?> getRootType() {
+    return StatCollector.class;
   }
 
   @Override

@@ -1,4 +1,4 @@
-package info.loenwind.autosave.handlers.endercore;
+package crazypants.enderio.autosave.handlers.endercore;
 
 import java.lang.reflect.Field;
 import java.util.Set;
@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.NBTAction;
+import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.fluid.SmartTank;
 
 import info.loenwind.autosave.Registry;
@@ -20,8 +20,8 @@ public class HandleSmartTank implements IHandler<SmartTank> {
   }
 
   @Override
-  public boolean canHandle(Class<?> clazz) {
-    return SmartTank.class.isAssignableFrom(clazz);
+  public Class<?> getRootType() {
+    return SmartTank.class;
   }
 
   @Override

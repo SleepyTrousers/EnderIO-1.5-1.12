@@ -89,6 +89,7 @@ allprojects {
         mavenCentral()
         maven { url = "http://tehnut.info/maven" }
         maven { url = "http://maven.tterrag.com" }
+        maven { url = "http://maven2.tterrag.com" }
         maven { url = "http://dvs1.progwml6.com/files/maven" }
         maven { url = "http://files.minecraftforge.net/maven" }
         maven { url = "http://maven.cil.li/" } // OpenComputers
