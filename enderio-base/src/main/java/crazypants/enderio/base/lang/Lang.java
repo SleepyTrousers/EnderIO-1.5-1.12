@@ -70,6 +70,8 @@ public enum Lang implements ILang {
   POWER_PERTICK(".power.format.pertick"),
   POWER_NAME(".power.format.name"),
   POWER_DETAILS(".power.format.details"),
+  TEMP_DEGC(".temperature.format.deg_c"),
+  GUI_GENERIC_EFFICIENCY(".format.percent_efficiency"),
   GUI_GENERIC_MAX(".gui.generic.max"),
   GUI_GENERIC_LOSS(".gui.generic.loss"),
   GUI_GENERIC_PROGRESS(".gui.generic.progress"),

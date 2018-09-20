@@ -68,6 +68,11 @@ public enum CapacitorKey implements ICapacitorKey {
   STIRLING_POWER_GEN(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_GEN, "gen"),
   STIRLING_POWER_EFFICIENCY(MachineObject.block_stirling_generator, CapacitorKeyType.SPEED, "efficiency"),
 
+  LAVAGEN_POWER_BUFFER(MachineObject.block_lava_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  LAVAGEN_POWER_GEN(MachineObject.block_lava_generator, CapacitorKeyType.ENERGY_GEN, "gen"),
+  LAVAGEN_POWER_LOSS(MachineObject.block_lava_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),
+  LAVAGEN_POWER_FLUID_USE(MachineObject.block_lava_generator, CapacitorKeyType.AMOUNT, "use"),
+
   SIMPLE_STIRLING_POWER_LOSS(MachineObject.block_simple_stirling_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),
   SIMPLE_STIRLING_POWER_BUFFER(MachineObject.block_simple_stirling_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   SIMPLE_STIRLING_POWER_GEN(MachineObject.block_simple_stirling_generator, CapacitorKeyType.ENERGY_GEN, "gen"),
@@ -226,7 +231,7 @@ public enum CapacitorKey implements ICapacitorKey {
   public float getFloat(float level) {
     return baseValue * scaler.scaleValue(level);
   }
-  
+
   @Override
   public int getBaseValue() {
     return baseValue;

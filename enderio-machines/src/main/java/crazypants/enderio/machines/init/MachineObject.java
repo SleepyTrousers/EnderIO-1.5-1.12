@@ -17,6 +17,7 @@ import crazypants.enderio.machines.machine.crafter.BlockCrafter;
 import crazypants.enderio.machines.machine.enchanter.BlockEnchanter;
 import crazypants.enderio.machines.machine.farm.BlockFarmStation;
 import crazypants.enderio.machines.machine.generator.combustion.BlockCombustionGenerator;
+import crazypants.enderio.machines.machine.generator.lava.BlockLavaGenerator;
 import crazypants.enderio.machines.machine.generator.stirling.BlockStirlingGenerator;
 import crazypants.enderio.machines.machine.generator.zombie.BlockZombieGenerator;
 import crazypants.enderio.machines.machine.ihopper.BlockImpulseHopper;
@@ -74,6 +75,7 @@ public enum MachineObject implements IModObjectBase {
   block_zombie_generator(BlockZombieGenerator.class, MachineTileEntity.TileZombieGenerator),
   block_franken_zombie_generator(BlockZombieGenerator.class, "create_franken", MachineTileEntity.TileFrankenZombieGenerator),
   block_ender_generator(BlockZombieGenerator.class, "create_ender", MachineTileEntity.TileEnderGenerator),
+  block_lava_generator(BlockLavaGenerator.class, MachineTileEntity.TileLavaGenerator),
 
   block_killer_joe(BlockKillerJoe.class, MachineTileEntity.TileKillerJoe),
   block_electric_light(BlockElectricLight.class, MachineTileEntity.TileElectricLight),

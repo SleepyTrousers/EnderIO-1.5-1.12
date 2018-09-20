@@ -656,6 +656,10 @@ enderio.power.format.pertick=%s µI/t
 enderio.power.format.name=Micro Infinity (%s)
 enderio.power.format.details=A unit of energy
 
+enderio.temperature.format.deg_c=%s °C
+
+enderio.format.percent_efficiency=%s%% efficiency
+
 enderio.fluid.millibucket.format=%s mB
 enderio.fluid.millibucket.format.name=%s mB of %s
 enderio.fluid.millibucket.format.of=%s / %s mB
@@ -667,7 +671,6 @@ enderio.fuel.tooltip.generates=Generates %s at %s
 enderio.fuel.tooltip.burnTime=Burn time %s ticks
 enderio.coolant.tooltip.heading=Coolant
 enderio.coolant.tooltip.degreesPerBucket=%s°C per bucket
-
 
 enderio.tooltip.anvilupgrades=Anvil Upgrades:
 

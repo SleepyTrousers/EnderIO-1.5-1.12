@@ -364,6 +364,13 @@ tile.block_crafter.name=Crafter
 
 tile.block_simple_crafter.name=Simple Crafter
 
+tile.block_lava_generator.name=Lava Heat Exchanger
+tile.block_lava_generator.tooltip.detailed.line1=Generates energy by cooling down lava.
+tile.block_lava_generator.tooltip.detailed.line2=Make sure it doesn't overheat!
+tile.block_lava_generator.tooltip.detailed.line3=Can be cooled by placing cold liquids or ice around it.
+enderio.gui.lavagen.heat=§bHeat
+
+
 # Types. smelting=Alloy Smelter Speed,
 # area=all machines "area" attribute (e.g. farm),
 # green=Farming Station area, red=Stirling Generator power generation, mobby=spawner speedup,

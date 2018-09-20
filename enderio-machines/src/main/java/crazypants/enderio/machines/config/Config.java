@@ -15,6 +15,7 @@ import crazypants.enderio.machines.config.config.FarmConfig;
 import crazypants.enderio.machines.config.config.ImpulseHopperConfig;
 import crazypants.enderio.machines.config.config.InhibitorConfig;
 import crazypants.enderio.machines.config.config.KillerJoeConfig;
+import crazypants.enderio.machines.config.config.LavaGenConfig;
 import crazypants.enderio.machines.config.config.SolarConfig;
 import crazypants.enderio.machines.config.config.SoulBinderConfig;
 import crazypants.enderio.machines.config.config.SpawnerConfig;
@@ -51,6 +52,7 @@ public final class Config {
     ImpulseHopperConfig.F.getClass();
     InhibitorConfig.F.getClass();
     KillerJoeConfig.F.getClass();
+    LavaGenConfig.F.getClass();
     SolarConfig.F.getClass();
     SoulBinderConfig.F.getClass();
     SpawnerConfig.F.getClass();

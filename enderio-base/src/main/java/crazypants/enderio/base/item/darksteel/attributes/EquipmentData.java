@@ -64,7 +64,8 @@ public enum EquipmentData implements IEquipmentData {
     }
 
   },
-
+  // 10, 15, 22, 10 - 3, 6, 8, 3 =
+  // 57 - 20 = 37 * 5% = 185%
   STELLAR_ALLOY(new Builder(4).setMaxDamageFactor(75).setDamageReduction(8, 14, 18, 7).setDamageReductionEmpowered(10, 15, 22, 10).setArmorEnchantability(40)
       .setSoundEvent(SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND).setToughness(7f).setToughnessEmpowered(9f).setToolMaterialName("stellarAlloy")
       .setHarvestLevel(Config.darkSteelPickMinesTiCArdite ? 5 : 3).setMaxUses(5000).setEfficiency(22).setDamage(11f).setToolEnchanability(40)

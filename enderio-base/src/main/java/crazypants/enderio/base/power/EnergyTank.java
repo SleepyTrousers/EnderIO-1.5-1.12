@@ -253,4 +253,8 @@ public class EnergyTank implements IEnergyStorage, IPowerBarData {
     return capacitorData;
   }
 
+  public boolean isFull() {
+    return getEnergyStored() >= getMaxEnergyStored();
+  }
+
 }
