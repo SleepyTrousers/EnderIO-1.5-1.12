@@ -4,17 +4,18 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
 import com.enderio.core.common.util.NNList;
@@ -32,7 +33,7 @@ import net.minecraftforge.fml.common.ModContainer;
 
 public class RecipeLoader {
 
-  private static Map<String, String> imcRecipes = new HashMap<>();
+  private static List<Pair<String, String>> imcRecipes = new ArrayList<>();
 
   private RecipeLoader() {
   }
@@ -138,7 +139,7 @@ public class RecipeLoader {
   }
 
   private static <T extends RecipeRoot> T handleIMCRecipes(T target, T config) {
-    for (Entry<String, String> recipe : imcRecipes.entrySet()) {
+    for (Entry<String, String> recipe : imcRecipes) {
       try (InputStream is = IOUtils.toInputStream(recipe.getValue(), Charset.forName("UTF-8"))) {
         T recipes = RecipeFactory.readStax(target, "recipes", is);
         recipes.enforceValidity();
@@ -212,7 +213,7 @@ public class RecipeLoader {
 
   public static void addIMCRecipe(String sender, String recipe) throws XMLStreamException, IOException {
     if (imcRecipes != null) {
-      imcRecipes.put(sender, recipe);
+      imcRecipes.add(Pair.of(sender, recipe));
     } else {
       try (InputStream is = IOUtils.toInputStream(recipe, Charset.forName("UTF-8"))) {
         Recipes recipes = RecipeFactory.readStax(new Recipes(), "recipes", is);
