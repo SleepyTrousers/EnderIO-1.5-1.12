@@ -32,7 +32,7 @@ public class GuiLavaGenerator extends GuiCapMachineBase<TileLavaGenerator> {
 
   public GuiLavaGenerator(@Nonnull InventoryPlayer playerInv, @Nonnull TileLavaGenerator te) {
     super(te, new ContainerLavaGenerator<>(playerInv, te), "lava_generator");
-    addDrawingElement(new PowerBar(te.getEnergy(), this, POWERX, POWERY, POWER_HEIGHT));
+    addDrawingElement(new PowerBar(te.getEnergy(), this, POWERX + 4, POWERY, POWER_HEIGHT));
     addToolTip(new GuiToolTip(RECTANGLE_TANK, "") {
 
       @Override
