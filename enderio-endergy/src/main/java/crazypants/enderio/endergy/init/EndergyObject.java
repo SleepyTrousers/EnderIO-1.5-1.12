@@ -10,6 +10,8 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.IModObjectBase;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.init.RegisterModObject;
+import crazypants.enderio.base.item.darksteel.ItemDarkSteelArmor;
+import crazypants.enderio.base.item.darksteel.ItemDarkSteelAxe;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelPickaxe;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelSword;
 import crazypants.enderio.endergy.EnderIOEndergy;
@@ -39,6 +41,11 @@ public enum EndergyObject implements IModObjectBase {
   // Tools and Armour
   itemStellarAlloySword(ItemDarkSteelSword.class, "createStellarAlloy"),
   itemStellarAlloyPickaxe(ItemDarkSteelPickaxe.class, "createStellarAlloy"),
+  itemStellarAlloyAxe(ItemDarkSteelAxe.class, "createStellarAlloy"),
+  itemStellarAlloyHelmet(ItemDarkSteelArmor.class, "createStellarAlloyHelmet"),
+  itemStellarAlloyBoots(ItemDarkSteelArmor.class, "createStellarAlloyBoots"),
+  itemStellarAlloyChestplate(ItemDarkSteelArmor.class, "createStellarAlloyChestplate"),
+  itemStellarAlloyLeggings(ItemDarkSteelArmor.class, "createStellarAlloyLeggings"),
 
   ;
 

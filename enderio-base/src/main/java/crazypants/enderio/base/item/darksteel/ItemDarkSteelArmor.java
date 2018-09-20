@@ -124,6 +124,24 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     return helmet;
   }
 
+  public static ItemDarkSteelArmor createStellarAlloyBoots(@Nonnull IModObject modObject) {
+    return new ItemDarkSteelArmor(EquipmentData.STELLAR_ALLOY, modObject, EntityEquipmentSlot.FEET, 2);
+  }
+
+  public static ItemDarkSteelArmor createStellarAlloyLeggings(@Nonnull IModObject modObject) {
+    return new ItemDarkSteelArmor(EquipmentData.STELLAR_ALLOY, modObject, EntityEquipmentSlot.LEGS, 2);
+  }
+
+  public static ItemDarkSteelArmor createStellarAlloyChestplate(@Nonnull IModObject modObject) {
+    return new ItemDarkSteelArmor(EquipmentData.STELLAR_ALLOY, modObject, EntityEquipmentSlot.CHEST, 2);
+  }
+
+  public static ItemDarkSteelArmor createStellarAlloyHelmet(@Nonnull IModObject modObject) {
+    final ItemDarkSteelArmor helmet = new ItemDarkSteelArmor(EquipmentData.STELLAR_ALLOY, modObject, EntityEquipmentSlot.HEAD, 2);
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new HelmetPainterTemplate(helmet));
+    return helmet;
+  }
+
   // ============================================================================================================
   // Fields
   // ============================================================================================================
@@ -178,7 +196,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
       par3List.add(is);
 
       is = new ItemStack(this);
-      EnergyUpgrade.UPGRADES.get(3).addToItem(is, this);
+      EnergyUpgrade.UPGRADES.get(getMaxEmpoweredLevel(is)).addToItem(is, this);
       EnergyUpgradeManager.setPowerFull(is, this);
 
       Iterator<IDarkSteelUpgrade> iter = DarkSteelRecipeManager.recipeIterator();
