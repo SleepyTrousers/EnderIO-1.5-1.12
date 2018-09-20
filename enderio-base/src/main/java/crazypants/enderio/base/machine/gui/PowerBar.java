@@ -32,7 +32,7 @@ public class PowerBar implements IDrawingElement {
 
   public class PowerBarTooltip extends GuiToolTip {
     public PowerBarTooltip() {
-      super(new Rectangle(x + 1, y, width, height));
+      super(new Rectangle(x, y, width, height));
     }
 
     @Override
