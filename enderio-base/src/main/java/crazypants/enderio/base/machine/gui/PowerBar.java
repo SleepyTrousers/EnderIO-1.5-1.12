@@ -140,7 +140,8 @@ public class PowerBar implements IDrawingElement {
 
   private int getEnergyStoredScaled(int scale) {
     final int maxEnergyStored = tank.getMaxEnergyStored();
-    return maxEnergyStored == 0 ? 0 : VecmathUtil.clamp(Math.round(scale * ((float) tank.getEnergyStored() / maxEnergyStored)), 0, scale);
+    final int energyStored = tank.getEnergyStored();
+    return maxEnergyStored == 0 || energyStored == 0 ? 0 : VecmathUtil.clamp(Math.round(scale * ((float) energyStored / maxEnergyStored)), 1, scale);
   }
 
   private void paintPowerBar(int guiX0, int guiY0) {
