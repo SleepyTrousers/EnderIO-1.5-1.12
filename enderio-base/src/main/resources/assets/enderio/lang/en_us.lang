@@ -658,7 +658,7 @@ enderio.power.format.details=A unit of energy
 
 enderio.temperature.format.deg_c=%s °C
 
-enderio.format.percent_efficiency=%s&& efficiency
+enderio.format.percent_efficiency=%s%% efficiency
 
 enderio.fluid.millibucket.format=%s mB
 enderio.fluid.millibucket.format.name=%s mB of %s

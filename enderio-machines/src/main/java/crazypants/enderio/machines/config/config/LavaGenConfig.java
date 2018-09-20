@@ -14,9 +14,8 @@ public final class LavaGenConfig {
   public static final IValue<Integer> heatLossPassive = F.make("heatLossPassive", 1, //
       "The amount of heat lost per tick.").setRange(0, 64).sync();
 
-  public static final IValue<Integer> heatLossActive = F.make("heatLossActive", 1, //
-      "The amount of heat lost per tick when actively cooled with a cold fluid block. Note that only one neighbor is checked per tick.").setRange(0, 64)
-      .sync();
+  public static final IValue<Integer> heatLossActive = F.make("heatLossActive", 3, //
+      "The amount of heat lost per tick when actively cooled with a cold fluid block. Note that only one neighbor is checked per tick.").setRange(0, 64).sync();
 
   public static final IValue<Integer> maxHeatFactor = F.make("maxHeatFactor", 8, //
       "The maximum heat that can be reached, as factor of the time it takes to process one bucket of lava.").setRange(1, 64).sync();

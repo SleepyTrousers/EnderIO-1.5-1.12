@@ -51,7 +51,7 @@ public class GenericBar implements IDrawingElement {
     GlStateManager.enableBlend();
     GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-    owner.drawGradientRect(drawX, drawY, barWidth, barHeight, getColor(), getColor());
+    owner.drawGradientRect(drawX, drawY, drawX + barWidth, drawY + barHeight, getColor(), getColor());
 
     GlStateManager.disableBlend();
   }

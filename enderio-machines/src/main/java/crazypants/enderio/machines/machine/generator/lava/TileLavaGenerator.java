@@ -15,6 +15,7 @@ import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityGeneratorEntity;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.power.PowerDistributor;
+import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.config.config.LavaGenConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import info.loenwind.autosave.annotations.Storable;
@@ -95,7 +96,7 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
         if (world.isBlockLoaded(pos2)) {
           Block block = world.getBlockState(pos2).getBlock();
           if (block instanceof IFluidBlock || block instanceof BlockLiquid) {
-            IFluidHandler targetFluidHandler = FluidUtil.getFluidHandler(world, pos, side.getOpposite());
+            IFluidHandler targetFluidHandler = FluidUtil.getFluidHandler(world, pos2, side.getOpposite());
             if (targetFluidHandler != null) {
               FluidStack fluidStack = targetFluidHandler.drain(1000, false);
               if (fluidStack != null && fluidStack.amount >= 1000 && fluidStack.getFluid().getTemperature(fluidStack) < getHeatDisplayValue()) {
@@ -127,12 +128,15 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
       }
       if (burnTime <= 0 && !tank.isEmpty()) {
         tank.drain(1, true);
-        burnTime = getLavaBurntime() / Fluid.BUCKET_VOLUME;
+        burnTime = getLavaBurntime() / Fluid.BUCKET_VOLUME / CapacitorKey.LAVAGEN_POWER_FLUID_USE.get(getCapacitorData());
       }
     }
 
     if (getHeat() > LavaGenConfig.overheatThreshold.get() && shouldDoWorkThisTick(20)) {
-      BlockPos pos2 = pos.up((int) (random.nextGaussian() * 3f)).east((int) (random.nextGaussian() * 5f)).north((int) (random.nextGaussian() * 5f));
+      int dx = random.nextInt(8) - random.nextInt(8);
+      int dy = random.nextInt(4) - random.nextInt(4);
+      int dz = random.nextInt(8) - random.nextInt(8);
+      BlockPos pos2 = pos.east(dx).up(dy).north(dz);
       if (world.isAirBlock(pos2)) {
         world.setBlockState(pos2, Blocks.FIRE.getDefaultState());
       }
@@ -160,7 +164,7 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
   }
 
   protected float getHeatDisplayValue() {
-    float factor = getHeatFactor();
+    float factor = getHeat();
     int ambient = FluidRegistry.WATER.getTemperature();
     int reallyhot = FluidRegistry.LAVA.getTemperature();
     return ambient + (reallyhot - ambient) * factor;

@@ -804,7 +804,7 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <recipe name="TelePad" required="true" disabled="false">
+  <recipe name="TelePad" required="true">
     <crafting>
       <grid size="3x3">
         <item name="FUSED_QUARTZ" /><item name="VIBRANT_ALLOY" /><item name="FUSED_QUARTZ" />
@@ -815,7 +815,7 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <recipe name="DialingDevice" required="true" disabled="false">
+  <recipe name="DialingDevice" required="true">
     <crafting>
       <grid size="3x3">
         <item/><item name="ELECTRICAL_STEEL" /><item/>
@@ -826,7 +826,7 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <recipe name="ImpulseHopper" required="true" disabled="false">
+  <recipe name="ImpulseHopper" required="true">
     <crafting>
       <grid size="3x3">
         <item name="ELECTRICAL_STEEL"/><item name="minecraft:hopper" /><item name="ELECTRICAL_STEEL"/>
@@ -837,7 +837,7 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <recipe name="Crafter" required="true" disabled="false">
+  <recipe name="Crafter" required="true">
     <crafting>
       <grid size="3x3">
         <item name="itemSilicon"/><item name="itemSilicon" /><item name="itemSilicon"/>
@@ -848,7 +848,7 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <recipe name="SimpleCrafter" required="true" disabled="false">
+  <recipe name="SimpleCrafter" required="true">
     <crafting>
       <grid size="3x3">
         <item name="itemSilicon"/><item name="itemSilicon" /><item name="itemSilicon"/>
@@ -859,13 +859,24 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <recipe name="Crafter, Upgrade" required="true" disabled="false">
+  <recipe name="Crafter, Upgrade" required="true">
     <crafting>
       <grid size="3x2">
         <item /><item name="enderio:block_simple_crafter" /><item />
         <item name="GEAR_IRON" /><item name="CHASSIS" /><item name="GEAR_IRON" />
       </grid>
       <output name="enderio:block_crafter" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Lava Generator" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotBrickNetherGlazed"/><item name="ingotBrickNetherGlazed" /><item name="ingotBrickNetherGlazed"/>
+        <item name="ingotBrickNetherGlazed"/><item name="CHASSIS" /><item name="ingotBrickNetherGlazed"/>
+        <item name="ingotBrickNetherGlazed" /><item name="enderio:block_tank:0" /><item name="ingotBrickNetherGlazed" />
+      </grid>
+      <output name="enderio:block_lava_generator" />
     </crafting>
   </recipe>
 

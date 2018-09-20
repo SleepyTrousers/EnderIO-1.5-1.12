@@ -23,7 +23,7 @@ import static crazypants.enderio.machines.lang.Lang.GUI_LAVAGEN_HEAT;
 
 public class GuiLavaGenerator extends GuiCapMachineBase<TileLavaGenerator> {
 
-  private static final int POWERX = 10;
+  private static final int POWERX = 12;
   private static final int POWERY = 14;
   private static final int POWER_HEIGHT = 42;
 
@@ -44,31 +44,30 @@ public class GuiLavaGenerator extends GuiCapMachineBase<TileLavaGenerator> {
 
     });
 
-    addDrawingElement(
-        new GenericBar(this, RECTANGLE_HEAT, -1, new GuiToolTip(RECTANGLE_HEAT, "") {
+    addDrawingElement(new GenericBar(this, RECTANGLE_HEAT, -1, new GuiToolTip(RECTANGLE_HEAT, "") {
 
-          @Override
-          protected void updateText() {
-            text.clear();
-            text.add(GUI_LAVAGEN_HEAT.get());
-            text.add(LangTemperature.degK(getTileEntity().getHeatDisplayValue())); // #.# °C
-            text.add(GUI_GENERIC_EFFICIENCY.get((int) (getTileEntity().getHeatFactor() * 100))); // ##% efficiency
-            text.add(LangPower.RFt(getTileEntity().getPowerGenPerTick())); // # µI/t
-          }
+      @Override
+      protected void updateText() {
+        text.clear();
+        text.add(GUI_LAVAGEN_HEAT.get());
+        text.add(LangTemperature.degK(getTileEntity().getHeatDisplayValue())); // #.# °C
+        text.add(GUI_GENERIC_EFFICIENCY.get((int) (getTileEntity().getHeatFactor() * 100))); // ##% efficiency
+        text.add(LangPower.RFt(getTileEntity().getPowerGenPerTick())); // # µI/t
+      }
 
-        }) {
+    }) {
 
-          @Override
-          protected float getLevel() {
-            return getTileEntity().getHeat();
-          }
+      @Override
+      protected float getLevel() {
+        return getTileEntity().getHeat();
+      }
 
-          @Override
-          protected int getColor() {
-            return getLevel() < .5 ? 0xB02ECB19 : getLevel() < .75 ? 0xB0FFD21F : 0xB0F21818;
-          }
+      @Override
+      protected int getColor() {
+        return getLevel() < .5 ? 0xB02ECB19 : getLevel() < .75 ? 0xB0FFD21F : 0xB0F21818;
+      }
 
-        });
+    });
   }
 
   @Override
