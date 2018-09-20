@@ -1,7 +1,9 @@
 package crazypants.enderio.conduits.conduit;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -14,6 +16,7 @@ import crazypants.enderio.util.NbtValue;
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
+import info.loenwind.autosave.handlers.java.HandleAbstractCollection;
 import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -56,5 +59,49 @@ public class ConduitHandler implements IHandler<IConduit> {
 
   private IConduit read(@Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound conduitTag) {
     return phase.contains(NBTAction.CLIENT) ? ConduitUtil.readClientConduitFromNBT(conduitTag) : ConduitUtil.readConduitFromNBT(conduitTag);
+  }
+  
+  @SuppressWarnings("rawtypes")
+  public static class List extends HandleAbstractCollection<CopyOnWriteArrayList<IConduit>> {
+
+    public List() throws NoHandlerFoundException {
+      super();
+    }
+    
+    protected List(Registry registry) throws NoHandlerFoundException {
+      super(registry, IConduit.class);
+    }
+
+    @Override
+    public Class<?> getRootType() {
+      return CopyOnWriteArrayList.class;
+    }
+
+    @Override
+    protected @Nonnull CopyOnWriteArrayList makeCollection() {
+      return new CopyOnWriteArrayList();
+    }
+    
+    @Override
+    protected IHandler<? extends CopyOnWriteArrayList<IConduit>> create(@Nonnull Registry registry, @Nonnull Type... types) throws NoHandlerFoundException {
+      if (types[0] == IConduit.class) {
+        return new List(registry);
+      }
+      return null;
+    }
+
+    @Override
+    public CopyOnWriteArrayList<IConduit> read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field,
+        @Nonnull String name, @Nullable CopyOnWriteArrayList<IConduit> object)
+        throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
+      final CopyOnWriteArrayList<IConduit> result = super.read(registry, phase, nbt, field, name, object);
+      if (result != null) {
+        // Remove null (missing) conduits
+        while (result.remove(null)) {
+        }
+      }
+      return result;
+    }
+
   }
 }
