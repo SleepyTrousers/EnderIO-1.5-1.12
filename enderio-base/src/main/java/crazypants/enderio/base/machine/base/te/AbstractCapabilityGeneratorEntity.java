@@ -6,7 +6,9 @@ import com.enderio.core.common.inventory.EnderInventory;
 
 import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.CapacitorKey;
+import info.loenwind.autosave.annotations.Storable;
 
+@Storable
 public abstract class AbstractCapabilityGeneratorEntity extends AbstractCapabilityPoweredMachineEntity {
 
   protected AbstractCapabilityGeneratorEntity(EnderInventory subclassInventory, @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {

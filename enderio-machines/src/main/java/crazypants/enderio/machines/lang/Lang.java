@@ -126,6 +126,7 @@ public enum Lang implements ILang {
   GUI_CREATIVE_SPAWNER_SOUL(".block_creative_spawner.gui.vial"),
   GUI_CREATIVE_SPAWNER_TEMPLATE(".block_creative_spawner.gui.template"),
   GUI_CREATIVE_SPAWNER_OFFERING(".block_creative_spawner.gui.offering"),
+  GUI_LAVAGEN_HEAT(".gui.lavagen.heat"),
 
   ;
 

@@ -220,4 +220,10 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
     return -1;
   }
 
+  // expose for GenericBar
+  @Override
+  public void drawGradientRect(int left, int top, int right, int bottom, int startColor, int endColor) {
+    super.drawGradientRect(left, top, right, bottom, startColor, endColor);
+  }
+
 }

@@ -9,11 +9,17 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.base.lang.LangFluid;
+import crazypants.enderio.base.lang.LangPower;
+import crazypants.enderio.base.lang.LangTemperature;
+import crazypants.enderio.base.machine.gui.GenericBar;
 import crazypants.enderio.base.machine.gui.GuiCapMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
+
+import static crazypants.enderio.base.lang.Lang.GUI_GENERIC_EFFICIENCY;
+import static crazypants.enderio.machines.lang.Lang.GUI_LAVAGEN_HEAT;
 
 public class GuiLavaGenerator extends GuiCapMachineBase<TileLavaGenerator> {
 
@@ -37,18 +43,32 @@ public class GuiLavaGenerator extends GuiCapMachineBase<TileLavaGenerator> {
       }
 
     });
-    addToolTip(new GuiToolTip(RECTANGLE_HEAT, "") {
 
-      @Override
-      protected void updateText() {
-        text.clear();
-        text.add("TODO heat"); // TODO
-        text.add(getTileEntity().heat + "°X");
-        text.add((int) (getTileEntity().getHeatFactor() * 100) + "% efficiency");
-        text.add(getTileEntity().getPowerGenPerTick() + " power gen");
-      }
+    addDrawingElement(
+        new GenericBar(this, RECTANGLE_HEAT, -1, new GuiToolTip(RECTANGLE_HEAT, "") {
 
-    });
+          @Override
+          protected void updateText() {
+            text.clear();
+            text.add(GUI_LAVAGEN_HEAT.get());
+            text.add(LangTemperature.degK(getTileEntity().getHeatDisplayValue())); // #.# °C
+            text.add(GUI_GENERIC_EFFICIENCY.get((int) (getTileEntity().getHeatFactor() * 100))); // ##% efficiency
+            text.add(LangPower.RFt(getTileEntity().getPowerGenPerTick())); // # µI/t
+          }
+
+        }) {
+
+          @Override
+          protected float getLevel() {
+            return getTileEntity().getHeat();
+          }
+
+          @Override
+          protected int getColor() {
+            return getLevel() < .5 ? 0xB02ECB19 : getLevel() < .75 ? 0xB0FFD21F : 0xB0F21818;
+          }
+
+        });
   }
 
   @Override
@@ -77,8 +97,6 @@ public class GuiLavaGenerator extends GuiCapMachineBase<TileLavaGenerator> {
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
     RenderUtil.renderGuiTank(getTileEntity().tank, guiLeft + RECTANGLE_TANK.x, guiTop + RECTANGLE_TANK.y, zLevel, RECTANGLE_TANK.width, RECTANGLE_TANK.height);
-
-    // TODO heatbar
   }
 
 }

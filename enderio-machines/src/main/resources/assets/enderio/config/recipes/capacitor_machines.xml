@@ -67,6 +67,24 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_stirling_generator/buffer" base="100000" scaler="POWER" />
   <capacitor key="enderio:block_stirling_generator/gen" base="60" scaler="DROPOFF" />
   <capacitor key="enderio:block_stirling_generator/efficiency" base="80" scaler="BURNTIME" />
+
+  <capacitor key="enderio:block_lava_generator/loss" base="0" scaler="CENT" />
+  <capacitor key="enderio:block_lava_generator/buffer" base="100000" scaler="POWER" />
+  <capacitor key="enderio:block_lava_generator/gen" base="10" >
+    <indexed step="1">
+      <data value="0"/>
+      <data value="1"/>
+      <data value="1.1"/>
+      <data value="1.3"/>
+      <data value="1.6"/>
+      <data value="2"/>
+      <data value="2.5"/>
+      <data value="3.1"/>
+      <data value="3.8"/>
+      <data value="4.6"/>
+      <data value="5.5"/>
+    </indexed>
+  </capacitor>
   
   <capacitor key="enderio:block_simple_stirling_generator/loss" base="10" scaler="CENT" />
   <capacitor key="enderio:block_simple_stirling_generator/buffer" base="2000" scaler="FIXED" />

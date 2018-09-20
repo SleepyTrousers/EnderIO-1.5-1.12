@@ -9,16 +9,23 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityGeneratorEntity;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.power.PowerDistributor;
+import crazypants.enderio.machines.config.config.LavaGenConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -27,10 +34,14 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
-import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_BUFFER;
-import static crazypants.enderio.machines.capacitor.CapacitorKey.STIRLING_POWER_GEN;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.LAVAGEN_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.LAVAGEN_POWER_GEN;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.LAVAGEN_POWER_LOSS;
 
 @Storable
 public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity implements IPaintable.IPaintableTileEntity, ITankAccess.IExtendedTankAccess {
@@ -40,13 +51,14 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
   @Store
   public int heat = 0;
   @Store
-  protected final @Nonnull SmartTank tank = new SmartTank(FluidRegistry.LAVA, 4000); // TODO config 4000
+  protected final @Nonnull SmartTank tank = new SmartTank(FluidRegistry.LAVA, LavaGenConfig.tankSize.get());
 
   private PowerDistributor powerDis;
+  private int coolingSide = 0;
 
   public TileLavaGenerator() {
-    super(STIRLING_POWER_BUFFER, STIRLING_POWER_GEN); // TODO
-    // setEnergyLoss(STIRLING_POWER_LOSS); // TODO
+    super(LAVAGEN_POWER_BUFFER, LAVAGEN_POWER_GEN);
+    getEnergy().setEnergyLoss(LAVAGEN_POWER_LOSS);
     tank.setTileEntity(this);
   }
 
@@ -72,14 +84,46 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
     if (heat > 0) {
-      heat--;
+      heat = Math.max(0, heat - LavaGenConfig.heatLossPassive.get());
+      if (heat > 0 && LavaGenConfig.heatLossActive.get() > 0) {
+        coolingSide++;
+        if (coolingSide > 5) {
+          coolingSide = 0;
+        }
+        final EnumFacing side = NNList.FACING.get(coolingSide);
+        BlockPos pos2 = pos.offset(side);
+        if (world.isBlockLoaded(pos2)) {
+          Block block = world.getBlockState(pos2).getBlock();
+          if (block instanceof IFluidBlock || block instanceof BlockLiquid) {
+            IFluidHandler targetFluidHandler = FluidUtil.getFluidHandler(world, pos, side.getOpposite());
+            if (targetFluidHandler != null) {
+              FluidStack fluidStack = targetFluidHandler.drain(1000, false);
+              if (fluidStack != null && fluidStack.amount >= 1000 && fluidStack.getFluid().getTemperature(fluidStack) < getHeatDisplayValue()) {
+                heat = Math.max(0, heat - LavaGenConfig.heatLossActive.get());
+                if (fluidStack.getFluid() == FluidRegistry.WATER && random.nextFloat() < LavaGenConfig.activeCoolingEvaporatesWater.get()) {
+                  world.setBlockToAir(pos2);
+                }
+              }
+            }
+          } else if (block == Blocks.ICE || block == Blocks.FROSTED_ICE || block == Blocks.PACKED_ICE) {
+            heat = Math.max(0, heat - LavaGenConfig.heatLossActive.get());
+            if (random.nextFloat() < LavaGenConfig.activeCoolingLiquefiesIce.get()) {
+              if (world.provider.doesWaterVaporize()) {
+                world.setBlockToAir(pos2);
+              } else {
+                world.setBlockState(pos2, Blocks.WATER.getDefaultState());
+              }
+            }
+          }
+        }
+      }
     }
 
     if (redstoneCheck && !getEnergy().isFull()) {
       if (burnTime > 0) {
         getEnergy().setEnergyStored(getEnergy().getEnergyStored() + getPowerGenPerTick());
         burnTime--;
-        heat = Math.min(heat + 4, getMaxHeat()); // TODO config 4
+        heat = Math.min(heat + LavaGenConfig.heatGain.get(), getMaxHeat());
       }
       if (burnTime <= 0 && !tank.isEmpty()) {
         tank.drain(1, true);
@@ -87,7 +131,12 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
       }
     }
 
-    // TODO: heat > 75% => make fire around machine
+    if (getHeat() > LavaGenConfig.overheatThreshold.get() && shouldDoWorkThisTick(20)) {
+      BlockPos pos2 = pos.up((int) (random.nextGaussian() * 3f)).east((int) (random.nextGaussian() * 5f)).north((int) (random.nextGaussian() * 5f));
+      if (world.isAirBlock(pos2)) {
+        world.setBlockState(pos2, Blocks.FIRE.getDefaultState());
+      }
+    }
 
     transmitEnergy();
 
@@ -95,8 +144,7 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
   }
 
   private int getLavaBurntime() {
-    return 20000; // hardcode vanilla value? or clamp it into some range?
-    // return Math.max(20000, TileEntityFurnace.getItemBurnTime(new ItemStack(Items.LAVA_BUCKET)));
+    return LavaGenConfig.useVanillaBurnTime.get() ? 20000 : TileEntityFurnace.getItemBurnTime(new ItemStack(Items.LAVA_BUCKET));
   }
 
   protected int getPowerGenPerTick() {
@@ -104,11 +152,22 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
   }
 
   protected float getHeatFactor() {
-    return Math.max(.05f, 1f - heat / (float) getMaxHeat()); // TODO config 5%
+    return Math.max(LavaGenConfig.minEfficiency.get(), 1f - getHeat());
+  }
+
+  protected float getHeat() {
+    return heat / (float) getMaxHeat();
+  }
+
+  protected float getHeatDisplayValue() {
+    float factor = getHeatFactor();
+    int ambient = FluidRegistry.WATER.getTemperature();
+    int reallyhot = FluidRegistry.LAVA.getTemperature();
+    return ambient + (reallyhot - ambient) * factor;
   }
 
   protected int getMaxHeat() {
-    return getLavaBurntime() * 8; // TODO config 8
+    return getLavaBurntime() * LavaGenConfig.maxHeatFactor.get();
   }
 
   private boolean transmitEnergy() {
