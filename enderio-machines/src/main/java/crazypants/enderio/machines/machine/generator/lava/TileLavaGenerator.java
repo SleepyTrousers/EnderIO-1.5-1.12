@@ -13,6 +13,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityGeneratorEntity;
+import crazypants.enderio.base.network.PacketSpawnParticles;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.power.PowerDistributor;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
@@ -25,9 +26,12 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -86,41 +90,10 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
   protected boolean processTasks(boolean redstoneCheck) {
     if (heat > 0) {
       heat = Math.max(0, heat - LavaGenConfig.heatLossPassive.get());
-      if (heat > 0 && LavaGenConfig.heatLossActive.get() > 0) {
-        coolingSide++;
-        if (coolingSide > 5) {
-          coolingSide = 0;
-        }
-        final EnumFacing side = NNList.FACING.get(coolingSide);
-        BlockPos pos2 = pos.offset(side);
-        if (world.isBlockLoaded(pos2)) {
-          Block block = world.getBlockState(pos2).getBlock();
-          if (block instanceof IFluidBlock || block instanceof BlockLiquid) {
-            IFluidHandler targetFluidHandler = FluidUtil.getFluidHandler(world, pos2, side.getOpposite());
-            if (targetFluidHandler != null) {
-              FluidStack fluidStack = targetFluidHandler.drain(1000, false);
-              if (fluidStack != null && fluidStack.amount >= 1000 && fluidStack.getFluid().getTemperature(fluidStack) < getHeatDisplayValue()) {
-                heat = Math.max(0, heat - LavaGenConfig.heatLossActive.get());
-                if (fluidStack.getFluid() == FluidRegistry.WATER && random.nextFloat() < LavaGenConfig.activeCoolingEvaporatesWater.get()) {
-                  world.setBlockToAir(pos2);
-                }
-              }
-            }
-          } else if (block == Blocks.ICE || block == Blocks.FROSTED_ICE || block == Blocks.PACKED_ICE) {
-            heat = Math.max(0, heat - LavaGenConfig.heatLossActive.get());
-            if (random.nextFloat() < LavaGenConfig.activeCoolingLiquefiesIce.get()) {
-              if (world.provider.doesWaterVaporize()) {
-                world.setBlockToAir(pos2);
-              } else {
-                world.setBlockState(pos2, Blocks.WATER.getDefaultState());
-              }
-            }
-          }
-        }
-      }
+      doActiveCooling();
     }
 
-    if (redstoneCheck && !getEnergy().isFull()) {
+    if (redstoneCheck && !getEnergy().isFull() && getEnergy().hasCapacitor()) {
       if (burnTime > 0) {
         getEnergy().setEnergyStored(getEnergy().getEnergyStored() + getPowerGenPerTick());
         burnTime--;
@@ -147,12 +120,64 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
     return false;
   }
 
+  private void doActiveCooling() {
+    if (heat > 0 && LavaGenConfig.heatLossActive.get() > 0) {
+      coolingSide++;
+      if (coolingSide > 5) {
+        coolingSide = 0;
+      }
+      final EnumFacing side = NNList.FACING.get(coolingSide);
+      BlockPos pos2 = pos.offset(side);
+      if (world.isBlockLoaded(pos2)) {
+        Block block = world.getBlockState(pos2).getBlock();
+        if (block instanceof IFluidBlock || block instanceof BlockLiquid) {
+          IFluidHandler targetFluidHandler = FluidUtil.getFluidHandler(world, pos2, side.getOpposite());
+          if (targetFluidHandler != null) {
+            FluidStack fluidStack = targetFluidHandler.drain(1000, false);
+            if (fluidStack != null && fluidStack.amount >= 1000 && fluidStack.getFluid().getTemperature(fluidStack) < getHeatDisplayValue()) {
+              heat = Math.max(0, heat - LavaGenConfig.heatLossActive.get());
+              if (fluidStack.getFluid() == FluidRegistry.WATER && random.nextFloat() < LavaGenConfig.activeCoolingEvaporatesWater.get()) {
+                world.setBlockToAir(pos2);
+                world.playSound(null, pos2.getX() + .5f, pos2.getY() + .5f, pos2.getZ() + .5f, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F,
+                    2.6F + (random.nextFloat() - random.nextFloat()) * 0.8F);
+                for (int k = 0; k < 8; ++k) {
+                  PacketSpawnParticles.create(world, pos2.getX() + random.nextDouble(), pos2.getY() + random.nextDouble(), pos2.getZ() + random.nextDouble(), 1,
+                      EnumParticleTypes.SMOKE_LARGE);
+                }
+              }
+            }
+          }
+        } else if (block == Blocks.ICE || block == Blocks.FROSTED_ICE || block == Blocks.PACKED_ICE) {
+          heat = Math.max(0, heat - LavaGenConfig.heatLossActive.get());
+          if (random.nextFloat() < LavaGenConfig.activeCoolingLiquefiesIce.get()) {
+            if (world.provider.doesWaterVaporize()) {
+              world.setBlockToAir(pos2);
+              world.playSound(null, pos2.getX() + .5f, pos2.getY() + .5f, pos2.getZ() + .5f, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F,
+                  2.6F + (random.nextFloat() - random.nextFloat()) * 0.8F);
+              for (int k = 0; k < 8; ++k) {
+                PacketSpawnParticles.create(world, pos2.getX() + random.nextDouble(), pos2.getY() + random.nextDouble(), pos2.getZ() + random.nextDouble(), 1,
+                    EnumParticleTypes.SMOKE_LARGE);
+              }
+            } else {
+              world.setBlockState(pos2, Blocks.WATER.getDefaultState());
+              for (int k = 0; k < 4; ++k) {
+                PacketSpawnParticles.create(world, pos2.getX() + random.nextDouble(), pos2.getY() + 1, pos2.getZ() + random.nextDouble(), 1,
+                    EnumParticleTypes.SMOKE_LARGE);
+              }
+              Blocks.WATER.neighborChanged(Blocks.WATER.getDefaultState(), world, pos2, block, pos2);
+            }
+          }
+        }
+      }
+    }
+  }
+
   private int getLavaBurntime() {
     return LavaGenConfig.useVanillaBurnTime.get() ? 20000 : TileEntityFurnace.getItemBurnTime(new ItemStack(Items.LAVA_BUCKET));
   }
 
   protected int getPowerGenPerTick() {
-    return (int) Math.max(1, getEnergy().getMaxUsage() * getHeatFactor());
+    return getEnergy().hasCapacitor() ? (int) Math.max(1, getEnergy().getMaxUsage() * getHeatFactor()) : 0;
   }
 
   protected float getHeatFactor() {

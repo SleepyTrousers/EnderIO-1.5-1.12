@@ -154,6 +154,10 @@ public class EnergyTank implements IEnergyStorage, IPowerBarData {
     }
   }
 
+  public boolean hasCapacitor() {
+    return capacitorData != DefaultCapacitorData.NONE;
+  }
+
   private void onChange() {
     if (owner != null) {
       owner.markDirty();

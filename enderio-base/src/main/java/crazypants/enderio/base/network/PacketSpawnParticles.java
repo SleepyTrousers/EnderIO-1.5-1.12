@@ -41,6 +41,10 @@ public class PacketSpawnParticles implements IMessage {
         position, world);
   }
 
+  public static void create(World world, double posX, double posY, double posZ, int count, EnumParticleTypes... particles) {
+    PacketHandler.INSTANCE.sendToAllAround(new PacketSpawnParticles(posX, posY, posZ, count, particles), new BlockPos(posX, posY, posZ), world);
+  }
+
   private PacketSpawnParticles(double posX, double posY, double posZ, int count, EnumParticleTypes... particles) {
     this.posX = posX;
     this.posY = posY;
