@@ -1,7 +1,8 @@
 package crazypants.enderio.autosave.handlers;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.autosave.handlers.endercore.HandleEnderInventory;
-import crazypants.enderio.autosave.handlers.endercore.HandleNNList;
 import crazypants.enderio.autosave.handlers.endercore.HandleSmartTank;
 import crazypants.enderio.autosave.handlers.endercore.HandleThings;
 import crazypants.enderio.autosave.handlers.endercore.HandleUserIdent;
@@ -10,6 +11,7 @@ import crazypants.enderio.autosave.handlers.enderio.HandleExperienceContainer;
 import crazypants.enderio.autosave.handlers.enderio.HandleIMachineRecipe;
 import crazypants.enderio.autosave.handlers.enderio.HandlePoweredTask;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
+import info.loenwind.autosave.handlers.java.util.HandleSimpleCollection;
 
 import static info.loenwind.autosave.Registry.GLOBAL_REGISTRY;
 
@@ -19,7 +21,7 @@ public class EIOHandlers {
     try {
       // EnderCore Object Handlers
       GLOBAL_REGISTRY.register(new HandleEnderInventory());
-      GLOBAL_REGISTRY.register(new HandleNNList());
+      GLOBAL_REGISTRY.register(new HandleSimpleCollection<>(NNList.class));
       GLOBAL_REGISTRY.register(new HandleSmartTank());
       GLOBAL_REGISTRY.register(new HandleThings());
       GLOBAL_REGISTRY.register(new HandleUserIdent());

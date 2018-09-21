@@ -1,4 +1,7 @@
 @ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 package crazypants.enderio.autosave.handlers.endercore;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+
+import mcp.MethodsReturnNonnullByDefault;

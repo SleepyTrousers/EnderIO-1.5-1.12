@@ -1,6 +1,5 @@
 package crazypants.enderio.conduits.conduit;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -16,19 +15,19 @@ import crazypants.enderio.util.NbtValue;
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
-import info.loenwind.autosave.handlers.java.HandleAbstractCollection;
+import info.loenwind.autosave.handlers.java.util.HandleSimpleCollection;
 import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class ConduitHandler implements IHandler<IConduit> {
 
   @Override
-  public Class<?> getRootType() {
+  public @Nonnull Class<?> getRootType() {
     return IConduit.class;
   }
 
   @Override
-  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name, @Nonnull IConduit object)
+  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull Type type, @Nonnull String name, @Nonnull IConduit object)
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if (object instanceof IServerConduit) {
       NBTTagCompound root = new NBTTagCompound();
@@ -41,7 +40,7 @@ public class ConduitHandler implements IHandler<IConduit> {
   }
 
   @Override
-  public IConduit read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
+  public IConduit read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull Type type, @Nonnull String name,
       @Nullable IConduit object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if (nbt.hasKey(name)) {
       NBTTagCompound root = nbt.getCompoundTag(name);
@@ -61,27 +60,17 @@ public class ConduitHandler implements IHandler<IConduit> {
     return phase.contains(NBTAction.CLIENT) ? ConduitUtil.readClientConduitFromNBT(conduitTag) : ConduitUtil.readConduitFromNBT(conduitTag);
   }
   
-  @SuppressWarnings("rawtypes")
-  public static class List extends HandleAbstractCollection<CopyOnWriteArrayList<IConduit>> {
+  @SuppressWarnings({"rawtypes", "unchecked"})
+  public static class List extends HandleSimpleCollection<CopyOnWriteArrayList<IConduit>> {
 
     public List() throws NoHandlerFoundException {
-      super();
+      super((Class<CopyOnWriteArrayList<IConduit>>) (Class) CopyOnWriteArrayList.class);
     }
     
     protected List(Registry registry) throws NoHandlerFoundException {
-      super(registry, IConduit.class);
+      super((Class<CopyOnWriteArrayList<IConduit>>) (Class) CopyOnWriteArrayList.class, CopyOnWriteArrayList::new, registry, IConduit.class);
     }
 
-    @Override
-    public Class<?> getRootType() {
-      return CopyOnWriteArrayList.class;
-    }
-
-    @Override
-    protected @Nonnull CopyOnWriteArrayList makeCollection() {
-      return new CopyOnWriteArrayList();
-    }
-    
     @Override
     protected IHandler<? extends CopyOnWriteArrayList<IConduit>> create(@Nonnull Registry registry, @Nonnull Type... types) throws NoHandlerFoundException {
       if (types[0] == IConduit.class) {
@@ -91,10 +80,10 @@ public class ConduitHandler implements IHandler<IConduit> {
     }
 
     @Override
-    public CopyOnWriteArrayList<IConduit> read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field,
+    public CopyOnWriteArrayList<IConduit> read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull Type type,
         @Nonnull String name, @Nullable CopyOnWriteArrayList<IConduit> object)
         throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
-      final CopyOnWriteArrayList<IConduit> result = super.read(registry, phase, nbt, field, name, object);
+      final CopyOnWriteArrayList<IConduit> result = super.read(registry, phase, nbt, type, name, object);
       if (result != null) {
         // Remove null (missing) conduits
         while (result.remove(null)) {

@@ -1,16 +1,15 @@
 package crazypants.enderio.base.recipe.sagmill;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import info.loenwind.autosave.util.NBTAction;
-
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class GrindingMultiplierNBT implements IGrindingMultiplier, IHandler<IGrindingMultiplier> {
@@ -79,12 +78,12 @@ public class GrindingMultiplierNBT implements IGrindingMultiplier, IHandler<IGri
   }
 
   @Override
-  public Class<?> getRootType() {
+  public @Nonnull Class<?> getRootType() {
     return IGrindingMultiplier.class;
   }
 
   @Override
-  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
+  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull Type type, @Nonnull String name,
       @Nonnull IGrindingMultiplier object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     NBTTagCompound tag = new NBTTagCompound();
     tag.setFloat(CM, object.getChanceMultiplier());
@@ -96,7 +95,7 @@ public class GrindingMultiplierNBT implements IGrindingMultiplier, IHandler<IGri
   }
 
   @Override
-  public IGrindingMultiplier read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field,
+  public IGrindingMultiplier read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull Type type,
       @Nonnull String name, @Nullable IGrindingMultiplier object)
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if (nbt.hasKey(name)) {

@@ -1,6 +1,6 @@
 package crazypants.enderio.autosave.handlers.endercore;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -20,19 +20,20 @@ public class HandleEnderInventory implements IHandler<EnderInventory> {
   }
 
   @Override
-  public Class<?> getRootType() {
+  public @Nonnull Class<?> getRootType() {
     return EnderInventory.class;
   }
 
   @Override
-  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
-      @Nonnull EnderInventory object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
+  public boolean store(Registry registry, Set<NBTAction> phase, NBTTagCompound nbt, Type type, String name,
+      EnderInventory object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     nbt.setTag(name, object.writeToNBT());
     return true;
   }
 
   @Override
-  public EnderInventory read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
+  @Nullable
+  public EnderInventory read(Registry registry, Set<NBTAction> phase, NBTTagCompound nbt, Type type, String name,
       @Nullable EnderInventory object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if (object != null && nbt.hasKey(name)) {
       object.readFromNBT(nbt, name);

@@ -1,6 +1,6 @@
 package crazypants.enderio.base.item.coordselector;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -13,7 +13,6 @@ import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
-import info.loenwind.autosave.handlers.java.HandleArrayList;
 import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -220,12 +219,12 @@ public class TelepadTarget implements IHandler<TelepadTarget> {
   }
 
   @Override
-  public Class<?> getRootType() {
+  public @Nonnull Class<?> getRootType() {
     return TelepadTarget.class;
   }
 
   @Override
-  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name1,
+  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull Type type, @Nonnull String name1,
       @Nonnull TelepadTarget object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     NBTTagCompound root = new NBTTagCompound();
     object.writeToNBT(root);
@@ -234,7 +233,7 @@ public class TelepadTarget implements IHandler<TelepadTarget> {
   }
 
   @Override
-  public TelepadTarget read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field,
+  public TelepadTarget read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull Type type,
       @Nonnull String name1, @Nullable TelepadTarget object)
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if (nbt.hasKey(name1)) {

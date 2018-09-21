@@ -11,6 +11,6 @@ dependencies {
 	}
 	compile "com.mod-buildcraft:buildcraft-api:${buildcraft_version}"
 	
-	compile "info.loenwind.autosave:AutoSave:${minecraft_version}-1.0.4"
-	embed "info.loenwind.autosave:AutoSave:${minecraft_version}-1.0.4"
+	compile "info.loenwind.autosave:AutoSave:${minecraft_version}-${autosave_version}"
+	embed "info.loenwind.autosave:AutoSave:${minecraft_version}-${autosave_version}"
 }
