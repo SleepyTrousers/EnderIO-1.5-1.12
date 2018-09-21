@@ -3,6 +3,7 @@ package crazypants.enderio.base.handler.darksteel;
 import java.util.Iterator;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.lwjgl.opengl.GL11;
 
@@ -114,7 +115,7 @@ public class PlayerAOEAttributeHandler {
     }
   }
 
-  public static @Nonnull RayTraceResult rayTrace(@Nonnull EntityPlayer player) {
+  public static @Nullable RayTraceResult rayTrace(@Nonnull EntityPlayer player) {
     return ((ItemDarkSteelPickaxe) ModObject.itemDarkSteelPickaxe.getItemNN()).rayTrace(player.world, player, false);
   }
 
@@ -134,7 +135,7 @@ public class PlayerAOEAttributeHandler {
 
   public static Iterator<BlockPos> getAOE(@Nonnull BlockPos origin, @Nonnull EntityPlayer player) {
     RayTraceResult movingObjectPositionIn = rayTrace(player);
-    if (movingObjectPositionIn.typeOfHit == RayTraceResult.Type.BLOCK) {
+    if (movingObjectPositionIn != null && movingObjectPositionIn.typeOfHit == RayTraceResult.Type.BLOCK) {
       if (origin.equals(movingObjectPositionIn.getBlockPos())) {
         return new BBIterator(origin, new BoundingBox(expandBBbyAOE(player, new AxisAlignedBB(origin), movingObjectPositionIn)));
       }

@@ -164,8 +164,9 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   }
 
   // exposed for tool methods. This should actually be a static method...
+  @SuppressWarnings("null") // wrong nonnull annotation in super class
   @Override
-  public @Nonnull RayTraceResult rayTrace(@Nonnull World worldIn, @Nonnull EntityPlayer playerIn, boolean useLiquids) {
+  public @Nullable RayTraceResult rayTrace(@Nonnull World worldIn, @Nonnull EntityPlayer playerIn, boolean useLiquids) {
     return super.rayTrace(worldIn, playerIn, useLiquids);
   }
 
