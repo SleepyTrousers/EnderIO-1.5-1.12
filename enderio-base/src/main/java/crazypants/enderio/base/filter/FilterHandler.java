@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.autosave.handlers.EIOHandlers;
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
@@ -15,7 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class FilterHandler implements IHandler<IFilter> {
 
   static {
-    Registry.GLOBAL_REGISTRY.register(new FilterHandler());
+    EIOHandlers.REGISTRY.register(new FilterHandler());
   }
 
   @Override

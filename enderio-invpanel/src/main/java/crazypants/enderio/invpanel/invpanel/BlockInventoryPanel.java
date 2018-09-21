@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.autosave.handlers.EIOHandlers;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -38,7 +39,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   private static final float BLOCK_SIZE = 4f / 16f;
 
   public static BlockInventoryPanel create(@Nonnull IModObject mo) {
-    Registry.GLOBAL_REGISTRY.register(new HandleStoredCraftingRecipe());
+    EIOHandlers.REGISTRY.register(new HandleStoredCraftingRecipe());
     
     BlockInventoryPanel panel = new BlockInventoryPanel(mo);
     panel.init();

@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.BlockCoord;
 
+import crazypants.enderio.autosave.handlers.EIOHandlers;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.Registry;
@@ -24,7 +25,7 @@ import net.minecraftforge.common.DimensionManager;
 public class TelepadTarget implements IHandler<TelepadTarget> {
 
   static {
-    Registry.GLOBAL_REGISTRY.register(new TelepadTarget());
+    EIOHandlers.REGISTRY.register(new TelepadTarget());
   }
 
   private @Nonnull BlockPos location;

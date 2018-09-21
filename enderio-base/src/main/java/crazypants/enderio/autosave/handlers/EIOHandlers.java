@@ -10,16 +10,19 @@ import crazypants.enderio.autosave.handlers.enderio.HandleCapturedMob;
 import crazypants.enderio.autosave.handlers.enderio.HandleExperienceContainer;
 import crazypants.enderio.autosave.handlers.enderio.HandleIMachineRecipe;
 import crazypants.enderio.autosave.handlers.enderio.HandlePoweredTask;
+import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.java.util.HandleSimpleCollection;
 
 import static info.loenwind.autosave.Registry.GLOBAL_REGISTRY;
 
 public class EIOHandlers {
+  
+  public static final Registry REGISTRY = new Registry();
 
   public static void register() {
     try {
-      // EnderCore Object Handlers
+      // EnderCore Object Handlers, leave these global for other mods
       GLOBAL_REGISTRY.register(new HandleEnderInventory());
       GLOBAL_REGISTRY.register(new HandleSimpleCollection<>(NNList.class));
       GLOBAL_REGISTRY.register(new HandleSmartTank());
@@ -27,10 +30,10 @@ public class EIOHandlers {
       GLOBAL_REGISTRY.register(new HandleUserIdent());
 
       // EnderIO Object Handlers
-      GLOBAL_REGISTRY.register(new HandleCapturedMob());
-      GLOBAL_REGISTRY.register(new HandleExperienceContainer());
-      GLOBAL_REGISTRY.register(new HandleIMachineRecipe());
-      GLOBAL_REGISTRY.register(new HandlePoweredTask());
+      REGISTRY.register(new HandleCapturedMob());
+      REGISTRY.register(new HandleExperienceContainer());
+      REGISTRY.register(new HandleIMachineRecipe());
+      REGISTRY.register(new HandlePoweredTask());
 
     } catch (NoHandlerFoundException ignored) {} // impossible
   }
