@@ -127,9 +127,9 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
         burnTime = getLavaBurntime() / Fluid.BUCKET_VOLUME / CapacitorKey.LAVAGEN_POWER_FLUID_USE.get(getCapacitorData());
         if (LavaGenConfig.outputEnabled.get()) {
           lavaUsed++;
+          doGenOutput();
         }
       }
-      doGenOutput();
     }
 
     if (getHeat() > LavaGenConfig.overheatThreshold.get() && shouldDoWorkThisTick(20)) {
@@ -148,28 +148,37 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
   }
 
   private void doGenOutput() {
-    if (lavaUsed >= LavaGenConfig.outputAmount.get()) {
+    while (lavaUsed >= LavaGenConfig.outputAmount.get()) {
       final ItemStack stack;
       final @Nonnull String slotName;
 
-      if (LavaGenConfig.cobbleEnabled.get() && cobblePoints >= stonePoints && cobblePoints >= obsidianPoints) {
+      if (cobblePoints > stonePoints && cobblePoints > obsidianPoints) {
+        cobblePoints = 0;
+        if (!LavaGenConfig.cobbleEnabled.get()) {
+          continue;
+        }
         stack = new ItemStack(Blocks.COBBLESTONE);
         slotName = OUTPUT_COB;
-        cobblePoints = 0;
-      } else if (LavaGenConfig.stoneEnabled.get() && stonePoints >= obsidianPoints) {
-        stack = new ItemStack(Blocks.STONE);
-        slotName = OUTPUT_STO;
-        stonePoints = 0;
-      } else if (LavaGenConfig.obsidianEnabled.get()) {
+      } else if (obsidianPoints > stonePoints) {
+        obsidianPoints = 0;
+        if (!LavaGenConfig.obsidianEnabled.get()) {
+          continue;
+        }
         stack = new ItemStack(Blocks.OBSIDIAN);
         slotName = OUTPUT_OBS;
-        obsidianPoints = 0;
       } else {
-        return;
+        stonePoints = 0;
+        if (!LavaGenConfig.stoneEnabled.get()) {
+          continue;
+        }
+        stack = new ItemStack(Blocks.STONE);
+        slotName = OUTPUT_STO;
       }
 
       if (mergeOutput(slotName, stack)) {
         lavaUsed -= LavaGenConfig.outputAmount.get();
+      } else {
+        break;
       }
     }
   }

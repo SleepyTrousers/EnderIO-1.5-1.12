@@ -19,7 +19,6 @@ import net.minecraft.item.ItemStack;
 
 import static crazypants.enderio.machines.config.config.LavaGenConfig.cobbleEnabled;
 import static crazypants.enderio.machines.config.config.LavaGenConfig.obsidianEnabled;
-import static crazypants.enderio.machines.config.config.LavaGenConfig.outputEnabled;
 import static crazypants.enderio.machines.config.config.LavaGenConfig.stoneEnabled;
 
 public class ContainerLavaGenerator<T extends TileLavaGenerator> extends ContainerEnderCap<EnderInventory, TileLavaGenerator> {
@@ -44,15 +43,15 @@ public class ContainerLavaGenerator<T extends TileLavaGenerator> extends Contain
   public void createGhostSlots(List<GhostSlot> slots) {
     Slot slot = inventorySlots.get(1);
     if (slot != null) {
-      slots.add(new GhostBackgroundItemSlot(new ItemStack(outputEnabled.get() && cobbleEnabled.get() ? Blocks.COBBLESTONE : Blocks.BARRIER), slot));
+      slots.add(new GhostBackgroundItemSlot(new ItemStack(cobbleEnabled.get() ? Blocks.COBBLESTONE : Blocks.BARRIER), slot));
     }
     slot = inventorySlots.get(2);
     if (slot != null) {
-      slots.add(new GhostBackgroundItemSlot(new ItemStack(outputEnabled.get() && stoneEnabled.get() ? Blocks.STONE : Blocks.BARRIER), slot));
+      slots.add(new GhostBackgroundItemSlot(new ItemStack(stoneEnabled.get() ? Blocks.STONE : Blocks.BARRIER), slot));
     }
     slot = inventorySlots.get(3);
     if (slot != null) {
-      slots.add(new GhostBackgroundItemSlot(new ItemStack(outputEnabled.get() && obsidianEnabled.get() ? Blocks.OBSIDIAN : Blocks.BARRIER), slot));
+      slots.add(new GhostBackgroundItemSlot(new ItemStack(obsidianEnabled.get() ? Blocks.OBSIDIAN : Blocks.BARRIER), slot));
     }
   }
 

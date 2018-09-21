@@ -40,19 +40,23 @@ public final class LavaGenConfig {
   public static final IValue<Float> overheatThreshold = F.make("overheatThreshold", .8f, //
       "The heat percentage above which the machine will overheat and set things on fire.").setRange(0, 1).sync();
 
-  public static final IValue<Boolean> outputEnabled = F.make("outputEnabled", true, //
-      "When enabled, cooled down lava will turn into some resource.").sync();
+  public static final IValue<Boolean> outputEnabled = new IValue<Boolean>() {
+    @Override
+    public Boolean get() {
+      return cobbleEnabled.get() || stoneEnabled.get() || obsidianEnabled.get();
+    }
+  };
 
-  public static final IValue<Integer> outputAmount = F.make("outputAmount", 1296, //
+  public static final IValue<Integer> outputAmount = F.make("outputAmount", 1000, //
       "The amount of lava (in mB) needed to generate one block of cobble/stone/obsidian.").setRange(1, 64000).sync();
 
   public static final IValue<Boolean> cobbleEnabled = F.make("outputCobbleEnabled", true, //
-      "When enabled, cooled down lava will turn into cobble. (outputEnabled must be on, too)").sync();
+      "When enabled, cooled down lava will turn into cobble. The type of output depends on the type of cooling.").sync();
 
   public static final IValue<Boolean> stoneEnabled = F.make("outputStoneEnabled", true, //
-      "When enabled, cooled down lava will turn into cobble. (outputEnabled must be on, too)").sync();
+      "When enabled, cooled down lava will turn into stone. The type of output depends on the type of cooling.").sync();
 
   public static final IValue<Boolean> obsidianEnabled = F.make("outputObsidianEnabled", true, //
-      "When enabled, cooled down lava will turn into cobble. (outputEnabled must be on, too)").sync();
+      "When enabled, cooled down lava will turn into obsidian. The type of output depends on the type of cooling.").sync();
 
 }
