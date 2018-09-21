@@ -7,8 +7,13 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
+import com.enderio.core.common.inventory.EnderInventory.Type;
+import com.enderio.core.common.inventory.Filters;
+import com.enderio.core.common.inventory.InventorySlot;
+import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
@@ -19,6 +24,7 @@ import crazypants.enderio.base.power.PowerDistributor;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.config.config.LavaGenConfig;
 import crazypants.enderio.machines.init.MachineObject;
+import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
@@ -44,6 +50,7 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
+import static crazypants.enderio.base.lang.LangTemperature.C2K;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.LAVAGEN_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.LAVAGEN_POWER_GEN;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.LAVAGEN_POWER_LOSS;
@@ -51,12 +58,24 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.LAVAGEN_POWER_L
 @Storable
 public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity implements IPaintable.IPaintableTileEntity, ITankAccess.IExtendedTankAccess {
 
+  public static final @Nonnull String OUTPUT_COB = "OUTCOB";
+  public static final @Nonnull String OUTPUT_STO = "OUTSTO";
+  public static final @Nonnull String OUTPUT_OBS = "OUTOBS";
+
   @Store
   public int burnTime = 0;
   @Store
   public int heat = 0;
   @Store
   protected final @Nonnull SmartTank tank = new SmartTank(FluidRegistry.LAVA, LavaGenConfig.tankSize.get());
+  @Store({ NBTAction.ITEM, NBTAction.SAVE })
+  public int lavaUsed = 0;
+  @Store({ NBTAction.ITEM, NBTAction.SAVE })
+  public int cobblePoints = 0;
+  @Store({ NBTAction.ITEM, NBTAction.SAVE })
+  public int stonePoints = 0;
+  @Store({ NBTAction.ITEM, NBTAction.SAVE })
+  public int obsidianPoints = 0;
 
   private PowerDistributor powerDis;
   private int coolingSide = 0;
@@ -65,6 +84,9 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
     super(LAVAGEN_POWER_BUFFER, LAVAGEN_POWER_GEN);
     getEnergy().setEnergyLoss(LAVAGEN_POWER_LOSS);
     tank.setTileEntity(this);
+    getInventory().add(Type.OUTPUT, OUTPUT_COB, new InventorySlot(Filters.ALWAYS_FALSE, Filters.ALWAYS_TRUE));
+    getInventory().add(Type.OUTPUT, OUTPUT_STO, new InventorySlot(Filters.ALWAYS_FALSE, Filters.ALWAYS_TRUE));
+    getInventory().add(Type.OUTPUT, OUTPUT_OBS, new InventorySlot(Filters.ALWAYS_FALSE, Filters.ALWAYS_TRUE));
   }
 
   @Override
@@ -90,10 +112,11 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
   protected boolean processTasks(boolean redstoneCheck) {
     if (heat > 0) {
       heat = Math.max(0, heat - LavaGenConfig.heatLossPassive.get());
+      cobblePoints += LavaGenConfig.heatLossPassive.get();
       doActiveCooling();
     }
 
-    if (redstoneCheck && !getEnergy().isFull() && getEnergy().hasCapacitor()) {
+    if (redstoneCheck && !getEnergy().isFull() && getEnergy().hasCapacitor() && !isOutputFull()) {
       if (burnTime > 0) {
         getEnergy().setEnergyStored(getEnergy().getEnergyStored() + getPowerGenPerTick());
         burnTime--;
@@ -102,7 +125,11 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
       if (burnTime <= 0 && !tank.isEmpty()) {
         tank.drain(1, true);
         burnTime = getLavaBurntime() / Fluid.BUCKET_VOLUME / CapacitorKey.LAVAGEN_POWER_FLUID_USE.get(getCapacitorData());
+        if (LavaGenConfig.outputEnabled.get()) {
+          lavaUsed++;
+        }
       }
+      doGenOutput();
     }
 
     if (getHeat() > LavaGenConfig.overheatThreshold.get() && shouldDoWorkThisTick(20)) {
@@ -120,6 +147,33 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
     return false;
   }
 
+  private void doGenOutput() {
+    if (lavaUsed >= LavaGenConfig.outputAmount.get()) {
+      final ItemStack stack;
+      final @Nonnull String slotName;
+
+      if (LavaGenConfig.cobbleEnabled.get() && cobblePoints >= stonePoints && cobblePoints >= obsidianPoints) {
+        stack = new ItemStack(Blocks.COBBLESTONE);
+        slotName = OUTPUT_COB;
+        cobblePoints = 0;
+      } else if (LavaGenConfig.stoneEnabled.get() && stonePoints >= obsidianPoints) {
+        stack = new ItemStack(Blocks.STONE);
+        slotName = OUTPUT_STO;
+        stonePoints = 0;
+      } else if (LavaGenConfig.obsidianEnabled.get()) {
+        stack = new ItemStack(Blocks.OBSIDIAN);
+        slotName = OUTPUT_OBS;
+        obsidianPoints = 0;
+      } else {
+        return;
+      }
+
+      if (mergeOutput(slotName, stack)) {
+        lavaUsed -= LavaGenConfig.outputAmount.get();
+      }
+    }
+  }
+
   private void doActiveCooling() {
     if (heat > 0 && LavaGenConfig.heatLossActive.get() > 0) {
       coolingSide++;
@@ -134,21 +188,32 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
           IFluidHandler targetFluidHandler = FluidUtil.getFluidHandler(world, pos2, side.getOpposite());
           if (targetFluidHandler != null) {
             FluidStack fluidStack = targetFluidHandler.drain(1000, false);
-            if (fluidStack != null && fluidStack.amount >= 1000 && fluidStack.getFluid().getTemperature(fluidStack) < getHeatDisplayValue()) {
+            final float heatInKelvin = getHeatDisplayValue();
+            if (fluidStack != null && fluidStack.amount >= 1000 && fluidStack.getFluid().getTemperature(fluidStack) < heatInKelvin) {
               heat = Math.max(0, heat - LavaGenConfig.heatLossActive.get());
-              if (fluidStack.getFluid() == FluidRegistry.WATER && random.nextFloat() < LavaGenConfig.activeCoolingEvaporatesWater.get()) {
-                world.setBlockToAir(pos2);
-                world.playSound(null, pos2.getX() + .5f, pos2.getY() + .5f, pos2.getZ() + .5f, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F,
-                    2.6F + (random.nextFloat() - random.nextFloat()) * 0.8F);
-                for (int k = 0; k < 8; ++k) {
-                  PacketSpawnParticles.create(world, pos2.getX() + random.nextDouble(), pos2.getY() + random.nextDouble(), pos2.getZ() + random.nextDouble(), 1,
-                      EnumParticleTypes.SMOKE_LARGE);
+              if (fluidStack.getFluid() == FluidRegistry.WATER) {
+                if (heatInKelvin > C2K(100) && random.nextFloat() < LavaGenConfig.activeCoolingEvaporatesWater.get()) {
+                  world.setBlockToAir(pos2);
+                  world.playSound(null, pos2.getX() + .5f, pos2.getY() + .5f, pos2.getZ() + .5f, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F,
+                      2.6F + (random.nextFloat() - random.nextFloat()) * 0.8F);
+                  for (int k = 0; k < 8; ++k) {
+                    PacketSpawnParticles.create(world, pos2.getX() + random.nextDouble(), pos2.getY() + random.nextDouble(), pos2.getZ() + random.nextDouble(),
+                        1, EnumParticleTypes.SMOKE_LARGE);
+                  }
+                  stonePoints += LavaGenConfig.heatLossActive.get(); // water, consumed
+                } else {
+                  cobblePoints += LavaGenConfig.heatLossActive.get(); // water, not consumed
                 }
+              } else if (fluidStack.getFluid().getTemperature(fluidStack) < C2K(0)) {
+                obsidianPoints += LavaGenConfig.heatLossActive.get(); // other fluid, very cold
+              } else {
+                cobblePoints += LavaGenConfig.heatLossActive.get(); // other fluid, luke warm
               }
             }
           }
         } else if (block == Blocks.ICE || block == Blocks.FROSTED_ICE || block == Blocks.PACKED_ICE) {
           heat = Math.max(0, heat - LavaGenConfig.heatLossActive.get());
+          obsidianPoints += LavaGenConfig.heatLossActive.get(); // ice is always cold
           if (random.nextFloat() < LavaGenConfig.activeCoolingLiquefiesIce.get()) {
             if (world.provider.doesWaterVaporize()) {
               world.setBlockToAir(pos2);
@@ -197,6 +262,39 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
 
   protected int getMaxHeat() {
     return getLavaBurntime() * LavaGenConfig.maxHeatFactor.get();
+  }
+
+  private boolean mergeOutput(@Nonnull String slotName, @Nonnull ItemStack stack) {
+    final InventorySlot slot = getInventory().getSlot(slotName);
+    final ItemStack oldStack = slot.get();
+    if (Prep.isInvalid(oldStack)) {
+      slot.set(stack);
+      return true;
+    } else if (ItemUtil.areStackMergable(oldStack, stack)) {
+      oldStack
+          .grow(stack.splitStack(Math.min(Math.min(oldStack.getMaxStackSize(), slot.getMaxStackSize()) - oldStack.getCount(), stack.getCount())).getCount());
+      slot.set(oldStack);
+      return stack.isEmpty();
+    }
+    return false;
+  }
+
+  /**
+   * Checks if all output slots can accept more items.
+   * 
+   * @return <code>true</code> if at least one slot if full, <code>false</code> otherwise
+   */
+  private boolean isOutputFull() {
+    for (InventorySlot slot : getInventory().getView(Type.OUTPUT)) {
+      final ItemStack stack = slot.get();
+      if (Prep.isInvalid(stack)) {
+        return false;
+      }
+      if (stack.getCount() >= stack.getMaxStackSize() || stack.getCount() >= slot.getMaxStackSize()) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private boolean transmitEnergy() {

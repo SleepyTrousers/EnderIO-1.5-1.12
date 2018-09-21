@@ -11,7 +11,15 @@ public final class LangTemperature {
   }
 
   public static @Nonnull String degK(float degrees) {
-    return degC(degrees - 273.15f);
+    return degC(K2C(degrees));
+  }
+
+  public static final float C2K(float degrees) {
+    return degrees + 273.15f;
+  }
+
+  public static final float K2C(float degrees) {
+    return degrees - 273.15f;
   }
 
 }
