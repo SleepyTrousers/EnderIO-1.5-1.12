@@ -12,11 +12,15 @@ import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.EnderInventory.Type;
 import com.enderio.core.common.inventory.EnderSlot;
 
-import crazypants.enderio.machines.config.config.LavaGenConfig;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import static crazypants.enderio.machines.config.config.LavaGenConfig.cobbleEnabled;
+import static crazypants.enderio.machines.config.config.LavaGenConfig.obsidianEnabled;
+import static crazypants.enderio.machines.config.config.LavaGenConfig.outputEnabled;
+import static crazypants.enderio.machines.config.config.LavaGenConfig.stoneEnabled;
 
 public class ContainerLavaGenerator<T extends TileLavaGenerator> extends ContainerEnderCap<EnderInventory, TileLavaGenerator> {
 
@@ -27,7 +31,9 @@ public class ContainerLavaGenerator<T extends TileLavaGenerator> extends Contain
   @Override
   protected void addSlots() {
     addSlotToContainer(new EnderSlot(getItemHandler().getView(Type.UPGRADE), "cap", 12, 60));
-    addSlotToContainer(new EnderSlot(Type.OUTPUT, getItemHandler(), "OUTPUT", 134, 52));
+    addSlotToContainer(new EnderSlot(Type.OUTPUT, getItemHandler(), TileLavaGenerator.OUTPUT_COB, 134, 54));
+    addSlotToContainer(new EnderSlot(Type.OUTPUT, getItemHandler(), TileLavaGenerator.OUTPUT_STO, 134, 54 - 18));
+    addSlotToContainer(new EnderSlot(Type.OUTPUT, getItemHandler(), TileLavaGenerator.OUTPUT_OBS, 134, 54 - 18 - 18));
   }
 
   @Override
@@ -36,9 +42,17 @@ public class ContainerLavaGenerator<T extends TileLavaGenerator> extends Contain
   }
 
   public void createGhostSlots(List<GhostSlot> slots) {
-    final Slot slot = inventorySlots.get(1);
+    Slot slot = inventorySlots.get(1);
     if (slot != null) {
-      slots.add(new GhostBackgroundItemSlot(new ItemStack(LavaGenConfig.cobbleEnabled.get() ? Blocks.COBBLESTONE : Blocks.BARRIER), slot));
+      slots.add(new GhostBackgroundItemSlot(new ItemStack(outputEnabled.get() && cobbleEnabled.get() ? Blocks.COBBLESTONE : Blocks.BARRIER), slot));
+    }
+    slot = inventorySlots.get(2);
+    if (slot != null) {
+      slots.add(new GhostBackgroundItemSlot(new ItemStack(outputEnabled.get() && stoneEnabled.get() ? Blocks.STONE : Blocks.BARRIER), slot));
+    }
+    slot = inventorySlots.get(3);
+    if (slot != null) {
+      slots.add(new GhostBackgroundItemSlot(new ItemStack(outputEnabled.get() && obsidianEnabled.get() ? Blocks.OBSIDIAN : Blocks.BARRIER), slot));
     }
   }
 
