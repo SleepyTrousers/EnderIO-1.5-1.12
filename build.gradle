@@ -108,6 +108,11 @@ allprojects {
         }
         mavenLocal()
     }
+    
+    configurations {
+        // configuration that holds jars to embed inside the jar
+        embed
+    }
 
     junitPlatform {
       platformVersion '1.0.3'
@@ -216,6 +221,21 @@ allprojects {
 
 // Configuration that applies only to modules
 subprojects {
+    
+    jar {            
+        into('/META-INF/libraries') {
+            from configurations.embed
+        }
+        
+        doFirst {
+            manifest {
+                attributes([
+                    "ContainedDeps": configurations.embed.collect { it.getName() }.join(' ')
+                ])
+            }
+        }
+    }
+    
     // Assembly an API jar
     task apiJar(type: Jar) {
         classifier = 'api'
@@ -280,6 +300,17 @@ jar {
     combjarprojects.each { subproject ->
         from subproject.sourceSets.main.output.classesDirs
         from subproject.sourceSets.main.output.resourcesDir
+        
+        into('/META-INF/libraries') {
+            from subproject.configurations.embed
+        }
+    }
+    doFirst {
+        manifest {
+            attributes([
+                "ContainedDeps": combjarprojects.collect { it.configurations.embed.collect { it.getName() }}.flatten().join(' ')
+            ])
+        }
     }
 }
 
