@@ -5,8 +5,10 @@ import java.awt.Rectangle;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.lang.LangPower;
@@ -28,7 +30,7 @@ public class GuiLavaGenerator extends GuiCapMachineBase<TileLavaGenerator> {
   private static final int POWER_HEIGHT = 42;
 
   private static final @Nonnull Rectangle RECTANGLE_TANK = new Rectangle(70, 21, 16, 47);
-  private static final @Nonnull Rectangle RECTANGLE_HEAT = new Rectangle(90, 21, 16, 47);
+  private static final @Nonnull Rectangle RECTANGLE_HEAT = new Rectangle(91, 21, 16, 47);
 
   public GuiLavaGenerator(@Nonnull InventoryPlayer playerInv, @Nonnull TileLavaGenerator te) {
     super(te, new ContainerLavaGenerator<>(playerInv, te), "lava_generator");
@@ -73,6 +75,14 @@ public class GuiLavaGenerator extends GuiCapMachineBase<TileLavaGenerator> {
   @Override
   protected boolean showRecipeButton() {
     return false; // TODO JEI recipe
+  }
+
+  @Override
+  public void initGui() {
+    super.initGui();
+    final NNList<GhostSlot> ghostSlots = getGhostSlotHandler().getGhostSlots();
+    ghostSlots.clear();
+    ((ContainerLavaGenerator<?>) inventorySlots).createGhostSlots(ghostSlots);
   }
 
   @Override

@@ -40,4 +40,10 @@ public final class LavaGenConfig {
   public static final IValue<Float> overheatThreshold = F.make("overheatThreshold", .8f, //
       "The heat percentage above which the machine will overheat and set things on fire.").setRange(0, 1).sync();
 
+  public static final IValue<Integer> cobbleAmount = F.make("cobbleAmount", 1296, //
+      "The amount of lava (in mB) needed to generate one block of cobble.").setRange(1, 64000).sync();
+
+  public static final IValue<Boolean> cobbleEnabled = F.make("cobbleEnabled", true, //
+      "When enabled, cooled down lava will turn into cobble.").sync();
+
 }

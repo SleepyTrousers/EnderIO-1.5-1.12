@@ -7,8 +7,13 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
+import com.enderio.core.common.inventory.EnderInventory.Type;
+import com.enderio.core.common.inventory.Filters;
+import com.enderio.core.common.inventory.InventorySlot;
+import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
@@ -19,6 +24,7 @@ import crazypants.enderio.base.power.PowerDistributor;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.config.config.LavaGenConfig;
 import crazypants.enderio.machines.init.MachineObject;
+import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
@@ -51,12 +57,16 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.LAVAGEN_POWER_L
 @Storable
 public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity implements IPaintable.IPaintableTileEntity, ITankAccess.IExtendedTankAccess {
 
+  public static final @Nonnull String OUTPUT_SLOT = "OUTPUT";
+
   @Store
   public int burnTime = 0;
   @Store
   public int heat = 0;
   @Store
   protected final @Nonnull SmartTank tank = new SmartTank(FluidRegistry.LAVA, LavaGenConfig.tankSize.get());
+  @Store({ NBTAction.ITEM, NBTAction.SAVE })
+  public int lavaUsed = 0;
 
   private PowerDistributor powerDis;
   private int coolingSide = 0;
@@ -65,6 +75,7 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
     super(LAVAGEN_POWER_BUFFER, LAVAGEN_POWER_GEN);
     getEnergy().setEnergyLoss(LAVAGEN_POWER_LOSS);
     tank.setTileEntity(this);
+    getInventory().add(Type.OUTPUT, OUTPUT_SLOT, new InventorySlot(Filters.ALWAYS_FALSE, Filters.ALWAYS_TRUE));
   }
 
   @Override
@@ -93,7 +104,7 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
       doActiveCooling();
     }
 
-    if (redstoneCheck && !getEnergy().isFull() && getEnergy().hasCapacitor()) {
+    if (redstoneCheck && !getEnergy().isFull() && getEnergy().hasCapacitor() && !isOutputFull()) {
       if (burnTime > 0) {
         getEnergy().setEnergyStored(getEnergy().getEnergyStored() + getPowerGenPerTick());
         burnTime--;
@@ -102,6 +113,12 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
       if (burnTime <= 0 && !tank.isEmpty()) {
         tank.drain(1, true);
         burnTime = getLavaBurntime() / Fluid.BUCKET_VOLUME / CapacitorKey.LAVAGEN_POWER_FLUID_USE.get(getCapacitorData());
+        if (LavaGenConfig.cobbleEnabled.get()) {
+          lavaUsed++;
+        }
+      }
+      if (lavaUsed >= LavaGenConfig.cobbleAmount.get() && mergeOutput(new ItemStack(Blocks.COBBLESTONE))) {
+        lavaUsed -= LavaGenConfig.cobbleAmount.get();
       }
     }
 
@@ -197,6 +214,28 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
 
   protected int getMaxHeat() {
     return getLavaBurntime() * LavaGenConfig.maxHeatFactor.get();
+  }
+
+  private boolean mergeOutput(@Nonnull ItemStack stack) {
+    final ItemStack oldOutput = getInventory().getSlot(OUTPUT_SLOT).get();
+    if (oldOutput.isEmpty()) {
+      getInventory().getSlot(OUTPUT_SLOT).set(stack);
+      return true;
+    } else if (ItemUtil.areStackMergable(oldOutput, stack)) {
+      oldOutput.grow(stack.splitStack(Math.min(oldOutput.getMaxStackSize() - oldOutput.getCount(), stack.getCount())).getCount());
+      getInventory().getSlot(OUTPUT_SLOT).set(oldOutput);
+      return stack.isEmpty();
+    }
+    return false;
+  }
+
+  private boolean isOutputFull() {
+    final InventorySlot slot = getInventory().getSlot(OUTPUT_SLOT);
+    final ItemStack stack = slot.get();
+    if (Prep.isInvalid(stack)) {
+      return false;
+    }
+    return stack.getCount() >= stack.getMaxStackSize() || stack.getCount() >= slot.getMaxStackSize();
   }
 
   private boolean transmitEnergy() {
