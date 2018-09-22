@@ -110,6 +110,8 @@ public enum Material {
 
   GEAR_DARKSTEEL("gear_darksteel", "gearDark"),
   POWDER_SOUL("powder_soul", "dustSoularium"),
+
+  // Endergy
   INFINITY_GOOP("infinity_goop", "itemInfinityGoop"),
   ENERGETIC_SILVER("ingot_energetic_silver", "ingotEnergeticSilver"),
   COMBUSTIVE_METAL("ingot_combustive_metal", "ingotCombustiveMetal"),
