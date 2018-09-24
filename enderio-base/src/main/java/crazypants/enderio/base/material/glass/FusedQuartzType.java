@@ -9,16 +9,17 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.base.config.Config;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.IStringSerializable;
 
 public enum FusedQuartzType implements IStringSerializable {
 
-  FUSED_QUARTZ("fusedQuartz", BaseMaterial.QUARTZ, Upgrade.NONE),
-  FUSED_GLASS("fusedGlass", BaseMaterial.GLASS, Upgrade.NONE),
-  ENLIGHTENED_FUSED_QUARTZ("enlightenedFusedQuartz", BaseMaterial.QUARTZ, Upgrade.ENLIGHTENED),
-  ENLIGHTENED_FUSED_GLASS("enlightenedFusedGlass", BaseMaterial.GLASS, Upgrade.ENLIGHTENED),
-  DARK_FUSED_QUARTZ("darkFusedQuartz", BaseMaterial.QUARTZ, Upgrade.DARKENED),
-  DARK_FUSED_GLASS("darkFusedGlass", BaseMaterial.GLASS, Upgrade.DARKENED);
+  FUSED_QUARTZ("fusedQuartz", BaseMaterial.QUARTZ, Upgrade.NONE, IPassingCallback.NONE),
+  FUSED_GLASS("fusedGlass", BaseMaterial.GLASS, Upgrade.NONE, IPassingCallback.NONE),
+  ENLIGHTENED_FUSED_QUARTZ("enlightenedFusedQuartz", BaseMaterial.QUARTZ, Upgrade.ENLIGHTENED, IPassingCallback.NONE),
+  ENLIGHTENED_FUSED_GLASS("enlightenedFusedGlass", BaseMaterial.GLASS, Upgrade.ENLIGHTENED, IPassingCallback.NONE),
+  DARK_FUSED_QUARTZ("darkFusedQuartz", BaseMaterial.QUARTZ, Upgrade.DARKENED, IPassingCallback.NONE),
+  DARK_FUSED_GLASS("darkFusedGlass", BaseMaterial.GLASS, Upgrade.DARKENED, IPassingCallback.NONE);
 
   private static enum BaseMaterial {
     QUARTZ,
@@ -31,17 +32,32 @@ public enum FusedQuartzType implements IStringSerializable {
     DARKENED
   }
 
+  public static interface IPassingCallback {
+
+    boolean canPass(@Nonnull Entity entity);
+
+    static @Nonnull IPassingCallback NONE = new IPassingCallback() {
+
+      @Override
+      public boolean canPass(@Nonnull Entity entity) {
+        return false;
+      }
+    };
+
+  }
+
   public static final @Nonnull PropertyEnum<FusedQuartzType> KIND = PropertyEnum.<FusedQuartzType> create("kind", FusedQuartzType.class);
 
   private final @Nonnull String oreDictName;
   private final @Nonnull BaseMaterial baseMaterial;
   private final @Nonnull Upgrade upgrade;
+  private final @Nonnull IPassingCallback passingCallback;
   private Block block;
 
-  private FusedQuartzType(@Nonnull String oreDictName, @Nonnull BaseMaterial baseMaterial, @Nonnull Upgrade upgrade) {
+  private FusedQuartzType(@Nonnull String oreDictName, @Nonnull BaseMaterial baseMaterial, @Nonnull Upgrade upgrade, @Nonnull IPassingCallback passingCallback) {
     this.oreDictName = oreDictName;
     this.baseMaterial = baseMaterial;
-    this.upgrade = upgrade;
+    this.upgrade = upgrade;this.passingCallback=passingCallback;
   }
 
   public boolean connectTo(FusedQuartzType other) {
@@ -86,4 +102,9 @@ public enum FusedQuartzType implements IStringSerializable {
   public void setBlock(@Nonnull Block block) {
     this.block = block;
   }
+
+  public boolean canPass(@Nonnull Entity entity) {
+    return passingCallback.canPass(entity);
+  }
+
 }

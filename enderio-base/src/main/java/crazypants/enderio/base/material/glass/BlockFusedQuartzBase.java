@@ -26,6 +26,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -115,6 +116,13 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
   @Override
   public boolean isFullCube(@Nonnull IBlockState state) {
     return false;
+  }
+
+  @Override
+  public void addCollisionBoxToList(@Nonnull IBlockState state, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull AxisAlignedBB entityBox,
+      @Nonnull List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean isActualState) {
+    if (entityIn == null || !state.getValue(FusedQuartzType.KIND).canPass(entityIn))
+      super.addCollisionBoxToList(state, worldIn, pos, entityBox, collidingBoxes, entityIn, isActualState);
   }
 
   public static class BlockItemFusedQuartzBase extends BlockItemPaintedBlock implements ICustomItemResourceLocation {
