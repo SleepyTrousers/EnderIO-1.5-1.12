@@ -6,10 +6,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.autosave.handlers.EIOHandlers;
 import crazypants.enderio.base.machine.base.block.BlockMachineExtension;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.recipe.sagmill.GrindingMultiplierNBT;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.machines.init.MachineObject;
@@ -32,6 +34,8 @@ public class BlockSagMill<T extends TileSagMill> extends AbstractPoweredTaskBloc
     implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockSagMill<TileSagMill.Normal> create(@Nonnull IModObject modObject) {
+    EIOHandlers.REGISTRY.register(new GrindingMultiplierNBT());
+    
     BlockSagMill<TileSagMill.Normal> res = new BlockSagMill<>(modObject);
     res.init();
     return res;
