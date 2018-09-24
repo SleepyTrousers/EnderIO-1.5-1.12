@@ -229,9 +229,12 @@ subprojects {
         
         doFirst {
             manifest {
-                attributes([
-                    "ContainedDeps": configurations.embed.collect { it.getName() }.join(' ')
-                ])
+                def contained = configurations.embed.collect { it.getName() };
+                if (!contained.isEmpty()) {
+                    attributes([
+                        "ContainedDeps": contained.join(' ')
+                    ])
+                }
             }
         }
     }
