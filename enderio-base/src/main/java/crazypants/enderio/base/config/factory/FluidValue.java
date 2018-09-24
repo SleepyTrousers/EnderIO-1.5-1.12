@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.NullHelper;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Loader;
@@ -36,7 +37,7 @@ public class FluidValue extends AbstractValue<Fluid> {
       if (owner.getServerConfig() != null && owner.getServerConfig().containsKey(keyname)) {
         value = FluidRegistry.getFluid((String) owner.getServerConfig().get(keyname));
       } else {
-        value = FluidRegistry.getFluid(owner.getConfig().getString(keyname, section, defaultValueName, getText()));
+        value = FluidRegistry.getFluid(getString());
         if (!owner.isInInit() && owner.getConfig().hasChanged()) {
           owner.getConfig().save();
         }
@@ -46,8 +47,18 @@ public class FluidValue extends AbstractValue<Fluid> {
     return NullHelper.first(value, defaultFluid, defaultValue);
   }
 
+  private @Nullable String getString() {
+    Property prop = owner.getConfig().get(section, keyname, defaultValueName);
+    prop.setLanguageKey(keyname);
+    prop.setValidationPattern(null);
+    prop.setComment(getText() + " [default: " + defaultValueName + "]");
+    prop.setRequiresMcRestart(isStartup);
+    return prop.getString();
+  }
+
   @Override
   protected @Nullable Fluid makeValue() {
+    getString();
     return null;
   }
 

@@ -35,4 +35,11 @@ public class EnumValue<E extends Enum<E>> implements IValue<E> {
     return this;
   }
 
+  @Override
+  @Nonnull
+  public IValue<E> startup() {
+    storage.startup();
+    return this;
+  }
+
 }

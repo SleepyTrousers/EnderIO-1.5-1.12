@@ -156,6 +156,11 @@ public enum Lang implements ILang {
   INVCHARGER_ENABLED(".tooltip.inventory_charger.enabled"),
   INVCHARGER_DISABLED(".tooltip.inventory_charger.disabled"),
 
+  NETWORK_BAD_CONFIG(".network.bad_config"),
+  NETWORK_CONFIG_CONNECTED(".network.autosync.connected"),
+  NETWORK_CONFIG_OFFLINE(".network.autosync.offline"),
+  NETWORK_CONFIG_SYNC(".network.manusync"),
+
   ;
 
   private final @Nonnull String key;

@@ -1,7 +1,7 @@
 package crazypants.enderio.base.integration.baubles;
 
 import baubles.api.BaublesApi;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.IntegrationConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -13,8 +13,12 @@ import net.minecraftforge.fml.relauncher.Side;
 public class BaublesUtil {
 
   public static enum WhoAmI {
-    SPCLIENT, MPCLIENT, SPSERVER, MPSERVER, OTHER;
-  
+    SPCLIENT,
+    MPCLIENT,
+    SPSERVER,
+    MPSERVER,
+    OTHER;
+
     public static BaublesUtil.WhoAmI whoAmI(World world) {
       Side side = FMLCommonHandler.instance().getSide();
       if (side == Side.CLIENT) {
@@ -39,10 +43,6 @@ public class BaublesUtil {
   }
 
   private static final BaublesUtil instance = new BaublesUtil();
-  private static final boolean baublesLoaded;
-  static {
-    baublesLoaded = Config.enableBaublesIntegration && Loader.isModLoaded("baubles");
-  }
 
   private BaublesUtil() {
   }
@@ -52,7 +52,7 @@ public class BaublesUtil {
   }
 
   public boolean hasBaubles() {
-    return baublesLoaded;
+    return IntegrationConfig.enableBaubles.get() && Loader.isModLoaded("baubles");
   }
 
   /**

@@ -3,6 +3,7 @@ package crazypants.enderio.base.integration.ae2;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.config.IntegrationConfig;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -15,7 +16,9 @@ public class AE2Util {
 
   @SubscribeEvent
   public static void registerHoes(@Nonnull EnderIOLifecycleEvent.Init.Pre event) {
-    FarmersRegistry.registerHoes("appliedenergistics2", "nether_quartz_hoe", "certus_quartz_hoe");
+    if (IntegrationConfig.enableAE2.get()) {
+      FarmersRegistry.registerHoes("appliedenergistics2", "nether_quartz_hoe", "certus_quartz_hoe");
+    }
   }
 
 }

@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.api.farm.IFertilizer;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.config.config.IntegrationConfig;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.fertilizer.Bonemeal;
@@ -19,6 +20,10 @@ public class ActuallyadditionsUtil {
 
   @SubscribeEvent
   public static void registerFertilizer(@Nonnull RegistryEvent.Register<IFertilizer> event) {
+    if (!IntegrationConfig.enableActuallyAdditions.get()) {
+      Log.info("Farming Station: Actually Additions integration disabled by config");
+      return;
+    }
     final Bonemeal fertilizer = new Bonemeal(FarmersRegistry.findItem("actuallyadditions", "item_fertilizer"));
     if (fertilizer.isValid()) {
       event.getRegistry().register(fertilizer);
@@ -30,8 +35,10 @@ public class ActuallyadditionsUtil {
 
   @SubscribeEvent
   public static void registerHoes(@Nonnull EnderIOLifecycleEvent.Init.Pre event) {
-    FarmersRegistry.registerHoes("actuallyadditions", "item_hoe_quartz", "item_hoe_emerald", "item_hoe_obsidian", "item_hoe_crystal_red",
-        "item_hoe_crystal_blue", "item_hoe_crystal_light_blue", "item_hoe_crystal_black", "item_hoe_crystal_green", "item_hoe_crystal_white");
+    if (IntegrationConfig.enableActuallyAdditions.get()) {
+      FarmersRegistry.registerHoes("actuallyadditions", "item_hoe_quartz", "item_hoe_emerald", "item_hoe_obsidian", "item_hoe_crystal_red",
+          "item_hoe_crystal_blue", "item_hoe_crystal_light_blue", "item_hoe_crystal_black", "item_hoe_crystal_green", "item_hoe_crystal_white");
+    }
   }
 
   @ItemStackHolder("actuallyadditions:item_solidified_experience")
