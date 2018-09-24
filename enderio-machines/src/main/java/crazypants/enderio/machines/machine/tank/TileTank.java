@@ -109,7 +109,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
 
   public boolean canVoidItems() {
     final FluidStack fluid = tank.getFluid();
-    return fluid != null && fluid.getFluid().getTemperature() > 973;
+    return fluid != null && fluid.getFluid().getTemperature() > 973 && TankConfig.allowVoiding.get();
   }
 
   public boolean canEatXP() {
@@ -118,25 +118,29 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   }
 
   public boolean isXpBottle(@Nonnull ItemStack stack) {
-    return FluidUtil.getFluidTypeFromItem(stack) == null && (isVanillaXpBottle(stack) || ActuallyadditionsUtil.isAAXpBottle(stack));
+    return FluidUtil.getFluidTypeFromItem(stack) == null && (isVanillaXpBottle(stack) || isAAXpBottle(stack));
   }
 
   private boolean isVanillaXpBottle(@Nonnull ItemStack stack) {
-    return stack.getItem() == Items.EXPERIENCE_BOTTLE;
+    return stack.getItem() == Items.EXPERIENCE_BOTTLE && TankConfig.liquefyXPBottles.get();
   }
 
   private int getXpFromBottle(@Nonnull ItemStack stack) {
     if (isVanillaXpBottle(stack)) {
       return 3 + world.rand.nextInt(5) + world.rand.nextInt(5);
-    } else if (ActuallyadditionsUtil.isAAXpBottle(stack)) {
+    } else if (isAAXpBottle(stack)) {
       return ActuallyadditionsUtil.getXpFromBottle(stack);
     } else {
       return 0;
     }
   }
 
+  private boolean isAAXpBottle(@Nonnull ItemStack stack) {
+    return TankConfig.liquefySolidXP.get() && ActuallyadditionsUtil.isAAXpBottle(stack);
+  }
+
   public @Nonnull VoidMode getVoidMode() {
-    return voidMode;
+    return TankConfig.allowVoiding.get() ? VoidMode.NEVER : voidMode;
   }
 
   public void setVoidMode(@Nonnull VoidMode mode) {
@@ -241,7 +245,8 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   }
 
   private boolean canBeMended(@Nonnull ItemStack stack) {
-    return Prep.isValid(stack) && stack.isItemDamaged() && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, stack) > 0
+    return TankConfig.allowMending.get() && Prep.isValid(stack) && stack.isItemDamaged()
+        && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, stack) > 0
         && tank.hasFluid(Fluids.XP_JUICE.getFluid());
   }
 

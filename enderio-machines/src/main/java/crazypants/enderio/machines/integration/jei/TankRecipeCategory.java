@@ -12,6 +12,7 @@ import crazypants.enderio.base.Log;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.xp.XpUtil;
 import crazypants.enderio.machines.EnderIOMachines;
+import crazypants.enderio.machines.config.config.TankConfig;
 import crazypants.enderio.machines.machine.tank.ContainerTank;
 import crazypants.enderio.machines.machine.tank.GuiTank;
 import crazypants.enderio.machines.machine.tank.TileTank;
@@ -125,31 +126,37 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
     }
 
     // add mending recipes
-    Map<Enchantment, Integer> enchMap = Collections.singletonMap(Enchantments.MENDING, 1);
-    final int maxMendable = TileTank.xpToDurability(XpUtil.liquidToExperience(16000));
-    for (ItemStack stack : validItems) {
-      if (stack.isItemStackDamageable()) {
-        ItemStack enchantedStack;
-        if (EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, stack) > 0) {
-          enchantedStack = stack.copy();
-        } else if (Enchantments.MENDING.canApply(stack)) {
-          enchantedStack = stack.copy();
-          EnchantmentHelper.setEnchantments(enchMap, enchantedStack);
-        } else {
-          continue;
-        }
+    if (TankConfig.allowMending.get()) {
+      Map<Enchantment, Integer> enchMap = Collections.singletonMap(Enchantments.MENDING, 1);
+      final int maxMendable = TileTank.xpToDurability(XpUtil.liquidToExperience(16000));
+      for (ItemStack stack : validItems) {
+        if (stack.isItemStackDamageable()) {
+          ItemStack enchantedStack;
+          if (EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, stack) > 0) {
+            enchantedStack = stack.copy();
+          } else if (Enchantments.MENDING.canApply(stack)) {
+            enchantedStack = stack.copy();
+            EnchantmentHelper.setEnchantments(enchMap, enchantedStack);
+          } else {
+            continue;
+          }
 
-        ItemStack damagedStack = enchantedStack.copy();
-        damagedStack.setItemDamage((damagedStack.getMaxDamage() * 3) / 4);
-        int damageMendable = Math.min(maxMendable, damagedStack.getItemDamage());
-        enchantedStack.setItemDamage(damagedStack.getItemDamage() - damageMendable);
+          ItemStack damagedStack = enchantedStack.copy();
+          damagedStack.setItemDamage((damagedStack.getMaxDamage() * 3) / 4);
+          int damageMendable = Math.min(maxMendable, damagedStack.getItemDamage());
+          enchantedStack.setItemDamage(damagedStack.getItemDamage() - damageMendable);
 
-        if (damagedStack.getItemDamage() != enchantedStack.getItemDamage()) {
-          result.add(new TankRecipeWrapper(new FluidStack(Fluids.XP_JUICE.getFluid(), XpUtil.experienceToLiquid(TileTank.durabilityToXp(damageMendable))), null,
-              damagedStack, enchantedStack));
+          if (damagedStack.getItemDamage() != enchantedStack.getItemDamage()) {
+            result.add(new TankRecipeWrapper(new FluidStack(Fluids.XP_JUICE.getFluid(), XpUtil.experienceToLiquid(TileTank.durabilityToXp(damageMendable))),
+                null, damagedStack, enchantedStack));
+          }
         }
       }
     }
+
+    // TODO TankConfig.liquefyXPBottles.get()
+
+    // TODO TankConfig.liquefySolidXP.get()
 
     long end = System.nanoTime();
     registry.addRecipes(result, UID);
