@@ -3,13 +3,11 @@ package crazypants.enderio.powertools.machine.capbank;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.NBTAction;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
@@ -41,8 +39,7 @@ import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.handlers.enderio.HandleIOMode;
-import info.loenwind.autosave.handlers.minecraft.HandleItemStack.HandleItemStackNNList;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -58,10 +55,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TileCapBank extends TileEntityEio
     implements ILegacyPowerReceiver, IIoConfigurable, IPowerStorage, IPaintable.IPaintableTileEntity, IPowerBarData {
 
-  @Store(handler = HandleIOMode.class)
-  private Map<EnumFacing, IoMode> faceModes;
-  @Store(handler = HandleDisplayMode.class)
-  private Map<EnumFacing, InfoDisplayType> faceDisplayTypes;
+  @Store
+  private EnumMap<EnumFacing, IoMode> faceModes;
+  @Store
+  private EnumMap<EnumFacing, InfoDisplayType> faceDisplayTypes;
 
   @Store({ NBTAction.SAVE, NBTAction.CLIENT })
   private int energyStored;
@@ -82,7 +79,7 @@ public class TileCapBank extends TileEntityEio
 
   private ICapBankNetwork network;
 
-  @Store(handler = HandleItemStackNNList.class)
+  @Store
   private final @Nonnull NNList<ItemStack> inventory = new NNList<>(4, ItemStack.EMPTY);
 
   // Client side reference to look up network state

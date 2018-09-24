@@ -3,9 +3,12 @@ package crazypants.enderio.base;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.NBTAction;
+import info.loenwind.autosave.util.NBTAction;
+
+import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.TileEntityBase;
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
@@ -19,6 +22,8 @@ import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -69,14 +74,29 @@ public abstract class TileEntityEio extends TileEntityBase {
       Log.warn(sb);
     }
   }
+  
+  @Deprecated
+  private @Nonnull NBTAction convertAction(com.enderio.core.common.NBTAction action) {
+    return NullHelper.notnullJ(NBTAction.values()[action.ordinal()], "Enum.values()");
+  }
 
   @Override
+  @Deprecated
+  protected void readCustomNBT(@Nonnull com.enderio.core.common.NBTAction action, @Nonnull NBTTagCompound root) {
+    readCustomNBT(convertAction(action), root);
+  }
+  
+  @Override
+  @Deprecated
+  protected void writeCustomNBT(@Nonnull com.enderio.core.common.NBTAction action, @Nonnull NBTTagCompound root) {
+    writeCustomNBT(convertAction(action), root);
+  }
+
   protected final void writeCustomNBT(@Nonnull NBTAction action, @Nonnull NBTTagCompound root) {
     onBeforeNbtWrite();
     Writer.write(action, root, this);
   }
 
-  @Override
   protected final void readCustomNBT(@Nonnull NBTAction action, @Nonnull NBTTagCompound root) {
     Reader.read(action, root, this);
     if (action == NBTAction.CLIENT) {

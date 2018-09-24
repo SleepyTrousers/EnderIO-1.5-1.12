@@ -89,6 +89,7 @@ allprojects {
         mavenCentral()
         maven { url = "http://tehnut.info/maven" }
         maven { url = "http://maven.tterrag.com" }
+        maven { url = "http://maven2.tterrag.com" }
         maven { url = "http://dvs1.progwml6.com/files/maven" }
         maven { url = "http://files.minecraftforge.net/maven" }
         maven { url = "http://maven.cil.li/" } // OpenComputers
@@ -106,6 +107,11 @@ allprojects {
             }
         }
         mavenLocal()
+    }
+    
+    configurations {
+        // configuration that holds jars to embed inside the jar
+        embed
     }
 
     junitPlatform {
@@ -215,6 +221,21 @@ allprojects {
 
 // Configuration that applies only to modules
 subprojects {
+    
+    jar {            
+        into('/META-INF/libraries') {
+            from configurations.embed
+        }
+        
+        doFirst {
+            manifest {
+                attributes([
+                    "ContainedDeps": configurations.embed.collect { it.getName() }.join(' ')
+                ])
+            }
+        }
+    }
+    
     // Assembly an API jar
     task apiJar(type: Jar) {
         classifier = 'api'
@@ -279,6 +300,17 @@ jar {
     combjarprojects.each { subproject ->
         from subproject.sourceSets.main.output.classesDirs
         from subproject.sourceSets.main.output.resourcesDir
+        
+        into('/META-INF/libraries') {
+            from subproject.configurations.embed
+        }
+    }
+    doFirst {
+        manifest {
+            attributes([
+                "ContainedDeps": combjarprojects.collect { it.configurations.embed.collect { it.getName() }}.flatten().join(' ')
+            ])
+        }
     }
 }
 

@@ -1,6 +1,6 @@
 package crazypants.enderio.invpanel.remote;
 
-import com.enderio.core.common.NBTAction;
+import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.network.NetworkUtil;
 
 import crazypants.enderio.base.EnderIO;

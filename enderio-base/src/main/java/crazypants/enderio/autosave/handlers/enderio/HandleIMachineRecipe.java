@@ -1,18 +1,16 @@
-package info.loenwind.autosave.handlers.enderio;
+package crazypants.enderio.autosave.handlers.enderio;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import info.loenwind.autosave.Registry;
-import com.enderio.core.common.NBTAction;
 
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class HandleIMachineRecipe implements IHandler<IMachineRecipe> {
@@ -21,19 +19,20 @@ public class HandleIMachineRecipe implements IHandler<IMachineRecipe> {
   }
 
   @Override
-  public boolean canHandle(Class<?> clazz) {
-    return IMachineRecipe.class.isAssignableFrom(clazz);
+  public Class<?> getRootType() {
+    return IMachineRecipe.class;
   }
 
   @Override
-  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
-      @Nonnull IMachineRecipe object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
+  public boolean store(Registry registry, Set<NBTAction> phase, NBTTagCompound nbt, Type type, String name,
+      IMachineRecipe object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     nbt.setString(name, object.getUid());
     return true;
   }
 
   @Override
-  public IMachineRecipe read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
+  @Nullable
+  public IMachineRecipe read(Registry registry, Set<NBTAction> phase, NBTTagCompound nbt, Type type, String name,
       @Nullable IMachineRecipe object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if (nbt.hasKey(name)) {
       return MachineRecipeRegistry.instance.getRecipeForUid(nbt.getString(name));

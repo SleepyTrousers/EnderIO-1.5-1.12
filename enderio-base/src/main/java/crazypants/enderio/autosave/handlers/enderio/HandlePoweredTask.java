@@ -1,19 +1,18 @@
-package info.loenwind.autosave.handlers.enderio;
+package crazypants.enderio.autosave.handlers.enderio;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import info.loenwind.autosave.Registry;
-import com.enderio.core.common.NBTAction;
-
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
+import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
+import info.loenwind.autosave.util.NBTAction;
+import info.loenwind.autosave.util.NullHelper;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class HandlePoweredTask implements IHandler<IPoweredTask> {
@@ -22,22 +21,23 @@ public class HandlePoweredTask implements IHandler<IPoweredTask> {
   }
 
   @Override
-  public boolean canHandle(Class<?> clazz) {
-    return IPoweredTask.class.isAssignableFrom(clazz);
+  public Class<?> getRootType() {
+    return IPoweredTask.class;
   }
 
   @Override
-  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name, @Nonnull IPoweredTask object)
+  public boolean store(Registry registry, Set<NBTAction> phase, NBTTagCompound nbt, Type type, String name, IPoweredTask object)
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     NBTTagCompound tag = new NBTTagCompound();
     object.writeToNBT(tag);
-    tag.setString("class", object.getClass().getName());
+    tag.setString("class", NullHelper.notnullJ(object.getClass().getName(), "Class#getName"));
     nbt.setTag(name, tag);
     return true;
   }
 
   @Override
-  public IPoweredTask read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field, @Nonnull String name,
+  @Nullable
+  public IPoweredTask read(Registry registry, Set<NBTAction> phase, NBTTagCompound nbt, Type type, String name,
       @Nullable IPoweredTask object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if (nbt.hasKey(name)) {
       try {

@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
-import com.enderio.core.common.NBTAction;
+import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 
@@ -30,7 +30,6 @@ import crazypants.enderio.invpanel.init.InvpanelObject;
 import crazypants.enderio.invpanel.network.PacketGuiSettingsUpdated;
 import crazypants.enderio.invpanel.network.PacketStoredCraftingRecipe;
 import crazypants.enderio.invpanel.network.PacketUpdateExtractionDisabled;
-import crazypants.enderio.invpanel.util.HandleStoredCraftingRecipe.HandleStoredCraftingRecipeArrayList;
 import crazypants.enderio.invpanel.util.StoredCraftingRecipe;
 import crazypants.enderio.machines.machine.generator.zombie.IHasNutrientTank;
 import crazypants.enderio.machines.machine.generator.zombie.PacketNutrientTank;
@@ -81,7 +80,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   @Store
   private boolean guiSync;
 
-  @Store(handler = HandleStoredCraftingRecipeArrayList.class)
+  @Store
   private final ArrayList<StoredCraftingRecipe> storedCraftingRecipes;
 
   public TileInventoryPanel() {

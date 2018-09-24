@@ -18,6 +18,7 @@ import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.tool.ITool;
+import crazypants.enderio.autosave.handlers.EIOHandlers;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
@@ -50,6 +51,7 @@ import crazypants.enderio.conduits.gui.GuiExternalConnectionSelector;
 import crazypants.enderio.conduits.lang.Lang;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduits.render.ConduitRenderMapper;
+import info.loenwind.autosave.Registry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
@@ -95,6 +97,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     implements IEioGuiHandler.WithPos, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IYetaAwareBlock {
 
   public static BlockConduitBundle create(@Nonnull IModObject modObject) {
+    EIOHandlers.REGISTRY.register(new ConduitHandler());
+    
     BlockConduitBundle result = new BlockConduitBundle(modObject);
     result.init();
     return result;

@@ -8,7 +8,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.NBTAction;
+import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.util.UserIdent;
 
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
@@ -25,7 +25,6 @@ import crazypants.enderio.base.machine.sound.MachineSound;
 import crazypants.enderio.base.paint.YetaUtil;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.handlers.enderio.HandleIOMode;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -60,8 +59,8 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
   private boolean redstoneStateDirty = true;
 
-  @Store(handler = HandleIOMode.class)
-  protected Map<EnumFacing, IoMode> faceModes;
+  @Store
+  protected EnumMap<EnumFacing, IoMode> faceModes;
 
   protected boolean notifyNeighbours = false;
 

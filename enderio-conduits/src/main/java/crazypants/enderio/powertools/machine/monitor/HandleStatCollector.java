@@ -1,28 +1,28 @@
 package crazypants.enderio.powertools.machine.monitor;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-
-import com.enderio.core.common.NBTAction;
 
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.nbt.NBTTagCompound;
 
 @ParametersAreNonnullByDefault
 public class HandleStatCollector implements IHandler<StatCollector> {
 
   @Override
-  public boolean canHandle(@Nullable Class<?> clazz) {
-    return false;
+  public @Nonnull Class<?> getRootType() {
+    return StatCollector.class;
   }
 
   @Override
-  public boolean store(Registry registry, Set<NBTAction> phase, NBTTagCompound nbt, String name, StatCollector object)
+  public boolean store(Registry registry, Set<NBTAction> phase, NBTTagCompound nbt, Type type, String name, StatCollector object)
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     NBTTagCompound tag = new NBTTagCompound();
     tag.setInteger("pos", object.getPos());
@@ -33,7 +33,7 @@ public class HandleStatCollector implements IHandler<StatCollector> {
   }
 
   @Override
-  public StatCollector read(Registry registry, Set<NBTAction> phase, NBTTagCompound nbt, @Nullable Field field, String name, @Nullable StatCollector object)
+  public StatCollector read(Registry registry, Set<NBTAction> phase, NBTTagCompound nbt, Type type, String name, @Nullable StatCollector object)
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if (object == null) {
       throw new IllegalArgumentException();
