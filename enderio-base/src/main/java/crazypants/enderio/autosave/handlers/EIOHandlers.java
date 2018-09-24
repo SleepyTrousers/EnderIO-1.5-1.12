@@ -1,5 +1,7 @@
 package crazypants.enderio.autosave.handlers;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.autosave.handlers.endercore.HandleEnderInventory;
@@ -18,7 +20,7 @@ import static info.loenwind.autosave.Registry.GLOBAL_REGISTRY;
 
 public class EIOHandlers {
   
-  public static final Registry REGISTRY = new Registry();
+  public static final @Nonnull Registry REGISTRY = new Registry();
 
   public static void register() {
     try {
