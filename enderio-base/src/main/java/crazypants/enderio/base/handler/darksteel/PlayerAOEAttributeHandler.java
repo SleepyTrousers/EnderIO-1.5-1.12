@@ -33,6 +33,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
+import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -47,7 +48,26 @@ public class PlayerAOEAttributeHandler {
   public static final @Nonnull IAttribute AOE_XYZ = new RangedAttribute(null, "enderio.aoe.xyz", 0.0D, 0.0D, 16).setShouldWatch(true);
 
   @SubscribeEvent
+  public static void handleConstruct(@Nonnull net.minecraftforge.event.entity.EntityEvent.EntityConstructing event) {
+    /*
+     * This event is fired in the constructor of Entity. The attribute map we add values to belongs to EntityLiving. So this should not actually work, as
+     * EntityLiving has not yet been constructed fully when we are called. But luckily for us, EntityLiving does not initialize the attribute map field with
+     * anything. So our value gets put in too early but is then not overwritten. However, I doubt the JVM specs actually allow this loophole. So this may stop
+     * working at any time.
+     * 
+     * And when it does, there will be three warnings about ignored unknown SharedMonsterAttributes when a player is loaded from the server's save file. Which
+     * can be ignored because they are of no consequence.
+     * 
+     */
+    handleAttributes(event);
+  }
+
+  @SubscribeEvent
   public static void handleJoin(@Nonnull EntityJoinWorldEvent event) {
+    handleAttributes(event);
+  }
+
+  private static void handleAttributes(@Nonnull EntityEvent event) {
     if (event.getEntity() instanceof EntityPlayer) {
       final AbstractAttributeMap map = ((EntityLivingBase) event.getEntity()).getAttributeMap();
       if (NullHelper.untrust(map.getAttributeInstance(AOE_XZ)) == null) {
