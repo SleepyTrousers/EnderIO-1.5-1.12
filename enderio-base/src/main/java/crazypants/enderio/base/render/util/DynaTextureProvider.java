@@ -23,8 +23,8 @@ import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -32,16 +32,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class DynaTextureProvider {
 
-  protected static final int TEXSIZE = 32;
+  public static final int TEXSIZE = 32;
 
   protected static final @Nonnull Queue<ResourceLocation> toFree = new ConcurrentLinkedQueue<ResourceLocation>();
   protected static final @Nonnull List<DynaTextureProvider> instances = new ArrayList<DynaTextureProvider>();
 
-  protected static final @Nonnull ResourceLocation pmon_screen = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/block_pmon_screen.png");
+  protected static final @Nonnull ResourceLocation pmon_screen = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/block_pm_on_screen.png");
   protected static final @Nonnull int[] pmon_screen_data = new int[TEXSIZE * TEXSIZE];
-  protected static final @Nonnull ResourceLocation pmon_color = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/block_pmon_color.png");
+  protected static final @Nonnull ResourceLocation pmon_color = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/block_pm_on_color.png");
   protected static final @Nonnull int[] pmon_color_data = new int[TEXSIZE * TEXSIZE];
-  protected static final @Nonnull ResourceLocation pmon_fallback = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/block_pmon.png");
+  protected static final @Nonnull ResourceLocation pmon_fallback = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/block_pm_on.png");
 
   protected final @Nonnull IDataProvider owner;
   protected final @Nonnull String id;
@@ -87,7 +87,6 @@ public class DynaTextureProvider {
         pmon_color_image.getRGB(0, 0, TEXSIZE, TEXSIZE, pmon_color_data, 0, TEXSIZE);
       }
       texturesLoaded = true;
-      MinecraftForge.EVENT_BUS.register(new Unloader());
     }
   }
 
@@ -160,10 +159,12 @@ public class DynaTextureProvider {
     super.finalize();
   }
 
+  @SideOnly(Side.CLIENT)
+  @EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
   public static class Unloader {
-    @SuppressWarnings({ "static-method"})
+    @SuppressWarnings({ "static-method" })
     @SubscribeEvent
-    public void unload(WorldEvent.Unload event) {
+    public static void unload(WorldEvent.Unload event) {
       if (event.getWorld() instanceof WorldClient) {
         for (DynaTextureProvider instance : instances) {
           instance.free();

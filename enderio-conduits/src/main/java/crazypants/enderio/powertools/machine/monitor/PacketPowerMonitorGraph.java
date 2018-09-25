@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.render.util.DynaTextureProvider;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;

@@ -51,7 +51,7 @@ public class StatCollector {
     }
   }
 
-  public int[][] getValues() {
+  public @Nonnull int[][] getValues() {
     int[][] result = { new int[MAX_VALUES], new int[MAX_VALUES] }; // sic
     for (int i = 0; i < max_values; i++) {
       int j = i + pos + 1;
