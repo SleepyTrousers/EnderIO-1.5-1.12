@@ -571,7 +571,7 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Sagmill: oreDiamond Ore" required="true">
     <sagmilling energy="3600">
-      <input name="oreDiamond" />
+      <input name="oreDiamond, -railcraft:ore:2" />
       <output name="gemDiamond" amount="2" />
       <output name="gemDiamond" chance="0.25" />
       <output name="dustCoal" chance="0.05" />
@@ -600,7 +600,7 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Sagmill: oreEmerald Ore" required="true">
     <sagmilling energy="3600">
-      <input name="oreEmerald" />
+      <input name="oreEmerald, -railcraft:ore:3" />
       <output name="gemEmerald" amount="2" />
       <output name="gemEmerald" chance="0.25" />
       <output name="oredict:cobblestone" chance="0.15" />
@@ -627,7 +627,7 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Sagmill: oreLapis Ore" required="true">
     <sagmilling energy="3600">
-      <input name="oreLapis" />
+      <input name="oreLapis, -railcraft:ore:4" />
       <output name="minecraft:dye:4" amount="8" />
       <output name="minecraft:dye:4" chance="0.2" />
       <output name="oredict:cobblestone" chance="0.15" />
@@ -780,7 +780,7 @@ XML editor will display that as tooltips when editing this file.
     <sagmilling energy="3600">
       <input name="oreSaltpeter" />
       <output name="dustSaltpeter" amount="4" />
-      <output name="oredict:cobblestone" chance="0.15" />
+      <output name="minecraft:sand" chance="0.15" />
     </sagmilling>
   </recipe>
 
