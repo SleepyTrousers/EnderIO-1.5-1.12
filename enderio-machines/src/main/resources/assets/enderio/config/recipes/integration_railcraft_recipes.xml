@@ -31,9 +31,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Sagmill: Poor Iron Ore" required="false">
     <sagmilling energy="1750">
       <input name="orePoorIron" />
-      <output name="nuggetIron" amount="3" />
-      <output name="nuggetIron" amount="2" chance="0.25" />
-      <output name="nuggetIron" amount="1" chance="0.15" />
+      <output name="dustTinyIron" amount="5" />
+      <output name="dustTinyIron" amount="1" chance="0.25" />
+      <output name="dustTinyIron" amount="2" chance="0.15" />
       <output name="oredict:cobblestone" chance="0.75" />
     </sagmilling>
   </recipe>
@@ -41,9 +41,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Sagmill: Poor Gold Ore" required="false">
     <sagmilling energy="1750">
       <input name="orePoorGold" />
-      <output name="nuggetGold" amount="3" />
-      <output name="nuggetGold" amount="2" chance="0.25" />
-      <output name="nuggetGold" amount="1" chance="0.15" />
+      <output name="dustTinyGold" amount="5" />
+      <output name="dustTinyGold" amount="1" chance="0.25" />
+      <output name="dustTinyGold" amount="1" chance="0.15" />
       <output name="oredict:cobblestone" chance="0.75" />
     </sagmilling>
   </recipe>
@@ -51,9 +51,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Sagmill: Poor Copper Ore" required="false">
     <sagmilling energy="1750">
       <input name="orePoorCopper" />
-      <output name="nuggetCopper" amount="3" />
-      <output name="nuggetCopper" amount="2" chance="0.25" />
-      <output name="nuggetCopper" amount="1" chance="0.15" />
+      <output name="dustTinyCopper" amount="5" />
+      <output name="dustTinyCopper" amount="1" chance="0.25" />
+      <output name="dustTinyCopper" amount="1" chance="0.15" />
       <output name="oredict:cobblestone" chance="0.75" />
     </sagmilling>
   </recipe>
@@ -61,9 +61,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Sagmill: Poor Tin Ore" required="false">
     <sagmilling energy="1750">
       <input name="orePoorTin" />
-      <output name="nuggetTin" amount="3" />
-      <output name="nuggetTin" amount="2" chance="0.25" />
-      <output name="nuggetTin" amount="1" chance="0.15" />
+      <output name="dustTinyTin" amount="5" />
+      <output name="dustTinyTin" amount="1" chance="0.25" />
+      <output name="dustTinyTin" amount="1" chance="0.15" />
       <output name="oredict:cobblestone" chance="0.75" />
     </sagmilling>
   </recipe>
@@ -71,9 +71,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Sagmill: Poor Lead Ore" required="false">
     <sagmilling energy="1750">
       <input name="orePoorLead" />
-      <output name="nuggetLead" amount="3" />
-      <output name="nuggetLead" amount="2" chance="0.25" />
-      <output name="nuggetLead" amount="1" chance="0.15" />
+      <output name="dustTinyLead" amount="5" />
+      <output name="dustTinyLead" amount="1" chance="0.25" />
+      <output name="dustTinyLead" amount="1" chance="0.15" />
       <output name="oredict:cobblestone" chance="0.75" />
     </sagmilling>
   </recipe>
@@ -81,9 +81,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Sagmill: Poor Silver Ore" required="false">
     <sagmilling energy="1750">
       <input name="orePoorSilver" />
-      <output name="nuggetSilver" amount="3" />
-      <output name="nuggetSilver" amount="2" chance="0.25" />
-      <output name="nuggetSilver" amount="1" chance="0.15" />
+      <output name="dustTinySilver" amount="5" />
+      <output name="dustTinySilver" amount="1" chance="0.25" />
+      <output name="dustTinySilver" amount="1" chance="0.15" />
       <output name="oredict:cobblestone" chance="0.75" />
     </sagmilling>
   </recipe>
@@ -91,9 +91,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Sagmill: Poor Nickel Ore" required="false">
     <sagmilling energy="1750">
       <input name="orePoorNickel" />
-      <output name="nuggetNickel" amount="3" />
-      <output name="nuggetNickel" amount="2" chance="0.25" />
-      <output name="nuggetNickel" amount="1" chance="0.15" />
+      <output name="dustTinyNickel" amount="5" />
+      <output name="dustTinyNickel" amount="1" chance="0.25" />
+      <output name="dustTinyNickel" amount="1" chance="0.15" />
       <output name="oredict:cobblestone" chance="0.75" />
     </sagmilling>
   </recipe>
@@ -101,9 +101,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Sagmill: Poor Zinc Ore" required="false">
     <sagmilling energy="1750">
       <input name="orePoorZinc" />
-      <output name="nuggetZinc" amount="3" />
-      <output name="nuggetZinc" amount="2" chance="0.25" />
-      <output name="nuggetZinc" amount="1" chance="0.15" />
+      <output name="dustTinyZinc" amount="5" />
+      <output name="dustTinyZinc" amount="1" chance="0.25" />
+      <output name="dustTinyZinc" amount="1" chance="0.15" />
       <output name="oredict:cobblestone" chance="0.75" />
     </sagmilling>
   </recipe>
