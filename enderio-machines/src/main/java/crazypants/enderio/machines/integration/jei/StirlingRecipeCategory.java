@@ -22,6 +22,7 @@ import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
+import crazypants.enderio.machines.config.config.PersonalConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.generator.stirling.ContainerStirlingGenerator;
@@ -126,6 +127,10 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
   } // -------------------------------------
 
   public static void register(@Nonnull IModRegistry registry, @Nonnull IGuiHelper guiHelper) {
+    // Check to see if the JEI recipes are enabled
+    if (!PersonalConfig.enableStirlingJEIRecipes.get()) {
+      return;
+    }
 
     registry.addRecipeCategories(new StirlingRecipeCategory(guiHelper));
     registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_stirling_generator.getBlockNN(), 1, 0), StirlingRecipeCategory.UID);

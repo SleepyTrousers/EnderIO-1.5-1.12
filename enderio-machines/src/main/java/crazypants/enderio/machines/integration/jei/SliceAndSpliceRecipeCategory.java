@@ -13,6 +13,7 @@ import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.machines.EnderIOMachines;
+import crazypants.enderio.machines.config.config.PersonalConfig;
 import crazypants.enderio.machines.machine.slicensplice.ContainerSliceAndSplice;
 import crazypants.enderio.machines.machine.slicensplice.GuiSliceAndSplice;
 import mezz.jei.api.IGuiHelper;
@@ -55,6 +56,10 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
   }
 
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
+    // Check JEI recipes are enabled
+    if (!PersonalConfig.enableSliceAndSpliceJEIRecipes.get()) {
+      return;
+    }
 
     registry.addRecipeCategories(new SliceAndSpliceRecipeCategory(guiHelper));
     registry.handleRecipes(IRecipe.class, SliceAndSpliceRecipe::new, SliceAndSpliceRecipeCategory.UID);

@@ -7,12 +7,12 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
+import crazypants.enderio.machines.config.config.PersonalConfig;
 import crazypants.enderio.machines.config.config.WeatherConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.obelisk.weather.ContainerWeatherObelisk;
@@ -73,6 +73,11 @@ public class WeatherObeliskRecipeCategory extends BlankRecipeCategory<WeatherObe
   } // -------------------------------------
 
   public static void register(IModRegistry registry, @Nonnull IGuiHelper guiHelper) {
+    // Check JEI recipes are enabled
+    if (!PersonalConfig.enableWeatherObeliskJEIRecipes.get()) {
+      return;
+    }
+
 
     registry.addRecipeCategories(new WeatherObeliskRecipeCategory(guiHelper));
     registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_weather_obelisk.getBlockNN()), WeatherObeliskRecipeCategory.UID);
