@@ -20,7 +20,11 @@ public abstract class AbstractCrafting extends AbstractConditional {
       throw new InvalidRecipeConfigException("Missing <output>");
     }
 
-    valid = checkOutputCount(getOutputs().size());
+    final List<Output> activeOutputs = getOutputs();
+    valid = checkOutputCount(activeOutputs.size());
+    for (Output output : activeOutputs) {
+      valid &= output.isValid();
+    }
 
     return this;
   }
@@ -31,7 +35,7 @@ public abstract class AbstractCrafting extends AbstractConditional {
 
   public Output getOutput() {
     for (Output output : outputs) {
-      if (output.isValid() && output.isActive()) {
+      if (output.isActive()) {
         return output;
       }
     }
@@ -41,7 +45,7 @@ public abstract class AbstractCrafting extends AbstractConditional {
   public List<Output> getOutputs() {
     List<Output> result = new ArrayList<Output>();
     for (Output output : outputs) {
-      if (output.isValid() && output.isActive()) {
+      if (output.isActive()) {
         result.add(output);
       }
     }
