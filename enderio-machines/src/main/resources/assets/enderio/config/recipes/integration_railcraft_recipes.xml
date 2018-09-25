@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+
+These are the built-in recipes. You cannot change this file, it is a
+reference for you only and will be generated every time the game starts.
+
+To make changes to the recipes, copy the recipes you want to change to
+a file in the 'user' folder. To disable a recipe, add an attribute "disabled"
+and set it to true, e.g.: <recipe name="Gear" disabled="true" />
+
+You can also disable all built-in recipes with the setting "loadCoreRecipes"
+in the Ender IO config file, so that only your files in the 'user' folder will
+be loaded. Please be advised that a number of recipes are absolutely needed,
+so you will have to copy those over into a 'user' file for the game to load.
+
+Item specifications can reference an alias, an ore dictionary name, a
+block or an item. You can force the type by prefixing the value with
+"oredict:", "block:" or "item:". Recipes that have items that cannot be
+found in-game are either skipped or an error, depending on their "required"
+attribute.
+
+More information on the syntax can be found in the recipes.xsd file. An
+XML editor will display that as tooltips when editing this file.
+
+ -->
+
+<!-- Railcraft ores are to "poor" to have bonus outputs" -->
+
+  <recipe name="Sagmill: Poor Iron Ore" required="false">
+    <sagmilling energy="1750">
+      <input name="orePoorIron" />
+      <output name="nuggetIron" amount="3" />
+      <output name="nuggetIron" amount="2" chance="0.25" />
+      <output name="nuggetIron" amount="1" chance="0.15" />
+      <output name="oredict:cobblestone" chance="0.75" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: Poor Gold Ore" required="false">
+    <sagmilling energy="1750">
+      <input name="orePoorGold" />
+      <output name="nuggetGold" amount="3" />
+      <output name="nuggetGold" amount="2" chance="0.25" />
+      <output name="nuggetGold" amount="1" chance="0.15" />
+      <output name="oredict:cobblestone" chance="0.75" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: Poor Copper Ore" required="false">
+    <sagmilling energy="1750">
+      <input name="orePoorCopper" />
+      <output name="nuggetCopper" amount="3" />
+      <output name="nuggetCopper" amount="2" chance="0.25" />
+      <output name="nuggetCopper" amount="1" chance="0.15" />
+      <output name="oredict:cobblestone" chance="0.75" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: Poor Tin Ore" required="false">
+    <sagmilling energy="1750">
+      <input name="orePoorTin" />
+      <output name="nuggetTin" amount="3" />
+      <output name="nuggetTin" amount="2" chance="0.25" />
+      <output name="nuggetTin" amount="1" chance="0.15" />
+      <output name="oredict:cobblestone" chance="0.75" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: Poor Lead Ore" required="false">
+    <sagmilling energy="1750">
+      <input name="orePoorLead" />
+      <output name="nuggetLead" amount="3" />
+      <output name="nuggetLead" amount="2" chance="0.25" />
+      <output name="nuggetLead" amount="1" chance="0.15" />
+      <output name="oredict:cobblestone" chance="0.75" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: Poor Silver Ore" required="false">
+    <sagmilling energy="1750">
+      <input name="orePoorSilver" />
+      <output name="nuggetSilver" amount="3" />
+      <output name="nuggetSilver" amount="2" chance="0.25" />
+      <output name="nuggetSilver" amount="1" chance="0.15" />
+      <output name="oredict:cobblestone" chance="0.75" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: Poor Nickel Ore" required="false">
+    <sagmilling energy="1750">
+      <input name="orePoorNickel" />
+      <output name="nuggetNickel" amount="3" />
+      <output name="nuggetNickel" amount="2" chance="0.25" />
+      <output name="nuggetNickel" amount="1" chance="0.15" />
+      <output name="oredict:cobblestone" chance="0.75" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: Poor Zinc Ore" required="false">
+    <sagmilling energy="1750">
+      <input name="orePoorZinc" />
+      <output name="nuggetZinc" amount="3" />
+      <output name="nuggetZinc" amount="2" chance="0.25" />
+      <output name="nuggetZinc" amount="1" chance="0.15" />
+      <output name="oredict:cobblestone" chance="0.75" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: Railcraft Saltpeter" required="false">
+    <sagmilling energy="1750">
+      <input name="railcraft:ore:1" />
+      <output name="dustSaltpeter" amount="4" />
+      <output name="sand" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: Dark Diamond Ore" required="false">
+    <sagmilling energy="5000">
+      <input name="railcraft:ore:2" />
+      <output name="gemDiamond" amount="2" />
+      <output name="gemDiamond" chance="0.25" />
+      <output name="dustCoal" chance="0.05" />
+      <output name="railcraft:brick_abyssal:5" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: Dark Emerald Ore" required="false">
+    <sagmilling energy="5000">
+      <input name="railcraft:ore:3" />
+      <output name="gemEmerald" amount="2" />
+      <output name="gemEmerald" chance="0.25" />
+      <output name="railcraft:brick_abyssal:5" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: Dark Lapis Ore" required="false">
+    <sagmilling energy="5000">
+      <input name="railcraft:ore:4" />
+      <output name="minecraft:dye:4" amount="8" />
+      <output name="minecraft:dye:4" chance="0.2" />
+      <output name="railcraft:brick_abyssal:5" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: Railcraft Magic Ore" required="false">
+    <sagmilling energy="5000" bonus="none">
+      <input name="railcraft:ore_magic" />
+      <output name="railcraft:firestone_raw" amount="1" />
+      <output name="netherrack" amount="1" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+</enderio:recipes>
