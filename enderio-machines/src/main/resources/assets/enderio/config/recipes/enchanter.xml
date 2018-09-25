@@ -278,7 +278,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Enchanter: draconicevolution:enchant_reaper" required="false" disabled="false">
     <enchanting>
       <input name="draconicevolution:draconium_block" amount="12"/>
-      <enchantment name="draconicevolution:enchant_reaper" costMultiplier="2"/>
+      <enchantment name="draconicevolution:enchant_reaper" costMultiplier="1"/>
     </enchanting>
   </recipe>
 
