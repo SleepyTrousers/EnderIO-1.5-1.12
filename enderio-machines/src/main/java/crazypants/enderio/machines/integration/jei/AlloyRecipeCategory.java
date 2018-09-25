@@ -15,6 +15,7 @@ import crazypants.enderio.base.recipe.IManyToOneRecipe;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
 import crazypants.enderio.machines.EnderIOMachines;
+import crazypants.enderio.machines.config.config.PersonalConfig;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.alloy.ContainerAlloySmelter;
 import crazypants.enderio.machines.machine.alloy.GuiAlloySmelter;
@@ -83,6 +84,10 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
   }
 
   public static void register(IModRegistry registry, @Nonnull IGuiHelper guiHelper) {
+    // Check JEI recipes are enabled
+    if (!PersonalConfig.enableAlloySmelterAlloyingJEIRecipes.get() && !PersonalConfig.enableAlloySmelterFurnaceJEIRecipes.get()) {
+      return;
+    }
 
     registry.addRecipeCategories(new AlloyRecipeCategory(guiHelper));
     registry.addRecipeClickArea(GuiAlloySmelter.Normal.class, 155, 42, 16, 16, AlloyRecipeCategory.UID, VanillaRecipeCategoryUid.SMELTING);
@@ -97,13 +102,17 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
     long start = System.nanoTime();
 
     List<AlloyRecipeWrapper> result = new ArrayList<>();
-    for (IManyToOneRecipe rec : AlloyRecipeManager.getInstance().getRecipes()) {
-      if (!rec.isSynthetic()) {
-        result.add(new AlloyRecipeWrapper(rec, guiHelper));
+    if (PersonalConfig.enableAlloySmelterAlloyingJEIRecipes.get()) {
+      for (IManyToOneRecipe rec : AlloyRecipeManager.getInstance().getRecipes()) {
+        if (!rec.isSynthetic()) {
+          result.add(new AlloyRecipeWrapper(rec, guiHelper));
+        }
       }
     }
-    for (IRecipe rec : AlloyRecipeManager.getInstance().getVanillaRecipe().getAllRecipes()) {
-      result.add(new AlloyRecipeWrapper(rec, guiHelper));
+    if (PersonalConfig.enableAlloySmelterFurnaceJEIRecipes.get()) {
+      for (IRecipe rec : AlloyRecipeManager.getInstance().getVanillaRecipe().getAllRecipes()) {
+        result.add(new AlloyRecipeWrapper(rec, guiHelper));
+      }
     }
 
     long end = System.nanoTime();

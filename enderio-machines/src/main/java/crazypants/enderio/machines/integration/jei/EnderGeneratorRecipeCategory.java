@@ -18,6 +18,7 @@ import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.config.config.EnderGenConfig;
+import crazypants.enderio.machines.config.config.PersonalConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.generator.zombie.GuiZombieGenerator;
@@ -76,6 +77,11 @@ public class EnderGeneratorRecipeCategory extends BlankRecipeCategory<EnderGener
   // -------------------------------------
 
   public static void register(@Nonnull IModRegistry registry, @Nonnull IGuiHelper guiHelper) {
+    // Check JEI recipes are enabled
+    if (!PersonalConfig.enableEnderGenJEIRecipes.get()) {
+      return;
+    }
+
     registry.addRecipeCategories(new EnderGeneratorRecipeCategory(guiHelper));
     registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_ender_generator.getBlockNN(), 1, 0), EnderGeneratorRecipeCategory.UID);
     registry.addRecipeClickArea(GuiZombieGenerator.class, 155, 42, 16, 16, EnderGeneratorRecipeCategory.UID);

@@ -11,6 +11,7 @@ import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.recipe.sagmill.GrindingBall;
 import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
 import crazypants.enderio.machines.EnderIOMachines;
+import crazypants.enderio.machines.config.config.PersonalConfig;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -85,6 +86,11 @@ public class SagMillGrindingBallCategory extends BlankRecipeCategory<SagMillGrin
   }
 
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
+    // Check JEI recipes are enabled
+    if (!PersonalConfig.enableGrindingBallJEIRecipes.get()) {
+      return;
+    }
+
     registry.addRecipeCategories(new SagMillGrindingBallCategory(guiHelper));
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_sag_mill.getBlockNN()), SagMillGrindingBallCategory.UID);
 

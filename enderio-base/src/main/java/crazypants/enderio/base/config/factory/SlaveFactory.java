@@ -108,6 +108,9 @@ public class SlaveFactory implements IValueFactory {
       Object readValue = dataType.readValue(buf);
       result.put(keyName, readValue);
     }
+    for (AbstractValue<?> abstractValue : syncValues) {
+      abstractValue.onServerSync(result);
+    }
     serverConfig = result;
     generation++;
     return result.size();

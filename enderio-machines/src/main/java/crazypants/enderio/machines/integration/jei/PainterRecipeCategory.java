@@ -13,6 +13,7 @@ import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.recipe.painter.AbstractPainterTemplate;
 import crazypants.enderio.machines.EnderIOMachines;
+import crazypants.enderio.machines.config.config.PersonalConfig;
 import crazypants.enderio.machines.machine.painter.ContainerPainter;
 import crazypants.enderio.machines.machine.painter.GuiPainter;
 import mezz.jei.api.IGuiHelper;
@@ -77,6 +78,11 @@ public class PainterRecipeCategory implements IRecipeCategory<PainterRecipeCateg
   }
 
   public static void register(IModRegistry registry) {
+    // Check the config to see if Painter recipes are enabled
+    if (!PersonalConfig.enablePainterJEIRecipes.get()) {
+      return;
+    }
+
     registry.addRecipeClickArea(GuiPainter.class, 155, 42, 16, 16, PainterRecipeCategory.UID);
     registry.addRecipeCatalyst(new ItemStack(block_painter.getBlockNN()), PainterRecipeCategory.UID);
 

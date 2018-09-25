@@ -16,6 +16,17 @@ public interface IValue<T> {
     return this;
   }
 
+  /**
+   * Marks this config value as one that needs to be in sync between the server and the client but cannot be changed at runtime. Returns the object itself for
+   * chaining.
+   * 
+   * Note: Not all config values support this.
+   */
+  @Nonnull
+  default IValue<T> startup() {
+    return this;
+  }
+
   @Nonnull
   default IValue<T> setRange(double min, double max) {
     setMin(min);

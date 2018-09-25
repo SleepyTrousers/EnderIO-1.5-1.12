@@ -1,12 +1,18 @@
 package crazypants.enderio.base.config.factory;
 
+import java.util.Map;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.lang.Lang;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class AbstractValue<T> implements IValue<T> {
 
@@ -21,6 +27,7 @@ public abstract class AbstractValue<T> implements IValue<T> {
   protected @Nullable T value = null;
   protected Double minValue, maxValue;
   private boolean isSynced = false;
+  protected boolean isStartup = false;
 
   protected AbstractValue(@Nonnull IValueFactory owner, @Nonnull String section, @Nonnull String keyname, @Nonnull T defaultValue, @Nonnull String text) {
     this.owner = owner;
@@ -74,10 +81,32 @@ public abstract class AbstractValue<T> implements IValue<T> {
   @Override
   @Nonnull
   public IValue<T> sync() {
-    isSynced = true;
-    owner.addSyncValue(this);
+    if (!isSynced) {
+      isSynced = true;
+      owner.addSyncValue(this);
+    }
     return this;
   };
+
+  @Override
+  @Nonnull
+  public IValue<T> startup() {
+    isStartup = true;
+    return sync();
+  }
+
+  @SideOnly(Side.CLIENT)
+  public void onServerSync(@Nonnull Map<String, Object> serverConfig) {
+    if (isStartup && serverConfig.containsKey(keyname)) {
+      @SuppressWarnings("unchecked")
+      T serverValue = (T) serverConfig.get(keyname);
+      T clientValue = get();
+      if (!clientValue.equals(serverValue)) {
+        Log.error(Lang.NETWORK_BAD_CONFIG.get(section, keyname, serverValue));
+        Minecraft.getMinecraft().player.connection.getNetworkManager().closeChannel(Lang.NETWORK_BAD_CONFIG.toChatServer(section, keyname, serverValue));
+      }
+    }
+  }
 
   @Nonnull
   public IValue<T> preload() {
@@ -95,6 +124,6 @@ public abstract class AbstractValue<T> implements IValue<T> {
   protected abstract ByteBufHelper getDataType();
 
   protected String getText() {
-    return text + (isSynced ? FactoryManager.SERVER_OVERRIDE : "");
+    return text + (isStartup ? FactoryManager.SERVER_SYNC : (isSynced ? FactoryManager.SERVER_OVERRIDE : ""));
   }
 }

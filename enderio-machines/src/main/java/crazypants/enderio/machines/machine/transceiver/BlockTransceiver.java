@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.autosave.handlers.EIOHandlers;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskBlock;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.render.RenderMappers;
@@ -43,6 +44,8 @@ public class BlockTransceiver extends AbstractPoweredTaskBlock<TileTransceiver>
 
     ConnectionHandler ch = new ConnectionHandler();
     MinecraftForge.EVENT_BUS.register(ch);
+    
+    EIOHandlers.REGISTRY.register(new HandleChannelList());
 
     BlockTransceiver res = new BlockTransceiver(modObject);
     res.init();

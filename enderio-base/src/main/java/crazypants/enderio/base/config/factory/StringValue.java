@@ -3,6 +3,8 @@ package crazypants.enderio.base.config.factory;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraftforge.common.config.Property;
+
 public class StringValue extends AbstractValue<String> {
 
   protected StringValue(@Nonnull IValueFactory owner, @Nonnull String section, @Nonnull String keyname, @Nonnull String defaultValue, @Nonnull String text) {
@@ -11,7 +13,12 @@ public class StringValue extends AbstractValue<String> {
 
   @Override
   protected @Nullable String makeValue() {
-    return owner.getConfig().getString(keyname, section, defaultValue, getText());
+    Property prop = owner.getConfig().get(section, keyname, defaultValue);
+    prop.setLanguageKey(keyname);
+    prop.setValidationPattern(null);
+    prop.setComment(getText() + " [default: " + defaultValue + "]");
+    prop.setRequiresMcRestart(isStartup);
+    return prop.getString();
   }
 
   @Override

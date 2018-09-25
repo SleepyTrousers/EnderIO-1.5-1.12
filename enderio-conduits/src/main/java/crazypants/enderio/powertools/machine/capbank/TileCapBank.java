@@ -3,14 +3,11 @@ package crazypants.enderio.powertools.machine.capbank;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.NBTAction;
-import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.capacitor.ICapacitorData;
@@ -38,11 +35,9 @@ import crazypants.enderio.powertools.machine.capbank.network.ICapBankNetwork;
 import crazypants.enderio.powertools.machine.capbank.network.NetworkUtil;
 import crazypants.enderio.powertools.machine.capbank.packet.PacketNetworkIdRequest;
 import crazypants.enderio.util.NbtValue;
-import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.handlers.enderio.HandleIOMode;
-import info.loenwind.autosave.handlers.minecraft.HandleItemStack.HandleItemStackNNList;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
@@ -55,13 +50,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
-public class TileCapBank extends TileEntityEio
-    implements ILegacyPowerReceiver, IIoConfigurable, IPowerStorage, IPaintable.IPaintableTileEntity, IPowerBarData {
+public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, IIoConfigurable, IPowerStorage, IPaintable.IPaintableTileEntity, IPowerBarData {
 
-  @Store(handler = HandleIOMode.class)
-  private Map<EnumFacing, IoMode> faceModes;
-  @Store(handler = HandleDisplayMode.class)
-  private Map<EnumFacing, InfoDisplayType> faceDisplayTypes;
+  @Store
+  private EnumMap<EnumFacing, IoMode> faceModes;
+  @Store
+  private EnumMap<EnumFacing, InfoDisplayType> faceDisplayTypes;
 
   @Store({ NBTAction.SAVE, NBTAction.CLIENT })
   private int energyStored;
@@ -81,9 +75,6 @@ public class TileCapBank extends TileEntityEio
   private boolean receptorsDirty = true;
 
   private ICapBankNetwork network;
-
-  @Store(handler = HandleItemStackNNList.class)
-  private final @Nonnull NNList<ItemStack> inventory = new NNList<>(4, ItemStack.EMPTY);
 
   // Client side reference to look up network state
   private int networkId = -1;
@@ -730,15 +721,6 @@ public class TileCapBank extends TileEntityEio
   public void writeCustomNBT(@Nonnull ItemStack stack) {
     super.writeCustomNBT(stack);
     NbtValue.ENERGY.setInt(stack, energyStored);
-    int count = 0;
-    for (int i = 0; i < inventory.size(); i++) {
-      if (Prep.isValid(inventory.get(i))) {
-        count++;
-      }
-    }
-    if (count > 0) {
-      NbtValue.CONTENTCOUNT.setInt(stack, count);
-    }
   }
 
   @Override

@@ -120,6 +120,7 @@ public enum Material {
   MELODIC_ALLOY("ingot_melodic_alloy", "ingotMelodicAlloy"),
   STELLAR_ALLOY("ingot_stellar_alloy", "ingotStellarAlloy"),
   CRYSTAlLINE_PINK_SLIME("ingot_crystalline_pink_slime", "ingotCrystallinePinkSlime"),
+  VIVID_ALLOY("ingot_vivid_alloy", "ingotVividAlloy"),
 
   ;
 

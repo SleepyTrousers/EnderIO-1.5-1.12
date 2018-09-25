@@ -224,8 +224,6 @@ public final class Config {
 
   public static boolean paintedGlowstoneRequireSilkTouch = false;
 
-  public static boolean enableBaublesIntegration = true;
-
   public static int maxMobsAttracted = 20;
 
   public static void init(FMLPreInitializationEvent event) {
@@ -668,9 +666,6 @@ public final class Config {
 
     paintedGlowstoneRequireSilkTouch = config.getBoolean("paintedGlowstoneRequireSilkTouch", sectionMisc.name, paintedGlowstoneRequireSilkTouch,
         "If true, painted glowstone will drop dust unless broken with silk touch");
-
-    enableBaublesIntegration = config.getBoolean("enableBaublesIntegration", sectionMisc.name, enableBaublesIntegration,
-        "If false baubles intergation will be disabled even if Baubles is installed");
 
     BaseConfig.load();
     BaseConfig.F.setConfig(config);

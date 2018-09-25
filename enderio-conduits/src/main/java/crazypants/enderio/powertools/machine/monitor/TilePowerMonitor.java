@@ -28,9 +28,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static com.enderio.core.common.NBTAction.CLIENT;
-import static com.enderio.core.common.NBTAction.ITEM;
-import static com.enderio.core.common.NBTAction.SAVE;
+import static info.loenwind.autosave.util.NBTAction.CLIENT;
+import static info.loenwind.autosave.util.NBTAction.ITEM;
+import static info.loenwind.autosave.util.NBTAction.SAVE;
 import static crazypants.enderio.powertools.capacitor.CapacitorKey.POWER_MONITOR_POWER_BUFFER;
 import static crazypants.enderio.powertools.capacitor.CapacitorKey.POWER_MONITOR_POWER_INTAKE;
 import static crazypants.enderio.powertools.capacitor.CapacitorKey.POWER_MONITOR_POWER_USE;

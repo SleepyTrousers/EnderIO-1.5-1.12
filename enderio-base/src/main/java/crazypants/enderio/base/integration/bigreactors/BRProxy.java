@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.config.config.IntegrationConfig;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -30,7 +31,7 @@ public class BRProxy {
 
   @SuppressWarnings("null")
   public static void init(FMLInitializationEvent event) {
-    if (Loader.isModLoaded("bigreactors")) {
+    if (Loader.isModLoaded("bigreactors") && IntegrationConfig.enableBigReactors.get()) {
       try {
         ReactorInterior = ReflectionHelper.getClass(BRProxy.class.getClassLoader(), "erogenousbeef.bigreactors.api.registry.ReactorInterior");
 

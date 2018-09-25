@@ -44,7 +44,7 @@ public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity {
 
   }
 
-  @Store(handler = HandleItemStack.HandleItemStackNNList.class)
+  @Store
   private final @Nonnull NNList<ItemStack> items;
 
   public TileImpulseHopper() {

@@ -16,6 +16,7 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.soul.ISoulBinderRecipe;
 import crazypants.enderio.base.recipe.soul.SoulBinderTunedPressurePlateRecipe;
 import crazypants.enderio.machines.EnderIOMachines;
+import crazypants.enderio.machines.config.config.PersonalConfig;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.soul.ContainerSoulBinder;
 import crazypants.enderio.machines.machine.soul.GuiSoulBinder;
@@ -117,6 +118,11 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
 
   @SuppressWarnings("null")
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
+    // Check JEI Recipes are enabled
+    if (!PersonalConfig.enableSoulBinderJEIRecipes.get()) {
+      return;
+    }
+
     registry.addRecipeCategories(new SoulBinderRecipeCategory(guiHelper));
     registry.handleRecipes(ISoulBinderRecipe.class, SoulBinderRecipeWrapper::new, SoulBinderRecipeCategory.UID);
     registry.addRecipeClickArea(GuiSoulBinder.class, 155, 42, 16, 16, SoulBinderRecipeCategory.UID);

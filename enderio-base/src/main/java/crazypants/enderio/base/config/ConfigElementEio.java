@@ -8,7 +8,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.config.factory.FactoryManager;
-import net.minecraft.util.text.TextFormatting;
+import crazypants.enderio.base.lang.Lang;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Property;
@@ -122,12 +122,12 @@ public class ConfigElementEio implements IConfigElement {
   @Override
   public String getComment() {
     String raw = NullHelper.first(isProperty ? prop.getComment() : category.getComment(), "").replaceFirst("\\s*\\[.*\\]", "");
-    boolean hasSyncMarker = raw.contains(FactoryManager.SERVER_OVERRIDE);
-    raw = raw.replace(FactoryManager.SERVER_OVERRIDE, "");
     if (isSynced()) {
-      return TextFormatting.DARK_RED + "" + TextFormatting.BOLD + "This value is determined by the server!\n" + TextFormatting.YELLOW + raw;
-    } else if (hasSyncMarker) {
-      return raw + "\n" + TextFormatting.ITALIC + "This value will be determined by the server.";
+      return Lang.NETWORK_CONFIG_CONNECTED.get(raw.replace(FactoryManager.SERVER_OVERRIDE, ""));
+    } else if (raw.contains(FactoryManager.SERVER_SYNC)) {
+      return Lang.NETWORK_CONFIG_OFFLINE.get(raw.replace(FactoryManager.SERVER_SYNC, ""));
+    } else if (raw.contains(FactoryManager.SERVER_OVERRIDE)) {
+      return Lang.NETWORK_CONFIG_SYNC.get(raw.replace(FactoryManager.SERVER_OVERRIDE, ""));
     } else {
       return raw;
     }

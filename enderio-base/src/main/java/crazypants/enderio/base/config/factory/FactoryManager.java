@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnection
 public class FactoryManager {
 
   public static final @Nonnull String SERVER_OVERRIDE = " (synced from server)";
+  public static final @Nonnull String SERVER_SYNC = " (must be kept in sync with server)";
   private static final @Nonnull Map<String, IValueFactory> factories = new HashMap<>();
 
   static void read(String mod, String section, final ByteBuf buf) {

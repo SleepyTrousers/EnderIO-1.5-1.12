@@ -3,6 +3,8 @@ package crazypants.enderio.base.config.factory;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraftforge.common.config.Property;
+
 public class BooleanValue extends AbstractValue<Boolean> {
 
   protected BooleanValue(@Nonnull IValueFactory owner, @Nonnull String section, @Nonnull String keyname, @Nonnull Boolean defaultValue, @Nonnull String text) {
@@ -11,7 +13,11 @@ public class BooleanValue extends AbstractValue<Boolean> {
 
   @Override
   protected @Nullable Boolean makeValue() {
-    return owner.getConfig().getBoolean(keyname, section, defaultValue, getText());
+    Property prop = owner.getConfig().get(section, keyname, defaultValue);
+    prop.setLanguageKey(keyname);
+    prop.setComment(getText() + " [default: " + defaultValue + "]");
+    prop.setRequiresMcRestart(isStartup);
+    return prop.getBoolean(defaultValue);
   }
 
   @Override

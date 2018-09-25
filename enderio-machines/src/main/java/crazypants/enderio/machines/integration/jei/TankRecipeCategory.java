@@ -12,6 +12,7 @@ import crazypants.enderio.base.Log;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.xp.XpUtil;
 import crazypants.enderio.machines.EnderIOMachines;
+import crazypants.enderio.machines.config.config.PersonalConfig;
 import crazypants.enderio.machines.config.config.TankConfig;
 import crazypants.enderio.machines.machine.tank.ContainerTank;
 import crazypants.enderio.machines.machine.tank.GuiTank;
@@ -84,6 +85,10 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
   } // -------------------------------------
 
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
+    // If all tank recipes are disabled, don't register the plugin
+    if (!PersonalConfig.enableTankFluidInOutJEIRecipes.get() && !PersonalConfig.enableTankMendingJEIRecipes.get()) {
+      return;
+    }
 
     registry.addRecipeCategories(new TankRecipeCategory(guiHelper));
     registry.addRecipeCategoryCraftingItem(new ItemStack(block_tank.getBlockNN(), 1, 0), TankRecipeCategory.UID);
@@ -92,32 +97,35 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
 
     long start = System.nanoTime();
 
-    Map<String, Fluid> fluids = FluidRegistry.getRegisteredFluids();
-
     List<ItemStack> validItems = registry.getIngredientRegistry().getIngredients(ItemStack.class);
 
     List<TankRecipeWrapper> result = new ArrayList<TankRecipeWrapper>();
-    for (ItemStack stack : validItems) {
-      ItemStack drainedStack = stack.copy();
-      IFluidHandlerItem fluidHandler = FluidUtil.getFluidHandler(drainedStack);
-      if (fluidHandler != null) {
-        FluidStack drain = fluidHandler.drain(16000, true);
-        drainedStack = fluidHandler.getContainer();
-        // Log.debug("Draining a " + stack + " gives " + fluidString(drain) + " and " + drainedStack);
-        if (drain != null && drain.amount > 0) {
-          // filled container
-          result.add(new TankRecipeWrapper(null, drain, stack.copy(), drainedStack));
-        } else {
-          // empty container
-          for (Fluid fluid : fluids.values()) {
-            ItemStack filledStack = stack.copy();
-            fluidHandler = FluidUtil.getFluidHandler(filledStack);
-            if (fluidHandler != null) {
-              int filled = fluidHandler.fill(new FluidStack(fluid, 16000), true);
-              filledStack = fluidHandler.getContainer();
-              if (filled > 0) {
-                // Log.debug("Filling a " + stack + " with " + fluidString(new FluidStack(fluid, filled)) + " gives " + filledStack);
-                result.add(new TankRecipeWrapper(new FluidStack(fluid, filled), null, stack.copy(), filledStack));
+
+    if (PersonalConfig.enableTankFluidInOutJEIRecipes.get()) {
+      Map<String, Fluid> fluids = FluidRegistry.getRegisteredFluids();
+
+      for (ItemStack stack : validItems) {
+        ItemStack drainedStack = stack.copy();
+        IFluidHandlerItem fluidHandler = FluidUtil.getFluidHandler(drainedStack);
+        if (fluidHandler != null) {
+          FluidStack drain = fluidHandler.drain(16000, true);
+          drainedStack = fluidHandler.getContainer();
+          // Log.debug("Draining a " + stack + " gives " + fluidString(drain) + " and " + drainedStack);
+          if (drain != null && drain.amount > 0) {
+            // filled container
+            result.add(new TankRecipeWrapper(null, drain, stack.copy(), drainedStack));
+          } else {
+            // empty container
+            for (Fluid fluid : fluids.values()) {
+              ItemStack filledStack = stack.copy();
+              fluidHandler = FluidUtil.getFluidHandler(filledStack);
+              if (fluidHandler != null) {
+                int filled = fluidHandler.fill(new FluidStack(fluid, 16000), true);
+                filledStack = fluidHandler.getContainer();
+                if (filled > 0) {
+                  // Log.debug("Filling a " + stack + " with " + fluidString(new FluidStack(fluid, filled)) + " gives " + filledStack);
+                  result.add(new TankRecipeWrapper(new FluidStack(fluid, filled), null, stack.copy(), filledStack));
+                }
               }
             }
           }
@@ -125,8 +133,9 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
       }
     }
 
-    // add mending recipes
     if (TankConfig.allowMending.get()) {
+    if (PersonalConfig.enableTankMendingJEIRecipes.get()) {
+      // add mending recipes
       Map<Enchantment, Integer> enchMap = Collections.singletonMap(Enchantments.MENDING, 1);
       final int maxMendable = TileTank.xpToDurability(XpUtil.liquidToExperience(16000));
       for (ItemStack stack : validItems) {
@@ -149,6 +158,7 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
           if (damagedStack.getItemDamage() != enchantedStack.getItemDamage()) {
             result.add(new TankRecipeWrapper(new FluidStack(Fluids.XP_JUICE.getFluid(), XpUtil.experienceToLiquid(TileTank.durabilityToXp(damageMendable))),
                 null, damagedStack, enchantedStack));
+          }
           }
         }
       }

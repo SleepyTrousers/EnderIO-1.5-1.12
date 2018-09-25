@@ -13,6 +13,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.machines.EnderIOMachines;
+import crazypants.enderio.machines.config.config.PersonalConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.solar.SolarType;
@@ -86,6 +87,11 @@ public class SolarPanelRecipeCategory extends BlankRecipeCategory<SolarPanelReci
   // -------------------------------------
 
   public static void register(@Nonnull IModRegistry registry, @Nonnull IGuiHelper guiHelper) {
+    // Check JEI Recipes are enabled
+    if (!PersonalConfig.enableSolarJEIRecipes.get()) {
+      return;
+    }
+
     registry.addRecipeCategories(new SolarPanelRecipeCategory(guiHelper));
     registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 3), SolarPanelRecipeCategory.UID);
     registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 2), SolarPanelRecipeCategory.UID);

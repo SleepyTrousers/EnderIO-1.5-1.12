@@ -1,8 +1,9 @@
 package crazypants.enderio.invpanel.remote;
 
-import com.enderio.core.common.NBTAction;
+import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.network.NetworkUtil;
 
+import crazypants.enderio.autosave.handlers.EIOHandlers;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.invpanel.invpanel.TileInventoryPanel;
 import info.loenwind.autosave.Reader;
@@ -24,7 +25,7 @@ public class PacketPrimeInventoryPanelRemote implements IMessage {
 
   public PacketPrimeInventoryPanelRemote(@Nonnull TileInventoryPanel te) {
     tag = new NBTTagCompound();
-    Writer.write(tag, te);
+    Writer.write(EIOHandlers.REGISTRY, tag, te);
   }
 
   @Override
@@ -43,7 +44,7 @@ public class PacketPrimeInventoryPanelRemote implements IMessage {
     public IMessage onMessage(PacketPrimeInventoryPanelRemote message, MessageContext ctx) {
       ClientRemoteGuiManager.targetTEtime = EnderIO.proxy.getTickCount() + 10;
       TileInventoryPanel te = new TileInventoryPanel();
-      Reader.read(NBTAction.CLIENT, message.tag, te);
+      Reader.read(EIOHandlers.REGISTRY, NBTAction.CLIENT, message.tag, te);
       ClientRemoteGuiManager.targetTE = te;
       return null;
     }

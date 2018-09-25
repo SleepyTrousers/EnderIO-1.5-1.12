@@ -23,7 +23,6 @@ import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.handlers.minecraft.HandleItemStack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
@@ -72,7 +71,7 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
   @Store
   DummyCraftingGrid craftingGrid = new DummyCraftingGrid();
 
-  @Store(handler = HandleItemStack.HandleItemStackNNList.class)
+  @Store
   private final NNList<ItemStack> containerItems;
 
   @Store

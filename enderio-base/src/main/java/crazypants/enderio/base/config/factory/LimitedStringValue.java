@@ -3,6 +3,8 @@ package crazypants.enderio.base.config.factory;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraftforge.common.config.Property;
+
 public class LimitedStringValue extends AbstractValue<String> {
 
   private final @Nonnull String[] limit;
@@ -15,7 +17,12 @@ public class LimitedStringValue extends AbstractValue<String> {
 
   @Override
   protected @Nullable String makeValue() {
-    return owner.getConfig().getString(keyname, section, defaultValue, getText(), limit);
+    Property prop = owner.getConfig().get(section, keyname, defaultValue);
+    prop.setValidValues(limit);
+    prop.setLanguageKey(keyname);
+    prop.setComment(getText() + " [default: " + defaultValue + "]");
+    prop.setRequiresMcRestart(isStartup);
+    return prop.getString();
   }
 
   @Override

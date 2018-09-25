@@ -22,6 +22,7 @@ public class DoubleValue extends AbstractValue<Double> {
     if (maxValue != null) {
       property.setMaxValue(maxValue);
     }
+    property.setRequiresMcRestart(isStartup);
     return property.getDouble(defaultValue);
   }
 

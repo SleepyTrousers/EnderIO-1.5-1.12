@@ -17,6 +17,7 @@ import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.enchanter.EnchanterRecipe;
 import crazypants.enderio.machines.EnderIOMachines;
+import crazypants.enderio.machines.config.config.PersonalConfig;
 import crazypants.enderio.machines.machine.enchanter.ContainerEnchanter;
 import crazypants.enderio.machines.machine.enchanter.GuiEnchanter;
 import mezz.jei.api.IGuiHelper;
@@ -179,6 +180,10 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
   }
 
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
+    // Check JEI recipes are enabled
+    if (!PersonalConfig.enableEnchanterJEIRecipes.get()) {
+      return;
+    }
 
     registry.addRecipeCategories(new EnchanterRecipeCategory(guiHelper));
     registry.handleRecipes(EnchanterRecipe.class, EnchanterRecipeWrapper::new, EnchanterRecipeCategory.UID);

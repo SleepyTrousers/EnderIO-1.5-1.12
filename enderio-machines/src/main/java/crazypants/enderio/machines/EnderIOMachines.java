@@ -90,7 +90,7 @@ public class EnderIOMachines implements IEnderIOAddon {
   public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
     return new NNList<>(Triple.of(2, null, "machines"), Triple.of(2, null, "sagmill"), Triple.of(3, null, "sagmill_modded"), Triple.of(3, null, "sagmill_ores"),
         Triple.of(3, null, "sagmill_metals"), Triple.of(3, null, "sagmill_vanilla"), Triple.of(3, null, "sagmill_vanilla2modded"), Triple.of(3, null, "vat"),
-        Triple.of(3, null, "enchanter"), Triple.of(3, null, "spawner"), Triple.of(9, null, "capacitor_machines"));
+        Triple.of(3, null, "enchanter"), Triple.of(3, null, "spawner"), Triple.of(9, null, "capacitor_machines"), Triple.of(3, null, "integration_railcraft_recipes"));
   }
 
   @Override

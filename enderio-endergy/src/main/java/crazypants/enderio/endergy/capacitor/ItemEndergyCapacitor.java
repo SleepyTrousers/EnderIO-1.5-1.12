@@ -50,12 +50,12 @@ public class ItemEndergyCapacitor extends Item {
     return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.SILVER_CAPACITOR);
   }
 
-  public static ItemEndergyCapacitor create_lead(@Nonnull IModObject modObject) {
-    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.LEAD_CAPACITOR);
+  public static ItemEndergyCapacitor create_energetic_silver(@Nonnull IModObject modObject) {
+    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.ENERGETIC_SILVER_CAPACITOR);
   }
 
-  public static ItemEndergyCapacitor create_electrum(@Nonnull IModObject modObject) {
-    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.ELECTRUM_CAPACITOR);
+  public static ItemEndergyCapacitor create_vivid(@Nonnull IModObject modObject) {
+    return new ItemEndergyCapacitor(modObject, EndergyCapacitorData.VIVID_CAPACITOR);
   }
 
   protected ItemEndergyCapacitor(@Nonnull IModObject modObject, @Nonnull ICapacitorData data) {

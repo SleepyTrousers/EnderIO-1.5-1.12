@@ -1,17 +1,15 @@
 package crazypants.enderio.invpanel.util;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.NBTAction;
-
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
-import info.loenwind.autosave.handlers.java.HandleArrayList;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class HandleStoredCraftingRecipe implements IHandler<StoredCraftingRecipe> {
@@ -20,12 +18,12 @@ public class HandleStoredCraftingRecipe implements IHandler<StoredCraftingRecipe
   }
 
   @Override
-  public boolean canHandle(Class<?> clazz) {
-    return StoredCraftingRecipe.class.isAssignableFrom(clazz);
+  public @Nonnull Class<?> getRootType() {
+    return StoredCraftingRecipe.class;
   }
 
   @Override
-  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull String name,
+  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull Type type, @Nonnull String name,
       @Nonnull StoredCraftingRecipe object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     NBTTagCompound tag = new NBTTagCompound();
     object.writeToNBT(tag);
@@ -34,7 +32,7 @@ public class HandleStoredCraftingRecipe implements IHandler<StoredCraftingRecipe
   }
 
   @Override
-  public StoredCraftingRecipe read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nullable Field field,
+  public StoredCraftingRecipe read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull Type type,
       @Nonnull String name, @Nullable StoredCraftingRecipe object)
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if (nbt.hasKey(name)) {
@@ -45,13 +43,4 @@ public class HandleStoredCraftingRecipe implements IHandler<StoredCraftingRecipe
     }
     return null;
   }
-
-  public static class HandleStoredCraftingRecipeArrayList extends HandleArrayList<StoredCraftingRecipe> {
-
-    public HandleStoredCraftingRecipeArrayList() {
-      super(new HandleStoredCraftingRecipe());
-    }
-
-  }
-
 }
