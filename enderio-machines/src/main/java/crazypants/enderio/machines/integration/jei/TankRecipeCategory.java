@@ -133,8 +133,7 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
       }
     }
 
-    if (TankConfig.allowMending.get()) {
-    if (PersonalConfig.enableTankMendingJEIRecipes.get()) {
+    if (TankConfig.allowMending.get() && PersonalConfig.enableTankMendingJEIRecipes.get()) {
       // add mending recipes
       Map<Enchantment, Integer> enchMap = Collections.singletonMap(Enchantments.MENDING, 1);
       final int maxMendable = TileTank.xpToDurability(XpUtil.liquidToExperience(16000));
@@ -158,7 +157,6 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
           if (damagedStack.getItemDamage() != enchantedStack.getItemDamage()) {
             result.add(new TankRecipeWrapper(new FluidStack(Fluids.XP_JUICE.getFluid(), XpUtil.experienceToLiquid(TileTank.durabilityToXp(damageMendable))),
                 null, damagedStack, enchantedStack));
-          }
           }
         }
       }
