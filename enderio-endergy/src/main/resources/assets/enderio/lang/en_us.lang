@@ -10,8 +10,8 @@ item.item_capacitor_melodic.name=Melodic Capacitor
 item.item_capacitor_stellar.name=Stellar Capacitor
 item.item_capacitor_totemic.name=Totemic Capacitor
 item.item_capacitor_silver.name=Silver Capacitor
-item.item_capacitor_lead.name=Leadstone Capacitor
-item.item_capacitor_electrum.name=Endergised Capacitor
+item.item_capacitor_energetic_silver.name=Endergetic Silver Capacitor
+item.item_capacitor_vivid.name=Endergised Capacitor
 
 enderio.item_endergy_conduit_cobble.name=Crude Energy Conduit
 enderio.item_endergy_conduit_iron.name=Iron Energy Conduit

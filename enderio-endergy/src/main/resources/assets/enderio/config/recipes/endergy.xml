@@ -91,7 +91,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid>
         <item /><item name="ingotCrystallineAlloy"/><item />
-        <item name="enderio:item_capacitor_electrum"/><item name="dustPrismarine"/><item name="enderio:item_capacitor_electrum"/>
+        <item name="enderio:item_capacitor_vivid"/><item name="dustPrismarine"/><item name="enderio:item_capacitor_vivid"/>
         <item /><item name="ingotCrystallineAlloy"/><item />
       </grid>
       <output name="enderio:item_capacitor_crystalline"/>
@@ -124,32 +124,32 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid>
         <item /><item name="nuggetSilver"/><item name="POWDER_INFINITY" />
-        <item name="nuggetSilver"/><item name="gemQuartz"/><item name="nuggetSilver"/>
+        <item name="nuggetSilver"/><item name="ingotTin"/><item name="nuggetSilver"/>
         <item name="POWDER_INFINITY"/><item name="nuggetSilver"/><item />
       </grid>
       <output name="enderio:item_capacitor_silver"/>
     </crafting>
   </recipe>
 
-  <recipe name="Capacitor Lead" required="false">
+  <recipe name="Capacitor Energetic Silver" required="false">
     <crafting>
       <grid>
-        <item /><item name="ingotLead"/><item />
-        <item name="enderio:item_capacitor_silver"/><item name="blockRedstone"/><item name="enderio:item_capacitor_silver"/>
-        <item /><item name="ingotLead"/><item />
+        <item /><item name="ingotEnergeticSilver"/><item />
+        <item name="enderio:item_capacitor_silver"/><item name="dustCoal"/><item name="enderio:item_capacitor_silver"/>
+        <item /><item name="ingotEnergeticSilver"/><item />
       </grid>
-      <output name="enderio:item_capacitor_lead"/>
+      <output name="enderio:item_capacitor_energetic_silver"/>
     </crafting>
   </recipe>
 
-  <recipe name="Capacitor Electrum" required="false">
+  <recipe name="Capacitor Vivid" required="false">
     <crafting>
       <grid>
-        <item /><item name="ingotElectrum"/><item />
-        <item name="enderio:item_capacitor_lead"/><item name="VIBRANT_POWDER"/><item name="enderio:item_capacitor_lead"/>
-        <item /><item name="ingotElectrum"/><item />
+        <item /><item name="ingotVividAlloy"/><item />
+        <item name="enderio:item_capacitor_energeticSilver"/><item name="oredict:glowstone"/><item name="enderio:item_capacitor_energeticSilver"/>
+        <item /><item name="ingotVividAlloy"/><item />
       </grid>
-      <output name="enderio:item_capacitor_electrum"/>
+      <output name="enderio:item_capacitor_vivid"/>
     </crafting>
   </recipe>
 
@@ -226,6 +226,15 @@ XML editor will display that as tooltips when editing this file.
       <input name="ingotSilver"/>
       <input name="dustGlowstone"/>
       <output name="ingotEnergeticSilver"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Vivid Alloy" required="false">
+    <!-- mirroring vibrant alloy recipe -->
+    <alloying energy="10000" exp="0.7">
+      <input name="minecraft:ender_pearl"/>
+      <input name="ingotEnergeticSilver"/>
+      <output name="ingotVividAlloy"/>
     </alloying>
   </recipe>
 

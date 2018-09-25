@@ -273,6 +273,7 @@ item.item_material.ingot_crude_steel.name=Crude Steel Ingot
 item.item_material.ingot_crystalline_alloy.name=Crystalline Alloy Ingot
 item.item_material.ingot_melodic_alloy.name=Melodic Alloy Ingot
 item.item_material.ingot_stellar_alloy.name=Stellar Alloy Ingot
+item.item_material.ingot_vivid_alloy.name=Vivid Alloy Ingot
 
 item.item_rod_of_return.name=Rod of Return
 item.item_rod_of_return.tooltip.detailed.line1=Returns the user to a Telepad

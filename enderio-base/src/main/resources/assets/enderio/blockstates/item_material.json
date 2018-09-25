@@ -493,6 +493,11 @@
         "textures": {
           "layer0": "enderio:items/item_material_ingot_stellar_alloy"
         }
+      },
+      "ingot_vivid_alloy": {
+        "textures": {
+          "layer0": "enderio:items/item_material_ingot_vivid_alloy"
+        }
       }
     }
   }
