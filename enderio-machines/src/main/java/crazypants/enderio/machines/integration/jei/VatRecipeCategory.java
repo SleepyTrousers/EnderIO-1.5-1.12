@@ -13,6 +13,7 @@ import crazypants.enderio.base.recipe.vat.VatRecipe;
 import crazypants.enderio.base.recipe.vat.VatRecipe.RecipeMatch;
 import crazypants.enderio.base.recipe.vat.VatRecipeManager;
 import crazypants.enderio.machines.EnderIOMachines;
+import crazypants.enderio.machines.config.config.PersonalConfig;
 import crazypants.enderio.machines.machine.vat.ContainerVat;
 import crazypants.enderio.machines.machine.vat.GuiVat;
 import crazypants.enderio.util.Prep;
@@ -85,6 +86,11 @@ public class VatRecipeCategory extends BlankRecipeCategory<VatRecipeCategory.Vat
   }
 
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
+    // Check JEI recipes are enabled
+    if (!PersonalConfig.enableVatJEIRecipes.get()) {
+      return;
+    }
+
     registry.addRecipeCategories(new VatRecipeCategory(guiHelper));
     registry.handleRecipes(IRecipe.class, VatRecipeWrapper::new, VatRecipeCategory.UID);
     registry.addRecipeClickArea(GuiVat.class, 155, 42, 16, 16, VatRecipeCategory.UID);

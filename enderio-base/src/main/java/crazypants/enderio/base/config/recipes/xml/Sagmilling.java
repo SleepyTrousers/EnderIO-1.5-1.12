@@ -37,7 +37,7 @@ public class Sagmilling extends AbstractCrafting {
       valid = valid && input.isValid();
 
     } catch (InvalidRecipeConfigException e) {
-      throw new InvalidRecipeConfigException(e, "in <alloying>");
+      throw new InvalidRecipeConfigException(e, "in <sagmilling>");
     }
     return this;
   }

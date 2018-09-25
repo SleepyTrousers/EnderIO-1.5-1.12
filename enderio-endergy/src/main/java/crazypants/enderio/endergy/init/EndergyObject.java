@@ -27,7 +27,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @EventBusSubscriber(modid = EnderIOEndergy.MODID)
 public enum EndergyObject implements IModObjectBase {
 
-//  itemEndergyAlloy(ItemEndergyAlloy.class),
   itemCapacitorGrainy(ItemEndergyCapacitor.class, "create_grainy"),
   itemCapacitorCrystalline(ItemEndergyCapacitor.class, "create_crystalline"),
   itemCapacitorMelodic(ItemEndergyCapacitor.class, "create_melodic"),
@@ -35,8 +34,8 @@ public enum EndergyObject implements IModObjectBase {
   itemCapacitorTotemic(ItemTotemicCapacitor.class),
   itemEndergyConduit(ItemEndergyConduit.class),
   itemCapacitorSilver(ItemEndergyCapacitor.class, "create_silver"),
-  itemCapacitorLead(ItemEndergyCapacitor.class, "create_lead"),
-  itemCapacitorElectrum(ItemEndergyCapacitor.class, "create_electrum"),
+  itemCapacitorEnergeticSilver(ItemEndergyCapacitor.class, "create_energetic_silver"),
+  itemCapacitorVivid(ItemEndergyCapacitor.class, "create_vivid"),
 
   // Tools and Armour
   itemStellarAlloySword(ItemDarkSteelSword.class, "createStellarAlloy"),

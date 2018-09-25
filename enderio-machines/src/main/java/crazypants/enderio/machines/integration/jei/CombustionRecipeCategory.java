@@ -21,6 +21,7 @@ import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
+import crazypants.enderio.machines.config.config.PersonalConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.generator.combustion.CombustionMath;
@@ -108,6 +109,10 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
   } // -------------------------------------
 
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
+    // Check JEI recipes are enabled
+    if (!PersonalConfig.enableCombustionGenJEIRecipes.get()) {
+      return;
+    }
 
     registry.addRecipeCategories(new CombustionRecipeCategory(guiHelper));
     registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_combustion_generator.getBlockNN(), 1, 0), CombustionRecipeCategory.UID);

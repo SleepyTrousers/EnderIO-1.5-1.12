@@ -3,7 +3,7 @@ package crazypants.enderio.base.config.factory;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import cofh.core.util.helpers.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.config.Property;
 
 public class IntValue extends AbstractValue<Integer> {

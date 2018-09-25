@@ -14,9 +14,10 @@ public enum EndergyCapacitorData implements ICapacitorData {
   STELLAR_CAPACITOR("stellar", 5.0f),
   TOTEMIC_CAPACITOR("totemic", 3.5f),
 
-  SILVER_CAPACITOR("silver", 1.5f),
-  LEAD_CAPACITOR("lead", 2.25f),
-  ELECTRUM_CAPACITOR("electrum", 3f),
+  // Modded ingots progression using silver and tin instead of gold and copper
+  SILVER_CAPACITOR("silver", 1.0f),
+  ENERGETIC_SILVER_CAPACITOR("energetic_silver", 2.0f),
+  VIVID_CAPACITOR("vivid", 3.0f),
 
   ;
 

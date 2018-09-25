@@ -111,7 +111,7 @@ Examples:
       <biome type="END" exclude="true" />
       <biome type="MUSHROOM" exclude="true" />
     </biomeFilter>   
-    <dimensionExclude name="Twilight Forest"/>
+    <dimensionExclude name="twilight_forest"/><!-- sic! TF uses its id for human readable name, too -->
     <dimensionExclude name="Dungeon"/>
   </entry>
 
@@ -123,7 +123,7 @@ Examples:
       <biome type="NETHER" exclude="true" />
       <biome type="END" exclude="true" />
     </biomeFilter>
-    <dimensionExclude name="Twilight Forest"/>
+    <dimensionExclude name="twilight_forest"/><!-- sic! TF uses its id for human readable name, too -->
   </entry>
 
   <entry id="FallenKnight" mobName="enderiozoo:fallenknight" rate="30" minGroupSize="1" maxGroupSize="4">
@@ -132,7 +132,7 @@ Examples:
       <biome type="NETHER" exclude="true" />
       <biome type="END" exclude="true" />
     </biomeFilter>
-    <dimensionExclude name="Twilight Forest"/>
+    <dimensionExclude name="twilight_forest"/><!-- sic! TF uses its id for human readable name, too -->
   </entry>
 
   <entry id="WitherWitch" mobName="enderiozoo:witherwitch" rate="5" minGroupSize="1" maxGroupSize="1">
@@ -145,7 +145,7 @@ Examples:
       <biome type="NETHER" exclude="true" />
       <biome type="END" exclude="true" />
     </biomeFilter>
-    <dimensionExclude name="Twilight Forest"/>
+    <dimensionExclude name="twilight_forest"/><!-- sic! TF uses its id for human readable name, too -->
   </entry>
 
   <entry id="DireWolf" mobName="enderiozoo:direwolf" rate="30" minGroupSize="2" maxGroupSize="6">

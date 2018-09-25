@@ -15,6 +15,7 @@ import crazypants.enderio.conduits.capability.IUpgradeHolder;
 import crazypants.enderio.conduits.conduit.item.IItemConduit;
 import crazypants.enderio.conduits.conduit.liquid.AbstractTankConduit;
 import crazypants.enderio.conduits.conduit.liquid.EnderLiquidConduit;
+import crazypants.enderio.conduits.conduit.power.IPowerConduit;
 import crazypants.enderio.conduits.conduit.redstone.IRedstoneConduit;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -146,7 +147,7 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
 
   private boolean isFunctionUpgradeAccepted(@Nonnull ItemStack stack, IConduit con) {
     // Hacky work around to avoid liquid conduits accepting upgrades
-    return stack.getItem() instanceof ItemFunctionUpgrade && !(con instanceof AbstractTankConduit);
+    return stack.getItem() instanceof ItemFunctionUpgrade && !(con instanceof AbstractTankConduit || con instanceof IPowerConduit);
   }
 
   @Override

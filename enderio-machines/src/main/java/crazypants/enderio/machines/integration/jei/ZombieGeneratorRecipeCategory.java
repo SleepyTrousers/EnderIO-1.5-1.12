@@ -17,6 +17,7 @@ import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
+import crazypants.enderio.machines.config.config.PersonalConfig;
 import crazypants.enderio.machines.config.config.ZombieGenConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.lang.Lang;
@@ -76,6 +77,11 @@ public class ZombieGeneratorRecipeCategory extends BlankRecipeCategory<ZombieGen
   // -------------------------------------
 
   public static void register(IModRegistry registry, IGuiHelper guiHelper) {
+    // Check JEI recipes are enabled
+    if (!PersonalConfig.enableZombieGenJEIRecipes.get()) {
+      return;
+    }
+
     registry.addRecipeCategories(new ZombieGeneratorRecipeCategory(guiHelper));
     registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_zombie_generator.getBlockNN(), 1, 0), ZombieGeneratorRecipeCategory.UID);
     registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_franken_zombie_generator.getBlockNN(), 1, 0), ZombieGeneratorRecipeCategory.UID);
