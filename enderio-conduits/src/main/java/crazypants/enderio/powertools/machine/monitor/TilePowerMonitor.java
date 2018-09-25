@@ -37,7 +37,7 @@ import static info.loenwind.autosave.util.NBTAction.ITEM;
 import static info.loenwind.autosave.util.NBTAction.SAVE;
 
 @Storable
-public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPaintableTileEntity, DynaTextureProvider.IDataProvider {
+public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPaintableTileEntity, DynaTextureProviderPMon.IDataProvider {
 
   private static final int iconUpdateRate = 30 * 60 * 20 / 24; // ticks per pixel
 
@@ -215,7 +215,7 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
   @SideOnly(Side.CLIENT)
   public void bindTexture() {
     if (dynaTextureProvider == null) {
-      dynaTextureProvider = new DynaTextureProvider(this);
+      dynaTextureProvider = new DynaTextureProviderPMon(this);
     }
     ((DynaTextureProvider) dynaTextureProvider).bindTexture();
   }
@@ -231,9 +231,9 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
   }
 
   // Side.CLIENT
-  protected int[] iconMins = new int[DynaTextureProvider.TEXSIZE];
+  protected int[] iconMins = new int[DynaTextureProviderPMon.TEXSIZE];
   // Side.CLIENT
-  protected int[] iconMaxs = new int[DynaTextureProvider.TEXSIZE];
+  protected int[] iconMaxs = new int[DynaTextureProviderPMon.TEXSIZE];
 
   @Override
   @SideOnly(Side.CLIENT)

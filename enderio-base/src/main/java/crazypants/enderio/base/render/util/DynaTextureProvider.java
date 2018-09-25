@@ -22,7 +22,6 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -30,80 +29,75 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class DynaTextureProvider {
+public abstract class DynaTextureProvider {
 
-  public static final int TEXSIZE = 32;
+  protected static final @Nonnull Queue<ResourceLocation> toFree = new ConcurrentLinkedQueue<>();
+  protected static final @Nonnull List<DynaTextureProvider> instances = new ArrayList<>();
 
-  protected static final @Nonnull Queue<ResourceLocation> toFree = new ConcurrentLinkedQueue<ResourceLocation>();
-  protected static final @Nonnull List<DynaTextureProvider> instances = new ArrayList<DynaTextureProvider>();
+  protected final @Nonnull ResourceLocation resourceLocation;
+  protected final @Nonnull int[] imageData;
+  protected boolean valid = true;
 
-  protected static final @Nonnull ResourceLocation pmon_screen = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/block_pm_on_screen.png");
-  protected static final @Nonnull int[] pmon_screen_data = new int[TEXSIZE * TEXSIZE];
-  protected static final @Nonnull ResourceLocation pmon_color = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/block_pm_on_color.png");
-  protected static final @Nonnull int[] pmon_color_data = new int[TEXSIZE * TEXSIZE];
-  protected static final @Nonnull ResourceLocation pmon_fallback = new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/block_pm_on.png");
-
-  protected final @Nonnull IDataProvider owner;
-  protected final @Nonnull String id;
-  protected @Nullable ResourceLocation resourceLocation;
-  protected @Nonnull final int[] imageData;
+  protected final @Nonnull ResourceLocation fallBackTexture;
 
   protected final @Nonnull DynamicTexture dynamicTexture;
   protected final @Nonnull TextureManager textureManager;
   protected final @Nonnull IResourceManager resourceManager;
 
-  @SuppressWarnings("null")
-  public DynaTextureProvider(@Nonnull IDataProvider owner) {
-    this.owner = owner;
+  public DynaTextureProvider(int textureSize, @Nonnull ResourceLocation fallBackTexture) {
     this.textureManager = Minecraft.getMinecraft().getTextureManager();
     this.resourceManager = Minecraft.getMinecraft().getResourceManager();
+    this.fallBackTexture = fallBackTexture;
 
-    this.id = EnderIO.DOMAIN + "pmon/" + owner.getLocation().toLong();
-
-    this.dynamicTexture = new DynamicTexture(TEXSIZE, TEXSIZE);
+    this.dynamicTexture = new DynamicTexture(textureSize, textureSize);
     this.imageData = this.dynamicTexture.getTextureData();
-    this.resourceLocation = textureManager.getDynamicTextureLocation(id, this.dynamicTexture);
+    this.resourceLocation = textureManager.getDynamicTextureLocation(EnderIO.DOMAIN, this.dynamicTexture);
 
     for (int i = 0; i < this.imageData.length; ++i) {
       this.imageData[i] = 0;
     }
-    loadTextures();
-    updateTexture();
     instances.add(this);
   }
 
-  protected static boolean texturesLoaded = false;
-
-  protected void loadTextures() {
-    if (!texturesLoaded) {
-      BufferedImage pmon_screen_image = getTexture(pmon_screen);
-      if (pmon_screen_image != null) {
-        pmon_screen_image = resize(pmon_screen_image, TEXSIZE);
-        pmon_screen_image.getRGB(0, 0, TEXSIZE, TEXSIZE, pmon_screen_data, 0, TEXSIZE);
-      }
-      BufferedImage pmon_color_image = getTexture(pmon_color);
-      if (pmon_color_image != null) {
-        pmon_color_image = resize(pmon_color_image, TEXSIZE);
-        pmon_color_image.getRGB(0, 0, TEXSIZE, TEXSIZE, pmon_color_data, 0, TEXSIZE);
-      }
-      texturesLoaded = true;
+  public void updateTexture() {
+    if (valid) {
+      updateTextureData();
+      dynamicTexture.updateDynamicTexture();
     }
   }
 
-  protected static BufferedImage resize(BufferedImage image, int size) {
-    if (image.getWidth() != size) {
-      BufferedImage resized = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
-      Graphics2D g = resized.createGraphics();
-      g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-      g.drawImage(image, 0, 0, size, size, 0, 0, image.getWidth(), image.getHeight(), null);
-      g.dispose();
-      return resized;
+  abstract protected void updateTextureData();
+
+  public void bindTexture() {
+    if (valid) {
+      textureManager.bindTexture(resourceLocation);
     } else {
-      return image;
+      textureManager.bindTexture(fallBackTexture);
     }
   }
 
-  protected BufferedImage getTexture(@Nonnull ResourceLocation blockResource) {
+  public void free() {
+    if (valid) {
+      textureManager.deleteTexture(resourceLocation);
+      valid = false;
+    }
+    ResourceLocation r = toFree.poll();
+    while (r != null) {
+      textureManager.deleteTexture(r);
+      r = toFree.poll();
+    }
+  }
+
+  @Override
+  protected void finalize() throws Throwable {
+    if (valid) {
+      toFree.add(resourceLocation);
+      valid = false;
+    }
+    super.finalize();
+  }
+
+  protected @Nullable BufferedImage getTexture(@Nonnull ResourceLocation blockResource) {
     try {
       IResource iResource = resourceManager.getResource(blockResource);
       BufferedImage image = ImageIO.read(iResource.getInputStream());
@@ -115,48 +109,17 @@ public class DynaTextureProvider {
     return null;
   }
 
-  public void updateTexture() {
-    if (resourceLocation != null) {
-      int[][] minmax = owner.getIconValues();
-
-      for (int x = 0; x < TEXSIZE; x++) {
-        for (int y = 0; y < TEXSIZE; y++) {
-          imageData[y * TEXSIZE + x] = (x > 27 || TEXSIZE - y > minmax[1][x] * 23 / 63 + 5 || TEXSIZE - y < minmax[0][x] * 23 / 63 + 5 ? pmon_screen_data
-              : pmon_color_data)[y * TEXSIZE + x];
-        }
-      }
-
-      dynamicTexture.updateDynamicTexture();
-    }
-  }
-
-  public void bindTexture() {
-    if (resourceLocation != null) {
-      textureManager.bindTexture(resourceLocation);
+  protected @Nonnull BufferedImage resize(@Nonnull BufferedImage image, int size) {
+    if (image.getWidth() != size) {
+      BufferedImage resized = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+      Graphics2D g = resized.createGraphics();
+      g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+      g.drawImage(image, 0, 0, size, size, 0, 0, image.getWidth(), image.getHeight(), null);
+      g.dispose();
+      return resized;
     } else {
-      textureManager.bindTexture(pmon_fallback);
+      return image;
     }
-  }
-
-  public void free() {
-    if (resourceLocation != null) {
-      textureManager.deleteTexture(resourceLocation);
-      resourceLocation = null;
-    }
-    ResourceLocation r = toFree.poll();
-    while (r != null) {
-      textureManager.deleteTexture(r);
-      r = toFree.poll();
-    }
-  }
-
-  @Override
-  protected void finalize() throws Throwable {
-    if (resourceLocation != null) {
-      toFree.add(resourceLocation);
-      resourceLocation = null;
-    }
-    super.finalize();
   }
 
   @SideOnly(Side.CLIENT)
@@ -174,13 +137,4 @@ public class DynaTextureProvider {
     }
   }
 
-  public static interface IDataProvider {
-
-    @Nonnull
-    BlockPos getLocation();
-
-    @Nonnull
-    int[][] getIconValues();
-
-  }
 }
