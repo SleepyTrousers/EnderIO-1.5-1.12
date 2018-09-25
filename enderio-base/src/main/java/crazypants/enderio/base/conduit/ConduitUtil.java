@@ -17,6 +17,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -57,9 +58,11 @@ public class ConduitUtil {
                                                                                                                                                                  // work
 
     if (reuseNetwork(conduit, connections, world)) {
+      Log.warn("Re-Using network for " + conduit);
       return;
     }
 
+    Log.warn("Re-Building network for " + conduit);
     IConduitNetwork res = conduit.createNetworkForType();
     res.init(conduit.getBundle(), connections, world);
     return;
