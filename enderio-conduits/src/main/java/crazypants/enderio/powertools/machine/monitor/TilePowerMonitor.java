@@ -15,6 +15,7 @@ import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.task.ContinuousTask;
 import crazypants.enderio.base.paint.IPaintable.IPaintableTileEntity;
 import crazypants.enderio.base.recipe.IMachineRecipe;
+import crazypants.enderio.base.render.util.DynaTextureProvider;
 import crazypants.enderio.conduits.conduit.power.IPowerConduit;
 import crazypants.enderio.conduits.conduit.power.NetworkPowerManager;
 import crazypants.enderio.conduits.conduit.power.PowerConduitNetwork;
@@ -28,15 +29,15 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static info.loenwind.autosave.util.NBTAction.CLIENT;
-import static info.loenwind.autosave.util.NBTAction.ITEM;
-import static info.loenwind.autosave.util.NBTAction.SAVE;
 import static crazypants.enderio.powertools.capacitor.CapacitorKey.POWER_MONITOR_POWER_BUFFER;
 import static crazypants.enderio.powertools.capacitor.CapacitorKey.POWER_MONITOR_POWER_INTAKE;
 import static crazypants.enderio.powertools.capacitor.CapacitorKey.POWER_MONITOR_POWER_USE;
+import static info.loenwind.autosave.util.NBTAction.CLIENT;
+import static info.loenwind.autosave.util.NBTAction.ITEM;
+import static info.loenwind.autosave.util.NBTAction.SAVE;
 
 @Storable
-public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPaintableTileEntity {
+public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPaintableTileEntity, DynaTextureProviderPMon.IDataProvider {
 
   private static final int iconUpdateRate = 30 * 60 * 20 / 24; // ticks per pixel
 
@@ -214,7 +215,7 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
   @SideOnly(Side.CLIENT)
   public void bindTexture() {
     if (dynaTextureProvider == null) {
-      dynaTextureProvider = new DynaTextureProvider(this);
+      dynaTextureProvider = new DynaTextureProviderPMon(this);
     }
     ((DynaTextureProvider) dynaTextureProvider).bindTexture();
   }
@@ -230,12 +231,13 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
   }
 
   // Side.CLIENT
-  protected int[] iconMins = new int[DynaTextureProvider.TEXSIZE];
+  protected int[] iconMins = new int[DynaTextureProviderPMon.TEXSIZE];
   // Side.CLIENT
-  protected int[] iconMaxs = new int[DynaTextureProvider.TEXSIZE];
+  protected int[] iconMaxs = new int[DynaTextureProviderPMon.TEXSIZE];
 
+  @Override
   @SideOnly(Side.CLIENT)
-  public int[][] getIconValues() {
+  public @Nonnull int[][] getIconValues() {
     return statsIcn.getValues();
   }
 

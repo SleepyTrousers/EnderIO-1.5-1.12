@@ -112,6 +112,9 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   @Nonnull
   public String getConduitProbeInfo(@Nonnull EntityPlayer player) {
     PowerConduitNetwork pcn = (PowerConduitNetwork) getNetwork();
+    if (pcn == null) {
+      return "";
+    }
     NetworkPowerManager pm = pcn.getPowerManager();
     PowerTracker tracker = pm.getTracker(this);
 
