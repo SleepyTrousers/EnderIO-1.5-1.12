@@ -58,11 +58,11 @@ public class ConduitUtil {
                                                                                                                                                                  // work
 
     if (reuseNetwork(conduit, connections, world)) {
-      Log.warn("Re-Using network for " + conduit);
+      Log.warn("Re-Using network at " + conduit.getBundle().getLocation() + " for " + conduit);
       return;
     }
 
-    Log.warn("Re-Building network for " + conduit);
+    Log.warn("Re-Building network at " + conduit.getBundle().getLocation() + " for " + conduit);
     IConduitNetwork res = conduit.createNetworkForType();
     res.init(conduit.getBundle(), connections, world);
     return;
