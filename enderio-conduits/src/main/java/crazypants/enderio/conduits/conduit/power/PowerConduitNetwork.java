@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.base.conduit.ConduitUtil.UnloadedBlockException;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.conduits.conduit.AbstractConduitNetwork;
@@ -33,7 +34,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
   }
 
   @Override
-  public void init(@Nonnull IConduitBundle tile, Collection<IPowerConduit> connections, @Nonnull World world) {
+  public void init(@Nonnull IConduitBundle tile, Collection<IPowerConduit> connections, @Nonnull World world) throws UnloadedBlockException {
     super.init(tile, connections, world);
     powerManager = new NetworkPowerManager(this, world);
     powerManager.receptorsChanged();

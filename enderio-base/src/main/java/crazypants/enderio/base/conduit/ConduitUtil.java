@@ -17,6 +17,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -49,21 +50,30 @@ public class ConduitUtil {
 
   @SuppressWarnings({ "rawtypes", "unchecked" })
   public static void ensureValidNetwork(IServerConduit conduit) {
-    TileEntity te = conduit.getBundle().getEntity();
-    World world = te.getWorld();
-    Collection<? extends IServerConduit> connections = getConnectedConduits(world, te.getPos(), (Class<? extends IServerConduit>) conduit.getBaseConduitType()); // TODO:
-                                                                                                                                                                 // this
-                                                                                                                                                                 // won't
-                                                                                                                                                                 // work
+    try {
+      TileEntity te = conduit.getBundle().getEntity();
+      World world = te.getWorld();
+      Collection<? extends IServerConduit> connections = getConnectedConduits(world, te.getPos(),
+          (Class<? extends IServerConduit>) conduit.getBaseConduitType()); // TODO:
+                                                                           // this
+                                                                           // won't
+                                                                           // work
 
-    if (reuseNetwork(conduit, connections, world)) {
-      // Log.warn("Re-Using network at " + conduit.getBundle().getLocation() + " for " + conduit);
-      return;
+      if (reuseNetwork(conduit, connections, world)) {
+        // Log.warn("Re-Using network at " + conduit.getBundle().getLocation() + " for " + conduit);
+        return;
+      }
+
+      // Log.warn("Re-Building network at " + conduit.getBundle().getLocation() + " for " + conduit);
+      IConduitNetwork res = conduit.createNetworkForType();
+      res.init(conduit.getBundle(), connections, world);
+    } catch (UnloadedBlockException e) {
+      IConduitNetwork<?, ?> networkToDestroy = e.getNetworkToDestroy();
+      if (networkToDestroy != null) {
+        networkToDestroy.destroyNetwork();
+        Log.warn("Failed building network at " + conduit.getBundle().getLocation() + " for " + conduit);
+      }
     }
-
-    // Log.warn("Re-Building network at " + conduit.getBundle().getLocation() + " for " + conduit);
-    IConduitNetwork res = conduit.createNetworkForType();
-    res.init(conduit.getBundle(), connections, world);
     return;
   }
 
@@ -231,11 +241,13 @@ public class ConduitUtil {
         te.getPos().getZ() + dir.getFrontOffsetZ(), type);
   }
 
-  public static <T extends IServerConduit> Collection<T> getConnectedConduits(@Nonnull World world, int x, int y, int z, @Nonnull Class<T> type) {
+  public static <T extends IServerConduit> Collection<T> getConnectedConduits(@Nonnull World world, int x, int y, int z, @Nonnull Class<T> type)
+      throws UnloadedBlockException {
     return getConnectedConduits(world, new BlockPos(x, y, z), type);
   }
 
-  public static <T extends IServerConduit> Collection<T> getConnectedConduits(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Class<T> type) {
+  public static <T extends IServerConduit> Collection<T> getConnectedConduits(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Class<T> type)
+      throws UnloadedBlockException {
     TileEntity te = world.getTileEntity(pos);
     if (!(te instanceof IConduitBundle)) {
       return Collections.emptyList();
@@ -245,14 +257,33 @@ public class ConduitUtil {
     T con = root.getConduit(type);
     if (con != null) {
       for (EnumFacing dir : con.getConduitConnections()) {
-        T connected = dir == null ? null : getConduit(world, root.getEntity(), dir, type);
-        if (connected != null) {
-          result.add(connected);
+        if (dir != null) {
+          if (!world.isBlockLoaded(pos.offset(dir))) {
+            throw new UnloadedBlockException(con.getNetwork());
+          }
+          T connected = getConduit(world, root.getEntity(), dir, type);
+          if (connected != null) {
+            result.add(connected);
+          }
         }
-
       }
     }
     return result;
+  }
+
+  public static class UnloadedBlockException extends Exception {
+
+    private static final long serialVersionUID = 2130974035860715939L;
+    private IConduitNetwork<?, ?> networkToDestroy;
+
+    public IConduitNetwork<?, ?> getNetworkToDestroy() {
+      return networkToDestroy;
+    }
+
+    public UnloadedBlockException(IConduitNetwork<?, ?> networkToDestroy) {
+      this.networkToDestroy = networkToDestroy;
+    }
+
   }
 
   public static void writeToNBT(IServerConduit conduit, @Nonnull NBTTagCompound conduitRoot) {

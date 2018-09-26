@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.conduit.ConduitUtil.UnloadedBlockException;
 import crazypants.enderio.base.handler.ServerTickHandler.ITickListener;
 import net.minecraft.world.World;
 
@@ -20,11 +21,11 @@ import net.minecraft.world.World;
 public interface IConduitNetwork<T extends IServerConduit, I extends T> extends ITickListener {
 
   // TODO: Tidy and edit Javadocs
-  public void init(@Nonnull IConduitBundle tile, Collection<I> connections, @Nonnull World world);
+  public void init(@Nonnull IConduitBundle tile, Collection<I> connections, @Nonnull World world) throws UnloadedBlockException;
 
   public @Nonnull Class<T> getBaseConduitType();
 
-  public void setNetwork(@Nonnull World world, @Nonnull IConduitBundle tile);
+  public void setNetwork(@Nonnull World world, @Nonnull IConduitBundle tile) throws UnloadedBlockException;
 
   public void addConduit(@Nonnull I newConduit);
 

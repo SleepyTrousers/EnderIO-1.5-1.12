@@ -16,6 +16,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
@@ -430,15 +431,25 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
     clientStateDirty = true;
   }
 
+  private long nextNetworkTry = -1L;
+
   protected void updateNetwork(World world) {
+    long tickCount = EnderIO.proxy.getServerTickCount();
+    if (tickCount < nextNetworkTry) {
+      return;
+    }
     BlockPos pos = getBundle().getLocation();
     if (getNetwork() == null && world.isBlockLoaded(pos)) {
       ConduitUtil.ensureValidNetwork(this);
-      if (getNetwork() != null) {
-        getNetwork().sendBlockUpdatesForEntireNetwork();
+      IConduitNetwork<?, ?> network = getNetwork();
+      if (network != null) {
+        nextNetworkTry = -1;
+        network.sendBlockUpdatesForEntireNetwork();
         if (readFromNbt) {
           connectionsChanged();
         }
+      } else {
+        nextNetworkTry = tickCount + 200;
       }
     }
   }

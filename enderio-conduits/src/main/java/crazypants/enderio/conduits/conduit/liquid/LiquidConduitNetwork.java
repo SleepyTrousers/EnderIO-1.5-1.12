@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.fluid.IFluidWrapper;
 
 import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.ConduitUtil.UnloadedBlockException;
 import crazypants.enderio.base.diagnostics.Prof;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.util.EnumFacing;
@@ -260,33 +261,37 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     }
     int totalCapacity = tank.getCapacity();
 
-    BlockPos pos = con.getBundle().getLocation();
-    Collection<ILiquidConduit> connections = ConduitUtil.getConnectedConduits(con.getBundle().getEntity().getWorld(), pos.getX(), pos.getY(), pos.getZ(),
-        ILiquidConduit.class);
-    for (ILiquidConduit n : connections) {
-      LiquidConduit neighbour = (LiquidConduit) n;
-      if (canFlowTo(con, neighbour)) { // can only flow within same network
-        totalAmount += neighbour.getTank().getFluidAmount();
-        totalCapacity += neighbour.getTank().getCapacity();
-      }
-    }
-
-    float targetRatio = (float) totalAmount / totalCapacity;
-    int flowVolume = (int) Math.floor((targetRatio - tank.getFilledRatio()) * tank.getCapacity());
-    flowVolume = Math.min(maxFlowVolume, flowVolume);
-
-    if (Math.abs(flowVolume) < 2) {
-      return; // dont bother with transfers of less than a thousands of a bucket
-    }
-
-    for (ILiquidConduit n : connections) {
-      LiquidConduit neigbour = (LiquidConduit) n;
-      if (canFlowTo(con, neigbour)) { // can only flow within same network
-        flowVolume = (int) Math.floor((targetRatio - neigbour.getTank().getFilledRatio()) * neigbour.getTank().getCapacity());
-        if (flowVolume != 0) {
-          actions.add(new FlowAction(con, neigbour, flowVolume));
+    try {
+      BlockPos pos = con.getBundle().getLocation();
+      Collection<ILiquidConduit> connections = ConduitUtil.getConnectedConduits(con.getBundle().getEntity().getWorld(), pos.getX(), pos.getY(), pos.getZ(),
+          ILiquidConduit.class);
+      for (ILiquidConduit n : connections) {
+        LiquidConduit neighbour = (LiquidConduit) n;
+        if (canFlowTo(con, neighbour)) { // can only flow within same network
+          totalAmount += neighbour.getTank().getFluidAmount();
+          totalCapacity += neighbour.getTank().getCapacity();
         }
       }
+
+      float targetRatio = (float) totalAmount / totalCapacity;
+      int flowVolume = (int) Math.floor((targetRatio - tank.getFilledRatio()) * tank.getCapacity());
+      flowVolume = Math.min(maxFlowVolume, flowVolume);
+
+      if (Math.abs(flowVolume) < 2) {
+        return; // dont bother with transfers of less than a thousands of a bucket
+      }
+
+      for (ILiquidConduit n : connections) {
+        LiquidConduit neigbour = (LiquidConduit) n;
+        if (canFlowTo(con, neigbour)) { // can only flow within same network
+          flowVolume = (int) Math.floor((targetRatio - neigbour.getTank().getFilledRatio()) * neigbour.getTank().getCapacity());
+          if (flowVolume != 0) {
+            actions.add(new FlowAction(con, neigbour, flowVolume));
+          }
+        }
+      }
+    } catch (UnloadedBlockException e) {
+      // NOP, should be impossible
     }
 
   }
