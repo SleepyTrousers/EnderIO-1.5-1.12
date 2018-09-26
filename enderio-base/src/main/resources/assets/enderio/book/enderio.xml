@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<book title="A Tinkerer's Journal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="book.xsd">
+  <conditions></conditions>
+  <chapter id="ch1">
+    <section >
+      <title>Ender IO</title>
+      <p>Welcome to the most incomplete guide to Ender IO.</p>
+    </section>
+  </chapter>
+  <chapter id="ch2">
+    <section>
+      <title>Getting started</title>
+      <p>Getting started with Ender IO isn't hard but you might want to get some mining done first. You need some iron, cobblestone,
+      a furnace or three, flint and access to the bedrock layer.</p>
+      <p>Start with making Flint &amp; Steel. Then go down to bedrock layer and set fire to some blocks of bedrock. It won't damage the
+      bedrock---after all it is infinite---but with some luck tiny Grains of Infinity will split off.</p>
+    </section>
+    <section>
+      <title>Making a Thing</title>
+      <p>Now that you have Grains of Infinity, you can craft the first item you'll need: The Simple Machine Chassis.</p>
+      <recipe type="gbook:crafting" key="enderio:simple_chassis" />
+    </section>
+  </chapter>
+</book>
