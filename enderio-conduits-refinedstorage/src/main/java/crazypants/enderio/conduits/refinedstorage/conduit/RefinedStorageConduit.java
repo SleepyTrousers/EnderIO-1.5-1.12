@@ -80,8 +80,7 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   }
 
   @Override
-  public @Nonnull
-  NNList<ItemStack> getDrops() {
+  public @Nonnull NNList<ItemStack> getDrops() {
     NNList<ItemStack> res = super.getDrops();
     for (ItemStack stack : upgrades.values()) {
       res.add(stack);
@@ -97,15 +96,15 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
 
   @Override
   public boolean canConnectToExternal(@Nonnull EnumFacing direction, boolean ignoreConnectionMode) {
-    TileEntity te = bundle.getEntity();
+    TileEntity te = getBundle().getEntity();
     World world = te.getWorld();
     TileEntity test = world.getTileEntity(te.getPos().offset(direction));
     if (test == null) {
       return false;
     }
-    if (test.hasCapability(RSHelper.NETWORK_NODE_PROXY_CAPABILITY, direction.getOpposite()) || test
-        .hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction.getOpposite()) || test
-        .hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction.getOpposite())) {
+    if (test.hasCapability(RSHelper.NETWORK_NODE_PROXY_CAPABILITY, direction.getOpposite())
+        || test.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction.getOpposite())
+        || test.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction.getOpposite())) {
       return true;
     }
 
@@ -192,6 +191,7 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
     return false;
   }
 
+  @SuppressWarnings("unchecked")
   @Nullable
   @Override
   public <T> T getInternalCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
@@ -216,7 +216,7 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   @Override
   public boolean setNetwork(@Nonnull IConduitNetwork<?, ?> network) {
     this.network = (RefinedStorageConduitNetwork) network;
-    return true;
+    return super.setNetwork(network);
   }
 
   @Override
@@ -230,11 +230,7 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
     World world = getBundle().getBundleworld();
     BlockPos pos = getBundle().getLocation();
     if (world.isRemote) {
-      if (clientSideNode == null) {
-        clientSideNode = new ConduitRefinedStorageNode(this);
-      }
-
-      return clientSideNode;
+      return clientSideNode != null ? clientSideNode : (clientSideNode = new ConduitRefinedStorageNode(this));
     }
 
     INetworkNodeManager manager = RSHelper.API.getNetworkNodeManager(world);
@@ -311,8 +307,7 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   }
 
   @Override
-  public @Nonnull
-  ConnectionMode getNextConnectionMode(@Nonnull EnumFacing dir) {
+  public @Nonnull ConnectionMode getNextConnectionMode(@Nonnull EnumFacing dir) {
     ConnectionMode mode = getConnectionMode(dir);
     mode = mode == ConnectionMode.IN_OUT ? ConnectionMode.DISABLED : ConnectionMode.IN_OUT;
     return mode;
@@ -488,10 +483,10 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   @Override
   @Nullable
   public IItemHandler getInventoryForSnapshot(int filterId, int param1) {
-    //    ItemConduitNetwork icn = getNetwork();
-    //    if (icn != null) {
-    //      return icn.getInventory(this, EnumFacing.getFront(param1)).getInventory();
-    //    }
+    // ItemConduitNetwork icn = getNetwork();
+    // if (icn != null) {
+    // return icn.getInventory(this, EnumFacing.getFront(param1)).getInventory();
+    // }
     return null;
   }
 
@@ -540,14 +535,14 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   @Override
   public void setInputFilterUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack stack) {
     inputFilterUpgrades.put(dir, stack);
-    setInputFilter(dir, FilterRegistry.<IItemFilter>getFilterForUpgrade(stack));
+    setInputFilter(dir, FilterRegistry.<IItemFilter> getFilterForUpgrade(stack));
     setClientStateDirty();
   }
 
   @Override
   public void setOutputFilterUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack stack) {
     outputFilterUpgrades.put(dir, stack);
-    setOutputFilter(dir, FilterRegistry.<IItemFilter>getFilterForUpgrade(stack));
+    setOutputFilter(dir, FilterRegistry.<IItemFilter> getFilterForUpgrade(stack));
     setClientStateDirty();
   }
 

@@ -134,7 +134,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Override
   public boolean setNetwork(@Nonnull IConduitNetwork<?, ?> network) {
     this.network = (RedstoneConduitNetwork) network;
-    return true;
+    return super.setNetwork(network);
   }
 
   @Override
@@ -467,35 +467,35 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     return res;
   }
 
-//  @Optional.Method(modid = "computercraft")
-//  @Override
-//  @Nonnull
-//  public Map<DyeColor, Signal> getComputerCraftSignals(@Nonnull EnumFacing side) {
-//    Map<DyeColor, Signal> ccSignals = new EnumMap<DyeColor, Signal>(DyeColor.class);
-//
-//    int bundledInput = getComputerCraftBundledPowerLevel(side);
-//    if (bundledInput >= 0) {
-//      for (int i = 0; i < 16; i++) {
-//        int color = bundledInput >>> i & 1;
-//        Signal signal = new Signal(color == 1 ? 16 : 0, signalIdBase + side.ordinal());
-//        ccSignals.put(DyeColor.fromIndex(Math.max(0, 15 - i)), signal);
-//      }
-//    }
-//
-//    return ccSignals;
-//  }
+  // @Optional.Method(modid = "computercraft")
+  // @Override
+  // @Nonnull
+  // public Map<DyeColor, Signal> getComputerCraftSignals(@Nonnull EnumFacing side) {
+  // Map<DyeColor, Signal> ccSignals = new EnumMap<DyeColor, Signal>(DyeColor.class);
+  //
+  // int bundledInput = getComputerCraftBundledPowerLevel(side);
+  // if (bundledInput >= 0) {
+  // for (int i = 0; i < 16; i++) {
+  // int color = bundledInput >>> i & 1;
+  // Signal signal = new Signal(color == 1 ? 16 : 0, signalIdBase + side.ordinal());
+  // ccSignals.put(DyeColor.fromIndex(Math.max(0, 15 - i)), signal);
+  // }
+  // }
+  //
+  // return ccSignals;
+  // }
 
-//  @Optional.Method(modid = "computercraft")
-//  private int getComputerCraftBundledPowerLevel(EnumFacing dir) {
-//    World world = getBundle().getBundleworld();
-//    BlockPos pos = getBundle().getLocation().offset(dir);
-//
-//    if (world.isBlockLoaded(pos)) {
-//      return ComputerCraftAPI.getBundledRedstoneOutput(world, pos, dir.getOpposite());
-//    } else {
-//      return -1;
-//    }
-//  }
+  // @Optional.Method(modid = "computercraft")
+  // private int getComputerCraftBundledPowerLevel(EnumFacing dir) {
+  // World world = getBundle().getBundleworld();
+  // BlockPos pos = getBundle().getLocation().offset(dir);
+  //
+  // if (world.isBlockLoaded(pos)) {
+  // return ComputerCraftAPI.getBundledRedstoneOutput(world, pos, dir.getOpposite());
+  // } else {
+  // return -1;
+  // }
+  // }
 
   @Override
   @Nonnull

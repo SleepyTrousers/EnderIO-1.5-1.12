@@ -297,7 +297,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
       return false;
     }
     this.network = (LiquidConduitNetwork) network;
-    return true;
+    return super.setNetwork(network);
   }
 
   @Override

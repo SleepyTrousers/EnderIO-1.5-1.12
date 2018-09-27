@@ -41,7 +41,6 @@ import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
 import crazypants.enderio.conduits.capability.IUpgradeHolder;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.conduit.IConduitComponent;
-import crazypants.enderio.conduits.gui.GuiExternalConnection;
 import crazypants.enderio.conduits.gui.ItemSettings;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.powertools.lang.Lang;
@@ -350,7 +349,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   private void checkInventoryConnections(@Nonnull EnumFacing direction) {
     if (network != null) {
-      BlockPos p = bundle.getEntity().getPos().offset(direction);
+      BlockPos p = getBundle().getEntity().getPos().offset(direction);
       NetworkedInventory networkedInventory = network.getInventory(this, direction);
       if (externalConnections.contains(direction) && getConnectionMode(direction) != ConnectionMode.DISABLED) {
         if (networkedInventory == null) {
@@ -409,7 +408,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public boolean setNetwork(@Nonnull IConduitNetwork<?, ?> network) {
     this.network = (ItemConduitNetwork) network;
-    return true;
+    return super.setNetwork(network);
   }
 
   @Override
@@ -755,7 +754,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   public void invalidate() {
     super.invalidate();
     if (network != null) {
-      final BlockPos pos = bundle.getEntity().getPos();
+      final BlockPos pos = getBundle().getEntity().getPos();
       for (EnumFacing direction : externalConnections) {
         try {
           BlockPos p = pos.offset(direction);
@@ -777,7 +776,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Nonnull
   @Override
   public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con) {
-    return new ItemSettings((GuiExternalConnection) gui, con);
+    return new ItemSettings(gui, con);
   }
 
   @Override

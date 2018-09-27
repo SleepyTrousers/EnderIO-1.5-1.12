@@ -123,8 +123,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
       return false;
     }
     this.network = n;
-    return true;
-
+    return super.setNetwork(network);
   }
 
   @Override

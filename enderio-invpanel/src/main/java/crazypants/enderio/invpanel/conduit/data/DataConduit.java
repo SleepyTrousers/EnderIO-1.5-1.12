@@ -134,7 +134,7 @@ public class DataConduit extends AbstractConduit implements IDataConduit {
   @Override
   public boolean setNetwork(@Nonnull IConduitNetwork<?, ?> network) {
     this.network = (DataConduitNetwork) network;
-    return true;
+    return super.setNetwork(network);
   }
 
   @Override

@@ -76,7 +76,8 @@ public interface IClientConduit extends IConduit {
     TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component);
 
     @SideOnly(Side.CLIENT)
-    public @Nonnull Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component);
+    @Nullable
+    Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component);
 
     @SideOnly(Side.CLIENT)
     float getTransmitionGeometryScale();

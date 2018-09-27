@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.client.render.BoundingBox;
@@ -178,7 +179,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   public boolean setNetwork(@Nonnull IConduitNetwork<?, ?> network) {
     this.network = (OCConduitNetwork) network;
     addMissingNodeConnections();
-    return true;
+    return super.setNetwork(network);
   }
 
   @Override
@@ -535,15 +536,13 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   }
 
   @Override
-  @Nonnull
-  public TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
+  public @Nullable TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
     return null;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  @Nonnull
-  public Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
+  public @Nullable Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
     return null;
   }
 

@@ -2,8 +2,11 @@ package crazypants.enderio.conduits.oc.conduit;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.client.render.ColorUtil;
 
+import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
@@ -17,13 +20,13 @@ import net.minecraftforge.client.model.ModelLoader.White;
 public class OCConduitRenderer extends DefaultConduitRenderer {
 
   @Override
-  public boolean isRendererForConduit(IConduit conduit) {
+  public boolean isRendererForConduit(@Nonnull IConduit conduit) {
     return conduit instanceof IOCConduit;
   }
 
   @Override
-  protected void addConduitQuads(IConduitBundle bundle, IConduit conduit, TextureAtlasSprite tex, CollidableComponent component, float selfIllum, BlockRenderLayer layer,
-      List<BakedQuad> quads) {
+  protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IClientConduit conduit, @Nonnull TextureAtlasSprite tex,
+      @Nonnull CollidableComponent component, float selfIllum, BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
     if (IOCConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
       if (conduit.containsExternalConnection(component.dir)) {
         int c = ((IOCConduit) conduit).getSignalColor(component.dir).getColor();

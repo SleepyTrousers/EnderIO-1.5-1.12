@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -16,6 +17,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.ILocalizable;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
@@ -31,6 +33,8 @@ import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.diagnostics.Prof;
+import crazypants.enderio.base.machine.interfaces.INotifier;
+import crazypants.enderio.conduits.lang.Lang;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -43,7 +47,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class AbstractConduit implements IServerConduit, IClientConduit.WithDefaultRendering {
+public abstract class AbstractConduit implements IServerConduit, IClientConduit.WithDefaultRendering, INotifier {
 
   protected final @Nonnull Set<EnumFacing> conduitConnections = EnumSet.noneOf(EnumFacing.class);
 
@@ -407,9 +411,10 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
     }
 
     boolean externalConnectionsChanged = false;
-    List<EnumFacing> copy = new ArrayList<EnumFacing>(externalConnections);
+    NNList<EnumFacing> copy = new NNList<EnumFacing>(externalConnections);
     // remove any no longer valid connections
-    for (EnumFacing dir : copy) {
+    for (NNIterator<EnumFacing> itr = copy.fastIterator(); itr.hasNext();) {
+      EnumFacing dir = itr.next();
       if (!canConnectToExternal(dir, false) || readFromNbt) {
         externalConnectionRemoved(dir);
         externalConnectionsChanged = true;
@@ -417,7 +422,8 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
     }
 
     // then check for new ones
-    for (EnumFacing dir : EnumFacing.VALUES) {
+    for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
+      EnumFacing dir = itr.next();
       if (!conduitConnections.contains(dir) && !externalConnections.contains(dir)) {
         if (canConnectToExternal(dir, false)) {
           externalConnectionAdded(dir);
@@ -447,36 +453,68 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
 
   protected void updateNetwork(World world) {
     long tickCount = EnderIO.proxy.getServerTickCount();
-    if (tickCount < nextNetworkTry) {
+    if (tickCount < nextNetworkTry && getNetwork() == null) {
       return;
     }
-    BlockPos pos = getBundle().getLocation();
-    if (getNetwork() == null && world.isBlockLoaded(pos)) {
-      ConduitUtil.ensureValidNetwork(this);
-      IConduitNetwork<?, ?> network = getNetwork();
-      if (network != null) {
-        nextNetworkTry = -1L;
-        network.sendBlockUpdatesForEntireNetwork();
-        if (readFromNbt) {
-          connectionsChanged();
+    if (getNetwork() == null) {
+      BlockPos pos = getBundle().getLocation();
+      if (world.isBlockLoaded(pos)) {
+        ConduitUtil.ensureValidNetwork(this);
+        IConduitNetwork<?, ?> network = getNetwork();
+        if (network != null) {
+          nextNetworkTry = -1L;
+          network.sendBlockUpdatesForEntireNetwork();
+          if (readFromNbt) {
+            connectionsChanged();
+          }
+        } else {
+          setNetworkBuildFailed();
         }
-      } else {
-        if (nextNetworkTry > -1L) {
-          setClientStateDirty();
-        }
-        nextNetworkTry = tickCount + 200;
       }
+    } else if (nextNetworkTry > -1L) {
+      nextNetworkTry = -1L;
+      setClientStateDirty();
     }
+  }
+
+  @Override
+  public void setNetworkBuildFailed() {
+    if (nextNetworkTry == -1L) {
+      setClientStateDirty();
+    }
+    nextNetworkTry = EnderIO.proxy.getServerTickCount() + 200 + (long) (Math.random() * 100);
+  }
+
+  @Override
+  @Nonnull
+  public Set<? extends ILocalizable> getNotification() {
+    Set<ILocalizable> result = new HashSet<>();
+    if (nextNetworkTry > -1L) {
+      result.add(new ILocalizable() {
+        @Override
+        @Nonnull
+        public String getUnlocalizedName() {
+          return Lang.GUI_NETWORK_PARTIALLY_UNLOADED.getKey();
+        }
+      });
+    }
+    return result;
+  }
+
+  @Override
+  public boolean setNetwork(@Nonnull IConduitNetwork<?, ?> network) {
+    return true;
   }
 
   @Override
   public void onAddedToBundle() {
 
-    TileEntity te = bundle.getEntity();
+    TileEntity te = getBundle().getEntity();
     World world = te.getWorld();
 
     conduitConnections.clear();
-    for (EnumFacing dir : EnumFacing.VALUES) {
+    for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
+      EnumFacing dir = itr.next();
       IConduit neighbour = ConduitUtil.getConduit(world, te, dir, getBaseConduitType());
       if (neighbour instanceof IServerConduit && ((IServerConduit) neighbour).canConnectToConduit(dir.getOpposite(), this)) {
         conduitConnections.add(dir);
@@ -486,7 +524,8 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
     }
 
     externalConnections.clear();
-    for (EnumFacing dir : EnumFacing.VALUES) {
+    for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
+      EnumFacing dir = itr.next();
       if (!containsConduitConnection(dir) && canConnectToExternal(dir, false)) {
         externalConnectionAdded(dir);
       }
@@ -501,10 +540,12 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
     World world = te.getWorld();
 
     for (EnumFacing dir : conduitConnections) {
-      IConduit neighbour = ConduitUtil.getConduit(world, te, dir, getBaseConduitType());
-      if (neighbour instanceof IServerConduit) {
-        ((IServerConduit) neighbour).conduitConnectionRemoved(dir.getOpposite());
-        ((IServerConduit) neighbour).connectionsChanged();
+      if (dir != null) {
+        IConduit neighbour = ConduitUtil.getConduit(world, te, dir, getBaseConduitType());
+        if (neighbour instanceof IServerConduit) {
+          ((IServerConduit) neighbour).conduitConnectionRemoved(dir.getOpposite());
+          ((IServerConduit) neighbour).connectionsChanged();
+        }
       }
     }
     conduitConnections.clear();
@@ -536,7 +577,8 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
     // Check for changes to external connections, connections to conduits are
     // handled by the bundle
     Set<EnumFacing> newCons = EnumSet.noneOf(EnumFacing.class);
-    for (EnumFacing dir : EnumFacing.VALUES) {
+    for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
+      EnumFacing dir = itr.next();
       if (!containsConduitConnection(dir) && canConnectToExternal(dir, false)) {
         newCons.add(dir);
       }
@@ -588,7 +630,8 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
     }
 
     List<CollidableComponent> result = new ArrayList<CollidableComponent>();
-    for (EnumFacing dir : EnumFacing.VALUES) {
+    for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
+      EnumFacing dir = itr.next();
       Collection<CollidableComponent> col = getCollidables(dir);
       if (col != null) {
         result.addAll(col);
@@ -624,6 +667,7 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
   public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
     hashCodes.add(this.getClass());
     hashCodes.add(conduitConnections, externalConnections, conectionModes);
+    hashCodes.add(hasNetwork);
   }
 
   @Override

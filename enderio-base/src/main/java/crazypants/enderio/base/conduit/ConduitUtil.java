@@ -17,7 +17,6 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.Log;
 import crazypants.enderio.base.conduit.IConduitBundle.FacadeRenderState;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -70,8 +69,15 @@ public class ConduitUtil {
     } catch (UnloadedBlockException e) {
       IConduitNetwork<?, ?> networkToDestroy = e.getNetworkToDestroy();
       if (networkToDestroy != null) {
+        for (IConduit con : networkToDestroy.getConduits()) {
+          // This is just to reduce server load by avoiding that all those conduits try to form a network one by one. It failed for one of them, it will fail
+          // for all of them.
+          if (con instanceof IServerConduit) {
+            ((IServerConduit) con).setNetworkBuildFailed();
+          }
+        }
         networkToDestroy.destroyNetwork();
-        Log.warn("Failed building network at " + conduit.getBundle().getLocation() + " for " + conduit);
+        // Log.warn("Failed building network at " + conduit.getBundle().getLocation() + " for " + conduit);
       }
     }
     return;

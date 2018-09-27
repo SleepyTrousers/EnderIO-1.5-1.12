@@ -212,7 +212,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
       this.network.connectionChanged(this, dir);
     }
 
-    return true;
+    return super.setNetwork(network);
   }
 
   @Override
