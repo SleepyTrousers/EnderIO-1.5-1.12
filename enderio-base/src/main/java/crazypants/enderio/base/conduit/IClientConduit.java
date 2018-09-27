@@ -56,6 +56,14 @@ public interface IClientConduit extends IConduit {
    */
   boolean isActive();
 
+  /**
+   * @return <code>true</code> if the conduit should render in an error state because the server could not form a network. The only reason for that at the
+   *         moment would be that the network would need to extend into unloaded blocks.
+   */
+  default boolean renderError() {
+    return false;
+  }
+
   // rendering, only needed if default rendering is used
   interface WithDefaultRendering extends IClientConduit {
 
@@ -64,7 +72,7 @@ public interface IClientConduit extends IConduit {
     TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component);
 
     @SideOnly(Side.CLIENT)
-    @Nonnull
+    @Nullable
     TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component);
 
     @SideOnly(Side.CLIENT)

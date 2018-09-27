@@ -6,8 +6,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.reflect.ConstructorUtils;
-
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
@@ -17,12 +15,11 @@ import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
+import crazypants.enderio.base.conduit.IClientConduit.WithDefaultRendering;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitRenderer;
-import crazypants.enderio.base.conduit.IClientConduit.WithDefaultRendering;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -66,12 +63,12 @@ public class DefaultConduitRenderer implements IConduitRenderer {
 
   @Override
   public void addBakedQuads(@Nonnull TileEntitySpecialRenderer<?> conduitBundleRenderer, @Nonnull IConduitBundle bundle,
-      @Nonnull IClientConduit.WithDefaultRendering conduit, float brightness, @Nullable BlockRenderLayer layer, List<BakedQuad> quads) {
+      @Nonnull IClientConduit.WithDefaultRendering conduit, float brightness, @Nullable BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
 
     Collection<CollidableComponent> components = conduit.getCollidableComponents();
     transmissionScaleFactor = conduit.getTransmitionGeometryScale();
     for (CollidableComponent component : components) {
-      if (renderComponent(component)) {
+      if (component != null && renderComponent(component)) {
         float selfIllum = Math.max(brightness, conduit.getSelfIlluminationForState(component));
         final TextureAtlasSprite transmitionTextureForState = conduit.getTransmitionTextureForState(component);
         if (layer != null && isNSEWUD(component.dir) && transmitionTextureForState != null) {
@@ -79,33 +76,32 @@ public class DefaultConduitRenderer implements IConduitRenderer {
           addTransmissionQuads(transmitionTextureForState, color, layer, conduit, component, selfIllum, quads);
         }
         TextureAtlasSprite tex = conduit.getTextureForState(component);
-        if (tex == null) {
-          tex = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
-        }
         addConduitQuads(bundle, conduit, tex, component, selfIllum, layer, quads);
       }
     }
   }
   
-  protected BlockRenderLayer getConduitQuadsLayer() {
+  protected @Nonnull BlockRenderLayer getConduitQuadsLayer() {
     return BlockRenderLayer.CUTOUT;
   }
   
-  protected BlockRenderLayer getTransmissionQuadsLayer() {
+  protected @Nonnull BlockRenderLayer getTransmissionQuadsLayer() {
     return BlockRenderLayer.CUTOUT;
   }
   
   @Override
-  public BlockRenderLayer getCoreLayer() {
+  public @Nonnull BlockRenderLayer getCoreLayer() {
     return getConduitQuadsLayer();
   }
   
   @Override
-  public boolean canRenderInLayer(WithDefaultRendering con, BlockRenderLayer layer) {
+  public boolean canRenderInLayer(@Nonnull WithDefaultRendering con, @Nonnull BlockRenderLayer layer) {
     return layer == getConduitQuadsLayer() || layer == getTransmissionQuadsLayer();
   }
 
-  protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex,
+  private static final @Nonnull Vector4f COLOR_ERROR = new Vector4f(1, 0, 0, 1);
+
+  protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IClientConduit conduit, @Nonnull TextureAtlasSprite tex,
       @Nonnull CollidableComponent component, float selfIllum, BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
     if (isNSEWUD(component.dir)) {
       if (layer != getConduitQuadsLayer()) {
@@ -119,7 +115,7 @@ public class DefaultConduitRenderer implements IConduitRenderer {
 
       BoundingBox cube = component.bound;
       BoundingBox bb = cube.expand(-xLen, -yLen, -zLen);
-      addQuadsForSection(bb, tex, component.dir, quads);
+      addQuadsForSection(bb, tex, component.dir, quads, conduit.renderError() ? COLOR_ERROR : null);
       if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
         tex = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);
         BakedQuadBuilder.addBakedQuadForFace(quads, bb, tex, component.dir);
@@ -129,11 +125,8 @@ public class DefaultConduitRenderer implements IConduitRenderer {
     }
   }
 
-  protected void addQuadsForSection(BoundingBox bb, TextureAtlasSprite tex, EnumFacing dir, List<BakedQuad> quads) {
-    addQuadsForSection(bb, tex, dir, quads, null);
-  }
-
-  protected void addQuadsForSection(BoundingBox bb, TextureAtlasSprite tex, EnumFacing dir, List<BakedQuad> quads, Vector4f color) {
+  protected void addQuadsForSection(@Nonnull BoundingBox bb, @Nonnull TextureAtlasSprite tex, @Nonnull EnumFacing dir, @Nonnull List<BakedQuad> quads,
+      @Nullable Vector4f color) {
 
     boolean rotateSides = dir == UP || dir == DOWN;
     boolean rotateTopBottom = dir == DOWN || dir == EAST || dir == SOUTH;
@@ -158,8 +151,8 @@ public class DefaultConduitRenderer implements IConduitRenderer {
     }
   }
 
-  protected void addTransmissionQuads(TextureAtlasSprite tex, Vector4f color, BlockRenderLayer layer, IConduit conduit, CollidableComponent component, float selfIllum,
-      List<BakedQuad> quads) {
+  protected void addTransmissionQuads(@Nonnull TextureAtlasSprite tex, Vector4f color, @Nonnull BlockRenderLayer layer, @Nonnull IConduit conduit,
+      @Nonnull CollidableComponent component, float selfIllum, @Nonnull List<BakedQuad> quads) {
     
     if (layer != getTransmissionQuadsLayer()) {
       return;
@@ -178,13 +171,13 @@ public class DefaultConduitRenderer implements IConduitRenderer {
   // ------------ Dynamic ---------------------------------------------
 
   @Override
-  public void renderDynamicEntity(@Nonnull TileEntitySpecialRenderer conduitBundleRenderer, @Nonnull IConduitBundle te,
+  public void renderDynamicEntity(@Nonnull TileEntitySpecialRenderer<?> conduitBundleRenderer, @Nonnull IConduitBundle te,
       @Nonnull IClientConduit.WithDefaultRendering conduit, double x, double y, double z, float partialTick, float worldLight) {
 
     Collection<CollidableComponent> components = conduit.getCollidableComponents();
     transmissionScaleFactor = conduit.getTransmitionGeometryScale();
     for (CollidableComponent component : components) {
-      if (renderComponent(component)) {
+      if (component != null && renderComponent(component)) {
         float selfIllum = Math.max(worldLight, conduit.getSelfIlluminationForState(component));
         final TextureAtlasSprite transmitionTextureForState = conduit.getTransmitionTextureForState(component);
         if (isNSEWUD(component.dir) && transmitionTextureForState != null) {
@@ -193,15 +186,13 @@ public class DefaultConduitRenderer implements IConduitRenderer {
         }
 
         TextureAtlasSprite tex = conduit.getTextureForState(component);
-        if (tex == null) {
-          tex = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
-        }
         renderConduitDynamic(tex, conduit, component, selfIllum);
       }
     }
   }
 
-  protected void renderConduitDynamic(TextureAtlasSprite tex, IClientConduit.WithDefaultRendering conduit, CollidableComponent component, float brightness) {
+  protected void renderConduitDynamic(@Nonnull TextureAtlasSprite tex, @Nonnull IClientConduit.WithDefaultRendering conduit,
+      @Nonnull CollidableComponent component, float brightness) {
     GlStateManager.color(1, 1, 1);
     if (isNSEWUD(component.dir)) {
       float scaleFactor = 0.75f;
@@ -223,7 +214,8 @@ public class DefaultConduitRenderer implements IConduitRenderer {
 
   }
 
-  protected void renderTransmissionDynamic(IConduit conduit, TextureAtlasSprite tex, Vector4f color, CollidableComponent component, float selfIllum) {
+  protected void renderTransmissionDynamic(@Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex, @Nonnull Vector4f color,
+      @Nonnull CollidableComponent component, float selfIllum) {
     float scaleFactor = 0.6f;
     float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
     float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;

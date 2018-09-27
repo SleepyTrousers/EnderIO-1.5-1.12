@@ -77,6 +77,12 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
 
   private Integer lastExternalRedstoneLevel = null;
 
+  /**
+   * Client-only value. The server sends this depending on {@link #getNetwork()}. If false, the conduit will render in an erro state. Initialized as
+   * <code>true</code> because most conduits will have no issue to form a network.
+   */
+  private boolean hasNetwork = true;
+
   protected AbstractConduit() {
   }
 
@@ -315,6 +321,9 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
       }
       conduitBody.setByteArray("conModes", modes);
     }
+
+    // Note: Don't tell the client that there's no network if we didn't actually try to form one yet
+    conduitBody.setBoolean("hasNetwork", getNetwork() != null || nextNetworkTry == -1L);
   }
 
   @Override
@@ -341,6 +350,9 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
         i++;
       }
     }
+
+    hasNetwork = conduitBody.getBoolean("hasNetwork");
+
     readFromNbt = true;
   }
 
@@ -443,12 +455,15 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
       ConduitUtil.ensureValidNetwork(this);
       IConduitNetwork<?, ?> network = getNetwork();
       if (network != null) {
-        nextNetworkTry = -1;
+        nextNetworkTry = -1L;
         network.sendBlockUpdatesForEntireNetwork();
         if (readFromNbt) {
           connectionsChanged();
         }
       } else {
+        if (nextNetworkTry > -1L) {
+          setClientStateDirty();
+        }
         nextNetworkTry = tickCount + 200;
       }
     }
@@ -625,6 +640,11 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
       lastExternalRedstoneLevel = ConduitUtil.isBlockIndirectlyGettingPoweredIfLoaded(te.getWorld(), te.getPos());
     }
     return lastExternalRedstoneLevel;
+  }
+
+  @Override
+  public boolean renderError() {
+    return !hasNetwork;
   }
 
   @Override

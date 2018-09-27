@@ -471,36 +471,36 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   @SideOnly(Side.CLIENT)
   @Override
-  public TextureAtlasSprite getTextureForInputMode() {
+  public @Nonnull TextureAtlasSprite getTextureForInputMode() {
     return ICON_KEY_INPUT.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public TextureAtlasSprite getTextureForOutputMode() {
+  public @Nonnull TextureAtlasSprite getTextureForOutputMode() {
     return ICON_KEY_OUTPUT.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public TextureAtlasSprite getTextureForInOutMode(boolean input) {
+  public @Nonnull TextureAtlasSprite getTextureForInOutMode(boolean input) {
     return input ? ICON_KEY_IN_OUT_IN.get(TextureAtlasSprite.class) : ICON_KEY_IN_OUT_OUT.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public TextureAtlasSprite getTextureForInOutBackground() {
+  public @Nonnull TextureAtlasSprite getTextureForInOutBackground() {
     return ICON_KEY_IN_OUT_BG.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public TextureAtlasSprite getEnderIcon() {
+  public @Nonnull TextureAtlasSprite getEnderIcon() {
     return ICON_KEY_ENDER.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
-  public TextureAtlasSprite getCoreIcon() {
+  public @Nonnull TextureAtlasSprite getCoreIcon() {
     return ICON_KEY_CORE.get(TextureAtlasSprite.class);
   }
 
