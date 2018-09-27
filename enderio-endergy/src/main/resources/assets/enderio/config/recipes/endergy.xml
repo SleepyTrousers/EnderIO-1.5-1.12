@@ -146,7 +146,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid>
         <item /><item name="ingotVividAlloy"/><item />
-        <item name="enderio:item_capacitor_energeticSilver"/><item name="oredict:glowstone"/><item name="enderio:item_capacitor_energeticSilver"/>
+        <item name="enderio:item_capacitor_energetic_silver"/><item name="oredict:glowstone"/><item name="enderio:item_capacitor_energetic_silver"/>
         <item /><item name="ingotVividAlloy"/><item />
       </grid>
       <output name="enderio:item_capacitor_vivid"/>
