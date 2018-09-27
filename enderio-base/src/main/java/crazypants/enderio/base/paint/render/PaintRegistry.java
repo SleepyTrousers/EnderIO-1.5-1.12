@@ -217,7 +217,6 @@ public class PaintRegistry {
       }
     }
 
-
     @SideOnly(Side.CLIENT)
     private IModelState combine(IModelState a, IModelState b) {
       boolean isUVlocked = false;
@@ -251,12 +250,14 @@ public class PaintRegistry {
 
   public static PaintRegistryServer getInstance() {
     if (instance == null) {
-      if (EnderIO.proxy.isDedicatedServer()) {
-        instance = new PaintRegistryServer();
-      } else {
-        instance = new PaintRegistryClient();
-        instance.init();
-        MinecraftForge.EVENT_BUS.register(instance);
+      synchronized (OVERLAY_TRANSFORMATION) {
+        if (EnderIO.proxy.isDedicatedServer()) {
+          instance = new PaintRegistryServer();
+        } else {
+          instance = new PaintRegistryClient();
+          instance.init();
+          MinecraftForge.EVENT_BUS.register(instance);
+        }
       }
     }
     return instance;

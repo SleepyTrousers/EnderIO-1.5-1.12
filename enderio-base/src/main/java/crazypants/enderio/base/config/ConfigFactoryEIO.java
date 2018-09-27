@@ -10,7 +10,6 @@ public class ConfigFactoryEIO implements IModGuiFactory {
 
   @Override
   public void initialize(Minecraft minecraftInstance) {
-    ;
   }
 
   @Override
