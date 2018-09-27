@@ -4,6 +4,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.vecmath.Vector3f;
 
@@ -248,9 +249,11 @@ public class PaintRegistry {
 
   private static PaintRegistryServer instance = null;
 
+  private static final @Nonnull Object LOCK = new Object();
+
   public static PaintRegistryServer getInstance() {
     if (instance == null) {
-      synchronized (OVERLAY_TRANSFORMATION) {
+      synchronized (LOCK) {
         if (EnderIO.proxy.isDedicatedServer()) {
           instance = new PaintRegistryServer();
         } else {
