@@ -62,8 +62,9 @@ public class CocoaFarmer extends CustomSeedFarmer {
     while (iterator.hasNext()) {
       EnumFacing dir = iterator.next();
       BlockPos p = bc.offset(dir);
-      if (validBlock(world.getBlockState(p)))
+      if (validBlock(world.getBlockState(p))) {
         return dir;
+      }
     }
 
     return null;

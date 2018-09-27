@@ -695,7 +695,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
  
   <recipe name="Alloy: FerroBoron (Nuclearcraft)" required="false">
-    <alloying energy="4000" exp="0">
+    <alloying energy="6000" exp="0">
       <input name="ingotSteel"/>
       <input name="ingotBoron"/>
       <output name="ingotFerroboron" amount="2"/>
@@ -703,7 +703,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
  
   <recipe name="Alloy: Tough Alloy (Nuclearcraft)" required="false">
-    <alloying energy="4000" exp="0">
+    <alloying energy="9000" exp="0">
       <input name="ingotFerroboron"/>
       <input name="ingotLithium"/>
       <output name="ingotTough" amount="2"/>
@@ -711,7 +711,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
  
   <recipe name="Alloy: Hard Carbon (Nuclearcraft)" required="false">
-    <alloying energy="4000" exp="0">
+    <alloying energy="8000" exp="0">
       <input name="ingotGraphite" amount="2"/>
       <input name="gemDiamond"/>
       <output name="ingotHardCarbon" amount="2"/>
@@ -727,10 +727,26 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
    <recipe name="Alloy: Lithium Manganese Alloy (Nuclearcraft)" required="false">
-    <alloying energy="4000" exp="0">
+    <alloying energy="6000" exp="0">
       <input name="ingotManganeseDioxide"/>
       <input name="ingotLithium"/>
       <output name="ingotMagnesiumDiboride" amount="2"/>
+    </alloying>
+  </recipe>
+ 
+   <recipe name="Alloy: EXTREME Alloy (Nuclearcraft)" required="false">
+    <alloying energy="16000" exp="0">
+      <input name="ingotTough"/>
+      <input name="ingotHardCarbon"/>
+      <output name="ingotExtreme"/>
+    </alloying>
+  </recipe>
+
+   <recipe name="Alloy: Thermoconducting Alloy (Nuclearcraft)" required="false">
+    <alloying energy="9000" exp="0">
+      <input name="ingotExtreme"/>
+      <input name="gemBoronArsenide"/>
+      <output name="ingotThermoconducting" amount="2"/>
     </alloying>
   </recipe>
  

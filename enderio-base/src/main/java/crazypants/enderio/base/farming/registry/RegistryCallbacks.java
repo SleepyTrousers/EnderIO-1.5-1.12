@@ -29,12 +29,13 @@ class RegistryCallbacks implements IForgeRegistry.AddCallback<IFarmerJoe>, IForg
     owner.getSlaveMap(Registry.PRIOLIST, PrioMap.class).put(joe, joe.getRegistryName());
     if (joe instanceof CustomSeedFarmer) {
       CustomSeedFarmer customSeedFarmer = (CustomSeedFarmer) joe;
-      if (customSeedFarmer.doesDisableTreeFarm())
+      if (customSeedFarmer.doesDisableTreeFarm()) {
         Commune.disableTrees.add(customSeedFarmer.getSeeds());
+      }
     }
   }
 
-  public static class PrioMap extends TreeMap<IFarmerJoe, ResourceLocation> {
+  public static final class PrioMap extends TreeMap<IFarmerJoe, ResourceLocation> {
 
     private static final long serialVersionUID = 4505789417181671182L;
 

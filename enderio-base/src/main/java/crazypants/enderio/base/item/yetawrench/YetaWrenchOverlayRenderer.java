@@ -120,9 +120,7 @@ public class YetaWrenchOverlayRenderer {
       BufferBuilder wr = tess.getBuffer();
       wr.begin(GL11.GL_QUADS, vf);
       wr.pos(x, y, -5).color(0, 0, 0, 0.2f).endVertex();
-      ;
       wr.pos(x, y + height, -5).color(0, 0, 0, 0.2f).endVertex();
-      ;
       Vector4f color = new Vector4f(0, 0, 0, 1);
       wr.pos(x + size, y + height, -5).color(color.x, color.y, color.z, color.w).endVertex();
       wr.pos(x + size, y, -5).color(color.x, color.y, color.z, color.w).endVertex();

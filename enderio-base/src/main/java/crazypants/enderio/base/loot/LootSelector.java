@@ -157,8 +157,9 @@ public class LootSelector extends LootFunction {
     float result = baseLevel + rand.nextFloat() * (4 - baseLevel) / 3;
     for (int i = 1; i < 2; i++) {
       result += rand.nextFloat() / i * 2;
-      if (result >= baseLevel + 1)
+      if (result >= baseLevel + 1) {
         result -= rand.nextFloat() / (i + 1);
+      }
     }
     return Math.min(result, 4.75f);
   }

@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.ITileFilterContainer;
 import crazypants.enderio.base.filter.item.ExistingItemFilter;
 import crazypants.enderio.base.filter.item.IItemFilter;
@@ -28,7 +29,7 @@ public class PacketExistingItemFilterSnapshot extends PacketFilterUpdate {
   public PacketExistingItemFilterSnapshot() {
   }
 
-  public PacketExistingItemFilterSnapshot(TileEntity te, @Nonnull IItemFilter filter, int filterId, int param1, Opcode opcode) {
+  public PacketExistingItemFilterSnapshot(@Nonnull TileEntity te, @Nonnull IItemFilter filter, int filterId, int param1, @Nonnull Opcode opcode) {
     super(te, filter, filterId, param1);
     this.opcode = opcode;
   }
@@ -53,17 +54,21 @@ public class PacketExistingItemFilterSnapshot extends PacketFilterUpdate {
       if (filterContainer == null) {
         return null;
       }
-      ExistingItemFilter filter = (ExistingItemFilter) filterContainer.getFilter(message.filterId, message.param1);
+      final IFilter filter = filterContainer.getFilter(message.filterId, message.param1);
+      if (!(filter instanceof ExistingItemFilter)) {
+        return null;
+      }
+      final ExistingItemFilter existingItemFilter = (ExistingItemFilter) filter;
 
       switch (message.opcode) {
       case CLEAR:
-        filter.setSnapshot((NNList<ItemStack>) null);
+        existingItemFilter.setSnapshot((NNList<ItemStack>) null);
         break;
 
       case SET: {
         IItemHandler inv = filterContainer.getInventoryForSnapshot(message.filterId, message.param1);
         if (inv != null) {
-          filter.setSnapshot(inv);
+          existingItemFilter.setSnapshot(inv);
         }
         break;
       }
@@ -71,7 +76,7 @@ public class PacketExistingItemFilterSnapshot extends PacketFilterUpdate {
       case MERGE: {
         IItemHandler inv = filterContainer.getInventoryForSnapshot(message.filterId, message.param1);
         if (inv != null) {
-          filter.mergeSnapshot(inv);
+          existingItemFilter.mergeSnapshot(inv);
         }
         break;
       }
@@ -80,7 +85,7 @@ public class PacketExistingItemFilterSnapshot extends PacketFilterUpdate {
         throw new AssertionError();
       }
 
-      filterContainer.setFilter(message.filterId, message.param1, filter);
+      filterContainer.setFilter(message.filterId, message.param1, existingItemFilter);
 
       return null;
     }

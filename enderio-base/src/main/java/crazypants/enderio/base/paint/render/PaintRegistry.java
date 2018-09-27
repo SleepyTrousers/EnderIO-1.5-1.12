@@ -4,6 +4,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.vecmath.Vector3f;
 
@@ -217,7 +218,6 @@ public class PaintRegistry {
       }
     }
 
-
     @SideOnly(Side.CLIENT)
     private IModelState combine(IModelState a, IModelState b) {
       boolean isUVlocked = false;
@@ -249,14 +249,18 @@ public class PaintRegistry {
 
   private static PaintRegistryServer instance = null;
 
+  private static final @Nonnull Object LOCK = new Object();
+
   public static PaintRegistryServer getInstance() {
     if (instance == null) {
-      if (EnderIO.proxy.isDedicatedServer()) {
-        instance = new PaintRegistryServer();
-      } else {
-        instance = new PaintRegistryClient();
-        instance.init();
-        MinecraftForge.EVENT_BUS.register(instance);
+      synchronized (LOCK) {
+        if (EnderIO.proxy.isDedicatedServer()) {
+          instance = new PaintRegistryServer();
+        } else {
+          instance = new PaintRegistryClient();
+          instance.init();
+          MinecraftForge.EVENT_BUS.register(instance);
+        }
       }
     }
     return instance;
