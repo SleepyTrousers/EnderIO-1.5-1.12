@@ -20,7 +20,6 @@ import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.gui.LiquidSettings;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -231,12 +230,6 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
       return new ConnectionLiquidSide(dir);
     }
     return null;
-  }
-
-  @Override
-  @Nonnull
-  public String getConduitProbeInfo(@Nonnull EntityPlayer player) {
-    return "";
   }
 
   /**

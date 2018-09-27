@@ -376,12 +376,6 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   }
 
   @Override
-  @Nonnull
-  public String getConduitProbeInfo(@Nonnull EntityPlayer player) {
-    return "";
-  }
-
-  @Override
   public boolean updateGuiPanel(@Nonnull ITabPanel panel) {
     if (panel instanceof MESettings) {
       return ((MESettings) panel).updateConduit(this);

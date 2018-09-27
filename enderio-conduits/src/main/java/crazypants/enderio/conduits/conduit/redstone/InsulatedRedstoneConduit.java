@@ -900,12 +900,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     return super.getInternalCapability(capability, facing);
   }
 
-  @Override
-  @Nonnull
-  public String getConduitProbeInfo(@Nonnull EntityPlayer player) {
-    return "";
-  }
-
   // -------------------------------------------
   // FILTERS
   // -------------------------------------------

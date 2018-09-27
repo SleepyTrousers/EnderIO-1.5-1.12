@@ -888,7 +888,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Nonnull
   public String getConduitProbeInfo(@Nonnull EntityPlayer player) {
     TextFormatting color;
-    StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder(super.getConduitProbeInfo(player));
 
     ItemStack input = player.getHeldItemMainhand();
 

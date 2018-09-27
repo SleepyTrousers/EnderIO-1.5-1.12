@@ -113,14 +113,14 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   public String getConduitProbeInfo(@Nonnull EntityPlayer player) {
     PowerConduitNetwork pcn = (PowerConduitNetwork) getNetwork();
     if (pcn == null) {
-      return "";
+      return super.getConduitProbeInfo(player);
     }
     NetworkPowerManager pm = pcn.getPowerManager();
     PowerTracker tracker = pm.getTracker(this);
 
     if (tracker != null) {
       String color = "\u00A7a ";
-      StringBuilder sb = new StringBuilder();
+      StringBuilder sb = new StringBuilder(super.getConduitProbeInfo(player));
       sb.append(color);
       sb.append(Lang.GUI_ENERGY_CONDUIT.get());
 
@@ -146,7 +146,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
     } else {
       tracker = pm.getNetworkPowerTracker();
       String color = "\u00A7a ";
-      StringBuilder sb = new StringBuilder();
+      StringBuilder sb = new StringBuilder(super.getConduitProbeInfo(player));
       sb.append(color);
       sb.append(Lang.GUI_CONDUIT_PROBE_NETWORK_HEADING.get());
       sb.append("\n");

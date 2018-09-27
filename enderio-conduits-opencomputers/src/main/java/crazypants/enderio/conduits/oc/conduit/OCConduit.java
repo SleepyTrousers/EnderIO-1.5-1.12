@@ -584,11 +584,4 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
     this.network = null;
   }
 
-  @Override
-  @Nonnull
-  public String getConduitProbeInfo(@Nonnull EntityPlayer player) {
-    // TODO Auto-generated method stub
-    return "";
-  }
-
 }

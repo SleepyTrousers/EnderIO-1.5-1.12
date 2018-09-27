@@ -143,12 +143,6 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   }
 
   @Override
-  @Nonnull
-  public String getConduitProbeInfo(@Nonnull EntityPlayer player) {
-    return "";
-  }
-
-  @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
     if (capability == RSHelper.NETWORK_NODE_PROXY_CAPABILITY) {
       return true;
