@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
@@ -63,7 +64,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   protected @Nonnull BlockRenderLayer getConduitQuadsLayer() {
     return BlockRenderLayer.TRANSLUCENT;
   }
-  
+
   @Override
   protected void addTransmissionQuads(@Nonnull TextureAtlasSprite tex, Vector4f color, @Nonnull BlockRenderLayer layer, @Nonnull IConduit conduit,
       @Nonnull CollidableComponent component, float selfIllum, @Nonnull List<BakedQuad> quads) {
@@ -90,7 +91,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   @Override
-  protected void renderTransmissionDynamic(@Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex, @Nonnull Vector4f color,
+  protected void renderTransmissionDynamic(@Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex, @Nullable Vector4f color,
       @Nonnull CollidableComponent component, float selfIllum) {
 
     if (((LiquidConduit) conduit).getTank().getFilledRatio() <= 0) {
@@ -119,7 +120,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     final Fluid fluid = fluidStack.getFluid();
     if (fluid != null) {
       for (CachableRenderStatement elem : computeFluidOutlineToCache(component, fluid, scaleFactor, outlineWidth)) {
-      elem.execute();
+        elem.execute();
       }
     }
   }
@@ -143,9 +144,6 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     cache0.put(fluid, data);
 
     TextureAtlasSprite texture = RenderUtil.getStillTexture(fluid);
-    if (texture == null) {
-      return data;
-    }
     int color = fluid.getColor();
     Vector4f colorv = new Vector4f((color >> 16 & 0xFF) / 255d, (color >> 8 & 0xFF) / 255d, (color & 0xFF) / 255d, 1);
 
@@ -207,7 +205,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   @Override
-  protected void setVerticesForTransmission(BoundingBox bound, EnumFacing id) {
+  protected void setVerticesForTransmission(@Nonnull BoundingBox bound, @Nonnull EnumFacing id) {
 
     float yScale = getRatioForConnection(id);
     float scale = 0.7f;

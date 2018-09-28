@@ -9,6 +9,7 @@ import com.enderio.core.common.util.FluidUtil;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
+import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.tool.ToolUtil;
@@ -45,7 +46,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
     AbstractTankConduitNetwork<? extends AbstractTankConduit> network = getTankNetwork();
     if (ToolUtil.isToolEquipped(player, hand)) {
 
-      if (!getBundle().getEntity().getWorld().isRemote && res != null) {
+      if (!getBundle().getEntity().getWorld().isRemote) {
         final CollidableComponent component = res.component;
         if (component != null) {
           EnumFacing faceHit = res.movingObjectPosition.sideHit;
@@ -55,6 +56,17 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
               return true;
             }
             // Attempt to join networks
+            BlockPos pos = getBundle().getLocation().offset(faceHit);
+            ILiquidConduit liquidConduit = ConduitUtil.getConduit(getBundle().getEntity().getWorld(), pos.getX(), pos.getY(), pos.getZ(), ILiquidConduit.class);
+            if (!(liquidConduit instanceof AbstractTankConduit) || !canJoinNeighbour(liquidConduit)) {
+              return false;
+            }
+            AbstractTankConduit neighbour = (AbstractTankConduit) liquidConduit;
+            if (neighbour.getFluidType() != null) {
+              setFluidTypeOnNetwork(this, neighbour.getFluidType());
+            } else if (getFluidType() != null) {
+              neighbour.setFluidTypeOnNetwork(neighbour, getFluidType());
+            }
             return ConduitUtil.connectConduits(this, faceHit);
           } else {
             EnumFacing connDir = component.getDirection();
@@ -123,6 +135,15 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
     }
     this.fluidTypeLocked = fluidTypeLocked;
     stateDirty = true;
+  }
+
+  private void setFluidTypeOnNetwork(AbstractTankConduit con, FluidStack type) {
+    IConduitNetwork<?, ?> n = con.getNetwork();
+    if (n != null) {
+      AbstractTankConduitNetwork<?> network = (AbstractTankConduitNetwork<?>) n;
+      network.setFluidType(type);
+    }
+
   }
 
   protected abstract boolean canJoinNeighbour(ILiquidConduit n);

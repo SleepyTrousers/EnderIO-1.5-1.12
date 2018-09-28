@@ -262,14 +262,13 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
             EnumFacing connDir = component.getDirection();
             if (externalConnections.contains(connDir)) {
               setConnectionMode(connDir, getNextConnectionMode(connDir));
-              return true;
             } else if (containsConduitConnection(connDir)) {
               ConduitUtil.disconnectConduits(this, connDir);
-              return true;
             }
           }
         }
       }
+      return true;
     }
     return false;
   }

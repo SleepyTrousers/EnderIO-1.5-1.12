@@ -15,7 +15,6 @@ import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
-import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.lang.LangPower;
@@ -68,8 +67,8 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockCapBank extends BlockEio<TileCapBank> implements IEioGuiHandler.WithPos, IAdvancedTooltipProvider,
-    ISmartRenderAwareBlock, IHaveTESR, ICustomSubItems, IPaintable.ISolidBlockPaintableBlock {
+public class BlockCapBank extends BlockEio<TileCapBank>
+    implements IEioGuiHandler.WithPos, IAdvancedTooltipProvider, ISmartRenderAwareBlock, IHaveTESR, ICustomSubItems, IPaintable.ISolidBlockPaintableBlock {
 
   public static BlockCapBank create(@Nonnull IModObject modObject) {
     BlockCapBank res = new BlockCapBank(modObject);
@@ -456,7 +455,7 @@ public class BlockCapBank extends BlockEio<TileCapBank> implements IEioGuiHandle
   }
 
   @Override
-  public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
+  public boolean canConnectRedstone(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
     return true;
   }
 

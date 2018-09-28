@@ -163,40 +163,41 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   public boolean onBlockActivated(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, @Nonnull RaytraceResult res, @Nonnull List<RaytraceResult> all) {
     if (ConduitUtil.isProbeEquipped(player, hand)) {
       return false;
-    } else if (ToolUtil.isToolEquipped(player, hand)) {
-      if (!getBundle().getEntity().getWorld().isRemote) {
-        if (res != null && res.component != null) {
-          EnumFacing faceHit = res.movingObjectPosition.sideHit;
-          if (res.component.isCore() || res.component.getDirection() == faceHit) {
-            if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
-              setConnectionMode(faceHit, getNextConnectionMode(faceHit));
-              return true;
-            }
-            // Attempt to join networks
-            return ConduitUtil.connectConduits(this, faceHit);
-          } else {
-            EnumFacing connDir = res.component.getDirection();
-            if (externalConnections.contains(connDir)) {
-              setConnectionMode(connDir, getNextConnectionMode(connDir));
-              return true;
-            } else if (containsConduitConnection(connDir)) {
-              ConduitUtil.disconnectConduits(this, connDir);
-              return true;
-            }
-          }
-        }
-      }
     } else {
-
-      if (res != null && res.component != null) {
-        if (res.component.isDirectional() && containsExternalConnection(res.component.getDirection())) {
-          if (player.world.isRemote) {
-            PacketHandler.sendToServer(new PacketConduitProbe(getBundle().getLocation(), res.component.getDirection()));
+      final CollidableComponent component = res.component;
+      if (ToolUtil.isToolEquipped(player, hand)) {
+        if (!getBundle().getEntity().getWorld().isRemote) {
+          if (component != null) {
+            EnumFacing faceHit = res.movingObjectPosition.sideHit;
+            if (component.isCore()) {
+              if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
+                setConnectionMode(faceHit, getNextConnectionMode(faceHit));
+                return true;
+              }
+              // Attempt to join networks
+              return ConduitUtil.connectConduits(this, faceHit);
+            } else {
+              EnumFacing connDir = component.getDirection();
+              if (externalConnections.contains(connDir)) {
+                setConnectionMode(connDir, getNextConnectionMode(connDir));
+              } else if (containsConduitConnection(connDir)) {
+                ConduitUtil.disconnectConduits(this, connDir);
+              }
+            }
           }
-          return true;
         }
-      }
+        return true;
+      } else {
+        if (component != null) {
+          if (component.isDirectional() && containsExternalConnection(component.getDirection())) {
+            if (player.world.isRemote) {
+              PacketHandler.sendToServer(new PacketConduitProbe(getBundle().getLocation(), component.getDirection()));
+            }
+            return true;
+          }
+        }
 
+      }
     }
     return false;
   }

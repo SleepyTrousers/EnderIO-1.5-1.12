@@ -201,7 +201,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
         return true;
       } else if (ToolUtil.isToolEquipped(player, hand)) {
         if (!getBundle().getEntity().getWorld().isRemote) {
-          if (res != null && component != null) {
+          if (component != null) {
             EnumFacing faceHit = res.movingObjectPosition.sideHit;
             if (component.isCore()) {
               if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
@@ -214,14 +214,13 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
               EnumFacing connDir = component.getDirection();
               if (externalConnections.contains(connDir)) {
                 setConnectionMode(connDir, getNextConnectionMode(connDir));
-                return true;
               } else if (containsConduitConnection(connDir)) {
                 ConduitUtil.disconnectConduits(this, connDir);
-                return true;
               }
             }
           }
         }
+        return true;
       }
     }
     return false;

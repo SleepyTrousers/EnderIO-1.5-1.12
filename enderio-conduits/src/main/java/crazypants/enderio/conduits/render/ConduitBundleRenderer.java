@@ -136,7 +136,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
     return result;
   }
-  
+
   @Nonnull
   private static final Vector4f CORE_UVS = new Vector4f(2, 14, 14, 2);
   static {
@@ -186,9 +186,6 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
             if (state.getYetaDisplayMode().renderConduit(component.conduitType)) {
               if (renderer.getCoreLayer() == layer) {
                 TextureAtlasSprite tex = conduit.getTextureForState(component);
-                if (tex == null) {
-                  tex = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
-                }
                 BakedQuadBuilder.addBakedQuads(quads, component.bound, CORE_UVS, tex);
               }
             } else if (layer == BlockRenderLayer.CUTOUT) {

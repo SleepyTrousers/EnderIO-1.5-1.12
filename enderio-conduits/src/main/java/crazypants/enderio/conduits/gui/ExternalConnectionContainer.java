@@ -124,7 +124,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   }
 
   @Override
-  public void setInOutSlotsVisible(boolean filterVisible, boolean upgradeVisible, IConduit conduit) {
+  public void setInOutSlotsVisible(boolean filterVisible, boolean upgradeVisible, @Nonnull IConduit conduit) {
     if (conduit == null) {
       return;
     }

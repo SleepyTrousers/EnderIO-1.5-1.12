@@ -211,7 +211,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
   }
 
   @Override
-  public @Nonnull TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
+  public @Nullable TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
     if (isActive() && tank.containsValidLiquid()) {
       return RenderUtil.getStillTexture(tank.getFluid());
     }
@@ -220,7 +220,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
 
   @Override
   @SideOnly(Side.CLIENT)
-  public @Nonnull Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
+  public @Nullable Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
     if (isActive() && tank.containsValidLiquid()) {
       int color = tank.getFluid().getFluid().getColor(tank.getFluid());
       return new Vector4f((color >> 16 & 0xFF) / 255d, (color >> 8 & 0xFF) / 255d, (color & 0xFF) / 255d, 1);

@@ -198,7 +198,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   public void onChunkUnload() {
-    RedstoneConduitNetwork networkR = (RedstoneConduitNetwork) getNetwork();
+    RedstoneConduitNetwork networkR = getNetwork();
     if (networkR != null) {
       BundledSignal oldSignals = networkR.getBundledSignal();
       List<IRedstoneConduit> conduits = Lists.newArrayList(networkR.getConduits());
@@ -598,7 +598,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   @SideOnly(Side.CLIENT)
-  public @Nonnull Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
+  public @Nullable Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
     return null;
   }
 

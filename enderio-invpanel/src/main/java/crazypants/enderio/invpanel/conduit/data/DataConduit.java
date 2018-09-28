@@ -155,14 +155,13 @@ public class DataConduit extends AbstractConduit implements IDataConduit {
             EnumFacing connDir = component.getDirection();
             if (externalConnections.contains(connDir)) {
               setConnectionMode(connDir, getNextConnectionMode(connDir));
-              return true;
             } else if (containsConduitConnection(connDir)) {
               ConduitUtil.disconnectConduits(this, connDir);
-              return true;
             }
           }
         }
       }
+      return true;
     }
     return false;
   }
