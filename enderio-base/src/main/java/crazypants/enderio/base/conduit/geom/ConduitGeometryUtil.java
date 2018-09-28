@@ -43,7 +43,7 @@ public class ConduitGeometryUtil {
 
   @SubscribeEvent
   public static void preInit(EnderIOLifecycleEvent.Config.Post event) {
-    float size = (float) ((1 / 16f) * Config.conduitPixels);
+    float size = (1 / 16f) * Config.conduitPixels;
 
     WIDTH = size;
     HEIGHT = size;
@@ -122,7 +122,7 @@ public class ConduitGeometryUtil {
     return EXTERNAL_CONNECTOR_BOUNDS.get(dir);
   }
 
-  public @Nonnull BoundingBox getBoundingBox(Class<? extends IConduit> type, EnumFacing dir, boolean isStub, Offset offset) {
+  public @Nonnull BoundingBox getBoundingBox(@Nonnull Class<? extends IConduit> type, EnumFacing dir, boolean isStub, Offset offset) {
     GeometryKey key = new GeometryKey(dir, isStub, offset, type);
     BoundingBox result = boundsCache.get(key);
     if (result == null) {

@@ -1,9 +1,10 @@
 package crazypants.enderio.base.integration.jei;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import mezz.jei.api.gui.IGhostIngredientHandler;
@@ -17,11 +18,10 @@ public class GhostIngredientHandlerEnderIO implements IGhostIngredientHandler<Gu
   @Override
   @Nonnull
   public <I> List<Target<I>> getTargets(@Nonnull GuiContainerBaseEIO gui, @Nonnull I ingredient, boolean doStart) {
-    List<Target<I>> list = Collections.emptyList();
     if (gui instanceof IHaveGhostTargets<?>) {
-      list = (List<Target<I>>) ((IHaveGhostTargets<?>)gui).getGhostTargets();
+      return (List<Target<I>>) ((IHaveGhostTargets<?>) gui).getGhostTargets();
     }
-    return list;
+    return NNList.emptyList();
   }
 
   @Override

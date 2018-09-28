@@ -21,11 +21,11 @@ public enum EnumTankType implements IStringSerializable {
 
   public static final @Nonnull PropertyEnum<EnumTankType> KIND = PropertyEnum.<EnumTankType> create("kind", EnumTankType.class);
 
-  private final IValue<Integer> size;
+  private final @Nonnull IValue<Integer> size;
   private final boolean explosionResistant;
   private final @Nonnull String suffix;
 
-  private EnumTankType(IValue<Integer> size, boolean explosionResistant, @Nonnull String suffix) {
+  private EnumTankType(@Nonnull IValue<Integer> size, boolean explosionResistant, @Nonnull String suffix) {
     this.size = size;
     this.explosionResistant = explosionResistant;
     this.suffix = suffix;
@@ -60,11 +60,11 @@ public enum EnumTankType implements IStringSerializable {
     return suffix;
   }
 
-  static void saveTank(ItemStack stack, SmartTank tank) {
+  static void saveTank(@Nonnull ItemStack stack, SmartTank tank) {
     ItemTankHelper.setTank(stack, tank);
   }
 
-  static SmartTank loadTank(ItemStack stack) {
+  static @Nonnull SmartTank loadTank(@Nonnull ItemStack stack) {
     if (stack.hasTagCompound()) {
       SmartTank tank = ItemTankHelper.getTank(stack);
       if (tank != null) {

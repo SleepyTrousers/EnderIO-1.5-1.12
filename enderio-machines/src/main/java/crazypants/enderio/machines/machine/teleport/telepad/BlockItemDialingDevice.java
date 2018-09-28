@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 public class BlockItemDialingDevice extends ItemBlock {
 
-  public BlockItemDialingDevice(Block b) {
+  public BlockItemDialingDevice(@Nonnull Block b) {
     super(b);
   }
 
