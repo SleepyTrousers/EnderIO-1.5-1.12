@@ -51,7 +51,6 @@ import crazypants.enderio.conduits.gui.GuiExternalConnectionSelector;
 import crazypants.enderio.conduits.lang.Lang;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduits.render.ConduitRenderMapper;
-import info.loenwind.autosave.Registry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
@@ -98,7 +97,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
 
   public static BlockConduitBundle create(@Nonnull IModObject modObject) {
     EIOHandlers.REGISTRY.register(new ConduitHandler());
-    
+
     BlockConduitBundle result = new BlockConduitBundle(modObject);
     result.init();
     return result;
@@ -660,9 +659,9 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
         if (result) {
           return true;
         }
-      } else {
+      } else if (closestComponent.isDirectional()) {
         if (!world.isRemote) {
-          openGui(world, pos, player, closestComponent.dir, closestComponent.dir.ordinal());
+          openGui(world, pos, player, closestComponent.getDirection(), closestComponent.getDirection().ordinal());
         }
         return true;
       }
@@ -736,11 +735,10 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     if (component == null) {
       return false;
     }
-    EnumFacing dir = component.dir;
-    if (dir == null) {
+    if (component.isCore()) {
       return false;
     }
-    return ItemConduitProbe.copyPasteSettings(player, stack, bundle, dir);
+    return ItemConduitProbe.copyPasteSettings(player, stack, bundle, component.getDirection());
   }
 
   private boolean handleConduitClick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player, @Nonnull IConduitBundle bundle,
@@ -877,22 +875,20 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
         }
       }
 
-      if (minBB == null) {
-        RaytraceResult hit = RaytraceResult.getClosestHit(Util.getEyePosition(player), results);
-        CollidableComponent component = hit == null ? null : hit.component;
-        if (component != null) {
-          EnumFacing dir = component.dir;
-          minBB = component.bound;
-          if (dir != null && component.conduitType == null) {
-            dir = dir.getOpposite();
-            float trans = 0.0125f;
-            minBB = minBB.translate(dir.getFrontOffsetX() * trans, dir.getFrontOffsetY() * trans, dir.getFrontOffsetZ() * trans);
-            float scale = 0.7f;
-            minBB = minBB.scale(1 + Math.abs(dir.getFrontOffsetX()) * scale, 1 + Math.abs(dir.getFrontOffsetY()) * scale,
-                1 + Math.abs(dir.getFrontOffsetZ()) * scale);
-          } else {
-            minBB = minBB.scale(1.09, 1.09, 1.09);
-          }
+      RaytraceResult hit = RaytraceResult.getClosestHit(Util.getEyePosition(player), results);
+      CollidableComponent component = hit == null ? null : hit.component;
+      if (component != null) {
+        minBB = component.bound;
+        if (component.isDirectional() && component.conduitType == null) {
+          EnumFacing dir = component.getDirection();
+          dir = dir.getOpposite();
+          float trans = 0.0125f;
+          minBB = minBB.translate(dir.getFrontOffsetX() * trans, dir.getFrontOffsetY() * trans, dir.getFrontOffsetZ() * trans);
+          float scale = 0.7f;
+          minBB = minBB.scale(1 + Math.abs(dir.getFrontOffsetX()) * scale, 1 + Math.abs(dir.getFrontOffsetY()) * scale,
+              1 + Math.abs(dir.getFrontOffsetZ()) * scale);
+        } else {
+          minBB = minBB.scale(1.09, 1.09, 1.09);
         }
       }
     } else {

@@ -240,10 +240,12 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   @Override
   public boolean onBlockActivated(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, @Nonnull RaytraceResult res, @Nonnull List<RaytraceResult> all) {
     DyeColor col = DyeColor.getColorFromDye(player.getHeldItem(hand));
-    if (col != null && res.component != null) {
-      setSignalColor(res.component.dir, col);
+    final CollidableComponent component = res.component;
+    if (col != null && component != null && component.isDirectional()) {
+      setSignalColor(component.getDirection(), col);
       return true;
     } else if (ConduitUtil.isProbeEquipped(player, hand)) {
+      // FIXME: This belongs in the probe callback, not here
       if (!player.world.isRemote) {
         BlockPos bc = getBundle().getLocation();
         if (network != null) {
@@ -272,30 +274,30 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
       return true;
     } else if (ToolUtil.isToolEquipped(player, hand)) {
       if (!getBundle().getEntity().getWorld().isRemote) {
-        if (res.component != null) {
-          EnumFacing connDir = res.component.dir;
+        if (component != null) {
           EnumFacing faceHit = res.movingObjectPosition.sideHit;
-          if (connDir != null && containsExternalConnection(connDir)) {
-            for (RaytraceResult rtr : all) {
-              if (rtr != null && rtr.component != null && COLOR_CONTROLLER_ID.equals(rtr.component.data)) {
-                setSignalColor(connDir, DyeColor.getNext(getSignalColor(connDir)));
-                return true;
-              }
-            }
-          }
-          if (connDir == null || connDir == faceHit) {
+          if (component.isCore()) {
             if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
               setConnectionMode(faceHit, ConnectionMode.IN_OUT);
               return true;
             }
             return ConduitUtil.connectConduits(this, faceHit);
-          } else if (externalConnections.contains(connDir)) {
-            setConnectionMode(connDir, getNextConnectionMode(connDir));
-            return true;
-          } else if (containsConduitConnection(connDir)) {
-            ConduitUtil.disconnectConduits(this, connDir);
-            addMissingNodeConnections();
-            return true;
+          } else {
+            EnumFacing connDir = component.getDirection();
+            if (containsExternalConnection(connDir)) {
+              for (RaytraceResult rtr : all) {
+                if (rtr != null && rtr.component != null && COLOR_CONTROLLER_ID.equals(rtr.component.data)) {
+                  setSignalColor(connDir, DyeColor.getNext(getSignalColor(connDir)));
+                  return true;
+                }
+              }
+              setConnectionMode(connDir, getNextConnectionMode(connDir));
+              return true;
+            } else if (containsConduitConnection(connDir)) {
+              ConduitUtil.disconnectConduits(this, connDir);
+              addMissingNodeConnections();
+              return true;
+            }
           }
         }
       }
@@ -521,7 +523,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
     // TODO
     // if (Config.enableOCConduitsAnimatedTexture) {
-    if (component.dir == null) {
+    if (component.isCore()) {
       return coreTextureA.get(TextureAtlasSprite.class);
     } else {
       return longTextureA.get(TextureAtlasSprite.class);

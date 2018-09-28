@@ -191,30 +191,35 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
 
   @Override
   public boolean onBlockActivated(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, @Nonnull RaytraceResult res, @Nonnull List<RaytraceResult> all) {
-    DyeColor col = DyeColor.getColorFromDye(player.getHeldItemMainhand());
     if (ConduitUtil.isProbeEquipped(player, hand)) {
       return false;
-    } else if (col != null && res.component != null && isColorBandRendered(res.component.dir)) {
-      setExtractionSignalColor(res.component.dir, col);
-      return true;
-    } else if (ToolUtil.isToolEquipped(player, hand)) {
-      if (!getBundle().getEntity().getWorld().isRemote) {
-        if (res != null && res.component != null) {
-          EnumFacing connDir = res.component.dir;
-          EnumFacing faceHit = res.movingObjectPosition.sideHit;
-          if (connDir == null || connDir == faceHit) {
-            if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
-              setConnectionMode(faceHit, getNextConnectionMode(faceHit));
-              return true;
+    } else {
+      final CollidableComponent component = res.component;
+      DyeColor col = DyeColor.getColorFromDye(player.getHeldItemMainhand());
+      if (col != null && component != null && component.isDirectional() && isColorBandRendered(component.getDirection())) {
+        setExtractionSignalColor(component.getDirection(), col);
+        return true;
+      } else if (ToolUtil.isToolEquipped(player, hand)) {
+        if (!getBundle().getEntity().getWorld().isRemote) {
+          if (res != null && component != null) {
+            EnumFacing faceHit = res.movingObjectPosition.sideHit;
+            if (component.isCore()) {
+              if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
+                setConnectionMode(faceHit, getNextConnectionMode(faceHit));
+                return true;
+              }
+              // Attempt to join networks
+              return ConduitUtil.connectConduits(this, faceHit);
+            } else {
+              EnumFacing connDir = component.getDirection();
+              if (externalConnections.contains(connDir)) {
+                setConnectionMode(connDir, getNextConnectionMode(connDir));
+                return true;
+              } else if (containsConduitConnection(connDir)) {
+                ConduitUtil.disconnectConduits(this, connDir);
+                return true;
+              }
             }
-            // Attempt to join networks
-            return ConduitUtil.connectConduits(this, faceHit);
-          } else if (externalConnections.contains(connDir)) {
-            setConnectionMode(connDir, getNextConnectionMode(connDir));
-            return true;
-          } else if (containsConduitConnection(connDir)) {
-            ConduitUtil.disconnectConduits(this, connDir);
-            return true;
           }
         }
       }

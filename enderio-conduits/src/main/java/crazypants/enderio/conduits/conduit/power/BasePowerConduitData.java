@@ -46,7 +46,7 @@ public final class BasePowerConduitData implements IPowerConduitData {
   @Override
   @SideOnly(Side.CLIENT)
   public @Nonnull TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
-    if (component.dir == null) {
+    if (component.isCore()) {
       return PowerConduit.ICONS.get(PowerConduit.ICON_CORE_KEY + PowerConduit.POSTFIX[getID()]).get(TextureAtlasSprite.class);
     }
     if (PowerConduit.COLOR_CONTROLLER_ID.equals(component.data)) {

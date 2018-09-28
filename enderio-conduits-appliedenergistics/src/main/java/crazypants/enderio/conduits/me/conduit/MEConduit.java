@@ -172,7 +172,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
 
   @Override
   public @Nonnull TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
-    if (component.dir == null) {
+    if (component.isCore()) {
       return (isDense ? coreTextureD : coreTextureN).get(TextureAtlasSprite.class);
     } else {
       return (isDense ? longTextureD : longTextureN).get(TextureAtlasSprite.class);
@@ -249,21 +249,24 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   public boolean onBlockActivated(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, @Nonnull RaytraceResult res, @Nonnull List<RaytraceResult> all) {
     if (ToolUtil.isToolEquipped(player, hand)) {
       if (!getBundle().getEntity().getWorld().isRemote) {
-        if (res.component != null) {
-          EnumFacing connDir = res.component.dir;
+        final CollidableComponent component = res.component;
+        if (component != null) {
           EnumFacing faceHit = res.movingObjectPosition.sideHit;
-          if (connDir == null || connDir == faceHit) {
+          if (component.isCore()) {
             if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
               setConnectionMode(faceHit, ConnectionMode.IN_OUT);
               return true;
             }
             return ConduitUtil.connectConduits(this, faceHit);
-          } else if (externalConnections.contains(connDir)) {
-            setConnectionMode(connDir, getNextConnectionMode(connDir));
-            return true;
-          } else if (containsConduitConnection(connDir)) {
-            ConduitUtil.disconnectConduits(this, connDir);
-            return true;
+          } else {
+            EnumFacing connDir = component.getDirection();
+            if (externalConnections.contains(connDir)) {
+              setConnectionMode(connDir, getNextConnectionMode(connDir));
+              return true;
+            } else if (containsConduitConnection(connDir)) {
+              ConduitUtil.disconnectConduits(this, connDir);
+              return true;
+            }
           }
         }
       }

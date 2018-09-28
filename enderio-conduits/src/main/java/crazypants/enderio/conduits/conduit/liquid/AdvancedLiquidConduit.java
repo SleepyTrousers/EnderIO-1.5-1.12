@@ -189,7 +189,7 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
   @Override
   @Nonnull
   public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
-    if (component.dir == null) {
+    if (component.isCore()) {
       return ICON_CORE_KEY.get(TextureAtlasSprite.class);
     }
     return fluidTypeLocked ? ICON_KEY_LOCKED.get(TextureAtlasSprite.class) : ICON_KEY.get(TextureAtlasSprite.class);

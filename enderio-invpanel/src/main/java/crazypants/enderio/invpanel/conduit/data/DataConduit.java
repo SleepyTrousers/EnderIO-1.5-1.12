@@ -9,6 +9,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.ITabPanel;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.conduit.ConduitUtil;
@@ -40,7 +42,7 @@ import net.minecraftforge.items.IItemHandler;
 
 public class DataConduit extends AbstractConduit implements IDataConduit {
 
-  static final Map<String, TextureSupplier> ICONS = new HashMap();
+  static final @Nonnull Map<String, TextureSupplier> ICONS = new HashMap<>();
 
   static {
     ICONS.put(ICON_KEY, TextureRegistry.registerTexture(ICON_KEY));
@@ -140,21 +142,24 @@ public class DataConduit extends AbstractConduit implements IDataConduit {
   public boolean onBlockActivated(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, @Nonnull RaytraceResult res, @Nonnull List<RaytraceResult> all) {
     if (ToolUtil.isToolEquipped(player, hand)) {
       if (!getBundle().getEntity().getWorld().isRemote) {
-        if (res != null && res.component != null) {
-          EnumFacing connDir = res.component.dir;
+        final CollidableComponent component = res.component;
+        if (component != null) {
           EnumFacing faceHit = res.movingObjectPosition.sideHit;
-          if (connDir == null || connDir == faceHit) {
+          if (component.isCore()) {
             if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
               setConnectionMode(faceHit, ConnectionMode.IN_OUT);
               return true;
             }
             return ConduitUtil.connectConduits(this, faceHit);
-          } else if (externalConnections.contains(connDir)) {
-            setConnectionMode(connDir, getNextConnectionMode(connDir));
-            return true;
-          } else if (containsConduitConnection(connDir)) {
-            ConduitUtil.disconnectConduits(this, connDir);
-            return true;
+          } else {
+            EnumFacing connDir = component.getDirection();
+            if (externalConnections.contains(connDir)) {
+              setConnectionMode(connDir, getNextConnectionMode(connDir));
+              return true;
+            } else if (containsConduitConnection(connDir)) {
+              ConduitUtil.disconnectConduits(this, connDir);
+              return true;
+            }
           }
         }
       }
@@ -175,8 +180,8 @@ public class DataConduit extends AbstractConduit implements IDataConduit {
   @Override
   public void onAddedToBundle() {
     super.onAddedToBundle();
-    for (EnumFacing dir : EnumFacing.VALUES) {
-      checkConnections(dir);
+    for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
+      checkConnections(itr.next());
     }
   }
 
@@ -242,22 +247,19 @@ public class DataConduit extends AbstractConduit implements IDataConduit {
   @Override
   @Nonnull
   public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
-    if (component.dir == null) {
+    if (component.isCore()) {
       return ICONS.get(ICON_CORE_KEY).get(TextureAtlasSprite.class);
     }
     return ICONS.get(ICON_KEY).get(TextureAtlasSprite.class);
   }
 
   @Override
-  @Nonnull
-  public TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
-    // TODO Auto-generated method stub
+  public @Nullable TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
     return null;
   }
 
   @Override
-  public @Nonnull Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
-    // TODO Auto-generated method stub
+  public @Nullable Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
     return null;
   }
 

@@ -28,8 +28,8 @@ public class OCConduitRenderer extends DefaultConduitRenderer {
   protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IClientConduit conduit, @Nonnull TextureAtlasSprite tex,
       @Nonnull CollidableComponent component, float selfIllum, BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
     if (IOCConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
-      if (conduit.containsExternalConnection(component.dir)) {
-        int c = ((IOCConduit) conduit).getSignalColor(component.dir).getColor();
+      if (conduit.containsExternalConnection(component.getDirection())) {
+        int c = ((IOCConduit) conduit).getSignalColor(component.getDirection()).getColor();
         BakedQuadBuilder.addBakedQuads(quads, component.bound, White.INSTANCE, ColorUtil.toFloat4(c));
       }
     } else {

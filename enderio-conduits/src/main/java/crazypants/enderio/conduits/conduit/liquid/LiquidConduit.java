@@ -324,13 +324,14 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
   @Override
   @Nonnull
   public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
-    if (component.dir == null) {
+    if (component.isCore()) {
       return ICON_CORE_KEY.get(TextureAtlasSprite.class);
     }
-    if (getConnectionMode(component.dir) == ConnectionMode.INPUT) {
+    final EnumFacing componentDirection = component.getDirection();
+    if (getConnectionMode(componentDirection) == ConnectionMode.INPUT) {
       return (getFluidType() == null ? ICON_EMPTY_EXTRACT_KEY : ICON_EXTRACT_KEY).get(TextureAtlasSprite.class);
     }
-    if (getConnectionMode(component.dir) == ConnectionMode.OUTPUT) {
+    if (getConnectionMode(componentDirection) == ConnectionMode.OUTPUT) {
       return (getFluidType() == null ? ICON_EMPTY_INSERT_KEY : ICON_INSERT_KEY).get(TextureAtlasSprite.class);
     }
     return fluidTypeLocked ? ICON_KEY_LOCKED.get(TextureAtlasSprite.class) : ICON_KEY.get(TextureAtlasSprite.class);

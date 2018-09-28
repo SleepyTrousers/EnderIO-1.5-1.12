@@ -22,6 +22,7 @@ import crazypants.enderio.conduits.render.DefaultConduitRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 
 public class PowerConduitRenderer extends DefaultConduitRenderer {
 
@@ -36,31 +37,33 @@ public class PowerConduitRenderer extends DefaultConduitRenderer {
 
     if (IPowerConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
       IPowerConduit pc = (IPowerConduit) conduit;
-      ConnectionMode conMode = pc.getConnectionMode(component.dir);
+      final EnumFacing componentDirection = component.getDirection();
+      ConnectionMode conMode = pc.getConnectionMode(componentDirection);
 
-      if (conduit.containsExternalConnection(component.dir) && pc.getExtractionRedstoneMode(component.dir) != RedstoneControlMode.IGNORE
+      if (conduit.containsExternalConnection(componentDirection) && pc.getExtractionRedstoneMode(componentDirection) != RedstoneControlMode.IGNORE
           && conMode != ConnectionMode.DISABLED) {
 
-        int cInt = ((IPowerConduit) conduit).getExtractionSignalColor(component.dir).getColor();
+        int cInt = ((IPowerConduit) conduit).getExtractionSignalColor(componentDirection).getColor();
         Vector4f col = ColorUtil.toFloat4(cInt);
 
         BoundingBox bound = component.bound;
         if (conMode != ConnectionMode.IN_OUT && conMode != ConnectionMode.NOT_SET) {
-          Vector3d trans = ForgeDirectionOffsets.offsetScaled(component.dir, -0.12);
+          Vector3d trans = ForgeDirectionOffsets.offsetScaled(componentDirection, -0.12);
           bound = bound.translate(trans);
         }
-        addQuadsForSection(bound, tex, component.dir, quads, col);
+        addQuadsForSection(bound, tex, componentDirection, quads, col);
       }
       return;
     }
 
     super.addConduitQuads(bundle, conduit, tex, component, selfIllum, layer, quads);
 
-    if (component.dir == null) {
+    if (component.isCore()) {
       return;
     }
     IPowerConduit pc = (IPowerConduit) conduit;
-    ConnectionMode mode = pc.getConnectionMode(component.dir);
+    final EnumFacing componentDirection = component.getDirection();
+    ConnectionMode mode = pc.getConnectionMode(componentDirection);
     if (mode != ConnectionMode.INPUT && mode != ConnectionMode.OUTPUT) {
       return;
     }
@@ -70,8 +73,8 @@ public class PowerConduitRenderer extends DefaultConduitRenderer {
     } else {
       tex = pc.getTextureForOutputMode();
     }
-    Offset offset = bundle.getOffset(IPowerConduit.class, component.dir);
-    ConnectionModeGeometry.addModeConnectorQuads(component.dir, offset, tex, null, quads);
+    Offset offset = bundle.getOffset(IPowerConduit.class, componentDirection);
+    ConnectionModeGeometry.addModeConnectorQuads(componentDirection, offset, tex, null, quads);
 
   }
 }

@@ -35,11 +35,11 @@ public class ItemConduitRenderer extends DefaultConduitRenderer {
       @Nonnull CollidableComponent component, float selfIllum, BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
     super.addConduitQuads(bundle, conduit, tex, component, selfIllum, layer, quads);
 
-    if (layer == null || component.dir == null) {
+    if (layer == null || component.isCore()) {
       return;
     }
 
-    EnumFacing dir = component.dir;
+    EnumFacing dir = component.getDirection();
     if (!conduit.getExternalConnections().contains(dir)) {
       return;
     }

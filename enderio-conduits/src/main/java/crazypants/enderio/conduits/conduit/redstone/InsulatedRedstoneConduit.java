@@ -214,16 +214,16 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     if (!world.isRemote) {
 
       DyeColor col = DyeColor.getColorFromDye(player.getHeldItem(hand));
-      if (col != null && res.component != null) {
-        setInputSignalColor(res.component.dir, col);
+      final CollidableComponent component = res.component;
+      if (col != null && component != null && component.isDirectional()) {
+        setInputSignalColor(component.getDirection(), col);
         return true;
       } else if (ToolUtil.isToolEquipped(player, hand)) {
 
-        if (res != null && res.component != null) {
-          EnumFacing connDir = res.component.dir;
+        if (component != null) {
           EnumFacing faceHit = res.movingObjectPosition.sideHit;
 
-          if (connDir == null || connDir == faceHit) {
+          if (component.isCore()) {
 
             BlockPos pos = getBundle().getLocation().offset(faceHit);
             Block id = world.getBlockState(pos).getBlock();
@@ -238,34 +238,37 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
             forceConnectionMode(faceHit, ConnectionMode.INPUT);
             return true;
 
-          } else if (externalConnections.contains(connDir)) {
-            if (network != null) {
-              network.destroyNetwork();
-            }
-            externalConnectionRemoved(connDir);
-            forceConnectionMode(connDir, ConnectionMode.DISABLED);
-            return true;
-
-          } else if (containsConduitConnection(connDir)) {
-            BlockPos pos = getBundle().getLocation().offset(connDir);
-            IRedstoneConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().getWorld(), pos.getX(), pos.getY(), pos.getZ(), IRedstoneConduit.class);
-            if (neighbour != null) {
+          } else {
+            EnumFacing connDir = component.getDirection();
+            if (externalConnections.contains(connDir)) {
               if (network != null) {
                 network.destroyNetwork();
               }
-              if (neighbour.getNetwork() != null) {
-                neighbour.getNetwork().destroyNetwork();
-              }
-              neighbour.conduitConnectionRemoved(connDir.getOpposite());
-              conduitConnectionRemoved(connDir);
-              neighbour.connectionsChanged();
-              connectionsChanged();
-              updateNetwork();
-              neighbour.updateNetwork();
+              externalConnectionRemoved(connDir);
+              forceConnectionMode(connDir, ConnectionMode.DISABLED);
               return true;
 
-            }
+            } else if (containsConduitConnection(connDir)) {
+              BlockPos pos = getBundle().getLocation().offset(connDir);
+              IRedstoneConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().getWorld(), pos.getX(), pos.getY(), pos.getZ(),
+                  IRedstoneConduit.class);
+              if (neighbour != null) {
+                if (network != null) {
+                  network.destroyNetwork();
+                }
+                if (neighbour.getNetwork() != null) {
+                  neighbour.getNetwork().destroyNetwork();
+                }
+                neighbour.conduitConnectionRemoved(connDir.getOpposite());
+                conduitConnectionRemoved(connDir);
+                neighbour.connectionsChanged();
+                connectionsChanged();
+                updateNetwork();
+                neighbour.updateNetwork();
+                return true;
 
+              }
+            }
           }
         }
       }
@@ -579,7 +582,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Override
   @Nonnull
   public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
-    if (component.dir == null) {
+    if (component.isCore()) {
       return ConduitConfig.showState.get() && isActive() ? ICONS.get(KEY_INS_CORE_ON_ICON).get(TextureAtlasSprite.class)
           : ICONS.get(KEY_INS_CORE_OFF_ICON).get(TextureAtlasSprite.class);
     }

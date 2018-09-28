@@ -166,31 +166,32 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     } else if (ToolUtil.isToolEquipped(player, hand)) {
       if (!getBundle().getEntity().getWorld().isRemote) {
         if (res != null && res.component != null) {
-          EnumFacing connDir = res.component.dir;
           EnumFacing faceHit = res.movingObjectPosition.sideHit;
-          if (connDir == null || connDir == faceHit) {
+          if (res.component.isCore() || res.component.getDirection() == faceHit) {
             if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
               setConnectionMode(faceHit, getNextConnectionMode(faceHit));
               return true;
             }
             // Attempt to join networks
             return ConduitUtil.connectConduits(this, faceHit);
-          } else if (externalConnections.contains(connDir)) {
-            setConnectionMode(connDir, getNextConnectionMode(connDir));
-            return true;
-          } else if (containsConduitConnection(connDir)) {
-            ConduitUtil.disconnectConduits(this, connDir);
-            return true;
+          } else {
+            EnumFacing connDir = res.component.getDirection();
+            if (externalConnections.contains(connDir)) {
+              setConnectionMode(connDir, getNextConnectionMode(connDir));
+              return true;
+            } else if (containsConduitConnection(connDir)) {
+              ConduitUtil.disconnectConduits(this, connDir);
+              return true;
+            }
           }
         }
       }
     } else {
 
       if (res != null && res.component != null) {
-        EnumFacing connDir = res.component.dir;
-        if (connDir != null && containsExternalConnection(connDir)) {
+        if (res.component.isDirectional() && containsExternalConnection(res.component.getDirection())) {
           if (player.world.isRemote) {
-            PacketHandler.sendToServer(new PacketConduitProbe(getBundle().getLocation(), connDir));
+            PacketHandler.sendToServer(new PacketConduitProbe(getBundle().getLocation(), res.component.getDirection()));
           }
           return true;
         }
@@ -507,7 +508,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   @Nonnull
   public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
-    if (component.dir == null) {
+    if (component.isCore()) {
       return getCoreIcon();
     }
     if (EXTERNAL_INTERFACE_GEOM.equals(component.data)) {
