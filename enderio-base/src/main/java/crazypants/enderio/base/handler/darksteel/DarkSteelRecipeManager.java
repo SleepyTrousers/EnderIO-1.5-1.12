@@ -151,6 +151,7 @@ public class DarkSteelRecipeManager {
           break;
         case RARE:
           costPerLevel = 4;
+          break;
         case UNCOMMON:
           costPerLevel = 2;
           break;
@@ -281,15 +282,19 @@ public class DarkSteelRecipeManager {
 
     @Override
     public boolean equals(Object obj) {
-      if (this == obj)
+      if (this == obj) {
         return true;
-      if (obj == null)
+      }
+      if (obj == null) {
         return false;
-      if (getClass() != obj.getClass())
+      }
+      if (getClass() != obj.getClass()) {
         return false;
+      }
       UpgradePath other = (UpgradePath) obj;
-      if (!id.equals(other.id))
+      if (!id.equals(other.id)) {
         return false;
+      }
       return true;
     }
 
