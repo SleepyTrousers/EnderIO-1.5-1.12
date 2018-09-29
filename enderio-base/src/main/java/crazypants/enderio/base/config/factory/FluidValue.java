@@ -31,7 +31,7 @@ public class FluidValue extends AbstractValue<Fluid> {
       return defaultValue;
     }
     if (defaultFluid == null) {
-      FluidRegistry.getFluid(defaultValueName);
+      defaultFluid = FluidRegistry.getFluid(defaultValueName);
     }
     if (value == null || valueGeneration != owner.getGeneration()) {
       if (owner.getServerConfig() != null && owner.getServerConfig().containsKey(keyname)) {

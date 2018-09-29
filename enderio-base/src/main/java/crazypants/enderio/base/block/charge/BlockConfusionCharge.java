@@ -148,7 +148,7 @@ public class BlockConfusionCharge extends BlockTNT implements ICharge, IDefaultR
   }
 
   @Override
-  public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
+  public boolean canConnectRedstone(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable EnumFacing side) {
     return true;
   }
 }

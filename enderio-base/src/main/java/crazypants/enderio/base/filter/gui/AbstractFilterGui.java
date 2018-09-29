@@ -25,7 +25,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 public abstract class AbstractFilterGui extends GuiContainerBaseEIO implements IHaveGhostTargets<AbstractFilterGui>, ICloseFilterRemoteExec.GUI {

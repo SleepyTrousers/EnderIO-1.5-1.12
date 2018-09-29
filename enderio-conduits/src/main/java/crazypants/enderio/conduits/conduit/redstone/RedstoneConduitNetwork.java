@@ -14,6 +14,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.base.conduit.ConduitUtil.UnloadedBlockException;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.redstone.signals.BundledSignal;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
@@ -47,7 +48,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   }
 
   @Override
-  public void init(@Nonnull IConduitBundle tile, Collection<IRedstoneConduit> connections, @Nonnull World world) {
+  public void init(@Nonnull IConduitBundle tile, Collection<IRedstoneConduit> connections, @Nonnull World world) throws UnloadedBlockException {
     super.init(tile, connections, world);
     updatingNetwork = true;
     notifyNeigborsOfSignalUpdate();
@@ -117,16 +118,16 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     Signal signal = con.getNetworkInput(dir);
     bundledSignal.addSignal(con.getInputSignalColor(dir), signal);
 
-//    if (Loader.isModLoaded("computercraft")) {
-//      Map<DyeColor, Signal> ccSignals = con.getComputerCraftSignals(dir);
-//
-//      if (!ccSignals.isEmpty()) {
-//        for (DyeColor color : ccSignals.keySet()) {
-//          Signal ccSig = ccSignals.get(color);
-//          bundledSignal.addSignal(color, ccSig);
-//        }
-//      }
-//    }
+    // if (Loader.isModLoaded("computercraft")) {
+    // Map<DyeColor, Signal> ccSignals = con.getComputerCraftSignals(dir);
+    //
+    // if (!ccSignals.isEmpty()) {
+    // for (DyeColor color : ccSignals.keySet()) {
+    // Signal ccSig = ccSignals.get(color);
+    // bundledSignal.addSignal(color, ccSig);
+    // }
+    // }
+    // }
 
     updatingNetwork = false;
   }

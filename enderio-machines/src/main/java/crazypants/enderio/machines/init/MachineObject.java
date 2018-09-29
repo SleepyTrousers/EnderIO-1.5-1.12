@@ -171,9 +171,9 @@ public enum MachineObject implements IModObjectBase {
 
   @Override
   @Nonnull
-  public <B extends Block> B apply(@Nonnull B block) {
-    block.setCreativeTab(EnderIOTab.tabEnderIOMachines);
-    return IModObjectBase.super.apply(block);
+  public <B extends Block> B apply(@Nonnull B blockIn) {
+    blockIn.setCreativeTab(EnderIOTab.tabEnderIOMachines);
+    return IModObjectBase.super.apply(blockIn);
   }
 
   @Override

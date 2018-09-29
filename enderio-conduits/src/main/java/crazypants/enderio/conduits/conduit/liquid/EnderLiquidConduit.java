@@ -42,7 +42,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
@@ -68,21 +67,21 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   private EnderLiquidConduitNetwork network;
   private int ticksSinceFailedExtract;
 
-  private final EnumMap<EnumFacing, IFluidFilter> outputFilters = new EnumMap<EnumFacing, IFluidFilter>(EnumFacing.class);
-  private final EnumMap<EnumFacing, IFluidFilter> inputFilters = new EnumMap<EnumFacing, IFluidFilter>(EnumFacing.class);
-  private final EnumMap<EnumFacing, ItemStack> outputFilterUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
-  private final EnumMap<EnumFacing, ItemStack> inputFilterUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
+  private final @Nonnull EnumMap<EnumFacing, IFluidFilter> outputFilters = new EnumMap<EnumFacing, IFluidFilter>(EnumFacing.class);
+  private final @Nonnull EnumMap<EnumFacing, IFluidFilter> inputFilters = new EnumMap<EnumFacing, IFluidFilter>(EnumFacing.class);
+  private final @Nonnull EnumMap<EnumFacing, ItemStack> outputFilterUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
+  private final @Nonnull EnumMap<EnumFacing, ItemStack> inputFilterUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
 
-  private final EnumMap<EnumFacing, DyeColor> inputColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
-  private final EnumMap<EnumFacing, DyeColor> outputColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
+  private final @Nonnull EnumMap<EnumFacing, DyeColor> inputColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
+  private final @Nonnull EnumMap<EnumFacing, DyeColor> outputColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
 
-  protected final EnumMap<EnumFacing, Integer> priorities = new EnumMap<EnumFacing, Integer>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, Integer> priorities = new EnumMap<EnumFacing, Integer>(EnumFacing.class);
 
-  protected final EnumMap<EnumFacing, Boolean> roundRobin = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, Boolean> roundRobin = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
 
-  protected final EnumMap<EnumFacing, Boolean> selfFeed = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, Boolean> selfFeed = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
 
-  protected final EnumMap<EnumFacing, ItemStack> functionUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, ItemStack> functionUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
 
   public EnderLiquidConduit() {
     super();
@@ -123,37 +122,24 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
     }
 
     if (ToolUtil.isToolEquipped(player, hand)) {
-
       if (!getBundle().getEntity().getWorld().isRemote) {
-
         final CollidableComponent component = res.component;
         if (component != null) {
-
-          EnumFacing connDir = component.dir;
           EnumFacing faceHit = res.movingObjectPosition.sideHit;
-
-          if (connDir == null || connDir == faceHit) {
-
+          if (component.isCore()) {
             if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
               setConnectionMode(faceHit, getNextConnectionMode(faceHit));
               return true;
             }
-
-            BlockPos pos = getBundle().getLocation().offset(faceHit);
-            ILiquidConduit n = ConduitUtil.getConduit(getBundle().getEntity().getWorld(), pos.getX(), pos.getY(), pos.getZ(), ILiquidConduit.class);
-            if (n == null) {
-              return false;
-            }
-            if (!(n instanceof EnderLiquidConduit)) {
-              return false;
-            }
+            // Attempt to join networks
             return ConduitUtil.connectConduits(this, faceHit);
-          } else if (containsExternalConnection(connDir)) {
-            // Toggle extraction mode
-            setConnectionMode(connDir, getNextConnectionMode(connDir));
-          } else if (containsConduitConnection(connDir)) {
-            ConduitUtil.disconnectConduits(this, connDir);
-
+          } else {
+            EnumFacing connDir = component.getDirection();
+            if (containsExternalConnection(connDir)) {
+              setConnectionMode(connDir, getNextConnectionMode(connDir));
+            } else if (containsConduitConnection(connDir)) {
+              ConduitUtil.disconnectConduits(this, connDir);
+            }
           }
         }
       }
@@ -212,7 +198,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
       this.network.connectionChanged(this, dir);
     }
 
-    return true;
+    return super.setNetwork(network);
   }
 
   @Override
@@ -228,7 +214,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   @Override
   @Nonnull
   public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
-    if (component.dir == null) {
+    if (component.isCore()) {
       return ICON_CORE_KEY.get(TextureAtlasSprite.class);
     }
     return ICON_KEY.get(TextureAtlasSprite.class);
@@ -266,7 +252,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
 
   @Override
   @SideOnly(Side.CLIENT)
-  public @Nonnull Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
+  public @Nullable Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
     return null;
   }
 

@@ -110,7 +110,7 @@ public class DarkSteelRecipeManager {
     resultStack.setItemDamage(Math.max(0, damage - totalDamageRemoved));
 
     evt.setOutput(resultStack);
-    evt.setCost(ingouts + (int) Math.ceil(getEnchantmentRepairCost(resultStack.copy()) / 2));
+    evt.setCost(ingouts + (int) Math.ceil(getEnchantmentRepairCost(resultStack.copy()) / 2d));
     evt.setMaterialCost(ingouts);
   }
 

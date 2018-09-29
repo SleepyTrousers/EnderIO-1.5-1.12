@@ -34,8 +34,8 @@ public class ItemEntryBase implements IItemEntry {
   }
 
   @Override
-  public boolean equals(int itemID, int meta, NBTTagCompound nbt) {
-    return this.itemID == itemID && this.meta == meta && ((this.nbt == nbt) || (this.nbt != null && this.nbt.equals(nbt)));
+  public boolean equals(int otherItemID, int otherMeta, NBTTagCompound otherNbt) {
+    return itemID == otherItemID && meta == otherMeta && ((nbt == otherNbt) || (nbt != null && nbt.equals(otherNbt)));
   }
 
   @Override

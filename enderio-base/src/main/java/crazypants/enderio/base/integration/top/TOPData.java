@@ -46,7 +46,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 class TOPData {
-  static enum ProgressResult {
+  enum ProgressResult {
     NONE,
     PROGRESS,
     PROGRESS_ACTIVE,
@@ -75,7 +75,7 @@ class TOPData {
   UserIdent owner = null;
   Set<? extends ILocalizable> notifications = null;
 
-  public TOPData(TileEntity tileEntity, IProbeHitData hitData) {
+  TOPData(TileEntity tileEntity, IProbeHitData hitData) {
 
     if (tileEntity instanceof AbstractMachineEntity) {
       AbstractMachineEntity te = (AbstractMachineEntity) tileEntity;

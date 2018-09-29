@@ -41,7 +41,6 @@ import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
 import crazypants.enderio.conduits.capability.IUpgradeHolder;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.conduit.IConduitComponent;
-import crazypants.enderio.conduits.gui.GuiExternalConnection;
 import crazypants.enderio.conduits.gui.ItemSettings;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.powertools.lang.Lang;
@@ -164,39 +163,41 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   public boolean onBlockActivated(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, @Nonnull RaytraceResult res, @Nonnull List<RaytraceResult> all) {
     if (ConduitUtil.isProbeEquipped(player, hand)) {
       return false;
-    } else if (ToolUtil.isToolEquipped(player, hand)) {
-      if (!getBundle().getEntity().getWorld().isRemote) {
-        if (res != null && res.component != null) {
-          EnumFacing connDir = res.component.dir;
-          EnumFacing faceHit = res.movingObjectPosition.sideHit;
-          if (connDir == null || connDir == faceHit) {
-            if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
-              setConnectionMode(faceHit, getNextConnectionMode(faceHit));
-              return true;
-            }
-            // Attempt to join networks
-            return ConduitUtil.connectConduits(this, faceHit);
-          } else if (externalConnections.contains(connDir)) {
-            setConnectionMode(connDir, getNextConnectionMode(connDir));
-            return true;
-          } else if (containsConduitConnection(connDir)) {
-            ConduitUtil.disconnectConduits(this, connDir);
-            return true;
-          }
-        }
-      }
     } else {
-
-      if (res != null && res.component != null) {
-        EnumFacing connDir = res.component.dir;
-        if (connDir != null && containsExternalConnection(connDir)) {
-          if (player.world.isRemote) {
-            PacketHandler.sendToServer(new PacketConduitProbe(getBundle().getLocation(), connDir));
+      final CollidableComponent component = res.component;
+      if (ToolUtil.isToolEquipped(player, hand)) {
+        if (!getBundle().getEntity().getWorld().isRemote) {
+          if (component != null) {
+            EnumFacing faceHit = res.movingObjectPosition.sideHit;
+            if (component.isCore()) {
+              if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
+                setConnectionMode(faceHit, getNextConnectionMode(faceHit));
+                return true;
+              }
+              // Attempt to join networks
+              return ConduitUtil.connectConduits(this, faceHit);
+            } else {
+              EnumFacing connDir = component.getDirection();
+              if (externalConnections.contains(connDir)) {
+                setConnectionMode(connDir, getNextConnectionMode(connDir));
+              } else if (containsConduitConnection(connDir)) {
+                ConduitUtil.disconnectConduits(this, connDir);
+              }
+            }
           }
-          return true;
         }
-      }
+        return true;
+      } else {
+        if (component != null) {
+          if (component.isDirectional() && containsExternalConnection(component.getDirection())) {
+            if (player.world.isRemote) {
+              PacketHandler.sendToServer(new PacketConduitProbe(getBundle().getLocation(), component.getDirection()));
+            }
+            return true;
+          }
+        }
 
+      }
     }
     return false;
   }
@@ -350,7 +351,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   private void checkInventoryConnections(@Nonnull EnumFacing direction) {
     if (network != null) {
-      BlockPos p = bundle.getEntity().getPos().offset(direction);
+      BlockPos p = getBundle().getEntity().getPos().offset(direction);
       NetworkedInventory networkedInventory = network.getInventory(this, direction);
       if (externalConnections.contains(direction) && getConnectionMode(direction) != ConnectionMode.DISABLED) {
         if (networkedInventory == null) {
@@ -409,7 +410,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public boolean setNetwork(@Nonnull IConduitNetwork<?, ?> network) {
     this.network = (ItemConduitNetwork) network;
-    return true;
+    return super.setNetwork(network);
   }
 
   @Override
@@ -471,36 +472,36 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   @SideOnly(Side.CLIENT)
   @Override
-  public TextureAtlasSprite getTextureForInputMode() {
+  public @Nonnull TextureAtlasSprite getTextureForInputMode() {
     return ICON_KEY_INPUT.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public TextureAtlasSprite getTextureForOutputMode() {
+  public @Nonnull TextureAtlasSprite getTextureForOutputMode() {
     return ICON_KEY_OUTPUT.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public TextureAtlasSprite getTextureForInOutMode(boolean input) {
+  public @Nonnull TextureAtlasSprite getTextureForInOutMode(boolean input) {
     return input ? ICON_KEY_IN_OUT_IN.get(TextureAtlasSprite.class) : ICON_KEY_IN_OUT_OUT.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public TextureAtlasSprite getTextureForInOutBackground() {
+  public @Nonnull TextureAtlasSprite getTextureForInOutBackground() {
     return ICON_KEY_IN_OUT_BG.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public TextureAtlasSprite getEnderIcon() {
+  public @Nonnull TextureAtlasSprite getEnderIcon() {
     return ICON_KEY_ENDER.get(TextureAtlasSprite.class);
   }
 
   @SideOnly(Side.CLIENT)
-  public TextureAtlasSprite getCoreIcon() {
+  public @Nonnull TextureAtlasSprite getCoreIcon() {
     return ICON_KEY_CORE.get(TextureAtlasSprite.class);
   }
 
@@ -508,7 +509,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   @Nonnull
   public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
-    if (component.dir == null) {
+    if (component.isCore()) {
       return getCoreIcon();
     }
     if (EXTERNAL_INTERFACE_GEOM.equals(component.data)) {
@@ -755,7 +756,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   public void invalidate() {
     super.invalidate();
     if (network != null) {
-      final BlockPos pos = bundle.getEntity().getPos();
+      final BlockPos pos = getBundle().getEntity().getPos();
       for (EnumFacing direction : externalConnections) {
         try {
           BlockPos p = pos.offset(direction);
@@ -777,7 +778,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Nonnull
   @Override
   public ITabPanel createGuiPanel(@Nonnull IGuiExternalConnection gui, @Nonnull IClientConduit con) {
-    return new ItemSettings((GuiExternalConnection) gui, con);
+    return new ItemSettings(gui, con);
   }
 
   @Override
@@ -889,7 +890,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Nonnull
   public String getConduitProbeInfo(@Nonnull EntityPlayer player) {
     TextFormatting color;
-    StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder(super.getConduitProbeInfo(player));
 
     ItemStack input = player.getHeldItemMainhand();
 

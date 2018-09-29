@@ -14,7 +14,7 @@ public interface IConduitRenderer {
   boolean isRendererForConduit(@Nonnull IConduit conduit);
 
   void addBakedQuads(@Nonnull TileEntitySpecialRenderer<?> conduitBundleRenderer, @Nonnull IConduitBundle bundle,
-      @Nonnull IClientConduit.WithDefaultRendering conduit, float brightness, @Nonnull BlockRenderLayer layer, List<BakedQuad> quads);
+      @Nonnull IClientConduit.WithDefaultRendering conduit, float brightness, @Nonnull BlockRenderLayer layer, @Nonnull List<BakedQuad> quads);
 
   // -----------------------
   // DYNAMIC
@@ -27,11 +27,11 @@ public interface IConduitRenderer {
     return false;
   }
 
-  default boolean canRenderInLayer(WithDefaultRendering con, BlockRenderLayer layer) {
+  default boolean canRenderInLayer(@Nonnull WithDefaultRendering con, @Nonnull BlockRenderLayer layer) {
     return layer == BlockRenderLayer.CUTOUT;
   }
 
-  default BlockRenderLayer getCoreLayer() {
+  default @Nonnull BlockRenderLayer getCoreLayer() {
     return BlockRenderLayer.SOLID;
   }
 

@@ -165,6 +165,8 @@ enderio.gui.redstone_signal_strength=Strong Signal
 enderio.gui.enabled=Enabled
 enderio.gui.disabled=Disabled
 
+enderio.gui.conduit.network.unloaded=Conduit partially in unloaded chunk(s)
+
 # Advancements
 
 enderio.advancement.conduits.root.name=Ender IO Conduits

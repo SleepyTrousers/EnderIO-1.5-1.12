@@ -98,7 +98,7 @@ public class ContainerVacuumChest extends ContainerEnderCap<EnderInventory, Tile
   }
 
   @Override
-  public IItemFilter getFilter(int index) {
+  public @Nonnull IItemFilter getFilter(int index) {
     return getTileEntity().getItemFilter();
   }
 

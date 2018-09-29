@@ -189,6 +189,7 @@ public class FluidFilter implements IFluidFilter {
     }
   }
 
+  @Override
   public int getSlotCount() {
     return fluids.length;
   }

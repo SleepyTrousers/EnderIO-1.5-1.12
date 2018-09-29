@@ -136,7 +136,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
     return result;
   }
-  
+
   @Nonnull
   private static final Vector4f CORE_UVS = new Vector4f(2, 14, 14, 2);
   static {
@@ -186,9 +186,6 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
             if (state.getYetaDisplayMode().renderConduit(component.conduitType)) {
               if (renderer.getCoreLayer() == layer) {
                 TextureAtlasSprite tex = conduit.getTextureForState(component);
-                if (tex == null) {
-                  tex = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
-                }
                 BakedQuadBuilder.addBakedQuads(quads, component.bound, CORE_UVS, tex);
               }
             } else if (layer == BlockRenderLayer.CUTOUT) {
@@ -258,10 +255,11 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
   }
 
   private void addWireBounds(@Nonnull List<BoundingBox> wireBounds, @Nonnull CollidableComponent component) {
-    if (component.dir != null) {
-      double sx = component.dir.getFrontOffsetX() != 0 ? 1 : 0.7;
-      double sy = component.dir.getFrontOffsetY() != 0 ? 1 : 0.7;
-      double sz = component.dir.getFrontOffsetZ() != 0 ? 1 : 0.7;
+    if (component.isDirectional()) {
+      final EnumFacing componentDirection = component.getDirection();
+      double sx = componentDirection.getFrontOffsetX() != 0 ? 1 : 0.7;
+      double sy = componentDirection.getFrontOffsetY() != 0 ? 1 : 0.7;
+      double sz = componentDirection.getFrontOffsetZ() != 0 ? 1 : 0.7;
       wireBounds.add(component.bound.scale(sx, sy, sz));
     } else {
       wireBounds.add(component.bound);

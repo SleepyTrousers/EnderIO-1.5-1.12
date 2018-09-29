@@ -190,7 +190,7 @@ public class SmartModelAttacher {
         ModelResourceLocation defaultMrl = locations.get(defaultState);
         if (defaultMrl == null) {
           throw new RuntimeException("Model for state " + defaultState + " failed to load from " + defaultMrl + ". "
-              + debugOutput(event.getModelRegistry(), defaultMrl, missingModel));
+              + debugOutput(event.getModelRegistry(), block.getRegistryName(), missingModel));
         }
         IBakedModel defaultBakedModel = event.getModelRegistry().getObject(defaultMrl);
         if (defaultBakedModel == null) {
@@ -223,7 +223,7 @@ public class SmartModelAttacher {
         ModelResourceLocation defaultMrl = locations.get(defaultState);
         if (defaultMrl == null) {
           throw new RuntimeException("Model for state " + defaultState + " failed to load from " + defaultMrl + ". "
-              + debugOutput(event.getModelRegistry(), defaultMrl, missingModel));
+              + debugOutput(event.getModelRegistry(), block.getRegistryName(), missingModel));
         }
         IBakedModel defaultBakedModel = event.getModelRegistry().getObject(defaultMrl);
         if (defaultBakedModel == null || defaultBakedModel == missingModel) {
@@ -235,7 +235,7 @@ public class SmartModelAttacher {
             final ModelResourceLocation mrl = NullHelper.notnullF(mrl0, "BlockModelShapes contains null keys");
             IBakedModel model = event.getModelRegistry().getObject(mrl);
             if (model == null || model == missingModel) {
-
+              // NOP
             } else {
               event.getModelRegistry().putObject(mrl, new RelayingBakedModel(NullHelper.first(model, defaultBakedModel)));
             }
@@ -255,14 +255,13 @@ public class SmartModelAttacher {
     OverlayHolder.collectOverlayQuads(event);
   }
 
-  @SuppressWarnings("null")
-  private static String debugOutput(IRegistry<ModelResourceLocation, IBakedModel> modelRegistry, ModelResourceLocation defaultMrl, IBakedModel missingModel) {
+  private static String debugOutput(IRegistry<ModelResourceLocation, IBakedModel> modelRegistry, ResourceLocation defaultMrl, IBakedModel missingModel) {
     String prefix = defaultMrl.getResourceDomain() + ":" + defaultMrl.getResourcePath();
     if (modelRegistry instanceof RegistrySimple) {
       RegistrySimple<?, ?> rg = (RegistrySimple<?, ?>) modelRegistry;
       StringBuilder sb = new StringBuilder();
       for (Object key : rg.getKeys()) {
-        if (modelRegistry.getObject((ModelResourceLocation) key) != missingModel && key.toString().startsWith(prefix)) {
+        if (key != null && modelRegistry.getObject((ModelResourceLocation) key) != missingModel && key.toString().startsWith(prefix)) {
           sb.append(key + "; ");
         }
       }

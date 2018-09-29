@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.ConduitUtil.UnloadedBlockException;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitNetwork;
@@ -43,7 +44,7 @@ public abstract class AbstractConduitNetwork<T extends IServerConduit, I extends
   }
 
   @Override
-  public void init(@Nonnull IConduitBundle tile, Collection<I> connections, @Nonnull World world) {
+  public void init(@Nonnull IConduitBundle tile, Collection<I> connections, @Nonnull World world) throws UnloadedBlockException {
 
     if (world.isRemote) {
       throw new UnsupportedOperationException();
@@ -65,7 +66,7 @@ public abstract class AbstractConduitNetwork<T extends IServerConduit, I extends
   }
 
   @Override
-  public void setNetwork(@Nonnull World world, @Nonnull IConduitBundle tile) {
+  public void setNetwork(@Nonnull World world, @Nonnull IConduitBundle tile) throws UnloadedBlockException {
 
     T conduit = tile.getConduit(getBaseConduitType());
 

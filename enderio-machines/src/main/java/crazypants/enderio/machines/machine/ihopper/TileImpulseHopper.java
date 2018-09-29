@@ -14,7 +14,6 @@ import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.handlers.minecraft.HandleItemStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 

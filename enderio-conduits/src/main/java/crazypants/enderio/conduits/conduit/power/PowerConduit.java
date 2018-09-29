@@ -113,14 +113,14 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   public String getConduitProbeInfo(@Nonnull EntityPlayer player) {
     PowerConduitNetwork pcn = (PowerConduitNetwork) getNetwork();
     if (pcn == null) {
-      return "";
+      return super.getConduitProbeInfo(player);
     }
     NetworkPowerManager pm = pcn.getPowerManager();
     PowerTracker tracker = pm.getTracker(this);
 
     if (tracker != null) {
       String color = "\u00A7a ";
-      StringBuilder sb = new StringBuilder();
+      StringBuilder sb = new StringBuilder(super.getConduitProbeInfo(player));
       sb.append(color);
       sb.append(Lang.GUI_ENERGY_CONDUIT.get());
 
@@ -146,7 +146,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
     } else {
       tracker = pm.getNetworkPowerTracker();
       String color = "\u00A7a ";
-      StringBuilder sb = new StringBuilder();
+      StringBuilder sb = new StringBuilder(super.getConduitProbeInfo(player));
       sb.append(color);
       sb.append(Lang.GUI_CONDUIT_PROBE_NETWORK_HEADING.get());
       sb.append("\n");
@@ -191,32 +191,36 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
 
   @Override
   public boolean onBlockActivated(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, @Nonnull RaytraceResult res, @Nonnull List<RaytraceResult> all) {
-    DyeColor col = DyeColor.getColorFromDye(player.getHeldItemMainhand());
     if (ConduitUtil.isProbeEquipped(player, hand)) {
       return false;
-    } else if (col != null && res.component != null && isColorBandRendered(res.component.dir)) {
-      setExtractionSignalColor(res.component.dir, col);
-      return true;
-    } else if (ToolUtil.isToolEquipped(player, hand)) {
-      if (!getBundle().getEntity().getWorld().isRemote) {
-        if (res != null && res.component != null) {
-          EnumFacing connDir = res.component.dir;
-          EnumFacing faceHit = res.movingObjectPosition.sideHit;
-          if (connDir == null || connDir == faceHit) {
-            if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
-              setConnectionMode(faceHit, getNextConnectionMode(faceHit));
-              return true;
+    } else {
+      final CollidableComponent component = res.component;
+      DyeColor col = DyeColor.getColorFromDye(player.getHeldItemMainhand());
+      if (col != null && component != null && component.isDirectional() && isColorBandRendered(component.getDirection())) {
+        setExtractionSignalColor(component.getDirection(), col);
+        return true;
+      } else if (ToolUtil.isToolEquipped(player, hand)) {
+        if (!getBundle().getEntity().getWorld().isRemote) {
+          if (component != null) {
+            EnumFacing faceHit = res.movingObjectPosition.sideHit;
+            if (component.isCore()) {
+              if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
+                setConnectionMode(faceHit, getNextConnectionMode(faceHit));
+                return true;
+              }
+              // Attempt to join networks
+              return ConduitUtil.connectConduits(this, faceHit);
+            } else {
+              EnumFacing connDir = component.getDirection();
+              if (externalConnections.contains(connDir)) {
+                setConnectionMode(connDir, getNextConnectionMode(connDir));
+              } else if (containsConduitConnection(connDir)) {
+                ConduitUtil.disconnectConduits(this, connDir);
+              }
             }
-            // Attempt to join networks
-            return ConduitUtil.connectConduits(this, faceHit);
-          } else if (externalConnections.contains(connDir)) {
-            setConnectionMode(connDir, getNextConnectionMode(connDir));
-            return true;
-          } else if (containsConduitConnection(connDir)) {
-            ConduitUtil.disconnectConduits(this, connDir);
-            return true;
           }
         }
+        return true;
       }
     }
     return false;
@@ -437,7 +441,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   @Override
   public boolean setNetwork(@Nonnull IConduitNetwork<?, ?> network) {
     this.network = (PowerConduitNetwork) network;
-    return true;
+    return super.setNetwork(network);
   }
 
   @Override
@@ -531,13 +535,13 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   }
 
   @Override
-  public @Nonnull TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
+  public @Nullable TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
     return null;
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public @Nonnull Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
+  public @Nullable Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
     return null;
   }
 

@@ -70,7 +70,7 @@ public class PacketFilterUpdate extends MessageTileEntity<TileEntity> {
     @Override
     public IMessage onMessage(PacketFilterUpdate message, MessageContext ctx) {
       ITileFilterContainer filterContainer = message.getFilterContainer(ctx);
-      if (filterContainer != null) {
+      if (filterContainer != null && message.filter != null) {
         filterContainer.setFilter(message.filterId, message.param1, message.filter);
       }
       return null;

@@ -1,14 +1,12 @@
 package crazypants.enderio.base.machine.base.te;
 
 import java.util.EnumMap;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.util.UserIdent;
 
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
@@ -25,6 +23,7 @@ import crazypants.enderio.base.machine.sound.MachineSound;
 import crazypants.enderio.base.paint.YetaUtil;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;

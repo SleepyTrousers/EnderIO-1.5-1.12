@@ -51,6 +51,7 @@ public interface IPowerConduitData {
   ItemStack createItemStackForSubtype();
 
   @SideOnly(Side.CLIENT)
+  @Nonnull
   TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component);
 
 }

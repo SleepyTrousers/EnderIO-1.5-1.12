@@ -8,7 +8,6 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
 
@@ -17,7 +16,7 @@ import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.base.power.wireless.WirelessChargedLocation;
 import info.loenwind.autosave.annotations.Store;
-import info.loenwind.autosave.handlers.minecraft.HandleBlockPos;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;

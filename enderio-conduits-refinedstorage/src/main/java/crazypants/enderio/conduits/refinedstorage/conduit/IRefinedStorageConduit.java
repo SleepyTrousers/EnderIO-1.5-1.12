@@ -12,13 +12,14 @@ import crazypants.enderio.conduits.capability.IUpgradeHolder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 
-public interface IRefinedStorageConduit extends IClientConduit, IServerConduit, INetworkNodeProxy<ConduitRefinedStorageNode>, IUpgradeHolder, IFilterHolder<IFilter> {
+public interface IRefinedStorageConduit
+    extends IClientConduit, IServerConduit, INetworkNodeProxy<ConduitRefinedStorageNode>, IUpgradeHolder, IFilterHolder<IFilter> {
 
   public static final int INDEX_INPUT_REFINED_STORAGE = 7;
   public static final int INDEX_OUTPUT_REFINED_STROAGE = 8;
 
-  public static final String ICON_KEY = "blocks/refined_storage_conduit";
-  public static final String ICON_CORE_KEY = "blocks/refined_storage_conduit_core";
+  public static final @Nonnull String ICON_KEY = "blocks/refined_storage_conduit";
+  public static final @Nonnull String ICON_CORE_KEY = "blocks/refined_storage_conduit_core";
 
   void setInputFilterUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack stack);
 

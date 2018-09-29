@@ -19,7 +19,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider {
 
-  public BlockItemTank(Block block) {
+  public BlockItemTank(@Nonnull Block block) {
     super(block);
     setHasSubtypes(true);
     setMaxDamage(0);

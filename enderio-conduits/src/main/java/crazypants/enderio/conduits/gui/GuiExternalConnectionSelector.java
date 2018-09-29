@@ -142,15 +142,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     for (EnumFacing dir : EnumFacing.VALUES) {
       if (stacks.containsKey(dir)) {
         ItemStack stack = stacks.get(dir);
-        String blockName = null;
-        if (stack.hasDisplayName()) {
-          blockName = stack.getDisplayName();
-        } else {
-          blockName = EnderIO.lang.localizeExact(stack.getUnlocalizedName() + ".name");
-        }
-        if (blockName == null) {
-          continue;
-        }
+        String blockName = stack.getDisplayName();
         int textWidth = fontRenderer.getStringWidth(blockName) / scale;
         Point p = textPositions.get(dir);
 
