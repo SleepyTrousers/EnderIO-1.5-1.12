@@ -12,11 +12,13 @@ import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
+import crazypants.enderio.base.conduit.IClientConduit.WithDefaultRendering;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitRenderer;
@@ -27,10 +29,12 @@ import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduits.conduit.TileConduitBundle;
 import crazypants.enderio.conduits.config.ConduitConfig;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -39,7 +43,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.fml.relauncher.Side;
@@ -49,6 +52,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduitBundle> {
 
   private final @Nonnull List<IConduitRenderer> conduitRenderers = new ArrayList<IConduitRenderer>();
+  private final @Nonnull List<IConduitRenderer> dynamicCnduitRenderers = new ArrayList<IConduitRenderer>();
   private final @Nonnull DefaultConduitRenderer dcr = new DefaultConduitRenderer();
 
   public ConduitBundleRenderer() {
@@ -56,6 +60,9 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
   public void registerRenderer(IConduitRenderer renderer) {
     conduitRenderers.add(renderer);
+    if (renderer.isDynamic()) {
+      dynamicCnduitRenderers.add(renderer);
+    }
   }
 
   // TESR rendering
@@ -65,49 +72,46 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
     IConduitBundle bundle = te;
     EntityPlayerSP player = Minecraft.getMinecraft().player;
-    if (bundle.hasFacade() && bundle.getPaintSource().isOpaqueCube() && !YetaUtil.isFacadeHidden(bundle, player)) {
-      return;
-    }
-    float brightness = -1;
-    boolean hasDynamic = false;
-    for (IClientConduit c : bundle.getClientConduits()) {
-      IClientConduit.WithDefaultRendering con = (IClientConduit.WithDefaultRendering) c;
-      if (YetaUtil.renderConduit(player, con)) {
-        IConduitRenderer renderer = getRendererForConduit(con);
-        if (renderer.isDynamic()) {
-          if (!hasDynamic) {
-            hasDynamic = true;
-            BlockPos loc = bundle.getLocation();
-            brightness = bundle.getEntity().getWorld().getLightFor(EnumSkyBlock.SKY, loc);
-
-            RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
-            RenderUtil.bindBlockTexture();
-            GlStateManager.enableNormalize();
-            GlStateManager.enableBlend();
-            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GlStateManager.shadeModel(GL11.GL_SMOOTH);
-
-            GlStateManager.pushMatrix();
-            GlStateManager.translate(x, y, z);
-
-            Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder tes = tessellator.getBuffer();
-            tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-
-          }
-          renderer.renderDynamicEntity(this, bundle, con, x, y, z, partialTick, brightness);
-
-        }
+    if (bundle.hasFacade() && !YetaUtil.isFacadeHidden(bundle, player)) {
+      final IBlockState paintSource = bundle.getPaintSource();
+      if (paintSource != null && paintSource.isOpaqueCube()) {
+        return;
       }
     }
 
-    if (hasDynamic) {
-      Tessellator.getInstance().draw();
-      GlStateManager.disableNormalize();
-      GlStateManager.disableBlend();
-      GlStateManager.shadeModel(GL11.GL_FLAT);
-      GlStateManager.popMatrix();
+    NNList<RenderPair> renderers = getDynamicRenderersForConduitBundle(bundle, player);
+    if (renderers.isEmpty()) {
+      return;
     }
+
+    float brightness = bundle.getEntity().getWorld().getLightFor(EnumSkyBlock.SKY, bundle.getLocation());
+
+    RenderUtil.setupLightmapCoords(te.getPos(), te.getWorld());
+    RenderUtil.bindBlockTexture();
+    RenderHelper.disableStandardItemLighting();
+    GlStateManager.disableLighting();
+    GlStateManager.enableNormalize();
+    GlStateManager.enableBlend();
+    GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+    GlStateManager.shadeModel(GL11.GL_SMOOTH);
+
+    GlStateManager.pushMatrix();
+    GlStateManager.translate(x, y, z);
+
+    Tessellator tessellator = Tessellator.getInstance();
+    BufferBuilder tes = tessellator.getBuffer();
+    tes.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+
+    for (RenderPair pair : renderers) {
+      pair.getRenderer().renderDynamicEntity(this, bundle, pair.getConduit(), x, y, z, partialTick, brightness);
+    }
+
+    Tessellator.getInstance().draw();
+    GlStateManager.disableNormalize();
+    GlStateManager.disableBlend();
+    GlStateManager.shadeModel(GL11.GL_FLAT);
+    RenderHelper.enableStandardItemLighting();
+    GlStateManager.popMatrix();
   }
 
   // ------------ Block Model building
@@ -155,22 +159,26 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     }
 
     for (IClientConduit c : bundle.getClientConduits()) {
-      IClientConduit.WithDefaultRendering con = (IClientConduit.WithDefaultRendering) c;
-      if (state.getYetaDisplayMode().renderConduit(con)) {
-        IConduitRenderer renderer = getRendererForConduit(con);
-        if (renderer.canRenderInLayer(con, layer)) {
-          renderer.addBakedQuads(this, bundle, con, brightness, layer, quads);
-        }
-        Set<EnumFacing> extCons = con.getExternalConnections();
-        for (EnumFacing dir : extCons) {
-          if (con.getConnectionMode(dir) != ConnectionMode.DISABLED && con.getConnectionMode(dir) != ConnectionMode.NOT_SET) {
-            externals.add(dir);
+      if (c instanceof IClientConduit.WithDefaultRendering) {
+        IClientConduit.WithDefaultRendering con = (IClientConduit.WithDefaultRendering) c;
+        if (state.getYetaDisplayMode().renderConduit(con)) {
+          IConduitRenderer renderer = getRendererForConduit(con);
+          if (renderer.canRenderInLayer(con, layer)) {
+            renderer.addBakedQuads(this, bundle, con, brightness, layer, quads);
           }
-        }
-      } else if (con != null && layer == BlockRenderLayer.CUTOUT) {
-        Collection<CollidableComponent> components = con.getCollidableComponents();
-        for (CollidableComponent component : components) {
-          addWireBounds(wireBounds, component);
+          Set<EnumFacing> extCons = con.getExternalConnections();
+          for (EnumFacing dir : extCons) {
+            if (dir != null && con.getConnectionMode(dir) != ConnectionMode.DISABLED && con.getConnectionMode(dir) != ConnectionMode.NOT_SET) {
+              externals.add(dir);
+            }
+          }
+        } else if (layer == BlockRenderLayer.CUTOUT) {
+          Collection<CollidableComponent> components = con.getCollidableComponents();
+          for (CollidableComponent component : components) {
+            if (component != null) {
+              addWireBounds(wireBounds, component);
+            }
+          }
         }
       }
     }
@@ -202,12 +210,16 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
     // render these after the 'normal' conduits so help with proper blending
     for (BoundingBox wireBound : wireBounds) {
-      BakedQuadBuilder.addBakedQuads(quads, wireBound, ConduitBundleRenderManager.instance.getWireFrameIcon());
+      if (wireBound != null) {
+        BakedQuadBuilder.addBakedQuads(quads, wireBound, ConduitBundleRenderManager.instance.getWireFrameIcon());
+      }
     }
 
     // External connection terminations
     for (EnumFacing dir : externals) {
-      addQuadsForExternalConnection(dir, quads);
+      if (dir != null) {
+        addQuadsForExternalConnection(dir, quads);
+      }
     }
 
     // Dummy rendering for empty bundles (shouldn't we just remove these from the world?)
@@ -270,7 +282,9 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     TextureAtlasSprite tex = ConduitBundleRenderManager.instance.getConnectorIcon(ConduitConnectorType.EXTERNAL);
     BoundingBox[] bbs = ConduitGeometryUtil.instance.getExternalConnectorBoundingBoxes(dir);
     for (BoundingBox bb : bbs) {
-      BakedQuadBuilder.addBakedQuads(quads, bb, tex);
+      if (bb != null) {
+        BakedQuadBuilder.addBakedQuads(quads, bb, tex);
+      }
     }
   }
 
@@ -281,6 +295,44 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
       }
     }
     return dcr;
+  }
+
+  protected @Nonnull NNList<RenderPair> getDynamicRenderersForConduitBundle(IConduitBundle b, EntityPlayerSP player) {
+    NNList<RenderPair> result = null;
+
+    for (IConduitRenderer conduitRenderer : dynamicCnduitRenderers) {
+      for (IClientConduit conduit : b.getClientConduits()) {
+        if (conduit instanceof IClientConduit.WithDefaultRendering && conduitRenderer != null && conduitRenderer.isRendererForConduit(conduit)
+            && YetaUtil.renderConduit(player, conduit)) {
+          if (result == null) {
+            result = new NNList<>();
+          }
+          result.add(new RenderPair(conduitRenderer, (IClientConduit.WithDefaultRendering) conduit));
+        }
+      }
+    }
+
+    return result != null ? result : NNList.emptyList();
+  }
+
+  static class RenderPair {
+    private final @Nonnull IClientConduit.WithDefaultRendering conduit;
+    private final @Nonnull IConduitRenderer renderer;
+
+    RenderPair(@Nonnull IConduitRenderer renderer, @Nonnull WithDefaultRendering conduit) {
+      this.renderer = renderer;
+      this.conduit = conduit;
+    }
+
+    @Nonnull
+    IClientConduit.WithDefaultRendering getConduit() {
+      return conduit;
+    }
+
+    @Nonnull
+    IConduitRenderer getRenderer() {
+      return renderer;
+    }
   }
 
 }

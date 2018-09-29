@@ -29,11 +29,11 @@ public class ConnectionModeGeometry {
   static {
 
     float scale = 0.9f;
-    BoundingBox refBB = ConduitGeometryUtil.CORE_BOUNDS;
+    BoundingBox refBB = ConduitGeometryUtil.getCoreBounds();
     refBB = refBB.scale(scale, scale, scale);
     refBB = refBB.scale(scale, 1, 1);
 
-    double offset = (ConduitGeometryUtil.HWIDTH * scale * scale) + ConduitGeometryUtil.CONNECTOR_DEPTH;
+    double offset = (ConduitGeometryUtil.getHalfWidth() * scale * scale) + ConduitGeometryUtil.CONNECTOR_DEPTH;
 
     EnumFacing dir;
     Vector3d trans;

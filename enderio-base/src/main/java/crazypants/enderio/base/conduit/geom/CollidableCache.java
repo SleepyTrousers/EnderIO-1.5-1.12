@@ -16,8 +16,8 @@ public class CollidableCache {
 
   private final Map<CacheKey, Collection<CollidableComponent>> cache = new HashMap<CollidableCache.CacheKey, Collection<CollidableComponent>>();
 
-  public @Nonnull CacheKey createKey(@Nonnull Class<? extends IConduit> baseType, @Nonnull Offset offset, @Nullable EnumFacing dir, boolean isStub) {
-    return new CacheKey(baseType, offset, dir, isStub);
+  public @Nonnull CacheKey createKey(@Nonnull Class<? extends IConduit> baseType, @Nonnull Offset offset, @Nullable EnumFacing dir) {
+    return new CacheKey(baseType, offset, dir);
   }
 
   public Collection<CollidableComponent> getCollidables(@Nonnull CacheKey key, @Nonnull IConduit conduit) {
@@ -35,14 +35,12 @@ public class CollidableCache {
     public final @Nonnull String className; // used to generate reliable equals / hashcode
     public final @Nonnull Offset offset;
     public final @Nullable EnumFacing dir;
-    public final boolean isStub;
 
-    public CacheKey(@Nonnull Class<? extends IConduit> baseType, @Nonnull Offset offset, @Nullable EnumFacing dir, boolean isStub) {
+    public CacheKey(@Nonnull Class<? extends IConduit> baseType, @Nonnull Offset offset, @Nullable EnumFacing dir) {
       this.baseType = baseType;
       className = baseType.getCanonicalName();
       this.offset = offset;
       this.dir = dir;
-      this.isStub = isStub;
     }
 
     @Override
@@ -51,7 +49,6 @@ public class CollidableCache {
       int result = 1;
       result = prime * result + className.hashCode();
       result = prime * result + ((dir != null) ? dir.hashCode() : 0);
-      result = prime * result + (isStub ? 1231 : 1237);
       result = prime * result + offset.hashCode();
       return result;
     }
@@ -72,9 +69,6 @@ public class CollidableCache {
         return false;
       }
       if (dir != other.dir) {
-        return false;
-      }
-      if (isStub != other.isStub) {
         return false;
       }
       if (offset != other.offset) {

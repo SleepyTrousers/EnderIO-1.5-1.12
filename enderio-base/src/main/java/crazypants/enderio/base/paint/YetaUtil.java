@@ -33,7 +33,7 @@ public class YetaUtil {
     }
     return checkResult;
   }
-  
+
   public static void onClientTick() {
     EntityPlayer player = EnderIO.proxy.getClientPlayer();
     if (player == null) {
@@ -98,7 +98,7 @@ public class YetaUtil {
     return renderConduit(player, con.getBaseConduitType());
   }
 
-  public static class YetaDisplayMode {
+  public static final class YetaDisplayMode {
     private boolean hideFacades = false;
     private @Nonnull ConduitDisplayMode displayMode = ConduitDisplayMode.ALL;
 

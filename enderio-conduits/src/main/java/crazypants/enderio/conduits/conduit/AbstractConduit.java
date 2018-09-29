@@ -615,11 +615,9 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
   @Override
   @Nonnull
   public Collection<CollidableComponent> createCollidables(@Nonnull CacheKey key) {
-    return NullHelper
-        .notnullJ(
-            Collections.singletonList(new CollidableComponent(getCollidableType(),
-                ConduitGeometryUtil.instance.getBoundingBox(getBaseConduitType(), key.dir, key.isStub, key.offset), key.dir, null)),
-            "Collections#singletonList");
+    return NullHelper.notnullJ(Collections.singletonList(
+        new CollidableComponent(getCollidableType(), ConduitGeometryUtil.instance.getBoundingBox(getBaseConduitType(), key.dir, key.offset), key.dir, null)),
+        "Collections#singletonList");
   }
 
   @Override
@@ -651,16 +649,11 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
     return result;
   }
 
-  protected boolean renderStub(@Nonnull EnumFacing dir) {
-    // return getConectionMode(dir) == ConnectionMode.DISABLED;
-    return false;
-  }
-
   private Collection<CollidableComponent> getCollidables(@Nonnull EnumFacing dir) {
     CollidableCache cc = CollidableCache.instance;
     Class<? extends IConduit> type = getCollidableType();
     if (isConnectedTo(dir) && getConnectionMode(dir) != ConnectionMode.DISABLED) {
-      return cc.getCollidables(cc.createKey(type, getBundle().getOffset(getBaseConduitType(), dir), dir, renderStub(dir)), this);
+      return cc.getCollidables(cc.createKey(type, getBundle().getOffset(getBaseConduitType(), dir), dir), this);
     }
     return null;
   }

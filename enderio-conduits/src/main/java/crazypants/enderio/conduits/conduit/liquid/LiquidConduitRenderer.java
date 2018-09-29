@@ -101,7 +101,9 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     if (component.isDirectional()) {
       BoundingBox[] cubes = toCubes(component.bound);
       for (BoundingBox cube : cubes) {
-        drawDynamicSection(cube, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), color, component.getDirection(), true);
+        if (cube != null) {
+          drawDynamicSection(cube, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), color, component.getDirection(), true);
+        }
       }
 
     } else {
@@ -113,7 +115,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   public static void renderFluidOutline(@Nonnull CollidableComponent component, @Nonnull FluidStack fluid) {
-    renderFluidOutline(component, fluid, 1 - ConduitGeometryUtil.HEIGHT, 1f / 16f);
+    renderFluidOutline(component, fluid, 1 - ConduitGeometryUtil.getHeight(), 1f / 16f);
   }
 
   public static void renderFluidOutline(@Nonnull CollidableComponent component, @Nonnull FluidStack fluidStack, double scaleFactor, float outlineWidth) {
