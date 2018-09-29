@@ -291,6 +291,11 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
     IRecipe recipe = CraftingManager.findMatchingRecipe(inv, world);
     if (recipe != null) {
       matches = recipe.getRecipeOutput();
+      if (Prep.isInvalid(matches)) {
+        ForgeHooks.setCraftingPlayer(getFakePlayer());
+        matches = recipe.getCraftingResult(inv);
+        ForgeHooks.setCraftingPlayer(null);
+      }
     }
     craftingGrid.setInventorySlotContents(9, matches);
     markDirty();
