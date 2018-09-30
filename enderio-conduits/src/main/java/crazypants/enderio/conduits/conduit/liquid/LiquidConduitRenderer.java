@@ -127,6 +127,9 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     }
   }
 
+  // TODO: (1) CollidableComponent is a bad key for a weak reference
+  // (2) CachableRenderStatement is an outdated class, use HalfBakedList instead
+  // (3) could this be done more efficiently (on the fly)?
   private static Map<CollidableComponent, Map<Fluid, List<CachableRenderStatement>>> cache = new WeakHashMap<CollidableComponent, Map<Fluid, List<CachableRenderStatement>>>();
 
   public static List<CachableRenderStatement> computeFluidOutlineToCache(@Nonnull CollidableComponent component, @Nonnull Fluid fluid, double scaleFactor,
@@ -269,6 +272,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     return flatRatio;
   }
 
+  // TODO: ModelBakeEvent would be better
   @Override
   public void onResourceManagerReload(@Nonnull IResourceManager p_110549_1_) {
     cache.clear();
