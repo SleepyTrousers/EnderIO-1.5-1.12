@@ -16,7 +16,7 @@ import com.mojang.authlib.GameProfile;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.base.integration.top.TheOneProbeUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
@@ -170,8 +170,8 @@ public class DarkSteelController {
         int energyStored = EnergyUpgradeManager.getEnergyStored(boots);
         if (energyStored > 0) {
           float toMitigate = distance - 3;
-          int energyCost = (int) Math.min(energyStored, Math.ceil(toMitigate * Config.darkSteelFallDistanceCost));
-          float mitigated = energyCost / (float) Config.darkSteelFallDistanceCost;
+          int energyCost = (int) Math.min(energyStored, Math.ceil(toMitigate * DarkSteelConfig.fallDistanceCost.get()));
+          float mitigated = energyCost / (float) DarkSteelConfig.fallDistanceCost.get();
           if (!event.getEntity().world.isRemote) {
             EnergyUpgradeManager.extractEnergy(boots, (IDarkSteelItem) boots.getItem(), energyCost, false);
           }
@@ -203,7 +203,7 @@ public class DarkSteelController {
       return;
     }
     int remaining = cost;
-    if (Config.darkSteelDrainPowerFromInventory) {
+    if (DarkSteelConfig.armorDrainPowerFromInventory.get()) {
       for (ItemStack stack : player.inventory.mainInventory) {
         IEnergyStorage cap = PowerHandlerUtil.getCapability(NullHelper.notnullM(stack, "null stack in main player inventory"));
         if (cap != null && cap.canExtract()) {
@@ -224,7 +224,7 @@ public class DarkSteelController {
   public static int getPlayerEnergy(EntityPlayer player, EntityEquipmentSlot slot) {
     int res = 0;
 
-    if (Config.darkSteelDrainPowerFromInventory) {
+    if (DarkSteelConfig.armorDrainPowerFromInventory.get()) {
       for (ItemStack stack : player.inventory.mainInventory) {
         IEnergyStorage cap = PowerHandlerUtil.getCapability(NullHelper.notnullM(stack, "null stack in main player inventory"));
         if (cap != null && cap.canExtract()) {
@@ -312,12 +312,12 @@ public class DarkSteelController {
     }
 
     int autoJumpOffset = autoJump ? 1 : 0;
-    int requiredPower = Config.darkSteelBootsJumpPowerCost * (int) Math.pow(DATA.get().jumpCount + 1 - autoJumpOffset, 2.5);
+    int requiredPower = DarkSteelConfig.bootsJumpPowerCost.get() * (int) Math.pow(DATA.get().jumpCount + 1 - autoJumpOffset, 2.5);
     int availablePower = getPlayerEnergy(player, EntityEquipmentSlot.FEET);
     int maxJumps = jumpUpgrade.getLevel() + autoJumpOffset;
     if (availablePower > 0 && requiredPower <= availablePower && DATA.get().jumpCount < maxJumps) {
       DATA.get().jumpCount++;
-      player.motionY += 0.15 * Config.darkSteelBootsJumpModifier * (DATA.get().jumpCount - autoJumpOffset);
+      player.motionY += 0.15 * DarkSteelConfig.darkSteelBootsJumpModifier.get() * (DATA.get().jumpCount - autoJumpOffset);
       DATA.get().ticksSinceLastJump = 0;
 
       usePlayerEnergy(player, EntityEquipmentSlot.FEET, requiredPower);

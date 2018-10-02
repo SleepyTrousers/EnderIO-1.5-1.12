@@ -6,7 +6,7 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.handler.darksteel.SwordHandler;
 import crazypants.enderio.zoo.EnderIOZoo;
@@ -326,7 +326,7 @@ public class EntityEnderminy extends EntityMob implements IEnderZooMob {
 
     boolean res = super.attackEntityFrom(damageSource, p_70097_2_);
     if (damageSource instanceof EntityDamageSource && damageSource.getTrueSource() instanceof EntityPlayer && getHealth() > 0) {
-      boolean skipTeleport = SwordHandler.isEquippedAndPowered((EntityPlayer) damageSource.getTrueSource(), Config.darkSteelSwordPowerUsePerHit);
+      boolean skipTeleport = SwordHandler.isEquippedAndPowered((EntityPlayer) damageSource.getTrueSource(), DarkSteelConfig.darkSteelSwordPowerUsePerHit);
       isAggressive = true;
       if (rand.nextInt(3) == 0) {
         for (int i = 0; i < 64; ++i) {

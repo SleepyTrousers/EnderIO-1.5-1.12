@@ -8,7 +8,7 @@ import com.enderio.core.client.ClientUtil;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.sound.SoundHelper;
@@ -27,9 +27,12 @@ public class JumpUpgrade extends AbstractUpgrade {
 
   private static final @Nonnull String UPGRADE_NAME = "jumpBoost";
 
-  public static final @Nonnull JumpUpgrade JUMP_ONE = new JumpUpgrade("enderio.darksteel.upgrade.jump_one", 1, Config.darkSteelJumpOneCost);
-  public static final @Nonnull JumpUpgrade JUMP_TWO = new JumpUpgrade("enderio.darksteel.upgrade.jump_two", 2, Config.darkSteelJumpTwoCost);
-  public static final @Nonnull JumpUpgrade JUMP_THREE = new JumpUpgrade("enderio.darksteel.upgrade.jump_three", 3, Config.darkSteelJumpThreeCost);
+  private static final String[] numbers = { "one", "two", "three" };
+
+  // TODO 1.13: Fix level range for consistency
+  public static final @Nonnull JumpUpgrade JUMP_ONE = new JumpUpgrade(1);
+  public static final @Nonnull JumpUpgrade JUMP_TWO = new JumpUpgrade(2);
+  public static final @Nonnull JumpUpgrade JUMP_THREE = new JumpUpgrade(3);
 
   private final short level;
 
@@ -50,8 +53,9 @@ public class JumpUpgrade extends AbstractUpgrade {
     return loadAnyFromItem(player.getItemStackFromSlot(EntityEquipmentSlot.FEET)) != null;
   }
 
-  public JumpUpgrade(@Nonnull String unlocName, int level, int levelCost) {
-    super(UPGRADE_NAME, level, unlocName, new ItemStack(Blocks.PISTON), levelCost);
+  public JumpUpgrade(int level) {
+    super(UPGRADE_NAME, level, "enderio.darksteel.upgrade.jump_" + numbers[level - 1], new ItemStack(Blocks.PISTON),
+        DarkSteelConfig.jumpUpgradeCost.get(level - 1));
     this.level = (short) level;
   }
 

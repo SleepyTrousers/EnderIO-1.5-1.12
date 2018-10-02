@@ -15,10 +15,40 @@ public final class DarkSteelConfig {
   public static final IValue<Boolean> rightClickPlaceEnabled_pick = F_PICKAXE.make("rightClickPlaceEnabled", false, //
       "If enabled, right clicking with the dark steel pickaxe will place a block.");
 
+  public static final IValue<Integer> pickPowerUseObsidian = F_PICKAXE.make("powerUseObsidian", 10000, //
+      "The amount of energy used to break an obsidian block.").setRange(1, 99999999).sync();
+  public static final IValue<Integer> pickEfficiencyObsidian = F_PICKAXE.make("efficiencyObsidian", 50, //
+      "The efficiency when breaking obsidian with a powered Dark Pickaxe.").setRange(1, 500).sync();
+  public static final IValue<Float> pickApplyObsidianEfficiencyAtHardness = F_PICKAXE.make("obsidianEfficiencyAtHardness", 40f, //
+      "If set to a value > 0, the obsidian speed and power use will be used for all blocks with hardness >= to this value.").setRange(1, 10000).sync();
+  public static final IValue<Integer> pickPowerUsePerDamagePoint = F_PICKAXE.make("powerUsePerDamagePoint", 750, //
+      "Energy use per damage/durability point avoided.").setRange(0, 99999999).sync();
+  public static final IValue<Float> pickEfficiencyBoostWhenPowered = F_PICKAXE.make("efficiencyBoostWhenPowered", 2f, //
+      "The increase in efficiency when powered.").setRange(1, 20).sync();
+
+  public static final IValueFactory F_DPICK = F_PICKAXE.section(".dark_steel_pickaxe");
+  
+  public static final IValue<Boolean> darkSteelPickMinesTiCArdite = F_DPICK.make("canMineTiCArdite", true, //
+      "When true the dark steel pick will be able to mine TiC Ardite and Cobalt").sync();
+  
+  public static final IValueFactory F_EPICK = F_PICKAXE.section(".end_steel_pickaxe");
+
+  public static final IValue<Boolean> endSteelPickMinesTiCArdite = F_EPICK.make("canMineTiCArdite", true, //
+      "When true the end steel pick will be able to mine TiC Ardite and Cobalt").sync();
+  
   public static final IValueFactory F_AXE = F_DARK_STEEL.section(".axe");
 
   public static final IValue<Boolean> rightClickPlaceEnabled_axe = F_AXE.make("rightClickPlaceEnabled", false, //
       "If enabled, right clicking with the dark steel axe will place a block.");
+
+  public static final IValue<Integer> axePowerUsePerDamagePoint = F_AXE.make("powerUsePerDamagePoint", 750, //
+      "Energy use per damage/durability point avoided.").setRange(0, 99999999).sync();
+  public static final IValue<Integer> axePowerUsePerDamagePointMultiHarvest = F_AXE.make("powerUsePerDamagePointMultiHarvest", 1500, //
+      "Energy per damage/durability point avoided when shift-harvesting multiple logs").setRange(0, 99999999).sync();
+  public static final IValue<Float> axeSpeedPenaltyMultiHarvest = F_AXE.make("speedPenaltyMultiHarvest", 4f, //
+      "How much slower shift-harvesting logs is.").setRange(1, 40).sync();
+  public static final IValue<Float> axeEfficiencyBoostWhenPowered = F_AXE.make("efficiencyBoostWhenPowered", 2f, //
+      "The increase in efficiency when powered.").setRange(1, 20).sync();
 
   public static final IValueFactory F_CROOK = F_DARK_STEEL.section(".crook");
 
@@ -60,6 +90,28 @@ public final class DarkSteelConfig {
   public static final IValue<Float> darkSteelSwordSpeedBonusEmpowered4 = F_SWORD.make("speedBonusEmpowered5", 0.6f, //
       "The increase in attack speed when the sword is empowered V and has energy.").setRange(0, 2).sync();
 
+  public static final IValue<Integer> darkSteelSwordPowerUsePerHit = F_SWORD.make("powerUsePerHit", 750, //
+      "The amount of energy used per hit.").setRange(1, 99999999).sync();
+
+  public static final IValue<Double> darkSteelSwordEnderPearlDropChance = F_SWORD.make("enderPearlDropChance", 1.05, //
+      "The chance that an ender pearl will be dropped when using the sword (0 = no chance, 1 = 100% chance; can go over 100%).").setRange(0, 10).sync();
+  public static final IValue<Double> darkSteelSwordEnderPearlDropChancePerLooting = F_SWORD.make("enderPearlDropChancePerLooting", 0.5, //
+      "The chance for each looting level that an additional ender pearl will be dropped when using a dark steel sword (0 = no chance, 1 = 100% chance; can go over 100%)")
+      .setRange(0, 5).sync();
+
+  public static final IValueFactory F_SHEARS = F_DARK_STEEL.section(".shears");
+
+  public static final IValue<Integer> shearsDurabilityFactor = F_SHEARS.make("durabilityFactor", 5, //
+      "How much more durable as vanilla shears they are.").setRange(0.5, 50).sync();
+  public static final IValue<Integer> shearsPowerUsePerDamagePoint = F_SHEARS.make("powerUsePerDamagePoint", 250, //
+      "Energy use per damage/durability point avoided.").setRange(0, 99999999).sync();
+  public static final IValue<Float> shearsEfficiencyBoostWhenPowered = F_SHEARS.make("efficiencyBoostWhenPowered", 2f, //
+      "The increase in efficiency when powered.").setRange(1, 20).sync();
+  public static final IValue<Integer> shearsBlockAreaBoostWhenPowered = F_SHEARS.make("blockAreaBoostWhenPowered", 4, //
+      "The increase in effected area (radius) when powered and used on blocks.").setRange(0, 16).sync();
+  public static final IValue<Float> shearsEntityAreaBoostWhenPowered = F_SHEARS.make("entityAreaBoostWhenPowered", 5f, //
+      "The increase in effected area (radius) when powered and used on sheep.").setRange(0, 16).sync();
+
   public static final IValueFactory F_UPGRADES = F_DARK_STEEL.section(".upgrades");
 
   public static final IValueFactory F_HOE = F_UPGRADES.section(".hoe");
@@ -98,6 +150,21 @@ public final class DarkSteelConfig {
       "The extra effectiveness of the speed upgrade when the Leggings are empowered IV and have energy.").setRange(0, 2).sync();
   public static final IValue<Float> darkSteelSpeedBonusEmpowered4 = F_SPEED.make("empoweredBonus5", 2.50f, //
       "The extra effectiveness of the speed upgrade when the Leggings are empowered V and have energy.").setRange(0, 2).sync();
+
+  public static final NNList<IValue<Integer>> speedUpgradeCost = new NNList<>( //
+      F_SPEED.make("upgradeCost1", 4, "Number of levels required for the 'Speed I' upgrade.").setRange(1, 99).sync(), //
+      F_SPEED.make("upgradeCost2", 6, "Number of levels required for the 'Speed II' upgrade.").setRange(1, 99).sync(), //
+      F_SPEED.make("upgradeCost3", 8, "Number of levels required for the 'Speed III' upgrade.").setRange(1, 99).sync());
+
+  public static final IValueFactory F_JUMP = F_UPGRADES.section(".jump");
+
+  public static final NNList<IValue<Integer>> jumpUpgradeCost = new NNList<>( //
+      F_JUMP.make("upgradeCost1", 4, "Number of levels required for the 'Jump I' upgrade.").setRange(1, 99).sync(), //
+      F_JUMP.make("upgradeCost2", 6, "Number of levels required for the 'Jump II' upgrade.").setRange(1, 99).sync(), //
+      F_JUMP.make("upgradeCost3", 8, "Number of levels required for the 'Jump III' upgrade.").setRange(1, 99).sync());
+
+  public static final IValue<Double> darkSteelBootsJumpModifier = F_JUMP.make("modifier", 1.5, //
+      "Jump height modifier applied when jumping with Dark Steel Boots equipped").setRange(1, 3).sync();
 
   public static final IValueFactory F_EXPLOSIVE = F_UPGRADES.section(".explosive");
 
@@ -152,6 +219,65 @@ public final class DarkSteelConfig {
       "Cost for the 'Empowered IV' upgrade in levels.").setRange(1, 99).sync();
   public static final IValue<Integer> energyUpgradeLevelCostEmpowered4 = F_ENERGY.make("upgradeCost5", 20, //
       "Cost for the 'Empowered V' upgrade in levels.").setRange(1, 99).sync();
+
+  public static final IValueFactory F_SWIM = F_UPGRADES.section(".swim");
+
+  public static final IValue<Integer> swimCost = F_SWIM.make("upgradeCost", 4, "Number of levels required for the 'Swim' upgrade.").setRange(1, 99).sync();
+
+  public static final IValueFactory F_NIGHT_VISION = F_UPGRADES.section(".nightVision");
+
+  public static final IValue<Integer> nightVisionCost = F_NIGHT_VISION.make("upgradeCost", 4, "Number of levels required for the 'Night Vision' upgrade.")
+      .setRange(1, 99).sync();
+
+  public static final IValueFactory F_TOP = F_UPGRADES.section(".theOneProbe");
+
+  public static final IValue<Integer> topCost = F_TOP.make("upgradeCost", 4, //
+      "Number of levels required for 'The One Probe' upgrade.").setRange(1, 99).sync();
+
+  public static final IValueFactory F_GLIDER = F_UPGRADES.section(".glider");
+
+  public static final IValue<Integer> gliderCost = F_GLIDER.make("upgradeCost", 4, //
+      "Number of levels required for the 'Glider' upgrade.").setRange(1, 99).sync();
+  public static final IValue<Double> gliderHorizontalSpeed = F_GLIDER.make("horizontalSpeed", 0.03, //
+      "Horizontal movement speed modifier when gliding.").setRange(0.001, 0.6).sync();
+  public static final IValue<Double> gliderVerticalSpeed = F_GLIDER.make("verticalSpeed", -0.05, //
+      "Rate of altitude loss when gliding.").setRange(-1, -0.001).sync();
+  public static final IValue<Double> gliderVerticalSpeedSprinting = F_GLIDER.make("verticalSpeedSprinting", -0.15, //
+      "Rate of altitude loss when sprinting and gliding.").setRange(-3, -0.001).sync();
+  
+  public static final IValueFactory F_ELYTRA = F_UPGRADES.section(".elytra");
+  
+  public static final IValue<Integer> elytraCost = F_ELYTRA.make("upgradeCost", 10, //
+      "Number of levels required for the 'Elytra' upgrade.").setRange(1, 99).sync();
+
+  public static final IValueFactory F_SOUND_LOCATOR = F_UPGRADES.section(".soundLocator");
+
+  public static final IValue<Integer> soundLocatorCost = F_SOUND_LOCATOR.make("upgradeCost", 4, //
+      "Number of levels required for the 'Sound Locator' upgrade.").setRange(1, 99).sync();
+  public static final IValue<Integer> soundLocatorRange = F_SOUND_LOCATOR.make("range", 40, //
+      "Range of the 'Sound Locator' upgrade.").setRange(1, 200).sync();
+  public static final IValue<Integer> soundLocatorLifespan = F_SOUND_LOCATOR.make("lifespan", 40, //
+      "Number of ticks the 'Sound Locator' icons are displayed for.").setRange(1, 200).sync();
+
+  public static final IValueFactory F_GOGGLES_OF_REVEALING = F_UPGRADES.section(".gogglesofrevealing");
+
+  public static final IValue<Integer> gogglesOfRevealingCost = F_GOGGLES_OF_REVEALING.make("gogglesOfRevealingUpgradeCost", 4, //
+      "Number of levels required for the 'Goggles of Revealing' upgrade.").setRange(1, 99).sync();
+
+  public static final IValueFactory F_THAUMATURGE_ROBES = F_UPGRADES.section(".thaumaturgerobes");
+
+  public static final IValue<Integer> thaumaturgeRobesCost = F_THAUMATURGE_ROBES.make("robesUpgradeCost", 4, //
+      "Number of levels required for the 'Thaumatruge's Robes' upgrades.").setRange(1, 99).sync();
+
+  public static IValueFactory F_TRAVEL = F_UPGRADES.section(".travel");
+
+  public static IValue<Integer> travelCost = F_TRAVEL.make("upgradeCost", 16, //
+      "Number of levels required for the 'Travel' upgrade.").setRange(1, 99).sync();
+
+  public static IValueFactory F_SPOON = F_UPGRADES.section(".spoon");
+
+  public static IValue<Integer> spoonCost = F_SPOON.make("upgradeCost", 4, //
+      "Number of levels required for the 'Spoon' upgrade.").setRange(1, 99).sync();
 
   public static final IValueFactory F_BOW = F_DARK_STEEL.section(".bow");
 
@@ -236,5 +362,18 @@ public final class DarkSteelConfig {
       "Durability of the Dark Steel Tree Tap.").setRange(1, 99999999).sync();
   public static final IValue<Integer> tapEnergyPerDamage = F_TAP.make("energyPerDamage", 750, //
       "Energy use per damage/durability point avoided.").setRange(1, 99999999).sync();
+
+  public static final IValueFactory F_ARMOR = F_DARK_STEEL.section(".armor");
+
+  public static final IValue<Boolean> armorDrainPowerFromInventory = F_ARMOR.make("drainPowerFromInventory", false, //
+      "If true, dark steel armor will drain power stored energy in power containers in the players inventory.").sync();
+
+  public static final IValue<Integer> bootsJumpPowerCost = F_ARMOR.make("bootsJumpPowerCost", 150, //
+      "Base amount of power used per jump energy dark steel boots. The second jump in a 'double jump' uses 2x this etc").setRange(1, 99999999).sync();
+  public static final IValue<Integer> fallDistanceCost = F_ARMOR.make("fallDistanceCost", 75, //
+      "Amount of power used per block height of fall distance damage negated.").setRange(1, 99999999);
+
+  public static final IValue<Boolean> slotZeroPlacesEight = F_DARK_STEEL.make("slotZeroPlacesEight", true, //
+      "Should the dark steel placement, when in the first (0th) slot, place the item in the last slot. If false, will place what's in the second slot.").sync();
 
 }

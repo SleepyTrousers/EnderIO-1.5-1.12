@@ -3,7 +3,7 @@ package crazypants.enderio.base.item.darksteel.upgrade.nightvision;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.potion.PotionUtil;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -21,7 +21,7 @@ public class NightVisionUpgrade extends AbstractUpgrade {
   }
 
   public NightVisionUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.nightVision", createUpgradeItem(), Config.darkSteelNightVisionCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.nightVision", createUpgradeItem(), DarkSteelConfig.nightVisionCost);
   }
 
   @Override

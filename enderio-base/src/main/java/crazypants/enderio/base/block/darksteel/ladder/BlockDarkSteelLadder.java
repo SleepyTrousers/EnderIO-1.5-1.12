@@ -6,7 +6,7 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.BlockConfig;
 import crazypants.enderio.base.render.IDefaultRenderers;
 import net.minecraft.block.BlockLadder;
 import net.minecraft.block.SoundType;
@@ -57,9 +57,9 @@ public class BlockDarkSteelLadder extends BlockLadder implements IResourceToolti
     try {
       DATA.get().isMoving = true;
       if (entity.motionY >= 0.1) {
-        entity.move(MoverType.SELF, 0, Config.darkSteelLadderSpeedBoost, 0);
+        entity.move(MoverType.SELF, 0, BlockConfig.darkSteelLadderSpeedBoost.get(), 0);
       } else if (entity.motionY <= -0.1) {
-        entity.move(MoverType.SELF, 0, -Config.darkSteelLadderSpeedBoost, 0);
+        entity.move(MoverType.SELF, 0, -BlockConfig.darkSteelLadderSpeedBoost.get(), 0);
       }
     } finally {
       DATA.get().isMoving = false;

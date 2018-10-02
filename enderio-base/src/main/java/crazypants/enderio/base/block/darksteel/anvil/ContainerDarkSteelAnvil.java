@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.BlockConfig;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.state.IBlockState;
@@ -85,7 +85,7 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
         IBlockState iblockstate = world.getBlockState(pos);
 
         if (!playerIn.capabilities.isCreativeMode && !world.isRemote && iblockstate.getBlock() == blockDarkSteelAnvil.getBlock()
-            && playerIn.getRNG().nextFloat() < Config.darkSteelAnvilDamageChance) {
+            && playerIn.getRNG().nextFloat() < BlockConfig.darkSteelAnvilDamageChance.get()) {
           int l = iblockstate.getValue(BlockAnvil.DAMAGE).intValue();
           ++l;
 

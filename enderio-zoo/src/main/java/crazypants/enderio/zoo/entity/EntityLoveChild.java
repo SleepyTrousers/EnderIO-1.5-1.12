@@ -3,7 +3,7 @@ package crazypants.enderio.zoo.entity;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.handler.darksteel.SwordHandler;
 import crazypants.enderio.base.init.ModObject;
@@ -121,7 +121,7 @@ public class EntityLoveChild extends EntityZombie implements IEnderZooMob {
   public boolean attackEntityFrom(@Nonnull DamageSource source, float amount) {
     if (!isEntityInvulnerable(source) && super.attackEntityFrom(source, amount)) {
       if (source instanceof EntityDamageSource && source.getTrueSource() instanceof EntityPlayer
-          && SwordHandler.isEquippedAndPowered((EntityPlayer) source.getTrueSource(), Config.darkSteelSwordPowerUsePerHit)) {
+          && SwordHandler.isEquippedAndPowered((EntityPlayer) source.getTrueSource(), DarkSteelConfig.darkSteelSwordPowerUsePerHit)) {
         return true;
       }
       if (rand.nextFloat() < ZooConfig.defendTeleportChance.get()) {

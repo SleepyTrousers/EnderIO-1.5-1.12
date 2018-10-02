@@ -3,7 +3,7 @@ package crazypants.enderio.base.item.darksteel.upgrade.flippers;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -17,7 +17,7 @@ public class SwimUpgrade extends AbstractUpgrade {
   public static final @Nonnull SwimUpgrade INSTANCE = new SwimUpgrade();
 
   public SwimUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.swim", new ItemStack(Blocks.WATERLILY), Config.darkSteelSwimCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.swim", new ItemStack(Blocks.WATERLILY), DarkSteelConfig.swimCost);
   }
 
   @Override

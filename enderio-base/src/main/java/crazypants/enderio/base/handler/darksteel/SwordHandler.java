@@ -8,7 +8,9 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.BlockConfig;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
+import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelSword;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -72,7 +74,7 @@ public class SwordHandler {
 
     double skullDropChance = getSkullDropChance(player, evt);
     if (player instanceof FakePlayer) {
-      skullDropChance *= Config.fakePlayerSkullChance;
+      skullDropChance *= BlockConfig.fakePlayerSkullChance.get();
     }
     if (killedMob.world.rand.nextFloat() < skullDropChance) {
       dropSkull(evt, player);
@@ -86,7 +88,7 @@ public class SwordHandler {
       if (isEnderman || isEnderminy) {
         ItemStack dropItem = isEnderminy ? Material.SHARD_ENDER.getStack() : new ItemStack(Items.ENDER_PEARL);
         int numPearls = 0;
-        double chance = Config.darkSteelSwordEnderPearlDropChance;
+        double chance = DarkSteelConfig.darkSteelSwordEnderPearlDropChance.get();
         while (chance >= 1) {
           numPearls++;
           chance--;
@@ -95,7 +97,7 @@ public class SwordHandler {
           numPearls++;
         }
         for (int i = 0; i < evt.getLootingLevel(); i++) {
-          chance = Config.darkSteelSwordEnderPearlDropChancePerLooting;
+          chance = DarkSteelConfig.darkSteelSwordEnderPearlDropChancePerLooting.get();
           while (chance >= 1) {
             numPearls++;
             chance--;
@@ -145,9 +147,9 @@ public class SwordHandler {
       return true;
     }
 
-    float chance = Math.max(Config.vanillaSwordSkullChance, Config.ticBeheadingSkullModifier * beheading);
+    float chance = Math.max(BlockConfig.vanillaSwordSkullChance.get(), BlockConfig.ticBeheadingSkullModifier.get() * beheading);
     if (player instanceof FakePlayer) {
-      chance *= Config.fakePlayerSkullChance;
+      chance *= BlockConfig.fakePlayerSkullChance.get();
     }
     while (chance >= 1) {
       dropSkull(evt, player);
@@ -161,18 +163,22 @@ public class SwordHandler {
 
   private static double getSkullDropChance(@Nonnull EntityPlayer player, LivingDropsEvent evt) {
     if (evt.getEntityLiving() instanceof EntityWitherSkeleton) {
-      if (isEquippedAndPowered(player, Config.darkSteelSwordPowerUsePerHit)) {
-        return Config.darkSteelSwordWitherSkullChance + Config.darkSteelSwordWitherSkullLootingModifier * evt.getLootingLevel();
+      if (isEquippedAndPowered(player, DarkSteelConfig.darkSteelSwordPowerUsePerHit)) {
+        return BlockConfig.darkSteelSwordWitherSkullChance.get() + BlockConfig.darkSteelSwordWitherSkullLootingModifier.get() * evt.getLootingLevel();
       } else {
         return 0.01;
       }
     } else {
-      if (isEquippedAndPowered(player, Config.darkSteelSwordPowerUsePerHit)) {
-        return Config.darkSteelSwordSkullChance + Config.darkSteelSwordSkullLootingModifier * evt.getLootingLevel();
+      if (isEquippedAndPowered(player, DarkSteelConfig.darkSteelSwordPowerUsePerHit)) {
+        return BlockConfig.darkSteelSwordSkullChance.get() + BlockConfig.darkSteelSwordSkullLootingModifier.get() * evt.getLootingLevel();
       } else {
-        return Config.vanillaSwordSkullChance + Config.vanillaSwordSkullLootingModifier * evt.getLootingLevel();
+        return BlockConfig.vanillaSwordSkullChance.get() + BlockConfig.vanillaSwordSkullLootingModifier.get() * evt.getLootingLevel();
       }
     }
+  }
+
+  public static boolean isEquippedAndPowered(EntityPlayer player, IValue<Integer> requiredPower) {
+    return isEquipped(player) && getStoredPower(player) >= requiredPower.get();
   }
 
   private static void dropSkull(LivingDropsEvent evt, EntityPlayer player) {
@@ -224,10 +230,6 @@ public class SwordHandler {
 
   private static boolean isEquipped(EntityPlayer player) {
     return player != null && player.getHeldItemMainhand().getItem() instanceof ItemDarkSteelSword;
-  }
-
-  public static boolean isEquippedAndPowered(EntityPlayer player, int requiredPower) {
-    return isEquipped(player) && getStoredPower(player) >= requiredPower;
   }
 
   private static int getStoredPower(EntityPlayer player) {

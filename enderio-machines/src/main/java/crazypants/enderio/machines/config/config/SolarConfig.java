@@ -22,6 +22,9 @@ public final class SolarConfig {
   public static final IValue<Integer> darkSteelSolarThreeCost = F.make("darkSteelSolarThreeCost", 24, //
       "Cost in XP levels of the Solar III upgrade.").setMin(1).sync();
 
+  public static final IValue<Boolean> helmetChargeOthers = F.make("helmetChargeOthers", true, //
+      "If enabled allows the solar upgrade to charge non-darksteel armors that the player is wearing.").sync();
+
   public static final IValue<Integer> solarPanelOneOutput = F.make("solarPanelOneOutput", 10, //
       "Maximum output in RF/t of the Simple Photovoltaic Panels.").setMin(1).sync();
   public static final IValue<Integer> solarPanelTwoOutput = F.make("solarPanelTwoOutput", 40, //

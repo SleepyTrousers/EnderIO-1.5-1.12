@@ -3,7 +3,7 @@ package crazypants.enderio.base.item.darksteel.upgrade.spoon;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import net.minecraft.init.Items;
@@ -16,7 +16,7 @@ public class SpoonUpgrade extends AbstractUpgrade {
   public static final @Nonnull SpoonUpgrade INSTANCE = new SpoonUpgrade();
 
   public SpoonUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.spoon", new ItemStack(Items.DIAMOND_SHOVEL), Config.darkSteelSpoonCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.spoon", new ItemStack(Items.DIAMOND_SHOVEL), DarkSteelConfig.spoonCost);
   }
 
   @Override
