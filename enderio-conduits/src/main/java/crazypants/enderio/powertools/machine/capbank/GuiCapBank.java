@@ -25,6 +25,7 @@ import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.PowerDisplayUtil;
+import crazypants.enderio.powertools.config.CapBankConfig;
 import crazypants.enderio.powertools.lang.Lang;
 import crazypants.enderio.powertools.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.powertools.machine.capbank.packet.PacketGuiChange;
@@ -163,13 +164,13 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     x = inputX - 24;
     y = inputY;
     maxInputTF = new TextFieldEnder(fr, x, y, 68, 16);
-    maxInputTF.setMaxStringLength(10);
+    maxInputTF.setMaxStringLength(getMaxIOMaxStringLength());
     maxInputTF.setCharFilter(TextFieldEnder.FILTER_NUMERIC);
 
     x = outputX - 24;
     y = outputY;
     maxOutputTF = new TextFieldEnder(fr, x, y, 68, 16);
-    maxOutputTF.setMaxStringLength(10);
+    maxOutputTF.setMaxStringLength(getMaxIOMaxStringLength());
     maxOutputTF.setCharFilter(TextFieldEnder.FILTER_NUMERIC);
 
     textFields.add(maxInputTF);
@@ -201,6 +202,11 @@ public class GuiCapBank extends GuiContainerBaseEIO {
       }
     };
     addDrawingElement(powerBar);
+  }
+
+  protected int getMaxIOMaxStringLength() {
+    return LangPower.format(Math.max(CapBankConfig.tierC_maxIO.get(),
+        Math.max(CapBankConfig.tier1_maxIO.get(), Math.max(CapBankConfig.tier2_maxIO.get(), CapBankConfig.tier3_maxIO.get())))).length();
   }
 
   @Override
