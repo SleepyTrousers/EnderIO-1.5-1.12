@@ -146,6 +146,17 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Wired Charger, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item /><item name="ELECTRICAL_STEEL" />
+        <item /><item name="CHASSIS" /><item />
+        <item name="ELECTRICAL_STEEL" /><item name="enderio:block_simple_wired_charger" /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="enderio:block_wired_charger" />
+    </crafting>
+  </recipe>
+
   <recipe name="Simple Wired Charger" required="true">
     <crafting>
       <grid size="3x3">
