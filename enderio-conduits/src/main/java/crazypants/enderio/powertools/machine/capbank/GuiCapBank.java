@@ -25,7 +25,6 @@ import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.PowerDisplayUtil;
-import crazypants.enderio.powertools.config.CapBankConfig;
 import crazypants.enderio.powertools.lang.Lang;
 import crazypants.enderio.powertools.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.powertools.machine.capbank.packet.PacketGuiChange;
@@ -205,8 +204,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
   }
 
   protected int getMaxIOMaxStringLength() {
-    return LangPower.format(Math.max(CapBankConfig.tierC_maxIO.get(),
-        Math.max(CapBankConfig.tier1_maxIO.get(), Math.max(CapBankConfig.tier2_maxIO.get(), CapBankConfig.tier3_maxIO.get())))).length();
+    return LangPower.format(network.getMaxIO()).length();
   }
 
   @Override
