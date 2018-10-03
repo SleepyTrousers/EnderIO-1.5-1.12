@@ -18,7 +18,6 @@ import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -29,7 +28,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimitedItemFilter {
+public class ItemFilter implements IItemFilter.WithGhostSlots, ILimitedItemFilter {
 
   private static final boolean DEFAULT_BLACKLIST = false;
 
@@ -328,12 +327,10 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
     readFromNBT(tag);
   }
 
-  @Override
   public int getSizeInventory() {
     return items.size();
   }
 
-  @Override
   public @Nonnull ItemStack getStackInSlot(int i) {
     if (i < 0 || i >= items.size()) {
       return Prep.getEmpty();
@@ -341,7 +338,6 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
     return items.get(i);
   }
 
-  @Override
   public @Nonnull ItemStack decrStackSize(int index, int amount) {
     if (index < 0 || index >= items.size()) {
       return Prep.getEmpty();
@@ -370,7 +366,6 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
     return items.get(slot);
   }
 
-  @Override
   public @Nonnull ItemStack removeStackFromSlot(int index) {
     if (index < 0 || index >= items.size()) {
       return Prep.getEmpty();
@@ -380,41 +375,33 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
     return res;
   }
 
-  @Override
   public void clear() {
     for (int index = 0; index < items.size(); index++) {
       items.set(index, Prep.getEmpty());
     }
   }
 
-  @Override
   public @Nonnull String getName() {
     return "Item Filter";
   }
 
-  @Override
   public int getInventoryStackLimit() {
     return 1;
   }
 
-  @Override
   public boolean hasCustomName() {
     return false;
   }
 
-  @Override
   public void markDirty() {
   }
 
-  @Override
   public void openInventory(@Nonnull EntityPlayer e) {
   }
 
-  @Override
   public void closeInventory(@Nonnull EntityPlayer e) {
   }
 
-  @Override
   public boolean isItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
     return true;
   }
@@ -495,21 +482,17 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
     }
   }
 
-  @Override
   public @Nonnull ITextComponent getDisplayName() {
     return hasCustomName() ? new TextComponentString(getName()) : new TextComponentTranslation(getName(), new Object[0]);
   }
 
-  @Override
   public int getField(int id) {
     return 0;
   }
 
-  @Override
   public void setField(int id, int value) {
   }
 
-  @Override
   public int getFieldCount() {
     return 0;
   }
@@ -574,7 +557,6 @@ public class ItemFilter implements IInventory, IItemFilter.WithGhostSlots, ILimi
     return true;
   }
 
-  @Override
   public boolean isUsableByPlayer(@Nonnull EntityPlayer player) {
     return true;
   }
