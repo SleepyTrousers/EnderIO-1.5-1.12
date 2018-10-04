@@ -173,7 +173,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Upgrade, Speed" required="true">
     <crafting>
       <grid>
-        <item name="ingotIron" /><item name="ingotIron" /><item name="ingotIron" />
+        <item name="IRON" /><item name="IRON" /><item name="IRON" />
         <item name="ELECTRICAL_STEEL" /><item name="minecraft:piston" /><item name="ELECTRICAL_STEEL" />
         <item name="ELECTRICAL_STEEL" /><item name="minecraft:redstone_torch" /><item name="ELECTRICAL_STEEL" />
       </grid>
@@ -184,7 +184,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Upgrade, Slowness" required="true">
     <crafting>
       <grid>
-        <item name="ingotIron" /><item name="ingotIron" /><item name="ingotIron" />
+        <item name="IRON" /><item name="IRON" /><item name="IRON" />
         <item name="ELECTRICAL_STEEL" /><item name="slimeball" /><item name="ELECTRICAL_STEEL" />
         <item name="ELECTRICAL_STEEL" /><item name="stickWood" /><item name="ELECTRICAL_STEEL" />
       </grid>

@@ -73,6 +73,10 @@
             "model": "forge:fluid",
             "custom": { "fluid": "soularium" }
         },
+        "construction_alloy": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "construction_alloy" }
+        },
         "glowstone": {
             "model": "forge:fluid",
             "custom": { "fluid": "glowstone" }

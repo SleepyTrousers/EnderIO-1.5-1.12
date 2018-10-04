@@ -187,7 +187,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid>
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
-        <item name="ingotIron" /><item name="INFINITY_GOOP" /><item name="ingotIron" />
+        <item name="IRON" /><item name="INFINITY_GOOP" /><item name="IRON" />
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
       <output name="enderio:item_endergy_conduit:1" amount="8">

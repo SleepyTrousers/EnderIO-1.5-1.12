@@ -188,6 +188,19 @@ public class TicMaterials {
       }
     });
 
+    TRAITS.put(Alloy.CONSTRUCTION_ALLOY, new Data() {
+      @Override
+      public void traits(@Nonnull Material material) {
+        material.addTrait(TinkerTraits.cheapskate);
+      }
+
+      @Override
+      public void stats(@Nonnull Material material) {
+        TinkerRegistry.addMaterialStats(material, new HeadMaterialStats(50, 1.25f, 1.00f, HarvestLevels.IRON), new HandleMaterialStats(0.5f, 10),
+            new ExtraMaterialStats(10), new BowMaterialStats(3f, 0.5f, 0f));
+      }
+    });
+
   }
 
   public static interface Data {

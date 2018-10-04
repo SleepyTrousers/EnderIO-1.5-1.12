@@ -157,9 +157,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Exit Rail" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="ingotIron" /><item name="minecraft:piston" /><item name="ingotIron" />
-        <item name="ingotIron" /><item name="minecraft:stone_pressure_plate" /><item name="ingotIron" />
-        <item name="ingotIron" /><item name="dustRedstone" /><item name="ingotIron" />
+        <item name="IRON" /><item name="minecraft:piston" /><item name="IRON" />
+        <item name="IRON" /><item name="minecraft:stone_pressure_plate" /><item name="IRON" />
+        <item name="IRON" /><item name="dustRedstone" /><item name="IRON" />
       </grid>
       <output name="enderio:block_exit_rail" amount="6" />
     </crafting>
@@ -262,6 +262,15 @@ XML editor will display that as tooltips when editing this file.
       <input name="ingotDarkSteel"/>
       <input name="obsidian"/>
       <output name="ingotEndSteel"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Construction Alloy" required="false">
+    <alloying energy="10000" exp="0">
+      <input name="ingotLead,ingotCopper,ingotSilver,ingotAluminium,ingotAluminum,ingotTin,ingotNickel,ingotZinc,ingotPlatinum,ingotOsmium,ingotArdite,ingotCobalt,ingotTitanium,ingotMagnesium,ingotTungsten"/>
+      <input name="ingotIron"/>
+      <input name="ingotLead,ingotCopper,ingotSilver,ingotAluminium,ingotAluminum,ingotTin,ingotNickel,ingotZinc,ingotPlatinum,ingotOsmium,ingotArdite,ingotCobalt,ingotTitanium,ingotMagnesium,ingotTungsten"/>
+      <output name="CONSTRUCTION_ALLOY" amount="3" />
     </alloying>
   </recipe>
 

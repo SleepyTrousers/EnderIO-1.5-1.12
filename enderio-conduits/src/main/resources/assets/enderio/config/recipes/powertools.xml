@@ -29,9 +29,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Capacitor Bank, simple" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="ingotIron" /><item name="CAPACITOR1" /><item name="ingotIron" />
+        <item name="IRON" /><item name="CAPACITOR1" /><item name="IRON" />
         <item name="CAPACITOR1" /><item name="blockRedstone" /><item name="CAPACITOR1" />
-        <item name="ingotIron" /><item name="CAPACITOR1" /><item name="ingotIron" />
+        <item name="IRON" /><item name="CAPACITOR1" /><item name="IRON" />
       </grid>
       <output name="CAP_BANK_1" />
     </crafting>
@@ -117,9 +117,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="RF Gauge" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="ingotIron" /><item /><item name="ingotIron" />
+        <item name="IRON" /><item /><item name="IRON" />
         <item name="ELECTRICAL_STEEL" /><item name="CONDUIT_PROBE" /><item name="ELECTRICAL_STEEL" />
-        <item name="ingotIron" /><item /><item name="ingotIron" />
+        <item name="IRON" /><item /><item name="IRON" />
       </grid>
       <output name="enderio:block_gauge" />
     </crafting>

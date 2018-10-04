@@ -23,6 +23,7 @@ public enum Alloy implements IStringSerializable {
   DARK_STEEL("darkSteel", 10.0f, 0x6c6c6c, 1540),
   SOULARIUM("soularium", 10.0f, 0x695b4d, 363),
   END_STEEL("endSteel", 10.0f, 0xfbfcb3, 940),
+  CONSTRUCTION_ALLOY("constructionAlloy", 1.0f, 0x029182a, 290),
 
   ;
 

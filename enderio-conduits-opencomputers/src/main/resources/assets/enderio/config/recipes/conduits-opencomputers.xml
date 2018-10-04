@@ -30,7 +30,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid>
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
-        <item name="ingotIron" /><item name="ingotIron" /><item name="ingotIron" />
+        <item name="IRON" /><item name="IRON" /><item name="IRON" />
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
       <output name="enderio:item_opencomputers_conduit" amount="8">

@@ -49,6 +49,11 @@
         "textures": {
           "layer0": "enderio:items/item_alloy_nugget_end_steel"
         }
+      },
+      "construction_alloy": {
+        "textures": {
+          "layer0": "enderio:items/item_alloy_nugget_construction_alloy"
+        }
       }
     }
   }

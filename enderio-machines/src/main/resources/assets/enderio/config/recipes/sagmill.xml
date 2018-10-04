@@ -32,7 +32,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item name="itemFlint" /><item name="itemFlint" /><item name="itemFlint" />
-        <item name="ingotIron" /><item name="SIMPLE_CHASSIS"/><item name="ingotIron" />
+        <item name="IRON" /><item name="SIMPLE_CHASSIS"/><item name="IRON" />
         <item name="GEAR_STONE" /><item name="minecraft:piston" /><item name="GEAR_STONE" />
       </grid>
       <output name="enderio:block_simple_sag_mill" />

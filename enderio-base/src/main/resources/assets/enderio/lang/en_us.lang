@@ -24,6 +24,7 @@ item.item_alloy_ingot_redstone_alloy.name=Redstone Alloy Ingot
 item.item_alloy_ingot_soularium.name=Soularium Ingot
 item.item_alloy_ingot_vibrant_alloy.name=Vibrant Alloy Ingot
 item.item_alloy_ingot_end_steel.name=End Steel Ingot
+item.item_alloy_ingot_construction_alloy.name=Iron Alloy Ingot
 
 item.item_alloy_ball_conductive_iron.name=Conductive Iron Grinding Ball
 item.item_alloy_ball_dark_steel.name=Dark Steel Grinding Ball
@@ -34,6 +35,7 @@ item.item_alloy_ball_redstone_alloy.name=Redstone Alloy Grinding Ball
 item.item_alloy_ball_soularium.name=Soularium Grinding Ball
 item.item_alloy_ball_vibrant_alloy.name=Vibrant Alloy Grinding Ball
 item.item_alloy_ball_end_steel.name=End Steel Grinding Ball
+item.item_alloy_ball_construction_alloy.name=Iron Alloy Grinding Ball
 
 item.item_alloy_nugget_conductive_iron.name=Conductive Iron Nugget
 item.item_alloy_nugget_dark_steel.name=Dark Steel Nugget
@@ -44,6 +46,7 @@ item.item_alloy_nugget_redstone_alloy.name=Redstone Alloy Nugget
 item.item_alloy_nugget_soularium.name=Soularium Nugget
 item.item_alloy_nugget_vibrant_alloy.name=Vibrant Alloy Nugget
 item.item_alloy_nugget_end_steel.name=End Steel Nugget
+item.item_alloy_nugget_construction_alloy.name=Iron Alloy Nugget
 
 item.item_basic_capacitor.activated.name=Double-Layer Capacitor
 item.item_basic_capacitor.basic.name=Basic Capacitor
@@ -340,6 +343,7 @@ tile.block_alloy.redstone_alloy.name=Redstone Alloy Block
 tile.block_alloy.soularium.name=Soularium Block
 tile.block_alloy.vibrant_alloy.name=Vibrant Alloy Block
 tile.block_alloy.end_steel.name=End Steel Block
+tile.block_alloy.construction_alloy.name=Iron Alloy Block
 
 tile.block_cold_fire.name=Cold Fire
 

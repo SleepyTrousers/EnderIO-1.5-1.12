@@ -88,6 +88,10 @@ XML editor will display that as tooltips when editing this file.
   <item name="ballEndSteel"/>
 </grindingball>
 
+<grindingball name="Construction Alloy Ball" grinding="1.0" chance="0.25" power="0.25" durability="12000" >
+  <item name="CONSTRUCTION_ALLOY_BALL"/>
+</grindingball>
+
 <grindingball name="Signalum Ball" grinding="1.2" chance="1.65" power="0.35" durability="100000" >
   <item name="SIGNALUM_BALL"/>
 </grindingball>
@@ -429,6 +433,43 @@ XML editor will display that as tooltips when editing this file.
     <casting>
       <input name="ingotGold" amount="2"/>
       <cast name="SOULARIUM_BALL" consumed="true"/>
+      <output name="tconstruct:cast_custom:2"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Construction Alloy Ball Crafting" required="true">
+    <crafting>
+      <grid>
+        <item/><item name="CONSTRUCTION_ALLOY"/><item/>
+        <item name="CONSTRUCTION_ALLOY"/><item name="CONSTRUCTION_ALLOY"/><item name="CONSTRUCTION_ALLOY"/>
+        <item/><item name="CONSTRUCTION_ALLOY"/><item/>
+      </grid>
+      <output name="CONSTRUCTION_ALLOY_BALL" amount="24"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Construction Alloy Casting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="CONSTRUCTION_ALLOY_NUGGET" amount="1.875"/><!-- 30mB -->
+      <cast name="tconstruct:cast_custom:2"/>
+      <output name="CONSTRUCTION_ALLOY_BALL"/>
+    </casting>
+  </recipe>
+
+  <recipe name="Construction Alloy Ball Smelting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <smelting tinkers="true" vanilla="false">
+      <input name="CONSTRUCTION_ALLOY_BALL" amount="24"/>
+      <output name="CONSTRUCTION_ALLOY" amount="5"/>
+    </smelting>
+  </recipe>
+
+  <recipe name="Construction Alloy Ball Reverse Casting" required="true">
+    <dependency item="tconstruct:cast_custom:2"/>
+    <casting>
+      <input name="ingotGold" amount="2"/>
+      <cast name="CONSTRUCTION_ALLOY_BALL" consumed="true"/>
       <output name="tconstruct:cast_custom:2"/>
     </casting>
   </recipe>
