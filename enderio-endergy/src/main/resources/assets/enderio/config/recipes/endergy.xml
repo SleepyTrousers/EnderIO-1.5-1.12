@@ -71,7 +71,7 @@ XML editor will display that as tooltips when editing this file.
     <alloying energy="20000" exp="0.5">
       <input name="minecraft:nether_star"/>
       <input name="ingotMelodicAlloy"/>
-      <input name="oredict:itemClay"/>
+      <input name="oredict:itemClay" amount="4" />
       <output name="ingotStellarAlloy" amount="2"/>
     </alloying>
   </recipe>
@@ -124,7 +124,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid>
         <item /><item name="nuggetSilver"/><item name="POWDER_INFINITY" />
-        <item name="nuggetSilver"/><item name="ingotTin"/><item name="nuggetSilver"/>
+        <item name="nuggetSilver"/><item name="ingotLead"/><item name="nuggetSilver"/>
         <item name="POWDER_INFINITY"/><item name="nuggetSilver"/><item />
       </grid>
       <output name="enderio:item_capacitor_silver"/>
