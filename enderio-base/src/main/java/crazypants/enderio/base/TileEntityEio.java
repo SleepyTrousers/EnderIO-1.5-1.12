@@ -12,6 +12,7 @@ import crazypants.enderio.autosave.handlers.EIOHandlers;
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.paint.PaintUtil;
+import crazypants.enderio.util.HandlePaintSource;
 import crazypants.enderio.util.NbtValue;
 import info.loenwind.autosave.Reader;
 import info.loenwind.autosave.Writer;
@@ -156,7 +157,7 @@ public abstract class TileEntityEio extends TileEntityBase {
   // PAINT START
   // ///////////////////////////////////////////////////////////////////////
 
-  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
+  @Store(value = { NBTAction.CLIENT, NBTAction.SAVE }, handler = HandlePaintSource.class)
   private IBlockState paintSource = null;
 
   public void setPaintSource(@Nullable IBlockState paintSource) {
