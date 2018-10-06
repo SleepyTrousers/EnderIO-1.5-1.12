@@ -22,48 +22,58 @@ public class Metal {
   private static final ResourceLocation TEX_FLOWING = new ResourceLocation("tconstruct:blocks/fluids/molten_metal");
 
   public static void createFluid(final @Nonnull Alloy alloy) {
-    TicMaterials.setFluid(alloy, new Fluid(alloy.getFluidName(), TEX_FLOWING, TEX_STILL) {
+    if (!TicMaterials.hasIntegration(alloy)) {
+      return;
+    }
+    TicMaterials.getData(alloy).setFluid(new Fluid(alloy.getFluidName(), TEX_FLOWING, TEX_STILL) {
       @Override
       public int getColor() {
         return 0xFF000000 | alloy.getColor();
       }
     }.setDensity(9000).setLuminosity(6).setTemperature(alloy.getMeltingPoint() + 273).setViscosity(3000));
 
-    FluidRegistry.registerFluid(TicMaterials.getFluid(alloy));
-    FluidRegistry.addBucketForFluid(TicMaterials.getFluid(alloy));
+    FluidRegistry.registerFluid(TicMaterials.getData(alloy).getFluid());
+    FluidRegistry.addBucketForFluid(TicMaterials.getData(alloy).getFluid());
 
-    TicMaterials.setMaterial(alloy, new Material(alloy.getBaseName(), alloy.getColor()));
-    TicMaterials.getMaterial(alloy).addCommonItems(alloy.getOreName());
-    TinkerRegistry.integrate(new MaterialIntegration(TicMaterials.getMaterial(alloy), TicMaterials.getFluid(alloy), alloy.getOreName()) {
+    TicMaterials.getData(alloy).setMaterial(new Material(alloy.getBaseName(), alloy.getColor()));
+    TicMaterials.getData(alloy).getMaterial().addCommonItems(alloy.getOreName());
+    TinkerRegistry.integrate(new MaterialIntegration(TicMaterials.getData(alloy).getMaterial(), TicMaterials.getData(alloy).getFluid(), alloy.getOreName()) {
       @Override
       public void registerFluidBlock(IForgeRegistry<Block> registry) {
       };
     }.toolforge()).preInit(); // preInit needed only for correct mod identification
-    TicMaterials.getData(alloy).stats(TicMaterials.getMaterial(alloy));
+    TicMaterials.getData(alloy).stats();
   }
 
   public static void createMaterial(final @Nonnull Alloy alloy) {
-    TicMaterials.setMaterial(alloy, new Material(alloy.getBaseName(), alloy.getColor()));
-    TicMaterials.getMaterial(alloy).addCommonItems(alloy.getOreName());
-    TinkerRegistry.integrate(new MaterialIntegration(TicMaterials.getMaterial(alloy), null, alloy.getOreName()) {
+    if (!TicMaterials.hasIntegration(alloy)) {
+      return;
+    }
+    TicMaterials.getData(alloy).setMaterial(new Material(alloy.getBaseName(), alloy.getColor()));
+    TicMaterials.getData(alloy).getMaterial().addCommonItems(alloy.getOreName());
+    TinkerRegistry.integrate(new MaterialIntegration(TicMaterials.getData(alloy).getMaterial(), null, alloy.getOreName()) {
       @Override
       public void registerFluidBlock(IForgeRegistry<Block> registry) {
       };
     }).preInit(); // preInit needed only for correct mod identification
-    TicMaterials.getData(alloy).stats(TicMaterials.getMaterial(alloy));
+    TicMaterials.getData(alloy).stats();
   }
 
   public static Block createFluidBlock(final @Nonnull Alloy alloy) {
-    return MoltenMetal.create(TicMaterials.getFluid(alloy), alloy.getColor());
+    return MoltenMetal.create(TicMaterials.getData(alloy).getFluid(), alloy.getColor());
   }
 
   public static void createTraits(final @Nonnull Alloy alloy) {
-    TicMaterials.getData(alloy).traits(TicMaterials.getMaterial(alloy));
+    if (TicMaterials.hasIntegration(alloy)) {
+      TicMaterials.getData(alloy).traits();
+    }
   }
 
   @SideOnly(Side.CLIENT)
   public static void registerRenderers(final @Nonnull Alloy alloy) {
-    Fluids.registerFluidBlockRendering(TicMaterials.getFluid(alloy));
+    if (TicMaterials.hasIntegration(alloy)) {
+      Fluids.registerFluidBlockRendering(TicMaterials.getData(alloy).getFluid());
+    }
   }
 
 }
