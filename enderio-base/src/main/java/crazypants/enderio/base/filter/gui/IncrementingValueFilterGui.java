@@ -49,9 +49,13 @@ public class IncrementingValueFilterGui extends AbstractFilterGui {
 
     int multiplier = 1;
     if (isShiftKeyDown()) {
-      multiplier = 10;
-    } else if (isCtrlKeyDown()) {
-      multiplier = 20;
+      multiplier *= 10;
+    }
+    if (isCtrlKeyDown()) {
+      multiplier *= 100;
+    }
+    if (isAltKeyDown()) {
+      multiplier *= 1000;
     }
 
     if (button.id == ID_VALUE_UP) {
