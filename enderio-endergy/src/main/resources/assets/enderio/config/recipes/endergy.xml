@@ -347,4 +347,80 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <!-- Tools and Armour -->
+  <recipe name="Stellar Steel Helmet" required="true">
+    <crafting>
+      <grid size="3x2">
+        <item name="ingotStellarAlloy" /><item name="ingotStellarAlloy" /><item name="ingotStellarAlloy" />
+        <item name="ingotStellarAlloy" /><item name="skullSentientEnder" /><item name="ingotStellarAlloy" />
+      </grid>
+      <output name="enderio:item_stellar_alloy_helmet" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Stellar Steel Chestplate" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotStellarAlloy" /><item name="skullSentientEnder" /><item name="ingotStellarAlloy" />
+        <item name="ingotStellarAlloy" /><item name="ingotStellarAlloy" /><item name="ingotStellarAlloy" />
+        <item name="ingotStellarAlloy" /><item name="ingotStellarAlloy" /><item name="ingotStellarAlloy" />
+      </grid>
+      <output name="enderio:item_stellar_alloy_chestplate" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Stellar Steel Leggings" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotStellarAlloy" /><item name="ingotStellarAlloy" /><item name="ingotStellarAlloy" />
+        <item name="ingotStellarAlloy" /><item name="skullSentientEnder" /><item name="ingotStellarAlloy" />
+        <item name="ingotStellarAlloy" /><item /><item name="ingotStellarAlloy" />
+      </grid>
+      <output name="enderio:item_stellar_alloy_leggings" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Stellar Steel Boots" required="true">
+    <crafting>
+      <grid size="3x2">
+        <item name="ingotStellarAlloy" /><item name="skullSentientEnder" /><item name="ingotStellarAlloy" />
+        <item name="ingotStellarAlloy" /><item /><item name="ingotStellarAlloy" />
+      </grid>
+      <output name="enderio:item_stellar_alloy_boots" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Stellar Alloy Sword" required="true">
+    <crafting>
+      <grid size="1x3">
+        <item name="ingotStellarAlloy" />
+        <item name="ingotStellarAlloy" />
+        <item name="skullSentientEnder" />
+      </grid>
+      <output name="enderio:item_stellar_alloy_sword" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Stellar Alloy Pickaxe" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="ingotStellarAlloy" /><item name="ingotStellarAlloy" /><item name="ingotStellarAlloy" />
+        <item /><item name="skullSentientEnder" /><item />
+        <item /><item name="itemInfinityRod" /><item />
+      </grid>
+      <output name="enderio:item_stellar_alloy_pickaxe" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Stellar Alloy Axe" required="true">
+    <crafting>
+      <grid size="2x3">
+        <item name="ingotStellarAlloy" /><item name="ingotStellarAlloy" />
+        <item name="ingotStellarAlloy" /><item name="skullSentientEnder" />
+        <item /><item name="itemInfinityRod" />
+      </grid>
+      <output name="enderio:item_stellar_alloy_axe" />
+    </crafting>
+  </recipe>
+
 </enderio:recipes>
