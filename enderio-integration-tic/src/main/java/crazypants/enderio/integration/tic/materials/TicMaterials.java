@@ -26,186 +26,193 @@ import static slimeknights.tconstruct.library.utils.HarvestLevels.STONE;
 
 public class TicMaterials {
 
-  private static final Map<Alloy, Data> TRAITS = new EnumMap<>(Alloy.class);
-  private static final Map<Alloy, Fluid> FLUIDS = new EnumMap<>(Alloy.class);
-  private static final Map<Alloy, Material> MATERIALS = new EnumMap<>(Alloy.class);
+  private static final Map<Alloy, Data> DATA = new EnumMap<>(Alloy.class);
+
+  public static boolean hasIntegration(Alloy alloy) {
+    return DATA.get(alloy) != null;
+  }
 
   public static @Nonnull Data getData(Alloy alloy) {
-    return NullHelper.notnull(TRAITS.get(alloy), "TRAIT AWOL");
-  }
-
-  public static @Nonnull Fluid getFluid(Alloy alloy) {
-    return NullHelper.notnull(FLUIDS.get(alloy), "FLUID AWOL");
-  }
-
-  public static @Nonnull Material getMaterial(Alloy alloy) {
-    return NullHelper.notnull(MATERIALS.get(alloy), "MATERIAL AWOL");
-  }
-
-  public static void setFluid(Alloy alloy, Fluid fluid) {
-    FLUIDS.put(alloy, fluid);
-  }
-
-  public static void setMaterial(Alloy alloy, Material material) {
-    MATERIALS.put(alloy, material);
+    return NullHelper.notnull(DATA.get(alloy), "TRAIT AWOL");
   }
 
   static {
-    TRAITS.put(Alloy.ELECTRICAL_STEEL, new Data() {
+    DATA.put(Alloy.ELECTRICAL_STEEL, new Data() {
       @Override
-      public void traits(@Nonnull Material material) {
-        material.addTrait(TinkerTraits.lightweight);
-        material.addTrait(TinkerTraits.shocking, MaterialTypes.HEAD);
+      public void traits() {
+        getMaterial().addTrait(TinkerTraits.lightweight);
+        getMaterial().addTrait(TinkerTraits.shocking, MaterialTypes.HEAD);
       }
 
       @Override
-      public void stats(@Nonnull Material material) {
-        TinkerRegistry.addMaterialStats(material, new HeadMaterialStats(306, 6.50f, 2.25f, HarvestLevels.DIAMOND), new HandleMaterialStats(0.75f, 80),
+      public void stats() {
+        TinkerRegistry.addMaterialStats(getMaterial(), new HeadMaterialStats(306, 6.50f, 2.25f, HarvestLevels.DIAMOND), new HandleMaterialStats(0.75f, 80),
             new ExtraMaterialStats(75), new BowMaterialStats(1.5f, 0.9f, 1f));
       }
     });
 
-    TRAITS.put(Alloy.ENERGETIC_ALLOY, new Data() {
+    DATA.put(Alloy.ENERGETIC_ALLOY, new Data() {
       @Override
-      public void traits(@Nonnull Material material) {
-        material.addTrait(TinkerTraits.petramor);
-        material.addTrait(TinkerTraits.unnatural, MaterialTypes.HEAD);
-        material.addTrait(TinkerTraits.holy, MaterialTypes.HANDLE);
+      public void traits() {
+        getMaterial().addTrait(TinkerTraits.petramor);
+        getMaterial().addTrait(TinkerTraits.unnatural, MaterialTypes.HEAD);
+        getMaterial().addTrait(TinkerTraits.holy, MaterialTypes.HANDLE);
       }
 
       @Override
-      public void stats(@Nonnull Material material) {
-        TinkerRegistry.addMaterialStats(material, new HeadMaterialStats(690, 2.50f, 5.60f, HarvestLevels.OBSIDIAN), new HandleMaterialStats(2.00f, -800),
+      public void stats() {
+        TinkerRegistry.addMaterialStats(getMaterial(), new HeadMaterialStats(690, 2.50f, 5.60f, HarvestLevels.OBSIDIAN), new HandleMaterialStats(2.00f, -800),
             new ExtraMaterialStats(400), new BowMaterialStats(0.50f, 0.8f, 1f));
       }
     });
 
-    TRAITS.put(Alloy.VIBRANT_ALLOY, new Data() {
+    DATA.put(Alloy.VIBRANT_ALLOY, new Data() {
       @Override
-      public void traits(@Nonnull Material material) {
-        material.addTrait(TraitPickup.instance);
-        material.addTrait(TraitTeleport.instance4, MaterialTypes.HEAD);
+      public void traits() {
+        getMaterial().addTrait(TraitPickup.instance);
+        getMaterial().addTrait(TraitTeleport.instance4, MaterialTypes.HEAD);
       }
 
       @Override
-      public void stats(@Nonnull Material material) {
-        TinkerRegistry.addMaterialStats(material, new HeadMaterialStats(220, 3.50f, 9.00f, HarvestLevels.COBALT), new HandleMaterialStats(0.50f, -50),
+      public void stats() {
+        TinkerRegistry.addMaterialStats(getMaterial(), new HeadMaterialStats(220, 3.50f, 9.00f, HarvestLevels.COBALT), new HandleMaterialStats(0.50f, -50),
             new ExtraMaterialStats(60), new BowMaterialStats(0.75f, 1.0f, 5f));
       }
     });
 
-    TRAITS.put(Alloy.REDSTONE_ALLOY, new Data() {
+    DATA.put(Alloy.REDSTONE_ALLOY, new Data() {
       @Override
-      public void traits(@Nonnull Material material) {
-        material.addTrait(TinkerTraits.crude);
-        material.addTrait(TinkerTraits.shocking, MaterialTypes.HEAD);
-        material.addTrait(TinkerTraits.writable, MaterialTypes.HANDLE);
+      public void traits() {
+        getMaterial().addTrait(TinkerTraits.crude);
+        getMaterial().addTrait(TinkerTraits.shocking, MaterialTypes.HEAD);
+        getMaterial().addTrait(TinkerTraits.writable, MaterialTypes.HANDLE);
       }
 
       @Override
-      public void stats(@Nonnull Material material) {
-        TinkerRegistry.addMaterialStats(material, new HeadMaterialStats(120, 2.50f, 1.50f, STONE), new HandleMaterialStats(1.00f, -5),
+      public void stats() {
+        TinkerRegistry.addMaterialStats(getMaterial(), new HeadMaterialStats(120, 2.50f, 1.50f, STONE), new HandleMaterialStats(1.00f, -5),
             new ExtraMaterialStats(150), new BowMaterialStats(2.5f, 0.4f, 0f));
       }
     });
 
-    TRAITS.put(Alloy.CONDUCTIVE_IRON, new Data() {
+    DATA.put(Alloy.CONDUCTIVE_IRON, new Data() {
       @Override
-      public void traits(@Nonnull Material material) {
-        material.addTrait(TinkerTraits.lightweight);
-        material.addTrait(TinkerTraits.crude2, MaterialTypes.HEAD);
+      public void traits() {
+        getMaterial().addTrait(TinkerTraits.lightweight);
+        getMaterial().addTrait(TinkerTraits.crude2, MaterialTypes.HEAD);
       }
 
       @Override
-      public void stats(@Nonnull Material material) {
-        TinkerRegistry.addMaterialStats(material, new HeadMaterialStats(106, 6.75f, 1.25f, HarvestLevels.DIAMOND), new HandleMaterialStats(1.25f, 100),
+      public void stats() {
+        TinkerRegistry.addMaterialStats(getMaterial(), new HeadMaterialStats(106, 6.75f, 1.25f, HarvestLevels.DIAMOND), new HandleMaterialStats(1.25f, 100),
             new ExtraMaterialStats(250), new BowMaterialStats(1.5f, 0.9f, 1.25f));
       }
     });
 
-    TRAITS.put(Alloy.PULSATING_IRON, new Data() {
+    DATA.put(Alloy.PULSATING_IRON, new Data() {
       @Override
-      public void traits(@Nonnull Material material) {
-        material.addTrait(TraitTeleport.instance1);
-        material.addTrait(TraitTeleport.instance2, MaterialTypes.HANDLE);
-        material.addTrait(TraitTeleport.instance3, MaterialTypes.EXTRA);
-        material.addTrait(TraitTeleport.instance0, MaterialTypes.HEAD);
-        material.addTrait(TinkerTraits.poisonous, MaterialTypes.PROJECTILE);
+      public void traits() {
+        getMaterial().addTrait(TraitTeleport.instance1);
+        getMaterial().addTrait(TraitTeleport.instance2, MaterialTypes.HANDLE);
+        getMaterial().addTrait(TraitTeleport.instance3, MaterialTypes.EXTRA);
+        getMaterial().addTrait(TraitTeleport.instance0, MaterialTypes.HEAD);
+        getMaterial().addTrait(TinkerTraits.poisonous, MaterialTypes.PROJECTILE);
       }
 
       @Override
-      public void stats(@Nonnull Material material) {
-        TinkerRegistry.addMaterialStats(material, new HeadMaterialStats(920, 6.00f, 2.00f, HarvestLevels.IRON), new HandleMaterialStats(1.05f, 250),
+      public void stats() {
+        TinkerRegistry.addMaterialStats(getMaterial(), new HeadMaterialStats(920, 6.00f, 2.00f, HarvestLevels.IRON), new HandleMaterialStats(1.05f, 250),
             new ExtraMaterialStats(250), new BowMaterialStats(0.25f, 3.5f, 6f));
       }
     });
 
-    TRAITS.put(Alloy.DARK_STEEL, new Data() {
+    DATA.put(Alloy.DARK_STEEL, new Data() {
       @Override
-      public void traits(@Nonnull Material material) {
-        material.addTrait(TinkerTraits.unnatural);
-        material.addTrait(TinkerTraits.enderference, MaterialTypes.HEAD);
-        material.addTrait(TinkerTraits.dense, MaterialTypes.EXTRA);
-        material.addTrait(TinkerTraits.dense, MaterialTypes.BOW);
+      public void traits() {
+        getMaterial().addTrait(TinkerTraits.unnatural);
+        getMaterial().addTrait(TinkerTraits.enderference, MaterialTypes.HEAD);
+        getMaterial().addTrait(TinkerTraits.dense, MaterialTypes.EXTRA);
+        getMaterial().addTrait(TinkerTraits.dense, MaterialTypes.BOW);
       }
 
       @Override
-      public void stats(@Nonnull Material material) {
-        TinkerRegistry.addMaterialStats(material, new HeadMaterialStats(550, 7.00f, 6.00f, HarvestLevels.COBALT), new HandleMaterialStats(0.9f, 150),
+      public void stats() {
+        TinkerRegistry.addMaterialStats(getMaterial(), new HeadMaterialStats(550, 7.00f, 6.00f, HarvestLevels.COBALT), new HandleMaterialStats(0.9f, 150),
             new ExtraMaterialStats(250), new BowMaterialStats(0.3f, 2.5f, 9f));
       }
     });
 
-    TRAITS.put(Alloy.SOULARIUM, new Data() {
+    DATA.put(Alloy.SOULARIUM, new Data() {
       @Override
-      public void traits(@Nonnull Material material) {
-        material.addTrait(TinkerTraits.duritos);
-        material.addTrait(TinkerTraits.hellish, MaterialTypes.HEAD);
-        material.addTrait(TinkerTraits.splinters, MaterialTypes.EXTRA);
-        material.addTrait(TinkerTraits.flammable, MaterialTypes.HANDLE);
-        material.addTrait(TinkerTraits.writable, MaterialTypes.BOWSTRING);
+      public void traits() {
+        getMaterial().addTrait(TinkerTraits.duritos);
+        getMaterial().addTrait(TinkerTraits.hellish, MaterialTypes.HEAD);
+        getMaterial().addTrait(TinkerTraits.splinters, MaterialTypes.EXTRA);
+        getMaterial().addTrait(TinkerTraits.flammable, MaterialTypes.HANDLE);
+        getMaterial().addTrait(TinkerTraits.writable, MaterialTypes.BOWSTRING);
       }
 
       @Override
-      public void stats(@Nonnull Material material) {
-        TinkerRegistry.addMaterialStats(material, new HeadMaterialStats(1555, 1.00f, 1.00f, HarvestLevels.STONE), new HandleMaterialStats(0.5f, 1500),
+      public void stats() {
+        TinkerRegistry.addMaterialStats(getMaterial(), new HeadMaterialStats(1555, 1.00f, 1.00f, HarvestLevels.STONE), new HandleMaterialStats(0.5f, 1500),
             new ExtraMaterialStats(1250), new BowMaterialStats(0.1f, 0.5f, 0f), new BowStringMaterialStats(0.75f));
       }
     });
 
-    TRAITS.put(Alloy.END_STEEL, new Data() {
+    DATA.put(Alloy.END_STEEL, new Data() {
       @Override
-      public void traits(@Nonnull Material material) {
-        material.addTrait(TinkerTraits.unnatural);
-        material.addTrait(TinkerTraits.enderference, MaterialTypes.HEAD);
-        material.addTrait(TinkerTraits.alien, MaterialTypes.HEAD);
+      public void traits() {
+        getMaterial().addTrait(TinkerTraits.unnatural);
+        getMaterial().addTrait(TinkerTraits.enderference, MaterialTypes.HEAD);
+        getMaterial().addTrait(TinkerTraits.alien, MaterialTypes.HEAD);
       }
 
       @Override
-      public void stats(@Nonnull Material material) {
-        TinkerRegistry.addMaterialStats(material, new HeadMaterialStats(400, 8.25f, 5.00f, HarvestLevels.COBALT), new HandleMaterialStats(0.9f, 50),
+      public void stats() {
+        TinkerRegistry.addMaterialStats(getMaterial(), new HeadMaterialStats(400, 8.25f, 5.00f, HarvestLevels.COBALT), new HandleMaterialStats(0.9f, 50),
             new ExtraMaterialStats(150), new BowMaterialStats(0.3f, 2.5f, 9f));
       }
     });
 
-    TRAITS.put(Alloy.CONSTRUCTION_ALLOY, new Data() {
+    DATA.put(Alloy.CONSTRUCTION_ALLOY, new Data() {
       @Override
-      public void traits(@Nonnull Material material) {
-        material.addTrait(TinkerTraits.cheapskate);
+      public void traits() {
+        getMaterial().addTrait(TinkerTraits.cheapskate);
       }
 
       @Override
-      public void stats(@Nonnull Material material) {
-        TinkerRegistry.addMaterialStats(material, new HeadMaterialStats(50, 1.25f, 1.00f, HarvestLevels.IRON), new HandleMaterialStats(0.5f, 10),
+      public void stats() {
+        TinkerRegistry.addMaterialStats(getMaterial(), new HeadMaterialStats(50, 1.25f, 1.00f, HarvestLevels.IRON), new HandleMaterialStats(0.5f, 10),
             new ExtraMaterialStats(10), new BowMaterialStats(3f, 0.5f, 0f));
       }
     });
 
   }
 
-  public static interface Data {
-    void traits(@Nonnull Material material);
+  public static abstract class Data {
+    private Fluid fluid;
 
-    void stats(@Nonnull Material material);
+    private Material material;
+
+    abstract public void traits();
+
+    abstract public void stats();
+
+    public @Nonnull Fluid getFluid() {
+      return NullHelper.notnull(fluid, "FLUID AWOL");
+    }
+
+    public void setFluid(Fluid fluid) {
+      this.fluid = fluid;
+    }
+
+    public @Nonnull Material getMaterial() {
+      return NullHelper.notnull(material, "MATERIAL AWOL");
+    }
+
+    public void setMaterial(Material material) {
+      this.material = material;
+    };
+
   }
 }
