@@ -361,8 +361,9 @@ tile.block_alloy.vibrant_alloy.name=Vibrant Alloy Block
 tile.block_alloy.end_steel.name=End Steel Block
 tile.block_alloy.construction_alloy.name=Iron Alloy Block
 
+tile.block_alloy_endergy.name=Endergy Alloy Block
 tile.block_alloy_endergy.crude_steel.name=Crude Steel Block
-tile.block_alloy_endergy.cyrstalline_alloy.name=Crystalline Alloy Block
+tile.block_alloy_endergy.crystalline_alloy.name=Crystalline Alloy Block
 tile.block_alloy_endergy.melodic_alloy.name=Melodic Alloy Block
 tile.block_alloy_endergy.stellar_alloy.name=Stellar Alloy Block
 tile.block_alloy_endergy.crystalline_pink_slime.name=Crystalline Pink Slime Block

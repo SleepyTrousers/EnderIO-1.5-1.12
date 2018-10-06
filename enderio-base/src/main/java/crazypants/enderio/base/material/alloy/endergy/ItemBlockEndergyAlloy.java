@@ -5,7 +5,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
-import crazypants.enderio.base.material.alloy.Alloy;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
@@ -22,7 +21,7 @@ public class ItemBlockEndergyAlloy extends ItemBlock {
 
   @Override
   public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
-    return getUnlocalizedName() + "." + Alloy.getTypeFromMeta(stack.getItemDamage()).getBaseName();
+    return getUnlocalizedName() + "." + AlloyEndergy.getTypeFromMeta(stack.getItemDamage()).getBaseName();
   }
 
   @Override
