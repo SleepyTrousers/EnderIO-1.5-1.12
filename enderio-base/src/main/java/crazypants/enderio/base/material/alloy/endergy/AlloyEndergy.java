@@ -1,4 +1,4 @@
-package crazypants.enderio.base.material.alloy;
+package crazypants.enderio.base.material.alloy.endergy;
 
 import java.util.Locale;
 
@@ -9,21 +9,20 @@ import org.apache.commons.lang3.StringUtils;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.material.alloy.IAlloy;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 
-public enum Alloy implements IStringSerializable, IAlloy {
+public enum AlloyEndergy implements IStringSerializable, IAlloy {
 
-  ELECTRICAL_STEEL("electricalSteel", 6.0f, 0xa9a9a9, 1202),
-  ENERGETIC_ALLOY("energeticAlloy", 7.0f, 0xd9934c, 855),
-  VIBRANT_ALLOY("vibrantAlloy", 4.0f, 0xb6c870, 640),
-  REDSTONE_ALLOY("redstoneAlloy", 1.0f, 0xb12727, 1084),
-  CONDUCTIVE_IRON("conductiveIron", 5.2f, 0xab5d5f, 1127),
-  PULSATING_IRON("pulsatingIron", 7.0f, 0x2c9044, 1132),
-  DARK_STEEL("darkSteel", 10.0f, 0x6c6c6c, 1540),
-  SOULARIUM("soularium", 10.0f, 0x695b4d, 363),
-  END_STEEL("endSteel", 10.0f, 0xfbfcb3, 940),
-  CONSTRUCTION_ALLOY("constructionAlloy", 1.0f, 0x029182a, 290),
+  // endergy
+  CRUDE_STEEL("crudeSteel", 2.0f, 0xc3b7b1, 140),
+  CRYSTALLINE_ALLOY("crystallineAlloy", 6.0f, 0x86d9d9, 1152),
+  MELODIC_ALLOY("melodicAlloy", 5.0f, 0x845e84, 940),
+  STELLAR_ALLOY("stellarAlloy", 10.0f, 0xe7eaea, 1202),
+  CRYSTAlLINE_PINK_SLIME("crystallinePinkSlime", 7.0f, 0x35a8db, 1174),
+  ENERGETIC_SILVER("energeticSilver", 7.0f, 0x79a5c5, 855),
+  VIVID_ALLOY("vividAlloy", 4.0f, 0x4bbad6, 650),
 
   ;
 
@@ -33,7 +32,7 @@ public enum Alloy implements IStringSerializable, IAlloy {
   private final int color;
   private final int meltingPoint; // in °C
 
-  private Alloy(@Nonnull String baseName, float hardness, int color, int meltingPoint) {
+  private AlloyEndergy(@Nonnull String baseName, float hardness, int color, int meltingPoint) {
     this.baseName = baseName.replaceAll("([A-Z])", "_$0").toLowerCase(Locale.ENGLISH);
     this.oreName = StringUtils.capitalize(baseName);
     this.hardness = hardness;
@@ -73,7 +72,7 @@ public enum Alloy implements IStringSerializable, IAlloy {
 
   @Override
   public @Nonnull ItemStack getStackNugget(int size) {
-    return new ItemStack(ModObject.itemAlloyNugget.getItemNN(), size, ordinal());
+    return new ItemStack(ModObject.itemAlloyEndergyNugget.getItemNN(), size, ordinal());
   }
 
   @Override
@@ -83,7 +82,7 @@ public enum Alloy implements IStringSerializable, IAlloy {
 
   @Override
   public @Nonnull ItemStack getStackIngot(int size) {
-    return new ItemStack(ModObject.itemAlloyIngot.getItemNN(), size, ordinal());
+    return new ItemStack(ModObject.itemAlloyEndergyIngot.getItemNN(), size, ordinal());
   }
 
   @Override
@@ -93,7 +92,7 @@ public enum Alloy implements IStringSerializable, IAlloy {
 
   @Override
   public @Nonnull ItemStack getStackBall(int size) {
-    return new ItemStack(ModObject.itemAlloyBall.getItemNN(), size, ordinal());
+    return new ItemStack(ModObject.itemAlloyEndergyNugget.getItemNN(), size, ordinal());
   }
 
   @Override
@@ -103,7 +102,7 @@ public enum Alloy implements IStringSerializable, IAlloy {
 
   @Override
   public @Nonnull ItemStack getStackBlock(int size) {
-    return new ItemStack(ModObject.blockAlloy.getBlockNN(), size, ordinal());
+    return new ItemStack(ModObject.blockAlloyEndergy.getBlockNN(), size, ordinal());
   }
 
   @Override
@@ -136,11 +135,12 @@ public enum Alloy implements IStringSerializable, IAlloy {
     return baseName;
   }
 
-  public static @Nonnull Alloy getTypeFromMeta(int meta) {
+  public static @Nonnull
+  AlloyEndergy getTypeFromMeta(int meta) {
     return NullHelper.notnullJ(values()[meta >= 0 && meta < values().length ? meta : 0], "Enum.values()");
   }
 
-  public static int getMetaFromType(@Nonnull Alloy value) {
+  public static int getMetaFromType(@Nonnull AlloyEndergy value) {
     return value.ordinal();
   }
 

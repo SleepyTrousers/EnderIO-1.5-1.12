@@ -268,15 +268,31 @@ item.item_material.glazed_nether_brick.name=Nethercotta
 item.item_material.infinity_goop.name=Infinity Reagent
 item.item_material.infinity_goop.tooltip.detailed.line1=An infinitely sticky substance for conducting energy.
 item.item_material.infinity_goop.tooltip.detailed.line2=Randalf got some on him once, and was stuck to his staff of travelling for 6 months...
-item.item_material.ingot_energetic_silver.name=Energetic Silver Ingot
-item.item_material.ingot_crystalline_pink_slime.name=Crystalline Pink Slime Ingot
-item.item_material.ingot_crystalline_pink_slime.tooltip.detailed.line1=So this is what happens when you leave jello in the freezer too long...
-item.item_material.ingot_combustive_metal.name=Combustive Iron Ingot
-item.item_material.ingot_crude_steel.name=Crude Steel Ingot
-item.item_material.ingot_crystalline_alloy.name=Crystalline Alloy Ingot
-item.item_material.ingot_melodic_alloy.name=Melodic Alloy Ingot
-item.item_material.ingot_stellar_alloy.name=Stellar Alloy Ingot
-item.item_material.ingot_vivid_alloy.name=Vivid Alloy Ingot
+
+item.item_alloy_endergy_ingot_crude_steel.name=Crude Steel Ingot
+item.item_alloy_endergy_ingot_crystalline_alloy.name=Crystalline Alloy Ingot
+item.item_alloy_endergy_ingot_melodic_alloy.name=Melodic Alloy Ingot
+item.item_alloy_endergy_ingot_stellar_alloy.name=Stellar Alloy Ingot
+item.item_alloy_endergy_ingot_crystalline_pink_slime.name=Crystalline Pink Slime Ingot
+item.item_alloy_endergy_ingot_crystalline_pink_slime.tooltip.detailed.line1=So this is what happens when you leave jello in the freezer too long...
+item.item_alloy_endergy_ingot_energetic_silver.name=Energetic Silver Ingot
+item.item_alloy_endergy_ingot_vivid_alloy.name=Vivid Alloy Ingot
+
+item.item_alloy_endergy_ball_crude_steel.name=Crude Steel Grinding Ball
+item.item_alloy_endergy_ball_crystalline_alloy.name=Crystalline Alloy Grinding Ball
+item.item_alloy_endergy_ball_melodic_alloy.name=Melodic Alloy Grinding Ball
+item.item_alloy_endergy_ball_stellar_alloy.name=Stellar Alloy Grinding Ball
+item.item_alloy_endergy_ball_crystalline_pink_slime.name=Crystalline Pink Slime Grinding Ball
+item.item_alloy_endergy_ball_energetic_silver.name=Energetic Silver Grinding Ball
+item.item_alloy_endergy_ball_vivid_alloy.name=Vivid Alloy Grinding Ball
+
+item.item_alloy_endergy_nugget_crude_steel.name=Crude Steel Nugget
+item.item_alloy_endergy_nugget_crystalline_alloy.name=Crystalline ALloy Nugget
+item.item_alloy_endergy_nugget_melodic_alloy.name=Melodic Alloy Nugget
+item.item_alloy_endergy_nugget_stellar_alloy.name=Stellar Alloy Nugget
+item.item_alloy_endergy_nugget_crystalline_pink_slime.name=Crystalline Pink Slime Nugget
+item.item_alloy_endergy_nugget_energetic_silver.name=Energetic Silver Nugget
+item.item_alloy_endergy_nugget_vivid_alloy.name=Vivid Alloy Nugget
 
 item.item_rod_of_return.name=Rod of Return
 item.item_rod_of_return.tooltip.detailed.line1=Returns the user to a Telepad
@@ -344,6 +360,14 @@ tile.block_alloy.soularium.name=Soularium Block
 tile.block_alloy.vibrant_alloy.name=Vibrant Alloy Block
 tile.block_alloy.end_steel.name=End Steel Block
 tile.block_alloy.construction_alloy.name=Iron Alloy Block
+
+tile.block_alloy_endergy.crude_steel.name=Crude Steel Block
+tile.block_alloy_endergy.cyrstalline_alloy.name=Crystalline Alloy Block
+tile.block_alloy_endergy.melodic_alloy.name=Melodic Alloy Block
+tile.block_alloy_endergy.stellar_alloy.name=Stellar Alloy Block
+tile.block_alloy_endergy.crystalline_pink_slime.name=Crystalline Pink Slime Block
+tile.block_alloy_endergy.energetic_silver.name=Energetic Silver Block
+tile.block_alloy_endergy.vivid_alloy.name=Vivid ALloy Block
 
 tile.block_cold_fire.name=Cold Fire
 

@@ -1,0 +1,45 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "enderio:item_generated"
+  },
+  "variants": {
+    "variant": {
+      "crude_steel": {
+        "textures": {
+          "layer0": "enderio:items/item_alloy_ingot_crude_steel"
+        }
+      },
+      "crystalline_alloy": {
+        "textures": {
+          "layer0": "enderio:items/item_alloy_ingot_crystalline_alloy"
+        }
+      },
+      "melodic_alloy": {
+        "textures": {
+          "layer0": "enderio:items/item_alloy_ingot_melodic_alloy"
+        }
+      },
+      "stellar_alloy": {
+        "textures": {
+          "layer0": "enderio:items/item_alloy_ingot_stellar_alloy"
+        }
+      },
+      "crystalline_pink_slime": {
+        "textures": {
+          "layer0": "enderio:items/item_alloy_ingot_crystalline_pink_slime"
+        }
+      },
+      "energetic_silver": {
+        "textures": {
+          "layer0": "enderio:items/item_alloy_ingot_energetic_silver"
+        }
+      },
+      "vivid_alloy": {
+        "textures": {
+          "layer0": "enderio:items/item_alloy_ingot_vivid_alloy"
+        }
+      }
+    }
+  }
+}

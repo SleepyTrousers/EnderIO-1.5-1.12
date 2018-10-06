@@ -35,13 +35,13 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
-  <recipe name="Alloy: Endergy Combustive Metal" required="true">
+  <!-- <recipe name="Alloy: Endergy Combustive Metal" required="true">
     <alloying energy="10000" exp="0.5">
       <input name="minecraft:fire_charge"/>
       <input name="ingotIron"/>
       <output name="ingotCombustiveMetal"/>
     </alloying>
-  </recipe>
+  </recipe> -->
 
   <recipe name="Alloy: Endergy Crystalline Alloy" required="true">
     <alloying energy="10000" exp="0.5">
