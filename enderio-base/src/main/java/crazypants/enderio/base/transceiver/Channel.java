@@ -6,6 +6,7 @@ import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.UserIdent;
 import com.mojang.authlib.GameProfile;
 
+import info.loenwind.autosave.annotations.Factory;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.nbt.NBTTagCompound;
@@ -39,6 +40,11 @@ public class Channel {
 
   public Channel(@Nonnull String name, @Nonnull ChannelType type) {
     this(name, UserIdent.NOBODY, type);
+  }
+  
+  @Factory
+  private Channel() {
+    this("(internal error)", ChannelType.ITEM);
   }
 
   public boolean isPublic() {

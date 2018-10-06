@@ -417,7 +417,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="nuggetGold"/><item name="CAPACITOR_METAL"/><item name="nuggetGold"/>
         <item name="POWDER_INFINITY"/><item name="nuggetGold"/><item />
       </grid>
-      <output name="CAPACITOR1"/>
+      <output name="enderio:item_basic_capacitor:0"/>
     </crafting>
   </recipe>
 
@@ -425,10 +425,10 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid>
         <item /><item name="ENERGETIC_ALLOY"/><item />
-        <item name="CAPACITOR1"/><item name="dustCoal"/><item name="CAPACITOR1"/>
+        <item name="enderio:item_basic_capacitor:0"/><item name="dustCoal"/><item name="enderio:item_basic_capacitor:0"/>
         <item /><item name="ENERGETIC_ALLOY"/><item />
       </grid>
-      <output name="CAPACITOR2"/>
+      <output name="enderio:item_basic_capacitor:1"/>
     </crafting>
   </recipe>
 
@@ -436,10 +436,10 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid>
         <item /><item name="VIBRANT_ALLOY"/><item />
-        <item name="CAPACITOR2"/><item name="oredict:glowstone"/><item name="CAPACITOR2"/>
+        <item name="enderio:item_basic_capacitor:1"/><item name="oredict:glowstone"/><item name="enderio:item_basic_capacitor:1"/>
         <item /><item name="VIBRANT_ALLOY"/><item />
       </grid>
-      <output name="CAPACITOR3"/>
+      <output name="enderio:item_basic_capacitor:2"/>
     </crafting>
   </recipe>
 
