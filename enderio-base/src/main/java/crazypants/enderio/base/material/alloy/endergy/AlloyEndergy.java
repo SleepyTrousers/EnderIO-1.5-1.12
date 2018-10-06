@@ -20,7 +20,7 @@ public enum AlloyEndergy implements IStringSerializable, IAlloy {
   CRYSTALLINE_ALLOY("crystallineAlloy", 6.0f, 0x86d9d9, 1152),
   MELODIC_ALLOY("melodicAlloy", 5.0f, 0x845e84, 940),
   STELLAR_ALLOY("stellarAlloy", 10.0f, 0xe7eaea, 1202),
-  CRYSTAlLINE_PINK_SLIME("crystallinePinkSlime", 7.0f, 0x35a8db, 1174),
+  CRYSTALLINE_PINK_SLIME("crystallinePinkSlime", 7.0f, 0x35a8db, 1174),
   ENERGETIC_SILVER("energeticSilver", 7.0f, 0x79a5c5, 855),
   VIVID_ALLOY("vividAlloy", 4.0f, 0x4bbad6, 650),
 
@@ -92,7 +92,7 @@ public enum AlloyEndergy implements IStringSerializable, IAlloy {
 
   @Override
   public @Nonnull ItemStack getStackBall(int size) {
-    return new ItemStack(ModObject.itemAlloyEndergyNugget.getItemNN(), size, ordinal());
+    return new ItemStack(ModObject.itemAlloyEndergyBall.getItemNN(), size, ordinal());
   }
 
   @Override

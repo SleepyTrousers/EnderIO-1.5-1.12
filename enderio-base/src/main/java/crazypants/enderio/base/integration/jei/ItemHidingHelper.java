@@ -76,7 +76,7 @@ public enum ItemHidingHelper {
   TAP(mod("ic2", PersonalConfig.hideTreetap).and(mod("techreborn", PersonalConfig.hideTreetap)), ModObject.itemDarkSteelTreetap),
   ENDERGY(mod("enderioendergy", PersonalConfig.hideEndergy), Material.INFINITY_GOOP),
   ENDERGY_ALLOYS(mod("enderioendergy", PersonalConfig.hideEndergy), AlloyEndergy.ENERGETIC_SILVER, AlloyEndergy.CRUDE_STEEL,
-      AlloyEndergy.CRYSTALLINE_ALLOY, AlloyEndergy.MELODIC_ALLOY, AlloyEndergy.STELLAR_ALLOY, AlloyEndergy.CRYSTAlLINE_PINK_SLIME),
+      AlloyEndergy.CRYSTALLINE_ALLOY, AlloyEndergy.MELODIC_ALLOY, AlloyEndergy.STELLAR_ALLOY, AlloyEndergy.CRYSTALLINE_PINK_SLIME),
 
   ;
 
