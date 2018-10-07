@@ -201,7 +201,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
             }
           }
 
-        } else if (state.getYetaDisplayMode().getDisplayMode().isAll()) {
+        } else if (layer == BlockRenderLayer.SOLID && state.getYetaDisplayMode().getDisplayMode().isAll()) {
           TextureAtlasSprite tex = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);
           BakedQuadBuilder.addBakedQuads(quads, component.bound, tex);
         }
@@ -216,9 +216,11 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     }
 
     // External connection terminations
-    for (EnumFacing dir : externals) {
-      if (dir != null) {
-        addQuadsForExternalConnection(dir, quads);
+    if (layer == BlockRenderLayer.SOLID) {
+      for (EnumFacing dir : externals) {
+        if (dir != null) {
+          addQuadsForExternalConnection(dir, quads);
+        }
       }
     }
 
