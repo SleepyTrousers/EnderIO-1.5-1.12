@@ -368,7 +368,7 @@ tile.block_alloy_endergy.melodic_alloy.name=Melodic Alloy Block
 tile.block_alloy_endergy.stellar_alloy.name=Stellar Alloy Block
 tile.block_alloy_endergy.crystalline_pink_slime.name=Crystalline Pink Slime Block
 tile.block_alloy_endergy.energetic_silver.name=Energetic Silver Block
-tile.block_alloy_endergy.vivid_alloy.name=Vivid ALloy Block
+tile.block_alloy_endergy.vivid_alloy.name=Vivid Alloy Block
 
 tile.block_cold_fire.name=Cold Fire
 
