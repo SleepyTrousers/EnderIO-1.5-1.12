@@ -140,7 +140,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   }
 
   public @Nonnull VoidMode getVoidMode() {
-    return TankConfig.allowVoiding.get() ? VoidMode.NEVER : voidMode;
+    return TankConfig.allowVoiding.get() ? voidMode : VoidMode.NEVER;
   }
 
   public void setVoidMode(@Nonnull VoidMode mode) {
@@ -246,8 +246,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
 
   private boolean canBeMended(@Nonnull ItemStack stack) {
     return TankConfig.allowMending.get() && Prep.isValid(stack) && stack.isItemDamaged()
-        && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, stack) > 0
-        && tank.hasFluid(Fluids.XP_JUICE.getFluid());
+        && EnchantmentHelper.getEnchantmentLevel(Enchantments.MENDING, stack) > 0 && tank.hasFluid(Fluids.XP_JUICE.getFluid());
   }
 
   private boolean mendItem() {

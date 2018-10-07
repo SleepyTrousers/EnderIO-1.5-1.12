@@ -12,8 +12,8 @@ import com.enderio.core.client.render.RenderUtil;
 
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.machine.gui.GuiMachineBase;
-import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.machines.lang.Lang;
+import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -83,8 +83,7 @@ public class GuiTank extends GuiMachineBase<TileTank> {
   protected void actionPerformed(@Nonnull GuiButton button) throws IOException {
     super.actionPerformed(button);
     if (button.id == voidBut.id) {
-      getTileEntity().setVoidMode(voidBut.getMode().getMode());
-      PacketHandler.INSTANCE.sendToServer(new PacketTankVoidMode(getTileEntity()));
+      PacketHandler.INSTANCE.sendToServer(new PacketTankVoidMode(getTileEntity(), voidBut.getMode().getMode()));
     }
   }
 
