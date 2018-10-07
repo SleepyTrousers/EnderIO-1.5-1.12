@@ -45,10 +45,7 @@
   "machine.soulbinder": {
     "category": "block",
     "sounds": [
-      "enderio:machine/soul/grind1",
-      "enderio:machine/soul/grind2",
-      "enderio:machine/soul/grind3",
-      "enderio:machine/soul/grind4"
+      "enderio:machine/soul/grind"
     ]
   }
 }
