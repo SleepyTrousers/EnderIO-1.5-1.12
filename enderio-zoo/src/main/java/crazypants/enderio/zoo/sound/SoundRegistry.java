@@ -1,29 +1,28 @@
-package crazypants.enderio.base.sound;
+package crazypants.enderio.zoo.sound;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.events.ModSoundRegisterEvent;
+import crazypants.enderio.base.sound.IModSound;
+import crazypants.enderio.zoo.EnderIOZoo;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@EventBusSubscriber(modid = EnderIO.MODID)
+@EventBusSubscriber(modid = EnderIOZoo.MODID)
 public enum SoundRegistry implements IModSound {
-  ZOMBIE_BUBBLE(SoundCategory.BLOCKS, "generator.zombie.bubble"),
-  NIGHTVISION_ON(SoundCategory.PLAYERS, "ds.nightvision.on"),
-  NIGHTVISION_OFF(SoundCategory.PLAYERS, "ds.nightvision.off"),
-  JUMP(SoundCategory.PLAYERS, "ds.jump"),
-  TELEPAD(SoundCategory.BLOCKS, "telepad.teleport"),
-  TRAVEL_SOURCE_BLOCK(SoundCategory.BLOCKS, new ResourceLocation("entity.endermen.teleport")),
-  TRAVEL_SOURCE_ITEM(SoundCategory.PLAYERS, new ResourceLocation("entity.endermen.teleport")),
-  ITEM_BURN(SoundCategory.BLOCKS, new ResourceLocation("entity.generic.burn")),
-  TAB_SWITCH(SoundCategory.MASTER, "tab.switch"),
+  OWL_HOOT(SoundCategory.NEUTRAL, "owl.hootSingle"),
+  OWL_HOOT2(SoundCategory.NEUTRAL, "owl.hootDouble"),
+  OWL_HURT(SoundCategory.NEUTRAL, "owl.hurt"),
+  WOLF_HURT(SoundCategory.HOSTILE, "direwolf.hurt"),
+  WOLF_HOWL(SoundCategory.HOSTILE, "direwolf.howl"),
+  WOLF_GROWL(SoundCategory.HOSTILE, "direwolf.growl"),
+  WOLF_DEATH(SoundCategory.HOSTILE, "direwolf.death"),
 
   ;
 
@@ -37,7 +36,7 @@ public enum SoundRegistry implements IModSound {
   }
 
   private SoundRegistry(@Nonnull SoundCategory soundCategory, @Nonnull String name) {
-    this(soundCategory, new ResourceLocation(EnderIO.DOMAIN, name));
+    this(soundCategory, new ResourceLocation(EnderIOZoo.DOMAIN, name));
   }
 
   @SubscribeEvent
