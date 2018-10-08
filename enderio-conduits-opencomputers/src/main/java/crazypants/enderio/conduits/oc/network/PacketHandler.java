@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
-import crazypants.enderio.conduits.oc.EnderIOConduitsOpenComputers;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -13,7 +12,8 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketHandler {
 
-  public static final @Nonnull ThreadedNetworkWrapper INSTANCE = new ThreadedNetworkWrapper(EnderIOConduitsOpenComputers.MODID); // sic! not DOMAIN!
+  public static final @Nonnull ThreadedNetworkWrapper INSTANCE = new ThreadedNetworkWrapper("eiococ"); // sic! EnderIOConduitsOpenComputers.MODID is too long
+                                                                                                       // sic! not DOMAIN!
 
   private static int ID = 0;
 
