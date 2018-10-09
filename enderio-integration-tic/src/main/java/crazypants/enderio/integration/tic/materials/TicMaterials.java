@@ -1,6 +1,6 @@
 package crazypants.enderio.integration.tic.materials;
 
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.material.alloy.Alloy;
+import crazypants.enderio.base.material.alloy.IAlloy;
 import crazypants.enderio.integration.tic.traits.TraitPickup;
 import crazypants.enderio.integration.tic.traits.TraitTeleport;
 import net.minecraftforge.fluids.Fluid;
@@ -26,13 +27,26 @@ import static slimeknights.tconstruct.library.utils.HarvestLevels.STONE;
 
 public class TicMaterials {
 
-  private static final Map<Alloy, Data> DATA = new EnumMap<>(Alloy.class);
+  private static final Map<IAlloy, Data> DATA = new HashMap<>();
 
-  public static boolean hasIntegration(Alloy alloy) {
+  public static boolean hasIntegration(IAlloy alloy) {
     return DATA.get(alloy) != null;
   }
 
-  public static @Nonnull Data getData(Alloy alloy) {
+  public static void addIntegration(IAlloy alloy) {
+    DATA.put(alloy, new Data() {
+
+      @Override
+      public void traits() {
+      }
+
+      @Override
+      public void stats() {
+      }
+    });
+  }
+
+  public static @Nonnull Data getData(IAlloy alloy) {
     return NullHelper.notnull(DATA.get(alloy), "TRAIT AWOL");
   }
 

@@ -10,6 +10,8 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.base.material.alloy.Alloy;
+import crazypants.enderio.base.material.alloy.IAlloy;
+import crazypants.enderio.base.material.alloy.endergy.AlloyEndergy;
 import crazypants.enderio.integration.tic.book.EioBook;
 import crazypants.enderio.integration.tic.book.TicBook;
 import crazypants.enderio.integration.tic.fluids.Ender;
@@ -23,6 +25,7 @@ import crazypants.enderio.integration.tic.queues.TicRecipeHandler;
 import crazypants.enderio.integration.tic.recipes.TicRegistration;
 import net.minecraft.block.Block;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -36,6 +39,14 @@ import slimeknights.tconstruct.tools.TinkerModifiers;
 import slimeknights.tconstruct.tools.TinkerTools;
 
 public class TicControl {
+
+  private static final @Nonnull NNList<IAlloy> ALLOYS = new NNList<IAlloy>();
+  static {
+    NNList.addAllEnum(ALLOYS, Alloy.class);
+    if (Loader.isModLoaded("enderioendergy")) {
+      NNList.addAllEnum(ALLOYS, AlloyEndergy.class);
+    }
+  }
 
   private static boolean doFluids() {
     return TConstruct.pulseManager.isPulseLoaded(NullHelper.notnull(TinkerSmeltery.PulseId, "TiC is broken"))
@@ -53,16 +64,16 @@ public class TicControl {
       Glowstone.createFluid();
       Redstone.createFluid();
       Ender.createFluid();
-      NNList.of(Alloy.class).apply(new Callback<Alloy>() {
+      ALLOYS.apply(new Callback<IAlloy>() {
         @Override
-        public void apply(@Nonnull Alloy alloy) {
-          Metal.createFluid(alloy);
+        public void apply(@Nonnull IAlloy alloy) {
+          Metal.createFluidMaterial(alloy);
         }
       });
     } else if (doToolMaterials()) {
-      NNList.of(Alloy.class).apply(new Callback<Alloy>() {
+      ALLOYS.apply(new Callback<IAlloy>() {
         @Override
-        public void apply(@Nonnull Alloy alloy) {
+        public void apply(@Nonnull IAlloy alloy) {
           Metal.createMaterial(alloy);
         }
       });
@@ -74,11 +85,11 @@ public class TicControl {
       registry.register(Glowstone.createFluidBlock());
       registry.register(Redstone.createFluidBlock());
       registry.register(Ender.createFluidBlock());
-      NNList.of(Alloy.class).apply(new Callback<Alloy>() {
+      ALLOYS.apply(new Callback<IAlloy>() {
         @Override
-        public void apply(@Nonnull Alloy alloy) {
+        public void apply(@Nonnull IAlloy alloy) {
           if (TicMaterials.hasIntegration(alloy)) {
-            registry.register(Metal.createFluidBlock(alloy));
+            Metal.createFluidBlock(registry, alloy);
           }
         }
       });
@@ -87,9 +98,9 @@ public class TicControl {
 
   public static void initBeforeTic(FMLInitializationEvent event) {
     if (doToolMaterials()) {
-      NNList.of(Alloy.class).apply(new Callback<Alloy>() {
+      ALLOYS.apply(new Callback<IAlloy>() {
         @Override
-        public void apply(@Nonnull Alloy alloy) {
+        public void apply(@Nonnull IAlloy alloy) {
           Metal.createTraits(alloy);
         }
       });
@@ -131,9 +142,9 @@ public class TicControl {
       Glowstone.registerRenderers();
       Redstone.registerRenderers();
       Ender.registerRenderers();
-      NNList.of(Alloy.class).apply(new Callback<Alloy>() {
+      ALLOYS.apply(new Callback<IAlloy>() {
         @Override
-        public void apply(@Nonnull Alloy alloy) {
+        public void apply(@Nonnull IAlloy alloy) {
           Metal.registerRenderers(alloy);
         }
       });
