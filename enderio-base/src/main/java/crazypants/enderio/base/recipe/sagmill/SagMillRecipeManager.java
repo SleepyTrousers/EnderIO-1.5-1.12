@@ -1,8 +1,5 @@
 package crazypants.enderio.base.recipe.sagmill;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
@@ -14,9 +11,8 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.Recipe;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
-public class SagMillRecipeManager {
+public final class SagMillRecipeManager {
 
   public static final int ORE_ENERGY_COST = 400;
 
@@ -32,50 +28,11 @@ public class SagMillRecipeManager {
 
   private final @Nonnull NNList<GrindingBall> balls = new NNList<GrindingBall>();
 
-  private final @Nonnull Set<ItemStack> excludedStackCache = new HashSet<ItemStack>();
-
   private SagMillRecipeManager() {
   }
 
   public boolean isValidSagBall(@Nonnull ItemStack stack) {
     return getGrindballFromStack(stack) != null;
-  }
-
-  public boolean isExcludedFromBallBonus(@Nonnull NNList<MachineRecipeInput> inputs) {
-    if (inputs.size() < 1) {
-      return true;
-    }
-    for (MachineRecipeInput input : inputs) {
-      if (Prep.isValid(input.item)) {
-        if (isExcludedStack(input.item)) {
-          return true;
-        }
-        int[] ids = OreDictionary.getOreIDs(input.item);
-        if (ids != null) {
-          for (int id : ids) {
-            String name = OreDictionary.getOreName(id);
-            if (name.startsWith("ingot") || name.startsWith("block") || name.startsWith("nugget")) {
-              addExcludedStack(input.item);
-              return true;
-            }
-          }
-        }
-      }
-    }
-
-    return false;
-  }
-
-  private void addExcludedStack(@Nonnull ItemStack item) {
-    item = item.copy();
-    item.setCount(1);
-    excludedStackCache.add(item);
-  }
-
-  private boolean isExcludedStack(@Nonnull ItemStack item) {
-    item = item.copy();
-    item.setCount(1);
-    return excludedStackCache.contains(item);
   }
 
   public IGrindingMultiplier getGrindballFromStack(@Nonnull ItemStack stack) {
