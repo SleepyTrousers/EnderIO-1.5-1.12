@@ -37,9 +37,9 @@ public class InternalPoweredTileWrapper implements IEnergyStorage {
   }
 
   private final @Nonnull ILegacyPoweredTile tile;
-  protected final @Nullable EnumFacing from;
+  protected final @Nonnull EnumFacing from;
 
-  public InternalPoweredTileWrapper(@Nonnull ILegacyPoweredTile tile, @Nullable EnumFacing from) {
+  public InternalPoweredTileWrapper(@Nonnull ILegacyPoweredTile tile, @Nonnull EnumFacing from) {
     this.tile = tile;
     this.from = from;
   }
