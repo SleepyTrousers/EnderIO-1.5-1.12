@@ -120,10 +120,10 @@ public enum Material {
 
   private final @Nonnull String baseName;
   private final @Nonnull String oreDict;
-  private final String dependency;
+  private final @Nullable String dependency;
 
   private Material(@Nonnull String baseName) {
-    this(baseName, "item" + StringUtils.capitalize(baseName), false);
+    this(baseName, false);
   }
 
   private Material(@Nonnull String baseName, @Nonnull String oreDict) {
