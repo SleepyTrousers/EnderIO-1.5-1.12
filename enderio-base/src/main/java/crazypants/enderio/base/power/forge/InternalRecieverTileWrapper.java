@@ -76,7 +76,6 @@ public class InternalRecieverTileWrapper extends InternalPoweredTileWrapper {
         if (serverTickCount != lastTick) {
           lastTick = serverTickCount;
           recv = receivedEnergy;
-          cooldown = 0;
         } else {
           recv += receivedEnergy;
           final int maxEnergyRecieved = tile.getMaxEnergyRecieved(from);
