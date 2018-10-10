@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 
 import org.apache.commons.io.IOUtils;
@@ -30,8 +31,14 @@ import crazypants.enderio.base.config.recipes.xml.Aliases;
 import crazypants.enderio.base.config.recipes.xml.Recipes;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.ProgressManager;
 
-public class RecipeLoader {
+public final class RecipeLoader {
+
+  private static final @Nonnull String EXT = ".xml";
+  private static final @Nonnull String RECIPES_ROOT = "recipes";
+  private static final @Nonnull String RECIPES_USER = RECIPES_ROOT + "/user";
+  private static final @Nonnull String RECIPES_EXAMPLES = RECIPES_ROOT + "/examples";
 
   private static List<Pair<String, String>> imcRecipes = new ArrayList<>();
 
@@ -39,28 +46,35 @@ public class RecipeLoader {
   }
 
   public static void addRecipes() {
+    ProgressManager.ProgressBar bar = ProgressManager.push("XML Recipes", 11, true);
     final RecipeFactory recipeFactory = new RecipeFactory(Config.getConfigDirectory(), EnderIO.DOMAIN);
 
-    recipeFactory.createFolder("recipes");
-    recipeFactory.createFolder("recipes/user");
-    recipeFactory.createFolder("recipes/examples");
-    recipeFactory.placeXSD("recipes");
-    recipeFactory.placeXSD("recipes/user");
-    recipeFactory.placeXSD("recipes/examples");
+    bar.step("Preparing Config Folder"); // 1
+    recipeFactory.createFolder(RECIPES_ROOT);
+    recipeFactory.createFolder(RECIPES_USER);
+    recipeFactory.createFolder(RECIPES_EXAMPLES);
+    recipeFactory.placeXSD(RECIPES_ROOT);
+    recipeFactory.placeXSD(RECIPES_USER);
+    recipeFactory.placeXSD(RECIPES_EXAMPLES);
 
     recipeFactory.createFileUser("recipes/user/user_recipes.xml");
 
     NNList<Triple<Integer, RecipeFactory, String>> coreFiles = new NNList<>();
 
-    for (ModContainer modContainer : Loader.instance().getModList()) {
+    bar.step("Collecting Sub-Mods/Addons"); // 2
+    final List<ModContainer> modList = Loader.instance().getModList();
+    ProgressManager.ProgressBar bar2 = ProgressManager.push("Mod", modList.size());
+    for (ModContainer modContainer : modList) {
+      bar2.step(modContainer.getName());
       Object mod = modContainer.getMod();
       if (mod instanceof IEnderIOAddon) {
         coreFiles.addAll(((IEnderIOAddon) mod).getRecipeFiles());
         for (String filename : ((IEnderIOAddon) mod).getExampleFiles()) {
-          recipeFactory.copyCore("recipes/examples/" + filename + ".xml");
+          recipeFactory.copyCore(RECIPES_EXAMPLES + "/" + filename + EXT);
         }
       }
     }
+    ProgressManager.pop(bar2);
 
     Collections.sort(coreFiles, new Comparator<Triple<Integer, RecipeFactory, String>>() {
       @Override
@@ -69,11 +83,12 @@ public class RecipeLoader {
       }
     });
 
-    Set<File> userfiles = new HashSet<>(recipeFactory.listXMLFiles("recipes/user"));
+    bar.step("Collecting User Files"); // 3
+    Set<File> userfiles = new HashSet<>(recipeFactory.listXMLFiles(RECIPES_USER));
     for (Triple<Integer, RecipeFactory, String> triple : coreFiles) {
       RecipeFactory factory = triple.getMiddle();
       if (factory != null) {
-        userfiles.addAll(factory.listXMLFiles("recipes/user"));
+        userfiles.addAll(factory.listXMLFiles(RECIPES_USER));
       }
     }
 
@@ -81,29 +96,43 @@ public class RecipeLoader {
      * Do a first pass just for aliases. Always load core aliases, even if core recipes are disabled.
      */
 
+    bar.step("Core Aliases"); // 4
+    bar2 = ProgressManager.push("File", coreFiles.size());
     for (Triple<Integer, RecipeFactory, String> triple : coreFiles) {
-      readCoreFile(new Aliases(), NullHelper.first(triple.getMiddle(), recipeFactory), "recipes/" + triple.getRight());
+      bar2.step(triple.getRight());
+      readCoreFile(new Aliases(), NullHelper.first(triple.getMiddle(), recipeFactory), RECIPES_ROOT + "/" + triple.getRight());
     }
+    ProgressManager.pop(bar2);
 
+    bar.step("IMC Aliases"); // 5
     if (imcRecipes != null) {
       handleIMCRecipes(new Aliases(), new Aliases());
     }
 
+    bar.step("User Aliases"); // 6
+    bar2 = ProgressManager.push("File", userfiles.size());
     for (File file : userfiles) {
+      bar2.step(file.getName());
       readUserFile(new Aliases(), recipeFactory, file.getName(), file);
     }
+    ProgressManager.pop(bar2);
 
     /*
      * Note that we load the recipes in core-imc-user order but merge them in reverse order. The loading order allows aliases to be added in the expected order,
      * while the reverse merging allows user recipes to replace imc recipes to replace core recipes.
      */
 
+    bar.step("Core Recipes"); // 7
     Recipes config = new Recipes();
     if (RecipeConfig.loadCoreRecipes.get()) {
       try {
+        bar2 = ProgressManager.push("File", coreFiles.size());
         for (Triple<Integer, RecipeFactory, String> triple : coreFiles) {
-          config = readCoreFile(new Recipes(), NullHelper.first(triple.getMiddle(), recipeFactory), "recipes/" + triple.getRight()).addRecipes(config, false);
+          bar2.step(triple.getRight());
+          config = readCoreFile(new Recipes(), NullHelper.first(triple.getMiddle(), recipeFactory), RECIPES_ROOT + "/" + triple.getRight()).addRecipes(config,
+              false);
         }
+        ProgressManager.pop(bar2);
       } catch (InvalidRecipeConfigException e) {
         recipeError(NullHelper.first(e.getFilename(), "Core Recipes"), e.getMessage());
       }
@@ -112,12 +141,16 @@ public class RecipeLoader {
       Log.warn("This is valid, but do NOT report recipe errors to the Ender IO team!");
     }
 
+    bar.step("IMC Recipes"); // 8
     if (imcRecipes != null) {
       config = handleIMCRecipes(new Recipes(), config);
       imcRecipes = null;
     }
 
+    bar.step("User Recipes"); // 9
+    bar2 = ProgressManager.push("File", userfiles.size());
     for (File file : userfiles) {
+      bar2.step(file.getName());
       final Recipes userFile = readUserFile(new Recipes(), recipeFactory, file.getName(), file);
       if (userFile != null) {
         try {
@@ -127,21 +160,31 @@ public class RecipeLoader {
         }
       }
     }
+    ProgressManager.pop(bar2);
 
+    bar.step("Registering Recipes"); // 10
     config.register("");
 
-    for (ModContainer modContainer : Loader.instance().getModList()) {
+    bar.step("Post Registration"); // 11
+    bar2 = ProgressManager.push("Mod", modList.size());
+    for (ModContainer modContainer : modList) {
+      bar2.step(modContainer.getName());
       Object mod = modContainer.getMod();
       if (mod instanceof IEnderIOAddon) {
         ((IEnderIOAddon) mod).postRecipeRegistration();
       }
     }
+    ProgressManager.pop(bar2);
+
+    ProgressManager.pop(bar);
   }
 
   private static <T extends RecipeRoot> T handleIMCRecipes(T target, T config) {
+    ProgressManager.ProgressBar bar = ProgressManager.push("IMC", imcRecipes.size());
     for (Entry<String, String> recipe : imcRecipes) {
+      bar.step(recipe.getKey());
       try (InputStream is = IOUtils.toInputStream(recipe.getValue(), Charset.forName("UTF-8"))) {
-        T recipes = RecipeFactory.readStax(target, "recipes", is);
+        T recipes = RecipeFactory.readStax(target, RECIPES_ROOT, is);
         recipes.enforceValidity();
         config = recipes.addRecipes(config, true);
       } catch (InvalidRecipeConfigException e) {
@@ -161,12 +204,13 @@ public class RecipeLoader {
         recipeError("IMC from the mod '" + recipe.getKey() + "'", "IMC has malformed XML:" + e.getMessage());
       }
     }
+    ProgressManager.pop(bar);
     return config;
   }
 
   private static <T extends RecipeRoot> T readUserFile(T target, final RecipeFactory recipeFactory, String filename, File file) {
     try {
-      final T recipes = RecipeFactory.readFileUser(target, "recipes", filename, file);
+      final T recipes = RecipeFactory.readFileUser(target, RECIPES_ROOT, filename, file);
       if (recipes.isValid()) {
         recipes.enforceValidity();
         return recipes;
@@ -190,7 +234,7 @@ public class RecipeLoader {
 
   private static <T extends RecipeRoot> T readCoreFile(T target, final RecipeFactory recipeFactory, String filename) {
     try {
-      final T recipes = recipeFactory.readCoreFile(target, "recipes", filename + ".xml");
+      final T recipes = recipeFactory.readCoreFile(target, RECIPES_ROOT, filename + EXT);
       if (recipes.isValid()) {
         recipes.enforceValidity();
         return recipes;
@@ -198,15 +242,15 @@ public class RecipeLoader {
         recipeError(filename, "File is empty or invalid");
       }
     } catch (InvalidRecipeConfigException e) {
-      recipeError(NullHelper.first(e.getFilename(), filename + ".xml"), e.getMessage());
+      recipeError(NullHelper.first(e.getFilename(), filename + EXT), e.getMessage());
     } catch (IOException e) {
       Log.error("IO error while reading file:");
       e.printStackTrace();
-      recipeError(filename + ".xml", "IO error while reading file:" + e.getMessage());
+      recipeError(filename + EXT, "IO error while reading file:" + e.getMessage());
     } catch (XMLStreamException e) {
       Log.error("File has malformed XML:");
       e.printStackTrace();
-      recipeError(filename + ".xml", "File has malformed XML:" + e.getMessage());
+      recipeError(filename + EXT, "File has malformed XML:" + e.getMessage());
     }
     return target;
   }
@@ -216,7 +260,7 @@ public class RecipeLoader {
       imcRecipes.add(Pair.of(sender, recipe));
     } else {
       try (InputStream is = IOUtils.toInputStream(recipe, Charset.forName("UTF-8"))) {
-        Recipes recipes = RecipeFactory.readStax(new Recipes(), "recipes", is);
+        Recipes recipes = RecipeFactory.readStax(new Recipes(), RECIPES_ROOT, is);
         recipes.enforceValidity();
         recipes.register("IMC recipes");
         return;
