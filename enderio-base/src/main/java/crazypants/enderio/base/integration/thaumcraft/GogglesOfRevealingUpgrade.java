@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
 
-  private static final @Nonnull String UPGRADE_NAME = "gogglesRevealing";
+  private static final @Nonnull String UPGRADE_NAME = "gogglesOfRevealing";
 
   public static final @Nonnull GogglesOfRevealingUpgrade INSTANCE = new GogglesOfRevealingUpgrade();
 
