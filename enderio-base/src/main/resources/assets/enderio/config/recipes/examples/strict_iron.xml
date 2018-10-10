@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+  <!-- This recipe file disables "Iron Alloy" (a.k.a "construction_alloy").
+  
+       Copy this file into the enderio/config/recipes/user folder to activate it. -->
+
+  <alias name="IRON" item="ingotIron" />
+
+  <recipe name="Alloy: Construction Alloy" disabled="true" />
+
+  <grindingball name="Construction Alloy Ball" disabled="true" />
+
+  <recipe name="Construction Alloy Ball Crafting" disabled="true" />
+
+  <recipe name="Construction Alloy Casting" disabled="true" />
+
+  <recipe name="Construction Alloy Ball Smelting" disabled="true" />
+
+  <recipe name="Construction Alloy Ball Reverse Casting" disabled="true" />
+
+</enderio:recipes>

@@ -122,9 +122,9 @@ public class EnderIO implements IEnderIOAddon {
     MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Config.Post());
 
     MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.PreInit());
-    
+
     proxy.init(event);
-    
+
     EIOHandlers.register();
 
     Log.debug("PHASE PRE-INIT END");
@@ -200,7 +200,7 @@ public class EnderIO implements IEnderIOAddon {
     PaintSourceValidator.instance.loadConfig();
 
     BuildcraftIntegration.init(event);
-//    TEUtil.init(event);
+    // TEUtil.init(event);
 
     proxy.init(event);
 
@@ -312,7 +312,7 @@ public class EnderIO implements IEnderIOAddon {
   @Override
   @Nonnull
   public NNList<String> getExampleFiles() {
-    return new NNList<>("peaceful", "easy_recipes", "hard_recipes", "broken_spawner", "cheap_materials", "legacy_recipes");
+    return new NNList<>("peaceful", "easy_recipes", "hard_recipes", "broken_spawner", "cheap_materials", "legacy_recipes", "strict_iron");
   }
 
   static void initCrashData() {
