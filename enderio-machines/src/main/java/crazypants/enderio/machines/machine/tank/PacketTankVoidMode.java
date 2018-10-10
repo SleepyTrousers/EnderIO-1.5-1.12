@@ -18,9 +18,9 @@ public class PacketTankVoidMode extends MessageTileEntity<TileTank> {
 
   private @Nonnull VoidMode mode = VoidMode.NEVER;
 
-  public PacketTankVoidMode(@Nonnull TileTank tank) {
+  public PacketTankVoidMode(@Nonnull TileTank tank, @Nonnull VoidMode mode) {
     super(tank);
-    this.mode = tank.getVoidMode();
+    this.mode = mode;
   }
 
   @Override

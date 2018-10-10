@@ -12,7 +12,6 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnderCap;
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.EnderInventory.Type;
-import com.enderio.core.common.inventory.EnderInventory.View;
 import com.enderio.core.common.inventory.EnderSlot;
 
 import crazypants.enderio.base.network.GuiPacket;
@@ -71,7 +70,7 @@ public class ContainerCrafter<T extends TileCrafter> extends ContainerEnderCap<E
       for (int col = 0; col < 3; ++col) {
         int x = leftX + col * 18;
         int y = topY + row * 18;
-        addSlotToContainer(new InputSlot(getTileEntityNN().getInventory().getView(Type.INPUT), "INPUT" + index, x, y));
+        addSlotToContainer(new EnderSlot(getTileEntityNN().getInventory().getView(Type.INPUT), "INPUT" + index, x, y));
         index++;
       }
     }
@@ -135,22 +134,6 @@ public class ContainerCrafter<T extends TileCrafter> extends ContainerEnderCap<E
   @Override
   public int getGuiID() {
     return guiId;
-  }
-
-  private class InputSlot extends EnderSlot {
-
-    public InputSlot(@Nonnull View enderInventory, @Nonnull String ident, int xPosition, int yPosition) {
-      super(enderInventory, ident, xPosition, yPosition);
-    }
-
-    @Override
-    public boolean isItemValid(@Nonnull ItemStack itemStack) {
-      ItemStack refStack = getTileEntityNN().craftingGrid.getStackInSlot(slotNumber);
-      if (refStack.isEmpty() || itemStack.isEmpty()) {
-        return false;
-      }
-      return TileCrafter.compareDamageable(itemStack, refStack);
-    }
   }
 
   public class DummySlot extends GhostSlot {

@@ -157,9 +157,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Exit Rail" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="ingotIron" /><item name="minecraft:piston" /><item name="ingotIron" />
-        <item name="ingotIron" /><item name="minecraft:stone_pressure_plate" /><item name="ingotIron" />
-        <item name="ingotIron" /><item name="dustRedstone" /><item name="ingotIron" />
+        <item name="IRON" /><item name="minecraft:piston" /><item name="IRON" />
+        <item name="IRON" /><item name="minecraft:stone_pressure_plate" /><item name="IRON" />
+        <item name="IRON" /><item name="dustRedstone" /><item name="IRON" />
       </grid>
       <output name="enderio:block_exit_rail" amount="6" />
     </crafting>
@@ -262,6 +262,15 @@ XML editor will display that as tooltips when editing this file.
       <input name="ingotDarkSteel"/>
       <input name="obsidian"/>
       <output name="ingotEndSteel"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Construction Alloy" required="false">
+    <alloying energy="10000" exp="0">
+      <input name="ingotLead,ingotCopper,ingotSilver,ingotAluminium,ingotAluminum,ingotTin,ingotNickel,ingotZinc,ingotPlatinum,ingotOsmium,ingotArdite,ingotCobalt,ingotTitanium,ingotMagnesium,ingotTungsten"/>
+      <input name="ingotIron"/>
+      <input name="ingotLead,ingotCopper,ingotSilver,ingotAluminium,ingotAluminum,ingotTin,ingotNickel,ingotZinc,ingotPlatinum,ingotOsmium,ingotArdite,ingotCobalt,ingotTitanium,ingotMagnesium,ingotTungsten"/>
+      <output name="CONSTRUCTION_ALLOY" amount="3" />
     </alloying>
   </recipe>
 
@@ -460,36 +469,18 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Alloy: Green Dye, Oredict" required="true">
     <alloying energy="2000" exp="0.25">
-      <input name="dyeGreen" amount="2"/>
+      <input name="dyeGreen,-ORGANIC_GREEN_DYE" amount="2"/>
       <input name="oredict:slimeball"/>
-      <input name="dustCoal" amount="2"/>
+      <input name="dustCoal,dustCharcoal" amount="2"/>
       <output name="ORGANIC_GREEN_DYE" amount="2"/>
     </alloying>
   </recipe>
 
   <recipe name="Alloy: Green Dye, Oredict Variant" required="true">
     <alloying energy="1500" exp="0.125">
-      <input name="dyeGreen"/>
+      <input name="dyeGreen,-ORGANIC_GREEN_DYE"/>
       <input name="oredict:egg"/>
-      <input name="dustCoal"/>
-      <output name="ORGANIC_GREEN_DYE"/>
-    </alloying>
-  </recipe>
-
-  <recipe name="Alloy: Green Dye, Oredict Charcoal" required="false">
-    <alloying energy="2000" exp="0.25">
-      <input name="dyeGreen" amount="2"/>
-      <input name="oredict:slimeball"/>
-      <input name="dustCharcoal" amount="2"/>
-      <output name="ORGANIC_GREEN_DYE" amount="2"/>
-    </alloying>
-  </recipe>
-
-  <recipe name="Alloy: Green Dye, Oredict Charcoal Variant" required="false">
-    <alloying energy="1500" exp="0.125">
-      <input name="dyeGreen"/>
-      <input name="oredict:egg"/>
-      <input name="dustCharcoal"/>
+      <input name="dustCoal,dustCharcoal"/>
       <output name="ORGANIC_GREEN_DYE"/>
     </alloying>
   </recipe>
@@ -512,43 +503,25 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Alloy: Brown Dye, Oredict" required="true">
     <alloying energy="2000" exp="0.25">
-      <input name="dyeBrown" amount="2"/>
+      <input name="dyeBrown,-ORGANIC_BROWN_DYE" amount="2"/>
       <input name="oredict:slimeball"/>
-      <input name="dustCoal" amount="2"/>
+      <input name="dustCoal,dustCharcoal" amount="2"/>
       <output name="ORGANIC_BROWN_DYE" amount="2"/>
     </alloying>
   </recipe>
 
   <recipe name="Alloy: Brown Dye, Oredict Variant" required="true">
     <alloying energy="1500" exp="0.125">
-      <input name="dyeBrown"/>
+      <input name="dyeBrown,-ORGANIC_BROWN_DYE"/>
       <input name="oredict:egg"/>
-      <input name="dustCoal"/>
-      <output name="ORGANIC_BROWN_DYE"/>
-    </alloying>
-  </recipe>
-
-  <recipe name="Alloy: Brown Dye, Oredict Charcoal" required="false">
-    <alloying energy="2000" exp="0.25">
-      <input name="dyeBrown" amount="2"/>
-      <input name="oredict:slimeball"/>
-      <input name="dustCharcoal" amount="2"/>
-      <output name="ORGANIC_BROWN_DYE" amount="2"/>
-    </alloying>
-  </recipe>
-
-  <recipe name="Alloy: Brown Dye, Oredict Charcoal Variant" required="false">
-    <alloying energy="1500" exp="0.125">
-      <input name="dyeBrown"/>
-      <input name="oredict:egg"/>
-      <input name="dustCharcoal"/>
+      <input name="dustCoal,dustCharcoal"/>
       <output name="ORGANIC_BROWN_DYE"/>
     </alloying>
   </recipe>
 
   <recipe name="Alloy: Black Dye" required="true">
     <alloying energy="2000" exp="0.25">
-      <input name="dustCoal" amount="6"/>
+      <input name="dustCoal,dustCharcoal" amount="6"/>
       <input name="oredict:slimeball"/>
       <output name="ORGANIC_BLACK_DYE" amount="2"/>
     </alloying>
@@ -556,23 +529,7 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Alloy: Black Dye, Variant" required="true">
     <alloying energy="1500" exp="0.125">
-      <input name="dustCoal" amount="3"/>
-      <input name="oredict:egg"/>
-      <output name="ORGANIC_BLACK_DYE"/>
-    </alloying>
-  </recipe>
-
-  <recipe name="Alloy: Black Dye Charcoal" required="false">
-    <alloying energy="2000" exp="0.25">
-      <input name="dustCharcoal" amount="6"/>
-      <input name="oredict:slimeball"/>
-      <output name="ORGANIC_BLACK_DYE" amount="2"/>
-    </alloying>
-  </recipe>
-
-  <recipe name="Alloy: Black Dye Charcoal, Variant" required="false">
-    <alloying energy="1500" exp="0.125">
-      <input name="dustCharcoal" amount="3"/>
+      <input name="dustCoal,dustCharcoal" amount="3"/>
       <input name="oredict:egg"/>
       <output name="ORGANIC_BLACK_DYE"/>
     </alloying>

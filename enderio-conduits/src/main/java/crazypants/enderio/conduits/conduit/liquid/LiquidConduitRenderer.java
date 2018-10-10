@@ -7,9 +7,12 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
@@ -58,19 +61,20 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   @Override
-  protected BlockRenderLayer getConduitQuadsLayer() {
+  protected @Nonnull BlockRenderLayer getConduitQuadsLayer() {
     return BlockRenderLayer.TRANSLUCENT;
   }
-  
+
   @Override
-  protected void addTransmissionQuads(TextureAtlasSprite tex, Vector4f color, BlockRenderLayer layer, IConduit conduit, CollidableComponent component, float selfIllum,
-      List<BakedQuad> quads) {
+  protected void addTransmissionQuads(@Nonnull TextureAtlasSprite tex, Vector4f color, @Nonnull BlockRenderLayer layer, @Nonnull IConduit conduit,
+      @Nonnull CollidableComponent component, float selfIllum, @Nonnull List<BakedQuad> quads) {
     // Handled in dynamic render
   }
 
   @Override
-  protected void renderConduitDynamic(TextureAtlasSprite tex, IClientConduit.WithDefaultRendering conduit, CollidableComponent component, float brightness) {
-    if (isNSEWUD(component.dir)) {
+  protected void renderConduitDynamic(@Nonnull TextureAtlasSprite tex, @Nonnull IClientConduit.WithDefaultRendering conduit,
+      @Nonnull CollidableComponent component, float brightness) {
+    if (component.isDirectional()) {
       LiquidConduit lc = (LiquidConduit) conduit;
       FluidStack fluid = lc.getFluidType();
       if (fluid != null) {
@@ -80,43 +84,56 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   @Override
-  public void renderDynamicEntity(@Nonnull TileEntitySpecialRenderer conduitBundleRenderer, @Nonnull IConduitBundle te,
+  public void renderDynamicEntity(@Nonnull TileEntitySpecialRenderer<?> conduitBundleRenderer, @Nonnull IConduitBundle te,
       @Nonnull IClientConduit.WithDefaultRendering conduit, double x, double y, double z, float partialTick, float worldLight) {
     calculateRatios((LiquidConduit) conduit);
     super.renderDynamicEntity(conduitBundleRenderer, te, conduit, x, y, z, partialTick, worldLight);
   }
 
   @Override
-  protected void renderTransmissionDynamic(IConduit conduit, TextureAtlasSprite tex, Vector4f color, CollidableComponent component, float selfIllum) {
+  protected void renderTransmissionDynamic(@Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex, @Nullable Vector4f color,
+      @Nonnull CollidableComponent component, float selfIllum) {
 
     if (((LiquidConduit) conduit).getTank().getFilledRatio() <= 0) {
       return;
     }
 
-    if (isNSEWUD(component.dir)) {
+    if (component.isDirectional()) {
       BoundingBox[] cubes = toCubes(component.bound);
       for (BoundingBox cube : cubes) {
-        drawDynamicSection(cube, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), color, component.dir, true);
+        if (cube != null) {
+          drawDynamicSection(cube, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), color, component.getDirection(), true);
+        }
       }
 
     } else {
-      drawDynamicSection(component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), color, component.dir, true);
+      // TODO: HL: I commented this out because component.getDirection() (the second to last parameter) is always null in
+      // this else branch and drawDynamicSection() with isTransmission=true (last parameter) would NPE on it. (Not a
+      // mistake in the component.dir encapsulation, this was that way before.)
+      // drawDynamicSection(component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), color, component.getDir(), true);
     }
   }
 
-  public static void renderFluidOutline(CollidableComponent component, FluidStack fluid) {
-    renderFluidOutline(component, fluid, 1 - ConduitGeometryUtil.HEIGHT, 1f / 16f);
+  public static void renderFluidOutline(@Nonnull CollidableComponent component, @Nonnull FluidStack fluid) {
+    renderFluidOutline(component, fluid, 1 - ConduitGeometryUtil.getHeight(), 1f / 16f);
   }
 
-  public static void renderFluidOutline(CollidableComponent component, FluidStack fluid, double scaleFactor, float outlineWidth) {
-    for (CachableRenderStatement elem : computeFluidOutlineToCache(component, fluid.getFluid(), scaleFactor, outlineWidth)) {
-      elem.execute();
+  public static void renderFluidOutline(@Nonnull CollidableComponent component, @Nonnull FluidStack fluidStack, double scaleFactor, float outlineWidth) {
+    final Fluid fluid = fluidStack.getFluid();
+    if (fluid != null) {
+      for (CachableRenderStatement elem : computeFluidOutlineToCache(component, fluid, scaleFactor, outlineWidth)) {
+        elem.execute();
+      }
     }
   }
 
+  // TODO: (1) CollidableComponent is a bad key for a weak reference
+  // (2) CachableRenderStatement is an outdated class, use HalfBakedList instead
+  // (3) could this be done more efficiently (on the fly)?
   private static Map<CollidableComponent, Map<Fluid, List<CachableRenderStatement>>> cache = new WeakHashMap<CollidableComponent, Map<Fluid, List<CachableRenderStatement>>>();
 
-  public static List<CachableRenderStatement> computeFluidOutlineToCache(CollidableComponent component, Fluid fluid, double scaleFactor, float outlineWidth) {
+  public static List<CachableRenderStatement> computeFluidOutlineToCache(@Nonnull CollidableComponent component, @Nonnull Fluid fluid, double scaleFactor,
+      float outlineWidth) {
 
     Map<Fluid, List<CachableRenderStatement>> cache0 = cache.get(component);
 
@@ -132,9 +149,6 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     cache0.put(fluid, data);
 
     TextureAtlasSprite texture = RenderUtil.getStillTexture(fluid);
-    if (texture == null) {
-      return data;
-    }
     int color = fluid.getColor();
     Vector4f colorv = new Vector4f((color >> 16 & 0xFF) / 255d, (color >> 8 & 0xFF) / 255d, (color & 0xFF) / 255d, 1);
 
@@ -142,20 +156,22 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
 
     double width = outlineWidth;
     scaleFactor = scaleFactor - 0.05;
-    double xScale = Math.abs(component.dir.getFrontOffsetX()) == 1 ? width : scaleFactor;
-    double yScale = Math.abs(component.dir.getFrontOffsetY()) == 1 ? width : scaleFactor;
-    double zScale = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? width : scaleFactor;
+    final EnumFacing componentDirection = component.getDirection();
+    double xScale = Math.abs(componentDirection.getFrontOffsetX()) == 1 ? width : scaleFactor;
+    double yScale = Math.abs(componentDirection.getFrontOffsetY()) == 1 ? width : scaleFactor;
+    double zScale = Math.abs(componentDirection.getFrontOffsetZ()) == 1 ? width : scaleFactor;
 
     double offSize = (0.5 - width) / 2 - width / 2;
-    double xOff = component.dir.getFrontOffsetX() * offSize;
-    double yOff = component.dir.getFrontOffsetY() * offSize;
-    double zOff = component.dir.getFrontOffsetZ() * offSize;
+    double xOff = componentDirection.getFrontOffsetX() * offSize;
+    double yOff = componentDirection.getFrontOffsetY() * offSize;
+    double zOff = componentDirection.getFrontOffsetZ() * offSize;
 
     bbb = component.bound.scale(xScale, yScale, zScale);
     bbb = bbb.translate(new Vector3d(xOff, yOff, zOff));
 
-    for (EnumFacing face : EnumFacing.VALUES) {
-      if (face != component.dir && face != component.dir.getOpposite()) {
+    for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
+      EnumFacing face = itr.next();
+      if (face != componentDirection && face != componentDirection.getOpposite()) {
         List<Vertex> corners = bbb.getCornersWithUvForFace(face, texture.getMinU(), texture.getMaxU(), texture.getMinV(), texture.getMaxV());
         for (Vertex corner : corners) {
           data.add(new CachableRenderStatement.AddVertexWithUV(corner.x(), corner.y(), corner.z(), corner.uv.x, corner.uv.y, colorv));
@@ -194,7 +210,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   @Override
-  protected void setVerticesForTransmission(BoundingBox bound, EnumFacing id) {
+  protected void setVerticesForTransmission(@Nonnull BoundingBox bound, @Nonnull EnumFacing id) {
 
     float yScale = getRatioForConnection(id);
     float scale = 0.7f;
@@ -256,6 +272,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     return flatRatio;
   }
 
+  // TODO: ModelBakeEvent would be better
   @Override
   public void onResourceManagerReload(@Nonnull IResourceManager p_110549_1_) {
     cache.clear();

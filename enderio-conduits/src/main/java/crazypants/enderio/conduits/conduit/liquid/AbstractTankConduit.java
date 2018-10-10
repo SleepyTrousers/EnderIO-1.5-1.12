@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.util.ChatUtil;
 import com.enderio.core.common.util.FluidUtil;
 
 import crazypants.enderio.base.EnderIO;
@@ -12,6 +11,7 @@ import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.RaytraceResult;
+import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.conduits.lang.Lang;
@@ -47,49 +47,39 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
     if (ToolUtil.isToolEquipped(player, hand)) {
 
       if (!getBundle().getEntity().getWorld().isRemote) {
-
-        if (res != null && res.component != null) {
-
-          EnumFacing connDir = res.component.dir;
+        final CollidableComponent component = res.component;
+        if (component != null) {
           EnumFacing faceHit = res.movingObjectPosition.sideHit;
-
-          if (connDir == null || connDir == faceHit) {
-
+          if (component.isCore()) {
             if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
               setConnectionMode(faceHit, getNextConnectionMode(faceHit));
               return true;
             }
-
+            // Attempt to join networks
             BlockPos pos = getBundle().getLocation().offset(faceHit);
             ILiquidConduit liquidConduit = ConduitUtil.getConduit(getBundle().getEntity().getWorld(), pos.getX(), pos.getY(), pos.getZ(), ILiquidConduit.class);
-            if (liquidConduit == null) {
-              return false;
-            }
-            if (!canJoinNeighbour(liquidConduit)) {
-              return false;
-            }
-            if (!(liquidConduit instanceof AbstractTankConduit)) {
+            if (!(liquidConduit instanceof AbstractTankConduit) || !canJoinNeighbour(liquidConduit)) {
               return false;
             }
             AbstractTankConduit neighbour = (AbstractTankConduit) liquidConduit;
-            if (neighbour.getFluidType() == null || getFluidType() == null) {
-              FluidStack type = getFluidType();
-              type = type != null ? type : neighbour.getFluidType();
-              neighbour.setFluidTypeOnNetwork(neighbour, type);
-              setFluidTypeOnNetwork(this, type);
+            if (neighbour.getFluidType() != null) {
+              setFluidTypeOnNetwork(this, neighbour.getFluidType());
+            } else if (getFluidType() != null) {
+              neighbour.setFluidTypeOnNetwork(neighbour, getFluidType());
             }
             return ConduitUtil.connectConduits(this, faceHit);
-          } else if (containsExternalConnection(connDir)) {
-            // Toggle extraction mode
-            setConnectionMode(connDir, getNextConnectionMode(connDir));
-          } else if (containsConduitConnection(connDir)) {
-            FluidStack curFluidType = null;
-            if (getTankNetwork() != null) {
-              curFluidType = getTankNetwork().getFluidType();
+          } else {
+            EnumFacing connDir = component.getDirection();
+            if (containsExternalConnection(connDir)) {
+              setConnectionMode(connDir, getNextConnectionMode(connDir));
+            } else if (containsConduitConnection(connDir)) {
+              FluidStack curFluidType = null;
+              if (getTankNetwork() != null) {
+                curFluidType = getTankNetwork().getFluidType();
+              }
+              ConduitUtil.disconnectConduits(this, connDir);
+              setFluidType(curFluidType);
             }
-            ConduitUtil.disconnectConduits(this, connDir);
-            setFluidType(curFluidType);
-
           }
         }
       }
@@ -110,7 +100,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
           if (network.fluidTypeLocked) {
             network.setFluidTypeLocked(false);
             numEmptyEvents = 0;
-            ChatUtil.sendNoSpam(player, Lang.ITEM_LIQUID_CONDUIT_UNLOCKED_TYPE.get());
+            player.sendStatusMessage(Lang.ITEM_LIQUID_CONDUIT_UNLOCKED_TYPE.toChatServer(), true);
           }
         } else if (network != null) {
           network.setFluidType(null);
@@ -247,6 +237,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
     }
   }
 
+  @Override
   public boolean canFill(EnumFacing side, FluidStack fluid) {
     if (getNetwork() == null || !getConnectionMode(side).acceptsInput()) {
       return false;
@@ -254,6 +245,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
     return canExtractFromDir(side) && LiquidConduitNetwork.areFluidsCompatable(getFluidType(), fluid);
   }
 
+  @Override
   public boolean canDrain(EnumFacing side, FluidStack fluid) {
     if (getNetwork() == null || !getConnectionMode(side).acceptsOutput()) {
       return false;

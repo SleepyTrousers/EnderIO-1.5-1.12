@@ -218,7 +218,7 @@ tile.block_killer_joe.tooltip.detailed.line1=Attacks nearby creatures when suppl
 #Obelisks
 
 tile.block_attractor_obelisk.name=Attractor Obelisk
-tile.block_attractor_obelisk.tooltip.detailed.line1=Draws mobs towards it
+tile.block_attractor_obelisk.tooltip.detailed.line1=Entices mobs to walk to it
 tile.block_attractor_obelisk.tooltip.detailed.line2=Specify the mobs to effect by placing their souls within the device
 
 tile.block_aversion_obelisk.name=Aversion Obelisk
@@ -228,7 +228,7 @@ tile.block_inhibitor_obelisk.name=Inhibitor Obelisk
 tile.block_inhibitor_obelisk.tooltip.detailed.line1=Prevents teleporting within  its area of effect
 
 tile.block_relocator_obelisk.name=Relocator Obelisk
-tile.block_relocator_obelisk.tooltip.detailed.line1=Relocates mobs that spawn within its area of effect
+tile.block_relocator_obelisk.tooltip.detailed.line1=Relocates mobs that spawn within its area of effect towards it
 
 tile.block_weather_obelisk.name=Weather Obelisk
 tile.block_weather_obelisk.tooltip.detailed.line1=Changes the current weather

@@ -7,17 +7,25 @@ import java.util.WeakHashMap;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.vecmath.Vector4f;
+
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.EntityAction;
 import crazypants.enderio.base.network.PacketSpawnParticles;
+import crazypants.enderio.base.render.ranged.RangeParticle;
 import crazypants.enderio.machines.init.MachineObject;
+import crazypants.enderio.machines.machine.obelisk.base.AbstractRangedObeliskEntity;
 import crazypants.enderio.machines.machine.obelisk.base.AbstractSpawningObeliskEntity;
 import info.loenwind.autosave.annotations.Storable;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.machines.capacitor.CapacitorKey.RELOCATOR_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.RELOCATOR_POWER_INTAKE;
@@ -97,6 +105,25 @@ public class TileRelocatorObelisk extends AbstractSpawningObeliskEntity {
   @Override
   public @Nonnull EntityAction getEntityAction() {
     return EntityAction.RELOCATE;
+  }
+
+  private final static @Nonnull Vector4f color = new Vector4f(.94f, .11f, .11f, .4f);
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void setShowRange(boolean showRange) {
+    if (showingRange == showRange) {
+      return;
+    }
+    super.setShowRange(showRange);
+    if (showingRange) {
+      Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle<AbstractRangedObeliskEntity>(this, color) {
+        @Override
+        protected @Nonnull BoundingBox getBounds() {
+          return new BoundingBox(getPos()).expand(4, 1d, 4);
+        }
+      });
+    }
   }
 
 }

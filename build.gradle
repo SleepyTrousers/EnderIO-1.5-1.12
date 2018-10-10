@@ -19,6 +19,7 @@ buildscript {
 
 plugins {
     id 'com.matthewprenger.cursegradle' version "1.1.0"
+    id "com.dorongold.task-tree" version "1.3"
 }
 
 apply plugin: 'eclipse'
@@ -217,16 +218,66 @@ allprojects {
         }
       }
     }
+
+    if (project.curse_projectId?.trim())
+        curseforge {
+            if (project.hasProperty('curseforge_key')) {
+                apiKey = project.curseforge_key
+            }
+
+            def build_number = System.getenv('BUILD_NUMBER') == null ? '0' : System.getenv('BUILD_NUMBER')
+            def changelog_content = System.getenv('CHANGELOG') != null && !System.getenv('CHANGELOG').equals('none') ? System.getenv('CHANGELOG') : ''
+
+            def changelog_text = getChangelogFormat()
+                .replaceAll('#BUILD#', build_number)
+                .replaceAll('#EXTRA#', changelog_content)
+
+            project {
+                id = project.curse_projectId
+                changelog = changelog_text
+                changelogType = 'html'
+                releaseType = 'release'
+
+                mainArtifact(jar) {
+                    String display_addon = project.hasProperty('curse_display_name') ? project.curse_display_name : "Ender IO";
+                    displayName = "${display_addon} - ${version}"
+                }
+
+                relations {
+                    if (project.hasProperty('curse_optional_libraries'))
+                        project.curse_optional_libraries.split(/,\s*/).findAll { it?.trim() }.each { slug -> optionalLibrary slug }
+                    if (project.hasProperty('curse_required_libraries'))
+                        project.curse_required_libraries.split(/,\s*/).findAll { it?.trim() }.each { slug -> requiredLibrary slug }
+                }
+
+                afterEvaluate {
+//     Work around https://github.com/matthewprenger/CurseGradle/issues/20
+                    gameVersionStrings.remove('Java 9')
+// (1) Work around cursegradle setting dependencies for the curseforgeXXX tasks to :subproject:jar and :reobfJar -> force :subproject:reobfJar instead.
+// (2) Depend on rmKeyStore instead of reobfJar so the signed jar is uploaded.
+// (3) It is very tricky to not run too early (before cursegradle creates the upload task), that's why this looks so convoluted...
+                    allprojects { p ->
+                        p.curseforge.curseProjects.findAll { it.uploadTask }.findAll { it.uploadTask.projectId == p.curse_projectId }.each { curseProject ->
+                            Task reobfTask = p.tasks.findByName('rmKeyStore')
+                            println "Forcing dependency of ${curseProject.uploadTask} to ${reobfTask}"
+                            curseProject.uploadTask.dependsOn.clear()
+                            curseProject.uploadTask.dependsOn reobfTask
+                        }
+                    }
+                }
+            }
+        }
+
 }
 
 // Configuration that applies only to modules
 subprojects {
-    
-    jar {            
+
+    jar {
         into('/META-INF/libraries') {
             from configurations.embed
         }
-        
+
         doFirst {
             manifest {
                 def contained = configurations.embed.collect { it.getName() };
@@ -238,7 +289,7 @@ subprojects {
             }
         }
     }
-    
+
     // Assembly an API jar
     task apiJar(type: Jar) {
         classifier = 'api'
@@ -303,7 +354,7 @@ jar {
     combjarprojects.each { subproject ->
         from subproject.sourceSets.main.output.classesDirs
         from subproject.sourceSets.main.output.resourcesDir
-        
+
         into('/META-INF/libraries') {
             from subproject.configurations.embed
         }
@@ -399,68 +450,6 @@ def release = System.getenv("RELEASE") != null &&
               !System.getenv("RELEASE").equalsIgnoreCase("false")
 
 tasks.curseforge.enabled = release && project.hasProperty('curseforge_key')
-curseforge {
-    if (project.hasProperty('curseforge_key')) {
-        apiKey = project.curseforge_key
-    }
-
-    def build_number = System.getenv('BUILD_NUMBER') == null ? '0' : System.getenv('BUILD_NUMBER')
-    def changelog_content = System.getenv('CHANGELOG') != null && !System.getenv('CHANGELOG').equals('none') ? System.getenv('CHANGELOG') : ''
-
-    def changelog_text = getChangelogFormat()
-        .replaceAll('#BUILD#', build_number)
-        .replaceAll('#EXTRA#', changelog_content)
-
-    project {
-        id = project.curse_projectId
-        changelog = changelog_text
-        changelogType = 'html'
-        releaseType = 'alpha' // for now
-
-        mainArtifact(jar) {
-            displayName = "Ender IO - ${version}"
-        }
-
-        relations {
-            requiredLibrary 'endercore'
-
-//            optionalLibrary 'waila'
-            optionalLibrary 'jei'
-            optionalLibrary 'the-one-probe'
-            optionalLibrary 'baubles'
-            optionalLibrary 'chisel'
-//            optionalLibrary 'hwyla'
-            optionalLibrary 'opencomputers'
-            optionalLibrary 'forestry'
-            optionalLibrary 'ctm'
-            optionalLibrary 'applied-energistics-2'
-            optionalLibrary 'actually-additions'
-            optionalLibrary 'extreme-reactors'
-            optionalLibrary 'biomes-o-plenty'
-            optionalLibrary 'botania'
-            optionalLibrary 'buildcraft'
-//            optionalLibrary 'chisels-bits'
-            optionalLibrary 'computercraft'
-            optionalLibrary 'extra-utilities'
-            optionalLibrary 'immersive-engineering'
-            optionalLibrary 'industrial-craft'
-            optionalLibrary 'natura'
-            optionalLibrary 'thermal-foundation'
-            optionalLibrary 'tinkers-construct'
-        }
-
-        // TODO: Make each subproject upload to its own curseforge project
-        // buildprojects.each { subproject ->
-        //     addArtifact subproject.jar
-
-        //     if (resolveOption(subproject, 'publish_api'))
-        //         addArtifact subproject.apiJar
-
-        //     if (resolveOption(subproject, 'publish_source'))
-        //         addArtifact subproject.sourceJar
-        // }
-    }
-}
 
 // Part of the temporary fix for not compiling modules
 gradle.taskGraph.whenReady {
@@ -563,3 +552,4 @@ def resolveOption(Project project, String option, boolean defaultValue = false) 
 
     return sourceValue == 'true' || sourceValue == true || sourceValue == 1
 }
+

@@ -6,10 +6,10 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.events.ModSoundRegisterEvent;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -41,7 +41,7 @@ public enum SoundRegistry implements IModSound {
   }
 
   @SubscribeEvent
-  public static void registerSounds(@Nonnull RegistryEvent.Register<SoundEvent> event) {
+  public static void registerSounds(@Nonnull ModSoundRegisterEvent event) {
     for (SoundRegistry soundRegistry : values()) {
       if (SoundEvent.REGISTRY.containsKey(soundRegistry.resourceLocation)) {
         soundRegistry.soundEvent = event.getRegistry().getValue(soundRegistry.resourceLocation);

@@ -14,6 +14,7 @@ public interface IFluidFilter extends IFilter {
    *
    * @return true if the filter has no fluids
    */
+  @Override
   boolean isEmpty();
 
   /**

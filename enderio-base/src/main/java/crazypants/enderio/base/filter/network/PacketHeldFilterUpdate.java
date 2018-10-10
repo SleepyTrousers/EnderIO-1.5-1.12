@@ -26,13 +26,13 @@ public class PacketHeldFilterUpdate implements IMessage {
   }
 
   @Override
-  public void fromBytes(@Nonnull ByteBuf buf) {
+  public void fromBytes(ByteBuf buf) {
     filter = FilterRegistry.readFilter(buf);
     param = buf.readInt();
   }
 
   @Override
-  public void toBytes(@Nonnull ByteBuf buf) {
+  public void toBytes(ByteBuf buf) {
     FilterRegistry.writeFilter(buf, filter);
     buf.writeInt(param);
   }

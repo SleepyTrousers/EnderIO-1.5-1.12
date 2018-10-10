@@ -1,5 +1,6 @@
 package crazypants.enderio.base.conduit.geom;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,6 +8,8 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 
@@ -19,31 +22,26 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
-public class ConduitGeometryUtil {
+public final class ConduitGeometryUtil {
 
   public static final @Nonnull ConduitGeometryUtil instance = new ConduitGeometryUtil();
 
-  public static float STUB_WIDTH = 0.2f;
-  public static float STUB_HEIGHT = 0.2f;
+  private static float WIDTH;
+  private static float HEIGHT;
 
-  public static float WIDTH;
-  public static float HEIGHT;
-
-  public static float HWIDTH;
-  public static float HHEIGHT;
+  private static float HWIDTH;
+  private static float HHEIGHT;
 
   // All values are for a single conduit core
-  public static Vector3d CORE_MIN;
-  public static Vector3d CORE_MAX;
-  public static BoundingBox CORE_BOUNDS;
+  private static BoundingBox CORE_BOUNDS;
 
   public static final float CONNECTOR_DEPTH = 0.05f;
 
-  private static final @Nonnull Map<EnumFacing, BoundingBox[]> EXTERNAL_CONNECTOR_BOUNDS = new HashMap<EnumFacing, BoundingBox[]>();
+  private static final @Nonnull Map<EnumFacing, BoundingBox[]> EXTERNAL_CONNECTOR_BOUNDS = new EnumMap<>(EnumFacing.class);
 
   @SubscribeEvent
   public static void preInit(EnderIOLifecycleEvent.Config.Post event) {
-    float size = (float) ((1 / 16f) * Config.conduitPixels);
+    float size = (1 / 16f) * Config.conduitPixels;
 
     WIDTH = size;
     HEIGHT = size;
@@ -51,13 +49,12 @@ public class ConduitGeometryUtil {
     HHEIGHT = HEIGHT / 2;
 
     final Vector3d core_min = new Vector3d(0.5f - HWIDTH, 0.5 - HHEIGHT, 0.5 - HWIDTH);
-    CORE_MIN = core_min;
-    final Vector3d core_max = new Vector3d(CORE_MIN.x + WIDTH, CORE_MIN.y + HEIGHT, CORE_MIN.z + WIDTH);
-    CORE_MAX = core_max;
+    final Vector3d core_max = new Vector3d(core_min.x + WIDTH, core_min.y + HEIGHT, core_min.z + WIDTH);
     CORE_BOUNDS = new BoundingBox(core_min, core_max);
 
     float connectorWidth = Math.min((2 / 16f) + (size * 3), 1);
-    for (EnumFacing dir : EnumFacing.VALUES) {
+    for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
+      EnumFacing dir = itr.next();
       EXTERNAL_CONNECTOR_BOUNDS.put(dir, createExternalConnector(dir, CONNECTOR_DEPTH, connectorWidth));
     }
   }
@@ -114,16 +111,18 @@ public class ConduitGeometryUtil {
   private ConduitGeometryUtil() {
   }
 
+  @SuppressWarnings("null")
   public @Nonnull BoundingBox getExternalConnectorBoundingBox(@Nonnull EnumFacing dir) {
     return getExternalConnectorBoundingBoxes(dir)[0];
   }
 
+  @SuppressWarnings("null")
   public @Nonnull BoundingBox[] getExternalConnectorBoundingBoxes(@Nonnull EnumFacing dir) {
     return EXTERNAL_CONNECTOR_BOUNDS.get(dir);
   }
 
-  public @Nonnull BoundingBox getBoundingBox(Class<? extends IConduit> type, EnumFacing dir, boolean isStub, Offset offset) {
-    GeometryKey key = new GeometryKey(dir, isStub, offset, type);
+  public @Nonnull BoundingBox getBoundingBox(@Nonnull Class<? extends IConduit> type, EnumFacing dir, @Nonnull Offset offset) {
+    GeometryKey key = new GeometryKey(dir, offset, type);
     BoundingBox result = boundsCache.get(key);
     if (result == null) {
       result = createConduitBounds(type, key);
@@ -163,10 +162,10 @@ public class ConduitGeometryUtil {
   }
 
   private @Nonnull BoundingBox createConduitBounds(@Nonnull Class<? extends IConduit> type, @Nonnull GeometryKey key) {
-    return createConduitBounds(type, key.dir, key.isStub, key.offset);
+    return createConduitBounds(type, key.dir, key.offset);
   }
 
-  private @Nonnull BoundingBox createConduitBounds(Class<? extends IConduit> type, EnumFacing dir, boolean isStub, @Nonnull Offset offset) {
+  private @Nonnull BoundingBox createConduitBounds(Class<? extends IConduit> type, EnumFacing dir, @Nonnull Offset offset) {
     BoundingBox bb = CORE_BOUNDS;
 
     Vector3d min = bb.getMin();
@@ -175,28 +174,28 @@ public class ConduitGeometryUtil {
     if (dir != null) {
       switch (dir) {
       case WEST:
-        min.x = isStub ? Math.max(0, bb.minX - STUB_WIDTH) : 0;
+        min.x = 0;
         max.x = bb.minX;
         break;
       case EAST:
         min.x = bb.maxX;
-        max.x = isStub ? Math.min(1, bb.maxX + STUB_WIDTH) : 1;
+        max.x = 1;
         break;
       case DOWN:
-        min.y = isStub ? Math.max(0, bb.minY - STUB_HEIGHT) : 0;
+        min.y = 0;
         max.y = bb.minY;
         break;
       case UP:
-        max.y = isStub ? Math.min(1, bb.maxY + STUB_HEIGHT) : 1;
         min.y = bb.maxY;
+        max.y = 1;
         break;
       case NORTH:
-        min.z = isStub ? Math.max(0.0F, bb.minZ - STUB_WIDTH) : 0;
+        min.z = 0;
         max.z = bb.minZ;
         break;
       case SOUTH:
-        max.z = isStub ? Math.min(1F, bb.maxZ + STUB_WIDTH) : 1;
         min.z = bb.maxZ;
+        max.z = 1;
         break;
       default:
         break;
@@ -208,6 +207,18 @@ public class ConduitGeometryUtil {
     max.add(trans);
     bb = new BoundingBox(VecmathUtil.clamp(min, 0, 1), VecmathUtil.clamp(max, 0, 1));
     return bb;
+  }
+
+  public static BoundingBox getCoreBounds() {
+    return CORE_BOUNDS;
+  }
+
+  public static float getHeight() {
+    return HEIGHT;
+  }
+
+  public static float getHalfWidth() {
+    return HWIDTH;
   }
 
 }

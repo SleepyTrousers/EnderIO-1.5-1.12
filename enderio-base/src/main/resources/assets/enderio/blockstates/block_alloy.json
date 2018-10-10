@@ -49,6 +49,11 @@
 				"textures": {
 					"all": "enderio:blocks/block_alloy_end_steel"
 				}
+			},
+			"construction_alloy": {
+				"textures": {
+					"all": "enderio:blocks/block_alloy_construction_alloy"
+				}
 			}
 		}
 	}

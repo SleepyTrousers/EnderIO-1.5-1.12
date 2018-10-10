@@ -50,9 +50,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Tweak: Wood Hopper" required="false">
     <crafting>
       <grid>
-        <item name="ingotIron"/><item name="logWood"/><item name="ingotIron"/>
-        <item name="ingotIron"/><item name="logWood"/><item name="ingotIron"/>
-        <item/><item name="ingotIron"/><item/>
+        <item name="IRON"/><item name="logWood"/><item name="IRON"/>
+        <item name="IRON"/><item name="logWood"/><item name="IRON"/>
+        <item/><item name="IRON"/><item/>
       </grid>
       <output name="blockHopper" />
     </crafting>

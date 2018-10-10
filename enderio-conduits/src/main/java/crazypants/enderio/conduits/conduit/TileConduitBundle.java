@@ -18,6 +18,7 @@ import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.ILocalizable;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
@@ -41,6 +42,7 @@ import crazypants.enderio.base.filter.ITileFilterContainer;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.machine.interfaces.INotifier;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -67,7 +69,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 
 @Storable
-public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent.IConduitComponentProvider, ITileFilterContainer {
+public class TileConduitBundle extends TileEntityEio implements IConduitBundle, IConduitComponent.IConduitComponentProvider, ITileFilterContainer, INotifier {
 
   // TODO Fix duct-tape
   // TODO Check store
@@ -666,8 +668,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       }
     }
     for (EnumFacing dir : externalDirs) {
-      BoundingBox bb = ConduitGeometryUtil.instance.getExternalConnectorBoundingBox(dir);
-      if (bb != null) {
+      if (dir != null) {
+        BoundingBox bb = ConduitGeometryUtil.instance.getExternalConnectorBoundingBox(dir);
         CollidableComponent cc = new CollidableComponent(null, bb, dir, ConduitConnectorType.EXTERNAL);
         result.add(cc);
         cachedConnectors.add(cc);
@@ -683,13 +685,13 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     Set<CollidableComponent> components = new LinkedHashSet<>();
     if (con.hasConnections()) {
       for (EnumFacing dir : con.getExternalConnections()) {
-        components.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), dir), null, false), con));
+        components.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), dir), null), con));
       }
       for (EnumFacing dir : con.getConduitConnections()) {
-        components.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), dir), null, false), con));
+        components.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), dir), null), con));
       }
     } else {
-      components.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), null), null, false), con));
+      components.addAll(cc.getCollidables(cc.createKey(type, getOffset(con.getBaseConduitType(), null), null), con));
     }
     result.addAll(components);
   }
@@ -852,6 +854,18 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       }
     }
     return null;
+  }
+
+  @Override
+  @Nonnull
+  public Set<? extends ILocalizable> getNotification() {
+    Set<ILocalizable> result = new HashSet<>();
+    for (IServerConduit conduit : getServerConduits()) {
+      if (conduit instanceof INotifier) {
+        result.addAll(((INotifier) conduit).getNotification());
+      }
+    }
+    return result;
   }
 
 }

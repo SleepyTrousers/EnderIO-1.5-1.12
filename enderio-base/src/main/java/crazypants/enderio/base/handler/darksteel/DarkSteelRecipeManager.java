@@ -110,7 +110,7 @@ public class DarkSteelRecipeManager {
     resultStack.setItemDamage(Math.max(0, damage - totalDamageRemoved));
 
     evt.setOutput(resultStack);
-    evt.setCost(ingouts + (int) Math.ceil(getEnchantmentRepairCost(resultStack.copy()) / 2));
+    evt.setCost(ingouts + (int) Math.ceil(getEnchantmentRepairCost(resultStack.copy()) / 2d));
     evt.setMaterialCost(ingouts);
   }
 
@@ -151,6 +151,7 @@ public class DarkSteelRecipeManager {
           break;
         case RARE:
           costPerLevel = 4;
+          break;
         case UNCOMMON:
           costPerLevel = 2;
           break;
@@ -281,15 +282,19 @@ public class DarkSteelRecipeManager {
 
     @Override
     public boolean equals(Object obj) {
-      if (this == obj)
+      if (this == obj) {
         return true;
-      if (obj == null)
+      }
+      if (obj == null) {
         return false;
-      if (getClass() != obj.getClass())
+      }
+      if (getClass() != obj.getClass()) {
         return false;
+      }
       UpgradePath other = (UpgradePath) obj;
-      if (!id.equals(other.id))
+      if (!id.equals(other.id)) {
         return false;
+      }
       return true;
     }
 

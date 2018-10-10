@@ -76,6 +76,8 @@ import crazypants.enderio.base.item.xptransfer.ItemXpTransfer;
 import crazypants.enderio.base.item.yetawrench.ItemYetaWrench;
 import crazypants.enderio.base.material.alloy.BlockAlloy;
 import crazypants.enderio.base.material.alloy.ItemAlloy;
+import crazypants.enderio.base.material.alloy.endergy.BlockEndergyAlloy;
+import crazypants.enderio.base.material.alloy.endergy.ItemEndergyAlloy;
 import crazypants.enderio.base.material.food.ItemEnderFood;
 import crazypants.enderio.base.material.glass.BlockFusedQuartz;
 import crazypants.enderio.base.material.glass.BlockPaintedFusedQuartz;
@@ -237,6 +239,12 @@ public enum ModObject implements IModObjectBase {
   itemStaffOfLevity(ItemStaffOfLevity.class),
 
   item_owl_egg(ItemOwlEgg.class),
+
+  // endergy Items
+  blockAlloyEndergy(BlockEndergyAlloy.class),
+  itemAlloyEndergyIngot(ItemEndergyAlloy.class),
+  itemAlloyEndergyNugget(ItemEndergyAlloy.class),
+  itemAlloyEndergyBall(ItemEndergyAlloy.class),
 
   ;
 

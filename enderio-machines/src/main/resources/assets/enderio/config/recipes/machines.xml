@@ -146,6 +146,17 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Wired Charger, Upgrade" required="true">
+    <crafting upgrade="true">
+      <grid size="3x3">
+        <item name="ELECTRICAL_STEEL" /><item /><item name="ELECTRICAL_STEEL" />
+        <item /><item name="CHASSIS" /><item />
+        <item name="ELECTRICAL_STEEL" /><item name="enderio:block_simple_wired_charger" /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="enderio:block_wired_charger" />
+    </crafting>
+  </recipe>
+
   <recipe name="Simple Wired Charger" required="true">
     <crafting>
       <grid size="3x3">
@@ -292,9 +303,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Tank" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="ingotIron" /><item name="barsIron" /><item name="ingotIron" />
+        <item name="IRON" /><item name="barsIron" /><item name="IRON" />
         <item name="barsIron" /><item name="blockGlass" /><item name="barsIron" />
-        <item name="ingotIron" /><item name="barsIron" /><item name="ingotIron" />
+        <item name="IRON" /><item name="barsIron" /><item name="IRON" />
       </grid>
       <output name="enderio:block_tank:0" />
     </crafting>
@@ -314,7 +325,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Simple Alloy Smelter" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="ingotIron" /><item name="ingotIron" /><item name="ingotIron" />
+        <item name="IRON" /><item name="IRON" /><item name="IRON" />
         <item name="minecraft:furnace" /><item name="SIMPLE_CHASSIS"/><item name="minecraft:furnace" />
         <item name="GEAR_STONE" /><item name="item:minecraft:bucket" /><item name="GEAR_STONE" />
       </grid>
@@ -325,7 +336,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Simple Furnace" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="ingotIron" /><item name="minecraft:furnace" /><item name="ingotIron" />
+        <item name="IRON" /><item name="minecraft:furnace" /><item name="IRON" />
         <item name="minecraft:stonebrick:0" /><item name="SIMPLE_CHASSIS"/><item name="minecraft:stonebrick:0" />
         <item name="GEAR_STONE" /><item name="item:minecraft:bucket" /><item name="GEAR_STONE" />
       </grid>
@@ -532,9 +543,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Vacuum Chest" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="ingotIron" /><item name="ingotIron" /><item name="ingotIron" />
-        <item name="ingotIron" /><item name="chestWood" /><item name="ingotIron" />
-        <item name="ingotIron" /><item name="PULSATING_CRYSTAL" /><item name="ingotIron" />
+        <item name="IRON" /><item name="IRON" /><item name="IRON" />
+        <item name="IRON" /><item name="chestWood" /><item name="IRON" />
+        <item name="IRON" /><item name="PULSATING_CRYSTAL" /><item name="IRON" />
       </grid>
       <output name="enderio:block_vacuum_chest" />
     </crafting>
@@ -543,9 +554,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="XP Vacuum" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="ingotIron" /><item name="ingotIron" /><item name="ingotIron" />
-        <item name="ingotIron" /><item name="enderio:item_xp_transfer" /><item name="ingotIron" />
-        <item name="ingotIron" /><item name="PULSATING_CRYSTAL" /><item name="ingotIron" />
+        <item name="IRON" /><item name="IRON" /><item name="IRON" />
+        <item name="IRON" /><item name="enderio:item_xp_transfer" /><item name="IRON" />
+        <item name="IRON" /><item name="PULSATING_CRYSTAL" /><item name="IRON" />
       </grid>
       <output name="enderio:block_xp_vacuum" />
     </crafting>
@@ -632,7 +643,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x2">
         <item name="blockGlass" /><item name="blockGlass" /><item name="blockGlass" />
-        <item name="ingotIron" /><item name="oredict:glowstone" /><item name="ingotIron" />
+        <item name="IRON" /><item name="oredict:glowstone" /><item name="IRON" />
       </grid>
       <output name="LIGHT_BASIC" />
     </crafting>
@@ -764,9 +775,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Item Buffer" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="ingotIron" /><item name="ELECTRICAL_STEEL" /><item name="ingotIron" />
+        <item name="IRON" /><item name="ELECTRICAL_STEEL" /><item name="IRON" />
         <item name="ELECTRICAL_STEEL" /><item name="chestWood" /><item name="ELECTRICAL_STEEL" />
-        <item name="ingotIron" /><item name="ELECTRICAL_STEEL" /><item name="ingotIron" />
+        <item name="IRON" /><item name="ELECTRICAL_STEEL" /><item name="IRON" />
       </grid>
       <output name="enderio:block_buffer:0" />
     </crafting>
@@ -775,9 +786,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Power Buffer" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="ingotIron" /><item name="ELECTRICAL_STEEL" /><item name="ingotIron" />
+        <item name="IRON" /><item name="ELECTRICAL_STEEL" /><item name="IRON" />
         <item name="ELECTRICAL_STEEL" /><item name="CHASSIS" /><item name="ELECTRICAL_STEEL" />
-        <item name="ingotIron" /><item name="ELECTRICAL_STEEL" /><item name="ingotIron" />
+        <item name="IRON" /><item name="ELECTRICAL_STEEL" /><item name="IRON" />
       </grid>
       <output name="enderio:block_buffer:1" />
     </crafting>
@@ -796,9 +807,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Travel Anchor" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="ingotIron" /><item name="CONDUIT_BINDER" /><item name="ingotIron" />
+        <item name="IRON" /><item name="CONDUIT_BINDER" /><item name="IRON" />
         <item name="CONDUIT_BINDER" /><item name="PULSATING_CRYSTAL" /><item name="CONDUIT_BINDER" />
-        <item name="ingotIron" /><item name="CONDUIT_BINDER" /><item name="ingotIron" />
+        <item name="IRON" /><item name="CONDUIT_BINDER" /><item name="IRON" />
       </grid>
       <output name="enderio:block_travel_anchor" />
     </crafting>
@@ -841,7 +852,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item name="itemSilicon"/><item name="itemSilicon" /><item name="itemSilicon"/>
-        <item name="ingotIron"/><item name="CHASSIS" /><item name="ingotIron"/>
+        <item name="IRON"/><item name="CHASSIS" /><item name="IRON"/>
         <item name="GEAR_IRON" /><item name="oredict:workbench" /><item name="GEAR_IRON" />
       </grid>
       <output name="enderio:block_crafter" />
@@ -852,7 +863,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item name="itemSilicon"/><item name="itemSilicon" /><item name="itemSilicon"/>
-        <item name="ingotIron"/><item name="SIMPLE_CHASSIS" /><item name="ingotIron"/>
+        <item name="IRON"/><item name="SIMPLE_CHASSIS" /><item name="IRON"/>
         <item name="GEAR_STONE" /><item name="oredict:workbench" /><item name="GEAR_STONE" />
       </grid>
       <output name="enderio:block_simple_crafter" />

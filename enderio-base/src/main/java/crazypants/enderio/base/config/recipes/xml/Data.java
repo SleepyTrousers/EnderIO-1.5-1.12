@@ -14,7 +14,7 @@ public class Data implements RecipeConfigElement {
   @Override
   public Object readResolve() throws InvalidRecipeConfigException, XMLStreamException {
     try {
-      if (value == Float.NaN) {
+      if (Float.isNaN(value)) {
         throw new InvalidRecipeConfigException("'value' is invalid");
       }
     } catch (InvalidRecipeConfigException e) {
@@ -29,7 +29,7 @@ public class Data implements RecipeConfigElement {
 
   @Override
   public boolean isValid() {
-    return value != Float.NaN;
+    return !Float.isNaN(value);
   }
 
   @Override

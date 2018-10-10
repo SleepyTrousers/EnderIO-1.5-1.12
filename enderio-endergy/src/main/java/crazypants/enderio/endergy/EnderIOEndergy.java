@@ -46,7 +46,7 @@ public class EnderIOEndergy implements IEnderIOAddon {
 
   public static final @Nonnull String MODID = "enderioendergy";
   public static final @Nonnull String DOMAIN = "enderio";
-  public static final @Nonnull String MOD_NAME = "Ender IO Endergy";
+  public static final @Nonnull String MOD_NAME = "Ender IO endergy";
   public static final @Nonnull String VERSION = "@VERSION@";
 
   private static final @Nonnull String DEFAULT_DEPENDENCIES = "after:" + crazypants.enderio.base.EnderIO.MODID;

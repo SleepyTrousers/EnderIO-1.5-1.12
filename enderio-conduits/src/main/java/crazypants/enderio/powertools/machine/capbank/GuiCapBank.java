@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.common.util.NullHelper;
+import com.google.common.base.Predicate;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
@@ -159,17 +160,21 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     configB = new GuiButtonIoConfig<TileCapBank>(this, CONFIG_ID, x, y, te, configOverlay);
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+    
+    // Validate that the next character input won't overflow the max IO, and disallow starting numbers with 0
+    final Predicate<String> inputValidator = s -> 
+      s == null || s.isEmpty() || (!s.startsWith("0") && PowerDisplayUtil.parsePower(s) <= network.getMaxIO());
 
     x = inputX - 24;
     y = inputY;
     maxInputTF = new TextFieldEnder(fr, x, y, 68, 16);
-    maxInputTF.setMaxStringLength(10);
+    maxInputTF.setValidator(inputValidator);
     maxInputTF.setCharFilter(TextFieldEnder.FILTER_NUMERIC);
 
     x = outputX - 24;
     y = outputY;
     maxOutputTF = new TextFieldEnder(fr, x, y, 68, 16);
-    maxOutputTF.setMaxStringLength(10);
+    maxOutputTF.setValidator(inputValidator);
     maxOutputTF.setCharFilter(TextFieldEnder.FILTER_NUMERIC);
 
     textFields.add(maxInputTF);

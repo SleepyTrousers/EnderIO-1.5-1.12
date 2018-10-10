@@ -115,8 +115,9 @@ public class LegacyMachineWrapper implements IItemHandler {
 
   @Override
   public @Nonnull ItemStack extractItem(int external, int amount, boolean simulate) {
-    if (amount <= 0 || !machine.getIoMode(side).canOutput())
+    if (amount <= 0 || !machine.getIoMode(side).canOutput()) {
       return Prep.getEmpty();
+    }
 
     int slot = extSlot2intSlot(external);
     if (!machine.getSlotDefinition().isOutputSlot(slot)) {

@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlastResistantItemBlock extends ItemBlock {
 
-  public BlastResistantItemBlock(Block block) {
+  public BlastResistantItemBlock(@Nonnull Block block) {
     super(block);
   }
 

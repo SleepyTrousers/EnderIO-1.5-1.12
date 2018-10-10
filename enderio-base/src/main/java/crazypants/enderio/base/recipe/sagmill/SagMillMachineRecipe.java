@@ -41,7 +41,7 @@ public class SagMillMachineRecipe extends AbstractMachineRecipe {
     if (recipe == null) {
       return RecipeBonusType.NONE;
     } else {
-      return recipe.getBonusType().withoutMultiply(SagMillRecipeManager.getInstance().isExcludedFromBallBonus(inputs));
+      return recipe.getBonusType();
     }
   }
 

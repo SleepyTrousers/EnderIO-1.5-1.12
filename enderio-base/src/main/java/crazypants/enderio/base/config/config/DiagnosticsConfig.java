@@ -33,4 +33,13 @@ public final class DiagnosticsConfig {
           + "This is intended to prevent the server from losing track of the player. Symptoms would be the player being invisible to other players, "
           + "not being able to interact with pressure plates, or being stuck in beds.");
 
+  public static final IValue<Protection> protectEnergyOverflow = F.make("protectAgainstEnergyOverflow", Protection.HARD, //
+      "Should TEs protected their maximum energy input against multiple inserts?");
+
+  public enum Protection {
+    NONE,
+    SOFT,
+    HARD;
+  }
+
 }

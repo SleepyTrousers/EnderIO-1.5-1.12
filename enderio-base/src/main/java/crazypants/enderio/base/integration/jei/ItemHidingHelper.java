@@ -13,7 +13,8 @@ import crazypants.enderio.base.config.config.InfinityConfig;
 import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.init.ModObject;
-import crazypants.enderio.base.material.alloy.Alloy;
+import crazypants.enderio.base.material.alloy.endergy.AlloyEndergy;
+import crazypants.enderio.base.material.alloy.IAlloy;
 import crazypants.enderio.base.material.material.Material;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ingredients.IIngredientBlacklist;
@@ -73,8 +74,9 @@ public enum ItemHidingHelper {
       Material.ENHANCED_CHASSIPARTS, Material.SIMPLE_CHASSIPARTS, Material.CAKE_BASE, Material.BRICK_GLAZED_NETHER),
   ZOO2(mod("enderiozoo", PersonalConfig.hideMobDrops), Material.POWDER_CONFUSION, Material.SHARD_ENDER, Material.POWDER_WITHERING),
   TAP(mod("ic2", PersonalConfig.hideTreetap).and(mod("techreborn", PersonalConfig.hideTreetap)), ModObject.itemDarkSteelTreetap),
-  ENDERGY(mod("enderioendergy", PersonalConfig.hideEndergy), Material.INFINITY_GOOP, Material.ENERGETIC_SILVER, Material.COMBUSTIVE_METAL, Material.CRUDE_STEEL,
-      Material.CRYSTALLINE_ALLOY, Material.MELODIC_ALLOY, Material.STELLAR_ALLOY, Material.CRYSTAlLINE_PINK_SLIME),
+  ENDERGY(mod("enderioendergy", PersonalConfig.hideEndergy), Material.INFINITY_GOOP),
+  ENDERGY_ALLOYS(mod("enderioendergy", PersonalConfig.hideEndergy), AlloyEndergy.ENERGETIC_SILVER, AlloyEndergy.CRUDE_STEEL,
+      AlloyEndergy.CRYSTALLINE_ALLOY, AlloyEndergy.MELODIC_ALLOY, AlloyEndergy.STELLAR_ALLOY, AlloyEndergy.CRYSTALLINE_PINK_SLIME),
 
   ;
 
@@ -101,8 +103,8 @@ public enum ItemHidingHelper {
     this.predicate = NullHelper.notnull(predicate, "predicate fail");
   }
 
-  private ItemHidingHelper(Predicate<IModRegistry> predicate, final @Nonnull Alloy... alloys) {
-    for (Alloy alloy : alloys) {
+  private ItemHidingHelper(Predicate<IModRegistry> predicate, final @Nonnull IAlloy... alloys) {
+    for (IAlloy alloy : alloys) {
       this.suppliers.add(() -> alloy.getStackBall());
       this.suppliers.add(() -> alloy.getStackBlock());
       this.suppliers.add(() -> alloy.getStackIngot());

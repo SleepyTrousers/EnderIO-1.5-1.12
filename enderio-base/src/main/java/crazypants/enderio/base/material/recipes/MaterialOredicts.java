@@ -11,6 +11,7 @@ import com.enderio.core.common.util.stackable.Things;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.material.alloy.Alloy;
+import crazypants.enderio.base.material.alloy.endergy.AlloyEndergy;
 import crazypants.enderio.base.material.glass.FusedQuartzType;
 import crazypants.enderio.base.material.material.Material;
 import net.minecraft.init.Items;
@@ -60,6 +61,16 @@ public class MaterialOredicts {
     NNList.of(Alloy.class).apply(new Callback<Alloy>() {
       @Override
       public void apply(@Nonnull Alloy alloy) {
+        OreDictionary.registerOre(alloy.getOreBlock(), alloy.getStackBlock());
+        OreDictionary.registerOre(alloy.getOreIngot(), alloy.getStackIngot());
+        OreDictionary.registerOre(alloy.getOreNugget(), alloy.getStackNugget());
+        OreDictionary.registerOre(alloy.getOreBall(), alloy.getStackBall());
+      }
+    });
+
+    NNList.of(AlloyEndergy.class).apply(new Callback<AlloyEndergy>() {
+      @Override
+      public void apply(@Nonnull AlloyEndergy alloy) {
         OreDictionary.registerOre(alloy.getOreBlock(), alloy.getStackBlock());
         OreDictionary.registerOre(alloy.getOreIngot(), alloy.getStackIngot());
         OreDictionary.registerOre(alloy.getOreNugget(), alloy.getStackNugget());

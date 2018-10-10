@@ -1,0 +1,45 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "enderio:cube"
+	},
+	"variants": {
+		"variant": {
+			"crude_steel": {
+				"textures": {
+				  "all": "enderio:blocks/block_alloy_crude_steel"
+				}
+			},
+			"crystalline_alloy": {
+				"textures": {
+					"all": "enderio:blocks/block_alloy_crystalline_alloy"
+				}
+			},
+			"melodic_alloy": {
+				"textures": {
+					"all": "enderio:blocks/block_alloy_melodic_alloy"
+				}
+			},
+			"stellar_alloy": {
+				"textures": {
+					"all": "enderio:blocks/block_alloy_stellar_alloy"
+				}
+			},
+			"crystalline_pink_slime": {
+				"textures": {
+					"all": "enderio:blocks/block_alloy_crystalline_pink_slime"
+				}
+			},
+			"energetic_silver": {
+				"textures": {
+					"all": "enderio:blocks/block_alloy_energetic_silver"
+				}
+			},
+			"vivid_alloy": {
+				"textures": {
+					"all": "enderio:blocks/block_alloy_vivid_alloy"
+				}
+			}
+		}
+	}
+}

@@ -3,9 +3,6 @@ package crazypants.enderio.base;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import info.loenwind.autosave.util.NBTAction;
-
-import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.TileEntityBase;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
@@ -15,16 +12,16 @@ import crazypants.enderio.autosave.handlers.EIOHandlers;
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.paint.PaintUtil;
+import crazypants.enderio.util.HandlePaintSource;
 import crazypants.enderio.util.NbtValue;
 import info.loenwind.autosave.Reader;
 import info.loenwind.autosave.Writer;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -160,7 +157,7 @@ public abstract class TileEntityEio extends TileEntityBase {
   // PAINT START
   // ///////////////////////////////////////////////////////////////////////
 
-  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
+  @Store(value = { NBTAction.CLIENT, NBTAction.SAVE }, handler = HandlePaintSource.class)
   private IBlockState paintSource = null;
 
   public void setPaintSource(@Nullable IBlockState paintSource) {

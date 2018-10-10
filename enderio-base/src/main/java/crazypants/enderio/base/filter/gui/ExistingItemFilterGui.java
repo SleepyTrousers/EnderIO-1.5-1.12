@@ -203,7 +203,7 @@ public class ExistingItemFilterGui extends AbstractFilterGui {
     snapshotOverlay.setIsVisible(true);
   }
 
-  private void sendSnapshotPacket(PacketExistingItemFilterSnapshot.Opcode opcode) {
+  private void sendSnapshotPacket(@Nonnull PacketExistingItemFilterSnapshot.Opcode opcode) {
     TileEntity te = filterContainer.getTileEntity();
     if (te != null) {
       PacketHandler.INSTANCE

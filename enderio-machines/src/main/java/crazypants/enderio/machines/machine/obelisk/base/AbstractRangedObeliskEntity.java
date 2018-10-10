@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @Storable
 public abstract class AbstractRangedObeliskEntity extends AbstractPowerConsumerEntity implements IRanged {
 
-  private boolean showingRange;
+  protected boolean showingRange;
 
   public AbstractRangedObeliskEntity(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
       @Nonnull ICapacitorKey maxEnergyUsed) {

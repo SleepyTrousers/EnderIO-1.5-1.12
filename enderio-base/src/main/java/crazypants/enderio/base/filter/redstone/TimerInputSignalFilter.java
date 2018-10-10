@@ -68,12 +68,12 @@ public class TimerInputSignalFilter implements IInputSignalFilter, IFilterIncrem
   }
 
   @Override
-  public String getFilterHeading() {
+  public @Nonnull String getFilterHeading() {
     return Lang.GUI_REDSTONE_FILTER_TIMER.get();
   }
 
   @Override
-  public String getIncrementingValueName() {
+  public @Nonnull String getIncrementingValueName() {
     return Lang.GUI_REDSTONE_FILTER_TIME.get();
   }
 

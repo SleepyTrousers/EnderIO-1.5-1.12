@@ -59,7 +59,7 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
 
     @Override
     public boolean doApply(@Nonnull ItemStack input) {
-      return input.isItemEqual(craftingGrid.getStackInSlot(slot));
+      return input.isItemEqualIgnoreDurability(craftingGrid.getStackInSlot(slot));
     }
 
   }
@@ -147,16 +147,6 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
     return BASE_TICK_RATE;
   }
 
-  static boolean compareDamageable(@Nonnull ItemStack stack, @Nonnull ItemStack req) {
-    if (stack.isItemEqual(req)) {
-      return true;
-    }
-    if (stack.isItemStackDamageable() && stack.getItem() == req.getItem()) {
-      return stack.getItemDamage() < stack.getMaxDamage();
-    }
-    return false;
-  }
-
   private static final UUID uuid = UUID.fromString("9b381cae-3c95-4a64-b958-1e25b0a4c790");
   private static final GameProfile DUMMY_PROFILE = new GameProfile(uuid, "[EioCrafter]");
 
@@ -169,7 +159,7 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
         required++;
         for (int i = 0; i < 9; i++) {
           ItemStack stack = getInventory().getSlot(INPUT_SLOT + i).get();
-          if (stack.getCount() > used[i] && compareDamageable(stack, req)) {
+          if (stack.getCount() > used[i] && stack.isItemEqualIgnoreDurability(req)) {
             found++;
             used[i]++;
             break;
@@ -198,30 +188,30 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
       } else {
         for (int i = 0; i < 9; i++) {
           ItemStack stack = getInventory().getSlot(INPUT_SLOT + i).get();
-          if (compareDamageable(stack, req)) {
+          if (stack.isItemEqualIgnoreDurability(req)) {
             inv.setInventorySlotContents(j, stack.splitStack(1));
             break;
           }
         }
       }
-      // Note: This need to be protected by canCraft() always!
-    }
-
-    if (playerInst == null) {
-      playerInst = new FakePlayerEIO(world, getLocation(), DUMMY_PROFILE);
-      playerInst.setOwner(getOwner());
+      // Note: This needs to be protected by canCraft() always!
     }
 
     // (2) Find a recipe
     IRecipe recipe = CraftingManager.findMatchingRecipe(inv, world);
     if (recipe == null) {
+      for (int j = 0; j < 9; j++) {
+        if (!inv.getStackInSlot(j).isEmpty()) {
+          containerItems.add(inv.getStackInSlot(j));
+        }
+      }
       return false;
     }
 
     // (3) Craft
-    ForgeHooks.setCraftingPlayer(playerInst);
+    ForgeHooks.setCraftingPlayer(getFakePlayer());
     ItemStack output = recipe.getCraftingResult(inv);
-    output.onCrafting(world, playerInst, 1);
+    output.onCrafting(world, getFakePlayer(), 1);
     NonNullList<ItemStack> remaining = CraftingManager.getRemainingItems(inv, world);
     ForgeHooks.setCraftingPlayer(null);
 
@@ -245,6 +235,10 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
     }
 
     return true;
+  }
+
+  private @Nonnull FakePlayerEIO getFakePlayer() {
+    return playerInst != null ? playerInst : (playerInst = new FakePlayerEIO(world, getLocation(), DUMMY_PROFILE).setOwner(getOwner()));
   }
 
   private boolean mergeOutput(@Nonnull ItemStack stack) {
@@ -297,6 +291,11 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
     IRecipe recipe = CraftingManager.findMatchingRecipe(inv, world);
     if (recipe != null) {
       matches = recipe.getRecipeOutput();
+      if (Prep.isInvalid(matches)) {
+        ForgeHooks.setCraftingPlayer(getFakePlayer());
+        matches = recipe.getCraftingResult(inv);
+        ForgeHooks.setCraftingPlayer(null);
+      }
     }
     craftingGrid.setInventorySlotContents(9, matches);
     markDirty();

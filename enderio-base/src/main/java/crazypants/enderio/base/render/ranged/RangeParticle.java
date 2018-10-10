@@ -76,13 +76,17 @@ public class RangeParticle<T extends TileEntity & IRanged> extends Particle {
 
     GlStateManager.color(color.x, color.y, color.z, color.w);
 
-    RenderUtil.renderBoundingBox(scale(owner.getPos(), owner.getBounds(), scale).expand(0.01, 0.01, 0.01), IconUtil.instance.whiteTexture);
+    RenderUtil.renderBoundingBox(scale(owner.getPos(), getBounds(), scale).expand(0.01, 0.01, 0.01), IconUtil.instance.whiteTexture);
 
     GlStateManager.depthMask(true);
     GlStateManager.disableBlend();
     GlStateManager.enableCull();
     GlStateManager.enableLighting();
     GlStateManager.popMatrix();
+  }
+
+  protected @Nonnull BoundingBox getBounds() {
+    return owner.getBounds();
   }
 
   private @Nonnull BoundingBox scale(final @Nonnull BlockPos source, final @Nonnull BoundingBox bounds, float scale) {

@@ -43,8 +43,9 @@ public class DarkSteelUpgradeRecipeCategory {
     DarkSteelUpgradeSubtypeInterpreter dsusi = new DarkSteelUpgradeSubtypeInterpreter();
     Set<Item> items = new HashSet<Item>();
     for (ItemStack stack : ItemHelper.getValidItems()) {
-      if (stack.getItem() instanceof IDarkSteelItem)
+      if (stack.getItem() instanceof IDarkSteelItem) {
         items.add(stack.getItem());
+      }
     }
     for (Item item : items) {
       if (item != null) {

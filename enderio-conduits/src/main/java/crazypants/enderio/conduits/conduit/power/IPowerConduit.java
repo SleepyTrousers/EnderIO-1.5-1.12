@@ -22,8 +22,10 @@ public interface IPowerConduit extends IEnergyStorage, IExtractor, IServerCondui
 
   IPowerInterface getExternalPowerReceptor(@Nonnull EnumFacing direction);
 
+  @Nonnull
   TextureAtlasSprite getTextureForInputMode();
 
+  @Nonnull
   TextureAtlasSprite getTextureForOutputMode();
 
   // called from NetworkPowerManager

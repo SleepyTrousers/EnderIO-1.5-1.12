@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
+import com.google.common.collect.ImmutableSet;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.diagnostics.Prof;
@@ -20,10 +21,10 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class ServerTickHandler {
 
-  public static interface ITickListener {
-    public void tickStart(TickEvent.ServerTickEvent event, @Nullable Profiler profiler);
+  public interface ITickListener {
+    void tickStart(TickEvent.ServerTickEvent event, @Nullable Profiler profiler);
 
-    public void tickEnd(TickEvent.ServerTickEvent event, @Nullable Profiler profiler);
+    void tickEnd(TickEvent.ServerTickEvent event, @Nullable Profiler profiler);
   }
 
   private final static @Nonnull IdentityHashMap<ITickListener, String> listeners = new IdentityHashMap<>();
@@ -48,7 +49,7 @@ public class ServerTickHandler {
     }
     Prof.start(profiler, "root"); // this event is fired outside the profiler's normal coverage...
     Prof.start(profiler, "ServerTickEvent_" + event.phase);
-    for (Entry<ITickListener, String> entry : listeners.entrySet()) {
+    for (Entry<ITickListener, String> entry : ImmutableSet.copyOf(NullHelper.notnullJ(listeners.entrySet(), "IdentityHashMap.entrySet()"))) {
       Prof.start(profiler, NullHelper.first(entry.getValue(), "(unnamed)"));
       if (event.phase == Phase.START) {
         entry.getKey().tickStart(event, profiler);

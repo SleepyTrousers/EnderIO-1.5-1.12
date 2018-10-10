@@ -82,8 +82,9 @@ public class ChorusFarmer extends AbstractFarmerJoe {
 
   private boolean placeBlockAt(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos,
       @Nonnull IBlockState newState) {
-    if (!world.setBlockState(pos, newState, 3))
+    if (!world.setBlockState(pos, newState, 3)) {
       return false;
+    }
 
     IBlockState state = world.getBlockState(pos);
     if (state.getBlock() == newState.getBlock()) {

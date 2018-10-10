@@ -88,8 +88,9 @@ public class Commune implements IFarmerJoe {
       return false;
     }
     for (ItemStack disableTreeStack : disableTrees) {
-      if (disableTreeStack.isItemEqual(stack))
+      if (disableTreeStack.isItemEqual(stack)) {
         return true;
+      }
     }
     return false;
   }

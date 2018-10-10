@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.recipes.xml.Crafting;
 import crazypants.enderio.base.material.alloy.Alloy;
+import crazypants.enderio.base.material.alloy.endergy.AlloyEndergy;
 import crazypants.enderio.base.material.glass.FusedQuartzType;
 import crazypants.enderio.base.material.material.NutritiousStickRecipe;
 import net.minecraft.item.EnumDyeColor;
@@ -25,6 +26,18 @@ public class MaterialRecipes {
     final IForgeRegistry<IRecipe> registry = event.getRegistry();
 
     for (Alloy alloy : Alloy.values()) {
+      registry.register(new ShapedOreRecipe(null, alloy.getStackBlock(), "iii", "iii", "iii", 'i', alloy.getOreIngot())
+          .setRegistryName(Crafting.mkRL("Auto: " + alloy.getBaseName() + " 1 block to 9 ingots")));
+      registry.register(new ShapelessOreRecipe(null, alloy.getStackIngot(9), alloy.getOreBlock())
+          .setRegistryName(Crafting.mkRL("Auto: " + alloy.getBaseName() + " 9 ingots to 1 block")));
+
+      registry.register(new ShapedOreRecipe(null, alloy.getStackIngot(), "nnn", "nnn", "nnn", 'n', alloy.getOreNugget())
+          .setRegistryName(Crafting.mkRL("Auto: " + alloy.getBaseName() + " 9 nuggets to 1 ingot")));
+      registry.register(new ShapelessOreRecipe(null, alloy.getStackNugget(9), alloy.getStackIngot())
+          .setRegistryName(Crafting.mkRL("Auto: " + alloy.getBaseName() + " 1 ingot to 9 nuggets")));
+    }
+
+    for (AlloyEndergy alloy : AlloyEndergy.values()) {
       registry.register(new ShapedOreRecipe(null, alloy.getStackBlock(), "iii", "iii", "iii", 'i', alloy.getOreIngot())
           .setRegistryName(Crafting.mkRL("Auto: " + alloy.getBaseName() + " 1 block to 9 ingots")));
       registry.register(new ShapelessOreRecipe(null, alloy.getStackIngot(9), alloy.getOreBlock())

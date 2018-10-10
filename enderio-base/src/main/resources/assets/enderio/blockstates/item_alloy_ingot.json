@@ -49,6 +49,11 @@
         "textures": {
           "layer0": "enderio:items/item_alloy_ingot_end_steel"
         }
+      },
+      "construction_alloy": {
+        "textures": {
+          "layer0": "enderio:items/item_alloy_ingot_construction_alloy"
+        }
       }
     }
   }

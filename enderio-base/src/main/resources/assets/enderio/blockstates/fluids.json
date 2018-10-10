@@ -73,6 +73,38 @@
             "model": "forge:fluid",
             "custom": { "fluid": "soularium" }
         },
+        "construction_alloy": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "construction_alloy" }
+        },
+        "crude_steel": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "crude_steel" }
+        },
+        "crystalline_alloy": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "crystalline_alloy" }
+        },
+        "melodic_alloy": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "melodic_alloy" }
+        },
+        "stellar_alloy": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "stellar_alloy" }
+        },
+        "crystalline_pink_slime": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "crystalline_pink_slime" }
+        },
+        "energetic_silver": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "energetic_silver" }
+        },
+        "vivid_alloy": {
+            "model": "forge:fluid",
+            "custom": { "fluid": "vivid_alloy" }
+        },
         "glowstone": {
             "model": "forge:fluid",
             "custom": { "fluid": "glowstone" }

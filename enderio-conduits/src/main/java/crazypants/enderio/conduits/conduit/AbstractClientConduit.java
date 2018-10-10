@@ -20,9 +20,9 @@ import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableCache;
 import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
-import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -148,7 +148,7 @@ public abstract class AbstractClientConduit implements IClientConduit.WithDefaul
     CollidableCache cc = CollidableCache.instance;
     for (EnumFacing dir : EnumFacing.VALUES) {
       if (dir != null && isConnectedTo(dir) && getConnectionMode(dir) != ConnectionMode.DISABLED) {
-        collidables.addAll(cc.getCollidables(cc.createKey(getCollidableType(), getBundle().getOffset(getBaseConduitType(), dir), dir, renderStub(dir)), this));
+        collidables.addAll(cc.getCollidables(cc.createKey(getCollidableType(), getBundle().getOffset(getBaseConduitType(), dir), dir), this));
       }
     }
   }
@@ -176,11 +176,9 @@ public abstract class AbstractClientConduit implements IClientConduit.WithDefaul
   @Override
   @Nonnull
   public Collection<CollidableComponent> createCollidables(@Nonnull CacheKey key) {
-    return NullHelper
-        .notnullJ(
-            Collections.singletonList(new CollidableComponent(getCollidableType(),
-                ConduitGeometryUtil.instance.getBoundingBox(getBaseConduitType(), key.dir, key.isStub, key.offset), key.dir, null)),
-            "Collections#singletonList");
+    return NullHelper.notnullJ(Collections.singletonList(
+        new CollidableComponent(getCollidableType(), ConduitGeometryUtil.instance.getBoundingBox(getBaseConduitType(), key.dir, key.offset), key.dir, null)),
+        "Collections#singletonList");
   }
 
   @Override
@@ -193,10 +191,6 @@ public abstract class AbstractClientConduit implements IClientConduit.WithDefaul
   @Nonnull
   public List<CollidableComponent> getCollidableComponents() {
     return collidables;
-  }
-
-  protected boolean renderStub(@Nonnull EnumFacing dir) {
-    return false;
   }
 
   @Override

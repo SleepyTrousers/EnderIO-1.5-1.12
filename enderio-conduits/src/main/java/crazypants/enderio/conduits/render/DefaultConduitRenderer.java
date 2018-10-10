@@ -6,8 +6,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.reflect.ConstructorUtils;
-
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
@@ -17,12 +15,11 @@ import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
+import crazypants.enderio.base.conduit.IClientConduit.WithDefaultRendering;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitRenderer;
-import crazypants.enderio.base.conduit.IClientConduit.WithDefaultRendering;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -66,74 +63,71 @@ public class DefaultConduitRenderer implements IConduitRenderer {
 
   @Override
   public void addBakedQuads(@Nonnull TileEntitySpecialRenderer<?> conduitBundleRenderer, @Nonnull IConduitBundle bundle,
-      @Nonnull IClientConduit.WithDefaultRendering conduit, float brightness, @Nullable BlockRenderLayer layer, List<BakedQuad> quads) {
+      @Nonnull IClientConduit.WithDefaultRendering conduit, float brightness, @Nullable BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
 
     Collection<CollidableComponent> components = conduit.getCollidableComponents();
     transmissionScaleFactor = conduit.getTransmitionGeometryScale();
     for (CollidableComponent component : components) {
-      if (renderComponent(component)) {
+      if (component != null && renderComponent(component)) {
         float selfIllum = Math.max(brightness, conduit.getSelfIlluminationForState(component));
         final TextureAtlasSprite transmitionTextureForState = conduit.getTransmitionTextureForState(component);
-        if (layer != null && isNSEWUD(component.dir) && transmitionTextureForState != null) {
+        if (layer != null && component.isDirectional() && transmitionTextureForState != null) {
           Vector4f color = conduit.getTransmitionTextureColorForState(component);
           addTransmissionQuads(transmitionTextureForState, color, layer, conduit, component, selfIllum, quads);
         }
         TextureAtlasSprite tex = conduit.getTextureForState(component);
-        if (tex == null) {
-          tex = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
-        }
         addConduitQuads(bundle, conduit, tex, component, selfIllum, layer, quads);
       }
     }
   }
   
-  protected BlockRenderLayer getConduitQuadsLayer() {
+  protected @Nonnull BlockRenderLayer getConduitQuadsLayer() {
     return BlockRenderLayer.CUTOUT;
   }
   
-  protected BlockRenderLayer getTransmissionQuadsLayer() {
+  protected @Nonnull BlockRenderLayer getTransmissionQuadsLayer() {
     return BlockRenderLayer.CUTOUT;
   }
   
   @Override
-  public BlockRenderLayer getCoreLayer() {
+  public @Nonnull BlockRenderLayer getCoreLayer() {
     return getConduitQuadsLayer();
   }
   
   @Override
-  public boolean canRenderInLayer(WithDefaultRendering con, BlockRenderLayer layer) {
+  public boolean canRenderInLayer(@Nonnull WithDefaultRendering con, @Nonnull BlockRenderLayer layer) {
     return layer == getConduitQuadsLayer() || layer == getTransmissionQuadsLayer();
   }
 
-  protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex,
+  private static final @Nonnull Vector4f COLOR_ERROR = new Vector4f(1, 0, 0, 1);
+
+  protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IClientConduit conduit, @Nonnull TextureAtlasSprite tex,
       @Nonnull CollidableComponent component, float selfIllum, BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
-    if (isNSEWUD(component.dir)) {
+    if (component.isDirectional()) {
       if (layer != getConduitQuadsLayer()) {
         return; // TODO? null is the blockbreaking animation
       }
 
       float shrink = 1 / 32f;
-      float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 0 : shrink;
-      float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 0 : shrink;
-      float zLen = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? 0 : shrink;
+      final EnumFacing componentDirection = component.getDirection();
+      float xLen = Math.abs(componentDirection.getFrontOffsetX()) == 1 ? 0 : shrink;
+      float yLen = Math.abs(componentDirection.getFrontOffsetY()) == 1 ? 0 : shrink;
+      float zLen = Math.abs(componentDirection.getFrontOffsetZ()) == 1 ? 0 : shrink;
 
       BoundingBox cube = component.bound;
       BoundingBox bb = cube.expand(-xLen, -yLen, -zLen);
-      addQuadsForSection(bb, tex, component.dir, quads);
-      if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
+      addQuadsForSection(bb, tex, componentDirection, quads, conduit.renderError() ? COLOR_ERROR : null);
+      if (conduit.getConnectionMode(componentDirection) == ConnectionMode.DISABLED) {
         tex = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);
-        BakedQuadBuilder.addBakedQuadForFace(quads, bb, tex, component.dir);
+        BakedQuadBuilder.addBakedQuadForFace(quads, bb, tex, componentDirection);
       }
     } else {
       BakedQuadBuilder.addBakedQuads(quads, component.bound, tex);
     }
   }
 
-  protected void addQuadsForSection(BoundingBox bb, TextureAtlasSprite tex, EnumFacing dir, List<BakedQuad> quads) {
-    addQuadsForSection(bb, tex, dir, quads, null);
-  }
-
-  protected void addQuadsForSection(BoundingBox bb, TextureAtlasSprite tex, EnumFacing dir, List<BakedQuad> quads, Vector4f color) {
+  protected void addQuadsForSection(@Nonnull BoundingBox bb, @Nonnull TextureAtlasSprite tex, @Nonnull EnumFacing dir, @Nonnull List<BakedQuad> quads,
+      @Nullable Vector4f color) {
 
     boolean rotateSides = dir == UP || dir == DOWN;
     boolean rotateTopBottom = dir == DOWN || dir == EAST || dir == SOUTH;
@@ -158,103 +152,108 @@ public class DefaultConduitRenderer implements IConduitRenderer {
     }
   }
 
-  protected void addTransmissionQuads(TextureAtlasSprite tex, Vector4f color, BlockRenderLayer layer, IConduit conduit, CollidableComponent component, float selfIllum,
-      List<BakedQuad> quads) {
+  protected void addTransmissionQuads(@Nonnull TextureAtlasSprite tex, Vector4f color, @Nonnull BlockRenderLayer layer, @Nonnull IConduit conduit,
+      @Nonnull CollidableComponent component, float selfIllum, @Nonnull List<BakedQuad> quads) {
     
     if (layer != getTransmissionQuadsLayer()) {
       return;
     }
 
     float shrink = 1 / 32f;
-    float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 0 : shrink;
-    float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 0 : shrink;
-    float zLen = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? 0 : shrink;
+    final EnumFacing componentDirection = component.getDirection();
+    float xLen = Math.abs(componentDirection.getFrontOffsetX()) == 1 ? 0 : shrink;
+    float yLen = Math.abs(componentDirection.getFrontOffsetY()) == 1 ? 0 : shrink;
+    float zLen = Math.abs(componentDirection.getFrontOffsetZ()) == 1 ? 0 : shrink;
 
     BoundingBox cube = component.bound;
     BoundingBox bb = cube.expand(-xLen, -yLen, -zLen);
-    addQuadsForSection(bb, tex, component.dir, quads, color);
+    addQuadsForSection(bb, tex, componentDirection, quads, color);
   }
 
   // ------------ Dynamic ---------------------------------------------
 
   @Override
-  public void renderDynamicEntity(@Nonnull TileEntitySpecialRenderer conduitBundleRenderer, @Nonnull IConduitBundle te,
+  public void renderDynamicEntity(@Nonnull TileEntitySpecialRenderer<?> conduitBundleRenderer, @Nonnull IConduitBundle te,
       @Nonnull IClientConduit.WithDefaultRendering conduit, double x, double y, double z, float partialTick, float worldLight) {
 
     Collection<CollidableComponent> components = conduit.getCollidableComponents();
     transmissionScaleFactor = conduit.getTransmitionGeometryScale();
     for (CollidableComponent component : components) {
-      if (renderComponent(component)) {
+      if (component != null && renderComponent(component)) {
         float selfIllum = Math.max(worldLight, conduit.getSelfIlluminationForState(component));
         final TextureAtlasSprite transmitionTextureForState = conduit.getTransmitionTextureForState(component);
-        if (isNSEWUD(component.dir) && transmitionTextureForState != null) {
+        if (component.isDirectional() && transmitionTextureForState != null) {
           Vector4f color = conduit.getTransmitionTextureColorForState(component);
           renderTransmissionDynamic(conduit, transmitionTextureForState, color, component, selfIllum);
         }
 
         TextureAtlasSprite tex = conduit.getTextureForState(component);
-        if (tex == null) {
-          tex = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
-        }
         renderConduitDynamic(tex, conduit, component, selfIllum);
       }
     }
   }
 
-  protected void renderConduitDynamic(TextureAtlasSprite tex, IClientConduit.WithDefaultRendering conduit, CollidableComponent component, float brightness) {
+  protected void renderConduitDynamic(@Nonnull TextureAtlasSprite tex, @Nonnull IClientConduit.WithDefaultRendering conduit,
+      @Nonnull CollidableComponent component, float brightness) {
     GlStateManager.color(1, 1, 1);
-    if (isNSEWUD(component.dir)) {
+    if (component.isDirectional()) {
+      final EnumFacing componentDirection = component.getDirection();
       float scaleFactor = 0.75f;
-      float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
-      float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
-      float zLen = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? 1 : scaleFactor;
+      float xLen = Math.abs(componentDirection.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
+      float yLen = Math.abs(componentDirection.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
+      float zLen = Math.abs(componentDirection.getFrontOffsetZ()) == 1 ? 1 : scaleFactor;
 
       BoundingBox cube = component.bound;
       BoundingBox bb = cube.scale(xLen, yLen, zLen);
-      drawDynamicSection(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, false, conduit.shouldMirrorTexture());
-      if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
+      drawDynamicSection(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), componentDirection, false, conduit.shouldMirrorTexture());
+      if (conduit.getConnectionMode(componentDirection) == ConnectionMode.DISABLED) {
         tex = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);
-        List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
+        List<Vertex> corners = component.bound.getCornersWithUvForFace(componentDirection, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
         RenderUtil.addVerticesToTessellator(corners, DefaultVertexFormats.POSITION_TEX, false);
       }
     } else {
-      drawDynamicSection(component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
+      // TODO: HL: I commented this out because component.getDirection() (the second to last parameter) is always null in
+      // this else branch and drawDynamicSection() with isTransmission=true (last parameter) would NPE on it. (Not a
+      // mistake in the component.dir encapsulation, this was that way before.)
+      // drawDynamicSection(component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), dir, true);
     }
 
   }
 
-  protected void renderTransmissionDynamic(IConduit conduit, TextureAtlasSprite tex, Vector4f color, CollidableComponent component, float selfIllum) {
+  protected void renderTransmissionDynamic(@Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex, @Nullable Vector4f color,
+      @Nonnull CollidableComponent component, float selfIllum) {
     float scaleFactor = 0.6f;
-    float xLen = Math.abs(component.dir.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
-    float yLen = Math.abs(component.dir.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
-    float zLen = Math.abs(component.dir.getFrontOffsetZ()) == 1 ? 1 : scaleFactor;
+    final EnumFacing componentDirection = component.getDirection();
+    float xLen = Math.abs(componentDirection.getFrontOffsetX()) == 1 ? 1 : scaleFactor;
+    float yLen = Math.abs(componentDirection.getFrontOffsetY()) == 1 ? 1 : scaleFactor;
+    float zLen = Math.abs(componentDirection.getFrontOffsetZ()) == 1 ? 1 : scaleFactor;
 
     GlStateManager.color(1, 1, 1);
     BoundingBox cube = component.bound;
     BoundingBox bb = cube.scale(xLen, yLen, zLen);
-    drawDynamicSection(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), color, component.dir, false);
+    drawDynamicSection(bb, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), color, componentDirection, false);
   }
 
-  protected boolean isNSEWUD(EnumFacing dir) {
-    return dir != null;
-  }
-
-  protected void drawDynamicSection(BoundingBox bound, float minU, float maxU, float minV, float maxV, EnumFacing dir, boolean isTransmission) {
+  protected void drawDynamicSection(@Nonnull BoundingBox bound, float minU, float maxU, float minV, float maxV, @Nonnull EnumFacing dir,
+      boolean isTransmission) {
     drawDynamicSection(bound, minU, maxU, minV, maxV, null, dir, isTransmission, true);
   }
 
-  protected void drawDynamicSection(BoundingBox bound, float minU, float maxU, float minV, float maxV, EnumFacing dir, boolean isTransmission,
+  protected void drawDynamicSection(@Nonnull BoundingBox bound, float minU, float maxU, float minV, float maxV, @Nonnull EnumFacing dir, boolean isTransmission,
       boolean mirrorTexture) {
     drawDynamicSection(bound, minU, maxU, minV, maxV, null, dir, isTransmission, mirrorTexture);
   }
 
-  protected void drawDynamicSection(BoundingBox bound, float minU, float maxU, float minV, float maxV, Vector4f color, EnumFacing dir, boolean isTransmission) {
+  protected void drawDynamicSection(@Nonnull BoundingBox bound, float minU, float maxU, float minV, float maxV, @Nullable Vector4f color,
+      @Nonnull EnumFacing dir, boolean isTransmission) {
     drawDynamicSection(bound, minU, maxU, minV, maxV, color, dir, isTransmission, true);
   }
 
-  private static final Vector4f NONE = new Vector4f(1f, 1f, 1f, 1f);
+  private static final @Nonnull Vector4f NONE = new Vector4f(1f, 1f, 1f, 1f);
 
-  protected void drawDynamicSection(BoundingBox bound, float minU, float maxU, float minV, float maxV, Vector4f color, EnumFacing dir, boolean isTransmission,
+  protected void drawDynamicSection(@Nonnull BoundingBox bound, float minU, float maxU, float minV, float maxV, @Nullable Vector4f color,
+      @Nonnull EnumFacing dir,
+      boolean isTransmission,
       boolean mirrorTexture) {
 
     if (isTransmission) {
@@ -462,23 +461,25 @@ public class DefaultConduitRenderer implements IConduitRenderer {
     return false;
   }
 
-  protected void setVerticesForTransmission(BoundingBox bound, EnumFacing dir) {
+  protected void setVerticesForTransmission(@Nonnull BoundingBox bound, @Nonnull EnumFacing dir) {
     float xs = dir.getFrontOffsetX() == 0 ? transmissionScaleFactor : 1;
     float ys = dir.getFrontOffsetY() == 0 ? transmissionScaleFactor : 1;
     float zs = dir.getFrontOffsetZ() == 0 ? transmissionScaleFactor : 1;
     setupVertices(bound.scale(xs, ys, zs));
   }
 
-  protected void addVecWithUV(Vector3d vec, double u, double v, Vector4f color) {
+  protected void addVecWithUV(@Nullable Vector3d vec, double u, double v, @Nonnull Vector4f color) {
+    if (vec != null) {
     BufferBuilder tes = Tessellator.getInstance().getBuffer();
-    tes.pos(vec.x, vec.y, vec.z).tex(u, v).color(color.x, color.y, color.z, color.w).endVertex();
+      tes.pos(vec.x, vec.y, vec.z).tex(u, v).color(color.x, color.y, color.z, color.w).endVertex();
+    }
   }
 
-  protected void setupVertices(BoundingBox bound) {
+  protected void setupVertices(@Nonnull BoundingBox bound) {
     setupVertices(bound, null);
   }
 
-  protected void setupVertices(BoundingBox bound, VertexTransform xForm) {
+  protected void setupVertices(@Nonnull BoundingBox bound, @Nullable VertexTransform xForm) {
     verts[0].set(bound.minX, bound.minY, bound.minZ);
     verts[1].set(bound.maxX, bound.minY, bound.minZ);
     verts[2].set(bound.maxX, bound.maxY, bound.minZ);
@@ -490,7 +491,9 @@ public class DefaultConduitRenderer implements IConduitRenderer {
 
     if (xForm != null) {
       for (Vector3d vec : verts) {
-        xForm.apply(vec);
+        if (vec != null) {
+          xForm.apply(vec);
+        }
       }
     }
   }

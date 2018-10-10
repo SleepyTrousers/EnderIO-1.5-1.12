@@ -269,8 +269,9 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 
   public static boolean isToolEffective(@Nonnull IBlockState state, @Nonnull ItemStack stack) {
     for (String type : stack.getItem().getToolClasses(stack)) {
-      if (state.getBlock().isToolEffective(NullHelper.notnull(type, "getToolClasses() derped"), state))
+      if (state.getBlock().isToolEffective(NullHelper.notnull(type, "getToolClasses() derped"), state)) {
         return true;
+      }
     }
     return false;
   }

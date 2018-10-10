@@ -195,10 +195,9 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
 
     int numSlotsFilled = 0;
     for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
-      if (i >= 0 && i < inventory.length) {
-        if (inventory[i] != null && inventory[i].getCount() > 0) {
-          numSlotsFilled++;
-        }
+      ItemStack currentStackType = getStackInSlot(i);
+      if (Prep.isValid(currentStackType)) {
+        numSlotsFilled++;
       }
     }
     NNList<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), MachineRecipeInput.create(slot, itemstack));
@@ -243,16 +242,12 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
   }
 
   private boolean isValidInputForFurnaceRecipe(@Nonnull ItemStack itemstack, int numSlotsFilled, NNList<IMachineRecipe> recipes) {
-    if (numSlotsFilled == 0) {
-      return containsFurnaceRecipe(recipes);
-    }
-    return containsFurnaceRecipe(recipes) && isItemAlreadyInASlot(itemstack);
+    return containsFurnaceRecipe(recipes) && (numSlotsFilled == 0 || isItemAlreadyInASlot(itemstack));
   }
 
   private boolean isItemAlreadyInASlot(@Nonnull ItemStack itemstack) {
-    ItemStack currentStackType = null;
-    for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot() && currentStackType == null; i++) {
-      currentStackType = getStackInSlot(i);
+    for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
+      ItemStack currentStackType = getStackInSlot(i);
       if (Prep.isValid(currentStackType)) {
         return currentStackType.isItemEqual(itemstack);
       }

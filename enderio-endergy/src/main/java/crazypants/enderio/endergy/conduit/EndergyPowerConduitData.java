@@ -83,8 +83,8 @@ public final class EndergyPowerConduitData implements IPowerConduitData {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
-    if (component.dir == null) {
+  public @Nonnull TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
+    if (component.isCore()) {
       return core.get(TextureAtlasSprite.class);
     }
     if (IPowerConduit.COLOR_CONTROLLER_ID.equals(component.data)) {

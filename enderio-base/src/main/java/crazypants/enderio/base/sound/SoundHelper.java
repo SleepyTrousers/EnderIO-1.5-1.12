@@ -82,7 +82,7 @@ import net.minecraft.world.WorldServer;
  * </ul>
  *
  */
-public class SoundHelper {
+public final class SoundHelper {
 
   private SoundHelper() {
   }

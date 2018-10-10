@@ -85,6 +85,14 @@ public interface IServerConduit extends IConduit, ICapabilityProvider {
   void clearNetwork();
 
   /**
+   * Tells the conduit that it has been part of an unsuccessful attempt to form a network. It is recommended that the conduit waits a good amount of time before
+   * trying to form a network again.
+   * <p>
+   * This may be called while a half-formed network is still set.
+   */
+  void setNetworkBuildFailed();
+
+  /**
    * Called when a connection to a non-conduit block is added
    *
    * @param fromDirection

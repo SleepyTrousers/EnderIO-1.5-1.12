@@ -91,7 +91,7 @@ public class ItemModItemFilter extends Item implements IItemFilterItemUpgrade, I
   @SideOnly(Side.CLIENT)
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
     Container container = player.openContainer;
-    if (container != null && container instanceof IFilterContainer) {
+    if (container instanceof IFilterContainer) {
       return new ModItemFilterGui(player.inventory, new ContainerFilter(player, (TileEntityBase) world.getTileEntity(pos), facing, param1),
           world.getTileEntity(pos), ((IFilterContainer<IItemFilter>) container).getFilter(param1));
     } else {

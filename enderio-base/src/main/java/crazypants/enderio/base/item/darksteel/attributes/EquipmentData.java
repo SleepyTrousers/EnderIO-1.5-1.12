@@ -9,6 +9,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.material.alloy.Alloy;
+import crazypants.enderio.base.material.alloy.endergy.AlloyEndergy;
 import crazypants.enderio.base.material.material.Material;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item.ToolMaterial;
@@ -66,10 +67,10 @@ public enum EquipmentData implements IEquipmentData {
   },
   // 10, 15, 22, 10 - 3, 6, 8, 3 =
   // 57 - 20 = 37 * 5% = 185%
-  STELLAR_ALLOY(new Builder(4).setMaxDamageFactor(75).setDamageReduction(8, 14, 18, 7).setDamageReductionEmpowered(10, 15, 22, 10).setArmorEnchantability(40)
+  STELLAR_ALLOY(new Builder(4).setMaxDamageFactor(75).setDamageReduction(8, 14, 18, 7).setDamageReductionEmpowered(10, 15, 22, 10).setArmorEnchantability(25)
       .setSoundEvent(SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND).setToughness(7f).setToughnessEmpowered(9f).setToolMaterialName("stellarAlloy")
-      .setHarvestLevel(DarkSteelConfig.darkSteelPickMinesTiCArdite.get() ? 5 : 3).setMaxUses(5000).setEfficiency(22).setDamage(11f).setToolEnchanability(40)
-      .setRepairIngotOredict(Material.STELLAR_ALLOY.getOreDict()).setBowRepairIngotOredict(Material.STELLAR_ALLOY.getOreDict())
+      .setHarvestLevel(DarkSteelConfig.darkSteelPickMinesTiCArdite.get() ? 5 : 3).setMaxUses(5000).setEfficiency(16).setDamage(11f).setToolEnchanability(25)
+      .setRepairIngotOredict(AlloyEndergy.STELLAR_ALLOY.getOreIngot()).setBowRepairIngotOredict(AlloyEndergy.STELLAR_ALLOY.getOreIngot())
       .setTexture1("stellar_alloy_layer_1").setTexture2("stellar_alloy_layer_2")),
 
   // Note maximum total armor value that has any effect at toughness 4*4 for damage=20 is 24. End steel comes up to 25.

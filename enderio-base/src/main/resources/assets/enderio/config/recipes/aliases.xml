@@ -89,9 +89,9 @@ XML editor will display that as tooltips when editing this file.
   <alias name="SKELETAL_CONTRACTOR" item="skullSkeletalContractor" />
   <alias name="GUARDIAN_DIODE" item="skullGuardianDiode" />
 
-  <alias name="CAPACITOR1" item="enderio:item_basic_capacitor:0" />
-  <alias name="CAPACITOR2" item="enderio:item_basic_capacitor:1" />
-  <alias name="CAPACITOR3" item="enderio:item_basic_capacitor:2" />
+  <alias name="CAPACITOR1" item="enderio:item_basic_capacitor:0,enderio:item_capacitor_silver" />
+  <alias name="CAPACITOR2" item="enderio:item_basic_capacitor:1,enderio:item_capacitor_energetic_silver" />
+  <alias name="CAPACITOR3" item="enderio:item_basic_capacitor:2,enderio:item_capacitor_vivid" />
 
   <alias name="FUSED_QUARTZ" item="oredict:fusedQuartz" />
   <alias name="FUSED_GLASS" item="oredict:fusedGlass" />
@@ -109,6 +109,7 @@ XML editor will display that as tooltips when editing this file.
   <alias name="DARK_STEEL_NUGGET" item="nuggetDarkSteel" />
   <alias name="SOULARIUM_NUGGET" item="nuggetSoularium" />
   <alias name="END_STEEL_NUGGET" item="nuggetEndSteel" />
+  <alias name="CONSTRUCTION_ALLOY_NUGGET" item="nuggetConstructionAlloy" />
 
   <alias name="ELECTRICAL_STEEL" item="ingotElectricalSteel" />
   <alias name="ENERGETIC_ALLOY" item="ingotEnergeticAlloy" />
@@ -119,6 +120,8 @@ XML editor will display that as tooltips when editing this file.
   <alias name="DARK_STEEL" item="ingotDarkSteel" />
   <alias name="SOULARIUM" item="ingotSoularium" />
   <alias name="END_STEEL" item="ingotEndSteel" />
+  <alias name="CONSTRUCTION_ALLOY" item="ingotConstructionAlloy" />
+  <alias name="IRON" item="ingotConstructionAlloy,ingotIron" />
   
   <alias name="ELECTRICAL_STEEL_BALL" item="ballElectricalSteel" />
   <alias name="ENERGETIC_ALLOY_BALL" item="ballEnergeticAlloy" />
@@ -129,6 +132,7 @@ XML editor will display that as tooltips when editing this file.
   <alias name="DARK_STEEL_BALL" item="ballDarkSteel" />
   <alias name="SOULARIUM_BALL" item="ballSoularium" />
   <alias name="END_STEEL_BALL" item="ballEndSteel" />
+  <alias name="CONSTRUCTION_ALLOY_BALL" item="ballConstructionAlloy" />
 
   <alias name="ELECTRICAL_STEEL_BLOCK" item="blockElectricalSteel" />
   <alias name="ENERGETIC_ALLOY_BLOCK" item="blockEnergeticAlloy" />

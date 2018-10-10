@@ -16,6 +16,7 @@ import crazypants.enderio.zoo.entity.ai.EntityAINearestAttackableTargetBounded;
 import crazypants.enderio.zoo.entity.navigate.FlyingMoveHelper;
 import crazypants.enderio.zoo.entity.navigate.FlyingPathNavigate;
 import crazypants.enderio.zoo.entity.render.RenderOwl;
+import crazypants.enderio.zoo.sound.SoundRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -70,19 +71,6 @@ public class EntityOwl extends EntityAnimal implements IFlyingMob {
   public static final @Nonnull String NAME = "owl";
   public static final int EGG_BG_COL = 0xC17949;
   public static final int EGG_FG_COL = 0xFFDDC6;
-
-  public static final @Nonnull SoundEvent SND_HOOT;
-  public static final @Nonnull SoundEvent SND_HOOT2;
-  public static final @Nonnull SoundEvent SND_HURT;
-
-  static {
-    SND_HOOT = new SoundEvent(new ResourceLocation(EnderIOZoo.DOMAIN, "owl.hootSingle"));
-    SND_HOOT.setRegistryName(EnderIOZoo.DOMAIN, "owl.hootSingle");
-    SND_HOOT2 = new SoundEvent(new ResourceLocation(EnderIOZoo.DOMAIN, "owl.hootDouble"));
-    SND_HOOT2.setRegistryName(EnderIOZoo.DOMAIN, "owl.hootDouble");
-    SND_HURT = new SoundEvent(new ResourceLocation(EnderIOZoo.DOMAIN, "owl.hurt"));
-    SND_HURT.setRegistryName(EnderIOZoo.DOMAIN, "owl.hurt");
-  }
 
   private float wingRotation;
   private float prevWingRotation;
@@ -358,20 +346,20 @@ public class EntityOwl extends EntityAnimal implements IFlyingMob {
   @Override
   protected @Nonnull SoundEvent getAmbientSound() {
     if (world.rand.nextBoolean()) {
-      return SND_HOOT2;
+      return SoundRegistry.OWL_HOOT2.getSoundEvent();
     } else {
-      return SND_HOOT;
+      return SoundRegistry.OWL_HOOT.getSoundEvent();
     }
   }
 
   @Override
   protected SoundEvent getHurtSound(@Nonnull DamageSource source) {
-    return SND_HURT;
+    return SoundRegistry.OWL_HURT.getSoundEvent();
   }
 
   @Override
   protected SoundEvent getDeathSound() {
-    return SND_HURT;
+    return SoundRegistry.OWL_HURT.getSoundEvent();
   }
 
   @Override

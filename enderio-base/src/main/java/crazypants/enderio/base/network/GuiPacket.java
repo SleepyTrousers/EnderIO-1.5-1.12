@@ -143,18 +143,21 @@ public class GuiPacket implements IMessage {
     for (DataType dt : PATTERN[pattern]) {
       switch (dt) {
       case INT:
-        if (ints == null)
+        if (ints == null) {
           ints = new int[PATTERN[pattern].length];
+        }
         ints[idx++] = buf.readInt();
         break;
       case LONG:
-        if (longs == null)
+        if (longs == null) {
           longs = new long[PATTERN[pattern].length];
+        }
         longs[idx++] = buf.readLong();
         break;
       case STRING:
-        if (strings == null)
+        if (strings == null) {
           strings = new String[PATTERN[pattern].length];
+        }
         if (buf.readBoolean()) {
           strings[idx] = ByteBufUtils.readUTF8String(buf);
         }

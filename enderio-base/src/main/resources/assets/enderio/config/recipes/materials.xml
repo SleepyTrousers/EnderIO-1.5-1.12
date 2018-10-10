@@ -137,14 +137,11 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Ender Pearl Nuggets" required="true">
-    <crafting>
-      <shapeless>
-        <item name="nuggetEnderpearl"/><item name="nuggetEnderpearl"/><item name="nuggetEnderpearl"/>
-        <item name="nuggetEnderpearl"/><item name="nuggetEnderpearl"/><item name="nuggetEnderpearl"/>
-        <item name="nuggetEnderpearl"/><item name="nuggetEnderpearl"/><item name="nuggetEnderpearl"/>
-      </shapeless>
+    <alloying energy="2000">
+      <input name="nuggetEnderpearl" amount="9"/>
       <output name="oredict:enderpearl"/>
-    </crafting>
+    </alloying>
+    <!-- Note: The same inputs as a 'crafting' gives dustEnderPearl, see sagmill.xml -->
   </recipe>
 
   <recipe name="Dark Iron Bars" required="true">
@@ -170,9 +167,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Simple Chassis" required="true">
     <crafting>
       <grid>
-        <item name="barsIron"/><item name="ingotIron"/><item name="barsIron"/>
-        <item name="ingotIron"/><item name="POWDER_INFINITY"/><item name="ingotIron"/>
-        <item name="barsIron"/><item name="ingotIron"/><item name="barsIron"/>
+        <item name="barsIron"/><item name="IRON"/><item name="barsIron"/>
+        <item name="IRON"/><item name="POWDER_INFINITY"/><item name="IRON"/>
+        <item name="barsIron"/><item name="IRON"/><item name="barsIron"/>
       </grid>
       <output name="SIMPLE_CHASSIS"/>
     </crafting>
@@ -333,9 +330,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Gear, Iron" required="true">
     <crafting>
       <grid>
-        <item name="nuggetIron"/><item name="ingotIron"/><item name="nuggetIron"/>
-        <item name="ingotIron"/><item name="POWDER_INFINITY"/><item name="ingotIron"/>
-        <item name="nuggetIron"/><item name="ingotIron"/><item name="nuggetIron"/>
+        <item name="nuggetIron"/><item name="IRON"/><item name="nuggetIron"/>
+        <item name="IRON"/><item name="POWDER_INFINITY"/><item name="IRON"/>
+        <item name="nuggetIron"/><item name="IRON"/><item name="nuggetIron"/>
       </grid>
       <output name="GEAR_IRON"/>
     </crafting>
@@ -420,7 +417,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="nuggetGold"/><item name="CAPACITOR_METAL"/><item name="nuggetGold"/>
         <item name="POWDER_INFINITY"/><item name="nuggetGold"/><item />
       </grid>
-      <output name="CAPACITOR1"/>
+      <output name="enderio:item_basic_capacitor:0"/>
     </crafting>
   </recipe>
 
@@ -428,10 +425,10 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid>
         <item /><item name="ENERGETIC_ALLOY"/><item />
-        <item name="CAPACITOR1"/><item name="dustCoal"/><item name="CAPACITOR1"/>
+        <item name="enderio:item_basic_capacitor:0"/><item name="dustCoal"/><item name="enderio:item_basic_capacitor:0"/>
         <item /><item name="ENERGETIC_ALLOY"/><item />
       </grid>
-      <output name="CAPACITOR2"/>
+      <output name="enderio:item_basic_capacitor:1"/>
     </crafting>
   </recipe>
 
@@ -439,10 +436,10 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid>
         <item /><item name="VIBRANT_ALLOY"/><item />
-        <item name="CAPACITOR2"/><item name="oredict:glowstone"/><item name="CAPACITOR2"/>
+        <item name="enderio:item_basic_capacitor:1"/><item name="oredict:glowstone"/><item name="enderio:item_basic_capacitor:1"/>
         <item /><item name="VIBRANT_ALLOY"/><item />
       </grid>
-      <output name="CAPACITOR3"/>
+      <output name="enderio:item_basic_capacitor:2"/>
     </crafting>
   </recipe>
 
@@ -591,9 +588,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Chassis Parts" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="ingotIron"/><item name="ingotIron"/><item name="ingotIron"/>
-        <item name="ingotIron"/><item name="CHASSIS"/><item name="ingotIron"/>
-        <item name="ingotIron"/><item name="ingotIron"/><item name="ingotIron"/>
+        <item name="IRON"/><item name="IRON"/><item name="IRON"/>
+        <item name="IRON"/><item name="CHASSIS"/><item name="IRON"/>
+        <item name="IRON"/><item name="IRON"/><item name="IRON"/>
       </grid>
       <output name="CHASSIPARTS" amount="16"/>
     </crafting>
@@ -602,9 +599,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Simple Chassis Parts" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="ingotIron"/><item name="ingotIron"/><item name="ingotIron"/>
-        <item name="ingotIron"/><item name="SIMPLE_CHASSIS"/><item name="ingotIron"/>
-        <item name="ingotIron"/><item name="ingotIron"/><item name="ingotIron"/>
+        <item name="IRON"/><item name="IRON"/><item name="IRON"/>
+        <item name="IRON"/><item name="SIMPLE_CHASSIS"/><item name="IRON"/>
+        <item name="IRON"/><item name="IRON"/><item name="IRON"/>
       </grid>
       <output name="SIMPLE_CHASSIPARTS" amount="16"/>
     </crafting>
@@ -613,9 +610,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Enhanced Chassis Parts" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="ingotIron"/><item name="ingotIron"/><item name="ingotIron"/>
-        <item name="ingotIron"/><item name="ENHANCED_CHASSIS"/><item name="ingotIron"/>
-        <item name="ingotIron"/><item name="ingotIron"/><item name="ingotIron"/>
+        <item name="IRON"/><item name="IRON"/><item name="IRON"/>
+        <item name="IRON"/><item name="ENHANCED_CHASSIS"/><item name="IRON"/>
+        <item name="IRON"/><item name="IRON"/><item name="IRON"/>
       </grid>
       <output name="ENHANCED_CHASSIPARTS" amount="16"/>
     </crafting>
@@ -1159,7 +1156,15 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Infinity Goop">
     <alloying energy="5000">
       <input name="POWDER_INFINITY"/>
-      <input name="itemClay"/>
+      <input name="dustCoal"/>
+      <output name="INFINITY_GOOP"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Infinity Goop, Charcoal">
+    <alloying energy="5000">
+      <input name="POWDER_INFINITY"/>
+      <input name="dustCharcoal"/>
       <output name="INFINITY_GOOP"/>
     </alloying>
   </recipe>

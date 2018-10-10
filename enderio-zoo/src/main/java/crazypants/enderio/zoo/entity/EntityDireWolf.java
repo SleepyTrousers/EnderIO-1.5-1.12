@@ -13,6 +13,7 @@ import crazypants.enderio.zoo.config.ZooConfig;
 import crazypants.enderio.zoo.entity.ai.EntityAIAttackOnCollideAggressive;
 import crazypants.enderio.zoo.entity.ai.EntityAINearestAttackableTargetBounded;
 import crazypants.enderio.zoo.entity.render.RenderDirewolf;
+import crazypants.enderio.zoo.sound.SoundRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -61,11 +62,6 @@ public class EntityDireWolf extends EntityMob implements IEnderZooMob {
   public static final @Nonnull String NAME = "direwolf";
   public static final int EGG_BG_COL = 0x606060;
   public static final int EGG_FG_COL = 0xA0A0A0;
-
-  private static final @Nonnull SoundEvent SND_HURT = new SoundEvent(new ResourceLocation(EnderIOZoo.DOMAIN, "direwolf.hurt"));
-  private static final @Nonnull SoundEvent SND_HOWL = new SoundEvent(new ResourceLocation(EnderIOZoo.DOMAIN, "direwolf.howl"));
-  private static final @Nonnull SoundEvent SND_GROWL = new SoundEvent(new ResourceLocation(EnderIOZoo.DOMAIN, "direwolf.growl"));
-  private static final @Nonnull SoundEvent SND_DEATH = new SoundEvent(new ResourceLocation(EnderIOZoo.DOMAIN, "direwolf.death"));
 
   private static final @Nonnull DataParameter<Boolean> ANGRY_INDEX = EntityDataManager.<Boolean> createKey(EntityDireWolf.class, DataSerializers.BOOLEAN);
 
@@ -138,10 +134,10 @@ public class EntityDireWolf extends EntityMob implements IEnderZooMob {
       return null;
     }
     if (isAngry()) {
-      return SND_GROWL;
+      return SoundRegistry.WOLF_GROWL.getSoundEvent();
     }
     if (EntityUtil.isPlayerWithinRange(this, 12)) {
-      return SND_GROWL;
+      return SoundRegistry.WOLF_GROWL.getSoundEvent();
     }
     boolean howl = (packHowl > 0 || rand.nextFloat() <= ZooConfig.howlChance.get()) && world.getTotalWorldTime() > (lastHowl + 10);
     if (howl) {
@@ -150,15 +146,15 @@ public class EntityDireWolf extends EntityMob implements IEnderZooMob {
       }
       lastHowl = world.getTotalWorldTime();
       packHowl = Math.max(packHowl - 1, 0);
-      return SND_HOWL;
+      return SoundRegistry.WOLF_HOWL.getSoundEvent();
     } else {
-      return SND_GROWL;
+      return SoundRegistry.WOLF_GROWL.getSoundEvent();
     }
   }
 
   @Override
   public void playSound(@Nonnull SoundEvent sound, float volume, float pitch) {
-    if (SND_HOWL.equals(sound)) {
+    if (SoundRegistry.WOLF_HOWL.getSoundEvent().equals(sound)) {
       volume *= ZooConfig.howlVolume.get();
       pitch *= 0.8f;
     }
@@ -167,12 +163,12 @@ public class EntityDireWolf extends EntityMob implements IEnderZooMob {
 
   @Override
   protected @Nonnull SoundEvent getHurtSound(@Nonnull DamageSource source) {
-    return SND_HURT;
+    return SoundRegistry.WOLF_HURT.getSoundEvent();
   }
 
   @Override
   protected @Nonnull SoundEvent getDeathSound() {
-    return SND_DEATH;
+    return SoundRegistry.WOLF_DEATH.getSoundEvent();
   }
 
   @Override

@@ -1,7 +1,5 @@
 package crazypants.enderio.base.recipe;
 
-import javax.annotation.Nonnull;
-
 public enum RecipeBonusType {
   NONE(false, false),
   MULTIPLY_OUTPUT(true, true),
@@ -24,16 +22,6 @@ public enum RecipeBonusType {
 
   public boolean useBalls() {
     return multiply || chances;
-  }
-
-  public @Nonnull RecipeBonusType withoutMultiply(boolean stripMultiply) {
-    if (!stripMultiply || !multiply) {
-      return this;
-    } else if (this == MULTIPLY_OUTPUT) {
-      return CHANCE_ONLY;
-    } else {
-      return NONE;
-    }
   }
 
 }

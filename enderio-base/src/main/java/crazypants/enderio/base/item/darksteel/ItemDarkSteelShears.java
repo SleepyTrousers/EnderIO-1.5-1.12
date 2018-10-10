@@ -299,10 +299,12 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
     public int compare(Entity paramT1, Entity paramT2) {
       double distanceSqToEntity1 = paramT1 == null ? 0 : refPoint.getDistanceSq(paramT1);
       double distanceSqToEntity2 = paramT2 == null ? 0 : refPoint.getDistanceSq(paramT2);
-      if (distanceSqToEntity1 < distanceSqToEntity2)
+      if (distanceSqToEntity1 < distanceSqToEntity2) {
         return -1;
-      if (distanceSqToEntity1 > distanceSqToEntity2)
+      }
+      if (distanceSqToEntity1 > distanceSqToEntity2) {
         return 1;
+      }
       // Double.compare() does something with bits now, but for distances it's clear:
       // if it's neither farther nor nearer is same.
       return 0;
