@@ -31,7 +31,7 @@ public enum EquipmentData implements IEquipmentData {
 
   END_STEEL(new Builder(2).setMaxDamageFactor(50).setDamageReduction(4, 7, 10, 4).setDamageReductionEmpowered(5, 8, 12, 5).setArmorEnchantability(25)
       .setSoundEvent(SoundEvents.ITEM_ARMOR_EQUIP_IRON).setToughness(3f).setToughnessEmpowered(4f).setToolMaterialName("endSteel")
-      .setHarvestLevel(DarkSteelConfig.darkSteelPickMinesTiCArdite.get() ? 5 : 3).setMaxUses(2000).setEfficiency(12).setDamage(5f).setToolEnchanability(30)
+      .setHarvestLevel(DarkSteelConfig.endSteelPickMinesTiCArdite.get() ? 5 : 3).setMaxUses(2000).setEfficiency(12).setDamage(5f).setToolEnchanability(30)
       .setRepairIngotOredict(Alloy.END_STEEL.getOreIngot()).setBowRepairIngotOredict(Material.INFINITY_ROD.getOreDict()).setTexture1("end_steel_layer_1")
       .setTexture2("end_steel_layer_2")) {
 

@@ -261,12 +261,12 @@ public final class DarkSteelConfig {
 
   public static final IValueFactory F_GOGGLES_OF_REVEALING = F_UPGRADES.section(".gogglesofrevealing");
 
-  public static final IValue<Integer> gogglesOfRevealingCost = F_GOGGLES_OF_REVEALING.make("gogglesOfRevealingUpgradeCost", 4, //
+  public static final IValue<Integer> gogglesOfRevealingCost = F_GOGGLES_OF_REVEALING.make("upgradeCost", 4, //
       "Number of levels required for the 'Goggles of Revealing' upgrade.").setRange(1, 99).sync();
 
   public static final IValueFactory F_THAUMATURGE_ROBES = F_UPGRADES.section(".thaumaturgerobes");
 
-  public static final IValue<Integer> thaumaturgeRobesCost = F_THAUMATURGE_ROBES.make("robesUpgradeCost", 4, //
+  public static final IValue<Integer> thaumaturgeRobesCost = F_THAUMATURGE_ROBES.make("upgradeCost", 4, //
       "Number of levels required for the 'Thaumatruge's Robes' upgrades.").setRange(1, 99).sync();
 
   public static IValueFactory F_TRAVEL = F_UPGRADES.section(".travel");
@@ -374,6 +374,6 @@ public final class DarkSteelConfig {
       "Amount of power used per block height of fall distance damage negated.").setRange(1, 99999999);
 
   public static final IValue<Boolean> slotZeroPlacesEight = F_DARK_STEEL.make("slotZeroPlacesEight", true, //
-      "Should the dark steel placement, when in the first (0th) slot, place the item in the last slot. If false, will place what's in the second slot.").sync();
+      "Should the dark steel placement, when in the first (0th) slot, place the item in the last slot. If false, will place what's in the second slot.");
 
 }
