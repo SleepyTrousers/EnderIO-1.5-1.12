@@ -3,7 +3,7 @@ package crazypants.enderio.base.integration.thaumcraft;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
 
-  private static final @Nonnull String UPGRADE_NAME = "gogglesRevealing";
+  private static final @Nonnull String UPGRADE_NAME = "gogglesOfRevealing";
 
   public static final @Nonnull GogglesOfRevealingUpgrade INSTANCE = new GogglesOfRevealingUpgrade();
 
@@ -32,7 +32,7 @@ public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
   }
 
   public GogglesOfRevealingUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.gogglesOfRevealing", getGoggles(), Config.darkSteelGogglesOfRevealingCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.gogglesOfRevealing", getGoggles(), DarkSteelConfig.gogglesOfRevealingCost);
   }
 
   @Override

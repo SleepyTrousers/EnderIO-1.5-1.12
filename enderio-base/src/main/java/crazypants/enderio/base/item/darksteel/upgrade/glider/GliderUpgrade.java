@@ -10,7 +10,7 @@ import com.enderio.core.common.vecmath.Vector4d;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
 import crazypants.enderio.api.upgrades.IRenderUpgrade;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
@@ -28,7 +28,7 @@ public class GliderUpgrade extends AbstractUpgrade implements IHasPlayerRenderer
   public static final @Nonnull GliderUpgrade INSTANCE = new GliderUpgrade();
 
   public GliderUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.glider", Material.GLIDER_WINGS.getStack(), Config.darkSteelGliderCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.glider", Material.GLIDER_WINGS.getStack(), DarkSteelConfig.gliderCost);
   }
 
   @Override
@@ -49,10 +49,10 @@ public class GliderUpgrade extends AbstractUpgrade implements IHasPlayerRenderer
     }
 
     if (!player.onGround && player.motionY < 0 && !player.isSneaking() && !player.isInWater()) {
-      double horizontalSpeed = Config.darkSteelGliderHorizontalSpeed;
-      double verticalSpeed = Config.darkSteelGliderVerticalSpeed;
+      double horizontalSpeed = DarkSteelConfig.gliderHorizontalSpeed.get();
+      double verticalSpeed = DarkSteelConfig.gliderVerticalSpeed.get();
       if (player.isSprinting()) {
-        verticalSpeed = Config.darkSteelGliderVerticalSpeedSprinting;
+        verticalSpeed = DarkSteelConfig.gliderVerticalSpeedSprinting.get();
       }
 
       Vector3d look = Util.getLookVecEio(player);

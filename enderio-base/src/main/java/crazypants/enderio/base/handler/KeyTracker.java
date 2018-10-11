@@ -176,7 +176,6 @@ public class KeyTracker {
   private static class GogglesAction implements Action {
     @Override
     public void execute() {
-      // TODO: Mod Thaumcraft
       EntityPlayer player = Minecraft.getMinecraft().player;
       if (GogglesOfRevealingUpgrade.isUpgradeEquipped(player)) {
         toggleDarkSteelController(Type.GOGGLES, "darksteel.upgrades.goggles");

@@ -3,7 +3,7 @@ package crazypants.enderio.base.item.darksteel.upgrade.travel;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.material.material.Material;
@@ -17,7 +17,7 @@ public class TravelUpgrade extends AbstractUpgrade {
   public static final @Nonnull TravelUpgrade INSTANCE = new TravelUpgrade();
 
   public TravelUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.travel", Material.ENDER_CRYSTAL.getStack(), Config.darkSteelTravelCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.travel", Material.ENDER_CRYSTAL.getStack(), DarkSteelConfig.travelCost);
   }
 
   @Override

@@ -3,7 +3,7 @@ package crazypants.enderio.base.item.darksteel.upgrade.sound;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -16,7 +16,7 @@ public class SoundDetectorUpgrade extends AbstractUpgrade {
   public static final @Nonnull SoundDetectorUpgrade INSTANCE = new SoundDetectorUpgrade();
 
   public SoundDetectorUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.sound", new ItemStack(Blocks.NOTEBLOCK), Config.darkSteelSoundLocatorCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.sound", new ItemStack(Blocks.NOTEBLOCK), DarkSteelConfig.soundLocatorCost);
   }
 
   @Override

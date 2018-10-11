@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
 
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.item.darksteel.upgrade.sound.SoundDetector.SoundSource;
 import net.minecraft.client.Minecraft;
@@ -27,7 +27,7 @@ public class SoundParticle extends Particle {
     this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
     this.motionX = this.motionY = this.motionZ = 0.0D;
     this.particleGravity = 0.0F;
-    this.particleMaxAge = Config.darkSteelSoundLocatorLifespan;
+    this.particleMaxAge = DarkSteelConfig.soundLocatorLifespan.get();
     this.ss = ss;
   }
 

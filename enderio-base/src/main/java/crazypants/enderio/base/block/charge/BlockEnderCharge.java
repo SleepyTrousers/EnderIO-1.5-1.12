@@ -6,7 +6,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.IModObject;
-import crazypants.enderio.base.config.config.ZooConfig;
+import crazypants.enderio.base.config.config.BlockConfig;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.teleport.RandomTeleportUtil;
 import net.minecraft.client.Minecraft;
@@ -58,7 +58,7 @@ public class BlockEnderCharge extends BlockConfusionCharge {
     world.playSound((EntityPlayer) null, entity.posX, entity.posY, entity.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.BLOCKS, 2F,
         1 + ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F));
 
-    AxisAlignedBB bb = getBoundsAround(entity, ZooConfig.enderChargeRange.get());
+    AxisAlignedBB bb = getBoundsAround(entity, BlockConfig.enderChargeRange.get());
     List<EntityLivingBase> ents = world.getEntitiesWithinAABB(EntityLivingBase.class, bb);
     for (EntityLivingBase ent : ents) {
       if (ent != null) {

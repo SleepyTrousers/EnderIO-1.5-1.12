@@ -3,7 +3,7 @@ package crazypants.enderio.base.item.darksteel.upgrade.speed;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.potion.PotionUtil;
@@ -16,9 +16,12 @@ public class SpeedUpgrade extends AbstractUpgrade {
 
   private static final @Nonnull String UPGRADE_NAME = "speedBoost";
 
-  public static final @Nonnull SpeedUpgrade SPEED_ONE = new SpeedUpgrade("enderio.darksteel.upgrade.speed_one", 1, Config.darkSteelSpeedOneCost);
-  public static final @Nonnull SpeedUpgrade SPEED_TWO = new SpeedUpgrade("enderio.darksteel.upgrade.speed_two", 2, Config.darkSteelSpeedTwoCost);
-  public static final @Nonnull SpeedUpgrade SPEED_THREE = new SpeedUpgrade("enderio.darksteel.upgrade.speed_three", 3, Config.darkSteelSpeedThreeCost);
+  private static final String[] numbers = { "one", "two", "three" };
+
+  // TODO 1.13: Fix level range for consistency
+  public static final @Nonnull SpeedUpgrade SPEED_ONE = new SpeedUpgrade(1);
+  public static final @Nonnull SpeedUpgrade SPEED_TWO = new SpeedUpgrade(2);
+  public static final @Nonnull SpeedUpgrade SPEED_THREE = new SpeedUpgrade(3);
 
   private final short level;
 
@@ -43,8 +46,8 @@ public class SpeedUpgrade extends AbstractUpgrade {
     return PotionUtil.createSwiftnessPotion(true, false);
   }
 
-  public SpeedUpgrade(@Nonnull String unlocName, int level, int levelCost) {
-    super(UPGRADE_NAME, level, unlocName, createUpgradeItem(), levelCost);
+  public SpeedUpgrade(int level) {
+    super(UPGRADE_NAME, level, "enderio.darksteel.upgrade.speed_" + numbers[level - 1], createUpgradeItem(), DarkSteelConfig.speedUpgradeCost.get(level - 1));
     this.level = (short) level;
   }
 

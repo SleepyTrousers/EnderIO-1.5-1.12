@@ -30,7 +30,7 @@ public class ThaumcraftUtil {
       registry.register(ThaumaturgeRobesUpgrade.BOOTS);
       registry.register(ThaumaturgeRobesUpgrade.LEGS);
       registry.register(ThaumaturgeRobesUpgrade.CHEST);
-      // registry.register(GogglesOfRevealingUpgrade.INSTANCE);
+      registry.register(GogglesOfRevealingUpgrade.INSTANCE);
       Log.info("Dark Steel Upgrades: Thaumcraft integration loaded");
     }
   }

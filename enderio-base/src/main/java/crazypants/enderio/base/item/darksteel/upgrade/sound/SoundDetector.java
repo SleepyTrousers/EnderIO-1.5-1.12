@@ -7,7 +7,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -63,7 +63,7 @@ public class SoundDetector {
       for (SoundSource ss : sounds) {
         double distSq = ss.pos.distanceSquared(eye);
         int minDist = ss.isEntity ? 4 : 49;
-        if (distSq > minDist && distSq <= Config.darkSteelSoundLocatorRange * Config.darkSteelSoundLocatorRange) {
+        if (distSq > minDist && distSq <= DarkSteelConfig.soundLocatorRange.get() * DarkSteelConfig.soundLocatorRange.get()) {
           minecraft.effectRenderer.addEffect(new SoundParticle(minecraft.player.world, ss));
         }
       }

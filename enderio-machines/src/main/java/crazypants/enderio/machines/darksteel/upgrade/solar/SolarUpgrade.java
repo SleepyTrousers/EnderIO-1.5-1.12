@@ -5,7 +5,6 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
 import crazypants.enderio.api.upgrades.IRenderUpgrade;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -106,7 +105,7 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
       for (int i = 0; i < 4 && toAdd > 0; i++) {
         ItemStack stack = player.inventory.armorInventory.get(nextIndex);
         IEnergyStorage cap = PowerHandlerUtil.getCapability(stack, null);
-        if (cap != null && (EnergyUpgradeManager.loadFromItem(stack) != null || Config.darkSteelSolarChargeOthers)) { // TODO: move config
+        if (cap != null && (EnergyUpgradeManager.loadFromItem(stack) != null || SolarConfig.helmetChargeOthers.get())) {
           toAdd -= cap.receiveEnergy(toAdd, false);
         }
         nextIndex = (nextIndex + 1) % 4;

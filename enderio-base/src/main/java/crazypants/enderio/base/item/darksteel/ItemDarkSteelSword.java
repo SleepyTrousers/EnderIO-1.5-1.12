@@ -23,6 +23,8 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
+import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.SwordHandler;
 import crazypants.enderio.base.item.darksteel.attributes.DarkSteelAttributeModifiers;
@@ -116,7 +118,8 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   public Multimap<String, AttributeModifier> getAttributeModifiers(@Nonnull EntityEquipmentSlot equipmentSlot, @Nonnull ItemStack stack) {
     Multimap<String, AttributeModifier> res = super.getItemAttributeModifiers(equipmentSlot);
     if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
-      if (Config.darkSteelSwordPowerUsePerHit <= 0 || EnergyUpgradeManager.getEnergyStored(stack) >= Config.darkSteelSwordPowerUsePerHit) {
+      if (DarkSteelConfig.darkSteelSwordPowerUsePerHit.get() <= 0
+          || EnergyUpgradeManager.getEnergyStored(stack) >= DarkSteelConfig.darkSteelSwordPowerUsePerHit.get()) {
         EnergyUpgrade energyUpgrade = EnergyUpgrade.loadAnyFromItem(stack);
         int level = energyUpgrade.getLevel();
         res.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), DarkSteelAttributeModifiers.getAttackDamage(level));
@@ -146,8 +149,8 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
       if (eu != null) {
         eu.writeToItem();
 
-        if (eu.getEnergy() >= Config.darkSteelSwordPowerUsePerHit) {
-          extractInternal(player.getHeldItemMainhand(), Config.darkSteelSwordPowerUsePerHit);
+        if (eu.getEnergy() >= DarkSteelConfig.darkSteelSwordPowerUsePerHit.get()) {
+          extractInternal(player.getHeldItemMainhand(), DarkSteelConfig.darkSteelSwordPowerUsePerHit);
           entity.getEntityData().setBoolean(SwordHandler.HIT_BY_DARK_STEEL_SWORD, true);
         }
 
@@ -276,6 +279,11 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
   @Override
   public @Nonnull ICapacitorKey getAbsorptionRatioKey(@Nonnull ItemStack stack) {
     return CapacitorKey.DARK_STEEL_SWORD_ABSORPTION_RATIO;
+  }
+
+  @Override
+  public void extractInternal(@Nonnull ItemStack equipped, IValue<Integer> power) {
+    EnergyUpgradeManager.extractEnergy(equipped, this, power, false);
   }
 
 }

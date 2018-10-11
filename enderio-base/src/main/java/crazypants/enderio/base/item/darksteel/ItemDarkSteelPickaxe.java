@@ -30,6 +30,7 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
+import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.PlayerAOEAttributeHandler;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
@@ -154,7 +155,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       @Nonnull EntityLivingBase entityLiving) {
     if (bs.getBlockHardness(world, pos) != 0.0D) {// TODO
       if (useObsidianEffeciency(item, bs)) {
-        extractInternal(item, Config.darkSteelPickPowerUseObsidian);
+        extractInternal(item, DarkSteelConfig.pickPowerUseObsidian);
       }
     }
     if (!entityLiving.isSneaking() && entityLiving instanceof EntityPlayerMP && PlayerAOEAttributeHandler.hasAOE((EntityPlayerMP) entityLiving)) {
@@ -194,7 +195,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     }
 
     int current = player.inventory.currentItem;
-    int slot = current == 0 && Config.slotZeroPlacesEight ? 8 : current + 1;
+    int slot = current == 0 && DarkSteelConfig.slotZeroPlacesEight.get() ? 8 : current + 1;
     if (slot < InventoryPlayer.getHotbarSize() && !(player.inventory.mainInventory.get(slot).getItem() instanceof IDarkSteelItem)) {
       /*
        * this will not work with buckets unless we don't switch back to the current item (the pick); there's probably some client <-> server event thing going
@@ -218,7 +219,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     } else {
       int damage = newDamage - oldDamage;
 
-      if (!absorbDamageWithEnergy(stack, damage * Config.darkSteelPickPowerUsePerDamagePoint)) {
+      if (!absorbDamageWithEnergy(stack, damage * DarkSteelConfig.pickPowerUsePerDamagePoint.get())) {
         super.setDamage(stack, newDamage);
       }
     }
@@ -254,12 +255,12 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       return toolMaterial.getEfficiency();
     }
     if (useObsidianEffeciency(stack, state)) {
-      return toolMaterial.getEfficiency() + Config.darkSteelPickEffeciencyBoostWhenPowered + Config.darkSteelPickEffeciencyObsidian;
+      return toolMaterial.getEfficiency() + DarkSteelConfig.pickEfficiencyBoostWhenPowered.get() + DarkSteelConfig.pickEfficiencyObsidian.get();
     }
     if (isToolEffective(state, stack)) {
-      if (Config.darkSteelPickPowerUsePerDamagePoint <= 0 ? EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)
+      if (DarkSteelConfig.pickPowerUsePerDamagePoint.get() <= 0 ? EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)
           : EnergyUpgradeManager.getEnergyStored(stack) > 0) {
-        return toolMaterial.getEfficiency() + Config.darkSteelPickEffeciencyBoostWhenPowered;
+        return toolMaterial.getEfficiency() + DarkSteelConfig.pickEfficiencyBoostWhenPowered.get();
       }
       return toolMaterial.getEfficiency();
     }
@@ -279,11 +280,11 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   private boolean useObsidianEffeciency(@Nonnull ItemStack item, @Nonnull IBlockState blockState) {
     boolean useObsidianSpeed = false;
     int energy = getEnergyStored(item);
-    if (energy > Config.darkSteelPickPowerUseObsidian) {
+    if (energy > DarkSteelConfig.pickPowerUseObsidian.get()) {
       useObsidianSpeed = blockState.getBlock() == Blocks.OBSIDIAN;
-      if (!useObsidianSpeed && Config.darkSteelPickApplyObsidianEffeciencyAtHardess > 0) {
+      if (!useObsidianSpeed && DarkSteelConfig.pickApplyObsidianEfficiencyAtHardness.get() > 0) {
         try {
-          useObsidianSpeed = blockState.getBlockHardness(null, new BlockPos(-1, -1, -1)) >= Config.darkSteelPickApplyObsidianEffeciencyAtHardess;
+          useObsidianSpeed = blockState.getBlockHardness(null, new BlockPos(-1, -1, -1)) >= DarkSteelConfig.pickApplyObsidianEfficiencyAtHardness.get();
         } catch (Exception e) {
           // given we are passing in a null world to getBlockHardness it is
           // possible this could cause an NPE, so just ignore it
@@ -335,9 +336,9 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       list.add(str);
     }
     if (EnergyUpgradeManager.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(Lang.PICK_POWERED.get(TextFormatting.WHITE, Config.darkSteelPickEffeciencyBoostWhenPowered));
-      list.add(Lang.PICK_OBSIDIAN.get(TextFormatting.WHITE, Config.darkSteelPickEffeciencyObsidian));
-      list.add(Lang.PICK_OBSIDIAN_COST.get(TextFormatting.WHITE, LangPower.RF(Config.darkSteelPickPowerUseObsidian)));
+      list.add(Lang.PICK_POWERED.get(TextFormatting.WHITE, DarkSteelConfig.pickEfficiencyBoostWhenPowered.get()));
+      list.add(Lang.PICK_OBSIDIAN.get(TextFormatting.WHITE, DarkSteelConfig.pickEfficiencyObsidian.get()));
+      list.add(Lang.PICK_OBSIDIAN_COST.get(TextFormatting.WHITE, LangPower.RF(DarkSteelConfig.pickPowerUseObsidian.get())));
     }
     DarkSteelRecipeManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
@@ -349,6 +350,11 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 
   @Override
   public void extractInternal(@Nonnull ItemStack equipped, int power) {
+    EnergyUpgradeManager.extractEnergy(equipped, this, power, false);
+  }
+
+  @Override
+  public void extractInternal(@Nonnull ItemStack equipped, IValue<Integer> power) {
     EnergyUpgradeManager.extractEnergy(equipped, this, power, false);
   }
 

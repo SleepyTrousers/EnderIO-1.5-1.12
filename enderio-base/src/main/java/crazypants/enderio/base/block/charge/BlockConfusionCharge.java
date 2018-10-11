@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.config.config.ZooConfig;
+import crazypants.enderio.base.config.config.BlockConfig;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.render.IDefaultRenderers;
 import net.minecraft.block.Block;
@@ -92,15 +92,15 @@ public class BlockConfusionCharge extends BlockTNT implements ICharge, IDefaultR
   @SideOnly(Side.CLIENT)
   public void explodeEffect(@Nonnull World world, double x, double y, double z) {
 
-    List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, getBoundsAround(x, y, z, ZooConfig.confusingChargeRange.get()));
+    List<EntityPlayer> players = world.getEntitiesWithinAABB(EntityPlayer.class, getBoundsAround(x, y, z, BlockConfig.confusingChargeRange.get()));
 
-    double maxDistanceSq = ZooConfig.confusingChargeRange.get() * ZooConfig.confusingChargeRange.get();
+    double maxDistanceSq = BlockConfig.confusingChargeRange.get() * BlockConfig.confusingChargeRange.get();
     for (EntityPlayer player : players) {
       double playerDistSq = player.getDistanceSq(x, y, z);
       if (playerDistSq < maxDistanceSq) {
         double scale = 1 - playerDistSq / maxDistanceSq;
         scale = Math.exp(scale) / Math.E;
-        int duration = (int) Math.ceil(ZooConfig.confusingChargeEffectDuration.get() * scale);
+        int duration = (int) Math.ceil(BlockConfig.confusingChargeEffectDuration.get() * scale);
         player.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, duration, 1, false, true));
       }
     }

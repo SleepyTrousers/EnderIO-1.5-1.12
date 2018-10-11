@@ -72,17 +72,18 @@ import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import thaumcraft.api.items.IGoggles;
+import thaumcraft.api.items.IRevealer;
 import thaumcraft.api.items.IVisDiscountGear;
 
 @InterfaceList({
-    // @Interface(iface = "thaumcraft.api.items.IGoggles", modid = "thaumcraft"),
+    @Interface(iface = "thaumcraft.api.items.IGoggles", modid = "thaumcraft"),
     @Interface(iface = "thaumcraft.api.items.IVisDiscountGear", modid = "thaumcraft"),
-    // @Interface(iface = "thaumcraft.api.items.IRevealer", modid = "thaumcraft"),
+    @Interface(iface = "thaumcraft.api.items.IRevealer", modid = "thaumcraft"),
     @Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = "forestry"),
     @Interface(iface = "forestry.api.core.IArmorNaturalist", modid = "forestry") })
 public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware, IHasPlayerRenderer,
-    IWithPaintName, IElytraFlyingProvider, IArmorApiarist, IArmorNaturalist, IVisDiscountGear {
-  // IGoggles, IRevealer, IVisDiscountGear {
+    IWithPaintName, IElytraFlyingProvider, IArmorApiarist, IArmorNaturalist, IVisDiscountGear, IGoggles, IRevealer {
 
   // ============================================================================================================
   // Item creation
@@ -454,29 +455,25 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   // THAUMCRAFT
   // ============================================================================================================
 
-  boolean gogglesUgradeActive = true;
+  @Override
+  @Method(modid = "thaumcraft")
+  public boolean showNodes(ItemStack stack, EntityLivingBase player) {
+    if (stack.isEmpty() || !(player instanceof EntityPlayer) || DarkSteelController.isActive((EntityPlayer) player, Type.GOGGLES)) {
+      return false;
+    }
+    return GogglesOfRevealingUpgrade.INSTANCE.hasUpgrade(stack);
 
-  // TODO: Mod Thaumcraft - Should we re add goggles upgrade?
-  //
-  // @Override
-  // @Method(modid = "thaumcraft")
-  // public boolean showNodes(ItemStack stack, EntityLivingBase player) {
-  // if (stack.isEmpty() || !gogglesUgradeActive) {
-  // return false;
-  // }
-  // return GogglesOfRevealingUpgrade.INSTANCE.hasUpgrade(stack);
-  //
-  // }
-  //
-  // @Override
-  // @Method(modid = "thaumcraft")
-  // public boolean showIngamePopups(ItemStack stack, EntityLivingBase player) {
-  // if (stack.isEmpty() || !gogglesUgradeActive) {
-  // return false;
-  // }
-  // return GogglesOfRevealingUpgrade.INSTANCE.hasUpgrade(stack);
-  // }
-  //
+  }
+
+  @Override
+  @Method(modid = "thaumcraft")
+  public boolean showIngamePopups(ItemStack stack, EntityLivingBase player) {
+    if (stack.isEmpty() || !(player instanceof EntityPlayer) || DarkSteelController.isActive((EntityPlayer) player, Type.GOGGLES)) {
+      return false;
+    }
+    return GogglesOfRevealingUpgrade.INSTANCE.hasUpgrade(stack);
+  }
+
   @Override
   @Method(modid = "thaumcraft")
   public int getVisDiscount(ItemStack stack, EntityPlayer player) {
@@ -484,18 +481,8 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
       return -100; // Garbage in, garbage out
     }
     return ThaumaturgeRobesUpgrade.BOOTS.hasUpgrade(stack) ? 2
-        : ThaumaturgeRobesUpgrade.LEGS.hasUpgrade(stack) ? 3 : ThaumaturgeRobesUpgrade.CHEST.hasUpgrade(stack) ? 3 : 0;
-    // if (stack.getItem() == ModObject.itemDarkSteelHelmet.getItemNN()) {
-    // return GogglesOfRevealingUpgrade.INSTANCE.hasUpgrade(stack) ? 5 : 0;
-    // }
-  }
-
-  public boolean isGogglesUgradeActive() {
-    return gogglesUgradeActive;
-  }
-
-  public void setGogglesUgradeActive(boolean gogglesUgradeActive) {
-    this.gogglesUgradeActive = gogglesUgradeActive;
+        : ThaumaturgeRobesUpgrade.LEGS.hasUpgrade(stack) ? 3
+            : ThaumaturgeRobesUpgrade.CHEST.hasUpgrade(stack) ? 3 : GogglesOfRevealingUpgrade.INSTANCE.hasUpgrade(stack) ? 5 : 0;
   }
 
   // ============================================================================================================

@@ -169,7 +169,7 @@ public class ItemDarkSteelCrook extends ItemTool implements IAdvancedTooltipProv
     for (ItemStack stack : drops) {
       if (world.rand.nextFloat() <= chance) {
         world.spawnEntity(new EntityItem(world, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
-        EnergyUpgradeManager.extractEnergy(player.getHeldItemMainhand(), this, DarkSteelConfig.crookEnergyPerDamageMulti.get(), false);
+        EnergyUpgradeManager.extractEnergy(player.getHeldItemMainhand(), this, DarkSteelConfig.crookEnergyPerDamageMulti, false);
         usedPower = true;
       }
     }
