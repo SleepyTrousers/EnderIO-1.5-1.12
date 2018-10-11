@@ -29,7 +29,9 @@ import net.minecraftforge.fml.common.ModContainer;
 
 public class RecipeFactory {
 
-  private static final String DEFAULT_USER_FILE = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+  private static final @Nonnull String ASSETS_FOLDER_CONFIG = "config/";
+
+  private static final @Nonnull String DEFAULT_USER_FILE = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
       + "<enderio:recipes xmlns:enderio=\"http://enderio.com/recipes\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://enderio.com/recipes recipes.xsd \">\n"
       + "\n</enderio:recipes>\n";
 
@@ -75,14 +77,14 @@ public class RecipeFactory {
   public NNList<File> listXMLFiles(String pathName) {
     return new NNList<>(new File(configDirectory, pathName).listFiles(new FilenameFilter() {
       @Override
-      public final boolean accept(File dir, String name) {
+      public boolean accept(File dir, String name) {
         return name.endsWith(".xml") && !"sagmill_oresalleasy.xml".equals(name);
       }
     }));
   }
 
   public <T extends RecipeRoot> T readCoreFile(T target, String rootElement, String fileName) throws IOException, XMLStreamException {
-    final ResourceLocation coreRL = new ResourceLocation(domain, "config/" + fileName);
+    final ResourceLocation coreRL = new ResourceLocation(domain, ASSETS_FOLDER_CONFIG + fileName);
     final File coreFL = new File(configDirectory, fileName);
     copyCore(coreRL, coreFL);
 
@@ -101,7 +103,7 @@ public class RecipeFactory {
   }
 
   public void copyCore(String fileName) {
-    final ResourceLocation coreRL = new ResourceLocation(domain, "config/" + fileName);
+    final ResourceLocation coreRL = new ResourceLocation(domain, ASSETS_FOLDER_CONFIG + fileName);
     final File coreFL = new File(configDirectory, fileName);
     copyCore(coreRL, coreFL);
   }
@@ -125,7 +127,7 @@ public class RecipeFactory {
         try {
           return readStax(target, rootElement, userFileStream);
         } catch (XMLStreamException e) {
-          try (final FileInputStream stream = new FileInputStream(userFL)) {
+          try (FileInputStream stream = new FileInputStream(userFL)) {
             printContentsOnError(stream, userFL.toString());
           }
           throw e;
@@ -137,6 +139,23 @@ public class RecipeFactory {
     }
     Log.info("Skipping missing user recipe file " + fileName);
     return target;
+  }
+
+  public static <T extends RecipeRoot> T readFileIMC(T target, String rootElement, String fileName) throws IOException, XMLStreamException {
+    File file = new File(fileName);
+    if (file.exists()) {
+      Log.info("Reading IMC recipe file " + fileName);
+      try (InputStream userFileStream = new FileInputStream(file)) {
+        try {
+          return readStax(target, rootElement, userFileStream);
+        } catch (InvalidRecipeConfigException irce) {
+          irce.setFilename(fileName);
+          throw irce;
+        }
+      }
+    } else {
+      throw new FileNotFoundException("IMC file '" + fileName + "' doesn't exist");
+    }
   }
 
   protected static void printContentsOnError(InputStream stream, String filename) throws FileNotFoundException, IOException {
