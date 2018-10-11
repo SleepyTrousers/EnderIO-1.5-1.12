@@ -1583,7 +1583,7 @@ material.redstone_alloy.prefix=红石合金%s
 material.soularium.prefix=魂金%s
 material.vibrant_alloy.prefix=脉冲合金%s
 material.end_steel.prefix=末影钢%s
-material.construction_alloy.prefix=Fake-Iron %s
+material.construction_alloy.prefix=伪铁%s
 
 modifier.enderport.name=传送
 modifier.enderport.desc=§o别挡我的路！§r\n有几率将实体传送走
@@ -1609,8 +1609,8 @@ fluid.soularium=熔融魂金
 tile.fluid.soularium.name=熔融魂金
 fluid.end_steel=熔融末影钢
 tile.fluid.end_steel.name=熔融末影钢
-fluid.construction_alloy=Molten 铁合金
-tile.fluid.construction_alloy.name=Molten 铁合金
+fluid.construction_alloy=熔融铁合金
+tile.fluid.construction_alloy.name=熔融铁合金
 
 fluid.enderio.glowstone=熔融荧石
 tile.fluid.enderio.glowstone.name=熔融荧石
