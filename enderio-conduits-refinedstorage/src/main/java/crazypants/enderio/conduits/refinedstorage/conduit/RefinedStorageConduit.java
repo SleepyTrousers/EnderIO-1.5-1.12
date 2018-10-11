@@ -50,7 +50,6 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 public class RefinedStorageConduit extends AbstractConduit implements IRefinedStorageConduit {
 
@@ -297,8 +296,8 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   }
 
   @Override
-  public void connectionsChanged() {
-    super.connectionsChanged();
+  public void setConnectionMode(@Nonnull EnumFacing dir, @Nonnull ConnectionMode mode) {
+    super.setConnectionMode(dir, mode);
     getNode().onConduitConnectionChange();
   }
 
@@ -474,16 +473,6 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
     } else if (filterId == getOutputFilterIndex()) {
       setOutputFilter(EnumFacing.getFront(param1), filter);
     }
-  }
-
-  @Override
-  @Nullable
-  public IItemHandler getInventoryForSnapshot(int filterId, int param1) {
-    // ItemConduitNetwork icn = getNetwork();
-    // if (icn != null) {
-    // return icn.getInventory(this, EnumFacing.getFront(param1)).getInventory();
-    // }
-    return null;
   }
 
   @Override
