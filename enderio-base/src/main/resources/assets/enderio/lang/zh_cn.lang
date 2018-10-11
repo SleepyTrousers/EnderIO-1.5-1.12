@@ -24,6 +24,7 @@ item.item_alloy_ingot_redstone_alloy.name=红石合金锭
 item.item_alloy_ingot_soularium.name=魂金锭
 item.item_alloy_ingot_vibrant_alloy.name=脉冲合金锭
 item.item_alloy_ingot_end_steel.name=末影钢锭
+item.item_alloy_ingot_construction_alloy.name=铁合金锭
 
 item.item_alloy_ball_conductive_iron.name=导电铁磨珠
 item.item_alloy_ball_dark_steel.name=玄钢磨珠
@@ -34,6 +35,7 @@ item.item_alloy_ball_redstone_alloy.name=红石合金磨珠
 item.item_alloy_ball_soularium.name=魂金磨珠
 item.item_alloy_ball_vibrant_alloy.name=脉冲合金磨珠
 item.item_alloy_ball_end_steel.name=末影钢磨珠
+item.item_alloy_ball_construction_alloy.name=铁合金磨珠
 
 item.item_alloy_nugget_conductive_iron.name=导电铁粒
 item.item_alloy_nugget_dark_steel.name=玄钢粒
@@ -44,6 +46,7 @@ item.item_alloy_nugget_redstone_alloy.name=红石合金粒
 item.item_alloy_nugget_soularium.name=魂金粒
 item.item_alloy_nugget_vibrant_alloy.name=脉冲合金粒
 item.item_alloy_nugget_end_steel.name=末影钢粒
+item.item_alloy_nugget_construction_alloy.name=铁合金粒
 
 item.item_basic_capacitor.activated.name=双层电容
 item.item_basic_capacitor.basic.name=基础电容
@@ -262,17 +265,34 @@ item.item_material.enhanced_chassi_parts.name=强化机器架板
 item.item_material.cake_base.name=蛋糕底座
 item.item_material.infinity_rod.name=无尽之杆
 item.item_material.glazed_nether_brick.name=釉制地狱砖
-item.item_material.infinity_goop.name=无尽粘物
+item.item_material.infinity_goop.name=无尽试剂
 item.item_material.infinity_goop.tooltip.detailed.line1=一个拥有传输能量的，无尽的粘着之物。
 item.item_material.infinity_goop.tooltip.detailed.line2=Randalf 有一次得到了一些这个东西，结果被困在他的旅行权杖上面长达六个月……
-item.item_material.ingot_energetic_silver.name=充能银锭
-item.item_material.ingot_crystalline_pink_slime.name=晶化粉红史莱姆锭
-item.item_material.ingot_crystalline_pink_slime.tooltip.detailed.line1=当你把果冻长时间放在冰箱里时，就会发生这种情况……
-item.item_material.ingot_combustive_metal.name=燃烧铁锭
-item.item_material.ingot_crude_steel.name=粗制钢锭
-item.item_material.ingot_crystalline_alloy.name=晶化合金锭
-item.item_material.ingot_melodic_alloy.name=旋律合金锭
-item.item_material.ingot_stellar_alloy.name=恒星合金锭
+
+item.item_alloy_endergy_ingot_crude_steel.name=粗制钢锭
+item.item_alloy_endergy_ingot_crystalline_alloy.name=晶化合金锭
+item.item_alloy_endergy_ingot_melodic_alloy.name=旋律合金锭
+item.item_alloy_endergy_ingot_stellar_alloy.name=恒星合金锭
+item.item_alloy_endergy_ingot_crystalline_pink_slime.name=晶化粉红史莱姆锭
+item.item_alloy_endergy_ingot_crystalline_pink_slime.tooltip.detailed.line1=So this is what happens when you leave jello in the freezer too long...
+item.item_alloy_endergy_ingot_energetic_silver.name=充能银锭
+item.item_alloy_endergy_ingot_vivid_alloy.name=生动合金锭
+
+item.item_alloy_endergy_ball_crude_steel.name=粗制钢磨珠
+item.item_alloy_endergy_ball_crystalline_alloy.name=晶化合金磨珠
+item.item_alloy_endergy_ball_melodic_alloy.name=旋律合金磨珠
+item.item_alloy_endergy_ball_stellar_alloy.name=恒星合金磨珠
+item.item_alloy_endergy_ball_crystalline_pink_slime.name=晶化粉红史莱姆磨珠
+item.item_alloy_endergy_ball_energetic_silver.name=充能银磨珠
+item.item_alloy_endergy_ball_vivid_alloy.name=生动合金磨珠
+
+item.item_alloy_endergy_nugget_crude_steel.name=粗制钢粒
+item.item_alloy_endergy_nugget_crystalline_alloy.name=晶化合金粒
+item.item_alloy_endergy_nugget_melodic_alloy.name=旋律合金粒
+item.item_alloy_endergy_nugget_stellar_alloy.name=恒星合金粒
+item.item_alloy_endergy_nugget_crystalline_pink_slime.name=晶化粉红史莱姆粒
+item.item_alloy_endergy_nugget_energetic_silver.name=充能银粒
+item.item_alloy_endergy_nugget_vivid_alloy.name=生动合金粒
 
 item.item_rod_of_return.name=折返权杖
 item.item_rod_of_return.tooltip.detailed.line1=将使用者传送回传送台
@@ -339,6 +359,16 @@ tile.block_alloy.redstone_alloy.name=红石合金块
 tile.block_alloy.soularium.name=魂金块
 tile.block_alloy.vibrant_alloy.name=脉冲合金块
 tile.block_alloy.end_steel.name=末影钢块
+tile.block_alloy.construction_alloy.name=铁合金块
+
+tile.block_alloy_endergy.name=末影合金块
+tile.block_alloy_endergy.crude_steel.name=粗制钢块
+tile.block_alloy_endergy.crystalline_alloy.name=晶化合金块
+tile.block_alloy_endergy.melodic_alloy.name=旋律合金块
+tile.block_alloy_endergy.stellar_alloy.name=恒星合金块
+tile.block_alloy_endergy.crystalline_pink_slime.name=晶化粉红史莱姆块
+tile.block_alloy_endergy.energetic_silver.name=充能银块
+tile.block_alloy_endergy.vivid_alloy.name=生动合金块
 
 tile.block_cold_fire.name=冰焰
 
@@ -656,6 +686,10 @@ enderio.power.format.pertick=%s µI/t
 enderio.power.format.name=Micro Infinity（%s）
 enderio.power.format.details=一单位的能量
 
+enderio.temperature.format.deg_c=%s °C
+
+enderio.format.percent_efficiency=%s%% 效率
+
 enderio.fluid.millibucket.format=%s mB
 enderio.fluid.millibucket.format.name=%s mB 的 %s
 enderio.fluid.millibucket.format.of=%s / %s mB
@@ -667,7 +701,6 @@ enderio.fuel.tooltip.generates=生成 %s 消耗 %s
 enderio.fuel.tooltip.burnTime=燃烧时间 %s ticks
 enderio.coolant.tooltip.heading=冷却剂
 enderio.coolant.tooltip.degreesPerBucket=%s°C/桶
-
 
 enderio.tooltip.anvilupgrades=铁砧升级：
 
@@ -695,7 +728,7 @@ enderio.darksteel.upgrade.travel.name=旅行
 enderio.darksteel.upgrade.travel.tooltip.detailed.line1=按住 Shift + 右击来传送一小段距离或传送到旅行锚
 
 enderio.darksteel.upgrade.spoon.name=勺子
-enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=有了勺子，谁还要铲子！
+enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=有了勺子，谁还要锹！
 
 enderio.darksteel.upgrade.hoe.name=叉子
 enderio.darksteel.upgrade.hoe.tooltip.detailed.line1=有了叉子，谁还要锄头……
@@ -801,10 +834,12 @@ enderio.top.action.header.post=：
 enderio.top.action.none=§4无
 
 enderio.top.range.header.pre=§e范围：§f
+enderio.top.range.header.post=
 # enderio.top.range is server-side only
 enderio.top.range=%sx%sx%s
 
 enderio.top.machine.side.pre=§e方向：§f
+enderio.top.machine.side.post=
 enderio.top.machine.side.north=北
 enderio.top.machine.side.south=南
 enderio.top.machine.side.west=西
@@ -812,6 +847,7 @@ enderio.top.machine.side.east=东
 enderio.top.machine.side.up=上
 enderio.top.machine.side.down=下
 enderio.top.machine.ioMode.pre=§e模式：§f
+enderio.top.machine.ioMode.post=
 enderio.top.machine.outofpower=§4能量不足
 enderio.top.machine.active=激活
 enderio.top.machine.idle=闲置
@@ -819,6 +855,7 @@ enderio.top.machine.idle=闲置
 enderio.top.progress.outofpower=§4能量耗尽
 
 enderio.top.redstone.header.pre=§e当前状态：§f
+enderio.top.redstone.header.post=
 enderio.top.redstone.true=开
 enderio.top.redstone.false=关
 
@@ -836,13 +873,17 @@ enderio.top.suffix.levels=等级
 enderio.top.suffix.items=物品
 enderio.top.suffix.percent=%
 
+enderio.top.tank.content.pre=
 enderio.top.tank.content.middle=/
 enderio.top.tank.content.post=mB
 enderio.top.tank.content.empty=空
 
 enderio.top.tank.header.input.pre=§e输入槽：§f
+enderio.top.tank.header.input.post=
 enderio.top.tank.header.output.pre=§e输出槽：§f
+enderio.top.tank.header.output.post=
 enderio.top.tank.header.storage.pre=§f
+enderio.top.tank.header.storage.post=
 
 
 # Fluids
@@ -881,7 +922,7 @@ item.item_existing_item_filter.tooltip.detailed.line1=基于相邻容器的
 item.item_existing_item_filter.tooltip.detailed.line2=快照过滤物品
 item.item_mod_item_filter.tooltip.detailed.line1=基于MOD过滤物品
 item.item_power_item_filter.tooltip.detailed.line1=基于物品现有能量过滤
-item.item_basic_item_filter.tooltip.detailed.line1=基于白名单过滤物品并匹配meta数据
+item.item_basic_item_filter.tooltip.detailed.line1=基于白名单过滤物品并匹配元数据
 item.item_advanced_item_filter.tooltip.detailed.line1=基于高级配置过滤物品
 item.item_limited_item_filter.tooltip.detailed.line1=基于物品堆叠过滤
 item.item_limited_item_filter.tooltip.detailed.line2=除了高级物品过滤之外
@@ -1098,8 +1139,8 @@ enderio.gui.item_filter.close2=返回至上一库存
 
 enderio.gui.item_filter.whitelist=白名单
 enderio.gui.item_filter.blacklist=黑名单
-enderio.gui.item_filter.match_meta=匹配 Meta 数据
-enderio.gui.item_filter.ignore_meta=忽略 Meta 数据
+enderio.gui.item_filter.match_meta=匹配元数据
+enderio.gui.item_filter.ignore_meta=忽略元数据
 enderio.gui.item_filter.sticky_enabled=粘滞模式开启
 enderio.gui.item_filter.sticky_enabled2=选定的物品只会被传送到这个或别的粘滞输出
 enderio.gui.item_filter.sticky_disabled=粘滞模式关闭
@@ -1201,6 +1242,11 @@ item.item_inventory_charger.name=物品栏充能器
 item.item_inventory_charger.tooltip.detailed.line1=充能物品栏所有物品。右击启用/禁用
 item.item_inventory_charger_vibrant.name=谐振物品栏充能器
 item.item_inventory_charger_vibrant.tooltip.detailed.line1=充能物品栏所有物品。右击启用/禁用
+
+enderio.network.bad_config=错误：Ender IO 在客户端端与服务端数值“%s.%s”不同，这个数值决定着游戏如何开始，现在使用服务端数据已经过晚，继续无法进行。为了修复此问题，请手动同步服务端与客户端 Ender IO 配置，或者把这个数值手动设置为“%s”。
+enderio.network.autosync.connected=§4§l这个数值右服务端决定！\n§e%s
+enderio.network.autosync.offline=%s\n§o这个数值必须与服务端保持同步！
+enderio.network.manusync=%s\n§o这个数值将由服务端决定。
 
 #PARSE_ESCAPES
 # ^ having this in the first line allows us to use "\uXXXX" escapes in this file
@@ -1369,6 +1415,8 @@ enderio.gui.redstone_signal_strength=强信号
 enderio.gui.enabled=启用
 enderio.gui.disabled=禁用
 
+enderio.gui.conduit.network.unloaded=部分管道处于未加载的区块
+
 # Advancements
 
 enderio.advancement.conduits.root.name=Ender IO 导管
@@ -1524,6 +1572,7 @@ material.redstone_alloy.name=红石合金
 material.soularium.name=魂金
 material.vibrant_alloy.name=脉冲合金
 material.end_steel.name=末影钢
+material.construction_alloy.name=铁合金
 
 material.dark_steel.prefix=玄钢%s
 material.conductive_iron.prefix=导电铁%s
@@ -1534,6 +1583,7 @@ material.redstone_alloy.prefix=红石合金%s
 material.soularium.prefix=魂金%s
 material.vibrant_alloy.prefix=脉冲合金%s
 material.end_steel.prefix=末影钢%s
+material.construction_alloy.prefix=Fake-Iron %s
 
 modifier.enderport.name=传送
 modifier.enderport.desc=§o别挡我的路！§r\n有几率将实体传送走
@@ -1559,6 +1609,8 @@ fluid.soularium=熔融魂金
 tile.fluid.soularium.name=熔融魂金
 fluid.end_steel=熔融末影钢
 tile.fluid.end_steel.name=熔融末影钢
+fluid.construction_alloy=Molten 铁合金
+tile.fluid.construction_alloy.name=Molten 铁合金
 
 fluid.enderio.glowstone=熔融荧石
 tile.fluid.enderio.glowstone.name=熔融荧石
@@ -1798,7 +1850,7 @@ tile.block_inhibitor_obelisk.name=传送抑制方尖碑
 tile.block_inhibitor_obelisk.tooltip.detailed.line1=阻止工作范围内的一切传送
 
 tile.block_relocator_obelisk.name=重定向方尖碑
-tile.block_relocator_obelisk.tooltip.detailed.line1=重定向在其工作范围内产生的怪物
+tile.block_relocator_obelisk.tooltip.detailed.line1=重定向在其工作范围内产生的怪物并朝向它
 
 tile.block_weather_obelisk.name=气象方尖碑
 tile.block_weather_obelisk.tooltip.detailed.line1=改变当前天气
@@ -1933,6 +1985,13 @@ tile.block_impulse_hopper.tooltip.detailed.line1=如果输入端恰好有一整�
 tile.block_crafter.name=合成器
 
 tile.block_simple_crafter.name=简易合成器
+
+tile.block_lava_generator.name=熔岩热交换器
+tile.block_lava_generator.tooltip.detailed.line1=通过冷却熔岩产生能量。
+tile.block_lava_generator.tooltip.detailed.line2=确保它不会过热！
+tile.block_lava_generator.tooltip.detailed.line3=可以通过在其周围放置冷的流体或冰块来冷却。
+enderio.gui.lavagen.heat=热量
+
 
 # Types. smelting=Alloy Smelter Speed,
 # area=all machines "area" attribute (e.g. farm),
