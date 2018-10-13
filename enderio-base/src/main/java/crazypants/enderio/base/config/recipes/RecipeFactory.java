@@ -15,8 +15,6 @@ import javax.annotation.Nonnull;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
 
 import org.apache.commons.io.IOUtils;
 
@@ -91,7 +89,7 @@ public class RecipeFactory {
     Log.debug("Reading core recipe file " + fileName);
     try (InputStream coreFileStream = getResource(coreRL)) {
       try {
-        return readStax(target, rootElement, coreFileStream);
+        return readStax(target, rootElement, coreFileStream, "core recipe file '" + fileName + "'");
       } catch (XMLStreamException e) {
         printContentsOnError(getResource(coreRL), coreRL.toString());
         throw e;
@@ -125,7 +123,7 @@ public class RecipeFactory {
       Log.info("Reading user recipe file " + fileName);
       try (InputStream userFileStream = userFL.exists() ? new FileInputStream(userFL) : null;) {
         try {
-          return readStax(target, rootElement, userFileStream);
+          return readStax(target, rootElement, userFileStream, "user recipe file '" + fileName + "'");
         } catch (XMLStreamException e) {
           try (FileInputStream stream = new FileInputStream(userFL)) {
             printContentsOnError(stream, userFL.toString());
@@ -147,7 +145,7 @@ public class RecipeFactory {
       Log.info("Reading IMC recipe file " + fileName);
       try (InputStream userFileStream = new FileInputStream(file)) {
         try {
-          return readStax(target, rootElement, userFileStream);
+          return readStax(target, rootElement, userFileStream, "IMC file '" + fileName + "'");
         } catch (InvalidRecipeConfigException irce) {
           irce.setFilename(fileName);
           throw irce;
@@ -186,24 +184,13 @@ public class RecipeFactory {
     }
   }
 
-  protected static <T extends RecipeRoot> T readStax(T target, String rootElement, InputStream in) throws XMLStreamException, InvalidRecipeConfigException {
+  protected static <T extends RecipeRoot> T readStax(T target, String rootElement, InputStream in, String source)
+      throws XMLStreamException, InvalidRecipeConfigException {
     XMLInputFactory inputFactory = XMLInputFactory.newInstance();
     XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
-    StaxFactory factory = new StaxFactory(eventReader);
+    StaxFactory factory = new StaxFactory(eventReader, source);
 
-    while (eventReader.hasNext()) {
-      XMLEvent event = eventReader.nextEvent();
-      if (event.isStartElement()) {
-        StartElement startElement = event.asStartElement();
-        if (rootElement.equals(startElement.getName().getLocalPart())) {
-          return factory.read(target, startElement);
-        } else {
-          throw new InvalidRecipeConfigException("Unexpected tag '" + startElement.getName() + "'");
-        }
-      }
-    }
-
-    throw new InvalidRecipeConfigException("Missing recipes tag");
+    return factory.readRoot(target, rootElement);
   }
 
   private void copyCore(ResourceLocation resourceLocation, File file) {

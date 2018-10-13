@@ -31,4 +31,15 @@ public interface RecipeConfigElement {
   boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException;
 
   boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException;
+
+  /**
+   * Sets a human-readable designation of the source of the XML, e.g. the filename or the IMC sender.
+   */
+  default void setSource(String source) {
+  }
+
+  default String getSource() {
+    return "unknown";
+  }
+
 }

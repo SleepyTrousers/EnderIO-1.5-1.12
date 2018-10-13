@@ -2,6 +2,12 @@ package crazypants.enderio.base.config.recipes;
 
 public interface RecipeRoot extends RecipeGameRecipe {
 
-  <T extends RecipeRoot> T addRecipes(RecipeRoot other, boolean allowOverrides) throws InvalidRecipeConfigException;
+  public enum Overrides {
+    ALLOW,
+    DENY,
+    WARN;
+  }
+
+  <T extends RecipeRoot> T addRecipes(RecipeRoot other, Overrides overrides) throws InvalidRecipeConfigException;
 
 }

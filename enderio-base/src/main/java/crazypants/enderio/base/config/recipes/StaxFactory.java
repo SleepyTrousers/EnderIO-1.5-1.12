@@ -12,12 +12,32 @@ import javax.xml.stream.events.XMLEvent;
 public class StaxFactory {
 
   private final XMLEventReader eventReader;
+  private final String source;
 
-  public StaxFactory(XMLEventReader eventReader) {
+  public StaxFactory(XMLEventReader eventReader, String source) {
     this.eventReader = eventReader;
+    this.source = source;
+  }
+
+  public <T extends RecipeRoot> T readRoot(T target, String rootElement) throws XMLStreamException, InvalidRecipeConfigException {
+    while (eventReader.hasNext()) {
+      XMLEvent event = eventReader.nextEvent();
+      if (event.isStartElement()) {
+        StartElement startElement = event.asStartElement();
+        if (rootElement.equals(startElement.getName().getLocalPart())) {
+          return read(target, startElement);
+        } else {
+          throw new InvalidRecipeConfigException("Unexpected tag '" + startElement.getName() + "'");
+        }
+      }
+    }
+
+    throw new InvalidRecipeConfigException("Missing top-level tag '" + rootElement + "'");
   }
 
   public <T extends RecipeConfigElement> T read(T target, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
+    target.setSource(source != null ? source : "unkown");
+
     try {
       Iterator<Attribute> attributes = startElement.getAttributes();
       while (attributes.hasNext()) {

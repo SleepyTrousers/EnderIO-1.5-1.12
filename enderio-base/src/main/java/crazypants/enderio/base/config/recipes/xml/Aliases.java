@@ -31,7 +31,7 @@ public class Aliases implements RecipeRoot {
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T extends RecipeRoot> T addRecipes(RecipeRoot other, boolean allowOverrides) throws InvalidRecipeConfigException {
+  public <T extends RecipeRoot> T addRecipes(RecipeRoot other, Overrides overrides) throws InvalidRecipeConfigException {
     return (T) this;
   }
 
