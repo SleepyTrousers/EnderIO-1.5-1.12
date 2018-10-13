@@ -20,6 +20,11 @@ public class Recipes implements RecipeRoot {
   private final @Nonnull List<AbstractConditional> recipes = new ArrayList<AbstractConditional>();
 
   @Override
+  public List<AbstractConditional> getRecipes() {
+    return recipes;
+  }
+
+  @Override
   public Object readResolve() throws InvalidRecipeConfigException {
     return this;
   }

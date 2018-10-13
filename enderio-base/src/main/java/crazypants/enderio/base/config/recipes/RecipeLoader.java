@@ -30,6 +30,7 @@ import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.config.RecipeConfig;
 import crazypants.enderio.base.config.recipes.RecipeRoot.Overrides;
+import crazypants.enderio.base.config.recipes.xml.AbstractConditional;
 import crazypants.enderio.base.config.recipes.xml.Aliases;
 import crazypants.enderio.base.config.recipes.xml.Recipes;
 import net.minecraftforge.fml.common.Loader;
@@ -159,7 +160,7 @@ public final class RecipeLoader {
     bar2 = ProgressManager.push("File", userfiles.size());
     for (File file : userfiles) {
       bar2.step(file.getName());
-      final Recipes userFile = readUserFile(new Recipes(), recipeFactory, file.getName(), file);
+      final RecipeRoot userFile = readUserFile(new Recipes(), recipeFactory, file.getName(), file);
       if (userFile != null) {
         try {
           config = userFile.addRecipes(config, Overrides.ALLOW);
@@ -237,6 +238,13 @@ public final class RecipeLoader {
       }
       ProgressManager.pop(bar);
 
+      List<AbstractConditional> list = collector.getRecipes();
+      if (list != null && !list.isEmpty()) {
+        Log.info("Valid IMC recipes to be processed:");
+        for (AbstractConditional recipe : list) {
+          Log.info(" * " + recipe.getName() + " from " + recipe.getSource());
+        }
+      }
       try {
         return collector.addRecipes(config, Overrides.ALLOW);
       } catch (InvalidRecipeConfigException e) {
@@ -300,7 +308,7 @@ public final class RecipeLoader {
       imcRecipes.add(Pair.of(sender, Pair.of(isFile ? IMCTYPE.FILE : IMCTYPE.XML, recipe)));
     } else {
       try {
-        Recipes recipes;
+        RecipeRoot recipes;
         if (!isFile) {
           try (InputStream is = IOUtils.toInputStream(recipe, Charset.forName("UTF-8"))) {
             recipes = RecipeFactory.readStax(new Recipes(), RECIPES_ROOT, is, "IMC from mod '" + sender + "'");

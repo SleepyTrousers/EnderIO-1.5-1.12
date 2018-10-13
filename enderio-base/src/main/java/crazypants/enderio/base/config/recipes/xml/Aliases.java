@@ -1,5 +1,7 @@
 package crazypants.enderio.base.config.recipes.xml;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -62,6 +64,11 @@ public class Aliases implements RecipeRoot {
 
   @Override
   public void enforceValidity() throws InvalidRecipeConfigException {
+  }
+
+  @Override
+  public List<AbstractConditional> getRecipes() {
+    return null;
   }
 
 }
