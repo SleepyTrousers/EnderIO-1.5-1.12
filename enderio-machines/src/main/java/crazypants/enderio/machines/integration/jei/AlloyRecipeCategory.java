@@ -13,6 +13,7 @@ import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.recipe.IManyToOneRecipe;
 import crazypants.enderio.base.recipe.IRecipe;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.PersonalConfig;
@@ -55,7 +56,7 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
 
     public AlloyRecipeWrapper(IRecipe recipe, @Nonnull IGuiHelper guiHelper) {
       super(recipe);
-      if (!IRecipe.RecipeLevel.SIMPLE.is(recipe.getRecipeLevel())) {
+      if (!RecipeLevel.SIMPLE.canMake(recipe.getRecipeLevel())) {
         alloyFront = guiHelper.createDrawable(new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/alloy_smelter_simple_front.png"), 0, 0, 16, 16, 16, 16);
       }
     }

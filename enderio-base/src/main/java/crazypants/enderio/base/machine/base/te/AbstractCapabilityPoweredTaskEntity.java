@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.IProgressTile;
-import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.util.NNList;
 
@@ -18,16 +17,20 @@ import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 public abstract class AbstractCapabilityPoweredTaskEntity extends AbstractCapabilityPoweredMachineEntity implements IProgressTile {
 
-  @Store({ NBTAction.SAVE, NBTAction.ITEM }) protected IPoweredTask currentTask = null;
-  @Store({ NBTAction.SAVE, NBTAction.ITEM }) protected IMachineRecipe lastCompletedRecipe;
+  @Store({ NBTAction.SAVE, NBTAction.ITEM })
+  protected IPoweredTask currentTask = null;
+  @Store({ NBTAction.SAVE, NBTAction.ITEM })
+  protected IMachineRecipe lastCompletedRecipe;
   protected IMachineRecipe cachedNextRecipe;
 
   protected int ticksSinceCheckedRecipe = 0;
@@ -263,9 +266,13 @@ public abstract class AbstractCapabilityPoweredTaskEntity extends AbstractCapabi
   @Nullable
   protected IMachineRecipe getNextRecipe() {
     if (cachedNextRecipe == null) {
-      cachedNextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), getRecipeInputs());
+      cachedNextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineLevel(), getMachineName(), getRecipeInputs());
     }
     return cachedNextRecipe;
+  }
+
+  protected @Nonnull RecipeLevel getMachineLevel() {
+    return RecipeLevel.IGNORE;
   }
 
   @Nullable
@@ -345,7 +352,7 @@ public abstract class AbstractCapabilityPoweredTaskEntity extends AbstractCapabi
   }
 
   protected boolean startNextTask(@Nonnull IMachineRecipe nextRecipe, long nextSeed) {
-    if (hasPower() && nextRecipe.isRecipe(getRecipeInputs())) {
+    if (hasPower() && nextRecipe.isRecipe(getMachineLevel(), getRecipeInputs())) {
       // then get our recipe and take away the source items
       currentTask = createTask(nextRecipe, nextSeed);
       List<MachineRecipeInput> consumed = nextRecipe.getQuantitiesConsumed(getRecipeInputs());

@@ -26,13 +26,13 @@ public class ManyToOneMachineRecipe extends AbstractMachineRecipe {
   }
 
   @Override
-  public IRecipe getRecipeForInputs(@Nonnull NNList<MachineRecipeInput> inputs) {
-    return recipeManager.getRecipeForInputs(inputs);
+  public IRecipe getRecipeForInputs(@Nonnull RecipeLevel machineLevel, @Nonnull NNList<MachineRecipeInput> inputs) {
+    return recipeManager.getRecipeForInputs(machineLevel, inputs);
   }
 
   @Override
-  public boolean isValidInput(@Nonnull MachineRecipeInput input) {
-    return recipeManager.isValidInput(input);
+  public boolean isValidInput(@Nonnull RecipeLevel machineLevel, @Nonnull MachineRecipeInput input) {
+    return recipeManager.isValidInput(machineLevel, input);
   }
 
   @Override
@@ -42,7 +42,7 @@ public class ManyToOneMachineRecipe extends AbstractMachineRecipe {
 
   @Override
   public float getExperienceForOutput(@Nonnull ItemStack output) {
-    return recipeManager.getExperianceForOutput(output);
+    return recipeManager.getExperienceForOutput(output);
   }
 
   public boolean isValidRecipeComponents(@Nonnull ItemStack[] resultInv) {

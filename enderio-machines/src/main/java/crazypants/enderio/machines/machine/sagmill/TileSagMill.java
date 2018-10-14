@@ -114,7 +114,7 @@ public abstract class TileSagMill extends AbstractPoweredTaskEntity implements I
 
   @Override
   public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
-    return Prep.isValid(itemstack) && SagMillRecipeManager.getInstance().isValidInput(new MachineRecipeInput(i, itemstack));
+    return Prep.isValid(itemstack) && SagMillRecipeManager.getInstance().isValidInput(getMachineLevel(), new MachineRecipeInput(i, itemstack));
   }
 
   public int getBallDurationScaled(int scale) {

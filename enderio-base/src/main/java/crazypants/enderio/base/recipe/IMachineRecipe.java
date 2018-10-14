@@ -51,7 +51,7 @@ public interface IMachineRecipe {
    * @param inputs
    * @return
    */
-  public boolean isRecipe(@Nonnull NNList<MachineRecipeInput> inputs);
+  boolean isRecipe(@Nonnull RecipeLevel machineLevel, @Nonnull NNList<MachineRecipeInput> inputs);
 
   /**
    * Returns the output from a single 'cycle' of the recipe (even if the inputs would allow the recipe to be crafted several times).
@@ -83,7 +83,7 @@ public interface IMachineRecipe {
    * @param input
    * @return
    */
-  boolean isValidInput(@Nonnull MachineRecipeInput input);
+  boolean isValidInput(@Nonnull RecipeLevel machineLevel, @Nonnull MachineRecipeInput input);
 
   /**
    * The name of the machine this recipe can be crafted by.

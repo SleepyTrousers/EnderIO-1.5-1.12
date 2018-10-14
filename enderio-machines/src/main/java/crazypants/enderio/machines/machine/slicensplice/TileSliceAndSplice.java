@@ -17,6 +17,7 @@ import crazypants.enderio.base.recipe.IRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.ManyToOneMachineRecipe;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
@@ -169,7 +170,8 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
         }
       }
     }
-    List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), MachineRecipeInput.create(slot, itemstack));
+    List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(RecipeLevel.IGNORE, getMachineName(),
+        MachineRecipeInput.create(slot, itemstack));
 
     return isValidInputForAlloyRecipe(slot, itemstack, numSlotsFilled, recipes);
   }

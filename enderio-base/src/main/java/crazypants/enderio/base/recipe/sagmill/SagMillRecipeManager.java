@@ -9,6 +9,7 @@ import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.Recipe;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
 
@@ -47,24 +48,24 @@ public final class SagMillRecipeManager {
     return null;
   }
 
-  public boolean isValidInput(@Nonnull MachineRecipeInput input) {
+  public boolean isValidInput(@Nonnull RecipeLevel machineLevel, @Nonnull MachineRecipeInput input) {
     if (input.slotNumber == 1) {
       return isValidSagBall(input.item);
     }
-    return getRecipeForInput(input.item) != null;
+    return getRecipeForInput(machineLevel, input.item) != null;
   }
 
   public void create() {
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.SAGMILL, new SagMillMachineRecipe());
   }
 
-  public IRecipe getRecipeForInput(@Nonnull ItemStack input) {
+  public IRecipe getRecipeForInput(@Nonnull RecipeLevel machineLevel, @Nonnull ItemStack input) {
     if (Prep.isInvalid(input)) {
       return null;
     }
     final NNList<MachineRecipeInput> machineRecipeInput = new NNList<>(new MachineRecipeInput(0, input));
     for (Recipe recipe : recipes) {
-      if (recipe.isInputForRecipe(machineRecipeInput)) {
+      if (machineLevel.canMake(recipe.getRecipeLevel()) && recipe.isInputForRecipe(machineRecipeInput)) {
         return recipe;
       }
     }
@@ -76,7 +77,7 @@ public final class SagMillRecipeManager {
       Log.debug("Could not add invalid recipe: " + recipe);
       return;
     }
-    IRecipe rec = getRecipeForInput(getInput(recipe));
+    IRecipe rec = getRecipeForInput(RecipeLevel.IGNORE, getInput(recipe));
     if (rec != null) {
       Log.warn("Not adding supplied recipe as a recipe already exists for the input: " + getInput(recipe));
       return;

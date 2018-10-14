@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.IProgressTile;
-import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.capacitor.ICapacitorKey;
@@ -18,9 +17,11 @@ import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -266,9 +267,13 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
 
   protected @Nullable IMachineRecipe getNextRecipe() {
     if (cachedNextRecipe == null) {
-      cachedNextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), getRecipeInputs());
+      cachedNextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineLevel(), getMachineName(), getRecipeInputs());
     }
     return cachedNextRecipe;
+  }
+
+  protected @Nonnull RecipeLevel getMachineLevel() {
+    return RecipeLevel.IGNORE;
   }
 
   protected IMachineRecipe canStartNextTask(long nextSeed) {
@@ -346,7 +351,7 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
   }
 
   protected boolean startNextTask(@Nonnull IMachineRecipe nextRecipe, long nextSeed) {
-    if (hasPower() && nextRecipe.isRecipe(getRecipeInputs())) {
+    if (hasPower() && nextRecipe.isRecipe(getMachineLevel(), getRecipeInputs())) {
       // then get our recipe and take away the source items
       currentTask = createTask(nextRecipe, nextSeed);
       List<MachineRecipeInput> consumed = nextRecipe.getQuantitiesConsumed(getRecipeInputs());

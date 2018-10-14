@@ -108,27 +108,29 @@ public class ManyToOneRecipeManager {
     for (ItemStack stack : inputs) {
       ins.add(new MachineRecipeInput(-1, NullHelper.notnullM(stack, "NNList iterated with null")));
     }
-    return getRecipeForInputs(ins);
+    return getRecipeForInputs(RecipeLevel.IGNORE, ins);
   }
 
-  public IRecipe getRecipeForInputs(@Nonnull NNList<MachineRecipeInput> inputs) {
+  public IRecipe getRecipeForInputs(@Nonnull RecipeLevel machineLevel, @Nonnull NNList<MachineRecipeInput> inputs) {
 
     for (IManyToOneRecipe rec : recipes) {
-      if (rec.isInputForRecipe(inputs)) {
+      if (machineLevel.canMake(rec.getRecipeLevel()) && rec.isInputForRecipe(inputs)) {
         return rec;
       }
     }
     return null;
   }
 
-  public boolean isValidInput(@Nonnull MachineRecipeInput input) {
+  public boolean isValidInput(@Nonnull RecipeLevel machineLevel, @Nonnull MachineRecipeInput input) {
     if (Prep.isInvalid(input.item)) {
       return false;
     }
     for (IManyToOneRecipe recipe : recipes) {
-      for (IRecipeInput ri : recipe.getInputs()) {
-        if (ri.isInput(input.item) && (ri.getSlotNumber() == -1 || input.slotNumber == ri.getSlotNumber())) {
-          return true;
+      if (machineLevel.canMake(recipe.getRecipeLevel())) {
+        for (IRecipeInput ri : recipe.getInputs()) {
+          if (ri.isInput(input.item) && (ri.getSlotNumber() == -1 || input.slotNumber == ri.getSlotNumber())) {
+            return true;
+          }
         }
       }
     }
@@ -160,7 +162,7 @@ public class ManyToOneRecipeManager {
     return result;
   }
 
-  public float getExperianceForOutput(@Nonnull ItemStack output) {
+  public float getExperienceForOutput(@Nonnull ItemStack output) {
     for (IManyToOneRecipe recipe : recipes) {
       if (recipe.getOutput().getItem() == output.getItem() && recipe.getOutput().getItemDamage() == output.getItemDamage()) {
         return recipe.getOutputs()[0].getExperiance();

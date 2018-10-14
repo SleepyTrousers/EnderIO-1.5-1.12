@@ -10,6 +10,7 @@ import crazypants.enderio.base.config.config.EnchanterConfig;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.util.Prep;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
@@ -59,7 +60,10 @@ public class EnchanterRecipe implements IMachineRecipe {
   }
 
   @Override
-  public boolean isRecipe(@Nonnull NNList<MachineRecipeInput> inputs) {
+  public boolean isRecipe(@Nonnull RecipeLevel machineLevel, @Nonnull NNList<MachineRecipeInput> inputs) {
+    if (!RecipeLevel.IGNORE.canMake(machineLevel)) {
+      return false;
+    }
     ItemStack slot0 = MachineRecipeInput.getInputForSlot(0, inputs);
     ItemStack slot1 = MachineRecipeInput.getInputForSlot(1, inputs);
     ItemStack slot2 = MachineRecipeInput.getInputForSlot(2, inputs);
@@ -85,7 +89,10 @@ public class EnchanterRecipe implements IMachineRecipe {
   }
 
   @Override
-  public boolean isValidInput(@Nonnull MachineRecipeInput inputs) {
+  public boolean isValidInput(@Nonnull RecipeLevel machineLevel, @Nonnull MachineRecipeInput inputs) {
+    if (!RecipeLevel.IGNORE.canMake(machineLevel)) {
+      return false;
+    }
     ItemStack slot0 = MachineRecipeInput.getInputForSlot(0, inputs);
     ItemStack slot1 = MachineRecipeInput.getInputForSlot(1, inputs);
     ItemStack slot2 = MachineRecipeInput.getInputForSlot(2, inputs);

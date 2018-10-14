@@ -156,7 +156,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
   protected IMachineRecipe canStartNextTask(long nextSeed) {
     if (getMode() == Mode.FURNACE) {
       VanillaSmeltingRecipe vr = AlloyRecipeManager.getInstance().getVanillaRecipe();
-      if (vr.isRecipe(getRecipeInputs())) {
+      if (vr.isRecipe(getMachineLevel(), getRecipeInputs())) {
         final IPoweredTask task = createTask(vr, nextSeed);
         if (task == null) {
           return null;
@@ -200,7 +200,8 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
         numSlotsFilled++;
       }
     }
-    NNList<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), MachineRecipeInput.create(slot, itemstack));
+    NNList<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineLevel(), getMachineName(),
+        MachineRecipeInput.create(slot, itemstack));
 
     if (getMode() == Mode.FURNACE) {
       return isValidInputForFurnaceRecipe(itemstack, numSlotsFilled, recipes);
