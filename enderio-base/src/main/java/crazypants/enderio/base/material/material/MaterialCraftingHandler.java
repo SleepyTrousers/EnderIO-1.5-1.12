@@ -31,7 +31,7 @@ public class MaterialCraftingHandler {
 
   @SubscribeEvent
   public static void on(NeighborNotifyEvent event) {
-    if (InfinityConfig.inWorldCraftingEnabled.get()) {
+    if (InfinityConfig.inWorldCraftingFireEnabled.get()) {
       final World world = event.getWorld();
       BlockPos posIdx = event.getPos();
       if (world.provider.getDimension() != 0) {
@@ -46,20 +46,7 @@ public class MaterialCraftingHandler {
       if (fires.containsKey(posIdx)) {
         if (world.isAirBlock(pos) && world.getBlockState(pos.down()).getBlock() == Blocks.BEDROCK && worldTime > fires.get(posIdx)
             && RANDOM.nextFloat() <= InfinityConfig.dropChance.get()) {
-          double d0 = RANDOM.nextFloat() * 0.5F + 0.25D;
-          double d1 = RANDOM.nextFloat() * 0.5F + 0.25D;
-          double d2 = RANDOM.nextFloat() * 0.5F + 0.25D;
-          EntityItem entityitem = new EntityItem(world, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2,
-              Material.POWDER_INFINITY.getStack(InfinityConfig.dropStackSize.get()));
-          entityitem.setDefaultPickupDelay();
-          // This gives the item enough health to survive for a while...
-          entityitem.attackEntityFrom(DamageSource.IN_FIRE, -100);
-          // while being on fire
-          entityitem.setFire(10);
-          world.spawnEntity(entityitem);
-          if (InfinityConfig.makesSound.get()) {
-            world.playSound(null, pos, SoundEvents.ENTITY_FIREWORK_LARGE_BLAST, SoundCategory.BLOCKS, 1.0F, RANDOM.nextFloat() * 0.4F + 0.8F);
-          }
+          spawnInfinityPowder(world, pos);
         }
         fires.remove(posIdx);
       } else if (event.getState().getBlock() instanceof BlockFire && world.getBlockState(pos.down()).getBlock() == Blocks.BEDROCK) {
@@ -73,6 +60,23 @@ public class MaterialCraftingHandler {
         }
         fires.put(posIdx, worldTime + InfinityConfig.fireMinAge.get());
       }
+    }
+  }
+
+  public static void spawnInfinityPowder(final @Nonnull World world, final @Nonnull BlockPos pos) {
+    double d0 = RANDOM.nextFloat() * 0.5F + 0.25D;
+    double d1 = RANDOM.nextFloat() * 0.5F + 0.25D;
+    double d2 = RANDOM.nextFloat() * 0.5F + 0.25D;
+    EntityItem entityitem = new EntityItem(world, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2,
+        Material.POWDER_INFINITY.getStack(InfinityConfig.dropStackSize.get()));
+    entityitem.setDefaultPickupDelay();
+    // This gives the item enough health to survive for a while...
+    entityitem.attackEntityFrom(DamageSource.IN_FIRE, -100);
+    // while being on fire
+    entityitem.setFire(10);
+    world.spawnEntity(entityitem);
+    if (InfinityConfig.makesSound.get()) {
+      world.playSound(null, pos, SoundEvents.ENTITY_FIREWORK_LARGE_BLAST, SoundCategory.BLOCKS, 1.0F, RANDOM.nextFloat() * 0.4F + 0.8F);
     }
   }
 

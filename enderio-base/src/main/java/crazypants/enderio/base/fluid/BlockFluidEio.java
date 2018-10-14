@@ -11,7 +11,9 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.InfinityConfig;
 import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.material.material.MaterialCraftingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.BlockLiquid;
@@ -73,6 +75,15 @@ public final class BlockFluidEio {
     public Boolean isEntityInsideMaterial(@Nonnull IBlockAccess world, @Nonnull BlockPos blockpos, @Nonnull IBlockState iblockstate, @Nonnull Entity entity,
         double yToTest, @Nonnull Material materialIn, boolean testingHead) {
       return materialIn == Material.LAVA || materialIn == this.blockMaterial;
+    }
+
+    @Override
+    public void randomTick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Random random) {
+      this.updateTick(world, pos, state, random);
+      if (InfinityConfig.inWorldCraftingFireWaterEnabled.get() && (world.provider.getDimension() == 0 || InfinityConfig.enableInAllDimensions.get())
+          && world.getBlockState(pos.down()).getBlock() == Blocks.BEDROCK && RANDOM.nextFloat() <= InfinityConfig.dropChanceFirewater.get()) {
+        MaterialCraftingHandler.spawnInfinityPowder(world, pos);
+      }
     }
 
   }
