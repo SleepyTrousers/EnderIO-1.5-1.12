@@ -173,6 +173,8 @@ public class EnderIO implements IEnderIOAddon {
 
     MaterialOredicts.init(event); // handles oredict registration for dependent entries
 
+    MaterialOredicts.checkOreRegistrations();
+
     RecipeLoader.addRecipes();
 
     CapacitorKeyRegistry.validate();
