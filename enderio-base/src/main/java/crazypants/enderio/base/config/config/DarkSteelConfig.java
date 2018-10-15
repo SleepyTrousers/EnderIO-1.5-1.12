@@ -27,15 +27,15 @@ public final class DarkSteelConfig {
       "The increase in efficiency when powered.").setRange(1, 20).sync();
 
   public static final IValueFactory F_DPICK = F_PICKAXE.section(".dark_steel_pickaxe");
-  
+
   public static final IValue<Boolean> darkSteelPickMinesTiCArdite = F_DPICK.make("canMineTiCArdite", true, //
       "When true the dark steel pick will be able to mine TiC Ardite and Cobalt").sync();
-  
+
   public static final IValueFactory F_EPICK = F_PICKAXE.section(".end_steel_pickaxe");
 
   public static final IValue<Boolean> endSteelPickMinesTiCArdite = F_EPICK.make("canMineTiCArdite", true, //
       "When true the end steel pick will be able to mine TiC Ardite and Cobalt").sync();
-  
+
   public static final IValueFactory F_AXE = F_DARK_STEEL.section(".axe");
 
   public static final IValue<Boolean> rightClickPlaceEnabled_axe = F_AXE.make("rightClickPlaceEnabled", false, //
@@ -244,9 +244,9 @@ public final class DarkSteelConfig {
       "Rate of altitude loss when gliding.").setRange(-1, -0.001).sync();
   public static final IValue<Double> gliderVerticalSpeedSprinting = F_GLIDER.make("verticalSpeedSprinting", -0.15, //
       "Rate of altitude loss when sprinting and gliding.").setRange(-3, -0.001).sync();
-  
+
   public static final IValueFactory F_ELYTRA = F_UPGRADES.section(".elytra");
-  
+
   public static final IValue<Integer> elytraCost = F_ELYTRA.make("upgradeCost", 10, //
       "Number of levels required for the 'Elytra' upgrade.").setRange(1, 99).sync();
 
@@ -259,6 +259,15 @@ public final class DarkSteelConfig {
   public static final IValue<Integer> soundLocatorLifespan = F_SOUND_LOCATOR.make("lifespan", 40, //
       "Number of ticks the 'Sound Locator' icons are displayed for.").setRange(1, 200).sync();
 
+  public static final IValueFactory F_PADDING = F_UPGRADES.section(".padding");
+
+  public static final IValue<Integer> paddingCost = F_PADDING.make("upgradeCost", 4, //
+      "Number of levels required for the 'Padding' upgrade.").setRange(1, 99).sync();
+  public static final IValue<Double> cutoffDistance = F_PADDING.make("cutoffDistance", 15d, //
+      "Distance in blocks that is no longer considered 'nearby' by the 'Padding' upgrade. Sounds at least this far away will play normally.").setRange(1, 99);
+  public static final IValue<Float> pitchAdjust = F_PADDING.make("pitchAdjust", .8f, //
+      "All sounds will be adjusted in pitch by this factor when using the 'Padding' upgrade. (1 for off").setRange(0.01, 1);
+
   public static final IValueFactory F_GOGGLES_OF_REVEALING = F_UPGRADES.section(".gogglesofrevealing");
 
   public static final IValue<Integer> gogglesOfRevealingCost = F_GOGGLES_OF_REVEALING.make("upgradeCost", 4, //
@@ -269,14 +278,14 @@ public final class DarkSteelConfig {
   public static final IValue<Integer> thaumaturgeRobesCost = F_THAUMATURGE_ROBES.make("upgradeCost", 4, //
       "Number of levels required for the 'Thaumatruge's Robes' upgrades.").setRange(1, 99).sync();
 
-  public static IValueFactory F_TRAVEL = F_UPGRADES.section(".travel");
+  public static final IValueFactory F_TRAVEL = F_UPGRADES.section(".travel");
 
-  public static IValue<Integer> travelCost = F_TRAVEL.make("upgradeCost", 16, //
+  public static final IValue<Integer> travelCost = F_TRAVEL.make("upgradeCost", 16, //
       "Number of levels required for the 'Travel' upgrade.").setRange(1, 99).sync();
 
-  public static IValueFactory F_SPOON = F_UPGRADES.section(".spoon");
+  public static final IValueFactory F_SPOON = F_UPGRADES.section(".spoon");
 
-  public static IValue<Integer> spoonCost = F_SPOON.make("upgradeCost", 4, //
+  public static final IValue<Integer> spoonCost = F_SPOON.make("upgradeCost", 4, //
       "Number of levels required for the 'Spoon' upgrade.").setRange(1, 99).sync();
 
   public static final IValueFactory F_BOW = F_DARK_STEEL.section(".bow");

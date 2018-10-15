@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
@@ -61,7 +62,10 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
    * @return True if this the the upgrade's recipe item.
    */
   default boolean isUpgradeItem(@Nonnull ItemStack stack) {
-    return !stack.isEmpty() && stack.isItemEqual(getUpgradeItem()) && stack.getCount() == getUpgradeItem().getCount();
+    final ItemStack upgradeItem = getUpgradeItem();
+    return !stack.isEmpty() && upgradeItem.getItem() == stack.getItem()
+        && (upgradeItem.getItemDamage() == OreDictionary.WILDCARD_VALUE || upgradeItem.getItemDamage() == stack.getItemDamage())
+        && stack.getCount() == upgradeItem.getCount();
   }
 
   /**
