@@ -40,18 +40,8 @@ public interface IRecipe {
 
   boolean isSynthetic();
 
-  public static enum RecipeLevel {
-    SIMPLE,
-    NORMAL,
-    ADVANCED;
-
-    public boolean is(@Nonnull RecipeLevel other) {
-      return other.ordinal() <= ordinal();
-    }
-  }
-
   default @Nonnull RecipeLevel getRecipeLevel() {
-    return RecipeLevel.SIMPLE;
+    return RecipeLevel.IGNORE;
   }
 
 }

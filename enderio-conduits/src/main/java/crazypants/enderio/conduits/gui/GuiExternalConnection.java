@@ -33,11 +33,11 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
     return nextButtonId++;
   }
 
-  final InventoryPlayer playerInv;
-  final IConduitBundle bundle;
+  final @Nonnull InventoryPlayer playerInv;
+  final @Nonnull IConduitBundle bundle;
   private final @Nonnull EnumFacing dir;
 
-  private final List<ITabPanel> tabs = new ArrayList<ITabPanel>();
+  private final @Nonnull List<ITabPanel> tabs = new ArrayList<ITabPanel>();
   private int activeTab = 0;
 
   private final IExternalConnectionContainer container;
@@ -57,7 +57,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
 
       @Override
       public int compare(@Nullable IClientConduit o1, @Nullable IClientConduit o2) {
-        return Integer.compare(o1.getGuiPanelTabOrder(), o2.getGuiPanelTabOrder());
+        return Integer.compare(o1 != null ? o1.getGuiPanelTabOrder() : 0, o2 != null ? o2.getGuiPanelTabOrder() : 0);
 
       }
     });
@@ -87,7 +87,9 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
         tabs.get(i).deactivate();
       }
     }
-    tabs.get(activeTab).onGuiInit(guiLeft + 10, guiTop, xSize - 20, ySize - 20);
+    if (activeTab < tabs.size()) {
+      tabs.get(activeTab).onGuiInit(guiLeft + 10, guiTop, xSize - 20, ySize - 20);
+    }
   }
 
   private @Nullable ITabPanel getActiveTab() {
@@ -132,7 +134,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
 
   @Override
   protected @Nonnull ResourceLocation getGuiTexture() {
-    return tabs.get(activeTab).getTexture();
+    return activeTab < tabs.size() ? tabs.get(activeTab).getTexture() : super.getGuiTexture();
   }
 
   public void setSize(int x, int y) {
@@ -149,28 +151,26 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
 
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
-    GlStateManager.color(1, 1, 1, 1);
-
-    int sx = (width - xSize) / 2;
-    int sy = (height - ySize) / 2;
-
-    ITabPanel tab = getActiveTab();
-
-    if (tab != null) {
-      Minecraft.getMinecraft().getTextureManager().bindTexture(tab.getTexture());
-      drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
-    } else {
+    final ITabPanel tab = getActiveTab();
+    if (tab == null) {
       Minecraft.getMinecraft().player.closeScreen();
       return;
     }
+
+    GlStateManager.color(1, 1, 1, 1);
+
+    final int sx = (width - xSize) / 2;
+    final int sy = (height - ySize) / 2;
+
+    Minecraft.getMinecraft().getTextureManager().bindTexture(tab.getTexture());
+    drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
 
     startTabs();
     for (int i = 0; i < tabs.size(); i++) {
       renderStdTab(sx, sy, i, tabs.get(i).getIcon(), i == activeTab);
     }
 
-    if (activeTab < tabs.size())
-      tabs.get(activeTab).render(par1, par2, par3);
+    tab.render(par1, par2, par3);
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
   }
@@ -185,20 +185,6 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
   public IExternalConnectionContainer getContainer() {
     return container;
   }
-
-  // @Override
-  // @Optional.Method(modid = "NotEnoughItems")
-  // public boolean hideItemPanelSlot(GuiContainer gc, int x, int y, int w, int h) {
-  // if(tabs.size() > 0) {
-  // int sx = (width - xSize) / 2;
-  // int sy = (height - ySize) / 2;
-  // int tabX = sx + xSize - 3;
-  // int tabY = sy + tabYOffset;
-  //
-  // return (x+w) >= tabX && x < (tabX + 14) && (y+h) >= tabY && y < (tabY + tabs.size()*TAB_HEIGHT);
-  // }
-  // return false;
-  // }
 
   @Override
   public void drawFakeItemStack(int x, int y, @Nonnull ItemStack stack) {

@@ -15,8 +15,6 @@ import javax.annotation.Nonnull;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
 
 import org.apache.commons.io.IOUtils;
 
@@ -29,7 +27,9 @@ import net.minecraftforge.fml.common.ModContainer;
 
 public class RecipeFactory {
 
-  private static final String DEFAULT_USER_FILE = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+  private static final @Nonnull String ASSETS_FOLDER_CONFIG = "config/";
+
+  private static final @Nonnull String DEFAULT_USER_FILE = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
       + "<enderio:recipes xmlns:enderio=\"http://enderio.com/recipes\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://enderio.com/recipes recipes.xsd \">\n"
       + "\n</enderio:recipes>\n";
 
@@ -75,21 +75,21 @@ public class RecipeFactory {
   public NNList<File> listXMLFiles(String pathName) {
     return new NNList<>(new File(configDirectory, pathName).listFiles(new FilenameFilter() {
       @Override
-      public final boolean accept(File dir, String name) {
+      public boolean accept(File dir, String name) {
         return name.endsWith(".xml") && !"sagmill_oresalleasy.xml".equals(name);
       }
     }));
   }
 
   public <T extends RecipeRoot> T readCoreFile(T target, String rootElement, String fileName) throws IOException, XMLStreamException {
-    final ResourceLocation coreRL = new ResourceLocation(domain, "config/" + fileName);
+    final ResourceLocation coreRL = new ResourceLocation(domain, ASSETS_FOLDER_CONFIG + fileName);
     final File coreFL = new File(configDirectory, fileName);
     copyCore(coreRL, coreFL);
 
     Log.debug("Reading core recipe file " + fileName);
     try (InputStream coreFileStream = getResource(coreRL)) {
       try {
-        return readStax(target, rootElement, coreFileStream);
+        return readStax(target, rootElement, coreFileStream, "core recipe file '" + fileName + "'");
       } catch (XMLStreamException e) {
         printContentsOnError(getResource(coreRL), coreRL.toString());
         throw e;
@@ -101,7 +101,7 @@ public class RecipeFactory {
   }
 
   public void copyCore(String fileName) {
-    final ResourceLocation coreRL = new ResourceLocation(domain, "config/" + fileName);
+    final ResourceLocation coreRL = new ResourceLocation(domain, ASSETS_FOLDER_CONFIG + fileName);
     final File coreFL = new File(configDirectory, fileName);
     copyCore(coreRL, coreFL);
   }
@@ -123,9 +123,9 @@ public class RecipeFactory {
       Log.info("Reading user recipe file " + fileName);
       try (InputStream userFileStream = userFL.exists() ? new FileInputStream(userFL) : null;) {
         try {
-          return readStax(target, rootElement, userFileStream);
+          return readStax(target, rootElement, userFileStream, "user recipe file '" + fileName + "'");
         } catch (XMLStreamException e) {
-          try (final FileInputStream stream = new FileInputStream(userFL)) {
+          try (FileInputStream stream = new FileInputStream(userFL)) {
             printContentsOnError(stream, userFL.toString());
           }
           throw e;
@@ -137,6 +137,23 @@ public class RecipeFactory {
     }
     Log.info("Skipping missing user recipe file " + fileName);
     return target;
+  }
+
+  public static <T extends RecipeRoot> T readFileIMC(T target, String rootElement, String fileName) throws IOException, XMLStreamException {
+    File file = new File(fileName);
+    if (file.exists()) {
+      Log.info("Reading IMC recipe file " + fileName);
+      try (InputStream userFileStream = new FileInputStream(file)) {
+        try {
+          return readStax(target, rootElement, userFileStream, "IMC file '" + fileName + "'");
+        } catch (InvalidRecipeConfigException irce) {
+          irce.setFilename(fileName);
+          throw irce;
+        }
+      }
+    } else {
+      throw new FileNotFoundException("IMC file '" + fileName + "' doesn't exist");
+    }
   }
 
   protected static void printContentsOnError(InputStream stream, String filename) throws FileNotFoundException, IOException {
@@ -167,24 +184,13 @@ public class RecipeFactory {
     }
   }
 
-  protected static <T extends RecipeRoot> T readStax(T target, String rootElement, InputStream in) throws XMLStreamException, InvalidRecipeConfigException {
+  protected static <T extends RecipeRoot> T readStax(T target, String rootElement, InputStream in, String source)
+      throws XMLStreamException, InvalidRecipeConfigException {
     XMLInputFactory inputFactory = XMLInputFactory.newInstance();
     XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
-    StaxFactory factory = new StaxFactory(eventReader);
+    StaxFactory factory = new StaxFactory(eventReader, source);
 
-    while (eventReader.hasNext()) {
-      XMLEvent event = eventReader.nextEvent();
-      if (event.isStartElement()) {
-        StartElement startElement = event.asStartElement();
-        if (rootElement.equals(startElement.getName().getLocalPart())) {
-          return factory.read(target, startElement);
-        } else {
-          throw new InvalidRecipeConfigException("Unexpected tag '" + startElement.getName() + "'");
-        }
-      }
-    }
-
-    throw new InvalidRecipeConfigException("Missing recipes tag");
+    return factory.readRoot(target, rootElement);
   }
 
   private void copyCore(ResourceLocation resourceLocation, File file) {

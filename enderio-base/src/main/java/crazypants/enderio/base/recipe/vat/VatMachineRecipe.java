@@ -8,6 +8,7 @@ import crazypants.enderio.base.recipe.AbstractMachineRecipe;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -20,13 +21,13 @@ public class VatMachineRecipe extends AbstractMachineRecipe {
   }
 
   @Override
-  public IRecipe getRecipeForInputs(@Nonnull NNList<MachineRecipeInput> inputs) {
-    return VatRecipeManager.instance.getRecipeForInput(inputs);
+  public IRecipe getRecipeForInputs(@Nonnull RecipeLevel machineLevel, @Nonnull NNList<MachineRecipeInput> inputs) {
+    return VatRecipeManager.instance.getRecipeForInput(machineLevel, inputs);
   }
 
   @Override
-  public boolean isValidInput(@Nonnull MachineRecipeInput input) {
-    return VatRecipeManager.instance.isValidInput(input);
+  public boolean isValidInput(@Nonnull RecipeLevel machineLevel, @Nonnull MachineRecipeInput input) {
+    return VatRecipeManager.instance.isValidInput(machineLevel, input);
   }
 
   @Override
@@ -38,7 +39,7 @@ public class VatMachineRecipe extends AbstractMachineRecipe {
   public @Nonnull NNList<MachineRecipeInput> getQuantitiesConsumed(@Nonnull NNList<MachineRecipeInput> inputs) {
     NNList<MachineRecipeInput> result = new NNList<MachineRecipeInput>();
 
-    VatRecipe rec = (VatRecipe) getRecipeForInputs(inputs);
+    VatRecipe rec = (VatRecipe) getRecipeForInputs(RecipeLevel.IGNORE, inputs);
     FluidStack inputFluidStack = rec.getRequiredFluidInput(inputs);
     result.add(new MachineRecipeInput(0, inputFluidStack));
 
@@ -57,7 +58,7 @@ public class VatMachineRecipe extends AbstractMachineRecipe {
     if (inputs.size() <= 0) {
       return new ResultStack[0];
     }
-    VatRecipe recipe = (VatRecipe) getRecipeForInputs(inputs);
+    VatRecipe recipe = (VatRecipe) getRecipeForInputs(RecipeLevel.IGNORE, inputs);
     if (recipe == null || !recipe.isValid()) {
       return new ResultStack[0];
     }

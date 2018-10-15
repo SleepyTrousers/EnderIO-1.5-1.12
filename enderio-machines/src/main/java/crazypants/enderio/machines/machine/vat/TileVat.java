@@ -122,11 +122,11 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
     for (int j = 0; j < inputs.size(); j++) {
       if (inputs.get(j).slotNumber == recipeInput.slotNumber) {
         inputs.set(j, recipeInput);
-        return VatRecipeManager.getInstance().isValidInput(inputs);
+        return VatRecipeManager.getInstance().isValidInput(getMachineLevel(), inputs);
       }
     }
     inputs.add(recipeInput);
-    return VatRecipeManager.getInstance().isValidInput(inputs);
+    return VatRecipeManager.getInstance().isValidInput(getMachineLevel(), inputs);
   }
 
   @Override

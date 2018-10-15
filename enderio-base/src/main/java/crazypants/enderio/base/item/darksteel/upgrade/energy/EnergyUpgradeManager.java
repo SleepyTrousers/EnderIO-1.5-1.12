@@ -5,6 +5,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.util.NbtComparer;
@@ -54,6 +55,18 @@ public abstract class EnergyUpgradeManager {
       return 0;
     }
     int res = eu.extractEnergy(maxExtract, simulate);
+    if (!simulate && res > 0) {
+      eu.writeToItem();
+    }
+    return res;
+  }
+
+  public static int extractEnergy(@Nonnull ItemStack container, @Nonnull IDarkSteelItem item, IValue<Integer> maxExtract, boolean simulate) {
+    EnergyUpgradeHolder eu = loadFromItem(container);
+    if (eu == null) {
+      return 0;
+    }
+    int res = eu.extractEnergy(maxExtract.get(), simulate);
     if (!simulate && res > 0) {
       eu.writeToItem();
     }

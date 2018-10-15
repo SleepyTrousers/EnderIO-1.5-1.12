@@ -7,8 +7,10 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -27,6 +29,8 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.config.RecipeConfig;
+import crazypants.enderio.base.config.recipes.RecipeRoot.Overrides;
+import crazypants.enderio.base.config.recipes.xml.AbstractConditional;
 import crazypants.enderio.base.config.recipes.xml.Aliases;
 import crazypants.enderio.base.config.recipes.xml.Recipes;
 import net.minecraftforge.fml.common.Loader;
@@ -40,7 +44,12 @@ public final class RecipeLoader {
   private static final @Nonnull String RECIPES_USER = RECIPES_ROOT + "/user";
   private static final @Nonnull String RECIPES_EXAMPLES = RECIPES_ROOT + "/examples";
 
-  private static List<Pair<String, String>> imcRecipes = new ArrayList<>();
+  private enum IMCTYPE {
+    XML,
+    FILE;
+  }
+
+  private static List<Pair<String, Pair<IMCTYPE, String>>> imcRecipes = new ArrayList<>();
 
   private RecipeLoader() {
   }
@@ -106,7 +115,7 @@ public final class RecipeLoader {
 
     bar.step("IMC Aliases"); // 5
     if (imcRecipes != null) {
-      handleIMCRecipes(new Aliases(), new Aliases());
+      handleIMCRecipes(Aliases.class, new Aliases());
     }
 
     bar.step("User Aliases"); // 6
@@ -130,7 +139,7 @@ public final class RecipeLoader {
         for (Triple<Integer, RecipeFactory, String> triple : coreFiles) {
           bar2.step(triple.getRight());
           config = readCoreFile(new Recipes(), NullHelper.first(triple.getMiddle(), recipeFactory), RECIPES_ROOT + "/" + triple.getRight()).addRecipes(config,
-              false);
+              Overrides.DENY);
         }
         ProgressManager.pop(bar2);
       } catch (InvalidRecipeConfigException e) {
@@ -143,7 +152,7 @@ public final class RecipeLoader {
 
     bar.step("IMC Recipes"); // 8
     if (imcRecipes != null) {
-      config = handleIMCRecipes(new Recipes(), config);
+      config = handleIMCRecipes(Recipes.class, config);
       imcRecipes = null;
     }
 
@@ -151,10 +160,10 @@ public final class RecipeLoader {
     bar2 = ProgressManager.push("File", userfiles.size());
     for (File file : userfiles) {
       bar2.step(file.getName());
-      final Recipes userFile = readUserFile(new Recipes(), recipeFactory, file.getName(), file);
+      final RecipeRoot userFile = readUserFile(new Recipes(), recipeFactory, file.getName(), file);
       if (userFile != null) {
         try {
-          config = userFile.addRecipes(config, true);
+          config = userFile.addRecipes(config, Overrides.ALLOW);
         } catch (InvalidRecipeConfigException e) {
           recipeError(NullHelper.first(e.getFilename(), file.getName()), e.getMessage());
         }
@@ -179,33 +188,72 @@ public final class RecipeLoader {
     ProgressManager.pop(bar);
   }
 
-  private static <T extends RecipeRoot> T handleIMCRecipes(T target, T config) {
-    ProgressManager.ProgressBar bar = ProgressManager.push("IMC", imcRecipes.size());
-    for (Entry<String, String> recipe : imcRecipes) {
-      bar.step(recipe.getKey());
-      try (InputStream is = IOUtils.toInputStream(recipe.getValue(), Charset.forName("UTF-8"))) {
-        T recipes = RecipeFactory.readStax(target, RECIPES_ROOT, is);
-        recipes.enforceValidity();
-        config = recipes.addRecipes(config, true);
-      } catch (InvalidRecipeConfigException e) {
-        Log.error("Invalied recipe while parsing IMC:");
-        e.printStackTrace();
-        Log.error("IMC message:\n" + recipe.getValue());
-        recipeError(NullHelper.first(e.getFilename(), "IMC from the mod '" + recipe.getKey() + "'"), e.getMessage());
-      } catch (IOException e) {
-        Log.error("IO error while parsing IMC:");
-        e.printStackTrace();
-        Log.error("IMC message:\n" + recipe.getValue());
-        recipeError("IMC from the mod '" + recipe.getKey() + "'", "IO error while parsing string:" + e.getMessage());
-      } catch (XMLStreamException e) {
-        Log.error("IMC has malformed XML:");
-        e.printStackTrace();
-        Log.error("IMC message:\n" + recipe.getValue());
-        recipeError("IMC from the mod '" + recipe.getKey() + "'", "IMC has malformed XML:" + e.getMessage());
+  private static <T extends RecipeRoot> T handleIMCRecipes(Class<T> target, T config) {
+    try {
+      ProgressManager.ProgressBar bar = ProgressManager.push("IMC", imcRecipes.size());
+      Map<String, T> targets = new HashMap<>();
+      for (Pair<String, Pair<IMCTYPE, String>> recipe : imcRecipes) {
+        bar.step(recipe.getKey());
+        try {
+          T recipes = targets.containsKey(recipe.getKey()) ? targets.get(recipe.getKey()) : target.newInstance();
+          if (recipe.getValue().getKey() == IMCTYPE.XML) {
+            try (InputStream is = IOUtils.toInputStream(recipe.getValue().getValue(), Charset.forName("UTF-8"))) {
+              recipes = RecipeFactory.readStax(recipes, RECIPES_ROOT, is, "IMC from mod '" + recipe.getKey() + "'");
+            }
+          } else { // IMCTYPE.FILE
+            recipes = RecipeFactory.readFileIMC(recipes, RECIPES_ROOT, recipe.getValue().getValue());
+          }
+          targets.put(recipe.getKey(), recipes);
+        } catch (InvalidRecipeConfigException e) {
+          Log.error("Invalid recipe while parsing IMC:");
+          e.printStackTrace();
+          Log.error("IMC message:\n" + recipe.getValue().getValue());
+          recipeError(NullHelper.first(e.getFilename(), "IMC from the mod '" + recipe.getKey() + "'"), e.getMessage());
+        } catch (IOException e) {
+          Log.error("IO error while parsing IMC:");
+          e.printStackTrace();
+          Log.error("IMC message:\n" + recipe.getValue().getValue());
+          recipeError("IMC from the mod '" + recipe.getKey() + "'", "IO error while parsing string:" + e.getMessage());
+        } catch (XMLStreamException e) {
+          Log.error("IMC has malformed XML:");
+          e.printStackTrace();
+          Log.error("IMC message:\n" + recipe.getValue().getValue());
+          recipeError("IMC from the mod '" + recipe.getKey() + "'", "IMC has malformed XML:" + e.getMessage());
+        }
       }
+      ProgressManager.pop(bar);
+
+      bar = ProgressManager.push("IMC", targets.size());
+      T collector = target.newInstance();
+      for (Entry<String, T> entry : targets.entrySet()) {
+        bar.step(entry.getKey());
+        try {
+          entry.getValue().enforceValidity();
+          collector = entry.getValue().addRecipes(collector, Overrides.WARN);
+        } catch (InvalidRecipeConfigException e) {
+          Log.error("Invalid recipe while parsing IMC:");
+          e.printStackTrace();
+          recipeError(NullHelper.first(e.getFilename(), "IMC from the mod '" + entry.getKey() + "'"), e.getMessage());
+        }
+      }
+      ProgressManager.pop(bar);
+
+      List<AbstractConditional> list = collector.getRecipes();
+      if (list != null && !list.isEmpty()) {
+        Log.info("Valid IMC recipes to be processed:");
+        for (AbstractConditional recipe : list) {
+          Log.info(" * " + recipe.getName() + " from " + recipe.getSource());
+        }
+      }
+      try {
+        return collector.addRecipes(config, Overrides.ALLOW);
+      } catch (InvalidRecipeConfigException e) {
+        // no valid errors expected at this time
+        throw new RuntimeException(e);
+      }
+    } catch (InstantiationException | IllegalAccessException e) {
+      throw new RuntimeException(e);
     }
-    ProgressManager.pop(bar);
-    return config;
   }
 
   private static <T extends RecipeRoot> T readUserFile(T target, final RecipeFactory recipeFactory, String filename, File file) {
@@ -255,12 +303,19 @@ public final class RecipeLoader {
     return target;
   }
 
-  public static void addIMCRecipe(String sender, String recipe) throws XMLStreamException, IOException {
+  public static void addIMCRecipe(String sender, boolean isFile, String recipe) throws XMLStreamException, IOException {
     if (imcRecipes != null) {
-      imcRecipes.add(Pair.of(sender, recipe));
+      imcRecipes.add(Pair.of(sender, Pair.of(isFile ? IMCTYPE.FILE : IMCTYPE.XML, recipe)));
     } else {
-      try (InputStream is = IOUtils.toInputStream(recipe, Charset.forName("UTF-8"))) {
-        Recipes recipes = RecipeFactory.readStax(new Recipes(), RECIPES_ROOT, is);
+      try {
+        RecipeRoot recipes;
+        if (!isFile) {
+          try (InputStream is = IOUtils.toInputStream(recipe, Charset.forName("UTF-8"))) {
+            recipes = RecipeFactory.readStax(new Recipes(), RECIPES_ROOT, is, "IMC from mod '" + sender + "'");
+          }
+        } else {
+          recipes = RecipeFactory.readFileIMC(new Recipes(), RECIPES_ROOT, recipe);
+        }
         recipes.enforceValidity();
         recipes.register("IMC recipes");
         return;

@@ -74,4 +74,16 @@ public abstract class AbstractConditional implements RecipeGameRecipe {
     return false;
   }
 
+  private String source;
+
+  @Override
+  public void setSource(String source) {
+    this.source = source;
+  }
+
+  @Override
+  public String getSource() {
+    return source;
+  }
+
 }

@@ -10,6 +10,7 @@ import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.IRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
@@ -30,12 +31,12 @@ public class VatRecipeManager {
 
   private final @Nonnull NNList<IRecipe> recipes = new NNList<IRecipe>();
 
-  public IRecipe getRecipeForInput(@Nonnull NNList<MachineRecipeInput> inputs) {
+  public IRecipe getRecipeForInput(@Nonnull RecipeLevel machineLevel, @Nonnull NNList<MachineRecipeInput> inputs) {
     if (inputs.size() == 0) {
       return null;
     }
     for (IRecipe recipe : recipes) {
-      if (recipe.isInputForRecipe(inputs)) {
+      if (machineLevel.canMake(recipe.getRecipeLevel()) && recipe.isInputForRecipe(inputs)) {
         return recipe;
       }
     }
@@ -54,32 +55,36 @@ public class VatRecipeManager {
     return recipes;
   }
 
-  public boolean isValidInput(@Nonnull MachineRecipeInput input) {
+  public boolean isValidInput(@Nonnull RecipeLevel machineLevel, @Nonnull MachineRecipeInput input) {
     for (IRecipe recipe : recipes) {
-      if (Prep.isValid(input.item) && recipe.isValidInput(input.slotNumber, input.item)) {
-        return true;
-      } else if (input.fluid != null && recipe.isValidInput(input.fluid)) {
-        return true;
+      if (machineLevel.canMake(recipe.getRecipeLevel())) {
+        if (Prep.isValid(input.item) && recipe.isValidInput(input.slotNumber, input.item)) {
+          return true;
+        } else if (input.fluid != null && recipe.isValidInput(input.fluid)) {
+          return true;
+        }
       }
     }
     return false;
   }
 
-  public boolean isValidInput(@Nonnull NNList<MachineRecipeInput> inputs) {
+  public boolean isValidInput(@Nonnull RecipeLevel machineLevel, @Nonnull NNList<MachineRecipeInput> inputs) {
     for (IRecipe recipe : recipes) {
-      boolean allValid = true;
-      for (MachineRecipeInput input : inputs) {
-        if (Prep.isValid(input.item)) {
-          allValid = recipe.isValidInput(input.slotNumber, input.item);
-        } else if (input.fluid != null) {
-          allValid = recipe.isValidInput(input.fluid);
+      if (machineLevel.canMake(recipe.getRecipeLevel())) {
+        boolean allValid = true;
+        for (MachineRecipeInput input : inputs) {
+          if (Prep.isValid(input.item)) {
+            allValid = recipe.isValidInput(input.slotNumber, input.item);
+          } else if (input.fluid != null) {
+            allValid = recipe.isValidInput(input.fluid);
+          }
+          if (!allValid) {
+            break;
+          }
         }
-        if (!allValid) {
-          break;
+        if (allValid) {
+          return true;
         }
-      }
-      if (allValid) {
-        return true;
       }
     }
     return false;

@@ -2,6 +2,8 @@ package crazypants.enderio.base.init;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 
@@ -216,13 +218,25 @@ public class ClientProxy extends CommonProxy {
     List<String> lines = new ArrayList<String>();
     for (String string : message) {
       Log.error(string);
-      while (string.length() > 71) {
-        lines.add(string.substring(0, 70));
-        string = string.substring(70, string.length());
+      if (string.length() > 71) {
+        lines.addAll(splitString(string, 71));
+      } else {
+        lines.add(string);
       }
-      lines.add(string);
     }
     EnderCore.proxy.throwModCompatibilityError(lines.toArray(new String[lines.size()]));
+  }
+
+  private static List<String> splitString(String msg, int lineSize) {
+    List<String> res = new ArrayList<>();
+
+    Pattern p = Pattern.compile("\\b.{1," + (lineSize - 1) + "}\\b\\W?");
+    Matcher m = p.matcher(msg);
+
+    while (m.find()) {
+      res.add(m.group());
+    }
+    return res;
   }
 
 }

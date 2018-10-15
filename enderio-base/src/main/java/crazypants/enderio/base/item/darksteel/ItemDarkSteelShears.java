@@ -22,7 +22,8 @@ import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
+import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
@@ -61,6 +62,10 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
     return getStoredPower(player) > requiredPower;
   }
 
+  public static boolean isEquippedAndPowered(EntityPlayer player, IValue<Integer> requiredPower) {
+    return getStoredPower(player) > requiredPower.get();
+  }
+
   public static int getStoredPower(EntityPlayer player) {
     return EnergyUpgradeManager.getEnergyStored(player.getHeldItemMainhand());
   }
@@ -75,7 +80,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
   private final EntityComparator entityComparator = new EntityComparator();
 
   protected ItemDarkSteelShears(@Nonnull IModObject modObject) {
-    this.setMaxDamage(this.getMaxDamage() * Config.darkSteelShearsDurabilityFactor);
+    this.setMaxDamage(this.getMaxDamage() * DarkSteelConfig.shearsDurabilityFactor.get());
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
   }
@@ -110,7 +115,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
     }
 
     int powerStored = getStoredPower(player);
-    if (powerStored < Config.darkSteelShearsPowerUsePerDamagePoint) {
+    if (powerStored < DarkSteelConfig.shearsPowerUsePerDamagePoint.get()) {
       return super.onBlockStartBreak(itemstack, pos, player);
     }
 
@@ -120,9 +125,9 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
     int y = pos.getY();
     int z = pos.getZ();
 
-    for (int dx = -Config.darkSteelShearsBlockAreaBoostWhenPowered; dx <= Config.darkSteelShearsBlockAreaBoostWhenPowered; dx++) {
-      for (int dy = -Config.darkSteelShearsBlockAreaBoostWhenPowered; dy <= Config.darkSteelShearsBlockAreaBoostWhenPowered; dy++) {
-        for (int dz = -Config.darkSteelShearsBlockAreaBoostWhenPowered; dz <= Config.darkSteelShearsBlockAreaBoostWhenPowered; dz++) {
+    for (int dx = -DarkSteelConfig.shearsBlockAreaBoostWhenPowered.get(); dx <= DarkSteelConfig.shearsBlockAreaBoostWhenPowered.get(); dx++) {
+      for (int dy = -DarkSteelConfig.shearsBlockAreaBoostWhenPowered.get(); dy <= DarkSteelConfig.shearsBlockAreaBoostWhenPowered.get(); dy++) {
+        for (int dz = -DarkSteelConfig.shearsBlockAreaBoostWhenPowered.get(); dz <= DarkSteelConfig.shearsBlockAreaBoostWhenPowered.get(); dz++) {
           Block block2 = player.world.getBlockState(new BlockPos(x + dx, y + dy, z + dz)).getBlock();
           if (block2 instanceof IShearable && ((IShearable) block2).isShearable(itemstack, player.world, new BlockPos(x + dx, y + dy, z + dz))) {
             res.add(new BlockPos(x + dx, y + dy, z + dz));
@@ -135,7 +140,8 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
     harvestComparator.refPoint = pos;
     Collections.sort(sortedTargets, harvestComparator);
 
-    int maxBlocks = Math.min(sortedTargets.size(), powerStored / Config.darkSteelShearsPowerUsePerDamagePoint);
+    int maxBlocks = DarkSteelConfig.shearsPowerUsePerDamagePoint.get() == 0 ? sortedTargets.size()
+        : Math.min(sortedTargets.size(), powerStored / DarkSteelConfig.shearsPowerUsePerDamagePoint.get());
     for (int i = 0; i < maxBlocks; i++) {
       BlockPos bc2 = sortedTargets.get(i);
       super.onBlockStartBreak(itemstack, bc2, player);
@@ -173,22 +179,23 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
     }
 
     int powerStored = getStoredPower(player);
-    if (powerStored < Config.darkSteelShearsPowerUsePerDamagePoint) {
+    if (powerStored < DarkSteelConfig.shearsPowerUsePerDamagePoint.get()) {
       return super.itemInteractionForEntity(itemstack, player, entity, hand);
     }
 
     if (entity instanceof IShearable) {
-      AxisAlignedBB bb = new AxisAlignedBB(entity.posX - Config.darkSteelShearsEntityAreaBoostWhenPowered,
-          entity.posY - Config.darkSteelShearsEntityAreaBoostWhenPowered, entity.posZ - Config.darkSteelShearsEntityAreaBoostWhenPowered,
-          entity.posX + Config.darkSteelShearsEntityAreaBoostWhenPowered, entity.posY + Config.darkSteelShearsEntityAreaBoostWhenPowered,
-          entity.posZ + Config.darkSteelShearsEntityAreaBoostWhenPowered);
+      AxisAlignedBB bb = new AxisAlignedBB(entity.posX - DarkSteelConfig.shearsEntityAreaBoostWhenPowered.get(),
+          entity.posY - DarkSteelConfig.shearsEntityAreaBoostWhenPowered.get(), entity.posZ - DarkSteelConfig.shearsEntityAreaBoostWhenPowered.get(),
+          entity.posX + DarkSteelConfig.shearsEntityAreaBoostWhenPowered.get(), entity.posY + DarkSteelConfig.shearsEntityAreaBoostWhenPowered.get(),
+          entity.posZ + DarkSteelConfig.shearsEntityAreaBoostWhenPowered.get());
 
       List<Entity> sortedTargets = new ArrayList<Entity>(entity.world.getEntitiesWithinAABB(Entity.class, bb, selectShearable));
       entityComparator.refPoint = entity;
       Collections.sort(sortedTargets, entityComparator);
 
       boolean result = false;
-      int maxSheep = Math.min(sortedTargets.size(), powerStored / Config.darkSteelShearsPowerUsePerDamagePoint);
+      int maxSheep = DarkSteelConfig.shearsPowerUsePerDamagePoint.get() == 0 ? sortedTargets.size()
+          : Math.min(sortedTargets.size(), powerStored / DarkSteelConfig.shearsPowerUsePerDamagePoint.get());
       for (int i = 0; i < maxSheep; i++) {
         Entity entity2 = sortedTargets.get(i);
         if (entity2 instanceof EntityLivingBase && super.itemInteractionForEntity(itemstack, player, (EntityLivingBase) entity2, hand)) {
@@ -202,8 +209,8 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
 
   @SubscribeEvent
   public void onBreakSpeedEvent(PlayerEvent.BreakSpeed evt) {
-    if (evt.getOriginalSpeed() > 2.0 && isEquippedAndPowered(evt.getEntityPlayer(), Config.darkSteelShearsPowerUsePerDamagePoint)) {
-      evt.setNewSpeed(evt.getOriginalSpeed() * Config.darkSteelShearsEffeciencyBoostWhenPowered);
+    if (evt.getOriginalSpeed() > 2.0 && isEquippedAndPowered(evt.getEntityPlayer(), DarkSteelConfig.shearsPowerUsePerDamagePoint)) {
+      evt.setNewSpeed(evt.getOriginalSpeed() * DarkSteelConfig.shearsEfficiencyBoostWhenPowered.get());
     }
   }
 
@@ -217,7 +224,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
 
     EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
     if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
-      eu.extractEnergy(damage * Config.darkSteelShearsPowerUsePerDamagePoint, false);
+      eu.extractEnergy(damage * DarkSteelConfig.shearsPowerUsePerDamagePoint.get(), false);
     } else {
       super.setDamage(stack, newDamage);
     }
@@ -257,7 +264,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
     }
     if (EnergyUpgradeManager.itemHasAnyPowerUpgrade(itemstack)) {
       list.add(Lang.SHEARS_MULTIHARVEST.get());
-      list.add(Lang.SHEARS_POWERED.get(TextFormatting.WHITE, Config.darkSteelShearsEffeciencyBoostWhenPowered));
+      list.add(Lang.SHEARS_POWERED.get(TextFormatting.WHITE, DarkSteelConfig.shearsEfficiencyBoostWhenPowered.get()));
     }
     DarkSteelRecipeManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }

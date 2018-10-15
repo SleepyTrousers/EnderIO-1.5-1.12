@@ -18,6 +18,7 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.soul.ISoulBinderRecipe;
 import crazypants.enderio.base.xp.ExperienceContainer;
 import crazypants.enderio.base.xp.IHaveExperience;
@@ -26,7 +27,6 @@ import crazypants.enderio.base.xp.XpUtil;
 import crazypants.enderio.machines.config.config.SoulBinderConfig;
 import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.util.Prep;
-
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
@@ -37,6 +37,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_POWER_INTAKE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SOUL_BINDER_POWER_USE;
@@ -111,7 +112,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     if (recipe == null) {
       return null;
     }
-    
+
     int xpRequired = ((ISoulBinderRecipe) recipe).getExperienceRequired();
     if (xpCont.getExperienceTotal() >= xpRequired) {
       return recipe;
@@ -172,18 +173,18 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     MachineRecipeInput newInput = new MachineRecipeInput(slot, item);
     int otherSlot = slot == 0 ? 1 : 0;
     if (Prep.isInvalid(getStackInSlot(otherSlot))) {
-      List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), newInput);
+      List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(RecipeLevel.IGNORE, getMachineName(), newInput);
       if (recipes.isEmpty()) {
         return false;
       }
       for (IMachineRecipe rec : recipes) {
-        if (rec != null && rec.isValidInput(newInput)) {
+        if (rec != null && rec.isValidInput(RecipeLevel.IGNORE, newInput)) {
           return true;
         }
       }
     } else {
       NNList<MachineRecipeInput> inputs = new NNList<>(newInput, new MachineRecipeInput(otherSlot, getStackInSlot(otherSlot)));
-      return MachineRecipeRegistry.instance.getRecipeForInputs(getMachineName(), inputs) != null;
+      return MachineRecipeRegistry.instance.getRecipeForInputs(RecipeLevel.IGNORE, getMachineName(), inputs) != null;
     }
     return false;
   }

@@ -11,6 +11,7 @@ import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.RecipeBonusType;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import net.minecraft.item.ItemStack;
 
 public class DummyRecipe implements IMachineRecipe {
@@ -27,7 +28,7 @@ public class DummyRecipe implements IMachineRecipe {
   }
 
   @Override
-  public boolean isRecipe(@Nonnull NNList<MachineRecipeInput> inputs) {
+  public boolean isRecipe(@Nonnull RecipeLevel machineLevel, @Nonnull NNList<MachineRecipeInput> inputs) {
     return true;
   }
 
@@ -47,7 +48,7 @@ public class DummyRecipe implements IMachineRecipe {
   }
 
   @Override
-  public boolean isValidInput(@Nonnull MachineRecipeInput input) {
+  public boolean isValidInput(@Nonnull RecipeLevel machineLevel, @Nonnull MachineRecipeInput input) {
     return false;
   }
 

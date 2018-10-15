@@ -3,7 +3,7 @@ package crazypants.enderio.base.integration.thaumcraft;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.util.Prep;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -47,7 +47,7 @@ public class ThaumaturgeRobesUpgrade extends AbstractUpgrade {
 
   public ThaumaturgeRobesUpgrade(@Nonnull EntityEquipmentSlot slot) {
     super(UPGRADE_NAME + slot.getName(), "enderio.darksteel.upgrade.thaumaturge_robes." + slot.getName(), getRobeArmor(slot),
-        Config.darkSteelThaumaturgeRobeCost);
+        DarkSteelConfig.thaumaturgeRobesCost);
     this.slot = slot;
   }
 

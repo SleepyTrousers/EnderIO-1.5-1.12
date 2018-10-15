@@ -13,6 +13,7 @@ import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.RecipeBonusType;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
 
@@ -56,7 +57,7 @@ public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
   }
 
   @Override
-  public final boolean isRecipe(@Nonnull NNList<MachineRecipeInput> inputs) {
+  public final boolean isRecipe(@Nonnull RecipeLevel machineLevel, @Nonnull NNList<MachineRecipeInput> inputs) {
     return isRecipe(getPaintSource(inputs), getTarget(inputs));
   }
 
@@ -125,6 +126,10 @@ public abstract class AbstractPainterTemplate<T> implements IMachineRecipe {
   }
 
   @Override
-  public abstract boolean isValidInput(@Nonnull MachineRecipeInput input);
+  public boolean isValidInput(@Nonnull RecipeLevel machineLevel, @Nonnull MachineRecipeInput input) {
+    return isValidInput(input);
+  }
+
+  protected abstract boolean isValidInput(@Nonnull MachineRecipeInput input);
 
 }

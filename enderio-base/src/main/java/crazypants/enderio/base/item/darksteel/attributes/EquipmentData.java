@@ -6,7 +6,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.base.material.alloy.endergy.AlloyEndergy;
@@ -25,13 +25,13 @@ public enum EquipmentData implements IEquipmentData {
 
   DARK_STEEL(new Builder(1).setMaxDamageFactor(35).setDamageReduction(2, 5, 6, 2).setDamageReductionEmpowered(3, 6, 8, 3).setArmorEnchantability(15)
       .setSoundEvent(SoundEvents.ITEM_ARMOR_EQUIP_IRON).setToughness(1f).setToughnessEmpowered(2f).setToolMaterialName("darkSteel")
-      .setHarvestLevel(Config.darkSteelPickMinesTiCArdite ? 5 : 3).setMaxUses(2000).setEfficiency(8).setDamage(3.0001f).setToolEnchanability(25)
+      .setHarvestLevel(DarkSteelConfig.darkSteelPickMinesTiCArdite.get() ? 5 : 3).setMaxUses(2000).setEfficiency(8).setDamage(3.0001f).setToolEnchanability(25)
       .setRepairIngotOredict(Alloy.DARK_STEEL.getOreIngot()).setBowRepairIngotOredict(Material.NUTRITIOUS_STICK.getOreDict()).setTexture1("dark_steel_layer_1")
       .setTexture2("dark_steel_layer_2")),
 
   END_STEEL(new Builder(2).setMaxDamageFactor(50).setDamageReduction(4, 7, 10, 4).setDamageReductionEmpowered(5, 8, 12, 5).setArmorEnchantability(25)
       .setSoundEvent(SoundEvents.ITEM_ARMOR_EQUIP_IRON).setToughness(3f).setToughnessEmpowered(4f).setToolMaterialName("endSteel")
-      .setHarvestLevel(Config.darkSteelPickMinesTiCArdite ? 5 : 3).setMaxUses(2000).setEfficiency(12).setDamage(5f).setToolEnchanability(30)
+      .setHarvestLevel(DarkSteelConfig.endSteelPickMinesTiCArdite.get() ? 5 : 3).setMaxUses(2000).setEfficiency(12).setDamage(5f).setToolEnchanability(30)
       .setRepairIngotOredict(Alloy.END_STEEL.getOreIngot()).setBowRepairIngotOredict(Material.INFINITY_ROD.getOreDict()).setTexture1("end_steel_layer_1")
       .setTexture2("end_steel_layer_2")) {
 
@@ -69,7 +69,7 @@ public enum EquipmentData implements IEquipmentData {
   // 57 - 20 = 37 * 5% = 185%
   STELLAR_ALLOY(new Builder(4).setMaxDamageFactor(75).setDamageReduction(8, 14, 18, 7).setDamageReductionEmpowered(10, 15, 22, 10).setArmorEnchantability(25)
       .setSoundEvent(SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND).setToughness(7f).setToughnessEmpowered(9f).setToolMaterialName("stellarAlloy")
-      .setHarvestLevel(Config.darkSteelPickMinesTiCArdite ? 5 : 3).setMaxUses(5000).setEfficiency(16).setDamage(11f).setToolEnchanability(25)
+      .setHarvestLevel(DarkSteelConfig.darkSteelPickMinesTiCArdite.get() ? 5 : 3).setMaxUses(5000).setEfficiency(16).setDamage(11f).setToolEnchanability(25)
       .setRepairIngotOredict(AlloyEndergy.STELLAR_ALLOY.getOreIngot()).setBowRepairIngotOredict(AlloyEndergy.STELLAR_ALLOY.getOreIngot())
       .setTexture1("stellar_alloy_layer_1").setTexture2("stellar_alloy_layer_2")),
 

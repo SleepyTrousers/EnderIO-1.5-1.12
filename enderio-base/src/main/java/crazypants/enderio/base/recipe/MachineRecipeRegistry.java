@@ -61,20 +61,20 @@ public class MachineRecipeRegistry {
     return null;
   }
 
-  public IMachineRecipe getRecipeForInputs(@Nonnull String machineName, @Nonnull NNList<MachineRecipeInput> inputs) {
+  public IMachineRecipe getRecipeForInputs(@Nonnull RecipeLevel machineLevel, @Nonnull String machineName, @Nonnull NNList<MachineRecipeInput> inputs) {
     for (IMachineRecipe recipe : getRecipesForMachine(machineName).values()) {
-      if (recipe.isRecipe(inputs)) {
+      if (recipe.isRecipe(machineLevel, inputs)) {
         return recipe;
       }
     }
     return null;
   }
 
-  public @Nonnull NNList<IMachineRecipe> getRecipesForInput(@Nonnull String machineName, @Nonnull MachineRecipeInput input) {
+  public @Nonnull NNList<IMachineRecipe> getRecipesForInput(@Nonnull RecipeLevel machineLevel, @Nonnull String machineName, @Nonnull MachineRecipeInput input) {
     NNList<IMachineRecipe> result = new NNList<IMachineRecipe>();
     Map<String, IMachineRecipe> recipes = getRecipesForMachine(machineName);
     for (IMachineRecipe recipe : recipes.values()) {
-      if (recipe.isValidInput(input)) {
+      if (recipe.isValidInput(machineLevel, input)) {
         result.add(recipe);
       }
     }

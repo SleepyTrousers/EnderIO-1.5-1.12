@@ -18,7 +18,7 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
     if (inputs.size() <= 0) {
       return 0;
     }
-    IRecipe recipe = getRecipeForInputs(inputs);
+    IRecipe recipe = getRecipeForInputs(RecipeLevel.IGNORE, inputs);
     return recipe == null ? 0 : recipe.getEnergyRequired();
   }
 
@@ -27,7 +27,7 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
     if (inputs.size() <= 0) {
       return RecipeBonusType.NONE;
     }
-    IRecipe recipe = getRecipeForInputs(inputs);
+    IRecipe recipe = getRecipeForInputs(RecipeLevel.IGNORE, inputs);
     if (recipe == null) {
       return RecipeBonusType.NONE;
     } else {
@@ -35,11 +35,11 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
     }
   }
 
-  public abstract IRecipe getRecipeForInputs(@Nonnull NNList<MachineRecipeInput> inputs);
+  public abstract IRecipe getRecipeForInputs(@Nonnull RecipeLevel machineLevel, @Nonnull NNList<MachineRecipeInput> inputs);
 
   @Override
   public @Nonnull NNList<MachineRecipeInput> getQuantitiesConsumed(@Nonnull NNList<MachineRecipeInput> inputs) {
-    IRecipe recipe = getRecipeForInputs(inputs);
+    IRecipe recipe = getRecipeForInputs(RecipeLevel.IGNORE, inputs);
     NNList<MachineRecipeInput> result = new NNList<MachineRecipeInput>();
 
     // Need to make copies so we can reduce their values as we go
@@ -111,11 +111,11 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
   }
 
   @Override
-  public boolean isRecipe(@Nonnull NNList<MachineRecipeInput> inputs) {
+  public boolean isRecipe(@Nonnull RecipeLevel machineLevel, @Nonnull NNList<MachineRecipeInput> inputs) {
     if (inputs.size() <= 0) {
       return false;
     }
-    IRecipe recipe = getRecipeForInputs(inputs);
+    IRecipe recipe = getRecipeForInputs(machineLevel, inputs);
     return recipe != null;
   }
 
@@ -124,7 +124,7 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
     if (inputs.size() <= 0) {
       return new ResultStack[0];
     }
-    IRecipe recipe = getRecipeForInputs(inputs);
+    IRecipe recipe = getRecipeForInputs(RecipeLevel.IGNORE, inputs);
     if (recipe == null) {
       return new ResultStack[0];
     }

@@ -173,6 +173,8 @@ public class EnderIO implements IEnderIOAddon {
 
     MaterialOredicts.init(event); // handles oredict registration for dependent entries
 
+    MaterialOredicts.checkOreRegistrations();
+
     RecipeLoader.addRecipes();
 
     CapacitorKeyRegistry.validate();
@@ -236,7 +238,7 @@ public class EnderIO implements IEnderIOAddon {
   void processImc(ImmutableList<IMCMessage> messages) {
     for (IMCMessage msg : messages) {
       String key = msg.key;
-      Log.info("Processing IMC message " + key + " from " + msg.getSender());
+      Log.info("Processing IMC message ", key, " from ", msg.getSender());
       try {
         if (msg.isStringMessage()) {
           String value = msg.getStringValue();
@@ -244,7 +246,9 @@ public class EnderIO implements IEnderIOAddon {
             return;
           }
           if (IMC.XML_RECIPE.equals(key)) {
-            RecipeLoader.addIMCRecipe(msg.getSender(), value);
+            RecipeLoader.addIMCRecipe(msg.getSender(), false, value);
+          } else if (IMC.XML_RECIPE_FILE.equals(key)) {
+            RecipeLoader.addIMCRecipe(msg.getSender(), true, value);
           } else if (IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
             Config.TRAVEL_BLACKLIST.add(value);
           } else if (IMC.REDSTONE_CONNECTABLE_ADD.equals(key)) {
@@ -278,7 +282,7 @@ public class EnderIO implements IEnderIOAddon {
         }
       } catch (Exception e) {
         e.printStackTrace();
-        Log.error("Error occurred handling IMC message " + key + " from " + msg.getSender());
+        Log.error("Error occurred handling IMC message ", key, " from ", msg.getSender());
       }
     }
   }

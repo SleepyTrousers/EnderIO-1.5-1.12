@@ -3,6 +3,7 @@ package crazypants.enderio.api;
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.paint.PaintSourceValidator;
 import crazypants.enderio.base.recipe.soul.SoulBinderRecipeManager;
@@ -24,6 +25,16 @@ public final class IMC {
    * sent later will still be processed, but then all other recipes will already have been loaded.
    */
   public static final String XML_RECIPE = "recipe:xml";
+
+  /**
+   * Key for a string message to add xml recipes from a file. The supplied string must be a filename that must exist and be readable. The contents of the file
+   * are treated the same as the contents from a {@link #XML_RECIPE} message.
+   * <p>
+   * We <b>really</b> recommend for that file to be in your config folder, but do not enforce it.
+   * <p>
+   * Have a look at {@link RecipeFactory#copyCore(String)} to see how to copy a file from your jar into your config folder.
+   */
+  public static final String XML_RECIPE_FILE = "recipe:xml:file";
 
   /**
    * Key for an NBT message to add Soul Binder recipes. Calls {@link SoulBinderRecipeManager#addRecipeFromNBT(net.minecraft.nbt.NBTTagCompound)} with the NBT
@@ -76,8 +87,8 @@ public final class IMC {
 
   /**
    * Key for an string message to register a block as connectable to insulated redstone conduits. Calls {@link ConnectivityTool#registerRedstoneAware(String)}
-   * with the value of the message. The value has the same syntax that is used in the xml config files. Using {@link IRedstoneConnectable}
-   * is generally preferred to this because it allows location-, state- and side-awareness.
+   * with the value of the message. The value has the same syntax that is used in the xml config files. Using {@link IRedstoneConnectable} is generally
+   * preferred to this because it allows location-, state- and side-awareness.
    */
   public static final String REDSTONE_CONNECTABLE_ADD = "redstone:connectable:add";
 

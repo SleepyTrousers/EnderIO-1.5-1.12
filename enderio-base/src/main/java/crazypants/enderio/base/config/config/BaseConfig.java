@@ -19,7 +19,7 @@ public final class BaseConfig {
     RecipeConfig.F.getClass();
     BrokenSpawnerConfig.F.getClass();
     TopConfig.F.getClass();
-    ZooConfig.F.getClass();
+    BlockConfig.F.getClass();
   }
 
 }

@@ -11,6 +11,7 @@ import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.RecipeBonusType;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.xp.XpUtil;
 import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.Prep;
@@ -68,10 +69,10 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   }
 
   @Override
-  public boolean isRecipe(@Nonnull NNList<MachineRecipeInput> inputs) {
+  public boolean isRecipe(@Nonnull RecipeLevel machineLevel, @Nonnull NNList<MachineRecipeInput> inputs) {
     int validCount = 0;
     for (MachineRecipeInput input : inputs) {
-      if (input != null && isValidInput(input)) {
+      if (input != null && isValidInput(machineLevel, input)) {
         validCount++;
       } else {
         return false;
@@ -105,7 +106,10 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   }
 
   @Override
-  public boolean isValidInput(@Nonnull MachineRecipeInput input) {
+  public boolean isValidInput(@Nonnull RecipeLevel machineLevel, @Nonnull MachineRecipeInput input) {
+    if (!RecipeLevel.IGNORE.canMake(machineLevel)) {
+      return false;
+    }
     if (Prep.isInvalid(input.item)) {
       return false;
     }

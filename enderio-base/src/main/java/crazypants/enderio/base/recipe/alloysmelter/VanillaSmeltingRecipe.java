@@ -17,6 +17,7 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.Recipe;
 import crazypants.enderio.base.recipe.RecipeBonusType;
 import crazypants.enderio.base.recipe.RecipeInput;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.util.Prep;
 import net.minecraft.init.Items;
@@ -50,7 +51,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   private int getNumInputs(@Nonnull NNList<MachineRecipeInput> inputs) {
     int numInputs = 0;
     for (MachineRecipeInput input : inputs) {
-      if (input != null && isValidInput(input)) {
+      if (input != null && isValidInput(RecipeLevel.IGNORE, input)) {
         numInputs += input.item.getCount();
       }
     }
@@ -58,7 +59,10 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   }
 
   @Override
-  public boolean isRecipe(@Nonnull NNList<MachineRecipeInput> inputs) {
+  public boolean isRecipe(@Nonnull RecipeLevel machineLevel, @Nonnull NNList<MachineRecipeInput> inputs) {
+    if (!machineLevel.canMake(RecipeLevel.NORMAL)) {
+      return false;
+    }
     ItemStack output = Prep.getEmpty();
     for (MachineRecipeInput ri : inputs) {
       if (ri != null && Prep.isValid(ri.item)) {
@@ -106,7 +110,10 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   }
 
   @Override
-  public boolean isValidInput(@Nonnull MachineRecipeInput input) {
+  public boolean isValidInput(@Nonnull RecipeLevel machineLevel, @Nonnull MachineRecipeInput input) {
+    if (!machineLevel.canMake(RecipeLevel.NORMAL)) {
+      return false;
+    }
     ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(input.item);
     return Prep.isValid(itemstack);
   }
@@ -121,7 +128,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     int consumed = 0;
     List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>();
     for (MachineRecipeInput ri : inputs) {
-      if (ri != null && Prep.isValid(ri.item) && isValidInput(new MachineRecipeInput(ri.slotNumber, ri.item)) && consumed < 3) {
+      if (ri != null && Prep.isValid(ri.item) && isValidInput(RecipeLevel.IGNORE, new MachineRecipeInput(ri.slotNumber, ri.item)) && consumed < 3) {
         int available = ri.item.getCount();
         int canUse = 3 - consumed;
         int use = Math.min(canUse, available);

@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
 import crazypants.enderio.api.upgrades.IRenderUpgrade;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import net.minecraft.init.Items;
@@ -21,7 +21,7 @@ public class ElytraUpgrade extends AbstractUpgrade implements IHasPlayerRenderer
   public static final @Nonnull ElytraUpgrade INSTANCE = new ElytraUpgrade();
 
   public ElytraUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.elytra", new ItemStack(Items.ELYTRA), Config.darkSteelElytraCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.elytra", new ItemStack(Items.ELYTRA), DarkSteelConfig.elytraCost);
   }
 
   @Override

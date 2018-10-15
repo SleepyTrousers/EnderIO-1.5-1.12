@@ -1,9 +1,9 @@
 package crazypants.enderio.base.config.recipes.xml;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
@@ -18,6 +18,11 @@ import net.minecraftforge.fml.common.ProgressManager;
 public class Recipes implements RecipeRoot {
 
   private final @Nonnull List<AbstractConditional> recipes = new ArrayList<AbstractConditional>();
+
+  @Override
+  public List<AbstractConditional> getRecipes() {
+    return recipes;
+  }
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -49,7 +54,7 @@ public class Recipes implements RecipeRoot {
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T extends RecipeRoot> T addRecipes(RecipeRoot other, boolean allowOverrides) throws InvalidRecipeConfigException {
+  public <T extends RecipeRoot> T addRecipes(RecipeRoot other, Overrides overrides) throws InvalidRecipeConfigException {
     if (other instanceof Recipes) {
       if (recipes.isEmpty()) {
         return (T) other;
@@ -59,16 +64,20 @@ public class Recipes implements RecipeRoot {
         return (T) this;
       }
 
-      Set<String> recipeNames = new HashSet<String>();
+      Map<String, AbstractConditional> recipeNames = new HashMap<>();
       for (AbstractConditional recipe : recipes) {
-        recipeNames.add(recipe.getName());
+        recipeNames.put(recipe.getName(), recipe);
       }
 
       for (AbstractConditional recipe : ((Recipes) other).recipes) {
-        if (!recipeNames.contains(recipe.getName())) {
+        if (!recipeNames.containsKey(recipe.getName())) {
           recipes.add(recipe);
-        } else if (!allowOverrides) {
-          throw new InvalidRecipeConfigException("Duplicate recipe '" + recipe.getName() + "'");
+        } else if (overrides == Overrides.DENY) {
+          throw new InvalidRecipeConfigException(
+              "Duplicate recipe '" + recipe.getName() + "'. A recipe with the same name was already read from " + recipe.getSource());
+        } else if (overrides == Overrides.WARN) {
+          Log.warn("Recipe '" + recipe.getName() + "' from '" + recipe.getSource() + "' is being replaced by a recipe from '"
+              + recipeNames.get(recipe.getName()).getSource() + "'");
         }
       }
 
@@ -118,7 +127,8 @@ public class Recipes implements RecipeRoot {
     final AbstractConditional recipe = factory.read(element, startElement);
     for (AbstractConditional existingRecipe : recipes) {
       if (existingRecipe.getName().equals(recipe.getName())) {
-        throw new InvalidRecipeConfigException("Duplicate recipe " + recipe.getName());
+        throw new InvalidRecipeConfigException(
+            "Duplicate recipe '" + recipe.getName() + "'. A recipe with the same name was already read from " + existingRecipe.getSource());
       }
     }
     recipes.add(recipe);
