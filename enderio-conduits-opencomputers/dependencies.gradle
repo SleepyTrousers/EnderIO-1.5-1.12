@@ -2,7 +2,7 @@ modDependencies {
 	forge { requireAfter(forge_version) }
 	endercore { requireAfter(endercore_version) }
 	jei { loadAfter(jei_version) }
-	refinedstorage { loadAfter(opencomputers_version)}
+	opencomputers { loadAfter(opencomputers_version)}
 }
 
 def localDependencies = [ project(':enderio-base'), project(':enderio-conduits') ]
