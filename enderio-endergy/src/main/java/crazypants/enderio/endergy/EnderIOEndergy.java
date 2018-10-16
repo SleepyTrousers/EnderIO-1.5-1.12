@@ -75,11 +75,10 @@ public class EnderIOEndergy implements IEnderIOAddon {
     return ConfigHandler.config;
   }
 
-
   @Override
   @Nonnull
   public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
-    return new NNList<>(Triple.of(2, null, "endergy"));
+    return new NNList<>(Triple.of(2, null, "endergy"), Triple.of(2, null, "endergy_balls"));
   }
 
 }
