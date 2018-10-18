@@ -10,7 +10,7 @@ import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.machines.EnderIOMachines;
-import crazypants.enderio.machines.config.config.SolarConfig;
+import crazypants.enderio.machines.config.config.UpgradeConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.solar.TileSolarPanel;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,14 +27,9 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
   private static final @Nonnull String UPGRADE_NAME = "solar";
   static final @Nonnull String NAME = "enderio.darksteel.upgrade.solar_";
 
-  public static final SolarUpgrade SOLAR1 = new SolarUpgrade(new ItemStack(MachineObject.block_solar_panel.getItemNN(), 1, 0), 1,
-      SolarConfig.darkSteelSolarOneCost, SolarConfig.darkSteelSolarOneGen);
-
-  public static final SolarUpgrade SOLAR2 = new SolarUpgrade(new ItemStack(MachineObject.block_solar_panel.getItemNN(), 1, 1), 2,
-      SolarConfig.darkSteelSolarTwoCost, SolarConfig.darkSteelSolarTwoGen);
-
-  public static final SolarUpgrade SOLAR3 = new SolarUpgrade(new ItemStack(MachineObject.block_solar_panel.getItemNN(), 1, 2), 3,
-      SolarConfig.darkSteelSolarThreeCost, SolarConfig.darkSteelSolarThreeGen);
+  public static final SolarUpgrade SOLAR1 = new SolarUpgrade(1);
+  public static final SolarUpgrade SOLAR2 = new SolarUpgrade(2);
+  public static final SolarUpgrade SOLAR3 = new SolarUpgrade(3);
 
   public static SolarUpgrade loadAnyFromItem(@Nonnull ItemStack stack) {
     if (SOLAR3.hasUpgrade(stack)) {
@@ -50,12 +45,13 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
   }
 
   private final int level;
-  private final @Nonnull IValue<Integer> rf;
+  private final @Nonnull IValue<Integer> fe;
 
-  public SolarUpgrade(@Nonnull ItemStack item, int level, @Nonnull IValue<Integer> levelCost, @Nonnull IValue<Integer> rf) {
-    super(EnderIOMachines.MODID, UPGRADE_NAME, level, NAME + level, item, levelCost);
+  public SolarUpgrade(int level) {
+    super(EnderIOMachines.MODID, UPGRADE_NAME, level, NAME + level, new ItemStack(MachineObject.block_solar_panel.getItemNN(), 1, level - 1),
+        UpgradeConfig.solarUpradeCost.get(level - 1));
     this.level = level;
-    this.rf = rf;
+    this.fe = UpgradeConfig.solarPowerGen.get(level - 1);
   }
 
   @Override
@@ -92,7 +88,7 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
       return;
     }
 
-    int RFperSecond = Math.round(rf.get() * TileSolarPanel.calculateLightRatio(player.world));
+    int RFperSecond = Math.round(fe.get() * TileSolarPanel.calculateLightRatio(player.world));
 
     int leftover = RFperSecond % 20;
     boolean addExtraRF = player.world.getTotalWorldTime() % 20 < leftover;
@@ -105,7 +101,7 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
       for (int i = 0; i < 4 && toAdd > 0; i++) {
         ItemStack stack = player.inventory.armorInventory.get(nextIndex);
         IEnergyStorage cap = PowerHandlerUtil.getCapability(stack, null);
-        if (cap != null && (EnergyUpgradeManager.loadFromItem(stack) != null || SolarConfig.helmetChargeOthers.get())) {
+        if (cap != null && (EnergyUpgradeManager.loadFromItem(stack) != null || UpgradeConfig.helmetChargeOthers.get())) {
           toAdd -= cap.receiveEnergy(toAdd, false);
         }
         nextIndex = (nextIndex + 1) % 4;

@@ -416,6 +416,9 @@ enderio.darksteel.upgrade.solar_2.tooltip.detailed.line1=Generates power from th
 enderio.darksteel.upgrade.solar_3.name=Solar III
 enderio.darksteel.upgrade.solar_3.tooltip.detailed.line1=Generates power from the sun.
 
+enderio.darksteel.upgrade.wet.name=Wet
+enderio.darksteel.upgrade.wet.tooltip.detailed.line1=Turns lava underneath the player into obsidian or cobblestone.
+
 enderio.config.capacitor=Capacitor Values
 enderio.config.client=Client Settings
 
@@ -433,6 +436,9 @@ enderio.config.killerjoe=Killer Joe
 enderio.config.experience=Experience Obelisk
 enderio.config.tank=Tank
 enderio.config.tranceiver=Tranceiver
+enderio.config.upgrades=Dark Steel Upgrades
+enderio.config.upgrades.solar=Helmet: Solar Upgrades
+enderio.config.upgrades.wet=Boots: Wet Upgrade
 
 enderio.config.generator=Generators
 enderio.config.generator.combustion=Combustion Generator
