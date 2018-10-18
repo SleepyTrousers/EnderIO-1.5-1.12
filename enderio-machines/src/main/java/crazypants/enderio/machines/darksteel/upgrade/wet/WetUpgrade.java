@@ -3,12 +3,15 @@ package crazypants.enderio.machines.darksteel.upgrade.wet;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.machines.config.config.UpgradeConfig;
 import crazypants.enderio.machines.init.MachineObject;
+import crazypants.enderio.machines.network.PacketHandler;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
@@ -39,31 +42,32 @@ public class WetUpgrade extends AbstractUpgrade {
   @Override
   public void onPlayerTick(@Nonnull ItemStack boots, @Nonnull IDarkSteelItem item, @Nonnull EntityPlayer player) {
     if (EnergyUpgradeManager.getEnergyStored(boots) < Math.min(UpgradeConfig.wetEnergyUsePerCobblestoneConverstion.get(),
-        UpgradeConfig.wetEnergyUsePerObsidianConverstion.get()))
+        UpgradeConfig.wetEnergyUsePerObsidianConverstion.get()) || (EnderIO.proxy.getServerTickCount() & 0b11) > 0 || player.isAirBorne)
       return;
     BlockPos playerPos = player.getPosition();
     double range = UpgradeConfig.wetRange.get();
+    double sqRange = range * range;
     World world = player.getEntityWorld();
 
     for (BlockPos pos : BlockPos.getAllInBox(playerPos.add(-range, -1.0D, -range), playerPos.add(range, -1.0D, range))) {
-      if (pos.distanceSqToCenter(player.posX, player.posY, player.posZ) > range * range || world.getBlockState(pos).getMaterial() != Material.LAVA)
-        continue;
-      if (world.getBlockState(pos).getValue(BlockLiquid.LEVEL) == 0
-          && EnergyUpgradeManager.getEnergyStored(boots) >= UpgradeConfig.wetEnergyUsePerObsidianConverstion.get()) {
-        EnergyUpgradeManager.extractEnergy(boots, item, UpgradeConfig.wetEnergyUsePerObsidianConverstion, false);
-        world.setBlockState(pos, Blocks.OBSIDIAN.getDefaultState());
-        triggerLiquidConversionEffects(world, pos);
-      } else if (world.getBlockState(pos).getValue(BlockLiquid.LEVEL) > 0 && world.getBlockState(pos).getValue(BlockLiquid.LEVEL) <= 4
-          && EnergyUpgradeManager.getEnergyStored(boots) >= UpgradeConfig.wetEnergyUsePerCobblestoneConverstion.get()) {
-        EnergyUpgradeManager.extractEnergy(boots, item, UpgradeConfig.wetEnergyUsePerCobblestoneConverstion, false);
-        world.setBlockState(pos, Blocks.COBBLESTONE.getDefaultState());
-        triggerLiquidConversionEffects(world, pos);
+      if (pos.distanceSqToCenter(player.posX, player.posY, player.posZ) <= sqRange
+          && (world.getBlockState(pos).getBlock() == Blocks.LAVA || world.getBlockState(pos).getBlock() == Blocks.FLOWING_LAVA) && world.isAirBlock(pos.up())) {
+        int level = world.getBlockState(pos).getValue(BlockLiquid.LEVEL);
+        Block target = level == 0 ? Blocks.OBSIDIAN : Blocks.COBBLESTONE;
+        IValue<Integer> energyTarget = level == 0 ? UpgradeConfig.wetEnergyUsePerObsidianConverstion : UpgradeConfig.wetEnergyUsePerCobblestoneConverstion;
+        if (EnergyUpgradeManager.extractEnergy(boots, item, energyTarget, true) == energyTarget.get()) {
+          if (!world.isRemote) {
+            world.setBlockState(pos, target.getDefaultState());
+          }
+          EnergyUpgradeManager.extractEnergy(boots, item, energyTarget, false);
+          PacketHandler.INSTANCE.sendToDimension(new PacketBlockTransformFXPacket(pos), player.dimension);
+        }
       }
     }
   }
 
   @SideOnly(Side.CLIENT)
-  protected void triggerLiquidConversionEffects(World world, BlockPos pos) {
+  public void triggerLiquidConversionEffects(World world, BlockPos pos) {
     double d0 = pos.getX();
     double d1 = pos.getY();
     double d2 = pos.getZ();
