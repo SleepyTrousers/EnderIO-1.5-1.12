@@ -28,9 +28,9 @@ public class UpgradeConfig {
   public static final IValueFactory F_WET = F.section(".wet");
 
   public static final IValue<Integer> wetCost = F_WET.make("upgradeCost", 6, "Cost in XP levels of the Wet upgrade").setMin(1).sync();
-  public static final IValue<Integer> wetEnergyUsePerCobblestoneConverstion = F_WET.make("energyUsePerCobblestoneConversiton", 400, //
+  public static final IValue<Integer> wetEnergyUsePerCobblestoneConverstion = F_WET.make("energyUsePerCobblestoneConversion", 400, //
       "How much energy the upgrade will use per flowing block of lava converted to cobblestone.").setMin(1).sync();
-  public static final IValue<Integer> wetEnergyUsePerObsidianConverstion = F_WET.make("energyUsePerObsidianConversiton", 2000, //
+  public static final IValue<Integer> wetEnergyUsePerObsidianConverstion = F_WET.make("energyUsePerObsidianConversion", 2000, //
       "How much energy the upgrade will use per source block of lava converted to obsidian.").setMin(1).sync();
   public static final IValue<Double> wetRange = F_WET.make("range", 2.0D, //
       "How far away from the player blocks of lava will be converted to obsidian or cobblestone.").setRange(0, 8).sync();
