@@ -205,10 +205,12 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
                   world.setBlockToAir(pos2);
                   world.playSound(null, pos2.getX() + .5f, pos2.getY() + .5f, pos2.getZ() + .5f, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F,
                       2.6F + (random.nextFloat() - random.nextFloat()) * 0.8F);
+                  PacketSpawnParticles effect = new PacketSpawnParticles();
                   for (int k = 0; k < 8; ++k) {
-                    PacketSpawnParticles.create(world, pos2.getX() + random.nextDouble(), pos2.getY() + random.nextDouble(), pos2.getZ() + random.nextDouble(),
-                        1, EnumParticleTypes.SMOKE_LARGE);
+                    effect.add(pos2.getX() + random.nextDouble(), pos2.getY() + random.nextDouble(), pos2.getZ() + random.nextDouble(), 1,
+                        EnumParticleTypes.SMOKE_LARGE);
                   }
+                  effect.send(world, pos2);
                   stonePoints += LavaGenConfig.heatLossActive.get(); // water, consumed
                 } else {
                   cobblePoints += LavaGenConfig.heatLossActive.get(); // water, not consumed
