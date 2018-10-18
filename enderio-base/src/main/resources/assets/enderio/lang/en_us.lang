@@ -645,7 +645,7 @@ enderio.config.items.darksteel.upgrades.gogglesofrevealing=Helmet: Goggles of Re
 enderio.config.items.darksteel.upgrades.soundlocator=Helmet: Sound Locator Upgrade
 enderio.config.items.darksteel.upgrades.travel=Pickaxe/Sword: Travel Upgrade
 enderio.config.items.darksteel.upgrades.spoon=Pickaxe: Spoon (Shovel) Upgrade
-
+enderio.config.items.darksteel.upgrades.padding=Helmet: Padding Upgrade
 
 enderio.config.recipe=Recipe Settings
 enderio.config.recipe.tooltip=Config ALL the things!
