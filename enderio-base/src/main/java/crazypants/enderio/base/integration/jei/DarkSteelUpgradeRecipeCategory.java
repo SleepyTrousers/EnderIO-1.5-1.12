@@ -60,8 +60,16 @@ public class DarkSteelUpgradeRecipeCategory {
     registry.addRecipeCatalyst(new ItemStack(blockDarkSteelAnvil.getBlockNN()), VanillaRecipeCategoryUid.ANVIL);
 
     NNList<ItemStack> blacklist = new NNList<>();
+    Set<Item> toBlacklist = new HashSet<>();
     for (UpgradePath rec : allRecipes) {
-      rec.getOutput().getItem().getSubItems(getCreativeTab(rec), blacklist);
+      toBlacklist.add(rec.getOutput().getItem());
+    }
+    for (Item item : toBlacklist) {
+      for (CreativeTabs tab : item.getCreativeTabs()) {
+        if (tab != null) {
+          item.getSubItems(tab, blacklist);
+        }
+      }
     }
 
     NNList<ItemStack> seen = new NNList<>();
