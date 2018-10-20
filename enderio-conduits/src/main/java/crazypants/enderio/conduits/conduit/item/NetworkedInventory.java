@@ -14,7 +14,6 @@ import com.enderio.core.common.util.RoundRobinIterator;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capability.ItemTools;
 import crazypants.enderio.base.filter.item.IItemFilter;
-import crazypants.enderio.base.filter.item.ILimitedItemFilter;
 import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
@@ -87,8 +86,8 @@ public class NetworkedInventory {
   }
 
   private boolean isSticky() {
-    final IItemFilter outputFilter = con.getOutputFilter(conDir);
-    return outputFilter != null && outputFilter.isValid() && outputFilter.isSticky();
+    final IItemFilter outputFilter = valid(con.getOutputFilter(conDir));
+    return outputFilter != null && outputFilter.isSticky();
   }
 
   private int getPriority() {
@@ -144,33 +143,40 @@ public class NetworkedInventory {
     }
 
     final int maxExtracted = con.getMaximumExtracted(conDir);
-    final IItemFilter filter = con.getInputFilter(conDir);
+    final IItemFilter filter = valid(con.getInputFilter(conDir));
 
-    int slot = -1;
     int slotChecksPerTick = ConduitConfig.maxSlotCheckPerTick.get();
     for (int i = 0; i < numSlots && i < slotChecksPerTick; i++) {
-      slot = nextSlot(numSlots);
+      final int slot = nextSlot(numSlots);
       ItemStack item = inventory.extractItem(slot, maxExtracted, SIMULATE);
       if (Prep.isValid(item)) {
-
-        if (filter instanceof ILimitedItemFilter && filter.isLimited()) {
-          final int count = filter.getMaxCountThatPassesFilter(inventory, item);
-          if (count <= 0) { // doesn't pass filter
-            item = Prep.getEmpty();
-          } else if (count < Integer.MAX_VALUE) { // some limit
-            final ItemStack stackInSlot = inventory.getStackInSlot(slot);
-            if (stackInSlot.getCount() <= count) { // there's less than the limit in there
-              item = Prep.getEmpty();
-            } else if (stackInSlot.getCount() - item.getCount() < count) { // we are trying to extract more than allowed
-              item = inventory.extractItem(slot, stackInSlot.getCount() - count, SIMULATE);
+        if (filter != null) {
+          if (filter.isLimited()) {
+            final int count = filter.getMaxCountThatPassesFilter(inventory, item);
+            if (count <= 0) { // doesn't pass filter
+              continue; // skip slot
+            } else if (count < Integer.MAX_VALUE) { // some limit
+              final ItemStack stackInSlot = inventory.getStackInSlot(slot);
+              if (stackInSlot.getCount() <= count) { // there's less than the limit in there
+                continue; // skip slot
+              } else if (stackInSlot.getCount() - item.getCount() < count) { // we are trying to extract more than allowed
+                item = inventory.extractItem(slot, stackInSlot.getCount() - count, SIMULATE);
+                if (Prep.isInvalid(item)) {
+                  continue; // skip slot
+                }
+              }
             }
+          } else if (!filter.doesItemPassFilter(inventory, item)) {
+            continue; // skip slot
           }
-        } else if (filter != null && !filter.doesItemPassFilter(inventory, item)) {
-          item = Prep.getEmpty();
         }
 
-        if (Prep.isValid(item) && doTransfer(inventory, item, slot)) {
-          setNextStartingSlot(slot);
+        if (doTransfer(inventory, item, slot)) {
+          if (inventory.getStackInSlot(slot).isEmpty()) {
+            setNextStartingSlot(slot + 1);
+          } else {
+            setNextStartingSlot(slot);
+          }
           return true;
         }
       } else {
@@ -200,36 +206,42 @@ public class NetworkedInventory {
     tickDeficit = Math.round(numInserted * con.getTickTimePerItem(conDir));
   }
 
-  private int insertIntoTargets(@Nonnull ItemStack toExtract) {
-    if (Prep.isInvalid(toExtract)) {
+  private int insertIntoTargets(@Nonnull ItemStack toInsert) {
+    if (Prep.isInvalid(toInsert)) {
       return 0;
     }
 
-    final int totalToInsert = toExtract.getCount();
-    int leftToInsert = totalToInsert;
-    boolean matchedStickyInput = false;
+    final int totalToInsert = toInsert.getCount();
+    // when true, a sticky filter has claimed this item and so only sticky outputs are allowed to handle it. sticky outputs are first in the target
+    // list, so all sticky outputs are queried before any non-sticky one.
+    boolean matchedStickyOutput = false;
 
-    final Iterable<Target> targets = getTargetIterator();
-    final IItemHandler inventory = getInventory();
-
-    // for (Target target : sendPriority) {
-    for (Target target : targets) {
-      if (target.stickyInput && !matchedStickyInput) {
-        IItemFilter of = target.inv.getCon().getInputFilter(target.inv.getConDir());
-        matchedStickyInput = of != null && of.isValid() && of.doesItemPassFilter(inventory, toExtract);
+    for (Target target : getTargetIterator()) {
+      final IItemFilter filter = valid(target.inv.getCon().getOutputFilter(target.inv.getConDir()));
+      if (target.stickyInput && !matchedStickyOutput && filter != null) {
+        matchedStickyOutput = filter.doesItemPassFilter(target.inv.getInventory(), toInsert);
       }
-      if (target.stickyInput || !matchedStickyInput) {
-        int inserted = target.inv.insertItem(toExtract);
-        if (inserted > 0) {
-          toExtract.shrink(inserted);
-          leftToInsert -= inserted;
+      if (target.stickyInput || !matchedStickyOutput) {
+        toInsert.shrink(positive(target.inv.insertItem(toInsert, filter)));
+        if (Prep.isInvalid(toInsert)) {
+          // everything has been inserted. we're done.
+          break;
         }
-        if (leftToInsert <= 0) {
-          return totalToInsert;
-        }
+      } else if (!target.stickyInput && matchedStickyOutput) {
+        // item has been claimed by a sticky output but there are no sticky outputs left in targets, so we can stop checking
+        break;
       }
     }
-    return totalToInsert - leftToInsert;
+
+    return totalToInsert - toInsert.getCount();
+  }
+
+  private static final IItemFilter valid(IItemFilter filter) {
+    return filter != null && filter.isValid() ? filter : null;
+  }
+
+  private static final int positive(int x) {
+    return x > 0 ? x : 0;
   }
 
   private Iterable<Target> getTargetIterator() {
@@ -239,7 +251,7 @@ public class NetworkedInventory {
     return sendPriority;
   }
 
-  private int insertItem(@Nonnull ItemStack item) {
+  private int insertItem(@Nonnull ItemStack item, IItemFilter filter) {
     if (!canInsert() || Prep.isInvalid(item)) {
       return 0;
     }
@@ -247,7 +259,6 @@ public class NetworkedInventory {
     if (inventory == null) {
       return 0;
     }
-    IItemFilter filter = con.getOutputFilter(conDir);
     if (filter != null) {
       if (filter.isLimited()) {
         final int count = filter.getMaxCountThatPassesFilter(inventory, item);

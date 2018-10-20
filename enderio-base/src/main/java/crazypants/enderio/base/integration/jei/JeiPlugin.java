@@ -24,6 +24,7 @@ import mezz.jei.api.ingredients.IModIngredientRegistration;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.ProgressManager;
 
 @JEIPlugin
 public class JeiPlugin implements IModPlugin {
@@ -48,24 +49,33 @@ public class JeiPlugin implements IModPlugin {
 
   @Override
   public void register(@Nonnull IModRegistry registry) {
+    ProgressManager.ProgressBar bar = ProgressManager.push("Ender IO", 7, true);
+    bar.step("Dark Steel Upgrades");
     DarkSteelUpgradeRecipeCategory.register(registry);
+    bar.step("Dark Steel Identities");
     DescriptionRecipeCategory.register(registry);
+    bar.step("Grains of Infinity");
     if (InfinityConfig.inWorldCraftingEnabled.get()) {
       InfinityRecipeCategory.registerExtras(registry);
     }
 
+    bar.step("GUI Handlers");
     registry.addAdvancedGuiHandlers(new AdvancedGuiHandlerEnderIO());
+    bar.step("Ghost Handlers");
     registry.addGhostIngredientHandler(GuiContainerBaseEIO.class, new GhostIngredientHandlerEnderIO());
 
+    bar.step("Fake Recipes");
     if (!JeiAccessor.ALTERNATIVES.isEmpty()) {
       // These are lookups for the outputs, the real recipes with the same input create a different oredicted variant of the output item.
       registry.addRecipes(JeiAccessor.ALTERNATIVES, VanillaRecipeCategoryUid.CRAFTING);
       Log.debug("Provided " + JeiAccessor.ALTERNATIVES.size() + " synthetic crafting recipes to JEI");
     }
 
+    bar.step("Hiding Items");
     registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ModObject.itemEnderface.getItemNN()));
 
     ItemHidingHelper.hide(registry);
+    ProgressManager.pop(bar);
   }
 
   @Override

@@ -28,7 +28,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class ItemFilter implements IItemFilter.WithGhostSlots, ILimitedItemFilter {
+public class ItemFilter implements IItemFilter.WithGhostSlots {
 
   private static final boolean DEFAULT_BLACKLIST = false;
 

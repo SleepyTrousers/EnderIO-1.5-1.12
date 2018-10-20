@@ -421,6 +421,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     final boolean withSpoon = hasSpoonUpgrade(item);
     GameType gameType = player.interactionManager.getGameType();
     int cost = DarkSteelConfig.explosiveUpgradeEnergyPerBlock.get();
+    PacketSpawnParticles effect = new PacketSpawnParticles();
     for (Iterator<BlockPos> itr = PlayerAOEAttributeHandler.getAOE(pos, player); getEnergyStored(item) >= cost && itr.hasNext();) {
       final BlockPos target = itr.next();
       if (target != null) {
@@ -444,9 +445,9 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
               }
               hasDoneSomething = true;
               if (itemRand.nextFloat() < .3f) {
-                PacketSpawnParticles.create(world, target, 1, EnumParticleTypes.EXPLOSION_NORMAL, EnumParticleTypes.SMOKE_NORMAL);
+                effect.add(target, 1, EnumParticleTypes.EXPLOSION_NORMAL, EnumParticleTypes.SMOKE_NORMAL);
               } else if (itemRand.nextFloat() < .5f) {
-                PacketSpawnParticles.create(world, target, 1, EnumParticleTypes.SMOKE_NORMAL);
+                effect.add(target, 1, EnumParticleTypes.SMOKE_NORMAL);
               }
             }
           }
@@ -454,7 +455,8 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       }
     }
     if (hasDoneSomething) {
-      PacketSpawnParticles.create(world, pos, 1, EnumParticleTypes.EXPLOSION_LARGE);
+      effect.add(pos, 1, EnumParticleTypes.EXPLOSION_LARGE);
+      effect.send(world, pos);
     }
   }
 

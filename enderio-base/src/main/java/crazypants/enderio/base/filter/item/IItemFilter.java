@@ -26,17 +26,17 @@ public interface IItemFilter extends IFilter {
   };
 
   /**
-   * Checks if the given item passes the filter or not.
+   * Checks if the given item passes the filter or not, giving a limit to the amount that can pass.
    * 
    * @param inv
    *          the attached inventory - or null when used without an inventory (eg for a GUI)
    * @param item
    *          the item to check
-   * @return false if the item is not allowed to pass, otherwise the maximum number of items that pass. If the filter doesn't impose a limit, the item's max
-   *         stacksize is returned.
+   * @return -1 if the item is not allowed to pass, Integer.MAX_VALUE if the item can pass and there is no limit, otherwise the maximum number of items that
+   *         pass.
    */
   default int getMaxCountThatPassesFilter(@Nullable IItemHandler inv, @Nonnull ItemStack item) {
-    return doesItemPassFilter(inv, item) ? item.getMaxStackSize() : 0;
+    return doesItemPassFilter(inv, item) ? Integer.MAX_VALUE : -1;
   };
 
   boolean isValid();
