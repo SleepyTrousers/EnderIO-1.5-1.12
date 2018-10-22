@@ -5,7 +5,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
 import crazypants.enderio.machines.EnderIOMachines;
-import crazypants.enderio.machines.darksteel.upgrade.wet.PacketBlockTransformFXPacket;
 import crazypants.enderio.machines.machine.buffer.PacketBufferIO;
 import crazypants.enderio.machines.machine.crafter.PacketCrafter;
 import crazypants.enderio.machines.machine.farm.PacketFarmAction;
@@ -94,8 +93,6 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketSendRecieveChannelList.Handler.class, PacketSendRecieveChannelList.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketSwing.Handler.class, PacketSwing.class, PacketHandler.nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketCrafter.Handler.class, PacketCrafter.class, PacketHandler.nextID(), Side.SERVER);
-    INSTANCE.registerMessage(PacketBlockTransformFXPacket.Handler.class, PacketBlockTransformFXPacket.class, PacketHandler.nextID(), Side.CLIENT);
-
   }
 
 }
