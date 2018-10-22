@@ -12,7 +12,6 @@ import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
-import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.base.power.PowerHandlerUtil;
@@ -134,6 +133,12 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
           IPowerInterface eh = PowerHandlerUtil.getPowerInterface(tile, face.getOpposite());
           if (eh != null) {
             sides.put(face, eh);
+            return;
+          }
+          eh = PowerHandlerUtil.getPowerInterface(tile, EnumFacing.DOWN);
+          if (eh != null) {
+            sides.put(face, eh);
+            return;
           }
         }
       }

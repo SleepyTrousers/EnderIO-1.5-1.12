@@ -13,6 +13,8 @@ import crazypants.enderio.powertools.machine.capbank.packet.PacketNetworkIdReque
 import crazypants.enderio.powertools.machine.capbank.packet.PacketNetworkIdResponse;
 import crazypants.enderio.powertools.machine.capbank.packet.PacketNetworkStateRequest;
 import crazypants.enderio.powertools.machine.capbank.packet.PacketNetworkStateResponse;
+import crazypants.enderio.powertools.machine.gauge.PacketGaugeEnergyRequest;
+import crazypants.enderio.powertools.machine.gauge.PacketGaugeEnergyResponse;
 import crazypants.enderio.powertools.machine.monitor.PacketPowerMonitorGraph;
 import crazypants.enderio.powertools.machine.monitor.PacketPowerMonitorStatData;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -57,6 +59,8 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketNetworkEnergyResponse.Handler.class, PacketNetworkEnergyResponse.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(new PacketCapBank.Handler<>(), PacketGuiChange.class, nextID(), Side.SERVER);
 
+    INSTANCE.registerMessage(PacketGaugeEnergyRequest.Handler.class, PacketGaugeEnergyRequest.class, PacketHandler.nextID(), Side.SERVER);
+    INSTANCE.registerMessage(PacketGaugeEnergyResponse.Handler.class, PacketGaugeEnergyResponse.class, PacketHandler.nextID(), Side.CLIENT);
   }
 
 }
