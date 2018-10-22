@@ -11,4 +11,6 @@ public interface IManyToOneRecipe extends IRecipe {
   @Nonnull
   ItemStack getOutput();
 
+  boolean isDedupeInput();
+
 }

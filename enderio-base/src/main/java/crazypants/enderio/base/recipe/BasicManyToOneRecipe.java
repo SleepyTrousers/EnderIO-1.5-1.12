@@ -20,6 +20,7 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
   private final @Nonnull Recipe recipe;
 
   private boolean synthetic = false;
+  private boolean dedupeInput = false;
 
   public BasicManyToOneRecipe(@Nonnull Recipe recipe) {
     this.recipe = recipe;
@@ -30,6 +31,9 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
 
   @Override
   public boolean isValidRecipeComponents(ItemStack... items) {
+    if (dedupeInput) {
+      return false;
+    }
 
     NNList<IRecipeInput> inputs = new NNList<>(recipe.getInputs());
     for (ItemStack is : items) {
@@ -58,7 +62,7 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
 
   @Override
   public boolean isValidInput(int slot, @Nonnull ItemStack input) {
-    if (Prep.isInvalid(input)) {
+    if (Prep.isInvalid(input) || dedupeInput) {
       return false;
     }
     return getRecipeComponentFromInput(input) != null;
@@ -96,7 +100,7 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
 
   @Override
   public boolean isInputForRecipe(NNList<MachineRecipeInput> inputs) {
-    if (inputs == null) {
+    if (inputs == null || dedupeInput) {
       return false;
     }
     return recipe.isInputForRecipe(inputs);
@@ -139,8 +143,18 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
     return synthetic;
   }
 
-  public BasicManyToOneRecipe setSynthetic() {
+  public @Nonnull BasicManyToOneRecipe setSynthetic() {
     this.synthetic = true;
+    return this;
+  }
+
+  @Override
+  public boolean isDedupeInput() {
+    return dedupeInput;
+  }
+
+  public @Nonnull IManyToOneRecipe setDedupeInput() {
+    dedupeInput = true;
     return this;
   }
 
