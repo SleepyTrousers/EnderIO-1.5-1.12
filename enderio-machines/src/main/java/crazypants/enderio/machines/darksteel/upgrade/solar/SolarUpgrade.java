@@ -3,6 +3,7 @@ package crazypants.enderio.machines.darksteel.upgrade.solar;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
 import crazypants.enderio.api.upgrades.IRenderUpgrade;
 import crazypants.enderio.base.config.factory.IValue;
@@ -19,9 +20,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
 
+@EventBusSubscriber(modid = EnderIOMachines.MODID)
 public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer {
 
   private static final @Nonnull String UPGRADE_NAME = "solar";
@@ -35,6 +41,14 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
 
   public static final SolarUpgrade SOLAR3 = new SolarUpgrade(new ItemStack(MachineObject.block_solar_panel.getItemNN(), 1, 2), 3,
       SolarConfig.darkSteelSolarThreeCost, SolarConfig.darkSteelSolarThreeGen);
+
+  @SubscribeEvent
+  public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
+    final IForgeRegistry<IDarkSteelUpgrade> registry = event.getRegistry();
+    registry.register(SOLAR1);
+    registry.register(SOLAR2);
+    registry.register(SOLAR3);
+  }
 
   public static SolarUpgrade loadAnyFromItem(@Nonnull ItemStack stack) {
     if (SOLAR3.hasUpgrade(stack)) {

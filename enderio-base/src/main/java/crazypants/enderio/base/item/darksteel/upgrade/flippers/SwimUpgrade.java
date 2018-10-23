@@ -3,18 +3,29 @@ package crazypants.enderio.base.item.darksteel.upgrade.flippers;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class SwimUpgrade extends AbstractUpgrade {
 
   private static final @Nonnull String UPGRADE_NAME = "swim";
 
   public static final @Nonnull SwimUpgrade INSTANCE = new SwimUpgrade();
+
+  @SubscribeEvent
+  public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
+    event.getRegistry().register(INSTANCE);
+  }
 
   public SwimUpgrade() {
     super(UPGRADE_NAME, "enderio.darksteel.upgrade.swim", new ItemStack(Blocks.WATERLILY), DarkSteelConfig.swimCost);

@@ -12,6 +12,7 @@ import com.enderio.core.common.util.NNList;
 import crazypants.enderio.api.capacitor.ICapacitorData;
 import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.block.skull.SkullType;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
@@ -24,15 +25,21 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import static crazypants.enderio.base.init.ModObject.blockEndermanSkull;
 import static crazypants.enderio.base.init.ModObject.itemBasicCapacitor;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class EnergyUpgrade extends AbstractUpgrade {
 
-  public class EnergyUpgradeHolder {
+  public final class EnergyUpgradeHolder {
     private int energy;
     private final @Nonnull ItemStack stack;
     private final @Nonnull IDarkSteelItem item;
@@ -109,6 +116,14 @@ public class EnergyUpgrade extends AbstractUpgrade {
           new ItemStack(itemBasicCapacitor.getItemNN(), 1, 2)),
       new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 4, "enderio.darksteel.upgrade.empowered_five", DarkSteelConfig.energyUpgradeLevelCostEmpowered4,
           new ItemStack(blockEndermanSkull.getBlockNN(), 1, SkullType.TORMENTED.ordinal())));
+
+  @SubscribeEvent(priority = EventPriority.HIGHEST)
+  public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
+    final IForgeRegistry<IDarkSteelUpgrade> registry = event.getRegistry();
+    for (EnergyUpgrade energyUpgrade : UPGRADES) {
+      registry.register(energyUpgrade);
+    }
+  }
 
   public static EnergyUpgrade loadAnyFromItem(@Nonnull ItemStack stack) {
     for (EnergyUpgrade energyUpgrade : UPGRADES) {

@@ -16,16 +16,18 @@ import net.minecraftforge.registries.IForgeRegistry;
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class ThaumcraftUtil {
 
+  static final @Nonnull String MODID_THAUMCRAFT = "thaumcraft";
+
   @SubscribeEvent
   public static void onPost(EnderIOLifecycleEvent.PostInit.Post event) {
-    if (Loader.isModLoaded("thaumcraft")) {
+    if (Loader.isModLoaded(MODID_THAUMCRAFT)) {
       ThaumcraftAspects.loadAspects();
     }
   }
 
   @SubscribeEvent
   public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
-    if (Loader.isModLoaded("thaumcraft")) {
+    if (Loader.isModLoaded(MODID_THAUMCRAFT)) {
       final IForgeRegistry<IDarkSteelUpgrade> registry = event.getRegistry();
       registry.register(ThaumaturgeRobesUpgrade.BOOTS);
       registry.register(ThaumaturgeRobesUpgrade.LEGS);
@@ -37,7 +39,7 @@ public class ThaumcraftUtil {
 
   @SubscribeEvent
   public static void registerHoes(@Nonnull EnderIOLifecycleEvent.Init.Pre event) {
-    FarmersRegistry.registerHoes("thaumcraft", "thaumium_hoe", "void_hoe", "elemental_hoe");
+    FarmersRegistry.registerHoes(MODID_THAUMCRAFT, "thaumium_hoe", "void_hoe", "elemental_hoe");
   }
 
 }

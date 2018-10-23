@@ -8,8 +8,10 @@ import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4d;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
 import crazypants.enderio.api.upgrades.IRenderUpgrade;
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
@@ -18,14 +20,23 @@ import crazypants.enderio.base.material.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class GliderUpgrade extends AbstractUpgrade implements IHasPlayerRenderer {
 
   private static final @Nonnull String UPGRADE_NAME = "glide";
 
   public static final @Nonnull GliderUpgrade INSTANCE = new GliderUpgrade();
+
+  @SubscribeEvent
+  public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
+    event.getRegistry().register(INSTANCE);
+  }
 
   public GliderUpgrade() {
     super(UPGRADE_NAME, "enderio.darksteel.upgrade.glider", Material.GLIDER_WINGS.getStack(), DarkSteelConfig.gliderCost);

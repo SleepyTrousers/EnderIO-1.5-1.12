@@ -8,6 +8,8 @@ import com.enderio.core.client.ClientUtil;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -20,9 +22,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class JumpUpgrade extends AbstractUpgrade {
 
   private static final @Nonnull String UPGRADE_NAME = "jumpBoost";
@@ -33,6 +39,13 @@ public class JumpUpgrade extends AbstractUpgrade {
   public static final @Nonnull JumpUpgrade JUMP_ONE = new JumpUpgrade(1);
   public static final @Nonnull JumpUpgrade JUMP_TWO = new JumpUpgrade(2);
   public static final @Nonnull JumpUpgrade JUMP_THREE = new JumpUpgrade(3);
+
+  @SubscribeEvent
+  public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
+    event.getRegistry().register(JUMP_ONE);
+    event.getRegistry().register(JUMP_TWO);
+    event.getRegistry().register(JUMP_THREE);
+  }
 
   private final short level;
 

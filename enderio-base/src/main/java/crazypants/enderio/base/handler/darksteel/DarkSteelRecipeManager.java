@@ -19,18 +19,8 @@ import com.google.common.collect.ImmutableList;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
-import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
-import crazypants.enderio.base.item.darksteel.upgrade.flippers.SwimUpgrade;
-import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
-import crazypants.enderio.base.item.darksteel.upgrade.hoe.HoeUpgrade;
-import crazypants.enderio.base.item.darksteel.upgrade.jump.JumpUpgrade;
-import crazypants.enderio.base.item.darksteel.upgrade.nightvision.NightVisionUpgrade;
-import crazypants.enderio.base.item.darksteel.upgrade.sound.SoundDetectorUpgrade;
-import crazypants.enderio.base.item.darksteel.upgrade.speed.SpeedUpgrade;
-import crazypants.enderio.base.item.darksteel.upgrade.spoon.SpoonUpgrade;
-import crazypants.enderio.base.item.darksteel.upgrade.travel.TravelUpgrade;
 import crazypants.enderio.base.lang.Lang;
+import crazypants.enderio.util.StringUtil;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,36 +28,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.event.AnvilUpdateEvent;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.registries.IForgeRegistry;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class DarkSteelRecipeManager {
-
-  @SubscribeEvent(priority = EventPriority.HIGH)
-  public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
-    final IForgeRegistry<IDarkSteelUpgrade> registry = event.getRegistry();
-    for (EnergyUpgrade energyUpgrade : EnergyUpgrade.UPGRADES) {
-      registry.register(energyUpgrade);
-    }
-    registry.register(JumpUpgrade.JUMP_ONE);
-    registry.register(JumpUpgrade.JUMP_TWO);
-    registry.register(JumpUpgrade.JUMP_THREE);
-    registry.register(SpeedUpgrade.SPEED_ONE);
-    registry.register(SpeedUpgrade.SPEED_TWO);
-    registry.register(SpeedUpgrade.SPEED_THREE);
-    registry.register(GliderUpgrade.INSTANCE);
-    registry.register(ElytraUpgrade.INSTANCE);
-    registry.register(SoundDetectorUpgrade.INSTANCE);
-    registry.register(SwimUpgrade.INSTANCE);
-    registry.register(NightVisionUpgrade.INSTANCE);
-    registry.register(TravelUpgrade.INSTANCE);
-    registry.register(SpoonUpgrade.INSTANCE);
-    registry.register(HoeUpgrade.INSTANCE);
-  }
 
   @SubscribeEvent
   public static void handleAnvilEvent(AnvilUpdateEvent evt) {
@@ -260,7 +225,7 @@ public class DarkSteelRecipeManager {
       this.input = input;
       this.upgrade = upgrade;
       this.output = output;
-      this.id = input.getItem().getRegistryName() + ":" + getUpgradesAsString(input) + ":" + getUpgradesAsString(output);
+      this.id = StringUtil.format("%s:%s:%s", input.getItem().getRegistryName(), getUpgradesAsString(input), getUpgradesAsString(output));
     }
 
     public @Nonnull ItemStack getInput() {

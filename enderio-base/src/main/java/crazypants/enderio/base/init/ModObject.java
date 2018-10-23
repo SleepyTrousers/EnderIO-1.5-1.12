@@ -279,7 +279,7 @@ public enum ModObject implements IModObjectBase {
    */
 
   private ModObject(@Nonnull Class<?> clazz) {
-    this(clazz, "create", null);
+    this(clazz, (IModTileEntity) null);
   }
 
   private ModObject(@Nonnull Class<?> clazz, @Nullable IModTileEntity modTileEntity) {
