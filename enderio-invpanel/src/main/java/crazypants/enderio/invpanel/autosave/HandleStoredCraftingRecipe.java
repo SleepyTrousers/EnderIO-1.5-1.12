@@ -1,4 +1,4 @@
-package crazypants.enderio.invpanel.util;
+package crazypants.enderio.invpanel.autosave;
 
 import java.lang.reflect.Type;
 import java.util.Set;
@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.invpanel.util.StoredCraftingRecipe;
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;

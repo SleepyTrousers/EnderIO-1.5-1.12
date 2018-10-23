@@ -46,6 +46,7 @@ import crazypants.enderio.base.machine.interfaces.INotifier;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.conduits.autosave.HandleIConduit;
 import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
 import crazypants.enderio.conduits.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduits.config.ConduitConfig;
@@ -73,7 +74,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   // TODO Fix duct-tape
   // TODO Check store
-  @Store(handler = ConduitHandler.List.class)
+  @Store(handler = HandleIConduit.List.class)
   private @Nonnull CopyOnWriteArrayList<IConduit> conduits = new CopyOnWriteArrayList<IConduit>(); // <- duct-tape fix
 
   /*

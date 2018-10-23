@@ -12,6 +12,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
+import crazypants.enderio.conduits.autosave.ConduitHandlers;
 import crazypants.enderio.conduits.config.ConfigHandler;
 import crazypants.enderio.conduits.init.CommonProxy;
 import crazypants.enderio.conduits.network.PacketHandler;
@@ -67,6 +68,7 @@ public class EnderIOConduits implements IEnderIOAddon {
   public void preInit(@Nonnull FMLPreInitializationEvent event) {
     ConfigHandler.init(event);
     proxy.init(event);
+    ConduitHandlers.register();
   }
 
   @EventHandler

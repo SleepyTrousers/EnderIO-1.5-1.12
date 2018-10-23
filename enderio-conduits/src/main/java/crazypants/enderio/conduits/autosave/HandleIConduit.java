@@ -1,4 +1,4 @@
-package crazypants.enderio.conduits.conduit;
+package crazypants.enderio.conduits.autosave;
 
 import java.lang.reflect.Type;
 import java.util.Set;
@@ -19,7 +19,7 @@ import info.loenwind.autosave.handlers.java.util.HandleSimpleCollection;
 import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class ConduitHandler implements IHandler<IConduit> {
+public class HandleIConduit implements IHandler<IConduit> {
 
   @Override
   public @Nonnull Class<?> getRootType() {

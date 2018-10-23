@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package crazypants.enderio.autosave.handlers.enderio;
+package crazypants.enderio.base.autosave.enderio;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

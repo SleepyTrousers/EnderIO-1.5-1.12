@@ -12,6 +12,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
+import crazypants.enderio.machines.autosave.MachineHandlers;
 import crazypants.enderio.machines.config.ConfigHandler;
 import crazypants.enderio.machines.init.EIOMDataFixer;
 import crazypants.enderio.machines.machine.obelisk.render.ObeliskRenderManager;
@@ -66,6 +67,7 @@ public class EnderIOMachines implements IEnderIOAddon {
   public static void init(FMLPreInitializationEvent event) {
     ConfigHandler.init(event);
     EIOMDataFixer.register();
+    MachineHandlers.register();
   }
 
   @EventHandler

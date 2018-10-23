@@ -1,4 +1,4 @@
-package crazypants.enderio.autosave.handlers.enderio;
+package crazypants.enderio.base.autosave.enderio;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

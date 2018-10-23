@@ -1,4 +1,4 @@
-package crazypants.enderio.autosave.handlers.endercore;
+package crazypants.enderio.base.autosave.endercore;
 
 import java.lang.reflect.Type;
 import java.util.Set;

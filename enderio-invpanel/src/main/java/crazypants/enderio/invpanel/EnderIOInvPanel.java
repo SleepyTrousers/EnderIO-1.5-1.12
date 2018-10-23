@@ -10,6 +10,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
+import crazypants.enderio.invpanel.autosave.InvPanelHandlers;
 import crazypants.enderio.invpanel.config.ConfigHandler;
 import crazypants.enderio.invpanel.network.PacketHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -46,6 +47,7 @@ public class EnderIOInvPanel implements IEnderIOAddon {
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
     ConfigHandler.init(event);
+    InvPanelHandlers.register();
   }
 
   @EventHandler

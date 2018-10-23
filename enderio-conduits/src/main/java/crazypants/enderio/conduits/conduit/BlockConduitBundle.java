@@ -18,9 +18,9 @@ import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.tool.ITool;
-import crazypants.enderio.autosave.handlers.EIOHandlers;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.autosave.BaseHandlers;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.IClientConduit;
@@ -96,8 +96,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     implements IEioGuiHandler.WithPos, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IYetaAwareBlock {
 
   public static BlockConduitBundle create(@Nonnull IModObject modObject) {
-    EIOHandlers.REGISTRY.register(new ConduitHandler());
-
     BlockConduitBundle result = new BlockConduitBundle(modObject);
     result.init();
     return result;

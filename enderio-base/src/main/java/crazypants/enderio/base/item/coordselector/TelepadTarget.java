@@ -1,20 +1,12 @@
 package crazypants.enderio.base.item.coordselector;
 
-import java.lang.reflect.Type;
-import java.util.Set;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.BlockCoord;
 
-import crazypants.enderio.autosave.handlers.EIOHandlers;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
-import info.loenwind.autosave.Registry;
-import info.loenwind.autosave.exceptions.NoHandlerFoundException;
-import info.loenwind.autosave.handlers.IHandler;
-import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -22,11 +14,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 
-public class TelepadTarget implements IHandler<TelepadTarget> {
-
-  static {
-    EIOHandlers.REGISTRY.register(new TelepadTarget());
-  }
+public class TelepadTarget {
 
   private @Nonnull BlockPos location;
   private int dimension;
@@ -217,30 +205,5 @@ public class TelepadTarget implements IHandler<TelepadTarget> {
     
     return new TelepadTarget(NbtValue.REMOTE_POS.getBlockPos(tag), NbtValue.REMOTE_D.getInt(tag), NbtValue.REMOTE_NAME.getString(tag, ""),
         NbtValue.REMOTE_ICON.getStack(tag));
-  }
-
-  @Override
-  public @Nonnull Class<?> getRootType() {
-    return TelepadTarget.class;
-  }
-
-  @Override
-  public boolean store(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull Type type, @Nonnull String name1,
-      @Nonnull TelepadTarget object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
-    NBTTagCompound root = new NBTTagCompound();
-    object.writeToNBT(root);
-    nbt.setTag(name1, root);
-    return true;
-  }
-
-  @Override
-  public TelepadTarget read(@Nonnull Registry registry, @Nonnull Set<NBTAction> phase, @Nonnull NBTTagCompound nbt, @Nonnull Type type,
-      @Nonnull String name1, @Nullable TelepadTarget object)
-      throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
-    if (nbt.hasKey(name1)) {
-      NBTTagCompound root = nbt.getCompoundTag(name1);
-      return readFromNBT(root);
-    }
-    return new TelepadTarget();
   }
 }

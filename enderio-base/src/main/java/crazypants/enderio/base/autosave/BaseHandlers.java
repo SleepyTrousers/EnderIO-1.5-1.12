@@ -1,24 +1,27 @@
-package crazypants.enderio.autosave.handlers;
+package crazypants.enderio.base.autosave;
 
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.autosave.handlers.endercore.HandleEnderInventory;
-import crazypants.enderio.autosave.handlers.endercore.HandleSmartTank;
-import crazypants.enderio.autosave.handlers.endercore.HandleThings;
-import crazypants.enderio.autosave.handlers.endercore.HandleUserIdent;
-import crazypants.enderio.autosave.handlers.enderio.HandleCapturedMob;
-import crazypants.enderio.autosave.handlers.enderio.HandleExperienceContainer;
-import crazypants.enderio.autosave.handlers.enderio.HandleIMachineRecipe;
-import crazypants.enderio.autosave.handlers.enderio.HandlePoweredTask;
+import crazypants.enderio.base.autosave.endercore.HandleEnderInventory;
+import crazypants.enderio.base.autosave.endercore.HandleSmartTank;
+import crazypants.enderio.base.autosave.endercore.HandleThings;
+import crazypants.enderio.base.autosave.endercore.HandleUserIdent;
+import crazypants.enderio.base.autosave.enderio.HandleCapturedMob;
+import crazypants.enderio.base.autosave.enderio.HandleExperienceContainer;
+import crazypants.enderio.base.autosave.enderio.HandleGrindingMultiplier;
+import crazypants.enderio.base.autosave.enderio.HandleIFilter;
+import crazypants.enderio.base.autosave.enderio.HandleIMachineRecipe;
+import crazypants.enderio.base.autosave.enderio.HandlePoweredTask;
+import crazypants.enderio.base.autosave.enderio.HandleTelepadTarget;
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.java.util.HandleSimpleCollection;
 
 import static info.loenwind.autosave.Registry.GLOBAL_REGISTRY;
 
-public class EIOHandlers {
+public class BaseHandlers {
   
   public static final @Nonnull Registry REGISTRY = new Registry();
 
@@ -36,6 +39,9 @@ public class EIOHandlers {
       REGISTRY.register(new HandleExperienceContainer());
       REGISTRY.register(new HandleIMachineRecipe());
       REGISTRY.register(new HandlePoweredTask());
+      REGISTRY.register(new HandleIFilter());
+      REGISTRY.register(new HandleGrindingMultiplier());
+      REGISTRY.register(new HandleTelepadTarget());
 
     } catch (NoHandlerFoundException ignored) {} // impossible
   }

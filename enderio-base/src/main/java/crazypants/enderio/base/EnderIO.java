@@ -14,7 +14,7 @@ import com.google.common.collect.ImmutableList;
 
 import crazypants.enderio.api.IMC;
 import crazypants.enderio.api.addon.IEnderIOAddon;
-import crazypants.enderio.autosave.handlers.EIOHandlers;
+import crazypants.enderio.base.autosave.BaseHandlers;
 import crazypants.enderio.base.capacitor.CapacitorKeyRegistry;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.config.Config;
@@ -125,7 +125,7 @@ public class EnderIO implements IEnderIOAddon {
 
     proxy.init(event);
 
-    EIOHandlers.register();
+    BaseHandlers.register();
 
     Log.debug("PHASE PRE-INIT END");
   }

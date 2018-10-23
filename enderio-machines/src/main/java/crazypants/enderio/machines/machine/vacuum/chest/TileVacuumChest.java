@@ -16,8 +16,8 @@ import com.enderio.core.common.inventory.InventorySlot;
 import com.enderio.core.common.util.MagnetUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 
+import crazypants.enderio.base.autosave.enderio.HandleIFilter;
 import crazypants.enderio.base.capability.ItemTools;
-import crazypants.enderio.base.filter.FilterHandler;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.ITileFilterContainer;
@@ -77,7 +77,7 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity
   @Store
   private int range = VacuumConfig.vacuumChestRange.get();
 
-  @Store(handler = FilterHandler.class)
+  @Store(handler = HandleIFilter.class)
   private IItemFilter filter;
 
   @Store({ NBTAction.CLIENT })

@@ -9,7 +9,7 @@ import java.util.Set;
 import com.enderio.core.common.util.NullHelper;
 import com.google.common.reflect.TypeToken;
 
-import crazypants.enderio.autosave.handlers.EIOHandlers;
+import crazypants.enderio.base.autosave.BaseHandlers;
 import crazypants.enderio.base.transceiver.Channel;
 import crazypants.enderio.base.transceiver.ChannelList;
 import crazypants.enderio.base.transceiver.ChannelType;
@@ -39,7 +39,7 @@ public class HandleChannelList extends DelegatingHandler<ChannelList, EnumMap<Ch
   @SuppressWarnings({ "unchecked", "serial" })
   private static IHandler<EnumMap<ChannelType, Set<Channel>>> getDelegate() {
     try {
-      return EIOHandlers.REGISTRY.findHandlers(NullHelper.notnull(new TypeToken<EnumMap<ChannelType, Set<Channel>>>(){}.getType(), "TypeToken#getType")).stream()
+      return BaseHandlers.REGISTRY.findHandlers(NullHelper.notnull(new TypeToken<EnumMap<ChannelType, Set<Channel>>>(){}.getType(), "TypeToken#getType")).stream()
           .filter(Objects::nonNull)
           .findFirst()
           .orElseThrow(() -> new IllegalStateException("Could not find delegate handler for ChannelList"));

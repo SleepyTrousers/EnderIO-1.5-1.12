@@ -1,4 +1,4 @@
-package crazypants.enderio.powertools.machine.monitor;
+package crazypants.enderio.conduits.autosave;
 
 import java.lang.reflect.Type;
 import java.util.Set;
@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import crazypants.enderio.powertools.machine.monitor.StatCollector;
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;

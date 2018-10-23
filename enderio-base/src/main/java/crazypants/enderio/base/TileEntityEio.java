@@ -8,7 +8,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.autosave.handlers.EIOHandlers;
+import crazypants.enderio.base.autosave.BaseHandlers;
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.paint.PaintUtil;
@@ -92,11 +92,11 @@ public abstract class TileEntityEio extends TileEntityBase {
 
   protected final void writeCustomNBT(@Nonnull NBTAction action, @Nonnull NBTTagCompound root) {
     onBeforeNbtWrite();
-    Writer.write(EIOHandlers.REGISTRY, action, root, this);
+    Writer.write(BaseHandlers.REGISTRY, action, root, this);
   }
 
   protected final void readCustomNBT(@Nonnull NBTAction action, @Nonnull NBTTagCompound root) {
-    Reader.read(EIOHandlers.REGISTRY, action, root, this);
+    Reader.read(BaseHandlers.REGISTRY, action, root, this);
     if (action == NBTAction.CLIENT) {
       onAfterDataPacket();
     }
