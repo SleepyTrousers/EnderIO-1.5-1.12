@@ -19,28 +19,47 @@ public class CopyFilterRecipe extends IForgeRegistryEntry.Impl<IRecipe> implemen
   @Override
   public boolean matches(@Nonnull InventoryCrafting inv, @Nonnull World world) {
 
-    int blankCount = 0;
-    @Nonnull
+    // find the "source filter"
     ItemStack filterInput = Prep.getEmpty();
+    int sourceSlot = -1;
     for (int i = 0; i < inv.getSizeInventory(); i++) {
-      @Nonnull
       ItemStack checkStack = inv.getStackInSlot(i);
-      if (checkStack.getItem() instanceof IItemFilterUpgrade) {
-        if (FilterRegistry.isFilterSet(checkStack)) {
-          if (Prep.isValid(filterInput)) {
-            return false;
+      if (Prep.isValid(checkStack)) {
+        if (checkStack.getItem() instanceof IItemFilterUpgrade) {
+          if (FilterRegistry.isFilterSet(checkStack)) {
+            if (sourceSlot >= 0) {
+              // 2 configured filter found
+              return false;
+            }
+            filterInput = checkStack;
+            sourceSlot = i;
           }
-          filterInput = checkStack;
+          // else unconfigured filter, ignore for now
         } else {
-          if (!isSameTypeOrNull(filterInput, checkStack)) {
-            return false;
-          }
-          blankCount++;
+          // a non-filter item was found
+          return false;
         }
       }
     }
 
-    if (blankCount == 0 || Prep.isInvalid(filterInput)) {
+    // no source filter found
+    if (sourceSlot < 0) {
+      return false;
+    }
+
+    // check that all other filters (targets) are of the same type
+    int blankCount = 0;
+    for (int i = 0; i < inv.getSizeInventory(); i++) {
+      ItemStack checkStack = inv.getStackInSlot(i);
+      if (i != sourceSlot && Prep.isValid(checkStack)) {
+        if (!isSameType(filterInput, checkStack)) {
+          return false;
+        }
+        blankCount++;
+      }
+    }
+
+    if (blankCount == 0) {
       return false;
     }
     output = filterInput.copy();
@@ -49,8 +68,8 @@ public class CopyFilterRecipe extends IForgeRegistryEntry.Impl<IRecipe> implemen
 
   }
 
-  private boolean isSameTypeOrNull(@Nonnull ItemStack matchOrNull, @Nonnull ItemStack checkStack) {
-    return Prep.isInvalid(matchOrNull) || (matchOrNull.getItem() == checkStack.getItem() && matchOrNull.getItemDamage() == checkStack.getItemDamage());
+  private boolean isSameType(@Nonnull ItemStack template, @Nonnull ItemStack candidate) {
+    return template.getItem() == candidate.getItem() && template.getItemDamage() == candidate.getItemDamage();
   }
 
   @Override
@@ -77,4 +96,5 @@ public class CopyFilterRecipe extends IForgeRegistryEntry.Impl<IRecipe> implemen
   public boolean isDynamic() {
     return true;
   }
+
 }
