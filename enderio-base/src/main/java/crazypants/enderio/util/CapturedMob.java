@@ -46,7 +46,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 import static crazypants.enderio.base.init.ModObject.itemSoulVial;
 
-public class CapturedMob { // TODO: DONE111
+public final class CapturedMob {
 
   private static final @Nonnull ResourceLocation PIG = new ResourceLocation("pig");
   private static final @Nonnull ResourceLocation DRAGON = new ResourceLocation("ender_dragon");
@@ -277,8 +277,9 @@ public class CapturedMob { // TODO: DONE111
         difficulty = world.getDifficultyForLocation(pos);
       }
       if (difficulty != null) {
-        if (pos == null || !ForgeEventFactory.doSpecialSpawn((EntityLiving) entity, world, pos.getX(), pos.getY(), pos.getZ(), null))
-        ((EntityLiving) entity).onInitialSpawn(difficulty, null);
+        if (pos == null || !ForgeEventFactory.doSpecialSpawn((EntityLiving) entity, world, pos.getX(), pos.getY(), pos.getZ(), null)) {
+          ((EntityLiving) entity).onInitialSpawn(difficulty, null);
+        }
       }
     }
 
