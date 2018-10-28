@@ -11,6 +11,7 @@ import crazypants.enderio.api.capacitor.Scaler;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capacitor.CapacitorHelper.SetType;
 import crazypants.enderio.base.capacitor.ScalerFactory;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.loot.WeightedUpgrade;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.init.MachineObject;
@@ -205,6 +206,12 @@ public enum CapacitorKey implements ICapacitorKey {
   TELEPAD_POWER_INTAKE(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   TELEPAD_POWER_BUFFER(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   TELEPAD_POWER_USE(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_USE, "use"),
+
+  WET_UPGRADE_POWER_USE(ModObject.itemDarkSteelBoots, CapacitorKeyType.ENERGY_USE, "wet_upgrade_power_use"),
+  WET_UPGRADE_RANGE(ModObject.itemDarkSteelBoots, CapacitorKeyType.AREA, "wet_upgrade_range"),
+  WET_UPGRADE_HEIGHT_UP(ModObject.itemDarkSteelBoots, CapacitorKeyType.AMOUNT, "wet_upgrade_height_up"),
+  WET_UPGRADE_HEIGHT_DOWN(ModObject.itemDarkSteelBoots, CapacitorKeyType.AMOUNT, "wet_upgrade_height_down"),
+
 
   //
   ;

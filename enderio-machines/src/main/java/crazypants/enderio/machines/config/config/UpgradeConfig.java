@@ -27,12 +27,15 @@ public class UpgradeConfig {
   
   public static final IValueFactory F_WET = F.section(".wet");
 
-  public static final IValue<Integer> wetCost = F_WET.make("upgradeCost", 6, "Cost in XP levels of the Wet upgrade").setMin(1).sync();
-  public static final IValue<Integer> wetEnergyUsePerCobblestoneConverstion = F_WET.make("energyUsePerCobblestoneConversion", 400, //
-      "How much energy the upgrade will use per flowing block of lava converted to cobblestone.").setMin(1).sync();
-  public static final IValue<Integer> wetEnergyUsePerObsidianConverstion = F_WET.make("energyUsePerObsidianConversion", 2000, //
-      "How much energy the upgrade will use per source block of lava converted to obsidian.").setMin(1).sync();
-  public static final IValue<Double> wetRange = F_WET.make("range", 2.0D, //
-      "How far away from the player blocks of lava will be converted to obsidian or cobblestone.").setRange(0, 8).sync();
+  public static final NNList<IValue<Integer>> wetCost = new NNList<IValue<Integer>>(
+      F_WET.make("upgradeCost1", 4, "Cost in XP levels of the Wet I upgrade").setMin(1).sync(),
+      F_WET.make("upgradeCost2", 6, "Cost in XP levels of the Wet II upgrade").setMin(1).sync(),
+      F_WET.make("upgradeCost3", 8, "Cost in XP levels of the Wet III upgrade").setMin(1).sync(),
+      F_WET.make("upgradeCost4", 12, "Cost in XP levels of the Wet IV upgrade").setMin(1).sync(),
+      F_WET.make("upgradeCost5", 16, "Cost in XP levels of the Wet V upgrade").setMin(1).sync());
+
+  public static final IValue<Float> cobblestoneModifier = F_WET.make("cobblestonePowerMod", 0.2F, //
+      "How much power should the upgrade use to convert flowing lava to cobblestone, relative to the power needed to convert still lava to obsidian (0 = 0%, 1 = 100%, can exceed 100%).")
+      .setMin(0).sync();
 
 }

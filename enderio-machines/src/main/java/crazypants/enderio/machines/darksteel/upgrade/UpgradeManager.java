@@ -20,7 +20,11 @@ public class UpgradeManager {
     registry.register(SolarUpgrade.SOLAR1);
     registry.register(SolarUpgrade.SOLAR2);
     registry.register(SolarUpgrade.SOLAR3);
-    registry.register(WetUpgrade.INSTANCE);
+    registry.register(WetUpgrade.WET1);
+    registry.register(WetUpgrade.WET2);
+    registry.register(WetUpgrade.WET3);
+    registry.register(WetUpgrade.WET4);
+    registry.register(WetUpgrade.WET5);
   }
 
 }

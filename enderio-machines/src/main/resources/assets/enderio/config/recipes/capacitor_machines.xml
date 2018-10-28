@@ -219,5 +219,10 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_tele_pad/intake" base="4000" scaler="FIXED" />
   <capacitor key="enderio:block_tele_pad/buffer" base="100000" scaler="FIXED" />
   <capacitor key="enderio:block_tele_pad/use" base="4000" scaler="FIXED" />
+  
+  <capacitor key="enderio:item_dark_steel_boots/wet_upgrade_power_use" base="1000" scaler="idx(1)5:2:2:2:1" />
+  <capacitor key="enderio:item_dark_steel_boots/wet_upgrade_range" base="1" scaler="idx(1)0.7:1.4:2.5:3.5:3.5" />
+  <capacitor key="enderio:item_dark_steel_boots/wet_upgrade_height_up" base="1" scaler="idx(1)0:0:0:0:1" />
+  <capacitor key="enderio:item_dark_steel_boots/wet_upgrade_height_down" base="1" scaler="idx(1)0:0:0:1:1" />
 
 </enderio:recipes>
