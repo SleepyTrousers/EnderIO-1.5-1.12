@@ -19,13 +19,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 @EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 public class PaddingHandler {
 
-  @SubscribeEvent
+  @SubscribeEvent(priority = EventPriority.LOWEST)
   public static void onPlaySoundEvent(PlaySoundEvent event) {
     final EntityPlayerSP player = Minecraft.getMinecraft().player;
     if (NullHelper.untrust(player) != null && PaddingUpgrade.INSTANCE.hasUpgrade(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD))) {
@@ -34,7 +35,9 @@ public class PaddingHandler {
   }
 
   private static ISound make(@Nonnull ISound parent) {
-    if (parent instanceof ITickableSound) {
+    if (parent instanceof MutedSound) {
+      return parent;
+    } else if (parent instanceof ITickableSound) {
       return new TickableMutedSound((ITickableSound) parent);
     } else {
       return new MutedSound(parent);
