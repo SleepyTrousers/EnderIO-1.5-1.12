@@ -14,9 +14,12 @@ import com.mojang.authlib.GameProfile;
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.base.power.wireless.WirelessChargedLocation;
 import crazypants.enderio.machines.config.config.KillerJoeConfig;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 
 class Attackera extends FakePlayerEIO implements ICreeperTarget {
 
@@ -63,6 +66,31 @@ class Attackera extends FakePlayerEIO implements ICreeperTarget {
 
   public int getTicksSinceLastSwing() {
     return ticksSinceLastSwing;
+  }
+
+  @Override
+  public void attackTargetEntityWithCurrentItem(@Nonnull Entity targetEntity) {
+    onGround = true; // sweep attacks need this
+    faceEntity(targetEntity); // sweep attack particles use this
+    super.attackTargetEntityWithCurrentItem(targetEntity);
+  }
+
+  // taken from EntityLiving and simplified
+  public void faceEntity(Entity entityIn) {
+    double d0 = entityIn.posX - this.posX;
+    double d2 = entityIn.posZ - this.posZ;
+    double d1;
+
+    if (entityIn instanceof EntityLivingBase) {
+      EntityLivingBase entitylivingbase = (EntityLivingBase) entityIn;
+      d1 = entitylivingbase.posY + entitylivingbase.getEyeHeight() - (this.posY + this.getEyeHeight());
+    } else {
+      d1 = (entityIn.getEntityBoundingBox().minY + entityIn.getEntityBoundingBox().maxY) / 2.0D - (this.posY + this.getEyeHeight());
+    }
+
+    double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
+    rotationPitch = MathHelper.wrapDegrees((float) (-(MathHelper.atan2(d1, d3) * (180D / Math.PI))));
+    rotationYaw = MathHelper.wrapDegrees((float) (MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F);
   }
 
   @Override
