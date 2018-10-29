@@ -46,7 +46,7 @@ public final class DarkSteelConfig {
   public static final IValue<Integer> axePowerUsePerDamagePointMultiHarvest = F_AXE.make("powerUsePerDamagePointMultiHarvest", 1500, //
       "Energy per damage/durability point avoided when shift-harvesting multiple logs").setRange(0, 99999999).sync();
   public static final IValue<Float> axeSpeedPenaltyMultiHarvest = F_AXE.make("speedPenaltyMultiHarvest", 4f, //
-      "How much slower shift-harvesting logs is.").setRange(1, 40).sync();
+      "How much slower multi-harvesting logs is.").setRange(1, 40).sync();
   public static final IValue<Float> axeEfficiencyBoostWhenPowered = F_AXE.make("efficiencyBoostWhenPowered", 2f, //
       "The increase in efficiency when powered.").setRange(1, 20).sync();
 
