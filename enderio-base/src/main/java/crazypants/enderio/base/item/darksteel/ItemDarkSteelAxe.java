@@ -185,7 +185,6 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
         world.spawnEntity(new EntityItem(world, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
         if (FarmersRegistry.isLog(block)) { // other wise leaves
           EnergyUpgradeManager.extractEnergy(player.getHeldItemMainhand(), this, DarkSteelConfig.axePowerUsePerDamagePointMultiHarvest, false);
-          System.out.println("Using energy for " + block); // TODO delme
           usedPower = true;
         }
       }
@@ -261,7 +260,6 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   private boolean absorbDamageWithEnergy(@Nonnull ItemStack stack, int amount) {
     EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
     if (eu != null && eu.isAbsorbDamageWithPower() && eu.getEnergy() > 0) {
-      System.out.println("Eating damage with energy " + amount); // TODO delme
       eu.extractEnergy(amount, false);
       eu.writeToItem();
       return true;
