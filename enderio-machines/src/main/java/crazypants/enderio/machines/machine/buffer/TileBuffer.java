@@ -51,7 +51,7 @@ public abstract class TileBuffer extends AbstractPowerConsumerEntity implements 
   @Storable
   public static class TileBufferOmni extends TileBuffer {
     public TileBufferOmni() {
-      super(new SlotDefinition(9, 0, 1), BufferType.OMNI, BUFFER_POWER_INTAKE, BUFFER_POWER_BUFFER, BUFFER_POWER_USE);
+      super(new SlotDefinition(0, 8, 0, 8, 9, 9), BufferType.OMNI, BUFFER_POWER_INTAKE, BUFFER_POWER_BUFFER, BUFFER_POWER_USE);
     }
   }
 
