@@ -194,8 +194,14 @@ public class NetworkedInventory {
     }
     ItemStack extracted = inventory.extractItem(slot, numInserted, EXECUTE);
     if (Prep.isInvalid(extracted) || extracted.getCount() != numInserted || extracted.getItem() != extractedItem.getItem()) {
+      if (extracted.getCount() < numInserted && (extracted.getCount() == 0 || extracted.getItem() == extractedItem.getItem())) {
+        Log.warn("NetworkedInventory.itemExtracted: Inserted " + numInserted + " " + extractedItem.getDisplayName() + " but only removed "
+            + extracted.getCount() + " " + extracted.getDisplayName() + " from " + inventory + " at " + location + ". This means that "
+            + (numInserted - extracted.getCount()) + " items were just duped by " + inventory + "!");
+      } else {
       Log.warn("NetworkedInventory.itemExtracted: Inserted " + numInserted + " " + extractedItem.getDisplayName() + " but only removed "
-          + (Prep.isInvalid(extracted) ? "null" : extracted.getCount() + " " + extracted.getDisplayName()) + " from " + inventory + " at " + location);
+            + extracted.getCount() + " " + extracted.getDisplayName() + " from " + inventory + " at " + location);
+      }
     }
     onItemExtracted(slot, numInserted);
     return true;
