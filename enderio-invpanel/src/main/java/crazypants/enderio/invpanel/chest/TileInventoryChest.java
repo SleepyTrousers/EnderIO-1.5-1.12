@@ -126,14 +126,6 @@ public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachin
   }
 
   @Override
-  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && !hasPower()) {
-      return false;
-    }
-    return super.hasCapability(capability, facingIn);
-  }
-
-  @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && !hasPower()) {
       return null;

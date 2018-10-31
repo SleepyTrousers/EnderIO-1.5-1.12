@@ -597,15 +597,6 @@ public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgress
 
   // Inventory
 
-  @Override
-  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
-        || capability == CapabilityEnergy.ENERGY) {
-      return inNetwork();
-    }
-    return super.hasCapability(capability, facingIn);
-  }
-
   @SuppressWarnings("unchecked")
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {

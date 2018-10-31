@@ -3,7 +3,6 @@ package crazypants.enderio.base.machine.base.te;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.EnderInventory.View;
 import com.enderio.core.common.inventory.InventorySlot;
@@ -14,6 +13,7 @@ import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -100,18 +100,10 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
     return false;
   }
 
-  @Override
-  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-      return facingIn == null || getIoMode(facingIn).canInputOrOutput();
-    }
-    return super.hasCapability(capability, facingIn);
-  }
-
   @SuppressWarnings("unchecked")
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facingIn != null && getIoMode(facingIn).canInputOrOutput()) {
       return (T) new Side(facingIn);
     }
     return super.getCapability(capability, facingIn);

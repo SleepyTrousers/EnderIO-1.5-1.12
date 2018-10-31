@@ -3,8 +3,6 @@ package crazypants.enderio.base.machine.baselegacy;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import info.loenwind.autosave.util.NBTAction;
-
 import crazypants.enderio.base.capability.ItemTools;
 import crazypants.enderio.base.capability.ItemTools.MoveResult;
 import crazypants.enderio.base.capability.LegacyMachineWrapper;
@@ -13,6 +11,7 @@ import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -136,11 +135,6 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
 
   public boolean isUseableByPlayer(EntityPlayer player) {
     return canPlayerAccess(player);
-  }
-
-  @Override
-  public final boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing1) {
-    return getCapability(capability, facing1) != null;
   }
 
   @SuppressWarnings("unchecked")
