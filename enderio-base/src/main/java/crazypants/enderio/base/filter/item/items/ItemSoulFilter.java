@@ -13,11 +13,11 @@ import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilterContainer;
-import crazypants.enderio.base.filter.gui.BasicItemFilterGui;
 import crazypants.enderio.base.filter.gui.ContainerFilter;
+import crazypants.enderio.base.filter.gui.SoulFilterGui;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.SoulFilter;
-import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.client.gui.GuiScreen;
@@ -42,11 +42,11 @@ public class ItemSoulFilter extends Item implements IItemFilterItemUpgrade, IRes
   private final int size;
 
   public static ItemSoulFilter createNormal(@Nonnull IModObject modObject) {
-    return new ItemSoulFilter(modObject, 1 * 9);
+    return new ItemSoulFilter(modObject, 1 * 5);
   }
 
   public static ItemSoulFilter createBig(@Nonnull IModObject modObject) {
-    return new ItemSoulFilter(modObject, 3 * 9);
+    return new ItemSoulFilter(modObject, 2 * 5);
   }
 
   protected ItemSoulFilter(@Nonnull IModObject modObject, int size) {
@@ -79,7 +79,7 @@ public class ItemSoulFilter extends Item implements IItemFilterItemUpgrade, IRes
   @Nonnull
   public ActionResult<ItemStack> onItemRightClick(@Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
     if (!world.isRemote && player.isSneaking()) {
-      ModObject.itemBasicItemFilter.openGui(world, player.getPosition(), player, null, hand.ordinal());// TODO
+      ModObjectRegistry.getModObjectNN(this).openGui(world, player.getPosition(), player, null, hand.ordinal());
       return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     }
     return super.onItemRightClick(world, player, hand);
@@ -97,16 +97,17 @@ public class ItemSoulFilter extends Item implements IItemFilterItemUpgrade, IRes
     }
   }
 
+  @SuppressWarnings({ "unchecked", "null" })
   @Override
   @Nullable
   @SideOnly(Side.CLIENT)
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
     Container container = player.openContainer;
     if (container instanceof IFilterContainer) {
-      return new BasicItemFilterGui(player.inventory, new ContainerFilter(player, (TileEntityBase) world.getTileEntity(pos), facing, param1), // TODO
+      return new SoulFilterGui(player.inventory, new ContainerFilter(player, (TileEntityBase) world.getTileEntity(pos), facing, param1),
           world.getTileEntity(pos), ((IFilterContainer<IItemFilter>) container).getFilter(param1));
     } else {
-      return new BasicItemFilterGui(player.inventory, new ContainerFilter(player, null, facing, param1), null, // TODO
+      return new SoulFilterGui(player.inventory, new ContainerFilter(player, null, facing, param1), null,
           FilterRegistry.getFilterForUpgrade(player.getHeldItem(EnumHand.values()[param1])));
     }
   }

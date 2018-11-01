@@ -7,6 +7,7 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.base.autosave.BaseHandlers;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.Prep;
@@ -22,10 +23,10 @@ import net.minecraftforge.items.IItemHandler;
 @Storable
 public class SoulFilter implements IItemFilter.WithGhostSlots {
 
-  public static final int GUI_COLUMNS = 9;
+  public static final int GUI_ROWS = 5;
 
   @Store
-  private @Nonnull NNList<CapturedMob> souls = new NNList<>();
+  private final @Nonnull NNList<CapturedMob> souls = new NNList<>();
   @Store
   private boolean blacklist = false;
   @Store
@@ -64,14 +65,18 @@ public class SoulFilter implements IItemFilter.WithGhostSlots {
     this.slotCount = slotCount;
   }
 
+  public NNList<CapturedMob> getSouls() {
+    return souls;
+  }
+
   @Override
   public void readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
-    Reader.read(nbtRoot, this);
+    Reader.read(BaseHandlers.REGISTRY, nbtRoot, this);
   }
 
   @Override
   public void writeToNBT(@Nonnull NBTTagCompound nbtRoot) {
-    Writer.write(nbtRoot, this);
+    Writer.write(BaseHandlers.REGISTRY, nbtRoot, this);
   }
 
   @Override
@@ -105,6 +110,34 @@ public class SoulFilter implements IItemFilter.WithGhostSlots {
   }
 
   @Override
+  public void setInventorySlotContents(int slot, @Nonnull ItemStack stack) {
+    CapturedMob input = null;
+    if (CapturedMob.containsSoul(stack)) {
+      input = CapturedMob.create(stack);
+    }
+    if (input != null) {
+      if (slot < souls.size()) {
+        souls.set(slot, input);
+        for (CapturedMob existing : souls) {
+          if (existing != input && existing.isSameType(input)) {
+            souls.remove(slot);
+            return; // CME!
+          }
+        }
+      } else {
+        for (CapturedMob existing : souls) {
+          if (existing.isSameType(input)) {
+            return;
+          }
+        }
+        souls.add(input);
+      }
+    } else if (slot < souls.size()) {
+      souls.remove(slot);
+    }
+  }
+
+  @Override
   @Nonnull
   public ItemStack getInventorySlotContents(int slot) {
     if (slot < souls.size()) {
@@ -117,20 +150,20 @@ public class SoulFilter implements IItemFilter.WithGhostSlots {
   public void createGhostSlots(@Nonnull NNList<GhostSlot> slots, int xOffset, int yOffset, @Nullable Runnable cb) {
     int row = 0, col = 0;
     for (int i = 0; i < slotCount; i++) {
-      int x = xOffset + col * 18;
-      int y = yOffset + row * 10;
+      int x = xOffset + col * 81;
+      int y = yOffset + row * 18;
 
       slots.add(new SoulFilterGhostSlot(i, x, y, cb));
 
-      col++;
-      if (col >= GUI_COLUMNS) {
-        col = 0;
-        row++;
+      row++;
+      if (row >= GUI_ROWS) {
+        row = 0;
+        col++;
       }
     }
   }
 
-  class SoulFilterGhostSlot extends GhostSlot {
+  public class SoulFilterGhostSlot extends GhostSlot {
     private final Runnable cb;
 
     SoulFilterGhostSlot(int slot, int x, int y, Runnable cb) {
@@ -144,19 +177,7 @@ public class SoulFilter implements IItemFilter.WithGhostSlots {
 
     @Override
     public void putStack(@Nonnull ItemStack stack, int realsize) {
-      CapturedMob input = null;
-      if (CapturedMob.containsSoul(stack)) {
-        input = CapturedMob.create(stack);
-      }
-      if (input != null) {
-        if (getSlot() < souls.size()) {
-          souls.set(getSlot(), input);
-        } else {
-          souls.add(input);
-        }
-      } else if (getSlot() < souls.size()) {
-        souls.remove(getSlot());
-      }
+      setInventorySlotContents(getSlot(), stack);
       cb.run();
     }
 

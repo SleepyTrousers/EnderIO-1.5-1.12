@@ -1194,6 +1194,8 @@ enderio.gui.existing_item_filter=Existing Item Filter
 enderio.gui.mod_item_filter=Mod Item Filter
 enderio.gui.power_item_filter=Power Item Filter
 enderio.gui.species_item_filter=Species Item Filter
+enderio.gui.soul_filter_normal=Soul Filter
+enderio.gui.soul_filter_big=Big Soul Filter
 
 enderio.gui.fluid_filter=Fluid Filter
 
@@ -1227,6 +1229,8 @@ item.item_big_advanced_item_filter.name=Advanced Big Item Filter
 item.item_existing_item_filter.name=Existing Item Filter
 item.item_mod_item_filter.name=Mod Item Filter
 item.item_power_item_filter.name=Power Item Filter
+item.item_soul_filter_normal.name=Soul Filter
+item.item_soul_filter_big.name=Big Soul Filter
 
 item.item_fluid_filter.name=Fluid Filter
 
