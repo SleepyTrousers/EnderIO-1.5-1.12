@@ -35,6 +35,8 @@ public class SoulBinderRecipeManager {
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.SOULBINDER, SoulBinderEnderCystalRecipe.instance);
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.SOULBINDER, SoulBinderAttractorCystalRecipe.instance);
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.SOULBINDER, SoulBinderPrecientCystalRecipe.instance);
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.SOULBINDER, SoulBinderSoulFilterRecipe.instance1);
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.SOULBINDER, SoulBinderSoulFilterRecipe.instance2);
   }
 
   //@formatter:off

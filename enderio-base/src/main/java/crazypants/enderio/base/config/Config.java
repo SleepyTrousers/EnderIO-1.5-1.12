@@ -123,6 +123,9 @@ public final class Config {
   public static int soulBinderVibrantCystalRF = 200000;
   public static int soulBinderVibrantCystalLevels = 8;
 
+  public static int soulBinderSoulFilterLevels = 12;
+  public static int soulBinderSoulFilterRF = 5_000_000;
+
   public static float slicenspliceToolDamageChance = 0.01f;
 
   public static int xpObeliskMaxXpLevel = Integer.MAX_VALUE;
