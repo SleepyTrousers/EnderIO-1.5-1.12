@@ -1,9 +1,11 @@
 package crazypants.enderio.base.config.config;
 
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.config.factory.IValueFactory;
+import crazypants.enderio.base.item.darksteel.upgrade.explosive.ExplosiveTargets;
 import net.minecraftforge.fluids.Fluid;
 
 public final class DarkSteelConfig {
@@ -181,10 +183,17 @@ public final class DarkSteelConfig {
   public static final IValue<Float> explosiveUpgradeDurabilityChance = F_EXPLOSIVE.make("durabilityChance", .3f, //
       "Chance that employing the explosive upgrade to blow up extra blocks costs the pickaxe durability.").setRange(0, 1).sync();
 
-  public static final IValue<Boolean> explosiveUpgradeUnlimitedTargets = F_EXPLOSIVE.make("unlimitedTargets", false, //
-      "Should the explosive upgrade blow up any kind of block the pickaxe can mine? If disabled, only a limited list of trash blocks will be blown up. "
-          + "Enable this in modpacks that have a large number of modded stone or dirt in their worldgen.")
+  public static final IValue<ExplosiveTargets> explosiveUpgradeTargets = F_EXPLOSIVE.make("targets", ExplosiveTargets.DEFAULT, //
+      "Which kinds of blocks should the explosive upgrade blow up? DEFAULT: Limited list of trash blocks. NO_INVENORY: All blocks that don't have a TileEntity. "
+          + " CUSTOM: Only the blocks in the config values 'customStone'/'customDirt'. DEFAULT_AND_CUSTOM: Combines DEFAULT and CUSTOM. ALL: Anything (dangerous!)"
+          + "Use this in modpacks that have a large number of modded stone or dirt in their worldgen.")
       .sync();
+
+  public static final IValue<Things> explosiveUpgradeCustomStone = F_EXPLOSIVE.make("customStone", new Things(), //
+      "Custom 'stone' target blocks for the explosive upgrade. See unlimitedTargets.").sync();
+
+  public static final IValue<Things> explosiveUpgradeCustomDirt = F_EXPLOSIVE.make("customDirt", new Things(), //
+      "Custom 'dirt' target blocks for the explosive upgrade. See unlimitedTargets. (Used whith the 'spoon' upgrade.)").sync();
 
   public static final IValueFactory F_CARPET = F_EXPLOSIVE.section(".carpet");
 
