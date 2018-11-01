@@ -190,10 +190,10 @@ public final class DarkSteelConfig {
       .sync();
 
   public static final IValue<Things> explosiveUpgradeCustomStone = F_EXPLOSIVE.make("customStone", new Things(), //
-      "Custom 'stone' target blocks for the explosive upgrade. See unlimitedTargets.").sync();
+      "Custom 'stone' target blocks for the explosive upgrade. See 'targets'.").sync();
 
   public static final IValue<Things> explosiveUpgradeCustomDirt = F_EXPLOSIVE.make("customDirt", new Things(), //
-      "Custom 'dirt' target blocks for the explosive upgrade. See unlimitedTargets. (Used whith the 'spoon' upgrade.)").sync();
+      "Custom 'dirt' target blocks for the explosive upgrade. See 'targets'. (Used whith the 'spoon' upgrade.)").sync();
 
   public static final IValueFactory F_CARPET = F_EXPLOSIVE.section(".carpet");
 
