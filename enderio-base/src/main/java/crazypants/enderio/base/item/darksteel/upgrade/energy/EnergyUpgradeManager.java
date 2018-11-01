@@ -43,7 +43,7 @@ public abstract class EnergyUpgradeManager {
   }
 
   public static int extractEnergy(@Nonnull ItemStack container, int maxExtract, boolean simulate) {
-    if (container.getItem() instanceof IDarkSteelItem) {
+    if (maxExtract > 0 && container.getItem() instanceof IDarkSteelItem) {
       return extractEnergy(container, (IDarkSteelItem) container.getItem(), maxExtract, simulate);
     }
     return 0;

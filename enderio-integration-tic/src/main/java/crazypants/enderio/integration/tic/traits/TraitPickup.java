@@ -1,7 +1,6 @@
 package crazypants.enderio.integration.tic.traits;
 
-import java.util.Iterator;
-
+import crazypants.enderio.base.item.darksteel.upgrade.direct.DirectUpgrade;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import slimeknights.tconstruct.library.modifiers.IToolMod;
@@ -19,17 +18,7 @@ public class TraitPickup extends ModifierTrait {
   @Override
   public void blockHarvestDrops(ItemStack tool, HarvestDropsEvent event) {
     if (ToolHelper.isToolEffective2(tool, event.getState())) {
-      for (Iterator<ItemStack> iterator = event.getDrops().iterator(); iterator.hasNext();) {
-        ItemStack next = iterator.next().copy();
-        if (random.nextFloat() <= event.getDropChance()) {
-          if (event.getHarvester().inventory.addItemStackToInventory(next)) {
-            iterator.remove();
-          }
-        } else {
-          iterator.remove();
-        }
-      }
-      event.setDropChance(1); // we already implemented the drop chance
+      DirectUpgrade.doDirect(event);
     }
   }
 

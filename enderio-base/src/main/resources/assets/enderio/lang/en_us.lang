@@ -803,6 +803,9 @@ enderio.darksteel.upgrade.sound.disabled=Sound Locator Disabled
 enderio.darksteel.upgrade.padding.name=Padding
 enderio.darksteel.upgrade.padding.tooltip.detailed.line1=Muffles nearby sounds
 
+enderio.darksteel.upgrade.direct.name=Direct
+enderio.darksteel.upgrade.direct.nametooltip.detailed.line1=Teleports mined things directly into your inventory
+
 enderio.darksteel.upgrade.gogglesOfRevealing.name=Revealing
 enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Vis Discount: 5%
 enderio.darksteel.upgrade.gogglesOfRevealing.enabled=Magic is being revealed

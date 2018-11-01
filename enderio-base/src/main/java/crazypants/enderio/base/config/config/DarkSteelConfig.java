@@ -268,6 +268,14 @@ public final class DarkSteelConfig {
   public static final IValue<Integer> soundLocatorLifespan = F_SOUND_LOCATOR.make("lifespan", 40, //
       "Number of ticks the 'Sound Locator' icons are displayed for.").setRange(1, 200).sync();
 
+  public static final IValueFactory F_DIRECT = F_UPGRADES.section(".direct");
+
+  public static final IValue<Integer> directCost = F_DIRECT.make("upgradeCost", 8, //
+      "Number of levels required for the 'Direct' upgrade.").setRange(1, 99).sync();
+
+  public static final IValue<Integer> directEnergyCost = F_DIRECT.make("energyCost", 100, //
+      "Amount of energy used by the 'Direct' upgrade to pick up one stack of stuff.").setRange(0, 999999).sync();
+
   public static final IValueFactory F_PADDING = F_UPGRADES.section(".padding");
 
   public static final IValue<Integer> paddingCost = F_PADDING.make("upgradeCost", 4, //
