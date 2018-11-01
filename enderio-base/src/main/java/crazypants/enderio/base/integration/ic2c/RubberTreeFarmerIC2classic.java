@@ -12,18 +12,17 @@ import net.minecraft.util.ResourceLocation;
 
 public class RubberTreeFarmerIC2classic extends RubberTreeFarmer {
 
-  private RubberTreeFarmerIC2classic(@Nonnull Block sapling, @Nonnull Block wood, @Nonnull Item treetap, @Nonnull ItemStack resin) {
-    super(sapling, wood, treetap, resin);
+  private RubberTreeFarmerIC2classic(@Nonnull Block sapling, @Nonnull Block wood, @Nonnull ItemStack resin) {
+    super(sapling, wood, resin);
   }
 
   public static RubberTreeFarmer create() {
     Block sapling = Block.REGISTRY.getObject(new ResourceLocation("ic2", "blockrubsapling"));
     Block wood = Block.REGISTRY.getObject(new ResourceLocation("ic2", "blockrubwood"));
-    Item treetap = Item.REGISTRY.getObject(new ResourceLocation("ic2", "itemtreetap"));
     Item resin = Item.REGISTRY.getObject(new ResourceLocation("ic2", "itemharz"));
 
-    if (sapling != Blocks.AIR && wood != Blocks.AIR && treetap != null && resin != null) {
-      return new RubberTreeFarmerIC2classic(sapling, wood, treetap, new ItemStack(resin));
+    if (sapling != Blocks.AIR && wood != Blocks.AIR && resin != null) {
+      return new RubberTreeFarmerIC2classic(sapling, wood, new ItemStack(resin));
     }
 
     return null;

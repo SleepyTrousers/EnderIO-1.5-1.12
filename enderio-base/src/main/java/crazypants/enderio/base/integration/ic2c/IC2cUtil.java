@@ -5,6 +5,8 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.api.farm.IFarmerJoe;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
+import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.farmers.RubberTreeFarmer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -22,6 +24,11 @@ public class IC2cUtil {
     } else {
       Log.info("Farming Station: IC2 classic integration not loaded");
     }
+  }
+
+  @SubscribeEvent
+  public static void registerTreetaps(@Nonnull EnderIOLifecycleEvent.Init.Pre event) {
+    FarmersRegistry.registerTreetaps("ic2", "itemtreetap");
   }
 
 }

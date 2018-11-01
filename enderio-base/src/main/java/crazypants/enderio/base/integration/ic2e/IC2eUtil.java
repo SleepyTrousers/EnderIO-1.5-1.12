@@ -27,8 +27,9 @@ public class IC2eUtil {
   }
 
   @SubscribeEvent
-  public static void registerHoes(@Nonnull EnderIOLifecycleEvent.Init.Pre event) {
+  public static void registerTools(@Nonnull EnderIOLifecycleEvent.Init.Pre event) {
     FarmersRegistry.registerHoes("ic2", "bronze_hoe");
+    FarmersRegistry.registerTreetaps("ic2", "treetap");
   }
 
 }

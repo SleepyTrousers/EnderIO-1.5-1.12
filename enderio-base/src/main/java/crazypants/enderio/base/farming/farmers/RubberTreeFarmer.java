@@ -20,7 +20,6 @@ import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -29,15 +28,14 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
 
   protected final @Nonnull ItemStack stickyResin;
 
-  public RubberTreeFarmer(@Nonnull Block sapling, @Nonnull Block wood, @Nonnull Item treetap, @Nonnull ItemStack resin) {
+  public RubberTreeFarmer(@Nonnull Block sapling, @Nonnull Block wood, @Nonnull ItemStack resin) {
     super(sapling, wood);
-    FarmingTool.TREETAP.getThings().add(treetap);
     stickyResin = resin;
     FarmersRegistry.slotItemsProduce.add(stickyResin);
   }
 
   public boolean isValid() {
-    return !saplings.isEmpty() && !woods.isEmpty() && !FarmingTool.TREETAP.getThings().isEmpty() && Prep.isValid(stickyResin);
+    return !saplings.isEmpty() && !woods.isEmpty() && Prep.isValid(stickyResin);
   }
 
   @Override

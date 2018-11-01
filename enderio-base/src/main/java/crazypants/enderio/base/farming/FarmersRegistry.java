@@ -176,4 +176,25 @@ public final class FarmersRegistry {
     return count;
   }
 
+  /**
+   * Register the given items as treetaps that can be used in the farming station. Ignores non-existing items.
+   * 
+   * @param modid
+   *          domain part of the item RL
+   * @param hoes
+   *          any number of item names
+   * @return The number of hoes found
+   */
+  public static int registerTreetaps(@Nonnull final String modid, final @Nonnull String... hoes) {
+    int count = 0;
+    for (String hoe : hoes) {
+      Item item = findItem(modid, NullHelper.first(hoe, ""));
+      if (item != null) {
+        OreDictionary.registerOre("toolTreetap", new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE));
+        count++;
+      }
+    }
+    return count;
+  }
+
 }
