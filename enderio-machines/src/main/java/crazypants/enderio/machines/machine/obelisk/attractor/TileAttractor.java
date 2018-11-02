@@ -14,6 +14,7 @@ import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.base.machine.modes.EntityAction;
 import crazypants.enderio.base.network.PacketSpawnParticles;
+import crazypants.enderio.machines.config.config.AttractorConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.obelisk.attractor.handlers.AttractionHandlers;
 import crazypants.enderio.machines.machine.obelisk.attractor.handlers.IMobAttractionHandler;
@@ -27,7 +28,6 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.TargetContext;
 
-import static crazypants.enderio.base.config.Config.maxMobsAttracted;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ATTRACTOR_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ATTRACTOR_POWER_INTAKE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ATTRACTOR_POWER_USE;
@@ -89,7 +89,7 @@ public class TileAttractor extends AbstractMobObeliskEntity {
       if (!entity.isDead && !tracking.containsKey(entity) && canAttract(entity)
           && PermissionAPI.hasPermission(getOwner().getAsGameProfile(), BlockAttractor.permissionAttracting, new TargetContext(getTarget(), entity))) {
         collectEntity(entity);
-        if (tracking.size() >= maxMobsAttracted) {
+        if (tracking.size() >= AttractorConfig.maxMobsAttracted.get()) {
           return;
         }
       }
@@ -125,7 +125,7 @@ public class TileAttractor extends AbstractMobObeliskEntity {
       tickTrackedEntities();
     }
 
-    if (tracking.size() < maxMobsAttracted && shouldDoWorkThisTick(20, 5)) {
+    if (tracking.size() < AttractorConfig.maxMobsAttracted.get() && shouldDoWorkThisTick(20, 5)) {
       collectEntities();
     }
 

@@ -7,6 +7,7 @@ import crazypants.enderio.base.config.Config.Section;
 import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.config.factory.ValueFactory;
 import crazypants.enderio.machines.EnderIOMachines;
+import crazypants.enderio.machines.config.config.AttractorConfig;
 import crazypants.enderio.machines.config.config.ChargerConfig;
 import crazypants.enderio.machines.config.config.ClientConfig;
 import crazypants.enderio.machines.config.config.CombustionGenConfig;
@@ -46,6 +47,7 @@ public final class Config {
 
   public static void load() {
     // force sub-configs to be classloaded with the main config
+    AttractorConfig.F.getClass();
     ClientConfig.F.getClass();
     CombustionGenConfig.F.getClass();
     ExperienceConfig.F.getClass();

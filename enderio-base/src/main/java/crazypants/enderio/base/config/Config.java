@@ -38,7 +38,6 @@ public final class Config {
   public static Configuration config;
 
   private static final @Nonnull Section sectionRod = new Section("Rod of Return Settings", "rod");
-  private static final @Nonnull Section sectionAdvanced = new Section("Advanced Settings", "advanced");
   private static final @Nonnull Section sectionSoulBinder = new Section("Soul Binder Settings", "soulBinder");
   private static final @Nonnull Section sectionSoulVial = new Section("", "soulvial");
   private static final @Nonnull Section sectionMisc = new Section("Misc", "misc");
@@ -106,8 +105,6 @@ public final class Config {
   public static String staffOfLevityFluidType = "vapor_of_levity";
 
   public static boolean paintedGlowstoneRequireSilkTouch = false;
-
-  public static int maxMobsAttracted = 20;
 
   public static void init(FMLPreInitializationEvent event) {
     MinecraftForge.EVENT_BUS.register(new Config());
@@ -263,9 +260,6 @@ public final class Config {
         "The number of levels required to tune a pressure plate.").getInt(soulBinderTunedPressurePlateLevels);
 
     xpObeliskMaxXpLevel = config.get(sectionMisc.name, "xpObeliskMaxXpLevel", xpObeliskMaxXpLevel, "Maximum level of XP the xp obelisk can contain.").getInt();
-
-    maxMobsAttracted = config
-        .get(sectionMisc.name, "maxMobsAttracted", maxMobsAttracted, "Maximum number of mobs any Attraction Obelisk can attract at any time.").getInt();
 
     glassConnectToTheirVariants = config.getBoolean("glassConnectToTheirVariants", sectionMisc.name, glassConnectToTheirVariants,
         "If true, quite clear glass and fused quartz will connect textures with their respective enlightened and darkened variants.");
