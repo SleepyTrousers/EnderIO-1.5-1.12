@@ -73,4 +73,9 @@ public interface ITravelAccessable {
   default void setVisible(boolean visible) {
   }
 
+  /**
+   * If this block is used as a travel source, how far is the travel range?
+   */
+  int getTravelRangeDeparting();
+
 }

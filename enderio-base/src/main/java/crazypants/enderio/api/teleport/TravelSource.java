@@ -1,6 +1,7 @@
 package crazypants.enderio.api.teleport;
 
 import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.TeleportConfig;
 import crazypants.enderio.base.sound.IModSound;
 import crazypants.enderio.base.sound.SoundRegistry;
 
@@ -9,7 +10,7 @@ public enum TravelSource {
   BLOCK(SoundRegistry.TRAVEL_SOURCE_BLOCK) {
     @Override
     public int getMaxDistanceTravelled() {
-      return Config.travelAnchorMaximumDistance;
+      return TeleportConfig.rangeBlocks.get();
     }
   },
   STAFF(SoundRegistry.TRAVEL_SOURCE_ITEM) {
@@ -35,10 +36,6 @@ public enum TravelSource {
     }
   },
   TELEPAD(SoundRegistry.TELEPAD);
-
-  public static int getMaxDistance() {
-    return STAFF.getMaxDistanceTravelledSq();
-  }
 
   public static int getMaxDistanceSq() {
     return STAFF.getMaxDistanceTravelledSq();

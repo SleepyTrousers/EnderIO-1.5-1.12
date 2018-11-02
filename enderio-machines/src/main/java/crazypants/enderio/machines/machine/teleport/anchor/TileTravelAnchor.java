@@ -6,7 +6,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.UserIdent;
 
@@ -20,6 +19,7 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.machines.integration.ftblib.FtblIntegration;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -239,6 +239,11 @@ public class TileTravelAnchor extends AbstractCapabilityPoweredMachineEntity imp
   @Override
   public void setVisible(boolean visible) {
     this.visible = visible;
+  }
+
+  @Override
+  public int getTravelRangeDeparting() {
+    return TravelSource.BLOCK.getMaxDistanceTravelled();
   }
 
 }

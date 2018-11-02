@@ -64,7 +64,6 @@ public final class Config {
     return NullHelper.notnull(configDirectory, "trying to access config before preInit");
   }
 
-  public static int travelAnchorMaximumDistance = 96;
   public static int travelAnchorCooldown = 0;
   public static boolean travelAnchorSneak = true;
   public static boolean travelAnchorSkipWarning = true;
@@ -221,9 +220,6 @@ public final class Config {
             "Valid values are between 2-5, smallest conduits at 2, largest at 5.\n" + "In SMP, all clients must be using the same value as the server.")
         .getInt(DEFAULT_CONDUIT_PIXELS);
     conduitPixels = MathHelper.clamp(conduitPixels, 2, 5);
-
-    travelAnchorMaximumDistance = config.get(sectionAnchor.name, "travelAnchorMaxDistance", travelAnchorMaximumDistance,
-        "Maximum number of blocks that can be traveled from one travel anchor to another.").getInt(travelAnchorMaximumDistance);
 
     travelAnchorCooldown = config
         .get(sectionAnchor.name, "travelAnchorCooldown", travelAnchorCooldown, "Number of ticks in cooldown between activations (1 sec = 20 ticks)")

@@ -18,6 +18,7 @@ public final class BaseConfig {
     ItemConfig.F.getClass();
     RecipeConfig.F.getClass();
     BrokenSpawnerConfig.F.getClass();
+    TeleportConfig.F.getClass();
     TopConfig.F.getClass();
     BlockConfig.F.getClass();
   }

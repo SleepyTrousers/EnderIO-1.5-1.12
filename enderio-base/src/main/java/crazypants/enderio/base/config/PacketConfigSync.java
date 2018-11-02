@@ -12,7 +12,6 @@ public class PacketConfigSync implements IMessage {
 
   @Override
   public void toBytes(ByteBuf buf) {
-    buf.writeInt(Config.travelAnchorMaximumDistance);
     buf.writeBoolean(Config.travelStaffBlinkEnabled);
     buf.writeBoolean(Config.travelStaffBlinkThroughSolidBlocksEnabled);
     buf.writeBoolean(Config.travelStaffBlinkThroughClearBlocksEnabled);
@@ -24,7 +23,6 @@ public class PacketConfigSync implements IMessage {
 
   @Override
   public void fromBytes(ByteBuf data) {
-    Config.travelAnchorMaximumDistance = data.readInt();
     Config.travelStaffBlinkEnabled = data.readBoolean();
     Config.travelStaffBlinkThroughSolidBlocksEnabled = data.readBoolean();
     Config.travelStaffBlinkThroughClearBlocksEnabled = data.readBoolean();

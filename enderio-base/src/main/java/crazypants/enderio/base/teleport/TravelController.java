@@ -6,6 +6,8 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
@@ -253,10 +255,6 @@ public class TravelController {
     }
   }
 
-  public int getMaxTravelDistanceSq() {
-    return TravelSource.getMaxDistanceSq();
-  }
-
   @SubscribeEvent
   public void onRender(@Nonnull RenderWorldLastEvent event) {
 
@@ -290,7 +288,8 @@ public class TravelController {
         candidates.clear();
         return;
       }
-      onBlockCoord = getActiveTravelBlock(player);
+      Pair<BlockPos, ITravelAccessable> pair = getActiveTravelBlock(player);
+      onBlockCoord = pair != null ? pair.getLeft() : null;
       boolean onBlock = onBlockCoord != null;
       showTargets = onBlock || isTravelItemActiveForSelecting(player);
       if (showTargets) {
@@ -510,9 +509,10 @@ public class TravelController {
   @SideOnly(Side.CLIENT)
   private void updateVerticalTarget(@Nonnull EntityPlayerSP player, int direction) {
 
-    BlockPos currentBlock = getActiveTravelBlock(player);
+    Pair<BlockPos, ITravelAccessable> pair = getActiveTravelBlock(player);
+    BlockPos currentBlock = pair.getKey();
     World world = Minecraft.getMinecraft().world;
-    for (int i = 0, y = currentBlock.getY() + direction; i < Config.travelAnchorMaximumDistance && y >= 0 && y <= 255; i++, y += direction) {
+    for (int i = 0, y = currentBlock.getY() + direction; i < pair.getValue().getTravelRangeDeparting() && y >= 0 && y <= 255; i++, y += direction) {
 
       // Circumvents the raytracing used to find candidates on the y axis
       TileEntity selectedBlock = world.getTileEntity(new BlockPos(currentBlock.getX(), y, currentBlock.getZ()));
@@ -610,7 +610,7 @@ public class TravelController {
 
   }
 
-  public double getScaleForCandidate(@Nonnull Vector3d loc) {
+  public double getScaleForCandidate(@Nonnull Vector3d loc, int maxDistanceSq) {
 
     if (!currentView.isValid()) {
       return 1;
@@ -642,7 +642,7 @@ public class TravelController {
       scale *= Config.travelAnchorZoomScale;
 
       // only apply 70% of the scaling so more distance targets are still smaller than closer targets
-      float nf = 1 - MathHelper.clamp((float) eyePoint.distanceSquared(loc) / TravelSource.STAFF.getMaxDistanceTravelledSq(), 0, 1);
+      float nf = 1 - MathHelper.clamp((float) eyePoint.distanceSquared(loc) / maxDistanceSq, 0, 1);
       scale = scale * (0.3 + 0.7 * nf);
 
       scale = (scale * mix) + (1 - mix);
@@ -680,7 +680,7 @@ public class TravelController {
   }
 
   @SideOnly(Side.CLIENT)
-  private BlockPos getActiveTravelBlock(@Nonnull EntityPlayerSP player) {
+  private Pair<BlockPos, ITravelAccessable> getActiveTravelBlock(@Nonnull EntityPlayerSP player) {
     World world = Minecraft.getMinecraft().world;
     if (NullHelper.untrust(world) == null) {
       // Log.warn("(in TickEvent.ClientTickEvent) net.minecraft.client.Minecraft.world is marked @Nonnull but it is null.");
@@ -693,7 +693,7 @@ public class TravelController {
     TileEntity tileEntity = world.getTileEntity(pos);
     if (tileEntity instanceof ITravelAccessable) {
       if (((ITravelAccessable) tileEntity).isTravelSource()) {
-        return new BlockPos(x, y, z);
+        return Pair.of(new BlockPos(x, y, z), ((ITravelAccessable) tileEntity));
       }
     }
     return null;
