@@ -37,7 +37,13 @@ public enum TravelSource {
   TELEPAD(SoundRegistry.TELEPAD);
 
   public static int getMaxDistanceSq() {
-    return STAFF.getMaxDistanceTravelledSq();
+    int result = 0;
+    for (TravelSource source : values()) {
+      if (source.getMaxDistanceTravelled() > result) {
+        result = source.getMaxDistanceTravelled();
+      }
+    }
+    return result * result;
   }
 
   public final IModSound sound;
