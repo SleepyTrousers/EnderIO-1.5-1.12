@@ -53,24 +53,24 @@ public class Alloying extends AbstractCrafting {
       if (valid && input.size() >= 2) {
         final NNList<ItemStack> stacks0 = input.get(0).getThing().getItemStacks();
         final NNList<ItemStack> stacks1 = input.get(1).getThing().getItemStacks();
-        if (input.get(0).name.equals(input.get(1).name)) {
+        if (isSame(input.get(0), input.get(1))) {
           needsDeduping = true;
           if (stacks0.size() == 1) {
             valid = false;
           }
         }
         if (input.size() == 3) {
-          if (input.get(0).name.equals(input.get(2).name)) {
+          if (isSame(input.get(0), input.get(2))) {
             needsDeduping = true;
             if (stacks0.size() == 1) {
               valid = false;
             }
-            if (input.get(1).name.equals(input.get(2).name)) {
+            if (isSame(input.get(1), input.get(2))) {
               if (stacks1.size() <= 2) {
                 valid = false;
               }
             }
-          } else if (input.get(1).name.equals(input.get(2).name)) {
+          } else if (isSame(input.get(1), input.get(2))) {
             needsDeduping = true;
             if (stacks1.size() == 1) {
               valid = false;
@@ -83,6 +83,10 @@ public class Alloying extends AbstractCrafting {
       throw new InvalidRecipeConfigException(e, "in <alloying>");
     }
     return this;
+  }
+
+  private static boolean isSame(ItemOptional a, ItemOptional b) {
+    return a.name.equals(b.name) && ((a.nbt == null && b.nbt == null) || (a.nbt != null && a.nbt.equals(b.nbt)));
   }
 
   @Override
