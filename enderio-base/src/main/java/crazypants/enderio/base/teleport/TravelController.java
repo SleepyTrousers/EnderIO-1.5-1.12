@@ -22,6 +22,7 @@ import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.TeleportConfig;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.teleport.packet.PacketOpenAuthGui;
@@ -301,20 +302,19 @@ public class TravelController {
       tempSneak = input.sneak;
 
       // Handles teleportation if a target is selected
-      if ((input.jump && !wasJumping && onBlock && selectedCoord != null)
-          || (input.sneak && !wasSneaking && onBlock && selectedCoord != null && Config.travelAnchorSneak)) {
+      if ((input.jump && !wasJumping && onBlock && selectedCoord != null && TeleportConfig.activateJump.get())
+          || (input.sneak && !wasSneaking && onBlock && selectedCoord != null && TeleportConfig.activateSneak.get())) {
 
         onInput(player);
       }
-      // If there is no selected coordinate and the input is jump, go up
-      if (input.jump && !wasJumping && onBlock && selectedCoord == null) {
 
+      // Elevator: If there is no selected coordinate and the input is jump, go up
+      if (input.jump && !wasJumping && onBlock && selectedCoord == null) {
         updateVerticalTarget(player, 1);
         onInput(player);
-
       }
 
-      // If there is no selected coordinate and the input is sneak, go down
+      // Elevator: If there is no selected coordinate and the input is sneak, go down
       if (input.sneak && !wasSneaking && onBlock && selectedCoord == null) {
         updateVerticalTarget(player, -1);
         onInput(player);

@@ -64,7 +64,6 @@ public final class Config {
     return NullHelper.notnull(configDirectory, "trying to access config before preInit");
   }
 
-  public static boolean travelAnchorSneak = true;
   public static boolean travelAnchorSkipWarning = true;
 
   public static int travelStaffMaximumDistance = 256;
@@ -219,9 +218,6 @@ public final class Config {
             "Valid values are between 2-5, smallest conduits at 2, largest at 5.\n" + "In SMP, all clients must be using the same value as the server.")
         .getInt(DEFAULT_CONDUIT_PIXELS);
     conduitPixels = MathHelper.clamp(conduitPixels, 2, 5);
-
-    travelAnchorSneak = config.get(sectionAnchor.name, "travelAnchorSneak", travelAnchorSneak, "Add sneak as an option to activate travel anchors")
-        .getBoolean(travelAnchorSneak);
 
     travelAnchorSkipWarning = config
         .get(sectionAnchor.name, "travelAnchorSkipWarning", travelAnchorSkipWarning, "Travel Anchors send a chat warning when skipping inaccessible anchors")
