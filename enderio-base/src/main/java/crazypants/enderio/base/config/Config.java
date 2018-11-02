@@ -64,7 +64,6 @@ public final class Config {
     return NullHelper.notnull(configDirectory, "trying to access config before preInit");
   }
 
-  public static int travelAnchorCooldown = 0;
   public static boolean travelAnchorSneak = true;
   public static boolean travelAnchorSkipWarning = true;
 
@@ -220,10 +219,6 @@ public final class Config {
             "Valid values are between 2-5, smallest conduits at 2, largest at 5.\n" + "In SMP, all clients must be using the same value as the server.")
         .getInt(DEFAULT_CONDUIT_PIXELS);
     conduitPixels = MathHelper.clamp(conduitPixels, 2, 5);
-
-    travelAnchorCooldown = config
-        .get(sectionAnchor.name, "travelAnchorCooldown", travelAnchorCooldown, "Number of ticks in cooldown between activations (1 sec = 20 ticks)")
-        .getInt(travelAnchorCooldown);
 
     travelAnchorSneak = config.get(sectionAnchor.name, "travelAnchorSneak", travelAnchorSneak, "Add sneak as an option to activate travel anchors")
         .getBoolean(travelAnchorSneak);

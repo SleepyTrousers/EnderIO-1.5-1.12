@@ -64,10 +64,6 @@ public class TravelController {
 
   private boolean wasSneaking = false;
 
-  private int delayTimer = 0;
-
-  private int timer = Config.travelAnchorCooldown;
-
   private boolean tempJump;
 
   private boolean tempSneak;
@@ -305,30 +301,23 @@ public class TravelController {
       tempSneak = input.sneak;
 
       // Handles teleportation if a target is selected
-      if ((input.jump && !wasJumping && onBlock && selectedCoord != null && delayTimer == 0)
-          || (input.sneak && !wasSneaking && onBlock && selectedCoord != null && delayTimer == 0 && Config.travelAnchorSneak)) {
+      if ((input.jump && !wasJumping && onBlock && selectedCoord != null)
+          || (input.sneak && !wasSneaking && onBlock && selectedCoord != null && Config.travelAnchorSneak)) {
 
         onInput(player);
-        delayTimer = timer;
       }
       // If there is no selected coordinate and the input is jump, go up
-      if (input.jump && !wasJumping && onBlock && selectedCoord == null && delayTimer == 0) {
+      if (input.jump && !wasJumping && onBlock && selectedCoord == null) {
 
         updateVerticalTarget(player, 1);
         onInput(player);
-        delayTimer = timer;
 
       }
 
       // If there is no selected coordinate and the input is sneak, go down
-      if (input.sneak && !wasSneaking && onBlock && selectedCoord == null && delayTimer == 0) {
+      if (input.sneak && !wasSneaking && onBlock && selectedCoord == null) {
         updateVerticalTarget(player, -1);
         onInput(player);
-        delayTimer = timer;
-      }
-
-      if (delayTimer != 0) {
-        delayTimer--;
       }
 
       wasJumping = tempJump;
