@@ -79,7 +79,8 @@ public final class BlockFluidEio {
     public void randomTick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Random random) {
       this.updateTick(world, pos, state, random);
       if (InfinityConfig.inWorldCraftingFireWaterEnabled.get() && (world.provider.getDimension() == 0 || InfinityConfig.enableInAllDimensions.get())
-          && world.getBlockState(pos.down()).getBlock() == Blocks.BEDROCK && RANDOM.nextFloat() <= InfinityConfig.dropChanceFirewater.get()) {
+          && InfinityConfig.bedrock.get().contains(world.getBlockState(pos.down()).getBlock())
+          && RANDOM.nextFloat() <= InfinityConfig.dropChanceFirewater.get()) {
         MaterialCraftingHandler.spawnInfinityPowder(world, pos);
       }
     }

@@ -10,10 +10,13 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.config.InfinityConfig;
+import crazypants.enderio.base.config.factory.IValue;
+import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.gui.BlockSceneRenderer;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.material.material.Material;
@@ -25,7 +28,7 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import mezz.jei.gui.recipes.RecipeLayout;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.Blocks;
@@ -38,22 +41,77 @@ public class InfinityRecipeCategory implements IRecipeCategory<InfinityRecipeCat
 
   public static class InfinityRecipeWrapper implements IRecipeWrapper {
 
+    private final @Nonnull BlockSceneRenderer bsr;
+    private final @Nonnull IValue<Float> dropchance;
+
+    public InfinityRecipeWrapper(@Nonnull Block block1, @Nonnull Block block2, @Nonnull IValue<Float> dropchance) {
+      this.bsr = new BlockSceneRenderer(
+          new NNList<>(Pair.of(new BlockPos(0, 0, 0), block1.getDefaultState()), Pair.of(new BlockPos(0, 1, 0), block2.getDefaultState())));
+      this.dropchance = dropchance;
+    }
+
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
       ingredients.setOutput(ItemStack.class, Material.POWDER_INFINITY.getStack());
     }
 
+    @Override
+    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+      int x = 15;
+      int y = 20;
+      int w = 26;
+      int h = 50;
+
+      GlStateManager.pushMatrix();
+      bsr.drawScreen(x, y, w, h);
+      GlStateManager.popMatrix();
+
+      final String text = "<" + (int) (dropchance.get() * 100) + "%";
+      int stringWidth = minecraft.fontRenderer.getStringWidth(text);
+      minecraft.fontRenderer.drawString(text, 59 - stringWidth / 2, 36, 0xFFFFFF, false);
+
+      if (InfinityConfig.enableInAllDimensions.get() == false) {
+        minecraft.fontRenderer.drawString(Lang.GUI_INFINTY_RECIPE_DIMENSIONS.get(), 59, 66, ColorUtil.getRGB(Color.GRAY));
+      }
+    }
+
   }
 
   public static void registerExtras(IModRegistry registry) {
-    registry.addRecipeCatalyst(new ItemStack(Blocks.BEDROCK, 1, 0), InfinityRecipeCategory.UUID);
-    registry.addRecipeCatalyst(new ItemStack(Items.FLINT_AND_STEEL, 1, 0), InfinityRecipeCategory.UUID);
+    final Boolean onFire = InfinityConfig.inWorldCraftingEnabled.get();
+    final Boolean onWater = InfinityConfig.inWorldCraftingFireWaterEnabled.get();
+    if (!onFire && !onWater && !InfinityConfig.bedrock.get().isEmpty()) {
+      return;
+    }
+
+    InfinityConfig.bedrock.get().getItemStacks().apply(new Callback<ItemStack>() {
+      @Override
+      public void apply(@Nonnull ItemStack stack) {
+        registry.addRecipeCatalyst(stack, InfinityRecipeCategory.UUID);
+      }
+    });
+    if (onFire) {
+      registry.addRecipeCatalyst(new ItemStack(Items.FLINT_AND_STEEL, 1, 0), InfinityRecipeCategory.UUID);
+    }
+    final Block fire_water = Fluids.FIRE_WATER.getFluid().getBlock();
+    if (onWater && fire_water != null) {
+      registry.addRecipeCatalyst(new ItemStack(fire_water), InfinityRecipeCategory.UUID);
+    }
 
     long start = System.nanoTime();
     List<InfinityRecipeWrapper> result = new ArrayList<InfinityRecipeWrapper>();
-    if (InfinityConfig.inWorldCraftingEnabled.get()) {
-      result.add(new InfinityRecipeWrapper());
-    }
+    InfinityConfig.bedrock.get().getBlocks().apply(new Callback<Block>() {
+
+      @Override
+      public void apply(@Nonnull Block block) {
+        if (onFire) {
+          result.add(new InfinityRecipeWrapper(block, Blocks.FIRE, InfinityConfig.dropChance));
+        }
+        if (onWater && fire_water != null) {
+          result.add(new InfinityRecipeWrapper(block, fire_water, InfinityConfig.dropChanceFirewater));
+        }
+      }
+    });
     long end = System.nanoTime();
     registry.addRecipes(result, UUID);
 
@@ -85,39 +143,11 @@ public class InfinityRecipeCategory implements IRecipeCategory<InfinityRecipeCat
     return background;
   }
 
-  private BlockSceneRenderer bsr;
-  private IRecipeLayout recipeLayout; // This only works as long as there's only one recipe in this category!
-
   @Override
   public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull InfinityRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
     IGuiItemStackGroup itemStacks = recipeLayout.getItemStacks();
     itemStacks.init(0, false, 85, 30);
     itemStacks.set(ingredients);
-
-    this.recipeLayout = recipeLayout;
-    bsr = new BlockSceneRenderer(
-        new NNList<>(Pair.of(new BlockPos(0, 0, 0), Blocks.BEDROCK.getDefaultState()), Pair.of(new BlockPos(0, 1, 0), Blocks.FIRE.getDefaultState())));
-  }
-
-  @Override
-  public void drawExtras(@Nonnull Minecraft minecraft) {
-
-    int x = ((RecipeLayout) recipeLayout).getPosX() + 15;
-    int y = 20 + ((RecipeLayout) recipeLayout).getPosY();
-    int w = 26;
-    int h = 50;
-
-    GlStateManager.pushMatrix();
-    bsr.drawScreen(x, y, w, h);
-    GlStateManager.popMatrix();
-
-    final String text = "<" + (int) (InfinityConfig.dropChance.get() * 100) + "%";
-    int stringWidth = minecraft.fontRenderer.getStringWidth(text);
-    minecraft.fontRenderer.drawString(text, 59 - stringWidth / 2, 36, 0xFFFFFF, false);
-
-    if (InfinityConfig.enableInAllDimensions.get() == false) {
-      minecraft.fontRenderer.drawString(Lang.GUI_INFINTY_RECIPE_DIMENSIONS.get(), 59, 66, ColorUtil.getRGB(Color.GRAY));
-    }
   }
 
   @Override

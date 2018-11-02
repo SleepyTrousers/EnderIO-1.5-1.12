@@ -12,7 +12,6 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.InfinityConfig;
 import net.minecraft.block.BlockFire;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
@@ -44,12 +43,12 @@ public class MaterialCraftingHandler {
       BlockPos pos = event.getPos();
       final long worldTime = world.getTotalWorldTime();
       if (fires.containsKey(posIdx)) {
-        if (world.isAirBlock(pos) && world.getBlockState(pos.down()).getBlock() == Blocks.BEDROCK && worldTime > fires.get(posIdx)
+        if (world.isAirBlock(pos) && InfinityConfig.bedrock.get().contains(world.getBlockState(pos.down()).getBlock()) && worldTime > fires.get(posIdx)
             && RANDOM.nextFloat() <= InfinityConfig.dropChance.get()) {
           spawnInfinityPowder(world, pos);
         }
         fires.remove(posIdx);
-      } else if (event.getState().getBlock() instanceof BlockFire && world.getBlockState(pos.down()).getBlock() == Blocks.BEDROCK) {
+      } else if (event.getState().getBlock() instanceof BlockFire && InfinityConfig.bedrock.get().contains(world.getBlockState(pos.down()).getBlock())) {
         if (fires.size() > 100) {
           Iterator<Long> iterator = fires.values().iterator();
           while (iterator.hasNext()) {
