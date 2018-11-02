@@ -28,6 +28,7 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.gui.recipes.RecipeLayout;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -43,6 +44,8 @@ public class InfinityRecipeCategory implements IRecipeCategory<InfinityRecipeCat
 
     private final @Nonnull BlockSceneRenderer bsr;
     private final @Nonnull IValue<Float> dropchance;
+    private int currentX = 0;
+    private int currentY = 0;
 
     public InfinityRecipeWrapper(@Nonnull Block block1, @Nonnull Block block2, @Nonnull IValue<Float> dropchance) {
       this.bsr = new BlockSceneRenderer(
@@ -57,8 +60,8 @@ public class InfinityRecipeCategory implements IRecipeCategory<InfinityRecipeCat
 
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-      int x = 15;
-      int y = 20;
+      int x = 15 + currentX;
+      int y = 0 + currentY;
       int w = 26;
       int h = 50;
 
@@ -68,10 +71,10 @@ public class InfinityRecipeCategory implements IRecipeCategory<InfinityRecipeCat
 
       final String text = "<" + (int) (dropchance.get() * 100) + "%";
       int stringWidth = minecraft.fontRenderer.getStringWidth(text);
-      minecraft.fontRenderer.drawString(text, 59 - stringWidth / 2, 36, 0xFFFFFF, false);
+      minecraft.fontRenderer.drawString(text, 59 - stringWidth / 2, 26, 0xFFFFFF, false);
 
       if (InfinityConfig.enableInAllDimensions.get() == false) {
-        minecraft.fontRenderer.drawString(Lang.GUI_INFINTY_RECIPE_DIMENSIONS.get(), 59, 66, ColorUtil.getRGB(Color.GRAY));
+        minecraft.fontRenderer.drawString(Lang.GUI_INFINTY_RECIPE_DIMENSIONS.get(), 45, 40, ColorUtil.getRGB(Color.GRAY));
       }
     }
 
@@ -95,7 +98,7 @@ public class InfinityRecipeCategory implements IRecipeCategory<InfinityRecipeCat
     }
     final Block fire_water = Fluids.FIRE_WATER.getFluid().getBlock();
     if (onWater && fire_water != null) {
-      registry.addRecipeCatalyst(new ItemStack(fire_water), InfinityRecipeCategory.UUID);
+      registry.addRecipeCatalyst(Fluids.FIRE_WATER.getBucket(), InfinityRecipeCategory.UUID);
     }
 
     long start = System.nanoTime();
@@ -125,7 +128,7 @@ public class InfinityRecipeCategory implements IRecipeCategory<InfinityRecipeCat
 
   public InfinityRecipeCategory(IGuiHelper guiHelper) {
     ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("infinity");
-    background = guiHelper.createDrawable(backgroundLocation, 0, 0, 128, 64);
+    background = guiHelper.createDrawable(backgroundLocation, 0, 10, 128, 50);
   }
 
   @Override
@@ -146,8 +149,10 @@ public class InfinityRecipeCategory implements IRecipeCategory<InfinityRecipeCat
   @Override
   public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull InfinityRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
     IGuiItemStackGroup itemStacks = recipeLayout.getItemStacks();
-    itemStacks.init(0, false, 85, 30);
+    itemStacks.init(0, false, 85, 20);
     itemStacks.set(ingredients);
+    recipeWrapper.currentX = ((RecipeLayout) recipeLayout).getPosX();
+    recipeWrapper.currentY = ((RecipeLayout) recipeLayout).getPosY();
   }
 
   @Override
