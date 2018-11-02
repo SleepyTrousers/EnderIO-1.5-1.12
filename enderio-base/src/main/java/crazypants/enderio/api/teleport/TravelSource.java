@@ -16,7 +16,7 @@ public enum TravelSource {
   STAFF(SoundRegistry.TRAVEL_SOURCE_ITEM) {
     @Override
     public int getMaxDistanceTravelled() {
-      return Config.travelStaffMaximumDistance;
+      return TeleportConfig.rangeItems.get();
     }
 
     @Override

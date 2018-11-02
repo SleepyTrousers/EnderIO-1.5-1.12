@@ -64,7 +64,6 @@ public final class Config {
     return NullHelper.notnull(configDirectory, "trying to access config before preInit");
   }
 
-  public static int travelStaffMaximumDistance = 256;
   public static float travelStaffPowerPerBlockRF = 250;
 
   public static int travelStaffMaxBlinkDistance = 16;
@@ -217,8 +216,6 @@ public final class Config {
         .getInt(DEFAULT_CONDUIT_PIXELS);
     conduitPixels = MathHelper.clamp(conduitPixels, 2, 5);
 
-    travelStaffMaximumDistance = config.get(sectionStaff.name, "travelStaffMaxDistance", travelStaffMaximumDistance,
-        "Maximum number of blocks that can be traveled using the Staff of Traveling.").getInt(travelStaffMaximumDistance);
     travelStaffPowerPerBlockRF = (float) config.get(sectionStaff.name, "travelStaffPowerPerBlockRF", travelStaffPowerPerBlockRF,
         "Amount of energy required per block traveled using the Staff of Traveling.").getDouble(travelStaffPowerPerBlockRF);
 
