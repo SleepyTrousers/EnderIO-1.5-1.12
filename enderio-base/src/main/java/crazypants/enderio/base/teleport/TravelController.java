@@ -21,7 +21,6 @@ import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.api.teleport.TravelSource;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.config.TeleportConfig;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
@@ -89,11 +88,11 @@ public class TravelController {
   }
 
   private boolean doesHandAllowTravel(@Nonnull EnumHand hand) {
-    return Config.travelStaffOffhandTravelEnabled || hand == EnumHand.MAIN_HAND;
+    return TeleportConfig.enableOffHandTravel.get() || hand == EnumHand.MAIN_HAND;
   }
 
   private boolean doesHandAllowBlink(@Nonnull EnumHand hand) {
-    return Config.travelStaffOffhandBlinkEnabled || hand == EnumHand.MAIN_HAND;
+    return TeleportConfig.enableOffHandBlink.get() || hand == EnumHand.MAIN_HAND;
   }
 
   public boolean activateTravelAccessable(@Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull World world, @Nonnull EntityPlayer player,
@@ -137,7 +136,7 @@ public class TravelController {
     double lookComp = -look.y * playerHeight;
     double maxDistance = TravelSource.STAFF_BLINK.getMaxDistanceTravelled() + lookComp;
 
-    RayTraceResult p = player.world.rayTraceBlocks(eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
+    RayTraceResult p = player.world.rayTraceBlocks(eye3, end, !TeleportConfig.enableBlinkNonSolidBlocks.get());
     if (p == null) {
 
       // go as far as possible
@@ -155,7 +154,7 @@ public class TravelController {
       return false;
     } else {
 
-      List<RayTraceResult> res = Util.raytraceAll(player.world, eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
+      List<RayTraceResult> res = Util.raytraceAll(player.world, eye3, end, !TeleportConfig.enableBlinkNonSolidBlocks.get());
       for (RayTraceResult pos : res) {
         if (pos != null) {
           IBlockState hitBlock = player.world.getBlockState(pos.getBlockPos());
@@ -206,8 +205,8 @@ public class TravelController {
   }
 
   private boolean isBlackListedBlock(@Nonnull EntityPlayer player, @Nonnull RayTraceResult pos, @Nonnull IBlockState hitBlock) {
-    return Config.TRAVEL_BLACKLIST.contains(hitBlock.getBlock())
-        && (hitBlock.getBlockHardness(player.world, pos.getBlockPos()) < 0 || !Config.travelStaffBlinkThroughUnbreakableBlocksEnabled);
+    return TeleportConfig.blockBlacklist.get().contains(hitBlock.getBlock())
+        && (hitBlock.getBlockHardness(player.world, pos.getBlockPos()) < 0 || !TeleportConfig.enableBlinkUnbreakableBlocks.get());
   }
 
   private boolean doBlinkAround(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull Vector3d sample,
@@ -334,7 +333,7 @@ public class TravelController {
   }
 
   public boolean isTravelItemActiveForRendering(@Nonnull EntityPlayer ep) {
-    return isTravelItemActive(ep, ep.getHeldItemMainhand()) || (Config.travelStaffOffhandShowsTravelTargets && isTravelItemActive(ep, ep.getHeldItemOffhand()));
+    return isTravelItemActive(ep, ep.getHeldItemMainhand()) || (TeleportConfig.enableOffHandTravel.get() && isTravelItemActive(ep, ep.getHeldItemOffhand()));
   }
 
   private boolean isTravelItemActiveForSelecting(@Nonnull EntityPlayer ep) {
@@ -438,7 +437,7 @@ public class TravelController {
     if (bc.getY() < 1) {
       return false;
     }
-    if (source == TravelSource.STAFF_BLINK && !Config.travelStaffBlinkThroughSolidBlocksEnabled) {
+    if (source == TravelSource.STAFF_BLINK && !TeleportConfig.enableBlinkSolidBlocks.get()) {
       Vec3d start = Util.getEyePosition(player);
       Vec3d target = new Vec3d(bc.getX() + 0.5f, bc.getY() + 0.5f, bc.getZ() + 0.5f);
       if (!canBlinkTo(bc, w, start, target)) {
@@ -457,9 +456,9 @@ public class TravelController {
   }
 
   private boolean canBlinkTo(@Nonnull BlockPos bc, @Nonnull World w, @Nonnull Vec3d start, @Nonnull Vec3d target) {
-    RayTraceResult p = w.rayTraceBlocks(start, target, !Config.travelStaffBlinkThroughClearBlocksEnabled);
+    RayTraceResult p = w.rayTraceBlocks(start, target, !TeleportConfig.enableBlinkNonSolidBlocks.get());
     if (p != null) {
-      if (!Config.travelStaffBlinkThroughClearBlocksEnabled) {
+      if (!TeleportConfig.enableBlinkNonSolidBlocks.get()) {
         return false;
       }
       IBlockState bs = w.getBlockState(p.getBlockPos());
@@ -622,7 +621,7 @@ public class TravelController {
       scale = tanFovRad * eyePoint.distance(loc);
 
       // Using this scale will give us the block full screen, we will make it 20% of the screen
-      scale *= Config.travelAnchorZoomScale;
+      scale *= TeleportConfig.visualScale.get();
 
       // only apply 70% of the scaling so more distance targets are still smaller than closer targets
       float nf = 1 - MathHelper.clamp((float) eyePoint.distanceSquared(loc) / maxDistanceSq, 0, 1);

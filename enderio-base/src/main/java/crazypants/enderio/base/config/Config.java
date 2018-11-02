@@ -8,13 +8,10 @@ import com.enderio.core.common.event.ConfigFileChangedEvent;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.NullHelper;
-import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.config.BaseConfig;
-import crazypants.enderio.base.network.PacketHandler;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
@@ -40,17 +37,13 @@ public final class Config {
 
   public static Configuration config;
 
-  public static final @Nonnull Section sectionPower = new Section("Power Settings", "power");
-  public static final @Nonnull Section sectionItems = new Section("Item Enabling", "item");
-  public static final @Nonnull Section sectionAnchor = new Section("Anchor Settings", "anchor");
-  public static final @Nonnull Section sectionStaff = new Section("Staff Settings", "staff");
-  public static final @Nonnull Section sectionRod = new Section("Rod of Return Settings", "rod");
-  public static final @Nonnull Section sectionAdvanced = new Section("Advanced Settings", "advanced");
-  public static final @Nonnull Section sectionFluid = new Section("Fluid Settings", "fluid");
-  public static final @Nonnull Section sectionSoulBinder = new Section("Soul Binder Settings", "soulBinder");
-  public static final @Nonnull Section sectionSoulVial = new Section("", "soulvial");
-  public static final @Nonnull Section sectionMisc = new Section("Misc", "misc");
-  public static final @Nonnull Section sectionHoes = new Section("Farm Settings.Hoes", "hoes");
+  private static final @Nonnull Section sectionPower = new Section("Power Settings", "power");
+  private static final @Nonnull Section sectionRod = new Section("Rod of Return Settings", "rod");
+  private static final @Nonnull Section sectionAdvanced = new Section("Advanced Settings", "advanced");
+  private static final @Nonnull Section sectionFluid = new Section("Fluid Settings", "fluid");
+  private static final @Nonnull Section sectionSoulBinder = new Section("Soul Binder Settings", "soulBinder");
+  private static final @Nonnull Section sectionSoulVial = new Section("", "soulvial");
+  private static final @Nonnull Section sectionMisc = new Section("Misc", "misc");
 
   public static final int DEFAULT_CONDUIT_PIXELS = 3;
 
@@ -63,19 +56,6 @@ public final class Config {
   public static @Nonnull File getConfigDirectory() {
     return NullHelper.notnull(configDirectory, "trying to access config before preInit");
   }
-
-  public static int travelStaffBlinkPauseTicks = 10;
-
-  public static boolean travelStaffBlinkEnabled = true;
-  public static boolean travelStaffBlinkThroughSolidBlocksEnabled = true;
-  public static boolean travelStaffBlinkThroughClearBlocksEnabled = true;
-  public static boolean travelStaffBlinkThroughUnbreakableBlocksEnabled = false;
-  public static String[] travelStaffBlinkBlackList = new String[] { "minecraft:bedrock", "Thaumcraft:blockWarded" };
-  public static boolean travelStaffOffhandBlinkEnabled = true;
-  public static boolean travelStaffOffhandTravelEnabled = true;
-  public static boolean travelStaffOffhandShowsTravelTargets = true;
-
-  public static float travelAnchorZoomScale = 0.2f;
 
   public static int hootchPowerPerCycleRF = 60;
   public static int hootchPowerTotalBurnTime = 6000;
@@ -171,7 +151,6 @@ public final class Config {
     }
   }
 
-  public static final Things TRAVEL_BLACKLIST = new Things(travelStaffBlinkBlackList);
 
   @SubscribeEvent
   public void onConfigChanged(OnConfigChangedEvent event) {
@@ -194,7 +173,6 @@ public final class Config {
 
   @SubscribeEvent
   public void onPlayerLoggon(PlayerLoggedInEvent evt) {
-    PacketHandler.INSTANCE.sendTo(new PacketConfigSync(), (EntityPlayerMP) evt.player);
     if (EnderIO.VERSION.contains("-") || EnderIO.VERSION.contains("@")) { // e.g. 1.2.3-nightly
       evt.player.sendMessage(new TextComponentString(
           TextFormatting.DARK_RED + "This is an " + TextFormatting.BLACK + "Ender IO " + TextFormatting.DARK_RED + "development build!"));
@@ -212,41 +190,6 @@ public final class Config {
             "Valid values are between 2-5, smallest conduits at 2, largest at 5.\n" + "In SMP, all clients must be using the same value as the server.")
         .getInt(DEFAULT_CONDUIT_PIXELS);
     conduitPixels = MathHelper.clamp(conduitPixels, 2, 5);
-
-    travelStaffBlinkPauseTicks = config.get(sectionStaff.name, "travelStaffBlinkPauseTicks", travelStaffBlinkPauseTicks,
-        "Minimum number of ticks between 'blinks'. Values of 10 or less allow a limited sort of flight.").getInt(travelStaffBlinkPauseTicks);
-
-    travelStaffBlinkEnabled = config.get(sectionStaff.name, "travelStaffBlinkEnabled", travelStaffBlinkEnabled,
-        "If set to false: the travel staff can not be used to shift-right click teleport, or blink.").getBoolean(travelStaffBlinkEnabled);
-    travelStaffBlinkThroughSolidBlocksEnabled = config.get(sectionStaff.name, "travelStaffBlinkThroughSolidBlocksEnabled",
-        travelStaffBlinkThroughSolidBlocksEnabled, "If set to false: the travel staff can be used to blink through any block.")
-        .getBoolean(travelStaffBlinkThroughSolidBlocksEnabled);
-    travelStaffBlinkThroughClearBlocksEnabled = config
-        .get(sectionItems.name, "travelStaffBlinkThroughClearBlocksEnabled", travelStaffBlinkThroughClearBlocksEnabled,
-            "If travelStaffBlinkThroughSolidBlocksEnabled is set to false and this is true: the travel "
-                + "staff can only be used to blink through transparent or partial blocks (e.g. torches). "
-                + "If both are false: only air blocks may be teleported through.")
-        .getBoolean(travelStaffBlinkThroughClearBlocksEnabled);
-    travelStaffBlinkThroughUnbreakableBlocksEnabled = config.get(sectionItems.name, "travelStaffBlinkThroughUnbreakableBlocksEnabled",
-        travelStaffBlinkThroughUnbreakableBlocksEnabled, "Allows the travel staff to blink through unbreakable blocks such as warded blocks and bedrock.")
-        .getBoolean();
-    travelStaffBlinkBlackList = config.getStringList("travelStaffBlinkBlackList", sectionStaff.name, travelStaffBlinkBlackList,
-        "Lists the blocks that cannot be teleported through in the form 'modID:blockName'");
-    travelAnchorZoomScale = config.getFloat("travelAnchorZoomScale", sectionStaff.name, travelAnchorZoomScale, 0, 1,
-        "Set the max zoomed size of a travel anchor as an aprox. percentage of screen height");
-
-    travelStaffOffhandBlinkEnabled = config
-        .get(sectionStaff.name, "travelStaffOffhandBlinkEnabled", travelStaffOffhandBlinkEnabled,
-            "If set to false: the travel staff can not be used to shift-right click teleport, or blink, when held in the off-hand.")
-        .getBoolean(travelStaffOffhandBlinkEnabled);
-    travelStaffOffhandTravelEnabled = config
-        .get(sectionStaff.name, "travelStaffOffhandTravelEnabled", travelStaffOffhandTravelEnabled,
-            "If set to false: the travel staff can not be used to click teleport to Travel Anchors, when held in the off-hand.")
-        .getBoolean(travelStaffOffhandTravelEnabled);
-    travelStaffOffhandShowsTravelTargets = config
-        .get(sectionStaff.name, "travelStaffOffhandShowsTravelTargets", travelStaffOffhandShowsTravelTargets,
-            "If set to false: Teleportation targets will not be highlighted for travel items held in the off-hand.")
-        .getBoolean(travelStaffOffhandShowsTravelTargets);
 
     rodOfReturnCanTargetAnywhere = config
         .get(sectionRod.name, "rodOfReturnCanTargetAnywhere", rodOfReturnCanTargetAnywhere, "If set to false the rod of return can only target a telepad.")

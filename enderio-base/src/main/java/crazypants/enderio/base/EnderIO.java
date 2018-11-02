@@ -18,6 +18,7 @@ import crazypants.enderio.base.capacitor.CapacitorKeyRegistry;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
+import crazypants.enderio.base.config.config.TeleportConfig;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.base.config.recipes.RecipeLoader;
 import crazypants.enderio.base.diagnostics.ProfilerAntiReactor;
@@ -247,7 +248,7 @@ public class EnderIO implements IEnderIOAddon {
           } else if (IMC.XML_RECIPE_FILE.equals(key)) {
             RecipeLoader.addIMCRecipe(msg.getSender(), true, value);
           } else if (IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
-            Config.TRAVEL_BLACKLIST.add(value);
+            TeleportConfig.blockBlacklist.get().add(value);
           } else if (IMC.REDSTONE_CONNECTABLE_ADD.equals(key)) {
             ConnectivityTool.registerRedstoneAware(value);
           }

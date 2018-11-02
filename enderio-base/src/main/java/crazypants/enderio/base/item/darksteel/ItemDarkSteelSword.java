@@ -22,8 +22,8 @@ import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
+import crazypants.enderio.base.config.config.TeleportConfig;
 import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.SwordHandler;
@@ -223,7 +223,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
         if (ticksSinceBlink < 0) {
           lastBlickTick = -1;
         }
-        if (Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
+        if (TeleportConfig.enableBlink.get() && world.isRemote && ticksSinceBlink >= TeleportConfig.blinkDelay.get()) {
           if (TravelController.instance.doBlink(stack, hand, player)) {
             player.swingArm(hand);
             lastBlickTick = EnderIO.proxy.getTickCount();
