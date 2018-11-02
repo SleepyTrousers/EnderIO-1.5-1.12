@@ -21,7 +21,7 @@ public enum TravelSource {
 
     @Override
     public float getPowerCostPerBlockTraveledRF() {
-      return Config.travelStaffPowerPerBlockRF;
+      return TeleportConfig.costItem2Block.get();
     }
   },
   STAFF_BLINK(SoundRegistry.TRAVEL_SOURCE_ITEM) {
@@ -32,7 +32,7 @@ public enum TravelSource {
 
     @Override
     public float getPowerCostPerBlockTraveledRF() {
-      return Config.travelStaffPowerPerBlockRF;
+      return TeleportConfig.costItem2Blink.get();
     }
   },
   TELEPAD(SoundRegistry.TELEPAD);

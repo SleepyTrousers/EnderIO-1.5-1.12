@@ -64,8 +64,6 @@ public final class Config {
     return NullHelper.notnull(configDirectory, "trying to access config before preInit");
   }
 
-  public static float travelStaffPowerPerBlockRF = 250;
-
   public static int travelStaffMaxBlinkDistance = 16;
   public static int travelStaffBlinkPauseTicks = 10;
 
@@ -215,9 +213,6 @@ public final class Config {
             "Valid values are between 2-5, smallest conduits at 2, largest at 5.\n" + "In SMP, all clients must be using the same value as the server.")
         .getInt(DEFAULT_CONDUIT_PIXELS);
     conduitPixels = MathHelper.clamp(conduitPixels, 2, 5);
-
-    travelStaffPowerPerBlockRF = (float) config.get(sectionStaff.name, "travelStaffPowerPerBlockRF", travelStaffPowerPerBlockRF,
-        "Amount of energy required per block traveled using the Staff of Traveling.").getDouble(travelStaffPowerPerBlockRF);
 
     travelStaffMaxBlinkDistance = config
         .get(sectionStaff.name, "travelStaffMaxBlinkDistance", travelStaffMaxBlinkDistance, "Max number of blocks teleported when shift clicking the staff.")
