@@ -13,6 +13,7 @@ public final class BaseConfig {
     PersonalConfig.F.getClass();
     DarkSteelConfig.F_DARK_STEEL.getClass();
     EnchanterConfig.F.getClass();
+    FluidConfig.F.getClass();
     InfinityConfig.F.getClass();
     IntegrationConfig.F.getClass();
     ItemConfig.F.getClass();

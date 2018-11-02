@@ -37,10 +37,8 @@ public final class Config {
 
   public static Configuration config;
 
-  private static final @Nonnull Section sectionPower = new Section("Power Settings", "power");
   private static final @Nonnull Section sectionRod = new Section("Rod of Return Settings", "rod");
   private static final @Nonnull Section sectionAdvanced = new Section("Advanced Settings", "advanced");
-  private static final @Nonnull Section sectionFluid = new Section("Fluid Settings", "fluid");
   private static final @Nonnull Section sectionSoulBinder = new Section("Soul Binder Settings", "soulBinder");
   private static final @Nonnull Section sectionSoulVial = new Section("", "soulvial");
   private static final @Nonnull Section sectionMisc = new Section("Misc", "misc");
@@ -57,21 +55,12 @@ public final class Config {
     return NullHelper.notnull(configDirectory, "trying to access config before preInit");
   }
 
-  public static int hootchPowerPerCycleRF = 60;
-  public static int hootchPowerTotalBurnTime = 6000;
-  public static int rocketFuelPowerPerCycleRF = 160;
-  public static int rocketFuelPowerTotalBurnTime = 7000;
-  public static int fireWaterPowerPerCycleRF = 80;
-  public static int fireWaterPowerTotalBurnTime = 15000;
 
   /**
    * Note: If someone asks you to include a hoe in this (no longer existing) list, the correct answer is:
    * 
    * "No. Get the other mod author to oredict their hoe(s) as 'toolHoe'"
    */
-
-  public static long nutrientFoodBoostDelay = 400;
-  public static boolean rocketFuelIsExplosive = true;
 
   public static double xpVacuumRange = 10;
 
@@ -208,29 +197,6 @@ public final class Config {
         .get(sectionRod.name, "rodOfReturnFluidUsePerTeleport", rodOfReturnFluidUsePerTeleport, "How much fluid is used per teleport")
         .getInt(rodOfReturnFluidUsePerTeleport);
     rodOfReturnFluidType = config.getString("rodOfReturnFluidType", sectionRod.name, rodOfReturnFluidType, "The type of fluid used by the rod.");
-
-    hootchPowerPerCycleRF = config.get(sectionPower.name, "hootchPowerPerCycleRF", hootchPowerPerCycleRF,
-        "The amount of power generated per BC engine cycle. Examples: BC Oil = 30, BC Fuel = 60").getInt(hootchPowerPerCycleRF);
-    hootchPowerTotalBurnTime = config
-        .get(sectionPower.name, "hootchPowerTotalBurnTime", hootchPowerTotalBurnTime, "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000")
-        .getInt(hootchPowerTotalBurnTime);
-
-    rocketFuelPowerPerCycleRF = config.get(sectionPower.name, "rocketFuelPowerPerCycleRF", rocketFuelPowerPerCycleRF,
-        "The amount of power generated per BC engine cycle. Examples: BC Oil = 3, BC Fuel = 6").getInt(rocketFuelPowerPerCycleRF);
-    rocketFuelPowerTotalBurnTime = config
-        .get(sectionPower.name, "rocketFuelPowerTotalBurnTime", rocketFuelPowerTotalBurnTime, "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000")
-        .getInt(rocketFuelPowerTotalBurnTime);
-
-    fireWaterPowerPerCycleRF = config.get(sectionPower.name, "fireWaterPowerPerCycleRF", fireWaterPowerPerCycleRF,
-        "The amount of power generated per BC engine cycle. Examples: BC Oil = 30, BC Fuel = 60").getInt(fireWaterPowerPerCycleRF);
-    fireWaterPowerTotalBurnTime = config
-        .get(sectionPower.name, "fireWaterPowerTotalBurnTime", fireWaterPowerTotalBurnTime, "The total burn time. Examples: BC Oil = 5000, BC Fuel = 25000")
-        .getInt(fireWaterPowerTotalBurnTime);
-
-    nutrientFoodBoostDelay = config.get(sectionFluid.name, "nutrientFluidFoodBoostDelay", nutrientFoodBoostDelay,
-        "The delay in ticks between when nutrient distillation boosts your food value.").getInt((int) nutrientFoodBoostDelay);
-    rocketFuelIsExplosive = config
-        .get(sectionFluid.name, "rocketFuelIsExplosive", rocketFuelIsExplosive, "If enabled, Rocket Fuel will explode when in contact with fire.").getBoolean();
 
     xpVacuumRange = config.get(sectionAdvanced.name, "xpVacuumRange", xpVacuumRange, "The distance from which XP will be gathered by the XP vacuum.")
         .getDouble(xpVacuumRange);

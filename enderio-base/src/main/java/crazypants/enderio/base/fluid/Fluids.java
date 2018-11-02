@@ -8,7 +8,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.FluidConfig;
 import crazypants.enderio.base.integration.railcraft.RailcraftUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -242,9 +242,9 @@ public enum Fluids {
   }
 
   public static void registerFuels() {
-    FluidFuelRegister.instance.addFuel(HOOTCH.getFluid(), Config.hootchPowerPerCycleRF, Config.hootchPowerTotalBurnTime);
-    FluidFuelRegister.instance.addFuel(ROCKET_FUEL.getFluid(), Config.rocketFuelPowerPerCycleRF, Config.rocketFuelPowerTotalBurnTime);
-    FluidFuelRegister.instance.addFuel(FIRE_WATER.getFluid(), Config.fireWaterPowerPerCycleRF, Config.fireWaterPowerTotalBurnTime);
+    FluidFuelRegister.instance.addFuel(HOOTCH.getFluid(), FluidConfig.hootchPowerPerCycle.get(), FluidConfig.hootchPowerTotalBurnTime.get());
+    FluidFuelRegister.instance.addFuel(ROCKET_FUEL.getFluid(), FluidConfig.rocketFuelPowerPerCycle.get(), FluidConfig.rocketFuelPowerTotalBurnTime.get());
+    FluidFuelRegister.instance.addFuel(FIRE_WATER.getFluid(), FluidConfig.fireWaterPowerPerCycle.get(), FluidConfig.fireWaterPowerTotalBurnTime.get());
     FluidFuelRegister.instance.addCoolant(VAPOR_OF_LEVITY.getFluid(), 0.0314f);
 
     RailcraftUtil.registerFuels();
