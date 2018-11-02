@@ -34,3 +34,11 @@ item.item_stellar_alloy_helmet.name=Stellar Helmet
 item.item_stellar_alloy_chestplate.name=Stellar Chestplate
 item.item_stellar_alloy_leggings.name=Stellar Leggings
 item.item_stellar_alloy_boots.name=Stellar Boots
+
+fluid.crude_steel=Crude Steel
+fluid.crystalline_alloy=Crystalline Alloy
+fluid.melodic_alloy=Melodic Alloy
+fluid.stellar_alloy=Stellar Alloy
+fluid.crystalline_pink_slime=Crystalline Pink Slime
+fluid.energetic_silver=Endergetic Silver
+fluid.vivid_alloy=Vivid Alloy
