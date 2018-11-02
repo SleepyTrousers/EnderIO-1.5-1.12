@@ -84,8 +84,6 @@ public final class Config {
   public static int soulBinderSoulFilterRF = 5_000_000;
 
 
-  public static int xpObeliskMaxXpLevel = Integer.MAX_VALUE;
-
   public static boolean clearGlassConnectToFusedQuartz = false;
   public static boolean glassConnectToTheirVariants = true;
   public static boolean glassConnectToTheirColorVariants = true;
@@ -258,8 +256,6 @@ public final class Config {
         "The number of levels required to change the type of a broken spawner.").getInt(soulBinderBrokenSpawnerLevels);
     soulBinderTunedPressurePlateLevels = config.get(sectionSoulBinder.name, "soulBinderTunedPressurePlateLevels", soulBinderTunedPressurePlateLevels,
         "The number of levels required to tune a pressure plate.").getInt(soulBinderTunedPressurePlateLevels);
-
-    xpObeliskMaxXpLevel = config.get(sectionMisc.name, "xpObeliskMaxXpLevel", xpObeliskMaxXpLevel, "Maximum level of XP the xp obelisk can contain.").getInt();
 
     glassConnectToTheirVariants = config.getBoolean("glassConnectToTheirVariants", sectionMisc.name, glassConnectToTheirVariants,
         "If true, quite clear glass and fused quartz will connect textures with their respective enlightened and darkened variants.");

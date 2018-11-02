@@ -27,6 +27,7 @@ import crazypants.enderio.machines.config.config.TranceiverConfig;
 import crazypants.enderio.machines.config.config.VacuumConfig;
 import crazypants.enderio.machines.config.config.VatConfig;
 import crazypants.enderio.machines.config.config.WeatherConfig;
+import crazypants.enderio.machines.config.config.XPObeliskConfig;
 import crazypants.enderio.machines.config.config.ZombieGenConfig;
 
 @ParametersAreNonnullByDefault // Not the right one, but eclipse knows only 3 null annotations anyway, so it's ok
@@ -68,5 +69,6 @@ public final class Config {
     WeatherConfig.F.getClass();
     ChargerConfig.F.getClass();
     ZombieGenConfig.F.getClass();
+    XPObeliskConfig.F.getClass();
   }
 }
