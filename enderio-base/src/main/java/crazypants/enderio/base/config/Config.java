@@ -64,8 +64,6 @@ public final class Config {
     return NullHelper.notnull(configDirectory, "trying to access config before preInit");
   }
 
-  public static boolean travelAnchorSkipWarning = true;
-
   public static int travelStaffMaximumDistance = 256;
   public static float travelStaffPowerPerBlockRF = 250;
 
@@ -218,10 +216,6 @@ public final class Config {
             "Valid values are between 2-5, smallest conduits at 2, largest at 5.\n" + "In SMP, all clients must be using the same value as the server.")
         .getInt(DEFAULT_CONDUIT_PIXELS);
     conduitPixels = MathHelper.clamp(conduitPixels, 2, 5);
-
-    travelAnchorSkipWarning = config
-        .get(sectionAnchor.name, "travelAnchorSkipWarning", travelAnchorSkipWarning, "Travel Anchors send a chat warning when skipping inaccessible anchors")
-        .getBoolean(travelAnchorSkipWarning);
 
     travelStaffMaximumDistance = config.get(sectionStaff.name, "travelStaffMaxDistance", travelStaffMaximumDistance,
         "Maximum number of blocks that can be traveled using the Staff of Traveling.").getInt(travelStaffMaximumDistance);

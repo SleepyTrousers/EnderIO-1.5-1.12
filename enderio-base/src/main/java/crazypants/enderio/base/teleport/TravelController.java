@@ -510,21 +510,15 @@ public class TravelController {
         ITravelAccessable travelBlock = (ITravelAccessable) selectedBlock;
         BlockPos targetBlock = new BlockPos(currentBlock.getX(), y, currentBlock.getZ());
 
-        if (Config.travelAnchorSkipWarning) {
-          if (travelBlock.getRequiresPassword(player)) {
-            player.sendMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipLocked"));
-          }
-
-          if (travelBlock.getAccessMode() == ITravelAccessable.AccessMode.PRIVATE && !travelBlock.canUiBeAccessed(player)) {
-            player.sendMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipPrivate"));
-          }
-          if (!isValidTarget(player, targetBlock, TravelSource.BLOCK)) {
-            player.sendMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipObstructed"));
-          }
-        }
         if (travelBlock.canBlockBeAccessed(player) && isValidTarget(player, targetBlock, TravelSource.BLOCK)) {
           selectedCoord = targetBlock;
           return;
+        } else if (travelBlock.getRequiresPassword(player)) {
+          player.sendStatusMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipLocked"), true);
+        } else if (travelBlock.getAccessMode() == ITravelAccessable.AccessMode.PRIVATE && !travelBlock.canUiBeAccessed(player)) {
+          player.sendStatusMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipPrivate"), true);
+        } else if (!isValidTarget(player, targetBlock, TravelSource.BLOCK)) {
+          player.sendStatusMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipObstructed"), true);
         }
       }
     }
