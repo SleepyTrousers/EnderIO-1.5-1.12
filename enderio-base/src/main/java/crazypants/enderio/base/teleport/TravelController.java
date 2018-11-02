@@ -127,7 +127,7 @@ public class TravelController {
     Vector3d look = Util.getLookVecEio(player);
 
     Vector3d sample = new Vector3d(look);
-    sample.scale(Config.travelStaffMaxBlinkDistance);
+    sample.scale(TravelSource.STAFF_BLINK.getMaxDistanceTravelled());
     sample.add(eye);
     Vec3d eye3 = new Vec3d(eye.x, eye.y, eye.z);
     Vec3d end = new Vec3d(sample.x, sample.y, sample.z);
@@ -135,7 +135,7 @@ public class TravelController {
     double playerHeight = player.getYOffset();
     // if you looking at you feet, and your player height to the max distance, or part there of
     double lookComp = -look.y * playerHeight;
-    double maxDistance = Config.travelStaffMaxBlinkDistance + lookComp;
+    double maxDistance = TravelSource.STAFF_BLINK.getMaxDistanceTravelled() + lookComp;
 
     RayTraceResult p = player.world.rayTraceBlocks(eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
     if (p == null) {

@@ -16,7 +16,6 @@ public class PacketConfigSync implements IMessage {
     buf.writeBoolean(Config.travelStaffBlinkThroughSolidBlocksEnabled);
     buf.writeBoolean(Config.travelStaffBlinkThroughClearBlocksEnabled);
     buf.writeInt(Config.travelStaffBlinkPauseTicks);
-    buf.writeInt(Config.travelStaffMaxBlinkDistance);
   }
 
   @Override
@@ -25,7 +24,6 @@ public class PacketConfigSync implements IMessage {
     Config.travelStaffBlinkThroughSolidBlocksEnabled = data.readBoolean();
     Config.travelStaffBlinkThroughClearBlocksEnabled = data.readBoolean();
     Config.travelStaffBlinkPauseTicks = data.readInt();
-    Config.travelStaffMaxBlinkDistance = data.readInt();
   }
 
   public static class Handler implements IMessageHandler<PacketConfigSync, IMessage> {

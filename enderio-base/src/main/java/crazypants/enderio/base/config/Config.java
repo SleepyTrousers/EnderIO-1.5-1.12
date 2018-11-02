@@ -64,7 +64,6 @@ public final class Config {
     return NullHelper.notnull(configDirectory, "trying to access config before preInit");
   }
 
-  public static int travelStaffMaxBlinkDistance = 16;
   public static int travelStaffBlinkPauseTicks = 10;
 
   public static boolean travelStaffBlinkEnabled = true;
@@ -213,10 +212,6 @@ public final class Config {
             "Valid values are between 2-5, smallest conduits at 2, largest at 5.\n" + "In SMP, all clients must be using the same value as the server.")
         .getInt(DEFAULT_CONDUIT_PIXELS);
     conduitPixels = MathHelper.clamp(conduitPixels, 2, 5);
-
-    travelStaffMaxBlinkDistance = config
-        .get(sectionStaff.name, "travelStaffMaxBlinkDistance", travelStaffMaxBlinkDistance, "Max number of blocks teleported when shift clicking the staff.")
-        .getInt(travelStaffMaxBlinkDistance);
 
     travelStaffBlinkPauseTicks = config.get(sectionStaff.name, "travelStaffBlinkPauseTicks", travelStaffBlinkPauseTicks,
         "Minimum number of ticks between 'blinks'. Values of 10 or less allow a limited sort of flight.").getInt(travelStaffBlinkPauseTicks);
