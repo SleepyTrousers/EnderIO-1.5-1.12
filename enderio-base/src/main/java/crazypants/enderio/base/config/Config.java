@@ -62,8 +62,6 @@ public final class Config {
    * "No. Get the other mod author to oredict their hoe(s) as 'toolHoe'"
    */
 
-  public static double xpVacuumRange = 10;
-
   public static NNList<ResourceLocation> soulVesselBlackList = new NNList<ResourceLocation>();
   public static NNList<ResourceLocation> soulVesselUnspawnableList = new NNList<ResourceLocation>();
   public static boolean soulVesselCapturesBosses = false;
@@ -86,7 +84,6 @@ public final class Config {
   public static int soulBinderSoulFilterLevels = 12;
   public static int soulBinderSoulFilterRF = 5_000_000;
 
-  public static float slicenspliceToolDamageChance = 0.01f;
 
   public static int xpObeliskMaxXpLevel = Integer.MAX_VALUE;
 
@@ -198,9 +195,6 @@ public final class Config {
         .getInt(rodOfReturnFluidUsePerTeleport);
     rodOfReturnFluidType = config.getString("rodOfReturnFluidType", sectionRod.name, rodOfReturnFluidType, "The type of fluid used by the rod.");
 
-    xpVacuumRange = config.get(sectionAdvanced.name, "xpVacuumRange", xpVacuumRange, "The distance from which XP will be gathered by the XP vacuum.")
-        .getDouble(xpVacuumRange);
-
     final NNList<String> temp = new NNList<>();
     soulVesselBlackList.apply(new Callback<ResourceLocation>() {
       @Override
@@ -267,11 +261,6 @@ public final class Config {
         "The number of levels required to change the type of a broken spawner.").getInt(soulBinderBrokenSpawnerLevels);
     soulBinderTunedPressurePlateLevels = config.get(sectionSoulBinder.name, "soulBinderTunedPressurePlateLevels", soulBinderTunedPressurePlateLevels,
         "The number of levels required to tune a pressure plate.").getInt(soulBinderTunedPressurePlateLevels);
-
-    slicenspliceToolDamageChance = (float) config.get(sectionAdvanced.name, "slicenspliceToolDamageChance", slicenspliceToolDamageChance,
-        "The chance that a tool will take damage each tick while the Slice'n'Splice is running (0 = no chance, 1 = 100% chance). "
-            + "Tools will always take damage when the crafting is finished.")
-        .getDouble(slicenspliceToolDamageChance);
 
     xpObeliskMaxXpLevel = config.get(sectionMisc.name, "xpObeliskMaxXpLevel", xpObeliskMaxXpLevel, "Maximum level of XP the xp obelisk can contain.").getInt();
 

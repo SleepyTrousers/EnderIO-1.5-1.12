@@ -18,6 +18,7 @@ import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.ManyToOneMachineRecipe;
 import crazypants.enderio.base.recipe.RecipeLevel;
+import crazypants.enderio.machines.config.config.SliceAndSpliceConfig;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,7 +27,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-import static crazypants.enderio.base.config.Config.slicenspliceToolDamageChance;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_INTAKE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SLICE_POWER_USE;
@@ -102,10 +102,10 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
   @Override
   protected int usePower(int wantToUse) {
     if (wantToUse > 0) {
-      if (random.nextFloat() < slicenspliceToolDamageChance) {
+      if (random.nextFloat() < SliceAndSpliceConfig.toolDamageChance.get()) {
         damageTool(getAxe(), axeIndex);
       }
-      if (random.nextFloat() < slicenspliceToolDamageChance) {
+      if (random.nextFloat() < SliceAndSpliceConfig.toolDamageChance.get()) {
         damageTool(getShears(), shearsIndex);
       }
     }
