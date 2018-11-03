@@ -107,7 +107,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
 
   public static final @Nonnull NNList<EnergyUpgrade> UPGRADES = new NNList<>(
       new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 0, "enderio.darksteel.upgrade.empowered_one", DarkSteelConfig.energyUpgradeLevelCostEmpowered0,
-          Material.VIBRANT_CYSTAL.getStack()),
+          Material.VIBRANT_CRYSTAL.getStack()),
       new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 1, "enderio.darksteel.upgrade.empowered_two", DarkSteelConfig.energyUpgradeLevelCostEmpowered1,
           new ItemStack(itemBasicCapacitor.getItemNN(), 1, 0)),
       new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 2, "enderio.darksteel.upgrade.empowered_three", DarkSteelConfig.energyUpgradeLevelCostEmpowered2,

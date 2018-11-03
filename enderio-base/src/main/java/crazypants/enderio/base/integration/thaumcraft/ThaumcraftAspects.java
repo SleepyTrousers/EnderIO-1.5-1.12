@@ -84,7 +84,7 @@ public class ThaumcraftAspects {
             .add(getAspects(Items.EMERALD)));
 
     registerObjectTag(new ItemStack(ModObject.itemMaterial.getItemNN(), 1, Material.ATTRACTOR_CRYSTAL.ordinal()), new AspectList().add(Aspect.AIR, 2)
-        .add(Aspect.MAN, 3).add(getAspects(new ItemStack(ModObject.itemMaterial.getItemNN(), 1, Material.VIBRANT_CYSTAL.ordinal()))));
+        .add(Aspect.MAN, 3).add(getAspects(new ItemStack(ModObject.itemMaterial.getItemNN(), 1, Material.VIBRANT_CRYSTAL.ordinal()))));
 
     registerObjectTag(new ItemStack(ModObject.blockFusedQuartz.getBlockNN(), 1),
         new AspectList().add(getAspects(new ItemStack(Items.QUARTZ, 4))).add(Aspect.CRYSTAL, 1));

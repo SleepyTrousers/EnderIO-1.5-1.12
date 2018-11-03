@@ -16,7 +16,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import static crazypants.enderio.base.init.ModObject.itemBasicCapacitor;
 import static crazypants.enderio.base.material.alloy.Alloy.ENERGETIC_ALLOY;
 import static crazypants.enderio.base.material.alloy.Alloy.VIBRANT_ALLOY;
-import static crazypants.enderio.base.material.material.Material.VIBRANT_CYSTAL;
+import static crazypants.enderio.base.material.material.Material.VIBRANT_CRYSTAL;
 
 @EventBusSubscriber(modid = EnderIOPowerTools.MODID)
 public class PowerToolRecipes {
@@ -28,7 +28,7 @@ public class PowerToolRecipes {
     ItemStack capacitor3 = new ItemStack(itemBasicCapacitor.getItemNN(), 1, 2);
     String energeticAlloy = ENERGETIC_ALLOY.getOreIngot();
     String phasedGold = VIBRANT_ALLOY.getOreIngot();
-    String vibCry = VIBRANT_CYSTAL.getOreDict();
+    String vibCry = VIBRANT_CRYSTAL.getOreDict();
 
     ItemStack capBank1 = BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.SIMPLE), 0);
     ItemStack capBank2 = BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.ACTIVATED), 0);

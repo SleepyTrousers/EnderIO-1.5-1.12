@@ -78,11 +78,12 @@ public class Soulbinding extends AbstractCrafting {
         throw new InvalidRecipeConfigException("Invalid negative or zero value for 'levels'");
       }
 
-      valid = valid && input.isValid();
-
+      boolean hasValidSoul = soulHandling != SoulHandling.LISTED;
       for (Soul soul : souls) {
-        valid = valid && soul.isValid();
+        hasValidSoul = hasValidSoul || soul.isValid();
       }
+
+      valid = valid && input.isValid() && hasValidSoul;
 
     } catch (InvalidRecipeConfigException e) {
       throw new InvalidRecipeConfigException(e, "in <soulbinding>");
