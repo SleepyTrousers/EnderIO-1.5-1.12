@@ -79,7 +79,7 @@ XML editor will display that as tooltips when editing this file.
     </spawning>
   </recipe>
 
-<!-- TODO: Move this to using enderio-zoo -->
+<!-- TODO 1.13: Remove the old zoo -->
   <recipe name="Spawner, Ender Zoo" required="false">
     <spawning>
       <entity name="enderzoo:concussioncreeper"    costMultiplier="1.5" disabled="false"/>

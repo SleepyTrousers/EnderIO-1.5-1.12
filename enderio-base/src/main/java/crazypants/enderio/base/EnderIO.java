@@ -196,7 +196,6 @@ public class EnderIO implements IEnderIOAddon {
     AlloyRecipeManager.getInstance().create();
     SliceAndSpliceRecipeManager.getInstance().create();
     VatRecipeManager.getInstance().create();
-    SoulBinderRecipeManager.getInstance().addDefaultRecipes();
     PaintSourceValidator.instance.loadConfig();
 
     BuildcraftIntegration.init(event);

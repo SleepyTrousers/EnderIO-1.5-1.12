@@ -463,7 +463,7 @@
                         </element>
                         <element minOccurs="1" maxOccurs="unbounded" name="entity">
                           <annotation>
-                            <documentation>When this item is used in the Enchanter it will give this recipe.</documentation>
+                            <documentation>The settings for one type of entity.</documentation>
                           </annotation>
                           <complexType>
                             <attribute use="required" name="name" type="string" />
@@ -714,6 +714,10 @@
                     </annotation>
                   </element>
                   <element name="fermenting" type="enderio:fermentingType" maxOccurs="unbounded" minOccurs="1"></element>
+                  <element name="soulbinding" type="enderio:soulbindingType" minOccurs="1" maxOccurs="unbounded">
+                    <annotation>
+                      <documentation>A recipe for the Soul Binder.</documentation>
+                    </annotation></element>
                 </choice>
               </sequence>
               <attribute use="optional" name="required" type="boolean">
@@ -962,4 +966,101 @@
                   <pattern value="idx\(([1-9]\d*(\.\d+)?|0\.\d+)\)(:?([1-9]\d*|0)(\.\d+)?)(:([1-9]\d*|0)(\.\d+)?)*"></pattern>
                 </restriction>
   </simpleType>
+
+  <complexType name="soulbindingType">
+    <annotation>
+      <documentation>A Soul Binder recipe.</documentation>
+    </annotation>
+    <sequence>
+      <element name="config" type="enderio:configComplexType" maxOccurs="unbounded" minOccurs="0"></element>
+      <element name="dependency" type="enderio:dependencyComplexType" maxOccurs="unbounded" minOccurs="0"></element>
+      <element name="input" minOccurs="1" maxOccurs="1">
+        <annotation>
+          <documentation>The item that is the input.</documentation>
+        </annotation>
+        <complexType>
+          <attribute use="required" name="name" type="string" />
+          <attribute name="nbt" type="string" use="optional"></attribute>
+        </complexType>
+      </element>
+      <element minOccurs="0" maxOccurs="unbounded" name="soul">
+        <annotation>
+          <documentation>
+            The soul that is the input. All souls must be in Soul Vials, so you only specify the soul itself here.
+          </documentation>
+        </annotation>
+        <complexType>
+          <attribute use="required" name="name" type="string" />
+        </complexType>
+      </element>
+      <element name="output" minOccurs="1" maxOccurs="1">
+        <annotation>
+          <documentation>The item to produce.</documentation>
+        </annotation>
+        <complexType>
+          <sequence>
+            <element minOccurs="0" maxOccurs="unbounded" name="config" type="enderio:configComplexType">
+              <annotation>
+                <documentation>Restricts this output to only be used if the given config value has the given value.</documentation>
+              </annotation>
+            </element>
+            <element minOccurs="0" maxOccurs="unbounded" name="dependency" type="enderio:dependencyComplexType">
+              <annotation>
+                <documentation>
+                  Restricts this output to only be used if the given game element can (not) be found in the game.
+                </documentation>
+              </annotation>
+            </element>
+          </sequence>
+          <attribute use="required" name="name" type="string" />
+        </complexType>
+      </element>
+    </sequence>
+    <attribute name="energy" use="required">
+      <annotation>
+        <documentation>The amount of energy running this recipe takes.</documentation>
+      </annotation>
+      <simpleType>
+        <restriction base="int">
+          <minExclusive value="0"></minExclusive>
+        </restriction>
+      </simpleType>
+    </attribute>
+    <attribute name="levels" use="required">
+      <annotation>
+        <documentation>The amount of XP levels running this recipe takes.</documentation>
+      </annotation>
+      <simpleType>
+        <restriction base="int">
+          <minExclusive value="1"></minExclusive>
+          <maxInclusive value="21862"></maxInclusive>
+        </restriction>
+      </simpleType>
+    </attribute>
+    <attribute name="logic" use="optional" default="NONE">
+      <simpleType>
+        <restriction base="string">
+          <enumeration value="NONE"></enumeration>
+          <enumeration value="APPLY"></enumeration>
+          <enumeration value="FILTER"></enumeration>
+        </restriction>
+      </simpleType>
+    </attribute>
+    <attribute name="souls" use="optional" default="LISTED">
+            <annotation>
+              <documentation>Which souls can be used with this recipe:
+
+* LISTED: Souls will be given with the 'soul' tag
+* ALL: All souls can be used
+* SPAWNABLE: All souls that can be used with the Powered Spawner can be used.</documentation>
+            </annotation>
+            <simpleType>
+        <restriction base="string">
+          <enumeration value="LISTED"></enumeration>
+          <enumeration value="ALL"></enumeration>
+          <enumeration value="SPAWNABLE"></enumeration>
+        </restriction>
+      </simpleType>
+    </attribute>
+  </complexType>
 </schema>

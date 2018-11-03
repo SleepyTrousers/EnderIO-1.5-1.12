@@ -54,7 +54,6 @@ public final class Config {
     return NullHelper.notnull(configDirectory, "trying to access config before preInit");
   }
 
-
   /**
    * Note: If someone asks you to include a hoe in this (no longer existing) list, the correct answer is:
    * 
@@ -64,25 +63,6 @@ public final class Config {
   public static NNList<ResourceLocation> soulVesselBlackList = new NNList<ResourceLocation>();
   public static NNList<ResourceLocation> soulVesselUnspawnableList = new NNList<ResourceLocation>();
   public static boolean soulVesselCapturesBosses = false;
-
-  public static int soulBinderBrokenSpawnerRF = 2500000;
-  public static int soulBinderBrokenSpawnerLevels = 8;
-  public static int soulBinderReanimationRF = 100000;
-  public static int soulBinderReanimationLevels = 4;
-  public static int soulBinderEnderCystalRF = 150000;
-  public static int soulBinderEnderCystalLevels = 6;
-  public static int soulBinderPrecientCystalRF = 200000;
-  public static int soulBinderPrecientCystalLevels = 8;
-  public static int soulBinderAttractorCystalRF = 100000;
-  public static int soulBinderAttractorCystalLevels = 4;
-  public static int soulBinderTunedPressurePlateLevels = 2;
-  public static int soulBinderTunedPressurePlateRF = 250000;
-  public static int soulBinderVibrantCystalRF = 200000;
-  public static int soulBinderVibrantCystalLevels = 8;
-
-  public static int soulBinderSoulFilterLevels = 12;
-  public static int soulBinderSoulFilterRF = 5_000_000;
-
 
   public static boolean clearGlassConnectToFusedQuartz = false;
   public static boolean glassConnectToTheirVariants = true;
@@ -131,7 +111,6 @@ public final class Config {
       }
     }
   }
-
 
   @SubscribeEvent
   public void onConfigChanged(OnConfigChangedEvent event) {
@@ -225,37 +204,6 @@ public final class Config {
     soulVesselCapturesBosses = config.getBoolean("soulVesselCapturesBosses", sectionSoulVial.name, soulVesselCapturesBosses,
         "When set to false, any mob with a 'boss bar' won't be able to be captured in the Soul Vial. Note: The Ender Dragon can not "
             + "be captured, even with this enabled. This is a limitation of the dragon, not the Soul Vial.");
-
-    soulBinderBrokenSpawnerRF = config.get(sectionSoulBinder.name, "soulBinderBrokenSpawnerRF", soulBinderBrokenSpawnerRF,
-        "The amount of energy required to change the type of a broken spawner.").getInt(soulBinderBrokenSpawnerRF);
-    soulBinderReanimationRF = config
-        .get(sectionSoulBinder.name, "soulBinderReanimationRF", soulBinderReanimationRF, "The amount of energy required to to re-animated a mob head.")
-        .getInt(soulBinderReanimationRF);
-    soulBinderEnderCystalRF = config
-        .get(sectionSoulBinder.name, "soulBinderEnderCystalRF", soulBinderEnderCystalRF, "The amount of energy required to create an ender crystal.")
-        .getInt(soulBinderEnderCystalRF);
-    soulBinderAttractorCystalRF = config.get(sectionSoulBinder.name, "soulBinderAttractorCystalRF", soulBinderAttractorCystalRF,
-        "The amount of energy required to create an attractor crystal.").getInt(soulBinderAttractorCystalRF);
-    soulBinderTunedPressurePlateRF = config.get(sectionSoulBinder.name, "soulBinderTunedPressurePlateRF", soulBinderTunedPressurePlateRF,
-        "The amount of energy required to tune a pressure plate.").getInt(soulBinderTunedPressurePlateRF);
-    soulBinderPrecientCystalRF = config
-        .get(sectionSoulBinder.name, "soulBinderPrecientCystalRF", soulBinderPrecientCystalRF, "The amount of energy required to create a precient crystal.")
-        .getInt(soulBinderPrecientCystalRF);
-
-    soulBinderAttractorCystalLevels = config.get(sectionSoulBinder.name, "soulBinderAttractorCystalLevels", soulBinderAttractorCystalLevels,
-        "The number of levels required to create an attractor crystal.").getInt(soulBinderAttractorCystalLevels);
-    soulBinderEnderCystalLevels = config
-        .get(sectionSoulBinder.name, "soulBinderEnderCystalLevels", soulBinderEnderCystalLevels, "The number of levels required to create an ender crystal.")
-        .getInt(soulBinderEnderCystalLevels);
-    soulBinderPrecientCystalLevels = config.get(sectionSoulBinder.name, "soulBinderPrecientCystalLevels", soulBinderPrecientCystalLevels,
-        "The number of levels required to create a precient crystal.").getInt(soulBinderPrecientCystalLevels);
-    soulBinderReanimationLevels = config
-        .get(sectionSoulBinder.name, "soulBinderReanimationLevels", soulBinderReanimationLevels, "The number of levels required to re-animate a mob head.")
-        .getInt(soulBinderReanimationLevels);
-    soulBinderBrokenSpawnerLevels = config.get(sectionSoulBinder.name, "soulBinderBrokenSpawnerLevels", soulBinderBrokenSpawnerLevels,
-        "The number of levels required to change the type of a broken spawner.").getInt(soulBinderBrokenSpawnerLevels);
-    soulBinderTunedPressurePlateLevels = config.get(sectionSoulBinder.name, "soulBinderTunedPressurePlateLevels", soulBinderTunedPressurePlateLevels,
-        "The number of levels required to tune a pressure plate.").getInt(soulBinderTunedPressurePlateLevels);
 
     glassConnectToTheirVariants = config.getBoolean("glassConnectToTheirVariants", sectionMisc.name, glassConnectToTheirVariants,
         "If true, quite clear glass and fused quartz will connect textures with their respective enlightened and darkened variants.");
