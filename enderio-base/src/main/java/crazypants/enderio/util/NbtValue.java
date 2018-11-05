@@ -49,6 +49,7 @@ public enum NbtValue { // TODO: DONE111
   DATAROOT("data"),
   FILTER_BIG("isBig"),
   ENABLED("enabled"),
+  INFINITY("infinity"),
 
   ;
 

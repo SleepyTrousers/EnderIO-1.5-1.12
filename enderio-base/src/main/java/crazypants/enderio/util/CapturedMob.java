@@ -203,14 +203,18 @@ public final class CapturedMob {
   }
 
   public boolean spawn(@Nullable World world, @Nullable BlockPos pos, @Nullable EnumFacing side, boolean clone) {
+    return doSpawn(world, pos, side, clone) != null;
+  }
+
+  public @Nullable Entity doSpawn(@Nullable World world, @Nullable BlockPos pos, @Nullable EnumFacing side, boolean clone) {
     if (world == null || pos == null) {
-      return false;
+      return null;
     }
     @Nonnull
     EnumFacing theSide = side != null ? side : EnumFacing.UP;
     Entity entity = getEntity(world, pos, null, clone);
     if (entity == null) {
-      return false;
+      return null;
     }
 
     Block blk = world.getBlockState(pos).getBlock();
@@ -223,7 +227,7 @@ public final class CapturedMob {
     entity.setLocationAndAngles(spawnX, spawnY, spawnZ, world.rand.nextFloat() * 360.0F, 0);
 
     if (!world.checkNoEntityCollision(entity.getEntityBoundingBox()) || !world.getCollisionBoxes(entity, entity.getEntityBoundingBox()).isEmpty()) {
-      return false;
+      return null;
     }
 
     if (customName != null && entity instanceof EntityLiving) {
@@ -233,7 +237,7 @@ public final class CapturedMob {
     if (!world.spawnEntity(entity)) {
       entity.setUniqueId(MathHelper.getRandomUUID(world.rand));
       if (!world.spawnEntity(entity)) {
-        return false;
+        return null;
       }
     }
 
@@ -241,7 +245,7 @@ public final class CapturedMob {
       ((EntityLiving) entity).playLivingSound();
     }
 
-    return true;
+    return entity;
   }
 
   public @Nullable Entity getEntity(@Nullable World world, boolean clone) {

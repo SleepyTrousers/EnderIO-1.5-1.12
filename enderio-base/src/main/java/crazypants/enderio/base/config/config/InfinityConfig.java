@@ -15,6 +15,9 @@ public final class InfinityConfig {
   public static final IValue<Float> dropChanceFirewater = F.make("dropChanceFirewater", .025f, //
       "Chance that Infinity Powder will drop from firewater on bedrock per growth tick.").setRange(0, 1).sync();
 
+  public static final IValue<Float> dropChanceFogCreatures = F.make("dropChanceFogCreatures", .314f, //
+      "Chance that Infinity Powder will drop from creatures that were spawned by Infinity Fog. (0 to disable)").setRange(0, 1).sync();
+
   public static final IValue<Integer> dropStackSize = F.make("dropStackSize", 1, //
       "Stack size when dropped from fire.").setRange(1, 64).sync();
   public static final IValue<Boolean> makesSound = F.make("makesSound", true, //

@@ -38,7 +38,6 @@ public final class Config {
   public static Configuration config;
 
   private static final @Nonnull Section sectionRod = new Section("Rod of Return Settings", "rod");
-  private static final @Nonnull Section sectionSoulBinder = new Section("Soul Binder Settings", "soulBinder");
   private static final @Nonnull Section sectionSoulVial = new Section("", "soulvial");
   private static final @Nonnull Section sectionMisc = new Section("Misc", "misc");
 
