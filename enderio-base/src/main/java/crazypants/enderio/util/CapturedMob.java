@@ -1,6 +1,5 @@
 package crazypants.enderio.util;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -12,7 +11,6 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
@@ -25,7 +23,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityElderGuardian;
 import net.minecraft.entity.monster.EntityWitherSkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -55,8 +52,9 @@ public final class CapturedMob {
   public static final @Nonnull String ENTITY_ID_KEY = "entityId";
   public static final @Nonnull String CUSTOM_NAME_KEY = "customName";
 
-  private final static List<ResourceLocation> blacklist = new ArrayList<ResourceLocation>();
-  private final static List<ResourceLocation> unspawnablelist = new ArrayList<ResourceLocation>();
+  private final static @Nonnull NNList<ResourceLocation> blacklist = new NNList<ResourceLocation>(DRAGON);
+  private final static @Nonnull NNList<ResourceLocation> unspawnablelist = new NNList<ResourceLocation>();
+  private static boolean bossesBlacklisted = true;
 
   private final @Nullable NBTTagCompound entityNbt;
   private final @Nonnull ResourceLocation entityId;
@@ -195,11 +193,11 @@ public final class CapturedMob {
 
   public static boolean isBlacklisted(@Nonnull Entity entity) {
     ResourceLocation entityId = EntityList.getKey(entity);
-    if (entityId == null || (!Config.soulVesselCapturesBosses && !entity.isNonBoss())
-        || (!Config.soulVesselCapturesBosses && entity instanceof EntityElderGuardian)) {
-      return true;
-    }
-    return Config.soulVesselBlackList.contains(entityId) || blacklist.contains(entityId);
+    return entityId == null || isBlacklistedBoss(entityId, entity) || blacklist.contains(entityId);
+  }
+
+  private static boolean isBlacklistedBoss(ResourceLocation entityId, Entity entity) {
+    return !bossesBlacklisted && !entity.isNonBoss() && !"minecraft".equals(entityId.getResourceDomain());
   }
 
   public boolean spawn(@Nullable World world, @Nullable BlockPos pos, @Nullable EnumFacing side, boolean clone) {
@@ -381,7 +379,7 @@ public final class CapturedMob {
   }
 
   private boolean isUnspawnable(ResourceLocation entityName) {
-    return Config.soulVesselUnspawnableList.contains(entityId) || unspawnablelist.contains(entityName);
+    return unspawnablelist.contains(entityName);
   }
 
   public @Nonnull ResourceLocation getEntityName() {
@@ -421,6 +419,10 @@ public final class CapturedMob {
 
   public static @Nonnull NNList<CapturedMob> getAllSouls() {
     return getSouls(EntityUtil.getAllRegisteredMobNames());
+  }
+
+  public static void setBossesBlacklisted(boolean b) {
+    bossesBlacklisted = b;
   }
 
 }

@@ -84,6 +84,10 @@ public final class PersonalConfig {
   public static final IValue<Boolean> animatedEnderArmorEnabled = F.make("animatedEnderArmorEnabled", true, //
       "Should the Ender Armor texture be animated?");
 
+  // TODO change geometry to be re-baked after server join
+  public static final IValue<Integer> conduitPixels = F.make("conduitPixels", 3, //
+      "Valid values are between 2-5, smallest conduits at 2, largest at 5.").setRange(2, 5).startup();
+
   // Item Hiding
 
   public static final IValueFactory H = F.section(".hiding");

@@ -11,6 +11,7 @@ import com.enderio.core.common.util.NNList;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import crazypants.enderio.base.recipe.spawner.PoweredSpawnerRecipeRegistry;
+import crazypants.enderio.util.CapturedMob;
 
 public class Spawning extends AbstractConditional {
 
@@ -49,10 +50,20 @@ public class Spawning extends AbstractConditional {
         if (entity.isDefault()) {
           PoweredSpawnerRecipeRegistry.getInstance().setDefaultCostMultiplier(entity.getCostMultiplier());
           PoweredSpawnerRecipeRegistry.getInstance().setAllowUnconfiguredMobs(!entity.isDisabled());
-        } else if (entity.isDisabled()) {
-          PoweredSpawnerRecipeRegistry.getInstance().addToBlacklist(entity.getMob().getEntityName());
+        } else if (entity.isBoss()) {
+          CapturedMob.setBossesBlacklisted(!entity.isSoulvial());
         } else {
-          PoweredSpawnerRecipeRegistry.getInstance().addEntityCost(entity.getMob().getEntityName(), entity.getCostMultiplier());
+          if (entity.isDisabled()) {
+            PoweredSpawnerRecipeRegistry.getInstance().addToBlacklist(entity.getMob().getEntityName());
+          } else {
+            PoweredSpawnerRecipeRegistry.getInstance().addEntityCost(entity.getMob().getEntityName(), entity.getCostMultiplier());
+          }
+          if (entity.isClone()) {
+            CapturedMob.addToUnspawnableList(entity.getMob().getEntityName());
+          }
+          if (!entity.isSoulvial()) {
+            CapturedMob.addToBlackList(entity.getMob().getEntityName());
+          }
         }
       }
     }

@@ -9,7 +9,6 @@ import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.CompoundCapabilityProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.FluidUtil;
-import com.enderio.core.common.util.Log;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.IModObject;
@@ -19,8 +18,7 @@ import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
-import crazypants.enderio.base.config.Config;
-import crazypants.enderio.base.fluid.Fluids;
+import crazypants.enderio.base.config.config.ItemConfig;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
@@ -43,8 +41,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
@@ -59,7 +55,6 @@ public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider,
     return new ItemStaffOfLevity(modObject);
   }
 
-  private final Fluid fluidType;
   private long lastActivationTick = 0;
   private boolean isEffectActive = false;
 
@@ -68,18 +63,6 @@ public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider,
     modObject.apply(this);
     setMaxStackSize(1);
     setHasSubtypes(true);
-
-    Fluid fluid = null;
-    if (Config.staffOfLevityFluidType != null) {
-      fluid = FluidRegistry.getFluid(Config.staffOfLevityFluidType);
-      if (fluid == null) {
-        Log.warn("ItemStaffOfLevity: Could not find fluid '" + Config.staffOfLevityFluidType + "' using default fluid " + Fluids.VAPOR_OF_LEVITY.name());
-      }
-    }
-    if (fluid == null) {
-      fluid = Fluids.VAPOR_OF_LEVITY.getFluid();
-    }
-    fluidType = fluid;
   }
 
   @Override
@@ -93,7 +76,7 @@ public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider,
       }
       player.swingArm(hand);
 
-      if (world.isRemote && (ticksSinceActivation == 0 || ticksSinceActivation >= Config.staffOfLevityTicksBetweenActivation)) {
+      if (world.isRemote && (ticksSinceActivation == 0 || ticksSinceActivation >= ItemConfig.staffOfLevityTicksBetweenActivation.get())) {
         if (!isEffectActive && hasFluid(stack)) {
           useFluid(stack);
           player.addPotionEffect(new PotionEffect(MobEffects.LEVITATION));
@@ -142,7 +125,7 @@ public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider,
       is = new ItemStack(this);
       EnergyUpgrade.UPGRADES.get(3).addToItem(is, this);
       EnergyUpgradeManager.setPowerFull(is, this);
-      FLUIDAMOUNT.setInt(is, Config.staffOfLevityFluidStorage);
+      FLUIDAMOUNT.setInt(is, ItemConfig.staffOfLevityFluidStorage.get());
       list.add(is);
     }
   }
@@ -164,7 +147,7 @@ public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider,
 
   private boolean hasFluid(@Nonnull ItemStack contianer) {
     int amount = FLUIDAMOUNT.getInt(contianer);
-    if (Config.staffOfLevityFluidUsePerTeleport > amount) {
+    if (ItemConfig.staffOfLevityFluidUsePerTeleport.get() > amount) {
       return false;
     }
     return true;
@@ -172,11 +155,11 @@ public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider,
 
   private boolean useFluid(@Nonnull ItemStack container) {
     int amount = FLUIDAMOUNT.getInt(container, 0);
-    if (Config.staffOfLevityFluidUsePerTeleport > amount) {
+    if (ItemConfig.staffOfLevityFluidUsePerTeleport.get() > amount) {
       FLUIDAMOUNT.setInt(container, 0);
       return false;
     } else {
-      FLUIDAMOUNT.setInt(container, amount - Config.staffOfLevityFluidUsePerTeleport);
+      FLUIDAMOUNT.setInt(container, amount - ItemConfig.staffOfLevityFluidUsePerTeleport.get());
       return true;
     }
   }
@@ -184,18 +167,19 @@ public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider,
   public FluidStack getFluid(@Nonnull ItemStack container) {
     int amount = FLUIDAMOUNT.getInt(container, 0);
     if (amount > 0) {
-      return new FluidStack(fluidType, amount);
+      return new FluidStack(ItemConfig.staffOfLevityFluidType.get(), amount);
     } else {
       return null;
     }
   }
 
   public int fill(@Nonnull ItemStack container, @Nonnull FluidStack resource, boolean doFill) {
-    if (!(container.getItem() == this) || resource.amount <= 0 || resource.getFluid() == null || resource.getFluid() != fluidType) {
+    if (!(container.getItem() == this) || resource.amount <= 0 || resource.getFluid() == null
+        || resource.getFluid() != ItemConfig.staffOfLevityFluidType.get()) {
       return 0;
     }
     int amount = FLUIDAMOUNT.getInt(container, 0);
-    int capacity = Config.staffOfLevityFluidStorage;
+    int capacity = ItemConfig.staffOfLevityFluidStorage.get();
     int free = capacity - amount;
     int toFill = Math.min(resource.amount, free);
     if (toFill > 0 && doFill) {
@@ -209,7 +193,7 @@ public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider,
     return new CompoundCapabilityProvider(new FluidCapabilityProvider(stack), super.initCapabilities(stack, nbt));
   }
 
-  private class FluidCapabilityProvider implements IFluidHandlerItem, ICapabilityProvider {
+  private final class FluidCapabilityProvider implements IFluidHandlerItem, ICapabilityProvider {
     protected final @Nonnull ItemStack container;
 
     private FluidCapabilityProvider(@Nonnull ItemStack container) {
@@ -239,7 +223,7 @@ public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider,
 
         @Override
         public int getCapacity() {
-          return Config.staffOfLevityFluidStorage;
+          return ItemConfig.staffOfLevityFluidStorage.get();
         }
 
         @Override
@@ -254,7 +238,7 @@ public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider,
 
         @Override
         public boolean canFillFluidType(FluidStack fluidStack) {
-          return fluidStack != null && fluidStack.getFluid() == fluidType;
+          return fluidStack != null && fluidStack.getFluid() == ItemConfig.staffOfLevityFluidType.get();
         }
 
         @Override

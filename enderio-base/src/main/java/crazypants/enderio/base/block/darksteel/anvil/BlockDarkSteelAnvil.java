@@ -9,7 +9,7 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.BaseConfig;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.render.IHaveRenderers;
@@ -41,7 +41,7 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
   private BlockDarkSteelAnvil(@Nonnull IModObject modObject) {
     setHardness(5.0F);
     setSoundType(SoundType.ANVIL);
-    setResistance(Config.EXPLOSION_RESISTANT);
+    setResistance(BaseConfig.explosionResistantBlockHardness.get());
     modObject.apply(this);
     setCreativeTab(EnderIOTab.tabEnderIO);
   }

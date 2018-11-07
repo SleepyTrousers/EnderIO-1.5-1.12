@@ -484,6 +484,18 @@
                                 <documentation>Entities that are disabled cannot be spawned by powered spawners.</documentation>
                               </annotation>
                             </attribute>
+                            <attribute name="clone" type="boolean" use="optional" default="false">
+                              <annotation>
+                                <documentation>
+                                  When set to true, the entity cannot be spawned and must be cloned from a captured entity instead
+                                  (Attention: Possibility of item duping!)
+                                </documentation>
+                              </annotation>
+                            </attribute>
+                            <attribute name="soulvial" type="boolean" use="optional" default="true">
+                              <annotation>
+                                <documentation>Specifies if this mob can be captured with a soul vial (default is yes)</documentation>
+                              </annotation></attribute>
                           </complexType>
                         </element>
                       </sequence>

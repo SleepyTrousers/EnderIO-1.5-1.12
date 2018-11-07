@@ -17,6 +17,9 @@ public class Entity implements RecipeConfigElement {
   private double costMultiplier = 1;
   private boolean disabled = false;
   private boolean isDefault = false;
+  private boolean isBoss = false;
+  private boolean clone = false;
+  private boolean soulvial = true;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -26,6 +29,17 @@ public class Entity implements RecipeConfigElement {
     }
     if (name.trim().equals("*")) {
       isDefault = true;
+      if (clone) {
+        throw new InvalidRecipeConfigException("Cannot set the default energy cost entry to 'clone'");
+      }
+      if (!soulvial) {
+        throw new InvalidRecipeConfigException("Cannot set the default energy cost entry to not 'soulvial'");
+      }
+    } else if (name.trim().equals("*boss*")) {
+      isBoss = true;
+      if (clone) {
+        throw new InvalidRecipeConfigException("Cannot set the 'all bosses' entry to 'clone'");
+      }
     } else {
       mob = CapturedMob.create(new ResourceLocation(name.trim()));
       if (mob == null) {
@@ -50,7 +64,7 @@ public class Entity implements RecipeConfigElement {
 
   @Override
   public boolean isValid() {
-    return isDefault || mob != null;
+    return isDefault || isBoss || mob != null;
   }
 
   @Override
@@ -69,6 +83,14 @@ public class Entity implements RecipeConfigElement {
     }
     if ("disabled".equals(name)) {
       this.disabled = Boolean.parseBoolean(value);
+      return true;
+    }
+    if ("clone".equals(name)) {
+      this.clone = Boolean.parseBoolean(value);
+      return true;
+    }
+    if ("soulvial".equals(name)) {
+      this.soulvial = Boolean.parseBoolean(value);
       return true;
     }
 
@@ -94,6 +116,18 @@ public class Entity implements RecipeConfigElement {
 
   public boolean isDefault() {
     return isDefault;
+  }
+
+  public boolean isBoss() {
+    return isBoss;
+  }
+
+  public boolean isClone() {
+    return clone;
+  }
+
+  public boolean isSoulvial() {
+    return soulvial;
   }
 
 }

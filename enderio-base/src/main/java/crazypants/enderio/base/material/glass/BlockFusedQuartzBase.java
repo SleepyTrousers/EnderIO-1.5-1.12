@@ -10,7 +10,7 @@ import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.block.painted.BlockItemPaintedBlock;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.BaseConfig;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.render.ICustomItemResourceLocation;
@@ -63,7 +63,7 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
   @Override
   public float getExplosionResistance(@Nonnull World world, @Nonnull BlockPos pos, @Nullable Entity exploder, @Nonnull Explosion explosion) {
     if (world.getBlockState(pos).getValue(FusedQuartzType.KIND).isBlastResistant()) {
-      return Config.EXPLOSION_RESISTANT;
+      return BaseConfig.explosionResistantBlockHardness.get();
     } else {
       return super.getExplosionResistance(world, pos, exploder, explosion);
     }

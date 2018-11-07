@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.IModObject;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.BlockConfig;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.render.PaintHelper;
@@ -119,7 +119,7 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone
   public void getDrops(@Nonnull NonNullList<ItemStack> drops, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune) {
 
     // if silk touch is required, the painted drop is handled in harvestBlock as that has the required te
-    if (Config.paintedGlowstoneRequireSilkTouch) {
+    if (BlockConfig.paintedGlowstoneRequireSilkTouch.get()) {
       super.getDrops(drops, world, pos, state, fortune);
       return;
     }
@@ -143,7 +143,7 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone
   public void harvestBlock(@Nonnull final World worldIn, @Nonnull EntityPlayer player, @Nonnull final BlockPos pos, @Nonnull IBlockState state,
       @Nullable TileEntity te, @Nonnull ItemStack stack) {
 
-    if (Config.paintedGlowstoneRequireSilkTouch && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) <= 0) {
+    if (BlockConfig.paintedGlowstoneRequireSilkTouch.get() && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) <= 0) {
       super.harvestBlock(worldIn, player, pos, state, te, stack);
       return;
     }

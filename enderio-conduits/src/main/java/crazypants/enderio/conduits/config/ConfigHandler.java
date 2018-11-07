@@ -27,7 +27,7 @@ public class ConfigHandler {
   }
 
   public static @Nullable File getConfigDirectoryRaw() {
-    return crazypants.enderio.base.config.Config.configDirectory;
+    return crazypants.enderio.base.config.Config.getConfigDirectoryRaw();
   }
 
   public static void init(FMLPreInitializationEvent event) {

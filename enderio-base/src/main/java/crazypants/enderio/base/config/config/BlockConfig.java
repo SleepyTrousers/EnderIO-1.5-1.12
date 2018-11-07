@@ -52,4 +52,18 @@ public final class BlockConfig {
       "The ratio of skull drops when a mob is killed by a 'FakePlayer', such as Killer Joe. When set to 0 no skulls will drop, at 1 the rate of skull drops is not modified")
       .setRange(0, 1).sync();
 
+  public static final IValueFactory GLASS = F.section(".glass");
+
+  public static final IValue<Boolean> clearGlassConnectToFusedQuartz = GLASS.make("clearGlassConnectToFusedQuartz", false, //
+      "If true, quite clear glass will connect textures with fused quartz.");
+  public static final IValue<Boolean> glassConnectToTheirVariants = GLASS.make("glassConnectToTheirVariants", true, //
+      "If true, quite clear glass and fused quartz will connect textures with their respective enlightened and darkened variants.");
+  public static final IValue<Boolean> glassConnectToTheirColorVariants = GLASS.make("glassConnectToTheirColorVariants", true, //
+      "If true, quite clear glass and fused quartz of different colors will connect textures.");
+
+  public static final IValueFactory GLOW = F.section(".glowstone");
+
+  public static final IValue<Boolean> paintedGlowstoneRequireSilkTouch = GLASS.make("paintedGlowstoneRequireSilkTouch", false, //
+      "If true, painted glowstone will drop dust unless broken with silk touch.").sync();
+
 }

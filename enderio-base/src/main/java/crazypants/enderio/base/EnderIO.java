@@ -186,8 +186,6 @@ public class EnderIO implements IEnderIOAddon {
   public void postInit(@Nonnull FMLPostInitializationEvent event) {
     Log.debug("PHASE POST-INIT START");
 
-    Config.init(event);
-
     MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.PostInit.Pre());
 
     ModObjectRegistry.init(event);
@@ -291,7 +289,7 @@ public class EnderIO implements IEnderIOAddon {
   @Override
   @Nullable
   public Configuration getConfiguration() {
-    return Config.config;
+    return Config.getConfig();
   }
 
   @EventHandler
