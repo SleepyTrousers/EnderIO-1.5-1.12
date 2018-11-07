@@ -10,6 +10,6 @@ package crazypants.enderio.api.capacitor;
  */
 public interface Scaler {
 
-  public float scaleValue(float idx);
+  float scaleValue(float idx);
 
 }

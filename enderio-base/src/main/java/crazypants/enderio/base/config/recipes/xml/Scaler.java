@@ -1,5 +1,6 @@
 package crazypants.enderio.base.config.recipes.xml;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
@@ -7,6 +8,7 @@ import crazypants.enderio.base.capacitor.ScalerFactory;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.RecipeConfigElement;
 import crazypants.enderio.base.config.recipes.StaxFactory;
+import info.loenwind.autosave.util.NullHelper;
 
 public class Scaler implements RecipeConfigElement {
 
@@ -61,6 +63,10 @@ public class Scaler implements RecipeConfigElement {
 
   public crazypants.enderio.api.capacitor.Scaler getScaler() {
     return scaler;
+  }
+
+  public @Nonnull String getScalerString() {
+    return NullHelper.notnull(name, "invalid scaler");
   }
 
 }

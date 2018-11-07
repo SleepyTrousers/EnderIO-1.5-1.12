@@ -2,6 +2,7 @@ package crazypants.enderio.base.config.recipes.xml;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
@@ -72,4 +73,8 @@ public class IndexedScaler extends Scaler {
     return super.setElement(factory, name, startElement);
   }
 
+  @Override
+  public @Nonnull String getScalerString() {
+    return ((crazypants.enderio.base.capacitor.IndexedScaler) scaler).store();
+  }
 }

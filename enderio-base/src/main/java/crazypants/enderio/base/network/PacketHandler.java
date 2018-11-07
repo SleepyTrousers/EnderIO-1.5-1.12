@@ -6,6 +6,7 @@ import com.enderio.core.common.network.ThreadedNetworkWrapper;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.block.charge.PacketExplodeEffect;
+import crazypants.enderio.base.capacitor.PacketCapacitorSync;
 import crazypants.enderio.base.config.factory.PacketConfigSyncNew;
 import crazypants.enderio.base.config.factory.PacketConfigSyncNew.PacketConfigSyncNewHandler;
 import crazypants.enderio.base.filter.network.PacketExistingItemFilterSnapshot;
@@ -37,7 +38,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class PacketHandler {
+public final class PacketHandler {
 
   public static final @Nonnull ThreadedNetworkWrapper INSTANCE = new ThreadedNetworkWrapper(EnderIO.DOMAIN);
 
@@ -89,6 +90,7 @@ public class PacketHandler {
     INSTANCE.registerMessage(PacketExistingItemFilterSnapshot.Handler.class, PacketExistingItemFilterSnapshot.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketHeldFilterUpdate.Handler.class, PacketHeldFilterUpdate.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketExplodeEffect.Handler.class, PacketExplodeEffect.class, nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(PacketCapacitorSync.Handler.class, PacketCapacitorSync.class, nextID(), Side.CLIENT);
   }
 
 }
