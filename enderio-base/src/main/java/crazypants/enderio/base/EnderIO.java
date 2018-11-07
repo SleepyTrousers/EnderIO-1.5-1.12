@@ -150,7 +150,7 @@ public class EnderIO implements IEnderIOAddon {
 
     proxy.init(event);
 
-    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Init.Pre());
+    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Init.Post());
 
     Log.debug("PHASE INIT END");
   }
