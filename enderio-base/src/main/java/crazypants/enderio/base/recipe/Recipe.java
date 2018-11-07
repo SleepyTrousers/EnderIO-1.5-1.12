@@ -55,6 +55,7 @@ public class Recipe implements IRecipe {
       }
     }
 
+    // fluids
     for (MachineRecipeInput input : machineInputs) {
       if (input != null && input.isFluid()) {
         Iterator<IRecipeInput> iterator = requiredInputs.iterator();
@@ -75,6 +76,7 @@ public class Recipe implements IRecipe {
       }
     }
 
+    // items
     for (MachineRecipeInput input : machineInputs) {
       if (input != null && !input.isFluid()) {
         Iterator<IRecipeInput> iterator = requiredInputs.iterator();

@@ -2,11 +2,9 @@ package crazypants.enderio.api;
 
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.paint.PaintSourceValidator;
-import crazypants.enderio.base.recipe.soul.SoulBinderRecipeManager;
 import crazypants.enderio.util.CapturedMob;
 
 /**
@@ -37,9 +35,9 @@ public final class IMC {
   public static final String XML_RECIPE_FILE = "recipe:xml:file";
 
   /**
-   * Key for an NBT message to add Soul Binder recipes. Calls {@link SoulBinderRecipeManager#addRecipeFromNBT(net.minecraft.nbt.NBTTagCompound)} with the NBT
-   * value of the message.
+   * @deprecated Use {@link #XML_RECIPE}
    */
+  @Deprecated
   public static final String SOUL_BINDER_RECIPE = "recipe:soulbinder";
 
   /**
@@ -81,7 +79,7 @@ public final class IMC {
 
   /**
    * Key for a string message to add a block to the list of blocks that cannot be teleported through using the Staff of Travel or Dark Steel Travel Upgrade.
-   * Value must be in the form: 'modid:blockName' Adds the value to {@link Config#TRAVEL_BLACKLIST}.
+   * Value must be in the form: 'modid:blockName'.
    */
   public static final String TELEPORT_BLACKLIST_ADD = "teleport:blacklist:add";
 

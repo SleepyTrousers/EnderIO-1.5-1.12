@@ -46,7 +46,7 @@ public class Capacitor extends AbstractConditional {
         throw new InvalidRecipeConfigException("'key' is invalid");
       }
 
-      valid |= scaler.isValid();
+      valid = valid && scaler.isValid();
       if (required && !valid && active) {
         throw new InvalidRecipeConfigException("No valid <scaler> or <indexed>");
       }
@@ -74,8 +74,7 @@ public class Capacitor extends AbstractConditional {
     if (!disabled && valid && active) {
       Log.debug("Registering XML recipe '" + getName() + "'");
 
-      CapacitorKeyRegistry.setScaler(key, scaler.getScaler());
-      CapacitorKeyRegistry.setBaseValue(key, base);
+      CapacitorKeyRegistry.setValue(key, base, scaler.getScaler(), scaler.getScalerString());
 
     } else {
       Log.debug("Skipping XML recipe '" + getName() + "' (valid=" + valid + ", active=" + active + ", required=" + required + ", disabled=" + disabled + ")");

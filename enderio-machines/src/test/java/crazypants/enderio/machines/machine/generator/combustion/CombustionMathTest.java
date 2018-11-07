@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.fluid.IFluidCoolant;
 import crazypants.enderio.base.fluid.IFluidFuel;
 import net.minecraftforge.fluids.Fluid;
@@ -83,7 +82,7 @@ class CombustionMathTest {
   private final MockCoolant CRYO = new MockCoolant(0.0276f, 50);
   private final MockCoolant VAPOR = new MockCoolant(0.0314f, 5);
 
-  private final MockFuel HOOTCH = new MockFuel(Config.hootchPowerPerCycleRF, Config.hootchPowerTotalBurnTime);
+  private final MockFuel HOOTCH = new MockFuel(60, 6000);
 
   @BeforeEach
   void testSetup() {

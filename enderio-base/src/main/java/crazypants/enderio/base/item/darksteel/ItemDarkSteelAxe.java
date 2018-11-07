@@ -157,7 +157,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
             : powerStored / DarkSteelConfig.axePowerUsePerDamagePointMultiHarvest.get();
         int numUsedPower = 0;
         for (int i = 0; numUsedPower < maxBlocks && i < sortedTargets.size(); i++) {
-          if (doMultiHarvest(player, player.world, sortedTargets.get(i), block)) {
+          if (doMultiHarvest(player, player.world, sortedTargets.get(i))) {
             numUsedPower++;
           }
         }
@@ -167,7 +167,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
     return false;
   }
 
-  private boolean doMultiHarvest(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc, @Nonnull Block refBlock) {
+  private boolean doMultiHarvest(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos bc) {
     IBlockState bs = world.getBlockState(bc);
     Block block = bs.getBlock();
     bs = bs.getActualState(world, bc);
@@ -183,7 +183,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
     for (ItemStack stack : drops) {
       if (world.rand.nextFloat() <= chance) {
         world.spawnEntity(new EntityItem(world, bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5, stack.copy()));
-        if (block == refBlock) { // other wise leaves
+        if (FarmersRegistry.isLog(block)) { // other wise leaves
           EnergyUpgradeManager.extractEnergy(player.getHeldItemMainhand(), this, DarkSteelConfig.axePowerUsePerDamagePointMultiHarvest, false);
           usedPower = true;
         }
@@ -195,7 +195,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
   @SubscribeEvent
   public void onBreakSpeedEvent(PlayerEvent.BreakSpeed evt) {
     if (isEquipped(evt.getEntityPlayer())) {
-      if (evt.getEntityPlayer().isSneaking() && isPowered(evt.getEntityPlayer(), DarkSteelConfig.axePowerUsePerDamagePointMultiHarvest)
+      if (!evt.getEntityPlayer().isSneaking() && isPowered(evt.getEntityPlayer(), DarkSteelConfig.axePowerUsePerDamagePointMultiHarvest)
           && FarmersRegistry.isLog(evt.getState().getBlock())) {
         evt.setNewSpeed(evt.getOriginalSpeed() / DarkSteelConfig.axeSpeedPenaltyMultiHarvest.get());
       } else if (evt.getState().getMaterial() == Material.LEAVES) {

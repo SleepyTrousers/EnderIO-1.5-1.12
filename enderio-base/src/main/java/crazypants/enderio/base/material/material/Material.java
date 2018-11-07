@@ -35,8 +35,8 @@ public enum Material {
   GEAR_ENERGIZED("gear_energized", "gearEnergized"),
   GEAR_VIBRANT("gear_vibrant", "gearVibrant"),
 
-  PULSATING_CYSTAL("pulsatingCrystal", true),
-  VIBRANT_CYSTAL("vibrantCrystal", true),
+  PULSATING_CRYSTAL("pulsatingCrystal", true),
+  VIBRANT_CRYSTAL("vibrantCrystal", true),
   ENDER_CRYSTAL("enderCrystal", true),
   ATTRACTOR_CRYSTAL("attractorCrystal", true),
   WEATHER_CRYSTAL("weatherCrystal", true),

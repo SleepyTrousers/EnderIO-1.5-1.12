@@ -14,18 +14,17 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class TOPUtil {
 
-  private TOPUtil() {
-  }
+  private static final @Nonnull String MODID_TOP = "theoneprobe";
 
   public static void create() {
-    if (Loader.isModLoaded("theoneprobe")) {
-      FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", "crazypants.enderio.base.integration.top.TOPCompatibility");
+    if (Loader.isModLoaded(MODID_TOP)) {
+      FMLInterModComms.sendFunctionMessage(MODID_TOP, "getTheOneProbe", "crazypants.enderio.base.integration.top.TOPCompatibility");
     }
   }
 
   @SubscribeEvent
   public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
-    if (Loader.isModLoaded("theoneprobe")) {
+    if (Loader.isModLoaded(MODID_TOP)) {
       event.getRegistry().register(TheOneProbeUpgrade.getInstance());
       Log.info("Dark Steel Upgrades: TOP integration loaded");
     }

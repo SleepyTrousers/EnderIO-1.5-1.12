@@ -46,19 +46,11 @@ public class TileSolarPanel extends TileEntityEio implements ILegacyPoweredTile,
   public void setEnergyStored(int stored) {
   }
 
-  @Override
-  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY) {
-      return facingIn == EnumFacing.DOWN;
-    }
-    return super.hasCapability(capability, facingIn);
-  }
-
   @SuppressWarnings("unchecked")
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityEnergy.ENERGY) {
-      return facingIn != EnumFacing.DOWN ? null : (T) new InternalPoweredTileWrapper(this, facingIn);
+      return facingIn == EnumFacing.DOWN ? (T) new InternalPoweredTileWrapper(this, facingIn) : null;
     }
     return super.getCapability(capability, facingIn);
   }

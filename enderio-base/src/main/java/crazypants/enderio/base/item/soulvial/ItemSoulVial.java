@@ -17,20 +17,29 @@ import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.base.render.itemoverlay.MobNameOverlayRenderHelper;
 import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.Prep;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
+import net.minecraft.dispenser.IBehaviorDispenseItem;
+import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityDispenser;
+import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -46,6 +55,54 @@ import net.minecraftforge.server.permission.context.BlockPosContext;
 import net.minecraftforge.server.permission.context.TargetContext;
 
 public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHaveRenderers, IOverlayRenderAware, IModObject.LifecycleInit {
+
+  public final @Nonnull IBehaviorDispenseItem DISPENSER_BEHAVIOR = new BehaviorDefaultDispenseItem() {
+    /**
+     * Dispense the specified stack, play the dispense sound and spawn particles.
+     */
+    @Override
+    protected @Nonnull ItemStack dispenseStack(@Nonnull IBlockSource source, @Nonnull ItemStack stack) {
+      ItemStack secondaryResult = Prep.getEmpty();
+      EnumFacing enumfacing = source.getBlockState().getValue(BlockDispenser.FACING);
+
+      CapturedMob capturedMob = CapturedMob.create(stack);
+
+      if (capturedMob != null) {
+        if (capturedMob.spawn(source.getWorld(), source.getBlockPos().offset(enumfacing).down(), EnumFacing.UP, true)) {
+          stack.shrink(1);
+          secondaryResult = new ItemStack(ItemSoulVial.this);
+        }
+      } else {
+        for (EntityLivingBase entity : source.getWorld().<EntityLivingBase> getEntitiesWithinAABB(EntityLivingBase.class,
+            new AxisAlignedBB(source.getBlockPos().offset(enumfacing)), EntitySelectors.NOT_SPECTATING)) {
+          if (!(entity instanceof IEntityOwnable) || ((IEntityOwnable) entity).getOwnerId() == null) {
+            capturedMob = CapturedMob.create(entity);
+            if (capturedMob != null) {
+              entity.setDead();
+              if (entity.isDead) {
+                stack.shrink(1);
+                secondaryResult = capturedMob.toStack(ItemSoulVial.this, 1, 1);
+                break;
+              }
+            }
+          }
+        }
+      }
+
+      if (Prep.isValid(secondaryResult)) {
+        if (Prep.isInvalid(stack)) {
+          stack = secondaryResult;
+        } else {
+          TileEntity blockTileEntity = source.getBlockTileEntity();
+          if (!(blockTileEntity instanceof TileEntityDispenser) || ((TileEntityDispenser) blockTileEntity).addItemStack(secondaryResult) < 0) {
+            Block.spawnAsEntity(source.getWorld(), source.getBlockPos().offset(enumfacing), secondaryResult);
+          }
+        }
+      }
+
+      return stack;
+    }
+  };
 
   private @Nonnull String permissionPickupOwned = "(item not initialized)";
   private @Nonnull String permissionPickup = "(item not initialized)";
@@ -69,6 +126,7 @@ public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHav
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
     setMaxStackSize(16);
+    BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this, DISPENSER_BEHAVIOR);
   }
 
   @Override

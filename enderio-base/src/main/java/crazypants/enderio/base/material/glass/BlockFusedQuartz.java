@@ -8,6 +8,7 @@ import com.enderio.core.common.util.NNList;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.TileEntityEio;
+import crazypants.enderio.base.config.config.BlockConfig;
 import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.paint.PaintUtil.IWithPaintName;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -36,8 +37,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import static crazypants.enderio.base.config.Config.glassConnectToTheirColorVariants;
 
 public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implements ITintedBlock, ICustomSubItems {
 
@@ -169,7 +168,7 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implem
     if (otherState.getBlock() instanceof BlockFusedQuartz) {
       IBlockState ourState = blockStateIn.getActualState(world, pos);
       return !ourState.getValue(FusedQuartzType.KIND).connectTo(otherState.getValue(FusedQuartzType.KIND))
-          || (!glassConnectToTheirColorVariants && ourState.getValue(BlockColored.COLOR) != otherState.getValue(BlockColored.COLOR));
+          || (!BlockConfig.glassConnectToTheirColorVariants.get() && ourState.getValue(BlockColored.COLOR) != otherState.getValue(BlockColored.COLOR));
     }
     return true;
   }

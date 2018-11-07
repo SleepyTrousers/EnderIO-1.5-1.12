@@ -26,17 +26,6 @@ public class SoulBinderRecipeManager {
     return instance;
   }
 
-  public void addDefaultRecipes() {
-    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.SOULBINDER, SoulBinderSpawnerRecipe.instance);
-    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.SOULBINDER, SoulBinderTunedPressurePlateRecipe.instance1);
-    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.SOULBINDER, SoulBinderTunedPressurePlateRecipe.instance2);
-    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.SOULBINDER, SoulBinderReanimationRecipe.instance);
-    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.SOULBINDER, SoulBinderSentientRecipe.instance);
-    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.SOULBINDER, SoulBinderEnderCystalRecipe.instance);
-    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.SOULBINDER, SoulBinderAttractorCystalRecipe.instance);
-    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.SOULBINDER, SoulBinderPrecientCystalRecipe.instance);
-  }
-
   //@formatter:off
   /**
    * Example of how to add a recipe:

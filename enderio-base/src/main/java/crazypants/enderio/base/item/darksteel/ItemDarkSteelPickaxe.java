@@ -15,7 +15,6 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.OreDictionaryHelper;
-import com.enderio.core.common.util.stackable.Things;
 import com.google.common.collect.Multimap;
 
 import crazypants.enderio.api.IModObject;
@@ -28,8 +27,8 @@ import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
+import crazypants.enderio.base.config.config.TeleportConfig;
 import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.PlayerAOEAttributeHandler;
@@ -382,7 +381,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       if (ticksSinceBlink < 0) {
         lastBlickTick = -1;
       }
-      if (Config.travelStaffBlinkEnabled && world.isRemote && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
+      if (TeleportConfig.enableBlink.get() && world.isRemote && ticksSinceBlink >= TeleportConfig.blinkDelay.get()) {
         if (TravelController.instance.doBlink(stack, hand, player)) {
           player.swingArm(hand);
           lastBlickTick = EnderIO.proxy.getTickCount();
@@ -403,14 +402,6 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     return slotChanged || Prep.isInvalid(oldStack) || Prep.isInvalid(newStack) || oldStack.getItem() != newStack.getItem();
   }
 
-  private static final Things STONES = new Things().add(Blocks.STONE).add(Blocks.COBBLESTONE).add(Blocks.NETHERRACK).add(Blocks.SANDSTONE)
-      .add(Blocks.BRICK_BLOCK).add(Blocks.BRICK_STAIRS).add(Blocks.COBBLESTONE_WALL).add(Blocks.END_BRICKS).add(Blocks.END_STONE).add(Blocks.MOSSY_COBBLESTONE)
-      .add(Blocks.MONSTER_EGG).add(Blocks.HARDENED_CLAY).add(Blocks.NETHER_BRICK).add(Blocks.NETHER_BRICK_FENCE).add(Blocks.NETHER_BRICK_STAIRS)
-      .add(Blocks.SANDSTONE_STAIRS).add(Blocks.STAINED_HARDENED_CLAY).add(Blocks.STONE_BRICK_STAIRS).add(Blocks.STONE_STAIRS).add(Blocks.STONEBRICK)
-      .add(Blocks.STONE_SLAB).add(Blocks.STONE_SLAB2).add(Blocks.DOUBLE_STONE_SLAB).add(Blocks.DOUBLE_STONE_SLAB2);
-  private static final Things DIRTS = new Things().add(Blocks.DIRT).add(Blocks.GRAVEL).add(Blocks.GRASS).add(Blocks.SOUL_SAND).add(Blocks.MYCELIUM)
-      .add(Blocks.GRASS_PATH).add(Blocks.FARMLAND).add(Blocks.CLAY).add(Blocks.SAND);
-
   private static final float notBedrock(float i) {
     return i >= 0 ? i : Float.MAX_VALUE;
   }
@@ -427,7 +418,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       if (target != null) {
         final IBlockState blockstate = world.getBlockState(target);
         final Block block = blockstate.getBlock();
-        if ((DarkSteelConfig.explosiveUpgradeUnlimitedTargets.get() || STONES.contains(block) || (withSpoon && DIRTS.contains(block)))
+        if (DarkSteelConfig.explosiveUpgradeTargets.get().matches(block, withSpoon)
             && referenceHardness >= notBedrock(blockstate.getBlockHardness(world, target))
             && (isToolEffective(blockstate, item) || ForgeHooks.canHarvestBlock(block, player, world, target))) {
           final int exp = ForgeHooks.onBlockBreakEvent(world, gameType, player, target);

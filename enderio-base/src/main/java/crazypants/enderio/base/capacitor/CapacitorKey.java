@@ -163,7 +163,8 @@ public enum CapacitorKey implements ICapacitorKey {
 
   @Override
   public final ICapacitorKey setRegistryName(ResourceLocation name) {
-    throw new IllegalStateException("Attempted to set registry name with existing registry name! New: " + name + " Old: " + getRegistryName());
+    setRegistryName(name.toString());
+    return this;
   }
 
   @Override
@@ -183,8 +184,7 @@ public enum CapacitorKey implements ICapacitorKey {
       Log.debug("<capacitor key=\"", key.getRegistryName() + "\" base=\"\" scaler=\"\" />");
     }
 
-    CapacitorKeyRegistry.setScaler(NO_POWER.getRegistryName(), ScalerFactory.FIXED);
-    CapacitorKeyRegistry.setBaseValue(NO_POWER.getRegistryName(), 0);
+    CapacitorKeyRegistry.setValue(NO_POWER.getRegistryName(), 0, ScalerFactory.FIXED, ScalerFactory.FIXED.name());
   }
 
 }

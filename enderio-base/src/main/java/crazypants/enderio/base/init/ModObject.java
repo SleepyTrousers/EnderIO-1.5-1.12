@@ -45,6 +45,7 @@ import crazypants.enderio.base.filter.item.items.ItemBasicItemFilter;
 import crazypants.enderio.base.filter.item.items.ItemExistingItemFilter;
 import crazypants.enderio.base.filter.item.items.ItemModItemFilter;
 import crazypants.enderio.base.filter.item.items.ItemPowerItemFilter;
+import crazypants.enderio.base.filter.item.items.ItemSoulFilter;
 import crazypants.enderio.base.filter.redstone.items.ItemBasicOutputSignalFilter;
 import crazypants.enderio.base.filter.redstone.items.ItemComparatorInputSignalFilter;
 import crazypants.enderio.base.filter.redstone.items.ItemCountingOutputSignalFilter;
@@ -182,6 +183,8 @@ public enum ModObject implements IModObjectBase {
   itemExistingItemFilter(ItemExistingItemFilter.class),
   itemModItemFilter(ItemModItemFilter.class),
   itemPowerItemFilter(ItemPowerItemFilter.class),
+  itemSoulFilterNormal(ItemSoulFilter.class, "createNormal"),
+  itemSoulFilterBig(ItemSoulFilter.class, "createBig"),
 
   itemFluidFilter(ItemFluidFilter.class),
 
@@ -279,7 +282,7 @@ public enum ModObject implements IModObjectBase {
    */
 
   private ModObject(@Nonnull Class<?> clazz) {
-    this(clazz, "create", null);
+    this(clazz, (IModTileEntity) null);
   }
 
   private ModObject(@Nonnull Class<?> clazz, @Nullable IModTileEntity modTileEntity) {

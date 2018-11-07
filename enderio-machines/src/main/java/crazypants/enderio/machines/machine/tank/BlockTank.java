@@ -12,6 +12,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.config.config.BaseConfig;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineBlock;
 import crazypants.enderio.base.paint.IPaintable;
@@ -21,7 +22,6 @@ import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.property.EnumRenderMode;
-import crazypants.enderio.machines.config.Config;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
@@ -143,7 +143,7 @@ public class BlockTank extends AbstractInventoryMachineBlock<TileTank>
   public float getExplosionResistance(@Nonnull World world, @Nonnull BlockPos pos, @Nullable Entity par1Entity, @Nonnull Explosion explosion) {
     IBlockState state = world.getBlockState(pos);
     if (state.getValue(EnumTankType.KIND).isExplosionResistant()) {
-      return Config.explosionResistantBlockHardness.get();
+      return BaseConfig.explosionResistantBlockHardness.get();
     } else {
       return super.getExplosionResistance(world, pos, par1Entity, explosion);
     }

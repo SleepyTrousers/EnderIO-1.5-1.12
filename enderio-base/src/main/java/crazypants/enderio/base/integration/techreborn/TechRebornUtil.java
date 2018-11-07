@@ -32,6 +32,7 @@ public class TechRebornUtil {
   @SubscribeEvent
   public static void registerHoes(@Nonnull EnderIOLifecycleEvent.Init.Pre event) {
     FarmersRegistry.registerHoes("techreborn", "bronzehoe", "rubyhoe", "sapphirehoe", "peridothoe");
+    FarmersRegistry.registerTreetaps("techreborn", "treetap");
   }
 
 }

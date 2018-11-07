@@ -1,6 +1,5 @@
 package crazypants.enderio.util;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -12,7 +11,6 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
@@ -25,7 +23,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityElderGuardian;
 import net.minecraft.entity.monster.EntityWitherSkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -46,7 +43,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 import static crazypants.enderio.base.init.ModObject.itemSoulVial;
 
-public class CapturedMob { // TODO: DONE111
+public final class CapturedMob {
 
   private static final @Nonnull ResourceLocation PIG = new ResourceLocation("pig");
   private static final @Nonnull ResourceLocation DRAGON = new ResourceLocation("ender_dragon");
@@ -55,8 +52,9 @@ public class CapturedMob { // TODO: DONE111
   public static final @Nonnull String ENTITY_ID_KEY = "entityId";
   public static final @Nonnull String CUSTOM_NAME_KEY = "customName";
 
-  private final static List<ResourceLocation> blacklist = new ArrayList<ResourceLocation>();
-  private final static List<ResourceLocation> unspawnablelist = new ArrayList<ResourceLocation>();
+  private final static @Nonnull NNList<ResourceLocation> blacklist = new NNList<ResourceLocation>(DRAGON);
+  private final static @Nonnull NNList<ResourceLocation> unspawnablelist = new NNList<ResourceLocation>();
+  private static boolean bossesBlacklisted = true;
 
   private final @Nullable NBTTagCompound entityNbt;
   private final @Nonnull ResourceLocation entityId;
@@ -195,22 +193,26 @@ public class CapturedMob { // TODO: DONE111
 
   public static boolean isBlacklisted(@Nonnull Entity entity) {
     ResourceLocation entityId = EntityList.getKey(entity);
-    if (entityId == null || (!Config.soulVesselCapturesBosses && !entity.isNonBoss())
-        || (!Config.soulVesselCapturesBosses && entity instanceof EntityElderGuardian)) {
-      return true;
-    }
-    return Config.soulVesselBlackList.contains(entityId) || blacklist.contains(entityId);
+    return entityId == null || isBlacklistedBoss(entityId, entity) || blacklist.contains(entityId);
+  }
+
+  private static boolean isBlacklistedBoss(ResourceLocation entityId, Entity entity) {
+    return !bossesBlacklisted && !entity.isNonBoss() && !"minecraft".equals(entityId.getResourceDomain());
   }
 
   public boolean spawn(@Nullable World world, @Nullable BlockPos pos, @Nullable EnumFacing side, boolean clone) {
+    return doSpawn(world, pos, side, clone) != null;
+  }
+
+  public @Nullable Entity doSpawn(@Nullable World world, @Nullable BlockPos pos, @Nullable EnumFacing side, boolean clone) {
     if (world == null || pos == null) {
-      return false;
+      return null;
     }
     @Nonnull
     EnumFacing theSide = side != null ? side : EnumFacing.UP;
     Entity entity = getEntity(world, pos, null, clone);
     if (entity == null) {
-      return false;
+      return null;
     }
 
     Block blk = world.getBlockState(pos).getBlock();
@@ -223,7 +225,7 @@ public class CapturedMob { // TODO: DONE111
     entity.setLocationAndAngles(spawnX, spawnY, spawnZ, world.rand.nextFloat() * 360.0F, 0);
 
     if (!world.checkNoEntityCollision(entity.getEntityBoundingBox()) || !world.getCollisionBoxes(entity, entity.getEntityBoundingBox()).isEmpty()) {
-      return false;
+      return null;
     }
 
     if (customName != null && entity instanceof EntityLiving) {
@@ -233,7 +235,7 @@ public class CapturedMob { // TODO: DONE111
     if (!world.spawnEntity(entity)) {
       entity.setUniqueId(MathHelper.getRandomUUID(world.rand));
       if (!world.spawnEntity(entity)) {
-        return false;
+        return null;
       }
     }
 
@@ -241,7 +243,7 @@ public class CapturedMob { // TODO: DONE111
       ((EntityLiving) entity).playLivingSound();
     }
 
-    return true;
+    return entity;
   }
 
   public @Nullable Entity getEntity(@Nullable World world, boolean clone) {
@@ -277,8 +279,9 @@ public class CapturedMob { // TODO: DONE111
         difficulty = world.getDifficultyForLocation(pos);
       }
       if (difficulty != null) {
-        if (pos == null || !ForgeEventFactory.doSpecialSpawn((EntityLiving) entity, world, pos.getX(), pos.getY(), pos.getZ(), null))
-        ((EntityLiving) entity).onInitialSpawn(difficulty, null);
+        if (pos == null || !ForgeEventFactory.doSpecialSpawn((EntityLiving) entity, world, pos.getX(), pos.getY(), pos.getZ(), null)) {
+          ((EntityLiving) entity).onInitialSpawn(difficulty, null);
+        }
       }
     }
 
@@ -376,7 +379,7 @@ public class CapturedMob { // TODO: DONE111
   }
 
   private boolean isUnspawnable(ResourceLocation entityName) {
-    return Config.soulVesselUnspawnableList.contains(entityId) || unspawnablelist.contains(entityName);
+    return unspawnablelist.contains(entityName);
   }
 
   public @Nonnull ResourceLocation getEntityName() {
@@ -416,6 +419,10 @@ public class CapturedMob { // TODO: DONE111
 
   public static @Nonnull NNList<CapturedMob> getAllSouls() {
     return getSouls(EntityUtil.getAllRegisteredMobNames());
+  }
+
+  public static void setBossesBlacklisted(boolean b) {
+    bossesBlacklisted = b;
   }
 
 }

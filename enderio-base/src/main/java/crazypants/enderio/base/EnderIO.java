@@ -14,11 +14,11 @@ import com.google.common.collect.ImmutableList;
 
 import crazypants.enderio.api.IMC;
 import crazypants.enderio.api.addon.IEnderIOAddon;
-import crazypants.enderio.autosave.handlers.EIOHandlers;
 import crazypants.enderio.base.capacitor.CapacitorKeyRegistry;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
+import crazypants.enderio.base.config.config.TeleportConfig;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.base.config.recipes.RecipeLoader;
 import crazypants.enderio.base.diagnostics.ProfilerAntiReactor;
@@ -125,8 +125,6 @@ public class EnderIO implements IEnderIOAddon {
 
     proxy.init(event);
 
-    EIOHandlers.register();
-
     Log.debug("PHASE PRE-INIT END");
   }
 
@@ -152,7 +150,7 @@ public class EnderIO implements IEnderIOAddon {
 
     proxy.init(event);
 
-    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Init.Pre());
+    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Init.Post());
 
     Log.debug("PHASE INIT END");
   }
@@ -188,8 +186,6 @@ public class EnderIO implements IEnderIOAddon {
   public void postInit(@Nonnull FMLPostInitializationEvent event) {
     Log.debug("PHASE POST-INIT START");
 
-    Config.init(event);
-
     MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.PostInit.Pre());
 
     ModObjectRegistry.init(event);
@@ -198,7 +194,6 @@ public class EnderIO implements IEnderIOAddon {
     AlloyRecipeManager.getInstance().create();
     SliceAndSpliceRecipeManager.getInstance().create();
     VatRecipeManager.getInstance().create();
-    SoulBinderRecipeManager.getInstance().addDefaultRecipes();
     PaintSourceValidator.instance.loadConfig();
 
     BuildcraftIntegration.init(event);
@@ -250,7 +245,7 @@ public class EnderIO implements IEnderIOAddon {
           } else if (IMC.XML_RECIPE_FILE.equals(key)) {
             RecipeLoader.addIMCRecipe(msg.getSender(), true, value);
           } else if (IMC.TELEPORT_BLACKLIST_ADD.equals(key)) {
-            Config.TRAVEL_BLACKLIST.add(value);
+            TeleportConfig.blockBlacklist.get().add(value);
           } else if (IMC.REDSTONE_CONNECTABLE_ADD.equals(key)) {
             ConnectivityTool.registerRedstoneAware(value);
           }
@@ -294,7 +289,7 @@ public class EnderIO implements IEnderIOAddon {
   @Override
   @Nullable
   public Configuration getConfiguration() {
-    return Config.config;
+    return Config.getConfig();
   }
 
   @EventHandler

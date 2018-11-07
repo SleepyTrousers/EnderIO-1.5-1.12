@@ -23,7 +23,7 @@ public abstract class AbstractCrafting extends AbstractConditional {
     final List<Output> activeOutputs = getOutputs();
     valid = checkOutputCount(activeOutputs.size());
     for (Output output : activeOutputs) {
-      valid &= output.isValid();
+      valid = valid && output.isValid();
     }
 
     return this;

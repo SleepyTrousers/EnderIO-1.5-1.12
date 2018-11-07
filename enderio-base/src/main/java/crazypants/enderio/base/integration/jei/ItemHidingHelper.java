@@ -13,8 +13,8 @@ import crazypants.enderio.base.config.config.InfinityConfig;
 import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.init.ModObject;
-import crazypants.enderio.base.material.alloy.endergy.AlloyEndergy;
 import crazypants.enderio.base.material.alloy.IAlloy;
+import crazypants.enderio.base.material.alloy.endergy.AlloyEndergy;
 import crazypants.enderio.base.material.material.Material;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ingredients.IIngredientBlacklist;
@@ -56,13 +56,13 @@ public enum ItemHidingHelper {
   CONDUIT2(mod("enderioconduits", PersonalConfig.hideConduits), Material.REDSTONE_FILTER_BASE),
   CONDUIT3(mod("enderioinvpanel", PersonalConfig.hideConduits), Material.REMOTE_AWARENESS_UPGRADE),
   TOOLS2(mod("enderiomachines", PersonalConfig.hideToolsAndArmor), Material.GLIDER_WING, Material.GLIDER_WINGS, Material.NUTRITIOUS_STICK,
-      Material.VIBRANT_CYSTAL, Material.SKELETAL_CONTRACTOR, Material.INFINITY_ROD),
+      Material.VIBRANT_CRYSTAL, Material.SKELETAL_CONTRACTOR, Material.INFINITY_ROD),
   MATS_TE(mod("thermalfoundation", PersonalConfig.hideTEMaterials), Material.INGOT_ENDERIUM_BASE, Material.GRINDING_BALL_SIGNALUM,
       Material.GRINDING_BALL_ENDERIUM, Material.GRINDING_BALL_LUMIUM),
   MATS_TIC(mod("enderiointegrationtic", PersonalConfig.hideTiCMaterials).or(mod("tconstruct", PersonalConfig.hideTiCMaterials)), Material.POWDER_ARDITE,
       Material.POWDER_COBALT),
   MATS3(mod("enderiomachines", PersonalConfig.hideMaterials), Material.SIMPLE_MACHINE_CHASSI, Material.MACHINE_CHASSI, Material.CHASSIPARTS,
-      Material.PLATE_PHOTOVOLTAIC, Material.SILICON, Material.GEAR_ENERGIZED, Material.GEAR_VIBRANT, Material.PULSATING_CYSTAL, Material.ENDER_CRYSTAL,
+      Material.PLATE_PHOTOVOLTAIC, Material.SILICON, Material.GEAR_ENERGIZED, Material.GEAR_VIBRANT, Material.PULSATING_CRYSTAL, Material.ENDER_CRYSTAL,
       Material.ATTRACTOR_CRYSTAL, Material.WEATHER_CRYSTAL, Material.PRECIENT_CRYSTAL, Material.POWDER_FLOUR, Material.POWDER_COAL, Material.POWDER_IRON,
       Material.POWDER_GOLD, Material.POWDER_COPPER, Material.POWDER_TIN, Material.POWDER_ENDER, Material.POWDER_OBSIDIAN, Material.POWDER_ARDITE,
       Material.POWDER_COBALT, Material.POWDER_LAPIS, Material.POWDER_QUARTZ, Material.POWDER_PRECIENT, Material.POWDER_VIBRANT, Material.POWDER_PULSATING,
@@ -75,8 +75,8 @@ public enum ItemHidingHelper {
   ZOO2(mod("enderiozoo", PersonalConfig.hideMobDrops), Material.POWDER_CONFUSION, Material.SHARD_ENDER, Material.POWDER_WITHERING),
   TAP(mod("ic2", PersonalConfig.hideTreetap).and(mod("techreborn", PersonalConfig.hideTreetap)), ModObject.itemDarkSteelTreetap),
   ENDERGY(mod("enderioendergy", PersonalConfig.hideEndergy), Material.INFINITY_GOOP),
-  ENDERGY_ALLOYS(mod("enderioendergy", PersonalConfig.hideEndergy), AlloyEndergy.ENERGETIC_SILVER, AlloyEndergy.CRUDE_STEEL,
-      AlloyEndergy.CRYSTALLINE_ALLOY, AlloyEndergy.MELODIC_ALLOY, AlloyEndergy.STELLAR_ALLOY, AlloyEndergy.CRYSTALLINE_PINK_SLIME),
+  ENDERGY_ALLOYS(mod("enderioendergy", PersonalConfig.hideEndergy), AlloyEndergy.ENERGETIC_SILVER, AlloyEndergy.CRUDE_STEEL, AlloyEndergy.CRYSTALLINE_ALLOY,
+      AlloyEndergy.MELODIC_ALLOY, AlloyEndergy.STELLAR_ALLOY, AlloyEndergy.CRYSTALLINE_PINK_SLIME, AlloyEndergy.VIVID_ALLOY),
 
   ;
 

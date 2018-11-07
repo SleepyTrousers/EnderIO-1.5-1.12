@@ -15,7 +15,7 @@ import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.IConduit;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -41,7 +41,7 @@ public final class ConduitGeometryUtil {
 
   @SubscribeEvent
   public static void preInit(EnderIOLifecycleEvent.Config.Post event) {
-    float size = (1 / 16f) * Config.conduitPixels;
+    float size = (1 / 16f) * PersonalConfig.conduitPixels.get();
 
     WIDTH = size;
     HEIGHT = size;

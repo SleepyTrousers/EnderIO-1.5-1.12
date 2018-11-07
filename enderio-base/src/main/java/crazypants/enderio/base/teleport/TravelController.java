@@ -6,6 +6,8 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
@@ -19,7 +21,7 @@ import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.api.teleport.TravelSource;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.TeleportConfig;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.teleport.packet.PacketOpenAuthGui;
@@ -62,10 +64,6 @@ public class TravelController {
 
   private boolean wasSneaking = false;
 
-  private int delayTimer = 0;
-
-  private int timer = Config.travelAnchorCooldown;
-
   private boolean tempJump;
 
   private boolean tempSneak;
@@ -90,11 +88,11 @@ public class TravelController {
   }
 
   private boolean doesHandAllowTravel(@Nonnull EnumHand hand) {
-    return Config.travelStaffOffhandTravelEnabled || hand == EnumHand.MAIN_HAND;
+    return TeleportConfig.enableOffHandTravel.get() || hand == EnumHand.MAIN_HAND;
   }
 
   private boolean doesHandAllowBlink(@Nonnull EnumHand hand) {
-    return Config.travelStaffOffhandBlinkEnabled || hand == EnumHand.MAIN_HAND;
+    return TeleportConfig.enableOffHandBlink.get() || hand == EnumHand.MAIN_HAND;
   }
 
   public boolean activateTravelAccessable(@Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull World world, @Nonnull EntityPlayer player,
@@ -128,7 +126,7 @@ public class TravelController {
     Vector3d look = Util.getLookVecEio(player);
 
     Vector3d sample = new Vector3d(look);
-    sample.scale(Config.travelStaffMaxBlinkDistance);
+    sample.scale(TravelSource.STAFF_BLINK.getMaxDistanceTravelled());
     sample.add(eye);
     Vec3d eye3 = new Vec3d(eye.x, eye.y, eye.z);
     Vec3d end = new Vec3d(sample.x, sample.y, sample.z);
@@ -136,9 +134,9 @@ public class TravelController {
     double playerHeight = player.getYOffset();
     // if you looking at you feet, and your player height to the max distance, or part there of
     double lookComp = -look.y * playerHeight;
-    double maxDistance = Config.travelStaffMaxBlinkDistance + lookComp;
+    double maxDistance = TravelSource.STAFF_BLINK.getMaxDistanceTravelled() + lookComp;
 
-    RayTraceResult p = player.world.rayTraceBlocks(eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
+    RayTraceResult p = player.world.rayTraceBlocks(eye3, end, !TeleportConfig.enableBlinkNonSolidBlocks.get());
     if (p == null) {
 
       // go as far as possible
@@ -156,7 +154,7 @@ public class TravelController {
       return false;
     } else {
 
-      List<RayTraceResult> res = Util.raytraceAll(player.world, eye3, end, !Config.travelStaffBlinkThroughClearBlocksEnabled);
+      List<RayTraceResult> res = Util.raytraceAll(player.world, eye3, end, !TeleportConfig.enableBlinkNonSolidBlocks.get());
       for (RayTraceResult pos : res) {
         if (pos != null) {
           IBlockState hitBlock = player.world.getBlockState(pos.getBlockPos());
@@ -207,8 +205,8 @@ public class TravelController {
   }
 
   private boolean isBlackListedBlock(@Nonnull EntityPlayer player, @Nonnull RayTraceResult pos, @Nonnull IBlockState hitBlock) {
-    return Config.TRAVEL_BLACKLIST.contains(hitBlock.getBlock())
-        && (hitBlock.getBlockHardness(player.world, pos.getBlockPos()) < 0 || !Config.travelStaffBlinkThroughUnbreakableBlocksEnabled);
+    return TeleportConfig.blockBlacklist.get().contains(hitBlock.getBlock())
+        && (hitBlock.getBlockHardness(player.world, pos.getBlockPos()) < 0 || !TeleportConfig.enableBlinkUnbreakableBlocks.get());
   }
 
   private boolean doBlinkAround(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull Vector3d sample,
@@ -253,10 +251,6 @@ public class TravelController {
     }
   }
 
-  public int getMaxTravelDistanceSq() {
-    return TravelSource.getMaxDistanceSq();
-  }
-
   @SubscribeEvent
   public void onRender(@Nonnull RenderWorldLastEvent event) {
 
@@ -290,7 +284,8 @@ public class TravelController {
         candidates.clear();
         return;
       }
-      onBlockCoord = getActiveTravelBlock(player);
+      Pair<BlockPos, ITravelAccessable> pair = getActiveTravelBlock(player);
+      onBlockCoord = pair != null ? pair.getLeft() : null;
       boolean onBlock = onBlockCoord != null;
       showTargets = onBlock || isTravelItemActiveForSelecting(player);
       if (showTargets) {
@@ -306,30 +301,22 @@ public class TravelController {
       tempSneak = input.sneak;
 
       // Handles teleportation if a target is selected
-      if ((input.jump && !wasJumping && onBlock && selectedCoord != null && delayTimer == 0)
-          || (input.sneak && !wasSneaking && onBlock && selectedCoord != null && delayTimer == 0 && Config.travelAnchorSneak)) {
+      if ((input.jump && !wasJumping && onBlock && selectedCoord != null && TeleportConfig.activateJump.get())
+          || (input.sneak && !wasSneaking && onBlock && selectedCoord != null && TeleportConfig.activateSneak.get())) {
 
         onInput(player);
-        delayTimer = timer;
       }
-      // If there is no selected coordinate and the input is jump, go up
-      if (input.jump && !wasJumping && onBlock && selectedCoord == null && delayTimer == 0) {
 
+      // Elevator: If there is no selected coordinate and the input is jump, go up
+      if (input.jump && !wasJumping && onBlock && selectedCoord == null) {
         updateVerticalTarget(player, 1);
         onInput(player);
-        delayTimer = timer;
-
       }
 
-      // If there is no selected coordinate and the input is sneak, go down
-      if (input.sneak && !wasSneaking && onBlock && selectedCoord == null && delayTimer == 0) {
+      // Elevator: If there is no selected coordinate and the input is sneak, go down
+      if (input.sneak && !wasSneaking && onBlock && selectedCoord == null) {
         updateVerticalTarget(player, -1);
         onInput(player);
-        delayTimer = timer;
-      }
-
-      if (delayTimer != 0) {
-        delayTimer--;
       }
 
       wasJumping = tempJump;
@@ -346,7 +333,7 @@ public class TravelController {
   }
 
   public boolean isTravelItemActiveForRendering(@Nonnull EntityPlayer ep) {
-    return isTravelItemActive(ep, ep.getHeldItemMainhand()) || (Config.travelStaffOffhandShowsTravelTargets && isTravelItemActive(ep, ep.getHeldItemOffhand()));
+    return isTravelItemActive(ep, ep.getHeldItemMainhand()) || (TeleportConfig.enableOffHandTravel.get() && isTravelItemActive(ep, ep.getHeldItemOffhand()));
   }
 
   private boolean isTravelItemActiveForSelecting(@Nonnull EntityPlayer ep) {
@@ -450,7 +437,7 @@ public class TravelController {
     if (bc.getY() < 1) {
       return false;
     }
-    if (source == TravelSource.STAFF_BLINK && !Config.travelStaffBlinkThroughSolidBlocksEnabled) {
+    if (source == TravelSource.STAFF_BLINK && !TeleportConfig.enableBlinkSolidBlocks.get()) {
       Vec3d start = Util.getEyePosition(player);
       Vec3d target = new Vec3d(bc.getX() + 0.5f, bc.getY() + 0.5f, bc.getZ() + 0.5f);
       if (!canBlinkTo(bc, w, start, target)) {
@@ -469,9 +456,9 @@ public class TravelController {
   }
 
   private boolean canBlinkTo(@Nonnull BlockPos bc, @Nonnull World w, @Nonnull Vec3d start, @Nonnull Vec3d target) {
-    RayTraceResult p = w.rayTraceBlocks(start, target, !Config.travelStaffBlinkThroughClearBlocksEnabled);
+    RayTraceResult p = w.rayTraceBlocks(start, target, !TeleportConfig.enableBlinkNonSolidBlocks.get());
     if (p != null) {
-      if (!Config.travelStaffBlinkThroughClearBlocksEnabled) {
+      if (!TeleportConfig.enableBlinkNonSolidBlocks.get()) {
         return false;
       }
       IBlockState bs = w.getBlockState(p.getBlockPos());
@@ -510,9 +497,10 @@ public class TravelController {
   @SideOnly(Side.CLIENT)
   private void updateVerticalTarget(@Nonnull EntityPlayerSP player, int direction) {
 
-    BlockPos currentBlock = getActiveTravelBlock(player);
+    Pair<BlockPos, ITravelAccessable> pair = getActiveTravelBlock(player);
+    BlockPos currentBlock = pair.getKey();
     World world = Minecraft.getMinecraft().world;
-    for (int i = 0, y = currentBlock.getY() + direction; i < Config.travelAnchorMaximumDistance && y >= 0 && y <= 255; i++, y += direction) {
+    for (int i = 0, y = currentBlock.getY() + direction; i < pair.getValue().getTravelRangeDeparting() && y >= 0 && y <= 255; i++, y += direction) {
 
       // Circumvents the raytracing used to find candidates on the y axis
       TileEntity selectedBlock = world.getTileEntity(new BlockPos(currentBlock.getX(), y, currentBlock.getZ()));
@@ -521,21 +509,15 @@ public class TravelController {
         ITravelAccessable travelBlock = (ITravelAccessable) selectedBlock;
         BlockPos targetBlock = new BlockPos(currentBlock.getX(), y, currentBlock.getZ());
 
-        if (Config.travelAnchorSkipWarning) {
-          if (travelBlock.getRequiresPassword(player)) {
-            player.sendMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipLocked"));
-          }
-
-          if (travelBlock.getAccessMode() == ITravelAccessable.AccessMode.PRIVATE && !travelBlock.canUiBeAccessed(player)) {
-            player.sendMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipPrivate"));
-          }
-          if (!isValidTarget(player, targetBlock, TravelSource.BLOCK)) {
-            player.sendMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipObstructed"));
-          }
-        }
         if (travelBlock.canBlockBeAccessed(player) && isValidTarget(player, targetBlock, TravelSource.BLOCK)) {
           selectedCoord = targetBlock;
           return;
+        } else if (travelBlock.getRequiresPassword(player)) {
+          player.sendStatusMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipLocked"), true);
+        } else if (travelBlock.getAccessMode() == ITravelAccessable.AccessMode.PRIVATE && !travelBlock.canUiBeAccessed(player)) {
+          player.sendStatusMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipPrivate"), true);
+        } else if (!isValidTarget(player, targetBlock, TravelSource.BLOCK)) {
+          player.sendStatusMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipObstructed"), true);
         }
       }
     }
@@ -610,7 +592,7 @@ public class TravelController {
 
   }
 
-  public double getScaleForCandidate(@Nonnull Vector3d loc) {
+  public double getScaleForCandidate(@Nonnull Vector3d loc, int maxDistanceSq) {
 
     if (!currentView.isValid()) {
       return 1;
@@ -639,10 +621,10 @@ public class TravelController {
       scale = tanFovRad * eyePoint.distance(loc);
 
       // Using this scale will give us the block full screen, we will make it 20% of the screen
-      scale *= Config.travelAnchorZoomScale;
+      scale *= TeleportConfig.visualScale.get();
 
       // only apply 70% of the scaling so more distance targets are still smaller than closer targets
-      float nf = 1 - MathHelper.clamp((float) eyePoint.distanceSquared(loc) / TravelSource.STAFF.getMaxDistanceTravelledSq(), 0, 1);
+      float nf = 1 - MathHelper.clamp((float) eyePoint.distanceSquared(loc) / maxDistanceSq, 0, 1);
       scale = scale * (0.3 + 0.7 * nf);
 
       scale = (scale * mix) + (1 - mix);
@@ -680,7 +662,7 @@ public class TravelController {
   }
 
   @SideOnly(Side.CLIENT)
-  private BlockPos getActiveTravelBlock(@Nonnull EntityPlayerSP player) {
+  private Pair<BlockPos, ITravelAccessable> getActiveTravelBlock(@Nonnull EntityPlayerSP player) {
     World world = Minecraft.getMinecraft().world;
     if (NullHelper.untrust(world) == null) {
       // Log.warn("(in TickEvent.ClientTickEvent) net.minecraft.client.Minecraft.world is marked @Nonnull but it is null.");
@@ -693,7 +675,7 @@ public class TravelController {
     TileEntity tileEntity = world.getTileEntity(pos);
     if (tileEntity instanceof ITravelAccessable) {
       if (((ITravelAccessable) tileEntity).isTravelSource()) {
-        return new BlockPos(x, y, z);
+        return Pair.of(new BlockPos(x, y, z), ((ITravelAccessable) tileEntity));
       }
     }
     return null;

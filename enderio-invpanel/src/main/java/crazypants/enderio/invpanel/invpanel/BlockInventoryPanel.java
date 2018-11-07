@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
-import crazypants.enderio.autosave.handlers.EIOHandlers;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -15,8 +14,6 @@ import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.property.EnumRenderMode6;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.invpanel.init.InvpanelObject;
-import crazypants.enderio.invpanel.util.HandleStoredCraftingRecipe;
-import info.loenwind.autosave.Registry;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -38,9 +35,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
 
   private static final float BLOCK_SIZE = 4f / 16f;
 
-  public static BlockInventoryPanel create(@Nonnull IModObject mo) {
-    EIOHandlers.REGISTRY.register(new HandleStoredCraftingRecipe());
-    
+  public static BlockInventoryPanel create(@Nonnull IModObject mo) {    
     BlockInventoryPanel panel = new BlockInventoryPanel(mo);
     panel.init();
     return panel;

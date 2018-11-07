@@ -68,14 +68,14 @@ public class TravelEntitySpecialRenderer<T extends TileTravelAnchor> extends Man
   public void renderTileEntity(@Nonnull T te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
     Vector3d eye = Util.getEyePositionEio(Minecraft.getMinecraft().player);
     Vector3d loc = new Vector3d(te.getPos().getX() + 0.5, te.getPos().getY() + 0.5, te.getPos().getZ() + 0.5);
-    double maxDistance = TravelController.instance.isTravelItemActiveForRendering(Minecraft.getMinecraft().player)
+    int maxDistance = TravelController.instance.isTravelItemActiveForRendering(Minecraft.getMinecraft().player)
         ? TravelSource.STAFF.getMaxDistanceTravelledSq()
         : TravelSource.BLOCK.getMaxDistanceTravelledSq();
     if (eye.distanceSquared(loc) > maxDistance) {
       return;
     }
 
-    double sf = TravelController.instance.getScaleForCandidate(loc);
+    double sf = TravelController.instance.getScaleForCandidate(loc, maxDistance);
     boolean highlight = TravelController.instance.isBlockSelected(te.getLocation());
 
     TravelController.instance.addCandidate(te.getLocation());

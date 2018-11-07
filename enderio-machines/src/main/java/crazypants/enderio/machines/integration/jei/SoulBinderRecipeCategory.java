@@ -14,7 +14,6 @@ import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.soul.ISoulBinderRecipe;
-import crazypants.enderio.base.recipe.soul.SoulBinderTunedPressurePlateRecipe;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.PersonalConfig;
 import crazypants.enderio.machines.lang.Lang;
@@ -84,25 +83,17 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
         }
       }
 
-      List<CapturedMob> souls = CapturedMob.getSouls(supportedSouls);
+      NNList<CapturedMob> souls = CapturedMob.getSouls(supportedSouls);
       final List<ItemStack> soulStacks = new ArrayList<ItemStack>();
+      final List<ItemStack> outputs = new ArrayList<ItemStack>();
       for (CapturedMob soul : souls) {
         soulStacks.add(soul.toStack(itemSoulVial.getItemNN(), 1, 1));
+        outputs.add(recipe.getOutputStack(inputStack, soul));
       }
 
       ingredients.setInputLists(ItemStack.class, new NNList<List<ItemStack>>(soulStacks, inputItemList));
 
-      if (itemBrokenSpawner.getItem() == outputStack.getItem() || recipe instanceof SoulBinderTunedPressurePlateRecipe) {
-        // these recipes take any kind of mob. make it so that any type is in the input list
-        List<ItemStack> outputs = new ArrayList<ItemStack>();
-        for (CapturedMob soul : souls) {
-          outputs.add(soul.toStack(outputStack.getItem(), outputStack.getMetadata(), 1));
-        }
-        ingredients.setOutputLists(ItemStack.class, new NNList<List<ItemStack>>(Collections.singletonList(new ItemStack(itemSoulVial.getItemNN())), outputs));
-      } else {
-        ingredients.setOutputLists(ItemStack.class,
-            new NNList<List<ItemStack>>(Collections.singletonList(new ItemStack(itemSoulVial.getItemNN())), Collections.singletonList(outputStack)));
-      }
+      ingredients.setOutputLists(ItemStack.class, new NNList<List<ItemStack>>(Collections.singletonList(new ItemStack(itemSoulVial.getItemNN())), outputs));
 
       ingredients.setInput(EnergyIngredient.class, new EnergyIngredient(recipe.getEnergyRequired()));
     }

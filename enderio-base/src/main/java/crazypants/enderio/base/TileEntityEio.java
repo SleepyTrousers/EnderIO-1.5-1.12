@@ -8,7 +8,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.autosave.handlers.EIOHandlers;
+import crazypants.enderio.base.autosave.BaseHandlers;
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.paint.PaintUtil;
@@ -23,6 +23,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -72,7 +74,7 @@ public abstract class TileEntityEio extends TileEntityBase {
       Log.warn(sb);
     }
   }
-  
+
   @Deprecated
   private @Nonnull NBTAction convertAction(com.enderio.core.common.NBTAction action) {
     return NullHelper.notnullJ(NBTAction.values()[action.ordinal()], "Enum.values()");
@@ -83,7 +85,7 @@ public abstract class TileEntityEio extends TileEntityBase {
   protected void readCustomNBT(@Nonnull com.enderio.core.common.NBTAction action, @Nonnull NBTTagCompound root) {
     readCustomNBT(convertAction(action), root);
   }
-  
+
   @Override
   @Deprecated
   protected void writeCustomNBT(@Nonnull com.enderio.core.common.NBTAction action, @Nonnull NBTTagCompound root) {
@@ -92,11 +94,11 @@ public abstract class TileEntityEio extends TileEntityBase {
 
   protected final void writeCustomNBT(@Nonnull NBTAction action, @Nonnull NBTTagCompound root) {
     onBeforeNbtWrite();
-    Writer.write(EIOHandlers.REGISTRY, action, root, this);
+    Writer.write(BaseHandlers.REGISTRY, action, root, this);
   }
 
   protected final void readCustomNBT(@Nonnull NBTAction action, @Nonnull NBTTagCompound root) {
-    Reader.read(EIOHandlers.REGISTRY, action, root, this);
+    Reader.read(BaseHandlers.REGISTRY, action, root, this);
     if (action == NBTAction.CLIENT) {
       onAfterDataPacket();
     }
@@ -209,6 +211,11 @@ public abstract class TileEntityEio extends TileEntityBase {
       te.getWorld().tickableTileEntities.remove(te);
     }
     notTickingTileEntitiesC.clear();
+  }
+
+  @Override
+  public final boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing1) {
+    return getCapability(capability, facing1) != null;
   }
 
 }

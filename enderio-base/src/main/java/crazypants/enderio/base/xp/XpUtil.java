@@ -49,6 +49,13 @@ public class XpUtil {
   private static final int[] xpmap = new int[MAX_LEVEL + 1];
 
   /**
+   * The highest level that can be converted into experience points that can be stored as an {@link Integer}.
+   */
+  public static int getMaxLevelsStorable() {
+    return MAX_LEVEL;
+  }
+
+  /**
    * 
    * @param level
    * @return The amount of XP a player needs to get from level 0 to the given level

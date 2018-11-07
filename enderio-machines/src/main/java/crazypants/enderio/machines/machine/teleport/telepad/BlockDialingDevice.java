@@ -35,7 +35,6 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice>
     implements IEioGuiHandler.WithPos, ITileEntityProvider, IResourceTooltipProvider, IHaveRenderers {
 
   public static BlockDialingDevice create(@Nonnull IModObject modObject) {
-
     BlockDialingDevice ret = new BlockDialingDevice(modObject);
     ret.init();
     return ret;

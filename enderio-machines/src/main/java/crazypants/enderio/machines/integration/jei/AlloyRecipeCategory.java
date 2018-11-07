@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.gui.IconEIO;
@@ -14,12 +16,14 @@ import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.recipe.IManyToOneRecipe;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.RecipeLevel;
+import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.PersonalConfig;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.alloy.ContainerAlloySmelter;
 import crazypants.enderio.machines.machine.alloy.GuiAlloySmelter;
+import crazypants.enderio.util.Prep;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -63,8 +67,59 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
 
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
-      super.getIngredients(ingredients);
+      List<List<ItemStack>> inputStacks = recipe.getInputStackAlternatives();
+
+      if (!(recipe instanceof IManyToOneRecipe) || !((IManyToOneRecipe) recipe).isDedupeInput()) {
+        ingredients.setInputLists(ItemStack.class, inputStacks);
+      } else {
+        List<ItemStack> list0 = inputStacks.size() >= 1 ? inputStacks.get(0) : new NNList<>(Prep.getEmpty());
+        List<ItemStack> list1 = inputStacks.size() >= 2 ? inputStacks.get(1) : new NNList<>(Prep.getEmpty());
+        List<ItemStack> list2 = inputStacks.size() >= 3 ? inputStacks.get(2) : new NNList<>(Prep.getEmpty());
+
+        List<ItemStack> out0 = new NNList<>(), out1 = new NNList<>(), out2 = new NNList<>();
+
+        for (ItemStack stack0 : list0) {
+          if (stack0 != null) {
+            for (ItemStack stack1 : list1) {
+              if (stack1 != null && !eq(stack0, stack1)) {
+                for (ItemStack stack2 : list2) {
+                  if (stack2 != null && !eq(stack0, stack2) && !eq(stack1, stack2)) {
+                    out0.add(stack0);
+                    out1.add(stack1);
+                    out2.add(stack2);
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        if (!out0.isEmpty()) {
+          final NNList<List<ItemStack>> inputs = new NNList<>();
+          inputs.add(out0);
+          if (!out1.isEmpty()) {
+            inputs.add(out1);
+            if (!out2.isEmpty()) {
+              inputs.add(out2);
+            }
+          }
+          ingredients.setInputLists(ItemStack.class, inputs);
+        }
+      }
+
+      List<ItemStack> outputs = new ArrayList<ItemStack>();
+      for (RecipeOutput out : recipe.getOutputs()) {
+        if (Prep.isValid(out.getOutput())) {
+          outputs.add(out.getOutput());
+        }
+      }
+      ingredients.setOutputs(ItemStack.class, outputs);
+
       ingredients.setInput(EnergyIngredient.class, new EnergyIngredient(recipe.getEnergyRequired()));
+    }
+
+    private static boolean eq(@Nonnull ItemStack a, @Nonnull ItemStack b) {
+      return a.getItem() == b.getItem() && a.getItemDamage() == b.getItemDamage();
     }
 
     @Override

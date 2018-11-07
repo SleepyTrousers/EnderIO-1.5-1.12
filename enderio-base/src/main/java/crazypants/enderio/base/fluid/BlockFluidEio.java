@@ -10,7 +10,7 @@ import com.enderio.core.common.fluid.BlockFluidEnder;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.FluidConfig;
 import crazypants.enderio.base.config.config.InfinityConfig;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.material.material.MaterialCraftingHandler;
@@ -36,8 +36,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import static crazypants.enderio.base.config.Config.rocketFuelIsExplosive;
 
 public final class BlockFluidEio {
 
@@ -81,7 +79,8 @@ public final class BlockFluidEio {
     public void randomTick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Random random) {
       this.updateTick(world, pos, state, random);
       if (InfinityConfig.inWorldCraftingFireWaterEnabled.get() && (world.provider.getDimension() == 0 || InfinityConfig.enableInAllDimensions.get())
-          && world.getBlockState(pos.down()).getBlock() == Blocks.BEDROCK && RANDOM.nextFloat() <= InfinityConfig.dropChanceFirewater.get()) {
+          && InfinityConfig.bedrock.get().contains(world.getBlockState(pos.down()).getBlock())
+          && RANDOM.nextFloat() <= InfinityConfig.dropChanceFirewater.get()) {
         MaterialCraftingHandler.spawnInfinityPowder(world, pos);
       }
     }
@@ -168,7 +167,7 @@ public final class BlockFluidEio {
     }
 
     protected void checkForFire(final World worldIn, final BlockPos pos) {
-      if (rocketFuelIsExplosive) {
+      if (FluidConfig.rocketFuelIsExplosive.get()) {
         NNList.FACING.apply(new Callback<EnumFacing>() {
           @Override
           public void apply(@Nonnull EnumFacing side) {
@@ -223,7 +222,7 @@ public final class BlockFluidEio {
       if (!world.isRemote && entity instanceof EntityPlayerMP) {
         long time = entity.world.getTotalWorldTime();
         EntityPlayerMP player = (EntityPlayerMP) entity;
-        if (time % Config.nutrientFoodBoostDelay == 0 && player.getEntityData().getLong("eioLastFoodBoost") != time) {
+        if (time % FluidConfig.nutrientFoodBoostDelay.get() == 0 && player.getEntityData().getLong("eioLastFoodBoost") != time) {
           player.getFoodStats().addStats(1, 0.1f);
           player.getEntityData().setLong("eioLastFoodBoost", time);
         }

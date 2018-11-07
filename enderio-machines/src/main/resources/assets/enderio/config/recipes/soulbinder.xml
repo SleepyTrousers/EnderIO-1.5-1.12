@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+
+These are the built-in recipes. You cannot change this file, it is a
+reference for you only and will be generated every time the game starts.
+
+To make changes to the recipes, copy the recipes you want to change to
+a file in the 'user' folder. To disable a recipe, add an attribute "disabled"
+and set it to true, e.g.: <recipe name="Gear" disabled="true" />
+
+You can also disable all built-in recipes with the setting "loadCoreRecipes"
+in the Ender IO config file, so that only your files in the 'user' folder will
+be loaded. Please be advised that a number of recipes are absolutely needed,
+so you will have to copy those over into a 'user' file for the game to load.
+
+Item specifications can reference an alias, an ore dictionary name, a
+block or an item. You can force the type by prefixing the value with
+"oredict:", "block:" or "item:". Recipes that have items that cannot be
+found in-game are either skipped or an error, depending on their "required"
+attribute.
+
+More information on the syntax can be found in the recipes.xsd file. An
+XML editor will display that as tooltips when editing this file.
+
+ -->
+
+  <recipe name="Soul Binder: Attractor Crystal" required="true">
+    <soulbinding energy="100000" levels="4">
+      <input name="item:minecraft:emerald" />
+      <soul name="minecraft:villager" />
+      <output name="ATTRACTOR_CRYSTAL" />
+    </soulbinding>
+  </recipe>
+
+  <recipe name="Soul Binder: Ender Crystal" required="true">
+    <soulbinding energy="150000" levels="6">
+      <input name="VIBRANT_CRYSTAL" />
+      <soul name="minecraft:enderman" />
+      <output name="ENDER_CRYSTAL" />
+    </soulbinding>
+  </recipe>
+
+  <recipe name="Soul Binder: Patented Crystal" required="true">
+    <soulbinding energy="200000" levels="8">
+      <input name="VIBRANT_CRYSTAL" />
+      <soul name="minecraft:shulker" />
+      <output name="PRECIENT_CRYSTAL" />
+    </soulbinding>
+  </recipe>
+
+  <recipe name="Soul Binder: Reanimation" required="true">
+    <soulbinding energy="100000" levels="4">
+      <input name="ZOMBIE_CONTROLLER" />
+      <soul name="minecraft:zombie" />
+      <soul name="minecraft:zombie_villager" />
+      <soul name="minecraft:husk" />
+      <output name="FRANKEN_ZOMBIE" />
+    </soulbinding>
+  </recipe>
+
+  <recipe name="Soul Binder: Sentient Ender" required="true">
+    <soulbinding energy="100000" levels="4">
+      <input name="ENDER_RESONATOR" />
+      <soul name="minecraft:witch" />
+      <soul name="enderzoo:witherwitch" />
+      <soul name="enderiozoo:witherwitch" />
+      <output name="SENTIENT_ENDER" />
+    </soulbinding>
+  </recipe>
+
+  <recipe name="Soul Binder: Broken Spawner" required="true">
+    <soulbinding energy="2500000" levels="8" logic="APPLY" souls="SPAWNABLE">
+      <input name="enderio:item_broken_spawner" />
+      <output name="enderio:item_broken_spawner" />
+    </soulbinding>
+  </recipe>
+
+  <recipe name="Soul Binder: Tuned Pressure Plate" required="true">
+    <soulbinding energy="250000" levels="2" logic="APPLY" souls="ALL">
+      <input name="PPP_SOULARIUM, PPP_TUNED" />
+      <output name="PPP_TUNED" />
+    </soulbinding>
+  </recipe>
+
+  <recipe name="Soul Binder: Tuned Pressure Plate, Retuning" required="true">
+    <soulbinding energy="250000" levels="2" logic="APPLY" souls="ALL">
+      <input name="PPP_SOULARIUM_SILENT, PPP_TUNED_SILENT" />
+      <output name="PPP_TUNED_SILENT" />
+    </soulbinding>
+  </recipe>
+
+  <recipe name="Soul Binder: Soul Filter" required="true">
+    <soulbinding energy="5000000" levels="12" logic="FILTER" souls="ALL">
+      <input name="enderio:item_basic_item_filter" />
+      <output name="enderio:item_soul_filter_normal" />
+    </soulbinding>
+  </recipe>
+
+  <recipe name="Soul Binder: Big Soul Filter" required="true">
+    <soulbinding energy="5000000" levels="12" logic="FILTER" souls="ALL">
+      <input name="enderio:item_big_item_filter" />
+      <output name="enderio:item_soul_filter_big" />
+    </soulbinding>
+  </recipe>
+
+</enderio:recipes>

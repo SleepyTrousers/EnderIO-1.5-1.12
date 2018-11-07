@@ -3,7 +3,7 @@ package crazypants.enderio.base.integration.railcraft;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.FluidConfig;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.fluid.Fluids;
@@ -16,11 +16,11 @@ public class RailcraftUtil {
 
   public static void registerFuels() {
     FMLInterModComms.sendMessage("railcraft", "boiler-fuel-liquid",
-        Fluids.HOOTCH + "@" + (Config.hootchPowerPerCycleRF / 10 * Config.hootchPowerTotalBurnTime));
+        Fluids.HOOTCH + "@" + (FluidConfig.hootchPowerPerCycle.get() / 10 * FluidConfig.hootchPowerTotalBurnTime.get()));
     FMLInterModComms.sendMessage("railcraft", "boiler-fuel-liquid",
-        Fluids.ROCKET_FUEL + "@" + (Config.rocketFuelPowerPerCycleRF / 10 * Config.rocketFuelPowerTotalBurnTime));
+        Fluids.ROCKET_FUEL + "@" + (FluidConfig.rocketFuelPowerPerCycle.get() / 10 * FluidConfig.rocketFuelPowerTotalBurnTime.get()));
     FMLInterModComms.sendMessage("railcraft", "boiler-fuel-liquid",
-        Fluids.FIRE_WATER + "@" + (Config.fireWaterPowerPerCycleRF / 10 * Config.fireWaterPowerTotalBurnTime));
+        Fluids.FIRE_WATER + "@" + (FluidConfig.fireWaterPowerPerCycle.get() / 10 * FluidConfig.fireWaterPowerTotalBurnTime.get()));
   }
 
   @SubscribeEvent

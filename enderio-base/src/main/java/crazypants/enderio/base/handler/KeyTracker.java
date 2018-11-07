@@ -52,7 +52,7 @@ public class KeyTracker {
 
   public static final KeyTracker instance = new KeyTracker();
 
-  private interface Action {
+  public interface Action {
     void execute();
   }
 
@@ -79,13 +79,13 @@ public class KeyTracker {
     fovMinusKeyFast = create("enderio.keybind.fovminusfast", Keyboard.KEY_NONE, "key.categories.misc");
   }
 
-  private @Nonnull KeyBinding create(@Nonnull String description, int keyCode, @Nonnull String category, @Nonnull Action action) {
+  public @Nonnull KeyBinding create(@Nonnull String description, int keyCode, @Nonnull String category, @Nonnull Action action) {
     final KeyBinding keyBinding = create(description, keyCode, category);
     keyActions.add(Pair.of(keyBinding, action));
     return keyBinding;
   }
 
-  private @Nonnull KeyBinding create(@Nonnull String description, int keyCode, @Nonnull String category) {
+  public @Nonnull KeyBinding create(@Nonnull String description, int keyCode, @Nonnull String category) {
     final KeyBinding keyBinding = new KeyBinding(description.trim(), keyCode, category.trim());
     ClientRegistry.registerKeyBinding(keyBinding);
     return keyBinding;
@@ -104,12 +104,12 @@ public class KeyTracker {
     }
   }
 
-  private static void sendEnabledChatMessage(String messageBase, boolean isActive) {
+  public static void sendEnabledChatMessage(String messageBase, boolean isActive) {
     String message = EnderIO.lang.addPrefix(messageBase.concat(isActive ? ".enabled" : ".disabled"));
     Minecraft.getMinecraft().player.sendStatusMessage(new TextComponentTranslation(message), true);
   }
 
-  private static void toggleDarkSteelController(Type type, String messageBase) {
+  public static void toggleDarkSteelController(Type type, String messageBase) {
     boolean isActive = !DarkSteelController.isActive(Minecraft.getMinecraft().player, type);
     sendEnabledChatMessage(messageBase, isActive);
     DarkSteelController.setActive(Minecraft.getMinecraft().player, type, isActive);

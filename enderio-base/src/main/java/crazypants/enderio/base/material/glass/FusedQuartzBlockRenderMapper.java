@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.base.config.config.BlockConfig;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.property.EnumMergingBlockRenderMode;
 import crazypants.enderio.base.render.rendermapper.ConnectedBlockRenderMapper;
@@ -18,7 +19,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import static crazypants.enderio.base.config.Config.glassConnectToTheirColorVariants;
 import static crazypants.enderio.base.render.property.EnumMergingBlockRenderMode.RENDER;
 
 public class FusedQuartzBlockRenderMapper extends ConnectedBlockRenderMapper {
@@ -37,7 +37,7 @@ public class FusedQuartzBlockRenderMapper extends ConnectedBlockRenderMapper {
   @Override
   protected boolean isSameKind(@Nonnull IBlockState state, @Nonnull IBlockState other) {
     return other.getBlock() instanceof BlockFusedQuartz && state.getValue(FusedQuartzType.KIND).connectTo(other.getValue(FusedQuartzType.KIND))
-        && (glassConnectToTheirColorVariants || (state.getValue(BlockColored.COLOR) == other.getValue(BlockColored.COLOR)));
+        && (BlockConfig.glassConnectToTheirColorVariants.get() || (state.getValue(BlockColored.COLOR) == other.getValue(BlockColored.COLOR)));
   }
 
   @Override

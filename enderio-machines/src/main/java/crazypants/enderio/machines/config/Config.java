@@ -1,12 +1,10 @@
 package crazypants.enderio.machines.config;
 
-import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import crazypants.enderio.base.config.Config.Section;
-import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.config.factory.ValueFactory;
 import crazypants.enderio.machines.EnderIOMachines;
+import crazypants.enderio.machines.config.config.AttractorConfig;
 import crazypants.enderio.machines.config.config.ChargerConfig;
 import crazypants.enderio.machines.config.config.ClientConfig;
 import crazypants.enderio.machines.config.config.CombustionGenConfig;
@@ -16,6 +14,7 @@ import crazypants.enderio.machines.config.config.ImpulseHopperConfig;
 import crazypants.enderio.machines.config.config.InhibitorConfig;
 import crazypants.enderio.machines.config.config.KillerJoeConfig;
 import crazypants.enderio.machines.config.config.LavaGenConfig;
+import crazypants.enderio.machines.config.config.SliceAndSpliceConfig;
 import crazypants.enderio.machines.config.config.SolarConfig;
 import crazypants.enderio.machines.config.config.SoulBinderConfig;
 import crazypants.enderio.machines.config.config.SpawnerConfig;
@@ -25,26 +24,19 @@ import crazypants.enderio.machines.config.config.TranceiverConfig;
 import crazypants.enderio.machines.config.config.VacuumConfig;
 import crazypants.enderio.machines.config.config.VatConfig;
 import crazypants.enderio.machines.config.config.WeatherConfig;
+import crazypants.enderio.machines.config.config.XPObeliskConfig;
 import crazypants.enderio.machines.config.config.ZombieGenConfig;
 
 @ParametersAreNonnullByDefault // Not the right one, but eclipse knows only 3 null annotations anyway, so it's ok
 public final class Config {
 
-  public static final Section sectionCapacitor = new Section("", "capacitor");
-
   public static final ValueFactory F = new ValueFactory(EnderIOMachines.MODID);
-
-  public static final IValue<Float> explosionResistantBlockHardness = new IValue<Float>() {
-    @Override
-    public @Nonnull Float get() {
-      return crazypants.enderio.base.config.Config.EXPLOSION_RESISTANT;
-    }
-  };
 
   //
 
   public static void load() {
     // force sub-configs to be classloaded with the main config
+    AttractorConfig.F.getClass();
     ClientConfig.F.getClass();
     CombustionGenConfig.F.getClass();
     ExperienceConfig.F.getClass();
@@ -53,6 +45,7 @@ public final class Config {
     InhibitorConfig.F.getClass();
     KillerJoeConfig.F.getClass();
     LavaGenConfig.F.getClass();
+    SliceAndSpliceConfig.F.getClass();
     SolarConfig.F.getClass();
     SoulBinderConfig.F.getClass();
     SpawnerConfig.F.getClass();
@@ -64,5 +57,6 @@ public final class Config {
     WeatherConfig.F.getClass();
     ChargerConfig.F.getClass();
     ZombieGenConfig.F.getClass();
+    XPObeliskConfig.F.getClass();
   }
 }

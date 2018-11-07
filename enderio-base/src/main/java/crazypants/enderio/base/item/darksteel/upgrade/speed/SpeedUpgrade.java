@@ -3,6 +3,8 @@ package crazypants.enderio.base.item.darksteel.upgrade.speed;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -11,7 +13,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionUtils;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class SpeedUpgrade extends AbstractUpgrade {
 
   private static final @Nonnull String UPGRADE_NAME = "speedBoost";
@@ -22,6 +28,13 @@ public class SpeedUpgrade extends AbstractUpgrade {
   public static final @Nonnull SpeedUpgrade SPEED_ONE = new SpeedUpgrade(1);
   public static final @Nonnull SpeedUpgrade SPEED_TWO = new SpeedUpgrade(2);
   public static final @Nonnull SpeedUpgrade SPEED_THREE = new SpeedUpgrade(3);
+
+  @SubscribeEvent
+  public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
+    event.getRegistry().register(SPEED_ONE);
+    event.getRegistry().register(SPEED_TWO);
+    event.getRegistry().register(SPEED_THREE);
+  }
 
   private final short level;
 

@@ -4,6 +4,7 @@ import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.config.factory.IValueFactory;
+import net.minecraftforge.fluids.Fluid;
 
 public class ItemConfig {
 
@@ -42,5 +43,35 @@ public class ItemConfig {
   public static final IValue<String> magnetBaublesType = MAG.make("baublesType", "AMULET", //
       new String[] { "AMULET", "RING", "BELT", "TRINKET", "HEAD", "BODY", "CHARM" },
       "The BaublesType the magnet should be, 'AMULET', 'RING' or 'BELT' (requires Baubles to be installed and allowInBaublesSlot to be on).").sync();
+
+  public static final IValueFactory STAFF = F.section(".staffoflevity");
+
+  public static final IValue<Integer> staffOfLevityFluidUsePerTeleport = STAFF.make("fluidUsePerTeleport", 100, //
+      "Amount of fluid in mB used by the Staff of Levity.").setRange(1, 1000).sync();
+  public static final IValue<Integer> staffOfLevityFluidStorage = STAFF.make("fluidStorage", 8000, //
+      "Amount of fluid stored by the Staff of Levity.").setRange(1, 64000).sync();
+  public static final IValue<Integer> staffOfLevityTicksBetweenActivation = STAFF.make("ticksBetweenActivations", 10, //
+      "Ticks that must pass between activations of the Staff of Levity.").setRange(1, 20 * 60 * 10).sync();
+  public static final IValue<Fluid> staffOfLevityFluidType = STAFF.makeFluid("fluidType", "vapor_of_levity", //
+      "Type of fluid used by the Staff of Levity.").sync();
+
+  public static final IValueFactory ROD = F.section(".rodofreturn");
+
+  public static final IValue<Boolean> rodOfReturnCanTargetAnywhere = ROD.make("canTargetAnywhere", false, //
+      "If set to false the Rod of Return can only target a telepad.").sync();
+  public static final IValue<Integer> rodOfReturnTicksToActivate = ROD.make("ticksToActivate", 50, //
+      "Number of ticks the Rod of Return must be used before teleporting.").setRange(1, 20 * 60).sync();
+  public static final IValue<Integer> rodOfReturnPowerStorage = ROD.make("powerStorage", 2000000, //
+      "Internal energy buffer for the Rod of Return.").setMin(1).sync();
+  public static final IValue<Integer> rodOfReturnMinTicksToRecharge = ROD.make("ticksToRecharge", 100, //
+      "Min number of ticks required to recharge the internal energy buffer of the Rod of Return.").setRange(1, 20 * 60).sync();
+  public static final IValue<Integer> rodOfReturnFluidStorage = ROD.make("fluidStorage", 200, //
+      "Amount of fluid stored by the Rod of Return.").setRange(1, 64000).sync();
+  public static final IValue<Integer> rodOfReturnFluidUsePerTeleport = ROD.make("fluidUsePerTeleport", 200, //
+      "Amount of fluid in mB used by the Rod of Return.").setRange(1, 1000).sync();
+  public static final IValue<Fluid> rodOfReturnFluidType = ROD.makeFluid("fluidType", "ender_distillation", //
+      "Type of fluid used by the Rod of Return.").sync();
+  public static final IValue<Integer> rodOfReturnRfPerTick = ROD.make("energyPerTick", 35000, //
+      "Amount of energy used by the Rod of Return each tick it is used.").setRange(1, 1000).sync();
 
 }

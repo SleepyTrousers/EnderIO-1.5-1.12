@@ -46,6 +46,7 @@ import crazypants.enderio.base.machine.interfaces.INotifier;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
+import crazypants.enderio.conduits.autosave.HandleIConduit;
 import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
 import crazypants.enderio.conduits.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduits.config.ConduitConfig;
@@ -73,7 +74,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   // TODO Fix duct-tape
   // TODO Check store
-  @Store(handler = ConduitHandler.List.class)
+  @Store(handler = HandleIConduit.List.class)
   private @Nonnull CopyOnWriteArrayList<IConduit> conduits = new CopyOnWriteArrayList<IConduit>(); // <- duct-tape fix
 
   /*
@@ -710,33 +711,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   }
 
   // ------------ Capabilities ----------------------
-
-  @Override
-  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-    if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY) {
-      for (IConduit conduit : getConduits()) {
-        if (conduit.hasInternalCapability(capability, facing)) {
-          return true;
-        }
-      }
-    }
-    if (facing != null) {
-      for (IServerConduit conduit : getServerConduits()) {
-        if (conduit.hasCapability(capability, facing)) {
-          return true;
-        }
-      }
-
-      if (world.isRemote) {
-        for (IClientConduit conduit : this.getClientConduits()) {
-          if (conduit.hasClientCapability(capability, facing)) {
-            return true;
-          }
-        }
-      }
-    }
-    return super.hasCapability(capability, facing);
-  }
 
   @Nullable
   @Override

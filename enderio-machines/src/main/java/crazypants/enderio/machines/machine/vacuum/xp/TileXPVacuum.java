@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.client.render.BoundingBox;
-import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.util.MagnetUtil;
 import com.enderio.core.common.util.NNList;
@@ -23,6 +22,7 @@ import crazypants.enderio.base.xp.ExperienceContainer;
 import crazypants.enderio.machines.config.config.VacuumConfig;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.util.EnumFacing;
@@ -165,14 +165,6 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
   @Override
   public void setTanksDirty() {
     markDirty();
-  }
-
-  @Override
-  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return true;
-    }
-    return super.hasCapability(capability, facingIn);
   }
 
   @SuppressWarnings("unchecked")

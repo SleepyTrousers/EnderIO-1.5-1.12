@@ -12,7 +12,6 @@ import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.RecipeBonusType;
 import crazypants.enderio.base.recipe.RecipeLevel;
-import crazypants.enderio.base.xp.XpUtil;
 import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.Entity;
@@ -27,7 +26,6 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   private final int energyRequired;
   private final @Nonnull String uid;
   private final int xpLevelsRequired;
-  private final int xpRequired;
 
   private final @Nonnull NNList<ResourceLocation> supportedEntities;
 
@@ -36,35 +34,33 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   }
 
   protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, @Nonnull String uid, @Nonnull ResourceLocation... entityNames) {
+    this(energyRequired, xpLevelsRequired, uid, new NNList<>(entityNames));
+  }
+
+  protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, @Nonnull String uid, @Nonnull NNList<ResourceLocation> entityNames) {
     this.energyRequired = energyRequired;
     this.xpLevelsRequired = xpLevelsRequired;
-    this.xpRequired = XpUtil.getExperienceForLevel(xpLevelsRequired);
     this.uid = uid;
-    this.supportedEntities = new NNList<>(entityNames);
+    this.supportedEntities = entityNames;
   }
 
   @Override
-  public @Nonnull String getUid() {
+  public final @Nonnull String getUid() {
     return uid;
   }
 
   @Override
-  public int getExperienceLevelsRequired() {
+  public final int getExperienceLevelsRequired() {
     return xpLevelsRequired;
   }
 
   @Override
-  public int getExperienceRequired() {
-    return xpRequired;
-  }
-
-  @Override
-  public int getEnergyRequired(@Nonnull NNList<MachineRecipeInput> inputs) {
+  public final int getEnergyRequired(@Nonnull NNList<MachineRecipeInput> inputs) {
     return getEnergyRequired();
   }
 
   @Override
-  public @Nonnull RecipeBonusType getBonusType(@Nonnull NNList<MachineRecipeInput> inputs) {
+  public final @Nonnull RecipeBonusType getBonusType(@Nonnull NNList<MachineRecipeInput> inputs) {
     return RecipeBonusType.NONE;
   }
 
@@ -101,7 +97,7 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   }
 
   @Override
-  public float getExperienceForOutput(@Nonnull ItemStack output) {
+  public final float getExperienceForOutput(@Nonnull ItemStack output) {
     return 0;
   }
 
@@ -152,15 +148,13 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
     return result;
   }
 
-  protected abstract @Nonnull ItemStack getOutputStack(@Nonnull ItemStack input, @Nonnull CapturedMob mobType);
-
   @Override
   public @Nonnull NNList<ResourceLocation> getSupportedSouls() {
     return supportedEntities;
   }
 
   @Override
-  public int getEnergyRequired() {
+  public final int getEnergyRequired() {
     return energyRequired;
   }
 

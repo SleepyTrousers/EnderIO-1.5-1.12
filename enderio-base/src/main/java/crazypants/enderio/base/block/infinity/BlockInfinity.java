@@ -19,6 +19,7 @@ import crazypants.enderio.base.block.painted.BlockItemPaintedBlock;
 import crazypants.enderio.base.render.IDefaultRenderers;
 import crazypants.enderio.base.render.ranged.InfinityParticle;
 import crazypants.enderio.util.CapturedMob;
+import crazypants.enderio.util.NbtValue;
 import info.loenwind.scheduler.Celeb;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -320,9 +321,15 @@ public class BlockInfinity extends BlockEio<TileEntityEio> implements IDefaultRe
         @Override
         public boolean apply(@Nonnull BlockPos e) {
           BlockPos pos = pos0.add(e);
-          return capturedMob.spawn(world, pos.up(), EnumFacing.DOWN, false) || capturedMob.spawn(world, pos, EnumFacing.DOWN, false)
-              || capturedMob.spawn(world, pos.down(), EnumFacing.DOWN, false) || capturedMob.spawn(world, pos.up().up(), EnumFacing.DOWN, false)
-              || capturedMob.spawn(world, pos.up().down().down(), EnumFacing.DOWN, false);
+          return spawn(pos.up()) || spawn(pos) || spawn(pos.down()) || spawn(pos.up().up()) || spawn(pos.up().down().down());
+        }
+
+        private boolean spawn(@Nullable BlockPos pos) {
+          final Entity entity = capturedMob.doSpawn(world, pos, EnumFacing.DOWN, false);
+          if (entity != null) {
+            NbtValue.INFINITY.setBoolean(entity.getEntityData(), true);
+          }
+          return entity != null;
         }
       });
     }

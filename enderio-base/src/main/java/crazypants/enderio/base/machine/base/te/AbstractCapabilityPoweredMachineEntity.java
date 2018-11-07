@@ -5,7 +5,6 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.inventory.Callback;
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.EnderInventory.Type;
@@ -21,6 +20,7 @@ import crazypants.enderio.base.power.EnergyTank;
 import crazypants.enderio.util.NbtValue;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -151,18 +151,10 @@ public abstract class AbstractCapabilityPoweredMachineEntity extends AbstractCap
     updateCapacitorFromSlot();
   }
 
-  @Override
-  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY) {
-      return facingIn == null || getIoMode(facingIn).canInputOrOutput();
-    }
-    return super.hasCapability(capability, facingIn);
-  }
-
   @SuppressWarnings("unchecked")
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY) {
+    if (capability == CapabilityEnergy.ENERGY && facingIn != null && getIoMode(facingIn).canInputOrOutput()) {
       return (T) getEnergy().get(facingIn);
     }
     return super.getCapability(capability, facingIn);

@@ -11,10 +11,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import static crazypants.enderio.base.integration.thaumcraft.ThaumcraftUtil.MODID_THAUMCRAFT;
+
 public class ThaumaturgeRobesUpgrade extends AbstractUpgrade {
 
   public static final @Nonnull String UPGRADE_NAME = "thaumaturge_robes_";
-  
+
   public static final @Nonnull ThaumaturgeRobesUpgrade CHEST = new ThaumaturgeRobesUpgrade(EntityEquipmentSlot.CHEST);
   public static final @Nonnull ThaumaturgeRobesUpgrade LEGS = new ThaumaturgeRobesUpgrade(EntityEquipmentSlot.LEGS);
   public static final @Nonnull ThaumaturgeRobesUpgrade BOOTS = new ThaumaturgeRobesUpgrade(EntityEquipmentSlot.FEET);
@@ -25,17 +27,17 @@ public class ThaumaturgeRobesUpgrade extends AbstractUpgrade {
     Item i;
     switch (slot) {
     case FEET:
-      i = Item.REGISTRY.getObject(new ResourceLocation("thaumcraft", "cloth_boots"));
+      i = Item.REGISTRY.getObject(new ResourceLocation(MODID_THAUMCRAFT, "cloth_boots"));
       if (i != null) {
         return new ItemStack(i);
       }
     case LEGS:
-      i = Item.REGISTRY.getObject(new ResourceLocation("thaumcraft", "cloth_legs"));
+      i = Item.REGISTRY.getObject(new ResourceLocation(MODID_THAUMCRAFT, "cloth_legs"));
       if (i != null) {
         return new ItemStack(i);
       }
     case CHEST:
-      i = Item.REGISTRY.getObject(new ResourceLocation("thaumcraft", "cloth_chest"));
+      i = Item.REGISTRY.getObject(new ResourceLocation(MODID_THAUMCRAFT, "cloth_chest"));
       if (i != null) {
         return new ItemStack(i);
       }

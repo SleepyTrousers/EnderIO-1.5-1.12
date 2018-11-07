@@ -584,22 +584,22 @@ enderio.gui.conduit.io_mode.not_set=Default
 enderio.gui.tooltip.redstoneControlMode=Redstone Mode
 
 enderio.config.title=Ender IO Configuration
-enderio.config.power=Power Settings
-enderio.config.power.tooltip=So many numbers to change...
-enderio.config.item=Item Settings
-enderio.config.item.tooltip=If you don't like some of my amazing items :(
+#enderio.config.power=Power Settings
+#enderio.config.power.tooltip=So many numbers to change...
+#enderio.config.item=Item Settings
+#enderio.config.item.tooltip=If you don't like some of my amazing items :(
 enderio.config.personal=Personal Settings
 enderio.config.personal.tooltip=I won't tell anyone, I promise.
-enderio.config.anchor=Travel Anchor
-enderio.config.anchor.tooltip=Anchors away!
-enderio.config.staff=Staff of Traveling
-enderio.config.staff.tooltip=Be careful with that thing, you'll teleport your face off.
+#enderio.config.anchor=Travel Anchor
+#enderio.config.anchor.tooltip=Anchors away!
+#enderio.config.staff=Staff of Traveling
+#enderio.config.staff.tooltip=Be careful with that thing, you'll teleport your face off.
 enderio.config.darksteel=Dark Steel
 enderio.config.darksteel.tooltip=It's not just regular steel, it's §odark§r§e steel.
 enderio.config.aesthetic=Aesthetic Settings
 enderio.config.aesthetic.tooltip=Oooh, ahhh, pretty.
-enderio.config.advanced=Advanced Settings
-enderio.config.advanced.tooltip=For those who can't have enough configs.
+#enderio.config.advanced=Advanced Settings
+#enderio.config.advanced.tooltip=For those who can't have enough configs.
 enderio.config.items.magnet=Electromagnet
 enderio.config.items.magnet.tooltip=How do they work?
 enderio.config.fluid=Fluids
@@ -607,7 +607,7 @@ enderio.config.fluid.tooltip=Pure liquid energy!
 
 enderio.config.enchanter=Enchanter
 enderio.config.enchantments=Enchantments
-enderio.config.hoes=Hoes for Farming Station
+#enderio.config.hoes=Hoes for Farming Station
 enderio.config.misc=Other Settings
 enderio.config.rod=Rod of Return
 enderio.config.soulbinder=Soulbinder Recipes
@@ -802,6 +802,9 @@ enderio.darksteel.upgrade.sound.disabled=Sound Locator Disabled
 
 enderio.darksteel.upgrade.padding.name=Padding
 enderio.darksteel.upgrade.padding.tooltip.detailed.line1=Muffles nearby sounds
+
+enderio.darksteel.upgrade.direct.name=Direct
+enderio.darksteel.upgrade.direct.nametooltip.detailed.line1=Teleports mined things directly into your inventory
 
 enderio.darksteel.upgrade.gogglesOfRevealing.name=Revealing
 enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Vis Discount: 5%
@@ -1191,6 +1194,8 @@ enderio.gui.existing_item_filter=Existing Item Filter
 enderio.gui.mod_item_filter=Mod Item Filter
 enderio.gui.power_item_filter=Power Item Filter
 enderio.gui.species_item_filter=Species Item Filter
+enderio.gui.soul_filter_normal=Soul Filter
+enderio.gui.soul_filter_big=Big Soul Filter
 
 enderio.gui.fluid_filter=Fluid Filter
 
@@ -1224,6 +1229,8 @@ item.item_big_advanced_item_filter.name=Advanced Big Item Filter
 item.item_existing_item_filter.name=Existing Item Filter
 item.item_mod_item_filter.name=Mod Item Filter
 item.item_power_item_filter.name=Power Item Filter
+item.item_soul_filter_normal.name=Soul Filter
+item.item_soul_filter_big.name=Big Soul Filter
 
 item.item_fluid_filter.name=Fluid Filter
 

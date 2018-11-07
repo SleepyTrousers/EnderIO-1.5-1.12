@@ -25,7 +25,7 @@ public class ConditionConfig implements RecipeConfigElement {
     if (name == null) {
       throw new InvalidRecipeConfigException("Missing name");
     }
-    if (!Config.config.hasKey(section, name)) {
+    if (!Config.getConfig().hasKey(section, name)) {
       throw new InvalidRecipeConfigException("Unknown config value '" + section + ":" + name + "'");
     }
     return this;
@@ -33,7 +33,7 @@ public class ConditionConfig implements RecipeConfigElement {
 
   @Override
   public boolean isValid() {
-    return Config.config.getCategory(section).get(name).getBoolean() == value;
+    return Config.getConfig().getCategory(section).get(name).getBoolean() == value;
   }
 
   @Override

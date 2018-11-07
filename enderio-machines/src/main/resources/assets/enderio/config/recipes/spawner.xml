@@ -23,12 +23,20 @@ XML editor will display that as tooltips when editing this file.
 
  -->
 
+<!-- 
+  Sorry, this config is a mix between Powered Spawner and Soul Vial.
+  "disabled", "costMultiplier" and "clone" are for the Powered Spawner, "soulvial" is for the Soul Vial
+  Bad planning by me
+     -Henry
+ -->
+
   <recipe name="Spawner, defaults" required="true">
     <spawning>
       <!-- This will print out all available mobs: 
       <entity name="minecraft:herobrine" costMultiplier="1" disabled="false"/>
       -->
       <entity name="*"                             costMultiplier="1.0" disabled="false"/> <!-- default -->
+      <entity name="*boss*"                        soulvial="false"/> <!-- all modded bosses -->
       <entity name="minecraft:bat"                 costMultiplier="0.5" disabled="false"/> <!-- Bat -->
       <entity name="minecraft:blaze"               costMultiplier="5.0" disabled="false"/> <!-- Blaze -->
       <entity name="minecraft:cave_spider"         costMultiplier="1.0" disabled="false"/> <!-- Cave Spider -->
@@ -36,7 +44,7 @@ XML editor will display that as tooltips when editing this file.
       <entity name="minecraft:cow"                 costMultiplier="0.5" disabled="false"/> <!-- Cow -->
       <entity name="minecraft:creeper"             costMultiplier="1.5" disabled="false"/> <!-- Creeper -->
       <entity name="minecraft:donkey"              costMultiplier="1.0" disabled="false"/> <!-- Donkey -->
-      <entity name="minecraft:elder_guardian"      costMultiplier="10"  disabled="true"/> <!-- Elder Guardian -->
+      <entity name="minecraft:elder_guardian"      costMultiplier="10"  disabled="true" soulvial="false"/> <!-- Elder Guardian -->
       <entity name="minecraft:enderman"            costMultiplier="10"  disabled="false"/> <!-- Enderman -->
       <entity name="minecraft:endermite"           costMultiplier="0.3" disabled="false"/> <!-- Endermite -->
       <entity name="minecraft:evocation_illager"   costMultiplier="25"  disabled="true"/> <!-- Evoker -->
@@ -68,7 +76,7 @@ XML editor will display that as tooltips when editing this file.
       <entity name="minecraft:villager_golem"      costMultiplier="10"  disabled="true"/> <!-- Iron Golem -->
       <entity name="minecraft:vindication_illager" costMultiplier="15"  disabled="false"/> <!-- Vindicator -->
       <entity name="minecraft:witch"               costMultiplier="5.0" disabled="false"/> <!-- Witch -->
-      <entity name="minecraft:wither"              costMultiplier="50"  disabled="true"/> <!-- Wither -->
+      <entity name="minecraft:wither"              costMultiplier="50"  disabled="true" soulvial="false"/> <!-- Wither -->
       <entity name="minecraft:wither_skeleton"     costMultiplier="20"  disabled="false"/> <!-- Wither Skeleton -->
       <entity name="minecraft:wolf"                costMultiplier="1.0" disabled="false"/> <!-- Wolf -->
       <entity name="minecraft:zombie"              costMultiplier="1.0" disabled="false"/> <!-- Zombie -->
@@ -79,7 +87,7 @@ XML editor will display that as tooltips when editing this file.
     </spawning>
   </recipe>
 
-<!-- TODO: Move this to using enderio-zoo -->
+<!-- TODO 1.13: Remove the old zoo -->
   <recipe name="Spawner, Ender Zoo" required="false">
     <spawning>
       <entity name="enderzoo:concussioncreeper"    costMultiplier="1.5" disabled="false"/>
@@ -96,7 +104,7 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Spawner, Chickens" required="false">
     <spawning>
-      <entity name="chickens:chickenschicken"      costMultiplier="30" disabled="false"/>
+      <entity name="chickens:chickenschicken"      costMultiplier="30" disabled="false" clone="true"/>
     </spawning>
   </recipe>
 
@@ -137,7 +145,7 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Spawner, Meecreeps" required="false">
     <spawning>
-      <entity name="meecreeps:meecreeps" costMultiplier="1.0" disabled="true"/>
+      <entity name="meecreeps:meecreeps" costMultiplier="1.0" disabled="true" soulvial="false"/>
     </spawning>
   </recipe>
 

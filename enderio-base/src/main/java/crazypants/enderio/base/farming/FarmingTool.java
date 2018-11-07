@@ -3,7 +3,6 @@ package crazypants.enderio.base.farming;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.OreDictionaryHelper;
-import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.api.farm.IFarmingTool;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelTreetap;
@@ -15,7 +14,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public enum FarmingTool implements IFarmingTool {
-  HAND,
+  HAND {
+    @Override
+    protected boolean match(@Nonnull ItemStack item) {
+      return false;
+    }
+  },
   HOE {
     @Override
     protected boolean match(@Nonnull ItemStack item) {
@@ -31,7 +35,7 @@ public enum FarmingTool implements IFarmingTool {
   TREETAP {
     @Override
     protected boolean match(@Nonnull ItemStack item) {
-      return super.match(item) || item.getItem() instanceof ItemDarkSteelTreetap || OreDictionaryHelper.hasName(item, "toolTreetap");
+      return item.getItem() instanceof ItemDarkSteelTreetap || OreDictionaryHelper.hasName(item, "toolTreetap");
     }
   },
   SHEARS {
@@ -47,17 +51,7 @@ public enum FarmingTool implements IFarmingTool {
     }
   };
 
-  private final @Nonnull Things things;
-
-  private FarmingTool(String... things) {
-    this(new Things());
-    for (String s : things) {
-      this.things.add(s);
-    }
-  }
-
-  private FarmingTool(@Nonnull Things things) {
-    this.things = things;
+  private FarmingTool() {
   }
 
   /*
@@ -70,13 +64,7 @@ public enum FarmingTool implements IFarmingTool {
     return Prep.isValid(item) && match(item);
   }
 
-  public final @Nonnull Things getThings() {
-    return things;
-  }
-
-  protected boolean match(@Nonnull ItemStack item) {
-    return things.contains(item);
-  }
+  protected abstract boolean match(@Nonnull ItemStack item);
 
   public static boolean isTool(@Nonnull ItemStack stack) {
     for (IFarmingTool type : values()) {

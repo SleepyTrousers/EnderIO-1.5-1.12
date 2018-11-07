@@ -12,12 +12,14 @@ import crazypants.enderio.base.config.recipes.StaxFactory;
 import crazypants.enderio.base.recipe.IRecipeInput;
 import crazypants.enderio.base.recipe.ThingsRecipeInput;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
+import net.minecraft.item.ItemStack;
 
 public class Alloying extends AbstractCrafting {
 
   private Float exp;
   private int energy;
   private final @Nonnull NNList<ItemIntegerAmount> input = new NNList<>();
+  private boolean needsDeduping = false;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -47,10 +49,44 @@ public class Alloying extends AbstractCrafting {
         valid = valid && itr.next().isValid();
       }
 
+      // make sure duplicate inputs can be resolved to different items
+      if (valid && input.size() >= 2) {
+        final NNList<ItemStack> stacks0 = input.get(0).getThing().getItemStacks();
+        final NNList<ItemStack> stacks1 = input.get(1).getThing().getItemStacks();
+        if (isSame(input.get(0), input.get(1))) {
+          needsDeduping = true;
+          if (stacks0.size() == 1) {
+            valid = false;
+          }
+        }
+        if (input.size() == 3) {
+          if (isSame(input.get(0), input.get(2))) {
+            needsDeduping = true;
+            if (stacks0.size() == 1) {
+              valid = false;
+            }
+            if (isSame(input.get(1), input.get(2))) {
+              if (stacks1.size() <= 2) {
+                valid = false;
+              }
+            }
+          } else if (isSame(input.get(1), input.get(2))) {
+            needsDeduping = true;
+            if (stacks1.size() == 1) {
+              valid = false;
+            }
+          }
+        }
+      }
+
     } catch (InvalidRecipeConfigException e) {
       throw new InvalidRecipeConfigException(e, "in <alloying>");
     }
     return this;
+  }
+
+  private static boolean isSame(ItemOptional a, ItemOptional b) {
+    return a.name.equals(b.name) && ((a.nbt == null && b.nbt == null) || (a.nbt != null && a.nbt.equals(b.nbt)));
   }
 
   @Override
@@ -69,7 +105,7 @@ public class Alloying extends AbstractCrafting {
         final ItemIntegerAmount item = itr.next();
         inputStacks.add(new ThingsRecipeInput(item.getThing()).setCount(item.getAmount()));
       }
-      AlloyRecipeManager.getInstance().addRecipe(inputStacks, getOutput().getItemStack(), energy, exp);
+      AlloyRecipeManager.getInstance().addRecipe(needsDeduping, inputStacks, getOutput().getItemStack(), energy, exp);
     }
   }
 

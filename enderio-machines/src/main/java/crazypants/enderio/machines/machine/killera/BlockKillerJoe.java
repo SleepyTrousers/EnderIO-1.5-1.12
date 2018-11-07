@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.config.BaseConfig;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineBlock;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
@@ -14,7 +15,6 @@ import crazypants.enderio.base.render.IRenderMapper.IBlockRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
-import crazypants.enderio.machines.config.Config;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -83,7 +83,7 @@ public class BlockKillerJoe extends AbstractInventoryMachineBlock<TileKillerJoe>
 
   @Override
   public float getExplosionResistance(@Nonnull World world, @Nonnull BlockPos pos, @Nullable Entity exploder, @Nonnull Explosion explosion) {
-    return Config.explosionResistantBlockHardness.get();
+    return BaseConfig.explosionResistantBlockHardness.get();
   }
 
   @SubscribeEvent

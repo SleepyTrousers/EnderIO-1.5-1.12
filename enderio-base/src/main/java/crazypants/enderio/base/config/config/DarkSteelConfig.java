@@ -1,9 +1,11 @@
 package crazypants.enderio.base.config.config;
 
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.config.factory.IValue;
 import crazypants.enderio.base.config.factory.IValueFactory;
+import crazypants.enderio.base.item.darksteel.upgrade.explosive.ExplosiveTargets;
 import net.minecraftforge.fluids.Fluid;
 
 public final class DarkSteelConfig {
@@ -46,7 +48,7 @@ public final class DarkSteelConfig {
   public static final IValue<Integer> axePowerUsePerDamagePointMultiHarvest = F_AXE.make("powerUsePerDamagePointMultiHarvest", 1500, //
       "Energy per damage/durability point avoided when shift-harvesting multiple logs").setRange(0, 99999999).sync();
   public static final IValue<Float> axeSpeedPenaltyMultiHarvest = F_AXE.make("speedPenaltyMultiHarvest", 4f, //
-      "How much slower shift-harvesting logs is.").setRange(1, 40).sync();
+      "How much slower multi-harvesting logs is.").setRange(1, 40).sync();
   public static final IValue<Float> axeEfficiencyBoostWhenPowered = F_AXE.make("efficiencyBoostWhenPowered", 2f, //
       "The increase in efficiency when powered.").setRange(1, 20).sync();
 
@@ -181,10 +183,17 @@ public final class DarkSteelConfig {
   public static final IValue<Float> explosiveUpgradeDurabilityChance = F_EXPLOSIVE.make("durabilityChance", .3f, //
       "Chance that employing the explosive upgrade to blow up extra blocks costs the pickaxe durability.").setRange(0, 1).sync();
 
-  public static final IValue<Boolean> explosiveUpgradeUnlimitedTargets = F_EXPLOSIVE.make("unlimitedTargets", false, //
-      "Should the explosive upgrade blow up any kind of block the pickaxe can mine? If disabled, only a limited list of trash blocks will be blown up. "
-          + "Enable this in modpacks that have a large number of modded stone or dirt in their worldgen.")
+  public static final IValue<ExplosiveTargets> explosiveUpgradeTargets = F_EXPLOSIVE.make("targets", ExplosiveTargets.DEFAULT, //
+      "Which kinds of blocks should the explosive upgrade blow up? DEFAULT: Limited list of trash blocks. NO_INVENORY: All blocks that don't have a TileEntity. "
+          + " CUSTOM: Only the blocks in the config values 'customStone'/'customDirt'. DEFAULT_AND_CUSTOM: Combines DEFAULT and CUSTOM. ALL: Anything (dangerous!)"
+          + "Use this in modpacks that have a large number of modded stone or dirt in their worldgen.")
       .sync();
+
+  public static final IValue<Things> explosiveUpgradeCustomStone = F_EXPLOSIVE.make("customStone", new Things(), //
+      "Custom 'stone' target blocks for the explosive upgrade. See 'targets'.").sync();
+
+  public static final IValue<Things> explosiveUpgradeCustomDirt = F_EXPLOSIVE.make("customDirt", new Things(), //
+      "Custom 'dirt' target blocks for the explosive upgrade. See 'targets'. (Used whith the 'spoon' upgrade.)").sync();
 
   public static final IValueFactory F_CARPET = F_EXPLOSIVE.section(".carpet");
 
@@ -258,6 +267,14 @@ public final class DarkSteelConfig {
       "Range of the 'Sound Locator' upgrade.").setRange(1, 200).sync();
   public static final IValue<Integer> soundLocatorLifespan = F_SOUND_LOCATOR.make("lifespan", 40, //
       "Number of ticks the 'Sound Locator' icons are displayed for.").setRange(1, 200).sync();
+
+  public static final IValueFactory F_DIRECT = F_UPGRADES.section(".direct");
+
+  public static final IValue<Integer> directCost = F_DIRECT.make("upgradeCost", 8, //
+      "Number of levels required for the 'Direct' upgrade.").setRange(1, 99).sync();
+
+  public static final IValue<Integer> directEnergyCost = F_DIRECT.make("energyCost", 100, //
+      "Amount of energy used by the 'Direct' upgrade to pick up one stack of stuff.").setRange(0, 999999).sync();
 
   public static final IValueFactory F_PADDING = F_UPGRADES.section(".padding");
 

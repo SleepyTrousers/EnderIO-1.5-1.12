@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.BlockConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.entity.Entity;
@@ -54,16 +54,18 @@ public enum FusedQuartzType implements IStringSerializable {
   private final @Nonnull IPassingCallback passingCallback;
   private Block block;
 
-  private FusedQuartzType(@Nonnull String oreDictName, @Nonnull BaseMaterial baseMaterial, @Nonnull Upgrade upgrade, @Nonnull IPassingCallback passingCallback) {
+  private FusedQuartzType(@Nonnull String oreDictName, @Nonnull BaseMaterial baseMaterial, @Nonnull Upgrade upgrade,
+      @Nonnull IPassingCallback passingCallback) {
     this.oreDictName = oreDictName;
     this.baseMaterial = baseMaterial;
-    this.upgrade = upgrade;this.passingCallback=passingCallback;
+    this.upgrade = upgrade;
+    this.passingCallback = passingCallback;
   }
 
   public boolean connectTo(FusedQuartzType other) {
-    return other != null && ((Config.clearGlassConnectToFusedQuartz && Config.glassConnectToTheirVariants)
-        || (Config.clearGlassConnectToFusedQuartz && this.upgrade == other.upgrade)
-        || (Config.glassConnectToTheirVariants && this.baseMaterial == other.baseMaterial));
+    return other != null && ((BlockConfig.clearGlassConnectToFusedQuartz.get() && BlockConfig.glassConnectToTheirVariants.get())
+        || (BlockConfig.clearGlassConnectToFusedQuartz.get() && this.upgrade == other.upgrade)
+        || (BlockConfig.glassConnectToTheirVariants.get() && this.baseMaterial == other.baseMaterial));
   }
 
   @Override
