@@ -9,11 +9,13 @@ import com.enderio.core.common.util.blockiterators.CubicBlockIterator;
 import crazypants.enderio.api.capacitor.ICapacitorData;
 import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.network.PacketSpawnParticles;
 import crazypants.enderio.base.potion.PotionUtil;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.config.config.UpgradeConfig;
 import crazypants.enderio.machines.init.MachineObject;
@@ -31,16 +33,31 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.registries.IForgeRegistry;
 
+@EventBusSubscriber(modid = EnderIOMachines.MODID)
 public class WetUpgrade extends AbstractUpgrade {
 
   private static final @Nonnull String UPGRADE_NAME = "wet";
 
-  public static final @Nonnull WetUpgrade WET1 = new WetUpgrade(1, PotionUtil.getEmptyPotion(true));
+  public static final @Nonnull WetUpgrade WET1 = new WetUpgrade(1, PotionUtil.getEmptyPotion(false));
   public static final @Nonnull WetUpgrade WET2 = new WetUpgrade(2, new ItemStack(Items.WATER_BUCKET));
   public static final @Nonnull WetUpgrade WET3 = new WetUpgrade(3, new ItemStack(MachineObject.block_reservoir.getItemNN()));
   public static final @Nonnull WetUpgrade WET4 = new WetUpgrade(4, new ItemStack(Blocks.SPONGE, 1, 1));
   public static final @Nonnull WetUpgrade WET5 = new WetUpgrade(5, new ItemStack(MachineObject.block_reservoir.getItemNN(), 4));
+
+  @SubscribeEvent
+  public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
+    final IForgeRegistry<IDarkSteelUpgrade> registry = event.getRegistry();
+    registry.register(WET1);
+    registry.register(WET2);
+    registry.register(WET3);
+    registry.register(WET4);
+    registry.register(WET5);
+  }
 
   protected final @Nonnull ICapacitorData capData;
   protected final int level;
