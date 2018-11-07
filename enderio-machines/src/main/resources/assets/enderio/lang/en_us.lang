@@ -416,8 +416,20 @@ enderio.darksteel.upgrade.solar_2.tooltip.detailed.line1=Generates power from th
 enderio.darksteel.upgrade.solar_3.name=Solar III
 enderio.darksteel.upgrade.solar_3.tooltip.detailed.line1=Generates power from the sun.
 
-enderio.darksteel.upgrade.wet.name=Wet
-enderio.darksteel.upgrade.wet.tooltip.detailed.line1=Turns lava underneath the player into obsidian or cobblestone.
+enderio.darksteel.upgrade.wet_1.name=Wet I
+enderio.darksteel.upgrade.wet_1.tooltip.detailed.line1=Turns the lava block the player is in to obsidian or cobblestone if flowing, at the cost of power.
+
+enderio.darksteel.upgrade.wet_2.name=Wet II
+enderio.darksteel.upgrade.wet_2.tooltip.detailed.line1=Turns lava blocks around the player to obsidian or cobblestone if flowing (similar to the Frost Walker enchantment), at the cost of power.
+
+enderio.darksteel.upgrade.wet_3.name=Wet III
+enderio.darksteel.upgrade.wet_3.tooltip.detailed.line1=Turns lava blocks around the player to obsidian or cobblestone if flowing (similar to the Frost Walker enchantment), at the cost of power.
+
+enderio.darksteel.upgrade.wet_4.name=Wet IV
+enderio.darksteel.upgrade.wet_4.tooltip.detailed.line1=Turns lava blocks around the player to obsidian or cobblestone if flowing (similar to the Frost Walker enchantment, but also one level lower), at the cost of power.
+
+enderio.darksteel.upgrade.wet_5.name=Wet V
+enderio.darksteel.upgrade.wet_5.tooltip.detailed.line1=Turns lava blocks around the player to obsidian or cobblestone if flowing (similar to the Frost Walker enchantment, but also one level lower and one level higher), at the cost of slightly less power.
 
 enderio.config.capacitor=Capacitor Values
 enderio.config.client=Client Settings

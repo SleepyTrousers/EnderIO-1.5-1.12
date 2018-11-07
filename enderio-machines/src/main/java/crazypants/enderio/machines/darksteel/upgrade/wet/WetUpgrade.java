@@ -2,6 +2,10 @@ package crazypants.enderio.machines.darksteel.upgrade.wet;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
+import com.enderio.core.common.util.blockiterators.CubicBlockIterator;
+
 import crazypants.enderio.api.capacitor.ICapacitorData;
 import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
@@ -15,6 +19,7 @@ import crazypants.enderio.machines.config.config.UpgradeConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -72,59 +77,71 @@ public class WetUpgrade extends AbstractUpgrade {
 
   @Override
   public void onPlayerTick(@Nonnull ItemStack boots, @Nonnull IDarkSteelItem item, @Nonnull EntityPlayer player) {
-    if ((EnderIO.proxy.getServerTickCount() & 0b11) > 0 && !player.isInLava())
+    if (((EnderIO.proxy.getServerTickCount() & 0b11) > 0 || !player.onGround) && !player.isInLava() || EnergyUpgradeManager.getEnergyStored(boots) == 0
+        || player.world.isRemote)
       return;
     double range = CapacitorKey.WET_UPGRADE_RANGE.get(capData);
     double sqRange = range * range;
-    int powerNeeded = CapacitorKey.WET_UPGRADE_POWER_USE.get(capData);
-    int cobblestonePowerNeeded = (int) (CapacitorKey.WET_UPGRADE_POWER_USE.get(capData) * UpgradeConfig.cobblestoneModifier.get());
     double heightUp = CapacitorKey.WET_UPGRADE_HEIGHT_UP.get(capData);
     double heightDown = CapacitorKey.WET_UPGRADE_HEIGHT_DOWN.get(capData);
     BlockPos playerPos = player.getPosition();
     World world = player.getEntityWorld();
-    PacketSpawnParticles particles = new PacketSpawnParticles();
-    if (!world.isRemote && player.isInLava() && player instanceof EntityPlayerMP
-        && (world.getBlockState(playerPos).getBlock() == Blocks.LAVA || world.getBlockState(playerPos).getBlock() == Blocks.FLOWING_LAVA)) {
-      world.setBlockState(playerPos, (world.getBlockState(playerPos).getValue(BlockLiquid.LEVEL) == 0 ? Blocks.OBSIDIAN : Blocks.COBBLESTONE).getDefaultState());
-      EnergyUpgradeManager.extractEnergy(boots, Math.min(powerNeeded, cobblestonePowerNeeded), false);
-      ((EntityPlayerMP) player).connection.setPlayerLocation(player.posX, Math.floor(player.posY) + 1.01, player.posZ, player.rotationYaw,
-          player.rotationPitch);
-    }
-    for (BlockPos pos : BlockPos.getAllInBox(playerPos.add(-range, heightDown - 1, -range), playerPos.add(range, heightUp - 1, range))) {
+    NNList<BlockPos> toChange = new NNList<BlockPos>();
+    for (BlockPos pos : BlockPos.getAllInBox(playerPos.add(-range, -heightDown - 1, -range), playerPos.add(range, heightUp - 1, range))) {
       if (pos.distanceSqToCenter(playerPos.getX(), pos.getY(), playerPos.getZ()) < sqRange
           && (world.getBlockState(pos).getBlock() == Blocks.LAVA || world.getBlockState(pos).getBlock() == Blocks.FLOWING_LAVA)) {
-        boolean legalBlock = range <= 1.5;
-        if (!legalBlock) {
-          for (BlockPos airCheck : BlockPos.getAllInBox(pos.add(-1, -1, -1), pos.add(1, 1, 1))) {
-            if (world.isAirBlock(airCheck)) {
-              legalBlock = true;
-              break;
-            }
-          }
-        }
-        if (legalBlock) {
-          if (!world.isRemote) {
-            int flowLevel = world.getBlockState(pos).getValue(BlockLiquid.LEVEL);
-            int energyStored = EnergyUpgradeManager.getEnergyStored(boots);
-            if (flowLevel == 0 && energyStored >= powerNeeded) {
-              EnergyUpgradeManager.extractEnergy(boots, powerNeeded, false);
-              world.setBlockState(pos, Blocks.OBSIDIAN.getDefaultState());
-            } else if (energyStored >= cobblestonePowerNeeded) {
-              EnergyUpgradeManager.extractEnergy(boots, cobblestonePowerNeeded, false);
-              world.setBlockState(pos, Blocks.COBBLESTONE.getDefaultState());
-            } else {
-              PacketHandler.INSTANCE.sendToAllAround(particles, playerPos, world);
-              return;
-            }
-          }
-          world.playSound((EntityPlayer) null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.1F,
-              2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
-          for (int i = 0; i < 4; ++i) {
-            particles.add(pos.getX() + Math.random(), pos.getY() + 1.2D, pos.getZ() + Math.random(), 1, EnumParticleTypes.SMOKE_NORMAL);
+        for (CubicBlockIterator iter = new CubicBlockIterator(pos, 1); iter.hasNext();) {
+          BlockPos airCheck = iter.next();
+          if (world.isAirBlock(airCheck) && !toChange.contains(pos)) {
+            toChange.add(pos);
+            break;
           }
         }
       }
     }
-    PacketHandler.INSTANCE.sendToAllAround(particles, playerPos, world);
+    if (!toChange.isEmpty()) {
+      int powerNeeded = CapacitorKey.WET_UPGRADE_POWER_USE.get(capData);
+      int cobblestonePowerNeeded = (int) (powerNeeded * UpgradeConfig.cobblestoneModifier.get());
+      PacketSpawnParticles particles = new PacketSpawnParticles();
+      IBlockState obsidian = Blocks.OBSIDIAN.getDefaultState();
+      IBlockState cobblestone = Blocks.COBBLESTONE.getDefaultState();
+      for (NNIterator<BlockPos> iter = toChange.fastIterator(); iter.hasNext();) {
+        BlockPos pos = iter.next();
+        if (pos.getY() < playerPos.getY()
+            || validForTransformationAbovePlayer(world, pos, toChange)) {
+          int flowLevel = world.getBlockState(pos).getValue(BlockLiquid.LEVEL);
+          if (!transformBlock(world, pos, flowLevel == 0 ? obsidian : cobblestone, boots, flowLevel == 0 ? powerNeeded : cobblestonePowerNeeded, particles)) {
+            if (EnergyUpgradeManager.getEnergyStored(boots) < powerNeeded && EnergyUpgradeManager.getEnergyStored(boots) < cobblestonePowerNeeded) {
+              break;
+            }
+          }
+          if (pos.equals(playerPos) && player instanceof EntityPlayerMP) {
+            ((EntityPlayerMP) player).connection.setPlayerLocation(player.posX, Math.floor(player.posY) + 1.01, player.posZ, player.rotationYaw,
+                player.rotationPitch);
+          }
+        }
+      }
+      PacketHandler.INSTANCE.sendToAllAround(particles, playerPos, world);
+    }
+  }
+
+  private boolean transformBlock(World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull ItemStack boots, int power,
+      PacketSpawnParticles particles) {
+    if (EnergyUpgradeManager.getEnergyStored(boots) < power) {
+      return false;
+    }
+    world.setBlockState(pos, state);
+    EnergyUpgradeManager.extractEnergy(boots, power, false);
+    world.playSound(null, pos, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.1F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
+    for (int i = 0; i < 4; ++i) {
+      particles.add(pos.getX() + Math.random(), pos.getY() + 1.2D, pos.getZ() + Math.random(), 1, EnumParticleTypes.SMOKE_NORMAL);
+    }
+    return true;
+  }
+
+  private boolean validForTransformationAbovePlayer(World world, BlockPos pos, NNList<BlockPos> list) {
+    BlockPos up = pos.up();
+    return list.contains(pos) && (world.getBlockState(up).getBlock() != Blocks.LAVA && world.getBlockState(up).getBlock() != Blocks.FLOWING_LAVA
+        || validForTransformationAbovePlayer(world, up, list));
   }
 }
