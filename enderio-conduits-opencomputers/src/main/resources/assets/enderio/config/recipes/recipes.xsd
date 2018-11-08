@@ -68,8 +68,8 @@
                     </documentation>
                   </annotation>
                 </element>
-                <choice minOccurs="1" maxOccurs="1">
-                  <element minOccurs="1" maxOccurs="unbounded" name="crafting">
+                <choice minOccurs="1" maxOccurs="unbounded">
+                  <element minOccurs="1" maxOccurs="1" name="crafting">
                     <annotation>
                       <documentation>Crafting variants are crafted in a crafting table.</documentation>
                     </annotation>
@@ -190,7 +190,7 @@
                       </attribute>
                     </complexType>
                   </element>
-                  <element minOccurs="1" maxOccurs="unbounded" name="smelting">
+                  <element minOccurs="1" maxOccurs="1" name="smelting">
                     <annotation>
                       <documentation>Smelting variants are crafted in a furnace (or alloy smelter in furnace mode).</documentation>
                     </annotation>
@@ -295,7 +295,7 @@
                       </attribute>
                     </complexType>
                   </element>
-                  <element name="casting" minOccurs="1" maxOccurs="unbounded">
+                  <element name="casting" minOccurs="1" maxOccurs="1">
                     <annotation>
                       <documentation>Smelting variants are crafted in Tinkers' casting table.</documentation>
                     </annotation>
@@ -362,7 +362,7 @@
                       </sequence>
                     </complexType>
                   </element>
-                  <element name="enchanting" minOccurs="1" maxOccurs="unbounded">
+                  <element name="enchanting" minOccurs="1" maxOccurs="1">
                     <annotation>
                       <documentation>Enchantment recipes used in the Enchanter.</documentation>
                     </annotation>
@@ -433,7 +433,7 @@
                       </sequence>
                     </complexType>
                   </element>
-                  <element name="spawning" maxOccurs="unbounded" minOccurs="1">
+                  <element name="spawning" maxOccurs="1" minOccurs="1">
                     <complexType>
                       <annotation>
                         <documentation>Spawn recipes to be used in the powered spawner.</documentation>
@@ -493,7 +493,7 @@
                       </sequence>
                     </complexType>
                   </element>
-                  <element minOccurs="1" maxOccurs="unbounded" name="alloying">
+                  <element minOccurs="1" maxOccurs="1" name="alloying">
                     <annotation>
                       <documentation>Alloying variants are crafted in an alloy smelter.</documentation>
                     </annotation>
@@ -598,7 +598,7 @@
                       </attribute>
                     </complexType>
                   </element>
-                  <element name="sagmilling" maxOccurs="unbounded" minOccurs="1">
+                  <element name="sagmilling" maxOccurs="1" minOccurs="1">
                     <annotation>
                       <documentation>Sagmilling recipes are used in a Sag Mill.</documentation>
                     </annotation>
@@ -712,13 +712,13 @@
                       </attribute>
                     </complexType>
                   </element>
-                  <element name="slicing" type="enderio:slicingType" maxOccurs="unbounded" minOccurs="1">
+                  <element name="slicing" type="enderio:slicingType" maxOccurs="1" minOccurs="1">
                     <annotation>
                       <documentation>Recipe for the Slice'n'Splice</documentation>
                     </annotation>
                   </element>
-                  <element name="fermenting" type="enderio:fermentingType" maxOccurs="unbounded" minOccurs="1"></element>
-                  <element name="soulbinding" type="enderio:soulbindingType" minOccurs="1" maxOccurs="unbounded">
+                  <element name="fermenting" type="enderio:fermentingType" maxOccurs="1" minOccurs="1"></element>
+                  <element name="soulbinding" type="enderio:soulbindingType" minOccurs="1" maxOccurs="1">
                     <annotation>
                       <documentation>A recipe for the Soul Binder.</documentation>
                     </annotation></element>
