@@ -764,10 +764,22 @@
     <attribute use="optional" name="value" type="boolean"></attribute>
   </complexType>
   <complexType name="dependencyComplexType">
-    <attribute use="required" name="item" type="string"></attribute>
-    <attribute use="optional" name="reverse" type="boolean"></attribute>
-  </complexType>
-
+        <annotation>
+          <documentation>Either item or mod must be given. A dependency is met (or not met if reverse is set) if the item (if given) exists and the mod (if given) is loaded.</documentation>
+        </annotation>
+        <attribute use="optional" name="item" type="string">
+      <annotation>
+        <documentation>The ID of an item that must exist in the game</documentation>
+      </annotation></attribute>
+    <attribute name="mod" type="string" use="optional">
+      <annotation>
+        <documentation>The ID of a mod that must be loaded</documentation>
+      </annotation></attribute>
+    <attribute use="optional" name="reverse" type="boolean">
+      <annotation>
+        <documentation>When set to true, the dependency is reversed, i.e. the item/mod most not exist</documentation>
+      </annotation></attribute>
+  </complexType>
   <complexType name="slicingType">
     <sequence>
       <element name="config" type="enderio:configComplexType" maxOccurs="unbounded" minOccurs="0"></element>
