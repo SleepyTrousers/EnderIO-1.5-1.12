@@ -160,16 +160,12 @@
                                   <attribute use="optional" name="value" type="boolean" />
                                 </complexType>
                               </element>
-                              <element minOccurs="0" maxOccurs="unbounded" name="dependency">
+                              <element minOccurs="0" maxOccurs="unbounded" name="dependency"  type="enderio:dependencyComplexType">
                                 <annotation>
                                   <documentation>
                                     Restricts this output to only be used if the given game element can (not) be found in the game.
                                   </documentation>
                                 </annotation>
-                                <complexType>
-                                  <attribute use="required" name="item" type="string" />
-                                  <attribute use="optional" name="reverse" type="boolean" />
-                                </complexType>
                               </element>
                             </sequence>
                             <attribute use="required" name="name" type="string" />
@@ -244,16 +240,12 @@
                                   <attribute use="optional" name="value" type="boolean" />
                                 </complexType>
                               </element>
-                              <element minOccurs="0" maxOccurs="unbounded" name="dependency">
+                              <element minOccurs="0" maxOccurs="unbounded" name="dependency" type="enderio:dependencyComplexType">
                                 <annotation>
                                   <documentation>
                                     Restricts this output to only be used if the given game element can (not) be found in the game.
                                   </documentation>
                                 </annotation>
-                                <complexType>
-                                  <attribute use="required" name="item" type="string" />
-                                  <attribute use="optional" name="reverse" type="boolean" />
-                                </complexType>
                               </element>
                             </sequence>
                             <attribute use="required" name="name" type="string" />
