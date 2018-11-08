@@ -6,6 +6,7 @@ import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.paint.PaintSourceValidator;
 import crazypants.enderio.util.CapturedMob;
+import net.minecraft.block.Block;
 
 /**
  * This class provides the keys for the IMC messages supported by EIO and links the the details of how the messages are processed. It is preferable not to refer
@@ -55,14 +56,20 @@ public final class IMC {
   /**
    * Key for a string message to add an entity to the Soul Vial blacklist. Calls {@link CapturedMob#addToBlackList(net.minecraft.util.ResourceLocation)} with
    * the string value of the message. Entities blacklisted this way cannot be picked up with Soul Vials.
+   * 
+   * @deprecated Use {@link #XML_RECIPE}
    */
+  @Deprecated
   public static final String SOUL_VIAL_BLACKLIST = "soulVial:blacklist:add";
 
   /**
    * Key for a string message to add an entity to the Spawner's "clone instead of spawn" list. Entities on this list will be cloned by the Powered Spawner
    * instead of spawned as a new entity. This is needed for entities that have sub-types (e.g. Fluid Cows). Using this for entities that have an inventory (e.g.
    * zombies with their hands) will allow item duping!
+   * 
+   * @deprecated Use {@link #XML_RECIPE}
    */
+  @Deprecated
   public static final String SOUL_VIAL_UNSPAWNABLELIST = "soulVial:unspawnablelist:add";
 
   /**
@@ -85,9 +92,12 @@ public final class IMC {
 
   /**
    * Key for an string message to register a block as connectable to insulated redstone conduits. Calls {@link ConnectivityTool#registerRedstoneAware(String)}
-   * with the value of the message. The value has the same syntax that is used in the xml config files. Using {@link IRedstoneConnectable} is generally
-   * preferred to this because it allows location-, state- and side-awareness.
+   * with the value of the message. The value has the same syntax that is used in the xml config files.
+   * 
+   * @deprecated Using {@link Block#canConnectRedstone} or {@link IRedstoneConnectable} (deprecated) is generally preferred to this because those allow
+   *             location-, state- and side-awareness.
    */
+  @Deprecated
   public static final String REDSTONE_CONNECTABLE_ADD = "redstone:connectable:add";
 
   private IMC() {
