@@ -30,7 +30,13 @@
         },
         "kind":{
             "normal":{},
-            "advanced":{ "textures":{ "side": "enderio:blocks/block_tank_advanced" } }
+            "advanced":{
+                "textures":{ 
+                    "side": "enderio:blocks/block_tank_advanced",
+                    "top": "enderio:blocks/block_tank_top_advanced",
+                    "bottom": "enderio:blocks/block_tank_bottom_advanced"
+                } 
+            }
         }
     }
 }
