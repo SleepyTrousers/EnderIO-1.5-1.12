@@ -11,7 +11,7 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.config.factory.IValue;
+import info.loenwind.autoconfig.factory.IValue;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

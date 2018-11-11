@@ -5,7 +5,7 @@ import java.util.Locale;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
-import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.RecipeConfigElement;
 import crazypants.enderio.base.config.recipes.StaxFactory;
@@ -25,7 +25,7 @@ public class ConditionConfig implements RecipeConfigElement {
     if (name == null) {
       throw new InvalidRecipeConfigException("Missing name");
     }
-    if (!Config.getConfig().hasKey(section, name)) {
+    if (!EnderIO.getInstance().getConfiguration().hasKey(section, name)) {
       throw new InvalidRecipeConfigException("Unknown config value '" + section + ":" + name + "'");
     }
     return this;
@@ -33,7 +33,7 @@ public class ConditionConfig implements RecipeConfigElement {
 
   @Override
   public boolean isValid() {
-    return Config.getConfig().getCategory(section).get(name).getBoolean() == value;
+    return EnderIO.getInstance().getConfiguration().getCategory(section).get(name).getBoolean() == value;
   }
 
   @Override

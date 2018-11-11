@@ -2,12 +2,12 @@ package crazypants.enderio.base.config.config;
 
 import com.enderio.core.common.util.stackable.Things;
 
-import crazypants.enderio.base.config.factory.IValue;
-import crazypants.enderio.base.config.factory.IValueFactory;
+import crazypants.enderio.base.config.factory.IValueFactoryEIO;
+import info.loenwind.autoconfig.factory.IValue;
 
 public final class BrokenSpawnerConfig {
 
-  public static final IValueFactory F = BaseConfig.F.section("brokenspawner");
+  public static final IValueFactoryEIO F = BaseConfig.F.section("brokenspawner");
 
   public static final IValue<Double> brokenSpawnerDropChance = F.make("brokenSpawnerDropChance", 1.0, //
       "The chance a broken spawner will be dropped when a spawner is broken. 1 = 100% chance, 0 = 0% chance").setRange(0.0, 1.0).sync();

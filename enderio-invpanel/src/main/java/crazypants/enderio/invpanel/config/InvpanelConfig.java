@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.config.factory.IValue;
-import crazypants.enderio.base.config.factory.IValueFactory;
+import info.loenwind.autoconfig.factory.IValue;
+import info.loenwind.autoconfig.factory.IValueFactory;
 import crazypants.enderio.invpanel.remote.ItemRemoteInvAccessType;
 import crazypants.enderio.machines.config.Config;
 

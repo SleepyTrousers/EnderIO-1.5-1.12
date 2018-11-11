@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.api.common.enchant.IAdvancedEnchant;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.config.factory.IValue;
+import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.inventory.EntityEquipmentSlot;

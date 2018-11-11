@@ -3,14 +3,15 @@ package crazypants.enderio.base.config.config;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.stackable.Things;
 
-import crazypants.enderio.base.config.factory.IValue;
-import crazypants.enderio.base.config.factory.IValueFactory;
+import crazypants.enderio.base.config.factory.IValueFactoryEIO;
 import crazypants.enderio.base.item.darksteel.upgrade.explosive.ExplosiveTargets;
+import info.loenwind.autoconfig.factory.IValue;
+import info.loenwind.autoconfig.factory.IValueFactory;
 import net.minecraftforge.fluids.Fluid;
 
 public final class DarkSteelConfig {
 
-  public static final IValueFactory F_DARK_STEEL = ItemConfig.F.section(".darksteel");
+  public static final IValueFactoryEIO F_DARK_STEEL = ItemConfig.F.section(".darksteel");
 
   public static final IValueFactory F_PICKAXE = F_DARK_STEEL.section(".pickaxe");
 
@@ -114,7 +115,7 @@ public final class DarkSteelConfig {
   public static final IValue<Float> shearsEntityAreaBoostWhenPowered = F_SHEARS.make("entityAreaBoostWhenPowered", 5f, //
       "The increase in effected area (radius) when powered and used on sheep.").setRange(0, 16).sync();
 
-  public static final IValueFactory F_UPGRADES = F_DARK_STEEL.section(".upgrades");
+  public static final IValueFactoryEIO F_UPGRADES = F_DARK_STEEL.section(".upgrades");
 
   public static final IValueFactory F_HOE = F_UPGRADES.section(".hoe");
 
@@ -168,7 +169,7 @@ public final class DarkSteelConfig {
   public static final IValue<Double> darkSteelBootsJumpModifier = F_JUMP.make("modifier", 1.5, //
       "Jump height modifier applied when jumping with Dark Steel Boots equipped").setRange(1, 3).sync();
 
-  public static final IValueFactory F_EXPLOSIVE = F_UPGRADES.section(".explosive");
+  public static final IValueFactoryEIO F_EXPLOSIVE = F_UPGRADES.section(".explosive");
 
   public static final NNList<IValue<Integer>> explosiveUpgradeCost = new NNList<>( //
       F_EXPLOSIVE.make("upgradeCost1", 8, "Cost for the explosive I upgrade in levels.").setRange(1, 99).sync(),

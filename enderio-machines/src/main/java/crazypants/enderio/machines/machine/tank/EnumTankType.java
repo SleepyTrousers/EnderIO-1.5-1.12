@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.config.factory.IValue;
+import info.loenwind.autoconfig.factory.IValue;
 import crazypants.enderio.base.fluid.ItemTankHelper;
 import crazypants.enderio.machines.config.config.TankConfig;
 import net.minecraft.block.properties.PropertyEnum;

@@ -2,7 +2,7 @@ package crazypants.enderio.api.teleport;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.config.factory.IValue;
+import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 

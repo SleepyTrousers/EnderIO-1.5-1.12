@@ -10,7 +10,7 @@ import com.enderio.core.common.util.Util;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.BlockConfig;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
-import crazypants.enderio.base.config.factory.IValue;
+import info.loenwind.autoconfig.factory.IValue;
 import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelSword;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;

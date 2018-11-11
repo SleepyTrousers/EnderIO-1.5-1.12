@@ -1,8 +1,8 @@
 package crazypants.enderio.base.config.config;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.config.factory.IValue;
-import crazypants.enderio.base.config.factory.IValueFactory;
+import info.loenwind.autoconfig.factory.IValue;
+import info.loenwind.autoconfig.factory.IValueFactory;
 
 public final class PersonalConfig {
 

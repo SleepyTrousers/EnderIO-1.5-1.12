@@ -7,8 +7,6 @@ import com.enderio.core.common.network.ThreadedNetworkWrapper;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.block.charge.PacketExplodeEffect;
 import crazypants.enderio.base.capacitor.PacketCapacitorSync;
-import crazypants.enderio.base.config.factory.PacketConfigSyncNew;
-import crazypants.enderio.base.config.factory.PacketConfigSyncNew.PacketConfigSyncNewHandler;
 import crazypants.enderio.base.filter.network.PacketExistingItemFilterSnapshot;
 import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.filter.network.PacketHeldFilterUpdate;
@@ -80,7 +78,6 @@ public final class PacketHandler {
     INSTANCE.registerMessage(PacketMagnetState.Handler.class, PacketMagnetState.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketOpenAuthGui.Handler.class, PacketOpenAuthGui.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketUpdateLocationPrintout.Handler.class, PacketUpdateLocationPrintout.class, nextID(), Side.SERVER);
-    INSTANCE.registerMessage(PacketConfigSyncNewHandler.class, PacketConfigSyncNew.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketSpawnParticles.Handler.class, PacketSpawnParticles.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketPowerStorage.Handler.class, PacketPowerStorage.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketPassword.Handler.class, PacketPassword.class, nextID(), Side.SERVER);

@@ -2,8 +2,8 @@ package crazypants.enderio.endergy.config;
 
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.base.config.factory.IValue;
-import crazypants.enderio.base.config.factory.IValueFactory;
+import info.loenwind.autoconfig.factory.IValue;
+import info.loenwind.autoconfig.factory.IValueFactory;
 
 public final class EndergyConfig {
 

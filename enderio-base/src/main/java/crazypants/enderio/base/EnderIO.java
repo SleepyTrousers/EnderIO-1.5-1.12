@@ -3,7 +3,6 @@ package crazypants.enderio.base;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Triple;
 
@@ -17,6 +16,7 @@ import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.capacitor.CapacitorKeyRegistry;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.config.Config;
+import crazypants.enderio.base.config.config.BaseConfig;
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
 import crazypants.enderio.base.config.config.TeleportConfig;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
@@ -73,7 +73,7 @@ import net.minecraftforge.fml.common.network.NetworkCheckHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Mod(modid = EnderIO.MODID, name = EnderIO.MOD_NAME, version = EnderIO.VERSION, dependencies = EnderIO.DEPENDENCIES, guiFactory = "crazypants.enderio.base.config.ConfigFactoryEIO")
+@Mod(modid = EnderIO.MODID, name = EnderIO.MOD_NAME, version = EnderIO.VERSION, dependencies = EnderIO.DEPENDENCIES, guiFactory = "crazypants.enderio.base.config.GUIFactory")
 public class EnderIO implements IEnderIOAddon {
 
   @NetworkCheckHandler
@@ -113,12 +113,15 @@ public class EnderIO implements IEnderIOAddon {
     CapInjectHandler.loadClass();
   }
 
+  @SuppressWarnings("unused")
+  private static Config configHandler;
+
   @EventHandler
   public void preInit(@Nonnull FMLPreInitializationEvent event) {
     Log.debug("PHASE PRE-INIT START");
 
     MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Config.Pre());
-    Config.init(event);
+    configHandler = new Config(event, BaseConfig.F, DOMAIN);
     MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Config.Post());
 
     MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.PreInit());
@@ -287,9 +290,12 @@ public class EnderIO implements IEnderIOAddon {
   }
 
   @Override
-  @Nullable
-  public Configuration getConfiguration() {
-    return Config.getConfig();
+  public @Nonnull Configuration getConfiguration() {
+    return BaseConfig.F.getConfig();
+  }
+
+  public static @Nonnull Config getConfigHandler() {
+    return NullHelper.notnull(configHandler, "Cannot access config before preInit phase");
   }
 
   @EventHandler
