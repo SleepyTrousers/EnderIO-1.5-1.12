@@ -11,6 +11,7 @@ import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.network.PacketSpawnParticles;
@@ -95,8 +96,9 @@ public class WetUpgrade extends AbstractUpgrade {
   @Override
   public void onPlayerTick(@Nonnull ItemStack boots, @Nonnull IDarkSteelItem item, @Nonnull EntityPlayer player) {
     if (((EnderIO.proxy.getServerTickCount() & 0b11) > 0 || !player.onGround) && !player.isInLava() || EnergyUpgradeManager.getEnergyStored(boots) == 0
-        || player.world.isRemote)
+        || player.world.isRemote) {
       return;
+    }
     double range = CapacitorKey.WET_UPGRADE_RANGE.get(capData);
     double sqRange = range * range;
     double heightUp = CapacitorKey.WET_UPGRADE_HEIGHT_UP.get(capData);
@@ -105,7 +107,7 @@ public class WetUpgrade extends AbstractUpgrade {
     World world = player.getEntityWorld();
     NNList<BlockPos> toChange = new NNList<BlockPos>();
     for (BlockPos pos : BlockPos.getAllInBox(playerPos.add(-range, -heightDown - 1, -range), playerPos.add(range, heightUp - 1, range))) {
-      if (pos.distanceSqToCenter(playerPos.getX(), pos.getY(), playerPos.getZ()) < sqRange
+      if (pos.distanceSqToCenter(player.posX, pos.getY(), player.posZ) < sqRange
           && (world.getBlockState(pos).getBlock() == Blocks.LAVA || world.getBlockState(pos).getBlock() == Blocks.FLOWING_LAVA)) {
         for (CubicBlockIterator iter = new CubicBlockIterator(pos, 1); iter.hasNext();) {
           BlockPos airCheck = iter.next();
@@ -116,6 +118,7 @@ public class WetUpgrade extends AbstractUpgrade {
         }
       }
     }
+    Log.info(toChange.size());
     if (!toChange.isEmpty()) {
       int powerNeeded = CapacitorKey.WET_UPGRADE_POWER_USE.get(capData);
       int cobblestonePowerNeeded = (int) (powerNeeded * UpgradeConfig.cobblestoneModifier.get());
