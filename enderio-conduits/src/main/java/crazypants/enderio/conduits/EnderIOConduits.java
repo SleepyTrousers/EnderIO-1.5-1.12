@@ -11,10 +11,12 @@ import com.enderio.core.common.Lang;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
+import crazypants.enderio.base.config.ConfigHandlerEIO;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
-import crazypants.enderio.conduits.config.ConfigHandler;
+import crazypants.enderio.conduits.config.Config;
 import crazypants.enderio.conduits.init.CommonProxy;
 import crazypants.enderio.conduits.network.PacketHandler;
+import info.loenwind.autoconfig.ConfigHandler;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -56,16 +58,18 @@ public class EnderIOConduits implements IEnderIOAddon {
 
   @SidedProxy(clientSide = "crazypants.enderio.conduits.init.ClientProxy", serverSide = "crazypants.enderio.conduits.init.CommonProxy")
   public static CommonProxy proxy;
+  @SuppressWarnings("unused")
+  private static ConfigHandler configHandler;
 
   @Override
   @Nullable
   public Configuration getConfiguration() {
-    return ConfigHandler.config;
+    return Config.F.getConfig();
   }
 
   @EventHandler
   public void preInit(@Nonnull FMLPreInitializationEvent event) {
-    ConfigHandler.init(event);
+    configHandler = new ConfigHandlerEIO(event, Config.F);
     proxy.init(event);
   }
 

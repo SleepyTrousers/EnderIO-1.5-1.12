@@ -10,9 +10,11 @@ import org.apache.commons.lang3.tuple.Triple;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
+import crazypants.enderio.base.config.ConfigHandlerEIO;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
-import crazypants.enderio.endergy.config.ConfigHandler;
+import crazypants.enderio.endergy.config.Config;
 import crazypants.enderio.endergy.init.CommonProxy;
+import info.loenwind.autoconfig.ConfigHandler;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -54,10 +56,12 @@ public class EnderIOEndergy implements IEnderIOAddon {
 
   @SidedProxy(clientSide = "crazypants.enderio.endergy.init.ClientProxy", serverSide = "crazypants.enderio.endergy.init.CommonProxy")
   public static CommonProxy proxy;
+  @SuppressWarnings("unused")
+  private static ConfigHandler configHandler;
 
   @EventHandler
   public static void init(@Nonnull FMLPreInitializationEvent event) {
-    ConfigHandler.init(event);
+    configHandler = new ConfigHandlerEIO(event, Config.F);
     proxy.preInit();
   }
 
@@ -72,7 +76,7 @@ public class EnderIOEndergy implements IEnderIOAddon {
   @Override
   @Nullable
   public Configuration getConfiguration() {
-    return ConfigHandler.config;
+    return Config.F.getConfig();
   }
 
   @Override

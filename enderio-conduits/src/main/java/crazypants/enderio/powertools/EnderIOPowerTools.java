@@ -11,10 +11,12 @@ import com.enderio.core.common.Lang;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
+import crazypants.enderio.base.config.ConfigHandlerEIO;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.conduits.EnderIOConduits;
-import crazypants.enderio.powertools.config.ConfigHandler;
+import crazypants.enderio.powertools.config.Config;
 import crazypants.enderio.powertools.network.PacketHandler;
+import info.loenwind.autoconfig.ConfigHandler;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -50,10 +52,13 @@ public class EnderIOPowerTools implements IEnderIOAddon {
 
   public static final @Nonnull Lang lang = new Lang(DOMAIN);
 
+  @SuppressWarnings("unused")
+  private static ConfigHandler configHandler;
+
   @Override
   @Nullable
   public Configuration getConfiguration() {
-    return ConfigHandler.config;
+    return Config.F.getConfig();
   }
 
   @Override
@@ -70,7 +75,7 @@ public class EnderIOPowerTools implements IEnderIOAddon {
 
   @EventHandler
   public static void preinit(@Nonnull FMLPreInitializationEvent event) {
-    ConfigHandler.init(event);
+    configHandler = new ConfigHandlerEIO(event, Config.F);
   }
 
   @EventHandler

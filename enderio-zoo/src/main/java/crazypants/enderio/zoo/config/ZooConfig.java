@@ -227,43 +227,4 @@ public final class ZooConfig {
   public static final IValue<Double> epicSquidAttackDamage = SQUID.make("attackDamage", 10d, //
       "Base attack damage of Epic Squids.").setRange(1, 200).sync();
 
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-
 }

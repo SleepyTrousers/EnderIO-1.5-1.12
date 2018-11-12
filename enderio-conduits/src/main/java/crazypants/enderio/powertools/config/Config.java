@@ -1,11 +1,11 @@
 package crazypants.enderio.powertools.config;
 
-import crazypants.enderio.base.config.factory.ValueFactory;
+import crazypants.enderio.base.config.factory.ValueFactoryEIO;
 import crazypants.enderio.powertools.EnderIOPowerTools;
 
 public final class Config {
 
-  public static final ValueFactory F = new ValueFactory(EnderIOPowerTools.MODID);
+  public static final ValueFactoryEIO F = new ValueFactoryEIO(EnderIOPowerTools.MODID);
 
   //
 
