@@ -687,7 +687,7 @@ XML editor will display that as tooltips when editing this file.
     <alloying energy="6000" exp="0">
       <input name="ingotManganeseDioxide"/>
       <input name="ingotLithium"/>
-      <output name="ingotMagnesiumDiboride" amount="2"/>
+      <output name="ingotLithiumManganeseDioxide" amount="2"/>
     </alloying>
   </recipe>
  
