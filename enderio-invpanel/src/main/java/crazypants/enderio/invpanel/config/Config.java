@@ -10,7 +10,7 @@ public final class Config {
 
   public static final ValueFactoryEIO F = new ValueFactoryEIO(EnderIOInvPanel.MODID);
 
-  public static void load() {
+  static {
     // force sub-configs to be classloaded with the main config
     InvpanelConfig.F.getClass();
   }

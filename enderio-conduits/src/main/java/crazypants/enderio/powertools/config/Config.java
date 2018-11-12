@@ -7,9 +7,7 @@ public final class Config {
 
   public static final ValueFactoryEIO F = new ValueFactoryEIO(EnderIOPowerTools.MODID);
 
-  //
-
-  public static void load() {
+  static {
     // force sub-configs to be classloaded with the main config
     CapBankConfig.F.getClass();
     GaugeConfig.F.getClass();

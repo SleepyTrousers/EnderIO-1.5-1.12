@@ -17,7 +17,7 @@ public final class BaseConfig {
     }
   };
 
-  public static void load() {
+  static {
     DiagnosticsConfig.F.getClass();
     EnchantmentConfig.F.getClass();
     PersonalConfig.F.getClass();

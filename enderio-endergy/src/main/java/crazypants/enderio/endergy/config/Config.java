@@ -7,9 +7,7 @@ public final class Config {
 
   public static final ValueFactoryEIO F = new ValueFactoryEIO(EnderIOEndergy.MODID);
 
-  //
-
-  public static void load() {
+  static {
     EndergyConfig.F.getClass();
   }
 }

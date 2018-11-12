@@ -7,9 +7,7 @@ public final class Config {
 
   public static final ValueFactoryEIO F = new ValueFactoryEIO(EnderIOConduits.MODID);
 
-  //
-
-  public static void load() {
+  static {
     // force sub-configs to be classloaded with the main config
     ConduitConfig.F.getClass();
   }

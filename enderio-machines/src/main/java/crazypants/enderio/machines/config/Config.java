@@ -32,9 +32,7 @@ public final class Config {
 
   public static final ValueFactoryEIO F = new ValueFactoryEIO(EnderIOMachines.MODID);
 
-  //
-
-  public static void load() {
+  static {
     // force sub-configs to be classloaded with the main config
     AttractorConfig.F.getClass();
     ClientConfig.F.getClass();

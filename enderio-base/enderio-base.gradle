@@ -13,4 +13,6 @@ dependencies {
 	
 	compile "info.loenwind.autosave:AutoSave:${minecraft_version}-${autosave_version}"
 	embed "info.loenwind.autosave:AutoSave:${minecraft_version}-${autosave_version}"
+  compile "info.loenwind.autoconfig:AutoConfig:${minecraft_version}-${autoconfig_version}"
+  embed "info.loenwind.autoconfig:AutoConfig:${minecraft_version}-${autoconfig_version}"
 }
