@@ -97,6 +97,7 @@ allprojects {
         maven { url = "http://maven.ic2.player.to" }
         maven { url = "http://maven.mcmoddev.com" }
         maven { url = "http://mod-buildcraft.com/maven/" }
+        maven { url = "https://maven.blamejared.com" } // Patchouli
         maven { url = "https://maven.latmod.com" } // FTBLib
         maven { url = "http://maven.covers1624.net/" } // CoFHCore
         maven { url = "http://cc.crzd.me/maven/" } // ComputerCraft
