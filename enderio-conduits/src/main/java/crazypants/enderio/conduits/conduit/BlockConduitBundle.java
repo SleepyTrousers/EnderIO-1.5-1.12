@@ -192,7 +192,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       CollidableComponent cc = (CollidableComponent) target.hitInfo;
       IConduit con = cb.getConduit(cc.conduitType);
       if (con != null && con instanceof IClientConduit.WithDefaultRendering) {
-        tex = ((IClientConduit.WithDefaultRendering) con).getTextureForState(cc).getSprite();
+        tex = ((IClientConduit.WithDefaultRendering) con).getTextureForState(cc).getCroppedSprite();
       }
     }
     if (tex == null) {

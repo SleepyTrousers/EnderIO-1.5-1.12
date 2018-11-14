@@ -68,8 +68,9 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   static final String[] POSTFIX = new String[] { "", "_enhanced", "_ender" };
 
   static {
+    int i = 0;
     for (String pf : POSTFIX) {
-      ICONS.put(ICON_KEY + pf, new ConduitTexture(TextureRegistry.registerTexture(ICON_KEY + pf), 0));
+      ICONS.put(ICON_KEY + pf, new ConduitTexture(TextureRegistry.registerTexture(ICON_KEY), i++));
       ICONS.put(ICON_CORE_KEY + pf, new ConduitTexture(TextureRegistry.registerTexture(ICON_CORE_KEY + pf), ConduitTexture.CORE));
     }
     ICONS.put(ICON_KEY_INPUT, new ConduitTexture(TextureRegistry.registerTexture(ICON_KEY_INPUT)));

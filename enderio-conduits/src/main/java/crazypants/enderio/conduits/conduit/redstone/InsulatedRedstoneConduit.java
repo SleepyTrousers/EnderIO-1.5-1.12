@@ -77,9 +77,9 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   static {
     ICONS.put(KEY_INS_CORE_OFF_ICON, new ConduitTexture(TextureRegistry.registerTexture(KEY_INS_CORE_OFF_ICON), ConduitTexture.CORE));
     ICONS.put(KEY_INS_CORE_ON_ICON, new ConduitTexture(TextureRegistry.registerTexture(KEY_INS_CORE_ON_ICON), ConduitTexture.CORE));
-    ICONS.put(KEY_INS_CONDUIT_ICON, new ConduitTexture(TextureRegistry.registerTexture(KEY_INS_CONDUIT_ICON), 0));
-    ICONS.put(KEY_CONDUIT_ICON, new ConduitTexture(TextureRegistry.registerTexture(KEY_CONDUIT_ICON), 0));
-    ICONS.put(KEY_TRANSMISSION_ICON, new ConduitTexture(TextureRegistry.registerTexture(KEY_TRANSMISSION_ICON), 0));
+    ICONS.put(KEY_INS_CONDUIT_ICON, new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit"), 1));
+    ICONS.put(KEY_CONDUIT_ICON, new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit"), 3));
+    ICONS.put(KEY_TRANSMISSION_ICON, new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit"), 2));
   }
 
   public static final TextureSupplier ICON_IN_OUT_KEY = TextureRegistry.registerTexture("blocks/item_conduit_in_out");
@@ -398,11 +398,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     CombinedSignal signal = getNetworkOutput(toDirection);
     result = Math.max(result, signal.getStrength());
     return result;
-  }
-
-  @Nonnull
-  private BlockPos getPos() {
-    return getBundle().getLocation();
   }
 
   @Override

@@ -56,7 +56,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   public static IConduitTexture coreTextureN = new ConduitTexture(TextureRegistry.registerTexture("blocks/me_conduit_core"), ConduitTexture.CORE);
   public static IConduitTexture coreTextureD = new ConduitTexture(TextureRegistry.registerTexture("blocks/me_conduit_core_dense"), ConduitTexture.CORE);
   public static IConduitTexture longTextureN = new ConduitTexture(TextureRegistry.registerTexture("blocks/me_conduit"), 0);
-  public static IConduitTexture longTextureD = new ConduitTexture(TextureRegistry.registerTexture("blocks/me_conduit_dense"), 0);
+  public static IConduitTexture longTextureD = new ConduitTexture(TextureRegistry.registerTexture("blocks/me_conduit_dense"), 1);
 
   private boolean isDense;
   private int playerID = -1;

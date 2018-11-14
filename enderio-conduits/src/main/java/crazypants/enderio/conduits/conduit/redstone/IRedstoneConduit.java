@@ -16,12 +16,12 @@ import net.minecraft.util.EnumFacing;
 
 public interface IRedstoneConduit extends IServerConduit, IClientConduit {
 
-  public static final String KEY_CONDUIT_ICON = "blocks/redstone_conduit";
-  public static final String KEY_TRANSMISSION_ICON = "blocks/redstone_conduit_transmission";
+  public static final @Nonnull String KEY_CONDUIT_ICON = "c";
+  public static final @Nonnull String KEY_TRANSMISSION_ICON = "b";
 
-  public static final String KEY_INS_CONDUIT_ICON = "blocks/redstone_insulated_conduit";
-  public static final String KEY_INS_CORE_OFF_ICON = "blocks/redstone_insulated_conduit_core_off";
-  public static final String KEY_INS_CORE_ON_ICON = "blocks/redstone_insulated_conduit_core_on";
+  public static final @Nonnull String KEY_INS_CONDUIT_ICON = "a";
+  public static final @Nonnull String KEY_INS_CORE_OFF_ICON = "blocks/redstone_insulated_conduit_core_off";
+  public static final @Nonnull String KEY_INS_CORE_ON_ICON = "blocks/redstone_insulated_conduit_core_on";
 
   // External redstone interface
 
@@ -75,9 +75,9 @@ public interface IRedstoneConduit extends IServerConduit, IClientConduit {
   @Nullable
   RedstoneConduitNetwork getNetwork() throws NullPointerException;
 
-//  @Optional.Method(modid = "computercraft")
-//  @Nonnull
-//  public Map<DyeColor, Signal> getComputerCraftSignals(@Nonnull EnumFacing dir);
+  // @Optional.Method(modid = "computercraft")
+  // @Nonnull
+  // public Map<DyeColor, Signal> getComputerCraftSignals(@Nonnull EnumFacing dir);
 
   @Nonnull
   IRedstoneSignalFilter getSignalFilter(@Nonnull EnumFacing dir, boolean isOutput);

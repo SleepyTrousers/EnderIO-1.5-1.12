@@ -205,8 +205,8 @@ public class DefaultConduitRenderer implements IConduitRenderer {
       BoundingBox cube = component.bound;
       BoundingBox bb = cube.scale(xLen, yLen, zLen);
       TextureAtlasSprite sprite = tex.getSprite();
-      drawDynamicSection(bb, sprite.getInterpolatedU(tex.getUv().x), sprite.getInterpolatedU(tex.getUv().z), sprite.getInterpolatedU(tex.getUv().y),
-          sprite.getInterpolatedU(tex.getUv().w), componentDirection, false, conduit.shouldMirrorTexture());
+      drawDynamicSection(bb, sprite.getInterpolatedU(tex.getUv().x * 16), sprite.getInterpolatedU(tex.getUv().z * 16),
+          sprite.getInterpolatedV(tex.getUv().y * 16), sprite.getInterpolatedV(tex.getUv().w * 16), componentDirection, false, conduit.shouldMirrorTexture());
       if (conduit.getConnectionMode(componentDirection) == ConnectionMode.DISABLED) {
         TextureAtlasSprite tex2 = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);
         List<Vertex> corners = component.bound.getCornersWithUvForFace(componentDirection, tex2.getMinU(), tex2.getMaxU(), tex2.getMinV(), tex2.getMaxV());
@@ -233,8 +233,8 @@ public class DefaultConduitRenderer implements IConduitRenderer {
     BoundingBox cube = component.bound;
     BoundingBox bb = cube.scale(xLen, yLen, zLen);
     TextureAtlasSprite sprite = tex.getSprite();
-    drawDynamicSection(bb, sprite.getInterpolatedU(tex.getUv().x), sprite.getInterpolatedU(tex.getUv().z), sprite.getInterpolatedU(tex.getUv().y),
-        sprite.getInterpolatedU(tex.getUv().w), color, componentDirection, false);
+    drawDynamicSection(bb, sprite.getInterpolatedU(tex.getUv().x * 16), sprite.getInterpolatedU(tex.getUv().z * 16),
+        sprite.getInterpolatedV(tex.getUv().y * 16), sprite.getInterpolatedV(tex.getUv().w * 16), color, componentDirection, false);
   }
 
   protected void drawDynamicSection(@Nonnull BoundingBox bound, float minU, float maxU, float minV, float maxV, @Nonnull EnumFacing dir,

@@ -70,7 +70,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   public static final String EXTERNAL_INTERFACE_GEOM = "ExternalInterface";
 
-  public static final IConduitTexture ICON_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/item_conduit"), 0);
+  public static final IConduitTexture ICON_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit"), 0);
 
   public static final IConduitTexture ICON_KEY_CORE = new ConduitTexture(TextureRegistry.registerTexture("blocks/item_conduit_core"), ConduitTexture.CORE);
 

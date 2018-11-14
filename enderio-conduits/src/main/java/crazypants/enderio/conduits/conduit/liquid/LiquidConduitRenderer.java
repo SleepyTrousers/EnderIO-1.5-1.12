@@ -95,7 +95,8 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   protected void renderTransmissionDynamic(@Nonnull IConduit conduit, @Nonnull IConduitTexture tex, @Nullable Vector4f color,
       @Nonnull CollidableComponent component, float selfIllum) {
 
-    if (((LiquidConduit) conduit).getTank().getFilledRatio() <= 0) {
+    final float filledRatio = ((LiquidConduit) conduit).getTank().getFilledRatio();
+    if (filledRatio <= 0) {
       return;
     }
 
@@ -104,8 +105,18 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
       BoundingBox[] cubes = toCubes(component.bound);
       for (BoundingBox cube : cubes) {
         if (cube != null) {
-          drawDynamicSection(cube, sprite.getInterpolatedU(tex.getUv().x), sprite.getInterpolatedU(tex.getUv().z), sprite.getInterpolatedU(tex.getUv().y),
-              sprite.getInterpolatedU(tex.getUv().w), color, component.getDirection(), true);
+
+          float shrink = 1 / 128f;
+          final EnumFacing componentDirection = component.getDirection();
+          float xLen = Math.abs(componentDirection.getFrontOffsetX()) == 1 ? 0 : shrink;
+          float yLen = Math.abs(componentDirection.getFrontOffsetY()) == 1 ? 0 : shrink;
+          float zLen = Math.abs(componentDirection.getFrontOffsetZ()) == 1 ? 0 : shrink;
+
+          BoundingBox bb = cube.expand(-xLen, -yLen, -zLen);
+
+          // TODO: This leaves holes between conduits as it only render 4 sides instead of the needed 5-6 sides
+          drawDynamicSection(bb, sprite.getInterpolatedU(tex.getUv().x * 16), sprite.getInterpolatedU(tex.getUv().z * 16),
+              sprite.getInterpolatedV(tex.getUv().y * 16), sprite.getInterpolatedV(tex.getUv().w * 16), color, componentDirection, true);
         }
       }
 

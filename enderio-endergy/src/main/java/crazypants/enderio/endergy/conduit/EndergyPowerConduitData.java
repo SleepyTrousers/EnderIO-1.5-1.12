@@ -36,14 +36,42 @@ public final class EndergyPowerConduitData implements IPowerConduitData {
    * 
    */
 
-  static final String[] POSTFIX = new String[] { "_cobble", "_iron", "_alu", "_gold", "_copper", "_silver", "_electrum", "_energetic_silver", "_crystalline",
-      "_pink_slime", "_melodic", "_stellar" };
+  private static class Data {
+    final @Nonnull String postfix;
+    final int file, idx;
+
+    Data(@Nonnull String postfix, int file, int idx) {
+      this.postfix = postfix;
+      this.file = file;
+      this.idx = idx;
+    };
+
+    @Nonnull
+    String corefile(@Nonnull String key) {
+      return key + postfix;
+    }
+
+    @Nonnull
+    String armfile(@Nonnull String key) {
+      return key + "_endergy_" + file;
+    }
+
+    @Override
+    public String toString() {
+      return postfix;
+    }
+  }
+
+  static final Data[] POSTFIX = new Data[] { //
+      new Data("_cobble", 0, 0), new Data("_iron", 0, 1), new Data("_alu", 0, 2), new Data("_gold", 0, 3), //
+      new Data("_copper", 1, 0), new Data("_silver", 1, 1), new Data("_electrum", 1, 2), new Data("_energetic_silver", 1, 3), //
+      new Data("_crystalline", 2, 0), new Data("_pink_slime", 2, 1), new Data("_melodic", 2, 2), new Data("_stellar", 2, 3) };
 
   static {
     for (int i = 0; i < POSTFIX.length; i++) {
-      IPowerConduitData.Registry
-          .register(new EndergyPowerConduitData(i, new ConduitTexture(TextureRegistry.registerTexture(IPowerConduit.ICON_KEY + POSTFIX[i]), 0),
-              new ConduitTexture(TextureRegistry.registerTexture(IPowerConduit.ICON_CORE_KEY + POSTFIX[i]), ConduitTexture.CORE)));
+      IPowerConduitData.Registry.register(
+          new EndergyPowerConduitData(i, new ConduitTexture(TextureRegistry.registerTexture(POSTFIX[i].armfile(IPowerConduit.ICON_KEY)), POSTFIX[i].idx),
+              new ConduitTexture(TextureRegistry.registerTexture(POSTFIX[i].corefile(IPowerConduit.ICON_CORE_KEY)), ConduitTexture.CORE)));
     }
   }
 
