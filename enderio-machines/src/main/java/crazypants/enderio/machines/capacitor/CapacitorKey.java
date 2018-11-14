@@ -265,7 +265,7 @@ public enum CapacitorKey implements ICapacitorKey {
   @Override
   public void validate() {
     if (scaler == ScalerFactory.INVALID || baseValue == Integer.MIN_VALUE) {
-      throw new RuntimeException(
+      throw new UnconfiguredCapKeyException(
           "CapacitorKey " + getRegistryName() + " has not been configured. This should not be possible and may be caused by a 3rd-party addon mod.");
     }
   }
