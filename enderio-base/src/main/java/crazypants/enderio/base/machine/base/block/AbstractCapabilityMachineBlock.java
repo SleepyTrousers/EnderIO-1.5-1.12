@@ -2,7 +2,8 @@ package crazypants.enderio.base.machine.base.block;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.inventory.EnderInventory;
+import com.enderio.core.common.inventory.EnderInventory.Type;
+import com.enderio.core.common.inventory.EnderInventory.View;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
@@ -33,7 +34,7 @@ public abstract class AbstractCapabilityMachineBlock<T extends AbstractCapabilit
     if (te == null) {
       return 0;
     } else {
-      EnderInventory inv = te.getInventory();
+      View inv = te.getInventory().getView(Type.INOUT);
       int i = 0;
       float f = 0.0F;
 
