@@ -20,7 +20,8 @@ public final class RecipeConfig {
       .sync();
 
   public static final IValue<Boolean> loadCoreRecipes = F.make("loadCoreRecipes", true, //
-      "When disabled the XML recipe files that come built-in with Ender IO will not be loaded. Only user supplied files (in the 'recipes/user' folder) will be loaded.")
+      "When disabled the XML recipe files that come built-in with Ender IO will not be loaded. Only user supplied files (in the 'recipes/user' folder) will be loaded. "
+          + "YOU MUST SUPPLY THE RECIPES ENDER IO NEEDS TO WORK YOURSELF IF YOU DO SO.")
       .sync();
 
 }

@@ -12,9 +12,11 @@ import org.apache.commons.lang3.tuple.Triple;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.capacitor.ICapacitorKey;
+import crazypants.enderio.api.capacitor.ICapacitorKey.UnconfiguredCapKeyException;
 import crazypants.enderio.api.capacitor.Scaler;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.config.config.RecipeConfig;
 import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
@@ -53,7 +55,16 @@ public class CapacitorKeyRegistry {
 
   public static void validate() {
     for (ICapacitorKey key : REGISTRY.getValuesCollection()) {
-      key.validate();
+      try {
+        key.validate();
+      } catch (UnconfiguredCapKeyException e) {
+        if (!RecipeConfig.loadCoreRecipes.get()) {
+          throw new UnconfiguredCapKeyException(
+              "Ender IO core recipe loading has been disabled in the configuration and you have failed to provide a user recipe for: " + key.getRegistryName(),
+              e);
+        }
+        throw e;
+      }
     }
   }
 

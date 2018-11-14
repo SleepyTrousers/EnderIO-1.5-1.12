@@ -19,7 +19,7 @@ public interface ICapacitorKey extends IForgeRegistryEntry<ICapacitorKey> {
   default int get(float level) {
     return (int) getFloat(level);
   }
-  
+
   /**
    * Convenience version that takes an {@link ICapacitorData}
    * 
@@ -28,7 +28,7 @@ public interface ICapacitorKey extends IForgeRegistryEntry<ICapacitorKey> {
   default int get(@Nonnull ICapacitorData data) {
     return (int) getFloat(data);
   }
-  
+
   /**
    * Convenience method to get the "default" value of this key, i.e. the value for level 1.
    * <p>
@@ -39,13 +39,13 @@ public interface ICapacitorKey extends IForgeRegistryEntry<ICapacitorKey> {
   default int getDefault() {
     return (int) getDefaultFloat();
   }
-  
+
   /**
    * See {@link ICapacitorKey#get(ICapacitorData)}, but this method will return the value as a float. Depending on the scaler and capacitor level, this may make
    * a difference.
    */
   float getFloat(float level);
-  
+
   /**
    * Convenience version that takes an {@link ICapacitorData}
    * 
@@ -56,15 +56,14 @@ public interface ICapacitorKey extends IForgeRegistryEntry<ICapacitorKey> {
   }
 
   /**
-   * Convenience method to get the "default" value of this key, i.e. the value
-   * for level 1.
+   * Convenience method to get the "default" value of this key, i.e. the value for level 1.
    * 
    * @return The value for level 1 on this capacitor key.
    */
   default float getDefaultFloat() {
     return getFloat(1);
   }
-  
+
   /**
    * @return The base value for this key, unscaled by the scaler.
    */
@@ -93,6 +92,20 @@ public interface ICapacitorKey extends IForgeRegistryEntry<ICapacitorKey> {
 
   void setBaseValue(int baseValue);
 
-  void validate();
+  void validate() throws UnconfiguredCapKeyException;
+
+  class UnconfiguredCapKeyException extends RuntimeException {
+
+    private static final long serialVersionUID = 307095860368579216L;
+
+    public UnconfiguredCapKeyException(String message, Throwable cause) {
+      super(message, cause);
+    }
+
+    public UnconfiguredCapKeyException(String message) {
+      super(message);
+    }
+
+  }
 
 }
