@@ -12,7 +12,7 @@
       "simple": { "textures": { "side": "enderio:blocks/capacitor_bank_simple_border" } },
       "activated": { "textures": { "side": "enderio:blocks/capacitor_bank_activated_border" } },
       "vibrant": { "textures": { "side": "enderio:blocks/capacitor_bank_vibrant_border" } },
-      "creative": { "textures": { "side": "enderio:blocks/capacitor_bank_creative_border" } }
+      "creative": { "textures": { "side": "enderio:blocks/block_capacitor_bank_creative" } }
   		},
     "render":{
 		"defaults":{ "model":"enderio:transform/block" },
