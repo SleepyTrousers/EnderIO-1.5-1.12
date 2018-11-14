@@ -21,13 +21,13 @@ public class Brewing extends AbstractConditional {
     try {
       super.readResolve();
       if (input == null) {
-        throw new InvalidRecipeConfigException("Missing item <input>");
+        throw new InvalidRecipeConfigException("Missing <reagent>");
       }
       if (in == null) {
-        throw new InvalidRecipeConfigException("Missing potion <input>");
+        throw new InvalidRecipeConfigException("Missing <input>");
       }
       if (out == null) {
-        throw new InvalidRecipeConfigException("Missing potion <output>");
+        throw new InvalidRecipeConfigException("Missing <output>");
       }
 
       valid = input.isValid() && in.isValid() && out.isValid();
@@ -44,7 +44,7 @@ public class Brewing extends AbstractConditional {
     in.enforceValidity();
     out.enforceValidity();
     if (input.getThing().isEmpty()) {
-      throw new InvalidRecipeConfigException("Valid child elements are invalid in <enchanting>");
+      throw new InvalidRecipeConfigException("Valid child elements are invalid in <brewing>");
     }
   }
 
