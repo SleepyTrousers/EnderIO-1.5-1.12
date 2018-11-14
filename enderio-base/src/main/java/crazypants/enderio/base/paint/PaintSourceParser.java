@@ -14,8 +14,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.recipe.RecipeConfig;
 import crazypants.enderio.base.recipe.RecipeConfigParser;
 import crazypants.enderio.base.recipe.RecipeInput;
@@ -26,7 +26,7 @@ public class PaintSourceParser extends DefaultHandler {
   private static final @Nonnull String CUSTOM_FILE_NAME = "painter_paint_sources_user.xml";
 
   public static void loadConfig() {
-    File coreFile = new File(Config.getConfigDirectory(), CORE_FILE_NAME);
+    File coreFile = new File(EnderIO.getConfigHandler().getConfigDirectory(), CORE_FILE_NAME);
 
     String defaultVals = null;
     try {
@@ -47,7 +47,7 @@ public class PaintSourceParser extends DefaultHandler {
       Log.error("Could not parse default lists from " + coreFile + ": " + e);
     }
 
-    File userFile = new File(Config.getConfigDirectory(), CUSTOM_FILE_NAME);
+    File userFile = new File(EnderIO.getConfigHandler().getConfigDirectory(), CUSTOM_FILE_NAME);
     String userConfigStr = null;
     try {
       userConfigStr = RecipeConfig.readRecipes(userFile, CUSTOM_FILE_NAME, false);

@@ -2,13 +2,14 @@ package crazypants.enderio.base.config.config;
 
 import com.enderio.core.common.util.stackable.Things;
 
-import crazypants.enderio.base.config.factory.IValue;
-import crazypants.enderio.base.config.factory.IValueFactory;
+import crazypants.enderio.base.config.factory.IValueFactoryEIO;
+import info.loenwind.autoconfig.factory.IValue;
+import info.loenwind.autoconfig.factory.IValueFactory;
 import net.minecraftforge.fluids.Fluid;
 
 public class ItemConfig {
 
-  public static final IValueFactory F = BaseConfig.F.section("items");
+  public static final IValueFactoryEIO F = BaseConfig.F.section("items");
 
   public static final IValueFactory FOOD = F.section(".food");
 
@@ -17,7 +18,7 @@ public class ItemConfig {
   public static final IValue<Float> enderiosTeleportRange = FOOD.make("enderiosTeleportRange", 16f, //
       "The maximum range of a cerial-induced location change.").setRange(1.5, 128).sync();
 
-  public static final IValueFactory MAG = F.section(".magnet");
+  public static final IValueFactoryEIO MAG = F.section(".magnet");
 
   public static final IValue<Integer> magnetPowerUsePerSecond = MAG.make("energyUsePerSecond", 1, //
       "The amount of energy used per tick when the magnet is active.").setRange(0, 1000).sync();

@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.util.IoUtil;
-import crazypants.enderio.zoo.config.ConfigHandler;
 import crazypants.enderio.zoo.spawn.impl.SpawnEntry;
 
 public class SpawnConfig {
@@ -50,7 +50,7 @@ public class SpawnConfig {
       return null;
     }
 
-    File userFile = new File(ConfigHandler.getConfigDirectory(), CONFIG_NAME_USER);
+    File userFile = new File(EnderIO.getConfigHandler().getConfigDirectory(), CONFIG_NAME_USER);
     String userText = null;
     try {
       userText = IoUtil.readConfigFile(CONFIG_NAME_USER);

@@ -2,7 +2,7 @@ package crazypants.enderio.zoo.entity.ai;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.config.factory.IValue;
+import info.loenwind.autoconfig.factory.IValue;
 import crazypants.enderio.zoo.entity.EntityUtil;
 import crazypants.enderio.zoo.entity.SpawnUtil;
 import net.minecraft.entity.EntityLiving;

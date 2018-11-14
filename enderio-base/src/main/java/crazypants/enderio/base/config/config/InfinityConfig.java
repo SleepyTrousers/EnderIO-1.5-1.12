@@ -2,13 +2,13 @@ package crazypants.enderio.base.config.config;
 
 import com.enderio.core.common.util.stackable.Things;
 
-import crazypants.enderio.base.config.factory.IValue;
-import crazypants.enderio.base.config.factory.IValueBool;
-import crazypants.enderio.base.config.factory.IValueFactory;
+import crazypants.enderio.base.config.factory.IValueFactoryEIO;
+import info.loenwind.autoconfig.factory.IValue;
+import info.loenwind.autoconfig.factory.IValueBool;
 
 public final class InfinityConfig {
 
-  public static final IValueFactory F = BaseConfig.F.section("items.infinityPowder");
+  public static final IValueFactoryEIO F = BaseConfig.F.section("items.infinityPowder");
 
   public static final IValue<Float> dropChance = F.make("dropChance", .5f, //
       "Chance that Infinity Powder will drop from fire on bedrock.").setRange(0, 1).sync();

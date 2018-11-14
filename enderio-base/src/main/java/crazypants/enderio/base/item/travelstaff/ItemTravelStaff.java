@@ -18,7 +18,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.config.TeleportConfig;
-import crazypants.enderio.base.config.factory.IValue;
+import info.loenwind.autoconfig.factory.IValue;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;

@@ -1,7 +1,7 @@
 package crazypants.enderio.machines.config.config;
 
-import crazypants.enderio.base.config.factory.IValue;
-import crazypants.enderio.base.config.factory.IValueFactory;
+import info.loenwind.autoconfig.factory.IValue;
+import info.loenwind.autoconfig.factory.IValueFactory;
 import crazypants.enderio.machines.config.Config;
 
 public final class AttractorConfig {

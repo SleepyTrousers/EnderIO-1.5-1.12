@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
-import crazypants.enderio.base.config.factory.IValue;
+import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;

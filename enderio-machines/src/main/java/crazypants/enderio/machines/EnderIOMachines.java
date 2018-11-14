@@ -11,11 +11,13 @@ import com.enderio.core.common.Lang;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
+import crazypants.enderio.base.config.ConfigHandlerEIO;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
-import crazypants.enderio.machines.config.ConfigHandler;
+import crazypants.enderio.machines.config.Config;
 import crazypants.enderio.machines.init.EIOMDataFixer;
 import crazypants.enderio.machines.machine.obelisk.render.ObeliskRenderManager;
 import crazypants.enderio.machines.network.PacketHandler;
+import info.loenwind.autoconfig.ConfigHandler;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
@@ -55,6 +57,8 @@ public class EnderIOMachines implements IEnderIOAddon {
 
   private static final @Nonnull String DEFAULT_DEPENDENCIES = "after:" + crazypants.enderio.base.EnderIO.MODID;
   public static final @Nonnull String DEPENDENCIES = DEFAULT_DEPENDENCIES;
+  @SuppressWarnings("unused")
+  private static ConfigHandler configHandler;
 
   @SubscribeEvent
   @SideOnly(Side.CLIENT)
@@ -63,8 +67,8 @@ public class EnderIOMachines implements IEnderIOAddon {
   }
 
   @EventHandler
-  public static void init(FMLPreInitializationEvent event) {
-    ConfigHandler.init(event);
+  public static void init(@Nonnull FMLPreInitializationEvent event) {
+    configHandler = new ConfigHandlerEIO(event, Config.F);
     EIOMDataFixer.register();
   }
 
@@ -82,7 +86,7 @@ public class EnderIOMachines implements IEnderIOAddon {
   @Override
   @Nullable
   public Configuration getConfiguration() {
-    return ConfigHandler.config;
+    return Config.F.getConfig();
   }
 
   @Override

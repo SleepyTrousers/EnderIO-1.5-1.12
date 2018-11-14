@@ -12,10 +12,12 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.config.ConfigHandlerEIO;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.base.init.RegisterModObject;
-import crazypants.enderio.integration.forestry.config.ConfigHandler;
+import crazypants.enderio.integration.forestry.config.Config;
 import crazypants.enderio.integration.forestry.init.ForestryIntegrationObject;
+import info.loenwind.autoconfig.ConfigHandler;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -56,9 +58,12 @@ public class EnderIOIntegrationForestry implements IEnderIOAddon {
   private static final @Nonnull String DEFAULT_DEPENDENCIES = "after:" + crazypants.enderio.base.EnderIO.MODID;
   public static final @Nonnull String DEPENDENCIES = DEFAULT_DEPENDENCIES;
 
+  @SuppressWarnings("unused")
+  private static ConfigHandler configHandler;
+
   @EventHandler
   public static void init(@Nonnull FMLPreInitializationEvent event) {
-    ConfigHandler.init(event);
+    configHandler = new ConfigHandlerEIO(event, Config.F);
     if (isLoaded()) {
       ForestryControl.init(event);
       Log.warn("Forestry integration loaded. Let things grow.");
@@ -86,7 +91,7 @@ public class EnderIOIntegrationForestry implements IEnderIOAddon {
   @Override
   @Nullable
   public Configuration getConfiguration() {
-    return isLoaded() ? ConfigHandler.config : null;
+    return isLoaded() ? Config.F.getConfig() : null;
   }
 
   @SubscribeEvent

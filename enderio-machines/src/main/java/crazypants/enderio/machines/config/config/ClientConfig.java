@@ -6,8 +6,8 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.config.PersonalConfig;
-import crazypants.enderio.base.config.factory.IValue;
-import crazypants.enderio.base.config.factory.IValueFactory;
+import info.loenwind.autoconfig.factory.IValue;
+import info.loenwind.autoconfig.factory.IValueFactory;
 import crazypants.enderio.machines.config.Config;
 
 public final class ClientConfig {

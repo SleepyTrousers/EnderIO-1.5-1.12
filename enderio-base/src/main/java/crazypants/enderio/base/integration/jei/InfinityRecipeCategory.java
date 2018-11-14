@@ -15,7 +15,7 @@ import com.enderio.core.common.util.NNList.Callback;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.config.InfinityConfig;
-import crazypants.enderio.base.config.factory.IValue;
+import info.loenwind.autoconfig.factory.IValue;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.gui.BlockSceneRenderer;
 import crazypants.enderio.base.lang.Lang;

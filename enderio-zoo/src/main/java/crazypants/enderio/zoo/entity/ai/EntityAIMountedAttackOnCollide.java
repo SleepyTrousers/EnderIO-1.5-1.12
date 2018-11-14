@@ -1,6 +1,6 @@
 package crazypants.enderio.zoo.entity.ai;
 
-import crazypants.enderio.base.config.factory.IValue;
+import info.loenwind.autoconfig.factory.IValue;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;

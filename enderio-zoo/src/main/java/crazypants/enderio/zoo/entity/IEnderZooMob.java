@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.config.factory.IValue;
+import info.loenwind.autoconfig.factory.IValue;
 import crazypants.enderio.zoo.EnderIOZoo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList.EntityEggInfo;

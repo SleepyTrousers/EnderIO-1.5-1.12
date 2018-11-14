@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 
 import com.google.common.base.Charsets;
 
-import crazypants.enderio.base.config.factory.IValue;
+import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 
 class DarkSteelAttributeModifier extends AttributeModifier {

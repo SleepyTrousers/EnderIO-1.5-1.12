@@ -2,7 +2,7 @@ package crazypants.enderio.machines.config;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import crazypants.enderio.base.config.factory.ValueFactory;
+import crazypants.enderio.base.config.factory.ValueFactoryEIO;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.AttractorConfig;
 import crazypants.enderio.machines.config.config.ChargerConfig;
@@ -30,11 +30,9 @@ import crazypants.enderio.machines.config.config.ZombieGenConfig;
 @ParametersAreNonnullByDefault // Not the right one, but eclipse knows only 3 null annotations anyway, so it's ok
 public final class Config {
 
-  public static final ValueFactory F = new ValueFactory(EnderIOMachines.MODID);
+  public static final ValueFactoryEIO F = new ValueFactoryEIO(EnderIOMachines.MODID);
 
-  //
-
-  public static void load() {
+  static {
     // force sub-configs to be classloaded with the main config
     AttractorConfig.F.getClass();
     ClientConfig.F.getClass();

@@ -3,8 +3,15 @@ package crazypants.enderio.base.config.factory;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.stackable.Things;
 
+import info.loenwind.autoconfig.factory.AbstractValue;
+import info.loenwind.autoconfig.factory.ByteBufAdapters;
+import info.loenwind.autoconfig.factory.IByteBufAdapter;
+import info.loenwind.autoconfig.factory.IValueFactory;
+import io.netty.buffer.ByteBuf;
 import net.minecraftforge.common.config.Property;
 
 public class ThingsValue extends AbstractValue<Things> {
@@ -24,8 +31,39 @@ public class ThingsValue extends AbstractValue<Things> {
   }
 
   @Override
-  protected ByteBufHelper getDataType() {
-    return ByteBufHelper.THINGS;
+  protected @Nonnull IByteBufAdapter<Things> getDataType() {
+    return THINGS;
   }
+
+  public static final @Nonnull IByteBufAdapter<Things> THINGS = ByteBufAdapters.register(new IByteBufAdapter<Things>() {
+
+    @Override
+    public void saveValue(@Nonnull ByteBuf buf, @Nonnull Things value) {
+      NNList<String> nameList = value.getNameList();
+      if (nameList.size() > 0x7F) {
+        throw new RuntimeException("Thing too big");
+      }
+      buf.writeByte(nameList.size());
+      for (String string : nameList) {
+        ByteBufAdapters.STRING127.saveValue(buf, NullHelper.first(string, ""));
+      }
+    }
+
+    @Override
+    public Things readValue(@Nonnull ByteBuf buf) {
+      Things result = new Things();
+      final int len = buf.readByte();
+      for (int i = 0; i < len; i++) {
+        result.add(ByteBufAdapters.STRING127.readValue(buf));
+      }
+      return result;
+    }
+
+    @Override
+    public @Nonnull String getName() {
+      return "T";
+    }
+
+  });
 
 }

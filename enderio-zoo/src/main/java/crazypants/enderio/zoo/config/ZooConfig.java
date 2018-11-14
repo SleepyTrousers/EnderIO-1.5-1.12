@@ -1,7 +1,7 @@
 package crazypants.enderio.zoo.config;
 
-import crazypants.enderio.base.config.factory.IValue;
-import crazypants.enderio.base.config.factory.IValueFactory;
+import info.loenwind.autoconfig.factory.IValue;
+import info.loenwind.autoconfig.factory.IValueFactory;
 
 public final class ZooConfig {
 
@@ -226,44 +226,5 @@ public final class ZooConfig {
       "Health of Epic Squids.").setRange(1, 200).sync();
   public static final IValue<Double> epicSquidAttackDamage = SQUID.make("attackDamage", 10d, //
       "Base attack damage of Epic Squids.").setRange(1, 200).sync();
-
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
 
 }

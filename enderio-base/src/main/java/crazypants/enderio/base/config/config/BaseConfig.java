@@ -3,12 +3,12 @@ package crazypants.enderio.base.config.config;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.config.factory.IValue;
-import crazypants.enderio.base.config.factory.ValueFactory;
+import crazypants.enderio.base.config.factory.ValueFactoryEIO;
+import info.loenwind.autoconfig.factory.IValue;
 
 public final class BaseConfig {
 
-  public static final ValueFactory F = new ValueFactory(EnderIO.MODID);
+  public static final ValueFactoryEIO F = new ValueFactoryEIO(EnderIO.MODID);
 
   public static final IValue<Float> explosionResistantBlockHardness = new IValue<Float>() {
     @Override
@@ -17,7 +17,7 @@ public final class BaseConfig {
     }
   };
 
-  public static void load() {
+  static {
     DiagnosticsConfig.F.getClass();
     EnchantmentConfig.F.getClass();
     PersonalConfig.F.getClass();

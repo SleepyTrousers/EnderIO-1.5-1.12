@@ -2,12 +2,13 @@ package crazypants.enderio.base.config.config;
 
 import com.enderio.core.common.util.stackable.Things;
 
-import crazypants.enderio.base.config.factory.IValue;
-import crazypants.enderio.base.config.factory.IValueFactory;
+import crazypants.enderio.base.config.factory.IValueFactoryEIO;
+import info.loenwind.autoconfig.factory.IValue;
+import info.loenwind.autoconfig.factory.IValueFactory;
 
 public final class TeleportConfig {
 
-  public static final IValueFactory F = BaseConfig.F.section("teleport");
+  public static final IValueFactoryEIO F = BaseConfig.F.section("teleport");
 
   public static final IValue<Integer> rangeBlocks = F.make("defaultTeleportRangeBlocks", 96, //
       "Default range of direct travel between blocks (e.g. Travel Anchors).").setRange(16, 16 * 32).sync();
@@ -33,7 +34,7 @@ public final class TeleportConfig {
   public static final IValue<Float> visualScale = F.make("visualScale", .2f, //
       "Visual size of possible targets when travelling to blocks.").setRange(0.01, 1);
 
-  public static final IValueFactory BLINK = F.section("blink");
+  public static final IValueFactoryEIO BLINK = F.section("blink");
 
   public static final IValue<Boolean> enableBlink = BLINK.make("enableBlink", true, //
       "Allow using travel items to 'blink' (teleport without a target)?").sync();

@@ -27,7 +27,6 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.config.RecipeConfig;
 import crazypants.enderio.base.config.recipes.RecipeRoot.Overrides;
 import crazypants.enderio.base.config.recipes.xml.AbstractConditional;
@@ -56,7 +55,7 @@ public final class RecipeLoader {
 
   public static void addRecipes() {
     ProgressManager.ProgressBar bar = ProgressManager.push("XML Recipes", 11, true);
-    final RecipeFactory recipeFactory = new RecipeFactory(Config.getConfigDirectory(), EnderIO.DOMAIN);
+    final RecipeFactory recipeFactory = new RecipeFactory(EnderIO.getConfigHandler().getConfigDirectory(), EnderIO.DOMAIN);
 
     bar.step("Preparing Config Folder"); // 1
     recipeFactory.createFolder(RECIPES_ROOT);

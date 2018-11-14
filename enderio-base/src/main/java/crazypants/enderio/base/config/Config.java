@@ -3,74 +3,34 @@ package crazypants.enderio.base.config;
 import java.io.File;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.common.event.ConfigFileChangedEvent;
-import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.config.config.BaseConfig;
+import info.loenwind.autoconfig.ConfigHandler;
+import info.loenwind.autoconfig.factory.IRootFactory;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 
-public final class Config {
+public final class Config extends ConfigHandler {
 
-  private static Configuration config;
-
-  private static File configDirectory;
-
-  public static @Nonnull File getConfigDirectory() {
-    return NullHelper.notnull(configDirectory, "trying to access config before preInit");
+  public Config(@Nonnull FMLPreInitializationEvent event, @Nonnull IRootFactory factory, String folder) {
+    super(event, factory, folder);
   }
 
-  public static @Nullable File getConfigDirectoryRaw() {
-    return configDirectory;
-  }
-
-  public static void init(FMLPreInitializationEvent event) {
-    MinecraftForge.EVENT_BUS.register(new Config());
-    configDirectory = new File(event.getModConfigurationDirectory(), EnderIO.DOMAIN);
-    if (!configDirectory.exists()) {
-      configDirectory.mkdir();
-    }
-
-    File configFile = new File(configDirectory, "EnderIO.cfg");
-    config = new Configuration(configFile);
-    syncConfig();
-  }
-
-  private static void syncConfig() {
-    try {
-      BaseConfig.load();
-      BaseConfig.F.setConfig(config);
-    } catch (Exception e) {
-      Log.error("EnderIO has a problem loading it's configuration");
-      e.printStackTrace();
-    } finally {
-      if (config.hasChanged()) {
-        config.save();
-      }
-    }
-  }
-
-  @SubscribeEvent
-  public void onConfigChanged(OnConfigChangedEvent event) {
-    if (event.getModID().equals(EnderIO.MODID)) {
-      Log.info("Updating config...");
-      syncConfig();
-    }
-  }
-
+  // endercore config file reload event
   @SubscribeEvent
   public void onConfigFileChanged(ConfigFileChangedEvent event) {
-    if (event.getModID().equals(EnderIO.MODID)) {
+    if (event.getModID().equals(factory.getModid())) {
       Log.info("Updating config...");
       config.load();
       syncConfig();
@@ -78,6 +38,24 @@ public final class Config {
     }
   }
 
+  @Override
+  @SubscribeEvent
+  public void onConfigChanged(@Nonnull OnConfigChangedEvent event) {
+    if (event.getModID().equals(factory.getModid())) {
+      Log.info("Updating config...");
+      syncConfig();
+
+      // also notify addons of the config change as we present their config values in our GUI
+      for (ModContainer modContainer : Loader.instance().getModList()) {
+        if (modContainer.getMod() instanceof IEnderIOAddon && !modContainer.getModId().equals(factory.getModid())) {
+          MinecraftForge.EVENT_BUS.post(new OnConfigChangedEvent(modContainer.getModId(), null, event.isWorldRunning(), event.isRequiresMcRestart()));
+        }
+      }
+
+    }
+  }
+
+  // this doesn't belong here...
   @SubscribeEvent
   public void onPlayerLoggon(PlayerLoggedInEvent evt) {
     if (EnderIO.VERSION.contains("-") || EnderIO.VERSION.contains("@")) { // e.g. 1.2.3-nightly
@@ -89,8 +67,8 @@ public final class Config {
     }
   }
 
-  public static @Nonnull Configuration getConfig() {
-    return NullHelper.notnull(config, "trying to access config before preInit");
+  public @Nonnull File getConfigDirectory() {
+    return configDirectory;
   }
 
 }

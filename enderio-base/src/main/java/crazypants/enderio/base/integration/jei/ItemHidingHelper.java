@@ -11,7 +11,7 @@ import com.enderio.core.common.util.stackable.IProducer;
 import crazypants.enderio.base.block.skull.SkullType;
 import crazypants.enderio.base.config.config.InfinityConfig;
 import crazypants.enderio.base.config.config.PersonalConfig;
-import crazypants.enderio.base.config.factory.IValue;
+import info.loenwind.autoconfig.factory.IValue;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.material.alloy.IAlloy;
 import crazypants.enderio.base.material.alloy.endergy.AlloyEndergy;

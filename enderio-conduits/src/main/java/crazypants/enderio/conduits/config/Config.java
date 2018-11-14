@@ -1,15 +1,13 @@
 package crazypants.enderio.conduits.config;
 
-import crazypants.enderio.base.config.factory.ValueFactory;
+import crazypants.enderio.base.config.factory.ValueFactoryEIO;
 import crazypants.enderio.conduits.EnderIOConduits;
 
 public final class Config {
 
-  public static final ValueFactory F = new ValueFactory(EnderIOConduits.MODID);
+  public static final ValueFactoryEIO F = new ValueFactoryEIO(EnderIOConduits.MODID);
 
-  //
-
-  public static void load() {
+  static {
     // force sub-configs to be classloaded with the main config
     ConduitConfig.F.getClass();
   }

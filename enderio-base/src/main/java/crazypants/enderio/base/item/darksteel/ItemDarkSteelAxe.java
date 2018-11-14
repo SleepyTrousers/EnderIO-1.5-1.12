@@ -22,7 +22,7 @@ import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
-import crazypants.enderio.base.config.factory.IValue;
+import info.loenwind.autoconfig.factory.IValue;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.farmers.HarvestResult;
 import crazypants.enderio.base.farming.harvesters.AxeHarvestingTarget;
