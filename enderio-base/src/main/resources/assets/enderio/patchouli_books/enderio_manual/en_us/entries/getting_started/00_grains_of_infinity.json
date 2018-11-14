@@ -1,0 +1,11 @@
+{
+    "name": "Grains of Infinity",
+    "icon": "enderio:item_material:20",
+    "category": "getting_started",
+    "pages": [
+        {
+            "type": "text",
+            "text": "I have done it! I have found a way to extract the energy from bedrock itself. It is a delicate process, and requires much patience. When fire is applied to bedrock occasionally a pulsating powder will burst forth from the flame. These 'grains of infinity' are bursting with power. If only I could find a way to exploit it…"
+        }
+    ]
+}

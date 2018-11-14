@@ -1,6 +1,6 @@
 {
-	"name": "The Ender IO",
-    "landing_text": "An 'I' Opener to the world of Ender IO",
+	"name": "Ender IO Manual - The Tales of Randalf the Tinkerer",
+    "landing_text": "This is the Journal of Randalf the Tinkerer, who exploited the power of bedrock's infinite nature to create machines beyond imagination.",
     "book_texture": "patchouli:textures/gui/book_cyan.png",
     "model": "enderio:item_manual",
 	"version": 1

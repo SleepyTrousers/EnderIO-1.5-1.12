@@ -1,0 +1,21 @@
+{
+    "name": "Mechanical Gears",
+    "icon": "enderio:item_material:11",
+    "category": "getting_started",
+    "pages": [
+        {
+            "type": "text",
+            "text": "These mundane materials won't do for crafting mechanical apparati. A gear should be far more useful."
+        },
+        {
+            "type": "crafting",
+            "recipe": "enderio:gear_wood",
+            "recipe2": "enderio:gear_stone"
+        },
+        {
+            "type": "crafting",
+            "recipe": "enderio:gear_iron",
+            "text": "The use of grains of infinity has made this far sturdier and conductive gear, this may come in handy later."
+        }
+    ]
+}

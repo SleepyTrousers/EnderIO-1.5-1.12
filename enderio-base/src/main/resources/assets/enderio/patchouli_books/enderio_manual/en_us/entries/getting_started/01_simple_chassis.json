@@ -1,0 +1,16 @@
+{
+    "name": "Simple Machine Chassis",
+    "icon": "enderio:item_material:0",
+    "category": "getting_started",
+    "pages": [
+        {
+            "type": "text",
+            "text": "By combining a sturdy frame of iron with the energetic potential of the grains, I have constructed a simple chassis for creating machines. The iron is not a perfect capacitor, so I suspect these machines will leak energy, but that is a problem for another day."
+        },
+        {
+            "type": "crafting",
+            "recipe": "enderio:simple_chassis",
+            "title": "Simple Machine Chassis"
+        }
+    ]
+}
