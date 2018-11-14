@@ -158,6 +158,10 @@ public class Recipe extends AbstractConditional {
         craftings.add(factory.read(new Soulbinding(), startElement));
         return true;
       }
+      if ("brewing".equals(name)) {
+        craftings.add(factory.read(new Brewing(), startElement));
+        return true;
+      }
     } catch (InvalidRecipeConfigException e) {
       throw new InvalidRecipeConfigException(e, "in <recipe> '" + getName() + "'");
     }

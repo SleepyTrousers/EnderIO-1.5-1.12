@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+
+These are the built-in recipes. You cannot change this file, it is a
+reference for you only and will be generated every time the game starts.
+
+To make changes to the recipes, copy the recipes you want to change to
+a file in the 'user' folder.
+
+You can also disable all built-in recipes with the setting "loadCoreRecipes"
+in the Ender IO config file, so that only your files in the 'user' folder will
+be loaded. Please be advised that a number of recipes are absolutely needed,
+so you will have to copy those over into a 'user' file for the game to load.
+
+More information on the syntax can be found in the recipes.xsd file. An
+XML editor will display that as tooltips when editing this file.
+
+ -->
+
+  <recipe name="Potion: Floating">
+    <brewing>
+      <input potion="minecraft:awkward"/>
+      <reagent name="eggOwl"/>
+      <output potion="enderio:floating"/>
+    </brewing>
+  </recipe>
+
+  <recipe name="Potion: Floating, Strong">
+    <brewing>
+      <input potion="enderio:floating"/>
+      <reagent name="dustGlowstone"/>
+      <output potion="enderio:strong_floating"/>
+    </brewing>
+  </recipe>
+
+  <recipe name="Potion: Floating, Long">
+    <brewing>
+      <input potion="enderio:floating"/>
+      <reagent name="dustRedstone"/>
+      <output potion="enderio:long_floating"/>
+    </brewing>
+  </recipe>
+
+
+  <recipe name="Potion: Confusion">
+    <brewing>
+      <input potion="minecraft:awkward"/>
+      <reagent name="itemConfusingDust"/>
+      <output potion="enderio:confusion"/>
+    </brewing>
+  </recipe>
+
+  <recipe name="Potion: Confusion, Long">
+    <brewing>
+      <input potion="enderio:confusion"/>
+      <reagent name="dustRedstone"/>
+      <output potion="enderio:long_confusion"/>
+    </brewing>
+  </recipe>
+
+
+  <recipe name="Potion: Withering">
+    <brewing>
+      <input potion="minecraft:awkward"/>
+      <reagent name="itemWitheringDust"/>
+      <output potion="enderio:withering"/>
+    </brewing>
+  </recipe>
+
+  <recipe name="Potion: Withering, Long">
+    <brewing>
+      <input potion="enderio:withering"/>
+      <reagent name="dustRedstone"/>
+      <output potion="enderio:long_withering"/>
+    </brewing>
+  </recipe>
+
+</enderio:recipes>

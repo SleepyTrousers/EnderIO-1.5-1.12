@@ -84,7 +84,7 @@ public class EnderIOZoo implements IEnderIOAddon {
   @Override
   @Nonnull
   public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
-    return new NNList<>(Triple.of(2, null, "spawner_zoo"));
+    return new NNList<>(Triple.of(2, null, "spawner_zoo"), Triple.of(4, null, "potions_zoo"));
   }
 
 }

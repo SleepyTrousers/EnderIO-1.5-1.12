@@ -3,12 +3,8 @@ package crazypants.enderio.base.potion;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.init.PotionTypes;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.potion.PotionHelper;
 import net.minecraft.potion.PotionType;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -33,10 +29,6 @@ public class PotionFloating {
     reg.register(floating.setRegistryName(EnderIO.MODID, NAME));
     reg.register(floatingStrong.setRegistryName(EnderIO.MODID, PREFIX_STRONG + NAME));
     reg.register(floatingLong.setRegistryName(EnderIO.MODID, PREFIX_LONG + NAME));
-
-    PotionHelper.addMix(PotionTypes.AWKWARD, Ingredient.fromItem(Items.SHULKER_SHELL), floating);
-    PotionHelper.addMix(floating, Ingredient.fromItem(Items.GLOWSTONE_DUST), floatingStrong);
-    PotionHelper.addMix(floating, Ingredient.fromItem(Items.REDSTONE), floatingLong);
   }
 
   public static @Nonnull PotionType getFloating() {

@@ -160,7 +160,7 @@
                                   <attribute use="optional" name="value" type="boolean" />
                                 </complexType>
                               </element>
-                              <element minOccurs="0" maxOccurs="unbounded" name="dependency"  type="enderio:dependencyComplexType">
+                              <element minOccurs="0" maxOccurs="unbounded" name="dependency" type="enderio:dependencyComplexType">
                                 <annotation>
                                   <documentation>
                                     Restricts this output to only be used if the given game element can (not) be found in the game.
@@ -486,8 +486,11 @@
                             </attribute>
                             <attribute name="soulvial" type="boolean" use="optional" default="true">
                               <annotation>
-                                <documentation>Specifies if this mob can be captured with a soul vial (default is yes)</documentation>
-                              </annotation></attribute>
+                                <documentation>
+                                  Specifies if this mob can be captured with a soul vial (default is yes)
+                                </documentation>
+                              </annotation>
+                            </attribute>
                           </complexType>
                         </element>
                       </sequence>
@@ -721,7 +724,9 @@
                   <element name="soulbinding" type="enderio:soulbindingType" minOccurs="1" maxOccurs="1">
                     <annotation>
                       <documentation>A recipe for the Soul Binder.</documentation>
-                    </annotation></element>
+                    </annotation>
+                  </element>
+                  <element name="brewing" type="enderio:brewingType" minOccurs="1" maxOccurs="1"></element>
                 </choice>
               </sequence>
               <attribute use="optional" name="required" type="boolean">
@@ -1078,5 +1083,33 @@
         </restriction>
       </simpleType>
     </attribute>
+  </complexType>
+  
+  <complexType name="brewingType">
+    <annotation>
+      <documentation>A Brewing recipe.</documentation>
+    </annotation>
+    <sequence>
+      <element name="config" type="enderio:configComplexType" maxOccurs="unbounded" minOccurs="0"></element>
+      <element name="dependency" type="enderio:dependencyComplexType" maxOccurs="unbounded" minOccurs="0"></element>
+      <element name="input" type="enderio:potionType" minOccurs="1" maxOccurs="1"></element>
+      <element name="reagent" minOccurs="1" maxOccurs="1">
+        <annotation>
+          <documentation>The item that is the input.</documentation>
+        </annotation>
+        <complexType>
+          <attribute use="required" name="name" type="string" />
+          <attribute name="nbt" type="string" use="optional"></attribute>
+        </complexType>
+      </element>
+      <element name="output" type="enderio:potionType" minOccurs="1" maxOccurs="1"></element>
+    </sequence>
+  </complexType>
+
+  <complexType name="potionType">
+    <attribute name="potion" type="string" use="required">
+      <annotation>
+        <documentation>The resource ID of a potion.</documentation>
+      </annotation></attribute>
   </complexType>
 </schema>

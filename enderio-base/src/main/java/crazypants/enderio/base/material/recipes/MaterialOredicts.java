@@ -114,6 +114,7 @@ public class MaterialOredicts {
 
     // Zoo
     registerOre("egg", new ItemStack(ModObject.item_owl_egg.getItemNN()));
+    registerOre("eggOwl", new ItemStack(ModObject.item_owl_egg.getItemNN()));
 
     // Shears
     registerOre("toolShears", new ItemStack(Items.SHEARS, 1, OreDictionary.WILDCARD_VALUE));
