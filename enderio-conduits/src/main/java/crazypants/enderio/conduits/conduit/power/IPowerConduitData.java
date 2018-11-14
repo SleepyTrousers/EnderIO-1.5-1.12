@@ -7,8 +7,8 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.base.conduit.IConduitTexture;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -52,6 +52,6 @@ public interface IPowerConduitData {
 
   @SideOnly(Side.CLIENT)
   @Nonnull
-  TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component);
+  IConduitTexture getTextureForState(@Nonnull CollidableComponent component);
 
 }

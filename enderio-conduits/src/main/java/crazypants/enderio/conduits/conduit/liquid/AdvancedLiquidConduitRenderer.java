@@ -15,8 +15,10 @@ import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
+import crazypants.enderio.base.conduit.IClientConduit.WithDefaultRendering;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IConduitTexture;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.conduits.geom.ConnectionModeGeometry;
@@ -47,7 +49,12 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
   }
 
   @Override
-  protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IClientConduit conduit, @Nonnull TextureAtlasSprite tex,
+  public boolean canRenderInLayer(@Nonnull WithDefaultRendering con, @Nonnull BlockRenderLayer layer) {
+    return super.canRenderInLayer(con, layer) || layer == BlockRenderLayer.CUTOUT;
+  }
+
+  @Override
+  protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IClientConduit conduit, @Nonnull IConduitTexture tex,
       @Nonnull CollidableComponent component, float selfIllum, BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
     super.addConduitQuads(bundle, conduit, tex, component, selfIllum, layer, quads);
 
@@ -132,8 +139,8 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
     }
 
     if (layer == BlockRenderLayer.TRANSLUCENT && conduit.getConnectionMode(component.getDirection()) == ConnectionMode.DISABLED) {
-      tex = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);
-      List<Vertex> corners = component.bound.getCornersWithUvForFace(component.getDirection(), tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
+      TextureAtlasSprite tex2 = ConduitBundleRenderManager.instance.getConnectorIcon(component.data);
+      List<Vertex> corners = component.bound.getCornersWithUvForFace(component.getDirection(), tex2.getMinU(), tex2.getMaxU(), tex2.getMinV(), tex2.getMaxV());
       List<Vertex> vertices = new ArrayList<>();
       for (Vertex c : corners) {
         vertices.add(c);
@@ -144,7 +151,7 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
         vertices.add(c);
       }
 
-      BakedQuadBuilder.addBakedQuads(quads, vertices, tex, null);
+      BakedQuadBuilder.addBakedQuads(quads, vertices, tex2, null);
     }
 
   }

@@ -20,6 +20,7 @@ import com.enderio.core.common.vecmath.Vertex;
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IConduitTexture;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduits.render.DefaultConduitRenderer;
@@ -66,13 +67,13 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   @Override
-  protected void addTransmissionQuads(@Nonnull TextureAtlasSprite tex, Vector4f color, @Nonnull BlockRenderLayer layer, @Nonnull IConduit conduit,
+  protected void addTransmissionQuads(@Nonnull IConduitTexture tex, Vector4f color, @Nonnull BlockRenderLayer layer, @Nonnull IConduit conduit,
       @Nonnull CollidableComponent component, float selfIllum, @Nonnull List<BakedQuad> quads) {
     // Handled in dynamic render
   }
 
   @Override
-  protected void renderConduitDynamic(@Nonnull TextureAtlasSprite tex, @Nonnull IClientConduit.WithDefaultRendering conduit,
+  protected void renderConduitDynamic(@Nonnull IConduitTexture tex, @Nonnull IClientConduit.WithDefaultRendering conduit,
       @Nonnull CollidableComponent component, float brightness) {
     if (component.isDirectional()) {
       LiquidConduit lc = (LiquidConduit) conduit;
@@ -91,7 +92,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
   }
 
   @Override
-  protected void renderTransmissionDynamic(@Nonnull IConduit conduit, @Nonnull TextureAtlasSprite tex, @Nullable Vector4f color,
+  protected void renderTransmissionDynamic(@Nonnull IConduit conduit, @Nonnull IConduitTexture tex, @Nullable Vector4f color,
       @Nonnull CollidableComponent component, float selfIllum) {
 
     if (((LiquidConduit) conduit).getTank().getFilledRatio() <= 0) {
@@ -99,10 +100,12 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     }
 
     if (component.isDirectional()) {
+      TextureAtlasSprite sprite = tex.getSprite();
       BoundingBox[] cubes = toCubes(component.bound);
       for (BoundingBox cube : cubes) {
         if (cube != null) {
-          drawDynamicSection(cube, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), color, component.getDirection(), true);
+          drawDynamicSection(cube, sprite.getInterpolatedU(tex.getUv().x), sprite.getInterpolatedU(tex.getUv().z), sprite.getInterpolatedU(tex.getUv().y),
+              sprite.getInterpolatedU(tex.getUv().w), color, component.getDirection(), true);
         }
       }
 

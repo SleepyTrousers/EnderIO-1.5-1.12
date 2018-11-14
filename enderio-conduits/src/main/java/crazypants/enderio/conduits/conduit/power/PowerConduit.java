@@ -23,6 +23,7 @@ import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitNetwork;
+import crazypants.enderio.base.conduit.IConduitTexture;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
@@ -33,16 +34,15 @@ import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.base.render.registry.TextureRegistry;
-import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.conduit.IConduitComponent;
 import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.conduits.gui.PowerSettings;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
+import crazypants.enderio.conduits.render.ConduitTexture;
 import crazypants.enderio.powertools.lang.Lang;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -63,18 +63,17 @@ import static crazypants.enderio.base.conduit.ConnectionMode.OUTPUT;
 
 public class PowerConduit extends AbstractConduit implements IPowerConduit, IConduitComponent {
 
-  static final Map<String, TextureSupplier> ICONS = new HashMap<>();
+  static final Map<String, IConduitTexture> ICONS = new HashMap<>();
 
   static final String[] POSTFIX = new String[] { "", "_enhanced", "_ender" };
 
   static {
     for (String pf : POSTFIX) {
-      ICONS.put(ICON_KEY + pf, TextureRegistry.registerTexture(ICON_KEY + pf));
-      ICONS.put(ICON_CORE_KEY + pf, TextureRegistry.registerTexture(ICON_CORE_KEY + pf));
+      ICONS.put(ICON_KEY + pf, new ConduitTexture(TextureRegistry.registerTexture(ICON_KEY + pf), 0));
+      ICONS.put(ICON_CORE_KEY + pf, new ConduitTexture(TextureRegistry.registerTexture(ICON_CORE_KEY + pf), ConduitTexture.CORE));
     }
-    ICONS.put(ICON_KEY_INPUT, TextureRegistry.registerTexture(ICON_KEY_INPUT));
-    ICONS.put(ICON_KEY_OUTPUT, TextureRegistry.registerTexture(ICON_KEY_OUTPUT));
-    ICONS.put(ICON_TRANSMISSION_KEY, TextureRegistry.registerTexture(ICON_TRANSMISSION_KEY));
+    ICONS.put(ICON_KEY_INPUT, new ConduitTexture(TextureRegistry.registerTexture(ICON_KEY_INPUT)));
+    ICONS.put(ICON_KEY_OUTPUT, new ConduitTexture(TextureRegistry.registerTexture(ICON_KEY_OUTPUT)));
   }
 
   public static final float WIDTH = 0.075f;
@@ -520,22 +519,22 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   // Rendering
   @Override
   @Nonnull
-  public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
+  public IConduitTexture getTextureForState(@Nonnull CollidableComponent component) {
     return subtype.getTextureForState(component);
   }
 
   @Override
-  public TextureAtlasSprite getTextureForInputMode() {
-    return ICONS.get(PowerConduit.ICON_KEY_INPUT).get(TextureAtlasSprite.class);
+  public @Nonnull IConduitTexture getTextureForInputMode() {
+    return ICONS.get(PowerConduit.ICON_KEY_INPUT);
   }
 
   @Override
-  public TextureAtlasSprite getTextureForOutputMode() {
-    return ICONS.get(PowerConduit.ICON_KEY_OUTPUT).get(TextureAtlasSprite.class);
+  public @Nonnull IConduitTexture getTextureForOutputMode() {
+    return ICONS.get(PowerConduit.ICON_KEY_OUTPUT);
   }
 
   @Override
-  public @Nullable TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
+  public @Nullable IConduitTexture getTransmitionTextureForState(@Nonnull CollidableComponent component) {
     return null;
   }
 

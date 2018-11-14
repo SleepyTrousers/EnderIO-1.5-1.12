@@ -14,7 +14,6 @@ import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
-import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
@@ -22,6 +21,7 @@ import crazypants.enderio.base.conduit.IClientConduit.WithDefaultRendering;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitRenderer;
+import crazypants.enderio.base.conduit.IConduitTexture;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
@@ -141,12 +141,6 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
     return result;
   }
 
-  @Nonnull
-  private static final Vector4f CORE_UVS = new Vector4f(2, 14, 14, 2);
-  static {
-    CORE_UVS.scale(1 / 16f);
-  }
-
   private void addConduitQuads(@Nonnull IBlockStateWrapper state, @Nonnull IConduitBundle bundle, float brightness, @Nonnull BlockRenderLayer layer,
       @Nonnull List<BakedQuad> quads) {
 
@@ -193,8 +187,8 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
             IConduitRenderer renderer = getRendererForConduit(conduit);
             if (state.getYetaDisplayMode().renderConduit(component.conduitType)) {
               if (renderer.getCoreLayer() == layer) {
-                TextureAtlasSprite tex = conduit.getTextureForState(component);
-                BakedQuadBuilder.addBakedQuads(quads, component.bound, CORE_UVS, tex);
+                IConduitTexture tex = conduit.getTextureForState(component);
+                BakedQuadBuilder.addBakedQuads(quads, component.bound, tex.getUv(), tex.getSprite());
               }
             } else if (layer == BlockRenderLayer.CUTOUT) {
               addWireBounds(wireBounds, component);
@@ -259,8 +253,8 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
         if (component.conduitType == conduitType || conduitType == null) {
           IClientConduit.WithDefaultRendering conduit = (IClientConduit.WithDefaultRendering) bundle.getConduit(component.conduitType);
           if (conduit != null) {
-            TextureAtlasSprite tex = conduit.getTextureForState(component);
-            BakedQuadBuilder.addBakedQuads(quads, component.bound, tex);
+            IConduitTexture tex = conduit.getTextureForState(component);
+            BakedQuadBuilder.addBakedQuads(quads, component.bound, tex.getSprite());
           }
         }
       }

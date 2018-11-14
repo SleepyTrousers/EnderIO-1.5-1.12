@@ -20,7 +20,6 @@ import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.autosave.BaseHandlers;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.IClientConduit;
@@ -193,7 +192,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       CollidableComponent cc = (CollidableComponent) target.hitInfo;
       IConduit con = cb.getConduit(cc.conduitType);
       if (con != null && con instanceof IClientConduit.WithDefaultRendering) {
-        tex = ((IClientConduit.WithDefaultRendering) con).getTextureForState(cc);
+        tex = ((IClientConduit.WithDefaultRendering) con).getTextureForState(cc).getSprite();
       }
     }
     if (tex == null) {

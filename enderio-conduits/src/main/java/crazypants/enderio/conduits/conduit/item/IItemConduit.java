@@ -3,6 +3,7 @@ package crazypants.enderio.conduits.conduit.item;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.conduit.IClientConduit;
+import crazypants.enderio.base.conduit.IConduitTexture;
 import crazypants.enderio.base.conduit.IExtractor;
 import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.filter.item.IItemFilter;
@@ -23,7 +24,7 @@ public interface IItemConduit extends IExtractor, IServerConduit, IClientConduit
 
   TextureAtlasSprite getTextureForInOutBackground();
 
-  TextureAtlasSprite getEnderIcon();
+  IConduitTexture getEnderIcon();
 
   IItemHandler getExternalInventory(@Nonnull EnumFacing direction);
 

@@ -5,15 +5,16 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.render.IconUtil;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.conduit.IConduitTexture;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.render.registry.TextureRegistry;
-import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.conduits.conduit.ItemConduitSubtype;
 import crazypants.enderio.conduits.conduit.power.IPowerConduit;
 import crazypants.enderio.conduits.conduit.power.IPowerConduitData;
+import crazypants.enderio.conduits.render.ConduitTexture;
+import crazypants.enderio.conduits.render.ConduitTextureWrapper;
 import crazypants.enderio.endergy.config.EndergyConfig;
 import crazypants.enderio.endergy.init.EndergyObject;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -40,8 +41,9 @@ public final class EndergyPowerConduitData implements IPowerConduitData {
 
   static {
     for (int i = 0; i < POSTFIX.length; i++) {
-      IPowerConduitData.Registry.register(new EndergyPowerConduitData(i, TextureRegistry.registerTexture(IPowerConduit.ICON_KEY + POSTFIX[i]),
-          TextureRegistry.registerTexture(IPowerConduit.ICON_CORE_KEY + POSTFIX[i])));
+      IPowerConduitData.Registry
+          .register(new EndergyPowerConduitData(i, new ConduitTexture(TextureRegistry.registerTexture(IPowerConduit.ICON_KEY + POSTFIX[i]), 0),
+              new ConduitTexture(TextureRegistry.registerTexture(IPowerConduit.ICON_CORE_KEY + POSTFIX[i]), ConduitTexture.CORE)));
     }
   }
 
@@ -58,9 +60,9 @@ public final class EndergyPowerConduitData implements IPowerConduitData {
   }
 
   private final int id;
-  private final @Nonnull TextureSupplier icon, core;
+  private final @Nonnull IConduitTexture icon, core;
 
-  public EndergyPowerConduitData(int id, @Nonnull TextureSupplier icon, @Nonnull TextureSupplier core) {
+  public EndergyPowerConduitData(int id, @Nonnull IConduitTexture icon, @Nonnull IConduitTexture core) {
     this.id = OFFSET + id;
     this.icon = icon;
     this.core = core;
@@ -83,14 +85,14 @@ public final class EndergyPowerConduitData implements IPowerConduitData {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public @Nonnull TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
+  public @Nonnull IConduitTexture getTextureForState(@Nonnull CollidableComponent component) {
     if (component.isCore()) {
-      return core.get(TextureAtlasSprite.class);
+      return core;
     }
     if (IPowerConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
-      return IconUtil.instance.whiteTexture;
+      return new ConduitTextureWrapper(IconUtil.instance.whiteTexture);
     }
-    return icon.get(TextureAtlasSprite.class);
+    return icon;
   }
 
   private int getIndex() {

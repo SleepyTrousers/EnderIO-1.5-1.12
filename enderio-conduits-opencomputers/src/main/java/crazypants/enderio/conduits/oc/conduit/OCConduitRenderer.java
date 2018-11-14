@@ -9,11 +9,11 @@ import com.enderio.core.client.render.ColorUtil;
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IConduitTexture;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduits.render.BakedQuadBuilder;
 import crazypants.enderio.conduits.render.DefaultConduitRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraftforge.client.model.ModelLoader.White;
 
@@ -25,7 +25,7 @@ public class OCConduitRenderer extends DefaultConduitRenderer {
   }
 
   @Override
-  protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IClientConduit conduit, @Nonnull TextureAtlasSprite tex,
+  protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IClientConduit conduit, @Nonnull IConduitTexture tex,
       @Nonnull CollidableComponent component, float selfIllum, BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
     if (IOCConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
       if (conduit.containsExternalConnection(component.getDirection())) {

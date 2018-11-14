@@ -9,6 +9,7 @@ import com.enderio.core.common.vecmath.Vector4f;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitNetwork;
+import crazypants.enderio.base.conduit.IConduitTexture;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.registry.TextureRegistry;
@@ -17,6 +18,8 @@ import crazypants.enderio.conduits.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduits.conduit.IConduitComponent;
 import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
+import crazypants.enderio.conduits.render.ConduitTexture;
+import crazypants.enderio.conduits.render.ConduitTextureWrapper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -34,9 +37,10 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
 
   public static final int CONDUIT_VOLUME = Fluid.BUCKET_VOLUME;
 
-  public static final TextureSupplier ICON_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_advanced");
-  public static final TextureSupplier ICON_KEY_LOCKED = TextureRegistry.registerTexture("blocks/liquid_conduit_advanced_locked");
-  public static final TextureSupplier ICON_CORE_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_core_advanced");
+  public static final IConduitTexture ICON_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/liquid_conduit_advanced"), 0);
+  public static final IConduitTexture ICON_KEY_LOCKED = new ConduitTexture(TextureRegistry.registerTexture("blocks/liquid_conduit_advanced_locked"), 0);
+  public static final IConduitTexture ICON_CORE_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/liquid_conduit_core_advanced"),
+      ConduitTexture.CORE);
   public static final TextureSupplier ICON_EXTRACT_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_advanced_input");
   public static final TextureSupplier ICON_INSERT_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_advanced_output");
 
@@ -188,11 +192,11 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
   @SideOnly(Side.CLIENT)
   @Override
   @Nonnull
-  public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
+  public IConduitTexture getTextureForState(@Nonnull CollidableComponent component) {
     if (component.isCore()) {
-      return ICON_CORE_KEY.get(TextureAtlasSprite.class);
+      return ICON_CORE_KEY;
     }
-    return fluidTypeLocked ? ICON_KEY_LOCKED.get(TextureAtlasSprite.class) : ICON_KEY.get(TextureAtlasSprite.class);
+    return fluidTypeLocked ? ICON_KEY_LOCKED : ICON_KEY;
   }
 
   @SideOnly(Side.CLIENT)
@@ -211,9 +215,9 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
   }
 
   @Override
-  public @Nullable TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
+  public @Nullable IConduitTexture getTransmitionTextureForState(@Nonnull CollidableComponent component) {
     if (isActive() && tank.containsValidLiquid()) {
-      return RenderUtil.getStillTexture(tank.getFluid());
+      return new ConduitTextureWrapper(RenderUtil.getStillTexture(tank.getFluid()));
     }
     return null;
   }

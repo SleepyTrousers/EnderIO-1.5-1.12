@@ -22,6 +22,7 @@ import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitNetwork;
+import crazypants.enderio.base.conduit.IConduitTexture;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
@@ -31,7 +32,7 @@ import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduits.conduit.TileConduitBundle;
 import crazypants.enderio.conduits.me.gui.MESettings;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import crazypants.enderio.conduits.render.ConduitTexture;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -52,10 +53,10 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   protected MEConduitNetwork network;
   protected MEConduitGrid grid;
 
-  public static TextureRegistry.TextureSupplier coreTextureN = TextureRegistry.registerTexture("blocks/me_conduit_core");
-  public static TextureRegistry.TextureSupplier coreTextureD = TextureRegistry.registerTexture("blocks/me_conduit_core_dense");
-  public static TextureRegistry.TextureSupplier longTextureN = TextureRegistry.registerTexture("blocks/me_conduit");
-  public static TextureRegistry.TextureSupplier longTextureD = TextureRegistry.registerTexture("blocks/me_conduit_dense");
+  public static IConduitTexture coreTextureN = new ConduitTexture(TextureRegistry.registerTexture("blocks/me_conduit_core"), ConduitTexture.CORE);
+  public static IConduitTexture coreTextureD = new ConduitTexture(TextureRegistry.registerTexture("blocks/me_conduit_core_dense"), ConduitTexture.CORE);
+  public static IConduitTexture longTextureN = new ConduitTexture(TextureRegistry.registerTexture("blocks/me_conduit"), 0);
+  public static IConduitTexture longTextureD = new ConduitTexture(TextureRegistry.registerTexture("blocks/me_conduit_dense"), 0);
 
   private boolean isDense;
   private int playerID = -1;
@@ -171,16 +172,16 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
   }
 
   @Override
-  public @Nonnull TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
+  public @Nonnull IConduitTexture getTextureForState(@Nonnull CollidableComponent component) {
     if (component.isCore()) {
-      return (isDense ? coreTextureD : coreTextureN).get(TextureAtlasSprite.class);
+      return (isDense ? coreTextureD : coreTextureN);
     } else {
-      return (isDense ? longTextureD : longTextureN).get(TextureAtlasSprite.class);
+      return (isDense ? longTextureD : longTextureN);
     }
   }
 
   @Override
-  public @Nullable TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
+  public @Nullable IConduitTexture getTransmitionTextureForState(@Nonnull CollidableComponent component) {
     return null;
   }
 

@@ -23,24 +23,24 @@ import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitNetwork;
+import crazypants.enderio.base.conduit.IConduitTexture;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.base.render.registry.TextureRegistry;
-import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduits.conduit.IConduitComponent;
 import crazypants.enderio.conduits.oc.gui.OCSettings;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle.ConduitCacheKey;
+import crazypants.enderio.conduits.render.ConduitTexture;
 import li.cil.oc.api.network.Environment;
 import li.cil.oc.api.network.Message;
 import li.cil.oc.api.network.Node;
 import li.cil.oc.api.network.SidedEnvironment;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -63,8 +63,8 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
 
   private final Map<EnumFacing, DyeColor> signalColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
 
-  private static final TextureSupplier coreTextureA = TextureRegistry.registerTexture("blocks/oc_conduit_core_anim");
-  private static final TextureSupplier longTextureA = TextureRegistry.registerTexture("blocks/oc_conduit_anim");
+  private static final IConduitTexture coreTextureA = new ConduitTexture(TextureRegistry.registerTexture("blocks/oc_conduit_core_anim"), ConduitTexture.CORE);
+  private static final IConduitTexture longTextureA = new ConduitTexture(TextureRegistry.registerTexture("blocks/oc_conduit_anim"), 0);
 
   public OCConduit() {
     super();
@@ -519,13 +519,13 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
 
   @Override
   @Nonnull
-  public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
+  public IConduitTexture getTextureForState(@Nonnull CollidableComponent component) {
     // TODO
     // if (Config.enableOCConduitsAnimatedTexture) {
     if (component.isCore()) {
-      return coreTextureA.get(TextureAtlasSprite.class);
+      return coreTextureA;
     } else {
-      return longTextureA.get(TextureAtlasSprite.class);
+      return longTextureA;
     }
     // } else {
     // if (component.dir == null) {
@@ -537,7 +537,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
   }
 
   @Override
-  public @Nullable TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
+  public @Nullable IConduitTexture getTransmitionTextureForState(@Nonnull CollidableComponent component) {
     return null;
   }
 

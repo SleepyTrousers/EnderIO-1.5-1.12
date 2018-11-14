@@ -4,9 +4,10 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.IconUtil;
 
+import crazypants.enderio.base.conduit.IConduitTexture;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduits.config.ConduitConfig;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import crazypants.enderio.conduits.render.ConduitTextureWrapper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -45,14 +46,14 @@ public final class BasePowerConduitData implements IPowerConduitData {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public @Nonnull TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
+  public @Nonnull IConduitTexture getTextureForState(@Nonnull CollidableComponent component) {
     if (component.isCore()) {
-      return PowerConduit.ICONS.get(PowerConduit.ICON_CORE_KEY + PowerConduit.POSTFIX[getID()]).get(TextureAtlasSprite.class);
+      return PowerConduit.ICONS.get(PowerConduit.ICON_CORE_KEY + PowerConduit.POSTFIX[getID()]);
     }
     if (PowerConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
-      return IconUtil.instance.whiteTexture;
+      return new ConduitTextureWrapper(IconUtil.instance.whiteTexture);
     }
-    return PowerConduit.ICONS.get(PowerConduit.ICON_KEY + PowerConduit.POSTFIX[getID()]).get(TextureAtlasSprite.class);
+    return PowerConduit.ICONS.get(PowerConduit.ICON_KEY + PowerConduit.POSTFIX[getID()]);
   }
 
 }

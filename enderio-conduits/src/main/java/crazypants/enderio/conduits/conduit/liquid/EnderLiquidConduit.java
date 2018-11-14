@@ -17,6 +17,7 @@ import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitNetwork;
+import crazypants.enderio.base.conduit.IConduitTexture;
 import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.filter.FilterRegistry;
@@ -35,6 +36,7 @@ import crazypants.enderio.conduits.conduit.IConduitComponent;
 import crazypants.enderio.conduits.conduit.IEnderConduit;
 import crazypants.enderio.conduits.conduit.item.ItemConduit;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
+import crazypants.enderio.conduits.render.ConduitTexture;
 import crazypants.enderio.util.Prep;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,8 +57,9 @@ import static crazypants.enderio.conduits.init.ConduitObject.item_liquid_conduit
 
 public class EnderLiquidConduit extends AbstractLiquidConduit implements IConduitComponent, IFilterHolder<IFluidFilter>, IUpgradeHolder, IEnderConduit {
 
-  public static final TextureSupplier ICON_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_ender");
-  public static final TextureSupplier ICON_CORE_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_core_ender");
+  public static final IConduitTexture ICON_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/liquid_conduit_ender"), 0);
+  public static final IConduitTexture ICON_CORE_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/liquid_conduit_core_ender"),
+      ConduitTexture.CORE);
   public static final TextureSupplier ICON_IN_OUT_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_advanced_in_out");
   public static final TextureSupplier ICON_KEY_IN_OUT_BG = TextureRegistry.registerTexture("blocks/item_conduit_io_connector");
   public static final TextureSupplier ICON_KEY_INPUT = TextureRegistry.registerTexture("blocks/item_conduit_input");
@@ -213,11 +216,11 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   @SideOnly(Side.CLIENT)
   @Override
   @Nonnull
-  public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
+  public IConduitTexture getTextureForState(@Nonnull CollidableComponent component) {
     if (component.isCore()) {
-      return ICON_CORE_KEY.get(TextureAtlasSprite.class);
+      return ICON_CORE_KEY;
     }
-    return ICON_KEY.get(TextureAtlasSprite.class);
+    return ICON_KEY;
   }
 
   @SideOnly(Side.CLIENT)
@@ -246,8 +249,8 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
   }
 
   @Override
-  public @Nonnull TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
-    return ItemConduit.ICON_KEY_ENDER.get(TextureAtlasSprite.class);
+  public @Nonnull IConduitTexture getTransmitionTextureForState(@Nonnull CollidableComponent component) {
+    return ItemConduit.ICON_KEY_ENDER;
   }
 
   @Override

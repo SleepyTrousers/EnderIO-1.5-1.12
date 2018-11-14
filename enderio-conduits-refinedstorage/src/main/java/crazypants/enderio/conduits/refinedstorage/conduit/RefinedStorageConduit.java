@@ -20,6 +20,7 @@ import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitNetwork;
+import crazypants.enderio.base.conduit.IConduitTexture;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
@@ -29,14 +30,13 @@ import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.ItemFilter;
 import crazypants.enderio.base.render.registry.TextureRegistry;
-import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.refinedstorage.RSHelper;
 import crazypants.enderio.conduits.refinedstorage.conduit.gui.RefinedStorageSettings;
 import crazypants.enderio.conduits.refinedstorage.init.ConduitRefinedStorageObject;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import crazypants.enderio.conduits.render.ConduitTexture;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -53,11 +53,11 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 public class RefinedStorageConduit extends AbstractConduit implements IRefinedStorageConduit {
 
-  static final Map<String, TextureSupplier> ICONS = new HashMap<>();
+  static final Map<String, IConduitTexture> ICONS = new HashMap<>();
 
   static {
-    ICONS.put(ICON_KEY, TextureRegistry.registerTexture(ICON_KEY));
-    ICONS.put(ICON_CORE_KEY, TextureRegistry.registerTexture(ICON_CORE_KEY));
+    ICONS.put(ICON_KEY, new ConduitTexture(TextureRegistry.registerTexture(ICON_KEY), 0));
+    ICONS.put(ICON_CORE_KEY, new ConduitTexture(TextureRegistry.registerTexture(ICON_CORE_KEY), ConduitTexture.CORE));
   }
 
   private Map<EnumFacing, ItemStack> upgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
@@ -424,15 +424,15 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
 
   @Override
   @Nonnull
-  public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
+  public IConduitTexture getTextureForState(@Nonnull CollidableComponent component) {
     if (component.isCore()) {
-      return ICONS.get(ICON_CORE_KEY).get(TextureAtlasSprite.class);
+      return ICONS.get(ICON_CORE_KEY);
     }
-    return ICONS.get(ICON_KEY).get(TextureAtlasSprite.class);
+    return ICONS.get(ICON_KEY);
   }
 
   @Override
-  public TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
+  public IConduitTexture getTransmitionTextureForState(@Nonnull CollidableComponent component) {
     return null;
   }
 

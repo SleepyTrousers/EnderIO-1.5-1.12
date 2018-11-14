@@ -14,13 +14,13 @@ import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
+import crazypants.enderio.base.conduit.IConduitTexture;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.conduits.geom.ConnectionModeGeometry;
 import crazypants.enderio.conduits.render.DefaultConduitRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 
@@ -32,7 +32,7 @@ public class PowerConduitRenderer extends DefaultConduitRenderer {
   }
 
   @Override
-  protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IClientConduit conduit, @Nonnull TextureAtlasSprite tex,
+  protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IClientConduit conduit, @Nonnull IConduitTexture tex,
       @Nonnull CollidableComponent component, float selfIllum, BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
 
     if (IPowerConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
@@ -74,7 +74,7 @@ public class PowerConduitRenderer extends DefaultConduitRenderer {
       tex = pc.getTextureForOutputMode();
     }
     Offset offset = bundle.getOffset(IPowerConduit.class, componentDirection);
-    ConnectionModeGeometry.addModeConnectorQuads(componentDirection, offset, tex, null, quads);
+    ConnectionModeGeometry.addModeConnectorQuads(componentDirection, offset, tex.getSprite(), null, quads);
 
   }
 }

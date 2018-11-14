@@ -13,13 +13,14 @@ import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitNetwork;
+import crazypants.enderio.base.conduit.IConduitTexture;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.render.registry.TextureRegistry;
-import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.conduits.conduit.IConduitComponent;
 import crazypants.enderio.conduits.config.ConduitConfig;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import crazypants.enderio.conduits.render.ConduitTexture;
+import crazypants.enderio.conduits.render.ConduitTextureWrapper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -40,13 +41,13 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
 
   static final int VOLUME_PER_CONNECTION = Fluid.BUCKET_VOLUME / 4;
 
-  public static final TextureSupplier ICON_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit");
-  public static final TextureSupplier ICON_KEY_LOCKED = TextureRegistry.registerTexture("blocks/liquid_conduit_locked");
-  public static final TextureSupplier ICON_CORE_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_core");
-  public static final TextureSupplier ICON_EXTRACT_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_extract");
-  public static final TextureSupplier ICON_EMPTY_EXTRACT_KEY = TextureRegistry.registerTexture("blocks/empty_liquid_conduit_extract");
-  public static final TextureSupplier ICON_INSERT_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_insert");
-  public static final TextureSupplier ICON_EMPTY_INSERT_KEY = TextureRegistry.registerTexture("blocks/empty_liquid_conduit_insert");
+  public static final IConduitTexture ICON_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/liquid_conduit"), 0);
+  public static final IConduitTexture ICON_KEY_LOCKED = new ConduitTexture(TextureRegistry.registerTexture("blocks/liquid_conduit_locked"));
+  public static final IConduitTexture ICON_CORE_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/liquid_conduit_core"), ConduitTexture.CORE);
+  public static final IConduitTexture ICON_EXTRACT_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/liquid_conduit_extract"));
+  public static final IConduitTexture ICON_EMPTY_EXTRACT_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/empty_liquid_conduit_extract"));
+  public static final IConduitTexture ICON_INSERT_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/liquid_conduit_insert"));
+  public static final IConduitTexture ICON_EMPTY_INSERT_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/empty_liquid_conduit_insert"));
 
   private LiquidConduitNetwork network;
 
@@ -323,24 +324,24 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
   @SideOnly(Side.CLIENT)
   @Override
   @Nonnull
-  public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
+  public IConduitTexture getTextureForState(@Nonnull CollidableComponent component) {
     if (component.isCore()) {
-      return ICON_CORE_KEY.get(TextureAtlasSprite.class);
+      return ICON_CORE_KEY;
     }
     final EnumFacing componentDirection = component.getDirection();
     if (getConnectionMode(componentDirection) == ConnectionMode.INPUT) {
-      return (getFluidType() == null ? ICON_EMPTY_EXTRACT_KEY : ICON_EXTRACT_KEY).get(TextureAtlasSprite.class);
+      return getFluidType() == null ? ICON_EMPTY_EXTRACT_KEY : ICON_EXTRACT_KEY;
     }
     if (getConnectionMode(componentDirection) == ConnectionMode.OUTPUT) {
-      return (getFluidType() == null ? ICON_EMPTY_INSERT_KEY : ICON_INSERT_KEY).get(TextureAtlasSprite.class);
+      return getFluidType() == null ? ICON_EMPTY_INSERT_KEY : ICON_INSERT_KEY;
     }
-    return fluidTypeLocked ? ICON_KEY_LOCKED.get(TextureAtlasSprite.class) : ICON_KEY.get(TextureAtlasSprite.class);
+    return fluidTypeLocked ? ICON_KEY_LOCKED : ICON_KEY;
   }
 
   @Override
-  public TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
+  public IConduitTexture getTransmitionTextureForState(@Nonnull CollidableComponent component) {
     if (tank.getFluid() != null && tank.getFluid().getFluid() != null) {
-      return RenderUtil.getStillTexture(tank.getFluid());
+      return new ConduitTextureWrapper(RenderUtil.getStillTexture(tank.getFluid()));
     }
     return null;
   }

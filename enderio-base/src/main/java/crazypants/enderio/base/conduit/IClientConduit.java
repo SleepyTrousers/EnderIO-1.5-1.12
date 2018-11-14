@@ -7,7 +7,6 @@ import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -69,11 +68,11 @@ public interface IClientConduit extends IConduit {
 
     @SideOnly(Side.CLIENT)
     @Nonnull
-    TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component);
+    IConduitTexture getTextureForState(@Nonnull CollidableComponent component);
 
     @SideOnly(Side.CLIENT)
     @Nullable
-    TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component);
+    IConduitTexture getTransmitionTextureForState(@Nonnull CollidableComponent component);
 
     @SideOnly(Side.CLIENT)
     @Nullable

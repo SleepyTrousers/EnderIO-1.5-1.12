@@ -18,6 +18,7 @@ import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitNetwork;
+import crazypants.enderio.base.conduit.IConduitTexture;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
@@ -27,8 +28,8 @@ import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
+import crazypants.enderio.conduits.render.ConduitTexture;
 import crazypants.enderio.invpanel.init.InvpanelObject;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -42,11 +43,11 @@ import net.minecraftforge.items.IItemHandler;
 
 public class DataConduit extends AbstractConduit implements IDataConduit {
 
-  static final @Nonnull Map<String, TextureSupplier> ICONS = new HashMap<>();
+  static final @Nonnull Map<String, IConduitTexture> ICONS = new HashMap<>();
 
   static {
-    ICONS.put(ICON_KEY, TextureRegistry.registerTexture(ICON_KEY));
-    ICONS.put(ICON_CORE_KEY, TextureRegistry.registerTexture(ICON_CORE_KEY));
+    ICONS.put(ICON_KEY, new ConduitTexture(TextureRegistry.registerTexture(ICON_KEY), 0));
+    ICONS.put(ICON_CORE_KEY, new ConduitTexture(TextureRegistry.registerTexture(ICON_CORE_KEY), ConduitTexture.CORE));
   }
 
   protected DataConduitNetwork network;
@@ -245,15 +246,15 @@ public class DataConduit extends AbstractConduit implements IDataConduit {
 
   @Override
   @Nonnull
-  public TextureAtlasSprite getTextureForState(@Nonnull CollidableComponent component) {
+  public IConduitTexture getTextureForState(@Nonnull CollidableComponent component) {
     if (component.isCore()) {
-      return ICONS.get(ICON_CORE_KEY).get(TextureAtlasSprite.class);
+      return ICONS.get(ICON_CORE_KEY);
     }
-    return ICONS.get(ICON_KEY).get(TextureAtlasSprite.class);
+    return ICONS.get(ICON_KEY);
   }
 
   @Override
-  public @Nullable TextureAtlasSprite getTransmitionTextureForState(@Nonnull CollidableComponent component) {
+  public @Nullable IConduitTexture getTransmitionTextureForState(@Nonnull CollidableComponent component) {
     return null;
   }
 
