@@ -1,6 +1,6 @@
 {
-    "parent": "enderio:item/item_conduit_base",
+    "parent": "enderio:item/item_conduit_base_1",
     "textures": {        
-        "all": "enderio:blocks/power_conduit_core_enhanced"
+        "all": "enderio:blocks/conduit_core_0"
     }
 }

@@ -75,8 +75,8 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   static final Map<String, IConduitTexture> ICONS = new HashMap<>();
 
   static {
-    ICONS.put(KEY_INS_CORE_OFF_ICON, new ConduitTexture(TextureRegistry.registerTexture(KEY_INS_CORE_OFF_ICON), ConduitTexture.CORE));
-    ICONS.put(KEY_INS_CORE_ON_ICON, new ConduitTexture(TextureRegistry.registerTexture(KEY_INS_CORE_ON_ICON), ConduitTexture.CORE));
+    ICONS.put(KEY_INS_CORE_OFF_ICON, new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit_core_1"), ConduitTexture.CORE3));
+    ICONS.put(KEY_INS_CORE_ON_ICON, new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit_core_0"), ConduitTexture.CORE3));
     ICONS.put(KEY_INS_CONDUIT_ICON, new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit"), 1));
     ICONS.put(KEY_CONDUIT_ICON, new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit"), 3));
     ICONS.put(KEY_TRANSMISSION_ICON, new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit"), 2));

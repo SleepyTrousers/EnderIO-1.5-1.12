@@ -20,8 +20,8 @@ public interface IRedstoneConduit extends IServerConduit, IClientConduit {
   public static final @Nonnull String KEY_TRANSMISSION_ICON = "b";
 
   public static final @Nonnull String KEY_INS_CONDUIT_ICON = "a";
-  public static final @Nonnull String KEY_INS_CORE_OFF_ICON = "blocks/redstone_insulated_conduit_core_off";
-  public static final @Nonnull String KEY_INS_CORE_ON_ICON = "blocks/redstone_insulated_conduit_core_on";
+  public static final @Nonnull String KEY_INS_CORE_OFF_ICON = "d";
+  public static final @Nonnull String KEY_INS_CORE_ON_ICON = "e";
 
   // External redstone interface
 

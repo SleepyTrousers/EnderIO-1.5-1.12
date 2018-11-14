@@ -1,6 +1,6 @@
 {
-    "parent": "enderio:item/item_conduit_base",
+    "parent": "enderio:item/item_conduit_base_3",
     "textures": {        
-        "all": "enderio:blocks/redstone_insulated_conduit_core_on"
+        "all": "enderio:blocks/conduit_core_0"
     }
 }

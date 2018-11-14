@@ -11,6 +11,10 @@ public class ConduitTexture implements IConduitTexture {
 
   public static final @Nonnull Vector4f FULL = new Vector4f(0, 0, 1, 1);
   public static final @Nonnull Vector4f CORE = new Vector4f(2 / 16f, 14 / 16f, 14 / 16f, 2 / 16f);
+  public static final @Nonnull Vector4f CORE0 = new Vector4f(0 / 16f, 8 / 16f, 8 / 16f, 0 / 16f);
+  public static final @Nonnull Vector4f CORE1 = new Vector4f(8 / 16f, 8 / 16f, 16 / 16f, 0 / 16f);
+  public static final @Nonnull Vector4f CORE2 = new Vector4f(0 / 16f, 16 / 16f, 8 / 16f, 8 / 16f);
+  public static final @Nonnull Vector4f CORE3 = new Vector4f(8 / 16f, 16 / 16f, 16 / 16f, 8 / 16f);
 
   private final @Nonnull TextureSupplier texture;
   private final @Nonnull Vector4f uv;
