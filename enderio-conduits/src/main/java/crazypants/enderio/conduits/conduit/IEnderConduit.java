@@ -118,8 +118,7 @@ public interface IEnderConduit {
    *          Direction of the conduit connection
    * @return The color channel of the input
    */
-  @Nonnull
-  default DyeColor getInputColor(@Nonnull EnumFacing dir) {
+  default @Nonnull DyeColor getInputColor(@Nonnull EnumFacing dir) {
     DyeColor result = getInputColors().get(dir);
     if (result == null) {
       return DyeColor.GREEN;
@@ -134,7 +133,7 @@ public interface IEnderConduit {
    *          Direction of the conduit connection
    * @return The color channel of the output
    */
-  default DyeColor getOutputColor(@Nonnull EnumFacing dir) {
+  default @Nonnull DyeColor getOutputColor(@Nonnull EnumFacing dir) {
     DyeColor result = getOutputColors().get(dir);
     if (result == null) {
       return DyeColor.GREEN;

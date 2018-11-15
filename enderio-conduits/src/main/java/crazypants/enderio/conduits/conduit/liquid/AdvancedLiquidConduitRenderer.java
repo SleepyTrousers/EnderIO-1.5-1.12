@@ -7,10 +7,10 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.vecmath.Vector3d;
-import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
 
 import crazypants.enderio.base.conduit.ConnectionMode;
@@ -20,10 +20,9 @@ import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IConduitTexture;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
-import crazypants.enderio.base.conduit.geom.Offset;
-import crazypants.enderio.conduits.geom.ConnectionModeGeometry;
 import crazypants.enderio.conduits.render.BakedQuadBuilder;
 import crazypants.enderio.conduits.render.ConduitBundleRenderManager;
+import crazypants.enderio.conduits.render.ConduitInOutRenderer;
 import crazypants.enderio.conduits.render.DefaultConduitRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -64,23 +63,7 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
 
     AdvancedLiquidConduit lc = (AdvancedLiquidConduit) conduit;
 
-    if (layer == BlockRenderLayer.CUTOUT) {
-
-      for (EnumFacing dir : conduit.getExternalConnections()) {
-        if (dir != null) {
-          TextureAtlasSprite ioTex = null;
-          if (conduit.getConnectionMode(dir) == ConnectionMode.INPUT) {
-            ioTex = lc.getTextureForInputMode();
-          } else if (conduit.getConnectionMode(dir) == ConnectionMode.OUTPUT) {
-            ioTex = lc.getTextureForOutputMode();
-          }
-          if (ioTex != null) {
-            Offset offset = bundle.getOffset(ILiquidConduit.class, dir);
-            ConnectionModeGeometry.addModeConnectorQuads(dir, offset, ioTex, new Vector4f(1, 1, 1, 1), quads);
-          }
-        }
-      }
-    }
+    ConduitInOutRenderer.renderIO(bundle, conduit, component, layer, quads, DyeColor.RED, DyeColor.RED);
 
     if (layer == BlockRenderLayer.TRANSLUCENT) {
 

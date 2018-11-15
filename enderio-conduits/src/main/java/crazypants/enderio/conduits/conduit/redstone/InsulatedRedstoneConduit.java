@@ -1,7 +1,5 @@
 package crazypants.enderio.conduits.conduit.redstone;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +24,6 @@ import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.IConduitTexture;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.conduit.RaytraceResult;
-import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.conduit.redstone.signals.BundledSignal;
@@ -548,20 +545,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     }
     BlockPos loc = getBundle().getLocation().offset(dir);
     return ConduitUtil.getConduit(getBundle().getEntity().getWorld(), loc.getX(), loc.getY(), loc.getZ(), IRedstoneConduit.class) == null;
-  }
-
-  @Override
-  @Nonnull
-  public Collection<CollidableComponent> createCollidables(@Nonnull CacheKey key) {
-    Collection<CollidableComponent> baseCollidables = super.createCollidables(key);
-    if (key.dir == null) {
-      return baseCollidables;
-    }
-
-    List<CollidableComponent> result = new ArrayList<CollidableComponent>();
-    result.addAll(baseCollidables);
-
-    return result;
   }
 
   // ---------------------

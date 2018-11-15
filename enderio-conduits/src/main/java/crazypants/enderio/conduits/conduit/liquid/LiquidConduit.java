@@ -417,4 +417,10 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
     }
   }
 
+  @Override
+  @Nonnull
+  public Class<? extends IConduit> getCollidableType() {
+    return LiquidConduit.class;
+  }
+
 }

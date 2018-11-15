@@ -1,8 +1,14 @@
 package crazypants.enderio.conduits.conduit.liquid;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 
@@ -10,12 +16,16 @@ import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.IConduitTexture;
+import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
+import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.conduits.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduits.conduit.IConduitComponent;
+import crazypants.enderio.conduits.conduit.power.IPowerConduit;
+import crazypants.enderio.conduits.conduit.power.PowerConduit;
 import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduits.render.ConduitTexture;
@@ -195,6 +205,9 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
     if (component.isCore()) {
       return ICON_CORE_KEY;
     }
+    if (PowerConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
+      return new ConduitTextureWrapper(IconUtil.instance.whiteTexture);
+    }
     return fluidTypeLocked ? ICON_KEY_LOCKED : ICON_KEY;
   }
 
@@ -279,12 +292,33 @@ public class AdvancedLiquidConduit extends AbstractTankConduit implements ICondu
     if (fluidType != null && fluidType.getFluid() != null) {
       hashCodes.add(fluidType.getFluid());
     }
+    hashCodes.addEnum(extractionColors);
+    hashCodes.addEnum(extractionModes);
   }
 
   @Override
   @Nonnull
   public AdvancedLiquidConduitNetwork createNetworkForType() {
     return new AdvancedLiquidConduitNetwork();
+  }
+
+  @Override
+  @Nonnull
+  public Collection<CollidableComponent> createCollidables(@Nonnull CacheKey key) {
+    Collection<CollidableComponent> baseCollidables = super.createCollidables(key);
+    final EnumFacing keydir = key.dir;
+    if (keydir == null) {
+      return baseCollidables;
+    }
+
+    BoundingBox bb = ConduitGeometryUtil.instance.createBoundsForConnectionController(keydir, key.offset);
+    CollidableComponent cc = new CollidableComponent(ILiquidConduit.class, bb, keydir, IPowerConduit.COLOR_CONTROLLER_ID);
+
+    List<CollidableComponent> result = new ArrayList<CollidableComponent>();
+    result.addAll(baseCollidables);
+    result.add(cc);
+
+    return result;
   }
 
 }

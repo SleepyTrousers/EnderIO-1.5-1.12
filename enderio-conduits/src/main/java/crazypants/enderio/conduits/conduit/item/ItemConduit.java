@@ -1,5 +1,7 @@
 package crazypants.enderio.conduits.conduit.item;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +11,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.ITabPanel;
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
@@ -24,7 +28,9 @@ import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.IConduitTexture;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.conduit.RaytraceResult;
+import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
+import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.base.conduit.item.FunctionUpgrade;
 import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.filter.FilterRegistry;
@@ -42,9 +48,12 @@ import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
 import crazypants.enderio.conduits.capability.IUpgradeHolder;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.conduit.IConduitComponent;
+import crazypants.enderio.conduits.conduit.power.IPowerConduit;
+import crazypants.enderio.conduits.conduit.power.PowerConduit;
 import crazypants.enderio.conduits.gui.ItemSettings;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduits.render.ConduitTexture;
+import crazypants.enderio.conduits.render.ConduitTextureWrapper;
 import crazypants.enderio.powertools.lang.Lang;
 import crazypants.enderio.powertools.network.PacketHandler;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -517,6 +526,9 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     if (EXTERNAL_INTERFACE_GEOM.equals(component.data)) {
       return getCoreIcon();
     }
+    if (PowerConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
+      return new ConduitTextureWrapper(IconUtil.instance.whiteTexture);
+    }
     return ICON_KEY;
   }
 
@@ -752,6 +764,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
     super.hashCodeForModelCaching(hashCodes);
     hashCodes.addEnum(outputColors);
     hashCodes.addEnum(inputColors);
+    hashCodes.addEnum(extractionColors);
+    hashCodes.addEnum(extractionModes);
   }
 
   @Override
@@ -980,6 +994,25 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
       }
     }
     return sb.toString();
+  }
+
+  @Override
+  @Nonnull
+  public Collection<CollidableComponent> createCollidables(@Nonnull CacheKey key) {
+    Collection<CollidableComponent> baseCollidables = super.createCollidables(key);
+    final EnumFacing keydir = key.dir;
+    if (keydir == null) {
+      return baseCollidables;
+    }
+
+    BoundingBox bb = ConduitGeometryUtil.instance.createBoundsForConnectionController(keydir, key.offset);
+    CollidableComponent cc = new CollidableComponent(IItemConduit.class, bb, keydir, IPowerConduit.COLOR_CONTROLLER_ID);
+
+    List<CollidableComponent> result = new ArrayList<CollidableComponent>();
+    result.addAll(baseCollidables);
+    result.add(cc);
+
+    return result;
   }
 
 }
