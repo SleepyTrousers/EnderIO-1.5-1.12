@@ -339,6 +339,7 @@ public class LiquidConduit extends AbstractTankConduit implements IConduitCompon
   }
 
   @Override
+  @SideOnly(Side.CLIENT)
   public IConduitTexture getTransmitionTextureForState(@Nonnull CollidableComponent component) {
     if (tank.getFluid() != null && tank.getFluid().getFluid() != null) {
       return new ConduitTextureWrapper(RenderUtil.getStillTexture(tank.getFluid()));
