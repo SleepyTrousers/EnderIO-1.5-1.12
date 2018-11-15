@@ -4,7 +4,7 @@
 		"iomode":{
 			"down_none":{
 				"textures":{
-					"overlay":"enderio:blocks/overlays/none"
+					"overlay":"endercore:blank"
 				},
 				"submodel":{
 					"overlay":{
@@ -290,7 +290,7 @@
 			},
 			"up_none":{
 				"textures":{
-					"overlay":"enderio:blocks/overlays/none"
+					"overlay":"endercore:blank"
 				},
 				"submodel":{
 					"overlay":{
@@ -576,7 +576,7 @@
 			},
 			"north_none":{
 				"textures":{
-					"overlay":"enderio:blocks/overlays/none"
+					"overlay":"endercore:blank"
 				},
 				"submodel":{
 					"overlay":{
@@ -862,7 +862,7 @@
 			},
 			"south_none":{
 				"textures":{
-					"overlay":"enderio:blocks/overlays/none"
+					"overlay":"endercore:blank"
 				},
 				"submodel":{
 					"overlay":{
@@ -1148,7 +1148,7 @@
 			},
 			"east_none":{
 				"textures":{
-					"overlay":"enderio:blocks/overlays/none"
+					"overlay":"endercore:blank"
 				},
 				"submodel":{
 					"overlay":{
@@ -1434,7 +1434,7 @@
 			},
 			"west_none":{
 				"textures":{
-					"overlay":"enderio:blocks/overlays/none"
+					"overlay":"endercore:blank"
 				},
 				"submodel":{
 					"overlay":{

@@ -1,6 +1,6 @@
 {
     "textures":{
-        "overlay":"enderio:blocks/overlays/none"
+        "overlay":"endercore:blank"
     },
     "elements":[
         {

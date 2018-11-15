@@ -69,6 +69,7 @@ public class TextureRegistry {
     @SubscribeEvent
     public void onIconLoad(TextureStitchEvent.Pre event) {
       for (Entry<String, TextureAtlasSprite> entry : sprites.entrySet()) {
+        Log.debug("TextureStitchEvent.Pre for ", entry.getKey());
         entry.setValue(event.getMap().registerSprite(new ResourceLocation(NullHelper.notnull(entry.getKey(), "internal data corruption"))));
       }
     }
@@ -80,6 +81,7 @@ public class TextureRegistry {
       if (prependModID) {
         key = EnderIO.DOMAIN + ":" + location;
       }
+      Log.debug("registerTexture ", key);
       final String keyF = key;
       if (!sprites.containsKey(keyF)) {
         sprites.put(keyF, null);

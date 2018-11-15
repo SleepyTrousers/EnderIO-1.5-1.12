@@ -10,7 +10,6 @@ import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
@@ -21,6 +20,7 @@ import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
+import crazypants.enderio.conduits.EnderIOConduits;
 import crazypants.enderio.conduits.conduit.power.IPowerConduit;
 import crazypants.enderio.conduits.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduits.geom.ConnectionModeGeometry;
@@ -30,11 +30,13 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.ModelLoader.White;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-@EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
+@EventBusSubscriber(modid = EnderIOConduits.MODID, value = Side.CLIENT)
 public class ConduitInOutRenderer {
 
+  @SubscribeEvent
   public static void load(EnderIOLifecycleEvent.PreInit event) {
     // force class being loaded to register textures
   }

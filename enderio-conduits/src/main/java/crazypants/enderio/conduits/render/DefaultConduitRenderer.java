@@ -72,7 +72,7 @@ public class DefaultConduitRenderer implements IConduitRenderer {
       if (component != null && renderComponent(component)) {
         float selfIllum = Math.max(brightness, conduit.getSelfIlluminationForState(component));
         final IConduitTexture transmitionTextureForState = conduit.getTransmitionTextureForState(component);
-        if (layer != null && component.isDirectional() && transmitionTextureForState != null) {
+        if (layer != null && component.isDirectional() && transmitionTextureForState != null && component.data == null) {
           Vector4f color = conduit.getTransmitionTextureColorForState(component);
           addTransmissionQuads(transmitionTextureForState, color, layer, conduit, component, selfIllum, quads);
         }

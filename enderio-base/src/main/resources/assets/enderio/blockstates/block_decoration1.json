@@ -50,7 +50,7 @@
         "top":      "enderio:items/item_broken_spawner",
         "side":     "enderio:items/item_broken_spawner"
       }, "model":   "enderio:hollow_cube" },
-      "type15":             { "model": "enderio:null", "textures": { "particle": "enderio:blocks/blank" } }
+      "type15":             { "model": "enderio:null", "textures": { "particle": "endercore:blank" } }
     }
   }
 }
