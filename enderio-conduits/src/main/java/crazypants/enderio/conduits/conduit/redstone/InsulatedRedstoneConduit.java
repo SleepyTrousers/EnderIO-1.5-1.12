@@ -41,7 +41,6 @@ import crazypants.enderio.base.filter.redstone.IInputSignalFilter;
 import crazypants.enderio.base.filter.redstone.IOutputSignalFilter;
 import crazypants.enderio.base.filter.redstone.IRedstoneSignalFilter;
 import crazypants.enderio.base.render.registry.TextureRegistry;
-import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.conduit.IConduitComponent;
@@ -52,7 +51,6 @@ import crazypants.enderio.conduits.render.ConduitTexture;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -72,19 +70,12 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   static final Map<String, IConduitTexture> ICONS = new HashMap<>();
 
   static {
-    ICONS.put(KEY_INS_CORE_OFF_ICON, new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit_core_1"), ConduitTexture.CORE3));
-    ICONS.put(KEY_INS_CORE_ON_ICON, new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit_core_0"), ConduitTexture.CORE3));
-    ICONS.put(KEY_INS_CONDUIT_ICON, new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit"), 1));
-    ICONS.put(KEY_CONDUIT_ICON, new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit"), 3));
-    ICONS.put(KEY_TRANSMISSION_ICON, new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit"), 2));
+    ICONS.put(KEY_INS_CORE_OFF_ICON, new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit_core_1"), ConduitTexture.core(3)));
+    ICONS.put(KEY_INS_CORE_ON_ICON, new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit_core_0"), ConduitTexture.core(3)));
+    ICONS.put(KEY_INS_CONDUIT_ICON, new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit"), ConduitTexture.arm(1)));
+    ICONS.put(KEY_CONDUIT_ICON, new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit"), ConduitTexture.arm(3)));
+    ICONS.put(KEY_TRANSMISSION_ICON, new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit"), ConduitTexture.arm(2)));
   }
-
-  public static final TextureSupplier ICON_IN_OUT_KEY = TextureRegistry.registerTexture("blocks/item_conduit_in_out");
-  public static final TextureSupplier ICON_KEY_IN_OUT_BG = TextureRegistry.registerTexture("blocks/item_conduit_io_connector");
-  public static final TextureSupplier ICON_KEY_INPUT = TextureRegistry.registerTexture("blocks/item_conduit_input");
-  public static final TextureSupplier ICON_KEY_OUTPUT = TextureRegistry.registerTexture("blocks/item_conduit_output");
-  public static final TextureSupplier ICON_KEY_IN_OUT_OUT = TextureRegistry.registerTexture("blocks/item_conduit_in_out_out");
-  public static final TextureSupplier ICON_KEY_IN_OUT_IN = TextureRegistry.registerTexture("blocks/item_conduit_in_out_in");
 
   // --------------------------------- Class Start
   // -------------------------------------------
@@ -578,39 +569,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @SideOnly(Side.CLIENT)
   public @Nullable Vector4f getTransmitionTextureColorForState(@Nonnull CollidableComponent component) {
     return null;
-  }
-
-  @SideOnly(Side.CLIENT)
-  @Override
-  @Nonnull
-  public TextureAtlasSprite getTextureForInputMode() {
-    return ICON_KEY_INPUT.get(TextureAtlasSprite.class);
-  }
-
-  @SideOnly(Side.CLIENT)
-  @Override
-  @Nonnull
-  public TextureAtlasSprite getTextureForInOutMode(boolean input) {
-    return input ? ICON_KEY_IN_OUT_IN.get(TextureAtlasSprite.class) : ICON_KEY_IN_OUT_OUT.get(TextureAtlasSprite.class);
-  }
-
-  @SideOnly(Side.CLIENT)
-  @Override
-  @Nonnull
-  public TextureAtlasSprite getTextureForOutputMode() {
-    return ICON_KEY_OUTPUT.get(TextureAtlasSprite.class);
-  }
-
-  @SideOnly(Side.CLIENT)
-  public TextureAtlasSprite getTextureForInOutMode() {
-    return ICON_IN_OUT_KEY.get(TextureAtlasSprite.class);
-  }
-
-  @SideOnly(Side.CLIENT)
-  @Override
-  @Nonnull
-  public TextureAtlasSprite getTextureForInOutBackground() {
-    return ICON_KEY_IN_OUT_BG.get(TextureAtlasSprite.class);
   }
 
   @Override

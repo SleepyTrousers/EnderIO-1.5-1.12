@@ -3,7 +3,6 @@ package crazypants.enderio.endergy.conduit;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.IconUtil;
-import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.conduit.IConduitTexture;
@@ -50,27 +49,12 @@ public final class EndergyPowerConduitData implements IPowerConduitData {
     @Nonnull
     ConduitTexture corefile(@Nonnull String key) {
       // return new ConduitTexture(TextureRegistry.registerTexture(key + postfix), ConduitTexture.CORE);
-      return new ConduitTexture(TextureRegistry.registerTexture(key + "_endergy_" + file), coreidx());
-    }
-
-    private @Nonnull Vector4f coreidx() {
-      switch (idx) {
-      case 0:
-        return ConduitTexture.CORE0;
-      case 1:
-        return ConduitTexture.CORE1;
-      case 2:
-        return ConduitTexture.CORE2;
-      case 3:
-        return ConduitTexture.CORE3;
-      default:
-        return ConduitTexture.CORE;
-      }
+      return new ConduitTexture(TextureRegistry.registerTexture(key + "_endergy_" + file), ConduitTexture.core(idx));
     }
 
     @Nonnull
     ConduitTexture armfile(@Nonnull String key) {
-      return new ConduitTexture(TextureRegistry.registerTexture(key + "_endergy_" + file), idx);
+      return new ConduitTexture(TextureRegistry.registerTexture(key + "_endergy_" + file), ConduitTexture.arm(idx));
     }
 
     @Override

@@ -108,6 +108,9 @@ public class DefaultConduitRenderer implements IConduitRenderer {
       if (layer != getConduitQuadsLayer()) {
         return; // TODO? null is the blockbreaking animation
       }
+      if (component.data != null) {
+        return; // this is handled by ConduitInOutRenderer.addColorBand() or the conduits themselves
+      }
 
       float shrink = 1 / 32f;
       final EnumFacing componentDirection = component.getDirection();
@@ -195,7 +198,7 @@ public class DefaultConduitRenderer implements IConduitRenderer {
   protected void renderConduitDynamic(@Nonnull IConduitTexture tex, @Nonnull IClientConduit.WithDefaultRendering conduit,
       @Nonnull CollidableComponent component, float brightness) {
     GlStateManager.color(1, 1, 1);
-    if (component.isDirectional()) {
+    if (component.isDirectional() && component.data == null) {
       final EnumFacing componentDirection = component.getDirection();
       float scaleFactor = 0.75f;
       float xLen = Math.abs(componentDirection.getFrontOffsetX()) == 1 ? 1 : scaleFactor;

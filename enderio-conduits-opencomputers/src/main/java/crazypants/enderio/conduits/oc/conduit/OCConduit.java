@@ -63,8 +63,8 @@ public class OCConduit extends AbstractConduit implements IOCConduit, IConduitCo
 
   private final Map<EnumFacing, DyeColor> signalColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
 
-  private static final IConduitTexture coreTextureA = new ConduitTexture(TextureRegistry.registerTexture("blocks/oc_conduit_core_anim"), ConduitTexture.CORE);
-  private static final IConduitTexture longTextureA = new ConduitTexture(TextureRegistry.registerTexture("blocks/oc_conduit_anim"), 0);
+  private static final IConduitTexture coreTextureA = new ConduitTexture(TextureRegistry.registerTexture("blocks/oc_conduit_core_anim"), ConduitTexture.core());
+  private static final IConduitTexture longTextureA = new ConduitTexture(TextureRegistry.registerTexture("blocks/oc_conduit_anim"), ConduitTexture.arm(0));
 
   public OCConduit() {
     super();

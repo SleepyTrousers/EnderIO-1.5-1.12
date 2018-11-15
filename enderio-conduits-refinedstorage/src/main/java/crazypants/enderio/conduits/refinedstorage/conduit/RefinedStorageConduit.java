@@ -56,8 +56,8 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   static final Map<String, IConduitTexture> ICONS = new HashMap<>();
 
   static {
-    ICONS.put(ICON_KEY, new ConduitTexture(TextureRegistry.registerTexture(ICON_KEY), 0));
-    ICONS.put(ICON_CORE_KEY, new ConduitTexture(TextureRegistry.registerTexture(ICON_CORE_KEY), ConduitTexture.CORE));
+    ICONS.put(ICON_KEY, new ConduitTexture(TextureRegistry.registerTexture(ICON_KEY), ConduitTexture.arm(0)));
+    ICONS.put(ICON_CORE_KEY, new ConduitTexture(TextureRegistry.registerTexture(ICON_CORE_KEY), ConduitTexture.core()));
   }
 
   private Map<EnumFacing, ItemStack> upgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);

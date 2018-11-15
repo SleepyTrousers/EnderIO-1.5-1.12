@@ -42,7 +42,6 @@ import crazypants.enderio.base.filter.item.ItemFilter;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.registry.TextureRegistry;
-import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
 import crazypants.enderio.conduits.capability.IUpgradeHolder;
@@ -56,7 +55,6 @@ import crazypants.enderio.conduits.render.ConduitTexture;
 import crazypants.enderio.conduits.render.ConduitTextureWrapper;
 import crazypants.enderio.powertools.lang.Lang;
 import crazypants.enderio.powertools.network.PacketHandler;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -79,19 +77,9 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   public static final String EXTERNAL_INTERFACE_GEOM = "ExternalInterface";
 
-  public static final IConduitTexture ICON_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit"), 0);
+  public static final IConduitTexture ICON_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit"), ConduitTexture.arm(0));
 
-  public static final IConduitTexture ICON_KEY_CORE = new ConduitTexture(TextureRegistry.registerTexture("blocks/item_conduit_core"), ConduitTexture.CORE);
-
-  public static final TextureSupplier ICON_KEY_INPUT = TextureRegistry.registerTexture("blocks/item_conduit_input");
-
-  public static final TextureSupplier ICON_KEY_OUTPUT = TextureRegistry.registerTexture("blocks/item_conduit_output");
-
-  public static final TextureSupplier ICON_KEY_IN_OUT_OUT = TextureRegistry.registerTexture("blocks/item_conduit_in_out_out");
-
-  public static final TextureSupplier ICON_KEY_IN_OUT_IN = TextureRegistry.registerTexture("blocks/item_conduit_in_out_in");
-
-  public static final TextureSupplier ICON_KEY_IN_OUT_BG = TextureRegistry.registerTexture("blocks/item_conduit_io_connector");
+  public static final IConduitTexture ICON_KEY_CORE = new ConduitTexture(TextureRegistry.registerTexture("blocks/item_conduit_core"), ConduitTexture.core());
 
   public static final IConduitTexture ICON_KEY_ENDER = new ConduitTexture(TextureRegistry.registerTexture("blocks/ender_still"));
 
@@ -480,30 +468,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   // -------------------------------------------
   // Textures
   // ------------------------------------------
-
-  @SideOnly(Side.CLIENT)
-  @Override
-  public @Nonnull TextureAtlasSprite getTextureForInputMode() {
-    return ICON_KEY_INPUT.get(TextureAtlasSprite.class);
-  }
-
-  @SideOnly(Side.CLIENT)
-  @Override
-  public @Nonnull TextureAtlasSprite getTextureForOutputMode() {
-    return ICON_KEY_OUTPUT.get(TextureAtlasSprite.class);
-  }
-
-  @SideOnly(Side.CLIENT)
-  @Override
-  public @Nonnull TextureAtlasSprite getTextureForInOutMode(boolean input) {
-    return input ? ICON_KEY_IN_OUT_IN.get(TextureAtlasSprite.class) : ICON_KEY_IN_OUT_OUT.get(TextureAtlasSprite.class);
-  }
-
-  @SideOnly(Side.CLIENT)
-  @Override
-  public @Nonnull TextureAtlasSprite getTextureForInOutBackground() {
-    return ICON_KEY_IN_OUT_BG.get(TextureAtlasSprite.class);
-  }
 
   @SideOnly(Side.CLIENT)
   @Override

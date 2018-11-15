@@ -25,7 +25,6 @@ import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.invpanel.capability.CapabilityDatabaseHandler;
 import crazypants.enderio.base.invpanel.capability.InventoryDatabaseSource;
 import crazypants.enderio.base.render.registry.TextureRegistry;
-import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.render.ConduitTexture;
@@ -46,8 +45,8 @@ public class DataConduit extends AbstractConduit implements IDataConduit {
   static final @Nonnull Map<String, IConduitTexture> ICONS = new HashMap<>();
 
   static {
-    ICONS.put(ICON_KEY, new ConduitTexture(TextureRegistry.registerTexture(ICON_KEY), 0));
-    ICONS.put(ICON_CORE_KEY, new ConduitTexture(TextureRegistry.registerTexture(ICON_CORE_KEY), ConduitTexture.CORE));
+    ICONS.put(ICON_KEY, new ConduitTexture(TextureRegistry.registerTexture(ICON_KEY), ConduitTexture.arm(0)));
+    ICONS.put(ICON_CORE_KEY, new ConduitTexture(TextureRegistry.registerTexture(ICON_CORE_KEY), ConduitTexture.core()));
   }
 
   protected DataConduitNetwork network;

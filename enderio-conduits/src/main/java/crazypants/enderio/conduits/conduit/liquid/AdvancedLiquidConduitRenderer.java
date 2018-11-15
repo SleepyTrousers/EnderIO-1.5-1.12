@@ -56,17 +56,15 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
   protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IClientConduit conduit, @Nonnull IConduitTexture tex,
       @Nonnull CollidableComponent component, float selfIllum, BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
     super.addConduitQuads(bundle, conduit, tex, component, selfIllum, layer, quads);
+    ConduitInOutRenderer.renderIO(bundle, conduit, component, layer, quads, DyeColor.RED, DyeColor.RED);
 
-    if (component.isCore()) {
+    if (component.isCore() || component.data != null) {
       return;
     }
 
-    AdvancedLiquidConduit lc = (AdvancedLiquidConduit) conduit;
-
-    ConduitInOutRenderer.renderIO(bundle, conduit, component, layer, quads, DyeColor.RED, DyeColor.RED);
-
     if (layer == BlockRenderLayer.TRANSLUCENT) {
 
+      AdvancedLiquidConduit lc = (AdvancedLiquidConduit) conduit;
       FluidStack fluid = lc.getFluidType();
       @Nonnull
       TextureAtlasSprite texture = fluid != null ? RenderUtil.getStillTexture(fluid) : lc.getNotSetEdgeTexture();

@@ -11,7 +11,6 @@ import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.conduit.redstone.signals.CombinedSignal;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import crazypants.enderio.base.filter.redstone.IRedstoneSignalFilter;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 
 public interface IRedstoneConduit extends IServerConduit, IClientConduit {
@@ -58,18 +57,6 @@ public interface IRedstoneConduit extends IServerConduit, IClientConduit {
   DyeColor getOutputSignalColor(@Nonnull EnumFacing dir);
 
   void setOutputSignalColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col);
-
-  @Nonnull
-  TextureAtlasSprite getTextureForInputMode();
-
-  @Nonnull
-  TextureAtlasSprite getTextureForOutputMode();
-
-  @Nonnull
-  TextureAtlasSprite getTextureForInOutMode(boolean b);
-
-  @Nonnull
-  TextureAtlasSprite getTextureForInOutBackground();
 
   @Override
   @Nullable

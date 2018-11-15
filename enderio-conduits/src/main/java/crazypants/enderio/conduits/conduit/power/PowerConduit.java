@@ -70,25 +70,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   static {
     int i = 0;
     for (String pf : POSTFIX) {
-      ICONS.put(ICON_KEY + pf, new ConduitTexture(TextureRegistry.registerTexture(ICON_KEY), i));
-      ICONS.put(ICON_CORE_KEY + pf, new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit_core_0"), coreidx(i++)));
-    }
-    ICONS.put(ICON_KEY_INPUT, new ConduitTexture(TextureRegistry.registerTexture(ICON_KEY_INPUT)));
-    ICONS.put(ICON_KEY_OUTPUT, new ConduitTexture(TextureRegistry.registerTexture(ICON_KEY_OUTPUT)));
-  }
-
-  private static @Nonnull Vector4f coreidx(int idx) {
-    switch (idx) {
-    case 0:
-      return ConduitTexture.CORE0;
-    case 1:
-      return ConduitTexture.CORE1;
-    case 2:
-      return ConduitTexture.CORE2;
-    case 3:
-      return ConduitTexture.CORE3;
-    default:
-      return ConduitTexture.CORE;
+      ICONS.put(ICON_KEY + pf, new ConduitTexture(TextureRegistry.registerTexture(ICON_KEY), ConduitTexture.arm(i)));
+      ICONS.put(ICON_CORE_KEY + pf, new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit_core_0"), ConduitTexture.core(i++)));
     }
   }
 
@@ -537,16 +520,6 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit, ICon
   @Nonnull
   public IConduitTexture getTextureForState(@Nonnull CollidableComponent component) {
     return subtype.getTextureForState(component);
-  }
-
-  @Override
-  public @Nonnull IConduitTexture getTextureForInputMode() {
-    return ICONS.get(PowerConduit.ICON_KEY_INPUT);
-  }
-
-  @Override
-  public @Nonnull IConduitTexture getTextureForOutputMode() {
-    return ICONS.get(PowerConduit.ICON_KEY_OUTPUT);
   }
 
   @Override

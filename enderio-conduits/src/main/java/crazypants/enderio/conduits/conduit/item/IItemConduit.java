@@ -8,7 +8,6 @@ import crazypants.enderio.base.conduit.IExtractor;
 import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.conduits.conduit.IEnderConduit;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandler;
@@ -16,14 +15,6 @@ import net.minecraftforge.items.IItemHandler;
 public interface IItemConduit extends IExtractor, IServerConduit, IClientConduit, IEnderConduit {
 
   // Textures
-  TextureAtlasSprite getTextureForInputMode();
-
-  TextureAtlasSprite getTextureForOutputMode();
-
-  TextureAtlasSprite getTextureForInOutMode(boolean inputComponent);
-
-  TextureAtlasSprite getTextureForInOutBackground();
-
   IConduitTexture getEnderIcon();
 
   IItemHandler getExternalInventory(@Nonnull EnumFacing direction);

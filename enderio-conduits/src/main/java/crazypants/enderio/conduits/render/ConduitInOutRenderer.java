@@ -10,12 +10,14 @@ import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IExtractor;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.Offset;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
@@ -27,8 +29,15 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.ModelLoader.White;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.relauncher.Side;
 
+@EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 public class ConduitInOutRenderer {
+
+  public static void load(EnderIOLifecycleEvent.PreInit event) {
+    // force class being loaded to register textures
+  }
 
   // background
   public static final @Nonnull TextureSupplier ICON_BG = TextureRegistry.registerTexture("blocks/item_conduit_io_connector");
@@ -36,8 +45,6 @@ public class ConduitInOutRenderer {
   public static final @Nonnull TextureSupplier ICON_IN = TextureRegistry.registerTexture("blocks/item_conduit_input");
   // centered out arrow
   public static final @Nonnull TextureSupplier ICON_OUT = TextureRegistry.registerTexture("blocks/item_conduit_output");
-  // both arrows
-  // public static final @Nonnull TextureSupplier ICON_INOUT_IN_OUT = TextureRegistry.registerTexture("blocks/item_conduit_in_out");
   // offset in arrow
   public static final @Nonnull TextureSupplier ICON_INOUT_IN = TextureRegistry.registerTexture("blocks/item_conduit_in_out_in");
   // offset out arrow

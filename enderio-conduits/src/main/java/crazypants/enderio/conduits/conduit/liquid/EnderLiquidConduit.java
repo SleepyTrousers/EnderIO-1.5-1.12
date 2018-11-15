@@ -34,7 +34,6 @@ import crazypants.enderio.base.filter.fluid.IFluidFilter;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.registry.TextureRegistry;
-import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
 import crazypants.enderio.conduits.capability.IUpgradeHolder;
@@ -47,7 +46,6 @@ import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduits.render.ConduitTexture;
 import crazypants.enderio.conduits.render.ConduitTextureWrapper;
 import crazypants.enderio.util.Prep;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -66,14 +64,8 @@ import static crazypants.enderio.conduits.init.ConduitObject.item_liquid_conduit
 
 public class EnderLiquidConduit extends AbstractLiquidConduit implements IConduitComponent, IFilterHolder<IFluidFilter>, IUpgradeHolder, IEnderConduit {
 
-  public static final IConduitTexture ICON_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/liquid_conduit"), 3);
-  public static final IConduitTexture ICON_CORE_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit_core_1"), ConduitTexture.CORE2);
-  public static final TextureSupplier ICON_IN_OUT_KEY = TextureRegistry.registerTexture("blocks/liquid_conduit_advanced_in_out");
-  public static final TextureSupplier ICON_KEY_IN_OUT_BG = TextureRegistry.registerTexture("blocks/item_conduit_io_connector");
-  public static final TextureSupplier ICON_KEY_INPUT = TextureRegistry.registerTexture("blocks/item_conduit_input");
-  public static final TextureSupplier ICON_KEY_OUTPUT = TextureRegistry.registerTexture("blocks/item_conduit_output");
-  public static final TextureSupplier ICON_KEY_IN_OUT_OUT = TextureRegistry.registerTexture("blocks/item_conduit_in_out_out");
-  public static final TextureSupplier ICON_KEY_IN_OUT_IN = TextureRegistry.registerTexture("blocks/item_conduit_in_out_in");
+  public static final IConduitTexture ICON_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/liquid_conduit"), ConduitTexture.arm(3));
+  public static final IConduitTexture ICON_CORE_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit_core_1"), ConduitTexture.core(2));
 
   private EnderLiquidConduitNetwork network;
   private int ticksSinceFailedExtract;
@@ -232,31 +224,6 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements ICondui
       return new ConduitTextureWrapper(IconUtil.instance.whiteTexture);
     }
     return ICON_KEY;
-  }
-
-  @SideOnly(Side.CLIENT)
-  public TextureAtlasSprite getTextureForInputMode() {
-    return ICON_KEY_INPUT.get(TextureAtlasSprite.class);
-  }
-
-  @SideOnly(Side.CLIENT)
-  public TextureAtlasSprite getTextureForInOutMode(boolean input) {
-    return input ? ICON_KEY_IN_OUT_IN.get(TextureAtlasSprite.class) : ICON_KEY_IN_OUT_OUT.get(TextureAtlasSprite.class);
-  }
-
-  @SideOnly(Side.CLIENT)
-  public TextureAtlasSprite getTextureForOutputMode() {
-    return ICON_KEY_OUTPUT.get(TextureAtlasSprite.class);
-  }
-
-  @SideOnly(Side.CLIENT)
-  public TextureAtlasSprite getTextureForInOutMode() {
-    return ICON_IN_OUT_KEY.get(TextureAtlasSprite.class);
-  }
-
-  @SideOnly(Side.CLIENT)
-  public TextureAtlasSprite getTextureForInOutBackground() {
-    return ICON_KEY_IN_OUT_BG.get(TextureAtlasSprite.class);
   }
 
   @Override
