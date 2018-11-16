@@ -5,20 +5,19 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.client.gui.button.IIconButton;
+import com.enderio.core.api.client.render.IWidgetIcon;
+import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
-import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 
+import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.machines.lang.Lang;
-import crazypants.enderio.machines.machine.alloy.TileAlloySmelter.Mode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 
@@ -56,16 +55,50 @@ public abstract class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInv
   static enum MODE {
     SIMPLE_ALLOY,
     SIMPLE_FURNACE,
-    ALLOY,
-    FURNACE,
+    ALLOY {
+      @Override
+      @Nonnull
+      IWidgetIcon getIcon() {
+        return IconEIO.ALLOY_MODE_ALLOY;
+      }
+
+      @Override
+      @Nonnull
+      Lang getLang() {
+        return Lang.GUI_ALLOY_MODE_ALLOY;
+      }
+    },
+    FURNACE {
+      @Override
+      @Nonnull
+      IWidgetIcon getIcon() {
+        return IconEIO.ALLOY_MODE_FURNACE;
+      }
+
+      @Override
+      @Nonnull
+      Lang getLang() {
+        return Lang.GUI_ALLOY_MODE_FURNACE;
+      }
+    },
     AUTO;
 
     boolean isSimple() {
       return this == MODE.SIMPLE_ALLOY || this == SIMPLE_FURNACE;
     }
+
+    @Nonnull
+    IWidgetIcon getIcon() {
+      return IconEIO.ALLOY_MODE_BOTH;
+    }
+
+    @Nonnull
+    Lang getLang() {
+      return Lang.GUI_ALLOY_MODE_ALL;
+    }
   }
 
-  private final @Nonnull IIconButton vanillaFurnaceButton;
+  private final @Nonnull IconButton vanillaFurnaceButton;
   private final @Nonnull GuiToolTip vanillaFurnaceTooltip;
   protected @Nonnull MODE mode;
 
@@ -77,12 +110,13 @@ public abstract class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInv
 
     this.mode = mode;
 
-    vanillaFurnaceButton = new IIconButton(getFontRenderer(), SMELT_MODE_BUTTON_ID, 0, 0, null, RenderUtil.BLOCK_TEX);
-    vanillaFurnaceButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
-    vanillaFurnaceButton.visible = !mode.isSimple();
-
     vanillaFurnaceTooltip = new GuiToolTip(new Rectangle(xSize - 5 - BUTTON_SIZE, 62, BUTTON_SIZE, BUTTON_SIZE), (String[]) null);
     vanillaFurnaceTooltip.setIsVisible(!mode.isSimple());
+
+    vanillaFurnaceButton = new IconButton(this, SMELT_MODE_BUTTON_ID, guiLeft + vanillaFurnaceTooltip.getBounds().x,
+        guiTop + vanillaFurnaceTooltip.getBounds().y, mode.getIcon());
+    vanillaFurnaceButton.visible = !mode.isSimple();
+    vanillaFurnaceButton.setIconMargin(2, 2); // hack because icon size is bad
 
     redstoneButton.setIsVisible(!mode.isSimple());
 
@@ -154,17 +188,8 @@ public abstract class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInv
   }
 
   private void updateVanillaFurnaceButton() {
-    TextureAtlasSprite icon = BlockAlloySmelter.vanillaSmeltingOn.get(TextureAtlasSprite.class);
-    Lang unlocText = Lang.GUI_ALLOY_MODE_ALL;
-    if (getTileEntity().getMode() == Mode.ALLOY) {
-      icon = BlockAlloySmelter.vanillaSmeltingOff.get(TextureAtlasSprite.class);
-      unlocText = Lang.GUI_ALLOY_MODE_ALLOY;
-    } else if (getTileEntity().getMode() == Mode.FURNACE) {
-      icon = BlockAlloySmelter.vanillaSmeltingOnly.get(TextureAtlasSprite.class);
-      unlocText = Lang.GUI_ALLOY_MODE_FURNACE;
-    }
-    vanillaFurnaceButton.setIcon(icon);
-    vanillaFurnaceTooltip.setToolTipText(Lang.GUI_ALLOY_MODE.get(), unlocText.get());
+    vanillaFurnaceButton.setIcon(getMode().getIcon());
+    vanillaFurnaceTooltip.setToolTipText(Lang.GUI_ALLOY_MODE.get(), getMode().getLang().get());
   }
 
   @Override

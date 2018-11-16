@@ -173,6 +173,12 @@ public enum IconEIO implements IWidgetIcon {
 
   ARROW_LEFT(0, 208),
 
+  ALLOY_MODE_FURNACE(0, 144),
+  ALLOY_MODE_BOTH(16, 144),
+  ALLOY_MODE_ALLOY(32, 144),
+
+  RECIPE_BOOK(48, 144),
+
   ;
 
   // Texture size is actually 512 but everything is aligned to a 256 grid

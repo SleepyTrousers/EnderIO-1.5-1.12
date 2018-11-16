@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.gui.button.IconButton;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.machines.lang.Lang;
@@ -24,9 +25,14 @@ public class GuiEnchanter extends GuiContainerBaseEIO {
     container = (ContainerEnchanter) inventorySlots;
     this.te = te;
 
-    recipeButton = new IconButton(this, 100, 154, 8, IconEIO.RECIPE);
-    recipeButton.visible = false;
-    recipeButton.setIconMargin(1, 1);
+    if (PersonalConfig.recipeButtonInMachineGuis.get()) {
+      recipeButton = new IconButton(this, 100, 154, 8, IconEIO.RECIPE_BOOK);
+      recipeButton.visible = false;
+    } else {
+      recipeButton = new IconButton(this, 100, 154, 8, IconEIO.RECIPE);
+      recipeButton.visible = false;
+      recipeButton.setIconMargin(1, 1);
+    }
   }
 
   @Override

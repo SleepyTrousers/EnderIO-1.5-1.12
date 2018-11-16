@@ -10,8 +10,6 @@ import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
-import crazypants.enderio.base.render.registry.TextureRegistry;
-import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.machines.init.MachineObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockFaceShape;
@@ -93,10 +91,6 @@ public class BlockAlloySmelter<T extends TileAlloySmelter> extends AbstractPower
   public static BlockMachineExtension create_extension(@Nonnull IModObject modObject) {
     return new BlockMachineExtension(modObject, MachineObject.block_enhanced_alloy_smelter, new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 11D / 16D, 1.0D));
   }
-
-  public static final TextureSupplier vanillaSmeltingOn = TextureRegistry.registerTexture("blocks/furnace_smelting_on");
-  public static final TextureSupplier vanillaSmeltingOff = TextureRegistry.registerTexture("blocks/furnace_smelting_off");
-  public static final TextureSupplier vanillaSmeltingOnly = TextureRegistry.registerTexture("blocks/furnace_smelting_only");
 
   protected BlockAlloySmelter(@Nonnull IModObject modObject) {
     super(modObject);

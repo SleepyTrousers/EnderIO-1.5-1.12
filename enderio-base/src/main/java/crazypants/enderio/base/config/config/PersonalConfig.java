@@ -17,6 +17,9 @@ public final class PersonalConfig {
   public static final IValue<Boolean> recipeButtonReplaceWithJei = F.make("recipeButtonReplaceWithJei", true, //
       "Should the annoying recipe button be replaced with a JEI recipe button if JEI is installed?");
 
+  public static final IValue<Boolean> recipeButtonInMachineGuis = F.make("recipeButtonInMachineGuis", Math.random() > .75, //
+      "Should the JEI recipe button in the machine GUIs use the vanilla icon?");
+
   // Yeta Wrench
 
   public static final IValue<Boolean> yetaUseSneakMouseWheel = F.make("yetaUseSneakMouseWheel", true, //

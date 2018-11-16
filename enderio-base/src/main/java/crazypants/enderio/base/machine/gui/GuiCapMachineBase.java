@@ -78,9 +78,14 @@ public class GuiCapMachineBase<T extends AbstractCapabilityMachineEntity> extend
     configB = new GuiButtonIoConfig<T>(this, CONFIG_ID, x, y, machine, configOverlay);
 
     y += 19;
-    recipeButton = new IconButton(this, RECIPE_ID, x, y, IconEIO.RECIPE);
-    recipeButton.setIsVisible(false);
-    recipeButton.setIconMargin(1, 1);
+    if (PersonalConfig.recipeButtonInMachineGuis.get()) {
+      recipeButton = new IconButton(this, RECIPE_ID, x, y, IconEIO.RECIPE_BOOK);
+      recipeButton.setIsVisible(false);
+    } else {
+      recipeButton = new IconButton(this, RECIPE_ID, x, y, IconEIO.RECIPE);
+      recipeButton.setIsVisible(false);
+      recipeButton.setIconMargin(1, 1);
+    }
   }
 
   @Override
