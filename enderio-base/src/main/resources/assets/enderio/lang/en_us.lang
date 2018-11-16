@@ -118,7 +118,7 @@ item.item_dark_steel_shears.tooltip.multiHarvest=Shears multiple blocks/sheep wh
 item.item_dark_steel_treetap.name=Dark Treetap
 item.item_dark_steel_treetap.tooltip.common.line1=Farming Station Use Only!
 
-item.item_dark_steel_hand.name=Dark Mechanical Arm
+item.item_dark_steel_hand.name=Dark Backhoe
 item.item_dark_steel_hand.tooltip.common.line1=Farming Station Use Only!
 item.item_dark_steel_hand.tooltip.detailed.line1=Better than a hoe for mechanical use
 
