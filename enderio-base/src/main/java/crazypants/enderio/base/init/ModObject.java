@@ -60,6 +60,7 @@ import crazypants.enderio.base.item.darksteel.ItemDarkSteelArmor;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelAxe;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelBow;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelCrook;
+import crazypants.enderio.base.item.darksteel.ItemDarkSteelHand;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelPickaxe;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelShears;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelSword;
@@ -225,6 +226,7 @@ public enum ModObject implements IModObjectBase {
   itemDarkSteelShears(ItemDarkSteelShears.class),
   itemDarkSteelTreetap(ItemDarkSteelTreetap.class),
   itemDarkSteelCrook(ItemDarkSteelCrook.class, "createDarkSteel"),
+  itemDarkSteelHand(ItemDarkSteelHand.class),
   itemInventoryChargerSimple(ItemInventoryCharger.class, "createSimple"),
   itemInventoryChargerBasic(ItemInventoryCharger.class, "createBasic"),
   itemInventoryCharger(ItemInventoryCharger.class),

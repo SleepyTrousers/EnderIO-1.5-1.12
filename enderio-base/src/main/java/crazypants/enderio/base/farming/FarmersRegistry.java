@@ -33,7 +33,7 @@ import net.minecraftforge.oredict.OreDictionary;
 public final class FarmersRegistry {
 
   public static final @Nonnull Things slotItemsHoeTools = new Things("toolHoe").add(Items.WOODEN_HOE).add(Items.STONE_HOE).add(Items.IRON_HOE)
-      .add(Items.GOLDEN_HOE).add(Items.DIAMOND_HOE);
+      .add(Items.GOLDEN_HOE).add(Items.DIAMOND_HOE).add(ModObject.itemDarkSteelHand);
   public static final @Nonnull Things slotItemsAxeTools = new Things().add(Items.WOODEN_AXE).add(Items.STONE_AXE).add(Items.IRON_AXE).add(Items.GOLDEN_AXE)
       .add(Items.DIAMOND_AXE).add(ModObject.itemDarkSteelAxe);
   public static final @Nonnull Things slotItemsExtraTools = new Things("toolShears").add(Items.SHEARS).add(ModObject.itemDarkSteelShears).add("toolTreetap");

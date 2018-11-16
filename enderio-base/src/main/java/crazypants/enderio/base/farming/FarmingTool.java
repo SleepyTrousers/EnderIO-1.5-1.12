@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.OreDictionaryHelper;
 
 import crazypants.enderio.api.farm.IFarmingTool;
+import crazypants.enderio.base.item.darksteel.ItemDarkSteelHand;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelTreetap;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.util.Prep;
@@ -23,7 +24,7 @@ public enum FarmingTool implements IFarmingTool {
   HOE {
     @Override
     protected boolean match(@Nonnull ItemStack item) {
-      return item.getItem() instanceof ItemHoe || OreDictionaryHelper.hasName(item, "toolHoe");
+      return item.getItem() instanceof ItemDarkSteelHand || item.getItem() instanceof ItemHoe || OreDictionaryHelper.hasName(item, "toolHoe");
     }
   },
   AXE {

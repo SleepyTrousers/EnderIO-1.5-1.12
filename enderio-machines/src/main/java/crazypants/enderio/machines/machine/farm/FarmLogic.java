@@ -19,6 +19,7 @@ import crazypants.enderio.api.farm.IFarmingTool;
 import crazypants.enderio.base.farming.FarmingTool;
 import crazypants.enderio.base.farming.PickupWorld;
 import crazypants.enderio.base.integration.tic.TicProxy;
+import crazypants.enderio.base.item.darksteel.ItemDarkSteelHand;
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.machines.config.config.FarmConfig;
 import crazypants.enderio.machines.network.PacketHandler;
@@ -28,6 +29,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
@@ -490,13 +492,27 @@ public class FarmLogic implements IFarmer {
       }
       ItemStack toolStack = getTool(FarmingTool.HOE);
 
-      toolStack = toolStack.copy();
+      if (toolStack.getItem() instanceof ItemDarkSteelHand) {
+        toolStack = new ItemStack(Items.DIAMOND_HOE);
+      } else {
+        toolStack = toolStack.copy();
+      }
 
       ItemStack heldItem = farmerJoe.getHeldItem(EnumHand.MAIN_HAND);
       farmerJoe.setHeldItem(EnumHand.MAIN_HAND, toolStack);
-      EnumActionResult itemUse = toolStack.getItem().onItemUse(farmerJoe, getWorld(), dirtLoc, EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
-      farmerJoe.setHeldItem(EnumHand.MAIN_HAND, heldItem);
+      EnumActionResult itemUse = toolStack.getItem().onItemUse(farmerJoe, farmerJoe.world, dirtLoc, EnumHand.MAIN_HAND, EnumFacing.UP, 0.5f, 0.5f, 0.5f);
+      farmerJoe.setHeldItem(EnumHand.MAIN_HAND, Prep.getEmpty());
 
+      boolean temp = joeInUse;
+      endUsingItem(false).apply(new Callback<ItemStack>() {
+        @Override
+        public void apply(@Nonnull ItemStack istack) {
+          handleExtraItem(istack, getLocation());
+        }
+      });
+      joeInUse = temp;
+
+      farmerJoe.setHeldItem(EnumHand.MAIN_HAND, heldItem);
       if (itemUse != EnumActionResult.SUCCESS) {
         return false;
       }

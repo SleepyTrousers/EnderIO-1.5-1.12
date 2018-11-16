@@ -86,6 +86,11 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:item_dark_steel_treetap/energy_use" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
   <capacitor key="enderio:item_dark_steel_treetap/absorption" base="1" scaler="idx(1)0:0.5:0.6:0.7:0.85:0.95" />
 
+  <capacitor key="enderio:item_dark_steel_hand/energy_buffer" base="100000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_hand/energy_intake" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_hand/energy_use" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
+  <capacitor key="enderio:item_dark_steel_hand/absorption" base="1" scaler="idx(1)0:0.5:0.6:0.7:0.85:0.95" />
+
   <capacitor key="enderio:item_staff_of_levity/energy_buffer" base="100000" scaler="idx(1)0:1:1.5:2.5:10:25" />
   <capacitor key="enderio:item_staff_of_levity/energy_intake" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />
   <capacitor key="enderio:item_staff_of_levity/energy_use" base="1000" scaler="idx(1)0:1:1.5:2.5:10:25" />

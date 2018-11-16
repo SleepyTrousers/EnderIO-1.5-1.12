@@ -390,6 +390,13 @@ public final class DarkSteelConfig {
   public static final IValue<Integer> tapEnergyPerDamage = F_TAP.make("energyPerDamage", 750, //
       "Energy use per damage/durability point avoided.").setRange(1, 99999999).sync();
 
+  public static final IValueFactory F_HAND = F_DARK_STEEL.section(".hand");
+
+  public static final IValue<Integer> handDurability = F_HAND.make("durability", 2000 * 3, //
+      "Durability of the Dark Steel Mechanical Arm.").setRange(1, 99999999).sync();
+  public static final IValue<Integer> handEnergyPerDamage = F_HAND.make("energyPerDamage", 750, //
+      "Energy use per damage/durability point avoided.").setRange(1, 99999999).sync();
+
   public static final IValueFactory F_ARMOR = F_DARK_STEEL.section(".armor");
 
   public static final IValue<Boolean> armorDrainPowerFromInventory = F_ARMOR.make("drainPowerFromInventory", false, //

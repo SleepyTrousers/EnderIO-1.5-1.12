@@ -318,6 +318,17 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Dark Hand" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="DARK_STEEL" /><item name="DARK_STEEL" /><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item name="minecraft:diamond_hoe"/><item name="DARK_STEEL" />
+        <item name="DARK_STEEL_NUGGET" /><item name="DARK_STEEL_NUGGET" /><item name="DARK_STEEL_NUGGET" />
+      </grid>
+      <output name="enderio:item_dark_steel_hand" />
+    </crafting>
+  </recipe>
+
   <recipe name="End Pickaxe" required="true">
     <crafting>
       <grid size="3x3">
