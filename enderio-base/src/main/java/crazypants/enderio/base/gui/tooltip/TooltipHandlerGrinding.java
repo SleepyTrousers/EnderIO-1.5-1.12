@@ -33,9 +33,17 @@ public class TooltipHandlerGrinding implements ITooltipCallback {
   @Override
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
+    addEntries(itemstack, list, null);
+  }
+
+  public void addEntries(@Nonnull ItemStack itemstack, @Nonnull List<String> list, @Nullable String withGrindingMultiplier) {
     IGrindingMultiplier ball = SagMillRecipeManager.getInstance().getGrindballFromStack(itemstack);
     list.add(Lang.GRINDING_BALL_1.get(TextFormatting.BLUE));
-    list.add(Lang.GRINDING_BALL_2.get(TextFormatting.GRAY, LangPower.toPercent(ball.getGrindingMultiplier())));
+    if (withGrindingMultiplier == null) {
+      list.add(Lang.GRINDING_BALL_2.get(TextFormatting.GRAY, LangPower.toPercent(ball.getGrindingMultiplier())));
+    } else {
+      list.add(Lang.GRINDING_BALL_2.get(TextFormatting.GRAY, withGrindingMultiplier));
+    }
     list.add(Lang.GRINDING_BALL_3.get(TextFormatting.GRAY, LangPower.toPercent(ball.getChanceMultiplier())));
     list.add(Lang.GRINDING_BALL_4.get(TextFormatting.GRAY, LangPower.toPercent(ball.getPowerMultiplier())));
   }

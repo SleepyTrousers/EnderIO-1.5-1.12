@@ -39,7 +39,7 @@ import static crazypants.enderio.machines.machine.sagmill.ContainerSagMill.FIRST
 import static crazypants.enderio.machines.machine.sagmill.ContainerSagMill.NUM_INVENTORY_SLOT;
 import static crazypants.enderio.machines.machine.sagmill.ContainerSagMill.NUM_RECIPE_SLOT;
 
-public class SagMillRecipeCategory extends BlankRecipeCategory<SagRecipe> implements ITooltipCallback<ItemStack> {
+public class SagMillRecipeCategory extends BlankRecipeCategory<SagRecipe> {
 
   public static final @Nonnull String UID = "SagMill";
 
@@ -105,7 +105,6 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagRecipe> implem
   @Override
   public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull SagRecipe recipeWrapper, @Nonnull IIngredients ingredients) {
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
-    guiItemStacks.addTooltipCallback(this);
     IGuiIngredientGroup<EnergyIngredient> group = recipeLayout.getIngredientsGroup(EnergyIngredient.class);
 
     guiItemStacks.init(0, true, 79 - xOff, 11 - yOff);
@@ -129,14 +128,17 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagRecipe> implem
             float chance = output.getChance();
             if (chance > 0 && chance < 1) {
               int chanceInt = (int) (chance * 100);
-              Object[] objects = { chanceInt };
-              tooltip.add(TextFormatting.GRAY + MessageFormat.format(Lang.JEI_SAGMILL_CHANCE.get(), objects));
+              String line = TextFormatting.GRAY + MessageFormat.format(Lang.JEI_SAGMILL_CHANCE.get(), chanceInt);
+              if (recipeWrapper.getBonusType().doChances()) {
+                line = Lang.JEI_SAGMILL_CHANCE_BALL.get(line);
+              }
+              tooltip.add(line);
             }
           }
           return;
         case 5:
           if (ballsTT.shouldHandleItem(ingredient)) {
-            ballsTT.addDetailedEntries(ingredient, Minecraft.getMinecraft().player, tooltip, true);
+            ballsTT.addEntries(ingredient, tooltip, recipeWrapper.getBonusType().doMultiply() ? null : Lang.JEI_SAGMILL_NO_MAINS.get());
           }
           return;
         default:
@@ -147,10 +149,6 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagRecipe> implem
 
     guiItemStacks.set(ingredients);
     group.set(ingredients);
-  }
-
-  @Override
-  public void onTooltip(int slotIndex, boolean input, @Nonnull ItemStack ingredient, @Nonnull List<String> tooltip) {
   }
 
   @Override

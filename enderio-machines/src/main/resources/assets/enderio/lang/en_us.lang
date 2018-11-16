@@ -391,6 +391,8 @@ enderio.loot.capacitor.kaboom=Explosive %s
 enderio.loot.capacitor.fatman=Atomic %s
 
 enderio.jei.sagmill.outputchance=Chance: {0,choice,0#'<1'|0<{0,number}}%
+enderio.jei.sagmill.outputchance.ball=%s (modified by grinding ball)
+enderio.jei.sagmill.nomains=bonus disabled by recipe; 100
 enderio.jei.combustion_generator.range.line1=Depending on capacitor and generator model
 enderio.jei.combustion_generator.range.line2=Better capacitor gives higher output at higher fuel cost.
 enderio.jei.combustion_generator.range.line3=Better model gives more output at same fuel cost.
