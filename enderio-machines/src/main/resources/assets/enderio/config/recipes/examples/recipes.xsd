@@ -727,6 +727,7 @@
                     </annotation>
                   </element>
                   <element name="brewing" type="enderio:brewingType" minOccurs="1" maxOccurs="1"></element>
+                  <element name="tanking" type="enderio:tankingType" minOccurs="1" maxOccurs="1"></element>
                 </choice>
               </sequence>
               <attribute use="optional" name="required" type="boolean">
@@ -1106,10 +1107,67 @@
     </sequence>
   </complexType>
 
+  <complexType name="tankingType">
+    <annotation>
+      <documentation>A filling or emptying recipe for the tank.</documentation>
+    </annotation>
+    <sequence>
+      <element name="config" type="enderio:configComplexType" maxOccurs="unbounded" minOccurs="0"></element>
+      <element name="dependency" type="enderio:dependencyComplexType" maxOccurs="unbounded" minOccurs="0"></element>
+      <element name="input" type="enderio:itemType" minOccurs="1" maxOccurs="1"></element>
+      <element name="fluid" type="enderio:fluidType" minOccurs="1" maxOccurs="1"></element>
+      <element name="output" type="enderio:itemType" minOccurs="0" maxOccurs="1"></element>
+    </sequence>
+    <attribute name="type" use="required">
+      <simpleType>
+        <restriction base="string">
+          <enumeration value="FILL"></enumeration>
+          <enumeration value="EMPTY"></enumeration>
+        </restriction>
+      </simpleType>
+    </attribute>
+    <attribute name="logic" use="optional" default="NONE">
+      <simpleType>
+        <restriction base="string">
+          <enumeration value="NONE"></enumeration>
+          <enumeration value="XPBOTTLE"></enumeration>
+          <enumeration value="AA_SOLID_XP"></enumeration>
+        </restriction>
+      </simpleType>
+    </attribute>
+  </complexType>
+
   <complexType name="potionType">
     <attribute name="potion" type="string" use="required">
       <annotation>
         <documentation>The resource ID of a potion.</documentation>
       </annotation></attribute>
   </complexType>
+
+  <complexType name="fluidType">
+    <attribute name="fluid" type="string" use="required">
+      <annotation>
+        <documentation>The resource ID of a fluid.</documentation>
+      </annotation>
+    </attribute>
+    <attribute name="nbt" type="string" use="optional">
+      <annotation>
+        <documentation>NBT for the fluid stack.</documentation>
+      </annotation></attribute>
+    <attribute name="amount" use="optional" default="1000">
+      <annotation>
+        <documentation>Amount of fluid in mB.</documentation>
+      </annotation>
+      <simpleType>
+        <restriction base="int">
+          <minInclusive value="0"></minInclusive>
+        </restriction>
+      </simpleType>
+    </attribute>
+  </complexType>
+  <complexType name="itemType">
+    <attribute use="required" name="name" type="string" />
+    <attribute name="nbt" type="string" use="optional" />
+  </complexType>
+
 </schema>

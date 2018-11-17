@@ -1,15 +1,20 @@
 package crazypants.enderio.base.config.recipes.xml;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
+import info.loenwind.autoconfig.util.NullHelper;
 
 public class Recipe extends AbstractConditional {
 
@@ -118,52 +123,13 @@ public class Recipe extends AbstractConditional {
   @Override
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     try {
-      if ("crafting".equals(name)) {
-        craftings.add(factory.read(new Crafting(), startElement));
-        return true;
-      }
-      if ("smelting".equals(name)) {
-        craftings.add(factory.read(new Smelting(), startElement));
-        return true;
-      }
-      if ("casting".equals(name)) {
-        craftings.add(factory.read(new Casting(), startElement));
-        return true;
-      }
-      if ("enchanting".equals(name)) {
-        craftings.add(factory.read(new Enchanting(), startElement));
-        return true;
-      }
-      if ("spawning".equals(name)) {
-        craftings.add(factory.read(new Spawning(), startElement));
-        return true;
-      }
-      if ("alloying".equals(name)) {
-        craftings.add(factory.read(new Alloying(), startElement));
-        return true;
-      }
-      if ("sagmilling".equals(name)) {
-        craftings.add(factory.read(new Sagmilling(), startElement));
-        return true;
-      }
-      if ("slicing".equals(name)) {
-        craftings.add(factory.read(new Slicing(), startElement));
-        return true;
-      }
-      if ("fermenting".equals(name)) {
-        craftings.add(factory.read(new Fermenting(), startElement));
-        return true;
-      }
-      if ("soulbinding".equals(name)) {
-        craftings.add(factory.read(new Soulbinding(), startElement));
-        return true;
-      }
-      if ("brewing".equals(name)) {
-        craftings.add(factory.read(new Brewing(), startElement));
+      AbstractConditional element = get(NullHelper.first(name, ""));
+      if (element != null) {
+        craftings.add(factory.read(element, startElement));
         return true;
       }
     } catch (InvalidRecipeConfigException e) {
-      throw new InvalidRecipeConfigException(e, "in <recipe> '" + getName() + "'");
+      throw new InvalidRecipeConfigException(e, "in <" + name + "> in <recipe name=\"" + getName() + "\"");
     }
 
     return super.setElement(factory, name, startElement);
@@ -177,6 +143,36 @@ public class Recipe extends AbstractConditional {
   @Override
   public boolean isActive() {
     return !disabled && super.isActive();
+  }
+
+  private static final @Nonnull Map<String, Class<? extends AbstractConditional>> MAPPING = new HashMap<>();
+
+  static {
+    register(Alloying.class, Casting.class, Crafting.class, Brewing.class, Enchanting.class, Fermenting.class, Sagmilling.class, Slicing.class, Smelting.class,
+        Soulbinding.class, Spawning.class, Tanking.class);
+  }
+
+  public static void register(@Nonnull String tagname, @Nonnull Class<? extends AbstractConditional> clazz) {
+    MAPPING.put(tagname, clazz);
+  }
+
+  @SafeVarargs
+  public static void register(@Nonnull Class<? extends AbstractConditional>... clazzes) {
+    for (Class<? extends AbstractConditional> clazz : clazzes) {
+      MAPPING.put(clazz.getSimpleName().toLowerCase(Locale.ENGLISH), clazz);
+    }
+  }
+
+  public static @Nullable AbstractConditional get(@Nonnull String tagname) {
+    Class<? extends AbstractConditional> clazz = MAPPING.get(tagname);
+    if (clazz != null) {
+      try {
+        return NullHelper.notnullJ(clazz.newInstance(), "Class.newInstance()");
+      } catch (InstantiationException | IllegalAccessException e) {
+        throw new RuntimeException(e);
+      }
+    }
+    return null;
   }
 
 }

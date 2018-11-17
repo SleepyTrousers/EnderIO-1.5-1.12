@@ -18,7 +18,7 @@ public class Fluid implements RecipeConfigElement {
   protected String name;
   protected String nbt;
   protected transient net.minecraftforge.fluids.Fluid fluid;
-  private transient NBTTagCompound tag;
+  protected transient NBTTagCompound tag;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
