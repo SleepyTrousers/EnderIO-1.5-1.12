@@ -7,7 +7,6 @@ import crazypants.enderio.base.config.recipes.xml.Crafting;
 import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.base.material.alloy.endergy.AlloyEndergy;
 import crazypants.enderio.base.material.glass.FusedQuartzType;
-import crazypants.enderio.base.material.material.NutritiousStickRecipe;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -62,7 +61,6 @@ public class MaterialRecipes {
       }
     }
 
-    registry.register(new NutritiousStickRecipe().setRegistryName(Crafting.mkRL("Auto: NutritiousStickRecipe")));
   }
 
 }
