@@ -20,6 +20,7 @@ import crazypants.enderio.base.xp.XpUtil;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.PersonalConfig;
 import crazypants.enderio.machines.config.config.TankConfig;
+import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.tank.ContainerTank;
 import crazypants.enderio.machines.machine.tank.GuiTank;
 import crazypants.enderio.machines.machine.tank.TileTank;
@@ -317,7 +318,7 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
       public void onTooltip(int slotIndex, boolean input, FluidStack ingredient, List<String> tooltip) {
         final String uuid = recipeWrapper.getUUID();
         if (uuid != null) {
-          tooltip.add("Recipe: \"" + uuid + "\"");
+          tooltip.add(Lang.JEI_RECIPE.get(uuid));
         }
       }
     });

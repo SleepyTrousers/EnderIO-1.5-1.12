@@ -115,6 +115,7 @@ public enum Lang implements ILang {
   JEI_GRINDING_BALL_MAIN(".jei.grinding_ball.main"),
   JEI_GRINDING_BALL_BONUS(".jei.grinding_ball.bonus"),
   JEI_GRINDING_BALL_POWER(".jei.grinding_ball.power"),
+  JEI_RECIPE(".jei.recipe"),
   GUI_BUFFER_MAXIO(".gui.buffer.maxio"),
   GUI_OBELISK_NO_VIALS(".gui.obelisk.no_vials"),
   GUI_IMPULSE_HOPPER_LOCKED(".gui.impulse_hopper.locked"),
