@@ -15,6 +15,7 @@ import com.enderio.core.common.inventory.InventorySlot;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.api.capacitor.ICapacitorData;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityGeneratorEntity;
 import crazypants.enderio.base.network.PacketSpawnParticles;
@@ -250,6 +251,10 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
 
   private int getLavaBurntime() {
     return LavaGenConfig.useVanillaBurnTime.get() ? 20000 : TileEntityFurnace.getItemBurnTime(new ItemStack(Items.LAVA_BUCKET));
+  }
+
+  public static int getNominalPowerGenPerTick(@Nonnull ICapacitorData data) {
+    return LAVAGEN_POWER_GEN.get(data);
   }
 
   protected int getPowerGenPerTick() {

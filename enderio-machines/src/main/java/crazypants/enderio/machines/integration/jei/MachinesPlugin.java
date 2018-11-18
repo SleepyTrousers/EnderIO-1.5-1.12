@@ -22,7 +22,7 @@ public class MachinesPlugin implements IModPlugin {
 
   @Override
   public void register(@Nonnull IModRegistry registry) {
-    ProgressManager.ProgressBar bar = ProgressManager.push("Ender IO Machines", 17, true);
+    ProgressManager.ProgressBar bar = ProgressManager.push("Ender IO Machines", 18, true);
 
     IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
 
@@ -60,6 +60,8 @@ public class MachinesPlugin implements IModPlugin {
     ZombieGeneratorRecipeCategory.register(registry, guiHelper);
     bar.step("Ender Generator");
     EnderGeneratorRecipeCategory.register(registry, guiHelper);
+    bar.step("Lava Generator");
+    LavaGeneratorRecipeCategory.register(registry, guiHelper);
 
     ProgressManager.pop(bar);
   }

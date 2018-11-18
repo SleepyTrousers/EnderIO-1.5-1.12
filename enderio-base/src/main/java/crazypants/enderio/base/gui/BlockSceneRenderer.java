@@ -7,13 +7,17 @@ import javax.annotation.Nonnull;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.vecmath.Camera;
 import com.enderio.core.common.vecmath.Matrix4d;
 import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vertex;
 
+import info.loenwind.autoconfig.util.NullHelper;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -23,12 +27,17 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.fluids.FluidRegistry;
 
 public class BlockSceneRenderer {
 
@@ -146,13 +155,54 @@ public class BlockSceneRenderer {
         try {
           BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
           EnumBlockRenderType type = bs.getRenderType();
-          if (type != EnumBlockRenderType.MODEL) {
-            blockrendererdispatcher.renderBlock(bs, pos, Minecraft.getMinecraft().world, worldRendererIn);
-          } else {
+          switch (type) {
+          case MODEL:
             IBakedModel ibakedmodel = blockrendererdispatcher.getModelForState(bs);
+            bs = bs.getBlock().getExtendedState(bs, Minecraft.getMinecraft().world, pos);
             blockrendererdispatcher.getBlockModelRenderer().renderModel(Minecraft.getMinecraft().world, ibakedmodel, bs, pos, worldRendererIn, false);
+            break;
+          case LIQUID:
+            if (bs.getBlock() == Blocks.WATER) {
+              TextureAtlasSprite tex1 = RenderUtil.getStillTexture(FluidRegistry.WATER);
+
+              ResourceLocation iconKey = FluidRegistry.WATER.getFlowing();
+              final TextureAtlasSprite tex = NullHelper.first(Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(iconKey.toString()), tex1);
+
+              Integer level = bs.getValue(BlockLiquid.LEVEL);
+              BoundingBox bb = new BoundingBox(pos).setMaxY(pos.getY() + (level / 15d));
+
+              float minU1 = tex1.getMinU();
+              float maxU1 = tex1.getInterpolatedU(8);
+              float minV1 = tex1.getMinV();
+              float maxV1 = tex1.getInterpolatedV(8);
+              for (Vertex v : bb.getCornersWithUvForFace(EnumFacing.DOWN, minU1, maxU1, minV1, maxV1)) {
+                worldRendererIn.pos(v.x(), v.y(), v.z()).color(0.5F, 0.5F, 0.5F, 1.0F).tex(v.u(), v.v()).lightmap(240, 240).endVertex();
+              }
+              for (Vertex v : bb.getCornersWithUvForFace(EnumFacing.UP, minU1, maxU1, minV1, maxV1)) {
+                worldRendererIn.pos(v.x(), v.y(), v.z()).color(0.5F, 0.5F, 0.5F, 1.0F).tex(v.u(), v.v()).lightmap(240, 240).endVertex();
+              }
+              float minU = tex.getMinU();
+              float maxU = tex.getInterpolatedU(8);
+              float minV = tex.getMinV();
+              float maxV = tex.getInterpolatedV(8);
+              NNList.FACING_HORIZONTAL.apply(new Callback<EnumFacing>() {
+                @Override
+                public void apply(@Nonnull EnumFacing e) {
+                  for (Vertex v : bb.getCornersWithUvForFace(e, minU, maxU, maxV, minV)) {
+                    worldRendererIn.pos(v.x(), v.y(), v.z()).color(0.5F, 0.5F, 0.5F, 1.0F).tex(v.u(), v.v()).lightmap(240, 240).endVertex();
+                  }
+                }
+              });
+              break;
+            }
+          case ENTITYBLOCK_ANIMATED:
+          case INVISIBLE:
+          default:
+            blockrendererdispatcher.renderBlock(bs, pos, Minecraft.getMinecraft().world, worldRendererIn);
+            break;
           }
         } catch (Throwable throwable) {
+          throwable.printStackTrace();
           // Just bury a render issue here, it is only a GUI screen
         }
       }

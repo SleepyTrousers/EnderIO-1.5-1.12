@@ -153,7 +153,8 @@ public class PainterRegistryPlugin implements IRecipeRegistryPlugin {
     if (recipeCategory instanceof PainterRecipeCategory) {
       V value = focus.getValue();
       if (value instanceof ItemStack) {
-        ItemStack stack = (ItemStack) value;
+        ItemStack stack = ((ItemStack) value).copy();
+        stack.setCount(1);
         List<PainterRecipeWrapper> list1 = new ArrayList<>();
         List<PainterRecipeWrapper> list2 = new ArrayList<>();
         Map<String, IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForMachine(MachineRecipeRegistry.PAINTER);

@@ -408,6 +408,8 @@ enderio.jei.grinding_ball.bonus.line1=Increases the chances of any random output
 enderio.jei.grinding_ball.bonus.line2=Calculated as original chance * bonus chance. 
 enderio.jei.grinding_ball.power.line1=Affects the power used per operation, speeding up or slowing down the machine
 enderio.jei.recipe=Recipe: "%s"
+enderio.jei.lavagen.cooling=Cooling is optional
+enderio.jei.lavagen.heat=decreases with heat buildup
 
 enderio.darksteel.upgrade.solar_1.name=Solar I
 enderio.darksteel.upgrade.solar_1.tooltip.detailed.line1=Generates power from the sun.

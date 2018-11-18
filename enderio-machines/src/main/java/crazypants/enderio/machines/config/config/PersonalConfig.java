@@ -1,8 +1,8 @@
 package crazypants.enderio.machines.config.config;
 
+import crazypants.enderio.machines.config.Config;
 import info.loenwind.autoconfig.factory.IValue;
 import info.loenwind.autoconfig.factory.IValueFactory;
-import crazypants.enderio.machines.config.Config;
 
 public class PersonalConfig {
 
@@ -44,6 +44,9 @@ public class PersonalConfig {
   public static final IValue<Boolean> enableSolarJEIRecipes = F.make("enableSolarJEI", true, //
       "Should Solar Panels have JEI recipes?").sync();
 
+  public static final IValue<Boolean> enableLavaGeneratorRecipes = F.make("enableLavaGeneratorJEI", true, //
+      "Should the Lava Generator have JEI recipes?").sync();
+
   public static final IValue<Boolean> enableSoulBinderJEIRecipes = F.make("enableSoulBinderJEI", true, //
       "Should the Soul Binder have JEI recipes?").sync();
 
@@ -58,6 +61,5 @@ public class PersonalConfig {
 
   public static final IValue<Boolean> enableZombieGenJEIRecipes = F.make("enableZombieGenJEI", true, //
       "Should the Zombie Generator have JEI recipes?").sync();
-
 
 }
