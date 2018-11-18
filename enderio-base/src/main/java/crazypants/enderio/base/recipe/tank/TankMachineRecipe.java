@@ -10,7 +10,6 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.stackable.Things;
 
-import crazypants.enderio.base.integration.actuallyadditions.ActuallyadditionsUtil;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
@@ -54,13 +53,13 @@ public class TankMachineRecipe implements IMachineRecipe {
         }
       }
     },
-    AA_SOLID_XP {
+    XP {
       @Override
       @Nonnull
       FluidStack convertFluidResult(boolean isFilling, @Nonnull ItemStack input, @Nonnull FluidStack machineFluid, @Nonnull FluidStack recipeFluid,
           @Nonnull ItemStack output) {
         FluidStack copy = recipeFluid.copy();
-        copy.amount *= XpUtil.experienceToLiquid(ActuallyadditionsUtil.getXpFromBottle(input));
+        copy.amount = XpUtil.experienceToLiquid(copy.amount);
         return copy;
       }
     };

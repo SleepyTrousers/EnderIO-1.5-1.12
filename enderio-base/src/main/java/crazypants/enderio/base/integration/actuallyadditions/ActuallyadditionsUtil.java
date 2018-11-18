@@ -9,11 +9,9 @@ import crazypants.enderio.base.config.config.IntegrationConfig;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.fertilizer.Bonemeal;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class ActuallyadditionsUtil {
@@ -39,17 +37,6 @@ public class ActuallyadditionsUtil {
       FarmersRegistry.registerHoes("actuallyadditions", "item_hoe_quartz", "item_hoe_emerald", "item_hoe_obsidian", "item_hoe_crystal_red",
           "item_hoe_crystal_blue", "item_hoe_crystal_light_blue", "item_hoe_crystal_black", "item_hoe_crystal_green", "item_hoe_crystal_white");
     }
-  }
-
-  @ItemStackHolder("actuallyadditions:item_solidified_experience")
-  public static final ItemStack AA_BOTTLE = null;
-
-  public static boolean isAAXpBottle(@Nonnull ItemStack stack) {
-    return AA_BOTTLE != null && stack.getItem() == AA_BOTTLE.getItem();
-  }
-
-  public static int getXpFromBottle(@Nonnull ItemStack stack) {
-    return 8;
   }
 
 }

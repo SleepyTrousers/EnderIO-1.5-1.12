@@ -29,22 +29,22 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Tank: XP Bottle, emptying" required="true">
     <tanking type="EMPTY" logic="XPBOTTLE">
       <input name="minecraft:experience_bottle"/>
-      <fluid name="xpjuice" amount="1"/><!-- for XP amount is a factor to the vanilla amount -->
+      <fluid name="xpjuice" amount="1"/><!-- for logic=XPBOTTLE amount is a factor to the vanilla amount -->
     </tanking>
   </recipe>
 
   <recipe name="Tank: XP Bottle, filling" required="true">
     <tanking type="FILL" logic="XPBOTTLE">
       <input name="minecraft:glass_bottle"/>
-      <fluid name="xpjuice" amount="2"/><!-- for XP amount is a factor to the vanilla amount -->
+      <fluid name="xpjuice" amount="2"/><!-- for logic=XPBOTTLE amount is a factor to the vanilla amount -->
       <output name="minecraft:experience_bottle"/>
     </tanking>
   </recipe>
 
   <recipe name="Tank: AA Solid XP, emptying" required="false">
-    <tanking type="EMPTY" logic="AA_SOLID_XP">
+    <tanking type="EMPTY" logic="XP">
       <input name="actuallyadditions:item_solidified_experience"/>
-      <fluid name="xpjuice" amount="1"/><!-- for XP amount is a factor to the vanilla amount -->
+      <fluid name="xpjuice" amount="8"/><!-- for logic=XP amount is in XP, not mB -->
     </tanking>
   </recipe>
 

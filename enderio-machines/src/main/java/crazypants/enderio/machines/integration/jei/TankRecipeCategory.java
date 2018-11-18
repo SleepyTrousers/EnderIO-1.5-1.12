@@ -12,7 +12,6 @@ import com.enderio.core.common.util.NNList;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.fluid.Fluids;
-import crazypants.enderio.base.integration.actuallyadditions.ActuallyadditionsUtil;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.tank.TankMachineRecipe;
@@ -124,9 +123,9 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
           copy.amount *= XpUtil.experienceToLiquid(i);
           fluids.add(copy);
         }
-      } else if (recipe.getLogic() == TankMachineRecipe.Logic.AA_SOLID_XP) {
+      } else if (recipe.getLogic() == TankMachineRecipe.Logic.XP) {
         FluidStack copy = fluid.copy();
-        copy.amount *= XpUtil.experienceToLiquid(ActuallyadditionsUtil.getXpFromBottle(Prep.getEmpty()));
+        copy.amount = XpUtil.experienceToLiquid(copy.amount);
         fluids.add(copy);
       } else {
         fluids.add(fluid);

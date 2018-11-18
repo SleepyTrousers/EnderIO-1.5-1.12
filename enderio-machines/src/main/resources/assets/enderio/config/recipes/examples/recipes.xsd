@@ -1131,7 +1131,7 @@
         <restriction base="string">
           <enumeration value="NONE"></enumeration>
           <enumeration value="XPBOTTLE"></enumeration>
-          <enumeration value="AA_SOLID_XP"></enumeration>
+          <enumeration value="XP"></enumeration>
         </restriction>
       </simpleType>
     </attribute>
