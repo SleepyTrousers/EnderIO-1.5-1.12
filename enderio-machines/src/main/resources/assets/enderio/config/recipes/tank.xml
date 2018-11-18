@@ -29,15 +29,174 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Tank: XP Bottle, emptying" required="true">
     <tanking type="EMPTY" logic="XPBOTTLE">
       <input name="minecraft:experience_bottle"/>
-      <fluid fluid="xpjuice" amount="1"/><!-- for XPBOTTLE amount is a factor to the vanilla amount -->
+      <fluid name="xpjuice" amount="1"/><!-- for XP amount is a factor to the vanilla amount -->
     </tanking>
   </recipe>
 
   <recipe name="Tank: XP Bottle, filling" required="true">
     <tanking type="FILL" logic="XPBOTTLE">
       <input name="minecraft:glass_bottle"/>
-      <fluid fluid="xpjuice" amount="2"/><!-- for XPBOTTLE amount is a factor to the vanilla amount -->
+      <fluid name="xpjuice" amount="2"/><!-- for XP amount is a factor to the vanilla amount -->
       <output name="minecraft:experience_bottle"/>
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: AA Solid XP, emptying" required="false">
+    <tanking type="EMPTY" logic="AA_SOLID_XP">
+      <input name="actuallyadditions:item_solidified_experience"/>
+      <fluid name="xpjuice" amount="1"/><!-- for XP amount is a factor to the vanilla amount -->
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Sponge, filling" required="true">
+    <tanking type="FILL" logic="NONE">
+      <input name="minecraft:sponge:0"/>
+      <fluid name="water" amount="1000"/>
+      <output name="minecraft:sponge:1"/>
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Sponge, emptying" required="true">
+    <tanking type="EMPTY" logic="NONE">
+      <input name="minecraft:sponge:1"/>
+      <fluid name="water" amount="1000"/>
+      <output name="minecraft:sponge:0"/>
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Nutritious Stick" required="true">
+    <tanking type="FILL" logic="NONE">
+      <input name="stickWood"/>
+      <fluid name="nutrient_distillation" amount="1000"/>
+      <output name="itemNutritiousStick"/>
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Concrete 0" required="true">
+    <tanking type="FILL" logic="NONE">
+      <input name="minecraft:concrete_powder:0"/>
+      <fluid name="water" amount="1000"/>
+      <output name="minecraft:concrete:0"/>
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Concrete 1" required="true">
+    <tanking type="FILL" logic="NONE">
+      <input name="minecraft:concrete_powder:1"/>
+      <fluid name="water" amount="1000"/>
+      <output name="minecraft:concrete:1"/>
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Concrete 2" required="true">
+    <tanking type="FILL" logic="NONE">
+      <input name="minecraft:concrete_powder:2"/>
+      <fluid name="water" amount="1000"/>
+      <output name="minecraft:concrete:2"/>
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Concrete 3" required="true">
+    <tanking type="FILL" logic="NONE">
+      <input name="minecraft:concrete_powder:3"/>
+      <fluid name="water" amount="1000"/>
+      <output name="minecraft:concrete:3"/>
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Concrete 4" required="true">
+    <tanking type="FILL" logic="NONE">
+      <input name="minecraft:concrete_powder:4"/>
+      <fluid name="water" amount="1000"/>
+      <output name="minecraft:concrete:4"/>
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Concrete 5" required="true">
+    <tanking type="FILL" logic="NONE">
+      <input name="minecraft:concrete_powder:5"/>
+      <fluid name="water" amount="1000"/>
+      <output name="minecraft:concrete:5"/>
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Concrete 6" required="true">
+    <tanking type="FILL" logic="NONE">
+      <input name="minecraft:concrete_powder:6"/>
+      <fluid name="water" amount="1000"/>
+      <output name="minecraft:concrete:6"/>
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Concrete 7" required="true">
+    <tanking type="FILL" logic="NONE">
+      <input name="minecraft:concrete_powder:7"/>
+      <fluid name="water" amount="1000"/>
+      <output name="minecraft:concrete:7"/>
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Concrete 8" required="true">
+    <tanking type="FILL" logic="NONE">
+      <input name="minecraft:concrete_powder:8"/>
+      <fluid name="water" amount="1000"/>
+      <output name="minecraft:concrete:8"/>
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Concrete 9" required="true">
+    <tanking type="FILL" logic="NONE">
+      <input name="minecraft:concrete_powder:9"/>
+      <fluid name="water" amount="1000"/>
+      <output name="minecraft:concrete:9"/>
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Concrete 10" required="true">
+    <tanking type="FILL" logic="NONE">
+      <input name="minecraft:concrete_powder:10"/>
+      <fluid name="water" amount="1000"/>
+      <output name="minecraft:concrete:10"/>
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Concrete 11" required="true">
+    <tanking type="FILL" logic="NONE">
+      <input name="minecraft:concrete_powder:11"/>
+      <fluid name="water" amount="1000"/>
+      <output name="minecraft:concrete:11"/>
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Concrete 12" required="true">
+    <tanking type="FILL" logic="NONE">
+      <input name="minecraft:concrete_powder:12"/>
+      <fluid name="water" amount="1000"/>
+      <output name="minecraft:concrete:12"/>
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Concrete 13" required="true">
+    <tanking type="FILL" logic="NONE">
+      <input name="minecraft:concrete_powder:13"/>
+      <fluid name="water" amount="1000"/>
+      <output name="minecraft:concrete:13"/>
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Concrete 14" required="true">
+    <tanking type="FILL" logic="NONE">
+      <input name="minecraft:concrete_powder:14"/>
+      <fluid name="water" amount="1000"/>
+      <output name="minecraft:concrete:14"/>
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Concrete 15" required="true">
+    <tanking type="FILL" logic="NONE">
+      <input name="minecraft:concrete_powder:15"/>
+      <fluid name="water" amount="1000"/>
+      <output name="minecraft:concrete:15"/>
     </tanking>
   </recipe>
 

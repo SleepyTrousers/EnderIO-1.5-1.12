@@ -6,15 +6,28 @@ import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
+import com.enderio.core.common.util.stackable.Things;
+
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
+import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.RecipeLevel;
+import crazypants.enderio.base.recipe.tank.TankMachineRecipe;
 import crazypants.enderio.base.recipe.tank.TankMachineRecipe.Logic;
+import net.minecraftforge.fluids.FluidStack;
 
 public class Tanking extends AbstractConditional {
 
-  private Item input, output;
+  private enum Type {
+    EMPTY,
+    FILL;
+  }
+
+  private Item input;
+  private ItemIntegerAmount output;
   private FluidAmount fluid;
-  private Logic logic = Logic.NONE;
+  private @Nonnull Logic logic = Logic.NONE;
+  private Type type;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -25,6 +38,9 @@ public class Tanking extends AbstractConditional {
       }
       if (fluid == null) {
         throw new InvalidRecipeConfigException("Missing <fluid>");
+      }
+      if (type == null) {
+        throw new InvalidRecipeConfigException("Missing attribute 'type'");
       }
 
       valid = input.isValid() && fluid.isValid() && (output == null || output.isValid());
@@ -53,12 +69,15 @@ public class Tanking extends AbstractConditional {
   @Override
   public void register(@Nonnull String recipeName) {
     if (isValid() && isActive()) {
-      // final Things thing = input.getThing();
-      // PotionType inPotion = in.getPotion();
-      // PotionType outPotion = out.getPotion();
-      // if (!thing.isEmpty() && inPotion != null && outPotion != null) {
-      // PotionHelper.addMix(inPotion, thing.asIngredient(), outPotion);
-      // }
+      final Things inThing = input.getThing();
+      final Things outThing = output != null ? output.getThing() : null;
+      FluidStack fluidStack = fluid.getFluidStack();
+      boolean isFilling = type == Type.FILL;
+
+      if (!inThing.isEmpty()) {
+        TankMachineRecipe recipe = new TankMachineRecipe(recipeName, isFilling, inThing, fluidStack, outThing, logic, RecipeLevel.IGNORE);
+        MachineRecipeRegistry.instance.registerRecipe(recipe);
+      }
     }
   }
 
@@ -69,6 +88,14 @@ public class Tanking extends AbstractConditional {
         logic = Logic.valueOf(value.toUpperCase(Locale.ENGLISH));
       } catch (IllegalArgumentException e) {
         throw new InvalidRecipeConfigException("'" + value + "' is not a valid value for 'logic'");
+      }
+      return true;
+    }
+    if ("type".equals(name)) {
+      try {
+        type = Type.valueOf(value.toUpperCase(Locale.ENGLISH));
+      } catch (IllegalArgumentException e) {
+        throw new InvalidRecipeConfigException("'" + value + "' is not a valid value for 'type'");
       }
       return true;
     }
@@ -91,7 +118,7 @@ public class Tanking extends AbstractConditional {
     }
     if ("output".equals(name)) {
       if (output == null) {
-        output = factory.read(new Item().setAllowDelaying(false), startElement);
+        output = factory.read(new ItemIntegerAmount().setAllowDelaying(false), startElement);
         return true;
       }
     }

@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.stackable.Things;
 
+import crazypants.enderio.base.integration.actuallyadditions.ActuallyadditionsUtil;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
@@ -39,7 +41,7 @@ public class TankMachineRecipe implements IMachineRecipe {
       }
 
       @Override
-      void executeSFX(boolean isFilling, @Nonnull World world, @Nonnull BlockPos pos) {
+      public void executeSFX(boolean isFilling, @Nonnull World world, @Nonnull BlockPos pos) {
         if (!isFilling) {
           BlockPos eventPos = pos;
           if (world.rand.nextBoolean()) {
@@ -52,23 +54,32 @@ public class TankMachineRecipe implements IMachineRecipe {
         }
       }
     },
-    AA_SOLID_XP;
+    AA_SOLID_XP {
+      @Override
+      @Nonnull
+      FluidStack convertFluidResult(boolean isFilling, @Nonnull ItemStack input, @Nonnull FluidStack machineFluid, @Nonnull FluidStack recipeFluid,
+          @Nonnull ItemStack output) {
+        FluidStack copy = recipeFluid.copy();
+        copy.amount *= XpUtil.experienceToLiquid(ActuallyadditionsUtil.getXpFromBottle(input));
+        return copy;
+      }
+    };
 
     private static final @Nonnull Random rand = new Random();
 
     @Nonnull
     ItemStack convertItemResult(boolean isFilling, @Nonnull ItemStack input, @Nonnull FluidStack machineFluid, @Nonnull FluidStack recipeFluid,
         @Nonnull ItemStack output) {
-      return output;
+      return output.copy();
     }
 
     @Nonnull
     FluidStack convertFluidResult(boolean isFilling, @Nonnull ItemStack input, @Nonnull FluidStack machineFluid, @Nonnull FluidStack recipeFluid,
         @Nonnull ItemStack output) {
-      return recipeFluid;
+      return recipeFluid.copy();
     }
 
-    void executeSFX(boolean isFilling, @Nonnull World world, @Nonnull BlockPos pos) {
+    public void executeSFX(boolean isFilling, @Nonnull World world, @Nonnull BlockPos pos) {
     }
   }
 
@@ -107,7 +118,7 @@ public class TankMachineRecipe implements IMachineRecipe {
     }
   }
 
-  public @Nonnull RecipeResult executeRecipe(@Nonnull ItemStack machineInput, @Nonnull FluidStack machineFluid) {
+  public @Nullable RecipeResult executeRecipe(@Nonnull ItemStack machineInput, @Nonnull FluidStack machineFluid) {
     RecipeResult result = new RecipeResult();
 
     result.itemResult = logic.convertItemResult(isFilling, machineInput, machineFluid, fluid, output.getItemStack());
@@ -119,10 +130,13 @@ public class TankMachineRecipe implements IMachineRecipe {
     if (isFilling) {
       result.remainingInputFluid = machineFluid.copy();
       result.remainingInputFluid.amount -= fluidResult.amount;
+      if (result.remainingInputFluid.amount < 0) {
+        return null;
+      }
       result.consumedInputFluid = machineFluid.copy();
       result.consumedInputFluid.amount = fluidResult.amount;
     } else if (machineFluid.amount == 0) {
-      result.remainingInputFluid = fluidResult.copy();
+      result.remainingInputFluid = fluidResult;
       result.consumedInputFluid = machineFluid;
     } else {
       result.remainingInputFluid = machineFluid.copy();
@@ -175,7 +189,6 @@ public class TankMachineRecipe implements IMachineRecipe {
       return false;
     }
 
-    FluidStack machineFluid = getInputFluid(inputs);
     ItemStack machineItemStack = getInputItem(inputs);
 
     // input item stack
@@ -187,13 +200,15 @@ public class TankMachineRecipe implements IMachineRecipe {
       return false;
     }
 
+    FluidStack machineFluid = getInputFluid(inputs);
+
     // filling always needs a fluid in the tank, emptying not
     if (isFilling && machineFluid.amount == 0) {
       return false;
     }
 
     // fluid in tank must match recipe or tank must be empty
-    if (machineFluid.amount > 0 && !machineFluid.containsFluid(fluid)) {
+    if (machineFluid.amount != 0 && !machineFluid.containsFluid(fluid)) {
       return false;
     }
 
@@ -222,7 +237,11 @@ public class TankMachineRecipe implements IMachineRecipe {
   @Nonnull
   public ResultStack[] getCompletedResult(long nextSeed, float chanceMultiplier, @Nonnull NNList<MachineRecipeInput> inputs) {
     RecipeResult recipeResult = executeRecipe(getInputItem(inputs), getInputFluid(inputs));
-    return new ResultStack[] { new ResultStack(recipeResult.itemResult), new ResultStack(recipeResult.remainingInputFluid) };
+    if (recipeResult != null) {
+      return new ResultStack[] { new ResultStack(recipeResult.itemResult), new ResultStack(recipeResult.remainingInputFluid) };
+    } else {
+      return new ResultStack[0];
+    }
   }
 
   @Override
@@ -237,13 +256,16 @@ public class TankMachineRecipe implements IMachineRecipe {
   @Override
   @Nonnull
   public String getMachineName() {
-    return MachineRecipeRegistry.TANK;
+    return isFilling ? MachineRecipeRegistry.TANK_FILLING : MachineRecipeRegistry.TANK_EMPTYING;
   }
 
   @Override
   @Nonnull
   public List<MachineRecipeInput> getQuantitiesConsumed(@Nonnull NNList<MachineRecipeInput> inputs) {
     RecipeResult recipeResult = executeRecipe(getInputItem(inputs), getInputFluid(inputs));
+    if (recipeResult == null) {
+      return NNList.emptyList();
+    }
     List<MachineRecipeInput> result = new ArrayList<>();
     for (MachineRecipeInput machineRecipeInput : inputs) {
       if (machineRecipeInput.isFluid()) {
@@ -253,6 +275,34 @@ public class TankMachineRecipe implements IMachineRecipe {
       }
     }
     return result;
+  }
+
+  public @Nonnull Logic getLogic() {
+    return logic;
+  }
+
+  public @Nonnull String getRecipeName() {
+    return recipeName;
+  }
+
+  public boolean isFilling() {
+    return isFilling;
+  }
+
+  public @Nonnull Things getInput() {
+    return input;
+  }
+
+  public @Nonnull FluidStack getFluid() {
+    return fluid;
+  }
+
+  public @Nonnull Things getOutput() {
+    return output;
+  }
+
+  public @Nonnull RecipeLevel getRecipelevel() {
+    return recipelevel;
   }
 
 }

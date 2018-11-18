@@ -1,8 +1,8 @@
 package crazypants.enderio.machines.config.config;
 
+import crazypants.enderio.machines.config.Config;
 import info.loenwind.autoconfig.factory.IValue;
 import info.loenwind.autoconfig.factory.IValueFactory;
-import crazypants.enderio.machines.config.Config;
 
 public final class TankConfig {
 
@@ -16,12 +16,6 @@ public final class TankConfig {
 
   public static final IValue<Integer> tankSizeAdvanced = F.make("tankSizeAdvanced", 32000, //
       "The size of an advanced tank in mB.").setRange(0, Integer.MAX_VALUE).sync();
-
-  public static final IValue<Boolean> liquefyXPBottles = F.make("liquefyXPBottles", true, //
-      "If true, the tank can convert Bottles of Enchanting into XP.").sync();
-
-  public static final IValue<Boolean> liquefySolidXP = F.make("liquefySolidXP", true, //
-      "If true, the tank can convert Actually Addions' solid XP into liquid XP.").sync();
 
   public static final IValue<Boolean> allowMending = F.make("allowMending", true, //
       "If true, the tank can mend items enchanted with Mending using liquid XP.").sync();

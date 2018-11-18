@@ -21,11 +21,16 @@ public class MachineRecipeRegistry {
   public static final @Nonnull String FARM = "farmingstation";
   public static final @Nonnull String TRANSCEIVER = "transceiver";
   public static final @Nonnull String ENCHANTER = "enchanter";
-  public static final @Nonnull String TANK = "tank";
+  public static final @Nonnull String TANK_FILLING = "tankfill";
+  public static final @Nonnull String TANK_EMPTYING = "tankempty";
 
   public static final @Nonnull MachineRecipeRegistry instance = new MachineRecipeRegistry();
 
   private final Map<String, Map<String, IMachineRecipe>> machineRecipes = new HashMap<String, Map<String, IMachineRecipe>>();
+
+  public void registerRecipe(@Nonnull IMachineRecipe recipe) {
+    getRecipesForMachine(recipe.getMachineName()).put(recipe.getUid(), recipe);
+  }
 
   public void registerRecipe(@Nonnull String machine, @Nonnull IMachineRecipe recipe) {
     getRecipesForMachine(machine).put(recipe.getUid(), recipe);

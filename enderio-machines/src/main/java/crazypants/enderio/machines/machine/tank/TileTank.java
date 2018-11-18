@@ -13,14 +13,21 @@ import com.enderio.core.common.fluid.SmartTankFluidHandler;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
-import crazypants.enderio.base.integration.actuallyadditions.ActuallyadditionsUtil;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.recipe.IMachineRecipe;
+import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
+import crazypants.enderio.base.recipe.MachineRecipeInput;
+import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.RecipeLevel;
+import crazypants.enderio.base.recipe.tank.TankMachineRecipe;
 import crazypants.enderio.base.sound.SoundHelper;
 import crazypants.enderio.base.sound.SoundRegistry;
 import crazypants.enderio.base.xp.XpUtil;
@@ -31,13 +38,9 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Enchantments;
-import net.minecraft.init.Items;
-import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.capabilities.Capability;
@@ -57,14 +60,16 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
 
   private boolean tankDirty = false;
   private int lastFluidLuminosity = 0;
+  private final @Nonnull EnumTankType tankType;
 
   @Store
   private @Nonnull VoidMode voidMode = VoidMode.NEVER;
 
-  public TileTank(EnumTankType tankType) {
+  public TileTank(@Nonnull EnumTankType tankType) {
     super(new SlotDefinition(0, 2, 3, 4, -1, -1));
     tank = tankType.getTank();
     tank.setTileEntity(this);
+    this.tankType = tankType;
   }
 
   public TileTank() {
@@ -112,33 +117,6 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     return fluid != null && fluid.getFluid().getTemperature() > 973 && TankConfig.allowVoiding.get();
   }
 
-  public boolean canEatXP() {
-    final FluidStack fluid = tank.getFluid();
-    return fluid == null || (fluid.getFluid() == Fluids.XP_JUICE.getFluid() && tank.getAvailableSpace() >= XpUtil.experienceToLiquid(11));
-  }
-
-  public boolean isXpBottle(@Nonnull ItemStack stack) {
-    return FluidUtil.getFluidTypeFromItem(stack) == null && (isVanillaXpBottle(stack) || isAAXpBottle(stack));
-  }
-
-  private boolean isVanillaXpBottle(@Nonnull ItemStack stack) {
-    return stack.getItem() == Items.EXPERIENCE_BOTTLE && TankConfig.liquefyXPBottles.get();
-  }
-
-  private int getXpFromBottle(@Nonnull ItemStack stack) {
-    if (isVanillaXpBottle(stack)) {
-      return 3 + world.rand.nextInt(5) + world.rand.nextInt(5);
-    } else if (isAAXpBottle(stack)) {
-      return ActuallyadditionsUtil.getXpFromBottle(stack);
-    } else {
-      return 0;
-    }
-  }
-
-  private boolean isAAXpBottle(@Nonnull ItemStack stack) {
-    return TankConfig.liquefySolidXP.get() && ActuallyadditionsUtil.isAAXpBottle(stack);
-  }
-
   public @Nonnull VoidMode getVoidMode() {
     return TankConfig.allowVoiding.get() ? voidMode : VoidMode.NEVER;
   }
@@ -153,13 +131,33 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
       return false;
     }
     if (i == 0) {
-      return (FluidUtil.getFluidTypeFromItem(item) != null) || (isXpBottle(item) && canEatXP());
+      return (FluidUtil.getFluidTypeFromItem(item) != null) || isValidInputItem(item, false);
     } else if (i == 1) {
-      return FluidUtil.hasEmptyCapacity(item) || canBeMended(item);
+      return FluidUtil.hasEmptyCapacity(item) || canBeMended(item) || isValidInputItem(item, true);
     } else if (i == 2 && canVoidItems()) {
       return voidMode == VoidMode.ALWAYS || (voidMode == VoidMode.NEVER ? false : !FluidUtil.isFluidContainer(item));
     }
     return false;
+  }
+
+  private boolean isValidInputItem(@Nonnull ItemStack item, boolean isFilling) {
+    NNList<MachineRecipeInput> list = new NNList<>();
+    list.add(new MachineRecipeInput(0, item));
+    list.add(new MachineRecipeInput(1, NullHelper.first(tank.getFluid(), TankMachineRecipe.NOTHING)));
+
+    return getRecipe(isFilling, list) != null;
+  }
+
+  private IMachineRecipe getRecipe(boolean isFilling, @Nonnull NNList<MachineRecipeInput> inputs) {
+    return MachineRecipeRegistry.instance.getRecipeForInputs(tankType.isExplosionResistant() ? RecipeLevel.ADVANCED : RecipeLevel.NORMAL,
+        isFilling ? MachineRecipeRegistry.TANK_FILLING : MachineRecipeRegistry.TANK_EMPTYING, inputs);
+  }
+
+  private @Nonnull NNList<MachineRecipeInput> getRecipeInputs(boolean isFilling) {
+    NNList<MachineRecipeInput> list = new NNList<>();
+    list.add(new MachineRecipeInput(0, getStackInSlot(isFilling ? 1 : 0)));
+    list.add(new MachineRecipeInput(1, NullHelper.first(tank.getFluid(), TankMachineRecipe.NOTHING)));
+    return list;
   }
 
   @Override
@@ -288,10 +286,31 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
       return false;
     }
 
+    IMachineRecipe recipe = null;
     final FluidTank outputTank = getOutputTanks()[0];
-    final FluidAndStackResult fill = FluidUtil.tryFillContainer(inputStack, outputTank.getFluid());
+    FluidAndStackResult fill = FluidUtil.tryFillContainer(inputStack, outputTank.getFluid());
     if (fill.result.fluidStack == null) {
-      return false;
+      NNList<MachineRecipeInput> recipeInputs = getRecipeInputs(true);
+      recipe = getRecipe(true, recipeInputs);
+      if (recipe != null) {
+        FluidStack fluidStack = null;
+        ItemStack remainderStack, resultStack = null;
+        for (ResultStack result : recipe.getCompletedResult(0L, 0f, recipeInputs)) {
+          if (result.fluid != null) {
+            fluidStack = result.fluid;
+          } else {
+            resultStack = result.item;
+          }
+        }
+        if (fluidStack == null || resultStack == null) {
+          return false;
+        }
+        remainderStack = inputStack.copy();
+        remainderStack.shrink(1);
+        fill = new FluidAndStackResult(resultStack, fluidStack, remainderStack, fluidStack);
+      } else {
+        return false;
+      }
     }
 
     final int output = getSlotDefinition().getMaxOutputSlot();
@@ -310,6 +329,10 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     setInventorySlotContents(input, fill.remainder.itemStack);
     setInventorySlotContents(output, fill.result.itemStack);
 
+    if (recipe instanceof TankMachineRecipe) {
+      ((TankMachineRecipe) recipe).getLogic().executeSFX(true, world, pos);
+    }
+
     setTanksDirty();
     markDirty();
     return false;
@@ -322,26 +345,30 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
       return false;
     }
 
-    final FluidAndStackResult fill = FluidUtil.tryDrainContainer(inputStack, this);
+    IMachineRecipe recipe = null;
+    FluidAndStackResult fill = FluidUtil.tryDrainContainer(inputStack, this);
     if (fill.result.fluidStack == null) {
-      if (isXpBottle(inputStack) && canEatXP()) {
-        if (tank.fill(new FluidStack(Fluids.XP_JUICE.getFluid(), XpUtil.experienceToLiquid(getXpFromBottle(inputStack))), true) > 0) {
-          inputStack.shrink(1);
-          setInventorySlotContents(input, inputStack);
-          setTanksDirty();
-          markDirty();
-          // The event takes a blockpos and plays at that corner. At least vary the corner a bit...
-          BlockPos eventPos = pos;
-          if (world.rand.nextBoolean()) {
-            eventPos = eventPos.south();
+      NNList<MachineRecipeInput> recipeInputs = getRecipeInputs(false);
+      recipe = getRecipe(false, recipeInputs);
+      if (recipe != null) {
+        FluidStack fluidStack = null;
+        ItemStack remainderStack, resultStack = null;
+        for (ResultStack result : recipe.getCompletedResult(0L, 0f, recipeInputs)) {
+          if (result.fluid != null) {
+            fluidStack = result.fluid;
+          } else {
+            resultStack = result.item;
           }
-          if (world.rand.nextBoolean()) {
-            eventPos = eventPos.east();
-          }
-          world.playEvent(2002, eventPos, PotionUtils.getPotionColor(PotionTypes.WATER));
         }
+        if (fluidStack == null || resultStack == null) {
+          return false;
+        }
+        remainderStack = inputStack.copy();
+        remainderStack.shrink(1);
+        fill = new FluidAndStackResult(resultStack, fluidStack, remainderStack, fluidStack);
+      } else {
+        return false;
       }
-      return false;
     }
 
     final int output = getSlotDefinition().getMinOutputSlot();
@@ -360,6 +387,10 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     setInventorySlotContents(input, fill.remainder.itemStack);
     if (Prep.isValid(fill.result.itemStack)) {
       setInventorySlotContents(output, fill.result.itemStack);
+    }
+
+    if (recipe instanceof TankMachineRecipe) {
+      ((TankMachineRecipe) recipe).getLogic().executeSFX(false, world, pos);
     }
 
     setTanksDirty();

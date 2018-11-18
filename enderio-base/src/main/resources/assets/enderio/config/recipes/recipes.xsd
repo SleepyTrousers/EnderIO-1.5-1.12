@@ -1145,7 +1145,7 @@
   </complexType>
 
   <complexType name="fluidType">
-    <attribute name="fluid" type="string" use="required">
+    <attribute name="name" type="string" use="required">
       <annotation>
         <documentation>The ID of a fluid.</documentation>
       </annotation>
