@@ -67,7 +67,7 @@ XML editor will display that as tooltips when editing this file.
       <entity name="minecraft:skeleton"            costMultiplier="2.0" disabled="false"/> <!-- Skeleton -->
       <entity name="minecraft:skeleton_horse"      costMultiplier="2.0" disabled="false"/> <!-- Skeleton Horse -->
       <entity name="minecraft:slime"               costMultiplier="5.0" disabled="false"/> <!-- Slime -->
-      <entity name="minecraft:snowman"             costMultiplier="1.0" disabled="false"/> <!-- Snow Golem -->
+      <entity name="minecraft:snowman"             costMultiplier="1.0" disabled="true"/> <!-- Snow Golem -->
       <entity name="minecraft:spider"              costMultiplier="1.0" disabled="false"/> <!-- Spider -->
       <entity name="minecraft:squid"               costMultiplier="0.5" disabled="false"/> <!-- Squid -->
       <entity name="minecraft:stray"               costMultiplier="3.0" disabled="false"/> <!-- Stray -->
