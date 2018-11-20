@@ -2724,7 +2724,7 @@ XML editor will display that as tooltips when editing this file.
       <input name="oreClathrateGlowstone" />
       <output name="crystalGlowstone" amount="2" />
       <output name="crystalGlowstone" amount="2" chance="0.25" />
-      <output name="dustSulfuFicr" amount="1" chance="0.5"/>
+      <output name="dustSulfur" amount="1" chance="0.5"/>
       <output name="minecraft:netherrack" chance="0.15" />
     </sagmilling>
   </recipe>
