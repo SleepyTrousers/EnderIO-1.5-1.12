@@ -668,6 +668,8 @@ XML editor will display that as tooltips when editing this file.
     </sagmilling>
   </recipe>
 
+ <!-- Apatite -->
+ 
   <recipe name="Sagmill: Forestry Apatite Ore" required="false">
     <sagmilling energy="3600">
       <input name="forestry:resources:0" />
