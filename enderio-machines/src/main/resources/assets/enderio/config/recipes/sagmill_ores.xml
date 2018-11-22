@@ -699,7 +699,7 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Sagmill: oreApatite Ore" required="false">
     <sagmilling energy="3600">
-      <input name="gemApatite, -forestry:resources:0, -silentgems:gemorelight:7" />
+      <input name="oreApatite, -forestry:resources:0, -silentgems:gemorelight:7" />
       <output name="gemApatite" amount="2" />
       <output name="gemApatite" chance="0.5" />
       <output name="dustSulfur" chance="0.1" required="false" />
