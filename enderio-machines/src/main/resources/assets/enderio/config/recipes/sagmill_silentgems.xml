@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- We Are the Crystal ___ (silent gems) -->
+	  
+  <recipe name="Sagmill: oreGarnet Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreGarnet" />
+      <output name="gemGarnet" amount="2" />
+      <output name="gemGarnet" chance="0.5" />
+      <output name="oredict:cobblestone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: oreHeliodor Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreHeliodor" />
+      <output name="gemHeliodor" amount="2" />
+      <output name="gemHeliodor" chance="0.5" />
+      <output name="oredict:cobblestone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Sagmill: oreBeyrl Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreBeyrl" />
+      <output name="gemBeyrl" amount="2" />
+      <output name="gemBeyrl" chance="0.5" />
+      <output name="oredict:cobblestone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreIndicolite Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreIndicolite" />
+      <output name="gemIndicolite" amount="2" />
+      <output name="gemIndicolite" chance="0.5" />
+      <output name="oredict:cobblestone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreAquamarine Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreAquamarine" />
+      <output name="gemAquamarine" amount="2" />
+      <output name="gemAquamarine" chance="0.5" />
+      <output name="oredict:cobblestone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreIolite Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreIolite" />
+      <output name="gemIolite" amount="2" />
+      <output name="gemIolite" chance="0.5" />
+      <output name="oredict:cobblestone" chance="0.15" />
+    </sagmilling>
+  </recipe>  
+  
+  <recipe name="Sagmill: oreAgate Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreAgate" />
+      <output name="gemAgate" amount="2" />
+      <output name="gemAgate" chance="0.5" />
+      <output name="oredict:cobblestone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+    <recipe name="Sagmill: oreMorganite Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreMorganite" />
+      <output name="gemMorganite" amount="2" />
+      <output name="gemMorganite" chance="0.5" />
+      <output name="oredict:cobblestone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreOnix Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreOnyx" />
+      <output name="gemOnyx" amount="2" />
+      <output name="gemOnyx" chance="0.5" />
+      <output name="oredict:cobblestone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreOpal Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreOpal" />
+      <output name="gemOpal" amount="2" />
+      <output name="gemOpal" chance="0.5" />
+      <output name="oredict:cobblestone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreCarnelian Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreCarnelian" />
+      <output name="gemCarnelian" amount="2" />
+      <output name="gemCarnelian" chance="0.5" />
+      <output name="netherrack" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreSpinel Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreSpinel" />
+      <output name="gemSpinel" amount="2" />
+      <output name="gemSpinel" chance="0.5" />
+      <output name="netherrack" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreCitrine Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreCitrine" />
+      <output name="gemCitrine" amount="2" />
+      <output name="gemCitrine" chance="0.5" />
+      <output name="netherrack" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreJasper Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreJasper" />
+      <output name="gemJasper" amount="2" />
+      <output name="gemJasper" chance="0.5" />
+      <output name="netherrack" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreGoldenBeryl Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreGoldenBeryl" />
+      <output name="gemGoldenBeryl" amount="2" />
+      <output name="gemGoldenBeryl" chance="0.5" />
+      <output name="netherrack" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreMoldavite Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreMoldavite" />
+      <output name="gemMoldavite" amount="2" />
+      <output name="gemMoldavite" chance="0.5" />
+      <output name="netherrack" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreTurquoise Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreTurquoise" />
+      <output name="gemTurquoise" amount="2" />
+      <output name="gemTurquoise" chance="0.5" />
+      <output name="netherrack" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreMoonstone Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreMoonstone" />
+      <output name="gemMoonstone" amount="2" />
+      <output name="gemMoonstone" chance="0.5" />
+      <output name="netherrack" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreBlueTopaz Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreBlueTopaz" />
+      <output name="gemBlueTopaz" amount="2" />
+      <output name="gemBlueTopaz" chance="0.5" />
+      <output name="netherrack" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreVioletSapphire Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreVioletSapphire" />
+      <output name="gemVioletSapphire" amount="2" />
+      <output name="gemVioletSapphire" chance="0.5" />
+      <output name="netherrack" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreLepidolite Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreLepidolite" />
+      <output name="gemLepidolite" amount="2" />
+      <output name="gemLepidolite" chance="0.5" />
+      <output name="netherrack" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreAmetrine Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreAmetrine" />
+      <output name="gemAmetrine" amount="2" />
+      <output name="gemAmetrine" chance="0.5" />
+      <output name="netherrack" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreBlackDiamond Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreBlackDiamond" />
+      <output name="gemBlackDiamond" amount="2" />
+      <output name="gemBlackDiamond" chance="0.5" />
+      <output name="netherrack" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreAlexandrite Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreAlexandrite" />
+      <output name="gemAlexandrite" amount="2" />
+      <output name="gemAlexandrite" chance="0.5" />
+      <output name="netherrack" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: orePyrope Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="orePyrope" />
+      <output name="gemPyrope" amount="2" />
+      <output name="gemPyrope" chance="0.5" />
+      <output name="endstone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreCoral Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreCoral" />
+      <output name="gemCoral" amount="2" />
+      <output name="gemCoral" chance="0.5" />
+      <output name="endstone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreSunstone Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreSunstone" />
+      <output name="gemSunstone" amount="2" />
+      <output name="gemSunstone" chance="0.5" />
+      <output name="endstone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreCatsEye Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreCatsEye" />
+      <output name="gemCatsEye" amount="2" />
+      <output name="gemCatsEye" chance="0.5" />
+      <output name="endstone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreZircon Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreZircon" />
+      <output name="gemZircon" amount="2" />
+      <output name="gemZircon" chance="0.5" />
+      <output name="endstone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreJade Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreJade" />
+      <output name="gemJade" amount="2" />
+      <output name="gemJade" chance="0.5" />
+      <output name="endstone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreChrysoprase Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreChrysoprase" />
+      <output name="gemChrysoprase" amount="2" />
+      <output name="gemChrysoprase" chance="0.5" />
+      <output name="endstone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreFluorite Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreFluorite" />
+      <output name="gemFluorite" amount="2" />
+      <output name="gemFluorite" chance="0.5" />
+      <output name="endstone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreKyanite Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreKyanite" />
+      <output name="gemKyanite" amount="2" />
+      <output name="gemKyanite" chance="0.5" />
+      <output name="endstone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill:silent oreSodalite Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="silentgems:gemorelight:10" />
+      <output name="gemSodalite" amount="2" />
+      <output name="gemSodalite" chance="0.5" />
+      <output name="endstone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreAmmolite Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreAmmolite" />
+      <output name="gemAmmolite" amount="2" />
+      <output name="gemAmmolite" chance="0.5" />
+      <output name="endstone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreKunzite Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreKunzite" />
+      <output name="gemKunzite" amount="2" />
+      <output name="gemKunzite" chance="0.5" />
+      <output name="endstone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreRoseQuartz Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreRoseQuartz" />
+      <output name="gemRoseQuartz" amount="2" />
+      <output name="gemRoseQuartz" chance="0.5" />
+      <output name="endstone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreTektite Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreTektite" />
+      <output name="gemTektite" amount="2" />
+      <output name="gemTektite" chance="0.5" />
+      <output name="endstone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: orePearl Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="orePearl" />
+      <output name="gemPearl" amount="2" />
+      <output name="gemPearl" chance="0.5" />
+      <output name="endstone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreChaos Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreChaos" />
+      <output name="gemChaos" amount="2" />
+      <output name="gemChaos" chance="0.5" />
+      <output name="cobblestone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: oreEnderEssence Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreEnderEssence" />
+      <output name="gemEnderEssence" amount="2" />
+      <output name="gemEnderEssence" chance="0.5" />
+      <output name="endstone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: silentgems Apatite Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="silentgems:gemorelight:7" />
+      <output name="silentgems:gem:39" amount="2" />
+      <output name="silentgems:gem:39" chance="0.5" />
+      <output name="endstone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+  <recipe name="Sagmill: silentgems Malachite Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="silentgems:gemoredark:6" />
+      <output name="gemMalachite" amount="2" />
+      <output name="gemMalachite" chance="0.5" />
+      <output name="netherrack" chance="0.15" />
+    </sagmilling>
+  </recipe>
+
+    <recipe name="Sagmill: silentgems Tanzanite Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="silentgems:gemoredark:10" />
+      <output name="gemTanzanite" amount="2" />
+      <output name="gemTanzanite" chance="0.5" />
+      <output name="netherrack" chance="0.15" />
+    </sagmilling>
+  </recipe>
+  
+</enderio:recipes>
