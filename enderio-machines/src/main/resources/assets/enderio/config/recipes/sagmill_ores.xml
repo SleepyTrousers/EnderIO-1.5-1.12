@@ -2837,7 +2837,7 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Sagmill: Sodalite Ore" required="false">
     <sagmilling energy="3600">
-      <input name="oreSodalite" />
+      <input name="oreSodalite, -silentgems:gemorelight:10" />
       <output name="dustSodalite" amount="2" />
       <output name="minecraft:endstone" chance="0.15" />
       <output name="dustAluminium" chance="0.1" />
