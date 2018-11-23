@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
-	  <!-- We Are the Crystal ___ (silent gems) -->
+
+<!-- We Are the Crystal ___ (silent gems) -->
 	  
   <recipe name="Sagmill: oreGarnet Ore" required="false">
     <sagmilling energy="3600">
