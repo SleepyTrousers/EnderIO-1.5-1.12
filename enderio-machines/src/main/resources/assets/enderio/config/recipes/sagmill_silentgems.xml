@@ -266,7 +266,7 @@
   
   <recipe name="Sagmill: oreJade Ore" required="false">
     <sagmilling energy="3600">
-      <input name="silentgems:gemorelight:5" />
+      <input name="oreJade" />
       <output name="gemJade" amount="2" />
       <output name="gemJade" chance="0.5" />
       <output name="endstone" chance="0.15" />
@@ -300,9 +300,9 @@
     </sagmilling>
   </recipe>
   
-  <recipe name="Sagmill: oreSodalite Ore" required="false">
+  <recipe name="Sagmill:silent oreSodalite Ore" required="false">
     <sagmilling energy="3600">
-      <input name="oreSodalite" />
+      <input name="silentgems:gemorelight:10" />
       <output name="gemSodalite" amount="2" />
       <output name="gemSodalite" chance="0.5" />
       <output name="endstone" chance="0.15" />
