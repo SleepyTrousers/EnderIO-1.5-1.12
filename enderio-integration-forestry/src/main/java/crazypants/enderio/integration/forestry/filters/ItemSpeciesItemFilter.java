@@ -5,17 +5,18 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.TileEntityBase;
 
 import crazypants.enderio.api.IModObject;
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilterContainer;
 import crazypants.enderio.base.filter.gui.ContainerFilter;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.items.IItemFilterItemUpgrade;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.integration.forestry.init.ForestryIntegrationObject;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.client.gui.GuiScreen;
@@ -34,7 +35,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemSpeciesItemFilter extends Item implements IItemFilterItemUpgrade {
+public class ItemSpeciesItemFilter extends Item implements IItemFilterItemUpgrade, IResourceTooltipProvider {
 
   public static ItemSpeciesItemFilter create(@Nonnull IModObject modObject) {
     return new ItemSpeciesItemFilter(modObject);
@@ -43,8 +44,8 @@ public class ItemSpeciesItemFilter extends Item implements IItemFilterItemUpgrad
   protected ItemSpeciesItemFilter(@Nonnull IModObject modObject) {
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
-    setHasSubtypes(true);
     setMaxDamage(0);
+    setHasSubtypes(true);
     setMaxStackSize(64);
   }
 
@@ -55,6 +56,12 @@ public class ItemSpeciesItemFilter extends Item implements IItemFilterItemUpgrad
       filter.readFromNBT(NbtValue.FILTER.getTag(stack));
     }
     return filter;
+  }
+
+  @Override
+  @Nonnull
+  public String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
+    return getUnlocalizedName();
   }
 
   @Override
@@ -72,15 +79,10 @@ public class ItemSpeciesItemFilter extends Item implements IItemFilterItemUpgrad
   public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
     super.addInformation(stack, worldIn, tooltip, flagIn);
     if (FilterRegistry.isFilterSet(stack)) {
-      if (!SpecialTooltipHandler.showAdvancedTooltips()) {
-        tooltip.add(EnderIO.lang.localize("itemConduitFilterUpgrade"));
-        SpecialTooltipHandler.addShowDetailsTooltip(tooltip);
-      } else {
-        tooltip.add(TextFormatting.ITALIC + EnderIO.lang.localize("itemConduitFilterUpgrade.configured"));
-        tooltip.add(TextFormatting.ITALIC + EnderIO.lang.localize("itemConduitFilterUpgrade.clearConfigMethod"));
+      if (SpecialTooltipHandler.showAdvancedTooltips()) {
+        tooltip.add(Lang.ITEM_FILTER_CONFIGURED.get(TextFormatting.ITALIC));
+        tooltip.add(Lang.ITEM_FILTER_CLEAR.get(TextFormatting.ITALIC));
       }
-    } else {
-      tooltip.add(EnderIO.lang.localize("itemConduitFilterUpgrade"));
     }
   }
 
@@ -89,7 +91,7 @@ public class ItemSpeciesItemFilter extends Item implements IItemFilterItemUpgrad
   @SideOnly(Side.CLIENT)
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
     Container container = player.openContainer;
-    if (container != null && container instanceof IFilterContainer) {
+    if (container instanceof IFilterContainer) {
       return new SpeciesItemFilterGui(player.inventory, new ContainerFilter(player, (TileEntityBase) world.getTileEntity(pos), facing, param1),
           world.getTileEntity(pos), ((IFilterContainer<IItemFilter>) container).getFilter(param1));
     } else {
