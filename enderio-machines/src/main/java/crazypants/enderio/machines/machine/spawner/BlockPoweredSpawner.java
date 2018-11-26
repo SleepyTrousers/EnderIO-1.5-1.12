@@ -13,6 +13,7 @@ import com.enderio.core.common.util.NNList.Callback;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
@@ -157,6 +158,7 @@ public class BlockPoweredSpawner extends AbstractPoweredTaskBlock<TilePoweredSpa
     CapturedMob mob = CapturedMob.create(itemstack);
     if (mob != null) {
       list.add(mob.getDisplayName());
+      list.add(Lang.TOOLTIP_SPAWNER_COST.get(LangPower.FLOAT_NF.format(PoweredSpawnerRecipeRegistry.getInstance().getCostMultiplierFor(mob.getEntityName()))));
     } else {
       list.add(Lang.SPAWNER_EMPTY.get());
     }
@@ -169,9 +171,9 @@ public class BlockPoweredSpawner extends AbstractPoweredTaskBlock<TilePoweredSpa
   @Override
   public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     if (CapturedMob.containsSoul(itemstack)) {
-      SpecialTooltipHandler.addDetailedTooltipFromResources(list, "tile.blockPoweredSpawner");
+      SpecialTooltipHandler.addDetailedTooltipFromResources(list, "tile.block_powered_spawner");
     } else {
-      SpecialTooltipHandler.addDetailedTooltipFromResources(list, "tile.blockPoweredSpawner.empty");
+      SpecialTooltipHandler.addDetailedTooltipFromResources(list, "tile.block_powered_spawner.empty");
     }
   }
 
