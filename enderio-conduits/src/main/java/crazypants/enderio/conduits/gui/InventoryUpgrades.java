@@ -110,10 +110,7 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
     }
     switch (slot) {
     case 0:
-      if (stack.getItem() instanceof ItemFunctionUpgrade && con instanceof IUpgradeHolder) {
-        return ((IUpgradeHolder) con).isFunctionUpgradeAccepted(stack);
-      }
-      return false;
+      return isFunctionUpgradeAccepted(stack, con);
     case 2:
       return isFilterUpgradeAccepted(stack, con, true);
     case 3:
@@ -125,6 +122,13 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
   private boolean isFilterUpgradeAccepted(@Nonnull ItemStack stack, IConduit con, boolean isInput) {
     if (con instanceof IFilterHolder) {
       return ((IFilterHolder) con).isFilterUpgradeAccepted(stack, isInput);
+    }
+    return false;
+  }
+
+  private boolean isFunctionUpgradeAccepted(@Nonnull ItemStack stack, IConduit con) {
+    if (stack.getItem() instanceof ItemFunctionUpgrade && con instanceof IUpgradeHolder) {
+      return ((IUpgradeHolder) con).isFunctionUpgradeAccepted(stack);
     }
     return false;
   }
