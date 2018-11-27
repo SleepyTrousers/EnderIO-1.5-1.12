@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 
-public class Commune implements IFarmerJoe {
+public final class Commune implements IFarmerJoe {
 
   public static final @Nonnull Commune instance = new Commune();
 

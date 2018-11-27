@@ -200,7 +200,7 @@ public class PlantableFarmer extends AbstractFarmerJoe {
     return new HarvestResult(result, pos);
   }
 
-  private boolean isPlantableForBlock(@Nonnull IFarmer farm, @Nonnull ItemStack stack, @Nonnull Block block) {
+  protected boolean isPlantableForBlock(@Nonnull IFarmer farm, @Nonnull ItemStack stack, @Nonnull Block block) {
     if (!(stack.getItem() instanceof IPlantable)) {
       return false;
     }
@@ -209,7 +209,7 @@ public class PlantableFarmer extends AbstractFarmerJoe {
     return b != null && b.getBlock() == block;
   }
 
-  private IBlockState getPlant(@Nonnull IFarmer farm, IPlantable plantable) {
+  protected IBlockState getPlant(@Nonnull IFarmer farm, IPlantable plantable) {
     return plantable.getPlant(farm.getWorld(), farm.getLocation().up(256));
   }
 

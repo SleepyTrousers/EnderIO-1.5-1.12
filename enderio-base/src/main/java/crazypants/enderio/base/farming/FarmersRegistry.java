@@ -7,6 +7,7 @@ import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.api.farm.IFarmerJoe;
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.farming.farmers.BigMushroomFarmer;
 import crazypants.enderio.base.farming.farmers.ChorusFarmer;
 import crazypants.enderio.base.farming.farmers.CocoaFarmer;
 import crazypants.enderio.base.farming.farmers.CustomSeedFarmer;
@@ -14,6 +15,7 @@ import crazypants.enderio.base.farming.farmers.FlowerPicker;
 import crazypants.enderio.base.farming.farmers.MelonFarmer;
 import crazypants.enderio.base.farming.farmers.PickableFarmer;
 import crazypants.enderio.base.farming.farmers.PlantableFarmer;
+import crazypants.enderio.base.farming.farmers.SmallMushroomFarmer;
 import crazypants.enderio.base.farming.farmers.StemFarmer;
 import crazypants.enderio.base.farming.farmers.TreeFarmer;
 import crazypants.enderio.base.init.ModObject;
@@ -32,23 +34,24 @@ import net.minecraftforge.oredict.OreDictionary;
 @EventBusSubscriber(modid = EnderIO.MODID)
 public final class FarmersRegistry {
 
-  public static final @Nonnull Things slotItemsHoeTools = new Things("toolHoe").add(Items.WOODEN_HOE).add(Items.STONE_HOE).add(Items.IRON_HOE)
-      .add(Items.GOLDEN_HOE).add(Items.DIAMOND_HOE).add(ModObject.itemDarkSteelHand);
-  public static final @Nonnull Things slotItemsAxeTools = new Things().add(Items.WOODEN_AXE).add(Items.STONE_AXE).add(Items.IRON_AXE).add(Items.GOLDEN_AXE)
-      .add(Items.DIAMOND_AXE).add(ModObject.itemDarkSteelAxe);
-  public static final @Nonnull Things slotItemsExtraTools = new Things("toolShears").add(Items.SHEARS).add(ModObject.itemDarkSteelShears).add("toolTreetap");
-  public static final @Nonnull Things slotItemsSeeds = new Things("treeSapling").add(Items.WHEAT_SEEDS).add(Items.CARROT).add(Items.POTATO)
-      .add(Blocks.RED_MUSHROOM).add(Blocks.BROWN_MUSHROOM).add(Items.NETHER_WART).add(Blocks.SAPLING).add(Items.REEDS).add(Items.MELON_SEEDS)
-      .add(Items.PUMPKIN_SEEDS);
-  public static final @Nonnull Things slotItemsProduce = new Things("logWood").add(new ItemStack(Blocks.LOG, 1, 0)).add(Blocks.WHEAT)
-      .add(new ItemStack(Blocks.LEAVES, 1, 0)).add(Items.APPLE).add(Items.MELON).add(Blocks.PUMPKIN).add(Blocks.YELLOW_FLOWER).add(Blocks.RED_FLOWER);
-
-  // TODO 1.11: move those treetaps somewhere else
-  // slotItemsStacks3.addAll(TileFarmStation.TREETAPS.getItemStacks());
+  public static final @Nonnull String TOOL_TREETAP = "toolTreetap";
+  public static final @Nonnull String TOOL_SHEARS = "toolShears";
+  public static final @Nonnull String TOOL_HOE = "toolHoe";
 
   private static final @Nonnull Things SAPLINGS = new Things("treeSapling");
   private static final @Nonnull Things WOODS = new Things("logWood");
   private static final @Nonnull Things FLOWERS = new Things().add(Blocks.YELLOW_FLOWER).add(Blocks.RED_FLOWER);
+
+  public static final @Nonnull Things slotItemsHoeTools = new Things(TOOL_HOE).add(Items.WOODEN_HOE).add(Items.STONE_HOE).add(Items.IRON_HOE)
+      .add(Items.GOLDEN_HOE).add(Items.DIAMOND_HOE).add(ModObject.itemDarkSteelHand);
+  public static final @Nonnull Things slotItemsAxeTools = new Things().add(Items.WOODEN_AXE).add(Items.STONE_AXE).add(Items.IRON_AXE).add(Items.GOLDEN_AXE)
+      .add(Items.DIAMOND_AXE).add(ModObject.itemDarkSteelAxe);
+  public static final @Nonnull Things slotItemsExtraTools = new Things(TOOL_SHEARS).add(Items.SHEARS).add(ModObject.itemDarkSteelShears).add(TOOL_TREETAP);
+  public static final @Nonnull Things slotItemsSeeds = new Things().add(SAPLINGS).add(Items.WHEAT_SEEDS).add(Items.CARROT).add(Items.POTATO)
+      .add(Blocks.RED_MUSHROOM).add(Blocks.BROWN_MUSHROOM).add(Items.NETHER_WART).add(Blocks.SAPLING).add(Items.REEDS).add(Items.MELON_SEEDS)
+      .add(Items.PUMPKIN_SEEDS);
+  public static final @Nonnull Things slotItemsProduce = new Things().add(WOODS).add(new ItemStack(Blocks.LOG, 1, 0)).add(Blocks.WHEAT)
+      .add(new ItemStack(Blocks.LEAVES, 1, 0)).add(Items.APPLE).add(Items.MELON).add(Blocks.PUMPKIN).add(Blocks.YELLOW_FLOWER).add(Blocks.RED_FLOWER);
 
   @SubscribeEvent
   public static void registerFarmers(@Nonnull RegistryEvent.Register<IFarmerJoe> event) {
@@ -58,9 +61,11 @@ public final class FarmersRegistry {
     event.getRegistry()
         .register(new StemFarmer(Blocks.CACTUS, new ItemStack(Blocks.CACTUS)).setPriority(EventPriority.LOW).setRegistryName(EnderIO.DOMAIN, "cactus"));
     event.getRegistry().register(new TreeFarmer(SAPLINGS, WOODS).setPriority(EventPriority.LOW).setRegistryName(EnderIO.DOMAIN, "trees"));
-    event.getRegistry().register(
-        new TreeFarmer(true, Blocks.RED_MUSHROOM, Blocks.RED_MUSHROOM_BLOCK).setPriority(EventPriority.LOW).setRegistryName(EnderIO.DOMAIN, "red_mushrooms"));
-    event.getRegistry().register(new TreeFarmer(true, Blocks.BROWN_MUSHROOM, Blocks.BROWN_MUSHROOM_BLOCK).setPriority(EventPriority.LOW)
+    // mushrooms only grow bigger on certain blocks. so plant them on those and harvest them on others
+    event.getRegistry().register(new SmallMushroomFarmer().setPriority(EventPriority.LOW).setRegistryName(EnderIO.DOMAIN, "small_mushrooms"));
+    event.getRegistry().register(new BigMushroomFarmer(true, Blocks.RED_MUSHROOM, Blocks.RED_MUSHROOM_BLOCK).setPriority(EventPriority.LOW)
+        .setRegistryName(EnderIO.DOMAIN, "red_mushrooms"));
+    event.getRegistry().register(new BigMushroomFarmer(true, Blocks.BROWN_MUSHROOM, Blocks.BROWN_MUSHROOM_BLOCK).setPriority(EventPriority.LOW)
         .setRegistryName(EnderIO.DOMAIN, "brown_mushrooms"));
     // special case of plantables to get spacing correct
     event.getRegistry().register(new MelonFarmer(Blocks.MELON_STEM, Blocks.MELON_BLOCK, new ItemStack(Items.MELON_SEEDS)).setPriority(EventPriority.LOW)
@@ -169,7 +174,7 @@ public final class FarmersRegistry {
     for (String hoe : hoes) {
       Item item = findItem(modid, NullHelper.first(hoe, ""));
       if (item != null) {
-        OreDictionary.registerOre("toolHoe", new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE));
+        OreDictionary.registerOre(TOOL_HOE, new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE));
         count++;
       }
     }
@@ -190,7 +195,7 @@ public final class FarmersRegistry {
     for (String hoe : hoes) {
       Item item = findItem(modid, NullHelper.first(hoe, ""));
       if (item != null) {
-        OreDictionary.registerOre("toolTreetap", new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE));
+        OreDictionary.registerOre(TOOL_TREETAP, new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE));
         count++;
       }
     }
