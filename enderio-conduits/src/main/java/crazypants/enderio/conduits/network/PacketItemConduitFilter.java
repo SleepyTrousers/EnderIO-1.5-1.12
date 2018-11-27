@@ -1,20 +1,24 @@
 package crazypants.enderio.conduits.network;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.conduits.conduit.item.IItemConduit;
+import info.loenwind.autoconfig.util.NullHelper;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit> {
 
-  private EnumFacing dir;
+  private @Nonnull EnumFacing dir = EnumFacing.DOWN;
   private boolean loopMode;
   private boolean roundRobin;
   private DyeColor colIn;
@@ -27,7 +31,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   public PacketItemConduitFilter() {
   }
 
-  public PacketItemConduitFilter(IItemConduit con, EnumFacing dir) {
+  public PacketItemConduitFilter(@Nonnull IItemConduit con, @Nonnull EnumFacing dir) {
     super(con.getBundle().getEntity(), con);
     this.dir = dir;
     loopMode = con.isSelfFeedEnabled(dir);
@@ -43,11 +47,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   @Override
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
-    if (dir == null) {
-      buf.writeShort(-1);
-    } else {
-      buf.writeShort(dir.ordinal());
-    }
+    buf.writeShort(dir.ordinal());
     buf.writeBoolean(loopMode);
     buf.writeBoolean(roundRobin);
     buf.writeInt(priority);
@@ -60,17 +60,12 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
-    short ord = buf.readShort();
-    if (ord < 0) {
-      dir = null;
-    } else {
-      dir = EnumFacing.values()[ord];
-    }
+    dir = NullHelper.first(EnumFacing.values()[MathHelper.clamp(buf.readShort(), 0, 5)], EnumFacing.DOWN);
     loopMode = buf.readBoolean();
     roundRobin = buf.readBoolean();
     priority = buf.readInt();
-    colIn = DyeColor.values()[buf.readShort()];
-    colOut = DyeColor.values()[buf.readShort()];
+    colIn = DyeColor.fromIndex(buf.readShort());
+    colOut = DyeColor.fromIndex(buf.readShort());
     inputFilter = (IItemFilter) FilterRegistry.readFilter(buf);
     outputFilter = (IItemFilter) FilterRegistry.readFilter(buf);
   }
@@ -83,8 +78,8 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
       if (conduit != null) {
         conduit.setSelfFeedEnabled(message.dir, message.loopMode);
         conduit.setRoundRobinEnabled(message.dir, message.roundRobin);
-        conduit.setInputColor(message.dir, message.colIn);
-        conduit.setOutputColor(message.dir, message.colOut);
+        conduit.setInputColor(message.dir, NullHelper.first(message.colIn, DyeColor.BLACK));
+        conduit.setOutputColor(message.dir, NullHelper.first(message.colOut, DyeColor.BLACK));
         conduit.setOutputPriority(message.dir, message.priority);
         applyFilter(message.dir, conduit, message.inputFilter, true);
         applyFilter(message.dir, conduit, message.outputFilter, false);
@@ -95,7 +90,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
       return null;
     }
 
-    private void applyFilter(EnumFacing dir, IItemConduit conduit, IItemFilter filter, boolean isInput) {
+    private void applyFilter(@Nonnull EnumFacing dir, @Nonnull IItemConduit conduit, IItemFilter filter, boolean isInput) {
       if (isInput) {
         conduit.setInputFilter(dir, filter);
       } else {

@@ -147,10 +147,10 @@ public class ItemSettings extends BaseSettingsPanel {
     } else if (guiButton.id == ID_PRIORITY_DOWN) {
       itemConduit.setOutputPriority(gui.getDir(), itemConduit.getOutputPriority(gui.getDir()) - 1);
     } else if (guiButton.id == ID_INSERT_CHANNEL) {
-      DyeColor col = DyeColor.values()[insertChannelB.getColorIndex()];
+      DyeColor col = DyeColor.fromIndex(insertChannelB.getColorIndex());
       itemConduit.setOutputColor(gui.getDir(), col);
     } else if (guiButton.id == ID_EXTRACT_CHANNEL) {
-      DyeColor col = DyeColor.values()[extractChannelB.getColorIndex()];
+      DyeColor col = DyeColor.fromIndex(extractChannelB.getColorIndex());
       itemConduit.setInputColor(gui.getDir(), col);
     } else if (guiButton.id == ID_INSERT_FILTER_OPTIONS) {
       doOpenFilterGui(FilterGuiUtil.INDEX_OUTPUT_ITEM);
