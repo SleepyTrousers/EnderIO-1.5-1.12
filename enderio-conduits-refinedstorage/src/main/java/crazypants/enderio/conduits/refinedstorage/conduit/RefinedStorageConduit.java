@@ -27,8 +27,10 @@ import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
+import crazypants.enderio.base.filter.fluid.items.IItemFilterFluidUpgrade;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.ItemFilter;
+import crazypants.enderio.base.filter.item.items.ItemBasicItemFilter;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
@@ -551,5 +553,10 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   @Override
   public int getOutputFilterIndex() {
     return INDEX_OUTPUT_REFINED_STROAGE;
+  }
+
+  @Override
+  public boolean isFilterUpgradeAccepted(@Nonnull ItemStack stack, boolean isInput) {
+    return stack.getItem() instanceof IItemFilterFluidUpgrade || stack.getItem() instanceof ItemBasicItemFilter;
   }
 }

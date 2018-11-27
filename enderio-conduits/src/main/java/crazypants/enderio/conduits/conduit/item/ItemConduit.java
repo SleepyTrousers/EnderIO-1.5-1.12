@@ -39,6 +39,7 @@ import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.ItemFilter;
+import crazypants.enderio.base.filter.item.items.IItemFilterItemUpgrade;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.registry.TextureRegistry;
@@ -864,6 +865,11 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
   @Override
   public int getOutputFilterIndex() {
     return FilterGuiUtil.INDEX_OUTPUT_ITEM;
+  }
+
+  @Override
+  public boolean isFilterUpgradeAccepted(@Nonnull ItemStack stack, boolean isInput) {
+    return stack.getItem() instanceof IItemFilterItemUpgrade;
   }
 
   @Override
