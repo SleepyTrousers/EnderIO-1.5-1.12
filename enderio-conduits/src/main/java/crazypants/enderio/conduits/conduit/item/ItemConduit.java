@@ -81,7 +81,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, ICondu
 
   public static final IConduitTexture ICON_KEY_CORE = new ConduitTexture(TextureRegistry.registerTexture("blocks/item_conduit_core"), ConduitTexture.core());
 
-  public static final IConduitTexture ICON_KEY_ENDER = new ConduitTexture(TextureRegistry.registerTexture("blocks/ender_still"));
+  public static final IConduitTexture ICON_KEY_ENDER = new ConduitTexture(TextureRegistry.registerTexture("blocks/ender_still"),
+      new Vector4f(1.5f / 16f, 6 / 16f, 14.5f / 16f, 10 / 16f));
 
   ItemConduitNetwork network;
 
