@@ -25,7 +25,6 @@ public class SmallMushroomFarmer extends PlantableFarmer {
   public boolean canHarvest(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
     Block block = state.getBlock();
     if (block == Blocks.RED_MUSHROOM || block == Blocks.BROWN_MUSHROOM) {
-      System.out.println("foo");
       Block block1 = farm.getBlockState(bc.down()).getBlock();
       // hardcoded check from net.minecraft.world.gen.feature.WorldGenBigMushroom.generate()
       return block1 != Blocks.DIRT && block1 != Blocks.GRASS && block1 != Blocks.MYCELIUM;
