@@ -38,7 +38,7 @@ public class ItemOCConduit extends AbstractItemConduit {
   protected ItemOCConduit(@Nonnull IModObject mo) {
     super(mo, subtypes);
     ConduitRegistry.register(ConduitBuilder.start().setUUID(new ResourceLocation(EnderIO.DOMAIN, "opencomputers")).setClass(getBaseConduitType())
-            .setOffsets(Offset.NORTH_DOWN, Offset.NORTH_DOWN, Offset.SOUTH_WEST, Offset.WEST_DOWN).build()
+            .setOffsets(Offset.WEST_DOWN, Offset.NORTH_DOWN, Offset.SOUTH_WEST, Offset.WEST_DOWN).build()
             .setUUID(new ResourceLocation(EnderIO.DOMAIN, "opencomputers_conduit")).setClass(OCConduit.class).build().finish());
         ConduitDisplayMode.registerDisplayMode(new ConduitDisplayMode(getBaseConduitType(), IconEIO.WRENCH_OVERLAY_OC, IconEIO.WRENCH_OVERLAY_OC_OFF));
   }

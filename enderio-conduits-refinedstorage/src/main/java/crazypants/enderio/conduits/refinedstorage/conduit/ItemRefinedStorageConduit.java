@@ -30,7 +30,7 @@ public class ItemRefinedStorageConduit extends AbstractItemConduit {
   protected ItemRefinedStorageConduit(@Nonnull IModObject modObject) {
     super(modObject, new ItemConduitSubtype(modObject.getUnlocalisedName(), modObject.getRegistryName().toString()));
     ConduitRegistry.register(ConduitBuilder.start().setUUID(new ResourceLocation(EnderIO.DOMAIN, "refinedstorage")).setClass(getBaseConduitType())
-        .setOffsets(Offset.NORTH_UP, Offset.NORTH_UP, Offset.NORTH_WEST, Offset.WEST_UP).build()
+        .setOffsets(Offset.WEST_UP, Offset.NORTH_UP, Offset.NORTH_WEST, Offset.WEST_UP).build()
         .setUUID(new ResourceLocation(EnderIO.DOMAIN, "refinedstorage_conduit")).setClass(RefinedStorageConduit.class).build().finish());
     ConduitDisplayMode.registerDisplayMode(new ConduitDisplayMode(getBaseConduitType(), IconEIO.WRENCH_OVERLAY_RS, IconEIO.WRENCH_OVERLAY_RS_OFF));
   }
