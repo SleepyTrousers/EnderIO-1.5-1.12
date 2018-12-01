@@ -42,7 +42,7 @@ public class ItemMEConduit extends AbstractItemConduit {
         new ItemConduitSubtype(modObject.getUnlocalisedName() + "_dense", modObject.getRegistryName().toString() + "_dense"));
 
     ConduitRegistry.register(ConduitBuilder.start().setUUID(new ResourceLocation(EnderIO.DOMAIN, "appliedenergistics")).setClass(getBaseConduitType())
-        .setOffsets(Offset.SOUTH_UP, Offset.SOUTH_UP, Offset.NORTH_EAST, Offset.EAST_UP).build()
+        .setOffsets(Offset.EAST_UP, Offset.SOUTH_UP, Offset.NORTH_EAST, Offset.EAST_UP).build()
         .setUUID(new ResourceLocation(EnderIO.DOMAIN, "appliedenergistics_conduit")).setClass(MEConduit.class).build().finish());
     ConduitDisplayMode.registerDisplayMode(new ConduitDisplayMode(getBaseConduitType(), IconEIO.WRENCH_OVERLAY_ME, IconEIO.WRENCH_OVERLAY_ME_OFF));
   }
