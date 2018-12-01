@@ -6,17 +6,7 @@ import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
-import crazypants.enderio.base.filter.fluid.items.IItemFilterFluidUpgrade;
-import crazypants.enderio.base.filter.item.items.IItemFilterItemUpgrade;
-import crazypants.enderio.base.filter.item.items.ItemBasicItemFilter;
-import crazypants.enderio.base.filter.redstone.items.IItemInputSignalFilterUpgrade;
-import crazypants.enderio.base.filter.redstone.items.IItemOutputSignalFilterUpgrade;
 import crazypants.enderio.conduits.capability.IUpgradeHolder;
-import crazypants.enderio.conduits.conduit.item.IItemConduit;
-import crazypants.enderio.conduits.conduit.liquid.AbstractTankConduit;
-import crazypants.enderio.conduits.conduit.liquid.EnderLiquidConduit;
-import crazypants.enderio.conduits.conduit.power.IPowerConduit;
-import crazypants.enderio.conduits.conduit.redstone.IRedstoneConduit;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -129,25 +119,18 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
     return false;
   }
 
-  // TODO make a way to do this based on the conduit
   private boolean isFilterUpgradeAccepted(@Nonnull ItemStack stack, IConduit con, boolean isInput) {
-    if (con instanceof IItemConduit) {
-      return stack.getItem() instanceof IItemFilterItemUpgrade;
-    } else if (con instanceof EnderLiquidConduit) {
-      return stack.getItem() instanceof IItemFilterFluidUpgrade;
-    } else if (con instanceof IRedstoneConduit) {
-      if (!isInput) {
-        return stack.getItem() instanceof IItemInputSignalFilterUpgrade;
-      } else {
-        return stack.getItem() instanceof IItemOutputSignalFilterUpgrade;
-      }
+    if (con instanceof IFilterHolder) {
+      return ((IFilterHolder) con).isFilterUpgradeAccepted(stack, isInput);
     }
-    return stack.getItem() instanceof IItemFilterFluidUpgrade || stack.getItem() instanceof ItemBasicItemFilter;
+    return false;
   }
 
   private boolean isFunctionUpgradeAccepted(@Nonnull ItemStack stack, IConduit con) {
-    // Hacky work around to avoid liquid conduits accepting upgrades
-    return stack.getItem() instanceof ItemFunctionUpgrade && !(con instanceof AbstractTankConduit || con instanceof IPowerConduit);
+    if (stack.getItem() instanceof ItemFunctionUpgrade && con instanceof IUpgradeHolder) {
+      return ((IUpgradeHolder) con).isFunctionUpgradeAccepted(stack);
+    }
+    return false;
   }
 
   @Override

@@ -40,6 +40,8 @@ import crazypants.enderio.base.filter.redstone.DefaultOutputSignalFilter;
 import crazypants.enderio.base.filter.redstone.IInputSignalFilter;
 import crazypants.enderio.base.filter.redstone.IOutputSignalFilter;
 import crazypants.enderio.base.filter.redstone.IRedstoneSignalFilter;
+import crazypants.enderio.base.filter.redstone.items.IItemInputSignalFilterUpgrade;
+import crazypants.enderio.base.filter.redstone.items.IItemOutputSignalFilterUpgrade;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
@@ -906,5 +908,14 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Override
   public int getOutputFilterIndex() {
     return FilterGuiUtil.INDEX_OUTPUT_REDSTONE;
+  }
+
+  @Override
+  public boolean isFilterUpgradeAccepted(@Nonnull ItemStack stack, boolean isInput) {
+    if (!isInput) {
+      return stack.getItem() instanceof IItemInputSignalFilterUpgrade;
+    } else {
+      return stack.getItem() instanceof IItemOutputSignalFilterUpgrade;
+    }
   }
 }

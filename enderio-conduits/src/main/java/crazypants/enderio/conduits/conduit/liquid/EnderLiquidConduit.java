@@ -31,6 +31,7 @@ import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.filter.fluid.FluidFilter;
 import crazypants.enderio.base.filter.fluid.IFluidFilter;
+import crazypants.enderio.base.filter.fluid.items.IItemFilterFluidUpgrade;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.registry.TextureRegistry;
@@ -623,6 +624,11 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
   @Override
   public int getOutputFilterIndex() {
     return FilterGuiUtil.INDEX_OUTPUT_FLUID;
+  }
+
+  @Override
+  public boolean isFilterUpgradeAccepted(@Nonnull ItemStack stack, boolean isInput) {
+    return stack.getItem() instanceof IItemFilterFluidUpgrade;
   }
 
   // ------------------------------------------------

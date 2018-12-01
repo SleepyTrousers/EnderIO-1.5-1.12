@@ -61,4 +61,14 @@ public interface IFilterHolder<T extends IFilter> {
 
   int getOutputFilterIndex();
 
+  /**
+   *Defaults to <code>false</code>.
+   *
+   * @param stack The stack to check for being a valid filter.
+   * @param isInput <code>true</code> if the slot is the input slot, <code>false</code> if it is the output slot.
+   * @return <code>true</code> if the conduit can accept the given ItemStack as a filter.
+   */
+  default boolean isFilterUpgradeAccepted(@Nonnull ItemStack stack, boolean isInput) {
+    return false;
+  }
 }
