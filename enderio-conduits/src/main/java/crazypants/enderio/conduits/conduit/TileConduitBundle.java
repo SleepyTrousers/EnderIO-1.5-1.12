@@ -569,125 +569,114 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       connectorsDirty = connectorsDirty || b;
     }
 
-    if (!connectorsDirty && !cachedConnectors.isEmpty()) {
-      result.addAll(cachedConnectors);
-      return;
-    }
+    if (connectorsDirty || cachedConnectors.isEmpty()) {
+      cachedConnectors.clear();
 
-    cachedConnectors.clear();
-
-    // TODO: What an unholly mess! (and it doesn't even work correctly...)
-    List<CollidableComponent> coreBounds = new ArrayList<CollidableComponent>();
-    for (IConduit con : getConduits()) {
-      addConduitCores(coreBounds, con);
-    }
-    cachedConnectors.addAll(coreBounds);
-    result.addAll(coreBounds);
-
-    // 1st algorithm
-    List<CollidableComponent> conduitsBounds = new ArrayList<CollidableComponent>();
-    for (IConduit con : getConduits()) {
-      conduitsBounds.addAll(con.getCollidableComponents());
-      addConduitCores(conduitsBounds, con);
-    }
-
-    Set<Class<IConduit>> collidingTypes = new HashSet<Class<IConduit>>();
-    for (CollidableComponent conCC : conduitsBounds) {
-      for (CollidableComponent innerCC : conduitsBounds) {
-        if (!IPowerConduit.COLOR_CONTROLLER_ID.equals(innerCC.data) && !IPowerConduit.COLOR_CONTROLLER_ID.equals(conCC.data) && conCC != innerCC
-            && conCC.bound.intersects(innerCC.bound)) {
-          // Note: That check could probably be data!=null...
-          collidingTypes.add((Class<IConduit>) conCC.conduitType);
-        }
+      // TODO: What an unholly mess! (and it doesn't even work correctly...)
+      List<CollidableComponent> coreBounds = new ArrayList<CollidableComponent>();
+      List<CollidableComponent> conduitsBounds = new ArrayList<CollidableComponent>();
+      for (IConduit con : getConduits()) {
+        addConduitCores(coreBounds, con);
+        conduitsBounds.addAll(con.getCollidableComponents());
       }
-    }
+      cachedConnectors.addAll(coreBounds);
+      conduitsBounds.addAll(coreBounds);
 
-    // TODO: Remove the core geometries covered up by this as no point in rendering these
-    if (!collidingTypes.isEmpty()) {
-      List<CollidableComponent> colCores = new ArrayList<CollidableComponent>();
-      for (Class<IConduit> c : collidingTypes) {
-        IConduit con = getConduit(c);
-        if (con != null) {
-          addConduitCores(colCores, con);
-        }
-      }
-
-      BoundingBox bb = null;
-      for (CollidableComponent cBB : colCores) {
-        if (bb == null) {
-          bb = cBB.bound;
-        } else {
-          bb = bb.expandBy(cBB.bound);
-        }
-      }
-      if (bb != null) {
-        bb = bb.scale(1.05, 1.05, 1.05);
-        CollidableComponent cc = new CollidableComponent(null, bb, null, ConduitConnectorType.INTERNAL);
-        result.add(cc);
-        cachedConnectors.add(cc);
-      }
-    }
-
-    // 2nd algorithm
-    for (IConduit con : getConduits()) {
-
-      if (con.hasConnections()) {
-        List<CollidableComponent> cores = new ArrayList<CollidableComponent>();
-        addConduitCores(cores, con);
-        if (cores.size() > 1) {
-          BoundingBox bb = cores.get(0).bound;
-          double area = bb.getArea();
-          for (CollidableComponent cc : cores) {
-            bb = bb.expandBy(cc.bound);
-          }
-          if (bb.getArea() > area * 1.5f) {
-            bb = bb.scale(1.05, 1.05, 1.05);
-            CollidableComponent cc = new CollidableComponent(null, bb, null, ConduitConnectorType.INTERNAL);
-            result.add(cc);
-            cachedConnectors.add(cc);
+      // 1st algorithm
+      Set<Class<IConduit>> collidingTypes = new HashSet<Class<IConduit>>();
+      for (CollidableComponent conCC : conduitsBounds) {
+        for (CollidableComponent innerCC : conduitsBounds) {
+          if (!IPowerConduit.COLOR_CONTROLLER_ID.equals(innerCC.data) && !IPowerConduit.COLOR_CONTROLLER_ID.equals(conCC.data) && conCC != innerCC
+              && conCC.bound.intersects(innerCC.bound)) {
+            // Note: That check could probably be data!=null...
+            collidingTypes.add((Class<IConduit>) conCC.conduitType);
           }
         }
       }
-    }
 
-    // Merge all internal conduit connectors into one box
-    BoundingBox conBB = null;
-    for (int i = 0; i < result.size(); i++) {
-      CollidableComponent cc = result.get(i);
-      if (cc.conduitType == null && cc.data == ConduitConnectorType.INTERNAL) {
-        conBB = conBB == null ? cc.bound : conBB.expandBy(cc.bound);
-        result.remove(i);
-        i--;
-        cachedConnectors.remove(cc);
-      }
-    }
+      if (!collidingTypes.isEmpty()) {
+        List<CollidableComponent> colCores = new ArrayList<CollidableComponent>();
+        for (Class<IConduit> c : collidingTypes) {
+          IConduit con = getConduit(c);
+          if (con != null) {
+            addConduitCores(colCores, con);
+          }
+        }
 
-    if (conBB != null) {
-      CollidableComponent cc = new CollidableComponent(null, conBB, null, ConduitConnectorType.INTERNAL);
-      result.add(cc);
-      cachedConnectors.add(cc);
-    }
-
-    // External Connectors
-    EnumSet<EnumFacing> externalDirs = EnumSet.noneOf(EnumFacing.class);
-    for (IConduit con : getConduits()) {
-      Set<EnumFacing> extCons = con.getExternalConnections();
-      for (EnumFacing dir : extCons) {
-        if (con.getConnectionMode(NullHelper.notnull(dir, "IConduit#getExternalConnections#iterator#next")) != ConnectionMode.DISABLED) {
-          externalDirs.add(dir);
+        BoundingBox bb = null;
+        for (CollidableComponent cBB : colCores) {
+          if (bb == null) {
+            bb = cBB.bound;
+          } else {
+            bb = bb.expandBy(cBB.bound);
+          }
+        }
+        if (bb != null) {
+          bb = bb.scale(1.05, 1.05, 1.05);
+          CollidableComponent cc = new CollidableComponent(null, bb, null, ConduitConnectorType.INTERNAL);
+          cachedConnectors.add(cc);
         }
       }
-    }
-    for (EnumFacing dir : externalDirs) {
-      if (dir != null) {
-        BoundingBox bb = ConduitGeometryUtil.instance.getExternalConnectorBoundingBox(dir);
-        CollidableComponent cc = new CollidableComponent(null, bb, dir, ConduitConnectorType.EXTERNAL);
-        result.add(cc);
+
+      // 2nd algorithm
+      for (IConduit con : getConduits()) {
+
+        if (con.hasConnections()) {
+          List<CollidableComponent> cores = new ArrayList<CollidableComponent>();
+          addConduitCores(cores, con);
+          if (cores.size() > 1) {
+            BoundingBox bb = cores.get(0).bound;
+            double area = bb.getArea();
+            for (CollidableComponent cc : cores) {
+              bb = bb.expandBy(cc.bound);
+            }
+            if (bb.getArea() > area * 1.5f) {
+              bb = bb.scale(1.05, 1.05, 1.05);
+              CollidableComponent cc = new CollidableComponent(null, bb, null, ConduitConnectorType.INTERNAL);
+              cachedConnectors.add(cc);
+            }
+          }
+        }
+      }
+
+      // Merge all internal conduit connectors into one box
+      BoundingBox conBB = null;
+      for (int i = 0; i < cachedConnectors.size(); i++) {
+        CollidableComponent cc = cachedConnectors.get(i);
+        if (cc.conduitType == null && cc.data == ConduitConnectorType.INTERNAL) {
+          conBB = conBB == null ? cc.bound : conBB.expandBy(cc.bound);
+          cachedConnectors.remove(i);
+          i--;
+        }
+      }
+
+      if (conBB != null) {
+        CollidableComponent cc = new CollidableComponent(null, conBB, null, ConduitConnectorType.INTERNAL);
         cachedConnectors.add(cc);
       }
+
+      // External Connectors
+      EnumSet<EnumFacing> externalDirs = EnumSet.noneOf(EnumFacing.class);
+      for (IConduit con : getConduits()) {
+        Set<EnumFacing> extCons = con.getExternalConnections();
+        for (EnumFacing dir : extCons) {
+          if (con.getConnectionMode(NullHelper.notnull(dir, "IConduit#getExternalConnections#iterator#next")) != ConnectionMode.DISABLED) {
+            externalDirs.add(dir);
+          }
+        }
+      }
+      for (EnumFacing dir : externalDirs) {
+        if (dir != null) {
+          BoundingBox bb = ConduitGeometryUtil.instance.getExternalConnectorBoundingBox(dir);
+          CollidableComponent cc = new CollidableComponent(null, bb, dir, ConduitConnectorType.EXTERNAL);
+          cachedConnectors.add(cc);
+        }
+      }
+
+      connectorsDirty = false;
     }
 
-    connectorsDirty = false;
+    result.addAll(cachedConnectors);
   }
 
   private void addConduitCores(List<CollidableComponent> result, IConduit con) {

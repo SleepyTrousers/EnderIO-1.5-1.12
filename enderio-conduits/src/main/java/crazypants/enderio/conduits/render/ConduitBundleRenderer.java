@@ -179,8 +179,19 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
     // Internal connectors between conduits
     List<CollidableComponent> connectors = bundle.getConnectors();
+
+    // if the "gray box" is rendered we don't need render stuff inside it
+    CollidableComponent conBB = null;
+    if (state.getYetaDisplayMode().getDisplayMode().isAll()) {
+      for (CollidableComponent component : connectors) {
+        if (component.conduitType == null && component.data == ConduitConnectorType.INTERNAL) {
+          conBB = component;
+        }
+      }
+    }
+
     for (CollidableComponent component : connectors) {
-      if (component != null) {
+      if (component != null && (component == conBB || conBB == null || !conBB.bound.contains(component.bound))) {
         if (component.conduitType != null) {
           IClientConduit.WithDefaultRendering conduit = (IClientConduit.WithDefaultRendering) bundle.getConduit(component.conduitType);
           if (conduit != null) {
