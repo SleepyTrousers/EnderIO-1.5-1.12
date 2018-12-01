@@ -48,13 +48,6 @@ public class ItemMEConduit extends AbstractItemConduit {
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public void registerRenderers(@Nonnull IModObject modObject) {
-    super.registerRenderers(modObject);
-    ConduitBundleRenderManager.instance.getConduitBundleRenderer().registerRenderer(new DefaultConduitRenderer());
-  }
-
-  @Override
   public @Nonnull Class<? extends IConduit> getBaseConduitType() {
     return IMEConduit.class;
   }
