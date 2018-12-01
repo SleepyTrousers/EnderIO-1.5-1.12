@@ -48,6 +48,7 @@ import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.conduits.autosave.HandleIConduit;
 import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
+import crazypants.enderio.conduits.conduit.power.IPowerConduit;
 import crazypants.enderio.conduits.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
@@ -591,6 +592,15 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     }
 
     Set<Class<IConduit>> collidingTypes = new HashSet<Class<IConduit>>();
+    for (CollidableComponent conCC : conduitsBounds) {
+      for (CollidableComponent innerCC : conduitsBounds) {
+        if (!IPowerConduit.COLOR_CONTROLLER_ID.equals(innerCC.data) && !IPowerConduit.COLOR_CONTROLLER_ID.equals(conCC.data) && conCC != innerCC
+            && conCC.bound.intersects(innerCC.bound)) {
+          // Note: That check could probably be data!=null...
+          collidingTypes.add((Class<IConduit>) conCC.conduitType);
+        }
+      }
+    }
 
     // TODO: Remove the core geometries covered up by this as no point in rendering these
     if (!collidingTypes.isEmpty()) {
