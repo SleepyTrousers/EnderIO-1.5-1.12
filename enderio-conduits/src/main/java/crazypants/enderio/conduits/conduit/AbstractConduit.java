@@ -48,15 +48,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class AbstractConduit implements IServerConduit, IClientConduit.WithDefaultRendering, INotifier {
+public abstract class AbstractConduit implements IServerConduit, IClientConduit.WithDefaultRendering, IConduitComponent, INotifier {
 
   protected final @Nonnull Set<EnumFacing> conduitConnections = EnumSet.noneOf(EnumFacing.class);
 
   protected final @Nonnull Set<EnumFacing> externalConnections = EnumSet.noneOf(EnumFacing.class);
-
-  public static final float STUB_WIDTH = 0.2f;
-
-  public static final float STUB_HEIGHT = 0.2f;
 
   public static final float TRANSMISSION_SCALE = 0.3f;
 
@@ -83,7 +79,7 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
   private Integer lastExternalRedstoneLevel = null;
 
   /**
-   * Client-only value. The server sends this depending on {@link #getNetwork()}. If false, the conduit will render in an erro state. Initialized as
+   * Client-only value. The server sends this depending on {@link #getNetwork()}. If false, the conduit will render in an error state. Initialized as
    * <code>true</code> because most conduits will have no issue to form a network.
    */
   private boolean hasNetwork = true;

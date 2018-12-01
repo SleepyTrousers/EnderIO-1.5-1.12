@@ -23,7 +23,6 @@ import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.conduits.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduits.conduit.IConduitComponent;
 import crazypants.enderio.conduits.conduit.power.IPowerConduit;
 import crazypants.enderio.conduits.conduit.power.PowerConduit;
 import crazypants.enderio.conduits.config.ConduitConfig;
@@ -43,7 +42,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.conduits.init.ConduitObject.item_liquid_conduit;
 
-public class AdvancedLiquidConduit extends AbstractTankConduit implements IConduitComponent {
+public class AdvancedLiquidConduit extends AbstractTankConduit {
 
   public static final int CONDUIT_VOLUME = Fluid.BUCKET_VOLUME;
 

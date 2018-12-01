@@ -33,7 +33,6 @@ import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduits.conduit.IConduitComponent;
 import crazypants.enderio.conduits.oc.gui.OCSettings;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle.ConduitCacheKey;
 import crazypants.enderio.conduits.render.ConduitTexture;
@@ -57,7 +56,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.conduits.oc.init.ConduitOpenComputersObject.item_opencomputers_conduit;
 
-public class OCConduit extends AbstractConduit implements IOCConduit, IConduitComponent {
+public class OCConduit extends AbstractConduit implements IOCConduit {
 
   protected OCConduitNetwork network;
 

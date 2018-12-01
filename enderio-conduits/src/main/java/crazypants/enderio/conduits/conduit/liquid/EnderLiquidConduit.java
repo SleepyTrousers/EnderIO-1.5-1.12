@@ -37,7 +37,6 @@ import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
 import crazypants.enderio.conduits.capability.IUpgradeHolder;
-import crazypants.enderio.conduits.conduit.IConduitComponent;
 import crazypants.enderio.conduits.conduit.IEnderConduit;
 import crazypants.enderio.conduits.conduit.item.ItemConduit;
 import crazypants.enderio.conduits.conduit.power.IPowerConduit;
@@ -62,7 +61,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.conduits.init.ConduitObject.item_liquid_conduit;
 
-public class EnderLiquidConduit extends AbstractLiquidConduit implements IConduitComponent, IFilterHolder<IFluidFilter>, IUpgradeHolder, IEnderConduit {
+public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilterHolder<IFluidFilter>, IUpgradeHolder, IEnderConduit {
 
   public static final IConduitTexture ICON_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/liquid_conduit"), ConduitTexture.arm(3));
   public static final IConduitTexture ICON_CORE_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit_core_1"), ConduitTexture.core(2));

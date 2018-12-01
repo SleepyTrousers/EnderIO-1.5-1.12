@@ -17,7 +17,6 @@ import crazypants.enderio.base.conduit.IConduitTexture;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.render.registry.TextureRegistry;
-import crazypants.enderio.conduits.conduit.IConduitComponent;
 import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.conduits.render.ConduitTexture;
 import crazypants.enderio.conduits.render.ConduitTextureWrapper;
@@ -37,7 +36,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.conduits.init.ConduitObject.item_liquid_conduit;
 
-public class LiquidConduit extends AbstractTankConduit implements IConduitComponent {
+public class LiquidConduit extends AbstractTankConduit {
 
   static final int VOLUME_PER_CONNECTION = Fluid.BUCKET_VOLUME / 4;
 

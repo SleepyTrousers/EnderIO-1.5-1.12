@@ -46,7 +46,6 @@ import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.capability.CapabilityUpgradeHolder;
 import crazypants.enderio.conduits.capability.IUpgradeHolder;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
-import crazypants.enderio.conduits.conduit.IConduitComponent;
 import crazypants.enderio.conduits.conduit.power.IPowerConduit;
 import crazypants.enderio.conduits.conduit.power.PowerConduit;
 import crazypants.enderio.conduits.gui.ItemSettings;
@@ -71,7 +70,7 @@ import net.minecraftforge.items.IItemHandler;
 
 import static crazypants.enderio.conduits.init.ConduitObject.item_item_conduit;
 
-public class ItemConduit extends AbstractConduit implements IItemConduit, IConduitComponent, IFilterHolder<IItemFilter>, IUpgradeHolder {
+public class ItemConduit extends AbstractConduit implements IItemConduit, IFilterHolder<IItemFilter>, IUpgradeHolder {
 
   public static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 

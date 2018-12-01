@@ -43,7 +43,6 @@ import crazypants.enderio.base.filter.redstone.IRedstoneSignalFilter;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
-import crazypants.enderio.conduits.conduit.IConduitComponent;
 import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.conduits.gui.RedstoneSettings;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
@@ -65,7 +64,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.conduits.init.ConduitObject.item_redstone_conduit;
 
-public class InsulatedRedstoneConduit extends AbstractConduit implements IRedstoneConduit, IConduitComponent, IFilterHolder<IRedstoneSignalFilter> {
+public class InsulatedRedstoneConduit extends AbstractConduit implements IRedstoneConduit, IFilterHolder<IRedstoneSignalFilter> {
 
   static final Map<String, IConduitTexture> ICONS = new HashMap<>();
 

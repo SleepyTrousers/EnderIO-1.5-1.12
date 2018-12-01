@@ -36,7 +36,6 @@ import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
-import crazypants.enderio.conduits.conduit.IConduitComponent;
 import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.conduits.gui.PowerSettings;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
@@ -61,7 +60,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import static crazypants.enderio.base.conduit.ConnectionMode.INPUT;
 import static crazypants.enderio.base.conduit.ConnectionMode.OUTPUT;
 
-public class PowerConduit extends AbstractConduit implements IPowerConduit, IConduitComponent {
+public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   static final Map<String, IConduitTexture> ICONS = new HashMap<>();
 
