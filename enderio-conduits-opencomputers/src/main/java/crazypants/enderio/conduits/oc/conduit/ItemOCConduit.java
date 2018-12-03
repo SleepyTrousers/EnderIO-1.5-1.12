@@ -42,13 +42,6 @@ public class ItemOCConduit extends AbstractItemConduit {
             .setUUID(new ResourceLocation(EnderIO.DOMAIN, "opencomputers_conduit")).setClass(OCConduit.class).build().finish());
         ConduitDisplayMode.registerDisplayMode(new ConduitDisplayMode(getBaseConduitType(), IconEIO.WRENCH_OVERLAY_OC, IconEIO.WRENCH_OVERLAY_OC_OFF));
   }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void registerRenderers(@Nonnull IModObject modObject) {
-    super.registerRenderers(modObject);
-    ConduitBundleRenderManager.instance.getConduitBundleRenderer().registerRenderer(new DefaultConduitRenderer());
-  }
   
   @Override
   public @Nonnull Class<? extends IConduit> getBaseConduitType() {

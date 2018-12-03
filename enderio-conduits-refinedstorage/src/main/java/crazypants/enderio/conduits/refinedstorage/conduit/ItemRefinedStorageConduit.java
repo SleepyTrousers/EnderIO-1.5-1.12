@@ -36,13 +36,6 @@ public class ItemRefinedStorageConduit extends AbstractItemConduit {
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public void registerRenderers(@Nonnull IModObject modObject) {
-    super.registerRenderers(modObject);
-    ConduitBundleRenderManager.instance.getConduitBundleRenderer().registerRenderer(new DefaultConduitRenderer());
-  }
-
-  @Override
   @Nonnull
   public Class<? extends IConduit> getBaseConduitType() {
     return IRefinedStorageConduit.class;
