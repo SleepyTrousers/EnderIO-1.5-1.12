@@ -208,11 +208,11 @@ public class SolarPanelNetwork implements ISolarPanelNetwork {
     result.add(text);
     for (BlockPos panel : panels) {
       if (TileSolarPanel.canSeeSun(world, panel)) {
-        result.add(String.format(" Panel at %s cannot see the sun!", BlockCoord.chatString(panel, TextFormatting.RESET)));
+        result.add(String.format(" All panels can see the sun!"));
       }
     }
     if (result.size() == 2) {
-      result.add(String.format(" All panels can see the sun!"));
+      result.add(String.format(" Panel at %s cannot see the sun!", BlockCoord.chatString(panel, TextFormatting.RESET)));
     }
     return result.toArray(new String[result.size()]);
   }
