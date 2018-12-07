@@ -16,6 +16,7 @@ import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManage
 import crazypants.enderio.base.sound.SoundHelper;
 import crazypants.enderio.base.sound.SoundRegistry;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -95,10 +96,15 @@ public class JumpUpgrade extends AbstractUpgrade {
 
     Random rand = player.world.rand;
     for (int i = rand.nextInt(10) + 5; i >= 0; i--) {
-      Particle fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.REDSTONE.getParticleID(),
-          player.posX + (rand.nextDouble() * 0.5 - 0.25), player.posY - player.getYOffset(), player.posZ + (rand.nextDouble() * 0.5 - 0.25), 1, 1, 1);
-      ClientUtil.setParticleVelocity(fx, player.motionX + (rand.nextDouble() * 0.5 - 0.25), (player.motionY / 2) + (rand.nextDouble() * -0.05),
-          player.motionZ + (rand.nextDouble() * 0.5 - 0.25));
+      final double posX = player.posX + (rand.nextDouble() * 0.5 - 0.25);
+      final double posY = player.posY - player.getYOffset();
+      final double posZ = player.posZ + (rand.nextDouble() * 0.5 - 0.25);
+      // Note: for EntityOtherPlayerMP the motion fields are not set and may contain garbage
+      final double velX = ((player instanceof EntityOtherPlayerMP) ? 0 : player.motionX) + (rand.nextDouble() * 0.5 - 0.25);
+      final double velY = ((player instanceof EntityOtherPlayerMP) ? 0 : (player.motionY / 2)) + (rand.nextDouble() * -0.5);
+      final double velZ = ((player instanceof EntityOtherPlayerMP) ? 0 : player.motionZ) + (rand.nextDouble() * 0.5 - 0.25);
+      Particle fx = Minecraft.getMinecraft().effectRenderer.spawnEffectParticle(EnumParticleTypes.REDSTONE.getParticleID(), posX, posY, posZ, 1, 1, 1);
+      ClientUtil.setParticleVelocity(fx, velX, velY, velZ);
       Minecraft.getMinecraft().effectRenderer.addEffect(NullHelper.notnullM(fx, "spawnEffectParticle() failed unexptedly"));
     }
   }
