@@ -17,6 +17,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -89,7 +90,7 @@ public class PaddingHandler {
       if (NullHelper.untrust(player) != null && PaddingUpgrade.INSTANCE.hasUpgrade(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD))) {
         final double distanceSq = player.getPosition().distanceSq(getXPosF(), getYPosF(), getZPosF());
         final double cutoffDistance = DarkSteelConfig.cutoffDistance.get();
-        final float volume = Math.min(.1f, Math.min(1f, (float) (distanceSq / (cutoffDistance * cutoffDistance))));
+        final float volume = MathHelper.clamp((float) (distanceSq / (cutoffDistance * cutoffDistance)), .1f, 1f);
         return parent.getVolume() * volume;
       }
       return parent.getVolume();
