@@ -46,6 +46,11 @@ public class DirectUpgrade extends AbstractUpgrade {
     return item.isForSlot(EntityEquipmentSlot.MAINHAND) && EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack) && !hasAnyUpgradeVariant(stack);
   }
 
+  @Override
+  public boolean canOtherBeRemoved(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item, @Nonnull IDarkSteelUpgrade other) {
+    return !EnergyUpgradeManager.isLowestPowerUpgrade(other);
+  }
+
   @SubscribeEvent(priority = EventPriority.LOWEST)
   public void blockDropEvent(BlockEvent.HarvestDropsEvent event) {
     if (event.getHarvester() == null) {

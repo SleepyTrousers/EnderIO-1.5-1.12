@@ -2,6 +2,8 @@ package crazypants.enderio.api.upgrades;
 
 import javax.annotation.Nonnull;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.google.common.collect.Multimap;
 
 import crazypants.enderio.base.handler.darksteel.PacketDarkSteelSFXPacket;
@@ -102,7 +104,25 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
    *          The item of the stack, pre-cast to {@link IDarkSteelItem}
    * @return True if this upgrade can be applied to the given item.
    */
-  boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item);
+  default boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
+    return !hasUpgrade(stack, item);
+  }
+
+  /**
+   * Checks if the other upgrade can be removed or if it is a prerequisite for this upgrade. This is called to build the JEI recipes, so it must mirror
+   * {@link #canAddToItem(ItemStack, IDarkSteelItem)}.
+   * 
+   * @param stack
+   *          An itemstack to test.
+   * @param item
+   *          The item of the stack, pre-cast to {@link IDarkSteelItem}
+   * @param other
+   *          The upgrade that would be removed.
+   * @return True if the other upgrade can be removed.
+   */
+  default boolean canOtherBeRemoved(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item, @Nonnull IDarkSteelUpgrade other) {
+    return true;
+  }
 
   /**
    * Applies the upgrade to the item's nbt.
@@ -113,6 +133,20 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
    *          The item of the stack, pre-cast to {@link IDarkSteelItem}
    */
   void addToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item);
+
+  /**
+   * Removes the upgrade from the item's nbt and returns the materials of the upgrade.
+   * <p>
+   * Note that this should return the full cost. Deducting any removal fees is done by the calling code.
+   * 
+   * @param stack
+   *          The stack to downgrade
+   * @param item
+   *          The item of the stack, pre-cast to {@link IDarkSteelItem}
+   * @return The upgrade item and levels to return to the player. (e.g. <code>return Pair.of(getUpgradeItem(), getLevelCost());</code>)
+   */
+  @Nonnull
+  Pair<ItemStack, Integer> removeFromItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item);
 
   /**
    * See {@link PlayerTickEvent}. Called when the given item is equipped in any {@link EntityEquipmentSlot} and has this upgrade.

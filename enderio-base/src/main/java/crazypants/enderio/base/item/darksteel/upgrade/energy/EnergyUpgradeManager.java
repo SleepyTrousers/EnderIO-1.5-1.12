@@ -5,10 +5,11 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
-import info.loenwind.autoconfig.factory.IValue;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.util.NbtComparer;
+import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -40,6 +41,10 @@ public abstract class EnergyUpgradeManager {
 
   public static boolean itemHasAnyPowerUpgrade(@Nonnull ItemStack itemstack) {
     return EnergyUpgrade.loadAnyFromItem(itemstack) != null;
+  }
+
+  public static boolean isLowestPowerUpgrade(@Nonnull IDarkSteelUpgrade upgrade) {
+    return (upgrade instanceof EnergyUpgrade) && ((EnergyUpgrade) upgrade).getLevel() == 0;
   }
 
   public static int extractEnergy(@Nonnull ItemStack container, int maxExtract, boolean simulate) {
