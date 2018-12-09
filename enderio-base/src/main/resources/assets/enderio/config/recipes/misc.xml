@@ -32,7 +32,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="logWood"/>
         <item name="logWood"/>
       </grid>
-      <output name="stickWood" amount="16" />
+      <output name="minecraft:stick, stickWood" amount="16" />
     </crafting>
   </recipe>
 
@@ -43,7 +43,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="logWood"/><item/><item name="logWood"/>
         <item name="logWood"/><item name="logWood"/><item name="logWood"/>
       </grid>
-      <output name="chestWood" amount="4" />
+      <output name="minecraft:chest, chestWood" amount="4" />
     </crafting>
   </recipe>
  
@@ -54,7 +54,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="IRON"/><item name="logWood"/><item name="IRON"/>
         <item/><item name="IRON"/><item/>
       </grid>
-      <output name="blockHopper" />
+      <output name="minecraft:hopper, blockHopper" />
     </crafting>
   </recipe>
 
