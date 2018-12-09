@@ -3,26 +3,25 @@ package crazypants.enderio.zoo.entity;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import info.loenwind.autoconfig.factory.IValue;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.config.ZooConfig;
 import crazypants.enderio.zoo.entity.render.RenderDireSlime;
+import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMagmaCube;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -36,6 +35,9 @@ public class EntityDireSlime extends EntityMagmaCube implements IEnderZooMob {
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
+    LootTableList.register(new ResourceLocation(EnderIOZoo.DOMAIN, NAME + "_1"));
+    LootTableList.register(new ResourceLocation(EnderIOZoo.DOMAIN, NAME + "_2"));
+    LootTableList.register(new ResourceLocation(EnderIOZoo.DOMAIN, NAME + "_4"));
     IEnderZooMob.register(event, NAME, EntityDireSlime.class, EGG_BG_COL, EGG_FG_COL, MobID.DLIME);
   }
 
@@ -163,14 +165,9 @@ public class EntityDireSlime extends EntityMagmaCube implements IEnderZooMob {
   }
 
   @Override
-  protected @Nonnull Item getDropItem() {
-    return this.getSlimeSize() == 4 ? Item.getItemFromBlock(Blocks.CLAY) : Items.CLAY_BALL;
-  }
-
-  @Override
   @Nullable
   protected ResourceLocation getLootTable() {
-    return null; // use getDropItem() instead
+    return new ResourceLocation(EnderIOZoo.DOMAIN, NAME + "_" + getSlimeSize());
   }
 
   @Override

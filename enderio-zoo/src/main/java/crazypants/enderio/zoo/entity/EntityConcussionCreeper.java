@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
-import crazypants.enderio.base.material.material.Material;
 import crazypants.enderio.base.teleport.RandomTeleportUtil;
 import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.config.ZooConfig;
@@ -16,15 +15,13 @@ import crazypants.enderio.zoo.entity.render.RenderConcussionCreeper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -39,6 +36,7 @@ public class EntityConcussionCreeper extends EntityCreeper implements IEnderZooM
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
+    LootTableList.register(new ResourceLocation(EnderIOZoo.DOMAIN, NAME));
     IEnderZooMob.register(event, NAME, EntityConcussionCreeper.class, EGG_BG_COL, EGG_FG_COL, MobID.CCREEPER);
   }
 
@@ -106,36 +104,9 @@ public class EntityConcussionCreeper extends EntityCreeper implements IEnderZooM
   }
 
   @Override
-  protected void dropFewItems(boolean hitByPlayer, int looting) {
-    int j = rand.nextInt(3);
-    if (looting > 0) {
-      j += rand.nextInt(looting + 1);
-    }
-    for (int k = 0; k < j; ++k) {
-      entityDropItem(getDropItemStack(), 0f);
-    }
-  }
-
-  protected @Nonnull ItemStack getDropItemStack() {
-    int num = rand.nextInt(3);
-    if (num == 0) {
-      return Material.SHARD_ENDER.getStack();
-    } else if (num == 1) {
-      return Material.POWDER_CONFUSION.getStack();
-    } else {
-      return new ItemStack(Items.GUNPOWDER);
-    }
-  }
-
-  @Override
-  protected @Nonnull Item getDropItem() {
-    return Items.AIR;
-  }
-
-  @Override
   @Nullable
   protected ResourceLocation getLootTable() {
-    return null; // use getDropItem() instead
+    return new ResourceLocation(EnderIOZoo.DOMAIN, NAME);
   }
 
   private void setTimeSinceIgnited(int i) {
