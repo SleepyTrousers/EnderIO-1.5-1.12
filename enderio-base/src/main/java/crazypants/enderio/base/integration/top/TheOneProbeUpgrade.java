@@ -2,12 +2,15 @@ package crazypants.enderio.base.integration.top;
 
 import javax.annotation.Nonnull;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
+import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -46,6 +49,12 @@ public class TheOneProbeUpgrade extends AbstractUpgrade {
   public void addToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     super.addToItem(stack, item);
     ItemUtil.getOrCreateNBT(stack).setInteger(PROBETAG, 1);
+  }
+
+  @Override
+  public @Nonnull Pair<ItemStack, Integer> removeFromItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
+    NbtValue.getOrCreateRoot(stack).removeTag(PROBETAG);
+    return super.removeFromItem(stack, item);
   }
 
   public boolean isAvailable() {

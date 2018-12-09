@@ -6,7 +6,6 @@ import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
 import crazypants.enderio.api.upgrades.IRenderUpgrade;
-import info.loenwind.autoconfig.factory.IValue;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.power.PowerHandlerUtil;
@@ -14,6 +13,7 @@ import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.SolarConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.solar.TileSolarPanel;
+import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -73,6 +73,11 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
   }
 
   @Override
+  protected int getMinVariant() {
+    return 1;
+  }
+
+  @Override
   public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     if (!item.isForSlot(EntityEquipmentSlot.HEAD) || !EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)) {
       return false;
@@ -82,6 +87,11 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
       return getLevel() == 1;
     }
     return up.getLevel() == getLevel() - 1;
+  }
+
+  @Override
+  public boolean canOtherBeRemoved(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item, @Nonnull IDarkSteelUpgrade other) {
+    return !EnergyUpgradeManager.isLowestPowerUpgrade(other);
   }
 
   @Override

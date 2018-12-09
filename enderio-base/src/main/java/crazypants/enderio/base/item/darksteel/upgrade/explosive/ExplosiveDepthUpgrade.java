@@ -34,4 +34,9 @@ public class ExplosiveDepthUpgrade extends AbstractUpgrade {
     return ExplosiveUpgrade.INSTANCE.hasAnyUpgradeVariant(stack) && !hasUpgrade(stack);
   }
 
+  @Override
+  public boolean canOtherBeRemoved(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item, @Nonnull IDarkSteelUpgrade other) {
+    return other != ExplosiveUpgrade.INSTANCE;
+  }
+
 }

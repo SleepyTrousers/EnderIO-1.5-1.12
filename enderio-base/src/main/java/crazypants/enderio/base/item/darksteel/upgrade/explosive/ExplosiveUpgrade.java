@@ -55,6 +55,11 @@ public class ExplosiveUpgrade extends AbstractUpgrade {
         && getUpgradeVariantLevel(stack) == variant - 1;
   }
 
+  @Override
+  public boolean canOtherBeRemoved(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item, @Nonnull IDarkSteelUpgrade other) {
+    return !EnergyUpgradeManager.isLowestPowerUpgrade(other);
+  }
+
   static final @Nonnull NNList<AttributeModifier> SIZE = new NNList<>( //
       new AttributeModifier(UPGRADE_UUID, UPGRADE_NAME, 0, 0), new AttributeModifier(UPGRADE_UUID, UPGRADE_NAME, 1, 0),
       new AttributeModifier(UPGRADE_UUID, UPGRADE_NAME, 2, 0), new AttributeModifier(UPGRADE_UUID, UPGRADE_NAME, 3, 0),

@@ -35,4 +35,9 @@ public class SpoonUpgrade extends AbstractUpgrade {
     return item.isPickaxe() && item.hasUpgradeCallbacks(this) && EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack) && !hasUpgrade(stack, item);
   }
 
+  @Override
+  public boolean canOtherBeRemoved(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item, @Nonnull IDarkSteelUpgrade other) {
+    return !EnergyUpgradeManager.isLowestPowerUpgrade(other);
+  }
+
 }

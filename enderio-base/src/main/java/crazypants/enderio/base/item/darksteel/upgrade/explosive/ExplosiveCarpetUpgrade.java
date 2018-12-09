@@ -37,6 +37,11 @@ public class ExplosiveCarpetUpgrade extends AbstractUpgrade {
   }
 
   @Override
+  public boolean canOtherBeRemoved(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item, @Nonnull IDarkSteelUpgrade other) {
+    return other != ExplosiveUpgrade.INSTANCE;
+  }
+
+  @Override
   public boolean isUpgradeItem(@Nonnull ItemStack stack) {
     return !stack.isEmpty() && stack.getItem() == getUpgradeItem().getItem() && stack.getCount() == getUpgradeItem().getCount();
   }

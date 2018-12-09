@@ -65,6 +65,11 @@ public class SpeedUpgrade extends AbstractUpgrade {
   }
 
   @Override
+  protected int getMinVariant() {
+    return 1;
+  }
+
+  @Override
   public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     if (!item.isForSlot(EntityEquipmentSlot.LEGS) || !EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)) {
       return false;
@@ -74,6 +79,11 @@ public class SpeedUpgrade extends AbstractUpgrade {
       return getLevel() == 1;
     }
     return up.getLevel() == getLevel() - 1;
+  }
+
+  @Override
+  public boolean canOtherBeRemoved(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item, @Nonnull IDarkSteelUpgrade other) {
+    return !EnergyUpgradeManager.isLowestPowerUpgrade(other);
   }
 
   public short getLevel() {

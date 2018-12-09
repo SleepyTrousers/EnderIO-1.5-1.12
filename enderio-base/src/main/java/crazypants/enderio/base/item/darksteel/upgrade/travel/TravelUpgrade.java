@@ -37,4 +37,9 @@ public class TravelUpgrade extends AbstractUpgrade {
         && !hasUpgrade(stack, item);
   }
 
+  @Override
+  public boolean canOtherBeRemoved(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item, @Nonnull IDarkSteelUpgrade other) {
+    return !EnergyUpgradeManager.isLowestPowerUpgrade(other);
+  }
+
 }
