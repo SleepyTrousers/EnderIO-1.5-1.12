@@ -1,0 +1,68 @@
+{
+  "pools": [
+    {
+      "name": "777f2df6-0dcf-42bf-92bd-0e1fee8a72cd",
+      "rolls": {
+        "min": 1,
+        "max": 1
+      },
+      "bonus_rolls": {
+        "min": 0,
+        "max": 1
+      },
+      "entries": [
+        {
+          "entryName": "c07ef2df-1e46-4869-a438-f0c5a83d5100",
+          "type": "item",
+          "name": "minecraft:air",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "enderio:use_things",
+              "name": "itemWitheringDust"
+            }
+          ]
+        },
+        {
+          "entryName": "137a50e4-67cd-41da-bbf3-a9e6bd8d74b9",
+          "type": "item",
+          "name": "minecraft:air",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "enderio:potion",
+              "name": "minecraft:healing",
+              "splash": true
+            }
+          ]
+        },
+        {
+          "entryName": "67b6a943-030a-4def-b83d-01d063983e0c",
+          "type": "item",
+          "name": "minecraft:air",
+          "weight": 2,
+          "functions": [
+            {
+              "function": "enderio:potion",
+              "name": "enderio:withering",
+              "splash": true
+            }
+          ]
+        },
+        {
+          "entryName": "26154dfd-e96d-486e-ab6b-c93baaa20885",
+          "type": "item",
+          "name": "minecraft:air",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "enderio:potion",
+              "name": "minecraft:regeneration",
+              "splash": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

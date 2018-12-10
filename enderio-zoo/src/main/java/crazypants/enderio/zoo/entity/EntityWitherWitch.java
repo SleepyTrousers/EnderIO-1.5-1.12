@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
-import crazypants.enderio.base.material.material.Material;
+import crazypants.enderio.base.loot.EntityLootHelper;
 import crazypants.enderio.base.potion.PotionUtil;
 import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.config.ZooConfig;
@@ -44,6 +44,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -59,6 +60,7 @@ public class EntityWitherWitch extends EntityMob implements IRangedAttackMob, IE
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
+    LootTableList.register(new ResourceLocation(EnderIOZoo.DOMAIN, NAME));
     IEnderZooMob.register(event, NAME, EntityWitherWitch.class, EGG_BG_COL, EGG_FG_COL, MobID.WWITCH);
   }
 
@@ -71,16 +73,6 @@ public class EntityWitherWitch extends EntityMob implements IRangedAttackMob, IE
   public static final @Nonnull String NAME = "witherwitch";
   public static final int EGG_BG_COL = 0x26520D;
   public static final int EGG_FG_COL = 0x905E43;
-
-  private final @Nonnull ItemStack[] drops = new ItemStack[] { //
-      Material.POWDER_WITHERING.getStack(), //
-      Material.POWDER_WITHERING.getStack(), //
-      Material.POWDER_WITHERING.getStack(), //
-      PotionUtil.createHealthPotion(false, true), //
-      PotionUtil.createWitherPotion(false, true), //
-      PotionUtil.createWitherPotion(false, true), //
-      PotionUtil.createRegenerationPotion(false, false, true) //
-  };
 
   private int attackTimer;
   private EntityLivingBase attackedWithPotion;
@@ -135,21 +127,15 @@ public class EntityWitherWitch extends EntityMob implements IRangedAttackMob, IE
   }
 
   @Override
-  protected void dropFewItems(boolean hitByPlayer, int lootingLevel) {
-    int numDrops = rand.nextInt(1) + 1;
-    if (lootingLevel > 0) {
-      numDrops += rand.nextInt(lootingLevel + 1);
-    }
-    for (int i = 0; i < numDrops; ++i) {
-      ItemStack item = drops[rand.nextInt(drops.length)].copy();
-      entityDropItem(item, 0);
-    }
+  @Nullable
+  protected ResourceLocation getLootTable() {
+    return new ResourceLocation(EnderIOZoo.DOMAIN, NAME);
   }
 
   @Override
-  @Nullable
-  protected ResourceLocation getLootTable() {
-    return null; // use getDropItem() instead
+  protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, @Nonnull DamageSource source) {
+    EntityLootHelper.dropLoot(this, getLootTable(), source);
+    dropEquipment(wasRecentlyHit, lootingModifier);
   }
 
   @Override

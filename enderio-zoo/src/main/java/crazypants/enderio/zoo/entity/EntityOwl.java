@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.loot.EntityLootHelper;
 import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.config.ZooConfig;
 import crazypants.enderio.zoo.entity.ai.EntityAIFlyingAttackOnCollide;
@@ -34,7 +35,6 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNavigate;
@@ -46,6 +46,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -59,6 +60,7 @@ public class EntityOwl extends EntityAnimal implements IFlyingMob {
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
+    LootTableList.register(new ResourceLocation(EnderIOZoo.DOMAIN, NAME));
     IEnderZooMob.register(event, NAME, EntityOwl.class, EGG_BG_COL, EGG_FG_COL, MobID.OWL);
   }
 
@@ -378,14 +380,15 @@ public class EntityOwl extends EntityAnimal implements IFlyingMob {
   }
 
   @Override
-  protected Item getDropItem() {
-    return Items.FEATHER;
+  @Nullable
+  protected ResourceLocation getLootTable() {
+    return new ResourceLocation(EnderIOZoo.DOMAIN, NAME);
   }
 
   @Override
-  @Nullable
-  protected ResourceLocation getLootTable() {
-    return null; // use getDropItem() instead
+  protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, @Nonnull DamageSource source) {
+    EntityLootHelper.dropLoot(this, getLootTable(), source);
+    dropEquipment(wasRecentlyHit, lootingModifier);
   }
 
   @Override
