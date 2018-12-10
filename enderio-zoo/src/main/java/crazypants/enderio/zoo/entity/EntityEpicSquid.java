@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
+import crazypants.enderio.base.loot.EntityLootHelper;
 import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.config.ZooConfig;
 import crazypants.enderio.zoo.entity.ai.EntityAIAttackOnCollideAggressive;
@@ -15,7 +16,9 @@ import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -29,6 +32,7 @@ public class EntityEpicSquid extends EntitySquid implements IEnderZooMob {
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
+    LootTableList.register(new ResourceLocation(EnderIOZoo.DOMAIN, NAME));
     IEnderZooMob.register(event, NAME, EntityEpicSquid.class, EGG_BG_COL, EGG_FG_COL, MobID.ESQUID);
     EntitySpawnPlacementRegistry.setPlacementType(EntityEpicSquid.class, SpawnPlacementType.IN_WATER);
   }
@@ -85,6 +89,18 @@ public class EntityEpicSquid extends EntitySquid implements IEnderZooMob {
       }
     }
     return this.inWater;
+  }
+
+  @Override
+  @Nullable
+  protected ResourceLocation getLootTable() {
+    return new ResourceLocation(EnderIOZoo.DOMAIN, NAME);
+  }
+
+  @Override
+  protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, @Nonnull DamageSource source) {
+    EntityLootHelper.dropLoot(this, getLootTable(), source);
+    dropEquipment(wasRecentlyHit, lootingModifier);
   }
 
   // TODO: Lava/Nether spawning

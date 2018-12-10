@@ -1,0 +1,29 @@
+{
+  "pools": [
+    {
+      "name": "f36f37cb-00af-4940-b608-988f2db41b37",
+      "rolls": {
+        "min": 0,
+        "max": 2
+      },
+      "bonus_rolls": {
+        "min": 0,
+        "max": 1
+      },
+      "entries": [
+        {
+          "entryName": "9a344707-a8f2-45bb-bc76-3812ef2ddc0b",
+          "type": "item",
+          "name": "minecraft:bone",
+          "weight": 1
+        },
+        {
+          "entryName": "6c86f032-d8e5-4400-8558-0c1e7495e71c",
+          "type": "item",
+          "name": "minecraft:rotten_flesh",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

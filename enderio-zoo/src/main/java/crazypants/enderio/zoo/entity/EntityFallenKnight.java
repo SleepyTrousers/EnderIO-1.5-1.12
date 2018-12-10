@@ -7,6 +7,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.loot.EntityLootHelper;
 import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.config.ZooConfig;
 import crazypants.enderio.zoo.entity.ai.EntityAIMountedArrowAttack;
@@ -34,10 +35,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -57,6 +60,7 @@ public class EntityFallenKnight extends EntitySkeleton implements IEnderZooMob {
   @SubscribeEvent
   @SideOnly(Side.CLIENT)
   public static void onPreInit(EnderIOLifecycleEvent.PreInit event) {
+    LootTableList.register(new ResourceLocation(EnderIOZoo.DOMAIN, NAME));
     RenderingRegistry.registerEntityRenderingHandler(EntityFallenKnight.class, RenderFallenKnight.FACTORY);
   }
 
@@ -92,13 +96,6 @@ public class EntityFallenKnight extends EntitySkeleton implements IEnderZooMob {
     getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(ZooConfig.fallenKnightFollowRange.get());
     applyAttributes(this, ZooConfig.fallenKnightHealth, ZooConfig.fallenKnightAttackDamage);
   }
-
-  // private float getAttackRange() {
-  // if(isRiding()) {
-  // return 3;
-  // }
-  // return 2;
-  // }
 
   // This is called from the super constructor and so is completely useless
   @Override
@@ -375,15 +372,15 @@ public class EntityFallenKnight extends EntitySkeleton implements IEnderZooMob {
   }
 
   @Override
-  protected void dropFewItems(boolean hitByPlayer, int lootingLevel) {
-    int numDrops = rand.nextInt(3 + lootingLevel);
-    for (int i = 0; i < numDrops; ++i) {
-      if (rand.nextBoolean()) {
-        dropItem(Items.BONE, 1);
-      } else {
-        dropItem(Items.ROTTEN_FLESH, 1);
-      }
-    }
+  @Nullable
+  protected ResourceLocation getLootTable() {
+    return new ResourceLocation(EnderIOZoo.DOMAIN, NAME);
+  }
+
+  @Override
+  protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, @Nonnull DamageSource source) {
+    EntityLootHelper.dropLoot(this, getLootTable(), source);
+    dropEquipment(wasRecentlyHit, lootingModifier);
   }
 
 }

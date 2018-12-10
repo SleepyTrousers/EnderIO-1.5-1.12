@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
+import crazypants.enderio.base.loot.EntityLootHelper;
 import crazypants.enderio.base.teleport.RandomTeleportUtil;
 import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.config.ZooConfig;
@@ -16,6 +17,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -107,6 +109,12 @@ public class EntityConcussionCreeper extends EntityCreeper implements IEnderZooM
   @Nullable
   protected ResourceLocation getLootTable() {
     return new ResourceLocation(EnderIOZoo.DOMAIN, NAME);
+  }
+
+  @Override
+  protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, @Nonnull DamageSource source) {
+    EntityLootHelper.dropLoot(this, getLootTable(), source);
+    dropEquipment(wasRecentlyHit, lootingModifier);
   }
 
   private void setTimeSinceIgnited(int i) {

@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
+import crazypants.enderio.base.loot.EntityLootHelper;
 import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.config.ZooConfig;
 import crazypants.enderio.zoo.entity.ai.EntityAIAttackOnCollideAggressive;
@@ -26,7 +27,6 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -37,6 +37,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -56,6 +57,7 @@ public class EntityDireWolf extends EntityMob implements IEnderZooMob {
   @SubscribeEvent
   @SideOnly(Side.CLIENT)
   public static void onPreInit(EnderIOLifecycleEvent.PreInit event) {
+    LootTableList.register(new ResourceLocation(EnderIOZoo.DOMAIN, NAME));
     RenderingRegistry.registerEntityRenderingHandler(EntityDireWolf.class, RenderDirewolf.FACTORY);
   }
 
@@ -182,14 +184,15 @@ public class EntityDireWolf extends EntityMob implements IEnderZooMob {
   }
 
   @Override
-  protected Item getDropItem() {
-    return Item.getItemById(-1);
+  @Nullable
+  protected ResourceLocation getLootTable() {
+    return new ResourceLocation(EnderIOZoo.DOMAIN, NAME);
   }
 
   @Override
-  @Nullable
-  protected ResourceLocation getLootTable() {
-    return null; // use getDropItem() instead
+  protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, @Nonnull DamageSource source) {
+    EntityLootHelper.dropLoot(this, getLootTable(), source);
+    dropEquipment(wasRecentlyHit, lootingModifier);
   }
 
   public float getTailRotation() {

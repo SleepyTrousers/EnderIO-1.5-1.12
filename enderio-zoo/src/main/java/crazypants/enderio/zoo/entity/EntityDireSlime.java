@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
+import crazypants.enderio.base.loot.EntityLootHelper;
 import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.config.ZooConfig;
 import crazypants.enderio.zoo.entity.render.RenderDireSlime;
@@ -168,6 +169,12 @@ public class EntityDireSlime extends EntityMagmaCube implements IEnderZooMob {
   @Nullable
   protected ResourceLocation getLootTable() {
     return new ResourceLocation(EnderIOZoo.DOMAIN, NAME + "_" + getSlimeSize());
+  }
+
+  @Override
+  protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, @Nonnull DamageSource source) {
+    EntityLootHelper.dropLoot(this, getLootTable(), source);
+    dropEquipment(wasRecentlyHit, lootingModifier);
   }
 
   @Override

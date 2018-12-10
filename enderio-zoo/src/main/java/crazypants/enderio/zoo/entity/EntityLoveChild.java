@@ -7,6 +7,7 @@ import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.handler.darksteel.SwordHandler;
 import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.loot.EntityLootHelper;
 import crazypants.enderio.base.teleport.RandomTeleportUtil;
 import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.config.ZooConfig;
@@ -18,7 +19,6 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
@@ -107,6 +107,12 @@ public class EntityLoveChild extends EntityZombie implements IEnderZooMob {
   }
 
   @Override
+  protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, @Nonnull DamageSource source) {
+    EntityLootHelper.dropLoot(this, getLootTable(), source);
+    dropEquipment(wasRecentlyHit, lootingModifier);
+  }
+
+  @Override
   public boolean attackEntityAsMob(@Nonnull Entity entityIn) {
     boolean flag = super.attackEntityAsMob(entityIn);
 
@@ -132,12 +138,6 @@ public class EntityLoveChild extends EntityZombie implements IEnderZooMob {
     }
 
     return false;
-  }
-
-  @Override
-  protected @Nonnull Item getDropItem() {
-    // unused, see loot table
-    return Items.ENDER_PEARL;
   }
 
   @Override
