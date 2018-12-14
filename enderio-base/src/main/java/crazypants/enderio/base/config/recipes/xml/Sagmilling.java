@@ -30,8 +30,8 @@ public class Sagmilling extends AbstractCrafting {
       if (input == null) {
         throw new InvalidRecipeConfigException("Missing <input>");
       }
-      if (energy < 0) {
-        throw new InvalidRecipeConfigException("Invalid negative value for 'energy'");
+      if (energy <= 0) {
+        throw new InvalidRecipeConfigException("Invalid low value for 'energy'");
       }
 
       valid = valid && input.isValid();

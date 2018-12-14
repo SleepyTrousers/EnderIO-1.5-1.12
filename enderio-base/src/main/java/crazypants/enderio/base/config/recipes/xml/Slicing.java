@@ -28,8 +28,8 @@ public class Slicing extends AbstractCrafting {
       if (inputs.size() != 6) {
         throw new InvalidRecipeConfigException("Wrong number of <input>");
       }
-      if (energy < 0) {
-        throw new InvalidRecipeConfigException("Invalid negative value for 'energy'");
+      if (energy <= 0) {
+        throw new InvalidRecipeConfigException("Invalid low value for 'energy'");
       }
 
       for (Item input : inputs) {

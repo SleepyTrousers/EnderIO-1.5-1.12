@@ -71,8 +71,8 @@ public class Soulbinding extends AbstractCrafting {
       if (!souls.isEmpty() && soulHandling != SoulHandling.LISTED) {
         throw new InvalidRecipeConfigException("Cannot give <soul> when using ALL or SPAWNABLE");
       }
-      if (energy < 0) {
-        throw new InvalidRecipeConfigException("Invalid negative value for 'energy'");
+      if (energy <= 0) {
+        throw new InvalidRecipeConfigException("Invalid low value for 'energy'");
       }
       if (levels <= 0) {
         throw new InvalidRecipeConfigException("Invalid negative or zero value for 'levels'");

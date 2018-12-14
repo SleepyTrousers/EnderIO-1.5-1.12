@@ -41,8 +41,8 @@ public class Alloying extends AbstractCrafting {
           throw new InvalidRecipeConfigException("Invalid value for 'exp', above 100%");
         }
       }
-      if (energy < 0) {
-        throw new InvalidRecipeConfigException("Invalid negative value for 'energy'");
+      if (energy <= 0) {
+        throw new InvalidRecipeConfigException("Invalid low value for 'energy'");
       }
 
       for (NNIterator<ItemIntegerAmount> itr = input.fastIterator(); valid && itr.hasNext();) {

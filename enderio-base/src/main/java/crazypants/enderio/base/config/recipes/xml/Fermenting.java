@@ -31,8 +31,8 @@ public class Fermenting extends AbstractConditional {
       if (inputgroup.size() < 1 || inputgroup.size() > 2) {
         throw new InvalidRecipeConfigException("Wrong number of <inputgroup>");
       }
-      if (energy < 0) {
-        throw new InvalidRecipeConfigException("Invalid negative value for 'energy'");
+      if (energy <= 0) {
+        throw new InvalidRecipeConfigException("Invalid low value for 'energy'");
       }
 
       valid = inputfluid.isValid() && outputfluid.isValid();
