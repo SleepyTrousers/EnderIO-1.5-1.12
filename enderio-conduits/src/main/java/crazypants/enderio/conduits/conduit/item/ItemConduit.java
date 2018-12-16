@@ -975,7 +975,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
       return baseCollidables;
     }
 
-    BoundingBox bb = ConduitGeometryUtil.instance.createBoundsForConnectionController(keydir, key.offset);
+    BoundingBox bb = ConduitGeometryUtil.getInstance().createBoundsForConnectionController(keydir, key.offset);
     CollidableComponent cc = new CollidableComponent(IItemConduit.class, bb, keydir, IPowerConduit.COLOR_CONTROLLER_ID);
 
     List<CollidableComponent> result = new ArrayList<CollidableComponent>();

@@ -177,7 +177,7 @@ public abstract class AbstractClientConduit implements IClientConduit.WithDefaul
   @Nonnull
   public Collection<CollidableComponent> createCollidables(@Nonnull CacheKey key) {
     return NullHelper.notnullJ(Collections.singletonList(
-        new CollidableComponent(getCollidableType(), ConduitGeometryUtil.instance.getBoundingBox(getBaseConduitType(), key.dir, key.offset), key.dir, null)),
+        new CollidableComponent(getCollidableType(), ConduitGeometryUtil.getInstance().getBoundingBox(getBaseConduitType(), key.dir, key.offset), key.dir, null)),
         "Collections#singletonList");
   }
 

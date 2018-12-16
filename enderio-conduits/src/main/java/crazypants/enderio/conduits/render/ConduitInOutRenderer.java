@@ -15,6 +15,7 @@ import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.IExtractor;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
+import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.base.conduit.geom.Offset;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -23,7 +24,6 @@ import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
 import crazypants.enderio.conduits.EnderIOConduits;
 import crazypants.enderio.conduits.conduit.power.IPowerConduit;
 import crazypants.enderio.conduits.conduit.redstone.IRedstoneConduit;
-import crazypants.enderio.conduits.geom.ConnectionModeGeometry;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.BlockRenderLayer;
@@ -77,17 +77,21 @@ public class ConduitInOutRenderer {
     }
 
     Offset offset = bundle.getOffset(conduit.getBaseConduitType(), dir);
-    ConnectionModeGeometry.addModeConnectorQuads(dir, offset, ICON_BG.get(TextureAtlasSprite.class), null, quads);
+    final ConduitGeometryUtil geometry = ConduitGeometryUtil.getInstance();
+    geometry.addModeConnectorQuads(dir, offset, ICON_BG.get(TextureAtlasSprite.class), null, quads);
     if (mode.acceptsInput()) {
       if (mode.acceptsOutput()) {
-        ConnectionModeGeometry.addModeConnectorQuads(dir, offset, ICON_INOUT_IN.get(TextureAtlasSprite.class), ColorUtil.toFloat4(inChannel.getColor()), quads);
-        ConnectionModeGeometry.addModeConnectorQuads(dir, offset, ICON_INOUT_OUT.get(TextureAtlasSprite.class), ColorUtil.toFloat4(outChannel.getColor()),
-            quads);
+        geometry.addModeConnectorQuads(dir, offset, ICON_INOUT_IN.get(TextureAtlasSprite.class),
+            ColorUtil.toFloat4(inChannel.getColor()), quads);
+        geometry.addModeConnectorQuads(dir, offset, ICON_INOUT_OUT.get(TextureAtlasSprite.class),
+            ColorUtil.toFloat4(outChannel.getColor()), quads);
       } else {
-        ConnectionModeGeometry.addModeConnectorQuads(dir, offset, ICON_IN.get(TextureAtlasSprite.class), ColorUtil.toFloat4(inChannel.getColor()), quads);
+        geometry.addModeConnectorQuads(dir, offset, ICON_IN.get(TextureAtlasSprite.class), ColorUtil.toFloat4(inChannel.getColor()),
+            quads);
       }
     } else if (mode.acceptsOutput()) {
-      ConnectionModeGeometry.addModeConnectorQuads(dir, offset, ICON_OUT.get(TextureAtlasSprite.class), ColorUtil.toFloat4(outChannel.getColor()), quads);
+      geometry.addModeConnectorQuads(dir, offset, ICON_OUT.get(TextureAtlasSprite.class), ColorUtil.toFloat4(outChannel.getColor()),
+          quads);
     }
   }
 

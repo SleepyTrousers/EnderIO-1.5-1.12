@@ -540,7 +540,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
       return baseCollidables;
     }
 
-    BoundingBox bb = ConduitGeometryUtil.instance.createBoundsForConnectionController(key.dir, key.offset);
+    BoundingBox bb = ConduitGeometryUtil.getInstance().createBoundsForConnectionController(key.dir, key.offset);
     CollidableComponent cc = new CollidableComponent(IPowerConduit.class, bb, key.dir, COLOR_CONTROLLER_ID);
 
     List<CollidableComponent> result = new ArrayList<CollidableComponent>();

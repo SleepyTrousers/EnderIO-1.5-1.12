@@ -287,7 +287,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer<TileConduit
 
   private void addQuadsForExternalConnection(@Nonnull EnumFacing dir, @Nonnull List<BakedQuad> quads) {
     TextureAtlasSprite tex = ConduitBundleRenderManager.instance.getConnectorIcon(ConduitConnectorType.EXTERNAL);
-    BoundingBox[] bbs = ConduitGeometryUtil.instance.getExternalConnectorBoundingBoxes(dir);
+    BoundingBox[] bbs = ConduitGeometryUtil.getInstance().getExternalConnectorBoundingBoxes(dir);
     for (BoundingBox bb : bbs) {
       if (bb != null) {
         BakedQuadBuilder.addBakedQuads(quads, bb, tex);

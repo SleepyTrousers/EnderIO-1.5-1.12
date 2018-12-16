@@ -667,7 +667,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       }
       for (EnumFacing dir : externalDirs) {
         if (dir != null) {
-          BoundingBox bb = ConduitGeometryUtil.instance.getExternalConnectorBoundingBox(dir);
+          BoundingBox bb = ConduitGeometryUtil.getInstance().getExternalConnectorBoundingBox(dir);
           CollidableComponent cc = new CollidableComponent(null, bb, dir, ConduitConnectorType.EXTERNAL);
           cachedConnectors.add(cc);
         }

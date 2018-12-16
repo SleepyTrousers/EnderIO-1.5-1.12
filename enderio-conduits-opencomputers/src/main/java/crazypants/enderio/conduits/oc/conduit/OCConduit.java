@@ -62,8 +62,10 @@ public class OCConduit extends AbstractConduit implements IOCConduit {
 
   private final Map<EnumFacing, DyeColor> signalColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
 
-  private static final IConduitTexture coreTextureA = new ConduitTexture(TextureRegistry.registerTexture("blocks/oc_conduit_core_anim"), ConduitTexture.core());
-  private static final IConduitTexture longTextureA = new ConduitTexture(TextureRegistry.registerTexture("blocks/oc_conduit_anim"), ConduitTexture.arm(0));
+  private static final @Nonnull IConduitTexture coreTextureA = new ConduitTexture(TextureRegistry.registerTexture("blocks/oc_conduit_core_anim"),
+      ConduitTexture.core());
+  private static final @Nonnull IConduitTexture longTextureA = new ConduitTexture(TextureRegistry.registerTexture("blocks/oc_conduit_anim"),
+      ConduitTexture.arm(0));
 
   public OCConduit() {
     super();
@@ -101,7 +103,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit {
       return baseCollidables;
     }
 
-    BoundingBox bb = ConduitGeometryUtil.instance.createBoundsForConnectionController(keydir, key.offset);
+    BoundingBox bb = ConduitGeometryUtil.getInstance().createBoundsForConnectionController(keydir, key.offset);
     CollidableComponent cc = new CollidableComponent(IOCConduit.class, bb, keydir, COLOR_CONTROLLER_ID);
 
     List<CollidableComponent> result = new ArrayList<CollidableComponent>();
