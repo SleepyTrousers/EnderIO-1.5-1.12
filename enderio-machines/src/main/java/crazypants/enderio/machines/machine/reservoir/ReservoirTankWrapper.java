@@ -17,6 +17,7 @@ import net.minecraftforge.fluids.FluidTank;
 
 class ReservoirTankWrapper implements ITankAccess {
 
+  private final @Nonnull ITankAccess owner;
   private final @Nonnull NNList<ITankAccess> parents = new NNList<>();
   private SmartTank tank;
   private final @Nonnull World world;
@@ -24,7 +25,7 @@ class ReservoirTankWrapper implements ITankAccess {
   private final boolean allowFluidVoiding;
 
   ReservoirTankWrapper(@Nonnull ITankAccess parent, @Nonnull World world, @Nonnull BlockPos pos, boolean allowFluidVoiding) {
-    this.parents.add(parent);
+    this.owner = parent;
     this.world = world;
     this.pos = pos;
     this.allowFluidVoiding = allowFluidVoiding;
@@ -32,11 +33,15 @@ class ReservoirTankWrapper implements ITankAccess {
 
   @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
-    FluidTank parentTank = parents.get(0).getInputTank(forFluidType);
-    if (parentTank == null) {
+    FluidTank ownerTank = owner.getInputTank(forFluidType);
+    if (ownerTank == null) {
       return null;
     }
-    int free = parentTank.getCapacity() - parentTank.getFluidAmount();
+    parents.clear();
+    int free = ownerTank.getCapacity() - ownerTank.getFluidAmount();
+    if (free > 0) {
+      parents.add(owner);
+    }
     for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
       TileEntity neighbor = world.getTileEntity(pos.offset(itr.next()));
       if (neighbor instanceof ITankAccess) {
@@ -50,12 +55,13 @@ class ReservoirTankWrapper implements ITankAccess {
     if (allowFluidVoiding && free < Fluid.BUCKET_VOLUME) {
       free = Fluid.BUCKET_VOLUME;
     }
-    return tank = new SmartTank(parentTank.getFluid(), free);
+    final FluidStack fluid = ownerTank.getFluid();
+    return tank = new SmartTank(fluid != null ? fluid.getFluid() : null, free);
   }
 
   @Override
   public @Nonnull FluidTank[] getOutputTanks() {
-    return parents.get(0).getOutputTanks();
+    return owner.getOutputTanks();
   }
 
   @Override
@@ -75,6 +81,7 @@ class ReservoirTankWrapper implements ITankAccess {
         }
       }
       tank.setCapacity(0);
+      parents.clear();
     }
   }
 
