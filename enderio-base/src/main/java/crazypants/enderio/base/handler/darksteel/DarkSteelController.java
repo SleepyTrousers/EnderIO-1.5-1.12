@@ -27,9 +27,11 @@ import crazypants.enderio.base.item.darksteel.upgrade.nightvision.NightVisionUpg
 import crazypants.enderio.base.item.darksteel.upgrade.speed.SpeedController;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.PowerHandlerUtil;
+import crazypants.enderio.util.Prep;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
@@ -84,6 +86,42 @@ public class DarkSteelController {
       }
     }
     return active;
+  }
+
+  /*
+   * TODO:
+   * 
+   * - Store active set in player.getEntityData()
+   * 
+   * - Sync that data to the player on login (getEntityData is persisted server-side)
+   * 
+   * - Sync setActive() to the server always (not just for selected ones in the KeyTracker)
+   * 
+   * DONE:
+   * 
+   * - Sync active set to other players (see onTracking())
+   * 
+   * - Sync changes to other players (see PacketUpgradeState.Handler)
+   */
+
+  /**
+   * When a player starts tracking another player, sync a complete set of flags of the tracked player to the tracking player.
+   * <p>
+   * That way you'll see another player's glider wings when you log on and the other player has them active already.
+   */
+  @SubscribeEvent
+  public static void onTracking(PlayerEvent.StartTracking event) {
+    final Entity target = event.getTarget();
+    if (target instanceof EntityPlayer) {
+      final EntityPlayer trackingPlayer = event.getEntityPlayer();
+      if (trackingPlayer instanceof EntityPlayerMP) {
+        final EnumSet<Type> activeSet = getActiveSet((EntityPlayer) target);
+        for (Type type : Type.values()) {
+          PacketHandler.INSTANCE.sendTo(new PacketUpgradeState(type, activeSet.contains(type), ((EntityPlayer) target).getEntityId()),
+              (EntityPlayerMP) trackingPlayer);
+        }
+      }
+    }
   }
 
   public static boolean isActive(EntityPlayer player, Type type) {
@@ -205,7 +243,7 @@ public class DarkSteelController {
     int remaining = cost;
     if (DarkSteelConfig.armorDrainPowerFromInventory.get()) {
       for (ItemStack stack : player.inventory.mainInventory) {
-        IEnergyStorage cap = PowerHandlerUtil.getCapability(NullHelper.notnullM(stack, "null stack in main player inventory"));
+        IEnergyStorage cap = PowerHandlerUtil.getCapability(NullHelper.first(stack, Prep.getEmpty()));
         if (cap != null && cap.canExtract()) {
           int used = cap.extractEnergy(remaining, false);
           remaining -= used;
@@ -226,7 +264,7 @@ public class DarkSteelController {
 
     if (DarkSteelConfig.armorDrainPowerFromInventory.get()) {
       for (ItemStack stack : player.inventory.mainInventory) {
-        IEnergyStorage cap = PowerHandlerUtil.getCapability(NullHelper.notnullM(stack, "null stack in main player inventory"));
+        IEnergyStorage cap = PowerHandlerUtil.getCapability(NullHelper.first(stack, Prep.getEmpty()));
         if (cap != null && cap.canExtract()) {
           res += cap.extractEnergy(Integer.MAX_VALUE, true);
         }
