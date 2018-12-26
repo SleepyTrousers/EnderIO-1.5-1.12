@@ -35,7 +35,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import static crazypants.enderio.base.integration.botania.BotaniaUtil.hasSolegnoliaAround;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
-public class MagnetController {
+public final class MagnetController {
 
   private MagnetController() {
   }
@@ -142,7 +142,7 @@ public class MagnetController {
                   isValidTarget = true;
                 }
               }
-              isValidTarget = isValidTarget && !MagnetUtil.isReserved(entity);
+              isValidTarget = isValidTarget && !MagnetUtil.isReserved(entity, false);
               if (isValidTarget) {
                 if (arraylist == null) {
                   arraylist = new ArrayList<Entity>(ItemConfig.magnetMaxItems.get() > 0 ? ItemConfig.magnetMaxItems.get() : 20);

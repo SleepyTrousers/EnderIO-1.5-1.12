@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
-import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.inventory.Callback;
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.EnderInventory.Type;
@@ -34,6 +33,7 @@ import crazypants.enderio.machines.config.config.VacuumConfig;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -142,7 +142,7 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity
         for (int chunkY = minChunkYClamped; chunkY <= maxChunkYClamped; ++chunkY) {
           for (Entity entity : entityLists[chunkY]) {
             if (!entity.isDead && (entity instanceof EntityItem) && entity.getEntityBoundingBox().intersects(bb)
-                && (filter == null || filter.doesItemPassFilter(null, ((EntityItem) entity).getItem())) && MagnetUtil.shouldAttract(getPos(), entity)) {
+                && (filter == null || filter.doesItemPassFilter(null, ((EntityItem) entity).getItem())) && MagnetUtil.shouldAttract(getPos(), entity, false)) {
               result.add((EntityItem) entity);
               if (maxItems > 0 && maxItems <= result.size()) {
                 return result;

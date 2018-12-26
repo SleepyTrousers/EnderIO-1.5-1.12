@@ -83,7 +83,7 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
 
   @Override
   public boolean apply(@Nullable EntityXPOrb entity) {
-    return MagnetUtil.shouldAttract(getPos(), entity);
+    return MagnetUtil.shouldAttract(getPos(), entity, true);
   }
 
   private static final double speed = VacuumConfig.vacuumXPVelocity.get();

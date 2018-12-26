@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.client.render.BoundingBox;
-import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
@@ -34,6 +33,7 @@ import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -258,7 +258,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
         if (!needsMending()) {
           return;
         }
-      } else if (MagnetUtil.shouldAttract(getPos(), entity)) {
+      } else if (MagnetUtil.shouldAttract(getPos(), entity, true)) {
         double d = 1 - (Math.max(0.1, totalDistance) / maxDist);
         double speed = 0.01 + (d * 0.02);
 
