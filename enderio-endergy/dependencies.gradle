@@ -4,7 +4,7 @@ modDependencies {
 	jei { loadAfter(jei_version) }
 }
 
-def localDependencies = [ project(':enderio-base'), project(':enderio-machines'), project(':enderio-conduits') ]
+def localDependencies = [ project(':enderio-base'), project(':enderio-conduits') ]
 localDependencies.each { dep ->
 	modDependencies {
 		"${dep.module_mod_id}" { requireAfter(dep.version) }

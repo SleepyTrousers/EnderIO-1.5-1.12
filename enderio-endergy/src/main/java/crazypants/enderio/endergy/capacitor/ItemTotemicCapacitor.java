@@ -11,6 +11,7 @@ import crazypants.enderio.api.capacitor.CapabilityCapacitorData;
 import crazypants.enderio.api.capacitor.ICapacitorData;
 import crazypants.enderio.base.capacitor.CapacitorHelper;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -30,12 +31,13 @@ public class ItemTotemicCapacitor extends ItemEndergyCapacitor {
     super(modObject, data, damage);
   }
 
-  public boolean canApplyAtEnchantingTable(@Nonnull ItemStack stack, @Nonnull Enchantment enchantment)
-  {
+  @Override
+  public boolean canApplyAtEnchantingTable(@Nonnull ItemStack stack, @Nonnull Enchantment enchantment) {
     if (enchantment.getName().equals("efficiency")) {
       return true;
     }
-    return enchantment.type.canEnchantItem(stack.getItem());
+    final EnumEnchantmentType type = enchantment.type;
+    return type == null ? false : type.canEnchantItem(stack.getItem());
   }
 
   @Override
