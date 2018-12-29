@@ -471,17 +471,17 @@ public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgress
 
   @Override
   public void teleportAll() {
-    TileTelePad m = getMasterTile();
-    if (m == null) {
-      return;
-    }
-    if (target.getY() <= 0) {
-      // coords have not yet been set or have been set to a very unhealthy location
-      return;
-    }
-    if (m.world.isRemote) {
-      PacketHandler.INSTANCE.sendToServer(new PacketTeleportTrigger(m));
+    if (world.isRemote) {
+      PacketHandler.INSTANCE.sendToServer(new PacketTeleportTrigger(this));
     } else {
+      TileTelePad m = getMasterTile();
+      if (m == null) {
+        return;
+      }
+      if (m.target.getY() <= 0) {
+        // coords have not yet been set or have been set to a very unhealthy location
+        return;
+      }
       for (Entity e : m.getEntitiesInRange()) {
         m.enqueueTeleport(e, true);
       }
