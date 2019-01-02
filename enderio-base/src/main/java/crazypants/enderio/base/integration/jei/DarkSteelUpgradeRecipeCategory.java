@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
@@ -19,7 +20,6 @@ import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager.UpgradePath;
-import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;
 import mezz.jei.api.recipe.IFocus;
@@ -82,47 +82,22 @@ public class DarkSteelUpgradeRecipeCategory {
     registry.addRecipeCatalyst(new ItemStack(blockDarkSteelAnvil.getBlockNN()), VanillaRecipeCategoryUid.ANVIL);
     registry.addRecipeRegistryPlugin(new IRecipeRegistryPlugin() {
       
-      @SuppressWarnings("unchecked")
       @Override
       public @Nonnull <T extends IRecipeWrapper, V> List<T> getRecipeWrappers(@Nonnull IRecipeCategory<T> recipeCategory, @Nonnull IFocus<V> focus) {
         if (recipeCategory.getUid().equals(VanillaRecipeCategoryUid.ANVIL) && focus.getValue() instanceof ItemStack) {
-          Set<UpgradePath> recipes = new HashSet<>();
+          Collection<UpgradePath> recipes;
           ItemStack focusStack = (ItemStack) focus.getValue();
           if (focus.getMode() == Mode.INPUT) {
-            DarkSteelRecipeManager.getRecipes(recipes, new NNList<>(focusStack));
-            recipes.addAll(NullHelper.notnullJ(
-                allRecipes.stream().filter(rec -> ItemStack.areItemsEqual(rec.getUpgrade(), focusStack)).collect(Collectors.toSet()),
-                "Stream#collect"));
+            Set<UpgradePath> res = new HashSet<>();
+            DarkSteelRecipeManager.getRecipes(res, new NNList<>(focusStack));
+            recipes = res;
           } else {
-            Map<ItemStackKey, List<UpgradePath>> byUpgrade = NullHelper.notnullJ(
-                allRecipes.stream().collect(Collectors.groupingBy(rec -> new ItemStackKey(rec.getUpgrade()))),
-                "Stream#collect");
-            
-            final IVanillaRecipeFactory factory = registry.getJeiHelpers().getVanillaRecipeFactory();
-
-            List<IRecipeWrapper> wrappers = new ArrayList<>();
-            for (Entry<ItemStackKey, List<UpgradePath>> e : byUpgrade.entrySet()) {
-              List<UpgradePath> recs = e.getValue();
-              ItemStack upgrade = e.getKey().wrapped;
-              List<ItemStack> upgradesRepeated = new ArrayList<>();
-              for (int i = 0; i < recs.size(); i++) {
-                upgradesRepeated.add(upgrade);
-              }
-              IRecipeWrapper w = factory.createAnvilRecipe(recs.get(0).getInput(), upgradesRepeated, 
-                  NullHelper.notnullJ(recs.stream().map(UpgradePath::getOutput).collect(Collectors.toList()), "Stream#collect"));
-              try {
-                // Hack pending https://github.com/mezz/JustEnoughItems/pull/1419
-                // Force the wrapper's input list to be all items instead of just the first
-                ReflectionHelper.<List<List<ItemStack>>, AnvilRecipeWrapper>getPrivateValue(AnvilRecipeWrapper.class, (AnvilRecipeWrapper) w, "inputs").set(0, recs.stream().map(UpgradePath::getInput).collect(Collectors.toList()));
-              } catch (Exception ex) {
-                // Something changed in JEI internals, we can just fall back to the first input
-                Log.LOGGER.debug("Error modifying AnvilRecipeWrapper, falling back to single input...", ex);
-              }
-              wrappers.add(w);
-            }
-            return (List<T>) wrappers;
+            recipes = allRecipes.stream().filter(u -> u.getOutput().getItem() == focusStack.getItem()).collect(Collectors.toSet());
           }
-          return getWrappers(recipes);
+          if (recipes.isEmpty()) {
+            return getWrappers(allRecipes, focusStack);
+          }
+          return getWrappers(recipes, null);
         }
         return NNList.emptyList();
       }
@@ -130,18 +105,43 @@ public class DarkSteelUpgradeRecipeCategory {
       @Override
       public @Nonnull <T extends IRecipeWrapper> List<T> getRecipeWrappers(@Nonnull IRecipeCategory<T> recipeCategory) {
         if (recipeCategory.getUid().equals(VanillaRecipeCategoryUid.ANVIL)) {
-          return getWrappers(allRecipes);
+          return getWrappers(allRecipes, null);
         }
         return NNList.emptyList();
       }
       
       @SuppressWarnings("unchecked")
-      private @Nonnull <T extends IRecipeWrapper> List<T> getWrappers(@Nonnull Collection<UpgradePath> recipes) {
+      private @Nonnull <T extends IRecipeWrapper> List<T> getWrappers(@Nonnull Collection<UpgradePath> recipes, @Nullable ItemStack upgradeFocus) {
         final IVanillaRecipeFactory factory = registry.getJeiHelpers().getVanillaRecipeFactory();
-        return (List<T>) NullHelper.notnullJ(recipes.stream()
-            .filter(rec -> UpgradeRegistry.getUpgrades().stream().anyMatch(u -> u.isUpgradeItem(rec.getUpgrade()) && u.canAddToItem(rec.getInput(), (IDarkSteelItem) rec.getInput().getItem())))
-            .map(rec -> factory.createAnvilRecipe(rec.getInput(), new NNList<>(rec.getUpgrade()), new NNList<>(rec.getOutput())))
-            .collect(Collectors.toList()), "Stream#collect");
+        Map<ItemStackKey, List<UpgradePath>> byUpgrade = NullHelper.notnullJ(
+            recipes.stream().collect(Collectors.groupingBy(rec -> new ItemStackKey(rec.getUpgrade()))),
+            "Stream#collect");
+        
+        List<IRecipeWrapper> wrappers = new ArrayList<>();
+        ItemStackKey focusKey = upgradeFocus == null ? null : new ItemStackKey(upgradeFocus);
+        for (Entry<ItemStackKey, List<UpgradePath>> e : byUpgrade.entrySet()) {
+          if (upgradeFocus != null && !e.getKey().equals(focusKey)) {
+            continue;
+          }
+          List<UpgradePath> recs = e.getValue();
+          ItemStack upgrade = e.getKey().wrapped;
+          List<ItemStack> upgradesRepeated = new ArrayList<>();
+          for (int i = 0; i < recs.size(); i++) {
+            upgradesRepeated.add(upgrade);
+          }
+          IRecipeWrapper w = factory.createAnvilRecipe(recs.get(0).getInput(), upgradesRepeated, 
+              NullHelper.notnullJ(recs.stream().map(UpgradePath::getOutput).collect(Collectors.toList()), "Stream#collect"));
+          try {
+            // Hack pending https://github.com/mezz/JustEnoughItems/pull/1419
+            // Force the wrapper's input list to be all items instead of just the first
+            ReflectionHelper.<List<List<ItemStack>>, AnvilRecipeWrapper>getPrivateValue(AnvilRecipeWrapper.class, (AnvilRecipeWrapper) w, "inputs").set(0, recs.stream().map(UpgradePath::getInput).collect(Collectors.toList()));
+          } catch (Exception ex) {
+            // Something changed in JEI internals, we can just fall back to the first input
+            Log.LOGGER.debug("Error modifying AnvilRecipeWrapper, falling back to single input...", ex);
+          }
+          wrappers.add(w);
+        }
+        return (List<T>) wrappers;
       }
       
       @Override
