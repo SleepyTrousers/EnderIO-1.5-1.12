@@ -42,6 +42,7 @@ import crazypants.enderio.base.capacitor.ItemCapacitor;
 import crazypants.enderio.base.conduit.facade.ItemConduitFacade;
 import crazypants.enderio.base.filter.fluid.items.ItemFluidFilter;
 import crazypants.enderio.base.filter.item.items.ItemBasicItemFilter;
+import crazypants.enderio.base.filter.item.items.ItemEnchantmentFilter;
 import crazypants.enderio.base.filter.item.items.ItemExistingItemFilter;
 import crazypants.enderio.base.filter.item.items.ItemModItemFilter;
 import crazypants.enderio.base.filter.item.items.ItemPowerItemFilter;
@@ -186,6 +187,8 @@ public enum ModObject implements IModObjectBase {
   itemPowerItemFilter(ItemPowerItemFilter.class),
   itemSoulFilterNormal(ItemSoulFilter.class, "createNormal"),
   itemSoulFilterBig(ItemSoulFilter.class, "createBig"),
+  itemEnchantmentFilterNormal(ItemEnchantmentFilter.class, "createNormal"),
+  itemEnchantmentFilterBig(ItemEnchantmentFilter.class, "createBig"),
 
   itemFluidFilter(ItemFluidFilter.class),
 

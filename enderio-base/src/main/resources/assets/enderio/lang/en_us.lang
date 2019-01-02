@@ -1200,6 +1200,8 @@ enderio.gui.power_item_filter=Power Item Filter
 enderio.gui.species_item_filter=Species Item Filter
 enderio.gui.soul_filter_normal=Soul Filter
 enderio.gui.soul_filter_big=Big Soul Filter
+enderio.gui.enchantment_filter_normal=Enchantment Filter
+enderio.gui.enchantment_filter_big=Big Enchantment Filter
 
 enderio.gui.fluid_filter=Fluid Filter
 
@@ -1235,6 +1237,8 @@ item.item_mod_item_filter.name=Mod Item Filter
 item.item_power_item_filter.name=Power Item Filter
 item.item_soul_filter_normal.name=Soul Filter
 item.item_soul_filter_big.name=Big Soul Filter
+item.item_enchantment_filter_normal.name=Enchantment Filter
+item.item_enchantment_filter_big.name=Big Enchantment Filter
 
 item.item_fluid_filter.name=Fluid Filter
 

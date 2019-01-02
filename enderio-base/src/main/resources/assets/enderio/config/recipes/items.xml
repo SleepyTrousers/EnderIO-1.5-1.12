@@ -538,6 +538,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Filter, Enchantment" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:item_basic_item_filter"/>
+        <item name="minecraft:enchanted_book"/>
+      </shapeless>
+      <output name="enderio:item_enchantment_filter_normal" />
+    </crafting>
+  </recipe>
+
   <recipe name="Filter, Advanced" required="true">
     <crafting>
       <grid>
@@ -599,6 +609,16 @@ XML editor will display that as tooltips when editing this file.
         <item name="dustObsidian" /><item name="minecraft:paper" /><item name="dustObsidian" />
       </grid>
       <output name="enderio:item_big_item_filter" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Filter, Enchantment, Big" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:item_big_item_filter"/>
+        <item name="minecraft:enchanted_book"/>
+      </shapeless>
+      <output name="enderio:item_enchantment_filter_big" />
     </crafting>
   </recipe>
 
