@@ -80,7 +80,7 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
   public void registerRenderers(@Nonnull IModObject modObject) {
     for (Integer dmg : DAMAGE.getAllowedValues()) {
       ClientUtil.regRenderer(this, dmg, DAMAGE.getName() + "=" + DAMAGE.getName(NullHelper.notnullM(dmg, "invalid property")) + "," + FACING.getName() + "="
-          + FACING.getName(EnumFacing.WEST));
+          + FACING.getName(EnumFacing.NORTH));
     }
   }
 
