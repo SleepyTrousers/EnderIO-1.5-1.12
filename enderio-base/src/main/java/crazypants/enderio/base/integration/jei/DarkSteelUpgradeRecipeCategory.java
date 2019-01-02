@@ -2,42 +2,66 @@ package crazypants.enderio.base.integration.jei;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
-import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.util.NullHelper;
-import com.google.common.collect.Lists;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager.UpgradePath;
+import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;
+import mezz.jei.api.recipe.IFocus;
+import mezz.jei.api.recipe.IFocus.Mode;
+import mezz.jei.api.recipe.IRecipeCategory;
+import mezz.jei.api.recipe.IRecipeRegistryPlugin;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.IVanillaRecipeFactory;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.init.Items;
+import mezz.jei.plugins.vanilla.anvil.AnvilRecipeWrapper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import static crazypants.enderio.base.init.ModObject.blockDarkSteelAnvil;
 
 public class DarkSteelUpgradeRecipeCategory {
+  
+  private static class ItemStackKey {
+    
+    final @Nonnull ItemStack wrapped;
+    
+    ItemStackKey(@Nonnull ItemStack stack) {
+      this.wrapped = stack;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == null || obj.getClass() != ItemStackKey.class) {
+        return false;
+      }
+      ItemStack stack = ((ItemStackKey) obj).wrapped;
+      return ItemStack.areItemsEqual(wrapped, stack) && ItemStack.areItemStackTagsEqual(wrapped, stack);
+    }
+    
+    @Override
+    public int hashCode() {
+      return Objects.hash(wrapped.getItem(), wrapped.getItemDamage(), wrapped.getTagCompound());
+    }
+  }
 
-  private static final List<UpgradePath> allRecipes = DarkSteelRecipeManager.getAllRecipes(ItemHelper.getValidItems());
+  private static final @Nonnull List<UpgradePath> allRecipes = DarkSteelRecipeManager.getAllRecipes(ItemHelper.getValidItems());
 
   public static void registerSubtypes(ISubtypeRegistry subtypeRegistry) {
     DarkSteelUpgradeSubtypeInterpreter dsusi = new DarkSteelUpgradeSubtypeInterpreter();
@@ -55,90 +79,75 @@ public class DarkSteelUpgradeRecipeCategory {
   }
 
   public static void register(IModRegistry registry) {
-    long start = System.nanoTime();
-
     registry.addRecipeCatalyst(new ItemStack(blockDarkSteelAnvil.getBlockNN()), VanillaRecipeCategoryUid.ANVIL);
+    registry.addRecipeRegistryPlugin(new IRecipeRegistryPlugin() {
+      
+      @SuppressWarnings("unchecked")
+      @Override
+      public @Nonnull <T extends IRecipeWrapper, V> List<T> getRecipeWrappers(@Nonnull IRecipeCategory<T> recipeCategory, @Nonnull IFocus<V> focus) {
+        if (recipeCategory.getUid().equals(VanillaRecipeCategoryUid.ANVIL) && focus.getValue() instanceof ItemStack) {
+          Set<UpgradePath> recipes = new HashSet<>();
+          ItemStack focusStack = (ItemStack) focus.getValue();
+          if (focus.getMode() == Mode.INPUT) {
+            DarkSteelRecipeManager.getRecipes(recipes, new NNList<>(focusStack));
+            recipes.addAll(NullHelper.notnullJ(
+                allRecipes.stream().filter(rec -> ItemStack.areItemsEqual(rec.getUpgrade(), focusStack)).collect(Collectors.toSet()),
+                "Stream#collect"));
+          } else {
+            Map<ItemStackKey, List<UpgradePath>> byUpgrade = NullHelper.notnullJ(
+                allRecipes.stream().collect(Collectors.groupingBy(rec -> new ItemStackKey(rec.getUpgrade()))),
+                "Stream#collect");
+            
+            final IVanillaRecipeFactory factory = registry.getJeiHelpers().getVanillaRecipeFactory();
 
-    NNList<ItemStack> blacklist = new NNList<>();
-    Set<Item> toBlacklist = new HashSet<>();
-    for (UpgradePath rec : allRecipes) {
-      toBlacklist.add(rec.getOutput().getItem());
-    }
-    for (Item item : toBlacklist) {
-      for (CreativeTabs tab : item.getCreativeTabs()) {
-        if (tab != null) {
-          item.getSubItems(tab, blacklist);
-        }
-      }
-    }
-
-    NNList<ItemStack> seen = new NNList<>();
-    for (UpgradePath rec : allRecipes) {
-      if (!inList(blacklist, rec.getOutput()) && !inList(seen, rec.getOutput())) {
-        seen.add(rec.getOutput());
-      }
-    }
-
-    int enchantmentRecipes = registerBookEnchantmentRecipes(registry, seen);
-
-    final IVanillaRecipeFactory factory = registry.getJeiHelpers().getVanillaRecipeFactory();
-    Collection<IRecipeWrapper> anvilRecipes = NullHelper.notnullJ(allRecipes.stream()
-        .map(rec -> factory.createAnvilRecipe(rec.getInput(), Collections.singletonList(rec.getUpgrade()), Collections.singletonList(rec.getOutput())))
-        .collect(Collectors.toList()), "Stream#collect");
-    registry.addRecipes(anvilRecipes, VanillaRecipeCategoryUid.ANVIL);
-
-    Log.info(String.format(
-        "DarkSteelUpgradeRecipeCategory: Added %d dark steel upgrade recipes and %d enchantment recipes for upgradable items to JEI in %.3f seconds.",
-        allRecipes.size(), enchantmentRecipes, (System.nanoTime() - start) / 1000000000d));
-  }
-
-  @SuppressWarnings("null")
-  private static @Nonnull CreativeTabs getCreativeTab(UpgradePath rec) {
-    return rec.getOutput().getItem().getCreativeTab();
-  }
-
-  private static int registerBookEnchantmentRecipes(@Nonnull IModRegistry registry, @Nonnull NNList<ItemStack> ingredients) {
-    int count = 0;
-    Collection<Enchantment> enchantments = ForgeRegistries.ENCHANTMENTS.getValuesCollection();
-    List<IRecipeWrapper> anvilRecipes = new ArrayList<>();
-    IVanillaRecipeFactory factory = registry.getJeiHelpers().getVanillaRecipeFactory();
-    for (ItemStack ingredient : ingredients) {
-      if (ingredient.isItemEnchantable()) {
-        for (Enchantment enchantment : enchantments) {
-          if (enchantment.canApply(ingredient)) {
-            Item item = ingredient.getItem();
-            List<ItemStack> perLevelBooks = Lists.newArrayList();
-            List<ItemStack> perLevelOutputs = Lists.newArrayList();
-            for (int level = 1; level <= enchantment.getMaxLevel(); level++) {
-              Map<Enchantment, Integer> enchMap = Collections.singletonMap(enchantment, level);
-              ItemStack bookEnchant = new ItemStack(Items.ENCHANTED_BOOK);
-              EnchantmentHelper.setEnchantments(enchMap, bookEnchant);
-              if (item.isBookEnchantable(ingredient, bookEnchant)) {
-                perLevelBooks.add(bookEnchant);
-                ItemStack withEnchant = ingredient.copy();
-                EnchantmentHelper.setEnchantments(enchMap, withEnchant);
-                perLevelOutputs.add(withEnchant);
+            List<IRecipeWrapper> wrappers = new ArrayList<>();
+            for (Entry<ItemStackKey, List<UpgradePath>> e : byUpgrade.entrySet()) {
+              List<UpgradePath> recs = e.getValue();
+              ItemStack upgrade = e.getKey().wrapped;
+              List<ItemStack> upgradesRepeated = new ArrayList<>();
+              for (int i = 0; i < recs.size(); i++) {
+                upgradesRepeated.add(upgrade);
               }
+              IRecipeWrapper w = factory.createAnvilRecipe(recs.get(0).getInput(), upgradesRepeated, 
+                  NullHelper.notnullJ(recs.stream().map(UpgradePath::getOutput).collect(Collectors.toList()), "Stream#collect"));
+              try {
+                // Hack pending https://github.com/mezz/JustEnoughItems/pull/1419
+                // Force the wrapper's input list to be all items instead of just the first
+                ReflectionHelper.<List<List<ItemStack>>, AnvilRecipeWrapper>getPrivateValue(AnvilRecipeWrapper.class, (AnvilRecipeWrapper) w, "inputs").set(0, recs.stream().map(UpgradePath::getInput).collect(Collectors.toList()));
+              } catch (Exception ex) {
+                // Something changed in JEI internals, we can just fall back to the first input
+                Log.LOGGER.debug("Error modifying AnvilRecipeWrapper, falling back to single input...", ex);
+              }
+              wrappers.add(w);
             }
-            if (!perLevelBooks.isEmpty() && !perLevelOutputs.isEmpty()) {
-              anvilRecipes.add(factory.createAnvilRecipe(ingredient, perLevelBooks, perLevelOutputs));
-              count++;
-            }
+            return (List<T>) wrappers;
           }
+          return getWrappers(recipes);
         }
+        return NNList.emptyList();
       }
-    }
-    registry.addRecipes(anvilRecipes, VanillaRecipeCategoryUid.ANVIL);
-    return count;
-  }
-
-  private static boolean inList(@Nonnull NNList<ItemStack> list, @Nonnull ItemStack stack) {
-    for (NNIterator<ItemStack> itr = list.fastIterator(); itr.hasNext();) {
-      if (ItemStack.areItemStacksEqual(itr.next(), stack)) {
-        return true;
+      
+      @Override
+      public @Nonnull <T extends IRecipeWrapper> List<T> getRecipeWrappers(@Nonnull IRecipeCategory<T> recipeCategory) {
+        if (recipeCategory.getUid().equals(VanillaRecipeCategoryUid.ANVIL)) {
+          return getWrappers(allRecipes);
+        }
+        return NNList.emptyList();
       }
-    }
-    return false;
+      
+      @SuppressWarnings("unchecked")
+      private @Nonnull <T extends IRecipeWrapper> List<T> getWrappers(@Nonnull Collection<UpgradePath> recipes) {
+        final IVanillaRecipeFactory factory = registry.getJeiHelpers().getVanillaRecipeFactory();
+        return (List<T>) NullHelper.notnullJ(recipes.stream()
+            .filter(rec -> UpgradeRegistry.getUpgrades().stream().anyMatch(u -> u.isUpgradeItem(rec.getUpgrade()) && u.canAddToItem(rec.getInput(), (IDarkSteelItem) rec.getInput().getItem())))
+            .map(rec -> factory.createAnvilRecipe(rec.getInput(), new NNList<>(rec.getUpgrade()), new NNList<>(rec.getOutput())))
+            .collect(Collectors.toList()), "Stream#collect");
+      }
+      
+      @Override
+      public @Nonnull <V> List<String> getRecipeCategoryUids(@Nonnull IFocus<V> focus) {
+        return new NNList<>(VanillaRecipeCategoryUid.ANVIL);
+      }
+    });
   }
-
 }
