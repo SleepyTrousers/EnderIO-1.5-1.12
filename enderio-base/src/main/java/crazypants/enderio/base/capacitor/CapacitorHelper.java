@@ -136,7 +136,7 @@ public class CapacitorHelper {
   }
 
   public static @Nonnull ICapacitorData increaseCapacitorLevel(@Nonnull ICapacitorData data, float level) {
-	if (data.getUnlocalizedName().equals("none")) {
+	if (data == DefaultCapacitorData.NONE) {
 	  return data;
 	}
     return new ICapacitorData() {
