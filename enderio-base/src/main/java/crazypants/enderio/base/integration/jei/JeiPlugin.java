@@ -33,7 +33,6 @@ public class JeiPlugin implements IModPlugin {
 
   @Override
   public void registerItemSubtypes(@Nonnull ISubtypeRegistry subtypeRegistry) {
-    DarkSteelUpgradeRecipeCategory.registerSubtypes(subtypeRegistry);
     MobContainerSubtypeInterpreter.registerSubtypes(subtypeRegistry);
   }
 
