@@ -1,10 +1,12 @@
 package crazypants.enderio.base.block.skull;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.base.EnderIOTab;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -35,6 +37,12 @@ public class ItemEndermanSkull extends ItemBlock {
         }
       }
     }
+  }
+
+  @Override
+  @Nullable
+  public EntityEquipmentSlot getEquipmentSlot(@Nonnull ItemStack stack) {
+    return EntityEquipmentSlot.HEAD;
   }
 
 }
