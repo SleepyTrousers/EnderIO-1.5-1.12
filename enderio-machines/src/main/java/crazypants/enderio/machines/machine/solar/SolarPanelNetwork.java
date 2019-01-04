@@ -207,7 +207,7 @@ public class SolarPanelNetwork implements ISolarPanelNetwork {
     result.add(String.format("%d panels producing %d µI/t now and %d µI/t peak", panels.size(), getEnergyAvailablePerTick(), getEnergyMaxPerTick()));
     result.add(text);
     for (BlockPos panel : panels) {
-      if (TileSolarPanel.canSeeSun(world, panel)) {
+      if (!TileSolarPanel.canSeeSun(world, panel)) {
         result.add(String.format(" Panel at %s cannot see the sun!", BlockCoord.chatString(panel, TextFormatting.RESET)));
       }
     }
