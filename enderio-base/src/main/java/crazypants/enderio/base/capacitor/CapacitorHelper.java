@@ -136,6 +136,9 @@ public class CapacitorHelper {
   }
 
   public static @Nonnull ICapacitorData increaseCapacitorLevel(@Nonnull ICapacitorData data, float level) {
+	if (data == DefaultCapacitorData.NONE) {
+	  return data;
+	}
     return new ICapacitorData() {
       @Override
       public float getUnscaledValue(@Nonnull ICapacitorKey key) {
