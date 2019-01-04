@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.api.client.gui.ListSelectionListener;
+import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiScrollableList;
@@ -166,17 +167,8 @@ public class ChannelTab implements ITabPanel {
   }
 
   @Override
-  public @Nonnull IconEIO getIcon() {
-    switch (type) {
-    case FLUID:
-      return IconEIO.WRENCH_OVERLAY_FLUID;
-    case ITEM:
-      return IconEIO.WRENCH_OVERLAY_ITEM;
-    case POWER:
-      return IconEIO.WRENCH_OVERLAY_POWER;
-    default:
-      return IconEIO.WRENCH_OVERLAY_POWER;
-    }
+  public @Nonnull IWidgetIcon getIcon() {
+    return type.getWidgetIcon();
   }
 
   @Override

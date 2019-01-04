@@ -7,6 +7,7 @@ import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.api.common.util.ITankAccess.ITankData;
 import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.fluid.SmartTank;
+import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.NullHelper;
 import com.google.common.base.Function;
 
@@ -22,6 +23,8 @@ import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.interfaces.ITEProxy;
 import crazypants.enderio.base.material.material.Material;
 import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.transceiver.Channel;
+import crazypants.enderio.base.transceiver.ChannelType;
 import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
@@ -54,7 +57,7 @@ import static mcjty.theoneprobe.api.IProbeInfo.STARTLOC;
 
 public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInfoProvider, IProbeConfigProvider {
 
-  public static ITheOneProbe probe;
+  private static ITheOneProbe probe;
 
   @Nullable
   @Override
@@ -83,8 +86,8 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     if (probeInfo != null && world != null && blockState != null && hitData != null
         && (blockState.getBlock() instanceof BlockEio || blockState.getBlock() instanceof IPaintable)) {
       TileEntity tileEntity = blockState.getBlock() instanceof ITEProxy
-          ? ((ITEProxy) blockState.getBlock()).getParent(world, NullHelper.notnull(hitData.getPos(), "JEI wants it so"), blockState)
-          : BlockEnder.getAnyTileEntitySafe(world, NullHelper.notnull(hitData.getPos(), "JEI wants it so"));
+          ? ((ITEProxy) blockState.getBlock()).getParent(world, NullHelper.notnull(hitData.getPos(), "hitData.getPos()"), blockState)
+          : BlockEnder.getAnyTileEntitySafe(world, NullHelper.notnull(hitData.getPos(), "hitData.getPos()/2"));
       if (tileEntity != null) {
         EioBox eiobox = new EioBox(probeInfo);
 
@@ -98,7 +101,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
         mkProgressLine(mode, eiobox, data);
 
-        mkRfLine(mode, eiobox, data);
+        mkEnergyLine(mode, eiobox, data);
 
         mkXPLine(mode, eiobox, data);
 
@@ -111,6 +114,8 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
         mkTankLines(mode, eiobox, data);
 
         mkItemFillLevelLine(mode, eiobox, data);
+
+        mkChannelLine(mode, eiobox, data);
 
         eiobox.finish();
 
@@ -251,6 +256,39 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     }
   }
 
+  private void mkChannelLine(ProbeMode mode, EioBox eiobox, TOPData data) {
+    if (data.sendChannels != null && data.recvChannels != null) {
+      if (mode != ProbeMode.NORMAL || TopConfig.showChannelsByDefault.get()) {
+        ChannelType.VALUES.apply(new Callback<ChannelType>() {
+          @Override
+          public void apply(@Nonnull ChannelType type) {
+            if (!data.sendChannels.get(type).isEmpty() || !data.recvChannels.get(type).isEmpty()) {
+              final IProbeInfo lines = addIcon(eiobox.get().horizontal(eiobox.center()), type.getWidgetIcon())
+                  .vertical(eiobox.getProbeinfo().defaultLayoutStyle().spacing(-1));
+              if (data.sendChannels.get(type).isEmpty()) {
+                lines.text(loc("top.channel.send", loc("top.channel.none")));
+              } else {
+                for (Channel channel : data.sendChannels.get(type)) {
+                  lines.text(loc("top.channel.send", channel.getName()));
+                }
+              }
+
+              if (data.recvChannels.get(type).isEmpty()) {
+                lines.text(loc("top.channel.recv", loc("top.channel.none")));
+              } else {
+                for (Channel channel : data.recvChannels.get(type)) {
+                  lines.text(loc("top.channel.recv", channel.getName()));
+                }
+              }
+            }
+          }
+        });
+      } else {
+        eiobox.addMore();
+      }
+    }
+  }
+
   private void mkRedstoneLine(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (data.hasRedstone) {
       if (mode != ProbeMode.NORMAL || TopConfig.showRedstoneByDefault.get()) {
@@ -287,7 +325,7 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
     }
   }
 
-  private void mkRfLine(ProbeMode mode, EioBox eiobox, TOPData data) {
+  private void mkEnergyLine(ProbeMode mode, EioBox eiobox, TOPData data) {
     if (data.hasRF) {
       if (mode != ProbeMode.NORMAL || TopConfig.showPowerByDefault.get()) {
         IProbeInfo rfLine = eiobox.get().horizontal(eiobox.center()).item(Material.POWDER_INFINITY.getStack());

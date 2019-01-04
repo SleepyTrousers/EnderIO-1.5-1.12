@@ -25,6 +25,7 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.transceiver.Channel;
 import crazypants.enderio.base.transceiver.ChannelList;
 import crazypants.enderio.base.transceiver.ChannelType;
+import crazypants.enderio.base.transceiver.IChanneledMachine;
 import crazypants.enderio.base.transceiver.ServerChannelRegister;
 import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.util.Prep;
@@ -48,7 +49,7 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.TRANSCEIVER_POW
 import static crazypants.enderio.machines.capacitor.CapacitorKey.TRANSCEIVER_POWER_INTAKE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.TRANSCEIVER_POWER_USE;
 
-public class TileTransceiver extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity {
+public class TileTransceiver extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity, IChanneledMachine {
 
   // Power will only be sent to other transceivers is the buffer is higher than this amount
   private static final float MIN_POWER_TO_SEND = 0.5f;
@@ -173,11 +174,15 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IPaint
     return hasPower();
   }
 
-  public Set<Channel> getSendChannels(ChannelType type) {
+  @SuppressWarnings("null")
+  @Override
+  public @Nonnull Set<Channel> getSendChannels(@Nonnull ChannelType type) {
     return sendChannels.get(type);
   }
 
-  public Set<Channel> getRecieveChannels(ChannelType type) {
+  @SuppressWarnings("null")
+  @Override
+  public @Nonnull Set<Channel> getRecieveChannels(@Nonnull ChannelType type) {
     return recieveChannels.get(type);
   }
 
@@ -306,7 +311,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IPaint
     neighbourFluidHandlers = null;
   }
 
-  private boolean hasRecieveChannel(Set<Channel> channels, ChannelType type) {
+  private boolean hasRecieveChannel(@Nonnull Set<Channel> channels, @Nonnull ChannelType type) {
     boolean hasChannel = false;
     for (Channel chan : channels) {
       if (getRecieveChannels(type).contains(chan)) {
@@ -319,7 +324,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IPaint
 
   // ---------------- Fluid Handling
 
-  public boolean canReceive(Set<Channel> channels, Fluid fluid) {
+  public boolean canReceive(@Nonnull Set<Channel> channels, @Nonnull Fluid fluid) {
     if (inFluidFill) {
       return false;
     }
@@ -353,7 +358,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IPaint
     }
   }
 
-  public int recieveFluid(Set<Channel> channels, FluidStack resource, boolean doFill) {
+  public int recieveFluid(@Nonnull Set<Channel> channels, @Nonnull FluidStack resource, boolean doFill) {
     if (inFluidFill) {
       return 0;
     }
@@ -373,7 +378,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IPaint
     return 0;
   }
 
-  public void getRecieveTankInfo(List<IFluidTankProperties> infos, Set<Channel> channels) {
+  public void getRecieveTankInfo(@Nonnull List<IFluidTankProperties> infos, @Nonnull Set<Channel> channels) {
     if (inGetTankInfo) {
       return;
     }

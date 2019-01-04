@@ -1,7 +1,9 @@
 package crazypants.enderio.base.integration.top;
 
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -13,6 +15,7 @@ import com.enderio.core.api.common.util.ITankAccess.ITankData;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.InventorySlot;
+import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.UserIdent;
 
 import crazypants.enderio.api.ILocalizable;
@@ -37,6 +40,9 @@ import crazypants.enderio.base.power.EnergyTank;
 import crazypants.enderio.base.power.ILegacyPoweredTile;
 import crazypants.enderio.base.power.IPowerStorage;
 import crazypants.enderio.base.render.ranged.IRanged;
+import crazypants.enderio.base.transceiver.Channel;
+import crazypants.enderio.base.transceiver.ChannelType;
+import crazypants.enderio.base.transceiver.IChanneledMachine;
 import crazypants.enderio.base.xp.ExperienceContainer;
 import crazypants.enderio.base.xp.IHaveExperience;
 import crazypants.enderio.util.CapturedMob;
@@ -74,6 +80,7 @@ class TOPData {
   ItemStack paint2 = Prep.getEmpty();
   UserIdent owner = null;
   Set<? extends ILocalizable> notifications = null;
+  Map<ChannelType, Set<Channel>> sendChannels, recvChannels;
 
   TOPData(TileEntity tileEntity, IProbeHitData hitData) {
 
@@ -188,6 +195,18 @@ class TOPData {
 
     if (tileEntity instanceof INotifier) {
       notifications = ((INotifier) tileEntity).getNotification();
+    }
+
+    if (tileEntity instanceof IChanneledMachine) {
+      sendChannels = new EnumMap<>(ChannelType.class);
+      recvChannels = new EnumMap<>(ChannelType.class);
+      ChannelType.VALUES.apply(new Callback<ChannelType>() {
+        @Override
+        public void apply(@Nonnull ChannelType type) {
+          sendChannels.put(type, ((IChanneledMachine) tileEntity).getSendChannels(type));
+          recvChannels.put(type, ((IChanneledMachine) tileEntity).getRecieveChannels(type));
+        }
+      });
     }
 
     calculateProgress();

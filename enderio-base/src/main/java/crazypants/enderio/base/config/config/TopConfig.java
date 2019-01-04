@@ -37,4 +37,7 @@ public final class TopConfig {
   public static final IValue<Boolean> showItemCountDefault = F.make("showItemCountDefault", true, //
       "If true, the item count will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed).").sync();
 
+  public static final IValue<Boolean> showChannelsByDefault = F.make("showChannelsByDefault", false, //
+      "If true, the channel list will be shown always, otherwise only it will only be shown on 'extended' mode (e.g. with shift pressed).").sync();
+
 }
