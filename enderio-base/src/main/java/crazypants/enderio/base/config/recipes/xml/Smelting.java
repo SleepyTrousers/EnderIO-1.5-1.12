@@ -68,14 +68,26 @@ public class Smelting extends AbstractCrafting {
   public void register(@Nonnull String recipeName) {
     if (isValid() && isActive()) {
       if (vanilla) {
+        final ItemStack result = getOutput().getItemStack();
         input.getThing().getItemStacks().apply(new Callback<ItemStack>() {
           @SuppressWarnings("null")
           @Override
           public void apply(@Nonnull ItemStack stack) {
             if (!EnderIO.DOMAIN.equals(stack.getItem().getRegistryName().getResourceDomain())) {
-              Log.warn("Adding smelting recipes for non-EnderIO items is not recommended (" + stack + " => " + getOutput().getItemStack() + ")");
+              Log.debug("Adding smelting recipes for non-EnderIO items is not recommended, recipe: " + recipeName + " (" + stack + " => " + result + ")");
             }
-            GameRegistry.addSmelting(stack, getOutput().getItemStack(), exp);
+            final ItemStack smeltingResult = FurnaceRecipes.instance().getSmeltingResult(stack);
+            if (Prep.isValid(smeltingResult)) {
+              if (result.getItem() != smeltingResult.getItem() || result.getCount() != smeltingResult.getCount()) {
+                Log.error("Cannot add smelting recipe " + recipeName + " (" + stack + " => " + result + ") because another mod already has registered a recipe "
+                    + stack + " => " + smeltingResult + ".");
+              } else {
+                Log.debug(
+                    "Smelting recipe " + recipeName + " (" + stack + " => " + result + ") is a real duplicate and will be ignored (XP may be different).");
+              }
+            } else {
+              GameRegistry.addSmelting(stack, result, exp);
+            }
           }
         });
       }
