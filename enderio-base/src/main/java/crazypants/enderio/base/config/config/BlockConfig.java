@@ -25,6 +25,9 @@ public final class BlockConfig {
 
   public static final IValue<Float> darkSteelLadderSpeedBoost = F.make("darkSteelLadderSpeedBoost", 0.06f, //
       "Speed boost, in blocks per tick, that the DS ladder gives over the vanilla ladder.").setRange(0, 0.6).sync();
+  
+  public static final IValue<Boolean> useOldBlockDetector = F.make("useOldBlockDetector", true, 
+	  "If true, the Block Detector will be inverted like it was before it was fixed in newer updates.");
 
   public static final IValueFactoryEIO F_SKULLS = F.section(".skulls");
 
