@@ -135,7 +135,7 @@ public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements I
 
   @Override
   public int getWeakPower(@Nonnull IBlockState state, @Nonnull IBlockAccess blockAccess, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
-    return side.getOpposite() != state.getValue(FACING) && state.getValue(IS_ON) ? 15 : 0;
+    return side.getOpposite() != state.getValue(FACING) && state.getValue(IS_ON) ? 0 : 15;
   }
 
   @Override
