@@ -29,10 +29,10 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.config.config.TeleportConfig;
-import info.loenwind.autoconfig.factory.IValue;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.PlayerAOEAttributeHandler;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
+import crazypants.enderio.base.item.darksteel.upgrade.direct.DirectUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -47,6 +47,7 @@ import crazypants.enderio.base.network.PacketSpawnParticles;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.base.teleport.TravelController;
 import crazypants.enderio.util.Prep;
+import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -121,20 +122,28 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
 
       is = new ItemStack(this);
       EnergyUpgrade.UPGRADES.get(3).addToItem(is, this);
+      if (EnergyUpgrade.UPGRADES.get(4).canAddToItem(is, this)) {
+        EnergyUpgrade.UPGRADES.get(4).addToItem(is, this);
+      }
       EnergyUpgradeManager.setPowerFull(is, this);
       TravelUpgrade.INSTANCE.addToItem(is, this);
       SpoonUpgrade.INSTANCE.addToItem(is, this);
       ExplosiveUpgrade.INSTANCE.addToItem(is, this);
+      DirectUpgrade.INSTANCE.addToItem(is, this);
       list.add(is);
 
       is = new ItemStack(this);
       EnergyUpgrade.UPGRADES.get(3).addToItem(is, this);
+      if (EnergyUpgrade.UPGRADES.get(4).canAddToItem(is, this)) {
+        EnergyUpgrade.UPGRADES.get(4).addToItem(is, this);
+      }
       EnergyUpgradeManager.setPowerFull(is, this);
       TravelUpgrade.INSTANCE.addToItem(is, this);
       SpoonUpgrade.INSTANCE.addToItem(is, this);
       ExplosiveUpgrade.INSTANCE5.addToItem(is, this);
       ExplosiveDepthUpgrade.INSTANCE.addToItem(is, this);
       ExplosiveCarpetUpgrade.INSTANCE.addToItem(is, this);
+      DirectUpgrade.INSTANCE.addToItem(is, this);
       list.add(is);
     }
   }

@@ -32,6 +32,7 @@ import crazypants.enderio.base.farming.harvesters.IHarvestingTarget;
 import crazypants.enderio.base.farming.harvesters.TreeHarvester;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
+import crazypants.enderio.base.item.darksteel.upgrade.direct.DirectUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -121,6 +122,7 @@ public class ItemDarkSteelCrook extends ItemTool implements IAdvancedTooltipProv
       EnergyUpgrade.UPGRADES.get(3).addToItem(is, this);
       EnergyUpgradeManager.setPowerFull(is, this);
       HoeUpgrade.INSTANCE.addToItem(is, this);
+      DirectUpgrade.INSTANCE.addToItem(is, this);
       list.add(is);
     }
   }
@@ -306,6 +308,11 @@ public class ItemDarkSteelCrook extends ItemTool implements IAdvancedTooltipProv
   @Override
   public boolean isForSlot(@Nonnull EntityEquipmentSlot slot) {
     return slot == EntityEquipmentSlot.MAINHAND;
+  }
+
+  @Override
+  public boolean isBlockBreakingTool() {
+    return true;
   }
 
   protected void setBlock(ItemStack stack, @Nonnull EntityPlayer player, World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state) {

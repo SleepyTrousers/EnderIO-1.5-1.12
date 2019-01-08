@@ -22,7 +22,6 @@ import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
-import info.loenwind.autoconfig.factory.IValue;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.farmers.HarvestResult;
 import crazypants.enderio.base.farming.harvesters.AxeHarvestingTarget;
@@ -31,6 +30,7 @@ import crazypants.enderio.base.farming.harvesters.TreeHarvester;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
+import crazypants.enderio.base.item.darksteel.upgrade.direct.DirectUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -39,6 +39,7 @@ import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.util.Prep;
+import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.material.Material;
@@ -131,8 +132,12 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
 
       is = new ItemStack(this);
       EnergyUpgrade.UPGRADES.get(3).addToItem(is, this);
+      if (EnergyUpgrade.UPGRADES.get(4).canAddToItem(is, this)) {
+        EnergyUpgrade.UPGRADES.get(4).addToItem(is, this);
+      }
       EnergyUpgradeManager.setPowerFull(is, this);
       HoeUpgrade.INSTANCE.addToItem(is, this);
+      DirectUpgrade.INSTANCE.addToItem(is, this);
       list.add(is);
     }
   }

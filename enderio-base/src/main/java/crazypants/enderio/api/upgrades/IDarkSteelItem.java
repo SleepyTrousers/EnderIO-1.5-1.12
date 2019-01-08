@@ -50,6 +50,17 @@ public interface IDarkSteelItem {
   }
 
   /**
+   * Checks if this item is a tool that breaks blocks, firing BlockHarvestEvents.
+   * <p>
+   * Used by upgrades to determine if they can be applied to an item.
+   * <p>
+   * Note: Items that return true here should also do so for {@link #isForSlot(EntityEquipmentSlot)} with {@link EntityEquipmentSlot#MAINHAND}.
+   */
+  default boolean isBlockBreakingTool() {
+    return isPickaxe() || isAxe();
+  }
+
+  /**
    * Checks if this item is a pickaxe.
    * <p>
    * Used by upgrades to determine if they can be applied to an item.

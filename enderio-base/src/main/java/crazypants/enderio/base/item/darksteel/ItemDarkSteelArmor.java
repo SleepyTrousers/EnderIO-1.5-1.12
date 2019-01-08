@@ -76,8 +76,7 @@ import thaumcraft.api.items.IGoggles;
 import thaumcraft.api.items.IRevealer;
 import thaumcraft.api.items.IVisDiscountGear;
 
-@InterfaceList({
-    @Interface(iface = "thaumcraft.api.items.IGoggles", modid = "thaumcraft"),
+@InterfaceList({ @Interface(iface = "thaumcraft.api.items.IGoggles", modid = "thaumcraft"),
     @Interface(iface = "thaumcraft.api.items.IVisDiscountGear", modid = "thaumcraft"),
     @Interface(iface = "thaumcraft.api.items.IRevealer", modid = "thaumcraft"),
     @Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = "forestry"),
@@ -200,11 +199,13 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
       EnergyUpgrade.UPGRADES.get(getMaxEmpoweredLevel(is)).addToItem(is, this);
       EnergyUpgradeManager.setPowerFull(is, this);
 
-      Iterator<IDarkSteelUpgrade> iter = DarkSteelRecipeManager.recipeIterator();
-      while (iter.hasNext()) {
-        IDarkSteelUpgrade upgrade = iter.next();
-        if (!(upgrade instanceof EnergyUpgrade || upgrade instanceof GliderUpgrade || upgrade instanceof ElytraUpgrade) && upgrade.canAddToItem(is, this)) {
-          upgrade.addToItem(is, this);
+      for (int i = 0; i < 2; i++) { // upgrades may not be in the best order, so try adding them a couple of times
+        Iterator<IDarkSteelUpgrade> iter = DarkSteelRecipeManager.recipeIterator();
+        while (iter.hasNext()) {
+          IDarkSteelUpgrade upgrade = iter.next();
+          if (!(upgrade instanceof EnergyUpgrade || upgrade instanceof GliderUpgrade || upgrade instanceof ElytraUpgrade) && upgrade.canAddToItem(is, this)) {
+            upgrade.addToItem(is, this);
+          }
         }
       }
 

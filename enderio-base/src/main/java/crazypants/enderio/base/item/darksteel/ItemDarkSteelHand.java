@@ -122,7 +122,7 @@ public class ItemDarkSteelHand extends Item implements IAdvancedTooltipProvider,
 
   @Override
   public boolean isForSlot(@Nonnull EntityEquipmentSlot slot) {
-    return slot == EntityEquipmentSlot.MAINHAND;
+    return false;
   }
 
   @Override

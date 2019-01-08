@@ -19,7 +19,6 @@ import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
-import info.loenwind.autoconfig.factory.IValue;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
@@ -27,6 +26,7 @@ import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.Energ
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.util.Prep;
+import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -125,6 +125,9 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
 
       is = new ItemStack(this);
       EnergyUpgrade.UPGRADES.get(3).addToItem(is, this);
+      if (EnergyUpgrade.UPGRADES.get(4).canAddToItem(is, this)) {
+        EnergyUpgrade.UPGRADES.get(4).addToItem(is, this);
+      }
       EnergyUpgradeManager.setPowerFull(is, this);
       list.add(is);
     }

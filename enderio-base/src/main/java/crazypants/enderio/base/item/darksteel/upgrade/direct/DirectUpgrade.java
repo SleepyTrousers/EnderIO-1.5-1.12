@@ -5,6 +5,7 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
@@ -14,7 +15,9 @@ import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.material.alloy.Alloy;
-import net.minecraft.entity.player.InventoryPlayer;
+import crazypants.enderio.util.Prep;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -43,7 +46,8 @@ public class DirectUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
-    return item.isForSlot(EntityEquipmentSlot.MAINHAND) && EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack) && !hasAnyUpgradeVariant(stack);
+    return item.isForSlot(EntityEquipmentSlot.MAINHAND) && item.isBlockBreakingTool() && EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)
+        && !hasAnyUpgradeVariant(stack);
   }
 
   @Override
@@ -52,7 +56,7 @@ public class DirectUpgrade extends AbstractUpgrade {
   }
 
   @SubscribeEvent(priority = EventPriority.LOWEST)
-  public void blockDropEvent(BlockEvent.HarvestDropsEvent event) {
+  public static void blockDropEvent(BlockEvent.HarvestDropsEvent event) {
     if (event.getHarvester() == null) {
       return;
     }
@@ -60,7 +64,7 @@ public class DirectUpgrade extends AbstractUpgrade {
     for (EnumHand hand : EnumHand.values()) {
       ItemStack stack = event.getHarvester().getHeldItem(NullHelper.notnullJ(hand, "EnumHand.values()"));
 
-      if (hasAnyUpgradeVariant(stack) && EnergyUpgradeManager.getEnergyStored(stack) > 0) {
+      if (INSTANCE.hasAnyUpgradeVariant(stack) && EnergyUpgradeManager.getEnergyStored(stack) > 0) {
         EnergyUpgradeManager.extractEnergy(stack, doDirect(event) * DarkSteelConfig.directEnergyCost.get(), false);
         return;
       }
@@ -70,20 +74,41 @@ public class DirectUpgrade extends AbstractUpgrade {
   // also used by TraitPickup
   public static int doDirect(BlockEvent.HarvestDropsEvent event) {
     int count = 0;
-    final InventoryPlayer inventory = event.getHarvester().inventory;
+    final EntityPlayer player = NullHelper.notnullF(event.getHarvester(), "BlockEvent.HarvestDropsEvent.getHarvester()");
+    final NNList<ItemStack> remainsList = new NNList<>();
     for (Iterator<ItemStack> iterator = event.getDrops().iterator(); iterator.hasNext();) {
       ItemStack next = NullHelper.notnullF(iterator.next(), "null stack in HarvestDropsEvent");
       if (random.nextFloat() < event.getDropChance()) {
-        if (inventory.addItemStackToInventory(next)) {
+        ItemStack remains = fakeItemPickup(player, next.copy()); // TODO use ItemUtil version after we update endercore dep
+        if (remains.getCount() < next.getCount()) {
           count++;
           iterator.remove();
+          if (Prep.isValid(remains)) {
+            remainsList.add(remains);
+          }
         }
       } else {
         iterator.remove();
       }
     }
+    event.getDrops().addAll(remainsList);
     event.setDropChance(1); // we already implemented the drop chance
     return count;
+  }
+
+  // TODO use ItemUtil version after we update endercore dep
+  public static @Nonnull ItemStack fakeItemPickup(@Nonnull EntityPlayer player, @Nonnull ItemStack itemstack) {
+    if (!player.world.isRemote) {
+      EntityItem entityItem = new EntityItem(player.world, player.posX, player.posY, player.posZ, itemstack);
+      entityItem.onCollideWithPlayer(player);
+      if (entityItem.isDead) {
+        return Prep.getEmpty();
+      } else {
+        entityItem.setDead();
+        return entityItem.getItem();
+      }
+    }
+    return itemstack;
   }
 
 }

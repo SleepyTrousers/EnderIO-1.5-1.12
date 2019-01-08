@@ -23,10 +23,10 @@ import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
-import info.loenwind.autoconfig.factory.IValue;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
+import crazypants.enderio.base.item.darksteel.upgrade.direct.DirectUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -34,11 +34,16 @@ import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.util.Prep;
+import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
@@ -49,6 +54,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -104,6 +110,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
       is = new ItemStack(this);
       EnergyUpgrade.UPGRADES.get(3).addToItem(is, this);
       EnergyUpgradeManager.setPowerFull(is, this);
+      DirectUpgrade.INSTANCE.addToItem(is, this);
       list.add(is);
     }
   }
@@ -116,7 +123,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
 
     int powerStored = getStoredPower(player);
     if (powerStored < DarkSteelConfig.shearsPowerUsePerDamagePoint.get()) {
-      return super.onBlockStartBreak(itemstack, pos, player);
+      return super_onBlockStartBreak(itemstack, pos, player);
     }
 
     List<BlockPos> res = new ArrayList<BlockPos>();
@@ -144,12 +151,56 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
         : Math.min(sortedTargets.size(), powerStored / DarkSteelConfig.shearsPowerUsePerDamagePoint.get());
     for (int i = 0; i < maxBlocks; i++) {
       BlockPos bc2 = sortedTargets.get(i);
-      super.onBlockStartBreak(itemstack, bc2, player);
+      super_onBlockStartBreak(itemstack, bc2, player);
       if (bc2 != pos) {
         player.world.setBlockToAir(bc2);
       }
     }
 
+    return false;
+  }
+
+  /**
+   * This is a copy of net.minecraft.item.ItemShears.onBlockStartBreak(ItemStack, BlockPos, EntityPlayer) with added code to fire a BlockHarvestEvent.
+   */
+  @SuppressWarnings({ "cast", "null" })
+  public boolean super_onBlockStartBreak(@Nonnull ItemStack itemstack, @Nonnull BlockPos pos, @Nonnull net.minecraft.entity.player.EntityPlayer player) {
+    if (player.world.isRemote || player.capabilities.isCreativeMode) {
+      return false;
+    }
+    IBlockState blockState = player.world.getBlockState(pos); // EIO ADD
+    Block block = player.world.getBlockState(pos).getBlock();
+    if (block instanceof net.minecraftforge.common.IShearable) {
+      net.minecraftforge.common.IShearable target = (net.minecraftforge.common.IShearable) block;
+      if (target.isShearable(itemstack, player.world, pos)) {
+        java.util.List<ItemStack> drops = target.onSheared(itemstack, player.world, pos,
+            net.minecraft.enchantment.EnchantmentHelper.getEnchantmentLevel(net.minecraft.init.Enchantments.FORTUNE, itemstack));
+        java.util.Random rand = new java.util.Random();
+
+        drops = new NNList<>(drops); // EIO ADD
+        float chance = ForgeEventFactory.fireBlockHarvesting(drops, player.world, pos, blockState,
+            EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, itemstack), 1,
+            EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, itemstack) != 0, player); // EIO ADD
+
+        for (ItemStack stack : drops) {
+          if (player.world.rand.nextFloat() <= chance) { // EIO ADD
+            float f = 0.7F;
+            double d = (double) (rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
+            double d1 = (double) (rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
+            double d2 = (double) (rand.nextFloat() * f) + (double) (1.0F - f) * 0.5D;
+            net.minecraft.entity.item.EntityItem entityitem = new net.minecraft.entity.item.EntityItem(player.world, (double) pos.getX() + d,
+                (double) pos.getY() + d1, (double) pos.getZ() + d2, stack);
+            entityitem.setDefaultPickupDelay();
+            player.world.spawnEntity(entityitem);
+          } // EIO ADD
+        }
+
+        itemstack.damageItem(1, player);
+        player.addStat(net.minecraft.stats.StatList.getBlockStats(block));
+        player.world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
+        return true;
+      }
+    }
     return false;
   }
 
@@ -325,6 +376,11 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
   @Override
   public boolean isForSlot(@Nonnull EntityEquipmentSlot slot) {
     return slot == EntityEquipmentSlot.MAINHAND;
+  }
+
+  @Override
+  public boolean isBlockBreakingTool() {
+    return true;
   }
 
   @Override

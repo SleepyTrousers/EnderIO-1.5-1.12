@@ -24,7 +24,6 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.config.config.TeleportConfig;
-import info.loenwind.autoconfig.factory.IValue;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.SwordHandler;
 import crazypants.enderio.base.item.darksteel.attributes.DarkSteelAttributeModifiers;
@@ -35,6 +34,7 @@ import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManage
 import crazypants.enderio.base.item.darksteel.upgrade.travel.TravelUpgrade;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.base.teleport.TravelController;
+import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -92,10 +92,9 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
       list.add(is);
 
       is = new ItemStack(this);
+      EnergyUpgrade.UPGRADES.get(3).addToItem(is, this);
       if (EnergyUpgrade.UPGRADES.get(4).canAddToItem(is, this)) {
         EnergyUpgrade.UPGRADES.get(4).addToItem(is, this);
-      } else {
-        EnergyUpgrade.UPGRADES.get(3).addToItem(is, this);
       }
       EnergyUpgradeManager.setPowerFull(is, this);
       TravelUpgrade.INSTANCE.addToItem(is, this);
