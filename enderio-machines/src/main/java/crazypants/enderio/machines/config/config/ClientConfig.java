@@ -6,9 +6,9 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.config.PersonalConfig;
+import crazypants.enderio.machines.config.Config;
 import info.loenwind.autoconfig.factory.IValue;
 import info.loenwind.autoconfig.factory.IValueFactory;
-import crazypants.enderio.machines.config.Config;
 
 public final class ClientConfig {
 
@@ -22,23 +22,41 @@ public final class ClientConfig {
 
   public static final IValue<Float> machineSoundVolume = PersonalConfig.machineSoundsVolume;
 
+  private enum BloodType implements IValue<Boolean> {
+    GREEN {
+      @Override
+      public Boolean get() {
+        return false;
+      }
+    },
+    RED {
+      @Override
+      public Boolean get() {
+        return true;
+      }
+    },
+    AUTO;
+
+    private static boolean hasLogged = false;
+
+    @Override
+    public Boolean get() {
+      final boolean germany = Locale.getDefault().getCountry().equals(Locale.GERMANY.getCountry());
+      if (germany && !hasLogged) {
+        Log.warn("Detected local country '" + Locale.getDefault().getCountry() + "', cencoring blood.");
+        hasLogged = true;
+      }
+      return !germany;
+    }
+  }
+
   public static final IValue<Boolean> bloodEnabled = new IValue<Boolean>() {
-    private final IValue<Integer> bloodEnabledInt = F.make("bloodEnabled", 0, "Should blood be red or green? (-1=green, 0=auto, 1=red)").setRange(-1, 1);
-    private boolean hasLogged = false;
+
+    private final IValue<BloodType> bloodEnabledEnum = F.make("bloodColor", BloodType.AUTO, "Which color should blood have? (RED, GREEN, AUTO)");
 
     @Override
     public @Nonnull Boolean get() {
-      final boolean overrideNeeded = Locale.getDefault().getCountry().equals(Locale.GERMANY.getCountry());
-      final Integer value = bloodEnabledInt.get();
-      if (overrideNeeded && value == 0) {
-        if (!hasLogged) {
-          Log.warn("Detected local country '" + Locale.getDefault().getCountry() + "', cencoring blood.");
-          hasLogged = true;
-        }
-        return false;
-      } else {
-        return value > 0;
-      }
+      return bloodEnabledEnum.get().get();
     }
   };
 
