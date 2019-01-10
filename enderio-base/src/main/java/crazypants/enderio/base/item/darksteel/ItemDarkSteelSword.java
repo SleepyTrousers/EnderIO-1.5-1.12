@@ -28,6 +28,7 @@ import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.SwordHandler;
 import crazypants.enderio.base.item.darksteel.attributes.DarkSteelAttributeModifiers;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
+import crazypants.enderio.base.item.darksteel.upgrade.direct.DirectUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
@@ -98,6 +99,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
       }
       EnergyUpgradeManager.setPowerFull(is, this);
       TravelUpgrade.INSTANCE.addToItem(is, this);
+      DirectUpgrade.INSTANCE.addToItem(is, this);
       list.add(is);
     }
   }

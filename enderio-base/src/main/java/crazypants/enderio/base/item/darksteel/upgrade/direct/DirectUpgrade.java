@@ -2,6 +2,7 @@ package crazypants.enderio.base.item.darksteel.upgrade.direct;
 
 import java.util.Iterator;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
@@ -16,12 +17,15 @@ import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.util.Prep;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -46,7 +50,7 @@ public class DirectUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
-    return item.isForSlot(EntityEquipmentSlot.MAINHAND) && item.isBlockBreakingTool() && EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)
+    return item.isForSlot(EntityEquipmentSlot.MAINHAND) && (item.isBlockBreakingTool() || item.isWeapon()) && EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)
         && !hasAnyUpgradeVariant(stack);
   }
 
@@ -69,6 +73,56 @@ public class DirectUpgrade extends AbstractUpgrade {
         return;
       }
     }
+  }
+
+  private final static @Nonnull String HIT_BY_DIRECT = "eio:hbd";
+
+  @SubscribeEvent
+  public static void attackEntityEvent(AttackEntityEvent event) {
+    if (event.getEntityPlayer() == null || event.getEntityPlayer().world.isRemote) {
+      return;
+    }
+
+    ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
+
+    if (INSTANCE.hasAnyUpgradeVariant(stack) && EnergyUpgradeManager.getEnergyStored(stack) > 0) {
+      event.getTarget().getEntityData().setUniqueId(HIT_BY_DIRECT, event.getEntityPlayer().getUniqueID());
+    }
+  }
+
+  @SubscribeEvent(priority = EventPriority.LOWEST)
+  public static void livingDropsEvent(LivingDropsEvent event) {
+    EntityLivingBase mob = event.getEntityLiving();
+    if (mob.getEntityData().hasUniqueId(HIT_BY_DIRECT)) {
+      UUID uuid = mob.getEntityData().getUniqueId(HIT_BY_DIRECT);
+      if (uuid != null) {
+        EntityPlayer player = mob.world.getPlayerEntityByUUID(uuid);
+        if (player != null) {
+          ItemStack stack = player.getHeldItemMainhand();
+          if (INSTANCE.hasAnyUpgradeVariant(stack) && EnergyUpgradeManager.getEnergyStored(stack) > 0) {
+            EnergyUpgradeManager.extractEnergy(stack, doDirect(event, player) * DarkSteelConfig.directEnergyCost.get(), false);
+          }
+        }
+      }
+    }
+  }
+
+  private static Integer doDirect(LivingDropsEvent event, @Nonnull EntityPlayer player) {
+    int count = 0;
+    for (Iterator<EntityItem> iterator = event.getDrops().iterator(); iterator.hasNext();) {
+      EntityItem next = NullHelper.notnullF(iterator.next(), "null LivingDropsEvent in LivingDropsEvent");
+      ItemStack remains = fakeItemPickup(player, next.getItem().copy()); // TODO use ItemUtil version after we update endercore dep
+      if (remains.getCount() < next.getItem().getCount()) {
+        count++;
+        if (Prep.isValid(remains)) {
+          next.setItem(remains);
+        } else {
+          next.setDead();
+          iterator.remove();
+        }
+      }
+    }
+    return count;
   }
 
   // also used by TraitPickup

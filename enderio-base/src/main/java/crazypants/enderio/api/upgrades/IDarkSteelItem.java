@@ -10,6 +10,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 
 /**
  * This interface for {@link Item}s marks them as being eligible for {@link IDarkSteelUpgrade}s. Ender IO will also handle repairing them if
@@ -47,6 +48,17 @@ public interface IDarkSteelItem {
    */
   default boolean isForSlot(@Nonnull EntityEquipmentSlot slot) {
     return false;
+  }
+
+  /**
+   * Checks if this item is a tool that kills/damages mobs, firing AttackEntityEvent and LivingDropsEvent.
+   * <p>
+   * Used by upgrades to determine if they can be applied to an item.
+   * <p>
+   * Note: Items that return true here should also do so for {@link #isForSlot(EntityEquipmentSlot)} with {@link EntityEquipmentSlot#MAINHAND}.
+   */
+  default boolean isWeapon() {
+    return this instanceof ItemSword || isAxe();
   }
 
   /**
