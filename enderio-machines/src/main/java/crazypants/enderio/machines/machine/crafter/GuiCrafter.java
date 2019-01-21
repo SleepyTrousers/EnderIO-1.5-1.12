@@ -1,6 +1,7 @@
 package crazypants.enderio.machines.machine.crafter;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
@@ -9,6 +10,7 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.integration.jei.IHaveGhostTargets;
+import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiCapMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.base.network.GuiPacket;
@@ -42,7 +44,9 @@ public class GuiCrafter extends GuiCapMachineBase<TileCrafter> implements IHaveG
     bufferSizeB.setSelected(te.isBufferStacks());
     bufferSizeB.setIsVisible(!isSimple);
 
-    addDrawingElement(new PowerBar(te.getEnergy(), this, POWERX, POWERY, POWER_HEIGHT));
+    final PowerBar powerbar = new PowerBar(te.getEnergy(), this, POWERX, POWERY, POWER_HEIGHT);
+    addDrawingElement(powerbar);
+    powerbar.getTooltip().setExtra(() -> Collections.singletonList(Lang.GUI_CRAFTER_USERPERCRAFT.get(LangPower.RF(te.getGuiEnergyUse()))));
   }
 
   @Override
@@ -69,7 +73,6 @@ public class GuiCrafter extends GuiCapMachineBase<TileCrafter> implements IHaveG
   protected void actionPerformed(@Nonnull GuiButton b) throws IOException {
     super.actionPerformed(b);
     if (b == bufferSizeB) {
-      getTileEntity().setBufferStacks(bufferSizeB.isSelected());
       GuiPacket.send(this, ContainerCrafter.EXEC_SET_BUFFER, bufferSizeB.isSelected());
     }
   }

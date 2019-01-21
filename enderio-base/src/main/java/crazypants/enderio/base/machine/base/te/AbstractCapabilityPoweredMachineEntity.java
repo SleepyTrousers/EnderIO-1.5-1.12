@@ -117,8 +117,10 @@ public abstract class AbstractCapabilityPoweredMachineEntity extends AbstractCap
 
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
-    damageCapacitor();
-    return true;
+    if (redstoneCheck) {
+      damageCapacitor();
+    }
+    return false;
   }
 
   protected void damageCapacitor() {

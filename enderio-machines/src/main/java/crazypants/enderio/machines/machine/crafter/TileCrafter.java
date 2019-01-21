@@ -91,7 +91,12 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
 
     for (int i = 0; i < 9; i++) {
       PredicateItemStackMatch predicate = new PredicateItemStackMatch(i);
-      getInventory().add(Type.INPUT, INPUT_SLOT + i, new InventorySlot(predicate, Filters.ALWAYS_TRUE));
+      getInventory().add(Type.INPUT, INPUT_SLOT + i, new InventorySlot(predicate, Filters.ALWAYS_TRUE) {
+        @Override
+        public int getMaxStackSize() {
+          return bufferStacks ? 64 : 1;
+        }
+      });
     }
 
     getInventory().add(Type.OUTPUT, OUTPUT_SLOT, new InventorySlot(Filters.ALWAYS_FALSE, Filters.ALWAYS_TRUE));
@@ -123,20 +128,19 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
             getInventory().getSlot(INPUT_SLOT + i).clear();
           }
         }
-      } else if (redstoneCheck && hasRequiredPower() && canMergeOutput() && canCraft() && craftRecipe()) {
+      } else if (redstoneCheck && getEnergy().canUseEnergy(CapacitorKey.CRAFTER_POWER_CRAFT) && canMergeOutput() && canCraft() && craftRecipe()) {
         ticksSinceLastCraft = 0;
-        getEnergy().extractEnergy(getPowerUsePerCraft(), false);
+        getEnergy().useEnergy(CapacitorKey.CRAFTER_POWER_CRAFT);
       }
     }
-    return false;
+    if (redstoneCheck) {
+      getEnergy().useEnergy();
+    }
+    return super.processTasks(redstoneCheck);
   }
 
-  private boolean hasRequiredPower() {
-    return getEnergy().getEnergyStored() >= getPowerUsePerCraft();
-  }
-
-  protected int getPowerUsePerCraft() {
-    return CapacitorKey.CRAFTER_POWER_CRAFT.get(getCapacitorData());
+  protected int getGuiEnergyUse() {
+    return getEnergy().getMaxUsage(CapacitorKey.CRAFTER_POWER_CRAFT);
   }
 
   public int getTicksPerCraft() {
@@ -271,6 +275,15 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
   }
 
   public void setBufferStacks(boolean bufferStacks) {
+    if (!bufferStacks && this.bufferStacks) {
+      for (int i = 0; i < 9; i++) {
+        ItemStack stack = getInventory().getSlot(INPUT_SLOT + i).getCopy();
+        if (stack.getCount() > 1) {
+          containerItems.add(stack.splitStack(stack.getCount() - 1));
+          getInventory().getSlot(INPUT_SLOT + i).set(stack);
+        }
+      }
+    }
     this.bufferStacks = bufferStacks;
   }
 

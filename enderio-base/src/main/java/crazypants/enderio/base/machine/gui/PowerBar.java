@@ -4,9 +4,9 @@ import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.lwjgl.opengl.GL11;
 
@@ -30,9 +30,28 @@ import net.minecraft.util.math.MathHelper;
 
 public class PowerBar implements IDrawingElement {
 
-  public class PowerBarTooltip extends GuiToolTip {
-    public PowerBarTooltip() {
+  public static abstract class PowerBarTooltip extends GuiToolTip {
+
+    public PowerBarTooltip(@Nonnull Rectangle bounds, String... lines) {
+      super(bounds, lines);
+    }
+
+    public void setExtra(@Nonnull Supplier<List<String>> extra) {
+    }
+
+  }
+
+  private class PowerBarTooltipImpl extends PowerBarTooltip {
+
+    private Supplier<List<String>> extra = null;
+
+    public PowerBarTooltipImpl() {
       super(new Rectangle(x, y, width, height));
+    }
+
+    @Override
+    public void setExtra(@Nonnull Supplier<List<String>> extra) {
+      this.extra = extra;
     }
 
     @Override
@@ -53,6 +72,9 @@ public class PowerBar implements IDrawingElement {
         float powerLossPerTick = tank.getPowerLossPerTick();
         if (powerLossPerTick > 0) {
           text.add(getPowerLossLabel(LangPower.RFt2(powerLossPerTick)));
+        }
+        if (extra != null) {
+          text.addAll(extra.get());
         }
         text.add(LangPower.RF(tank.getEnergyStored(), tank.getMaxEnergyStored()));
       }
@@ -87,11 +109,11 @@ public class PowerBar implements IDrawingElement {
     this.y = y > 0 ? y : 14;
     this.width = width > 0 ? width : 9;
     this.height = height > 0 ? height : 42;
-    tooltip = new PowerBarTooltip();
+    tooltip = new PowerBarTooltipImpl();
   }
 
   @Override
-  public @Nullable GuiToolTip getTooltip() {
+  public @Nonnull PowerBarTooltip getTooltip() {
     return tooltip;
   }
 

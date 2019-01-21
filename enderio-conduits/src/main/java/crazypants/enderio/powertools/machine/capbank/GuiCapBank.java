@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
-import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.common.util.NullHelper;
 import com.google.common.base.Predicate;
@@ -160,10 +158,9 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     configB = new GuiButtonIoConfig<TileCapBank>(this, CONFIG_ID, x, y, te, configOverlay);
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
-    
+
     // Validate that the next character input won't overflow the max IO, and disallow starting numbers with 0
-    final Predicate<String> inputValidator = s -> 
-      s == null || s.isEmpty() || (!s.startsWith("0") && PowerDisplayUtil.parsePower(s) <= network.getMaxIO());
+    final Predicate<String> inputValidator = s -> s == null || s.isEmpty() || (!s.startsWith("0") && PowerDisplayUtil.parsePower(s) <= network.getMaxIO());
 
     x = inputX - 24;
     y = inputY;
@@ -182,8 +179,8 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
     powerBar = new PowerBar(te, this, POWER_X, POWER_Y, POWER_HEIGHT) {
       @Override
-      public @Nullable GuiToolTip getTooltip() {
-        return new GuiToolTip(new Rectangle(7, POWER_Y + 1, POWER_WIDTH, POWER_HEIGHT - 1), "") {
+      public @Nonnull PowerBarTooltip getTooltip() {
+        return new PowerBarTooltip(new Rectangle(7, POWER_Y + 1, POWER_WIDTH, POWER_HEIGHT - 1), "") {
 
           @Override
           protected void updateText() {

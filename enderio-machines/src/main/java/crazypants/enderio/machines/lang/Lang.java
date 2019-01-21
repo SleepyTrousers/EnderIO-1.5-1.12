@@ -125,6 +125,7 @@ public enum Lang implements ILang {
   GUI_IMPULSE_HOPPER_LOCKED_TOOLTIP(".gui.impulse_hopper.locked.tooltip"),
   GUI_BUFFERING_STACK(".gui.crafter.buffering_stack"),
   GUI_BUFFERING_SINGLE(".gui.crafter.buffering_single"),
+  GUI_CRAFTER_USERPERCRAFT(".gui.crafter.use_per_craft"),
   GUI_VACUUM_XP_HEADER(".gui.vacuum.xp.header"),
   GUI_VACUUM_PRIME_TOOLTIP(".gui.vacuum.prime"),
   STATUS_SPAWNER_UNBOUND(".status.powered_spawner.unbound"),

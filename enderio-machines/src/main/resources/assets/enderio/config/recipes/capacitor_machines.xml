@@ -206,13 +206,13 @@ XML editor will display that as tooltips when editing this file.
   
   <capacitor key="enderio:block_crafter/intake" base="120" scaler="POWER" />
   <capacitor key="enderio:block_crafter/buffer" base="100000" scaler="POWER" />
-  <capacitor key="enderio:block_crafter/use" base="10" scaler="POWER" />
+  <capacitor key="enderio:block_crafter/use" base="1" scaler="POWER" />
   <capacitor key="enderio:block_crafter/use_craft" base="10" scaler="FIXED" />
-  <capacitor key="enderio:block_crafter/speed" base="1" scaler="QUADRATIC" />
+  <capacitor key="enderio:block_crafter/speed" base="2" scaler="QUADRATIC" />
   
   <capacitor key="enderio:block_simple_crafter/intake" base="30" scaler="FIXED" />
   <capacitor key="enderio:block_simple_crafter/buffer" base="10000" scaler="FIXED" />
-  <capacitor key="enderio:block_simple_crafter/use" base="15" scaler="FIXED" />
+  <capacitor key="enderio:block_simple_crafter/use" base="2" scaler="FIXED" />
   <capacitor key="enderio:block_simple_crafter/use_craft" base="15" scaler="FIXED" />
   <capacitor key="enderio:block_simple_crafter/speed" base="1" scaler="FIXED" />
   

@@ -141,6 +141,7 @@ enderio.gui.impulse_hopper.locked.tooltip=Stops the impulse hopper from sorting 
 
 enderio.gui.crafter.buffering_stack=Buffering Item Stacks
 enderio.gui.crafter.buffering_single=Buffering Single Items
+enderio.gui.crafter.use_per_craft=Per Craft: %s
 
 tile.block_alloy_smelter.name=Alloy Smelter
 tile.block_alloy_smelter.tooltip.detailed.line1=Used to create EnderIO alloys
