@@ -1,6 +1,5 @@
 package crazypants.enderio.powertools.machine.capbank;
 
-import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +18,8 @@ import crazypants.enderio.base.machine.gui.GuiButtonIoConfig;
 import crazypants.enderio.base.machine.gui.GuiMachineBase;
 import crazypants.enderio.base.machine.gui.GuiOverlayIoConfig;
 import crazypants.enderio.base.machine.gui.PowerBar;
+import crazypants.enderio.base.machine.gui.PowerBar.Op;
+import crazypants.enderio.base.machine.gui.PowerBar.What;
 import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
@@ -48,7 +49,6 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
   private static final int POWER_X = 8;
   private static final int POWER_Y = 9;
-  private static final int POWER_WIDTH = 10;
   private static final int POWER_HEIGHT = 68;
   protected static final int BOTTOM_POWER_Y = POWER_Y + POWER_HEIGHT;
 
@@ -177,32 +177,25 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     textFields.add(maxInputTF);
     textFields.add(maxOutputTF);
 
-    powerBar = new PowerBar(te, this, POWER_X, POWER_Y, POWER_HEIGHT) {
-      @Override
-      public @Nonnull PowerBarTooltip getTooltip() {
-        return new PowerBarTooltip(new Rectangle(7, POWER_Y + 1, POWER_WIDTH, POWER_HEIGHT - 1), "") {
-
-          @Override
-          protected void updateText() {
-            text.clear();
-            // FIXME how can we put a newline between these two without hardcoding word order?
-            text.add(LangPower.format(network.getEnergyStoredL()) + " " + LangPower.ofStr());
-            text.add(TextFormatting.WHITE + LangPower.format(network.getMaxEnergyStoredL()) + " " + TextFormatting.GRAY + LangPower.RF());
-
-            float change = network.getAverageChangePerTick();
-            String color = TextFormatting.WHITE.toString();
-            if (change > 0) {
-              color = TextFormatting.GREEN.toString() + "+";
-            } else if (change < 0) {
-              color = TextFormatting.RED.toString();
-            }
-            text.add(crazypants.enderio.base.lang.Lang.POWER_PERTICK.get(color + LangPower.format(Math.round(change)) + TextFormatting.GRAY.toString()));
-          }
-
-        };
-      }
-    };
+    powerBar = new PowerBar(te, this, POWER_X, POWER_Y, POWER_HEIGHT);
     addDrawingElement(powerBar);
+    powerBar.addTooltip(Op.REPLACE, What.ALL, //
+        () -> LangPower.format(network.getEnergyStoredL()) + " " + LangPower.ofStr(), //
+        () -> TextFormatting.WHITE + LangPower.format(network.getMaxEnergyStoredL()) + " " + TextFormatting.GRAY + LangPower.RF(), //
+        () -> crazypants.enderio.base.lang.Lang.POWER_PERTICK
+            .get(getIOColor() + LangPower.format(Math.round(network.getAverageChangePerTick())) + TextFormatting.GRAY) //
+    );
+  }
+
+  private @Nonnull String getIOColor() {
+    float change = network.getAverageChangePerTick();
+    if (change > 0) {
+      return TextFormatting.GREEN + "+";
+    } else if (change < 0) {
+      return TextFormatting.RED + "";
+    } else {
+      return TextFormatting.WHITE + "";
+    }
   }
 
   @Override

@@ -1,7 +1,6 @@
 package crazypants.enderio.machines.machine.crafter;
 
 import java.io.IOException;
-import java.util.Collections;
 
 import javax.annotation.Nonnull;
 
@@ -13,6 +12,8 @@ import crazypants.enderio.base.integration.jei.IHaveGhostTargets;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiCapMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
+import crazypants.enderio.base.machine.gui.PowerBar.Op;
+import crazypants.enderio.base.machine.gui.PowerBar.What;
 import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.Minecraft;
@@ -46,7 +47,7 @@ public class GuiCrafter extends GuiCapMachineBase<TileCrafter> implements IHaveG
 
     final PowerBar powerbar = new PowerBar(te.getEnergy(), this, POWERX, POWERY, POWER_HEIGHT);
     addDrawingElement(powerbar);
-    powerbar.getTooltip().setExtra(() -> Collections.singletonList(Lang.GUI_CRAFTER_USERPERCRAFT.get(LangPower.RF(te.getGuiEnergyUse()))));
+    powerbar.addTooltip(Op.ADD, What.MIDDLE, () -> Lang.GUI_CRAFTER_USERPERCRAFT.get(LangPower.RF(te.getGuiEnergyUse())));
   }
 
   @Override

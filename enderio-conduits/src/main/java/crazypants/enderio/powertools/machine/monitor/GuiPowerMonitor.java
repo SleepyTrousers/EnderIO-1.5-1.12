@@ -111,7 +111,7 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
 
       @SuppressWarnings("null")
       @Override
-      public @Nonnull PowerBarTooltip getTooltip() {
+      public @Nonnull GuiToolTip getTooltip() {
         return tab == Tab.GRAPH ? super.getTooltip() : null;
       }
     });

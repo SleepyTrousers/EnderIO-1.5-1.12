@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -13,7 +14,9 @@ import org.lwjgl.opengl.GL11;
 import com.enderio.core.client.gui.IDrawingElement;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.vecmath.VecmathUtil;
+import com.google.common.collect.Iterables;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
@@ -30,28 +33,10 @@ import net.minecraft.util.math.MathHelper;
 
 public class PowerBar implements IDrawingElement {
 
-  public static abstract class PowerBarTooltip extends GuiToolTip {
+  private class PowerBarTooltip extends GuiToolTip {
 
-    public PowerBarTooltip(@Nonnull Rectangle bounds, String... lines) {
-      super(bounds, lines);
-    }
-
-    public void setExtra(@Nonnull Supplier<List<String>> extra) {
-    }
-
-  }
-
-  private class PowerBarTooltipImpl extends PowerBarTooltip {
-
-    private Supplier<List<String>> extra = null;
-
-    public PowerBarTooltipImpl() {
+    public PowerBarTooltip() {
       super(new Rectangle(x, y, width, height));
-    }
-
-    @Override
-    public void setExtra(@Nonnull Supplier<List<String>> extra) {
-      this.extra = extra;
     }
 
     @Override
@@ -68,15 +53,7 @@ public class PowerBar implements IDrawingElement {
       if (tank.getCapacitorData() == DefaultCapacitorData.NONE) {
         text.addAll(Lang.GUI_NOCAP.getLines());
       } else {
-        text.add(getPowerOutputLabel(LangPower.RFt(tank.getMaxUsage())));
-        float powerLossPerTick = tank.getPowerLossPerTick();
-        if (powerLossPerTick > 0) {
-          text.add(getPowerLossLabel(LangPower.RFt2(powerLossPerTick)));
-        }
-        if (extra != null) {
-          text.addAll(extra.get());
-        }
-        text.add(LangPower.RF(tank.getEnergyStored(), tank.getMaxEnergyStored()));
+        Iterables.concat(tooltipLines1, tooltipLines2).forEach(function -> text.addAll(function.get()));
       }
     }
   }
@@ -85,6 +62,8 @@ public class PowerBar implements IDrawingElement {
   private final @Nonnull GuiContainerBaseEIO owner;
   private final @Nonnull PowerBarTooltip tooltip;
   private int x, y, width, height;
+  private final @Nonnull List<Supplier<List<String>>> tooltipLines1 = new NNList<>();
+  private final @Nonnull List<Supplier<List<String>>> tooltipLines2 = new NNList<>();
 
   public PowerBar(@Nonnull IPowerBarData tank, @Nonnull GuiContainerBaseEIO owner, int height) {
     this(tank, owner, -1, -1, -1, height);
@@ -109,11 +88,85 @@ public class PowerBar implements IDrawingElement {
     this.y = y > 0 ? y : 14;
     this.width = width > 0 ? width : 9;
     this.height = height > 0 ? height : 42;
-    tooltip = new PowerBarTooltipImpl();
+    tooltip = new PowerBarTooltip();
+    addTooltip(Op.ADD, What.FIRST, () -> getPowerOutputLabel(LangPower.RFt(this.tank.getMaxUsage())));
+    addTooltips(Op.ADD, What.MIDDLE,
+        () -> this.tank.getPowerLossPerTick() > 0 ? Collections.singletonList(getPowerLossLabel(LangPower.RFt2(this.tank.getPowerLossPerTick())))
+            : Collections.emptyList());
+    addTooltip(Op.ADD, What.END, () -> LangPower.RF(this.tank.getEnergyStored(), this.tank.getMaxEnergyStored()));
+  }
+
+  public enum Op {
+    ADD,
+    REPLACE;
+  }
+
+  public enum What {
+    /**
+     * Adds before or replaces the first line of the tooltip
+     */
+    FIRST,
+    /**
+     * Before the final line
+     */
+    MIDDLE,
+    /**
+     * After the final line
+     */
+    END,
+    /**
+     * Only valid for REPLACE; removes all lines and then adds the the first block
+     */
+    ALL;
+  }
+
+  @SafeVarargs
+  public final void addTooltip(Op op, What what, @SuppressWarnings("unchecked") Supplier<String>... providers) {
+    addTooltips(op, what,
+        Arrays.stream(providers).<Supplier<List<String>>> map(supplier -> () -> Collections.singletonList(supplier.get())).collect(Collectors.toList()));
+  }
+
+  @SafeVarargs
+  public final void addTooltips(Op op, What what, @SuppressWarnings("unchecked") Supplier<List<String>>... providers) {
+    addTooltips(op, what, new NNList<>(providers));
+  }
+
+  public void addTooltips(Op op, What what, List<Supplier<List<String>>> providers) {
+    if (op == Op.REPLACE) {
+      switch (what) {
+      case FIRST:
+        if (!tooltipLines1.isEmpty()) {
+          tooltipLines1.remove(0);
+        }
+        break;
+      case ALL:
+        tooltipLines1.clear();
+        tooltipLines2.clear();
+        break;
+      case MIDDLE:
+        tooltipLines1.clear();
+        break;
+      case END:
+        tooltipLines2.clear();
+        break;
+      }
+    }
+    switch (what) {
+    case FIRST:
+      tooltipLines1.addAll(0, providers);
+      break;
+    case ALL:
+    case MIDDLE:
+      tooltipLines1.addAll(providers);
+      break;
+    case END:
+      tooltipLines2.addAll(providers);
+      break;
+    }
   }
 
   @Override
-  public @Nonnull PowerBarTooltip getTooltip() {
+  public @Nonnull GuiToolTip getTooltip() {
     return tooltip;
   }
 
