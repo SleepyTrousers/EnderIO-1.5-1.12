@@ -14,7 +14,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
-import info.loenwind.scheduler.Celeb;
+import crazypants.enderio.base.scheduler.Celeb;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;

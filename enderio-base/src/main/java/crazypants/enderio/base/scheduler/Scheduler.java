@@ -1,4 +1,4 @@
-package info.loenwind.scheduler;
+package crazypants.enderio.base.scheduler;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -7,7 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-public class Scheduler extends Thread {
+public final class Scheduler extends Thread {
 
   public final static Scheduler instance = new Scheduler();
 

@@ -28,7 +28,7 @@ import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
-import info.loenwind.scheduler.Celeb;
+import crazypants.enderio.base.scheduler.Celeb;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Container;

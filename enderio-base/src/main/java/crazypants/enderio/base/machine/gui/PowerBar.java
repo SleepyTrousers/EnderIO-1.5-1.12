@@ -25,7 +25,7 @@ import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.lang.LangPower;
-import info.loenwind.scheduler.Celeb;
+import crazypants.enderio.base.scheduler.Celeb;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;

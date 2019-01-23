@@ -32,7 +32,7 @@ import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
 import crazypants.enderio.base.machine.modes.IoMode;
-import info.loenwind.scheduler.Celeb;
+import crazypants.enderio.base.scheduler.Celeb;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Slot;

@@ -1,4 +1,4 @@
-package info.loenwind.scheduler;
+package crazypants.enderio.base.scheduler;
 
 import java.util.Calendar;
 
