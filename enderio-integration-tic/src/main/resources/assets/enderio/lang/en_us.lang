@@ -63,3 +63,17 @@ tile.fluid.enderio.redstone.name=Molten Redstone
 fluid.enderio.ender=Liquefied Ender Pearls
 tile.fluid.enderio.ender.name=Liquefied Ender Pearls
 
+fluid.crude_steel=Molten Crude Steel
+tile.fluid.crude_steel=Molten Crude Steel
+fluid.crystalline_alloy=Molten Crystalline Alloy
+tile.fluid.crystalline_alloy=Molten Crystalline Alloy
+fluid.melodic_alloy=Molten Melodic Alloy
+tile.fluid.melodic_alloy=Molten Melodic Alloy
+fluid.stellar_alloy=Molten Stellar Alloy
+tile.fluid.stellar_alloy=Molten Stellar Alloy
+fluid.crystalline_pink_slime=Molten Crystalline Pink Slime
+tile.fluid.crystalline_pink_slime=Molten Crystalline Pink Slime
+fluid.energetic_silver=Molten Energetic Silver
+tile.fluid.energetic_silver=Molten Energetic Silver
+fluid.vivid_alloy=Molten Vivid Alloy
+tile.fluid.vivid_alloy=Molten Vivid Alloy
