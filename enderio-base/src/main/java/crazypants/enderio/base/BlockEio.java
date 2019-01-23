@@ -17,10 +17,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -96,6 +98,16 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> im
     }
 
     return super.onBlockActivated(world, pos, state, entityPlayer, hand, side, hitX, hitY, hitZ);
+  }
+
+  @Override
+  protected @Nonnull ItemStack processPickBlock(@Nonnull IBlockState state, @Nonnull RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos,
+      @Nonnull EntityPlayer player, @Nonnull ItemStack pickBlock) {
+    T te = getTileEntity(world, pos);
+    if (te != null) {
+      return te.processPickBlock(target, player, pickBlock);
+    }
+    return pickBlock;
   }
 
   public boolean shouldWrench(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {

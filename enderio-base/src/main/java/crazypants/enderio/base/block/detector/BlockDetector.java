@@ -12,7 +12,6 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.block.painted.BlockItemPaintedBlock;
 import crazypants.enderio.base.block.painted.TileEntityPaintedBlock;
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.render.PaintHelper;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveRenderers;
@@ -32,7 +31,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -171,14 +169,6 @@ public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements I
       int meta, @Nonnull EntityLivingBase placer, @Nonnull EnumHand hand) {
     final IBlockState state = super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, hand).withProperty(FACING, facing);
     return state.withProperty(IS_ON, isTargetBlockAir(state, world, pos));
-  }
-
-  @Override
-  public @Nonnull ItemStack getPickBlock(@Nonnull IBlockState state, @Nonnull RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos,
-      @Nonnull EntityPlayer player) {
-    final ItemStack pickBlock = super.getPickBlock(state, target, world, pos, player);
-    PaintUtil.setSourceBlock(pickBlock, getPaintSource(world.getBlockState(pos), world, pos));
-    return pickBlock;
   }
 
   @Override

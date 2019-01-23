@@ -5,11 +5,10 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 
-import crazypants.enderio.base.block.painted.BlockItemPaintedBlock.INamedSubBlocks;
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.block.painted.BlockItemPaintedBlock.INamedSubBlocks;
 import crazypants.enderio.base.block.painted.TileEntityPaintedBlock;
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.render.PaintHelper;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -24,7 +23,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -47,7 +45,7 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   }
 
   @SuppressWarnings("null")
-  private BlockPaintedFusedQuartz(@Nonnull IModObject modObject) {
+  protected BlockPaintedFusedQuartz(@Nonnull IModObject modObject) {
     super(modObject);
     setCreativeTab(null);
     setDefaultState(getBlockState().getBaseState().withProperty(FusedQuartzType.KIND, FusedQuartzType.FUSED_QUARTZ));
@@ -118,14 +116,6 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   @Override
   public TileEntity createNewTileEntity(@Nonnull World world, int metadata) {
     return new TileEntityPaintedBlock();
-  }
-
-  @Override
-  public @Nonnull ItemStack getPickBlock(@Nonnull IBlockState bs, @Nonnull RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos,
-      @Nonnull EntityPlayer player) {
-    final ItemStack pickBlock = super.getPickBlock(bs, target, world, pos, player);
-    PaintUtil.setSourceBlock(pickBlock, getPaintSource(world.getBlockState(pos), world, pos));
-    return pickBlock;
   }
 
   @Override

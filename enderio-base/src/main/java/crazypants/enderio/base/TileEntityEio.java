@@ -19,11 +19,18 @@ import info.loenwind.autosave.Writer;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.util.NBTAction;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -44,7 +51,7 @@ public abstract class TileEntityEio extends TileEntityBase {
     super();
     if (DiagnosticsConfig.debugTraceTELivecycleExtremelyDetailed.get()) {
       StringBuilder sb = new StringBuilder("TE ").append(this).append(" created");
-      for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
+      for (StackTraceElement elem : new Exception("Stacktrace").getStackTrace()) {
         sb.append(" at ").append(elem);
       }
       Log.warn(sb);
@@ -56,7 +63,7 @@ public abstract class TileEntityEio extends TileEntityBase {
     super.invalidate();
     if (DiagnosticsConfig.debugTraceTELivecycleExtremelyDetailed.get()) {
       StringBuilder sb = new StringBuilder("TE ").append(this).append(" invalidated");
-      for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
+      for (StackTraceElement elem : new Exception("Stacktrace").getStackTrace()) {
         sb.append(" at ").append(elem);
       }
       Log.warn(sb);
@@ -68,7 +75,7 @@ public abstract class TileEntityEio extends TileEntityBase {
     super.onChunkUnload();
     if (DiagnosticsConfig.debugTraceTELivecycleExtremelyDetailed.get()) {
       StringBuilder sb = new StringBuilder("TE ").append(this).append(" unloaded");
-      for (StackTraceElement elem : new Exception("Stackstrace").getStackTrace()) {
+      for (StackTraceElement elem : new Exception("Stacktrace").getStackTrace()) {
         sb.append(" at ").append(elem);
       }
       Log.warn(sb);
@@ -150,9 +157,27 @@ public abstract class TileEntityEio extends TileEntityBase {
     writeCustomNBT(NBTAction.ITEM, tag);
     if (!tag.hasNoTags()) {
       NbtValue.DATAROOT.setTag(stack, tag);
-      stack.setStackDisplayName(Lang.MACHINE_CONFIGURED.get(stack.getDisplayName()));
+      NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+      NBTTagList nbttaglist = new NBTTagList();
+      nbttaglist.appendTag(new NBTTagString("(+NBT)"));
+      nbttagcompound1.setTag("Lore", nbttaglist);
+      final String name = Lang.MACHINE_CONFIGURED.get(stack.getDisplayName());
+      if (!name.equals(Lang.MACHINE_CONFIGURED.get("big fail"))) {
+        // dirty workaround for translation failing on servers sometimes
+        nbttagcompound1.setString("Name", name);
+      }
+      stack.setTagInfo("display", nbttagcompound1);
     }
     PaintUtil.setSourceBlock(stack, getPaintSource());
+  }
+
+  /**
+   * The block is processed by {@link Block#getPickBlock(IBlockState, RayTraceResult, World, BlockPos, EntityPlayer)} but not in "copy" mode. Add stuff that
+   * belongs to the block's identity but not its state.
+   */
+  protected @Nonnull ItemStack processPickBlock(@Nonnull RayTraceResult target, @Nonnull EntityPlayer player, @Nonnull ItemStack stack) {
+    PaintUtil.setSourceBlock(stack, getPaintSource());
+    return stack;
   }
 
   // ///////////////////////////////////////////////////////////////////////

@@ -279,8 +279,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
   }
 
   @Override
-  @Nonnull
-  public ItemStack getPickBlock(@Nonnull IBlockState bs, @Nonnull RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos,
+  public @Nonnull ItemStack getPickBlock(@Nonnull IBlockState state, @Nonnull RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos,
       @Nonnull EntityPlayer player) {
     ItemStack ret = ItemStack.EMPTY;
 
