@@ -7,6 +7,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.config.config.RecipeConfig;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.render.PaintHelper;
@@ -62,7 +63,7 @@ public class BlockPaintedStone extends Block implements ITileEntityProvider, IPa
 
       @Override
       public int getEnergyRequired(@Nonnull NNList<MachineRecipeInput> inputs) {
-        return super.getEnergyRequired(inputs) * 3;
+        return (int) (super.getEnergyRequired(inputs) * RecipeConfig.energyFactorForCobblestone.get());
       }
 
     });

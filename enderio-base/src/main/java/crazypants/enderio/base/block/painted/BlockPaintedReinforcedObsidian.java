@@ -6,6 +6,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.block.darksteel.obsidian.BlockReinforcedObsidianBase;
+import crazypants.enderio.base.config.config.RecipeConfig;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.render.PaintHelper;
@@ -54,7 +55,7 @@ public class BlockPaintedReinforcedObsidian extends BlockReinforcedObsidianBase
 
           @Override
           public int getEnergyRequired(@Nonnull NNList<MachineRecipeInput> inputs) {
-            return super.getEnergyRequired(inputs) * 10;
+            return (int) (super.getEnergyRequired(inputs) * RecipeConfig.energyFactorForReinforcedObsidian.get());
           }
 
         });

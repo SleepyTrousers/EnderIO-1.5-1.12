@@ -7,6 +7,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.config.config.RecipeConfig;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.PaintUtil;
@@ -67,7 +68,7 @@ public class BlockPaintedWorkbench extends BlockWorkbench
 
       @Override
       public int getEnergyRequired(@Nonnull NNList<MachineRecipeInput> inputs) {
-        return super.getEnergyRequired(inputs) * 50;
+        return (int) (super.getEnergyRequired(inputs) * RecipeConfig.energyFactorForWorkbench.get());
       }
 
     });
