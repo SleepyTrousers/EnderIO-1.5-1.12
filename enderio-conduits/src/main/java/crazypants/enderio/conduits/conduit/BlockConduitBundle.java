@@ -397,32 +397,36 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       if (te.getFacadeRenderedAs() == FacadeRenderState.WIRE_FRAME) {
         return 255;
       } else {
-        return getMixedBrightnessForFacade(bs, worldIn, pos, te.getPaintSourceNN().getBlock());
+        return getMixedBrightnessForFacade(bs, worldIn, pos, te.getPaintSourceNN());
       }
     }
     return super.getPackedLightmapCoords(bs, worldIn, pos);
   }
 
   @SideOnly(Side.CLIENT)
-  public int getMixedBrightnessForFacade(@Nonnull IBlockState bs, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos, @Nonnull Block facadeBlock) {
-    int i = worldIn.getCombinedLight(pos, getLightValue(bs, worldIn, pos));
-    if (i == 0 && facadeBlock instanceof BlockSlab) {
-      pos = pos.down();
-      Block block = worldIn.getBlockState(pos).getBlock();
-      return worldIn.getCombinedLight(pos, block.getLightValue(bs, worldIn, pos));
-    } else if (facadeBlock.getUseNeighborBrightness(bs)) {
-      return getNeightbourBrightness(worldIn, pos);
+  public int getMixedBrightnessForFacade(@Nonnull IBlockState bs, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState facade) {
+    if (facade.getBlock() instanceof BlockSlab) {
+      // TODO: this is wrong for glass and glowing slabs, isn't it? find a way to do them right---once we got some from somewhere
+      if (((BlockSlab) facade.getBlock()).isDouble()) {
+        return worldIn.getCombinedLight(pos, getLightValue(bs, worldIn, pos));
+      }
+      return getNeightbourBrightness(worldIn, pos, facade.getValue(BlockSlab.HALF) == BlockSlab.EnumBlockHalf.TOP ? EnumFacing.UP : EnumFacing.DOWN);
+    } else if (facade.useNeighborBrightness()) {
+      // TODO: stairs...
+      return getNeightbourBrightness(worldIn, pos, null);
     } else {
-      return i;
+      return worldIn.getCombinedLight(pos, getLightValue(bs, worldIn, pos));
     }
   }
 
-  private int getNeightbourBrightness(@Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
+  private int getNeightbourBrightness(@Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos, @Nullable EnumFacing except) {
     int result = worldIn.getCombinedLight(pos.up(), 0);
     for (EnumFacing dir : EnumFacing.HORIZONTALS) {
-      int val = worldIn.getCombinedLight(pos.offset(NullHelper.notnullM(dir, "EnumFacing iterated with null")), 0);
-      if (val > result) {
-        result = val;
+      if (dir != null && dir != except) {
+        int val = worldIn.getCombinedLight(pos.offset(dir), 0);
+        if (val > result) {
+          result = val;
+        }
       }
     }
     return result;
