@@ -53,17 +53,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockInfinity extends BlockEio<TileEntityEio> implements IDefaultRenderers, IResourceTooltipProvider {
+public class BlockInfinityFog extends BlockEio<TileEntityEio> implements IDefaultRenderers, IResourceTooltipProvider {
 
   public static final @Nonnull PropertyInteger AGE = PropertyInteger.create("age", 0, 7);
   public static final @Nonnull PropertyBool HARMLESS = PropertyBool.create("harmless");
 
-  public static BlockInfinity create(@Nonnull IModObject modObject) {
-    BlockInfinity result = new BlockInfinity(modObject, false);
+  public static BlockInfinityFog create(@Nonnull IModObject modObject) {
+    BlockInfinityFog result = new BlockInfinityFog(modObject, false);
     return result;
   }
 
-  protected BlockInfinity(@Nonnull IModObject modObject, boolean silent) {
+  protected BlockInfinityFog(@Nonnull IModObject modObject, boolean silent) {
     super(modObject, Material.BARRIER);
     setCreativeTab(EnderIOTab.tabEnderIOMaterials);
     // volume -1 gives effective volume of 0 when used by ItemBlock
