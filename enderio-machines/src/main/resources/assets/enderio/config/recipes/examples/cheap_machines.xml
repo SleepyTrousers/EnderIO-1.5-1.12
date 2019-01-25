@@ -38,7 +38,7 @@
     <crafting>
       <grid size="3x3">
         <item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" />
-        <item name="EnderIO:block_tank:0" /><item name="CHASSIS" /><item name="EnderIO:block_tank:0" />
+        <item name="enderio:block_tank:0" /><item name="CHASSIS" /><item name="enderio:block_tank:0" />
         <item name="minecraft:dirt" /><item name="minecraft:piston" /><item name="minecraft:dirt" />
       </grid>
       <output name="enderio:block_combustion_generator" />
@@ -49,7 +49,7 @@
     <crafting>
       <grid size="3x3">
         <item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" /><item name="ELECTRICAL_STEEL" />
-        <item name="EnderIO:block_tank:1" /><item name="CHASSIS" /><item name="EnderIO:block_tank:1" />
+        <item name="enderio:block_tank:1" /><item name="CHASSIS" /><item name="enderio:block_tank:1" />
         <item name="minecraft:dirt" /><item name="minecraft:piston" /><item name="minecraft:dirt" />
       </grid>
       <output name="enderio:block_enhanced_combustion_generator" />
@@ -59,7 +59,7 @@
   <recipe name="Enhanced Combustion Generator, Upgrade" required="true">
     <crafting upgrade="true">
       <grid size="3x2">
-        <item name="EnderIO:block_tank:1" /><item name="enderio:block_combustion_generator" /><item name="EnderIO:block_tank:1" />
+        <item name="enderio:block_tank:1" /><item name="enderio:block_combustion_generator" /><item name="enderio:block_tank:1" />
         <item name="minecraft:dirt" /><item /><item name="minecraft:dirt" />
       </grid>
       <output name="enderio:block_enhanced_combustion_generator" />

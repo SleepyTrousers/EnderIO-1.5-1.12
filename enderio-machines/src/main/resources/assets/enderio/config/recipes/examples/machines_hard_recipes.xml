@@ -42,7 +42,7 @@
       <grid size="3x3">
         <item name="blockDiamond" /><item name="minecraft:bookshelf" /><item name="blockDiamond" />
         <item name="blockDarkSteel" /><item name="blockDarkSteel" /><item name="blockDarkSteel" />
-        <item name="" /><item name="DARK_STEEL" /><item name="" />
+        <item /><item name="DARK_STEEL" /><item />
       </grid>
       <output name="enderio:block_enchanter" />
     </crafting>

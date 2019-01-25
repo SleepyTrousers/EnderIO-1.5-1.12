@@ -62,7 +62,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item name="ingotDarkSteel" /><item name="ELECTRICAL_STEEL" /><item name="ingotDarkSteel" />
-        <item name="EnderIO:block_tank:0" /><item name="CHASSIS" /><item name="EnderIO:block_tank:0" />
+        <item name="enderio:block_tank:0" /><item name="CHASSIS" /><item name="enderio:block_tank:0" />
         <item name="GEAR_DARKSTEEL" /><item name="minecraft:piston" /><item name="GEAR_DARKSTEEL" />
       </grid>
       <output name="enderio:block_combustion_generator" />
@@ -73,7 +73,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item name="ingotEndSteel" /><item name="ELECTRICAL_STEEL" /><item name="ingotEndSteel" />
-        <item name="EnderIO:block_tank:1" /><item name="ENHANCED_CHASSIS" /><item name="EnderIO:block_tank:1" />
+        <item name="enderio:block_tank:1" /><item name="ENHANCED_CHASSIS" /><item name="enderio:block_tank:1" />
         <item name="GEAR_VIBRANT" /><item name="minecraft:piston" /><item name="GEAR_VIBRANT" />
       </grid>
       <output name="enderio:block_enhanced_combustion_generator" />
@@ -84,7 +84,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting upgrade="true">
       <grid size="3x3">
         <item name="ingotEndSteel" /><item name="enderio:block_combustion_generator" /><item name="ingotEndSteel" />
-        <item name="EnderIO:block_tank:1" /><item name="ENHANCED_CHASSIS" /><item name="EnderIO:block_tank:1" />
+        <item name="enderio:block_tank:1" /><item name="ENHANCED_CHASSIS" /><item name="enderio:block_tank:1" />
         <item name="GEAR_VIBRANT" /><item /><item name="GEAR_VIBRANT" />
       </grid>
       <output name="enderio:block_enhanced_combustion_generator" />

@@ -38,7 +38,7 @@
                   </documentation>
                 </annotation>
               </attribute>
-              <attribute name="item" type="string" use="required">
+              <attribute name="item" type="enderio:ThingsString" use="required">
                 <annotation>
                   <documentation>A descriptor naming an item, block, ordict or another alias.</documentation>
                 </annotation>
@@ -104,7 +104,7 @@
                                     <documentation>An item to be used for crafting.</documentation>
                                   </annotation>
                                   <complexType>
-                                    <attribute use="optional" name="name" type="string" />
+                                    <attribute use="optional" name="name" type="enderio:ThingsString" />
                                   </complexType>
                                 </element>
                               </sequence>
@@ -135,7 +135,7 @@
                                     <documentation>An item to be used for crafting.</documentation>
                                   </annotation>
                                   <complexType>
-                                    <attribute use="optional" name="name" type="string" />
+                                    <attribute use="optional" name="name" type="enderio:ThingsString" />
                                   </complexType>
                                 </element>
                               </sequence>
@@ -168,7 +168,7 @@
                                 </annotation>
                               </element>
                             </sequence>
-                            <attribute use="required" name="name" type="string" />
+                            <attribute use="required" name="name" type="enderio:ThingsString" />
                             <attribute use="optional" name="amount">
                               <simpleType>
                                 <restriction base="int">
@@ -248,7 +248,7 @@
                                 </annotation>
                               </element>
                             </sequence>
-                            <attribute use="required" name="name" type="string" />
+                            <attribute use="required" name="name" type="enderio:ThingsString" />
                             <attribute use="optional" name="amount">
                               <simpleType>
                                 <annotation>
@@ -322,7 +322,7 @@
                             </documentation>
                           </annotation>
                           <complexType>
-                            <attribute use="required" name="name" type="string" />
+                            <attribute use="required" name="name" type="enderio:ThingsString" />
                             <attribute name="amount" use="optional">
                               <annotation>
                                 <documentation>
@@ -343,7 +343,7 @@
                             <documentation>The Tinkers cast to use.</documentation>
                           </annotation>
                           <complexType>
-                            <attribute use="required" name="name" type="string" />
+                            <attribute use="required" name="name" type="enderio:ThingsString" />
                             <attribute name="consumed" type="boolean" use="optional" default="false">
                               <annotation>
                                 <documentation>Should the cast be consumed?</documentation>
@@ -356,7 +356,7 @@
                             <documentation>The result of the casting process.</documentation>
                           </annotation>
                           <complexType>
-                            <attribute use="required" name="name" type="string" />
+                            <attribute use="required" name="name" type="enderio:ThingsString" />
                           </complexType>
                         </element>
                       </sequence>
@@ -387,7 +387,7 @@
                             <documentation>When this item is used in the Enchanter it will give this recipe.</documentation>
                           </annotation>
                           <complexType>
-                            <attribute use="required" name="name" type="string" />
+                            <attribute use="required" name="name" type="enderio:ThingsString" />
                             <attribute name="amount" use="optional">
                               <annotation>
                                 <documentation>
@@ -518,7 +518,7 @@
                         </element>
                         <element minOccurs="1" maxOccurs="3" name="input">
                           <complexType>
-                            <attribute use="required" name="name" type="string" />
+                            <attribute use="required" name="name" type="enderio:ThingsString" />
                             <attribute name="amount" use="optional">
                               <annotation>
                                 <documentation>Number of input items needed.</documentation>
@@ -560,7 +560,7 @@
                                 </annotation>
                               </element>
                             </sequence>
-                            <attribute use="required" name="name" type="string" />
+                            <attribute use="required" name="name" type="enderio:ThingsString" />
                             <attribute use="optional" name="amount">
                               <simpleType>
                                 <annotation>
@@ -623,7 +623,7 @@
                         </element>
                         <element minOccurs="1" maxOccurs="1" name="input">
                           <complexType>
-                            <attribute use="required" name="name" type="string" />
+                            <attribute use="required" name="name" type="enderio:ThingsString" />
                           </complexType>
                         </element>
                         <element minOccurs="1" maxOccurs="unbounded" name="output">
@@ -647,7 +647,7 @@
                                 </annotation>
                               </element>
                             </sequence>
-                            <attribute use="required" name="name" type="string" />
+                            <attribute use="required" name="name" type="enderio:ThingsString" />
                             <attribute use="optional" name="amount">
                               <simpleType>
                                 <annotation>
@@ -784,7 +784,7 @@
       <element name="dependency" type="enderio:dependencyComplexType" maxOccurs="unbounded" minOccurs="0"></element>
       <element name="input" minOccurs="6" maxOccurs="6">
         <complexType>
-          <attribute use="required" name="name" type="string" />
+          <attribute use="required" name="name" type="enderio:ThingsString" />
           <attribute name="nbt" type="string" use="optional"></attribute>
         </complexType>
       </element>
@@ -805,7 +805,7 @@
                                 </annotation>
                               </element>
                             </sequence>
-                            <attribute use="required" name="name" type="string" />
+                            <attribute use="required" name="name" type="enderio:ThingsString" />
       </complexType></element>
     </sequence>
     <attribute name="energy" use="required">
@@ -835,7 +835,7 @@
       <element name="dependency" type="enderio:dependencyComplexType" minOccurs="0" maxOccurs="unbounded"></element>
       <element name="item" minOccurs="1" maxOccurs="1">
         <complexType>
-          <attribute name="name" type="string" use="required"></attribute>
+          <attribute name="name" type="enderio:ThingsString" use="required"></attribute>
         </complexType>
       </element>
     </sequence>
@@ -896,7 +896,7 @@
           <sequence>
             <element name="input" minOccurs="1" maxOccurs="unbounded">
               <complexType>
-                <attribute name="name" type="string" use="required"></attribute>
+                <attribute name="name" type="enderio:ThingsString" use="required"></attribute>
                 <attribute name="multiplier" type="float" use="optional" default="1.0"></attribute>
               </complexType></element>
           </sequence>
@@ -1001,7 +1001,7 @@
           <documentation>The item that is the input.</documentation>
         </annotation>
         <complexType>
-          <attribute use="required" name="name" type="string" />
+          <attribute use="required" name="name" type="enderio:ThingsString" />
           <attribute name="nbt" type="string" use="optional"></attribute>
         </complexType>
       </element>
@@ -1034,7 +1034,7 @@
               </annotation>
             </element>
           </sequence>
-          <attribute use="required" name="name" type="string" />
+          <attribute use="required" name="name" type="enderio:ThingsString" />
         </complexType>
       </element>
     </sequence>
@@ -1099,7 +1099,7 @@
           <documentation>The item that is the input.</documentation>
         </annotation>
         <complexType>
-          <attribute use="required" name="name" type="string" />
+          <attribute use="required" name="name" type="enderio:ThingsString" />
           <attribute name="nbt" type="string" use="optional"></attribute>
         </complexType>
       </element>
@@ -1166,8 +1166,32 @@
     </attribute>
   </complexType>
   <complexType name="itemType">
-    <attribute use="required" name="name" type="string" />
+    <attribute use="required" name="name" type="enderio:ThingsString" />
     <attribute name="nbt" type="string" use="optional" />
   </complexType>
 
+
+  <simpleType name="ThingsString">
+        <annotation>
+          <documentation>A string that specifies one or more items, consisting of a comma-separated list of item specifiers. Specifiers may be prefixed with a "+" or "-", the latter removes that item from the list.
+
+If this is used as an input, all items in the list will be used. If it is used as an output, only the first one is used. The list can contain non-existing items as long as there also is at least one existing one.
+
+Each specifuer can be one of 4 things:
+
+(1) An alias, e.g. "IRON"
+
+(2) An oredict name, e.g. "ingotIron". Oredict names can be prefixed with "oredict:" to prevent confusion, e.g. "oredict:ingotIron"
+
+(3) The resource location of a block, e.g. "minecraft:stone". Block resource locations may be prefixed with "block:" to prevent confusion, e.g. "block:minecraft:stone". In recipes these will only work if that block has a corresponding item that is internally linked to the block.
+
+(4) The resource location of an item, e.g. "minecraft:iron_ingot". Item resource locations may be prefixed with "item:" to prevent confusion, e.g. "item:minecraft:iron_ingot". A number of items have blocks with the same name that are NOT linked, for them the "item:" prefix is required. Items can further be limited to specific meta values by postfixing with ":(number)", e.g. "item:minecraft:stone:3".
+
+</documentation>
+        </annotation>
+        <restriction base="string">
+      <pattern value="((\+|\-)?(([A-Z0-9_]+)|(((item:)?([a-z][a-z0-9_-]*:)?[a-z][a-z0-9_-]*(:(\*|\d+))?))|((block:)?([a-z][a-z0-9_-]*:)?[a-z][a-z0-9_-]*)|((oredict:)?[a-zA-Z][A-Za-z0-9_-]*)))(,\s*(\+|\-)?(([A-Z0-9_]+)|(((item:)?([a-z][a-z0-9_-]*:)?[a-z][a-z0-9_-]*(:(\*|\d+))?))|((block:)?([a-z][a-z0-9_-]*:)?[a-z][a-z0-9_-]*)|((oredict:)?[a-zA-Z][A-Za-z0-9_-]*)))*"></pattern>
+      <whiteSpace value="collapse"></whiteSpace>
+    </restriction>
+  </simpleType>
 </schema>
