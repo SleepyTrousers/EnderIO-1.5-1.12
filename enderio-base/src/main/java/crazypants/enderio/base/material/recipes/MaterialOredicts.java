@@ -122,6 +122,11 @@ public class MaterialOredicts {
 
     // Treetap
     registerOre("toolTreetap", new ItemStack(ModObject.itemDarkSteelTreetap.getItemNN(), 1, OreDictionary.WILDCARD_VALUE));
+
+    // Infinity Dust Block
+    registerOre("compressed1xDustBedrock", new ItemStack(ModObject.block_infinity.getItemNN(), 1, 0));
+    registerOre("compressed2xDustBedrock", new ItemStack(ModObject.block_infinity.getItemNN(), 1, 1));
+    registerOre("compressed3xDustBedrock", new ItemStack(ModObject.block_infinity.getItemNN(), 1, 2));
   }
 
   public static void registerOre(@Nonnull String name, @Nonnull ItemStack ore) {

@@ -21,6 +21,7 @@ import crazypants.enderio.base.block.decoration.BlockDecoration;
 import crazypants.enderio.base.block.decoration.BlockDecorationFacing;
 import crazypants.enderio.base.block.detector.BlockDetector;
 import crazypants.enderio.base.block.infinity.BlockInfinity;
+import crazypants.enderio.base.block.infinity.BlockInfinityFog;
 import crazypants.enderio.base.block.insulation.BlockIndustrialInsulation;
 import crazypants.enderio.base.block.lever.BlockSelfResettingLever;
 import crazypants.enderio.base.block.painted.BlockPaintedCarpet;
@@ -110,7 +111,8 @@ public enum ModObject implements IModObjectBase {
   itemMaterial(ItemMaterial.class),
 
   itemBrokenSpawner(ItemBrokenSpawner.class),
-  block_infinity_fog(BlockInfinity.class),
+  block_infinity_fog(BlockInfinityFog.class),
+  block_infinity(BlockInfinity.class),
 
   // Blocks
   blockColdFire(BlockColdFire.class),

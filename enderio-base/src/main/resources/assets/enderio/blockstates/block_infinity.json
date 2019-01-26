@@ -1,0 +1,13 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "enderio:cube"
+  },
+  "variants": {
+    "level": {
+      "0": { "textures": { "all": "enderio:blocks/block_infinity_0" } },
+      "1": { "textures": { "all": "enderio:blocks/block_infinity_1" } },
+      "2": { "textures": { "all": "enderio:blocks/block_infinity_2" } }
+    }
+  }
+}
