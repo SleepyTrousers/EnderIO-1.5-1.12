@@ -8,6 +8,7 @@ import mezz.jei.api.gui.IGuiIngredientGroup;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.IFocus;
+import mezz.jei.api.recipe.IIngredientType;
 import mezz.jei.api.recipe.IRecipeCategory;
 
 public class SagMillRecipeLayout implements IRecipeLayout {
@@ -27,10 +28,16 @@ public class SagMillRecipeLayout implements IRecipeLayout {
   public @Nonnull IGuiFluidStackGroup getFluidStacks() {
     return recipeLayout.getFluidStacks();
   }
-
+  
+  @SuppressWarnings("deprecation")
   @Override
   public @Nonnull <T> IGuiIngredientGroup<T> getIngredientsGroup(@Nonnull Class<T> ingredientClass) {
     return recipeLayout.getIngredientsGroup(ingredientClass);
+  }
+
+  @Override
+  public @Nonnull <T> IGuiIngredientGroup<T> getIngredientsGroup(@Nonnull IIngredientType<T> ingredientType) {
+    return recipeLayout.getIngredientsGroup(ingredientType);
   }
 
   @Override
@@ -53,5 +60,4 @@ public class SagMillRecipeLayout implements IRecipeLayout {
   public @Nonnull IRecipeCategory<?> getRecipeCategory() {
     return recipeLayout.getRecipeCategory();
   }
-
 }
