@@ -101,12 +101,6 @@ allprojects {
         maven { url = "http://maven.covers1624.net/" } // CoFHCore
         maven { url = "http://cc.crzd.me/maven/" } // ComputerCraft
         maven { url = "https://repo.raoulvdberge.com/" } // Refined Storage (new)
-        ivy {
-            url "http://ae-mod.info/builds"
-            layout "pattern", {
-                artifact "[module]-[revision](-[classifier])(.[ext])"
-            }
-        }
         mavenLocal()
     }
     
