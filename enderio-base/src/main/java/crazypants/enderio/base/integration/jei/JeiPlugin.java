@@ -29,7 +29,7 @@ import net.minecraftforge.fml.common.ProgressManager;
 @JEIPlugin
 public class JeiPlugin implements IModPlugin {
 
-  private static IJeiRuntime jeiRuntime = null;
+  static IJeiRuntime jeiRuntime = null;
 
   @Override
   public void registerItemSubtypes(@Nonnull ISubtypeRegistry subtypeRegistry) {
