@@ -120,6 +120,8 @@ enderio.gui.cap_bank.output_mode=Saída
 #                            en: Output
 enderio.gui.cap_bank.output_rs=Saída Redstone Mode
 #                          en: Output Redstone Mode
+enderio.gui.conduit.network.unloaded=
+#                                en: Conduit partially in unloaded chunk(s)
 enderio.gui.conduit_bundle_full=
 #                           en: Bundle Full
 enderio.gui.conduit_channel=Canal

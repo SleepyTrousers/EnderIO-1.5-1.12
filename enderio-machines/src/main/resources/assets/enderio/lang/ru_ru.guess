@@ -3,14 +3,34 @@
 # Edit the .lang file instead. You may have to create it first.
 #
 # enderio.gui.stirling_generator.burnRate= <-- extra unused key
+# tile.block_omni_reservoir.tooltip.detailed.line5= <-- extra unused key
+# tile.block_reservoir.tooltip.detailed.line5= <-- extra unused key
 enderio.block_creative_spawner.gui.offering=
 #                                       en: Pay here
 enderio.block_creative_spawner.gui.template=
 #                                       en: Payment Template
 enderio.block_creative_spawner.gui.vial=
 #                                   en: Soul
+enderio.block_powered_spawner.note.denied=
+#                                     en: Denied by another mod
+enderio.block_powered_spawner.tooltip.cost=
+#                                      en: Cost Multiplier: %sx
+enderio.gui.crafter.use_per_craft=
+#                             en: Per Craft: %s
+enderio.gui.lavagen.heat=
+#                    en: Heat
 enderio.gui.stirling_generator.efficiency=
 #                                     en: Efficiency: %s%%
+enderio.jei.lavagen.cooling=
+#                       en: Cooling is optional
+enderio.jei.lavagen.heat=
+#                    en: decreases with heat buildup
+enderio.jei.recipe=
+#              en: Recipe: "%s"
+enderio.jei.sagmill.nomains=
+#                       en: bonus disabled by recipe; 100
+enderio.jei.sagmill.outputchance.ball=
+#                                 en: %s (modified by grinding ball)
 tile.block_creative_spawner.name=
 #                            en: Creative Spawner
 tile.block_creative_spawner.tooltip.common.line1=
@@ -19,3 +39,15 @@ tile.block_creative_spawner.tooltip.detailed.line1=
 #                                              en: Admin: Put in a soul vial and optionally an item that will serve as payment for spawning mobs.
 tile.block_creative_spawner.tooltip.detailed.line2=
 #                                              en: User: Put in the payment to have mobs spawned (unless the spawner is free).
+tile.block_lava_generator.name=
+#                          en: Lava Heat Exchanger
+tile.block_lava_generator.tooltip.detailed.line1=
+#                                            en: Generates energy by cooling down lava.
+tile.block_lava_generator.tooltip.detailed.line2=
+#                                            en: Make sure it doesn't overheat!
+tile.block_lava_generator.tooltip.detailed.line3=
+#                                            en: Can be cooled by placing cold liquids or ice around it.
+tile.block_omni_reservoir.tooltip.common.line1=
+#                                          en: A reservoir for any liquid.
+tile.block_reservoir.tooltip.common.line1=
+#                                     en: An infinite reservoir for water.

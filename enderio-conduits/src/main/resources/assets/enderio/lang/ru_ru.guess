@@ -2,3 +2,5 @@
 #
 # Edit the .lang file instead. You may have to create it first.
 #
+enderio.gui.conduit.network.unloaded=
+#                                en: Conduit partially in unloaded chunk(s)

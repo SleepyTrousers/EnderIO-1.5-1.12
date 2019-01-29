@@ -2,28 +2,31 @@
 #
 # Edit the .lang file instead. You may have to create it first.
 #
+# enderio.config.advanced.tooltip= <-- extra unused key
+# enderio.config.advanced= <-- extra unused key
+# enderio.config.anchor.tooltip= <-- extra unused key
+# enderio.config.anchor= <-- extra unused key
+# enderio.config.item.tooltip= <-- extra unused key
+# enderio.config.item= <-- extra unused key
+# enderio.config.power.tooltip= <-- extra unused key
+# enderio.config.power= <-- extra unused key
+# enderio.config.staff.tooltip= <-- extra unused key
+# enderio.config.staff= <-- extra unused key
+# enderio.coolant.tooltip.degreesPerBucket= <-- different number of %s
+#  ('°C pro Eimer' vs '%s°C per bucket')
+# enderio.darksteel.upgrade.tnt.name= <-- extra unused key
+# enderio.fuel.tooltip.burnTime= <-- different number of %s
+#  ('Brenndauer {0,number} Ticks' vs 'Burn time %s ticks')
+# enderio.gui.item_filter.damage.damage_75_00= <-- different number of %s
+#  ('Mehr als 75 beschädigt' vs 'More than 75% Damaged')
+attribute.name.enderio.aoe.xyz=
+#                          en: Mining Volume
+attribute.name.enderio.aoe.xz=
+#                         en: Mining Range
+attribute.name.enderio.aoe.y=
+#                        en: Mining Depth
 container.chestDouble=
 #                 en: Double Chest
-description.enchantment.enderio.repellent=
-#                                     en: Chance to teleport attackers away|Higher levels teleport more often and farther
-description.enchantment.enderio.shimmer=
-#                                   en: Makes the item shimmer as if it was enchanted.|That's all.|Really.|Nothing more.|Yes, it is useless.|I know.
-description.enchantment.enderio.soulbound=
-#                                     en: Prevents item from being lost on death|Note: Most gravestone mods are stupid and prevent this from working!
-description.enchantment.enderio.witherarrow=
-#                                       en: Applies withering to the target|Applies to bows
-description.enchantment.enderio.witherweapon=
-#                                        en: Applies withering to the target|Applies to melee weapons
-enchantment.enderio.repellent=
-#                         en: Repellent
-enchantment.enderio.shimmer=
-#                       en: Shimmer
-enchantment.enderio.soulbound=Seelengebunden
-#                         en: Soulbound
-enchantment.enderio.witherarrow=Zerfall
-#                           en: Withering
-enchantment.enderio.witherweapon=Verfall
-#                            en: Decay
 enderio.activated.name=Doppelschichtkondensator
 #                  en: Double-Layer Capacitor
 enderio.advancement.gear.g2_stone_gear.desc=
@@ -58,206 +61,62 @@ enderio.advancement.start.2_simple_chassis_get.desc=
 #                                               en: Make your first Machine Chassis
 enderio.advancement.start.2_simple_chassis_get.name=
 #                                               en: The Third 'S' is Silent
-enderio.block.tooltip.blastResistant=Explosionssicher
-#                                en: Blast Resistant
-enderio.block.tooltip.isBeaconBase=Kann als Leuchtfeuerbasis genutzt werden
-#                              en: Can be used as beacon base
-enderio.block.tooltip.lightBlocker=Blockiert Licht
-#                              en: Blocks Light
-enderio.block.tooltip.lightEmitter=Verbreitet Licht
-#                              en: Emits Light
-enderio.color.black=
-#               en: Black
-enderio.color.blue=
-#              en: Blue
-enderio.color.brown=
-#               en: Brown
-enderio.color.cyan=
-#              en: Cyan
-enderio.color.gray=
-#              en: Gray
-enderio.color.green=
-#               en: Green
-enderio.color.lightBlue=
-#                   en: Light Blue
-enderio.color.lime=
-#              en: Lime
-enderio.color.magenta=
-#                 en: Magenta
-enderio.color.orange=
-#                en: Orange
-enderio.color.pink=
-#              en: Pink
-enderio.color.purple=
-#                en: Purple
-enderio.color.red=
-#             en: Red
-enderio.color.silver=
-#                en: Light Gray
-enderio.color.white=
-#               en: White
-enderio.color.yellow=
-#                en: Yellow
-enderio.config.advanced.tooltip=Für diejenigen, die nicht genug Konfigs haben
-#                           en: For those who can't have enough configs.
-enderio.config.advanced=Erweiterte Einstellungen
-#                   en: Advanced Settings
-enderio.config.aesthetic.tooltip=Oooh, ahh, hübsch!
-#                            en: Oooh, ahhh, pretty.
-enderio.config.aesthetic=Ästhetische Einstellungen
-#                    en: Aesthetic Settings
-enderio.config.anchor.tooltip=Anker los! Setzt die Segel!
-#                         en: Anchors away!
-enderio.config.anchor=Reiseanker
-#                 OR: Ankereinstellungen
-#                 en: Travel Anchor
-enderio.config.blocks.charges.concussion=Erschütterungsladung
-#                                    en: Concussion Charge
-enderio.config.blocks.charges.confusion=
-#                                   en: Confusion Charge
-enderio.config.blocks.charges.ender=Enderladung
-#                               en: Ender Charge
-enderio.config.blocks.charges=
-#                         en: Charges
-enderio.config.blocks=
-#                 en: Blocks
-enderio.config.brokenspawner=Zerstörter Spawner
-#                        en: Broken Spawner
-enderio.config.darksteel.tooltip=Es ist nicht nur gewöhnlicher Stahl, es ist §oDunkel§r§estahl.
-#                            en: It's not just regular steel, it's §odark§r§e steel.
-enderio.config.darksteel=Dunkelstahl
-#                    en: Dark Steel
-enderio.config.diagnostics.tooltip=
-#                              en: Use with care!
-enderio.config.diagnostics=
-#                      en: Diagnostic Settings
-enderio.config.enchanter=Verzauberer
-#                    en: Enchanter
-enderio.config.enchantments=
-#                       en: Enchantments
-enderio.config.fluid.tooltip=Reine flüssige Energie
-#                        en: Pure liquid energy!
-enderio.config.fluid=Flüssigkeitseinstellungen
-#                en: Fluids
-enderio.config.hoes=
-#               en: Hoes for Farming Station
-enderio.config.item.tooltip=Wenn du welche von meinen großartigen Item nicht magst :(
-#                       en: If you don't like some of my amazing items :(
-enderio.config.item=Item-Freischaltung
-#               en: Item Settings
-enderio.config.items.darksteel.axe=
-#                              en: Axe
-enderio.config.items.darksteel.coldfire=
-#                                   en: Cold Fire Igniter
-enderio.config.items.darksteel.pickaxe=
-#                                  en: Pickaxe
-enderio.config.items.darksteel.sword=Der Ender
-#                                en: The Ender
-enderio.config.items.darksteel.tooltip=Es ist nicht nur gewöhnlicher Stahl, es ist §oDunkel§r§estahl.
-#                                  en: It's not just regular steel, it's §odark§r§e steel.
-enderio.config.items.darksteel.upgrades.explosive=
-#                                             en: Explosive Upgrade
-enderio.config.items.darksteel.upgrades.speed=
-#                                         en: Speed Upgrade
-enderio.config.items.darksteel.upgrades=
-#                                   en: Dark Steel Upgrades
-enderio.config.items.darksteel=
-#                          en: Dark Steel Items
-enderio.config.items.infinitypowder=
-#                               en: Infinity Powder
+enderio.config.items.darksteel.armor=
+#                                en: Armor
+enderio.config.items.darksteel.bow=
+#                              en: Bow
+enderio.config.items.darksteel.crook=
+#                                en: Crook
+enderio.config.items.darksteel.shears=
+#                                 en: Shears
+enderio.config.items.darksteel.treetap=
+#                                  en: Treetap
+enderio.config.items.darksteel.upgrades.elytra=
+#                                          en: Chestplate: Elytra Upgrade
+enderio.config.items.darksteel.upgrades.empowered=
+#                                             en: Empowered Upgrades
+enderio.config.items.darksteel.upgrades.glider=
+#                                          en: Chestplate: Glider Upgrade
+enderio.config.items.darksteel.upgrades.gogglesofrevealing=
+#                                                      en: Helmet: Goggles of Revealing Upgrade
+enderio.config.items.darksteel.upgrades.hoe=
+#                                       en: Axe: Fork (Hoe) Upgrade
+enderio.config.items.darksteel.upgrades.jump=
+#                                        en: Boots: Jump Upgrade
+enderio.config.items.darksteel.upgrades.nightvision=
+#                                               en: Helmet: Night Vision Upgrade
+enderio.config.items.darksteel.upgrades.padding=
+#                                           en: Helmet: Padding Upgrade
+enderio.config.items.darksteel.upgrades.soundlocator=
+#                                                en: Helmet: Sound Locator Upgrade
+enderio.config.items.darksteel.upgrades.spoon=
+#                                         en: Pickaxe: Spoon (Shovel) Upgrade
+enderio.config.items.darksteel.upgrades.swim=
+#                                        en: Leggings: Swimming Upgrade
+enderio.config.items.darksteel.upgrades.thaumaturgerobes=
+#                                                    en: Armor: Thaumaturge's Robes Upgrades
+enderio.config.items.darksteel.upgrades.theoneprobe=
+#                                               en: Helmet: The One Probe Upgrade
+enderio.config.items.darksteel.upgrades.travel=
+#                                          en: Pickaxe/Sword: Travel Upgrade
 enderio.config.items.magnet.tooltip=Wie funktionieren die?
 #                               en: How do they work?
-enderio.config.items.magnet=Elektromagnet
-#                       en: Electromagnet
-enderio.config.items=
-#                en: Items
-enderio.config.misc=
-#               en: Other Settings
-enderio.config.personal.tooltip=Ich verspreche, ich werde niemandem davon erzählen.
-#                           en: I won't tell anyone, I promise.
-enderio.config.personal=Persönliche Einstellungen
-#                   en: Personal Settings
-enderio.config.power.tooltip=So viele Zahlen zum Ändern...
-#                        en: So many numbers to change...
-enderio.config.power=Energieeinstellungen
-#                en: Power Settings
-enderio.config.recipe.alloy=
-#                       en: Alloy Smelter Recipes
 enderio.config.recipe.painter=
 #                         en: Painter Recipes
-enderio.config.recipe.tooltip=Konfiguriere ALL die Dinge!
-#                         en: Config ALL the things!
-enderio.config.recipe=Rezepteinstellungen
-#                 en: Recipe Settings
-enderio.config.rod=
-#              en: Rod of Return
 enderio.config.soulbinder=
 #                     en: Soulbinder Recipes
-enderio.config.soulvial=Seelenampulle
-#                   en: Soul Vial
-enderio.config.staff.tooltip=Sei vorsichtig mit dem Ding!
-#                        en: Be careful with that thing, you'll teleport your face off.
-enderio.config.staff=Stab des Reisens
-#                OR: Stabeinstellungen
-#                en: Staff of Traveling
-enderio.config.title=Ender IO Konfiguration
-#                en: Ender IO Configuration
-enderio.config.top=
-#              en: The One Probe Integration
-enderio.config.wireless=Drahtlos-Ladegerät
-#                   en: Wireless Charger
-enderio.coolant.tooltip.degreesPerBucket=° pro Eimer
-#                                    en: %s°C per bucket
-enderio.coolant.tooltip.heading=Kühlmittel
-#                           en: Coolant
-enderio.darksteel.upgrade.elytra.disabled=
-#                                     en: Elytra Disabled
-enderio.darksteel.upgrade.elytra.enabled=
-#                                    en: Elytra Active
-enderio.darksteel.upgrade.elytra.name=
-#                                 en: Elytra
-enderio.darksteel.upgrade.elytra.tooltip.detailed.line1=
-#                                                   en: Makes armor work as Elytra
-enderio.darksteel.upgrade.elytra.tooltip.detailed.line2=
-#                                                   en: §4(That means flying as if an Elytra was equipped, NOT "creative" flight!)
-enderio.darksteel.upgrade.empowered_five.name=
-#                                         en: Empowered V
-enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line1=Energie: $P
-#                                                           en: Power: $P
-enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line2=
-#                                                           en: $D% damage absorbed by power
-enderio.darksteel.upgrade.empowered_four.name=Verstärkt IV
-#                                         en: Empowered IV
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Energie: $P
-#                                                           en: Power: $P
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=Hälfte des Haltbarkeitsschadens
-#                                                           en: $D% damage absorbed by power
-enderio.darksteel.upgrade.empowered_one.name=Verstärkt
-#                                        en: Empowered
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Energie: $P
-#                                                          en: Power: $P
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=Hälfte des Haltbarkeitsschadens
-#                                                          en: $D% damage absorbed by power
-enderio.darksteel.upgrade.empowered_three.name=Verstärkt III
-#                                          en: Empowered III
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=Energie: $P
-#                                                            en: Power: $P
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=Hälfte des Haltbarkeitsschadens
-#                                                            en: $D% damage absorbed by power
-enderio.darksteel.upgrade.empowered_two.name=Verstärkt II
-#                                        en: Empowered II
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=Energie: $P
-#                                                          en: Power: $P
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=Hälfte des Haltbarkeitsschadens
-#                                                          en: $D% damage absorbed by power
-enderio.darksteel.upgrade.glider.disabled=Gleiter Inaktiv
-#                                     en: Glider Disabled
-enderio.darksteel.upgrade.glider.enabled=Gleiter Aktiv
-#                                    en: Glider Active
-enderio.darksteel.upgrade.glider.name=Gleiter
-#                                 en: Glider
-enderio.darksteel.upgrade.glider.tooltip.detailed.line1=Ermöglicht Gleiten
-#                                                   en: Enables gliding
+enderio.darksteel.upgrade.carpet.name=
+#                                 en: Carpeting
+enderio.darksteel.upgrade.carpet.tooltip.detailed.line1=
+#                                                   en: Flattens the explosive force into a carpet.
+enderio.darksteel.upgrade.depth.name=
+#                                en: Depth
+enderio.darksteel.upgrade.depth.tooltip.detailed.line1=
+#                                                  en: Directs the explosive force away from the player.
+enderio.darksteel.upgrade.direct.name=
+#                                 en: Direct
+enderio.darksteel.upgrade.direct.tooltip.detailed.line1=
+#                                                   en: Teleports mined things directly into your inventory
 enderio.darksteel.upgrade.gogglesOfRevealing.disabled=Magie ist versteckt
 #                                                 en: Magic is hidden from plain sight
 enderio.darksteel.upgrade.gogglesOfRevealing.enabled=Magie wird enthüllt
@@ -266,74 +125,10 @@ enderio.darksteel.upgrade.gogglesOfRevealing.name=Brille der Enthüllung
 #                                             en: Revealing
 enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Vis Discount: 5%
 #                                                               en: Vis Discount: 5%
-enderio.darksteel.upgrade.hoe.name=
-#                              en: Fork
-enderio.darksteel.upgrade.hoe.tooltip.detailed.line1=
-#                                                en: Who needs a hoe when you have a fork...
-enderio.darksteel.upgrade.jump.disabled=Springen deaktiviert
-#                                   en: Jump Disabled
-enderio.darksteel.upgrade.jump.enabled=Springen aktiviert
-#                                  en: Jump Enabled
-enderio.darksteel.upgrade.jump_one.name=Springen
-#                                   OR: Sprung
-#                                   en: Jump
-enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Erhöht Schreit- und Sprunghöhe
-#                                                     OR: Erhöht Sprunghöhe
-#                                                     en: Increases step and jump height
-enderio.darksteel.upgrade.jump_three.name=Springen III
-#                                     en: Jump III
-enderio.darksteel.upgrade.jump_three.tooltip.detailed.line1=Erhöht Schreit- und Sprunghöhe
-#                                                       OR: Erhöht Sprunghöhe
-#                                                       en: Increases step and jump height
-enderio.darksteel.upgrade.jump_three.tooltip.detailed.line2=Erlaubt Dreifachsprünge
-#                                                       en: Allows triple jumps
-enderio.darksteel.upgrade.jump_two.name=Springen II
-#                                   en: Jump II
-enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=Erhöht Schreit- und Sprunghöhe
-#                                                     OR: Erhöht Sprunghöhe
-#                                                     en: Increases step and jump height
-enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=Erlaubt Doppelsprünge
-#                                                     en: Allows double jumps
-enderio.darksteel.upgrade.nightVision.disabled=Nachtsicht deaktiviert
-#                                          en: Night Vision Disabled
-enderio.darksteel.upgrade.nightVision.enabled=Nachtsicht aktiviert
-#                                         en: Night Vision Enabled
-enderio.darksteel.upgrade.nightVision.name=Nachtsicht
-#                                      en: Night Vision
-enderio.darksteel.upgrade.sound.disabled=Schalldetektor Inaktiv
-#                                    en: Sound Locator Disabled
-enderio.darksteel.upgrade.sound.enabled=Schalldetektor Aktiv
-#                                   en: Sound Locator Active
-enderio.darksteel.upgrade.sound.name=Schalldetektor
-#                                en: Sound Locator
-enderio.darksteel.upgrade.sound.tooltip.detailed.line1=Zeigt die Position von
-#                                                  en: Displays the location of nearby sounds
-enderio.darksteel.upgrade.speed.disabled=Schnelligkeit deaktiviert
-#                                    en: Speed Disabled
-enderio.darksteel.upgrade.speed.enabled=Schnelligkeit aktiviert
-#                                   en: Speed Active
-enderio.darksteel.upgrade.speed_one.name=Schnelligkeit
-#                                    en: Speed
-enderio.darksteel.upgrade.speed_one.tooltip.detailed.line1=Erhöht Bewegungsgeschwindigkeit
-#                                                      en: Increases movement speed
-enderio.darksteel.upgrade.speed_three.name=Schnelligkeit III
-#                                      en: Speed III
-enderio.darksteel.upgrade.speed_three.tooltip.detailed.line1=Erhöht Bewegungsgeschwindigkeit
-#                                                        en: Increases movement speed
-enderio.darksteel.upgrade.speed_two.name=Schnelligkeit II
-#                                    en: Speed II
-enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=Erhöht Bewegungsgeschwindigkeit
-#                                                      en: Increases movement speed
-enderio.darksteel.upgrade.spoon.name=Löffel
-#                                en: Spoon
-enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=Wozu braucht man eine Schaufel,
-#                                                  en: Who needs a shovel when you have a spoon...
-enderio.darksteel.upgrade.stepAssist.disabled=Stufenhilfe deaktiviert
-#                                         en: Step Assist Disabled
-enderio.darksteel.upgrade.stepAssist.enabled=Stufenhilfe aktiviert
-#                                        en: Step Assist Active
-enderio.darksteel.upgrade.swim.name=Schwimmflossen
-#                               en: Flippers
+enderio.darksteel.upgrade.padding.name=
+#                                  en: Padding
+enderio.darksteel.upgrade.padding.tooltip.detailed.line1=
+#                                                    en: Muffles nearby sounds
 enderio.darksteel.upgrade.thaumaturge_robes.chest.name=
 #                                                  en: Thaumaturge's Robe
 enderio.darksteel.upgrade.thaumaturge_robes.chest.tooltip.detailed.line1=
@@ -346,98 +141,62 @@ enderio.darksteel.upgrade.thaumaturge_robes.legs.name=
 #                                                 en: Thaumaturge's Leggings
 enderio.darksteel.upgrade.thaumaturge_robes.legs.tooltip.detailed.line1=
 #                                                                   en: Vis Discount: 3%
-enderio.darksteel.upgrade.tnt.name=
-#                              en: Explosive
-enderio.darksteel.upgrade.tnt.tooltip.detailed.line1=
-#                                                en: Adds explosive power to the pickaxe, damaging surrounding blocks while mining.
-enderio.darksteel.upgrade.tnt.tooltip.detailed.line2=
-#                                                en: For problems that look like nails.
-enderio.darksteel.upgrade.top.name=
-#                              en: The One Probe
-enderio.darksteel.upgrade.travel.name=Reise
-#                                 en: Travel
+enderio.darksteel.upgrade.tnt.0.name=
+#                                en: Explosive I
+enderio.darksteel.upgrade.tnt.0.tooltip.detailed.line1=
+#                                                  en: Adds explosive power to the pickaxe, damaging surrounding blocks while mining.
+enderio.darksteel.upgrade.tnt.0.tooltip.detailed.line2=
+#                                                  en: For problems that look like nails.
+enderio.darksteel.upgrade.tnt.1.name=
+#                                en: Explosive II
+enderio.darksteel.upgrade.tnt.1.tooltip.detailed.line1=
+#                                                  en: Adds more explosive power to the pickaxe, damaging surrounding blocks while mining.
+enderio.darksteel.upgrade.tnt.1.tooltip.detailed.line2=
+#                                                  en: For problems that look like nails.
+enderio.darksteel.upgrade.tnt.2.name=
+#                                en: Explosive III
+enderio.darksteel.upgrade.tnt.2.tooltip.detailed.line1=
+#                                                  en: Adds even more explosive power to the pickaxe, damaging surrounding blocks while mining.
+enderio.darksteel.upgrade.tnt.2.tooltip.detailed.line2=
+#                                                  en: For problems that look like nails.
+enderio.darksteel.upgrade.tnt.3.name=
+#                                en: Explosive IV
+enderio.darksteel.upgrade.tnt.3.tooltip.detailed.line1=
+#                                                  en: Adds ridiculous explosive power to the pickaxe, damaging surrounding blocks while mining.
+enderio.darksteel.upgrade.tnt.3.tooltip.detailed.line2=
+#                                                  en: For problems that look like combs.
+enderio.darksteel.upgrade.tnt.4.name=
+#                                en: Explosive V
+enderio.darksteel.upgrade.tnt.4.tooltip.detailed.line1=
+#                                                  en: Adds ludicrous explosive power to the pickaxe, damaging surrounding blocks while mining.
+enderio.darksteel.upgrade.tnt.4.tooltip.detailed.line2=
+#                                                  en: https://youtu.be/ygE01sOhzz0
 enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Halte Shift und Rechts-Klick zum Teleportieren,
 #                                                   en: Hold shift and R-Click to teleport or activate a travel anchor or Ender IO
-enderio.easteregg.piginabottle=
-#                          en: Bacon in a Bottle
 enderio.ender.name=
 #              en: Ocatadic Capacitor
-enderio.entity_action.block_attractor_obelisk.action=
-#                                                en: Attracts
-enderio.entity_action.block_aversion_obelisk.action=
-#                                               en: Prevents spawning
-enderio.entity_action.block_powered_spawner.action=
-#                                              en: Spawns
-enderio.entity_action.block_relocator_obelisk.action=
-#                                                en: Relocates
-enderio.farm.note.noAxe=Keine Axt
-#                   en: No Axe
-enderio.farm.note.noCapacitor=
-#                         en: No Capacitor
-enderio.farm.note.noHoe=Keine Hacke
-#                   en: No Hoe
-enderio.farm.note.noPower=Keine Energie
-#                     en: No Power
-enderio.farm.note.noSeeds=Kein Saatgut
-#                     en: No Seeds
-enderio.farm.note.noShears=
-#                      en: No Shears
 enderio.farm.note.noTreetap=
 #                       en: No Treetap
-enderio.farm.note.outputFull=Ausgang voll
-#                        en: Output Full
-enderio.fluid.millibucket.format.name=
-#                                 en: %s mB of %s
-enderio.fluid.millibucket.format.of=
-#                               en: %s / %s mB
-enderio.fluid.millibucket.format.ofname=
-#                                   en: %s / %s mB of %s
-enderio.fluid.millibucket.format.tickper=
-#                                    en: %s t/mB
-enderio.fluid.millibucket.format=
-#                            en: %s mB
-enderio.fuel.tooltip.burnTime=Brenndauer {0,number}
-#                         en: Burn time %s ticks
-enderio.fuel.tooltip.generates=
-#                          en: Generates %s at %s
-enderio.fuel.tooltip.heading=Treibstoffdetails
-#                        en: Fuel Details
-enderio.generic.tooltip.paintedWith=Bemalt mit:
-#                               en: Painted with: %s
-enderio.generic.tooltip.unpainted=
-#                             en: Not painted
-enderio.grindingball.gui.durability=
-#                               en: Remaining: %s %%
+enderio.format.percent_efficiency=
+#                             en: %s%% efficiency
 enderio.grindingball.tooltip.line1=
 #                              en: %sSAG Mill Grinding Ball
 enderio.grindingball.tooltip.line2=
 #                              en: %sMain Output %s%%
 enderio.grindingball.tooltip.line3=
 #                              en: %sBonus Output %s%%
-enderio.grindingball.tooltip.line4=
-#                              en: %sPower Use %s%%
-enderio.gui.advanced_item_filter=Erweiterter Item-Filter
-#                            en: Advanced Item Filter
-enderio.gui.basic_item_filter=Einfacher Item-Filter
-#                         en: Basic Item Filter
-enderio.gui.big_advanced_item_filter=Filter
-#                                en: Filter
-enderio.gui.big_item_filter=
-#                       en: Big Item Filter
-enderio.gui.conduit.io_mode.disabled=Deaktiviert
-#                                en: Disabled
 enderio.gui.conduit.io_mode.in_out=Ein / Aus
 #                              en: In / Out
 enderio.gui.conduit.io_mode.input=Extrahieren
 #                             OR: Extraktionsfilter
 #                             en: Extract
-enderio.gui.conduit.io_mode.not_set=Standard
-#                               en: Default
 enderio.gui.conduit.io_mode.output=Insertionsfilter
 #                              OR: Insertieren
 #                              en: Insert
-enderio.gui.edit_item_filter=
-#                        en: Edit Filter Settings
+enderio.gui.enchantment_filter_big=
+#                              en: Big Enchantment Filter
+enderio.gui.enchantment_filter_normal=
+#                                 en: Enchantment Filter
 enderio.gui.existing.item_filter.clear2=
 #                                   en: Clear the snapshot
 enderio.gui.existing.item_filter.clear=Löschen
@@ -456,8 +215,6 @@ enderio.gui.existing.item_filter.snapshot=Snapshot
 #                                     en: Snapshot
 enderio.gui.existing_item_filter=Existierende Items-Filter
 #                            en: Existing Item Filter
-enderio.gui.fluid_filter=
-#                    en: Fluid Filter
 enderio.gui.generic.ioMode.overlay.tooltip.visible.line1=IO Konfigurieren
 #                                                    en: Configure IO
 enderio.gui.generic.ioMode.overlay.tooltip.visible.line2=Shift-Klick um alle Seiten in den
@@ -466,60 +223,12 @@ enderio.gui.generic.ioMode.overlay.tooltip.visible.line3=Ausgangszustand zurück
 #                                                    en: to their default setting
 enderio.gui.generic.ioMode.overlay.tooltip=IO Konfigurieren
 #                                      en: Configure IO
-enderio.gui.generic.loss=
-#                    en: Leakage: %s
-enderio.gui.generic.max=
-#                   en: Max: %s
-enderio.gui.generic.nocap.line1=
-#                           en: §3Capacitor missing
-enderio.gui.generic.nocap.line2=
-#                           en: Insert any capacitor so
-enderio.gui.generic.nocap.line3=
-#                           en: this machine can work!
-enderio.gui.generic.progress=
-#                        en: Progress %s%%
-enderio.gui.infinity_recipe_dimensions=
-#                                  en: Overworld Only
 enderio.gui.item_filter.blacklist=Blacklist
 #                             en: Blacklist
 enderio.gui.item_filter.close2=
 #                          en: Go back to previous inventory
 enderio.gui.item_filter.close=
 #                         en: Close Filter
-enderio.gui.item_filter.damage.damage_00_00=
-#                                       en: Not Damaged
-enderio.gui.item_filter.damage.damage_00_25=
-#                                       en: Up to 25% Damaged
-enderio.gui.item_filter.damage.damage_00_50=
-#                                       en: Up to 50% Damaged
-enderio.gui.item_filter.damage.damage_00_75=
-#                                       en: Up to 75% Damaged
-enderio.gui.item_filter.damage.damage_01_00=
-#                                       en: Damaged
-enderio.gui.item_filter.damage.damage_25_00=
-#                                       en: More than 25% Damaged
-enderio.gui.item_filter.damage.damage_50_00=
-#                                       en: More than 50% Damaged
-enderio.gui.item_filter.damage.damage_75_00=
-#                                       en: More than 75% Damaged
-enderio.gui.item_filter.damage.damage_not=
-#                                     en: Cannot be Damaged
-enderio.gui.item_filter.damage.damage_yes=
-#                                     en: Can be Damaged
-enderio.gui.item_filter.damage.disabled=
-#                                   en: Ignore Damage
-enderio.gui.item_filter.ignore_meta=
-#                               en: Ignore Metadata
-enderio.gui.item_filter.ignore_nbt=
-#                              en: Ignore NBT
-enderio.gui.item_filter.match_meta=
-#                              en: Match Metadata
-enderio.gui.item_filter.match_nbt=
-#                             en: Match NBT
-enderio.gui.item_filter.ore_dic_disabled=Ore Dictionary Deaktiviert
-#                                    en: Ore Dictionary Disabled
-enderio.gui.item_filter.ore_dic_enabled=Ore Dictionary Aktiviert
-#                                   en: Ore Dictionary Enabled
 enderio.gui.item_filter.sticky_disabled=Sticky Mode Deaktiviert
 #                                   en: Sticky Mode Disabled
 enderio.gui.item_filter.sticky_enabled2=
@@ -556,8 +265,6 @@ enderio.gui.mod.item_filter.slot=
 #                            en: Input Slot
 enderio.gui.mod_item_filter=Mod-Item-Filter
 #                       en: Mod Item Filter
-enderio.gui.permission.denied=
-#                         en: Permission denied
 enderio.gui.power.item_filter.compare=
 #                                 en: Comparison Mode
 enderio.gui.power.item_filter.percent=
@@ -592,6 +299,10 @@ enderio.gui.redstone_filter.xnor=
 #                            en: Redstone XNOR Filter
 enderio.gui.redstone_filter.xor=
 #                           en: Redstone XOR Filter
+enderio.gui.soul_filter_big=
+#                       en: Big Soul Filter
+enderio.gui.soul_filter_normal=
+#                          en: Soul Filter
 enderio.gui.species_item_filter=
 #                           en: Species Item Filter
 enderio.gui.tooltip.redstoneControlMode.ignore=Immer aktiv.
@@ -751,6 +462,14 @@ enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Erhöht Energiespeicher s
 #                                                  en: Increases energy storage and speed / range of machines
 enderio.machine.tooltip.upgrade=Maschinen-Upgrade
 #                           en: Machine Upgrade
+enderio.network.autosync.connected=
+#                              en: §4§lThis value is determined by the server!\u000a§e%s
+enderio.network.autosync.offline=
+#                            en: %s\u000a§oThis value must be kept in sync with the server!
+enderio.network.bad_config=
+#                      en: ERROR: The Ender IO config value "%s.%s" has different values on the server you are connecting to than in your local installation. As this value influences how the game is started up, it is now too late to use the server-side value. Continuing is not possible. To fix this, manually synchronize the server and client configuration files for Ender IO, or set this value to "%s" manually.
+enderio.network.manusync=
+#                    en: %s\u000a§oThis value will be determined by the server.
 enderio.owlegg.no_owl=
 #                 en: No Owl found (install Ender IO Zoo!)
 enderio.power.format.details=
@@ -775,6 +494,8 @@ enderio.soulvial.owned.denied=
 #                         en: Permission §cdenied§r - only owners may pick up owned animals
 enderio.soulvial.player.denied=
 #                          en: §cNo!$r How would you feel if you had to play this game from inside a bottle?
+enderio.temperature.format.deg_c=
+#                            en: %s °C
 enderio.tooltip.anvilupgrades=Amboss-Upgrades:
 #                         en: Anvil Upgrades:
 enderio.tooltip.inventory_charger.disabled=
@@ -789,6 +510,16 @@ enderio.top.action.header.pre=
 #                         en: §e
 enderio.top.action.none=
 #                   en: §4nothing
+enderio.top.channel.none=
+#                    en: §7None
+enderio.top.channel.recv.post=
+#                         en: 
+enderio.top.channel.recv.pre=
+#                        en: §eRecv: §f
+enderio.top.channel.send.post=
+#                         en: 
+enderio.top.channel.send.pre=
+#                        en: §eSend: §f
 enderio.top.machine.active=
 #                      en: active
 enderio.top.machine.idle=
@@ -912,6 +643,8 @@ item.item_advanced_item_filter.tooltip.detailed.line1=
 #                                                 en: Filters items with advanced configuration options
 item.item_alloy_ball_conductive_iron.name=
 #                                     en: Conductive Iron Grinding Ball
+item.item_alloy_ball_construction_alloy.name=
+#                                        en: Iron Alloy Grinding Ball
 item.item_alloy_ball_dark_steel.name=
 #                                en: Dark Steel Grinding Ball
 item.item_alloy_ball_electrical_steel.name=
@@ -928,8 +661,54 @@ item.item_alloy_ball_soularium.name=
 #                               en: Soularium Grinding Ball
 item.item_alloy_ball_vibrant_alloy.name=
 #                                   en: Vibrant Alloy Grinding Ball
+item.item_alloy_endergy_ball_crude_steel.name=
+#                                         en: Crude Steel Grinding Ball
+item.item_alloy_endergy_ball_crystalline_alloy.name=
+#                                               en: Crystalline Alloy Grinding Ball
+item.item_alloy_endergy_ball_crystalline_pink_slime.name=
+#                                                    en: Crystalline Pink Slime Grinding Ball
+item.item_alloy_endergy_ball_energetic_silver.name=
+#                                              en: Energetic Silver Grinding Ball
+item.item_alloy_endergy_ball_melodic_alloy.name=
+#                                           en: Melodic Alloy Grinding Ball
+item.item_alloy_endergy_ball_stellar_alloy.name=
+#                                           en: Stellar Alloy Grinding Ball
+item.item_alloy_endergy_ball_vivid_alloy.name=
+#                                         en: Vivid Alloy Grinding Ball
+item.item_alloy_endergy_ingot_crude_steel.name=
+#                                          en: Crude Steel Ingot
+item.item_alloy_endergy_ingot_crystalline_alloy.name=
+#                                                en: Crystalline Alloy Ingot
+item.item_alloy_endergy_ingot_crystalline_pink_slime.name=
+#                                                     en: Crystalline Pink Slime Ingot
+item.item_alloy_endergy_ingot_crystalline_pink_slime.tooltip.detailed.line1=
+#                                                                       en: So this is what happens when you leave jello in the freezer too long...
+item.item_alloy_endergy_ingot_energetic_silver.name=
+#                                               en: Energetic Silver Ingot
+item.item_alloy_endergy_ingot_melodic_alloy.name=
+#                                            en: Melodic Alloy Ingot
+item.item_alloy_endergy_ingot_stellar_alloy.name=
+#                                            en: Stellar Alloy Ingot
+item.item_alloy_endergy_ingot_vivid_alloy.name=
+#                                          en: Vivid Alloy Ingot
+item.item_alloy_endergy_nugget_crude_steel.name=
+#                                           en: Crude Steel Nugget
+item.item_alloy_endergy_nugget_crystalline_alloy.name=
+#                                                 en: Crystalline Alloy Nugget
+item.item_alloy_endergy_nugget_crystalline_pink_slime.name=
+#                                                      en: Crystalline Pink Slime Nugget
+item.item_alloy_endergy_nugget_energetic_silver.name=
+#                                                en: Energetic Silver Nugget
+item.item_alloy_endergy_nugget_melodic_alloy.name=
+#                                             en: Melodic Alloy Nugget
+item.item_alloy_endergy_nugget_stellar_alloy.name=
+#                                             en: Stellar Alloy Nugget
+item.item_alloy_endergy_nugget_vivid_alloy.name=
+#                                           en: Vivid Alloy Nugget
 item.item_alloy_ingot_conductive_iron.name=
 #                                      en: Conductive Iron Ingot
+item.item_alloy_ingot_construction_alloy.name=
+#                                         en: Iron Alloy Ingot
 item.item_alloy_ingot_dark_steel.name=
 #                                 en: Dark Steel Ingot
 item.item_alloy_ingot_electrical_steel.name=
@@ -948,6 +727,8 @@ item.item_alloy_ingot_vibrant_alloy.name=
 #                                    en: Vibrant Alloy Ingot
 item.item_alloy_nugget_conductive_iron.name=
 #                                       en: Conductive Iron Nugget
+item.item_alloy_nugget_construction_alloy.name=
+#                                          en: Iron Alloy Nugget
 item.item_alloy_nugget_dark_steel.name=
 #                                  en: Dark Steel Nugget
 item.item_alloy_nugget_electrical_steel.name=
@@ -1070,6 +851,16 @@ item.item_dark_steel_bow.name=
 #                         en: Dark Bow
 item.item_dark_steel_chestplate.name=Dunkelbrustpanzer
 #                                en: Dark Plate
+item.item_dark_steel_crook.name=
+#                           en: Dark Crook
+item.item_dark_steel_crook.tooltip.multiHarvest=
+#                                           en: Harvests full crowns when powered (sneak to prevent this)
+item.item_dark_steel_hand.name=
+#                          en: Dark Backhoe
+item.item_dark_steel_hand.tooltip.common.line1=
+#                                          en: Farming Station Use Only!
+item.item_dark_steel_hand.tooltip.detailed.line1=
+#                                            en: Better than a hoe for mechanical use
 item.item_dark_steel_helmet.name=Dunkelhelm
 #                            en: Dark Helm
 item.item_dark_steel_leggings.name=Dunkelbeinschutz
@@ -1098,6 +889,10 @@ item.item_dark_steel_treetap.name=
 #                             en: Dark Treetap
 item.item_dark_steel_treetap.tooltip.common.line1=
 #                                             en: Farming Station Use Only!
+item.item_enchantment_filter_big.name=
+#                                 en: Big Enchantment Filter
+item.item_enchantment_filter_normal.name=
+#                                    en: Enchantment Filter
 item.item_end_steel_axe.name=
 #                        en: Ender Axe
 item.item_end_steel_boots.name=
@@ -1252,6 +1047,12 @@ item.item_material.grinding_ball_lumium.name=
 #                                        en: Lumium Grinding Ball
 item.item_material.grinding_ball_signalum.name=
 #                                          en: Signalum Grinding Ball
+item.item_material.infinity_goop.name=
+#                                 en: Infinity Reagent
+item.item_material.infinity_goop.tooltip.detailed.line1=
+#                                                   en: An infinitely sticky substance for conducting energy.
+item.item_material.infinity_goop.tooltip.detailed.line2=
+#                                                   en: Randalf got some on him once, and was stuck to his staff of travelling for 6 months...
 item.item_material.infinity_rod.name=
 #                                en: Infinity Rod
 item.item_material.ingot_enderium_base.name=Enderium-Basis
@@ -1432,6 +1233,10 @@ item.item_rod_of_return.tooltip.fluid=
 #                                 en: %s
 item.item_rod_of_return.tooltip.power=
 #                                 en: %s
+item.item_soul_filter_big.name=
+#                          en: Big Soul Filter
+item.item_soul_filter_normal.name=
+#                             en: Soul Filter
 item.item_soul_vial.name=Seelenampulle
 #                    en: Soul Vial
 item.item_soul_vial.tooltip.color=
@@ -1532,6 +1337,8 @@ subtitles.entity.enderman.teleport=
 #                              en: Something teleports
 tile.block_alloy.conductive_iron.name=Block aus Leitendem Eisen
 #                                 en: Conductive Iron Block
+tile.block_alloy.construction_alloy.name=
+#                                    en: Iron Alloy Block
 tile.block_alloy.dark_steel.name=Dunkelstahlblock
 #                            en: Dark Steel Block
 tile.block_alloy.electrical_steel.name=Block aus Elektrischem Stahl
@@ -1550,6 +1357,22 @@ tile.block_alloy.soularium.name=Soularium-Block
 #                           en: Soularium Block
 tile.block_alloy.vibrant_alloy.name=Block aus Dynamischer Legierung
 #                               en: Vibrant Alloy Block
+tile.block_alloy_endergy.crude_steel.name=
+#                                     en: Crude Steel Block
+tile.block_alloy_endergy.crystalline_alloy.name=
+#                                           en: Crystalline Alloy Block
+tile.block_alloy_endergy.crystalline_pink_slime.name=
+#                                                en: Crystalline Pink Slime Block
+tile.block_alloy_endergy.energetic_silver.name=
+#                                          en: Energetic Silver Block
+tile.block_alloy_endergy.melodic_alloy.name=
+#                                       en: Melodic Alloy Block
+tile.block_alloy_endergy.name=
+#                         en: Endergy Alloy Block
+tile.block_alloy_endergy.stellar_alloy.name=
+#                                       en: Stellar Alloy Block
+tile.block_alloy_endergy.vivid_alloy.name=
+#                                     en: Vivid Alloy Block
 tile.block_cold_fire.name=
 #                     en: Cold Fire
 tile.block_concussion_charge.name=Erschütterungsladung
@@ -1716,6 +1539,18 @@ tile.block_industrial_insulation.name=
 #                                 en: Industrial Insulation
 tile.block_industrial_insulation.tooltip.common.line1=
 #                                                 en: Absorbs nearby fluids like a sponge
+tile.block_infinity_0.name=
+#                      en: Infinity Dust Block
+tile.block_infinity_0.tooltip.common.line1=
+#                                      en: Not quite solid
+tile.block_infinity_1.name=
+#                      en: Compressed Infinity Dust Block
+tile.block_infinity_1.tooltip.common.line1=
+#                                      en: Not quite solid
+tile.block_infinity_2.name=
+#                      en: Double Compressed Infinity Dust Block
+tile.block_infinity_2.tooltip.common.line1=
+#                                      en: Not quite solid
 tile.block_infinity_fog.name=
 #                        en: Infinity Dust
 tile.block_infinity_fog.tooltip.common.line1=
@@ -1848,6 +1683,10 @@ tile.block_painted_redstone.name=
 #                            en: Painted Redstone
 tile.block_painted_redstone_solid.name=
 #                                  en: Painted Redstone
+tile.block_painted_reinforced_obsidian.name=
+#                                       en: Painted Reinforced Obsidian
+tile.block_painted_reinforced_obsidian.tooltip.common.line1=Wither-fest
+#                                                       en: Wither Proof
 tile.block_painted_slab.name=Bemalte Stufe
 #                        en: Painted Slab
 tile.block_painted_stair.name=Bemalte Treppe

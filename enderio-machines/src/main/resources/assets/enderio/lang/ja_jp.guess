@@ -11,8 +11,26 @@ enderio.block_creative_spawner.gui.template=
 #                                       en: Payment Template
 enderio.block_creative_spawner.gui.vial=
 #                                   en: Soul
+enderio.block_powered_spawner.note.denied=
+#                                     en: Denied by another mod
+enderio.block_powered_spawner.tooltip.cost=
+#                                      en: Cost Multiplier: %sx
+enderio.gui.crafter.use_per_craft=
+#                             en: Per Craft: %s
+enderio.gui.lavagen.heat=
+#                    en: Heat
 enderio.gui.stirling_generator.efficiency=
 #                                     en: Efficiency: %s%%
+enderio.jei.lavagen.cooling=
+#                       en: Cooling is optional
+enderio.jei.lavagen.heat=
+#                    en: decreases with heat buildup
+enderio.jei.recipe=
+#              en: Recipe: "%s"
+enderio.jei.sagmill.nomains=
+#                       en: bonus disabled by recipe; 100
+enderio.jei.sagmill.outputchance.ball=
+#                                 en: %s (modified by grinding ball)
 enderio.status.powered_spawner.unbound=
 #                                  en: §4Cannot spawn "nothing"
 tile.block_creative_spawner.name=
@@ -49,14 +67,22 @@ tile.block_franken_zombie_generator.name=
 #                                    en: Frank'n'Zombie Generator
 tile.block_franken_zombie_generator.tooltip.detailed.line1=
 #                                                      en: Consumes Nutrient Distillation to generate even more power
+tile.block_lava_generator.name=
+#                          en: Lava Heat Exchanger
+tile.block_lava_generator.tooltip.detailed.line1=
+#                                            en: Generates energy by cooling down lava.
+tile.block_lava_generator.tooltip.detailed.line2=
+#                                            en: Make sure it doesn't overheat!
+tile.block_lava_generator.tooltip.detailed.line3=
+#                                            en: Can be cooled by placing cold liquids or ice around it.
 tile.block_omni_reservoir.name=
 #                          en: Omnivoir
+tile.block_omni_reservoir.tooltip.common.line1=
+#                                          en: A reservoir for any liquid.
 tile.block_omni_reservoir.tooltip.detailed.line1=
-#                                            en: A reservoir for any liquid.
-tile.block_omni_reservoir.tooltip.detailed.line5=
 #                                            en: - Right-Click with a wrench to enable auto-output
-tile.block_reservoir.tooltip.detailed.line5=
-#                                       en: - Right-Click with a wrench to enable auto-output
+tile.block_reservoir.tooltip.common.line1=
+#                                     en: An infinite reservoir for water.
 tile.block_simple_furnace.name=
 #                          en: Simple Powered Furnace
 tile.block_simple_furnace.tooltip.detailed.line1=

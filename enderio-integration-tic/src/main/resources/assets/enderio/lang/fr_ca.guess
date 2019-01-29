@@ -4,6 +4,14 @@
 #
 fluid.conductive_iron=
 #                 en: Molten Conductive Iron
+fluid.construction_alloy=
+#                    en: Molten Iron Alloy
+fluid.crude_steel=
+#             en: Molten Crude Steel
+fluid.crystalline_alloy=
+#                   en: Molten Crystalline Alloy
+fluid.crystalline_pink_slime=
+#                        en: Molten Crystalline Pink Slime
 fluid.dark_steel=
 #            en: Molten Dark Steel
 fluid.electrical_steel=
@@ -18,18 +26,30 @@ fluid.enderio.redstone=
 #                  en: Molten Redstone
 fluid.energetic_alloy=
 #                 en: Molten Energetic Alloy
+fluid.energetic_silver=
+#                  en: Molten Energetic Silver
+fluid.melodic_alloy=
+#               en: Molten Melodic Alloy
 fluid.pulsating_iron=
 #                en: Molten Pulsating Iron
 fluid.redstone_alloy=
 #                en: Molten Redstone Alloy
 fluid.soularium=
 #           en: Molten Soularium
+fluid.stellar_alloy=
+#               en: Molten Stellar Alloy
 fluid.vibrant_alloy=
 #               en: Molten Vibrant Alloy
+fluid.vivid_alloy=
+#             en: Molten Vivid Alloy
 material.conductive_iron.name=
 #                         en: Conductive Iron
 material.conductive_iron.prefix=
 #                           en: Conductive %s
+material.construction_alloy.name=
+#                            en: Iron Alloy
+material.construction_alloy.prefix=
+#                              en: Fake-Iron %s
 material.dark_steel.name=
 #                    en: Dark Steel
 material.dark_steel.prefix=
@@ -72,6 +92,14 @@ modifier.enderport.name=
 #                   en: Vanishing
 tile.fluid.conductive_iron.name=
 #                           en: Molten Conductive Iron
+tile.fluid.construction_alloy.name=
+#                              en: Molten Iron Alloy
+tile.fluid.crude_steel=
+#                  en: Molten Crude Steel
+tile.fluid.crystalline_alloy=
+#                        en: Molten Crystalline Alloy
+tile.fluid.crystalline_pink_slime=
+#                             en: Molten Crystalline Pink Slime
 tile.fluid.dark_steel.name=
 #                      en: Molten Dark Steel
 tile.fluid.electrical_steel.name=
@@ -86,11 +114,19 @@ tile.fluid.enderio.redstone.name=
 #                            en: Molten Redstone
 tile.fluid.energetic_alloy.name=
 #                           en: Molten Energetic Alloy
+tile.fluid.energetic_silver=
+#                       en: Molten Energetic Silver
+tile.fluid.melodic_alloy=
+#                    en: Molten Melodic Alloy
 tile.fluid.pulsating_iron.name=
 #                          en: Molten Pulsating Iron
 tile.fluid.redstone_alloy.name=
 #                          en: Molten Redstone Alloy
 tile.fluid.soularium.name=
 #                     en: Molten Soularium
+tile.fluid.stellar_alloy=
+#                    en: Molten Stellar Alloy
 tile.fluid.vibrant_alloy.name=
 #                         en: Molten Vibrant Alloy
+tile.fluid.vivid_alloy=
+#                  en: Molten Vivid Alloy

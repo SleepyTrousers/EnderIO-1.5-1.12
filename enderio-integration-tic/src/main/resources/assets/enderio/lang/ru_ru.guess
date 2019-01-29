@@ -2,3 +2,39 @@
 #
 # Edit the .lang file instead. You may have to create it first.
 #
+fluid.construction_alloy=
+#                    en: Molten Iron Alloy
+fluid.crude_steel=
+#             en: Molten Crude Steel
+fluid.crystalline_alloy=
+#                   en: Molten Crystalline Alloy
+fluid.crystalline_pink_slime=
+#                        en: Molten Crystalline Pink Slime
+fluid.energetic_silver=
+#                  en: Molten Energetic Silver
+fluid.melodic_alloy=
+#               en: Molten Melodic Alloy
+fluid.stellar_alloy=
+#               en: Molten Stellar Alloy
+fluid.vivid_alloy=
+#             en: Molten Vivid Alloy
+material.construction_alloy.name=
+#                            en: Iron Alloy
+material.construction_alloy.prefix=
+#                              en: Fake-Iron %s
+tile.fluid.construction_alloy.name=
+#                              en: Molten Iron Alloy
+tile.fluid.crude_steel=
+#                  en: Molten Crude Steel
+tile.fluid.crystalline_alloy=
+#                        en: Molten Crystalline Alloy
+tile.fluid.crystalline_pink_slime=
+#                             en: Molten Crystalline Pink Slime
+tile.fluid.energetic_silver=
+#                       en: Molten Energetic Silver
+tile.fluid.melodic_alloy=
+#                    en: Molten Melodic Alloy
+tile.fluid.stellar_alloy=
+#                    en: Molten Stellar Alloy
+tile.fluid.vivid_alloy=
+#                  en: Molten Vivid Alloy
