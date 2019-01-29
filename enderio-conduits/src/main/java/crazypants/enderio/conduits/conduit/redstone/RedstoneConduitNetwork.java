@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -33,13 +32,11 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneConduit, IRedstoneConduit> {
 
-  private final BundledSignal bundledSignal = new BundledSignal();
+  private final @Nonnull BundledSignal bundledSignal = new BundledSignal();
 
   boolean updatingNetwork = false;
 
   private boolean networkEnabled = true;
-
-  private boolean endTickUpdate = false;
 
   private int baseId = 0;
 
@@ -83,9 +80,8 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     updatingNetwork = false;
 
     // Then ask them what inputs they have now
-    Set<EnumFacing> externalConnections = con.getExternalConnections();
     for (EnumFacing side : EnumFacing.values()) {
-      if (con.getConnectionMode(side).acceptsOutput()) {
+      if (side != null && con.getConnectionMode(side).acceptsOutput()) {
         updateInputsForSource(con, side);
       }
     }
@@ -132,7 +128,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     updatingNetwork = false;
   }
 
-  public BundledSignal getBundledSignal() {
+  public @Nonnull BundledSignal getBundledSignal() {
     return bundledSignal;
   }
 
@@ -258,11 +254,9 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   public void tickEnd(ServerTickEvent event, @Nullable Profiler profiler) {
     super.tickEnd(event, profiler);
 
-    endTickUpdate = true;
-
     for (IRedstoneConduit con : getConduits()) {
       for (EnumFacing dir : EnumFacing.VALUES) {
-        if (((IInputSignalFilter) con.getSignalFilter(dir, false)).shouldUpdate()) {
+        if (dir != null && ((IInputSignalFilter) con.getSignalFilter(dir, false)).shouldUpdate()) {
           updateInputsForSource(con, dir);
 
           World world = con.getBundle().getBundleworld();
@@ -273,8 +267,6 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
       }
       notifyConduitNeighbours(con);
     }
-
-    endTickUpdate = false;
   }
 
 }

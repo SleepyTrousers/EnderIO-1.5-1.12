@@ -112,6 +112,7 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
       setConnectionMode(dir, mode);
     }
     readTypeSettings(dir, dataRoot);
+    getBundle().dirty();
     return true;
   }
 
@@ -659,6 +660,7 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
     return true;
   }
 
+  @Override
   @SideOnly(Side.CLIENT)
   public void hashCodeForModelCaching(BlockStateWrapperConduitBundle.ConduitCacheKey hashCodes) {
     hashCodes.add(this.getClass());

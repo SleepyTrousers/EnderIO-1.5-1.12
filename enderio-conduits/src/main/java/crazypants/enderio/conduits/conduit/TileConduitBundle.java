@@ -359,6 +359,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     world.notifyBlockUpdate(pos, bs, bs, 3);
     world.neighborChanged(pos, getBlockType(), pos);
     markDirty();
+    forceUpdatePlayers();
     conduitsDirty = false;
   }
 
