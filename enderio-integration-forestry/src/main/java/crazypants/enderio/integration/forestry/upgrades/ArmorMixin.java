@@ -13,12 +13,11 @@ import forestry.api.core.IArmorNaturalist;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
 @SimpleMixin(dependencies = "forestry", value = ItemDarkSteelArmor.class)
-public abstract class ArmorMixin extends Item implements IArmorApiarist, IArmorNaturalist, IDarkSteelItem {
+public abstract class ArmorMixin implements IArmorApiarist, IArmorNaturalist, IDarkSteelItem {
 
   @ObjectHolder("enderiointegrationforestry:apiarist_armor_feet")
   public static final IDarkSteelUpgrade FORESTRY_FEET = null;
