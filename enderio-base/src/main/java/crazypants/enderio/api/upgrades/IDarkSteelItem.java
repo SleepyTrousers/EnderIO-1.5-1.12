@@ -1,7 +1,9 @@
 package crazypants.enderio.api.upgrades;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import com.enderio.core.common.MappedCapabilityProvider;
 import com.google.common.collect.Multimap;
 
 import crazypants.enderio.api.capacitor.ICapacitorKey;
@@ -11,6 +13,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * This interface for {@link Item}s marks them as being eligible for {@link IDarkSteelUpgrade}s. Ender IO will also handle repairing them if
@@ -156,6 +159,11 @@ public interface IDarkSteelItem {
       }
     }
     return map;
+  }
+
+  default @Nonnull MappedCapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt,
+      @Nonnull MappedCapabilityProvider capProv) {
+    return capProv;
   }
 
 }

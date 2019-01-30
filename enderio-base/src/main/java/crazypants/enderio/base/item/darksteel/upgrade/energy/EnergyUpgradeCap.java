@@ -1,17 +1,12 @@
 package crazypants.enderio.base.item.darksteel.upgrade.energy;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class EnergyUpgradeCap implements IEnergyStorage, ICapabilityProvider {
+public class EnergyUpgradeCap implements IEnergyStorage {
 
   private final @Nonnull ItemStack container;
 
@@ -47,17 +42,6 @@ public class EnergyUpgradeCap implements IEnergyStorage, ICapabilityProvider {
   @Override
   public boolean canReceive() {
     return true;
-  }
-
-  @Override
-  public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-    return capability == CapabilityEnergy.ENERGY;
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-    return capability == CapabilityEnergy.ENERGY ? (T) this : null;
   }
 
 }
