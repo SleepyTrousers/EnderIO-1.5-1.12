@@ -12,6 +12,7 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.transform.EnderCoreMethods.IElytraFlyingProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNMap;
 import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.collect.HashMultimap;
@@ -61,7 +62,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
@@ -262,24 +262,11 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   // ============================================================================================================
 
   @Override
-  public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
-  }
-
-  @Override
-  public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
-  }
-
-  @Override
   public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     if (!SpecialTooltipHandler.showDurability(flag)) {
       list.add(ItemUtil.getDurabilityString(itemstack));
     }
-    String str = EnergyUpgradeManager.getStoredEnergyString(itemstack);
-    if (str != null) {
-      list.add(str);
-    }
+    NNList.addIf(list, EnergyUpgradeManager.getStoredEnergyString(itemstack));
     if (EnergyUpgradeManager.itemHasAnyPowerUpgrade(itemstack)) {
       list.addAll(Lang.DARK_STEEL_POWERED.getLines(TextFormatting.WHITE));
       if (armorType == EntityEquipmentSlot.FEET) {
@@ -292,12 +279,6 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   @Override
   public String getPaintName(@Nonnull ItemStack itemStack) {
     ItemStack paintSource = PaintUtil.getPaintSource(itemStack);
-    if (Prep.isValid(paintSource)) {
-      final NBTTagCompound subCompound = itemStack.getSubCompound("DSPAINT"); // TODO 1.13 remove
-      if (subCompound != null) {
-        paintSource = new ItemStack(subCompound);
-      }
-    }
     if (Prep.isValid(paintSource)) {
       return paintSource.getDisplayName();
     }
@@ -516,6 +497,8 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     return (FORESTRY_HEAD != null && FORESTRY_HEAD.hasUpgrade(armor)) || (FORESTRY_CHEST != null && FORESTRY_CHEST.hasUpgrade(armor))
         || (FORESTRY_FEET != null && FORESTRY_FEET.hasUpgrade(armor)) || (FORESTRY_LEGS != null && FORESTRY_LEGS.hasUpgrade(armor));
   }
+
+  // ============================================================================================================
 
   @Override
   public @Nonnull IEquipmentData getEquipmentData() {

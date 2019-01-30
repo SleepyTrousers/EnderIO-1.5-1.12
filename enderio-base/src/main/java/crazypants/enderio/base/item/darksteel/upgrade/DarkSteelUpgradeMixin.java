@@ -1,17 +1,22 @@
 package crazypants.enderio.base.item.darksteel.upgrade;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.MappedCapabilityProvider;
 import com.enderio.core.common.transform.SimpleMixin;
 import com.google.common.collect.Multimap;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
+import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeCap;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,7 +25,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 @SimpleMixin(IDarkSteelItem.class)
-public abstract class DarkSteelUpgradeMixin extends Item implements IDarkSteelItem {
+public abstract class DarkSteelUpgradeMixin extends Item implements IDarkSteelItem, IAdvancedTooltipProvider {
 
   // Capabilities (Energy Upgrade)
 
@@ -40,6 +45,23 @@ public abstract class DarkSteelUpgradeMixin extends Item implements IDarkSteelIt
       }
     }
     return map;
+  }
+
+  // Tooltips
+
+  @Override
+  public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
+    DarkSteelRecipeManager.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
+  }
+
+  @Override
+  public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
+    DarkSteelRecipeManager.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
+  }
+
+  @Override
+  public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
+    DarkSteelRecipeManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
 }

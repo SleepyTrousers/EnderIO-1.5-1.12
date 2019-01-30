@@ -13,6 +13,7 @@ import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.OreDictionaryHelper;
 
@@ -160,7 +161,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   public boolean onBlockDestroyed(@Nonnull ItemStack item, @Nonnull World world, @Nonnull IBlockState bs, @Nonnull BlockPos pos,
       @Nonnull EntityLivingBase entityLiving) {
     if (bs.getBlockHardness(world, pos) != 0.0D) {// TODO
-      if (useObsidianEffeciency(item, bs)) {
+      if (useObsidianEffeciency(item, bs, world, pos)) {
         extractInternal(item, DarkSteelConfig.pickPowerUseObsidian);
       }
     }
@@ -260,7 +261,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     if (state.getMaterial() == Material.GLASS) {
       return toolMaterial.getEfficiency();
     }
-    if (useObsidianEffeciency(stack, state)) {
+    if (useObsidianEffeciency(stack, state, null, null)) {
       return toolMaterial.getEfficiency() + DarkSteelConfig.pickEfficiencyBoostWhenPowered.get() + DarkSteelConfig.pickEfficiencyObsidian.get();
     }
     if (isToolEffective(state, stack)) {
@@ -283,14 +284,14 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   }
 
   @SuppressWarnings("null")
-  private boolean useObsidianEffeciency(@Nonnull ItemStack item, @Nonnull IBlockState blockState) {
+  private boolean useObsidianEffeciency(@Nonnull ItemStack item, @Nonnull IBlockState blockState, @Nullable World world, @Nullable BlockPos pos) {
     boolean useObsidianSpeed = false;
     int energy = getEnergyStored(item);
     if (energy > DarkSteelConfig.pickPowerUseObsidian.get()) {
       useObsidianSpeed = blockState.getBlock() == Blocks.OBSIDIAN;
       if (!useObsidianSpeed && DarkSteelConfig.pickApplyObsidianEfficiencyAtHardness.get() > 0) {
         try {
-          useObsidianSpeed = blockState.getBlockHardness(null, new BlockPos(-1, -1, -1)) >= DarkSteelConfig.pickApplyObsidianEfficiencyAtHardness.get();
+          useObsidianSpeed = blockState.getBlockHardness(world, pos) >= DarkSteelConfig.pickApplyObsidianEfficiencyAtHardness.get();
         } catch (Exception e) {
           // given we are passing in a null world to getBlockHardness it is
           // possible this could cause an NPE, so just ignore it
@@ -323,24 +324,11 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   }
 
   @Override
-  public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
-  }
-
-  @Override
-  public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
-  }
-
-  @Override
   public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     if (!SpecialTooltipHandler.showDurability(flag)) {
       list.add(ItemUtil.getDurabilityString(itemstack));
     }
-    String str = EnergyUpgradeManager.getStoredEnergyString(itemstack);
-    if (str != null) {
-      list.add(str);
-    }
+    NNList.addIf(list, EnergyUpgradeManager.getStoredEnergyString(itemstack));
     if (EnergyUpgradeManager.itemHasAnyPowerUpgrade(itemstack)) {
       list.add(Lang.PICK_POWERED.get(TextFormatting.WHITE, DarkSteelConfig.pickEfficiencyBoostWhenPowered.get()));
       list.add(Lang.PICK_OBSIDIAN.get(TextFormatting.WHITE, DarkSteelConfig.pickEfficiencyObsidian.get()));
@@ -409,7 +397,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     return slotChanged || Prep.isInvalid(oldStack) || Prep.isInvalid(newStack) || oldStack.getItem() != newStack.getItem();
   }
 
-  private static final float notBedrock(float i) {
+  private static float notBedrock(float i) {
     return i >= 0 ? i : Float.MAX_VALUE;
   }
 
@@ -464,21 +452,21 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     // The vanilla behavior is to reset the "block break" on item change and/or metadata change and/or NBT change
     // since we use NBT to store the energy value, when a wireless charger updates the NBT the default behavior
     // will reset progress.
-    // So first thing first, if by vanilla standards it's ok to keep going, keep going
+    // So first things first, if by vanilla standards it's ok to keep going, keep going
     if (!super.shouldCauseBlockBreakReset(oldStack, newStack)) {
       return false;
     }
 
     // Make sure the only difference is in NBT
-    if (oldStack.isEmpty() != newStack.isEmpty() || oldStack.hasTagCompound() != newStack.hasTagCompound() || newStack.getItem() != oldStack.getItem()
-        || newStack.isItemStackDamageable() && newStack.getMetadata() != oldStack.getMetadata()) {
+    if (newStack.getItem() != oldStack.getItem() || (newStack.isItemStackDamageable() && newStack.getMetadata() != oldStack.getMetadata())
+        || oldStack.hasTagCompound() != newStack.hasTagCompound()) {
       return true;
     }
 
     // Here comes the tricky part, in theory we could totally ignore NBT but that could cause problems
     // and honestly will be an ugly hack. Instead we'll use a deep comparer that ignores the energy
     // tag.
-    if (!oldStack.hasTagCompound() && !newStack.hasTagCompound()) {
+    if (!oldStack.hasTagCompound()) {
       return false;
     }
 
