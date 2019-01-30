@@ -31,7 +31,6 @@ import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;
-import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.enderio.base.integration.thaumcraft.ThaumaturgeRobesUpgrade;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
@@ -50,8 +49,6 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.HelmetPainterTemplate;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.util.Prep;
-import forestry.api.apiculture.IArmorApiarist;
-import forestry.api.core.IArmorNaturalist;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -69,7 +66,6 @@ import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.fml.common.Optional.Interface;
 import net.minecraftforge.fml.common.Optional.InterfaceList;
 import net.minecraftforge.fml.common.Optional.Method;
-import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import thaumcraft.api.items.IGoggles;
@@ -78,11 +74,9 @@ import thaumcraft.api.items.IVisDiscountGear;
 
 @InterfaceList({ @Interface(iface = "thaumcraft.api.items.IGoggles", modid = "thaumcraft"),
     @Interface(iface = "thaumcraft.api.items.IVisDiscountGear", modid = "thaumcraft"),
-    @Interface(iface = "thaumcraft.api.items.IRevealer", modid = "thaumcraft"),
-    @Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = "forestry"),
-    @Interface(iface = "forestry.api.core.IArmorNaturalist", modid = "forestry") })
+    @Interface(iface = "thaumcraft.api.items.IRevealer", modid = "thaumcraft") })
 public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware, IHasPlayerRenderer,
-    IWithPaintName, IElytraFlyingProvider, IArmorApiarist, IArmorNaturalist, IVisDiscountGear, IGoggles, IRevealer {
+    IWithPaintName, IElytraFlyingProvider, IVisDiscountGear, IGoggles, IRevealer {
 
   // ============================================================================================================
   // Item creation
@@ -428,8 +422,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 
   @Override
   public boolean hasUpgradeCallbacks(@Nonnull IDarkSteelUpgrade upgrade) {
-    return upgrade == FORESTRY_FEET || upgrade == FORESTRY_LEGS || upgrade == FORESTRY_CHEST || upgrade == FORESTRY_HEAD || upgrade == FORESTRY_EYES
-        || upgrade == ElytraUpgrade.INSTANCE || upgrade == GogglesOfRevealingUpgrade.INSTANCE || upgrade == ThaumaturgeRobesUpgrade.BOOTS
+    return upgrade == ElytraUpgrade.INSTANCE || upgrade == GogglesOfRevealingUpgrade.INSTANCE || upgrade == ThaumaturgeRobesUpgrade.BOOTS
         || upgrade == ThaumaturgeRobesUpgrade.LEGS || upgrade == ThaumaturgeRobesUpgrade.CHEST;
   }
 
@@ -470,33 +463,6 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   // ============================================================================================================
   // FORESTRY
   // ============================================================================================================
-
-  @ObjectHolder("enderiointegrationforestry:apiarist_armor_feet")
-  public static final IDarkSteelUpgrade FORESTRY_FEET = null;
-  @ObjectHolder("enderiointegrationforestry:apiarist_armor_legs")
-  public static final IDarkSteelUpgrade FORESTRY_LEGS = null;
-  @ObjectHolder("enderiointegrationforestry:apiarist_armor_chest")
-  public static final IDarkSteelUpgrade FORESTRY_CHEST = null;
-  @ObjectHolder("enderiointegrationforestry:apiarist_armor_head")
-  public static final IDarkSteelUpgrade FORESTRY_HEAD = null;
-  @ObjectHolder("enderiointegrationforestry:naturalist_eye")
-  public static final IDarkSteelUpgrade FORESTRY_EYES = null;
-
-  @Override
-  @Method(modid = "forestry")
-  public boolean canSeePollination(@Nonnull EntityPlayer player, @Nonnull ItemStack armor, boolean doSee) {
-    if (armor.getItem() != ModObject.itemDarkSteelHelmet.getItemNN()) {
-      return false;
-    }
-    return FORESTRY_EYES != null && FORESTRY_EYES.hasUpgrade(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD));
-  }
-
-  @Override
-  @Method(modid = "forestry")
-  public boolean protectEntity(@Nonnull EntityLivingBase entity, @Nonnull ItemStack armor, @Nullable String cause, boolean doProtect) {
-    return (FORESTRY_HEAD != null && FORESTRY_HEAD.hasUpgrade(armor)) || (FORESTRY_CHEST != null && FORESTRY_CHEST.hasUpgrade(armor))
-        || (FORESTRY_FEET != null && FORESTRY_FEET.hasUpgrade(armor)) || (FORESTRY_LEGS != null && FORESTRY_LEGS.hasUpgrade(armor));
-  }
 
   // ============================================================================================================
 
