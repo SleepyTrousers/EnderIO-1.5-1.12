@@ -173,8 +173,6 @@ public class BlockInfinity extends BlockFalling implements IResourceTooltipProvi
         CapturedMob capturedMob = CapturedMob.create(new ResourceLocation("minecraft", "endermite"));
         if (capturedMob != null) {
           capturedMob.doSpawn(worldIn, pos, EnumFacing.DOWN, false);
-        } else {
-          System.out.println("oops");
         }
       }
       return true;
