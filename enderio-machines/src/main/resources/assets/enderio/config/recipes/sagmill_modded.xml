@@ -310,5 +310,13 @@ XML editor will display that as tooltips when editing this file.
       <output name="itemPlantgreen" chance="0.1"/>
     </sagmilling>
   </recipe>
+ 
+  <!-- Misc. -->
+  <recipe name="Sagmill: Diamond Dust" required="false">
+    <sagmilling energy="2400" bonus="none">
+      <input name="gemDiamond"/>
+      <output name="dustDiamond" />
+    </sagmilling>
+  </recipe>
 
 </enderio:recipes>
