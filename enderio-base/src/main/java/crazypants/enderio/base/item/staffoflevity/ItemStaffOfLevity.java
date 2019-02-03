@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.common.CompoundCapabilityProvider;
+import com.enderio.core.common.MappedCapabilityProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.NullHelper;
@@ -34,13 +34,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
@@ -189,26 +186,16 @@ public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider,
   }
 
   @Override
-  public @Nonnull ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
-    return new CompoundCapabilityProvider(new FluidCapabilityProvider(stack), super.initCapabilities(stack, nbt));
+  @Nonnull
+  public MappedCapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt, @Nonnull MappedCapabilityProvider capProv) {
+    return capProv.add(FluidUtil.getFluidItemCapability(), new FluidCapabilityProvider(stack));
   }
 
-  private final class FluidCapabilityProvider implements IFluidHandlerItem, ICapabilityProvider {
+  private final class FluidCapabilityProvider implements IFluidHandlerItem {
     protected final @Nonnull ItemStack container;
 
     private FluidCapabilityProvider(@Nonnull ItemStack container) {
       this.container = container;
-    }
-
-    @Override
-    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-      return capability == FluidUtil.getFluidItemCapability();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-      return capability == FluidUtil.getFluidItemCapability() ? (T) this : null;
     }
 
     @Override
