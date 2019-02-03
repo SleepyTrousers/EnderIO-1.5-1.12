@@ -1,6 +1,7 @@
 package crazypants.enderio.machines.machine.wireless;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.vecmath.Vector4f;
@@ -9,8 +10,9 @@ import crazypants.enderio.base.Log;
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.YetaUtil;
-import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.power.PowerHandlerUtil;
+import crazypants.enderio.base.power.forge.tile.ILegacyPoweredTile;
+import crazypants.enderio.base.power.forge.tile.InternalRecieverTileWrapper;
 import crazypants.enderio.base.power.wireless.IWirelessCharger;
 import crazypants.enderio.base.power.wireless.WirelessChargerController;
 import crazypants.enderio.base.render.ranged.IRanged;
@@ -25,12 +27,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
-public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerReceiver, IWirelessCharger, IPaintable.IPaintableTileEntity, IRanged {
+public class TileWirelessCharger extends TileEntityEio implements ILegacyPoweredTile.Receiver, IWirelessCharger, IPaintable.IPaintableTileEntity, IRanged {
 
   @Store
   private int storedEnergyRF;
@@ -179,7 +183,7 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
       spawnRangeParticle();
     }
   }
-  
+
   @SideOnly(Side.CLIENT)
   private void spawnRangeParticle() {
     Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle<TileWirelessCharger>(this, color));
@@ -195,6 +199,14 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowerRe
   @Nonnull
   public BoundingBox getBounds() {
     return getRange();
+  }
+
+  @Override
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY) {
+      return CapabilityEnergy.ENERGY.cast(InternalRecieverTileWrapper.get(this, facingIn));
+    }
+    return super.getCapability(capability, facingIn);
   }
 
 }

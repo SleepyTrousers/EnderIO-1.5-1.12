@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityGeneratorEntity;
-import crazypants.enderio.base.power.GeneratorBlockItem;
+import crazypants.enderio.base.power.forge.item.GeneratorBlockItem;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 

@@ -4,19 +4,19 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.IProgressTile;
-import info.loenwind.autosave.util.NBTAction;
 
 import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.power.PowerHandlerUtil;
+import crazypants.enderio.base.power.forge.tile.ILegacyPoweredTile;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -32,9 +32,10 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_WIRED_PO
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_WIRED_POWER_USE;
 
 @Storable
-public class TileWiredCharger extends AbstractPowerConsumerEntity implements ILegacyPowerReceiver, IPaintable.IPaintableTileEntity, IProgressTile {
+public class TileWiredCharger extends AbstractPowerConsumerEntity implements ILegacyPoweredTile.Receiver, IPaintable.IPaintableTileEntity, IProgressTile {
 
-  protected TileWiredCharger(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
+  protected TileWiredCharger(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
+      @Nonnull ICapacitorKey maxEnergyUsed) {
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
   }
 
@@ -119,12 +120,10 @@ public class TileWiredCharger extends AbstractPowerConsumerEntity implements ILe
   }
 
   @Store(NBTAction.CLIENT)
-  private @Nonnull
-  ItemStack itemForClient = Prep.getEmpty();
+  private @Nonnull ItemStack itemForClient = Prep.getEmpty();
 
   @SideOnly(Side.CLIENT)
-  protected @Nonnull
-  ItemStack getItemToRender() {
+  protected @Nonnull ItemStack getItemToRender() {
     return itemForClient;
   }
 
@@ -167,4 +166,5 @@ public class TileWiredCharger extends AbstractPowerConsumerEntity implements ILe
     }
     return super.getPowerUsePerTick();
   }
+
 }

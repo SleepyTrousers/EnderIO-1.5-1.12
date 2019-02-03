@@ -1,4 +1,4 @@
-package crazypants.enderio.base.power;
+package crazypants.enderio.base.power.forge.tile;
 
 import javax.annotation.Nonnull;
 
@@ -22,5 +22,17 @@ public interface ILegacyPoweredTile {
    * Should the power be displayed in WAILA or other places
    */
   boolean displayPower();
+
+  public interface Generator extends ILegacyPoweredTile {
+
+  }
+
+  public interface Receiver extends ILegacyPoweredTile {
+
+    int getMaxEnergyRecieved(EnumFacing dir);
+
+    int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate);
+
+  }
 
 }

@@ -1,49 +1,34 @@
-package crazypants.enderio.base.power.forge;
+package crazypants.enderio.base.power.forge.tile;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
-import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 
 public class InternalRecieverTileWrapper extends InternalPoweredTileWrapper {
 
-  public static class RecieverTileCapabilityProvider extends PoweredTileCapabilityProvider {
-
-    private final @Nonnull ILegacyPowerReceiver tile;
-
-    public RecieverTileCapabilityProvider(@Nonnull ILegacyPowerReceiver tile) {
-      super(tile);
-      this.tile = tile;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-      if (capability == CapabilityEnergy.ENERGY && facing != null && tile.canConnectEnergy(facing)) {
-        switch (DiagnosticsConfig.protectEnergyOverflow.get()) {
-        case NONE:
-          return (T) new InternalRecieverTileWrapper(tile, facing);
-        case SOFT:
-          return (T) new LimitingRecieverTileCapabilityProvider(tile, facing);
-        case HARD:
-          return (T) new ValidatingRecieverTileCapabilityProvider(tile, facing);
-        }
+  public static @Nullable IEnergyStorage get(@Nonnull ILegacyPoweredTile.Receiver tile, @Nullable EnumFacing facing) {
+    if (facing != null && tile.canConnectEnergy(facing)) {
+      switch (DiagnosticsConfig.protectEnergyOverflow.get()) {
+      case NONE:
+        return new InternalRecieverTileWrapper(tile, facing);
+      case SOFT:
+        return new LimitingRecieverTileCapabilityProvider(tile, facing);
+      case HARD:
+        return new ValidatingRecieverTileCapabilityProvider(tile, facing);
       }
-      return null;
     }
-
+    return null;
   }
 
-  protected final @Nonnull ILegacyPowerReceiver tile;
+  protected final @Nonnull ILegacyPoweredTile.Receiver tile;
 
-  public InternalRecieverTileWrapper(@Nonnull ILegacyPowerReceiver tile, @Nonnull EnumFacing facing) {
+  public InternalRecieverTileWrapper(@Nonnull ILegacyPoweredTile.Receiver tile, @Nonnull EnumFacing facing) {
     super(tile, facing);
     this.tile = tile;
   }
@@ -64,7 +49,7 @@ public class InternalRecieverTileWrapper extends InternalPoweredTileWrapper {
     private int recv = 0;
     private int cooldown = 0;
 
-    public ValidatingRecieverTileCapabilityProvider(@Nonnull ILegacyPowerReceiver tile, @Nonnull EnumFacing facing) {
+    public ValidatingRecieverTileCapabilityProvider(@Nonnull ILegacyPoweredTile.Receiver tile, @Nonnull EnumFacing facing) {
       super(tile, facing);
     }
 
@@ -100,7 +85,7 @@ public class InternalRecieverTileWrapper extends InternalPoweredTileWrapper {
     private long lastTick = -1L;
     private int recv = 0;
 
-    public LimitingRecieverTileCapabilityProvider(@Nonnull ILegacyPowerReceiver tile, @Nonnull EnumFacing facing) {
+    public LimitingRecieverTileCapabilityProvider(@Nonnull ILegacyPoweredTile.Receiver tile, @Nonnull EnumFacing facing) {
       super(tile, facing);
     }
 

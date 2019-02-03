@@ -1,6 +1,6 @@
 package crazypants.enderio.base.machine.baselegacy;
 
-import crazypants.enderio.base.power.ILegacyPoweredTile;
+import crazypants.enderio.base.power.forge.tile.ILegacyPoweredTile;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;

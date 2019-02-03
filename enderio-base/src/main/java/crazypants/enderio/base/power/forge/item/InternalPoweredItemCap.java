@@ -1,40 +1,16 @@
-package crazypants.enderio.base.power.forge;
+package crazypants.enderio.base.power.forge.item;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
-import crazypants.enderio.base.power.IInternalPoweredItem;
-import crazypants.enderio.base.power.ItemPowerCapabilityProvider;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class InternalPoweredItemWrapper implements IEnergyStorage {
+public class InternalPoweredItemCap implements IEnergyStorage {
 
-  
-  public static class PoweredItemCapabilityProvider implements ItemPowerCapabilityProvider {
-
-    @Override
-    public boolean hasCapability(@Nonnull ItemStack stack, Capability<?> capability, @Nullable EnumFacing facing) {
-      return capability == CapabilityEnergy.ENERGY;
-    }
-
-    @Override
-    public <T> T getCapability(@Nonnull ItemStack stack, Capability<T> capability, @Nullable EnumFacing facing) {
-      if (capability == CapabilityEnergy.ENERGY) {
-        return CapabilityEnergy.ENERGY.cast(new InternalPoweredItemWrapper(stack));
-      }
-      return null;
-    }
-
-  }
-  
   protected final @Nonnull ItemStack container;
   protected @Nonnull IInternalPoweredItem item;
 
-  public InternalPoweredItemWrapper(@Nonnull ItemStack container) {
+  public InternalPoweredItemCap(@Nonnull ItemStack container) {
     this.container = container;
     this.item = (IInternalPoweredItem) container.getItem();
   }

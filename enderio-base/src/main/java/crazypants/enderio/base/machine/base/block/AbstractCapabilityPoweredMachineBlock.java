@@ -6,7 +6,7 @@ import com.enderio.core.common.inventory.InventorySlot;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
-import crazypants.enderio.base.power.PoweredBlockItem;
+import crazypants.enderio.base.power.forge.item.PoweredBlockItem;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

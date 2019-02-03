@@ -9,9 +9,8 @@ import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.power.PowerDistributor;
-import crazypants.enderio.base.power.forge.InternalRecieverTileWrapper;
+import crazypants.enderio.base.power.forge.tile.ILegacyPoweredTile;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
@@ -21,8 +20,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.energy.CapabilityEnergy;
 
 import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.BUFFER_POWER_INTAKE;
@@ -32,7 +29,7 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.CREATIVE_BUFFER
 import static crazypants.enderio.machines.capacitor.CapacitorKey.CREATIVE_BUFFER_POWER_USE;
 
 @Storable
-public abstract class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPowerReceiver, IPaintable.IPaintableTileEntity {
+public abstract class TileBuffer extends AbstractPowerConsumerEntity implements ILegacyPoweredTile.Receiver, IPaintable.IPaintableTileEntity {
 
   @Storable
   public static class TileBufferItem extends TileBuffer {
@@ -268,15 +265,6 @@ public abstract class TileBuffer extends AbstractPowerConsumerEntity implements 
   @Override
   public int getMaxEnergyStored() {
     return hasPower() ? super.getMaxEnergyStored() : 0;
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY) {
-      return hasPower() ? (T) new InternalRecieverTileWrapper(this, facingIn) : null;
-    }
-    return super.getCapability(capability, facingIn);
   }
 
   private BufferType getType() {

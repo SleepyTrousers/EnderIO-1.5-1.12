@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.enderio.core.common.CompoundCapabilityProvider;
+import com.enderio.core.common.MappedCapabilityProvider;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
 import crazypants.enderio.api.IModObject;
@@ -17,8 +17,7 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.lang.LangPower;
-import crazypants.enderio.base.power.IInternalPoweredItem;
-import crazypants.enderio.base.power.ItemPowerCapabilityBackend;
+import crazypants.enderio.base.power.forge.item.IInternalPoweredItem;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.invpanel.init.InvpanelObject;
@@ -45,8 +44,6 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -310,29 +307,16 @@ public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvide
   }
 
   @Override
-  public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nonnull NBTTagCompound nbt) {
-    return new CompoundCapabilityProvider(new CapabilityProvider(stack), new ItemPowerCapabilityBackend(stack));
+  @Nonnull
+  public MappedCapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt, @Nonnull MappedCapabilityProvider capProv) {
+    return capProv.add(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, new CapabilityProvider(stack));
   }
 
-  private class CapabilityProvider implements IFluidHandlerItem, ICapabilityProvider {
+  private class CapabilityProvider implements IFluidHandlerItem {
     protected final @Nonnull ItemStack container;
 
     private CapabilityProvider(@Nonnull ItemStack container) {
       this.container = container;
-    }
-
-    @Override
-    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-      return capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-      if (capability == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY) {
-        return (T) this;
-      }
-      return null;
     }
 
     @Override

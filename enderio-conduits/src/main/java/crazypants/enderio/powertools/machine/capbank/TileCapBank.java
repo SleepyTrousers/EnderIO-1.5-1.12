@@ -23,10 +23,11 @@ import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.base.power.IPowerStorage;
 import crazypants.enderio.base.power.PowerHandlerUtil;
+import crazypants.enderio.base.power.forge.tile.ILegacyPoweredTile;
+import crazypants.enderio.base.power.forge.tile.InternalRecieverTileWrapper;
 import crazypants.enderio.powertools.init.PowerToolObject;
 import crazypants.enderio.powertools.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.powertools.machine.capbank.network.ClientNetworkManager;
@@ -46,11 +47,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
-public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, IIoConfigurable, IPowerStorage, IPaintable.IPaintableTileEntity, IPowerBarData {
+public class TileCapBank extends TileEntityEio
+    implements ILegacyPoweredTile.Receiver, IIoConfigurable, IPowerStorage, IPaintable.IPaintableTileEntity, IPowerBarData {
 
   @Store
   private EnumMap<EnumFacing, IoMode> faceModes;
@@ -737,6 +741,14 @@ public class TileCapBank extends TileEntityEio implements ILegacyPowerReceiver, 
   @Override
   public int getMaxUsage() {
     return 0;
+  }
+
+  @Override
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY) {
+      return CapabilityEnergy.ENERGY.cast(InternalRecieverTileWrapper.get(this, facingIn));
+    }
+    return super.getCapability(capability, facingIn);
   }
 
 }

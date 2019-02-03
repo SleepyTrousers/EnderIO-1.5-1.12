@@ -13,7 +13,6 @@ import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.base.machine.modes.IoMode;
-import crazypants.enderio.base.power.PowerDisplayUtil;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.network.PacketHandler;
@@ -85,12 +84,12 @@ public class GuiBuffer extends GuiInventoryMachineBase<TileBuffer> {
 
   private void updateInputOutput() {
     boolean changed = false;
-    int input = PowerDisplayUtil.parsePower(maxInput);
+    int input = LangPower.parsePower(maxInput);
     if (input != lastInput) {
       lastInput = input;
       changed = true;
     }
-    int output = PowerDisplayUtil.parsePower(maxOutput);
+    int output = LangPower.parsePower(maxOutput);
     if (output != lastOutput) {
       lastOutput = output;
       changed = true;

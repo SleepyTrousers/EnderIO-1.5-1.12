@@ -37,7 +37,6 @@ import crazypants.enderio.base.integration.chiselsandbits.CABIMC;
 import crazypants.enderio.base.material.recipes.MaterialOredicts;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.PaintSourceValidator;
-import crazypants.enderio.base.power.CapInjectHandler;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
 import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
 import crazypants.enderio.base.recipe.slicensplice.SliceAndSpliceRecipeManager;
@@ -110,7 +109,6 @@ public class EnderIO implements IEnderIOAddon {
   // prePreInit
   static {
     FluidRegistry.enableUniversalBucket();
-    CapInjectHandler.loadClass();
   }
 
   @SuppressWarnings("unused")

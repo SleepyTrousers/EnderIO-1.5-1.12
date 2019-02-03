@@ -28,7 +28,7 @@ import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.sound.MachineSound;
-import crazypants.enderio.base.power.AbstractPoweredItem;
+import crazypants.enderio.base.power.forge.item.AbstractPoweredItem;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.base.teleport.TeleportUtil;
 import net.minecraft.client.Minecraft;

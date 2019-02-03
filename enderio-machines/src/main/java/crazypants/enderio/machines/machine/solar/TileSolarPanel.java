@@ -5,10 +5,10 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe.IHasConduitProbeData;
-import crazypants.enderio.base.power.ILegacyPoweredTile;
 import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.base.power.PowerHandlerUtil;
-import crazypants.enderio.base.power.forge.InternalPoweredTileWrapper;
+import crazypants.enderio.base.power.forge.tile.ILegacyPoweredTile;
+import crazypants.enderio.base.power.forge.tile.InternalGeneratorTileWrapper;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -50,7 +50,7 @@ public class TileSolarPanel extends TileEntityEio implements ILegacyPoweredTile,
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     if (capability == CapabilityEnergy.ENERGY) {
-      return facingIn == EnumFacing.DOWN ? (T) new InternalPoweredTileWrapper(this, facingIn) : null;
+      return facingIn == EnumFacing.DOWN ? CapabilityEnergy.ENERGY.cast(InternalGeneratorTileWrapper.get(this, facingIn)) : null;
     }
     return super.getCapability(capability, facingIn);
   }

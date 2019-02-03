@@ -1,13 +1,15 @@
-package crazypants.enderio.base.power;
+package crazypants.enderio.base.power.forge.item;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.MappedCapabilityProvider;
+
 import crazypants.enderio.util.NbtValue;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public interface IInternalPoweredItem {
 
@@ -29,8 +31,20 @@ public interface IInternalPoweredItem {
     setEnergyStored(container, getMaxEnergyStored(container));
   }
 
-  default @Nullable ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
-    return new ItemPowerCapabilityBackend(stack);
+  /**
+   * This allows you to add more capabilities to your item in addition to the energy capability you get automatically.
+   * 
+   * @param stack
+   *          See {@link Item#initCapabilities(ItemStack, NBTTagCompound)}
+   * @param nbt
+   *          See {@link Item#initCapabilities(ItemStack, NBTTagCompound)}
+   * @param capProv
+   *          A map that already contains the energy capability
+   * @return the third parameter (for chaining the call)
+   */
+  default @Nonnull MappedCapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt,
+      @Nonnull MappedCapabilityProvider capProv) {
+    return capProv;
   }
 
 }

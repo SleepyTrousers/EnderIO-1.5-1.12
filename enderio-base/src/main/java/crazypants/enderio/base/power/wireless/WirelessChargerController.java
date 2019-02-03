@@ -29,9 +29,9 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
-public class WirelessChargerController {
+public final class WirelessChargerController {
 
-  public static @Nonnull WirelessChargerController instance = new WirelessChargerController();
+  public static final @Nonnull WirelessChargerController instance = new WirelessChargerController();
 
   private final @Nonnull Map<Integer, Collection<BlockPos>> perWorldChargers = new HashMap<>();
   private int changeCount;
@@ -68,7 +68,7 @@ public class WirelessChargerController {
       IWirelessCharger charger = chargerPos != null ? BlockEnder.getAnyTileEntitySafe(world, chargerPos, IWirelessCharger.class) : null;
       if (charger != null) {
         if (charger.getRange().contains(pos)) {
-        res.add(charger);
+          res.add(charger);
         }
       } else {
         iterator.remove();

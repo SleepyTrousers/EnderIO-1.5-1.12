@@ -3,7 +3,7 @@ package crazypants.enderio.machines.machine.buffer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import crazypants.enderio.base.power.PoweredBlockItem;
+import crazypants.enderio.base.power.forge.item.PoweredBlockItem;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
