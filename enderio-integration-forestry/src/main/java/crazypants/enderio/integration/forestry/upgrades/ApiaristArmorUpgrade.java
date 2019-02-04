@@ -41,7 +41,7 @@ public class ApiaristArmorUpgrade extends AbstractUpgrade {
 
   private final @Nonnull EntityEquipmentSlot slot;
 
-  public ApiaristArmorUpgrade(@Nonnull EntityEquipmentSlot slot) {
+  protected ApiaristArmorUpgrade(@Nonnull EntityEquipmentSlot slot) {
     super(EnderIOIntegrationForestry.MODID, UPGRADE_NAME + slot.getName(), "enderio.darksteel.upgrade.apiarist_armor." + slot.getName(), getApiaristArmor(slot),
         ForestryConfig.apiaristArmorCost);
     this.slot = slot;

@@ -12,23 +12,21 @@ import forestry.api.core.IArmorNaturalist;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import static crazypants.enderio.integration.forestry.upgrades.ForestryUpgrades.*;
-
 @SimpleMixin(dependencies = "forestry", value = ItemDarkSteelArmor.class)
-public abstract class ArmorMixin implements IArmorApiarist, IArmorNaturalist, IDarkSteelItem {
+public abstract class ArmorMixin extends Item implements IArmorApiarist, IArmorNaturalist, IDarkSteelItem {
 
   @Override
   public boolean canSeePollination(@Nonnull EntityPlayer player, @Nonnull ItemStack armor, boolean doSee) {
-    System.out.println(FORESTRY_EYES != null);
-    return isForSlot(EntityEquipmentSlot.HEAD) && FORESTRY_EYES != null && FORESTRY_EYES.hasUpgrade(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD));
+    return isForSlot(EntityEquipmentSlot.HEAD) && NaturalistEyeUpgrade.INSTANCE.hasUpgrade(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD));
   }
 
   @Override
   public boolean protectEntity(@Nonnull EntityLivingBase entity, @Nonnull ItemStack armor, @Nullable String cause, boolean doProtect) {
-    return (FORESTRY_HEAD != null && FORESTRY_HEAD.hasUpgrade(armor)) || (FORESTRY_CHEST != null && FORESTRY_CHEST.hasUpgrade(armor))
-        || (FORESTRY_FEET != null && FORESTRY_FEET.hasUpgrade(armor)) || (FORESTRY_LEGS != null && FORESTRY_LEGS.hasUpgrade(armor));
+    return ApiaristArmorUpgrade.HELMET.hasUpgrade(armor) || ApiaristArmorUpgrade.CHEST.hasUpgrade(armor) || ApiaristArmorUpgrade.BOOTS.hasUpgrade(armor)
+        || ApiaristArmorUpgrade.LEGS.hasUpgrade(armor);
   }
 
 }

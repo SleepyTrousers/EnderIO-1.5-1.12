@@ -14,13 +14,15 @@ import net.minecraft.item.ItemStack;
 
 public class NaturalistEyeUpgrade extends AbstractUpgrade {
 
+  public static final @Nonnull NaturalistEyeUpgrade INSTANCE = new NaturalistEyeUpgrade();
+
   private static final @Nonnull String UPGRADE_NAME = "naturalist_eye";
 
   public static @Nonnull ItemStack getNaturalistEye() {
     return ForestryItemStacks.FORESTRY_HELMET != null ? ForestryItemStacks.FORESTRY_HELMET : Prep.getEmpty();
   }
 
-  public NaturalistEyeUpgrade() {
+  protected NaturalistEyeUpgrade() {
     super(EnderIOIntegrationForestry.MODID, UPGRADE_NAME, "enderio.darksteel.upgrade.naturalist_eye", getNaturalistEye(), ForestryConfig.naturalistEyeCost);
   }
 
