@@ -10,7 +10,6 @@ import crazypants.enderio.integration.forestry.farmers.ForestryFarmer;
 import crazypants.enderio.integration.forestry.fertilizer.ForestryFertilizer;
 import crazypants.enderio.integration.forestry.upgrades.ApiaristArmorUpgrade;
 import crazypants.enderio.integration.forestry.upgrades.NaturalistEyeUpgrade;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -52,11 +51,11 @@ public class ForestryControl {
   @SubscribeEvent
   public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
     final IForgeRegistry<IDarkSteelUpgrade> registry = event.getRegistry();
-    registry.register(new NaturalistEyeUpgrade());
-    registry.register(new ApiaristArmorUpgrade(EntityEquipmentSlot.FEET));
-    registry.register(new ApiaristArmorUpgrade(EntityEquipmentSlot.LEGS));
-    registry.register(new ApiaristArmorUpgrade(EntityEquipmentSlot.CHEST));
-    registry.register(new ApiaristArmorUpgrade(EntityEquipmentSlot.HEAD));
+    registry.register(NaturalistEyeUpgrade.INSTANCE);
+    registry.register(ApiaristArmorUpgrade.BOOTS);
+    registry.register(ApiaristArmorUpgrade.LEGS);
+    registry.register(ApiaristArmorUpgrade.CHEST);
+    registry.register(ApiaristArmorUpgrade.HELMET);
     Log.info("Dark Steel Upgrades: Forestry integration loaded");
   }
 
