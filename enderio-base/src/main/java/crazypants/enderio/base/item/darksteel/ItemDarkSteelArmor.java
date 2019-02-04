@@ -27,10 +27,12 @@ import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
 import crazypants.enderio.api.upgrades.IRenderUpgrade;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
+import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.enderio.base.integration.thaumcraft.ThaumaturgeRobesUpgrade;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
@@ -41,6 +43,9 @@ import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManage
 import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.nightvision.NightVisionUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.sound.SoundDetectorUpgrade;
+import crazypants.enderio.base.item.darksteel.upgrade.storage.StorageCap;
+import crazypants.enderio.base.item.darksteel.upgrade.storage.StorageContainer;
+import crazypants.enderio.base.item.darksteel.upgrade.storage.StorageGui;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.PaintUtil;
@@ -49,6 +54,8 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.HelmetPainterTemplate;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.util.Prep;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -56,6 +63,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -76,7 +84,7 @@ import thaumcraft.api.items.IVisDiscountGear;
     @Interface(iface = "thaumcraft.api.items.IVisDiscountGear", modid = "thaumcraft"),
     @Interface(iface = "thaumcraft.api.items.IRevealer", modid = "thaumcraft") })
 public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware, IHasPlayerRenderer,
-    IWithPaintName, IElytraFlyingProvider, IVisDiscountGear, IGoggles, IRevealer {
+    IWithPaintName, IElytraFlyingProvider, IVisDiscountGear, IGoggles, IRevealer, IEioGuiHandler.WithServerComponent.WithOutPos {
 
   // ============================================================================================================
   // Item creation
@@ -489,6 +497,30 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   @Override
   public @Nonnull ICapacitorKey getAbsorptionRatioKey(@Nonnull ItemStack stack) {
     return CapacitorKey.DARK_STEEL_ARMOR_ABSORPTION_RATIO;
+  }
+
+  @Override
+  @Nullable
+  public Container getServerGuiElement(@Nonnull EntityPlayer player, int param1, int param2, int param3) {
+    for (ItemStack stack : Minecraft.getMinecraft().player.inventory.armorInventory) {
+      if (stack.getItem() == ModObject.itemDarkSteelChestplate.getItemNN()) { // TODO check upgrade
+        return new StorageContainer(player.inventory, new StorageCap(9 * 6, stack));
+      }
+    }
+    return null;
+  }
+
+  @Override
+  @Nullable
+  @SideOnly(Side.CLIENT)
+  public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, int param1, int param2, int param3) {
+    // TODO having a dummy inventory on the client instead of writing to the item would probably be better
+    Container container = getServerGuiElement(player, param1, param2, param3);
+    if (container != null) {
+      return new StorageGui(container);
+    } else {
+      return null;
+    }
   }
 
 }
