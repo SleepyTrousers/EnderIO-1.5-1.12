@@ -116,7 +116,7 @@ public class EnderIO implements IEnderIOAddon {
   private static Config configHandler;
   
   public EnderIO() {
-    EnderCorePlugin.instance().loadMixinSources();
+    EnderCorePlugin.instance().loadMixinSources(this);
   }
 
   @EventHandler
