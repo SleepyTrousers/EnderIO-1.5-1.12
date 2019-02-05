@@ -32,7 +32,6 @@ import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;
-import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.enderio.base.integration.thaumcraft.ThaumaturgeRobesUpgrade;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
@@ -43,6 +42,7 @@ import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManage
 import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.nightvision.NightVisionUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.sound.SoundDetectorUpgrade;
+import crazypants.enderio.base.item.darksteel.upgrade.storage.SlotEncoder;
 import crazypants.enderio.base.item.darksteel.upgrade.storage.StorageCap;
 import crazypants.enderio.base.item.darksteel.upgrade.storage.StorageContainer;
 import crazypants.enderio.base.item.darksteel.upgrade.storage.StorageGui;
@@ -54,7 +54,6 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.HelmetPainterTemplate;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.util.Prep;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.creativetab.CreativeTabs;
@@ -502,10 +501,15 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   @Override
   @Nullable
   public Container getServerGuiElement(@Nonnull EntityPlayer player, int param1, int param2, int param3) {
-    for (ItemStack stack : Minecraft.getMinecraft().player.inventory.armorInventory) {
-      if (stack.getItem() == ModObject.itemDarkSteelChestplate.getItemNN()) { // TODO check upgrade
-        return new StorageContainer(player.inventory, new StorageCap(9 * 6, stack));
-      }
+    SlotEncoder enc = new SlotEncoder(param1);
+    if (enc.hasSlots()) {
+      NonNullList<ItemStack> list = player.inventory.armorInventory;
+      // Note: StorageCap(0, xxx) ignores the xxx, so it is ok to call it with another armor item
+      return new StorageContainer(player.inventory, //
+          new StorageCap(EntityEquipmentSlot.FEET, enc.get(EntityEquipmentSlot.FEET), list.get(EntityEquipmentSlot.FEET.getIndex())), //
+          new StorageCap(EntityEquipmentSlot.LEGS, enc.get(EntityEquipmentSlot.LEGS), list.get(EntityEquipmentSlot.LEGS.getIndex())), //
+          new StorageCap(EntityEquipmentSlot.CHEST, enc.get(EntityEquipmentSlot.CHEST), list.get(EntityEquipmentSlot.CHEST.getIndex())), //
+          new StorageCap(EntityEquipmentSlot.HEAD, enc.get(EntityEquipmentSlot.HEAD), list.get(EntityEquipmentSlot.HEAD.getIndex())));
     }
     return null;
   }
@@ -514,10 +518,13 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   @Nullable
   @SideOnly(Side.CLIENT)
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, int param1, int param2, int param3) {
-    // TODO having a dummy inventory on the client instead of writing to the item would probably be better
-    Container container = getServerGuiElement(player, param1, param2, param3);
-    if (container != null) {
-      return new StorageGui(container);
+    SlotEncoder enc = new SlotEncoder(param1);
+    if (enc.hasSlots()) {
+      return new StorageGui(new StorageContainer(player.inventory, //
+          new StorageCap(EntityEquipmentSlot.FEET, enc.get(EntityEquipmentSlot.FEET)), //
+          new StorageCap(EntityEquipmentSlot.LEGS, enc.get(EntityEquipmentSlot.LEGS)), //
+          new StorageCap(EntityEquipmentSlot.CHEST, enc.get(EntityEquipmentSlot.CHEST)), //
+          new StorageCap(EntityEquipmentSlot.HEAD, enc.get(EntityEquipmentSlot.HEAD))));
     } else {
       return null;
     }

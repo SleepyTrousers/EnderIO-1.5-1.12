@@ -30,7 +30,6 @@ public interface IHaveGhostTargets<T extends GuiContainerBase> {
 
       @Override
       public void accept(Object ingredient) {
-        System.out.println(ingredient);
         if (ingredient instanceof ItemStack) {
           s.putStack((ItemStack) ingredient, 1);
         } else if (ingredient instanceof FluidStack && s instanceof IFluidGhostSlot) {
