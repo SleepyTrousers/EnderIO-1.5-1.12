@@ -498,18 +498,19 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     return CapacitorKey.DARK_STEEL_ARMOR_ABSORPTION_RATIO;
   }
 
+  // Note: The GUI is bound to ModObject.itemDarkSteelChestplate, but that is just for technical reasons. It supports any armor item with the upgrade, even if
+  // it doesn't extend this class
   @Override
   @Nullable
   public Container getServerGuiElement(@Nonnull EntityPlayer player, int param1, int param2, int param3) {
     SlotEncoder enc = new SlotEncoder(param1);
     if (enc.hasSlots()) {
-      NonNullList<ItemStack> list = player.inventory.armorInventory;
       // Note: StorageCap(0, xxx) ignores the xxx, so it is ok to call it with another armor item
       return new StorageContainer(player.inventory, //
-          new StorageCap(EntityEquipmentSlot.FEET, enc.get(EntityEquipmentSlot.FEET), list.get(EntityEquipmentSlot.FEET.getIndex())), //
-          new StorageCap(EntityEquipmentSlot.LEGS, enc.get(EntityEquipmentSlot.LEGS), list.get(EntityEquipmentSlot.LEGS.getIndex())), //
-          new StorageCap(EntityEquipmentSlot.CHEST, enc.get(EntityEquipmentSlot.CHEST), list.get(EntityEquipmentSlot.CHEST.getIndex())), //
-          new StorageCap(EntityEquipmentSlot.HEAD, enc.get(EntityEquipmentSlot.HEAD), list.get(EntityEquipmentSlot.HEAD.getIndex())));
+          new StorageCap(EntityEquipmentSlot.FEET, enc.get(EntityEquipmentSlot.FEET), player), //
+          new StorageCap(EntityEquipmentSlot.LEGS, enc.get(EntityEquipmentSlot.LEGS), player), //
+          new StorageCap(EntityEquipmentSlot.CHEST, enc.get(EntityEquipmentSlot.CHEST), player), //
+          new StorageCap(EntityEquipmentSlot.HEAD, enc.get(EntityEquipmentSlot.HEAD), player));
     }
     return null;
   }

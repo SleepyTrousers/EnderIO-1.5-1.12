@@ -2,6 +2,12 @@ package crazypants.enderio.base.item.darksteel.upgrade.storage;
 
 import net.minecraft.inventory.EntityEquipmentSlot;
 
+/**
+ * Encode 4 7-bit values indexed by EntityEquipmentSlot into an int.
+ * 
+ * @author Henry Loenwind
+ *
+ */
 public class SlotEncoder {
 
   private int value = 0;

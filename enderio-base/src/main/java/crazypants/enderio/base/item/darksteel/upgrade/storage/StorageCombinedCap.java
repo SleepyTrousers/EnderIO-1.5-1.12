@@ -2,6 +2,12 @@ package crazypants.enderio.base.item.darksteel.upgrade.storage;
 
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
+/**
+ * Just making some protected method available...
+ * 
+ * @author Henry Loenwind
+ *
+ */
 public class StorageCombinedCap extends CombinedInvWrapper {
 
   public StorageCombinedCap(StorageCap... itemHandler) {

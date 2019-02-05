@@ -61,8 +61,10 @@ public class KeyTracker {
 
   private final @Nonnull KeyBinding fovPlusKeyFast, fovMinusKeyFast, fovPlusKey, fovMinusKey, yetaWrenchMode;
 
+  public final @Nonnull KeyBinding inventory;
+
   public KeyTracker() {
-    create("enderio.keybind.inventory         ", Keyboard.KEY_I, "   key.category.darksteelarmor    ", new InventoryAction());
+    inventory = create("enderio.keybind.inventory", Keyboard.KEY_I, "key.category.darksteelarmor    ", new InventoryAction());
     create("enderio.keybind.glidertoggle      ", Keyboard.KEY_G, "   key.category.darksteelarmor    ", new GlideAction());
     create("enderio.keybind.soundlocator      ", Keyboard.KEY_NONE, "key.category.darksteelarmor    ", new SoundDetectorAction());
     create("enderio.keybind.nightvision       ", Keyboard.KEY_P, "   key.category.darksteelarmor    ", new NightVisionAction());

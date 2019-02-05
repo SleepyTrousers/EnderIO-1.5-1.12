@@ -39,7 +39,7 @@ public class StorageContainer extends ContainerEnderCap<StorageCombinedCap, Tile
     for (int i = 0; i < getItemHandler().getSlots(); i++) {
       EntityEquipmentSlot current = getItemHandler().getHandlerFromSlot(i).getEquipmentSlot();
       if (current != last) {
-        xoff = (9 - StorageData.cols(current)) / 2;
+        xoff = (9 - StorageUpgrade.cols(current)) / 2;
         x = 0;
         y = 0;
         last = current;
@@ -57,7 +57,7 @@ public class StorageContainer extends ContainerEnderCap<StorageCombinedCap, Tile
         }
       });
       x++;
-      if (x >= StorageData.cols(current)) {
+      if (x >= StorageUpgrade.cols(current)) {
         x = 0;
         y++;
       }
@@ -96,6 +96,11 @@ public class StorageContainer extends ContainerEnderCap<StorageCombinedCap, Tile
   public IMessage setTab(@Nonnull EntityEquipmentSlot tab) {
     activeTab = tab;
     return null;
+  }
+
+  @Override
+  public boolean canInteractWith(@Nonnull EntityPlayer player) {
+    return feet.isStillConnectedToPlayer() && legs.isStillConnectedToPlayer() && body.isStillConnectedToPlayer() && head.isStillConnectedToPlayer();
   }
 
 }

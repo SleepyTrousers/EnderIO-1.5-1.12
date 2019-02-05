@@ -165,6 +165,8 @@ public enum Lang implements ILang {
   NETWORK_CONFIG_OFFLINE(".network.autosync.offline"),
   NETWORK_CONFIG_SYNC(".network.manusync"),
 
+  GUI_NO_ARMOR_INVENTORY(".keybind.inventory.none_equipped"),
+
   ;
 
   private final @Nonnull String key;
