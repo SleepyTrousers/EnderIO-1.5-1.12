@@ -5,6 +5,9 @@ import java.text.NumberFormat;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
+import net.minecraft.client.gui.GuiTextField;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static crazypants.enderio.base.lang.Lang.POWER;
 import static crazypants.enderio.base.lang.Lang.POWER_OF;
@@ -93,6 +96,35 @@ public final class LangPower {
 
   public static @Nonnull String toPercent(float fl) {
     return "" + Math.round(fl * 100);
+  }
+
+  public static Integer parsePower(String power) {
+    if (power == null) {
+      return null;
+    }
+    try {
+      Number d = INT_NF.parse(power);
+      if (d == null) {
+        return null;
+      }
+      return d.intValue();
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  @SideOnly(Side.CLIENT)
+  public static int parsePower(GuiTextField tf) {
+    String txt = tf.getText();
+    try {
+      Integer power = parsePower(txt);
+      if (power == null) {
+        return -1;
+      }
+      return power.intValue();
+    } catch (Exception e) {
+      return -1;
+    }
   }
 
 }

@@ -1,16 +1,16 @@
 package crazypants.enderio.api.upgrades;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import com.google.common.collect.Multimap;
+import com.enderio.core.common.MappedCapabilityProvider;
 
 import crazypants.enderio.api.capacitor.ICapacitorKey;
-import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * This interface for {@link Item}s marks them as being eligible for {@link IDarkSteelUpgrade}s. Ender IO will also handle repairing them if
@@ -138,24 +138,19 @@ public interface IDarkSteelItem {
   }
 
   /**
-   * Call this from {@link Item#getAttributeModifiers(EntityEquipmentSlot, ItemStack)} like this:
-   * <p>
+   * This allows you to add more capabilities to your item in addition to the energy capability you get automatically.
    * 
-   * <pre>
-   * &#64;Override
-   * public @Nonnull Multimap<String, AttributeModifier> getAttributeModifiers(@Nonnull EntityEquipmentSlot slot, @Nonnull ItemStack stack) {
-   *   return addAttributeModifiers(slot, stack, super.getAttributeModifiers(slot, stack));
-   * }
-   * </pre>
+   * @param stack
+   *          See {@link Item#initCapabilities(ItemStack, NBTTagCompound)}
+   * @param nbt
+   *          See {@link Item#initCapabilities(ItemStack, NBTTagCompound)}
+   * @param capProv
+   *          A map that already contains the energy capability
+   * @return the third parameter (for chaining the call)
    */
-  default @Nonnull Multimap<String, AttributeModifier> addAttributeModifiers(@Nonnull EntityEquipmentSlot slot, @Nonnull ItemStack stack,
-      @Nonnull Multimap<String, AttributeModifier> map) {
-    for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
-      if (upgrade.hasUpgrade(stack)) {
-        upgrade.addAttributeModifiers(slot, stack, map);
-      }
-    }
-    return map;
+  default @Nonnull MappedCapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt,
+      @Nonnull MappedCapabilityProvider capProv) {
+    return capProv;
   }
 
 }

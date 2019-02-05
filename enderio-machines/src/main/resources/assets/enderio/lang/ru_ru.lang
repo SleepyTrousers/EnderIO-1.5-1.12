@@ -96,7 +96,7 @@ enderio.gui.vacuum.header.range=Дальность
 enderio.gui.vacuum.xp.header=XP вакуум
 enderio.gui.vacuum.prime=Чтобы активировать, щелкните ПКМ по XP Вакуумом ведром жидкого опыта.
 
-enderio.gui.trans.publicChannel=Общественный канал
+enderio.gui.trans.publicChannel=Общедоступный канал
 enderio.gui.trans.privateChannel=Частный канал
 enderio.gui.trans.addChannel=Добавить канал
 enderio.gui.trans.deleteChannel=Удалить канал
@@ -112,7 +112,7 @@ enderio.gui.trans.buffer.item.single=Ограничение на отдельн�
 enderio.gui.trans.channel.receive=Получать
 enderio.gui.trans.channel.send=Отправлять
 
-enderio.gui.travel_accessable.public=Общественный
+enderio.gui.travel_accessable.public=Общедоступный
 enderio.gui.travel_accessable.private=Частный
 enderio.gui.travel_accessable.protected=Защищённый
 enderio.gui.travel_accessable.prompt=Требуется код доступа
@@ -120,7 +120,7 @@ enderio.gui.travel_accessable.promp.login=Авторизироваться
 enderio.chat.travel_accessable.error.private=Только §4%s §fможет изменить настройки этого блока.
 enderio.chat.travel_accessable.error.harvest=Только §4%s §fможет собрать этот блок.
 enderio.gui.travel_accessable.visible.line1=Видимость
-enderio.gui.travel_accessable.visible.line2=Когда дальше, этот блок можно увидеть держа посох путешествия или стоять на якорь путешествия
+enderio.gui.travel_accessable.visible.line2=Издалека этот блок можно увидеть, держа посох путешествия или если встать на якорь путешествия
 
 enderio.chat.telepad.noFluid=Недостаточно %s для телепортации!
 enderio.gui.telepad.configure.travel=Настройки путешествия
@@ -144,18 +144,18 @@ enderio.gui.crafter.buffering_single=Буферизация одиночных �
 tile.block_alloy_smelter.name=Завод сплавов
 tile.block_alloy_smelter.tooltip.detailed.line1=Используется для создания сплавов EnderIO
 tile.block_alloy_smelter.tooltip.detailed.line2=Также может использоваться как электрическая печь
-tile.block_alloy_smelter.tooltip.detailed.line3=Обновление с конденсаторами увеличит скорость и накопление энергии
+tile.block_alloy_smelter.tooltip.detailed.line3=Обновление конденсаторами увеличит скорость и накопление энергии
 
 tile.block_simple_alloy_smelter.name=Простой завод сплавов
 tile.block_simple_alloy_smelter.tooltip.detailed.line1=Используется для создания сплавов EnderIO
 
-tile.block_simple_furnace.name=Простаяч электропечь
+tile.block_simple_furnace.name=Простая электропечь
 tile.block_simple_furnace.tooltip.detailed.line1=Плавит предметы с помощью энергии
 
 tile.block_enhanced_alloy_smelter.name=Улучшенный завод сплавов
 tile.block_enhanced_alloy_smelter.tooltip.detailed.line1=Используется для создания сплавов EnderIO
 tile.block_enhanced_alloy_smelter.tooltip.detailed.line2=Может также использоваться как электрическая печь
-tile.block_enhanced_alloy_smelter.tooltip.detailed.line3=Обновление с конденсаторами увеличит скорость и накопление энергии
+tile.block_enhanced_alloy_smelter.tooltip.detailed.line3=Обновление конденсаторами увеличит скорость и накопление энергии
 
 tile.block_buffer.item.name=Предметный буфер
 tile.block_buffer.power.name=Энергобуфер
@@ -200,7 +200,7 @@ tile.block_simple_stirling_generator.name=Простой генератор Ст
 
 tile.block_stirling_generator.name=Генератор Стирлинга
 tile.block_stirling_generator.tooltip.detailed.line1=Сжигает твёрдое топливо для производства энергии
-tile.block_stirling_generator.tooltip.detailed.line2=Может быть модернизирован, чтобы увеличить производство и эффективность с конденсаторами
+tile.block_stirling_generator.tooltip.detailed.line2=Может быть модернизирован, чтобы увеличить производство и эффективность конденсаторами
 
 tile.block_zombie_generator.name=Зомби генератор
 tile.block_zombie_generator.tooltip.detailed.line1=Потребляет питательный дистиллят для производства энергии
@@ -446,7 +446,7 @@ enderio.advancement.challenge.1_all_simple_get.name=Начало в начале
 enderio.advancement.challenge.1_all_simple_get.desc=Создайте все простые механизмы
 
 enderio.advancement.sagmill.1_sagmill_get.name=Полуавтоматическое дробление
-enderio.advancement.sagmill.1_sagmill_get.desc=Создаайте простой дроббитель
+enderio.advancement.sagmill.1_sagmill_get.desc=Создайте простой дробитель
 
 enderio.advancement.sagmill.2_sagmill_flowers.name=Уничтожить что-то красивое
 enderio.advancement.sagmill.2_sagmill_flowers.desc=Измельчить некоторые растительные вещества

@@ -73,7 +73,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Yeta Wrench" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="ELECTRICAL_STEEL" /><item name="" /><item name="ELECTRICAL_STEEL" />
+        <item name="ELECTRICAL_STEEL" /><item /><item name="ELECTRICAL_STEEL" />
         <item /><item name="GEAR_STONE" /><item />
         <item /><item name="ELECTRICAL_STEEL" /><item />
       </grid>

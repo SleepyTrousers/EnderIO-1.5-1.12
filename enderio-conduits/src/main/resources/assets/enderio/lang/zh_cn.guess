@@ -124,6 +124,8 @@ enderio.gui.cap_bank.output_mode=输出模式
 #                            en: Output
 enderio.gui.cap_bank.output_rs=输出红石控制
 #                          en: Output Redstone Mode
+enderio.gui.conduit.network.unloaded=
+#                                en: Conduit partially in unloaded chunk(s)
 enderio.gui.conduit_bundle_full=
 #                           en: Bundle Full
 enderio.gui.conduit_channel=频道

@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.ChatUtil;
 
 import crazypants.enderio.base.conduit.IConduitBundle;
-import crazypants.enderio.base.power.ILegacyPoweredTile;
+import crazypants.enderio.base.power.forge.tile.ILegacyPoweredTile;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;

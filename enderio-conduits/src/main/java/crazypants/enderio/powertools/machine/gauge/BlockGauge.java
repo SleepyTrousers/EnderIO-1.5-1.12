@@ -13,7 +13,6 @@ import com.enderio.core.common.util.NNList.Callback;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.conduit.IConduitBundle;
-import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
@@ -34,6 +33,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -87,7 +87,7 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
 
   @Override
   public @Nonnull AxisAlignedBB getBoundingBox(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
-    Map<EnumFacing, IPowerInterface> sides = getDisplays(world, pos);
+    Map<EnumFacing, IEnergyStorage> sides = getDisplays(world, pos);
     if (sides.isEmpty()) {
       return FULL_BLOCK_AABB;
     }
@@ -122,20 +122,20 @@ public class BlockGauge extends BlockEio<TileGauge> implements IResourceTooltipP
     return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
   }
 
-  protected static @Nonnull Map<EnumFacing, IPowerInterface> getDisplays(@Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
-    Map<EnumFacing, IPowerInterface> sides = new EnumMap<EnumFacing, IPowerInterface>(EnumFacing.class);
+  protected static @Nonnull Map<EnumFacing, IEnergyStorage> getDisplays(@Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+    Map<EnumFacing, IEnergyStorage> sides = new EnumMap<>(EnumFacing.class);
     NNList.FACING_HORIZONTAL.apply(new Callback<EnumFacing>() {
       @Override
       public void apply(@Nonnull EnumFacing face) {
         BlockPos neighbor = pos.offset(face);
         TileEntity tile = getAnyTileEntitySafe(world, neighbor);
         if (!(tile instanceof TileCapBank) && !(tile instanceof IConduitBundle)) {
-          IPowerInterface eh = PowerHandlerUtil.getPowerInterface(tile, face.getOpposite());
+          IEnergyStorage eh = PowerHandlerUtil.getCapability(tile, face.getOpposite());
           if (eh != null) {
             sides.put(face, eh);
             return;
           }
-          eh = PowerHandlerUtil.getPowerInterface(tile, EnumFacing.DOWN);
+          eh = PowerHandlerUtil.getCapability(tile, EnumFacing.DOWN);
           if (eh != null) {
             sides.put(face, eh);
             return;

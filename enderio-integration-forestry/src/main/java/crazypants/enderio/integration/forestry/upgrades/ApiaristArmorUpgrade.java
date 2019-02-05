@@ -6,6 +6,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
+import crazypants.enderio.base.item.darksteel.ItemDarkSteelArmor;
 import crazypants.enderio.integration.forestry.EnderIOIntegrationForestry;
 import crazypants.enderio.integration.forestry.ForestryItemStacks;
 import crazypants.enderio.integration.forestry.config.ForestryConfig;
@@ -40,7 +41,7 @@ public class ApiaristArmorUpgrade extends AbstractUpgrade {
 
   private final @Nonnull EntityEquipmentSlot slot;
 
-  public ApiaristArmorUpgrade(@Nonnull EntityEquipmentSlot slot) {
+  protected ApiaristArmorUpgrade(@Nonnull EntityEquipmentSlot slot) {
     super(EnderIOIntegrationForestry.MODID, UPGRADE_NAME + slot.getName(), "enderio.darksteel.upgrade.apiarist_armor." + slot.getName(), getApiaristArmor(slot),
         ForestryConfig.apiaristArmorCost);
     this.slot = slot;
@@ -48,7 +49,8 @@ public class ApiaristArmorUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
-    return item.isForSlot(slot) && item.hasUpgradeCallbacks(this) && Prep.isValid(getUpgradeItem()) && !hasUpgrade(stack, item);
+    return item.isForSlot(slot) && (item instanceof ItemDarkSteelArmor || item.hasUpgradeCallbacks(this)) && Prep.isValid(getUpgradeItem())
+        && !hasUpgrade(stack, item);
   }
 
   @Override

@@ -151,9 +151,11 @@ public class DarkSteelRecipeManager {
     }
   }
 
+  public static boolean skipUpgradeTooltips = false;
+
   public static void addAdvancedTooltipEntries(@Nonnull ItemStack itemstack, EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack.getUnlocalizedName());
-    if (itemstack.getItem() instanceof IDarkSteelItem) {
+    if (itemstack.getItem() instanceof IDarkSteelItem && !skipUpgradeTooltips) {
       List<IDarkSteelUpgrade> applyableUpgrades = new ArrayList<IDarkSteelUpgrade>();
       for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
         if (upgrade instanceof IAdvancedTooltipProvider && upgrade.hasUpgrade(itemstack, (IDarkSteelItem) itemstack.getItem())) {
@@ -196,7 +198,7 @@ public class DarkSteelRecipeManager {
           if (upgrade.canAddToItem(inputStack, (IDarkSteelItem) inputStack.getItem())) {
             ItemStack outputStack = inputStack.copy();
             upgrade.addToItem(outputStack, (IDarkSteelItem) outputStack.getItem());
-            final UpgradePath path = new UpgradePath(inputStack, upgrade.getUpgradeItem(), outputStack);
+            final UpgradePath path = new UpgradePath(upgrade, inputStack, upgrade.getUpgradeItem(), outputStack);
             if (!list.contains(path)) {
               list.add(path);
               output.add(outputStack);
@@ -219,12 +221,14 @@ public class DarkSteelRecipeManager {
 
   public static class UpgradePath {
     private final @Nonnull ItemStack input, upgrade, output;
+    private final @Nonnull IDarkSteelUpgrade dsupgrade;
     private final @Nonnull String id;
 
-    UpgradePath(@Nonnull ItemStack input, @Nonnull ItemStack upgrade, @Nonnull ItemStack output) {
+    UpgradePath(@Nonnull IDarkSteelUpgrade dsupgrade, @Nonnull ItemStack input, @Nonnull ItemStack upgrade, @Nonnull ItemStack output) {
       this.input = input;
       this.upgrade = upgrade;
       this.output = output;
+      this.dsupgrade = dsupgrade;
       this.id = StringUtil.format("%s:%s:%s", input.getItem().getRegistryName(), getUpgradesAsString(input), getUpgradesAsString(output));
     }
 
@@ -238,6 +242,10 @@ public class DarkSteelRecipeManager {
 
     public @Nonnull ItemStack getOutput() {
       return output;
+    }
+
+    public @Nonnull IDarkSteelUpgrade getDsupgrade() {
+      return dsupgrade;
     }
 
     @Override

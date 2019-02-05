@@ -10,6 +10,7 @@ import crazypants.enderio.base.handler.darksteel.PacketDarkSteelSFXPacket;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -172,6 +173,16 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
   default void doMultiplayerSFX(@Nonnull EntityPlayer otherPlayer) {
   }
 
+  /**
+   * See {@link Item#getAttributeModifiers(EntityEquipmentSlot, ItemStack)}. This allows upgrades to also add attribute modifieres to the item.
+   * 
+   * @param slot
+   *          See {@link Item#getAttributeModifiers(EntityEquipmentSlot, ItemStack)}
+   * @param stack
+   *          See {@link Item#getAttributeModifiers(EntityEquipmentSlot, ItemStack)}
+   * @param map
+   *          the pre-populated attribute modifier map
+   */
   default void addAttributeModifiers(@Nonnull EntityEquipmentSlot slot, @Nonnull ItemStack stack, @Nonnull Multimap<String, AttributeModifier> map) {
   }
 

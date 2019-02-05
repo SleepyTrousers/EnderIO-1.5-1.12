@@ -445,7 +445,7 @@ XML editor will display that as tooltips when editing this file.
 
   <recipe name="Alloy: Dark Fused Glass, Upgrade" required="true">
     <alloying energy="1250" exp="0.2">
-      <input name="enderio:block_fused_Glass:0"/>
+      <input name="enderio:block_fused_glass:0"/>
       <input name="dyeBlack" amount="2"/>
       <output name="enderio:block_dark_fused_glass:0"/>
     </alloying>

@@ -7,13 +7,15 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.base.TileEntityEio;
-import crazypants.enderio.base.power.ILegacyPowerReceiver;
 import crazypants.enderio.base.power.PowerHandlerUtil;
+import crazypants.enderio.base.power.forge.tile.ILegacyPoweredTile;
+import crazypants.enderio.base.power.forge.tile.InternalRecieverTileWrapper;
 import crazypants.enderio.base.power.wireless.WirelessChargedLocation;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.util.NBTAction;
@@ -23,11 +25,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 
 import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
 import static crazypants.enderio.machines.init.MachineObject.block_light_node;
 
-public class TileElectricLight extends TileEntityEio implements ILegacyPowerReceiver {
+public class TileElectricLight extends TileEntityEio implements ILegacyPoweredTile.Receiver {
 
   @Store({ NBTAction.SAVE, NBTAction.CLIENT })
   private @Nonnull EnumFacing face = EnumFacing.DOWN;
@@ -377,6 +381,14 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPowerRece
   @Override
   public @Nonnull BlockPos getLocation() {
     return pos;
+  }
+
+  @Override
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
+    if (capability == CapabilityEnergy.ENERGY) {
+      return CapabilityEnergy.ENERGY.cast(InternalRecieverTileWrapper.get(this, facingIn));
+    }
+    return super.getCapability(capability, facingIn);
   }
 
 }

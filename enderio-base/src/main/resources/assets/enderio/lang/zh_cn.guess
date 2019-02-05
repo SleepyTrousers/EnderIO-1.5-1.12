@@ -2,6 +2,12 @@
 #
 # Edit the .lang file instead. You may have to create it first.
 #
+attribute.name.enderio.aoe.xyz=
+#                          en: Mining Volume
+attribute.name.enderio.aoe.xz=
+#                         en: Mining Range
+attribute.name.enderio.aoe.y=
+#                        en: Mining Depth
 container.chestDouble=
 #                 en: Double Chest
 description.enchantment.enderio.repellent=
@@ -98,19 +104,10 @@ enderio.color.white=白
 #               en: White
 enderio.color.yellow=黄
 #                en: Yellow
-enderio.config.advanced.tooltip=为那些觉得设置不够多的人而准备.
-#                           en: For those who can't have enough configs.
-enderio.config.advanced=高级设置
-#                   en: Advanced Settings
 enderio.config.aesthetic.tooltip=哦,啊哼,漂亮.
 #                            en: Oooh, ahhh, pretty.
 enderio.config.aesthetic=外观设置
 #                    en: Aesthetic Settings
-enderio.config.anchor.tooltip=船锚一边去!
-#                         en: Anchors away!
-enderio.config.anchor=锚设置
-#                 OR: 旅行锚
-#                 en: Travel Anchor
 enderio.config.blocks.charges.concussion=震荡炸药
 #                                    en: Concussion Charge
 enderio.config.blocks.charges.confusion=
@@ -140,26 +137,58 @@ enderio.config.fluid.tooltip=纯净的液态能量!
 #                        en: Pure liquid energy!
 enderio.config.fluid=流体设置
 #                en: Fluids
-enderio.config.hoes=
-#               en: Hoes for Farming Station
-enderio.config.item.tooltip=如果你不喜欢我的一些惊奇的物品 :(
-#                       en: If you don't like some of my amazing items :(
-enderio.config.item=物品授权
-#               en: Item Settings
+enderio.config.items.darksteel.armor=
+#                                en: Armor
 enderio.config.items.darksteel.axe=
 #                              en: Axe
+enderio.config.items.darksteel.bow=
+#                              en: Bow
 enderio.config.items.darksteel.coldfire=
 #                                   en: Cold Fire Igniter
+enderio.config.items.darksteel.crook=
+#                                en: Crook
 enderio.config.items.darksteel.pickaxe=
 #                                  en: Pickaxe
+enderio.config.items.darksteel.shears=
+#                                 en: Shears
 enderio.config.items.darksteel.sword=终结之剑
 #                                en: The Ender
 enderio.config.items.darksteel.tooltip=这不是一般的钢铁, 这是§o深色§r§e 钢铁.
 #                                  en: It's not just regular steel, it's §odark§r§e steel.
+enderio.config.items.darksteel.treetap=
+#                                  en: Treetap
+enderio.config.items.darksteel.upgrades.elytra=
+#                                          en: Chestplate: Elytra Upgrade
+enderio.config.items.darksteel.upgrades.empowered=
+#                                             en: Empowered Upgrades
 enderio.config.items.darksteel.upgrades.explosive=
-#                                             en: Explosive Upgrade
+#                                             en: Pickaxe: Explosive Upgrade
+enderio.config.items.darksteel.upgrades.glider=
+#                                          en: Chestplate: Glider Upgrade
+enderio.config.items.darksteel.upgrades.gogglesofrevealing=
+#                                                      en: Helmet: Goggles of Revealing Upgrade
+enderio.config.items.darksteel.upgrades.hoe=
+#                                       en: Axe: Fork (Hoe) Upgrade
+enderio.config.items.darksteel.upgrades.jump=
+#                                        en: Boots: Jump Upgrade
+enderio.config.items.darksteel.upgrades.nightvision=
+#                                               en: Helmet: Night Vision Upgrade
+enderio.config.items.darksteel.upgrades.padding=
+#                                           en: Helmet: Padding Upgrade
+enderio.config.items.darksteel.upgrades.soundlocator=
+#                                                en: Helmet: Sound Locator Upgrade
 enderio.config.items.darksteel.upgrades.speed=
-#                                         en: Speed Upgrade
+#                                         en: Leggings: Speed Upgrade
+enderio.config.items.darksteel.upgrades.spoon=
+#                                         en: Pickaxe: Spoon (Shovel) Upgrade
+enderio.config.items.darksteel.upgrades.swim=
+#                                        en: Leggings: Swimming Upgrade
+enderio.config.items.darksteel.upgrades.thaumaturgerobes=
+#                                                    en: Armor: Thaumaturge's Robes Upgrades
+enderio.config.items.darksteel.upgrades.theoneprobe=
+#                                               en: Helmet: The One Probe Upgrade
+enderio.config.items.darksteel.upgrades.travel=
+#                                          en: Pickaxe/Sword: Travel Upgrade
 enderio.config.items.darksteel.upgrades=
 #                                   en: Dark Steel Upgrades
 enderio.config.items.darksteel=
@@ -178,10 +207,6 @@ enderio.config.personal.tooltip=我绝不会告诉任何人, 我发誓.
 #                           en: I won't tell anyone, I promise.
 enderio.config.personal=个人设置
 #                   en: Personal Settings
-enderio.config.power.tooltip=太多数字要修改了...
-#                        en: So many numbers to change...
-enderio.config.power=能量设置
-#                en: Power Settings
 enderio.config.recipe.alloy=
 #                       en: Alloy Smelter Recipes
 enderio.config.recipe.painter=
@@ -196,11 +221,6 @@ enderio.config.soulbinder=
 #                     en: Soulbinder Recipes
 enderio.config.soulvial=灵魂瓶
 #                   en: Soul Vial
-enderio.config.staff.tooltip=小心点,传送时别撞到脸.
-#                        en: Be careful with that thing, you'll teleport your face off.
-enderio.config.staff=权杖设置
-#                OR: 旅行权杖
-#                en: Staff of Traveling
 enderio.config.title=末影接口配置文件
 #                en: Ender IO Configuration
 enderio.config.top=
@@ -211,6 +231,18 @@ enderio.coolant.tooltip.degreesPerBucket=度每桶
 #                                    en: %s°C per bucket
 enderio.coolant.tooltip.heading=冷却剂
 #                           en: Coolant
+enderio.darksteel.upgrade.carpet.name=
+#                                 en: Carpeting
+enderio.darksteel.upgrade.carpet.tooltip.detailed.line1=
+#                                                   en: Flattens the explosive force into a carpet.
+enderio.darksteel.upgrade.depth.name=
+#                                en: Depth
+enderio.darksteel.upgrade.depth.tooltip.detailed.line1=
+#                                                  en: Directs the explosive force away from the player.
+enderio.darksteel.upgrade.direct.name=
+#                                 en: Direct
+enderio.darksteel.upgrade.direct.tooltip.detailed.line1=
+#                                                   en: Teleports mined things directly into your inventory
 enderio.darksteel.upgrade.elytra.disabled=禁用鞘翅
 #                                     en: Elytra Disabled
 enderio.darksteel.upgrade.elytra.enabled=启用鞘翅
@@ -297,6 +329,10 @@ enderio.darksteel.upgrade.nightVision.enabled=夜视已启用
 #                                         en: Night Vision Enabled
 enderio.darksteel.upgrade.nightVision.name=夜视
 #                                      en: Night Vision
+enderio.darksteel.upgrade.padding.name=
+#                                  en: Padding
+enderio.darksteel.upgrade.padding.tooltip.detailed.line1=
+#                                                    en: Muffles nearby sounds
 enderio.darksteel.upgrade.sound.disabled=声波定位禁用
 #                                    en: Sound Locator Disabled
 enderio.darksteel.upgrade.sound.enabled=声波定位激活
@@ -343,12 +379,36 @@ enderio.darksteel.upgrade.thaumaturge_robes.legs.name=
 #                                                 en: Thaumaturge's Leggings
 enderio.darksteel.upgrade.thaumaturge_robes.legs.tooltip.detailed.line1=
 #                                                                   en: Vis Discount: 3%
-enderio.darksteel.upgrade.tnt.name=
-#                              en: Explosive
-enderio.darksteel.upgrade.tnt.tooltip.detailed.line1=
-#                                                en: Adds explosive power to the pickaxe, damaging surrounding blocks while mining.
-enderio.darksteel.upgrade.tnt.tooltip.detailed.line2=
-#                                                en: For problems that look like nails.
+enderio.darksteel.upgrade.tnt.0.name=
+#                                en: Explosive I
+enderio.darksteel.upgrade.tnt.0.tooltip.detailed.line1=
+#                                                  en: Adds explosive power to the pickaxe, damaging surrounding blocks while mining.
+enderio.darksteel.upgrade.tnt.0.tooltip.detailed.line2=
+#                                                  en: For problems that look like nails.
+enderio.darksteel.upgrade.tnt.1.name=
+#                                en: Explosive II
+enderio.darksteel.upgrade.tnt.1.tooltip.detailed.line1=
+#                                                  en: Adds more explosive power to the pickaxe, damaging surrounding blocks while mining.
+enderio.darksteel.upgrade.tnt.1.tooltip.detailed.line2=
+#                                                  en: For problems that look like nails.
+enderio.darksteel.upgrade.tnt.2.name=
+#                                en: Explosive III
+enderio.darksteel.upgrade.tnt.2.tooltip.detailed.line1=
+#                                                  en: Adds even more explosive power to the pickaxe, damaging surrounding blocks while mining.
+enderio.darksteel.upgrade.tnt.2.tooltip.detailed.line2=
+#                                                  en: For problems that look like nails.
+enderio.darksteel.upgrade.tnt.3.name=
+#                                en: Explosive IV
+enderio.darksteel.upgrade.tnt.3.tooltip.detailed.line1=
+#                                                  en: Adds ridiculous explosive power to the pickaxe, damaging surrounding blocks while mining.
+enderio.darksteel.upgrade.tnt.3.tooltip.detailed.line2=
+#                                                  en: For problems that look like combs.
+enderio.darksteel.upgrade.tnt.4.name=
+#                                en: Explosive V
+enderio.darksteel.upgrade.tnt.4.tooltip.detailed.line1=
+#                                                  en: Adds ludicrous explosive power to the pickaxe, damaging surrounding blocks while mining.
+enderio.darksteel.upgrade.tnt.4.tooltip.detailed.line2=
+#                                                  en: https://youtu.be/ygE01sOhzz0
 enderio.darksteel.upgrade.top.name=检测器No.1
 #                              en: The One Probe
 enderio.darksteel.upgrade.travel.name=旅行
@@ -394,6 +454,8 @@ enderio.fluid.millibucket.format.tickper=
 #                                    en: %s t/mB
 enderio.fluid.millibucket.format=
 #                            en: %s mB
+enderio.format.percent_efficiency=
+#                             en: %s%% efficiency
 enderio.fuel.tooltip.burnTime=燃烧时间 {0,number}
 #                         en: Burn time %s ticks
 enderio.fuel.tooltip.generates=
@@ -437,6 +499,10 @@ enderio.gui.conduit.io_mode.output=加入物品过滤
 #                              en: Insert
 enderio.gui.edit_item_filter=
 #                        en: Edit Filter Settings
+enderio.gui.enchantment_filter_big=
+#                              en: Big Enchantment Filter
+enderio.gui.enchantment_filter_normal=
+#                                 en: Enchantment Filter
 enderio.gui.existing.item_filter.clear2=
 #                                   en: Clear the snapshot
 enderio.gui.existing.item_filter.clear=清空
@@ -593,6 +659,10 @@ enderio.gui.redstone_filter.xnor=
 #                            en: Redstone XNOR Filter
 enderio.gui.redstone_filter.xor=
 #                           en: Redstone XOR Filter
+enderio.gui.soul_filter_big=
+#                       en: Big Soul Filter
+enderio.gui.soul_filter_normal=
+#                          en: Soul Filter
 enderio.gui.species_item_filter=
 #                           en: Species Item Filter
 enderio.gui.tooltip.redstoneControlMode.ignore=始终工作
@@ -756,6 +826,14 @@ enderio.machine.tooltip.upgrade.tooltip.detailed.line1=增加机器能量存储�
 #                                                  en: Increases energy storage and speed / range of machines
 enderio.machine.tooltip.upgrade=机器升级
 #                           en: Machine Upgrade
+enderio.network.autosync.connected=
+#                              en: §4§lThis value is determined by the server!\u000a§e%s
+enderio.network.autosync.offline=
+#                            en: %s\u000a§oThis value must be kept in sync with the server!
+enderio.network.bad_config=
+#                      en: ERROR: The Ender IO config value "%s.%s" has different values on the server you are connecting to than in your local installation. As this value influences how the game is started up, it is now too late to use the server-side value. Continuing is not possible. To fix this, manually synchronize the server and client configuration files for Ender IO, or set this value to "%s" manually.
+enderio.network.manusync=
+#                    en: %s\u000a§oThis value will be determined by the server.
 enderio.owlegg.no_owl=
 #                 en: No Owl found (install Ender IO Zoo!)
 enderio.power.format.details=
@@ -780,6 +858,8 @@ enderio.soulvial.owned.denied=
 #                         en: Permission §cdenied§r - only owners may pick up owned animals
 enderio.soulvial.player.denied=
 #                          en: §cNo!$r How would you feel if you had to play this game from inside a bottle?
+enderio.temperature.format.deg_c=
+#                            en: %s °C
 enderio.tooltip.anvilupgrades=铁砧升级:
 #                         en: Anvil Upgrades:
 enderio.tooltip.inventory_charger.disabled=
@@ -794,6 +874,16 @@ enderio.top.action.header.pre=
 #                         en: §e
 enderio.top.action.none=无
 #                   en: §4nothing
+enderio.top.channel.none=
+#                    en: §7None
+enderio.top.channel.recv.post=
+#                         en: 
+enderio.top.channel.recv.pre=
+#                        en: §eRecv: §f
+enderio.top.channel.send.post=
+#                         en: 
+enderio.top.channel.send.pre=
+#                        en: §eSend: §f
 enderio.top.machine.active=启用
 #                      en: active
 enderio.top.machine.idle=闲置
@@ -917,6 +1007,8 @@ item.item_advanced_item_filter.tooltip.detailed.line1=
 #                                                 en: Filters items with advanced configuration options
 item.item_alloy_ball_conductive_iron.name=
 #                                     en: Conductive Iron Grinding Ball
+item.item_alloy_ball_construction_alloy.name=
+#                                        en: Iron Alloy Grinding Ball
 item.item_alloy_ball_dark_steel.name=
 #                                en: Dark Steel Grinding Ball
 item.item_alloy_ball_electrical_steel.name=
@@ -933,8 +1025,54 @@ item.item_alloy_ball_soularium.name=
 #                               en: Soularium Grinding Ball
 item.item_alloy_ball_vibrant_alloy.name=
 #                                   en: Vibrant Alloy Grinding Ball
+item.item_alloy_endergy_ball_crude_steel.name=
+#                                         en: Crude Steel Grinding Ball
+item.item_alloy_endergy_ball_crystalline_alloy.name=
+#                                               en: Crystalline Alloy Grinding Ball
+item.item_alloy_endergy_ball_crystalline_pink_slime.name=
+#                                                    en: Crystalline Pink Slime Grinding Ball
+item.item_alloy_endergy_ball_energetic_silver.name=
+#                                              en: Energetic Silver Grinding Ball
+item.item_alloy_endergy_ball_melodic_alloy.name=
+#                                           en: Melodic Alloy Grinding Ball
+item.item_alloy_endergy_ball_stellar_alloy.name=
+#                                           en: Stellar Alloy Grinding Ball
+item.item_alloy_endergy_ball_vivid_alloy.name=
+#                                         en: Vivid Alloy Grinding Ball
+item.item_alloy_endergy_ingot_crude_steel.name=
+#                                          en: Crude Steel Ingot
+item.item_alloy_endergy_ingot_crystalline_alloy.name=
+#                                                en: Crystalline Alloy Ingot
+item.item_alloy_endergy_ingot_crystalline_pink_slime.name=
+#                                                     en: Crystalline Pink Slime Ingot
+item.item_alloy_endergy_ingot_crystalline_pink_slime.tooltip.detailed.line1=
+#                                                                       en: So this is what happens when you leave jello in the freezer too long...
+item.item_alloy_endergy_ingot_energetic_silver.name=
+#                                               en: Energetic Silver Ingot
+item.item_alloy_endergy_ingot_melodic_alloy.name=
+#                                            en: Melodic Alloy Ingot
+item.item_alloy_endergy_ingot_stellar_alloy.name=
+#                                            en: Stellar Alloy Ingot
+item.item_alloy_endergy_ingot_vivid_alloy.name=
+#                                          en: Vivid Alloy Ingot
+item.item_alloy_endergy_nugget_crude_steel.name=
+#                                           en: Crude Steel Nugget
+item.item_alloy_endergy_nugget_crystalline_alloy.name=
+#                                                 en: Crystalline Alloy Nugget
+item.item_alloy_endergy_nugget_crystalline_pink_slime.name=
+#                                                      en: Crystalline Pink Slime Nugget
+item.item_alloy_endergy_nugget_energetic_silver.name=
+#                                                en: Energetic Silver Nugget
+item.item_alloy_endergy_nugget_melodic_alloy.name=
+#                                             en: Melodic Alloy Nugget
+item.item_alloy_endergy_nugget_stellar_alloy.name=
+#                                             en: Stellar Alloy Nugget
+item.item_alloy_endergy_nugget_vivid_alloy.name=
+#                                           en: Vivid Alloy Nugget
 item.item_alloy_ingot_conductive_iron.name=
 #                                      en: Conductive Iron Ingot
+item.item_alloy_ingot_construction_alloy.name=
+#                                         en: Iron Alloy Ingot
 item.item_alloy_ingot_dark_steel.name=
 #                                 en: Dark Steel Ingot
 item.item_alloy_ingot_electrical_steel.name=
@@ -953,6 +1091,8 @@ item.item_alloy_ingot_vibrant_alloy.name=
 #                                    en: Vibrant Alloy Ingot
 item.item_alloy_nugget_conductive_iron.name=
 #                                       en: Conductive Iron Nugget
+item.item_alloy_nugget_construction_alloy.name=
+#                                          en: Iron Alloy Nugget
 item.item_alloy_nugget_dark_steel.name=
 #                                  en: Dark Steel Nugget
 item.item_alloy_nugget_electrical_steel.name=
@@ -1075,6 +1215,16 @@ item.item_dark_steel_bow.name=
 #                         en: Dark Bow
 item.item_dark_steel_chestplate.name=玄钢胸甲
 #                                en: Dark Plate
+item.item_dark_steel_crook.name=
+#                           en: Dark Crook
+item.item_dark_steel_crook.tooltip.multiHarvest=
+#                                           en: Harvests full crowns when powered (sneak to prevent this)
+item.item_dark_steel_hand.name=
+#                          en: Dark Backhoe
+item.item_dark_steel_hand.tooltip.common.line1=
+#                                          en: Farming Station Use Only!
+item.item_dark_steel_hand.tooltip.detailed.line1=
+#                                            en: Better than a hoe for mechanical use
 item.item_dark_steel_helmet.name=玄钢头盔
 #                            en: Dark Helm
 item.item_dark_steel_leggings.name=玄钢护腿
@@ -1103,6 +1253,10 @@ item.item_dark_steel_treetap.name=
 #                             en: Dark Treetap
 item.item_dark_steel_treetap.tooltip.common.line1=
 #                                             en: Farming Station Use Only!
+item.item_enchantment_filter_big.name=
+#                                 en: Big Enchantment Filter
+item.item_enchantment_filter_normal.name=
+#                                    en: Enchantment Filter
 item.item_end_steel_axe.name=
 #                        en: Ender Axe
 item.item_end_steel_boots.name=
@@ -1259,6 +1413,12 @@ item.item_material.grinding_ball_lumium.name=
 #                                        en: Lumium Grinding Ball
 item.item_material.grinding_ball_signalum.name=
 #                                          en: Signalum Grinding Ball
+item.item_material.infinity_goop.name=
+#                                 en: Infinity Reagent
+item.item_material.infinity_goop.tooltip.detailed.line1=
+#                                                   en: An infinitely sticky substance for conducting energy.
+item.item_material.infinity_goop.tooltip.detailed.line2=
+#                                                   en: Randalf got some on him once, and was stuck to his staff of travelling for 6 months...
 item.item_material.infinity_rod.name=
 #                                en: Infinity Rod
 item.item_material.ingot_enderium_base.name=末影锭粗胚
@@ -1441,6 +1601,10 @@ item.item_rod_of_return.tooltip.fluid=%s
 item.item_rod_of_return.tooltip.power=%s
 #                                 OR: 平凡的%s
 #                                 en: %s
+item.item_soul_filter_big.name=
+#                          en: Big Soul Filter
+item.item_soul_filter_normal.name=
+#                             en: Soul Filter
 item.item_soul_vial.name=灵魂瓶
 #                    en: Soul Vial
 item.item_soul_vial.tooltip.color=
@@ -1541,6 +1705,8 @@ subtitles.entity.enderman.teleport=
 #                              en: Something teleports
 tile.block_alloy.conductive_iron.name=导电铁块
 #                                 en: Conductive Iron Block
+tile.block_alloy.construction_alloy.name=
+#                                    en: Iron Alloy Block
 tile.block_alloy.dark_steel.name=玄钢块
 #                            en: Dark Steel Block
 tile.block_alloy.electrical_steel.name=磁钢块
@@ -1559,6 +1725,22 @@ tile.block_alloy.soularium.name=魂金块
 #                           en: Soularium Block
 tile.block_alloy.vibrant_alloy.name=脉冲合金块
 #                               en: Vibrant Alloy Block
+tile.block_alloy_endergy.crude_steel.name=
+#                                     en: Crude Steel Block
+tile.block_alloy_endergy.crystalline_alloy.name=
+#                                           en: Crystalline Alloy Block
+tile.block_alloy_endergy.crystalline_pink_slime.name=
+#                                                en: Crystalline Pink Slime Block
+tile.block_alloy_endergy.energetic_silver.name=
+#                                          en: Energetic Silver Block
+tile.block_alloy_endergy.melodic_alloy.name=
+#                                       en: Melodic Alloy Block
+tile.block_alloy_endergy.name=
+#                         en: Endergy Alloy Block
+tile.block_alloy_endergy.stellar_alloy.name=
+#                                       en: Stellar Alloy Block
+tile.block_alloy_endergy.vivid_alloy.name=
+#                                     en: Vivid Alloy Block
 tile.block_cold_fire.name=
 #                     en: Cold Fire
 tile.block_concussion_charge.name=震荡炸药
@@ -1725,6 +1907,18 @@ tile.block_industrial_insulation.name=
 #                                 en: Industrial Insulation
 tile.block_industrial_insulation.tooltip.common.line1=
 #                                                 en: Absorbs nearby fluids like a sponge
+tile.block_infinity_0.name=
+#                      en: Infinity Dust Block
+tile.block_infinity_0.tooltip.common.line1=
+#                                      en: Not quite solid
+tile.block_infinity_1.name=
+#                      en: Compressed Infinity Dust Block
+tile.block_infinity_1.tooltip.common.line1=
+#                                      en: Not quite solid
+tile.block_infinity_2.name=
+#                      en: Double Compressed Infinity Dust Block
+tile.block_infinity_2.tooltip.common.line1=
+#                                      en: Not quite solid
 tile.block_infinity_fog.name=
 #                        en: Infinity Dust
 tile.block_infinity_fog.tooltip.common.line1=
@@ -1857,6 +2051,10 @@ tile.block_painted_redstone.name=喷涂红石
 #                            en: Painted Redstone
 tile.block_painted_redstone_solid.name=喷涂红石
 #                                  en: Painted Redstone
+tile.block_painted_reinforced_obsidian.name=
+#                                       en: Painted Reinforced Obsidian
+tile.block_painted_reinforced_obsidian.tooltip.common.line1=能抵挡凋零
+#                                                       en: Wither Proof
 tile.block_painted_slab.name=喷涂台阶
 #                        en: Painted Slab
 tile.block_painted_stair.name=喷涂楼梯

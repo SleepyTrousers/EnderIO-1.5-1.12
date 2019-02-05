@@ -13,6 +13,7 @@ import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.collect.Lists;
 
@@ -100,7 +101,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   private boolean activeDirty = false;
 
-  private boolean connectionsDirty = false;
+  private boolean connectionsDirty = false; // TODO: can this be merged with super.connectionsDirty?
 
   private int signalIdBase = 0;
 
@@ -142,7 +143,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Override
   public void updateNetwork() {
     World world = getBundle().getEntity().getWorld();
-    if (world != null) {
+    if (NullHelper.untrust(world) != null) {
       updateNetwork(world);
     }
   }
@@ -247,8 +248,9 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
                 if (network != null) {
                   network.destroyNetwork();
                 }
-                if (neighbour.getNetwork() != null) {
-                  neighbour.getNetwork().destroyNetwork();
+                final RedstoneConduitNetwork neighbourNetwork = neighbour.getNetwork();
+                if (neighbourNetwork != null) {
+                  neighbourNetwork.destroyNetwork();
                 }
                 neighbour.conduitConnectionRemoved(connDir.getOpposite());
                 conduitConnectionRemoved(connDir);
@@ -641,7 +643,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       byte[] modes = new byte[6];
       int i = 0;
       for (EnumFacing dir : EnumFacing.VALUES) {
-        boolean isStrong = isOutputStrong(dir);
+        boolean isStrong = dir != null && isOutputStrong(dir);
         if (isStrong) {
           modes[i] = 1;
         } else {
@@ -700,7 +702,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
     forcedConnections.clear();
     byte[] modes = nbtRoot.getByteArray("forcedConnections");
-    if (modes != null && modes.length == 6) {
+    if (modes.length == 6) {
       int i = 0;
       for (EnumFacing dir : EnumFacing.VALUES) {
         if (modes[i] >= 0) {
@@ -712,7 +714,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
     inputSignalColors.clear();
     byte[] cols = nbtRoot.getByteArray("signalColors");
-    if (cols != null && cols.length == 6) {
+    if (cols.length == 6) {
       int i = 0;
       for (EnumFacing dir : EnumFacing.VALUES) {
         if (cols[i] >= 0) {
@@ -724,7 +726,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
     outputSignalColors.clear();
     byte[] outCols = nbtRoot.getByteArray("outputSignalColors");
-    if (outCols != null && outCols.length == 6) {
+    if (outCols.length == 6) {
       int i = 0;
       for (EnumFacing dir : EnumFacing.VALUES) {
         if (outCols[i] >= 0) {
@@ -736,7 +738,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
     signalStrengths.clear();
     byte[] strengths = nbtRoot.getByteArray("signalStrengths");
-    if (strengths != null && strengths.length == 6) {
+    if (strengths.length == 6) {
       int i = 0;
       for (EnumFacing dir : EnumFacing.VALUES) {
         if (strengths[i] > 0) {

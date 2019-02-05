@@ -1169,4 +1169,85 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
+  <recipe name="Infinity Dust Block 1">
+    <crafting>
+      <grid>
+        <item name="dustBedrock"/><item name="dustBedrock"/><item name="dustBedrock"/>
+        <item name="dustBedrock"/><item name="dustBedrock"/><item name="dustBedrock"/>
+        <item name="dustBedrock"/><item name="dustBedrock"/><item name="dustBedrock"/>
+      </grid>
+      <output name="compressed1xDustBedrock"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Infinity Dust Block 1, Uncrafting">
+    <crafting>
+      <shapeless><item name="compressed1xDustBedrock"/></shapeless>
+      <output name="dustBedrock" amount="9"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Infinity Dust Block 1, Sagmilling">
+    <sagmilling energy="10000" bonus="chance_only">
+      <input name="compressed1xDustBedrock"/>
+      <output name="dustBedrock" amount="9"/>
+      <output name="enderio:block_infinity_fog" amount="1" chance="0.05"/>
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Infinity Dust Block 2">
+    <crafting>
+      <grid>
+        <item name="compressed1xDustBedrock"/><item name="compressed1xDustBedrock"/><item name="compressed1xDustBedrock"/>
+        <item name="compressed1xDustBedrock"/><item name="compressed1xDustBedrock"/><item name="compressed1xDustBedrock"/>
+        <item name="compressed1xDustBedrock"/><item name="compressed1xDustBedrock"/><item name="compressed1xDustBedrock"/>
+      </grid>
+      <output name="compressed2xDustBedrock"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Infinity Dust Block 2, Uncrafting">
+    <crafting>
+      <shapeless><item name="compressed2xDustBedrock"/></shapeless>
+      <output name="compressed1xDustBedrock" amount="9"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Infinity Dust Block 2, Sagmilling">
+    <sagmilling energy="20000" bonus="chance_only">
+      <input name="compressed2xDustBedrock"/>
+      <output name="compressed1xDustBedrock" amount="9"/>
+      <output name="dustBedrock" amount="1" chance="0.05"/>
+      <output name="enderio:block_infinity_fog" amount="1" chance="0.1"/>
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Infinity Dust Block 3">
+    <crafting>
+      <grid>
+        <item name="compressed2xDustBedrock"/><item name="compressed2xDustBedrock"/><item name="compressed2xDustBedrock"/>
+        <item name="compressed2xDustBedrock"/><item name="compressed2xDustBedrock"/><item name="compressed2xDustBedrock"/>
+        <item name="compressed2xDustBedrock"/><item name="compressed2xDustBedrock"/><item name="compressed2xDustBedrock"/>
+      </grid>
+      <output name="compressed3xDustBedrock"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Infinity Dust Block 3, Uncrafting">
+    <crafting>
+      <shapeless><item name="compressed3xDustBedrock"/></shapeless>
+      <output name="compressed2xDustBedrock" amount="9"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Infinity Dust Block 3, Sagmilling">
+    <sagmilling energy="30000" bonus="chance_only">
+      <input name="compressed3xDustBedrock"/>
+      <output name="compressed2xDustBedrock" amount="9"/>
+      <output name="compressed1xDustBedrock" amount="1" chance="0.05"/>
+      <output name="dustBedrock" amount="1" chance="0.1"/>
+      <output name="enderio:block_infinity_fog" amount="1" chance="0.2"/>
+    </sagmilling>
+  </recipe>
+
 </enderio:recipes>

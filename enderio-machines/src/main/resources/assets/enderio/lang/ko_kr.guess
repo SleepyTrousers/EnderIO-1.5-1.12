@@ -76,12 +76,16 @@ enderio.block_powered_spawner.note.areaFull=
 #                                       en: Too many mobs
 enderio.block_powered_spawner.note.badSoul=
 #                                      en: Bad soul, cannot create entity
+enderio.block_powered_spawner.note.denied=
+#                                     en: Denied by another mod
 enderio.block_powered_spawner.note.noLocationAtAll=
 #                                              en: No viable space
 enderio.block_powered_spawner.note.noLocationFound=
 #                                              en: No space found
 enderio.block_powered_spawner.note.noPlayer=
 #                                       en: No player in range
+enderio.block_powered_spawner.tooltip.cost=
+#                                      en: Cost Multiplier: %sx
 enderio.block_powered_spawner.tooltip.empty=비어 있음
 #                                       en: Empty
 enderio.block_solar_panel.tooltip.maxoutput=
@@ -178,6 +182,8 @@ enderio.gui.crafter.buffering_single=
 #                                en: Buffering Single Items
 enderio.gui.crafter.buffering_stack=
 #                               en: Buffering Item Stacks
+enderio.gui.crafter.use_per_craft=
+#                             en: Per Craft: %s
 enderio.gui.farm.baseUse=
 #                    en: Base Use: %s
 enderio.gui.impulse_hopper.locked.tooltip=
@@ -190,6 +196,8 @@ enderio.gui.killerJoe.fluid.minReq=
 #                              en: %s Required for activation
 enderio.gui.killerJoe.fuelTank=영양 증류액 저장고
 #                          en: Nutrient Tank
+enderio.gui.lavagen.heat=
+#                    en: Heat
 enderio.gui.obelisk.no_vials=
 #                        en: Need Soul Vials!
 enderio.gui.powered_spawner.capture=
@@ -372,6 +380,16 @@ enderio.jei.grinding_ball.main.line1=
 #                                en: Adds a chance to double all outputs
 enderio.jei.grinding_ball.power.line1=
 #                                 en: Affects the power used per operation, speeding up or slowing down the machine
+enderio.jei.lavagen.cooling=
+#                       en: Cooling is optional
+enderio.jei.lavagen.heat=
+#                    en: decreases with heat buildup
+enderio.jei.recipe=
+#              en: Recipe: "%s"
+enderio.jei.sagmill.nomains=
+#                       en: bonus disabled by recipe; 100
+enderio.jei.sagmill.outputchance.ball=
+#                                 en: %s (modified by grinding ball)
 enderio.jei.sagmill.outputchance=
 #                            en: Chance: {0,choice,0#'<1'|0<{0,number}}%
 enderio.jei.solar_panel.output=
@@ -424,8 +442,8 @@ tile.block_alloy_smelter.tooltip.detailed.line3=
 #                                           en: Upgrade with capacitors to increase speed and energy storage
 tile.block_attractor_obelisk.name=매혹의 오벨리스크
 #                             en: Attractor Obelisk
-tile.block_attractor_obelisk.tooltip.detailed.line1=몹을 가까이로 끌어당깁니다.
-#                                               en: Draws mobs towards it
+tile.block_attractor_obelisk.tooltip.detailed.line1=
+#                                               en: Entices mobs to walk to it
 tile.block_attractor_obelisk.tooltip.detailed.line2=
 #                                               en: Specify the mobs to effect by placing their souls within the device
 tile.block_aversion_obelisk.name=혐오의 오벨리스크
@@ -548,15 +566,23 @@ tile.block_killer_joe.name=킬러 조
 #                      en: Killer Joe
 tile.block_killer_joe.tooltip.detailed.line1=
 #                                        en: Attacks nearby creatures when supplied with a sword and Nutrient Distillation
+tile.block_lava_generator.name=
+#                          en: Lava Heat Exchanger
+tile.block_lava_generator.tooltip.detailed.line1=
+#                                            en: Generates energy by cooling down lava.
+tile.block_lava_generator.tooltip.detailed.line2=
+#                                            en: Make sure it doesn't overheat!
+tile.block_lava_generator.tooltip.detailed.line3=
+#                                            en: Can be cooled by placing cold liquids or ice around it.
 tile.block_normal_wireless_charger.name=
 #                                   en: Wireless Charging Antenna
 tile.block_normal_wireless_charger.tooltip.detailed.line1=
 #                                                     en: Charges items in nearby players inventories.
 tile.block_omni_reservoir.name=
 #                          en: Omnivoir
+tile.block_omni_reservoir.tooltip.common.line1=
+#                                          en: A reservoir for any liquid.
 tile.block_omni_reservoir.tooltip.detailed.line1=
-#                                            en: A reservoir for any liquid.
-tile.block_omni_reservoir.tooltip.detailed.line5=
 #                                            en: - Right-Click with a wrench to enable auto-output
 tile.block_painter.name=채색기
 #                   en: Painting Machine
@@ -571,18 +597,18 @@ tile.block_powered_spawner.tooltip.detailed.line2=
 tile.block_relocator_obelisk.name=
 #                             en: Relocator Obelisk
 tile.block_relocator_obelisk.tooltip.detailed.line1=
-#                                               en: Relocates mobs that spawn within its area of effect
+#                                               en: Relocates mobs that spawn within its area of effect towards it
 tile.block_reservoir.name=
 #                     en: Endervoir
+tile.block_reservoir.tooltip.common.line1=
+#                                     en: An infinite reservoir for water.
 tile.block_reservoir.tooltip.detailed.line1=
-#                                       en: An infinite reservoir for water.
-tile.block_reservoir.tooltip.detailed.line2=
 #                                       en: When connected with other Endervoirs:
-tile.block_reservoir.tooltip.detailed.line3=
+tile.block_reservoir.tooltip.detailed.line2=
 #                                       en: - Add two buckets of water for an infinite water source
-tile.block_reservoir.tooltip.detailed.line4=
+tile.block_reservoir.tooltip.detailed.line3=
 #                                       en: - Produces one bucket per second
-tile.block_reservoir.tooltip.detailed.line5=
+tile.block_reservoir.tooltip.detailed.line4=
 #                                       en: - Right-Click with a wrench to enable auto-output
 tile.block_sag_mill.name=반자동 분쇄기
 #                    en: SAG Mill

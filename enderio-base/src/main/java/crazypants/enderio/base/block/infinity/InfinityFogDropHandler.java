@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
-public class InfinityDropHandler {
+public class InfinityFogDropHandler {
 
   @SubscribeEvent
   public static void onDrop(LivingDropsEvent event) {

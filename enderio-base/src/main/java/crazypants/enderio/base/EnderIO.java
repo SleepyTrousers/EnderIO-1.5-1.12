@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import org.apache.commons.lang3.tuple.Triple;
 
 import com.enderio.core.common.Lang;
+import com.enderio.core.common.transform.EnderCorePlugin;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 import com.google.common.collect.ImmutableList;
@@ -37,7 +38,6 @@ import crazypants.enderio.base.integration.chiselsandbits.CABIMC;
 import crazypants.enderio.base.material.recipes.MaterialOredicts;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.PaintSourceValidator;
-import crazypants.enderio.base.power.CapInjectHandler;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
 import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
 import crazypants.enderio.base.recipe.slicensplice.SliceAndSpliceRecipeManager;
@@ -110,11 +110,14 @@ public class EnderIO implements IEnderIOAddon {
   // prePreInit
   static {
     FluidRegistry.enableUniversalBucket();
-    CapInjectHandler.loadClass();
   }
 
   @SuppressWarnings("unused")
   private static Config configHandler;
+  
+  public EnderIO() {
+    EnderCorePlugin.instance().loadMixinSources(this);
+  }
 
   @EventHandler
   public void preInit(@Nonnull FMLPreInitializationEvent event) {

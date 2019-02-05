@@ -15,7 +15,7 @@ import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.machine.gui.IPowerBarData;
 import crazypants.enderio.base.network.PacketHandler;
-import crazypants.enderio.base.power.ILegacyPoweredTile;
+import crazypants.enderio.base.power.forge.tile.ILegacyPoweredTile;
 import crazypants.enderio.util.NbtValue;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;

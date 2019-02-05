@@ -1,4 +1,4 @@
-package crazypants.enderio.base.power;
+package crazypants.enderio.base.power.forge.item;
 
 import javax.annotation.Nonnull;
 

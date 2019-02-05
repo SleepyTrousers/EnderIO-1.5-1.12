@@ -1,12 +1,9 @@
-package crazypants.enderio.base.power;
+package crazypants.enderio.base.power.forge.item;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public abstract class AbstractPoweredItem extends Item implements IInternalPoweredItem {
 
@@ -33,11 +30,6 @@ public abstract class AbstractPoweredItem extends Item implements IInternalPower
   @Override
   public int getMaxOutput(@Nonnull ItemStack container) {
     return maxOutput;
-  }
-
-  @Override
-  public @Nullable ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
-    return IInternalPoweredItem.super.initCapabilities(stack, nbt);
   }
 
 }

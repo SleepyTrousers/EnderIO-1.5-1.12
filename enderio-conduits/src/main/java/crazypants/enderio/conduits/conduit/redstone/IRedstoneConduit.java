@@ -28,6 +28,7 @@ public interface IRedstoneConduit extends IServerConduit, IClientConduit {
 
   int isProvidingWeakPower(@Nonnull EnumFacing toDirection);
 
+  @Nonnull
   Signal getNetworkInput(@Nonnull EnumFacing side);
 
   CombinedSignal getNetworkOutput(@Nonnull EnumFacing side);

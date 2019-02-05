@@ -1,20 +1,17 @@
 package crazypants.enderio.powertools.machine.capbank;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.power.IInternalPoweredItem;
+import crazypants.enderio.base.power.forge.item.IInternalPoweredItem;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.powertools.config.PersonalConfig;
 import crazypants.enderio.powertools.init.PowerToolObject;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class BlockItemCapBank extends ItemBlock implements IOverlayRenderAware, IInternalPoweredItem {
 
@@ -91,11 +88,6 @@ public class BlockItemCapBank extends ItemBlock implements IOverlayRenderAware, 
       energy = CapBankType.getTypeFromMeta(container.getMetadata()).getMaxEnergyStored() / 2;
     }
     IInternalPoweredItem.super.setEnergyStored(container, energy);
-  }
-
-  @Override
-  public @Nullable ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
-    return IInternalPoweredItem.super.initCapabilities(stack, nbt);
   }
 
 }

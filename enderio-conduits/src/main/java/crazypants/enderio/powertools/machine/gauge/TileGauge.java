@@ -6,11 +6,11 @@ import java.util.Map.Entry;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.TileEntityEio;
-import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.powertools.config.GaugeConfig;
 import crazypants.enderio.powertools.network.PacketHandler;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.energy.IEnergyStorage;
 
 @Storable
 public class TileGauge extends TileEntityEio {
@@ -35,8 +35,8 @@ public class TileGauge extends TileEntityEio {
         } else {
           data.clear();
         }
-        for (Entry<EnumFacing, IPowerInterface> side : BlockGauge.getDisplays(world, getPos()).entrySet()) {
-          IPowerInterface eh = side.getValue();
+        for (Entry<EnumFacing, IEnergyStorage> side : BlockGauge.getDisplays(world, getPos()).entrySet()) {
+          IEnergyStorage eh = side.getValue();
           EnumFacing face = side.getKey().getOpposite();
           int energyStored = eh.getEnergyStored();
           int maxEnergyStored = eh.getMaxEnergyStored();

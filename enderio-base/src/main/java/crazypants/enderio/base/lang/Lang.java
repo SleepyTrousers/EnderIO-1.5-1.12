@@ -37,6 +37,7 @@ public enum Lang implements ILang {
   DARK_BOOTS_POWERED("item.item_dark_steel_boots.tooltip"),
   DARK_STEEL_LEVELS1("item.item_dark_steel_armor.tooltip.levelcost.line1"),
   DARK_STEEL_LEVELS2("item.item_dark_steel_armor.tooltip.levelcost.line2"),
+  DARK_STEEL_ANVIL_UPGRADES_ALL(".tooltip.anvilupgrades.all"),
   PRESSURE_PLATE_TUNED("tile.block_painted_pressure_plate.tuned.tooltip"),
   GUI_PERMISSION_DENIED(".gui.permission.denied"),
   BLOCK_BLAST_RESISTANT(".block.tooltip.blastResistant"),
@@ -164,6 +165,8 @@ public enum Lang implements ILang {
   NETWORK_CONFIG_CONNECTED(".network.autosync.connected"),
   NETWORK_CONFIG_OFFLINE(".network.autosync.offline"),
   NETWORK_CONFIG_SYNC(".network.manusync"),
+
+  GUI_NO_ARMOR_INVENTORY(".keybind.inventory.none_equipped"),
 
   ;
 

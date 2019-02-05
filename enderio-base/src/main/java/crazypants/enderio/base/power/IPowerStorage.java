@@ -3,8 +3,13 @@ package crazypants.enderio.base.power;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 
+/**
+ * API for {@link TileEntity}s that store more than {@link Integer#MAX_VALUE} units of energy.
+ *
+ */
 public interface IPowerStorage {
 
   @Nullable

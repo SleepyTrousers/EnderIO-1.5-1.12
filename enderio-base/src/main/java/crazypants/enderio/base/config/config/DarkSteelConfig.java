@@ -169,6 +169,37 @@ public final class DarkSteelConfig {
   public static final IValue<Double> darkSteelBootsJumpModifier = F_JUMP.make("modifier", 1.5, //
       "Jump height modifier applied when jumping with Dark Steel Boots equipped").setRange(1, 3).sync();
 
+  public static final IValueFactoryEIO F_INVENTORY = F_UPGRADES.section(".inventory");
+
+  public static final NNList<IValue<Integer>> inventoryUpgradeCost = new NNList<>( //
+      F_INVENTORY.make("upgradeCost1", 12, "Cost for the inventory I upgrade in levels.").setRange(1, 99).sync(),
+      F_INVENTORY.make("upgradeCost2", 20, "Cost for the inventory II upgrade in levels.").setRange(1, 99).sync(),
+      F_INVENTORY.make("upgradeCost3", 32, "Cost for the inventory III upgrade in levels.").setRange(1, 99).sync());
+
+  public enum COLS {
+    COL1(1),
+    COL3(3),
+    COL5(5),
+    COL7(7),
+    COL9(9);
+    public final int cols;
+
+    private COLS(int cols) {
+      this.cols = cols;
+    }
+  }
+
+  public static final NNList<IValue<COLS>> inventoryUpgradeCols = new NNList<>( //
+      F_INVENTORY.make("columnsFeet", COLS.COL3, "Number of inventory columns the inventory upgrade gives for foot armor.").sync(),
+      F_INVENTORY.make("columnsLegs", COLS.COL5, "Number of inventory columns the inventory upgrade gives for leg armor.").sync(),
+      F_INVENTORY.make("columnsBody", COLS.COL9, "Number of inventory columns the inventory upgrade gives for body armor.").sync(),
+      F_INVENTORY.make("columnsHead", COLS.COL1, "Number of inventory columns the inventory upgrade gives for head armor.").sync());
+
+  public static final NNList<IValue<Integer>> inventoryUpgradeRows = new NNList<>( //
+      F_INVENTORY.make("rows1", 2, "Number of inventory columns the inventory I upgrade gives.").setRange(1, 6).sync(),
+      F_INVENTORY.make("rows2", 4, "Number of inventory columns the inventory II upgrade gives.").setRange(1, 6).sync(),
+      F_INVENTORY.make("rows3", 6, "Number of inventory columns the inventory III upgrade gives.").setRange(1, 6).sync());
+
   public static final IValueFactoryEIO F_EXPLOSIVE = F_UPGRADES.section(".explosive");
 
   public static final NNList<IValue<Integer>> explosiveUpgradeCost = new NNList<>( //

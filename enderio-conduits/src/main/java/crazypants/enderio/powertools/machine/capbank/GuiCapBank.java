@@ -24,7 +24,6 @@ import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.network.PacketHandler;
-import crazypants.enderio.base.power.PowerDisplayUtil;
 import crazypants.enderio.powertools.lang.Lang;
 import crazypants.enderio.powertools.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.powertools.machine.capbank.packet.PacketGuiChange;
@@ -160,7 +159,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
     // Validate that the next character input won't overflow the max IO, and disallow starting numbers with 0
-    final Predicate<String> inputValidator = s -> s == null || s.isEmpty() || (!s.startsWith("0") && PowerDisplayUtil.parsePower(s) <= network.getMaxIO());
+    final Predicate<String> inputValidator = s -> s == null || s.isEmpty() || (!s.startsWith("0") && LangPower.parsePower(s) <= network.getMaxIO());
 
     x = inputX - 24;
     y = inputY;
@@ -218,11 +217,11 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     if (!textFieldsHaveRealData) {
       return;
     }
-    int input = PowerDisplayUtil.parsePower(maxInputTF);
+    int input = LangPower.parsePower(maxInputTF);
     if (input >= 0 && network.getMaxInput() != input) {
       setMaxInput(input);
     }
-    int output = PowerDisplayUtil.parsePower(maxOutputTF);
+    int output = LangPower.parsePower(maxOutputTF);
     if (output >= 0 && network.getMaxOutput() != output) {
       setMaxOutput(output);
     }
