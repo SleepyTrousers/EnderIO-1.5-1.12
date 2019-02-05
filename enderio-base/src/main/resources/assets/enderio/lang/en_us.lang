@@ -736,6 +736,7 @@ enderio.coolant.tooltip.heading=Coolant
 enderio.coolant.tooltip.degreesPerBucket=%s°C per bucket
 
 enderio.tooltip.anvilupgrades=Anvil Upgrades:
+enderio.tooltip.anvilupgrades.all=All Anvil Upgrades:
 
 enderio.darksteel.upgrade.empowered_one.name=Empowered
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Power: $P
