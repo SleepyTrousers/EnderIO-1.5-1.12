@@ -820,6 +820,19 @@ enderio.darksteel.upgrade.padding.tooltip.detailed.line1=Muffles nearby sounds
 enderio.darksteel.upgrade.direct.name=Direct
 enderio.darksteel.upgrade.direct.tooltip.detailed.line1=Teleports mined things directly into your inventory
 
+enderio.darksteel.upgrade.inv.0.name=Inventory I
+enderio.darksteel.upgrade.inv.0.tooltip.detailed.line1=Adds an inventory to your armor
+enderio.darksteel.upgrade.inv.0.tooltip.detailed.line2=The size depends on the armor type
+enderio.darksteel.upgrade.inv.0.tooltip.detailed.line3=Set the hotkey to open it in the game options
+
+enderio.darksteel.upgrade.inv.1.name=Inventory II
+enderio.darksteel.upgrade.inv.1.tooltip.detailed.line1=Increases the size of your armor's inventory
+enderio.darksteel.upgrade.inv.1.tooltip.detailed.line2=Set the hotkey to open it in the game options
+
+enderio.darksteel.upgrade.inv.2.name=Inventory III
+enderio.darksteel.upgrade.inv.2.tooltip.detailed.line1=Increases the size of your armor's inventory
+enderio.darksteel.upgrade.inv.2.tooltip.detailed.line2=Set the hotkey to open it in the game options
+
 enderio.darksteel.upgrade.gogglesOfRevealing.name=Revealing
 enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Vis Discount: 5%
 enderio.darksteel.upgrade.gogglesOfRevealing.enabled=Magic is being revealed
@@ -1113,6 +1126,8 @@ enderio.loot.capacitor.title.19=Thing
 enderio.loot.capacitor.title.20=Something
 enderio.loot.capacitor.title.21=Nothing
 
+enderio.keybind.inventory=Open Armor Inventory
+enderio.keybind.inventory.none_equipped=No armor with inventory equipped
 enderio.keybind.glidertoggle=Glider/Elytra Toggle
 enderio.keybind.soundlocator=Sound Locator
 enderio.keybind.nightvision=Night Vision

@@ -16,6 +16,7 @@ import crazypants.enderio.base.handler.darksteel.PacketUpgradeState;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbeMode;
 import crazypants.enderio.base.item.coordselector.PacketUpdateLocationPrintout;
+import crazypants.enderio.base.item.darksteel.upgrade.storage.PacketOpenInventory;
 import crazypants.enderio.base.item.magnet.PacketMagnetState;
 import crazypants.enderio.base.item.travelstaff.PacketDrainStaff;
 import crazypants.enderio.base.item.xptransfer.PacketXpTransferEffects;
@@ -72,6 +73,7 @@ public final class PacketHandler {
     INSTANCE.registerMessage(PacketDarkSteelPowerPacket.Handler.class, PacketDarkSteelPowerPacket.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketUpgradeState.Handler.class, PacketUpgradeState.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketUpgradeState.Handler.class, PacketUpgradeState.class, nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(PacketOpenInventory.Handler.class, PacketOpenInventory.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketDrainStaff.Handler.class, PacketDrainStaff.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketIoMode.Handler.class, PacketIoMode.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketLegacyPowerStorage.Handler.class, PacketLegacyPowerStorage.class, nextID(), Side.CLIENT);

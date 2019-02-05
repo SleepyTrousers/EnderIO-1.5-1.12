@@ -8,13 +8,13 @@ public interface IRemoteExec {
 
   int getGuiID();
 
-  public static interface IContainer extends IRemoteExec {
+  public interface IContainer extends IRemoteExec {
 
     IMessage networkExec(int id, GuiPacket message);
 
   }
 
-  public static interface IGui extends IRemoteExec {
+  public interface IGui extends IRemoteExec {
 
   }
 

@@ -27,6 +27,7 @@ import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
 import crazypants.enderio.api.upgrades.IRenderUpgrade;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
+import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState;
@@ -41,6 +42,10 @@ import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManage
 import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.nightvision.NightVisionUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.sound.SoundDetectorUpgrade;
+import crazypants.enderio.base.item.darksteel.upgrade.storage.SlotEncoder;
+import crazypants.enderio.base.item.darksteel.upgrade.storage.StorageCap;
+import crazypants.enderio.base.item.darksteel.upgrade.storage.StorageContainer;
+import crazypants.enderio.base.item.darksteel.upgrade.storage.StorageGui;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.PaintUtil;
@@ -49,6 +54,7 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.HelmetPainterTemplate;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.util.Prep;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -56,6 +62,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -76,7 +83,7 @@ import thaumcraft.api.items.IVisDiscountGear;
     @Interface(iface = "thaumcraft.api.items.IVisDiscountGear", modid = "thaumcraft"),
     @Interface(iface = "thaumcraft.api.items.IRevealer", modid = "thaumcraft") })
 public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware, IHasPlayerRenderer,
-    IWithPaintName, IElytraFlyingProvider, IVisDiscountGear, IGoggles, IRevealer {
+    IWithPaintName, IElytraFlyingProvider, IVisDiscountGear, IGoggles, IRevealer, IEioGuiHandler.WithServerComponent.WithOutPos {
 
   // ============================================================================================================
   // Item creation
@@ -489,6 +496,39 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   @Override
   public @Nonnull ICapacitorKey getAbsorptionRatioKey(@Nonnull ItemStack stack) {
     return CapacitorKey.DARK_STEEL_ARMOR_ABSORPTION_RATIO;
+  }
+
+  // Note: The GUI is bound to ModObject.itemDarkSteelChestplate, but that is just for technical reasons. It supports any armor item with the upgrade, even if
+  // it doesn't extend this class
+  @Override
+  @Nullable
+  public Container getServerGuiElement(@Nonnull EntityPlayer player, int param1, int param2, int param3) {
+    SlotEncoder enc = new SlotEncoder(param1);
+    if (enc.hasSlots()) {
+      // Note: StorageCap(0, xxx) ignores the xxx, so it is ok to call it with another armor item
+      return new StorageContainer(player.inventory, //
+          new StorageCap(EntityEquipmentSlot.FEET, enc.get(EntityEquipmentSlot.FEET), player), //
+          new StorageCap(EntityEquipmentSlot.LEGS, enc.get(EntityEquipmentSlot.LEGS), player), //
+          new StorageCap(EntityEquipmentSlot.CHEST, enc.get(EntityEquipmentSlot.CHEST), player), //
+          new StorageCap(EntityEquipmentSlot.HEAD, enc.get(EntityEquipmentSlot.HEAD), player));
+    }
+    return null;
+  }
+
+  @Override
+  @Nullable
+  @SideOnly(Side.CLIENT)
+  public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, int param1, int param2, int param3) {
+    SlotEncoder enc = new SlotEncoder(param1);
+    if (enc.hasSlots()) {
+      return new StorageGui(new StorageContainer(player.inventory, //
+          new StorageCap(EntityEquipmentSlot.FEET, enc.get(EntityEquipmentSlot.FEET)), //
+          new StorageCap(EntityEquipmentSlot.LEGS, enc.get(EntityEquipmentSlot.LEGS)), //
+          new StorageCap(EntityEquipmentSlot.CHEST, enc.get(EntityEquipmentSlot.CHEST)), //
+          new StorageCap(EntityEquipmentSlot.HEAD, enc.get(EntityEquipmentSlot.HEAD))));
+    } else {
+      return null;
+    }
   }
 
 }

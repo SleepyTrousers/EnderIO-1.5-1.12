@@ -50,6 +50,7 @@ public enum NbtValue { // TODO: DONE111
   FILTER_BIG("isBig"),
   ENABLED("enabled"),
   INFINITY("infinity"),
+  INVENTORY("inv"),
 
   ;
 
