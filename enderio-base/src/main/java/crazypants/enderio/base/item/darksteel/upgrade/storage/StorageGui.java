@@ -26,7 +26,7 @@ public class StorageGui extends GuiContainerBaseEIO implements StorageRemoteExec
 
   @Override
   protected boolean doSwitchTab(int tab) {
-    setTab((cont.activeTab = NullHelper.first(StorageData.ARMOR[tab], EntityEquipmentSlot.HEAD)).getIndex());
+    setTab(cont.activeTab = NullHelper.first(StorageData.ARMOR[tab], EntityEquipmentSlot.HEAD));
     return true;
   }
 
@@ -37,7 +37,7 @@ public class StorageGui extends GuiContainerBaseEIO implements StorageRemoteExec
       hasSetTab = true;
       for (EntityEquipmentSlot drawTab : StorageData.ARMOR) {
         if (cont.getItemHandler().getHandlerFromIndex(drawTab.getIndex()).getSlots() > 0) {
-          setTab((cont.activeTab = drawTab).getIndex());
+          setTab(cont.activeTab = drawTab);
           return;
         }
       }

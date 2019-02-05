@@ -5,7 +5,6 @@ import java.awt.Point;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.ContainerEnderCap;
-import com.enderio.core.common.util.NullHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -94,8 +93,8 @@ public class StorageContainer extends ContainerEnderCap<StorageCombinedCap, Tile
   }
 
   @Override
-  public IMessage setTab(int tab) {
-    activeTab = NullHelper.first(StorageData.ARMOR_INDEX[tab], EntityEquipmentSlot.CHEST);
+  public IMessage setTab(@Nonnull EntityEquipmentSlot tab) {
+    activeTab = tab;
     return null;
   }
 

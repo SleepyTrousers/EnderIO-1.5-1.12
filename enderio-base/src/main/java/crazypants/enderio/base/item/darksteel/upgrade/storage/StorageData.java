@@ -27,11 +27,4 @@ public class StorageData {
   protected static final @Nonnull EntityEquipmentSlot[] ARMOR = { EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS,
       EntityEquipmentSlot.FEET };
 
-  protected static final @Nonnull EntityEquipmentSlot[] ARMOR_INDEX = { null, null, null, null };
-  static {
-    for (EntityEquipmentSlot slot : ARMOR) {
-      ARMOR_INDEX[slot.getIndex()] = slot;
-    }
-  }
-
 }
