@@ -22,6 +22,12 @@ import net.minecraft.world.World;
 
 public class BlockMineShaft extends BlockEio<TileMineShaft> implements IDefaultRenderers, ITEProxy {
 
+  public static BlockMineShaft create(@Nonnull IModObject modObject) {
+    BlockMineShaft mine = new BlockMineShaft(modObject);
+    mine.init();
+    return mine;
+  }
+
   protected BlockMineShaft(@Nonnull IModObject modObject) {
     super(modObject);
     setCreativeTab(EnderIOTab.tabEnderIOMaterials);

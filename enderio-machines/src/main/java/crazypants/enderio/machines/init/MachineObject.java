@@ -24,6 +24,8 @@ import crazypants.enderio.machines.machine.ihopper.BlockImpulseHopper;
 import crazypants.enderio.machines.machine.killera.BlockKillerJoe;
 import crazypants.enderio.machines.machine.light.BlockElectricLight;
 import crazypants.enderio.machines.machine.light.BlockLightNode;
+import crazypants.enderio.machines.machine.mine.BlockMine;
+import crazypants.enderio.machines.machine.mine.BlockMineShaft;
 import crazypants.enderio.machines.machine.obelisk.attractor.BlockAttractor;
 import crazypants.enderio.machines.machine.obelisk.aversion.BlockAversionObelisk;
 import crazypants.enderio.machines.machine.obelisk.inhibitor.BlockInhibitorObelisk;
@@ -125,6 +127,9 @@ public enum MachineObject implements IModObjectBase {
   block_simple_crafter(BlockCrafter.class, "create_simple", MachineTileEntity.TileSimpleCrafter),
 
   block_creative_spawner(BlockCreativeSpawner.class, MachineTileEntity.TileCreativeSpawner),
+
+  block_mine_shaft(BlockMineShaft.class, MachineTileEntity.TileMineShaft),
+  block_mine(BlockMine.class, MachineTileEntity.TileMine),
 
   ;
 

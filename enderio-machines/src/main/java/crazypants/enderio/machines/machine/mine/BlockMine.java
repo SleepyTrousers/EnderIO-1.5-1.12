@@ -30,7 +30,7 @@ public class BlockMine extends AbstractCapabilityPoweredMachineBlock<TileMine> i
 
   public BlockMine(@Nonnull IModObject mo) {
     super(mo);
-    setShape(mkShape(BlockFaceShape.SOLID));
+    setShape(mkShape(BlockFaceShape.UNDEFINED));
   }
 
   @Override

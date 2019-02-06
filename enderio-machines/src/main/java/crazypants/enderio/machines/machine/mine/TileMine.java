@@ -6,7 +6,8 @@ import com.enderio.core.common.inventory.EnderInventory.Type;
 import com.enderio.core.common.inventory.Filters;
 import com.enderio.core.common.inventory.InventorySlot;
 import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.blockiterators.CubicBlockIterator;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.blockiterators.AbstractBlockIterator;
 
 import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.init.ModObject;
@@ -17,8 +18,14 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+
+import static crazypants.enderio.machines.capacitor.CapacitorKey.FARM_POWER_BUFFER;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.FARM_POWER_INTAKE;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.FARM_POWER_USE;
 
 @Storable
 public class TileMine extends AbstractCapabilityPoweredMachineEntity {
@@ -28,13 +35,17 @@ public class TileMine extends AbstractCapabilityPoweredMachineEntity {
     TOOL
   }
 
+  public TileMine() {
+    this(FARM_POWER_INTAKE, FARM_POWER_BUFFER, FARM_POWER_USE); // TODO
+  }
+
   protected TileMine(@Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
     super(maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
 
     getInventory().add(Type.INPUT, InputSlot.SHAFT, new InventorySlot(new Filters.PredicateItemStack() {
       @Override
       public boolean doApply(@Nonnull ItemStack input) {
-        return MachineObject.block_alloy_smelter.getItemNN() == input.getItem(); // TODO
+        return MachineObject.block_mine_shaft.getItemNN() == input.getItem();
       }
     }, Filters.ALWAYS_TRUE));
     getInventory().add(Type.INPUT, InputSlot.TOOL, new InventorySlot(new Filters.PredicateItemStack() {
@@ -54,7 +65,7 @@ public class TileMine extends AbstractCapabilityPoweredMachineEntity {
   /**
    * An iterator over the shaft cube. null while no checks are running
    */
-  private CubicBlockIterator shaft = null;
+  private AbstractBlockIterator shaft = null;
   /**
    * A BlockPos in the shaft cube that needs to be re-check next tick. null while no checks are running or if the last position that was checked was fine
    */
@@ -63,6 +74,9 @@ public class TileMine extends AbstractCapabilityPoweredMachineEntity {
    * true if the shaft checker wants to put a shaft block down but there's none in the inventory
    */
   private boolean needShaftBlocks = false;
+
+  @Store({ NBTAction.ITEM, NBTAction.SAVE })
+  private final @Nonnull NNList<ItemStack> outputQueue = new NNList<>();
 
   public void onBlockRemoved(@Nonnull BlockPos childPos) {
     formed = false;
@@ -80,26 +94,38 @@ public class TileMine extends AbstractCapabilityPoweredMachineEntity {
     }
     needShaftBlocks = false;
     if (shaft == null) {
-      shaft = new CubicBlockIterator(pos.north(2).west(2).down(), BlockCoord.withY(pos.north(-2).west(-2), 0));
+      shaft = new CubicBlockIteratorReversed(pos.north(2).west(2).down(), BlockCoord.withY(pos.north(-2).west(-2), 0));
       shaftNextCheck = null;
     }
     if (shaftNextCheck == null && shaft.hasNext()) {
       shaftNextCheck = shaft.next();
     }
-    if (shaftNextCheck != null) {
-      IBlockState blockState = world.getBlockState(shaftNextCheck);
-      if (blockState.getBlock() == MachineObject.block_alloy_smelter.getBlockNN()) { // TODO
+    final BlockPos targetPos = shaftNextCheck;
+    if (targetPos != null) {
+      IBlockState blockState = world.getBlockState(targetPos);
+      if (blockState.getBlock() == Blocks.BEDROCK) {
         shaftNextCheck = null;
-      } else if (blockState.getBlock().isAir(blockState, world, shaftNextCheck.toImmutable())) {
+      } else if (blockState.getBlock() == MachineObject.block_mine_shaft.getBlockNN()) {
+        TileEntity tileEntity = world.getTileEntity(targetPos);
+        if (tileEntity instanceof TileMineShaft) {
+          // TODO check if parent is set and points to another valid mine. set permanent error in that case
+          ((TileMineShaft) tileEntity).setParent(pos);
+        } // else what?
+        shaftNextCheck = null;
+      } else if (blockState.getBlock().isAir(blockState, world, targetPos)) {
         ItemStack extractItem = getInventory().getSlot(InputSlot.SHAFT).extractItem(0, 1, false);
         if (Prep.isValid(extractItem)) {
-          world.setBlockState(shaftNextCheck.toImmutable(), MachineObject.block_alloy_smelter.getBlockNN().getDefaultState());
+          world.setBlockState(targetPos, MachineObject.block_mine_shaft.getBlockNN().getDefaultState());
+          TileEntity tileEntity = world.getTileEntity(targetPos);
+          if (tileEntity instanceof TileMineShaft) {
+            ((TileMineShaft) tileEntity).setParent(pos);
+          }
           shaftNextCheck = null;
         } else {
           needShaftBlocks = true;
         }
       } else {
-        // TODO try break block
+        outputQueue.addAll(BlockBreakingUtil.breakBlock(world, targetPos, true));
       }
     }
     if (shaftNextCheck == null && !shaft.hasNext()) {
@@ -107,6 +133,20 @@ public class TileMine extends AbstractCapabilityPoweredMachineEntity {
       return formed = true;
     }
     return false;
+  }
+
+  // World.isChunkGeneratedAt(blockpos >>4)
+
+  @Override
+  protected boolean processTasks(boolean redstoneCheck) {
+    if (redstoneCheck && getEnergy().useEnergy()) {
+      if (!formed) {
+        form();
+      } else {
+        // do work
+      }
+    }
+    return super.processTasks(redstoneCheck);
   }
 
 }
