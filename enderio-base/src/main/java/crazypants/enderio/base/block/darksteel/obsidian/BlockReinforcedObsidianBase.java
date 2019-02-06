@@ -11,6 +11,7 @@ import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.TileEntityEio;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -87,6 +88,12 @@ public abstract class BlockReinforcedObsidianBase extends BlockEio<TileEntityEio
   @Override
   public boolean canBeWrenched() {
     return false;
+  }
+
+  @Override
+  public @Nonnull EnumPushReaction getMobilityFlag(@Nonnull IBlockState state) {
+    // moving reinforced obsidian with a mere piston? nope, I don't think so...
+    return EnumPushReaction.BLOCK;
   }
 
 }

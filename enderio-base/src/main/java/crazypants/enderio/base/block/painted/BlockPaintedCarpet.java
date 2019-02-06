@@ -56,6 +56,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock,
     IRenderMapper.IBlockRenderMapper.IRenderLayerAware, IRenderMapper.IItemRenderMapper.IItemModelMapper, IModObject.WithBlockItem, ICustomSubItems {
 
+  private static final @Nonnull String MODEL_CARPET = "carpet";
+
   public static BlockPaintedCarpet create(@Nonnull IModObject modObject) {
     BlockPaintedCarpet result = new BlockPaintedCarpet(modObject);
     result.init(modObject);
@@ -75,7 +77,7 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   private void init(@Nonnull IModObject modObject) {
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new BasicPainterTemplate<BlockPaintedCarpet>(this, Blocks.CARPET));
     SmartModelAttacher.registerNoProps(this);
-    PaintRegistry.registerModel("carpet", new ResourceLocation("minecraft", "block/carpet"), PaintRegistry.PaintMode.ALL_TEXTURES);
+    PaintRegistry.registerModel(MODEL_CARPET, new ResourceLocation("minecraft", "block/carpet"), PaintRegistry.PaintMode.ALL_TEXTURES);
   }
 
   @Override
@@ -149,8 +151,8 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
   public List<IBakedModel> mapItemRender(@Nonnull Block block, @Nonnull ItemStack stack) {
     IBlockState paintSource = getPaintSource(block, stack);
     IBlockState stdOverlay = ModObject.block_machine_base.getBlockNN().getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
-    IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "carpet", paintSource, null);
-    IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "carpet", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION);
+    IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, MODEL_CARPET, paintSource, null);
+    IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, MODEL_CARPET, stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION);
     List<IBakedModel> list = new ArrayList<IBakedModel>();
     list.add(model1);
     list.add(model2);
@@ -159,7 +161,7 @@ public class BlockPaintedCarpet extends BlockCarpet implements ITileEntityProvid
 
   @SideOnly(Side.CLIENT)
   private IBakedModel mapRender(IBlockState state, IBlockState paint) {
-    return PaintRegistry.getModel(IBakedModel.class, "carpet", paint, null);
+    return PaintRegistry.getModel(IBakedModel.class, MODEL_CARPET, paint, null);
   }
 
   @Override

@@ -68,12 +68,12 @@ public interface IPaintable {
   /**
    * A block that can be painted with a texture. It keeps its model, but applies the texture from the paint source to it.
    */
-  public static interface ITexturePaintableBlock extends IPaintable {
+  public interface ITexturePaintableBlock extends IPaintable {
 
   }
 
   @Interface(iface = "team.chisel.ctm.api.IFacade", modid = "ctm-api")
-  public static interface IBlockPaintableBlock extends IPaintable, team.chisel.ctm.api.IFacade {
+  public interface IBlockPaintableBlock extends IPaintable, team.chisel.ctm.api.IFacade {
 
     @Override
     @Nonnull
@@ -88,27 +88,27 @@ public interface IPaintable {
   /**
    * A block that can be painted with a full block. It renders the paint source's model instead of its own. The paint source must be a full, solid block.
    */
-  public static interface ISolidBlockPaintableBlock extends IBlockPaintableBlock {
+  public interface ISolidBlockPaintableBlock extends IBlockPaintableBlock {
 
   }
 
   /**
    * A block that can be painted with any block. It renders the paint source's model instead of its own. The paint source can be any block.
    */
-  public static interface INonSolidBlockPaintableBlock extends IBlockPaintableBlock {
+  public interface INonSolidBlockPaintableBlock extends IBlockPaintableBlock {
 
   }
 
   /**
    * Helper interface to make it easier for blocks to talk to their tile entity.
    */
-  public static interface IPaintableTileEntity {
+  public interface IPaintableTileEntity {
 
     void setPaintSource(@Nullable IBlockState paintSource);
 
     @Nullable
     IBlockState getPaintSource();
-    
+
     /**
      * @return AIR if no paint source is found.
      */
@@ -121,7 +121,7 @@ public interface IPaintable {
    * Block marked with this interface won't have their paint rendered when paint is hidden by the wrench. Only valid for IBlockPaintableBlock and its
    * sub-interfaces
    */
-  public static interface IWrenchHideablePaint {
+  public interface IWrenchHideablePaint {
 
   }
 
