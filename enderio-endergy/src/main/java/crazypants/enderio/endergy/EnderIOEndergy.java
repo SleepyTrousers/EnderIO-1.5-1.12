@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Triple;
 
+import com.enderio.core.common.transform.EnderCorePlugin;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
@@ -58,6 +59,10 @@ public class EnderIOEndergy implements IEnderIOAddon {
   public static CommonProxy proxy;
   @SuppressWarnings("unused")
   private static ConfigHandler configHandler;
+
+  public EnderIOEndergy() {
+    EnderCorePlugin.instance().loadMixinSources(this);
+  }
 
   @EventHandler
   public static void init(@Nonnull FMLPreInitializationEvent event) {
