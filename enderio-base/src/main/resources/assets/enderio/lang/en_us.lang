@@ -854,6 +854,8 @@ enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=Increases step and jum
 enderio.darksteel.upgrade.stepAssist.enabled=Step Assist Active
 enderio.darksteel.upgrade.stepAssist.disabled=Step Assist Disabled
 
+enderio.gui.step_assis_unavailable=Step Assist may be disabled by another mod
+
 enderio.darksteel.upgrade.jump_two.name=Jump II
 enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=Increases step and jump height
 enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=Allows double jumps
