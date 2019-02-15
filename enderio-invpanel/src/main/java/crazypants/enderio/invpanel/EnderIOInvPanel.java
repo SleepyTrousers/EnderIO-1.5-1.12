@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Triple;
 
+import com.enderio.core.common.transform.EnderCorePlugin;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
@@ -49,6 +50,10 @@ public class EnderIOInvPanel implements IEnderIOAddon {
 
   @SuppressWarnings("unused")
   private static ConfigHandler configHandler;
+
+  public EnderIOInvPanel() {
+    EnderCorePlugin.instance().loadMixinSources(this);
+  }
 
   @EventHandler
   public void preInit(@Nonnull FMLPreInitializationEvent event) {

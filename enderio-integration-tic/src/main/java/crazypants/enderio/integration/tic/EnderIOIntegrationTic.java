@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.Lang;
+import com.enderio.core.common.transform.EnderCorePlugin;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.Log;
@@ -54,6 +55,10 @@ public class EnderIOIntegrationTic implements IEnderIOAddon {
 
   private static final @Nonnull String DEFAULT_DEPENDENCIES = "before:tconstruct;before:enderiobase";
   public static final @Nonnull String DEPENDENCIES = DEFAULT_DEPENDENCIES;
+
+  public EnderIOIntegrationTic() {
+    EnderCorePlugin.instance().loadMixinSources(this);
+  }
 
   @EventHandler
   public static void init(FMLPreInitializationEvent event) {

@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang3.tuple.Triple;
 
 import com.enderio.core.common.Lang;
+import com.enderio.core.common.transform.EnderCorePlugin;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
@@ -60,6 +61,10 @@ public class EnderIOMachines implements IEnderIOAddon {
   @SuppressWarnings("unused")
   private static ConfigHandler configHandler;
 
+  public EnderIOMachines() {
+    EnderCorePlugin.instance().loadMixinSources(this);
+  }
+
   @SubscribeEvent
   @SideOnly(Side.CLIENT)
   public static void onModelRegister(ModelRegistryEvent event) {
@@ -93,9 +98,10 @@ public class EnderIOMachines implements IEnderIOAddon {
   @Nonnull
   public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
     return new NNList<>(Triple.of(2, null, "machines"), Triple.of(2, null, "sagmill"), Triple.of(3, null, "sagmill_modded"), Triple.of(3, null, "sagmill_ores"),
-        Triple.of(3, null, "sagmill_metals"), Triple.of(3, null, "sagmill_vanilla"), Triple.of(3, null, "sagmill_vanilla2modded"), Triple.of(3, null, "sagmill_silentgems"), Triple.of(3, null, "vat"),
-        Triple.of(3, null, "enchanter"), Triple.of(3, null, "spawner"), Triple.of(9, null, "capacitor_machines"),
-        Triple.of(3, null, "integration_railcraft_recipes"), Triple.of(3, null, "soulbinder"), Triple.of(3, null, "tank"));
+        Triple.of(3, null, "sagmill_metals"), Triple.of(3, null, "sagmill_vanilla"), Triple.of(3, null, "sagmill_vanilla2modded"),
+        Triple.of(3, null, "sagmill_silentgems"), Triple.of(3, null, "vat"), Triple.of(3, null, "enchanter"), Triple.of(3, null, "spawner"),
+        Triple.of(9, null, "capacitor_machines"), Triple.of(3, null, "integration_railcraft_recipes"), Triple.of(3, null, "soulbinder"),
+        Triple.of(3, null, "tank"));
   }
 
   @Override

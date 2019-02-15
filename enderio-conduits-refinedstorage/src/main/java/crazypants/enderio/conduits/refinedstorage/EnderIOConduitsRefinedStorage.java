@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Triple;
 
+import com.enderio.core.common.transform.EnderCorePlugin;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
@@ -53,6 +54,10 @@ public class EnderIOConduitsRefinedStorage implements IEnderIOAddon {
 
   private static final @Nonnull String DEFAULT_DEPENDENCIES = "after:" + crazypants.enderio.base.EnderIO.MODID;
   public static final @Nonnull String DEPENDENCIES = DEFAULT_DEPENDENCIES;
+
+  public EnderIOConduitsRefinedStorage() {
+    EnderCorePlugin.instance().loadMixinSources(this);
+  }
 
   @EventHandler
   public static void init(@Nonnull FMLPreInitializationEvent event) {

@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
+import crazypants.enderio.base.machine.task.PoweredTaskProgress;
 import info.loenwind.autosave.Registry;
 import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.IHandler;
@@ -28,17 +29,19 @@ public class HandlePoweredTask implements IHandler<IPoweredTask> {
   @Override
   public boolean store(Registry registry, Set<NBTAction> phase, NBTTagCompound nbt, Type type, String name, IPoweredTask object)
       throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
-    NBTTagCompound tag = new NBTTagCompound();
-    object.writeToNBT(tag);
-    tag.setString("class", NullHelper.notnullJ(object.getClass().getName(), "Class#getName"));
-    nbt.setTag(name, tag);
+    if (!(object instanceof PoweredTaskProgress)) {
+      NBTTagCompound tag = new NBTTagCompound();
+      object.writeToNBT(tag);
+      tag.setString("class", NullHelper.notnullJ(object.getClass().getName(), "Class#getName"));
+      nbt.setTag(name, tag);
+    }
     return true;
   }
 
   @Override
   @Nullable
-  public IPoweredTask read(Registry registry, Set<NBTAction> phase, NBTTagCompound nbt, Type type, String name,
-      @Nullable IPoweredTask object) throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
+  public IPoweredTask read(Registry registry, Set<NBTAction> phase, NBTTagCompound nbt, Type type, String name, @Nullable IPoweredTask object)
+      throws IllegalArgumentException, IllegalAccessException, InstantiationException, NoHandlerFoundException {
     if (nbt.hasKey(name)) {
       try {
         NBTTagCompound tag = (NBTTagCompound) nbt.getTag(name);

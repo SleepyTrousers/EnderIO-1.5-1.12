@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang3.tuple.Triple;
 
 import com.enderio.core.common.Lang;
+import com.enderio.core.common.transform.EnderCorePlugin;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
@@ -60,6 +61,10 @@ public class EnderIOConduits implements IEnderIOAddon {
   public static CommonProxy proxy;
   @SuppressWarnings("unused")
   private static ConfigHandler configHandler;
+
+  public EnderIOConduits() {
+    EnderCorePlugin.instance().loadMixinSources(this);
+  }
 
   @Override
   @Nullable

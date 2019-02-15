@@ -25,6 +25,7 @@ import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.jump.JumpUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.nightvision.NightVisionUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.speed.SpeedController;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.util.Prep;
@@ -42,6 +43,7 @@ import net.minecraft.util.MovementInput;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -230,6 +232,9 @@ public class DarkSteelController {
 
   private static void updateStepHeightAndFallDistance(EntityPlayer player) {
     if (player.stepHeight < MAGIC_STEP_HEIGHT && !player.isSneaking() && JumpUpgrade.isEquipped(player) && isStepAssistActive(player)) {
+      if (Loader.isModLoaded("clienttweaks")) {
+        player.sendStatusMessage(Lang.GUI_STEP_ASSIST_UNAVAILABLE.toChatServer(), true);
+      }
       player.stepHeight = MAGIC_STEP_HEIGHT;
     } else if (player.stepHeight == MAGIC_STEP_HEIGHT) {
       player.stepHeight = 0.6F;

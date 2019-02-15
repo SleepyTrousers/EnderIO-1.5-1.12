@@ -31,10 +31,11 @@ public final class Config extends ConfigHandler {
   @SubscribeEvent
   public void onConfigFileChanged(ConfigFileChangedEvent event) {
     if (event.getModID().equals(factory.getModid())) {
-      Log.info("Updating config...");
+      Log.info("Reloading config file...");
       config.load();
       syncConfig();
       event.setSuccessful();
+      Log.info("Config reload finished");
     }
   }
 
@@ -52,6 +53,7 @@ public final class Config extends ConfigHandler {
         }
       }
 
+      Log.info("Config update finished");
     }
   }
 
