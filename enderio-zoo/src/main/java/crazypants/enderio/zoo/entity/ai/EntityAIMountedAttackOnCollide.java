@@ -123,7 +123,7 @@ public class EntityAIMountedAttackOnCollide extends EntityAIBase {
       targetPosX = target.posX;
       targetPosY = target.getEntityBoundingBox().minY;
       targetPosZ = target.posZ;
-      pathUpdateTimer = failedPathFindingPenalty + 4 + attacker.getRNG().nextInt(7);
+      pathUpdateTimer = 4 + attacker.getRNG().nextInt(7);
 
       final Path path = getNavigator().getPath();
       if (path != null) {
