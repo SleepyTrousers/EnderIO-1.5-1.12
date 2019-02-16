@@ -30,8 +30,8 @@ public class ItemRedstoneConduit extends AbstractItemConduit {
     super(modObject, new ItemConduitSubtype(modObject.getUnlocalisedName() + "_insulated", modObject.getRegistryName().toString() + "_insulated"));
 
     ConduitRegistry.register(ConduitBuilder.start().setUUID(new ResourceLocation(EnderIO.DOMAIN, "redstone")).setClass(getBaseConduitType())
-        .setOffsets(Offset.UP, Offset.UP, Offset.NORTH, Offset.UP).build().setUUID(new ResourceLocation(EnderIO.DOMAIN, "redstone_conduit"))
-        .setClass(InsulatedRedstoneConduit.class).build().finish());
+        .setOffsets(Offset.UP, Offset.UP, Offset.NORTH, Offset.UP).setCanConnectToAnything().build()
+        .setUUID(new ResourceLocation(EnderIO.DOMAIN, "redstone_conduit")).setClass(InsulatedRedstoneConduit.class).build().finish());
     ConduitDisplayMode.registerDisplayMode(new ConduitDisplayMode(getBaseConduitType(), IconEIO.WRENCH_OVERLAY_REDSTONE, IconEIO.WRENCH_OVERLAY_REDSTONE_OFF));
   }
 
