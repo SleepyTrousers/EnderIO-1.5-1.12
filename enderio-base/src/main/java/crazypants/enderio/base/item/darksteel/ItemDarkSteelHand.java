@@ -40,7 +40,7 @@ public class ItemDarkSteelHand extends Item implements IAdvancedTooltipProvider,
   }
 
   protected ItemDarkSteelHand(@Nonnull IModObject modObject) {
-    this.setMaxDamage(DarkSteelConfig.handDurability.get());
+    this.setMaxDamage(DarkSteelConfig.backhoeDurability.get());
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
   }
@@ -76,7 +76,7 @@ public class ItemDarkSteelHand extends Item implements IAdvancedTooltipProvider,
     } else {
       int damage = newDamage - oldDamage;
 
-      if (!absorbDamageWithEnergy(stack, damage * DarkSteelConfig.handEnergyPerDamage.get())) {
+      if (!absorbDamageWithEnergy(stack, damage * DarkSteelConfig.backhoeEnergyPerDamage.get())) {
         super.setDamage(stack, newDamage);
       }
     }
