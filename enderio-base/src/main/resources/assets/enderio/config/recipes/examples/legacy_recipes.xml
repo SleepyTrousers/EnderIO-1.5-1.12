@@ -361,6 +361,16 @@ While workarounds have been added, access to new content is not guaranteed.
     </crafting>
   </recipe>
 
+  <recipe name="Infinity Dust Block 1" disabled="true" />
+  <recipe name="Infinity Dust Block 1, Uncrafting" disabled="true" />
+  <recipe name="Infinity Dust Block 1, Sagmilling" disabled="true" />
+  <recipe name="Infinity Dust Block 2" disabled="true" />
+  <recipe name="Infinity Dust Block 2, Uncrafting" disabled="true" />
+  <recipe name="Infinity Dust Block 2, Sagmilling" disabled="true" />
+  <recipe name="Infinity Dust Block 3" disabled="true" />
+  <recipe name="Infinity Dust Block 3, Uncrafting" disabled="true" />
+  <recipe name="Infinity Dust Block 3, Sagmilling" disabled="true" />
+
 <!-- sagmill.xml -->
 
   <recipe name="Simple SAG Mill" disabled="true" />
