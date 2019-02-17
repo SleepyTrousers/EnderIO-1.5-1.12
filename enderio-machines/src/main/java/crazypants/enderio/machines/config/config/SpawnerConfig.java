@@ -1,8 +1,8 @@
 package crazypants.enderio.machines.config.config;
 
+import crazypants.enderio.machines.config.Config;
 import info.loenwind.autoconfig.factory.IValue;
 import info.loenwind.autoconfig.factory.IValueFactory;
-import crazypants.enderio.machines.config.Config;
 
 public final class SpawnerConfig {
 
@@ -49,5 +49,8 @@ public final class SpawnerConfig {
       "The maximum number of mobs allowed in the homezone. When there are more, no new ones will be spawned. Radius in blocks. No effect if homeZoneEnabled is off. "
           + "Note that poweredSpawnerMaxNearbyEntities still applies for mobs within the poweredSpawnerSpawnRange.")
       .sync();
+
+  public static final IValue<Boolean> disableNotification = F.make("disableNotification", false, //
+      "Disable the notification text above the block.");
 
 }
