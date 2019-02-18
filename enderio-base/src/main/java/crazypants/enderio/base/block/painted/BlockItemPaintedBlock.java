@@ -4,15 +4,15 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.base.ItemEIO;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class BlockItemPaintedBlock extends ItemBlock {
+public class BlockItemPaintedBlock extends ItemEIO {
 
   public BlockItemPaintedBlock(@Nonnull Block block) {
-    super(block);
+    super(block, true);
     setHasSubtypes(true);
   }
 
@@ -30,7 +30,7 @@ public class BlockItemPaintedBlock extends ItemBlock {
     }
   }
 
-  public static interface INamedSubBlocks {
+  public interface INamedSubBlocks {
     @Nonnull
     String getUnlocalizedName(int meta);
   }

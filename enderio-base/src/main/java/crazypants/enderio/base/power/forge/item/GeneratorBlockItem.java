@@ -2,12 +2,17 @@ package crazypants.enderio.base.power.forge.item;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
+import crazypants.enderio.base.machine.base.block.AbstractCapabilityGeneratorBlock;
+import crazypants.enderio.base.machine.baselegacy.AbstractGeneratorBlock;
 import net.minecraft.item.ItemStack;
 
 public class GeneratorBlockItem extends PoweredBlockItem {
 
-  public GeneratorBlockItem(@Nonnull Block block) {
+  public GeneratorBlockItem(@Nonnull AbstractGeneratorBlock<?> block) {
+    super(block);
+  }
+
+  public GeneratorBlockItem(@Nonnull AbstractCapabilityGeneratorBlock<?> block) {
     super(block);
   }
 

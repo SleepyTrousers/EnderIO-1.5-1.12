@@ -38,7 +38,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -179,7 +178,7 @@ public class BlockPoweredSpawner extends AbstractPoweredTaskBlock<TilePoweredSpa
 
   @Override
   @Nullable
-  public Item createBlockItem(@Nonnull IModObject modObject) {
+  public PoweredBlockItem createBlockItem(@Nonnull IModObject modObject) {
     return modObject.apply(new PoweredBlockItem(this) {
       @Override
       public @Nonnull EnumActionResult onItemUse(@Nonnull EntityPlayer player, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull EnumHand hand,

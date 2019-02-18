@@ -32,7 +32,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -66,7 +65,7 @@ public class BlockTank extends AbstractInventoryMachineBlock<TileTank>
   }
 
   @Override
-  public ItemBlock createBlockItem(@Nonnull IModObject modObject) {
+  public BlockItemTank createBlockItem(@Nonnull IModObject modObject) {
     return modObject.apply(new BlockItemTank(this));
   }
 

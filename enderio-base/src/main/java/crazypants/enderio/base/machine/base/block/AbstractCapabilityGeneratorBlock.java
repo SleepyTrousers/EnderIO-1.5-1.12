@@ -6,7 +6,6 @@ import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityGeneratorEntity;
 import crazypants.enderio.base.power.forge.item.GeneratorBlockItem;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
 
 public abstract class AbstractCapabilityGeneratorBlock<T extends AbstractCapabilityGeneratorEntity> extends AbstractCapabilityPoweredMachineBlock<T> {
 
@@ -19,7 +18,7 @@ public abstract class AbstractCapabilityGeneratorBlock<T extends AbstractCapabil
   }
 
   @Override
-  public Item createBlockItem(@Nonnull IModObject modObject) {
+  public GeneratorBlockItem createBlockItem(@Nonnull IModObject modObject) {
     return modObject.apply(new GeneratorBlockItem(this));
   }
 

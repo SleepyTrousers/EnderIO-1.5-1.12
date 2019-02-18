@@ -21,7 +21,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -35,7 +34,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
 
   private static final float BLOCK_SIZE = 4f / 16f;
 
-  public static BlockInventoryPanel create(@Nonnull IModObject mo) {    
+  public static BlockInventoryPanel create(@Nonnull IModObject mo) {
     BlockInventoryPanel panel = new BlockInventoryPanel(mo);
     panel.init();
     return panel;
@@ -48,7 +47,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
 
   @Override
-  public Item createBlockItem(@Nonnull IModObject modObject) {
+  public BlockItemInventoryPanel createBlockItem(@Nonnull IModObject modObject) {
     return modObject.apply(new BlockItemInventoryPanel(this));
   }
 

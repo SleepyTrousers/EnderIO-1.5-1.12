@@ -15,14 +15,12 @@ import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.render.ICustomItemResourceLocation;
 import crazypants.enderio.base.render.ISmartRenderAwareBlock;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -45,7 +43,7 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
   }
 
   @Override
-  public Item createBlockItem(@Nonnull IModObject modObject) {
+  public BlockItemFusedQuartzBase createBlockItem(@Nonnull IModObject modObject) {
     return modObject.apply(new BlockItemFusedQuartzBase(this));
   }
 
@@ -128,7 +126,7 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
 
   public static class BlockItemFusedQuartzBase extends BlockItemPaintedBlock implements ICustomItemResourceLocation {
 
-    public BlockItemFusedQuartzBase(@Nonnull Block block) {
+    public BlockItemFusedQuartzBase(@Nonnull BlockFusedQuartzBase<?> block) {
       super(block);
     }
 

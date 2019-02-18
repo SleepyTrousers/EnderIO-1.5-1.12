@@ -5,14 +5,13 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.base.power.forge.item.PoweredBlockItem;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class BlockItemBuffer extends PoweredBlockItem {
 
-  public BlockItemBuffer(@Nonnull Block block) {
+  public BlockItemBuffer(@Nonnull BlockBuffer block) {
     super(block);
     setHasSubtypes(true);
     setMaxDamage(0);

@@ -20,6 +20,7 @@ import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.tool.ITool;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.ItemEIO;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.IClientConduit;
@@ -67,7 +68,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -143,7 +143,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
 
   @Override
   @Nullable
-  public Item createBlockItem(@Nonnull IModObject modObject) {
+  public ItemEIO createBlockItem(@Nonnull IModObject modObject) {
     return null;
   };
 

@@ -4,17 +4,16 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.EnderIOTab;
-import net.minecraft.block.Block;
+import crazypants.enderio.base.ItemEIO;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 
-public class ItemEndermanSkull extends ItemBlock {
+public class ItemEndermanSkull extends ItemEIO {
 
-  public ItemEndermanSkull(@Nonnull Block block) {
+  public ItemEndermanSkull(@Nonnull BlockEndermanSkull block) {
     super(block);
     setHasSubtypes(true);
     setMaxDamage(0);

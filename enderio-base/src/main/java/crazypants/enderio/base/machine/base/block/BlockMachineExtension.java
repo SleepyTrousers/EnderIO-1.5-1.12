@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
+import crazypants.enderio.base.ItemEIO;
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.machine.interfaces.ITEProxy;
 import crazypants.enderio.util.Prep;
@@ -57,7 +58,7 @@ public class BlockMachineExtension extends BlockEio<TileEntityEio> implements IT
   }
 
   @Override
-  public @Nullable Item createBlockItem(@Nonnull IModObject modObject) {
+  public @Nullable ItemEIO createBlockItem(@Nonnull IModObject modObject) {
     return null;
   };
 
