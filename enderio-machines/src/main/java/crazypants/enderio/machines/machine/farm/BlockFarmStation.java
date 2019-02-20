@@ -22,10 +22,12 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -145,6 +147,16 @@ public class BlockFarmStation extends AbstractPoweredTaskBlock<TileFarmStation>
         "Permission for the block " + getUnlocalizedName() + " of Ender IO to farm land. This includes tilling, planting, harvesting and fertilizing."
             + " Only the base block of a plant will be checked, not the dirt block below it or the additional plant blocks above it."
             + " Note: The GameProfile will be for the block owner, the EntityPlayer in the context will be the fake player.");
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public int getLightValue(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+    // getRenderLayer() is a ThreadLocal, so the integrated server thread will always have null
+    if (MinecraftForgeClient.getRenderLayer() == BlockRenderLayer.TRANSLUCENT) {
+      return 15;
+    }
+    return super.getLightValue(state, world, pos);
   }
 
 }
