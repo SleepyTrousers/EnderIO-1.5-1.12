@@ -185,22 +185,6 @@ public class EntityOwl extends EntityAnimal implements IFlyingMob {
       timeUntilNextEgg = getNextLayingTime();
     }
 
-    AxisAlignedBB movedBB = getEntityBoundingBox().offset(0, motionY, 0);
-    BlockPos ep = getPosition();
-    BlockPos pos = new BlockPos(ep.getX(), movedBB.maxY, ep.getZ());
-    IBlockState bs = world.getBlockState(pos);
-    if (bs.getMaterial() != Material.AIR) {
-      AxisAlignedBB bb = bs.getCollisionBoundingBox(world, pos);
-      if (bb != null) {
-        double ouch = movedBB.maxY - bb.minY;
-        if (ouch == 0) {
-          motionY = -0.1;
-        } else {
-          motionY = 0;
-        }
-      }
-    }
-
     if (onGround) {
       motionX *= groundSpeedRatio;
       motionZ *= groundSpeedRatio;
@@ -210,62 +194,6 @@ public class EntityOwl extends EntityAnimal implements IFlyingMob {
   private boolean isOnLeaves() {
     IBlockState bs = world.getBlockState(getPosition().down());
     return bs.getMaterial() == Material.LEAVES;
-  }
-  /*
-   * //this ONLY fires serverside. however motionX only affects things clientside. so i moved the collision detection to the udptae
-   * 
-   * @Override public void moveEntityWithHeading(float strafe, float forward) {
-   * 
-   * System.out.println("isRemote"+this.world.isRemote);//always false so always server System.out.println("!!strafe"+strafe);
-   * System.out.println("!!forward"+forward); moveRelative(strafe, forward, 0.1f);
-   * 
-   * // Dont fly up inot things AxisAlignedBB movedBB = getEntityBoundingBox().offset(0, motionY, 0); BlockPos ep = getPosition(); BlockPos pos = new
-   * BlockPos(ep.getX(), movedBB.maxY, ep.getZ()); IBlockState bs = world.getBlockState(pos); Block block = bs.getBlock(); if (block.getMaterial(bs) !=
-   * Material.AIR) { AxisAlignedBB bb = block.getCollisionBoundingBox(bs, world, pos); if (bb != null) { double ouch = movedBB.maxY - bb.minY; if (ouch == 0) {
-   * motionY = -0.1; } else { motionY = 0; } } }
-   * 
-   * 
-   * // drag motionX *= 0.8; motionY *= 0.8; motionZ *= 0.8;
-   * 
-   * onGround = EntityUtil.isOnGround(this);
-   * 
-   * isAirBorne = !onGround;
-   * 
-   * if (onGround) { motionX *= groundSpeedRatio; motionZ *= groundSpeedRatio; }
-   * 
-   * addVelocity(motionX, motionY, motionZ);//moveEntity prevLimbSwingAmount = limbSwingAmount; double deltaX = posX - prevPosX; double deltaZ = posZ -
-   * prevPosZ; float f7 = MathHelper.sqrt(deltaX * deltaX + deltaZ * deltaZ) * 4.0F; if (f7 > 1.0F) { f7 = 1.0F; } limbSwingAmount += (f7 - limbSwingAmount) *
-   * 0.4F; limbSwing += limbSwingAmount;
-   * 
-   * }
-   */
-
-  @Override
-  public boolean isEntityInsideOpaqueBlock() {
-    if (noClip) {
-      return false;
-    } else {
-      BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE);
-
-      for (int i = 0; i < 8; ++i) {
-        int x = MathHelper.floor(posX + ((i >> 1) % 2 - 0.5F) * width * 0.8F);
-        int y = MathHelper.floor(posY + ((i >> 0) % 2 - 0.5F) * 0.1F + getEyeHeight());
-        // I added this check as it was sometimes clipping into the block above
-        if (y > getEntityBoundingBox().maxY) {
-          y = MathHelper.floor(getEntityBoundingBox().maxY);
-        }
-        int z = MathHelper.floor(posZ + ((i >> 2) % 2 - 0.5F) * width * 0.8F);
-
-        if (pos.getX() != x || pos.getY() != y || pos.getZ() != z) {
-          pos.setPos(x, y, z);
-          if (world.getBlockState(pos).isOpaqueCube()) {
-            return true;
-          }
-        }
-      }
-
-      return false;
-    }
   }
 
   private void calculateWingAngle(float partialTicks) {
@@ -324,7 +252,7 @@ public class EntityOwl extends EntityAnimal implements IFlyingMob {
 
   @Override
   public float getEyeHeight() {
-    return height;
+    return height - 0.1F;
   }
 
   @Override

@@ -6,6 +6,7 @@ import com.enderio.core.client.render.ManagedTESR;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector3f;
 
+import crazypants.enderio.machines.config.config.SpawnerConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -29,7 +30,7 @@ public class PoweredSpawnerSpecialRenderer extends ManagedTESR<TilePoweredSpawne
   @Override
   protected void renderTileEntity(@Nonnull TilePoweredSpawner te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
     renderMob(te, partialTicks);
-    if (!te.getNotification().isEmpty()) {
+    if (!te.getNotification().isEmpty() && !SpawnerConfig.disableNotification.get()) {
       float offset = 0;
       GlStateManager.disableDepth();
       for (SpawnerNotification note : te.getNotification()) {

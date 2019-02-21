@@ -127,7 +127,7 @@ public class BlockDetector extends BlockEio<TileEntityPaintedBlock> implements I
   }
 
   @Override
-  public Item createBlockItem(@Nonnull IModObject modObject) {
+  public BlockItemPaintedBlock createBlockItem(@Nonnull IModObject modObject) {
     return modObject.apply(new BlockItemPaintedBlock(this));
   }
 

@@ -78,7 +78,8 @@ public class EntityAIMountedAttackOnCollide extends EntityAIBase {
   /**
    * Returns whether an in-progress EntityAIBase should continue executing
    */
-  public boolean continueExecuting() {
+  @Override
+  public boolean shouldContinueExecuting() {
     EntityLivingBase entitylivingbase = attacker.getAttackTarget();
     return entitylivingbase == null ? false
         : (!entitylivingbase.isEntityAlive() ? false : (!longMemory ? !getNavigator().noPath() : attacker.isWithinHomeDistanceCurrentPosition()));
@@ -122,7 +123,7 @@ public class EntityAIMountedAttackOnCollide extends EntityAIBase {
       targetPosX = target.posX;
       targetPosY = target.getEntityBoundingBox().minY;
       targetPosZ = target.posZ;
-      pathUpdateTimer = failedPathFindingPenalty + 4 + attacker.getRNG().nextInt(7);
+      pathUpdateTimer = 4 + attacker.getRNG().nextInt(7);
 
       final Path path = getNavigator().getPath();
       if (path != null) {

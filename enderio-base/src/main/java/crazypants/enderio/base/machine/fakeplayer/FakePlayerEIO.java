@@ -9,6 +9,7 @@ import com.enderio.core.common.util.UserIdent;
 import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.util.Prep;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
@@ -72,6 +73,15 @@ public class FakePlayerEIO extends FakePlayer {
   @Override
   public @Nonnull WorldServer getServerWorld() {
     return origWorld;
+  }
+
+  @Override
+  public void onItemPickup(@Nonnull Entity entityIn, int quantity) {
+    if (world instanceof WorldServer) {
+      // EntityLivingBase will unconditionally cast world to WorldServer
+      super.onItemPickup(entityIn, quantity);
+      // no else needed, if it's not a server world there will be no attached tracker anyway
+    }
   }
 
 }

@@ -38,6 +38,7 @@ import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.oredict.OreDictionary;
 
 import static crazypants.enderio.machines.init.MachineObject.block_alloy_smelter;
 import static crazypants.enderio.machines.init.MachineObject.block_enhanced_alloy_smelter;
@@ -119,7 +120,8 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
     }
 
     private static boolean eq(@Nonnull ItemStack a, @Nonnull ItemStack b) {
-      return a.getItem() == b.getItem() && a.getItemDamage() == b.getItemDamage();
+      return a.getItem() == b.getItem()
+          && (a.getItemDamage() == b.getItemDamage() || a.getItemDamage() == OreDictionary.WILDCARD_VALUE || b.getItemDamage() == OreDictionary.WILDCARD_VALUE);
     }
 
     @Override

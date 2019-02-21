@@ -10,15 +10,15 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.ItemEIO;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class BlockItemSolarPanel extends ItemBlock implements IAdvancedTooltipProvider, IResourceTooltipProvider {
+public class BlockItemSolarPanel extends ItemEIO implements IAdvancedTooltipProvider, IResourceTooltipProvider {
 
-  public BlockItemSolarPanel(BlockSolarPanel blockSolarPanel) {
+  public BlockItemSolarPanel(@Nonnull BlockSolarPanel blockSolarPanel) {
     super(blockSolarPanel);
     setHasSubtypes(true);
     setMaxDamage(0);

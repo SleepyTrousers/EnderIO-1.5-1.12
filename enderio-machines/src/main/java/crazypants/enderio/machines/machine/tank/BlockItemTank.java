@@ -9,17 +9,16 @@ import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.fluid.SmartTank;
 
 import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.ItemEIO;
 import crazypants.enderio.base.lang.LangFluid;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-public class BlockItemTank extends ItemBlock implements IAdvancedTooltipProvider {
+public class BlockItemTank extends ItemEIO implements IAdvancedTooltipProvider {
 
-  public BlockItemTank(@Nonnull Block block) {
+  public BlockItemTank(@Nonnull BlockTank block) {
     super(block);
     setHasSubtypes(true);
     setMaxDamage(0);

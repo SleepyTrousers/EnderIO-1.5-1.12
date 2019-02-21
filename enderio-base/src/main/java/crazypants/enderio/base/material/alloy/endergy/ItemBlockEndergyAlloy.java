@@ -5,15 +5,14 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
-import net.minecraft.block.Block;
+import crazypants.enderio.base.ItemEIO;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
-public class ItemBlockEndergyAlloy extends ItemBlock {
+public class ItemBlockEndergyAlloy extends ItemEIO {
 
-  public ItemBlockEndergyAlloy(@Nonnull Block block) {
+  public ItemBlockEndergyAlloy(@Nonnull BlockEndergyAlloy block) {
     super(block);
     setHasSubtypes(true);
     setMaxDamage(0);

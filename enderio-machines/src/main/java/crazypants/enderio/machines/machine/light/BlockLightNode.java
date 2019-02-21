@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
+import crazypants.enderio.base.ItemEIO;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -14,7 +15,6 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.NonNullList;
@@ -45,7 +45,7 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
 
   @Override
   @Nullable
-  public Item createBlockItem(@Nonnull IModObject modObject) {
+  public ItemEIO createBlockItem(@Nonnull IModObject modObject) {
     return null;
   }
 

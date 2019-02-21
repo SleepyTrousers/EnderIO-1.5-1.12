@@ -17,6 +17,7 @@ import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.power.forge.item.PoweredBlockItem;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.spawner.DummyRecipe;
 import crazypants.enderio.base.recipe.spawner.PoweredSpawnerRecipeRegistry;
@@ -37,8 +38,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -179,8 +178,8 @@ public class BlockPoweredSpawner extends AbstractPoweredTaskBlock<TilePoweredSpa
 
   @Override
   @Nullable
-  public Item createBlockItem(@Nonnull IModObject modObject) {
-    return modObject.apply(new ItemBlock(this) {
+  public PoweredBlockItem createBlockItem(@Nonnull IModObject modObject) {
+    return modObject.apply(new PoweredBlockItem(this) {
       @Override
       public @Nonnull EnumActionResult onItemUse(@Nonnull EntityPlayer player, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull EnumHand hand,
           @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ) {

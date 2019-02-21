@@ -421,11 +421,11 @@ public final class DarkSteelConfig {
   public static final IValue<Integer> tapEnergyPerDamage = F_TAP.make("energyPerDamage", 750, //
       "Energy use per damage/durability point avoided.").setRange(1, 99999999).sync();
 
-  public static final IValueFactory F_HAND = F_DARK_STEEL.section(".hand");
+  public static final IValueFactory F_BACKHOE = F_DARK_STEEL.section(".backhoe");
 
-  public static final IValue<Integer> handDurability = F_HAND.make("durability", 2000 * 3, //
-      "Durability of the Dark Steel Mechanical Arm.").setRange(1, 99999999).sync();
-  public static final IValue<Integer> handEnergyPerDamage = F_HAND.make("energyPerDamage", 750, //
+  public static final IValue<Integer> backhoeDurability = F_BACKHOE.make("durability", 2000 * 3, //
+      "Durability of the Dark Steel Backhoe.").setRange(1, 99999999).sync();
+  public static final IValue<Integer> backhoeEnergyPerDamage = F_BACKHOE.make("energyPerDamage", 250, //
       "Energy use per damage/durability point avoided.").setRange(1, 99999999).sync();
 
   public static final IValueFactory F_ARMOR = F_DARK_STEEL.section(".armor");

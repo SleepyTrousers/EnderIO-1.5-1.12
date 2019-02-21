@@ -21,7 +21,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -51,7 +50,7 @@ public class BlockDialingDevice extends BlockEio<TileDialingDevice>
   }
 
   @Override
-  public ItemBlock createBlockItem(@Nonnull IModObject mo) {
+  public BlockItemDialingDevice createBlockItem(@Nonnull IModObject mo) {
     return mo.apply(new BlockItemDialingDevice(this));
   }
 

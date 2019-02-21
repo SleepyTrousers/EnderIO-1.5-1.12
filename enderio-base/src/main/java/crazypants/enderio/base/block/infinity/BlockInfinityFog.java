@@ -37,7 +37,6 @@ import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.BlockRenderLayer;
@@ -100,7 +99,7 @@ public class BlockInfinityFog extends BlockEio<TileEntityEio> implements IDefaul
   }
 
   @Override
-  public Item createBlockItem(@Nonnull IModObject modObject) {
+  public BlockItemPaintedBlock createBlockItem(@Nonnull IModObject modObject) {
     return modObject.apply(new BlockItemPaintedBlock(this));
   }
 

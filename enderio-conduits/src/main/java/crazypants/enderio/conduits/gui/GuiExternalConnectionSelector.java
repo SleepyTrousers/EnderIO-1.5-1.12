@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.IClientConduit;
@@ -19,6 +20,7 @@ import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.PacketOpenConduitUI;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.network.PacketHandler;
+import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -31,6 +33,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class GuiExternalConnectionSelector extends GuiScreen {
@@ -93,16 +97,26 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     PacketHandler.INSTANCE.sendToServer(new PacketOpenConduitUI(cb.getEntity(), dir));
   }
 
-  protected void findBlockDataForDirection(EnumFacing direction) {
+  protected void findBlockDataForDirection(@Nonnull EnumFacing direction) {
     World world = cb.getBundleworld();
     BlockPos blockPos = cb.getLocation().offset(direction);
     if (!world.isAirBlock(blockPos)) {
       IBlockState bs = world.getBlockState(blockPos);
       Block b = bs.getBlock();
-      if (b != null && b != ConduitRegistry.getConduitModObjectNN().getBlock()) {
-        try {// TODO: This seems wrong. pickBlock?
+      if (b != ConduitRegistry.getConduitModObjectNN().getBlock()) {
+        try {
+          ItemStack pickBlock = b.getPickBlock(bs, new RayTraceResult(new Vec3d(0, 0, 0), direction.getOpposite(), blockPos), world, blockPos,
+              Minecraft.getMinecraft().player);
+          if (Prep.isValid(pickBlock)) {
+            stacks.put(direction, pickBlock);
+            return;
+          }
+        } catch (Throwable t) {
+        }
+        // fallback:
+        try {
           Item item = b.getItemDropped(bs.getActualState(world, blockPos), world.rand, 0);
-          if (item != null) {
+          if (NullHelper.untrust(item) != null) {
             stacks.put(direction, new ItemStack(item, 1, b.damageDropped(bs)));
           }
         } catch (Throwable t) {

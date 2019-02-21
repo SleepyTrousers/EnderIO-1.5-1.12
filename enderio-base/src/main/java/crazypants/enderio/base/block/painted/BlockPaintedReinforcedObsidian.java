@@ -22,7 +22,6 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -63,7 +62,7 @@ public class BlockPaintedReinforcedObsidian extends BlockReinforcedObsidianBase
   }
 
   @Override
-  public Item createBlockItem(@Nonnull IModObject modObject) {
+  public BlockItemPaintedBlock createBlockItem(@Nonnull IModObject modObject) {
     return modObject.apply(new BlockItemPaintedBlock(this));
   }
 
