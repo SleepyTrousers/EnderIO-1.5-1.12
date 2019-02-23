@@ -35,6 +35,15 @@ public class TileMine extends AbstractCapabilityPoweredMachineEntity {
     TOOL
   }
 
+  protected enum OutputSlot {
+    SLOT0,
+    SLOT1,
+    SLOT2,
+    SLOT3,
+    SLOT4,
+    SLOT5
+  }
+
   public TileMine() {
     this(FARM_POWER_INTAKE, FARM_POWER_BUFFER, FARM_POWER_USE); // TODO
   }
@@ -55,6 +64,7 @@ public class TileMine extends AbstractCapabilityPoweredMachineEntity {
       }
     }, Filters.ALWAYS_TRUE));
 
+    NNList.of(OutputSlot.class).apply(slot -> getInventory().add(Type.OUTPUT, slot, new InventorySlot(Filters.ALWAYS_FALSE, Filters.ALWAYS_TRUE)));
   }
 
   /**
@@ -142,8 +152,17 @@ public class TileMine extends AbstractCapabilityPoweredMachineEntity {
     if (redstoneCheck && getEnergy().useEnergy()) {
       if (!formed) {
         form();
-      } else {
+      } else if (outputQueue.size() < 10) {
         // do work
+      }
+    }
+    if (!outputQueue.isEmpty()) {
+      for (InventorySlot slot : outputSlots) {
+        outputQueue.set(0, slot.insertItem(0, outputQueue.get(0), false));
+        if (Prep.isInvalid(outputQueue.get(0))) {
+          outputQueue.remove(0);
+          break;
+        }
       }
     }
     return super.processTasks(redstoneCheck);
