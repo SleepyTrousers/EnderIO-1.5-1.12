@@ -26,7 +26,7 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
   @Store({ NBTAction.SAVE, NBTAction.ITEM })
   private final @Nonnull EnderInventory inventory = new EnderInventory();
   private final @Nonnull EnderInventory inventoryDelegate;
-  private final @Nonnull View upgradeSlots, inputSlots, outputSlots;
+  protected final @Nonnull View upgradeSlots, inputSlots, outputSlots;
 
   protected AbstractCapabilityMachineEntity() {
     this(null);
