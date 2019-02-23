@@ -1,0 +1,16 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "particle": "enderio:blocks/mineshaft_side",
+      "bottom": "enderio:blocks/mineshaft_top",
+      "top": "enderio:blocks/mineshaft_top",
+      "side": "enderio:blocks/mineshaft_side"
+    },
+    "model": "enderio:sided_cube"
+  },
+  "variants": {
+    "inventory": [{}],
+    "normal": [{}]
+  }
+}
