@@ -3,7 +3,10 @@ package crazypants.enderio.base.gui;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -65,9 +68,30 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
   private final @Nonnull List<Rectangle> tabAreas = new ArrayList<Rectangle>();
   private final static @Nonnull Rectangle NO_TAB = new Rectangle(0, 0, 0, 0);
 
+  // JEI
   public List<Rectangle> getBlockingAreas() {
     // return a new object every time so equals() actually checks the contents
     return new ArrayList<Rectangle>(tabAreas);
+  }
+
+  // Project Intelligence
+  public @Nonnull Set<String> getDocumentationPages() {
+    return Collections.singleton(getDocumentationPage());
+  }
+
+  // Project Intelligence
+  protected @Nonnull String getDocumentationPage() {
+    return EnderIO.DOMAIN + ":" + getClass().getSimpleName().replaceAll("([A-Z])", "_$0").replaceFirst("^_", "").toLowerCase(Locale.ENGLISH);
+  }
+
+  // Project Intelligence
+  public Rectangle getDocumentationButtonArea() {
+    return new Rectangle(guiLeft - 25, guiTop + 3, 25, 25);
+  }
+
+  // Project Intelligence
+  public Rectangle getDocumentationArea() {
+    return new Rectangle(3, 3, guiLeft - 6, height - 6);
   }
 
   /**

@@ -76,6 +76,11 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> im
   }
 
   @Override
+  public @Nullable ItemEIO createBlockItem(@Nonnull IModObject modObject) {
+    return modObject.apply(new ItemEIO(this));
+  };
+
+  @Override
   public boolean onBlockActivated(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer entityPlayer,
       @Nonnull EnumHand hand, @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
     if (shouldWrench(world, pos, entityPlayer, side) && ToolUtil.breakBlockWithTool(this, world, pos, side, entityPlayer, hand, permissionNodeWrenching)) {

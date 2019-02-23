@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
-public class EnchantmentSoulBound extends EnchantmentBase {
+public final class EnchantmentSoulBound extends EnchantmentBase {
 
   private static final @Nonnull String NAME = "soulbound";
 

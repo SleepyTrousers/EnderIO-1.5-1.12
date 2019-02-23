@@ -196,5 +196,24 @@ XML editor will display that as tooltips when editing this file.
       <entity name="totemic:bald_eagle" costMultiplier="1.0" disabled="false"/>
     </spawning>
   </recipe>
-  
+
+  <recipe name="Spawner, Galacticraft" required="false">
+    <spawning>
+      <entity name="galacticraftcore:evolved_skeleton_boss" costMultiplier="20.0" disabled="true" soulvial="false"/>
+      <entity name="galacticraftplanets:creeper_boss"       costMultiplier="20.0" disabled="true" soulvial="false"/>
+    </spawning>
+  </recipe>
+
+  <recipe name="Spawner, Extra Planets" required="false">
+    <spawning>
+      <entity name="extraplanets:extraplanets.evolvedfirebatboss"     costMultiplier="20.0" disabled="true" soulvial="false"/>
+      <entity name="extraplanets:extraplanets.evolvedghastboss"       costMultiplier="20.0" disabled="true" soulvial="false"/>
+      <entity name="extraplanets:extraplanets.evolvedgiantzombieboss" costMultiplier="20.0" disabled="true" soulvial="false"/>
+      <entity name="extraplanets:extraplanets.evolvediceslimeboss"    costMultiplier="20.0" disabled="true" soulvial="false"/>
+      <entity name="extraplanets:extraplanets.evolvedmagmacubeboss"   costMultiplier="20.0" disabled="true" soulvial="false"/>
+      <entity name="extraplanets:extraplanets.evolvedsnowmanboss"     costMultiplier="20.0" disabled="true" soulvial="false"/>
+      <entity name="extraplanets:extraplanets.evolvedspacemanboss"    costMultiplier="20.0" disabled="true" soulvial="false"/>
+    </spawning>
+  </recipe>
+
 </enderio:recipes>

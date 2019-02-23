@@ -5,7 +5,6 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.power.forge.item.GeneratorBlockItem;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
 
 public abstract class AbstractGeneratorBlock<T extends AbstractGeneratorEntity> extends AbstractPoweredMachineBlock<T> {
 
@@ -18,7 +17,7 @@ public abstract class AbstractGeneratorBlock<T extends AbstractGeneratorEntity> 
   }
 
   @Override
-  public Item createBlockItem(@Nonnull IModObject modObject) {
+  public GeneratorBlockItem createBlockItem(@Nonnull IModObject modObject) {
     return modObject.apply(new GeneratorBlockItem(this));
   }
 

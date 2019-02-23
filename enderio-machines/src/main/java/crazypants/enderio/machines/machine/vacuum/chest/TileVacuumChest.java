@@ -142,7 +142,7 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity
         for (int chunkY = minChunkYClamped; chunkY <= maxChunkYClamped; ++chunkY) {
           for (Entity entity : entityLists[chunkY]) {
             if (!entity.isDead && (entity instanceof EntityItem) && entity.getEntityBoundingBox().intersects(bb)
-                && (filter == null || filter.doesItemPassFilter(null, ((EntityItem) entity).getItem())) && MagnetUtil.shouldAttract(getPos(), entity, false)) {
+                && (filter == null || filter.doesItemPassFilter(null, ((EntityItem) entity).getItem())) && MagnetUtil.shouldAttract(getPos(), entity, true)) {
               result.add((EntityItem) entity);
               if (maxItems > 0 && maxItems <= result.size()) {
                 return result;

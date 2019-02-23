@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
-public class EnchantmentWitherWeapon extends EnchantmentBase {
+public final class EnchantmentWitherWeapon extends EnchantmentBase {
 
   private static final @Nonnull String NAME = "witherweapon";
 
@@ -26,7 +26,7 @@ public class EnchantmentWitherWeapon extends EnchantmentBase {
     event.getRegistry().register(new EnchantmentWitherWeapon());
   }
 
-  public EnchantmentWitherWeapon() {
+  private EnchantmentWitherWeapon() {
     super(NAME, EnchantmentConfig.witherWeaponRarity, EnumEnchantmentType.WEAPON,
         new EntityEquipmentSlot[] { EntityEquipmentSlot.MAINHAND, EntityEquipmentSlot.OFFHAND }, EnchantmentConfig.witherWeaponEnabled);
   }

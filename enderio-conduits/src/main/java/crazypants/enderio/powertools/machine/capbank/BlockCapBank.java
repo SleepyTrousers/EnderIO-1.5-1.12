@@ -51,7 +51,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -89,7 +88,7 @@ public class BlockCapBank extends BlockEio<TileCapBank>
   }
 
   @Override
-  public ItemBlock createBlockItem(@Nonnull IModObject modObject) {
+  public BlockItemCapBank createBlockItem(@Nonnull IModObject modObject) {
     return modObject.apply(new BlockItemCapBank(this));
   }
 

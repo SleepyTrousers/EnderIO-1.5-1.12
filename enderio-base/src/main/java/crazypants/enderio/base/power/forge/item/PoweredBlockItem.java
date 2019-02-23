@@ -4,15 +4,25 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
+import crazypants.enderio.base.ItemEIO;
+import crazypants.enderio.base.machine.base.block.AbstractCapabilityPoweredMachineBlock;
+import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerBlock;
+import crazypants.enderio.base.machine.baselegacy.AbstractPoweredMachineBlock;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.util.NbtValue;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class PoweredBlockItem extends ItemBlock implements IInternalPoweredItem, IOverlayRenderAware {
+public class PoweredBlockItem extends ItemEIO implements IInternalPoweredItem, IOverlayRenderAware {
 
-  public PoweredBlockItem(@Nonnull Block block) {
+  public PoweredBlockItem(@Nonnull AbstractPoweredMachineBlock<?> block) {
+    super(block);
+  }
+
+  public PoweredBlockItem(@Nonnull AbstractPowerConsumerBlock<?> block) {
+    super(block);
+  }
+
+  public PoweredBlockItem(@Nonnull AbstractCapabilityPoweredMachineBlock<?> block) {
     super(block);
   }
 

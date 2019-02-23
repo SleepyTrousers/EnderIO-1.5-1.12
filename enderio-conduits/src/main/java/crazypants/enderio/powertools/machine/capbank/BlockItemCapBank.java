@@ -5,15 +5,15 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
 import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.ItemEIO;
 import crazypants.enderio.base.power.forge.item.IInternalPoweredItem;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.powertools.config.PersonalConfig;
 import crazypants.enderio.powertools.init.PowerToolObject;
 import crazypants.enderio.util.NbtValue;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class BlockItemCapBank extends ItemBlock implements IOverlayRenderAware, IInternalPoweredItem {
+public class BlockItemCapBank extends ItemEIO implements IOverlayRenderAware, IInternalPoweredItem {
 
   public static @Nonnull ItemStack createItemStackWithPower(int meta, int storedEnergy) {
     ItemStack res = new ItemStack(PowerToolObject.block_cap_bank.getBlockNN(), 1, meta);

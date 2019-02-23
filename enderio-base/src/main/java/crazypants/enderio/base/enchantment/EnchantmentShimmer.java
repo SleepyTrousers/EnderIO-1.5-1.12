@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
-public class EnchantmentShimmer extends EnchantmentBase {
+public final class EnchantmentShimmer extends EnchantmentBase {
 
   private static final @Nonnull String NAME = "shimmer";
 
@@ -21,7 +21,7 @@ public class EnchantmentShimmer extends EnchantmentBase {
     event.getRegistry().register(new EnchantmentShimmer());
   }
 
-  public EnchantmentShimmer() {
+  private EnchantmentShimmer() {
     super(NAME, EnchantmentConfig.shimmerRarity, EnumEnchantmentType.ALL, EntityEquipmentSlot.values(), EnchantmentConfig.shimmerEnabled);
   }
 

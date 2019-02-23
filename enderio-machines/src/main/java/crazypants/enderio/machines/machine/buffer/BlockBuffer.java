@@ -22,7 +22,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -49,7 +48,7 @@ public class BlockBuffer extends AbstractPowerConsumerBlock<TileBuffer>
   }
 
   @Override
-  public Item createBlockItem(@Nonnull IModObject modObject) {
+  public BlockItemBuffer createBlockItem(@Nonnull IModObject modObject) {
     return modObject.apply(new BlockItemBuffer(this));
   }
 

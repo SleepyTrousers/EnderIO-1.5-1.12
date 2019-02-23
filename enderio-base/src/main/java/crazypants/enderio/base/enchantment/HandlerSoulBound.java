@@ -36,6 +36,8 @@ import static crazypants.enderio.util.NbtValue.FLUIDAMOUNT;
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class HandlerSoulBound {
 
+  private static final @Nonnull String KEEP_INVENTORY = "keepInventory";
+
   /*
    * This is called the moment the player dies and drops his stuff.
    * 
@@ -47,7 +49,7 @@ public class HandlerSoulBound {
     if (evt.getEntityPlayer() == null || evt.getEntityPlayer() instanceof FakePlayer || evt.isCanceled()) {
       return;
     }
-    if (evt.getEntityPlayer().world.getGameRules().getBoolean("keepInventory")) {
+    if (evt.getEntityPlayer().world.getGameRules().getBoolean(KEEP_INVENTORY)) {
       return;
     }
 
@@ -107,7 +109,7 @@ public class HandlerSoulBound {
     if (evt.getEntityPlayer() == null || evt.getEntityPlayer() instanceof FakePlayer || evt.isCanceled()) {
       return;
     }
-    if (evt.getEntityPlayer().world.getGameRules().getBoolean("keepInventory")) {
+    if (evt.getEntityPlayer().world.getGameRules().getBoolean(KEEP_INVENTORY)) {
       return;
     }
 
@@ -141,7 +143,7 @@ public class HandlerSoulBound {
     if (evt.getOriginal() == null || evt.getEntityPlayer() == null || evt.getEntityPlayer() instanceof FakePlayer) {
       return;
     }
-    if (evt.getEntityPlayer().world.getGameRules().getBoolean("keepInventory")) {
+    if (evt.getEntityPlayer().world.getGameRules().getBoolean(KEEP_INVENTORY)) {
       return;
     }
     if (evt.getOriginal() == evt.getEntityPlayer() || evt.getOriginal().inventory == evt.getEntityPlayer().inventory
@@ -184,7 +186,7 @@ public class HandlerSoulBound {
     if (evt.getOriginal() == null || evt.getEntityPlayer() == null || evt.getEntityPlayer() instanceof FakePlayer) {
       return;
     }
-    if (evt.getEntityPlayer().world.getGameRules().getBoolean("keepInventory")) {
+    if (evt.getEntityPlayer().world.getGameRules().getBoolean(KEEP_INVENTORY)) {
       return;
     }
     if (evt.getOriginal() == evt.getEntityPlayer() || evt.getOriginal().inventory == evt.getEntityPlayer().inventory

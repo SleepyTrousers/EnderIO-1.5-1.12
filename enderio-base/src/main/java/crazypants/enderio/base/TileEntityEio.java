@@ -10,7 +10,6 @@ import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.autosave.BaseHandlers;
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
-import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.util.HandlePaintSource;
 import crazypants.enderio.util.NbtValue;
@@ -24,8 +23,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -157,16 +154,6 @@ public abstract class TileEntityEio extends TileEntityBase {
     writeCustomNBT(NBTAction.ITEM, tag);
     if (!tag.hasNoTags()) {
       NbtValue.DATAROOT.setTag(stack, tag);
-      NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-      NBTTagList nbttaglist = new NBTTagList();
-      nbttaglist.appendTag(new NBTTagString("(+NBT)"));
-      nbttagcompound1.setTag("Lore", nbttaglist);
-      final String name = Lang.MACHINE_CONFIGURED.get(stack.getDisplayName());
-      if (!name.equals(Lang.MACHINE_CONFIGURED.get("big fail"))) {
-        // dirty workaround for translation failing on servers sometimes
-        nbttagcompound1.setString("Name", name);
-      }
-      stack.setTagInfo("display", nbttagcompound1);
     }
     PaintUtil.setSourceBlock(stack, getPaintSource());
   }

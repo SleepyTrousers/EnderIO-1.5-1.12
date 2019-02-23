@@ -27,7 +27,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -197,7 +196,7 @@ public class BlockFusedQuartz extends BlockFusedQuartzBase<TileEntityEio> implem
   }
 
   @Override
-  public Item createBlockItem(@Nonnull IModObject modObject) {
+  public BlockItemFusedQuartz createBlockItem(@Nonnull IModObject modObject) {
     return modObject.apply(new BlockItemFusedQuartz(this));
   }
 

@@ -15,6 +15,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
+import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.EntityLivingBase;
@@ -61,7 +62,7 @@ public class DirectUpgrade extends AbstractUpgrade {
 
   @SubscribeEvent(priority = EventPriority.LOWEST)
   public static void blockDropEvent(BlockEvent.HarvestDropsEvent event) {
-    if (event.getHarvester() == null) {
+    if (event.getHarvester() == null || event.getHarvester() instanceof FakePlayerEIO) {
       return;
     }
 
@@ -79,7 +80,7 @@ public class DirectUpgrade extends AbstractUpgrade {
 
   @SubscribeEvent
   public static void attackEntityEvent(AttackEntityEvent event) {
-    if (event.getEntityPlayer() == null || event.getEntityPlayer().world.isRemote) {
+    if (event.getEntityPlayer() == null || event.getEntityPlayer().world.isRemote || event.getEntityPlayer() instanceof FakePlayerEIO) {
       return;
     }
 

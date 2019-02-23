@@ -11,7 +11,6 @@ import crazypants.enderio.util.Prep;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -58,7 +57,7 @@ public abstract class AbstractCapabilityPoweredMachineBlock<T extends AbstractCa
   }
 
   @Override
-  public Item createBlockItem(@Nonnull IModObject modObject) {
+  public PoweredBlockItem createBlockItem(@Nonnull IModObject modObject) {
     return modObject.apply(new PoweredBlockItem(this));
   }
 

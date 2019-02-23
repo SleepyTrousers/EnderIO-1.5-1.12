@@ -5,7 +5,6 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.power.forge.item.PoweredBlockItem;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
 
 public abstract class AbstractPowerConsumerBlock<T extends AbstractPowerConsumerEntity> extends AbstractPoweredMachineBlock<T> {
 
@@ -18,7 +17,7 @@ public abstract class AbstractPowerConsumerBlock<T extends AbstractPowerConsumer
   }
 
   @Override
-  public Item createBlockItem(@Nonnull IModObject modObject) {
+  public PoweredBlockItem createBlockItem(@Nonnull IModObject modObject) {
     return modObject.apply(new PoweredBlockItem(this));
   }
 
