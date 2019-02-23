@@ -208,4 +208,9 @@ public class BasicItemFilterGui extends AbstractFilterGui {
     return targets;
   }
 
+  @Override
+  @Nonnull
+  protected String getDocumentationPage() {
+    return super.getDocumentationPage() + (isAdvanced ? "_advanced" : "") + (isLimited ? "_limited" : "") + (isBig ? "_big" : "");
+  }
 }
