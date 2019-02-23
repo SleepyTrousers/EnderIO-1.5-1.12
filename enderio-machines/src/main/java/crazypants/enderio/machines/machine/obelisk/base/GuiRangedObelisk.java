@@ -91,4 +91,10 @@ public class GuiRangedObelisk extends GuiInventoryMachineBase<AbstractRangedObel
     return false;
   }
 
+  @Override
+  @Nonnull
+  protected String getDocumentationPage() {
+    return getTileEntity().getDocumentationPage();
+  }
+
 }

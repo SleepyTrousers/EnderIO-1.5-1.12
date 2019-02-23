@@ -10,6 +10,7 @@ import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.common.vecmath.Vector4f;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.machine.gui.GuiInventoryMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
@@ -49,6 +50,12 @@ public abstract class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInv
   public static class Furnace extends GuiAlloySmelter<TileAlloySmelter.Furnace> {
     public Furnace(@Nonnull InventoryPlayer par1InventoryPlayer, @Nonnull TileAlloySmelter.Furnace furnaceInventory) {
       super(par1InventoryPlayer, furnaceInventory, MODE.SIMPLE_FURNACE);
+    }
+
+    @Override
+    @Nonnull
+    protected String getDocumentationPage() {
+      return EnderIO.DOMAIN + ":furnace";
     }
   }
 
@@ -209,5 +216,11 @@ public abstract class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInv
     }
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+  }
+
+  @Override
+  @Nonnull
+  protected String getDocumentationPage() {
+    return EnderIO.DOMAIN + ":alloy_smelter";
   }
 }

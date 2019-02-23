@@ -8,9 +8,9 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.render.ColorUtil;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.redstone.IFilterIncrementingValue;
-import crazypants.enderio.base.lang.Lang;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -86,7 +86,13 @@ public class IncrementingValueFilterGui extends AbstractFilterGui {
   @Override
   @Nonnull
   protected String getUnlocalisedNameForHeading() {
-    return Lang.GUI_REDSTONE_FILTER_TIMER.get();
+    return incrementingFilter.getFilterHeading();
+  }
+
+  @Override
+  @Nonnull
+  protected String getDocumentationPage() {
+    return EnderIO.DOMAIN + ":redstone_signal_logic";
   }
 
 }

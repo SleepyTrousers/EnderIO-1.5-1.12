@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.vecmath.Vector4f;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.EntityAction;
 import crazypants.enderio.base.network.PacketSpawnParticles;
@@ -124,6 +125,11 @@ public class TileRelocatorObelisk extends AbstractSpawningObeliskEntity {
         }
       });
     }
+  }
+
+  @Override
+  protected @Nonnull String getDocumentationPage() {
+    return EnderIO.DOMAIN + ":relocator_obelisk";
   }
 
 }

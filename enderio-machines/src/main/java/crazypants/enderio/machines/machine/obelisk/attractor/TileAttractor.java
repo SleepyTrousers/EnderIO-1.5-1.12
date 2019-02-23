@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 
 import com.mojang.authlib.GameProfile;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
@@ -158,6 +159,11 @@ public class TileAttractor extends AbstractMobObeliskEntity {
       super(world, getLocation(), new GameProfile(null, MachineObject.block_attractor_obelisk.getUnlocalisedName() + ":" + getLocation()));
       posY += 1;
     }
+  }
+
+  @Override
+  protected @Nonnull String getDocumentationPage() {
+    return EnderIO.DOMAIN + ":attractor_obelisk";
   }
 
 }

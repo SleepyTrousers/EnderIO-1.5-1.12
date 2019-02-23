@@ -2,6 +2,7 @@ package crazypants.enderio.machines.machine.obelisk.inhibitor;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.obelisk.base.AbstractRangedObeliskEntity;
@@ -75,6 +76,11 @@ public class TileInhibitorObelisk extends AbstractRangedObeliskEntity {
   @Override
   public boolean canWork() {
     return true;
+  }
+
+  @Override
+  protected @Nonnull String getDocumentationPage() {
+    return EnderIO.DOMAIN + ":inhibitor_obelisk";
   }
 
 }

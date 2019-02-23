@@ -59,4 +59,5 @@ public abstract class AbstractRangedObeliskEntity extends AbstractPowerConsumerE
    */
   abstract public boolean canWork();
 
+  abstract protected @Nonnull String getDocumentationPage();
 }

@@ -81,7 +81,8 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
 
   // Project Intelligence
   protected @Nonnull String getDocumentationPage() {
-    return EnderIO.DOMAIN + ":" + getClass().getSimpleName().replaceAll("([A-Z])", "_$0").replaceFirst("^_", "").toLowerCase(Locale.ENGLISH);
+    return EnderIO.DOMAIN + ":" + getClass().getSimpleName().replaceAll("([A-Z])", "_$0").replaceFirst("^_", "").toLowerCase(Locale.ENGLISH)
+        .replaceFirst("_gui$", "").replaceFirst("^gui_", "");
   }
 
   // Project Intelligence

@@ -103,9 +103,9 @@ public enum MachineObject implements IModObjectBase {
   block_vat(BlockVat.class, MachineTileEntity.TileVat),
   block_enhanced_vat(BlockVat.class, "create_enhanced", MachineTileEntity.TileVatEnhanced),
   block_enhanced_vat_top(BlockVat.class, "create_extension"),
+  block_simple_wired_charger(BlockWiredCharger.class, "create_simple", MachineTileEntity.TileWiredChargerSimple),
   block_wired_charger(BlockWiredCharger.class, MachineTileEntity.TileWiredCharger),
   block_enhanced_wired_charger(BlockWiredCharger.class, "create_enhanced", MachineTileEntity.TileWiredChargerEnhanced),
-  block_simple_wired_charger(BlockWiredCharger.class, "create_simple", MachineTileEntity.TileWiredChargerSimple),
   block_enhanced_wired_charger_top(BlockWiredCharger.class, "create_extension", MachineTileEntity.TileWiredChargerEnhanced),
   block_wireless_charger(BlockWirelessCharger.class, MachineTileEntity.TileWirelessCharger),
   block_normal_wireless_charger(BlockNormalWirelessCharger.class, MachineTileEntity.TileWirelessCharger),
@@ -121,8 +121,8 @@ public enum MachineObject implements IModObjectBase {
   block_dialing_device(BlockDialingDevice.class, MachineTileEntity.TileDialingDevice),
 
   block_impulse_hopper(BlockImpulseHopper.class, MachineTileEntity.TileImpulseHopper),
-  block_crafter(BlockCrafter.class, MachineTileEntity.TileCrafter),
   block_simple_crafter(BlockCrafter.class, "create_simple", MachineTileEntity.TileSimpleCrafter),
+  block_crafter(BlockCrafter.class, MachineTileEntity.TileCrafter),
 
   block_creative_spawner(BlockCreativeSpawner.class, MachineTileEntity.TileCreativeSpawner),
 

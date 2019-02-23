@@ -15,6 +15,7 @@ import com.enderio.core.client.render.ColorUtil;
 
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.ITravelAccessable.AccessMode;
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.integration.jei.IHaveGhostTargets;
@@ -28,7 +29,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> extends GuiContainerBaseEIO implements IHaveGhostTargets<GuiTravelAccessable<T>>, ITravelAccessableRemoteExec.GUI {
+public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> extends GuiContainerBaseEIO
+    implements IHaveGhostTargets<GuiTravelAccessable<T>>, ITravelAccessableRemoteExec.GUI {
 
   private static final int ID_PUBLIC = 0;
   private static final int ID_PRIVATE = 1;
@@ -234,10 +236,15 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
   protected int getGuiOffset() {
     return 0;
   }
-  
+
   @Override
   public boolean isSlotTarget(GhostSlot slot) {
-    return protectedCB.isSelected() || !((CtaGhostSlot)slot).isAuth;
+    return protectedCB.isSelected() || !((CtaGhostSlot) slot).isAuth;
+  }
+
+  @Override
+  protected @Nonnull String getDocumentationPage() {
+    return EnderIO.DOMAIN + ":travel_accessable";
   }
 
 }
