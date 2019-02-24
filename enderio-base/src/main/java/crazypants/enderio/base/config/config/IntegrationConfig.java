@@ -25,7 +25,7 @@ public final class IntegrationConfig {
   public static final IValue<Boolean> enableBoP = F.make("enableBoP", true, //
       "Enables the integration with Biomes'o'Plenty (harvesting flowers).").startup();
 
-  public static final IValue<Boolean> experimentalProjectIntelligence = F.make("experimentalProjectIntelligence", false, //
-      "Enables the integration with Project Intelligence. Not yet ready...");
+  public static final IValue<Boolean> enableProjectIntelligence = F.make("enableProjectIntelligence", true, //
+      "Enables the integration with Project Intelligence.");
 
 }

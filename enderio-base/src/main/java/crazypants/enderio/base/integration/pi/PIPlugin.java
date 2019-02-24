@@ -15,7 +15,7 @@ public class PIPlugin implements IModPlugin {
 
   @Override
   public void registerModGUIs(IGuiDocRegistry registry) {
-    if (IntegrationConfig.experimentalProjectIntelligence.get()) {
+    if (IntegrationConfig.enableProjectIntelligence.get()) {
       registry.registerGuiDocPages(GuiContainerBaseEIO.class, gui -> gui.getDocumentationPages());
       registry.registerGuiHandler(GuiContainerBaseEIO.class, new IGuiDocHandler<GuiContainerBaseEIO>() {
 
