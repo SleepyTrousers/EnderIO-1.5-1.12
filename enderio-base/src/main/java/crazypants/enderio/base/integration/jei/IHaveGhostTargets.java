@@ -10,6 +10,8 @@ import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
 import mezz.jei.api.gui.IGhostIngredientHandler.Target;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -36,6 +38,15 @@ public interface IHaveGhostTargets<T extends GuiContainerBase> {
           ((IFluidGhostSlot) s).putFluidStack((FluidStack) ingredient);
         } else if (ingredient instanceof Fluid && s instanceof IFluidGhostSlot) {
           ((IFluidGhostSlot) s).putFluid((Fluid) ingredient);
+        } else if (ingredient instanceof EnchantmentData && s instanceof IEnchantmentGhostSlot) {
+          ((IEnchantmentGhostSlot) s).putEnchantmentData((EnchantmentData) ingredient);
+        } else if (ingredient instanceof Enchantment && s instanceof IEnchantmentGhostSlot) {
+          ((IEnchantmentGhostSlot) s).putEnchantment((Enchantment) ingredient);
+        } else if (s instanceof ICustomGhostSlot) {
+          ICustomGhostSlot customSlot = (ICustomGhostSlot) s;
+          if (customSlot.isType(ingredient)) {
+            customSlot.putIngredient(ingredient);
+          }
         }
       }
     }).collect(Collectors.toList());
@@ -45,8 +56,7 @@ public interface IHaveGhostTargets<T extends GuiContainerBase> {
     return true;
   }
 
-  public interface IFluidGhostSlot {
-
+  interface IFluidGhostSlot {
     default void putFluidStack(@Nonnull FluidStack stack) {
       final Fluid fluid = stack.getFluid();
       if (fluid != null) {
@@ -55,7 +65,22 @@ public interface IHaveGhostTargets<T extends GuiContainerBase> {
     }
 
     void putFluid(@Nonnull Fluid fluid);
+  }
 
+  interface IEnchantmentGhostSlot {
+    default void putEnchantmentData(@Nonnull EnchantmentData enchantmentData) {
+      if (enchantmentData.enchantmentLevel > 0) {
+        putEnchantment(enchantmentData.enchantment);
+      }
+    }
+
+    void putEnchantment(@Nonnull Enchantment enchantment);
+  }
+
+  interface ICustomGhostSlot {
+    void putIngredient(Object ingredient);
+
+    boolean isType(Object object);
   }
 
 }

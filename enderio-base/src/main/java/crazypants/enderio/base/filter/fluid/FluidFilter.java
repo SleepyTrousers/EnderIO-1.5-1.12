@@ -217,6 +217,12 @@ public class FluidFilter implements IFluidFilter {
     }
 
     @Override
+    public void putFluidStack(@Nonnull FluidStack fluid) {
+      setFluid(getSlot(), fluid);
+      cb.run();
+    }
+
+    @Override
     public void putFluid(@Nonnull Fluid fluid) {
       setFluid(getSlot(), fluid);
       cb.run();
