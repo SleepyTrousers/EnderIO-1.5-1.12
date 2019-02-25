@@ -3,8 +3,6 @@ package crazypants.enderio.base.filter.gui;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -15,7 +13,6 @@ import com.enderio.core.client.render.ColorUtil;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.ModItemFilter;
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.base.integration.jei.GhostSlotTarget;
 import crazypants.enderio.base.lang.Lang;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -66,6 +63,16 @@ public class ModItemFilterGui extends AbstractFilterGui {
 
     whiteListB = new IconButton(this, -1, inputOffsetX + 19, 24, IconEIO.FILTER_WHITELIST);
     whiteListB.setToolTip(Lang.GUI_ITEM_FILTER_WHITELIST.get());
+  }
+
+  public void createFilterSlots() {
+    filter.createGhostSlots(getGhostSlotHandler().getGhostSlots(), inputOffsetX, 46, this::sendFilterChange);
+  }
+
+  @Override
+  public void initGui() {
+    createFilterSlots();
+    super.initGui();
   }
 
   @Override
@@ -120,25 +127,6 @@ public class ModItemFilterGui extends AbstractFilterGui {
     }
   }
 
-  @Override
-  public void mouseClicked(int x, int y, int par3) throws IOException {
-    super.mouseClicked(x, y, par3);
-    ItemStack st = Minecraft.getMinecraft().player.inventory.getItemStack();
-    if (st.isEmpty()) {
-      return;
-    }
-
-    int xOffset = getGuiLeft();
-    int yOffset = getGuiTop();
-
-    for (int i = 0; i < inputBounds.length; i++) {
-      Rectangle bound = inputBounds[i];
-      if (bound.contains(x - xOffset, y - yOffset)) {
-        setMod(i, st);
-      }
-    }
-  }
-
   private void setMod(int i, @Nonnull ItemStack st) {
     filter.setMod(i, st);
     sendFilterChange();
@@ -148,15 +136,6 @@ public class ModItemFilterGui extends AbstractFilterGui {
   @Nonnull
   protected String getUnlocalisedNameForHeading() {
     return Lang.GUI_MOD_ITEM_FILTER.get();
-  }
-
-  @Override
-  public @Nonnull List<GhostSlotTarget<?>> getGhostTargets() {
-    List<GhostSlotTarget<?>> targets = new ArrayList<>();
-    for (int i = 0; i < inputBounds.length; i++) {
-      targets.add(new GhostSlotTarget<>(filter, i, getGuiLeft(), getGuiTop(), inputBounds[i].x, inputBounds[i].y, this));
-    }
-    return targets;
   }
 
 }

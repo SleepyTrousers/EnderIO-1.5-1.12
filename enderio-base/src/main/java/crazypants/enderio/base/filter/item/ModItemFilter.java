@@ -3,8 +3,10 @@ package crazypants.enderio.base.filter.item;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
 
+import com.enderio.core.common.util.NNList;
 import crazypants.enderio.util.Prep;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.Item;
@@ -13,7 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.items.IItemHandler;
 
-public class ModItemFilter implements IItemFilter {
+public class ModItemFilter implements IItemFilter.WithGhostSlots {
 
   private final String[] mods = new String[3];
   private boolean blacklist = false;
@@ -144,5 +146,36 @@ public class ModItemFilter implements IItemFilter {
   @Override
   public boolean isEmpty() {
     return true;
+  }
+
+  @Override
+  public void createGhostSlots(@Nonnull NNList<GhostSlot> slots, int xOffset, int yOffset, @Nullable Runnable cb) {
+    int index = 0;
+    for (int row = 0; row < mods.length; row++) {
+      slots.add(new ModFilterGhostSlot(index, xOffset, yOffset + 22 * row, cb));
+      index++;
+    }
+  }
+
+  class ModFilterGhostSlot extends GhostSlot {
+    private final Runnable cb;
+
+    ModFilterGhostSlot(int slot, int x, int y, Runnable cb) {
+      this.setX(x);
+      this.setY(y);
+      this.setSlot(slot);
+      this.cb = cb;
+    }
+
+    @Override
+    public void putStack(@Nonnull ItemStack stack, int realsize) {
+      setInventorySlotContents(getSlot(), stack);
+      cb.run();
+    }
+
+    @Override
+    public @Nonnull ItemStack getStack() {
+      return Prep.getEmpty();
+    }
   }
 }

@@ -8,6 +8,7 @@ import com.enderio.core.common.network.NetworkUtil;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.base.integration.jei.IHaveGhostTargets.IFluidGhostSlot;
 import crazypants.enderio.util.NbtValue;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
@@ -194,7 +195,7 @@ public class FluidFilter implements IFluidFilter {
     return fluids.length;
   }
 
-  class FluidFilterGhostSlot extends GhostSlot {
+  class FluidFilterGhostSlot extends GhostSlot implements IFluidGhostSlot {
     private final Runnable cb;
 
     FluidFilterGhostSlot(int slot, int x, int y, Runnable cb) {
@@ -206,13 +207,19 @@ public class FluidFilter implements IFluidFilter {
 
     @Override
     public void putStack(@Nonnull ItemStack stack, int realsize) {
-      fluids[getSlot()] = FluidUtil.getFluidTypeFromItem(stack);
+      setFluid(getSlot(), stack);
       cb.run();
     }
 
     @Override
     public @Nonnull ItemStack getStack() {
       return ItemStack.EMPTY;
+    }
+
+    @Override
+    public void putFluid(@Nonnull Fluid fluid) {
+      setFluid(getSlot(), fluid);
+      cb.run();
     }
   }
 

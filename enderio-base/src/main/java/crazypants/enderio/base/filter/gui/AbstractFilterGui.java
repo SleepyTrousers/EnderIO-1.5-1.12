@@ -2,8 +2,6 @@ package crazypants.enderio.base.filter.gui;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -16,7 +14,6 @@ import crazypants.enderio.base.filter.network.PacketFilterUpdate;
 import crazypants.enderio.base.filter.network.PacketHeldFilterUpdate;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.base.integration.jei.GhostSlotTarget;
 import crazypants.enderio.base.integration.jei.IHaveGhostTargets;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
@@ -110,11 +107,6 @@ public abstract class AbstractFilterGui extends GuiContainerBaseEIO implements I
   @Nonnull
   private IFilter getFilter() {
     return filter;
-  }
-
-  @Override
-  public List<GhostSlotTarget<?>> getGhostTargets() {
-    return new ArrayList<>();
   }
 
 }

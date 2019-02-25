@@ -2,8 +2,6 @@ package crazypants.enderio.base.filter.gui;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -12,13 +10,11 @@ import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.common.util.NNList;
-import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.SoulFilter;
 import crazypants.enderio.base.filter.item.SoulFilter.SoulFilterGhostSlot;
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.base.integration.jei.GhostSlotTarget;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.CapturedMob;
 import net.minecraft.client.Minecraft;
@@ -127,18 +123,6 @@ public class SoulFilterGui extends AbstractFilterGui {
   @Nonnull
   protected String getUnlocalisedNameForHeading() {
     return (isBig() ? Lang.GUI_SOUL_FILTER_BIG : Lang.GUI_SOUL_FILTER_NORMAL).get();
-  }
-
-  @Override
-  public @Nonnull List<GhostSlotTarget<?>> getGhostTargets() {
-    List<GhostSlotTarget<?>> targets = new ArrayList<>();
-    getGhostSlotHandler().getGhostSlots().apply(new Callback<GhostSlot>() {
-      @Override
-      public void apply(@Nonnull GhostSlot slot) {
-        targets.add(new GhostSlotTarget<>(filter, slot, getGuiLeft(), getGuiTop(), SoulFilterGui.this));
-      }
-    });
-    return targets;
   }
 
   @Override
