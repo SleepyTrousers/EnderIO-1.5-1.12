@@ -18,7 +18,6 @@ import crazypants.enderio.base.autosave.enderio.HandlePoweredTask;
 import crazypants.enderio.base.autosave.enderio.HandleTelepadTarget;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import info.loenwind.autosave.Registry;
-import info.loenwind.autosave.exceptions.NoHandlerFoundException;
 import info.loenwind.autosave.handlers.java.util.HandleSimpleCollection;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -32,24 +31,21 @@ public class BaseHandlers {
 
   @SubscribeEvent
   public static void register(EnderIOLifecycleEvent.PreInit event) {
-    try {
-      // EnderCore Object Handlers, leave these global for other mods
-      GLOBAL_REGISTRY.register(new HandleEnderInventory());
-      GLOBAL_REGISTRY.register(new HandleSimpleCollection<>(NNList.class));
-      GLOBAL_REGISTRY.register(new HandleSmartTank());
-      GLOBAL_REGISTRY.register(new HandleThings());
-      GLOBAL_REGISTRY.register(new HandleUserIdent());
+    // EnderCore Object Handlers, leave these global for other mods
+    GLOBAL_REGISTRY.register(new HandleEnderInventory());
+    GLOBAL_REGISTRY.register(new HandleSimpleCollection<>(NNList.class));
+    GLOBAL_REGISTRY.register(new HandleSmartTank());
+    GLOBAL_REGISTRY.register(new HandleThings());
+    GLOBAL_REGISTRY.register(new HandleUserIdent());
 
-      // EnderIO Object Handlers
-      REGISTRY.register(new HandleCapturedMob());
-      REGISTRY.register(new HandleExperienceContainer());
-      REGISTRY.register(new HandleIMachineRecipe());
-      REGISTRY.register(new HandlePoweredTask());
-      REGISTRY.register(new HandleIFilter());
-      REGISTRY.register(new HandleGrindingMultiplier());
-      REGISTRY.register(new HandleTelepadTarget());
-
-    } catch (NoHandlerFoundException ignored) {} // impossible
+    // EnderIO Object Handlers
+    REGISTRY.register(new HandleCapturedMob());
+    REGISTRY.register(new HandleExperienceContainer());
+    REGISTRY.register(new HandleIMachineRecipe());
+    REGISTRY.register(new HandlePoweredTask());
+    REGISTRY.register(new HandleIFilter());
+    REGISTRY.register(new HandleGrindingMultiplier());
+    REGISTRY.register(new HandleTelepadTarget());
   }
 
 }
