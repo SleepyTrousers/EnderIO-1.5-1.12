@@ -1,10 +1,14 @@
 package crazypants.enderio.base.init;
 
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.IModTileEntity;
 import crazypants.enderio.base.block.charge.BlockConcussionCharge;
 import crazypants.enderio.base.block.charge.BlockConfusionCharge;
@@ -115,14 +119,14 @@ public enum ModObject implements IModObjectBase {
   block_infinity(BlockInfinity.class),
 
   // Blocks
-  blockColdFire(BlockColdFire.class),
-  blockDarkSteelAnvil(BlockDarkSteelAnvil.class),
-  blockDarkSteelLadder(BlockDarkSteelLadder.class),
-  blockDarkIronBars(BlockDarkIronBars.class),
-  blockDarkSteelTrapdoor(BlockDarkSteelTrapDoor.class),
-  blockDarkSteelDoor(BlockDarkSteelDoor.class),
-  blockReinforcedObsidian(BlockReinforcedObsidian.class),
-  blockSelfResettingLever5(BlockSelfResettingLever.class, "create5"),
+  blockColdFire(BlockColdFire::create),
+  blockDarkSteelAnvil(BlockDarkSteelAnvil::create),
+  blockDarkSteelLadder(BlockDarkSteelLadder::create),
+  blockDarkIronBars(BlockDarkIronBars::create),
+  blockDarkSteelTrapdoor(BlockDarkSteelTrapDoor::create),
+  blockDarkSteelDoor(BlockDarkSteelDoor::create),
+  blockReinforcedObsidian(BlockReinforcedObsidian::create),
+  blockSelfResettingLever5(BlockSelfResettingLever::create5),
   blockSelfResettingLever10(BlockSelfResettingLever.class, "create10"),
   blockSelfResettingLever30(BlockSelfResettingLever.class, "create30"),
   blockSelfResettingLever60(BlockSelfResettingLever.class, "create60"),
@@ -139,14 +143,14 @@ public enum ModObject implements IModObjectBase {
   blockEnderCharge(BlockEnderCharge.class),
 
   // Painter
-  blockPaintedFence(BlockPaintedFence.class, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedFence(BlockPaintedFence::create, ModTileEntity.TileEntityPaintedBlock),
   blockPaintedStoneFence(BlockPaintedFence.class, "create_stone", ModTileEntity.TileEntityPaintedBlock),
   blockPaintedFenceGate(BlockPaintedFenceGate.class, ModTileEntity.TileEntityPaintedBlock),
   blockPaintedWall(BlockPaintedWall.class, ModTileEntity.TileEntityPaintedBlock),
   blockPaintedStair(BlockPaintedStairs.class, ModTileEntity.TileEntityPaintedBlock),
   blockPaintedStoneStair(BlockPaintedStairs.class, "create_stone", ModTileEntity.TileEntityPaintedBlock),
   blockPaintedSlab(BlockPaintedSlabManager.class, "create_wood", "create_item", ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedDoubleSlab(BlockPaintedSlabManager.class, "create_wood_double", null, ModTileEntity.TileEntityTwicePaintedBlock),
+  blockPaintedDoubleSlab(BlockPaintedSlabManager::create_wood_double, (mo, b) -> null, ModTileEntity.TileEntityTwicePaintedBlock),
   blockPaintedStoneSlab(BlockPaintedSlabManager.class, "create_stone", "create_item", ModTileEntity.TileEntityPaintedBlock),
   blockPaintedStoneDoubleSlab(BlockPaintedSlabManager.class, "create_stone_double", null, ModTileEntity.TileEntityTwicePaintedBlock),
   blockPaintedGlowstone(BlockPaintedGlowstone.class, ModTileEntity.TileEntityPaintedBlock),
@@ -269,6 +273,9 @@ public enum ModObject implements IModObjectBase {
   protected final @Nullable String blockMethodName, itemMethodName;
   protected final @Nullable IModTileEntity modTileEntity;
 
+  protected final @Nullable Function<IModObject, Block> blockMaker;
+  protected final @Nullable BiFunction<IModObject, Block, Item> itemMaker;
+
   /*
    * A modObject can be defined in a couple of different ways.
    * 
@@ -289,6 +296,36 @@ public enum ModObject implements IModObjectBase {
    * Please note that it is not recommended to override the lifecycle methods to add callbacks to the block/item code. Doing so will classload that Block/Item
    * together with the ModObject enum, which can cause weird errors. Implement the IModObject lifecycle interfaces on the block/item instead.
    */
+
+  private ModObject(@Nonnull BiFunction<IModObject, Block, Item> itemMaker) {
+    this(null, itemMaker, null);
+  }
+
+  private ModObject(@Nonnull Function<IModObject, Block> blockMaker) {
+    this(blockMaker, null, null);
+  }
+
+  private ModObject(@Nonnull Function<IModObject, Block> blockMaker, @Nonnull BiFunction<IModObject, Block, Item> itemMaker) {
+    this(blockMaker, itemMaker, null);
+  }
+
+  private ModObject(@Nonnull Function<IModObject, Block> blockMaker, @Nonnull IModTileEntity modTileEntity) {
+    this(blockMaker, null, modTileEntity);
+  }
+
+  private ModObject(@Nullable Function<IModObject, Block> blockMaker, @Nullable BiFunction<IModObject, Block, Item> itemMaker,
+      @Nullable IModTileEntity modTileEntity) {
+    this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
+    this.clazz = this.getClass(); // dummy
+    this.blockMethodName = null;
+    this.itemMethodName = null;
+    this.blockMaker = blockMaker;
+    this.itemMaker = itemMaker;
+    if (blockMaker == null && itemMaker == null) {
+      throw new RuntimeException(this + " unexpectedly is neither a Block nor an Item.");
+    }
+    this.modTileEntity = modTileEntity;
+  }
 
   private ModObject(@Nonnull Class<?> clazz) {
     this(clazz, (IModTileEntity) null);
@@ -315,6 +352,8 @@ public enum ModObject implements IModObjectBase {
       throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
     }
     this.modTileEntity = modTileEntity;
+    this.blockMaker = null;
+    this.itemMaker = null;
   }
 
   @Override
@@ -361,6 +400,16 @@ public enum ModObject implements IModObjectBase {
   @Nullable
   public IModTileEntity getTileEntity() {
     return modTileEntity;
+  }
+
+  @Override
+  public @Nonnull Function<IModObject, Block> getBlockCreator() {
+    return blockMaker != null ? blockMaker : IModObjectBase.super.getBlockCreator();
+  }
+
+  @Override
+  public @Nonnull BiFunction<IModObject, Block, Item> getItemCreator() {
+    return itemMaker != null ? itemMaker : IModObjectBase.super.getItemCreator();
   }
 
 }

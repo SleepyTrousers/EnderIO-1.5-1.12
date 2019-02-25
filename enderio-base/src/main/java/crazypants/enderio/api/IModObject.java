@@ -1,5 +1,8 @@
 package crazypants.enderio.api;
 
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -36,14 +39,56 @@ public interface IModObject extends IProducer, IForgeRegistryEntry<IModObject> {
   @Nullable
   Class<? extends TileEntity> getTEClass();
 
+  @Deprecated
   @Nonnull
   Class<?> getClazz();
 
+  @Deprecated
   @Nullable
   String getBlockMethodName();
 
+  @Deprecated
   @Nullable
   String getItemMethodName();
+
+  default @Nonnull Function<IModObject, Block> getBlockCreator() {
+    return modobject -> {
+      try {
+        if (getBlockMethodName() == null) {
+          return null;
+        }
+        return (Block) modobject.getClazz().getDeclaredMethod(getBlockMethodName(), new Class<?>[] { IModObject.class }).invoke(null,
+            new Object[] { modobject });
+      } catch (Exception | Error e) {
+        throw new RuntimeException("ModObject:create: Could not create instance for " + modobject.getClazz() + " using method " + getBlockMethodName(), e);
+      }
+    };
+  }
+
+  default @Nonnull BiFunction<IModObject, Block, Item> getItemCreator() {
+    return (modobject, block) -> {
+      if (modobject == null) {
+        throw new NullPointerException();
+      }
+      if (block instanceof IModObject.WithBlockItem) {
+        return ((IModObject.WithBlockItem) block).createBlockItem(modobject);
+      }
+      if (getItemMethodName() == null) {
+        return null;
+      }
+      try {
+        return (Item) modobject.getClazz().getDeclaredMethod(getItemMethodName(), new Class<?>[] { IModObject.class, Block.class }).invoke(null,
+            new Object[] { modobject, block });
+      } catch (Exception | Error e0) {
+        try {
+          return (Item) modobject.getClazz().getDeclaredMethod(getItemMethodName(), new Class<?>[] { IModObject.class }).invoke(null,
+              new Object[] { modobject });
+        } catch (Exception | Error e) {
+          throw new RuntimeException("ModObject:create: Could not create instance for " + modobject.getClazz() + " using method " + getItemMethodName(), e);
+        }
+      }
+    };
+  }
 
   @Nullable
   IModTileEntity getTileEntity();
