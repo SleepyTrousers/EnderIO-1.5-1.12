@@ -1,20 +1,16 @@
 package crazypants.enderio.base.filter.gui;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.button.CycleButton;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
-import com.enderio.core.client.gui.widget.GhostSlot;
 
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.ItemFilter;
 import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.base.integration.jei.GhostSlotTarget;
 import crazypants.enderio.base.lang.Lang;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -197,15 +193,6 @@ public class BasicItemFilterGui extends AbstractFilterGui {
     } else {
       return Lang.GUI_BASIC_ITEM_FILTER.get();
     }
-  }
-
-  @Override
-  public @Nonnull List<GhostSlotTarget<?>> getGhostTargets() {
-    List<GhostSlotTarget<?>> targets = new ArrayList<>();
-    for (GhostSlot slot : getGhostSlotHandler().getGhostSlots()) {
-      targets.add(new GhostSlotTarget<>(filter, slot, getGuiLeft(), getGuiTop(), this));
-    }
-    return targets;
   }
 
   @Override

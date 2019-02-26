@@ -3,17 +3,25 @@ package crazypants.enderio.base.filter.item;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
 
+import com.enderio.core.common.util.NNList;
+import crazypants.enderio.base.integration.jei.IHaveGhostTargets.IEnchantmentGhostSlot;
+import crazypants.enderio.base.integration.jei.IHaveGhostTargets.IFluidGhostSlot;
 import crazypants.enderio.util.Prep;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.IItemHandler;
 
-public class ModItemFilter implements IItemFilter {
+public class ModItemFilter implements IItemFilter.WithGhostSlots {
 
   private final String[] mods = new String[3];
   private boolean blacklist = false;
@@ -28,6 +36,36 @@ public class ModItemFilter implements IItemFilter {
       return null;
     }
     ResourceLocation ui = Item.REGISTRY.getNameForObject(itemStack.getItem());
+    if (ui == null) {
+      setMod(index, (String) null);
+      return null;
+    }
+    String targetMod = ui.getResourceDomain();
+    setMod(index, targetMod);
+    return targetMod;
+  }
+
+  public String setMod(int index, @Nonnull FluidStack fluid) {
+    if (index < 0 || index >= mods.length) {
+      return null;
+    }
+
+    if (fluid.getFluid() == null) {
+      setMod(index, (String) null);
+      return null;
+    }
+    String targetMod = FluidRegistry.getModId(fluid);
+    setMod(index, targetMod);
+    return targetMod;
+  }
+
+
+  public String setMod(int index, @Nonnull Enchantment enchantment) {
+    if (index < 0 || index >= mods.length) {
+      return null;
+    }
+
+    ResourceLocation ui = Enchantment.REGISTRY.getNameForObject(enchantment);
     if (ui == null) {
       setMod(index, (String) null);
       return null;
@@ -144,5 +182,54 @@ public class ModItemFilter implements IItemFilter {
   @Override
   public boolean isEmpty() {
     return true;
+  }
+
+  @Override
+  public void createGhostSlots(@Nonnull NNList<GhostSlot> slots, int xOffset, int yOffset, @Nullable Runnable cb) {
+    int index = 0;
+    for (int row = 0; row < mods.length; row++) {
+      slots.add(new ModFilterGhostSlot(index, xOffset, yOffset + 22 * row, cb));
+      index++;
+    }
+  }
+
+  class ModFilterGhostSlot extends GhostSlot implements IFluidGhostSlot, IEnchantmentGhostSlot {
+    private final Runnable cb;
+
+    ModFilterGhostSlot(int slot, int x, int y, Runnable cb) {
+      this.setX(x);
+      this.setY(y);
+      this.setSlot(slot);
+      this.cb = cb;
+    }
+
+    @Override
+    public void putStack(@Nonnull ItemStack stack, int realsize) {
+      setInventorySlotContents(getSlot(), stack);
+      cb.run();
+    }
+
+    @Override
+    public @Nonnull ItemStack getStack() {
+      return Prep.getEmpty();
+    }
+
+    @Override
+    public void putFluidStack(@Nonnull FluidStack fluidStack) {
+      setMod(getSlot(), fluidStack);
+      cb.run();
+    }
+
+    @Override
+    public void putFluid(@Nonnull Fluid fluid) {
+      setMod(getSlot(), new FluidStack(fluid, 0));
+      cb.run();
+    }
+
+    @Override
+    public void putEnchantment(@Nonnull Enchantment enchantment) {
+      setMod(getSlot(), enchantment);
+      cb.run();
+    }
   }
 }

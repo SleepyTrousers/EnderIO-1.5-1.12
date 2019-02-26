@@ -11,6 +11,7 @@ import com.enderio.core.common.network.NetworkUtil;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.autosave.BaseHandlers;
+import crazypants.enderio.base.integration.jei.IHaveGhostTargets.IEnchantmentGhostSlot;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.Reader;
 import info.loenwind.autosave.Writer;
@@ -140,6 +141,21 @@ public class EnchantmentFilter implements IItemFilter.WithGhostSlots {
     }
   }
 
+  public void setEnchantment(int slot, @Nonnull Enchantment enchantment) {
+    if (!enchantments.contains(enchantment)) {
+      if (slot < enchantments.size()) {
+        enchantments.set(slot, enchantment);
+      } else {
+        enchantments.add(enchantment);
+      }
+      while (enchantments.size() > slotCount) {
+        enchantments.remove(slotCount);
+      }
+    } else if (slot < enchantments.size()) {
+      enchantments.remove(slot);
+    }
+  }
+
   @Override
   @Nonnull
   public ItemStack getInventorySlotContents(int slot) {
@@ -169,7 +185,7 @@ public class EnchantmentFilter implements IItemFilter.WithGhostSlots {
     }
   }
 
-  public class EnchantmentFilterGhostSlot extends GhostSlot {
+  public class EnchantmentFilterGhostSlot extends GhostSlot implements IEnchantmentGhostSlot {
     private final Runnable cb;
 
     EnchantmentFilterGhostSlot(int slot, int x, int y, Runnable cb) {
@@ -190,6 +206,12 @@ public class EnchantmentFilter implements IItemFilter.WithGhostSlots {
     @Override
     public @Nonnull ItemStack getStack() {
       return getInventorySlotContents(getSlot());
+    }
+
+    @Override
+    public void putEnchantment(@Nonnull Enchantment enchantment) {
+      setEnchantment(getSlot(), enchantment);
+      cb.run();
     }
   }
 
