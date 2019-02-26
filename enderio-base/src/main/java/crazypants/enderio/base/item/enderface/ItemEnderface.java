@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.util.Prep;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -15,7 +16,7 @@ import net.minecraftforge.client.model.ModelLoader;
 
 public class ItemEnderface extends Item implements IHaveRenderers {
 
-  public static ItemEnderface create(@Nonnull IModObject modObject) {
+  public static ItemEnderface create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemEnderface(modObject);
   }
 

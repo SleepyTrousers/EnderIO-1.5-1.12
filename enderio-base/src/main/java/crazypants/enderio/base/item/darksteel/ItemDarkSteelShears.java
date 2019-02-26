@@ -76,7 +76,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
     return EnergyUpgradeManager.getEnergyStored(player.getHeldItemMainhand());
   }
 
-  public static ItemDarkSteelShears create(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelShears create(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemDarkSteelShears res = new ItemDarkSteelShears(modObject);
     MinecraftForge.EVENT_BUS.register(res);
     return res;

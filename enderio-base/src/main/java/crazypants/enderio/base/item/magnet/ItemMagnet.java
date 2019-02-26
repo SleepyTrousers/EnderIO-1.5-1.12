@@ -20,6 +20,7 @@ import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.power.forge.item.AbstractPoweredItem;
 import crazypants.enderio.base.power.forge.item.IInternalPoweredItem;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
+import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -41,7 +42,7 @@ import static crazypants.enderio.util.NbtValue.MAGNET_ACTIVE;
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles|API")
 public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipProvider, IBauble, IOverlayRenderAware, IHasPlayerRenderer {
 
-  public static ItemMagnet create(@Nonnull IModObject modObject) {
+  public static ItemMagnet create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemMagnet(modObject);
   }
 

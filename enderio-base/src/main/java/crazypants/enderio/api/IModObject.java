@@ -40,7 +40,7 @@ public interface IModObject extends IProducer, IForgeRegistryEntry<IModObject> {
   Class<? extends TileEntity> getTEClass();
 
   @Deprecated
-  @Nonnull
+  @Nullable
   Class<?> getClazz();
 
   @Deprecated
@@ -53,14 +53,14 @@ public interface IModObject extends IProducer, IForgeRegistryEntry<IModObject> {
 
   default @Nonnull Function<IModObject, Block> getBlockCreator() {
     return modobject -> {
+      final Class<?> clazz = modobject.getClazz();
       try {
-        if (getBlockMethodName() == null) {
+        if (modobject.getBlockMethodName() == null || clazz == null) {
           return null;
         }
-        return (Block) modobject.getClazz().getDeclaredMethod(getBlockMethodName(), new Class<?>[] { IModObject.class }).invoke(null,
-            new Object[] { modobject });
+        return (Block) clazz.getDeclaredMethod(modobject.getBlockMethodName(), new Class<?>[] { IModObject.class }).invoke(null, new Object[] { modobject });
       } catch (Exception | Error e) {
-        throw new RuntimeException("ModObject:create: Could not create instance for " + modobject.getClazz() + " using method " + getBlockMethodName(), e);
+        throw new RuntimeException("ModObject:create: Could not create instance for " + clazz + " using method " + modobject.getBlockMethodName(), e);
       }
     };
   }
@@ -70,21 +70,18 @@ public interface IModObject extends IProducer, IForgeRegistryEntry<IModObject> {
       if (modobject == null) {
         throw new NullPointerException();
       }
-      if (block instanceof IModObject.WithBlockItem) {
-        return ((IModObject.WithBlockItem) block).createBlockItem(modobject);
-      }
-      if (getItemMethodName() == null) {
-        return null;
+      final Class<?> clazz = modobject.getClazz();
+      if (modobject.getItemMethodName() == null || clazz == null) {
+        return IModObject.WithBlockItem.itemCreator.apply(modobject, block);
       }
       try {
-        return (Item) modobject.getClazz().getDeclaredMethod(getItemMethodName(), new Class<?>[] { IModObject.class, Block.class }).invoke(null,
+        return (Item) clazz.getDeclaredMethod(modobject.getItemMethodName(), new Class<?>[] { IModObject.class, Block.class }).invoke(null,
             new Object[] { modobject, block });
       } catch (Exception | Error e0) {
         try {
-          return (Item) modobject.getClazz().getDeclaredMethod(getItemMethodName(), new Class<?>[] { IModObject.class }).invoke(null,
-              new Object[] { modobject });
+          return (Item) clazz.getDeclaredMethod(modobject.getItemMethodName(), new Class<?>[] { IModObject.class }).invoke(null, new Object[] { modobject });
         } catch (Exception | Error e) {
-          throw new RuntimeException("ModObject:create: Could not create instance for " + modobject.getClazz() + " using method " + getItemMethodName(), e);
+          throw new RuntimeException("ModObject:create: Could not create instance for " + clazz + " using method " + modobject.getItemMethodName(), e);
         }
       }
     };
@@ -114,21 +111,32 @@ public interface IModObject extends IProducer, IForgeRegistryEntry<IModObject> {
    * the method shall NOT do the registering itself.
    *
    */
-  public static interface WithBlockItem {
+  public interface WithBlockItem {
 
     default @Nullable Item createBlockItem(@Nonnull IModObject modObject) {
       return modObject.apply(new ItemBlock((Block) this));
     };
 
+    @Nonnull
+    BiFunction<IModObject, Block, Item> itemCreator = (modobject, block) -> {
+      if (modobject == null) {
+        throw new NullPointerException();
+      }
+      if (block instanceof IModObject.WithBlockItem) {
+        return ((IModObject.WithBlockItem) block).createBlockItem(modobject);
+      }
+      return null;
+    };
+
   }
 
-  public static interface LifecycleInit {
+  public interface LifecycleInit {
 
     void init(@Nonnull IModObject modObject, @Nonnull FMLInitializationEvent event);
 
   }
 
-  public static interface LifecyclePostInit {
+  public interface LifecyclePostInit {
 
     void init(@Nonnull IModObject modObject, @Nonnull FMLPostInitializationEvent event);
 

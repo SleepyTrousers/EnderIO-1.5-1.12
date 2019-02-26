@@ -20,6 +20,7 @@ import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.NbtValue;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,11 +42,11 @@ public class ItemEnchantmentFilter extends Item implements IItemFilterItemUpgrad
 
   private final int size;
 
-  public static ItemEnchantmentFilter createNormal(@Nonnull IModObject modObject) {
+  public static ItemEnchantmentFilter createNormal(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemEnchantmentFilter(modObject, 1 * 5);
   }
 
-  public static ItemEnchantmentFilter createBig(@Nonnull IModObject modObject) {
+  public static ItemEnchantmentFilter createBig(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemEnchantmentFilter(modObject, 2 * 5);
   }
 

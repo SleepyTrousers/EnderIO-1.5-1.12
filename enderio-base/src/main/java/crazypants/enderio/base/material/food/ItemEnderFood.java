@@ -1,6 +1,7 @@
 package crazypants.enderio.base.material.food;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.NNList;
@@ -12,6 +13,7 @@ import crazypants.enderio.base.config.config.ItemConfig;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.base.teleport.RandomTeleportUtil;
 import crazypants.enderio.util.Prep;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -28,7 +30,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider, IHaveRenderers {
 
-  public static ItemEnderFood create(@Nonnull IModObject modObject) {
+  public static ItemEnderFood create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemEnderFood(modObject);
   }
 

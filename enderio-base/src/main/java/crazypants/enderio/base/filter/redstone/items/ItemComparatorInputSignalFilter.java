@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.filter.redstone.ComparatorInputSignalFilter;
 import crazypants.enderio.base.filter.redstone.IInputSignalFilter;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -18,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemComparatorInputSignalFilter extends Item implements IItemInputSignalFilterUpgrade {
 
-  public static ItemComparatorInputSignalFilter create(@Nonnull IModObject modObject) {
+  public static ItemComparatorInputSignalFilter create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemComparatorInputSignalFilter(modObject);
   }
 

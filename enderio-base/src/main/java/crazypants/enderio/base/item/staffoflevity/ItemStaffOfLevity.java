@@ -24,6 +24,7 @@ import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -48,7 +49,7 @@ import static crazypants.enderio.util.NbtValue.FLUIDAMOUNT;
 
 public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider, IOverlayRenderAware, IDarkSteelItem {
 
-  public static ItemStaffOfLevity create(@Nonnull IModObject modObject) {
+  public static ItemStaffOfLevity create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemStaffOfLevity(modObject);
   }
 

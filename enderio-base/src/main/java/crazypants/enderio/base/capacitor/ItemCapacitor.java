@@ -18,6 +18,7 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.util.NbtValue;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
@@ -48,7 +49,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemCapacitor extends Item implements IHaveRenderers {
 
-  public static ItemCapacitor create(@Nonnull IModObject modObject) {
+  public static ItemCapacitor create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemCapacitor(modObject);
   }
 

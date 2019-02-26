@@ -118,7 +118,7 @@ public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHav
         "Permission to place down an entity with Ender IO's soul vessel");
   }
 
-  public static ItemSoulVial create(@Nonnull IModObject modObject) {
+  public static ItemSoulVial create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemSoulVial(modObject);
   }
 

@@ -25,6 +25,7 @@ import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -45,25 +46,25 @@ import net.minecraftforge.fml.relauncher.Side;
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class ItemInventoryCharger extends Item implements IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
 
-  public static ItemInventoryCharger createSimple(@Nonnull IModObject modObject) {
+  public static ItemInventoryCharger createSimple(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemInventoryCharger res = new ItemInventoryCharger(modObject, CapacitorKey.DARK_STEEL_CHARGER_SIMPLE_ENERGY_BUFFER,
         CapacitorKey.DARK_STEEL_CHARGER_SIMPLE_ENERGY_INPUT, CapacitorKey.DARK_STEEL_CHARGER_SIMPLE_ENERGY_USE, true);
     return res;
   }
 
-  public static ItemInventoryCharger createBasic(@Nonnull IModObject modObject) {
+  public static ItemInventoryCharger createBasic(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemInventoryCharger res = new ItemInventoryCharger(modObject, CapacitorKey.DARK_STEEL_CHARGER_BASIC_ENERGY_BUFFER,
         CapacitorKey.DARK_STEEL_CHARGER_BASIC_ENERGY_INPUT, CapacitorKey.DARK_STEEL_CHARGER_BASIC_ENERGY_USE, false);
     return res;
   }
 
-  public static ItemInventoryCharger create(@Nonnull IModObject modObject) {
+  public static ItemInventoryCharger create(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemInventoryCharger res = new ItemInventoryCharger(modObject, CapacitorKey.DARK_STEEL_CHARGER_ENERGY_BUFFER, CapacitorKey.DARK_STEEL_CHARGER_ENERGY_INPUT,
         CapacitorKey.DARK_STEEL_CHARGER_ENERGY_USE, false);
     return res;
   }
 
-  public static ItemInventoryCharger createVibrant(@Nonnull IModObject modObject) {
+  public static ItemInventoryCharger createVibrant(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemInventoryCharger res = new ItemInventoryCharger(modObject, CapacitorKey.DARK_STEEL_CHARGER_VIBRANT_ENERGY_BUFFER,
         CapacitorKey.DARK_STEEL_CHARGER_VIBRANT_ENERGY_INPUT, CapacitorKey.DARK_STEEL_CHARGER_VIBRANT_ENERGY_USE, false);
     return res;

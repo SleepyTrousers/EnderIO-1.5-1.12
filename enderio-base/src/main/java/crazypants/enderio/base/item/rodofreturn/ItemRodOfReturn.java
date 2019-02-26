@@ -31,6 +31,7 @@ import crazypants.enderio.base.machine.sound.MachineSound;
 import crazypants.enderio.base.power.forge.item.AbstractPoweredItem;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.base.teleport.TeleportUtil;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.util.ITooltipFlag;
@@ -67,7 +68,7 @@ import static crazypants.enderio.util.NbtValue.LAST_USED_TICK;
 
 public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedTooltipProvider, IOverlayRenderAware {
 
-  public static ItemRodOfReturn create(@Nonnull IModObject modObject) {
+  public static ItemRodOfReturn create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemRodOfReturn(modObject);
   }
 

@@ -54,6 +54,7 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.HelmetPainterTemplate;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.util.Prep;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.creativetab.CreativeTabs;
@@ -89,55 +90,55 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   // Item creation
   // ============================================================================================================
 
-  public static ItemDarkSteelArmor createDarkSteelBoots(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createDarkSteelBoots(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemDarkSteelArmor(EquipmentData.DARK_STEEL, modObject, EntityEquipmentSlot.FEET, 1);
   }
 
-  public static ItemDarkSteelArmor createDarkSteelLeggings(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createDarkSteelLeggings(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemDarkSteelArmor(EquipmentData.DARK_STEEL, modObject, EntityEquipmentSlot.LEGS, 1);
   }
 
-  public static ItemDarkSteelArmor createDarkSteelChestplate(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createDarkSteelChestplate(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemDarkSteelArmor(EquipmentData.DARK_STEEL, modObject, EntityEquipmentSlot.CHEST, 1);
   }
 
-  public static ItemDarkSteelArmor createDarkSteelHelmet(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createDarkSteelHelmet(@Nonnull IModObject modObject, @Nullable Block block) {
     final ItemDarkSteelArmor helmet = new ItemDarkSteelArmor(EquipmentData.DARK_STEEL, modObject, EntityEquipmentSlot.HEAD, 1);
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new HelmetPainterTemplate(helmet));
     return helmet;
   }
 
-  public static ItemDarkSteelArmor createEndSteelBoots(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createEndSteelBoots(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemDarkSteelArmor(EquipmentData.END_STEEL, modObject, EntityEquipmentSlot.FEET, 2);
   }
 
-  public static ItemDarkSteelArmor createEndSteelLeggings(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createEndSteelLeggings(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemDarkSteelArmor(EquipmentData.END_STEEL, modObject, EntityEquipmentSlot.LEGS, 2);
   }
 
-  public static ItemDarkSteelArmor createEndSteelChestplate(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createEndSteelChestplate(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemDarkSteelArmor(EquipmentData.END_STEEL, modObject, EntityEquipmentSlot.CHEST, 2);
   }
 
-  public static ItemDarkSteelArmor createEndSteelHelmet(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createEndSteelHelmet(@Nonnull IModObject modObject, @Nullable Block block) {
     final ItemDarkSteelArmor helmet = new ItemDarkSteelArmor(EquipmentData.END_STEEL, modObject, EntityEquipmentSlot.HEAD, 2);
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new HelmetPainterTemplate(helmet));
     return helmet;
   }
 
-  public static ItemDarkSteelArmor createStellarAlloyBoots(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createStellarAlloyBoots(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemDarkSteelArmor(EquipmentData.STELLAR_ALLOY, modObject, EntityEquipmentSlot.FEET, 2);
   }
 
-  public static ItemDarkSteelArmor createStellarAlloyLeggings(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createStellarAlloyLeggings(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemDarkSteelArmor(EquipmentData.STELLAR_ALLOY, modObject, EntityEquipmentSlot.LEGS, 2);
   }
 
-  public static ItemDarkSteelArmor createStellarAlloyChestplate(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createStellarAlloyChestplate(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemDarkSteelArmor(EquipmentData.STELLAR_ALLOY, modObject, EntityEquipmentSlot.CHEST, 2);
   }
 
-  public static ItemDarkSteelArmor createStellarAlloyHelmet(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createStellarAlloyHelmet(@Nonnull IModObject modObject, @Nullable Block block) {
     final ItemDarkSteelArmor helmet = new ItemDarkSteelArmor(EquipmentData.STELLAR_ALLOY, modObject, EntityEquipmentSlot.HEAD, 2);
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new HelmetPainterTemplate(helmet));
     return helmet;

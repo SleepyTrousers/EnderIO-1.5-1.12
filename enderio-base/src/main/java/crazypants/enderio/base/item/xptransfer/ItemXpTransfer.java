@@ -1,6 +1,7 @@
 package crazypants.enderio.base.item.xptransfer;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.fluid.FluidWrapper;
@@ -11,6 +12,7 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.xp.XpUtil;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
@@ -29,7 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
 
-  public static ItemXpTransfer create(@Nonnull IModObject modObject) {
+  public static ItemXpTransfer create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemXpTransfer(modObject);
   }
 

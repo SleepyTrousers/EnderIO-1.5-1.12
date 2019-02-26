@@ -7,6 +7,7 @@ import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.filter.redstone.IOutputSignalFilter;
 import crazypants.enderio.base.filter.redstone.ToggleOutputSignalFilter;
 import crazypants.enderio.util.NbtValue;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -19,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemToggleOutputSignalFilter extends Item implements IItemOutputSignalFilterUpgrade {
 
-  public static ItemToggleOutputSignalFilter create(@Nonnull IModObject modObject) {
+  public static ItemToggleOutputSignalFilter create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemToggleOutputSignalFilter(modObject);
   }
 
