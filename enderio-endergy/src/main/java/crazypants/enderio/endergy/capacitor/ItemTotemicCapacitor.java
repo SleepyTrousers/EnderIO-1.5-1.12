@@ -10,6 +10,7 @@ import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.capacitor.CapabilityCapacitorData;
 import crazypants.enderio.api.capacitor.ICapacitorData;
 import crazypants.enderio.base.capacitor.CapacitorHelper;
+import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.item.ItemStack;
@@ -23,7 +24,7 @@ public class ItemTotemicCapacitor extends ItemEndergyCapacitor {
 
   private static final int ENCHANT_ID_EFFICIENCY = 32;
 
-  public static ItemTotemicCapacitor create(@Nonnull IModObject modObject) {
+  public static ItemTotemicCapacitor create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemTotemicCapacitor(modObject, EndergyCapacitorData.TOTEMIC_CAPACITOR, 512);
   }
 

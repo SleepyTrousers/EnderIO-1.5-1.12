@@ -57,7 +57,7 @@ public enum ItemRemoteInvAccessType {
     return nameSuffix;
   }
 
-  public String getUnlocalizedName(String basename) {
+  public @Nonnull String getUnlocalizedName(String basename) {
     return basename + getNameSuffix();
   }
 
@@ -82,8 +82,7 @@ public enum ItemRemoteInvAccessType {
     String fluidname = InvpanelConfig.remoteInventoryFluidTypes.get(ordinal()).get();
     fluid = FluidRegistry.getFluid(fluidname);
     if (fluid == null) {
-      Log.warn("ItemRemoteInvAccessType: Could not find fluid '" + fluidname + "' using default fluid "
-          + Fluids.NUTRIENT_DISTILLATION.getFluid());
+      Log.warn("ItemRemoteInvAccessType: Could not find fluid '" + fluidname + "' using default fluid " + Fluids.NUTRIENT_DISTILLATION.getFluid());
       fluid = NullHelper.notnull(Fluids.NUTRIENT_DISTILLATION.getFluid(), "Nutrient Distillation registration went AWOL");
     }
     return fluid;

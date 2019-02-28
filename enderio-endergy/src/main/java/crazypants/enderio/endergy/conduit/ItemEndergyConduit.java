@@ -14,6 +14,7 @@ import crazypants.enderio.conduits.conduit.AbstractItemConduit;
 import crazypants.enderio.conduits.conduit.power.IPowerConduit;
 import crazypants.enderio.conduits.conduit.power.IPowerConduitData;
 import crazypants.enderio.conduits.conduit.power.PowerConduit;
+import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -23,7 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemEndergyConduit extends AbstractItemConduit {
 
-  public static ItemEndergyConduit create(@Nonnull IModObject modObject) {
+  public static ItemEndergyConduit create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemEndergyConduit(modObject);
   }
 

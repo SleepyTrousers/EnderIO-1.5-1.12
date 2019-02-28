@@ -22,6 +22,7 @@ import crazypants.enderio.conduits.conduit.ItemConduitSubtype;
 import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.conduits.lang.Lang;
 import crazypants.enderio.conduits.render.ConduitBundleRenderManager;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -30,7 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedTooltipProvider {
 
-  public static ItemLiquidConduit create(@Nonnull IModObject modObject) {
+  public static ItemLiquidConduit create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemLiquidConduit(modObject);
   }
 

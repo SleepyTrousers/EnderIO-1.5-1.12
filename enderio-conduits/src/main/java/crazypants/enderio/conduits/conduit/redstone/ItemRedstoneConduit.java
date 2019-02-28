@@ -1,6 +1,7 @@
 package crazypants.enderio.conduits.conduit.redstone;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIO;
@@ -14,6 +15,7 @@ import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.conduits.conduit.AbstractItemConduit;
 import crazypants.enderio.conduits.conduit.ItemConduitSubtype;
 import crazypants.enderio.conduits.render.ConduitBundleRenderManager;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -22,7 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemRedstoneConduit extends AbstractItemConduit {
 
-  public static ItemRedstoneConduit create(@Nonnull IModObject modObject) {
+  public static ItemRedstoneConduit create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemRedstoneConduit(modObject);
   }
 
