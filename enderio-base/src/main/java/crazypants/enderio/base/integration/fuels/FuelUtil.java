@@ -16,6 +16,30 @@ public class FuelUtil {
     case "creosote":
       FluidFuelRegister.instance.addFuel(event.getFluidName(), 20, 5000);
       break;
+    case "fuel_dense":
+      FluidFuelRegister.instance.addFuel(event.getFluidName(), 100, 24000);
+      break;
+    case "fuel_gaseous":
+      FluidFuelRegister.instance.addFuel(event.getFluidName(), 130, 1500);
+      break;
+    case "fuel_light":
+      FluidFuelRegister.instance.addFuel(event.getFluidName(), 100, 8000);
+      break;
+    case "fuel_mixed_heavy":
+      FluidFuelRegister.instance.addFuel(event.getFluidName(), 80, 8000);
+      break;
+    case "fuel_mixed_light":
+      FluidFuelRegister.instance.addFuel(event.getFluidName(), 50, 6400);
+      break;
+    case "oil_dense":
+      FluidFuelRegister.instance.addFuel(event.getFluidName(), 64, 25000);
+      break;
+    case "oil_distilled":
+      FluidFuelRegister.instance.addFuel(event.getFluidName(), 20, 25000);
+      break;
+    case "oil_heavy":
+      FluidFuelRegister.instance.addFuel(event.getFluidName(), 32, 24000);
+      break;
     case "coal":
       FluidFuelRegister.instance.addFuel(event.getFluidName(), 40, 10000);
       break;
