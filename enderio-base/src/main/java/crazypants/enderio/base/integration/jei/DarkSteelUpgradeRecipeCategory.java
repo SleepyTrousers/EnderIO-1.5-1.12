@@ -95,7 +95,11 @@ public class DarkSteelUpgradeRecipeCategory {
             recipes = temp;
           }
           if (recipes.isEmpty()) {
-            return getWrappers(Collections.singletonList(allRecipes.get(new ItemStackKey(focusStack))));
+            List<UpgradePath> recs = allRecipes.get(new ItemStackKey(focusStack));
+            if (recs == null) {
+              return NNList.emptyList();
+            }
+            return getWrappers(Collections.singletonList(recs));
           }
           return getWrappers(recipes);
         }
