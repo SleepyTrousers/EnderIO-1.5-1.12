@@ -139,6 +139,7 @@ public class DarkSteelUpgradeRecipeCategory {
       
       @Override
       public @Nonnull <V> List<String> getRecipeCategoryUids(@Nonnull IFocus<V> focus) {
+        // TODO: Only return ANVIL if the focus item actually would yield a recipe!
         return new NNList<>(VanillaRecipeCategoryUid.ANVIL);
       }
     });
