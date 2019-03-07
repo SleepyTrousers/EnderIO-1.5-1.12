@@ -5,13 +5,13 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.config.config.IntegrationConfig;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.registries.IForgeRegistry;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class ThaumcraftUtil {
@@ -20,7 +20,7 @@ public class ThaumcraftUtil {
 
   @SubscribeEvent
   public static void onPost(EnderIOLifecycleEvent.PostInit.Post event) {
-    if (Loader.isModLoaded(MODID_THAUMCRAFT)) {
+    if (Loader.isModLoaded(MODID_THAUMCRAFT) && IntegrationConfig.enableThaumcraftAspects.get()) {
       ThaumcraftAspects.loadAspects();
     }
   }
@@ -28,11 +28,8 @@ public class ThaumcraftUtil {
   @SubscribeEvent
   public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
     if (Loader.isModLoaded(MODID_THAUMCRAFT)) {
-      final IForgeRegistry<IDarkSteelUpgrade> registry = event.getRegistry();
-      registry.register(ThaumaturgeRobesUpgrade.BOOTS);
-      registry.register(ThaumaturgeRobesUpgrade.LEGS);
-      registry.register(ThaumaturgeRobesUpgrade.CHEST);
-      registry.register(GogglesOfRevealingUpgrade.INSTANCE);
+      event.getRegistry().registerAll(ThaumaturgeRobesUpgrade.BOOTS, ThaumaturgeRobesUpgrade.LEGS, ThaumaturgeRobesUpgrade.CHEST,
+          GogglesOfRevealingUpgrade.INSTANCE);
       Log.info("Dark Steel Upgrades: Thaumcraft integration loaded");
     }
   }
