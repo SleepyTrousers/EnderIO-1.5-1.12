@@ -18,6 +18,7 @@ import crazypants.enderio.base.sound.SoundRegistry;
 import crazypants.enderio.machines.config.config.ClientConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.killera.KillerJoeRenderMapper;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -46,19 +47,19 @@ public class BlockZombieGenerator<T extends TileZombieGenerator> extends Abstrac
   private static final double px = 1d / 16d;
   public static final @Nonnull AxisAlignedBB AABB = new AxisAlignedBB(2 * px, 0 * px, 2 * px, 14 * px, 16 * px, 14 * px);
 
-  public static BlockZombieGenerator<TileZombieGenerator> create(@Nonnull IModObject modObject) {
+  public static Block create(@Nonnull IModObject modObject) {
     BlockZombieGenerator<TileZombieGenerator> gen = new BlockZombieGenerator<>(modObject);
     gen.init();
     return gen;
   }
 
-  public static BlockFrankNZombieGenerator create_franken(@Nonnull IModObject modObject) {
+  public static Block create_franken(@Nonnull IModObject modObject) {
     BlockFrankNZombieGenerator gen = new BlockFrankNZombieGenerator(modObject);
     gen.init();
     return gen;
   }
 
-  public static BlockEnderGenerator create_ender(@Nonnull IModObject modObject) {
+  public static Block create_ender(@Nonnull IModObject modObject) {
     BlockEnderGenerator gen = new BlockEnderGenerator(modObject);
     gen.init();
     return gen;
@@ -73,7 +74,8 @@ public class BlockZombieGenerator<T extends TileZombieGenerator> extends Abstrac
     @Override
     @SideOnly(Side.CLIENT)
     public void bindTileEntitySpecialRenderer() {
-      ClientRegistry.bindTileEntitySpecialRenderer(TileZombieGenerator.TileFrankenZombieGenerator.class, new ZombieGeneratorRenderer(MachineObject.block_franken_zombie_generator.getBlockNN()));
+      ClientRegistry.bindTileEntitySpecialRenderer(TileZombieGenerator.TileFrankenZombieGenerator.class,
+          new ZombieGeneratorRenderer(MachineObject.block_franken_zombie_generator.getBlockNN()));
     }
   }
 
@@ -86,7 +88,8 @@ public class BlockZombieGenerator<T extends TileZombieGenerator> extends Abstrac
     @Override
     @SideOnly(Side.CLIENT)
     public void bindTileEntitySpecialRenderer() {
-      ClientRegistry.bindTileEntitySpecialRenderer(TileZombieGenerator.TileEnderGenerator.class, new ZombieGeneratorRenderer(MachineObject.block_ender_generator.getBlockNN()));
+      ClientRegistry.bindTileEntitySpecialRenderer(TileZombieGenerator.TileEnderGenerator.class,
+          new ZombieGeneratorRenderer(MachineObject.block_ender_generator.getBlockNN()));
     }
 
     @Override
@@ -200,6 +203,5 @@ public class BlockZombieGenerator<T extends TileZombieGenerator> extends Abstrac
   public void bindTileEntitySpecialRenderer() {
     ClientRegistry.bindTileEntitySpecialRenderer(TileZombieGenerator.class, new ZombieGeneratorRenderer(MachineObject.block_zombie_generator.getBlockNN()));
   }
-
 
 }
