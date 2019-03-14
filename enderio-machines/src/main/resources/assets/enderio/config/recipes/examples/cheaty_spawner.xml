@@ -65,5 +65,11 @@ Copy this file into the enderio/config/recipes/user folder to activate it.
       <entity name="minecraft:zombie_villager"     costMultiplier="2.5" disabled="false"/> <!-- Zombie Villager -->
     </spawning>
   </recipe>
+  
+  <recipe name="Spawner, Pixelmon" required="false">
+    <spawning>
+      <entity name="pixelmon:*" costMultiplier="20.0" disabled="false" clone="true"/>
+    </spawning>
+  </recipe>
 
 </enderio:recipes>
