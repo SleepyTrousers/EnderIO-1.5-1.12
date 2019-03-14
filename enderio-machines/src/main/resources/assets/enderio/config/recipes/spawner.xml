@@ -215,5 +215,14 @@ XML editor will display that as tooltips when editing this file.
       <entity name="extraplanets:extraplanets.evolvedspacemanboss"    costMultiplier="20.0" disabled="true" soulvial="false"/>
     </spawning>
   </recipe>
+<!--
+Warning Enabling these without seting the "Clone" tag to true will break your Save Game... DONT TEST THIS
+-->
+  <recipe name="Spawner, Pixelmon" required="false">
+    <spawning>
+      <entity name="pixelmon:*" costMultiplier="20.0" disabled="true" soulvial="false"/>
+    </spawning>
+  </recipe>
+
 
 </enderio:recipes>
