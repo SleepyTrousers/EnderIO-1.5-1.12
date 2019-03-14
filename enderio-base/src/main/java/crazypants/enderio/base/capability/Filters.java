@@ -54,7 +54,7 @@ public class Filters {
   public static final @Nonnull Predicate<ItemStack> CAPACITORS = new PredicateItemStack() {
     @Override
     public boolean doApply(@Nonnull ItemStack input) {
-      return (input.getItem() == itemBasicCapacitor.getItem() && input.getItemDamage() > 0) || CapacitorHelper.getCapacitorDataFromItemStack(input) != null;
+      return input.getItem() == itemBasicCapacitor.getItem() || CapacitorHelper.getCapacitorDataFromItemStack(input) != null;
     }
   };
 
