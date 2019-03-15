@@ -159,7 +159,8 @@ public class GuiCapBank extends GuiContainerBaseEIO {
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
     // Validate that the next character input won't overflow the max IO, and disallow starting numbers with 0
-    final Predicate<String> inputValidator = s -> s == null || s.isEmpty() || (!s.startsWith("0") && LangPower.parsePower(s) <= network.getMaxIO());
+    final Predicate<String> inputValidator = s -> s == null || s.isEmpty()
+        || (!s.startsWith("0") && NullHelper.first(LangPower.parsePower(s), (Integer) Integer.MAX_VALUE) <= network.getMaxIO());
 
     x = inputX - 24;
     y = inputY;
