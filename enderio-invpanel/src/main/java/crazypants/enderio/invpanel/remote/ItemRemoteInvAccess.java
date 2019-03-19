@@ -24,6 +24,7 @@ import crazypants.enderio.invpanel.init.InvpanelObject;
 import crazypants.enderio.invpanel.invpanel.TileInventoryPanel;
 import crazypants.enderio.util.ClientUtil;
 import crazypants.enderio.util.NbtValue;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -61,7 +62,7 @@ import static crazypants.enderio.util.NbtValue.REMOTE_Z;
 
 public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvider, IOverlayRenderAware, IInternalPoweredItem, IHaveRenderers {
 
-  public static ItemRemoteInvAccess create(@Nonnull IModObject modObject) {
+  public static ItemRemoteInvAccess create(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemRemoteInvAccess result = new ItemRemoteInvAccess(modObject);
     return result;
   }
@@ -111,7 +112,7 @@ public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvide
   @Override
   @Nonnull
   public EnumActionResult onItemUseFirst(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing side, float hitX,
-      float hitY, float hitZ, EnumHand hand) {
+      float hitY, float hitZ, @Nonnull EnumHand hand) {
 
     if (world.isRemote || !player.isSneaking()) {
       return EnumActionResult.PASS;
@@ -222,6 +223,7 @@ public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvide
     return false;
   }
 
+  @Override
   public void setFull(@Nonnull ItemStack container) {
     setEnergyStored(container, getMaxEnergyStored(container));
     FLUIDAMOUNT.setInt(container, getCapacity(container));
@@ -246,7 +248,7 @@ public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvide
 
   @Override
   @SideOnly(Side.CLIENT)
-  public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+  public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
     super.addInformation(stack, worldIn, tooltip, flagIn);
     tooltip.add(LangPower.RF(getEnergyStored(stack), getMaxEnergyStored(stack)));
     tooltip.add(LangFluid.MB(FLUIDAMOUNT.getInt(stack, 0), getFluidType(stack)));

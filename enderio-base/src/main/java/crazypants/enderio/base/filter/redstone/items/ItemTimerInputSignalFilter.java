@@ -13,6 +13,7 @@ import crazypants.enderio.base.filter.gui.IncrementingValueFilterGui;
 import crazypants.enderio.base.filter.redstone.IInputSignalFilter;
 import crazypants.enderio.base.filter.redstone.TimerInputSignalFilter;
 import crazypants.enderio.util.NbtValue;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -27,7 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemTimerInputSignalFilter extends Item implements IItemInputSignalFilterUpgrade {
 
-  public static ItemTimerInputSignalFilter create(@Nonnull IModObject modObject) {
+  public static ItemTimerInputSignalFilter create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemTimerInputSignalFilter(modObject);
   }
 

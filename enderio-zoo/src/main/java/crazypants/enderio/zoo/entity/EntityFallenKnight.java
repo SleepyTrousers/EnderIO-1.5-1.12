@@ -12,6 +12,7 @@ import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.config.ZooConfig;
 import crazypants.enderio.zoo.entity.ai.EntityAIMountedArrowAttack;
 import crazypants.enderio.zoo.entity.ai.EntityAIMountedAttackOnCollide;
+import crazypants.enderio.zoo.entity.navigate.PathNavigateGroundMounted;
 import crazypants.enderio.zoo.entity.render.RenderFallenKnight;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -33,6 +34,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
@@ -95,6 +97,11 @@ public class EntityFallenKnight extends EntitySkeleton implements IEnderZooMob {
     super.applyEntityAttributes();
     getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(ZooConfig.fallenKnightFollowRange.get());
     applyAttributes(this, ZooConfig.fallenKnightHealth, ZooConfig.fallenKnightAttackDamage);
+  }
+
+  @Override
+  protected PathNavigate createNavigator(World worldIn) {
+    return new PathNavigateGroundMounted(this, worldIn);
   }
 
   // This is called from the super constructor and so is completely useless

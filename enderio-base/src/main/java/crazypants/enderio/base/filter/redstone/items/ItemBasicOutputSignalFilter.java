@@ -14,6 +14,7 @@ import crazypants.enderio.base.filter.redstone.IOutputSignalFilter;
 import crazypants.enderio.base.filter.redstone.LogicOutputSignalFilter;
 import crazypants.enderio.base.filter.redstone.LogicOutputSignalFilter.EnumSignalFilterType;
 import crazypants.enderio.util.NbtValue;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -30,27 +31,27 @@ public class ItemBasicOutputSignalFilter extends Item implements IItemOutputSign
 
   private final @Nonnull EnumSignalFilterType filterType;
 
-  public static ItemBasicOutputSignalFilter createOr(@Nonnull IModObject modObject) {
+  public static ItemBasicOutputSignalFilter createOr(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemBasicOutputSignalFilter(modObject, EnumSignalFilterType.OR);
   }
 
-  public static ItemBasicOutputSignalFilter createAnd(@Nonnull IModObject modObject) {
+  public static ItemBasicOutputSignalFilter createAnd(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemBasicOutputSignalFilter(modObject, EnumSignalFilterType.AND);
   }
 
-  public static ItemBasicOutputSignalFilter createNor(@Nonnull IModObject modObject) {
+  public static ItemBasicOutputSignalFilter createNor(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemBasicOutputSignalFilter(modObject, EnumSignalFilterType.NOR);
   }
 
-  public static ItemBasicOutputSignalFilter createNand(@Nonnull IModObject modObject) {
+  public static ItemBasicOutputSignalFilter createNand(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemBasicOutputSignalFilter(modObject, EnumSignalFilterType.NAND);
   }
 
-  public static ItemBasicOutputSignalFilter createXor(@Nonnull IModObject modObject) {
+  public static ItemBasicOutputSignalFilter createXor(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemBasicOutputSignalFilter(modObject, EnumSignalFilterType.XOR);
   }
 
-  public static ItemBasicOutputSignalFilter createXnor(@Nonnull IModObject modObject) {
+  public static ItemBasicOutputSignalFilter createXnor(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemBasicOutputSignalFilter(modObject, EnumSignalFilterType.XNOR);
   }
 

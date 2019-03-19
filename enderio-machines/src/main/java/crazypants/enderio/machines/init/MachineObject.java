@@ -1,10 +1,14 @@
 package crazypants.enderio.machines.init;
 
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.IModTileEntity;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.init.IModObjectBase;
@@ -59,72 +63,72 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @EventBusSubscriber(modid = EnderIOMachines.MODID)
 public enum MachineObject implements IModObjectBase {
 
-  block_simple_furnace(BlockAlloySmelter.class, "create_furnace", MachineTileEntity.TileAlloySmelterFurnace),
-  block_simple_alloy_smelter(BlockAlloySmelter.class, "create_simple", MachineTileEntity.TileAlloySmelterSimple),
-  block_alloy_smelter(BlockAlloySmelter.class, MachineTileEntity.TileAlloySmelter),
-  block_enhanced_alloy_smelter(BlockAlloySmelter.class, "create_enhanced", MachineTileEntity.TileAlloySmelterEnhanced),
-  block_enhanced_alloy_smelter_top(BlockAlloySmelter.class, "create_extension"),
-  block_buffer(BlockBuffer.class, MachineTileEntity.TileBufferAbstract),
-  block_enchanter(BlockEnchanter.class, MachineTileEntity.TileEnchanter),
-  block_farm_station(BlockFarmStation.class, MachineTileEntity.TileFarmStation),
-  block_combustion_generator(BlockCombustionGenerator.class, MachineTileEntity.TileCombustionGenerator),
-  block_enhanced_combustion_generator(BlockCombustionGenerator.class, "create_enhanced", MachineTileEntity.TileCombustionGeneratorEnhanced),
-  block_enhanced_combustion_generator_top(BlockCombustionGenerator.class, "create_extension"),
-  block_simple_stirling_generator(BlockStirlingGenerator.class, "create_simple", MachineTileEntity.TileStirlingGeneratorSimple),
-  block_stirling_generator(BlockStirlingGenerator.class, MachineTileEntity.TileStirlingGenerator),
-  block_zombie_generator(BlockZombieGenerator.class, MachineTileEntity.TileZombieGenerator),
-  block_franken_zombie_generator(BlockZombieGenerator.class, "create_franken", MachineTileEntity.TileFrankenZombieGenerator),
-  block_ender_generator(BlockZombieGenerator.class, "create_ender", MachineTileEntity.TileEnderGenerator),
-  block_lava_generator(BlockLavaGenerator.class, MachineTileEntity.TileLavaGenerator),
+  block_simple_furnace(BlockAlloySmelter::create_furnace, MachineTileEntity.TileAlloySmelterFurnace),
+  block_simple_alloy_smelter(BlockAlloySmelter::create_simple, MachineTileEntity.TileAlloySmelterSimple),
+  block_alloy_smelter(BlockAlloySmelter::create, MachineTileEntity.TileAlloySmelter),
+  block_enhanced_alloy_smelter(BlockAlloySmelter::create_enhanced, MachineTileEntity.TileAlloySmelterEnhanced),
+  block_enhanced_alloy_smelter_top(BlockAlloySmelter::create_extension),
+  block_buffer(BlockBuffer::create, MachineTileEntity.TileBufferAbstract),
+  block_enchanter(BlockEnchanter::create, MachineTileEntity.TileEnchanter),
+  block_farm_station(BlockFarmStation::create, MachineTileEntity.TileFarmStation),
+  block_combustion_generator(BlockCombustionGenerator::create, MachineTileEntity.TileCombustionGenerator),
+  block_enhanced_combustion_generator(BlockCombustionGenerator::create_enhanced, MachineTileEntity.TileCombustionGeneratorEnhanced),
+  block_enhanced_combustion_generator_top(BlockCombustionGenerator::create_extension),
+  block_simple_stirling_generator(BlockStirlingGenerator::create_simple, MachineTileEntity.TileStirlingGeneratorSimple),
+  block_stirling_generator(BlockStirlingGenerator::create, MachineTileEntity.TileStirlingGenerator),
+  block_zombie_generator(BlockZombieGenerator::create, MachineTileEntity.TileZombieGenerator),
+  block_franken_zombie_generator(BlockZombieGenerator::create_franken, MachineTileEntity.TileFrankenZombieGenerator),
+  block_ender_generator(BlockZombieGenerator::create_ender, MachineTileEntity.TileEnderGenerator),
+  block_lava_generator(BlockLavaGenerator::create, MachineTileEntity.TileLavaGenerator),
 
-  block_killer_joe(BlockKillerJoe.class, MachineTileEntity.TileKillerJoe),
-  block_electric_light(BlockElectricLight.class, MachineTileEntity.TileElectricLight),
-  block_light_node(BlockLightNode.class, MachineTileEntity.TileLightNode),
+  block_killer_joe(BlockKillerJoe::create, MachineTileEntity.TileKillerJoe),
+  block_electric_light(BlockElectricLight::create, MachineTileEntity.TileElectricLight),
+  block_light_node(BlockLightNode::create, MachineTileEntity.TileLightNode),
 
   // Obelisks
-  block_attractor_obelisk(BlockAttractor.class, MachineTileEntity.TileAttractor),
-  block_aversion_obelisk(BlockAversionObelisk.class, MachineTileEntity.TileAversionObelisk),
-  block_inhibitor_obelisk(BlockInhibitorObelisk.class, MachineTileEntity.TileInhibitorObelisk),
-  block_relocator_obelisk(BlockRelocatorObelisk.class, MachineTileEntity.TileRelocatorObelisk),
-  block_weather_obelisk(BlockWeatherObelisk.class, MachineTileEntity.TileWeatherObelisk),
-  block_experience_obelisk(BlockExperienceObelisk.class, MachineTileEntity.TileExperienceObelisk),
+  block_attractor_obelisk(BlockAttractor::create, MachineTileEntity.TileAttractor),
+  block_aversion_obelisk(BlockAversionObelisk::create, MachineTileEntity.TileAversionObelisk),
+  block_inhibitor_obelisk(BlockInhibitorObelisk::create, MachineTileEntity.TileInhibitorObelisk),
+  block_relocator_obelisk(BlockRelocatorObelisk::create, MachineTileEntity.TileRelocatorObelisk),
+  block_weather_obelisk(BlockWeatherObelisk::create, MachineTileEntity.TileWeatherObelisk),
+  block_experience_obelisk(BlockExperienceObelisk::create, MachineTileEntity.TileExperienceObelisk),
 
-  block_painter(BlockPainter.class, MachineTileEntity.TileEntityPainter),
-  block_reservoir(BlockReservoirBase.class, MachineTileEntity.TileReservoir),
-  block_omni_reservoir(BlockReservoirBase.class, "create_omni", MachineTileEntity.TileOmniReservoir),
-  block_simple_sag_mill(BlockSagMill.class, "create_simple", MachineTileEntity.TileSagMillSimple),
-  block_sag_mill(BlockSagMill.class, MachineTileEntity.TileSagMill),
-  block_enhanced_sag_mill(BlockSagMill.class, "create_enhanced", MachineTileEntity.TileSagMillEnhanced),
-  block_enhanced_sag_mill_top(BlockSagMill.class, "create_extension"),
-  block_slice_and_splice(BlockSliceAndSplice.class, MachineTileEntity.TileSliceAndSplice),
-  block_solar_panel(BlockSolarPanel.class, MachineTileEntity.TileSolarPanel),
-  block_soul_binder(BlockSoulBinder.class, MachineTileEntity.TileSoulBinder),
-  block_powered_spawner(BlockPoweredSpawner.class, MachineTileEntity.TilePoweredSpawner),
-  block_vat(BlockVat.class, MachineTileEntity.TileVat),
-  block_enhanced_vat(BlockVat.class, "create_enhanced", MachineTileEntity.TileVatEnhanced),
-  block_enhanced_vat_top(BlockVat.class, "create_extension"),
-  block_simple_wired_charger(BlockWiredCharger.class, "create_simple", MachineTileEntity.TileWiredChargerSimple),
-  block_wired_charger(BlockWiredCharger.class, MachineTileEntity.TileWiredCharger),
-  block_enhanced_wired_charger(BlockWiredCharger.class, "create_enhanced", MachineTileEntity.TileWiredChargerEnhanced),
-  block_enhanced_wired_charger_top(BlockWiredCharger.class, "create_extension", MachineTileEntity.TileWiredChargerEnhanced),
-  block_wireless_charger(BlockWirelessCharger.class, MachineTileEntity.TileWirelessCharger),
-  block_normal_wireless_charger(BlockNormalWirelessCharger.class, MachineTileEntity.TileWirelessCharger),
-  block_enhanced_wireless_charger(BlockEnhancedWirelessCharger.class, MachineTileEntity.TileWirelessCharger),
-  block_wireless_charger_extension(BlockAntenna.class),
-  block_tank(BlockTank.class, MachineTileEntity.TileTank),
-  block_transceiver(BlockTransceiver.class, MachineTileEntity.TileTransceiver),
-  block_vacuum_chest(BlockVacuumChest.class, MachineTileEntity.TileVacuumChest),
-  block_xp_vacuum(BlockXPVacuum.class, MachineTileEntity.TileXPVacuum),
+  block_painter(BlockPainter::create, MachineTileEntity.TileEntityPainter),
+  block_reservoir(BlockReservoirBase::create, MachineTileEntity.TileReservoir),
+  block_omni_reservoir(BlockReservoirBase::create_omni, MachineTileEntity.TileOmniReservoir),
+  block_simple_sag_mill(BlockSagMill::create_simple, MachineTileEntity.TileSagMillSimple),
+  block_sag_mill(BlockSagMill::create, MachineTileEntity.TileSagMill),
+  block_enhanced_sag_mill(BlockSagMill::create_enhanced, MachineTileEntity.TileSagMillEnhanced),
+  block_enhanced_sag_mill_top(BlockSagMill::create_extension),
+  block_slice_and_splice(BlockSliceAndSplice::create, MachineTileEntity.TileSliceAndSplice),
+  block_solar_panel(BlockSolarPanel::create, MachineTileEntity.TileSolarPanel),
+  block_soul_binder(BlockSoulBinder::create, MachineTileEntity.TileSoulBinder),
+  block_powered_spawner(BlockPoweredSpawner::create, MachineTileEntity.TilePoweredSpawner),
+  block_vat(BlockVat::create, MachineTileEntity.TileVat),
+  block_enhanced_vat(BlockVat::create_enhanced, MachineTileEntity.TileVatEnhanced),
+  block_enhanced_vat_top(BlockVat::create_extension),
+  block_simple_wired_charger(BlockWiredCharger::create_simple, MachineTileEntity.TileWiredChargerSimple),
+  block_wired_charger(BlockWiredCharger::create, MachineTileEntity.TileWiredCharger),
+  block_enhanced_wired_charger(BlockWiredCharger::create_enhanced, MachineTileEntity.TileWiredChargerEnhanced),
+  block_enhanced_wired_charger_top(BlockWiredCharger::create_extension, MachineTileEntity.TileWiredChargerEnhanced),
+  block_wireless_charger(BlockWirelessCharger::create, MachineTileEntity.TileWirelessCharger),
+  block_normal_wireless_charger(BlockNormalWirelessCharger::create, MachineTileEntity.TileWirelessCharger),
+  block_enhanced_wireless_charger(BlockEnhancedWirelessCharger::create, MachineTileEntity.TileWirelessCharger),
+  block_wireless_charger_extension(BlockAntenna::create),
+  block_tank(BlockTank::create, MachineTileEntity.TileTank),
+  block_transceiver(BlockTransceiver::create, MachineTileEntity.TileTransceiver),
+  block_vacuum_chest(BlockVacuumChest::create, MachineTileEntity.TileVacuumChest),
+  block_xp_vacuum(BlockXPVacuum::create, MachineTileEntity.TileXPVacuum),
 
-  block_travel_anchor(BlockTravelAnchor.class, MachineTileEntity.TileTravelAnchor),
-  block_tele_pad(BlockTelePad.class, "create_telepad", MachineTileEntity.TileTelePad),
-  block_dialing_device(BlockDialingDevice.class, MachineTileEntity.TileDialingDevice),
+  block_travel_anchor(BlockTravelAnchor::create, MachineTileEntity.TileTravelAnchor),
+  block_tele_pad(BlockTelePad::create_telepad, MachineTileEntity.TileTelePad),
+  block_dialing_device(BlockDialingDevice::create, MachineTileEntity.TileDialingDevice),
 
-  block_impulse_hopper(BlockImpulseHopper.class, MachineTileEntity.TileImpulseHopper),
-  block_simple_crafter(BlockCrafter.class, "create_simple", MachineTileEntity.TileSimpleCrafter),
-  block_crafter(BlockCrafter.class, MachineTileEntity.TileCrafter),
+  block_impulse_hopper(BlockImpulseHopper::create, MachineTileEntity.TileImpulseHopper),
+  block_simple_crafter(BlockCrafter::create_simple, MachineTileEntity.TileSimpleCrafter),
+  block_crafter(BlockCrafter::create, MachineTileEntity.TileCrafter),
 
-  block_creative_spawner(BlockCreativeSpawner.class, MachineTileEntity.TileCreativeSpawner),
+  block_creative_spawner(BlockCreativeSpawner::create, MachineTileEntity.TileCreativeSpawner),
 
   ;
 
@@ -138,42 +142,36 @@ public enum MachineObject implements IModObjectBase {
   protected @Nullable Block block;
   protected @Nullable Item item;
 
-  protected final @Nonnull Class<?> clazz;
-  protected final @Nullable String blockMethodName, itemMethodName;
   protected final @Nullable IModTileEntity modTileEntity;
 
-  private MachineObject(@Nonnull Class<?> clazz) {
-    this(clazz, "create", null);
+  protected final @Nullable Function<IModObject, Block> blockMaker;
+  protected final @Nullable BiFunction<IModObject, Block, Item> itemMaker;
+
+  private MachineObject(@Nonnull BiFunction<IModObject, Block, Item> itemMaker) {
+    this(null, itemMaker, null);
   }
 
-  private MachineObject(@Nonnull Class<?> clazz, @Nullable IModTileEntity modTileEntity) {
-    this(clazz, "create", modTileEntity);
+  private MachineObject(@Nonnull Function<IModObject, Block> blockMaker) {
+    this(blockMaker, null, null);
   }
 
-  private MachineObject(@Nonnull Class<?> clazz, @Nonnull String methodName) {
-    this(clazz, Block.class.isAssignableFrom(clazz) ? methodName : null, Item.class.isAssignableFrom(clazz) ? methodName : null, null);
+  private MachineObject(@Nonnull Function<IModObject, Block> blockMaker, @Nonnull BiFunction<IModObject, Block, Item> itemMaker) {
+    this(blockMaker, itemMaker, null);
   }
 
-  private MachineObject(@Nonnull Class<?> clazz, @Nonnull String methodName, @Nullable IModTileEntity modTileEntity) {
-    this(clazz, Block.class.isAssignableFrom(clazz) ? methodName : null, Item.class.isAssignableFrom(clazz) ? methodName : null, modTileEntity);
+  private MachineObject(@Nonnull Function<IModObject, Block> blockMaker, @Nonnull IModTileEntity modTileEntity) {
+    this(blockMaker, null, modTileEntity);
   }
 
-  private MachineObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, @Nullable IModTileEntity modTileEntity) {
+  private MachineObject(@Nullable Function<IModObject, Block> blockMaker, @Nullable BiFunction<IModObject, Block, Item> itemMaker,
+      @Nullable IModTileEntity modTileEntity) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
-    this.clazz = clazz;
-    this.blockMethodName = blockMethodName == null || blockMethodName.isEmpty() ? null : blockMethodName;
-    this.itemMethodName = itemMethodName == null || itemMethodName.isEmpty() ? null : itemMethodName;
-    if (blockMethodName == null && itemMethodName == null) {
-      throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
+    this.blockMaker = blockMaker;
+    this.itemMaker = itemMaker;
+    if (blockMaker == null && itemMaker == null) {
+      throw new RuntimeException(this + " unexpectedly is neither a Block nor an Item.");
     }
     this.modTileEntity = modTileEntity;
-  }
-
-  @Override
-  @Nonnull
-  public <B extends Block> B apply(@Nonnull B blockIn) {
-    blockIn.setCreativeTab(EnderIOTab.tabEnderIOMachines);
-    return IModObjectBase.super.apply(blockIn);
   }
 
   @Override
@@ -192,18 +190,18 @@ public enum MachineObject implements IModObjectBase {
   }
 
   @Override
-  public final @Nonnull Class<?> getClazz() {
-    return clazz;
+  public final @Nullable Class<?> getClazz() {
+    return null;
   }
 
   @Override
   public final String getBlockMethodName() {
-    return blockMethodName;
+    return null;
   }
 
   @Override
   public final String getItemMethodName() {
-    return itemMethodName;
+    return null;
   }
 
   @Override
@@ -220,6 +218,23 @@ public enum MachineObject implements IModObjectBase {
   @Nullable
   public IModTileEntity getTileEntity() {
     return modTileEntity;
+  }
+
+  @Override
+  public @Nonnull Function<IModObject, Block> getBlockCreator() {
+    return blockMaker != null ? blockMaker : mo -> null;
+  }
+
+  @Override
+  public @Nonnull BiFunction<IModObject, Block, Item> getItemCreator() {
+    return NullHelper.first(itemMaker, IModObject.WithBlockItem.itemCreator);
+  }
+
+  @Override
+  @Nonnull
+  public <B extends Block> B apply(@Nonnull B blockIn) {
+    blockIn.setCreativeTab(EnderIOTab.tabEnderIOMachines);
+    return IModObjectBase.super.apply(blockIn);
   }
 
 }

@@ -1,6 +1,7 @@
 package crazypants.enderio.conduits.me.conduit;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import appeng.api.AEApi;
 import crazypants.enderio.api.IModObject;
@@ -15,22 +16,14 @@ import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.conduits.conduit.AbstractItemConduit;
 import crazypants.enderio.conduits.conduit.ItemConduitSubtype;
 import crazypants.enderio.conduits.me.MEUtil;
-import crazypants.enderio.conduits.me.init.ConduitAppliedEnergisticsObject;
-import crazypants.enderio.conduits.render.ConduitBundleRenderManager;
-import crazypants.enderio.conduits.render.DefaultConduitRenderer;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemMEConduit extends AbstractItemConduit {
 
-  private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-      new ItemConduitSubtype(ConduitAppliedEnergisticsObject.item_me_conduit.name(), EnderIO.DOMAIN + ":item_me_conduit"),
-      new ItemConduitSubtype(ConduitAppliedEnergisticsObject.item_me_conduit.name() + "dense", EnderIO.DOMAIN + ":item_me_conduit_dense") };
-
-  public static ItemMEConduit create(@Nonnull IModObject modObject) {
+  public static ItemMEConduit create(@Nonnull IModObject modObject, @Nullable Block block) {
     if (MEUtil.isMEEnabled()) {
       return new ItemMEConduit(modObject);
     }
@@ -63,4 +56,5 @@ public class ItemMEConduit extends AbstractItemConduit {
   public boolean shouldHideFacades(@Nonnull ItemStack stack, @Nonnull EntityPlayer player) {
     return true;
   }
+
 }

@@ -1,6 +1,7 @@
 package crazypants.enderio.base.material.alloy.endergy;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
@@ -8,6 +9,7 @@ import com.enderio.core.common.util.NNList.Callback;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.render.IHaveRenderers;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -19,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemEndergyAlloy extends Item implements IHaveRenderers {
 
-  public static ItemEndergyAlloy create(@Nonnull IModObject modObject) {
+  public static ItemEndergyAlloy create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemEndergyAlloy(modObject);
   }
 

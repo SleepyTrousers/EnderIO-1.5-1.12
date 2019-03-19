@@ -1,5 +1,8 @@
 package crazypants.enderio.base.power.forge.tile;
 
+import java.util.EnumMap;
+import java.util.WeakHashMap;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -12,18 +15,30 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class InternalRecieverTileWrapper extends InternalPoweredTileWrapper {
 
+  public static final @Nonnull WeakHashMap<ILegacyPoweredTile.Receiver, EnumMap<EnumFacing, IEnergyStorage>> CACHE = new WeakHashMap<>();
+
   public static @Nullable IEnergyStorage get(@Nonnull ILegacyPoweredTile.Receiver tile, @Nullable EnumFacing facing) {
     if (facing != null && tile.canConnectEnergy(facing)) {
-      switch (DiagnosticsConfig.protectEnergyOverflow.get()) {
-      case NONE:
-        return new InternalRecieverTileWrapper(tile, facing);
-      case SOFT:
-        return new LimitingRecieverTileCapabilityProvider(tile, facing);
-      case HARD:
-        return new ValidatingRecieverTileCapabilityProvider(tile, facing);
+      EnumMap<EnumFacing, IEnergyStorage> sideMap = CACHE.computeIfAbsent(tile, theTile -> new EnumMap<>(EnumFacing.class));
+      IEnergyStorage energyStorage = sideMap.get(facing);
+      if (energyStorage == null) { // no computeIfAbsent() here as it would need to create a new Function every time to capture the tile
+        sideMap.put(facing, energyStorage = getInternal(tile, facing));
       }
+      return energyStorage;
     }
     return null;
+  }
+
+  private static @Nonnull IEnergyStorage getInternal(@Nonnull ILegacyPoweredTile.Receiver tile, @Nonnull EnumFacing facing) {
+    switch (DiagnosticsConfig.protectEnergyOverflow.get()) {
+    case NONE:
+      return new InternalRecieverTileWrapper(tile, facing);
+    case SOFT:
+      return new LimitingRecieverTileCapabilityProvider(tile, facing);
+    case HARD:
+    default:
+      return new ValidatingRecieverTileCapabilityProvider(tile, facing);
+    }
   }
 
   protected final @Nonnull ILegacyPoweredTile.Receiver tile;
@@ -55,15 +70,18 @@ public class InternalRecieverTileWrapper extends InternalPoweredTileWrapper {
 
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
-      final int receivedEnergy = super.receiveEnergy(maxReceive, simulate);
+      final long serverTickCount = EnderIO.proxy.getServerTickCount();
+      if (serverTickCount != lastTick) {
+        lastTick = serverTickCount;
+        recv = 0;
+      }
+      final int maxEnergyRecieved = tile.getMaxEnergyRecieved(from);
+      final int receivedEnergy = super.receiveEnergy(Math.max(0, Math.min(maxReceive, maxEnergyRecieved - recv)), simulate);
       if (!simulate) {
-        final long serverTickCount = EnderIO.proxy.getServerTickCount();
-        if (serverTickCount != lastTick) {
-          lastTick = serverTickCount;
-          recv = receivedEnergy;
-        } else {
+        if (recv == 0) { // first call each tick is allowed to push anything
           recv += receivedEnergy;
-          final int maxEnergyRecieved = tile.getMaxEnergyRecieved(from);
+        } else {
+          recv += maxReceive; // we didn't take that much, but they did try to push that much, so count what they wanted to push to us
           if (recv > maxEnergyRecieved) {
             if (cooldown <= 0) {
               final BlockPos pos = tile.getLocation().offset(from);

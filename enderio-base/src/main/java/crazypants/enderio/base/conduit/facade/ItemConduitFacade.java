@@ -41,7 +41,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider, IResourceTooltipProvider, IHaveRenderers {
 
-  public static ItemConduitFacade create(@Nonnull IModObject modObject) {
+  public static ItemConduitFacade create(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemConduitFacade result = new ItemConduitFacade(modObject);
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new FacadePainterRecipe(result));
     return result;

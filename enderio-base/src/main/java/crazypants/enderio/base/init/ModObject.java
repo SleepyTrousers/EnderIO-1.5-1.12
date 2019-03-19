@@ -99,24 +99,24 @@ import net.minecraft.item.Item;
 public enum ModObject implements IModObjectBase {
 
   // Dummies
-  block_machine_io(BlockMachineIO.class),
-  block_machine_base(BlockMachineBase.class),
-  itemEnderface(ItemEnderface.class),
+  block_machine_io(BlockMachineIO::create),
+  block_machine_base(BlockMachineBase::create),
+  itemEnderface(ItemEnderface::create),
 
   // Conduits
-  itemConduitFacade(ItemConduitFacade.class),
+  itemConduitFacade(ItemConduitFacade::create),
 
   // Materials
-  itemBasicCapacitor(ItemCapacitor.class),
-  blockAlloy(BlockAlloy.class),
-  itemAlloyIngot(ItemAlloy.class),
-  itemAlloyNugget(ItemAlloy.class),
-  itemAlloyBall(ItemAlloy.class),
-  itemMaterial(ItemMaterial.class),
+  itemBasicCapacitor(ItemCapacitor::create),
+  blockAlloy(BlockAlloy::create),
+  itemAlloyIngot(ItemAlloy::create),
+  itemAlloyNugget(ItemAlloy::create),
+  itemAlloyBall(ItemAlloy::create),
+  itemMaterial(ItemMaterial::create),
 
-  itemBrokenSpawner(ItemBrokenSpawner.class),
-  block_infinity_fog(BlockInfinityFog.class),
-  block_infinity(BlockInfinity.class),
+  itemBrokenSpawner(ItemBrokenSpawner::create),
+  block_infinity_fog(BlockInfinityFog::create),
+  block_infinity(BlockInfinity::create),
 
   // Blocks
   blockColdFire(BlockColdFire::create),
@@ -127,140 +127,140 @@ public enum ModObject implements IModObjectBase {
   blockDarkSteelDoor(BlockDarkSteelDoor::create),
   blockReinforcedObsidian(BlockReinforcedObsidian::create),
   blockSelfResettingLever5(BlockSelfResettingLever::create5),
-  blockSelfResettingLever10(BlockSelfResettingLever.class, "create10"),
-  blockSelfResettingLever30(BlockSelfResettingLever.class, "create30"),
-  blockSelfResettingLever60(BlockSelfResettingLever.class, "create60"),
-  blockSelfResettingLever300(BlockSelfResettingLever.class, "create300"),
-  blockDecoration1(BlockDecoration.class),
-  blockDecoration2(BlockDecorationFacing.class),
-  blockDecoration3(BlockDecorationFacing.class, "create2"),
-  blockIndustrialInsulation(BlockIndustrialInsulation.class),
-  blockEndIronBars(BlockEndIronBars.class),
+  blockSelfResettingLever10(BlockSelfResettingLever::create10),
+  blockSelfResettingLever30(BlockSelfResettingLever::create30),
+  blockSelfResettingLever60(BlockSelfResettingLever::create60),
+  blockSelfResettingLever300(BlockSelfResettingLever::create300),
+  blockDecoration1(BlockDecoration::create),
+  blockDecoration2(BlockDecorationFacing::create),
+  blockDecoration3(BlockDecorationFacing::create2),
+  blockIndustrialInsulation(BlockIndustrialInsulation::create),
+  blockEndIronBars(BlockEndIronBars::create),
 
   // Charges
-  blockConfusionCharge(BlockConfusionCharge.class),
-  blockConcussionCharge(BlockConcussionCharge.class),
-  blockEnderCharge(BlockEnderCharge.class),
+  blockConfusionCharge(BlockConfusionCharge::create),
+  blockConcussionCharge(BlockConcussionCharge::create),
+  blockEnderCharge(BlockEnderCharge::create),
 
   // Painter
   blockPaintedFence(BlockPaintedFence::create, ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedStoneFence(BlockPaintedFence.class, "create_stone", ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedFenceGate(BlockPaintedFenceGate.class, ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedWall(BlockPaintedWall.class, ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedStair(BlockPaintedStairs.class, ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedStoneStair(BlockPaintedStairs.class, "create_stone", ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedSlab(BlockPaintedSlabManager.class, "create_wood", "create_item", ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedStoneFence(BlockPaintedFence::create_stone, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedFenceGate(BlockPaintedFenceGate::create, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedWall(BlockPaintedWall::create, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedStair(BlockPaintedStairs::create, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedStoneStair(BlockPaintedStairs::create_stone, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedSlab(BlockPaintedSlabManager::create_wood, BlockPaintedSlabManager::create_item, ModTileEntity.TileEntityPaintedBlock),
   blockPaintedDoubleSlab(BlockPaintedSlabManager::create_wood_double, (mo, b) -> null, ModTileEntity.TileEntityTwicePaintedBlock),
-  blockPaintedStoneSlab(BlockPaintedSlabManager.class, "create_stone", "create_item", ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedStoneDoubleSlab(BlockPaintedSlabManager.class, "create_stone_double", null, ModTileEntity.TileEntityTwicePaintedBlock),
-  blockPaintedGlowstone(BlockPaintedGlowstone.class, ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedGlowstoneSolid(BlockPaintedGlowstone.class, "create_solid", ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedCarpet(BlockPaintedCarpet.class, ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedPressurePlate(BlockPaintedPressurePlate.class, ModTileEntity.TilePaintedPressurePlate),
-  blockPaintedRedstone(BlockPaintedRedstone.class, ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedRedstoneSolid(BlockPaintedRedstone.class, "create_solid", ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedStone(BlockPaintedStone.class, ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedWoodenTrapdoor(BlockPaintedTrapDoor.class, "create_wooden", ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedIronTrapdoor(BlockPaintedTrapDoor.class, "create_iron", ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedDarkSteelTrapdoor(BlockPaintedTrapDoor.class, "create_dark", ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedWoodenDoor(BlockPaintedDoor.class, "create_wooden", ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedIronDoor(BlockPaintedDoor.class, "create_iron", ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedDarkSteelDoor(BlockPaintedDoor.class, "create_dark", ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedWorkbench(BlockPaintedWorkbench.class, ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedReinforcedObsidian(BlockPaintedReinforcedObsidian.class, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedStoneSlab(BlockPaintedSlabManager::create_stone, BlockPaintedSlabManager::create_item, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedStoneDoubleSlab(BlockPaintedSlabManager::create_stone_double, null, ModTileEntity.TileEntityTwicePaintedBlock),
+  blockPaintedGlowstone(BlockPaintedGlowstone::create, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedGlowstoneSolid(BlockPaintedGlowstone::create_solid, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedCarpet(BlockPaintedCarpet::create, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedPressurePlate(BlockPaintedPressurePlate::create, ModTileEntity.TilePaintedPressurePlate),
+  blockPaintedRedstone(BlockPaintedRedstone::create, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedRedstoneSolid(BlockPaintedRedstone::create_solid, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedStone(BlockPaintedStone::create, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedWoodenTrapdoor(BlockPaintedTrapDoor::create_wooden, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedIronTrapdoor(BlockPaintedTrapDoor::create_iron, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedDarkSteelTrapdoor(BlockPaintedTrapDoor::create_dark, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedWoodenDoor(BlockPaintedDoor::create_wooden, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedIronDoor(BlockPaintedDoor::create_iron, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedDarkSteelDoor(BlockPaintedDoor::create_dark, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedWorkbench(BlockPaintedWorkbench::create, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedReinforcedObsidian(BlockPaintedReinforcedObsidian::create, ModTileEntity.TileEntityPaintedBlock),
 
-  blockExitRail(BlockExitRail.class),
+  blockExitRail(BlockExitRail::create),
 
-  itemConduitProbe(ItemConduitProbe.class),
-  itemYetaWrench(ItemYetaWrench.class),
-  itemXpTransfer(ItemXpTransfer.class),
-  itemColdFireIgniter(ItemColdFireIgniter.class),
+  itemConduitProbe(ItemConduitProbe::create),
+  itemYetaWrench(ItemYetaWrench::create),
+  itemXpTransfer(ItemXpTransfer::create),
+  itemColdFireIgniter(ItemColdFireIgniter::create),
 
-  itemCoordSelector(ItemCoordSelector.class),
-  itemLocationPrintout(ItemLocationPrintout.class),
-  itemTravelStaff(ItemTravelStaff.class),
-  itemRodOfReturn(ItemRodOfReturn.class),
-  itemMagnet(ItemMagnet.class),
-  blockEndermanSkull(BlockEndermanSkull.class, ModTileEntity.TileEndermanSkull),
-  itemEnderFood(ItemEnderFood.class),
+  itemCoordSelector(ItemCoordSelector::create),
+  itemLocationPrintout(ItemLocationPrintout::create),
+  itemTravelStaff(ItemTravelStaff::create),
+  itemRodOfReturn(ItemRodOfReturn::create),
+  itemMagnet(ItemMagnet::create),
+  blockEndermanSkull(BlockEndermanSkull::create, ModTileEntity.TileEndermanSkull),
+  itemEnderFood(ItemEnderFood::create),
 
   // Filters
-  itemBasicItemFilter(ItemBasicItemFilter.class, "createBasicItemFilter"),
-  itemAdvancedItemFilter(ItemBasicItemFilter.class, "createAdvancedItemFilter"),
-  itemLimitedItemFilter(ItemBasicItemFilter.class, "createLimitedItemFilter"),
-  itemBigItemFilter(ItemBasicItemFilter.class, "createBigItemFilter"),
-  itemBigAdvancedItemFilter(ItemBasicItemFilter.class, "createBigAdvancedItemFilter"),
-  itemExistingItemFilter(ItemExistingItemFilter.class),
-  itemModItemFilter(ItemModItemFilter.class),
-  itemPowerItemFilter(ItemPowerItemFilter.class),
-  itemSoulFilterNormal(ItemSoulFilter.class, "createNormal"),
-  itemSoulFilterBig(ItemSoulFilter.class, "createBig"),
-  itemEnchantmentFilterNormal(ItemEnchantmentFilter.class, "createNormal"),
-  itemEnchantmentFilterBig(ItemEnchantmentFilter.class, "createBig"),
+  itemBasicItemFilter(ItemBasicItemFilter::createBasicItemFilter),
+  itemAdvancedItemFilter(ItemBasicItemFilter::createAdvancedItemFilter),
+  itemLimitedItemFilter(ItemBasicItemFilter::createLimitedItemFilter),
+  itemBigItemFilter(ItemBasicItemFilter::createBigItemFilter),
+  itemBigAdvancedItemFilter(ItemBasicItemFilter::createBigAdvancedItemFilter),
+  itemExistingItemFilter(ItemExistingItemFilter::create),
+  itemModItemFilter(ItemModItemFilter::create),
+  itemPowerItemFilter(ItemPowerItemFilter::create),
+  itemSoulFilterNormal(ItemSoulFilter::createNormal),
+  itemSoulFilterBig(ItemSoulFilter::createBig),
+  itemEnchantmentFilterNormal(ItemEnchantmentFilter::createNormal),
+  itemEnchantmentFilterBig(ItemEnchantmentFilter::createBig),
 
-  itemFluidFilter(ItemFluidFilter.class),
+  itemFluidFilter(ItemFluidFilter::create),
 
-  itemRedstoneNotFilter(ItemInvertingOutputSignalFilter.class),
-  itemRedstoneOrFilter(ItemBasicOutputSignalFilter.class, "createOr"),
-  itemRedstoneAndFilter(ItemBasicOutputSignalFilter.class, "createAnd"),
-  itemRedstoneNorFilter(ItemBasicOutputSignalFilter.class, "createNor"),
-  itemRedstoneNandFilter(ItemBasicOutputSignalFilter.class, "createNand"),
-  itemRedstoneXorFilter(ItemBasicOutputSignalFilter.class, "createXor"),
-  itemRedstoneXnorFilter(ItemBasicOutputSignalFilter.class, "createXnor"),
-  itemRedstoneToggleFilter(ItemToggleOutputSignalFilter.class),
-  itemRedstoneCountingFilter(ItemCountingOutputSignalFilter.class),
+  itemRedstoneNotFilter(ItemInvertingOutputSignalFilter::create),
+  itemRedstoneOrFilter(ItemBasicOutputSignalFilter::createOr),
+  itemRedstoneAndFilter(ItemBasicOutputSignalFilter::createAnd),
+  itemRedstoneNorFilter(ItemBasicOutputSignalFilter::createNor),
+  itemRedstoneNandFilter(ItemBasicOutputSignalFilter::createNand),
+  itemRedstoneXorFilter(ItemBasicOutputSignalFilter::createXor),
+  itemRedstoneXnorFilter(ItemBasicOutputSignalFilter::createXnor),
+  itemRedstoneToggleFilter(ItemToggleOutputSignalFilter::create),
+  itemRedstoneCountingFilter(ItemCountingOutputSignalFilter::create),
 
-  itemRedstoneSensorFilter(ItemComparatorInputSignalFilter.class),
-  itemRedstoneTimerFilter(ItemTimerInputSignalFilter.class),
+  itemRedstoneSensorFilter(ItemComparatorInputSignalFilter::create),
+  itemRedstoneTimerFilter(ItemTimerInputSignalFilter::create),
 
-  blockFusedQuartz(BlockFusedQuartz.class, "createFusedQuartz"),
-  blockFusedGlass(BlockFusedQuartz.class, "createFusedGlass"),
-  blockEnlightenedFusedQuartz(BlockFusedQuartz.class, "createEnlightenedFusedQuartz"),
-  blockEnlightenedFusedGlass(BlockFusedQuartz.class, "createEnlightenedFusedGlass"),
-  blockDarkFusedQuartz(BlockFusedQuartz.class, "createDarkFusedQuartz"),
-  blockDarkFusedGlass(BlockFusedQuartz.class, "createDarkFusedGlass"),
-  blockPaintedFusedQuartz(BlockPaintedFusedQuartz.class, ModTileEntity.TileEntityPaintedBlock),
+  blockFusedQuartz(BlockFusedQuartz::createFusedQuartz),
+  blockFusedGlass(BlockFusedQuartz::createFusedGlass),
+  blockEnlightenedFusedQuartz(BlockFusedQuartz::createEnlightenedFusedQuartz),
+  blockEnlightenedFusedGlass(BlockFusedQuartz::createEnlightenedFusedGlass),
+  blockDarkFusedQuartz(BlockFusedQuartz::createDarkFusedQuartz),
+  blockDarkFusedGlass(BlockFusedQuartz::createDarkFusedGlass),
+  blockPaintedFusedQuartz(BlockPaintedFusedQuartz::create, ModTileEntity.TileEntityPaintedBlock),
 
-  itemSoulVial(ItemSoulVial.class),
+  itemSoulVial(ItemSoulVial::create),
 
-  block_detector_block(BlockDetector.class, ModTileEntity.TileEntityPaintedBlock),
-  block_detector_block_silent(BlockDetector.class, "createSilent", ModTileEntity.TileEntityPaintedBlock),
+  block_detector_block(BlockDetector::create, ModTileEntity.TileEntityPaintedBlock),
+  block_detector_block_silent(BlockDetector::createSilent, ModTileEntity.TileEntityPaintedBlock),
 
-  itemDarkSteelHelmet(ItemDarkSteelArmor.class, "createDarkSteelHelmet"),
-  itemDarkSteelChestplate(ItemDarkSteelArmor.class, "createDarkSteelChestplate"),
-  itemDarkSteelLeggings(ItemDarkSteelArmor.class, "createDarkSteelLeggings"),
-  itemDarkSteelBoots(ItemDarkSteelArmor.class, "createDarkSteelBoots"),
-  itemDarkSteelSword(ItemDarkSteelSword.class, "createDarkSteel"),
-  itemDarkSteelPickaxe(ItemDarkSteelPickaxe.class, "createDarkSteel"),
-  itemDarkSteelAxe(ItemDarkSteelAxe.class, "createDarkSteel"),
-  itemDarkSteelBow(ItemDarkSteelBow.class, "createDarkSteel"),
-  itemDarkSteelShears(ItemDarkSteelShears.class),
-  itemDarkSteelTreetap(ItemDarkSteelTreetap.class),
-  itemDarkSteelCrook(ItemDarkSteelCrook.class, "createDarkSteel"),
-  itemDarkSteelHand(ItemDarkSteelHand.class),
-  itemInventoryChargerSimple(ItemInventoryCharger.class, "createSimple"),
-  itemInventoryChargerBasic(ItemInventoryCharger.class, "createBasic"),
-  itemInventoryCharger(ItemInventoryCharger.class),
-  itemInventoryChargerVibrant(ItemInventoryCharger.class, "createVibrant"),
-  itemEndSteelSword(ItemDarkSteelSword.class, "createEndSteel"),
-  itemEndSteelPickaxe(ItemDarkSteelPickaxe.class, "createEndSteel"),
-  itemEndSteelAxe(ItemDarkSteelAxe.class, "createEndSteel"),
-  itemEndSteelBow(ItemDarkSteelBow.class, "createEndSteel"),
+  itemDarkSteelHelmet(ItemDarkSteelArmor::createDarkSteelHelmet),
+  itemDarkSteelChestplate(ItemDarkSteelArmor::createDarkSteelChestplate),
+  itemDarkSteelLeggings(ItemDarkSteelArmor::createDarkSteelLeggings),
+  itemDarkSteelBoots(ItemDarkSteelArmor::createDarkSteelBoots),
+  itemDarkSteelSword(ItemDarkSteelSword::createDarkSteel),
+  itemDarkSteelPickaxe(ItemDarkSteelPickaxe::createDarkSteel),
+  itemDarkSteelAxe(ItemDarkSteelAxe::createDarkSteel),
+  itemDarkSteelBow(ItemDarkSteelBow::createDarkSteel),
+  itemDarkSteelShears(ItemDarkSteelShears::create),
+  itemDarkSteelTreetap(ItemDarkSteelTreetap::create),
+  itemDarkSteelCrook(ItemDarkSteelCrook::createDarkSteel),
+  itemDarkSteelHand(ItemDarkSteelHand::create),
+  itemInventoryChargerSimple(ItemInventoryCharger::createSimple),
+  itemInventoryChargerBasic(ItemInventoryCharger::createBasic),
+  itemInventoryCharger(ItemInventoryCharger::create),
+  itemInventoryChargerVibrant(ItemInventoryCharger::createVibrant),
+  itemEndSteelSword(ItemDarkSteelSword::createEndSteel),
+  itemEndSteelPickaxe(ItemDarkSteelPickaxe::createEndSteel),
+  itemEndSteelAxe(ItemDarkSteelAxe::createEndSteel),
+  itemEndSteelBow(ItemDarkSteelBow::createEndSteel),
 
-  itemEndSteelHelmet(ItemDarkSteelArmor.class, "createEndSteelHelmet"),
-  itemEndSteelChestplate(ItemDarkSteelArmor.class, "createEndSteelChestplate"),
-  itemEndSteelLeggings(ItemDarkSteelArmor.class, "createEndSteelLeggings"),
-  itemEndSteelBoots(ItemDarkSteelArmor.class, "createEndSteelBoots"),
+  itemEndSteelHelmet(ItemDarkSteelArmor::createEndSteelHelmet),
+  itemEndSteelChestplate(ItemDarkSteelArmor::createEndSteelChestplate),
+  itemEndSteelLeggings(ItemDarkSteelArmor::createEndSteelLeggings),
+  itemEndSteelBoots(ItemDarkSteelArmor::createEndSteelBoots),
 
-  itemStaffOfLevity(ItemStaffOfLevity.class),
+  itemStaffOfLevity(ItemStaffOfLevity::create),
 
-  item_owl_egg(ItemOwlEgg.class),
+  item_owl_egg(ItemOwlEgg::create),
 
   // endergy Items
-  blockAlloyEndergy(BlockEndergyAlloy.class),
-  itemAlloyEndergyIngot(ItemEndergyAlloy.class),
-  itemAlloyEndergyNugget(ItemEndergyAlloy.class),
-  itemAlloyEndergyBall(ItemEndergyAlloy.class),
+  blockAlloyEndergy(BlockEndergyAlloy::create),
+  itemAlloyEndergyIngot(ItemEndergyAlloy::create),
+  itemAlloyEndergyNugget(ItemEndergyAlloy::create),
+  itemAlloyEndergyBall(ItemEndergyAlloy::create),
 
   ;
 
@@ -269,33 +269,10 @@ public enum ModObject implements IModObjectBase {
   protected @Nullable Block block;
   protected @Nullable Item item;
 
-  protected final @Nonnull Class<?> clazz;
-  protected final @Nullable String blockMethodName, itemMethodName;
   protected final @Nullable IModTileEntity modTileEntity;
 
   protected final @Nullable Function<IModObject, Block> blockMaker;
   protected final @Nullable BiFunction<IModObject, Block, Item> itemMaker;
-
-  /*
-   * A modObject can be defined in a couple of different ways.
-   * 
-   * It always needs a class.
-   * 
-   * If there is no creation method name given, the method name "create" is used and it is auto-detected from the class if it is a Block or an Item.
-   * 
-   * If only one method name is given, the same auto-detection is used.
-   * 
-   * If two method names are given, one is used to create a block and the second one to create the blockItem.
-   * 
-   * If it is a Block and does not have the second method name, but implements IModObject.WithBlockItem, that interface is used to create the blockItem.
-   * 
-   * It can also have a TileEntity class. It it is given, it is registered automatially. Multiple blocks can use the same class, the registration is
-   * automatically de-duped.
-   * 
-   * 
-   * Please note that it is not recommended to override the lifecycle methods to add callbacks to the block/item code. Doing so will classload that Block/Item
-   * together with the ModObject enum, which can cause weird errors. Implement the IModObject lifecycle interfaces on the block/item instead.
-   */
 
   private ModObject(@Nonnull BiFunction<IModObject, Block, Item> itemMaker) {
     this(null, itemMaker, null);
@@ -316,44 +293,12 @@ public enum ModObject implements IModObjectBase {
   private ModObject(@Nullable Function<IModObject, Block> blockMaker, @Nullable BiFunction<IModObject, Block, Item> itemMaker,
       @Nullable IModTileEntity modTileEntity) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
-    this.clazz = this.getClass(); // dummy
-    this.blockMethodName = null;
-    this.itemMethodName = null;
     this.blockMaker = blockMaker;
     this.itemMaker = itemMaker;
     if (blockMaker == null && itemMaker == null) {
       throw new RuntimeException(this + " unexpectedly is neither a Block nor an Item.");
     }
     this.modTileEntity = modTileEntity;
-  }
-
-  private ModObject(@Nonnull Class<?> clazz) {
-    this(clazz, (IModTileEntity) null);
-  }
-
-  private ModObject(@Nonnull Class<?> clazz, @Nullable IModTileEntity modTileEntity) {
-    this(clazz, "create", modTileEntity);
-  }
-
-  private ModObject(@Nonnull Class<?> clazz, @Nonnull String methodName) {
-    this(clazz, Block.class.isAssignableFrom(clazz) ? methodName : null, Item.class.isAssignableFrom(clazz) ? methodName : null, null);
-  }
-
-  private ModObject(@Nonnull Class<?> clazz, @Nonnull String methodName, @Nullable IModTileEntity modTileEntity) {
-    this(clazz, Block.class.isAssignableFrom(clazz) ? methodName : null, Item.class.isAssignableFrom(clazz) ? methodName : null, modTileEntity);
-  }
-
-  private ModObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, @Nullable IModTileEntity modTileEntity) {
-    this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
-    this.clazz = clazz;
-    this.blockMethodName = blockMethodName == null || blockMethodName.isEmpty() ? null : blockMethodName;
-    this.itemMethodName = itemMethodName == null || itemMethodName.isEmpty() ? null : itemMethodName;
-    if (blockMethodName == null && itemMethodName == null) {
-      throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
-    }
-    this.modTileEntity = modTileEntity;
-    this.blockMaker = null;
-    this.itemMaker = null;
   }
 
   @Override
@@ -372,18 +317,18 @@ public enum ModObject implements IModObjectBase {
   }
 
   @Override
-  public final @Nonnull Class<?> getClazz() {
-    return clazz;
+  public final @Nullable Class<?> getClazz() {
+    return null;
   }
 
   @Override
   public final String getBlockMethodName() {
-    return blockMethodName;
+    return null;
   }
 
   @Override
   public final String getItemMethodName() {
-    return itemMethodName;
+    return null;
   }
 
   @Override
@@ -404,12 +349,12 @@ public enum ModObject implements IModObjectBase {
 
   @Override
   public @Nonnull Function<IModObject, Block> getBlockCreator() {
-    return blockMaker != null ? blockMaker : IModObjectBase.super.getBlockCreator();
+    return blockMaker != null ? blockMaker : mo -> null;
   }
 
   @Override
   public @Nonnull BiFunction<IModObject, Block, Item> getItemCreator() {
-    return itemMaker != null ? itemMaker : IModObjectBase.super.getItemCreator();
+    return NullHelper.first(itemMaker, IModObject.WithBlockItem.itemCreator);
   }
 
 }

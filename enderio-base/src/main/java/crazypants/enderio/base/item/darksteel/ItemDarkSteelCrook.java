@@ -81,12 +81,12 @@ public class ItemDarkSteelCrook extends ItemTool implements IAdvancedTooltipProv
     return EnergyUpgradeManager.getEnergyStored(player.getHeldItemMainhand());
   }
 
-  public static @Nonnull ItemDarkSteelCrook createEndSteel(@Nonnull IModObject modObject) {
+  public static @Nonnull ItemDarkSteelCrook createEndSteel(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemDarkSteelCrook res = new ItemDarkSteelCrook(modObject, EquipmentData.END_STEEL);
     return res;
   }
 
-  public static @Nonnull ItemDarkSteelCrook createDarkSteel(@Nonnull IModObject modObject) {
+  public static @Nonnull ItemDarkSteelCrook createDarkSteel(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemDarkSteelCrook res = new ItemDarkSteelCrook(modObject, EquipmentData.DARK_STEEL);
     return res;
   }

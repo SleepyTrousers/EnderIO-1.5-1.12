@@ -1,12 +1,15 @@
 package crazypants.enderio.conduits.refinedstorage.init;
 
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.IModTileEntity;
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.init.IModObjectBase;
 import crazypants.enderio.base.init.ModObjectRegistry;
@@ -14,15 +17,14 @@ import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.conduits.refinedstorage.conduit.ItemRefinedStorageConduit;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
 
 public enum ConduitRefinedStorageObject implements IModObjectBase {
 
-  item_refined_storage_conduit(ItemRefinedStorageConduit.class),
+  item_refined_storage_conduit(ItemRefinedStorageConduit::create),
 
-  item_rs_crafting_upgrade(ItemFunctionUpgrade.class, "createRSCraftingUpgrade"),
-  item_rs_crafting_speed_upgrade(ItemFunctionUpgrade.class, "createRSCraftingSpeedUpgrade"),
-  item_rs_crafting_speed_downgrade(ItemFunctionUpgrade.class, "createRSCraftingSpeedDowngrade"),
+  item_rs_crafting_upgrade(ItemFunctionUpgrade::createRSCraftingUpgrade),
+  item_rs_crafting_speed_upgrade(ItemFunctionUpgrade::createRSCraftingSpeedUpgrade),
+  item_rs_crafting_speed_downgrade(ItemFunctionUpgrade::createRSCraftingSpeedDowngrade),
 
   ;
 
@@ -35,83 +37,76 @@ public enum ConduitRefinedStorageObject implements IModObjectBase {
   protected @Nullable Block block;
   protected @Nullable Item item;
 
-  protected final @Nonnull Class<?> clazz;
-  protected final @Nullable String blockMethodName, itemMethodName;
   protected final @Nullable IModTileEntity modTileEntity;
 
-  private ConduitRefinedStorageObject(@Nonnull Class<?> clazz) {
-    this(clazz, (IModTileEntity) null);
+  protected final @Nullable Function<IModObject, Block> blockMaker;
+  protected final @Nullable BiFunction<IModObject, Block, Item> itemMaker;
+
+  private ConduitRefinedStorageObject(@Nonnull BiFunction<IModObject, Block, Item> itemMaker) {
+    this(null, itemMaker, null);
   }
 
-  private ConduitRefinedStorageObject(@Nonnull Class<?> clazz, @Nullable IModTileEntity modTileEntity) {
-    this(clazz, "create", modTileEntity);
+  private ConduitRefinedStorageObject(@Nonnull Function<IModObject, Block> blockMaker) {
+    this(blockMaker, null, null);
   }
 
-  private ConduitRefinedStorageObject(@Nonnull Class<?> clazz, @Nonnull String methodName) {
-    this(clazz, Block.class.isAssignableFrom(clazz) ? methodName : null, Item.class.isAssignableFrom(clazz) ? methodName : null, null);
+  private ConduitRefinedStorageObject(@Nonnull Function<IModObject, Block> blockMaker, @Nonnull BiFunction<IModObject, Block, Item> itemMaker) {
+    this(blockMaker, itemMaker, null);
   }
 
-  private ConduitRefinedStorageObject(@Nonnull Class<?> clazz, @Nonnull String methodName, @Nullable IModTileEntity modTileEntity) {
+  private ConduitRefinedStorageObject(@Nonnull Function<IModObject, Block> blockMaker, @Nonnull IModTileEntity modTileEntity) {
+    this(blockMaker, null, modTileEntity);
+  }
+
+  private ConduitRefinedStorageObject(@Nullable Function<IModObject, Block> blockMaker, @Nullable BiFunction<IModObject, Block, Item> itemMaker,
+      @Nullable IModTileEntity modTileEntity) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
-    this.clazz = clazz;
-    if (Block.class.isAssignableFrom(clazz)) {
-      this.blockMethodName = methodName;
-      this.itemMethodName = null;
-    } else if (Item.class.isAssignableFrom(clazz)) {
-      this.blockMethodName = null;
-      this.itemMethodName = methodName;
-    } else {
-      throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
+    this.blockMaker = blockMaker;
+    this.itemMaker = itemMaker;
+    if (blockMaker == null && itemMaker == null) {
+      throw new RuntimeException(this + " unexpectedly is neither a Block nor an Item.");
     }
     this.modTileEntity = modTileEntity;
   }
 
-  private ConduitRefinedStorageObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName,
-      @Nullable IModTileEntity modTileEntity) {
-    this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
-    this.clazz = clazz;
-    this.blockMethodName = blockMethodName == null || blockMethodName.isEmpty() ? null : blockMethodName;
-    this.itemMethodName = itemMethodName == null || itemMethodName.isEmpty() ? null : itemMethodName;
-    this.modTileEntity = modTileEntity;
-  }
-
   @Override
-  public @Nonnull Class<?> getClazz() {
-    return clazz;
-  }
-
-  @Override
-  public void setItem(@Nullable Item obj) {
-    this.item = obj;
-  }
-
-  @Override
-  public void setBlock(@Nullable Block obj) {
-    this.block = obj;
-  }
-
-  @Nonnull
-  @Override
-  public String getUnlocalisedName() {
+  public final @Nonnull String getUnlocalisedName() {
     return unlocalisedName;
   }
 
-  @Nonnull
   @Override
-  public ResourceLocation getRegistryName() {
-    return new ResourceLocation(EnderIO.DOMAIN, getUnlocalisedName());
-  }
-
-  @Nullable
-  @Override
-  public Block getBlock() {
+  public final @Nullable Block getBlock() {
     return block;
   }
 
-  @Nullable
   @Override
-  public Item getItem() {
+  public final @Nullable Item getItem() {
     return item;
+  }
+
+  @Override
+  public final @Nullable Class<?> getClazz() {
+    return null;
+  }
+
+  @Override
+  public final String getBlockMethodName() {
+    return null;
+  }
+
+  @Override
+  public final String getItemMethodName() {
+    return null;
+  }
+
+  @Override
+  public final void setItem(@Nullable Item obj) {
+    item = obj;
+  }
+
+  @Override
+  public final void setBlock(@Nullable Block obj) {
+    block = obj;
   }
 
   @Override
@@ -121,28 +116,13 @@ public enum ConduitRefinedStorageObject implements IModObjectBase {
   }
 
   @Override
-  public final @Nonnull <B extends Block> B apply(@Nonnull B blockIn) {
-    blockIn.setUnlocalizedName(getUnlocalisedName());
-    blockIn.setRegistryName(getRegistryName());
-    return blockIn;
+  public @Nonnull Function<IModObject, Block> getBlockCreator() {
+    return blockMaker != null ? blockMaker : mo -> null;
   }
 
   @Override
-  public final @Nonnull <I extends Item> I apply(@Nonnull I itemIn) {
-    itemIn.setUnlocalizedName(getUnlocalisedName());
-    itemIn.setRegistryName(getRegistryName());
-    return itemIn;
+  public @Nonnull BiFunction<IModObject, Block, Item> getItemCreator() {
+    return NullHelper.first(itemMaker, IModObject.WithBlockItem.itemCreator);
   }
 
-  @Override
-  @Nullable
-  public String getBlockMethodName() {
-    return blockMethodName;
-  }
-
-  @Override
-  @Nullable
-  public String getItemMethodName() {
-    return itemMethodName;
-  }
 }

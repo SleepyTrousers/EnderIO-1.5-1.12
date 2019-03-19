@@ -17,6 +17,7 @@ import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
+import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,7 +45,7 @@ import static crazypants.enderio.util.NbtValue.FLUIDAMOUNT;
 
 public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvider, IOverlayRenderAware {
 
-  public static ItemColdFireIgniter create(@Nonnull IModObject modObject) {
+  public static ItemColdFireIgniter create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemColdFireIgniter(modObject);
   }
 

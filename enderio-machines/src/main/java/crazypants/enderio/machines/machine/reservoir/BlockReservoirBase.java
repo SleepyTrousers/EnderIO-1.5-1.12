@@ -16,6 +16,7 @@ import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumMergingBlockRenderMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.base.tool.ToolUtil;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -41,13 +42,13 @@ public abstract class BlockReservoirBase extends BlockEio<TileReservoirBase> imp
   @SideOnly(Side.CLIENT)
   private static ReservoirItemRenderMapper RENDER_MAPPER;
 
-  public static BlockOmniReservoir create_omni(@Nonnull IModObject modObject) {
+  public static Block create_omni(@Nonnull IModObject modObject) {
     BlockOmniReservoir res = new BlockOmniReservoir(modObject);
     res.init();
     return res;
   }
 
-  public static BlockReservoir create(@Nonnull IModObject modObject) {
+  public static Block create(@Nonnull IModObject modObject) {
     BlockReservoir result = new BlockReservoir(modObject);
     result.init();
     return result;

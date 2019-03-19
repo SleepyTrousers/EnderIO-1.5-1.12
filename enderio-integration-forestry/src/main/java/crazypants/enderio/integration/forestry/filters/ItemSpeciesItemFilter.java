@@ -19,6 +19,7 @@ import crazypants.enderio.base.filter.item.items.IItemFilterItemUpgrade;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.integration.forestry.init.ForestryIntegrationObject;
 import crazypants.enderio.util.NbtValue;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,7 +38,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemSpeciesItemFilter extends Item implements IItemFilterItemUpgrade, IResourceTooltipProvider {
 
-  public static ItemSpeciesItemFilter create(@Nonnull IModObject modObject) {
+  public static ItemSpeciesItemFilter create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemSpeciesItemFilter(modObject);
   }
 

@@ -25,6 +25,7 @@ import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.Energ
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -34,7 +35,7 @@ import net.minecraft.util.NonNullList;
 
 public class ItemDarkSteelHand extends Item implements IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
 
-  public static ItemDarkSteelHand create(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelHand create(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemDarkSteelHand res = new ItemDarkSteelHand(modObject);
     return res;
   }

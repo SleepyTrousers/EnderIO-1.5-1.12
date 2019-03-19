@@ -51,6 +51,7 @@ public final class CapturedMob {
 
   public static final @Nonnull String ENTITY_KEY = "entity";
   public static final @Nonnull String ENTITY_ID_KEY = "entityId";
+  public static final @Nonnull String ENTITY_TAG_KEY = "EntityTag";
   public static final @Nonnull String CUSTOM_NAME_KEY = "customName";
 
   private final static @Nonnull NNList<Predicate<ResourceLocation>> blacklist = new NNList<>(in -> DRAGON.equals(in));
@@ -87,6 +88,8 @@ public final class CapturedMob {
   private CapturedMob(@Nonnull NBTTagCompound nbt) {
     if (nbt.hasKey(ENTITY_KEY)) {
       entityNbt = nbt.getCompoundTag(ENTITY_KEY).copy();
+    } else if (nbt.hasKey(ENTITY_TAG_KEY)) {
+      entityNbt = nbt.getCompoundTag(ENTITY_TAG_KEY).copy();
     } else {
       entityNbt = null;
     }
@@ -167,7 +170,7 @@ public final class CapturedMob {
   }
 
   public static boolean containsSoul(@Nullable NBTTagCompound nbt) {
-    return nbt != null && (nbt.hasKey(ENTITY_KEY) || nbt.hasKey(ENTITY_ID_KEY));
+    return nbt != null && (nbt.hasKey(ENTITY_KEY) || nbt.hasKey(ENTITY_ID_KEY) || nbt.hasKey(ENTITY_TAG_KEY));
   }
 
   @SuppressWarnings("null")

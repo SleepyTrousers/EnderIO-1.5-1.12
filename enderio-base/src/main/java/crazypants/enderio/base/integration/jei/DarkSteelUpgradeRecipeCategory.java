@@ -95,7 +95,11 @@ public class DarkSteelUpgradeRecipeCategory {
             recipes = temp;
           }
           if (recipes.isEmpty()) {
-            return getWrappers(Collections.singletonList(allRecipes.get(new ItemStackKey(focusStack))));
+            List<UpgradePath> recs = allRecipes.get(new ItemStackKey(focusStack));
+            if (recs == null) {
+              return NNList.emptyList();
+            }
+            return getWrappers(Collections.singletonList(recs));
           }
           return getWrappers(recipes);
         }
@@ -135,6 +139,7 @@ public class DarkSteelUpgradeRecipeCategory {
       
       @Override
       public @Nonnull <V> List<String> getRecipeCategoryUids(@Nonnull IFocus<V> focus) {
+        // TODO: Only return ANVIL if the focus item actually would yield a recipe!
         return new NNList<>(VanillaRecipeCategoryUid.ANVIL);
       }
     });

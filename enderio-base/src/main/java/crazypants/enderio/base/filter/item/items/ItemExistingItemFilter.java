@@ -21,6 +21,7 @@ import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.NbtValue;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,7 +42,7 @@ import net.minecraftforge.items.IItemHandler;
 
 public class ItemExistingItemFilter extends Item implements IItemFilterItemUpgrade, IResourceTooltipProvider {
 
-  public static ItemExistingItemFilter create(@Nonnull IModObject modObject) {
+  public static ItemExistingItemFilter create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemExistingItemFilter(modObject);
   }
 

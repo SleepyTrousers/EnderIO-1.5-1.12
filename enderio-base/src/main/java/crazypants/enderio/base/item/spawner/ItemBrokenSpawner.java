@@ -13,6 +13,7 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.recipe.spawner.PoweredSpawnerRecipeRegistry;
 import crazypants.enderio.base.render.itemoverlay.MobNameOverlayRenderHelper;
 import crazypants.enderio.util.CapturedMob;
+import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -25,7 +26,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBrokenSpawner extends Item implements IOverlayRenderAware {
 
-  public static ItemBrokenSpawner create(@Nonnull IModObject modObject) {
+  public static ItemBrokenSpawner create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemBrokenSpawner(modObject);
   }
 

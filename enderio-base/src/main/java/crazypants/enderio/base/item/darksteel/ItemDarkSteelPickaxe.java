@@ -84,19 +84,19 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
     return EnergyUpgradeManager.getEnergyStored(player.getHeldItemMainhand());
   }
 
-  public static ItemDarkSteelPickaxe createEndSteel(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelPickaxe createEndSteel(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemDarkSteelPickaxe res = new ItemDarkSteelPickaxe(modObject, EquipmentData.END_STEEL);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
-  public static ItemDarkSteelPickaxe createDarkSteel(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelPickaxe createDarkSteel(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemDarkSteelPickaxe res = new ItemDarkSteelPickaxe(modObject, EquipmentData.DARK_STEEL);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
-  public static ItemDarkSteelPickaxe createStellarAlloy(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelPickaxe createStellarAlloy(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemDarkSteelPickaxe res = new ItemDarkSteelPickaxe(modObject, EquipmentData.STELLAR_ALLOY);
     MinecraftForge.EVENT_BUS.register(res);
     return res;

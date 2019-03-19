@@ -27,6 +27,7 @@ import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManage
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autoconfig.factory.IValue;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -62,14 +63,14 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
   private final @Nonnull NNList<IValue<Integer>> drawSpeeds;
   private final @Nonnull IEquipmentData data;
 
-  public static ItemDarkSteelBow createEndSteel(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelBow createEndSteel(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemDarkSteelBow res = new ItemDarkSteelBow(modObject, EquipmentData.END_STEEL, DarkSteelConfig.endBowDrawSpeed, DarkSteelConfig.endBowForceMultipliers,
         DarkSteelConfig.endBowFOVMultipliers, DarkSteelConfig.endBowDamageBonus);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
-  public static ItemDarkSteelBow createDarkSteel(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelBow createDarkSteel(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemDarkSteelBow res = new ItemDarkSteelBow(modObject, EquipmentData.DARK_STEEL, DarkSteelConfig.darkBowDrawSpeed, DarkSteelConfig.darkBowForceMultipliers,
         DarkSteelConfig.darkBowFOVMultipliers, DarkSteelConfig.darkBowDamageBonus);
     MinecraftForge.EVENT_BUS.register(res);

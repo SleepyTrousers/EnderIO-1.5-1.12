@@ -85,19 +85,19 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
     return EnergyUpgradeManager.getEnergyStored(player.getHeldItemMainhand());
   }
 
-  public static @Nonnull ItemDarkSteelAxe createEndSteel(@Nonnull IModObject modObject) {
+  public static @Nonnull ItemDarkSteelAxe createEndSteel(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemDarkSteelAxe res = new ItemDarkSteelAxe(modObject, EquipmentData.END_STEEL);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
-  public static @Nonnull ItemDarkSteelAxe createDarkSteel(@Nonnull IModObject modObject) {
+  public static @Nonnull ItemDarkSteelAxe createDarkSteel(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemDarkSteelAxe res = new ItemDarkSteelAxe(modObject, EquipmentData.DARK_STEEL);
     MinecraftForge.EVENT_BUS.register(res);
     return res;
   }
 
-  public static @Nonnull ItemDarkSteelAxe createStellarAlloy(@Nonnull IModObject modObject) {
+  public static @Nonnull ItemDarkSteelAxe createStellarAlloy(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemDarkSteelAxe res = new ItemDarkSteelAxe(modObject, EquipmentData.STELLAR_ALLOY);
     MinecraftForge.EVENT_BUS.register(res);
     return res;

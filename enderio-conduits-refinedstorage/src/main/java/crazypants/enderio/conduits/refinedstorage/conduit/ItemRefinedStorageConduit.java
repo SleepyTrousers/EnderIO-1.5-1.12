@@ -1,6 +1,7 @@
 package crazypants.enderio.conduits.refinedstorage.conduit;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIO;
@@ -13,17 +14,14 @@ import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.conduits.conduit.AbstractItemConduit;
 import crazypants.enderio.conduits.conduit.ItemConduitSubtype;
-import crazypants.enderio.conduits.render.ConduitBundleRenderManager;
-import crazypants.enderio.conduits.render.DefaultConduitRenderer;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemRefinedStorageConduit extends AbstractItemConduit {
 
-  public static ItemRefinedStorageConduit create(@Nonnull IModObject modObject) {
+  public static ItemRefinedStorageConduit create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemRefinedStorageConduit(modObject);
   }
 

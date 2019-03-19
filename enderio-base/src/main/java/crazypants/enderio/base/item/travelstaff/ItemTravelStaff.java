@@ -26,6 +26,7 @@ import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManage
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.base.teleport.TravelController;
 import info.loenwind.autoconfig.factory.IValue;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -45,7 +46,7 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
 
   private long lastBlickTick = 0;
 
-  public static ItemTravelStaff create(@Nonnull IModObject modObject) {
+  public static ItemTravelStaff create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemTravelStaff(modObject);
   }
 

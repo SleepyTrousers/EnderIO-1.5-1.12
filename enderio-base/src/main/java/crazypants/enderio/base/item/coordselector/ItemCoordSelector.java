@@ -1,6 +1,7 @@
 package crazypants.enderio.base.item.coordselector;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.BlockCoord;
@@ -10,6 +11,7 @@ import com.enderio.core.common.vecmath.Vector3d;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.init.ModObject;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -25,7 +27,7 @@ import net.minecraft.world.World;
 
 public class ItemCoordSelector extends Item implements IResourceTooltipProvider {
 
-  public static ItemCoordSelector create(@Nonnull IModObject modObject) {
+  public static ItemCoordSelector create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemCoordSelector(modObject);
   }
 

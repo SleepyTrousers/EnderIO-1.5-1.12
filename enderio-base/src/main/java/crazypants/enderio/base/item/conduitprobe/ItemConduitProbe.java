@@ -1,6 +1,7 @@
 package crazypants.enderio.base.item.conduitprobe;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.TileEntityBase;
@@ -13,6 +14,7 @@ import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.render.IHaveRenderers;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -32,7 +34,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemConduitProbe extends Item implements IResourceTooltipProvider, IHideFacades, IHaveRenderers {
 
-  public static ItemConduitProbe create(@Nonnull IModObject modObject) {
+  public static ItemConduitProbe create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemConduitProbe(modObject);
   }
 

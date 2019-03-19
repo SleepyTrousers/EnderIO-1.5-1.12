@@ -69,7 +69,7 @@ public class ItemConfig {
   public static final IValue<Integer> rodOfReturnFluidStorage = ROD.make("fluidStorage", 200, //
       "Amount of fluid stored by the Rod of Return.").setRange(1, 64000).sync();
   public static final IValue<Integer> rodOfReturnFluidUsePerTeleport = ROD.make("fluidUsePerTeleport", 200, //
-      "Amount of fluid in mB used by the Rod of Return.").setRange(1, 1000).sync();
+      "Amount of fluid in mB used by the Rod of Return. (0 to disable fluid use)").setRange(0, 1000).sync();
   public static final IValue<Fluid> rodOfReturnFluidType = ROD.makeFluid("fluidType", "ender_distillation", //
       "Type of fluid used by the Rod of Return.").sync();
   public static final IValue<Integer> rodOfReturnRfPerTick = ROD.make("energyPerTick", 35000, //

@@ -54,6 +54,7 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.HelmetPainterTemplate;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.util.Prep;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.creativetab.CreativeTabs;
@@ -70,74 +71,65 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.ISpecialArmor;
-import net.minecraftforge.fml.common.Optional.Interface;
-import net.minecraftforge.fml.common.Optional.InterfaceList;
-import net.minecraftforge.fml.common.Optional.Method;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import thaumcraft.api.items.IGoggles;
-import thaumcraft.api.items.IRevealer;
-import thaumcraft.api.items.IVisDiscountGear;
 
-@InterfaceList({ @Interface(iface = "thaumcraft.api.items.IGoggles", modid = "thaumcraft"),
-    @Interface(iface = "thaumcraft.api.items.IVisDiscountGear", modid = "thaumcraft"),
-    @Interface(iface = "thaumcraft.api.items.IRevealer", modid = "thaumcraft") })
 public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware, IHasPlayerRenderer,
-    IWithPaintName, IElytraFlyingProvider, IVisDiscountGear, IGoggles, IRevealer, IEioGuiHandler.WithServerComponent.WithOutPos {
+    IWithPaintName, IElytraFlyingProvider, IEioGuiHandler.WithServerComponent.WithOutPos {
 
   // ============================================================================================================
   // Item creation
   // ============================================================================================================
 
-  public static ItemDarkSteelArmor createDarkSteelBoots(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createDarkSteelBoots(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemDarkSteelArmor(EquipmentData.DARK_STEEL, modObject, EntityEquipmentSlot.FEET, 1);
   }
 
-  public static ItemDarkSteelArmor createDarkSteelLeggings(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createDarkSteelLeggings(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemDarkSteelArmor(EquipmentData.DARK_STEEL, modObject, EntityEquipmentSlot.LEGS, 1);
   }
 
-  public static ItemDarkSteelArmor createDarkSteelChestplate(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createDarkSteelChestplate(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemDarkSteelArmor(EquipmentData.DARK_STEEL, modObject, EntityEquipmentSlot.CHEST, 1);
   }
 
-  public static ItemDarkSteelArmor createDarkSteelHelmet(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createDarkSteelHelmet(@Nonnull IModObject modObject, @Nullable Block block) {
     final ItemDarkSteelArmor helmet = new ItemDarkSteelArmor(EquipmentData.DARK_STEEL, modObject, EntityEquipmentSlot.HEAD, 1);
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new HelmetPainterTemplate(helmet));
     return helmet;
   }
 
-  public static ItemDarkSteelArmor createEndSteelBoots(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createEndSteelBoots(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemDarkSteelArmor(EquipmentData.END_STEEL, modObject, EntityEquipmentSlot.FEET, 2);
   }
 
-  public static ItemDarkSteelArmor createEndSteelLeggings(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createEndSteelLeggings(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemDarkSteelArmor(EquipmentData.END_STEEL, modObject, EntityEquipmentSlot.LEGS, 2);
   }
 
-  public static ItemDarkSteelArmor createEndSteelChestplate(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createEndSteelChestplate(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemDarkSteelArmor(EquipmentData.END_STEEL, modObject, EntityEquipmentSlot.CHEST, 2);
   }
 
-  public static ItemDarkSteelArmor createEndSteelHelmet(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createEndSteelHelmet(@Nonnull IModObject modObject, @Nullable Block block) {
     final ItemDarkSteelArmor helmet = new ItemDarkSteelArmor(EquipmentData.END_STEEL, modObject, EntityEquipmentSlot.HEAD, 2);
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new HelmetPainterTemplate(helmet));
     return helmet;
   }
 
-  public static ItemDarkSteelArmor createStellarAlloyBoots(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createStellarAlloyBoots(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemDarkSteelArmor(EquipmentData.STELLAR_ALLOY, modObject, EntityEquipmentSlot.FEET, 2);
   }
 
-  public static ItemDarkSteelArmor createStellarAlloyLeggings(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createStellarAlloyLeggings(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemDarkSteelArmor(EquipmentData.STELLAR_ALLOY, modObject, EntityEquipmentSlot.LEGS, 2);
   }
 
-  public static ItemDarkSteelArmor createStellarAlloyChestplate(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createStellarAlloyChestplate(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemDarkSteelArmor(EquipmentData.STELLAR_ALLOY, modObject, EntityEquipmentSlot.CHEST, 2);
   }
 
-  public static ItemDarkSteelArmor createStellarAlloyHelmet(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelArmor createStellarAlloyHelmet(@Nonnull IModObject modObject, @Nullable Block block) {
     final ItemDarkSteelArmor helmet = new ItemDarkSteelArmor(EquipmentData.STELLAR_ALLOY, modObject, EntityEquipmentSlot.HEAD, 2);
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new HelmetPainterTemplate(helmet));
     return helmet;
@@ -432,44 +424,6 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     return upgrade == ElytraUpgrade.INSTANCE || upgrade == GogglesOfRevealingUpgrade.INSTANCE || upgrade == ThaumaturgeRobesUpgrade.BOOTS
         || upgrade == ThaumaturgeRobesUpgrade.LEGS || upgrade == ThaumaturgeRobesUpgrade.CHEST;
   }
-
-  // ============================================================================================================
-  // THAUMCRAFT
-  // ============================================================================================================
-
-  @Override
-  @Method(modid = "thaumcraft")
-  public boolean showNodes(ItemStack stack, EntityLivingBase player) {
-    if (stack.isEmpty() || !(player instanceof EntityPlayer) || DarkSteelController.isActive((EntityPlayer) player, Type.GOGGLES)) {
-      return false;
-    }
-    return GogglesOfRevealingUpgrade.INSTANCE.hasUpgrade(stack);
-
-  }
-
-  @Override
-  @Method(modid = "thaumcraft")
-  public boolean showIngamePopups(ItemStack stack, EntityLivingBase player) {
-    if (stack.isEmpty() || !(player instanceof EntityPlayer) || DarkSteelController.isActive((EntityPlayer) player, Type.GOGGLES)) {
-      return false;
-    }
-    return GogglesOfRevealingUpgrade.INSTANCE.hasUpgrade(stack);
-  }
-
-  @Override
-  @Method(modid = "thaumcraft")
-  public int getVisDiscount(ItemStack stack, EntityPlayer player) {
-    if (stack == null) {
-      return -100; // Garbage in, garbage out
-    }
-    return ThaumaturgeRobesUpgrade.BOOTS.hasUpgrade(stack) ? 2
-        : ThaumaturgeRobesUpgrade.LEGS.hasUpgrade(stack) ? 3
-            : ThaumaturgeRobesUpgrade.CHEST.hasUpgrade(stack) ? 3 : GogglesOfRevealingUpgrade.INSTANCE.hasUpgrade(stack) ? 5 : 0;
-  }
-
-  // ============================================================================================================
-  // FORESTRY
-  // ============================================================================================================
 
   // ============================================================================================================
 

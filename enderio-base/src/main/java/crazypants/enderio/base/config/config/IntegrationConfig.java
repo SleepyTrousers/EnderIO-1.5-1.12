@@ -28,4 +28,7 @@ public final class IntegrationConfig {
   public static final IValue<Boolean> enableProjectIntelligence = F.make("enableProjectIntelligence", true, //
       "Enables the integration with Project Intelligence.");
 
+  public static final IValue<Boolean> enableThaumcraftAspects = F.make("enableThaumcraftAspects", true, //
+      "Registers aspects for Ender IO items with Thaumcraft.");
+
 }

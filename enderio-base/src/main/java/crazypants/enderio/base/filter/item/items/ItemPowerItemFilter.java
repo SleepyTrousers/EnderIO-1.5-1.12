@@ -20,6 +20,7 @@ import crazypants.enderio.base.filter.item.PowerItemFilter;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.NbtValue;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,7 +43,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class ItemPowerItemFilter extends Item implements IItemFilterItemUpgrade, IResourceTooltipProvider {
 
-  public static ItemPowerItemFilter create(@Nonnull IModObject modObject) {
+  public static ItemPowerItemFilter create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemPowerItemFilter(modObject);
   }
 

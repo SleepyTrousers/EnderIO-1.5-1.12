@@ -20,6 +20,7 @@ import crazypants.enderio.base.filter.item.ItemFilter;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.NbtValue;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,23 +42,23 @@ public class ItemBasicItemFilter extends Item implements IItemFilterItemUpgrade,
 
   protected BasicFilterTypes filterType;
 
-  public static ItemBasicItemFilter createBasicItemFilter(@Nonnull IModObject modObject) {
+  public static ItemBasicItemFilter createBasicItemFilter(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemBasicItemFilter(modObject, BasicFilterTypes.filterUpgradeBasic);
   }
 
-  public static ItemBasicItemFilter createAdvancedItemFilter(@Nonnull IModObject modObject) {
+  public static ItemBasicItemFilter createAdvancedItemFilter(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemBasicItemFilter(modObject, BasicFilterTypes.filterUpgradeAdvanced);
   }
 
-  public static ItemBasicItemFilter createLimitedItemFilter(@Nonnull IModObject modObject) {
+  public static ItemBasicItemFilter createLimitedItemFilter(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemBasicItemFilter(modObject, BasicFilterTypes.filterUpgradeLimited);
   }
 
-  public static ItemBasicItemFilter createBigItemFilter(@Nonnull IModObject modObject) {
+  public static ItemBasicItemFilter createBigItemFilter(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemBasicItemFilter(modObject, BasicFilterTypes.filterUpgradeBig);
   }
 
-  public static ItemBasicItemFilter createBigAdvancedItemFilter(@Nonnull IModObject modObject) {
+  public static ItemBasicItemFilter createBigAdvancedItemFilter(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemBasicItemFilter(modObject, BasicFilterTypes.filterUpgradeBigAdvanced);
   }
 

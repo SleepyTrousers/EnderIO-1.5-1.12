@@ -14,6 +14,7 @@ import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.Prep;
+import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,7 +41,7 @@ public class ItemLocationPrintout extends Item implements IEioGuiHandler {
   static final int GUI_ID_LOCATION_PRINTOUT_CREATE = 1337;
   static final int GUI_ID_LOCATION_PRINTOUT = 31337;
 
-  public static ItemLocationPrintout create(@Nonnull IModObject modObject) {
+  public static ItemLocationPrintout create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemLocationPrintout(modObject);
   }
 

@@ -1,6 +1,7 @@
 package crazypants.enderio.invpanel.conduit.data;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIO;
@@ -13,13 +14,14 @@ import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.conduits.conduit.AbstractItemConduit;
 import crazypants.enderio.conduits.conduit.ItemConduitSubtype;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class ItemDataConduit extends AbstractItemConduit {
 
-  public static ItemDataConduit create(@Nonnull IModObject modObj) {
+  public static ItemDataConduit create(@Nonnull IModObject modObj, @Nullable Block block) {
     return new ItemDataConduit(modObj);
   }
 

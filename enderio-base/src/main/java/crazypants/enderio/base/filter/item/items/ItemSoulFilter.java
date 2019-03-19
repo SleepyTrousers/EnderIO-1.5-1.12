@@ -20,6 +20,7 @@ import crazypants.enderio.base.filter.item.SoulFilter;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.NbtValue;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,11 +42,11 @@ public class ItemSoulFilter extends Item implements IItemFilterItemUpgrade, IRes
 
   private final int size;
 
-  public static ItemSoulFilter createNormal(@Nonnull IModObject modObject) {
+  public static ItemSoulFilter createNormal(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemSoulFilter(modObject, 1 * 5);
   }
 
-  public static ItemSoulFilter createBig(@Nonnull IModObject modObject) {
+  public static ItemSoulFilter createBig(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemSoulFilter(modObject, 2 * 5);
   }
 

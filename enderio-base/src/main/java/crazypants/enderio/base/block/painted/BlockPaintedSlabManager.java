@@ -1,6 +1,7 @@
 package crazypants.enderio.base.block.painted;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.init.ModObject;
@@ -56,7 +57,7 @@ public class BlockPaintedSlabManager {
     }
   }
 
-  public static Item create_item(@Nonnull IModObject modObject) {
+  public static Item create_item(@Nonnull IModObject modObject, @Nullable Block block) {
     final BlockItemPaintedSlab item = modObject.apply(new BlockItemPaintedSlab((BlockPaintedSlab) ((ModObject) modObject).getBlockNN()));
     item.addDoubleSlab((BlockPaintedSlab) ModObject.values()[((ModObject) modObject).ordinal() + 1].getBlockNN());
     return item;

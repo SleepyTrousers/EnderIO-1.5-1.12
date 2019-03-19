@@ -36,6 +36,7 @@ import crazypants.enderio.base.item.darksteel.upgrade.travel.TravelUpgrade;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.base.teleport.TravelController;
 import info.loenwind.autoconfig.factory.IValue;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -52,17 +53,17 @@ import net.minecraft.world.World;
 
 public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel, IOverlayRenderAware {
 
-  public static ItemDarkSteelSword createEndSteel(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelSword createEndSteel(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemDarkSteelSword res = new ItemDarkSteelSword(modObject, EquipmentData.END_STEEL);
     return res;
   }
 
-  public static ItemDarkSteelSword createDarkSteel(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelSword createDarkSteel(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemDarkSteelSword res = new ItemDarkSteelSword(modObject, EquipmentData.DARK_STEEL);
     return res;
   }
 
-  public static ItemDarkSteelSword createStellarAlloy(@Nonnull IModObject modObject) {
+  public static ItemDarkSteelSword createStellarAlloy(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemDarkSteelSword res = new ItemDarkSteelSword(modObject, EquipmentData.STELLAR_ALLOY);
     return res;
   }

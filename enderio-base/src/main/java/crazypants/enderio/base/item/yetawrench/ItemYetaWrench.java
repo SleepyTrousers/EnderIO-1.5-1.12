@@ -53,7 +53,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
     @Interface(iface = "cofh.api.item.IToolHammer", modid = "cofhcore") })
 public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdvancedTooltipProvider, IToolWrench, IToolHammer {
 
-  public static ItemYetaWrench create(@Nonnull IModObject modObject) {
+  public static ItemYetaWrench create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemYetaWrench(modObject);
   }
 

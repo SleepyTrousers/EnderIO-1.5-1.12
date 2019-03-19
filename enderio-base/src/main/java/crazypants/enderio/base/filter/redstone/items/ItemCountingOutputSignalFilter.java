@@ -13,6 +13,7 @@ import crazypants.enderio.base.filter.gui.IncrementingValueFilterGui;
 import crazypants.enderio.base.filter.redstone.CountingOutputSignalFilter;
 import crazypants.enderio.base.filter.redstone.IOutputSignalFilter;
 import crazypants.enderio.util.NbtValue;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -27,7 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemCountingOutputSignalFilter extends Item implements IItemOutputSignalFilterUpgrade {
 
-  public static ItemCountingOutputSignalFilter create(@Nonnull IModObject modObject) {
+  public static ItemCountingOutputSignalFilter create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemCountingOutputSignalFilter(modObject);
   }
 

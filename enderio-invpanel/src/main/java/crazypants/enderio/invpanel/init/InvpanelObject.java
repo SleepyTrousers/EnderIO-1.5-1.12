@@ -1,12 +1,15 @@
 package crazypants.enderio.invpanel.init;
 
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.IModTileEntity;
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.init.IModObjectBase;
 import crazypants.enderio.base.init.ModObjectRegistry;
@@ -19,32 +22,31 @@ import crazypants.enderio.invpanel.remote.ItemRemoteInvAccess;
 import crazypants.enderio.invpanel.sensor.BlockInventoryPanelSensor;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIOInvPanel.MODID)
 public enum InvpanelObject implements IModObjectBase {
 
-  blockInventoryPanel(BlockInventoryPanel.class, InvpanelTileEntity.TileInventoryPanel),
-  blockInventoryPanelSensor(BlockInventoryPanelSensor.class, InvpanelTileEntity.TileInventoryPanelSensor),
+  blockInventoryPanel(BlockInventoryPanel::create, InvpanelTileEntity.TileInventoryPanel),
+  blockInventoryPanelSensor(BlockInventoryPanelSensor::create, InvpanelTileEntity.TileInventoryPanelSensor),
 
   // Warehouses
-  blockInventoryChestTiny(BlockInventoryChest.class, "create_simple", InvpanelTileEntity.TileInventoryChestTiny),
-  blockInventoryChestSmall(BlockInventoryChest.class, "create_simple", InvpanelTileEntity.TileInventoryChestSmall),
-  blockInventoryChestMedium(BlockInventoryChest.class, "create_simple", InvpanelTileEntity.TileInventoryChestMedium),
-  blockInventoryChestBig(BlockInventoryChest.class, InvpanelTileEntity.TileInventoryChestBig),
-  blockInventoryChestLarge(BlockInventoryChest.class, InvpanelTileEntity.TileInventoryChestLarge),
-  blockInventoryChestHuge(BlockInventoryChest.class, InvpanelTileEntity.TileInventoryChestHuge),
-  blockInventoryChestEnormous(BlockInventoryChest.class, "create_enhanced", InvpanelTileEntity.TileInventoryChestEnormous),
-  blockInventoryChestWarehouse(BlockInventoryChest.class, "create_enhanced", InvpanelTileEntity.TileInventoryChestWarehouse),
-  blockInventoryChestWarehouse13(BlockInventoryChest.class, "create_enhanced", InvpanelTileEntity.TileInventoryChestWarehouse13),
+  blockInventoryChestTiny(BlockInventoryChest::create_simple, InvpanelTileEntity.TileInventoryChestTiny),
+  blockInventoryChestSmall(BlockInventoryChest::create_simple, InvpanelTileEntity.TileInventoryChestSmall),
+  blockInventoryChestMedium(BlockInventoryChest::create_simple, InvpanelTileEntity.TileInventoryChestMedium),
+  blockInventoryChestBig(BlockInventoryChest::create, InvpanelTileEntity.TileInventoryChestBig),
+  blockInventoryChestLarge(BlockInventoryChest::create, InvpanelTileEntity.TileInventoryChestLarge),
+  blockInventoryChestHuge(BlockInventoryChest::create, InvpanelTileEntity.TileInventoryChestHuge),
+  blockInventoryChestEnormous(BlockInventoryChest::create_enhanced, InvpanelTileEntity.TileInventoryChestEnormous),
+  blockInventoryChestWarehouse(BlockInventoryChest::create_enhanced, InvpanelTileEntity.TileInventoryChestWarehouse),
+  blockInventoryChestWarehouse13(BlockInventoryChest::create_enhanced, InvpanelTileEntity.TileInventoryChestWarehouse13),
 
   // Remotes
-  itemInventoryRemote(ItemRemoteInvAccess.class),
+  itemInventoryRemote(ItemRemoteInvAccess::create),
 
   // Conduits
-  item_data_conduit(ItemDataConduit.class);
+  item_data_conduit(ItemDataConduit::create);
 
   ;
 
@@ -58,82 +60,76 @@ public enum InvpanelObject implements IModObjectBase {
   protected @Nullable Block block;
   protected @Nullable Item item;
 
-  protected final @Nonnull Class<?> clazz;
-  protected final @Nullable String blockMethodName, itemMethodName;
   protected final @Nullable IModTileEntity modTileEntity;
 
-  private InvpanelObject(@Nonnull Class<?> clazz) {
-    this(clazz, (IModTileEntity) null);
+  protected final @Nullable Function<IModObject, Block> blockMaker;
+  protected final @Nullable BiFunction<IModObject, Block, Item> itemMaker;
+
+  private InvpanelObject(@Nonnull BiFunction<IModObject, Block, Item> itemMaker) {
+    this(null, itemMaker, null);
   }
 
-  private InvpanelObject(@Nonnull Class<?> clazz, @Nullable IModTileEntity modTileEntity) {
-    this(clazz, "create", modTileEntity);
+  private InvpanelObject(@Nonnull Function<IModObject, Block> blockMaker) {
+    this(blockMaker, null, null);
   }
 
-  private InvpanelObject(@Nonnull Class<?> clazz, @Nonnull String methodName) {
-    this(clazz, Block.class.isAssignableFrom(clazz) ? methodName : null, Item.class.isAssignableFrom(clazz) ? methodName : null, null);
+  private InvpanelObject(@Nonnull Function<IModObject, Block> blockMaker, @Nonnull BiFunction<IModObject, Block, Item> itemMaker) {
+    this(blockMaker, itemMaker, null);
   }
 
-  private InvpanelObject(@Nonnull Class<?> clazz, @Nonnull String methodName, @Nullable IModTileEntity modTileEntity) {
+  private InvpanelObject(@Nonnull Function<IModObject, Block> blockMaker, @Nonnull IModTileEntity modTileEntity) {
+    this(blockMaker, null, modTileEntity);
+  }
+
+  private InvpanelObject(@Nullable Function<IModObject, Block> blockMaker, @Nullable BiFunction<IModObject, Block, Item> itemMaker,
+      @Nullable IModTileEntity modTileEntity) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
-    this.clazz = clazz;
-    if (Block.class.isAssignableFrom(clazz)) {
-      this.blockMethodName = methodName;
-      this.itemMethodName = null;
-    } else if (Item.class.isAssignableFrom(clazz)) {
-      this.blockMethodName = null;
-      this.itemMethodName = methodName;
-    } else {
-      throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
+    this.blockMaker = blockMaker;
+    this.itemMaker = itemMaker;
+    if (blockMaker == null && itemMaker == null) {
+      throw new RuntimeException(this + " unexpectedly is neither a Block nor an Item.");
     }
     this.modTileEntity = modTileEntity;
   }
 
-  private InvpanelObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, @Nullable IModTileEntity modTileEntity) {
-    this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
-    this.clazz = clazz;
-    this.blockMethodName = blockMethodName == null || blockMethodName.isEmpty() ? null : blockMethodName;
-    this.itemMethodName = itemMethodName == null || itemMethodName.isEmpty() ? null : itemMethodName;
-    this.modTileEntity = modTileEntity;
-  }
-
   @Override
-  public @Nonnull Class<?> getClazz() {
-    return clazz;
-  }
-
-  @Override
-  public void setItem(@Nullable Item obj) {
-    this.item = obj;
-  }
-
-  @Override
-  public void setBlock(@Nullable Block obj) {
-    this.block = obj;
-  }
-
-  @Nonnull
-  @Override
-  public String getUnlocalisedName() {
+  public final @Nonnull String getUnlocalisedName() {
     return unlocalisedName;
   }
 
-  @Nonnull
   @Override
-  public ResourceLocation getRegistryName() {
-    return new ResourceLocation(EnderIO.DOMAIN, getUnlocalisedName());
-  }
-
-  @Nullable
-  @Override
-  public Block getBlock() {
+  public final @Nullable Block getBlock() {
     return block;
   }
 
-  @Nullable
   @Override
-  public Item getItem() {
+  public final @Nullable Item getItem() {
     return item;
+  }
+
+  @Override
+  public final @Nullable Class<?> getClazz() {
+    return null;
+  }
+
+  @Override
+  public final String getBlockMethodName() {
+    return null;
+  }
+
+  @Override
+  public final String getItemMethodName() {
+    return null;
+  }
+
+  @Override
+  public final void setItem(@Nullable Item obj) {
+    item = obj;
+  }
+
+  @Override
+  public final void setBlock(@Nullable Block obj) {
+    block = obj;
   }
 
   @Override
@@ -143,21 +139,19 @@ public enum InvpanelObject implements IModObjectBase {
   }
 
   @Override
+  public @Nonnull Function<IModObject, Block> getBlockCreator() {
+    return blockMaker != null ? blockMaker : mo -> null;
+  }
+
+  @Override
+  public @Nonnull BiFunction<IModObject, Block, Item> getItemCreator() {
+    return NullHelper.first(itemMaker, IModObject.WithBlockItem.itemCreator);
+  }
+
+  @Override
   public final @Nonnull <B extends Block> B apply(@Nonnull B blockIn) {
     blockIn.setCreativeTab(EnderIOTab.tabEnderIOInvpanel);
     return IModObjectBase.super.apply(blockIn);
-  }
-
-  @Override
-  @Nullable
-  public String getBlockMethodName() {
-    return blockMethodName;
-  }
-
-  @Override
-  @Nullable
-  public String getItemMethodName() {
-    return itemMethodName;
   }
 
 }

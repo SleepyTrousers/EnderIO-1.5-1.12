@@ -1,9 +1,11 @@
 package crazypants.enderio.base.item.eggs;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIOTab;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
@@ -20,7 +22,7 @@ public class ItemOwlEgg extends Item {
   private static final float INACCURACY_DEFAULT = 1.0F;
   private static final float PITCHOFFSET = 0.0F;
 
-  public static ItemOwlEgg create(@Nonnull IModObject modObject) {
+  public static ItemOwlEgg create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemOwlEgg(modObject);
   }
 

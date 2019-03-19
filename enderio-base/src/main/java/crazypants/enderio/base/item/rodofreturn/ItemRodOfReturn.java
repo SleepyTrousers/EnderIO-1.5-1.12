@@ -31,6 +31,7 @@ import crazypants.enderio.base.machine.sound.MachineSound;
 import crazypants.enderio.base.power.forge.item.AbstractPoweredItem;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.base.teleport.TeleportUtil;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.util.ITooltipFlag;
@@ -67,7 +68,7 @@ import static crazypants.enderio.util.NbtValue.LAST_USED_TICK;
 
 public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedTooltipProvider, IOverlayRenderAware {
 
-  public static ItemRodOfReturn create(@Nonnull IModObject modObject) {
+  public static ItemRodOfReturn create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemRodOfReturn(modObject);
   }
 
@@ -224,7 +225,9 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   @SideOnly(Side.CLIENT)
   public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
     super.addInformation(stack, worldIn, tooltip, flagIn);
-    tooltip.add(Lang.RETURN_ROD_FLUID.get(LangFluid.MB(FLUIDAMOUNT.getInt(stack, 0), ItemConfig.rodOfReturnFluidStorage.get())));
+    if (usesFluid()) {
+      tooltip.add(Lang.RETURN_ROD_FLUID.get(LangFluid.MB(FLUIDAMOUNT.getInt(stack, 0), ItemConfig.rodOfReturnFluidStorage.get())));
+    }
     tooltip.add(Lang.RETURN_ROD_POWER.get(LangPower.RF(getEnergyStored(stack), ItemConfig.rodOfReturnPowerStorage.get())));
   }
 
@@ -249,7 +252,9 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   @Override
   public void renderItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
     PowerBarOverlayRenderHelper.instance.render(stack, xPosition, yPosition, true);
-    PowerBarOverlayRenderHelper.instance_fluid.render(stack, xPosition, yPosition, 1, true);
+    if (usesFluid()) {
+      PowerBarOverlayRenderHelper.instance_fluid.render(stack, xPosition, yPosition, 1, true);
+    }
   }
 
   @SideOnly(Side.CLIENT)
@@ -341,7 +346,9 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   @Override
   public void setFull(@Nonnull ItemStack container) {
     super.setFull(container);
-    FLUIDAMOUNT.setInt(container, ItemConfig.rodOfReturnFluidStorage.get());
+    if (usesFluid()) {
+      FLUIDAMOUNT.setInt(container, ItemConfig.rodOfReturnFluidStorage.get());
+    }
   }
 
   private void setTarget(@Nonnull ItemStack container, @Nonnull BlockPos pos, int dimension) {
@@ -362,16 +369,20 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     List<String> entries = new ArrayList<String>();
     SpecialTooltipHandler.addDetailedTooltipFromResources(entries, getUnlocalizedName());
-    String fluidString = ItemConfig.rodOfReturnFluidType.get().getLocalizedName(new FluidStack(ItemConfig.rodOfReturnFluidType.get(), 1000));
+    String fluidString = usesFluid() ? ItemConfig.rodOfReturnFluidType.get().getLocalizedName(new FluidStack(ItemConfig.rodOfReturnFluidType.get(), 1000))
+        : "---";
     for (int i = 0; i < entries.size(); i++) {
       String str = entries.get(i);
       list.add(String.format(str, fluidString));
     }
   }
 
-  // Fluid handeling
+  // Fluid handling
 
   private boolean useFluid(@Nonnull ItemStack container) {
+    if (!usesFluid()) {
+      return true;
+    }
     int amount = FLUIDAMOUNT.getInt(container, 0);
     if (ItemConfig.rodOfReturnFluidUsePerTeleport.get() > amount) {
       FLUIDAMOUNT.setInt(container, 0);
@@ -384,7 +395,7 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
 
   public FluidStack getFluid(@Nonnull ItemStack container) {
     int amount = FLUIDAMOUNT.getInt(container, 0);
-    if (amount > 0) {
+    if (amount > 0 && usesFluid()) {
       return new FluidStack(ItemConfig.rodOfReturnFluidType.get(), amount);
     } else {
       return null;
@@ -392,7 +403,8 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
   }
 
   public int fill(@Nonnull ItemStack container, @Nonnull FluidStack resource, boolean doFill) {
-    if (!(container.getItem() == this) || resource.amount <= 0 || resource.getFluid() == null || resource.getFluid() != ItemConfig.rodOfReturnFluidType.get()) {
+    if (!(container.getItem() == this) || resource.amount <= 0 || resource.getFluid() == null || resource.getFluid() != ItemConfig.rodOfReturnFluidType.get()
+        || !usesFluid()) {
       return 0;
     }
     int amount = FLUIDAMOUNT.getInt(container, 0);
@@ -403,6 +415,10 @@ public class ItemRodOfReturn extends AbstractPoweredItem implements IAdvancedToo
       FLUIDAMOUNT.setInt(container, amount + toFill);
     }
     return toFill;
+  }
+
+  private static boolean usesFluid() {
+    return ItemConfig.rodOfReturnFluidUsePerTeleport.get() > 0;
   }
 
   @Override

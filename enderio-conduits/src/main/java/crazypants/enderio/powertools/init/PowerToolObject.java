@@ -1,12 +1,15 @@
 package crazypants.enderio.powertools.init;
 
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.IModTileEntity;
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.init.IModObjectBase;
 import crazypants.enderio.base.init.ModObjectRegistry;
@@ -17,17 +20,16 @@ import crazypants.enderio.powertools.machine.gauge.BlockGauge;
 import crazypants.enderio.powertools.machine.monitor.BlockPowerMonitor;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIOPowerTools.MODID)
 public enum PowerToolObject implements IModObjectBase {
 
-  block_cap_bank(BlockCapBank.class, PowerToolTileEntity.TileCapBank),
-  block_gauge(BlockGauge.class, PowerToolTileEntity.TileGauge),
-  block_power_monitor(BlockPowerMonitor.class, "createPowerMonitor", PowerToolTileEntity.TilePowerMonitor),
-  block_advanced_power_monitor(BlockPowerMonitor.class, "createAdvancedPowerMonitor", PowerToolTileEntity.TilePowerMonitor),
+  block_cap_bank(BlockCapBank::create, PowerToolTileEntity.TileCapBank),
+  block_gauge(BlockGauge::create, PowerToolTileEntity.TileGauge),
+  block_power_monitor(BlockPowerMonitor::createPowerMonitor, PowerToolTileEntity.TilePowerMonitor),
+  block_advanced_power_monitor(BlockPowerMonitor::createAdvancedPowerMonitor, PowerToolTileEntity.TilePowerMonitor),
 
   ;
 
@@ -41,86 +43,76 @@ public enum PowerToolObject implements IModObjectBase {
   protected @Nullable Block block;
   protected @Nullable Item item;
 
-  protected final @Nonnull Class<?> clazz;
-  protected final @Nullable String blockMethodName, itemMethodName;
   protected final @Nullable IModTileEntity modTileEntity;
 
-  private PowerToolObject(@Nonnull Class<?> clazz) {
-    this(clazz, "create", (IModTileEntity) null);
+  protected final @Nullable Function<IModObject, Block> blockMaker;
+  protected final @Nullable BiFunction<IModObject, Block, Item> itemMaker;
+
+  private PowerToolObject(@Nonnull BiFunction<IModObject, Block, Item> itemMaker) {
+    this(null, itemMaker, null);
   }
 
-  private PowerToolObject(@Nonnull Class<?> clazz, @Nullable IModTileEntity modTileEntity) {
-    this(clazz, "create", modTileEntity);
+  private PowerToolObject(@Nonnull Function<IModObject, Block> blockMaker) {
+    this(blockMaker, null, null);
   }
 
-  private PowerToolObject(@Nonnull Class<?> clazz, @Nonnull String methodName) {
-    this(clazz, methodName, (IModTileEntity) null);
+  private PowerToolObject(@Nonnull Function<IModObject, Block> blockMaker, @Nonnull BiFunction<IModObject, Block, Item> itemMaker) {
+    this(blockMaker, itemMaker, null);
   }
 
-  private PowerToolObject(@Nonnull Class<?> clazz, @Nonnull String blockMethodName, @Nonnull String itemMethodName) {
-    this(clazz, blockMethodName, itemMethodName, null);
+  private PowerToolObject(@Nonnull Function<IModObject, Block> blockMaker, @Nonnull IModTileEntity modTileEntity) {
+    this(blockMaker, null, modTileEntity);
   }
 
-  private PowerToolObject(@Nonnull Class<?> clazz, @Nonnull String methodName, @Nullable IModTileEntity modTileEntity) {
+  private PowerToolObject(@Nullable Function<IModObject, Block> blockMaker, @Nullable BiFunction<IModObject, Block, Item> itemMaker,
+      @Nullable IModTileEntity modTileEntity) {
     this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
-    this.clazz = clazz;
-    if (Block.class.isAssignableFrom(clazz)) {
-      this.blockMethodName = methodName;
-      this.itemMethodName = null;
-    } else if (Item.class.isAssignableFrom(clazz)) {
-      this.blockMethodName = null;
-      this.itemMethodName = methodName;
-    } else {
-      throw new RuntimeException("Clazz " + clazz + " unexpectedly is neither a Block nor an Item.");
+    this.blockMaker = blockMaker;
+    this.itemMaker = itemMaker;
+    if (blockMaker == null && itemMaker == null) {
+      throw new RuntimeException(this + " unexpectedly is neither a Block nor an Item.");
     }
     this.modTileEntity = modTileEntity;
   }
 
-  private PowerToolObject(@Nonnull Class<?> clazz, @Nullable String blockMethodName, @Nullable String itemMethodName, @Nullable IModTileEntity modTileEntity) {
-    this.unlocalisedName = ModObjectRegistry.sanitizeName(NullHelper.notnullJ(name(), "Enum.name()"));
-    this.clazz = clazz;
-    this.blockMethodName = blockMethodName == null || blockMethodName.isEmpty() ? null : blockMethodName;
-    this.itemMethodName = itemMethodName == null || itemMethodName.isEmpty() ? null : itemMethodName;
-    this.modTileEntity = modTileEntity;
-  }
-
   @Override
-  public @Nonnull Class<?> getClazz() {
-    return clazz;
-  }
-
-  @Override
-  public void setItem(@Nullable Item obj) {
-    this.item = obj;
-  }
-
-  @Override
-  public void setBlock(@Nullable Block obj) {
-    this.block = obj;
-  }
-
-  @Nonnull
-  @Override
-  public String getUnlocalisedName() {
+  public final @Nonnull String getUnlocalisedName() {
     return unlocalisedName;
   }
 
-  @Nonnull
   @Override
-  public ResourceLocation getRegistryName() {
-    return new ResourceLocation(EnderIO.DOMAIN, getUnlocalisedName());
-  }
-
-  @Nullable
-  @Override
-  public Block getBlock() {
+  public final @Nullable Block getBlock() {
     return block;
   }
 
-  @Nullable
   @Override
-  public Item getItem() {
+  public final @Nullable Item getItem() {
     return item;
+  }
+
+  @Override
+  public final @Nullable Class<?> getClazz() {
+    return null;
+  }
+
+  @Override
+  public final String getBlockMethodName() {
+    return null;
+  }
+
+  @Override
+  public final String getItemMethodName() {
+    return null;
+  }
+
+  @Override
+  public final void setItem(@Nullable Item obj) {
+    item = obj;
+  }
+
+  @Override
+  public final void setBlock(@Nullable Block obj) {
+    block = obj;
   }
 
   @Override
@@ -130,21 +122,19 @@ public enum PowerToolObject implements IModObjectBase {
   }
 
   @Override
+  public @Nonnull Function<IModObject, Block> getBlockCreator() {
+    return blockMaker != null ? blockMaker : mo -> null;
+  }
+
+  @Override
+  public @Nonnull BiFunction<IModObject, Block, Item> getItemCreator() {
+    return NullHelper.first(itemMaker, IModObject.WithBlockItem.itemCreator);
+  }
+
+  @Override
   public final @Nonnull <B extends Block> B apply(@Nonnull B blockIn) {
     blockIn.setCreativeTab(EnderIOTab.tabEnderIOConduits);
     return IModObjectBase.super.apply(blockIn);
-  }
-
-  @Override
-  @Nullable
-  public String getBlockMethodName() {
-    return blockMethodName;
-  }
-
-  @Override
-  @Nullable
-  public String getItemMethodName() {
-    return itemMethodName;
   }
 
 }
