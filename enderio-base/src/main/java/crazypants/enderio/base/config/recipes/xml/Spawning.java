@@ -12,6 +12,7 @@ import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import crazypants.enderio.base.recipe.spawner.PoweredSpawnerRecipeRegistry;
 import crazypants.enderio.util.CapturedMob;
+import net.minecraft.util.ResourceLocation;
 
 public class Spawning extends AbstractConditional {
 
@@ -53,11 +54,9 @@ public class Spawning extends AbstractConditional {
         } else if (entity.isBoss()) {
           CapturedMob.setBossesBlacklisted(!entity.isSoulvial());
         } else {
-          if (entity.isDisabled()) {
-            PoweredSpawnerRecipeRegistry.getInstance().addToBlacklist(entity.getMob().getEntityName());
-          } else {
-            PoweredSpawnerRecipeRegistry.getInstance().addEntityCost(entity.getMob().getEntityName(), entity.getCostMultiplier());
-          }
+          ResourceLocation entityName = entity.getMob().getEntityName();
+          PoweredSpawnerRecipeRegistry.getInstance().addEntityData(entityName, elem -> elem.equals(entityName), entity.getCostMultiplier(),
+              entity.isDisabled());
           if (entity.isClone()) {
             CapturedMob.addToUnspawnableList(entity.getMob().getEntityName());
           }
