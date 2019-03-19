@@ -1,7 +1,6 @@
 package crazypants.enderio.util;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -15,6 +14,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
+import crazypants.enderio.base.recipe.spawner.EntityDataRegistry;
 import crazypants.enderio.base.scheduler.Celeb;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
@@ -54,8 +54,6 @@ public final class CapturedMob {
   public static final @Nonnull String ENTITY_TAG_KEY = "EntityTag";
   public static final @Nonnull String CUSTOM_NAME_KEY = "customName";
 
-  private final static @Nonnull NNList<Predicate<ResourceLocation>> blacklist = new NNList<>(in -> DRAGON.equals(in));
-  private final static @Nonnull NNList<Predicate<ResourceLocation>> unspawnablelist = new NNList<>();
   private static boolean bossesBlacklisted = true;
 
   private final @Nullable NBTTagCompound entityNbt;
@@ -145,7 +143,7 @@ public final class CapturedMob {
 
   public @Nonnull ItemStack toGenericStack(@Nonnull Item item, int meta, int amount) {
     NBTTagCompound data = new NBTTagCompound();
-    if (isUnspawnable(entityId)) {
+    if (EntityDataRegistry.getInstance().needsCloning(entityId)) {
       return toStack(item, meta, amount);
     }
     data.setString(ENTITY_ID_KEY, entityId.toString());
@@ -197,7 +195,7 @@ public final class CapturedMob {
 
   public static boolean isBlacklisted(@Nonnull Entity entity) {
     ResourceLocation entityId = EntityList.getKey(entity);
-    return entityId == null || isBlacklistedBoss(entityId, entity) || blacklist.stream().anyMatch(elem -> elem.test(entityId));
+    return entityId == null || isBlacklistedBoss(entityId, entity) || EntityDataRegistry.getInstance().isBlackListedForSoulVial(entityId);
   }
 
   private static boolean isBlacklistedBoss(ResourceLocation entityId, Entity entity) {
@@ -260,7 +258,7 @@ public final class CapturedMob {
     }
 
     final NBTTagCompound entityNbt_nullchecked = entityNbt;
-    if (entityNbt_nullchecked != null && (clone || isUnspawnable(entityId))) {
+    if (entityNbt_nullchecked != null && (clone || EntityDataRegistry.getInstance().needsCloning(entityId))) {
       final Entity entity = EntityList.createEntityFromNBT(entityNbt_nullchecked, world);
       if (!clone && entity != null) {
         // The caller doesn't expect a clone, but we return one. Give it a unique/new ID to avoid problems with duplicate entities.
@@ -372,26 +370,6 @@ public final class CapturedMob {
       return NullHelper.notnullJ(entityNbt, "private final field changed its value").getString("FluidName");
     }
     return null;
-  }
-
-  public static void addToBlackList(ResourceLocation entityName) {
-    blacklist.add(in -> entityName.equals(in));
-  }
-
-  public static void addToBlackList(Predicate<ResourceLocation> entityFilter) {
-    blacklist.add(entityFilter);
-  }
-
-  public static void addToUnspawnableList(ResourceLocation entityName) {
-    unspawnablelist.add(in -> entityName.equals(in));
-  }
-
-  public static void addToUnspawnableList(Predicate<ResourceLocation> entityFilter) {
-    unspawnablelist.add(entityFilter);
-  }
-
-  private boolean isUnspawnable(ResourceLocation entityName) {
-    return unspawnablelist.stream().anyMatch(elem -> elem.test(entityName));
   }
 
   public @Nonnull ResourceLocation getEntityName() {

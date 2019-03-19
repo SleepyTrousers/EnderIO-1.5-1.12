@@ -16,7 +16,7 @@ import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.item.SoulFilter;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.soul.BasicSoulBinderRecipe;
-import crazypants.enderio.base.recipe.spawner.PoweredSpawnerRecipeRegistry;
+import crazypants.enderio.base.recipe.spawner.EntityDataRegistry;
 import crazypants.enderio.util.CapturedMob;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -115,7 +115,7 @@ public class Soulbinding extends AbstractCrafting {
       case SPAWNABLE:
         soulnames.addAll(EntityUtil.getAllRegisteredMobNames());
         for (NNIterator<ResourceLocation> iterator = soulnames.iterator(); iterator.hasNext();) {
-          if (PoweredSpawnerRecipeRegistry.getInstance().isBlackListed(iterator.next())) {
+          if (EntityDataRegistry.getInstance().isBlackListedForSpawning(iterator.next())) {
             iterator.remove();
           }
         }

@@ -21,7 +21,7 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.spawner.DummyRecipe;
-import crazypants.enderio.base.recipe.spawner.PoweredSpawnerRecipeRegistry;
+import crazypants.enderio.base.recipe.spawner.EntityDataRegistry;
 import crazypants.enderio.base.render.ranged.IRanged;
 import crazypants.enderio.base.render.ranged.RangeParticle;
 import crazypants.enderio.machines.config.config.SpawnerConfig;
@@ -120,13 +120,13 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity
   @Override
   public int getPowerUsePerTick() {
     final ResourceLocation entityName = getEntityName();
-    return (int) (super.getPowerUsePerTick() * (entityName == null ? 0 : PoweredSpawnerRecipeRegistry.getInstance().getCostMultiplierFor(entityName)));
+    return (int) (super.getPowerUsePerTick() * (entityName == null ? 0 : EntityDataRegistry.getInstance().getCostMultiplierFor(entityName)));
   }
 
   @Override
   public int getMaxEnergyRecieved(EnumFacing dir) {
     final ResourceLocation entityName = getEntityName();
-    return (int) (super.getMaxEnergyRecieved(dir) * (entityName == null ? 0 : PoweredSpawnerRecipeRegistry.getInstance().getCostMultiplierFor(entityName)));
+    return (int) (super.getMaxEnergyRecieved(dir) * (entityName == null ? 0 : EntityDataRegistry.getInstance().getCostMultiplierFor(entityName)));
   }
 
   @Override

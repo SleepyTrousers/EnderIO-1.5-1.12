@@ -20,7 +20,7 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.power.forge.item.PoweredBlockItem;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.spawner.DummyRecipe;
-import crazypants.enderio.base.recipe.spawner.PoweredSpawnerRecipeRegistry;
+import crazypants.enderio.base.recipe.spawner.EntityDataRegistry;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.IRenderMapper;
@@ -131,7 +131,7 @@ public class BlockPoweredSpawner extends AbstractPoweredTaskBlock<TilePoweredSpa
   }
 
   public static boolean isBlackListed(@Nonnull ResourceLocation entityId) {
-    return PoweredSpawnerRecipeRegistry.getInstance().isBlackListed(entityId);
+    return EntityDataRegistry.getInstance().isBlackListedForSpawning(entityId);
   }
 
   @Override
@@ -157,7 +157,7 @@ public class BlockPoweredSpawner extends AbstractPoweredTaskBlock<TilePoweredSpa
     CapturedMob mob = CapturedMob.create(itemstack);
     if (mob != null) {
       list.add(mob.getDisplayName());
-      list.add(Lang.TOOLTIP_SPAWNER_COST.get(LangPower.FLOAT_NF.format(PoweredSpawnerRecipeRegistry.getInstance().getCostMultiplierFor(mob.getEntityName()))));
+      list.add(Lang.TOOLTIP_SPAWNER_COST.get(LangPower.FLOAT_NF.format(EntityDataRegistry.getInstance().getCostMultiplierFor(mob.getEntityName()))));
     } else {
       list.add(Lang.SPAWNER_EMPTY.get());
     }

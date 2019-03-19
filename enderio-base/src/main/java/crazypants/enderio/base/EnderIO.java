@@ -42,11 +42,11 @@ import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
 import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
 import crazypants.enderio.base.recipe.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.base.recipe.soul.SoulBinderRecipeManager;
+import crazypants.enderio.base.recipe.spawner.EntityDataRegistry;
 import crazypants.enderio.base.recipe.vat.VatRecipeManager;
 import crazypants.enderio.base.scheduler.Celeb;
 import crazypants.enderio.base.scheduler.Scheduler;
 import crazypants.enderio.base.transceiver.ServerChannelRegister;
-import crazypants.enderio.util.CapturedMob;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.crash.ICrashReportDetail;
@@ -114,7 +114,7 @@ public class EnderIO implements IEnderIOAddon {
 
   @SuppressWarnings("unused")
   private static Config configHandler;
-  
+
   public EnderIO() {
     EnderCorePlugin.instance().loadMixinSources(this);
   }
@@ -258,9 +258,9 @@ public class EnderIO implements IEnderIOAddon {
         } else if (msg.isResourceLocationMessage()) {
           ResourceLocation value = msg.getResourceLocationValue();
           if (IMC.SOUL_VIAL_BLACKLIST.equals(key)) {
-            CapturedMob.addToBlackList(value);
+            EntityDataRegistry.getInstance().addToBlacklistSoulVial(null, elem -> value.equals(elem));
           } else if (IMC.SOUL_VIAL_UNSPAWNABLELIST.equals(key)) {
-            CapturedMob.addToUnspawnableList(value);
+            EntityDataRegistry.getInstance().setNeedsCloning(null, elem -> value.equals(elem));
           }
         } else if (msg.isNBTMessage()) {
           final NBTTagCompound nbtValue = msg.getNBTValue();

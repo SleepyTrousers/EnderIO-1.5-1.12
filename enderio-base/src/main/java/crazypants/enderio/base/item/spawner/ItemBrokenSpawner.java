@@ -10,7 +10,7 @@ import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.recipe.spawner.PoweredSpawnerRecipeRegistry;
+import crazypants.enderio.base.recipe.spawner.EntityDataRegistry;
 import crazypants.enderio.base.render.itemoverlay.MobNameOverlayRenderHelper;
 import crazypants.enderio.util.CapturedMob;
 import net.minecraft.block.Block;
@@ -50,7 +50,7 @@ public class ItemBrokenSpawner extends Item implements IOverlayRenderAware {
       list.add(CapturedMob.create(new ResourceLocation("minecraft", "chicken")).toStack(this, 0, 1));
     } else if (tab == EnderIOTab.tabEnderIOMobs) {
       for (CapturedMob capturedMob : CapturedMob.getAllSouls()) {
-        if (!PoweredSpawnerRecipeRegistry.getInstance().isBlackListed(capturedMob.getEntityName())) {
+        if (!EntityDataRegistry.getInstance().isBlackListedForSpawning(capturedMob.getEntityName())) {
           list.add(capturedMob.toStack(this, 0, 1));
         }
       }

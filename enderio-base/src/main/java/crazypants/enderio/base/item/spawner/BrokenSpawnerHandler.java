@@ -12,7 +12,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.config.BrokenSpawnerConfig;
 import crazypants.enderio.base.init.ModObject;
-import crazypants.enderio.base.recipe.spawner.PoweredSpawnerRecipeRegistry;
+import crazypants.enderio.base.recipe.spawner.EntityDataRegistry;
 import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.BlockMobSpawner;
@@ -155,7 +155,7 @@ public class BrokenSpawnerHandler {
   }
 
   public static boolean isBlackListed(@Nonnull ResourceLocation entityId) {
-    return PoweredSpawnerRecipeRegistry.getInstance().isBlackListed(entityId);
+    return EntityDataRegistry.getInstance().isBlackListedForSpawning(entityId);
   }
 
 }
