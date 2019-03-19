@@ -1,6 +1,7 @@
 package crazypants.enderio.util;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -52,8 +53,8 @@ public final class CapturedMob {
   public static final @Nonnull String ENTITY_ID_KEY = "entityId";
   public static final @Nonnull String CUSTOM_NAME_KEY = "customName";
 
-  private final static @Nonnull NNList<ResourceLocation> blacklist = new NNList<ResourceLocation>(DRAGON);
-  private final static @Nonnull NNList<ResourceLocation> unspawnablelist = new NNList<ResourceLocation>();
+  private final static @Nonnull NNList<Predicate<ResourceLocation>> blacklist = new NNList<>(in -> DRAGON.equals(in));
+  private final static @Nonnull NNList<Predicate<ResourceLocation>> unspawnablelist = new NNList<>();
   private static boolean bossesBlacklisted = true;
 
   private final @Nullable NBTTagCompound entityNbt;
@@ -193,7 +194,7 @@ public final class CapturedMob {
 
   public static boolean isBlacklisted(@Nonnull Entity entity) {
     ResourceLocation entityId = EntityList.getKey(entity);
-    return entityId == null || isBlacklistedBoss(entityId, entity) || blacklist.contains(entityId);
+    return entityId == null || isBlacklistedBoss(entityId, entity) || blacklist.stream().anyMatch(elem -> elem.test(entityId));
   }
 
   private static boolean isBlacklistedBoss(ResourceLocation entityId, Entity entity) {
@@ -371,15 +372,23 @@ public final class CapturedMob {
   }
 
   public static void addToBlackList(ResourceLocation entityName) {
-    blacklist.add(entityName);
+    blacklist.add(in -> entityName.equals(in));
+  }
+
+  public static void addToBlackList(Predicate<ResourceLocation> entityFilter) {
+    blacklist.add(entityFilter);
   }
 
   public static void addToUnspawnableList(ResourceLocation entityName) {
-    unspawnablelist.add(entityName);
+    unspawnablelist.add(in -> entityName.equals(in));
+  }
+
+  public static void addToUnspawnableList(Predicate<ResourceLocation> entityFilter) {
+    unspawnablelist.add(entityFilter);
   }
 
   private boolean isUnspawnable(ResourceLocation entityName) {
-    return unspawnablelist.contains(entityName);
+    return unspawnablelist.stream().anyMatch(elem -> elem.test(entityName));
   }
 
   public @Nonnull ResourceLocation getEntityName() {
