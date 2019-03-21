@@ -28,4 +28,6 @@ public interface IPowerConduit extends IEnergyStorage, IExtractor, IServerCondui
   int getMaxEnergyRecieved(@Nonnull EnumFacing dir);
 
   int getMaxEnergyExtracted(@Nonnull EnumFacing dir);
+
+  void setConnectionsDirty();
 }

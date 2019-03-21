@@ -82,8 +82,8 @@ public class NetworkPowerManager {
     Set<Object> done = new HashSet<Object>();
     for (ReceptorEntry re : receptors) {
       if (!re.emmiter.getConnectionsDirty()) {
-        IPowerInterface powerReceptor = re.powerInterface;
-        if (!done.contains(powerReceptor.getProvider())) {
+        IPowerInterface powerReceptor = re.getPowerInterface();
+        if (powerReceptor != null && !done.contains(powerReceptor.getProvider())) {
           done.add(powerReceptor.getProvider());
           result += powerReceptor.getEnergyStored();
         }
@@ -97,8 +97,8 @@ public class NetworkPowerManager {
     Set<Object> done = new HashSet<Object>();
     for (ReceptorEntry re : receptors) {
       if (!re.emmiter.getConnectionsDirty()) {
-        IPowerInterface powerReceptor = re.powerInterface;
-        if (!done.contains(powerReceptor.getProvider())) {
+        IPowerInterface powerReceptor = re.getPowerInterface();
+        if (powerReceptor != null && !done.contains(powerReceptor.getProvider())) {
           done.add(powerReceptor.getProvider());
           result += powerReceptor.getMaxEnergyStored();
         }
@@ -160,7 +160,7 @@ public class NetworkPowerManager {
         receptorIterator = receptors.listIterator();
       }
       ReceptorEntry r = receptorIterator.next();
-      IPowerInterface pp = r.powerInterface;
+      IPowerInterface pp = r.getPowerInterface();
       if (pp != null) {
         int canOffer = (int) Math.min(r.emmiter.getMaxEnergyExtracted(r.direction), available);
         Prof.start(profiler, "", pp.getProvider());
@@ -321,10 +321,16 @@ public class NetworkPowerManager {
     receptors.clear();
     storageReceptors.clear();
     for (ReceptorEntry rec : network.getPowerReceptors()) {
-      if (rec.powerInterface.getProvider() instanceof IPowerStorage) {
-        storageReceptors.add(rec);
+      final IPowerInterface powerInterface = rec.getPowerInterface();
+      if (powerInterface != null) {
+        if (powerInterface.getProvider() instanceof IPowerStorage) {
+          storageReceptors.add(rec);
+        } else {
+          receptors.add(rec);
+        }
       } else {
-        receptors.add(rec);
+        // we can ignore that connection here, but the conduit should also update and remove its external connection
+        rec.emmiter.setConnectionsDirty();
       }
     }
     receptorIterator = receptors.listIterator();
@@ -370,7 +376,12 @@ public class NetworkPowerManager {
       double maxToBalance = 0;
 
       for (ReceptorEntry rec : storageReceptors) {
-        IPowerStorage cb = (IPowerStorage) rec.powerInterface.getProvider();
+        final IPowerInterface powerInterface = rec.getPowerInterface();
+        if (powerInterface == null) {
+          // This should be impossible for connections to capBanks. They send proper block updates when they decide to no longer have an energy capability ;)
+          continue;
+        }
+        IPowerStorage cb = (IPowerStorage) powerInterface.getProvider();
 
         boolean processed = capBanks.contains(cb.getController());
 

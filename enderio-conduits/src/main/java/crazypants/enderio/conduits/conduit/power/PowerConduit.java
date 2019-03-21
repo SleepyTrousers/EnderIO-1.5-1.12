@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
 
@@ -261,8 +262,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   protected void readTypeSettings(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
-    setConnectionMode(dir, ConnectionMode.values()[dataRoot.getShort("connectionMode")]);
-    setExtractionSignalColor(dir, DyeColor.values()[dataRoot.getShort("extractionSignalColor")]);
+    setConnectionMode(dir, NullHelper.first(ConnectionMode.values()[dataRoot.getShort("connectionMode")], ConnectionMode.NOT_SET));
+    setExtractionSignalColor(dir, NullHelper.first(DyeColor.values()[dataRoot.getShort("extractionSignalColor")], DyeColor.RED));
     setExtractionRedstoneMode(RedstoneControlMode.fromOrdinal(dataRoot.getShort("extractionRedstoneMode")), dir);
   }
 
@@ -474,7 +475,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     if (network != null) {
       TileEntity te = getBundle().getEntity();
       BlockPos p = te.getPos().offset(direction);
-      network.powerReceptorAdded(this, direction, p.getX(), p.getY(), p.getZ(), getExternalPowerReceptor(direction));
+      network.powerReceptorAdded(this, direction, p);
     }
   }
 
@@ -536,12 +537,13 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   @Nonnull
   public Collection<CollidableComponent> createCollidables(@Nonnull CacheKey key) {
     Collection<CollidableComponent> baseCollidables = super.createCollidables(key);
-    if (key.dir == null) {
+    final EnumFacing key_dir = key.dir;
+    if (key_dir == null) {
       return baseCollidables;
     }
 
-    BoundingBox bb = ConduitGeometryUtil.getInstance().createBoundsForConnectionController(key.dir, key.offset);
-    CollidableComponent cc = new CollidableComponent(IPowerConduit.class, bb, key.dir, COLOR_CONTROLLER_ID);
+    BoundingBox bb = ConduitGeometryUtil.getInstance().createBoundsForConnectionController(key_dir, key.offset);
+    CollidableComponent cc = new CollidableComponent(IPowerConduit.class, bb, key_dir, COLOR_CONTROLLER_ID);
 
     List<CollidableComponent> result = new ArrayList<CollidableComponent>();
     result.addAll(baseCollidables);
@@ -706,4 +708,10 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
       return isReceive() && PowerConduit.this.canReceive();
     }
   }
+
+  @Override
+  public void setConnectionsDirty() {
+    connectionsDirty = true;
+  }
+
 }

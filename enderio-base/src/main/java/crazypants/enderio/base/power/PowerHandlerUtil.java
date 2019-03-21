@@ -13,7 +13,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class PowerHandlerUtil {
 
-  public static IPowerInterface getPowerInterface(@Nullable ICapabilityProvider provider, EnumFacing side) {
+  public static @Nullable IPowerInterface getPowerInterface(@Nullable ICapabilityProvider provider, EnumFacing side) {
     if (provider != null) {
       @SuppressWarnings("null")
       final IEnergyStorage capability = provider.getCapability(CapabilityEnergy.ENERGY, side);
@@ -25,12 +25,12 @@ public class PowerHandlerUtil {
   }
 
   @SuppressWarnings("null")
-  public static IEnergyStorage getCapability(@Nonnull ItemStack stack) {
+  public static @Nullable IEnergyStorage getCapability(@Nonnull ItemStack stack) {
     return stack.getCapability(CapabilityEnergy.ENERGY, null);
   }
 
   @SuppressWarnings("null")
-  public static IEnergyStorage getCapability(@Nullable ICapabilityProvider provider, EnumFacing side) {
+  public static @Nullable IEnergyStorage getCapability(@Nullable ICapabilityProvider provider, EnumFacing side) {
     return provider == null ? null : provider.getCapability(CapabilityEnergy.ENERGY, side);
   }
 

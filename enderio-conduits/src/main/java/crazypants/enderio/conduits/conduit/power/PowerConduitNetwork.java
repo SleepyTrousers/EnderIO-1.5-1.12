@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 import crazypants.enderio.base.conduit.ConduitUtil.UnloadedBlockException;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.power.IPowerInterface;
+import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.conduits.conduit.AbstractConduitNetwork;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
@@ -65,7 +66,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
         if (pr != null) {
           TileEntity te = con.getBundle().getEntity();
           BlockPos p = te.getPos().offset(dir);
-          powerReceptorAdded(con, dir, p.getX(), p.getY(), p.getZ(), pr);
+          powerReceptorAdded(con, dir, p);
         }
       }
     }
@@ -74,13 +75,11 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
     }
   }
 
-  public void powerReceptorAdded(@Nonnull IPowerConduit powerConduit, @Nonnull EnumFacing direction, int x, int y, int z,
-      @Nonnull IPowerInterface powerReceptor) {
-    BlockPos pos = new BlockPos(x, y, z);
+  public void powerReceptorAdded(@Nonnull IPowerConduit powerConduit, @Nonnull EnumFacing direction, @Nonnull BlockPos pos) {
     ReceptorKey key = new ReceptorKey(pos, direction);
     ReceptorEntry re = powerReceptors.get(key);
     if (re == null) {
-      re = new ReceptorEntry(powerReceptor, pos, powerConduit, direction);
+      re = new ReceptorEntry(pos, powerConduit, direction);
       powerReceptors.put(key, re);
     }
     if (powerManager != null) {
@@ -117,13 +116,15 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
     final @Nonnull BlockPos pos;
     final @Nonnull EnumFacing direction;
 
-    IPowerInterface powerInterface;
-
-    public ReceptorEntry(@Nonnull IPowerInterface powerReceptor, @Nonnull BlockPos pos, @Nonnull IPowerConduit emmiter, @Nonnull EnumFacing direction) {
-      powerInterface = powerReceptor;
+    public ReceptorEntry(@Nonnull BlockPos pos, @Nonnull IPowerConduit emmiter, @Nonnull EnumFacing direction) {
       this.pos = pos;
       this.emmiter = emmiter;
       this.direction = direction;
+    }
+
+    @Nullable
+    IPowerInterface getPowerInterface() {
+      return PowerHandlerUtil.getPowerInterface(emmiter.getBundle().getBundleworld().getTileEntity(pos), direction.getOpposite());
     }
 
   }
