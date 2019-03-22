@@ -76,7 +76,14 @@ public class DirectUpgrade extends AbstractUpgrade {
     }
   }
 
-  private final static @Nonnull String HIT_BY_DIRECT = "eio:hbd";
+  /**
+   * Marker for mobs that have been hit by a Dark Steel weapon with the Direct upgrade
+   */
+  public final static @Nonnull String HIT_BY_DIRECT = "eio:hbd";
+  /**
+   * Marker for mobs that have been hit by a weapon that does Direct without being Dark Steel and using energy
+   */
+  public final static @Nonnull String HIT_BY_DIRECT_FREE = "eio:hbdf";
 
   @SubscribeEvent
   public static void attackEntityEvent(AttackEntityEvent event) {
@@ -103,6 +110,14 @@ public class DirectUpgrade extends AbstractUpgrade {
           if (INSTANCE.hasAnyUpgradeVariant(stack) && EnergyUpgradeManager.getEnergyStored(stack) > 0) {
             EnergyUpgradeManager.extractEnergy(stack, doDirect(event, player) * DarkSteelConfig.directEnergyCost.get(), false);
           }
+        }
+      }
+    } else if (mob.getEntityData().hasUniqueId(HIT_BY_DIRECT_FREE)) {
+      UUID uuid = mob.getEntityData().getUniqueId(HIT_BY_DIRECT_FREE);
+      if (uuid != null) {
+        EntityPlayer player = mob.world.getPlayerEntityByUUID(uuid);
+        if (player != null) {
+          doDirect(event, player);
         }
       }
     }

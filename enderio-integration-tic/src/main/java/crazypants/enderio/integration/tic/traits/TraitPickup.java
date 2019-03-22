@@ -1,6 +1,8 @@
 package crazypants.enderio.integration.tic.traits;
 
 import crazypants.enderio.base.item.darksteel.upgrade.direct.DirectUpgrade;
+import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import slimeknights.tconstruct.library.modifiers.IToolMod;
@@ -30,6 +32,13 @@ public class TraitPickup extends ModifierTrait {
   @Override
   public int getPriority() {
     return 10;
+  }
+
+  @Override
+  public void afterHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damageDealt, boolean wasCritical, boolean wasHit) {
+    if (wasHit && damageDealt > 0 && !player.world.isRemote && !(player instanceof FakePlayerEIO)) {
+      target.getEntityData().setUniqueId(DirectUpgrade.HIT_BY_DIRECT_FREE, player.getUniqueID());
+    }
   }
 
 }
