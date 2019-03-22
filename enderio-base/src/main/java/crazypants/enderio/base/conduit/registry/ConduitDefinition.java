@@ -66,15 +66,19 @@ public class ConduitDefinition {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
+    if (this == obj) {
       return true;
-    if (obj == null)
+    }
+    if (obj == null) {
       return false;
-    if (getClass() != obj.getClass())
+    }
+    if (getClass() != obj.getClass()) {
       return false;
+    }
     ConduitDefinition other = (ConduitDefinition) obj;
-    if (!conduitUUID.equals(other.conduitUUID))
+    if (!conduitUUID.equals(other.conduitUUID)) {
       return false;
+    }
     return true;
   }
 

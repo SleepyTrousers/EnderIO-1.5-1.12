@@ -94,15 +94,19 @@ public class ConduitTypeDefinition {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
+    if (this == obj) {
       return true;
-    if (obj == null)
+    }
+    if (obj == null) {
       return false;
-    if (getClass() != obj.getClass())
+    }
+    if (getClass() != obj.getClass()) {
       return false;
+    }
     ConduitTypeDefinition other = (ConduitTypeDefinition) obj;
-    if (!networkUUID.equals(other.networkUUID))
+    if (!networkUUID.equals(other.networkUUID)) {
       return false;
+    }
     return true;
   }
 

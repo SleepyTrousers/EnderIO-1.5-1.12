@@ -156,7 +156,7 @@ public class ConduitRegistry {
     try {
       return UUID_TO_CONDUIT.get(uuid).getServerClass().newInstance();
     } catch (Exception e) {
-      throw new RuntimeException("Could not create an instance of the conduit of type " + uuid, e);
+      throw new RuntimeException("Could not create a server instance of the conduit of type " + uuid, e);
     }
   }
 
@@ -167,7 +167,7 @@ public class ConduitRegistry {
     try {
       return UUID_TO_CONDUIT.get(uuid).getClientClass().newInstance();
     } catch (Exception e) {
-      throw new RuntimeException("Could not create an instance of the conduit of type " + uuid, e);
+      throw new RuntimeException("Could not create a client instance of the conduit of type " + uuid, e);
     }
   }
 
