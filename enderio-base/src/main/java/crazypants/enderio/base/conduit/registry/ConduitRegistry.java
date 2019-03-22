@@ -90,6 +90,30 @@ public class ConduitRegistry {
   }
 
   /**
+   * Add a member to an already registered conduit type. The given ConduitDefinition MUST belong to an already registered ConduitTypeDefinition, you can access
+   * all registered types with {@link #getNetwork(IConduit)}.
+   * <p>
+   * Please be advised that may or may not work. Especially conduit types where the members need to interact with each other will not magically work.
+   **/
+  public static void injectMember(ConduitDefinition member) {
+    if (!UUID_TO_NETWORK.containsKey(member.getNetwork().getUUID())) {
+      throw new IllegalArgumentException("Cannot add a ConduitDefinition that is for an unregistered ConduitTypeDefinition");
+    }
+    UUID_TO_CONDUIT.put(member.getUUID(), member);
+    for (UUID uuid : member.getAliases()) {
+      UUID_TO_CONDUIT.put(uuid, member);
+    }
+    CLASS_TO_UUID.put(member.getServerClass(), member.getUUID());
+    CLASS_TO_UUID.put(member.getClientClass(), member.getUUID());
+
+    // pre-classload the instances
+    getServerInstance(member.getUUID());
+    if (!EnderIO.proxy.isDedicatedServer()) {
+      getClientInstance(member.getUUID());
+    }
+  }
+
+  /**
    * Returns the ConduitDefinition for the given conduit instance (member).
    */
   public static ConduitDefinition get(IConduit conduit) {
