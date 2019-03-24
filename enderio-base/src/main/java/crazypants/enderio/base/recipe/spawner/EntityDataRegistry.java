@@ -55,7 +55,9 @@ public final class EntityDataRegistry {
   }
 
   private double defaultCostMultiplier = 1f;
-  private boolean allowUnconfiguredMobs = true;
+  private boolean defaultBlacklistedSpawning = false;
+  private boolean defaultBlacklistedSoulvial = false;
+  private boolean defaultNeedsCloning = false;
 
   public static EntityDataRegistry getInstance() {
     return instance;
@@ -76,17 +78,18 @@ public final class EntityDataRegistry {
   @SuppressWarnings("null")
   public boolean isBlackListedForSpawning(@Nonnull ResourceLocation entity) {
     return entries.stream().filter(elem -> elem.selector.test(entity)).map(elem -> elem.blacklistedSpawning).reduce(Boolean::logicalOr)
-        .orElse(allowUnconfiguredMobs);
+        .orElse(defaultBlacklistedSpawning);
   }
 
   @SuppressWarnings("null")
   public boolean isBlackListedForSoulVial(@Nonnull ResourceLocation entity) {
-    return entries.stream().filter(elem -> elem.selector.test(entity)).anyMatch(elem -> elem.blacklistedSoulvial);
+    return entries.stream().filter(elem -> elem.selector.test(entity)).map(elem -> elem.blacklistedSoulvial).reduce(Boolean::logicalOr)
+        .orElse(defaultBlacklistedSoulvial);
   }
 
   @SuppressWarnings("null")
   public boolean needsCloning(@Nonnull ResourceLocation entity) {
-    return entries.stream().filter(elem -> elem.selector.test(entity)).anyMatch(elem -> elem.needsCloning);
+    return entries.stream().filter(elem -> elem.selector.test(entity)).map(elem -> elem.needsCloning).reduce(Boolean::logicalOr).orElse(defaultNeedsCloning);
   }
 
   private EntityDataRegistry() {
@@ -94,12 +97,11 @@ public final class EntityDataRegistry {
     addEntityData(null, in -> DRAGON.equals(in), Double.MAX_VALUE, true, true, true);
   }
 
-  public void setDefaultCostMultiplier(double defaultCostMultiplier) {
-    this.defaultCostMultiplier = defaultCostMultiplier;
-  }
-
-  public void setAllowUnconfiguredMobs(boolean allowUnconfiguredMobs) {
-    this.allowUnconfiguredMobs = allowUnconfiguredMobs;
+  public void setDefaults(double costMultiplier, boolean blacklistedSpawning, boolean blacklistedSoulvial, boolean needsCloning) {
+    defaultCostMultiplier = costMultiplier;
+    defaultBlacklistedSpawning = blacklistedSpawning;
+    defaultBlacklistedSoulvial = blacklistedSoulvial;
+    defaultNeedsCloning = needsCloning;
   }
 
   /**

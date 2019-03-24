@@ -458,7 +458,16 @@
                             <documentation>The settings for one type of entity.</documentation>
                           </annotation>
                           <complexType>
-                            <attribute use="required" name="name" type="string" />
+                            <attribute use="required" name="name" type="string">
+                              <annotation>
+                                <documentation>The ResourceLocation of the entity this entry is for. Aside from a literal ResourceLocation, a number of special
+                                values can be used. "*" denotes the default entry, its values are used when there is no matching configuration.
+                                "*boss*" matches all modded boss mobs; it can only be used for soul vial configuration. Additionally, both the modid and
+                                the mobid (the part before and after the colon) can contain a single asterisk as wildcard ("*:*" is an alias for "*").
+                                If multiple entries match the same mob (only possible when using wildcards), the configurations combine. On entry disabling
+                                spawning or soulvialing is enough to disable that and the highest cost multipier is used.</documentation>
+                              </annotation>
+                            </attribute>
                             <attribute name="costMultiplier" default="1">
                               <annotation>
                                 <documentation>
@@ -487,7 +496,7 @@
                             <attribute name="soulvial" type="boolean" use="optional" default="true">
                               <annotation>
                                 <documentation>
-                                  Specifies if this mob can be captured with a soul vial (default is yes)
+                                  Specifies if this mob can be captured with a soul vial (default is yes). If an entity cannot be captured, it also cannot be spawning by powered spawners.
                                 </documentation>
                               </annotation>
                             </attribute>

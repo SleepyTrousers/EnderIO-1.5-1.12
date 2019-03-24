@@ -216,4 +216,10 @@ XML editor will display that as tooltips when editing this file.
     </spawning>
   </recipe>
 
+  <recipe name="Spawner, Pixelmon" required="false">
+    <spawning>
+      <entity name="pixelmon:*"    disabled="true" soulvial="false" clone="true" />
+    </spawning>
+  </recipe>
+
 </enderio:recipes>

@@ -10,9 +10,6 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
-import crazypants.enderio.base.recipe.spawner.EntityDataRegistry;
-import crazypants.enderio.util.CapturedMob;
-import net.minecraft.util.ResourceLocation;
 
 public class Spawning extends AbstractConditional {
 
@@ -48,16 +45,7 @@ public class Spawning extends AbstractConditional {
   public void register(@Nonnull String recipeName) {
     if (isValid() && isActive()) {
       for (Entity entity : entities) {
-        if (entity.isDefault()) {
-          EntityDataRegistry.getInstance().setDefaultCostMultiplier(entity.getCostMultiplier());
-          EntityDataRegistry.getInstance().setAllowUnconfiguredMobs(!entity.isDisabled());
-        } else if (entity.isBoss()) {
-          CapturedMob.setBossesBlacklisted(!entity.isSoulvial());
-        } else {
-          ResourceLocation entityName = entity.getMob().getEntityName();
-          EntityDataRegistry.getInstance().addEntityData(entityName, elem -> elem.equals(entityName), entity.getCostMultiplier(), entity.isDisabled(),
-              !entity.isSoulvial(), entity.isClone());
-        }
+        entity.register(recipeName);
       }
     }
   }
