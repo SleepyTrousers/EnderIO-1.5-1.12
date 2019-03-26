@@ -320,7 +320,7 @@ public class EnderIO implements IEnderIOAddon {
   @Override
   @Nonnull
   public NNList<String> getExampleFiles() {
-    return new NNList<>("peaceful", "easy_recipes", "hard_recipes", "broken_spawner", "cheap_materials", "legacy_recipes", "strict_iron");
+    return new NNList<>("peaceful", "easy_recipes", "hard_recipes", "broken_spawner", "cheap_materials", "legacy_recipes", "strict_iron", "optional_tweaks");
   }
 
   static void initCrashData() {

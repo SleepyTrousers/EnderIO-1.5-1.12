@@ -7,7 +7,7 @@
   <recipe name="Alloy: Dark Steel, Variant: Steel, Obsidian Dust" required="false">
     <alloying energy="9000" exp="0.4">
       <input name="ingotSteel"/>
-      <input name="dustObsidian"/>
+      <input name="dustObsidian" amount="4"/>
       <output name="ingotDarkSteel"/>
     </alloying>
   </recipe>
@@ -16,7 +16,7 @@
     <alloying energy="9000" exp="0.4">
       <input name="ingotIron"/>
       <input name="dustCoal"/>
-      <input name="dustObsidian"/>
+      <input name="dustObsidian" amount="4"/>
       <output name="ingotDarkSteel"/>
     </alloying>
   </recipe>
