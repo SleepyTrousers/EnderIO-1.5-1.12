@@ -86,7 +86,7 @@
     <sagmilling energy="2400" bonus="none">
       <input name="rodBasalz" />
       <output name="dustBasalz" amount="4"/>
-      <output name="dustObsidian" chance="0.5"/>
+      <output name="POWDER_OBSIDIAN" chance="0.5"/>
     </sagmilling>
   </recipe>
 

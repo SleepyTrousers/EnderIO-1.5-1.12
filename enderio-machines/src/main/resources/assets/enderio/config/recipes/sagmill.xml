@@ -160,7 +160,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Sagmill: Obsidian" required="true">
     <sagmilling energy="4000">
       <input name="minecraft:obsidian"/>
-      <output name="dustObsidian" amount="4" />
+      <output name="POWDER_OBSIDIAN" amount="4" />
     </sagmilling>
   </recipe>
 

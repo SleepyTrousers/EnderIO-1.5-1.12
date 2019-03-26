@@ -387,9 +387,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Conduit Facade, hardened" required="true">
     <crafting>
       <grid>
-        <item /><item name="dustObsidian" /><item />
-        <item name="dustObsidian" /><item name="enderio:item_conduit_facade:0" /><item name="dustObsidian" />
-        <item /><item name="dustObsidian" /><item />
+        <item /><item name="POWDER_OBSIDIAN" /><item />
+        <item name="POWDER_OBSIDIAN" /><item name="enderio:item_conduit_facade:0" /><item name="POWDER_OBSIDIAN" />
+        <item /><item name="POWDER_OBSIDIAN" /><item />
       </grid>
       <output name="enderio:item_conduit_facade:1" />
     </crafting>
@@ -418,9 +418,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Conduit Facade, transparent, hardened" required="true">
     <crafting>
       <grid>
-        <item /><item name="dustObsidian" /><item />
-        <item name="dustObsidian" /><item name="enderio:item_conduit_facade:2" /><item name="dustObsidian" />
-        <item /><item name="dustObsidian" /><item />
+        <item /><item name="POWDER_OBSIDIAN" /><item />
+        <item name="POWDER_OBSIDIAN" /><item name="enderio:item_conduit_facade:2" /><item name="POWDER_OBSIDIAN" />
+        <item /><item name="POWDER_OBSIDIAN" /><item />
       </grid>
       <output name="enderio:item_conduit_facade:3" />
     </crafting>
@@ -604,9 +604,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Filter, Big" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="dustObsidian" /><item name="minecraft:paper" /><item name="dustObsidian" />
+        <item name="POWDER_OBSIDIAN" /><item name="minecraft:paper" /><item name="POWDER_OBSIDIAN" />
         <item name="minecraft:paper" /><item name="SKELETAL_CONTRACTOR" /><item name="minecraft:paper" />
-        <item name="dustObsidian" /><item name="minecraft:paper" /><item name="dustObsidian" />
+        <item name="POWDER_OBSIDIAN" /><item name="minecraft:paper" /><item name="POWDER_OBSIDIAN" />
       </grid>
       <output name="enderio:item_big_item_filter" />
     </crafting>
