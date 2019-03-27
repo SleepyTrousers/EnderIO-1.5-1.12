@@ -387,4 +387,32 @@ While workarounds have been added, access to new content is not guaranteed.
     </crafting>
   </recipe>
 
+  <recipe name="Item Hiding, Infinity" required="true">
+    <hiding>
+      <item name="dustBedrock" hide="true" />
+      <item name="enderio:block_infinity_fog" hide="true" />
+      <item name="compressed1xDustBedrock" hide="true" />
+      <item name="compressed2xDustBedrock" hide="true" />
+      <item name="compressed3xDustBedrock" hide="true" />
+      <item name="itemPlatePhotovoltaic" hide="true" />
+      <item name="itemPowderPhotovoltaic" hide="true" />
+      <item name="enderio:block_simple_furnace" hide="true" />
+      <item name="enderio:block_simple_alloy_smelter" hide="true" />
+      <item name="enderio:block_simple_stirling_generator" hide="true" />
+      <item name="enderio:block_simple_sag_mill" hide="true" />
+      <item name="enderio:block_simple_wired_charger" hide="true" />
+      <item name="enderio:block_simple_crafter" hide="true" />
+      <item name="itemSimpleMachineChassi" hide="true" />
+      <item name="dyeMachine" hide="true" />
+      <item name="dyeSoulMachine" hide="true" />
+      <item name="itemSoulMachineChassi" hide="true" />
+      <item name="itemEnhancedMachineChassi" hide="true" />
+      <item name="itemUnsouledMachineChassi" hide="true" />
+      <item name="itemEndSteelMachineChassi" hide="true" />
+      <item name="dyeEnhancedMachine" hide="true" />
+      <item name="itemEnhancedChassiParts" hide="true" />
+      <item name="itemSimpleChassiParts" hide="true" />
+    </hiding>
+  </recipe>
+
 </enderio:recipes>

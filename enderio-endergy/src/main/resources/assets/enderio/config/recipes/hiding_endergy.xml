@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+
+These are the built-in recipes. You cannot change this file, it is a
+reference for you only and will be generated every time the game starts.
+
+This file enables stuff used by endergy.
+
+See hiding_base.xml for more information.
+
+More information on the syntax can be found in the recipes.xsd file. An
+XML editor will display that as tooltips when editing this file.
+
+ -->
+
+  <recipe name="Item Hiding, Endergy" required="true">
+    <!-- These items are shown when Ender IO Endergy is installed. -->
+    <hiding>
+      <item name="enderio:item_material:75" show="true" /><!-- itemInfinityGoop -->
+
+      <item name="blockCrudeSteel" show="true" />
+      <item name="blockCrystallineAlloy" show="true" />
+      <item name="blockMelodicAlloy" show="true" />
+      <item name="blockStellarAlloy" show="true" />
+      <item name="blockCrystallinePinkSlime" show="true" />
+      <item name="blockEnergeticSilver" show="true" />
+      <item name="blockVividAlloy" show="true" />
+
+      <item name="ingotCrudeSteel" show="true" />
+      <item name="ingotCrystallineAlloy" show="true" />
+      <item name="ingotMelodicAlloy" show="true" />
+      <item name="ingotStellarAlloy" show="true" />
+      <item name="ingotCrystallinePinkSlime" show="true" />
+      <item name="ingotEnergeticSilver" show="true" />
+      <item name="ingotVividAlloy" show="true" />
+
+      <item name="nuggetCrudeSteel" show="true" />
+      <item name="nuggetCrystallineAlloy" show="true" />
+      <item name="nuggetMelodicAlloy" show="true" />
+      <item name="nuggetStellarAlloy" show="true" />
+      <item name="nuggetCrystallinePinkSlime" show="true" />
+      <item name="nuggetEnergeticSilver" show="true" />
+      <item name="nuggetVividAlloy" show="true" />
+
+      <item name="ballCrudeSteel" show="true" />
+      <item name="ballCrystallineAlloy" show="true" />
+      <item name="ballMelodicAlloy" show="true" />
+      <item name="ballStellarAlloy" show="true" />
+      <item name="ballCrystallinePinkSlime" show="true" />
+      <item name="ballEnergeticSilver" show="true" />
+      <item name="ballVividAlloy" show="true" />
+    </hiding>
+  </recipe>
+
+</enderio:recipes>

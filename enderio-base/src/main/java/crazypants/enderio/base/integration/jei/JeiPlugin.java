@@ -8,6 +8,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.config.InfinityConfig;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
@@ -20,6 +21,7 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;
 import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.ingredients.IIngredientBlacklist;
 import mezz.jei.api.ingredients.IModIngredientRegistration;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
@@ -29,7 +31,7 @@ import net.minecraftforge.fml.common.ProgressManager;
 @JEIPlugin
 public class JeiPlugin implements IModPlugin {
 
-  static IJeiRuntime jeiRuntime = null;
+  private static IJeiRuntime jeiRuntime = null;
 
   @Override
   public void registerItemSubtypes(@Nonnull ISubtypeRegistry subtypeRegistry) {
@@ -73,8 +75,14 @@ public class JeiPlugin implements IModPlugin {
     bar.step("Hiding Items");
     registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ModObject.itemEnderface.getItemNN()));
 
-    ItemHidingHelper.hide(registry);
+    hide(registry.getJeiHelpers().getIngredientBlacklist());
     ProgressManager.pop(bar);
+  }
+
+  private void hide(@Nonnull IIngredientBlacklist blacklist) {
+    if (!PersonalConfig.disableHiding.get()) {
+      JeiHidingRegistry.getObjectsToHide().apply(e -> blacklist.addIngredientToBlacklist(e));
+    }
   }
 
   @Override

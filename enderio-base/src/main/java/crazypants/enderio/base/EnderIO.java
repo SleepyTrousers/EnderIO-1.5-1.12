@@ -213,6 +213,7 @@ public class EnderIO implements IEnderIOAddon {
     MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.PostInit.Post());
 
     Log.debug("PHASE POST-INIT END");
+    // crazypants.enderio.base.init.ModObjectRegistry.dumpItems();
   }
 
   @EventHandler
@@ -314,13 +315,14 @@ public class EnderIO implements IEnderIOAddon {
   @Nonnull
   public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
     return new NNList<>(Triple.of(0, null, "aliases"), Triple.of(1, null, "materials"), Triple.of(1, null, "items"), Triple.of(1, null, "base"),
-        Triple.of(1, null, "balls"), Triple.of(9, null, "misc"), Triple.of(9, null, "capacitor"));
+        Triple.of(1, null, "balls"), Triple.of(9, null, "misc"), Triple.of(9, null, "capacitor"), Triple.of(1, null, "hiding_base"));
   }
 
   @Override
   @Nonnull
   public NNList<String> getExampleFiles() {
-    return new NNList<>("peaceful", "easy_recipes", "hard_recipes", "broken_spawner", "cheap_materials", "legacy_recipes", "strict_iron", "optional_tweaks");
+    return new NNList<>("peaceful", "easy_recipes", "hard_recipes", "broken_spawner", "cheap_materials", "legacy_recipes", "strict_iron", "optional_tweaks",
+        "unhide_base");
   }
 
   static void initCrashData() {
