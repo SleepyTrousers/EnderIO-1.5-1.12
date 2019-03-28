@@ -19,7 +19,7 @@ public abstract class InternalPoweredItemMixin extends Item implements IInternal
 
   @Override
   public @Nullable ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
-    return initCapabilities(stack, nbt, new MappedCapabilityProvider().add(CapabilityEnergy.ENERGY, new InternalPoweredItemCap(stack)));
+    return initCapabilities(stack, nbt, new MappedCapabilityProvider().add(CapabilityEnergy.ENERGY, new InternalPoweredItemCap(this, stack)));
   }
 
 }

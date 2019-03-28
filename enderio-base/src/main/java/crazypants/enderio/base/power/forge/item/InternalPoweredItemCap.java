@@ -10,9 +10,9 @@ public class InternalPoweredItemCap implements IEnergyStorage {
   protected final @Nonnull ItemStack container;
   protected @Nonnull IInternalPoweredItem item;
 
-  public InternalPoweredItemCap(@Nonnull ItemStack container) {
+  public InternalPoweredItemCap(@Nonnull IInternalPoweredItem item, @Nonnull ItemStack container) {
     this.container = container;
-    this.item = (IInternalPoweredItem) container.getItem();
+    this.item = item;
   }
 
   @Override

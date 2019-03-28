@@ -127,7 +127,7 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
     return new CapabilityProvider(stack);
   }
 
-  private class CapabilityProvider implements ICapabilityProvider, IFluidHandlerItem {
+  private final class CapabilityProvider implements ICapabilityProvider, IFluidHandlerItem {
     protected final @Nonnull ItemStack container;
 
     private CapabilityProvider(@Nonnull ItemStack container) {
