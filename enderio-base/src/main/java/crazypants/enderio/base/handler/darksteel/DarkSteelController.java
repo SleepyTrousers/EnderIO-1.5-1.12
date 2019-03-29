@@ -165,7 +165,7 @@ public class DarkSteelController {
 
     if (event.phase == Phase.START && !player.isSpectator()) {
       // boots
-      updateStepHeightAndFallDistance(player);
+      updateStepHeight(player);
 
       // leggings
       SpeedController.updateSpeed(player);
@@ -230,7 +230,7 @@ public class DarkSteelController {
 
   private static final float MAGIC_STEP_HEIGHT = 1.0023f;
 
-  private static void updateStepHeightAndFallDistance(EntityPlayer player) {
+  private static void updateStepHeight(EntityPlayer player) {
     if (player.stepHeight < MAGIC_STEP_HEIGHT && !player.isSneaking() && JumpUpgrade.isEquipped(player) && isStepAssistActive(player)) {
       if (Loader.isModLoaded("clienttweaks")) {
         player.sendStatusMessage(Lang.GUI_STEP_ASSIST_UNAVAILABLE.toChatServer(), true);

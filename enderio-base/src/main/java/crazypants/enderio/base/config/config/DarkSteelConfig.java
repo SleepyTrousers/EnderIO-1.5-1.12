@@ -117,6 +117,12 @@ public final class DarkSteelConfig {
 
   public static final IValueFactoryEIO F_UPGRADES = F_DARK_STEEL.section(".upgrades");
 
+  public static final IValue<String> disabledUpgrades = F_UPGRADES.make("disabled", "",
+      "Comma-separated list of IDs of upgrades that should be disabled. "
+          + "Those upgrades will be registered with the game engine, but they will be removed from the list of available upgrades. Please note that this may "
+          + "not work well with upgrades that already exist on items. It will also not work well when other upgrades depend on them.")
+      .startup();
+
   public static final IValueFactory F_HOE = F_UPGRADES.section(".hoe");
 
   public static final IValue<Integer> darkSteelHoeCost = F_HOE.make("darkSteelHoeCost", 4, "Number of levels required for the 'Hoe' upgrade.");
