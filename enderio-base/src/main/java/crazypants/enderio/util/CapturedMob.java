@@ -199,7 +199,7 @@ public final class CapturedMob {
   }
 
   private static boolean isBlacklistedBoss(ResourceLocation entityId, Entity entity) {
-    return !bossesBlacklisted && !entity.isNonBoss() && !"minecraft".equals(entityId.getResourceDomain());
+    return bossesBlacklisted && !entity.isNonBoss() && !"minecraft".equals(entityId.getResourceDomain());
   }
 
   public boolean spawn(@Nullable World world, @Nullable BlockPos pos, @Nullable EnumFacing side, boolean clone) {

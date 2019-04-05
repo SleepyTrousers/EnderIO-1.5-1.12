@@ -203,7 +203,9 @@ public class BlockPoweredSpawner extends AbstractPoweredTaskBlock<TilePoweredSpa
       CapturedMob.getAllSouls().apply(new Callback<CapturedMob>() {
         @Override
         public void apply(@Nonnull CapturedMob mob) {
-          list.add(mob.toStack(BlockPoweredSpawner.this, 0, 1));
+          if (!EntityDataRegistry.getInstance().isBlackListedForSpawning(mob.getEntityName())) {
+            list.add(mob.toStack(BlockPoweredSpawner.this, 0, 1));
+          }
         }
       });
     } else {
