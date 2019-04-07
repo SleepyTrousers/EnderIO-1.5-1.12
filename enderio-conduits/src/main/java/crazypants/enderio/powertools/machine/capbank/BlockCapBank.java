@@ -2,7 +2,6 @@ package crazypants.enderio.powertools.machine.capbank;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Random;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -303,11 +302,6 @@ public class BlockCapBank extends BlockEio<TileCapBank>
     if (te != null) {
       te.onNeighborBlockChange(neighborBlock);
     }
-  }
-
-  @Override
-  public int quantityDropped(@Nonnull Random r) {
-    return 0;
   }
 
   @Override

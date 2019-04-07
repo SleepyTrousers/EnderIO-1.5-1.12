@@ -51,6 +51,7 @@ import crazypants.enderio.conduits.gui.GuiExternalConnectionSelector;
 import crazypants.enderio.conduits.lang.Lang;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduits.render.ConduitRenderMapper;
+import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
@@ -67,7 +68,9 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -75,6 +78,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -279,8 +283,8 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
   }
 
   @Override
-  public @Nonnull ItemStack getPickBlock(@Nonnull IBlockState state, @Nonnull RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos,
-      @Nonnull EntityPlayer player) {
+  protected @Nonnull ItemStack processPickBlock(@Nonnull IBlockState state, @Nonnull RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos,
+      @Nonnull EntityPlayer player, @Nonnull ItemStack pickBlock) {
     ItemStack ret = ItemStack.EMPTY;
 
     if (target.hitInfo instanceof CollidableComponent) {
@@ -303,7 +307,44 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
 
   @Override
   public int quantityDropped(@Nonnull Random r) {
+    // This would be the bundle itself---but a bundle doesn't have an item.
     return 0;
+  }
+
+  @Override
+  public @Nonnull Item getItemDropped(@Nonnull IBlockState state, @Nonnull Random randParam, int fortune) {
+    // This would be the bundle itself---but a bundle doesn't have an item.
+    return Items.AIR;
+  }
+
+  @Override
+  public @Nonnull ItemStack getItem(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+    // This would be the bundle itself---but a bundle doesn't have an item.
+    return Prep.getEmpty();
+  }
+
+  @Override
+  public @Nullable ItemStack getNBTDrop(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune,
+      @Nullable TileConduitBundle te) {
+    // This would be the bundle itself---but a bundle doesn't have an item. For the conduits, see getExtraDrops()
+    return null;
+  }
+
+  @Override
+  public void getExtraDrops(@Nonnull NonNullList<ItemStack> drops, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune,
+      @Nullable TileConduitBundle te) {
+    // This isn't called normally. But if another mod wants our drops (e.g. to quarry us), give them a full dump
+    if (te == null) {
+      return;
+    }
+    if (te.hasFacade()) {
+      ItemStack stack = new ItemStack(ModObject.itemConduitFacade.getItemNN(), 1, EnumFacadeType.getMetaFromType(te.getFacadeType()));
+      PaintUtil.setSourceBlock(stack, te.getPaintSource());
+      drops.add(stack);
+    }
+    for (IConduit conduit : te.getConduits()) {
+      drops.addAll(conduit.getDrops());
+    }
   }
 
   @Override

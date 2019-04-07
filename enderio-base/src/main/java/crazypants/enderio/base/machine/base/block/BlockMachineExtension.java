@@ -130,13 +130,19 @@ public class BlockMachineExtension extends BlockEio<TileEntityEio> implements IT
   }
 
   @Override
-  public @Nonnull ItemStack getPickBlock(@Nonnull IBlockState state, @Nonnull RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos,
-      @Nonnull EntityPlayer player) {
+  protected @Nonnull ItemStack processPickBlock(@Nonnull IBlockState state, @Nonnull RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos,
+      @Nonnull EntityPlayer player, @Nonnull ItemStack pickBlock) {
     if (checkParent(world, pos)) {
       return getParentBlock(world, pos).getPickBlock(getParentBlockState(world, pos), target, world, getParentPos(pos), player);
     } else {
       return Prep.getEmpty();
     }
+  }
+
+  @Override
+  public @Nullable ItemStack getNBTDrop(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune,
+      @Nullable TileEntityEio te) {
+    return null;
   }
 
   @Override
