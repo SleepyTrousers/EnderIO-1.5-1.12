@@ -121,8 +121,6 @@ allprojects {
         // Remote / local endercore
         if (!localEnderCore) {
             deobfCompile "com.enderio.core:EnderCore:${endercore_version}"
-            // Note: deobfCompile doesn't work here, it would only see one ec jar after the deobf
-            compile "com.enderio.core:EnderCore:${endercore_version}:core"
         }
 
         // All jars in the '<module>/lib' directory

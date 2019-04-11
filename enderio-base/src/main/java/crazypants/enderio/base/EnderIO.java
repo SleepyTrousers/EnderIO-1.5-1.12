@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import org.apache.commons.lang3.tuple.Triple;
 
 import com.enderio.core.common.Lang;
-import com.enderio.core.common.transform.EnderCorePlugin;
+import com.enderio.core.common.mixin.SimpleMixinLoader;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 import com.google.common.collect.ImmutableList;
@@ -116,7 +116,7 @@ public class EnderIO implements IEnderIOAddon {
   private static Config configHandler;
 
   public EnderIO() {
-    EnderCorePlugin.instance().loadMixinSources(this);
+    SimpleMixinLoader.loadMixinSources(this);
   }
 
   @EventHandler

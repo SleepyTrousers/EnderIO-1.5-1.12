@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Triple;
 
-import com.enderio.core.common.transform.EnderCorePlugin;
+import com.enderio.core.common.mixin.SimpleMixinLoader;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
@@ -56,7 +56,7 @@ public class EnderIOConduitsRefinedStorage implements IEnderIOAddon {
   public static final @Nonnull String DEPENDENCIES = DEFAULT_DEPENDENCIES;
 
   public EnderIOConduitsRefinedStorage() {
-    EnderCorePlugin.instance().loadMixinSources(this);
+    SimpleMixinLoader.loadMixinSources(this);
   }
 
   @EventHandler

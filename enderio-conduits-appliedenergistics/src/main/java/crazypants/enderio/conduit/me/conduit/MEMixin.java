@@ -1,6 +1,6 @@
 package crazypants.enderio.conduit.me.conduit;
 
-import com.enderio.core.common.transform.SimpleMixin;
+import com.enderio.core.common.mixin.SimpleMixin;
 
 import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;

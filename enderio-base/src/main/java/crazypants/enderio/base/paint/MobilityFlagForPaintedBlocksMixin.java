@@ -2,7 +2,7 @@ package crazypants.enderio.base.paint;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.transform.SimpleMixin;
+import com.enderio.core.common.mixin.SimpleMixin;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.EnumPushReaction;

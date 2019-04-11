@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
+import com.enderio.core.common.interfaces.IOverlayRenderAware;
 
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.render.itemoverlay.MobNameOverlayRenderHelper;

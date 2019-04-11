@@ -1,6 +1,6 @@
 package crazypants.enderio.conduit.oc.conduit;
 
-import com.enderio.core.common.transform.SimpleMixin;
+import com.enderio.core.common.mixin.SimpleMixin;
 
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.conduits.conduit.TileConduitBundle;
