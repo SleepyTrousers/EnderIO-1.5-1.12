@@ -18,6 +18,12 @@ import slimeknights.tconstruct.tools.modifiers.ModBeheading;
 public class TicModifierHandler implements ITicModifierHandler {
 
   public static final @Nonnull TicModifierHandler instance = new TicModifierHandler();
+  public static final @Nonnull TicModifierHandler instanceWithoutModifiers = new TicModifierHandler() {
+    @Override
+    public int getBehadingLevel(@Nonnull ItemStack itemStack) {
+      return 0;
+    }
+  };
 
   protected boolean isToolWithTrait(@Nonnull ItemStack itemStack, ITrait trait) {
     return TinkerUtil.hasTrait(TagUtil.getTagSafe(itemStack), trait.getIdentifier());

@@ -58,8 +58,16 @@ public class TicControl {
         && TConstruct.pulseManager.isPulseLoaded(NullHelper.notnull(TinkerModifiers.PulseId, "TiC is broken"));
   }
 
+  private static boolean doModifierChecks() {
+    return TConstruct.pulseManager.isPulseLoaded(NullHelper.notnull(TinkerModifiers.PulseId, "TiC is broken"));
+  }
+
   public static void preInitBeforeTic(FMLPreInitializationEvent event) {
-    TicProxy.register(TicRecipeHandler.instance, TicModifierHandler.instance);
+    if (doModifierChecks()) {
+      TicProxy.register(TicRecipeHandler.instance, TicModifierHandler.instance);
+    } else {
+      TicProxy.register(TicRecipeHandler.instance, TicModifierHandler.instanceWithoutModifiers);
+    }
     if (doFluids()) {
       Glowstone.createFluid();
       Redstone.createFluid();
