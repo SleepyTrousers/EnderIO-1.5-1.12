@@ -1,5 +1,7 @@
 package crazypants.enderio.base.config.config;
 
+import java.util.function.Supplier;
+
 import crazypants.enderio.base.EnderIO;
 import info.loenwind.autoconfig.factory.IValue;
 import info.loenwind.autoconfig.factory.IValueFactory;
@@ -97,5 +99,41 @@ public final class PersonalConfig {
 
   public static final IValue<Boolean> disableHiding = H.make("disableHiding", false, //
       "If true, nothing will be hidden in JEI regardless of the xml configuration for ingredient hiding.");
+
+  // Tooltips
+
+  public static final IValueFactory T = F.section(".tooltips");
+
+  public enum TooltipPaintEnum implements Supplier<Boolean> {
+    NEVER {
+      @Override
+      public Boolean get() {
+        return false;
+      }
+    },
+    AUTO {
+      @Override
+      public Boolean get() {
+        return painterAvailable;
+      }
+    },
+    ALWAYS {
+      @Override
+      public Boolean get() {
+        return true;
+      }
+    };
+
+    private static boolean painterAvailable = false;
+
+    public static void setPainterAvailable() {
+      TooltipPaintEnum.painterAvailable = true;
+    }
+
+  }
+
+  public static final IValue<TooltipPaintEnum> enablePainterTooltip = T.make("enablePainterTooltip", TooltipPaintEnum.AUTO,
+      "Should paintable (and painted) items have a tooltip showing their paint information? Possible values are ALWAYS, NEVER and AUTO. The latter will only "
+          + "show tooltips if there is some way to paint items available (e.g. the Painting Machine).");
 
 }

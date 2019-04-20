@@ -19,6 +19,7 @@ import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.config.Config;
 import crazypants.enderio.base.config.config.BaseConfig;
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.config.config.TeleportConfig;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.base.config.recipes.RecipeLoader;
@@ -242,7 +243,9 @@ public class EnderIO implements IEnderIOAddon {
       String key = msg.key;
       Log.info("Processing IMC message ", key, " from ", msg.getSender());
       try {
-        if (msg.isStringMessage()) {
+        if (IMC.ENABLE_PAINTING.equals(key)) {
+          PersonalConfig.TooltipPaintEnum.setPainterAvailable();
+        } else if (msg.isStringMessage()) {
           String value = msg.getStringValue();
           if (value == null) {
             return;
