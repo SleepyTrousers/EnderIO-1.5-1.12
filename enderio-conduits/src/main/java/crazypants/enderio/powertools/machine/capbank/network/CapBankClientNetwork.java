@@ -203,7 +203,8 @@ public class CapBankClientNetwork implements ICapBankNetwork {
   }
 
   @Override
-  public void addEnergy(int energy) {
+  public int addEnergy(int energy) {
+    return energy;
   }
 
   @Override

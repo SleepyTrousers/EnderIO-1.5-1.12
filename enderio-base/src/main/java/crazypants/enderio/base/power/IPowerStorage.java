@@ -38,7 +38,14 @@ public interface IPowerStorage {
 
   int getAverageIOPerTick();
 
-  void addEnergy(int amount);
+  /**
+   * Adds energy to the cap bank's storage
+   * 
+   * @param amount
+   *          to add
+   * @return amount remaining (not added)
+   */
+  int addEnergy(int amount);
 
   boolean isCreative();
 

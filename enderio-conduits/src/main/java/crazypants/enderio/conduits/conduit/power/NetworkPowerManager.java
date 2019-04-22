@@ -197,7 +197,7 @@ public class NetworkPowerManager {
       if (capBankChange < 0) {
         capSupply.remove(Math.abs(capBankChange));
       } else if (capBankChange > 0) {
-        capSupply.add(capBankChange);
+        energyStored += capSupply.add(capBankChange);
       }
 
       capSupply.balance();
@@ -483,9 +483,9 @@ public class NetworkPowerManager {
       }
     }
 
-    void add(long amount) {
+    long add(long amount) {
       if (canFill <= 0 || amount <= 0) {
-        return;
+        return amount;
       }
       double ratio = (double) amount / canFill;
 
@@ -493,13 +493,14 @@ public class NetworkPowerManager {
         long add = (int) Math.ceil(ratio * entry.canFill);
         add = Math.min(add, entry.canFill);
         add = Math.min(add, amount);
-        entry.capBank.addEnergy((int) add);
+        add -= entry.capBank.addEnergy((int) add);
         trackerSend(entry.emmiter, (int) add, true);
         amount -= add;
         if (amount == 0) {
-          return;
+          return amount;
         }
       }
+      return amount;
     }
 
   }
