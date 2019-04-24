@@ -39,29 +39,12 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     NetworkTankKey key = new NetworkTankKey(con, conDir);
     NetworkTank tank = new NetworkTank(con, conDir);
 
-    // Check for later
-    boolean sort = false;
-    NetworkTank oldTank = tankMap.get(key);
-    if (oldTank != null && oldTank.priority != tank.priority) {
-      sort = true;
-    }
-
     tanks.remove(tank); // remove old tank, NB: =/hash is only calced on location and dir
-    tankMap.remove(key);
     tanks.add(tank);
+    tankMap.remove(key);
     tankMap.put(key, tank);
 
-    // If the priority has been changed, then sort the list to match
-    if (sort) {
-      tanks.sort(new Comparator<NetworkTank>() {
-
-        @Override
-        public int compare(NetworkTank arg0, NetworkTank arg1) {
-          return arg1.priority - arg0.priority;
-        }
-
-      });
-    }
+    tanks.sort((left, right) -> right.priority - left.priority);
   }
 
   public boolean extractFrom(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir) {

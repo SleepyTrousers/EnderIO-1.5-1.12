@@ -1,6 +1,6 @@
 package crazypants.enderio.base.integration.thaumcraft;
 
-import com.enderio.core.common.transform.SimpleMixin;
+import com.enderio.core.common.mixin.SimpleMixin;
 
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;

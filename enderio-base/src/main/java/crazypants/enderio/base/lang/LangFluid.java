@@ -28,6 +28,10 @@ public final class LangFluid {
     return Lang.FLUID_AMOUNT_NAME.get(amount, new FluidStack(fluid, amount).getLocalizedName());
   }
 
+  public static @Nonnull String MB(FluidStack fluid) {
+    return Lang.FLUID_AMOUNT_NAME.get(fluid.amount, fluid.getLocalizedName());
+  }
+
   public static @Nonnull String tMB(int amount) {
     return Lang.FLUID_TICKPER.get(amount);
   }

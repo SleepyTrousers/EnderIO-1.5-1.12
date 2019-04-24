@@ -3,7 +3,7 @@ package crazypants.enderio.integration.forestry.upgrades;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.transform.SimpleMixin;
+import com.enderio.core.common.mixin.SimpleMixin;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelArmor;

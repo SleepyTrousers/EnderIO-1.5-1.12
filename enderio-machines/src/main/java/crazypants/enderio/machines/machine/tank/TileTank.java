@@ -131,7 +131,8 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
       return false;
     }
     if (i == 0) {
-      return (FluidUtil.getFluidTypeFromItem(item) != null) || isValidInputItem(item, false);
+      FluidStack fluidType = FluidUtil.getFluidTypeFromItem(item);
+      return (fluidType != null && fluidType.amount > 0) || isValidInputItem(item, false);
     } else if (i == 1) {
       return FluidUtil.hasEmptyCapacity(item) || canBeMended(item) || isValidInputItem(item, true);
     } else if (i == 2 && canVoidItems()) {

@@ -2,7 +2,7 @@ package crazypants.enderio.base.block.decoration;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
+import com.enderio.core.common.interfaces.IOverlayRenderAware;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;

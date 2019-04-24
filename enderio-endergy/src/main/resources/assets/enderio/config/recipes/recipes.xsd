@@ -460,12 +460,16 @@
                           <complexType>
                             <attribute use="required" name="name" type="string">
                               <annotation>
-                                <documentation>The ResourceLocation of the entity this entry is for. Aside from a literal ResourceLocation, a number of special
-                                values can be used. "*" denotes the default entry, its values are used when there is no matching configuration.
-                                "*boss*" matches all modded boss mobs; it can only be used for soul vial configuration. Additionally, both the modid and
-                                the mobid (the part before and after the colon) can contain a single asterisk as wildcard ("*:*" is an alias for "*").
-                                If multiple entries match the same mob (only possible when using wildcards), the configurations combine. On entry disabling
-                                spawning or soulvialing is enough to disable that and the highest cost multipier is used.</documentation>
+                                <documentation>
+                                  The ResourceLocation of the entity this entry is for. Aside from a literal ResourceLocation, a
+                                  number of special values can be used. "*" denotes the default entry, its values are used when
+                                  there is no matching configuration. "*boss*" matches all modded boss mobs; it can only be used for
+                                  soul vial configuration. Additionally, both the modid and the mobid (the part before and after the
+                                  colon) can contain a single asterisk as wildcard ("*:*" is an alias for "*"). If multiple entries
+                                  match the same mob (only possible when using wildcards), the configurations combine. On entry
+                                  disabling spawning or soulvialing is enough to disable that and the highest cost multipier is
+                                  used.
+                                </documentation>
                               </annotation>
                             </attribute>
                             <attribute name="costMultiplier" default="1">
@@ -496,7 +500,8 @@
                             <attribute name="soulvial" type="boolean" use="optional" default="true">
                               <annotation>
                                 <documentation>
-                                  Specifies if this mob can be captured with a soul vial (default is yes). If an entity cannot be captured, it also cannot be spawning by powered spawners.
+                                  Specifies if this mob can be captured with a soul vial (default is yes). If an entity cannot be
+                                  captured, it also cannot be spawning by powered spawners.
                                 </documentation>
                               </annotation>
                             </attribute>
@@ -729,14 +734,31 @@
                       <documentation>Recipe for the Slice'n'Splice</documentation>
                     </annotation>
                   </element>
-                  <element name="fermenting" type="enderio:fermentingType" maxOccurs="1" minOccurs="1"></element>
+                  <element name="fermenting" type="enderio:fermentingType" maxOccurs="1" minOccurs="1">
+                    <annotation>
+                      <documentation>A recipe for the VAT.</documentation>
+                    </annotation>
+                  </element>
                   <element name="soulbinding" type="enderio:soulbindingType" minOccurs="1" maxOccurs="1">
                     <annotation>
                       <documentation>A recipe for the Soul Binder.</documentation>
                     </annotation>
                   </element>
-                  <element name="brewing" type="enderio:brewingType" minOccurs="1" maxOccurs="1"></element>
-                  <element name="tanking" type="enderio:tankingType" minOccurs="1" maxOccurs="1"></element>
+                  <element name="brewing" type="enderio:brewingType" minOccurs="1" maxOccurs="1">
+                    <annotation>
+                      <documentation>A recipe for the vanilla brewing stand.</documentation>
+                    </annotation>
+                  </element>
+                  <element name="tanking" type="enderio:tankingType" minOccurs="1" maxOccurs="1">
+                    <annotation>
+                      <documentation>A recipe for the Tank.</documentation>
+                    </annotation>
+                  </element>
+                  <element name="hiding" type="enderio:hidingType" maxOccurs="1" minOccurs="1">
+                    <annotation>
+                      <documentation>A pseudo-recipe for hiding items and fluids in the JEI list of ingredients.</documentation>
+                    </annotation>
+                  </element>
                 </choice>
               </sequence>
               <attribute use="optional" name="required" type="boolean">
@@ -1146,6 +1168,21 @@
     </attribute>
   </complexType>
 
+  <complexType name="hidingType">
+    <annotation>
+      <documentation>Configure which items/fluids should be hidden in JEI.</documentation>
+    </annotation>
+    <sequence>
+      <element name="config" type="enderio:configComplexType" maxOccurs="unbounded" minOccurs="0"></element>
+      <element name="dependency" type="enderio:dependencyComplexType" maxOccurs="unbounded" minOccurs="0"></element>
+      <choice maxOccurs="unbounded" minOccurs="1">
+        <element name="item" type="enderio:itemHidingType" minOccurs="1" maxOccurs="1"></element>
+        <element name="fluid" type="enderio:fluidHidingType" minOccurs="1" maxOccurs="1"></element>
+      </choice>
+    </sequence>
+  </complexType>
+
+
   <complexType name="potionType">
     <attribute name="potion" type="string" use="required">
       <annotation>
@@ -1153,6 +1190,64 @@
       </annotation></attribute>
   </complexType>
 
+  <complexType name="fluidHidingType">
+    <attribute name="name" type="string" use="required">
+      <annotation>
+        <documentation>The ID of a fluid.</documentation>
+      </annotation>
+    </attribute>
+    <attribute name="show" type="boolean" use="optional" default="false">
+      <annotation>
+        <documentation>An element will be hidden if:
+
+(1) there exists a configuration for it. Elements that are never configured will not be hidden.
+
+(2) There is no configuration that sets "show" to true OR
+
+(3) There is at least one configuration that sets "hide" to true.
+
+Ender IO itself will never set "hide" to true and will only use "show" internally. Modpack makers (and players) are expected to only use "hide" to hide stuff and use "show" to unhide stuff that Ender IO has hidden.</documentation>
+      </annotation></attribute>
+    <attribute name="hide" type="boolean" use="optional" default="false">
+      <annotation>
+        <documentation>An element will be hidden if:
+
+(1) there exists a configuration for it. Elements that are never configured will not be hidden.
+
+(2) There is no configuration that sets "show" to true OR
+
+(3) There is at least one configuration that sets "hide" to true.
+
+Ender IO itself will never set "hide" to true and will only use "show" internally. Modpack makers (and players) are expected to only use "hide" to hide stuff and use "show" to unhide stuff that Ender IO has hidden.</documentation>
+      </annotation></attribute>
+  </complexType>
+  <complexType name="itemHidingType">
+    <attribute use="required" name="name" type="enderio:ThingsString" />
+    <attribute name="show" type="boolean" use="optional" default="false">
+      <annotation>
+        <documentation>An element will be hidden if:
+
+(1) there exists a configuration for it. Elements that are never configured will not be hidden.
+
+(2) There is no configuration that sets "show" to true OR
+
+(3) There is at least one configuration that sets "hide" to true.
+
+Ender IO itself will never set "hide" to true and will only use "show" internally. Modpack makers (and players) are expected to only use "hide" to hide stuff and use "show" to unhide stuff that Ender IO has hidden.</documentation>
+      </annotation></attribute>
+    <attribute name="hide" type="boolean" use="optional" default="false">
+      <annotation>
+        <documentation>An element will be hidden if:
+
+(1) there exists a configuration for it. Elements that are never configured will not be hidden.
+
+(2) There is no configuration that sets "show" to true OR
+
+(3) There is at least one configuration that sets "hide" to true.
+
+Ender IO itself will never set "hide" to true and will only use "show" internally. Modpack makers (and players) are expected to only use "hide" to hide stuff and use "show" to unhide stuff that Ender IO has hidden.</documentation>
+      </annotation></attribute>
+  </complexType>
   <complexType name="fluidType">
     <attribute name="name" type="string" use="required">
       <annotation>

@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.Lang;
-import com.enderio.core.common.transform.EnderCorePlugin;
+import com.enderio.core.common.mixin.SimpleMixinLoader;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.Log;
@@ -57,7 +57,7 @@ public class EnderIOIntegrationTic implements IEnderIOAddon {
   public static final @Nonnull String DEPENDENCIES = DEFAULT_DEPENDENCIES;
 
   public EnderIOIntegrationTic() {
-    EnderCorePlugin.instance().loadMixinSources(this);
+    SimpleMixinLoader.loadMixinSources(this);
   }
 
   @EventHandler

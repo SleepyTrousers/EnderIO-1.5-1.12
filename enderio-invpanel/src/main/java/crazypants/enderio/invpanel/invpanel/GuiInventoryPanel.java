@@ -110,8 +110,9 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         // super.ghostSlotClicked(gui, slot, x, y, button);
       }
 
-      @Override
-      protected void drawGhostSlotToolTip(@Nonnull GuiContainerBase gui, int mouseX, int mouseY) {
+      // @Override
+      protected void drawGhostSlotToolTip_OLD(@Nonnull GuiContainerBase gui, int mouseX, int mouseY) {
+        // TODO: 1.12 This needs to go into the ghost slot
         GhostSlot slot = this.getGhostSlotAt(gui, mouseX, mouseY);
         if (slot != null) {
           ItemStack stack = slot.getStack();

@@ -369,7 +369,7 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
   }
 
   @Override
-  public void addEnergy(int energy) {
+  public int addEnergy(int energy) {
     if (energy > 0) {
       energyReceived += energy;
     } else {
@@ -378,12 +378,17 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
     if (!type.isCreative()) {
       energyStored += energy;
       if (energyStored > maxEnergyStored) {
+        energy = (int) (energyStored - maxEnergyStored);
         energyStored = maxEnergyStored;
+        energyReceived -= energy;
+        return energy;
       } else if (energyStored < 0) {
         energyStored = 0;
       }
+      return 0;
     } else {
       energyStored = maxEnergyStored / 2;
+      return 0;
     }
   }
 

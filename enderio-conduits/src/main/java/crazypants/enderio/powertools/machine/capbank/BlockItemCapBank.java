@@ -2,7 +2,7 @@ package crazypants.enderio.powertools.machine.capbank;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
+import com.enderio.core.common.interfaces.IOverlayRenderAware;
 
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.ItemEIO;

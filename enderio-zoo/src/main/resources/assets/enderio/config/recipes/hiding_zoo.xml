@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+
+These are the built-in recipes. You cannot change this file, it is a
+reference for you only and will be generated every time the game starts.
+
+This file enables stuff used by zoo.
+
+See hiding_base.xml for more information.
+
+More information on the syntax can be found in the recipes.xsd file. An
+XML editor will display that as tooltips when editing this file.
+
+ -->
+
+  <recipe name="Item Hiding, Zoo" required="true">
+    <!-- These items are shown when Ender IO Zoo is installed. -->
+    <hiding>
+      <item name="enderio:item_material:61" show="true" /><!-- itemConfusingDust -->
+      <item name="enderio:item_material:62" show="true" /><!-- itemEnderFragment -->
+      <item name="enderio:item_material:63" show="true" /><!-- itemWitheringDust -->
+
+      <item name="enderio:block_confusion_charge:0" show="true" />
+      <item name="enderio:block_concussion_charge:0" show="true" />
+      <item name="enderio:block_ender_charge:0" show="true" />
+
+      <item name="enderio:item_owl_egg:0" show="true" />
+
+    </hiding>
+  </recipe>
+
+</enderio:recipes>
+ 

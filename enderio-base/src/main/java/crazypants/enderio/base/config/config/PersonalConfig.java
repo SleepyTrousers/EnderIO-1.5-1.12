@@ -1,5 +1,7 @@
 package crazypants.enderio.base.config.config;
 
+import java.util.function.Supplier;
+
 import crazypants.enderio.base.EnderIO;
 import info.loenwind.autoconfig.factory.IValue;
 import info.loenwind.autoconfig.factory.IValueFactory;
@@ -96,39 +98,42 @@ public final class PersonalConfig {
   public static final IValueFactory H = F.section(".hiding");
 
   public static final IValue<Boolean> disableHiding = H.make("disableHiding", false, //
-      "If true, nothing will be hidden in JEI regardless of the rest of the 'hide...' settings.");
+      "If true, nothing will be hidden in JEI regardless of the xml configuration for ingredient hiding.");
 
-  public static final IValue<Boolean> hideConduits = H.make("hideConduits", true, //
-      "Should conduit-related items be hidden in JEI if the conduits module is not installed?");
+  // Tooltips
 
-  public static final IValue<Boolean> hideEndergy = H.make("hideEndergy", true, //
-      "Should endergy-related items be hidden in JEI if the conduits module is not installed?");
+  public static final IValueFactory T = F.section(".tooltips");
 
-  public static final IValue<Boolean> hideMachineParts = H.make("hideMachineParts", true, //
-      "Should machine part items be hidden in JEI if the machines module is not installed?");
+  public enum TooltipPaintEnum implements Supplier<Boolean> {
+    NEVER {
+      @Override
+      public Boolean get() {
+        return false;
+      }
+    },
+    AUTO {
+      @Override
+      public Boolean get() {
+        return painterAvailable;
+      }
+    },
+    ALWAYS {
+      @Override
+      public Boolean get() {
+        return true;
+      }
+    };
 
-  public static final IValue<Boolean> hideMaterials = H.make("hideMaterials", true, //
-      "Should material items that need machines to be crafted be hidden in JEI if the machines module is not installed?");
+    private static boolean painterAvailable = false;
 
-  public static final IValue<Boolean> hideMaterialBlocks = H.make("hideMaterialBlocks", true, //
-      "Should blocks made from materials that need machines to be crafted be hidden in JEI if the machines module is not installed?");
+    public static void setPainterAvailable() {
+      TooltipPaintEnum.painterAvailable = true;
+    }
 
-  public static final IValue<Boolean> hideMobDrops = H.make("hideMobDrops", true, //
-      "Should mob drop items (and items crafted with those) be hidden in JEI if the zoo module is not installed?");
+  }
 
-  public static final IValue<Boolean> hideToolsAndArmor = H.make("hideToolsAndArmor", true, //
-      "Should tool and armor items be hidden in JEI if the machines module is not installed?");
-
-  public static final IValue<Boolean> hideInfinity = H.make("hideInfinity", true, //
-      "Should grains of infinity be hidden in JEI if the in-world crafting is disabled?");
-
-  public static final IValue<Boolean> hideTEMaterials = H.make("hideTEMaterials", true, //
-      "Should compatibility items for Thermal Foundation be hidden in JEI if it is not installed?");
-
-  public static final IValue<Boolean> hideTiCMaterials = H.make("hideTiCMaterials", true, //
-      "Should compatibility items for Tinkers Construct be hidden in JEI if it is not installed?");
-
-  public static final IValue<Boolean> hideTreetap = H.make("hideTreetap", true, //
-      "Should the treetap be hidden in JEI if no mods with rubber trees are installed?");
+  public static final IValue<TooltipPaintEnum> enablePainterTooltip = T.make("enablePainterTooltip", TooltipPaintEnum.AUTO,
+      "Should paintable (and painted) items have a tooltip showing their paint information? Possible values are ALWAYS, NEVER and AUTO. The latter will only "
+          + "show tooltips if there is some way to paint items available (e.g. the Painting Machine).");
 
 }

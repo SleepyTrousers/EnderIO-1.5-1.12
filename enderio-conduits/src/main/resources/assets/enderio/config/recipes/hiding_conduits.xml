@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+
+These are the built-in recipes. You cannot change this file, it is a
+reference for you only and will be generated every time the game starts.
+
+This file enables stuff used by conduits.
+
+See hiding_base.xml for more information.
+
+More information on the syntax can be found in the recipes.xsd file. An
+XML editor will display that as tooltips when editing this file.
+
+ -->
+
+  <recipe name="Item Hiding, Conduits" required="true">
+    <!-- These items are shown when Ender IO Conduits is installed. -->
+    <hiding>
+      <item name="enderio:item_conduit_facade:*" show="true" />
+
+      <item name="enderio:item_basic_capacitor:*" show="true" />
+
+      <item name="enderio:item_material:4" show="true" /><!-- itemConduitBinder -->
+      <item name="enderio:item_material:5" show="true" /><!-- itemSilicon -->
+      <item name="enderio:item_material:22" show="true" /><!-- itemBinderComposite -->
+      <item name="enderio:item_material:60" show="true" /><!-- itemRedstoneFilterBase -->
+
+      <item name="enderio:item_conduit_probe:0" show="true" />
+      <item name="enderio:item_yeta_wrench:0" show="true" />
+
+      <item name="enderio:item_basic_item_filter:0" show="true" />
+      <item name="enderio:item_advanced_item_filter:0" show="true" />
+      <item name="enderio:item_limited_item_filter:0" show="true" />
+      <item name="enderio:item_big_item_filter:0" show="true" />
+      <item name="enderio:item_big_advanced_item_filter:0" show="true" />
+      <item name="enderio:item_existing_item_filter:0" show="true" />
+      <item name="enderio:item_mod_item_filter:0" show="true" />
+      <item name="enderio:item_power_item_filter:0" show="true" />
+      <item name="enderio:item_soul_filter_normal:0" show="true" />
+      <item name="enderio:item_soul_filter_big:0" show="true" />
+      <item name="enderio:item_enchantment_filter_normal:0" show="true" />
+      <item name="enderio:item_enchantment_filter_big:0" show="true" />
+      <item name="enderio:item_fluid_filter:0" show="true" />
+      <item name="enderio:item_redstone_not_filter:0" show="true" />
+      <item name="enderio:item_redstone_or_filter:0" show="true" />
+      <item name="enderio:item_redstone_and_filter:0" show="true" />
+      <item name="enderio:item_redstone_nor_filter:0" show="true" />
+      <item name="enderio:item_redstone_nand_filter:0" show="true" />
+      <item name="enderio:item_redstone_xor_filter:0" show="true" />
+      <item name="enderio:item_redstone_xnor_filter:0" show="true" />
+      <item name="enderio:item_redstone_toggle_filter:0" show="true" />
+      <item name="enderio:item_redstone_counting_filter:0" show="true" />
+      <item name="enderio:item_redstone_sensor_filter:0" show="true" />
+      <item name="enderio:item_redstone_timer_filter:0" show="true" />
+
+      <item name="enderio:item_inventory_charger_simple:0" show="true" />
+      <item name="enderio:item_inventory_charger_basic:0" show="true" />
+      <item name="enderio:item_inventory_charger:0" show="true" />
+      <item name="enderio:item_inventory_charger_vibrant:0" show="true" />
+
+    </hiding>
+  </recipe>
+
+ </enderio:recipes>

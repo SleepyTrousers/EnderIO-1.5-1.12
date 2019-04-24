@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
+import com.enderio.core.common.interfaces.IOverlayRenderAware;
 import com.enderio.core.common.util.FluidUtil;
 
 import crazypants.enderio.api.IModObject;
@@ -127,7 +127,7 @@ public class ItemColdFireIgniter extends Item implements IAdvancedTooltipProvide
     return new CapabilityProvider(stack);
   }
 
-  private class CapabilityProvider implements ICapabilityProvider, IFluidHandlerItem {
+  private final class CapabilityProvider implements ICapabilityProvider, IFluidHandlerItem {
     protected final @Nonnull ItemStack container;
 
     private CapabilityProvider(@Nonnull ItemStack container) {

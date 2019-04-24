@@ -20,6 +20,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.config.IntegrationConfig;
 import crazypants.enderio.base.network.IRemoteExec;
 import crazypants.enderio.base.sound.SoundHelper;
 import crazypants.enderio.base.sound.SoundRegistry;
@@ -68,13 +69,19 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
   private final @Nonnull List<Rectangle> tabAreas = new ArrayList<Rectangle>();
   private final static @Nonnull Rectangle NO_TAB = new Rectangle(0, 0, 0, 0);
 
-  // JEI
+  /**
+   * See {@link mezz.jei.api.gui.IAdvancedGuiHandler#getGuiExtraAreas(net.minecraft.client.gui.inventory.GuiContainer)}
+   * 
+   */
   public List<Rectangle> getBlockingAreas() {
     // return a new object every time so equals() actually checks the contents
     return new ArrayList<Rectangle>(tabAreas);
   }
 
-  // Project Intelligence
+  /**
+   * See {@link com.brandon3055.projectintelligence.api.IPageSupplier}
+   * 
+   */
   public @Nonnull Set<String> getDocumentationPages() {
     return Collections.singleton(getDocumentationPage());
   }
@@ -85,14 +92,20 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
         .replaceFirst("_gui$", "").replaceFirst("^gui_", "");
   }
 
-  // Project Intelligence
+  /**
+   * See {@link com.brandon3055.projectintelligence.api.IGuiDocHandler#getCollapsedArea(net.minecraft.client.gui.GuiScreen)}
+   *
+   */
   public Rectangle getDocumentationButtonArea() {
     return new Rectangle(guiLeft - 25, guiTop + 3, 25, 25);
   }
 
-  // Project Intelligence
+  /**
+   * See {@link com.brandon3055.projectintelligence.api.IGuiDocHandler#getExpandedArea(net.minecraft.client.gui.GuiScreen)}
+   *
+   */
   public Rectangle getDocumentationArea() {
-    return new Rectangle(3, 3, guiLeft - 6, height - 6);
+    return IntegrationConfig.rectangleWithPIMargins(0, 0, guiLeft, height);
   }
 
   /**

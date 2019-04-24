@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Triple;
 
-import com.enderio.core.common.transform.EnderCorePlugin;
+import com.enderio.core.common.mixin.SimpleMixinLoader;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
@@ -52,7 +52,7 @@ public class EnderIOInvPanel implements IEnderIOAddon {
   private static ConfigHandler configHandler;
 
   public EnderIOInvPanel() {
-    EnderCorePlugin.instance().loadMixinSources(this);
+    SimpleMixinLoader.loadMixinSources(this);
   }
 
   @EventHandler
@@ -68,7 +68,7 @@ public class EnderIOInvPanel implements IEnderIOAddon {
   @Override
   @Nonnull
   public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
-    return new NNList<>(Triple.of(2, null, "invpanel"), Triple.of(9, null, "capacitor_invpanel"));
+    return new NNList<>(Triple.of(2, null, "invpanel"), Triple.of(9, null, "capacitor_invpanel"), Triple.of(9, null, "hiding_invpanel"));
   }
 
   @Override

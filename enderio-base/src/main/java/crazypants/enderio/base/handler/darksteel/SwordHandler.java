@@ -10,12 +10,12 @@ import com.enderio.core.common.util.Util;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.BlockConfig;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
-import info.loenwind.autoconfig.factory.IValue;
 import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelSword;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.material.material.Material;
 import crazypants.enderio.util.Prep;
+import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -28,7 +28,6 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
@@ -129,14 +128,13 @@ public class SwordHandler {
       return false;
     }
     ItemStack equipped = player.getHeldItemMainhand();
-    NBTTagCompound tagCompound = equipped.getTagCompound();
-    if (tagCompound == null) {
+    if (!equipped.hasTagCompound()) {
       return false;
     }
 
     int beheading = TicProxy.getBehadingLevel(equipped);
 
-    if (beheading == 0) {
+    if (beheading <= 0) {
       // Use default behavior if it is not a cleaver and doesn't have beheading
       return false;
     }

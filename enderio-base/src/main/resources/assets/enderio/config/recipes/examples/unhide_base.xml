@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+
+These is an example file. Copy it to the user folder to enable it.
+
+This file enables all items in the base package that can be used when there's
+an alternative method to get Ender IO's alloys. Note that you also need to
+provide a way to get the fluids or disable fluid use for the items that need
+fluids.
+
+Note: This is not a one-stop solution. You still need to check what works and
+what needs to be tweaked recipe-wise!
+
+See hiding_base.xml for more information.
+
+More information on the syntax can be found in the recipes.xsd file. An
+XML editor will display that as tooltips when editing this file.
+
+ -->
+
+  <recipe name="Item Un-Hiding, Base">
+    <hiding>
+      <item name="enderio:item_basic_capacitor:*" show="true" />
+
+      <item name="blockElectricalSteel" show="true" />
+      <item name="blockEnergeticAlloy" show="true" />
+      <item name="blockVibrantAlloy" show="true" />
+      <item name="blockRedstoneAlloy" show="true" />
+      <item name="blockConductiveIron" show="true" />
+      <item name="blockPulsatingIron" show="true" />
+      <item name="blockDarkSteel" show="true" />
+      <item name="blockSoularium" show="true" />
+      <item name="blockEndSteel" show="true" />
+      <item name="blockConstructionAlloy" show="true" />
+
+      <item name="ingotElectricalSteel" show="true" />
+      <item name="ingotEnergeticAlloy" show="true" />
+      <item name="ingotVibrantAlloy" show="true" />
+      <item name="ingotRedstoneAlloy" show="true" />
+      <item name="ingotConductiveIron" show="true" />
+      <item name="ingotPulsatingIron" show="true" />
+      <item name="ingotDarkSteel" show="true" />
+      <item name="ingotSoularium" show="true" />
+      <item name="ingotEndSteel" show="true" />
+      <item name="ingotConstructionAlloy" show="true" />
+
+      <item name="nuggetElectricalSteel" show="true" />
+      <item name="nuggetEnergeticAlloy" show="true" />
+      <item name="nuggetVibrantAlloy" show="true" />
+      <item name="nuggetRedstoneAlloy" show="true" />
+      <item name="nuggetConductiveIron" show="true" />
+      <item name="nuggetPulsatingIron" show="true" />
+      <item name="nuggetDarkSteel" show="true" />
+      <item name="nuggetSoularium" show="true" />
+      <item name="nuggetEndSteel" show="true" />
+      <item name="nuggetConstructionAlloy" show="true" />
+
+      <item name="enderio:item_material:6" show="true" /><!-- itemGliderWing -->
+      <item name="enderio:item_material:7" show="true" /><!-- itemGliderWings -->
+      <item name="enderio:item_material:8" show="true" /><!-- itemNutritiousStick -->
+      <item name="enderio:item_material:12" show="true" /><!-- gearEnergized -->
+      <item name="enderio:item_material:13" show="true" /><!-- gearVibrant -->
+      <item name="enderio:item_material:71" show="true" /><!-- itemInfinityRod -->
+      <item name="enderio:item_material:73" show="true" /><!-- gearDark -->
+
+      <item name="enderio:block_dark_steel_anvil:*" show="true" />
+      <item name="enderio:block_dark_steel_ladder:0" show="true" />
+      <item name="enderio:block_dark_iron_bars:0" show="true" />
+      <item name="enderio:block_dark_steel_trapdoor:0" show="true" />
+      <item name="enderio:block_dark_steel_door:0" show="true" />
+
+      <item name="enderio:block_reinforced_obsidian:0" show="true" />
+
+      <item name="enderio:block_end_iron_bars:0" show="true" />
+
+      <item name="enderio:item_xp_transfer:0" show="true" />
+      <item name="enderio:item_cold_fire_igniter:0" show="true" />
+      <item name="enderio:item_travel_staff:0" show="true" />
+      <item name="enderio:item_rod_of_return:0" show="true" />
+      <!--  <item name="enderio:item_magnet:0" show="true" /> This one needs a
+      crystal to be crafted. You can enable it but you need to supply a
+      crafting recipe, too. -->
+
+      <item name="enderio:block_detector_block:0" show="true" />
+      <item name="enderio:block_detector_block_silent:0" show="true" />
+
+      <item name="enderio:item_dark_steel_helmet:0" show="true" />
+      <item name="enderio:item_dark_steel_chestplate:0" show="true" />
+      <item name="enderio:item_dark_steel_leggings:0" show="true" />
+      <item name="enderio:item_dark_steel_boots:0" show="true" />
+
+      <item name="enderio:item_dark_steel_sword:0" show="true" />
+      <item name="enderio:item_dark_steel_pickaxe:0" show="true" />
+      <item name="enderio:item_dark_steel_axe:0" show="true" />
+      <item name="enderio:item_dark_steel_bow:0" show="true" />
+      <item name="enderio:item_dark_steel_shears:0" show="true" />
+
+      <item name="enderio:item_inventory_charger_simple:0" show="true" />
+      <item name="enderio:item_inventory_charger_basic:0" show="true" />
+      <item name="enderio:item_inventory_charger:0" show="true" />
+      <item name="enderio:item_inventory_charger_vibrant:0" show="true" />
+
+      <item name="enderio:item_end_steel_sword:0" show="true" />
+      <item name="enderio:item_end_steel_pickaxe:0" show="true" />
+      <item name="enderio:item_end_steel_axe:0" show="true" />
+      <item name="enderio:item_end_steel_bow:0" show="true" />
+      <item name="enderio:item_end_steel_helmet:0" show="true" />
+      <item name="enderio:item_end_steel_chestplate:0" show="true" />
+      <item name="enderio:item_end_steel_leggings:0" show="true" />
+      <item name="enderio:item_end_steel_boots:0" show="true" />
+
+      <item name="enderio:item_staff_of_levity:0" show="true" />
+
+      <fluid name="ender_distillation" show="true"/>
+      <fluid name="vapor_of_levity" show="true"/>
+      <fluid name="xpjuice" show="true"/>
+
+    </hiding>
+  </recipe>
+
+ </enderio:recipes>

@@ -23,14 +23,48 @@ import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.passive.EntitySkeletonHorse;
 import net.minecraft.entity.passive.EntityZombieHorse;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public enum EnumPressurePlateType implements IStringSerializable {
 
-  WOOD(true, Entity.class),
-  STONE(true, EntityLivingBase.class),
+  WOOD(true, Entity.class) {
+    @Override
+    public int getFlammability() {
+      return 20;
+    }
+
+    @Override
+    public int getFireSpreadSpeed() {
+      return 5;
+    }
+
+    @Override
+    public void playClickOnSound(@Nonnull World worldIn, @Nonnull BlockPos pos) {
+      worldIn.playSound((EntityPlayer) null, pos, SoundEvents.BLOCK_WOOD_PRESSPLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.8F);
+    }
+
+    @Override
+    public void playClickOffSound(@Nonnull World worldIn, @Nonnull BlockPos pos) {
+      worldIn.playSound((EntityPlayer) null, pos, SoundEvents.BLOCK_WOOD_PRESSPLATE_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.7F);
+    }
+  },
+  STONE(true, EntityLivingBase.class) {
+    @Override
+    public void playClickOnSound(@Nonnull World worldIn, @Nonnull BlockPos pos) {
+      worldIn.playSound((EntityPlayer) null, pos, SoundEvents.BLOCK_STONE_PRESSPLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
+    }
+
+    @Override
+    public void playClickOffSound(@Nonnull World worldIn, @Nonnull BlockPos pos) {
+      worldIn.playSound((EntityPlayer) null, pos, SoundEvents.BLOCK_STONE_PRESSPLATE_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
+    }
+  },
   IRON(true, CountingMode.ENTITIES, Entity.class),
   GOLD(true, CountingMode.ITEMS, EntityItem.class),
   DARKSTEEL(false, EntityPlayer.class),
@@ -62,9 +96,13 @@ public enum EnumPressurePlateType implements IStringSerializable {
       };
     }
 
+    @Override
+    public boolean hasEffect() {
+      return true;
+    }
   };
 
-  public static enum CountingMode {
+  public enum CountingMode {
     BINARY {
       @Override
       public int count(List<Entity> list) {
@@ -206,6 +244,26 @@ public enum EnumPressurePlateType implements IStringSerializable {
 
   public boolean isShadowsVanilla() {
     return shadowsVanilla;
+  }
+
+  public int getFlammability() {
+    return 0;
+  }
+
+  public int getFireSpreadSpeed() {
+    return 0;
+  }
+
+  public boolean hasEffect() {
+    return false;
+  }
+
+  public void playClickOnSound(@Nonnull World worldIn, @Nonnull BlockPos pos) {
+    worldIn.playSound((EntityPlayer) null, pos, SoundEvents.BLOCK_METAL_PRESSPLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.9F);
+  }
+
+  public void playClickOffSound(@Nonnull World worldIn, @Nonnull BlockPos pos) {
+    worldIn.playSound((EntityPlayer) null, pos, SoundEvents.BLOCK_METAL_PRESSPLATE_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.75F);
   }
 
 }

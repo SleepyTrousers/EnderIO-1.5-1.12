@@ -59,6 +59,7 @@ public class PaintUtil {
           return false;
         }
       } else if (block instanceof IPaintable) {
+        // Weird error case: Our pressure plates are always painted, so they cannot be used as paint sources (e.g. to unpaint them)
         bs = ((IPaintable) block).getPaintSource(block, paintSource);
         if (bs != null) {
           return false;
@@ -296,10 +297,8 @@ public class PaintUtil {
     return null;
   }
 
-  private static final BlockRenderLayer BREAKING = null;
-
-  public static boolean canRenderInLayer(@Nullable IBlockState paintSource, @Nonnull BlockRenderLayer blockLayer) {
-    if (blockLayer == BREAKING) {
+  public static boolean canRenderInLayer(@Nullable IBlockState paintSource, @Nullable BlockRenderLayer blockLayer) {
+    if (blockLayer == null) { // a.k.a BREAKING
       return true;
     } else if (paintSource != null) {
       return paintSource.getBlock().canRenderInLayer(paintSource, blockLayer);
@@ -318,19 +317,22 @@ public class PaintUtil {
     try {
       stateFromMeta = paintBlock.getStateFromMeta(paintSource.getItem().getMetadata(paintSource.getMetadata()));
     } catch (Exception e) {
-      throw new RuntimeException("Block " + paintBlock + " (" + paintBlock.getClass() + ") belonging to item " + paintSource
-          + " failed to convert its item damage into a blockstate. This is a bug in the mod '" + block2Modname(paintBlock) + "'.", e);
+      throw new RuntimeException(
+          String.format("Block %s (%s) belonging to item %s failed to convert its item damage into a blockstate. This is a bug in the mod '%s'.", paintBlock,
+              paintBlock.getClass(), paintSource, block2Modname(paintBlock)),
+          e);
     }
     if (NullHelper.untrust(stateFromMeta) == null) {
-      throw new RuntimeException("Block " + paintBlock + " (" + paintBlock.getClass() + ") belonging to item " + paintSource
-          + " returned null from getStateFromMeta(). This is a major bug in the mod '" + block2Modname(paintBlock) + "'.");
+      throw new RuntimeException(String.format("Block %s (%s) belonging to item %s returned null from getStateFromMeta(). This is a major bug in the mod '%s'.",
+          paintBlock, paintBlock.getClass(), paintSource, block2Modname(paintBlock)));
     } else if (NullHelper.untrust(stateFromMeta.getBlock()) == null) {
-      throw new RuntimeException("Block " + paintBlock + " (" + paintBlock.getClass() + ") belonging to item " + paintSource + " returned a blockstate ("
-          + stateFromMeta + ") without block from getStateFromMeta(). This is a major bug in the mod '" + block2Modname(paintBlock) + "'.");
+      throw new RuntimeException(String.format(
+          "Block %s (%s) belonging to item %s returned a blockstate (%s) without block from getStateFromMeta(). This is a major bug in the mod '%s'.",
+          paintBlock, paintBlock.getClass(), paintSource, stateFromMeta, block2Modname(paintBlock)));
     } else if (NullHelper.untrust(Block.REGISTRY.getNameForObject(stateFromMeta.getBlock())) == null) {
-      throw new RuntimeException("Block " + paintBlock + " (" + paintBlock.getClass() + ") belonging to item " + paintSource + " returned a blockstate ("
-          + stateFromMeta + ") that belongs to an unregistered block " + stateFromMeta.getBlock() + " from getStateFromMeta(). This is a major bug in the mod '"
-          + block2Modname(paintBlock) + "'.");
+      throw new RuntimeException(String.format(
+          "Block %s (%s) belonging to item %s returned a blockstate (%s) that belongs to an unregistered block %s from getStateFromMeta(). This is a major bug in the mod '%s'.",
+          paintBlock, paintBlock.getClass(), paintSource, stateFromMeta, stateFromMeta.getBlock(), block2Modname(paintBlock)));
     }
     return stateFromMeta;
   }

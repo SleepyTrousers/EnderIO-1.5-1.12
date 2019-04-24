@@ -8,14 +8,13 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.BlockEnder;
-import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
+import com.enderio.core.common.util.NNEnumMap;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.block.painted.BlockItemPaintedBlock.INamedSubBlocks;
 import crazypants.enderio.base.init.ModObject;
-import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.material.glass.BlockFusedQuartzBase;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.PaintUtil;
@@ -28,7 +27,6 @@ import crazypants.enderio.base.render.ICacheKey;
 import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.ISmartRenderAwareBlock;
-import crazypants.enderio.base.render.itemoverlay.MobNameOverlayRenderHelper;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumRenderPart;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
@@ -46,12 +44,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelRotation;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -59,7 +55,6 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -72,9 +67,11 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
     implements ITileEntityProvider, IPaintable.ITexturePaintableBlock, ISmartRenderAwareBlock, IRenderMapper.IBlockRenderMapper.IRenderLayerAware,
     INamedSubBlocks, IResourceTooltipProvider, IRenderMapper.IItemRenderMapper.IItemModelMapper, IModObject.WithBlockItem, ICustomSubItems {
 
+  private static final @Nonnull String MODEL_UP = "pressure_plate_up";
+  private static final @Nonnull String MODEL_DOWN = "pressure_plate_down";
+
   public static BlockPaintedPressurePlate create(@Nonnull IModObject modObject) {
     BlockPaintedPressurePlate result = new BlockPaintedPressurePlate(modObject);
-    result.setHardness(0.5F);
     result.init(modObject);
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER,
         new PressurePlatePainterTemplate(result, EnumPressurePlateType.WOOD.getMetaFromType(), Blocks.WOODEN_PRESSURE_PLATE));
@@ -94,26 +91,25 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
     setCreativeTab(EnderIOTab.tabEnderIO);
     modObject.apply(this);
     setSoundType(SoundType.WOOD);
+    setHardness(0.5F);
   }
 
-  private final NNList<IBlockState> defaultPaints = new NNList<IBlockState>(EnumPressurePlateType.values().length,
-      Blocks.WOODEN_PRESSURE_PLATE.getDefaultState());
+  private final @Nonnull NNEnumMap<EnumPressurePlateType, IBlockState> defaultPaints = new NNEnumMap<>(EnumPressurePlateType.class,
+      Blocks.AIR.getDefaultState());
 
   private void init(@Nonnull IModObject modObject) {
     SmartModelAttacher.registerNoProps(this);
-    PaintRegistry.registerModel("pressure_plate_up", new ResourceLocation("minecraft", "block/stone_pressure_plate_up"), PaintRegistry.PaintMode.ALL_TEXTURES);
-    PaintRegistry.registerModel("pressure_plate_down", new ResourceLocation("minecraft", "block/stone_pressure_plate_down"),
-        PaintRegistry.PaintMode.ALL_TEXTURES);
-    PaintRegistry.registerModel("pressure_plate_inventory", new ResourceLocation("minecraft", "block/stone_pressure_plate_up"),
-        PaintRegistry.PaintMode.ALL_TEXTURES);
+    PaintRegistry.registerModel(MODEL_UP, new ResourceLocation("minecraft:block/stone_pressure_plate_up"), PaintRegistry.PaintMode.ALL_TEXTURES);
+    PaintRegistry.registerModel(MODEL_DOWN, new ResourceLocation("minecraft:block/stone_pressure_plate_down"), PaintRegistry.PaintMode.ALL_TEXTURES);
 
-    defaultPaints.set(EnumPressurePlateType.WOOD.ordinal(), Blocks.WOODEN_PRESSURE_PLATE.getDefaultState());
-    defaultPaints.set(EnumPressurePlateType.STONE.ordinal(), Blocks.STONE_PRESSURE_PLATE.getDefaultState());
-    defaultPaints.set(EnumPressurePlateType.IRON.ordinal(), Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE.getDefaultState());
-    defaultPaints.set(EnumPressurePlateType.GOLD.ordinal(), Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE.getDefaultState());
-    defaultPaints.set(EnumPressurePlateType.DARKSTEEL.ordinal(), getDefaultState().withProperty(BlockPressurePlateWeighted.POWER, 1));
-    defaultPaints.set(EnumPressurePlateType.SOULARIUM.ordinal(), getDefaultState().withProperty(BlockPressurePlateWeighted.POWER, 2));
-    defaultPaints.set(EnumPressurePlateType.TUNED.ordinal(), getDefaultState().withProperty(BlockPressurePlateWeighted.POWER, 3));
+    defaultPaints.put(EnumPressurePlateType.WOOD, Blocks.WOODEN_PRESSURE_PLATE.getDefaultState());
+    defaultPaints.put(EnumPressurePlateType.STONE, Blocks.STONE_PRESSURE_PLATE.getDefaultState());
+    defaultPaints.put(EnumPressurePlateType.IRON, Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE.getDefaultState());
+    defaultPaints.put(EnumPressurePlateType.GOLD, Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE.getDefaultState());
+    // we "hide" our textures for our variants in these blockstates. Our paint rendering will make sure they are never actually rendered.
+    defaultPaints.put(EnumPressurePlateType.DARKSTEEL, getDefaultState().withProperty(BlockPressurePlateWeighted.POWER, 1));
+    defaultPaints.put(EnumPressurePlateType.SOULARIUM, getDefaultState().withProperty(BlockPressurePlateWeighted.POWER, 2));
+    defaultPaints.put(EnumPressurePlateType.TUNED, getDefaultState().withProperty(BlockPressurePlateWeighted.POWER, 3));
   }
 
   @Override
@@ -256,9 +252,12 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
 
   protected @Nonnull ItemStack getDrop(@Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     CapturedMob mobType = getMobType(world, pos);
-    ItemStack drop = mobType != null ? mobType.toStack(Item.getItemFromBlock(this), getMetaForStack(world, pos), 1)
-        : new ItemStack(Item.getItemFromBlock(this), 1, getMetaForStack(world, pos));
-    PaintUtil.setSourceBlock(drop, getPaintSource(world.getBlockState(pos), world, pos));
+    ItemStack drop = mobType != null ? mobType.toStack(this, getMetaForStack(world, pos), 1) : new ItemStack(this, 1, getMetaForStack(world, pos));
+    TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos);
+    if (te instanceof IPaintable.IPaintableTileEntity) {
+      // don't ask getPaintSource() as that would give us the default paint for rendering, too
+      PaintUtil.setSourceBlock(drop, ((IPaintableTileEntity) te).getPaintSource());
+    }
     return drop;
   }
 
@@ -272,7 +271,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   public void setPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nullable IBlockState paintSource) {
     TileEntity te = world.getTileEntity(pos);
     if (te instanceof IPaintable.IPaintableTileEntity) {
-      if (defaultPaints.get(getType(world, pos).ordinal()) == paintSource) {
+      if (defaultPaints.get(getType(world, pos)) == paintSource) {
         ((IPaintableTileEntity) te).setPaintSource(null);
       } else {
         ((IPaintableTileEntity) te).setPaintSource(paintSource);
@@ -282,7 +281,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
 
   @Override
   public void setPaintSource(@Nonnull Block block, @Nonnull ItemStack stack, @Nullable IBlockState paintSource) {
-    if (defaultPaints.get(EnumPressurePlateType.getTypeFromMeta(stack.getMetadata()).ordinal()) == paintSource) {
+    if (defaultPaints.get(EnumPressurePlateType.getTypeFromMeta(stack.getMetadata())) == paintSource) {
       PaintUtil.setSourceBlock(stack, null);
     } else {
       PaintUtil.setSourceBlock(stack, paintSource);
@@ -290,7 +289,7 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   }
 
   @Override
-  public IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+  public @Nonnull IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos);
     if (te instanceof IPaintable.IPaintableTileEntity) {
       IBlockState paintSource = ((IPaintableTileEntity) te).getPaintSource();
@@ -298,13 +297,13 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
         return paintSource;
       }
     }
-    return defaultPaints.get(getType(world, pos).ordinal());
+    return defaultPaints.get(getType(world, pos));
   }
 
   @Override
-  public IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack) {
+  public @Nonnull IBlockState getPaintSource(@Nonnull Block block, @Nonnull ItemStack stack) {
     IBlockState paintSource = PaintUtil.getSourceBlock(stack);
-    return paintSource != null ? paintSource : defaultPaints.get(EnumPressurePlateType.getTypeFromMeta(stack.getMetadata()).ordinal());
+    return paintSource != null ? paintSource : defaultPaints.get(EnumPressurePlateType.getTypeFromMeta(stack.getMetadata()));
   }
 
   @Override
@@ -344,9 +343,9 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
     }
 
     if (state.getValue(BlockPressurePlateWeighted.POWER) > 0) {
-      return PaintRegistry.getModel(IBakedModel.class, "pressure_plate_down", paint, rot);
+      return PaintRegistry.getModel(IBakedModel.class, MODEL_DOWN, paint, rot);
     } else {
-      return PaintRegistry.getModel(IBakedModel.class, "pressure_plate_up", paint, rot);
+      return PaintRegistry.getModel(IBakedModel.class, MODEL_UP, paint, rot);
     }
   }
 
@@ -375,12 +374,12 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   @SideOnly(Side.CLIENT)
   public List<IBakedModel> mapItemRender(@Nonnull Block block, @Nonnull ItemStack stack) {
     IBlockState paintSource = getPaintSource(block, stack);
-    IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, "pressure_plate_inventory", paintSource, null);
+    IBakedModel model1 = PaintRegistry.getModel(IBakedModel.class, MODEL_UP, paintSource, null);
     List<IBakedModel> list = new ArrayList<IBakedModel>();
     list.add(model1);
-    if (paintSource != defaultPaints.get(EnumPressurePlateType.getTypeFromMeta(stack.getMetadata()).ordinal())) {
+    if (paintSource != defaultPaints.get(EnumPressurePlateType.getTypeFromMeta(stack.getMetadata()))) {
       IBlockState stdOverlay = ModObject.block_machine_base.getBlockNN().getDefaultState().withProperty(EnumRenderPart.SUB, EnumRenderPart.PAINT_OVERLAY);
-      IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, "pressure_plate_inventory", stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION);
+      IBakedModel model2 = PaintRegistry.getModel(IBakedModel.class, MODEL_UP, stdOverlay, PaintRegistry.OVERLAY_TRANSFORMATION);
       list.add(model2);
     }
     return list;
@@ -393,20 +392,12 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
 
   @Override
   public int getFlammability(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing face) {
-    TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos);
-    if (te instanceof TilePaintedPressurePlate) {
-      return EnumPressurePlateType.WOOD == ((TilePaintedPressurePlate) te).getType() ? 20 : 0;
-    }
-    return 0;
+    return getType(world, pos).getFlammability();
   }
 
   @Override
   public int getFireSpreadSpeed(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing face) {
-    TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos);
-    if (te instanceof TilePaintedPressurePlate) {
-      return EnumPressurePlateType.WOOD == ((TilePaintedPressurePlate) te).getType() ? 5 : 0;
-    }
-    return 0;
+    return getType(world, pos).getFireSpreadSpeed();
   }
 
   @Override
@@ -431,60 +422,6 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   }
 
   @Override
-  protected void updateState(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state, int oldRedstoneStrength) {
-    int newRedstoneStrength = this.computeRedstoneStrength(worldIn, pos);
-    boolean wasOn = oldRedstoneStrength > 0;
-    boolean isOn = newRedstoneStrength > 0;
-
-    if (oldRedstoneStrength != newRedstoneStrength) {
-      state = this.setRedstoneStrength(state, newRedstoneStrength);
-      worldIn.setBlockState(pos, state, 2);
-      this.updateNeighbors(worldIn, pos);
-      worldIn.markBlockRangeForRenderUpdate(pos, pos);
-
-      if (!isSilent(worldIn, pos)) {
-        if (!isOn && wasOn) {
-          worldIn.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.1D, pos.getZ() + 0.5D, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.5F);
-        } else if (isOn && !wasOn) {
-          worldIn.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.1D, pos.getZ() + 0.5D, SoundEvents.UI_BUTTON_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
-        }
-      }
-    }
-
-    if (isOn) {
-      worldIn.scheduleUpdate(new BlockPos(pos), this, this.tickRate(worldIn));
-    }
-  }
-
-  public static class BlockItemPaintedPressurePlate extends BlockItemPaintedBlock implements IOverlayRenderAware {
-
-    public BlockItemPaintedPressurePlate(@Nonnull BlockPaintedPressurePlate block) {
-      super(block);
-    }
-
-    @Override
-    public boolean hasEffect(@Nonnull ItemStack stack) {
-      return EnumPressurePlateType.getTypeFromMeta(stack.getMetadata()) == EnumPressurePlateType.TUNED;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
-      super.addInformation(stack, worldIn, tooltip, flagIn);
-      CapturedMob capturedMob = CapturedMob.create(stack);
-      if (capturedMob != null) {
-        tooltip.add(Lang.PRESSURE_PLATE_TUNED.get(capturedMob.getDisplayName()));
-      }
-    }
-
-    @Override
-    public void renderItemOverlayIntoGUI(@Nonnull ItemStack stack, int xPosition, int yPosition) {
-      MobNameOverlayRenderHelper.doItemOverlayIntoGUI(stack, xPosition, yPosition);
-    }
-
-  }
-
-  @Override
   public @Nonnull String getUnlocalizedName(int meta) {
     return getUnlocalizedName() + "." + EnumPressurePlateType.getTypeFromMeta(meta).getName()
         + (EnumPressurePlateType.getSilentFromMeta(meta) ? ".silent" : "");
@@ -500,25 +437,28 @@ public class BlockPaintedPressurePlate extends BlockBasePressurePlate
   public List<IBlockState> mapBlockRender(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nullable BlockRenderLayer blockLayer, @Nonnull QuadCollector quadCollector) {
     IBlockState paintSource = getPaintSource(state, world, pos);
-    if ((blockLayer == null || PaintUtil.canRenderInLayer(paintSource, blockLayer))
-        && (paintSource == null || !(paintSource.getBlock() instanceof BlockFusedQuartzBase))) {
+    if (PaintUtil.canRenderInLayer(paintSource, blockLayer) && !isInvisible(paintSource)) {
       quadCollector.addFriendlybakedModel(blockLayer, mapRender(state, paintSource, getRotation(world, pos)), paintSource, MathHelper.getPositionRandom(pos));
     }
     return null;
   }
 
-  @Override
-  protected void playClickOnSound(@Nonnull World worldIn, @Nonnull BlockPos color) {
-    if (blockMaterial == Material.WOOD) {
-      worldIn.playSound((EntityPlayer) null, color, SoundEvents.BLOCK_WOOD_PRESSPLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.8F);
-    } else {
-      worldIn.playSound((EntityPlayer) null, color, SoundEvents.BLOCK_STONE_PRESSPLATE_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
-    }
+  public boolean isInvisible(@Nonnull IBlockState paintSource) {
+    return paintSource.getBlock() instanceof BlockFusedQuartzBase;
+  }
 
+  @Override
+  protected void playClickOnSound(@Nonnull World worldIn, @Nonnull BlockPos pos) {
+    if (!isSilent(worldIn, pos)) {
+      getType(worldIn, pos).playClickOnSound(worldIn, pos);
+    }
   }
 
   @Override
   protected void playClickOffSound(@Nonnull World worldIn, @Nonnull BlockPos pos) {
+    if (!isSilent(worldIn, pos)) {
+      getType(worldIn, pos).playClickOffSound(worldIn, pos);
+    }
   }
 
   @SideOnly(Side.CLIENT)

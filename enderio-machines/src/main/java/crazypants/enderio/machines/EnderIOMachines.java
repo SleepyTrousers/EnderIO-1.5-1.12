@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang3.tuple.Triple;
 
 import com.enderio.core.common.Lang;
-import com.enderio.core.common.transform.EnderCorePlugin;
+import com.enderio.core.common.mixin.SimpleMixinLoader;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
@@ -62,7 +62,7 @@ public class EnderIOMachines implements IEnderIOAddon {
   private static ConfigHandler configHandler;
 
   public EnderIOMachines() {
-    EnderCorePlugin.instance().loadMixinSources(this);
+    SimpleMixinLoader.loadMixinSources(this);
   }
 
   @SubscribeEvent
@@ -101,7 +101,7 @@ public class EnderIOMachines implements IEnderIOAddon {
         Triple.of(3, null, "sagmill_metals"), Triple.of(3, null, "sagmill_vanilla"), Triple.of(3, null, "sagmill_vanilla2modded"),
         Triple.of(3, null, "sagmill_silentgems"), Triple.of(3, null, "vat"), Triple.of(3, null, "enchanter"), Triple.of(3, null, "spawner"),
         Triple.of(9, null, "capacitor_machines"), Triple.of(3, null, "integration_railcraft_recipes"), Triple.of(3, null, "soulbinder"),
-        Triple.of(3, null, "tank"));
+        Triple.of(3, null, "tank"), Triple.of(3, null, "hiding_machines"));
   }
 
   @Override

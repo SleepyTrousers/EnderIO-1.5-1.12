@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Triple;
 
-import com.enderio.core.common.transform.EnderCorePlugin;
+import com.enderio.core.common.mixin.SimpleMixinLoader;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
@@ -61,7 +61,7 @@ public class EnderIOEndergy implements IEnderIOAddon {
   private static ConfigHandler configHandler;
 
   public EnderIOEndergy() {
-    EnderCorePlugin.instance().loadMixinSources(this);
+    SimpleMixinLoader.loadMixinSources(this);
   }
 
   @EventHandler
@@ -87,7 +87,7 @@ public class EnderIOEndergy implements IEnderIOAddon {
   @Override
   @Nonnull
   public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
-    return new NNList<>(Triple.of(2, null, "endergy"), Triple.of(2, null, "endergy_balls"));
+    return new NNList<>(Triple.of(2, null, "endergy"), Triple.of(2, null, "endergy_balls"), Triple.of(2, null, "hiding_endergy"));
   }
 
 }

@@ -165,7 +165,7 @@ public class DarkSteelController {
 
     if (event.phase == Phase.START && !player.isSpectator()) {
       // boots
-      updateStepHeightAndFallDistance(player);
+      updateStepHeight(player);
 
       // leggings
       SpeedController.updateSpeed(player);
@@ -229,15 +229,23 @@ public class DarkSteelController {
   }
 
   private static final float MAGIC_STEP_HEIGHT = 1.0023f;
+  private static int stepHeightWarner = 0;
 
-  private static void updateStepHeightAndFallDistance(EntityPlayer player) {
-    if (player.stepHeight < MAGIC_STEP_HEIGHT && !player.isSneaking() && JumpUpgrade.isEquipped(player) && isStepAssistActive(player)) {
-      if (Loader.isModLoaded("clienttweaks")) {
-        player.sendStatusMessage(Lang.GUI_STEP_ASSIST_UNAVAILABLE.toChatServer(), true);
+  private static void updateStepHeight(EntityPlayer player) {
+    if (!player.isSneaking() && JumpUpgrade.isEquipped(player) && isStepAssistActive(player)) {
+      if (player.stepHeight < MAGIC_STEP_HEIGHT) {
+        stepHeightWarner++;
+        if (Loader.isModLoaded("clienttweaks") && stepHeightWarner > 20) {
+          player.sendStatusMessage(Lang.GUI_STEP_ASSIST_UNAVAILABLE.toChatServer(), true);
+          stepHeightWarner = -100; // 1 second after switching on but 6 seconds between repeated warnings
+        }
+        player.stepHeight = MAGIC_STEP_HEIGHT;
+      } else if (stepHeightWarner > 0) {
+        stepHeightWarner--;
       }
-      player.stepHeight = MAGIC_STEP_HEIGHT;
     } else if (player.stepHeight == MAGIC_STEP_HEIGHT) {
       player.stepHeight = 0.6F;
+      stepHeightWarner = 0;
     }
   }
 

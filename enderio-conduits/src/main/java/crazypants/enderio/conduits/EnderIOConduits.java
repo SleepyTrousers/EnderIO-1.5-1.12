@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang3.tuple.Triple;
 
 import com.enderio.core.common.Lang;
-import com.enderio.core.common.transform.EnderCorePlugin;
+import com.enderio.core.common.mixin.SimpleMixinLoader;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.addon.IEnderIOAddon;
@@ -63,7 +63,7 @@ public class EnderIOConduits implements IEnderIOAddon {
   private static ConfigHandler configHandler;
 
   public EnderIOConduits() {
-    EnderCorePlugin.instance().loadMixinSources(this);
+    SimpleMixinLoader.loadMixinSources(this);
   }
 
   @Override
@@ -92,7 +92,7 @@ public class EnderIOConduits implements IEnderIOAddon {
   @Override
   @Nonnull
   public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
-    return new NNList<>(Triple.of(2, null, "conduits"));
+    return new NNList<>(Triple.of(2, null, "conduits"), Triple.of(2, null, "hiding_conduits"));
   }
 
   @Override

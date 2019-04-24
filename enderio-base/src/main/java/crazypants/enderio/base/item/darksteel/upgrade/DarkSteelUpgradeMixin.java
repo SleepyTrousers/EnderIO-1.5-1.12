@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.MappedCapabilityProvider;
-import com.enderio.core.common.transform.SimpleMixin;
+import com.enderio.core.common.mixin.SimpleMixin;
 import com.google.common.collect.Multimap;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;

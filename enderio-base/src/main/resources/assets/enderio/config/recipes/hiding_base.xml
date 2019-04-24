@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+
+These are the built-in recipes. You cannot change this file, it is a
+reference for you only and will be generated every time the game starts.
+
+This file contains information on which items to hide in the JEI ingredients
+list. You do not need to copy these recipes when making your own configurations
+in a user XML file. Instead you can just make new recipes. To show an item that
+is hidden by Ender IO configure it to show="true". To hide an item that is
+shown by Ender IO configure it to hide="true".
+
+An item or fluid will be hidden if:
+
+(1) There exists a configuration for it. Elements that are never configured
+    will not be hidden.
+
+(2) There is no configuration that sets "show" to true OR
+
+(3) There is at least one configuration that sets "hide" to true.
+
+Ender IO itself will never set "hide" to true and will only use "show"
+internally. Modpack makers (and players) are expected to only use "hide" to
+hide stuff and use "show" to unhide stuff that Ender IO has hidden.
+
+More information on the syntax can be found in the recipes.xsd file. An
+XML editor will display that as tooltips when editing this file.
+
+ -->
+
+  <recipe name="Item Hiding, Base" required="true">
+    <!-- These items are hidden when only Ender IO Base is installed. Sub-mods have configurations to show them. -->
+    <hiding>
+      <item name="enderio:item_conduit_facade:*" show="false" />
+
+      <item name="enderio:item_basic_capacitor:*" show="false" />
+
+      <item name="blockElectricalSteel" show="false" />
+      <item name="blockEnergeticAlloy" show="false" />
+      <item name="blockVibrantAlloy" show="false" />
+      <item name="blockRedstoneAlloy" show="false" />
+      <item name="blockConductiveIron" show="false" />
+      <item name="blockPulsatingIron" show="false" />
+      <item name="blockDarkSteel" show="false" />
+      <item name="blockSoularium" show="false" />
+      <item name="blockEndSteel" show="false" />
+      <item name="blockConstructionAlloy" show="false" />
+
+      <item name="ingotElectricalSteel" show="false" />
+      <item name="ingotEnergeticAlloy" show="false" />
+      <item name="ingotVibrantAlloy" show="false" />
+      <item name="ingotRedstoneAlloy" show="false" />
+      <item name="ingotConductiveIron" show="false" />
+      <item name="ingotPulsatingIron" show="false" />
+      <item name="ingotDarkSteel" show="false" />
+      <item name="ingotSoularium" show="false" />
+      <item name="ingotEndSteel" show="false" />
+      <item name="ingotConstructionAlloy" show="false" />
+
+      <item name="nuggetElectricalSteel" show="false" />
+      <item name="nuggetEnergeticAlloy" show="false" />
+      <item name="nuggetVibrantAlloy" show="false" />
+      <item name="nuggetRedstoneAlloy" show="false" />
+      <item name="nuggetConductiveIron" show="false" />
+      <item name="nuggetPulsatingIron" show="false" />
+      <item name="nuggetDarkSteel" show="false" />
+      <item name="nuggetSoularium" show="false" />
+      <item name="nuggetEndSteel" show="false" />
+      <item name="nuggetConstructionAlloy" show="false" />
+
+      <item name="ballElectricalSteel" show="false" />
+      <item name="ballEnergeticAlloy" show="false" />
+      <item name="ballVibrantAlloy" show="false" />
+      <item name="ballRedstoneAlloy" show="false" />
+      <item name="ballConductiveIron" show="false" />
+      <item name="ballPulsatingIron" show="false" />
+      <item name="ballDarkSteel" show="false" />
+      <item name="ballSoularium" show="false" />
+      <item name="ballEndSteel" show="false" />
+      <item name="ballConstructionAlloy" show="false" />
+
+      <item name="enderio:item_material:0" show="false" /><!-- itemSimpleMachineChassi -->
+      <item name="enderio:item_material:1" show="false" /><!-- itemMachineChassi -->
+      <item name="enderio:item_material:2" show="false" /><!-- itemChassiParts -->
+      <item name="enderio:item_material:3" show="false" /><!-- itemPlatePhotovoltaic -->
+      <item name="enderio:item_material:4" show="false" /><!-- itemConduitBinder -->
+      <item name="enderio:item_material:5" show="false" /><!-- itemSilicon -->
+      <item name="enderio:item_material:6" show="false" /><!-- itemGliderWing -->
+      <item name="enderio:item_material:7" show="false" /><!-- itemGliderWings -->
+      <item name="enderio:item_material:8" show="false" /><!-- itemNutritiousStick -->
+      <item name="enderio:item_material:9" show="true" /><!-- gearWood -->
+      <item name="enderio:item_material:10" show="true" /><!-- gearStone -->
+      <item name="enderio:item_material:11" show="true" /><!-- gearIronInfinity -->
+      <item name="enderio:item_material:12" show="false" /><!-- gearEnergized -->
+      <item name="enderio:item_material:13" show="false" /><!-- gearVibrant -->
+      <item name="enderio:item_material:14" show="false" /><!-- itemPulsatingCrystal -->
+      <item name="enderio:item_material:15" show="false" /><!-- itemVibrantCrystal -->
+      <item name="enderio:item_material:16" show="false" /><!-- itemEnderCrystal -->
+      <item name="enderio:item_material:17" show="false" /><!-- itemAttractorCrystal -->
+      <item name="enderio:item_material:18" show="false" /><!-- itemWeatherCrystal -->
+      <item name="enderio:item_material:19" show="false" /><!-- itemPrecientCrystal -->
+      <item name="enderio:item_material:20" show="true" /><!-- dustBedrock -->
+      <item name="enderio:item_material:21" show="false" /><!-- dustWheat -->
+      <item name="enderio:item_material:22" show="false" /><!-- itemBinderComposite -->
+      <item name="enderio:item_material:23" show="false" /><!-- dustCoal -->
+      <item name="enderio:item_material:24" show="false" /><!-- dustIron -->
+      <item name="enderio:item_material:25" show="false" /><!-- dustGold -->
+      <item name="enderio:item_material:26" show="false" /><!-- dustCopper -->
+      <item name="enderio:item_material:27" show="false" /><!-- dustTin -->
+      <item name="enderio:item_material:28" show="false" /><!-- nuggetEnderpearl -->
+      <item name="enderio:item_material:29" show="false" /><!-- dustObsidian -->
+      <item name="enderio:item_material:30" show="false" /><!-- dustArdite -->
+      <item name="enderio:item_material:31" show="false" /><!-- dustCobalt -->
+      <item name="enderio:item_material:32" show="false" /><!-- dustLapis -->
+      <item name="enderio:item_material:33" show="false" /><!-- dustNetherQuartz -->
+      <item name="enderio:item_material:34" show="false" /><!-- itemPrecientPowder -->
+      <item name="enderio:item_material:35" show="false" /><!-- itemVibrantPowder -->
+      <item name="enderio:item_material:36" show="false" /><!-- itemPulsatingPowder -->
+      <item name="enderio:item_material:37" show="false" /><!-- itemEnderCrystalPowder -->
+      <item name="enderio:item_material:38" show="false" /><!-- itemPowderPhotovoltaic -->
+      <item name="enderio:item_material:39" show="false" /><!-- ingotEnderiumBase -->
+      <item name="enderio:item_material:40" show="false" /><!-- skullZombieElectrode -->
+      <item name="enderio:item_material:41" show="false" /><!-- skullZombieController -->
+      <item name="enderio:item_material:42" show="false" /><!-- skullZombieFrankenstein -->
+      <item name="enderio:item_material:43" show="false" /><!-- skullEnderResonator -->
+      <item name="enderio:item_material:44" show="false" /><!-- skullSentientEnder -->
+      <item name="enderio:item_material:45" show="false" /><!-- skullSkeletalContractor -->
+      <item name="enderio:item_material:46" show="false" /><!-- itemPlantgreen -->
+      <item name="enderio:item_material:47" show="false" /><!-- itemPlantbrown -->
+      <item name="enderio:item_material:48" show="false" /><!-- dyeGreen -->
+      <item name="enderio:item_material:49" show="false" /><!-- dyeBrown -->
+      <item name="enderio:item_material:50" show="false" /><!-- dyeBlack -->
+      <item name="enderio:item_material:51" show="false" /><!-- dyeMachine -->
+      <item name="enderio:item_material:52" show="false" /><!-- dyeSoulMachine -->
+      <item name="enderio:item_material:53" show="false" /><!-- itemSoulMachineChassi -->
+      <item name="enderio:item_material:54" show="false" /><!-- itemEnhancedMachineChassi -->
+      <item name="enderio:item_material:55" show="false" /><!-- itemUnsouledMachineChassi -->
+      <item name="enderio:item_material:56" show="false" /><!-- skullGuardianDiode -->
+      <item name="enderio:item_material:57" show="false" /><!-- itemGrindingBallSignalum -->
+      <item name="enderio:item_material:58" show="false" /><!-- itemGrindingBallEnderium -->
+      <item name="enderio:item_material:59" show="false" /><!-- itemGrindingBallLumium -->
+      <item name="enderio:item_material:60" show="false" /><!-- itemRedstoneFilterBase -->
+      <item name="enderio:item_material:61" show="false" /><!-- itemConfusingDust -->
+      <item name="enderio:item_material:62" show="false" /><!-- itemEnderFragment -->
+      <item name="enderio:item_material:63" show="false" /><!-- itemWitheringDust -->
+      <item name="enderio:item_material:64" show="false" /><!-- itemRemoteAwarenessUpgrade -->
+      <item name="enderio:item_material:65" show="false" /><!-- itemWirelessDish -->
+      <item name="enderio:item_material:66" show="false" /><!-- itemEndSteelMachineChassi -->
+      <item name="enderio:item_material:67" show="false" /><!-- dyeEnhancedMachine -->
+      <item name="enderio:item_material:68" show="false" /><!-- itemEnhancedChassiParts -->
+      <item name="enderio:item_material:69" show="false" /><!-- itemSimpleChassiParts -->
+      <item name="enderio:item_material:70" show="false" /><!-- itemCakeBase -->
+      <item name="enderio:item_material:71" show="false" /><!-- itemInfinityRod -->
+      <item name="enderio:item_material:72" show="false" /><!-- ingotBrickNetherGlazed -->
+      <item name="enderio:item_material:73" show="false" /><!-- gearDark -->
+      <item name="enderio:item_material:74" show="false" /><!-- dustSoularium -->
+      <item name="enderio:item_material:75" show="false" /><!-- itemInfinityGoop -->
+
+      <item name="enderio:item_broken_spawner" show="true" />
+      <item name="enderio:block_infinity_fog" show="false" />
+      <item name="compressed1xDustBedrock" show="true" />
+      <item name="compressed2xDustBedrock" show="true" />
+      <item name="compressed3xDustBedrock" show="true" />
+
+      <item name="enderio:block_dark_steel_anvil:*" show="false" />
+      <item name="enderio:block_dark_steel_ladder:0" show="false" />
+      <item name="enderio:block_dark_iron_bars:0" show="false" />
+      <item name="enderio:block_dark_steel_trapdoor:0" show="false" />
+      <item name="enderio:block_dark_steel_door:0" show="false" />
+
+      <item name="enderio:block_reinforced_obsidian:0" show="false" />
+
+      <item name="enderio:block_self_resetting_lever5:0" show="true" />
+      <item name="enderio:block_self_resetting_lever10:0" show="true" />
+      <item name="enderio:block_self_resetting_lever30:0" show="true" />
+      <item name="enderio:block_self_resetting_lever60:0" show="true" />
+      <item name="enderio:block_self_resetting_lever300:0" show="true" />
+
+      <item name="enderio:block_decoration1:*" show="false" />
+      <item name="enderio:block_decoration2:*" show="false" />
+      <item name="enderio:block_decoration3:*" show="false" />
+
+      <item name="enderio:block_industrial_insulation:0" show="false" />
+      <item name="enderio:block_end_iron_bars:0" show="false" />
+
+      <item name="enderio:block_confusion_charge:0" show="false" />
+      <item name="enderio:block_concussion_charge:0" show="false" />
+      <item name="enderio:block_ender_charge:0" show="false" />
+
+      <item name="enderio:block_painted_pressure_plate:*" show="false" />
+
+      <item name="enderio:block_exit_rail:0" show="true" />
+
+      <item name="enderio:item_conduit_probe:0" show="false" />
+      <item name="enderio:item_yeta_wrench:0" show="false" />
+
+      <item name="enderio:item_xp_transfer:0" show="false" />
+      <item name="enderio:item_cold_fire_igniter:0" show="false" />
+      <item name="enderio:item_coord_selector:0" show="false" />
+      <item name="enderio:item_travel_staff:0" show="false" />
+      <item name="enderio:item_rod_of_return:0" show="false" />
+      <item name="enderio:item_magnet:0" show="false" />
+
+      <item name="enderio:block_enderman_skull:0" show="true" />
+      <item name="enderio:block_enderman_skull:2" show="false" />
+
+      <item name="enderio:item_ender_food:*" show="false" />
+
+      <item name="enderio:item_basic_item_filter:0" show="false" />
+      <item name="enderio:item_advanced_item_filter:0" show="false" />
+      <item name="enderio:item_limited_item_filter:0" show="false" />
+      <item name="enderio:item_big_item_filter:0" show="false" />
+      <item name="enderio:item_big_advanced_item_filter:0" show="false" />
+      <item name="enderio:item_existing_item_filter:0" show="false" />
+      <item name="enderio:item_mod_item_filter:0" show="false" />
+      <item name="enderio:item_power_item_filter:0" show="false" />
+      <item name="enderio:item_soul_filter_normal:0" show="false" />
+      <item name="enderio:item_soul_filter_big:0" show="false" />
+      <item name="enderio:item_enchantment_filter_normal:0" show="false" />
+      <item name="enderio:item_enchantment_filter_big:0" show="false" />
+      <item name="enderio:item_fluid_filter:0" show="false" />
+      <item name="enderio:item_redstone_not_filter:0" show="false" />
+      <item name="enderio:item_redstone_or_filter:0" show="false" />
+      <item name="enderio:item_redstone_and_filter:0" show="false" />
+      <item name="enderio:item_redstone_nor_filter:0" show="false" />
+      <item name="enderio:item_redstone_nand_filter:0" show="false" />
+      <item name="enderio:item_redstone_xor_filter:0" show="false" />
+      <item name="enderio:item_redstone_xnor_filter:0" show="false" />
+      <item name="enderio:item_redstone_toggle_filter:0" show="false" />
+      <item name="enderio:item_redstone_counting_filter:0" show="false" />
+      <item name="enderio:item_redstone_sensor_filter:0" show="false" />
+      <item name="enderio:item_redstone_timer_filter:0" show="false" />
+
+      <item name="enderio:block_fused_quartz:*" show="false" />
+      <item name="enderio:block_fused_glass:*" show="false" />
+      <item name="enderio:block_enlightened_fused_quartz:*" show="false" />
+      <item name="enderio:block_enlightened_fused_glass:*" show="false" />
+      <item name="enderio:block_dark_fused_quartz:*" show="false" />
+      <item name="enderio:block_dark_fused_glass:*" show="false" />
+
+      <item name="enderio:item_soul_vial:0" show="false" /><!-- empty -->
+      <item name="enderio:item_soul_vial:1" show="false" /><!-- filled -->
+
+      <item name="enderio:block_detector_block:0" show="false" />
+      <item name="enderio:block_detector_block_silent:0" show="false" />
+
+      <item name="enderio:item_dark_steel_helmet:0" show="false" />
+      <item name="enderio:item_dark_steel_chestplate:0" show="false" />
+      <item name="enderio:item_dark_steel_leggings:0" show="false" />
+      <item name="enderio:item_dark_steel_boots:0" show="false" />
+
+      <item name="enderio:item_dark_steel_sword:0" show="false" />
+      <item name="enderio:item_dark_steel_pickaxe:0" show="false" />
+      <item name="enderio:item_dark_steel_axe:0" show="false" />
+      <item name="enderio:item_dark_steel_bow:0" show="false" />
+      <item name="enderio:item_dark_steel_shears:0" show="false" />
+      <item name="enderio:item_dark_steel_treetap:0" show="false" />
+      <item name="enderio:item_dark_steel_crook:0" show="false" />
+      <item name="enderio:item_dark_steel_hand:0" show="false" />
+
+      <item name="enderio:item_inventory_charger_simple:0" show="false" />
+      <item name="enderio:item_inventory_charger_basic:0" show="false" />
+      <item name="enderio:item_inventory_charger:0" show="false" />
+      <item name="enderio:item_inventory_charger_vibrant:0" show="false" />
+
+      <item name="enderio:item_end_steel_sword:0" show="false" />
+      <item name="enderio:item_end_steel_pickaxe:0" show="false" />
+      <item name="enderio:item_end_steel_axe:0" show="false" />
+      <item name="enderio:item_end_steel_bow:0" show="false" />
+      <item name="enderio:item_end_steel_helmet:0" show="false" />
+      <item name="enderio:item_end_steel_chestplate:0" show="false" />
+      <item name="enderio:item_end_steel_leggings:0" show="false" />
+      <item name="enderio:item_end_steel_boots:0" show="false" />
+
+      <item name="enderio:item_staff_of_levity:0" show="false" />
+
+      <item name="enderio:item_owl_egg:0" show="false" />
+
+      <item name="blockCrudeSteel" show="false" />
+      <item name="blockCrystallineAlloy" show="false" />
+      <item name="blockMelodicAlloy" show="false" />
+      <item name="blockStellarAlloy" show="false" />
+      <item name="blockCrystallinePinkSlime" show="false" />
+      <item name="blockEnergeticSilver" show="false" />
+      <item name="blockVividAlloy" show="false" />
+
+      <item name="ingotCrudeSteel" show="false" />
+      <item name="ingotCrystallineAlloy" show="false" />
+      <item name="ingotMelodicAlloy" show="false" />
+      <item name="ingotStellarAlloy" show="false" />
+      <item name="ingotCrystallinePinkSlime" show="false" />
+      <item name="ingotEnergeticSilver" show="false" />
+      <item name="ingotVividAlloy" show="false" />
+
+      <item name="nuggetCrudeSteel" show="false" />
+      <item name="nuggetCrystallineAlloy" show="false" />
+      <item name="nuggetMelodicAlloy" show="false" />
+      <item name="nuggetStellarAlloy" show="false" />
+      <item name="nuggetCrystallinePinkSlime" show="false" />
+      <item name="nuggetEnergeticSilver" show="false" />
+      <item name="nuggetVividAlloy" show="false" />
+
+      <item name="ballCrudeSteel" show="false" />
+      <item name="ballCrystallineAlloy" show="false" />
+      <item name="ballMelodicAlloy" show="false" />
+      <item name="ballStellarAlloy" show="false" />
+      <item name="ballCrystallinePinkSlime" show="false" />
+      <item name="ballEnergeticSilver" show="false" />
+      <item name="ballVividAlloy" show="false" />
+
+      <fluid name="nutrient_distillation" show="false"/>
+      <fluid name="ender_distillation" show="false"/>
+      <fluid name="vapor_of_levity" show="false"/>
+      <fluid name="hootch" show="false"/>
+      <fluid name="rocket_fuel" show="false"/>
+      <fluid name="fire_water" show="false"/>
+      <fluid name="xpjuice" show="false"/>
+      <fluid name="liquid_sunshine" show="false"/>
+      <fluid name="cloud_seed" show="false"/>
+      <fluid name="cloud_seed_concentrated" show="false"/>
+
+    </hiding>
+  </recipe>
+
+</enderio:recipes>

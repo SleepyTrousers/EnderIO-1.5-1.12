@@ -149,7 +149,7 @@ public class Recipe extends AbstractConditional {
 
   static {
     register(Alloying.class, Casting.class, Crafting.class, Brewing.class, Enchanting.class, Fermenting.class, Sagmilling.class, Slicing.class, Smelting.class,
-        Soulbinding.class, Spawning.class, Tanking.class);
+        Soulbinding.class, Spawning.class, Tanking.class, Hiding.class);
   }
 
   public static void register(@Nonnull String tagname, @Nonnull Class<? extends AbstractConditional> clazz) {

@@ -100,6 +100,12 @@ public final class IMC {
   @Deprecated
   public static final String REDSTONE_CONNECTABLE_ADD = "redstone:connectable:add";
 
+  /**
+   * Key for a message to tell Ender IO that you provide a way to paint items. If Ender IO Machines is installed this will have no effect, otherwise it will
+   * tell the base module that there is some alternative to the Painting Machine installed. For now this only enabled item tooltips.
+   */
+  public static final String ENABLE_PAINTING = "enablePainting";
+
   private IMC() {
   }
 

@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.MappedCapabilityProvider;
-import com.enderio.core.common.transform.SimpleMixin;
+import com.enderio.core.common.mixin.SimpleMixin;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -19,7 +19,7 @@ public abstract class InternalPoweredItemMixin extends Item implements IInternal
 
   @Override
   public @Nullable ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt) {
-    return initCapabilities(stack, nbt, new MappedCapabilityProvider().add(CapabilityEnergy.ENERGY, new InternalPoweredItemCap(stack)));
+    return initCapabilities(stack, nbt, new MappedCapabilityProvider().add(CapabilityEnergy.ENERGY, new InternalPoweredItemCap(this, stack)));
   }
 
 }

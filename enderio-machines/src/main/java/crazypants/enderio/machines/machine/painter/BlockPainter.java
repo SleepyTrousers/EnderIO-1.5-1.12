@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskBlock;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
@@ -23,6 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockPainter extends AbstractPoweredTaskBlock<TileEntityPainter> implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
   public static BlockPainter create(@Nonnull IModObject modObject) {
+    PersonalConfig.TooltipPaintEnum.setPainterAvailable();
     BlockPainter painter = new BlockPainter(modObject);
     painter.init();
     return painter;

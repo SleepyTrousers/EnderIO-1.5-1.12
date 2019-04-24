@@ -1,8 +1,11 @@
 package crazypants.enderio.base.filter.fluid;
 
+import java.util.Collections;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
 import com.enderio.core.common.util.FluidUtil;
@@ -10,13 +13,16 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.integration.jei.IHaveGhostTargets.IFluidGhostSlot;
 import crazypants.enderio.util.NbtValue;
+import crazypants.enderio.util.Prep;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.client.config.GuiUtils;
 
 public class FluidFilter implements IFluidFilter {
 
@@ -226,6 +232,17 @@ public class FluidFilter implements IFluidFilter {
     public void putFluid(@Nonnull Fluid fluid) {
       setFluid(getSlot(), fluid);
       cb.run();
+    }
+
+    @Override
+    public boolean drawGhostSlotToolTip(@Nonnull GuiContainerBase gui, int mouseX, int mouseY) {
+      FluidStack stack = getFluidStackAt(getSlot());
+      if (stack != null && gui.mc.player.inventory.getItemStack().isEmpty()) {
+        GuiUtils.drawHoveringText(Prep.getEmpty(), Collections.singletonList(EnumRarity.COMMON.rarityColor + stack.getLocalizedName()), mouseX, mouseY,
+            gui.width, gui.height, -1, gui.getFontRenderer());
+        return true;
+      }
+      return false;
     }
   }
 

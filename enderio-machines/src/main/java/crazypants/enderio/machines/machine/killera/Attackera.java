@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.enderio.core.common.transform.EnderCoreMethods.ICreeperTarget;
+import com.enderio.core.common.interfaces.ICreeperTarget;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.UserIdent;
 import com.mojang.authlib.GameProfile;

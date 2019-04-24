@@ -18,7 +18,9 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
@@ -30,6 +32,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
@@ -99,6 +102,31 @@ public class ModObjectRegistry {
         mo.setItem(item);
         event.getRegistry().register(item);
         reverseMapping.put(item, mo);
+      }
+    }
+  }
+
+  @SuppressWarnings("null")
+  public static void dumpItems() {
+    for (IModObject mo : REGISTRY) {
+      Item item = mo.getItem();
+      if (item != null) {
+        for (CreativeTabs tab : item.getCreativeTabs()) {
+          NNList<ItemStack> list = new NNList<>();
+          item.getSubItems(tab, list);
+          for (ItemStack itemStack : list) {
+            final int[] oreIDs = OreDictionary.getOreIDs(itemStack);
+            if (oreIDs.length == 0) {
+              System.out.println("  <item name=\"" + itemStack.getItem().getRegistryName() + ":" + itemStack.getItemDamage() + "\" show=\"false\" />");
+            } else {
+              System.out.println("  <item name=\"" + itemStack.getItem().getRegistryName() + ":" + itemStack.getItemDamage() + "\" show=\"false\" /><!-- "
+                  + OreDictionary.getOreName(oreIDs[0]) + " -->");
+            }
+            for (int i : oreIDs) {
+              System.out.println("    <item name=\"" + OreDictionary.getOreName(i) + "\" show=\"false\" />");
+            }
+          }
+        }
       }
     }
   }

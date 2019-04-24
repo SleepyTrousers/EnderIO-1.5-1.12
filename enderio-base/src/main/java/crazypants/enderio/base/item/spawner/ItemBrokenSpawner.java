@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
+import com.enderio.core.common.interfaces.IOverlayRenderAware;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIOTab;

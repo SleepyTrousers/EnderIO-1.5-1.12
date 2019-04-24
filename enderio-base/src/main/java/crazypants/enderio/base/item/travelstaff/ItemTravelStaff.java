@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.MappedCapabilityProvider;
-import com.enderio.core.common.transform.EnderCoreMethods.IOverlayRenderAware;
+import com.enderio.core.common.interfaces.IOverlayRenderAware;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.capacitor.ICapacitorKey;
