@@ -380,6 +380,7 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
       if (energyStored > maxEnergyStored) {
         energy = (int) (energyStored - maxEnergyStored);
         energyStored = maxEnergyStored;
+        energyReceived -= energy;
         return energy;
       } else if (energyStored < 0) {
         energyStored = 0;
