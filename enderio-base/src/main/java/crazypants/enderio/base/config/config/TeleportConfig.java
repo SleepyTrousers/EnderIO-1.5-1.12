@@ -45,10 +45,10 @@ public final class TeleportConfig {
   public static final IValue<Boolean> enableBlinkNonSolidBlocks = BLINK.make("enableBlinkThroughNonSolidBlocks", true, //
       "Allow blinking through non-solid (transparent/partial) blocks?").sync();
 
-  public static final IValue<Boolean> enableBlinkUnbreakableBlocks = BLINK.make("enableBlinkThroughUnbreakableBlocks", true, //
+  public static final IValue<Boolean> enableBlinkUnbreakableBlocks = BLINK.make("enableBlinkThroughUnbreakableBlocks", false, //
       "Allow blinking through unbreakable (e.g. bedrock) blocks?").sync();
 
-  public static final IValue<Things> blockBlacklist = BLINK.make("blockBlacklist", new Things("minecraft:bedrock", "Thaumcraft:blockWarded"), //
+  public static final IValue<Things> blockBlacklist = BLINK.make("blockBlacklist", new Things("Thaumcraft:blockWarded"), //
       "Blocks that cannot be blinked through.").sync();
 
   public static final IValue<Integer> blinkDelay = BLINK.make("cooldown", 10, //

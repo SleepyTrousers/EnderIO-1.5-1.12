@@ -206,7 +206,7 @@ public class TravelController {
 
   private boolean isBlackListedBlock(@Nonnull EntityPlayer player, @Nonnull RayTraceResult pos, @Nonnull IBlockState hitBlock) {
     return TeleportConfig.blockBlacklist.get().contains(hitBlock.getBlock())
-        && (hitBlock.getBlockHardness(player.world, pos.getBlockPos()) < 0 || !TeleportConfig.enableBlinkUnbreakableBlocks.get());
+        || (hitBlock.getBlockHardness(player.world, pos.getBlockPos()) < 0 && !TeleportConfig.enableBlinkUnbreakableBlocks.get());
   }
 
   private boolean doBlinkAround(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull Vector3d sample,
