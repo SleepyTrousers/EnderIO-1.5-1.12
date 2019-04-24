@@ -601,11 +601,14 @@ public class TileCapBank extends TileEntityEio
   // ------------------- Power -----------------
 
   @Override
-  public void addEnergy(int energy) {
+  public int addEnergy(int energy) {
     if (network == null) {
-      setEnergyStored(getEnergyStored() + energy);
+      final int energyStored2 = getEnergyStored();
+      setEnergyStored(energyStored2 + energy);
+      energy -= (getEnergyStored() - energyStored2);
+      return energy;
     } else {
-      network.addEnergy(energy);
+      return network.addEnergy(energy);
     }
   }
 

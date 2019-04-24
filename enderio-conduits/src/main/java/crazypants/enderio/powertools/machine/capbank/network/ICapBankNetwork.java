@@ -30,7 +30,7 @@ public interface ICapBankNetwork extends IPowerStorage {
   long getEnergyStoredL();
 
   @Override
-  void addEnergy(int energy);
+  int addEnergy(int energy);
 
   int receiveEnergy(int maxReceive, boolean simulate);
 
