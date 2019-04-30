@@ -15,11 +15,12 @@ import com.enderio.core.common.util.NNList.Callback;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.config.InfinityConfig;
-import info.loenwind.autoconfig.factory.IValue;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.gui.BlockSceneRenderer;
+import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.material.material.Material;
+import info.loenwind.autoconfig.factory.IValue;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -73,9 +74,39 @@ public class InfinityRecipeCategory implements IRecipeCategory<InfinityRecipeCat
       int stringWidth = minecraft.fontRenderer.getStringWidth(text);
       minecraft.fontRenderer.drawString(text, 59 - stringWidth / 2, 26, 0xFFFFFF, false);
 
-      if (InfinityConfig.enableInAllDimensions.get() == false) {
-        minecraft.fontRenderer.drawString(Lang.GUI_INFINTY_RECIPE_DIMENSIONS.get(), 45, 40, ColorUtil.getRGB(Color.GRAY));
+      if (!InfinityConfig.enableInAllDimensions.get()) {
+        if (InfinityConfig.enableInDimensions.get().length == 1 && InfinityConfig.enableInDimensions.get()[0] == 0) {
+          minecraft.fontRenderer.drawString(Lang.GUI_INFINTY_RECIPE_DIMENSIONS.get(), 45, 40, ColorUtil.getRGB(Color.GRAY));
+        } else {
+          minecraft.fontRenderer.drawString(Lang.GUI_INFINTY_RECIPE_DIMENSIONS_MULTI.get(), 45, 40, ColorUtil.getRGB(Color.GRAY));
+        }
       }
+    }
+
+    @Override
+    public @Nonnull List<String> getTooltipStrings(int mouseX, int mouseY) {
+      if (mouseX >= 45 && mouseY >= 40 && mouseY < (40 + Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT) && !InfinityConfig.enableInAllDimensions.get()
+          && !(InfinityConfig.enableInDimensions.get().length == 1 && InfinityConfig.enableInDimensions.get()[0] == 0)
+          && mouseX < 45 + Minecraft.getMinecraft().fontRenderer.getStringWidth(Lang.GUI_INFINTY_RECIPE_DIMENSIONS_MULTI.get())) {
+        List<String> result = new ArrayList<>();
+        result.add(Lang.GUI_INFINTY_RECIPE_DIMENSIONS_THESE.get());
+        result.add("");
+        boolean inCurrent = false;
+        for (int dim : InfinityConfig.enableInDimensions.get()) {
+          if (Minecraft.getMinecraft().player.world.provider.getDimension() == dim) {
+            result.add(Lang.GUI_INFINTY_RECIPE_DIMENSIONS_LIST_HERE.get(TelepadTarget.getDimenionName(dim)));
+            inCurrent = true;
+          } else {
+            result.add(Lang.GUI_INFINTY_RECIPE_DIMENSIONS_LIST.get(TelepadTarget.getDimenionName(dim)));
+          }
+        }
+        if (!inCurrent) {
+          result.add("");
+          result.add(Lang.GUI_INFINTY_RECIPE_DIMENSIONS_NOTHERE.get());
+        }
+        return result;
+      }
+      return IRecipeWrapper.super.getTooltipStrings(mouseX, mouseY);
     }
 
   }

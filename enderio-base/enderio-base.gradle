@@ -1,3 +1,5 @@
+def localAutoConfig = project.hasProperty('use_local_auto_config') && project.getProperty('use_local_auto_config').equalsIgnoreCase('true')
+
 dependencies {
 	deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
 	deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}:api"
@@ -13,6 +15,9 @@ dependencies {
 	
 	compile "info.loenwind.autosave:AutoSave:${minecraft_version}-${autosave_version}"
 	embed "info.loenwind.autosave:AutoSave:${minecraft_version}-${autosave_version}"
-  compile "info.loenwind.autoconfig:AutoConfig:${minecraft_version}-${autoconfig_version}"
-  embed "info.loenwind.autoconfig:AutoConfig:${minecraft_version}-${autoconfig_version}"
+	
+	if (!localAutoConfig) {
+    compile "info.loenwind.autoconfig:AutoConfig:${minecraft_version}-${autoconfig_version}"
+    embed "info.loenwind.autoconfig:AutoConfig:${minecraft_version}-${autoconfig_version}"
+  }
 }

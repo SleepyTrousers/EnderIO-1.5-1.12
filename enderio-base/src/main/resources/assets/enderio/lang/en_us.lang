@@ -1261,6 +1261,11 @@ enderio.gui.redstone_filter.count=Count
 enderio.gui.redstone_filter.time=Time
 
 enderio.gui.infinity_recipe_dimensions=Overworld Only
+enderio.gui.infinity_recipe_dimensions.multi=Some Dimensions
+enderio.gui.infinity_recipe_dimensions.these=Can be crafted in:
+enderio.gui.infinity_recipe_dimensions.list.here=- %s <-- you are here
+enderio.gui.infinity_recipe_dimensions.list=- %s
+enderio.gui.infinity_recipe_dimensions.nothere=You are currently not in one of these
 
 item.item_basic_item_filter.name=Basic Item Filter
 item.item_advanced_item_filter.name=Advanced Item Filter

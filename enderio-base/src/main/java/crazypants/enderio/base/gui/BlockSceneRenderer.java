@@ -29,7 +29,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -37,6 +36,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 public class BlockSceneRenderer {
@@ -155,6 +155,10 @@ public class BlockSceneRenderer {
         try {
           BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
           EnumBlockRenderType type = bs.getRenderType();
+          Fluid fluidForBlock = FluidRegistry.lookupFluidForBlock(bs.getBlock());
+          if (fluidForBlock != null && bs.getProperties().containsKey(BlockLiquid.LEVEL)) {
+            type = EnumBlockRenderType.LIQUID;
+          }
           switch (type) {
           case MODEL:
             IBakedModel ibakedmodel = blockrendererdispatcher.getModelForState(bs);
@@ -162,13 +166,16 @@ public class BlockSceneRenderer {
             blockrendererdispatcher.getBlockModelRenderer().renderModel(Minecraft.getMinecraft().world, ibakedmodel, bs, pos, worldRendererIn, false);
             break;
           case LIQUID:
-            if (bs.getBlock() == Blocks.WATER) {
-              TextureAtlasSprite tex1 = RenderUtil.getStillTexture(FluidRegistry.WATER);
+            if (fluidForBlock != null) {
+              TextureAtlasSprite tex1 = RenderUtil.getStillTexture(fluidForBlock);
 
-              ResourceLocation iconKey = FluidRegistry.WATER.getFlowing();
+              ResourceLocation iconKey = fluidForBlock.getFlowing();
               final TextureAtlasSprite tex = NullHelper.first(Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(iconKey.toString()), tex1);
 
-              Integer level = bs.getValue(BlockLiquid.LEVEL);
+              float level = bs.getValue(BlockLiquid.LEVEL);
+              if (level == 0) {
+                level = Math.abs((Minecraft.getSystemTime() / 128f) % 30 - 15);
+              }
               BoundingBox bb = new BoundingBox(pos).setMaxY(pos.getY() + (level / 15d));
 
               float minU1 = tex1.getMinU();

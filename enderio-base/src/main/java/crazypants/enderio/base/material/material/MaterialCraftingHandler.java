@@ -32,13 +32,12 @@ public class MaterialCraftingHandler {
   public static void on(NeighborNotifyEvent event) {
     if (InfinityConfig.inWorldCraftingFireEnabled.get()) {
       final World world = event.getWorld();
+      if (!InfinityConfig.isEnabledInDimension(world.provider.getDimension())) {
+        return;
+      }
       BlockPos posIdx = event.getPos();
-      if (world.provider.getDimension() != 0) {
-        if (InfinityConfig.enableInAllDimensions.get()) {
-          posIdx = posIdx.up(world.provider.getDimension() * 256);
-        } else {
-          return;
-        }
+      if (InfinityConfig.isEnabledInMultipleDimensions()) {
+        posIdx = posIdx.up(world.provider.getDimension() * 256);
       }
       BlockPos pos = event.getPos();
       final long worldTime = world.getTotalWorldTime();
@@ -83,7 +82,7 @@ public class MaterialCraftingHandler {
   @SubscribeEvent
   public static void onWorldTick(@Nonnull TickEvent.WorldTickEvent event) {
     if (!fires.isEmpty() && !event.world.getGameRules().getBoolean("doFireTick") && InfinityConfig.inWorldCraftingEnabled.get()
-        && (InfinityConfig.enableInAllDimensions.get() || event.world.provider.getDimension() == 0)) {
+        && InfinityConfig.isEnabledInDimension(event.world.provider.getDimension())) {
       final int yOffset = event.world.provider.getDimension() * 256;
       final long worldTime = event.world.getTotalWorldTime();
       for (Entry<BlockPos, Long> fire : fires.entrySet()) {
