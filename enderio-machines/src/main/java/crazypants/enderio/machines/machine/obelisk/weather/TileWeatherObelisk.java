@@ -12,7 +12,6 @@ import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 
-import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.machine.baselegacy.AbstractPowerConsumerEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
@@ -48,6 +47,7 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.WEATHER_POWER_U
 @Storable
 public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements IProgressTile, ITankAccess.IExtendedTankAccess {
 
+  // TODO: these should be recipes, not fixed tasks
   public enum WeatherTask {
     CLEAR(Color.YELLOW) {
       @Override
@@ -57,8 +57,14 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       }
 
       @Override
-      int getRequiredFluidAmount() {
-        return WeatherConfig.weatherObeliskClearFluid.get();
+      public int getRequiredFluidAmount() {
+        return WeatherConfig.weatherObeliskClearFluidAmount.get();
+      }
+
+      @Override
+      @Nonnull
+      public Fluid getRequiredFluidAmountType() {
+        return WeatherConfig.weatherObeliskClearFluidType.get();
       }
     },
     RAIN(new Color(120, 120, 255)) {
@@ -69,8 +75,14 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       }
 
       @Override
-      int getRequiredFluidAmount() {
-        return WeatherConfig.weatherObeliskRainFluid.get();
+      public int getRequiredFluidAmount() {
+        return WeatherConfig.weatherObeliskRainFluidAmount.get();
+      }
+
+      @Override
+      @Nonnull
+      public Fluid getRequiredFluidAmountType() {
+        return WeatherConfig.weatherObeliskRainFluidType.get();
       }
     },
     STORM(Color.DARK_GRAY) {
@@ -81,8 +93,14 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       }
 
       @Override
-      int getRequiredFluidAmount() {
-        return WeatherConfig.weatherObeliskThunderFluid.get();
+      public int getRequiredFluidAmount() {
+        return WeatherConfig.weatherObeliskThunderFluidAmount.get();
+      }
+
+      @Override
+      @Nonnull
+      public Fluid getRequiredFluidAmountType() {
+        return WeatherConfig.weatherObeliskThunderFluidType.get();
       }
     };
 
@@ -94,7 +112,9 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
 
     abstract void complete(World world);
 
-    abstract int getRequiredFluidAmount();
+    public abstract int getRequiredFluidAmount();
+
+    public abstract @Nonnull Fluid getRequiredFluidAmountType();
 
     protected void rain(World world, boolean state) {
       world.getWorldInfo().setRaining(state);
@@ -111,13 +131,11 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       return task == CLEAR;
     }
 
-    public static WeatherTask fromFluid(Fluid f) {
-      if (f == Fluids.LIQUID_SUNSHINE.getFluid()) {
-        return CLEAR;
-      } else if (f == Fluids.CLOUD_SEED.getFluid()) {
-        return RAIN;
-      } else if (f == Fluids.CLOUD_SEED_CONCENTRATED.getFluid()) {
-        return STORM;
+    public static @Nullable WeatherTask fromFluid(Fluid f) {
+      for (WeatherTask task : values()) {
+        if (f == task.getRequiredFluidAmountType()) {
+          return task;
+        }
       }
       return null;
     }
@@ -314,7 +332,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   }
 
   private boolean isValidFluid(Fluid f) {
-    return f == Fluids.LIQUID_SUNSHINE.getFluid() || f == Fluids.CLOUD_SEED.getFluid() || f == Fluids.CLOUD_SEED_CONCENTRATED.getFluid();
+    return WeatherTask.fromFluid(f) != null;
   }
 
   @Override

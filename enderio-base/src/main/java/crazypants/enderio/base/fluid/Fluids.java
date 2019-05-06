@@ -288,4 +288,8 @@ public enum Fluids {
     event.getMap().registerSprite(XP_JUICE.getFluid().getFlowing());
   }
 
+  public @Nonnull String getName() {
+    return name;
+  }
+
 }

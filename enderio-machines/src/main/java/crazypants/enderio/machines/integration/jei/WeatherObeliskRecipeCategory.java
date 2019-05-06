@@ -7,16 +7,15 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.config.config.PersonalConfig;
-import crazypants.enderio.machines.config.config.WeatherConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.obelisk.weather.ContainerWeatherObelisk;
 import crazypants.enderio.machines.machine.obelisk.weather.GuiWeatherObelisk;
+import crazypants.enderio.machines.machine.obelisk.weather.TileWeatherObelisk;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -78,7 +77,6 @@ public class WeatherObeliskRecipeCategory extends BlankRecipeCategory<WeatherObe
       return;
     }
 
-
     registry.addRecipeCategories(new WeatherObeliskRecipeCategory(guiHelper));
     registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_weather_obelisk.getBlockNN()), WeatherObeliskRecipeCategory.UID);
     registry.addRecipeClickArea(GuiWeatherObelisk.class, 155, 42, 16, 16, WeatherObeliskRecipeCategory.UID);
@@ -88,20 +86,20 @@ public class WeatherObeliskRecipeCategory extends BlankRecipeCategory<WeatherObe
     List<WeatherObeliskRecipeWrapper> result = new ArrayList<WeatherObeliskRecipeWrapper>();
 
     result.add(new WeatherObeliskRecipeWrapper(new ItemStack(Items.FIREWORKS),
-        new FluidStack(Fluids.LIQUID_SUNSHINE.getFluid(), WeatherConfig.weatherObeliskClearFluid.get()),
-        WeatherConfig.weatherObeliskClearFluid.get() / CapacitorKey.WEATHER_POWER_FLUID_USE.getDefault()
+        new FluidStack(TileWeatherObelisk.WeatherTask.CLEAR.getRequiredFluidAmountType(), TileWeatherObelisk.WeatherTask.CLEAR.getRequiredFluidAmount()),
+        TileWeatherObelisk.WeatherTask.CLEAR.getRequiredFluidAmount() / CapacitorKey.WEATHER_POWER_FLUID_USE.getDefault()
             * CapacitorKey.WEATHER_POWER_USE.getDefault(),
         "weather_sun", guiHelper));
 
     result.add(new WeatherObeliskRecipeWrapper(new ItemStack(Items.FIREWORKS),
-        new FluidStack(Fluids.CLOUD_SEED.getFluid(), WeatherConfig.weatherObeliskRainFluid.get()),
-        WeatherConfig.weatherObeliskRainFluid.get() / CapacitorKey.WEATHER_POWER_FLUID_USE.getDefault()
+        new FluidStack(TileWeatherObelisk.WeatherTask.RAIN.getRequiredFluidAmountType(), TileWeatherObelisk.WeatherTask.RAIN.getRequiredFluidAmount()),
+        TileWeatherObelisk.WeatherTask.RAIN.getRequiredFluidAmount() / CapacitorKey.WEATHER_POWER_FLUID_USE.getDefault()
             * CapacitorKey.WEATHER_POWER_USE.getDefault(),
         "weather_rain", guiHelper));
 
     result.add(new WeatherObeliskRecipeWrapper(new ItemStack(Items.FIREWORKS),
-        new FluidStack(Fluids.CLOUD_SEED_CONCENTRATED.getFluid(), WeatherConfig.weatherObeliskThunderFluid.get()),
-        WeatherConfig.weatherObeliskThunderFluid.get() / CapacitorKey.WEATHER_POWER_FLUID_USE.getDefault()
+        new FluidStack(TileWeatherObelisk.WeatherTask.STORM.getRequiredFluidAmountType(), TileWeatherObelisk.WeatherTask.STORM.getRequiredFluidAmount()),
+        TileWeatherObelisk.WeatherTask.STORM.getRequiredFluidAmount() / CapacitorKey.WEATHER_POWER_FLUID_USE.getDefault()
             * CapacitorKey.WEATHER_POWER_USE.getDefault(),
         "weather_thunder", guiHelper));
 
