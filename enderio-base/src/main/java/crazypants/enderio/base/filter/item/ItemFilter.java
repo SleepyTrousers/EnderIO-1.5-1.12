@@ -469,6 +469,9 @@ public class ItemFilter implements IItemFilter.WithGhostSlots {
     @Override
     public void putStack(@Nonnull ItemStack stack, int realsize) {
       setInventorySlotContents(getSlot(), stack);
+      if (Prep.isValid(stack)) {
+        items.get(getSlot()).setCount(MathHelper.clamp(realsize, 1, getStackSizeLimit()));
+      }
       cb.run();
     }
 
