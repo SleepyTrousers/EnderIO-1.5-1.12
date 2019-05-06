@@ -155,7 +155,7 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
   public void addMember(@Nonnull TileCapBank cap) {
     if (!capBanks.contains(cap)) {
       capBanks.add(cap);
-      long newIO = maxIO + cap.getType().getMaxIO();
+      long newIO = (long) maxIO + cap.getType().getMaxIO();
       if (newIO > IO_CAP) {
         newIO = IO_CAP;
       }
