@@ -545,7 +545,7 @@ public class TravelController {
     if (selectedCoord != null) {
 
       Vector3d blockCenter = new Vector3d(selectedCoord.getX() + 0.5, selectedCoord.getY() + 0.5, selectedCoord.getZ() + 0.5);
-      Vector3d blockCenterScreenSpace = currentView.getScreenPoint(blockCenter);
+      Vector3d blockCenterScreenSpace = currentView.getScreenPoint3D(blockCenter);
       Vector2d blockCenterPixel = new Vector2d(blockCenterScreenSpace.x, blockCenterScreenSpace.y);
 
       Vector2d screenMidPixel = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
@@ -639,11 +639,12 @@ public class TravelController {
   }
 
   private double addRatio(@Nonnull BlockPos bc) {
-    Vector3d sp = currentView.getScreenPoint(new Vector3d(bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5));
-    // If the point is behind the player (z > 0), return Double.MAX_VALUE to indicate this.
-    // Also don't add the candidate and its ratio, as it can otherwise result in points
-    // behind the screen plane being preferred before actual visible points.
-    if (sp.z > 0) {
+    Vector3d sp = currentView.getScreenPoint3D(new Vector3d(bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5));
+    // For visible points (points beginning after the zNear plane, the projected z coordinate is [0,1].
+	// All other points (behind) have values in (1,inf). We return Double.MAX_VALUE to indicate this.
+    // Also we don't add the candidate and its ratio, as it can otherwise result in points
+    // behind the screen plane being preferred over actual visible points.
+    if (sp.z > 1) {
       return Double.MAX_VALUE;
     }
     Vector2d sp2d = new Vector2d(sp.x, sp.y);
