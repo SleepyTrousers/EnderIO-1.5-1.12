@@ -152,7 +152,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   private boolean tanksDirty;
 
   @Store
-  private final @Nonnull SmartTank inputTank = new SmartTank(8000) {
+  private final @Nonnull SmartTank inputTank = new SmartTank(WeatherConfig.tankSize.get()) {
 
     @Override
     public boolean canFillFluidType(@Nullable FluidStack resource) {
