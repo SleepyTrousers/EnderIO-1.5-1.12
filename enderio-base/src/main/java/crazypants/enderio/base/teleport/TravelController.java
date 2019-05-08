@@ -1,6 +1,6 @@
 package crazypants.enderio.base.teleport;
 
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
@@ -16,6 +17,7 @@ import com.enderio.core.common.vecmath.Matrix4d;
 import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector2d;
 import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector4d;
 
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.ITravelAccessable;
@@ -74,9 +76,7 @@ public class TravelController {
 
   private BlockPos selectedCoord;
 
-  private final @Nonnull Camera currentView = new Camera();
-
-  private final @Nonnull HashMap<BlockPos, Float> candidates = new HashMap<>();
+  private final @Nonnull HashSet<BlockPos> candidates = new HashSet<>();
 
   private boolean selectionEnabled = true;
 
@@ -246,26 +246,12 @@ public class TravelController {
   }
 
   public void addCandidate(@Nonnull BlockPos coord) {
-    if (!candidates.containsKey(coord)) {
-      candidates.put(coord, -1f);
-    }
+    candidates.add(coord);
   }
 
   @SubscribeEvent
   public void onRender(@Nonnull RenderWorldLastEvent event) {
-
-    Minecraft mc = Minecraft.getMinecraft();
-    Vector3d eye = Util.getEyePositionEio(mc.player);
-    Vector3d lookAt = Util.getLookVecEio(mc.player);
-    lookAt.add(eye);
-    Matrix4d mv = VecmathUtil.createMatrixAsLookAt(eye, lookAt, new Vector3d(0, 1, 0));
-
     float fov = Minecraft.getMinecraft().gameSettings.fovSetting;
-    Matrix4d pr = VecmathUtil.createProjectionMatrixAsPerspective(fov, 0.05f, mc.gameSettings.renderDistanceChunks * 16, mc.displayWidth, mc.displayHeight);
-    currentView.setProjectionMatrix(pr);
-    currentView.setViewMatrix(mv);
-    currentView.setViewport(0, 0, mc.displayWidth, mc.displayHeight);
-
     fovRad = Math.toRadians(fov);
     tanFovRad = Math.tanh(fovRad);
   }
@@ -531,35 +517,20 @@ public class TravelController {
     }
 
     double closestDistance = Double.MAX_VALUE;
-    for (BlockPos bc : candidates.keySet()) {
+    for (BlockPos bc : candidates) {
+      // Exclude the block the player is standing on
       if (!bc.equals(onBlockCoord)) {
+        Vector3d loc = new Vector3d(bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5);
+        double[] distanceAndAngle = getCandidateDistanceAndAngle(loc);
+        double distance = distanceAndAngle[0];
+        double angle = distanceAndAngle[1];
 
-        double d = addRatio(bc);
-        if (d < closestDistance) {
+        if (angle < getCandidateHitAngle()) {
+          // Valid hit, sort by distance now.
           selectedCoord = bc;
-          closestDistance = d;
+          closestDistance = distance;
         }
       }
-    }
-
-    if (selectedCoord != null) {
-
-      Vector3d blockCenter = new Vector3d(selectedCoord.getX() + 0.5, selectedCoord.getY() + 0.5, selectedCoord.getZ() + 0.5);
-      Vector3d blockCenterScreenSpace = currentView.getScreenPoint3D(blockCenter);
-      Vector2d blockCenterPixel = new Vector2d(blockCenterScreenSpace.x, blockCenterScreenSpace.y);
-
-      Vector2d screenMidPixel = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
-      screenMidPixel.scale(0.5);
-
-      double pixDist = blockCenterPixel.distance(screenMidPixel);
-      double rat = pixDist / Minecraft.getMinecraft().displayHeight;
-      if (rat != rat) {
-        rat = 0;
-      }
-      if (rat > 0.07) {
-        selectedCoord = null;
-      }
-
     }
   }
 
@@ -593,70 +564,80 @@ public class TravelController {
 
   }
 
-  public double getScaleForCandidate(@Nonnull Vector3d loc, int maxDistanceSq) {
-
-    if (!currentView.isValid()) {
-      return 1;
-    }
-
-    BlockPos bc = new BlockPos(loc.x, loc.y, loc.z);
-    float ratio = -1;
-    Float r = candidates.get(bc);
-    if (r != null) {
-      ratio = r;
-    }
-    if (ratio < 0) {
-      // no cached value
-      if (addRatio(bc) == Double.MAX_VALUE) {
-        // The canditate block is behind the player
-        return 1.0;
-      }
-      ratio = candidates.get(bc);
-    }
-
-    // smoothly zoom to a larger size, starting when the point is the middle 20% of the screen
-    float start = 0.2f;
-    float end = 0.01f;
-    double mix = MathHelper.clamp((start - ratio) / (start - end), 0, 1);
-    double scale = 1;
-    if (mix > 0) {
-
-      Vector3d eyePoint = Util.getEyePositionEio(Minecraft.getMinecraft().player);
-      scale = tanFovRad * eyePoint.distance(loc);
-
-      // Using this scale will give us the block full screen, we will make it 20% of the screen
-      scale *= TeleportConfig.visualScale.get();
-
-      // only apply 70% of the scaling so more distance targets are still smaller than closer targets
-      float nf = 1 - MathHelper.clamp((float) eyePoint.distanceSquared(loc) / maxDistanceSq, 0, 1);
-      scale = scale * (0.3 + 0.7 * nf);
-
-      scale = (scale * mix) + (1 - mix);
-      scale = Math.max(1.01, scale);
-
-    }
-    return scale;
+  public double getCandidateHitScale(double fullScreenScaling, double distance) {
+    // Take 10% of the screen width per default as the maximum scale for hits (perfectly looking at block)
+    return 0.10 * fullScreenScaling;
   }
 
-  private double addRatio(@Nonnull BlockPos bc) {
-    Vector3d sp = currentView.getScreenPoint3D(new Vector3d(bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5));
-    // For visible points (points beginning after the zNear plane, the projected z coordinate is [0,1].
-	// All other points (behind) have values in (1,inf). We return Double.MAX_VALUE to indicate this.
-    // Also we don't add the candidate and its ratio, as it can otherwise result in points
-    // behind the screen plane being preferred over actual visible points.
-    if (sp.z > 1) {
-      return Double.MAX_VALUE;
+  public double getCandidateMissScale(double fullScreenScaling, double distance) {
+    // At least 1.5 times the normal block size if the angle is not close to the block
+    return 1.5;
+  }
+
+  public double getCandidateHitAngle() {
+    // CAREFUL: missAngle MUST BE >= hitAngle
+    // Hit scale for blocks with an angle below this threshold
+    return 0.087; // == ~5 degree
+  }
+
+  public double getCandidateMissAngle() {
+    // CAREFUL: missAngle MUST BE >= hitAngle
+    // Miss scale for blocks with an angle above this threshold
+    return Math.PI / 5; // == 36 degrees
+  }
+
+  public double[] getCandidateDistanceAndAngle(@Nonnull Vector3d loc) {
+    Vector3d eye = Util.getEyePositionEio(Minecraft.getMinecraft().player);
+    Vector3d look = Util.getLookVecEio(Minecraft.getMinecraft().player);
+    Vector3d relativeBlock = new Vector3d(loc);
+
+    relativeBlock.sub(eye);
+    double distance = relativeBlock.length();
+    relativeBlock.normalize();
+
+    // Angle in [0,pi]
+    double angle = Math.acos(look.dot(relativeBlock));
+    return new double[]{ distance, angle };
+  }
+
+  public double getScaleForCandidate(@Nonnull Vector3d loc, int maxDistanceSq) {
+    // Retrieve the candidate distance and angle
+    double[] distanceAndAngle = getCandidateDistanceAndAngle(loc);
+    double distance = distanceAndAngle[0];
+    double angle = distanceAndAngle[1];
+
+    // To get screen relative scaling, normalize based on fov and
+    // distance (this scaling factor would cause the block to be displayed
+    // horizontally fitted to the screen)
+    double fullScreenScaling = Math.tan(fovRad/2) * 2 * distance;
+
+    double scaleHit = getCandidateHitScale(fullScreenScaling, distance);
+    double scaleMiss = getCandidateMissScale(fullScreenScaling, distance);
+
+    double hitAngle = getCandidateHitAngle();
+    double missAngle = getCandidateMissAngle();
+
+    // Always apply configuration scaling factor
+    // FIXME: The (1/.2) is there because currently .2 is the default value for this config
+    // and this new algorithm needs 1 to be the base value. Maybe it is best to change
+    // the default config value and remove this factor. The then the config represents
+    // intuitive scaling (1.0 = 100%)
+    double scale = (1/.2) * TeleportConfig.visualScale.get();
+
+    // Now we will scale according to the angle:
+    //   scaleHit                         for [0,hitAngle)
+    //   interpolate(scaleHit, scaleMiss) for [hitAngle,missAngle)
+    //   scaleMiss                        for [missAngle,pi]
+    if (angle < hitAngle) {
+      scale *= scaleHit;
+    } else if (angle >= hitAngle && angle < missAngle) {
+      double lerp = (angle - hitAngle) / (missAngle - hitAngle);
+      scale *= scaleHit + lerp * (scaleMiss - scaleHit);
+    } else {
+      scale *= scaleMiss;
     }
-    Vector2d sp2d = new Vector2d(sp.x, sp.y);
-    Vector2d mid = new Vector2d(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
-    mid.scale(0.5);
-    double d = sp2d.distance(mid);
-    if (d != d) {
-      d = 0f;
-    }
-    float ratio = (float) d / Minecraft.getMinecraft().displayWidth;
-    candidates.put(bc, ratio);
-    return d;
+
+    return scale;
   }
 
   // Note: This is restricted to the current player
