@@ -18,6 +18,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import static crazypants.enderio.base.init.ModObject.blockDarkSteelAnvil;
@@ -66,6 +67,9 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
           playerIn.addExperienceLevel(-ContainerDarkSteelAnvil.this.maximumCost);
         }
 
+        float breakChance = ForgeHooks.onAnvilRepair(playerIn, stack, inputSlots.getStackInSlot(0), inputSlots.getStackInSlot(1));
+        breakChance /= 0.12f; // normalize vanilla standard chance to 1.0
+
         inputSlots.setInventorySlotContents(0, Prep.getEmpty());
 
         if (materialCost > 0) {
@@ -85,7 +89,7 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
         IBlockState iblockstate = world.getBlockState(pos);
 
         if (!playerIn.capabilities.isCreativeMode && !world.isRemote && iblockstate.getBlock() == blockDarkSteelAnvil.getBlock()
-            && playerIn.getRNG().nextFloat() < BlockConfig.darkSteelAnvilDamageChance.get()) {
+            && playerIn.getRNG().nextFloat() < (breakChance * BlockConfig.darkSteelAnvilDamageChance.get())) {
           int l = iblockstate.getValue(BlockAnvil.DAMAGE).intValue();
           ++l;
 

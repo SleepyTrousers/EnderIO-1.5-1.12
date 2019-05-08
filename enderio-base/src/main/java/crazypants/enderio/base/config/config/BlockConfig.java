@@ -21,7 +21,7 @@ public final class BlockConfig {
       "The range of the ender charge's effect.").setRange(1, 99).sync();
 
   public static final IValue<Float> darkSteelAnvilDamageChance = F.make("darkSteelAnvilDamageChance", 0.024f, //
-      "Chance that the dark steel anvil will take damage after repairing something.").setRange(0, 1).sync();
+      "Chance that the dark steel anvil will take damage after repairing something. (Vanilla anvil is 0.12)").setRange(0, 1).sync();
 
   public static final IValue<Float> darkSteelLadderSpeedBoost = F.make("darkSteelLadderSpeedBoost", 0.06f, //
       "Speed boost, in blocks per tick, that the DS ladder gives over the vanilla ladder.").setRange(0, 0.6).sync();
