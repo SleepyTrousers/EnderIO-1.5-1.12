@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -151,7 +152,11 @@ public class DarkSteelRecipeManager {
     }
   }
 
-  public static boolean skipUpgradeTooltips = false;
+  public static void setSkipUpgradeTooltips(boolean skipUpgradeTooltips) {
+    DarkSteelRecipeManager.skipUpgradeTooltips = skipUpgradeTooltips;
+  }
+
+  private static boolean skipUpgradeTooltips = false;
 
   public static void addAdvancedTooltipEntries(@Nonnull ItemStack itemstack, EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack.getUnlocalizedName());
@@ -179,13 +184,9 @@ public class DarkSteelRecipeManager {
   }
 
   public static @Nonnull String getUpgradesAsString(@Nonnull ItemStack stack) {
-    String result = "";
-    for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
-      if (upgrade.hasUpgrade(stack)) {
-        result += "/" + upgrade.getUnlocalizedName();
-      }
-    }
-    return result.isEmpty() ? "" : NullHelper.first(result.substring(1), "");
+    return NullHelper.first(UpgradeRegistry.getUpgrades().stream().filter(upgrade -> upgrade.hasUpgrade(stack))
+        .map(upgrade -> "" + UpgradeRegistry.getId(upgrade)).collect(Collectors.joining("/")), "");
+    // Note: Using the numeric ID here to keep the string short and save memory
   }
 
   public static NNList<ItemStack> getRecipes(@Nonnull Set<UpgradePath> list, @Nonnull NNList<ItemStack> input) {

@@ -63,10 +63,10 @@ public class DescriptionRecipeCategory {
         ItemStack itemStack = new ItemStack(item);
         NNList<String> allTooltips;
         try {
-          DarkSteelRecipeManager.skipUpgradeTooltips = true;
+          DarkSteelRecipeManager.setSkipUpgradeTooltips(true);
           allTooltips = SpecialTooltipHandler.getAllTooltips(itemStack);
         } finally {
-          DarkSteelRecipeManager.skipUpgradeTooltips = false;
+          DarkSteelRecipeManager.setSkipUpgradeTooltips(false);
         }
 
         NNList<UpgradePath> list = DarkSteelRecipeManager.getAllRecipes(new NNList<>(itemStack));
