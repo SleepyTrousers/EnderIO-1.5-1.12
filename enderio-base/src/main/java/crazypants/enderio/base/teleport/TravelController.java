@@ -525,8 +525,8 @@ public class TravelController {
         double distance = distanceAndAngle[0];
         double angle = distanceAndAngle[1];
 
-        if (angle < getCandidateHitAngle()) {
-          // Valid hit, sort by distance now.
+        if (distance < closestDistance && angle < getCandidateHitAngle()) {
+          // Valid hit, sorted by distance.
           selectedCoord = bc;
           closestDistance = distance;
         }
