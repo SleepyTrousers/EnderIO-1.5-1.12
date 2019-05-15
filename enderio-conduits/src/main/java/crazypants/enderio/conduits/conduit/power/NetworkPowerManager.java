@@ -296,6 +296,7 @@ public class NetworkPowerManager {
   }
 
   boolean isActive() {
+    // TODO: This doesn't seem to make sense
     return energyStored > 0;
   }
 
