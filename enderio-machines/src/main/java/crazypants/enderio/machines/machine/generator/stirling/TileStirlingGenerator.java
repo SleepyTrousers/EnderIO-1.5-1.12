@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.IProgressTile;
+import com.enderio.core.common.util.FluidUtil;
 
 import crazypants.enderio.api.capacitor.ICapacitorData;
 import crazypants.enderio.api.capacitor.ICapacitorKey;
@@ -30,7 +31,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import static crazypants.enderio.machines.capacitor.CapacitorKey.SIMPLE_STIRLING_POWER_BUFFER;
@@ -132,7 +132,7 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
   
   public static int getBurnTime(@Nonnull ItemStack item, @Nonnull ICapacitorKey maxUsage, @Nonnull ICapacitorData data) {
     float base = (getBurnTimeGeneric(item) / (maxUsage.get(data) / maxUsage.getDefaultFloat())) * getBurnEfficiency(data);
-    if (item.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
+    if (FluidUtil.isFluidContainer(item)) {
       // Lava and other fluid buckets are nerfed, prefer combustion engine for those
       base /= 5;
     }
