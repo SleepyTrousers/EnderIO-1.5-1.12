@@ -100,7 +100,7 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
 
   @Override
   public boolean readConduitSettingsFromNBT(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound nbt) {
-    if (!getExternalConnections().contains(dir)) {
+    if (!getExternalConnections().contains(dir) && !canConnectToExternal(dir, true)) {
       return false;
     }
     NBTTagCompound dataRoot = getNbtRootForType(nbt, false);

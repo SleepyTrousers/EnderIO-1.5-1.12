@@ -66,10 +66,8 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
     boolean performedAction = false;
 
     for (IServerConduit conduit : bundle.getServerConduits()) {
-      if (conduit.getExternalConnections().contains(dir)) {
-        if (conduit.readConduitSettingsFromNBT(dir, nbt)) {
-          performedAction = true;
-        }
+      if (conduit.readConduitSettingsFromNBT(dir, nbt)) {
+        performedAction = true;
       }
     }
 
