@@ -15,6 +15,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 
 public class CapabilityFilterHolder {
 
+  @SuppressWarnings("null")
   @CapabilityInject(IFilterHolder.class)
   @Nonnull
   public static Capability<IFilterHolder> FILTER_HOLDER_CAPABILITY = null;

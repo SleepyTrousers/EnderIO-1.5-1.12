@@ -15,6 +15,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 
 public class CapabilityDatabaseHandler {
 
+  @SuppressWarnings("null")
   @CapabilityInject(IDatabaseHandler.class)
   @Nonnull
   public static Capability<IDatabaseHandler> DATABASE_HANDLER_CAPABILITY = null;
