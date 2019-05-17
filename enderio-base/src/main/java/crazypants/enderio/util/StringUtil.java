@@ -6,6 +6,9 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.text.TextComponentTranslation;
+
 /**
  * Some duplication of jrt code that is properly null-annotated
  * <p>
@@ -20,6 +23,10 @@ public class StringUtil {
     try (Formatter f = new Formatter()) {
       return NullHelper.first(f.format(format, args).toString(), "");
     }
+  }
+
+  public static void sendEnabledChatMessage(final EntityPlayer player, String messageBase, boolean isActive) {
+    player.sendStatusMessage(new TextComponentTranslation(messageBase.concat(isActive ? ".enabled" : ".disabled")), true);
   }
 
 }

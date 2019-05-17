@@ -32,6 +32,7 @@ import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.sound.SoundHelper;
 import crazypants.enderio.base.sound.SoundRegistry;
 import crazypants.enderio.util.Prep;
+import crazypants.enderio.util.StringUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
@@ -41,7 +42,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FOVModifier;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -109,8 +109,7 @@ public class KeyTracker {
   }
 
   public static void sendEnabledChatMessage(String messageBase, boolean isActive) {
-    String message = EnderIO.lang.addPrefix(messageBase.concat(isActive ? ".enabled" : ".disabled"));
-    Minecraft.getMinecraft().player.sendStatusMessage(new TextComponentTranslation(message), true);
+    StringUtil.sendEnabledChatMessage(Minecraft.getMinecraft().player, EnderIO.lang.addPrefix(messageBase), isActive);
   }
 
   public static void toggleDarkSteelController(Type type, String messageBase) {

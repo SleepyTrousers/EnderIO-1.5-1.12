@@ -13,6 +13,7 @@ import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.item.magnet.PacketMagnetState.SlotType;
 import crazypants.enderio.util.Prep;
+import crazypants.enderio.util.StringUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -210,6 +211,7 @@ public final class MagnetController {
       }
     }
     ItemMagnet.setActive(stack, isActive);
+    StringUtil.sendEnabledChatMessage(player, ModObject.itemMagnet.getItemNN().getUnlocalizedName(), isActive);
     switch (type) {
     case INVENTORY:
       player.inventory.setInventorySlotContents(slot, stack);
