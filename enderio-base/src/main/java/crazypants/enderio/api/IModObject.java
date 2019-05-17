@@ -58,7 +58,7 @@ public interface IModObject extends IProducer, IForgeRegistryEntry<IModObject> {
         if (modobject.getBlockMethodName() == null || clazz == null) {
           return null;
         }
-        return (Block) clazz.getDeclaredMethod(modobject.getBlockMethodName(), new Class<?>[] { IModObject.class }).invoke(null, new Object[] { modobject });
+        return (Block) clazz.getDeclaredMethod(modobject.getBlockMethodName(), IModObject.class).invoke(null, modobject);
       } catch (Exception | Error e) {
         throw new RuntimeException("ModObject:create: Could not create instance for " + clazz + " using method " + modobject.getBlockMethodName(), e);
       }
@@ -75,11 +75,10 @@ public interface IModObject extends IProducer, IForgeRegistryEntry<IModObject> {
         return IModObject.WithBlockItem.itemCreator.apply(modobject, block);
       }
       try {
-        return (Item) clazz.getDeclaredMethod(modobject.getItemMethodName(), new Class<?>[] { IModObject.class, Block.class }).invoke(null,
-            new Object[] { modobject, block });
+        return (Item) clazz.getDeclaredMethod(modobject.getItemMethodName(), IModObject.class, Block.class).invoke(null, modobject, block);
       } catch (Exception | Error e0) {
         try {
-          return (Item) clazz.getDeclaredMethod(modobject.getItemMethodName(), new Class<?>[] { IModObject.class }).invoke(null, new Object[] { modobject });
+          return (Item) clazz.getDeclaredMethod(modobject.getItemMethodName(), IModObject.class).invoke(null, modobject);
         } catch (Exception | Error e) {
           throw new RuntimeException("ModObject:create: Could not create instance for " + clazz + " using method " + modobject.getItemMethodName(), e);
         }

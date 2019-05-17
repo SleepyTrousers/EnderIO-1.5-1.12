@@ -82,7 +82,10 @@ public class JeiPlugin implements IModPlugin {
   private void hide(@Nonnull IIngredientBlacklist blacklist) {
     if (!PersonalConfig.disableHiding.get()) {
       // Note: Need the cast for OpenJDK
-      JeiHidingRegistry.getObjectsToHide().apply((NNList.Callback<Object>) e -> blacklist.addIngredientToBlacklist(e));
+      JeiHidingRegistry.getObjectsToHide().apply((NNList.Callback<Object>) e -> {
+        blacklist.addIngredientToBlacklist(e);
+        Log.warn("Hiding ingredient in JEI: ", e); // TODO: Demote to "debug"
+      });
     }
   }
 

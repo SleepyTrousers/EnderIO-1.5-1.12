@@ -10,6 +10,7 @@ import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.filter.IFilter;
@@ -98,6 +99,18 @@ public class RedstoneSettings extends BaseSettingsPanel {
     strongCB.onGuiInit();
     strongCB.setSelected(insCon.isOutputStrong(gui.getDir()));
     filtersChanged();
+  }
+
+  @Override
+  public boolean updateConduit(@Nonnull IClientConduit conduit) {
+    this.con = conduit;
+    // Note: Redstone conduits track their connections a bit differently to other conduits, so we need to catch the case that it is not actually
+    // connected to anything and display it in the GUI as such.
+    final ConnectionMode connectionMode = con.containsExternalConnection(gui.getDir()) ? con.getConnectionMode(gui.getDir()) : ConnectionMode.NOT_SET;
+    if (oldConnectionMode != connectionMode) {
+      connectionModeChanged(connectionMode);
+    }
+    return true;
   }
 
   private void createGhostSlots() {

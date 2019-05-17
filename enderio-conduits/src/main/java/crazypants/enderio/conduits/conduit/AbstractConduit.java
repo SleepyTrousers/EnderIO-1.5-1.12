@@ -100,7 +100,7 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
 
   @Override
   public boolean readConduitSettingsFromNBT(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound nbt) {
-    if (!getExternalConnections().contains(dir)) {
+    if (!getExternalConnections().contains(dir) && !canConnectToExternal(dir, true)) {
       return false;
     }
     NBTTagCompound dataRoot = getNbtRootForType(nbt, false);
@@ -520,7 +520,8 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
     for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
       EnumFacing dir = itr.next();
       IConduit neighbour = ConduitUtil.getConduit(world, te, dir, getBaseConduitType());
-      if (neighbour instanceof IServerConduit && ((IServerConduit) neighbour).canConnectToConduit(dir.getOpposite(), this)) {
+      if (neighbour instanceof IServerConduit && ((IServerConduit) neighbour).canConnectToConduit(dir.getOpposite(), this)
+          && canConnectToConduit(dir, neighbour)) {
         conduitConnections.add(dir);
         ((IServerConduit) neighbour).conduitConnectionAdded(dir.getOpposite());
         ((IServerConduit) neighbour).connectionsChanged();
@@ -612,9 +613,8 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
   @Override
   @Nonnull
   public Collection<CollidableComponent> createCollidables(@Nonnull CacheKey key) {
-    return NullHelper.notnullJ(Collections.singletonList(
-        new CollidableComponent(getCollidableType(), ConduitGeometryUtil.getInstance().getBoundingBox(getBaseConduitType(), key.dir, key.offset), key.dir, null)),
-        "Collections#singletonList");
+    return NullHelper.notnullJ(Collections.singletonList(new CollidableComponent(getCollidableType(),
+        ConduitGeometryUtil.getInstance().getBoundingBox(getBaseConduitType(), key.dir, key.offset), key.dir, null)), "Collections#singletonList");
   }
 
   @Override
