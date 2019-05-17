@@ -234,7 +234,7 @@ public abstract class AbstractMachineContainer<E extends AbstractInventoryMachin
 
   protected int getProgressScaled(int scale) {
     if (te instanceof IProgressTile) {
-      Util.getProgressScaled(scale, (IProgressTile) te);
+      return Util.getProgressScaled(scale, (IProgressTile) te);
     }
     return 0;
   }

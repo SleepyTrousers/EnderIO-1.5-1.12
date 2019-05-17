@@ -20,6 +20,7 @@ import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.gui.LiquidSettings;
+import crazypants.enderio.util.EnumReader;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -44,7 +45,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
     return FluidWrapper.wrap(world, pos, side);
   }
 
-  public IFluidWrapper getExternalHandler(EnumFacing direction) {
+  public IFluidWrapper getExternalHandler(@Nonnull EnumFacing direction) {
     return getExternalFluidHandler(getBundle().getBundleworld(), getBundle().getLocation().offset(direction), direction.getOpposite());
   }
 
@@ -131,7 +132,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
 
   @Override
   protected void readTypeSettings(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
-    setExtractionSignalColor(dir, DyeColor.values()[dataRoot.getShort("extractionSignalColor")]);
+    setExtractionSignalColor(dir, EnumReader.get(DyeColor.class, dataRoot.getShort("extractionSignalColor")));
     setExtractionRedstoneMode(RedstoneControlMode.fromOrdinal(dataRoot.getShort("extractionRedstoneMode")), dir);
   }
 
@@ -236,9 +237,9 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
    * Inner class for holding the direction of capabilities.
    */
   protected class ConnectionLiquidSide implements IFluidHandler {
-    protected EnumFacing side;
+    protected @Nonnull EnumFacing side;
 
-    public ConnectionLiquidSide(EnumFacing side) {
+    public ConnectionLiquidSide(@Nonnull EnumFacing side) {
       this.side = side;
     }
 

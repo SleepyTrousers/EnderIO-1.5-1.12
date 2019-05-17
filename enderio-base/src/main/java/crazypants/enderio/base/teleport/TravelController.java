@@ -8,16 +8,11 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
-import com.enderio.core.common.vecmath.Camera;
-import com.enderio.core.common.vecmath.Matrix4d;
 import com.enderio.core.common.vecmath.VecmathUtil;
-import com.enderio.core.common.vecmath.Vector2d;
 import com.enderio.core.common.vecmath.Vector3d;
-import com.enderio.core.common.vecmath.Vector4d;
 
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.ITravelAccessable;
@@ -164,8 +159,6 @@ public class TravelController {
           }
         }
       }
-
-      eye3 = new Vec3d(eye.x, eye.y, eye.z);
 
       Vector3d targetBc = new Vector3d(p.getBlockPos());
       double sampleDistance = 1.5;
@@ -597,7 +590,7 @@ public class TravelController {
 
     // Angle in [0,pi]
     double angle = Math.acos(look.dot(relativeBlock));
-    return new double[]{ distance, angle };
+    return new double[] { distance, angle };
   }
 
   public double getScaleForCandidate(@Nonnull Vector3d loc, int maxDistanceSq) {
@@ -609,7 +602,7 @@ public class TravelController {
     // To get screen relative scaling, normalize based on fov and
     // distance (this scaling factor would cause the block to be displayed
     // horizontally fitted to the screen)
-    double fullScreenScaling = Math.tan(fovRad/2) * 2 * distance;
+    double fullScreenScaling = Math.tan(fovRad / 2) * 2 * distance;
 
     double scaleHit = getCandidateHitScale(fullScreenScaling, distance);
     double scaleMiss = getCandidateMissScale(fullScreenScaling, distance);
@@ -622,12 +615,12 @@ public class TravelController {
     // and this new algorithm needs 1 to be the base value. Maybe it is best to change
     // the default config value and remove this factor. The then the config represents
     // intuitive scaling (1.0 = 100%)
-    double scale = (1/.2) * TeleportConfig.visualScale.get();
+    double scale = (1 / .2) * TeleportConfig.visualScale.get();
 
     // Now we will scale according to the angle:
-    //   scaleHit                         for [0,hitAngle)
-    //   interpolate(scaleHit, scaleMiss) for [hitAngle,missAngle)
-    //   scaleMiss                        for [missAngle,pi]
+    // scaleHit for [0,hitAngle)
+    // interpolate(scaleHit, scaleMiss) for [hitAngle,missAngle)
+    // scaleMiss for [missAngle,pi]
     if (angle < hitAngle) {
       scale *= scaleHit;
     } else if (angle >= hitAngle && angle < missAngle) {

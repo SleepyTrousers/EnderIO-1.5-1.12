@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
  * Utils to prepare for the next version change.
  *
  */
-public class Prep {
+public final class Prep {
 
   private static final @Nonnull ItemStack EMPTY = new ItemStack(Items.DIAMOND, -1);
 

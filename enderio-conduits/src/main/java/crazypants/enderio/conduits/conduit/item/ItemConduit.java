@@ -55,6 +55,8 @@ import crazypants.enderio.conduits.render.ConduitTexture;
 import crazypants.enderio.conduits.render.ConduitTextureWrapper;
 import crazypants.enderio.powertools.lang.Lang;
 import crazypants.enderio.powertools.network.PacketHandler;
+import crazypants.enderio.util.EnumReader;
+import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -75,34 +77,35 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
 
   public static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 
-  public static final String EXTERNAL_INTERFACE_GEOM = "ExternalInterface";
+  public static final @Nonnull String EXTERNAL_INTERFACE_GEOM = "ExternalInterface";
 
-  public static final IConduitTexture ICON_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit"), ConduitTexture.arm(0));
+  public static final @Nonnull IConduitTexture ICON_KEY = new ConduitTexture(TextureRegistry.registerTexture("blocks/conduit"), ConduitTexture.arm(0));
 
-  public static final IConduitTexture ICON_KEY_CORE = new ConduitTexture(TextureRegistry.registerTexture("blocks/item_conduit_core"), ConduitTexture.core());
+  public static final @Nonnull IConduitTexture ICON_KEY_CORE = new ConduitTexture(TextureRegistry.registerTexture("blocks/item_conduit_core"),
+      ConduitTexture.core());
 
-  public static final IConduitTexture ICON_KEY_ENDER = new ConduitTexture(TextureRegistry.registerTexture("blocks/ender_still"),
+  public static final @Nonnull IConduitTexture ICON_KEY_ENDER = new ConduitTexture(TextureRegistry.registerTexture("blocks/ender_still"),
       new Vector4f(1.5f / 16f, 6 / 16f, 14.5f / 16f, 10 / 16f));
 
   ItemConduitNetwork network;
 
-  protected final EnumMap<EnumFacing, RedstoneControlMode> extractionModes = new EnumMap<EnumFacing, RedstoneControlMode>(EnumFacing.class);
-  protected final EnumMap<EnumFacing, DyeColor> extractionColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, RedstoneControlMode> extractionModes = new EnumMap<EnumFacing, RedstoneControlMode>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, DyeColor> extractionColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
 
-  protected final EnumMap<EnumFacing, IItemFilter> outputFilters = new EnumMap<EnumFacing, IItemFilter>(EnumFacing.class);
-  protected final EnumMap<EnumFacing, IItemFilter> inputFilters = new EnumMap<EnumFacing, IItemFilter>(EnumFacing.class);
-  protected final EnumMap<EnumFacing, ItemStack> outputFilterUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
-  protected final EnumMap<EnumFacing, ItemStack> inputFilterUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
-  protected final EnumMap<EnumFacing, ItemStack> functionUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, IItemFilter> outputFilters = new EnumMap<EnumFacing, IItemFilter>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, IItemFilter> inputFilters = new EnumMap<EnumFacing, IItemFilter>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, ItemStack> outputFilterUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, ItemStack> inputFilterUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, ItemStack> functionUpgrades = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
 
-  protected final EnumMap<EnumFacing, Boolean> selfFeed = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, Boolean> selfFeed = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
 
-  protected final EnumMap<EnumFacing, Boolean> roundRobin = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, Boolean> roundRobin = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
 
-  protected final EnumMap<EnumFacing, Integer> priorities = new EnumMap<EnumFacing, Integer>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, Integer> priorities = new EnumMap<EnumFacing, Integer>(EnumFacing.class);
 
-  protected final EnumMap<EnumFacing, DyeColor> outputColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
-  protected final EnumMap<EnumFacing, DyeColor> inputColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, DyeColor> outputColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
+  protected final @Nonnull EnumMap<EnumFacing, DyeColor> inputColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
 
   private int metaData;
 
@@ -122,11 +125,11 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
 
   @Override
   protected void readTypeSettings(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
-    setConnectionMode(dir, ConnectionMode.values()[dataRoot.getShort("connectionMode")]);
-    setExtractionSignalColor(dir, DyeColor.values()[dataRoot.getShort("extractionSignalColor")]);
-    setExtractionRedstoneMode(RedstoneControlMode.values()[dataRoot.getShort("extractionRedstoneMode")], dir);
-    setInputColor(dir, DyeColor.values()[dataRoot.getShort("inputColor")]);
-    setOutputColor(dir, DyeColor.values()[dataRoot.getShort("outputColor")]);
+    setConnectionMode(dir, EnumReader.get(ConnectionMode.class, dataRoot.getShort("connectionMode")));
+    setExtractionSignalColor(dir, EnumReader.get(DyeColor.class, dataRoot.getShort("extractionSignalColor")));
+    setExtractionRedstoneMode(EnumReader.get(RedstoneControlMode.class, dataRoot.getShort("extractionRedstoneMode")), dir);
+    setInputColor(dir, EnumReader.get(DyeColor.class, dataRoot.getShort("inputColor")));
+    setOutputColor(dir, EnumReader.get(DyeColor.class, dataRoot.getShort("outputColor")));
     setSelfFeedEnabled(dir, dataRoot.getBoolean("selfFeed"));
     setRoundRobinEnabled(dir, dataRoot.getBoolean("roundRobin"));
     setOutputPriority(dir, dataRoot.getInteger("outputPriority"));
@@ -526,8 +529,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
     }
 
     for (Entry<EnumFacing, ItemStack> entry : functionUpgrades.entrySet()) {
-      if (entry.getValue() != null) {
-        ItemStack up = entry.getValue();
+      ItemStack up = entry.getValue();
+      if (up != null && Prep.isValid(up)) {
         NBTTagCompound itemRoot = new NBTTagCompound();
         up.writeToNBT(itemRoot);
         nbtRoot.setTag("functionUpgrades." + entry.getKey().name(), itemRoot);
@@ -535,19 +538,17 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
     }
 
     for (Entry<EnumFacing, IItemFilter> entry : outputFilters.entrySet()) {
-      if (entry.getValue() != null) {
-        IItemFilter f = entry.getValue();
-        if (!isDefault(f)) {
-          NBTTagCompound itemRoot = new NBTTagCompound();
-          FilterRegistry.writeFilterToNbt(f, itemRoot);
-          nbtRoot.setTag("outFilts." + entry.getKey().name(), itemRoot);
-        }
+      IItemFilter f = entry.getValue();
+      if (f != null && !isDefault(f)) {
+        NBTTagCompound itemRoot = new NBTTagCompound();
+        FilterRegistry.writeFilterToNbt(f, itemRoot);
+        nbtRoot.setTag("outFilts." + entry.getKey().name(), itemRoot);
       }
     }
 
     for (Entry<EnumFacing, ItemStack> entry : inputFilterUpgrades.entrySet()) {
-      if (entry.getValue() != null) {
-        ItemStack up = entry.getValue();
+      ItemStack up = entry.getValue();
+      if (up != null && Prep.isValid(up)) {
         IItemFilter filter = getInputFilter(entry.getKey());
         FilterRegistry.writeFilterToStack(filter, up);
 
@@ -558,8 +559,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
     }
 
     for (Entry<EnumFacing, ItemStack> entry : outputFilterUpgrades.entrySet()) {
-      if (entry.getValue() != null) {
-        ItemStack up = entry.getValue();
+      ItemStack up = entry.getValue();
+      if (up != null && Prep.isValid(up)) {
         IItemFilter filter = getOutputFilter(entry.getKey());
         FilterRegistry.writeFilterToStack(filter, up);
 

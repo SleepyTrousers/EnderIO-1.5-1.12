@@ -122,26 +122,22 @@ public class PaintRegistry {
     @SideOnly(Side.CLIENT)
     @Override
     public <T> T getModel(Class<T> clazz, String name, @Nullable IBlockState paintSource, IModelState rotation) {
-      if (!cache.containsKey(name)) {
-        cache.put(name, new ConcurrentHashMap<Pair<IBlockState, IModelState>, IBakedModel>());
-      }
-      ConcurrentMap<Pair<IBlockState, IModelState>, IBakedModel> subcache = cache.get(name);
-      Pair<IBlockState, IModelState> key = Pair.of(paintSource, rotation);
-      IBakedModel bakedModel = subcache.get(key);
-      if (bakedModel == null) {
+      ConcurrentMap<Pair<IBlockState, IModelState>, IBakedModel> subcache = cache.computeIfAbsent(name,
+          x -> new ConcurrentHashMap<Pair<IBlockState, IModelState>, IBakedModel>());
+      IBakedModel bakedModel = subcache.computeIfAbsent(Pair.of(paintSource, rotation), key -> {
         IModel sourceModel = models.get(name);
         if (sourceModel == null) {
           sourceModel = models.get("_missing");
         }
         if (sourceModel != null) {
-          bakedModel = paintModel(sourceModel, paintSource, rotation, getPaintMode(name));
+          IBakedModel result = paintModel(sourceModel, paintSource, rotation, getPaintMode(name));
+          if (result != null) {
+            return result;
+          }
         }
-        if (bakedModel == null) {
-          bakedModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
-        }
-        subcache.putIfAbsent(key, bakedModel);
-        checkCache(name, subcache);
-      }
+        return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel();
+      });
+      checkCache(name, subcache);
       return clazz.isInstance(bakedModel) ? clazz.cast(bakedModel) : null;
     }
 

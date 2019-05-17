@@ -15,6 +15,7 @@ import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.conduit.ConduitUtil;
@@ -45,6 +46,7 @@ import crazypants.enderio.conduits.conduit.power.PowerConduit;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduits.render.ConduitTexture;
 import crazypants.enderio.conduits.render.ConduitTextureWrapper;
+import crazypants.enderio.util.EnumReader;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -175,9 +177,9 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
   @Nonnull
   public ItemStack getFilterStack(@Nonnull EnumFacing dir, boolean isInput) {
     if (isInput) {
-      return inputFilterUpgrades.get(dir);
+      return NullHelper.first(inputFilterUpgrades.get(dir), Prep.getEmpty());
     } else {
-      return outputFilterUpgrades.get(dir);
+      return NullHelper.first(outputFilterUpgrades.get(dir), Prep.getEmpty());
     }
   }
 
@@ -187,7 +189,10 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
     } else {
       outputFilterUpgrades.put(dir, stack);
     }
-    setFilter(dir, FilterRegistry.<IFluidFilter> getFilterForUpgrade(stack), isInput);
+    final IFluidFilter filterForUpgrade = FilterRegistry.<IFluidFilter> getFilterForUpgrade(stack);
+    if (filterForUpgrade != null) {
+      setFilter(dir, filterForUpgrade, isInput);
+    }
     setClientStateDirty();
   }
 
@@ -213,6 +218,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
   // TEXTURES
   // --------------------------------
 
+  @SuppressWarnings("null")
   @SideOnly(Side.CLIENT)
   @Override
   @Nonnull
@@ -347,7 +353,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
 
   @Override
   public boolean canFill(EnumFacing from, FluidStack fluid) {
-    if (network == null) {
+    if (network == null || from == null) {
       return false;
     }
     return getConnectionMode(from).acceptsInput();
@@ -361,11 +367,11 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
   @Override
   protected void readTypeSettings(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
     super.readTypeSettings(dir, dataRoot);
-    setConnectionMode(dir, ConnectionMode.values()[dataRoot.getShort("connectionMode")]);
-    setExtractionSignalColor(dir, DyeColor.values()[dataRoot.getShort("extractionSignalColor")]);
-    setExtractionRedstoneMode(RedstoneControlMode.values()[dataRoot.getShort("extractionRedstoneMode")], dir);
-    setInputColor(dir, DyeColor.values()[dataRoot.getShort("inputColor")]);
-    setOutputColor(dir, DyeColor.values()[dataRoot.getShort("outputColor")]);
+    setConnectionMode(dir, EnumReader.get(ConnectionMode.class, dataRoot.getShort("connectionMode")));
+    setExtractionSignalColor(dir, EnumReader.get(DyeColor.class, dataRoot.getShort("extractionSignalColor")));
+    setExtractionRedstoneMode(EnumReader.get(RedstoneControlMode.class, dataRoot.getShort("extractionRedstoneMode")), dir);
+    setInputColor(dir, EnumReader.get(DyeColor.class, dataRoot.getShort("inputColor")));
+    setOutputColor(dir, EnumReader.get(DyeColor.class, dataRoot.getShort("outputColor")));
     setSelfFeedEnabled(dir, dataRoot.getBoolean("selfFeed"));
     setRoundRobinEnabled(dir, dataRoot.getBoolean("roundRobin"));
     setOutputPriority(dir, dataRoot.getInteger("outputPriority"));
@@ -415,8 +421,8 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
       }
     }
     for (Entry<EnumFacing, ItemStack> entry : inputFilterUpgrades.entrySet()) {
-      if (entry.getValue() != null) {
-        ItemStack up = entry.getValue();
+      ItemStack up = entry.getValue();
+      if (up != null && Prep.isValid(up)) {
         IFluidFilter filter = getFilter(entry.getKey(), true);
         FilterRegistry.writeFilterToStack(filter, up);
 
@@ -427,8 +433,8 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
     }
 
     for (Entry<EnumFacing, ItemStack> entry : outputFilterUpgrades.entrySet()) {
-      if (entry.getValue() != null) {
-        ItemStack up = entry.getValue();
+      ItemStack up = entry.getValue();
+      if (up != null && Prep.isValid(up)) {
         IFluidFilter filter = getFilter(entry.getKey(), false);
         FilterRegistry.writeFilterToStack(filter, up);
 
@@ -471,8 +477,8 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
     }
 
     for (Entry<EnumFacing, ItemStack> entry : functionUpgrades.entrySet()) {
-      if (entry.getValue() != null) {
-        ItemStack up = entry.getValue();
+      ItemStack up = entry.getValue();
+      if (up != null && Prep.isValid(up)) {
         NBTTagCompound itemRoot = new NBTTagCompound();
         up.writeToNBT(itemRoot);
         nbtRoot.setTag("functionUpgrades." + entry.getKey().name(), itemRoot);
@@ -569,7 +575,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
   @Override
   public boolean hasInternalCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
     if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY
-        || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY && containsExternalConnection(facing)) {
+        || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY && facing != null && containsExternalConnection(facing)) {
       return true;
     }
     return false;
@@ -685,7 +691,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
 
   @Nonnull
   public ItemStack getFunctionUpgrade(@Nonnull EnumFacing dir) {
-    return functionUpgrades.get(dir);
+    return NullHelper.first(functionUpgrades.get(dir), Prep.getEmpty());
   }
 
   public void setFunctionUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack upgrade) {
@@ -718,14 +724,14 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
   @Nullable
   @Override
   public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && facing != null) {
       return (T) new ConnectionEnderLiquidSide(facing);
     }
     return null;
   }
 
   protected class ConnectionEnderLiquidSide extends ConnectionLiquidSide {
-    public ConnectionEnderLiquidSide(EnumFacing side) {
+    public ConnectionEnderLiquidSide(@Nonnull EnumFacing side) {
       super(side);
     }
 

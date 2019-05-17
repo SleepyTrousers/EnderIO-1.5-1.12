@@ -43,11 +43,7 @@ public class PaintWrangler {
     IBlockState actualPaintSource = paintSource;
     IBlockState extendedPaintSource = paintSource;
     Block block = paintSource.getBlock();
-    Memory memory = cache.get(block);
-    if (memory == null) {
-      memory = new Memory();
-      cache.put(block, memory);
-    }
+    Memory memory = cache.computeIfAbsent(block, x -> new Memory());
     if (!memory.doPaint) {
       return false;
     }

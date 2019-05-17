@@ -9,6 +9,11 @@ import crazypants.enderio.base.conduit.redstone.signals.CombinedSignal;
 
 public class DefaultOutputSignalFilter implements IOutputSignalFilter {
 
+  public static final @Nonnull DefaultOutputSignalFilter instance = new DefaultOutputSignalFilter();
+
+  private DefaultOutputSignalFilter() {
+  }
+
   @Override
   @Nonnull
   public CombinedSignal apply(@Nonnull DyeColor color, @Nonnull BundledSignal bundledSignal) {

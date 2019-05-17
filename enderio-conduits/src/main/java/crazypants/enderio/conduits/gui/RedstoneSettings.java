@@ -25,6 +25,7 @@ import crazypants.enderio.conduits.init.ConduitObject;
 import crazypants.enderio.conduits.lang.Lang;
 import crazypants.enderio.conduits.network.PacketRedstoneConduitOutputStrength;
 import crazypants.enderio.conduits.network.PacketRedstoneConduitSignalColor;
+import crazypants.enderio.util.EnumReader;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.item.ItemStack;
 
@@ -70,10 +71,10 @@ public class RedstoneSettings extends BaseSettingsPanel {
   public void actionPerformed(@Nonnull GuiButton guiButton) {
     super.actionPerformed(guiButton);
     if (guiButton.id == ID_INPUT_COLOR_BUTTON) {
-      insCon.setInputSignalColor(gui.getDir(), DyeColor.values()[inputColorB.getColorIndex()]);
+      insCon.setInputSignalColor(gui.getDir(), EnumReader.get(DyeColor.class, inputColorB.getColorIndex()));
       PacketHandler.INSTANCE.sendToServer(new PacketRedstoneConduitSignalColor(insCon, gui.getDir(), true));
     } else if (guiButton.id == ID_OUTPUT_COLOR_BUTTON) {
-      insCon.setOutputSignalColor(gui.getDir(), DyeColor.values()[outputColorB.getColorIndex()]);
+      insCon.setOutputSignalColor(gui.getDir(), EnumReader.get(DyeColor.class, outputColorB.getColorIndex()));
       PacketHandler.INSTANCE.sendToServer(new PacketRedstoneConduitSignalColor(insCon, gui.getDir(), false));
     } else if (guiButton.id == ID_STRONG_BUTTON && strongCB != null) {
       insCon.setOutputStrength(gui.getDir(), strongCB.isSelected());
@@ -155,12 +156,8 @@ public class RedstoneSettings extends BaseSettingsPanel {
 
   @Override
   protected boolean hasFilterGui(boolean output) {
-    IFilterContainer<?> container = (IFilterContainer<?>) gui.getContainer();
-    IFilter filter = container.getFilter(!output ? FilterGuiUtil.INDEX_INPUT_REDSTONE : FilterGuiUtil.INDEX_OUTPUT_REDSTONE);
-    if (filter != null) {
-      return filter.hasGui();
-    }
-    return super.hasFilterGui(output);
+    return ((IFilter) ((IFilterContainer<?>) gui.getContainer()).getFilter(!output ? FilterGuiUtil.INDEX_INPUT_REDSTONE : FilterGuiUtil.INDEX_OUTPUT_REDSTONE))
+        .hasGui();
   }
 
   @Override

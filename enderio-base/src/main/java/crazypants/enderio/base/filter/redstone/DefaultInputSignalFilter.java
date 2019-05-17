@@ -13,6 +13,11 @@ import net.minecraft.world.World;
  */
 public class DefaultInputSignalFilter implements IInputSignalFilter {
 
+  public static final @Nonnull DefaultInputSignalFilter instance = new DefaultInputSignalFilter();
+
+  private DefaultInputSignalFilter() {
+  }
+
   @Override
   @Nonnull
   public CombinedSignal apply(@Nonnull CombinedSignal signal, @Nonnull World world, @Nonnull BlockPos pos) {

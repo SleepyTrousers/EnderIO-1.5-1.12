@@ -20,6 +20,7 @@ public class FilterRegistry {
     if (!isItemFilter(stack)) {
       return null;
     }
+    @SuppressWarnings("unchecked")
     IItemFilterUpgrade<T> upgrade = (IItemFilterUpgrade<T>) stack.getItem();
     T res = upgrade.createFilterFromStack(stack);
     return res;
