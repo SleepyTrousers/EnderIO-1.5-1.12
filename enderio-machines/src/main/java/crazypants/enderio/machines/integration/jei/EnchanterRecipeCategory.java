@@ -29,6 +29,7 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
+import mezz.jei.api.recipe.IFocus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
@@ -237,6 +238,13 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
     currentRecipe = recipeWrapper;
 
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+    IFocus<?> focus = recipeLayout.getFocus();
+    if (focus != null) {
+      // we cycle through different variants of the same output items here, keeping one of them in focus
+      // would trash our recipe.
+      guiItemStacks.setOverrideDisplayFocus(null);
+      // TODO: Re-build the ingredient lists to satisfy the focus.
+    }
 
     Map<Integer, ? extends IGuiIngredient<ItemStack>> ings = guiItemStacks.getGuiIngredients();
     currentRecipe.setInfoData(ings);
