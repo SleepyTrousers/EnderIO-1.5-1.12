@@ -34,7 +34,7 @@ public class ItemTotemicCapacitor extends ItemEndergyCapacitor {
 
   @Override
   public boolean canApplyAtEnchantingTable(@Nonnull ItemStack stack, @Nonnull Enchantment enchantment) {
-    if (enchantment.getName().equals("efficiency")) {
+    if (enchantment.getName().equals("enchantment.digging")) {
       return true;
     }
     final EnumEnchantmentType type = enchantment.type;
