@@ -13,6 +13,7 @@ import crazypants.enderio.base.capacitor.CapacitorHelper;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -34,11 +35,11 @@ public class ItemTotemicCapacitor extends ItemEndergyCapacitor {
 
   @Override
   public boolean canApplyAtEnchantingTable(@Nonnull ItemStack stack, @Nonnull Enchantment enchantment) {
-    if (enchantment.getName().equals("enchantment.digging")) {
+    if (enchantment == Enchantments.EFFICIENCY) {
       return true;
     }
     final EnumEnchantmentType type = enchantment.type;
-    return type == null ? false : type.canEnchantItem(stack.getItem());
+    return type != null && type.canEnchantItem(stack.getItem());
   }
 
   @Override
@@ -71,7 +72,7 @@ public class ItemTotemicCapacitor extends ItemEndergyCapacitor {
     for (int i = 0; i < enchantments.tagCount(); i++) {
       NBTTagCompound ench = enchantments.getCompoundTagAt(i);
       if (ench.hasKey("id") && ench.getInteger("id") == ENCHANT_ID_EFFICIENCY) {
-        return CapacitorHelper.increaseCapacitorLevel(EndergyCapacitorData.TOTEMIC_CAPACITOR, ench.getInteger("lvl") / 2);
+        return CapacitorHelper.increaseCapacitorLevel(EndergyCapacitorData.TOTEMIC_CAPACITOR, ench.getInteger("lvl") / 2f);
       }
     }
     return getData();
