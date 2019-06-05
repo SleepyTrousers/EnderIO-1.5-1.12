@@ -151,7 +151,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
         int powerStored = EnergyUpgradeManager.getEnergyStored(itemstack);
 
         HarvestResult res = new HarvestResult();
-        final IHarvestingTarget target = new AxeHarvestingTarget(bs, pos);
+        final IHarvestingTarget target = new AxeHarvestingTarget(bs, pos, DarkSteelConfig.axeHarvestRadius.get(), DarkSteelConfig.axeHarvestHeight.get());
         TreeHarvester.harvest(player.world, pos, res, target);
 
         NNList<BlockPos> sortedTargets = new NNList<BlockPos>(res.getHarvestedBlocks());

@@ -14,7 +14,7 @@ public class FarmHarvestingTarget implements IHarvestingTarget {
   private final @Nonnull TreeFarmer farmer;
   private final @Nonnull BoundingBox bb;
 
-  public FarmHarvestingTarget(@Nonnull TreeFarmer farmer, @Nonnull IFarmer farm) {
+  public FarmHarvestingTarget(@Nonnull TreeFarmer farmer, @Nonnull IFarmer farm, int radius, int height) {
     this.farmer = farmer;
     this.bb = new BoundingBox(farm.getLocation(), farm.getLocation().up(30)).expand(farm.getFarmSize() + 7, 0, farm.getFarmSize() + 7);
   }

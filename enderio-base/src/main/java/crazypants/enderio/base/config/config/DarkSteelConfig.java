@@ -53,6 +53,11 @@ public final class DarkSteelConfig {
   public static final IValue<Float> axeEfficiencyBoostWhenPowered = F_AXE.make("efficiencyBoostWhenPowered", 2f, //
       "The increase in efficiency when powered.").setRange(1, 20).sync();
 
+  public static final IValue<Integer> axeHarvestRadius = F_AXE.make("harvestRadius", 12, //
+      "Radius for multi-harvesting logs.").setRange(1, 64).sync();
+  public static final IValue<Integer> axeHarvestHeight = F_AXE.make("harvestHeight", 30, //
+      "Height (from initial block) for multi-harvesting logs.").setRange(1, 255).sync();
+
   public static final IValueFactory F_CROOK = F_DARK_STEEL.section(".crook");
 
   public static final IValue<Boolean> rightClickPlaceEnabled_crook = F_CROOK.make("rightClickPlaceEnabled", false, //

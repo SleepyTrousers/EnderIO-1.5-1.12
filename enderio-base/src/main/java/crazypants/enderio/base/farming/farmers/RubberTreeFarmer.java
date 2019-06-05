@@ -11,6 +11,7 @@ import crazypants.enderio.api.farm.FarmNotification;
 import crazypants.enderio.api.farm.FarmingAction;
 import crazypants.enderio.api.farm.IFarmer;
 import crazypants.enderio.api.farm.IHarvestResult;
+import crazypants.enderio.base.config.config.FarmingConfig;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.FarmingTool;
 import crazypants.enderio.base.farming.harvesters.FarmHarvestingTarget;
@@ -91,7 +92,8 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
     final World world = farm.getWorld();
     final HarvestResult res = new HarvestResult();
 
-    final IHarvestingTarget target = new FarmHarvestingTarget(this, farm);
+    final IHarvestingTarget target = new FarmHarvestingTarget(this, farm, FarmingConfig.rubbertreeHarvestRadius.get(),
+        FarmingConfig.rubbertreeHarvestHeight.get());
     TreeHarvester.harvest(world, bc, res, target);
     Collections.sort(res.getHarvestedBlocks(), comp);
 

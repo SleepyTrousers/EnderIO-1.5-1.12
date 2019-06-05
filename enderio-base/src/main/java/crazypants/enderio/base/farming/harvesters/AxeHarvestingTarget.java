@@ -16,10 +16,10 @@ public class AxeHarvestingTarget implements IHarvestingTarget {
   private final EnumType variant;
   private final @Nonnull BoundingBox bb;
 
-  public AxeHarvestingTarget(@Nonnull IBlockState wood, @Nonnull BlockPos pos) {
+  public AxeHarvestingTarget(@Nonnull IBlockState wood, @Nonnull BlockPos pos, int radius, int height) {
     this.wood = wood;
-    variant = getVariant(wood);
-    this.bb = new BoundingBox(pos, pos.up(30)).expand(12, 0, 12);
+    this.variant = getVariant(wood);
+    this.bb = new BoundingBox(pos, pos.up(height)).expand(radius, 0, radius);
   }
 
   private static EnumType getVariant(IBlockState bs) {
