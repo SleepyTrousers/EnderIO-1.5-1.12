@@ -36,6 +36,7 @@ import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockTripWire;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -200,7 +201,16 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
         player.world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
         return true;
       }
-    }
+/*    } else if (block instanceof BlockTripWire) {
+      // BlockTripWire.onBlockHarvested() does this hardcoded for vanilla shears
+      player.world.setBlockState(pos, blockState.withProperty(BlockTripWire.DISARMED, true), 4);
+      player.world.playEvent(2001, pos, Block.getStateId(blockState));
+      if (block.removedByPlayer(blockState, player.world, pos, player, false)) {
+        block.onBlockDestroyedByPlayer(player.world, pos, blockState);
+      }
+      block.harvestBlock(player.world, player, pos, blockState, null, itemstack);
+      return true;
+*/    }
     return false;
   }
 
