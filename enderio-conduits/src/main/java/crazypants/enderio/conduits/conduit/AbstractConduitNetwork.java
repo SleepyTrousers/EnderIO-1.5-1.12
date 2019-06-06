@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConduitUtil.UnloadedBlockException;
@@ -34,6 +36,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 public abstract class AbstractConduitNetwork<T extends IServerConduit, I extends T> implements IConduitNetwork<T, I> {
 
   private final @Nonnull List<I> conduits = new ArrayList<I>();
+  private long lastConduitListCheck = -1L; // server tick of the last time a full check on the conduit list was run. Used to limit the full check to once per
+                                           // tick.
 
   protected final @Nonnull Class<I> implClass;
   protected final @Nonnull Class<T> baseConduitClass;
@@ -68,22 +72,36 @@ public abstract class AbstractConduitNetwork<T extends IServerConduit, I extends
   @Override
   public void setNetwork(@Nonnull World world, @Nonnull IConduitBundle tile) throws UnloadedBlockException {
 
-    T conduit = tile.getConduit(getBaseConduitType());
+    List<T> candidates = new LinkedList<>();
+    candidates.add(tile.getConduit(getBaseConduitType()));
 
-    if (conduit != null && implClass.isAssignableFrom(conduit.getClass()) && conduit.setNetwork(this)) {
-      addConduit(implClass.cast(conduit));
-      TileEntity te = tile.getEntity();
-      Collection<T> connections = ConduitUtil.getConnectedConduits(world, te.getPos(), getBaseConduitType());
-      for (T con : connections) {
-        final IConduitNetwork<?, ?> network = con.getNetwork();
-        if (network == null) {
-          setNetwork(world, con.getBundle());
-        } else if (network != this) {
-          network.destroyNetwork();
-          setNetwork(world, con.getBundle());
-        }
+    while (!candidates.isEmpty()) {
+      T conduit = candidates.remove(0);
+      if (conduit == null || !implClass.isAssignableFrom(conduit.getClass())) {
+        continue;
       }
+      IConduitNetwork<?, ?> network = conduit.getNetwork();
+      if (network == this) {
+        continue;
+      } else if (network != null) {
+        network.destroyNetwork();
+      }
+
+      if (conduit.setNetwork(this)) {
+        addConduit(implClass.cast(conduit));
+        candidates.addAll(ConduitUtil.getConnectedConduits(world, conduit.getBundle().getEntity().getPos(), getBaseConduitType()));
+      }
+
     }
+  }
+
+  private boolean isSameTick() {
+    long temp = EnderIO.proxy.getServerTickCount();
+    if (lastConduitListCheck != temp) {
+      lastConduitListCheck = temp;
+      return false;
+    }
+    return true;
   }
 
   @Override
@@ -91,6 +109,7 @@ public abstract class AbstractConduitNetwork<T extends IServerConduit, I extends
     if (conduits.isEmpty()) {
       ServerTickHandler.addListener(this);
     }
+    boolean doFullCheck = !isSameTick();
     BlockPos newPos = null;
     boolean error = false;
     // Step 1: Is the new conduit attached to a TE that is valid?
@@ -118,7 +137,25 @@ public abstract class AbstractConduitNetwork<T extends IServerConduit, I extends
       new Exception("trace for message above").printStackTrace();
       return;
     }
-    // Step 2: Check for duplicates and other errors
+    // Step 2: Check for duplicates and other errors (short variant)
+    if (!doFullCheck) {
+      for (I oldConduit : conduits) {
+        if (newConduit == oldConduit) {
+          // real dupe, ignore it
+          return;
+        }
+        if (oldConduit.getBundle().getEntity().getPos().equals(newPos)) {
+          // Something fishy is happening, we need to do the full check
+          doFullCheck = true;
+          break;
+        }
+      }
+      if (!doFullCheck) {
+        conduits.add(newConduit);
+        return;
+      }
+    }
+    // Step 2: Check for duplicates and other errors (full variant)
     List<I> old = new ArrayList<I>(conduits);
     conduits.clear();
     boolean newConduitIsBad = false;
