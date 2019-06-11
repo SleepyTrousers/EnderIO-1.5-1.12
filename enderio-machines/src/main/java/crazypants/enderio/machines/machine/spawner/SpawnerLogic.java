@@ -69,7 +69,9 @@ public class SpawnerLogic {
         spawner.setNotification(SpawnerNotification.BAD_SOUL);
         return false;
       }
-      return isAreaClear(world, entity, spawnRangeXZ, spawnRangeY, amount);
+      final boolean result = isAreaClear(world, entity, spawnRangeXZ, spawnRangeY, amount);
+      cleanupUnspawnedEntity(entity);
+      return result;
     }
     return true;
   }
@@ -79,7 +81,6 @@ public class SpawnerLogic {
       int nearbyEntities = world
           .getEntitiesWithinAABB(entity.getClass(), spawner.getBounds().expand(spawnRangeXZ, spawnRangeY, spawnRangeXZ), EntitySelectors.IS_ALIVE).size();
       if (nearbyEntities >= amount) {
-        cleanupUnspawnedEntity(entity);
         spawner.setNotification(SpawnerNotification.AREA_FULL);
         return false;
       }
@@ -102,6 +103,7 @@ public class SpawnerLogic {
     int spawnRange = spawner.getRange();
 
     if (!isAreaClear(world, entity, spawnRange, 2, SpawnerConfig.poweredSpawnerMaxNearbyEntities.get())) {
+      cleanupUnspawnedEntity(entity);
       return false;
     }
 
