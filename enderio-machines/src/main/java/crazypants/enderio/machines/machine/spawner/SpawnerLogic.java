@@ -179,6 +179,7 @@ public class SpawnerLogic {
 
   private void cleanupUnspawnedEntity(Entity entity) {
     if (entity != null) {
+      entity.setDead();
       final Entity ridingEntity = entity.getRidingEntity();
       if (ridingEntity != null) {
         ridingEntity.setDead();
