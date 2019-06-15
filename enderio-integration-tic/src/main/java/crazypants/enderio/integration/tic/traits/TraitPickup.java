@@ -35,8 +35,8 @@ public class TraitPickup extends ModifierTrait {
   }
 
   @Override
-  public void afterHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damageDealt, boolean wasCritical, boolean wasHit) {
-    if (wasHit && damageDealt > 0 && !player.world.isRemote && !(player instanceof FakePlayerEIO)) {
+  public void onHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damage, boolean isCritical) {
+    if (damage > 0 && !player.world.isRemote && !(player instanceof FakePlayerEIO)) {
       target.getEntityData().setUniqueId(DirectUpgrade.HIT_BY_DIRECT_FREE, player.getUniqueID());
     }
   }
