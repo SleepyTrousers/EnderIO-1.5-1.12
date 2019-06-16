@@ -29,7 +29,6 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -47,7 +46,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
@@ -194,33 +192,32 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
       BlockPos pos2 = pos.offset(side);
       if (world.isBlockLoaded(pos2)) {
         Block block = world.getBlockState(pos2).getBlock();
-        if (block instanceof IFluidBlock || block instanceof BlockLiquid) {
-          IFluidHandler targetFluidHandler = FluidUtil.getFluidHandler(world, pos2, side.getOpposite());
-          if (targetFluidHandler != null) {
-            FluidStack fluidStack = targetFluidHandler.drain(1000, false);
-            final float heatInKelvin = getHeatDisplayValue();
-            if (fluidStack != null && fluidStack.amount >= 1000 && fluidStack.getFluid().getTemperature(fluidStack) < heatInKelvin) {
-              heat = Math.max(0, heat - LavaGenConfig.heatLossActive.get());
-              if (fluidStack.getFluid() == FluidRegistry.WATER) {
-                if (heatInKelvin > C2K(100) && random.nextFloat() < LavaGenConfig.activeCoolingEvaporatesWater.get()) {
-                  world.setBlockToAir(pos2);
-                  world.playSound(null, pos2.getX() + .5f, pos2.getY() + .5f, pos2.getZ() + .5f, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F,
-                      2.6F + (random.nextFloat() - random.nextFloat()) * 0.8F);
-                  PacketSpawnParticles effect = new PacketSpawnParticles();
-                  for (int k = 0; k < 8; ++k) {
-                    effect.add(pos2.getX() + random.nextDouble(), pos2.getY() + random.nextDouble(), pos2.getZ() + random.nextDouble(), 1,
-                        EnumParticleTypes.SMOKE_LARGE);
-                  }
-                  effect.send(world, pos2);
-                  stonePoints += LavaGenConfig.heatLossActive.get(); // water, consumed
-                } else {
-                  cobblePoints += LavaGenConfig.heatLossActive.get(); // water, not consumed
+        IFluidHandler targetFluidHandler = FluidUtil.getFluidHandler(world, pos2, side.getOpposite());
+        if (targetFluidHandler != null) {
+          FluidStack fluidStack = targetFluidHandler.drain(1000, false);
+          final float heatInKelvin = getHeatDisplayValue();
+          if (fluidStack != null && fluidStack.amount >= 0 && fluidStack.getFluid().getTemperature(fluidStack) < heatInKelvin) {
+            float factor = fluidStack.amount / 1000f;
+            heat = Math.max(0, heat - LavaGenConfig.heatLossActive.get());
+            if (fluidStack.getFluid() == FluidRegistry.WATER) {
+              if (heatInKelvin > C2K(100) && random.nextFloat() < LavaGenConfig.activeCoolingEvaporatesWater.get()) {
+                targetFluidHandler.drain(fluidStack.amount, true);
+                world.playSound(null, pos2.getX() + .5f, pos2.getY() + .5f, pos2.getZ() + .5f, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F,
+                    2.6F + (random.nextFloat() - random.nextFloat()) * 0.8F);
+                PacketSpawnParticles effect = new PacketSpawnParticles();
+                for (int k = 0; k < 8; ++k) {
+                  effect.add(pos2.getX() + random.nextDouble(), pos2.getY() + random.nextDouble(), pos2.getZ() + random.nextDouble(), 1,
+                      EnumParticleTypes.SMOKE_LARGE);
                 }
-              } else if (fluidStack.getFluid().getTemperature(fluidStack) < C2K(0)) {
-                obsidianPoints += LavaGenConfig.heatLossActive.get(); // other fluid, very cold
+                effect.send(world, pos2);
+                stonePoints += LavaGenConfig.heatLossActive.get() * factor; // water, consumed
               } else {
-                cobblePoints += LavaGenConfig.heatLossActive.get(); // other fluid, luke warm
+                cobblePoints += LavaGenConfig.heatLossActive.get() * factor; // water, not consumed
               }
+            } else if (fluidStack.getFluid().getTemperature(fluidStack) < C2K(0)) {
+              obsidianPoints += LavaGenConfig.heatLossActive.get() * factor; // other fluid, very cold
+            } else {
+              cobblePoints += LavaGenConfig.heatLossActive.get() * factor; // other fluid, luke warm
             }
           }
           // TODO 1.14: add Blue Ice
