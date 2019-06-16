@@ -223,6 +223,8 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
               }
             }
           }
+          // TODO 1.14: add Blue Ice
+          // TODO 1.14: add separate chances for melting that reflect the recipes
         } else if (block == Blocks.ICE || block == Blocks.FROSTED_ICE || block == Blocks.PACKED_ICE) {
           heat = Math.max(0, heat - LavaGenConfig.heatLossActive.get());
           obsidianPoints += LavaGenConfig.heatLossActive.get(); // ice is always cold
