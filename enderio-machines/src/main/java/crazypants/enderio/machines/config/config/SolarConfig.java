@@ -1,8 +1,8 @@
 package crazypants.enderio.machines.config.config;
 
+import crazypants.enderio.machines.config.Config;
 import info.loenwind.autoconfig.factory.IValue;
 import info.loenwind.autoconfig.factory.IValueFactory;
-import crazypants.enderio.machines.config.Config;
 
 public final class SolarConfig {
 
@@ -35,8 +35,11 @@ public final class SolarConfig {
       "Maximum output in RF/t of the Vibrant Photovoltaic Panels.").setMin(1).sync();
 
   public static final IValue<Boolean> canSolarTypesJoin = F.make("canSolarTypesJoin", false, //
-      "When enabled Photovoltaic Panels of different kinds can join together as a multi-block").setMin(1).sync();
+      "When enabled Photovoltaic Panels of different kinds can join together as a multi-block").sync();
   public static final IValue<Integer> solarRecalcSunTick = F.make("solarRecalcSunTick", 5 * 20, //
       "How often (in ticks) the Photovoltaic Panels should check the sun's angle.").setMin(1).sync();
+
+  public static final IValue<Boolean> solarPoweredBySunshine = F.make("solarPoweredBySunshine", true, //
+      "When enabled Photovoltaic Panels accept Liquid Sunshine directly above them as source of sunlight.").sync();
 
 }

@@ -4,11 +4,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.base.TileEntityEio;
+import crazypants.enderio.base.fluid.BlockFluidEio;
+import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe.IHasConduitProbeData;
 import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.base.power.forge.tile.ILegacyPoweredTile;
 import crazypants.enderio.base.power.forge.tile.InternalGeneratorTileWrapper;
+import crazypants.enderio.machines.config.config.SolarConfig;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -112,15 +115,33 @@ public class TileSolarPanel extends TileEntityEio implements ILegacyPoweredTile,
     return calculateLightRatio(world);
   }
 
-  boolean canSeeSun() {
-    return canSeeSun(world, pos);
+  static boolean isPowered(@Nonnull World world, BlockPos pos) {
+    return isSolarPowered(world, pos) || isArtificiallyPowered(world, pos);
   }
 
-  static boolean canSeeSun(World world, BlockPos pos) {
+  static boolean isSolarPowered(@Nonnull World world, BlockPos pos) {
     return world.canBlockSeeSky(pos.up());
   }
 
-  public static float calculateLightRatio(World world) {
+  static boolean isArtificiallyPowered(@Nonnull World world, BlockPos pos) {
+    // TODO 1.14: Change to check if panel is waterlogged by liquid sunshine
+    return SolarConfig.solarPoweredBySunshine.get() && world.getBlockState(pos.up()).getBlock() == Fluids.LIQUID_SUNSHINE.getBlock();
+  }
+
+  static float calculateLocalLightRatio(@Nonnull World world, BlockPos pos, float baseRatio) {
+    float ratio = isSolarPowered(world, pos) ? baseRatio : 0;
+    if (ratio < 1 && SolarConfig.solarPoweredBySunshine.get()) {
+      IBlockState blockState = world.getBlockState(pos.up());
+      if (blockState.getBlock() == Fluids.LIQUID_SUNSHINE.getBlock()) {
+        @SuppressWarnings("null")
+        float value = ((BlockFluidEio.LiquidSunshine) Fluids.LIQUID_SUNSHINE.getBlock()).getScaledLevel(blockState, world, pos.up());
+        ratio = Math.max(value, ratio);
+      }
+    }
+    return ratio;
+  }
+
+  public static float calculateLightRatio(@Nonnull World world) {
     int lightValue = EnumSkyBlock.SKY.defaultLightValue - world.getSkylightSubtracted();
     float sunAngle = world.getCelestialAngleRadians(1.0F);
 

@@ -236,7 +236,7 @@ public final class BlockFluidEio {
   // Liquid Sunshine
   /////////////////////////////////////////////////////////////////////////
 
-  static class LiquidSunshine extends BlockFluidEnder {
+  public static class LiquidSunshine extends BlockFluidEnder {
 
     protected LiquidSunshine(@Nonnull Fluid fluid, @Nonnull Material material, int fogColor) {
       super(fluid, material, fogColor);
@@ -249,6 +249,12 @@ public final class BlockFluidEio {
         ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.GLOWING, 1200, 0, true, true));
       }
       super.onEntityCollidedWithBlock(world, pos, state, entity);
+    }
+
+    public float getScaledLevel(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+      @SuppressWarnings("null")
+      int data = quantaPerBlock - state.getValue(LEVEL);
+      return (int) (data / quantaPerBlockFloat * lightValue) / 15f;
     }
 
   }

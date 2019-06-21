@@ -133,6 +133,7 @@ public enum Fluids {
     }
   };
 
+  private @Nullable BlockFluidEnder block = null;
   private final @Nonnull String name;
   private final boolean hasBlock;
   protected final @Nonnull Material material;
@@ -178,6 +179,14 @@ public enum Fluids {
 
   public @Nonnull ItemStack getBucket() {
     return getBucket(getFluid());
+  }
+
+  public @Nullable BlockFluidEnder getBlock() {
+    return block;
+  }
+
+  public @Nonnull BlockFluidEnder getBlockNN() {
+    return NullHelper.notnull(block, "Block missing");
   }
 
   public static @Nonnull ItemStack getBucket(@Nonnull Fluid fluid) {
@@ -228,7 +237,7 @@ public enum Fluids {
   public static void registerBlocks(@Nonnull RegistryEvent.Register<Block> event) {
     for (Fluids fluid : values()) {
       if (fluid.hasBlock) {
-        event.getRegistry().register(fluid.init());
+        event.getRegistry().register(fluid.block = fluid.init());
       }
     }
   }

@@ -157,13 +157,12 @@ public class BlockSolarPanel extends BlockEio<TileSolarPanel> implements IResour
   @Override
   @SideOnly(Side.CLIENT)
   public void randomDisplayTick(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
-    if (state.getValue(SolarType.KIND) == SolarType.VIBRANT) {
-      if (TileSolarPanel.canSeeSun(world, pos) && TileSolarPanel.calculateLightRatio(world) / 3 > rand.nextFloat()) {
-        double d0 = pos.getX() + 0.5D + (Math.random() - 0.5D) * 0.5D;
-        double d1 = pos.getY() + BLOCK_HEIGHT;
-        double d2 = pos.getZ() + 0.5D + (Math.random() - 0.5D) * 0.5D;
-        world.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1, d2, 0x47 / 255d, 0x9f / 255d, 0xa3 / 255d);
-      }
+    if (state.getValue(SolarType.KIND) == SolarType.VIBRANT && TileSolarPanel.isPowered(world, pos)
+        && TileSolarPanel.calculateLocalLightRatio(world, pos, TileSolarPanel.calculateLightRatio(world)) / 3 > rand.nextFloat()) {
+      double d0 = pos.getX() + 0.5D + (Math.random() - 0.5D) * 0.5D;
+      double d1 = pos.getY() + BLOCK_HEIGHT;
+      double d2 = pos.getZ() + 0.5D + (Math.random() - 0.5D) * 0.5D;
+      world.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1, d2, 0x47 / 255d, 0x9f / 255d, 0xa3 / 255d);
     }
   }
 
