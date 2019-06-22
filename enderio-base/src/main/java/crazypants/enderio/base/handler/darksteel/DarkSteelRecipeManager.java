@@ -37,7 +37,7 @@ public class DarkSteelRecipeManager {
 
   @SubscribeEvent
   public static void handleAnvilEvent(AnvilUpdateEvent evt) {
-    if (evt.getLeft().getItem() instanceof IDarkSteelItem) {
+    if (evt.getLeft().getCount() == 1 && evt.getLeft().getItem() instanceof IDarkSteelItem) {
       if (isRepair(evt, (IDarkSteelItem) evt.getLeft().getItem())) {
         handleRepair(evt, (IDarkSteelItem) evt.getLeft().getItem());
       } else {
