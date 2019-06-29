@@ -29,6 +29,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import slimeknights.mantle.util.RecipeMatch;
+import slimeknights.tconstruct.library.TinkerAPIException;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.smeltery.CastingRecipe;
 import slimeknights.tconstruct.library.smeltery.MeltingRecipe;
@@ -58,7 +59,11 @@ public class TicRegistration {
     }
 
     gcd(fluidResult, fluids);
-    TinkerRegistry.registerAlloy(fluidResult, fluids);
+    try {
+      TinkerRegistry.registerAlloy(fluidResult, fluids);
+    } catch (TinkerAPIException e) {
+      throw new RuntimeException("Error while registering alloy recipe '" + debug + " => " + toString(fluidResult) + "' with Tinkers", e);
+    }
     Log.debug("Tinkers.registerAlloy: " + toString(fluidResult) + ", " + debug);
   }
 
@@ -108,12 +113,22 @@ public class TicRegistration {
       if (!basin.getCast().isEmpty()) {
         for (NNIterator<ItemStack> itr = basin.getCast().getItemStacks().fastIterator(); itr.hasNext();) {
           ItemStack castStack = itr.next();
-          TinkerRegistry.registerBasinCasting(basin.getOutput().getItemStack(), castStack, basin.getFluid(), (int) Math.ceil(basin.getAmount()));
+          try {
+            TinkerRegistry.registerBasinCasting(basin.getOutput().getItemStack(), castStack, basin.getFluid(), (int) Math.ceil(basin.getAmount()));
+          } catch (TinkerAPIException e) {
+            throw new RuntimeException("Error while registering basin casting recipe '" + toString(basin.getOutput()) + ", " + toString(castStack) + ", "
+                + basin.getFluid().getName() + ", " + basin.getAmount() + "' with Tinkers", e);
+          }
           Log.debug("Tinkers.registerBasinCasting: " + toString(basin.getOutput()) + ", " + toString(castStack) + ", " + basin.getFluid().getName() + ", "
               + basin.getAmount());
         }
       } else {
-        TinkerRegistry.registerBasinCasting(basin.getOutput().getItemStack(), Prep.getEmpty(), basin.getFluid(), (int) Math.ceil(basin.getAmount()));
+        try {
+          TinkerRegistry.registerBasinCasting(basin.getOutput().getItemStack(), Prep.getEmpty(), basin.getFluid(), (int) Math.ceil(basin.getAmount()));
+        } catch (TinkerAPIException e) {
+          throw new RuntimeException("Error while registering basin casting recipe '" + toString(basin.getOutput()) + ", (empty), " + basin.getFluid().getName()
+              + ", " + basin.getAmount() + "' with Tinkers", e);
+        }
         Log.debug("Tinkers.registerBasinCasting: " + toString(basin.getOutput()) + ", (empty), " + basin.getFluid().getName() + ", " + basin.getAmount());
       }
     }
@@ -137,14 +152,24 @@ public class TicRegistration {
         if (!cast.getCast().isEmpty()) {
           for (NNIterator<ItemStack> itr = cast.getCast().getItemStacks().fastIterator(); itr.hasNext();) {
             ItemStack castStack = itr.next();
-            TinkerRegistry.registerTableCasting(new CastingRecipe(cast.getResult().getItemStack(), RecipeMatch.ofNBT(castStack), cast.getFluid(),
-                (int) Math.ceil(cast.getAmount()), cast.isConsumeCast(), false));
+            try {
+              TinkerRegistry.registerTableCasting(new CastingRecipe(cast.getResult().getItemStack(), RecipeMatch.ofNBT(castStack), cast.getFluid(),
+                  (int) Math.ceil(cast.getAmount()), cast.isConsumeCast(), false));
+            } catch (TinkerAPIException e) {
+              throw new RuntimeException("Error while registering table casting recipe '" + toString(cast.getResult()) + ", " + toString(castStack) + ", "
+                  + cast.getFluid().getName() + ", " + cast.getAmount() + "' with Tinkers", e);
+            }
             Log.debug("Tinkers.registerTableCasting: " + toString(cast.getResult()) + ", " + toString(castStack) + ", " + cast.getFluid().getName() + ", "
                 + cast.getAmount());
           }
         } else {
-          TinkerRegistry.registerTableCasting(
-              new CastingRecipe(cast.getResult().getItemStack(), null, cast.getFluid(), (int) Math.ceil(cast.getAmount()), cast.isConsumeCast(), false));
+          try {
+            TinkerRegistry.registerTableCasting(
+                new CastingRecipe(cast.getResult().getItemStack(), null, cast.getFluid(), (int) Math.ceil(cast.getAmount()), cast.isConsumeCast(), false));
+          } catch (TinkerAPIException e) {
+            throw new RuntimeException("Error while registering table casting recipe '" + toString(cast.getResult()) + ", (no cast), "
+                + cast.getFluid().getName() + ", " + cast.getAmount() + "' with Tinkers", e);
+          }
           Log.debug("Tinkers.registerTableCasting: " + toString(cast.getResult()) + ", (no cast), " + cast.getFluid().getName() + ", " + cast.getAmount());
         }
       }
@@ -172,7 +197,12 @@ public class TicRegistration {
       }
       if (smelt.getFluidOutput() != null) {
         for (ItemStack in : smelt.getInput().getItemStacks()) {
-          TinkerRegistry.registerMelting(in, smelt.getFluidOutput(), (int) Math.max(1, Math.floor(smelt.getAmount())));
+          try {
+            TinkerRegistry.registerMelting(in, smelt.getFluidOutput(), (int) Math.max(1, Math.floor(smelt.getAmount())));
+          } catch (TinkerAPIException e) {
+            throw new RuntimeException("Error while registering melting recipe '" + toString(in) + ", " + smelt.getFluidOutput().getName() + ", "
+                + smelt.getAmount() + "' with Tinkers", e);
+          }
           Log.debug("Tinkers.registerMelting: " + toString(in) + ", " + smelt.getFluidOutput().getName() + ", " + smelt.getAmount());
         }
       }
