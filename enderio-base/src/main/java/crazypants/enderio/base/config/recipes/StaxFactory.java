@@ -20,25 +20,49 @@ public class StaxFactory {
   }
 
   public <T extends RecipeRoot> T readRoot(T target, String rootElement) throws XMLStreamException, InvalidRecipeConfigException {
+    T result = null;
     while (eventReader.hasNext()) {
       XMLEvent event = eventReader.nextEvent();
-      if (event.isStartElement()) {
-        StartElement startElement = event.asStartElement();
-        if (rootElement.equals(startElement.getName().getLocalPart())) {
-          return read(target, startElement);
-        } else {
-          throw new InvalidRecipeConfigException("Unexpected tag '" + startElement.getName() + "'");
+
+      switch (event.getEventType()) {
+      case XMLStreamConstants.NAMESPACE:
+      case XMLStreamConstants.PROCESSING_INSTRUCTION:
+      case XMLStreamConstants.COMMENT:
+      case XMLStreamConstants.DTD:
+      case XMLStreamConstants.START_DOCUMENT:
+      case XMLStreamConstants.END_DOCUMENT:
+        break;
+
+      case XMLStreamConstants.START_ELEMENT:
+        if (result == null) {
+          StartElement startElement = event.asStartElement();
+          if (rootElement.equals(startElement.getName().getLocalPart())) {
+            result = read(target, startElement);
+            break;
+          } else {
+            throw new InvalidRecipeConfigException("Unexpected tag '" + startElement.getName() + "'");
+          }
         }
+
+      case XMLStreamConstants.END_ELEMENT:
+      case XMLStreamConstants.CHARACTERS:
+      case XMLStreamConstants.ATTRIBUTE:
+      default:
+        throw new InvalidRecipeConfigException("Unexpected element '" + event + "'");
       }
     }
 
-    throw new InvalidRecipeConfigException("Missing top-level tag '" + rootElement + "'");
+    if (result == null) {
+      throw new InvalidRecipeConfigException("Missing top-level tag '" + rootElement + "'");
+    }
+    return result;
   }
 
   public <T extends RecipeConfigElement> T read(T target, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     target.setSource(source != null ? source : "unkown");
 
     try {
+      @SuppressWarnings("unchecked")
       Iterator<Attribute> attributes = startElement.getAttributes();
       while (attributes.hasNext()) {
         Attribute attribute = attributes.next();
