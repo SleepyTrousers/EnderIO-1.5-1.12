@@ -84,7 +84,7 @@ public class JeiPlugin implements IModPlugin {
       // Note: Need the cast for OpenJDK
       JeiHidingRegistry.getObjectsToHide().apply((NNList.Callback<Object>) e -> {
         blacklist.addIngredientToBlacklist(e);
-        Log.warn("Hiding ingredient in JEI: ", e); // TODO: Demote to "debug"
+        Log.debug("Hiding ingredient in JEI: ", e);
       });
     }
   }
