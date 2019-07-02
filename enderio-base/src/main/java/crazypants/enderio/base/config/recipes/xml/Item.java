@@ -8,7 +8,7 @@ public class Item extends ItemOptional {
   public Object readResolve() throws InvalidRecipeConfigException {
     super.readResolve();
     if (nullItem) {
-      throw new InvalidRecipeConfigException("Missing items name");
+      throw new InvalidRecipeConfigException("Missing item name");
     }
     return this;
   }

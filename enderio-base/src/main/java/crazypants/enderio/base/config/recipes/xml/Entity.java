@@ -1,33 +1,34 @@
 package crazypants.enderio.base.config.recipes.xml;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.config.recipes.IRecipeConfigElement;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
-import crazypants.enderio.base.config.recipes.RecipeConfigElement;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import crazypants.enderio.base.recipe.spawner.EntityDataRegistry;
 import crazypants.enderio.util.CapturedMob;
 import net.minecraft.util.ResourceLocation;
 
-public class Entity implements RecipeConfigElement {
+public class Entity implements IRecipeConfigElement {
 
-  protected String name;
+  protected Optional<String> name = empty();
   private double costMultiplier = 1;
   private boolean disabled = false;
   private boolean isDefault = false;
   private boolean isBoss = false;
   private boolean clone = false;
   private boolean soulvial = true;
-  protected transient @Nonnull Predicate<ResourceLocation> filter = always -> false;
+  protected transient Predicate<ResourceLocation> filter = always -> false;
 
-  public void register(@Nonnull String recipeName) {
+  public void register(String recipeName) {
     if (isDefault()) {
       EntityDataRegistry.getInstance().setDefaults(getCostMultiplier(), isDisabled(), !isSoulvial(), isClone());
     } else if (isBoss()) {
@@ -37,14 +38,17 @@ public class Entity implements RecipeConfigElement {
     }
   }
 
-  private static final Pattern WILDCARD1 = Pattern.compile("^([a-z0-9_]+|\\*):([a-z0-9_]*)\\*([a-z0-9_]*)$");
-  private static final Pattern WILDCARD2 = Pattern.compile("^([a-z0-9_]*)\\*([a-z0-9_]*):([a-z0-9_]+|\\*)$");
+  @SuppressWarnings("null")
+  private static final Pattern WILDCARD1 = Pattern.compile("^([a-z0-9_]+|\\*):([a-z0-9_]*)\\*([a-z0-9_]*)$"),
+      WILDCARD2 = Pattern.compile("^([a-z0-9_]*)\\*([a-z0-9_]*):([a-z0-9_]+|\\*)$");
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
-    if (name == null || name.isEmpty()) {
+    if (!name.isPresent()) {
       throw new InvalidRecipeConfigException("Entity name must be set");
     }
+    @SuppressWarnings("hiding")
+    String name = this.name.get();
     if (name.equals("*") || name.equals("*:*")) {
       isDefault = true;
     } else if (name.equals("*boss*") || name.equals("*:*boss*")) {
@@ -73,13 +77,14 @@ public class Entity implements RecipeConfigElement {
   }
 
   private static class ResourceLocationMatcher implements Predicate<ResourceLocation> {
-    private final String modid, modidPre, modidPost, id, pre, post;
+    private final @Nullable String modid, modidPre, modidPost, id, pre, post;
 
-    private static String fix(String id) {
-      return id == null || id.isEmpty() || "*".equals(id) ? null : id;
+    private static @Nullable String fix(@Nullable String id) {
+      return id == null || id.trim().isEmpty() || "*".equals(id.trim()) ? null : id;
     }
 
-    ResourceLocationMatcher(String modid, String modidPre, String modidPost, String id, String pre, String post) {
+    ResourceLocationMatcher(@Nullable String modid, @Nullable String modidPre, @Nullable String modidPost, @Nullable String id, @Nullable String pre,
+        @Nullable String post) {
       this.modid = fix(modid);
       this.modidPre = fix(modidPre);
       this.modidPost = fix(modidPost);
@@ -89,12 +94,12 @@ public class Entity implements RecipeConfigElement {
     }
 
     @Override
-    public boolean test(ResourceLocation t) {
+    public boolean test(@Nullable ResourceLocation t) {
       return t != null //
-          && (modid == null || modid.equals(t.getResourceDomain())) //
+          && (modid == null || t.getResourceDomain().equals(modid)) //
           && (modidPre == null || t.getResourceDomain().startsWith(modidPre)) //
           && (modidPost == null || t.getResourceDomain().endsWith(modidPost)) //
-          && (id == null || id.equals(t.getResourcePath())) //
+          && (id == null || t.getResourcePath().equals(id)) //
           && (pre == null || t.getResourcePath().startsWith(pre)) //
           && (post == null || t.getResourcePath().endsWith(post));
     }
@@ -103,12 +108,12 @@ public class Entity implements RecipeConfigElement {
   @Override
   public void enforceValidity() throws InvalidRecipeConfigException {
     if (!isValid()) {
-      Log.warn("Could not find an entity for '" + name + "'");
+      Log.warn("Could not find an entity for '" + name.get() + "'");
       Log.warn("Available entities are:");
       for (CapturedMob possible : CapturedMob.getAllSouls()) {
         Log.warn(" -> " + possible.getEntityName() + " (" + possible.getDisplayName() + ")");
       }
-      throw new InvalidRecipeConfigException("Could not find an entity for '" + name + "'");
+      throw new InvalidRecipeConfigException("Could not find an entity for '" + name.get() + "'");
     }
   }
 
@@ -128,7 +133,7 @@ public class Entity implements RecipeConfigElement {
   @Override
   public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
     if ("name".equals(name)) {
-      this.name = value == null ? "" : value.trim();
+      this.name = ofString(value);
       return true;
     }
     if ("costMultiplier".equals(name)) {

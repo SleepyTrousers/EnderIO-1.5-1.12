@@ -19,7 +19,7 @@ import crazypants.enderio.base.recipe.slicensplice.SliceAndSpliceRecipeManager;
 public class Slicing extends AbstractCrafting {
 
   private int energy;
-  private NNList<Item> inputs = new NNList<>();
+  private final NNList<Item> inputs = new NNList<>();
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {

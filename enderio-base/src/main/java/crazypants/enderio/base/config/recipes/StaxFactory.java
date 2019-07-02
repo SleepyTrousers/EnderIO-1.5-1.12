@@ -2,12 +2,15 @@ package crazypants.enderio.base.config.recipes;
 
 import java.util.Iterator;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+
+import com.enderio.core.common.util.NullHelper;
 
 public class StaxFactory {
 
@@ -19,7 +22,7 @@ public class StaxFactory {
     this.source = source;
   }
 
-  public <T extends RecipeRoot> T readRoot(T target, String rootElement) throws XMLStreamException, InvalidRecipeConfigException {
+  public <T extends IRecipeRoot> T readRoot(T target, String rootElement) throws XMLStreamException, InvalidRecipeConfigException {
     T result = null;
     while (eventReader.hasNext()) {
       XMLEvent event = eventReader.nextEvent();
@@ -58,7 +61,7 @@ public class StaxFactory {
     return result;
   }
 
-  public <T extends RecipeConfigElement> T read(T target, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
+  public @Nonnull <T extends IRecipeConfigElement> T read(T target, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     target.setSource(source != null ? source : "unkown");
 
     try {
@@ -66,7 +69,7 @@ public class StaxFactory {
       Iterator<Attribute> attributes = startElement.getAttributes();
       while (attributes.hasNext()) {
         Attribute attribute = attributes.next();
-        if (!target.setAttribute(this, attribute.getName().getLocalPart().toString(), attribute.getValue())) {
+        if (!target.setAttribute(this, attribute.getName().getLocalPart().toString(), NullHelper.first(attribute.getValue(), ""))) {
           throw new InvalidRecipeConfigException("Unexpected attribute '" + attribute.getName() + "' inside " + startElement.getName());
         }
       }
@@ -84,7 +87,7 @@ public class StaxFactory {
 
       try {
         if (event.isStartElement()) {
-          if (!target.setElement(this, event.asStartElement().getName().getLocalPart(), event.asStartElement())) {
+          if (!target.setElement(this, NullHelper.first(event.asStartElement().getName().getLocalPart(), ""), NullHelper.first(event.asStartElement()))) {
             throw new InvalidRecipeConfigException("Unexpected tag '" + event.asStartElement().getName() + "' inside " + startElement.getName());
           }
         } else if (event.isEndElement()) {

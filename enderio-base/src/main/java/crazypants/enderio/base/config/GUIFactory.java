@@ -1,7 +1,6 @@
 package crazypants.enderio.base.config;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;

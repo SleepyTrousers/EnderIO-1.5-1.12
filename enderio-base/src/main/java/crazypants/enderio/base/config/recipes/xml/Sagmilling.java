@@ -1,7 +1,7 @@
 package crazypants.enderio.base.config.recipes.xml;
 
-import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
@@ -20,21 +20,21 @@ import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
 public class Sagmilling extends AbstractCrafting {
 
   private int energy;
-  private @Nonnull RecipeBonusType bonus = RecipeBonusType.MULTIPLY_OUTPUT;
-  private Item input;
+  private RecipeBonusType bonus = RecipeBonusType.MULTIPLY_OUTPUT;
+  private Optional<Item> input = empty();
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
     try {
       super.readResolve();
-      if (input == null) {
+      if (!input.isPresent()) {
         throw new InvalidRecipeConfigException("Missing <input>");
       }
       if (energy <= 0) {
         throw new InvalidRecipeConfigException("Invalid low value for 'energy'");
       }
 
-      valid = valid && input.isValid();
+      valid = valid && input.get().isValid();
 
     } catch (InvalidRecipeConfigException e) {
       throw new InvalidRecipeConfigException(e, "in <sagmilling>");
@@ -50,13 +50,13 @@ public class Sagmilling extends AbstractCrafting {
   @Override
   public void enforceValidity() throws InvalidRecipeConfigException {
     super.enforceValidity();
-    input.enforceValidity();
+    input.get().enforceValidity();
   }
 
   @Override
   public void register(@Nonnull String recipeName) {
     if (isValid() && isActive()) {
-      ThingsRecipeInput recipeInput = new ThingsRecipeInput(input.getThing());
+      ThingsRecipeInput recipeInput = new ThingsRecipeInput(input.get().getThing());
       NNList<RecipeOutput> recipeOutputs = new NNList<>();
       for (Output output : getOutputs()) {
         if (output instanceof OutputWithChance) {
@@ -90,16 +90,11 @@ public class Sagmilling extends AbstractCrafting {
 
   @Override
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
-    if ("input".equals(name)) {
-      if (input == null) {
-        input = factory.read(new ItemIntegerAmount().setAllowDelaying(false), startElement);
-        return true;
-      }
+    if ("input".equals(name) && !input.isPresent()) {
+      input = of(factory.read(new ItemIntegerAmount().setAllowDelaying(false), startElement));
+      return true;
     }
     if ("output".equals(name)) {
-      if (outputs == null) {
-        outputs = new ArrayList<Output>();
-      }
       outputs.add(factory.read(new OutputWithChance(), startElement));
       return true;
     }

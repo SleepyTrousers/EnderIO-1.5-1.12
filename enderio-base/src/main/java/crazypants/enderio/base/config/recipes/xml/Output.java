@@ -1,5 +1,7 @@
 package crazypants.enderio.base.config.recipes.xml;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 
@@ -16,38 +18,33 @@ public class Output extends AbstractConditional {
 
   private int amount;
 
-  private String nbt;
+  private Optional<String> nbt = empty();
 
-  private Item item;
+  private Optional<Item> item = empty();
 
   private boolean required = true;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
     super.readResolve();
-    if (item == null) {
+    if (!item.isPresent()) {
       throw new InvalidRecipeConfigException("Missing name in <output>");
     }
-    if (isValid()) {
-      if (amount < 0) {
-        throw new InvalidRecipeConfigException("Invalid negative amount in <output>");
-      }
-      if (amount > item.getItemStack().getMaxStackSize()) {
-        throw new InvalidRecipeConfigException("Invalid amount in <output>, bigger than maximum stack size");
-      }
-      if (amount == 0) {
-        amount = 1;
-      }
+    if (amount < 0) {
+      throw new InvalidRecipeConfigException("Invalid negative amount in <output>");
     }
-    item.getThing().setSize(amount);
-    final String nbt_nullchecked = nbt;
-    if (nbt_nullchecked != null) {
-      if (!nbt_nullchecked.trim().isEmpty()) {
-        try {
-          item.getThing().setNbt(JsonToNBT.getTagFromJson(nbt_nullchecked));
-        } catch (NBTException e) {
-          throw new InvalidRecipeConfigException(nbt_nullchecked + " is not valid NBT json.");
-        }
+    if (amount > item.get().getItemStack().getMaxStackSize()) {
+      throw new InvalidRecipeConfigException("Invalid amount in <output>, bigger than maximum stack size");
+    }
+    if (amount == 0) {
+      amount = 1;
+    }
+    item.get().getThing().setSize(amount);
+    if (nbt.isPresent()) {
+      try {
+        item.get().getThing().setNbt(JsonToNBT.getTagFromJson(get(nbt)));
+      } catch (NBTException e) {
+        throw new InvalidRecipeConfigException("'" + nbt.get() + "' is not valid NBT json");
       }
     }
     return this;
@@ -55,14 +52,14 @@ public class Output extends AbstractConditional {
 
   @Override
   public void enforceValidity() throws InvalidRecipeConfigException {
-    item.enforceValidity();
+    item.get().enforceValidity();
   }
 
   // Items can be potentially valid with an oredict value that doesn't yet have any items. We cannot use that for the output, so we force it to have at least
   // one valid stack.
   @Override
   public boolean isValid() {
-    return item != null && item.isValid();
+    return item.isPresent() && item.get().isValid();
   }
 
   @Override
@@ -70,18 +67,18 @@ public class Output extends AbstractConditional {
     return super.isActive() && (required || isValid());
   }
 
-  public @Nonnull ItemStack getItemStack() {
-    ItemStack itemStack = item.getItemStack().copy();
+  public ItemStack getItemStack() {
+    ItemStack itemStack = item.get().getItemStack().copy();
     itemStack.setCount(amount);
     return itemStack;
   }
 
   public boolean hasAlternatives() {
-    return item.getThing().getItemStacks().size() > 1;
+    return getThing().getItemStacks().size() > 1;
   }
 
-  public @Nonnull NNList<ItemStack> getAlternatives() {
-    NNList<ItemStack> list = item.getThing().getItemStacks().copy();
+  public NNList<ItemStack> getAlternatives() {
+    NNList<ItemStack> list = getThing().getItemStacks().copy();
     list.remove(0);
     for (ItemStack itemStack : list) {
       itemStack.setCount(amount);
@@ -89,8 +86,8 @@ public class Output extends AbstractConditional {
     return list;
   }
 
-  public @Nonnull Things getThing() {
-    return item.getThing();
+  public Things getThing() {
+    return item.get().getThing();
   }
 
   @Override
@@ -100,13 +97,15 @@ public class Output extends AbstractConditional {
       return true;
     }
     if ("nbt".equals(name)) {
-      this.nbt = value;
+      this.nbt = ofString(value);
       return true;
     }
     if ("name".equals(name)) {
-      item = new Item().setAllowDelaying(false);
+      @SuppressWarnings("hiding")
+      Item item = new Item().setAllowDelaying(false);
       item.setName(value);
       item.readResolve();
+      this.item = of(item);
       return true;
     }
     if ("required".equals(name)) {

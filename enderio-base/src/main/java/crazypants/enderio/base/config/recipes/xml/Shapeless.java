@@ -1,29 +1,25 @@
 package crazypants.enderio.base.config.recipes.xml;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.base.config.recipes.IRecipeConfigElement;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
-import crazypants.enderio.base.config.recipes.RecipeConfigElement;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import net.minecraft.item.crafting.Ingredient;
 
-public class Shapeless implements RecipeConfigElement {
+public class Shapeless implements IRecipeConfigElement {
 
-  private List<Item> items;
+  private final NNList<Item> items = new NNList<>();
 
   private transient boolean valid;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
     try {
-      if (items == null || items.isEmpty()) {
+      if (items.isEmpty()) {
         throw new InvalidRecipeConfigException("Not enough items");
       }
       if (items.size() > 9) {
@@ -35,7 +31,7 @@ public class Shapeless implements RecipeConfigElement {
         valid = valid && item.isValid();
       }
     } catch (InvalidRecipeConfigException e) {
-      throw new InvalidRecipeConfigException(e, "in <Shapeless>");
+      throw new InvalidRecipeConfigException(e, "in <shapeless>");
     }
     return this;
   }
@@ -52,7 +48,7 @@ public class Shapeless implements RecipeConfigElement {
     return valid;
   }
 
-  public @Nonnull NNList<Ingredient> getIngredients() {
+  public NNList<Ingredient> getIngredients() {
     NNList<Ingredient> result = new NNList<>();
 
     for (ItemOptional item : items) {
@@ -75,9 +71,6 @@ public class Shapeless implements RecipeConfigElement {
   @Override
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("item".equals(name)) {
-      if (items == null) {
-        items = new ArrayList<Item>();
-      }
       items.add(factory.read(new Item().setAllowDelaying(false), startElement));
       return true;
     }

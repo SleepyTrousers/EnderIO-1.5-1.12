@@ -1,11 +1,12 @@
 package crazypants.enderio.base.config.recipes.xml;
 
-import javax.annotation.Nonnull;
+import java.util.Optional;
+
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
+import crazypants.enderio.base.config.recipes.IRecipeConfigElement;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
-import crazypants.enderio.base.config.recipes.RecipeConfigElement;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
@@ -13,27 +14,24 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-public class Fluid implements RecipeConfigElement {
+public class Fluid implements IRecipeConfigElement {
 
-  protected String name;
-  protected String nbt;
-  protected transient net.minecraftforge.fluids.Fluid fluid;
-  protected transient NBTTagCompound tag;
+  protected Optional<String> name = empty();
+  protected Optional<String> nbt = empty();
+  protected transient Optional<net.minecraftforge.fluids.Fluid> fluid = empty();
+  protected transient Optional<NBTTagCompound> tag = empty();
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
-    if (name == null || name.trim().isEmpty()) {
+    if (!name.isPresent()) {
       throw new InvalidRecipeConfigException("Missing fluid name");
     }
-    fluid = FluidRegistry.getFluid(name);
-    final String nbt_nullchecked = nbt;
-    if (nbt_nullchecked != null) {
-      if (!nbt_nullchecked.trim().isEmpty()) {
-        try {
-          tag = JsonToNBT.getTagFromJson(nbt_nullchecked);
-        } catch (NBTException e) {
-          throw new InvalidRecipeConfigException(nbt_nullchecked + " is not valid NBT json.");
-        }
+    fluid = ofNullable(FluidRegistry.getFluid(get(name)));
+    if (nbt.isPresent()) {
+      try {
+        tag = of(JsonToNBT.getTagFromJson(get(nbt)));
+      } catch (NBTException e) {
+        throw new InvalidRecipeConfigException("'" + nbt.get() + "' is not valid NBT json");
       }
     }
     return this;
@@ -42,31 +40,31 @@ public class Fluid implements RecipeConfigElement {
   @Override
   public void enforceValidity() throws InvalidRecipeConfigException {
     if (!isValid()) {
-      throw new InvalidRecipeConfigException("Could not find a fluid for '" + name);
+      throw new InvalidRecipeConfigException("Could not find a fluid for '" + name.get());
     }
   }
 
   @Override
   public boolean isValid() {
-    return fluid != null;
+    return fluid.isPresent();
   }
 
   public net.minecraftforge.fluids.Fluid getFluid() {
-    return fluid;
+    return get(fluid);
   }
 
-  public @Nonnull FluidStack getFluidStack() {
-    return new FluidStack(fluid, 1000, tag);
+  public FluidStack getFluidStack() {
+    return new FluidStack(fluid.get(), 1000, tag.orElse(null));
   }
 
   @Override
   public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
     if ("name".equals(name)) {
-      this.name = value;
+      this.name = ofString(value);
       return true;
     }
     if ("nbt".equals(name)) {
-      this.nbt = value;
+      this.nbt = ofString(value);
       return true;
     }
 

@@ -1,5 +1,7 @@
 package crazypants.enderio.base.config.recipes.xml;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -21,8 +23,8 @@ public class Fermenting extends AbstractConditional {
 
   private int energy;
   private NNList<Inputgroup> inputgroup = new NNList<>();
-  private FluidMultiplier inputfluid;
-  private Fluid outputfluid;
+  private Optional<FluidMultiplier> inputfluid = empty();
+  private Optional<Fluid> outputfluid = empty();
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -34,8 +36,14 @@ public class Fermenting extends AbstractConditional {
       if (energy <= 0) {
         throw new InvalidRecipeConfigException("Invalid low value for 'energy'");
       }
+      if (!inputfluid.isPresent()) {
+        throw new InvalidRecipeConfigException("Missing <inputfluid>");
+      }
+      if (!outputfluid.isPresent()) {
+        throw new InvalidRecipeConfigException("Missing <outputfluid>");
+      }
 
-      valid = inputfluid.isValid() && outputfluid.isValid();
+      valid = inputfluid.get().isValid() && outputfluid.get().isValid();
       for (Inputgroup input : inputgroup) {
         valid = valid && input.isValid();
       }
@@ -51,8 +59,8 @@ public class Fermenting extends AbstractConditional {
     for (Inputgroup input : inputgroup) {
       input.enforceValidity();
     }
-    inputfluid.enforceValidity();
-    outputfluid.enforceValidity();
+    inputfluid.get().enforceValidity();
+    outputfluid.get().enforceValidity();
   }
 
   @Override
@@ -67,8 +75,8 @@ public class Fermenting extends AbstractConditional {
         }
         slot++;
       }
-      inputStacks.add(new RecipeInput(inputfluid.getFluidStack(), inputfluid.multiplier));
-      RecipeOutput recipeOutput = new RecipeOutput(outputfluid.getFluidStack());
+      inputStacks.add(new RecipeInput(inputfluid.get().getFluidStack(), inputfluid.get().multiplier));
+      RecipeOutput recipeOutput = new RecipeOutput(outputfluid.get().getFluidStack());
       VatRecipeManager.getInstance()
           .addRecipe(new Recipe(recipeOutput, energy, RecipeBonusType.NONE, inputStacks.toArray(new IRecipeInput[inputStacks.size()])));
     }
@@ -90,12 +98,12 @@ public class Fermenting extends AbstractConditional {
       inputgroup.add(factory.read(new Inputgroup(), startElement));
       return true;
     }
-    if ("inputfluid".equals(name)) {
-      inputfluid = factory.read(new FluidMultiplier(), startElement);
+    if ("inputfluid".equals(name) && !inputfluid.isPresent()) {
+      inputfluid = of(factory.read(new FluidMultiplier(), startElement));
       return true;
     }
-    if ("outputfluid".equals(name)) {
-      outputfluid = factory.read(new Fluid(), startElement);
+    if ("outputfluid".equals(name) && !outputfluid.isPresent()) {
+      outputfluid = of(factory.read(new Fluid(), startElement));
       return true;
     }
 

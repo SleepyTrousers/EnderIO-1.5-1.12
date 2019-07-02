@@ -2,7 +2,7 @@ package crazypants.enderio.base.config.recipes;
 
 import javax.annotation.Nonnull;
 
-public interface RecipeGameRecipe extends RecipeConfigElement {
+public interface IRecipeGameRecipe extends IRecipeConfigElement {
 
   boolean isActive();
 

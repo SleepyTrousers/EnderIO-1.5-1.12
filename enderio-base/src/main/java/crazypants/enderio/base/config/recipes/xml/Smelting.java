@@ -1,12 +1,13 @@
 package crazypants.enderio.base.config.recipes.xml;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
 import com.enderio.core.common.util.NNList.Callback;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
@@ -18,17 +19,17 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Smelting extends AbstractCrafting {
 
-  private Float exp;
+  private float exp = Float.NaN;
   private boolean tinkers = false;
   private boolean vanilla = true;
 
-  private ItemFloatAmount input;
+  private Optional<ItemFloatAmount> input = empty();
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
     try {
       super.readResolve();
-      if (exp == null) {
+      if (Float.isNaN(exp)) {
         if (valid) {
           exp = FurnaceRecipes.instance().getSmeltingExperience(getOutput().getItemStack());
         }
@@ -40,17 +41,17 @@ public class Smelting extends AbstractCrafting {
           throw new InvalidRecipeConfigException("Invalid value for 'exp', above 100%");
         }
       }
-      if (input == null) {
+      if (!input.isPresent()) {
         throw new InvalidRecipeConfigException("Missing <input>");
       }
       if (!vanilla && !tinkers) {
         throw new InvalidRecipeConfigException("One or more of 'vanilla' or 'tinkers' must be enabled");
       }
-      if (vanilla && input.amount != 1f) {
+      if (vanilla && input.get().amount != 1f) {
         throw new InvalidRecipeConfigException("For 'vanilla' setting an input amount is not valid");
       }
 
-      valid = valid && input.isValid() && (!vanilla || Prep.isValid(input.getItemStack()));
+      valid = valid && input.get().isValid() && (!vanilla || Prep.isValid(input.get().getItemStack()));
 
     } catch (InvalidRecipeConfigException e) {
       throw new InvalidRecipeConfigException(e, "in <smelting>");
@@ -61,7 +62,7 @@ public class Smelting extends AbstractCrafting {
   @Override
   public void enforceValidity() throws InvalidRecipeConfigException {
     super.enforceValidity();
-    input.enforceValidity();
+    input.get().enforceValidity();
   }
 
   @Override
@@ -69,13 +70,10 @@ public class Smelting extends AbstractCrafting {
     if (isValid() && isActive()) {
       if (vanilla) {
         final ItemStack result = getOutput().getItemStack();
-        input.getThing().getItemStacks().apply(new Callback<ItemStack>() {
+        input.get().getThing().getItemStacks().apply(new Callback<ItemStack>() {
           @SuppressWarnings("null")
           @Override
           public void apply(@Nonnull ItemStack stack) {
-            if (!EnderIO.DOMAIN.equals(stack.getItem().getRegistryName().getResourceDomain())) {
-              Log.debug("Adding smelting recipes for non-EnderIO items is not recommended, recipe: " + recipeName + " (" + stack + " => " + result + ")");
-            }
             final ItemStack smeltingResult = FurnaceRecipes.instance().getSmeltingResult(stack);
             if (Prep.isValid(smeltingResult)) {
               if (result.getItem() != smeltingResult.getItem() || result.getCount() != smeltingResult.getCount()) {
@@ -92,7 +90,7 @@ public class Smelting extends AbstractCrafting {
         });
       }
       if (tinkers) {
-        TicProxy.registerSmelterySmelting(input.getThing(), getOutput().getThing(), 1f / input.amount);
+        TicProxy.registerSmelterySmelting(input.get().getThing(), getOutput().getThing(), 1f / input.get().amount);
       }
     }
   }
@@ -117,11 +115,9 @@ public class Smelting extends AbstractCrafting {
 
   @Override
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
-    if ("input".equals(name)) {
-      if (input == null) {
-        input = factory.read(new ItemFloatAmount().setAllowDelaying(false), startElement);
-        return true;
-      }
+    if ("input".equals(name) && !input.isPresent()) {
+      input = of(factory.read(new ItemFloatAmount().setAllowDelaying(false), startElement));
+      return true;
     }
 
     return super.setElement(factory, name, startElement);

@@ -1,5 +1,7 @@
 package crazypants.enderio.base.config.recipes.xml;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -13,13 +15,13 @@ import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
 
 public class Grindingball extends AbstractConditional {
 
-  private String name;
+  private Optional<String> name = empty();
 
   private boolean required;
 
   private boolean disabled;
 
-  private Item item;
+  private Optional<Item> item = empty();
 
   private float grinding = 1f, chance = 1f, power = 1f;
 
@@ -32,7 +34,7 @@ public class Grindingball extends AbstractConditional {
     }
     try {
       super.readResolve();
-      if (item == null) {
+      if (!item.isPresent()) {
         throw new InvalidRecipeConfigException("Missing <item>");
       }
       if (durability <= 0) {
@@ -48,7 +50,7 @@ public class Grindingball extends AbstractConditional {
         throw new InvalidRecipeConfigException("'power' is invalid'");
       }
 
-      valid = item.isValid();
+      valid = item.get().isValid();
 
       if (required && !valid && active) {
         throw new InvalidRecipeConfigException("No valid <item>");
@@ -64,7 +66,7 @@ public class Grindingball extends AbstractConditional {
     if (disabled || !active) {
       return;
     }
-    item.enforceValidity();
+    item.get().enforceValidity();
   }
 
   @Override
@@ -72,25 +74,23 @@ public class Grindingball extends AbstractConditional {
     if (!disabled && valid && active) {
       Log.debug("Registering XML recipe '" + getName() + "'");
 
-      SagMillRecipeManager.getInstance().addBall(new GrindingBall(new ThingsRecipeInput(item.getThing()), grinding, chance, power, durability));
+      SagMillRecipeManager.getInstance().addBall(new GrindingBall(new ThingsRecipeInput(item.get().getThing()), grinding, chance, power, durability));
 
     } else {
       Log.debug("Skipping XML recipe '" + getName() + "' (valid=" + valid + ", active=" + active + ", required=" + required + ", disabled=" + disabled + ")");
     }
   }
 
+  @SuppressWarnings("null")
   @Override
   public @Nonnull String getName() {
-    if (name != null && !name.trim().isEmpty()) {
-      return name.trim();
-    }
-    return "unnamed recipe";
+    return name.orElse("unnamed recipe");
   }
 
   @Override
   public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
     if ("name".equals(name)) {
-      this.name = value;
+      this.name = ofString(value);
       return true;
     }
     if ("required".equals(name)) {
@@ -123,11 +123,9 @@ public class Grindingball extends AbstractConditional {
 
   @Override
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
-    if ("item".equals(name)) {
-      if (item == null) {
-        item = factory.read(new Item().setAllowDelaying(false), startElement);
-        return true;
-      }
+    if ("item".equals(name) && !item.isPresent()) {
+      item = of(factory.read(new Item().setAllowDelaying(false), startElement));
+      return true;
     }
 
     return super.setElement(factory, name, startElement);

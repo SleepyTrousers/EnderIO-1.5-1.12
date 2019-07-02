@@ -81,7 +81,7 @@ public class RecipeFactory {
     }));
   }
 
-  public <T extends RecipeRoot> T readCoreFile(T target, String rootElement, String fileName) throws IOException, XMLStreamException {
+  public <T extends IRecipeRoot> T readCoreFile(T target, String rootElement, String fileName) throws IOException, XMLStreamException {
     final ResourceLocation coreRL = new ResourceLocation(domain, ASSETS_FOLDER_CONFIG + fileName);
     final File coreFL = new File(configDirectory, fileName);
     copyCore(coreRL, coreFL);
@@ -118,7 +118,7 @@ public class RecipeFactory {
     }
   }
 
-  public static <T extends RecipeRoot> T readFileUser(T target, String rootElement, String fileName, File userFL) throws IOException, XMLStreamException {
+  public static <T extends IRecipeRoot> T readFileUser(T target, String rootElement, String fileName, File userFL) throws IOException, XMLStreamException {
     if (userFL.exists()) {
       Log.info("Reading user recipe file " + fileName);
       try (InputStream userFileStream = userFL.exists() ? new FileInputStream(userFL) : null;) {
@@ -139,7 +139,7 @@ public class RecipeFactory {
     return target;
   }
 
-  public static <T extends RecipeRoot> T readFileIMC(T target, String rootElement, String fileName) throws IOException, XMLStreamException {
+  public static <T extends IRecipeRoot> T readFileIMC(T target, String rootElement, String fileName) throws IOException, XMLStreamException {
     File file = new File(fileName);
     if (file.exists()) {
       Log.info("Reading IMC recipe file " + fileName);
@@ -184,7 +184,7 @@ public class RecipeFactory {
     }
   }
 
-  protected static <T extends RecipeRoot> T readStax(T target, String rootElement, InputStream in, String source)
+  protected static <T extends IRecipeRoot> T readStax(T target, String rootElement, InputStream in, String source)
       throws XMLStreamException, InvalidRecipeConfigException {
     XMLInputFactory inputFactory = XMLInputFactory.newInstance();
     XMLEventReader eventReader = inputFactory.createXMLEventReader(in);

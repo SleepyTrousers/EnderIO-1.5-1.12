@@ -1,45 +1,42 @@
 package crazypants.enderio.base.config.recipes.xml;
 
 import java.util.Locale;
+import java.util.Optional;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
+import crazypants.enderio.base.config.recipes.IRecipeConfigElement;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
-import crazypants.enderio.base.config.recipes.RecipeConfigElement;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import net.minecraftforge.fml.common.Loader;
 
-public class ConditionDependency implements RecipeConfigElement {
+public class ConditionDependency implements IRecipeConfigElement {
 
-  private String itemString, modString;
+  private Optional<String> itemString = empty(), modString = empty();
   private boolean reverse, valid;
-
-  private transient ItemOptional item;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
     try {
-      final boolean hasItem = itemString != null && !itemString.trim().isEmpty();
-      final boolean hasMod = modString != null && !modString.trim().isEmpty();
-      if (!hasItem && !hasMod) {
+      if (!itemString.isPresent() && !modString.isPresent()) {
         throw new InvalidRecipeConfigException("Missing item and mod");
       }
       valid = true;
-      if (hasItem) {
-        item = new ItemOptional().setAllowDelaying(false);
-        item.setName(itemString);
+      if (itemString.isPresent()) {
+        ItemOptional item = new ItemOptional().setAllowDelaying(false);
+        item.setName(get(itemString));
         item.readResolve();
         valid = valid && item.isValid();
       }
-      if (hasMod) {
-        if (modString.length() > 64) {
-          throw new InvalidRecipeConfigException(String.format("The modId %s is longer than the maximum of 64 characters.", modString));
+      if (modString.isPresent()) {
+        if (modString.get().length() > 64) {
+          throw new InvalidRecipeConfigException(String.format("The modId %s is longer than the maximum of 64 characters.", modString.get()));
         }
-        if (!modString.equals(modString.toLowerCase(Locale.ENGLISH))) {
-          throw new InvalidRecipeConfigException(String.format("The modId %s must be all lowercase.", modString));
+        if (!modString.get().equals(modString.get().toLowerCase(Locale.ENGLISH))) {
+          throw new InvalidRecipeConfigException(String.format("The modId %s must be all lowercase.", modString.get()));
         }
-        valid = valid && Loader.isModLoaded(modString);
+        valid = valid && Loader.isModLoaded(modString.get());
       }
     } catch (InvalidRecipeConfigException e) {
       throw new InvalidRecipeConfigException(e, "in <dependency>");
@@ -55,11 +52,11 @@ public class ConditionDependency implements RecipeConfigElement {
   @Override
   public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
     if ("item".equals(name)) {
-      this.itemString = value;
+      this.itemString = ofString(value);
       return true;
     }
     if ("mod".equals(name)) {
-      this.modString = value;
+      this.modString = ofString(value);
       return true;
     }
     if ("reverse".equals(name)) {

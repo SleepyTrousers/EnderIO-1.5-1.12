@@ -1,9 +1,10 @@
 package crazypants.enderio.base.config.recipes.xml;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 
-import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.Log;
@@ -12,25 +13,31 @@ import crazypants.enderio.base.config.recipes.StaxFactory;
 
 public class Alias extends AbstractConditional {
 
-  private String name;
+  private Optional<String> name = empty();
 
-  private String item;
+  private Optional<String> item = empty();
 
   @Override
   public @Nonnull String getName() {
-    return NullHelper.first(name, "(unnamed)");
+    return get(name);
   }
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
     try {
       super.readResolve();
+      if (!name.isPresent()) {
+        throw new InvalidRecipeConfigException("Missing name");
+      }
+      if (!item.isPresent()) {
+        throw new InvalidRecipeConfigException("Missing item");
+      }
     } catch (InvalidRecipeConfigException e) {
-      throw new InvalidRecipeConfigException(e, "in alias '" + item + "'");
+      throw new InvalidRecipeConfigException(e, "in alias '" + item.orElse("(missing item)") + "'");
     }
     if (isActive()) {
-      Things.addAlias(name, item);
-      Log.debug("Added alias '" + name + "' => '" + item + "'");
+      Things.addAlias(get(name), get(item));
+      Log.debug("Added alias '" + name.get() + "' => '" + item.get() + "'");
     }
     return this;
   }
@@ -42,11 +49,11 @@ public class Alias extends AbstractConditional {
   @Override
   public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
     if ("name".equals(name)) {
-      this.name = value;
+      this.name = ofString(value);
       return true;
     }
     if ("item".equals(name)) {
-      this.item = value;
+      this.item = ofString(value);
       return true;
     }
     return super.setAttribute(factory, name, value);

@@ -1,5 +1,7 @@
 package crazypants.enderio.base.config.recipes.xml;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -28,14 +30,14 @@ public class Soulbinding extends AbstractCrafting {
     APPLY {
       @Override
       @Nonnull
-      public ItemStack apply(@Nonnull ItemStack output, @Nonnull CapturedMob mobType) {
+      public ItemStack apply(ItemStack output, CapturedMob mobType) {
         return mobType.toStack(output.getItem(), output.getItemDamage(), output.getCount());
       }
     },
     FILTER {
       @Override
       @Nonnull
-      public ItemStack apply(@Nonnull ItemStack output, @Nonnull CapturedMob mobType) {
+      public ItemStack apply(ItemStack output, CapturedMob mobType) {
         final IFilter filter = FilterRegistry.getFilterForUpgrade(output);
         if (filter instanceof SoulFilter) {
           ((SoulFilter) filter).getSouls().add(mobType);
@@ -53,16 +55,16 @@ public class Soulbinding extends AbstractCrafting {
   }
 
   private int energy, levels;
-  private NNList<Soul> souls = new NNList<>();
-  private Item input;
-  private @Nonnull Logic logic = Logic.NONE;
-  private @Nonnull SoulHandling soulHandling = SoulHandling.LISTED;
+  private final NNList<Soul> souls = new NNList<>();
+  private Optional<Item> input = empty();
+  private Logic logic = Logic.NONE;
+  private SoulHandling soulHandling = SoulHandling.LISTED;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
     try {
       super.readResolve();
-      if (input == null) {
+      if (!input.isPresent()) {
         throw new InvalidRecipeConfigException("No <input>");
       }
       if (souls.isEmpty() && soulHandling == SoulHandling.LISTED) {
@@ -83,7 +85,7 @@ public class Soulbinding extends AbstractCrafting {
         hasValidSoul = hasValidSoul || soul.isValid();
       }
 
-      valid = valid && input.isValid() && hasValidSoul;
+      valid = valid && input.get().isValid() && hasValidSoul;
 
     } catch (InvalidRecipeConfigException e) {
       throw new InvalidRecipeConfigException(e, "in <soulbinding>");
@@ -94,7 +96,7 @@ public class Soulbinding extends AbstractCrafting {
   @Override
   public void enforceValidity() throws InvalidRecipeConfigException {
     super.enforceValidity();
-    input.enforceValidity();
+    input.get().enforceValidity();
     for (Soul soul : souls) {
       if (soul.isValid()) {
         soul.enforceValidity();
@@ -130,7 +132,7 @@ public class Soulbinding extends AbstractCrafting {
         break;
       }
 
-      input.getThing().getItemStacks().apply(new Callback<ItemStack>() {
+      input.get().getThing().getItemStacks().apply(new Callback<ItemStack>() {
         int i = 0;
 
         @Override
@@ -175,7 +177,7 @@ public class Soulbinding extends AbstractCrafting {
   @Override
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("input".equals(name)) {
-      input = factory.read(new Item().setAllowDelaying(false), startElement);
+      input = of(factory.read(new Item().setAllowDelaying(false), startElement));
       return true;
     }
     if ("soul".equals(name)) {
