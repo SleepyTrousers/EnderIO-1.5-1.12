@@ -54,8 +54,9 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     }
 
     FluidStack drained = tank.externalTank.getAvailableFluid();
+    boolean firstTry = tryExtract(con, conDir, tank, drained);
 
-    if (!tryExtract(con, conDir, tank, drained)) {
+    if (!firstTry) {
       for (ITankInfoWrapper tankInfoWrapper : tank.externalTank.getTankInfoWrappers()) {
         FluidStack toDrain = tankInfoWrapper.getIFluidTankProperties().getContents();
 
@@ -70,7 +71,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
       }
     }
 
-    return false;
+    return firstTry;
   }
 
   private boolean tryExtract(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir, @Nonnull NetworkTank tank, FluidStack drained) {
