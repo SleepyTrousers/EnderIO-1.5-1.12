@@ -1057,6 +1057,14 @@ enderio.color.magenta=Magenta
 enderio.color.orange=Orange
 enderio.color.white=White
 
+# EnumFacing
+enderio.facing.north=North
+enderio.facing.south=South
+enderio.facing.west=West
+enderio.facing.east=East
+enderio.facing.up=Up
+enderio.facing.down=Down
+
 enderio.generic.tooltip.paintedWith=Painted with: %s
 enderio.generic.tooltip.unpainted=Not painted
 

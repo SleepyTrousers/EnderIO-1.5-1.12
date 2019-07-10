@@ -896,7 +896,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
         sb.append(" ");
         sb.append(Lang.GUI_CONDUIT_PROBE_CONNECTION_DIR.get());
         sb.append(" ");
-        sb.append(dir);
+        sb.append(EnderIO.lang.localize("facing." + dir));
         sb.append("\n");
 
         ItemConduitNetwork icn = getNetwork();
