@@ -18,7 +18,6 @@ import crazypants.enderio.base.filter.IFilterContainer;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.init.ModObject;
-import crazypants.enderio.base.material.material.Material;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.conduits.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduits.init.ConduitObject;
@@ -115,12 +114,12 @@ public class RedstoneSettings extends BaseSettingsPanel {
   }
 
   private void createGhostSlots() {
-    NNList<ItemStack> filtersOut = new NNList<>(new ItemStack(ModObject.itemMaterial.getItemNN(), 1, Material.REDSTONE_FILTER_BASE.ordinal()),
+    NNList<ItemStack> filtersOut = new NNList<>( //
         new ItemStack(ModObject.itemRedstoneAndFilter.getItemNN()), new ItemStack(ModObject.itemRedstoneNandFilter.getItemNN()),
         new ItemStack(ModObject.itemRedstoneNorFilter.getItemNN()), new ItemStack(ModObject.itemRedstoneNotFilter.getItemNN()),
         new ItemStack(ModObject.itemRedstoneOrFilter.getItemNN()), new ItemStack(ModObject.itemRedstoneToggleFilter.getItemNN()),
         new ItemStack(ModObject.itemRedstoneXnorFilter.getItemNN()), new ItemStack(ModObject.itemRedstoneXorFilter.getItemNN()));
-    NNList<ItemStack> filtersIn = new NNList<>(new ItemStack(ModObject.itemMaterial.getItemNN(), 1, Material.REDSTONE_FILTER_BASE.ordinal()),
+    NNList<ItemStack> filtersIn = new NNList<>( //
         new ItemStack(ModObject.itemRedstoneSensorFilter.getItemNN()), new ItemStack(ModObject.itemRedstoneTimerFilter.getItemNN()));
     NNList<ItemStack> upgrades = new NNList<>();
     gui.getContainer().createGhostSlots(gui.getGhostSlotHandler().getGhostSlots(), filtersIn, filtersOut, upgrades);
