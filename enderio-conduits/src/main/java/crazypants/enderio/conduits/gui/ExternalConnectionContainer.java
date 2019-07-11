@@ -69,7 +69,12 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
       @Override
       public int getSlotStackLimit() {
-        return speedUpgradeSlotLimit;
+        return ExternalConnectionContainer.this.getItemHandler().getSlotLimit(0);
+      }
+
+      @Override
+      public int getItemStackLimit(@Nonnull ItemStack stack) {
+        return ExternalConnectionContainer.this.getItemHandler().getSlotLimit(0, stack);
       }
     });
   }
@@ -238,6 +243,11 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
     @Override
     public int getSlotStackLimit() {
       return 1;
+    }
+
+    @Override
+    public int getItemStackLimit(@Nonnull ItemStack stack) {
+      return Math.min(super.getItemStackLimit(stack), getSlotStackLimit());
     }
 
     @Override

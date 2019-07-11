@@ -140,7 +140,11 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
 
   @Override
   public int getSlotLimit(int slot) {
-    return slot == 0 ? 15 : 1;
+    return slot == 0 ? upgradeHolder.getUpgradeSlotLimit() : 1;
+  }
+
+  public int getSlotLimit(int slot, @Nonnull ItemStack stack) {
+    return slot == 0 ? upgradeHolder.getUpgradeSlotLimit(stack) : getSlotLimit(slot);
   }
 
   @Override

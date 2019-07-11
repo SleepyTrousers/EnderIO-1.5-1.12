@@ -13,13 +13,23 @@ public enum FunctionUpgrade {
   EXTRACT_SPEED_UPGRADE("extract_speed_upgrade", "item.item_extract_speed_upgrade", 15) {
     @Override
     public int getMaximumExtracted(int stackSize) {
-      return BASE_MAX_EXTRACTED + Math.min(stackSize, maxStackSize) * 4;
+      return BASE_MAX_EXTRACTED + Math.min(stackSize, getMaxStackSize()) * 4;
+    }
+
+    @Override
+    public float getFluidSpeedMultiplier(int stackSize) {
+      return 1 + Math.min(getMaxStackSize(), stackSize);
     }
   },
-  EXTRACT_SPEED_DOWNGRADE("extract_speed_downgrade", "item.item_extract_speed_downgrade", 1) {
+  EXTRACT_SPEED_DOWNGRADE("extract_speed_downgrade", "item.item_extract_speed_downgrade", 3) {
     @Override
     public int getMaximumExtracted(int stackSize) {
-      return 1;
+      return stackSize;
+    }
+
+    @Override
+    public float getFluidSpeedMultiplier(int stackSize) {
+      return .25f * stackSize;
     }
   },
 
@@ -27,7 +37,7 @@ public enum FunctionUpgrade {
   RS_CRAFTING_SPEED_UPGRADE("rs_crafting_upgrade", "item.item_rs_crafting_upgrade", 15) {
     @Override
     public int getMaximumExtracted(int stackSize) {
-      return BASE_MAX_EXTRACTED + Math.min(stackSize, maxStackSize) * 4;
+      return BASE_MAX_EXTRACTED + Math.min(stackSize, getMaxStackSize()) * 4;
     }
   },
   RS_CRAFTING_SPEED_DOWNGRADE("rs_crafting_speed_downgrade", "item.item_rs_crafting_speed_downgrade", 1) {
@@ -37,16 +47,14 @@ public enum FunctionUpgrade {
     }
   },
 
-
   ;
 
   public static final int BASE_MAX_EXTRACTED = 4;
-  public static final int LIQUID_MAX_EXTRACTED_SCALER = 2;
 
   public final @Nonnull String baseName;
   public final @Nonnull String iconName;
   public final @Nonnull String unlocName;
-  public final int maxStackSize;
+  private final int maxStackSize;
 
   public static List<ResourceLocation> resources() {
     List<ResourceLocation> res = new ArrayList<ResourceLocation>(values().length);
@@ -66,4 +74,21 @@ public enum FunctionUpgrade {
   public int getMaximumExtracted(int stackSize) {
     return BASE_MAX_EXTRACTED;
   }
+
+  /**
+   * @return Maximum stack size allowed in the upgrade slot. Has no effect on the stack size in normal inventories.
+   */
+  public int getMaxStackSize() {
+    return maxStackSize;
+  }
+
+  /**
+   * @param stackSize
+   *          size of the stack of upgrades
+   * @return Multiplier of the base speed for fluid conduits.
+   */
+  public float getFluidSpeedMultiplier(int stackSize) {
+    return 0;
+  }
+
 }

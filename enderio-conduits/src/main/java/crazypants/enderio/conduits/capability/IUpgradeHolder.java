@@ -18,10 +18,20 @@ public interface IUpgradeHolder {
   /**
    * Defaults to <code>true</code>.
    *
-   * @param stack Is an instance of ItemFunctionUpgrade. Passed in case more detailed checking wants to be performed by the conduit.
+   * @param stack
+   *          Is an instance of ItemFunctionUpgrade. Passed in case more detailed checking wants to be performed by the conduit.
    * @return <code>true</code> if this conduit can accept the given ItemStack as a function upgrade.
    */
   default boolean isFunctionUpgradeAccepted(@Nonnull ItemStack stack) {
     return true;
   }
+
+  default int getUpgradeSlotLimit() {
+    return 15;
+  }
+
+  default int getUpgradeSlotLimit(@Nonnull ItemStack stack) {
+    return getUpgradeSlotLimit();
+  }
+
 }

@@ -27,6 +27,7 @@ import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
@@ -708,6 +709,12 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
   @Override
   public void setUpgradeStack(int param1, @Nonnull ItemStack stack) {
     this.setFunctionUpgrade(EnumFacing.getFront(param1), stack);
+  }
+
+  @Override
+  public int getUpgradeSlotLimit(@Nonnull ItemStack stack) {
+    return stack.getItem() instanceof ItemFunctionUpgrade ? ((ItemFunctionUpgrade) stack.getItem()).getUpgradeSlotLimit()
+        : IUpgradeHolder.super.getUpgradeSlotLimit(stack);
   }
 
   @SuppressWarnings("unchecked")

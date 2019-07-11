@@ -859,6 +859,12 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
   }
 
   @Override
+  public int getUpgradeSlotLimit(@Nonnull ItemStack stack) {
+    return stack.getItem() instanceof ItemFunctionUpgrade ? ((ItemFunctionUpgrade) stack.getItem()).getUpgradeSlotLimit()
+        : IUpgradeHolder.super.getUpgradeSlotLimit(stack);
+  }
+
+  @Override
   public int getInputFilterIndex() {
     return FilterGuiUtil.INDEX_INPUT_ITEM;
   }

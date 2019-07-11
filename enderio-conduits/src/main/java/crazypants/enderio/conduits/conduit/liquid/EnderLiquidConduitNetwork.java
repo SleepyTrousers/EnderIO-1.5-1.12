@@ -1,7 +1,6 @@
 package crazypants.enderio.conduits.conduit.liquid;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +57,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     }
 
     drained = drained.copy();
-    drained.amount = Math.min(drained.amount, ConduitConfig.fluid_tier3_extractRate.get() * getExtractSpeedMultiplier(tank) / 2);
+    drained.amount = Math.min(drained.amount, (int) (ConduitConfig.fluid_tier3_extractRate.get() * getExtractSpeedMultiplier(tank)));
     int amountAccepted = fillFrom(tank, drained.copy(), true);
     if (amountAccepted <= 0) {
       return false;
@@ -99,7 +98,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
       }
 
       resource = resource.copy();
-      resource.amount = Math.min(resource.amount, ConduitConfig.fluid_tier3_maxIO.get() * getExtractSpeedMultiplier(tank) / 2);
+      resource.amount = Math.min(resource.amount, (int) (ConduitConfig.fluid_tier3_maxIO.get() * getExtractSpeedMultiplier(tank)));
       int filled = 0;
       int remaining = resource.amount;
       // TODO: Only change starting pos of iterator is doFill is true so a false then true returns the same
@@ -126,20 +125,16 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     }
   }
 
-  private int getExtractSpeedMultiplier(NetworkTank tank) {
-    int extractSpeedMultiplier = 2;
-
+  private float getExtractSpeedMultiplier(NetworkTank tank) {
     ItemStack upgradeStack = tank.con.getFunctionUpgrade(tank.conDir);
     if (!upgradeStack.isEmpty()) {
       FunctionUpgrade upgrade = ItemFunctionUpgrade.getFunctionUpgrade(upgradeStack);
-      if (upgrade == FunctionUpgrade.EXTRACT_SPEED_UPGRADE) {
-        extractSpeedMultiplier += FunctionUpgrade.LIQUID_MAX_EXTRACTED_SCALER * Math.min(upgrade.maxStackSize, upgradeStack.getCount());
-      } else if (upgrade == FunctionUpgrade.EXTRACT_SPEED_DOWNGRADE) {
-        extractSpeedMultiplier = 1;
+      if (upgrade != null) {
+        return upgrade.getFluidSpeedMultiplier(upgradeStack.getCount());
       }
     }
 
-    return extractSpeedMultiplier;
+    return 1;
   }
 
   private boolean matchedFilter(FluidStack drained, @Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir, boolean isInput) {

@@ -61,4 +61,8 @@ public class ItemFunctionUpgrade extends Item implements IResourceTooltipProvide
     return getUnlocalizedName(itemStack);
   }
 
+  public int getUpgradeSlotLimit() {
+    return upgradeType.getMaxStackSize();
+  }
+
 }
