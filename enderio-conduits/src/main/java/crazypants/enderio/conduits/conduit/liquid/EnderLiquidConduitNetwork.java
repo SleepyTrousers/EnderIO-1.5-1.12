@@ -48,7 +48,29 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     if (!tank.isValid()) {
       return false;
     }
+
     FluidStack drained = tank.externalTank.getAvailableFluid();
+    boolean firstTry = tryExtract(con, conDir, tank, drained);
+
+    if (!firstTry && tank.supportsMultipleTanks) {
+      for (ITankInfoWrapper tankInfoWrapper : tank.externalTank.getTankInfoWrappers()) {
+        FluidStack toDrain = tankInfoWrapper.getIFluidTankProperties().getContents();
+
+        // Don't try to drain the same fluid twice
+        if (toDrain != null && toDrain.isFluidEqual(drained)) {
+          continue;
+        }
+
+        if (tryExtract(con, conDir, tank, toDrain)) {
+          return true;
+        }
+      }
+    }
+
+    return firstTry;
+  }
+
+  private boolean tryExtract(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir, @Nonnull NetworkTank tank, FluidStack drained) {
     if (drained == null || drained.amount <= 0 || !matchedFilter(drained, con, conDir, true)) {
       return false;
     }
