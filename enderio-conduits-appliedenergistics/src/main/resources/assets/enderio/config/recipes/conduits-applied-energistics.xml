@@ -43,7 +43,7 @@ You need to add custom recipes yourself then!
         <item name="crystalFluix" /><item name="appliedenergistics2:part:140" /><item name="crystalFluix" />
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
-      <output name="enderio:item_me_conduit:0" amount="8">
+      <output name="enderio:item_me_conduit:0" amount="4">
       </output>
     </crafting>
   </recipe>
@@ -55,11 +55,23 @@ You need to add custom recipes yourself then!
         <item name="crystalPureFluix" /><item name="appliedenergistics2:part:140" /><item name="crystalPureFluix" />
         <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
       </grid>
-      <output name="enderio:item_me_conduit:0" amount="8">
+      <output name="enderio:item_me_conduit:0" amount="4">
       </output>
     </crafting>
   </recipe>
 
+  <recipe name="Conduit, ME Conduit Alt" required="false">
+    <crafting>
+      <grid>
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+        <item /><item name="appliedenergistics2:part,appliedenergistics2:part:1,appliedenergistics2:part:2,appliedenergistics2:part:3,appliedenergistics2:part:4,appliedenergistics2:part:5,appliedenergistics2:part:6,appliedenergistics2:part:7,appliedenergistics2:part:8,appliedenergistics2:part:9,appliedenergistics2:part:10,appliedenergistics2:part:11,appliedenergistics2:part:12,appliedenergistics2:part:13,appliedenergistics2:part:14,appliedenergistics2:part:15,appliedenergistics2:part:16" /><item />
+        <item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" /><item name="CONDUIT_BINDER" />
+      </grid>
+      <output name="enderio:item_me_conduit:0" amount="4">
+      </output>
+    </crafting>
+  </recipe>
+ 
   <recipe name="Conduit, ME Conduit Dense" required="true">
     <crafting>
       <grid>
@@ -67,7 +79,7 @@ You need to add custom recipes yourself then!
         <item name="enderio:item_me_conduit:0" /><item name="CONDUIT_BINDER" /><item name="enderio:item_me_conduit:0" />
         <item name="CONDUIT_BINDER" /><item name="enderio:item_me_conduit:0" /><item name="CONDUIT_BINDER" />
       </grid>
-      <output name="enderio:item_me_conduit:1" amount="4">
+      <output name="enderio:item_me_conduit:1" amount="1">
       </output>
     </crafting>
   </recipe>
