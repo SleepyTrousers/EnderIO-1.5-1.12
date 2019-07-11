@@ -67,7 +67,7 @@ You need to add custom recipes yourself then!
         <item name="enderio:item_me_conduit:0" /><item name="CONDUIT_BINDER" /><item name="enderio:item_me_conduit:0" />
         <item name="CONDUIT_BINDER" /><item name="enderio:item_me_conduit:0" /><item name="CONDUIT_BINDER" />
       </grid>
-      <output name="enderio:item_me_conduit:1" amount="4">
+      <output name="enderio:item_me_conduit:1" amount="1">
       </output>
     </crafting>
   </recipe>
