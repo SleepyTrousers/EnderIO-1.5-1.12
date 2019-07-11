@@ -110,8 +110,9 @@ public class StemFarmer extends CustomSeedFarmer {
   @Override
   protected boolean plantFromInventory(@Nonnull IFarmer farm, @Nonnull BlockPos bc) {
     World world = farm.getWorld();
-    if (canPlant(farm, world, bc) && Prep.isValid(farm.takeSeedFromSupplies(seeds, bc))) {
-      return plant(farm, world, bc);
+    if (canPlant(farm, world, bc) && Prep.isValid(farm.takeSeedFromSupplies(seeds, bc, true)) && plant(farm, world, bc)) {
+      farm.takeSeedFromSupplies(seeds, bc, false);
+      return true;
     }
     return false;
   }

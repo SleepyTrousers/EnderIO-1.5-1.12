@@ -47,14 +47,32 @@ public interface IFarmer {
   BlockPos getLocation();
 
   /**
+   * Get the itemstack in the seed slot for the given location if it matches the given template.
+   * 
+   * @param seeds
+   *          The template to check for.
+   * @param pos
+   *          The location to check for.
+   * @param simulate
+   *          if <code>true</code>, the seed is returned but not removed from the inventory
+   * @return An itemstack of size 1 or an empty stack.
+   */
+
+  @Nonnull
+  ItemStack takeSeedFromSupplies(@Nonnull ItemStack seeds, @Nonnull BlockPos pos, boolean simulate);
+
+  /**
    * Removes a single item from the seed slot for the given location ant returns it.
    * 
    * @param pos
    *          The target location.
+   * @param simulate
+   *          if <code>true</code>, the seed is returned but not removed from the inventory
    * @return An itemstack with a size of one or an empty itemstack.
    */
-  @Nonnull
-  ItemStack takeSeedFromSupplies(@Nonnull BlockPos pos, boolean simulate);
+  default @Nonnull ItemStack takeSeedFromSupplies(@Nonnull BlockPos pos, boolean simulate) {
+    return takeSeedFromSupplies(ItemStack.EMPTY, pos, false);
+  }
 
   default @Nonnull ItemStack takeSeedFromSupplies(@Nonnull BlockPos pos) {
     return takeSeedFromSupplies(pos, false);
@@ -201,19 +219,6 @@ public interface IFarmer {
    * @return True if it is locked.
    */
   boolean isSlotLocked(@Nonnull BlockPos pos);
-
-  /**
-   * Get the itemstack in the seed slot for the given location if it matches the given template.
-   * 
-   * @param seeds
-   *          The template to check for.
-   * @param pos
-   *          The location to check for.
-   * @return An itemstack of size 1 or an empty stack.
-   */
-
-  @Nonnull
-  ItemStack takeSeedFromSupplies(@Nonnull ItemStack seeds, @Nonnull BlockPos bc);
 
   /**
    * @return The size of the farm.
