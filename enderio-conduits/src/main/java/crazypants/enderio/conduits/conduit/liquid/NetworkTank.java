@@ -22,6 +22,7 @@ public class NetworkTank {
   final int priority;
   final boolean roundRobin;
   final boolean selfFeed;
+  final boolean supportsMultipleTanks;
 
   public NetworkTank(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir) {
     this.con = con;
@@ -35,6 +36,7 @@ public class NetworkTank {
     priority = con.getOutputPriority(conDir);
     roundRobin = con.isRoundRobinEnabled(conDir);
     selfFeed = con.isSelfFeedEnabled(conDir);
+    supportsMultipleTanks = (externalTank != null) && externalTank.getTankInfoWrappers().size() > 1;
   }
 
   public boolean isValid() {
