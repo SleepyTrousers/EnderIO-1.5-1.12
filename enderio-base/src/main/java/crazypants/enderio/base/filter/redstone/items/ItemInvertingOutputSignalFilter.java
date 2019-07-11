@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.filter.redstone.IOutputSignalFilter;
 import crazypants.enderio.base.filter.redstone.InvertingOutputSignalFilter;
 import net.minecraft.block.Block;
@@ -24,6 +25,7 @@ public class ItemInvertingOutputSignalFilter extends Item implements IItemOutput
   }
 
   public ItemInvertingOutputSignalFilter(@Nonnull IModObject modObject) {
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
     setHasSubtypes(true);
     setMaxDamage(0);

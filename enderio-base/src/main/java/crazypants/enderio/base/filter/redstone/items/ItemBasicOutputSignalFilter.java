@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.TileEntityBase;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilterContainer;
 import crazypants.enderio.base.filter.gui.ContainerFilter;
@@ -56,6 +57,7 @@ public class ItemBasicOutputSignalFilter extends Item implements IItemOutputSign
   }
 
   public ItemBasicOutputSignalFilter(@Nonnull IModObject modObject, @Nonnull EnumSignalFilterType filterType) {
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     this.filterType = filterType;
     modObject.apply(this);
     setHasSubtypes(true);

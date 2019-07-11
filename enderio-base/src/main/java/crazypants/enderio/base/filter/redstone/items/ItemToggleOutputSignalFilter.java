@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.filter.redstone.IOutputSignalFilter;
 import crazypants.enderio.base.filter.redstone.ToggleOutputSignalFilter;
 import crazypants.enderio.util.NbtValue;
@@ -25,6 +26,7 @@ public class ItemToggleOutputSignalFilter extends Item implements IItemOutputSig
   }
 
   public ItemToggleOutputSignalFilter(@Nonnull IModObject modObject) {
+    setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
     setHasSubtypes(true);
     setMaxDamage(0);
