@@ -1,16 +1,17 @@
 package crazypants.enderio.base.config.recipes.xml;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
+import crazypants.enderio.base.config.recipes.IRecipeRoot;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
-import crazypants.enderio.base.config.recipes.RecipeRoot;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 
-public class Aliases implements RecipeRoot {
+public class Aliases implements IRecipeRoot {
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -33,7 +34,7 @@ public class Aliases implements RecipeRoot {
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T extends RecipeRoot> T addRecipes(RecipeRoot other, Overrides overrides) throws InvalidRecipeConfigException {
+  public <T extends IRecipeRoot> T addRecipes(IRecipeRoot other, Overrides overrides) throws InvalidRecipeConfigException {
     return (T) this;
   }
 
@@ -68,7 +69,7 @@ public class Aliases implements RecipeRoot {
 
   @Override
   public List<AbstractConditional> getRecipes() {
-    return null;
+    return Collections.emptyList();
   }
 
 }

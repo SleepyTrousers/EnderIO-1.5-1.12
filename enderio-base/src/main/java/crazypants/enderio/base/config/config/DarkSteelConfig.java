@@ -348,6 +348,9 @@ public final class DarkSteelConfig {
   public static final IValue<Integer> spoonCost = F_SPOON.make("upgradeCost", 4, //
       "Number of levels required for the 'Spoon' upgrade.").setRange(1, 99).sync();
 
+  public static final IValue<Boolean> spoonCanMakePaths = F_SPOON.make("enablePathMaking", true, //
+      "If enabled, right clicking with the spoon upgrade will make pahs like a vanilla shovel. This takes priority over block placing and travelling.");
+
   public static final IValueFactory F_BOW = F_DARK_STEEL.section(".bow");
 
   public static final IValue<Integer> bowPowerUsePerDamagePoint = F_BOW.make("energyUsePerDamagePoint", 1000, //

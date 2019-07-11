@@ -36,7 +36,7 @@ public class FluidAmount extends Fluid {
 
   @Override
   public @Nonnull FluidStack getFluidStack() {
-    return new FluidStack(fluid, amount, tag);
+    return new FluidStack(fluid.get(), amount, tag.orElse(null));
   }
 
 }

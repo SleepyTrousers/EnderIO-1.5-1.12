@@ -1,11 +1,13 @@
 package crazypants.enderio.base.config.recipes.xml;
 
 import java.util.Locale;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.stackable.Things;
 
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
@@ -23,27 +25,27 @@ public class Tanking extends AbstractConditional {
     FILL;
   }
 
-  private Item input;
-  private ItemIntegerAmount output;
-  private FluidAmount fluid;
-  private @Nonnull Logic logic = Logic.NONE;
-  private Type type;
+  private Optional<Item> input = empty();
+  private Optional<ItemIntegerAmount> output = empty();
+  private Optional<FluidAmount> fluid = empty();
+  private Logic logic = Logic.NONE;
+  private Optional<Type> type = empty();
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
     try {
       super.readResolve();
-      if (input == null) {
+      if (!input.isPresent()) {
         throw new InvalidRecipeConfigException("Missing <input>");
       }
-      if (fluid == null) {
+      if (!fluid.isPresent()) {
         throw new InvalidRecipeConfigException("Missing <fluid>");
       }
-      if (type == null) {
+      if (!type.isPresent()) {
         throw new InvalidRecipeConfigException("Missing attribute 'type'");
       }
 
-      valid = input.isValid() && fluid.isValid() && (output == null || output.isValid());
+      valid = input.get().isValid() && fluid.get().isValid() && (!output.isPresent() || output.get().isValid());
 
     } catch (InvalidRecipeConfigException e) {
       throw new InvalidRecipeConfigException(e, "in <tanking>");
@@ -53,14 +55,14 @@ public class Tanking extends AbstractConditional {
 
   @Override
   public void enforceValidity() throws InvalidRecipeConfigException {
-    input.enforceValidity();
-    if (input.getThing().isEmpty()) {
+    input.get().enforceValidity();
+    if (input.get().getThing().isEmpty()) {
       throw new InvalidRecipeConfigException("Valid child elements are invalid in <tanking>");
     }
-    fluid.enforceValidity();
-    if (output != null) {
-      output.enforceValidity();
-      if (output.getThing().isEmpty()) {
+    fluid.get().enforceValidity();
+    if (output.isPresent()) {
+      output.get().enforceValidity();
+      if (output.get().getThing().isEmpty()) {
         throw new InvalidRecipeConfigException("Valid child elements are invalid in <tanking>");
       }
     }
@@ -69,12 +71,12 @@ public class Tanking extends AbstractConditional {
   @Override
   public void register(@Nonnull String recipeName) {
     if (isValid() && isActive()) {
-      final Things inThing = input.getThing();
-      final Things outThing = output != null ? output.getThing() : null;
-      FluidStack fluidStack = fluid.getFluidStack();
-      boolean isFilling = type == Type.FILL;
-
+      final Things inThing = input.get().getThing();
       if (!inThing.isEmpty()) {
+        final Things outThing = output.isPresent() ? output.get().getThing() : null;
+        final FluidStack fluidStack = fluid.get().getFluidStack();
+        final boolean isFilling = type.get() == Type.FILL;
+
         TankMachineRecipe recipe = new TankMachineRecipe(recipeName, isFilling, inThing, fluidStack, outThing, logic, RecipeLevel.IGNORE);
         MachineRecipeRegistry.instance.registerRecipe(recipe);
       }
@@ -93,7 +95,7 @@ public class Tanking extends AbstractConditional {
     }
     if ("type".equals(name)) {
       try {
-        type = Type.valueOf(value.toUpperCase(Locale.ENGLISH));
+        type = of(Type.valueOf(NullHelper.first(value.toUpperCase(Locale.ENGLISH))));
       } catch (IllegalArgumentException e) {
         throw new InvalidRecipeConfigException("'" + value + "' is not a valid value for 'type'");
       }
@@ -104,23 +106,17 @@ public class Tanking extends AbstractConditional {
 
   @Override
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
-    if ("input".equals(name)) {
-      if (input == null) {
-        input = factory.read(new Item().setAllowDelaying(false), startElement);
+    if ("input".equals(name) && !input.isPresent()) {
+      input = of(factory.read(new Item().setAllowDelaying(false), startElement));
         return true;
-      }
     }
-    if ("fluid".equals(name)) {
-      if (fluid == null) {
-        fluid = factory.read(new FluidAmount(), startElement);
+    if ("fluid".equals(name) && !fluid.isPresent()) {
+      fluid = of(factory.read(new FluidAmount(), startElement));
         return true;
-      }
     }
-    if ("output".equals(name)) {
-      if (output == null) {
-        output = factory.read(new ItemIntegerAmount().setAllowDelaying(false), startElement);
+    if ("output".equals(name) && !output.isPresent()) {
+      output = of(factory.read(new ItemIntegerAmount().setAllowDelaying(false), startElement));
         return true;
-      }
     }
 
     return super.setElement(factory, name, startElement);

@@ -1,23 +1,23 @@
 package crazypants.enderio.base.config.recipes.xml;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.config.recipes.IRecipeRoot;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
-import crazypants.enderio.base.config.recipes.RecipeRoot;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import net.minecraftforge.fml.common.ProgressManager;
 
-public class Recipes implements RecipeRoot {
+public class Recipes implements IRecipeRoot {
 
-  private final @Nonnull List<AbstractConditional> recipes = new ArrayList<AbstractConditional>();
+  private final NNList<AbstractConditional> recipes = new NNList<AbstractConditional>();
 
   @Override
   public List<AbstractConditional> getRecipes() {
@@ -40,7 +40,7 @@ public class Recipes implements RecipeRoot {
   }
 
   @Override
-  public void register(@Nonnull String recipeName) {
+  public void register(String recipeName) {
     final String prefix = recipeName.isEmpty() ? "" : recipeName + ": ";
     Log.debug("Starting registering XML recipes");
     ProgressManager.ProgressBar bar = ProgressManager.push("Recipe", recipes.size());
@@ -54,7 +54,7 @@ public class Recipes implements RecipeRoot {
 
   @SuppressWarnings("unchecked")
   @Override
-  public <T extends RecipeRoot> T addRecipes(RecipeRoot other, Overrides overrides) throws InvalidRecipeConfigException {
+  public <T extends IRecipeRoot> T addRecipes(IRecipeRoot other, Overrides overrides) throws InvalidRecipeConfigException {
     if (other instanceof Recipes) {
       if (recipes.isEmpty()) {
         return (T) other;

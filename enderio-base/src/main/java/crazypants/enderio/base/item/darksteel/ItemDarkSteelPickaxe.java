@@ -58,6 +58,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
@@ -67,6 +68,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -181,6 +183,18 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   @Override
   public @Nonnull EnumActionResult onItemUse(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumHand hand,
       @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
+    ItemStack stack = player.getHeldItem(hand);
+
+    if (DarkSteelConfig.spoonCanMakePaths.get() && side != EnumFacing.DOWN && player.canPlayerEdit(pos, side, stack) && SpoonUpgrade.INSTANCE.hasUpgrade(stack)
+        && world.getBlockState(pos.up()).getMaterial() == Material.AIR && world.getBlockState(pos).getBlock() == Blocks.GRASS) {
+      world.playSound(player, pos, SoundEvents.ITEM_SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
+      if (!world.isRemote) {
+        world.setBlockState(pos, Blocks.GRASS_PATH.getDefaultState(), 11);
+        stack.damageItem(1, player);
+      }
+      return EnumActionResult.SUCCESS;
+    }
+
     if (world.isRemote) {
       if (DarkSteelConfig.rightClickPlaceEnabled_pick.get()) {
         return doRightClickItemPlace(player, world, pos, side, hand, hitX, hitX, hitX);

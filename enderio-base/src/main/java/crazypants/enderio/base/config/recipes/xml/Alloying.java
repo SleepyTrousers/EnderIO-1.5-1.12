@@ -16,9 +16,9 @@ import net.minecraft.item.ItemStack;
 
 public class Alloying extends AbstractCrafting {
 
-  private Float exp;
+  private float exp = 0f;
   private int energy;
-  private final @Nonnull NNList<ItemIntegerAmount> input = new NNList<>();
+  private final NNList<ItemIntegerAmount> input = new NNList<>();
   private boolean needsDeduping = false;
 
   @Override
@@ -31,15 +31,11 @@ public class Alloying extends AbstractCrafting {
       if (input.size() > 3) {
         throw new InvalidRecipeConfigException("Too many <input>s");
       }
-      if (exp == null) {
-        exp = 0f;
-      } else {
-        if (exp < 0) {
-          throw new InvalidRecipeConfigException("Invalid negative value for 'exp'");
-        }
-        if (exp > 1) {
-          throw new InvalidRecipeConfigException("Invalid value for 'exp', above 100%");
-        }
+      if (exp < 0) {
+        throw new InvalidRecipeConfigException("Invalid negative value for 'exp'");
+      }
+      if (exp > 1) {
+        throw new InvalidRecipeConfigException("Invalid value for 'exp', above 100%");
       }
       if (energy <= 0) {
         throw new InvalidRecipeConfigException("Invalid low value for 'energy'");
@@ -53,24 +49,24 @@ public class Alloying extends AbstractCrafting {
       if (valid && input.size() >= 2) {
         final NNList<ItemStack> stacks0 = input.get(0).getThing().getItemStacks();
         final NNList<ItemStack> stacks1 = input.get(1).getThing().getItemStacks();
-        if (isSame(input.get(0), input.get(1))) {
+        if (input.get(0).isSame(input.get(1))) {
           needsDeduping = true;
           if (stacks0.size() == 1) {
             valid = false;
           }
         }
         if (input.size() == 3) {
-          if (isSame(input.get(0), input.get(2))) {
+          if (input.get(0).isSame(input.get(2))) {
             needsDeduping = true;
             if (stacks0.size() == 1) {
               valid = false;
             }
-            if (isSame(input.get(1), input.get(2))) {
+            if (input.get(1).isSame(input.get(2))) {
               if (stacks1.size() <= 2) {
                 valid = false;
               }
             }
-          } else if (isSame(input.get(1), input.get(2))) {
+          } else if (input.get(1).isSame(input.get(2))) {
             needsDeduping = true;
             if (stacks1.size() == 1) {
               valid = false;
@@ -83,10 +79,6 @@ public class Alloying extends AbstractCrafting {
       throw new InvalidRecipeConfigException(e, "in <alloying>");
     }
     return this;
-  }
-
-  private static boolean isSame(ItemOptional a, ItemOptional b) {
-    return a.name.equals(b.name) && ((a.nbt == null && b.nbt == null) || (a.nbt != null && a.nbt.equals(b.nbt)));
   }
 
   @Override

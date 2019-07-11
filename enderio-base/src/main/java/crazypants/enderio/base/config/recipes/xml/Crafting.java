@@ -1,10 +1,13 @@
 package crazypants.enderio.base.config.recipes.xml;
 
 import java.util.Locale;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
+
+import org.apache.logging.log4j.util.Strings;
 
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
@@ -28,9 +31,9 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 public class Crafting extends AbstractCrafting {
 
-  private Grid grid;
+  private Optional<Grid> grid = empty();
 
-  private Shapeless shapeless;
+  private Optional<Shapeless> shapeless = empty();
 
   private boolean upgrade = false;
 
@@ -38,15 +41,13 @@ public class Crafting extends AbstractCrafting {
   public Object readResolve() throws InvalidRecipeConfigException {
     try {
       super.readResolve();
-      if (grid != null) {
-        if (shapeless != null) {
-          throw new InvalidRecipeConfigException("Cannot have both <grid> and <shapeless>");
-        }
-        valid = valid && grid.isValid();
-      } else if (shapeless != null) {
-        valid = valid && shapeless.isValid();
+      if (grid.isPresent() == shapeless.isPresent()) {
+        throw new InvalidRecipeConfigException("Exactly one of either <grid> or <shapeless> must be specified");
+      }
+      if (grid.isPresent()) {
+        valid = valid && grid.get().isValid();
       } else {
-        throw new InvalidRecipeConfigException("Missing <grid> and <shapeless>");
+        valid = valid && shapeless.get().isValid();
       }
     } catch (InvalidRecipeConfigException e) {
       throw new InvalidRecipeConfigException(e, "in <crafting>");
@@ -57,14 +58,14 @@ public class Crafting extends AbstractCrafting {
   @Override
   public void enforceValidity() throws InvalidRecipeConfigException {
     super.enforceValidity();
-    if (grid != null) {
-      grid.enforceValidity();
-    } else if (shapeless != null) {
-      shapeless.enforceValidity();
+    if (grid.isPresent()) {
+      grid.get().enforceValidity();
+    } else if (shapeless.isPresent()) {
+      shapeless.get().enforceValidity();
     }
   }
 
-  public static @Nonnull ResourceLocation mkRL(@Nonnull String recipeName) {
+  public static ResourceLocation mkRL(String recipeName) {
     String s = recipeName.replaceAll("[^A-Za-z0-9]", "_").replaceAll("([A-Z])", "_$0").replaceAll("__+", "_").replaceFirst("^_", "").replaceFirst("_$", "")
         .toLowerCase(Locale.ENGLISH);
     ModContainer activeMod = Loader.instance().activeModContainer();
@@ -88,7 +89,9 @@ public class Crafting extends AbstractCrafting {
     if (valid && active) {
       final ResourceLocation recipeRL = mkRL(recipeName);
       final IForgeRegistry<IRecipe> registry = ForgeRegistries.RECIPES;
-      if (grid != null) {
+      if (grid.isPresent()) {
+        @SuppressWarnings("hiding")
+        Grid grid = this.grid.get();
         if (upgrade) {
           log("ShapedRecipe.Upgrade", recipeName, recipeRL, getOutput().getItemStack(), grid.getIngredients());
           registry.register(new ShapedRecipe.Upgrade(recipeRL, grid.getWidth(), grid.getHeight(), grid.getIngredients(), getOutput().getThing()));
@@ -106,6 +109,8 @@ public class Crafting extends AbstractCrafting {
           });
         }
       } else {
+        @SuppressWarnings("hiding")
+        Shapeless shapeless = this.shapeless.get();
         if (upgrade) {
           log("GenericUpgradeRecipeShapeless", recipeName, recipeRL, getOutput().getItemStack(), shapeless.getIngredients());
           registry.register(new ShapelessRecipe.Upgrade(recipeRL, shapeless.getIngredients(), getOutput().getThing()));
@@ -124,14 +129,14 @@ public class Crafting extends AbstractCrafting {
         }
       }
     } else {
-      Log.debug("Skipping Crafting '" + (getOutput() == null ? "null" : getOutput().getItemStack()) + "' (valid=" + valid + ", active=" + active + ")");
+      Log.debug("Skipping Crafting '" + (getOutputs().isEmpty() ? "null" : getOutput().getItemStack()) + "' (valid=" + valid + ", active=" + active + ")");
     }
   }
 
   @Override
   public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
     if ("upgrade".equals(name)) {
-      upgrade = value != null && value.trim().length() > 0 && !"no".equals(value.toLowerCase(Locale.ENGLISH))
+      upgrade = !Strings.isBlank(value) && !"no".equals(value.toLowerCase(Locale.ENGLISH))
           && !"false".equals(value.toLowerCase(Locale.ENGLISH));
       return true;
     }
@@ -140,17 +145,13 @@ public class Crafting extends AbstractCrafting {
 
   @Override
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
-    if ("grid".equals(name)) {
-      if (grid == null) {
-        grid = factory.read(new Grid(), startElement);
-        return true;
-      }
+    if ("grid".equals(name) && !grid.isPresent()) {
+      grid = of(factory.read(new Grid(), startElement));
+      return true;
     }
-    if ("shapeless".equals(name)) {
-      if (shapeless == null) {
-        shapeless = factory.read(new Shapeless(), startElement);
-        return true;
-      }
+    if ("shapeless".equals(name) && !shapeless.isPresent()) {
+      shapeless = of(factory.read(new Shapeless(), startElement));
+      return true;
     }
 
     return super.setElement(factory, name, startElement);

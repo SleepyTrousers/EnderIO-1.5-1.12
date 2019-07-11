@@ -1,25 +1,27 @@
 package crazypants.enderio.base.config.recipes.xml;
 
+import java.util.Optional;
+
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
+import crazypants.enderio.base.config.recipes.IRecipeConfigElement;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
-import crazypants.enderio.base.config.recipes.RecipeConfigElement;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 
-public class Enchantment implements RecipeConfigElement {
+public class Enchantment implements IRecipeConfigElement {
 
-  protected String name;
-  protected transient net.minecraft.enchantment.Enchantment enchantment = null;
+  protected Optional<String> name = empty();
+  protected transient Optional<net.minecraft.enchantment.Enchantment> enchantment = empty();
   private double costMultiplier = 1;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
-    if (name == null || name.trim().isEmpty()) {
-      enchantment = null;
+    if (!name.isPresent()) {
+      enchantment = empty();
       return this;
     }
-    enchantment = net.minecraft.enchantment.Enchantment.getEnchantmentByLocation(name.trim());
+    enchantment = ofNullable(net.minecraft.enchantment.Enchantment.getEnchantmentByLocation(get(name)));
     return this;
   }
 
@@ -27,19 +29,19 @@ public class Enchantment implements RecipeConfigElement {
   public void enforceValidity() throws InvalidRecipeConfigException {
     if (!isValid()) {
       throw new InvalidRecipeConfigException(
-          "Could not find an enchantment for '" + name + "'");
+          "Could not find an enchantment for '" + name.get() + "'");
     }
   }
 
   @Override
   public boolean isValid() {
-    return enchantment != null;
+    return enchantment.isPresent();
   }
 
   @Override
   public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
     if ("name".equals(name)) {
-      this.name = value;
+      this.name = ofString(value);
       return true;
     }
     if ("costMultiplier".equals(name)) {
@@ -60,7 +62,7 @@ public class Enchantment implements RecipeConfigElement {
   }
 
   public net.minecraft.enchantment.Enchantment getEnchantment() {
-    return enchantment;
+    return get(enchantment);
   }
 
   public double getCostMultiplier() {

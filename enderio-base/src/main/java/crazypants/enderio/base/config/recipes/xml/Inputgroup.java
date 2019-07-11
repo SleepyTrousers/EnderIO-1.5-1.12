@@ -1,16 +1,15 @@
 package crazypants.enderio.base.config.recipes.xml;
 
-import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.base.config.recipes.IRecipeConfigElement;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
-import crazypants.enderio.base.config.recipes.RecipeConfigElement;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 
-public class Inputgroup implements RecipeConfigElement {
+public class Inputgroup implements IRecipeConfigElement {
 
   private NNList<ItemMultiplier> inputs = new NNList<>();
 
@@ -43,7 +42,7 @@ public class Inputgroup implements RecipeConfigElement {
     return false;
   }
 
-  public @Nonnull NNList<ItemMultiplier> getItems() {
+  public NNList<ItemMultiplier> getItems() {
     NNList<ItemMultiplier> result = new NNList<>();
     for (ItemMultiplier item : inputs) {
       if (item.isValid()) {

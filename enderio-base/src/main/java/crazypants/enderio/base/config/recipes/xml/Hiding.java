@@ -1,24 +1,22 @@
 package crazypants.enderio.base.config.recipes.xml;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.base.config.recipes.IRecipeConfigElement;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
-import crazypants.enderio.base.config.recipes.RecipeConfigElement;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 
 public class Hiding extends AbstractConditional {
 
-  public interface IHidingElement extends RecipeConfigElement {
-    void register(@Nonnull String recipeName);
+  public interface IHidingElement extends IRecipeConfigElement {
+    void register(String recipeName);
   }
 
-  private final List<IHidingElement> elements = new NNList<>();
+  private final NNList<IHidingElement> elements = new NNList<>();
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {

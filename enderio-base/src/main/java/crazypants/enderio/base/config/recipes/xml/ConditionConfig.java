@@ -1,49 +1,50 @@
 package crazypants.enderio.base.config.recipes.xml;
 
 import java.util.Locale;
+import java.util.Optional;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.recipes.IRecipeConfigElement;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
-import crazypants.enderio.base.config.recipes.RecipeConfigElement;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 
-public class ConditionConfig implements RecipeConfigElement {
+public class ConditionConfig implements IRecipeConfigElement {
 
-  private String section;
-  private String name;
+  private Optional<String> section = empty();
+  private Optional<String> name = empty();
   private boolean value;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
-    if (section == null) {
+    if (!section.isPresent()) {
       throw new InvalidRecipeConfigException("Missing section");
     }
-    section = section.toLowerCase(Locale.US);
-    if (name == null) {
+    section = of(section.get().toLowerCase(Locale.ENGLISH));
+    if (!name.isPresent()) {
       throw new InvalidRecipeConfigException("Missing name");
     }
-    if (!EnderIO.getInstance().getConfiguration().hasKey(section, name)) {
-      throw new InvalidRecipeConfigException("Unknown config value '" + section + ":" + name + "'");
+    if (!EnderIO.getInstance().getConfiguration().hasKey(get(section), get(name))) {
+      throw new InvalidRecipeConfigException("Unknown config value '" + section.get() + ":" + name.get() + "'");
     }
     return this;
   }
 
   @Override
   public boolean isValid() {
-    return EnderIO.getInstance().getConfiguration().getCategory(section).get(name).getBoolean() == value;
+    return EnderIO.getInstance().getConfiguration().getCategory(get(section)).get(get(name)).getBoolean() == value;
   }
 
   @Override
   public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
     if ("section".equals(name)) {
-      this.section = value;
+      this.section = ofString(value);
       return true;
     }
     if ("name".equals(name)) {
-      this.name = value;
+      this.name = ofString(value);
       return true;
     }
     if ("value".equals(name)) {

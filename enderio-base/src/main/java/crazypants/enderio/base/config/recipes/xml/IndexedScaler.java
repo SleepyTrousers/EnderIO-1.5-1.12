@@ -1,7 +1,5 @@
 package crazypants.enderio.base.config.recipes.xml;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -14,10 +12,11 @@ import crazypants.enderio.base.config.recipes.StaxFactory;
 public class IndexedScaler extends Scaler {
 
   private float step = 1f;
-  private List<Data> data = new NNList<>();
+  private NNList<Data> data = new NNList<>();
 
   @Override
   public Scaler readResolve() throws InvalidRecipeConfigException, XMLStreamException {
+    // No super on purpose
     try {
       if (step <= 0f) {
         throw new InvalidRecipeConfigException("'step' is invalid");
@@ -37,7 +36,7 @@ public class IndexedScaler extends Scaler {
         throw new InvalidRecipeConfigException("no <data>");
       }
 
-      scaler = new crazypants.enderio.base.capacitor.IndexedScaler(step, dataArray);
+      scaler = of(new crazypants.enderio.base.capacitor.IndexedScaler(step, dataArray));
     } catch (InvalidRecipeConfigException e) {
       throw new InvalidRecipeConfigException(e, "in <indexed>");
     }
@@ -46,11 +45,6 @@ public class IndexedScaler extends Scaler {
 
   @Override
   public void enforceValidity() throws InvalidRecipeConfigException {
-  }
-
-  @Override
-  public boolean isValid() {
-    return scaler != null;
   }
 
   @Override
@@ -75,6 +69,6 @@ public class IndexedScaler extends Scaler {
 
   @Override
   public @Nonnull String getScalerString() {
-    return ((crazypants.enderio.base.capacitor.IndexedScaler) scaler).store();
+    return ((crazypants.enderio.base.capacitor.IndexedScaler) scaler.get()).store();
   }
 }

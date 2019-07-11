@@ -1,3 +1,0 @@
-System.out.println("Crafting: Sag Mill, Upgrade (Casting a CaMeL) _impörtänt!_".replaceAll("[:]", "_").replaceAll("[^A-Za-z]", "_").replaceAll("([A-Z])", "_$0")
-    .replaceAll("__+", "_").replaceFirst("^_", "").replaceFirst("_$", "")
-        .toLowerCase(java.util.Locale.ENGLISH));

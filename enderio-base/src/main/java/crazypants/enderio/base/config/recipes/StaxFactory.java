@@ -2,12 +2,15 @@ package crazypants.enderio.base.config.recipes;
 
 import java.util.Iterator;
 
+import javax.annotation.Nonnull;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+
+import com.enderio.core.common.util.NullHelper;
 
 public class StaxFactory {
 
@@ -19,30 +22,54 @@ public class StaxFactory {
     this.source = source;
   }
 
-  public <T extends RecipeRoot> T readRoot(T target, String rootElement) throws XMLStreamException, InvalidRecipeConfigException {
+  public <T extends IRecipeRoot> T readRoot(T target, String rootElement) throws XMLStreamException, InvalidRecipeConfigException {
+    T result = null;
     while (eventReader.hasNext()) {
       XMLEvent event = eventReader.nextEvent();
-      if (event.isStartElement()) {
-        StartElement startElement = event.asStartElement();
-        if (rootElement.equals(startElement.getName().getLocalPart())) {
-          return read(target, startElement);
-        } else {
-          throw new InvalidRecipeConfigException("Unexpected tag '" + startElement.getName() + "'");
+
+      switch (event.getEventType()) {
+      case XMLStreamConstants.NAMESPACE:
+      case XMLStreamConstants.PROCESSING_INSTRUCTION:
+      case XMLStreamConstants.COMMENT:
+      case XMLStreamConstants.DTD:
+      case XMLStreamConstants.START_DOCUMENT:
+      case XMLStreamConstants.END_DOCUMENT:
+        break;
+
+      case XMLStreamConstants.START_ELEMENT:
+        if (result == null) {
+          StartElement startElement = event.asStartElement();
+          if (rootElement.equals(startElement.getName().getLocalPart())) {
+            result = read(target, startElement);
+            break;
+          } else {
+            throw new InvalidRecipeConfigException("Unexpected tag '" + startElement.getName() + "'");
+          }
         }
+
+      case XMLStreamConstants.END_ELEMENT:
+      case XMLStreamConstants.CHARACTERS:
+      case XMLStreamConstants.ATTRIBUTE:
+      default:
+        throw new InvalidRecipeConfigException("Unexpected element '" + event + "'");
       }
     }
 
-    throw new InvalidRecipeConfigException("Missing top-level tag '" + rootElement + "'");
+    if (result == null) {
+      throw new InvalidRecipeConfigException("Missing top-level tag '" + rootElement + "'");
+    }
+    return result;
   }
 
-  public <T extends RecipeConfigElement> T read(T target, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
+  public @Nonnull <T extends IRecipeConfigElement> T read(T target, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     target.setSource(source != null ? source : "unkown");
 
     try {
+      @SuppressWarnings("unchecked")
       Iterator<Attribute> attributes = startElement.getAttributes();
       while (attributes.hasNext()) {
         Attribute attribute = attributes.next();
-        if (!target.setAttribute(this, attribute.getName().getLocalPart().toString(), attribute.getValue())) {
+        if (!target.setAttribute(this, attribute.getName().getLocalPart().toString(), NullHelper.first(attribute.getValue(), ""))) {
           throw new InvalidRecipeConfigException("Unexpected attribute '" + attribute.getName() + "' inside " + startElement.getName());
         }
       }
@@ -60,7 +87,7 @@ public class StaxFactory {
 
       try {
         if (event.isStartElement()) {
-          if (!target.setElement(this, event.asStartElement().getName().getLocalPart(), event.asStartElement())) {
+          if (!target.setElement(this, NullHelper.first(event.asStartElement().getName().getLocalPart(), ""), NullHelper.first(event.asStartElement()))) {
             throw new InvalidRecipeConfigException("Unexpected tag '" + event.asStartElement().getName() + "' inside " + startElement.getName());
           }
         } else if (event.isEndElement()) {

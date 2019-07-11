@@ -28,7 +28,7 @@ import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.config.RecipeConfig;
-import crazypants.enderio.base.config.recipes.RecipeRoot.Overrides;
+import crazypants.enderio.base.config.recipes.IRecipeRoot.Overrides;
 import crazypants.enderio.base.config.recipes.xml.AbstractConditional;
 import crazypants.enderio.base.config.recipes.xml.Aliases;
 import crazypants.enderio.base.config.recipes.xml.Recipes;
@@ -159,7 +159,7 @@ public final class RecipeLoader {
     bar2 = ProgressManager.push("File", userfiles.size());
     for (File file : userfiles) {
       bar2.step(file.getName());
-      final RecipeRoot userFile = readUserFile(new Recipes(), recipeFactory, file.getName(), file);
+      final IRecipeRoot userFile = readUserFile(new Recipes(), recipeFactory, file.getName(), file);
       if (userFile != null) {
         try {
           config = userFile.addRecipes(config, Overrides.ALLOW);
@@ -187,7 +187,7 @@ public final class RecipeLoader {
     ProgressManager.pop(bar);
   }
 
-  private static <T extends RecipeRoot> T handleIMCRecipes(Class<T> target, T config) {
+  private static @Nonnull <T extends IRecipeRoot> T handleIMCRecipes(@Nonnull Class<T> target, @Nonnull T config) {
     try {
       ProgressManager.ProgressBar bar = ProgressManager.push("IMC", imcRecipes.size());
       Map<String, T> targets = new HashMap<>();
@@ -223,7 +223,8 @@ public final class RecipeLoader {
       ProgressManager.pop(bar);
 
       bar = ProgressManager.push("IMC", targets.size());
-      T collector = target.newInstance();
+      @Nonnull
+      T collector = NullHelper.notnullJ(target.newInstance(), "Class.newInstance()");
       for (Entry<String, T> entry : targets.entrySet()) {
         bar.step(entry.getKey());
         try {
@@ -238,7 +239,7 @@ public final class RecipeLoader {
       ProgressManager.pop(bar);
 
       List<AbstractConditional> list = collector.getRecipes();
-      if (list != null && !list.isEmpty()) {
+      if (!list.isEmpty()) {
         Log.info("Valid IMC recipes to be processed:");
         for (AbstractConditional recipe : list) {
           Log.info(" * " + recipe.getName() + " from " + recipe.getSource());
@@ -255,7 +256,7 @@ public final class RecipeLoader {
     }
   }
 
-  private static <T extends RecipeRoot> T readUserFile(T target, final RecipeFactory recipeFactory, String filename, File file) {
+  private static <T extends IRecipeRoot> T readUserFile(T target, final RecipeFactory recipeFactory, String filename, File file) {
     try {
       final T recipes = RecipeFactory.readFileUser(target, RECIPES_ROOT, filename, file);
       if (recipes.isValid()) {
@@ -279,7 +280,7 @@ public final class RecipeLoader {
     return null;
   }
 
-  private static <T extends RecipeRoot> T readCoreFile(T target, final RecipeFactory recipeFactory, String filename) {
+  private static <T extends IRecipeRoot> T readCoreFile(T target, final RecipeFactory recipeFactory, String filename) {
     try {
       final T recipes = recipeFactory.readCoreFile(target, RECIPES_ROOT, filename + EXT);
       if (recipes.isValid()) {
@@ -307,7 +308,7 @@ public final class RecipeLoader {
       imcRecipes.add(Pair.of(sender, Pair.of(isFile ? IMCTYPE.FILE : IMCTYPE.XML, recipe)));
     } else {
       try {
-        RecipeRoot recipes;
+        IRecipeRoot recipes;
         if (!isFile) {
           try (InputStream is = IOUtils.toInputStream(recipe, Charset.forName("UTF-8"))) {
             recipes = RecipeFactory.readStax(new Recipes(), RECIPES_ROOT, is, "IMC from mod '" + sender + "'");

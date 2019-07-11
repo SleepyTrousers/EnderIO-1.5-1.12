@@ -108,11 +108,11 @@ public class KeyTracker {
     }
   }
 
-  public static void sendEnabledChatMessage(String messageBase, boolean isActive) {
+  public static void sendEnabledChatMessage(@Nonnull String messageBase, boolean isActive) {
     StringUtil.sendEnabledChatMessage(Minecraft.getMinecraft().player, EnderIO.lang.addPrefix(messageBase), isActive);
   }
 
-  public static void toggleDarkSteelController(Type type, String messageBase) {
+  public static void toggleDarkSteelController(@Nonnull Type type, @Nonnull String messageBase) {
     boolean isActive = !DarkSteelController.isActive(Minecraft.getMinecraft().player, type);
     sendEnabledChatMessage(messageBase, isActive);
     DarkSteelController.setActive(Minecraft.getMinecraft().player, type, isActive);

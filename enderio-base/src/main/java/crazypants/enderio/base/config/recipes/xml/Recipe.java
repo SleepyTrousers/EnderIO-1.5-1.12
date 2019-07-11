@@ -1,15 +1,16 @@
 package crazypants.enderio.base.config.recipes.xml;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
+
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
@@ -18,13 +19,13 @@ import info.loenwind.autoconfig.util.NullHelper;
 
 public class Recipe extends AbstractConditional {
 
-  private String name;
+  private Optional<String> name = empty();
 
   private boolean required;
 
   private boolean disabled;
 
-  private final @Nonnull List<AbstractConditional> craftings = new ArrayList<AbstractConditional>();
+  private final NNList<AbstractConditional> craftings = new NNList<AbstractConditional>();
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -94,18 +95,16 @@ public class Recipe extends AbstractConditional {
     }
   }
 
+  @SuppressWarnings("null")
   @Override
   public @Nonnull String getName() {
-    if (name != null && !name.trim().isEmpty()) {
-      return name.trim();
-    }
-    return "unnamed recipe";
+    return name.orElse("unnamed recipe");
   }
 
   @Override
   public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
     if ("name".equals(name)) {
-      this.name = value;
+      this.name = ofString(value);
       return true;
     }
     if ("required".equals(name)) {
@@ -145,25 +144,25 @@ public class Recipe extends AbstractConditional {
     return !disabled && super.isActive();
   }
 
-  private static final @Nonnull Map<String, Class<? extends AbstractConditional>> MAPPING = new HashMap<>();
+  private static final Map<String, Class<? extends AbstractConditional>> MAPPING = new HashMap<>();
 
   static {
     register(Alloying.class, Casting.class, Crafting.class, Brewing.class, Enchanting.class, Fermenting.class, Sagmilling.class, Slicing.class, Smelting.class,
         Soulbinding.class, Spawning.class, Tanking.class, Hiding.class);
   }
 
-  public static void register(@Nonnull String tagname, @Nonnull Class<? extends AbstractConditional> clazz) {
+  public static void register(String tagname, Class<? extends AbstractConditional> clazz) {
     MAPPING.put(tagname, clazz);
   }
 
   @SafeVarargs
-  public static void register(@Nonnull Class<? extends AbstractConditional>... clazzes) {
+  public static void register(Class<? extends AbstractConditional>... clazzes) {
     for (Class<? extends AbstractConditional> clazz : clazzes) {
       MAPPING.put(clazz.getSimpleName().toLowerCase(Locale.ENGLISH), clazz);
     }
   }
 
-  public static @Nullable AbstractConditional get(@Nonnull String tagname) {
+  public static @Nullable AbstractConditional get(String tagname) {
     Class<? extends AbstractConditional> clazz = MAPPING.get(tagname);
     if (clazz != null) {
       try {

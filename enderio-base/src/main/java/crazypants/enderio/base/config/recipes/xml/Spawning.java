@@ -1,7 +1,5 @@
 package crazypants.enderio.base.config.recipes.xml;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -13,7 +11,7 @@ import crazypants.enderio.base.config.recipes.StaxFactory;
 
 public class Spawning extends AbstractConditional {
 
-  private final List<Entity> entities = new NNList<>();
+  private final NNList<Entity> entities = new NNList<>();
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {

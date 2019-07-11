@@ -4,10 +4,10 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
-import crazypants.enderio.base.config.recipes.RecipeConfigElement;
+import crazypants.enderio.base.config.recipes.IRecipeConfigElement;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 
-public class Data implements RecipeConfigElement {
+public class Data implements IRecipeConfigElement {
 
   private float value = Float.NaN;
 

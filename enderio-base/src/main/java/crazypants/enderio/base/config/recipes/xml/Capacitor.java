@@ -1,5 +1,7 @@
 package crazypants.enderio.base.config.recipes.xml;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -14,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class Capacitor extends AbstractConditional {
 
-  private ResourceLocation key;
+  private Optional<ResourceLocation> key = empty();
 
   private boolean required;
 
@@ -22,7 +24,7 @@ public class Capacitor extends AbstractConditional {
 
   private int base = Integer.MIN_VALUE;
 
-  private Scaler scaler;
+  private Optional<Scaler> scaler = empty();
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -31,14 +33,14 @@ public class Capacitor extends AbstractConditional {
     }
     try {
       super.readResolve();
-      if (scaler == null) {
+      if (!scaler.isPresent()) {
         throw new InvalidRecipeConfigException("Missing <scaler> or <indexed>");
       }
       if (base == Integer.MIN_VALUE) {
         throw new InvalidRecipeConfigException("'base' is invalid");
       }
-      if (key != null) {
-        valid = CapacitorKeyRegistry.contains(key);
+      if (key.isPresent()) {
+        valid = CapacitorKeyRegistry.contains(get(key));
         if (required && !valid && active) {
           throw new InvalidRecipeConfigException("'key' is invalid");
         }
@@ -46,7 +48,7 @@ public class Capacitor extends AbstractConditional {
         throw new InvalidRecipeConfigException("'key' is invalid");
       }
 
-      valid = valid && scaler.isValid();
+      valid = valid && scaler.get().isValid();
       if (required && !valid && active) {
         throw new InvalidRecipeConfigException("No valid <scaler> or <indexed>");
       }
@@ -62,9 +64,9 @@ public class Capacitor extends AbstractConditional {
     if (disabled || !active) {
       return;
     }
-    scaler.enforceValidity();
-    if (key == null || !CapacitorKeyRegistry.contains(key)) {
-      throw new InvalidRecipeConfigException("'key' '" + key + "' is invalid");
+    scaler.get().enforceValidity();
+    if (key == null || !CapacitorKeyRegistry.contains(key.get())) {
+      throw new InvalidRecipeConfigException("'key' '" + key.get() + "' is invalid");
     }
   }
 
@@ -74,7 +76,7 @@ public class Capacitor extends AbstractConditional {
     if (!disabled && valid && active) {
       Log.debug("Registering XML recipe '" + getName() + "'");
 
-      CapacitorKeyRegistry.setValue(key, base, scaler.getScaler(), scaler.getScalerString());
+      CapacitorKeyRegistry.setValue(key.get(), base, scaler.get().getScaler(), scaler.get().getScalerString());
 
     } else {
       Log.debug("Skipping XML recipe '" + getName() + "' (valid=" + valid + ", active=" + active + ", required=" + required + ", disabled=" + disabled + ")");
@@ -83,8 +85,8 @@ public class Capacitor extends AbstractConditional {
 
   @Override
   public @Nonnull String getName() {
-    if (key != null) {
-      return key.toString();
+    if (key.isPresent()) {
+      return key.get().toString();
     }
     return "unnamed recipe";
   }
@@ -92,7 +94,7 @@ public class Capacitor extends AbstractConditional {
   @Override
   public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
     if ("key".equals(name)) {
-      this.key = new ResourceLocation(NullHelper.first(value, ""));
+      this.key = of(new ResourceLocation(NullHelper.first(value, "")));
       return true;
     }
     if ("required".equals(name)) {
@@ -107,11 +109,9 @@ public class Capacitor extends AbstractConditional {
       this.base = Integer.parseInt(value);
       return true;
     }
-    if ("scaler".equals(name)) {
-      if (scaler == null) {
-        scaler = new Scaler(value).readResolve();
-        return true;
-      }
+    if ("scaler".equals(name) && !scaler.isPresent()) {
+      scaler = of(new Scaler(value).readResolve());
+      return true;
     }
 
     return super.setAttribute(factory, name, value);
@@ -119,17 +119,13 @@ public class Capacitor extends AbstractConditional {
 
   @Override
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
-    if ("scaler".equals(name)) {
-      if (scaler == null) {
-        scaler = factory.read(new Scaler(), startElement);
-        return true;
-      }
+    if ("scaler".equals(name) && !scaler.isPresent()) {
+      scaler = of(factory.read(new Scaler(), startElement));
+      return true;
     }
-    if ("indexed".equals(name)) {
-      if (scaler == null) {
-        scaler = factory.read(new IndexedScaler(), startElement);
-        return true;
-      }
+    if ("indexed".equals(name) && !scaler.isPresent()) {
+      scaler = of(factory.read(new IndexedScaler(), startElement));
+      return true;
     }
 
     return super.setElement(factory, name, startElement);

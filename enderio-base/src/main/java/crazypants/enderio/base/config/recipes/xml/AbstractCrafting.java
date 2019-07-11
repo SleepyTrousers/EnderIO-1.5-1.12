@@ -6,17 +6,19 @@ import java.util.List;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 
 public abstract class AbstractCrafting extends AbstractConditional {
 
-  protected List<Output> outputs;
+  protected final NNList<Output> outputs = new NNList<>();
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
     super.readResolve();
-    if (outputs == null || outputs.isEmpty()) {
+    if (outputs.isEmpty()) {
       throw new InvalidRecipeConfigException("Missing <output>");
     }
 
@@ -39,7 +41,7 @@ public abstract class AbstractCrafting extends AbstractConditional {
         return output;
       }
     }
-    return null;
+    throw new RuntimeException("Missing <output>");
   }
 
   public List<Output> getOutputs() {
@@ -60,9 +62,6 @@ public abstract class AbstractCrafting extends AbstractConditional {
   @Override
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("output".equals(name)) {
-      if (outputs == null) {
-        outputs = new ArrayList<Output>();
-      }
       outputs.add(factory.read(new Output(), startElement));
       return true;
     }
