@@ -3,6 +3,8 @@ package crazypants.enderio.machines.machine.solar;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.TileEntityEio;
 import crazypants.enderio.base.fluid.BlockFluidEio;
 import crazypants.enderio.base.fluid.Fluids;
@@ -18,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -175,6 +178,12 @@ public class TileSolarPanel extends TileEntityEio implements ILegacyPoweredTile,
   @Override
   public String[] getConduitProbeData(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
     return network.getConduitProbeData(player, side);
+  }
+
+  @Override
+  @Nonnull
+  public NNList<ITextComponent> getConduitProbeInformation(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
+    return network.getConduitProbeInformation(player, side);
   }
 
 }

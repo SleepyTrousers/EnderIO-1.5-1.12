@@ -13,11 +13,13 @@ import com.enderio.core.common.util.NNList.NNIterator;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.machines.config.config.SolarConfig;
+import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
@@ -200,19 +202,25 @@ public class SolarPanelNetwork implements ISolarPanelNetwork {
   @Nonnull
   @Override
   public String[] getConduitProbeData(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
-    NNList<String> result = new NNList<>();
-    final @Nonnull String text = String.format(" Energy was last accessed %d ticks ago", EnderIO.proxy.getServerTickCount() - lastTick);
-    result.add(String.format("%d panels producing %d µI/t now and %d µI/t peak", panels.size(), getEnergyAvailablePerTick(), getEnergyMaxPerTick()));
+    return new String[0];
+  }
+
+  @Override
+  @Nonnull
+  public NNList<ITextComponent> getConduitProbeInformation(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
+    NNList<ITextComponent> result = new NNList<>();
+    ITextComponent text = Lang.PROBE_SOLAR_LAST.toChatServer(EnderIO.proxy.getServerTickCount() - lastTick);
+    result.add(Lang.PROBE_SOLAR_PROD.toChatServer(panels.size(), getEnergyAvailablePerTick(), getEnergyMaxPerTick()));
     result.add(text);
     for (BlockPos panel : panels) {
       if (!TileSolarPanel.isPowered(world, panel)) {
-        result.add(String.format(" Panel at %s cannot see the sun!", BlockCoord.chatString(panel, TextFormatting.RESET)));
+        result.add(Lang.PROBE_SOLAR_NOSUN.toChatServer(BlockCoord.chatString(panel, TextFormatting.RESET)));
       }
     }
     if (result.size() == 2) {
-      result.add(String.format(" All panels can see the sun!"));
+      result.add(Lang.PROBE_SOLAR_ALLSUN.toChatServer());
     }
-    return result.toArray(new String[result.size()]);
+    return result;
   }
 
   @Override

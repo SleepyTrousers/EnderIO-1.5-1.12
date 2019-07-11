@@ -134,6 +134,10 @@ public enum Lang implements ILang {
   GUI_CREATIVE_SPAWNER_OFFERING(".block_creative_spawner.gui.offering"),
   GUI_LAVAGEN_HEAT(".gui.lavagen.heat"),
   TOOLTIP_SPAWNER_COST(".block_powered_spawner.tooltip.cost"),
+  PROBE_SOLAR_PROD(".block_solar_panel.probe.production"),
+  PROBE_SOLAR_LAST(".block_solar_panel.probe.last_access"),
+  PROBE_SOLAR_NOSUN(".block_solar_panel.probe.no_sun"),
+  PROBE_SOLAR_ALLSUN(".block_solar_panel.probe.all_sun"),
 
   ;
 

@@ -58,8 +58,6 @@ enderio.gui.xp_obelisk.button.retrieve.all.line3=§aGets you to level %d
 enderio.gui.xp_obelisk.button.retrieve.empty=§4XP Obelisk is empty
 enderio.gui.xp_obelisk.button.store.empty=§4You don't have any XP
 
-enderio.block_solar_panel.tooltip.maxoutput=Max Output: %s
-
 enderio.gui.soul_binder.useplayerxp=Use Player XP
 
 enderio.block_powered_spawner.tooltip.empty=Empty
@@ -278,6 +276,13 @@ tile.block_solar_panel.tooltip.detailed.line1=Produces power during daylight hou
 tile.block_solar_panel.tooltip.detailed.line2=Must have a clear line of sight to the sky
 enderio.jei.solar_panel.output=Generating up to
 enderio.jei.solar_panel.range.line1=Actual power generated depends on the weather and the angle of sun
+enderio.block_solar_panel.tooltip.maxoutput=Max Output: %s
+
+# These 4 use the brain-dead TextComponentTranslation format
+enderio.block_solar_panel.probe.production=%1$s panel(s) producing %2$s µI/t now and %3$s µI/t peak
+enderio.block_solar_panel.probe.last_access=\u0020Energy was last accessed %s ticks ago
+enderio.block_solar_panel.probe.no_sun=\u0020Panel at %s cannot see the sun!
+enderio.block_solar_panel.probe.all_sun=\u0020All panels can see the sun!
 
 tile.block_soul_binder.name=Soul Binder
 tile.block_soul_binder.tooltip.detailed.line1=Used to convert the type of a broken spawner

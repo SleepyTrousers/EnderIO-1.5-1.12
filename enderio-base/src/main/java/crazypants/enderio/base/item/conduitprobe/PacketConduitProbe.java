@@ -3,7 +3,8 @@ package crazypants.enderio.base.item.conduitprobe;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.util.ChatUtil;
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.power.forge.tile.ILegacyPoweredTile;
@@ -12,6 +13,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -67,6 +70,9 @@ public class PacketConduitProbe implements IMessage {
   }
 
   public static class Handler implements IMessageHandler<PacketConduitProbe, IMessage> {
+
+    private static final @Nonnull TextComponentString NOTEXT = new TextComponentString("");
+
     @Override
     public IMessage onMessage(PacketConduitProbe message, MessageContext ctx) {
       EntityPlayer player = ctx.getServerHandler().player;
@@ -78,18 +84,26 @@ public class PacketConduitProbe implements IMessage {
 
       TileEntity te = world.getTileEntity(pos);
       if (te instanceof IHasConduitProbeData) {
-        ChatUtil.sendNoSpam(player, ((IHasConduitProbeData) te).getConduitProbeData(player, message.side));
+        ((IHasConduitProbeData) te).getConduitProbeInformation(player, message.side).forEach(elem -> player.sendMessage((NullHelper.first(elem, NOTEXT))));
       }
       return null;
     }
 
   }
 
-  public static interface IHasConduitProbeData {
+  public interface IHasConduitProbeData {
 
+    @Deprecated
     @Nonnull
     String[] getConduitProbeData(@Nonnull EntityPlayer player, @Nullable EnumFacing side);
 
+    default @Nonnull NNList<ITextComponent> getConduitProbeInformation(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
+      NNList<ITextComponent> result = new NNList<>();
+      for (String s : getConduitProbeData(player, side)) {
+        result.add(new TextComponentString(NullHelper.first(s, "")));
+      }
+      return result;
+    }
   }
 
 }
