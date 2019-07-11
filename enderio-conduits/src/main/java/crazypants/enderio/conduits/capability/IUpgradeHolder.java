@@ -1,8 +1,12 @@
 package crazypants.enderio.conduits.capability;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 
 /**
  * 
@@ -32,6 +36,10 @@ public interface IUpgradeHolder {
 
   default int getUpgradeSlotLimit(@Nonnull ItemStack stack) {
     return getUpgradeSlotLimit();
+  }
+
+  default @Nonnull List<String> getFunctionUpgradeToolTipText(@Nonnull EnumFacing dir) {
+    return Collections.emptyList();
   }
 
 }

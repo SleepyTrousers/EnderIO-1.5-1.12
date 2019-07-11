@@ -151,7 +151,9 @@ enderio.gui.self_feed_disabled=Self Feed Disabled
 enderio.gui.item_filter_upgrade=Filter Upgrade
 enderio.gui.item_function_upgrade=Function Upgrade
 enderio.gui.item_function_upgrade2=Max Speed Upgrades is 15
-enderio.gui.item_function_upgrade3=Max Speed Downgrades is 1
+enderio.gui.item_function_upgrade3=Max Speed Downgrades is 3
+enderio.gui.item_function_upgrade.details=Effective speed:
+enderio.gui.item_function_upgrade.details2=%s item(s) per operation
 enderio.gui.signal_color=Signal Color
 enderio.gui.priority=Priority
 
@@ -159,6 +161,8 @@ enderio.gui.liquid_auto_extract=Auto Extract
 enderio.gui.liquid_filter=Filter
 enderio.gui.liquid_whitelist=Whitelist
 enderio.gui.liquid_blacklist=Blacklist
+enderio.gui.liquid_function_upgrade.details=Effective speed:
+enderio.gui.liquid_function_upgrade.details2=%s %% / %s per operation
 
 enderio.gui.redstone_signal_strength=Strong Signal
 

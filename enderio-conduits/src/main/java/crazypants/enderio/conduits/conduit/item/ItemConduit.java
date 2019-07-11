@@ -865,6 +865,13 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
   }
 
   @Override
+  @Nonnull
+  public List<String> getFunctionUpgradeToolTipText(@Nonnull EnumFacing dir) {
+    return new NNList<>(crazypants.enderio.conduits.lang.Lang.GUI_ITEM_FUNCTION_UPGRADE_DETAILS.get(),
+        crazypants.enderio.conduits.lang.Lang.GUI_ITEM_FUNCTION_UPGRADE_DETAILS2.get(getMaximumExtracted(dir)));
+  }
+
+  @Override
   public int getInputFilterIndex() {
     return FilterGuiUtil.INDEX_INPUT_ITEM;
   }

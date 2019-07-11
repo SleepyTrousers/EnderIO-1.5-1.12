@@ -10,12 +10,9 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.fluid.IFluidWrapper.ITankInfoWrapper;
 import com.enderio.core.common.util.RoundRobinIterator;
 
-import crazypants.enderio.base.conduit.item.FunctionUpgrade;
-import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.filter.fluid.IFluidFilter;
 import crazypants.enderio.conduits.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduits.config.ConduitConfig;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
@@ -126,15 +123,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
   }
 
   private float getExtractSpeedMultiplier(NetworkTank tank) {
-    ItemStack upgradeStack = tank.con.getFunctionUpgrade(tank.conDir);
-    if (!upgradeStack.isEmpty()) {
-      FunctionUpgrade upgrade = ItemFunctionUpgrade.getFunctionUpgrade(upgradeStack);
-      if (upgrade != null) {
-        return upgrade.getFluidSpeedMultiplier(upgradeStack.getCount());
-      }
-    }
-
-    return 1;
+    return tank.con.getExtractSpeedMultiplier(tank.conDir);
   }
 
   private boolean matchedFilter(FluidStack drained, @Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir, boolean isInput) {

@@ -27,6 +27,7 @@ import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.base.conduit.item.FunctionUpgrade;
 import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
@@ -35,6 +36,7 @@ import crazypants.enderio.base.filter.fluid.FluidFilter;
 import crazypants.enderio.base.filter.fluid.IFluidFilter;
 import crazypants.enderio.base.filter.fluid.items.IItemFilterFluidUpgrade;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
+import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.tool.ToolUtil;
@@ -44,6 +46,7 @@ import crazypants.enderio.conduits.conduit.IEnderConduit;
 import crazypants.enderio.conduits.conduit.item.ItemConduit;
 import crazypants.enderio.conduits.conduit.power.IPowerConduit;
 import crazypants.enderio.conduits.conduit.power.PowerConduit;
+import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduits.render.ConduitTexture;
 import crazypants.enderio.conduits.render.ConduitTextureWrapper;
@@ -717,6 +720,14 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
         : IUpgradeHolder.super.getUpgradeSlotLimit(stack);
   }
 
+  @Override
+  @Nonnull
+  public List<String> getFunctionUpgradeToolTipText(@Nonnull EnumFacing dir) {
+    return new NNList<>(crazypants.enderio.conduits.lang.Lang.GUI_LIQUID_FUNCTION_UPGRADE_DETAILS.get(),
+        crazypants.enderio.conduits.lang.Lang.GUI_LIQUID_FUNCTION_UPGRADE_DETAILS2.get((int) (100 * getExtractSpeedMultiplier(dir)),
+            LangFluid.MB((int) (ConduitConfig.fluid_tier3_extractRate.get() * getExtractSpeedMultiplier(dir)))));
+  }
+
   @SuppressWarnings("unchecked")
   @Nullable
   @Override
@@ -776,6 +787,19 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
     result.add(cc);
 
     return result;
+  }
+
+  public float getExtractSpeedMultiplier(@Nonnull EnumFacing dir) {
+    ItemStack upgradeStack = getFunctionUpgrade(dir);
+    if (!upgradeStack.isEmpty()) {
+      FunctionUpgrade upgrade = ItemFunctionUpgrade.getFunctionUpgrade(upgradeStack);
+      if (upgrade != null) {
+        return upgrade.getFluidSpeedMultiplier(upgradeStack.getCount());
+      }
+    }
+
+    return 1;
+
   }
 
 }

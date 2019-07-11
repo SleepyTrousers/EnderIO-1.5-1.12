@@ -2,6 +2,7 @@ package crazypants.enderio.conduits.gui;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -60,6 +61,7 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
 
   private @Nonnull IconButton insertFilterOptionsB;
   private @Nonnull IconButton extractFilterOptionsB;
+  private @Nonnull FakeButton functionUpgradeOptionsB;
 
   protected int left = 0;
   protected int top = 0;
@@ -114,6 +116,26 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
 
     extractFilterOptionsB = new IconButton(gui, ID_EXTRACT_FILTER_OPTIONS, x, y, IconEIO.GEAR_LIGHT);
     extractFilterOptionsB.setToolTip(crazypants.enderio.base.lang.Lang.GUI_EDIT_ITEM_FILTER.get());
+
+    x = rightColumn + 18 + 1;
+
+    functionUpgradeOptionsB = new FakeButton(gui, x, y, IconEIO.INFO) {
+      @Override
+      public boolean isVisible() {
+        return hasUpgrades() && super.isVisible();
+      }
+    };
+    functionUpgradeOptionsB.setToolTip(new GuiToolTip(new Rectangle(x, y, 18, 18), "") {
+      @Override
+      public boolean shouldDraw() {
+        return hasUpgrades() && super.shouldDraw();
+      }
+
+      @Override
+      public @Nonnull List<String> getToolTipText() {
+        return gui.getContainer().getFunctionUpgradeToolTipText();
+      }
+    });
 
     gui.getContainer().addFilterListener(this::filtersChanged);
 
@@ -198,6 +220,7 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
     }
     if (hasUpgrades()) {
       gui.addToolTip(functionUpgradeTooltip);
+      functionUpgradeOptionsB.onGuiInit();
     }
 
     initCustomOptions();
@@ -216,6 +239,7 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
     extractEnabledB.detach();
     insertFilterOptionsB.detach();
     extractFilterOptionsB.detach();
+    functionUpgradeOptionsB.detach();
 
     gui.removeToolTip(functionUpgradeTooltip);
     gui.removeToolTip(filterExtractUpgradeTooltip);
@@ -305,8 +329,7 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
 
   }
 
-  protected @Nonnull
-  String getTypeName() {
+  protected @Nonnull String getTypeName() {
     return typeName;
   }
 

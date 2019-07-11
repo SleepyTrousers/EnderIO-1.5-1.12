@@ -178,6 +178,7 @@ public enum IconEIO implements IWidgetIcon {
   ALLOY_MODE_ALLOY(32, 144),
 
   RECIPE_BOOK(48, 144),
+  INFO(64, 144),
 
   ;
 

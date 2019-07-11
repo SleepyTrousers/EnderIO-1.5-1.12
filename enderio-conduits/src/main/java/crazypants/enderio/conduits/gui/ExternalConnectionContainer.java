@@ -262,4 +262,10 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
   }
 
+  @Override
+  @Nonnull
+  public List<String> getFunctionUpgradeToolTipText() {
+    return getItemHandler().getFunctionUpgradeToolTipText();
+  }
+
 }

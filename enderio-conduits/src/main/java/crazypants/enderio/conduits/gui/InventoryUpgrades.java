@@ -1,5 +1,7 @@
 package crazypants.enderio.conduits.gui;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.conduit.IConduit;
@@ -150,6 +152,10 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
   @Override
   public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
     setInventorySlotContents(slot, stack);
+  }
+
+  public @Nonnull List<String> getFunctionUpgradeToolTipText() {
+    return upgradeHolder.getFunctionUpgradeToolTipText(dir);
   }
 
 }

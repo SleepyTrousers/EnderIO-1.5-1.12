@@ -1,5 +1,7 @@
 package crazypants.enderio.base.conduit;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.widget.GhostSlot;
@@ -67,4 +69,7 @@ public interface IExternalConnectionContainer {
    *          The ItemStacks of the upgrades for the ghost slot
    */
   void createGhostSlots(@Nonnull NNList<GhostSlot> ghostSlots, @Nonnull NNList<ItemStack> filters, @Nonnull NNList<ItemStack> upgrades);
+
+  @Nonnull
+  List<String> getFunctionUpgradeToolTipText();
 }

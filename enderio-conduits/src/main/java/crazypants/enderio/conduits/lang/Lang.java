@@ -21,6 +21,8 @@ public enum Lang implements ILang {
   GUI_ITEM_FUNCTION_UPGRADE(".gui.item_function_upgrade"),
   GUI_ITEM_FUNCTION_UPGRADE_2(".gui.item_function_upgrade2"),
   GUI_ITEM_FUNCTION_UPGRADE_3(".gui.item_function_upgrade3"),
+  GUI_ITEM_FUNCTION_UPGRADE_DETAILS(".gui.item_function_upgrade.details"),
+  GUI_ITEM_FUNCTION_UPGRADE_DETAILS2(".gui.item_function_upgrade.details2"),
   GUI_SIGNAL_COLOR(".gui.signal_color"),
   GUI_PRIORITY(".gui.priority"),
 
@@ -35,6 +37,8 @@ public enum Lang implements ILang {
   GUI_LIQUID_TOOLTIP_MAX_EXTRACT(".item_liquid_conduit.tooltip.max_extract"),
   GUI_LIQUID_TOOLTIP_MAX_IO(".item_liquid_conduit.tooltip.max_io"),
   ITEM_LIQUID_CONDUIT_UNLOCKED_TYPE(".item_liquid_conduit.unlocked_type"),
+  GUI_LIQUID_FUNCTION_UPGRADE_DETAILS(".gui.liquid_function_upgrade.details"),
+  GUI_LIQUID_FUNCTION_UPGRADE_DETAILS2(".gui.liquid_function_upgrade.details2"),
 
   GUI_REDSTONE_CONDUIT_INPUT_MODE(".gui.redstone_conduit_input_mode"),
   GUI_REDSTONE_CONDUIT_OUTPUT_MODE(".gui.redstone_conduit_output_mode"),
