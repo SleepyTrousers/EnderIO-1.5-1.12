@@ -5,8 +5,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.HashSet;
 
 import javax.annotation.Nonnull;
 
@@ -28,7 +26,6 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
   List<NetworkTank> tanks = new ArrayList<NetworkTank>();
   Map<NetworkTankKey, NetworkTank> tankMap = new HashMap<NetworkTankKey, NetworkTank>();
-  Set<NetworkTankKey> hasMultipleTanksSet = new HashSet<NetworkTankKey>();
 
   Map<NetworkTank, RoundRobinIterator<NetworkTank>> iterators;
 
@@ -47,11 +44,6 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     tankMap.remove(key);
     tankMap.put(key, tank);
 
-    hasMultipleTanksSet.remove(key);
-    if (tank.isValid() && !tank.externalTank.getTankInfoWrappers().isEmpty()) {
-      hasMultipleTanksSet.add(key);
-    }
-
     tanks.sort((left, right) -> right.priority - left.priority);
   }
 
@@ -64,7 +56,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     FluidStack drained = tank.externalTank.getAvailableFluid();
     boolean firstTry = tryExtract(con, conDir, tank, drained);
 
-    if (!firstTry && hasMultipleTanksSet.contains(new NetworkTankKey(con, conDir))) {
+    if (!firstTry && tank.supportsMultipleTanks) {
       for (ITankInfoWrapper tankInfoWrapper : tank.externalTank.getTankInfoWrappers()) {
         FluidStack toDrain = tankInfoWrapper.getIFluidTankProperties().getContents();
 
