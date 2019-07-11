@@ -36,7 +36,7 @@ public class NetworkTank {
     priority = con.getOutputPriority(conDir);
     roundRobin = con.isRoundRobinEnabled(conDir);
     selfFeed = con.isSelfFeedEnabled(conDir);
-    supportsMultipleTanks = (externalTank != null) && !externalTank.getTankInfoWrappers().isEmpty();
+    supportsMultipleTanks = (externalTank != null) && externalTank.getTankInfoWrappers().size() > 1;
   }
 
   public boolean isValid() {
