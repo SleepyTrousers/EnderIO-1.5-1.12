@@ -137,7 +137,8 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
       for (int dy = -DarkSteelConfig.shearsBlockAreaBoostWhenPowered.get(); dy <= DarkSteelConfig.shearsBlockAreaBoostWhenPowered.get(); dy++) {
         for (int dz = -DarkSteelConfig.shearsBlockAreaBoostWhenPowered.get(); dz <= DarkSteelConfig.shearsBlockAreaBoostWhenPowered.get(); dz++) {
           Block block2 = player.world.getBlockState(new BlockPos(x + dx, y + dy, z + dz)).getBlock();
-          if (block2 instanceof IShearable && ((IShearable) block2).isShearable(itemstack, player.world, new BlockPos(x + dx, y + dy, z + dz))) {
+          if ((block2 instanceof BlockTripWire)
+              || (block2 instanceof IShearable && ((IShearable) block2).isShearable(itemstack, player.world, new BlockPos(x + dx, y + dy, z + dz)))) {
             res.add(new BlockPos(x + dx, y + dy, z + dz));
           }
         }
@@ -166,12 +167,16 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
    */
   @SuppressWarnings({ "cast", "null" })
   public boolean super_onBlockStartBreak(@Nonnull ItemStack itemstack, @Nonnull BlockPos pos, @Nonnull net.minecraft.entity.player.EntityPlayer player) {
-    if (player.world.isRemote || player.capabilities.isCreativeMode) {
+    if (player.world.isRemote) {
       return false;
     }
     IBlockState blockState = player.world.getBlockState(pos); // EIO ADD
     Block block = player.world.getBlockState(pos).getBlock();
     if (block instanceof net.minecraftforge.common.IShearable) {
+      if (player.capabilities.isCreativeMode) {
+        player.world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
+        return true;
+      }
       net.minecraftforge.common.IShearable target = (net.minecraftforge.common.IShearable) block;
       if (target.isShearable(itemstack, player.world, pos)) {
         java.util.List<ItemStack> drops = target.onSheared(itemstack, player.world, pos,
@@ -201,16 +206,19 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
         player.world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
         return true;
       }
-/*    } else if (block instanceof BlockTripWire) {
+    } else if (block instanceof BlockTripWire) {
       // BlockTripWire.onBlockHarvested() does this hardcoded for vanilla shears
-      player.world.setBlockState(pos, blockState.withProperty(BlockTripWire.DISARMED, true), 4);
+      blockState = blockState.withProperty(BlockTripWire.DISARMED, true);
+      player.world.setBlockState(pos, blockState, 4);
       player.world.playEvent(2001, pos, Block.getStateId(blockState));
       if (block.removedByPlayer(blockState, player.world, pos, player, false)) {
         block.onBlockDestroyedByPlayer(player.world, pos, blockState);
       }
-      block.harvestBlock(player.world, player, pos, blockState, null, itemstack);
+      if (!player.capabilities.isCreativeMode) {
+        block.harvestBlock(player.world, player, pos, blockState, null, itemstack);
+      }
       return true;
-*/    }
+    }
     return false;
   }
 
