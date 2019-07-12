@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
@@ -51,6 +52,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -108,83 +111,59 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   @Nonnull
-  public String getConduitProbeInfo(@Nonnull EntityPlayer player) {
+  public NNList<ITextComponent> getConduitProbeInformation(@Nonnull EntityPlayer player) {
+    final NNList<ITextComponent> result = super.getConduitProbeInformation(player);
     PowerConduitNetwork pcn = (PowerConduitNetwork) getNetwork();
-    if (pcn == null) {
-      return super.getConduitProbeInfo(player);
+    NetworkPowerManager pm = pcn != null ? pcn.getPowerManager() : null;
+    PowerTracker ctracker = pm != null ? pm.getTracker(this) : null;
+    PowerTracker ntracker = pm != null ? pm.getNetworkPowerTracker() : null;
+
+    ITextComponent elem = Lang.GUI_CONDUIT_PROBE_POWER_TRACKED_1.toChatServer();
+    elem.getStyle().setColor(TextFormatting.GREEN);
+    result.add(elem);
+
+    elem = Lang.GUI_CONDUIT_PROBE_POWER_TRACKED_2.toChatServer(LangPower.sRF(getEnergyStored(), getMaxEnergyStored()));
+    elem.getStyle().setColor(TextFormatting.BLUE);
+    result.add(elem);
+
+    if (ctracker != null) {
+      elem = Lang.GUI_CONDUIT_PROBE_POWER_TRACKED_3.toChatServer(LangPower.sRFt(ctracker.getAverageRfTickSent()));
+      elem.getStyle().setColor(TextFormatting.BLUE);
+      result.add(elem);
+
+      elem = Lang.GUI_CONDUIT_PROBE_POWER_TRACKED_4.toChatServer(LangPower.sRFt(ctracker.getAverageRfTickRecieved()));
+      elem.getStyle().setColor(TextFormatting.BLUE);
+      result.add(elem);
     }
-    NetworkPowerManager pm = pcn.getPowerManager();
-    PowerTracker tracker = pm.getTracker(this);
 
-    if (tracker != null) {
-      String color = "\u00A7a ";
-      StringBuilder sb = new StringBuilder(super.getConduitProbeInfo(player));
-      sb.append(color);
-      sb.append(Lang.GUI_ENERGY_CONDUIT.get());
-
-      color = "\u00A79 ";
-      sb.append(color);
-      sb.append(Lang.GUI_CONDUIT_PROBE_CONDUIT_BUFFER.get());
-      sb.append(" ");
-      sb.append(LangPower.RF(getEnergyStored()));
-      sb.append(" ");
-      sb.append(Lang.GUI_POWER_MONITOR_OF.get());
-      sb.append(" ");
-      sb.append(LangPower.RF(getMaxEnergyStored()));
-      sb.append("\n");
-      sb.append(Lang.GUI_POWER_MONITOR_AVERAGE_OUTPUT.get());
-      sb.append(" ");
-      sb.append(LangPower.RF(tracker.getAverageRfTickSent()));
-      sb.append("\n");
-      sb.append(Lang.GUI_POWER_MONITOR_AVERAGE_INPUT.get());
-      sb.append(" ");
-      sb.append(LangPower.RF(tracker.getAverageRfTickRecieved()));
-
-      return sb.toString();
-    } else {
-      tracker = pm.getNetworkPowerTracker();
-      String color = "\u00A7a ";
-      StringBuilder sb = new StringBuilder(super.getConduitProbeInfo(player));
-      sb.append(color);
-      sb.append(Lang.GUI_CONDUIT_PROBE_NETWORK_HEADING.get());
-      sb.append("\n");
-
-      color = "\u00A79 ";
-      sb.append(color);
-      sb.append(Lang.GUI_POWER_MONITOR_CONDUIT_STORAGE.get());
-      sb.append(" ");
-      sb.append(LangPower.RF(pm.getPowerInConduits()));
-      sb.append(" ");
-      sb.append(Lang.GUI_POWER_MONITOR_OF.get());
-      sb.append(" ");
-      sb.append(LangPower.RF(pm.getMaxPowerInConduits()));
-      sb.append("\n");
-      sb.append(Lang.GUI_POWER_MONITOR_CAPBANK_STORAGE.get());
-      sb.append(" ");
-      sb.append(LangPower.RF(pm.getPowerInCapacitorBanks()));
-      sb.append(" ");
-      sb.append(Lang.GUI_POWER_MONITOR_OF.get());
-      sb.append(" ");
-      sb.append(LangPower.RF(pm.getMaxPowerInCapacitorBanks()));
-      sb.append("\n");
-      sb.append(Lang.GUI_POWER_MONITOR_MACHINE_BUFFER.get());
-      sb.append(" ");
-      sb.append(LangPower.RF(pm.getPowerInReceptors()));
-      sb.append(" ");
-      sb.append(Lang.GUI_POWER_MONITOR_OF.get());
-      sb.append(" ");
-      sb.append(LangPower.RF(pm.getMaxPowerInReceptors()));
-      sb.append("\n");
-      sb.append(Lang.GUI_POWER_MONITOR_AVERAGE_OUTPUT.get());
-      sb.append(" ");
-      sb.append(LangPower.RF(tracker.getAverageRfTickSent()));
-      sb.append("\n");
-      sb.append(Lang.GUI_POWER_MONITOR_AVERAGE_INPUT.get());
-      sb.append(" ");
-      sb.append(LangPower.RF(tracker.getAverageRfTickRecieved()));
-
-      return sb.toString();
+    if (pm != null || ntracker != null) {
+      elem = Lang.GUI_CONDUIT_PROBE_POWER_NETWORK_1.toChatServer();
+      elem.getStyle().setColor(TextFormatting.GREEN);
+      result.add(elem);
     }
+
+    if (pm != null) {
+      elem = Lang.GUI_CONDUIT_PROBE_POWER_NETWORK_2.toChatServer(LangPower.sRF(pm.getPowerInConduits(), pm.getMaxPowerInConduits()));
+      elem.getStyle().setColor(TextFormatting.BLUE);
+      result.add(elem);
+      elem = Lang.GUI_CONDUIT_PROBE_POWER_NETWORK_3.toChatServer(LangPower.sRF(pm.getPowerInCapacitorBanks(), pm.getMaxPowerInCapacitorBanks()));
+      elem.getStyle().setColor(TextFormatting.BLUE);
+      result.add(elem);
+      elem = Lang.GUI_CONDUIT_PROBE_POWER_NETWORK_4.toChatServer(LangPower.sRF(pm.getPowerInReceptors(), pm.getMaxPowerInReceptors()));
+      elem.getStyle().setColor(TextFormatting.BLUE);
+      result.add(elem);
+    }
+
+    if (ntracker != null) {
+      elem = Lang.GUI_CONDUIT_PROBE_POWER_NETWORK_5.toChatServer(LangPower.sRFt(ntracker.getAverageRfTickSent()));
+      elem.getStyle().setColor(TextFormatting.BLUE);
+      result.add(elem);
+      elem = Lang.GUI_CONDUIT_PROBE_POWER_NETWORK_6.toChatServer(LangPower.sRFt(ntracker.getAverageRfTickRecieved()));
+      elem.getStyle().setColor(TextFormatting.BLUE);
+      result.add(elem);
+    }
+
+    return result;
   }
 
   @Override

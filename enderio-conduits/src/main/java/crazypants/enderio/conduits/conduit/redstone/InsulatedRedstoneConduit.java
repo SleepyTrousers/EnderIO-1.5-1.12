@@ -16,6 +16,7 @@ import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.collect.Lists;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitUtil;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IClientConduit;
@@ -49,6 +50,7 @@ import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.conduits.gui.RedstoneSettings;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduits.render.ConduitTexture;
+import crazypants.enderio.powertools.lang.Lang;
 import crazypants.enderio.util.EnumReader;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
@@ -61,6 +63,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
@@ -432,6 +437,20 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     }
 
     return new Signal(result, signalIdBase + side.ordinal());
+  }
+
+  protected int getExternalPowerLevelProtected(@Nonnull EnumFacing side) {
+    if (network != null) {
+      network.setNetworkEnabled(false);
+    }
+
+    int input = getExternalPowerLevel(side);
+
+    if (network != null) {
+      network.setNetworkEnabled(true);
+    }
+
+    return input;
   }
 
   protected int getExternalPowerLevel(@Nonnull EnumFacing dir) {
@@ -940,4 +959,46 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       return stack.getItem() instanceof IItemOutputSignalFilterUpgrade;
     }
   }
+
+  @Override
+  @Nonnull
+  public NNList<ITextComponent> getConduitProbeInformation(@Nonnull EntityPlayer player) {
+    final NNList<ITextComponent> result = super.getConduitProbeInformation(player);
+
+    if (getExternalConnections().isEmpty()) {
+      ITextComponent elem = Lang.GUI_CONDUIT_PROBE_REDSTONE_HEADING_NO_CONNECTIONS.toChatServer();
+      elem.getStyle().setColor(TextFormatting.GOLD);
+      result.add(elem);
+    } else {
+      for (EnumFacing dir : getExternalConnections()) {
+        if (dir == null) {
+          continue;
+        }
+
+        ITextComponent elem = Lang.GUI_CONDUIT_PROBE_REDSTONE_HEADING.toChatServer(new TextComponentTranslation(EnderIO.lang.addPrefix("facing." + dir)));
+        elem.getStyle().setColor(TextFormatting.GREEN);
+        result.add(elem);
+
+        ConnectionMode mode = getConnectionMode(dir);
+        if (mode.acceptsInput()) {
+          elem = Lang.GUI_CONDUIT_PROBE_REDSTONE_STRONG.toChatServer(isProvidingStrongPower(dir));
+          elem.getStyle().setColor(TextFormatting.BLUE);
+          result.add(elem);
+
+          elem = Lang.GUI_CONDUIT_PROBE_REDSTONE_WEAK.toChatServer(isProvidingWeakPower(dir));
+          elem.getStyle().setColor(TextFormatting.BLUE);
+          result.add(elem);
+        }
+        if (mode.acceptsOutput()) {
+          elem = Lang.GUI_CONDUIT_PROBE_REDSTONE_EXTERNAL.toChatServer(getExternalPowerLevelProtected(dir));
+          elem.getStyle().setColor(TextFormatting.BLUE);
+          result.add(elem);
+        }
+
+      }
+    }
+
+    return result;
+  }
+
 }

@@ -930,7 +930,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
           elem.getStyle().setColor(TextFormatting.BLUE);
           result.add(elem);
           for (String str : targets) {
-            result.add(new TextComponentString("  - " + str));
+            result.add(new TextComponentString("  -> " + str));
           }
         }
 
@@ -952,7 +952,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
           elem.getStyle().setColor(TextFormatting.BLUE);
           result.add(elem);
           for (String str : sources) {
-            result.add(new TextComponentString("  - " + str));
+            result.add(new TextComponentString("  -> " + str));
           }
         }
       }

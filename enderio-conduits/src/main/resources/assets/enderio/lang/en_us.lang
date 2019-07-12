@@ -92,25 +92,36 @@ enderio.gui.power_monitor.average_input=Average input over 5 seconds
 enderio.gui.power_monitor.no_network_error=No conduit network attached. The Power Monitor needs to be attached to a conduit network to read data from.
 
 # Conduit Probe
-enderio.gui.conduit_probe.network_heading=Power Network
-enderio.gui.conduit_probe.conduit_buffer=Internal Buffer
-enderio.gui.conduit_probe.request_range=Per tick request range
-enderio.gui.conduit_probe.current_request=Current request
-enderio.gui.conduit_probe.no_power_from_side=cannot receive power from this side
-
 enderio.gui.conduit_probe.item.heading=Item Conduit connection to: %s
 enderio.gui.conduit_probe.item.heading.no_connections=Item Conduit has no external connections
 
-enderio.gui.conduit_probe.item.receive.no_items=Can not receive items
-enderio.gui.conduit_probe.item.receive.no_item=Can not receive item %s
-enderio.gui.conduit_probe.item.receive.items=Can receive items from:
-enderio.gui.conduit_probe.item.receive.item=Can receive item %s from:
+enderio.gui.conduit_probe.item.receive.no_items=\u0020- Can not receive items
+enderio.gui.conduit_probe.item.receive.no_item=\u0020- Can not receive item %s
+enderio.gui.conduit_probe.item.receive.items=\u0020- Can receive items from:
+enderio.gui.conduit_probe.item.receive.item=\u0020- Can receive item %s from:
 
-enderio.gui.conduit_probe.item.extract.no_item.no_targets=Extracted items have no valid outputs
-enderio.gui.conduit_probe.item.extract.no_item.targets=Extracted items will be inserted into:
-enderio.gui.conduit_probe.item.extract.item.no_targets=Item %s has no valid outputs
-enderio.gui.conduit_probe.item.extract.item.targets=Item %s will be inserted into:
+enderio.gui.conduit_probe.item.extract.no_item.no_targets=\u0020- Extracted items have no valid outputs
+enderio.gui.conduit_probe.item.extract.no_item.targets=\u0020- Extracted items will be inserted into:
+enderio.gui.conduit_probe.item.extract.item.no_targets=\u0020- Item %s has no valid outputs
+enderio.gui.conduit_probe.item.extract.item.targets=\u0020- Item %s will be inserted into:
 
+enderio.gui.conduit_probe.power.tracked_conduit.line1=Energy Conduit
+enderio.gui.conduit_probe.power.tracked_conduit.line2=\u0020- Internal Buffer: %s
+enderio.gui.conduit_probe.power.tracked_conduit.line3=\u0020- Average output over 5 seconds: %s
+enderio.gui.conduit_probe.power.tracked_conduit.line4=\u0020- Average input over 5 seconds: %s
+
+enderio.gui.conduit_probe.power.tracked_network.line1=Energy Network
+enderio.gui.conduit_probe.power.tracked_network.line2=\u0020- Conduit Storage: %s
+enderio.gui.conduit_probe.power.tracked_network.line3=\u0020- Capacitor Bank Storage: %s
+enderio.gui.conduit_probe.power.tracked_network.line4=\u0020- Machine Buffers: %s
+enderio.gui.conduit_probe.power.tracked_network.line5=\u0020- Average output over 5 seconds: %s
+enderio.gui.conduit_probe.power.tracked_network.line6=\u0020- Average input over 5 seconds: %s
+
+enderio.gui.conduit_probe.redstone.heading=Redstone Conduit connection to: %s
+enderio.gui.conduit_probe.redstone.heading.no_connections=Redstone Conduit has no external connections
+enderio.gui.conduit_probe.redstone.strong=\u0020- Provides strong signal level %s
+enderio.gui.conduit_probe.redstone.weak=\u0020- Provides weak signal level %s
+enderio.gui.conduit_probe.redstone.external=\u0020- Reads redstone level %s
 
 enderio.gui.conduit_energy.header=Energy Conduit
 enderio.gui.conduit_item.header=Item Conduit

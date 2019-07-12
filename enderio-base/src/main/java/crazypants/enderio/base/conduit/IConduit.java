@@ -202,8 +202,9 @@ public interface IConduit {
   void updateEntity(@Nonnull World world); // Please, do not tick unless really, really needed!
 
   @Deprecated
-  @Nonnull
-  String getConduitProbeInfo(@Nonnull EntityPlayer player);
+  default @Nonnull String getConduitProbeInfo(@Nonnull EntityPlayer player) {
+    return "";
+  }
 
   /**
    * See {@link ICapabilityProvider#hasCapability(Capability, EnumFacing)}.

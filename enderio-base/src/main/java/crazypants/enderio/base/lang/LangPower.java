@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -41,8 +42,16 @@ public final class LangPower {
     return POWER_PERTICK.get(format(amountPerTick));
   }
 
+  public static @Nonnull ITextComponent sRFt(int amountPerTick) {
+    return POWER_PERTICK.toChatServer(format(amountPerTick));
+  }
+
   public static @Nonnull String RFt(float amountPerTick) {
     return POWER_PERTICK.get(format(amountPerTick));
+  }
+
+  public static @Nonnull ITextComponent sRFt(float amountPerTick) {
+    return POWER_PERTICK.toChatServer(format(amountPerTick));
   }
 
   public static @Nonnull String RFt2(float amountPerTick) {
@@ -53,16 +62,32 @@ public final class LangPower {
     return POWER_OF.get(format(amount), format(capacity));
   }
 
+  public static @Nonnull ITextComponent sRF(int amount, int capacity) {
+    return POWER_OF.toChatServer(format(amount), format(capacity));
+  }
+
   public static @Nonnull String RF(long amount, long capacity) {
     return POWER_OF.get(format(amount), format(capacity));
+  }
+
+  public static @Nonnull ITextComponent sRF(long amount, long capacity) {
+    return POWER_OF.toChatServer(format(amount), format(capacity));
   }
 
   public static @Nonnull String RF(long amount) {
     return POWER.get(format(amount));
   }
 
+  public static @Nonnull ITextComponent sRF(long amount) {
+    return POWER.toChatServer(format(amount));
+  }
+
   public static @Nonnull String RF(int amount) {
     return POWER.get(format(amount));
+  }
+
+  public static @Nonnull ITextComponent sRF(int amount) {
+    return POWER.toChatServer(format(amount));
   }
 
   public static @Nonnull String RF(float amount) {

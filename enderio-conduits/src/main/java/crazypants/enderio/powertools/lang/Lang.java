@@ -32,12 +32,6 @@ public enum Lang implements ILang {
   GUI_POWER_MONITOR_OF(".gui.power_monitor.of"),
 
   // Conduit Probe
-  GUI_CONDUIT_PROBE_NETWORK_HEADING(".gui.conduit_probe.network_heading"),
-  GUI_CONDUIT_PROBE_CONDUIT_BUFFER(".gui.conduit_probe.conduit_buffer"),
-  GUI_CONDUIT_PROBE_REQUEST_RANGE(".gui.conduit_probe.request_range"),
-  GUI_CONDUIT_PROBE_CURRENT_REQUEST(".gui.conduit_probe.current_request"),
-  GUI_CONDUIT_PROBE_NO_POWER_FROM_SIDE(".gui.conduit_probe.no_power_from_side"),
-
   GUI_CONDUIT_PROBE_ITEM_HEADING(".gui.conduit_probe.item.heading"),
   GUI_CONDUIT_PROBE_ITEM_HEADING_NO_CONNECTIONS(".gui.conduit_probe.item.heading.no_connections"),
 
@@ -55,6 +49,25 @@ public enum Lang implements ILang {
   GUI_CONDUIT_PROBE_EXTRACT_NO_ITEM_TARGETS(".gui.conduit_probe.item.extract.no_item.targets"),
   GUI_CONDUIT_PROBE_EXTRACT_ITEM_NO_TARGET(".gui.conduit_probe.item.extract.item.no_targets"),
   GUI_CONDUIT_PROBE_EXTRACT_ITEM_TARGETS(".gui.conduit_probe.item.extract.item.targets"),
+
+  GUI_CONDUIT_PROBE_POWER_TRACKED_1(".gui.conduit_probe.power.tracked_conduit.line1"),
+  GUI_CONDUIT_PROBE_POWER_TRACKED_2(".gui.conduit_probe.power.tracked_conduit.line2"),
+  GUI_CONDUIT_PROBE_POWER_TRACKED_3(".gui.conduit_probe.power.tracked_conduit.line3"),
+  GUI_CONDUIT_PROBE_POWER_TRACKED_4(".gui.conduit_probe.power.tracked_conduit.line4"),
+
+  GUI_CONDUIT_PROBE_POWER_NETWORK_1(".gui.conduit_probe.power.tracked_network.line1"),
+  GUI_CONDUIT_PROBE_POWER_NETWORK_2(".gui.conduit_probe.power.tracked_network.line2"),
+  GUI_CONDUIT_PROBE_POWER_NETWORK_3(".gui.conduit_probe.power.tracked_network.line3"),
+  GUI_CONDUIT_PROBE_POWER_NETWORK_4(".gui.conduit_probe.power.tracked_network.line4"),
+  GUI_CONDUIT_PROBE_POWER_NETWORK_5(".gui.conduit_probe.power.tracked_network.line5"),
+  GUI_CONDUIT_PROBE_POWER_NETWORK_6(".gui.conduit_probe.power.tracked_network.line6"),
+
+  GUI_CONDUIT_PROBE_REDSTONE_HEADING(".gui.conduit_probe.redstone.heading"),
+  GUI_CONDUIT_PROBE_REDSTONE_HEADING_NO_CONNECTIONS(".gui.conduit_probe.redstone.heading.no_connections"),
+
+  GUI_CONDUIT_PROBE_REDSTONE_STRONG(".gui.conduit_probe.redstone.strong"),
+  GUI_CONDUIT_PROBE_REDSTONE_WEAK(".gui.conduit_probe.redstone.weak"),
+  GUI_CONDUIT_PROBE_REDSTONE_EXTERNAL(".gui.conduit_probe.redstone.external"),
 
   ;
 
