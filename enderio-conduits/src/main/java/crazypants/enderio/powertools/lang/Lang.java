@@ -36,24 +36,25 @@ public enum Lang implements ILang {
   GUI_CONDUIT_PROBE_CONDUIT_BUFFER(".gui.conduit_probe.conduit_buffer"),
   GUI_CONDUIT_PROBE_REQUEST_RANGE(".gui.conduit_probe.request_range"),
   GUI_CONDUIT_PROBE_CURRENT_REQUEST(".gui.conduit_probe.current_request"),
-  GUI_CONDUIT_PROBE_ITEM_HEADING(".gui.conduit_probe.item_heading"),
-  GUI_CONDUIT_PROBE_ITEM_NO_CONNECTIONS(".gui.conduit_probe.item_no_connections"),
   GUI_CONDUIT_PROBE_NO_POWER_FROM_SIDE(".gui.conduit_probe.no_power_from_side"),
-  GUI_CONDUIT_PROBE_CONNECTION_DIR(".gui.conduit_probe.connection_dir"),
-  GUI_CONDUIT_PROBE_EXTRACTED_ITEMS(".gui.conduit_probe.extracted_items"),
-  GUI_CONDUIT_PROBE_EXTRACTED_ITEM(".gui.conduit_probe.extracted_item"),
-  GUI_CONDUIT_PROBE_NO_OUTPUTS(".gui.conduit_probe.no_outputs"),
-  GUI_CONDUIT_PROBE_INSERTED_INTO(".gui.conduit_probe.inserted_into"),
-  GUI_CONDUIT_PROBE_NO_ITEMS(".gui.conduit_probe.no_items"),
-  GUI_CONDUIT_PROBE_NO_ITEM(".gui.conduit_probe.no_item"),
-  GUI_CONDUIT_PROBE_RECEIVE_ITEMS(".gui.conduit_probe.receive_items"),
-  GUI_CONDUIT_PROBE_RECEIVE_ITEM1(".gui.conduit_probe.receive_item1"),
-  GUI_CONDUIT_PROBE_RECEIVE_ITEM2(".gui.conduit_probe.receive_item2"),
+
+  GUI_CONDUIT_PROBE_ITEM_HEADING(".gui.conduit_probe.item.heading"),
+  GUI_CONDUIT_PROBE_ITEM_HEADING_NO_CONNECTIONS(".gui.conduit_probe.item.heading.no_connections"),
+
+  GUI_CONDUIT_PROBE_NO_ITEMS(".gui.conduit_probe.item.receive.no_items"),
+  GUI_CONDUIT_PROBE_NO_ITEM(".gui.conduit_probe.item.receive.no_item"),
+  GUI_CONDUIT_PROBE_RECEIVE_ITEMS(".gui.conduit_probe.item.receive.items"),
+  GUI_CONDUIT_PROBE_RECEIVE_ITEM(".gui.conduit_probe.item.receive.item"),
 
   GUI_ENERGY_CONDUIT(".gui.conduit_energy.header"),
   GUI_ITEM_CONDUIT(".gui.conduit_item.header"),
   GUI_FLUID_CONDUIT(".gui.conduit_fluid.header"),
   GUI_REDSTONE_CONDUIT(".gui.conduit_redstone.header"),
+
+  GUI_CONDUIT_PROBE_EXTRACT_NO_ITEM_NO_TARGET(".gui.conduit_probe.item.extract.no_item.no_targets"),
+  GUI_CONDUIT_PROBE_EXTRACT_NO_ITEM_TARGETS(".gui.conduit_probe.item.extract.no_item.targets"),
+  GUI_CONDUIT_PROBE_EXTRACT_ITEM_NO_TARGET(".gui.conduit_probe.item.extract.item.no_targets"),
+  GUI_CONDUIT_PROBE_EXTRACT_ITEM_TARGETS(".gui.conduit_probe.item.extract.item.targets"),
 
   ;
 

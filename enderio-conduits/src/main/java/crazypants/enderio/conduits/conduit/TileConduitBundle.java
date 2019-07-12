@@ -16,6 +16,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.ILocalizable;
@@ -63,6 +64,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -202,14 +204,13 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     return a.getBlock().getMetaFromState(a) == b.getBlock().getMetaFromState(b);
   }
 
-  @Nonnull
   @Override
-  public String[] getConduitProbeData(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
-    StringBuilder sb = new StringBuilder();
-    for (IConduit con : getConduits()) {
-      sb.append(con.getConduitProbeInfo(player));
+  public @Nonnull NNList<ITextComponent> getConduitProbeInformation(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
+    NNList<ITextComponent> result = new NNList<>();
+    for (IServerConduit con : getServerConduits()) {
+      result.addAll(con.getConduitProbeInformation(player));
     }
-    return sb.toString().split("\n");
+    return result;
   }
 
   @Override

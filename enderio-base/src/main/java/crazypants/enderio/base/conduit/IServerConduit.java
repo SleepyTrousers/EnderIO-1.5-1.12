@@ -3,12 +3,18 @@ package crazypants.enderio.base.conduit;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.logging.log4j.util.Strings;
+
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
@@ -184,6 +190,18 @@ public interface IServerConduit extends IConduit, ICapabilityProvider {
   @Override
   default @Nullable <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
     return null;
+  }
+
+  default @Nonnull NNList<ITextComponent> getConduitProbeInformation(@Nonnull EntityPlayer player) {
+    String info = getConduitProbeInfo(player);
+    if (Strings.isBlank(info)) {
+      return NNList.emptyList();
+    }
+    NNList<ITextComponent> result = new NNList<>();
+    for (String s : info.split("\n")) {
+      result.add(new TextComponentString(NullHelper.first(s, "")));
+    }
+    return result;
   }
 
 }

@@ -63,6 +63,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -888,96 +891,74 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
 
   @Override
   @Nonnull
-  public String getConduitProbeInfo(@Nonnull EntityPlayer player) {
-    TextFormatting color;
-    StringBuilder sb = new StringBuilder(super.getConduitProbeInfo(player));
-
-    ItemStack input = player.getHeldItemMainhand();
+  public NNList<ITextComponent> getConduitProbeInformation(@Nonnull EntityPlayer player) {
+    final NNList<ITextComponent> result = super.getConduitProbeInformation(player);
 
     if (getExternalConnections().isEmpty()) {
-      sb.append(Lang.GUI_CONDUIT_PROBE_ITEM_HEADING.get());
-      sb.append(" ");
-      sb.append(Lang.GUI_CONDUIT_PROBE_ITEM_NO_CONNECTIONS.get());
-      sb.append("\n");
+      ITextComponent elem = Lang.GUI_CONDUIT_PROBE_ITEM_HEADING_NO_CONNECTIONS.toChatServer();
+      elem.getStyle().setColor(TextFormatting.GOLD);
+      result.add(elem);
     } else {
+      ItemStack input = player.getHeldItemMainhand();
+      ItemConduitNetwork icn = getNetwork();
+
       for (EnumFacing dir : getExternalConnections()) {
+        if (dir == null) {
+          continue;
+        }
         ConnectionMode mode = getConnectionMode(dir);
-        color = TextFormatting.GREEN;
 
-        sb.append(color);
-        sb.append(Lang.GUI_CONDUIT_PROBE_ITEM_HEADING.get());
-        sb.append(" ");
-        sb.append(Lang.GUI_CONDUIT_PROBE_CONNECTION_DIR.get());
-        sb.append(" ");
-        sb.append(EnderIO.lang.localize("facing." + dir));
-        sb.append("\n");
+        ITextComponent elem = Lang.GUI_CONDUIT_PROBE_ITEM_HEADING.toChatServer(new TextComponentTranslation(EnderIO.lang.addPrefix("facing." + dir)));
+        elem.getStyle().setColor(TextFormatting.GREEN);
+        result.add(elem);
 
-        ItemConduitNetwork icn = getNetwork();
         if (icn != null && mode.acceptsInput()) {
-          color = TextFormatting.BLUE;
-          sb.append(color);
-          sb.append(" ");
-
-          if (input.isEmpty()) {
-            sb.append(Lang.GUI_CONDUIT_PROBE_EXTRACTED_ITEMS.get());
-          } else {
-            sb.append(Lang.GUI_CONDUIT_PROBE_EXTRACTED_ITEM.get());
-            sb.append(" ");
-            sb.append(input.getDisplayName());
-          }
-          sb.append(" ");
           List<String> targets = icn.getTargetsForExtraction(getBundle().getLocation().offset(dir), this, input);
-          if (targets.isEmpty()) {
-            sb.append(" ");
-            sb.append(Lang.GUI_CONDUIT_PROBE_NO_OUTPUTS.get());
-            sb.append(".\n");
-          } else {
-            sb.append(" ");
-            sb.append(Lang.GUI_CONDUIT_PROBE_INSERTED_INTO.get());
-            sb.append("\n");
-            for (String str : targets) {
-              sb.append("  - ");
-              sb.append(str);
-              sb.append(" ");
-              sb.append("\n");
+          if (input.isEmpty()) {
+            if (targets.isEmpty()) {
+              elem = Lang.GUI_CONDUIT_PROBE_EXTRACT_NO_ITEM_NO_TARGET.toChatServer();
+            } else {
+              elem = Lang.GUI_CONDUIT_PROBE_EXTRACT_NO_ITEM_TARGETS.toChatServer();
             }
+          } else {
+            if (targets.isEmpty()) {
+              elem = Lang.GUI_CONDUIT_PROBE_EXTRACT_ITEM_NO_TARGET.toChatServer(input.getDisplayName());
+            } else {
+              elem = Lang.GUI_CONDUIT_PROBE_EXTRACT_ITEM_TARGETS.toChatServer(input.getDisplayName());
+            }
+          }
+          elem.getStyle().setColor(TextFormatting.BLUE);
+          result.add(elem);
+          for (String str : targets) {
+            result.add(new TextComponentString("  - " + str));
           }
         }
-        if (icn != null && mode.acceptsOutput()) {
-          color = TextFormatting.BLUE;
-          sb.append(color + " ");
 
-          List<String> targets = icn.getInputSourcesFor(this, dir, input);
-          if (targets.isEmpty()) {
+        if (icn != null && mode.acceptsOutput()) {
+          List<String> sources = icn.getInputSourcesFor(this, dir, input);
+          if (sources.isEmpty()) {
             if (input.isEmpty()) {
-              sb.append(Lang.GUI_CONDUIT_PROBE_NO_ITEMS.get());
+              elem = Lang.GUI_CONDUIT_PROBE_NO_ITEMS.toChatServer();
             } else {
-              sb.append(Lang.GUI_CONDUIT_PROBE_NO_ITEM.get());
-              sb.append(" ");
-              sb.append(input.getDisplayName());
+              elem = Lang.GUI_CONDUIT_PROBE_NO_ITEM.toChatServer(input.getDisplayName());
             }
           } else {
             if (input.isEmpty()) {
-              sb.append(Lang.GUI_CONDUIT_PROBE_RECEIVE_ITEMS.get());
+              elem = Lang.GUI_CONDUIT_PROBE_RECEIVE_ITEMS.toChatServer();
             } else {
-              sb.append(Lang.GUI_CONDUIT_PROBE_RECEIVE_ITEM1.get());
-              sb.append(" ");
-              sb.append(input.getDisplayName());
-              sb.append(" ");
-              sb.append(EnderIO.lang.localize(Lang.GUI_CONDUIT_PROBE_RECEIVE_ITEM2.get()));
-            }
-            sb.append("\n");
-            for (String str : targets) {
-              sb.append("  - ");
-              sb.append(str);
-              sb.append("\n");
+              elem = Lang.GUI_CONDUIT_PROBE_RECEIVE_ITEM.toChatServer(input.getDisplayName());
             }
           }
-
+          elem.getStyle().setColor(TextFormatting.BLUE);
+          result.add(elem);
+          for (String str : sources) {
+            result.add(new TextComponentString("  - " + str));
+          }
         }
       }
     }
-    return sb.toString();
+
+    return result;
   }
 
   @Override

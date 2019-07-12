@@ -93,17 +93,9 @@ public class PacketConduitProbe implements IMessage {
 
   public interface IHasConduitProbeData {
 
-    @Deprecated
     @Nonnull
-    String[] getConduitProbeData(@Nonnull EntityPlayer player, @Nullable EnumFacing side);
+    NNList<ITextComponent> getConduitProbeInformation(@Nonnull EntityPlayer player, @Nullable EnumFacing side);
 
-    default @Nonnull NNList<ITextComponent> getConduitProbeInformation(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
-      NNList<ITextComponent> result = new NNList<>();
-      for (String s : getConduitProbeData(player, side)) {
-        result.add(new TextComponentString(NullHelper.first(s, "")));
-      }
-      return result;
-    }
   }
 
 }

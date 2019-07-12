@@ -174,12 +174,6 @@ public class TileSolarPanel extends TileEntityEio implements ILegacyPoweredTile,
     return pos;
   }
 
-  @Nonnull
-  @Override
-  public String[] getConduitProbeData(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
-    return network.getConduitProbeData(player, side);
-  }
-
   @Override
   @Nonnull
   public NNList<ITextComponent> getConduitProbeInformation(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {

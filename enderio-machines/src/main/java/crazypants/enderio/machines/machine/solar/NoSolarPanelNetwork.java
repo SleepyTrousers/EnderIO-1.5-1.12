@@ -6,21 +6,18 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NNList;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 
 public class NoSolarPanelNetwork implements ISolarPanelNetwork {
 
   public static final @Nonnull ISolarPanelNetwork INSTANCE = new NoSolarPanelNetwork();
 
   private NoSolarPanelNetwork() {
-  }
-
-  @Override
-  @Nonnull
-  public String[] getConduitProbeData(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
-    return new String[] { toString() };
   }
 
   @Override
@@ -54,6 +51,12 @@ public class NoSolarPanelNetwork implements ISolarPanelNetwork {
   @Override
   public @Nonnull Set<BlockPos> getPanels() {
     return Collections.emptySet();
+  }
+
+  @Override
+  @Nonnull
+  public NNList<ITextComponent> getConduitProbeInformation(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
+    return NNList.emptyList();
   }
 
 }

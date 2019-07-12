@@ -199,12 +199,6 @@ public class SolarPanelNetwork implements ISolarPanelNetwork {
     return energyMaxPerTick;
   }
 
-  @Nonnull
-  @Override
-  public String[] getConduitProbeData(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {
-    return new String[0];
-  }
-
   @Override
   @Nonnull
   public NNList<ITextComponent> getConduitProbeInformation(@Nonnull EntityPlayer player, @Nullable EnumFacing side) {

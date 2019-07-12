@@ -96,19 +96,21 @@ enderio.gui.conduit_probe.network_heading=Power Network
 enderio.gui.conduit_probe.conduit_buffer=Internal Buffer
 enderio.gui.conduit_probe.request_range=Per tick request range
 enderio.gui.conduit_probe.current_request=Current request
-enderio.gui.conduit_probe.item_heading=Item Conduit
-enderio.gui.conduit_probe.item_no_connections=has no external connections
 enderio.gui.conduit_probe.no_power_from_side=cannot receive power from this side
-enderio.gui.conduit_probe.connection_dir=connection to:
-enderio.gui.conduit_probe.extracted_items=Extracted items
-enderio.gui.conduit_probe.extracted_item=Item
-enderio.gui.conduit_probe.no_outputs=has no valid outputs
-enderio.gui.conduit_probe.inserted_into=will be inserted into:
-enderio.gui.conduit_probe.no_items=Receives no items.
-enderio.gui.conduit_probe.no_item=Can not receive
-enderio.gui.conduit_probe.receive_items=Can receive items from:
-enderio.gui.conduit_probe.receive_item1=Can receive
-enderio.gui.conduit_probe.receive_item2=from:
+
+enderio.gui.conduit_probe.item.heading=Item Conduit connection to: %s
+enderio.gui.conduit_probe.item.heading.no_connections=Item Conduit has no external connections
+
+enderio.gui.conduit_probe.item.receive.no_items=Can not receive items
+enderio.gui.conduit_probe.item.receive.no_item=Can not receive item %s
+enderio.gui.conduit_probe.item.receive.items=Can receive items from:
+enderio.gui.conduit_probe.item.receive.item=Can receive item %s from:
+
+enderio.gui.conduit_probe.item.extract.no_item.no_targets=Extracted items have no valid outputs
+enderio.gui.conduit_probe.item.extract.no_item.targets=Extracted items will be inserted into:
+enderio.gui.conduit_probe.item.extract.item.no_targets=Item %s has no valid outputs
+enderio.gui.conduit_probe.item.extract.item.targets=Item %s will be inserted into:
+
 
 enderio.gui.conduit_energy.header=Energy Conduit
 enderio.gui.conduit_item.header=Item Conduit

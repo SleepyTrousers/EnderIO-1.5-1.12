@@ -43,6 +43,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -501,8 +503,12 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
 
   @Override
   @Nonnull
-  public String getConduitProbeInfo(@Nonnull EntityPlayer player) {
-    return nextNetworkTry > -1L ? TextFormatting.RED + Lang.GUI_NETWORK_PARTIALLY_UNLOADED.get() + "\n" : "";
+  public NNList<ITextComponent> getConduitProbeInformation(@Nonnull EntityPlayer player) {
+    NNList<ITextComponent> result = new NNList<>();
+    if (nextNetworkTry > -1L) {
+      result.add(Lang.GUI_NETWORK_PARTIALLY_UNLOADED.toChatServer().setStyle(new Style().setColor(TextFormatting.RED)));
+    }
+    return result;
   }
 
   @Override
