@@ -303,10 +303,6 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     }
   }
 
-  @Override
-  public void onTick() {
-  }
-
   public static int getMaxEnergyIO(IPowerConduitData subtype) {
     return subtype.getMaxEnergyIO();
   }

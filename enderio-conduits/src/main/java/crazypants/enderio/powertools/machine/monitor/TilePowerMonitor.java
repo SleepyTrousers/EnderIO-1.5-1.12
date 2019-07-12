@@ -110,7 +110,7 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
         }
       }
       if (engineControlEnabled) {
-        float level = getPercentFull(pm);
+        double level = getPercentFull(pm);
         if (level < startLevel) {
           if (!redStoneOn) {
             redStoneOn = true;
@@ -133,8 +133,9 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
     return false;
   }
 
-  private float getPercentFull(NetworkPowerManager pm) {
-    return (float) (pm.getPowerInConduits() + pm.getPowerInCapacitorBanks()) / (pm.getMaxPowerInConduits() + pm.getMaxPowerInCapacitorBanks());
+  private double getPercentFull(NetworkPowerManager pm) {
+    return ((double) pm.getPowerInConduits() + (double) pm.getPowerInCapacitorBanks())
+        / ((double) pm.getMaxPowerInConduits() + (double) pm.getMaxPowerInCapacitorBanks());
   }
 
   private void broadcastSignal() {
@@ -259,8 +260,8 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
   }
 
   static class StatData {
-    int powerInConduits;
-    int maxPowerInConduits;
+    long powerInConduits;
+    long maxPowerInConduits;
     long powerInCapBanks;
     long maxPowerInCapBanks;
     long powerInMachines;

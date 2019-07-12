@@ -11,6 +11,8 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.diagnostics.Prof;
@@ -26,54 +28,48 @@ public class NetworkPowerManager {
 
   private final PowerConduitNetwork network;
 
-  long maxEnergyStored;
-  long energyStored;
+  private long maxEnergyStored;
+  private long energyStored;
 
-  private final List<ReceptorEntry> receptors = new ArrayList<PowerConduitNetwork.ReceptorEntry>();
-  private ListIterator<ReceptorEntry> receptorIterator = receptors.listIterator();
+  private final @Nonnull List<ReceptorEntry> receptors = new ArrayList<PowerConduitNetwork.ReceptorEntry>();
+  private @Nonnull ListIterator<ReceptorEntry> receptorIterator = NullHelper.notnullJ(receptors.listIterator(), "List.listIterator()");
 
-  private final List<ReceptorEntry> storageReceptors = new ArrayList<ReceptorEntry>();
+  private final @Nonnull List<ReceptorEntry> storageReceptors = new ArrayList<ReceptorEntry>();
 
   private boolean receptorsDirty = true;
 
-  private final Map<IPowerConduit, PowerTracker> powerTrackers = new HashMap<IPowerConduit, PowerTracker>();
+  private final @Nonnull Map<IPowerConduit, PowerTracker> powerTrackers = new HashMap<IPowerConduit, PowerTracker>();
 
-  private final PowerTracker networkPowerTracker = new PowerTracker();
+  private final @Nonnull PowerTracker networkPowerTracker = new PowerTracker();
 
-  private final CapBankSupply capSupply = new CapBankSupply();
+  private final @Nonnull CapBankSupply capSupply = new CapBankSupply();
 
   public NetworkPowerManager(@Nonnull PowerConduitNetwork network, @Nonnull World world) {
     this.network = network;
     maxEnergyStored = 64;
   }
 
-  public PowerTracker getTracker(IPowerConduit conduit) {
+  public @Nullable PowerTracker getTracker(@Nonnull IPowerConduit conduit) {
     return powerTrackers.get(conduit);
   }
 
-  public PowerTracker getNetworkPowerTracker() {
+  public @Nonnull PowerTracker getNetworkPowerTracker() {
     return networkPowerTracker;
   }
 
-  public int getPowerInConduits() {
-    return energyStored > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) energyStored;
+  public long getPowerInConduits() {
+    return energyStored;
   }
 
-  public int getMaxPowerInConduits() {
-    return maxEnergyStored > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) maxEnergyStored;
+  public long getMaxPowerInConduits() {
+    return maxEnergyStored;
   }
 
   public long getPowerInCapacitorBanks() {
-    if (capSupply == null) {
-      return 0;
-    }
     return capSupply.stored;
   }
 
   public long getMaxPowerInCapacitorBanks() {
-    if (capSupply == null) {
-      return 0;
-    }
     return capSupply.maxCap;
   }
 
@@ -157,7 +153,7 @@ public class NetworkPowerManager {
     while (available > 0 && appliedCount < numReceptors) {
 
       if (!receptors.isEmpty() && !receptorIterator.hasNext()) {
-        receptorIterator = receptors.listIterator();
+        receptorIterator = NullHelper.notnullJ(receptors.listIterator(), "List.listIterator()");
       }
       ReceptorEntry r = receptorIterator.next();
       IPowerInterface pp = r.getPowerInterface();
@@ -214,7 +210,6 @@ public class NetworkPowerManager {
   }
 
   private void trackerStartTick() {
-
     if (!ConduitConfig.detailedTracking.get()) {
       return;
     }
@@ -295,17 +290,11 @@ public class NetworkPowerManager {
     }
   }
 
-  boolean isActive() {
-    // TODO: This doesn't seem to make sense
-    return energyStored > 0;
-  }
-
   private void updateNetworkStorage() {
     maxEnergyStored = 0;
     energyStored = 0;
     for (IPowerConduit con : network.getConduits()) {
       maxEnergyStored += con.getMaxEnergyStored();
-      con.onTick();
       energyStored += con.getEnergyStored();
     }
     energyStored = energyStored < 0 ? 0 : energyStored > maxEnergyStored ? maxEnergyStored : energyStored;
@@ -334,7 +323,7 @@ public class NetworkPowerManager {
         rec.emmiter.setConnectionsDirty();
       }
     }
-    receptorIterator = receptors.listIterator();
+    receptorIterator = NullHelper.notnullJ(receptors.listIterator(), "List.listIterator()");
 
     receptorsDirty = false;
   }
@@ -354,13 +343,13 @@ public class NetworkPowerManager {
 
     int canExtract;
     int canFill;
-    Set<IPowerStorage> capBanks = new HashSet<IPowerStorage>();
+    final @Nonnull Set<IPowerStorage> capBanks = new HashSet<IPowerStorage>();
 
     double filledRatio;
     long stored = 0;
     long maxCap = 0;
 
-    List<CapBankSupplyEntry> enteries = new ArrayList<NetworkPowerManager.CapBankSupplyEntry>();
+    final @Nonnull List<CapBankSupplyEntry> enteries = new ArrayList<NetworkPowerManager.CapBankSupplyEntry>();
 
     CapBankSupply() {
     }
@@ -517,7 +506,7 @@ public class NetworkPowerManager {
 
     private CapBankSupplyEntry(@Nonnull IPowerStorage capBank, int available, int canFill, @Nonnull IPowerConduit emmiter, @Nonnull EnumFacing direction) {
       this.capBank = capBank;
-      canExtract = available;
+      this.canExtract = available;
       this.canFill = canFill;
       this.emmiter = emmiter;
       this.direction = direction;

@@ -18,9 +18,6 @@ public interface IPowerConduit extends IEnergyStorage, IExtractor, IServerCondui
 
   IPowerInterface getExternalPowerReceptor(@Nonnull EnumFacing direction);
 
-  // called from NetworkPowerManager
-  void onTick();
-
   boolean getConnectionsDirty();
 
   void setEnergyStored(int energy);

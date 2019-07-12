@@ -44,8 +44,8 @@ public class PacketPowerMonitorStatData extends MessageTileEntity<TilePowerMonit
       data = null;
     } else {
       data = new StatData();
-      data.powerInConduits = buf.readInt();
-      data.maxPowerInConduits = buf.readInt();
+      data.powerInConduits = buf.readLong();
+      data.maxPowerInConduits = buf.readLong();
       data.powerInCapBanks = buf.readLong();
       data.maxPowerInCapBanks = buf.readLong();
       data.powerInMachines = buf.readLong();
@@ -62,8 +62,8 @@ public class PacketPowerMonitorStatData extends MessageTileEntity<TilePowerMonit
       buf.writeByte(0);
     } else {
       buf.writeByte(1);
-      buf.writeInt(data.powerInConduits);
-      buf.writeInt(data.maxPowerInConduits);
+      buf.writeLong(data.powerInConduits);
+      buf.writeLong(data.maxPowerInConduits);
       buf.writeLong(data.powerInCapBanks);
       buf.writeLong(data.maxPowerInCapBanks);
       buf.writeLong(data.powerInMachines);

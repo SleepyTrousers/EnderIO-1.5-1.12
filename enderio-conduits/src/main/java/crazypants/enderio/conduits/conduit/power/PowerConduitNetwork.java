@@ -70,10 +70,6 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
         }
       }
     }
-    if (powerManager != null) {
-      // TODO: This doesn't seem to make sense
-      con.setActive(powerManager.isActive());
-    }
   }
 
   public void powerReceptorAdded(@Nonnull IPowerConduit powerConduit, @Nonnull EnumFacing direction, @Nonnull BlockPos pos) {
