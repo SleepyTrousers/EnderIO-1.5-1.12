@@ -144,13 +144,13 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
     if (pm != null) {
       elem = Lang.GUI_CONDUIT_PROBE_POWER_NETWORK_2.toChatServer(LangPower.sRF(pm.getPowerInConduits(), pm.getMaxPowerInConduits()));
-      elem.getStyle().setColor(TextFormatting.BLUE);
+      elem.getStyle().setColor(TextFormatting.DARK_BLUE);
       result.add(elem);
       elem = Lang.GUI_CONDUIT_PROBE_POWER_NETWORK_3.toChatServer(LangPower.sRF(pm.getPowerInCapacitorBanks(), pm.getMaxPowerInCapacitorBanks()));
       elem.getStyle().setColor(TextFormatting.BLUE);
       result.add(elem);
       elem = Lang.GUI_CONDUIT_PROBE_POWER_NETWORK_4.toChatServer(LangPower.sRF(pm.getPowerInReceptors(), pm.getMaxPowerInReceptors()));
-      elem.getStyle().setColor(TextFormatting.BLUE);
+      elem.getStyle().setColor(TextFormatting.AQUA);
       result.add(elem);
     }
 
@@ -460,7 +460,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     if (network != null) {
       TileEntity te = getBundle().getEntity();
       BlockPos p = te.getPos().offset(direction);
-      network.powerReceptorRemoved(p.getX(), p.getY(), p.getZ());
+      network.powerReceptorRemoved(this, direction, p);
     }
   }
 

@@ -1,10 +1,7 @@
 package crazypants.enderio.conduits.conduit.power;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -28,7 +25,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
 
   NetworkPowerManager powerManager;
 
-  private final Map<ReceptorKey, ReceptorEntry> powerReceptors = new HashMap<ReceptorKey, ReceptorEntry>();
+  private final @Nonnull Set<ReceptorEntry> powerReceptors = new HashSet<ReceptorEntry>();
 
   public PowerConduitNetwork() {
     super(IPowerConduit.class, IPowerConduit.class);
@@ -73,33 +70,21 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
   }
 
   public void powerReceptorAdded(@Nonnull IPowerConduit powerConduit, @Nonnull EnumFacing direction, @Nonnull BlockPos pos) {
-    ReceptorKey key = new ReceptorKey(pos, direction);
-    ReceptorEntry re = powerReceptors.get(key);
-    if (re == null) {
-      re = new ReceptorEntry(pos, powerConduit, direction);
-      powerReceptors.put(key, re);
-    }
+    powerReceptors.add(new ReceptorEntry(pos, powerConduit, direction));
     if (powerManager != null) {
       powerManager.receptorsChanged();
     }
   }
 
-  public void powerReceptorRemoved(int x, int y, int z) {
-    BlockPos pos = new BlockPos(x, y, z);
-    List<ReceptorKey> remove = new ArrayList<ReceptorKey>();
-    for (ReceptorKey key : powerReceptors.keySet()) {
-      if (key != null && key.pos.equals(pos)) {
-        remove.add(key);
-      }
+  public void powerReceptorRemoved(@Nonnull IPowerConduit powerConduit, @Nonnull EnumFacing direction, @Nonnull BlockPos pos) {
+    powerReceptors.remove(new ReceptorEntry(pos, powerConduit, direction));
+    if (powerManager != null) {
+      powerManager.receptorsChanged();
     }
-    for (ReceptorKey key : remove) {
-      powerReceptors.remove(key);
-    }
-    powerManager.receptorsChanged();
   }
 
   public Collection<ReceptorEntry> getPowerReceptors() {
-    return powerReceptors.values();
+    return powerReceptors;
   }
 
   @Override
@@ -124,23 +109,12 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
       return PowerHandlerUtil.getPowerInterface(emmiter.getBundle().getBundleworld().getTileEntity(pos), direction.getOpposite());
     }
 
-  }
-
-  private static class ReceptorKey {
-    BlockPos pos;
-    EnumFacing direction;
-
-    ReceptorKey(@Nonnull BlockPos pos, @Nonnull EnumFacing direction) {
-      this.pos = pos;
-      this.direction = direction;
-    }
-
     @Override
     public int hashCode() {
       final int prime = 31;
       int result = 1;
-      result = prime * result + ((pos == null) ? 0 : pos.hashCode());
-      result = prime * result + ((direction == null) ? 0 : direction.hashCode());
+      result = prime * result + pos.hashCode();
+      result = prime * result + direction.hashCode();
       return result;
     }
 
@@ -155,12 +129,8 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
       if (getClass() != obj.getClass()) {
         return false;
       }
-      ReceptorKey other = (ReceptorKey) obj;
-      if (pos == null) {
-        if (other.pos != null) {
-          return false;
-        }
-      } else if (!pos.equals(other.pos)) {
+      ReceptorEntry other = (ReceptorEntry) obj;
+      if (!pos.equals(other.pos)) {
         return false;
       }
       if (direction != other.direction) {
