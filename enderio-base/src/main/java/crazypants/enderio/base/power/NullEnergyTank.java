@@ -23,7 +23,7 @@ public class NullEnergyTank implements IEnergyTank {
     return INSTANCE;
   }
 
-  private NullEnergyTank() {
+  protected NullEnergyTank() {
   }
 
   @Override

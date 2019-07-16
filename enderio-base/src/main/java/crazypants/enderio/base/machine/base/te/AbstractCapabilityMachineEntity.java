@@ -18,6 +18,7 @@ import crazypants.enderio.base.capability.ItemTools.MoveResult;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.power.EnergyTank;
 import crazypants.enderio.base.power.IEnergyTank;
+import crazypants.enderio.base.power.NullEnergyTank;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -40,7 +41,7 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
   @Store({ NBTAction.SAVE, NBTAction.CLIENT })
   // Not NBTAction.ITEM to keep the storedEnergy tag out in the open
   // TODO 1.14: remove here and store to nbt in EnergyLogic
-  private final @Nonnull IEnergyTank energy;
+  private final @Nonnull NullEnergyTank energy; // NullEnergyTank not IEnergyTank because @Store!
   private final @Nonnull IEnergyLogic energyLogic;
 
   protected AbstractCapabilityMachineEntity() {
@@ -72,7 +73,7 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
     outputSlots = inventoryDelegate.getView(EnderInventory.Type.OUTPUT);
     inventoryDelegate.setOwner(this);
     energyLogic = NullHelper.first(logicSupplier.apply(this), NullEnergyLogic.INSTANCE);
-    energy = energyLogic.getEnergy();
+    energy = (NullEnergyTank) energyLogic.getEnergy(); // sic
     addICap(this::makeItemCapability);
   }
 

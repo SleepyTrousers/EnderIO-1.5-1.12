@@ -19,8 +19,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.energy.IEnergyStorage;
 
-@Storable
-public class EnergyTank implements IEnergyTank {
+@Storable // Note: This extends the null tank so we can use the Storable handler
+public class EnergyTank extends NullEnergyTank implements IEnergyTank {
 
   private class Side implements IEnergyStorage {
 
