@@ -22,7 +22,6 @@ import crazypants.enderio.api.ILocalizable;
 import crazypants.enderio.base.block.painted.TileEntityTwicePaintedBlock;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
-import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.interfaces.IHasFillLevel;
@@ -109,9 +108,9 @@ class TOPData {
         isPowered = rf > 0;
         hasRF = maxrf > 0;
       }
-    } else if (tileEntity instanceof AbstractCapabilityPoweredMachineEntity) {
-      if (((AbstractCapabilityPoweredMachineEntity) tileEntity).displayPower()) {
-        IEnergyTank energy = ((AbstractCapabilityPoweredMachineEntity) tileEntity).getEnergy();
+    } else if (tileEntity instanceof AbstractCapabilityMachineEntity) {
+      if (((AbstractCapabilityMachineEntity) tileEntity).displayPower()) {
+        IEnergyTank energy = ((AbstractCapabilityMachineEntity) tileEntity).getEnergy();
         maxrf = energy.getMaxEnergyStored();
         rf = energy.getEnergyStored();
         isPowered = rf > 0;

@@ -114,6 +114,10 @@ public class EnergyTank implements IEnergyTank {
   @Store
   private int storedEnergy;
 
+  public EnergyTank(@Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
+    this(null, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
+  }
+
   public EnergyTank(TileEntity owner, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
     this.owner = owner;
     this.maxEnergyRecieved = maxEnergyRecieved;
@@ -122,10 +126,7 @@ public class EnergyTank implements IEnergyTank {
   }
 
   public EnergyTank(TileEntity owner) {
-    this.owner = owner;
-    this.maxEnergyRecieved = CapacitorKey.LEGACY_ENERGY_INTAKE;
-    this.maxEnergyStored = CapacitorKey.LEGACY_ENERGY_BUFFER;
-    this.maxEnergyUsed = CapacitorKey.LEGACY_ENERGY_USE;
+    this(owner, CapacitorKey.LEGACY_ENERGY_INTAKE, CapacitorKey.LEGACY_ENERGY_BUFFER, CapacitorKey.LEGACY_ENERGY_USE);
   }
 
   @Override
@@ -258,7 +259,7 @@ public class EnergyTank implements IEnergyTank {
 
   @Override
   public boolean canReceive() {
-    return true;
+    return maxEnergyRecieved != CapacitorKey.NO_POWER;
   }
 
   @Override

@@ -25,7 +25,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public abstract class AbstractCapabilityPoweredTaskEntity extends AbstractCapabilityPoweredMachineEntity implements IProgressTile {
+public abstract class AbstractCapabilityPoweredTaskEntity extends AbstractCapabilityMachineEntity implements IProgressTile {
 
   @Store({ NBTAction.SAVE, NBTAction.ITEM })
   protected IPoweredTask currentTask = null;

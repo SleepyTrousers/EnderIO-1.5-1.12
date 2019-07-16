@@ -86,6 +86,7 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
     getInventory().add(Type.OUTPUT, OUTPUT_COB, new InventorySlot(Filters.ALWAYS_FALSE, Filters.ALWAYS_TRUE));
     getInventory().add(Type.OUTPUT, OUTPUT_STO, new InventorySlot(Filters.ALWAYS_FALSE, Filters.ALWAYS_TRUE));
     getInventory().add(Type.OUTPUT, OUTPUT_OBS, new InventorySlot(Filters.ALWAYS_FALSE, Filters.ALWAYS_TRUE));
+    addICap(this::getSmartTankFluidHandler);
   }
 
   @Override
@@ -109,6 +110,7 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
 
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
+    super.processTasks(redstoneCheck);
     if (heat > 0) {
       heat = Math.max(0, heat - LavaGenConfig.heatLossPassive.get());
       cobblePoints += LavaGenConfig.heatLossPassive.get();
@@ -328,20 +330,14 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
 
   private SmartTankFluidHandler smartTankFluidHandler;
 
-  protected SmartTankFluidHandler getSmartTankFluidHandler() {
-    if (smartTankFluidHandler == null) {
-      smartTankFluidHandler = new SmartTankFluidMachineHandler(this, tank);
-    }
-    return smartTankFluidHandler;
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
+  protected IFluidHandler getSmartTankFluidHandler(Capability<?> capability, EnumFacing facingIn) {
     if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return (T) getSmartTankFluidHandler().get(facingIn);
+      if (smartTankFluidHandler == null) {
+        smartTankFluidHandler = new SmartTankFluidMachineHandler(this, tank);
+      }
+      return smartTankFluidHandler.get(facingIn);
     }
-    return super.getCapability(capability, facingIn);
+    return null;
   }
 
   @Override

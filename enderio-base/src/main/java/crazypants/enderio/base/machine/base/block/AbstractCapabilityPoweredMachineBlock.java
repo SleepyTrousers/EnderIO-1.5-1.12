@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.inventory.InventorySlot;
 
 import crazypants.enderio.api.IModObject;
-import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
+import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
 import crazypants.enderio.base.machine.base.te.EnergyLogic;
 import crazypants.enderio.base.power.forge.item.PoweredBlockItem;
 import crazypants.enderio.util.Prep;
@@ -18,7 +18,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class AbstractCapabilityPoweredMachineBlock<T extends AbstractCapabilityPoweredMachineEntity> extends AbstractCapabilityMachineBlock<T> {
+public abstract class AbstractCapabilityPoweredMachineBlock<T extends AbstractCapabilityMachineEntity> extends AbstractCapabilityMachineBlock<T> {
 
   protected AbstractCapabilityPoweredMachineBlock(@Nonnull IModObject mo) {
     super(mo);

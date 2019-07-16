@@ -9,7 +9,7 @@ import com.enderio.core.common.inventory.InventorySlot;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
+import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import info.loenwind.autosave.annotations.Storable;
@@ -18,7 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 
 @Storable
-public class TileImpulseHopper extends AbstractCapabilityPoweredMachineEntity {
+public class TileImpulseHopper extends AbstractCapabilityMachineEntity {
 
   public static final String OUTPUT_SLOT = "OUTPUT";
   public static final String INPUT_SLOT = "INPUT";

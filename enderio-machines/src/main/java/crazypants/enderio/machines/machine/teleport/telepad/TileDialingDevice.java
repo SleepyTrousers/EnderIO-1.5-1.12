@@ -17,7 +17,7 @@ import com.enderio.core.common.vecmath.Vector4f;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
-import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
+import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
 import crazypants.enderio.base.machine.base.te.EnergyLogic;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.render.ranged.IRanged;
@@ -35,7 +35,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
-public class TileDialingDevice extends AbstractCapabilityPoweredMachineEntity implements IRanged {
+public class TileDialingDevice extends AbstractCapabilityMachineEntity implements IRanged {
 
   @Store
   private DialerFacing dialerFacing;

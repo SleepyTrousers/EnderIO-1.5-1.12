@@ -4,21 +4,20 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
-import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
+import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketPowerStorage extends MessageTileEntity<AbstractCapabilityPoweredMachineEntity> {
+public class PacketPowerStorage extends MessageTileEntity<AbstractCapabilityMachineEntity> {
 
   private int storedEnergy;
 
   public PacketPowerStorage() {
   }
 
-  public PacketPowerStorage(@Nonnull AbstractCapabilityPoweredMachineEntity ent) {
+  public PacketPowerStorage(@Nonnull AbstractCapabilityMachineEntity ent) {
     super(ent);
     storedEnergy = ent.getEnergy().getEnergyStored();
   }
@@ -39,7 +38,7 @@ public class PacketPowerStorage extends MessageTileEntity<AbstractCapabilityPowe
 
     @Override
     public IMessage onMessage(PacketPowerStorage message, MessageContext ctx) {
-      AbstractCapabilityPoweredMachineEntity te = message.getTileEntity(Minecraft.getMinecraft().player.world);
+      AbstractCapabilityMachineEntity te = message.getTileEntity(message.getWorld(ctx));
       if (te != null) {
         te.getEnergy().setEnergyStored(message.storedEnergy);
       }

@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.inventory.Callback;
 import com.enderio.core.common.inventory.EnderInventory.Type;
 import com.enderio.core.common.inventory.InventorySlot;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.capacitor.ICapacitorData;
 import crazypants.enderio.base.capability.Filters;
@@ -24,7 +25,7 @@ public class EnergyLogic implements IEnergyLogic, ICap, Callback<ItemStack> {
 
   public static final @Nonnull String CAPSLOT = "cap";
 
-  private final @Nonnull AbstractCapabilityPoweredMachineEntity owner;
+  private final @Nonnull AbstractCapabilityMachineEntity owner;
   private final @Nonnull IEnergyTank energy;
 
   private final @Nonnull Random random = new Random();
@@ -32,8 +33,8 @@ public class EnergyLogic implements IEnergyLogic, ICap, Callback<ItemStack> {
   private long lastSyncPowerTick = -1;
   private boolean isCapacitorDamageable = false;
 
-  public EnergyLogic(@Nonnull AbstractCapabilityPoweredMachineEntity owner, @Nonnull IEnergyTank energy) {
-    this.owner = owner;
+  public EnergyLogic(AbstractCapabilityMachineEntity owner, @Nonnull IEnergyTank energy) {
+    this.owner = NullHelper.notnull(owner, "Logic Error: Owner missing");
     this.energy = energy;
     owner.getInventory().add(Type.UPGRADE, EnergyLogic.CAPSLOT, new InventorySlot(Filters.CAPACITORS, null, this, 1));
     updateCapacitorFromSlot();

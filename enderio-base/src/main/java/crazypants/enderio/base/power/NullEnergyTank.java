@@ -8,6 +8,7 @@ import com.enderio.core.common.inventory.InventorySlot;
 import crazypants.enderio.api.capacitor.ICapacitorData;
 import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
+import info.loenwind.autosave.annotations.Factory;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -15,7 +16,12 @@ import net.minecraftforge.energy.IEnergyStorage;
 @Storable
 public class NullEnergyTank implements IEnergyTank {
 
-  public static final @Nonnull NullEnergyTank INSTANCE = new NullEnergyTank();
+  private static final @Nonnull NullEnergyTank INSTANCE = new NullEnergyTank();
+
+  @Factory
+  public static @Nonnull NullEnergyTank getInstance() {
+    return INSTANCE;
+  }
 
   private NullEnergyTank() {
   }

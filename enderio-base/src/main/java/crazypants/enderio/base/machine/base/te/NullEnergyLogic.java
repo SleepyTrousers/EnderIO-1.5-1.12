@@ -40,13 +40,13 @@ public final class NullEnergyLogic implements IEnergyLogic {
   @Override
   @Nonnull
   public ICapacitorData getCapacitorData() {
-    return NullEnergyTank.INSTANCE.getCapacitorData();
+    return NullEnergyTank.getInstance().getCapacitorData();
   }
 
   @Override
   @Nonnull
   public IEnergyTank getEnergy() {
-    return NullEnergyTank.INSTANCE;
+    return NullEnergyTank.getInstance();
   }
 
   @Override

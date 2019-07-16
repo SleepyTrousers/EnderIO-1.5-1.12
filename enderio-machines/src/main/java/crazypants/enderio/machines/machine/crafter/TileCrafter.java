@@ -16,7 +16,7 @@ import com.mojang.authlib.GameProfile;
 import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.init.ModObject;
-import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
+import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
 import crazypants.enderio.base.machine.base.te.EnergyLogic;
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.base.paint.IPaintable;
@@ -34,7 +34,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.ForgeHooks;
 
 @Storable
-public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implements IPaintable.IPaintableTileEntity {
+public class TileCrafter extends AbstractCapabilityMachineEntity implements IPaintable.IPaintableTileEntity {
 
   public static class Simple extends TileCrafter {
 
