@@ -18,6 +18,7 @@ import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
+import crazypants.enderio.base.machine.base.te.EnergyLogic;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.render.ranged.IRanged;
 import crazypants.enderio.base.render.ranged.RangeParticle;
@@ -47,7 +48,7 @@ public class TileDialingDevice extends AbstractCapabilityPoweredMachineEntity im
 
     getInventory().add(Type.INPUT, "INPUT", new InventorySlot(TileTelePad.LOCATION_PRINTOUTS, 1));
     getInventory().add(Type.OUTPUT, "OUTPUT", new InventorySlot(1));
-    getInventory().getSlot(CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
+    getInventory().getSlot(EnergyLogic.CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
   }
 
   @Override
@@ -175,7 +176,7 @@ public class TileDialingDevice extends AbstractCapabilityPoweredMachineEntity im
 
   @Override
   protected void onAfterNbtRead() {
-    getInventory().getSlot(CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
+    getInventory().getSlot(EnergyLogic.CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
     super.onAfterNbtRead();
   }
 

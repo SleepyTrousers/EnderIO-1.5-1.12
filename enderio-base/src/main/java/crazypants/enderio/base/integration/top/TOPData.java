@@ -36,7 +36,7 @@ import crazypants.enderio.base.machine.modes.RedstoneControlMode.IconHolder;
 import crazypants.enderio.base.machine.task.ContinuousTask;
 import crazypants.enderio.base.paint.IPaintable.IPaintableTileEntity;
 import crazypants.enderio.base.paint.PaintUtil;
-import crazypants.enderio.base.power.EnergyTank;
+import crazypants.enderio.base.power.IEnergyTank;
 import crazypants.enderio.base.power.IPowerStorage;
 import crazypants.enderio.base.power.forge.tile.ILegacyPoweredTile;
 import crazypants.enderio.base.render.ranged.IRanged;
@@ -110,11 +110,13 @@ class TOPData {
         hasRF = maxrf > 0;
       }
     } else if (tileEntity instanceof AbstractCapabilityPoweredMachineEntity) {
-      EnergyTank energy = ((AbstractCapabilityPoweredMachineEntity) tileEntity).getEnergy();
-      maxrf = energy.getMaxEnergyStored();
-      rf = energy.getEnergyStored();
-      isPowered = rf > 0;
-      hasRF = maxrf > 0;
+      if (((AbstractCapabilityPoweredMachineEntity) tileEntity).displayPower()) {
+        IEnergyTank energy = ((AbstractCapabilityPoweredMachineEntity) tileEntity).getEnergy();
+        maxrf = energy.getMaxEnergyStored();
+        rf = energy.getEnergyStored();
+        isPowered = rf > 0;
+        hasRF = maxrf > 0;
+      }
     }
 
     if (tileEntity instanceof IProgressTile) {

@@ -109,7 +109,7 @@ public abstract class AbstractCapabilityPoweredTaskEntity extends AbstractCapabi
     // Get a new chance when we don't have one yet
     // If a recipe could not be started we will try with the same chance next time
     if (theNextSeed == null) {
-      theNextSeed = random.nextLong();
+      theNextSeed = world.rand.nextLong();
     }
 
     // Then see if we need to start a new one
@@ -155,7 +155,7 @@ public abstract class AbstractCapabilityPoweredTaskEntity extends AbstractCapabi
         mergeResults(output);
       }
     }
-    damageCapacitor();
+    getEnergyLogic().damageCapacitor();
     markDirty();
     currentTask = null;
   }

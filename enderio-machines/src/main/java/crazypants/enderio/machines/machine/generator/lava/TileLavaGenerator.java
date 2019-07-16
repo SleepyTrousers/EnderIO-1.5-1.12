@@ -132,9 +132,9 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
     }
 
     if (getHeat() > LavaGenConfig.overheatThreshold.get() && shouldDoWorkThisTick(20)) {
-      int dx = random.nextInt(8) - random.nextInt(8);
-      int dy = random.nextInt(4) - random.nextInt(4);
-      int dz = random.nextInt(8) - random.nextInt(8);
+      int dx = world.rand.nextInt(8) - world.rand.nextInt(8);
+      int dy = world.rand.nextInt(4) - world.rand.nextInt(4);
+      int dz = world.rand.nextInt(8) - world.rand.nextInt(8);
       BlockPos pos2 = pos.east(dx).up(dy).north(dz);
       if (world.isAirBlock(pos2)) {
         world.setBlockState(pos2, Blocks.FIRE.getDefaultState());
@@ -200,13 +200,13 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
             float factor = fluidStack.amount / 1000f;
             heat = Math.max(0, heat - LavaGenConfig.heatLossActive.get());
             if (fluidStack.getFluid() == FluidRegistry.WATER) {
-              if (heatInKelvin > C2K(100) && random.nextFloat() < LavaGenConfig.activeCoolingEvaporatesWater.get()) {
+              if (heatInKelvin > C2K(100) && world.rand.nextFloat() < LavaGenConfig.activeCoolingEvaporatesWater.get()) {
                 targetFluidHandler.drain(fluidStack.amount, true);
                 world.playSound(null, pos2.getX() + .5f, pos2.getY() + .5f, pos2.getZ() + .5f, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F,
-                    2.6F + (random.nextFloat() - random.nextFloat()) * 0.8F);
+                    2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
                 PacketSpawnParticles effect = new PacketSpawnParticles();
                 for (int k = 0; k < 8; ++k) {
-                  effect.add(pos2.getX() + random.nextDouble(), pos2.getY() + random.nextDouble(), pos2.getZ() + random.nextDouble(), 1,
+                  effect.add(pos2.getX() + world.rand.nextDouble(), pos2.getY() + world.rand.nextDouble(), pos2.getZ() + world.rand.nextDouble(), 1,
                       EnumParticleTypes.SMOKE_LARGE);
                 }
                 effect.send(world, pos2);
@@ -225,19 +225,20 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
         } else if (block == Blocks.ICE || block == Blocks.FROSTED_ICE || block == Blocks.PACKED_ICE) {
           heat = Math.max(0, heat - LavaGenConfig.heatLossActive.get());
           obsidianPoints += LavaGenConfig.heatLossActive.get(); // ice is always cold
-          if (random.nextFloat() < LavaGenConfig.activeCoolingLiquefiesIce.get()) {
+          if (world.rand.nextFloat() < LavaGenConfig.activeCoolingLiquefiesIce.get()) {
             if (world.provider.doesWaterVaporize()) {
               world.setBlockToAir(pos2);
               world.playSound(null, pos2.getX() + .5f, pos2.getY() + .5f, pos2.getZ() + .5f, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F,
-                  2.6F + (random.nextFloat() - random.nextFloat()) * 0.8F);
+                  2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
               for (int k = 0; k < 8; ++k) {
-                PacketSpawnParticles.create(world, pos2.getX() + random.nextDouble(), pos2.getY() + random.nextDouble(), pos2.getZ() + random.nextDouble(), 1,
+                PacketSpawnParticles.create(world, pos2.getX() + world.rand.nextDouble(), pos2.getY() + world.rand.nextDouble(),
+                    pos2.getZ() + world.rand.nextDouble(), 1,
                     EnumParticleTypes.SMOKE_LARGE);
               }
             } else {
               world.setBlockState(pos2, Blocks.WATER.getDefaultState());
               for (int k = 0; k < 4; ++k) {
-                PacketSpawnParticles.create(world, pos2.getX() + random.nextDouble(), pos2.getY() + 1, pos2.getZ() + random.nextDouble(), 1,
+                PacketSpawnParticles.create(world, pos2.getX() + world.rand.nextDouble(), pos2.getY() + 1, pos2.getZ() + world.rand.nextDouble(), 1,
                     EnumParticleTypes.SMOKE_LARGE);
               }
               Blocks.WATER.neighborChanged(Blocks.WATER.getDefaultState(), world, pos2, block, pos2);

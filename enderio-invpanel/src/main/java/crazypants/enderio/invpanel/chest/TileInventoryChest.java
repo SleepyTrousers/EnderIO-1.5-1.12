@@ -9,6 +9,7 @@ import com.enderio.core.common.inventory.InventorySlot;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
+import crazypants.enderio.base.machine.base.te.EnergyLogic;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.invpanel.capacitor.CapacitorKey;
 import crazypants.enderio.util.Prep;
@@ -92,7 +93,7 @@ public abstract class TileInventoryChest extends AbstractCapabilityPoweredMachin
     for (int i = 0; i < size.getSlots(); i++) {
       getInventory().add(EnderInventory.Type.INOUT, "slot" + i, new InventorySlot());
     }
-    getInventory().getSlot(CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
+    getInventory().getSlot(EnergyLogic.CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
   }
 
   @Override

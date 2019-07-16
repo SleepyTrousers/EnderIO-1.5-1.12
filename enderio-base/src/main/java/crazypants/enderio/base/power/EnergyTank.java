@@ -11,7 +11,6 @@ import crazypants.enderio.base.capacitor.CapacitorHelper;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
-import crazypants.enderio.base.machine.gui.IPowerBarData;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -21,7 +20,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.energy.IEnergyStorage;
 
 @Storable
-public class EnergyTank implements IEnergyStorage, IPowerBarData {
+public class EnergyTank implements IEnergyTank {
 
   private class Side implements IEnergyStorage {
 
@@ -96,6 +95,7 @@ public class EnergyTank implements IEnergyStorage, IPowerBarData {
 
   }
 
+  @Override
   public IEnergyStorage get(@Nullable EnumFacing side) {
     if (side != null && (owner instanceof AbstractMachineEntity)) {
       return new Side(side);
@@ -128,10 +128,12 @@ public class EnergyTank implements IEnergyStorage, IPowerBarData {
     this.maxEnergyUsed = CapacitorKey.LEGACY_ENERGY_USE;
   }
 
+  @Override
   public void setEnergyLoss(ICapacitorKey energyLoss) {
     this.energyLoss = energyLoss;
   }
 
+  @Override
   public boolean updateCapacitorFromSlot(@Nonnull InventorySlot slot) {
     int oldValue = maxEnergyStored.get(capacitorData);
 
@@ -154,6 +156,7 @@ public class EnergyTank implements IEnergyStorage, IPowerBarData {
     }
   }
 
+  @Override
   public boolean hasCapacitor() {
     return capacitorData != DefaultCapacitorData.NONE;
   }
@@ -172,6 +175,7 @@ public class EnergyTank implements IEnergyStorage, IPowerBarData {
     return canUseEnergy(maxEnergyUsed);
   }
 
+  @Override
   public boolean canUseEnergy(@Nonnull ICapacitorKey key) {
     int toUse = getMaxUsage(key);
     if (toUse <= getEnergyStored()) {
@@ -180,10 +184,12 @@ public class EnergyTank implements IEnergyStorage, IPowerBarData {
     return false;
   }
 
+  @Override
   public boolean useEnergy() {
     return useEnergy(maxEnergyUsed);
   }
 
+  @Override
   public boolean useEnergy(@Nonnull ICapacitorKey key) {
     int toUse = getMaxUsage(key);
     if (toUse <= getEnergyStored()) {
@@ -198,10 +204,12 @@ public class EnergyTank implements IEnergyStorage, IPowerBarData {
     return getMaxUsage(maxEnergyUsed);
   }
 
+  @Override
   public int getMaxUsage(@Nonnull ICapacitorKey key) {
     return key.get(capacitorData);
   }
 
+  @Override
   public void loseEnergy() {
     if (storedEnergy > 0) {
       if (energyLoss != null) {
@@ -210,6 +218,7 @@ public class EnergyTank implements IEnergyStorage, IPowerBarData {
     }
   }
 
+  @Override
   public void setEnergyStored(int stored) {
     int newEnergy = MathHelper.clamp(stored, 0, getMaxEnergyStored());
     if (newEnergy != storedEnergy) {
@@ -257,6 +266,7 @@ public class EnergyTank implements IEnergyStorage, IPowerBarData {
     return capacitorData;
   }
 
+  @Override
   public boolean isFull() {
     return getEnergyStored() >= getMaxEnergyStored();
   }

@@ -26,6 +26,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
+import crazypants.enderio.base.machine.base.te.EnergyLogic;
 import crazypants.enderio.base.machine.interfaces.INotifier;
 import crazypants.enderio.base.machine.sound.MachineSound;
 import crazypants.enderio.base.teleport.TeleportUtil;
@@ -124,7 +125,7 @@ public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgress
     tank.setCanDrain(false);
     tank.setTileEntity(this);
 
-    getInventory().getSlot(CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
+    getInventory().getSlot(EnergyLogic.CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
   }
 
   public boolean isFluidEnabled() {
@@ -714,7 +715,7 @@ public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgress
 
   @Override
   protected void onAfterNbtRead() {
-    getInventory().getSlot(CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
+    getInventory().getSlot(EnergyLogic.CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
     super.onAfterNbtRead();
   }
 

@@ -10,6 +10,7 @@ import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.autosave.BaseHandlers;
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
+import crazypants.enderio.base.machine.base.te.ICap;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.util.HandlePaintSource;
 import crazypants.enderio.util.NbtValue;
@@ -225,9 +226,26 @@ public abstract class TileEntityEio extends TileEntityBase {
     notTickingTileEntitiesC.clear();
   }
 
+  /*************************************
+   * CAPABILITIES
+   *************************************/
+
+  private final @Nonnull ICap.List iCaps = new ICap.List((capability, facingIn) -> super.getCapability(capability, facingIn));
+
+  public final void addICap(@Nonnull ICap iCap) {
+    iCaps.add(0, iCap);
+  }
+
   @Override
   public final boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing1) {
     return getCapability(capability, facing1) != null;
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  // TODO make final when all subclasses are changed
+  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
+    return iCaps.first(capability, facingIn);
   }
 
 }

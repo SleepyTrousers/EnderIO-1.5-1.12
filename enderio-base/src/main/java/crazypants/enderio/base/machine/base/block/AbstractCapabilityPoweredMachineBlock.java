@@ -6,6 +6,7 @@ import com.enderio.core.common.inventory.InventorySlot;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
+import crazypants.enderio.base.machine.base.te.EnergyLogic;
 import crazypants.enderio.base.power.forge.item.PoweredBlockItem;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.material.Material;
@@ -33,7 +34,7 @@ public abstract class AbstractCapabilityPoweredMachineBlock<T extends AbstractCa
     T machine = getTileEntity(world, pos);
     ItemStack heldItem = entityPlayer.getHeldItem(hand);
     if (Prep.isValid(heldItem) && machine != null && machine.isValidUpgrade(heldItem)) {
-      InventorySlot upgradeSlot = machine.getInventory().getSlot(AbstractCapabilityPoweredMachineEntity.CAPSLOT);
+      InventorySlot upgradeSlot = machine.getInventory().getSlot(EnergyLogic.CAPSLOT);
       ItemStack heldUpgrade = entityPlayer.isCreative() ? heldItem.copy() : heldItem.splitStack(1);
       heldUpgrade.setCount(1);
 

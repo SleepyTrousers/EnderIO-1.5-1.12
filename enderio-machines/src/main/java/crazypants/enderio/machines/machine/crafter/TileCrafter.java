@@ -17,6 +17,7 @@ import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityPoweredMachineEntity;
+import crazypants.enderio.base.machine.base.te.EnergyLogic;
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
@@ -39,7 +40,7 @@ public class TileCrafter extends AbstractCapabilityPoweredMachineEntity implemen
 
     public Simple() {
       super(CapacitorKey.SIMPLE_CRAFTER_POWER_INTAKE, CapacitorKey.SIMPLE_CRAFTER_POWER_BUFFER, CapacitorKey.SIMPLE_CRAFTER_POWER_USE);
-      getInventory().getSlot(CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
+      getInventory().getSlot(EnergyLogic.CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
     }
 
     @Override
