@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.fluid.IFluidWrapper.ITankInfoWrapper;
 import com.enderio.core.common.util.RoundRobinIterator;
 
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.filter.fluid.IFluidFilter;
 import crazypants.enderio.conduits.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduits.config.ConduitConfig;
@@ -44,53 +45,69 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
   }
 
   public boolean extractFrom(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir) {
-    NetworkTank tank = getTank(con, conDir);
+    final NetworkTank tank = getTank(con, conDir);
     if (!tank.isValid()) {
       return false;
     }
 
-    FluidStack drained = tank.externalTank.getAvailableFluid();
-    boolean firstTry = tryExtract(con, conDir, tank, drained);
-
-    if (!firstTry && tank.supportsMultipleTanks) {
+    final int fullLimit = (int) (ConduitConfig.fluid_tier3_extractRate.get() * getExtractSpeedMultiplier(tank));
+    if (tank.supportsMultipleTanks) {
+      int limit = fullLimit;
       for (ITankInfoWrapper tankInfoWrapper : tank.externalTank.getTankInfoWrappers()) {
-        FluidStack toDrain = tankInfoWrapper.getIFluidTankProperties().getContents();
-
-        // Don't try to drain the same fluid twice
-        if (toDrain != null && toDrain.isFluidEqual(drained)) {
-          continue;
-        }
-
-        if (tryExtract(con, conDir, tank, toDrain)) {
-          return true;
+        final IFluidTankProperties tankProperties = tankInfoWrapper.getIFluidTankProperties();
+        if (tankProperties.canDrain()) {
+          limit -= tryTransfer(con, conDir, tank, tankProperties.getContents(), limit);
+          if (limit <= 0) {
+            return true;
+          }
         }
       }
+      return limit < fullLimit;
+    } else {
+      return tryTransfer(con, conDir, tank, tank.externalTank.getAvailableFluid(), fullLimit) > 0;
     }
-
-    return firstTry;
   }
 
-  private boolean tryExtract(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir, @Nonnull NetworkTank tank, FluidStack drained) {
-    if (drained == null || drained.amount <= 0 || !matchedFilter(drained, con, conDir, true)) {
-      return false;
+  private int tryTransfer(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir, @Nonnull NetworkTank from, FluidStack toDrain, int limit) {
+    if (toDrain == null || toDrain.amount <= 0 || !matchedFilter(toDrain, con, conDir, true)) {
+      return 0;
     }
 
-    drained = drained.copy();
-    drained.amount = Math.min(drained.amount, (int) (ConduitConfig.fluid_tier3_extractRate.get() * getExtractSpeedMultiplier(tank)));
-    int amountAccepted = fillFrom(tank, drained.copy(), true);
+    // (1) Our limit
+    FluidStack draining = toDrain.copy();
+    draining.amount = Math.min(draining.amount, limit);
+
+    // (2) Simulate putting all of that into targets
+    int amountAccepted = fillFrom(from, draining.copy(), false);
     if (amountAccepted <= 0) {
-      return false;
+      return 0;
     }
-    drained.amount = amountAccepted;
-    drained = tank.externalTank.drain(drained);
+    draining.amount = Math.min(draining.amount, amountAccepted);
+
+    // (3) Drain what we could insert from the source
+    FluidStack drained = from.externalTank.drain(draining);
     if (drained == null || drained.amount <= 0) {
-      return false;
+      return 0;
     }
-    // if(drained.amount != amountAccepted) {
-    // Log.warn("EnderLiquidConduit.extractFrom: Extracted fluid volume is not equal to inserted volume. Drained=" + drained.amount + " filled="
-    // + amountAccepted + " Fluid: " + drained + " Accepted=" + amountAccepted);
-    // }
-    return true;
+
+    // (4) Insert what we just drained into targets for real---and hope it actually works out...
+    int amountFilled = fillFrom(from, drained.copy(), true);
+    if (amountFilled > drained.amount) {
+      Log.warn("EnderLiquidConduit at " + con.getBundle().getLocation() + ": Inserted fluid volume (" + amountFilled + "mB) is more than we tried to insert ("
+          + drained.amount + "mB).");
+    } else if (amountFilled < drained.amount) {
+      Log.warn("EnderLiquidConduit at " + con.getBundle().getLocation() + ": Inserted fluid volume (" + amountFilled
+          + "mB) is less than when we asked the target how much to insert (" + drained.amount
+          + "mB). This means that one of the blocks connected to this conduit line has a bug.");
+      FluidStack toPutBack = toDrain.copy();
+      toPutBack.amount = drained.amount - amountFilled;
+      int putBack = from.externalTank.fill(toPutBack.copy());
+      if (putBack < toPutBack.amount) {
+        Log.warn("EnderLiquidConduit at " + con.getBundle().getLocation() + ": In addition, putting back " + toPutBack.amount
+            + "mB into the source tank failed, leading to " + (toPutBack.amount - putBack) + "mB being voided.");
+      }
+    }
+    return amountFilled;
   }
 
   @Nonnull
@@ -108,6 +125,10 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
       return 0;
     }
 
+    RoundRobinIterator<NetworkTank> iteratorForTank = getIteratorForTank(tank);
+    if (!doFill) {
+      iteratorForTank = iteratorForTank.copy();
+    }
     try {
 
       filling = true;
@@ -120,9 +141,8 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
       resource.amount = Math.min(resource.amount, (int) (ConduitConfig.fluid_tier3_maxIO.get() * getExtractSpeedMultiplier(tank)));
       int filled = 0;
       int remaining = resource.amount;
-      // TODO: Only change starting pos of iterator is doFill is true so a false then true returns the same
 
-      for (NetworkTank target : getIteratorForTank(tank)) {
+      for (NetworkTank target : iteratorForTank) {
         if ((!target.equals(tank) || tank.selfFeed) && target.acceptsOuput && target.isValid() && target.inputColor == tank.outputColor
             && matchedFilter(resource, target.con, target.conDir, false)) {
           int vol = doFill ? target.externalTank.fill(resource.copy()) : target.externalTank.offer(resource.copy());
@@ -138,7 +158,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
     } finally {
       if (!tank.roundRobin) {
-        getIteratorForTank(tank).reset();
+        iteratorForTank.reset();
       }
       filling = false;
     }
