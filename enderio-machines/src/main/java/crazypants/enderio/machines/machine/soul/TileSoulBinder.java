@@ -33,7 +33,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -71,6 +70,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   public TileSoulBinder() {
     super(new SlotDefinition(2, 2, 1), SOUL_BINDER_POWER_INTAKE, SOUL_BINDER_POWER_BUFFER, SOUL_BINDER_POWER_USE);
     xpCont.setTileEntity(this);
+    addICap(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facingIn -> getSmartTankFluidHandler().get(facingIn));
   }
 
   @Override
@@ -282,15 +282,6 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
       smartTankFluidHandler = new SmartTankFluidMachineHandler(this, xpCont);
     }
     return smartTankFluidHandler;
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return (T) getSmartTankFluidHandler().get(facingIn);
-    }
-    return super.getCapability(capability, facingIn);
   }
 
 }

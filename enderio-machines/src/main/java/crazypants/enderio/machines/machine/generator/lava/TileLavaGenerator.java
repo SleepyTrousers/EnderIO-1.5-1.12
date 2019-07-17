@@ -40,7 +40,6 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -86,7 +85,7 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
     getInventory().add(Type.OUTPUT, OUTPUT_COB, new InventorySlot(Filters.ALWAYS_FALSE, Filters.ALWAYS_TRUE));
     getInventory().add(Type.OUTPUT, OUTPUT_STO, new InventorySlot(Filters.ALWAYS_FALSE, Filters.ALWAYS_TRUE));
     getInventory().add(Type.OUTPUT, OUTPUT_OBS, new InventorySlot(Filters.ALWAYS_FALSE, Filters.ALWAYS_TRUE));
-    addICap(this::getSmartTankFluidHandler);
+    addICap(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, this::getSmartTankFluidHandler);
   }
 
   @Override
@@ -234,8 +233,7 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
                   2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
               for (int k = 0; k < 8; ++k) {
                 PacketSpawnParticles.create(world, pos2.getX() + world.rand.nextDouble(), pos2.getY() + world.rand.nextDouble(),
-                    pos2.getZ() + world.rand.nextDouble(), 1,
-                    EnumParticleTypes.SMOKE_LARGE);
+                    pos2.getZ() + world.rand.nextDouble(), 1, EnumParticleTypes.SMOKE_LARGE);
               }
             } else {
               world.setBlockState(pos2, Blocks.WATER.getDefaultState());
@@ -330,14 +328,11 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
 
   private SmartTankFluidHandler smartTankFluidHandler;
 
-  protected IFluidHandler getSmartTankFluidHandler(Capability<?> capability, EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      if (smartTankFluidHandler == null) {
-        smartTankFluidHandler = new SmartTankFluidMachineHandler(this, tank);
-      }
-      return smartTankFluidHandler.get(facingIn);
+  protected IFluidHandler getSmartTankFluidHandler(EnumFacing facingIn) {
+    if (smartTankFluidHandler == null) {
+      smartTankFluidHandler = new SmartTankFluidMachineHandler(this, tank);
     }
-    return null;
+    return smartTankFluidHandler.get(facingIn);
   }
 
   @Override

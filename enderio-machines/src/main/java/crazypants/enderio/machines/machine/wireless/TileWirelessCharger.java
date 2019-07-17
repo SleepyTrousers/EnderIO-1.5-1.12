@@ -1,7 +1,6 @@
 package crazypants.enderio.machines.machine.wireless;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.vecmath.Vector4f;
@@ -27,7 +26,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
@@ -45,6 +43,7 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowered
   private IBlockState blockState = null;
 
   public TileWirelessCharger() {
+    addICap(CapabilityEnergy.ENERGY, facing -> InternalRecieverTileWrapper.get(this, facing));
   }
 
   @Override
@@ -199,14 +198,6 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowered
   @Nonnull
   public BoundingBox getBounds() {
     return getRange();
-  }
-
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY) {
-      return CapabilityEnergy.ENERGY.cast(InternalRecieverTileWrapper.get(this, facingIn));
-    }
-    return super.getCapability(capability, facingIn);
   }
 
 }

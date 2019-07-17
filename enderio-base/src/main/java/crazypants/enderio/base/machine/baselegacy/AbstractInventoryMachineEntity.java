@@ -8,6 +8,7 @@ import crazypants.enderio.base.capability.ItemTools.MoveResult;
 import crazypants.enderio.base.capability.LegacyMachineWrapper;
 import crazypants.enderio.base.capacitor.CapacitorHelper;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
+import crazypants.enderio.base.machine.base.te.ICap;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -20,8 +21,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.items.CapabilityItemHandler;
+
+import static net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 
 @Storable
 public abstract class AbstractInventoryMachineEntity extends AbstractMachineEntity {
@@ -36,6 +37,7 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
     for (int i = 0; i < inventory.length; ++i) {
       inventory[i] = Prep.getEmpty();
     }
+    addICap(ITEM_HANDLER_CAPABILITY, ICap.facedOnly(facingIn -> new LegacyMachineWrapper(this, facingIn)));
   }
 
   @Override
@@ -135,15 +137,6 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
 
   public boolean isUseableByPlayer(EntityPlayer player) {
     return canPlayerAccess(player);
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing1) {
-    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing1 != null) {
-      return (T) new LegacyMachineWrapper(this, facing1);
-    }
-    return super.getCapability(capability, facing1);
   }
 
   public int getSizeInventory() {

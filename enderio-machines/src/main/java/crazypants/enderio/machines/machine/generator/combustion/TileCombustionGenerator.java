@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.common.util.ITankAccess;
-import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
@@ -29,13 +28,13 @@ import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.network.PacketHandler;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -115,6 +114,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
     coolantTank.setCanDrain(false);
     fuelTank.setTileEntity(this);
     fuelTank.setCanDrain(false);
+    addICap(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facingIn -> getSmartTankFluidHandler().get(facingIn));
   }
 
   @Override
@@ -398,15 +398,6 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
       smartTankFluidHandler = new SmartTankFluidMachineHandler(this, coolantTank, fuelTank);
     }
     return smartTankFluidHandler;
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return (T) getSmartTankFluidHandler().get(facingIn);
-    }
-    return super.getCapability(capability, facingIn);
   }
 
 }

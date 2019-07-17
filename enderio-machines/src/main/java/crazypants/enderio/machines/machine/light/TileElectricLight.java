@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
@@ -25,7 +24,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
@@ -53,6 +51,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPoweredTi
   private int energyStoredRF;
 
   public TileElectricLight() {
+    addICap(CapabilityEnergy.ENERGY, facing -> InternalRecieverTileWrapper.get(this, facing));
   }
 
   public void onNeighborBlockChange(Block blockID) {
@@ -381,14 +380,6 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPoweredTi
   @Override
   public @Nonnull BlockPos getLocation() {
     return pos;
-  }
-
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY) {
-      return CapabilityEnergy.ENERGY.cast(InternalRecieverTileWrapper.get(this, facingIn));
-    }
-    return super.getCapability(capability, facingIn);
   }
 
 }

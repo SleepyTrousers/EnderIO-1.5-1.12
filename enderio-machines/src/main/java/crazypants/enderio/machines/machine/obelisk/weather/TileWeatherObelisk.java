@@ -28,11 +28,9 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -169,6 +167,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
     super(new SlotDefinition(1, 0, 0), WEATHER_POWER_INTAKE, WEATHER_POWER_BUFFER, WEATHER_POWER_USE);
     inputTank.setTileEntity(this);
     inputTank.setCanDrain(false);
+    addICap(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facingIn -> getSmartTankFluidHandler().get(facingIn));
   }
 
   @Override
@@ -387,15 +386,6 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       smartTankFluidHandler = new SmartTankFluidMachineHandler(this, inputTank);
     }
     return smartTankFluidHandler;
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return (T) getSmartTankFluidHandler().get(facingIn);
-    }
-    return super.getCapability(capability, facingIn);
   }
 
   public void updateRedstoneState() {

@@ -23,7 +23,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 import static crazypants.enderio.machines.init.MachineObject.block_solar_panel;
@@ -32,6 +31,10 @@ import static crazypants.enderio.machines.init.MachineObject.block_solar_panel;
 public class TileSolarPanel extends TileEntityEio implements ILegacyPoweredTile, IHasConduitProbeData {
 
   protected ISolarPanelNetwork network = NoSolarPanelNetwork.INSTANCE;
+
+  public TileSolarPanel() {
+    addICap(CapabilityEnergy.ENERGY, facing -> facing == EnumFacing.DOWN ? InternalGeneratorTileWrapper.get(this, facing) : null);
+  }
 
   @Override
   public boolean canConnectEnergy(@Nonnull EnumFacing from) {
@@ -50,15 +53,6 @@ public class TileSolarPanel extends TileEntityEio implements ILegacyPoweredTile,
 
   @Override
   public void setEnergyStored(int stored) {
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY) {
-      return facingIn == EnumFacing.DOWN ? CapabilityEnergy.ENERGY.cast(InternalGeneratorTileWrapper.get(this, facingIn)) : null;
-    }
-    return super.getCapability(capability, facingIn);
   }
 
   private int idleCounter = 0;

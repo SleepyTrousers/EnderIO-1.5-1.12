@@ -1,15 +1,14 @@
 package crazypants.enderio.base.machine.baselegacy;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import crazypants.enderio.api.capacitor.ICapacitorKey;
+import crazypants.enderio.base.machine.base.te.ICap;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.base.power.forge.tile.ILegacyPoweredTile;
 import crazypants.enderio.base.power.forge.tile.InternalRecieverTileWrapper;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 @Storable
@@ -18,6 +17,7 @@ public abstract class AbstractPowerConsumerEntity extends AbstractPoweredMachine
   protected AbstractPowerConsumerEntity(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved,
       @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
+    addICap(CapabilityEnergy.ENERGY, ICap.facedOnly(facingIn -> InternalRecieverTileWrapper.get(this, facingIn)));
   }
 
   @Override
@@ -34,14 +34,6 @@ public abstract class AbstractPowerConsumerEntity extends AbstractPoweredMachine
       return 0;
     }
     return maxEnergyRecieved.get(getCapacitorData());
-  }
-
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY) {
-      return CapabilityEnergy.ENERGY.cast(InternalRecieverTileWrapper.get(this, facingIn));
-    }
-    return super.getCapability(capability, facingIn);
   }
 
 }

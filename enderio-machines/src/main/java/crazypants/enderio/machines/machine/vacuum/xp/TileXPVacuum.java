@@ -26,7 +26,6 @@ import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -53,6 +52,7 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
     xpCon = new ExperienceContainer(Integer.MAX_VALUE);
     xpCon.setTileEntity(this);
     xpCon.setCanFill(!formed);
+    addICap(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing -> getContainer());
   }
 
   @Override
@@ -165,15 +165,6 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
   @Override
   public void setTanksDirty() {
     markDirty();
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return (T) xpCon;
-    }
-    return super.getCapability(capability, facingIn);
   }
 
   @Nonnull

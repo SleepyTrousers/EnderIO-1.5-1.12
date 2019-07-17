@@ -43,6 +43,7 @@ import crazypants.enderio.base.filter.ITileFilterContainer;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.machine.base.te.ICap;
 import crazypants.enderio.base.machine.interfaces.INotifier;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.YetaUtil;
@@ -113,6 +114,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   public TileConduitBundle() {
     this.blockType = ConduitRegistry.getConduitModObjectNN().getBlockNN();
+    addICap((capability, facing) -> findCapability(capability, facing));
   }
 
   @Nonnull
@@ -714,13 +716,13 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   // ------------ Capabilities ----------------------
 
   @Nullable
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+  private Object findCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
     if (capability == CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY || capability == CapabilityUpgradeHolder.UPGRADE_HOLDER_CAPABILITY) {
       for (IConduit conduit : getConduits()) {
         if (conduit.hasInternalCapability(capability, facing))
           return conduit.getInternalCapability(capability, facing);
       }
+      return ICap.DENY;
     }
 
     if (facing != null) {
@@ -737,7 +739,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
         }
       }
     }
-    return super.getCapability(capability, facing);
+    return ICap.NEXT;
   }
 
   @Override

@@ -21,6 +21,7 @@ import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.tic.TicProxy;
+import crazypants.enderio.base.machine.base.te.ICap;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.render.ranged.IRanged;
@@ -51,7 +52,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -102,6 +102,9 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     super(new SlotDefinition(1, 0, 0));
     tank.setTileEntity(this);
     tank.setCanDrain(false);
+
+    addICap(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facingIn -> getSmartTankFluidHandler().get(facingIn));
+    addICap(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, ICap.facedOnly(facingIn -> new LegacyKillerJoeWrapper(this, facingIn)));
   }
 
   // These weapons are tested to work and render correctly in the Killer Joe. That's why this is not in the config file.
@@ -541,17 +544,6 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
       smartTankFluidHandler = new SmartTankFluidMachineHandler(this, tank);
     }
     return smartTankFluidHandler;
-  }
-
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(getSmartTankFluidHandler().get(facingIn));
-    }
-    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facingIn != null) {
-      return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new LegacyKillerJoeWrapper(this, facingIn));
-    }
-    return super.getCapability(capability, facingIn);
   }
 
   @Override

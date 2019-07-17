@@ -25,7 +25,6 @@ import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.IItemHandler;
 
 import static net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
@@ -74,11 +73,7 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
     inventoryDelegate.setOwner(this);
     energyLogic = NullHelper.first(logicSupplier.apply(this), NullEnergyLogic.INSTANCE);
     energy = (NullEnergyTank) energyLogic.getEnergy(); // sic
-    addICap(this::makeItemCapability);
-  }
-
-  private Side makeItemCapability(Capability<?> capability, EnumFacing facingIn) {
-    return (capability == ITEM_HANDLER_CAPABILITY && facingIn != null && getIoMode(facingIn).canInputOrOutput()) ? new Side(facingIn) : null;
+    addICap(ITEM_HANDLER_CAPABILITY, ICap.facedOnly(facingIn -> getIoMode(facingIn).canInputOrOutput() ? new Side(facingIn) : null));
   }
 
   /////////////////////////////////////////////////////////////////////////

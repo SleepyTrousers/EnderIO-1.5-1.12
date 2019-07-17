@@ -27,6 +27,7 @@ import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.base.machine.base.te.EnergyLogic;
+import crazypants.enderio.base.machine.base.te.ICap;
 import crazypants.enderio.base.machine.interfaces.INotifier;
 import crazypants.enderio.base.machine.sound.MachineSound;
 import crazypants.enderio.base.teleport.TeleportUtil;
@@ -56,11 +57,12 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.items.CapabilityItemHandler;
+
+import static net.minecraftforge.fluids.capability.CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+import static net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 
 public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgressTile, ITankAccess.IExtendedTankAccess, INotifier {
 
@@ -126,6 +128,12 @@ public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgress
     tank.setTileEntity(this);
 
     getInventory().getSlot(EnergyLogic.CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
+
+    addICap(FLUID_HANDLER_CAPABILITY, f -> getMasterCapability(FLUID_HANDLER_CAPABILITY, f, tank));
+    addICap(ITEM_HANDLER_CAPABILITY, f -> getMasterCapability(ITEM_HANDLER_CAPABILITY, f, ICap.NEXT));
+    addICap(CapabilityEnergy.ENERGY, f -> getMasterCapability(CapabilityEnergy.ENERGY, f, ICap.NEXT));
+    // Note: Other capabilities are not relayed to the master. Other mods that attach caps to foreign blocks probably don't
+    // know about our multi-block, so let them treat it as 9 separate blocks.
   }
 
   public boolean isFluidEnabled() {
@@ -596,24 +604,25 @@ public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgress
     return true;
   }
 
-  // Inventory
+  // Capabilities
 
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
-    if (isMaster()) {
-      if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
-      }
-      return super.getCapability(capability, facingIn);
-    } else if (inNetwork()) {
-      return NullHelper.notnull(getMaster(), "Telepad master is null while in network!").getCapability(capability, facingIn);
-    } else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY
-        || capability == CapabilityEnergy.ENERGY) {
-      return null;
-    } else {
-      return super.getCapability(capability, facingIn);
+  /**
+   * If the current tile is a master: Returns the last parameter.
+   * <p>
+   * If the current tile has a master (i.e. is one of the 8 blocks around the center): Relays the call to the master's
+   * {@link #getCapability(Capability, EnumFacing)}. If that doesn't yield a result, returns DENY to stop the current tile's superclasses fro providing a value.
+   * <p>
+   * Otherwise, returns DENY. This tile is not part of a formed multi-block and as such is inactive.
+   * 
+   */
+  private Object getMasterCapability(Capability<?> capability, @Nullable EnumFacing facingIn, Object masterValue) {
+    TileTelePad master = getMaster();
+    if (master == this) {
+      return masterValue;
+    } else if (master != null && capability != null) {
+      return NullHelper.first(master.getCapability(capability, facingIn), () -> ICap.DENY);
     }
+    return ICap.DENY;
   }
 
   // Fluids

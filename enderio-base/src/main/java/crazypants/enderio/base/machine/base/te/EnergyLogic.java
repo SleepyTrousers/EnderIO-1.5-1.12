@@ -3,7 +3,6 @@ package crazypants.enderio.base.machine.base.te;
 import java.util.Random;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.common.inventory.Callback;
 import com.enderio.core.common.inventory.EnderInventory.Type;
@@ -18,10 +17,10 @@ import crazypants.enderio.base.power.IEnergyTank;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 
-public class EnergyLogic implements IEnergyLogic, ICap, Callback<ItemStack> {
+public class EnergyLogic implements IEnergyLogic, ICap.NNFunction, Callback<ItemStack> {
 
   public static final @Nonnull String CAPSLOT = "cap";
 
@@ -38,7 +37,7 @@ public class EnergyLogic implements IEnergyLogic, ICap, Callback<ItemStack> {
     this.energy = energy;
     owner.getInventory().add(Type.UPGRADE, EnergyLogic.CAPSLOT, new InventorySlot(Filters.CAPACITORS, null, this, 1));
     updateCapacitorFromSlot();
-    owner.addICap(this);
+    owner.addICap(CapabilityEnergy.ENERGY, ICap.facedOnly(facingIn -> this));
   }
 
   @Override
@@ -134,11 +133,8 @@ public class EnergyLogic implements IEnergyLogic, ICap, Callback<ItemStack> {
   }
 
   @Override
-  @Nullable
-  public Object getCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facingIn) {
-    return (capability == CapabilityEnergy.ENERGY && facingIn != null && owner.getIoMode(facingIn).canInputOrOutput())
-        ? getEnergy().get(facingIn)
-        : null;
+  public IEnergyStorage apply(@Nonnull EnumFacing facingIn) {
+    return owner.getIoMode(facingIn).canInputOrOutput() ? getEnergy().get(facingIn) : null;
   }
 
 }

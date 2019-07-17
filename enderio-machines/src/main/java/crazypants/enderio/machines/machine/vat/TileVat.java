@@ -34,7 +34,6 @@ import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -100,6 +99,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
     inputTank.setCanDrain(false);
     outputTank.setTileEntity(this);
     outputTank.setCanFill(false);
+    addICap(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facingIn -> getSmartTankFluidHandler().get(facingIn));
   }
 
   public TileVat() {
@@ -298,15 +298,6 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
       smartTankFluidHandler = new SmartTankFluidMachineHandler(this, inputTank, outputTank);
     }
     return smartTankFluidHandler;
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return (T) getSmartTankFluidHandler().get(facingIn);
-    }
-    return super.getCapability(capability, facingIn);
   }
 
 }

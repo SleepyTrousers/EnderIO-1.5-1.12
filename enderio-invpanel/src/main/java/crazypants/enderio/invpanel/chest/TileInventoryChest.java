@@ -1,7 +1,6 @@
 package crazypants.enderio.invpanel.chest;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.InventorySlot;
@@ -10,13 +9,12 @@ import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
 import crazypants.enderio.base.machine.base.te.EnergyLogic;
+import crazypants.enderio.base.machine.base.te.ICap;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.invpanel.capacitor.CapacitorKey;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 @Storable
@@ -94,6 +92,7 @@ public abstract class TileInventoryChest extends AbstractCapabilityMachineEntity
       getInventory().add(EnderInventory.Type.INOUT, "slot" + i, new InventorySlot());
     }
     getInventory().getSlot(EnergyLogic.CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
+    addICap(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facingIn -> hasPower() ? ICap.NEXT : ICap.DENY);
   }
 
   @Override
@@ -124,14 +123,6 @@ public abstract class TileInventoryChest extends AbstractCapabilityMachineEntity
       }
     }
     return count == 0 ? 0 : (14 * count / size.getSlots() + 1);
-  }
-
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && !hasPower()) {
-      return null;
-    }
-    return super.getCapability(capability, facingIn);
   }
 
 }

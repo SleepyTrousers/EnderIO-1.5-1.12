@@ -22,7 +22,6 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -36,6 +35,7 @@ public class TileExperienceObelisk extends AbstractInventoryMachineEntity implem
   public TileExperienceObelisk() {
     super(new SlotDefinition(0, 0, 0));
     xpCont.setTileEntity(this);
+    addICap(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facingIn -> getSmartTankFluidHandler().get(facingIn));
   }
 
   @Override
@@ -117,15 +117,6 @@ public class TileExperienceObelisk extends AbstractInventoryMachineEntity implem
       smartTankFluidHandler = new SmartTankFluidMachineHandler(this, xpCont);
     }
     return smartTankFluidHandler;
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return (T) getSmartTankFluidHandler().get(facingIn);
-    }
-    return super.getCapability(capability, facingIn);
   }
 
 }

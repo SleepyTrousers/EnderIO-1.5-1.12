@@ -20,7 +20,6 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -113,6 +112,7 @@ public abstract class TileReservoirBase extends TileEntityEio implements ITankAc
   private TileReservoirBase(@Nullable Fluid fluid) {
     tank = new SmartTank(fluid, Fluid.BUCKET_VOLUME);
     tank.setTileEntity(this);
+    addICap(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing -> getSmartTankFluidHandler().get(facing));
   }
 
   private static final int IO_MB_TICK = 100;
@@ -306,15 +306,6 @@ public abstract class TileReservoirBase extends TileEntityEio implements ITankAc
       };
     }
     return smartTankFluidHandler;
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return (T) getSmartTankFluidHandler().get(facingIn);
-    }
-    return super.getCapability(capability, facingIn);
   }
 
   protected @Nonnull SmartTank getTank() {

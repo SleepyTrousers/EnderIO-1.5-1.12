@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.IFluidWrapper;
@@ -38,7 +37,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -86,6 +84,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IPaint
 
     // sendItemFilter = new ItemFilter(BasicFilterTypes.filterUpgradeAdvanced);
     // recieveItemFilter = new ItemFilter(BasicFilterTypes.filterUpgradeAdvanced);
+    addICap(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facingIn -> new FluidCap(facingIn));
   }
 
   public boolean isRedstoneChecksPassed() {
@@ -406,15 +405,6 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IPaint
       neighbourFluidHandlers = FluidUtil.getNeighbouringFluidHandlers(world, getPos());
     }
     return neighbourFluidHandlers;
-  }
-
-  @SuppressWarnings("unchecked")
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-      return (T) new FluidCap(facingIn);
-    }
-    return super.getCapability(capability, facingIn);
   }
 
   private class FluidCap implements IFluidHandler {

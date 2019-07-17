@@ -1,5 +1,7 @@
 package crazypants.enderio.base;
 
+import java.util.function.Function;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -233,7 +235,11 @@ public abstract class TileEntityEio extends TileEntityBase {
   private final @Nonnull ICap.List iCaps = new ICap.List((capability, facingIn) -> super.getCapability(capability, facingIn));
 
   public final void addICap(@Nonnull ICap iCap) {
-    iCaps.add(0, iCap);
+    iCaps.add(iCap);
+  }
+
+  public final void addICap(Capability<?> capability, @Nonnull Function<EnumFacing, Object> func) {
+    iCaps.add(capability, func);
   }
 
   @Override
@@ -243,8 +249,7 @@ public abstract class TileEntityEio extends TileEntityBase {
 
   @SuppressWarnings("unchecked")
   @Override
-  // TODO make final when all subclasses are changed
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
+  public final <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
     return iCaps.first(capability, facingIn);
   }
 

@@ -47,7 +47,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -87,6 +86,10 @@ public class TileCapBank extends TileEntityEio
   private boolean displayTypesDirty;
   private boolean revalidateDisplayTypes;
   private int lastComparatorState;
+
+  public TileCapBank() {
+    addICap(CapabilityEnergy.ENERGY, facing -> InternalRecieverTileWrapper.get(this, facing));
+  }
 
   public @Nonnull CapBankType getType() {
     if (!hasWorld()) {
@@ -744,14 +747,6 @@ public class TileCapBank extends TileEntityEio
   @Override
   public int getMaxUsage() {
     return 0;
-  }
-
-  @Override
-  public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facingIn) {
-    if (capability == CapabilityEnergy.ENERGY) {
-      return CapabilityEnergy.ENERGY.cast(InternalRecieverTileWrapper.get(this, facingIn));
-    }
-    return super.getCapability(capability, facingIn);
   }
 
 }
