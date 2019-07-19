@@ -1,7 +1,7 @@
 package crazypants.enderio.zoo.entity.ai;
 
 import crazypants.enderio.util.Prep;
-import crazypants.enderio.zoo.entity.IFlyingMob;
+import crazypants.enderio.zoo.entity.IEnderZooEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -27,14 +27,14 @@ public class EntityAIFlyingAttackOnCollide extends EntityAIBase {
   private double targetZ;
   private int failedPathFindingPenalty = 0;
   private boolean canPenalize = false;
-  private IFlyingMob flyingMob;
+  private IEnderZooEntity.Flying flyingMob;
 
-  public EntityAIFlyingAttackOnCollide(IFlyingMob mob, Class<? extends Entity> targetClass, double speedIn, boolean useLongMemory) {
+  public EntityAIFlyingAttackOnCollide(IEnderZooEntity.Flying mob, Class<? extends Entity> targetClass, double speedIn, boolean useLongMemory) {
     this(mob, speedIn, useLongMemory);
     this.classTarget = targetClass;
   }
 
-  public EntityAIFlyingAttackOnCollide(IFlyingMob mob, double speedIn, boolean useLongMemory) {
+  public EntityAIFlyingAttackOnCollide(IEnderZooEntity.Flying mob, double speedIn, boolean useLongMemory) {
     this.flyingMob = mob;
     this.attacker = mob.asEntityCreature();
     this.speedTowardsTarget = speedIn;

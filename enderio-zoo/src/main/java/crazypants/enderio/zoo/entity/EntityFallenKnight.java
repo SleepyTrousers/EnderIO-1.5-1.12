@@ -52,11 +52,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @EventBusSubscriber(modid = EnderIOZoo.MODID)
-public class EntityFallenKnight extends EntitySkeleton implements IEnderZooMob {
+public class EntityFallenKnight extends EntitySkeleton implements IEnderZooEntity.Aggressive {
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
-    IEnderZooMob.register(event, NAME, EntityFallenKnight.class, EGG_BG_COL, EGG_FG_COL, MobID.FKNIGHT);
+    IEnderZooEntity.register(event, NAME, EntityFallenKnight.class, EGG_BG_COL, EGG_FG_COL, MobID.FKNIGHT);
   }
 
   @SubscribeEvent
@@ -100,7 +100,7 @@ public class EntityFallenKnight extends EntitySkeleton implements IEnderZooMob {
   }
 
   @Override
-  protected PathNavigate createNavigator(World worldIn) {
+  protected @Nonnull PathNavigate createNavigator(@Nonnull World worldIn) {
     return new PathNavigateGroundMounted(this, worldIn);
   }
 

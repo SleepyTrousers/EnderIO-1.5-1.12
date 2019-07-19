@@ -4,14 +4,17 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
 
-import info.loenwind.autoconfig.factory.IValue;
 import crazypants.enderio.zoo.EnderIOZoo;
+import crazypants.enderio.zoo.entity.navigate.FlyingPathNavigate;
+import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList.EntityEggInfo;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.common.registry.EntityEntry;
@@ -20,7 +23,22 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 /**
  * Marker interface for WAILA purposes
  */
-public interface IEnderZooMob extends IMob {
+public interface IEnderZooEntity extends IAnimals {
+
+  public interface Aggressive extends IEnderZooEntity, IMob {
+
+  }
+
+  public interface Flying extends IEnderZooEntity {
+
+    float getMaxTurnRate();
+
+    float getMaxClimbRate();
+
+    FlyingPathNavigate getFlyingNavigator();
+
+    EntityCreature asEntityCreature();
+  }
 
   static void register(@Nonnull Register<EntityEntry> event, @Nonnull String name, @Nonnull Class<? extends Entity> clazz, int eggBgCol, int eggFgCol,
       IMobID id) {

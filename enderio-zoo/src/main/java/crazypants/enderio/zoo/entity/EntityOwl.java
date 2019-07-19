@@ -41,7 +41,6 @@ import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -56,12 +55,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @EventBusSubscriber(modid = EnderIOZoo.MODID)
-public class EntityOwl extends EntityAnimal implements IFlyingMob {
+public class EntityOwl extends EntityAnimal implements IEnderZooEntity.Flying {
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
     LootTableList.register(new ResourceLocation(EnderIOZoo.DOMAIN, NAME));
-    IEnderZooMob.register(event, NAME, EntityOwl.class, EGG_BG_COL, EGG_FG_COL, MobID.OWL);
+    IEnderZooEntity.register(event, NAME, EntityOwl.class, EGG_BG_COL, EGG_FG_COL, MobID.OWL);
   }
 
   @SubscribeEvent

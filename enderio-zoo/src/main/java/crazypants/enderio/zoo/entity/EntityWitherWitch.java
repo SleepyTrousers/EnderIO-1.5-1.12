@@ -56,12 +56,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @EventBusSubscriber(modid = EnderIOZoo.MODID)
-public class EntityWitherWitch extends EntityMob implements IRangedAttackMob, IEnderZooMob {
+public class EntityWitherWitch extends EntityMob implements IRangedAttackMob, IEnderZooEntity.Aggressive {
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
     LootTableList.register(new ResourceLocation(EnderIOZoo.DOMAIN, NAME));
-    IEnderZooMob.register(event, NAME, EntityWitherWitch.class, EGG_BG_COL, EGG_FG_COL, MobID.WWITCH);
+    IEnderZooEntity.register(event, NAME, EntityWitherWitch.class, EGG_BG_COL, EGG_FG_COL, MobID.WWITCH);
   }
 
   @SubscribeEvent
@@ -91,7 +91,6 @@ public class EntityWitherWitch extends EntityMob implements IRangedAttackMob, IE
   public EntityWitherWitch(World world) {
     super(world);
     rangedAttackAI = new EntityAIRangedAttack(this, 1, 60, 10);
-    tasks.addTask(1, new EntityAISwimming(this));
     tasks.addTask(1, new EntityAISwimming(this));
     tasks.addTask(2, rangedAttackAI);
     tasks.addTask(2, new EntityAIWander(this, 1.0D));

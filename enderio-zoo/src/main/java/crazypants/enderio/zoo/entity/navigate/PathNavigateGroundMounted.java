@@ -1,6 +1,5 @@
 package crazypants.enderio.zoo.entity.navigate;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.math.MathHelper;
@@ -16,6 +15,7 @@ public class PathNavigateGroundMounted extends PathNavigateGround {
   /**
    * Based off of PathNavigateGround.pathFollow() with 1 small modification mentioned below
    */
+  @SuppressWarnings("all")
   @Override
   protected void pathFollow() {
     Vec3d vec3d = this.getEntityPosition();
@@ -32,15 +32,16 @@ public class PathNavigateGroundMounted extends PathNavigateGround {
     Vec3d vec3d1 = this.currentPath.getCurrentPos();
 
     /**
-     * Adjust the maximum height difference to allow the mob riding the other mob to step down a block correctly
-     * - only when detected it is riding the mob
-     * - only for pathing downwards as it can interfere with pathing upwards
+     * Adjust the maximum height difference to allow the mob riding the other mob to step down a block correctly - only when detected it is riding the mob -
+     * only for pathing downwards as it can interfere with pathing upwards
      */
     double maxHeightDifference = 1D;
     if (this.entity.isRiding() && this.entity.posY - vec3d1.y > 0) {
       maxHeightDifference = 2D;
     }
-    if (MathHelper.abs((float) (this.entity.posX - (vec3d1.x + 0.5D))) < this.maxDistanceToWaypoint && MathHelper.abs((float) (this.entity.posZ - (vec3d1.z + 0.5D))) < this.maxDistanceToWaypoint && Math.abs(this.entity.posY - vec3d1.y) < maxHeightDifference) {
+    if (MathHelper.abs((float) (this.entity.posX - (vec3d1.x + 0.5D))) < this.maxDistanceToWaypoint
+        && MathHelper.abs((float) (this.entity.posZ - (vec3d1.z + 0.5D))) < this.maxDistanceToWaypoint
+        && Math.abs(this.entity.posY - vec3d1.y) < maxHeightDifference) {
       this.currentPath.setCurrentPathIndex(this.currentPath.getCurrentPathIndex() + 1);
     }
 

@@ -44,11 +44,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @EventBusSubscriber(modid = EnderIOZoo.MODID)
-public class EntityFallenMount extends EntityHorse implements IEnderZooMob {
+public class EntityFallenMount extends EntityHorse implements IEnderZooEntity.Aggressive {
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
-    IEnderZooMob.register(event, NAME, EntityFallenMount.class, EGG_BG_COL, EGG_FG_COL, MobID.FMOUNT);
+    IEnderZooEntity.register(event, NAME, EntityFallenMount.class, EGG_BG_COL, EGG_FG_COL, MobID.FMOUNT);
   }
 
   @SubscribeEvent

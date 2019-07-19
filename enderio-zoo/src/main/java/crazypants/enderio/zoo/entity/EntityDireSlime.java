@@ -32,14 +32,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @EventBusSubscriber(modid = EnderIOZoo.MODID)
-public class EntityDireSlime extends EntityMagmaCube implements IEnderZooMob {
+public class EntityDireSlime extends EntityMagmaCube implements IEnderZooEntity.Aggressive {
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
     LootTableList.register(new ResourceLocation(EnderIOZoo.DOMAIN, NAME + "_1"));
     LootTableList.register(new ResourceLocation(EnderIOZoo.DOMAIN, NAME + "_2"));
     LootTableList.register(new ResourceLocation(EnderIOZoo.DOMAIN, NAME + "_4"));
-    IEnderZooMob.register(event, NAME, EntityDireSlime.class, EGG_BG_COL, EGG_FG_COL, MobID.DLIME);
+    IEnderZooEntity.register(event, NAME, EntityDireSlime.class, EGG_BG_COL, EGG_FG_COL, MobID.DLIME);
   }
 
   @SubscribeEvent

@@ -34,12 +34,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @EventBusSubscriber(modid = EnderIOZoo.MODID)
-public class EntityConcussionCreeper extends EntityCreeper implements IEnderZooMob {
+public class EntityConcussionCreeper extends EntityCreeper implements IEnderZooEntity.Aggressive {
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
     LootTableList.register(new ResourceLocation(EnderIOZoo.DOMAIN, NAME));
-    IEnderZooMob.register(event, NAME, EntityConcussionCreeper.class, EGG_BG_COL, EGG_FG_COL, MobID.CCREEPER);
+    IEnderZooEntity.register(event, NAME, EntityConcussionCreeper.class, EGG_BG_COL, EGG_FG_COL, MobID.CCREEPER);
   }
 
   @SubscribeEvent

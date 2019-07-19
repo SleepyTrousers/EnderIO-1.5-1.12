@@ -28,12 +28,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @EventBusSubscriber(modid = EnderIOZoo.MODID)
-public class EntityEpicSquid extends EntitySquid implements IEnderZooMob {
+public class EntityEpicSquid extends EntitySquid implements IEnderZooEntity {
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
     LootTableList.register(new ResourceLocation(EnderIOZoo.DOMAIN, NAME));
-    IEnderZooMob.register(event, NAME, EntityEpicSquid.class, EGG_BG_COL, EGG_FG_COL, MobID.ESQUID);
+    IEnderZooEntity.register(event, NAME, EntityEpicSquid.class, EGG_BG_COL, EGG_FG_COL, MobID.ESQUID);
     EntitySpawnPlacementRegistry.setPlacementType(EntityEpicSquid.class, SpawnPlacementType.IN_WATER);
   }
 

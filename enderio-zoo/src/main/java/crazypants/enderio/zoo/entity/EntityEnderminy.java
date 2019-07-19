@@ -59,12 +59,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @EventBusSubscriber(modid = EnderIOZoo.MODID)
-public class EntityEnderminy extends EntityMob implements IEnderZooMob {
+public class EntityEnderminy extends EntityMob implements IEnderZooEntity {
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
     LootTableList.register(new ResourceLocation(EnderIOZoo.DOMAIN, NAME));
-    IEnderZooMob.register(event, NAME, EntityEnderminy.class, EGG_BG_COL, EGG_FG_COL, MobID.EMINIY);
+    IEnderZooEntity.register(event, NAME, EntityEnderminy.class, EGG_BG_COL, EGG_FG_COL, MobID.EMINIY);
   }
 
   @SubscribeEvent

@@ -48,11 +48,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @EventBusSubscriber(modid = EnderIOZoo.MODID)
-public class EntityWitherCat extends EntityMob implements IOwnable<EntityWitherCat, EntityWitherWitch>, IEnderZooMob {
+public class EntityWitherCat extends EntityMob implements IOwnable<EntityWitherCat, EntityWitherWitch>, IEnderZooEntity {
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
-    IEnderZooMob.register(event, NAME, EntityWitherCat.class, EGG_BG_COL, EGG_FG_COL, MobID.WCAT);
+    IEnderZooEntity.register(event, NAME, EntityWitherCat.class, EGG_BG_COL, EGG_FG_COL, MobID.WCAT);
   }
 
   @SubscribeEvent

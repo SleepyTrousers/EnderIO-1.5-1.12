@@ -47,11 +47,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @EventBusSubscriber(modid = EnderIOZoo.MODID)
-public class EntityDireWolf extends EntityMob implements IEnderZooMob {
+public class EntityDireWolf extends EntityMob implements IEnderZooEntity.Aggressive {
 
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
-    IEnderZooMob.register(event, NAME, EntityDireWolf.class, EGG_BG_COL, EGG_FG_COL, MobID.DWOLF);
+    IEnderZooEntity.register(event, NAME, EntityDireWolf.class, EGG_BG_COL, EGG_FG_COL, MobID.DWOLF);
   }
 
   @SubscribeEvent
