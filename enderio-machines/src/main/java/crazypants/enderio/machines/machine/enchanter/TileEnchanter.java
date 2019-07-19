@@ -3,6 +3,7 @@ package crazypants.enderio.machines.machine.enchanter;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.Util;
 
@@ -205,6 +206,12 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
   @Override
   public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
     return mode == IoMode.NONE;
+  }
+
+  @Override
+  protected boolean mergeOutput(@Nonnull ItemStack next) {
+    ItemUtil.spawnItemInWorldWithRandomMotion(world, next, pos);
+    return true;
   }
 
 }

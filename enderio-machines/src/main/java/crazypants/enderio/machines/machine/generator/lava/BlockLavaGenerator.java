@@ -54,7 +54,7 @@ public class BlockLavaGenerator<T extends TileLavaGenerator> extends AbstractCap
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     T te = getTileEntity(world, pos);
     if (te != null && te.isActive()) {
-      EnumFacing front = te.facing;
+      EnumFacing front = te.getFacing();
       for (int i = 0; i < 2; i++) {
         double px = pos.getX() + 0.5 + front.getFrontOffsetX() * 0.6;
         double pz = pos.getZ() + 0.5 + front.getFrontOffsetZ() * 0.6;

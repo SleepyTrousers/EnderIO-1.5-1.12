@@ -91,7 +91,7 @@ public class BlockCombustionGenerator<T extends TileCombustionGenerator> extends
       EnumFacing facing = EnumFacing.SOUTH;
       if (te instanceof AbstractMachineEntity) {
         AbstractMachineEntity me = (AbstractMachineEntity) te;
-        facing = me.facing;
+        facing = me.getFacing();
       }
       for (int j = 0; j < (isEnhanced ? 3 : 1); j++) {
 

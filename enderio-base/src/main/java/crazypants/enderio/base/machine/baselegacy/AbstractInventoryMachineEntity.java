@@ -3,6 +3,8 @@ package crazypants.enderio.base.machine.baselegacy;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.ItemUtil;
+
 import crazypants.enderio.base.capability.ItemTools;
 import crazypants.enderio.base.capability.ItemTools.MoveResult;
 import crazypants.enderio.base.capability.LegacyMachineWrapper;
@@ -130,6 +132,43 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
           : itemStack.getCount() < Math.min(itemStack.getMaxStackSize(), getInventoryStackLimit(slot));
     }
     return hasSpace;
+  }
+
+  @Override
+  protected boolean mergeOutput(@Nonnull ItemStack next) {
+    int firstFreeSlot = -1;
+
+    // try to add it to existing stacks first
+    for (int slot = slotDefinition.minOutputSlot; slot <= slotDefinition.maxOutputSlot; slot++) {
+      final ItemStack itemStack = inventory[slot];
+      if (itemStack != null && Prep.isValid(itemStack)) {
+        int num = getNumCanMerge(itemStack, next);
+        if (num > 0) {
+          itemStack.grow(num);
+          next.shrink(num);
+          if (Prep.isInvalid(next)) {
+            return true;
+          }
+        }
+      } else if (firstFreeSlot < 0) {
+        firstFreeSlot = slot;
+      }
+    }
+
+    // Try and add it to an empty slot
+    if (firstFreeSlot >= 0) {
+      inventory[firstFreeSlot] = next;
+      return true;
+    }
+
+    return false;
+  }
+
+  protected int getNumCanMerge(@Nonnull ItemStack itemStack, @Nonnull ItemStack result) {
+    if (ItemUtil.isStackFull(itemStack) || !itemStack.isItemEqual(result) || !ItemStack.areItemStackTagsEqual(itemStack, result)) {
+      return 0;
+    }
+    return Math.min(itemStack.getMaxStackSize() - itemStack.getCount(), result.getCount());
   }
 
   // ---- Inventory

@@ -31,7 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockSagMill<T extends TileSagMill> extends AbstractPoweredTaskBlock<T>
     implements IPaintable.ISolidBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
-  public static BlockSagMill<TileSagMill.Normal> create(@Nonnull IModObject modObject) {    
+  public static BlockSagMill<TileSagMill.Normal> create(@Nonnull IModObject modObject) {
     BlockSagMill<TileSagMill.Normal> res = new BlockSagMill<>(modObject);
     res.init();
     return res;
@@ -100,7 +100,7 @@ public class BlockSagMill<T extends TileSagMill> extends AbstractPoweredTaskBloc
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     TileSagMill te = getTileEntity(world, pos);
     if (te != null && te.isActive()) {
-      EnumFacing front = te.facing;
+      EnumFacing front = te.getFacing();
 
       for (int i = 0; i < 3; i++) {
         double px = pos.getX() + 0.5 + front.getFrontOffsetX() * 0.51;

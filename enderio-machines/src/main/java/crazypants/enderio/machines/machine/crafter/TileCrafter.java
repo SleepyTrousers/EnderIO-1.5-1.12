@@ -9,8 +9,6 @@ import com.enderio.core.common.inventory.Filters;
 import com.enderio.core.common.inventory.Filters.PredicateItemStack;
 import com.enderio.core.common.inventory.InventorySlot;
 import com.enderio.core.common.util.ItemUtil;
-import com.enderio.core.common.util.NNList;
-import com.enderio.core.common.util.NNList.NNIterator;
 import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.api.capacitor.ICapacitorKey;
@@ -40,7 +38,8 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
 
     public Simple() {
       super(CapacitorKey.SIMPLE_CRAFTER_POWER_INTAKE, CapacitorKey.SIMPLE_CRAFTER_POWER_BUFFER, CapacitorKey.SIMPLE_CRAFTER_POWER_USE);
-      getInventory().getSlot(EnergyLogic.CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
+      getInventory().getSlot(EnergyLogic.CAPSLOT)
+          .set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
     }
 
     @Override
@@ -73,9 +72,6 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
   DummyCraftingGrid craftingGrid = new DummyCraftingGrid();
 
   @Store
-  private final NNList<ItemStack> containerItems;
-
-  @Store
   private boolean bufferStacks = true;
 
   private long ticksSinceLastCraft = 0;
@@ -88,7 +84,6 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
 
   public TileCrafter(@Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
     super(maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
-    containerItems = new NNList<ItemStack>();
 
     for (int i = 0; i < 9; i++) {
       PredicateItemStackMatch predicate = new PredicateItemStackMatch(i);
@@ -113,19 +108,14 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
     ticksSinceLastCraft++;
 
     // process buffered container items
-    if (!containerItems.isEmpty()) {
-      for (NNIterator<ItemStack> iter = containerItems.iterator(); iter.hasNext();) {
-        if (mergeOutput(iter.next())) {
-          iter.remove();
-        }
-      }
+    if (isOutputQueued()) {
       ticksSinceLastCraft = 0;
     } else if (ticksSinceLastCraft > getTicksPerCraft()) {
       if (!craftingGrid.hasValidRecipe()) {
         for (int i = 0; i < 9; i++) {
           ItemStack stack = getInventory().getSlot(INPUT_SLOT + i).get();
           if (Prep.isValid(stack)) {
-            containerItems.add(stack);
+            addToOutputQueue(stack);
             getInventory().getSlot(INPUT_SLOT + i).clear();
           }
         }
@@ -207,7 +197,7 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
     if (recipe == null) {
       for (int j = 0; j < 9; j++) {
         if (!inv.getStackInSlot(j).isEmpty()) {
-          containerItems.add(inv.getStackInSlot(j));
+          addToOutputQueue(inv.getStackInSlot(j));
         }
       }
       return false;
@@ -224,19 +214,19 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
     for (int j = 0; j < 9; j++) {
       inv.getStackInSlot(j).shrink(1);
       if (!inv.getStackInSlot(j).isEmpty()) {
-        containerItems.add(inv.getStackInSlot(j));
+        addToOutputQueue(inv.getStackInSlot(j));
       }
     }
     // (4b) ... and the remains and ...
     for (ItemStack stack : remaining) {
       if (!stack.isEmpty()) {
-        containerItems.add(stack.copy());
+        addToOutputQueue(stack.copy());
       }
     }
 
     // (5) ... put the result into its slot
     if (!mergeOutput(output)) {
-      containerItems.add(output);
+      addToOutputQueue(output);
     }
 
     return true;
@@ -244,19 +234,6 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
 
   private @Nonnull FakePlayerEIO getFakePlayer() {
     return playerInst != null ? playerInst : (playerInst = new FakePlayerEIO(world, getLocation(), DUMMY_PROFILE).setOwner(getOwner()));
-  }
-
-  private boolean mergeOutput(@Nonnull ItemStack stack) {
-    ItemStack oldOutput = getInventory().getSlot(OUTPUT_SLOT).get();
-    if (oldOutput.isEmpty()) {
-      getInventory().getSlot(OUTPUT_SLOT).set(stack);
-      return true;
-    } else if (ItemUtil.areStackMergable(oldOutput, stack)) {
-      oldOutput.grow(stack.splitStack(Math.min(oldOutput.getMaxStackSize() - oldOutput.getCount(), stack.getCount())).getCount());
-      getInventory().getSlot(OUTPUT_SLOT).set(oldOutput);
-      return stack.isEmpty();
-    }
-    return false;
   }
 
   private boolean canMergeOutput() {
@@ -280,7 +257,7 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
       for (int i = 0; i < 9; i++) {
         ItemStack stack = getInventory().getSlot(INPUT_SLOT + i).getCopy();
         if (stack.getCount() > 1) {
-          containerItems.add(stack.splitStack(stack.getCount() - 1));
+          addToOutputQueue(stack.splitStack(stack.getCount() - 1));
           getInventory().getSlot(INPUT_SLOT + i).set(stack);
         }
       }

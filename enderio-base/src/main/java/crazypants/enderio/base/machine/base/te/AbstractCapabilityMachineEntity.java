@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.EnderInventory.View;
 import com.enderio.core.common.inventory.InventorySlot;
+import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.capacitor.ICapacitorData;
@@ -134,6 +135,29 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
         return true;
       }
     }
+    return false;
+  }
+
+  @Override
+  protected boolean mergeOutput(@Nonnull ItemStack stack) {
+    InventorySlot empty = null;
+    for (InventorySlot slot : outputSlots) {
+      ItemStack oldOutput = slot.get();
+      if (oldOutput.isEmpty()) {
+        if (empty == null && slot.isItemValidForSlot(stack)) {
+          empty = slot;
+        }
+      } else if (!ItemUtil.isStackFull(oldOutput) && ItemUtil.areStackMergable(oldOutput, stack)) {
+        oldOutput.grow(stack.splitStack(Math.min(oldOutput.getMaxStackSize() - oldOutput.getCount(), stack.getCount())).getCount());
+        slot.set(oldOutput);
+        return stack.isEmpty();
+      }
+    }
+    if (empty != null) {
+      empty.set(stack);
+      return true;
+    }
+
     return false;
   }
 

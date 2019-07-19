@@ -7,6 +7,8 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.util.UserIdent;
 
 import crazypants.enderio.api.redstone.IRedstoneConnectable;
@@ -27,6 +29,7 @@ import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -36,13 +39,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Storable
-public abstract class AbstractMachineEntity extends TileEntityEio
-    implements IMachine, IRedstoneModeControlable, IRedstoneConnectable, IIoConfigurable {
+public abstract class AbstractMachineEntity extends TileEntityEio implements IMachine, IRedstoneModeControlable, IRedstoneConnectable, IIoConfigurable {
 
   private static final @Nonnull Limit PULL_PUSH_LIMIT = new Limit(1, 64);
 
   @Store({ NBTAction.CLIENT, NBTAction.SAVE })
-  public @Nonnull EnumFacing facing = EnumFacing.SOUTH;
+  protected @Nonnull EnumFacing facing = EnumFacing.SOUTH;
 
   // Client sync monitoring
   protected int ticksSinceSync = -1;
@@ -68,6 +70,9 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
   @Store(NBTAction.SAVE)
   private @Nullable UserIdent owner;
+
+  @Store({ NBTAction.SAVE, NBTAction.ITEM })
+  private final @Nonnull NNList<ItemStack> outputQueue = new NNList<>();
 
   @Override
   public @Nonnull IoMode toggleIoModeForFace(@Nullable EnumFacing faceHit) {
@@ -201,6 +206,11 @@ public abstract class AbstractMachineEntity extends TileEntityEio
         updateClients |= prevRedCheck != redstoneCheckPassed;
       }
 
+      if (shouldProcessOutputQueue()) {
+        Prof.next(getWorld(), "outputQueue");
+        processOutputQueue();
+      }
+
       if (shouldDoWorkThisTick(5)) {
         Prof.next(getWorld(), "sideIO");
         doSideIo();
@@ -285,6 +295,32 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
   protected @Nonnull Limit getPushLimit() {
     return PULL_PUSH_LIMIT.copy();
+  }
+
+  protected boolean shouldProcessOutputQueue() {
+    return !outputQueue.isEmpty() && shouldDoWorkThisTick(7);
+  }
+
+  protected void processOutputQueue() {
+    for (NNIterator<ItemStack> iter = outputQueue.iterator(); iter.hasNext();) {
+      if (mergeOutput(iter.next())) {
+        iter.remove();
+      }
+    }
+  }
+
+  protected abstract boolean mergeOutput(@Nonnull ItemStack next);
+
+  protected void addToOutputQueue(@Nonnull ItemStack stack) {
+    outputQueue.add(stack);
+  }
+
+  protected boolean isOutputQueued() {
+    return !outputQueue.isEmpty();
+  }
+
+  protected @Nonnull NNList<ItemStack> getOutputQueue() {
+    return outputQueue;
   }
 
   protected abstract boolean processTasks(boolean redstoneCheck);

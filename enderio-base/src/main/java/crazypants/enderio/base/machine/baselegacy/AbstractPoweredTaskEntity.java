@@ -343,13 +343,6 @@ public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEnt
     return false;
   }
 
-  protected int getNumCanMerge(@Nonnull ItemStack itemStack, @Nonnull ItemStack result) {
-    if (!itemStack.isItemEqual(result) || !ItemStack.areItemStackTagsEqual(itemStack, result)) {
-      return 0;
-    }
-    return Math.min(itemStack.getMaxStackSize() - itemStack.getCount(), result.getCount());
-  }
-
   protected boolean startNextTask(@Nonnull IMachineRecipe nextRecipe, long nextSeed) {
     if (hasPower() && nextRecipe.isRecipe(getMachineLevel(), getRecipeInputs())) {
       // then get our recipe and take away the source items
