@@ -114,6 +114,8 @@ public enum Material {
   // endergy
   INFINITY_GOOP("infinity_goop", "itemInfinityGoop"),
 
+  CLAYED_GLOWSTONE("clayedGlowstone"),
+
   ;
 
   public final boolean hasEffect;

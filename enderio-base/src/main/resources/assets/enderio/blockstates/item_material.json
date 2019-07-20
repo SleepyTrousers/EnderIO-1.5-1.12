@@ -498,6 +498,11 @@
         "textures": {
           "layer0": "enderio:items/item_material_ingot_vivid_alloy"
         }
+      },
+      "clayed_glowstone": {
+        "textures": {
+          "layer0": "enderio:items/item_material_clayed_glowstone"
+        }
       }
     }
   }

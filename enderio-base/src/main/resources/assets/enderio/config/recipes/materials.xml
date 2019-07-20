@@ -1153,7 +1153,7 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <recipe name="Infinity Goop">
+  <recipe name="Infinity Goop" required="true">
     <alloying energy="5000">
       <input name="POWDER_INFINITY"/>
       <input name="dustCoal"/>
@@ -1161,7 +1161,7 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
-  <recipe name="Infinity Goop, Charcoal">
+  <recipe name="Infinity Goop, Charcoal" required="true">
     <alloying energy="5000">
       <input name="POWDER_INFINITY"/>
       <input name="dustCharcoal"/>
@@ -1169,7 +1169,7 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
-  <recipe name="Infinity Dust Block 1">
+  <recipe name="Infinity Dust Block 1" required="true">
     <crafting>
       <grid>
         <item name="dustBedrock"/><item name="dustBedrock"/><item name="dustBedrock"/>
@@ -1180,14 +1180,14 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <recipe name="Infinity Dust Block 1, Uncrafting">
+  <recipe name="Infinity Dust Block 1, Uncrafting" required="true">
     <crafting>
       <shapeless><item name="compressed1xDustBedrock"/></shapeless>
       <output name="dustBedrock" amount="9"/>
     </crafting>
   </recipe>
 
-  <recipe name="Infinity Dust Block 1, Sagmilling">
+  <recipe name="Infinity Dust Block 1, Sagmilling" required="true">
     <sagmilling energy="10000" bonus="chance_only">
       <input name="compressed1xDustBedrock"/>
       <output name="dustBedrock" amount="9"/>
@@ -1195,7 +1195,7 @@ XML editor will display that as tooltips when editing this file.
     </sagmilling>
   </recipe>
 
-  <recipe name="Infinity Dust Block 2">
+  <recipe name="Infinity Dust Block 2" required="true">
     <crafting>
       <grid>
         <item name="compressed1xDustBedrock"/><item name="compressed1xDustBedrock"/><item name="compressed1xDustBedrock"/>
@@ -1206,14 +1206,14 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <recipe name="Infinity Dust Block 2, Uncrafting">
+  <recipe name="Infinity Dust Block 2, Uncrafting" required="true">
     <crafting>
       <shapeless><item name="compressed2xDustBedrock"/></shapeless>
       <output name="compressed1xDustBedrock" amount="9"/>
     </crafting>
   </recipe>
 
-  <recipe name="Infinity Dust Block 2, Sagmilling">
+  <recipe name="Infinity Dust Block 2, Sagmilling" required="true">
     <sagmilling energy="20000" bonus="chance_only">
       <input name="compressed2xDustBedrock"/>
       <output name="compressed1xDustBedrock" amount="9"/>
@@ -1222,7 +1222,7 @@ XML editor will display that as tooltips when editing this file.
     </sagmilling>
   </recipe>
 
-  <recipe name="Infinity Dust Block 3">
+  <recipe name="Infinity Dust Block 3" required="true">
     <crafting>
       <grid>
         <item name="compressed2xDustBedrock"/><item name="compressed2xDustBedrock"/><item name="compressed2xDustBedrock"/>
@@ -1233,20 +1233,37 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <recipe name="Infinity Dust Block 3, Uncrafting">
+  <recipe name="Infinity Dust Block 3, Uncrafting" required="true">
     <crafting>
       <shapeless><item name="compressed3xDustBedrock"/></shapeless>
       <output name="compressed2xDustBedrock" amount="9"/>
     </crafting>
   </recipe>
 
-  <recipe name="Infinity Dust Block 3, Sagmilling">
+  <recipe name="Infinity Dust Block 3, Sagmilling" required="true">
     <sagmilling energy="30000" bonus="chance_only">
       <input name="compressed3xDustBedrock"/>
       <output name="compressed2xDustBedrock" amount="9"/>
       <output name="compressed1xDustBedrock" amount="1" chance="0.05"/>
       <output name="dustBedrock" amount="1" chance="0.1"/>
       <output name="enderio:block_infinity_fog" amount="1" chance="0.2"/>
+    </sagmilling>
+  </recipe>
+
+  <recipe name="Clayed Glowstone" required="true">
+    <alloying energy="5000">
+      <input name="dustGlowstone"/>
+      <input name="oredict:itemClay"/>
+      <output name="itemClayedGlowstone" amount="2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Holy Dust, Batman" required="true">
+    <sagmilling energy="5000">
+      <input name="itemClayedGlowstone"/>
+      <output name="enderio:block_holy_fog" amount="2" chance="0.8"/>
+      <output name="dustGlowstone" chance="0.1"/>
+      <output name="oredict:itemClay" chance="0.1"/>
     </sagmilling>
   </recipe>
 
