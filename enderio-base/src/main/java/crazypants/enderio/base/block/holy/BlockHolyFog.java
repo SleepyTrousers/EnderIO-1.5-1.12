@@ -284,6 +284,7 @@ public class BlockHolyFog extends BlockEio<TileEntityEio> implements IDefaultRen
     }
   }
 
+  @SideOnly(Side.CLIENT)
   protected static void makeParticle(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rnd) {
     float offsetX = (.25f + .5f * rnd.nextFloat());
     float offsetY = (.25f + .5f * rnd.nextFloat());
