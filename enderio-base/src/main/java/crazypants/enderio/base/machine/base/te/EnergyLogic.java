@@ -37,7 +37,7 @@ public class EnergyLogic implements IEnergyLogic, ICap.NNFunction, Callback<Item
     this.energy = energy;
     owner.getInventory().add(Type.UPGRADE, EnergyLogic.CAPSLOT, new InventorySlot(Filters.CAPACITORS, null, this, 1));
     updateCapacitorFromSlot();
-    owner.addICap(CapabilityEnergy.ENERGY, ICap.facedOnly(facingIn -> this));
+    owner.addICap(CapabilityEnergy.ENERGY, ICap.facedOnly(this));
   }
 
   @Override
