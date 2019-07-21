@@ -127,8 +127,6 @@ public class ItemSettings extends BaseSettingsPanel {
     insertChannelB.setColorIndex(itemConduit.getOutputColor(gui.getDir()).ordinal());
     extractChannelB.onGuiInit();
     extractChannelB.setColorIndex(itemConduit.getInputColor(gui.getDir()).ordinal());
-
-    filtersChanged();
   }
 
   @Override

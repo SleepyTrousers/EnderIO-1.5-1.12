@@ -83,7 +83,5 @@ public class RefinedStorageSettings extends BaseSettingsPanel {
         new ItemStack(ConduitRefinedStorageObject.item_rs_crafting_speed_upgrade.getItemNN()),
         new ItemStack(ConduitRefinedStorageObject.item_rs_crafting_speed_downgrade.getItemNN()));
     gui.getContainer().createGhostSlots(gui.getGhostSlotHandler().getGhostSlots(), filtersAll, filtersAll, upgrades);
-
-    filtersChanged();
   }
 }

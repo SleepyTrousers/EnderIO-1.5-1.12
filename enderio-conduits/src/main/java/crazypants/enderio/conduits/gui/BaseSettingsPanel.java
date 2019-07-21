@@ -47,8 +47,6 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
   private @Nonnull String inputHeading;
   private @Nonnull String outputHeading;
 
-  private @Nonnull String enabledHeading;
-
   private boolean insertEnabled = false;
   private boolean extractEnabled = false;
 
@@ -88,7 +86,6 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
 
     inputHeading = getInputHeading();
     outputHeading = getOutputHeading();
-    enabledHeading = getEnabledHeading();
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
@@ -137,8 +134,6 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
       }
     });
 
-    gui.getContainer().addFilterListener(this::filtersChanged);
-
     filterExtractUpgradeTooltip = new GuiToolTip(new Rectangle(rightColumn, 70, 18, 18), Lang.GUI_ITEM_FILTER_UPGRADE.get()) {
       @Override
       public boolean shouldDraw() {
@@ -165,10 +160,7 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
 
   }
 
-  protected void filtersChanged() {
-    insertFilterOptionsB.onGuiInit();
-    extractFilterOptionsB.onGuiInit();
-
+  protected void updateFilterButtons() {
     if (gui.getContainer().hasFilter(true) && hasFilterGui(true)) {
       insertFilterOptionsB.setIsVisible(true);
     } else {
@@ -217,6 +209,10 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
     if (hasFilters()) {
       gui.addToolTip(filterExtractUpgradeTooltip);
       gui.addToolTip(filterInsertUpgradeTooltip);
+      insertFilterOptionsB.onGuiInit();
+      extractFilterOptionsB.onGuiInit();
+      insertFilterOptionsB.setIsVisible(false);
+      extractFilterOptionsB.setIsVisible(false);
     }
     if (hasUpgrades()) {
       gui.addToolTip(functionUpgradeTooltip);
@@ -308,6 +304,8 @@ public class BaseSettingsPanel extends Gui implements ITabPanel, IOpenFilterRemo
 
   @Override
   public void render(float par1, int par2, int par3) {
+    updateFilterButtons();
+
     FontRenderer fr = gui.getFontRenderer();
 
     int rgb = ColorUtil.getRGB(Color.darkGray);

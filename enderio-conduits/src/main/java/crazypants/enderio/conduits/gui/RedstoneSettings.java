@@ -98,7 +98,6 @@ public class RedstoneSettings extends BaseSettingsPanel {
     outputColorB.onGuiInit();
     strongCB.onGuiInit();
     strongCB.setSelected(insCon.isOutputStrong(gui.getDir()));
-    filtersChanged();
   }
 
   @Override

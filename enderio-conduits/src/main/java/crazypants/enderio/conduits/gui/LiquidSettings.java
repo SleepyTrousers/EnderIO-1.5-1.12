@@ -28,6 +28,7 @@ import crazypants.enderio.conduits.init.ConduitObject;
 import crazypants.enderio.conduits.lang.Lang;
 import crazypants.enderio.conduits.network.PacketEnderLiquidConduit;
 import crazypants.enderio.conduits.network.PacketExtractMode;
+import crazypants.enderio.util.EnumReader;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
@@ -46,7 +47,7 @@ public class LiquidSettings extends BaseSettingsPanel {
   private static final int ID_ROUND_ROBIN = GuiExternalConnection.nextButtonId();
   private static final int ID_LOOP = GuiExternalConnection.nextButtonId();
 
-  private final RedstoneModeButton rsB;
+  private final RedstoneModeButton<?> rsB;
   private final ColorButton colorB;
   private boolean isEnder = false;
   private EnderLiquidConduit eCon;
@@ -63,7 +64,7 @@ public class LiquidSettings extends BaseSettingsPanel {
   private int priLeft = 46;
   private int priWidth = 32;
 
-  private final ILiquidConduit conduit;
+  private final @Nonnull ILiquidConduit conduit;
 
   public LiquidSettings(@Nonnull final IGuiExternalConnection gui, @Nonnull IClientConduit con) {
     super(IconEIO.WRENCH_OVERLAY_FLUID, ConduitObject.item_liquid_conduit.getUnlocalisedName(), gui, con, "in_out_settings");
@@ -135,10 +136,10 @@ public class LiquidSettings extends BaseSettingsPanel {
       doOpenFilterGui(FilterGuiUtil.INDEX_INPUT_FLUID);
       return;
     } else if (guiButton.id == ID_INSERT_CHANNEL) {
-      DyeColor col = DyeColor.values()[insertChannelB.getColorIndex()];
+      DyeColor col = EnumReader.get(DyeColor.class, insertChannelB.getColorIndex());
       eCon.setOutputColor(gui.getDir(), col);
     } else if (guiButton.id == ID_EXTRACT_CHANNEL) {
-      DyeColor col = DyeColor.values()[extractChannelB.getColorIndex()];
+      DyeColor col = EnumReader.get(DyeColor.class, extractChannelB.getColorIndex());
       eCon.setInputColor(gui.getDir(), col);
     } else if (guiButton.id == ID_PRIORITY_UP) {
       eCon.setOutputPriority(gui.getDir(), eCon.getOutputPriority(gui.getDir()) + 1);
@@ -197,9 +198,6 @@ public class LiquidSettings extends BaseSettingsPanel {
       loopB.setSelected(eCon.isSelfFeedEnabled(gui.getDir()));
     }
 
-    if (isEnder) {
-      filtersChanged();
-    }
   }
 
   @Override

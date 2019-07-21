@@ -1,7 +1,6 @@
 package crazypants.enderio.conduits.gui;
 
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -13,7 +12,6 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.IExternalConnectionContainer;
-import crazypants.enderio.base.conduit.IFilterChangeListener;
 import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.IFilterContainer;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
@@ -38,8 +36,6 @@ import net.minecraftforge.items.SlotItemHandler;
 public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgrades, TileConduitBundle>
     implements IExternalConnectionContainer, IOpenFilterRemoteExec.Container, IFilterContainer {
 
-  private int speedUpgradeSlotLimit = 15;
-
   private Slot slotFunctionUpgrade;
   private Slot slotInputFilter;
   private Slot slotOutputFilter;
@@ -48,8 +44,6 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   private @Nonnull EntityPlayer player;
 
   private IConduit currentCon;
-
-  final List<IFilterChangeListener> filterListeners = new ArrayList<IFilterChangeListener>();
 
   public ExternalConnectionContainer(@Nonnull InventoryPlayer playerInv, @Nonnull EnumFacing dir, @Nonnull TileConduitBundle bundle) {
     super(playerInv, new InventoryUpgrades(dir), bundle);
@@ -104,17 +98,6 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   @Nonnull
   public Point getPlayerInventoryOffset() {
     return new Point(23, 113);
-  }
-
-  @Override
-  public void addFilterListener(@Nonnull IFilterChangeListener list) {
-    filterListeners.add(list);
-  }
-
-  protected void filterChanged() {
-    for (IFilterChangeListener list : filterListeners) {
-      list.onFilterChanged();
-    }
   }
 
   @Override
@@ -223,16 +206,16 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
     return null;
   }
 
-  @Override
+  @Override // FIXME nonnull? it's certainly used that way, so why can it return null in so many cases
   public @Nonnull IFilter getFilter(int filterIndex) {
     if (currentCon.hasInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir)) {
       IFilterHolder<?> filterHolder = currentCon.getInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
       int param1 = dir.ordinal();
       if (filterHolder != null) {
-        return filterHolder.getFilter(filterIndex, param1);
+        return filterHolder.getFilter(filterIndex, param1); // Nullable
       }
     }
-    return null;
+    return null; // Null
   }
 
   private class FilterSlot extends SlotItemHandler {
@@ -248,11 +231,6 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
     @Override
     public int getItemStackLimit(@Nonnull ItemStack stack) {
       return Math.min(super.getItemStackLimit(stack), getSlotStackLimit());
-    }
-
-    @Override
-    public void onSlotChanged() {
-      filterChanged();
     }
 
     @Override

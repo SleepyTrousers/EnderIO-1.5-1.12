@@ -30,14 +30,6 @@ public interface IExternalConnectionContainer {
   boolean hasFilter(boolean input);
 
   /**
-   * Adds a filter listener to the list
-   * 
-   * @param listener
-   *          Filter Listener
-   */
-  void addFilterListener(@Nonnull IFilterChangeListener listener);
-
-  /**
    * Creates default ghost slots (Basic Item Filters, All Upgrades) for a conduit gui
    * 
    * @param ghostSlots
