@@ -161,7 +161,6 @@ public class BlockHolyFog extends BlockEio<TileEntityEio> implements IDefaultRen
   @Override
   public void updateTick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Random rnd) {
     if (!world.isRemote) {
-      System.out.println("TICK");
 
       // (1) try to drop down
       IBlockState down = world.getBlockState(pos.down());
