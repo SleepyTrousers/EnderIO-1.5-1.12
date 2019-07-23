@@ -174,6 +174,15 @@ public enum Lang implements ILang {
   GUI_NO_ARMOR_INVENTORY(".keybind.inventory.none_equipped"),
   GUI_STEP_ASSIST_UNAVAILABLE(".gui.step_assis_unavailable"),
 
+  DSU_TOOLTIP_MAIN(".darksteel.upgrades.tooltip.main"),
+  DSU_TOOLTIP_DEPS(".darksteel.upgrades.tooltip.dependencies"),
+  DSU_TOOLTIP_CLAS(".darksteel.upgrades.tooltip.itemclasses"),
+  DSU_TOOLTIP_LINE(".darksteel.upgrades.tooltip.lineitem"),
+
+  DSU_CLASS_EVERYTHING(".darksteel.upgrades.everything"),
+  DSU_CLASS_WEAPONS(".darksteel.upgrades.weapons"),
+  DSU_CLASS_TOOLS(".darksteel.upgrades.tools"),
+
   ;
 
   private final @Nonnull String key;

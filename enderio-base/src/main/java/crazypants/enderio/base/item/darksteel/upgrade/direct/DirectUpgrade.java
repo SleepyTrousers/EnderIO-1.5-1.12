@@ -1,8 +1,10 @@
 package crazypants.enderio.base.item.darksteel.upgrade.direct;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
@@ -14,7 +16,9 @@ import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
+import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.util.Prep;
@@ -53,6 +57,18 @@ public class DirectUpgrade extends AbstractUpgrade {
   public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     return item.isForSlot(EntityEquipmentSlot.MAINHAND) && (item.isBlockBreakingTool() || item.isWeapon()) && EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)
         && !hasAnyUpgradeVariant(stack);
+  }
+
+  @Override
+  @Nonnull
+  public List<IDarkSteelUpgrade> getDependencies() {
+    return new NNList<>(EnergyUpgrade.UPGRADES.get(0));
+  }
+
+  @Override
+  @Nonnull
+  public List<Supplier<String>> getItemClassesForTooltip() {
+    return new NNList<>(Lang.DSU_CLASS_WEAPONS::get, Lang.DSU_CLASS_TOOLS::get);
   }
 
   @Override

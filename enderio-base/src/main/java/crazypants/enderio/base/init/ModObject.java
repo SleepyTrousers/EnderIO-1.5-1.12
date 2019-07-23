@@ -92,6 +92,7 @@ import crazypants.enderio.base.material.food.ItemEnderFood;
 import crazypants.enderio.base.material.glass.BlockFusedQuartz;
 import crazypants.enderio.base.material.glass.BlockPaintedFusedQuartz;
 import crazypants.enderio.base.material.material.ItemMaterial;
+import crazypants.enderio.base.material.upgrades.ItemUpgrades;
 import crazypants.enderio.base.render.dummy.BlockMachineBase;
 import crazypants.enderio.base.render.dummy.BlockMachineIO;
 import net.minecraft.block.Block;
@@ -255,6 +256,9 @@ public enum ModObject implements IModObjectBase {
   itemEndSteelBoots(ItemDarkSteelArmor::createEndSteelBoots),
 
   itemStaffOfLevity(ItemStaffOfLevity::create),
+
+  // upgrades
+  itemDarkSteelUpgrade(ItemUpgrades::create),
 
   item_owl_egg(ItemOwlEgg::create),
 

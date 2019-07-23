@@ -51,6 +51,7 @@ public enum NbtValue { // TODO: DONE111
   ENABLED("enabled"),
   INFINITY("infinity"),
   INVENTORY("inv"),
+  DSU("dsu"),
 
   ;
 
@@ -76,7 +77,7 @@ public enum NbtValue { // TODO: DONE111
     return _default;
   }
 
-  public String getString(@Nonnull ItemStack stack) {
+  public @Nonnull String getString(@Nonnull ItemStack stack) {
     return getString(stack, "");
   }
 

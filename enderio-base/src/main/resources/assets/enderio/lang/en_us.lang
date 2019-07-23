@@ -802,6 +802,19 @@ attribute.name.enderio.aoe.xz=Mining Range
 attribute.name.enderio.aoe.y=Mining Depth
 attribute.name.enderio.aoe.xyz=Mining Volume
 
+item.item_dark_steel_upgrade.name=Blank Dark Steel Upgrade
+item.item_dark_steel_upgrade.with=Dark Steel Upgrade "%s"
+
+# These are for the tooltips of item_dark_steel_upgrade:
+enderio.darksteel.upgrades.tooltip.lineitem=\u0020*\u0020%s
+enderio.darksteel.upgrades.tooltip.main=Upgrade for Dark Steel Items
+enderio.darksteel.upgrades.tooltip.dependencies=Depends on:
+enderio.darksteel.upgrades.tooltip.itemclasses=Can be applied to:
+
+enderio.darksteel.upgrades.everything=Any Dark Steel Item
+enderio.darksteel.upgrades.weapons=Dark Steel Weapons
+enderio.darksteel.upgrades.tools=Dark Steel Tools
+
 enderio.darksteel.upgrade.carpet.name=Carpeting
 enderio.darksteel.upgrade.carpet.tooltip.detailed.line1=Flattens the explosive force into a carpet.
 

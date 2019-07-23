@@ -1,5 +1,9 @@
 package crazypants.enderio.api.upgrades;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Supplier;
+
 import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -184,6 +188,16 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
    *          the pre-populated attribute modifier map
    */
   default void addAttributeModifiers(@Nonnull EntityEquipmentSlot slot, @Nonnull ItemStack stack, @Nonnull Multimap<String, AttributeModifier> map) {
+  }
+
+  // TODO
+  default @Nonnull List<IDarkSteelUpgrade> getDependencies() {
+    return Collections.emptyList();
+  }
+
+  // TODO
+  default @Nonnull List<Supplier<String>> getItemClassesForTooltip() {
+    return Collections.emptyList();
   }
 
 }
