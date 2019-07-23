@@ -1161,7 +1161,7 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
-  <recipe name="Infinity Goop, Charcoal" required="true">
+  <recipe name="Infinity Goop, Charcoal" required="false">
     <alloying energy="5000">
       <input name="POWDER_INFINITY"/>
       <input name="dustCharcoal"/>
