@@ -1,12 +1,17 @@
 package crazypants.enderio.integration.forestry.upgrades;
 
+import java.util.List;
+import java.util.function.Supplier;
+
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelArmor;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.integration.forestry.EnderIOIntegrationForestry;
 import crazypants.enderio.integration.forestry.ForestryItemStacks;
 import crazypants.enderio.integration.forestry.config.ForestryConfig;
@@ -51,6 +56,23 @@ public class ApiaristArmorUpgrade extends AbstractUpgrade {
   public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     return item.isForSlot(slot) && (item instanceof ItemDarkSteelArmor || item.hasUpgradeCallbacks(this)) && Prep.isValid(getUpgradeItem())
         && !hasUpgrade(stack, item);
+  }
+
+  @Override
+  @Nonnull
+  public List<Supplier<String>> getItemClassesForTooltip() {
+    switch (slot) {
+    case FEET:
+      return new NNList<>(Lang.DSU_CLASS_ARMOR_FEET::get);
+    case LEGS:
+      return new NNList<>(Lang.DSU_CLASS_ARMOR_LEGS::get);
+    case CHEST:
+      return new NNList<>(Lang.DSU_CLASS_ARMOR_CHEST::get);
+    case HEAD:
+      return new NNList<>(Lang.DSU_CLASS_ARMOR_HEAD::get);
+    default:
+      return new NNList<>(Lang.DSU_CLASS_ARMOR::get);
+    }
   }
 
   @Override

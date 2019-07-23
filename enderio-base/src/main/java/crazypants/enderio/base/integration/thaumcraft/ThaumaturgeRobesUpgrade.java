@@ -1,10 +1,16 @@
 package crazypants.enderio.base.integration.thaumcraft;
 
+import java.util.List;
+import java.util.function.Supplier;
+
 import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.Prep;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -56,6 +62,23 @@ public class ThaumaturgeRobesUpgrade extends AbstractUpgrade {
   @Override
   public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     return item.isForSlot(slot) && item.hasUpgradeCallbacks(this) && Prep.isValid(getUpgradeItem()) && !hasUpgrade(stack, item);
+  }
+
+  @Override
+  @Nonnull
+  public List<Supplier<String>> getItemClassesForTooltip() {
+    switch (slot) {
+    case FEET:
+      return new NNList<>(Lang.DSU_CLASS_ARMOR_FEET::get);
+    case LEGS:
+      return new NNList<>(Lang.DSU_CLASS_ARMOR_LEGS::get);
+    case CHEST:
+      return new NNList<>(Lang.DSU_CLASS_ARMOR_CHEST::get);
+    case HEAD:
+      return new NNList<>(Lang.DSU_CLASS_ARMOR_HEAD::get);
+    default:
+      return new NNList<>(Lang.DSU_CLASS_ARMOR::get);
+    }
   }
 
   @Override

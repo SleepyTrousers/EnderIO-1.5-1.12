@@ -1,13 +1,20 @@
 package crazypants.enderio.base.item.darksteel.upgrade.hoe;
 
+import java.util.List;
+import java.util.function.Supplier;
+
 import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
+import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
+import crazypants.enderio.base.lang.Lang;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.RegistryEvent;
@@ -33,6 +40,18 @@ public class HoeUpgrade extends AbstractUpgrade {
   @Override
   public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     return item.hasUpgradeCallbacks(this) && EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack) && !hasUpgrade(stack, item);
+  }
+
+  @Override
+  @Nonnull
+  public List<IDarkSteelUpgrade> getDependencies() {
+    return new NNList<>(EnergyUpgrade.UPGRADES.get(0));
+  }
+
+  @Override
+  @Nonnull
+  public List<Supplier<String>> getItemClassesForTooltip() {
+    return new NNList<>(Lang.DSU_CLASS_TOOLS_AXE::get, Lang.DSU_CLASS_TOOLS_CROOK::get);
   }
 
   @Override

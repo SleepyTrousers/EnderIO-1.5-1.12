@@ -181,7 +181,16 @@ public enum Lang implements ILang {
 
   DSU_CLASS_EVERYTHING(".darksteel.upgrades.everything"),
   DSU_CLASS_WEAPONS(".darksteel.upgrades.weapons"),
+  DSU_CLASS_WEAPONS_SWORD(".darksteel.upgrades.weapons.sword"),
   DSU_CLASS_TOOLS(".darksteel.upgrades.tools"),
+  DSU_CLASS_TOOLS_AXE(".darksteel.upgrades.tools.axe"),
+  DSU_CLASS_TOOLS_CROOK(".darksteel.upgrades.tools.crook"),
+  DSU_CLASS_TOOLS_PICKAXE(".darksteel.upgrades.tools.pickaxe"),
+  DSU_CLASS_ARMOR(".darksteel.upgrades.armor"),
+  DSU_CLASS_ARMOR_HEAD(".darksteel.upgrades.armor.head"),
+  DSU_CLASS_ARMOR_CHEST(".darksteel.upgrades.armor.chest"),
+  DSU_CLASS_ARMOR_LEGS(".darksteel.upgrades.armor.legs"),
+  DSU_CLASS_ARMOR_FEET(".darksteel.upgrades.armor.feet"),
 
   ;
 

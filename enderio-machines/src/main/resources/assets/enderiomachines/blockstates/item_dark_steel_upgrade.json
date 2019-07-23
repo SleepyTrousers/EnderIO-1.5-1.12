@@ -1,0 +1,33 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "enderio:item_generated",
+    "textures": {
+      "layer0": "enderio:items/item_dark_steel_upgrade"
+    }
+  },
+  "variants": {
+    "upgrade": {
+      "solar": {
+        "textures": {
+          "layer0": "enderiomachines:items/item_dark_steel_upgrade_solar"
+        }
+      },
+      "solar1": {
+        "textures": {
+          "layer0": "enderiomachines:items/item_dark_steel_upgrade_solar1"
+        }
+      },
+      "solar2": {
+        "textures": {
+          "layer0": "enderiomachines:items/item_dark_steel_upgrade_solar2"
+        }
+      },
+      "solar3": {
+        "textures": {
+          "layer0": "enderiomachines:items/item_dark_steel_upgrade_solar3"
+        }
+      }
+    }
+  }
+}

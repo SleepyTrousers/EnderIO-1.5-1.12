@@ -35,7 +35,9 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemUpgrades extends Item implements IHaveRenderers, IAdvancedTooltipProvider {
+public final class ItemUpgrades extends Item implements IHaveRenderers, IAdvancedTooltipProvider {
+
+  private static final @Nonnull String INVENTORY = "inventory";
 
   public static ItemUpgrades create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemUpgrades(modObject);
@@ -51,11 +53,11 @@ public class ItemUpgrades extends Item implements IHaveRenderers, IAdvancedToolt
   @Override
   @SideOnly(Side.CLIENT)
   public void registerRenderers(final @Nonnull IModObject modObject) {
-    ModelBakery.registerItemVariants(this, new ModelResourceLocation(modObject.getRegistryName(), "inventory"));
+    ModelBakery.registerItemVariants(this, new ModelResourceLocation(modObject.getRegistryName(), INVENTORY));
     UpgradeRegistry.getUpgrades().apply(upgrade -> {
       final ResourceLocation registryName = upgrade.getRegistryName();
       if (registryName != null) {
-        ModelBakery.registerItemVariants(this, getMRL(registryName));
+        ModelBakery.registerItemVariants(this, getMRL(modObject.getRegistryName(), registryName));
       }
     });
 
@@ -68,15 +70,16 @@ public class ItemUpgrades extends Item implements IHaveRenderers, IAdvancedToolt
     if (upgrade != null) {
       final ResourceLocation registryName = upgrade.getRegistryName();
       if (registryName != null) {
-        return getMRL(registryName);
+        return getMRL(getRegistryName(), registryName);
       }
     }
-    return new ModelResourceLocation(NullHelper.first(getRegistryName()), "inventory");
+    return new ModelResourceLocation(NullHelper.first(getRegistryName()), INVENTORY);
   }
 
   @SideOnly(Side.CLIENT)
-  protected @Nonnull ModelResourceLocation getMRL(final @Nonnull ResourceLocation registryName) {
-    return new ModelResourceLocation(new ResourceLocation(registryName.getResourceDomain(), "upgrade_item_" + registryName.getResourcePath()), "inventory");
+  protected @Nonnull ModelResourceLocation getMRL(final ResourceLocation base, final @Nonnull ResourceLocation registryName) {
+    return new ModelResourceLocation(new ResourceLocation(registryName.getResourceDomain(), base.getResourcePath()),
+        "upgrade=" + registryName.getResourcePath());
   }
 
   protected IDarkSteelUpgrade getUpgrade(@Nonnull ItemStack stack) {

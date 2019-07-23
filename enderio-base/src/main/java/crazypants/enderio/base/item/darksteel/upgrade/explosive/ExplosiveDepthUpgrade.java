@@ -1,6 +1,11 @@
 package crazypants.enderio.base.item.darksteel.upgrade.explosive;
 
+import java.util.List;
+import java.util.function.Supplier;
+
 import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
@@ -32,6 +37,18 @@ public class ExplosiveDepthUpgrade extends AbstractUpgrade {
   @Override
   public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     return ExplosiveUpgrade.INSTANCE.hasAnyUpgradeVariant(stack) && !hasUpgrade(stack);
+  }
+
+  @Override
+  @Nonnull
+  public List<IDarkSteelUpgrade> getDependencies() {
+    return new NNList<>(ExplosiveUpgrade.INSTANCE);
+  }
+
+  @Override
+  @Nonnull
+  public List<Supplier<String>> getItemClassesForTooltip() {
+    return ExplosiveUpgrade.INSTANCE.getItemClassesForTooltip();
   }
 
   @Override

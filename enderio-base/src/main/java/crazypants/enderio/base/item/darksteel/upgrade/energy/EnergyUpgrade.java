@@ -142,6 +142,11 @@ public class EnergyUpgrade extends AbstractUpgrade {
     return next >= UPGRADES.size() ? null : UPGRADES.get(next);
   }
 
+  public static EnergyUpgrade prev(EnergyUpgrade upgrade) {
+    int next = upgrade == null ? 0 : (upgrade.level - 1);
+    return next < 0 ? null : UPGRADES.get(next);
+  }
+
   protected final int level;
   protected final @Nonnull ICapacitorData capData;
 
@@ -174,6 +179,13 @@ public class EnergyUpgrade extends AbstractUpgrade {
     final EnergyUpgrade existing = loadAnyFromItem(stack);
     EnergyUpgrade up = next(existing);
     return up != null && up.id.equals(id) && up.level == this.level && item.getMaxEmpoweredLevel(stack) >= level;
+  }
+
+  @Override
+  @Nonnull
+  public List<IDarkSteelUpgrade> getDependencies() {
+    EnergyUpgrade prev = prev(this);
+    return prev != null ? new NNList<>(prev) : super.getDependencies();
   }
 
   @Override

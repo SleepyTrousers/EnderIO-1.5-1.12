@@ -1,0 +1,189 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "enderio:item_generated",
+    "textures": {
+      "layer0": "enderio:items/item_dark_steel_upgrade"
+    }
+  },
+  "variants": {
+    "inventory": [{}],
+    "upgrade": {
+      "carpet": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_carpet"
+        }
+      },
+      "depth": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_depth"
+        }
+      },
+      "direct": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_direct"
+        }
+      },
+      "elytra": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_elytra"
+        }
+      },
+      "energyupgrade4": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_energyupgrade4"
+        }
+      },
+      "energyupgrade3": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_energyupgrade3"
+        }
+      },
+      "energyupgrade": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_energyupgrade"
+        }
+      },
+      "energyupgrade2": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_energyupgrade2"
+        }
+      },
+      "energyupgrade1": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_energyupgrade1"
+        }
+      },
+      "glide": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_glide"
+        }
+      },
+      "hoe": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_hoe"
+        }
+      },
+      "inv": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_inv"
+        }
+      },
+      "inv1": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_inv1"
+        }
+      },
+      "inv2": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_inv2"
+        }
+      },
+      "jumpboost1": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_jumpboost1"
+        }
+      },
+      "jumpboost3": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_jumpboost3"
+        }
+      },
+      "jumpboost2": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_jumpboost2"
+        }
+      },
+      "nightvision": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_nightvision"
+        }
+      },
+      "padding": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_padding"
+        }
+      },
+      "sounddetector": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_sounddetector"
+        }
+      },
+      "speedboost1": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_speedboost1"
+        }
+      },
+      "speedboost3": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_speedboost3"
+        }
+      },
+      "speedboost2": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_speedboost2"
+        }
+      },
+      "spoon": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_spoon"
+        }
+      },
+      "swim": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_swim"
+        }
+      },
+      "tnt": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_tnt"
+        }
+      },
+      "tnt1": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_tnt1"
+        }
+      },
+      "tnt2": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_tnt2"
+        }
+      },
+      "tnt3": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_tnt3"
+        }
+      },
+      "tnt4": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_tnt4"
+        }
+      },
+      "top": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_top"
+        }
+      },
+      "travel": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_travel"
+        }
+      },
+      "thaumaturge_robes_chest": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_thaumaturge_robes_chest"
+        }
+      },
+      "thaumaturge_robes_feet": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_thaumaturge_robes_feet"
+        }
+      },
+      "thaumaturge_robes_legs": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_thaumaturge_robes_legs"
+        }
+      }
+    }
+  }
+}

@@ -1,13 +1,20 @@
 package crazypants.enderio.base.item.darksteel.upgrade.speed;
 
+import java.util.List;
+import java.util.function.Supplier;
+
 import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
+import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.potion.PotionUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -79,6 +86,25 @@ public class SpeedUpgrade extends AbstractUpgrade {
       return getLevel() == 1;
     }
     return up.getLevel() == getLevel() - 1;
+  }
+
+  @Override
+  @Nonnull
+  public List<IDarkSteelUpgrade> getDependencies() {
+    switch (getLevel()) {
+    case 2:
+      return new NNList<>(EnergyUpgrade.UPGRADES.get(0), SPEED_ONE);
+    case 3:
+      return new NNList<>(EnergyUpgrade.UPGRADES.get(0), SPEED_TWO);
+    default:
+      return new NNList<>(EnergyUpgrade.UPGRADES.get(0));
+    }
+  }
+
+  @Override
+  @Nonnull
+  public List<Supplier<String>> getItemClassesForTooltip() {
+    return new NNList<>(Lang.DSU_CLASS_ARMOR_LEGS::get);
   }
 
   @Override

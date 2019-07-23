@@ -1,6 +1,8 @@
 package crazypants.enderio.base.item.darksteel.upgrade.explosive;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
@@ -14,7 +16,9 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.handler.darksteel.PlayerAOEAttributeHandler;
+import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
+import crazypants.enderio.base.lang.Lang;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -53,6 +57,18 @@ public class ExplosiveUpgrade extends AbstractUpgrade {
   public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     return item.isPickaxe() && item.hasUpgradeCallbacks(INSTANCE) && EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)
         && getUpgradeVariantLevel(stack) == variant - 1;
+  }
+
+  @Override
+  @Nonnull
+  public List<IDarkSteelUpgrade> getDependencies() {
+    return new NNList<>(EnergyUpgrade.UPGRADES.get(0));
+  }
+
+  @Override
+  @Nonnull
+  public List<Supplier<String>> getItemClassesForTooltip() {
+    return new NNList<>(Lang.DSU_CLASS_TOOLS_PICKAXE::get);
   }
 
   @Override

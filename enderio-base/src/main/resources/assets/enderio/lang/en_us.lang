@@ -813,7 +813,16 @@ enderio.darksteel.upgrades.tooltip.itemclasses=Can be applied to:
 
 enderio.darksteel.upgrades.everything=Any Dark Steel Item
 enderio.darksteel.upgrades.weapons=Dark Steel Weapons
+enderio.darksteel.upgrades.weapons.sword=Dark Steel Swords
 enderio.darksteel.upgrades.tools=Dark Steel Tools
+enderio.darksteel.upgrades.tools.axe=Dark Steel Axes
+enderio.darksteel.upgrades.tools.crook=Dark Steel Crooks
+enderio.darksteel.upgrades.tools.pickaxe=Dark Steel Pickaxes
+enderio.darksteel.upgrades.armor=Dark Steel Armors
+enderio.darksteel.upgrades.armor.head=Dark Steel Helmets
+enderio.darksteel.upgrades.armor.chest=Dark Steel Chestplates
+enderio.darksteel.upgrades.armor.legs=Dark Steel Leg Armor
+enderio.darksteel.upgrades.armor.feet=Dark Steel Boots
 
 enderio.darksteel.upgrade.carpet.name=Carpeting
 enderio.darksteel.upgrade.carpet.tooltip.detailed.line1=Flattens the explosive force into a carpet.

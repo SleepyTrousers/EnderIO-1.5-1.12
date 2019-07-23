@@ -1,6 +1,11 @@
 package crazypants.enderio.base.item.darksteel.upgrade.elytra;
 
+import java.util.List;
+import java.util.function.Supplier;
+
 import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
@@ -10,6 +15,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
+import crazypants.enderio.base.lang.Lang;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -39,6 +45,12 @@ public class ElytraUpgrade extends AbstractUpgrade implements IHasPlayerRenderer
   public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     return item.isForSlot(EntityEquipmentSlot.CHEST) && item.hasUpgradeCallbacks(this) && !hasUpgrade(stack, item)
         && !GliderUpgrade.INSTANCE.hasUpgrade(stack, item);
+  }
+
+  @Override
+  @Nonnull
+  public List<Supplier<String>> getItemClassesForTooltip() {
+    return new NNList<>(Lang.DSU_CLASS_ARMOR_CHEST::get);
   }
 
   @Override

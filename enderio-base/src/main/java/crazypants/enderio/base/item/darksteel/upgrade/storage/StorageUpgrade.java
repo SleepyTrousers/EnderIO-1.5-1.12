@@ -1,13 +1,20 @@
 package crazypants.enderio.base.item.darksteel.upgrade.storage;
 
+import java.util.List;
+import java.util.function.Supplier;
+
 import javax.annotation.Nonnull;
+
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
+import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
+import crazypants.enderio.base.lang.Lang;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -47,6 +54,25 @@ public class StorageUpgrade extends AbstractUpgrade {
   public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     return (item.isForSlot(EntityEquipmentSlot.FEET) || item.isForSlot(EntityEquipmentSlot.LEGS) || item.isForSlot(EntityEquipmentSlot.CHEST)
         || item.isForSlot(EntityEquipmentSlot.HEAD)) && EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack) && getUpgradeVariantLevel(stack) == variant - 1;
+  }
+
+  @Override
+  @Nonnull
+  public List<IDarkSteelUpgrade> getDependencies() {
+    switch (variant) {
+    case 1:
+      return new NNList<>(EnergyUpgrade.UPGRADES.get(0), INSTANCE);
+    case 2:
+      return new NNList<>(EnergyUpgrade.UPGRADES.get(0), INSTANCE2);
+    default:
+      return new NNList<>(EnergyUpgrade.UPGRADES.get(0));
+    }
+  }
+
+  @Override
+  @Nonnull
+  public List<Supplier<String>> getItemClassesForTooltip() {
+    return new NNList<>(Lang.DSU_CLASS_ARMOR::get);
   }
 
   @Override

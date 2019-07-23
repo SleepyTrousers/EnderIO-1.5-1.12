@@ -1,0 +1,38 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "enderio:item_generated",
+    "textures": {
+      "layer0": "enderio:items/item_dark_steel_upgrade"
+    }
+  },
+  "variants": {
+    "upgrade": {
+      "apiarist_armor_chest": {
+        "textures": {
+          "layer0": "enderiointegrationforestry:items/item_dark_steel_upgrade_apiarist_armor_chest"
+        }
+      },
+      "apiarist_armor_feet": {
+        "textures": {
+          "layer0": "enderiointegrationforestry:items/item_dark_steel_upgrade_apiarist_armor_feet"
+        }
+      },
+      "apiarist_armor_head": {
+        "textures": {
+          "layer0": "enderiointegrationforestry:items/item_dark_steel_upgrade_apiarist_armor_head"
+        }
+      },
+      "apiarist_armor_legs": {
+        "textures": {
+          "layer0": "enderiointegrationforestry:items/item_dark_steel_upgrade_apiarist_armor_legs"
+        }
+      },
+      "naturalist_eye": {
+        "textures": {
+          "layer0": "enderiointegrationforestry:items/item_dark_steel_upgrade_naturalist_eye"
+        }
+      }
+    }
+  }
+}
