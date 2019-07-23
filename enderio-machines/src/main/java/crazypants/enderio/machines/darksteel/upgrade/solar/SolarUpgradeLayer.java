@@ -16,7 +16,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class SolarUpgradeLayer implements IRenderUpgrade {
 
-  public static final @Nonnull SolarUpgradeLayer instance = new SolarUpgradeLayer();
+  private static final @Nonnull SolarUpgradeLayer instance = new SolarUpgradeLayer();
+
+  SolarUpgrade solarUpgrade;
 
   private SolarUpgradeLayer() {
   }
@@ -31,7 +33,6 @@ public class SolarUpgradeLayer implements IRenderUpgrade {
       return;
     }
 
-    SolarUpgrade solarUpgrade = SolarUpgrade.loadAnyFromItem(piece);
     if (solarUpgrade == null) {
       return;
     }
@@ -51,9 +52,14 @@ public class SolarUpgradeLayer implements IRenderUpgrade {
     GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
     GlStateManager.scale(f2, -f2, -f2);
 
-    Minecraft.getMinecraft().getItemRenderer().renderItem(entitylivingbaseIn, solarUpgrade.getUpgradeItem(), TransformType.HEAD);
+    Minecraft.getMinecraft().getItemRenderer().renderItem(entitylivingbaseIn, solarUpgrade.getRenderItem(), TransformType.HEAD);
 
     GlStateManager.popMatrix();
+  }
+
+  public static @Nonnull SolarUpgradeLayer withUpgrade(@Nonnull SolarUpgrade upgrade) {
+    instance.solarUpgrade = upgrade;
+    return instance;
   }
 
 }

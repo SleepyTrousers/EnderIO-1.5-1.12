@@ -2,6 +2,8 @@ package crazypants.enderio.machines.darksteel.upgrade.solar;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
@@ -11,9 +13,8 @@ import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManage
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.SolarConfig;
-import crazypants.enderio.machines.init.MachineObject;
+import crazypants.enderio.machines.machine.solar.SolarType;
 import crazypants.enderio.machines.machine.solar.TileSolarPanel;
-import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -25,7 +26,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.registries.IForgeRegistry;
 
 @EventBusSubscriber(modid = EnderIOMachines.MODID)
 public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer {
@@ -33,48 +33,19 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
   private static final @Nonnull String UPGRADE_NAME = "solar";
   static final @Nonnull String NAME = "enderio.darksteel.upgrade.solar_";
 
-  public static final SolarUpgrade SOLAR1 = new SolarUpgrade(new ItemStack(MachineObject.block_solar_panel.getItemNN(), 1, 0), 1,
-      SolarConfig.darkSteelSolarOneCost, SolarConfig.darkSteelSolarOneGen);
-
-  public static final SolarUpgrade SOLAR2 = new SolarUpgrade(new ItemStack(MachineObject.block_solar_panel.getItemNN(), 1, 1), 2,
-      SolarConfig.darkSteelSolarTwoCost, SolarConfig.darkSteelSolarTwoGen);
-
-  public static final SolarUpgrade SOLAR3 = new SolarUpgrade(new ItemStack(MachineObject.block_solar_panel.getItemNN(), 1, 2), 3,
-      SolarConfig.darkSteelSolarThreeCost, SolarConfig.darkSteelSolarThreeGen);
+  public static final @Nonnull NNList<SolarUpgrade> INSTANCES = new NNList<>( //
+      new SolarUpgrade(SolarType.SIMPLE), new SolarUpgrade(SolarType.NORMAL), new SolarUpgrade(SolarType.ADVANCED), new SolarUpgrade(SolarType.VIBRANT));
 
   @SubscribeEvent
   public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
-    final IForgeRegistry<IDarkSteelUpgrade> registry = event.getRegistry();
-    registry.register(SOLAR1);
-    registry.register(SOLAR2);
-    registry.register(SOLAR3);
+    INSTANCES.apply(event.getRegistry()::register);
   }
 
-  public static SolarUpgrade loadAnyFromItem(@Nonnull ItemStack stack) {
-    if (SOLAR3.hasUpgrade(stack)) {
-      return SOLAR3;
-    }
-    if (SOLAR2.hasUpgrade(stack)) {
-      return SOLAR2;
-    }
-    if (SOLAR1.hasUpgrade(stack)) {
-      return SOLAR1;
-    }
-    return null;
-  }
+  private final @Nonnull SolarType type;
 
-  private final int level;
-  private final @Nonnull IValue<Integer> rf;
-
-  public SolarUpgrade(@Nonnull ItemStack item, int level, @Nonnull IValue<Integer> levelCost, @Nonnull IValue<Integer> rf) {
-    super(EnderIOMachines.MODID, UPGRADE_NAME, level, NAME + level, item, levelCost);
-    this.level = level;
-    this.rf = rf;
-  }
-
-  @Override
-  protected int getMinVariant() {
-    return 1;
+  public SolarUpgrade(@Nonnull SolarType type) {
+    super(EnderIOMachines.MODID, UPGRADE_NAME, type.ordinal(), NAME + type.ordinal(), type.getUpgradeItem(), type::getUpgradeLevelCost);
+    this.type = type;
   }
 
   @Override
@@ -82,11 +53,7 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
     if (!item.isForSlot(EntityEquipmentSlot.HEAD) || !EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)) {
       return false;
     }
-    SolarUpgrade up = loadAnyFromItem(stack);
-    if (up == null) {
-      return getLevel() == 1;
-    }
-    return up.getLevel() == getLevel() - 1;
+    return getUpgradeVariantLevel(stack) == getLevel() - 1;
   }
 
   @Override
@@ -97,11 +64,11 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
   @Override
   @SideOnly(Side.CLIENT)
   public @Nonnull IRenderUpgrade getRender() {
-    return SolarUpgradeLayer.instance;
+    return SolarUpgradeLayer.withUpgrade(this);
   }
 
   public int getLevel() {
-    return level;
+    return type.ordinal();
   }
 
   @Override
@@ -116,7 +83,7 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
       return;
     }
 
-    int RFperSecond = Math.round(rf.get() * TileSolarPanel.calculateLightRatio(player.world));
+    int RFperSecond = Math.round(type.getRfperSecond() * TileSolarPanel.calculateLightRatio(player.world));
 
     int leftover = RFperSecond % 20;
     boolean addExtraRF = player.world.getTotalWorldTime() % 20 < leftover;
@@ -129,7 +96,7 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
       for (int i = 0; i < 4 && toAdd > 0; i++) {
         ItemStack stack = player.inventory.armorInventory.get(nextIndex);
         IEnergyStorage cap = PowerHandlerUtil.getCapability(stack, null);
-        if (cap != null && (EnergyUpgradeManager.loadFromItem(stack) != null || SolarConfig.helmetChargeOthers.get())) {
+        if (cap != null && (SolarConfig.helmetChargeOthers.get() || EnergyUpgradeManager.loadFromItem(stack) != null)) {
           toAdd -= cap.receiveEnergy(toAdd, false);
         }
         nextIndex = (nextIndex + 1) % 4;
@@ -137,6 +104,10 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
 
       player.getEntityData().setInteger("dsarmor:solar", nextIndex);
     }
+  }
+
+  public @Nonnull ItemStack getRenderItem() {
+    return type.getItemStack();
   }
 
 }

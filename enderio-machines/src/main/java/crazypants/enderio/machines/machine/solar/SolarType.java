@@ -7,7 +7,10 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.machines.config.config.SolarConfig;
+import crazypants.enderio.machines.init.MachineObject;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 
 public enum SolarType implements IStringSerializable {
@@ -47,17 +50,32 @@ public enum SolarType implements IStringSerializable {
   }
 
   public int getRfperTick() {
-    switch (this) {
-    case SIMPLE:
-      return SolarConfig.solarPanelOneOutput.get();
-    case NORMAL:
-      return SolarConfig.solarPanelTwoOutput.get();
-    case ADVANCED:
-      return SolarConfig.solarPanelThreeOutput.get();
-    case VIBRANT:
-      return SolarConfig.solarPanelFourOutput.get();
-    default:
-      return 0;
-    }
+    return SolarConfig.blockGen.get(this.ordinal()).get();
   }
+
+  public int getRfperSecond() {
+    return SolarConfig.upgradeGen.get(this.ordinal()).get();
+  }
+
+  public int getUpgradeLevelCost() {
+    return SolarConfig.upgradeCost.get(this.ordinal()).get();
+  }
+
+  public @Nonnull IBlockState getBlockState() {
+    return MachineObject.block_solar_panel.getBlockNN().getDefaultState().withProperty(KIND, this);
+  }
+
+  public @Nonnull ItemStack getItemStack(int size) {
+    return new ItemStack(MachineObject.block_solar_panel.getItemNN(), size, this.ordinal());
+  }
+
+  public @Nonnull ItemStack getItemStack() {
+    return getItemStack(1);
+  }
+
+  public @Nonnull ItemStack getUpgradeItem() {
+    // This is where the new DSU item goes in
+    return new ItemStack(MachineObject.block_solar_panel.getItemNN(), 1, this.ordinal());
+  }
+
 }

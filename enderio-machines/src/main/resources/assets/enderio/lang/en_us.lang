@@ -418,6 +418,9 @@ enderio.jei.recipe=Recipe: "%s"
 enderio.jei.lavagen.cooling=Cooling is optional
 enderio.jei.lavagen.heat=decreases with heat buildup
 
+enderio.darksteel.upgrade.solar_0.name=Simple Solar
+enderio.darksteel.upgrade.solar_0.tooltip.detailed.line1=Generates power from the sun.
+
 enderio.darksteel.upgrade.solar_1.name=Solar I
 enderio.darksteel.upgrade.solar_1.tooltip.detailed.line1=Generates power from the sun.
 
