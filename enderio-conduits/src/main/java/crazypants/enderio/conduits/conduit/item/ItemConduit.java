@@ -889,9 +889,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
       result.add(elem);
     } else {
       ItemStack input = player.getHeldItemMainhand();
-      ItemStack offhand = player.getHeldItemOffhand();
-      if (input.getItem() == itemConduitProbe.getItem() && Prep.isValid(offhand)) {
-        input = offhand;
+      if (input.getItem() == itemConduitProbe.getItem()) {
+        input = player.getHeldItemOffhand();
       }
       ItemConduitNetwork icn = getNetwork();
 
