@@ -14,12 +14,10 @@ import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.block.skull.SkullType;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.travelstaff.ItemTravelStaff;
 import crazypants.enderio.base.lang.LangPower;
-import crazypants.enderio.base.material.material.Material;
 import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -32,9 +30,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
-
-import static crazypants.enderio.base.init.ModObject.blockEndermanSkull;
-import static crazypants.enderio.base.init.ModObject.itemBasicCapacitor;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class EnergyUpgrade extends AbstractUpgrade {
@@ -106,16 +101,11 @@ public class EnergyUpgrade extends AbstractUpgrade {
   }
 
   public static final @Nonnull NNList<EnergyUpgrade> UPGRADES = new NNList<>(
-      new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 0, "enderio.darksteel.upgrade.empowered_one", DarkSteelConfig.energyUpgradeLevelCostEmpowered0,
-          Material.VIBRANT_CRYSTAL.getStack()),
-      new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 1, "enderio.darksteel.upgrade.empowered_two", DarkSteelConfig.energyUpgradeLevelCostEmpowered1,
-          new ItemStack(itemBasicCapacitor.getItemNN(), 1, 0)),
-      new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 2, "enderio.darksteel.upgrade.empowered_three", DarkSteelConfig.energyUpgradeLevelCostEmpowered2,
-          new ItemStack(itemBasicCapacitor.getItemNN(), 1, 1)),
-      new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 3, "enderio.darksteel.upgrade.empowered_four", DarkSteelConfig.energyUpgradeLevelCostEmpowered3,
-          new ItemStack(itemBasicCapacitor.getItemNN(), 1, 2)),
-      new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 4, "enderio.darksteel.upgrade.empowered_five", DarkSteelConfig.energyUpgradeLevelCostEmpowered4,
-          new ItemStack(blockEndermanSkull.getBlockNN(), 1, SkullType.TORMENTED.ordinal())));
+      new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 0, "enderio.darksteel.upgrade.empowered_one", DarkSteelConfig.energyUpgradeLevelCostEmpowered0),
+      new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 1, "enderio.darksteel.upgrade.empowered_two", DarkSteelConfig.energyUpgradeLevelCostEmpowered1),
+      new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 2, "enderio.darksteel.upgrade.empowered_three", DarkSteelConfig.energyUpgradeLevelCostEmpowered2),
+      new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 3, "enderio.darksteel.upgrade.empowered_four", DarkSteelConfig.energyUpgradeLevelCostEmpowered3),
+      new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 4, "enderio.darksteel.upgrade.empowered_five", DarkSteelConfig.energyUpgradeLevelCostEmpowered4));
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
@@ -150,8 +140,8 @@ public class EnergyUpgrade extends AbstractUpgrade {
   protected final int level;
   protected final @Nonnull ICapacitorData capData;
 
-  public EnergyUpgrade(@Nonnull String id, int level, @Nonnull String name, @Nonnull IValue<Integer> levels, @Nonnull ItemStack upgradeItem) {
-    super(id, level, name, upgradeItem, levels);
+  public EnergyUpgrade(@Nonnull String id, int level, @Nonnull String name, @Nonnull IValue<Integer> levels) {
+    super(id, level, name, levels);
     this.level = level;
     this.capData = new ICapacitorData() {
 

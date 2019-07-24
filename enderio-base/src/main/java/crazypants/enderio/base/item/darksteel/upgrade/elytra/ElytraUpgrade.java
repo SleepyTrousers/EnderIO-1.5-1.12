@@ -16,7 +16,6 @@ import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.base.lang.Lang;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.RegistryEvent;
@@ -38,7 +37,7 @@ public class ElytraUpgrade extends AbstractUpgrade implements IHasPlayerRenderer
   }
 
   public ElytraUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.elytra", new ItemStack(Items.ELYTRA), DarkSteelConfig.elytraCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.elytra", DarkSteelConfig.elytraCost);
   }
 
   @Override

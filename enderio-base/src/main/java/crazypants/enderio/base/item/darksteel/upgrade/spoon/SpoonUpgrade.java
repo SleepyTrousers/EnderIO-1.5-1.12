@@ -15,7 +15,6 @@ import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.lang.Lang;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -34,7 +33,7 @@ public class SpoonUpgrade extends AbstractUpgrade {
   }
 
   public SpoonUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.spoon", new ItemStack(Items.DIAMOND_SHOVEL), DarkSteelConfig.spoonCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.spoon", DarkSteelConfig.spoonCost);
   }
 
   @Override

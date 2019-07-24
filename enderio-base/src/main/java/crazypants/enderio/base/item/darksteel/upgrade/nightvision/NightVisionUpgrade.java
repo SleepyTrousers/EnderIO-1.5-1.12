@@ -13,10 +13,8 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.lang.Lang;
-import crazypants.enderio.base.potion.PotionUtil;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionUtils;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -33,12 +31,8 @@ public class NightVisionUpgrade extends AbstractUpgrade {
     event.getRegistry().register(INSTANCE);
   }
 
-  private static @Nonnull ItemStack createUpgradeItem() {
-    return PotionUtil.createNightVisionPotion(false, false);
-  }
-
   public NightVisionUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.nightVision", createUpgradeItem(), DarkSteelConfig.nightVisionCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.nightVision", DarkSteelConfig.nightVisionCost);
   }
 
   @Override
@@ -50,11 +44,6 @@ public class NightVisionUpgrade extends AbstractUpgrade {
   @Nonnull
   public List<Supplier<String>> getItemClassesForTooltip() {
     return new NNList<>(Lang.DSU_CLASS_ARMOR_HEAD::get);
-  }
-
-  @Override
-  public boolean isUpgradeItem(@Nonnull ItemStack stack) {
-    return super.isUpgradeItem(stack) && PotionUtils.getPotionFromItem(getUpgradeItem()).equals(PotionUtils.getPotionFromItem(stack));
   }
 
 }

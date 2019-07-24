@@ -15,7 +15,6 @@ import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.lang.Lang;
-import crazypants.enderio.base.material.material.Material;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.RegistryEvent;
@@ -35,7 +34,7 @@ public class TravelUpgrade extends AbstractUpgrade {
   }
 
   public TravelUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.travel", Material.ENDER_CRYSTAL.getStack(), DarkSteelConfig.travelCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.travel", DarkSteelConfig.travelCost);
   }
 
   @Override

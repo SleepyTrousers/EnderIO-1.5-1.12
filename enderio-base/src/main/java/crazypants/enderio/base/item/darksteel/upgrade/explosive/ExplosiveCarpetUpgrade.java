@@ -12,12 +12,10 @@ import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.oredict.OreDictionary;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class ExplosiveCarpetUpgrade extends AbstractUpgrade {
@@ -32,8 +30,7 @@ public class ExplosiveCarpetUpgrade extends AbstractUpgrade {
   }
 
   public ExplosiveCarpetUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade." + UPGRADE_NAME, new ItemStack(Blocks.CARPET, 1, OreDictionary.WILDCARD_VALUE),
-        DarkSteelConfig.explosiveCarpetUpgradeCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade." + UPGRADE_NAME, DarkSteelConfig.explosiveCarpetUpgradeCost);
   }
 
   @Override
@@ -56,11 +53,6 @@ public class ExplosiveCarpetUpgrade extends AbstractUpgrade {
   @Override
   public boolean canOtherBeRemoved(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item, @Nonnull IDarkSteelUpgrade other) {
     return other != ExplosiveUpgrade.INSTANCE;
-  }
-
-  @Override
-  public boolean isUpgradeItem(@Nonnull ItemStack stack) {
-    return !stack.isEmpty() && stack.getItem() == getUpgradeItem().getItem() && stack.getCount() == getUpgradeItem().getCount();
   }
 
 }

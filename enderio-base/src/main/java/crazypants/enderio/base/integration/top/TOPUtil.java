@@ -25,7 +25,7 @@ public class TOPUtil {
   @SubscribeEvent
   public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
     if (Loader.isModLoaded(MODID_TOP)) {
-      event.getRegistry().register(TheOneProbeUpgrade.getInstance());
+      event.getRegistry().register(TheOneProbeUpgrade.INSTANCE);
       Log.info("Dark Steel Upgrades: TOP integration loaded");
     }
   }

@@ -24,7 +24,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
@@ -73,8 +72,7 @@ public class JumpUpgrade extends AbstractUpgrade {
   }
 
   public JumpUpgrade(int level) {
-    super(UPGRADE_NAME, level, "enderio.darksteel.upgrade.jump_" + numbers[level - 1], new ItemStack(Blocks.PISTON),
-        DarkSteelConfig.jumpUpgradeCost.get(level - 1));
+    super(UPGRADE_NAME, level, "enderio.darksteel.upgrade.jump_" + numbers[level - 1], DarkSteelConfig.jumpUpgradeCost.get(level - 1));
     this.level = (short) level;
   }
 
