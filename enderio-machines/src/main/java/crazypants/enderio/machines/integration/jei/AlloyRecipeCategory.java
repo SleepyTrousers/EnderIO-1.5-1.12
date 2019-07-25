@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
@@ -19,6 +20,7 @@ import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
 import crazypants.enderio.machines.EnderIOMachines;
+import crazypants.enderio.machines.config.config.AlloySmelterConfig;
 import crazypants.enderio.machines.config.config.PersonalConfig;
 import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.alloy.ContainerAlloySmelter;
@@ -35,7 +37,10 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
@@ -148,14 +153,15 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
     }
 
     registry.addRecipeCategories(new AlloyRecipeCategory(guiHelper));
-    registry.addRecipeClickArea(GuiAlloySmelter.Normal.class, 155, 42, 16, 16, AlloyRecipeCategory.UID, VanillaRecipeCategoryUid.SMELTING);
-    registry.addRecipeClickArea(GuiAlloySmelter.Simple.class, 155, 42, 16, 16, AlloyRecipeCategory.UID);
-    registry.addRecipeClickArea(GuiAlloySmelter.Furnace.class, 155, 42, 16, 16, VanillaRecipeCategoryUid.SMELTING);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(block_simple_furnace.getBlockNN()), VanillaRecipeCategoryUid.SMELTING);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(block_alloy_smelter.getBlockNN()), AlloyRecipeCategory.UID, VanillaRecipeCategoryUid.SMELTING);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(block_simple_alloy_smelter.getBlockNN()), AlloyRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(block_enhanced_alloy_smelter.getBlockNN()), AlloyRecipeCategory.UID,
-        VanillaRecipeCategoryUid.SMELTING);
+
+    setModes(registry, AlloySmelterConfig.profileSimpleAlloy.get(), GuiAlloySmelter.Simple.class, ContainerAlloySmelter.Simple.class,
+        block_simple_alloy_smelter.getBlockNN(), 1);
+    setModes(registry, AlloySmelterConfig.profileSimpleFurnace.get(), GuiAlloySmelter.Furnace.class, ContainerAlloySmelter.Furnace.class,
+        block_simple_furnace.getBlockNN(), 1);
+    setModes(registry, AlloySmelterConfig.profileNormal.get(), GuiAlloySmelter.Normal.class, ContainerAlloySmelter.Normal.class,
+        block_alloy_smelter.getBlockNN(), 0);
+    setModes(registry, AlloySmelterConfig.profileEnhancedAlloy.get(), GuiAlloySmelter.Enhanced.class, ContainerAlloySmelter.Enhanced.class,
+        block_enhanced_alloy_smelter.getBlockNN(), 0);
 
     long start = System.nanoTime();
 
@@ -176,16 +182,32 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
     long end = System.nanoTime();
     registry.addRecipes(result, UID);
 
-    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerAlloySmelter.Normal.class, AlloyRecipeCategory.UID, FIRST_RECIPE_SLOT,
-        NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
-    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerAlloySmelter.Simple.class, AlloyRecipeCategory.UID, FIRST_RECIPE_SLOT,
-        NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT - 1, NUM_INVENTORY_SLOT);
-    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerAlloySmelter.Normal.class, VanillaRecipeCategoryUid.SMELTING, FIRST_RECIPE_SLOT,
-        NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
-    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerAlloySmelter.Furnace.class, VanillaRecipeCategoryUid.SMELTING, FIRST_RECIPE_SLOT,
-        NUM_RECIPE_SLOT, FIRST_INVENTORY_SLOT - 1, NUM_INVENTORY_SLOT);
-
     Log.info(String.format("AlloyRecipeCategory: Added %d alloy smelter recipes to JEI in %.3f seconds.", result.size(), (end - start) / 1000000000d));
+  }
+
+  private static void setModes(IModRegistry registry, @Nonnull AlloySmelterConfig.Profile profile, @Nonnull Class<? extends GuiContainer> gui,
+      @Nonnull Class<? extends Container> container, @Nonnull Block block, int offset) {
+    String[] UIDS;
+    switch (profile.get().getOperatingMode()) {
+    case ALL:
+      UIDS = new String[] { AlloyRecipeCategory.UID, VanillaRecipeCategoryUid.SMELTING };
+      break;
+    case ALLOY:
+      UIDS = new String[] { AlloyRecipeCategory.UID };
+      break;
+    case FURNACE:
+      UIDS = new String[] { VanillaRecipeCategoryUid.SMELTING };
+      break;
+    default:
+      return;
+    }
+
+    registry.addRecipeClickArea(gui, 155, 42, 16, 16, UIDS);
+    registry.addRecipeCatalyst(new ItemStack(block), UIDS);
+    for (int i = 0; i < UIDS.length; i++) {
+      registry.getRecipeTransferRegistry().addRecipeTransferHandler(container, NullHelper.first(UIDS[i]), FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT,
+          FIRST_INVENTORY_SLOT - offset, NUM_INVENTORY_SLOT);
+    }
   }
 
   // ------------ Category

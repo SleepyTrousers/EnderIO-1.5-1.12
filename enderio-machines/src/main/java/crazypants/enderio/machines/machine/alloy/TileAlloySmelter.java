@@ -21,6 +21,7 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.ManyToOneMachineRecipe;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
 import crazypants.enderio.base.recipe.alloysmelter.VanillaSmeltingRecipe;
+import crazypants.enderio.machines.config.config.AlloySmelterConfig;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
@@ -47,14 +48,9 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
   public static class Simple extends TileAlloySmelter {
 
     public Simple() {
-      super(new SlotDefinition(3, 1, 0), SIMPLE_ALLOY_SMELTER_POWER_INTAKE, SIMPLE_ALLOY_SMELTER_POWER_BUFFER, SIMPLE_ALLOY_SMELTER_POWER_USE);
+      super(AlloySmelterConfig.profileSimpleAlloy.get().get(), new SlotDefinition(3, 1, 0), SIMPLE_ALLOY_SMELTER_POWER_INTAKE,
+          SIMPLE_ALLOY_SMELTER_POWER_BUFFER, SIMPLE_ALLOY_SMELTER_POWER_USE);
       setEnergyLoss(SIMPLE_ALLOY_SMELTER_POWER_LOSS);
-      mode = Mode.ALLOY;
-    }
-
-    @Override
-    public @Nonnull Mode getMode() {
-      return Mode.ALLOY;
     }
 
   }
@@ -62,21 +58,17 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
   public static class Furnace extends TileAlloySmelter {
 
     public Furnace() {
-      super(new SlotDefinition(3, 1, 0), SIMPLE_ALLOY_SMELTER_POWER_INTAKE, SIMPLE_ALLOY_SMELTER_POWER_BUFFER, SIMPLE_ALLOY_SMELTER_POWER_USE);
+      super(AlloySmelterConfig.profileSimpleFurnace.get().get(), new SlotDefinition(3, 1, 0), SIMPLE_ALLOY_SMELTER_POWER_INTAKE,
+          SIMPLE_ALLOY_SMELTER_POWER_BUFFER, SIMPLE_ALLOY_SMELTER_POWER_USE);
       setEnergyLoss(SIMPLE_STIRLING_POWER_LOSS);
-      mode = Mode.FURNACE;
     }
 
-    @Nonnull
-    @Override
-    public Mode getMode() {
-      return Mode.FURNACE;
-    }
   }
 
   public static class Enhanced extends TileAlloySmelter {
     public Enhanced() {
-      super(new SlotDefinition(3, 1, 1), ENHANCED_ALLOY_SMELTER_POWER_INTAKE, ENHANCED_ALLOY_SMELTER_POWER_BUFFER, ENHANCED_ALLOY_SMELTER_POWER_USE);
+      super(AlloySmelterConfig.profileEnhancedAlloy.get().get(), new SlotDefinition(3, 1, 1), ENHANCED_ALLOY_SMELTER_POWER_INTAKE,
+          ENHANCED_ALLOY_SMELTER_POWER_BUFFER, ENHANCED_ALLOY_SMELTER_POWER_USE);
       setEfficiencyMultiplier(ENHANCED_ALLOY_SMELTER_POWER_EFFICIENCY);
     }
 
@@ -102,49 +94,33 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
 
   }
 
-  public static enum Mode {
-    ALL,
-    ALLOY,
-    FURNACE;
-
-    @Nonnull
-    Mode next() {
-      int nextOrd = ordinal() + 1;
-      if (nextOrd >= values().length) {
-        nextOrd = 0;
-      }
-      return NullHelper.first(values()[nextOrd], ALL);
-    }
-
-    @Nonnull
-    Mode prev() {
-      int nextOrd = ordinal() - 1;
-      if (nextOrd < 0) {
-        nextOrd = values().length - 1;
-      }
-      return NullHelper.first(values()[nextOrd], ALL);
-    }
-  }
+  protected final @Nonnull OperatingProfile operatingProfile;
 
   @Store
-  protected @Nonnull Mode mode = Mode.ALL;
+  protected @Nonnull OperatingMode mode = OperatingMode.ALL;
 
   public TileAlloySmelter() {
-    this(new SlotDefinition(3, 1), ALLOY_SMELTER_POWER_INTAKE, ALLOY_SMELTER_POWER_BUFFER, ALLOY_SMELTER_POWER_USE);
+    this(AlloySmelterConfig.profileNormal.get().get(), new SlotDefinition(3, 1), ALLOY_SMELTER_POWER_INTAKE, ALLOY_SMELTER_POWER_BUFFER,
+        ALLOY_SMELTER_POWER_USE);
   }
 
-  protected TileAlloySmelter(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
-      @Nonnull ICapacitorKey maxEnergyUsed) {
+  protected TileAlloySmelter(@Nonnull OperatingProfile operatingProfile, @Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved,
+      @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
+    this.operatingProfile = operatingProfile;
   }
 
-  public @Nonnull Mode getMode() {
-    return mode;
+  public @Nonnull OperatingProfile getOperatingProfile() {
+    return operatingProfile;
   }
 
-  public void setMode(Mode mode) {
+  public @Nonnull OperatingMode getMode() {
+    return operatingProfile.canSwitchProfiles() ? mode : operatingProfile.getOperatingMode();
+  }
+
+  public void setMode(OperatingMode mode) {
     if (mode == null) {
-      mode = Mode.ALL;
+      mode = OperatingMode.ALL;
     }
     if (this.mode != mode) {
       this.mode = mode;
@@ -154,7 +130,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
 
   @Override
   protected IMachineRecipe canStartNextTask(long nextSeed) {
-    if (getMode() == Mode.FURNACE) {
+    if (getMode() == OperatingMode.FURNACE) {
       VanillaSmeltingRecipe vr = AlloyRecipeManager.getInstance().getVanillaRecipe();
       if (vr.isRecipe(getMachineLevel(), getRecipeInputs())) {
         final IPoweredTask task = createTask(vr, nextSeed);
@@ -171,7 +147,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     }
 
     IMachineRecipe nextRecipe = getNextRecipe();
-    if (getMode() == Mode.ALLOY && nextRecipe instanceof VanillaSmeltingRecipe) {
+    if (getMode() == OperatingMode.ALLOY && nextRecipe instanceof VanillaSmeltingRecipe) {
       nextRecipe = null;
     }
     if (nextRecipe == null) {
@@ -203,9 +179,9 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     NNList<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineLevel(), getMachineName(),
         MachineRecipeInput.create(slot, itemstack));
 
-    if (getMode() == Mode.FURNACE) {
+    if (getMode() == OperatingMode.FURNACE) {
       return isValidInputForFurnaceRecipe(itemstack, numSlotsFilled, recipes);
-    } else if (getMode() == Mode.ALLOY) {
+    } else if (getMode() == OperatingMode.ALLOY) {
       return isValidInputForAlloyRecipe(slot, itemstack, numSlotsFilled, recipes);
     }
     return isValidInputForFurnaceRecipe(itemstack, numSlotsFilled, recipes) || isValidInputForAlloyRecipe(slot, itemstack, numSlotsFilled, recipes);
