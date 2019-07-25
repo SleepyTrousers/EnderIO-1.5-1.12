@@ -794,7 +794,7 @@
   </complexType>
   <complexType name="dependencyComplexType">
         <annotation>
-          <documentation>Either item or mod must be given. A dependency is met (or not met if reverse is set) if the item (if given) exists and the mod (if given) is loaded.</documentation>
+          <documentation>Either item or mod or upgrade must be given. A dependency is met (or not met if reverse is set) if the item (if given) exists and the upgrade (if given) exists and the mod (if given) is loaded.</documentation>
         </annotation>
         <attribute use="optional" name="item" type="string">
       <annotation>
@@ -804,9 +804,13 @@
       <annotation>
         <documentation>The ID of a mod that must be loaded</documentation>
       </annotation></attribute>
+    <attribute name="upgrade" type="string" use="optional">
+      <annotation>
+        <documentation>The ID of a Dark Steel Upgrade that must be loaded</documentation>
+      </annotation></attribute>
     <attribute use="optional" name="reverse" type="boolean">
       <annotation>
-        <documentation>When set to true, the dependency is reversed, i.e. the item/mod most not exist</documentation>
+        <documentation>When set to true, the dependency is reversed, i.e. the item/mod/upgrade must not exist</documentation>
       </annotation></attribute>
   </complexType>
   <complexType name="slicingType">

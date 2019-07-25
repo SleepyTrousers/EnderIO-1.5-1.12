@@ -9,18 +9,20 @@ import javax.xml.stream.events.StartElement;
 import crazypants.enderio.base.config.recipes.IRecipeConfigElement;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
+import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
 
 public class ConditionDependency implements IRecipeConfigElement {
 
-  private Optional<String> itemString = empty(), modString = empty();
+  private Optional<String> itemString = empty(), modString = empty(), upgradeString = empty();
   private boolean reverse, valid;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
     try {
-      if (!itemString.isPresent() && !modString.isPresent()) {
-        throw new InvalidRecipeConfigException("Missing item and mod");
+      if (!itemString.isPresent() && !modString.isPresent() && !upgradeString.isPresent()) {
+        throw new InvalidRecipeConfigException("Missing item and mod and upgrade");
       }
       valid = true;
       if (itemString.isPresent()) {
@@ -28,6 +30,15 @@ public class ConditionDependency implements IRecipeConfigElement {
         item.setName(get(itemString));
         item.readResolve();
         valid = valid && item.isValid();
+      }
+      if (upgradeString.isPresent()) {
+        if (upgradeString.get().length() > 64) {
+          throw new InvalidRecipeConfigException(String.format("The upgrade ID %s is longer than the maximum of 64 characters.", upgradeString.get()));
+        }
+        if (!upgradeString.get().equals(upgradeString.get().toLowerCase(Locale.ENGLISH))) {
+          throw new InvalidRecipeConfigException(String.format("The upgrade ID %s must be all lowercase.", upgradeString.get()));
+        }
+        valid = valid && UpgradeRegistry.getUpgrade(new ResourceLocation(get(upgradeString))) != null;
       }
       if (modString.isPresent()) {
         if (modString.get().length() > 64) {
@@ -57,6 +68,10 @@ public class ConditionDependency implements IRecipeConfigElement {
     }
     if ("mod".equals(name)) {
       this.modString = ofString(value);
+      return true;
+    }
+    if ("upgrade".equals(name)) {
+      this.upgradeString = ofString(value);
       return true;
     }
     if ("reverse".equals(name)) {
