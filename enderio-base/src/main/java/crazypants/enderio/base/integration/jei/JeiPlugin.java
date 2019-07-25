@@ -36,6 +36,7 @@ public class JeiPlugin implements IModPlugin {
   @Override
   public void registerItemSubtypes(@Nonnull ISubtypeRegistry subtypeRegistry) {
     MobContainerSubtypeInterpreter.registerSubtypes(subtypeRegistry);
+    UpgradeItemSubtypeInterpreter.registerSubtypes(subtypeRegistry);
   }
 
   @Override
