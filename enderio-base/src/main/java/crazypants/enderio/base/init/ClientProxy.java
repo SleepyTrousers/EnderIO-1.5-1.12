@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.EnderCore;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.vecmath.Vector4d;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.api.IModObject;
@@ -16,6 +17,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.block.coldfire.ColdFireStateMapper;
 import crazypants.enderio.base.block.lever.LeverStateMapper;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.diagnostics.EnderIOCrashCallable;
 import crazypants.enderio.base.gui.IoConfigRenderer;
 import crazypants.enderio.base.gui.tooltip.TooltipHandlerBurnTime;
@@ -27,6 +29,8 @@ import crazypants.enderio.base.item.conduitprobe.ConduitProbeOverlayRenderer;
 import crazypants.enderio.base.item.darksteel.upgrade.sound.SoundDetector;
 import crazypants.enderio.base.item.yetawrench.YetaWrenchOverlayRenderer;
 import crazypants.enderio.base.material.glass.EnderIOGlassesStateMapper;
+import crazypants.enderio.base.material.material.ItemMaterial;
+import crazypants.enderio.base.material.material.Material;
 import crazypants.enderio.base.paint.YetaUtil;
 import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.IDefaultRenderers;
@@ -147,6 +151,14 @@ public class ClientProxy extends CommonProxy {
     // Item Models
     ItemModelRegistry.create();
     // ItemModelRegistry.registerRotating("enderCrystal", 2);
+    if (PersonalConfig.animatedGears.get()) {
+      ItemModelRegistry.registerRotating(ItemMaterial.makeMRL(ModObject.itemMaterial, Material.GEAR_WOOD), new Vector4d(0, 0, 1, .5));
+      ItemModelRegistry.registerRotating(ItemMaterial.makeMRL(ModObject.itemMaterial, Material.GEAR_STONE), new Vector4d(0, 0, 1, -1));
+      ItemModelRegistry.registerRotating(ItemMaterial.makeMRL(ModObject.itemMaterial, Material.GEAR_IRON), new Vector4d(0, 0, 1, 1.5));
+      ItemModelRegistry.registerRotating(ItemMaterial.makeMRL(ModObject.itemMaterial, Material.GEAR_ENERGIZED), new Vector4d(0, 0, 1, -2));
+      ItemModelRegistry.registerRotating(ItemMaterial.makeMRL(ModObject.itemMaterial, Material.GEAR_VIBRANT), new Vector4d(0, 0, 1, 3));
+      ItemModelRegistry.registerRotating(ItemMaterial.makeMRL(ModObject.itemMaterial, Material.GEAR_DARKSTEEL), new Vector4d(0, 0, 1, -3.5));
+    }
 
     // Listeners
     MinecraftForge.EVENT_BUS.register(TravelController.instance);

@@ -39,10 +39,14 @@ public class ItemMaterial extends Item implements IHaveRenderers, IResourceToolt
     NNList.of(Material.class).apply(new Callback<Material>() {
       @Override
       public void apply(@Nonnull Material alloy) {
-        ModelLoader.setCustomModelResourceLocation(ItemMaterial.this, Material.getMetaFromType(alloy),
-            new ModelResourceLocation(modObject.getRegistryName(), "variant=" + alloy.getBaseName()));
+        ModelLoader.setCustomModelResourceLocation(ItemMaterial.this, Material.getMetaFromType(alloy), makeMRL(modObject, alloy));
       }
+
     });
+  }
+
+  public static @Nonnull ModelResourceLocation makeMRL(final @Nonnull IModObject modObject, @Nonnull Material alloy) {
+    return new ModelResourceLocation(modObject.getRegistryName(), "variant=" + alloy.getBaseName());
   }
 
   @Override

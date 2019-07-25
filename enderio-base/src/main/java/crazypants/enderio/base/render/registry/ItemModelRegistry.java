@@ -6,6 +6,8 @@ import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.vecmath.Vector4d;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.render.model.FacadeSmartItemModel;
 import crazypants.enderio.base.render.model.RotatingSmartItemModel;
@@ -18,7 +20,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ItemModelRegistry {
+public final class ItemModelRegistry {
 
   private ItemModelRegistry() {
   }
@@ -27,7 +29,7 @@ public class ItemModelRegistry {
     MinecraftForge.EVENT_BUS.register(new ItemModelRegistry());
   }
 
-  public static interface Registry {
+  public interface Registry {
     @Nonnull
     IBakedModel wrap(@Nonnull IBakedModel model);
   }
@@ -42,11 +44,20 @@ public class ItemModelRegistry {
     registries.put(resource, registry);
   }
 
-  public static void registerRotating(@Nonnull String resource, final int speed) {
+  public static void registerRotating(@Nonnull String resource, @Nonnull Vector4d rot) {
     register(resource, new Registry() {
       @Override
       public @Nonnull IBakedModel wrap(@Nonnull IBakedModel model) {
-        return new RotatingSmartItemModel(model, speed);
+        return new RotatingSmartItemModel(model, rot);
+      }
+    });
+  }
+
+  public static void registerRotating(@Nonnull ModelResourceLocation resource, @Nonnull Vector4d rot) {
+    register(resource, new Registry() {
+      @Override
+      public @Nonnull IBakedModel wrap(@Nonnull IBakedModel model) {
+        return new RotatingSmartItemModel(model, rot);
       }
     });
   }
