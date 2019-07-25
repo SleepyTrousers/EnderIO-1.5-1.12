@@ -30,7 +30,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -269,7 +269,8 @@ public class BlockHolyFog extends BlockEio<TileEntityEio> implements IDefaultRen
 
   @Override
   public void onEntityCollidedWithBlock(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Entity entityIn) {
-    if (!worldIn.isRemote && entityIn instanceof EntityZombie && RANDOM.nextFloat() < 0.05f) {
+    if (!worldIn.isRemote && entityIn instanceof EntityLivingBase && ((EntityLivingBase) entityIn).getCreatureAttribute() == EnumCreatureAttribute.UNDEAD
+        && RANDOM.nextFloat() < 0.05f) {
       entityIn.attackEntityFrom(DamageSource.HOT_FLOOR, 1.0F);
     }
   }
