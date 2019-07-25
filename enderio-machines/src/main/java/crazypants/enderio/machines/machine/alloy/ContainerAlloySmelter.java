@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
-import crazypants.enderio.machines.machine.alloy.TileAlloySmelter.Mode;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -17,6 +16,12 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public abstract class ContainerAlloySmelter<T extends TileAlloySmelter> extends AbstractMachineContainer<T> implements IAlloySmelterRemoteExec.Container {
+
+  public static class Enhanced extends ContainerAlloySmelter<TileAlloySmelter.Enhanced> {
+    public Enhanced(@Nonnull InventoryPlayer playerInv, @Nonnull TileAlloySmelter.Enhanced te) {
+      super(playerInv, te);
+    }
+  }
 
   public static class Normal extends ContainerAlloySmelter<TileAlloySmelter> {
     public Normal(@Nonnull InventoryPlayer playerInv, @Nonnull TileAlloySmelter te) {
@@ -42,6 +47,8 @@ public abstract class ContainerAlloySmelter<T extends TileAlloySmelter> extends 
       return (ContainerAlloySmelter<E>) new Simple(playerInv, (TileAlloySmelter.Simple) te);
     } else if (te instanceof TileAlloySmelter.Furnace) {
       return (ContainerAlloySmelter<E>) new Furnace(playerInv, (TileAlloySmelter.Furnace) te);
+    } else if (te instanceof TileAlloySmelter.Enhanced) {
+      return (ContainerAlloySmelter<E>) new Enhanced(playerInv, (TileAlloySmelter.Enhanced) te);
     } else {
       return (ContainerAlloySmelter<E>) new Normal(playerInv, te);
     }
@@ -132,7 +139,7 @@ public abstract class ContainerAlloySmelter<T extends TileAlloySmelter> extends 
   }
 
   @Override
-  public IMessage doSetMode(@Nonnull Mode mode) {
+  public IMessage doSetMode(@Nonnull OperatingMode mode) {
     getTe().setMode(mode);
     IBlockState bs = getTe().getWorld().getBlockState(getTe().getPos());
     getTe().getWorld().notifyBlockUpdate(getTe().getPos(), bs, bs, 3);

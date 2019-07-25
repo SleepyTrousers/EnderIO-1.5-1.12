@@ -4,6 +4,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import crazypants.enderio.base.config.factory.ValueFactoryEIO;
 import crazypants.enderio.machines.EnderIOMachines;
+import crazypants.enderio.machines.config.config.AlloySmelterConfig;
 import crazypants.enderio.machines.config.config.AttractorConfig;
 import crazypants.enderio.machines.config.config.ChargerConfig;
 import crazypants.enderio.machines.config.config.ClientConfig;
@@ -34,6 +35,7 @@ public final class Config {
 
   static {
     // force sub-configs to be classloaded with the main config
+    AlloySmelterConfig.F.getClass();
     AttractorConfig.F.getClass();
     ClientConfig.F.getClass();
     CombustionGenConfig.F.getClass();

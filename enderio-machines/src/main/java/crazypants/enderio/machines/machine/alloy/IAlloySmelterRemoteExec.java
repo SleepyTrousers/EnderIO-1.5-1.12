@@ -12,7 +12,7 @@ public interface IAlloySmelterRemoteExec {
 
   public interface GUI extends IRemoteExec.IGui {
 
-    default void doSetMode(@Nonnull TileAlloySmelter.Mode mode) {
+    default void doSetMode(@Nonnull OperatingMode mode) {
       GuiPacket.send(this, ID_MODE, mode);
     }
 
@@ -20,13 +20,13 @@ public interface IAlloySmelterRemoteExec {
 
   public interface Container extends IRemoteExec.IContainer {
 
-    IMessage doSetMode(@Nonnull TileAlloySmelter.Mode mode);
+    IMessage doSetMode(@Nonnull OperatingMode mode);
 
     @Override
     default IMessage networkExec(int id, GuiPacket message) {
       switch (id) {
       case ID_MODE:
-        return doSetMode(message.getEnum(0, TileAlloySmelter.Mode.class));
+        return doSetMode(message.getEnum(0, OperatingMode.class));
       }
       return null;
     }
