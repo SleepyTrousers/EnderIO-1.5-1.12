@@ -11,16 +11,21 @@ import com.enderio.core.common.util.stackable.Things;
 import crazypants.enderio.base.config.recipes.IRecipeConfigElement;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
+import crazypants.enderio.base.potion.PotionUtil;
+import info.loenwind.autoconfig.util.NullHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
+import net.minecraft.potion.PotionType;
+import net.minecraft.potion.PotionUtils;
 
 public class ItemOptional implements IRecipeConfigElement {
 
   protected transient boolean allowDelaying = false;
   protected Optional<String> name = empty();
   protected Optional<String> nbt = empty();
+  protected Optional<String> potion = empty();
   protected transient boolean nullItem;
   protected transient final Things thing = new Things();
 
@@ -30,6 +35,21 @@ public class ItemOptional implements IRecipeConfigElement {
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
+    if (potion.isPresent()) {
+      if (nbt.isPresent()) {
+        throw new InvalidRecipeConfigException("Cannot have nbt on a potion");
+      }
+      PotionType potionType = PotionType.getPotionTypeForName(get(potion));
+      if (potionType == null) {
+        throw new InvalidRecipeConfigException("'" + get(potion) + "' is not a valid potion name");
+      }
+      final ItemStack stack = PotionUtils.addPotionToItemStack(PotionUtil.getEmptyPotion(false), potionType);
+      if (!name.isPresent()) {
+        name = ofString("item:" + NullHelper.first(stack.getItem().getRegistryName(), (Object) "").toString());
+      }
+      nbt = ofString(NullHelper.first(stack.getTagCompound(), (Object) "").toString());
+    }
+
     if (!name.isPresent()) {
       if (nbt.isPresent()) {
         throw new InvalidRecipeConfigException("Cannot have nbt on an empty item");
@@ -39,11 +59,11 @@ public class ItemOptional implements IRecipeConfigElement {
     }
     thing.add(get(name));
     if (nbt.isPresent()) {
-        try {
+      try {
         thing.setNbt(JsonToNBT.getTagFromJson(get(nbt)));
-        } catch (NBTException e) {
+      } catch (NBTException e) {
         throw new InvalidRecipeConfigException("'" + nbt.get() + "' is not valid NBT json");
-        }
+      }
     }
     return this;
   }
@@ -82,6 +102,10 @@ public class ItemOptional implements IRecipeConfigElement {
     }
     if ("nbt".equals(name)) {
       this.nbt = ofString(value);
+      return true;
+    }
+    if ("potion".equals(name)) {
+      this.potion = ofString(value);
       return true;
     }
 
