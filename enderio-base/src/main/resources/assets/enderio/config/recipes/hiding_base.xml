@@ -25,6 +25,9 @@ Ender IO itself will never set "hide" to true and will only use "show"
 internally. Modpack makers (and players) are expected to only use "hide" to
 hide stuff and use "show" to unhide stuff that Ender IO has hidden.
 
+Note that hiding items does not prevent crafting them. You need to disable
+their crafting recipes as well.
+
 More information on the syntax can be found in the recipes.xsd file. An
 XML editor will display that as tooltips when editing this file.
 

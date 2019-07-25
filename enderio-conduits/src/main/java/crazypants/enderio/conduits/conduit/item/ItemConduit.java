@@ -40,7 +40,6 @@ import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.ItemFilter;
 import crazypants.enderio.base.filter.item.items.IItemFilterItemUpgrade;
-import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.tool.ToolUtil;
@@ -54,7 +53,6 @@ import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduits.render.ConduitTexture;
 import crazypants.enderio.conduits.render.ConduitTextureWrapper;
 import crazypants.enderio.powertools.lang.Lang;
-import crazypants.enderio.powertools.network.PacketHandler;
 import crazypants.enderio.util.EnumReader;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
@@ -74,6 +72,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import static crazypants.enderio.base.init.ModObject.itemConduitProbe;
 import static crazypants.enderio.conduits.init.ConduitObject.item_item_conduit;
 
 public class ItemConduit extends AbstractConduit implements IItemConduit, IFilterHolder<IItemFilter>, IUpgradeHolder {
@@ -193,16 +192,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
           }
         }
         return true;
-      } else {
-        if (component != null) {
-          if (component.isDirectional() && containsExternalConnection(component.getDirection())) {
-            if (player.world.isRemote) {
-              PacketHandler.sendToServer(new PacketConduitProbe(getBundle().getLocation(), component.getDirection()));
-            }
-            return true;
-          }
-        }
-
       }
     }
     return false;
@@ -900,6 +889,9 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
       result.add(elem);
     } else {
       ItemStack input = player.getHeldItemMainhand();
+      if (input.getItem() == itemConduitProbe.getItem()) {
+        input = player.getHeldItemOffhand();
+      }
       ItemConduitNetwork icn = getNetwork();
 
       for (EnumFacing dir : getExternalConnections()) {
