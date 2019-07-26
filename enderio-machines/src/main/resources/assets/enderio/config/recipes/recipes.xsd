@@ -99,13 +99,10 @@
                             </annotation>
                             <complexType>
                               <sequence>
-                                <element minOccurs="1" maxOccurs="9" name="item">
+                                <element minOccurs="1" maxOccurs="9" name="item" type="enderio:itemType">
                                   <annotation>
                                     <documentation>An item to be used for crafting.</documentation>
-                                  </annotation>
-                                  <complexType>
-                                    <attribute use="optional" name="name" type="enderio:ThingsString" />
-                                  </complexType>
+                                  </annotation>
                                 </element>
                               </sequence>
                               <attribute use="optional" name="size">
@@ -130,13 +127,10 @@
                             </annotation>
                             <complexType>
                               <sequence>
-                                <element minOccurs="1" maxOccurs="9" name="item">
+                                <element minOccurs="1" maxOccurs="9" name="item" type="enderio:itemType">
                                   <annotation>
                                     <documentation>An item to be used for crafting.</documentation>
-                                  </annotation>
-                                  <complexType>
-                                    <attribute use="optional" name="name" type="enderio:ThingsString" />
-                                  </complexType>
+                                  </annotation>
                                 </element>
                               </sequence>
                             </complexType>
@@ -177,6 +171,7 @@
                                 </restriction>
                               </simpleType>
                             </attribute>
+                            <attribute name="nbt" type="string" use="optional"></attribute>
                           </complexType>
                         </element>
                       </sequence>
@@ -794,9 +789,9 @@
   </complexType>
   <complexType name="dependencyComplexType">
         <annotation>
-          <documentation>Either item or mod must be given. A dependency is met (or not met if reverse is set) if the item (if given) exists and the mod (if given) is loaded.</documentation>
+          <documentation>Either item or mod or upgrade must be given. A dependency is met (or not met if reverse is set) if the item (if given) exists and the upgrade (if given) exists and the mod (if given) is loaded.</documentation>
         </annotation>
-        <attribute use="optional" name="item" type="string">
+        <attribute use="optional" name="item" type="enderio:ThingsString">
       <annotation>
         <documentation>The ID of an item that must exist in the game</documentation>
       </annotation></attribute>
@@ -804,9 +799,13 @@
       <annotation>
         <documentation>The ID of a mod that must be loaded</documentation>
       </annotation></attribute>
+    <attribute name="upgrade" type="string" use="optional">
+      <annotation>
+        <documentation>The ID of a Dark Steel Upgrade that must be loaded</documentation>
+      </annotation></attribute>
     <attribute use="optional" name="reverse" type="boolean">
       <annotation>
-        <documentation>When set to true, the dependency is reversed, i.e. the item/mod most not exist</documentation>
+        <documentation>When set to true, the dependency is reversed, i.e. the item/mod/upgrade must not exist</documentation>
       </annotation></attribute>
   </complexType>
   <complexType name="slicingType">
@@ -1270,11 +1269,13 @@ Ender IO itself will never set "hide" to true and will only use "show" internall
     </attribute>
   </complexType>
   <complexType name="itemType">
-    <attribute use="required" name="name" type="enderio:ThingsString" />
+    <attribute use="optional" name="name" type="enderio:ThingsString" />
     <attribute name="nbt" type="string" use="optional" />
+    <attribute name="potion" type="string" use="optional">
+      <annotation>
+        <documentation>The registry name of a potion effect. If this is given, a potion bottle with this effect is created. Cannot be used together with name or nbt.</documentation>
+      </annotation></attribute>
   </complexType>
-
-
   <simpleType name="ThingsString">
         <annotation>
           <documentation>A string that specifies one or more items, consisting of a comma-separated list of item specifiers. Specifiers may be prefixed with a "+" or "-", the latter removes that item from the list.
@@ -1298,4 +1299,5 @@ Each specifuer can be one of 4 things:
       <whiteSpace value="collapse"></whiteSpace>
     </restriction>
   </simpleType>
+
 </schema>

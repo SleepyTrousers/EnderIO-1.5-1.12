@@ -11,12 +11,9 @@ import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.lang.Lang;
-import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
 
@@ -24,26 +21,18 @@ public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
 
   public static final @Nonnull GogglesOfRevealingUpgrade INSTANCE = new GogglesOfRevealingUpgrade();
 
-  public static @Nonnull ItemStack getGoggles() {
-    Item i = Item.REGISTRY.getObject(new ResourceLocation("thaumcraft", "goggles"));
-    if (i != null) {
-      return new ItemStack(i);
-    }
-    return Prep.getEmpty();
-  }
-
   public static boolean isUpgradeEquipped(@Nonnull EntityPlayer player) {
     ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
     return GogglesOfRevealingUpgrade.INSTANCE.hasUpgrade(helmet);
   }
 
   public GogglesOfRevealingUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.gogglesOfRevealing", getGoggles(), DarkSteelConfig.gogglesOfRevealingCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade." + UPGRADE_NAME, DarkSteelConfig.gogglesOfRevealingCost);
   }
 
   @Override
   public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
-    if (!item.isForSlot(EntityEquipmentSlot.HEAD) || Prep.isInvalid(getGoggles())) {
+    if (!item.isForSlot(EntityEquipmentSlot.HEAD)) {
       return false;
     }
     return item.hasUpgradeCallbacks(this) && !hasUpgrade(stack, item);
@@ -53,23 +42,6 @@ public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
   @Nonnull
   public List<Supplier<String>> getItemClassesForTooltip() {
     return new NNList<>(Lang.DSU_CLASS_ARMOR_HEAD::get);
-  }
-
-  @Override
-  public @Nonnull ItemStack getUpgradeItem() {
-    if (Prep.isValid(upgradeItem)) {
-      return upgradeItem;
-    }
-    upgradeItem = getGoggles();
-    return upgradeItem;
-  }
-
-  @Override
-  public @Nonnull String getUpgradeItemName() {
-    if (Prep.isInvalid(getUpgradeItem())) {
-      return "Goggles of Revealing";
-    }
-    return super.getUpgradeItemName();
   }
 
 }

@@ -14,7 +14,6 @@ import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.lang.Lang;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.RegistryEvent;
@@ -34,7 +33,7 @@ public class SwimUpgrade extends AbstractUpgrade {
   }
 
   public SwimUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.swim", new ItemStack(Blocks.WATERLILY), DarkSteelConfig.swimCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.swim", DarkSteelConfig.swimCost);
   }
 
   @Override

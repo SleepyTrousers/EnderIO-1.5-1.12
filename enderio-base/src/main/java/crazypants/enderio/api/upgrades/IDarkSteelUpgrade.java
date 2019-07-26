@@ -52,11 +52,13 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
    * @return The item that is shown in the JEI recipe for this upgrade.
    */
   @Nonnull
+  @Deprecated
   ItemStack getUpgradeItem();
 
   /**
    * @return The item name that is shown in the tooltip for available upgrades.
    */
+  @Deprecated
   default @Nonnull String getUpgradeItemName() {
     return getUpgradeItem().getDisplayName();
   }
@@ -68,6 +70,7 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
    *          The "right" item in the anvil.
    * @return True if this the the upgrade's recipe item.
    */
+  @Deprecated
   default boolean isUpgradeItem(@Nonnull ItemStack stack) {
     final ItemStack upgradeItem = getUpgradeItem();
     return !stack.isEmpty() && upgradeItem.getItem() == stack.getItem()

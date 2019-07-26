@@ -13,13 +13,11 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.lang.Lang;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.oredict.OreDictionary;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class PaddingUpgrade extends AbstractUpgrade {
@@ -34,7 +32,7 @@ public class PaddingUpgrade extends AbstractUpgrade {
   }
 
   public PaddingUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.padding", new ItemStack(Blocks.WOOL, 1, OreDictionary.WILDCARD_VALUE), DarkSteelConfig.paddingCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.padding", DarkSteelConfig.paddingCost);
   }
 
   @Override

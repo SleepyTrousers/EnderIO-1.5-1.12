@@ -15,11 +15,9 @@ import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.lang.Lang;
-import crazypants.enderio.base.potion.PotionUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionUtils;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -62,12 +60,8 @@ public class SpeedUpgrade extends AbstractUpgrade {
     return loadAnyFromItem(player.getItemStackFromSlot(EntityEquipmentSlot.LEGS)) != null;
   }
 
-  private static @Nonnull ItemStack createUpgradeItem() {
-    return PotionUtil.createSwiftnessPotion(true, false);
-  }
-
   public SpeedUpgrade(int level) {
-    super(UPGRADE_NAME, level, "enderio.darksteel.upgrade.speed_" + numbers[level - 1], createUpgradeItem(), DarkSteelConfig.speedUpgradeCost.get(level - 1));
+    super(UPGRADE_NAME, level, "enderio.darksteel.upgrade.speed_" + numbers[level - 1], DarkSteelConfig.speedUpgradeCost.get(level - 1));
     this.level = (short) level;
   }
 
@@ -114,11 +108,6 @@ public class SpeedUpgrade extends AbstractUpgrade {
 
   public short getLevel() {
     return level;
-  }
-
-  @Override
-  public boolean isUpgradeItem(@Nonnull ItemStack stack) {
-    return super.isUpgradeItem(stack) && PotionUtils.getPotionFromItem(getUpgradeItem()).equals(PotionUtils.getPotionFromItem(stack));
   }
 
 }

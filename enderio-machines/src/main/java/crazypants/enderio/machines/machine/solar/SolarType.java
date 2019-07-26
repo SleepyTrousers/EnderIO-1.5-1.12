@@ -73,9 +73,4 @@ public enum SolarType implements IStringSerializable {
     return getItemStack(1);
   }
 
-  public @Nonnull ItemStack getUpgradeItem() {
-    // This is where the new DSU item goes in
-    return new ItemStack(MachineObject.block_solar_panel.getItemNN(), 1, this.ordinal());
-  }
-
 }

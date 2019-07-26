@@ -82,7 +82,7 @@ public final class ItemUpgrades extends Item implements IHaveRenderers, IAdvance
         "upgrade=" + registryName.getResourcePath());
   }
 
-  protected IDarkSteelUpgrade getUpgrade(@Nonnull ItemStack stack) {
+  public IDarkSteelUpgrade getUpgrade(@Nonnull ItemStack stack) {
     String string = NbtValue.DSU.getString(stack);
     if (!Strings.isBlank(string)) {
       return UpgradeRegistry.getUpgrade(new ResourceLocation(string));
@@ -120,6 +120,14 @@ public final class ItemUpgrades extends Item implements IHaveRenderers, IAdvance
         }
       });
     }
+  }
+
+  public @Nonnull ItemStack withUpgrade(@Nonnull IDarkSteelUpgrade upgrade) {
+    final ResourceLocation registryName = upgrade.getRegistryName();
+    if (registryName != null) {
+      return NbtValue.DSU.setString(new ItemStack(this), registryName.toString());
+    }
+    return new ItemStack(this);
   }
 
   @Override

@@ -10,6 +10,7 @@ import javax.vecmath.Quat4f;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.enderio.core.common.vecmath.Vector4d;
 import com.google.common.collect.Lists;
 
 import crazypants.enderio.base.EnderIO;
@@ -30,11 +31,11 @@ import net.minecraftforge.common.model.TRSRTransformation;
 public class RotatingSmartItemModel implements IBakedModel {
 
   private final @Nonnull IBakedModel parent;
-  private final int speed;
+  private final @Nonnull Vector4d rot;
 
-  public RotatingSmartItemModel(@Nonnull IBakedModel parent, int speed) {
+  public RotatingSmartItemModel(@Nonnull IBakedModel parent, @Nonnull Vector4d rot) {
     this.parent = parent;
-    this.speed = speed;
+    this.rot = rot;
   }
 
   @Override
@@ -72,12 +73,12 @@ public class RotatingSmartItemModel implements IBakedModel {
   public @Nonnull Pair<? extends IBakedModel, Matrix4f> handlePerspective(@Nonnull ItemCameraTransforms.TransformType cameraTransformType) {
     Pair<? extends IBakedModel, Matrix4f> perspective = parent.handlePerspective(cameraTransformType);
 
-    double r = (EnderIO.proxy.getTickCount() % 360) + Minecraft.getMinecraft().getRenderPartialTicks();
+    double r = (EnderIO.proxy.getTickCount() % 360) + (Minecraft.getMinecraft().isGamePaused() ? 0 : Minecraft.getMinecraft().getRenderPartialTicks());
 
     TRSRTransformation transformOrig = new TRSRTransformation(perspective.getRight());
     Quat4f leftRot = transformOrig.getLeftRot();
     Quat4f yRotation = new Quat4f();
-    yRotation.set(new AxisAngle4d(0, 1, 0, Math.toRadians(r * speed)));
+    yRotation.set(new AxisAngle4d(rot.x, rot.y, rot.z, Math.toRadians(r * rot.w)));
     leftRot.mul(yRotation);
     TRSRTransformation transformNew = new TRSRTransformation(transformOrig.getTranslation(), leftRot, transformOrig.getScale(), transformOrig.getRightRot());
 
@@ -94,7 +95,7 @@ public class RotatingSmartItemModel implements IBakedModel {
 
       IBakedModel newBase = parent.getOverrides().handleItemState(parent, stack, world, entity);
       if (parent != newBase) {
-        return new RotatingSmartItemModel(newBase, speed);
+        return new RotatingSmartItemModel(newBase, rot);
       }
       return RotatingSmartItemModel.this;
     }

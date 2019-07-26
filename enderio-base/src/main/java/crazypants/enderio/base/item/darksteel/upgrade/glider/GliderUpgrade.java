@@ -21,7 +21,6 @@ import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.base.lang.Lang;
-import crazypants.enderio.base.material.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -44,7 +43,7 @@ public class GliderUpgrade extends AbstractUpgrade implements IHasPlayerRenderer
   }
 
   public GliderUpgrade() {
-    super(UPGRADE_NAME, "enderio.darksteel.upgrade.glider", Material.GLIDER_WINGS.getStack(), DarkSteelConfig.gliderCost);
+    super(UPGRADE_NAME, "enderio.darksteel.upgrade.glider", DarkSteelConfig.gliderCost);
   }
 
   @Override

@@ -93,6 +93,9 @@ public final class PersonalConfig {
   public static final IValue<Integer> conduitPixels = F.make("conduitPixels", 3, //
       "Valid values are between 2-5, smallest conduits at 2, largest at 5.").setRange(2, 5).startup();
 
+  public static final IValue<Boolean> animatedGears = F.make("animatedGears", true, //
+      "Should the Gear item be animated?");
+
   // Item Hiding
 
   public static final IValueFactory H = F.section(".hiding");

@@ -49,7 +49,7 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
   private final @Nonnull SolarType type;
 
   public SolarUpgrade(@Nonnull SolarType type) {
-    super(EnderIOMachines.MODID, UPGRADE_NAME, type.ordinal(), NAME + type.ordinal(), type.getUpgradeItem(), type::getUpgradeLevelCost);
+    super(EnderIOMachines.MODID, UPGRADE_NAME, type.ordinal(), NAME + type.ordinal(), type::getUpgradeLevelCost);
     this.type = type;
   }
 

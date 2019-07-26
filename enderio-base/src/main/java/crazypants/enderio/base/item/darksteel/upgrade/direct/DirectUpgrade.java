@@ -20,7 +20,6 @@ import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
-import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -50,7 +49,7 @@ public class DirectUpgrade extends AbstractUpgrade {
   }
 
   public DirectUpgrade() {
-    super(UPGRADE_NAME, 0, "enderio.darksteel.upgrade." + UPGRADE_NAME, Alloy.VIBRANT_ALLOY.getStackBlock(), DarkSteelConfig.directCost);
+    super(UPGRADE_NAME, 0, "enderio.darksteel.upgrade." + UPGRADE_NAME, DarkSteelConfig.directCost);
   }
 
   @Override

@@ -414,7 +414,7 @@ public class DarkSteelController {
 
   public static boolean isTopUpgradeEquipped(EntityPlayer player) {
     ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-    return TheOneProbeUpgrade.getInstance().hasUpgrade(helmet);
+    return TheOneProbeUpgrade.INSTANCE.hasUpgrade(helmet);
   }
 
   public static void setTopActive(EntityPlayer player, boolean active) {
