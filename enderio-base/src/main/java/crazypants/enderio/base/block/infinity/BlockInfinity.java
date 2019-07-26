@@ -45,8 +45,17 @@ public class BlockInfinity extends BlockFalling implements IResourceTooltipProvi
 
   public static final @Nonnull PropertyInteger LEVEL = PropertyInteger.create("level", 0, 2);
 
+  private static class NotRock extends Material {
+
+    public NotRock(@Nonnull MapColor color) {
+      super(color);
+      setRequiresTool(); // protected, so we have to subclass to call it...
+    }
+
+  }
+
   protected BlockInfinity(@Nonnull IModObject modObject) {
-    super(Material.ROCK);
+    super(new NotRock(MapColor.OBSIDIAN)); // Not Material.ROCK because ItemPickaxe is effective against it
     modObject.apply(this);
     setHardness(50.0F);
     setResistance(2000.0F);
@@ -95,11 +104,6 @@ public class BlockInfinity extends BlockFalling implements IResourceTooltipProvi
   @Override
   public int damageDropped(@Nonnull IBlockState state) {
     return state.getValue(LEVEL);
-  }
-
-  @Override
-  public @Nonnull MapColor getMapColor(@Nonnull IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
-    return MapColor.OBSIDIAN;
   }
 
   private static final int[] COLS = { 0x010101, 0x111111, 0x222222, 0x333333, 0xFFFFFF }; // red==0 is forced to 255 by the particle
