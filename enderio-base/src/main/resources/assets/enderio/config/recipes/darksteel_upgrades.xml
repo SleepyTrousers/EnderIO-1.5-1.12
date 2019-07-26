@@ -26,6 +26,15 @@ XML editor will display that as tooltips when editing this file.
 
  -->
 
+  <recipe name="Dark Steel Upgrade">
+    <alloying energy="30000">
+      <input name="enderio:block_dark_iron_bars"/>
+      <input name="oredict:itemClay"/>
+      <input name="string" amount="4"/>
+      <output name="enderio:item_dark_steel_upgrade"/>
+    </alloying>
+  </recipe>
+
   <recipe name="Dark Steel Upgrade: Carpet">
     <dependency upgrade="enderio:carpet"/>
     <crafting>
@@ -63,6 +72,136 @@ XML editor will display that as tooltips when editing this file.
         <item name="enderio:item_dark_steel_upgrade"/><item name="minecraft:elytra"/>
       </shapeless>
       <output name="enderio:item_dark_steel_upgrade" nbt='{"enderio:dsu":"enderio:elytra"}'/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Upgrade: Empowered">
+    <dependency upgrade="enderio:energyupgrade"/>
+    <crafting>
+      <shapeless>
+        <item name="enderio:item_dark_steel_upgrade"/><item name="VIBRANT_CRYSTAL"/>
+      </shapeless>
+      <output name="enderio:item_dark_steel_upgrade" nbt='{"enderio:dsu":"enderio:energyupgrade"}'/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Upgrade: Empowered II">
+    <dependency upgrade="enderio:energyupgrade1"/>
+    <crafting>
+      <shapeless>
+        <item name="enderio:item_dark_steel_upgrade"/><item name="enderio:item_basic_capacitor:0"/>
+      </shapeless>
+      <output name="enderio:item_dark_steel_upgrade" nbt='{"enderio:dsu":"enderio:energyupgrade1"}'/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Upgrade: Empowered III">
+    <dependency upgrade="enderio:energyupgrade2"/>
+    <crafting>
+      <shapeless>
+        <item name="enderio:item_dark_steel_upgrade"/><item name="enderio:item_basic_capacitor:1"/>
+      </shapeless>
+      <output name="enderio:item_dark_steel_upgrade" nbt='{"enderio:dsu":"enderio:energyupgrade2"}'/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Upgrade: Empowered IV">
+    <dependency upgrade="enderio:energyupgrade3"/>
+    <crafting>
+      <shapeless>
+        <item name="enderio:item_dark_steel_upgrade"/><item name="enderio:item_basic_capacitor:2"/>
+      </shapeless>
+      <output name="enderio:item_dark_steel_upgrade" nbt='{"enderio:dsu":"enderio:energyupgrade3"}'/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Upgrade: Empowered V">
+    <dependency upgrade="enderio:energyupgrade4"/>
+    <crafting>
+      <shapeless>
+        <item name="enderio:item_dark_steel_upgrade"/><item name="HEAD_ENDERMAN_TORMENTED"/>
+      </shapeless>
+      <output name="enderio:item_dark_steel_upgrade" nbt='{"enderio:dsu":"enderio:energyupgrade4"}'/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Upgrade: Glide">
+    <dependency upgrade="enderio:glide"/>
+    <crafting>
+      <shapeless>
+        <item name="enderio:item_dark_steel_upgrade"/><item name="GLIDER_WINGS"/>
+      </shapeless>
+      <output name="enderio:item_dark_steel_upgrade" nbt='{"enderio:dsu":"enderio:glide"}'/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Upgrade: Hoe">
+    <dependency upgrade="enderio:hoe"/>
+    <crafting>
+      <shapeless>
+        <item name="enderio:item_dark_steel_upgrade"/><item name="minecraft:diamond_hoe"/>
+      </shapeless>
+      <output name="enderio:item_dark_steel_upgrade" nbt='{"enderio:dsu":"enderio:hoe"}'/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Upgrade: Inventory">
+    <dependency upgrade="enderio:inv"/>
+    <crafting>
+      <shapeless>
+        <item name="enderio:item_dark_steel_upgrade"/><item name="chestWood"/><item name="GEAR_WOOD"/>
+      </shapeless>
+      <output name="enderio:item_dark_steel_upgrade" nbt='{"enderio:dsu":"enderio:inv"}'/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Upgrade: Inventory II">
+    <dependency upgrade="enderio:inv1"/>
+    <crafting>
+      <shapeless>
+        <item name="enderio:item_dark_steel_upgrade"/><item name="chestWood"/><item name="GEAR_ENERGIZED"/>
+      </shapeless>
+      <output name="enderio:item_dark_steel_upgrade" nbt='{"enderio:dsu":"enderio:inv1"}'/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Upgrade: Inventory III">
+    <dependency upgrade="enderio:inv2"/>
+    <crafting>
+      <shapeless>
+        <item name="enderio:item_dark_steel_upgrade"/><item name="chestWood"/><item name="GEAR_VIBRANT"/>
+      </shapeless>
+      <output name="enderio:item_dark_steel_upgrade" nbt='{"enderio:dsu":"enderio:inv2"}'/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Upgrade: Jump Boost">
+    <dependency upgrade="enderio:jumpboost1"/>
+    <crafting>
+      <shapeless>
+        <item name="enderio:item_dark_steel_upgrade"/><item potion="minecraft:long_swiftness"/><item name="GEAR_WOOD"/>
+      </shapeless>
+      <output name="enderio:item_dark_steel_upgrade" nbt='{"enderio:dsu":"enderio:jumpboost1"}'/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Upgrade: Jump Boost 2">
+    <dependency upgrade="enderio:jumpboost2"/>
+    <crafting>
+      <shapeless>
+        <item name="enderio:item_dark_steel_upgrade"/><item potion="minecraft:long_swiftness"/><item name="GEAR_ENERGIZED"/>
+      </shapeless>
+      <output name="enderio:item_dark_steel_upgrade" nbt='{"enderio:dsu":"enderio:jumpboost2"}'/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Dark Steel Upgrade: Jump Boost 3">
+    <dependency upgrade="enderio:jumpboost3"/>
+    <crafting>
+      <shapeless>
+        <item name="enderio:item_dark_steel_upgrade"/><item potion="minecraft:long_swiftness"/><item name="GEAR_VIBRANT"/>
+      </shapeless>
+      <output name="enderio:item_dark_steel_upgrade" nbt='{"enderio:dsu":"enderio:jumpboost3"}'/>
     </crafting>
   </recipe>
 
