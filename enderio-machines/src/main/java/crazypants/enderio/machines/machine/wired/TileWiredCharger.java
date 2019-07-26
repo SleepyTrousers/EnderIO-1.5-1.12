@@ -47,6 +47,7 @@ public class TileWiredCharger extends AbstractPowerConsumerEntity implements ILe
     this(new SlotDefinition(1, 1, 1), CapacitorKey.WIRED_POWER_INTAKE, CapacitorKey.WIRED_POWER_BUFFER);
   }
 
+  @Storable
   public static class Enhanced extends TileWiredCharger {
 
     public Enhanced() {
@@ -60,6 +61,7 @@ public class TileWiredCharger extends AbstractPowerConsumerEntity implements ILe
 
   }
 
+  @Storable
   public static class Simple extends TileWiredCharger {
 
     public Simple() {
