@@ -38,7 +38,7 @@ public class BlockWiredCharger<T extends TileWiredCharger> extends AbstractPower
   }
 
   public static BlockWiredCharger<TileWiredCharger.Enhanced> create_enhanced(@Nonnull IModObject modObject) {
-    BlockWiredCharger<TileWiredCharger.Enhanced> res = new BlockWiredCharger<TileWiredCharger.Enhanced>(modObject){
+    BlockWiredCharger<TileWiredCharger.Enhanced> res = new BlockWiredCharger<TileWiredCharger.Enhanced>(modObject) {
       @Override
       @SideOnly(Side.CLIENT)
       public @Nonnull IRenderMapper.IItemRenderMapper getItemRenderMapper() {
@@ -50,6 +50,12 @@ public class BlockWiredCharger<T extends TileWiredCharger> extends AbstractPower
       public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
         return RenderMappers.ENHANCED_BODY_MAPPER;
       }
+
+      @Override
+      @SideOnly(Side.CLIENT)
+      public void bindTileEntitySpecialRenderer() {
+      }
+
     };
     res.isEnhanced = true;
     res.init();
@@ -57,7 +63,7 @@ public class BlockWiredCharger<T extends TileWiredCharger> extends AbstractPower
   }
 
   public static BlockWiredCharger<TileWiredCharger.Simple> create_simple(@Nonnull IModObject modObject) {
-    BlockWiredCharger<TileWiredCharger.Simple> res = new BlockWiredCharger<TileWiredCharger.Simple>(modObject){
+    BlockWiredCharger<TileWiredCharger.Simple> res = new BlockWiredCharger<TileWiredCharger.Simple>(modObject) {
       @Override
       @SideOnly(Side.CLIENT)
       public @Nonnull IRenderMapper.IItemRenderMapper getItemRenderMapper() {
@@ -69,6 +75,12 @@ public class BlockWiredCharger<T extends TileWiredCharger> extends AbstractPower
       public IRenderMapper.IBlockRenderMapper getBlockRenderMapper() {
         return RenderMappers.SIMPLE_BODY_MAPPER;
       }
+
+      @Override
+      @SideOnly(Side.CLIENT)
+      public void bindTileEntitySpecialRenderer() {
+      }
+
     };
     res.init();
     return res;
@@ -104,7 +116,7 @@ public class BlockWiredCharger<T extends TileWiredCharger> extends AbstractPower
   @Override
   @SideOnly(Side.CLIENT)
   public void bindTileEntitySpecialRenderer() {
-    ClientRegistry.bindTileEntitySpecialRenderer(TileWiredCharger.class, new TESRWiredCharger<>(this));
+    ClientRegistry.bindTileEntitySpecialRenderer(TileWiredCharger.class, new TESRWiredCharger<>(null));
   }
 
   @Override

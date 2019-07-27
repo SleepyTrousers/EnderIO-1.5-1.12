@@ -52,6 +52,11 @@ public class GuiWiredCharger extends GuiInventoryMachineBase<TileWiredCharger> {
 
     drawTexturedModalRect(sx, sy, 0, 0, xSize, ySize);
 
+    if (shouldRenderProgress()) {
+      int scaled = getProgressScaled(37);
+      drawTexturedModalRect(sx + 103, sy + 17 + 37 - scaled, 242, 0 + 37 - scaled, 14, 38);
+    }
+
     if (container.hasBaublesSlots()) {
       drawTexturedModalRect(sx + 194, sy + 6, 221, 78, 24, 39);
       for (int i = 1; i < container.baubles.getSizeInventory(); i++) {
@@ -65,11 +70,6 @@ public class GuiWiredCharger extends GuiInventoryMachineBase<TileWiredCharger> {
           drawTexturedModalRect(sx + 196, sy + 12 + i * 18, textureX, textureY, 16, 16);
         }
       }
-    }
-
-    if (shouldRenderProgress()) {
-      int scaled = getProgressScaled(37);
-      drawTexturedModalRect(sx + 103, sy + 17 + 37 - scaled, 242, 0 + 37 - scaled, 14, 38);
     }
 
     String invName = EnderIOMachines.lang.localizeExact(getTileEntity().getMachineName() + ".name");
