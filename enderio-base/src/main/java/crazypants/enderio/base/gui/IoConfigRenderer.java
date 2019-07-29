@@ -26,6 +26,8 @@ import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
 
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.machine.interfaces.IIoConfigurable;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.modes.PacketIoMode;
@@ -58,11 +60,13 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.relauncher.Side;
 
+@EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
 
-  public static void init(@Nonnull FMLPreInitializationEvent event) {
+  public static void init(@Nonnull EnderIOLifecycleEvent.PreInit event) {
     // only init selectedFaceIcon
   }
 
@@ -260,9 +264,9 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
     }
 
     applyCamera(partialTick);
-    TravelController.instance.setSelectionEnabled(false);
+    TravelController.setSelectionEnabled(false);
     renderScene();
-    TravelController.instance.setSelectionEnabled(true);
+    TravelController.setSelectionEnabled(true);
     renderSelection();
     renderOverlay(par1, par2);
   }

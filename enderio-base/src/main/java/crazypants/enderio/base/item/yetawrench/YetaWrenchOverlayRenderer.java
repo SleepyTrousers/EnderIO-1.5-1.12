@@ -10,6 +10,7 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.api.tool.IConduitControl;
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
 import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.util.Prep;
@@ -24,26 +25,28 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
+@EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 public class YetaWrenchOverlayRenderer {
 
-  private @Nonnull ConduitDisplayMode cachedMode = ConduitDisplayMode.ALL;
-  private int displayTickCount;
-  private long lastTick;
-
-  public YetaWrenchOverlayRenderer() {
-  }
+  private static @Nonnull ConduitDisplayMode cachedMode = ConduitDisplayMode.ALL;
+  private static int displayTickCount;
+  private static long lastTick;
 
   @SubscribeEvent
-  public void renderOverlay(@Nonnull RenderGameOverlayEvent.Post event) {
-    ItemStack equippedWrench = getEquippedWrench();
-    if (event.getType() == ElementType.ALL && Prep.isValid(equippedWrench)) {
-      doRenderOverlay(event, equippedWrench);
+  public static void renderOverlay(@Nonnull RenderGameOverlayEvent.Post event) {
+    if (event.getType() == ElementType.ALL) {
+      ItemStack equippedWrench = getEquippedWrench();
+      if (Prep.isValid(equippedWrench)) {
+        doRenderOverlay(event, equippedWrench);
+      }
     }
   }
 
-  private @Nonnull ItemStack getEquippedWrench() {
+  private static @Nonnull ItemStack getEquippedWrench() {
     EntityPlayer player = Minecraft.getMinecraft().player;
     ItemStack equipped = player.getHeldItemMainhand();
     if (equipped.getItem() instanceof IConduitControl && ((IConduitControl) equipped.getItem()).showOverlay(equipped, player)) {
@@ -52,7 +55,7 @@ public class YetaWrenchOverlayRenderer {
     return Prep.getEmpty();
   }
 
-  private void doRenderOverlay(@Nonnull RenderGameOverlayEvent event, @Nonnull ItemStack equippedWrench) {
+  private static void doRenderOverlay(@Nonnull RenderGameOverlayEvent event, @Nonnull ItemStack equippedWrench) {
     ConduitDisplayMode mode = ConduitDisplayMode.getDisplayMode(equippedWrench);
 
     if (mode != cachedMode) {

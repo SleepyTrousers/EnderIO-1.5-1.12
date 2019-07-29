@@ -18,6 +18,7 @@ import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.TeleportConfig;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
@@ -45,52 +46,47 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 public class TravelController {
 
-  public static final TravelController instance = new TravelController();
+  private static final @Nonnull Random rand = new Random();
 
-  private final @Nonnull Random rand = new Random();
+  private static boolean wasJumping = false;
 
-  private boolean wasJumping = false;
+  private static boolean wasSneaking = false;
 
-  private boolean wasSneaking = false;
+  private static boolean tempJump;
 
-  private boolean tempJump;
+  private static boolean tempSneak;
 
-  private boolean tempSneak;
+  private static boolean showTargets = false;
 
-  private boolean showTargets = false;
+  private static BlockPos onBlockCoord;
 
-  private BlockPos onBlockCoord;
+  private static BlockPos selectedCoord;
 
-  private BlockPos selectedCoord;
+  private static final @Nonnull HashSet<BlockPos> candidates = new HashSet<>();
 
-  private final @Nonnull HashSet<BlockPos> candidates = new HashSet<>();
+  private static boolean selectionEnabled = true;
 
-  private boolean selectionEnabled = true;
+  private static double fovRad;
 
-  private double fovRad;
-
-  private double tanFovRad;
-
-  private TravelController() {
-  }
-
-  private boolean doesHandAllowTravel(@Nonnull EnumHand hand) {
+  private static boolean doesHandAllowTravel(@Nonnull EnumHand hand) {
     return TeleportConfig.enableOffHandTravel.get() || hand == EnumHand.MAIN_HAND;
   }
 
-  private boolean doesHandAllowBlink(@Nonnull EnumHand hand) {
+  private static boolean doesHandAllowBlink(@Nonnull EnumHand hand) {
     return TeleportConfig.enableOffHandBlink.get() || hand == EnumHand.MAIN_HAND;
   }
 
-  public boolean activateTravelAccessable(@Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull World world, @Nonnull EntityPlayer player,
+  public static boolean activateTravelAccessable(@Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull World world, @Nonnull EntityPlayer player,
       @Nonnull TravelSource source) {
     BlockPos target = selectedCoord;
     if (target == null) {
@@ -112,7 +108,7 @@ public class TravelController {
     return true;
   }
 
-  public boolean doBlink(@Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull EntityPlayer player) {
+  public static boolean doBlink(@Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull EntityPlayer player) {
     if (!doesHandAllowBlink(hand)) {
 
       return false;
@@ -197,12 +193,12 @@ public class TravelController {
     return false;
   }
 
-  private boolean isBlackListedBlock(@Nonnull EntityPlayer player, @Nonnull RayTraceResult pos, @Nonnull IBlockState hitBlock) {
+  private static boolean isBlackListedBlock(@Nonnull EntityPlayer player, @Nonnull RayTraceResult pos, @Nonnull IBlockState hitBlock) {
     return TeleportConfig.blockBlacklist.get().contains(hitBlock.getBlock())
         || (hitBlock.getBlockHardness(player.world, pos.getBlockPos()) < 0 && !TeleportConfig.enableBlinkUnbreakableBlocks.get());
   }
 
-  private boolean doBlinkAround(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull Vector3d sample,
+  private static boolean doBlinkAround(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull Vector3d sample,
       boolean conserveMomentum) {
     if (doBlink(player, equipped, hand, new BlockPos((int) Math.floor(sample.x), (int) Math.floor(sample.y) - 1, (int) Math.floor(sample.z)),
         conserveMomentum)) {
@@ -218,41 +214,40 @@ public class TravelController {
     return false;
   }
 
-  private boolean doBlink(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull BlockPos coord,
+  private static boolean doBlink(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull BlockPos coord,
       boolean conserveMomentum) {
     return travelToLocation(player, equipped, hand, TravelSource.STAFF_BLINK, coord, conserveMomentum);
   }
 
-  public boolean showTargets() {
+  public static boolean showTargets() {
     return showTargets && selectionEnabled;
   }
 
-  public void setSelectionEnabled(boolean b) {
+  public static void setSelectionEnabled(boolean b) {
     selectionEnabled = b;
     if (!selectionEnabled) {
       candidates.clear();
     }
   }
 
-  public boolean isBlockSelected(@Nonnull BlockPos coord) {
+  public static boolean isBlockSelected(@Nonnull BlockPos coord) {
     return coord.equals(selectedCoord);
   }
 
-  public void addCandidate(@Nonnull BlockPos coord) {
+  public static void addCandidate(@Nonnull BlockPos coord) {
     candidates.add(coord);
   }
 
   @SubscribeEvent
-  public void onRender(@Nonnull RenderWorldLastEvent event) {
+  public static void onRender(@Nonnull RenderWorldLastEvent event) {
     float fov = Minecraft.getMinecraft().gameSettings.fovSetting;
     fovRad = Math.toRadians(fov);
-    tanFovRad = Math.tanh(fovRad);
   }
 
   @SuppressWarnings({ "unused", "null" })
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
-  public void onClientTick(@Nonnull TickEvent.ClientTickEvent event) {
+  public static void onClientTick(@Nonnull TickEvent.ClientTickEvent event) {
     if (event.phase == TickEvent.Phase.END) {
       EntityPlayerSP player = Minecraft.getMinecraft().player;
       if (NullHelper.untrust(player) == null) {
@@ -304,26 +299,26 @@ public class TravelController {
     }
   }
 
-  private int getEnergyInTravelItem(@Nonnull ItemStack equipped) {
+  private static int getEnergyInTravelItem(@Nonnull ItemStack equipped) {
     if (!(equipped.getItem() instanceof IItemOfTravel)) {
       return 0;
     }
     return ((IItemOfTravel) equipped.getItem()).getEnergyStored(equipped);
   }
 
-  public boolean isTravelItemActiveForRendering(@Nonnull EntityPlayer ep) {
+  public static boolean isTravelItemActiveForRendering(@Nonnull EntityPlayer ep) {
     return isTravelItemActive(ep, ep.getHeldItemMainhand()) || (TeleportConfig.enableOffHandTravel.get() && isTravelItemActive(ep, ep.getHeldItemOffhand()));
   }
 
-  private boolean isTravelItemActiveForSelecting(@Nonnull EntityPlayer ep) {
+  private static boolean isTravelItemActiveForSelecting(@Nonnull EntityPlayer ep) {
     return isTravelItemActive(ep, ep.getHeldItemMainhand()) || isTravelItemActive(ep, ep.getHeldItemOffhand());
   }
 
-  private boolean isTravelItemActive(@Nonnull EntityPlayer ep, @Nonnull ItemStack equipped) {
+  private static boolean isTravelItemActive(@Nonnull EntityPlayer ep, @Nonnull ItemStack equipped) {
     return equipped.getItem() instanceof IItemOfTravel && ((IItemOfTravel) equipped.getItem()).isActive(ep, equipped);
   }
 
-  private boolean travelToSelectedTarget(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull TravelSource source,
+  private static boolean travelToSelectedTarget(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull TravelSource source,
       boolean conserveMomentum) {
     final BlockPos selectedCoord_nullchecked = selectedCoord;
     if (selectedCoord_nullchecked == null) {
@@ -332,7 +327,7 @@ public class TravelController {
     return travelToLocation(player, equipped, hand, source, selectedCoord_nullchecked, conserveMomentum);
   }
 
-  private boolean travelToLocation(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull TravelSource source,
+  private static boolean travelToLocation(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull EnumHand hand, @Nonnull TravelSource source,
       @Nonnull BlockPos coord, boolean conserveMomentum) {
 
     if (source != TravelSource.STAFF_BLINK) {
@@ -373,7 +368,7 @@ public class TravelController {
     return true;
   }
 
-  private int getRequiredPower(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull TravelSource source, @Nonnull BlockPos coord) {
+  private static int getRequiredPower(@Nonnull EntityPlayer player, @Nonnull ItemStack equipped, @Nonnull TravelSource source, @Nonnull BlockPos coord) {
     if (!isTravelItemActive(player, equipped)) {
       return 0;
     }
@@ -387,21 +382,21 @@ public class TravelController {
     return requiredPower;
   }
 
-  private boolean isInRangeTarget(@Nonnull EntityPlayer player, @Nonnull BlockPos bc, float maxSq) {
+  private static boolean isInRangeTarget(@Nonnull EntityPlayer player, @Nonnull BlockPos bc, float maxSq) {
     return getDistanceSquared(player, bc) <= maxSq;
   }
 
-  private double getDistanceSquared(@Nonnull EntityPlayer player, @Nonnull BlockPos bc) {
+  private static double getDistanceSquared(@Nonnull EntityPlayer player, @Nonnull BlockPos bc) {
     Vector3d eye = Util.getEyePositionEio(player);
     Vector3d target = new Vector3d(bc.getX() + 0.5, bc.getY() + 0.5, bc.getZ() + 0.5);
     return eye.distanceSquared(target);
   }
 
-  private double getDistance(@Nonnull EntityPlayer player, @Nonnull BlockPos coord) {
+  private static double getDistance(@Nonnull EntityPlayer player, @Nonnull BlockPos coord) {
     return Math.sqrt(getDistanceSquared(player, coord));
   }
 
-  private boolean isValidTarget(@Nonnull EntityPlayer player, @Nonnull BlockPos bc, @Nonnull TravelSource source) {
+  private static boolean isValidTarget(@Nonnull EntityPlayer player, @Nonnull BlockPos bc, @Nonnull TravelSource source) {
     World w = player.world;
     BlockPos baseLoc = bc;
     if (source != TravelSource.STAFF_BLINK) {
@@ -412,7 +407,7 @@ public class TravelController {
     return canTeleportTo(player, source, baseLoc, w) && canTeleportTo(player, source, baseLoc.offset(EnumFacing.UP), w);
   }
 
-  private boolean canTeleportTo(@Nonnull EntityPlayer player, @Nonnull TravelSource source, @Nonnull BlockPos bc, @Nonnull World w) {
+  private static boolean canTeleportTo(@Nonnull EntityPlayer player, @Nonnull TravelSource source, @Nonnull BlockPos bc, @Nonnull World w) {
     if (bc.getY() < 1) {
       return false;
     }
@@ -434,7 +429,7 @@ public class TravelController {
     return aabb.getAverageEdgeLength() < 0.7;
   }
 
-  private boolean canBlinkTo(@Nonnull BlockPos bc, @Nonnull World w, @Nonnull Vec3d start, @Nonnull Vec3d target) {
+  private static boolean canBlinkTo(@Nonnull BlockPos bc, @Nonnull World w, @Nonnull Vec3d start, @Nonnull Vec3d target) {
     RayTraceResult p = w.rayTraceBlocks(start, target, !TeleportConfig.enableBlinkNonSolidBlocks.get());
     if (p != null) {
       if (!TeleportConfig.enableBlinkNonSolidBlocks.get()) {
@@ -461,7 +456,7 @@ public class TravelController {
     return true;
   }
 
-  private boolean isClear(@Nonnull World w, @Nonnull IBlockState bs, @Nonnull Block block, @Nonnull BlockPos bp) {
+  private static boolean isClear(@Nonnull World w, @Nonnull IBlockState bs, @Nonnull Block block, @Nonnull BlockPos bp) {
     if (block.isAir(bs, w, bp)) {
       return true;
     }
@@ -474,7 +469,7 @@ public class TravelController {
   }
 
   @SideOnly(Side.CLIENT)
-  private void updateVerticalTarget(@Nonnull EntityPlayerSP player, int direction) {
+  private static void updateVerticalTarget(@Nonnull EntityPlayerSP player, int direction) {
 
     Pair<BlockPos, ITravelAccessable> pair = getActiveTravelBlock(player);
     BlockPos currentBlock = pair.getKey();
@@ -503,7 +498,7 @@ public class TravelController {
   }
 
   @SideOnly(Side.CLIENT)
-  private void updateSelectedTarget(@Nonnull EntityPlayerSP player) {
+  private static void updateSelectedTarget(@Nonnull EntityPlayerSP player) {
     selectedCoord = null;
     if (candidates.isEmpty()) {
       return;
@@ -528,10 +523,10 @@ public class TravelController {
   }
 
   @SideOnly(Side.CLIENT)
-  private void onInput(@Nonnull EntityPlayerSP player) {
+  private static void onInput(@Nonnull EntityPlayerSP player) {
 
     MovementInput input = player.movementInput;
-    BlockPos target = TravelController.instance.selectedCoord;
+    BlockPos target = selectedCoord;
     if (target == null) {
       return;
     }
@@ -557,29 +552,29 @@ public class TravelController {
 
   }
 
-  public double getCandidateHitScale(double fullScreenScaling, double distance) {
+  public static double getCandidateHitScale(double fullScreenScaling, double distance) {
     // Take 10% of the screen width per default as the maximum scale for hits (perfectly looking at block)
     return 0.10 * fullScreenScaling;
   }
 
-  public double getCandidateMissScale(double fullScreenScaling, double distance) {
+  public static double getCandidateMissScale(double fullScreenScaling, double distance) {
     // At least 1.5 times the normal block size if the angle is not close to the block
     return 1.5;
   }
 
-  public double getCandidateHitAngle() {
+  public static double getCandidateHitAngle() {
     // CAREFUL: missAngle MUST BE >= hitAngle
     // Hit scale for blocks with an angle below this threshold
     return 0.087; // == ~5 degree
   }
 
-  public double getCandidateMissAngle() {
+  public static double getCandidateMissAngle() {
     // CAREFUL: missAngle MUST BE >= hitAngle
     // Miss scale for blocks with an angle above this threshold
     return Math.PI / 5; // == 36 degrees
   }
 
-  public double[] getCandidateDistanceAndAngle(@Nonnull Vector3d loc) {
+  public static double[] getCandidateDistanceAndAngle(@Nonnull Vector3d loc) {
     Vector3d eye = Util.getEyePositionEio(Minecraft.getMinecraft().player);
     Vector3d look = Util.getLookVecEio(Minecraft.getMinecraft().player);
     Vector3d relativeBlock = new Vector3d(loc);
@@ -593,7 +588,7 @@ public class TravelController {
     return new double[] { distance, angle };
   }
 
-  public double getScaleForCandidate(@Nonnull Vector3d loc, int maxDistanceSq) {
+  public static double getScaleForCandidate(@Nonnull Vector3d loc, int maxDistanceSq) {
     // Retrieve the candidate distance and angle
     double[] distanceAndAngle = getCandidateDistanceAndAngle(loc);
     double distance = distanceAndAngle[0];
@@ -634,7 +629,7 @@ public class TravelController {
   }
 
   // Note: This is restricted to the current player
-  public boolean doClientTeleport(@Nonnull Entity entity, @Nonnull EnumHand hand, @Nonnull BlockPos bc, @Nonnull TravelSource source, int powerUse,
+  public static boolean doClientTeleport(@Nonnull Entity entity, @Nonnull EnumHand hand, @Nonnull BlockPos bc, @Nonnull TravelSource source, int powerUse,
       boolean conserveMomentum) {
 
     TeleportEntityEvent evt = new TeleportEntityEvent(entity, source, bc, entity.dimension);
@@ -648,7 +643,7 @@ public class TravelController {
   }
 
   @SideOnly(Side.CLIENT)
-  private Pair<BlockPos, ITravelAccessable> getActiveTravelBlock(@Nonnull EntityPlayerSP player) {
+  private static Pair<BlockPos, ITravelAccessable> getActiveTravelBlock(@Nonnull EntityPlayerSP player) {
     World world = Minecraft.getMinecraft().world;
     if (NullHelper.untrust(world) == null) {
       // Log.warn("(in TickEvent.ClientTickEvent) net.minecraft.client.Minecraft.world is marked @Nonnull but it is null.");
@@ -667,7 +662,7 @@ public class TravelController {
     return null;
   }
 
-  public BlockPos getPosPlayerOn() {
+  public static BlockPos getPosPlayerOn() {
     return onBlockCoord;
   }
 

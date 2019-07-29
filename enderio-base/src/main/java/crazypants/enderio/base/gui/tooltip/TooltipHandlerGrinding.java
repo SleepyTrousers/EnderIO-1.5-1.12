@@ -5,8 +5,11 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.client.handlers.SpecialTooltipHandler.ITooltipCallback;
 
+import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.recipe.sagmill.IGrindingMultiplier;
@@ -14,10 +17,18 @@ import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 public class TooltipHandlerGrinding implements ITooltipCallback {
+
+  @SubscribeEvent
+  public static void init(EnderIOLifecycleEvent.PreInit event) {
+    SpecialTooltipHandler.addCallback(new TooltipHandlerGrinding());
+  }
 
   @Override
   @SideOnly(Side.CLIENT)

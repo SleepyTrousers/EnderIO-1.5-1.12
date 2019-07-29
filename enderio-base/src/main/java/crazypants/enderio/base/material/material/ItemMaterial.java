@@ -6,10 +6,13 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
+import com.enderio.core.common.vecmath.Vector4d;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.render.IHaveRenderers;
+import crazypants.enderio.base.render.registry.ItemModelRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -41,8 +44,15 @@ public class ItemMaterial extends Item implements IHaveRenderers, IResourceToolt
       public void apply(@Nonnull Material alloy) {
         ModelLoader.setCustomModelResourceLocation(ItemMaterial.this, Material.getMetaFromType(alloy), makeMRL(modObject, alloy));
       }
-
     });
+    if (PersonalConfig.animatedGears.get()) {
+      ItemModelRegistry.registerRotating(ItemMaterial.makeMRL(modObject, Material.GEAR_WOOD), new Vector4d(0, 0, 1, .5));
+      ItemModelRegistry.registerRotating(ItemMaterial.makeMRL(modObject, Material.GEAR_STONE), new Vector4d(0, 0, 1, -1));
+      ItemModelRegistry.registerRotating(ItemMaterial.makeMRL(modObject, Material.GEAR_IRON), new Vector4d(0, 0, 1, 1.5));
+      ItemModelRegistry.registerRotating(ItemMaterial.makeMRL(modObject, Material.GEAR_ENERGIZED), new Vector4d(0, 0, 1, -2));
+      ItemModelRegistry.registerRotating(ItemMaterial.makeMRL(modObject, Material.GEAR_VIBRANT), new Vector4d(0, 0, 1, 3));
+      ItemModelRegistry.registerRotating(ItemMaterial.makeMRL(modObject, Material.GEAR_DARKSTEEL), new Vector4d(0, 0, 1, -3.5));
+    }
   }
 
   public static @Nonnull ModelResourceLocation makeMRL(final @Nonnull IModObject modObject, @Nonnull Material alloy) {

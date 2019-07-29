@@ -16,7 +16,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.fml.relauncher.Side;
 
+@EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 public class YetaUtil {
 
   private static volatile @Nonnull YetaDisplayMode lastCheckResult = new YetaDisplayMode();
@@ -34,15 +40,18 @@ public class YetaUtil {
     return checkResult;
   }
 
-  public static void onClientTick() {
-    EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    if (player == null) {
-      return;
+  @SubscribeEvent
+  public static void onTick(@Nonnull ClientTickEvent evt) {
+    if (evt.phase == Phase.END) {
+      EntityPlayer player = EnderIO.proxy.getClientPlayer();
+      if (player == null) {
+        return;
+      }
+      boolean checkResult = shouldHeldItemHideFacades(player);
+      toggled = lastCheckResult.isHideFacades() != checkResult;
+      lastCheckResult.setHideFacades(checkResult);
+      lastCheckResult.setDisplayMode(getDisplayMode(player));
     }
-    boolean checkResult = shouldHeldItemHideFacades(player);
-    toggled = lastCheckResult.isHideFacades() != checkResult;
-    lastCheckResult.setHideFacades(checkResult);
-    lastCheckResult.setDisplayMode(getDisplayMode(player));
   }
 
   public static boolean shouldHeldItemHideFacadesClient() {

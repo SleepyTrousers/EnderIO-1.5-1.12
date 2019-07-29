@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.util.Prep;
 import net.minecraft.client.Minecraft;
@@ -11,24 +12,26 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 import static crazypants.enderio.base.init.ModObject.itemConduitProbe;
 
+@EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 public class ConduitProbeOverlayRenderer {
 
-  public ConduitProbeOverlayRenderer() {
-  }
-
   @SubscribeEvent
-  public void renderOverlay(@Nonnull RenderGameOverlayEvent.Post event) {
-    ItemStack equippedProbe = getEquippedProbe();
-    if (event.getType() == ElementType.ALL && Prep.isValid(equippedProbe)) {
-      doRenderOverlay(event, equippedProbe);
+  public static void renderOverlay(@Nonnull RenderGameOverlayEvent.Post event) {
+    if (event.getType() == ElementType.ALL) {
+      ItemStack equippedProbe = getEquippedProbe();
+      if (Prep.isValid(equippedProbe)) {
+        doRenderOverlay(event, equippedProbe);
+      }
     }
   }
 
-  private @Nonnull ItemStack getEquippedProbe() {
+  private static @Nonnull ItemStack getEquippedProbe() {
     ItemStack equipped = Minecraft.getMinecraft().player.getHeldItemMainhand();
     if (equipped.getItem() == itemConduitProbe.getItem()) {
       return equipped;
@@ -36,7 +39,7 @@ public class ConduitProbeOverlayRenderer {
     return Prep.getEmpty();
   }
 
-  private void doRenderOverlay(RenderGameOverlayEvent event, @Nonnull ItemStack equippedProbe) {
+  private static void doRenderOverlay(RenderGameOverlayEvent event, @Nonnull ItemStack equippedProbe) {
     IconEIO icon1, icon2;
     if (equippedProbe.getItemDamage() == 0) {
       icon1 = IconEIO.PROBE_OVERLAY_PROBE;

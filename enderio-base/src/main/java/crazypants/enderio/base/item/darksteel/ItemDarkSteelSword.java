@@ -215,7 +215,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
       ItemStack stack = player.getHeldItem(hand);
       if (isTravelUpgradeActive(player, stack)) {
         if (world.isRemote) {
-          if (TravelController.instance.activateTravelAccessable(stack, hand, world, player, TravelSource.STAFF)) {
+          if (TravelController.activateTravelAccessable(stack, hand, world, player, TravelSource.STAFF)) {
             player.swingArm(hand);
             return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
           }
@@ -226,7 +226,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
           lastBlickTick = -1;
         }
         if (TeleportConfig.enableBlink.get() && world.isRemote && ticksSinceBlink >= TeleportConfig.blinkDelay.get()) {
-          if (TravelController.instance.doBlink(stack, hand, player)) {
+          if (TravelController.doBlink(stack, hand, player)) {
             player.swingArm(hand);
             lastBlickTick = EnderIO.proxy.getTickCount();
           }

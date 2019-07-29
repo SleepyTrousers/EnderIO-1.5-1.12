@@ -130,8 +130,6 @@ public class EnderIO implements IEnderIOAddon {
 
     MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.PreInit());
 
-    proxy.init(event);
-
     Log.debug("PHASE PRE-INIT END");
   }
 
@@ -154,8 +152,6 @@ public class EnderIO implements IEnderIOAddon {
     PacketHandler.init(event);
 
     GuiHelper.init(event);
-
-    proxy.init(event);
 
     MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Init.Post());
 
@@ -205,8 +201,6 @@ public class EnderIO implements IEnderIOAddon {
 
     BuildcraftIntegration.init(event);
     // TEUtil.init(event);
-
-    proxy.init(event);
 
     Celeb.init(event);
     Scheduler.instance.start();

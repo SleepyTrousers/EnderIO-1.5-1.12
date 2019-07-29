@@ -5,10 +5,13 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.client.handlers.SpecialTooltipHandler.ITooltipCallback;
 import com.enderio.core.common.util.FluidUtil;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.PersonalConfig;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.fluid.IFluidCoolant;
 import crazypants.enderio.base.fluid.IFluidFuel;
@@ -18,8 +21,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
+@EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 public class TooltipHandlerFluid implements ITooltipCallback {
+
+  @SubscribeEvent
+  public static void init(EnderIOLifecycleEvent.PreInit event) {
+    SpecialTooltipHandler.addCallback(new TooltipHandlerFluid());
+  }
 
   @Override
   public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {

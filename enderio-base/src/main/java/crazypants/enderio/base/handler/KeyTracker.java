@@ -44,26 +44,27 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FOVModifier;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 import static crazypants.enderio.base.init.ModObject.itemConduitProbe;
 
+@EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 public class KeyTracker {
-
-  public static final KeyTracker instance = new KeyTracker();
 
   public interface Action {
     void execute();
   }
 
-  private final @Nonnull List<Pair<KeyBinding, Action>> keyActions = new ArrayList<Pair<KeyBinding, Action>>();
+  private static final @Nonnull List<Pair<KeyBinding, Action>> keyActions = new ArrayList<Pair<KeyBinding, Action>>();
 
-  private final @Nonnull KeyBinding fovPlusKeyFast, fovMinusKeyFast, fovPlusKey, fovMinusKey, yetaWrenchMode;
+  private static final @Nonnull KeyBinding fovPlusKeyFast, fovMinusKeyFast, fovPlusKey, fovMinusKey, yetaWrenchMode;
 
-  public final @Nonnull KeyBinding inventory;
+  public static final @Nonnull KeyBinding inventory;
 
-  public KeyTracker() {
+  static {
     inventory = create("enderio.keybind.inventory", Keyboard.KEY_I, "key.category.darksteelarmor    ", new InventoryAction());
     create("enderio.keybind.glidertoggle      ", Keyboard.KEY_G, "   key.category.darksteelarmor    ", new GlideAction());
     create("enderio.keybind.soundlocator      ", Keyboard.KEY_NONE, "key.category.darksteelarmor    ", new SoundDetectorAction());
@@ -83,20 +84,20 @@ public class KeyTracker {
     fovMinusKeyFast = create("enderio.keybind.fovminusfast", Keyboard.KEY_NONE, "key.categories.misc");
   }
 
-  public @Nonnull KeyBinding create(@Nonnull String description, int keyCode, @Nonnull String category, @Nonnull Action action) {
+  public static @Nonnull KeyBinding create(@Nonnull String description, int keyCode, @Nonnull String category, @Nonnull Action action) {
     final KeyBinding keyBinding = create(description, keyCode, category);
     keyActions.add(Pair.of(keyBinding, action));
     return keyBinding;
   }
 
-  public @Nonnull KeyBinding create(@Nonnull String description, int keyCode, @Nonnull String category) {
+  public static @Nonnull KeyBinding create(@Nonnull String description, int keyCode, @Nonnull String category) {
     final KeyBinding keyBinding = new KeyBinding(description.trim(), keyCode, category.trim());
     ClientRegistry.registerKeyBinding(keyBinding);
     return keyBinding;
   }
 
   @SubscribeEvent
-  public void onKeyInput(KeyInputEvent event) {
+  public static void onKeyInput(KeyInputEvent event) {
     for (Pair<KeyBinding, Action> keyAction : keyActions) {
       if (keyAction.getKey().isPressed()) {
         keyAction.getValue().execute();
@@ -104,7 +105,7 @@ public class KeyTracker {
     }
 
     if (!isSoundDetectorUpgradeEquipped(Minecraft.getMinecraft().player)) {
-      SoundDetector.instance.setEnabled(false);
+      SoundDetector.setEnabled(false);
     }
   }
 
@@ -220,9 +221,9 @@ public class KeyTracker {
     @Override
     public void execute() {
       if (isSoundDetectorUpgradeEquipped(Minecraft.getMinecraft().player)) {
-        boolean isActive = !SoundDetector.instance.isEnabled();
+        boolean isActive = !SoundDetector.isEnabled();
         sendEnabledChatMessage("darksteel.upgrade.sound", isActive);
-        SoundDetector.instance.setEnabled(isActive);
+        SoundDetector.setEnabled(isActive);
       }
     }
   }
@@ -265,19 +266,19 @@ public class KeyTracker {
     }
   }
 
-  private class FovAction implements Action {
+  private static class FovAction implements Action {
     @Override
     public void execute() {
       fovLevelLast = fovLevelNext = 1;
     }
   }
 
-  private double fovLevelLast = 1;
-  private double fovLevelNext = 1;
-  private long lastWorldTime = 0;
+  private static double fovLevelLast = 1;
+  private static double fovLevelNext = 1;
+  private static long lastWorldTime = 0;
 
   @SubscribeEvent
-  public void onFov(FOVModifier event) {
+  public static void onFov(FOVModifier event) {
     long worldTime = EnderIO.proxy.getTickCount();
     while (worldTime > lastWorldTime) {
       if (worldTime - lastWorldTime > 10) {
@@ -301,7 +302,7 @@ public class KeyTracker {
     event.setFOV((float) (event.getFOV() * val));
   }
 
-  public KeyBinding getYetaWrenchMode() {
+  public static KeyBinding getYetaWrenchMode() {
     return yetaWrenchMode;
   }
 

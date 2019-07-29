@@ -75,7 +75,7 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
         lastBlickTick = -1;
       }
       if (TeleportConfig.enableBlink.get() && world.isRemote && ticksSinceBlink >= TeleportConfig.blinkDelay.get()) {
-        if (TravelController.instance.doBlink(equipped, hand, player)) {
+        if (TravelController.doBlink(equipped, hand, player)) {
           player.swingArm(hand);
           lastBlickTick = EnderIO.proxy.getTickCount();
         }
@@ -84,7 +84,7 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
     }
 
     if (world.isRemote) {
-      TravelController.instance.activateTravelAccessable(equipped, hand, world, player, TravelSource.STAFF);
+      TravelController.activateTravelAccessable(equipped, hand, world, player, TravelSource.STAFF);
     }
     player.swingArm(hand);
     return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);

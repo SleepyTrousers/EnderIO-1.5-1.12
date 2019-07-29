@@ -380,7 +380,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   protected ActionResult<ItemStack> doTravelAction(@Nonnull ItemStack stack, @Nonnull World world, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
     if (isTravelUpgradeActive(player, stack, hand)) {
       if (world.isRemote) {
-        if (TravelController.instance.activateTravelAccessable(stack, hand, world, player, TravelSource.STAFF)) {
+        if (TravelController.activateTravelAccessable(stack, hand, world, player, TravelSource.STAFF)) {
           player.swingArm(hand);
           return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
         }
@@ -391,7 +391,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
         lastBlickTick = -1;
       }
       if (TeleportConfig.enableBlink.get() && world.isRemote && ticksSinceBlink >= TeleportConfig.blinkDelay.get()) {
-        if (TravelController.instance.doBlink(stack, hand, player)) {
+        if (TravelController.doBlink(stack, hand, player)) {
           player.swingArm(hand);
           lastBlickTick = EnderIO.proxy.getTickCount();
         }

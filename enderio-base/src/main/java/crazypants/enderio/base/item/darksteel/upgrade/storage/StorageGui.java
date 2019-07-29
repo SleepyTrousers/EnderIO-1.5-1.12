@@ -86,7 +86,7 @@ public class StorageGui extends GuiContainerBaseEIO implements StorageRemoteExec
 
   @Override
   protected void keyTyped(char c, int key) throws IOException {
-    if (key == KeyTracker.instance.inventory.getKeyCode()) {
+    if (key == KeyTracker.inventory.getKeyCode()) {
       if (!hideOverlays()) {
         this.mc.player.closeScreen();
       }

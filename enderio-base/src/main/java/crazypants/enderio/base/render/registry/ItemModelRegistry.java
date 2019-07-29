@@ -14,20 +14,14 @@ import crazypants.enderio.base.render.model.RotatingSmartItemModel;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
+@EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 public final class ItemModelRegistry {
-
-  private ItemModelRegistry() {
-  }
-
-  public static void create() {
-    MinecraftForge.EVENT_BUS.register(new ItemModelRegistry());
-  }
 
   public interface Registry {
     @Nonnull
@@ -72,7 +66,7 @@ public final class ItemModelRegistry {
   }
 
   @SubscribeEvent()
-  public void bakeModels(@Nonnull ModelBakeEvent event) {
+  public static void bakeModels(@Nonnull ModelBakeEvent event) {
     for (Entry<ModelResourceLocation, Registry> entry : registries.entrySet()) {
       final ModelResourceLocation resource = entry.getKey();
       if (resource != null) {

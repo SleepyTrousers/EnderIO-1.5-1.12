@@ -189,7 +189,7 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     ArrayList<String> tmp = new ArrayList<String>();
     SpecialTooltipHandler.addDetailedTooltipFromResources(tmp, getUnlocalizedName());
-    String keyName = KeyTracker.instance.getYetaWrenchMode().getDisplayName();
+    String keyName = KeyTracker.getYetaWrenchMode().getDisplayName();
     for (String line : tmp) {
       list.add(String.format(line, keyName));
     }

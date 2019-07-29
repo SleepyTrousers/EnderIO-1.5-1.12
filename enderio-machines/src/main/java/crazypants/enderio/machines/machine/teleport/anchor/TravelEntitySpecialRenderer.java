@@ -59,8 +59,8 @@ public class TravelEntitySpecialRenderer<T extends TileTravelAnchor> extends Man
 
   @Override
   public boolean shouldRender(@Nonnull T te, @Nonnull IBlockState blockState, int renderPass) {
-    return TravelController.instance.showTargets() && te.isVisible()
-        && (TravelController.instance.getPosPlayerOn() == null || BlockCoord.getDist(TravelController.instance.getPosPlayerOn(), te.getLocation()) > 2)
+    return TravelController.showTargets() && te.isVisible()
+        && (TravelController.getPosPlayerOn() == null || BlockCoord.getDist(TravelController.getPosPlayerOn(), te.getLocation()) > 2)
         && te.canSeeBlock(Minecraft.getMinecraft().player);
   }
 
@@ -68,17 +68,16 @@ public class TravelEntitySpecialRenderer<T extends TileTravelAnchor> extends Man
   public void renderTileEntity(@Nonnull T te, @Nonnull IBlockState blockState, float partialTicks, int destroyStage) {
     Vector3d eye = Util.getEyePositionEio(Minecraft.getMinecraft().player);
     Vector3d loc = new Vector3d(te.getPos().getX() + 0.5, te.getPos().getY() + 0.5, te.getPos().getZ() + 0.5);
-    int maxDistance = TravelController.instance.isTravelItemActiveForRendering(Minecraft.getMinecraft().player)
-        ? TravelSource.STAFF.getMaxDistanceTravelledSq()
+    int maxDistance = TravelController.isTravelItemActiveForRendering(Minecraft.getMinecraft().player) ? TravelSource.STAFF.getMaxDistanceTravelledSq()
         : TravelSource.BLOCK.getMaxDistanceTravelledSq();
     if (eye.distanceSquared(loc) > maxDistance) {
       return;
     }
 
-    double sf = TravelController.instance.getScaleForCandidate(loc, maxDistance);
-    boolean highlight = TravelController.instance.isBlockSelected(te.getLocation());
+    double sf = TravelController.getScaleForCandidate(loc, maxDistance);
+    boolean highlight = TravelController.isBlockSelected(te.getLocation());
 
-    TravelController.instance.addCandidate(te.getLocation());
+    TravelController.addCandidate(te.getLocation());
 
     Minecraft.getMinecraft().entityRenderer.disableLightmap();
 

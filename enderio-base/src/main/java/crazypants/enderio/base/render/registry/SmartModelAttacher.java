@@ -13,6 +13,7 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.ICustomItemResourceLocation;
@@ -39,6 +40,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.IRegistry;
 import net.minecraft.util.registry.RegistrySimple;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -97,8 +99,9 @@ public class SmartModelAttacher {
    * <p>
    * For items that have subtypes, all subtypes are registered. All subtypes are registered to the same model, as the smart model can be damage-aware.
    */
+  @SubscribeEvent
   @SideOnly(Side.CLIENT)
-  public static void registerBlockItemModels() {
+  public static void registerBlockItemModels(ModelRegistryEvent event) {
     for (RegistrationHolder<?, ?> holder : blocks) {
       Block block = holder.block;
       IModObject modObject = ModObjectRegistry.getModObject(holder.block);
@@ -148,7 +151,8 @@ public class SmartModelAttacher {
   }
 
   @SideOnly(Side.CLIENT)
-  public static void registerColoredBlocksAndItems() {
+  @SubscribeEvent
+  public static void registerColoredBlocksAndItems(EnderIOLifecycleEvent.Init.Post event) {
     NNList<Block> blocklist = new NNList<Block>();
     NNList<Item> itemlist = new NNList<Item>();
     for (RegistrationHolder<?, ?> holder : blocks) {

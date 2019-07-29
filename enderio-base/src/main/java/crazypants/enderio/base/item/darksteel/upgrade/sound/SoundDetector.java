@@ -7,28 +7,29 @@ import java.util.concurrent.ArrayBlockingQueue;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.event.sound.PlaySoundSourceEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 public class SoundDetector {
 
   private static final int MAX_PARTICLES = 64;
 
-  public static SoundDetector instance = new SoundDetector();
+  private static final ArrayBlockingQueue<SoundSource> soundQueue = new ArrayBlockingQueue<SoundSource>(MAX_PARTICLES);
 
-  private final ArrayBlockingQueue<SoundSource> soundQueue = new ArrayBlockingQueue<SoundSource>(MAX_PARTICLES);
-
-  boolean enabled = false;
+  private static boolean enabled = false;
 
   @SubscribeEvent
-  public void onSound(PlaySoundSourceEvent evt) {
+  public static void onSound(PlaySoundSourceEvent evt) {
     if (enabled && soundQueue.size() < MAX_PARTICLES) {
       switch (evt.getSound().getCategory()) {
       case BLOCKS:
@@ -48,7 +49,7 @@ public class SoundDetector {
 
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
-  public void onClientTick(TickEvent.ClientTickEvent event) {
+  public static void onClientTick(TickEvent.ClientTickEvent event) {
 
     if (!enabled) {
       return;
@@ -72,12 +73,12 @@ public class SoundDetector {
     }
   }
 
-  public boolean isEnabled() {
+  public static boolean isEnabled() {
     return enabled;
   }
 
-  public void setEnabled(boolean enabled) {
-    this.enabled = enabled;
+  public static void setEnabled(boolean enabled) {
+    SoundDetector.enabled = enabled;
   }
 
   public static class SoundSource {
