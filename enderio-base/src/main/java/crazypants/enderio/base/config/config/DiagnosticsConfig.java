@@ -13,6 +13,9 @@ public final class DiagnosticsConfig {
   public static final IValue<Boolean> debugChunkRerenders = F.make("debugChunkRerenders", false, //
       "If true, TEs will flash when they trigger a chunk re-render.");
 
+  public static final IValue<Boolean> debugUpgradeDebugMessagesToInfo = F.make("debugUpgradeDebugMessagesToInfo", false, //
+      "This will flood your logfile with gigabytes of data filling up your harddisk very fast. DO NOT enable unless asked by an Ender IO developer!");
+
   public static final IValue<Boolean> debugTraceNBTActivityExtremelyDetailed = F.make("debugTraceNBTActivityExtremelyDetailed", false, //
       "This will flood your logfile with gigabytes of data filling up your harddisk very fast. DO NOT enable unless asked by an Ender IO developer!");
 

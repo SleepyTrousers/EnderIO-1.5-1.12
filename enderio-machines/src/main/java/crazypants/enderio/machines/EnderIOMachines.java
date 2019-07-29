@@ -101,7 +101,7 @@ public class EnderIOMachines implements IEnderIOAddon {
         Triple.of(3, null, "sagmill_metals"), Triple.of(3, null, "sagmill_vanilla"), Triple.of(3, null, "sagmill_vanilla2modded"),
         Triple.of(3, null, "sagmill_silentgems"), Triple.of(3, null, "vat"), Triple.of(3, null, "enchanter"), Triple.of(3, null, "spawner"),
         Triple.of(9, null, "capacitor_machines"), Triple.of(3, null, "integration_railcraft_recipes"), Triple.of(3, null, "soulbinder"),
-        Triple.of(3, null, "tank"), Triple.of(3, null, "hiding_machines"));
+        Triple.of(3, null, "tank"), Triple.of(3, null, "hiding_machines"), Triple.of(3, null, "darksteel_upgrades_machines"));
   }
 
   @Override

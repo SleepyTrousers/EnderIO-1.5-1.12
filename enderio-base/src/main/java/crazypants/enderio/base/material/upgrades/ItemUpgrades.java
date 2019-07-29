@@ -83,9 +83,12 @@ public final class ItemUpgrades extends Item implements IHaveRenderers, IAdvance
   }
 
   public IDarkSteelUpgrade getUpgrade(@Nonnull ItemStack stack) {
-    String string = NbtValue.DSU.getString(stack);
-    if (!Strings.isBlank(string)) {
-      return UpgradeRegistry.getUpgrade(new ResourceLocation(string));
+    if (stack.getItemDamage() == 1) { // TODO 1.14: just drop the meta
+      // Note: This is just so vanilla's and other mods' item/recipe handling don't see a blank plate and a upgrade one as the same item
+      String string = NbtValue.DSU.getString(stack);
+      if (!Strings.isBlank(string)) {
+        return UpgradeRegistry.getUpgrade(new ResourceLocation(string));
+      }
     }
     return null;
   }
@@ -116,7 +119,7 @@ public final class ItemUpgrades extends Item implements IHaveRenderers, IAdvance
       UpgradeRegistry.getUpgrades().apply(upgrade -> {
         final ResourceLocation registryName = upgrade.getRegistryName();
         if (registryName != null) {
-          list.add(NbtValue.DSU.setString(new ItemStack(this), registryName.toString()));
+          list.add(NbtValue.DSU.setString(new ItemStack(this, 1, 1), registryName.toString()));
         }
       });
     }
@@ -125,7 +128,7 @@ public final class ItemUpgrades extends Item implements IHaveRenderers, IAdvance
   public @Nonnull ItemStack withUpgrade(@Nonnull IDarkSteelUpgrade upgrade) {
     final ResourceLocation registryName = upgrade.getRegistryName();
     if (registryName != null) {
-      return NbtValue.DSU.setString(new ItemStack(this), registryName.toString());
+      return NbtValue.DSU.setString(new ItemStack(this, 1, 1), registryName.toString());
     }
     return new ItemStack(this);
   }

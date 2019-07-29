@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+
+These are the built-in recipes. You cannot change this file, it is a
+reference for you only and will be generated every time the game starts.
+
+To make changes to the recipes, copy the recipes you want to change to
+a file in the 'user' folder. To disable a recipe, add an attribute "disabled"
+and set it to true, e.g.: <recipe required="true" name="Gear" disabled="true" />
+
+You can also disable all built-in recipes with the setting "loadCoreRecipes"
+in the Ender IO config file, so that only your files in the 'user' folder will
+be loaded. Please be advised that a number of recipes are absolutely needed,
+so you will have to copy those over into a 'user' file for the game to load.
+
+Item specifications can reference an alias, an ore dictionary name, a
+block or an item. You can force the type by prefixing the value with
+"oredict:", "block:" or "item:". Recipes that have items that cannot be
+found in-game are either skipped or an error, depending on their "required"
+attribute.
+
+More information on the syntax can be found in the recipes.xsd file. An
+XML editor will display that as tooltips when editing this file.
+
+ -->
+
+  <recipe required="true" name="Dark Steel Upgrade: Solar">
+    <dependency upgrade="enderiomachines:solar"/>
+    <crafting>
+      <shapeless>
+        <item name="enderio:item_dark_steel_upgrade:0"/><item name="SOLAR_1"/>
+      </shapeless>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiomachines:solar"}'/>
+    </crafting>
+  </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade: Solar 1">
+    <dependency upgrade="enderiomachines:solar1"/>
+    <crafting>
+      <shapeless>
+        <item name="enderio:item_dark_steel_upgrade:0"/><item name="SOLAR_2"/>
+      </shapeless>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiomachines:solar1"}'/>
+    </crafting>
+  </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade: Solar 2">
+    <dependency upgrade="enderiomachines:solar2"/>
+    <crafting>
+      <shapeless>
+        <item name="enderio:item_dark_steel_upgrade:0"/><item name="SOLAR_3"/>
+      </shapeless>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiomachines:solar2"}'/>
+    </crafting>
+  </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade: Solar 3">
+    <dependency upgrade="enderiomachines:solar3"/>
+    <crafting>
+      <shapeless>
+        <item name="enderio:item_dark_steel_upgrade:0"/><item name="SOLAR_4"/>
+      </shapeless>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiomachines:solar3"}'/>
+    </crafting>
+  </recipe>
+
+</enderio:recipes>

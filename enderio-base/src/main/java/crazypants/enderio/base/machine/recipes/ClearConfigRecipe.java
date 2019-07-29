@@ -95,7 +95,7 @@ public class ClearConfigRecipe extends IForgeRegistryEntry.Impl<IRecipe> impleme
       event.getToolTip().add(Lang.RECIPE_CLEAR.get());
     }
 
-    if (Log.inDev && event.getItemStack().hasTagCompound()) {
+    if (Log.isInDev() && event.getItemStack().hasTagCompound()) {
       event.getToolTip().add("NBT: " + event.getItemStack().getTagCompound() + "(INDEV)");
     }
   }

@@ -112,7 +112,7 @@ public class EnderIOIntegrationForestry implements IEnderIOAddon {
   @Nonnull
   public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
     if (isLoaded()) {
-      return new NNList<>(Triple.of(2, null, "integration-forestry"));
+      return new NNList<>(Triple.of(2, null, "integration-forestry"), Triple.of(2, null, "darksteel_upgrades_forestry"));
     }
     return NNList.emptyList();
   }
