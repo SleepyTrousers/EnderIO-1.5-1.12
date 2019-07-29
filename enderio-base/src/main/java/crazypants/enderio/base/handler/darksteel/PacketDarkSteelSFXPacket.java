@@ -23,7 +23,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class PacketDarkSteelSFXPacket implements IMessage {
 
   private ResourceLocation upgradeName;
-  public UUID uid;
+  private UUID uid;
 
   public PacketDarkSteelSFXPacket() {
   }

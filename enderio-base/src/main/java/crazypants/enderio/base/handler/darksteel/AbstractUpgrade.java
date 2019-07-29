@@ -84,7 +84,7 @@ public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements
 
   @Override
   public final boolean isUpgradeItem(@Nonnull ItemStack stack) {
-    return ((ItemUpgrades) ModObject.itemDarkSteelUpgrade.getItemNN()).getUpgrade(stack) == this;
+    return ItemUpgrades.getUpgrade(stack) == this && ItemUpgrades.isEnabled(stack);
   }
 
   @Override
@@ -101,14 +101,18 @@ public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements
   @Override
   @SideOnly(Side.CLIENT)
   public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    list.add(TextFormatting.DARK_AQUA + EnderIO.lang.localizeExact(getUnlocalizedName() + ".name"));
+    list.add(TextFormatting.DARK_AQUA + getDisplayName());
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    list.add(TextFormatting.DARK_AQUA + EnderIO.lang.localizeExact(getUnlocalizedName() + ".name"));
+    list.add(TextFormatting.DARK_AQUA + getDisplayName());
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, getUnlocalizedName());
+  }
+
+  public @Nonnull String getDisplayName() {
+    return EnderIO.lang.localizeExact(getUnlocalizedName() + ".name");
   }
 
   @Override

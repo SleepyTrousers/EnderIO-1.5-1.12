@@ -82,7 +82,7 @@ public final class ItemUpgrades extends Item implements IHaveRenderers, IAdvance
         "upgrade=" + registryName.getResourcePath());
   }
 
-  public IDarkSteelUpgrade getUpgrade(@Nonnull ItemStack stack) {
+  public static IDarkSteelUpgrade getUpgrade(@Nonnull ItemStack stack) {
     if (stack.getItemDamage() == 1) { // TODO 1.14: just drop the meta
       // Note: This is just so vanilla's and other mods' item/recipe handling don't see a blank plate and a upgrade one as the same item
       String string = NbtValue.DSU.getString(stack);
@@ -128,9 +128,24 @@ public final class ItemUpgrades extends Item implements IHaveRenderers, IAdvance
   public @Nonnull ItemStack withUpgrade(@Nonnull IDarkSteelUpgrade upgrade) {
     final ResourceLocation registryName = upgrade.getRegistryName();
     if (registryName != null) {
-      return NbtValue.DSU.setString(new ItemStack(this, 1, 1), registryName.toString());
+      return setEnabled(NbtValue.DSU.setString(new ItemStack(this, 1, 1), registryName.toString()), true);
     }
     return new ItemStack(this);
+  }
+
+  public static boolean isEnabled(@Nonnull ItemStack stack) {
+    return true;
+    // return NbtValue.ENABLED.getBoolean(stack);
+  }
+
+  public static @Nonnull ItemStack setEnabled(@Nonnull ItemStack stack, boolean value) {
+    return stack;
+    // return NbtValue.ENABLED.setBoolean(stack, value);
+  }
+
+  @Override
+  public boolean hasEffect(@Nonnull ItemStack stack) {
+    return NbtValue.ENABLED.getBoolean(stack) || super.hasEffect(stack);
   }
 
   @Override

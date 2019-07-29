@@ -24,7 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 @SideOnly(Side.CLIENT)
-public class UpgradeRenderManager {
+public final class UpgradeRenderManager {
 
   // no WeakHashSet in Java...
   private static final Map<RenderPlayer, Object> injected = new WeakHashMap<RenderPlayer, Object>();
