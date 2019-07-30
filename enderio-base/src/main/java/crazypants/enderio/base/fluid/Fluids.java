@@ -9,6 +9,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.FluidConfig;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.integration.railcraft.RailcraftUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -250,7 +251,8 @@ public enum Fluids {
     }
   }
 
-  public static void registerFuels() {
+  @SubscribeEvent
+  public static void init(@Nonnull EnderIOLifecycleEvent.Init.Pre event) {
     FluidFuelRegister.instance.addFuel(HOOTCH.getFluid(), FluidConfig.hootchPowerPerCycle.get(), FluidConfig.hootchPowerTotalBurnTime.get());
     FluidFuelRegister.instance.addFuel(ROCKET_FUEL.getFluid(), FluidConfig.rocketFuelPowerPerCycle.get(), FluidConfig.rocketFuelPowerTotalBurnTime.get());
     FluidFuelRegister.instance.addFuel(FIRE_WATER.getFluid(), FluidConfig.fireWaterPowerPerCycle.get(), FluidConfig.fireWaterPowerTotalBurnTime.get());

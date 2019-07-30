@@ -27,15 +27,11 @@ import crazypants.enderio.base.diagnostics.ProfilerAntiReactor;
 import crazypants.enderio.base.diagnostics.ProfilerDebugger;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
-import crazypants.enderio.base.fluid.Fluids;
-import crazypants.enderio.base.gui.handler.GuiHelper;
 import crazypants.enderio.base.handler.ServerTickHandler;
 import crazypants.enderio.base.init.CommonProxy;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
-import crazypants.enderio.base.integration.bigreactors.BRProxy;
 import crazypants.enderio.base.integration.buildcraft.BuildcraftIntegration;
-import crazypants.enderio.base.integration.chiselsandbits.CABIMC;
 import crazypants.enderio.base.material.recipes.MaterialOredicts;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.PaintSourceValidator;
@@ -137,23 +133,15 @@ public class EnderIO implements IEnderIOAddon {
   public void load(@Nonnull FMLInitializationEvent event) {
     Log.debug("PHASE INIT START");
 
-    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Init.Pre());
-
     initCrashData(); // after blocks have been created
 
-    Fluids.registerFuels();
-
-    ModObjectRegistry.init(event);
-
-    BRProxy.init(event);
-
-    CABIMC.init(event);
+    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Init.Pre(event));
 
     PacketHandler.init(event);
 
-    GuiHelper.init(event);
+    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Init.Normal(event));
 
-    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Init.Post());
+    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.Init.Post(event));
 
     Log.debug("PHASE INIT END");
   }

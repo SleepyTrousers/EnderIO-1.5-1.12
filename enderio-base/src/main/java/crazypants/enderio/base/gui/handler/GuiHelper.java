@@ -6,22 +6,26 @@ import javax.annotation.Nullable;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.lang.Lang;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.BlockPosContext;
 import net.minecraftforge.server.permission.context.PlayerContext;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class GuiHelper {
 
-  public static void init(@Nonnull FMLInitializationEvent event) {
+  @SubscribeEvent
+  public static void init(@Nonnull EnderIOLifecycleEvent.Init.Normal event) {
     for (IModObject mo : ModObjectRegistry.getRegistry()) {
       if (mo.getBlock() instanceof IEioGuiHandler.WithServerComponent || mo.getItem() instanceof IEioGuiHandler.WithServerComponent) {
         Log.info("Registered permission ", PermissionAPI.registerNode(getPermission(mo), DefaultPermissionLevel.ALL,

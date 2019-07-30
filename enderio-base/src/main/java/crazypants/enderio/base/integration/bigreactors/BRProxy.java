@@ -3,10 +3,13 @@ package crazypants.enderio.base.integration.bigreactors;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.config.IntegrationConfig;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class BRProxy {
@@ -30,7 +33,8 @@ public class BRProxy {
   private static Method getTurbineBlockData;
 
   @SuppressWarnings("null")
-  public static void init(FMLInitializationEvent event) {
+  @SubscribeEvent
+  public static void init(@Nonnull EnderIOLifecycleEvent.Init.Normal event) {
     if (Loader.isModLoaded("bigreactors") && IntegrationConfig.enableBigReactors.get()) {
       try {
         ReactorInterior = ReflectionHelper.getClass(BRProxy.class.getClassLoader(), "erogenousbeef.bigreactors.api.registry.ReactorInterior");
@@ -63,7 +67,7 @@ public class BRProxy {
 
         isLoaded = true;
 
-        BRRegistrations.init(event);
+        BRRegistrations.init(event.getEvent());
 
       } catch (RuntimeException e) {
         Log.error("Failed to load Extreme Reactors integration. Reason:");

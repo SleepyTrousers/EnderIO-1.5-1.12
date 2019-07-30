@@ -27,7 +27,6 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.ModContainer;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -136,15 +135,16 @@ public class ModObjectRegistry {
     // oredict registration goes here
   }
 
-  public static void init(@Nonnull FMLInitializationEvent event) {
+  @SubscribeEvent(priority = EventPriority.HIGH)
+  public static void init(@Nonnull EnderIOLifecycleEvent.Init.Pre event) {
     for (IModObject mo : REGISTRY) {
       final Block block = mo.getBlock();
       if (block instanceof IModObject.LifecycleInit) {
-        ((IModObject.LifecycleInit) block).init(mo, event);
+        ((IModObject.LifecycleInit) block).init(mo, event.getEvent());
       }
       Item item = mo.getItem();
       if (item instanceof IModObject.LifecycleInit) {
-        ((IModObject.LifecycleInit) item).init(mo, event);
+        ((IModObject.LifecycleInit) item).init(mo, event.getEvent());
       }
     }
   }
