@@ -72,8 +72,6 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
 
   public static final TextureSupplier selectedFaceIcon = TextureRegistry.registerTexture("blocks/overlays/selected_face");
 
-  // protected static final RenderBlocks RB = new RenderBlocks();
-
   private boolean dragging = false;
   private float pitch = 0;
   private float yaw = 0;
@@ -88,8 +86,6 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
   private final @Nonnull Camera camera = new Camera();
   private final @Nonnull Matrix4d pitchRot = new Matrix4d();
   private final @Nonnull Matrix4d yawRot = new Matrix4d();
-
-  public @Nonnull BlockPos originBC;
 
   private @Nonnull NNList<BlockPos> configurables = new NNList<BlockPos>();
   private @Nonnull NNList<BlockPos> neighbours = new NNList<BlockPos>();
@@ -126,7 +122,6 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
       size.scale(2);
     }
 
-    originBC = new BlockPos((int) c.x, (int) c.y, (int) c.z);
     origin.set(c);
     pitchRot.setIdentity();
     yawRot.setIdentity();
