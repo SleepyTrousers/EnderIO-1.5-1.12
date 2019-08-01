@@ -13,6 +13,7 @@ import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.base.power.wireless.WirelessChargedLocation;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.KillerJoeConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,7 +21,12 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@EventBusSubscriber(modid = EnderIOMachines.MODID)
 class Attackera extends FakePlayerEIO implements ICreeperTarget {
 
   private static final UUID uuid = UUID.fromString("3baa66fa-a69a-11e4-89d3-123b93f75cba");
@@ -93,9 +99,20 @@ class Attackera extends FakePlayerEIO implements ICreeperTarget {
     rotationYaw = MathHelper.wrapDegrees((float) (MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F);
   }
 
+  // don't let Creepers blow us up
+
   @Override
   public boolean isCreeperTarget(@Nonnull EntityCreeper swellingCreeper) {
     return KillerJoeConfig.killerProvokesCreeperExpolosions.get();
+  }
+
+  // don't let Zombies summon aid
+
+  @SubscribeEvent
+  public static void onSummonAid(SummonAidEvent event) {
+    if (event.getAttacker() instanceof Attackera) {
+      event.setResult(Result.DENY);
+    }
   }
 
 }

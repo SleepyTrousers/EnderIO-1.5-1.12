@@ -212,7 +212,12 @@ public final class ZooConfig {
       "Armor of Love Children. (Zombie: 2)").setRange(0, 20).sync();
 
   public static final IValue<SkullDrop> loveSkullDrop = LOVE.make("skullDrop", SkullDrop.ZOMBIE, //
-      "Type of skull Love Children should drop (ZOMBIE/ENDERMAN/NONE). Note that there is an additional Enderman skull in the loot table.").sync();
+      "Type of skull Love Children should drop (ZOMBIE/ENDERMAN/NONE). Note that there is an " + //
+          "additional Enderman skull in the loot table.")
+      .sync();
+
+  public static final IValue<Boolean> loveSummonAid = LOVE.make("summonAid", true, //
+      "Should Love Children summon aid like vanilla Zombies do?").sync();
 
   public static enum SkullDrop {
     NONE,
