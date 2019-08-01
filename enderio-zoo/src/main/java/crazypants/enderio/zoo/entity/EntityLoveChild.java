@@ -25,11 +25,14 @@ import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.event.RegistryEvent.Register;
+import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -65,7 +68,6 @@ public class EntityLoveChild extends EntityZombie implements IEnderZooEntity.Agg
     super.applyEntityAttributes();
     getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(ZooConfig.loveChildSpeed.get());
     getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(ZooConfig.loveChildArmor.get());
-    getEntityAttribute(SPAWN_REINFORCEMENTS_CHANCE).setBaseValue(0);
     applyAttributes(this, ZooConfig.loveChildHealth, ZooConfig.loveChildAttackDamage);
   }
 
@@ -138,6 +140,23 @@ public class EntityLoveChild extends EntityZombie implements IEnderZooEntity.Agg
     }
 
     return false;
+  }
+
+  @SubscribeEvent
+  public static void onSummonAid(SummonAidEvent event) {
+    if (event.getSummoner() instanceof EntityLoveChild) {
+      if (ZooConfig.loveSummonAid.get() && //
+          event.getResult() != Result.DENY && //
+          event.getAttacker() != null && //
+          event.getWorld().getDifficulty() == EnumDifficulty.HARD && //
+          event.getWorld().rand.nextFloat() < event.getSummoner().getEntityAttribute(SPAWN_REINFORCEMENTS_CHANCE).getAttributeValue() && //
+          event.getWorld().getGameRules().getBoolean("doMobSpawning")) {
+        event.setResult(Result.ALLOW);
+        event.setCustomSummonedAid(new EntityLoveChild(event.getWorld()));
+      } else {
+        event.setResult(Result.DENY);
+      }
+    }
   }
 
   @Override

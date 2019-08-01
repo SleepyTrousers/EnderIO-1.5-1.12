@@ -39,7 +39,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
@@ -199,10 +198,6 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
         }
         if (!PermissionAPI.hasPermission(getOwner().getAsGameProfile(), BlockKillerJoe.permissionAttacking, new TargetContext(atackera, ent))) {
           continue;
-        }
-        if (ent instanceof EntityZombie) {
-          // TODO: tag the entity instead (see Powered Spawner)
-          ZombieCache.cache.add(ent.getUniqueID());
         }
         try {
           if (togglePvp) {
