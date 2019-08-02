@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -16,6 +17,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -105,6 +108,8 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
   /**
    * Checks if this upgrade can be applied to the given item. This is called by the anvil crafting for the "left" item after {@link #isUpgradeItem(ItemStack)}
    * return true for the "right" item.
+   * <p>
+   * This is also called by the upgrade GUI to check if the slot for this upgrade should be open or blocked.
    * 
    * @param stack
    *          An itemstack to test.
@@ -193,14 +198,134 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
   default void addAttributeModifiers(@Nonnull EntityEquipmentSlot slot, @Nonnull ItemStack stack, @Nonnull Multimap<String, AttributeModifier> map) {
   }
 
-  // TODO
+  // TODO remove
   default @Nonnull List<IDarkSteelUpgrade> getDependencies() {
     return Collections.emptyList();
   }
 
-  // TODO
+  // TODO remove
   default @Nonnull List<Supplier<String>> getItemClassesForTooltip() {
     return Collections.emptyList();
+  }
+
+  /**
+   * Returns a list of rules that determine if the upgrade can be applied to an item. The list should be stable and all rules must return the same result on
+   * server and client.
+   * <p>
+   * Note: There is no need to include a rule to prevent applying the same upgrade twice.
+   * <p>
+   * Note 2: There should be at least one {@link IRule.ItemType} rule (for the upgrade item tooltip).
+   * 
+   */
+  default @Nonnull List<IRule> getRules() {
+    return Collections.emptyList();
+  }
+
+  public interface IRule {
+
+    public final class CheckResult {
+      public static final @Nonnull CheckResult PASS = new CheckResult(true);
+      public static final @Nonnull CheckResult SILENT_FAIL = new CheckResult(false);
+
+      private final boolean passed;
+      private final @Nullable ITextComponent result;
+
+      public CheckResult(ITextComponent result) {
+        this.passed = false;
+        this.result = result;
+      }
+
+      private CheckResult(boolean passed) {
+        this.passed = passed;
+        this.result = null;
+      }
+
+      public boolean passes() {
+        return passed;
+      }
+
+      public boolean hasResult() {
+        return result != null;
+      }
+
+      public @Nonnull ITextComponent getResult() {
+        if (result != null) {
+          return result;
+        }
+        throw new NullPointerException();
+      }
+
+    }
+
+    /**
+     * Checks if this rule applies to the given item.
+     * 
+     * @param stack
+     *          An itemstack to test.
+     * @param item
+     *          The item of the stack, pre-cast to {@link IDarkSteelItem}
+     * @return True if this upgrade can be applied to the given item.
+     */
+    @Nonnull
+    CheckResult check(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item);
+
+    /**
+     * Marks the rule as one that only checks the type of the item, not its current state. Only those rules are used when the GUI has to determine which slots
+     * to show.
+     *
+     */
+    interface StaticRule extends IRule {
+
+    }
+
+    /**
+     * Marks the rule as one checking for the existence of another upgrade. Those will be shown in the upgrade item tooltip under the "depends on" header.
+     * <p>
+     * Should <em>not</em>be used together with {@link WithTooltip} or {@link ItemType}.
+     * <p>
+     * Note: The default implementation of {@link #check(ItemStack, IDarkSteelItem)} should be used whenever possible.
+     * <p>
+     * Note 2: The Energy Upgrade has a predefined rule for "any energy upgrade".
+     *
+     */
+    interface Prerequisite extends IRule {
+
+      @Override
+      @Nonnull
+      default CheckResult check(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
+        return getPrerequisite().hasUpgrade(stack, item) ? CheckResult.PASS
+            : new CheckResult( //
+                new TextComponentTranslation("enderio.darksteel.upgrades.check.prerequisite.missing", //
+                    new TextComponentTranslation(getPrerequisite().getUnlocalizedName() + ".name")));
+      }
+
+      @Nonnull
+      IDarkSteelUpgrade getPrerequisite();
+    }
+
+    /**
+     * Marks the rule as one checking the general type of item (weapon, tool, ...). Those will be shown in the upgrade item tooltip under the "can be applied
+     * to" header.
+     * <p>
+     * Should <em>not</em>be used together with {@link WithTooltip} or {@link Prerequisite}.
+     *
+     */
+    interface ItemType extends IRule {
+      @Nonnull
+      ITextComponent getTooltip();
+    }
+
+    /**
+     * Marks the rule as having a tooltip for the upgrade item. Those tooltips will be shown at the end of the tooltip.
+     * <p>
+     * Should <em>not</em>be used together with {@link ItemType} or {@link Prerequisite}.
+     *
+     */
+    interface WithTooltip extends IRule {
+      @Nonnull
+      ITextComponent getTooltip();
+    }
+
   }
 
 }

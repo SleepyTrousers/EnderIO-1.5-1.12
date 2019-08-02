@@ -17,6 +17,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.item.travelstaff.ItemTravelStaff;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.lang.LangPower;
 import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.entity.player.EntityPlayer;
@@ -106,6 +107,28 @@ public class EnergyUpgrade extends AbstractUpgrade {
       new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 2, "enderio.darksteel.upgrade.empowered_three", DarkSteelConfig.energyUpgradeLevelCostEmpowered2),
       new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 3, "enderio.darksteel.upgrade.empowered_four", DarkSteelConfig.energyUpgradeLevelCostEmpowered3),
       new EnergyUpgrade(EnergyUpgradeManager.UPGRADE_NAME, 4, "enderio.darksteel.upgrade.empowered_five", DarkSteelConfig.energyUpgradeLevelCostEmpowered4));
+
+  public static final @Nonnull IRule.Prerequisite HAS_ANY = new IRule.Prerequisite() {
+
+    @Override
+    @Nonnull
+    public CheckResult check(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
+      for (EnergyUpgrade energyUpgrade : UPGRADES) {
+        if (energyUpgrade.hasUpgrade(stack, item)) {
+          return CheckResult.PASS;
+        }
+      }
+
+      return new CheckResult(Lang.DSU_CHECK_PREREQ_ENERGY.toChatServer());
+    }
+
+    @Override
+    @Nonnull
+    public IDarkSteelUpgrade getPrerequisite() {
+      return UPGRADES.get(0);
+    }
+
+  };
 
   @SubscribeEvent(priority = EventPriority.HIGHEST)
   public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {

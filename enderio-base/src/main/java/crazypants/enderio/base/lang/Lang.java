@@ -192,6 +192,9 @@ public enum Lang implements ILang {
   DSU_CLASS_ARMOR_LEGS(".darksteel.upgrades.armor.legs"),
   DSU_CLASS_ARMOR_FEET(".darksteel.upgrades.armor.feet"),
 
+  DSU_CHECK_PREREQ_MISSING(".darksteel.upgrades.check.prerequisite.missing"), // see IDarkSteelUpgrade
+  DSU_CHECK_PREREQ_ENERGY(".darksteel.upgrades.check.prerequisite.energy"),
+
   ;
 
   private final @Nonnull String key;
