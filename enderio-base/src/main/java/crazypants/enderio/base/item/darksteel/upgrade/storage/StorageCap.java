@@ -1,6 +1,7 @@
 package crazypants.enderio.base.item.darksteel.upgrade.storage;
 
 import java.util.Iterator;
+import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
@@ -35,21 +36,24 @@ import net.minecraftforge.items.ItemStackHandler;
  */
 public class StorageCap extends ItemStackHandler {
 
-  private final @Nonnull EntityEquipmentSlot equipmentSlot;
-  private final @Nonnull ItemStack owner;
-  private final EntityPlayer player;
+  protected final @Nonnull NbtValue NBT;
+  protected final @Nonnull EntityEquipmentSlot equipmentSlot;
+  protected final @Nonnull ItemStack owner;
+  protected final EntityPlayer player;
+  protected Function<ItemStack, Boolean> validator = x -> true;
 
   /**
    * Connect this inventory to a real item
    * 
    */
-  public StorageCap(@Nonnull EntityEquipmentSlot equipmentSlot, int size, @Nonnull EntityPlayer player) {
+  public StorageCap(@Nonnull NbtValue NBT, @Nonnull EntityEquipmentSlot equipmentSlot, int size, @Nonnull EntityPlayer player) {
     super(size);
+    this.NBT = NBT;
     this.equipmentSlot = equipmentSlot;
     this.player = size > 0 ? player : null;
-    this.owner = size > 0 ? player.inventory.armorInventory.get(equipmentSlot.getIndex()) : Prep.getEmpty();
+    this.owner = size > 0 ? player.getItemStackFromSlot(equipmentSlot) : Prep.getEmpty();
     size = Prep.isValid(owner) ? size : 0;
-    deserializeNBT(NbtValue.INVENTORY.getTag(owner));
+    deserializeNBT(NBT.getTag(owner));
     if (size != super.getSlots()) {
       if (size < super.getSlots()) {
         for (Iterator<ItemStack> itr = stacks.iterator(); itr.hasNext();) {
@@ -74,13 +78,14 @@ public class StorageCap extends ItemStackHandler {
    */
   public StorageCap(@Nonnull EntityEquipmentSlot equipmentSlot, int size) {
     super(size);
+    this.NBT = NbtValue.INVENTORY;
     this.equipmentSlot = equipmentSlot;
     this.owner = Prep.getEmpty();
     this.player = null;
   }
 
   public boolean isStillConnectedToPlayer() {
-    return player == null || Prep.isInvalid(owner) || owner == player.inventory.armorInventory.get(equipmentSlot.getIndex());
+    return player == null || Prep.isInvalid(owner) || owner == player.getItemStackFromSlot(equipmentSlot);
   }
 
   public @Nonnull EntityEquipmentSlot getEquipmentSlot() {
@@ -91,9 +96,10 @@ public class StorageCap extends ItemStackHandler {
   @Override
   @Nonnull
   public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-    if (stack == owner || stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) != null || isLarge(stack)) {
+    if (stack == owner || stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) != null || isLarge(stack)
+        || (Prep.isValid(stack) && !validator.apply(stack))) {
       // FIXME This can cause desyncs between client and server, find a way to resync them here.
-      return ItemStack.EMPTY;
+      return stack;
     }
 
     return super.insertItem(slot, stack, simulate);
@@ -109,13 +115,20 @@ public class StorageCap extends ItemStackHandler {
 
   @Override
   protected void onContentsChanged(int slot) {
-    NbtValue.INVENTORY.setTag(owner, serializeNBT());
+    if (Prep.isValid(owner)) {
+      NBT.setTag(owner, serializeNBT());
+    }
   }
 
   @Override
   public void setSize(int size) {
     // we need to be able to manipulate the size if reading from nbt changed it, NonNullList cannot do that
     stacks = new NNList<>(size, Prep.getEmpty());
+  }
+
+  public StorageCap setValidator(@Nonnull Function<ItemStack, Boolean> validator) {
+    this.validator = validator;
+    return this;
   }
 
 }
