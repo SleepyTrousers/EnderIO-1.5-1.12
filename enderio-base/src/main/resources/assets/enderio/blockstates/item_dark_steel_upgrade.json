@@ -183,6 +183,11 @@
         "textures": {
           "layer0": "enderio:items/item_dark_steel_upgrade_thaumaturge_robes_legs"
         }
+      },
+      "gogglesofrevealing": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_gogglesofrevealing"
+        }
       }
     }
   }
