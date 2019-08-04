@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
 import io.netty.buffer.ByteBuf;
@@ -98,7 +99,13 @@ public class StorageCap extends ItemStackHandler {
   public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
     if (stack == owner || stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) != null || isLarge(stack)
         || (Prep.isValid(stack) && !validator.apply(stack))) {
-      // FIXME This can cause desyncs between client and server, find a way to resync them here.
+      if (player != null) {
+        if (stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) != null) {
+          player.sendStatusMessage(Lang.GUI_ARMOR_INVENTORY_CONTAINER.toChatServer(), true);
+        } else if (isLarge(stack)) {
+          player.sendStatusMessage(Lang.GUI_ARMOR_INVENTORY_BIG.toChatServer(), true);
+        }
+      }
       return stack;
     }
 
@@ -108,7 +115,7 @@ public class StorageCap extends ItemStackHandler {
   private boolean isLarge(@Nonnull ItemStack stack) {
     ByteBuf buffer = Unpooled.buffer();
     ByteBufUtils.writeItemStack(buffer, stack);
-    boolean result = buffer.writerIndex() <= 500;
+    boolean result = buffer.writerIndex() > 500;
     buffer.release();
     return result;
   }

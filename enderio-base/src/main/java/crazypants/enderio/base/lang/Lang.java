@@ -195,6 +195,9 @@ public enum Lang implements ILang {
   DSU_CHECK_PREREQ_MISSING(".darksteel.upgrades.check.prerequisite.missing"), // see IDarkSteelUpgrade
   DSU_CHECK_PREREQ_ENERGY(".darksteel.upgrades.check.prerequisite.energy"),
 
+  GUI_ARMOR_INVENTORY_CONTAINER(".darksteel.upgrade.inv.container"),
+  GUI_ARMOR_INVENTORY_BIG(".darksteel.upgrade.inv.big"),
+
   ;
 
   private final @Nonnull String key;
