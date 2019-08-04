@@ -65,7 +65,7 @@ public class Capacitor extends AbstractConditional {
       return;
     }
     scaler.get().enforceValidity();
-    if (key == null || !CapacitorKeyRegistry.contains(key.get())) {
+    if (!key.isPresent() || !CapacitorKeyRegistry.contains(key.get())) {
       throw new InvalidRecipeConfigException("'key' '" + key.get() + "' is invalid");
     }
   }
