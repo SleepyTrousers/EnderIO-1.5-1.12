@@ -19,9 +19,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TextureRegistry {
+public final class TextureRegistry {
 
-  public static interface TextureSupplier {
+  public interface TextureSupplier {
     @Nonnull
     <T extends Object> T get(@Nonnull Class<T> clazz);
   }
@@ -49,7 +49,7 @@ public class TextureRegistry {
 
   }
 
-  private static class TextureRegistryClient extends TextureRegistryServer {
+  private final static class TextureRegistryClient extends TextureRegistryServer {
 
     @SideOnly(Side.CLIENT)
     private Map<String, TextureAtlasSprite> sprites;
