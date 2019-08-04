@@ -2,22 +2,13 @@ package crazypants.enderio.base.render.registry;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.NullHelper;
-
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public final class TextureRegistry {
 
@@ -26,102 +17,55 @@ public final class TextureRegistry {
     <T extends Object> T get(@Nonnull Class<T> clazz);
   }
 
-  private static final @Nonnull TextureSupplier noSupplier = new TextureSupplier() {
-    @SuppressWarnings("null")
-    @Override
-    @Nonnull
-    public <T> T get(@Nonnull Class<T> clazz) {
-      Log.error("Client side method TextureSupplier.get() called on server!");
-      return null;
-    }
+  private static final @Nonnull Map<ResourceLocation, Object> sprites = new HashMap<>();
+  private static boolean locked = false;
+  private static Function<ResourceLocation, Object> fallback = key -> {
+    throw new UnsupportedOperationException("TextureRegistry: Texture is accessed too early (or on a dedicated server): " + key);
   };
 
-  private static class TextureRegistryServer {
-    private TextureRegistryServer() {
-    }
-
-    protected void init() {
-    }
-
-    public @Nonnull TextureSupplier registerTexture(final @Nonnull String location, boolean prependDomain) {
-      return noSupplier;
-    }
-
+  protected static @Nonnull Map<ResourceLocation, Object> getSprites() {
+    return sprites;
   }
 
-  private final static class TextureRegistryClient extends TextureRegistryServer {
-
-    @SideOnly(Side.CLIENT)
-    private Map<String, TextureAtlasSprite> sprites;
-
-    private TextureRegistryClient() {
-      super();
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    protected void init() {
-      sprites = new HashMap<String, TextureAtlasSprite>();
-      MinecraftForge.EVENT_BUS.register(instance);
-    }
-
-    @SideOnly(Side.CLIENT)
-    @SubscribeEvent
-    public void onIconLoad(TextureStitchEvent.Pre event) {
-      for (Entry<String, TextureAtlasSprite> entry : sprites.entrySet()) {
-        Log.debug("TextureStitchEvent.Pre for ", entry.getKey());
-        entry.setValue(event.getMap().registerSprite(new ResourceLocation(NullHelper.notnull(entry.getKey(), "internal data corruption"))));
-      }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public @Nonnull TextureSupplier registerTexture(final @Nonnull String location, boolean prependModID) {
-      String key = location;
-      if (prependModID) {
-        key = EnderIO.DOMAIN + ":" + location;
-      }
-      Log.debug("registerTexture ", key);
-      final String keyF = key;
-      if (!sprites.containsKey(keyF)) {
-        sprites.put(keyF, null);
-      }
-      return new TextureSupplier() {
-        @SuppressWarnings("unchecked")
-        @Override
-        @Nonnull
-        public <T> T get(@Nonnull Class<T> clazz) {
-          if (clazz == TextureAtlasSprite.class) {
-            final TextureAtlasSprite sprite = sprites.get(keyF);
-            if (sprite != null) {
-              return (T) sprite;
-            } else {
-              Log.error("Missing texture: " + keyF);
-              return (T) RenderUtil.getMissingSprite();
-            }
-          } else {
-            throw new UnsupportedOperationException("TextureSupplier can only supply TextureAtlasSprite");
-          }
-        }
-      };
-    }
-  }
-
-  private static TextureRegistryServer instance;
-
-  public static @Nonnull TextureSupplier registerTexture(final @Nonnull String location) {
-    return registerTexture(location, true);
+  protected static void lock(Function<ResourceLocation, Object> fallbackIn) {
+    locked = true;
+    TextureRegistry.fallback = fallbackIn;
   }
 
   public static @Nonnull TextureSupplier registerTexture(final @Nonnull String location, boolean prependDomain) {
-    if (instance == null) {
-      instance = new TextureRegistryClient();
-      instance.init();
+    final ResourceLocation key = new ResourceLocation(prependDomain ? EnderIO.DOMAIN + ":" + location : location);
+    Log.debug("registerTexture ", key);
+    if (locked) {
+      throw new UnsupportedOperationException("TextureRegistry: Texture is registered too late: " + key);
     }
-    return instance.registerTexture(location, prependDomain);
+    if (!sprites.containsKey(key)) {
+      sprites.put(key, null);
+    }
+    return new TextureSupplier() {
+      @Override
+      @Nonnull
+      public <T> T get(@Nonnull Class<T> clazz) {
+        return first(clazz, key, sprites::get, fallback, unused -> {
+          throw new UnsupportedOperationException("TextureRegistry can only supply TextureAtlasSprite");
+        });
+      }
+    };
   }
 
-  private TextureRegistry() {
+  @SuppressWarnings({ "unchecked", "null" })
+  @SafeVarargs
+  private final static @Nonnull <P> P first(@Nonnull Class<P> clazz, @Nonnull ResourceLocation key, @Nonnull Function<ResourceLocation, ?/* super P */>... o) {
+    for (Function<ResourceLocation, ?> on : o) {
+      Object p = on.apply(key);
+      if (clazz.isInstance(p)) {
+        return (P) p;
+      }
+    }
+    throw new NullPointerException();
+  }
+
+  public static @Nonnull TextureSupplier registerTexture(final @Nonnull String location) {
+    return registerTexture(location, true);
   }
 
 }
