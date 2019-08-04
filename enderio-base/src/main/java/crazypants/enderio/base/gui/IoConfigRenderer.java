@@ -61,11 +61,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 @EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
 
+  @SubscribeEvent
   public static void init(@Nonnull EnderIOLifecycleEvent.PreInit event) {
     // only init selectedFaceIcon
   }
