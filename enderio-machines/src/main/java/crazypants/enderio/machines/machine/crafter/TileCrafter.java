@@ -95,7 +95,7 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
       });
     }
 
-    getInventory().add(Type.OUTPUT, OUTPUT_SLOT, new InventorySlot(Filters.ALWAYS_FALSE, Filters.ALWAYS_TRUE));
+    getInventory().add(Type.OUTPUT, OUTPUT_SLOT, new InventorySlot(Filters.ALWAYS_TRUE, Filters.ALWAYS_TRUE));
   }
 
   @Override
