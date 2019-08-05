@@ -48,6 +48,34 @@ XML editor will display that as tooltips when editing this file.
     </tanking>
   </recipe>
 
+  <recipe name="Tank: Deep Mob Learning, Overworld Matter" required="false">
+    <tanking type="EMPTY" logic="XP">
+      <input name="deepmoblearning:living_matter_overworldian"/>
+      <fluid name="xpjuice" amount="10"/><!-- for logic=XP amount is in XP, not mB -->
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Deep Mob Learning, Hellish Matter" required="false">
+    <tanking type="EMPTY" logic="XP">
+      <input name="deepmoblearning:living_matter_hellish"/>
+      <fluid name="xpjuice" amount="14"/><!-- for logic=XP amount is in XP, not mB -->
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Deep Mob Learning, Extraterrestrial Matter" required="false">
+    <tanking type="EMPTY" logic="XP">
+      <input name="deepmoblearning:living_matter_extraterrestrial"/>
+      <fluid name="xpjuice" amount="20"/><!-- for logic=XP amount is in XP, not mB -->
+    </tanking>
+  </recipe>
+
+  <recipe name="Tank: Deep Mob Learning, Twilight Matter" required="false">
+    <tanking type="EMPTY" logic="XP">
+      <input name="deepmoblearning:living_matter_twilight"/>
+      <fluid name="xpjuice" amount="30"/><!-- for logic=XP amount is in XP, not mB -->
+    </tanking>
+  </recipe>
+
   <recipe name="Tank: Sponge, filling" required="true">
     <tanking type="FILL" logic="NONE">
       <input name="minecraft:sponge:0"/>
