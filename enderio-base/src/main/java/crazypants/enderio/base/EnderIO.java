@@ -32,6 +32,7 @@ import crazypants.enderio.base.init.CommonProxy;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.integration.buildcraft.BuildcraftIntegration;
+import crazypants.enderio.base.integration.railcraft.RailcraftUtil;
 import crazypants.enderio.base.material.recipes.MaterialOredicts;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.PaintSourceValidator;
@@ -168,6 +169,8 @@ public class EnderIO implements IEnderIOAddon {
 
     CapacitorKeyRegistry.validate();
 
+    RailcraftUtil.registerFuels();
+
     // END mess
 
     Log.debug("PHASE IMC END");
@@ -301,7 +304,7 @@ public class EnderIO implements IEnderIOAddon {
   public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
     return new NNList<>(Triple.of(0, null, "aliases"), Triple.of(1, null, "materials"), Triple.of(1, null, "items"), Triple.of(1, null, "base"),
         Triple.of(1, null, "balls"), Triple.of(9, null, "misc"), Triple.of(9, null, "capacitor"), Triple.of(1, null, "hiding_base"),
-        Triple.of(1, null, "darksteel_upgrades"));
+        Triple.of(1, null, "darksteel_upgrades"), Triple.of(1, null, "fuels"));
   }
 
   @Override

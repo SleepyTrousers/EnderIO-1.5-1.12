@@ -5,7 +5,6 @@ import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
 import crazypants.enderio.base.paint.PaintSourceValidator;
-import crazypants.enderio.util.CapturedMob;
 import net.minecraft.block.Block;
 
 /**
@@ -54,8 +53,7 @@ public final class IMC {
   public static final String PAINTER_BLACKLIST_ADD = "painter:blacklist:add";
 
   /**
-   * Key for a string message to add an entity to the Soul Vial blacklist. Calls {@link CapturedMob#addToBlackList(net.minecraft.util.ResourceLocation)} with
-   * the string value of the message. Entities blacklisted this way cannot be picked up with Soul Vials.
+   * Key for a string (ResourceLocation) message to add an entity to the Soul Vial blacklist. Entities blacklisted this way cannot be picked up with Soul Vials.
    * 
    * @deprecated Use {@link #XML_RECIPE}
    */
@@ -75,13 +73,19 @@ public final class IMC {
   /**
    * Key for an NBT message to register a fluid fuel. Calls {@link FluidFuelRegister#addFuel(net.minecraft.nbt.NBTTagCompound)} with the NBT value of the
    * message.
+   * 
+   * @deprecated Use {@link #XML_RECIPE}
    */
+  @Deprecated
   public static final String FLUID_FUEL_ADD = "fluidFuel:add";
 
   /**
    * Key for an NBT message to register a fluid coolant. Calls {@link FluidFuelRegister#addCoolant(net.minecraft.nbt.NBTTagCompound)} with the NBT value of the
    * message.
+   * 
+   * @deprecated Use {@link #XML_RECIPE}
    */
+  @Deprecated
   public static final String FLUID_COOLANT_ADD = "fluidCoolant:add";
 
   /**

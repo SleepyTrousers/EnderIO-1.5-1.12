@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema targetNamespace="http://enderio.com/recipes" elementFormDefault="unqualified" attributeFormDefault="unqualified"
   xmlns="http://www.w3.org/2001/XMLSchema" xmlns:enderio="http://enderio.com/recipes">
-  <element name="recipes">
+    <element name="recipes">
     <complexType>
       <sequence maxOccurs="unbounded" minOccurs="0">
         <choice maxOccurs="1" minOccurs="1">
@@ -102,7 +102,7 @@
                                 <element minOccurs="1" maxOccurs="9" name="item" type="enderio:itemType">
                                   <annotation>
                                     <documentation>An item to be used for crafting.</documentation>
-                                  </annotation>
+                                  </annotation>
                                 </element>
                               </sequence>
                               <attribute use="optional" name="size">
@@ -130,7 +130,7 @@
                                 <element minOccurs="1" maxOccurs="9" name="item" type="enderio:itemType">
                                   <annotation>
                                     <documentation>An item to be used for crafting.</documentation>
-                                  </annotation>
+                                  </annotation>
                                 </element>
                               </sequence>
                             </complexType>
@@ -754,6 +754,8 @@
                       <documentation>A pseudo-recipe for hiding items and fluids in the JEI list of ingredients.</documentation>
                     </annotation>
                   </element>
+                  <element name="fuel" type="enderio:fuelType" minOccurs="1" maxOccurs="1"></element>
+                  <element name="coolant" type="enderio:coolantType" minOccurs="1" maxOccurs="1"></element>
                 </choice>
               </sequence>
               <attribute use="optional" name="required" type="boolean">
@@ -1167,6 +1169,37 @@
     </attribute>
   </complexType>
 
+  <complexType name="fuelType">
+    <annotation>
+      <documentation>A fuel for usage in the combustion generators.</documentation>
+    </annotation>
+    <sequence>
+      <element name="config" type="enderio:configComplexType" maxOccurs="unbounded" minOccurs="0"></element>
+      <element name="dependency" type="enderio:dependencyComplexType" maxOccurs="unbounded" minOccurs="0"></element>
+    </sequence>
+    <attribute name="fluid" type="string" use="required"></attribute>
+    <attribute name="pertick" use="required">
+            <annotation>
+              <documentation>Amount of energy the fuel generates per tick (base value)</documentation>
+            </annotation>
+            <simpleType>
+        <restriction base="int">
+          <minExclusive value="0"></minExclusive>
+        </restriction>
+      </simpleType>
+    </attribute>
+    <attribute name="ticks" use="required">
+            <annotation>
+              <documentation>Number of ticks the fuel lasts (base value)</documentation>
+            </annotation>
+            <simpleType>
+        <restriction base="int">
+          <minExclusive value="0"></minExclusive>
+        </restriction>
+      </simpleType>
+    </attribute>
+  </complexType>
+  
   <complexType name="hidingType">
     <annotation>
       <documentation>Configure which items/fluids should be hidden in JEI.</documentation>
@@ -1181,6 +1214,26 @@
     </sequence>
   </complexType>
 
+  <complexType name="coolantType">
+    <annotation>
+      <documentation>A coolant for usage in the combustion generators.</documentation>
+    </annotation>
+    <sequence>
+      <element name="config" type="enderio:configComplexType" maxOccurs="unbounded" minOccurs="0"></element>
+      <element name="dependency" type="enderio:dependencyComplexType" maxOccurs="unbounded" minOccurs="0"></element>
+    </sequence>
+    <attribute name="fluid" type="string" use="required"></attribute>
+    <attribute name="amount" use="required">
+            <annotation>
+              <documentation>degreesCoolingPerMB (base value)</documentation>
+            </annotation>
+            <simpleType>
+              <restriction base="float">
+                <minExclusive value="0"></minExclusive>
+              </restriction>
+            </simpleType>
+    </attribute>
+  </complexType>
 
   <complexType name="potionType">
     <attribute name="potion" type="string" use="required">
