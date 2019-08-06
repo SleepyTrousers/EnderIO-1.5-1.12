@@ -26,6 +26,7 @@ import crazypants.enderio.base.transceiver.ChannelList;
 import crazypants.enderio.base.transceiver.ChannelType;
 import crazypants.enderio.base.transceiver.IChanneledMachine;
 import crazypants.enderio.base.transceiver.ServerChannelRegister;
+import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Store;
@@ -48,9 +49,6 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.TRANSCEIVER_POW
 import static crazypants.enderio.machines.capacitor.CapacitorKey.TRANSCEIVER_POWER_USE;
 
 public class TileTransceiver extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity, IChanneledMachine {
-
-  // Power will only be sent to other transceivers is the buffer is higher than this amount
-  private static final float MIN_POWER_TO_SEND = 0.5f;
 
   @Store
   private final ChannelList sendChannels = new ChannelList();
@@ -297,7 +295,15 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IPaint
   }
 
   private int getMaxSendableEnergy() {
-    return getEnergyStored() - (int) (MIN_POWER_TO_SEND * getMaxEnergyStored());
+    return getEnergyStored() - (int) (getInternalBufferRatio() * getMaxEnergyStored());
+  }
+
+  public float getInternalBufferRatio() {
+    return CapacitorKey.TRANSCEIVER_POWER_BUFFER_RATIO.getFloat(getCapacitorData());
+  }
+
+  public float getSendBufferRatio() {
+    return 1f - getInternalBufferRatio();
   }
 
   @Override

@@ -163,6 +163,14 @@ XML editor will display that as tooltips when editing this file.
   
   <capacitor key="enderio:block_transceiver/intake" base="40960" scaler="POWER" />
   <capacitor key="enderio:block_transceiver/buffer" base="500000" scaler="CUBIC" />
+  <capacitor key="enderio:block_transceiver/ratio" base="1">
+  <indexed step="1">
+    <data value=".75"/>
+    <data value=".5"/>
+    <data value=".15"/>
+    <data value=".025"/>
+  </indexed>
+  </capacitor>
   <capacitor key="enderio:block_transceiver/use" base="10" scaler="QUADRATIC" />
 
   <capacitor key="enderio:block_vat/intake" base="120" scaler="POWER" />

@@ -2,20 +2,23 @@ package crazypants.enderio.machines.machine.transceiver.gui;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.client.gui.button.ToggleButton;
-import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.api.capacitor.ICapacitorData;
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.lang.LangPower;
+import crazypants.enderio.base.machine.gui.IPowerBarData;
 import crazypants.enderio.base.machine.gui.PowerBar;
+import crazypants.enderio.base.machine.gui.PowerBar.Op;
+import crazypants.enderio.base.machine.gui.PowerBar.What;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -27,10 +30,9 @@ public class GeneralTab implements ITabPanel {
   private static final int SEND_BAR_OFFSET = 12;
   final @Nonnull ContainerTransceiver container;
   final @Nonnull GuiTransceiver parent;
-  final @Nonnull GuiToolTip sendPowerBarTT;
 
   final @Nonnull ToggleButton bufferSizeB;
-  final @Nonnull PowerBar internalPowerBar;
+  final @Nonnull PowerBar internalPowerBar, sendPowerBar;
 
   public GeneralTab(@Nonnull GuiTransceiver guiTransceiver) {
     parent = guiTransceiver;
@@ -43,18 +45,63 @@ public class GeneralTab implements ITabPanel {
     bufferSizeB.setUnselectedToolTip(Lang.GUI_TRANS_BUFFER_SINGLES.get());
     bufferSizeB.setSelected(parent.getTransciever().isBufferStacks());
 
-    sendPowerBarTT = new GuiToolTip(new Rectangle(11 + SEND_BAR_OFFSET, 14, 10, 58), "") {
-      @Override
-      protected void updateText() {
-        text.clear();
-        if (parent.renderPowerBar()) {
-          updateSendPowerBarTooltip(text);
-        }
-      }
-    };
-    parent.addToolTip(sendPowerBarTT);
+    internalPowerBar = new PowerBar(new PowerBarDataMain(), parent, 11, 14, 58);
+    final PowerBarDataSend sendTank = new PowerBarDataSend();
+    sendPowerBar = new PowerBar(sendTank, parent, 11 + SEND_BAR_OFFSET, 14, 58);
+    sendPowerBar.addTooltips(Op.REPLACE, What.ALL,
+        () -> new NNList<String>(Lang.GUI_TRANS_BUFFER_SHARED.get(),
+            Lang.GUI_TRANS_BUFFER_MAXIO.get(LangPower.RFt(parent.getTransciever().getMaxEnergyRecieved(null))),
+            LangPower.RF(sendTank.getEnergyStored(), sendTank.getMaxEnergyStored())));
+  }
 
-    internalPowerBar = new PowerBar(container.getTe(), parent, 11, 14, 58);
+  private class PowerBarDataMain implements IPowerBarData {
+
+    @Override
+    public int getMaxEnergyStored() {
+      return (int) (container.getTe().getMaxEnergyStored() * container.getTe().getInternalBufferRatio());
+    }
+
+    @Override
+    @Nonnull
+    public ICapacitorData getCapacitorData() {
+      return container.getTe().getCapacitorData();
+    }
+
+    @Override
+    public int getEnergyStored() {
+      return Math.min(getMaxEnergyStored(), container.getTe().getEnergyStored());
+    }
+
+    @Override
+    public int getMaxUsage() {
+      return container.getTe().getMaxUsage();
+    }
+
+  }
+
+  private class PowerBarDataSend implements IPowerBarData {
+
+    @Override
+    public int getMaxEnergyStored() {
+      return (int) (container.getTe().getMaxEnergyStored() * container.getTe().getSendBufferRatio());
+    }
+
+    @Override
+    @Nonnull
+    public ICapacitorData getCapacitorData() {
+      return DefaultCapacitorData.BASIC_CAPACITOR;
+    }
+
+    @Override
+    public int getEnergyStored() {
+      return Math.max(0, container.getTe().getEnergyStored() - (container.getTe().getMaxEnergyStored() - getMaxEnergyStored()));
+    }
+
+    @Override
+    public int getMaxUsage() {
+      return container.getTe().getMaxUsage();
+    }
+
   }
 
   @Override
@@ -62,6 +109,7 @@ public class GeneralTab implements ITabPanel {
     container.setPlayerInventoryVisible(true);
     container.setBufferSlotsVisible(true);
     parent.addDrawingElement(internalPowerBar);
+    parent.addDrawingElement(sendPowerBar);
     bufferSizeB.onGuiInit();
   }
 
@@ -70,6 +118,7 @@ public class GeneralTab implements ITabPanel {
     container.setPlayerInventoryVisible(false);
     container.setBufferSlotsVisible(false);
     parent.removeDrawingElement(internalPowerBar);
+    parent.removeDrawingElement(sendPowerBar);
     bufferSizeB.detach();
   }
 
@@ -101,33 +150,6 @@ public class GeneralTab implements ITabPanel {
 
     // Highlights
     parent.renderSlotHighlights();
-
-    // Power
-    parent.bindGuiTexture();
-    GlStateManager.color(1, 1, 1);
-
-    x = left + 11 - 1;
-    y = top + 14 - 1;
-    int maxHeight = 58;
-
-    int totalPixelHeight = parent.getTransciever().getEnergyStoredScaled(maxHeight * 2);
-    int fillHeight = Math.min(totalPixelHeight, maxHeight);
-
-    int fillY = y + 1 + 58 - fillHeight;
-    x += 1;
-
-    fillHeight = Math.max(0, totalPixelHeight - maxHeight);
-    fillY = y + 1 + 58 - fillHeight;
-    parent.drawTexturedModalRect(x + SEND_BAR_OFFSET, fillY, 246 - 25, 196, 9, fillHeight);
-
-  }
-
-  private void updateSendPowerBarTooltip(List<String> text) {
-    text.add(Lang.GUI_TRANS_BUFFER_SHARED.get());
-    text.add(Lang.GUI_TRANS_BUFFER_MAXIO.get(LangPower.RFt(parent.getTransciever().getMaxEnergyRecieved(null))));
-    int maxEnergy = parent.getTransciever().getMaxEnergyStored() / 2;
-    int energyStored = Math.max(0, parent.getTransciever().getEnergyStored() - maxEnergy);
-    text.add(LangPower.RF(energyStored, maxEnergy));
   }
 
   @Override

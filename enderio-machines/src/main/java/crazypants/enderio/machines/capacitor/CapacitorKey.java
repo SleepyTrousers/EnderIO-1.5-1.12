@@ -150,6 +150,7 @@ public enum CapacitorKey implements ICapacitorKey {
   TRANSCEIVER_POWER_INTAKE(MachineObject.block_transceiver, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   TRANSCEIVER_POWER_BUFFER(MachineObject.block_transceiver, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   TRANSCEIVER_POWER_USE(MachineObject.block_transceiver, CapacitorKeyType.ENERGY_USE, "use"),
+  TRANSCEIVER_POWER_BUFFER_RATIO(MachineObject.block_transceiver, CapacitorKeyType.ENERGY_EFFICIENCY, "ratio"),
 
   VAT_POWER_INTAKE(MachineObject.block_vat, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   VAT_POWER_BUFFER(MachineObject.block_vat, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
