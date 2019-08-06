@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class RailcraftUtil {
 
   public static void registerFuels() {
+    // TODO: Check if this is still valid
     IFluidFuel hootch = FluidFuelRegister.instance.getFuel(Fluids.HOOTCH.getFluid());
     if (hootch != null) {
       FMLInterModComms.sendMessage("railcraft", "boiler-fuel-liquid",
