@@ -307,16 +307,27 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
      * Marks the rule as one checking the general type of item (weapon, tool, ...). Those will be shown in the upgrade item tooltip under the "can be applied
      * to" header.
      * <p>
+     * Note that the tooltip is fetched without querying check() first, as there is no item to check against when showing the tooltip for the upgrade item.
+     * <p>
      * Should <em>not</em>be used together with {@link WithTooltip} or {@link Prerequisite}.
      *
      */
     interface ItemType extends IRule {
       @Nonnull
       ITextComponent getTooltip();
+
+      /**
+       * Helper interface for anonymous implementations
+       *
+       */
+      interface Static extends ItemType, StaticRule {
+      }
     }
 
     /**
      * Marks the rule as having a tooltip for the upgrade item. Those tooltips will be shown at the end of the tooltip.
+     * <p>
+     * Note that the tooltip is fetched without querying check() first, as there is no item to check against when showing the tooltip for the upgrade item.
      * <p>
      * Should <em>not</em>be used together with {@link ItemType} or {@link Prerequisite}.
      *
