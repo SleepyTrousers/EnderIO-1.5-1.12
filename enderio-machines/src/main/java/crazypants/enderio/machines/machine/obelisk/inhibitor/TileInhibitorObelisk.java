@@ -2,12 +2,16 @@ package crazypants.enderio.machines.machine.obelisk.inhibitor;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.machines.init.MachineObject;
 import crazypants.enderio.machines.machine.obelisk.base.AbstractRangedObeliskEntity;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import static crazypants.enderio.machines.capacitor.CapacitorKey.INHIBITOR_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.INHIBITOR_POWER_INTAKE;
@@ -49,28 +53,34 @@ public class TileInhibitorObelisk extends AbstractRangedObeliskEntity {
     return INHIBITOR_RANGE.getFloat(getCapacitorData());
   }
 
+  private void register() {
+    if (NullHelper.untrust(getPos()) != null && NullHelper.untrust(getWorld()) != null) {
+      InhibitorHandler.register(getWorld(), getPos(), this);
+    }
+  }
+
   @Override
   public void onCapacitorDataChange() {
     super.onCapacitorDataChange();
-    BlockInhibitorObelisk.instance.activeInhibitors.put(getLocation(), getBounds());
+    register();
+  }
+
+  @Override
+  public void setWorld(@Nonnull World worldIn) {
+    super.setWorld(worldIn);
+    register();
+  }
+
+  @Override
+  public void setPos(@Nonnull BlockPos posIn) {
+    super.setPos(posIn);
+    register();
   }
 
   @Override
   public void validate() {
     super.validate();
-    BlockInhibitorObelisk.instance.activeInhibitors.put(getLocation(), getBounds());
-  }
-
-  @Override
-  public void invalidate() {
-    super.invalidate();
-    BlockInhibitorObelisk.instance.activeInhibitors.remove(getLocation());
-  }
-
-  @Override
-  public void onChunkUnload() {
-    super.onChunkUnload();
-    BlockInhibitorObelisk.instance.activeInhibitors.remove(getLocation());
+    register();
   }
 
   @Override

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+
+These are the built-in recipes. You cannot change this file, it is a
+reference for you only and will be generated every time the game starts.
+
+To make changes to the recipes, copy the recipes you want to change to
+a file in the 'user' folder. To disable a recipe, add an attribute "disabled"
+and set it to true, e.g.: <recipe name="Gear" disabled="true" />
+
+You can also disable all built-in recipes with the setting "loadCoreRecipes"
+in the Ender IO config file, so that only your files in the 'user' folder will
+be loaded. Please be advised that a number of recipes are absolutely needed,
+so you will have to copy those over into a 'user' file for the game to load.
+
+These are recipes for fuels and coolant for use by the Combustion Generator.
+Recipes that have fluids that cannot be found in-game are either skipped or an
+error, depending on their "required" attribute.
+
+More information on the syntax can be found in the recipes.xsd file. An
+XML editor will display that as tooltips when editing this file.
+
+ -->
+
+  <recipe name="Coolant: Water" required="true">
+    <coolant fluid="water" amount="0.0023" />
+  </recipe>
+
+  <recipe name="Fuel: Hootch" required="true">
+    <fuel fluid="hootch" pertick="60" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: Rocket Fuel" required="true">
+    <fuel fluid="rocket_fuel" pertick="160" ticks="7000" />
+  </recipe>
+
+  <recipe name="Fuel: Fire Water" required="true">
+    <fuel fluid="fire_water" pertick="80" ticks="15000" />
+  </recipe>
+
+  <recipe name="Coolant: Vapor of Levity" required="true">
+    <coolant fluid="vapor_of_levity" amount="0.0314" />
+  </recipe>
+
+  <recipe name="Fuel: creosote" required="false">
+    <fuel fluid="creosote" pertick="20" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: fuel_dense" required="false">
+    <fuel fluid="fuel_dense" pertick="100" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: fuel_gaseous" required="false">
+    <fuel fluid="fuel_gaseous" pertick="130" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: fuel_light" required="false">
+    <fuel fluid="fuel_light" pertick="100" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: fuel_mixed_heavy" required="false">
+    <fuel fluid="fuel_mixed_heavy" pertick="80" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: fuel_mixed_light" required="false">
+    <fuel fluid="fuel_mixed_light" pertick="50" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: oil_dense" required="false">
+    <fuel fluid="oil_dense" pertick="64" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: oil_distilled" required="false">
+    <fuel fluid="oil_distilled" pertick="20" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: oil_heavy" required="false">
+    <fuel fluid="oil_heavy" pertick="32" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: coal" required="false">
+    <fuel fluid="coal" pertick="40" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: crude_oil" required="false">
+    <fuel fluid="crude_oil" pertick="50" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: tree_oil" required="false">
+    <fuel fluid="tree_oil" pertick="50" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: refined_oil" required="false">
+    <fuel fluid="refined_oil" pertick="100" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: refined_fuel" required="false">
+    <fuel fluid="refined_fuel" pertick="200" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: seed_oil" required="false">
+    <fuel fluid="seed_oil" pertick="20" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: refined_biofuel" required="false">
+    <fuel fluid="refined_biofuel" pertick="125" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: canolaoil" required="false">
+    <fuel fluid="canolaoil" pertick="20" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: refinedcanolaoil" required="false">
+    <fuel fluid="refinedcanolaoil" pertick="40" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: crystaloil" required="false">
+    <fuel fluid="crystaloil" pertick="80" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: empoweredoil" required="false">
+    <fuel fluid="empoweredoil" pertick="140" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: bio.ethanol" required="false">
+    <fuel fluid="bio.ethanol" pertick="160" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: biodiesel" required="false">
+    <fuel fluid="biodiesel" pertick="125" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: oil" required="false">
+    <fuel fluid="oil" pertick="50" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: diesel" required="false">
+    <fuel fluid="diesel" pertick="125" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: gasoline" required="false">
+    <fuel fluid="gasoline" pertick="160" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: ic2biogas" required="false">
+    <fuel fluid="ic2biogas" pertick="50" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: biofuel" required="false">
+    <fuel fluid="biofuel" pertick="125" ticks="6000" />
+  </recipe>
+
+  <recipe name="Fuel: if.protein" required="false">
+    <fuel fluid="if.protein" pertick="25" ticks="6000" />
+  </recipe>
+
+</enderio:recipes>
