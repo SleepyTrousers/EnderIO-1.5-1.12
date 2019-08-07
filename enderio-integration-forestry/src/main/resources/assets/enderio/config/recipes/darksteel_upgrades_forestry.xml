@@ -66,7 +66,7 @@ XML editor will display that as tooltips when editing this file.
       <shapeless>
         <item name="enderio:item_dark_steel_upgrade:0"/><item name="forestry:apiarist_boots"/>
       </shapeless>
-      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"eenderiointegrationforestry:apiarist_armor_feet"}'/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiointegrationforestry:apiarist_armor_feet"}'/>
     </crafting>
   </recipe>
 
