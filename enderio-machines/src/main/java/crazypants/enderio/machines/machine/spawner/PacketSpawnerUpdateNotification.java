@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
-import crazypants.enderio.base.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -48,7 +47,7 @@ public class PacketSpawnerUpdateNotification extends MessageTileEntity<TilePower
 
     @Override
     public IMessage onMessage(PacketSpawnerUpdateNotification message, MessageContext ctx) {
-      TilePoweredSpawner te = message.getTileEntity(EnderIO.proxy.getClientWorld());
+      TilePoweredSpawner te = message.getTileEntity(message.getWorld(ctx));
       if (te != null) {
         te.replaceNotification(message.notification);
       }

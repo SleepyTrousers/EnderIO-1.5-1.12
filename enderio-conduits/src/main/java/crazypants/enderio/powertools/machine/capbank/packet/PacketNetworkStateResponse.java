@@ -2,7 +2,6 @@ package crazypants.enderio.powertools.machine.capbank.packet;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.powertools.machine.capbank.network.ClientNetworkManager;
 import crazypants.enderio.powertools.machine.capbank.network.ICapBankNetwork;
 import crazypants.enderio.powertools.machine.capbank.network.NetworkState;
@@ -51,13 +50,14 @@ public class PacketNetworkStateResponse implements IMessage {
       state = null;
     }
   }
-  
+
   public static class Handler implements IMessageHandler<PacketNetworkStateResponse, IMessage> {
 
+    @SuppressWarnings("null")
     @Override
     public IMessage onMessage(PacketNetworkStateResponse message, MessageContext ctx) {
       if (message.state != null) {
-        ClientNetworkManager.getInstance().updateState(EnderIO.proxy.getClientWorld(), message.id, message.state);
+        ClientNetworkManager.getInstance().updateState(message.id, message.state);
       } else {
         ClientNetworkManager.getInstance().destroyNetwork(message.id);
       }

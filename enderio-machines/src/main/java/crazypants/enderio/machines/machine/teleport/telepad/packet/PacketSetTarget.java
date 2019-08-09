@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.machines.config.config.TelePadConfig;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
@@ -64,7 +63,7 @@ public class PacketSetTarget extends MessageTileEntity<TileEntity> {
   public static class HandlerClient implements IMessageHandler<PacketSetTarget, IMessage> {
     @Override
     public IMessage onMessage(PacketSetTarget message, MessageContext ctx) {
-      TileEntity te = message.getTileEntity(EnderIO.proxy.getClientWorld());
+      TileEntity te = message.getTileEntity(message.getWorld(ctx));
       if (te instanceof TileTelePad) {
         TileTelePad tp = (TileTelePad) te;
         tp.setTarget(message.target);

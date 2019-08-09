@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.button.IconButton;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
@@ -39,7 +38,7 @@ public class GuiEnchanter extends GuiContainerBaseEIO {
   public void initGui() {
     super.initGui();
     recipeButton.onGuiInit();
-    recipeButton.visible = EnderIO.proxy.isAnEiInstalled();
+    recipeButton.visible = showRecipeButton();
   }
 
   @Override

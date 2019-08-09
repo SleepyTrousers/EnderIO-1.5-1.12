@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -41,7 +40,7 @@ public class PacketTelePadFluidLevel extends MessageTileEntity<TileTelePad> {
 
     @Override
     public IMessage onMessage(PacketTelePadFluidLevel message, MessageContext ctx) {
-      TileTelePad te = message.getTileEntity(ctx.side.isClient() ? EnderIO.proxy.getClientWorld() : message.getWorld(ctx));
+      TileTelePad te = message.getTileEntity(message.getWorld(ctx));
       if (te != null) {
         te.setFluidAmount(message.level);
       }

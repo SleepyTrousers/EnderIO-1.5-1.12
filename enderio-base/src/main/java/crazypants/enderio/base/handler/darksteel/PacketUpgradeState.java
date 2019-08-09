@@ -1,12 +1,15 @@
 package crazypants.enderio.base.handler.darksteel;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.network.PacketHandler;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PacketUpgradeState implements IMessage {
 
@@ -50,20 +53,29 @@ public class PacketUpgradeState implements IMessage {
     entityID = buf.readInt();
   }
 
-  public static class Handler implements IMessageHandler<PacketUpgradeState, IMessage> {
+  public static class ClientHandler implements IMessageHandler<PacketUpgradeState, IMessage> {
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IMessage onMessage(PacketUpgradeState message, MessageContext ctx) {
-      EntityPlayer player = (EntityPlayer) (ctx.side.isClient() ? EnderIO.proxy.getClientWorld().getEntityByID(message.entityID)
-          : ctx.getServerHandler().player);
-      if (player != null) {
-        DarkSteelController.setActive(player, message.type, message.isActive);
-        if (ctx.side.isServer()) {
-          message.entityID = player.getEntityId();
-          PacketHandler.INSTANCE.sendToDimension(message, player.world.provider.getDimension());
-        }
+      Entity player = Minecraft.getMinecraft().world.getEntityByID(message.entityID);
+      if (player instanceof EntityPlayer) {
+        DarkSteelController.setActive((EntityPlayer) player, message.type, message.isActive);
       }
       return null;
     }
   }
+
+  public static class ServerHandler implements IMessageHandler<PacketUpgradeState, IMessage> {
+
+    @Override
+    public IMessage onMessage(PacketUpgradeState message, MessageContext ctx) {
+      EntityPlayer player = ctx.getServerHandler().player;
+      DarkSteelController.setActive(player, message.type, message.isActive);
+      message.entityID = player.getEntityId();
+      PacketHandler.INSTANCE.sendToDimension(message, player.world.provider.getDimension());
+      return null;
+    }
+  }
+
 }

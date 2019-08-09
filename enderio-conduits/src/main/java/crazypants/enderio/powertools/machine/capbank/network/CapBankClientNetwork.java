@@ -19,7 +19,6 @@ import crazypants.enderio.powertools.machine.capbank.packet.PacketNetworkStateRe
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
 
 public class CapBankClientNetwork implements ICapBankNetwork {
 
@@ -65,7 +64,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     }
   }
 
-  public void setState(@Nonnull World world, @Nonnull NetworkState state) {
+  public void setState(@Nonnull NetworkState state) {
     maxEnergyRecieved = state.getMaxInput();
     maxEnergySent = state.getMaxOutput();
     maxIO = state.getMaxIO();

@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
-import crazypants.enderio.base.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -38,7 +37,7 @@ public class PacketActivateWeather extends MessageTileEntity<TileWeatherObelisk>
 
     @Override
     public IMessage onMessage(PacketActivateWeather message, MessageContext ctx) {
-      TileWeatherObelisk te = message.getTileEntity(ctx.side.isServer() ? message.getWorld(ctx) : EnderIO.proxy.getClientWorld());
+      TileWeatherObelisk te = message.getTileEntity(message.getWorld(ctx));
       if (te != null) {
         if (message.start) {
           te.startTask();
