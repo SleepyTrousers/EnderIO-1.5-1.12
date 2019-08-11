@@ -23,6 +23,7 @@ import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.base.render.ITintedBlock;
 import crazypants.enderio.base.render.ITintedItem;
 import crazypants.enderio.base.render.model.RelayingBakedModel;
+import crazypants.enderio.base.render.model.SmartModel;
 import crazypants.enderio.base.render.pipeline.OverlayHolder;
 import crazypants.enderio.base.render.property.EnumRenderMode;
 import net.minecraft.block.Block;
@@ -201,7 +202,13 @@ public class SmartModelAttacher {
           Log.warn("ModelBakeEvent: cannot register smart model over null model for " + holder.block + ". See model errors below.");
           continue;
         }
-        RelayingBakedModel model = new RelayingBakedModel(defaultBakedModel);
+        RelayingBakedModel model;
+        if (defaultBakedModel instanceof SmartModel.SmartBakedModel) {
+          model = (RelayingBakedModel) defaultBakedModel;
+          System.out.println("SmartModelAttacher: Skipping default " + defaultMrl);
+        } else {
+          model = new RelayingBakedModel(defaultBakedModel);
+        }
 
         ModelResourceLocation itemMrl = new ModelResourceLocation(defaultMrl.getResourceDomain() + ":" + defaultMrl.getResourcePath() + "#inventory");
         event.getModelRegistry().putObject(itemMrl, model);
@@ -219,7 +226,11 @@ public class SmartModelAttacher {
           if (existingModel == null || existingModel == missingModel) {
             event.getModelRegistry().putObject(entryMrl, defaultBakedModel);
           } else if (entryBlockstate.getValue(holder_property) == holder.autoValue) {
-            event.getModelRegistry().putObject(entryMrl, model);
+            if (existingModel instanceof SmartModel.SmartBakedModel) {
+              System.out.println("SmartModelAttacher: Skipping entry " + entryMrl);
+            } else {
+              event.getModelRegistry().putObject(entryMrl, model);
+            }
           }
         }
       } else {
