@@ -9,6 +9,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
+import crazypants.enderio.base.handler.darksteel.Rules;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelArmor;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.integration.forestry.EnderIOIntegrationForestry;
@@ -36,6 +37,13 @@ public class ApiaristArmorUpgrade extends AbstractUpgrade {
   @Override
   public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     return item.isForSlot(slot) && (item instanceof ItemDarkSteelArmor || item.hasUpgradeCallbacks(this)) && !hasUpgrade(stack, item);
+  }
+
+  @Override
+  @Nonnull
+  public List<IRule> getRules() {
+    return new NNList<>(Rules.forSlot(slot), Rules.or(Rules.callbacksFor(this), Rules.staticCheck(item -> item instanceof ItemDarkSteelArmor)),
+        Rules.itemTypeTooltip(slot));
   }
 
   @Override

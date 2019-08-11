@@ -16,6 +16,7 @@ import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
+import crazypants.enderio.base.handler.darksteel.Rules;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.lang.Lang;
@@ -56,6 +57,14 @@ public class DirectUpgrade extends AbstractUpgrade {
   public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     return item.isForSlot(EntityEquipmentSlot.MAINHAND) && (item.isBlockBreakingTool() || item.isWeapon()) && EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)
         && !hasAnyUpgradeVariant(stack);
+  }
+
+  @Override
+  @Nonnull
+  public List<IRule> getRules() {
+    return new NNList<>(Rules.forSlot(EntityEquipmentSlot.MAINHAND),
+        Rules.or(Rules.staticCheck(item -> item.isBlockBreakingTool()), Rules.staticCheck(item -> item.isWeapon())), EnergyUpgrade.HAS_ANY,
+        Rules.itemTypeTooltip(Lang.DSU_CLASS_WEAPONS), Rules.itemTypeTooltip(Lang.DSU_CLASS_TOOLS));
   }
 
   @Override
