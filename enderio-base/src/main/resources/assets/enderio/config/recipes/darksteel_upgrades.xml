@@ -379,13 +379,13 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe required="true" name="Dark Steel Upgrade: Thaumaturge Boots">
-    <dependency upgrade="enderio:thaumaturge_robes_boots"/>
+    <dependency upgrade="enderio:thaumaturge_robes_feet"/>
     <dependency item="thaumcraft:cloth_boots"/>
     <crafting>
       <shapeless>
         <item name="enderio:item_dark_steel_upgrade:0"/><item name="thaumcraft:cloth_boots"/>
       </shapeless>
-      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:thaumaturge_robes_boots"}'/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:thaumaturge_robes_feet"}'/>
     </crafting>
   </recipe>
 
