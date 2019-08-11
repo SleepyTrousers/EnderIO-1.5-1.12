@@ -5,13 +5,16 @@ import java.lang.reflect.Method;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.config.IntegrationConfig;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class BRProxy {
 
   private static boolean isLoaded = false;
