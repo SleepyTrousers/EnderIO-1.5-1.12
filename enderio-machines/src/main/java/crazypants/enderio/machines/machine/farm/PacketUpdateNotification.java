@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.network.MessageTileEntity;
 
 import crazypants.enderio.api.farm.FarmNotification;
-import crazypants.enderio.base.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -49,7 +48,7 @@ public class PacketUpdateNotification extends MessageTileEntity<TileFarmStation>
 
     @Override
     public IMessage onMessage(PacketUpdateNotification message, MessageContext ctx) {
-      TileFarmStation te = message.getTileEntity(EnderIO.proxy.getClientWorld());
+      TileFarmStation te = message.getTileEntity(message.getWorld(ctx));
       if (te != null) {
         te.clearNotification(true);
         te.getNotification().addAll(message.notification);

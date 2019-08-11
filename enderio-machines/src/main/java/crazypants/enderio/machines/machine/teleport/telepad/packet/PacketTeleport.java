@@ -2,7 +2,6 @@ package crazypants.enderio.machines.machine.teleport.telepad.packet;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
@@ -78,7 +77,7 @@ public class PacketTeleport extends MessageTileEntity<TileEntity> {
 
     @Override
     public IMessage onMessage(PacketTeleport message, MessageContext ctx) {
-      World world = ctx.side.isClient() ? EnderIO.proxy.getClientWorld() : message.getWorld(ctx);
+      World world = message.getWorld(ctx);
       TileEntity te = message.getTileEntity(world);
       if (te instanceof TileTelePad) {
 

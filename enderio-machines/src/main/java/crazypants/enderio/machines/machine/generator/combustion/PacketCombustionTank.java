@@ -5,7 +5,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.network.MessageTileEntity;
 import com.enderio.core.common.network.NetworkUtil;
 
-import crazypants.enderio.base.EnderIO;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -50,7 +49,7 @@ public class PacketCombustionTank extends MessageTileEntity<TileCombustionGenera
 
     @Override
     public IMessage onMessage(PacketCombustionTank message, MessageContext ctx) {
-      TileCombustionGenerator tile = message.getTileEntity(EnderIO.proxy.getClientWorld());
+      TileCombustionGenerator tile = message.getTileEntity(message.getWorld(ctx));
       if (tile != null) {
         if (message.nbtRoot.hasKey("coolantTank")) {
           NBTTagCompound tankRoot = message.nbtRoot.getCompoundTag("coolantTank");

@@ -96,10 +96,6 @@ public class GuiCapMachineBase<T extends AbstractCapabilityMachineEntity> extend
     recipeButton.onGuiInit();
   }
 
-  protected boolean showRecipeButton() {
-    return EnderIO.proxy.isAnEiInstalled();
-  }
-
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

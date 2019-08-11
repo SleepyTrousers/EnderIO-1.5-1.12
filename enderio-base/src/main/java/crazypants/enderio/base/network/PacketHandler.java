@@ -71,8 +71,8 @@ public final class PacketHandler {
     INSTANCE.registerMessage(PacketAddRemoveChannel.Handler.class, PacketAddRemoveChannel.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketChannelList.Handler.class, PacketChannelList.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketDarkSteelPowerPacket.Handler.class, PacketDarkSteelPowerPacket.class, nextID(), Side.SERVER);
-    INSTANCE.registerMessage(PacketUpgradeState.Handler.class, PacketUpgradeState.class, nextID(), Side.SERVER);
-    INSTANCE.registerMessage(PacketUpgradeState.Handler.class, PacketUpgradeState.class, nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(PacketUpgradeState.ServerHandler.class, PacketUpgradeState.class, nextID(), Side.SERVER);
+    INSTANCE.registerMessage(PacketUpgradeState.ClientHandler.class, PacketUpgradeState.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketOpenInventory.Handler.class, PacketOpenInventory.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketDrainStaff.Handler.class, PacketDrainStaff.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketIoMode.Handler.class, PacketIoMode.class, nextID(), Side.SERVER);

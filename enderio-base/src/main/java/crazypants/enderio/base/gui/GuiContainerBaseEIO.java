@@ -21,6 +21,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.IntegrationConfig;
+import crazypants.enderio.base.integration.jei.JeiAccessor;
 import crazypants.enderio.base.network.IRemoteExec;
 import crazypants.enderio.base.sound.SoundHelper;
 import crazypants.enderio.base.sound.SoundRegistry;
@@ -64,6 +65,10 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
   @Override
   protected @Nonnull ResourceLocation getGuiTexture() {
     return getGuiTexture(0);
+  }
+
+  protected boolean showRecipeButton() {
+    return JeiAccessor.isJeiRuntimeAvailable();
   }
 
   private final @Nonnull List<Rectangle> tabAreas = new ArrayList<Rectangle>();

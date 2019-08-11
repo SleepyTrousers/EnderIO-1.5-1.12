@@ -14,7 +14,6 @@ import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.diagnostics.EnderIOCrashCallable;
-import crazypants.enderio.base.integration.jei.JeiAccessor;
 import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.IDefaultRenderers;
 import crazypants.enderio.base.render.IHaveRenderers;
@@ -25,7 +24,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
@@ -35,7 +33,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -47,12 +44,7 @@ public class ClientProxy extends CommonProxy {
 
   @Override
   public World getClientWorld() {
-    return FMLClientHandler.instance().getClient().world;
-  }
-
-  @Override
-  public boolean isAnEiInstalled() {
-    return JeiAccessor.isJeiRuntimeAvailable();
+    return Minecraft.getMinecraft().world;
   }
 
   @Override
@@ -90,14 +82,6 @@ public class ClientProxy extends CommonProxy {
         ((IHaveTESR) block).bindTileEntitySpecialRenderer();
       }
     }
-  }
-
-  @Override
-  public double getReachDistanceForPlayer(EntityPlayer entityPlayer) {
-    if (entityPlayer instanceof EntityPlayerMP) {
-      return ((EntityPlayerMP) entityPlayer).interactionManager.getBlockReachDistance();
-    }
-    return super.getReachDistanceForPlayer(entityPlayer);
   }
 
   @Override

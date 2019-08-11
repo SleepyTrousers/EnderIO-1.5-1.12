@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.machine.task.PoweredTaskProgress;
 import crazypants.enderio.base.recipe.IMachineRecipe;
@@ -83,7 +82,7 @@ public class PacketVatProgress extends MessageTileEntity<TileVat> {
 
     @Override
     public IMessage onMessage(PacketVatProgress message, MessageContext ctx) {
-      TileVat tile = message.getTileEntity(EnderIO.proxy.getClientWorld());
+      TileVat tile = message.getTileEntity(message.getWorld(ctx));
       if (tile != null) {
         tile.currentTaskInputFluid = null;
         tile.currentTaskOutputFluid = null;

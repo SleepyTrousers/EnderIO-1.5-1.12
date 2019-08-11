@@ -30,7 +30,7 @@ public class CommonProxy {
   }
 
   public double getReachDistanceForPlayer(EntityPlayer entityPlayer) {
-    return 5;
+    return entityPlayer.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue();
   }
 
   public void stopWithErrorScreen(String... message) {
@@ -50,10 +50,6 @@ public class CommonProxy {
 
   public long getServerTickCount() {
     return TickTimer.getServerTickCount();
-  }
-
-  public boolean isAnEiInstalled() {
-    return false;
   }
 
   public void setInstantConfusionOnPlayer(@Nonnull EntityPlayer ent, int duration) {

@@ -9,7 +9,6 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.powertools.EnderIOPowerTools;
 import crazypants.enderio.powertools.machine.capbank.TileCapBank;
 import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.world.World;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -39,9 +38,9 @@ public class ClientNetworkManager {
     }
   }
 
-  public void updateState(@Nonnull World world, int id, @Nonnull NetworkState state) {
+  public void updateState(int id, @Nonnull NetworkState state) {
     CapBankClientNetwork network = getOrCreateNetwork(id);
-    network.setState(world, state);
+    network.setState(state);
   }
 
   public void updateEnergy(int id, long energyStored, float avgInput, float avgOutput) {
