@@ -11,6 +11,7 @@ import com.enderio.core.common.util.NNList;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade.IRule;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade.IRule.CheckResult;
 import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.util.Prep;
@@ -93,7 +94,7 @@ public class UpgradeCap implements IItemHandler {
       return false;
     }
 
-    return upgrade.getRules().stream().map(rule -> rule.check(getOwner(), item)).allMatch(rule -> rule.passes());
+    return upgrade.getRules().stream().map(rule -> rule.check(getOwner(), item)).allMatch(CheckResult::passes);
   }
 
   public @Nullable List<ITextComponent> checkInsert(int slot, @Nonnull ItemStack stack) {
@@ -108,7 +109,7 @@ public class UpgradeCap implements IItemHandler {
       return null;
     }
 
-    return upgrade.getRules().stream().map(rule -> rule.check(getOwner(), item)).filter(result -> result.hasResult()).map(result -> result.getResult())
+    return upgrade.getRules().stream().map(rule -> rule.check(getOwner(), item)).filter(CheckResult::hasResult).map(CheckResult::getResult)
         .collect(Collectors.toList());
   }
 
