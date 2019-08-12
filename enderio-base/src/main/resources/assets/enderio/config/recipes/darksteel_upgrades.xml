@@ -35,6 +35,7 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
+
   <recipe required="true" name="Dark Steel Upgrade: Carpet">
     <dependency upgrade="enderio:carpet"/>
     <crafting>
@@ -44,6 +45,16 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:carpet"}'/>
     </crafting>
   </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Carpet">
+    <dependency upgrade="enderio:carpet"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:carpet"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:carpet"}'/>
+    </tanking>
+  </recipe>
+
 
   <recipe required="true" name="Dark Steel Upgrade: Depth">
     <dependency upgrade="enderio:depth"/>
@@ -55,6 +66,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Depth">
+    <dependency upgrade="enderio:depth"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:depth"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:depth"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: Direct">
     <dependency upgrade="enderio:direct"/>
     <crafting>
@@ -64,6 +85,16 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:direct"}'/>
     </crafting>
   </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Direct">
+    <dependency upgrade="enderio:direct"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:direct"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:direct"}'/>
+    </tanking>
+  </recipe>
+
 
   <recipe required="true" name="Dark Steel Upgrade: Elytra">
     <dependency upgrade="enderio:elytra"/>
@@ -75,6 +106,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Elytra">
+    <dependency upgrade="enderio:elytra"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:elytra"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:elytra"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: Empowered">
     <dependency upgrade="enderio:energyupgrade"/>
     <crafting>
@@ -84,6 +125,16 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:energyupgrade"}'/>
     </crafting>
   </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Empowered">
+    <dependency upgrade="enderio:energyupgrade"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:energyupgrade"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:energyupgrade"}'/>
+    </tanking>
+  </recipe>
+
 
   <recipe required="true" name="Dark Steel Upgrade: Empowered II">
     <dependency upgrade="enderio:energyupgrade1"/>
@@ -95,6 +146,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Empowered II">
+    <dependency upgrade="enderio:energyupgrade1"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:energyupgrade1"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:energyupgrade1"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: Empowered III">
     <dependency upgrade="enderio:energyupgrade2"/>
     <crafting>
@@ -104,6 +165,16 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:energyupgrade2"}'/>
     </crafting>
   </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Empowered III">
+    <dependency upgrade="enderio:energyupgrade2"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:energyupgrade2"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:energyupgrade2"}'/>
+    </tanking>
+  </recipe>
+
 
   <recipe required="true" name="Dark Steel Upgrade: Empowered IV">
     <dependency upgrade="enderio:energyupgrade3"/>
@@ -115,6 +186,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Empowered IV">
+    <dependency upgrade="enderio:energyupgrade3"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:energyupgrade3"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:energyupgrade3"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: Empowered V">
     <dependency upgrade="enderio:energyupgrade4"/>
     <crafting>
@@ -124,6 +205,16 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:energyupgrade4"}'/>
     </crafting>
   </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Empowered V">
+    <dependency upgrade="enderio:energyupgrade4"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:energyupgrade4"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:energyupgrade4"}'/>
+    </tanking>
+  </recipe>
+
 
   <recipe required="true" name="Dark Steel Upgrade: Glide">
     <dependency upgrade="enderio:glide"/>
@@ -135,6 +226,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Glide">
+    <dependency upgrade="enderio:glide"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:glide"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:glide"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: Hoe">
     <dependency upgrade="enderio:hoe"/>
     <crafting>
@@ -144,6 +245,16 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:hoe"}'/>
     </crafting>
   </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Hoe">
+    <dependency upgrade="enderio:hoe"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:hoe"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:hoe"}'/>
+    </tanking>
+  </recipe>
+
 
   <recipe required="true" name="Dark Steel Upgrade: Inventory">
     <dependency upgrade="enderio:inv"/>
@@ -155,6 +266,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Inventory">
+    <dependency upgrade="enderio:inv"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:inv"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:inv"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: Inventory II">
     <dependency upgrade="enderio:inv1"/>
     <crafting>
@@ -164,6 +285,16 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:inv1"}'/>
     </crafting>
   </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Inventory II">
+    <dependency upgrade="enderio:inv1"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:inv1"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:inv1"}'/>
+    </tanking>
+  </recipe>
+
 
   <recipe required="true" name="Dark Steel Upgrade: Inventory III">
     <dependency upgrade="enderio:inv2"/>
@@ -175,6 +306,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Inventory III">
+    <dependency upgrade="enderio:inv2"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:inv2"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:inv2"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: Jump Boost">
     <dependency upgrade="enderio:jumpboost1"/>
     <crafting>
@@ -184,6 +325,16 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:jumpboost1"}'/>
     </crafting>
   </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Jump Boost">
+    <dependency upgrade="enderio:jumpboost1"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:jumpboost1"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:jumpboost1"}'/>
+    </tanking>
+  </recipe>
+
 
   <recipe required="true" name="Dark Steel Upgrade: Jump Boost 2">
     <dependency upgrade="enderio:jumpboost2"/>
@@ -195,6 +346,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Jump Boost 2">
+    <dependency upgrade="enderio:jumpboost2"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:jumpboost2"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:jumpboost2"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: Jump Boost 3">
     <dependency upgrade="enderio:jumpboost3"/>
     <crafting>
@@ -204,6 +365,16 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:jumpboost3"}'/>
     </crafting>
   </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Jump Boost 3">
+    <dependency upgrade="enderio:jumpboost3"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:jumpboost3"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:jumpboost3"}'/>
+    </tanking>
+  </recipe>
+
 
   <recipe required="true" name="Dark Steel Upgrade: Nightvision">
     <dependency upgrade="enderio:direct"/>
@@ -215,6 +386,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Nightvision">
+    <dependency upgrade="enderio:direct"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:direct"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:direct"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: Padding">
     <dependency upgrade="enderio:padding"/>
     <crafting>
@@ -224,6 +405,16 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:padding"}'/>
     </crafting>
   </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Padding">
+    <dependency upgrade="enderio:padding"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:padding"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:padding"}'/>
+    </tanking>
+  </recipe>
+
 
   <recipe required="true" name="Dark Steel Upgrade: Sound Detector">
     <dependency upgrade="enderio:sounddetector"/>
@@ -235,6 +426,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Sound Detector">
+    <dependency upgrade="enderio:sounddetector"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:sounddetector"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:sounddetector"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: Speed Boost">
     <dependency upgrade="enderio:speedboost1"/>
     <crafting>
@@ -244,6 +445,16 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:speedboost1"}'/>
     </crafting>
   </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Speed Boost">
+    <dependency upgrade="enderio:speedboost1"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:speedboost1"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:speedboost1"}'/>
+    </tanking>
+  </recipe>
+
 
   <recipe required="true" name="Dark Steel Upgrade: Speed Boost 2">
     <dependency upgrade="enderio:speedboost2"/>
@@ -255,6 +466,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Speed Boost 2">
+    <dependency upgrade="enderio:speedboost2"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:speedboost2"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:speedboost2"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: Speed Boost 3">
     <dependency upgrade="enderio:speedboost3"/>
     <crafting>
@@ -264,6 +485,16 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:speedboost3"}'/>
     </crafting>
   </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Speed Boost 3">
+    <dependency upgrade="enderio:speedboost3"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:speedboost3"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:speedboost3"}'/>
+    </tanking>
+  </recipe>
+
 
   <recipe required="true" name="Dark Steel Upgrade: Spoon">
     <dependency upgrade="enderio:spoon"/>
@@ -275,6 +506,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Spoon">
+    <dependency upgrade="enderio:spoon"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:spoon"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:spoon"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: Flippers">
     <dependency upgrade="enderio:swim"/>
     <crafting>
@@ -284,6 +525,16 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:swim"}'/>
     </crafting>
   </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Flippers">
+    <dependency upgrade="enderio:swim"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:swim"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:swim"}'/>
+    </tanking>
+  </recipe>
+
 
   <recipe required="true" name="Dark Steel Upgrade: TNT">
     <dependency upgrade="enderio:tnt"/>
@@ -295,6 +546,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: TNT">
+    <dependency upgrade="enderio:tnt"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:tnt"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:tnt"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: TNT 2">
     <dependency upgrade="enderio:tnt1"/>
     <crafting>
@@ -304,6 +565,16 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:tnt1"}'/>
     </crafting>
   </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: TNT 2">
+    <dependency upgrade="enderio:tnt1"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:tnt1"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:tnt1"}'/>
+    </tanking>
+  </recipe>
+
 
   <recipe required="true" name="Dark Steel Upgrade: TNT 3">
     <dependency upgrade="enderio:tnt2"/>
@@ -315,6 +586,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: TNT 3">
+    <dependency upgrade="enderio:tnt2"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:tnt2"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:tnt2"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: TNT 4">
     <dependency upgrade="enderio:tnt3"/>
     <crafting>
@@ -325,6 +606,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: TNT 4">
+    <dependency upgrade="enderio:tnt3"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:tnt3"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:tnt3"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: TNT 5">
     <dependency upgrade="enderio:tnt4"/>
     <crafting>
@@ -334,6 +625,16 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:tnt4"}'/>
     </crafting>
   </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: TNT 5">
+    <dependency upgrade="enderio:tnt4"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:tnt4"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:tnt4"}'/>
+    </tanking>
+  </recipe>
+
 
   <recipe required="true" name="Dark Steel Upgrade: TOP">
     <dependency upgrade="enderio:top"/>
@@ -346,6 +647,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: TOP">
+    <dependency upgrade="enderio:top"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:top"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:top"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: Travel">
     <dependency upgrade="enderio:travel"/>
     <crafting>
@@ -355,6 +666,16 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:travel"}'/>
     </crafting>
   </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Travel">
+    <dependency upgrade="enderio:travel"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:travel"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:travel"}'/>
+    </tanking>
+  </recipe>
+
 
   <recipe required="true" name="Dark Steel Upgrade: Thaumaturge Chest">
     <dependency upgrade="enderio:thaumaturge_robes_chest"/>
@@ -367,6 +688,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Thaumaturge Chest">
+    <dependency upgrade="enderio:thaumaturge_robes_chest"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:thaumaturge_robes_chest"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:thaumaturge_robes_chest"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: Thaumaturge Legs">
     <dependency upgrade="enderio:thaumaturge_robes_legs"/>
     <dependency item="thaumcraft:cloth_legs"/>
@@ -377,6 +708,16 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:thaumaturge_robes_legs"}'/>
     </crafting>
   </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Thaumaturge Legs">
+    <dependency upgrade="enderio:thaumaturge_robes_legs"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:thaumaturge_robes_legs"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:thaumaturge_robes_legs"}'/>
+    </tanking>
+  </recipe>
+
 
   <recipe required="true" name="Dark Steel Upgrade: Thaumaturge Boots">
     <dependency upgrade="enderio:thaumaturge_robes_feet"/>
@@ -389,6 +730,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Thaumaturge Boots">
+    <dependency upgrade="enderio:thaumaturge_robes_feet"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:thaumaturge_robes_feet"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:thaumaturge_robes_feet"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: Goggles of Revealing">
     <dependency upgrade="enderio:gogglesofrevealing"/>
     <dependency item="thaumcraft:goggles"/>
@@ -398,6 +749,15 @@ XML editor will display that as tooltips when editing this file.
       </shapeless>
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:gogglesofrevealing"}'/>
     </crafting>
+  </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Goggles of Revealing">
+    <dependency upgrade="enderio:gogglesofrevealing"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:gogglesofrevealing"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:gogglesofrevealing"}'/>
+    </tanking>
   </recipe>
 
 </enderio:recipes>

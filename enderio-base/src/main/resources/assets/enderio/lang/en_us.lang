@@ -127,7 +127,7 @@ item.item_end_steel_bow.name=Ender Bow
 
 item.item_dark_steel_armor.tooltip.line1=%sBetter protection when powered
 item.item_dark_steel_armor.tooltip.levelcost.line1=%s%s:
-item.item_dark_steel_armor.tooltip.levelcost.line2=%s%s  %s + %s levels
+item.item_dark_steel_armor.tooltip.levelcost.line2=%s%s  %s
 
 item.item_dark_steel_boots.name=Dark Boots
 item.item_dark_steel_boots.tooltip.line1=Fall damage negated when powered
@@ -810,6 +810,8 @@ enderio.darksteel.upgrades.tooltip.lineitem=\u0020*\u0020%s
 enderio.darksteel.upgrades.tooltip.main=Upgrade for Dark Steel Items
 enderio.darksteel.upgrades.tooltip.dependencies=Depends on:
 enderio.darksteel.upgrades.tooltip.itemclasses=Can be applied to:
+enderio.darksteel.upgrades.tooltip.levels.line1=%s levels needed to activate this upgrade
+enderio.darksteel.upgrades.tooltip.levels.line2=(Activate this upgrade by right-clicking)
 
 enderio.darksteel.upgrades.gui.not_levels=%s levels needed to activate this upgrade
 enderio.darksteel.upgrades.gui.activated=Upgrade activated

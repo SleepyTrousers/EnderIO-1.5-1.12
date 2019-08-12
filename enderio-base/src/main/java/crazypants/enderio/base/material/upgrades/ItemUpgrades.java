@@ -34,6 +34,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -51,8 +52,14 @@ public final class ItemUpgrades extends Item implements IHaveRenderers, IAdvance
   private ItemUpgrades(@Nonnull IModObject modObject) {
     setHasSubtypes(true);
     setMaxDamage(0);
+    setMaxStackSize(1);
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     modObject.apply(this);
+  }
+
+  @Override
+  public int getItemStackLimit(@Nonnull ItemStack stack) {
+    return stack.getItemDamage() > 0 ? 1 : 64;
   }
 
   @Override
@@ -122,10 +129,8 @@ public final class ItemUpgrades extends Item implements IHaveRenderers, IAdvance
     if (isInCreativeTab(tab)) {
       list.add(new ItemStack(this));
       UpgradeRegistry.getUpgrades().apply(upgrade -> {
-        final ResourceLocation registryName = upgrade.getRegistryName();
-        if (registryName != null) {
-          list.add(NbtValue.DSU.setString(new ItemStack(this, 1, 1), registryName.toString()));
-        }
+        list.add(withUpgrade(upgrade));
+        list.add(setEnabled(withUpgrade(upgrade), true));
       });
     }
   }
@@ -133,19 +138,17 @@ public final class ItemUpgrades extends Item implements IHaveRenderers, IAdvance
   public @Nonnull ItemStack withUpgrade(@Nonnull IDarkSteelUpgrade upgrade) {
     final ResourceLocation registryName = upgrade.getRegistryName();
     if (registryName != null) {
-      return setEnabled(NbtValue.DSU.setString(new ItemStack(this, 1, 1), registryName.toString()), true);
+      return NbtValue.DSU.setString(new ItemStack(this, 1, 1), registryName.toString());
     }
     return new ItemStack(this);
   }
 
   public static boolean isEnabled(@Nonnull ItemStack stack) {
-    return true;
-    // return NbtValue.ENABLED.getBoolean(stack);
+    return NbtValue.ENABLED.getBoolean(stack);
   }
 
   public static @Nonnull ItemStack setEnabled(@Nonnull ItemStack stack, boolean value) {
-    return stack;
-    // return NbtValue.ENABLED.setBoolean(stack, value);
+    return NbtValue.ENABLED.setBoolean(stack, value);
   }
 
   @Override
@@ -190,6 +193,10 @@ public final class ItemUpgrades extends Item implements IHaveRenderers, IAdvance
       } else {
         classes.forEach(itemclass -> list.add(Lang.DSU_TOOLTIP_LINE.get(itemclass.get())));
       }
+      if (!isEnabled(itemstack)) {
+        list.add(TextFormatting.LIGHT_PURPLE + Lang.DSU_TOOLTIP_LEVELS_1.get(upgrade.getLevelCost()));
+        list.add(Lang.DSU_TOOLTIP_LEVELS_2.get());
+      }
     } else {
       SpecialTooltipHandler.addDetailedTooltipFromResources(list, getUnlocalizedName());
     }
@@ -198,7 +205,7 @@ public final class ItemUpgrades extends Item implements IHaveRenderers, IAdvance
   @Override
   public @Nonnull ActionResult<ItemStack> onItemRightClick(@Nonnull World worldIn, @Nonnull EntityPlayer playerIn, @Nonnull EnumHand handIn) {
     final ItemStack stack = playerIn.getHeldItem(handIn);
-    if (!isEnabled(stack)) {
+    if (!isEnabled(stack) && stack.getCount() == 1) {
       IDarkSteelUpgrade upgrade = getUpgrade(stack);
       if (upgrade != null) {
         int levelCost = upgrade.getLevelCost();

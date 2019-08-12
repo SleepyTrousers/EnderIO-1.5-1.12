@@ -90,7 +90,7 @@ public class DarkSteelRecipeManager {
         }
         upgrade.addToItem(res, item);
         evt.setOutput(res);
-        evt.setCost(upgrade.getLevelCost());
+        evt.setCost(1); // upgrade.getLevelCost());
         return;
       }
     }
@@ -173,7 +173,7 @@ public class DarkSteelRecipeManager {
         list.add(TextFormatting.YELLOW + EnderIO.lang.localize("tooltip.anvilupgrades") + " ");
         for (IDarkSteelUpgrade up : applyableUpgrades) {
           list.add(Lang.DARK_STEEL_LEVELS1.get(TextFormatting.DARK_AQUA, EnderIO.lang.localizeExact(up.getUnlocalizedName() + ".name")));
-          list.add(Lang.DARK_STEEL_LEVELS2.get(TextFormatting.DARK_AQUA, TextFormatting.ITALIC, up.getUpgradeItemName(), up.getLevelCost()));
+          list.add(Lang.DARK_STEEL_LEVELS2.get(TextFormatting.DARK_AQUA, TextFormatting.ITALIC, up.getUpgradeItemName(), 1));
         }
       }
     }

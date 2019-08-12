@@ -178,6 +178,8 @@ public enum Lang implements ILang {
   DSU_TOOLTIP_DEPS(".darksteel.upgrades.tooltip.dependencies"),
   DSU_TOOLTIP_CLAS(".darksteel.upgrades.tooltip.itemclasses"),
   DSU_TOOLTIP_LINE(".darksteel.upgrades.tooltip.lineitem"),
+  DSU_TOOLTIP_LEVELS_1(".darksteel.upgrades.tooltip.levels.line1"),
+  DSU_TOOLTIP_LEVELS_2(".darksteel.upgrades.tooltip.levels.line2"),
 
   DSU_CLASS_EVERYTHING(".darksteel.upgrades.everything"),
   DSU_CLASS_WEAPONS(".darksteel.upgrades.weapons"),

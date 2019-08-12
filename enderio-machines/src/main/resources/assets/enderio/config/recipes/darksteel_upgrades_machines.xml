@@ -36,6 +36,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Solar">
+    <dependency upgrade="enderiomachines:solar"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiomachines:solar"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiomachines:solar"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: Solar 1">
     <dependency upgrade="enderiomachines:solar1"/>
     <crafting>
@@ -45,6 +55,16 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiomachines:solar1"}'/>
     </crafting>
   </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Solar 1">
+    <dependency upgrade="enderiomachines:solar1"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiomachines:solar1"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiomachines:solar1"}'/>
+    </tanking>
+  </recipe>
+
 
   <recipe required="true" name="Dark Steel Upgrade: Solar 2">
     <dependency upgrade="enderiomachines:solar2"/>
@@ -56,6 +76,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Solar 2">
+    <dependency upgrade="enderiomachines:solar2"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiomachines:solar2"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiomachines:solar2"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: Solar 3">
     <dependency upgrade="enderiomachines:solar3"/>
     <crafting>
@@ -65,5 +95,15 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiomachines:solar3"}'/>
     </crafting>
   </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Solar 3">
+    <dependency upgrade="enderiomachines:solar3"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiomachines:solar3"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiomachines:solar3"}'/>
+    </tanking>
+  </recipe>
+
 
 </enderio:recipes>

@@ -78,8 +78,13 @@ public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements
   }
 
   @Override
+  public final @Nonnull String getSortKey() {
+    return id + variant;
+  }
+
+  @Override
   public final @Nonnull ItemStack getUpgradeItem() {
-    return ((ItemUpgrades) ModObject.itemDarkSteelUpgrade.getItemNN()).withUpgrade(this);
+    return ItemUpgrades.setEnabled(((ItemUpgrades) ModObject.itemDarkSteelUpgrade.getItemNN()).withUpgrade(this), true);
   }
 
   @Override

@@ -24,9 +24,9 @@ public class UpgradeItemSubtypeInterpreter implements ISubtypeInterpreter {
     if (itemStack == null) {
       throw new NullPointerException("You want me to return something Nonnull for a null ItemStack? F.U.");
     }
-    IDarkSteelUpgrade upgrade = ((ItemUpgrades) ModObject.itemDarkSteelUpgrade.getItemNN()).getUpgrade(itemStack);
+    IDarkSteelUpgrade upgrade = ItemUpgrades.getUpgrade(itemStack);
     if (upgrade != null) {
-      return NullHelper.first(NullHelper.first(upgrade.getRegistryName(), "").toString(), "");
+      return NullHelper.first(NullHelper.first(upgrade.getRegistryName(), "").toString() + (ItemUpgrades.isEnabled(itemStack) ? "" : ":on"), "");
     }
     return "base";
   }

@@ -11,6 +11,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.Multimap;
 
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade.IRule;
 import crazypants.enderio.base.handler.darksteel.PacketDarkSteelSFXPacket;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,6 +46,13 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
    */
   @Nonnull
   String getUnlocalizedName();
+
+  /**
+   * @return The String that is used to sort upgrades for display in JEI and the Creative Menu.
+   */
+  default @Nonnull String getSortKey() {
+    return getUnlocalizedName();
+  }
 
   /**
    * @return The amount of levels it costs to apply this upgrade.
@@ -223,7 +231,7 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
 
   public interface IRule {
 
-    public final class CheckResult {
+    final class CheckResult {
       public static final @Nonnull CheckResult PASS = new CheckResult(true);
       public static final @Nonnull CheckResult SILENT_FAIL = new CheckResult(false);
 

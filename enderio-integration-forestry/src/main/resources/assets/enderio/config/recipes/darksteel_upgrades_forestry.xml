@@ -37,6 +37,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Apiarist Head">
+    <dependency upgrade="enderiointegrationforestry:apiarist_armor_head"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiointegrationforestry:apiarist_armor_head"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiointegrationforestry:apiarist_armor_head"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: Apiarist Chest">
     <dependency upgrade="enderiointegrationforestry:apiarist_armor_chest"/>
     <dependency item="forestry:apiarist_chest"/>
@@ -47,6 +57,16 @@ XML editor will display that as tooltips when editing this file.
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiointegrationforestry:apiarist_armor_chest"}'/>
     </crafting>
   </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Apiarist Chest">
+    <dependency upgrade="enderiointegrationforestry:apiarist_armor_chest"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiointegrationforestry:apiarist_armor_chest"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiointegrationforestry:apiarist_armor_chest"}'/>
+    </tanking>
+  </recipe>
+
 
   <recipe required="true" name="Dark Steel Upgrade: Apiarist Legs">
     <dependency upgrade="enderiointegrationforestry:apiarist_armor_legs"/>
@@ -59,6 +79,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Apiarist Legs">
+    <dependency upgrade="enderiointegrationforestry:apiarist_armor_legs"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiointegrationforestry:apiarist_armor_legs"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiointegrationforestry:apiarist_armor_legs"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: Apiarist Boots">
     <dependency upgrade="enderiointegrationforestry:apiarist_armor_feet"/>
     <dependency item="forestry:apiarist_boots"/>
@@ -70,6 +100,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Apiarist Boots">
+    <dependency upgrade="enderiointegrationforestry:apiarist_armor_feet"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiointegrationforestry:apiarist_armor_feet"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiointegrationforestry:apiarist_armor_feet"}'/>
+    </tanking>
+  </recipe>
+
+
   <recipe required="true" name="Dark Steel Upgrade: Naturalist">
     <dependency upgrade="enderiointegrationforestry:naturalist_eye"/>
     <dependency item="forestry:naturalist_helmet"/>
@@ -79,6 +119,15 @@ XML editor will display that as tooltips when editing this file.
       </shapeless>
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiointegrationforestry:naturalist_eye"}'/>
     </crafting>
+  </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Naturalist">
+    <dependency upgrade="enderiointegrationforestry:naturalist_eye"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiointegrationforestry:naturalist_eye"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderiointegrationforestry:naturalist_eye"}'/>
+    </tanking>
   </recipe>
 
 </enderio:recipes>
