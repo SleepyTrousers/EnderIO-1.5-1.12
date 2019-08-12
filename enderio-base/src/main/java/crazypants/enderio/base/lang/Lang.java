@@ -198,6 +198,9 @@ public enum Lang implements ILang {
   GUI_ARMOR_INVENTORY_CONTAINER(".darksteel.upgrade.inv.container"),
   GUI_ARMOR_INVENTORY_BIG(".darksteel.upgrade.inv.big"),
 
+  DSU_GUI_NOT_ENOUGH_LEVELS(".darksteel.upgrades.gui.not_levels"),
+  DSU_GUI_ACTIVATED(".darksteel.upgrades.gui.activated"),
+
   ;
 
   private final @Nonnull String key;

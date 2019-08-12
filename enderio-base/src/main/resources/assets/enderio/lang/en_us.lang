@@ -811,6 +811,9 @@ enderio.darksteel.upgrades.tooltip.main=Upgrade for Dark Steel Items
 enderio.darksteel.upgrades.tooltip.dependencies=Depends on:
 enderio.darksteel.upgrades.tooltip.itemclasses=Can be applied to:
 
+enderio.darksteel.upgrades.gui.not_levels=%s levels needed to activate this upgrade
+enderio.darksteel.upgrades.gui.activated=Upgrade activated
+
 enderio.darksteel.upgrades.everything=Any Dark Steel Item
 enderio.darksteel.upgrades.weapons=Dark Steel Weapons
 enderio.darksteel.upgrades.weapons.sword=Dark Steel Swords

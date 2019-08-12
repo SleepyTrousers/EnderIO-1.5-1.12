@@ -123,19 +123,17 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
           copy.amount *= XpUtil.experienceToLiquid(i);
           fluids.add(copy);
         }
-      } else if (recipe.getLogic() == TankMachineRecipe.Logic.XP) {
-        FluidStack copy = fluid.copy();
-        copy.amount = XpUtil.experienceToLiquid(copy.amount);
-        fluids.add(copy);
       } else {
-        fluids.add(fluid);
+        fluids.add(recipe.getLogic().convertFluidResult(recipe.isFilling(), recipe.getInput().getItemStack(), fluid, fluid,
+            recipe.getOutput().getItemStack()));
       }
       if (recipe.isFilling()) {
         ingredients.setInputLists(FluidStack.class, new NNList<List<FluidStack>>(fluids));
       } else {
         ingredients.setOutputLists(FluidStack.class, new NNList<List<FluidStack>>(fluids));
       }
-      ingredients.setOutput(ItemStack.class, recipe.getOutput().getItemStack());
+      ingredients.setOutput(ItemStack.class,
+          recipe.getLogic().convertItemResult(recipe.isFilling(), recipe.getInput().getItemStack(), fluid, fluid, recipe.getOutput().getItemStack()));
     }
 
     @Override

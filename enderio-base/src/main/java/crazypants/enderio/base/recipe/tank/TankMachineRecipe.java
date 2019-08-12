@@ -10,6 +10,8 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.stackable.Things;
 
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
+import crazypants.enderio.base.material.upgrades.ItemUpgrades;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
@@ -32,7 +34,7 @@ public class TankMachineRecipe implements IMachineRecipe {
     XPBOTTLE {
       @Override
       @Nonnull
-      FluidStack convertFluidResult(boolean isFilling, @Nonnull ItemStack input, @Nonnull FluidStack machineFluid, @Nonnull FluidStack recipeFluid,
+      public FluidStack convertFluidResult(boolean isFilling, @Nonnull ItemStack input, @Nonnull FluidStack machineFluid, @Nonnull FluidStack recipeFluid,
           @Nonnull ItemStack output) {
         FluidStack copy = recipeFluid.copy();
         copy.amount *= XpUtil.experienceToLiquid(3 + rand.nextInt(5) + rand.nextInt(5));
@@ -56,24 +58,56 @@ public class TankMachineRecipe implements IMachineRecipe {
     XP {
       @Override
       @Nonnull
-      FluidStack convertFluidResult(boolean isFilling, @Nonnull ItemStack input, @Nonnull FluidStack machineFluid, @Nonnull FluidStack recipeFluid,
+      public FluidStack convertFluidResult(boolean isFilling, @Nonnull ItemStack input, @Nonnull FluidStack machineFluid, @Nonnull FluidStack recipeFluid,
           @Nonnull ItemStack output) {
         FluidStack copy = recipeFluid.copy();
         copy.amount = XpUtil.experienceToLiquid(copy.amount);
         return copy;
+      }
+    },
+    /**
+     * Calculates the fluid amount based on the Dark Steel Upgrade's level cost. Only looks at the output item. Forces the output item to be "enabled" if it not
+     * already is.
+     * <p>
+     * see also
+     * {@link crazypants.enderio.base.material.upgrades.ItemUpgrades#onItemRightClick(World, net.minecraft.entity.player.EntityPlayer, net.minecraft.util.EnumHand)}
+     */
+    DSU {
+      @Override
+      @Nonnull
+      public FluidStack convertFluidResult(boolean isFilling, @Nonnull ItemStack input, @Nonnull FluidStack machineFluid, @Nonnull FluidStack recipeFluid,
+          @Nonnull ItemStack output) {
+        IDarkSteelUpgrade upgrade = ItemUpgrades.getUpgrade(output);
+        if (isFilling && upgrade != null) {
+          FluidStack copy = recipeFluid.copy();
+          copy.amount *= XpUtil.experienceToLiquid(XpUtil.getExperienceForLevel(upgrade.getLevelCost()));
+          return copy;
+        }
+        return super.convertFluidResult(isFilling, input, machineFluid, recipeFluid, output);
+      }
+
+      @Override
+      @Nonnull
+      public ItemStack convertItemResult(boolean isFilling, @Nonnull ItemStack input, @Nonnull FluidStack machineFluid, @Nonnull FluidStack recipeFluid,
+          @Nonnull ItemStack output) {
+        IDarkSteelUpgrade upgrade = ItemUpgrades.getUpgrade(output);
+        if (isFilling && upgrade != null && !ItemUpgrades.isEnabled(output)) {
+          return ItemUpgrades.setEnabled(output.copy(), true);
+        }
+        return super.convertItemResult(isFilling, input, machineFluid, recipeFluid, output);
       }
     };
 
     private static final @Nonnull Random rand = new Random();
 
     @Nonnull
-    ItemStack convertItemResult(boolean isFilling, @Nonnull ItemStack input, @Nonnull FluidStack machineFluid, @Nonnull FluidStack recipeFluid,
+    public ItemStack convertItemResult(boolean isFilling, @Nonnull ItemStack input, @Nonnull FluidStack machineFluid, @Nonnull FluidStack recipeFluid,
         @Nonnull ItemStack output) {
       return output.copy();
     }
 
     @Nonnull
-    FluidStack convertFluidResult(boolean isFilling, @Nonnull ItemStack input, @Nonnull FluidStack machineFluid, @Nonnull FluidStack recipeFluid,
+    public FluidStack convertFluidResult(boolean isFilling, @Nonnull ItemStack input, @Nonnull FluidStack machineFluid, @Nonnull FluidStack recipeFluid,
         @Nonnull ItemStack output) {
       return recipeFluid.copy();
     }
