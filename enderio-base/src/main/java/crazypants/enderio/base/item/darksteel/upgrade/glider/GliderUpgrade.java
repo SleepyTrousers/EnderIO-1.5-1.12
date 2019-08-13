@@ -14,6 +14,7 @@ import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
 import crazypants.enderio.api.upgrades.IRenderUpgrade;
+import crazypants.enderio.api.upgrades.IRule;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
@@ -44,11 +45,6 @@ public class GliderUpgrade extends AbstractUpgrade implements IHasPlayerRenderer
 
   public GliderUpgrade() {
     super(UPGRADE_NAME, "enderio.darksteel.upgrade.glider", DarkSteelConfig.gliderCost);
-  }
-
-  @Override
-  public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
-    return item.isForSlot(EntityEquipmentSlot.CHEST) && !ElytraUpgrade.INSTANCE.hasUpgrade(stack, item) && !hasUpgrade(stack, item);
   }
 
   @Override

@@ -8,6 +8,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
+import crazypants.enderio.api.upgrades.IRule;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
@@ -32,11 +33,6 @@ public class ExplosiveCarpetUpgrade extends AbstractUpgrade {
 
   public ExplosiveCarpetUpgrade() {
     super(UPGRADE_NAME, "enderio.darksteel.upgrade." + UPGRADE_NAME, DarkSteelConfig.explosiveCarpetUpgradeCost);
-  }
-
-  @Override
-  public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
-    return ExplosiveUpgrade.INSTANCE.hasAnyUpgradeVariant(stack) && !hasUpgrade(stack);
   }
 
   @Override

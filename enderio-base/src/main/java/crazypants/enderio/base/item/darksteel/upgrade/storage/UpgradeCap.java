@@ -10,8 +10,8 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
-import crazypants.enderio.api.upgrades.IDarkSteelUpgrade.IRule;
-import crazypants.enderio.api.upgrades.IDarkSteelUpgrade.IRule.CheckResult;
+import crazypants.enderio.api.upgrades.IRule;
+import crazypants.enderio.api.upgrades.IRule.CheckResult;
 import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.util.Prep;
@@ -35,7 +35,7 @@ public class UpgradeCap implements IItemHandler {
     this.player = player;
     this.owner = player.getItemStackFromSlot(equipmentSlot);
     if (owner.getItem() instanceof IDarkSteelItem) {
-      this.item = (IDarkSteelItem) getOwner().getItem();
+      this.item = (IDarkSteelItem) owner.getItem();
       UpgradeRegistry.getUpgrades().stream()
           .filter(upgrade -> upgrade.getRules().stream().filter(rule -> rule instanceof IRule.StaticRule).allMatch(rule -> rule.check(owner, item).passes()))
           .forEachOrdered(stacks::add);
@@ -54,28 +54,23 @@ public class UpgradeCap implements IItemHandler {
   @Nonnull
   public ItemStack getStackInSlot(int slot) {
     validateSlotIndex(slot);
-    return stacks.get(slot).hasUpgrade(getOwner()) ? stacks.get(slot).getUpgradeItem() : Prep.getEmpty();
+    return stacks.get(slot).hasUpgrade(getOwner()) ? UpgradeRegistry.getUpgradeItem(stacks.get(slot)) : Prep.getEmpty();
   }
 
   @Nonnull
   public ItemStack getUpgradeItem(int slot) {
     validateSlotIndex(slot);
-    return stacks.get(slot).getUpgradeItem();
+    return UpgradeRegistry.getUpgradeItem(stacks.get(slot));
   }
 
   @Override
   @Nonnull
   public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-    if (stack.isEmpty()) {
-      return stack;
-    }
-
     validateSlotIndex(slot);
 
     IDarkSteelUpgrade upgrade = stacks.get(slot);
-    boolean existing = upgrade.hasUpgrade(getOwner());
 
-    if (existing || !upgrade.isUpgradeItem(stack) || upgrade.getRules().stream().allMatch(rule -> rule.check(getOwner(), item).passes())) {
+    if (!UpgradeRegistry.isUpgradeItem(upgrade, stack) || !upgrade.canAddToItem(getOwner(), item)) {
       return stack;
     }
 
@@ -90,22 +85,15 @@ public class UpgradeCap implements IItemHandler {
     validateSlotIndex(slot);
 
     IDarkSteelUpgrade upgrade = stacks.get(slot);
-    if (upgrade.hasUpgrade(getOwner())) {
-      return false;
-    }
 
-    return upgrade.getRules().stream().map(rule -> rule.check(getOwner(), item)).allMatch(CheckResult::passes);
+    return upgrade.canAddToItem(getOwner(), item);
   }
 
   public @Nullable List<ITextComponent> checkInsert(int slot, @Nonnull ItemStack stack) {
-    if (stack.isEmpty()) {
-      return null;
-    }
-
     validateSlotIndex(slot);
 
     IDarkSteelUpgrade upgrade = stacks.get(slot);
-    if (upgrade.hasUpgrade(getOwner()) || !upgrade.isUpgradeItem(stack)) {
+    if (!UpgradeRegistry.isUpgradeItem(upgrade, stack) || upgrade.hasUpgrade(getOwner())) {
       return null;
     }
 
@@ -133,7 +121,7 @@ public class UpgradeCap implements IItemHandler {
     if (!simulate && !player.world.isRemote) {
       upgrade.removeFromItem(getOwner(), item);
     }
-    return upgrade.getUpgradeItem();
+    return UpgradeRegistry.getUpgradeItem(upgrade);
   }
 
   @Override

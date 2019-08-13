@@ -19,6 +19,7 @@ import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager.UpgradePath;
+import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.lang.Lang;
 import mezz.jei.api.IModRegistry;
@@ -90,8 +91,8 @@ public class DescriptionRecipeCategory {
               allTooltips.add(Lang.DARK_STEEL_LEVELS1.get(TextFormatting.DARK_AQUA, name));
               SpecialTooltipHandler.addDetailedTooltipFromResources(allTooltips, upgrade.getUnlocalizedName());
             }
-            allTooltips.add(Lang.DARK_STEEL_LEVELS2.get(TextFormatting.DARK_AQUA, TextFormatting.ITALIC, upgrade.getUpgradeItemName(), upgrade.getLevelCost())
-                + TextFormatting.RESET);
+            allTooltips.add(Lang.DARK_STEEL_LEVELS2.get(TextFormatting.DARK_AQUA, TextFormatting.ITALIC,
+                UpgradeRegistry.getUpgradeItem(upgrade).getDisplayName(), upgrade.getLevelCost()) + TextFormatting.RESET);
           }
         }
 

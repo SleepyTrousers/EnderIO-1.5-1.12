@@ -8,6 +8,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
+import crazypants.enderio.api.upgrades.IRule;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
@@ -48,12 +49,6 @@ public class StorageUpgrade extends AbstractUpgrade {
   }
 
   // Note: The GUI is bound to ModObject.itemDarkSteelChestplate, but that is just for technical reasons. It supports any armor item with this upgrade
-  @Override
-  public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
-    return (item.isForSlot(EntityEquipmentSlot.FEET) || item.isForSlot(EntityEquipmentSlot.LEGS) || item.isForSlot(EntityEquipmentSlot.CHEST)
-        || item.isForSlot(EntityEquipmentSlot.HEAD)) && EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack) && getUpgradeVariantLevel(stack) == variant - 1;
-  }
-
   @Override
   @Nonnull
   public List<IRule> getRules() {

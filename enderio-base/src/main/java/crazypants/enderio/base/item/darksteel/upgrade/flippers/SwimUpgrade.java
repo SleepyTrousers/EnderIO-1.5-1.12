@@ -8,6 +8,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
+import crazypants.enderio.api.upgrades.IRule;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
@@ -33,11 +34,6 @@ public class SwimUpgrade extends AbstractUpgrade {
 
   public SwimUpgrade() {
     super(UPGRADE_NAME, "enderio.darksteel.upgrade.swim", DarkSteelConfig.swimCost);
-  }
-
-  @Override
-  public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
-    return item.isForSlot(EntityEquipmentSlot.FEET) && !hasUpgrade(stack, item);
   }
 
   @Override

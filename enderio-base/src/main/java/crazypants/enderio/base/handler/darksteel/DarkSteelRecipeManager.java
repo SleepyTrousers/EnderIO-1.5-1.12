@@ -81,18 +81,17 @@ public class DarkSteelRecipeManager {
   }
 
   private static void handleUpgrade(AnvilUpdateEvent evt, @Nonnull IDarkSteelItem item) {
-    for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
-      if (upgrade.isUpgradeItem(evt.getRight()) && upgrade.canAddToItem(evt.getLeft(), item)) {
-        ItemStack res = new ItemStack(evt.getLeft().getItem(), 1, evt.getLeft().getItemDamage());
-        final NBTTagCompound tagCompound = evt.getLeft().getTagCompound();
-        if (tagCompound != null) {
-          res.setTagCompound(tagCompound.copy());
-        }
-        upgrade.addToItem(res, item);
-        evt.setOutput(res);
-        evt.setCost(1); // upgrade.getLevelCost());
-        return;
+    IDarkSteelUpgrade upgrade = UpgradeRegistry.getUpgradeFromItem(evt.getRight());
+    if (upgrade != null && upgrade.canAddToItem(evt.getLeft(), item)) {
+      ItemStack res = new ItemStack(evt.getLeft().getItem(), 1, evt.getLeft().getItemDamage());
+      final NBTTagCompound tagCompound = evt.getLeft().getTagCompound();
+      if (tagCompound != null) {
+        res.setTagCompound(tagCompound.copy());
       }
+      upgrade.addToItem(res, item);
+      evt.setOutput(res);
+      evt.setCost(1); // upgrade.getLevelCost());
+      return;
     }
   }
 
@@ -173,7 +172,7 @@ public class DarkSteelRecipeManager {
         list.add(TextFormatting.YELLOW + EnderIO.lang.localize("tooltip.anvilupgrades") + " ");
         for (IDarkSteelUpgrade up : applyableUpgrades) {
           list.add(Lang.DARK_STEEL_LEVELS1.get(TextFormatting.DARK_AQUA, EnderIO.lang.localizeExact(up.getUnlocalizedName() + ".name")));
-          list.add(Lang.DARK_STEEL_LEVELS2.get(TextFormatting.DARK_AQUA, TextFormatting.ITALIC, up.getUpgradeItemName(), 1));
+          list.add(Lang.DARK_STEEL_LEVELS2.get(TextFormatting.DARK_AQUA, TextFormatting.ITALIC, UpgradeRegistry.getUpgradeItem(up).getDisplayName(), 1));
         }
       }
     }
@@ -199,7 +198,7 @@ public class DarkSteelRecipeManager {
           if (upgrade.canAddToItem(inputStack, (IDarkSteelItem) inputStack.getItem())) {
             ItemStack outputStack = inputStack.copy();
             upgrade.addToItem(outputStack, (IDarkSteelItem) outputStack.getItem());
-            final UpgradePath path = new UpgradePath(upgrade, inputStack, upgrade.getUpgradeItem(), outputStack);
+            final UpgradePath path = new UpgradePath(upgrade, inputStack, UpgradeRegistry.getUpgradeItem(upgrade), outputStack);
             if (!list.contains(path)) {
               list.add(path);
               output.add(outputStack);

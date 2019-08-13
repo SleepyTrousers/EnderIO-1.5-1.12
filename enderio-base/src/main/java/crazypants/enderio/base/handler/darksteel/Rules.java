@@ -8,8 +8,7 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
-import crazypants.enderio.api.upgrades.IDarkSteelUpgrade.IRule;
-import crazypants.enderio.api.upgrades.IDarkSteelUpgrade.IRule.Prerequisite;
+import crazypants.enderio.api.upgrades.IRule;
 import crazypants.enderio.base.lang.ILang;
 import crazypants.enderio.base.lang.Lang;
 import net.minecraft.inventory.EntityEquipmentSlot;

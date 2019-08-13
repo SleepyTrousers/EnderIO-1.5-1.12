@@ -8,6 +8,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
+import crazypants.enderio.api.upgrades.IRule;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
@@ -34,11 +35,6 @@ public class SpoonUpgrade extends AbstractUpgrade {
 
   public SpoonUpgrade() {
     super(UPGRADE_NAME, "enderio.darksteel.upgrade.spoon", DarkSteelConfig.spoonCost);
-  }
-
-  @Override
-  public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
-    return item.isPickaxe() && item.hasUpgradeCallbacks(this) && EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack) && !hasUpgrade(stack, item);
   }
 
   @Override

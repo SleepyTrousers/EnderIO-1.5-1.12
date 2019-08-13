@@ -15,7 +15,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
-import crazypants.enderio.api.upgrades.IDarkSteelUpgrade.IRule;
+import crazypants.enderio.api.upgrades.IRule;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;

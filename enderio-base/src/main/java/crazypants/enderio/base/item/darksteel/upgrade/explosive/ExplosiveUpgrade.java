@@ -11,6 +11,7 @@ import com.google.common.collect.Multimap;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
+import crazypants.enderio.api.upgrades.IRule;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
@@ -71,12 +72,6 @@ public class ExplosiveUpgrade extends AbstractUpgrade {
 
   public ExplosiveUpgrade(int level) {
     super(UPGRADE_NAME, level, "enderio.darksteel.upgrade." + UPGRADE_NAME + "." + level, DarkSteelConfig.explosiveUpgradeCost.get(level));
-  }
-
-  @Override
-  public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
-    return item.isPickaxe() && item.hasUpgradeCallbacks(INSTANCE) && EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)
-        && getUpgradeVariantLevel(stack) == variant - 1;
   }
 
   @Override

@@ -6,12 +6,11 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.api.upgrades.IRule;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.handler.darksteel.Rules;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemStack;
 
 public class ThaumaturgeRobesUpgrade extends AbstractUpgrade {
 
@@ -26,11 +25,6 @@ public class ThaumaturgeRobesUpgrade extends AbstractUpgrade {
   public ThaumaturgeRobesUpgrade(@Nonnull EntityEquipmentSlot slot) {
     super(UPGRADE_NAME + slot.getName(), "enderio.darksteel.upgrade.thaumaturge_robes." + slot.getName(), DarkSteelConfig.thaumaturgeRobesCost);
     this.slot = slot;
-  }
-
-  @Override
-  public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
-    return item.isForSlot(slot) && item.hasUpgradeCallbacks(this) && !hasUpgrade(stack, item);
   }
 
   @Override

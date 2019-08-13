@@ -10,6 +10,7 @@ import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
 import crazypants.enderio.api.upgrades.IRenderUpgrade;
+import crazypants.enderio.api.upgrades.IRule;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.handler.darksteel.Rules;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
@@ -50,14 +51,6 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
   public SolarUpgrade(@Nonnull SolarType type) {
     super(EnderIOMachines.MODID, UPGRADE_NAME, type.ordinal(), NAME + type.ordinal(), type::getUpgradeLevelCost);
     this.type = type;
-  }
-
-  @Override
-  public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
-    if (!item.isForSlot(EntityEquipmentSlot.HEAD) || !EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)) {
-      return false;
-    }
-    return getUpgradeVariantLevel(stack) == getLevel() - 1;
   }
 
   @Override

@@ -5,16 +5,12 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.init.ModObject;
-import crazypants.enderio.base.material.upgrades.ItemUpgrades;
 import crazypants.enderio.util.NbtValue;
 import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.entity.player.EntityPlayer;
@@ -80,21 +76,6 @@ public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements
   @Override
   public final @Nonnull String getSortKey() {
     return id + variant;
-  }
-
-  @Override
-  public final @Nonnull ItemStack getUpgradeItem() {
-    return ItemUpgrades.setEnabled(((ItemUpgrades) ModObject.itemDarkSteelUpgrade.getItemNN()).withUpgrade(this), true);
-  }
-
-  @Override
-  public final boolean isUpgradeItem(@Nonnull ItemStack stack) {
-    return ItemUpgrades.getUpgrade(stack) == this && ItemUpgrades.isEnabled(stack);
-  }
-
-  @Override
-  final public @Nonnull String getUpgradeItemName() {
-    return IDarkSteelUpgrade.super.getUpgradeItemName();
   }
 
   @Override
@@ -167,7 +148,7 @@ public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements
   }
 
   @Override
-  public @Nonnull Pair<ItemStack, Integer> removeFromItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
+  public void removeFromItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     if (variant > getMinVariant()) {
       getOrCreateUpgradeNBT(stack).setInteger(KEY_VARIANT, variant - 1);
     } else {
@@ -179,7 +160,6 @@ public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements
         stack.setTagCompound(null);
       }
     }
-    return Pair.of(getUpgradeItem(), getLevelCost());
   }
 
   public @Nonnull NBTTagCompound getOrCreateUpgradeNBT(@Nonnull ItemStack stack) {

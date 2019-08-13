@@ -8,6 +8,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
+import crazypants.enderio.api.upgrades.IRule;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
@@ -67,18 +68,6 @@ public class SpeedUpgrade extends AbstractUpgrade {
   @Override
   protected int getMinVariant() {
     return 1;
-  }
-
-  @Override
-  public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
-    if (!item.isForSlot(EntityEquipmentSlot.LEGS) || !EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)) {
-      return false;
-    }
-    SpeedUpgrade up = loadAnyFromItem(stack);
-    if (up == null) {
-      return getLevel() == 1;
-    }
-    return up.getLevel() == getLevel() - 1;
   }
 
   @Override

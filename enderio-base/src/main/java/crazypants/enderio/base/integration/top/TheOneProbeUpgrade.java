@@ -4,12 +4,11 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.api.upgrades.IRule;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.handler.darksteel.Rules;
@@ -29,11 +28,6 @@ public class TheOneProbeUpgrade extends AbstractUpgrade {
   }
 
   @Override
-  public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
-    return item.isForSlot(EntityEquipmentSlot.HEAD) && !hasUpgrade(stack, item);
-  }
-
-  @Override
   @Nonnull
   public List<IRule> getRules() {
     return new NNList<>(Rules.forSlot(EntityEquipmentSlot.HEAD), Rules.itemTypeTooltip(EntityEquipmentSlot.HEAD));
@@ -46,9 +40,9 @@ public class TheOneProbeUpgrade extends AbstractUpgrade {
   }
 
   @Override
-  public @Nonnull Pair<ItemStack, Integer> removeFromItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
+  public void removeFromItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     NbtValue.getOrCreateRoot(stack).removeTag(PROBETAG);
-    return super.removeFromItem(stack, item);
+    super.removeFromItem(stack, item);
   }
 
 }

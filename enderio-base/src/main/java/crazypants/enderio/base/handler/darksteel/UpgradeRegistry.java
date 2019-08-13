@@ -10,6 +10,9 @@ import com.enderio.core.common.util.NNList;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
+import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.material.upgrades.ItemUpgrades;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -54,6 +57,26 @@ public class UpgradeRegistry {
 
   public static int getId(IDarkSteelUpgrade upgrade) {
     return ((ForgeRegistry<IDarkSteelUpgrade>) REGISTRY).getID(upgrade);
+  }
+
+  public static @Nonnull ItemStack getUpgradeItem(@Nonnull IDarkSteelUpgrade upgrade, boolean enabled) {
+    return ItemUpgrades.setEnabled(((ItemUpgrades) ModObject.itemDarkSteelUpgrade.getItemNN()).withUpgrade(upgrade), enabled);
+  }
+
+  public static @Nonnull ItemStack getUpgradeItem(@Nonnull IDarkSteelUpgrade upgrade) {
+    return getUpgradeItem(upgrade, true);
+  }
+
+  public static boolean isUpgradeItem(@Nonnull IDarkSteelUpgrade upgrade, @Nonnull ItemStack stack) {
+    return stack.getCount() == 1 && stack.getItem() == ModObject.itemDarkSteelUpgrade.getItemNN() && ItemUpgrades.getUpgrade(stack) == upgrade
+        && ItemUpgrades.isEnabled(stack);
+  }
+
+  public static @Nullable IDarkSteelUpgrade getUpgradeFromItem(@Nonnull ItemStack stack) {
+    if (stack.getCount() == 1 && stack.getItem() == ModObject.itemDarkSteelUpgrade.getItemNN() && ItemUpgrades.isEnabled(stack)) {
+      return ItemUpgrades.getUpgrade(stack);
+    }
+    return null;
   }
 
 }
