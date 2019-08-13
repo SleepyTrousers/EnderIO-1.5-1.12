@@ -51,6 +51,10 @@ public final class Rules {
     };
   }
 
+  public static @Nonnull IRule.Prerequisite withPrerequisite(final @Nonnull IDarkSteelUpgrade upgrade) {
+    return () -> upgrade;
+  }
+
   /**
    * Generates a rule that always success but will list the given language element in the "can be applied to" list of the upgrade's tooltips. You need to add
    * additional rules to actually implement the check(s).
@@ -106,25 +110,59 @@ public final class Rules {
     }
   }
 
-  public static @Nonnull IRule.StaticRule or(final @Nonnull IRule.StaticRule rule1, final @Nonnull IRule.StaticRule rule2) {
+  public static @Nonnull IRule.StaticRule or(final @Nonnull IRule.StaticRule... rules) {
     return new IRule.StaticRule() {
 
       @Override
       @Nonnull
       public CheckResult check(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
-        return rule1.check(stack, item).passes() || rule2.check(stack, item).passes() ? CheckResult.PASS : CheckResult.SILENT_FAIL;
+        for (IRule rule : rules) {
+          if (rule.check(stack, item).passes()) {
+            return CheckResult.PASS;
+          }
+        }
+        return CheckResult.SILENT_FAIL;
       }
 
     };
   }
 
-  public static @Nonnull IRule or(final @Nonnull IRule rule1, final @Nonnull IRule rule2) {
+  public static @Nonnull IRule or(final @Nonnull IRule... rules) {
     return new IRule() {
 
       @Override
       @Nonnull
       public CheckResult check(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
-        return rule1.check(stack, item).passes() || rule2.check(stack, item).passes() ? CheckResult.PASS : CheckResult.SILENT_FAIL;
+        for (IRule rule : rules) {
+          if (rule.check(stack, item).passes()) {
+            return CheckResult.PASS;
+          }
+        }
+        return CheckResult.SILENT_FAIL;
+      }
+
+    };
+  }
+
+  public static @Nonnull IRule.StaticRule not(final @Nonnull IRule.StaticRule rule) {
+    return new IRule.StaticRule() {
+
+      @Override
+      @Nonnull
+      public CheckResult check(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
+        return rule.check(stack, item).passes() ? CheckResult.SILENT_FAIL : CheckResult.PASS;
+      }
+
+    };
+  }
+
+  public static @Nonnull IRule not(final @Nonnull IRule rule) {
+    return new IRule() {
+
+      @Override
+      @Nonnull
+      public CheckResult check(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
+        return rule.check(stack, item).passes() ? CheckResult.SILENT_FAIL : CheckResult.PASS;
       }
 
     };

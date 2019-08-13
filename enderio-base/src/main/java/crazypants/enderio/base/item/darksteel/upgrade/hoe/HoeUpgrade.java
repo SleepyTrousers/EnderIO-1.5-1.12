@@ -12,6 +12,7 @@ import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
+import crazypants.enderio.base.handler.darksteel.Rules;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.lang.Lang;
@@ -39,6 +40,13 @@ public class HoeUpgrade extends AbstractUpgrade {
   @Override
   public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     return item.hasUpgradeCallbacks(this) && EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack) && !hasUpgrade(stack, item);
+  }
+
+  @Override
+  @Nonnull
+  public List<IRule> getRules() {
+    return new NNList<>(Rules.callbacksFor(this), EnergyUpgrade.HAS_ANY, Rules.itemTypeTooltip(Lang.DSU_CLASS_TOOLS_AXE),
+        Rules.itemTypeTooltip(Lang.DSU_CLASS_TOOLS_CROOK));
   }
 
   @Override

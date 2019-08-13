@@ -13,9 +13,11 @@ import crazypants.enderio.api.capacitor.ICapacitorData;
 import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade.IRule.CheckResult;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
+import crazypants.enderio.base.handler.darksteel.Rules;
 import crazypants.enderio.base.item.travelstaff.ItemTravelStaff;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.lang.LangPower;
@@ -192,6 +194,18 @@ public class EnergyUpgrade extends AbstractUpgrade {
     final EnergyUpgrade existing = loadAnyFromItem(stack);
     EnergyUpgrade up = next(existing);
     return up != null && up.id.equals(id) && up.level == this.level && item.getMaxEmpoweredLevel(stack) >= level;
+  }
+
+  @Override
+  @Nonnull
+  public List<IRule> getRules() {
+    EnergyUpgrade prev = prev(this);
+    if (prev != null) {
+      return new NNList<>((stack, item) -> item.getMaxEmpoweredLevel(stack) >= level ? CheckResult.PASS : CheckResult.SILENT_FAIL,
+          Rules.withPrerequisite(prev));
+    } else {
+      return new NNList<>(Rules.not(HAS_ANY));
+    }
   }
 
   @Override

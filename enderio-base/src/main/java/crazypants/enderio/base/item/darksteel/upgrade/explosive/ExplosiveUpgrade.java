@@ -12,10 +12,12 @@ import com.google.common.collect.Multimap;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade.IRule.CheckResult;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.handler.darksteel.PlayerAOEAttributeHandler;
+import crazypants.enderio.base.handler.darksteel.Rules;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.lang.Lang;
@@ -55,6 +57,14 @@ public class ExplosiveUpgrade extends AbstractUpgrade {
   public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     return item.isPickaxe() && item.hasUpgradeCallbacks(INSTANCE) && EnergyUpgradeManager.itemHasAnyPowerUpgrade(stack)
         && getUpgradeVariantLevel(stack) == variant - 1;
+  }
+
+  @Override
+  @Nonnull
+  public List<IRule> getRules() {
+    return new NNList<>(Rules.callbacksFor(this), Rules.staticCheck(item -> item.isPickaxe()), EnergyUpgrade.HAS_ANY,
+        (stack, item) -> getUpgradeVariantLevel(stack) == variant - 1 ? CheckResult.PASS : CheckResult.SILENT_FAIL,
+        Rules.itemTypeTooltip(Lang.DSU_CLASS_TOOLS_PICKAXE));
   }
 
   @Override

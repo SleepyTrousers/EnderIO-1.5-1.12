@@ -14,6 +14,7 @@ import crazypants.enderio.api.upgrades.IRenderUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
+import crazypants.enderio.base.handler.darksteel.Rules;
 import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.base.lang.Lang;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -44,6 +45,13 @@ public class ElytraUpgrade extends AbstractUpgrade implements IHasPlayerRenderer
   public boolean canAddToItem(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     return item.isForSlot(EntityEquipmentSlot.CHEST) && item.hasUpgradeCallbacks(this) && !hasUpgrade(stack, item)
         && !GliderUpgrade.INSTANCE.hasUpgrade(stack, item);
+  }
+
+  @Override
+  @Nonnull
+  public List<IRule> getRules() {
+    return new NNList<>(Rules.forSlot(EntityEquipmentSlot.CHEST), Rules.callbacksFor(this), Rules.not(Rules.withPrerequisite(GliderUpgrade.INSTANCE)),
+        Rules.itemTypeTooltip(Lang.DSU_CLASS_ARMOR_CHEST));
   }
 
   @Override
