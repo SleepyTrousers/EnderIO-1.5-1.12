@@ -180,7 +180,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Enhanced Wired Charger, Upgrade" required="true">
-    <crafting>
+    <crafting upgrade="true">
       <grid size="3x3">
         <item /><item name="END_STEEL" /><item />
         <item /><item name="ENHANCED_CHASSIS" /><item />
@@ -213,7 +213,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Wireless Charger (Antenna), Upgrade" required="true">
-    <crafting>
+    <crafting upgrade="true">
       <grid size="3x3">
         <item name="itemWirelessDish" /><item name="enderio:block_wireless_charger" /><item name="itemWirelessDish" />
         <item name="itemWirelessDish" /><item name="CHASSIS" /><item name="itemWirelessDish" />
@@ -235,7 +235,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Wireless Charger (Antenna, enhanced), Upgrade 1" required="true">
-    <crafting>
+    <crafting upgrade="true">
       <grid size="3x3">
         <item name="itemWirelessDish" /><item name="enderio:block_wireless_charger" /><item name="itemWirelessDish" />
         <item name="itemWirelessDish" /><item name="ENHANCED_CHASSIS" /><item name="itemWirelessDish" />
@@ -246,7 +246,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Wireless Charger (Antenna, enhanced), Upgrade 2" required="true">
-    <crafting>
+    <crafting upgrade="true">
       <grid size="3x3">
         <item /><item name="enderio:block_normal_wireless_charger" /><item />
         <item /><item name="ENHANCED_CHASSIS" /><item />
