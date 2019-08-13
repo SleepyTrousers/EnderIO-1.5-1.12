@@ -2,7 +2,6 @@ package crazypants.enderio.base.item.darksteel.upgrade.explosive;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
@@ -12,7 +11,6 @@ import com.google.common.collect.Multimap;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
-import crazypants.enderio.api.upgrades.IDarkSteelUpgrade.IRule.CheckResult;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
@@ -49,6 +47,28 @@ public class ExplosiveUpgrade extends AbstractUpgrade {
     event.getRegistry().register(INSTANCE5);
   }
 
+  public static final @Nonnull IRule.Prerequisite HAS_ANY = new IRule.Prerequisite() {
+
+    @Override
+    @Nonnull
+    public CheckResult check(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
+      for (ExplosiveUpgrade upgrade : new ExplosiveUpgrade[] { INSTANCE, INSTANCE2, INSTANCE3, INSTANCE4, INSTANCE5 }) {
+        if (upgrade.hasUpgrade(stack, item)) {
+          return CheckResult.PASS;
+        }
+      }
+
+      return new CheckResult(Lang.DSU_CHECK_PREREQ_ENERGY.toChatServer());
+    }
+
+    @Override
+    @Nonnull
+    public IDarkSteelUpgrade getPrerequisite() {
+      return INSTANCE;
+    }
+
+  };
+
   public ExplosiveUpgrade(int level) {
     super(UPGRADE_NAME, level, "enderio.darksteel.upgrade." + UPGRADE_NAME + "." + level, DarkSteelConfig.explosiveUpgradeCost.get(level));
   }
@@ -62,21 +82,8 @@ public class ExplosiveUpgrade extends AbstractUpgrade {
   @Override
   @Nonnull
   public List<IRule> getRules() {
-    return new NNList<>(Rules.callbacksFor(this), Rules.staticCheck(item -> item.isPickaxe()), EnergyUpgrade.HAS_ANY,
-        (stack, item) -> getUpgradeVariantLevel(stack) == variant - 1 ? CheckResult.PASS : CheckResult.SILENT_FAIL,
-        Rules.itemTypeTooltip(Lang.DSU_CLASS_TOOLS_PICKAXE));
-  }
-
-  @Override
-  @Nonnull
-  public List<IDarkSteelUpgrade> getDependencies() {
-    return new NNList<>(EnergyUpgrade.UPGRADES.get(0));
-  }
-
-  @Override
-  @Nonnull
-  public List<Supplier<String>> getItemClassesForTooltip() {
-    return new NNList<>(Lang.DSU_CLASS_TOOLS_PICKAXE::get);
+    return new NNList<>(Rules.callbacksFor(INSTANCE), Rules.staticCheck(item -> item.isPickaxe()), EnergyUpgrade.HAS_ANY,
+        Rules.withLevels(variant, INSTANCE, INSTANCE2, INSTANCE3, INSTANCE4), Rules.itemTypeTooltip(Lang.DSU_CLASS_TOOLS_PICKAXE));
   }
 
   @Override

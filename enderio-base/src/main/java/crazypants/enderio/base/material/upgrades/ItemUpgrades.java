@@ -1,7 +1,7 @@
 package crazypants.enderio.base.material.upgrades;
 
 import java.util.List;
-import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -15,6 +15,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade.IRule;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
@@ -181,17 +182,21 @@ public final class ItemUpgrades extends Item implements IHaveRenderers, IAdvance
           list.add(Lang.DSU_TOOLTIP_LINE.get(line));
         }
       });
-      List<IDarkSteelUpgrade> dependencies = upgrade.getDependencies();
+
+      List<IDarkSteelUpgrade> dependencies = upgrade.getRules().stream().filter(rule -> rule instanceof IRule.Prerequisite)
+          .map(rule -> ((IRule.Prerequisite) rule).getPrerequisite()).collect(Collectors.toList());
       if (!dependencies.isEmpty()) {
         list.add(Lang.DSU_TOOLTIP_DEPS.get());
         dependencies.forEach(dependency -> list.add(Lang.DSU_TOOLTIP_LINE.get(EnderIO.lang.localizeExact(dependency.getUnlocalizedName() + ".name"))));
       }
-      List<Supplier<String>> classes = upgrade.getItemClassesForTooltip();
+
+      List<String> classes = upgrade.getRules().stream().filter(rule -> rule instanceof IRule.ItemType)
+          .map(rule -> ((IRule.ItemType) rule).getTooltip().getFormattedText()).collect(Collectors.toList());
       list.add(Lang.DSU_TOOLTIP_CLAS.get());
       if (classes.isEmpty()) {
         list.add(Lang.DSU_TOOLTIP_LINE.get(Lang.DSU_CLASS_EVERYTHING.get()));
       } else {
-        classes.forEach(itemclass -> list.add(Lang.DSU_TOOLTIP_LINE.get(itemclass.get())));
+        classes.forEach(itemclass -> list.add(Lang.DSU_TOOLTIP_LINE.get(itemclass)));
       }
       if (!isEnabled(itemstack)) {
         list.add(TextFormatting.LIGHT_PURPLE + Lang.DSU_TOOLTIP_LEVELS_1.get(upgrade.getLevelCost()));

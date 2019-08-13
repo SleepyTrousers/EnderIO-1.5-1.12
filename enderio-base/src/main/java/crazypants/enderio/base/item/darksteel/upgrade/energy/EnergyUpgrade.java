@@ -209,13 +209,6 @@ public class EnergyUpgrade extends AbstractUpgrade {
   }
 
   @Override
-  @Nonnull
-  public List<IDarkSteelUpgrade> getDependencies() {
-    EnergyUpgrade prev = prev(this);
-    return prev != null ? new NNList<>(prev) : super.getDependencies();
-  }
-
-  @Override
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     List<String> upgradeStr = new ArrayList<String>();

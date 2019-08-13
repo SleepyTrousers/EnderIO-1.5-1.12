@@ -1,7 +1,6 @@
 package crazypants.enderio.machines.darksteel.upgrade.solar;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
@@ -12,9 +11,9 @@ import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.api.upgrades.IHasPlayerRenderer;
 import crazypants.enderio.api.upgrades.IRenderUpgrade;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
+import crazypants.enderio.base.handler.darksteel.Rules;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
-import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.SolarConfig;
@@ -63,23 +62,9 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
 
   @Override
   @Nonnull
-  public List<IDarkSteelUpgrade> getDependencies() {
-    switch (getLevel()) {
-    case 1:
-      return new NNList<>(EnergyUpgrade.UPGRADES.get(0), INSTANCES.get(0));
-    case 2:
-      return new NNList<>(EnergyUpgrade.UPGRADES.get(0), INSTANCES.get(1));
-    case 3:
-      return new NNList<>(EnergyUpgrade.UPGRADES.get(0), INSTANCES.get(2));
-    default:
-      return new NNList<>(EnergyUpgrade.UPGRADES.get(0));
-    }
-  }
-
-  @Override
-  @Nonnull
-  public List<Supplier<String>> getItemClassesForTooltip() {
-    return new NNList<>(Lang.DSU_CLASS_ARMOR_HEAD::get);
+  public List<IRule> getRules() {
+    return new NNList<>(Rules.forSlot(EntityEquipmentSlot.HEAD), EnergyUpgrade.HAS_ANY, Rules.withLevels(getLevel(), INSTANCES),
+        Rules.itemTypeTooltip(EntityEquipmentSlot.HEAD));
   }
 
   @Override

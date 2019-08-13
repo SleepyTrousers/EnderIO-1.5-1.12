@@ -2,7 +2,6 @@ package crazypants.enderio.base.item.darksteel.upgrade.jump;
 
 import java.util.List;
 import java.util.Random;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
@@ -15,9 +14,9 @@ import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
+import crazypants.enderio.base.handler.darksteel.Rules;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
-import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.sound.SoundHelper;
 import crazypants.enderio.base.sound.SoundRegistry;
 import net.minecraft.client.Minecraft;
@@ -95,21 +94,9 @@ public class JumpUpgrade extends AbstractUpgrade {
 
   @Override
   @Nonnull
-  public List<IDarkSteelUpgrade> getDependencies() {
-    switch (getLevel()) {
-    case 2:
-      return new NNList<>(EnergyUpgrade.UPGRADES.get(0), JUMP_ONE);
-    case 3:
-      return new NNList<>(EnergyUpgrade.UPGRADES.get(0), JUMP_TWO);
-    default:
-      return new NNList<>(EnergyUpgrade.UPGRADES.get(0));
-    }
-  }
-
-  @Override
-  @Nonnull
-  public List<Supplier<String>> getItemClassesForTooltip() {
-    return new NNList<>(Lang.DSU_CLASS_ARMOR_FEET::get);
+  public List<IRule> getRules() {
+    return new NNList<>(Rules.forSlot(EntityEquipmentSlot.FEET), EnergyUpgrade.HAS_ANY, Rules.withLevels(level, null, JUMP_ONE, JUMP_TWO),
+        Rules.itemTypeTooltip(EntityEquipmentSlot.FEET));
   }
 
   @Override

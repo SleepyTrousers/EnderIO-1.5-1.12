@@ -1,7 +1,6 @@
 package crazypants.enderio.base.item.darksteel.upgrade.travel;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
@@ -49,18 +48,6 @@ public class TravelUpgrade extends AbstractUpgrade {
   public List<IRule> getRules() {
     return new NNList<>(Rules.forSlot(EntityEquipmentSlot.MAINHAND), Rules.callbacksFor(this), EnergyUpgrade.HAS_ANY,
         Rules.itemTypeTooltip(Lang.DSU_CLASS_WEAPONS_SWORD), Rules.itemTypeTooltip(Lang.DSU_CLASS_TOOLS_PICKAXE));
-  }
-
-  @Override
-  @Nonnull
-  public List<IDarkSteelUpgrade> getDependencies() {
-    return new NNList<>(EnergyUpgrade.UPGRADES.get(0));
-  }
-
-  @Override
-  @Nonnull
-  public List<Supplier<String>> getItemClassesForTooltip() {
-    return new NNList<>(Lang.DSU_CLASS_WEAPONS_SWORD::get, Lang.DSU_CLASS_TOOLS_PICKAXE::get);
   }
 
   @Override

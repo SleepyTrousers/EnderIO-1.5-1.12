@@ -1,7 +1,6 @@
 package crazypants.enderio.base.item.darksteel.upgrade.hoe;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
@@ -47,18 +46,6 @@ public class HoeUpgrade extends AbstractUpgrade {
   public List<IRule> getRules() {
     return new NNList<>(Rules.callbacksFor(this), EnergyUpgrade.HAS_ANY, Rules.itemTypeTooltip(Lang.DSU_CLASS_TOOLS_AXE),
         Rules.itemTypeTooltip(Lang.DSU_CLASS_TOOLS_CROOK));
-  }
-
-  @Override
-  @Nonnull
-  public List<IDarkSteelUpgrade> getDependencies() {
-    return new NNList<>(EnergyUpgrade.UPGRADES.get(0));
-  }
-
-  @Override
-  @Nonnull
-  public List<Supplier<String>> getItemClassesForTooltip() {
-    return new NNList<>(Lang.DSU_CLASS_TOOLS_AXE::get, Lang.DSU_CLASS_TOOLS_CROOK::get);
   }
 
   @Override

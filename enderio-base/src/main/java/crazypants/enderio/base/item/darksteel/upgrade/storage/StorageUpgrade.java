@@ -1,7 +1,6 @@
 package crazypants.enderio.base.item.darksteel.upgrade.storage;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
@@ -12,6 +11,7 @@ import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
+import crazypants.enderio.base.handler.darksteel.Rules;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.lang.Lang;
@@ -56,21 +56,11 @@ public class StorageUpgrade extends AbstractUpgrade {
 
   @Override
   @Nonnull
-  public List<IDarkSteelUpgrade> getDependencies() {
-    switch (variant) {
-    case 1:
-      return new NNList<>(EnergyUpgrade.UPGRADES.get(0), INSTANCE);
-    case 2:
-      return new NNList<>(EnergyUpgrade.UPGRADES.get(0), INSTANCE2);
-    default:
-      return new NNList<>(EnergyUpgrade.UPGRADES.get(0));
-    }
-  }
-
-  @Override
-  @Nonnull
-  public List<Supplier<String>> getItemClassesForTooltip() {
-    return new NNList<>(Lang.DSU_CLASS_ARMOR::get);
+  public List<IRule> getRules() {
+    return new NNList<>(
+        Rules.or(Rules.forSlot(EntityEquipmentSlot.FEET), Rules.forSlot(EntityEquipmentSlot.LEGS), Rules.forSlot(EntityEquipmentSlot.CHEST),
+            Rules.forSlot(EntityEquipmentSlot.HEAD)),
+        EnergyUpgrade.HAS_ANY, Rules.withLevels(variant, INSTANCE, INSTANCE2, INSTANCE3), Rules.itemTypeTooltip(Lang.DSU_CLASS_ARMOR));
   }
 
   @Override

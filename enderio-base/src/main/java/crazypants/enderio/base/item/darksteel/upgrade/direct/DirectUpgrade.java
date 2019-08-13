@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
@@ -65,18 +64,6 @@ public class DirectUpgrade extends AbstractUpgrade {
     return new NNList<>(Rules.forSlot(EntityEquipmentSlot.MAINHAND),
         Rules.or(Rules.staticCheck(item -> item.isBlockBreakingTool()), Rules.staticCheck(item -> item.isWeapon())), EnergyUpgrade.HAS_ANY,
         Rules.itemTypeTooltip(Lang.DSU_CLASS_WEAPONS), Rules.itemTypeTooltip(Lang.DSU_CLASS_TOOLS));
-  }
-
-  @Override
-  @Nonnull
-  public List<IDarkSteelUpgrade> getDependencies() {
-    return new NNList<>(EnergyUpgrade.UPGRADES.get(0));
-  }
-
-  @Override
-  @Nonnull
-  public List<Supplier<String>> getItemClassesForTooltip() {
-    return new NNList<>(Lang.DSU_CLASS_WEAPONS::get, Lang.DSU_CLASS_TOOLS::get);
   }
 
   @Override

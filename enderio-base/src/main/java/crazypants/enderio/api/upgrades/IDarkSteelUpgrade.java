@@ -1,8 +1,6 @@
 package crazypants.enderio.api.upgrades;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -11,7 +9,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.Multimap;
 
-import crazypants.enderio.api.upgrades.IDarkSteelUpgrade.IRule;
 import crazypants.enderio.base.handler.darksteel.PacketDarkSteelSFXPacket;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
@@ -206,16 +203,6 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
   default void addAttributeModifiers(@Nonnull EntityEquipmentSlot slot, @Nonnull ItemStack stack, @Nonnull Multimap<String, AttributeModifier> map) {
   }
 
-  // TODO remove
-  default @Nonnull List<IDarkSteelUpgrade> getDependencies() {
-    return Collections.emptyList();
-  }
-
-  // TODO remove
-  default @Nonnull List<Supplier<String>> getItemClassesForTooltip() {
-    return Collections.emptyList();
-  }
-
   /**
    * Returns a list of rules that determine if the upgrade can be applied to an item. The list should be stable and all rules must return the same result on
    * server and client.
@@ -225,9 +212,8 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
    * Note 2: There should be at least one {@link IRule.ItemType} rule (for the upgrade item tooltip).
    * 
    */
-  default @Nonnull List<IRule> getRules() {
-    return Collections.emptyList();
-  }
+  @Nonnull
+  List<IRule> getRules();
 
   public interface IRule {
 

@@ -1,7 +1,6 @@
 package crazypants.enderio.base.item.darksteel.upgrade.sound;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
@@ -12,7 +11,7 @@ import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
-import crazypants.enderio.base.lang.Lang;
+import crazypants.enderio.base.handler.darksteel.Rules;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.RegistryEvent;
@@ -42,8 +41,8 @@ public class SoundDetectorUpgrade extends AbstractUpgrade {
 
   @Override
   @Nonnull
-  public List<Supplier<String>> getItemClassesForTooltip() {
-    return new NNList<>(Lang.DSU_CLASS_ARMOR_HEAD::get);
+  public List<IRule> getRules() {
+    return new NNList<>(Rules.forSlot(EntityEquipmentSlot.HEAD), Rules.itemTypeTooltip(EntityEquipmentSlot.HEAD));
   }
 
 }

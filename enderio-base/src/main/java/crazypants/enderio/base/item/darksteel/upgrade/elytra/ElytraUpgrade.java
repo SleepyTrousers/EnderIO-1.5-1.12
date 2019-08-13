@@ -1,7 +1,6 @@
 package crazypants.enderio.base.item.darksteel.upgrade.elytra;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
@@ -52,12 +51,6 @@ public class ElytraUpgrade extends AbstractUpgrade implements IHasPlayerRenderer
   public List<IRule> getRules() {
     return new NNList<>(Rules.forSlot(EntityEquipmentSlot.CHEST), Rules.callbacksFor(this), Rules.not(Rules.withPrerequisite(GliderUpgrade.INSTANCE)),
         Rules.itemTypeTooltip(Lang.DSU_CLASS_ARMOR_CHEST));
-  }
-
-  @Override
-  @Nonnull
-  public List<Supplier<String>> getItemClassesForTooltip() {
-    return new NNList<>(Lang.DSU_CLASS_ARMOR_CHEST::get);
   }
 
   @Override

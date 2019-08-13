@@ -1,7 +1,6 @@
 package crazypants.enderio.base.item.darksteel.upgrade.explosive;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
@@ -43,20 +42,7 @@ public class ExplosiveCarpetUpgrade extends AbstractUpgrade {
   @Override
   @Nonnull
   public List<IRule> getRules() {
-    return new NNList<>(Rules.withPrerequisite(ExplosiveUpgrade.INSTANCE), Rules.staticCheck(item -> item.isPickaxe()),
-        Rules.itemTypeTooltip(Lang.DSU_CLASS_TOOLS_PICKAXE));
-  }
-
-  @Override
-  @Nonnull
-  public List<IDarkSteelUpgrade> getDependencies() {
-    return new NNList<>(ExplosiveUpgrade.INSTANCE);
-  }
-
-  @Override
-  @Nonnull
-  public List<Supplier<String>> getItemClassesForTooltip() {
-    return ExplosiveUpgrade.INSTANCE.getItemClassesForTooltip();
+    return new NNList<>(ExplosiveUpgrade.HAS_ANY, Rules.itemTypeTooltip(Lang.DSU_CLASS_TOOLS_PICKAXE));
   }
 
   @Override

@@ -1,12 +1,15 @@
 package crazypants.enderio.base.handler.darksteel;
 
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade.IRule;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade.IRule.Prerequisite;
 import crazypants.enderio.base.lang.ILang;
 import crazypants.enderio.base.lang.Lang;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -53,6 +56,31 @@ public final class Rules {
 
   public static @Nonnull IRule.Prerequisite withPrerequisite(final @Nonnull IDarkSteelUpgrade upgrade) {
     return () -> upgrade;
+  }
+
+  /**
+   * Creates a rule for multi-level upgrades to depend on the next lower tier upgrade or, for the lowest level, to require no upgrade to be present.
+   * 
+   * @param level
+   *          the level of the upgrade
+   * @param upgrades
+   *          dependencies for the levels starting at level <em>1</em>. (The first element (index 0) is the dependency for level 1.)
+   * @return Either a {@link Prerequisite} on the given upgrade for the given level or a <code>not(or())</code> of all given upgrades.
+   */
+  @SuppressWarnings("null")
+  public static @Nonnull IRule withLevels(int level, IDarkSteelUpgrade... upgrades) {
+    if (level == 0 || upgrades[level - 1] == null) {
+      return not(or(Stream.of(upgrades).filter(upgrade -> upgrade != null).map(Rules::withPrerequisite).toArray(IRule.Prerequisite[]::new)));
+    }
+    return withPrerequisite(upgrades[level - 1]);
+  }
+
+  @SuppressWarnings("null")
+  public static @Nonnull IRule withLevels(int level, List<? extends IDarkSteelUpgrade> upgrades) {
+    if (level == 0 || upgrades.get(level - 1) == null) {
+      return not(or(upgrades.stream().filter(upgrade -> upgrade != null).map(Rules::withPrerequisite).toArray(IRule.Prerequisite[]::new)));
+    }
+    return withPrerequisite(upgrades.get(level - 1));
   }
 
   /**
