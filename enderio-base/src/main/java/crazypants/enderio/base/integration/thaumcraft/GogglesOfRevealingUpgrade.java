@@ -10,6 +10,7 @@ import com.enderio.core.common.util.NNList;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
+import crazypants.enderio.base.handler.darksteel.Rules;
 import crazypants.enderio.base.lang.Lang;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -36,6 +37,12 @@ public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
       return false;
     }
     return item.hasUpgradeCallbacks(this) && !hasUpgrade(stack, item);
+  }
+
+  @Override
+  @Nonnull
+  public List<IRule> getRules() {
+    return new NNList<>(Rules.forSlot(EntityEquipmentSlot.HEAD), Rules.callbacksFor(this), Rules.itemTypeTooltip(EntityEquipmentSlot.HEAD));
   }
 
   @Override
