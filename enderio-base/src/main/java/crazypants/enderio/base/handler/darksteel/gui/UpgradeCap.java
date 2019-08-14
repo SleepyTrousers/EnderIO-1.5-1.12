@@ -1,4 +1,4 @@
-package crazypants.enderio.base.item.darksteel.upgrade.storage;
+package crazypants.enderio.base.handler.darksteel.gui;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,13 +16,15 @@ import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-public class UpgradeCap implements IItemHandler {
+public class UpgradeCap implements IItemHandlerModifiable {
 
   protected final @Nonnull NNList<IDarkSteelUpgrade> stacks = new NNList<>();
   protected final @Nonnull EntityEquipmentSlot equipmentSlot;
@@ -76,6 +78,7 @@ public class UpgradeCap implements IItemHandler {
 
     if (!simulate && !player.world.isRemote) {
       upgrade.addToItem(getOwner(), item);
+      syncChangesToClient();
     }
 
     return ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - 1);
@@ -120,8 +123,22 @@ public class UpgradeCap implements IItemHandler {
 
     if (!simulate && !player.world.isRemote) {
       upgrade.removeFromItem(getOwner(), item);
+      syncChangesToClient();
     }
     return UpgradeRegistry.getUpgradeItem(upgrade);
+  }
+
+  /**
+   * The game doesn't sync player inventory slots that don't have a matching slot in the currently open container. We have to do that ourselves.
+   */
+  protected void syncChangesToClient() {
+    if (player instanceof EntityPlayerMP) {
+      for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+        if (player.inventory.getStackInSlot(i) == owner) {
+          ((EntityPlayerMP) player).connection.sendPacket(new SPacketSetSlot(-2, i, owner));
+        }
+      }
+    }
   }
 
   @Override
@@ -150,6 +167,25 @@ public class UpgradeCap implements IItemHandler {
       }
     }
     return owner;
+  }
+
+  @Override
+  public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
+    if (Prep.isValid(stack)) {
+      insertItem(slot, stack.copy(), false);
+    } else {
+      extractItem(slot, 1, false);
+    }
+
+  }
+
+  public @Nonnull EntityEquipmentSlot getEquipmentSlot() {
+    return equipmentSlot;
+  }
+
+  public @Nonnull IDarkSteelUpgrade getUpgrade(int slot) {
+    validateSlotIndex(slot);
+    return stacks.get(slot);
   }
 
 }

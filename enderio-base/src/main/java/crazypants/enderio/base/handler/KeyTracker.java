@@ -14,6 +14,7 @@ import crazypants.enderio.base.conduit.ConduitDisplayMode;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;
+import crazypants.enderio.base.handler.darksteel.gui.PacketOpenDSU;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.integration.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbeMode;
@@ -62,10 +63,11 @@ public class KeyTracker {
 
   private static final @Nonnull KeyBinding fovPlusKeyFast, fovMinusKeyFast, fovPlusKey, fovMinusKey, yetaWrenchMode;
 
-  public static final @Nonnull KeyBinding inventory;
+  public static final @Nonnull KeyBinding inventory, dsu;
 
   static {
     inventory = create("enderio.keybind.inventory", Keyboard.KEY_I, "key.category.darksteelarmor    ", new InventoryAction());
+    dsu = create("enderio.keybind.dsu            ", Keyboard.KEY_NONE, "key.category.darksteelarmor    ", new DSUAction());
     create("enderio.keybind.glidertoggle      ", Keyboard.KEY_G, "   key.category.darksteelarmor    ", new GlideAction());
     create("enderio.keybind.soundlocator      ", Keyboard.KEY_NONE, "key.category.darksteelarmor    ", new SoundDetectorAction());
     create("enderio.keybind.nightvision       ", Keyboard.KEY_P, "   key.category.darksteelarmor    ", new NightVisionAction());
@@ -154,6 +156,13 @@ public class KeyTracker {
     @Override
     public void execute() {
       PacketHandler.INSTANCE.sendToServer(new PacketOpenInventory());
+    }
+  }
+
+  private static class DSUAction implements Action {
+    @Override
+    public void execute() {
+      PacketHandler.INSTANCE.sendToServer(new PacketOpenDSU());
     }
   }
 

@@ -13,6 +13,7 @@ import crazypants.enderio.base.filter.network.PacketHeldFilterUpdate;
 import crazypants.enderio.base.handler.darksteel.PacketDarkSteelPowerPacket;
 import crazypants.enderio.base.handler.darksteel.PacketDarkSteelSFXPacket;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState;
+import crazypants.enderio.base.handler.darksteel.gui.PacketOpenDSU;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbe;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbeMode;
 import crazypants.enderio.base.item.coordselector.PacketUpdateLocationPrintout;
@@ -90,6 +91,7 @@ public final class PacketHandler {
     INSTANCE.registerMessage(PacketHeldFilterUpdate.Handler.class, PacketHeldFilterUpdate.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketExplodeEffect.Handler.class, PacketExplodeEffect.class, nextID(), Side.CLIENT);
     INSTANCE.registerMessage(PacketCapacitorSync.Handler.class, PacketCapacitorSync.class, nextID(), Side.CLIENT);
+    INSTANCE.registerMessage(PacketOpenDSU.Handler.class, PacketOpenDSU.class, nextID(), Side.SERVER);
   }
 
 }

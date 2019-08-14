@@ -29,8 +29,12 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.config.config.TeleportConfig;
+import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.PlayerAOEAttributeHandler;
+import crazypants.enderio.base.handler.darksteel.gui.DSUContainer;
+import crazypants.enderio.base.handler.darksteel.gui.DSUGui;
+import crazypants.enderio.base.handler.darksteel.gui.UpgradeCap;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.direct.DirectUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
@@ -80,7 +84,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel, IOverlayRenderAware {
+public class ItemDarkSteelPickaxe extends ItemPickaxe
+    implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel, IOverlayRenderAware, IEioGuiHandler.WithServerComponent.WithOutPos {
 
   public static int getStoredPower(EntityPlayer player) {
     return EnergyUpgradeManager.getEnergyStored(player.getHeldItemMainhand());
@@ -525,6 +530,36 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
   @Override
   public @Nonnull ICapacitorKey getAbsorptionRatioKey(@Nonnull ItemStack stack) {
     return CapacitorKey.DARK_STEEL_PICKAXE_ABSORPTION_RATIO;
+  }
+
+  // Note: The GUI is bound to ModObject.itemDarkSteelChestplate, but that is just for technical reasons. It supports any armor item with the upgrade, even if
+  // it doesn't extend this class
+  @Override
+  @Nonnull
+  public DSUContainer getServerGuiElement(@Nonnull EntityPlayer player, int param1, int param2, int param3) {
+    // SlotEncoder enc = new SlotEncoder(param1);
+    // if (enc.hasSlots()) {
+    return new DSUContainer(player.inventory, //
+        new UpgradeCap(EntityEquipmentSlot.FEET, player), //
+        new UpgradeCap(EntityEquipmentSlot.LEGS, player), //
+        new UpgradeCap(EntityEquipmentSlot.CHEST, player), //
+        new UpgradeCap(EntityEquipmentSlot.HEAD, player), //
+        new UpgradeCap(EntityEquipmentSlot.MAINHAND, player), //
+        new UpgradeCap(EntityEquipmentSlot.OFFHAND, player));
+    // }
+    // return null;
+  }
+
+  @Override
+  @Nullable
+  @SideOnly(Side.CLIENT)
+  public DSUGui getClientGuiElement(@Nonnull EntityPlayer player, int param1, int param2, int param3) {
+    // SlotEncoder enc = new SlotEncoder(param1);
+    // if (enc.hasSlots()) {
+    return new DSUGui(getServerGuiElement(player, param1, param2, param3));
+    // } else {
+    // return null;
+    // }
   }
 
 }
