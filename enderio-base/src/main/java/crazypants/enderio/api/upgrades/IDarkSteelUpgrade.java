@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.google.common.collect.Multimap;
 
 import crazypants.enderio.base.handler.darksteel.PacketDarkSteelSFXPacket;
@@ -12,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -38,11 +41,17 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
   @Nonnull
   String getUnlocalizedName();
 
+  default @Nonnull String getDisplayName() {
+    return I18n.translateToLocal(getUnlocalizedName() + ".name");
+  }
+
   /**
-   * @return The String that is used to sort upgrades for display in JEI and the Creative Menu.
+   * @return A {@link Pair}<code>&lt;{@link String}, {@link Integer}&gt;</code> that is used to sort upgrades for display in JEI and the Creative Menu. The
+   *         sorting is done on the concatenation of both. When determining if two upgrades should be grouped together, the String is compared and the upgrades
+   *         are ordered by the number.
    */
-  default @Nonnull String getSortKey() {
-    return getUnlocalizedName();
+  default @Nonnull Pair<String, Integer> getSortKey() {
+    return Pair.of(getUnlocalizedName(), 0);
   }
 
   /**

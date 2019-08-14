@@ -5,6 +5,8 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
@@ -32,27 +34,6 @@ public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements
   protected final @Nonnull String id;
   protected final @Nonnull String unlocName;
 
-  @Deprecated
-  protected AbstractUpgrade(@Nonnull String id, @Nonnull String unlocName, int levelCost) {
-    this(id, 0, unlocName, levelCost);
-  }
-
-  @Deprecated
-  protected AbstractUpgrade(@Nonnull String id, int variant, @Nonnull String unlocName, int levelCost) {
-    this(EnderIO.DOMAIN, id, variant, unlocName, levelCost);
-  }
-
-  @Deprecated
-  protected AbstractUpgrade(@Nonnull String domain, @Nonnull String id, int variant, @Nonnull String unlocName, int levelCost) {
-    this(domain, id, variant, unlocName, new IValue<Integer>() {
-      @Override
-      @Nonnull
-      public Integer get() {
-        return levelCost;
-      }
-    });
-  }
-
   protected AbstractUpgrade(@Nonnull String id, @Nonnull String unlocName, IValue<Integer> levelCost) {
     this(id, 0, unlocName, levelCost);
   }
@@ -74,8 +55,8 @@ public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements
   }
 
   @Override
-  public final @Nonnull String getSortKey() {
-    return id + variant;
+  public final @Nonnull Pair<String, Integer> getSortKey() {
+    return Pair.of(id, variant);
   }
 
   @Override
@@ -97,10 +78,6 @@ public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, getUnlocalizedName());
   }
 
-  public @Nonnull String getDisplayName() {
-    return EnderIO.lang.localizeExact(getUnlocalizedName() + ".name");
-  }
-
   @Override
   public int getLevelCost() {
     return levelCost.get();
@@ -109,11 +86,6 @@ public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements
   @Override
   public @Nonnull String getUnlocalizedName() {
     return unlocName;
-  }
-
-  @Override
-  public final boolean hasUpgrade(@Nonnull ItemStack stack) {
-    return IDarkSteelUpgrade.super.hasUpgrade(stack);
   }
 
   @Override

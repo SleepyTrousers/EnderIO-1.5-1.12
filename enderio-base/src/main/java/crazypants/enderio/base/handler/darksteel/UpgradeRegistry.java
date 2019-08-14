@@ -5,6 +5,8 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
@@ -43,12 +45,18 @@ public class UpgradeRegistry {
       synchronized (sortedList) {
         sortedList.clear();
         sortedList.addAll(REGISTRY.getValuesCollection());
-        sortedList.sort((o1, o2) -> o1.getSortKey().compareTo(o2.getSortKey()));
+        sortedList.sort(UpgradeRegistry::compare);
         Arrays.stream(DarkSteelConfig.disabledUpgrades.get().split("\\s*[,;]\\s*")).map(s -> s != null ? new ResourceLocation(s) : null)
             .forEach(rl -> sortedList.remove(getUpgrade(rl)));
       }
     }
     return sortedList;
+  }
+
+  protected static int compare(@Nonnull IDarkSteelUpgrade o1, @Nonnull IDarkSteelUpgrade o2) {
+    final Pair<String, Integer> k1 = o1.getSortKey();
+    final Pair<String, Integer> k2 = o2.getSortKey();
+    return (k1.getLeft() + k1.getRight()).compareTo((k2.getLeft() + k2.getRight()));
   }
 
   public static @Nullable IDarkSteelUpgrade getUpgrade(ResourceLocation id) {

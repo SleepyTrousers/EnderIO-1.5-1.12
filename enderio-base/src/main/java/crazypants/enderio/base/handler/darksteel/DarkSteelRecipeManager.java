@@ -171,7 +171,7 @@ public class DarkSteelRecipeManager {
       if (!applyableUpgrades.isEmpty()) {
         list.add(TextFormatting.YELLOW + EnderIO.lang.localize("tooltip.anvilupgrades") + " ");
         for (IDarkSteelUpgrade up : applyableUpgrades) {
-          list.add(Lang.DARK_STEEL_LEVELS1.get(TextFormatting.DARK_AQUA, EnderIO.lang.localizeExact(up.getUnlocalizedName() + ".name")));
+          list.add(Lang.DARK_STEEL_LEVELS1.get(TextFormatting.DARK_AQUA, up.getDisplayName()));
           list.add(Lang.DARK_STEEL_LEVELS2.get(TextFormatting.DARK_AQUA, TextFormatting.ITALIC, UpgradeRegistry.getUpgradeItem(up).getDisplayName(), 1));
         }
       }

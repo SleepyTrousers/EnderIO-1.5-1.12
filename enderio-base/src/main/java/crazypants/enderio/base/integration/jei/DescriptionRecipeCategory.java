@@ -16,7 +16,6 @@ import com.enderio.core.common.util.NNList.Callback;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager.UpgradePath;
 import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
@@ -73,7 +72,7 @@ public class DescriptionRecipeCategory {
         NNList<UpgradePath> list = DarkSteelRecipeManager.getAllRecipes(new NNList<>(itemStack));
         Map<String, IDarkSteelUpgrade> set = new HashMap<>();
         for (UpgradePath upgradePath : list) {
-          set.put(EnderIO.lang.localizeExact(upgradePath.getDsupgrade().getUnlocalizedName() + ".name"), upgradePath.getDsupgrade());
+          set.put(upgradePath.getDsupgrade().getDisplayName(), upgradePath.getDsupgrade());
         }
         List<String> names = new ArrayList<>(set.keySet());
         Collections.sort(names);

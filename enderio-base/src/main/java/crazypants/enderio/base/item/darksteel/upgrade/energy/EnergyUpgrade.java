@@ -199,7 +199,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
   @SideOnly(Side.CLIENT)
   public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     List<String> upgradeStr = new ArrayList<String>();
-    upgradeStr.add(TextFormatting.DARK_AQUA + EnderIO.lang.localizeExact(getUnlocalizedName() + ".name"));
+    upgradeStr.add(TextFormatting.DARK_AQUA + getDisplayName());
     if (itemstack.isItemStackDamageable() && itemstack.getItem() instanceof IDarkSteelItem) {
       SpecialTooltipHandler.addDetailedTooltipFromResources(upgradeStr, getUnlocalizedName());
 

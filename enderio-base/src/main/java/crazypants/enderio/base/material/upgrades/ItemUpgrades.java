@@ -16,7 +16,6 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.api.upgrades.IRule;
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
 import crazypants.enderio.base.lang.Lang;
@@ -154,7 +153,7 @@ public final class ItemUpgrades extends Item implements IHaveRenderers, IAdvance
 
   @Override
   public boolean hasEffect(@Nonnull ItemStack stack) {
-    return NbtValue.ENABLED.getBoolean(stack) || super.hasEffect(stack);
+    return isEnabled(stack) || super.hasEffect(stack);
   }
 
   @Override
@@ -187,7 +186,7 @@ public final class ItemUpgrades extends Item implements IHaveRenderers, IAdvance
           .map(rule -> ((IRule.Prerequisite) rule).getPrerequisite()).collect(Collectors.toList());
       if (!dependencies.isEmpty()) {
         list.add(Lang.DSU_TOOLTIP_DEPS.get());
-        dependencies.forEach(dependency -> list.add(Lang.DSU_TOOLTIP_LINE.get(EnderIO.lang.localizeExact(dependency.getUnlocalizedName() + ".name"))));
+        dependencies.forEach(dependency -> list.add(Lang.DSU_TOOLTIP_LINE.get(dependency.getDisplayName())));
       }
 
       List<String> classes = upgrade.getRules().stream().filter(rule -> rule instanceof IRule.ItemType)
