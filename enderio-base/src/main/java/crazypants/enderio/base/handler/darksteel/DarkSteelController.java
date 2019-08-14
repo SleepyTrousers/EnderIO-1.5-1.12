@@ -30,6 +30,7 @@ import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.util.Prep;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
@@ -40,6 +41,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MovementInput;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -163,7 +165,7 @@ public class DarkSteelController {
   public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
     EntityPlayer player = event.player;
 
-    if (event.phase == Phase.START && !player.isSpectator()) {
+    if (event.phase == Phase.START && !player.isSpectator() && !(player instanceof EntityOtherPlayerMP) && !(player instanceof FakePlayer)) {
       // boots
       updateStepHeight(player);
 
