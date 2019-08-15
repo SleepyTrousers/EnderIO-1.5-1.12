@@ -148,6 +148,12 @@ public class ItemInventoryCharger extends Item implements IAdvancedTooltipProvid
   @Override
   public @Nonnull ActionResult<ItemStack> onItemRightClick(@Nonnull World worldIn, @Nonnull EntityPlayer playerIn, @Nonnull EnumHand handIn) {
     final ItemStack stack = playerIn.getHeldItem(handIn);
+    if (playerIn.isSneaking()) {
+      if (!worldIn.isRemote) {
+        openUpgradeGui(playerIn, handIn);
+      }
+      return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+    }
     if (EnergyUpgradeManager.loadFromItem(stack) != null) {
       if (!worldIn.isRemote) {
         NbtValue.ENABLED.setBoolean(stack, !NbtValue.ENABLED.getBoolean(stack));

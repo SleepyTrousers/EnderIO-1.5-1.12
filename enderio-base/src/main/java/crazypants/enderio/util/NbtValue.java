@@ -448,7 +448,7 @@ public enum NbtValue { // TODO: DONE111
   // /////////////////////////////////////////////////////////////////////////////////////////////////////
 
   public @Nonnull ItemStack getStack(@Nullable NBTTagCompound tag, int idx, @Nonnull ItemStack _default) {
-    if (tag != null && tag.hasKey(key, Constants.NBT.TAG_COMPOUND)) {
+    if (tag != null && tag.hasKey(key, Constants.NBT.TAG_LIST)) {
       return new ItemStack(tag.getTagList(key, Constants.NBT.TAG_COMPOUND).getCompoundTagAt(idx));
     }
     return _default;
@@ -461,6 +461,9 @@ public enum NbtValue { // TODO: DONE111
   public @Nullable NBTTagCompound setStack(@Nullable NBTTagCompound tag, int idx, @Nonnull ItemStack value) {
     if (tag != null) {
       NBTTagList list = tag.getTagList(key, Constants.NBT.TAG_COMPOUND);
+      while (list.tagCount() <= idx) {
+        list.appendTag(new NBTTagCompound());
+      }
       list.set(idx, value.writeToNBT(new NBTTagCompound()));
       tag.setTag(key, list); // we always get a list, but if it's a new one, we manually have to set it
     }

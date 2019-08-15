@@ -234,6 +234,12 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
       }
     }
+    if (player.isSneaking()) {
+      if (!world.isRemote) {
+        openUpgradeGui(player, hand);
+      }
+      return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+    }
 
     return super.onItemRightClick(world, player, hand);
   }

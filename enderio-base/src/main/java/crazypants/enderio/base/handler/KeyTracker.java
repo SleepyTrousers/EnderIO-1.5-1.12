@@ -67,7 +67,7 @@ public class KeyTracker {
 
   static {
     inventory = create("enderio.keybind.inventory", Keyboard.KEY_I, "key.category.darksteelarmor    ", new InventoryAction());
-    dsu = create("enderio.keybind.dsu            ", Keyboard.KEY_NONE, "key.category.darksteelarmor    ", new DSUAction());
+    dsu = create("enderio.keybind.dsu         ", Keyboard.KEY_NONE, "key.category.darksteelarmor    ", new DSUAction());
     create("enderio.keybind.glidertoggle      ", Keyboard.KEY_G, "   key.category.darksteelarmor    ", new GlideAction());
     create("enderio.keybind.soundlocator      ", Keyboard.KEY_NONE, "key.category.darksteelarmor    ", new SoundDetectorAction());
     create("enderio.keybind.nightvision       ", Keyboard.KEY_P, "   key.category.darksteelarmor    ", new NightVisionAction());

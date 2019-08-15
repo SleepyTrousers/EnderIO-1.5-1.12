@@ -18,6 +18,7 @@ import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.api.upgrades.IRule;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.base.xp.XpUtil;
@@ -209,6 +210,14 @@ public final class ItemUpgrades extends Item implements IHaveRenderers, IAdvance
   @Override
   public @Nonnull ActionResult<ItemStack> onItemRightClick(@Nonnull World worldIn, @Nonnull EntityPlayer playerIn, @Nonnull EnumHand handIn) {
     final ItemStack stack = playerIn.getHeldItem(handIn);
+
+    if (playerIn.isSneaking()) {
+      if (!worldIn.isRemote) {
+        ModObject.itemDarkSteelPickaxe.openGui(worldIn, playerIn, -1, 0, 0);
+      }
+      return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+    }
+
     if (!isEnabled(stack) && stack.getCount() == 1) {
       IDarkSteelUpgrade upgrade = getUpgrade(stack);
       if (upgrade != null) {

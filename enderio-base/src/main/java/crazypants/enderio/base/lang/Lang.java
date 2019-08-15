@@ -202,6 +202,7 @@ public enum Lang implements ILang {
 
   DSU_GUI_NOT_ENOUGH_LEVELS(".darksteel.upgrades.gui.not_levels"),
   DSU_GUI_ACTIVATED(".darksteel.upgrades.gui.activated"),
+  DSU_GUI_NO_ITEMS(".darksteel.upgrades.gui.no_items"),
 
   ;
 

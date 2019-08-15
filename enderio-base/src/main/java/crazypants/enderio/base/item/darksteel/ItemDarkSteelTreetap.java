@@ -31,7 +31,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
 
 public class ItemDarkSteelTreetap extends Item implements IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
 
@@ -149,6 +153,17 @@ public class ItemDarkSteelTreetap extends Item implements IAdvancedTooltipProvid
   @Override
   public @Nonnull ICapacitorKey getAbsorptionRatioKey(@Nonnull ItemStack stack) {
     return CapacitorKey.DARK_STEEL_TREETAP_ABSORPTION_RATIO;
+  }
+
+  @Override
+  public @Nonnull ActionResult<ItemStack> onItemRightClick(@Nonnull World worldIn, @Nonnull EntityPlayer playerIn, @Nonnull EnumHand handIn) {
+    if (playerIn.isSneaking()) {
+      if (!worldIn.isRemote) {
+        openUpgradeGui(playerIn, handIn);
+      }
+      return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+    }
+    return super.onItemRightClick(worldIn, playerIn, handIn);
   }
 
 }

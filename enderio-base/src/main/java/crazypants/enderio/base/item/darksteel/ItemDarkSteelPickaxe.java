@@ -403,6 +403,13 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe
       }
       return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
     }
+    if (player.isSneaking()) {
+      if (!world.isRemote) {
+        openUpgradeGui(player, hand);
+      }
+      return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+    }
+
     return null;
   }
 
@@ -532,34 +539,30 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe
     return CapacitorKey.DARK_STEEL_PICKAXE_ABSORPTION_RATIO;
   }
 
-  // Note: The GUI is bound to ModObject.itemDarkSteelChestplate, but that is just for technical reasons. It supports any armor item with the upgrade, even if
+  // Note: The GUI is bound to this, but that is just for technical reasons. It supports any item with an upgrade, even if
   // it doesn't extend this class
   @Override
-  @Nonnull
+  @Nullable
   public DSUContainer getServerGuiElement(@Nonnull EntityPlayer player, int param1, int param2, int param3) {
-    // SlotEncoder enc = new SlotEncoder(param1);
-    // if (enc.hasSlots()) {
-    return new DSUContainer(player.inventory, //
+    DSUContainer container = DSUContainer.create(player.inventory, //
         new UpgradeCap(EntityEquipmentSlot.FEET, player), //
         new UpgradeCap(EntityEquipmentSlot.LEGS, player), //
         new UpgradeCap(EntityEquipmentSlot.CHEST, player), //
         new UpgradeCap(EntityEquipmentSlot.HEAD, player), //
         new UpgradeCap(EntityEquipmentSlot.MAINHAND, player), //
         new UpgradeCap(EntityEquipmentSlot.OFFHAND, player));
-    // }
-    // return null;
+    if (container == null && !player.world.isRemote) {
+      player.sendStatusMessage(Lang.DSU_GUI_NO_ITEMS.toChatServer(), true);
+    }
+    return container;
   }
 
   @Override
   @Nullable
   @SideOnly(Side.CLIENT)
   public DSUGui getClientGuiElement(@Nonnull EntityPlayer player, int param1, int param2, int param3) {
-    // SlotEncoder enc = new SlotEncoder(param1);
-    // if (enc.hasSlots()) {
-    return new DSUGui(getServerGuiElement(player, param1, param2, param3));
-    // } else {
-    // return null;
-    // }
+    final DSUContainer container = getServerGuiElement(player, param1, param2, param3);
+    return container != null ? new DSUGui(container, param1) : null;
   }
 
 }

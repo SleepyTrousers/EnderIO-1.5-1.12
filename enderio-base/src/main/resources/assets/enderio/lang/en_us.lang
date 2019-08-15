@@ -813,8 +813,12 @@ enderio.darksteel.upgrades.tooltip.itemclasses=Can be applied to:
 enderio.darksteel.upgrades.tooltip.levels.line1=%s levels needed to activate this upgrade
 enderio.darksteel.upgrades.tooltip.levels.line2=(Activate this upgrade by right-clicking)
 
+enderio.darksteel.upgrades.check.prerequisite.missing=Requires upgrade "%s" to be installed
+enderio.darksteel.upgrades.check.prerequisite.energy=Requires item to be empowered
+
 enderio.darksteel.upgrades.gui.not_levels=%s levels needed to activate this upgrade
 enderio.darksteel.upgrades.gui.activated=Upgrade activated
+enderio.darksteel.upgrades.gui.no_items=No upgradeable Dark Steel items equipped
 
 enderio.darksteel.upgrades.everything=Any Dark Steel Item
 enderio.darksteel.upgrades.weapons=Dark Steel Weapons
@@ -1179,6 +1183,7 @@ enderio.loot.capacitor.title.22=Help! I'm trapped in a video game!
 
 enderio.keybind.inventory=Open Armor Inventory
 enderio.keybind.inventory.none_equipped=No armor with inventory equipped
+enderio.keybind.dsu=Open Dark Steel Upgrade Inventory
 enderio.keybind.glidertoggle=Glider/Elytra Toggle
 enderio.keybind.soundlocator=Sound Locator
 enderio.keybind.nightvision=Night Vision

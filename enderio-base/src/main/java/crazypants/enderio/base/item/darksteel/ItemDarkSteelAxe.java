@@ -54,6 +54,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -207,6 +208,17 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
         evt.setNewSpeed(6);
       }
     }
+  }
+
+  @Override
+  public @Nonnull ActionResult<ItemStack> onItemRightClick(@Nonnull World worldIn, @Nonnull EntityPlayer playerIn, @Nonnull EnumHand handIn) {
+    if (playerIn.isSneaking()) {
+      if (!worldIn.isRemote) {
+        openUpgradeGui(playerIn, handIn);
+      }
+      return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+    }
+    return super.onItemRightClick(worldIn, playerIn, handIn);
   }
 
   @SuppressWarnings("incomplete-switch")

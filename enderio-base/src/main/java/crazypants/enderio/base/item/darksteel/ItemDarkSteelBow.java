@@ -43,6 +43,8 @@ import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -438,6 +440,17 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
   @Override
   public @Nonnull ICapacitorKey getAbsorptionRatioKey(@Nonnull ItemStack stack) {
     return CapacitorKey.DARK_STEEL_BOW_ABSORPTION_RATIO;
+  }
+
+  @Override
+  public @Nonnull ActionResult<ItemStack> onItemRightClick(@Nonnull World worldIn, @Nonnull EntityPlayer playerIn, @Nonnull EnumHand handIn) {
+    if (playerIn.isSneaking()) {
+      if (!worldIn.isRemote) {
+        openUpgradeGui(playerIn, handIn);
+      }
+      return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+    }
+    return super.onItemRightClick(worldIn, playerIn, handIn);
   }
 
 }

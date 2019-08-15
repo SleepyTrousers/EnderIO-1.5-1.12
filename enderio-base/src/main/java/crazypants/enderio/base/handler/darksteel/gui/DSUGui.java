@@ -8,6 +8,7 @@ import com.enderio.core.client.gui.widget.GhostSlot;
 
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.handler.KeyTracker;
+import crazypants.enderio.util.EnumReader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -18,10 +19,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
 
   private final @Nonnull DSUContainer cont;
+  private final int initialTab;
 
-  public DSUGui(@Nonnull DSUContainer par1Container) {
+  public DSUGui(@Nonnull DSUContainer par1Container, int initialTab) {
     super(par1Container, "dsu");
     this.cont = par1Container;
+    this.initialTab = initialTab;
     ySize = 206;
   }
 
@@ -47,10 +50,11 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
   private void setInitialTab() {
     if (!hasSetTab) {
       hasSetTab = true;
+      EntityEquipmentSlot preferedSlot = initialTab > -1 ? EnumReader.get(EntityEquipmentSlot.class, initialTab) : EntityEquipmentSlot.CHEST;
       EntityEquipmentSlot found = null;
       for (EntityEquipmentSlot drawTab : EntityEquipmentSlot.values()) {
-        if (cont.getItemHandler().getHandlerFromIndex(drawTab.getIndex()).getSlots() > 0) {
-          if (found == null || drawTab == EntityEquipmentSlot.CHEST) {
+        if (cont.getItemHandler().getHandlerFromIndex(drawTab.getSlotIndex()).getSlots() > 0) {
+          if (found == null || drawTab == preferedSlot) {
             found = drawTab;
           }
         }
@@ -70,18 +74,20 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
     bindGuiTexture();
     drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
     // we have a dark gray background for the ghostslot grayout, let's overpaint it with light gray
-    drawTexturedModalRect(guiLeft, guiTop + 5, 0, 220, xSize, 36);
-    drawTexturedModalRect(guiLeft, guiTop + 26, 0, 220, xSize, 36);
-    drawTexturedModalRect(guiLeft, guiTop + 62, 0, 220, xSize, 36);
+    drawScaledCustomSizeModalRect(guiLeft, guiTop + 5, 0, 220, xSize, 1, xSize, 111, 256, 256);
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
     for (GhostSlot slot : getGhostSlotHandler().getGhostSlots()) {
       if (slot instanceof DSUContainer.UpgradeSlot && slot.isVisible()) {
         if (((DSUContainer.UpgradeSlot) slot).isHead()) {
-          drawTexturedModalRect(guiLeft + slot.getX() - 1 - 6, guiTop + slot.getY() - 1, 218, 0, 6, 18);
+          drawTexturedModalRect(guiLeft + slot.getX() - 1 - 6, guiTop + slot.getY() - 1, 200, 18, 6, 18);
         }
-        drawTexturedModalRect(guiLeft + slot.getX() - 1, guiTop + slot.getY() - 1, 200, 0, 18, 18);
+        if (((DSUContainer.UpgradeSlot) slot).isBlocked()) {
+          drawTexturedModalRect(guiLeft + slot.getX() - 1, guiTop + slot.getY() - 1, 218, 0, 18, 18);
+        } else {
+          drawTexturedModalRect(guiLeft + slot.getX() - 1, guiTop + slot.getY() - 1, 200, 0, 18, 18);
+        }
       }
     }
 

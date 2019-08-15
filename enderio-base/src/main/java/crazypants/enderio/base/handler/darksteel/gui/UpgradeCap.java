@@ -227,6 +227,9 @@ public class UpgradeCap implements IItemHandlerModifiable {
   }
 
   public boolean isStillConnectedToPlayer() {
+    if (stacks.isEmpty()) {
+      return true;
+    }
     if (player.world.isRemote) {
       return player.getItemStackFromSlot(equipmentSlot).getItem() == owner.getItem();
     }

@@ -14,7 +14,10 @@ import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
+import crazypants.enderio.base.handler.darksteel.gui.PacketOpenDSU;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeCap;
+import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -64,4 +67,12 @@ public abstract class DarkSteelUpgradeMixin extends Item implements IDarkSteelIt
     DarkSteelRecipeManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
+  @Override
+  public void openUpgradeGui(@Nonnull EntityPlayer player, @Nullable EntityEquipmentSlot slot) {
+    if (player.world.isRemote) {
+      PacketHandler.INSTANCE.sendToServer(new PacketOpenDSU(slot != null ? slot.ordinal() : -1));
+    } else {
+      ModObject.itemDarkSteelPickaxe.openGui(player.world, player, slot != null ? slot.ordinal() : -1, 0, 0);
+    }
+  }
 }

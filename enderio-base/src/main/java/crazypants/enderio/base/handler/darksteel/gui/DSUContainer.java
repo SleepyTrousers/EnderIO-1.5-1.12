@@ -2,12 +2,15 @@ package crazypants.enderio.base.handler.darksteel.gui;
 
 import java.awt.Point;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnderCap;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.item.darksteel.upgrade.storage.StorageCombinedCap;
 import crazypants.enderio.base.material.upgrades.ItemUpgrades;
@@ -18,13 +21,18 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.client.config.GuiUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCap>, TileEntity> implements DSURemoteExec.Container {
 
-  final class UpgradeSlot extends GhostBackgroundItemSlot {
+  static final class UpgradeSlot extends GhostBackgroundItemSlot {
     private final @Nonnull AutoSlot slot;
 
     UpgradeSlot(@Nonnull ItemStack stack, @Nonnull AutoSlot parent) {
@@ -45,6 +53,35 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
     public boolean isHead() {
       return slot.isHead();
     }
+
+    public boolean isBlocked() {
+      return slot.isBlocked();
+    }
+
+    @Override
+    public boolean isMouseOver(int mx, int my) {
+      return !slot.isInventorySlot() && mx >= getX() && mx < (getX() + 16) && my >= getY() && my < (getY() + 16);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean drawGhostSlotToolTip(@Nonnull GuiContainerBase gui, int mouseX, int mouseY) {
+      if (gui.mc.player.inventory.getItemStack().isEmpty()) {
+        final List<String> text = new NNList<>(getStack().getDisplayName());
+        if (isBlocked()) {
+          List<ITextComponent> reason = slot.getSlotBlockedReason();
+          if (!reason.isEmpty()) {
+            text.add("");
+            text.addAll(reason.stream().peek(itc -> itc.getStyle().setColor(TextFormatting.DARK_RED)).map(ITextComponent::getFormattedText)
+                .collect(Collectors.toList()));
+          }
+        }
+        GuiUtils.drawHoveringText(Prep.getEmpty(), text, mouseX, mouseY, gui.width, gui.height, -1, gui.getFontRenderer());
+        return true;
+      }
+      return false;
+    }
+
   }
 
   final class AutoSlot extends SlotItemHandler {
@@ -53,6 +90,14 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
     AutoSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition, boolean isHead) {
       super(itemHandler, index, xPosition, yPosition);
       this.isHead = isHead;
+    }
+
+    public boolean isBlocked() {
+      return getHandler().isSlotBlocked(getHandlerSlot());
+    }
+
+    public @Nonnull List<ITextComponent> getSlotBlockedReason() {
+      return getHandler().getSlotBlockedReason(getHandlerSlot());
     }
 
     public boolean isHead() {
@@ -85,6 +130,9 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
       return getHandler().getUpgradeItem(getHandlerSlot());
     }
 
+    boolean isInventorySlot() {
+      return getHandler().isInventorySlot(getHandlerSlot());
+    }
   }
 
   private static final int X0 = 8;
@@ -94,6 +142,15 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
   private final @Nonnull UpgradeCap main, head, body, legs, feet, offh;
 
   protected @Nonnull EntityEquipmentSlot activeTab = EntityEquipmentSlot.CHEST;
+
+  public static DSUContainer create(@Nonnull InventoryPlayer playerInv, @Nonnull UpgradeCap feet, @Nonnull UpgradeCap legs, @Nonnull UpgradeCap body,
+      @Nonnull UpgradeCap head, @Nonnull UpgradeCap main, @Nonnull UpgradeCap offh) {
+    if (feet.getSlots() > 0 || legs.getSlots() > 0 || body.getSlots() > 0 || head.getSlots() > 0 || main.getSlots() > 0 || offh.getSlots() > 0) {
+      return new DSUContainer(playerInv, feet, legs, body, head, main, offh);
+    } else {
+      return null;
+    }
+  }
 
   public DSUContainer(@Nonnull InventoryPlayer playerInv, @Nonnull UpgradeCap feet, @Nonnull UpgradeCap legs, @Nonnull UpgradeCap body,
       @Nonnull UpgradeCap head, @Nonnull UpgradeCap main, @Nonnull UpgradeCap offh) {
@@ -115,12 +172,13 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
       boolean isHead = false;
       final UpgradeCap handler = getItemHandler().getHandlerFromSlot(i);
       EntityEquipmentSlot current = handler.getEquipmentSlot();
+      int idx = getItemHandler().getIndexForHandler(i);
       if (current != last) {
         x = 0;
         y = 0;
         last = current;
-      } else if (handler.isHead(i)) {
-        if (handler.isInventorySlot(i)) {
+      } else if (handler.isHead(idx)) {
+        if (handler.isInventorySlot(idx)) {
           x = 0;
           y = 5 * 18; // row 6 is inventory
         } else {
@@ -128,7 +186,7 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
           isHead = true;
         }
       }
-      if (x > COLS * 18) {
+      if (x > (COLS - 1) * 18) {
         x = 0;
         y += 24;
         isHead = false;

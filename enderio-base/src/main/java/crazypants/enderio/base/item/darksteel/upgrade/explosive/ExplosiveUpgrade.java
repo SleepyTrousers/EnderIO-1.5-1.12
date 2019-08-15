@@ -23,6 +23,7 @@ import crazypants.enderio.base.lang.Lang;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -59,7 +60,7 @@ public class ExplosiveUpgrade extends AbstractUpgrade {
         }
       }
 
-      return new CheckResult(Lang.DSU_CHECK_PREREQ_ENERGY.toChatServer());
+      return new CheckResult(Lang.DSU_CHECK_PREREQ_MISSING.toChatServer(new TextComponentTranslation(INSTANCE.getUnlocalizedName() + ".name")));
     }
 
     @Override
