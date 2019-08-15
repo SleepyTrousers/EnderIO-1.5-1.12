@@ -14,6 +14,7 @@ import com.enderio.core.common.ContainerEnderCap;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.storage.StorageCombinedCap;
+import crazypants.enderio.base.material.upgrades.ItemUpgrades;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -37,7 +38,7 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
 
     @Override
     public @Nonnull ItemStack getStack() {
-      return slot.getUpgradeItem();
+      return ItemUpgrades.setEnabled(slot.getUpgradeItem(), false);
     }
 
     @Override
@@ -127,7 +128,7 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
         slots.add(new UpgradeSlot(Prep.getEmpty(), (AutoSlot) slot));
       }
     }
-    for (int y = 4; y < 6; y++) {
+    for (int y = 5; y < 6; y++) {
       for (int x = 0; x < 9; x++) {
         slots.add(new GhostBackgroundItemSlot(ModObject.itemDarkSteelUpgrade.getItemNN(), X0 + 18 * x, Y0 + 18 * y));
       }

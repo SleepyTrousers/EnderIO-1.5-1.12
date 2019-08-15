@@ -64,13 +64,15 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     setInitialTab();
-    int sx = (width - xSize) / 2;
-    int sy = (height - ySize) / 2;
 
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
     bindGuiTexture();
     drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+    // we have a dark gray background for the ghostslot grayout, let's overpaint it with light gray
+    drawTexturedModalRect(guiLeft, guiTop + 5, 0, 220, xSize, 36);
+    drawTexturedModalRect(guiLeft, guiTop + 26, 0, 220, xSize, 36);
+    drawTexturedModalRect(guiLeft, guiTop + 62, 0, 220, xSize, 36);
 
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
@@ -83,11 +85,12 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
     startTabs();
     for (EntityEquipmentSlot drawTab : EntityEquipmentSlot.values()) {
       if (cont.getItemHandler().getHandlerFromIndex(drawTab.getSlotIndex()).getSlots() > 0) {
-        renderStdTab(sx, sy, idFromSlot(drawTab), Minecraft.getMinecraft().player.getItemStackFromSlot(drawTab), drawTab == cont.activeTab);
+        renderStdTab(guiLeft, guiTop, idFromSlot(drawTab), Minecraft.getMinecraft().player.getItemStackFromSlot(drawTab), drawTab == cont.activeTab);
       }
     }
 
-    fontRenderer.drawString("WIP - may break horribly!", sx + 10, sy + 65, 0xff0000);
+    fontRenderer.drawString("Storage", guiLeft + 7, guiTop + 99 - 11, 4210752);
+    fontRenderer.drawString("WIP - may break horribly!", guiLeft + 7 + 15, guiTop + 99 - 11 - 9, 0xff0000);
   }
 
   @Override
