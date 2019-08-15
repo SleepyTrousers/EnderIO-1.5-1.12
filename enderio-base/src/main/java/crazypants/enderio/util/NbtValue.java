@@ -8,7 +8,9 @@ import javax.annotation.Nullable;
 import crazypants.enderio.base.EnderIO;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.util.Constants;
 
 public enum NbtValue { // TODO: DONE111
   GLINT("glinted"),
@@ -52,6 +54,7 @@ public enum NbtValue { // TODO: DONE111
   INFINITY("infinity"),
   INVENTORY("inv"),
   DSU("dsu"),
+  DSUINV("dsuinv"),
 
   ;
 
@@ -438,6 +441,55 @@ public enum NbtValue { // TODO: DONE111
 
   public @Nonnull ItemStack setStackCopy(@Nonnull ItemStack stack, @Nonnull ItemStack value) {
     return setStack(stack.copy(), value);
+  }
+
+  // /////////////////////////////////////////////////////////////////////////////////////////////////////
+  // NBT ITEMSTACK LIST
+  // /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  public @Nonnull ItemStack getStack(@Nullable NBTTagCompound tag, int idx, @Nonnull ItemStack _default) {
+    if (tag != null && tag.hasKey(key, Constants.NBT.TAG_COMPOUND)) {
+      return new ItemStack(tag.getTagList(key, Constants.NBT.TAG_COMPOUND).getCompoundTagAt(idx));
+    }
+    return _default;
+  }
+
+  public @Nonnull ItemStack getStack(@Nullable NBTTagCompound tag, int idx) {
+    return getStack(tag, idx, Prep.getEmpty());
+  }
+
+  public @Nullable NBTTagCompound setStack(@Nullable NBTTagCompound tag, int idx, @Nonnull ItemStack value) {
+    if (tag != null) {
+      NBTTagList list = tag.getTagList(key, Constants.NBT.TAG_COMPOUND);
+      list.set(idx, value.writeToNBT(new NBTTagCompound()));
+      tag.setTag(key, list); // we always get a list, but if it's a new one, we manually have to set it
+    }
+    return tag;
+  }
+
+  public @Nullable NBTTagCompound setStackCopy(@Nullable NBTTagCompound tag, int idx, @Nonnull ItemStack value) {
+    return tag != null ? setStack(tag.copy(), idx, value) : null;
+  }
+
+  // /////////////////////////////////////////////////////////////////////////////////////////////////////
+  // ITEMSTACK ITEMSTACK LIST
+  // /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  public @Nonnull ItemStack getStack(@Nonnull ItemStack stack, int idx, @Nonnull ItemStack _default) {
+    return getStack(getReadOnlyRoot(stack), idx, _default);
+  }
+
+  public @Nonnull ItemStack getStack(@Nonnull ItemStack stack, int idx) {
+    return getStack(stack, idx, Prep.getEmpty());
+  }
+
+  public @Nonnull ItemStack setStack(@Nonnull ItemStack stack, int idx, @Nonnull ItemStack value) {
+    setStack(getOrCreateRoot(stack), idx, value);
+    return stack;
+  }
+
+  public @Nonnull ItemStack setStackCopy(@Nonnull ItemStack stack, int idx, @Nonnull ItemStack value) {
+    return setStack(stack.copy(), idx, value);
   }
 
   // /////////////////////////////////////////////////////////////////////////////////////////////////////

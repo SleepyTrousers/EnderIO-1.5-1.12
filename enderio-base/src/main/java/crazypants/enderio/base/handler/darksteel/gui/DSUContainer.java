@@ -5,14 +5,10 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.ContainerEnderCap;
 
-import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
-import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.storage.StorageCombinedCap;
 import crazypants.enderio.base.material.upgrades.ItemUpgrades;
 import crazypants.enderio.util.Prep;
@@ -45,17 +41,37 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
     public boolean isVisible() {
       return slot.isEnabled();
     }
+
+    public boolean isHead() {
+      return slot.isHead();
+    }
   }
 
   final class AutoSlot extends SlotItemHandler {
-    AutoSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
+    private final boolean isHead;
+
+    AutoSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition, boolean isHead) {
       super(itemHandler, index, xPosition, yPosition);
+      this.isHead = isHead;
+    }
+
+    public boolean isHead() {
+      return isHead;
     }
 
     @SuppressWarnings("unchecked")
+    private int getHandlerSlot() {
+      return ((StorageCombinedCap<UpgradeCap>) getItemHandler()).getIndexForHandler(getSlotIndex());
+    }
+
+    @SuppressWarnings("unchecked")
+    private UpgradeCap getHandler() {
+      return ((StorageCombinedCap<UpgradeCap>) getItemHandler()).getHandlerFromSlot(getSlotIndex());
+    }
+
     @Override
     public boolean isEnabled() {
-      return activeTab == ((StorageCombinedCap<UpgradeCap>) getItemHandler()).getHandlerFromSlot(getSlotIndex()).getEquipmentSlot();
+      return activeTab == getHandler().getEquipmentSlot();
     }
 
     @Override
@@ -64,11 +80,9 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
       return isEnabled() && super.isItemValid(stack);
     }
 
-    @SuppressWarnings("unchecked")
     @Nonnull
     ItemStack getUpgradeItem() {
-      return ((StorageCombinedCap<UpgradeCap>) getItemHandler()).getHandlerFromSlot(getSlotIndex())
-          .getUpgradeItem(((StorageCombinedCap<UpgradeCap>) getItemHandler()).getIndexForHandler(getSlotIndex()));
+      return getHandler().getUpgradeItem(getHandlerSlot());
     }
 
   }
@@ -97,28 +111,30 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
     int y = 0;
     int x = 0;
     EntityEquipmentSlot last = null;
-    String lastKey = "";
     for (int i = 0; i < getItemHandler().getSlots(); i++) {
+      boolean isHead = false;
       final UpgradeCap handler = getItemHandler().getHandlerFromSlot(i);
-      IDarkSteelUpgrade upgrade = handler.getUpgrade(getItemHandler().getIndexForHandler(i));
-      Pair<String, Integer> sortKey = upgrade.getSortKey();
-      String key = sortKey.getKey();
       EntityEquipmentSlot current = handler.getEquipmentSlot();
       if (current != last) {
         x = 0;
         y = 0;
         last = current;
-        lastKey = key;
-      } else if (!key.equals(lastKey) && x > 0) {
-        x += 6;
-        lastKey = key;
+      } else if (handler.isHead(i)) {
+        if (handler.isInventorySlot(i)) {
+          x = 0;
+          y = 5 * 18; // row 6 is inventory
+        } else {
+          x += 6;
+          isHead = true;
+        }
       }
-      addSlotToContainer(new AutoSlot(getItemHandler(), i, X0 + x, Y0 + 24 * y));
-      x += 18;
-      if (x > (COLS - 1) * 18) {
+      if (x > COLS * 18) {
         x = 0;
-        y++;
+        y += 24;
+        isHead = false;
       }
+      addSlotToContainer(new AutoSlot(getItemHandler(), i, X0 + x, Y0 + y, isHead));
+      x += 18;
     }
   }
 
@@ -128,11 +144,11 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
         slots.add(new UpgradeSlot(Prep.getEmpty(), (AutoSlot) slot));
       }
     }
-    for (int y = 5; y < 6; y++) {
-      for (int x = 0; x < 9; x++) {
-        slots.add(new GhostBackgroundItemSlot(ModObject.itemDarkSteelUpgrade.getItemNN(), X0 + 18 * x, Y0 + 18 * y));
-      }
-    }
+    // for (int y = 5; y < 6; y++) {
+    // for (int x = 0; x < 9; x++) {
+    // slots.add(new GhostBackgroundItemSlot(ModObject.itemDarkSteelUpgrade.getItemNN(), X0 + 18 * x, Y0 + 18 * y));
+    // }
+    // }
   }
 
   @Override

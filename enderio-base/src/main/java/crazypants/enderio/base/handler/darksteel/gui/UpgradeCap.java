@@ -4,16 +4,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
-import crazypants.enderio.api.upgrades.IRule;
 import crazypants.enderio.api.upgrades.IRule.CheckResult;
+import crazypants.enderio.base.handler.darksteel.Rules;
 import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
 import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -26,7 +27,24 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 public class UpgradeCap implements IItemHandlerModifiable {
 
-  protected final @Nonnull NNList<IDarkSteelUpgrade> stacks = new NNList<>();
+  private final static class Holder {
+    final @Nonnull IDarkSteelUpgrade upgrade;
+    boolean hasNext = false;
+    boolean isHead = true;
+
+    Holder(@Nonnull IDarkSteelUpgrade upgrade) {
+      this.upgrade = upgrade;
+    }
+
+    String getKey() {
+      return upgrade.getSortKey().getKey();
+    }
+
+  }
+
+  protected final static int INVSIZE = 9;
+
+  protected final @Nonnull NNList<Holder> stacks = new NNList<>();
   protected final @Nonnull EntityEquipmentSlot equipmentSlot;
   protected final @Nonnull ItemStack owner;
   protected final @Nonnull IDarkSteelItem item;
@@ -38,41 +56,84 @@ public class UpgradeCap implements IItemHandlerModifiable {
     this.owner = player.getItemStackFromSlot(equipmentSlot);
     if (owner.getItem() instanceof IDarkSteelItem) {
       this.item = (IDarkSteelItem) owner.getItem();
-      UpgradeRegistry.getUpgrades().stream()
-          .filter(upgrade -> upgrade.getRules().stream().filter(rule -> rule instanceof IRule.StaticRule).allMatch(rule -> rule.check(owner, item).passes()))
-          .forEachOrdered(stacks::add);
+      UpgradeRegistry.getUpgrades().stream().filter(upgrade -> upgrade.getRules().stream().filter(Rules::isStatic).allMatch(Rules.makeChecker(owner, item)))
+          .map(Holder::new).forEachOrdered(this::addHolder);
     } else {
-      stacks.clear(); // no stacks, no slots, nothing will happen
+      this.stacks.clear(); // no stacks, no slots, nothing will happen
       this.item = (IDarkSteelItem) ModObject.itemDarkSteelChestplate.getItemNN(); // dummy value
     }
   }
 
+  /**
+   * see {@link #showUpgrade(int)}
+   */
+  private void addHolder(Holder holder) {
+    if (!stacks.isEmpty()) {
+      final Holder last = stacks.get(stacks.size() - 1);
+      if (last.getKey().equals(holder.getKey())) {
+        holder.isHead = false;
+        last.hasNext = true;
+      }
+    }
+    stacks.add(holder);
+  }
+
   @Override
   public int getSlots() {
-    return stacks.size();
+    return stacks.isEmpty() ? 0 : stacks.size() + INVSIZE;
+  }
+
+  /**
+   * Upgrades with multiple levels only have the highest applied upgrade on the item. In this case, the lower tier upgrades need to be shown in the GUI
+   * artificially. This method checks if an upgrade either is applied itself or is the lower level of an applied higher tier.
+   * <p>
+   * This relies on tiered upgrades being in order.
+   * <p>
+   * Note that this method should not be used on the "extract" path. Only upgrades that are actually present may be removed. Extraction will automatically fail
+   * for "fake" upgrades as the extraction logic will see those upgrades as "not present".
+   */
+  private boolean showUpgrade(int slot) {
+    Holder holder = stacks.get(slot);
+    return holder.upgrade.hasUpgrade(getOwner()) || (holder.hasNext && showUpgrade(slot + 1));
   }
 
   @Override
   @Nonnull
   public ItemStack getStackInSlot(int slot) {
-    validateSlotIndex(slot);
-    return stacks.get(slot).hasUpgrade(getOwner()) ? UpgradeRegistry.getUpgradeItem(stacks.get(slot)) : Prep.getEmpty();
+    if (isInventorySlot(slot)) {
+      return NbtValue.DSUINV.getStack(getOwner(), slot - stacks.size());
+    }
+    return showUpgrade(slot) ? UpgradeRegistry.getUpgradeItem(stacks.get(slot).upgrade) : Prep.getEmpty();
   }
 
   @Nonnull
   public ItemStack getUpgradeItem(int slot) {
-    validateSlotIndex(slot);
-    return UpgradeRegistry.getUpgradeItem(stacks.get(slot));
+    if (isInventorySlot(slot)) {
+      return new ItemStack(ModObject.itemDarkSteelUpgrade.getItemNN());
+    }
+    return UpgradeRegistry.getUpgradeItem(stacks.get(slot).upgrade);
   }
 
   @Override
   @Nonnull
   public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-    validateSlotIndex(slot);
+    if (isInventorySlot(slot)) {
+      if (Prep.isValid(NbtValue.DSUINV.getStack(getOwner(), slot - stacks.size()))) {
+        return stack;
+      }
+      if (stack.getItem() != ModObject.itemDarkSteelUpgrade.getItemNN()) {
+        return stack;
+      }
+      if (!simulate) {
+        NbtValue.DSUINV.setStack(getOwner(), slot - stacks.size(), ItemHandlerHelper.copyStackWithSize(stack, 1));
+        syncChangesToClient();
+      }
+      return ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - 1);
+    }
 
-    IDarkSteelUpgrade upgrade = stacks.get(slot);
+    IDarkSteelUpgrade upgrade = stacks.get(slot).upgrade;
 
-    if (!UpgradeRegistry.isUpgradeItem(upgrade, stack) || !upgrade.canAddToItem(getOwner(), item)) {
+    if (showUpgrade(slot) || !UpgradeRegistry.isUpgradeItem(upgrade, stack) || !upgrade.canAddToItem(getOwner(), item)) {
       return stack;
     }
 
@@ -84,24 +145,29 @@ public class UpgradeCap implements IItemHandlerModifiable {
     return ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - 1);
   }
 
-  public boolean canInsert(int slot) {
-    validateSlotIndex(slot);
-
-    IDarkSteelUpgrade upgrade = stacks.get(slot);
-
-    return upgrade.canAddToItem(getOwner(), item);
+  /**
+   * Checks if the slot should be drawn normal or should be drawn as "blocked".
+   * <p>
+   * Block slots represent upgrades that cannot be applied because either their prerequisites are not met or they conflict with another already applied upgrade.
+   * <p>
+   * Slots that already contain an upgrade are always "open".
+   */
+  public boolean isSlotBlocked(int slot) {
+    return !isInventorySlot(slot) && !showUpgrade(slot) && !stacks.get(slot).upgrade.canAddToItem(getOwner(), item);
   }
 
-  public @Nullable List<ITextComponent> checkInsert(int slot, @Nonnull ItemStack stack) {
-    validateSlotIndex(slot);
-
-    IDarkSteelUpgrade upgrade = stacks.get(slot);
-    if (!UpgradeRegistry.isUpgradeItem(upgrade, stack) || upgrade.hasUpgrade(getOwner())) {
-      return null;
-    }
-
-    return upgrade.getRules().stream().map(rule -> rule.check(getOwner(), item)).filter(CheckResult::hasResult).map(CheckResult::getResult)
-        .collect(Collectors.toList());
+  /**
+   * Finds the reason a slot is not open.
+   * <p>
+   * Please note that the list may be empty if none of the rules provide a reason text (or if a slot is not blocked).
+   */
+  public @Nonnull List<ITextComponent> getSlotBlockedReason(int slot) {
+    return NullHelper.first(
+        isSlotBlocked(slot)
+            ? stacks.get(slot).upgrade.getRules().stream().map(rule -> rule.check(getOwner(), item)).filter(CheckResult::hasResult).map(CheckResult::getResult)
+                .collect(Collectors.toList())
+            : null,
+        NNList.emptyList());
   }
 
   @Override
@@ -111,13 +177,20 @@ public class UpgradeCap implements IItemHandlerModifiable {
       return ItemStack.EMPTY;
     }
 
-    validateSlotIndex(slot);
+    if (isInventorySlot(slot)) {
+      ItemStack result = NbtValue.DSUINV.getStack(getOwner(), slot - stacks.size());
+      if (!simulate) {
+        NbtValue.DSUINV.setStack(getOwner(), slot - stacks.size(), Prep.getEmpty());
+        syncChangesToClient();
+      }
+      return result;
+    }
 
-    IDarkSteelUpgrade upgrade = stacks.get(slot);
+    IDarkSteelUpgrade upgrade = stacks.get(slot).upgrade;
     boolean existing = upgrade.hasUpgrade(getOwner());
 
-    if (!existing
-        || !stacks.stream().filter(up -> up != upgrade && up.hasUpgrade(getOwner())).allMatch(up -> up.canOtherBeRemoved(getOwner(), item, upgrade))) {
+    if (!existing || !stacks.stream().map(holder -> holder.upgrade).filter(up -> up != upgrade && up.hasUpgrade(getOwner()))
+        .allMatch(up -> up.canOtherBeRemoved(getOwner(), item, upgrade))) {
       return ItemStack.EMPTY;
     }
 
@@ -146,10 +219,11 @@ public class UpgradeCap implements IItemHandlerModifiable {
     return 1;
   }
 
-  protected void validateSlotIndex(int slot) {
-    if (slot < 0 || slot >= stacks.size()) {
+  protected boolean isInventorySlot(int slot) {
+    if (slot < 0 || slot >= stacks.size() + INVSIZE) {
       throw new RuntimeException("Slot " + slot + " not in valid range - [0," + stacks.size() + ")");
     }
+    return slot >= stacks.size();
   }
 
   public boolean isStillConnectedToPlayer() {
@@ -171,6 +245,15 @@ public class UpgradeCap implements IItemHandlerModifiable {
 
   @Override
   public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
+    if (isInventorySlot(slot)) {
+      if (stack.getItem() != ModObject.itemDarkSteelUpgrade.getItemNN()) {
+        return;
+      }
+      NbtValue.DSUINV.setStack(getOwner(), slot - stacks.size(), ItemHandlerHelper.copyStackWithSize(stack, 1));
+      syncChangesToClient();
+      return;
+    }
+
     if (Prep.isValid(stack)) {
       insertItem(slot, stack.copy(), false);
     } else {
@@ -183,9 +266,8 @@ public class UpgradeCap implements IItemHandlerModifiable {
     return equipmentSlot;
   }
 
-  public @Nonnull IDarkSteelUpgrade getUpgrade(int slot) {
-    validateSlotIndex(slot);
-    return stacks.get(slot);
+  public boolean isHead(int slot) {
+    return isInventorySlot(slot) ? slot == stacks.size() : stacks.get(slot).isHead;
   }
 
 }

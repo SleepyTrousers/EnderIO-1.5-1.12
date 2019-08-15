@@ -78,6 +78,9 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
 
     for (GhostSlot slot : getGhostSlotHandler().getGhostSlots()) {
       if (slot instanceof DSUContainer.UpgradeSlot && slot.isVisible()) {
+        if (((DSUContainer.UpgradeSlot) slot).isHead()) {
+          drawTexturedModalRect(guiLeft + slot.getX() - 1 - 6, guiTop + slot.getY() - 1, 218, 0, 6, 18);
+        }
         drawTexturedModalRect(guiLeft + slot.getX() - 1, guiTop + slot.getY() - 1, 200, 0, 18, 18);
       }
     }

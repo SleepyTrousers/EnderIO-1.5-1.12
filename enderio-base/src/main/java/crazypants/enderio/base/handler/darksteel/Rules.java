@@ -2,6 +2,7 @@ package crazypants.enderio.base.handler.darksteel;
 
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
@@ -9,6 +10,7 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.api.upgrades.IRule;
+import crazypants.enderio.api.upgrades.IRule.Prerequisite;
 import crazypants.enderio.base.lang.ILang;
 import crazypants.enderio.base.lang.Lang;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -234,5 +236,13 @@ public final class Rules {
     }
 
   };
+
+  public static boolean isStatic(IRule rule) {
+    return rule instanceof IRule.StaticRule;
+  }
+
+  public static Predicate<IRule> makeChecker(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
+    return rule -> rule.check(stack, item).passes();
+  }
 
 }
