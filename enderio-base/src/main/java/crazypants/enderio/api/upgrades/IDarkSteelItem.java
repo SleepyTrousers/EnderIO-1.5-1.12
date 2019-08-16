@@ -133,6 +133,12 @@ public interface IDarkSteelItem {
   @Nonnull
   ICapacitorKey getAbsorptionRatioKey(@Nonnull ItemStack stack);
 
+  /**
+   * Determines what the maximum level of the "Empowered" upgrade that this item can support is.
+   * <p>
+   * Note that the given ItemStack will be empty when determining which upgrade slots will be shown in the upgrade GUI. It will be filled when checkig if the
+   * upgrade can be applied.
+   */
   default int getMaxEmpoweredLevel(@Nonnull ItemStack stack) {
     return getEquipmentData().getTier() >= 2 ? 4 : 3;
     // 3: "Empowered IV", max for Dark Steel

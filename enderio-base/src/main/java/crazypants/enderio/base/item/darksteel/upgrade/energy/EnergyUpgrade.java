@@ -21,6 +21,7 @@ import crazypants.enderio.base.handler.darksteel.Rules;
 import crazypants.enderio.base.item.travelstaff.ItemTravelStaff;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.lang.LangPower;
+import crazypants.enderio.util.Prep;
 import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -192,7 +193,11 @@ public class EnergyUpgrade extends AbstractUpgrade {
   @Override
   @Nonnull
   public List<IRule> getRules() {
-    return new NNList<>(Rules.withLevels(level, UPGRADES));
+    return new NNList<>(Rules.withLevels(level, UPGRADES),
+        // static check for slots:
+        Rules.staticCheck(item -> item.getMaxEmpoweredLevel(Prep.getEmpty()) >= level),
+        // dynamic check for applying:
+        (stack, item) -> item.getMaxEmpoweredLevel(stack) >= level ? IRule.CheckResult.PASS : IRule.CheckResult.SILENT_FAIL);
   }
 
   @Override
