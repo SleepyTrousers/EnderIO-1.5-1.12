@@ -141,7 +141,7 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
   protected @Nonnull ISlotSelector activeTab = SlotSelector.CHEST;
   protected final @Nonnull SlotInventory slotInventory = new SlotInventory();
 
-  public static DSUContainer create(@Nonnull EntityPlayer player, @Nonnull ISlotSelector... slotSelectors) {
+  public static DSUContainer create(@Nonnull EntityPlayer player, boolean withAnvil, boolean withSlot, @Nonnull ISlotSelector... slotSelectors) {
     boolean hasAtleastOne = false;
     NNList<UpgradeCap> caps = new NNList<>();
     for (ISlotSelector iSlotSelector : slotSelectors) {
@@ -153,10 +153,12 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
         caps.add(upgradeCap);
       }
     }
-    if (!hasAtleastOne) {
+    if (!hasAtleastOne && !withAnvil) {
       return null;
     }
-    caps.add(new UpgradeCap(new SlotSelector.SlotItem(null), player));
+    if (withSlot) {
+      caps.add(new UpgradeCap(new SlotSelector.SlotItem(), player));
+    }
     return new DSUContainer(player, caps).init();
   }
 

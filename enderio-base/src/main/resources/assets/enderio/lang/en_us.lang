@@ -820,6 +820,10 @@ enderio.darksteel.upgrades.gui.not_levels=%s levels needed to activate this upgr
 enderio.darksteel.upgrades.gui.activated=Upgrade activated
 enderio.darksteel.upgrades.gui.no_items=No upgradeable Dark Steel items equipped
 
+enderio.darksteel.upgrades.gui.not_installed=No upgradeable item equipped
+enderio.darksteel.upgrades.gui.not_inserted=Put an upgradeable item into the slot
+enderio.darksteel.upgrades.gui.storage=Storage
+
 enderio.darksteel.upgrades.everything=Any Dark Steel Item
 enderio.darksteel.upgrades.weapons=Dark Steel Weapons
 enderio.darksteel.upgrades.weapons.sword=Dark Steel Swords

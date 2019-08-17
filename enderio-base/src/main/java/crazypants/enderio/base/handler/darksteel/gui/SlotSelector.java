@@ -44,10 +44,9 @@ public enum SlotSelector implements ISlotSelector {
 
   public static class SlotItem implements ISlotSelector {
 
-    private Slot containerSlot;
+    private Slot containerSlot = null;
 
-    public SlotItem(Slot containerSlot) {
-      this.containerSlot = containerSlot;
+    public SlotItem() {
     }
 
     @Override

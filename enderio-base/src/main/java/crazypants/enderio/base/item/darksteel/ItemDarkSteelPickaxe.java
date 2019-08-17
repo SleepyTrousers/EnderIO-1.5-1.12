@@ -544,7 +544,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe
   @Override
   @Nullable
   public DSUContainer getServerGuiElement(@Nonnull EntityPlayer player, int param1, int param2, int param3) {
-    DSUContainer container = DSUContainer.create(player, SlotSelector.values());
+    DSUContainer container = DSUContainer.create(player, false, true, SlotSelector.values());
     if (container == null && !player.world.isRemote) {
       player.sendStatusMessage(Lang.DSU_GUI_NO_ITEMS.toChatServer(), true);
     }

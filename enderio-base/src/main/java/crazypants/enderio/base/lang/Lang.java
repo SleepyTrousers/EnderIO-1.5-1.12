@@ -204,6 +204,10 @@ public enum Lang implements ILang {
   DSU_GUI_ACTIVATED(".darksteel.upgrades.gui.activated"),
   DSU_GUI_NO_ITEMS(".darksteel.upgrades.gui.no_items"),
 
+  GUI_DSU_NOT_INSTALLED(".darksteel.upgrades.gui.not_installed"),
+  GUI_DSU_NOT_INSERTED(".darksteel.upgrades.gui.not_inserted"),
+  GUI_DSU_STORAGE(".darksteel.upgrades.gui.storage"),
+
   ;
 
   private final @Nonnull String key;

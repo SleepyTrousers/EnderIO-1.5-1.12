@@ -11,6 +11,7 @@ import com.enderio.core.common.util.NNList;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.handler.KeyTracker;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.sound.SoundHelper;
 import crazypants.enderio.base.sound.SoundRegistry;
 import crazypants.enderio.util.EnumReader;
@@ -136,9 +137,9 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
     }
 
     if (hasAnySlots) {
-      fontRenderer.drawString("Storage", guiLeft + 7, guiTop + 99 - 11, 4210752); // TODO lang
+      fontRenderer.drawString(Lang.GUI_DSU_STORAGE.get(), guiLeft + 7, guiTop + 99 - 11, 4210752);
     } else {
-      String str = cont.activeTab.isItem() ? "Put an upgradeable item into the slot" : "No upgradeable item equipped"; // TODO lang
+      String str = (cont.activeTab.isItem() ? Lang.GUI_DSU_NOT_INSTALLED : Lang.GUI_DSU_NOT_INSERTED).get();
       int y = 0;
       for (String sub : fontRenderer.listFormattedStringToWidth(str, xSize)) {
         if (sub != null) {
@@ -147,9 +148,7 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
           y += 9;
         }
       }
-
     }
-    fontRenderer.drawString("WIP - may break horribly!", guiLeft + 7 + 15, guiTop + 99 - 11 - 9, 0xff0000);
   }
 
   @Override
