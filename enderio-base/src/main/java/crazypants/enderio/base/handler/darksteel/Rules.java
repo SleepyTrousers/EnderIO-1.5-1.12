@@ -11,6 +11,7 @@ import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.api.upgrades.IRule;
 import crazypants.enderio.api.upgrades.IRule.Prerequisite;
+import crazypants.enderio.base.item.darksteel.upgrade.storage.NNPair;
 import crazypants.enderio.base.lang.ILang;
 import crazypants.enderio.base.lang.Lang;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -243,6 +244,10 @@ public final class Rules {
 
   public static Predicate<IRule> makeChecker(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
     return rule -> rule.check(stack, item).passes();
+  }
+
+  public static Predicate<IRule> makeChecker(@Nonnull NNPair<ItemStack, IDarkSteelItem> pair) {
+    return rule -> rule.check(pair.getLeft(), pair.getRight()).passes();
   }
 
 }

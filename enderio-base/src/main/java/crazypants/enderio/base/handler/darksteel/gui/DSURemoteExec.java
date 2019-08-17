@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.base.network.IRemoteExec;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public interface DSURemoteExec {
@@ -13,20 +12,21 @@ public interface DSURemoteExec {
 
   public interface GUI extends IRemoteExec.IGui {
 
-    default void setTab(@Nonnull EntityEquipmentSlot tab) {
-      GuiPacket.send(this, ID_SET_TAB, tab);
+    default void setTab(@Nonnull ISlotSelector tab) {
+      GuiPacket.send(this, ID_SET_TAB, tab.getTabOrder());
     }
 
   }
 
   public interface Container extends IRemoteExec.IContainer {
 
-    IMessage setTab(@Nonnull EntityEquipmentSlot tab);
+    @Nonnull
+    ISlotSelector setTab(int tab);
 
     @Override
     default IMessage networkExec(int id, GuiPacket message) {
       if (id == ID_SET_TAB) {
-        return setTab(message.getEnum(0, EntityEquipmentSlot.class));
+        setTab(message.getInt(0));
       }
       return null;
     }

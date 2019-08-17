@@ -34,7 +34,7 @@ import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.PlayerAOEAttributeHandler;
 import crazypants.enderio.base.handler.darksteel.gui.DSUContainer;
 import crazypants.enderio.base.handler.darksteel.gui.DSUGui;
-import crazypants.enderio.base.handler.darksteel.gui.UpgradeCap;
+import crazypants.enderio.base.handler.darksteel.gui.SlotSelector;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.direct.DirectUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
@@ -544,13 +544,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe
   @Override
   @Nullable
   public DSUContainer getServerGuiElement(@Nonnull EntityPlayer player, int param1, int param2, int param3) {
-    DSUContainer container = DSUContainer.create(player.inventory, //
-        new UpgradeCap(EntityEquipmentSlot.FEET, player), //
-        new UpgradeCap(EntityEquipmentSlot.LEGS, player), //
-        new UpgradeCap(EntityEquipmentSlot.CHEST, player), //
-        new UpgradeCap(EntityEquipmentSlot.HEAD, player), //
-        new UpgradeCap(EntityEquipmentSlot.MAINHAND, player), //
-        new UpgradeCap(EntityEquipmentSlot.OFFHAND, player));
+    DSUContainer container = DSUContainer.create(player, SlotSelector.values());
     if (container == null && !player.world.isRemote) {
       player.sendStatusMessage(Lang.DSU_GUI_NO_ITEMS.toChatServer(), true);
     }

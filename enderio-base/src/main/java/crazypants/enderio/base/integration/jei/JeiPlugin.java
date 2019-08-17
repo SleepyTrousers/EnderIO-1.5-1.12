@@ -52,10 +52,13 @@ public class JeiPlugin implements IModPlugin {
   @Override
   public void register(@Nonnull IModRegistry registry) {
     ProgressManager.ProgressBar bar = ProgressManager.push("Ender IO", 7, true);
+
     bar.step("Dark Steel Upgrades");
-    DarkSteelUpgradeRecipeCategory.register(registry);
+    // DarkSteelUpgradeRecipeCategory.register(registry);
+
     bar.step("Dark Steel Identities");
     DescriptionRecipeCategory.register(registry);
+
     bar.step("Grains of Infinity");
     if (InfinityConfig.inWorldCraftingEnabled.get()) {
       InfinityRecipeCategory.registerExtras(registry);
@@ -63,6 +66,7 @@ public class JeiPlugin implements IModPlugin {
 
     bar.step("GUI Handlers");
     registry.addAdvancedGuiHandlers(new AdvancedGuiHandlerEnderIO());
+
     bar.step("Ghost Handlers");
     registry.addGhostIngredientHandler(GuiContainerBaseEIO.class, new GhostIngredientHandlerEnderIO());
 
@@ -75,8 +79,8 @@ public class JeiPlugin implements IModPlugin {
 
     bar.step("Hiding Items");
     registry.getJeiHelpers().getIngredientBlacklist().addIngredientToBlacklist(new ItemStack(ModObject.itemEnderface.getItemNN()));
-
     hide(registry.getJeiHelpers().getIngredientBlacklist());
+
     ProgressManager.pop(bar);
   }
 

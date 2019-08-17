@@ -38,7 +38,7 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
     return new BlockDarkSteelAnvil(modObject);
   }
 
-  private BlockDarkSteelAnvil(@Nonnull IModObject modObject) {
+  BlockDarkSteelAnvil(@Nonnull IModObject modObject) {
     setHardness(5.0F);
     setSoundType(SoundType.ANVIL);
     setResistance(BaseConfig.explosionResistantBlockHardness.get());

@@ -211,8 +211,9 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
     if (isActive) {
       GlStateManager.color(1, 1, 1, 1);
     } else {
-      GlStateManager.color(.9f, .9f, .9f, 1);
+      GlStateManager.color(.8f, .8f, .8f, 1);
     }
+    GlStateManager.disableLighting();
 
     BufferBuilder tes = Tessellator.getInstance().getBuffer();
     RenderUtil.bindTexture(IconEIO.map.getTexture());
@@ -222,10 +223,13 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
     renderTabPart(tes, x + l_x, y, IconEIO.TAB_FRAME_LEFT.getX() + l_x, IconEIO.TAB_FRAME_LEFT.getY(), l_w, IconEIO.TAB_FRAME_LEFT.getHeight());
     renderTabPart(tes, x + r_x, y, IconEIO.TAB_FRAME_RIGHT.getX() + r_u, IconEIO.TAB_FRAME_RIGHT.getY(), r_w, IconEIO.TAB_FRAME_RIGHT.getHeight());
 
-    if (icon != null) {
+    if (icon != null && icon.getMap() == IconEIO.map) {
       icon.getMap().render(icon, x + w / 2 - 8, y + IconEIO.TAB_BG.getHeight() / 2 - 8, false);
     }
     Tessellator.getInstance().draw();
+    if (icon != null && icon.getMap() != IconEIO.map) {
+      icon.getMap().render(icon, x + w / 2 - 8, y + IconEIO.TAB_BG.getHeight() / 2 - 8, true);
+    }
 
     if (Prep.isValid(stack)) {
       RenderHelper.enableGUIStandardItemLighting();
