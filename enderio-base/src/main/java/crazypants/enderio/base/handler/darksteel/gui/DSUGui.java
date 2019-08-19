@@ -33,17 +33,20 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
 
   private final @Nonnull DSUContainer cont;
   private final int initialTab;
+  private final @Nonnull AnvilSubGui anvil;
 
   public DSUGui(@Nonnull DSUContainer par1Container, int initialTab) {
     super(par1Container, "dsu");
     this.cont = par1Container;
     this.initialTab = initialTab;
+    this.anvil = new AnvilSubGui(par1Container, this);
     ySize = 206;
   }
 
   @Override
   public void initGui() {
     super.initGui();
+    anvil.initGui();
     cont.createGhostSlots(getGhostSlotHandler().getGhostSlots());
   }
 
@@ -99,23 +102,45 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
     // we have a dark gray background for the ghostslot grayout, let's overpaint it with light gray
     drawScaledCustomSizeModalRect(guiLeft, guiTop + 5, 0, 220, xSize, 1, xSize, 111, 256, 256);
 
-    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-
-    boolean hasAnySlots = false;
-    for (GhostSlot slot : getGhostSlotHandler().getGhostSlots()) {
-      if (slot instanceof DSUContainer.UpgradeSlot && slot.isVisible()) {
-        hasAnySlots = true;
-        if (((DSUContainer.UpgradeSlot) slot).isHead()) {
-          drawTexturedModalRect(guiLeft + slot.getX() - 1 - 6, guiTop + slot.getY() - 1, 200, 18, 6, 18);
+    if (cont.activeTab.isAnvil()) {
+      anvil.drawGuiContainerBackgroundLayer(par1, par2, par3);
+    } else {
+      boolean hasAnySlots = false;
+      for (GhostSlot slot : getGhostSlotHandler().getGhostSlots()) {
+        if (slot instanceof DSUContainer.UpgradeSlot && slot.isVisible()) {
+          hasAnySlots = true;
+          if (((DSUContainer.UpgradeSlot) slot).isHead()) {
+            drawTexturedModalRect(guiLeft + slot.getX() - 1 - 6, guiTop + slot.getY() - 1, 200, 18, 6, 18);
+          }
+          if (((DSUContainer.UpgradeSlot) slot).isBlocked()) {
+            drawTexturedModalRect(guiLeft + slot.getX() - 1, guiTop + slot.getY() - 1, 218, 0, 18, 18);
+          } else {
+            drawTexturedModalRect(guiLeft + slot.getX() - 1, guiTop + slot.getY() - 1, 200, 0, 18, 18);
+          }
         }
-        if (((DSUContainer.UpgradeSlot) slot).isBlocked()) {
-          drawTexturedModalRect(guiLeft + slot.getX() - 1, guiTop + slot.getY() - 1, 218, 0, 18, 18);
-        } else {
-          drawTexturedModalRect(guiLeft + slot.getX() - 1, guiTop + slot.getY() - 1, 200, 0, 18, 18);
+      }
+
+      if (hasAnySlots) {
+        fontRenderer.drawString(Lang.GUI_DSU_STORAGE.get(), guiLeft + 7, guiTop + 99 - 11, 4210752);
+      } else {
+        String str = (cont.activeTab.isItem() ? Lang.GUI_DSU_NOT_INSTALLED : Lang.GUI_DSU_NOT_INSERTED).get();
+        int y = 0;
+        for (String sub : fontRenderer.listFormattedStringToWidth(str, xSize)) {
+          if (sub != null) {
+            int stringWidth = fontRenderer.getStringWidth(sub);
+            fontRenderer.drawString(sub, guiLeft + xSize / 2 - stringWidth / 2, guiTop + (ySize - 86) / 2 + y, 4210752);
+            y += 9;
+          }
         }
       }
     }
 
+    drawTabs();
+
+    super.drawGuiContainerBackgroundLayer(par1, par2, par3);
+  }
+
+  private void drawTabs() {
     startTabs();
     for (UpgradeCap cap : cont.caps) {
       if (cap.getSlotSelector().isItem()) {
@@ -135,24 +160,13 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
             cap.getSlotSelector() == cont.activeTab);
       }
     }
-
-    if (hasAnySlots) {
-      fontRenderer.drawString(Lang.GUI_DSU_STORAGE.get(), guiLeft + 7, guiTop + 99 - 11, 4210752);
-    } else {
-      String str = (cont.activeTab.isItem() ? Lang.GUI_DSU_NOT_INSTALLED : Lang.GUI_DSU_NOT_INSERTED).get();
-      int y = 0;
-      for (String sub : fontRenderer.listFormattedStringToWidth(str, xSize)) {
-        if (sub != null) {
-          int stringWidth = fontRenderer.getStringWidth(sub);
-          fontRenderer.drawString(sub, guiLeft + xSize / 2 - stringWidth / 2, guiTop + (ySize - 86) / 2 + y, 4210752);
-          y += 9;
-        }
-      }
-    }
   }
 
   @Override
   protected void keyTyped(char c, int key) throws IOException {
+    if (cont.activeTab.isAnvil() && anvil.keyTyped(c, key)) {
+      return;
+    }
     if (key == KeyTracker.dsu.getKeyCode()) {
       if (!hideOverlays()) {
         this.mc.player.closeScreen();
@@ -162,4 +176,25 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
     super.keyTyped(c, key);
   }
 
+  @Override
+  protected void mouseClicked(int x, int y, int button) throws IOException {
+    if (cont.activeTab.isAnvil()) {
+      anvil.mouseClicked(x, y, button);
+    }
+    super.mouseClicked(x, y, button);
+  }
+
+  @Override
+  protected void drawForegroundImpl(int mouseX, int mouseY) {
+    if (cont.activeTab.isAnvil()) {
+      anvil.drawGuiContainerForegroundLayer(mouseX, mouseY);
+    }
+    super.drawForegroundImpl(mouseX, mouseY);
+  }
+
+  @Override
+  public void onGuiClosed() {
+    super.onGuiClosed();
+    anvil.onGuiClosed();
+  }
 }

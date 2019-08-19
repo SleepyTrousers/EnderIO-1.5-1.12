@@ -17,12 +17,15 @@ import crazypants.enderio.base.item.darksteel.upgrade.storage.StorageCombinedCap
 import crazypants.enderio.base.material.upgrades.ItemUpgrades;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.client.config.GuiUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -140,10 +143,15 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
 
   protected @Nonnull ISlotSelector activeTab = SlotSelector.CHEST;
   protected final @Nonnull SlotInventory slotInventory = new SlotInventory();
+  protected final @Nonnull AnvilSubContainer anvil;
 
   public static DSUContainer create(@Nonnull EntityPlayer player, boolean withAnvil, boolean withSlot, @Nonnull ISlotSelector... slotSelectors) {
     boolean hasAtleastOne = false;
     NNList<UpgradeCap> caps = new NNList<>();
+    if (withAnvil) {
+      caps.add(new UpgradeCap(SlotSelector.ANVIL, player));
+      hasAtleastOne = true;
+    }
     for (ISlotSelector iSlotSelector : slotSelectors) {
       if (iSlotSelector != null) {
         UpgradeCap upgradeCap = new UpgradeCap(iSlotSelector, player);
@@ -153,7 +161,7 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
         caps.add(upgradeCap);
       }
     }
-    if (!hasAtleastOne && !withAnvil) {
+    if (!hasAtleastOne) {
       return null;
     }
     if (withSlot) {
@@ -167,10 +175,12 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
   public DSUContainer(@Nonnull EntityPlayer player, @Nonnull NNList<UpgradeCap> caps) {
     super(player.inventory, new StorageCombinedCap<>(caps.toArray(new UpgradeCap[0])), null, true);
     this.caps = caps;
+    this.anvil = new AnvilSubContainer(this, player);
   }
 
   @Override
   protected void addSlots() {
+    anvil.addSlots(); // Note: Anvil GUI hardcodes these as the first 3 slots
     for (int i = 0; i < getItemHandler().getSlots(); i++) {
       addSlotToContainer(new AutoSlot(getItemHandler(), i, 0, 0, false));
     }
@@ -269,9 +279,10 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
   @Override
   public void onContainerClosed(@Nonnull EntityPlayer playerIn) {
     super.onContainerClosed(playerIn);
+    anvil.onContainerClosed(playerIn);
 
     if (!playerIn.world.isRemote) {
-      this.clearContainer(playerIn, playerIn.world, slotInventory);
+      clearContainer(playerIn, playerIn.world, slotInventory);
     }
   }
 
@@ -291,4 +302,32 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
       return stack.getItem() instanceof IDarkSteelItem;
     }
   }
+
+  @Override // opened for sub container
+  protected @Nonnull Slot addSlotToContainer(@Nonnull Slot slotIn) {
+    return super.addSlotToContainer(slotIn);
+  }
+
+  @Override // opened for sub container
+  protected void clearContainer(@Nonnull EntityPlayer playerIn, @Nonnull World worldIn, @Nonnull IInventory inventoryIn) {
+    super.clearContainer(playerIn, worldIn, inventoryIn);
+  }
+
+  @Override
+  public void addListener(@Nonnull IContainerListener listener) {
+    super.addListener(listener);
+    anvil.addListener(listener);
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void updateProgressBar(int id, int data) {
+    anvil.updateProgressBar(id, data);
+  }
+
+  @Override
+  public void updateItemName(@Nonnull String newName) {
+    anvil.updateItemName(newName);
+  }
+
 }

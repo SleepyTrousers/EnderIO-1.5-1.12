@@ -219,10 +219,7 @@ public class UpgradeCap implements IItemHandlerModifiable {
   }
 
   public boolean isStillConnectedToPlayer() {
-    // if (ss.isItem()) {
-    // return true;
-    // }
-    return ss.getItem(player).getItem() instanceof IDarkSteelItem;
+    return ss.isAnvil() || ss.getItem(player).getItem() instanceof IDarkSteelItem;
   }
 
   protected @Nonnull NNPair<ItemStack, IDarkSteelItem> getOwner() {
@@ -278,6 +275,9 @@ public class UpgradeCap implements IItemHandlerModifiable {
   }
 
   public boolean isAvailable() {
+    if (ss.isAnvil()) {
+      return true;
+    }
     if (!isStillConnectedToPlayer()) {
       return false;
     }
