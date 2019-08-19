@@ -188,6 +188,21 @@
         "textures": {
           "layer0": "enderio:items/item_dark_steel_upgrade_gogglesofrevealing"
         }
+      },
+      "anvil": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_anvil"
+        }
+      },
+      "anvil1": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_anvil1"
+        }
+      },
+      "anvil2": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_anvil2"
+        }
       }
     }
   }

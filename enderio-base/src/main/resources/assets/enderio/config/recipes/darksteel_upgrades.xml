@@ -760,4 +760,70 @@ XML editor will display that as tooltips when editing this file.
     </tanking>
   </recipe>
 
+
+  <recipe required="true" name="Dark Steel Upgrade: Anvil">
+    <dependency upgrade="enderio:anvil"/>
+    <crafting>
+      <grid>
+        <item/><item name="DARK_STEEL_NUGGET"/><item name="DARK_STEEL_NUGGET"/>
+        <item/><item/><item name="itemStick"/>
+        <item name="enderio:item_dark_steel_upgrade:0"/><item/><item name="itemStick"/>
+      </grid>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:anvil"}'/>
+    </crafting>
+  </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Anvil">
+    <dependency upgrade="enderio:anvil"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:anvil"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:anvil"}'/>
+    </tanking>
+  </recipe>
+
+
+  <recipe required="true" name="Dark Steel Upgrade: Anvil II">
+    <dependency upgrade="enderio:anvil1"/>
+    <crafting>
+      <grid>
+        <item/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
+        <item/><item/><item name="itemStick"/>
+        <item name="enderio:item_dark_steel_upgrade:0"/><item/><item name="itemStick"/>
+      </grid>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:anvil1"}'/>
+    </crafting>
+  </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Anvil II">
+    <dependency upgrade="enderio:anvil1"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:anvil1"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:anvil1"}'/>
+    </tanking>
+  </recipe>
+
+
+  <recipe required="true" name="Dark Steel Upgrade: Anvil III">
+    <dependency upgrade="enderio:anvil2"/>
+    <crafting>
+      <grid>
+        <item/><item/><item name="DARK_STEEL_BLOCK"/>
+        <item/><item/><item name="itemStick"/>
+        <item name="enderio:item_dark_steel_upgrade:0"/><item name="enderio:block_dark_steel_anvil"/><item name="itemStick"/>
+      </grid>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:anvil2"}'/>
+    </crafting>
+  </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Anvil III">
+    <dependency upgrade="enderio:anvil2"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:anvil2"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:anvil2"}'/>
+    </tanking>
+  </recipe>
+
 </enderio:recipes>

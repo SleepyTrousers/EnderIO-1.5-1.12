@@ -180,6 +180,13 @@ public final class DarkSteelConfig {
   public static final IValue<Double> darkSteelBootsJumpModifier = F_JUMP.make("modifier", 1.5, //
       "Jump height modifier applied when jumping with Dark Steel Boots equipped").setRange(1, 3).sync();
 
+  public static final IValueFactory F_ANVIL = F_UPGRADES.section(".anvil");
+
+  public static final NNList<IValue<Integer>> anvilUpgradeCost = new NNList<>( //
+      F_ANVIL.make("upgradeCost1", 1, "Number of levels required for the 'Anvil I' upgrade.").setRange(1, 99).sync(), //
+      F_ANVIL.make("upgradeCost2", 2, "Number of levels required for the 'Anvil II' upgrade.").setRange(1, 99).sync(), //
+      F_ANVIL.make("upgradeCost3", 4, "Number of levels required for the 'Anvil III' upgrade.").setRange(1, 99).sync());
+
   public static final IValueFactoryEIO F_INVENTORY = F_UPGRADES.section(".inventory");
 
   public static final NNList<IValue<Integer>> inventoryUpgradeCost = new NNList<>( //
