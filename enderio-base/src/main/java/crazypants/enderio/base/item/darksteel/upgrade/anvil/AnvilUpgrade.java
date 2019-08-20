@@ -30,7 +30,9 @@ public class AnvilUpgrade extends AbstractUpgrade {
 
   @SubscribeEvent
   public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
-    INSTANCES.apply(instance -> event.getRegistry().register(instance));
+    INSTANCES.apply(instance -> {
+      event.getRegistry().register(instance);
+    });
   }
 
   public static AnvilUpgrade loadAnyFromItem(@Nonnull ItemStack stack) {
