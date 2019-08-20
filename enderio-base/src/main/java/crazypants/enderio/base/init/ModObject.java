@@ -14,6 +14,7 @@ import crazypants.enderio.base.block.charge.BlockConcussionCharge;
 import crazypants.enderio.base.block.charge.BlockConfusionCharge;
 import crazypants.enderio.base.block.charge.BlockEnderCharge;
 import crazypants.enderio.base.block.coldfire.BlockColdFire;
+import crazypants.enderio.base.block.darksteel.anvil.BlockBrokenAnvil;
 import crazypants.enderio.base.block.darksteel.anvil.BlockDarkSteelAnvil;
 import crazypants.enderio.base.block.darksteel.bars.BlockDarkIronBars;
 import crazypants.enderio.base.block.darksteel.bars.BlockEndIronBars;
@@ -124,6 +125,7 @@ public enum ModObject implements IModObjectBase {
   // Blocks
   blockColdFire(BlockColdFire::create),
   blockDarkSteelAnvil(BlockDarkSteelAnvil::create),
+  blockBrokenAnvil(BlockBrokenAnvil::create),
   blockDarkSteelLadder(BlockDarkSteelLadder::create),
   blockDarkIronBars(BlockDarkIronBars::create),
   blockDarkSteelTrapdoor(BlockDarkSteelTrapDoor::create),

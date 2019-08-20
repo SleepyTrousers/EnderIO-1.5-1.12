@@ -20,9 +20,6 @@ public final class BlockConfig {
   public static final IValue<Float> enderChargeRange = F13.make("range", 6f, //
       "The range of the ender charge's effect.").setRange(1, 99).sync();
 
-  public static final IValue<Float> darkSteelAnvilDamageChance = F.make("darkSteelAnvilDamageChance", 0.024f, //
-      "Chance that the dark steel anvil will take damage after repairing something. (Vanilla anvil is 0.12)").setRange(0, 1).sync();
-
   public static final IValue<Float> darkSteelLadderSpeedBoost = F.make("darkSteelLadderSpeedBoost", 0.06f, //
       "Speed boost, in blocks per tick, that the DS ladder gives over the vanilla ladder.").setRange(0, 0.6).sync();
 
@@ -67,6 +64,9 @@ public final class BlockConfig {
       "If true, painted glowstone will drop dust unless broken with silk touch.").sync();
 
   public static final IValueFactoryEIO DSA = F.section(".dark_steel_anvil");
+
+  public static final IValue<Float> darkSteelAnvilDamageChance = DSA.make("damageChance", 0.024f, //
+      "Chance that the Dark Steel Anvil will take damage after repairing something. (Vanilla anvil is 0.12)").setRange(0, 1).sync();
 
   public static final IValue<Integer> dsaMaxCost = DSA.make("maxCost", 80, //
       "Maximum enchantment cost the Dark Steel Anvil can handle. Also applies to the Anvil Upgrade.").setRange(40, 400).sync();

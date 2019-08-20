@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -22,7 +23,16 @@ public interface WorldTarget {
     return isValid(player);
   }
 
-  static final @Nonnull WorldTarget TRUE = new WorldTarget() {
+  default @Nonnull IBlockState read() {
+    return Blocks.AIR.getDefaultState();
+  }
+
+  default boolean write(@Nonnull IBlockState newState) {
+    return false;
+  }
+
+  @Nonnull
+  WorldTarget TRUE = new WorldTarget() {
 
     @Override
     public boolean isValid() {
@@ -31,7 +41,8 @@ public interface WorldTarget {
 
   };
 
-  static final @Nonnull WorldTarget FALSE = new WorldTarget() {
+  @Nonnull
+  WorldTarget FALSE = new WorldTarget() {
 
     @Override
     public boolean isValid() {
@@ -44,7 +55,7 @@ public interface WorldTarget {
     return new BlockTarget(block, world, pos);
   }
 
-  static class BlockTarget implements WorldTarget {
+  class BlockTarget implements WorldTarget {
     final @Nonnull WeakReference<World> targetWorld;
     final @Nonnull BlockPos targetPos;
     final @Nonnull Block targetBlock;
@@ -56,9 +67,24 @@ public interface WorldTarget {
     }
 
     @Override
-    public boolean isValid() {
+    public boolean write(@Nonnull IBlockState newState) {
       World world2 = targetWorld.get();
-      return world2 != null && world2.isBlockLoaded(targetPos) && world2.getBlockState(targetPos).getBlock() == targetBlock;
+      if (world2 != null && world2.isBlockLoaded(targetPos)) {
+        return world2.setBlockState(targetPos, newState);
+      }
+      return WorldTarget.super.write(newState);
+    }
+
+    @Override
+    @Nonnull
+    public IBlockState read() {
+      World world2 = targetWorld.get();
+      return world2 != null && world2.isBlockLoaded(targetPos) ? world2.getBlockState(targetPos) : WorldTarget.super.read();
+    }
+
+    @Override
+    public boolean isValid() {
+      return read().getBlock() == targetBlock;
     }
 
     @Override
@@ -76,7 +102,7 @@ public interface WorldTarget {
     return new BlockStateTarget(blockstate, world, pos);
   }
 
-  static class BlockStateTarget extends BlockTarget {
+  class BlockStateTarget extends BlockTarget {
 
     private @Nonnull IBlockState targetBlockstate;
 
@@ -87,8 +113,7 @@ public interface WorldTarget {
 
     @Override
     public boolean isValid() {
-      World world2 = targetWorld.get();
-      return world2 != null && world2.isBlockLoaded(targetPos) && world2.getBlockState(targetPos) == targetBlockstate;
+      return read() == targetBlockstate;
     }
 
   }

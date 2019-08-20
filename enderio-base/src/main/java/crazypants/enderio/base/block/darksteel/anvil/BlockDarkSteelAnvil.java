@@ -73,7 +73,7 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
   @Override
   public boolean onBlockActivated(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer entityPlayer,
       @Nonnull EnumHand hand, @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
-    return ModObjectRegistry.getModObjectNN(this).openGui(world, pos, entityPlayer, side, 0);
+    return ModObjectRegistry.getModObjectNN(this).openGui(world, pos, entityPlayer, side, -2);
   }
 
   @Override

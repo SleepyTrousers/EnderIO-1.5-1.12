@@ -76,9 +76,14 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
     if (!hasSetTab) {
       hasSetTab = true;
       EntityEquipmentSlot preferedSlot = initialTab > -1 ? EnumReader.get(EntityEquipmentSlot.class, initialTab) : EntityEquipmentSlot.CHEST;
+      boolean wantAnvil = initialTab == -2;
       int found = -1;
       for (UpgradeCap cap : cont.caps) {
         if (cap.isAvailable()) {
+          if (wantAnvil && cap.getSlotSelector().isAnvil()) {
+            found = cap.getSlotSelector().getTabOrder();
+            break;
+          }
           if (found < 0 || (cap.getSlotSelector().isSlot() && cap.getSlotSelector().getSlot() == preferedSlot)) {
             found = cap.getSlotSelector().getTabOrder();
           }

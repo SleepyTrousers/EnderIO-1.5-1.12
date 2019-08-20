@@ -1,0 +1,14 @@
+{
+ 	"forge_marker": 1,
+	"defaults": {
+	    "model": "enderio:block_broken_anvil"
+	},
+    "variants": {
+        "facing": {
+            "south": { },
+            "west": { "y": 90 },
+            "north": { "y": 180 },
+            "east": { "y": 270 }
+        }
+    }
+}

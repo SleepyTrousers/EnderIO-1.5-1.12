@@ -9,9 +9,13 @@ import org.apache.commons.lang3.StringUtils;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.base.config.config.BlockConfig;
+import crazypants.enderio.base.init.ModObject;
+import net.minecraft.block.BlockAnvil;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
@@ -20,6 +24,7 @@ import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -48,6 +53,8 @@ public class AnvilSubContainer {
         thePlayer.addExperienceLevel(-getMaximumCost());
       }
 
+      int effect = handleAnvilDamage(stack);
+
       inputSlots.setInventorySlotContents(0, ItemStack.EMPTY);
 
       if (materialCost > 0) {
@@ -60,8 +67,8 @@ public class AnvilSubContainer {
 
       setMaximumCost(0);
 
-      if (!thePlayer.world.isRemote) {
-        thePlayer.world.playEvent(1030, BlockCoord.get(thePlayer), 0);
+      if (effect > 0) {
+        thePlayer.world.playEvent(effect, BlockCoord.get(thePlayer), 0);
       }
 
       return stack;
@@ -349,6 +356,45 @@ public class AnvilSubContainer {
 
   public void setMaximumCost(int maximumCost) {
     this.maximumCost = maximumCost;
+  }
+
+  private int handleAnvilDamage(@Nonnull ItemStack stack) {
+
+    if (player.world.isRemote) {
+      return -1;
+    }
+
+    if (player.capabilities.isCreativeMode) {
+      return 1030;
+    }
+
+    IBlockState iblockstate = parent.target.read();
+
+    if (iblockstate.getBlock() == Blocks.AIR) {
+      return 1030;
+    }
+
+    float breakChance = ForgeHooks.onAnvilRepair(player, stack, inputSlots.getStackInSlot(0), inputSlots.getStackInSlot(1));
+    breakChance /= 0.12f; // normalize vanilla standard chance to 1.0
+
+    if (player.getRNG().nextFloat() - 1/* DELME */ < (breakChance * BlockConfig.darkSteelAnvilDamageChance.get())) {
+      int l = iblockstate.getValue(BlockAnvil.DAMAGE) + 1;
+      if (l > 2) {
+        if (iblockstate.getBlock() == ModObject.blockDarkSteelAnvil.getBlockNN()) {
+          parent.target
+              .write(ModObject.blockBrokenAnvil.getBlockNN().getDefaultState().withProperty(BlockAnvil.FACING, iblockstate.getValue(BlockAnvil.FACING)));
+        } else {
+          parent.target.write(Blocks.AIR.getDefaultState());
+        }
+        return 1029;
+      } else {
+        parent.target.write(iblockstate.withProperty(BlockAnvil.DAMAGE, l));
+        return 1030;
+      }
+    } else {
+      return 1030;
+    }
+
   }
 
 }

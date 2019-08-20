@@ -153,6 +153,8 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
   protected @Nonnull ISlotSelector activeTab = SlotSelector.CHEST;
   protected final @Nonnull SlotInventory slotInventory = new SlotInventory();
   protected final @Nonnull AnvilSubContainer anvil;
+  protected final @Nonnull NNList<UpgradeCap> caps;
+  protected final @Nonnull WorldTarget target;
 
   public static DSUContainer create(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1,
       Block block) {
@@ -214,9 +216,6 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
     }
     return null;
   }
-
-  final @Nonnull NNList<UpgradeCap> caps;
-  private final @Nonnull WorldTarget target;
 
   public DSUContainer(@Nonnull EntityPlayer player, @Nonnull NNList<UpgradeCap> caps, @Nonnull WorldTarget target) {
     super(player.inventory, new StorageCombinedCap<>(caps.toArray(new UpgradeCap[0])), null, true);

@@ -408,6 +408,8 @@ tile.block_dark_steel_anvil.intact.name=Dark Steel Anvil
 tile.block_dark_steel_anvil.slightlyDamaged.name=Slightly Damaged Dark Steel Anvil
 tile.block_dark_steel_anvil.veryDamaged.name=Very Damaged Dark Steel Anvil
 
+tile.block_broken_anvil.name=Broken Dark Steel Anvil
+
 tile.block_dark_steel_ladder.name=Dark Steel Ladder
 tile.block_dark_steel_ladder.tooltip.common.line1=Faster than regular ladders
 
