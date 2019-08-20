@@ -123,7 +123,7 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
       if (hasAnySlots) {
         fontRenderer.drawString(Lang.GUI_DSU_STORAGE.get(), guiLeft + 7, guiTop + 99 - 11, 4210752);
       } else {
-        String str = (cont.activeTab.isItem() ? Lang.GUI_DSU_NOT_INSTALLED : Lang.GUI_DSU_NOT_INSERTED).get();
+        String str = (cont.activeTab.isItem() ? Lang.GUI_DSU_NOT_INSERTED : Lang.GUI_DSU_NOT_INSTALLED).get();
         int y = 0;
         for (String sub : fontRenderer.listFormattedStringToWidth(str, xSize)) {
           if (sub != null) {

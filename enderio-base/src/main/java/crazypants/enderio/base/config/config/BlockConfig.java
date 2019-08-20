@@ -66,4 +66,9 @@ public final class BlockConfig {
   public static final IValue<Boolean> paintedGlowstoneRequireSilkTouch = GLASS.make("paintedGlowstoneRequireSilkTouch", false, //
       "If true, painted glowstone will drop dust unless broken with silk touch.").sync();
 
+  public static final IValueFactoryEIO DSA = F.section(".dark_steel_anvil");
+
+  public static final IValue<Integer> dsaMaxCost = DSA.make("maxCost", 80, //
+      "Maximum enchantment cost the Dark Steel Anvil can handle. Also applies to the Anvil Upgrade.").setRange(40, 400).sync();
+
 }

@@ -29,12 +29,8 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.config.config.TeleportConfig;
-import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.PlayerAOEAttributeHandler;
-import crazypants.enderio.base.handler.darksteel.gui.DSUContainer;
-import crazypants.enderio.base.handler.darksteel.gui.DSUGui;
-import crazypants.enderio.base.handler.darksteel.gui.SlotSelector;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.direct.DirectUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
@@ -84,8 +80,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemDarkSteelPickaxe extends ItemPickaxe
-    implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel, IOverlayRenderAware, IEioGuiHandler.WithServerComponent.WithOutPos {
+public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel, IOverlayRenderAware {
 
   public static int getStoredPower(EntityPlayer player) {
     return EnergyUpgradeManager.getEnergyStored(player.getHeldItemMainhand());
@@ -537,26 +532,6 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe
   @Override
   public @Nonnull ICapacitorKey getAbsorptionRatioKey(@Nonnull ItemStack stack) {
     return CapacitorKey.DARK_STEEL_PICKAXE_ABSORPTION_RATIO;
-  }
-
-  // Note: The GUI is bound to this, but that is just for technical reasons. It supports any item with an upgrade, even if
-  // it doesn't extend this class
-  @Override
-  @Nullable
-  public DSUContainer getServerGuiElement(@Nonnull EntityPlayer player, int param1, int param2, int param3) {
-    DSUContainer container = DSUContainer.create(player, false, true, SlotSelector.values());
-    if (container == null && !player.world.isRemote) {
-      player.sendStatusMessage(Lang.DSU_GUI_NO_ITEMS.toChatServer(), true);
-    }
-    return container;
-  }
-
-  @Override
-  @Nullable
-  @SideOnly(Side.CLIENT)
-  public DSUGui getClientGuiElement(@Nonnull EntityPlayer player, int param1, int param2, int param3) {
-    final DSUContainer container = getServerGuiElement(player, param1, param2, param3);
-    return container != null ? new DSUGui(container, param1) : null;
   }
 
 }

@@ -47,10 +47,12 @@ public class UpgradeCap implements IItemHandlerModifiable {
   protected final @Nonnull NNList<Holder> stacks = new NNList<>();
   protected final @Nonnull ISlotSelector ss;
   protected final @Nonnull EntityPlayer player;
+  protected final boolean addOnly;
 
-  public UpgradeCap(@Nonnull ISlotSelector ss, @Nonnull EntityPlayer player) {
+  public UpgradeCap(@Nonnull ISlotSelector ss, @Nonnull EntityPlayer player, boolean addOnly) {
     this.ss = ss;
     this.player = player;
+    this.addOnly = addOnly;
     UpgradeRegistry.getUpgrades().stream().map(Holder::new).forEachOrdered(this::addHolder);
   }
 
@@ -70,7 +72,7 @@ public class UpgradeCap implements IItemHandlerModifiable {
 
   @Override
   public int getSlots() {
-    return stacks.size() + INVSIZE;
+    return ss.isAnvil() ? 0 : (stacks.size() + INVSIZE);
   }
 
   /**
@@ -164,7 +166,7 @@ public class UpgradeCap implements IItemHandlerModifiable {
   @Override
   @Nonnull
   public ItemStack extractItem(int slot, int amount, boolean simulate) {
-    if (amount == 0) {
+    if (amount == 0 || addOnly) {
       return ItemStack.EMPTY;
     }
 
@@ -198,9 +200,14 @@ public class UpgradeCap implements IItemHandlerModifiable {
    */
   protected void syncChangesToClient() {
     if (player instanceof EntityPlayerMP) {
-      for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-        if (player.inventory.getStackInSlot(i) == getOwner().getLeft()) {
-          ((EntityPlayerMP) player).connection.sendPacket(new SPacketSetSlot(-2, i, player.inventory.getStackInSlot(i)));
+      if (ss.isItem()) {
+        player.openContainer.detectAndSendChanges();
+      } else {
+        final ItemStack owner = getOwner().getLeft();
+        for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+          if (player.inventory.getStackInSlot(i) == owner) {
+            ((EntityPlayerMP) player).connection.sendPacket(new SPacketSetSlot(-2, i, player.inventory.getStackInSlot(i)));
+          }
         }
       }
     }

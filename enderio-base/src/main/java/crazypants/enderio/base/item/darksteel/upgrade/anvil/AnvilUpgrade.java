@@ -38,7 +38,7 @@ public class AnvilUpgrade extends AbstractUpgrade {
     return level < 0 ? null : INSTANCES.get(level);
   }
 
-  public static AnvilUpgrade getHighestEquippedEquipped(@Nonnull EntityPlayer player) {
+  public static AnvilUpgrade getHighestEquippedUpgrade(@Nonnull EntityPlayer player) {
     int level = -1;
     for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
       level = Math.max(level, INSTANCES.get(0).getUpgradeVariantLevel(player.getItemStackFromSlot(NullHelper.notnullJ(slot, "Enum.values()"))));

@@ -154,7 +154,8 @@ public class ItemCapacitor extends Item implements IHaveRenderers {
       LootContext.Builder lootcontext$builder = new LootContext.Builder((WorldServer) world);
       lootcontext$builder.withLuck(player.getLuck());
 
-      LootTable loottable = world.getLootTableManager().getLootTableFromLocation(LootTableList.CHESTS_SIMPLE_DUNGEON);
+      LootTable loottable = world.getLootTableManager().getLootTableFromLocation(LootTableList.CHESTS_VILLAGE_BLACKSMITH);
+      // LootTable loottable = world.getLootTableManager().getLootTableFromLocation(LootTableList.CHESTS_SIMPLE_DUNGEON);
       // LootTable loottable = world.getLootTableManager().getLootTableFromLocation(LootTableList.CHESTS_IGLOO_CHEST);
       loottable.fillInventory(chest, world.rand, lootcontext$builder.build());
       return EnumActionResult.PASS;

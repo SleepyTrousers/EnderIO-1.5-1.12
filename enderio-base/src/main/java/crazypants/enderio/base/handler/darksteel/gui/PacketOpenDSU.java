@@ -33,7 +33,7 @@ public class PacketOpenDSU implements IMessage {
     @Override
     public IMessage onMessage(PacketOpenDSU message, MessageContext ctx) {
       EntityPlayer player = ctx.getServerHandler().player;
-      ModObject.itemDarkSteelPickaxe.openGui(player.world, player, message.slot, 0, 0);
+      ModObject.blockDarkSteelAnvil.openGui(player.world, player, message.slot, 0, 0);
       return null;
     }
   }

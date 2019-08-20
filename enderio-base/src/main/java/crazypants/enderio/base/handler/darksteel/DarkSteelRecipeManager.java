@@ -26,7 +26,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -37,12 +36,8 @@ public class DarkSteelRecipeManager {
 
   @SubscribeEvent
   public static void handleAnvilEvent(AnvilUpdateEvent evt) {
-    if (evt.getLeft().getCount() == 1 && evt.getLeft().getItem() instanceof IDarkSteelItem) {
-      if (isRepair(evt, (IDarkSteelItem) evt.getLeft().getItem())) {
-        handleRepair(evt, (IDarkSteelItem) evt.getLeft().getItem());
-      } else {
-        handleUpgrade(evt, (IDarkSteelItem) evt.getLeft().getItem());
-      }
+    if (evt.getLeft().getCount() == 1 && evt.getLeft().getItem() instanceof IDarkSteelItem && isRepair(evt, (IDarkSteelItem) evt.getLeft().getItem())) {
+      handleRepair(evt, (IDarkSteelItem) evt.getLeft().getItem());
     }
   }
 
@@ -78,21 +73,6 @@ public class DarkSteelRecipeManager {
     evt.setOutput(resultStack);
     evt.setCost(ingouts + (int) Math.ceil(getEnchantmentRepairCost(resultStack.copy()) / 2d));
     evt.setMaterialCost(ingouts);
-  }
-
-  private static void handleUpgrade(AnvilUpdateEvent evt, @Nonnull IDarkSteelItem item) {
-    IDarkSteelUpgrade upgrade = UpgradeRegistry.getUpgradeFromItem(evt.getRight());
-    if (upgrade != null && upgrade.canAddToItem(evt.getLeft(), item)) {
-      ItemStack res = new ItemStack(evt.getLeft().getItem(), 1, evt.getLeft().getItemDamage());
-      final NBTTagCompound tagCompound = evt.getLeft().getTagCompound();
-      if (tagCompound != null) {
-        res.setTagCompound(tagCompound.copy());
-      }
-      upgrade.addToItem(res, item);
-      evt.setOutput(res);
-      evt.setCost(1); // upgrade.getLevelCost());
-      return;
-    }
   }
 
   private static int getEnchantmentRepairCost(@Nonnull ItemStack itemStack) {
@@ -171,8 +151,7 @@ public class DarkSteelRecipeManager {
       if (!applyableUpgrades.isEmpty()) {
         list.add(TextFormatting.YELLOW + EnderIO.lang.localize("tooltip.anvilupgrades") + " ");
         for (IDarkSteelUpgrade up : applyableUpgrades) {
-          list.add(Lang.DARK_STEEL_LEVELS1.get(TextFormatting.DARK_AQUA, up.getDisplayName()));
-          list.add(Lang.DARK_STEEL_LEVELS2.get(TextFormatting.DARK_AQUA, TextFormatting.ITALIC, UpgradeRegistry.getUpgradeItem(up).getDisplayName(), 1));
+          list.add(Lang.DARK_STEEL_LEVELS2.get(TextFormatting.DARK_AQUA, TextFormatting.ITALIC, up.getDisplayName(), 1));
         }
       }
     }

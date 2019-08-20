@@ -403,6 +403,7 @@ tile.block_end_iron_bars.name=End Steel Bars
 tile.block_dark_steel_anvil.name=Dark Steel Anvil
 tile.block_dark_steel_anvil.tooltip.common.line1=Damage Resistant
 tile.block_dark_steel_anvil.tooltip.detailed.line1=Lasts much longer than the vanilla anvil
+tile.block_dark_steel_anvil.tooltip.detailed.line1=Can be used to apply and remove upgrades
 tile.block_dark_steel_anvil.intact.name=Dark Steel Anvil
 tile.block_dark_steel_anvil.slightlyDamaged.name=Slightly Damaged Dark Steel Anvil
 tile.block_dark_steel_anvil.veryDamaged.name=Very Damaged Dark Steel Anvil
@@ -744,8 +745,8 @@ enderio.fuel.tooltip.burnTime=Burn time %s ticks
 enderio.coolant.tooltip.heading=Coolant
 enderio.coolant.tooltip.degreesPerBucket=%s°C per bucket
 
-enderio.tooltip.anvilupgrades=Anvil Upgrades:
-enderio.tooltip.anvilupgrades.all=All Anvil Upgrades:
+enderio.tooltip.anvilupgrades=Possible Upgrades:
+enderio.tooltip.anvilupgrades.all=All Upgrades:
 
 enderio.darksteel.upgrade.empowered_one.name=Empowered
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Power: $P
@@ -801,6 +802,18 @@ enderio.darksteel.upgrade.tnt.4.tooltip.detailed.line2=https://youtu.be/ygE01sOh
 attribute.name.enderio.aoe.xz=Mining Range
 attribute.name.enderio.aoe.y=Mining Depth
 attribute.name.enderio.aoe.xyz=Mining Volume
+
+enderio.darksteel.upgrade.anvil.0.name=Micro Anvil
+enderio.darksteel.upgrade.anvil.0.tooltip.detailed.line1=Allows editing upgrades of a single item in the field.
+enderio.darksteel.upgrade.anvil.0.tooltip.detailed.line2=Activate with a hotkey or by shift-right-clicking any upgradeable item that doesn't do anything else when doing that.
+
+enderio.darksteel.upgrade.anvil.1.name=Mini Anvil
+enderio.darksteel.upgrade.anvil.1.tooltip.detailed.line1=Allows editing upgrades of all equipped items in the field.
+enderio.darksteel.upgrade.anvil.1.tooltip.detailed.line2=Activate with a hotkey or by shift-right-clicking any upgradeable item that doesn't do anything else when doing that.
+
+enderio.darksteel.upgrade.anvil.2.name=Pocket Anvil
+enderio.darksteel.upgrade.anvil.2.tooltip.detailed.line1=Provides full anvil functionality and allows editing upgrades of any item in the field.
+enderio.darksteel.upgrade.anvil.2.tooltip.detailed.line2=Activate with a hotkey or by shift-right-clicking any upgradeable item that doesn't do anything else when doing that.
 
 item.item_dark_steel_upgrade.name=Blank Dark Steel Upgrade
 item.item_dark_steel_upgrade.with=Dark Steel Upgrade "%s"

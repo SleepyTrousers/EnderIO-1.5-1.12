@@ -72,7 +72,7 @@ public abstract class DarkSteelUpgradeMixin extends Item implements IDarkSteelIt
     if (player.world.isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketOpenDSU(slot != null ? slot.ordinal() : -1));
     } else {
-      ModObject.itemDarkSteelPickaxe.openGui(player.world, player, slot != null ? slot.ordinal() : -1, 0, 0);
+      ModObject.blockDarkSteelAnvil.openGui(player.world, player, slot != null ? slot.ordinal() : -1, 0, 0);
     }
   }
 }

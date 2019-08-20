@@ -213,7 +213,7 @@ public final class ItemUpgrades extends Item implements IHaveRenderers, IAdvance
 
     if (playerIn.isSneaking()) {
       if (!worldIn.isRemote) {
-        ModObject.itemDarkSteelPickaxe.openGui(worldIn, playerIn, -1, 0, 0);
+        ModObject.blockDarkSteelAnvil.openGui(worldIn, playerIn, -1, 0, 0);
       }
       return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
     }

@@ -321,6 +321,24 @@
             }
           ],
           "name": "enderio:item_basic_capacitor"
+        },
+        {
+          "entryName": "dsu",
+          "weight": 1,
+          "quality": 1,
+          "conditions": [
+            {
+              "chance": 0.1,
+              "condition": "minecraft:random_chance"
+            }
+          ],
+          "type": "item",
+          "functions": [
+            {
+              "function": "enderio:random_dsu"
+            }
+          ],
+          "name": "enderio:item_dark_steel_upgrade"
         }
       ],
       "rolls": {

@@ -6,65 +6,72 @@ import javax.annotation.Nonnull;
 
 import org.lwjgl.input.Keyboard;
 
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 
-public class AnvilSubGui implements IContainerListener {
+public class AnvilSubGui implements IInventoryChangedListener {
 
   private static final @Nonnull ResourceLocation ANVIL_RESOURCE = new ResourceLocation("textures/gui/container/anvil.png");
 
   private final @Nonnull DSUContainer anvil;
   private final @Nonnull DSUGui parent;
 
-  private GuiTextField nameField;
+  private GuiTextField nameField = null;
+  private String lastName = null;
 
-  private static final int ANVIL_HEIGHT = 100;
-  private static final int ANVIL_Y_OFFSET = 10;
+  /**
+   * Height of the anvil's gui texture without inventory slots
+   */
+  private static final int ANVIL_HEIGHT = 80;
+  /**
+   * How far to shift the anvil GUI down from its original position. It's smaller then our GUI so it'd look funny if it stayed at the top.
+   */
+  private static final int ANVIL_Y_OFFSET = AnvilSubContainer.ANVIL_Y_OFFSET;
+  /**
+   * How many pixels to remove at the left, right and top of the anvil texture. This should just cut off the GUI border.
+   */
   private static final int ANVIL_BORDER = 5;
 
   AnvilSubGui(@Nonnull DSUContainer container, @Nonnull DSUGui parent) {
     this.anvil = container;
     this.parent = parent;
+    anvil.anvil.inputSlots.addInventoryChangeListener(this);
   }
 
   public void initGui() {
     Keyboard.enableRepeatEvents(true);
-    int i = (parent.width - parent.getXSize()) / 2;
-    int j = (parent.height - parent.getYSize()) / 2;
-    nameField = new GuiTextField(0, parent.getFontRenderer(), i + 62, j + 24 + ANVIL_Y_OFFSET, 103, 12);
+    nameField = new GuiTextField(0, parent.getFontRenderer(), 62, 24 + ANVIL_Y_OFFSET, 103, 12);
     nameField.setTextColor(-1);
     nameField.setDisabledTextColour(-1);
     nameField.setEnableBackgroundDrawing(false);
     nameField.setMaxStringLength(35);
-    anvil.removeListener(this);
-    anvil.addListener(this);
   }
 
   public void onGuiClosed() {
     Keyboard.enableRepeatEvents(false);
-    anvil.removeListener(this);
+    anvil.anvil.inputSlots.removeInventoryChangeListener(this);
   }
 
   protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
     GlStateManager.disableLighting();
     GlStateManager.disableBlend();
-    parent.getFontRenderer().drawString(I18n.format("container.repair"), 60, 6 + ANVIL_Y_OFFSET, 4210752);
+    final FontRenderer fontRenderer = parent.getFontRenderer();
+    fontRenderer.drawString(I18n.format("container.repair"), 60, 6 + ANVIL_Y_OFFSET, 4210752);
 
-    if (anvil.anvil.maximumCost > 0) {
+    if (anvil.anvil.getMaximumCost() > 0) {
       int i = 8453920;
       boolean flag = true;
-      String s = I18n.format("container.repair.cost", anvil.anvil.maximumCost);
+      String s = I18n.format("container.repair.cost", anvil.anvil.getMaximumCost());
 
-      if (anvil.anvil.maximumCost >= 40 && !parent.mc.player.capabilities.isCreativeMode) {
+      if (anvil.anvil.getMaximumCost() >= AnvilSubContainer.getMaxCost() && !parent.mc.player.capabilities.isCreativeMode) {
         s = I18n.format("container.repair.expensive");
         i = 16736352;
       } else if (!this.anvil.getSlot(2).getHasStack()) {
@@ -75,18 +82,18 @@ public class AnvilSubGui implements IContainerListener {
 
       if (flag) {
         int j = -16777216 | (i & 16579836) >> 2 | i & -16777216;
-        int k = parent.getXSize() - 8 - parent.getFontRenderer().getStringWidth(s);
+        int k = parent.getXSize() - 8 - fontRenderer.getStringWidth(s);
 
-        if (parent.getFontRenderer().getUnicodeFlag()) {
+        if (fontRenderer.getUnicodeFlag()) {
           Gui.drawRect(k - 3, 65, parent.getXSize() - 7, 77 + ANVIL_Y_OFFSET, -16777216);
           Gui.drawRect(k - 2, 66, parent.getXSize() - 8, 76 + ANVIL_Y_OFFSET, -12895429);
         } else {
-          parent.getFontRenderer().drawString(s, k, 68 + ANVIL_Y_OFFSET, j);
-          parent.getFontRenderer().drawString(s, k + 1, 67 + ANVIL_Y_OFFSET, j);
-          parent.getFontRenderer().drawString(s, k + 1, 68 + ANVIL_Y_OFFSET, j);
+          fontRenderer.drawString(s, k, 68 + ANVIL_Y_OFFSET, j);
+          fontRenderer.drawString(s, k + 1, 67 + ANVIL_Y_OFFSET, j);
+          fontRenderer.drawString(s, k + 1, 68 + ANVIL_Y_OFFSET, j);
         }
 
-        parent.getFontRenderer().drawString(s, k, 67 + ANVIL_Y_OFFSET, i);
+        fontRenderer.drawString(s, k, 67 + ANVIL_Y_OFFSET, i);
       }
     }
 
@@ -118,7 +125,9 @@ public class AnvilSubGui implements IContainerListener {
   }
 
   protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-    nameField.mouseClicked(mouseX, mouseY, mouseButton);
+    int i = (parent.width - parent.getXSize()) / 2;
+    int j = (parent.height - parent.getYSize()) / 2;
+    nameField.mouseClicked(mouseX - i, mouseY - j, mouseButton);
   }
 
   protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
@@ -128,37 +137,27 @@ public class AnvilSubGui implements IContainerListener {
     int j = (parent.height - parent.getYSize()) / 2;
     parent.drawTexturedModalRect(i + ANVIL_BORDER, j + ANVIL_Y_OFFSET + ANVIL_BORDER, ANVIL_BORDER, ANVIL_BORDER, parent.getXSize() - 2 * ANVIL_BORDER,
         ANVIL_HEIGHT - ANVIL_BORDER);
-    parent.drawTexturedModalRect(i + 59, j + 20 + ANVIL_Y_OFFSET, 0, parent.getYSize() + (anvil.getSlot(0).getHasStack() ? 0 : 16), 110, 16);
+    parent.drawTexturedModalRect(i + 59, j + 20 + ANVIL_Y_OFFSET, 0, 166 /* ysize */ + (anvil.getSlot(0).getHasStack() ? 0 : 16), 110, 16);
 
-    if ((this.anvil.getSlot(0).getHasStack() || this.anvil.getSlot(1).getHasStack()) && !this.anvil.getSlot(2).getHasStack()) {
+    if ((anvil.getSlot(0).getHasStack() || anvil.getSlot(1).getHasStack()) && !anvil.getSlot(2).getHasStack()) {
       parent.drawTexturedModalRect(i + 99, j + 45 + ANVIL_Y_OFFSET, parent.getXSize(), 0, 28, 21);
     }
     parent.bindGuiTexture();
   }
 
   @Override
-  public void sendAllContents(@Nonnull Container containerToSend, @Nonnull NonNullList<ItemStack> itemsList) {
-    sendSlotContents(containerToSend, 0, containerToSend.getSlot(0).getStack());
-  }
-
-  @Override
-  public void sendSlotContents(@Nonnull Container containerToSend, int slotInd, @Nonnull ItemStack stack) {
-    if (slotInd == 0) {
-      nameField.setText(stack.isEmpty() ? "" : stack.getDisplayName());
-      nameField.setEnabled(!stack.isEmpty());
-
-      if (!stack.isEmpty()) {
-        renameItem();
-      }
+  public void onInventoryChanged(@Nonnull IInventory invBasic) {
+    ItemStack stack = invBasic.getStackInSlot(0);
+    String newName = stack.isEmpty() ? "" : stack.getDisplayName();
+    if (!newName.equals(lastName)) {
+      nameField.setText(newName);
+      lastName = newName;
     }
-  }
+    nameField.setEnabled(!stack.isEmpty());
 
-  @Override
-  public void sendWindowProperty(@Nonnull Container containerIn, int varToUpdate, int newValue) {
-  }
-
-  @Override
-  public void sendAllWindowProperties(@Nonnull Container containerIn, @Nonnull IInventory inventory) {
+    if (!stack.isEmpty()) {
+      renameItem();
+    }
   }
 
 }

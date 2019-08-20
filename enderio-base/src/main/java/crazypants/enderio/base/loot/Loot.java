@@ -16,6 +16,7 @@ public class Loot {
     LootFunctionManager.registerFunction(new SetRandomDarkUpgrade.Serializer());
     LootFunctionManager.registerFunction(new UseThings.Serializer());
     LootFunctionManager.registerFunction(new Potion.Serializer());
+    LootFunctionManager.registerFunction(new SetRandomUpgrade.Serializer());
     AnvilCapacitorRecipe.create();
   }
 

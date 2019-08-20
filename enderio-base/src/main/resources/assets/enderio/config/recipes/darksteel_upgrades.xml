@@ -766,8 +766,8 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid>
         <item/><item name="DARK_STEEL_NUGGET"/><item name="DARK_STEEL_NUGGET"/>
-        <item/><item/><item name="itemStick"/>
-        <item name="enderio:item_dark_steel_upgrade:0"/><item/><item name="itemStick"/>
+        <item/><item/><item name="stickWood"/>
+        <item name="enderio:item_dark_steel_upgrade:0"/><item/><item name="stickWood"/>
       </grid>
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:anvil"}'/>
     </crafting>
@@ -788,8 +788,8 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid>
         <item/><item name="DARK_STEEL"/><item name="DARK_STEEL"/>
-        <item/><item/><item name="itemStick"/>
-        <item name="enderio:item_dark_steel_upgrade:0"/><item/><item name="itemStick"/>
+        <item/><item/><item name="stickWood"/>
+        <item name="enderio:item_dark_steel_upgrade:0"/><item/><item name="stickWood"/>
       </grid>
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:anvil1"}'/>
     </crafting>
@@ -810,8 +810,8 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid>
         <item/><item/><item name="DARK_STEEL_BLOCK"/>
-        <item/><item/><item name="itemStick"/>
-        <item name="enderio:item_dark_steel_upgrade:0"/><item name="enderio:block_dark_steel_anvil"/><item name="itemStick"/>
+        <item/><item/><item name="stickWood"/>
+        <item name="enderio:item_dark_steel_upgrade:0"/><item name="enderio:block_dark_steel_anvil"/><item name="stickWood"/>
       </grid>
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:anvil2"}'/>
     </crafting>

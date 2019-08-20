@@ -3,7 +3,6 @@ package crazypants.enderio.base.handler.darksteel.gui;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.util.Prep;
-import info.loenwind.autosave.util.NullHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -11,17 +10,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public enum SlotSelector implements ISlotSelector {
-  ANVIL(0, null) {
-    @Override
-    public boolean isAnvil() {
-      return true;
-    }
-
-    @Override
-    public @Nonnull ItemStack getItem(@Nonnull EntityPlayer player) {
-      return new ItemStack(Blocks.ANVIL);
-    }
-  },
   MAIN(1, EntityEquipmentSlot.MAINHAND),
   HEAD(2, EntityEquipmentSlot.HEAD),
   CHEST(3, EntityEquipmentSlot.CHEST),
@@ -30,6 +18,53 @@ public enum SlotSelector implements ISlotSelector {
   OFFH(6, EntityEquipmentSlot.OFFHAND)
 
   ;
+
+  public static final @Nonnull ISlotSelector ANVIL = new ISlotSelector() {
+
+    @Override
+    public boolean isAnvil() {
+      return true;
+    }
+
+    @Override
+    public boolean isItem() {
+      return false;
+    }
+
+    @Override
+    public boolean isSlot() {
+      return false;
+    }
+
+    @Override
+    @Nonnull
+    public EntityEquipmentSlot getSlot() {
+      throw new RuntimeException(INTERNAL_LOGIC_ERROR);
+    }
+
+    @Override
+    public int getTabOrder() {
+      return 0;
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getItem(@Nonnull EntityPlayer player) {
+      return new ItemStack(Blocks.ANVIL);
+    }
+
+    @Override
+    @Nonnull
+    public Slot setContainerSlot(@Nonnull Slot containerSlot) {
+      throw new RuntimeException(INTERNAL_LOGIC_ERROR);
+    }
+
+    @Override
+    public Slot getContainerSlot() {
+      throw new RuntimeException(INTERNAL_LOGIC_ERROR);
+    }
+
+  };
 
   private static final @Nonnull String INTERNAL_LOGIC_ERROR = "Internal Logic Error";
 
@@ -72,7 +107,7 @@ public enum SlotSelector implements ISlotSelector {
     @Override
     @Nonnull
     public EntityEquipmentSlot getSlot() {
-      throw new NullPointerException("Not a slot proxy");
+      throw new RuntimeException(INTERNAL_LOGIC_ERROR);
     }
 
     @Override
@@ -93,10 +128,10 @@ public enum SlotSelector implements ISlotSelector {
 
   }
 
-  private final EntityEquipmentSlot slot;
+  private final @Nonnull EntityEquipmentSlot slot;
   private final int tabOrder;
 
-  private SlotSelector(int tabOrder, EntityEquipmentSlot slot) {
+  private SlotSelector(int tabOrder, @Nonnull EntityEquipmentSlot slot) {
     this.tabOrder = tabOrder;
     this.slot = slot;
   }
@@ -113,12 +148,12 @@ public enum SlotSelector implements ISlotSelector {
 
   @Override
   public boolean isSlot() {
-    return slot != null;
+    return true;
   }
 
   @Override
   public @Nonnull EntityEquipmentSlot getSlot() {
-    return NullHelper.notnull(slot, INTERNAL_LOGIC_ERROR);
+    return slot;
   }
 
   @Override
@@ -128,11 +163,7 @@ public enum SlotSelector implements ISlotSelector {
 
   @Override
   public @Nonnull ItemStack getItem(@Nonnull EntityPlayer player) {
-    if (slot != null) {
-      return player.getItemStackFromSlot(slot);
-    } else {
-      return Prep.getEmpty();
-    }
+    return player.getItemStackFromSlot(slot);
   }
 
   @Override

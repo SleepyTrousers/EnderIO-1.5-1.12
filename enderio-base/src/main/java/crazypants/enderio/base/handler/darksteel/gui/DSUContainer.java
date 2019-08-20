@@ -13,10 +13,14 @@ import com.enderio.core.common.ContainerEnderCap;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.item.darksteel.upgrade.anvil.AnvilUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.storage.StorageCombinedCap;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.material.upgrades.ItemUpgrades;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
@@ -145,29 +149,55 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
   protected final @Nonnull SlotInventory slotInventory = new SlotInventory();
   protected final @Nonnull AnvilSubContainer anvil;
 
-  public static DSUContainer create(@Nonnull EntityPlayer player, boolean withAnvil, boolean withSlot, @Nonnull ISlotSelector... slotSelectors) {
-    boolean hasAtleastOne = false;
+  public static DSUContainer create(@Nonnull EntityPlayer player, int param1, int param2, int param3) {
     NNList<UpgradeCap> caps = new NNList<>();
-    if (withAnvil) {
-      caps.add(new UpgradeCap(SlotSelector.ANVIL, player));
-      hasAtleastOne = true;
-    }
-    for (ISlotSelector iSlotSelector : slotSelectors) {
-      if (iSlotSelector != null) {
-        UpgradeCap upgradeCap = new UpgradeCap(iSlotSelector, player);
-        if (upgradeCap.isAvailable()) {
-          hasAtleastOne = true;
-        }
-        caps.add(upgradeCap);
+    if (param2 == 1) {
+      caps.add(new UpgradeCap(SlotSelector.ANVIL, player, false));
+      NNList.of(SlotSelector.class).apply(ss -> {
+        caps.add(new UpgradeCap(ss, player, false));
+      });
+      caps.add(new UpgradeCap(new SlotSelector.SlotItem(), player, false));
+    } else {
+      AnvilUpgrade highestEquipped = AnvilUpgrade.getHighestEquippedUpgrade(player);
+      if (highestEquipped != null && highestEquipped.allowsAnvilRecipes()) {
+        caps.add(new UpgradeCap(SlotSelector.ANVIL, player, false));
+      }
+      if (highestEquipped != null && highestEquipped.allowsEditingOtherEquippedItems()) {
+        NNList.of(SlotSelector.class).apply(ss -> {
+          caps.add(new UpgradeCap(ss, player, false));
+        });
+      } else if (player.getHeldItemMainhand().getItem() == ModObject.itemDarkSteelUpgrade.getItemNN()) {
+        NNList.of(SlotSelector.class).forEach(ss -> {
+          if (ss.getSlot() != EntityEquipmentSlot.MAINHAND) {
+            caps.add(new UpgradeCap(ss, player, AnvilUpgrade.loadAnyFromItem(ss.getItem(player)) == null));
+          }
+        });
+      } else if (player.getHeldItemOffhand().getItem() == ModObject.itemDarkSteelUpgrade.getItemNN()) {
+        NNList.of(SlotSelector.class).forEach(ss -> {
+          if (ss.getSlot() != EntityEquipmentSlot.OFFHAND) {
+            caps.add(new UpgradeCap(ss, player, AnvilUpgrade.loadAnyFromItem(ss.getItem(player)) == null));
+          }
+        });
+      } else {
+        NNList.of(SlotSelector.class).apply(ss -> {
+          if (AnvilUpgrade.loadAnyFromItem(ss.getItem(player)) != null) {
+            caps.add(new UpgradeCap(ss, player, false));
+          }
+        });
+      }
+      if (highestEquipped != null && highestEquipped.allowsEditingSlotItems()) {
+        caps.add(new UpgradeCap(new SlotSelector.SlotItem(), player, false));
       }
     }
-    if (!hasAtleastOne) {
-      return null;
+    for (UpgradeCap cap : caps) {
+      if (!cap.getSlotSelector().isSlot() || cap.isAvailable()) {
+        return new DSUContainer(player, caps).init();
+      }
     }
-    if (withSlot) {
-      caps.add(new UpgradeCap(new SlotSelector.SlotItem(), player));
+    if (!player.world.isRemote) {
+      player.sendStatusMessage(Lang.DSU_GUI_NO_ITEMS.toChatServer(), true);
     }
-    return new DSUContainer(player, caps).init();
+    return null;
   }
 
   final @Nonnull NNList<UpgradeCap> caps;
@@ -178,11 +208,14 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
     this.anvil = new AnvilSubContainer(this, player);
   }
 
+  private final @Nonnull NNList<AutoSlot> autoSlots = new NNList<>();
+
   @Override
   protected void addSlots() {
     anvil.addSlots(); // Note: Anvil GUI hardcodes these as the first 3 slots
+    autoSlots.clear();
     for (int i = 0; i < getItemHandler().getSlots(); i++) {
-      addSlotToContainer(new AutoSlot(getItemHandler(), i, 0, 0, false));
+      autoSlots.add((AutoSlot) addSlotToContainer(new AutoSlot(getItemHandler(), i, 0, 0, false)));
     }
     int i = 0;
     for (UpgradeCap cap : caps) {
@@ -206,7 +239,7 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
       int idx = getItemHandler().getIndexForHandler(i);
       if (handler.isVisible(idx)) {
         ISlotSelector current = handler.getSlotSelector();
-        AutoSlot slot = (AutoSlot) inventorySlots.get(i); // FIXME: This is scary
+        AutoSlot slot = autoSlots.get(i);
         slot.noHead = false;
         if (current != last) {
           x = 0;
