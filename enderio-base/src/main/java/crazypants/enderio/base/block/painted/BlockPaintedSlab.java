@@ -97,9 +97,9 @@ public abstract class BlockPaintedSlab extends BlockSlab implements ITileEntityP
 
     this.setDefaultState(iblockstate);
     Prep.setNoCreativeTab(this);
-    modObject.apply(this);
     this.halfVariant = halfVariant != null ? halfVariant : this;
     useNeighborBrightness = true;
+    modObject.apply(this);
   }
 
   protected void init(@Nonnull IModObject modObject) {

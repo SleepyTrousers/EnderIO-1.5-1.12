@@ -18,6 +18,8 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSlab;
+import net.minecraft.block.BlockStairs;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -74,6 +76,20 @@ public class ModObjectRegistry {
         mo.setBlock(block);
         event.getRegistry().register(block);
         reverseMapping.put(block, mo);
+        checkUseNeighborBrightness(mo, block);
+      }
+    }
+  }
+
+  private static void checkUseNeighborBrightness(IModObject mo, Block block) {
+    if (System.getProperty("INDEV") != null && !block.getUseNeighborBrightness(block.getDefaultState())) {
+      boolean flag1 = block instanceof BlockStairs;
+      boolean flag2 = block instanceof BlockSlab;
+      boolean flag4 = block.isTranslucent(block.getDefaultState());
+      boolean flag5 = block.getLightOpacity(block.getDefaultState()) == 0;
+      if (flag1 || flag2 || flag4 || flag5) {
+        Log.error("Block " + mo.getRegistryName() + " doesn't set useNeighborBrightness but it seems it should because: " + (flag1 ? "stairs " : "")
+            + (flag2 ? "slab " : "") + (flag4 ? "translucent " : "") + (flag5 ? "lightOpacity " : ""));
       }
     }
   }

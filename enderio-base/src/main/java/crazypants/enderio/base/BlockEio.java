@@ -33,13 +33,16 @@ import net.minecraftforge.server.permission.context.BlockPosContext;
 public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> implements IModObject.LifecycleInit, IModObject.WithBlockItem {
 
   protected @Nonnull String permissionNodeWrenching = "(block not initialized)";
-  protected @Nonnull String permissionNodeIOWrenching = "(block not initialized)";
+  protected @Nonnull String permissionNodeIOWrenching = permissionNodeWrenching;
 
   @SuppressWarnings("unchecked")
   protected BlockEio(@Nonnull IModObject modObject) {
     super((Class<? extends T>) modObject.getTEClass());
     modObject.apply(this);
     setCreativeTab(EnderIOTab.tabEnderIOMachines);
+    if (translucent || lightOpacity == 0) {
+      useNeighborBrightness = true;
+    }
   }
 
   @SuppressWarnings("unchecked")
@@ -47,6 +50,9 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> im
     super((Class<? extends T>) modObject.getTEClass(), mat);
     modObject.apply(this);
     setCreativeTab(EnderIOTab.tabEnderIOMachines);
+    if (translucent || lightOpacity == 0) {
+      useNeighborBrightness = true;
+    }
   }
 
   @SuppressWarnings("unchecked")
@@ -54,6 +60,9 @@ public abstract class BlockEio<T extends TileEntityEio> extends BlockEnder<T> im
     super((Class<? extends T>) modObject.getTEClass(), mat, mapColor);
     modObject.apply(this);
     setCreativeTab(EnderIOTab.tabEnderIOMachines);
+    if (translucent || lightOpacity == 0) {
+      useNeighborBrightness = true;
+    }
   }
 
   /**

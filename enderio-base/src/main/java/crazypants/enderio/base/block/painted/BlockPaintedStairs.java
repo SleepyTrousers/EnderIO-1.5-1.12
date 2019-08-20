@@ -83,6 +83,7 @@ public class BlockPaintedStairs extends BlockStairs implements ITileEntityProvid
       throw new RuntimeException();
     }
     Prep.setNoCreativeTab(this);
+    useNeighborBrightness = true;
     modObject.apply(this);
   }
 
