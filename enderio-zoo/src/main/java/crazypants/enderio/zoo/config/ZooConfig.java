@@ -7,6 +7,9 @@ public final class ZooConfig {
 
   public static final IValueFactory F = Config.F.section("zoo");
 
+  public static final IValue<Float> lootModifierFakePlayer = F.make("lootModifierFakePlayer", .5f, //
+      "Adjust the probability of 'player kill' loot drops for fake players (machines). Does not affect normal drops or XP.").setRange(0, 1).sync();
+
   public static final IValueFactory F0 = F.section(".mobs");
   public static final IValueFactory CREEPER = F0.section(".concussion_creeper");
 

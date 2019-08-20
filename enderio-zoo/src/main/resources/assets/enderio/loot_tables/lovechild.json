@@ -92,7 +92,7 @@
       "name": "2b626f28-80cd-4cb7-aa4e-8046c1f9d69e",
       "conditions": [
         {
-          "condition": "killed_by_player"
+          "condition": "enderio:killed_by_player"
         }
       ],
       "rolls": 1,
