@@ -32,7 +32,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
-public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipProvider, IHaveRenderers, IEioGuiHandler.WithOutPos, IModObject.WithBlockItem {
+public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipProvider, IHaveRenderers, IEioGuiHandler.WithPos, IModObject.WithBlockItem {
 
   public static BlockDarkSteelAnvil create(@Nonnull IModObject modObject) {
     return new BlockDarkSteelAnvil(modObject);
@@ -53,15 +53,15 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
 
   @Override
   @Nullable
-  public DSUContainer getServerGuiElement(@Nonnull EntityPlayer player, int param1, int param2, int param3) {
-    return DSUContainer.create(player, param1, param2, param3);
+  public DSUContainer getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
+    return DSUContainer.create(player, world, pos, facing, param1, this);
   }
 
   @Override
   @Nullable
   @SideOnly(Side.CLIENT)
-  public DSUGui getClientGuiElement(@Nonnull EntityPlayer player, int param1, int param2, int param3) {
-    final DSUContainer container = getServerGuiElement(player, param1, param2, param3);
+  public DSUGui getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
+    final DSUContainer container = getServerGuiElement(player, world, pos, facing, param1);
     return container != null ? new DSUGui(container, param1) : null;
   }
 
@@ -73,7 +73,7 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
   @Override
   public boolean onBlockActivated(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer entityPlayer,
       @Nonnull EnumHand hand, @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
-    return ModObjectRegistry.getModObjectNN(this).openGui(world, entityPlayer, 0, 1, 0);
+    return ModObjectRegistry.getModObjectNN(this).openGui(world, pos, entityPlayer, side, 0);
   }
 
   @Override

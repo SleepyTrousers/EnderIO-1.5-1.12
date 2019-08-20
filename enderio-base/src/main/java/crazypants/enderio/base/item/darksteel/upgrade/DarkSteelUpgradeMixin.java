@@ -24,6 +24,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 
@@ -72,7 +73,7 @@ public abstract class DarkSteelUpgradeMixin extends Item implements IDarkSteelIt
     if (player.world.isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketOpenDSU(slot != null ? slot.ordinal() : -1));
     } else {
-      ModObject.blockDarkSteelAnvil.openGui(player.world, player, slot != null ? slot.ordinal() : -1, 0, 0);
+      ModObject.blockDarkSteelAnvil.openGui(player.world, new BlockPos(0, -1, 0), player, null, slot != null ? slot.ordinal() : -1);
     }
   }
 }

@@ -35,6 +35,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
@@ -213,7 +214,7 @@ public final class ItemUpgrades extends Item implements IHaveRenderers, IAdvance
 
     if (playerIn.isSneaking()) {
       if (!worldIn.isRemote) {
-        ModObject.blockDarkSteelAnvil.openGui(worldIn, playerIn, -1, 0, 0);
+        ModObject.blockDarkSteelAnvil.openGui(worldIn, new BlockPos(0, -1, 0), playerIn, null, -1);
       }
       return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
     }

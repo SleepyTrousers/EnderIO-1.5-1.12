@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
@@ -19,6 +20,8 @@ import crazypants.enderio.base.item.darksteel.upgrade.storage.StorageCombinedCap
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.material.upgrades.ItemUpgrades;
 import crazypants.enderio.util.Prep;
+import crazypants.enderio.util.WorldTarget;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IContainerListener;
@@ -27,6 +30,8 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -149,15 +154,20 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
   protected final @Nonnull SlotInventory slotInventory = new SlotInventory();
   protected final @Nonnull AnvilSubContainer anvil;
 
-  public static DSUContainer create(@Nonnull EntityPlayer player, int param1, int param2, int param3) {
+  public static DSUContainer create(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1,
+      Block block) {
     NNList<UpgradeCap> caps = new NNList<>();
-    if (param2 == 1) {
+    WorldTarget target = WorldTarget.TRUE;
+    if (pos.getY() >= 0 && world.isBlockLoaded(pos) && world.getBlockState(pos).getBlock() == block) {
+      // this case is the GUI for the Dark Steel Anvil
+      target = WorldTarget.ofBlock(world, pos, block);
       caps.add(new UpgradeCap(SlotSelector.ANVIL, player, false));
       NNList.of(SlotSelector.class).apply(ss -> {
         caps.add(new UpgradeCap(ss, player, false));
       });
       caps.add(new UpgradeCap(new SlotSelector.SlotItem(), player, false));
     } else {
+      // Check what items the player has equipped
       AnvilUpgrade highestEquipped = AnvilUpgrade.getHighestEquippedUpgrade(player);
       if (highestEquipped != null && highestEquipped.allowsAnvilRecipes()) {
         caps.add(new UpgradeCap(SlotSelector.ANVIL, player, false));
@@ -167,6 +177,9 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
           caps.add(new UpgradeCap(ss, player, false));
         });
       } else if (player.getHeldItemMainhand().getItem() == ModObject.itemDarkSteelUpgrade.getItemNN()) {
+        // DSU item gives limited access to add it all equipped items.
+        // Items that have the lowest tier Anvil Upgrade still allow full editing.
+        // And filter out the tab with the DSU item
         NNList.of(SlotSelector.class).forEach(ss -> {
           if (ss.getSlot() != EntityEquipmentSlot.MAINHAND) {
             caps.add(new UpgradeCap(ss, player, AnvilUpgrade.loadAnyFromItem(ss.getItem(player)) == null));
@@ -179,6 +192,7 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
           }
         });
       } else {
+        // No high level upgrades, no anvil, no DSU item---show only the items that have the low level upgrade.
         NNList.of(SlotSelector.class).apply(ss -> {
           if (AnvilUpgrade.loadAnyFromItem(ss.getItem(player)) != null) {
             caps.add(new UpgradeCap(ss, player, false));
@@ -191,7 +205,8 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
     }
     for (UpgradeCap cap : caps) {
       if (!cap.getSlotSelector().isSlot() || cap.isAvailable()) {
-        return new DSUContainer(player, caps).init();
+        // There's at least one tab to be shown, so open the GUI
+        return new DSUContainer(player, caps, target).init();
       }
     }
     if (!player.world.isRemote) {
@@ -201,11 +216,13 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
   }
 
   final @Nonnull NNList<UpgradeCap> caps;
+  private final @Nonnull WorldTarget target;
 
-  public DSUContainer(@Nonnull EntityPlayer player, @Nonnull NNList<UpgradeCap> caps) {
+  public DSUContainer(@Nonnull EntityPlayer player, @Nonnull NNList<UpgradeCap> caps, @Nonnull WorldTarget target) {
     super(player.inventory, new StorageCombinedCap<>(caps.toArray(new UpgradeCap[0])), null, true);
     this.caps = caps;
     this.anvil = new AnvilSubContainer(this, player);
+    this.target = target;
   }
 
   private final @Nonnull NNList<AutoSlot> autoSlots = new NNList<>();
@@ -306,7 +323,7 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
 
   @Override
   public boolean canInteractWith(@Nonnull EntityPlayer player) {
-    return caps.stream().anyMatch(UpgradeCap::isStillConnectedToPlayer);
+    return target.isValid(player, 64) && caps.stream().anyMatch(UpgradeCap::isStillConnectedToPlayer);
   }
 
   @Override
