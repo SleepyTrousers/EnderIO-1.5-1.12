@@ -32,6 +32,7 @@ import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;
+import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
 import crazypants.enderio.base.integration.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.enderio.base.integration.thaumcraft.ThaumaturgeRobesUpgrade;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
@@ -343,6 +344,12 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
           new AttributeModifier(ARMOR_MODIFIERS.get(equipmentSlot), "Armor modifier", armorMaterial.getDamageReductionAmount(equipmentSlot), 0));
       multimap.put(SharedMonsterAttributes.ARMOR_TOUGHNESS.getName(),
           new AttributeModifier(ARMOR_MODIFIERS.get(equipmentSlot), "Armor toughness", armorMaterial.getToughness(), 0));
+      // see crazypants.enderio.base.item.darksteel.upgrade.DarkSteelUpgradeMixin.getAttributeModifiers(EntityEquipmentSlot, ItemStack)
+      for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
+        if (upgrade.hasUpgrade(stack)) {
+          upgrade.addAttributeModifiers(equipmentSlot, stack, multimap);
+        }
+      }
     }
 
     return multimap;

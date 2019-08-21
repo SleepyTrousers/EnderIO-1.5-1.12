@@ -282,6 +282,8 @@ public final class DarkSteelConfig {
   public static final IValueFactory F_SWIM = F_UPGRADES.section(".swim");
 
   public static final IValue<Integer> swimCost = F_SWIM.make("upgradeCost", 4, "Number of levels required for the 'Swim' upgrade.").setRange(1, 99).sync();
+  public static final IValue<Double> swimSpeed = F_SWIM.make("speed", 2.5, //
+      "Speed modifier applied when swimming with the Dark Steel Boots with Flippers.").setRange(0.1, 1).sync();
 
   public static final IValueFactory F_NIGHT_VISION = F_UPGRADES.section(".nightVision");
 
