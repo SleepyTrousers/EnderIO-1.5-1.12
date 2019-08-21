@@ -79,7 +79,7 @@ public class BlockPoweredSpawner extends AbstractPoweredTaskBlock<TilePoweredSpa
     setShape(mkShape(BlockFaceShape.SOLID, BlockFaceShape.SOLID, BlockFaceShape.UNDEFINED, BlockFaceShape.SOLID));
 
     try {
-      fieldpersistenceRequired = ReflectionHelper.findField(EntityLiving.class, "field_82179_bU", "persistenceRequired");
+      fieldpersistenceRequired = ReflectionHelper.findField(EntityLiving.class, "persistenceRequired", "field_82179_bU");
     } catch (Exception e) {
       Log.error("BlockPoweredSpawner: Could not find field: persistenceRequired");
     }

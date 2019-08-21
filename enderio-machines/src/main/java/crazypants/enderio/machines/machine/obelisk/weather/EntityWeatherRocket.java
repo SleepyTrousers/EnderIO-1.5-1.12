@@ -1,5 +1,8 @@
 package crazypants.enderio.machines.machine.obelisk.weather;
 
+import javax.annotation.Nonnull;
+
+import crazypants.enderio.machines.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleFirework;
 import net.minecraft.entity.item.EntityFireworkRocket;
@@ -15,32 +18,28 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nonnull;
-
-import crazypants.enderio.machines.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
-
 public class EntityWeatherRocket extends EntityFireworkRocket {
 
-  private static final @Nonnull DataParameter<Integer> DATA_ID = EntityDataManager.<Integer>createKey(EntityWeatherRocket.class, DataSerializers.VARINT);
-  
+  private static final @Nonnull DataParameter<Integer> DATA_ID = EntityDataManager.<Integer> createKey(EntityWeatherRocket.class, DataSerializers.VARINT);
+
   private static final int MAX_AGE = 70;
 
   public EntityWeatherRocket(World world) {
     super(world);
-    ReflectionHelper.setPrivateValue(EntityFireworkRocket.class, this, MAX_AGE, "field_92055_b", "lifetime");
+    ReflectionHelper.setPrivateValue(EntityFireworkRocket.class, this, MAX_AGE, "lifetime", "field_92055_b");
   }
 
   public EntityWeatherRocket(World world, WeatherTask task) {
-    this(world);    
+    this(world);
     dataManager.set(DATA_ID, task.ordinal());
   }
 
   @Override
   protected void entityInit() {
     super.entityInit();
-    dataManager.register(DATA_ID, 0);        
+    dataManager.register(DATA_ID, 0);
   }
-  
+
   @Override
   public void onEntityUpdate() {
     super.onEntityUpdate();
@@ -48,22 +47,22 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
       doEffect();
     }
   }
-  
+
   @Override
   public void setDead() {
     super.setDead();
     WeatherTask task = WeatherTask.values()[dataManager.get(DATA_ID)];
     task.complete(world);
   }
-  
+
   @Override
   public void handleStatusUpdate(byte id) {
   }
-  
+
   @SideOnly(Side.CLIENT)
   private void doEffect() {
-    SoundEvent se = SoundEvents.ENTITY_FIREWORK_LARGE_BLAST;    
-    if (ticksExisted > 40) {    
+    SoundEvent se = SoundEvents.ENTITY_FIREWORK_LARGE_BLAST;
+    if (ticksExisted > 40) {
       se = SoundEvents.ENTITY_FIREWORK_LARGE_BLAST_FAR;
     }
     world.playSound(this.posX, this.posY, this.posZ, se, SoundCategory.BLOCKS, 20.0F, 0.95F + this.rand.nextFloat() * 0.1F, true);
@@ -88,7 +87,7 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
 
           entityfireworksparkfx.setTrail(true);
           entityfireworksparkfx.setTwinkle(false);
-          
+
           entityfireworksparkfx.setColor(WeatherTask.values()[dataManager.get(DATA_ID)].color.getRGB());
 
           Minecraft.getMinecraft().effectRenderer.addEffect(entityfireworksparkfx);
