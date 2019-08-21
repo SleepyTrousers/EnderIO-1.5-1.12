@@ -93,17 +93,20 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     // (4) Insert what we just drained into targets for real---and hope it actually works out...
     int amountFilled = fillFrom(from, drained.copy(), true);
     if (amountFilled > drained.amount) {
-      Log.warn("EnderLiquidConduit at " + con.getBundle().getLocation() + ": Inserted fluid volume (" + amountFilled + "mB) is more than we tried to insert ("
-          + drained.amount + "mB).");
+      Log.warn(
+          "EnderLiquidConduit at " + con.getBundle().getLocation() + " in dimension " + con.getBundle().getBundleworld().provider.getDimensionType().getId()
+              + ": Inserted fluid volume (" + amountFilled + "mB) is more than we tried to insert (" + drained.amount + "mB).");
     } else if (amountFilled < drained.amount) {
-      Log.warn("EnderLiquidConduit at " + con.getBundle().getLocation() + ": Inserted fluid volume (" + amountFilled
-          + "mB) is less than when we asked the target how much to insert (" + drained.amount
-          + "mB). This means that one of the blocks connected to this conduit line has a bug.");
+      Log.warn(
+          "EnderLiquidConduit at " + con.getBundle().getLocation() + " in dimension " + con.getBundle().getBundleworld().provider.getDimensionType().getId()
+              + ": Inserted fluid volume (" + amountFilled + "mB) is less than when we asked the target how much to insert (" + drained.amount
+              + "mB). This means that one of the blocks connected to this conduit line has a bug.");
       FluidStack toPutBack = toDrain.copy();
       toPutBack.amount = drained.amount - amountFilled;
       int putBack = from.externalTank.fill(toPutBack.copy());
       if (putBack < toPutBack.amount) {
-        Log.warn("EnderLiquidConduit at " + con.getBundle().getLocation() + ": In addition, putting back " + toPutBack.amount
+        Log.warn("EnderLiquidConduit at " + con.getBundle().getLocation() + " in dimension "
+            + con.getBundle().getBundleworld().provider.getDimensionType().getId() + ": In addition, putting back " + toPutBack.amount
             + "mB into the source tank failed, leading to " + (toPutBack.amount - putBack) + "mB being voided.");
       }
     }
