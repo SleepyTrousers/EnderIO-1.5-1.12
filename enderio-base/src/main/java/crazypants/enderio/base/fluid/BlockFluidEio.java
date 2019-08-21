@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.fluid.BlockFluidEnder;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.config.config.FluidConfig;
 import crazypants.enderio.base.config.config.InfinityConfig;
@@ -32,6 +33,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.relauncher.Side;
@@ -334,9 +336,13 @@ public final class BlockFluidEio {
         final BlockPos neighborPos = getNeighbor(pos, rand);
         final IBlockState neighborState = world.getBlockState(neighborPos);
         if (canMakeSnow(world, neighborPos, neighborState)) {
-          world.setBlockState(neighborPos, Blocks.SNOW_LAYER.getDefaultState());
+          world.setBlockState(neighborPos,
+              NullHelper.notnullF(ForgeEventFactory.fireFluidPlaceBlockEvent(world, neighborPos, pos, Blocks.SNOW_LAYER.getDefaultState()),
+                  "ForgeEventFactory.fireFluidPlaceBlockEvent()"));
         } else if (canMakeIce(world, neighborPos, neighborState)) {
-          world.setBlockState(neighborPos, Blocks.ICE.getDefaultState());
+          world.setBlockState(neighborPos,
+              NullHelper.notnullF(ForgeEventFactory.fireFluidPlaceBlockEvent(world, neighborPos, pos, Blocks.ICE.getDefaultState()),
+                  "ForgeEventFactory.fireFluidPlaceBlockEvent()"));
         }
       }
       super.updateTick(world, pos, state, rand);
