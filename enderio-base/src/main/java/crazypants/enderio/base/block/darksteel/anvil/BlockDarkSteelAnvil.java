@@ -32,7 +32,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
-public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipProvider, IHaveRenderers, IEioGuiHandler.WithPos, IModObject.WithBlockItem {
+public class BlockDarkSteelAnvil extends BlockAnvil
+    implements IResourceTooltipProvider, IHaveRenderers, IEioGuiHandler.WithServerComponent, IModObject.WithBlockItem {
 
   public static BlockDarkSteelAnvil create(@Nonnull IModObject modObject) {
     return new BlockDarkSteelAnvil(modObject);
@@ -53,17 +54,32 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
 
   @Override
   @Nullable
-  public DSUContainer getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
-    return DSUContainer.create(player, world, pos, facing, param1, this);
+  public Object getGuiElement(boolean server, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+      int param1, int param2, int param3) {
+    DSUContainer container = DSUContainer.create(player, world, pos, facing, param1, this);
+    return container == null ? null : server ? container : makeGuiObject(container, param1);
   }
 
-  @Override
-  @Nullable
   @SideOnly(Side.CLIENT)
-  public DSUGui getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
-    final DSUContainer container = getServerGuiElement(player, world, pos, facing, param1);
-    return container != null ? new DSUGui(container, param1) : null;
+  private static Object makeGuiObject(@Nonnull DSUContainer container, int param1) {
+    return new DSUGui(container, param1);
   }
+
+  // @Override
+  // @Nullable
+  // public DSUContainer getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1)
+  // {
+  // System.out.println("foobar?");
+  // return DSUContainer.create(player, world, pos, facing, param1, this);
+  // }
+  //
+  // @Override
+  // @Nullable
+  // @SideOnly(Side.CLIENT)
+  // public DSUGui getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
+  // final DSUContainer container = getServerGuiElement(player, world, pos, facing, param1);
+  // return container != null ? new DSUGui(container, param1) : null;
+  // }
 
   @Override
   public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {

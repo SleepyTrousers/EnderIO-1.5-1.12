@@ -58,15 +58,7 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
 
     @Override
     public boolean isVisible() {
-      return slot.isEnabled();
-    }
-
-    public boolean isHead() {
-      return slot.isHead();
-    }
-
-    public boolean isBlocked() {
-      return slot.isBlocked();
+      return slot.isEnabled() && super.isVisible();
     }
 
     @Override
@@ -79,7 +71,7 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
     public boolean drawGhostSlotToolTip(@Nonnull GuiContainerBase gui, int mouseX, int mouseY) {
       if (gui.mc.player.inventory.getItemStack().isEmpty()) {
         final List<String> text = new NNList<>(getStack().getDisplayName());
-        if (isBlocked()) {
+        if (slot.isBlocked()) {
           List<ITextComponent> reason = slot.getSlotBlockedReason();
           if (!reason.isEmpty()) {
             text.add("");
@@ -115,6 +107,10 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
       return getHandler().isHead(getHandlerSlot()) && !noHead;
     }
 
+    public boolean isAddOnly() {
+      return getHandler().isAddOnly();
+    }
+
     @SuppressWarnings("unchecked")
     private int getHandlerSlot() {
       return ((StorageCombinedCap<UpgradeCap>) getItemHandler()).getIndexForHandler(getSlotIndex());
@@ -144,6 +140,15 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
     boolean isInventorySlot() {
       return getHandler().isInventorySlot(getHandlerSlot());
     }
+
+    public int getX() {
+      return xPos;
+    }
+
+    public int getY() {
+      return yPos;
+    }
+
   }
 
   private static final int X0 = 8;

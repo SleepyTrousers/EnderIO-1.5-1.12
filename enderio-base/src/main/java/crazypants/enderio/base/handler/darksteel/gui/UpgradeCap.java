@@ -295,4 +295,8 @@ public class UpgradeCap implements IItemHandlerModifiable {
     }
     return false;
   }
+
+  public boolean isAddOnly() {
+    return addOnly;
+  }
 }

@@ -5,12 +5,12 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.handler.KeyTracker;
+import crazypants.enderio.base.handler.darksteel.gui.DSUContainer.AutoSlot;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.sound.SoundHelper;
 import crazypants.enderio.base.sound.SoundRegistry;
@@ -111,16 +111,21 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
       anvil.drawGuiContainerBackgroundLayer(par1, par2, par3);
     } else {
       boolean hasAnySlots = false;
-      for (GhostSlot slot : getGhostSlotHandler().getGhostSlots()) {
-        if (slot instanceof DSUContainer.UpgradeSlot && slot.isVisible()) {
-          hasAnySlots = true;
-          if (((DSUContainer.UpgradeSlot) slot).isHead()) {
-            drawTexturedModalRect(guiLeft + slot.getX() - 1 - 6, guiTop + slot.getY() - 1, 200, 18, 6, 18);
-          }
-          if (((DSUContainer.UpgradeSlot) slot).isBlocked()) {
-            drawTexturedModalRect(guiLeft + slot.getX() - 1, guiTop + slot.getY() - 1, 218, 0, 18, 18);
-          } else {
-            drawTexturedModalRect(guiLeft + slot.getX() - 1, guiTop + slot.getY() - 1, 200, 0, 18, 18);
+      for (Slot inventorySlot : cont.inventorySlots) {
+        if (inventorySlot instanceof DSUContainer.AutoSlot) {
+          final AutoSlot slot = (DSUContainer.AutoSlot) inventorySlot;
+          if (slot.isEnabled()) {
+            hasAnySlots = true;
+            if (slot.isHead()) {
+              drawTexturedModalRect(guiLeft + slot.getX() - 1 - 6, guiTop + slot.getY() - 1, 200, 18, 6, 18);
+            }
+            if (slot.isAddOnly() && slot.getHasStack()) {
+              drawTexturedModalRect(guiLeft + slot.getX() - 1, guiTop + slot.getY() - 1, 236, 0, 18, 18);
+            } else if (slot.isBlocked()) {
+              drawTexturedModalRect(guiLeft + slot.getX() - 1, guiTop + slot.getY() - 1, 218, 0, 18, 18);
+            } else {
+              drawTexturedModalRect(guiLeft + slot.getX() - 1, guiTop + slot.getY() - 1, 200, 0, 18, 18);
+            }
           }
         }
       }
