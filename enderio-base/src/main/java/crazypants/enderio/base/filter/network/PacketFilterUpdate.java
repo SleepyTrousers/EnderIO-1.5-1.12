@@ -4,12 +4,12 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.network.MessageTileEntity;
 
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.ITileFilterContainer;
 import crazypants.enderio.base.filter.gui.ContainerFilter;
 import io.netty.buffer.ByteBuf;
-import jline.internal.Log;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
