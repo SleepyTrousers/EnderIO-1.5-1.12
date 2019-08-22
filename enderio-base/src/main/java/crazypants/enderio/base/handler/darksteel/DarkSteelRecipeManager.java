@@ -21,7 +21,6 @@ import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.lang.Lang;
-import crazypants.enderio.util.StringUtil;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -167,6 +166,12 @@ public class DarkSteelRecipeManager {
     // Note: Using the numeric ID here to keep the string short and save memory
   }
 
+  public static @Nonnull NNList<IDarkSteelUpgrade> getUpgrades(@Nonnull ItemStack stack) {
+    NNList<IDarkSteelUpgrade> list =  UpgradeRegistry.getUpgrades();
+    list.removeIf(upgrade -> !upgrade.hasUpgrade(stack));
+    return list;
+  }
+
   public static NNList<ItemStack> getRecipes(@Nonnull Set<UpgradePath> list, @Nonnull NNList<ItemStack> input) {
     NNList<ItemStack> output = new NNList<ItemStack>();
     NNIterator<ItemStack> iterator = input.iterator();
@@ -201,14 +206,17 @@ public class DarkSteelRecipeManager {
   public static class UpgradePath {
     private final @Nonnull ItemStack input, upgrade, output;
     private final @Nonnull IDarkSteelUpgrade dsupgrade;
-    private final @Nonnull String id;
+    private final int hash;
 
     UpgradePath(@Nonnull IDarkSteelUpgrade dsupgrade, @Nonnull ItemStack input, @Nonnull ItemStack upgrade, @Nonnull ItemStack output) {
       this.input = input;
       this.upgrade = upgrade;
       this.output = output;
       this.dsupgrade = dsupgrade;
-      this.id = StringUtil.format("%s:%s:%s", input.getItem().getRegistryName(), getUpgradesAsString(input), getUpgradesAsString(output));
+      int hash = input.getItem().getRegistryName().hashCode();
+      hash = hash * 31 + getUpgradesAsString(input).hashCode();
+      hash = hash * 31 + getUpgradesAsString(output).hashCode();
+      this.hash = hash;
     }
 
     public @Nonnull ItemStack getInput() {
@@ -229,7 +237,7 @@ public class DarkSteelRecipeManager {
 
     @Override
     public int hashCode() {
-      return id.hashCode();
+      return hash;
     }
 
     @Override
@@ -244,7 +252,13 @@ public class DarkSteelRecipeManager {
         return false;
       }
       UpgradePath other = (UpgradePath) obj;
-      if (!id.equals(other.id)) {
+      if (input.getItem() != other.getInput().getItem()) {
+        return false;
+      }
+      if (!getUpgrades(input).equals(getUpgrades(other.input))) {
+        return false;
+      }
+      if (!getUpgrades(output).equals(getUpgrades(other.output))) {
         return false;
       }
       return true;
