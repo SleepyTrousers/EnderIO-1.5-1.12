@@ -33,7 +33,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class AnvilSubContainer {
 
   class OutputSlot extends HidingSlot {
-    OutputSlot(@Nonnull IInventory inventoryIn, int index, int xPosition, int yPosition) {
+    OutputSlot(IInventory inventoryIn, int index, int xPosition, int yPosition) {
       super(inventoryIn, index, xPosition, yPosition);
     }
 
@@ -76,7 +76,7 @@ public class AnvilSubContainer {
   }
 
   class HidingSlot extends Slot {
-    HidingSlot(@Nonnull IInventory inventoryIn, int index, int xPosition, int yPosition) {
+    HidingSlot(IInventory inventoryIn, int index, int xPosition, int yPosition) {
       super(inventoryIn, index, xPosition, yPosition);
     }
 
@@ -88,10 +88,10 @@ public class AnvilSubContainer {
 
   static final int ANVIL_Y_OFFSET = 10;
 
-  private final @Nonnull DSUContainer parent;
+  private final DSUContainer parent;
 
-  private final @Nonnull IInventory outputSlot = new InventoryCraftResult();
-  final @Nonnull InventoryBasic inputSlots = new InventoryBasic("Repair", true, 2) {
+  private final IInventory outputSlot = new InventoryCraftResult();
+  final InventoryBasic inputSlots = new InventoryBasic("Repair", true, 2) {
     @Override
     public void markDirty() {
       super.markDirty();
@@ -100,10 +100,10 @@ public class AnvilSubContainer {
   };
   private int maximumCost = 0;
   private int materialCost = 0;
-  private @Nonnull String repairedItemName = "";
-  final @Nonnull EntityPlayer player;
+  private String repairedItemName = "";
+  final EntityPlayer player;
 
-  AnvilSubContainer(@Nonnull DSUContainer parent, @Nonnull EntityPlayer player) {
+  AnvilSubContainer(DSUContainer parent, EntityPlayer player) {
     this.parent = parent;
     this.player = player;
 
@@ -116,7 +116,7 @@ public class AnvilSubContainer {
   }
 
   // see net.minecraftforge.common.ForgeHooks.onAnvilChange
-  private boolean onAnvilChange(@Nonnull ItemStack left, @Nonnull ItemStack right, int baseCost) {
+  private boolean onAnvilChange(ItemStack left, ItemStack right, int baseCost) {
     AnvilUpdateEvent e = new AnvilUpdateEvent(left, right, repairedItemName, baseCost);
     if (MinecraftForge.EVENT_BUS.post(e)) {
       return false;
@@ -328,13 +328,13 @@ public class AnvilSubContainer {
     }
   }
 
-  public void onContainerClosed(@Nonnull EntityPlayer playerIn) {
+  public void onContainerClosed(EntityPlayer playerIn) {
     if (!player.world.isRemote) {
       parent.clearContainer(playerIn, player.world, inputSlots);
     }
   }
 
-  public void updateItemName(@Nonnull String newName) {
+  public void updateItemName(String newName) {
     repairedItemName = newName;
 
     if (!outputSlot.getStackInSlot(0).isEmpty()) {
@@ -358,7 +358,7 @@ public class AnvilSubContainer {
     this.maximumCost = maximumCost;
   }
 
-  private int handleAnvilDamage(@Nonnull ItemStack stack) {
+  private int handleAnvilDamage(ItemStack stack) {
 
     if (player.world.isRemote) {
       return -1;

@@ -16,9 +16,9 @@ import com.enderio.core.common.util.NNList;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.anvil.AnvilUpgrade;
-import crazypants.enderio.base.item.darksteel.upgrade.storage.StorageCombinedCap;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.material.upgrades.ItemUpgrades;
+import crazypants.enderio.util.EIOCombinedInvWrapper;
 import crazypants.enderio.util.Prep;
 import crazypants.enderio.util.WorldTarget;
 import net.minecraft.block.Block;
@@ -41,12 +41,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCap>, TileEntity> implements DSURemoteExec.Container {
+public class DSUContainer extends ContainerEnderCap<EIOCombinedInvWrapper<UpgradeCap>, TileEntity> implements DSURemoteExec.Container {
 
   static final class UpgradeSlot extends GhostBackgroundItemSlot {
-    private final @Nonnull AutoSlot slot;
+    private final AutoSlot slot;
 
-    UpgradeSlot(@Nonnull ItemStack stack, @Nonnull AutoSlot parent) {
+    UpgradeSlot(ItemStack stack, AutoSlot parent) {
       super(stack, parent);
       this.slot = parent;
     }
@@ -99,7 +99,7 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
       return getHandler().isSlotBlocked(getHandlerSlot());
     }
 
-    public @Nonnull List<ITextComponent> getSlotBlockedReason() {
+    public List<ITextComponent> getSlotBlockedReason() {
       return getHandler().getSlotBlockedReason(getHandlerSlot());
     }
 
@@ -113,12 +113,12 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
 
     @SuppressWarnings("unchecked")
     private int getHandlerSlot() {
-      return ((StorageCombinedCap<UpgradeCap>) getItemHandler()).getIndexForHandler(getSlotIndex());
+      return ((EIOCombinedInvWrapper<UpgradeCap>) getItemHandler()).getIndexForHandler(getSlotIndex());
     }
 
     @SuppressWarnings("unchecked")
     private UpgradeCap getHandler() {
-      return ((StorageCombinedCap<UpgradeCap>) getItemHandler()).getHandlerFromSlot(getSlotIndex());
+      return ((EIOCombinedInvWrapper<UpgradeCap>) getItemHandler()).getHandlerFromSlot(getSlotIndex());
     }
 
     @Override
@@ -132,7 +132,6 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
       return isEnabled() && super.isItemValid(stack);
     }
 
-    @Nonnull
     ItemStack getUpgradeItem() {
       return getHandler().getUpgradeItem(getHandlerSlot());
     }
@@ -155,14 +154,13 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
   private static final int Y0 = 10;
   private static final int COLS = 9;
 
-  protected @Nonnull ISlotSelector activeTab = SlotSelector.CHEST;
-  protected final @Nonnull SlotInventory slotInventory = new SlotInventory();
-  protected final @Nonnull AnvilSubContainer anvil;
-  protected final @Nonnull NNList<UpgradeCap> caps;
-  protected final @Nonnull WorldTarget target;
+  protected ISlotSelector activeTab = SlotSelector.CHEST;
+  protected final SlotInventory slotInventory = new SlotInventory();
+  protected final AnvilSubContainer anvil;
+  protected final NNList<UpgradeCap> caps;
+  protected final WorldTarget target;
 
-  public static DSUContainer create(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1,
-      Block block) {
+  public static @Nullable DSUContainer create(EntityPlayer player, World world, BlockPos pos, @Nullable EnumFacing facing, int param1, Block block) {
     NNList<UpgradeCap> caps = new NNList<>();
     WorldTarget target = WorldTarget.TRUE;
     if (pos.getY() >= 0 && world.isBlockLoaded(pos) && world.getBlockState(pos).getBlock() == block) {
@@ -222,14 +220,14 @@ public class DSUContainer extends ContainerEnderCap<StorageCombinedCap<UpgradeCa
     return null;
   }
 
-  public DSUContainer(@Nonnull EntityPlayer player, @Nonnull NNList<UpgradeCap> caps, @Nonnull WorldTarget target) {
-    super(player.inventory, new StorageCombinedCap<>(caps.toArray(new UpgradeCap[0])), null, true);
+  public DSUContainer(EntityPlayer player, NNList<UpgradeCap> caps, WorldTarget target) {
+    super(player.inventory, new EIOCombinedInvWrapper<>(caps.toArray(new UpgradeCap[0])), null, true);
     this.caps = caps;
     this.anvil = new AnvilSubContainer(this, player);
     this.target = target;
   }
 
-  private final @Nonnull NNList<AutoSlot> autoSlots = new NNList<>();
+  private final NNList<AutoSlot> autoSlots = new NNList<>();
 
   @Override
   protected void addSlots() {

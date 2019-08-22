@@ -1,4 +1,4 @@
-package crazypants.enderio.base.item.darksteel.upgrade.storage;
+package crazypants.enderio.util;
 
 import javax.annotation.Nonnull;
 

@@ -1,5 +1,7 @@
 package crazypants.enderio.base.handler.darksteel.gui;
 
+import javax.annotation.Nullable;
+
 import crazypants.enderio.base.init.ModObject;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,19 +22,19 @@ public class PacketOpenDSU implements IMessage {
   }
 
   @Override
-  public void toBytes(ByteBuf buf) {
+  public void toBytes(@Nullable ByteBuf buf) {
     buf.writeShort(slot);
   }
 
   @Override
-  public void fromBytes(ByteBuf buf) {
+  public void fromBytes(@Nullable ByteBuf buf) {
     slot = buf.readShort();
   }
 
   public static class Handler implements IMessageHandler<PacketOpenDSU, IMessage> {
 
     @Override
-    public IMessage onMessage(PacketOpenDSU message, MessageContext ctx) {
+    public @Nullable IMessage onMessage(@Nullable PacketOpenDSU message, @Nullable MessageContext ctx) {
       EntityPlayer player = ctx.getServerHandler().player;
       ModObject.blockDarkSteelAnvil.openGui(player.world, new BlockPos(0, -1, 0), player, null, message.slot);
       return null;

@@ -1,6 +1,7 @@
 package crazypants.enderio.base.handler.darksteel.gui;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +20,7 @@ public enum SlotSelector implements ISlotSelector {
 
   ;
 
-  public static final @Nonnull ISlotSelector ANVIL = new ISlotSelector() {
+  public static final ISlotSelector ANVIL = new ISlotSelector() {
 
     @Override
     public boolean isAnvil() {
@@ -66,9 +67,9 @@ public enum SlotSelector implements ISlotSelector {
 
   };
 
-  private static final @Nonnull String INTERNAL_LOGIC_ERROR = "Internal Logic Error";
+  private static final String INTERNAL_LOGIC_ERROR = "Internal Logic Error";
 
-  public static @Nonnull SlotSelector fromEntityEquipmentSlot(@Nonnull EntityEquipmentSlot slot) {
+  public static SlotSelector fromEntityEquipmentSlot(EntityEquipmentSlot slot) {
     for (SlotSelector ss : values()) {
       if (ss.slot == slot) {
         return ss;
@@ -79,7 +80,7 @@ public enum SlotSelector implements ISlotSelector {
 
   public static class SlotItem implements ISlotSelector {
 
-    private Slot containerSlot = null;
+    private @Nullable Slot containerSlot = null;
 
     public SlotItem() {
     }
@@ -122,16 +123,16 @@ public enum SlotSelector implements ISlotSelector {
     }
 
     @Override
-    public Slot getContainerSlot() {
+    public @Nullable Slot getContainerSlot() {
       return containerSlot;
     }
 
   }
 
-  private final @Nonnull EntityEquipmentSlot slot;
+  private final EntityEquipmentSlot slot;
   private final int tabOrder;
 
-  private SlotSelector(int tabOrder, @Nonnull EntityEquipmentSlot slot) {
+  private SlotSelector(int tabOrder, EntityEquipmentSlot slot) {
     this.tabOrder = tabOrder;
     this.slot = slot;
   }

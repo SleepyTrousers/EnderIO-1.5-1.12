@@ -19,13 +19,13 @@ import net.minecraft.util.ResourceLocation;
 
 public class AnvilSubGui implements IInventoryChangedListener {
 
-  private static final @Nonnull ResourceLocation ANVIL_RESOURCE = new ResourceLocation("textures/gui/container/anvil.png");
+  private static final ResourceLocation ANVIL_RESOURCE = new ResourceLocation("textures/gui/container/anvil.png");
 
-  private final @Nonnull DSUContainer anvil;
-  private final @Nonnull DSUGui parent;
+  private final DSUContainer anvil;
+  private final DSUGui parent;
 
-  private GuiTextField nameField = null;
-  private String lastName = null;
+  private final GuiTextField nameField;
+  private String lastName = "";
 
   /**
    * Height of the anvil's gui texture without inventory slots
@@ -40,19 +40,19 @@ public class AnvilSubGui implements IInventoryChangedListener {
    */
   private static final int ANVIL_BORDER = 5;
 
-  AnvilSubGui(@Nonnull DSUContainer container, @Nonnull DSUGui parent) {
+  AnvilSubGui(DSUContainer container, DSUGui parent) {
     this.anvil = container;
     this.parent = parent;
     anvil.anvil.inputSlots.addInventoryChangeListener(this);
-  }
-
-  public void initGui() {
-    Keyboard.enableRepeatEvents(true);
     nameField = new GuiTextField(0, parent.getFontRenderer(), 62, 24 + ANVIL_Y_OFFSET, 103, 12);
     nameField.setTextColor(-1);
     nameField.setDisabledTextColour(-1);
     nameField.setEnableBackgroundDrawing(false);
     nameField.setMaxStringLength(35);
+  }
+
+  public void initGui() {
+    Keyboard.enableRepeatEvents(true);
   }
 
   public void onGuiClosed() {

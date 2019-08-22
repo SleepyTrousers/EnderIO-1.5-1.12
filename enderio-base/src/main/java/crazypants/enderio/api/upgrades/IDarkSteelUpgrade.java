@@ -8,6 +8,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.collect.Multimap;
 
+import crazypants.enderio.api.ILocalizable;
 import crazypants.enderio.base.handler.darksteel.PacketDarkSteelSFXPacket;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,11 +34,12 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
  * @author Henry Loenwind
  *
  */
-public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade> {
+public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade>, ILocalizable {
 
   /**
    * @return The unlocalized name to display in the tooltip.
    */
+  @Override
   @Nonnull
   String getUnlocalizedName();
 

@@ -1,4 +1,4 @@
-package crazypants.enderio.base.handler.darksteel.gui;
+package crazypants.enderio.util;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

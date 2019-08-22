@@ -3,8 +3,6 @@ package crazypants.enderio.base.handler.darksteel.gui;
 import java.awt.Rectangle;
 import java.io.IOException;
 
-import javax.annotation.Nonnull;
-
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIO;
@@ -14,6 +12,7 @@ import crazypants.enderio.base.handler.darksteel.gui.DSUContainer.AutoSlot;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.sound.SoundHelper;
 import crazypants.enderio.base.sound.SoundRegistry;
+import crazypants.enderio.util.AtlasWidgetIcon;
 import crazypants.enderio.util.EnumReader;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -25,17 +24,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
 
-  private final static @Nonnull NNList<String> TEXTURES = new NNList<>(EnderIO.DOMAIN + ":items/paint_overlay", "minecraft:items/empty_armor_slot_shield");
+  private final static NNList<String> TEXTURES = new NNList<>(EnderIO.DOMAIN + ":items/paint_overlay", "minecraft:items/empty_armor_slot_shield");
 
   static {
     TEXTURES.addAll(ItemArmor.EMPTY_SLOT_NAMES);
   }
 
-  private final @Nonnull DSUContainer cont;
+  private final DSUContainer cont;
   private final int initialTab;
-  private final @Nonnull AnvilSubGui anvil;
+  private final AnvilSubGui anvil;
 
-  public DSUGui(@Nonnull DSUContainer par1Container, int initialTab) {
+  public DSUGui(DSUContainer par1Container, int initialTab) {
     super(par1Container, "dsu");
     this.cont = par1Container;
     this.initialTab = initialTab;

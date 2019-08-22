@@ -1,4 +1,6 @@
-package crazypants.enderio.base.item.darksteel.upgrade.storage;
+package crazypants.enderio.util;
+
+import javax.annotation.Nonnull;
 
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
@@ -9,21 +11,21 @@ import net.minecraftforge.items.wrapper.CombinedInvWrapper;
  * @author Henry Loenwind
  *
  */
-public class StorageCombinedCap<T extends IItemHandlerModifiable> extends CombinedInvWrapper {
+public class EIOCombinedInvWrapper<T extends IItemHandlerModifiable> extends CombinedInvWrapper {
 
   @SafeVarargs
-  public StorageCombinedCap(T... itemHandler) {
+  public EIOCombinedInvWrapper(T... itemHandler) {
     super(itemHandler);
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "null" })
   @Override
-  public T getHandlerFromIndex(int index) {
+  public @Nonnull T getHandlerFromIndex(int index) {
     return (T) super.getHandlerFromIndex(index);
   }
 
-  @SuppressWarnings("unchecked")
-  public T getHandlerFromSlot(int slot) {
+  @SuppressWarnings({ "unchecked", "null" })
+  public @Nonnull T getHandlerFromSlot(int slot) {
     return (T) super.getHandlerFromIndex(getIndexForSlot(slot));
   }
 

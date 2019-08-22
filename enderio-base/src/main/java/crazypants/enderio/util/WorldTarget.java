@@ -51,19 +51,23 @@ public interface WorldTarget {
 
   };
 
-  static @Nonnull WorldTarget ofBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block block) {
-    return new BlockTarget(block, world, pos);
+  static @Nonnull WorldTarget ofBlockPos(@Nonnull World world, @Nonnull BlockPos pos) {
+    return new BlockPosTarget(world, pos);
   }
 
-  class BlockTarget implements WorldTarget {
+  class BlockPosTarget implements WorldTarget {
     final @Nonnull WeakReference<World> targetWorld;
     final @Nonnull BlockPos targetPos;
-    final @Nonnull Block targetBlock;
 
-    private BlockTarget(@Nonnull Block block, @Nonnull World world, @Nonnull BlockPos pos) {
+    private BlockPosTarget(@Nonnull World world, @Nonnull BlockPos pos) {
       targetWorld = new WeakReference<World>(world);
       targetPos = pos.toImmutable();
-      targetBlock = block;
+    }
+
+    @Override
+    public boolean isValid() {
+      World world2 = targetWorld.get();
+      return world2 != null && world2.isBlockLoaded(targetPos);
     }
 
     @Override
@@ -80,6 +84,20 @@ public interface WorldTarget {
     public IBlockState read() {
       World world2 = targetWorld.get();
       return world2 != null && world2.isBlockLoaded(targetPos) ? world2.getBlockState(targetPos) : WorldTarget.super.read();
+    }
+
+  }
+
+  static @Nonnull WorldTarget ofBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block block) {
+    return new BlockTarget(block, world, pos);
+  }
+
+  class BlockTarget extends BlockPosTarget {
+    final @Nonnull Block targetBlock;
+
+    private BlockTarget(@Nonnull Block block, @Nonnull World world, @Nonnull BlockPos pos) {
+      super(world, pos);
+      targetBlock = block;
     }
 
     @Override

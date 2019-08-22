@@ -1,6 +1,6 @@
 package crazypants.enderio.base.handler.darksteel.gui;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NullHelper;
 
@@ -14,11 +14,11 @@ public interface DSURemoteExec {
 
   public interface GUI extends IRemoteExec.IGui {
 
-    default void setTab(@Nonnull ISlotSelector tab) {
+    default void setTab(ISlotSelector tab) {
       GuiPacket.send(this, ID_SET_TAB, tab.getTabOrder());
     }
 
-    default void updateItemName(@Nonnull String newName) {
+    default void updateItemName(String newName) {
       GuiPacket.send(this, ID_SET_NAME, newName);
     }
 
@@ -26,13 +26,12 @@ public interface DSURemoteExec {
 
   public interface Container extends IRemoteExec.IContainer {
 
-    @Nonnull
     ISlotSelector setTab(int tab);
 
-    void updateItemName(@Nonnull String newName);
+    void updateItemName(String newName);
 
     @Override
-    default IMessage networkExec(int id, GuiPacket message) {
+    default @Nullable IMessage networkExec(int id, GuiPacket message) {
       if (id == ID_SET_TAB) {
         setTab(message.getInt(0));
       }

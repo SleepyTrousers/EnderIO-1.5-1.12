@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.ContainerEnderCap;
 
+import crazypants.enderio.util.EIOCombinedInvWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -14,7 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class StorageContainer extends ContainerEnderCap<StorageCombinedCap<StorageCap>, TileEntity> implements StorageRemoteExec.Container {
+public class StorageContainer extends ContainerEnderCap<EIOCombinedInvWrapper<StorageCap>, TileEntity> implements StorageRemoteExec.Container {
 
   private static final int X0 = 8;
   private static final int Y0 = 10;
@@ -25,7 +26,7 @@ public class StorageContainer extends ContainerEnderCap<StorageCombinedCap<Stora
 
   public StorageContainer(@Nonnull InventoryPlayer playerInv, @Nonnull StorageCap feet, @Nonnull StorageCap legs, @Nonnull StorageCap body,
       @Nonnull StorageCap head) {
-    super(playerInv, new StorageCombinedCap<>(feet, legs, body, head), null);
+    super(playerInv, new EIOCombinedInvWrapper<>(feet, legs, body, head), null);
     this.feet = feet;
     this.legs = legs;
     this.body = body;
@@ -47,7 +48,7 @@ public class StorageContainer extends ContainerEnderCap<StorageCombinedCap<Stora
       addSlotToContainer(new SlotItemHandler(getItemHandler(), i, X0 + 18 * (x + xoff), Y0 + 18 * y) {
         @Override
         public boolean isEnabled() {
-          return activeTab == ((StorageCombinedCap<StorageCap>) getItemHandler()).getHandlerFromSlot(getSlotIndex()).getEquipmentSlot();
+          return activeTab == ((EIOCombinedInvWrapper<StorageCap>) getItemHandler()).getHandlerFromSlot(getSlotIndex()).getEquipmentSlot();
         }
 
         @Override

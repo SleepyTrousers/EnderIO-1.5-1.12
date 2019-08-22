@@ -14,7 +14,7 @@ import crazypants.enderio.api.upgrades.IRule.CheckResult;
 import crazypants.enderio.base.handler.darksteel.Rules;
 import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
 import crazypants.enderio.base.init.ModObject;
-import crazypants.enderio.base.item.darksteel.upgrade.storage.NNPair;
+import crazypants.enderio.util.NNPair;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,28 +28,28 @@ import net.minecraftforge.items.ItemHandlerHelper;
 public class UpgradeCap implements IItemHandlerModifiable {
 
   private final static class Holder {
-    final @Nonnull IDarkSteelUpgrade upgrade;
+    final IDarkSteelUpgrade upgrade;
     boolean hasNext = false;
     boolean isHead = true;
 
-    Holder(@Nonnull IDarkSteelUpgrade upgrade) {
+    Holder(IDarkSteelUpgrade upgrade) {
       this.upgrade = upgrade;
     }
 
     String getKey() {
-      return upgrade.getSortKey().getKey();
+      return NullHelper.first(upgrade.getSortKey().getKey(), "");
     }
 
   }
 
   protected final static int INVSIZE = 9;
 
-  protected final @Nonnull NNList<Holder> stacks = new NNList<>();
-  protected final @Nonnull ISlotSelector ss;
-  protected final @Nonnull EntityPlayer player;
+  protected final NNList<Holder> stacks = new NNList<>();
+  protected final ISlotSelector ss;
+  protected final EntityPlayer player;
   protected final boolean addOnly;
 
-  public UpgradeCap(@Nonnull ISlotSelector ss, @Nonnull EntityPlayer player, boolean addOnly) {
+  public UpgradeCap(ISlotSelector ss, EntityPlayer player, boolean addOnly) {
     this.ss = ss;
     this.player = player;
     this.addOnly = addOnly;
@@ -98,7 +98,6 @@ public class UpgradeCap implements IItemHandlerModifiable {
     return showUpgrade(slot) ? UpgradeRegistry.getUpgradeItem(stacks.get(slot).upgrade) : Prep.getEmpty();
   }
 
-  @Nonnull
   public ItemStack getUpgradeItem(int slot) {
     if (isInventorySlot(slot)) {
       return new ItemStack(ModObject.itemDarkSteelUpgrade.getItemNN());
@@ -154,7 +153,7 @@ public class UpgradeCap implements IItemHandlerModifiable {
    * <p>
    * Please note that the list may be empty if none of the rules provide a reason text (or if a slot is not blocked).
    */
-  public @Nonnull List<ITextComponent> getSlotBlockedReason(int slot) {
+  public List<ITextComponent> getSlotBlockedReason(int slot) {
     final NNPair<ItemStack, IDarkSteelItem> owner = getOwner();
     return NullHelper
         .first(isSlotBlocked(slot)
@@ -229,7 +228,7 @@ public class UpgradeCap implements IItemHandlerModifiable {
     return ss.isAnvil() || ss.getItem(player).getItem() instanceof IDarkSteelItem;
   }
 
-  protected @Nonnull NNPair<ItemStack, IDarkSteelItem> getOwner() {
+  protected NNPair<ItemStack, IDarkSteelItem> getOwner() {
     ItemStack current = ss.getItem(player);
     if (current.getItem() instanceof IDarkSteelItem) {
       return NNPair.of(current, (IDarkSteelItem) current.getItem());
@@ -256,7 +255,7 @@ public class UpgradeCap implements IItemHandlerModifiable {
 
   }
 
-  public @Nonnull ISlotSelector getSlotSelector() {
+  public ISlotSelector getSlotSelector() {
     return ss;
   }
 

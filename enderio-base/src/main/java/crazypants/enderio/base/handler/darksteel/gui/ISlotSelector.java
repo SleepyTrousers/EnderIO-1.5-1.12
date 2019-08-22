@@ -1,6 +1,6 @@
 package crazypants.enderio.base.handler.darksteel.gui;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -15,17 +15,15 @@ public interface ISlotSelector {
 
   boolean isSlot();
 
-  @Nonnull
   EntityEquipmentSlot getSlot();
 
   int getTabOrder();
 
-  @Nonnull
-  ItemStack getItem(@Nonnull EntityPlayer player);
+  ItemStack getItem(EntityPlayer player);
 
-  @Nonnull
-  Slot setContainerSlot(@Nonnull Slot containerSlot);
+  Slot setContainerSlot(Slot containerSlot);
 
+  @Nullable
   Slot getContainerSlot();
 
 }
