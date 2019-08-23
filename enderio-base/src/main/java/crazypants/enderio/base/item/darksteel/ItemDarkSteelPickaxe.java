@@ -29,7 +29,7 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.config.config.TeleportConfig;
-import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
+import crazypants.enderio.base.handler.darksteel.DarkSteelTooltipManager;
 import crazypants.enderio.base.handler.darksteel.PlayerAOEAttributeHandler;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.direct.DirectUpgrade;
@@ -348,7 +348,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IAdvancedToolti
       list.add(Lang.PICK_OBSIDIAN.get(TextFormatting.WHITE, DarkSteelConfig.pickEfficiencyObsidian.get()));
       list.add(Lang.PICK_OBSIDIAN_COST.get(TextFormatting.WHITE, LangPower.RF(DarkSteelConfig.pickPowerUseObsidian.get())));
     }
-    DarkSteelRecipeManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelTooltipManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override

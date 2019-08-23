@@ -24,7 +24,7 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.config.config.TeleportConfig;
-import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
+import crazypants.enderio.base.handler.darksteel.DarkSteelTooltipManager;
 import crazypants.enderio.base.handler.darksteel.SwordHandler;
 import crazypants.enderio.base.item.darksteel.attributes.DarkSteelAttributeModifiers;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
@@ -174,12 +174,12 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
 
   @Override
   public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelTooltipManager.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelTooltipManager.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
@@ -191,7 +191,7 @@ public class ItemDarkSteelSword extends ItemSword implements IAdvancedTooltipPro
     if (str != null) {
       list.add(str);
     }
-    DarkSteelRecipeManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelTooltipManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override

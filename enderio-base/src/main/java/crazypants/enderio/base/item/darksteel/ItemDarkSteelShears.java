@@ -23,7 +23,7 @@ import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
-import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
+import crazypants.enderio.base.handler.darksteel.DarkSteelTooltipManager;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.direct.DirectUpgrade;
@@ -317,12 +317,12 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
 
   @Override
   public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelTooltipManager.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelTooltipManager.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
@@ -338,7 +338,7 @@ public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipP
       list.add(Lang.SHEARS_MULTIHARVEST.get());
       list.add(Lang.SHEARS_POWERED.get(TextFormatting.WHITE, DarkSteelConfig.shearsEfficiencyBoostWhenPowered.get()));
     }
-    DarkSteelRecipeManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelTooltipManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   public ItemStack createItemStack() {

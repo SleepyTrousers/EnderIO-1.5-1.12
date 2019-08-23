@@ -374,10 +374,10 @@ public class DarkSteelController {
       DATA.get().ticksSinceLastJump = 0;
 
       usePlayerEnergy(player, EntityEquipmentSlot.FEET, requiredPower);
-      PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelPowerPacket(requiredPower, EntityEquipmentSlot.FEET));
+      PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelPowerUse(requiredPower, EntityEquipmentSlot.FEET));
 
       jumpUpgrade.doMultiplayerSFX(player);
-      PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelSFXPacket(jumpUpgrade, player));
+      PacketHandler.INSTANCE.sendToServer(new PacketDarkSteelSFX(jumpUpgrade, player));
 
       return true;
     }

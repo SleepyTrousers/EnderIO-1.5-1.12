@@ -20,15 +20,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketDarkSteelSFXPacket implements IMessage {
+public class PacketDarkSteelSFX implements IMessage {
 
   private ResourceLocation upgradeName;
   private UUID uid;
 
-  public PacketDarkSteelSFXPacket() {
+  public PacketDarkSteelSFX() {
   }
 
-  public PacketDarkSteelSFXPacket(@Nonnull IDarkSteelUpgrade upgrade, @Nonnull EntityPlayer player) {
+  public PacketDarkSteelSFX(@Nonnull IDarkSteelUpgrade upgrade, @Nonnull EntityPlayer player) {
     this.upgradeName = upgrade.getRegistryName();
     this.uid = player.getUniqueID();
   }
@@ -49,10 +49,10 @@ public class PacketDarkSteelSFXPacket implements IMessage {
     uid = new UUID(mostSig, leastSig);
   }
 
-  public static class ServerHandler implements IMessageHandler<PacketDarkSteelSFXPacket, IMessage> {
+  public static class ServerHandler implements IMessageHandler<PacketDarkSteelSFX, IMessage> {
 
     @Override
-    public IMessage onMessage(PacketDarkSteelSFXPacket message, MessageContext ctx) {
+    public IMessage onMessage(PacketDarkSteelSFX message, MessageContext ctx) {
       if (message.upgradeName != null) {
         IDarkSteelUpgrade upgrade = UpgradeRegistry.getUpgrade(message.upgradeName);
         if (upgrade != null) {
@@ -88,10 +88,10 @@ public class PacketDarkSteelSFXPacket implements IMessage {
     }
   }
 
-  public static class ClientHandler implements IMessageHandler<PacketDarkSteelSFXPacket, IMessage> {
+  public static class ClientHandler implements IMessageHandler<PacketDarkSteelSFX, IMessage> {
 
     @Override
-    public IMessage onMessage(PacketDarkSteelSFXPacket message, MessageContext ctx) {
+    public IMessage onMessage(PacketDarkSteelSFX message, MessageContext ctx) {
       final UUID uid = message.uid;
       if (message.upgradeName != null && uid != null) {
         IDarkSteelUpgrade upgrade = UpgradeRegistry.getUpgrade(message.upgradeName);

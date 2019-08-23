@@ -28,7 +28,7 @@ import crazypants.enderio.base.item.magnet.MagnetController;
 import crazypants.enderio.base.item.magnet.MagnetController.ActiveMagnet;
 import crazypants.enderio.base.item.magnet.PacketMagnetState;
 import crazypants.enderio.base.item.magnet.PacketMagnetState.SlotType;
-import crazypants.enderio.base.item.yetawrench.YetaWrenchPacketProcessor;
+import crazypants.enderio.base.item.yetawrench.PacketYetaWrenchDisplayMode;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.sound.SoundHelper;
 import crazypants.enderio.base.sound.SoundRegistry;
@@ -215,7 +215,7 @@ public class KeyTracker {
         ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(equipped);
         ConduitDisplayMode newMode = player.isSneaking() ? curMode.previous() : curMode.next();
         ConduitDisplayMode.setDisplayMode(equipped, newMode);
-        PacketHandler.INSTANCE.sendToServer(new YetaWrenchPacketProcessor(player.inventory.currentItem, newMode));
+        PacketHandler.INSTANCE.sendToServer(new PacketYetaWrenchDisplayMode(player.inventory.currentItem, newMode));
       } else if (equipped.getItem() == itemConduitProbe.getItem()) {
         int newMeta = equipped.getItemDamage() == 0 ? 1 : 0;
         equipped.setItemDamage(newMeta);

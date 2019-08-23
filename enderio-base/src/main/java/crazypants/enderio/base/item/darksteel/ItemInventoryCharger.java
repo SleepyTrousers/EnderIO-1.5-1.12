@@ -15,7 +15,7 @@ import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
-import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
+import crazypants.enderio.base.handler.darksteel.DarkSteelTooltipManager;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
@@ -169,12 +169,12 @@ public class ItemInventoryCharger extends Item implements IAdvancedTooltipProvid
     if (EnergyUpgradeManager.loadFromItem(itemstack) == null) {
       list.add(Lang.INVCHARGER_NEEDUPGRADE.get());
     }
-    DarkSteelRecipeManager.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelTooltipManager.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelTooltipManager.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
@@ -183,7 +183,7 @@ public class ItemInventoryCharger extends Item implements IAdvancedTooltipProvid
     if (str != null) {
       list.add(str);
     }
-    DarkSteelRecipeManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelTooltipManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override

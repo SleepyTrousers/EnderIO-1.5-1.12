@@ -6,7 +6,7 @@ import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
 import crazypants.enderio.base.config.config.PersonalConfig;
-import crazypants.enderio.base.item.yetawrench.YetaWrenchPacketProcessor;
+import crazypants.enderio.base.item.yetawrench.PacketYetaWrenchDisplayMode;
 import crazypants.enderio.base.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -48,7 +48,7 @@ public class ToolTickHandler {
     ConduitDisplayMode mode = ConduitDisplayMode.getDisplayMode(stack);
     mode = dWheel < 0 ? mode.next() : mode.previous();
     ConduitDisplayMode.setDisplayMode(stack, mode);
-    PacketHandler.INSTANCE.sendToServer(new YetaWrenchPacketProcessor(player.inventory.currentItem, mode));
+    PacketHandler.INSTANCE.sendToServer(new PacketYetaWrenchDisplayMode(player.inventory.currentItem, mode));
   }
 
   private static void changeConduitProbeMode(@Nonnull ItemStack stack) {

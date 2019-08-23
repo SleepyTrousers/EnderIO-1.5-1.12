@@ -30,7 +30,7 @@ import crazypants.enderio.base.farming.farmers.HarvestResult;
 import crazypants.enderio.base.farming.harvesters.CrookHarvestingTarget;
 import crazypants.enderio.base.farming.harvesters.IHarvestingTarget;
 import crazypants.enderio.base.farming.harvesters.TreeHarvester;
-import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
+import crazypants.enderio.base.handler.darksteel.DarkSteelTooltipManager;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.direct.DirectUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
@@ -266,12 +266,12 @@ public class ItemDarkSteelCrook extends ItemTool implements IAdvancedTooltipProv
 
   @Override
   public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelTooltipManager.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelTooltipManager.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
@@ -286,7 +286,7 @@ public class ItemDarkSteelCrook extends ItemTool implements IAdvancedTooltipProv
     if (EnergyUpgradeManager.itemHasAnyPowerUpgrade(itemstack)) {
       list.add(Lang.CROOK_MULTIHARVEST.get());
     }
-    DarkSteelRecipeManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelTooltipManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   private static class MultiHarvestComparator implements Comparator<BlockPos> {

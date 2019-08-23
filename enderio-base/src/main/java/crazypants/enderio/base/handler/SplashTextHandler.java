@@ -19,7 +19,7 @@ public class SplashTextHandler {
 
   private static final @Nonnull Random RANDOM = new Random();
   // just a tiny easter egg, no need for I18N
-  private static final @Nonnull NNList<String> TEXTS = new NNList<>("Ender IO!", "now with mods", "laggy as ever");
+  private static final @Nonnull NNList<String> TEXTS = new NNList<>("Ender IO!", "now with mods", "laggy as ever", "now 192470% faster");
 
   @SubscribeEvent
   public static void handle(GuiScreenEvent.InitGuiEvent.Pre event) {

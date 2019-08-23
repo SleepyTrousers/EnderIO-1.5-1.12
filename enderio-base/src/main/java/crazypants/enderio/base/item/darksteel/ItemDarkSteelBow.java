@@ -19,7 +19,7 @@ import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
-import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
+import crazypants.enderio.base.handler.darksteel.DarkSteelTooltipManager;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
@@ -392,12 +392,12 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
 
   @Override
   public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelTooltipManager.addCommonTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
   public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-    DarkSteelRecipeManager.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelTooltipManager.addBasicTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
@@ -409,7 +409,7 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
     if (str != null) {
       list.add(str);
     }
-    DarkSteelRecipeManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelTooltipManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
