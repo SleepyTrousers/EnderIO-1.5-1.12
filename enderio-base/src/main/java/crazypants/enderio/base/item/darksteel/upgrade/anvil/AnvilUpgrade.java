@@ -55,7 +55,8 @@ public class AnvilUpgrade extends AbstractUpgrade {
   @Override
   @Nonnull
   public List<IRule> getRules() {
-    return new NNList<>(Rules.withLevels(variant, INSTANCES), Rules.itemTypeTooltip(Lang.DSU_CLASS_EVERYTHING));
+    return new NNList<>(Rules.withLevels(variant, INSTANCES), Rules.itemTypeTooltip(Lang.DSU_CLASS_EVERYTHING),
+        Rules.staticCheck(item -> !(item instanceof INoAnvilUpgrade)));
   }
 
   public boolean allowsEditingOtherEquippedItems() {
@@ -68,6 +69,9 @@ public class AnvilUpgrade extends AbstractUpgrade {
 
   public boolean allowsAnvilRecipes() {
     return variant >= 2;
+  }
+
+  public interface INoAnvilUpgrade {
   }
 
 }

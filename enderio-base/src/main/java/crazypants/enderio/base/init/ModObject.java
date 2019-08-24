@@ -73,6 +73,7 @@ import crazypants.enderio.base.item.darksteel.ItemDarkSteelCrook;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelHand;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelPickaxe;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelShears;
+import crazypants.enderio.base.item.darksteel.ItemDarkSteelShield;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelSword;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelTreetap;
 import crazypants.enderio.base.item.darksteel.ItemInventoryCharger;
@@ -237,6 +238,8 @@ public enum ModObject implements IModObjectBase {
   itemDarkSteelChestplate(ItemDarkSteelArmor::createDarkSteelChestplate),
   itemDarkSteelLeggings(ItemDarkSteelArmor::createDarkSteelLeggings),
   itemDarkSteelBoots(ItemDarkSteelArmor::createDarkSteelBoots),
+  itemDarkSteelShield(ItemDarkSteelShield::createDarkSteel),
+
   itemDarkSteelSword(ItemDarkSteelSword::createDarkSteel),
   itemDarkSteelPickaxe(ItemDarkSteelPickaxe::createDarkSteel),
   itemDarkSteelAxe(ItemDarkSteelAxe::createDarkSteel),
@@ -245,10 +248,12 @@ public enum ModObject implements IModObjectBase {
   itemDarkSteelTreetap(ItemDarkSteelTreetap::create),
   itemDarkSteelCrook(ItemDarkSteelCrook::createDarkSteel),
   itemDarkSteelHand(ItemDarkSteelHand::create),
+
   itemInventoryChargerSimple(ItemInventoryCharger::createSimple),
   itemInventoryChargerBasic(ItemInventoryCharger::createBasic),
   itemInventoryCharger(ItemInventoryCharger::create),
   itemInventoryChargerVibrant(ItemInventoryCharger::createVibrant),
+
   itemEndSteelSword(ItemDarkSteelSword::createEndSteel),
   itemEndSteelPickaxe(ItemDarkSteelPickaxe::createEndSteel),
   itemEndSteelAxe(ItemDarkSteelAxe::createEndSteel),
@@ -258,6 +263,7 @@ public enum ModObject implements IModObjectBase {
   itemEndSteelChestplate(ItemDarkSteelArmor::createEndSteelChestplate),
   itemEndSteelLeggings(ItemDarkSteelArmor::createEndSteelLeggings),
   itemEndSteelBoots(ItemDarkSteelArmor::createEndSteelBoots),
+  itemEndSteelShield(ItemDarkSteelShield::createEndSteel),
 
   itemStaffOfLevity(ItemStaffOfLevity::create),
 

@@ -138,6 +138,24 @@ item.item_dark_steel_helmet.name=Dark Helm
 
 item.item_dark_steel_leggings.name=Dark Leggings
 
+item.item_dark_steel_shield.name=Dark Shield
+item.item_dark_steel_shield.black.name=Dark Black Shield
+item.item_dark_steel_shield.red.name=Dark Red Shield
+item.item_dark_steel_shield.green.name=Dark Green Shield
+item.item_dark_steel_shield.brown.name=Dark Brown Shield
+item.item_dark_steel_shield.blue.name=Dark Blue Shield
+item.item_dark_steel_shield.purple.name=Dark Purple Shield
+item.item_dark_steel_shield.cyan.name=Dark Cyan Shield
+item.item_dark_steel_shield.silver.name=Dark Silver Shield
+item.item_dark_steel_shield.gray.name=Dark Gray Shield
+item.item_dark_steel_shield.pink.name=Dark Pink Shield
+item.item_dark_steel_shield.lime.name=Dark Lime Shield
+item.item_dark_steel_shield.yellow.name=Dark Yellow Shield
+item.item_dark_steel_shield.lightBlue.name=Dark Sky Blue Shield
+item.item_dark_steel_shield.magenta.name=Dark Magenta Shield
+item.item_dark_steel_shield.orange.name=Dark Orange Shield
+item.item_dark_steel_shield.white.name=Dark White Shield
+
 item.item_end_steel_boots.name=Ender Boots
 item.item_end_steel_boots.tooltip.line1=Fall damage negated when powered
 
@@ -146,6 +164,24 @@ item.item_end_steel_chestplate.name=Ender Plate
 item.item_end_steel_helmet.name=Ender Helm
 
 item.item_end_steel_leggings.name=Ender Leggings
+
+item.item_end_steel_shield.name=Ender Shield
+item.item_end_steel_shield.black.name=Black Ender Shield
+item.item_end_steel_shield.red.name=Red Ender Shield
+item.item_end_steel_shield.green.name=Green Ender Shield
+item.item_end_steel_shield.brown.name=Brown Ender Shield
+item.item_end_steel_shield.blue.name=Blue Ender Shield
+item.item_end_steel_shield.purple.name=Purple Ender Shield
+item.item_end_steel_shield.cyan.name=Cyan Ender Shield
+item.item_end_steel_shield.silver.name=Silver Ender Shield
+item.item_end_steel_shield.gray.name=Gray Ender Shield
+item.item_end_steel_shield.pink.name=Pink Ender Shield
+item.item_end_steel_shield.lime.name=Lime Ender Shield
+item.item_end_steel_shield.yellow.name=Yellow Ender Shield
+item.item_end_steel_shield.lightBlue.name=Sky BlueEnder  Shield
+item.item_end_steel_shield.magenta.name=Magenta Ender Shield
+item.item_end_steel_shield.orange.name=Orange Ender Shield
+item.item_end_steel_shield.white.name=White Ender Shield
 
 item.item_end_steel_sword.name=The Ender Mk2
 item.item_end_steel_pickaxe.name=Ender Pickaxe

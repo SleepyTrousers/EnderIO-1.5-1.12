@@ -12,6 +12,7 @@ import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.base.material.alloy.endergy.AlloyEndergy;
 import crazypants.enderio.base.material.material.Material;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.util.SoundEvent;
@@ -21,19 +22,19 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public enum EquipmentData implements IEquipmentData {
 
-  IRON(ArmorMaterial.IRON, ArmorMaterial.IRON, ToolMaterial.IRON, "ingotIron", "stickWood", "", "", 0),
+  IRON(ArmorMaterial.IRON, ArmorMaterial.IRON, ToolMaterial.IRON, "ingotIron", "stickWood", "", "", 0, ""),
 
   DARK_STEEL(new Builder(1).setMaxDamageFactor(35).setDamageReduction(2, 5, 6, 2).setDamageReductionEmpowered(3, 6, 8, 3).setArmorEnchantability(15)
       .setSoundEvent(SoundEvents.ITEM_ARMOR_EQUIP_IRON).setToughness(1f).setToughnessEmpowered(2f).setToolMaterialName("darkSteel")
       .setHarvestLevel(DarkSteelConfig.darkSteelPickMinesTiCArdite.get() ? 5 : 3).setMaxUses(2000).setEfficiency(8).setDamage(3.0001f).setToolEnchanability(25)
       .setRepairIngotOredict(Alloy.DARK_STEEL.getOreIngot()).setBowRepairIngotOredict(Material.NUTRITIOUS_STICK.getOreDict()).setTexture1("dark_steel_layer_1")
-      .setTexture2("dark_steel_layer_2")),
+      .setTexture2("dark_steel_layer_2").setTextureShieldBase("dark_steel_shield")),
 
   END_STEEL(new Builder(2).setMaxDamageFactor(50).setDamageReduction(4, 7, 10, 4).setDamageReductionEmpowered(5, 8, 12, 5).setArmorEnchantability(25)
       .setSoundEvent(SoundEvents.ITEM_ARMOR_EQUIP_IRON).setToughness(3f).setToughnessEmpowered(4f).setToolMaterialName("endSteel")
       .setHarvestLevel(DarkSteelConfig.endSteelPickMinesTiCArdite.get() ? 5 : 3).setMaxUses(2000).setEfficiency(12).setDamage(5f).setToolEnchanability(30)
       .setRepairIngotOredict(Alloy.END_STEEL.getOreIngot()).setBowRepairIngotOredict(Material.INFINITY_ROD.getOreDict()).setTexture1("end_steel_layer_1")
-      .setTexture2("end_steel_layer_2")) {
+      .setTexture2("end_steel_layer_2").setTextureShieldBase("end_steel_shield")) {
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -71,7 +72,7 @@ public enum EquipmentData implements IEquipmentData {
       .setSoundEvent(SoundEvents.ITEM_ARMOR_EQUIP_DIAMOND).setToughness(7f).setToughnessEmpowered(9f).setToolMaterialName("stellarAlloy")
       .setHarvestLevel(DarkSteelConfig.darkSteelPickMinesTiCArdite.get() ? 5 : 3).setMaxUses(5000).setEfficiency(16).setDamage(11f).setToolEnchanability(25)
       .setRepairIngotOredict(AlloyEndergy.STELLAR_ALLOY.getOreIngot()).setBowRepairIngotOredict(AlloyEndergy.STELLAR_ALLOY.getOreIngot())
-      .setTexture1("stellar_alloy_layer_1").setTexture2("stellar_alloy_layer_2")),
+      .setTexture1("stellar_alloy_layer_1").setTexture2("stellar_alloy_layer_2").setTextureShieldBase("stellar_steel_shield")),
 
   // Note maximum total armor value that has any effect at toughness 4*4 for damage=20 is 24. End steel comes up to 25.
 
@@ -84,13 +85,14 @@ public enum EquipmentData implements IEquipmentData {
   private final @Nonnull ArmorMaterial armorMaterial, armorMaterialEmpowered;
   private final @Nonnull ToolMaterial toolMaterial;
   private final @Nonnull String repairIngotOredict, bowRepairIngotOredict;
-  private final @Nonnull String texture1, texture2;
+  private final @Nonnull String texture1, texture2, textureShieldBase;
   private final @Nonnull Integer tier;
+  private final int shieldDurability;
 
   private EquipmentData(int maxDamageFactor, @Nonnull int[] damageReduction, @Nonnull int[] damageReductionEmpowered, int armorEnchantability,
       SoundEvent soundEvent, float toughness, float toughnessEmpowered, String toolMaterialName, int harvestLevel, int maxUses, float efficiency, float damage,
       int toolEnchanability, @Nonnull String repairIngotOredict, @Nonnull String bowRepairIngotOredict, @Nonnull String texture1, @Nonnull String texture2,
-      @Nonnull Integer tier) {
+      @Nonnull Integer tier, @Nonnull String textureShieldBase) {
 
     this.armorMaterial = NullHelper.notnullF(
         EnumHelper.addArmorMaterial(name(), name(), maxDamageFactor, damageReduction, armorEnchantability, soundEvent, toughness),
@@ -104,10 +106,13 @@ public enum EquipmentData implements IEquipmentData {
     this.texture1 = EnderIO.DOMAIN + ":textures/models/armor/" + texture1;
     this.texture2 = EnderIO.DOMAIN + ":textures/models/armor/" + texture2;
     this.tier = tier;
+    this.shieldDurability = 36 * maxDamageFactor;
+    this.textureShieldBase = EnderIO.DOMAIN + ":textures/models/armor/" + textureShieldBase;
   }
 
   private EquipmentData(@Nonnull ArmorMaterial armorMaterial, @Nonnull ArmorMaterial armorMaterialEmpowered, @Nonnull ToolMaterial toolMaterial,
-      @Nonnull String repairIngotOredict, @Nonnull String bowRepairIngotOredict, @Nonnull String texture1, @Nonnull String texture2, @Nonnull Integer tier) {
+      @Nonnull String repairIngotOredict, @Nonnull String bowRepairIngotOredict, @Nonnull String texture1, @Nonnull String texture2, @Nonnull Integer tier,
+      @Nonnull String textureShieldBase) {
     this.armorMaterial = armorMaterial;
     this.armorMaterialEmpowered = armorMaterialEmpowered;
     this.toolMaterial = toolMaterial;
@@ -116,6 +121,8 @@ public enum EquipmentData implements IEquipmentData {
     this.texture1 = texture1;
     this.texture2 = texture2;
     this.tier = tier;
+    this.shieldDurability = 36 * armorMaterial.getDurability(EntityEquipmentSlot.FEET) / 13;
+    this.textureShieldBase = textureShieldBase;
   }
 
   private EquipmentData(@Nonnull Builder b) {
@@ -137,7 +144,8 @@ public enum EquipmentData implements IEquipmentData {
         NullHelper.notnull(b.bowRepairIngotOredict, "bowRepairIngotOredict", " must be set"), //
         NullHelper.notnull(b.texture1, "texture1", " must be set"), //
         NullHelper.notnull(b.texture2, "texture2", " must be set"), //
-        NullHelper.notnull(b.tier, "tier", " must be set") //
+        NullHelper.notnull(b.tier, "tier", " must be set"), //
+        NullHelper.notnull(b.textureShieldBase, "textureShieldBase", " must be set") //
     );
   }
 
@@ -206,6 +214,7 @@ public enum EquipmentData implements IEquipmentData {
     String texture1;
     String texture2;
     Integer tier;
+    private String textureShieldBase;
 
     @Nonnull
     Builder setMaxDamageFactor(int maxDamageFactor) {
@@ -319,6 +328,22 @@ public enum EquipmentData implements IEquipmentData {
       this.tier = tier;
     }
 
+    @Nonnull
+    Builder setTextureShieldBase(String textureShieldBase) {
+      this.textureShieldBase = textureShieldBase;
+      return this;
+    }
+
+  }
+
+  @Override
+  public int getShieldDurability() {
+    return shieldDurability;
+  }
+
+  @Override
+  public @Nonnull String getTextureShieldBase() {
+    return textureShieldBase;
   }
 
 }

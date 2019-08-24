@@ -31,4 +31,8 @@ public interface IEquipmentData {
   @Nonnull
   Integer getTier();
 
+  int getShieldDurability();
+
+  @Nonnull
+  String getTextureShieldBase();
 }

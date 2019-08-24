@@ -147,6 +147,17 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Dark Steel Shield" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="DARK_STEEL" /><item name="IRON"/><item name="DARK_STEEL" />
+        <item name="DARK_STEEL" /><item /><item name="DARK_STEEL" />
+        <item /><item name="DARK_STEEL" /><item />
+      </grid>
+      <output name="enderio:item_dark_steel_shield" />
+    </crafting>
+  </recipe>
+
   <recipe name="End Steel Helmet" required="true">
     <crafting>
       <grid size="3x2">
@@ -186,6 +197,17 @@ XML editor will display that as tooltips when editing this file.
         <item name="END_STEEL" /><item /><item name="END_STEEL" />
       </grid>
       <output name="enderio:item_end_steel_boots" />
+    </crafting>
+  </recipe>
+
+  <recipe name="End Steel Shield" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="END_STEEL" /><item name="GUARDIAN_DIODE"/><item name="END_STEEL" />
+        <item name="END_STEEL" /><item /><item name="END_STEEL" />
+        <item /><item name="END_STEEL" /><item />
+      </grid>
+      <output name="enderio:item_dark_steel_shield" />
     </crafting>
   </recipe>
 
