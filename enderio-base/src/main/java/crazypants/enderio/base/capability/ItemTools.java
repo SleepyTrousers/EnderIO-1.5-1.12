@@ -24,10 +24,10 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-public class ItemTools {
+public final class ItemTools {
 
   @CapabilityInject(IItemHandler.class)
-  public static Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
+  public static final Capability<IItemHandler> ITEM_HANDLER_CAPABILITY = null;
 
   private ItemTools() {
   }
@@ -86,7 +86,7 @@ public class ItemTools {
     }
   }
 
-  public static enum MoveResult {
+  public enum MoveResult {
     NO_ACTION,
     LIMITED,
     MOVED,
@@ -244,9 +244,9 @@ public class ItemTools {
       ItemStack stack = handler.getStackInSlot(i);
       if (ItemUtil.areStacksEqual(template, stack)) {
         count += stack.getCount();
-      }
-      if (count >= limit) {
-        return 0;
+        if (count >= limit) {
+          return 0;
+        }
       }
     }
     return limit - count;
@@ -258,9 +258,9 @@ public class ItemTools {
       ItemStack stack = handler.getStackInSlot(i);
       if (com.enderio.core.common.util.ItemUtil.areStacksEqual(template, stack)) {
         count += stack.getCount();
-      }
-      if (count >= limit) {
-        return true;
+        if (count >= limit) {
+          return true;
+        }
       }
     }
     return false;
