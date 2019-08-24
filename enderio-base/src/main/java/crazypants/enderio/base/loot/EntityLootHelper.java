@@ -19,11 +19,11 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 public class EntityLootHelper {
 
   static ResourceLocation getDeathLootTable(EntityLiving entity) {
-    return ReflectionHelper.getPrivateValue(EntityLiving.class, entity, "field_184659_bA", "deathLootTable");
+    return ReflectionHelper.getPrivateValue(EntityLiving.class, entity, "deathLootTable", "field_184659_bA");
   }
 
   static long getDeathLootTableSeed(EntityLiving entity) {
-    return ReflectionHelper.getPrivateValue(EntityLiving.class, entity, "field_184653_bB", "deathLootTableSeed");
+    return ReflectionHelper.getPrivateValue(EntityLiving.class, entity, "deathLootTableSeed", "field_184653_bB");
   }
 
   static final @Nonnull Random rand = new Random();

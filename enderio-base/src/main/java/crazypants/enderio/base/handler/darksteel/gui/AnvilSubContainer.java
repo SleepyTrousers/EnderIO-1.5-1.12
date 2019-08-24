@@ -377,7 +377,7 @@ public class AnvilSubContainer {
     float breakChance = ForgeHooks.onAnvilRepair(player, stack, inputSlots.getStackInSlot(0), inputSlots.getStackInSlot(1));
     breakChance /= 0.12f; // normalize vanilla standard chance to 1.0
 
-    if (player.getRNG().nextFloat() - 1/* DELME */ < (breakChance * BlockConfig.darkSteelAnvilDamageChance.get())) {
+    if (player.getRNG().nextFloat() < (breakChance * BlockConfig.darkSteelAnvilDamageChance.get())) {
       int l = iblockstate.getValue(BlockAnvil.DAMAGE) + 1;
       if (l > 2) {
         if (iblockstate.getBlock() == ModObject.blockDarkSteelAnvil.getBlockNN()) {

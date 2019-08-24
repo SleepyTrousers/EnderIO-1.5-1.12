@@ -1,6 +1,5 @@
 package crazypants.enderio.base.item.darksteel;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,9 +28,10 @@ import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
-import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
+import crazypants.enderio.base.handler.darksteel.DarkSteelTooltipManager;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;
+import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
 import crazypants.enderio.base.integration.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.enderio.base.integration.thaumcraft.ThaumaturgeRobesUpgrade;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
@@ -197,10 +197,8 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
       EnergyUpgrade.UPGRADES.get(getMaxEmpoweredLevel(is)).addToItem(is, this);
       EnergyUpgradeManager.setPowerFull(is, this);
 
-      for (int i = 0; i < 2; i++) { // upgrades may not be in the best order, so try adding them a couple of times
-        Iterator<IDarkSteelUpgrade> iter = DarkSteelRecipeManager.recipeIterator();
-        while (iter.hasNext()) {
-          IDarkSteelUpgrade upgrade = iter.next();
+      for (int i = 0; i <= 2; i++) { // upgrades may not be in the best order, so try adding them a couple of times
+        for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
           if (!(upgrade instanceof EnergyUpgrade || upgrade instanceof GliderUpgrade || upgrade instanceof ElytraUpgrade) && upgrade.canAddToItem(is, this)) {
             upgrade.addToItem(is, this);
           }
@@ -271,7 +269,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
         list.addAll(Lang.DARK_BOOTS_POWERED.getLines(TextFormatting.WHITE));
       }
     }
-    DarkSteelRecipeManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
+    DarkSteelTooltipManager.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }
 
   @Override
@@ -343,6 +341,12 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
           new AttributeModifier(ARMOR_MODIFIERS.get(equipmentSlot), "Armor modifier", armorMaterial.getDamageReductionAmount(equipmentSlot), 0));
       multimap.put(SharedMonsterAttributes.ARMOR_TOUGHNESS.getName(),
           new AttributeModifier(ARMOR_MODIFIERS.get(equipmentSlot), "Armor toughness", armorMaterial.getToughness(), 0));
+      // see crazypants.enderio.base.item.darksteel.upgrade.DarkSteelUpgradeMixin.getAttributeModifiers(EntityEquipmentSlot, ItemStack)
+      for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
+        if (upgrade.hasUpgrade(stack)) {
+          upgrade.addAttributeModifiers(equipmentSlot, stack, multimap);
+        }
+      }
     }
 
     return multimap;

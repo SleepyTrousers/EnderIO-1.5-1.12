@@ -9,7 +9,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.google.common.collect.Multimap;
 
 import crazypants.enderio.api.ILocalizable;
-import crazypants.enderio.base.handler.darksteel.PacketDarkSteelSFXPacket;
+import crazypants.enderio.base.handler.darksteel.PacketDarkSteelSFX;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -152,7 +152,7 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
   }
 
   /**
-   * Called via server when another player activates the SFX for this upgrade. That activation has to send a {@link PacketDarkSteelSFXPacket} to the server if
+   * Called via server when another player activates the SFX for this upgrade. That activation has to send a {@link PacketDarkSteelSFX} to the server if
    * it wants this to fire on other clients, that is not happening auto-magically.
    * 
    * @param otherPlayer

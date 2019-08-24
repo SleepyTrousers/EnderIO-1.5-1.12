@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public enum FunctionUpgrade {
@@ -73,6 +75,15 @@ public enum FunctionUpgrade {
 
   public int getMaximumExtracted(int stackSize) {
     return BASE_MAX_EXTRACTED;
+  }
+
+  public static int getMaximumExtracted(@Nullable FunctionUpgrade upgrade, int stackSize) {
+    return upgrade == null ? BASE_MAX_EXTRACTED : upgrade.getMaximumExtracted(stackSize);
+  }
+
+  public static int getMaximumExtracted(@Nonnull ItemStack upgradeStack) {
+    FunctionUpgrade upgrade = ItemFunctionUpgrade.getFunctionUpgrade(upgradeStack);
+    return upgrade == null ? BASE_MAX_EXTRACTED : upgrade.getMaximumExtracted(upgradeStack.getCount());
   }
 
   /**

@@ -1,17 +1,22 @@
 package crazypants.enderio.base.loot;
 
+import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.core.common.util.NNList;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
+import crazypants.enderio.api.upgrades.IRule;
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
-import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager.UpgradePath;
+import crazypants.enderio.base.handler.darksteel.Rules;
+import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -27,10 +32,28 @@ public class SetRandomDarkUpgrade extends LootFunction {
 
   @Override
   public @Nonnull ItemStack apply(@Nonnull ItemStack stack, @Nonnull Random rand, @Nonnull LootContext context) {
-    if (Prep.isValid(stack)) {
-      NNList<UpgradePath> list = DarkSteelRecipeManager.getAllRecipes(new NNList<>(stack));
+    if (Prep.isValid(stack) && stack.getItem() instanceof IDarkSteelItem) {
+      final Predicate<IRule> checker = Rules.makeChecker(stack, (IDarkSteelItem) stack.getItem());
+      List<IDarkSteelUpgrade> list = UpgradeRegistry.getUpgrades().stream()
+          .filter(upgrade -> upgrade.getRules().stream().filter(Rules::isStatic).allMatch(checker)).collect(Collectors.toList());
       if (!list.isEmpty()) {
-        return list.get((int) (rand.nextInt(list.size()) * rand.nextFloat())).getOutput();
+        int maxCount = rand.nextInt(4) + 2;
+        int count = 0;
+        int tries = list.size() * maxCount;
+        stack = stack.copy();
+        int nextInt = rand.nextInt(list.size());
+        while (count < maxCount && tries-- > 0) {
+          IDarkSteelUpgrade upgrade = list.get(nextInt);
+          if (upgrade.canAddToItem(stack, (IDarkSteelItem) stack.getItem())) {
+            upgrade.addToItem(stack, (IDarkSteelItem) stack.getItem());
+            count++;
+            nextInt = rand.nextInt(list.size());
+          } else if (nextInt == 0) {
+            nextInt = list.size() - 1;
+          } else {
+            nextInt--;
+          }
+        }
       }
     }
     return stack;

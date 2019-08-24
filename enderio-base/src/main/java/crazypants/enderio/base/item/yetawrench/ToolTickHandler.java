@@ -43,7 +43,7 @@ public class ToolTickHandler {
     ConduitDisplayMode mode = ConduitDisplayMode.getDisplayMode(stack);
     mode = dWheel < 0 ? mode.next() : mode.previous();
     ConduitDisplayMode.setDisplayMode(stack, mode);
-    PacketHandler.INSTANCE.sendToServer(new YetaWrenchPacketProcessor(player.inventory.currentItem, mode));
+    PacketHandler.INSTANCE.sendToServer(new PacketYetaWrenchDisplayMode(player.inventory.currentItem, mode));
   }
 
   private void changeConduitProbeMode(@Nonnull ItemStack stack) {

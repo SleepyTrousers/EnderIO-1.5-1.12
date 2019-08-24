@@ -8,15 +8,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class YetaWrenchPacketProcessor implements IMessage {
+public class PacketYetaWrenchDisplayMode implements IMessage {
 
   private int slot;
   private ConduitDisplayMode mode;
 
-  public YetaWrenchPacketProcessor() {
+  public PacketYetaWrenchDisplayMode() {
   }
 
-  public YetaWrenchPacketProcessor(int slot, ConduitDisplayMode mode) {
+  public PacketYetaWrenchDisplayMode(int slot, ConduitDisplayMode mode) {
     this.slot = slot;
     this.mode = mode;
   }
@@ -33,9 +33,9 @@ public class YetaWrenchPacketProcessor implements IMessage {
     mode = ConduitDisplayMode.fromName(ByteBufUtils.readUTF8String(buffer));
   }
 
-  public static class Handler implements IMessageHandler<YetaWrenchPacketProcessor, IMessage> {
+  public static class Handler implements IMessageHandler<PacketYetaWrenchDisplayMode, IMessage> {
     @Override
-    public IMessage onMessage(YetaWrenchPacketProcessor message, MessageContext ctx) {
+    public IMessage onMessage(PacketYetaWrenchDisplayMode message, MessageContext ctx) {
       final ConduitDisplayMode mode_nullchecked = message.mode;
       if (mode_nullchecked != null && message.slot >= 0 && message.slot < InventoryPlayer.getHotbarSize()) {
         ConduitDisplayMode.setDisplayMode(ctx.getServerHandler().player.inventory.getStackInSlot(message.slot), mode_nullchecked);

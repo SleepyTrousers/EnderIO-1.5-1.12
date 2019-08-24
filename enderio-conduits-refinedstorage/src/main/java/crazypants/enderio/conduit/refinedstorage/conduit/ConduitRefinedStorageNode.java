@@ -2,10 +2,14 @@ package crazypants.enderio.conduit.refinedstorage.conduit;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.UUID;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.NNList;
+import com.raoulvdberge.refinedstorage.api.autocrafting.task.ICraftingTask;
 import com.raoulvdberge.refinedstorage.api.network.INetwork;
 import com.raoulvdberge.refinedstorage.api.network.INetworkNodeVisitor;
 import com.raoulvdberge.refinedstorage.api.network.node.INetworkNode;
@@ -13,14 +17,22 @@ import com.raoulvdberge.refinedstorage.api.storage.IStorageProvider;
 import com.raoulvdberge.refinedstorage.api.util.Action;
 import com.raoulvdberge.refinedstorage.api.util.IComparer;
 
+import crazypants.enderio.base.capability.ItemTools;
 import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.item.FunctionUpgrade;
 import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.fluid.IFluidFilter;
+import crazypants.enderio.base.filter.gui.DamageMode;
 import crazypants.enderio.base.filter.item.IItemFilter;
+import crazypants.enderio.base.filter.item.ItemFilter;
 import crazypants.enderio.conduit.refinedstorage.RSHelper;
 import crazypants.enderio.conduit.refinedstorage.init.ConduitRefinedStorageObject;
+import crazypants.enderio.util.FuncUtil;
+import crazypants.enderio.util.MathUtil;
+import crazypants.enderio.util.Prep;
+import crazypants.enderio.util.SidedInt;
+import crazypants.enderio.util.SidedNNObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -31,7 +43,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
@@ -39,22 +50,27 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
 
   public static final @Nonnull String ID = "rs_conduit";
 
-  @Nullable protected INetwork rsNetwork;
-  protected @Nonnull World world;
-  protected @Nonnull BlockPos pos;
-  protected @Nonnull IRefinedStorageConduit con;
-  protected int compare = IComparer.COMPARE_DAMAGE;
+  @Nullable
+  protected INetwork rsNetwork;
+  protected final @Nonnull World world;
+  protected final @Nonnull BlockPos pos;
+  protected final @Nonnull IRefinedStorageConduit con;
 
   private int tickCount = 0;
-  private int itemsPerTick = 4;
-  private @Nonnull Queue<EnumFacing> dirsToCheck;
+  private final @Nonnull Queue<EnumFacing> dirsToCheck;
 
-  private int currentSlot;
+  /**
+   * The slot ID in the connected inventory we're currently are importing from (or have imported from last tick).
+   */
+  private final @Nonnull SidedInt currentImportSlot = new SidedInt();
 
   private int importFilterSlot;
-  private int exportFilterSlot;
+  /**
+   * The slot ID in the export filter we are currently exporting for (or have exported for last tick).
+   */
+  private final @Nonnull SidedInt exportFilterSlot = new SidedInt();
 
-  private int slotsToCheck;
+  private final @Nonnull SidedNNObject<UUID> craftingTask = new SidedNNObject<>(UUID.randomUUID());
 
   public ConduitRefinedStorageNode(@Nonnull IRefinedStorageConduit con) {
     this.con = con;
@@ -111,7 +127,7 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
           EnumFacing dir = dirsToCheck.poll();
           dirsToCheck.offer(dir);
 
-          if (con.containsExternalConnection(dir) && updateDir(dir)) {
+          if (dir == null || (con.containsExternalConnection(dir) && updateDir(dir))) {
             break;
           }
         }
@@ -149,10 +165,11 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
 
           if (!exportFilter.isEmpty()) {
             do {
-              stack = exportFilter.getFluidStackAt(exportFilterSlot >= exportFilter.getSlotCount() ? exportFilterSlot = 0 : exportFilterSlot);
+              stack = exportFilter
+                  .getFluidStackAt(exportFilterSlot.get(dir) >= exportFilter.getSlotCount() ? exportFilterSlot.set(dir, 0) : exportFilterSlot.get(dir));
 
               if (stack == null) {
-                exportFilterSlot++;
+                exportFilterSlot.set(dir, exportFilterSlot.get(dir) + 1);
               }
             } while (stack == null);
           }
@@ -167,6 +184,7 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
           if (stack != null) {
             int toExtract = Fluid.BUCKET_VOLUME;
 
+            int compare = IComparer.COMPARE_DAMAGE;
             FluidStack stackInStorage = rsNetwork.getFluidStorageCache().getList().get(stack, compare);
 
             if (stackInStorage != null) {
@@ -181,7 +199,7 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
                   took = rsNetwork.extractFluid(stack, filled, compare, Action.PERFORM);
 
                   handler.fill(took, true);
-                  exportFilterSlot++;
+                  exportFilterSlot.set(dir, exportFilterSlot.get(dir) + 1);
                   return true;
                 }
               }
@@ -233,123 +251,130 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
     return false;
   }
 
+  private int getInsertLimit(@Nonnull IItemFilter filter, @Nonnull IItemHandler inventory, @Nonnull ItemStack item, int limit) {
+    if (filter.isLimited()) {
+      final int count = filter.getMaxCountThatPassesFilter(inventory, item);
+      if (count <= 0) {
+        return 0;
+      } else {
+        final int maxInsert = ItemTools.getInsertLimit(inventory, item, count);
+        if (maxInsert <= 0) {
+          return 0;
+        } else if (maxInsert < item.getCount()) {
+          return Math.min(limit, maxInsert);
+        }
+      }
+    } else if (!filter.doesItemPassFilter(inventory, item)) {
+      return 0;
+    }
+    return Math.min(limit, item.getCount());
+  }
+
+  // note: existing needs to be the slot from the inventory with its real count
+  private int getExtractLimit(@Nonnull IItemFilter filter, @Nonnull IItemHandler inventory, @Nonnull ItemStack existing, int limit) {
+    if (filter.isLimited()) {
+      final int count = filter.getMaxCountThatPassesFilter(inventory, existing);
+      if (count <= 0) {
+        return 0;
+      } else if (count < Integer.MAX_VALUE) {
+        return Math.max(0, Math.min(limit, existing.getCount() - count));
+      }
+    } else if (!filter.doesItemPassFilter(inventory, existing)) {
+      return 0; // skip slot
+    }
+    return Math.min(limit, existing.getCount());
+  }
+
   private boolean updateDirItems(@Nonnull EnumFacing dir, @Nonnull TileEntity te) {
-    if (te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, dir.getOpposite())) {
+    INetwork network = rsNetwork;
+    IItemHandler handler = ItemTools.getExternalInventory(te, dir.getOpposite());
 
-      IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, dir.getOpposite());
+    if (network != null && handler != null && handler.getSlots() > 0) {
 
-      if (handler != null) {
-
-        ItemStack upgrade = con.getUpgradeStack(dir.ordinal());
-        FunctionUpgrade up = null;
-
-        if (!upgrade.isEmpty()) {
-          up = ((ItemFunctionUpgrade) upgrade.getItem()).getFunctionUpgrade();
-          itemsPerTick = up.getMaximumExtracted(64);
-        } else {
-          itemsPerTick = 4;
-        }
-
-        // Exporting
-        IFilter outFilt = con.getOutputFilter(dir);
-        if (outFilt instanceof IItemFilter) {
-
-          IItemFilter exportFilter = (IItemFilter) outFilt;
-
-          ItemStack slot = ItemStack.EMPTY;
-
-          if (!exportFilter.isEmpty()) {
-            do {
-              slot = exportFilter.getInventorySlotContents(exportFilterSlot >= exportFilter.getSlotCount() ? exportFilterSlot = 0 : exportFilterSlot);
-
-              if (slot.isEmpty()) {
-                exportFilterSlot++;
-              }
-            } while (slot.isEmpty());
+      // Exporting
+      IFilter outFilt = con.getOutputFilter(dir);
+      if (outFilt instanceof IItemFilter) {
+        IItemFilter exportFilter = (IItemFilter) outFilt;
+        if (!exportFilter.isEmpty()) {
+          ItemStack prototype = exportFilter
+              .getInventorySlotContents(exportFilterSlot.set(dir, MathUtil.cycle(exportFilterSlot.get(dir), 0, exportFilter.getSlotCount() - 1)));
+          int compare = IComparer.COMPARE_DAMAGE;
+          if (exportFilter instanceof ItemFilter) {
+            // Note: damage mode cannot be handled by RS, so ask it to export ignoring damage and let our filter handle it. Yes, this most likely will lead to
+            // stalled exports, but that's better than wrong ones, isn't it?
+            boolean matchMeta = ((ItemFilter) exportFilter).isMatchMeta() && ((ItemFilter) exportFilter).getDamageMode() == DamageMode.DISABLED;
+            boolean matchNBT = ((ItemFilter) exportFilter).isMatchNBT();
+            compare = (matchMeta ? IComparer.COMPARE_DAMAGE : 0) | (matchNBT ? IComparer.COMPARE_NBT : 0);
           }
-
-          if (!slot.isEmpty()) {
-            ItemStack took = rsNetwork.extractItem(slot, Math.min(slot.getMaxStackSize(), itemsPerTick), compare, Action.SIMULATE);
-
-            if (took == null) {
-              if (up != null && isCraftingUpgrade(up)) {
-                rsNetwork.getCraftingManager().request(slot, itemsPerTick);
-              } else {
-                exportFilterSlot++;
-              }
-              return false;
-            } else if (ItemHandlerHelper.insertItem(handler, took, true).isEmpty()) {
-              took = rsNetwork.extractItem(slot, Math.min(slot.getMaxStackSize(), itemsPerTick), compare, Action.PERFORM);
-
-              if (took != null) {
-                ItemHandlerHelper.insertItem(handler, took, false);
-                exportFilterSlot++;
-                return true;
-              }
-            }
-          }
-        }
-
-        // Importing
-        IFilter inFilt = con.getInputFilter(dir);
-        if (inFilt instanceof IItemFilter) {
-
-          IItemFilter importFilter = (IItemFilter) inFilt;
-
-          boolean all = importFilter.isEmpty();
-
-          ItemStack slot = ItemStack.EMPTY;
-
-          if (!all) {
-            do {
-              slot = importFilter.getInventorySlotContents(importFilterSlot >= importFilter.getSlotCount() ? importFilterSlot = 0 : importFilterSlot);
-
-              if (slot.isEmpty()) {
-                importFilterSlot++;
-                slotsToCheck = 0;
-              }
-            } while (slot.isEmpty());
-          }
-
-          if (all || !slot.isEmpty()) {
-
-            if (currentSlot >= handler.getSlots()) {
-              currentSlot = 0;
-            }
-
-            if (handler.getSlots() > 0) {
-              while (currentSlot + 1 < handler.getSlots() && (handler.getStackInSlot(currentSlot).isEmpty() || (!all && !handler.getStackInSlot(currentSlot)
-                  .isItemEqual(importFilter.getInventorySlotContents(importFilterSlot))))) {
-                currentSlot++;
-                slotsToCheck++;
-
-                if (slotsToCheck >= handler.getSlots()) {
-                  importFilterSlot++;
+          if (!prototype.isEmpty()) {
+            ItemStack upgrade = con.getUpgradeStack(dir.ordinal());
+            int itemsPerTick = FunctionUpgrade.getMaximumExtracted(upgrade);
+            ItemStack available = network.extractItem(prototype, Math.min(prototype.getMaxStackSize(), itemsPerTick), compare, Action.SIMULATE);
+            if (available == null || Prep.isInvalid(available)) {
+              if (isCraftingUpgrade(ItemFunctionUpgrade.getFunctionUpgrade(upgrade))) {
+                available = ItemHandlerHelper.copyStackWithSize(prototype, getInsertLimit(exportFilter, handler, prototype, Integer.MAX_VALUE));
+                int insertable = available.getCount() - ItemTools.insertItemStacked(handler, available, true).getCount();
+                if (insertable > 0 && network.getCraftingManager().getTask(craftingTask.get(dir)) == null) {
+                  craftingTask.set(dir, FuncUtil.runIf(network.getCraftingManager().request(prototype, insertable), ICraftingTask::getId));
                 }
               }
-
-              ItemStack stack = handler.getStackInSlot(currentSlot);
-
-              ItemStack result = handler.extractItem(currentSlot, itemsPerTick, true);
-
-              if (!result.isEmpty() && rsNetwork.insertItem(result, result.getCount(), Action.SIMULATE) == null) {
-                result = handler.extractItem(currentSlot, itemsPerTick, false);
-
-                if (!result.isEmpty()) {
-                  rsNetwork.insertItemTracked(result, result.getCount());
+            } else {
+              available = ItemHandlerHelper.copyStackWithSize(available, getInsertLimit(exportFilter, handler, available, itemsPerTick));
+              if (Prep.isValid(available)) {
+                ItemStack remains = ItemTools.insertItemStacked(handler, available, true);
+                if (remains.getCount() < available.getCount()) { // meaning something was inserted
+                  available = network.extractItem(prototype, available.getCount() - remains.getCount(), compare, Action.PERFORM);
+                  if (available != null && Prep.isValid(available)) {
+                    remains = ItemTools.insertItemStacked(handler, available, false);
+                    if (Prep.isValid(remains)) {
+                      // darn, simulate lied to us. put the stuff back
+                      remains = network.insertItemTracked(remains, remains.getCount());
+                      if (remains != null && Prep.isValid(remains)) {
+                        // oh come one, we just got that stuff from the network...
+                        ItemUtil.spawnItemInWorldWithRandomMotion(getWorld(), remains, getPos());
+                      }
+                    }
+                  }
                 }
-              } else {
-                currentSlot++;
               }
             }
           }
         }
       }
+
+      // Importing
+      IFilter inFilt = con.getInputFilter(dir);
+      if (inFilt instanceof IItemFilter) {
+        IItemFilter importFilter = (IItemFilter) inFilt;
+        currentImportSlot.set(dir, MathUtil.cycle(currentImportSlot.get(dir), 0, handler.getSlots() - 1));
+        ItemStack existing = handler.getStackInSlot(currentImportSlot.get(dir));
+        if (Prep.isValid(existing)) {
+          int maxCountThatPassesFilter = getExtractLimit(importFilter, handler, existing,
+              FunctionUpgrade.getMaximumExtracted(con.getUpgradeStack(dir.ordinal())));
+          if (maxCountThatPassesFilter > 0) {
+            ItemStack extractable = handler.extractItem(currentImportSlot.get(dir), maxCountThatPassesFilter, true);
+            if (Prep.isValid(extractable)) {
+              ItemStack remains = network.insertItem(extractable, maxCountThatPassesFilter, Action.SIMULATE);
+              int insertable = maxCountThatPassesFilter - (remains == null ? 0 : remains.getCount());
+              if (insertable > 0) {
+                extractable = handler.extractItem(currentImportSlot.get(dir), insertable, false);
+                remains = network.insertItemTracked(extractable, extractable.getCount());
+                if (remains != null && Prep.isValid(remains)) {
+                  // hey, RS, why you lie to us?
+                  // not trying to put stuff back, this is not an issue in some random mod we won't be able to get hold of
+                  ItemUtil.spawnItemInWorldWithRandomMotion(getWorld(), remains, getPos());
+                }
+              }
+            }
+          }
+        }
+      }
+
     }
     return false;
   }
 
-  private boolean isCraftingUpgrade(@Nonnull FunctionUpgrade functionUpgrade) {
+  private boolean isCraftingUpgrade(@Nullable FunctionUpgrade functionUpgrade) {
     return functionUpgrade == FunctionUpgrade.RS_CRAFTING_UPGRADE || functionUpgrade == FunctionUpgrade.RS_CRAFTING_SPEED_UPGRADE
         || functionUpgrade == FunctionUpgrade.RS_CRAFTING_SPEED_DOWNGRADE;
   }
@@ -360,12 +385,12 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
   }
 
   @Override
-  public BlockPos getPos() {
+  public @Nonnull BlockPos getPos() {
     return pos;
   }
 
   @Override
-  public World getWorld() {
+  public @Nonnull World getWorld() {
     return world;
   }
 
@@ -397,11 +422,11 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
 
   @Override
   public void visit(Operator operator) {
-    for (EnumFacing facing : EnumFacing.VALUES) {
+    NNList.FACING.apply(facing -> {
       if (canConduct(facing)) {
         operator.apply(world, pos.offset(facing), facing.getOpposite());
       }
-    }
+    });
   }
 
   public void onConduitConnectionChange() {

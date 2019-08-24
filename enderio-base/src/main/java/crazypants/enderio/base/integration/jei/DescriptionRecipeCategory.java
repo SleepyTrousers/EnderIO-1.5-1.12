@@ -3,8 +3,10 @@ package crazypants.enderio.base.integration.jei;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
@@ -16,8 +18,9 @@ import com.enderio.core.common.util.NNList.Callback;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
-import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager;
-import crazypants.enderio.base.handler.darksteel.DarkSteelRecipeManager.UpgradePath;
+import crazypants.enderio.base.Log;
+import crazypants.enderio.base.handler.darksteel.DarkSteelTooltipManager;
+import crazypants.enderio.base.handler.darksteel.Rules;
 import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.lang.Lang;
@@ -32,23 +35,26 @@ public class DescriptionRecipeCategory {
 
   public static void register(IModRegistry registry) {
     NNList<ItemStack> items = new NNList<>();
-    NNList<Item> dsitems = new NNList<>();
+    Set<IDarkSteelItem> dsitems = new HashSet<>();
     for (IModObject mo : ModObjectRegistry.getRegistry()) {
       final Item item = mo.getItem();
+      Log.debug(item);
       if (item != null) {
         final CreativeTabs creativeTab = item.getCreativeTab();
         if (creativeTab != null) {
           if (item instanceof IDarkSteelItem) {
-            dsitems.add(item);
+            dsitems.add((IDarkSteelItem) item);
           } else {
             item.getSubItems(creativeTab, items);
           }
         }
       }
     }
+
     items.apply(new Callback<ItemStack>() {
       @Override
       public void apply(@Nonnull ItemStack itemStack) {
+        Log.debug(itemStack);
         NNList<String> allTooltips = SpecialTooltipHandler.getAllTooltips(itemStack);
         if (!allTooltips.isEmpty()) {
           allTooltips.add(0, TextFormatting.WHITE.toString() + TextFormatting.BOLD + itemStack.getDisplayName() + TextFormatting.RESET);
@@ -57,41 +63,43 @@ public class DescriptionRecipeCategory {
         }
       }
     });
-    dsitems.apply(new Callback<Item>() {
-      @Override
-      public void apply(@Nonnull Item item) {
-        ItemStack itemStack = new ItemStack(item);
+
+    dsitems.forEach(item -> {
+      if (item instanceof Item) { // keep null and casting warnings happy
+        Log.debug(item);
+        ItemStack itemStack = new ItemStack((Item) item);
         NNList<String> allTooltips;
         try {
-          DarkSteelRecipeManager.setSkipUpgradeTooltips(true);
+          DarkSteelTooltipManager.setSkipUpgradeTooltips(true);
           allTooltips = SpecialTooltipHandler.getAllTooltips(itemStack);
         } finally {
-          DarkSteelRecipeManager.setSkipUpgradeTooltips(false);
+          DarkSteelTooltipManager.setSkipUpgradeTooltips(false);
         }
 
-        NNList<UpgradePath> list = DarkSteelRecipeManager.getAllRecipes(new NNList<>(itemStack));
         Map<String, IDarkSteelUpgrade> set = new HashMap<>();
-        for (UpgradePath upgradePath : list) {
-          set.put(upgradePath.getDsupgrade().getDisplayName(), upgradePath.getDsupgrade());
+        for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
+          if (upgrade.getRules().stream().filter(Rules::isStatic).allMatch(Rules.makeChecker(itemStack, item))) {
+            set.put(upgrade.getDisplayName(), upgrade);
+          }
         }
         List<String> names = new ArrayList<>(set.keySet());
         Collections.sort(names);
         if (!names.isEmpty()) {
           allTooltips.add("");
           allTooltips.add(Lang.DARK_STEEL_ANVIL_UPGRADES_ALL.get());
-        }
-        for (String name : names) {
-          IDarkSteelUpgrade upgrade = set.get(name);
-          if (upgrade != null) {
-            allTooltips.add("");
-            if (upgrade instanceof IAdvancedTooltipProvider) {
-              ((IAdvancedTooltipProvider) upgrade).addDetailedEntries(itemStack, null, allTooltips, false);
-            } else {
-              allTooltips.add(Lang.DARK_STEEL_LEVELS1.get(TextFormatting.DARK_AQUA, name));
-              SpecialTooltipHandler.addDetailedTooltipFromResources(allTooltips, upgrade.getUnlocalizedName());
+          for (String name : names) {
+            IDarkSteelUpgrade upgrade = set.get(name);
+            if (upgrade != null) {
+              allTooltips.add("");
+              if (upgrade instanceof IAdvancedTooltipProvider) {
+                ((IAdvancedTooltipProvider) upgrade).addDetailedEntries(itemStack, null, allTooltips, false);
+              } else {
+                allTooltips.add(Lang.DARK_STEEL_LEVELS1.get(TextFormatting.DARK_AQUA, name));
+                SpecialTooltipHandler.addDetailedTooltipFromResources(allTooltips, upgrade.getUnlocalizedName());
+              }
+              allTooltips.add(Lang.DARK_STEEL_LEVELS2.get(TextFormatting.DARK_AQUA, TextFormatting.ITALIC,
+                  UpgradeRegistry.getUpgradeItem(upgrade).getDisplayName(), upgrade.getLevelCost()) + TextFormatting.RESET);
             }
-            allTooltips.add(Lang.DARK_STEEL_LEVELS2.get(TextFormatting.DARK_AQUA, TextFormatting.ITALIC,
-                UpgradeRegistry.getUpgradeItem(upgrade).getDisplayName(), upgrade.getLevelCost()) + TextFormatting.RESET);
           }
         }
 
