@@ -501,6 +501,17 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Dark Paper Anvil" required="true">
+    <crafting>
+      <grid>
+        <item name="paperBlack"/><item name="paperBlack"/><item name="paperBlack"/>
+        <item/><item name="paperBlack"/><item/>
+        <item name="paperBlack"/><item name="paperBlack"/><item name="paperBlack"/>
+      </grid>
+      <output name="enderio:block_dark_paper_anvil"/>
+    </crafting>
+  </recipe>
+
   <recipe name="Dark Steel Ladder" required="true">
     <crafting>
       <grid size="1x3">
@@ -1265,6 +1276,15 @@ XML editor will display that as tooltips when editing this file.
       <output name="dustGlowstone" chance="0.1"/>
       <output name="oredict:itemClay" chance="0.1"/>
     </sagmilling>
+  </recipe>
+
+  <recipe name="Black Paper" required="true">
+    <crafting>
+      <shapeless>
+        <item name="oredict:paper"/><item name="dyeBlack"/>
+      </shapeless>
+      <output name="paperBlack" />
+    </crafting>
   </recipe>
 
 </enderio:recipes>

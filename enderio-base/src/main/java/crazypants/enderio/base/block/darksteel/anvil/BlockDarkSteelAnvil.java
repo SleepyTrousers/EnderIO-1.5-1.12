@@ -10,6 +10,7 @@ import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.config.config.BaseConfig;
+import crazypants.enderio.base.config.config.BlockConfig;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.handler.darksteel.gui.DSUContainer;
 import crazypants.enderio.base.handler.darksteel.gui.DSUGui;
@@ -65,22 +66,6 @@ public class BlockDarkSteelAnvil extends BlockAnvil
     return new DSUGui(container, param1);
   }
 
-  // @Override
-  // @Nullable
-  // public DSUContainer getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1)
-  // {
-  // System.out.println("foobar?");
-  // return DSUContainer.create(player, world, pos, facing, param1, this);
-  // }
-  //
-  // @Override
-  // @Nullable
-  // @SideOnly(Side.CLIENT)
-  // public DSUGui getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
-  // final DSUContainer container = getServerGuiElement(player, world, pos, facing, param1);
-  // return container != null ? new DSUGui(container, param1) : null;
-  // }
-
   @Override
   public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
     return this.getUnlocalizedName();
@@ -99,6 +84,18 @@ public class BlockDarkSteelAnvil extends BlockAnvil
       ClientUtil.regRenderer(this, dmg, DAMAGE.getName() + "=" + DAMAGE.getName(NullHelper.notnullM(dmg, "invalid property")) + "," + FACING.getName() + "="
           + FACING.getName(EnumFacing.NORTH));
     }
+  }
+
+  public float getDamageChance() {
+    return BlockConfig.darkSteelAnvilDamageChance.get();
+  }
+
+  public int getUseEvent() {
+    return 1030;
+  }
+
+  public int getBreakEvent() {
+    return 1029;
   }
 
 }

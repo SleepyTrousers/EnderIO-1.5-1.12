@@ -275,6 +275,7 @@ item.item_material.infinity_goop.name=Infinity Reagent
 item.item_material.infinity_goop.tooltip.detailed.line1=An infinitely sticky substance for conducting energy.
 item.item_material.infinity_goop.tooltip.detailed.line2=Randalf got some on him once, and was stuck to his staff of travelling for 6 months...
 item.item_material.clayed_glowstone.name=Clay-Coated Glowstone Dust
+item.item_material.black_paper.name=Black Paper
 
 item.item_alloy_endergy_ingot_crude_steel.name=Crude Steel Ingot
 item.item_alloy_endergy_ingot_crystalline_alloy.name=Crystalline Alloy Ingot
@@ -403,10 +404,18 @@ tile.block_end_iron_bars.name=End Steel Bars
 tile.block_dark_steel_anvil.name=Dark Steel Anvil
 tile.block_dark_steel_anvil.tooltip.common.line1=Damage Resistant
 tile.block_dark_steel_anvil.tooltip.detailed.line1=Lasts much longer than the vanilla anvil
-tile.block_dark_steel_anvil.tooltip.detailed.line1=Can be used to apply and remove upgrades
+tile.block_dark_steel_anvil.tooltip.detailed.line2=Can be used to apply and remove upgrades
 tile.block_dark_steel_anvil.intact.name=Dark Steel Anvil
 tile.block_dark_steel_anvil.slightlyDamaged.name=Slightly Damaged Dark Steel Anvil
 tile.block_dark_steel_anvil.veryDamaged.name=Very Damaged Dark Steel Anvil
+
+tile.block_dark_paper_anvil.name=Dark Paper Anvil
+tile.block_dark_paper_anvil.tooltip.common.line1=Not durable
+tile.block_dark_paper_anvil.tooltip.detailed.line1=Lasts much shorter than the vanilla anvil
+tile.block_dark_paper_anvil.tooltip.detailed.line2=Can be used to apply and remove upgrades
+tile.block_dark_paper_anvil.intact.name=Dark Paper Anvil
+tile.block_dark_paper_anvil.slightlyDamaged.name=Slightly Damaged Dark Paper Anvil
+tile.block_dark_paper_anvil.veryDamaged.name=Very Damaged Dark Paper Anvil
 
 tile.block_broken_anvil.name=Broken Dark Steel Anvil
 

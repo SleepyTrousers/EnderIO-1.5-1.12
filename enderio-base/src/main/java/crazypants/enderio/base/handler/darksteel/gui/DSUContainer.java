@@ -14,6 +14,7 @@ import com.enderio.core.common.ContainerEnderCap;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.base.block.darksteel.anvil.BlockDarkSteelAnvil;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.anvil.AnvilUpgrade;
 import crazypants.enderio.base.lang.Lang;
@@ -21,7 +22,6 @@ import crazypants.enderio.base.material.upgrades.ItemUpgrades;
 import crazypants.enderio.util.EIOCombinedInvWrapper;
 import crazypants.enderio.util.Prep;
 import crazypants.enderio.util.WorldTarget;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IContainerListener;
@@ -159,8 +159,10 @@ public class DSUContainer extends ContainerEnderCap<EIOCombinedInvWrapper<Upgrad
   protected final AnvilSubContainer anvil;
   protected final NNList<UpgradeCap> caps;
   protected final WorldTarget target;
+  protected final @Nullable BlockDarkSteelAnvil block;
 
-  public static @Nullable DSUContainer create(EntityPlayer player, World world, BlockPos pos, @Nullable EnumFacing facing, int param1, Block block) {
+  public static @Nullable DSUContainer create(EntityPlayer player, World world, BlockPos pos, @Nullable EnumFacing facing, int param1,
+      @Nullable BlockDarkSteelAnvil block) {
     NNList<UpgradeCap> caps = new NNList<>();
     WorldTarget target = WorldTarget.TRUE;
     if (pos.getY() >= 0 && world.isBlockLoaded(pos) && world.getBlockState(pos).getBlock() == block) {
@@ -211,7 +213,7 @@ public class DSUContainer extends ContainerEnderCap<EIOCombinedInvWrapper<Upgrad
     for (UpgradeCap cap : caps) {
       if (!cap.getSlotSelector().isSlot() || cap.isAvailable()) {
         // There's at least one tab to be shown, so open the GUI
-        return new DSUContainer(player, caps, target).init();
+        return new DSUContainer(player, caps, target, block).init();
       }
     }
     if (!player.world.isRemote) {
@@ -220,11 +222,12 @@ public class DSUContainer extends ContainerEnderCap<EIOCombinedInvWrapper<Upgrad
     return null;
   }
 
-  public DSUContainer(EntityPlayer player, NNList<UpgradeCap> caps, WorldTarget target) {
+  public DSUContainer(EntityPlayer player, NNList<UpgradeCap> caps, WorldTarget target, @Nullable BlockDarkSteelAnvil block) {
     super(player.inventory, new EIOCombinedInvWrapper<>(caps.toArray(new UpgradeCap[0])), null, true);
     this.caps = caps;
     this.anvil = new AnvilSubContainer(this, player);
     this.target = target;
+    this.block = block;
   }
 
   private final NNList<AutoSlot> autoSlots = new NNList<>();

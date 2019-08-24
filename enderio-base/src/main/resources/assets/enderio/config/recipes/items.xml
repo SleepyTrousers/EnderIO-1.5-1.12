@@ -530,9 +530,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Filter, Basic" required="true">
     <crafting>
       <grid>
-        <item /><item name="oredict:paper" /><item />
-        <item name="oredict:paper" /><item name="blockHopper" /><item name="oredict:paper" />
-        <item /><item name="oredict:paper" /><item/>
+        <item /><item name="oredict:paper, paperBlack" /><item />
+        <item name="oredict:paper, paperBlack" /><item name="blockHopper" /><item name="oredict:paper, paperBlack" />
+        <item /><item name="oredict:paper, paperBlack" /><item/>
       </grid>
       <output name="enderio:item_basic_item_filter" />
     </crafting>
@@ -551,9 +551,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Filter, Advanced" required="true">
     <crafting>
       <grid>
-        <item name="dustRedstone" /><item name="oredict:paper" /><item name="dustRedstone" />
-        <item name="oredict:paper" /><item name="ZOMBIE_CONTROLLER" /><item name="oredict:paper" />
-        <item name="dustRedstone" /><item name="oredict:paper" /><item name="dustRedstone" />
+        <item name="dustRedstone" /><item name="oredict:paper, paperBlack" /><item name="dustRedstone" />
+        <item name="oredict:paper, paperBlack" /><item name="ZOMBIE_CONTROLLER" /><item name="oredict:paper, paperBlack" />
+        <item name="dustRedstone" /><item name="oredict:paper, paperBlack" /><item name="dustRedstone" />
       </grid>
       <output name="enderio:item_advanced_item_filter" />
     </crafting>
@@ -571,9 +571,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Filter, Mod" required="true">
     <crafting>
       <grid>
-        <item /><item name="oredict:paper" /><item />
-        <item name="oredict:paper" /><item name="enderio:item_yeta_wrench" /><item name="oredict:paper" />
-        <item /><item name="oredict:paper" /><item/>
+        <item /><item name="oredict:paper, paperBlack" /><item />
+        <item name="oredict:paper, paperBlack" /><item name="enderio:item_yeta_wrench" /><item name="oredict:paper, paperBlack" />
+        <item /><item name="oredict:paper, paperBlack" /><item/>
       </grid>
       <output name="enderio:item_mod_item_filter" />
     </crafting>
@@ -593,9 +593,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Filter, Power" required="true">
     <crafting>
       <grid>
-        <item /><item name="oredict:paper" /><item />
-        <item name="oredict:paper" /><item name="CONDUIT_PROBE" /><item name="oredict:paper" />
-        <item /><item name="oredict:paper" /><item/>
+        <item /><item name="oredict:paper, paperBlack" /><item />
+        <item name="oredict:paper, paperBlack" /><item name="CONDUIT_PROBE" /><item name="oredict:paper, paperBlack" />
+        <item /><item name="oredict:paper, paperBlack" /><item/>
       </grid>
       <output name="enderio:item_power_item_filter" />
     </crafting>
@@ -604,9 +604,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Filter, Big" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="POWDER_OBSIDIAN" /><item name="minecraft:paper" /><item name="POWDER_OBSIDIAN" />
-        <item name="minecraft:paper" /><item name="SKELETAL_CONTRACTOR" /><item name="minecraft:paper" />
-        <item name="POWDER_OBSIDIAN" /><item name="minecraft:paper" /><item name="POWDER_OBSIDIAN" />
+        <item name="POWDER_OBSIDIAN" /><item name="minecraft:paper, paperBlack" /><item name="POWDER_OBSIDIAN" />
+        <item name="minecraft:paper, paperBlack" /><item name="SKELETAL_CONTRACTOR" /><item name="minecraft:paper, paperBlack" />
+        <item name="POWDER_OBSIDIAN" /><item name="minecraft:paper, paperBlack" /><item name="POWDER_OBSIDIAN" />
       </grid>
       <output name="enderio:item_big_item_filter" />
     </crafting>
@@ -636,9 +636,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Filter, Fluid" required="true">
     <crafting>
       <grid>
-        <item /><item name="oredict:paper" /><item />
-        <item name="oredict:paper" /><item name="minecraft:bucket" /><item name="oredict:paper" />
-        <item /><item name="oredict:paper" /><item/>
+        <item /><item name="oredict:paper, paperBlack" /><item />
+        <item name="oredict:paper, paperBlack" /><item name="minecraft:bucket" /><item name="oredict:paper, paperBlack" />
+        <item /><item name="oredict:paper, paperBlack" /><item/>
       </grid>
       <output name="enderio:item_fluid_filter" />
     </crafting>
@@ -647,9 +647,9 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Filter, Redstone Base" required="true">
     <crafting>
       <grid size="3x3">
-        <item name="REDSTONE_ALLOY"/><item name="oredict:paper" /><item name="REDSTONE_ALLOY"/>
-        <item name="oredict:paper" /><item name="IRON"/><item name="oredict:paper" />
-        <item name="REDSTONE_ALLOY"/><item name="oredict:paper" /><item name="REDSTONE_ALLOY"/>
+        <item name="REDSTONE_ALLOY"/><item name="oredict:paper, paperBlack" /><item name="REDSTONE_ALLOY"/>
+        <item name="oredict:paper, paperBlack" /><item name="IRON"/><item name="oredict:paper, paperBlack" />
+        <item name="REDSTONE_ALLOY"/><item name="oredict:paper, paperBlack" /><item name="REDSTONE_ALLOY"/>
       </grid>
       <output name="REDSTONE_FILTER_BASE" />
     </crafting>

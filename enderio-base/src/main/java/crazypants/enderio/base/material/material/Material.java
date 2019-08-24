@@ -116,6 +116,8 @@ public enum Material {
 
   CLAYED_GLOWSTONE("clayedGlowstone"),
 
+  BLACK_PAPER("blackPaper", "paperBlack")
+
   ;
 
   public final boolean hasEffect;

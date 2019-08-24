@@ -503,6 +503,11 @@
         "textures": {
           "layer0": "enderio:items/item_material_clayed_glowstone"
         }
+      },
+      "black_paper": {
+        "textures": {
+          "layer0": "enderio:items/item_material_black_paper"
+        }
       }
     }
   }
