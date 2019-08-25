@@ -88,6 +88,8 @@ public enum Lang implements ILang {
   SOUL_VIAL_DENIED_OWNED_PET(".soulvial.owned.denied"),
   SOUL_VIAL_DENIED_PLAYER(".soulvial.player.denied"),
   SOUL_VIAL_DENIED_AALISTED(".soulvial.blacklisted.denied"),
+  SOUL_VIAL_DENIED_DEAD(".soulvial.dead.denied"),
+  SOUL_VIAL_DENIED_UNKNOWN(".soulvial.unknown.denied"),
   CONFIG_TITLE(".config.title"),
   GUI_NOCAP(".gui.generic.nocap"),
   GUI_PROBE_COPIED(".gui.probe.copied"),

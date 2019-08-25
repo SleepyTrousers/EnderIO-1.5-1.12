@@ -1178,6 +1178,8 @@ enderio.soulvial.denied=Permission §cdenied§r!
 enderio.soulvial.owned.denied=Permission §cdenied§r - only owners may pick up owned animals
 enderio.soulvial.player.denied=§cNo!$r How would you feel if you had to play this game from inside a bottle?
 enderio.soulvial.blacklisted.denied=Permission §cdenied§r - this entity is blacklisted
+enderio.soulvial.dead.denied=Pickup failed. This entity is §cdead§r as a Norwegian parrot!
+enderio.soulvial.unknown.denied=Pickup failed for unknown reasons.
 
 # There's a 1% change that a soul vial containing a pig is named this:
 enderio.easteregg.piginabottle=Bacon in a Bottle

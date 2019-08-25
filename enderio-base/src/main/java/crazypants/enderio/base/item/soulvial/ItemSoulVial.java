@@ -199,25 +199,27 @@ public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHav
       return false;
     }
 
-    // first check if that entity can be picked up at all
-    CapturedMob capturedMob = CapturedMob.create(entity);
-    if (capturedMob == null) {
-      if (entity instanceof EntityPlayer) {
-        player.sendMessage(Lang.SOUL_VIAL_DENIED_PLAYER.toChatServer());
-      } else if (CapturedMob.isBlacklisted(entity)) {
-        player.sendMessage(Lang.SOUL_VIAL_DENIED_AALISTED.toChatServer());
-      }
-      return false;
-    }
-
-    // then check for reasons this specific one cannot
-    if (entity instanceof IEntityOwnable && ((IEntityOwnable) entity).getOwnerId() != null && !player.equals(((IEntityOwnable) entity).getOwner())
+    // check the cases we have a message for first
+    if (entity instanceof EntityPlayer) {
+      player.sendMessage(Lang.SOUL_VIAL_DENIED_PLAYER.toChatServer());
+    } else if (CapturedMob.isBlacklisted(entity)) {
+      player.sendMessage(Lang.SOUL_VIAL_DENIED_AALISTED.toChatServer());
+    } else if (entity instanceof IEntityOwnable && ((IEntityOwnable) entity).getOwnerId() != null && !player.equals(((IEntityOwnable) entity).getOwner())
         && !PermissionAPI.hasPermission(player.getGameProfile(), permissionPickupOwned, new TargetContext(player, entity))) {
       player.sendMessage(Lang.SOUL_VIAL_DENIED_OWNED_PET.toChatServer());
       return false;
-    }
-    if (!PermissionAPI.hasPermission(player.getGameProfile(), permissionPickup, new TargetContext(player, entity))) {
+    } else if (!PermissionAPI.hasPermission(player.getGameProfile(), permissionPickup, new TargetContext(player, entity))) {
       player.sendMessage(Lang.SOUL_VIAL_DENIED.toChatServer());
+      return false;
+    } else if (!entity.isEntityAlive()) {
+      player.sendMessage(Lang.SOUL_VIAL_DENIED_DEAD.toChatServer());
+      return false;
+    }
+
+    // then check if that entity can be picked up at all
+    CapturedMob capturedMob = CapturedMob.create(entity);
+    if (capturedMob == null) {
+      player.sendMessage(Lang.SOUL_VIAL_DENIED_UNKNOWN.toChatServer());
       return false;
     }
 
