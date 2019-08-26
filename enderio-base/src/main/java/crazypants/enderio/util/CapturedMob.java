@@ -46,6 +46,7 @@ import static crazypants.enderio.base.init.ModObject.itemSoulVial;
 
 public final class CapturedMob {
 
+  private static final @Nonnull String PRIVATE_FINAL_FIELD_CHANGED_ITS_VALUE = "private final field changed its value";
   private static final @Nonnull ResourceLocation PIG = new ResourceLocation("pig");
   private static final @Nonnull ResourceLocation DRAGON = new ResourceLocation("ender_dragon");
 
@@ -95,7 +96,7 @@ public final class CapturedMob {
     if (nbt.hasKey(ENTITY_ID_KEY)) {
       id = nbt.getString(ENTITY_ID_KEY);
     } else if (entityNbt != null && entityNbt.hasKey("id")) {
-      id = NullHelper.notnullJ(entityNbt, "private final field changed its value").getString("id");
+      id = NullHelper.notnullJ(entityNbt, PRIVATE_FINAL_FIELD_CHANGED_ITS_VALUE).getString("id");
     }
     entityId = id == null || id.isEmpty() ? PIG : new ResourceLocation(id);
     if (nbt.hasKey(CUSTOM_NAME_KEY)) {
@@ -306,7 +307,7 @@ public final class CapturedMob {
     String baseName = EnderIO.lang.localizeExact("entity." + getTranslationName() + ".name");
     if (baseName.trim().isEmpty()) {
       if (customName != null && !customName.trim().isEmpty()) {
-        return NullHelper.notnullJ(customName, "private final field changed its value");
+        return NullHelper.notnullJ(customName, PRIVATE_FINAL_FIELD_CHANGED_ITS_VALUE);
       } else {
         return "???";
       }
@@ -325,7 +326,7 @@ public final class CapturedMob {
 
   public float getHealth() {
     if (entityNbt != null && entityNbt.hasKey("HealF")) {
-      return NullHelper.notnullJ(entityNbt, "private final field changed its value").getFloat("HealF");
+      return NullHelper.notnullJ(entityNbt, PRIVATE_FINAL_FIELD_CHANGED_ITS_VALUE).getFloat("HealF");
     } else {
       return Float.NaN;
     }
@@ -341,7 +342,7 @@ public final class CapturedMob {
 
   public @Nullable NBTTagCompound getAttribute(@Nullable String name) {
     if (name != null && entityNbt != null && entityNbt.hasKey("Attributes")) {
-      NBTBase tag = NullHelper.notnullJ(entityNbt, "private final field changed its value").getTag("Attributes");
+      NBTBase tag = NullHelper.notnullJ(entityNbt, PRIVATE_FINAL_FIELD_CHANGED_ITS_VALUE).getTag("Attributes");
       if (tag instanceof NBTTagList) {
         NBTTagList attributes = (NBTTagList) tag;
         for (int i = 0; i < attributes.tagCount(); i++) {
@@ -357,7 +358,7 @@ public final class CapturedMob {
 
   public @Nullable DyeColor getColor() {
     if (entityNbt != null && entityNbt.hasKey("Color")) {
-      int colorIdx = NullHelper.notnullJ(entityNbt, "private final field changed its value").getInteger("Color");
+      int colorIdx = NullHelper.notnullJ(entityNbt, PRIVATE_FINAL_FIELD_CHANGED_ITS_VALUE).getInteger("Color");
       if (colorIdx >= 0 && colorIdx <= 15) {
         return DyeColor.values()[15 - colorIdx];
       }
@@ -367,7 +368,7 @@ public final class CapturedMob {
 
   public @Nullable String getFluidName() {
     if (entityNbt != null && entityNbt.hasKey("FluidName")) {
-      return NullHelper.notnullJ(entityNbt, "private final field changed its value").getString("FluidName");
+      return NullHelper.notnullJ(entityNbt, PRIVATE_FINAL_FIELD_CHANGED_ITS_VALUE).getString("FluidName");
     }
     return null;
   }

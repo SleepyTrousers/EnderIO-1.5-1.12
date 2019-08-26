@@ -106,8 +106,8 @@ public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHav
   };
 
   private @Nonnull String permissionPickupOwned = "(item not initialized)";
-  private @Nonnull String permissionPickup = "(item not initialized)";
-  private @Nonnull String permissionPlace = "(item not initialized)";
+  private @Nonnull String permissionPickup = permissionPickupOwned;
+  private @Nonnull String permissionPlace = permissionPickupOwned;
 
   @Override
   public void init(@Nonnull IModObject modObject, @Nonnull FMLInitializationEvent event) {
