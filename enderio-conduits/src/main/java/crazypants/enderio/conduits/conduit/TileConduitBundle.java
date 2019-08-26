@@ -541,14 +541,16 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     if (!collidablesDirty && !cachedCollidables.isEmpty()) {
       return cachedCollidables;
     }
-    cachedCollidables.clear();
-    for (IConduit conduit : getConduits()) {
-      cachedCollidables.addAll(conduit.getCollidableComponents());
+    synchronized (cachedCollidables) {
+      cachedCollidables.clear();
+      for (IConduit conduit : getConduits()) {
+        cachedCollidables.addAll(conduit.getCollidableComponents());
+      }
+
+      addConnectors(cachedCollidables);
+
+      collidablesDirty = false;
     }
-
-    addConnectors(cachedCollidables);
-
-    collidablesDirty = false;
 
     return cachedCollidables;
   }
@@ -574,7 +576,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     }
 
     if (connectorsDirty || cachedConnectors.isEmpty()) {
-      cachedConnectors.clear();
+      List<CollidableComponent> temp = new ArrayList<>();
 
       // TODO: What an unholly mess! (and it doesn't even work correctly...)
       List<CollidableComponent> coreBounds = new ArrayList<CollidableComponent>();
@@ -583,7 +585,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
         addConduitCores(coreBounds, con);
         conduitsBounds.addAll(con.getCollidableComponents());
       }
-      cachedConnectors.addAll(coreBounds);
+      temp.addAll(coreBounds);
       conduitsBounds.addAll(coreBounds);
 
       // 1st algorithm
@@ -618,7 +620,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
         if (bb != null) {
           bb = bb.scale(1.05, 1.05, 1.05);
           CollidableComponent cc = new CollidableComponent(null, bb, null, ConduitConnectorType.INTERNAL);
-          cachedConnectors.add(cc);
+          temp.add(cc);
         }
       }
 
@@ -637,7 +639,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
             if (bb.getArea() > area * 1.5f) {
               bb = bb.scale(1.05, 1.05, 1.05);
               CollidableComponent cc = new CollidableComponent(null, bb, null, ConduitConnectorType.INTERNAL);
-              cachedConnectors.add(cc);
+              temp.add(cc);
             }
           }
         }
@@ -645,18 +647,18 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
       // Merge all internal conduit connectors into one box
       BoundingBox conBB = null;
-      for (int i = 0; i < cachedConnectors.size(); i++) {
-        CollidableComponent cc = cachedConnectors.get(i);
+      for (int i = 0; i < temp.size(); i++) {
+        CollidableComponent cc = temp.get(i);
         if (cc.conduitType == null && cc.data == ConduitConnectorType.INTERNAL) {
           conBB = conBB == null ? cc.bound : conBB.expandBy(cc.bound);
-          cachedConnectors.remove(i);
+          temp.remove(i);
           i--;
         }
       }
 
       if (conBB != null) {
         CollidableComponent cc = new CollidableComponent(null, conBB, null, ConduitConnectorType.INTERNAL);
-        cachedConnectors.add(cc);
+        temp.add(cc);
       }
 
       // External Connectors
@@ -673,14 +675,21 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
         if (dir != null) {
           BoundingBox bb = ConduitGeometryUtil.getInstance().getExternalConnectorBoundingBox(dir);
           CollidableComponent cc = new CollidableComponent(null, bb, dir, ConduitConnectorType.EXTERNAL);
-          cachedConnectors.add(cc);
+          temp.add(cc);
         }
       }
 
-      connectorsDirty = false;
+      synchronized (cachedConnectors) {
+        cachedConnectors.clear();
+        cachedConnectors.addAll(temp);
+        connectorsDirty = false;
+        result.addAll(cachedConnectors);
+      }
+    } else {
+      synchronized (cachedConnectors) {
+        result.addAll(cachedConnectors);
+      }
     }
-
-    result.addAll(cachedConnectors);
   }
 
   private void addConduitCores(List<CollidableComponent> result, IConduit con) {
