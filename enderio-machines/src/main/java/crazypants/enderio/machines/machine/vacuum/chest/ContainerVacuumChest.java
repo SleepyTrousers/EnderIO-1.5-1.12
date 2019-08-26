@@ -28,7 +28,7 @@ public class ContainerVacuumChest extends ContainerEnderCap<EnderInventory, Tile
 
   private Slot filterSlot;
   private Runnable filterChangedCB;
-  private EntityPlayer player;
+  private @Nonnull EntityPlayer player;
 
   public ContainerVacuumChest(@Nonnull InventoryPlayer inventory, final @Nonnull TileVacuumChest te) {
     super(inventory, te.getInventory(), te);

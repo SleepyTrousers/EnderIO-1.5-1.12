@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.IItemFilterUpgrade;
+import crazypants.enderio.util.EnumReader;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -27,21 +28,25 @@ public class PacketHeldFilterUpdate implements IMessage {
 
   @Override
   public void fromBytes(ByteBuf buf) {
-    filter = FilterRegistry.readFilter(buf);
-    param = buf.readInt();
+    if (buf != null) {
+      filter = FilterRegistry.readFilter(buf);
+      param = buf.readInt();
+    }
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
-    FilterRegistry.writeFilter(buf, filter);
-    buf.writeInt(param);
+    if (buf != null) {
+      FilterRegistry.writeFilter(buf, filter);
+      buf.writeInt(param);
+    }
   }
 
   public static class Handler implements IMessageHandler<PacketHeldFilterUpdate, IMessage> {
 
     @Override
     public IMessage onMessage(PacketHeldFilterUpdate message, MessageContext ctx) {
-      ItemStack filterStack = ctx.getServerHandler().player.getHeldItem(EnumHand.values()[message.param]);
+      ItemStack filterStack = ctx.getServerHandler().player.getHeldItem(EnumReader.get(EnumHand.class, message.param));
       if (!filterStack.isEmpty() && filterStack.getItem() instanceof IItemFilterUpgrade) {
         FilterRegistry.writeFilterToStack(message.filter, filterStack);
       }

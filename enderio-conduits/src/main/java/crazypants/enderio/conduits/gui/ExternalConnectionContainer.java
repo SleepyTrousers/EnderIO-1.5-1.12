@@ -36,12 +36,12 @@ import net.minecraftforge.items.SlotItemHandler;
 public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgrades, TileConduitBundle>
     implements IExternalConnectionContainer, IOpenFilterRemoteExec.Container, IFilterContainer {
 
-  private Slot slotFunctionUpgrade;
-  private Slot slotInputFilter;
-  private Slot slotOutputFilter;
+  private final @Nonnull Slot slotFunctionUpgrade;
+  private final @Nonnull Slot slotInputFilter;
+  private final @Nonnull Slot slotOutputFilter;
 
-  private @Nonnull EnumFacing dir;
-  private @Nonnull EntityPlayer player;
+  private final @Nonnull EnumFacing dir;
+  private final @Nonnull EntityPlayer player;
 
   private IConduit currentCon;
 
@@ -49,13 +49,9 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
     super(playerInv, new InventoryUpgrades(dir), bundle);
     this.dir = dir;
     this.player = playerInv.player;
-  }
-
-  @Override
-  protected void addSlots() {
-    addSlotToContainer(slotInputFilter = new FilterSlot(getItemHandler(), 3, 23, 71));
-    addSlotToContainer(slotOutputFilter = new FilterSlot(getItemHandler(), 2, 113, 71));
-    addSlotToContainer(slotFunctionUpgrade = new SlotItemHandler(getItemHandler(), 0, 131, 71) {
+    this.slotInputFilter = new FilterSlot(getItemHandler(), 3, 23, 71);
+    this.slotOutputFilter = new FilterSlot(getItemHandler(), 2, 113, 71);
+    this.slotFunctionUpgrade = new SlotItemHandler(getItemHandler(), 0, 131, 71) {
       @Override
       public boolean isItemValid(@Nonnull ItemStack itemStack) {
         return ExternalConnectionContainer.this.getItemHandler().isItemValidForSlot(0, itemStack, currentCon);
@@ -70,7 +66,14 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
       public int getItemStackLimit(@Nonnull ItemStack stack) {
         return ExternalConnectionContainer.this.getItemHandler().getSlotLimit(0, stack);
       }
-    });
+    };
+  }
+
+  @Override
+  protected void addSlots() {
+    addSlotToContainer(slotInputFilter);
+    addSlotToContainer(slotOutputFilter);
+    addSlotToContainer(slotFunctionUpgrade);
   }
 
   @Override
@@ -102,21 +105,16 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
 
   @Override
   public boolean hasFunctionUpgrade() {
-    return slotFunctionUpgrade != null && slotFunctionUpgrade.getHasStack();
+    return slotFunctionUpgrade.getHasStack();
   }
 
   @Override
   public boolean hasFilter(boolean input) {
-    Slot slot = input ? slotInputFilter : slotOutputFilter;
-    return slot != null && slot.getHasStack();
+    return (input ? slotInputFilter : slotOutputFilter).getHasStack();
   }
 
   @Override
   public void setInOutSlotsVisible(boolean filterVisible, boolean upgradeVisible, @Nonnull IConduit conduit) {
-    if (conduit == null) {
-      return;
-    }
-
     World world = getTileEntityNN().getBundleworld();
 
     boolean hasFilterHolder = false;

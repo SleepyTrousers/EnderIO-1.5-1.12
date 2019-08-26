@@ -46,7 +46,7 @@ public class ITravelAccessableRemoteExec {
     IMessage doCloseGui();
 
     @Override
-    default IMessage networkExec(int id, GuiPacket message) {
+    default IMessage networkExec(int id, @Nonnull GuiPacket message) {
       switch (id) {
       case EXEC_ACCESS_MODE:
         return doSetAccessMode(message.getEnum(0, TileTravelAnchor.AccessMode.class));

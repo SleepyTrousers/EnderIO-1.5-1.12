@@ -6,6 +6,7 @@ import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.conduit.oc.conduit.IOCConduit;
 import crazypants.enderio.conduits.network.AbstractConduitPacket;
+import crazypants.enderio.util.EnumReader;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
@@ -15,16 +16,18 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketOCConduitSignalColor extends AbstractConduitPacket<IOCConduit> {
 
-  private EnumFacing dir;
-  private DyeColor col;
+  private @Nonnull EnumFacing dir;
+  private @Nonnull DyeColor col;
 
   public PacketOCConduitSignalColor() {
+    dir = EnumFacing.DOWN;
+    col = DyeColor.BLACK;
   }
 
   public PacketOCConduitSignalColor(@Nonnull IOCConduit con, @Nonnull EnumFacing dir) {
     super(con);
     this.dir = dir;
-    col = con.getSignalColor(dir);
+    this.col = con.getSignalColor(dir);
   }
 
   @Override
@@ -37,8 +40,8 @@ public class PacketOCConduitSignalColor extends AbstractConduitPacket<IOCConduit
   @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
-    dir = EnumFacing.values()[buf.readShort()];
-    col = DyeColor.values()[buf.readShort()];
+    dir = EnumReader.get(EnumFacing.class, buf.readShort());
+    col = EnumReader.get(DyeColor.class, buf.readShort());
   }
 
   public static class Handler implements IMessageHandler<PacketOCConduitSignalColor, IMessage> {

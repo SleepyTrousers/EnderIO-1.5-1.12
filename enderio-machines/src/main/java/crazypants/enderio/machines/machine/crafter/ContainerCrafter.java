@@ -113,7 +113,7 @@ public class ContainerCrafter<T extends TileCrafter> extends ContainerEnderCap<E
   }
 
   @Override
-  public IMessage networkExec(int id, GuiPacket message) {
+  public IMessage networkExec(int id, @Nonnull GuiPacket message) {
     switch (id) {
     case EXEC_SET_BUFFER:
       getTileEntityNN().setBufferStacks(message.getBoolean(0));

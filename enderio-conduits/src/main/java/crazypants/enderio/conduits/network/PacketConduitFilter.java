@@ -7,6 +7,7 @@ import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
+import crazypants.enderio.util.EnumReader;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
@@ -16,7 +17,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketConduitFilter<T extends IConduit> extends AbstractConduitPacket<T> {
 
-  protected EnumFacing dir;
+  protected @Nonnull EnumFacing dir = EnumFacing.DOWN;
   protected IFilter inputFilter;
   protected IFilter outputFilter;
 
@@ -30,19 +31,17 @@ public class PacketConduitFilter<T extends IConduit> extends AbstractConduitPack
 
     if (con.hasInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir)) {
       IFilterHolder<IFilter> filterHolder = con.getInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
-      inputFilter = filterHolder.getFilter(filterHolder.getInputFilterIndex(), dir.ordinal());
-      outputFilter = filterHolder.getFilter(filterHolder.getOutputFilterIndex(), dir.ordinal());
+      if (filterHolder != null) {
+        inputFilter = filterHolder.getFilter(filterHolder.getInputFilterIndex(), dir.ordinal());
+        outputFilter = filterHolder.getFilter(filterHolder.getOutputFilterIndex(), dir.ordinal());
+      }
     }
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
     super.toBytes(buf);
-    if (dir == null) {
-      buf.writeShort(-1);
-    } else {
-      buf.writeShort(dir.ordinal());
-    }
+    buf.writeShort(dir.ordinal());
     FilterRegistry.writeFilter(buf, inputFilter);
     FilterRegistry.writeFilter(buf, outputFilter);
   }
@@ -50,24 +49,25 @@ public class PacketConduitFilter<T extends IConduit> extends AbstractConduitPack
   @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
-    short ord = buf.readShort();
-    if (ord < 0) {
-      dir = null;
-    } else {
-      dir = EnumFacing.values()[ord];
-    }
+    dir = EnumReader.get(EnumFacing.class, buf.readShort());
     inputFilter = FilterRegistry.readFilter(buf);
     outputFilter = FilterRegistry.readFilter(buf);
   }
 
-  public static class Handler implements IMessageHandler<PacketConduitFilter, IMessage> {
+  public static class Handler implements IMessageHandler<PacketConduitFilter<?>, IMessage> {
 
     @Override
-    public IMessage onMessage(PacketConduitFilter message, MessageContext ctx) {
+    public IMessage onMessage(PacketConduitFilter<?> message, MessageContext ctx) {
       IConduit conduit = message.getConduit(ctx);
       if (conduit != null) {
-        applyFilter(message.dir, conduit, message.inputFilter, true);
-        applyFilter(message.dir, conduit, message.outputFilter, false);
+        final IFilter inputFilter = message.inputFilter;
+        if (inputFilter != null) {
+          applyFilter(message.dir, conduit, inputFilter, true);
+        }
+        final IFilter outputFilter = message.outputFilter;
+        if (outputFilter != null) {
+          applyFilter(message.dir, conduit, outputFilter, false);
+        }
 
         IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
         message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);
@@ -75,13 +75,15 @@ public class PacketConduitFilter<T extends IConduit> extends AbstractConduitPack
       return null;
     }
 
-    private void applyFilter(EnumFacing dir, IConduit conduit, IFilter filter, boolean isInput) {
+    private void applyFilter(@Nonnull EnumFacing dir, @Nonnull IConduit conduit, @Nonnull IFilter filter, boolean isInput) {
       if (conduit.hasInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir)) {
         IFilterHolder<IFilter> filterHolder = conduit.getInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
-        if (isInput) {
-          filterHolder.setFilter(filterHolder.getInputFilterIndex(), dir.ordinal(), filter);
-        } else {
-          filterHolder.setFilter(filterHolder.getOutputFilterIndex(), dir.ordinal(), filter);
+        if (filterHolder != null) {
+          if (isInput) {
+            filterHolder.setFilter(filterHolder.getInputFilterIndex(), dir.ordinal(), filter);
+          } else {
+            filterHolder.setFilter(filterHolder.getOutputFilterIndex(), dir.ordinal(), filter);
+          }
         }
       }
     }

@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.transceiver.gui;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.base.network.IRemoteExec;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -21,7 +23,7 @@ public interface ITransceiverRemoteExec {
     IMessage doSetBufferStacks(boolean bufferStacks);
 
     @Override
-    default IMessage networkExec(int id, GuiPacket message) {
+    default IMessage networkExec(int id, @Nonnull GuiPacket message) {
       switch (id) {
       case EXEC_SET_BUFFER:
         return doSetBufferStacks(message.getBoolean(0));

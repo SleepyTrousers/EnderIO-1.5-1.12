@@ -24,7 +24,7 @@ public interface ISoulBinderRemoteExec {
     IMessage doDrainXP(@Nonnull EntityPlayer player, int level);
 
     @Override
-    default IMessage networkExec(int id, GuiPacket message) {
+    default IMessage networkExec(int id, @Nonnull GuiPacket message) {
       if (id == DWN_XP) {
         return doDrainXP(message.getPlayer(), message.getInt(0));
       }

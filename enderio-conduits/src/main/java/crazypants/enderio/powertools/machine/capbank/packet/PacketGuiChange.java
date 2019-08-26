@@ -8,6 +8,7 @@ import crazypants.enderio.base.config.config.DiagnosticsConfig;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.powertools.machine.capbank.TileCapBank;
 import crazypants.enderio.powertools.machine.capbank.network.ICapBankNetwork;
+import crazypants.enderio.util.EnumReader;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -16,8 +17,8 @@ public class PacketGuiChange extends PacketCapBank<PacketGuiChange, IMessage> {
 
   private int maxSend;
   private int maxRec;
-  private RedstoneControlMode inputMode;
-  private RedstoneControlMode outputMode;
+  private @Nonnull RedstoneControlMode inputMode = RedstoneControlMode.OFF;
+  private @Nonnull RedstoneControlMode outputMode = RedstoneControlMode.OFF;
 
   public PacketGuiChange() {
   }
@@ -40,8 +41,7 @@ public class PacketGuiChange extends PacketCapBank<PacketGuiChange, IMessage> {
   }
 
   @Override
-  public void toBytes(ByteBuf buf) {
-    super.toBytes(buf);
+  public void write(ByteBuf buf) {
     buf.writeInt(maxSend);
     buf.writeInt(maxRec);
     buf.writeShort(inputMode.ordinal());
@@ -49,12 +49,11 @@ public class PacketGuiChange extends PacketCapBank<PacketGuiChange, IMessage> {
   }
 
   @Override
-  public void fromBytes(ByteBuf buf) {
-    super.fromBytes(buf);
+  public void read(ByteBuf buf) {
     maxSend = buf.readInt();
     maxRec = buf.readInt();
-    inputMode = RedstoneControlMode.values()[buf.readShort()];
-    outputMode = RedstoneControlMode.values()[buf.readShort()];
+    inputMode = EnumReader.get(RedstoneControlMode.class, buf.readShort());
+    outputMode = EnumReader.get(RedstoneControlMode.class, buf.readShort());
   }
 
   @Override

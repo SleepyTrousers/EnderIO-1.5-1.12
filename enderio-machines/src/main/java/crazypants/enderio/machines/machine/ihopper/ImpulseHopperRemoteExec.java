@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.ihopper;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.base.network.IRemoteExec;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -21,7 +23,7 @@ public interface ImpulseHopperRemoteExec {
     IMessage doOpenFilterGui(boolean isLocked);
 
     @Override
-    default IMessage networkExec(int id, GuiPacket message) {
+    default IMessage networkExec(int id, @Nonnull GuiPacket message) {
       if (id == ID_LOCK_OUTPUT) {
         return doOpenFilterGui(message.getBoolean(0));
       }

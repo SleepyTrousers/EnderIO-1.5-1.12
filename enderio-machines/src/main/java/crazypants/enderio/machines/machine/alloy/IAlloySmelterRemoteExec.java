@@ -23,7 +23,7 @@ public interface IAlloySmelterRemoteExec {
     IMessage doSetMode(@Nonnull OperatingMode mode);
 
     @Override
-    default IMessage networkExec(int id, GuiPacket message) {
+    default IMessage networkExec(int id, @Nonnull GuiPacket message) {
       switch (id) {
       case ID_MODE:
         return doSetMode(message.getEnum(0, OperatingMode.class));

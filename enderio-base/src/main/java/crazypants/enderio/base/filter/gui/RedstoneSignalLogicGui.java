@@ -14,6 +14,7 @@ import com.enderio.core.common.util.DyeColor;
 import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.redstone.LogicOutputSignalFilter;
 import crazypants.enderio.base.lang.Lang;
+import crazypants.enderio.util.EnumReader;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -57,7 +58,7 @@ public class RedstoneSignalLogicGui extends AbstractFilterGui {
     super.actionPerformed(button);
     for (int i = 0; i < filter.getNumColors(); i++) {
       if (button.id == ID_COLOR + i) {
-        filter.setColor(i, DyeColor.values()[colorButtons.get(i).getColorIndex()]);
+        filter.setColor(i, EnumReader.get(DyeColor.class, colorButtons.get(i).getColorIndex()));
       }
     }
     sendFilterChange();

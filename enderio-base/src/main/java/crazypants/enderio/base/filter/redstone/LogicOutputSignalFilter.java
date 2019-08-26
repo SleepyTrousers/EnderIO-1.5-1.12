@@ -6,16 +6,23 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.conduit.redstone.signals.BundledSignal;
 import crazypants.enderio.base.conduit.redstone.signals.CombinedSignal;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import crazypants.enderio.base.lang.ILang;
 import crazypants.enderio.base.lang.Lang;
+import crazypants.enderio.util.EnumReader;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 public class LogicOutputSignalFilter implements IOutputSignalFilter {
+
+  private static final @Nonnull String NBT_SIGNAL_COLORS = "signalColors";
+  private static final @Nonnull String NBT_COLOR = "color";
+  private static final @Nonnull String NBT_TYPE = "type";
+  private static final @Nonnull String NBT_FILTER_TYPE = "filterType";
 
   @Nonnull
   protected static CombinedSignal invertSignal(CombinedSignal sig) {
@@ -29,7 +36,7 @@ public class LogicOutputSignalFilter implements IOutputSignalFilter {
       @Nonnull
       public CombinedSignal apply(@Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
         for (DyeColor sigColor : signalColors) {
-          if (bundledSignal.getSignal(sigColor).getStrength() > Signal.NONE.getStrength()) {
+          if (sigColor != null && bundledSignal.getSignal(sigColor).getStrength() > Signal.NONE.getStrength()) {
             return CombinedSignal.MAX;
           }
         }
@@ -43,7 +50,7 @@ public class LogicOutputSignalFilter implements IOutputSignalFilter {
       @Nonnull
       public CombinedSignal apply(@Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
         for (DyeColor sigColor : signalColors) {
-          if (!(bundledSignal.getSignal(sigColor).getStrength() > Signal.NONE.getStrength())) {
+          if (sigColor != null && !(bundledSignal.getSignal(sigColor).getStrength() > Signal.NONE.getStrength())) {
             return CombinedSignal.NONE;
           }
         }
@@ -79,7 +86,7 @@ public class LogicOutputSignalFilter implements IOutputSignalFilter {
       public CombinedSignal apply(@Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
         boolean output = false;
         for (DyeColor sigColor : signalColors) {
-          if (bundledSignal.getSignal(sigColor).getStrength() > Signal.NONE.getStrength()) {
+          if (sigColor != null && bundledSignal.getSignal(sigColor).getStrength() > Signal.NONE.getStrength()) {
             output = !output;
           }
         }
@@ -149,7 +156,7 @@ public class LogicOutputSignalFilter implements IOutputSignalFilter {
   @Nonnull
   public DyeColor getColor(int index) {
     if (index < signalColors.size()) {
-      return signalColors.get(index);
+      return NullHelper.first(signalColors.get(index), DyeColor.fromIndex(0));
     }
     return DyeColor.fromIndex(0);
   }
@@ -163,12 +170,12 @@ public class LogicOutputSignalFilter implements IOutputSignalFilter {
   public void readFromNBT(@Nonnull NBTTagCompound nbtRoot) {
     signalColors.clear();
 
-    NBTTagCompound t = nbtRoot.getCompoundTag("filterType");
-    type = EnumSignalFilterType.values()[t.getInteger("type")];
+    NBTTagCompound t = nbtRoot.getCompoundTag(NBT_FILTER_TYPE);
+    type = EnumReader.get(EnumSignalFilterType.class, t.getInteger(NBT_TYPE));
 
-    NBTTagList tagList = nbtRoot.getTagList("signalColors", nbtRoot.getId());
+    NBTTagList tagList = nbtRoot.getTagList(NBT_SIGNAL_COLORS, nbtRoot.getId());
     for (int i = 0; i < tagList.tagCount(); i++) {
-      signalColors.add(DyeColor.fromIndex(tagList.getCompoundTagAt(i).getInteger("color")));
+      signalColors.add(DyeColor.fromIndex(tagList.getCompoundTagAt(i).getInteger(NBT_COLOR)));
     }
   }
 
@@ -181,15 +188,15 @@ public class LogicOutputSignalFilter implements IOutputSignalFilter {
       NBTTagCompound root = new NBTTagCompound();
       if (color != null) {
         root.setInteger("index", index);
-        root.setInteger("color", color.ordinal());
+        root.setInteger(NBT_COLOR, color.ordinal());
         colorList.appendTag(root);
       }
       index++;
     }
     NBTTagCompound t = new NBTTagCompound();
-    t.setInteger("type", type.ordinal());
-    nbtRoot.setTag("filterType", t);
-    nbtRoot.setTag("signalColors", colorList);
+    t.setInteger(NBT_TYPE, type.ordinal());
+    nbtRoot.setTag(NBT_FILTER_TYPE, t);
+    nbtRoot.setTag(NBT_SIGNAL_COLORS, colorList);
   }
 
   @Override

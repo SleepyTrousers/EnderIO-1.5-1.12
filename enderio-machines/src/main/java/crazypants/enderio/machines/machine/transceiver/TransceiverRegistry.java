@@ -7,8 +7,10 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.RoundRobinIterator;
 
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
@@ -24,21 +26,21 @@ public enum TransceiverRegistry {
 
   INSTANCE;
 
-  private final List<TileTransceiver> transceivers = new ArrayList<TileTransceiver>();
-  private Map<Channel, RoundRobinIterator<TileTransceiver>> iterators = new HashMap<Channel, RoundRobinIterator<TileTransceiver>>();
+  private final @Nonnull NNList<TileTransceiver> transceivers = new NNList<TileTransceiver>();
+  private final @Nonnull Map<Channel, RoundRobinIterator<TileTransceiver>> iterators = new HashMap<Channel, RoundRobinIterator<TileTransceiver>>();
 
   private TransceiverRegistry() {
   }
 
-  public void register(TileTransceiver transceiver) {
+  public void register(@Nonnull TileTransceiver transceiver) {
     transceivers.add(transceiver);
   }
 
-  public void dergister(TileTransceiver transceiver) {
+  public void dergister(@Nonnull TileTransceiver transceiver) {
     transceivers.remove(transceiver);
   }
 
-  public RoundRobinIterator<TileTransceiver> getIterator(Channel channel) {
+  public @Nonnull RoundRobinIterator<TileTransceiver> getIterator(@Nonnull Channel channel) {
     RoundRobinIterator<TileTransceiver> res = iterators.get(channel);
     if (res == null) {
       res = new RoundRobinIterator<TileTransceiver>(transceivers);
@@ -49,7 +51,7 @@ public enum TransceiverRegistry {
 
   // Power
 
-  public void sendPower(TileTransceiver sender, int canSend, Channel channel) {
+  public void sendPower(@Nonnull TileTransceiver sender, int canSend, @Nonnull Channel channel) {
     RoundRobinIterator<TileTransceiver> iter = getIterator(channel);
     for (TileTransceiver trans : iter) {
       if (trans != sender && trans.getRecieveChannels(ChannelType.POWER).contains(channel)) {
@@ -66,7 +68,7 @@ public enum TransceiverRegistry {
 
   // Fluid
 
-  public IFluidTankProperties[] getTankInfoForChannels(TileTransceiver tileTransceiver, Set<Channel> channelsIn) {
+  public @Nonnull IFluidTankProperties[] getTankInfoForChannels(@Nullable TileTransceiver tileTransceiver, @Nonnull Set<Channel> channelsIn) {
     List<IFluidTankProperties> infos = new ArrayList<IFluidTankProperties>();
     for (TileTransceiver tran : transceivers) {
       if (tran != tileTransceiver) {
@@ -76,7 +78,7 @@ public enum TransceiverRegistry {
     return infos.toArray(new IFluidTankProperties[infos.size()]);
   }
 
-  public boolean canFill(TileTransceiver tileTransceiver, Set<Channel> set, Fluid fluid) {
+  public boolean canFill(@Nullable TileTransceiver tileTransceiver, @Nonnull Set<Channel> set, @Nonnull Fluid fluid) {
     for (TileTransceiver tran : transceivers) {
       if (tran != tileTransceiver) {
         if (tran.canReceive(set, fluid)) {
@@ -87,21 +89,23 @@ public enum TransceiverRegistry {
     return false;
   }
 
-  public int fill(TileTransceiver from, Set<Channel> list, FluidStack resource, boolean doFill) {
+  public int fill(TileTransceiver from, @Nonnull Set<Channel> list, FluidStack resource, boolean doFill) {
     if (resource == null || !from.hasPower()) {
       return 0;
     }
     for (Channel channel : list) {
-      RoundRobinIterator<TileTransceiver> iter = getIterator(channel);
-      for (TileTransceiver trans : iter) {
-        if (trans != from) {
-          int val = trans.recieveFluid(list, resource, doFill);
-          if (val > 0) {
-            if (doFill && TranceiverConfig.bucketEnergyCost.get() > 0) {
-              int powerUsed = (int) Math.max(1, TranceiverConfig.bucketEnergyCost.get() * val / 1000d);
-              from.usePower(powerUsed);
+      if (channel != null) {
+        RoundRobinIterator<TileTransceiver> iter = getIterator(channel);
+        for (TileTransceiver trans : iter) {
+          if (trans != from) {
+            int val = trans.recieveFluid(list, resource, doFill);
+            if (val > 0) {
+              if (doFill && TranceiverConfig.bucketEnergyCost.get() > 0) {
+                int powerUsed = (int) Math.max(1, TranceiverConfig.bucketEnergyCost.get() * val / 1000d);
+                from.usePower(powerUsed);
+              }
+              return val;
             }
-            return val;
           }
         }
       }
@@ -111,7 +115,7 @@ public enum TransceiverRegistry {
 
   // Item
 
-  public void sendItem(TileTransceiver from, Set<Channel> channelsIn, int slot, @Nonnull ItemStack contents) {
+  public void sendItem(@Nonnull TileTransceiver from, @Nonnull Set<Channel> channelsIn, int slot, @Nonnull ItemStack contents) {
     if (!from.hasPower()) {
       return;
     }
@@ -119,12 +123,14 @@ public enum TransceiverRegistry {
     // return;
     // }
     for (Channel channel : channelsIn) {
-      RoundRobinIterator<TileTransceiver> iter = getIterator(channel);
-      for (TileTransceiver trans : iter) {
-        if (trans != from && trans.getRecieveChannels(ChannelType.ITEM).contains(channel) && trans.getRedstoneChecksPassed()) {
-          contents = sendItem(from, slot, contents, trans);
-          if (contents.isEmpty()) {
-            return;
+      if (channel != null) {
+        RoundRobinIterator<TileTransceiver> iter = getIterator(channel);
+        for (TileTransceiver trans : iter) {
+          if (trans != from && trans.getRecieveChannels(ChannelType.ITEM).contains(channel) && trans.getRedstoneChecksPassed()) {
+            contents = sendItem(from, slot, contents, trans);
+            if (contents.isEmpty()) {
+              return;
+            }
           }
         }
       }
@@ -132,7 +138,7 @@ public enum TransceiverRegistry {
   }
 
   @Nonnull
-  private ItemStack sendItem(TileTransceiver from, int slot, @Nonnull ItemStack contents, TileTransceiver to) {
+  private ItemStack sendItem(@Nonnull TileTransceiver from, int slot, @Nonnull ItemStack contents, @Nonnull TileTransceiver to) {
     SlotDefinition sd = to.getSlotDefinition();
     // if (!to.getReceiveItemFilter().doesItemPassFilter(null, contents)) {
     // return contents;

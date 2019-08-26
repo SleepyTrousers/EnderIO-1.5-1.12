@@ -82,6 +82,8 @@ public enum EquipmentData implements IEquipmentData {
 
   ;
 
+  private static final @Nonnull String TEXTURES_MODELS_ARMOR = ":textures/models/armor/";
+
   private final @Nonnull ArmorMaterial armorMaterial, armorMaterialEmpowered;
   private final @Nonnull ToolMaterial toolMaterial;
   private final @Nonnull String repairIngotOredict, bowRepairIngotOredict;
@@ -97,17 +99,18 @@ public enum EquipmentData implements IEquipmentData {
     this.armorMaterial = NullHelper.notnullF(
         EnumHelper.addArmorMaterial(name(), name(), maxDamageFactor, damageReduction, armorEnchantability, soundEvent, toughness),
         "Failed to create armor material");
-    this.armorMaterialEmpowered = NullHelper.notnullF(EnumHelper.addArmorMaterial(name() + "_EMPOWERED", name() + "_EMPOWERED", maxDamageFactor,
-        damageReductionEmpowered, armorEnchantability, soundEvent, toughnessEmpowered), "Failed to create armor material");
+    final String nameEmpowered = name() + "_EMPOWERED";
+    this.armorMaterialEmpowered = NullHelper.notnullF(EnumHelper.addArmorMaterial(nameEmpowered, nameEmpowered, maxDamageFactor, damageReductionEmpowered,
+        armorEnchantability, soundEvent, toughnessEmpowered), "Failed to create empowered armor material");
     this.toolMaterial = NullHelper.notnullF(EnumHelper.addToolMaterial(toolMaterialName, harvestLevel, maxUses, efficiency, damage, toolEnchanability),
         "failed to add tool material dark steel");
     this.repairIngotOredict = repairIngotOredict;
     this.bowRepairIngotOredict = bowRepairIngotOredict;
-    this.texture1 = EnderIO.DOMAIN + ":textures/models/armor/" + texture1;
-    this.texture2 = EnderIO.DOMAIN + ":textures/models/armor/" + texture2;
+    this.texture1 = EnderIO.DOMAIN + TEXTURES_MODELS_ARMOR + texture1;
+    this.texture2 = EnderIO.DOMAIN + TEXTURES_MODELS_ARMOR + texture2;
     this.tier = tier;
     this.shieldDurability = 36 * maxDamageFactor;
-    this.textureShieldBase = EnderIO.DOMAIN + ":textures/models/armor/" + textureShieldBase;
+    this.textureShieldBase = EnderIO.DOMAIN + TEXTURES_MODELS_ARMOR + textureShieldBase;
   }
 
   private EquipmentData(@Nonnull ArmorMaterial armorMaterial, @Nonnull ArmorMaterial armorMaterialEmpowered, @Nonnull ToolMaterial toolMaterial,
@@ -127,25 +130,25 @@ public enum EquipmentData implements IEquipmentData {
 
   private EquipmentData(@Nonnull Builder b) {
     this( //
-        NullHelper.notnull(b.maxDamageFactor, "maxDamageFactor", " must be set"), //
-        NullHelper.notnull(b.damageReduction, "damageReduction", " must be set"), //
-        NullHelper.notnull(b.damageReductionEmpowered, "damageReductionEmpowered", " must be set"), //
-        NullHelper.notnull(b.armorEnchantability, "armorEnchantability", " must be set"), //
-        NullHelper.notnull(b.soundEvent, "soundEvent", " must be set"), //
-        NullHelper.notnull(b.toughness, "toughness", " must be set"), //
-        NullHelper.notnull(b.toughnessEmpowered, "toughnessEmpowered", " must be set"), //
-        NullHelper.notnull(b.toolMaterialName, "toolMaterialName", " must be set"), //
-        NullHelper.notnull(b.harvestLevel, "harvestLevel", " must be set"), //
-        NullHelper.notnull(b.maxUses, "maxUses", " must be set"), //
-        NullHelper.notnull(b.efficiency, "efficiency", " must be set"), //
-        NullHelper.notnull(b.damage, "damage", " must be set"), //
-        NullHelper.notnull(b.toolEnchanability, "toolEnchanability", " must be set"), //
-        NullHelper.notnull(b.repairIngotOredict, "repairIngotOredict", " must be set"), //
-        NullHelper.notnull(b.bowRepairIngotOredict, "bowRepairIngotOredict", " must be set"), //
-        NullHelper.notnull(b.texture1, "texture1", " must be set"), //
-        NullHelper.notnull(b.texture2, "texture2", " must be set"), //
-        NullHelper.notnull(b.tier, "tier", " must be set"), //
-        NullHelper.notnull(b.textureShieldBase, "textureShieldBase", " must be set") //
+        NullHelper.notnull(b.maxDamageFactor, "maxDamageFactor  must be set"), //
+        NullHelper.notnull(b.damageReduction, "damageReduction  must be set"), //
+        NullHelper.notnull(b.damageReductionEmpowered, "damageReductionEmpowered  must be set"), //
+        NullHelper.notnull(b.armorEnchantability, "armorEnchantability  must be set"), //
+        NullHelper.notnull(b.soundEvent, "soundEvent  must be set"), //
+        NullHelper.notnull(b.toughness, "toughness  must be set"), //
+        NullHelper.notnull(b.toughnessEmpowered, "toughnessEmpowered  must be set"), //
+        NullHelper.notnull(b.toolMaterialName, "toolMaterialName  must be set"), //
+        NullHelper.notnull(b.harvestLevel, "harvestLevel  must be set"), //
+        NullHelper.notnull(b.maxUses, "maxUses  must be set"), //
+        NullHelper.notnull(b.efficiency, "efficiency  must be set"), //
+        NullHelper.notnull(b.damage, "damage  must be set"), //
+        NullHelper.notnull(b.toolEnchanability, "toolEnchanability  must be set"), //
+        NullHelper.notnull(b.repairIngotOredict, "repairIngotOredict  must be set"), //
+        NullHelper.notnull(b.bowRepairIngotOredict, "bowRepairIngotOredict  must be set"), //
+        NullHelper.notnull(b.texture1, "texture1  must be set"), //
+        NullHelper.notnull(b.texture2, "texture2  must be set"), //
+        NullHelper.notnull(b.tier, "tier  must be set"), //
+        NullHelper.notnull(b.textureShieldBase, "textureShieldBase  must be set") //
     );
   }
 

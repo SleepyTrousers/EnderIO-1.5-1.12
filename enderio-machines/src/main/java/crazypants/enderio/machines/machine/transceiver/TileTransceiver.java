@@ -280,8 +280,11 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IPaint
     if (canSend > 0 && !sendTo.isEmpty()) {
       Iterator<Channel> iter = sendTo.iterator();
       while (canSend > 0 && iter.hasNext()) {
-        TransceiverRegistry.INSTANCE.sendPower(this, canSend, iter.next());
-        canSend = getMaxSendableEnergy();
+        final Channel next = iter.next();
+        if (next != null) {
+          TransceiverRegistry.INSTANCE.sendPower(this, canSend, next);
+          canSend = getMaxSendableEnergy();
+        }
       }
     }
     canSend = getMaxSendableEnergy();

@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.vacuum.xp;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.base.network.IRemoteExec;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -20,7 +22,7 @@ public interface IVacuumRangeRemoteExec {
     IMessage doSetVacuumRange(int range);
 
     @Override
-    default IMessage networkExec(int id, GuiPacket message) {
+    default IMessage networkExec(int id, @Nonnull GuiPacket message) {
       if (id == ID_SET_VACUUM_RANGE) {
         return doSetVacuumRange(message.getInt(0));
       }

@@ -163,7 +163,9 @@ public class TileWiredCharger extends AbstractPowerConsumerEntity implements ILe
       ItemStack stack = getStackInSlot(getSlotDefinition().maxInputSlot);
       if (!stack.isEmpty()) {
         IEnergyStorage chargable = PowerHandlerUtil.getCapability(stack, null);
-        return chargable.getMaxEnergyStored() / CapacitorKey.WIRED_POWER_CHARGE.get(getCapacitorData());
+        if (chargable != null) {
+          return chargable.getMaxEnergyStored() / CapacitorKey.WIRED_POWER_CHARGE.get(getCapacitorData());
+        }
       }
     }
     return super.getPowerUsePerTick();

@@ -46,14 +46,20 @@ import static crazypants.enderio.base.init.ModObject.itemSoulVial;
 
 public final class CapturedMob {
 
+  private static final @Nonnull String NBT_HEAL_F = "HealF";
+  private static final @Nonnull String NBT_FLUID_NAME = "FluidName";
+  private static final @Nonnull String NBT_COLOR = "Color";
+  private static final @Nonnull String NBT_ATTRIBUTES = "Attributes";
+
   private static final @Nonnull String PRIVATE_FINAL_FIELD_CHANGED_ITS_VALUE = "private final field changed its value";
+
   private static final @Nonnull ResourceLocation PIG = new ResourceLocation("pig");
   private static final @Nonnull ResourceLocation DRAGON = new ResourceLocation("ender_dragon");
 
-  public static final @Nonnull String ENTITY_KEY = "entity";
-  public static final @Nonnull String ENTITY_ID_KEY = "entityId";
-  public static final @Nonnull String ENTITY_TAG_KEY = "EntityTag";
-  public static final @Nonnull String CUSTOM_NAME_KEY = "customName";
+  private static final @Nonnull String ENTITY_KEY = "entity";
+  private static final @Nonnull String ENTITY_ID_KEY = "entityId";
+  private static final @Nonnull String ENTITY_TAG_KEY = "EntityTag";
+  private static final @Nonnull String CUSTOM_NAME_KEY = "customName";
 
   private static boolean bossesBlacklisted = true;
 
@@ -325,8 +331,8 @@ public final class CapturedMob {
   }
 
   public float getHealth() {
-    if (entityNbt != null && entityNbt.hasKey("HealF")) {
-      return NullHelper.notnullJ(entityNbt, PRIVATE_FINAL_FIELD_CHANGED_ITS_VALUE).getFloat("HealF");
+    if (entityNbt != null && entityNbt.hasKey(NBT_HEAL_F)) {
+      return NullHelper.notnullJ(entityNbt, PRIVATE_FINAL_FIELD_CHANGED_ITS_VALUE).getFloat(NBT_HEAL_F);
     } else {
       return Float.NaN;
     }
@@ -341,8 +347,8 @@ public final class CapturedMob {
   }
 
   public @Nullable NBTTagCompound getAttribute(@Nullable String name) {
-    if (name != null && entityNbt != null && entityNbt.hasKey("Attributes")) {
-      NBTBase tag = NullHelper.notnullJ(entityNbt, PRIVATE_FINAL_FIELD_CHANGED_ITS_VALUE).getTag("Attributes");
+    if (name != null && entityNbt != null && entityNbt.hasKey(NBT_ATTRIBUTES)) {
+      NBTBase tag = NullHelper.notnullJ(entityNbt, PRIVATE_FINAL_FIELD_CHANGED_ITS_VALUE).getTag(NBT_ATTRIBUTES);
       if (tag instanceof NBTTagList) {
         NBTTagList attributes = (NBTTagList) tag;
         for (int i = 0; i < attributes.tagCount(); i++) {
@@ -357,8 +363,8 @@ public final class CapturedMob {
   }
 
   public @Nullable DyeColor getColor() {
-    if (entityNbt != null && entityNbt.hasKey("Color")) {
-      int colorIdx = NullHelper.notnullJ(entityNbt, PRIVATE_FINAL_FIELD_CHANGED_ITS_VALUE).getInteger("Color");
+    if (entityNbt != null && entityNbt.hasKey(NBT_COLOR)) {
+      int colorIdx = NullHelper.notnullJ(entityNbt, PRIVATE_FINAL_FIELD_CHANGED_ITS_VALUE).getInteger(NBT_COLOR);
       if (colorIdx >= 0 && colorIdx <= 15) {
         return DyeColor.values()[15 - colorIdx];
       }
@@ -367,8 +373,8 @@ public final class CapturedMob {
   }
 
   public @Nullable String getFluidName() {
-    if (entityNbt != null && entityNbt.hasKey("FluidName")) {
-      return NullHelper.notnullJ(entityNbt, PRIVATE_FINAL_FIELD_CHANGED_ITS_VALUE).getString("FluidName");
+    if (entityNbt != null && entityNbt.hasKey(NBT_FLUID_NAME)) {
+      return NullHelper.notnullJ(entityNbt, PRIVATE_FINAL_FIELD_CHANGED_ITS_VALUE).getString(NBT_FLUID_NAME);
     }
     return null;
   }

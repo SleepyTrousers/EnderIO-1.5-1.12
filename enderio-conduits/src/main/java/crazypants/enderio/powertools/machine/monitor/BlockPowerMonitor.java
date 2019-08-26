@@ -10,8 +10,6 @@ import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 
 import crazypants.enderio.api.IModObject;
-import crazypants.enderio.base.EnderIOTab;
-import crazypants.enderio.base.autosave.BaseHandlers;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -39,7 +37,7 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor>
 
   private final boolean advanced;
 
-  public static BlockPowerMonitor createAdvancedPowerMonitor(@Nonnull IModObject modObject) {    
+  public static BlockPowerMonitor createAdvancedPowerMonitor(@Nonnull IModObject modObject) {
     BlockPowerMonitor result = new BlockPowerMonitor(modObject, true);
     result.init();
     return result;

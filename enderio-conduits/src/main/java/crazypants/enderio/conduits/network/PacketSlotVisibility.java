@@ -45,7 +45,7 @@ public class PacketSlotVisibility extends AbstractConduitPacket<IConduit> {
     public IMessage onMessage(PacketSlotVisibility message, MessageContext ctx) {
       IConduit conduit = message.getConduit(ctx);
       EntityPlayerMP player = ctx.getServerHandler().player;
-      if (player.openContainer instanceof ExternalConnectionContainer) {
+      if (conduit != null && player.openContainer instanceof ExternalConnectionContainer) {
         ExternalConnectionContainer ecc = (ExternalConnectionContainer) player.openContainer;
         ecc.setInOutSlotsVisible(message.filterVisible, message.upgradeVisible, conduit);
       }

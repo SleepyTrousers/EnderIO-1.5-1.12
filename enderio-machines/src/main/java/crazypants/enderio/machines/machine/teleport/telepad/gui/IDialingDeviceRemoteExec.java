@@ -24,7 +24,7 @@ public interface IDialingDeviceRemoteExec {
     IMessage doTeleport(@Nonnull BlockPos telepad, int targetID, boolean initiateTeleport);
 
     @Override
-    default IMessage networkExec(int id, GuiPacket message) {
+    default IMessage networkExec(int id, @Nonnull GuiPacket message) {
       if (id == ID_DO_TELEPORT) {
         return doTeleport(BlockPos.fromLong(message.getLong(2)), message.getInt(0), message.getBoolean(1));
       }

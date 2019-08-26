@@ -46,6 +46,10 @@ public class LootManager {
 
   // Note: Testing code is on the capacitor item. Right-click a chest in creative mode to fill it with loot. Edit the code to select which loot table to use.
 
+  private static final @Nonnull String ERROR_UNREGISTERED_ITEM = "found unregistered item";
+
+  private static final @Nonnull String RL_MINECRAFT = "minecraft";
+
   private static final @Nonnull LootCondition[] NO_CONDITIONS = new LootCondition[0];
 
   public static void init(@Nonnull EnderIOLifecycleEvent.Init.Post event) {
@@ -126,7 +130,7 @@ public class LootManager {
 
     } else if (evt.getName().equals(LootTableList.CHESTS_IGLOO_CHEST)) {
 
-      final CapturedMob polarBear = CapturedMob.create(new ResourceLocation("minecraft", "polar_bear"));
+      final CapturedMob polarBear = CapturedMob.create(new ResourceLocation(RL_MINECRAFT, "polar_bear"));
       if (polarBear != null) {
         lp.addEntry(
             new LootEntryItem(ModObject.itemSoulVial.getItemNN(), 1, 1, new LootFunction[] { setCount(1, 1), new SetNBT(NO_CONDITIONS, polarBear.toNbt(null)) },
@@ -181,7 +185,7 @@ public class LootManager {
 
     } else if (evt.getName().equals(LootTableList.CHESTS_END_CITY_TREASURE)) {
 
-      final CapturedMob shulker = CapturedMob.create(new ResourceLocation("minecraft", "shulker"));
+      final CapturedMob shulker = CapturedMob.create(new ResourceLocation(RL_MINECRAFT, "shulker"));
       if (shulker != null) {
         lp.addEntry(
             new LootEntryItem(ModObject.itemSoulVial.getItemNN(), 1, 1, new LootFunction[] { setCount(1, 1), new SetNBT(NO_CONDITIONS, shulker.toNbt(null)) },
@@ -222,7 +226,7 @@ public class LootManager {
    */
   private @Nonnull static LootEntry createLootEntry(@Nonnull Item item, int meta, int minStackSize, int maxStackSize, float chance) {
     LootCondition[] chanceCond = new LootCondition[] { new RandomChance(chance) };
-    final ResourceLocation registryName = NullHelper.notnull(item.getRegistryName(), "found unregistered item");
+    final ResourceLocation registryName = NullHelper.notnull(item.getRegistryName(), ERROR_UNREGISTERED_ITEM);
     if (item.isDamageable()) {
       return new LootEntryItem(item, 1, 1, new LootFunction[] { setCount(minStackSize, maxStackSize), setDamage(item, meta), setEnergy() }, chanceCond,
           registryName.toString() + ":" + meta);
@@ -234,7 +238,7 @@ public class LootManager {
 
   private @Nonnull static LootEntry createLootEntry(@Nonnull ItemStack stack, int minStackSize, int maxStackSize, float chance) {
     LootCondition[] chanceCond = new LootCondition[] { new RandomChance(chance) };
-    final ResourceLocation registryName = NullHelper.notnull(stack.getItem().getRegistryName(), "found unregistered item");
+    final ResourceLocation registryName = NullHelper.notnull(stack.getItem().getRegistryName(), ERROR_UNREGISTERED_ITEM);
     return new LootEntryItem(stack.getItem(), 1, 1, new LootFunction[] { setCount(minStackSize, maxStackSize), setMetadata(stack.getMetadata()) }, chanceCond,
         registryName.toString() + ":" + stack.getMetadata());
   }
@@ -249,7 +253,7 @@ public class LootManager {
 
   private @Nonnull static LootEntry createDarkSteelLootEntry(@Nonnull Item item, int meta, int minStackSize, int maxStackSize, float chance) {
     LootCondition[] chanceCond = new LootCondition[] { new RandomChance(chance) };
-    final ResourceLocation registryName = NullHelper.notnull(item.getRegistryName(), "found unregistered item");
+    final ResourceLocation registryName = NullHelper.notnull(item.getRegistryName(), ERROR_UNREGISTERED_ITEM);
     return new LootEntryItem(item, 1, 1, new LootFunction[] { setCount(minStackSize, maxStackSize), setDamage(item, meta), setUpgrades(), setEnergy() },
         chanceCond, registryName.toString() + ":" + meta);
   }

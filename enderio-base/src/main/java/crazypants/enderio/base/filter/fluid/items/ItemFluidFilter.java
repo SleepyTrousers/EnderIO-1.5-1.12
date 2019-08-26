@@ -19,6 +19,7 @@ import crazypants.enderio.base.filter.gui.ContainerFilter;
 import crazypants.enderio.base.filter.gui.FluidFilterGui;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
+import crazypants.enderio.util.EnumReader;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
@@ -103,7 +104,7 @@ public class ItemFluidFilter extends Item implements IItemFilterFluidUpgrade, IR
           world.getTileEntity(pos), ((IFilterContainer<IFluidFilter>) container).getFilter(param1));
     } else {
       return new FluidFilterGui(player.inventory, new ContainerFilter(player, null, facing, param1), null,
-          FilterRegistry.getFilterForUpgrade(player.getHeldItem(EnumHand.values()[param1])));
+          FilterRegistry.getFilterForUpgrade(player.getHeldItem(EnumReader.get(EnumHand.class, param1))));
     }
   }
 

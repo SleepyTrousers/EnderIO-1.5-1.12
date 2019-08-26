@@ -23,7 +23,7 @@ public interface IPowerMonitorRemoteExec {
     IMessage doSetConfig(boolean engineControlEnabled, float startLevel, float stopLevel);
 
     @Override
-    default IMessage networkExec(int id, GuiPacket message) {
+    default IMessage networkExec(int id, @Nonnull GuiPacket message) {
       switch (id) {
       case ID_CONFIG:
         return doSetConfig(message.getBoolean(0), Float.intBitsToFloat(message.getInt(1)), Float.intBitsToFloat(message.getInt(2)));

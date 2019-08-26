@@ -16,7 +16,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 public class SlotCraftingWrapper extends SlotCrafting {
 
   public TileInventoryPanel inventory; // Shadow super field
-  protected EntityPlayer player; // Shadow super field
+  protected final @Nonnull EntityPlayer player; // Shadow super field
   protected int amountCrafted; // Shadow super field
   private final InventoryCrafting craftMatrix;
 
@@ -49,8 +49,8 @@ public class SlotCraftingWrapper extends SlotCrafting {
         if (this.craftMatrix.getStackInSlot(i).isEmpty()) {
           this.craftMatrix.setInventorySlotContents(i, containeritemstack);
         } else {
-          ItemStack remainder = ItemHandlerHelper
-              .insertItem(inventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), containeritemstack, false);
+          ItemStack remainder = ItemHandlerHelper.insertItem(inventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), containeritemstack,
+              false);
           if (!remainder.isEmpty()) {
             if (!playerIn.inventory.addItemStackToInventory(remainder)) {
               playerIn.dropItem(remainder, false);
@@ -76,14 +76,14 @@ public class SlotCraftingWrapper extends SlotCrafting {
     }
 
     amountCrafted = 0;
-    //    InventoryCraftResult inventorycraftresult = (InventoryCraftResult)this.inventory;
-    //    IRecipe irecipe = inventorycraftresult.getRecipeUsed();
+    // InventoryCraftResult inventorycraftresult = (InventoryCraftResult)this.inventory;
+    // IRecipe irecipe = inventorycraftresult.getRecipeUsed();
     //
-    //    if (irecipe != null && !irecipe.isDynamic())
-    //    {
-    //      this.player.unlockRecipes(Lists.newArrayList(irecipe));
-    //      inventorycraftresult.setRecipeUsed((IRecipe)null);
-    //    }
+    // if (irecipe != null && !irecipe.isDynamic())
+    // {
+    // this.player.unlockRecipes(Lists.newArrayList(irecipe));
+    // inventorycraftresult.setRecipeUsed((IRecipe)null);
+    // }
   }
 
   @Override

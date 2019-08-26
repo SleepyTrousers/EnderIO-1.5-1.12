@@ -18,6 +18,7 @@ import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.items.IItemFilterItemUpgrade;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.integration.forestry.init.ForestryIntegrationObject;
+import crazypants.enderio.util.EnumReader;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
@@ -97,7 +98,7 @@ public class ItemSpeciesItemFilter extends Item implements IItemFilterItemUpgrad
           world.getTileEntity(pos), ((IFilterContainer<IItemFilter>) container).getFilter(param1));
     } else {
       return new SpeciesItemFilterGui(player.inventory, new ContainerFilter(player, null, facing, param1), null,
-          FilterRegistry.getFilterForUpgrade(player.getHeldItem(EnumHand.values()[param1])));
+          FilterRegistry.getFilterForUpgrade(player.getHeldItem(EnumReader.get(EnumHand.class, param1))));
     }
   }
 

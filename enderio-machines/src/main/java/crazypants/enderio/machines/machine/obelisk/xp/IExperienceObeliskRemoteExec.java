@@ -39,7 +39,7 @@ public interface IExperienceObeliskRemoteExec {
     IMessage doRemoveXP(@Nonnull EntityPlayer player, int level);
 
     @Override
-    default IMessage networkExec(int id, GuiPacket message) {
+    default IMessage networkExec(int id, @Nonnull GuiPacket message) {
       switch (id) {
       case ADD_XP:
         return doAddXP(message.getPlayer(), message.getInt(0));

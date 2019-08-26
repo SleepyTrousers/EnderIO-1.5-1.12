@@ -9,6 +9,7 @@ import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
 import crazypants.enderio.conduits.conduit.liquid.EnderLiquidConduit;
+import crazypants.enderio.util.EnumReader;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
@@ -18,8 +19,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class PacketEnderLiquidConduit extends PacketConduitFilter<EnderLiquidConduit> {
 
-  private DyeColor colIn;
-  private DyeColor colOut;
+  private @Nonnull DyeColor colIn = DyeColor.BLACK;
+  private @Nonnull DyeColor colOut = DyeColor.BLACK;
   private int priority;
   private boolean roundRobin;
   private boolean selfFeed;
@@ -49,8 +50,8 @@ public class PacketEnderLiquidConduit extends PacketConduitFilter<EnderLiquidCon
   @Override
   public void fromBytes(ByteBuf buf) {
     super.fromBytes(buf);
-    colIn = DyeColor.values()[buf.readShort()];
-    colOut = DyeColor.values()[buf.readShort()];
+    colIn = EnumReader.get(DyeColor.class, buf.readShort());
+    colOut = EnumReader.get(DyeColor.class, buf.readShort());
     priority = buf.readInt();
     roundRobin = buf.readBoolean();
     selfFeed = buf.readBoolean();
@@ -67,8 +68,14 @@ public class PacketEnderLiquidConduit extends PacketConduitFilter<EnderLiquidCon
         conduit.setOutputPriority(message.dir, message.priority);
         conduit.setRoundRobinEnabled(message.dir, message.roundRobin);
         conduit.setSelfFeedEnabled(message.dir, message.selfFeed);
-        applyFilter(message.dir, conduit, message.inputFilter, true);
-        applyFilter(message.dir, conduit, message.outputFilter, false);
+        final IFilter inputFilter = message.inputFilter;
+        if (inputFilter != null) {
+          applyFilter(message.dir, conduit, inputFilter, true);
+        }
+        final IFilter outputFilter = message.outputFilter;
+        if (outputFilter != null) {
+          applyFilter(message.dir, conduit, outputFilter, false);
+        }
 
         IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
         message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);
@@ -76,13 +83,15 @@ public class PacketEnderLiquidConduit extends PacketConduitFilter<EnderLiquidCon
       return null;
     }
 
-    private void applyFilter(EnumFacing dir, IConduit conduit, IFilter filter, boolean isInput) {
+    private void applyFilter(@Nonnull EnumFacing dir, @Nonnull IConduit conduit, @Nonnull IFilter filter, boolean isInput) {
       if (conduit.hasInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir)) {
         IFilterHolder<IFilter> filterHolder = conduit.getInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
-        if (isInput) {
-          filterHolder.setFilter(filterHolder.getInputFilterIndex(), dir.ordinal(), filter);
-        } else {
-          filterHolder.setFilter(filterHolder.getOutputFilterIndex(), dir.ordinal(), filter);
+        if (filterHolder != null) {
+          if (isInput) {
+            filterHolder.setFilter(filterHolder.getInputFilterIndex(), dir.ordinal(), filter);
+          } else {
+            filterHolder.setFilter(filterHolder.getOutputFilterIndex(), dir.ordinal(), filter);
+          }
         }
       }
     }

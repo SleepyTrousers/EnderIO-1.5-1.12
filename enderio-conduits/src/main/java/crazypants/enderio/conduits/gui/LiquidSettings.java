@@ -50,7 +50,7 @@ public class LiquidSettings extends BaseSettingsPanel {
   private final RedstoneModeButton<?> rsB;
   private final ColorButton colorB;
   private boolean isEnder = false;
-  private EnderLiquidConduit eCon;
+  private final EnderLiquidConduit eCon;
 
   private ColorButton insertChannelB;
   private ColorButton extractChannelB;
@@ -73,6 +73,8 @@ public class LiquidSettings extends BaseSettingsPanel {
     if (con instanceof EnderLiquidConduit) {
       isEnder = true;
       eCon = (EnderLiquidConduit) con;
+    } else {
+      eCon = null;
     }
 
     int x = leftColumn;
@@ -135,22 +137,23 @@ public class LiquidSettings extends BaseSettingsPanel {
     } else if (guiButton.id == ID_EXTRACT_FILTER_OPTIONS) {
       doOpenFilterGui(FilterGuiUtil.INDEX_INPUT_FLUID);
       return;
-    } else if (guiButton.id == ID_INSERT_CHANNEL) {
-      DyeColor col = EnumReader.get(DyeColor.class, insertChannelB.getColorIndex());
-      eCon.setOutputColor(gui.getDir(), col);
-    } else if (guiButton.id == ID_EXTRACT_CHANNEL) {
-      DyeColor col = EnumReader.get(DyeColor.class, extractChannelB.getColorIndex());
-      eCon.setInputColor(gui.getDir(), col);
-    } else if (guiButton.id == ID_PRIORITY_UP) {
-      eCon.setOutputPriority(gui.getDir(), eCon.getOutputPriority(gui.getDir()) + 1);
-    } else if (guiButton.id == ID_PRIORITY_DOWN) {
-      eCon.setOutputPriority(gui.getDir(), eCon.getOutputPriority(gui.getDir()) - 1);
-    } else if (guiButton.id == ID_ROUND_ROBIN) {
-      eCon.setRoundRobinEnabled(gui.getDir(), !eCon.isRoundRobinEnabled(gui.getDir()));
-    } else if (guiButton.id == ID_LOOP) {
-      eCon.setSelfFeedEnabled(gui.getDir(), !eCon.isSelfFeedEnabled(gui.getDir()));
     }
-    if (isEnder) {
+    if (eCon != null) {
+      if (guiButton.id == ID_INSERT_CHANNEL) {
+        DyeColor col = EnumReader.get(DyeColor.class, insertChannelB.getColorIndex());
+        eCon.setOutputColor(gui.getDir(), col);
+      } else if (guiButton.id == ID_EXTRACT_CHANNEL) {
+        DyeColor col = EnumReader.get(DyeColor.class, extractChannelB.getColorIndex());
+        eCon.setInputColor(gui.getDir(), col);
+      } else if (guiButton.id == ID_PRIORITY_UP) {
+        eCon.setOutputPriority(gui.getDir(), eCon.getOutputPriority(gui.getDir()) + 1);
+      } else if (guiButton.id == ID_PRIORITY_DOWN) {
+        eCon.setOutputPriority(gui.getDir(), eCon.getOutputPriority(gui.getDir()) - 1);
+      } else if (guiButton.id == ID_ROUND_ROBIN) {
+        eCon.setRoundRobinEnabled(gui.getDir(), !eCon.isRoundRobinEnabled(gui.getDir()));
+      } else if (guiButton.id == ID_LOOP) {
+        eCon.setSelfFeedEnabled(gui.getDir(), !eCon.isSelfFeedEnabled(gui.getDir()));
+      }
       PacketHandler.INSTANCE.sendToServer(new PacketEnderLiquidConduit(eCon, gui.getDir()));
     }
   }
