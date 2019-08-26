@@ -43,7 +43,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
   private final IExternalConnectionContainer container;
 
   public GuiExternalConnection(@Nonnull InventoryPlayer playerInv, @Nonnull IConduitBundle bundle, @Nonnull EnumFacing dir) {
-    super(new ExternalConnectionContainer(playerInv, dir, (TileConduitBundle) bundle.getEntity()), "item_filter");
+    super(new ExternalConnectionContainer(playerInv, dir, (TileConduitBundle) bundle.getEntity()).init(), "item_filter");
     container = (ExternalConnectionContainer) inventorySlots;
     this.playerInv = playerInv;
     this.bundle = bundle;

@@ -54,10 +54,11 @@ public class PacketConduitFilter<T extends IConduit> extends AbstractConduitPack
     outputFilter = FilterRegistry.readFilter(buf);
   }
 
-  public static class Handler implements IMessageHandler<PacketConduitFilter<?>, IMessage> {
+  @SuppressWarnings("rawtypes")
+  public static class Handler implements IMessageHandler<PacketConduitFilter, IMessage> {
 
     @Override
-    public IMessage onMessage(PacketConduitFilter<?> message, MessageContext ctx) {
+    public IMessage onMessage(PacketConduitFilter message, MessageContext ctx) {
       IConduit conduit = message.getConduit(ctx);
       if (conduit != null) {
         final IFilter inputFilter = message.inputFilter;

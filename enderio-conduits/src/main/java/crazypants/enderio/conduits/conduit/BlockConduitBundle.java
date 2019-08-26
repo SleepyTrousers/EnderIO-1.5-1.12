@@ -811,7 +811,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     // items, which are then sent to the client for display
     TileConduitBundle te = getTileEntity(world, pos);
     if (te != null) {
-      return new ExternalConnectionContainer(player.inventory, facing, te);
+      return new ExternalConnectionContainer(player.inventory, facing, te).init();
     }
     return null;
   }

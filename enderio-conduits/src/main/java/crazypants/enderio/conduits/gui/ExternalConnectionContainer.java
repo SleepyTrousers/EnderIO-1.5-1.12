@@ -46,7 +46,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
   private IConduit currentCon;
 
   public ExternalConnectionContainer(@Nonnull InventoryPlayer playerInv, @Nonnull EnumFacing dir, @Nonnull TileConduitBundle bundle) {
-    super(playerInv, new InventoryUpgrades(dir), bundle);
+    super(playerInv, new InventoryUpgrades(dir), bundle, true);
     this.dir = dir;
     this.player = playerInv.player;
     this.slotInputFilter = new FilterSlot(getItemHandler(), 3, 23, 71);
