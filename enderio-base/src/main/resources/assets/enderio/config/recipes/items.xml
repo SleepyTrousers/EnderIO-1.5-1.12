@@ -207,7 +207,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="END_STEEL" /><item /><item name="END_STEEL" />
         <item /><item name="END_STEEL" /><item />
       </grid>
-      <output name="enderio:item_dark_steel_shield" />
+      <output name="enderio:item_end_steel_shield" />
     </crafting>
   </recipe>
 
