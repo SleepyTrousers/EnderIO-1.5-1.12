@@ -239,7 +239,7 @@ public class UpgradeCap implements IItemHandlerModifiable {
   @Override
   public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
     if (isInventorySlot(slot)) {
-      if (stack.getItem() != ModObject.itemDarkSteelUpgrade.getItemNN()) {
+      if (Prep.isValid(stack) && stack.getItem() != ModObject.itemDarkSteelUpgrade.getItemNN()) {
         return;
       }
       NbtValue.DSUINV.setStack(getOwner().getLeft(), slot - stacks.size(), ItemHandlerHelper.copyStackWithSize(stack, 1));
