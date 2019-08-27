@@ -162,31 +162,45 @@ public class DarkSteelController {
   }
 
   @SubscribeEvent
+  @SideOnly(Side.CLIENT)
   public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
     EntityPlayer player = event.player;
 
     if (event.phase == Phase.START && !player.isSpectator() && !(player instanceof EntityOtherPlayerMP) && !(player instanceof FakePlayer)) {
-      // boots
-      updateStepHeight(player);
+      doPlayerTick(player);
+    }
+  }
 
-      // leggings
-      SpeedController.updateSpeed(player);
+  @SubscribeEvent
+  @SideOnly(Side.SERVER)
+  public static void onPlayerTickServer(TickEvent.PlayerTickEvent event) {
+    EntityPlayer player = event.player;
 
-      NNList.of(EntityEquipmentSlot.class).apply(new Callback<EntityEquipmentSlot>() {
-        @Override
-        public void apply(@Nonnull EntityEquipmentSlot slot) {
-          ItemStack item = player.getItemStackFromSlot(slot);
-          if (item.getItem() instanceof IDarkSteelItem) {
-            for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
-              if (upgrade.hasUpgrade(item)) {
-                upgrade.onPlayerTick(item, (IDarkSteelItem) item.getItem(), player);
-              }
+    if (event.phase == Phase.START && !player.isSpectator() && !(player instanceof FakePlayer)) {
+      doPlayerTick(player);
+    }
+  }
+
+  private static void doPlayerTick(@Nonnull EntityPlayer player) {
+    // boots
+    updateStepHeight(player);
+
+    // leggings
+    SpeedController.updateSpeed(player);
+
+    NNList.of(EntityEquipmentSlot.class).apply(new Callback<EntityEquipmentSlot>() {
+      @Override
+      public void apply(@Nonnull EntityEquipmentSlot slot) {
+        ItemStack item = player.getItemStackFromSlot(slot);
+        if (item.getItem() instanceof IDarkSteelItem) {
+          for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
+            if (upgrade.hasUpgrade(item)) {
+              upgrade.onPlayerTick(item, (IDarkSteelItem) item.getItem(), player);
             }
           }
         }
-      });
-
-    }
+      }
+    });
   }
 
   public static boolean isGliderUpgradeEquipped(EntityPlayer player) {
