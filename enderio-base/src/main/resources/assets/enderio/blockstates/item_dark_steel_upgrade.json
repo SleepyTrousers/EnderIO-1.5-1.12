@@ -203,6 +203,11 @@
         "textures": {
           "layer0": "enderio:items/item_dark_steel_upgrade_anvil2"
         }
+      },
+      "step_assist": {
+        "textures": {
+          "layer0": "enderio:items/item_dark_steel_upgrade_step_assist"
+        }
       }
     }
   }

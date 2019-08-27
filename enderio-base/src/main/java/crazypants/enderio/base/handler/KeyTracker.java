@@ -9,18 +9,22 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.input.Keyboard;
 
 import crazypants.enderio.api.tool.IConduitControl;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
-import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.base.handler.darksteel.gui.PacketOpenDSU;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.integration.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbeMode;
+import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
+import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.jump.JumpUpgrade;
+import crazypants.enderio.base.item.darksteel.upgrade.nightvision.NightVisionUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.sound.SoundDetector;
 import crazypants.enderio.base.item.darksteel.upgrade.sound.SoundDetectorUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.speed.SpeedUpgrade;
+import crazypants.enderio.base.item.darksteel.upgrade.stepassist.StepAssistUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.storage.PacketOpenInventory;
 import crazypants.enderio.base.item.magnet.ItemMagnet;
 import crazypants.enderio.base.item.magnet.MagnetController;
@@ -114,7 +118,7 @@ public class KeyTracker {
     StringUtil.sendEnabledChatMessage(Minecraft.getMinecraft().player, EnderIO.lang.addPrefix(messageBase), isActive);
   }
 
-  public static void toggleDarkSteelController(@Nonnull Type type, @Nonnull String messageBase) {
+  public static void toggleDarkSteelController(@Nonnull IDarkSteelUpgrade type, @Nonnull String messageBase) {
     boolean isActive = !DarkSteelController.isActive(Minecraft.getMinecraft().player, type);
     sendEnabledChatMessage(messageBase, isActive);
     DarkSteelController.setActive(Minecraft.getMinecraft().player, type, isActive);
@@ -168,7 +172,7 @@ public class KeyTracker {
     @Override
     public void execute() {
       if (JumpUpgrade.isEquipped(Minecraft.getMinecraft().player)) {
-        toggleDarkSteelController(Type.JUMP, "darksteel.upgrade.jump");
+        toggleDarkSteelController(JumpUpgrade.JUMP_ONE, "darksteel.upgrade.jump");
       }
     }
   }
@@ -177,7 +181,7 @@ public class KeyTracker {
     @Override
     public void execute() {
       if (SpeedUpgrade.isEquipped(Minecraft.getMinecraft().player)) {
-        toggleDarkSteelController(Type.SPEED, "darksteel.upgrade.speed");
+        toggleDarkSteelController(SpeedUpgrade.SPEED_ONE, "darksteel.upgrade.speed");
       }
     }
   }
@@ -186,7 +190,7 @@ public class KeyTracker {
     @Override
     public void execute() {
       if (JumpUpgrade.isEquipped(Minecraft.getMinecraft().player)) {
-        toggleDarkSteelController(Type.STEP_ASSIST, "darksteel.upgrade.stepAssist");
+        toggleDarkSteelController(StepAssistUpgrade.INSTANCE, "darksteel.upgrade.stepAssist");
       }
     }
   }
@@ -196,7 +200,7 @@ public class KeyTracker {
     public void execute() {
       EntityPlayer player = Minecraft.getMinecraft().player;
       if (GogglesOfRevealingUpgrade.isUpgradeEquipped(player)) {
-        toggleDarkSteelController(Type.GOGGLES, "darksteel.upgrades.goggles");
+        toggleDarkSteelController(GogglesOfRevealingUpgrade.INSTANCE, "darksteel.upgrades.goggles");
       }
     }
   }
@@ -239,9 +243,9 @@ public class KeyTracker {
     @Override
     public void execute() {
       if (DarkSteelController.isGliderUpgradeEquipped(Minecraft.getMinecraft().player)) {
-        toggleDarkSteelController(Type.GLIDE, "darksteel.upgrade.glider");
+        toggleDarkSteelController(GliderUpgrade.INSTANCE, "darksteel.upgrade.glider");
       } else if (DarkSteelController.isElytraUpgradeEquipped(Minecraft.getMinecraft().player)) {
-        toggleDarkSteelController(Type.ELYTRA, "darksteel.upgrade.elytra");
+        toggleDarkSteelController(ElytraUpgrade.INSTANCE, "darksteel.upgrade.elytra");
       }
     }
   }
@@ -257,7 +261,7 @@ public class KeyTracker {
         } else {
           SoundHelper.playSound(player.world, player, SoundRegistry.NIGHTVISION_OFF, 0.1f, 1.0f);
         }
-        DarkSteelController.setActive(player, Type.NIGHTVISION, isActive);
+        DarkSteelController.setActive(player, NightVisionUpgrade.INSTANCE, isActive);
       }
     }
   }

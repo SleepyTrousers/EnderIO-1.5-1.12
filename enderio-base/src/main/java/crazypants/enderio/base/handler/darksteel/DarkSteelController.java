@@ -1,8 +1,7 @@
 package crazypants.enderio.base.handler.darksteel;
 
-import java.util.EnumSet;
-
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
@@ -12,13 +11,14 @@ import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
-import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.base.integration.top.TheOneProbeUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.jump.JumpUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.nightvision.NightVisionUpgrade;
+import crazypants.enderio.base.item.darksteel.upgrade.speed.SpeedUpgrade;
+import crazypants.enderio.base.item.darksteel.upgrade.stepassist.StepAssistUpgrade;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.PowerHandlerUtil;
@@ -55,7 +55,6 @@ public class DarkSteelController {
 
   private static final @Nonnull String ENDERIO_FLAGS = EnderIO.DOMAIN + ":flags";
   private static final @Nonnull NNList<EntityEquipmentSlot> SLOTS = NNList.of(EntityEquipmentSlot.class);
-  private static final EnumSet<Type> DEFAULT_ACTIVE = EnumSet.of(Type.SPEED, Type.STEP_ASSIST, Type.JUMP);
 
   private static class Data {
     private boolean jumpPre;
@@ -72,35 +71,19 @@ public class DarkSteelController {
     }
   };
 
-  private static NBTTagCompound getActiveSetNBT(EntityPlayer player) {
+  private static NBTTagCompound getActiveSetNBT(@Nonnull EntityPlayer player) {
     NBTTagCompound entityData = player.getEntityData();
     NBTTagCompound set;
     if (entityData.hasKey(ENDERIO_FLAGS, Constants.NBT.TAG_COMPOUND)) {
       set = entityData.getCompoundTag(ENDERIO_FLAGS);
     } else {
       entityData.setTag(ENDERIO_FLAGS, set = new NBTTagCompound());
-      for (Type type : DEFAULT_ACTIVE) {
-        set.setBoolean(type.name(), false);
-      }
+      set.setBoolean(getNbtKey(SpeedUpgrade.SPEED_ONE), false);
+      set.setBoolean(getNbtKey(StepAssistUpgrade.INSTANCE), false);
+      set.setBoolean(getNbtKey(JumpUpgrade.JUMP_ONE), false);
     }
     return set;
   }
-
-  /*
-   * TODO:
-   * 
-   * - Store active set in player.getEntityData() -- ok
-   * 
-   * - Sync that data to the player on login (getEntityData is persisted server-side) -- ok
-   * 
-   * - Sync setActive() to the server always (not just for selected ones in the KeyTracker) -- ok
-   * 
-   * DONE:
-   * 
-   * - Sync active set to other players (see onTracking())
-   * 
-   * - Sync changes to other players (see PacketUpgradeState.Handler)
-   */
 
   /**
    * When a player starts tracking another player, sync a complete set of flags of the tracked player to the tracking player.
@@ -128,16 +111,19 @@ public class DarkSteelController {
 
   private static void updateFlags(@Nonnull EntityPlayerMP toUpdate, @Nonnull EntityPlayer target) {
     final NBTTagCompound activeSet = getActiveSetNBT(target);
-    for (PacketUpgradeState.Type type : PacketUpgradeState.Type.values()) {
-      PacketHandler.sendTo(new PacketUpgradeState(type, activeSet.hasKey(type.name()), target.getEntityId()), toUpdate);
-    }
+    UpgradeRegistry.getUpgrades()
+        .apply(type -> PacketHandler.sendTo(new PacketUpgradeState(type, activeSet.hasKey(getNbtKey(type)), target.getEntityId()), toUpdate));
   }
 
-  public static boolean isActive(EntityPlayer player, Type type) {
-    return getActiveSetNBT(player).hasKey(type.name());
+  public static boolean isActive(@Nonnull EntityPlayer player, @Nullable IDarkSteelUpgrade type) {
+    return type != null && getActiveSetNBT(player).hasKey(getNbtKey(type));
   }
 
-  public static void setActive(EntityPlayer player, Type type, boolean isActive) {
+  private static @Nonnull String getNbtKey(@Nonnull IDarkSteelUpgrade type) {
+    return NullHelper.first(type.getSortKey().getKey(), "nosuchupdate");
+  }
+
+  public static void setActive(@Nonnull EntityPlayer player, @Nonnull IDarkSteelUpgrade type, boolean isActive) {
     if (player.world.isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketUpgradeState(type, isActive));
     } else {
@@ -146,33 +132,29 @@ public class DarkSteelController {
     }
   }
 
-  public static void syncActive(EntityPlayer player, Type type, boolean isActive) {
+  public static void syncActive(@Nonnull EntityPlayer player, @Nonnull IDarkSteelUpgrade type, boolean isActive) {
     NBTTagCompound set = getActiveSetNBT(player);
     if (isActive) {
-      set.setBoolean(type.name(), isActive);
+      set.setBoolean(getNbtKey(type), isActive);
     } else {
-      set.removeTag(type.name());
+      set.removeTag(getNbtKey(type));
     }
   }
 
-  public static boolean isGlideActive(EntityPlayer player) {
-    return isActive(player, Type.GLIDE);
+  public static boolean isGlideActive(@Nonnull EntityPlayer player) {
+    return isActive(player, GliderUpgrade.INSTANCE);
   }
 
-  public static boolean isSpeedActive(EntityPlayer player) {
-    return isActive(player, Type.SPEED);
+  public static boolean isSpeedActive(@Nonnull EntityPlayer player) {
+    return isActive(player, SpeedUpgrade.SPEED_ONE);
   }
 
-  public static boolean isStepAssistActive(EntityPlayer player) {
-    return isActive(player, Type.STEP_ASSIST);
+  public static boolean isJumpActive(@Nonnull EntityPlayer player) {
+    return isActive(player, JumpUpgrade.JUMP_ONE);
   }
 
-  public static boolean isJumpActive(EntityPlayer player) {
-    return isActive(player, Type.JUMP);
-  }
-
-  public static boolean isElytraActive(EntityPlayer player) {
-    return isActive(player, Type.ELYTRA);
+  public static boolean isElytraActive(@Nonnull EntityPlayer player) {
+    return isActive(player, ElytraUpgrade.INSTANCE);
   }
 
   @SubscribeEvent
@@ -252,7 +234,7 @@ public class DarkSteelController {
   private static int stepHeightWarner = 0;
 
   private static void updateStepHeight(EntityPlayer player) {
-    if (!player.isSneaking() && JumpUpgrade.isEquipped(player) && isStepAssistActive(player)) {
+    if (!player.isSneaking() && StepAssistUpgrade.isEquipped(player) && isActive(player, StepAssistUpgrade.INSTANCE)) {
       if (player.stepHeight < MAGIC_STEP_HEIGHT) {
         stepHeightWarner++;
         if (Loader.isModLoaded("clienttweaks") && stepHeightWarner > 20) {
@@ -342,7 +324,7 @@ public class DarkSteelController {
 
     if (!jumpHandled && input.jump && !DATA.get().jumpPre && !player.onGround && player.motionY < 0.0D && !player.capabilities.isFlying
         && isElytraUpgradeEquipped(player) && !isElytraActive(player)) {
-      setActive(player, Type.ELYTRA, true);
+      setActive(player, ElytraUpgrade.INSTANCE, true);
     }
 
     DATA.get().wasJumping = !player.onGround;
@@ -353,7 +335,7 @@ public class DarkSteelController {
   }
 
   @SideOnly(Side.CLIENT)
-  private static boolean doJump(EntityPlayerSP player) {
+  private static boolean doJump(@Nonnull EntityPlayerSP player) {
     if (!isJumpActive(player)) {
       return false;
     }
@@ -391,14 +373,14 @@ public class DarkSteelController {
     return false;
   }
 
-  private static void updateNightvision(EntityPlayer player) {
-    if (isActive(player, Type.NIGHTVISION)) {
+  private static void updateNightvision(@Nonnull EntityPlayer player) {
+    if (isActive(player, NightVisionUpgrade.INSTANCE)) {
       if (isNightVisionUpgradeEquipped(player)) {
         player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 210, 0, true, true));
         DATA.get().wasNightvisionActive = true;
         return;
       } else {
-        setActive(player, Type.NIGHTVISION, false);
+        setActive(player, NightVisionUpgrade.INSTANCE, false);
       }
     }
     if (DATA.get().wasNightvisionActive) {
@@ -407,21 +389,21 @@ public class DarkSteelController {
     }
   }
 
-  public static boolean isNightVisionUpgradeEquipped(EntityPlayer player) {
+  public static boolean isNightVisionUpgradeEquipped(@Nonnull EntityPlayer player) {
     ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
     return NightVisionUpgrade.INSTANCE.hasUpgrade(helmet);
   }
 
-  public static boolean isNightVisionActive(EntityPlayer player) {
-    return isActive(player, Type.NIGHTVISION);
+  public static boolean isNightVisionActive(@Nonnull EntityPlayer player) {
+    return isActive(player, NightVisionUpgrade.INSTANCE);
   }
 
-  public static boolean isTopUpgradeEquipped(EntityPlayer player) {
+  public static boolean isTopUpgradeEquipped(@Nonnull EntityPlayer player) {
     ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
     return TheOneProbeUpgrade.INSTANCE.hasUpgrade(helmet);
   }
 
-  public static void setTopActive(EntityPlayer player, boolean active) {
+  public static void setTopActive(@Nonnull EntityPlayer player, boolean active) {
     ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
     if (active) {
       ItemUtil.getOrCreateNBT(helmet).setInteger(TheOneProbeUpgrade.PROBETAG, 1);
@@ -430,7 +412,7 @@ public class DarkSteelController {
     }
   }
 
-  public static boolean isTopActive(EntityPlayer player) {
+  public static boolean isTopActive(@Nonnull EntityPlayer player) {
     ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
     return ItemUtil.getOrCreateNBT(helmet).hasKey(TheOneProbeUpgrade.PROBETAG);
   }

@@ -172,6 +172,11 @@ public final class DarkSteelConfig {
   public static final IValue<Double> darkSteelBootsJumpModifier = F_JUMP.make("modifier", 1.5, //
       "Jump height modifier applied when jumping with Dark Steel Boots equipped").setRange(1, 3).sync();
 
+  public static final IValueFactory F_STEP = F_UPGRADES.section(".step_assist");
+
+  public static final IValue<Integer> stepAssistCost = F_STEP.make("upgradeCost", 2, //
+      "Number of levels required for the 'Step Assist' upgrade.").setRange(1, 99).sync();
+
   public static final IValueFactory F_ANVIL = F_UPGRADES.section(".anvil");
 
   public static final NNList<IValue<Integer>> anvilUpgradeCost = new NNList<>( //

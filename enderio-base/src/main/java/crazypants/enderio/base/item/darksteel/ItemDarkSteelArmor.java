@@ -29,7 +29,6 @@ import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.handler.darksteel.DarkSteelTooltipManager;
-import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
 import crazypants.enderio.base.integration.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.enderio.base.integration.thaumcraft.ThaumaturgeRobesUpgrade;
@@ -408,7 +407,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   public boolean isElytraFlying(@Nonnull EntityLivingBase entity, @Nonnull ItemStack itemstack, boolean shouldStop) {
     if (entity instanceof EntityPlayer && DarkSteelController.isElytraUpgradeEquipped(itemstack) && DarkSteelController.isElytraActive((EntityPlayer) entity)) {
       if (shouldStop && !entity.world.isRemote) {
-        DarkSteelController.setActive((EntityPlayer) entity, Type.ELYTRA, false);
+        DarkSteelController.setActive((EntityPlayer) entity, ElytraUpgrade.INSTANCE, false);
       }
       return true;
     } else {

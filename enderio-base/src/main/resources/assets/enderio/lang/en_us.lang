@@ -862,6 +862,9 @@ enderio.darksteel.upgrade.anvil.2.name=Pocket Anvil
 enderio.darksteel.upgrade.anvil.2.tooltip.detailed.line1=Provides full anvil functionality and allows editing upgrades of any item in the field.
 enderio.darksteel.upgrade.anvil.2.tooltip.detailed.line2=Activate with a hotkey or by shift-right-clicking any upgradeable item that doesn't do anything else when doing that.
 
+enderio.darksteel.upgrade.step_assist.name=Step Assist
+enderio.darksteel.upgrade.step_assist.tooltip.detailed.line1=Allows you to walk up blocks as if they were stairs.
+
 item.item_dark_steel_upgrade.name=Blank Dark Steel Upgrade
 item.item_dark_steel_upgrade.with=Dark Steel Upgrade "%s"
 

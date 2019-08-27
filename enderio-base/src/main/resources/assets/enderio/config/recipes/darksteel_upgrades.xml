@@ -826,4 +826,26 @@ XML editor will display that as tooltips when editing this file.
     </tanking>
   </recipe>
 
+
+  <recipe required="true" name="Dark Steel Upgrade: Step Assist">
+    <dependency upgrade="enderio:step_assist"/>
+    <crafting>
+      <grid>
+        <item/>                  <item/>                  <item name="ingotBrick"/>
+        <item/>                  <item name="ingotBrick"/><item name="ingotBrick"/>
+        <item name="ingotBrick"/><item name="ingotBrick"/><item name="enderio:item_dark_steel_upgrade:0"/>
+      </grid>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:step_assist"}'/>
+    </crafting>
+  </recipe>
+
+  <recipe required="true" name="Dark Steel Upgrade Empowering: Step Assist">
+    <dependency upgrade="enderio:step_assist"/>
+    <tanking type="FILL" logic="DSU">
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:step_assist"}'/>
+      <fluid name="xpjuice" amount="1"/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:step_assist"}'/>
+    </tanking>
+  </recipe>
+
 </enderio:recipes>

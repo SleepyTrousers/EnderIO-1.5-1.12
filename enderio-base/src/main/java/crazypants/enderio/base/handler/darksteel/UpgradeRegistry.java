@@ -14,12 +14,14 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.material.upgrades.ItemUpgrades;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistry.AddCallback;
@@ -85,6 +87,11 @@ public class UpgradeRegistry {
       return ItemUpgrades.getUpgrade(stack);
     }
     return null;
+  }
+
+  @SuppressWarnings("null")
+  public static @Nullable IDarkSteelUpgrade read(@Nonnull ByteBuf in) {
+    return ByteBufUtils.readRegistryEntry(in, REGISTRY);
   }
 
 }

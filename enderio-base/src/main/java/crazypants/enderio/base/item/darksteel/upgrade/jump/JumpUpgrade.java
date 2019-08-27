@@ -18,6 +18,7 @@ import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.handler.darksteel.Rules;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.sound.SoundHelper;
 import crazypants.enderio.base.sound.SoundRegistry;
 import net.minecraft.client.Minecraft;
@@ -27,6 +28,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -51,6 +53,28 @@ public class JumpUpgrade extends AbstractUpgrade {
     event.getRegistry().register(JUMP_TWO);
     event.getRegistry().register(JUMP_THREE);
   }
+
+  public static final @Nonnull IRule.Prerequisite HAS_ANY = new IRule.Prerequisite() {
+
+    @Override
+    @Nonnull
+    public CheckResult check(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item) {
+      for (JumpUpgrade upgrade : new JumpUpgrade[] { JUMP_ONE, JUMP_TWO, JUMP_THREE }) {
+        if (upgrade.hasUpgrade(stack, item)) {
+          return CheckResult.PASS;
+        }
+      }
+
+      return new CheckResult(Lang.DSU_CHECK_PREREQ_MISSING.toChatServer(new TextComponentTranslation(JUMP_ONE.getUnlocalizedName() + ".name")));
+    }
+
+    @Override
+    @Nonnull
+    public IDarkSteelUpgrade getPrerequisite() {
+      return JUMP_ONE;
+    }
+
+  };
 
   private final short level;
 
