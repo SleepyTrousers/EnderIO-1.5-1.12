@@ -1,6 +1,5 @@
 package crazypants.enderio.base.handler.darksteel;
 
-import crazypants.enderio.base.network.PacketHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -19,7 +18,8 @@ public class PacketUpgradeState implements IMessage {
     STEP_ASSIST,
     JUMP,
     ELYTRA,
-    GOGGLES
+    GOGGLES,
+    NIGHTVISION
   }
 
   public PacketUpgradeState() {
@@ -60,7 +60,7 @@ public class PacketUpgradeState implements IMessage {
     public IMessage onMessage(PacketUpgradeState message, MessageContext ctx) {
       Entity player = Minecraft.getMinecraft().world.getEntityByID(message.entityID);
       if (player instanceof EntityPlayer) {
-        DarkSteelController.setActive((EntityPlayer) player, message.type, message.isActive);
+        DarkSteelController.syncActive((EntityPlayer) player, message.type, message.isActive);
       }
       return null;
     }
@@ -72,8 +72,6 @@ public class PacketUpgradeState implements IMessage {
     public IMessage onMessage(PacketUpgradeState message, MessageContext ctx) {
       EntityPlayer player = ctx.getServerHandler().player;
       DarkSteelController.setActive(player, message.type, message.isActive);
-      message.entityID = player.getEntityId();
-      PacketHandler.INSTANCE.sendToDimension(message, player.world.provider.getDimension());
       return null;
     }
   }

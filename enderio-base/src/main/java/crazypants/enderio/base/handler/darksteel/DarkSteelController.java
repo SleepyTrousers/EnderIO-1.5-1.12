@@ -1,17 +1,12 @@
 package crazypants.enderio.base.handler.darksteel;
 
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
-import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.NullHelper;
-import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
@@ -24,7 +19,6 @@ import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManage
 import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.jump.JumpUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.nightvision.NightVisionUpgrade;
-import crazypants.enderio.base.item.darksteel.upgrade.speed.SpeedController;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.power.PowerHandlerUtil;
@@ -39,8 +33,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MovementInput;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -48,6 +44,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.relauncher.Side;
@@ -56,6 +53,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class DarkSteelController {
 
+  private static final @Nonnull String ENDERIO_FLAGS = EnderIO.DOMAIN + ":flags";
   private static final @Nonnull NNList<EntityEquipmentSlot> SLOTS = NNList.of(EntityEquipmentSlot.class);
   private static final EnumSet<Type> DEFAULT_ACTIVE = EnumSet.of(Type.SPEED, Type.STEP_ASSIST, Type.JUMP);
 
@@ -64,12 +62,7 @@ public class DarkSteelController {
     private boolean wasJumping;
     private int jumpCount;
     private int ticksSinceLastJump;
-
-    private final @Nonnull Map<UUID, EnumSet<Type>> allActive = new HashMap<UUID, EnumSet<Type>>();
-
-    private boolean nightVisionActive = false;
-    private boolean removeNightvision = false;
-
+    private boolean wasNightvisionActive = false;
   }
 
   private static ThreadLocal<Data> DATA = new ThreadLocal<Data>() {
@@ -79,28 +72,28 @@ public class DarkSteelController {
     }
   };
 
-  private static EnumSet<Type> getActiveSet(EntityPlayer player) {
-    EnumSet<Type> active;
-    GameProfile gameProfile = player.getGameProfile();
-    UUID id = gameProfile.getId();
-    active = id == null ? null : DATA.get().allActive.get(id);
-    if (active == null) {
-      active = DEFAULT_ACTIVE.clone();
-      if (id != null) {
-        DATA.get().allActive.put(id, active);
+  private static NBTTagCompound getActiveSetNBT(EntityPlayer player) {
+    NBTTagCompound entityData = player.getEntityData();
+    NBTTagCompound set;
+    if (entityData.hasKey(ENDERIO_FLAGS, Constants.NBT.TAG_COMPOUND)) {
+      set = entityData.getCompoundTag(ENDERIO_FLAGS);
+    } else {
+      entityData.setTag(ENDERIO_FLAGS, set = new NBTTagCompound());
+      for (Type type : DEFAULT_ACTIVE) {
+        set.setBoolean(type.name(), false);
       }
     }
-    return active;
+    return set;
   }
 
   /*
    * TODO:
    * 
-   * - Store active set in player.getEntityData()
+   * - Store active set in player.getEntityData() -- ok
    * 
-   * - Sync that data to the player on login (getEntityData is persisted server-side)
+   * - Sync that data to the player on login (getEntityData is persisted server-side) -- ok
    * 
-   * - Sync setActive() to the server always (not just for selected ones in the KeyTracker)
+   * - Sync setActive() to the server always (not just for selected ones in the KeyTracker) -- ok
    * 
    * DONE:
    * 
@@ -116,29 +109,49 @@ public class DarkSteelController {
    */
   @SubscribeEvent
   public static void onTracking(PlayerEvent.StartTracking event) {
-    final Entity target = event.getTarget();
-    if (target instanceof EntityPlayer) {
-      final EntityPlayer trackingPlayer = event.getEntityPlayer();
-      if (trackingPlayer instanceof EntityPlayerMP) {
-        final EnumSet<Type> activeSet = getActiveSet((EntityPlayer) target);
-        for (Type type : Type.values()) {
-          PacketHandler.INSTANCE.sendTo(new PacketUpgradeState(type, activeSet.contains(type), ((EntityPlayer) target).getEntityId()),
-              (EntityPlayerMP) trackingPlayer);
-        }
+    final EntityPlayer toUpdate = event.getEntityPlayer();
+    if (toUpdate instanceof EntityPlayerMP) {
+      final Entity target = event.getTarget();
+      if (target instanceof EntityPlayer) {
+        updateFlags((EntityPlayerMP) toUpdate, (EntityPlayer) target);
       }
     }
   }
 
+  @SubscribeEvent
+  public static void onLogin(PlayerLoggedInEvent event) {
+    final EntityPlayer player = event.player;
+    if (player instanceof EntityPlayerMP) {
+      updateFlags((EntityPlayerMP) player, player);
+    }
+  }
+
+  private static void updateFlags(@Nonnull EntityPlayerMP toUpdate, @Nonnull EntityPlayer target) {
+    final NBTTagCompound activeSet = getActiveSetNBT(target);
+    for (PacketUpgradeState.Type type : PacketUpgradeState.Type.values()) {
+      PacketHandler.sendTo(new PacketUpgradeState(type, activeSet.hasKey(type.name()), target.getEntityId()), toUpdate);
+    }
+  }
+
   public static boolean isActive(EntityPlayer player, Type type) {
-    return getActiveSet(player).contains(type);
+    return getActiveSetNBT(player).hasKey(type.name());
   }
 
   public static void setActive(EntityPlayer player, Type type, boolean isActive) {
-    EnumSet<Type> set = getActiveSet(player);
-    if (isActive) {
-      set.add(type);
+    if (player.world.isRemote) {
+      PacketHandler.INSTANCE.sendToServer(new PacketUpgradeState(type, isActive));
     } else {
-      set.remove(type);
+      syncActive(player, type, isActive);
+      PacketHandler.INSTANCE.sendToDimension(new PacketUpgradeState(type, isActive, player.getEntityId()), player.world.provider.getDimension());
+    }
+  }
+
+  public static void syncActive(EntityPlayer player, Type type, boolean isActive) {
+    NBTTagCompound set = getActiveSetNBT(player);
+    if (isActive) {
+      set.setBoolean(type.name(), isActive);
+    } else {
+      set.removeTag(type.name());
     }
   }
 
@@ -297,16 +310,6 @@ public class DarkSteelController {
     return res;
   }
 
-  @SubscribeEvent
-  public static void onStartTracking(PlayerEvent.StartTracking event) {
-    if (event.getTarget() instanceof EntityPlayerMP) {
-      for (PacketUpgradeState.Type type : PacketUpgradeState.Type.values()) {
-        PacketHandler.sendTo(new PacketUpgradeState(type, isActive((EntityPlayer) event.getTarget(), type), event.getTarget().getEntityId()),
-            (EntityPlayerMP) event.getEntityPlayer());
-      }
-    }
-  }
-
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
   public static void onClientTick(TickEvent.ClientTickEvent event) {
@@ -340,7 +343,6 @@ public class DarkSteelController {
     if (!jumpHandled && input.jump && !DATA.get().jumpPre && !player.onGround && player.motionY < 0.0D && !player.capabilities.isFlying
         && isElytraUpgradeEquipped(player) && !isElytraActive(player)) {
       setActive(player, Type.ELYTRA, true);
-      PacketHandler.INSTANCE.sendToServer(new PacketUpgradeState(Type.ELYTRA, true));
     }
 
     DATA.get().wasJumping = !player.onGround;
@@ -390,16 +392,18 @@ public class DarkSteelController {
   }
 
   private static void updateNightvision(EntityPlayer player) {
-    if (isNightVisionUpgradeEquipped(player) && DATA.get().nightVisionActive) {
-      player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 210, 0, true, true));
+    if (isActive(player, Type.NIGHTVISION)) {
+      if (isNightVisionUpgradeEquipped(player)) {
+        player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 210, 0, true, true));
+        DATA.get().wasNightvisionActive = true;
+        return;
+      } else {
+        setActive(player, Type.NIGHTVISION, false);
+      }
     }
-    if (!isNightVisionUpgradeEquipped(player) && DATA.get().nightVisionActive) {
-      DATA.get().nightVisionActive = false;
-      DATA.get().removeNightvision = true;
-    }
-    if (DATA.get().removeNightvision) {
+    if (DATA.get().wasNightvisionActive) {
       player.removePotionEffect(MobEffects.NIGHT_VISION);
-      DATA.get().removeNightvision = false;
+      DATA.get().wasNightvisionActive = false;
     }
   }
 
@@ -408,15 +412,8 @@ public class DarkSteelController {
     return NightVisionUpgrade.INSTANCE.hasUpgrade(helmet);
   }
 
-  public static void setNightVisionActive(boolean isNightVisionActive) {
-    if (DATA.get().nightVisionActive && !isNightVisionActive) {
-      DATA.get().removeNightvision = true;
-    }
-    DATA.get().nightVisionActive = isNightVisionActive;
-  }
-
-  public static boolean isNightVisionActive() {
-    return DATA.get().nightVisionActive;
+  public static boolean isNightVisionActive(EntityPlayer player) {
+    return isActive(player, Type.NIGHTVISION);
   }
 
   public static boolean isTopUpgradeEquipped(EntityPlayer player) {

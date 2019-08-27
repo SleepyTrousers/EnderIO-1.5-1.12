@@ -29,7 +29,6 @@ import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.handler.darksteel.DarkSteelTooltipManager;
-import crazypants.enderio.base.handler.darksteel.PacketUpgradeState;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
 import crazypants.enderio.base.integration.thaumcraft.GogglesOfRevealingUpgrade;
@@ -47,7 +46,6 @@ import crazypants.enderio.base.item.darksteel.upgrade.storage.StorageCap;
 import crazypants.enderio.base.item.darksteel.upgrade.storage.StorageContainer;
 import crazypants.enderio.base.item.darksteel.upgrade.storage.StorageGui;
 import crazypants.enderio.base.lang.Lang;
-import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.PaintUtil.IWithPaintName;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
@@ -411,7 +409,6 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
     if (entity instanceof EntityPlayer && DarkSteelController.isElytraUpgradeEquipped(itemstack) && DarkSteelController.isElytraActive((EntityPlayer) entity)) {
       if (shouldStop && !entity.world.isRemote) {
         DarkSteelController.setActive((EntityPlayer) entity, Type.ELYTRA, false);
-        PacketHandler.INSTANCE.sendToDimension(new PacketUpgradeState(Type.ELYTRA, false, entity.getEntityId()), entity.world.provider.getDimension());
       }
       return true;
     } else {

@@ -12,7 +12,6 @@ import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
-import crazypants.enderio.base.handler.darksteel.PacketUpgradeState;
 import crazypants.enderio.base.handler.darksteel.PacketUpgradeState.Type;
 import crazypants.enderio.base.handler.darksteel.gui.PacketOpenDSU;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
@@ -119,7 +118,6 @@ public class KeyTracker {
     boolean isActive = !DarkSteelController.isActive(Minecraft.getMinecraft().player, type);
     sendEnabledChatMessage(messageBase, isActive);
     DarkSteelController.setActive(Minecraft.getMinecraft().player, type, isActive);
-    PacketHandler.INSTANCE.sendToServer(new PacketUpgradeState(type, isActive));
   }
 
   public static boolean isSoundDetectorUpgradeEquipped(EntityPlayerSP player) {
@@ -253,13 +251,13 @@ public class KeyTracker {
     public void execute() {
       EntityPlayer player = Minecraft.getMinecraft().player;
       if (DarkSteelController.isNightVisionUpgradeEquipped(player)) {
-        boolean isActive = !DarkSteelController.isNightVisionActive();
+        boolean isActive = !DarkSteelController.isNightVisionActive(player);
         if (isActive) {
           SoundHelper.playSound(player.world, player, SoundRegistry.NIGHTVISION_ON, 0.1f, player.world.rand.nextFloat() * 0.4f - 0.2f + 1.0f);
         } else {
           SoundHelper.playSound(player.world, player, SoundRegistry.NIGHTVISION_OFF, 0.1f, 1.0f);
         }
-        DarkSteelController.setNightVisionActive(isActive);
+        DarkSteelController.setActive(player, Type.NIGHTVISION, isActive);
       }
     }
   }
