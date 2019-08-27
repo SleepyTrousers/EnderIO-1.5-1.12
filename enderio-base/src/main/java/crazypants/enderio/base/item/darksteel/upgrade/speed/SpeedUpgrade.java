@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
+import com.google.common.collect.Multimap;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
@@ -12,9 +13,14 @@ import crazypants.enderio.api.upgrades.IRule;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
+import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.handler.darksteel.Rules;
+import crazypants.enderio.base.item.darksteel.attributes.DarkSteelAttributeModifiers;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
+import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -84,6 +90,29 @@ public class SpeedUpgrade extends AbstractUpgrade {
 
   public short getLevel() {
     return level;
+  }
+
+  @Override
+  public void addAttributeModifiers(@Nonnull EntityEquipmentSlot slot, @Nonnull ItemStack stack, @Nonnull Multimap<String, AttributeModifier> map) {
+    if (slot == EntityEquipmentSlot.LEGS) {
+      EnergyUpgradeHolder upgradeHolder = EnergyUpgradeManager.loadFromItem(stack);
+      if (upgradeHolder != null && upgradeHolder.getEnergy() > 0) {
+        AttributeModifier modifier = DarkSteelAttributeModifiers.getWalkSpeed(getLevel(), upgradeHolder.getUpgrade().getLevel());
+        map.put(SharedMonsterAttributes.MOVEMENT_SPEED.getName(), modifier);
+      }
+    }
+  }
+
+  @Override
+  public void onPlayerTick(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item, @Nonnull EntityPlayer player) {
+    if (player.world.isRemote) {
+      return;
+    }
+
+    double horzMovement = Math.abs(player.distanceWalkedModified - player.prevDistanceWalkedModified);
+    int costModifier = (player.isSprinting() ? DarkSteelConfig.darkSteelSpeedSprintEnergyCost : DarkSteelConfig.darkSteelSpeedWalkEnergyCost).get();
+    int cost = (int) (horzMovement * costModifier);
+    DarkSteelController.usePlayerEnergy(player, EntityEquipmentSlot.LEGS, cost);
   }
 
 }

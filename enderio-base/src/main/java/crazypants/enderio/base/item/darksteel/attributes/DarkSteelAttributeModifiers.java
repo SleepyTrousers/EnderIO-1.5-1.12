@@ -47,28 +47,6 @@ public class DarkSteelAttributeModifiers {
           new DoubleSteelAttributeModifier(UU_SPEED, DarkSteelConfig.darkSteelSpeedWalkModifier2, DarkSteelConfig.darkSteelSpeedBonusEmpowered4),
           new DoubleSteelAttributeModifier(UU_SPEED, DarkSteelConfig.darkSteelSpeedWalkModifier3, DarkSteelConfig.darkSteelSpeedBonusEmpowered4)));
 
-  private static final @Nonnull NNList<NNList<AttributeModifier>> SPRINT_SPEED = new NNList<>( //
-      new NNList<>( //
-          new DoubleSteelAttributeModifier(UU_SPEED, DarkSteelConfig.darkSteelSpeedSprintModifier1, DarkSteelConfig.darkSteelSpeedBonusEmpowered),
-          new DoubleSteelAttributeModifier(UU_SPEED, DarkSteelConfig.darkSteelSpeedSprintModifier2, DarkSteelConfig.darkSteelSpeedBonusEmpowered),
-          new DoubleSteelAttributeModifier(UU_SPEED, DarkSteelConfig.darkSteelSpeedSprintModifier3, DarkSteelConfig.darkSteelSpeedBonusEmpowered)),
-      new NNList<>( //
-          new DoubleSteelAttributeModifier(UU_SPEED, DarkSteelConfig.darkSteelSpeedSprintModifier1, DarkSteelConfig.darkSteelSpeedBonusEmpowered1),
-          new DoubleSteelAttributeModifier(UU_SPEED, DarkSteelConfig.darkSteelSpeedSprintModifier2, DarkSteelConfig.darkSteelSpeedBonusEmpowered1),
-          new DoubleSteelAttributeModifier(UU_SPEED, DarkSteelConfig.darkSteelSpeedSprintModifier3, DarkSteelConfig.darkSteelSpeedBonusEmpowered1)),
-      new NNList<>( //
-          new DoubleSteelAttributeModifier(UU_SPEED, DarkSteelConfig.darkSteelSpeedSprintModifier1, DarkSteelConfig.darkSteelSpeedBonusEmpowered2),
-          new DoubleSteelAttributeModifier(UU_SPEED, DarkSteelConfig.darkSteelSpeedSprintModifier2, DarkSteelConfig.darkSteelSpeedBonusEmpowered2),
-          new DoubleSteelAttributeModifier(UU_SPEED, DarkSteelConfig.darkSteelSpeedSprintModifier3, DarkSteelConfig.darkSteelSpeedBonusEmpowered2)),
-      new NNList<>( //
-          new DoubleSteelAttributeModifier(UU_SPEED, DarkSteelConfig.darkSteelSpeedSprintModifier1, DarkSteelConfig.darkSteelSpeedBonusEmpowered2),
-          new DoubleSteelAttributeModifier(UU_SPEED, DarkSteelConfig.darkSteelSpeedSprintModifier2, DarkSteelConfig.darkSteelSpeedBonusEmpowered2),
-          new DoubleSteelAttributeModifier(UU_SPEED, DarkSteelConfig.darkSteelSpeedSprintModifier3, DarkSteelConfig.darkSteelSpeedBonusEmpowered2)),
-      new NNList<>( //
-          new DoubleSteelAttributeModifier(UU_SPEED, DarkSteelConfig.darkSteelSpeedSprintModifier1, DarkSteelConfig.darkSteelSpeedBonusEmpowered3),
-          new DoubleSteelAttributeModifier(UU_SPEED, DarkSteelConfig.darkSteelSpeedSprintModifier2, DarkSteelConfig.darkSteelSpeedBonusEmpowered3),
-          new DoubleSteelAttributeModifier(UU_SPEED, DarkSteelConfig.darkSteelSpeedSprintModifier3, DarkSteelConfig.darkSteelSpeedBonusEmpowered3)));
-
   public static @Nonnull AttributeModifier getAttackDamage(int level) {
     return ATTACK_DAMAGE.get(level);
   }
@@ -77,8 +55,8 @@ public class DarkSteelAttributeModifiers {
     return ATTACK_SPEED.get(level);
   }
 
-  public static @Nonnull AttributeModifier getWalkSpeed(boolean sprint, int level, int energyLevel) {
-    return (sprint ? SPRINT_SPEED : WALK_SPEED).get(energyLevel).get(level - 1);
+  public static @Nonnull AttributeModifier getWalkSpeed(int level, int energyLevel) {
+    return WALK_SPEED.get(energyLevel).get(level - 1);
   }
 
 }

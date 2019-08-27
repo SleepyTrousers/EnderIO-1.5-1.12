@@ -56,6 +56,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class DarkSteelController {
 
+  private static final @Nonnull NNList<EntityEquipmentSlot> SLOTS = NNList.of(EntityEquipmentSlot.class);
   private static final EnumSet<Type> DEFAULT_ACTIVE = EnumSet.of(Type.SPEED, Type.STEP_ASSIST, Type.JUMP);
 
   private static class Data {
@@ -164,20 +165,16 @@ public class DarkSteelController {
   @SubscribeEvent
   @SideOnly(Side.CLIENT)
   public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-    EntityPlayer player = event.player;
-
-    if (event.phase == Phase.START && !player.isSpectator() && !(player instanceof EntityOtherPlayerMP) && !(player instanceof FakePlayer)) {
-      doPlayerTick(player);
+    if (event.phase == Phase.START && !event.player.isSpectator() && !(event.player instanceof EntityOtherPlayerMP) && !(event.player instanceof FakePlayer)) {
+      doPlayerTick(event.player);
     }
   }
 
   @SubscribeEvent
   @SideOnly(Side.SERVER)
   public static void onPlayerTickServer(TickEvent.PlayerTickEvent event) {
-    EntityPlayer player = event.player;
-
-    if (event.phase == Phase.START && !player.isSpectator() && !(player instanceof FakePlayer)) {
-      doPlayerTick(player);
+    if (event.phase == Phase.START && !event.player.isSpectator() && !(event.player instanceof FakePlayer)) {
+      doPlayerTick(event.player);
     }
   }
 
@@ -185,18 +182,12 @@ public class DarkSteelController {
     // boots
     updateStepHeight(player);
 
-    // leggings
-    SpeedController.updateSpeed(player);
-
-    NNList.of(EntityEquipmentSlot.class).apply(new Callback<EntityEquipmentSlot>() {
-      @Override
-      public void apply(@Nonnull EntityEquipmentSlot slot) {
-        ItemStack item = player.getItemStackFromSlot(slot);
-        if (item.getItem() instanceof IDarkSteelItem) {
-          for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
-            if (upgrade.hasUpgrade(item)) {
-              upgrade.onPlayerTick(item, (IDarkSteelItem) item.getItem(), player);
-            }
+    SLOTS.apply(slot -> {
+      ItemStack stack = player.getItemStackFromSlot(slot);
+      if (stack.getItem() instanceof IDarkSteelItem) {
+        for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
+          if (upgrade.hasUpgrade(stack)) {
+            upgrade.onPlayerTick(stack, (IDarkSteelItem) stack.getItem(), player);
           }
         }
       }

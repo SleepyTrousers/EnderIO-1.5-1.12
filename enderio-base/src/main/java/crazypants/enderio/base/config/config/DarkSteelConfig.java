@@ -135,35 +135,27 @@ public final class DarkSteelConfig {
   public static final IValueFactory F_SPEED = F_UPGRADES.section(".speed");
 
   public static final IValue<Float> darkSteelSpeedWalkModifier1 = F_SPEED.make("walkModifier1", 0.15f, //
-      "Speed modifier applied when walking in the Dark Steel Leggings with Speed I.").setRange(0, 32).sync();
-  public static final IValue<Float> darkSteelSpeedSprintModifier1 = F_SPEED.make("sprintModifier1", 0.10f, //
-      "Speed modifier applied when sprinting in the Dark Steel Leggings with Speed I.").setRange(0, 32).sync();
-
+      "Speed modifier applied by the Dark Steel Leggings with Speed I.").setRange(0, 32).sync();
   public static final IValue<Float> darkSteelSpeedWalkModifier2 = F_SPEED.make("walkModifier2", 0.30f, //
-      "Speed modifier applied when walking in the Dark Steel Leggings with Speed II.").setRange(0, 32).sync();
-  public static final IValue<Float> darkSteelSpeedSprintModifier2 = F_SPEED.make("sprintModifier2", 0.30f, //
-      "Speed modifier applied when sprinting in the Dark Steel Leggings with Speed II.").setRange(0, 32).sync();
-
+      "Speed modifier applied by the Dark Steel Leggings with Speed II.").setRange(0, 32).sync();
   public static final IValue<Float> darkSteelSpeedWalkModifier3 = F_SPEED.make("walkModifier3", 0.45f, //
-      "Speed modifier applied when walking in the Dark Steel Leggings with Speed III.").setRange(0, 32).sync();
-  public static final IValue<Float> darkSteelSpeedSprintModifier3 = F_SPEED.make("sprintModifier3", 0.50f, //
-      "Speed modifier applied when sprinting in the Dark Steel Leggings with Speed III.").setRange(0, 32).sync();
+      "Speed modifier applied by the Dark Steel Leggings with Speed III.").setRange(0, 32).sync();
 
   public static final IValue<Integer> darkSteelSpeedWalkEnergyCost = F_SPEED.make("walkEnergyCost", 80, //
       "Energy cost of walking one block in the Dark Steel Leggings with Speed (any level).").setMin(0).sync();
   public static final IValue<Integer> darkSteelSpeedSprintEnergyCost = F_SPEED.make("sprintEnergyCost", 320, //
-      "Energy cost of walking one block in the Dark Steel Leggings with Speed (any level).").setMin(0).sync();
+      "Energy cost of running one block in the Dark Steel Leggings with Speed (any level).").setMin(0).sync();
 
   public static final IValue<Float> darkSteelSpeedBonusEmpowered = F_SPEED.make("empoweredBonus1", 1f, //
-      "The extra effectiveness of the speed upgrade when the Leggings are empowered I and have energy.").setRange(0, 2).sync();
+      "The extra effectiveness of the speed upgrade when the Leggings are empowered I and have energy.").setRange(0, 5).sync();
   public static final IValue<Float> darkSteelSpeedBonusEmpowered1 = F_SPEED.make("empoweredBonus2", 1.10f, //
-      "The extra effectiveness of the speed upgrade when the Leggings are empowered II and have energy.").setRange(0, 2).sync();
+      "The extra effectiveness of the speed upgrade when the Leggings are empowered II and have energy.").setRange(0, 5).sync();
   public static final IValue<Float> darkSteelSpeedBonusEmpowered2 = F_SPEED.make("empoweredBonus3", 1.50f, //
-      "The extra effectiveness of the speed upgrade when the Leggings are empowered III and have energy.").setRange(0, 2).sync();
+      "The extra effectiveness of the speed upgrade when the Leggings are empowered III and have energy.").setRange(0, 5).sync();
   public static final IValue<Float> darkSteelSpeedBonusEmpowered3 = F_SPEED.make("empoweredBonus4", 2.00f, //
-      "The extra effectiveness of the speed upgrade when the Leggings are empowered IV and have energy.").setRange(0, 2).sync();
+      "The extra effectiveness of the speed upgrade when the Leggings are empowered IV and have energy.").setRange(0, 5).sync();
   public static final IValue<Float> darkSteelSpeedBonusEmpowered4 = F_SPEED.make("empoweredBonus5", 2.50f, //
-      "The extra effectiveness of the speed upgrade when the Leggings are empowered V and have energy.").setRange(0, 2).sync();
+      "The extra effectiveness of the speed upgrade when the Leggings are empowered V and have energy.").setRange(0, 5).sync();
 
   public static final NNList<IValue<Integer>> speedUpgradeCost = new NNList<>( //
       F_SPEED.make("upgradeCost1", 4, "Number of levels required for the 'Speed I' upgrade.").setRange(1, 99).sync(), //
