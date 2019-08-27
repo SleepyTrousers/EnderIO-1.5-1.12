@@ -168,4 +168,8 @@ public interface IDarkSteelItem {
     openUpgradeGui(player, hand == EnumHand.MAIN_HAND ? EntityEquipmentSlot.MAINHAND : EntityEquipmentSlot.OFFHAND);
   }
 
+  default boolean canUpgradeBeRemoved(@Nonnull ItemStack stack, @Nullable IDarkSteelUpgrade upgrade) {
+    return true;
+  }
+
 }

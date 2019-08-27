@@ -14,6 +14,7 @@ import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
+import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.api.upgrades.IEquipmentData;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
@@ -64,6 +65,11 @@ public class ItemTravelStaff extends Item implements IItemOfTravel, IAdvancedToo
       EnergyUpgrade.UPGRADES.get(0).addToItem(stack, this);
     }
     return IDarkSteelItem.super.initCapabilities(stack, nbt, capProv);
+  }
+
+  @Override
+  public boolean canUpgradeBeRemoved(@Nonnull ItemStack stack, @Nullable IDarkSteelUpgrade upgrade) {
+    return upgrade != EnergyUpgrade.UPGRADES.get(0);
   }
 
   @Override

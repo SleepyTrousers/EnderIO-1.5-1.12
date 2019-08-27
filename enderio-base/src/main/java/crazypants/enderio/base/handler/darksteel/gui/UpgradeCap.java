@@ -182,8 +182,10 @@ public class UpgradeCap implements IItemHandlerModifiable {
     IDarkSteelUpgrade upgrade = stacks.get(slot).upgrade;
     boolean existing = upgrade.hasUpgrade(owner.getLeft());
 
-    if (!existing || !stacks.stream().map(holder -> holder.upgrade).filter(up -> up != upgrade && up.hasUpgrade(owner.getLeft()))
-        .allMatch(up -> up.canOtherBeRemoved(owner.getLeft(), owner.getRight(), upgrade))) {
+    if (!existing
+        || !stacks.stream().map(holder -> holder.upgrade).filter(up -> up != upgrade && up.hasUpgrade(owner.getLeft()))
+            .allMatch(up -> up.canOtherBeRemoved(owner.getLeft(), owner.getRight(), upgrade))
+        || !owner.getRight().canUpgradeBeRemoved(owner.getLeft(), upgrade)) {
       return ItemStack.EMPTY;
     }
 
