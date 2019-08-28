@@ -10,6 +10,7 @@ import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.TileEntityEio;
+import crazypants.enderio.util.EnumReader;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.MapColor;
@@ -32,17 +33,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public abstract class BlockReinforcedObsidianBase extends BlockEio<TileEntityEio> implements IResourceTooltipProvider {
 
   protected BlockReinforcedObsidianBase(@Nonnull IModObject modObject) {
-    super(modObject, Material.ROCK);
+    super(modObject, Material.ROCK, MapColor.OBSIDIAN);
     setHardness(50.0F);
     setResistance(2000.0F);
     setSoundType(SoundType.STONE);
     setCreativeTab(EnderIOTab.tabEnderIO);
     setShape(mkShape(BlockFaceShape.SOLID));
-  }
-
-  @Override
-  public @Nonnull MapColor getMapColor(@Nonnull IBlockState state, @Nonnull IBlockAccess worldIn, @Nonnull BlockPos pos) {
-    return MapColor.OBSIDIAN;
   }
 
   private static final int[] COLS = { 0x3c3056, 0x241e31, 0x1e182b, 0x0e0e15, 0x07070b };
@@ -51,18 +47,20 @@ public abstract class BlockReinforcedObsidianBase extends BlockEio<TileEntityEio
   @SideOnly(Side.CLIENT)
   public void randomDisplayTick(@Nonnull IBlockState state, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull Random rand) {
     if (rand.nextFloat() < .25f) {
-      EnumFacing face = EnumFacing.values()[rand.nextInt(EnumFacing.values().length)];
-      double xd = face.getFrontOffsetX() == 0 ? rand.nextDouble() : face.getFrontOffsetX() < 0 ? -0.05 : 1.05;
-      double yd = face.getFrontOffsetY() == 0 ? rand.nextDouble() : face.getFrontOffsetY() < 0 ? -0.05 : 1.05;
-      double zd = face.getFrontOffsetZ() == 0 ? rand.nextDouble() : face.getFrontOffsetZ() < 0 ? -0.05 : 1.05;
+      EnumFacing face = EnumReader.get(EnumFacing.class, rand.nextInt(EnumFacing.values().length));
+      if (!worldIn.isBlockNormalCube(pos.offset(face), false)) {
+        double xd = face.getFrontOffsetX() == 0 ? rand.nextDouble() : face.getFrontOffsetX() < 0 ? -0.05 : 1.05;
+        double yd = face.getFrontOffsetY() == 0 ? rand.nextDouble() : face.getFrontOffsetY() < 0 ? -0.05 : 1.05;
+        double zd = face.getFrontOffsetZ() == 0 ? rand.nextDouble() : face.getFrontOffsetZ() < 0 ? -0.05 : 1.05;
 
-      double x = pos.getX() + xd;
-      double y = pos.getY() + yd;
-      double z = pos.getZ() + zd;
+        double x = pos.getX() + xd;
+        double y = pos.getY() + yd;
+        double z = pos.getZ() + zd;
 
-      int col = COLS[rand.nextInt(COLS.length)];
+        int col = COLS[rand.nextInt(COLS.length)];
 
-      worldIn.spawnParticle(EnumParticleTypes.REDSTONE, x, y, z, (col >> 16 & 255) / 255d, (col >> 8 & 255) / 255d, (col & 255) / 255d, new int[0]);
+        worldIn.spawnParticle(EnumParticleTypes.REDSTONE, x, y, z, (col >> 16 & 255) / 255d, (col >> 8 & 255) / 255d, (col & 255) / 255d, new int[0]);
+      }
     }
   }
 
