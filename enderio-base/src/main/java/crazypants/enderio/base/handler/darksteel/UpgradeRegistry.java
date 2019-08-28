@@ -78,8 +78,12 @@ public class UpgradeRegistry {
   }
 
   public static boolean isUpgradeItem(@Nonnull IDarkSteelUpgrade upgrade, @Nonnull ItemStack stack) {
+    return isUpgradeItem(upgrade, stack, true);
+  }
+
+  public static boolean isUpgradeItem(@Nonnull IDarkSteelUpgrade upgrade, @Nonnull ItemStack stack, Boolean enabled) {
     return stack.getCount() == 1 && stack.getItem() == ModObject.itemDarkSteelUpgrade.getItemNN() && ItemUpgrades.getUpgrade(stack) == upgrade
-        && ItemUpgrades.isEnabled(stack);
+        && (enabled == null || ItemUpgrades.isEnabled(stack) == enabled);
   }
 
   public static @Nullable IDarkSteelUpgrade getUpgradeFromItem(@Nonnull ItemStack stack) {

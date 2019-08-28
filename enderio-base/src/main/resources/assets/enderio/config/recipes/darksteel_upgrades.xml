@@ -79,9 +79,11 @@ XML editor will display that as tooltips when editing this file.
   <recipe required="true" name="Dark Steel Upgrade: Direct">
     <dependency upgrade="enderio:direct"/>
     <crafting>
-      <shapeless>
-        <item name="enderio:item_dark_steel_upgrade:0"/><item name="VIBRANT_ALLOY_BLOCK"/>
-      </shapeless>
+      <grid>
+        <item name="VIBRANT_ALLOY_NUGGET"/><item name="VIBRANT_ALLOY"/><item name="VIBRANT_ALLOY_NUGGET"/>
+        <item name="VIBRANT_ALLOY"/><item name="oredict:enderpearl"/><item name="VIBRANT_ALLOY"/>
+        <item name="VIBRANT_ALLOY_NUGGET"/><item name="enderio:item_dark_steel_upgrade:0"/><item name="VIBRANT_ALLOY_NUGGET"/>
+      </grid>
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:direct"}'/>
     </crafting>
   </recipe>
@@ -377,7 +379,7 @@ XML editor will display that as tooltips when editing this file.
 
 
   <recipe required="true" name="Dark Steel Upgrade: Nightvision">
-    <dependency upgrade="enderio:direct"/>
+    <dependency upgrade="enderio:nightvision"/>
     <crafting>
       <shapeless>
         <item name="enderio:item_dark_steel_upgrade:0"/><item potion="minecraft:night_vision"/>
@@ -387,11 +389,11 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe required="true" name="Dark Steel Upgrade Empowering: Nightvision">
-    <dependency upgrade="enderio:direct"/>
+    <dependency upgrade="enderio:nightvision"/>
     <tanking type="FILL" logic="DSU">
-      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:direct"}'/>
+      <input name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:nightvision"}'/>
       <fluid name="xpjuice" amount="1"/>
-      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:direct"}'/>
+      <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:nightvision"}'/>
     </tanking>
   </recipe>
 
