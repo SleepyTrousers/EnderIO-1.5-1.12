@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
@@ -111,8 +112,8 @@ public class DarkSteelController {
 
   private static void updateFlags(@Nonnull EntityPlayerMP toUpdate, @Nonnull EntityPlayer target) {
     final NBTTagCompound activeSet = getActiveSetNBT(target);
-    UpgradeRegistry.getUpgrades()
-        .apply(type -> PacketHandler.sendTo(new PacketUpgradeState(type, activeSet.hasKey(getNbtKey(type)), target.getEntityId()), toUpdate));
+    UpgradeRegistry.getUpgrades().apply((Callback<IDarkSteelUpgrade>) type -> PacketHandler
+        .sendTo(new PacketUpgradeState(type, activeSet.hasKey(getNbtKey(type)), target.getEntityId()), toUpdate));
   }
 
   public static boolean isActive(@Nonnull EntityPlayer player, @Nullable IDarkSteelUpgrade type) {
