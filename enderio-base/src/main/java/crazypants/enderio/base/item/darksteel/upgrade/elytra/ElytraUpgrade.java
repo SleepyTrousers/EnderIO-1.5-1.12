@@ -16,6 +16,7 @@ import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.handler.darksteel.Rules;
 import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.base.lang.Lang;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -48,7 +49,7 @@ public class ElytraUpgrade extends AbstractUpgrade implements IHasPlayerRenderer
 
   @Override
   @SideOnly(Side.CLIENT)
-  public @Nonnull IRenderUpgrade getRender() {
+  public @Nonnull IRenderUpgrade getRender(@Nonnull AbstractClientPlayer player) {
     return ElytraUpgradeLayer.instance;
   }
 

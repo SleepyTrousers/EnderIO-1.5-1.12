@@ -14,7 +14,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class ElytraUpgradeLayer implements IRenderUpgrade {
+public final class ElytraUpgradeLayer implements IRenderUpgrade {
 
   private static final @Nonnull ResourceLocation TEXTURE_ELYTRA = new ResourceLocation(EnderIO.DOMAIN, "textures/models/armor/elytra.png");
   private final @Nonnull ModelElytra modelElytra = new ModelElytra();

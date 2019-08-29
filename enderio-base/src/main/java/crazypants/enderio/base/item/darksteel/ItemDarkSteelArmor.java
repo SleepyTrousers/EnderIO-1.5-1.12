@@ -308,7 +308,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   @Override
   @SideOnly(Side.CLIENT)
   public @Nonnull IRenderUpgrade getRender() {
-    return armorType == EntityEquipmentSlot.HEAD ? PaintedHelmetLayer.instance : PaintedHelmetLayer.not_an_helmet;
+    return armorType == EntityEquipmentSlot.HEAD ? PaintedHelmetLayer.instance : IHasPlayerRenderer.super.getRender();
   }
 
   @Override
@@ -405,7 +405,8 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 
   @Override
   public boolean isElytraFlying(@Nonnull EntityLivingBase entity, @Nonnull ItemStack itemstack, boolean shouldStop) {
-    if (entity instanceof EntityPlayer && DarkSteelController.isElytraUpgradeEquipped(itemstack) && DarkSteelController.isElytraActive((EntityPlayer) entity)) {
+    if (entity instanceof EntityPlayer && DarkSteelController.isElytraUpgradeEquipped(itemstack)
+        && DarkSteelController.isActive((EntityPlayer) entity, ElytraUpgrade.INSTANCE)) {
       if (shouldStop && !entity.world.isRemote) {
         DarkSteelController.setActive((EntityPlayer) entity, ElytraUpgrade.INSTANCE, false);
       }

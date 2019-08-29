@@ -22,6 +22,7 @@ import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.handler.darksteel.Rules;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.base.lang.Lang;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -56,13 +57,13 @@ public class GliderUpgrade extends AbstractUpgrade implements IHasPlayerRenderer
 
   @Override
   @SideOnly(Side.CLIENT)
-  public @Nonnull IRenderUpgrade getRender() {
-    return GliderUpgradeLayer.instance;
+  public @Nonnull IRenderUpgrade getRender(@Nonnull AbstractClientPlayer player) {
+    return DarkSteelController.isActive(player, this) ? GliderUpgradeLayer.instance : IHasPlayerRenderer.super.getRender(player);
   }
 
   @Override
   public void onPlayerTick(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item, @Nonnull EntityPlayer player) {
-    if (!DarkSteelController.isGlideActive(player)) {
+    if (!DarkSteelController.isActive(player, this)) {
       return;
     }
 

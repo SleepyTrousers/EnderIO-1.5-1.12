@@ -23,20 +23,26 @@ public class PacketOpenDSU implements IMessage {
 
   @Override
   public void toBytes(@Nullable ByteBuf buf) {
-    buf.writeShort(slot);
+    if (buf != null) {
+      buf.writeShort(slot);
+    }
   }
 
   @Override
   public void fromBytes(@Nullable ByteBuf buf) {
-    slot = buf.readShort();
+    if (buf != null) {
+      slot = buf.readShort();
+    }
   }
 
   public static class Handler implements IMessageHandler<PacketOpenDSU, IMessage> {
 
     @Override
     public @Nullable IMessage onMessage(@Nullable PacketOpenDSU message, @Nullable MessageContext ctx) {
-      EntityPlayer player = ctx.getServerHandler().player;
-      ModObject.blockDarkSteelAnvil.openGui(player.world, new BlockPos(0, -1, 0), player, null, message.slot);
+      if (message != null && ctx != null) {
+        EntityPlayer player = ctx.getServerHandler().player;
+        ModObject.blockDarkSteelAnvil.openGui(player.world, new BlockPos(0, -1, 0), player, null, message.slot);
+      }
       return null;
     }
   }

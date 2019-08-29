@@ -18,17 +18,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class PaintedHelmetLayer implements IRenderUpgrade {
+public final class PaintedHelmetLayer implements IRenderUpgrade {
 
   public static final @Nonnull PaintedHelmetLayer instance = new PaintedHelmetLayer();
-
-  public static final @Nonnull IRenderUpgrade not_an_helmet = new IRenderUpgrade() {
-    @Override
-    public void doRenderLayer(@Nonnull RenderPlayer renderPlayer, EntityEquipmentSlot equipmentSlot, @Nonnull ItemStack piece,
-        @Nonnull AbstractClientPlayer entitylivingbaseIn, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_,
-        float p_177141_7_, float scale) {
-    }
-  };
 
   public static final @Nonnull ModelBiped no_render = new ModelBiped() {
     @Override

@@ -142,22 +142,6 @@ public class DarkSteelController {
     }
   }
 
-  public static boolean isGlideActive(@Nonnull EntityPlayer player) {
-    return isActive(player, GliderUpgrade.INSTANCE);
-  }
-
-  public static boolean isSpeedActive(@Nonnull EntityPlayer player) {
-    return isActive(player, SpeedUpgrade.SPEED_ONE);
-  }
-
-  public static boolean isJumpActive(@Nonnull EntityPlayer player) {
-    return isActive(player, JumpUpgrade.JUMP_ONE);
-  }
-
-  public static boolean isElytraActive(@Nonnull EntityPlayer player) {
-    return isActive(player, ElytraUpgrade.INSTANCE);
-  }
-
   @SubscribeEvent
   @SideOnly(Side.CLIENT)
   public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
@@ -324,7 +308,7 @@ public class DarkSteelController {
     }
 
     if (!jumpHandled && input.jump && !DATA.get().jumpPre && !player.onGround && player.motionY < 0.0D && !player.capabilities.isFlying
-        && isElytraUpgradeEquipped(player) && !isElytraActive(player)) {
+        && isElytraUpgradeEquipped(player) && !isActive(player, ElytraUpgrade.INSTANCE)) {
       setActive(player, ElytraUpgrade.INSTANCE, true);
     }
 
@@ -337,7 +321,7 @@ public class DarkSteelController {
 
   @SideOnly(Side.CLIENT)
   private static boolean doJump(@Nonnull EntityPlayerSP player) {
-    if (!isJumpActive(player)) {
+    if (!isActive(player, JumpUpgrade.JUMP_ONE)) {
       return false;
     }
 
@@ -393,10 +377,6 @@ public class DarkSteelController {
   public static boolean isNightVisionUpgradeEquipped(@Nonnull EntityPlayer player) {
     ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
     return NightVisionUpgrade.INSTANCE.hasUpgrade(helmet);
-  }
-
-  public static boolean isNightVisionActive(@Nonnull EntityPlayer player) {
-    return isActive(player, NightVisionUpgrade.INSTANCE);
   }
 
   public static boolean isTopUpgradeEquipped(@Nonnull EntityPlayer player) {

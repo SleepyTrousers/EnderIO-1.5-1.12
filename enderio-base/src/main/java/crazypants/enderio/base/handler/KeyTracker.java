@@ -255,7 +255,7 @@ public class KeyTracker {
     public void execute() {
       EntityPlayer player = Minecraft.getMinecraft().player;
       if (DarkSteelController.isNightVisionUpgradeEquipped(player)) {
-        boolean isActive = !DarkSteelController.isNightVisionActive(player);
+        boolean isActive = !DarkSteelController.isActive(player, NightVisionUpgrade.INSTANCE);
         if (isActive) {
           SoundHelper.playSound(player.world, player, SoundRegistry.NIGHTVISION_ON, 0.1f, player.world.rand.nextFloat() * 0.4f - 0.2f + 1.0f);
         } else {

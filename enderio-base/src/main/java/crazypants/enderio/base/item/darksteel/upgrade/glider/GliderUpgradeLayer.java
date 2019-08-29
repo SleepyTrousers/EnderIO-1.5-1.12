@@ -3,7 +3,6 @@ package crazypants.enderio.base.item.darksteel.upgrade.glider;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.api.upgrades.IRenderUpgrade;
-import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.material.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -16,7 +15,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class GliderUpgradeLayer implements IRenderUpgrade {
+public final class GliderUpgradeLayer implements IRenderUpgrade {
 
   public static final @Nonnull GliderUpgradeLayer instance = new GliderUpgradeLayer();
 
@@ -33,7 +32,7 @@ public class GliderUpgradeLayer implements IRenderUpgrade {
       return;
     }
 
-    if (entitylivingbaseIn.hasPlayerInfo() && !entitylivingbaseIn.isInvisible() && DarkSteelController.isGlideActive(entitylivingbaseIn)) { // changed
+    if (entitylivingbaseIn.hasPlayerInfo() && !entitylivingbaseIn.isInvisible()) { // changed
       GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
       // removed: this.playerRenderer.bindTexture(entitylivingbaseIn.getLocationCape());
       GlStateManager.pushMatrix();
