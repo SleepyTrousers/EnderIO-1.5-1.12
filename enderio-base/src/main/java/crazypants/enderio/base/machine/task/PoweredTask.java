@@ -24,6 +24,7 @@ public class PoweredTask implements IPoweredTask {
 
   public static final @Nonnull String KEY_RECIPE = "recipeUid";
   public static final @Nonnull String KEY_USED_ENERGY = "usedEnergy";
+  public static final @Nonnull String KEY_CUSTOM_ENERGY = "customEnergy";
   private static final @Nonnull String KEY_SEED = "seed";
   private static final @Nonnull String KEY_CHANCE_OUTPUT = "chance1";
   private static final @Nonnull String KEY_CHANCE_MULTI = "chance2";
@@ -33,6 +34,7 @@ public class PoweredTask implements IPoweredTask {
   private @Nonnull NNList<MachineRecipeInput> inputs;
 
   private float requiredEnergy;
+  private boolean hasCustomEnergyCost = false;
 
   private @Nonnull RecipeBonusType bonusType;
 
@@ -119,6 +121,7 @@ public class PoweredTask implements IPoweredTask {
 
   public void setRequiredEnergy(float requiredEnergy) {
     this.requiredEnergy = requiredEnergy;
+    this.hasCustomEnergyCost = true;
   }
 
   @Override
@@ -139,6 +142,9 @@ public class PoweredTask implements IPoweredTask {
 
     nbtRoot.setString(KEY_RECIPE, recipe.getUid());
     nbtRoot.setFloat(KEY_USED_ENERGY, usedEnergy);
+    if (hasCustomEnergyCost) {
+      nbtRoot.setFloat(KEY_CUSTOM_ENERGY, requiredEnergy);
+    }
 
     nbtRoot.setLong(KEY_SEED, nextSeed);
     nbtRoot.setFloat(KEY_CHANCE_OUTPUT, outputMultiplier);
@@ -153,6 +159,13 @@ public class PoweredTask implements IPoweredTask {
     float outputMultiplier = nbtRoot.getFloat(KEY_CHANCE_OUTPUT);
     float chanceMultiplier = nbtRoot.getFloat(KEY_CHANCE_MULTI);
 
+    boolean hasCustomEnergyCost = false;
+    float requiredEnergy = 0;
+    if (nbtRoot.hasKey(KEY_CUSTOM_ENERGY)) {
+      hasCustomEnergyCost = true;
+      requiredEnergy = nbtRoot.getFloat(KEY_CUSTOM_ENERGY);
+    }
+
     NBTTagList inputItems = (NBTTagList) nbtRoot.getTag(KEY_INPUT_STACKS);
 
     NNList<MachineRecipeInput> ins = new NNList<MachineRecipeInput>();
@@ -165,7 +178,11 @@ public class PoweredTask implements IPoweredTask {
     String uid = nbtRoot.getString(KEY_RECIPE);
     recipe = MachineRecipeRegistry.instance.getRecipeForUid(uid);
     if (recipe != null) {
-      return new PoweredTask(recipe, usedEnergy, seed, outputMultiplier, chanceMultiplier, ins);
+      final PoweredTask poweredTask = new PoweredTask(recipe, usedEnergy, seed, outputMultiplier, chanceMultiplier, ins);
+      if (hasCustomEnergyCost) {
+        poweredTask.setRequiredEnergy(requiredEnergy);
+      }
+      return poweredTask;
     }
     return null;
 
