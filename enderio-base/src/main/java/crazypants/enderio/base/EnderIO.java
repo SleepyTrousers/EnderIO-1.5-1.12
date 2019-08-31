@@ -327,4 +327,11 @@ public class EnderIO implements IEnderIOAddon {
     CrashReportCategory.addBlockInfo(crashreportcategory, new BlockPos(0, 0, 0), ModObject.block_machine_base.getBlockNN().getDefaultState());
   }
 
+  static {
+    if (com.mojang.authlib.minecraft.MinecraftProfileTexture.Type.ELYTRA.getClass().toString().equals("force a classload real hard")) {
+      // this will crash some pirated clients.
+      // better now than some weird and seemingly random crashes later in the game.
+    }
+  }
+
 }
