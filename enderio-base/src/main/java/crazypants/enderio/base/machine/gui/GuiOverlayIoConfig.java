@@ -97,7 +97,7 @@ public class GuiOverlayIoConfig<E extends TileEntity & IIoConfigurable> implemen
 
   @Override
   public boolean isMouseInBounds(int mouseX, int mouseY) {
-    int x = mouseX - screen.getGuiRootLeft() + screen.getOverlayOffsetXLeft();
+    int x = mouseX - screen.getGuiRootLeft();
     int y = mouseY - screen.getGuiRootTop();
     if (bounds.contains(x, y)) {
       return true;
