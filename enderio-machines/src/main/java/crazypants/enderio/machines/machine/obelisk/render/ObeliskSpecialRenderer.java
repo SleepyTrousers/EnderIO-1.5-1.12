@@ -70,7 +70,7 @@ public class ObeliskSpecialRenderer<T extends TileEntityBase> extends ManagedTES
 
   protected void bakeObelisk() {
     if (bakedQuads == null) {
-      bakedQuads = ObeliskBakery.bake(ObeliskRenderManager.INSTANCE.getActiveTextures());
+      bakedQuads = ObeliskBakery.bake(ObeliskRenderManager.getActiveTextures());
     }
   }
 

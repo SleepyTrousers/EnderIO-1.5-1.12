@@ -15,25 +15,18 @@ import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.config.ConfigHandlerEIO;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.machines.config.Config;
-import crazypants.enderio.machines.init.EIOMDataFixer;
-import crazypants.enderio.machines.machine.obelisk.render.ObeliskRenderManager;
 import crazypants.enderio.machines.network.PacketHandler;
 import info.loenwind.autoconfig.ConfigHandler;
-import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkCheckHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod(modid = EnderIOMachines.MODID, name = EnderIOMachines.MOD_NAME, version = EnderIOMachines.VERSION, dependencies = EnderIOMachines.DEPENDENCIES)
-@EventBusSubscriber(Side.CLIENT)
 public class EnderIOMachines implements IEnderIOAddon {
 
   @NetworkCheckHandler
@@ -65,25 +58,14 @@ public class EnderIOMachines implements IEnderIOAddon {
     SimpleMixinLoader.loadMixinSources(this);
   }
 
-  @SubscribeEvent
-  @SideOnly(Side.CLIENT)
-  public static void onModelRegister(ModelRegistryEvent event) {
-    ObeliskRenderManager.INSTANCE.registerRenderers();
-  }
-
   @EventHandler
   public static void init(@Nonnull FMLPreInitializationEvent event) {
     configHandler = new ConfigHandlerEIO(event, Config.F);
-    EIOMDataFixer.register();
   }
 
   @EventHandler
   public static void init(FMLInitializationEvent event) {
     PacketHandler.init(event);
-  }
-
-  @EventHandler
-  public static void init(FMLPostInitializationEvent event) {
   }
 
   public static final @Nonnull Lang lang = new Lang(DOMAIN);

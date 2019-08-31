@@ -7,6 +7,7 @@ import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.material.material.Material;
 import crazypants.enderio.base.render.registry.TextureRegistry;
 import crazypants.enderio.base.render.registry.TextureRegistry.TextureSupplier;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.machine.obelisk.attractor.TileAttractor;
 import crazypants.enderio.machines.machine.obelisk.aversion.AversionObeliskRenderer;
 import crazypants.enderio.machines.machine.obelisk.aversion.TileAversionObelisk;
@@ -23,7 +24,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -35,25 +39,23 @@ import static crazypants.enderio.machines.init.MachineObject.block_relocator_obe
 import static crazypants.enderio.machines.init.MachineObject.block_weather_obelisk;
 
 @SideOnly(Side.CLIENT)
+@EventBusSubscriber(modid = EnderIOMachines.MODID, value = Side.CLIENT)
 public class ObeliskRenderManager {
 
-  public static final ObeliskRenderManager INSTANCE = new ObeliskRenderManager();
+  public static final @Nonnull ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation("enderio:obelisk");
 
-  public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation("enderio:obelisk");
-
-  private TextureSupplier[] textures = { TextureRegistry.registerTexture("blocks/obelisk_bottom"),
+  private static final @Nonnull TextureSupplier[] textures = { TextureRegistry.registerTexture("blocks/obelisk_bottom"),
       TextureRegistry.registerTexture("blocks/block_soul_machine_top"), TextureRegistry.registerTexture("blocks/block_attractor_side"),
       TextureRegistry.registerTexture("blocks/block_attractor_side"), TextureRegistry.registerTexture("blocks/block_attractor_side"),
       TextureRegistry.registerTexture("blocks/block_attractor_side") };
-  private TextureSupplier[] activeTextures = { TextureRegistry.registerTexture("blocks/obelisk_bottom"),
+  private static final @Nonnull TextureSupplier[] activeTextures = { TextureRegistry.registerTexture("blocks/obelisk_bottom"),
       TextureRegistry.registerTexture("blocks/block_soul_machine_top"), TextureRegistry.registerTexture("blocks/block_attractor_side_on"),
       TextureRegistry.registerTexture("blocks/block_attractor_side_on"), TextureRegistry.registerTexture("blocks/block_attractor_side_on"),
       TextureRegistry.registerTexture("blocks/block_attractor_side_on") };
 
-  private ObeliskRenderManager() {
-  }
-
-  public void registerRenderers() {
+  @SubscribeEvent
+  @SideOnly(Side.CLIENT)
+  public static void onModelRegister(ModelRegistryEvent event) {
     Block block;
 
     block = block_experience_obelisk.getBlock();
@@ -94,17 +96,17 @@ public class ObeliskRenderManager {
     }
   }
 
-  private <T extends AbstractMachineEntity> void registerRenderer(@Nonnull Block block, Class<T> tileClass,
+  private static <T extends AbstractMachineEntity> void registerRenderer(@Nonnull Block block, Class<T> tileClass,
       TileEntitySpecialRenderer<? super T> specialRenderer) {
     ClientRegistry.bindTileEntitySpecialRenderer(tileClass, specialRenderer);
     ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(block), 0, tileClass);
   }
 
-  public TextureSupplier[] getTextures() {
+  public static @Nonnull TextureSupplier[] getTextures() {
     return textures;
   }
 
-  public TextureSupplier[] getActiveTextures() {
+  public static @Nonnull TextureSupplier[] getActiveTextures() {
     return activeTextures;
   }
 

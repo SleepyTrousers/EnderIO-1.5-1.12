@@ -34,7 +34,7 @@ public class ObeliskRenderMapper extends MachineRenderMapper {
   @SideOnly(Side.CLIENT)
   public List<Pair<IBlockState, ItemStack>> mapItemRender(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ItemQuadCollector itemQuadCollector) {
     // unused, see ObeliskSpecialRenderer
-    itemQuadCollector.addQuads(null, ObeliskBakery.bake(ObeliskRenderManager.INSTANCE.getActiveTextures()));
+    itemQuadCollector.addQuads(null, ObeliskBakery.bake(ObeliskRenderManager.getActiveTextures()));
     return null;
   }
 
@@ -47,7 +47,7 @@ public class ObeliskRenderMapper extends MachineRenderMapper {
     boolean isActive = tileEntity instanceof AbstractMachineEntity ? ((AbstractMachineEntity) tileEntity).isActive() : true;
 
     quadCollector.addQuads(null, BlockRenderLayer.CUTOUT,
-        ObeliskBakery.bake(isActive ? ObeliskRenderManager.INSTANCE.getActiveTextures() : ObeliskRenderManager.INSTANCE.getTextures()));
+        ObeliskBakery.bake(isActive ? ObeliskRenderManager.getActiveTextures() : ObeliskRenderManager.getTextures()));
 
     return null;
   }
