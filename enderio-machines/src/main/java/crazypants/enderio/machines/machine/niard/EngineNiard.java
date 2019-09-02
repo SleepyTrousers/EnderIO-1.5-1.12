@@ -1,16 +1,23 @@
 package crazypants.enderio.machines.machine.niard;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.Callback;
+import com.enderio.core.common.util.NullHelper;
+
+import crazypants.enderio.base.network.PacketSpawnParticles;
 import crazypants.enderio.base.xp.XpUtil;
+import crazypants.enderio.machines.config.config.NiardConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
@@ -18,19 +25,17 @@ import net.minecraftforge.fluids.BlockFluidFinite;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
-import static info.loenwind.enderioaddons.config.Config.niardAllowWaterInHell;
-
 public class EngineNiard {
 
-  private final TileNiard owner;
+  private final @Nonnull TileNiard owner;
   private Fluid fluid = null;
-  private Block block;
-  private FluidType type;
-  private EnumFacing downflowDirection;
+  private @Nonnull Block block = Blocks.WATER;
+  private @Nonnull FluidType type = FluidType.VANILLA;
+  private @Nonnull EnumFacing downflowDirection = EnumFacing.DOWN;
   private int radius = -1;
   private RadiusIterator radiusItr;
 
-  public EngineNiard(TileNiard owner) {
+  public EngineNiard(@Nonnull TileNiard owner) {
     this.owner = owner;
   }
 
@@ -39,13 +44,16 @@ public class EngineNiard {
       this.radiusItr = radius >= 0 ? new RadiusIterator(owner.offset(), radius) : null;
       this.fluid = fluid;
       this.downflowDirection = fluid.getDensity() > 0 ? EnumFacing.DOWN : EnumFacing.UP;
-      block = fluid.getBlock();
-      if (block instanceof BlockFluidClassic) {
-        type = FluidType.CLASSIC;
-      } else if (block instanceof BlockFluidFinite) {
-        type = FluidType.FINITE;
-      } else if (block instanceof BlockLiquid) {
-        type = FluidType.VANILLA;
+      Block fluidBlock = fluid.getBlock();
+      if (fluidBlock instanceof BlockFluidClassic) {
+        this.type = FluidType.CLASSIC;
+        this.block = fluidBlock;
+      } else if (fluidBlock instanceof BlockFluidFinite) {
+        this.type = FluidType.FINITE;
+        this.block = fluidBlock;
+      } else if (fluidBlock instanceof BlockLiquid) {
+        this.type = FluidType.VANILLA;
+        this.block = fluidBlock;
       } else {
         this.fluid = null;
       }
@@ -68,7 +76,7 @@ public class EngineNiard {
       return false;
     }
     for (int i = 0; i < radiusItr.size(); i++) {
-      List<BlockPos> seen = new ArrayList<>();
+      NNList<BlockPos> seen = new NNList<>();
       BlockPos base = radiusItr.next();
       BlockPos next = base.offset(downflowDirection);
       while (isInWorld(next) && (owner.getWorld().isAirBlock(next) || (isSameLiquid(next) && isFlowingBlock(next)))) {
@@ -77,11 +85,7 @@ public class EngineNiard {
       }
       if (!seen.isEmpty()) {
         setSourceBlock(seen.remove(seen.size() - 1));
-        if (!seen.isEmpty()) {
-          for (BlockPos bc : seen) {
-            setVerticalBlock(bc, false);
-          }
-        }
+        seen.apply((Callback<BlockPos>) bc -> setVerticalBlock(bc, false));
         owner.getWorld().notifyBlockUpdate(base, owner.getWorld().getBlockState(base), owner.getWorld().getBlockState(base), 3);
         return true;
       }
@@ -113,8 +117,8 @@ public class EngineNiard {
 
   // Tools of the trade
 
-  private boolean isInWorld(BlockPos bc) {
-    return owner.getWorld().blockExists(bc);
+  private boolean isInWorld(@Nonnull BlockPos bc) {
+    return bc.getY() >= 0 && bc.getY() < 256 && owner.getWorld().isBlockLoaded(bc);
   }
 
   private boolean isSameLiquid(@Nonnull BlockPos bc) {
@@ -129,52 +133,56 @@ public class EngineNiard {
     case FINITE:
       return false;
     case VANILLA:
-      return owner.getWorld().getBlockMetadata(bc.x, bc.y, bc.z) != 0;
+      return owner.getWorld().getBlockState(bc).getValue(BlockLiquid.LEVEL) != 0;
     }
     throw new IllegalStateException("unreachable code");
   }
 
-  private void setSourceBlock(BlockPos bc) {
-    Block blockToSet = block;
-    int metaToSet = 0;
+  private void setSourceBlock(@Nonnull BlockPos bc) {
+    IBlockState metaToSet;
     final World world = owner.getWorld();
     switch (type) {
     case CLASSIC:
-      metaToSet = ((BlockFluidClassic) block).getMaxRenderHeightMeta();
+      metaToSet = block.getStateFromMeta(((BlockFluidClassic) block).getMaxRenderHeightMeta());
       break;
     case FINITE:
-      metaToSet = ((BlockFluidFinite) block).getMaxRenderHeightMeta();
+      metaToSet = block.getStateFromMeta(((BlockFluidFinite) block).getMaxRenderHeightMeta());
       break;
     case VANILLA:
-      if (world.provider.doesWaterVaporize() && fluid == FluidRegistry.WATER && !niardAllowWaterInHell.getBoolean()) {
-        world.playSoundEffect(bc.getX() + 0.5F, bc.getY() + 0.1F, bc.getZ() + 0.5F, "random.fizz", 0.5F,
+      if (world.provider.doesWaterVaporize() && fluid == FluidRegistry.WATER && !NiardConfig.allowWaterInHell.get()) {
+        world.playSound(null, bc, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F,
             2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
-        for (int l = 0; l < 8; ++l) {
-          spawnParticle(world, "largesmoke", bc.getX() - 1 + 3 * Math.random(), bc.getY() + Math.random(), bc.z - 1 + 3 * Math.random(), 0.0D, 0.0D, 0.0D);
+        PacketSpawnParticles packet = new PacketSpawnParticles();
+        for (int k = 0; k < 8; ++k) {
+          packet.add(bc.getX() - 1 + 3 * world.rand.nextDouble(), bc.getY() + world.rand.nextDouble(), bc.getZ() - 1 + 3 * world.rand.nextDouble(), 1,
+              EnumParticleTypes.SMOKE_LARGE);
         }
         setVerticalBlock(bc, false);
         return;
       }
-      metaToSet = 0;
+      metaToSet = block.getDefaultState().withProperty(BlockLiquid.LEVEL, 0);
       break;
+    default:
+      return;
     }
-    world.setBlockState(bc, blockToSet, metaToSet, 3);
+    world.setBlockState(bc, metaToSet, 3);
   }
 
-  private void setVerticalBlock(BlockPos bc, boolean blockUpdate) {
-    Block blockToSet = block;
-    int metaToSet = 0;
+  private void setVerticalBlock(@Nonnull BlockPos bc, boolean blockUpdate) {
+    IBlockState metaToSet;
     switch (type) {
     case CLASSIC:
-      metaToSet = 1;
+      metaToSet = block.getDefaultState().withProperty(NullHelper.notnullF(BlockFluidClassic.LEVEL, "BlockFluidClassic.LEVEL"), 1);
       break;
     case FINITE:
       return;
     case VANILLA:
-      metaToSet = 8;
+      metaToSet = block.getDefaultState().withProperty(BlockLiquid.LEVEL, 8);
       break;
+    default:
+      return;
     }
-    owner.getWorld().setBlock(bc.x, bc.y, bc.z, blockToSet, metaToSet, blockUpdate ? 3 : 2);
+    owner.getWorld().setBlockState(bc, metaToSet, blockUpdate ? 3 : 2);
   }
 
 }

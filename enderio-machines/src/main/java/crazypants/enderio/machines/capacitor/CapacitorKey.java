@@ -207,6 +207,13 @@ public enum CapacitorKey implements ICapacitorKey {
   TELEPAD_POWER_BUFFER(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   TELEPAD_POWER_USE(MachineObject.block_tele_pad, CapacitorKeyType.ENERGY_USE, "use"),
 
+  NIARD_POWER_INTAKE(MachineObject.block_farm_station, CapacitorKeyType.ENERGY_INTAKE, "intake"),
+  NIARD_POWER_BUFFER(MachineObject.block_farm_station, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
+  NIARD_POWER_USE(MachineObject.block_farm_station, CapacitorKeyType.ENERGY_USE, "use"),
+  NIARD_RANGE(MachineObject.block_farm_station, CapacitorKeyType.AREA, "range"),
+  NIARD_DELAY(MachineObject.block_farm_station, CapacitorKeyType.AMOUNT, "delay"),
+  NIARD_POWER_WORK(MachineObject.block_farm_station, CapacitorKeyType.AMOUNT, "work"),
+
   //
   ;
 
