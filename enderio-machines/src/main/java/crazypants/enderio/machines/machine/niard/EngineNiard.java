@@ -6,24 +6,28 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.network.PacketSpawnParticles;
 import crazypants.enderio.base.xp.XpUtil;
 import crazypants.enderio.machines.config.config.NiardConfig;
+import crazypants.enderio.machines.network.PacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.BlockFluidFinite;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.wrappers.BlockLiquidWrapper;
+import net.minecraftforge.fluids.capability.wrappers.BlockWrapper;
+import net.minecraftforge.fluids.capability.wrappers.FluidBlockWrapper;
 
 public class EngineNiard {
 
@@ -79,7 +83,7 @@ public class EngineNiard {
       NNList<BlockPos> seen = new NNList<>();
       BlockPos base = radiusItr.next();
       BlockPos next = base.offset(downflowDirection);
-      while (isInWorld(next) && (owner.getWorld().isAirBlock(next) || (isSameLiquid(next) && isFlowingBlock(next)))) {
+      while (isInWorld(next) && (canPlace(next) || (isSameLiquid(next) && isFlowingBlock(next)))) {
         seen.add(next);
         next = next.offset(downflowDirection);
       }
@@ -93,12 +97,21 @@ public class EngineNiard {
     return false;
   }
 
+  private boolean canPlace(@Nonnull BlockPos pos) {
+    World world = owner.getWorld();
+    IBlockState destBlockState = world.getBlockState(pos);
+    Material destMaterial = destBlockState.getMaterial();
+    boolean isDestNonSolid = !destMaterial.isSolid();
+    boolean isDestReplaceable = destBlockState.getBlock().isReplaceable(world, pos);
+    return world.isAirBlock(pos) || isDestNonSolid || isDestReplaceable;
+  }
+
   public int work(int xp_in_mb) {
     int remaining = XpUtil.liquidToExperience(xp_in_mb);
     if (radius >= 0) {
       for (int i = 0; i < radiusItr.size(); i++) {
         BlockPos next = radiusItr.next().offset(EnumFacing.DOWN);
-        if (isInWorld(next) && owner.getWorld().isAirBlock(next)) {
+        if (isInWorld(next) && canPlace(next)) {
           int i1 = EntityXPOrb.getXPSplit(remaining / (owner.getWorld().rand.nextInt(4) + 1));
           remaining -= i1;
           final EntityXPOrb xpOrb = new EntityXPOrb(owner.getWorld(), next.getX() + 0.5D, next.getY() + 0.7D, next.getZ() + 0.5D, i1);
@@ -139,33 +152,26 @@ public class EngineNiard {
   }
 
   private void setSourceBlock(@Nonnull BlockPos bc) {
-    IBlockState metaToSet;
     final World world = owner.getWorld();
-    switch (type) {
-    case CLASSIC:
-      metaToSet = block.getStateFromMeta(((BlockFluidClassic) block).getMaxRenderHeightMeta());
-      break;
-    case FINITE:
-      metaToSet = block.getStateFromMeta(((BlockFluidFinite) block).getMaxRenderHeightMeta());
-      break;
-    case VANILLA:
-      if (world.provider.doesWaterVaporize() && fluid == FluidRegistry.WATER && !NiardConfig.allowWaterInHell.get()) {
-        world.playSound(null, bc, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.5F,
-            2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
-        PacketSpawnParticles packet = new PacketSpawnParticles();
-        for (int k = 0; k < 8; ++k) {
-          packet.add(bc.getX() - 1 + 3 * world.rand.nextDouble(), bc.getY() + world.rand.nextDouble(), bc.getZ() - 1 + 3 * world.rand.nextDouble(), 1,
-              EnumParticleTypes.SMOKE_LARGE);
-        }
-        setVerticalBlock(bc, false);
-        return;
-      }
-      metaToSet = block.getDefaultState().withProperty(BlockLiquid.LEVEL, 0);
-      break;
-    default:
+    final FluidStack stack = new FluidStack(fluid, Fluid.BUCKET_VOLUME);
+
+    if (world.provider.doesWaterVaporize() && fluid.doesVaporize(stack) && !NiardConfig.allowWaterInHell.get()) {
+      PacketHandler.sendToAllAround(new PacketSFXFluidFizzle(stack, bc), owner);
+      setVerticalBlock(bc, false);
       return;
     }
-    world.setBlockState(bc, metaToSet, 3);
+
+    // First clean up, we may target locations destroyBlockOnFluidPlacement doesn't clean, so call it manually and then clear the pos hard. That's with drops
+    // but without sound.
+    FluidUtil.destroyBlockOnFluidPlacement(world, bc);
+    if (!world.isAirBlock(bc)) {
+      IBlockState iblockstate = world.getBlockState(bc);
+      iblockstate.getBlock().dropBlockAsItem(world, bc, iblockstate, 0);
+      world.setBlockState(bc, Blocks.AIR.getDefaultState(), 3);
+    }
+
+    getFluidBlockHandler(bc).fill(stack, true);
+    // TODO: do we need to check the return value here?
   }
 
   private void setVerticalBlock(@Nonnull BlockPos bc, boolean blockUpdate) {
@@ -183,6 +189,19 @@ public class EngineNiard {
       return;
     }
     owner.getWorld().setBlockState(bc, metaToSet, blockUpdate ? 3 : 2);
+  }
+
+  /**
+   * see {@link FluidUtil#getFluidBlockHandler}
+   */
+  IFluidHandler getFluidBlockHandler(BlockPos pos) {
+    if (block instanceof IFluidBlock) {
+      return new FluidBlockWrapper((IFluidBlock) block, owner.getWorld(), pos);
+    } else if (block instanceof BlockLiquid) {
+      return new BlockLiquidWrapper((BlockLiquid) block, owner.getWorld(), pos);
+    } else {
+      return new BlockWrapper(block, owner.getWorld(), pos);
+    }
   }
 
 }
