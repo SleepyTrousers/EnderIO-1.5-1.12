@@ -69,7 +69,9 @@ public class TileNiard extends AbstractCapabilityMachineEntity implements ITankA
 
   @Override
   public boolean isActive() {
-    return !inputTank.isEmpty() && hasPower() && redstoneCheckPassed;
+    return true;
+    // TODO: client-side
+    // return hasPower() && redstoneCheckPassed;
   }
 
   @Override
@@ -169,7 +171,7 @@ public class TileNiard extends AbstractCapabilityMachineEntity implements ITankA
   }
 
   @Nonnull
-  protected FluidTank getInputTank() {
+  protected SmartTank getInputTank() {
     return inputTank;
   }
 

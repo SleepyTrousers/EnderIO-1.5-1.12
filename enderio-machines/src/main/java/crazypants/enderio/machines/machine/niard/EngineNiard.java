@@ -83,14 +83,16 @@ public class EngineNiard {
       NNList<BlockPos> seen = new NNList<>();
       BlockPos base = radiusItr.next();
       BlockPos next = base.offset(downflowDirection);
-      while (isInWorld(next) && (canPlace(next) || (isSameLiquid(next) && isFlowingBlock(next)))) {
-        seen.add(next);
+      while (isInWorld(next) && (isSameLiquid(next) ? isFlowingBlock(next) : canPlace(next))) {
+        seen.add(0, next);
         next = next.offset(downflowDirection);
       }
       if (!seen.isEmpty()) {
-        setSourceBlock(seen.remove(seen.size() - 1));
+        setSourceBlock(seen.remove(0));
         seen.apply((Callback<BlockPos>) bc -> setVerticalBlock(bc, false));
-        owner.getWorld().notifyBlockUpdate(base, owner.getWorld().getBlockState(base), owner.getWorld().getBlockState(base), 3);
+        owner.getWorld().getBlockState(base.offset(downflowDirection)).neighborChanged(owner.getWorld(), base.offset(downflowDirection),
+            owner.getWorld().getBlockState(owner.getLocation()).getBlock(), owner.getLocation());
+        // owner.getWorld().notifyBlockUpdate(base, owner.getWorld().getBlockState(base), owner.getWorld().getBlockState(base), 3);
         return true;
       }
     }
@@ -102,8 +104,9 @@ public class EngineNiard {
     IBlockState destBlockState = world.getBlockState(pos);
     Material destMaterial = destBlockState.getMaterial();
     boolean isDestNonSolid = !destMaterial.isSolid();
+    boolean isLiquid = destMaterial.isLiquid();
     boolean isDestReplaceable = destBlockState.getBlock().isReplaceable(world, pos);
-    return world.isAirBlock(pos) || isDestNonSolid || isDestReplaceable;
+    return world.isAirBlock(pos) || (!isLiquid && (isDestNonSolid || isDestReplaceable));
   }
 
   public int work(int xp_in_mb) {
