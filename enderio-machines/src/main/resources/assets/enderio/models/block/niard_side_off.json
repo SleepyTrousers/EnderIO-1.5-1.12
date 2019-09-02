@@ -1,0 +1,141 @@
+{
+	"__comment": "Designed by HenryLoenwind with Cubik Studio - https://cubik.studio",
+	"parent": "enderio:block/transform/block",
+  "textures":{
+    "particle":"enderio:blocks/block_machine_bottom",
+		"back":"enderio:blocks/block_machine_back",
+		"niard": "enderio:blocks/block_niard"
+	},
+	"elements": [ 	 
+		{
+			"__comment": "Box1",
+			"from": [ 4, 7, 15.25 ],
+			"to": [ 12, 15.5, 15.75 ],
+			"faces": {
+				"south": { "uv": [ 4, 0.5, 12, 9 ], "texture": "#niard", "cullface": "south" }
+			}
+		},
+		{
+			"__comment": "Box1",
+			"from": [ 0.5, 0.5, 15.25 ],
+			"to": [ 4, 15.5, 15.75 ],
+			"faces": {
+				"south": { "uv": [ 0.5, 0.5, 4, 15.5 ], "texture": "#niard", "cullface": "south" }
+			}
+		},
+		{
+			"__comment": "Box1",
+			"from": [ 12, 0.5, 15.25 ],
+			"to": [ 15.5, 15.5, 15.75 ],
+			"faces": {
+				"south": { "uv": [ 12, 0.5, 15.5, 15.5 ], "texture": "#niard", "cullface": "south" }
+			}
+		},
+		{
+			"__comment": "Box17",
+			"from": [ 5, 6, 15 ],
+			"to": [ 11, 7, 16 ],
+			"faces": {
+				"down": { "uv": [ 5, 9, 11, 10 ], "texture": "#niard", "cullface": "south" },
+				"up": { "uv": [ 5, 9, 11, 10 ], "texture": "#niard", "cullface": "south" },
+				"south": { "uv": [ 5, 9, 11, 10 ], "texture": "#niard", "cullface": "south" }
+			}
+		},
+		{
+			"__comment": "Box17",
+			"from": [ 4, 1, 15 ],
+			"to": [ 5, 7, 16 ],
+			"faces": {
+				"up": { "uv": [ 4, 15, 5, 16 ], "texture": "#niard", "cullface": "south" },
+				"south": { "uv": [ 4, 9, 5, 15 ], "texture": "#niard", "cullface": "south" },
+				"west": { "uv": [ 4, 9, 5, 15 ], "texture": "#niard", "cullface": "south" },
+				"east": { "uv": [ 4, 9, 5, 15 ], "texture": "#niard", "cullface": "south" }
+			}
+		},
+		{
+			"__comment": "Box17",
+			"from": [ 11, 1, 15 ],
+			"to": [ 12, 7, 16 ],
+			"faces": {
+				"up": { "uv": [ 11, 15, 12, 16 ], "texture": "#niard", "cullface": "south" },
+				"south": { "uv": [ 11, 9, 12, 15 ], "texture": "#niard", "cullface": "south" },
+				"west": { "uv": [ 11, 9, 12, 15 ], "texture": "#niard", "cullface": "south" },
+				"east": { "uv": [ 11, 9, 12, 15 ], "texture": "#niard", "cullface": "south" }
+			}
+		},
+		{
+			"__comment": "Box20",
+			"from": [ 8.5, 2.5, 15.25 ],
+			"to": [ 10, 3.5, 15.75 ],
+			"faces": {
+				"down": { "uv": [ 8.5, 13, 10, 13.5 ], "texture": "#niard", "cullface": "south" },
+				"up": { "uv": [ 8.5, 12.5, 10, 13 ], "texture": "#niard", "cullface": "south" },
+				"south": { "uv": [ 8.5, 12.5, 10, 13.5 ], "texture": "#niard", "cullface": "south" }
+			}
+		},
+		{
+			"__comment": "Box20",
+			"from": [ 5, 1, 15.25 ],
+			"to": [ 6, 6, 15.75 ],
+			"faces": {
+				"south": { "uv": [ 5, 10, 6, 15 ], "texture": "#niard", "cullface": "south" },
+				"east": { "uv": [ 5.5, 10, 6, 15 ], "texture": "#niard", "cullface": "south" }
+			}
+		},
+		{
+			"__comment": "Box20",
+			"from": [ 7.5, 1, 15.25 ],
+			"to": [ 8.5, 6, 15.75 ],
+			"faces": {
+				"south": { "uv": [ 7.5, 10, 8.5, 15 ], "texture": "#niard", "cullface": "south" },
+				"west": { "uv": [ 7.5, 10, 8, 15 ], "texture": "#niard", "cullface": "south" },
+				"east": { "uv": [ 8, 10, 8.5, 15 ], "texture": "#niard", "cullface": "south" }
+			}
+		},
+		{
+			"__comment": "Box20",
+			"from": [ 10, 1, 15.25 ],
+			"to": [ 11, 6, 15.75 ],
+			"faces": {
+				"south": { "uv": [ 10, 10, 11, 15 ], "texture": "#niard", "cullface": "south" },
+				"west": { "uv": [ 10, 10, 10.5, 15 ], "texture": "#niard", "cullface": "south" }
+			}
+		},
+		{
+			"__comment": "Box20",
+			"from": [ 6, 2.5, 15.25 ],
+			"to": [ 7.5, 3.5, 15.75 ],
+			"faces": {
+				"down": { "uv": [ 6, 13, 7.5, 13.5 ], "texture": "#niard", "cullface": "south" },
+				"up": { "uv": [ 6, 12.5, 7.5, 13 ], "texture": "#niard", "cullface": "south" },
+				"south": { "uv": [ 6, 12.5, 7.5, 13.5 ], "texture": "#niard", "cullface": "south" }
+			}
+		},
+		{
+			"__comment": "Box20",
+			"from": [ 6, 5, 15.25 ],
+			"to": [ 7.5, 6, 15.75 ],
+			"faces": {
+				"down": { "uv": [ 6, 10.5, 7.5, 11 ], "texture": "#niard", "cullface": "south" },
+				"south": { "uv": [ 6, 10, 7.5, 11 ], "texture": "#niard", "cullface": "south" }
+			}
+		},
+		{
+			"__comment": "Box20",
+			"from": [ 8.5, 5, 15.25 ],
+			"to": [ 10, 6, 15.75 ],
+			"faces": {
+				"down": { "uv": [ 8.5, 10.5, 10, 11 ], "texture": "#niard", "cullface": "south" },
+				"south": { "uv": [ 8.5, 10, 10, 11 ], "texture": "#niard", "cullface": "south" }
+			}
+		},
+		{
+			"__comment": "Box14",
+			"from": [ 5.75, 0.75, 15.5 ],
+			"to": [ 10.25, 5.25, 15.501 ],
+			"faces": {
+				"south": { "uv": [ 5.75, 10.75, 10.25, 15.25 ], "texture": "#back", "cullface": "south" }
+			}
+		}
+	]
+}
