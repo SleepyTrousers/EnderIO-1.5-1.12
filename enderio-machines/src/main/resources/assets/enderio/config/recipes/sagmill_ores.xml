@@ -2880,4 +2880,13 @@ XML editor will display that as tooltips when editing this file.
     </sagmilling>
   </recipe>
 
+<!-- Ender Ore Mod -->
+  <recipe name="Sagmill: oreEnder Ore" required="false">
+    <sagmilling energy="3600">
+      <input name="oreEnder" />
+      <output name="dustEnder" amount="2" />
+      <output name="oredict:cobblestone" chance="0.15" />
+    </sagmilling>
+  </recipe>
+ 
 </enderio:recipes>
