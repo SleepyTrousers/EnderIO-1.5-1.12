@@ -47,18 +47,9 @@ eiostore.jks
 
 build\.sh
 
-enderio-machines/logs/
-
-enderio-zoo/src/main/resources/assets/enderio/entity/Corel Auto-Preserve/
-
-enderio-machines/src/main/resources/assets/enderio/textures/gui/40/Corel Auto-Preserve/
+**/logs/
 
 enderio-base/\.checkstyle
 
-enderio-conduits-appliedenergistics/src/main/resources/assets/enderio/textures/blocks/Corel Auto-Preserve/
+**/Corel Auto-Preserve/
 
-enderio-conduits/src/main/resources/assets/enderio/textures/blocks/Corel Auto-Preserve/
-
-doc/textures/Corel Auto-Preserve/
-
-enderio-base/logs/
