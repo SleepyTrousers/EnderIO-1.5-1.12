@@ -136,14 +136,6 @@ XML editor will display that as tooltips when editing this file.
     </casting>
   </recipe>
 
-  <recipe name="Ender Pearl Nuggets" required="true">
-    <alloying energy="2000">
-      <input name="nuggetEnderpearl" amount="9"/>
-      <output name="oredict:enderpearl"/>
-    </alloying>
-    <!-- Note: The same inputs as a 'crafting' gives dustEnderPearl, see sagmill.xml -->
-  </recipe>
-
   <recipe name="Dark Iron Bars" required="true">
     <crafting>
       <grid size="3x2">
@@ -173,30 +165,6 @@ XML editor will display that as tooltips when editing this file.
       </grid>
       <output name="SIMPLE_CHASSIS"/>
     </crafting>
-  </recipe>
-
-  <recipe name="Chassis">
-    <alloying energy="3600" exp="1">
-      <input name="SIMPLE_CHASSIS"/>
-      <input name="dyeMachine"/>
-      <output name="CHASSIS"/>
-    </alloying>
-  </recipe>
-
-  <recipe name="Enhanced Chassis">
-    <alloying energy="3600" exp="1">
-      <input name="END_STEEL_CHASSIS"/>
-      <input name="dyeEnhancedMachine"/>
-      <output name="ENHANCED_CHASSIS"/>
-    </alloying>
-  </recipe>
-
-  <recipe name="Soul Chassis">
-    <alloying energy="3600" exp="1">
-      <input name="SIMPLE_CHASSIS"/>
-      <input name="dyeSoulMachine"/>
-      <output name="SOUL_CHASSIS"/>
-    </alloying>
   </recipe>
 
   <recipe name="End Steel Chassis" required="true">
@@ -472,25 +440,7 @@ XML editor will display that as tooltips when editing this file.
     <dependency item="dustTin" reverse="true"/>
   </alias>
 
-  <recipe name="Alloy: Industrial Insulation" required="true">
-    <alloying energy="5000" exp="0.5">
-      <input name="dustLapis"/>
-      <input name="minecraft:wool"/>
-      <input name="INSULATION_METAL"/>
-      <output name="INDUSTRIAL_INSULATION"/>
-    </alloying>
-  </recipe>
-
-  <recipe name="Alloy: Nethercotta" required="true">
-    <alloying energy="20000" exp="1">
-      <input name="ingotBrickNether"/>
-      <input name="cropNetherWart" amount="4" />
-      <input name="oredict:itemClay" amount="6" />
-      <output name="ingotBrickNetherGlazed"/>
-    </alloying>
-  </recipe>
-
-  <recipe name="Dark Steel Anvil" required="true">
+ <recipe name="Dark Steel Anvil" required="true">
     <crafting>
       <grid>
         <item name="DARK_STEEL_BLOCK"/><item name="DARK_STEEL_BLOCK"/><item name="DARK_STEEL_BLOCK"/>
@@ -1164,22 +1114,6 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
-  <recipe name="Infinity Goop" required="true">
-    <alloying energy="5000">
-      <input name="POWDER_INFINITY"/>
-      <input name="dustCoal"/>
-      <output name="INFINITY_GOOP"/>
-    </alloying>
-  </recipe>
-
-  <recipe name="Infinity Goop, Charcoal" required="false">
-    <alloying energy="5000">
-      <input name="POWDER_INFINITY"/>
-      <input name="dustCharcoal"/>
-      <output name="INFINITY_GOOP"/>
-    </alloying>
-  </recipe>
-
   <recipe name="Infinity Dust Block 1" required="true">
     <crafting>
       <grid>
@@ -1259,14 +1193,6 @@ XML editor will display that as tooltips when editing this file.
       <output name="dustBedrock" amount="1" chance="0.1"/>
       <output name="enderio:block_infinity_fog" amount="1" chance="0.2"/>
     </sagmilling>
-  </recipe>
-
-  <recipe name="Clayed Glowstone" required="true">
-    <alloying energy="5000">
-      <input name="dustGlowstone"/>
-      <input name="oredict:itemClay"/>
-      <output name="itemClayedGlowstone" amount="2"/>
-    </alloying>
   </recipe>
 
   <recipe name="Holy Dust, Batman" required="true">
