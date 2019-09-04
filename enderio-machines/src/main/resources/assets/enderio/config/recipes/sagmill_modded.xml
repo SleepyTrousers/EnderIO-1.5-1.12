@@ -218,14 +218,6 @@ XML editor will display that as tooltips when editing this file.
     </sagmilling>
   </recipe>
 
-  <recipe name="Alloy: Enderium Blend" required="false">
-    <alloying energy="2400">
-      <input name="dustEnderium"/>
-      <input name="ore:sand"/>
-      <output name="ingotEnderium"/>
-    </alloying>
-  </recipe>
-
   <recipe name="Sagmill: Enderium Block" required="false">
     <sagmilling energy="3600" bonus="none">
       <input name="blockEnderium" />
@@ -238,14 +230,6 @@ XML editor will display that as tooltips when editing this file.
       <input name="ingotSignalum" />
       <output name="dustSignalum" />
     </sagmilling>
-  </recipe>
-
-    <recipe name="Alloy: Signalum Blend" required="false">
-    <alloying energy="2400">
-      <input name="dustSignalum"/>
-      <input name="ore:sand"/>
-      <output name="ingotSignalum"/>
-    </alloying>
   </recipe>
 
   <recipe name="Sagmill: Signalum Block" required="false">
@@ -262,14 +246,6 @@ XML editor will display that as tooltips when editing this file.
     </sagmilling>
   </recipe>
 
-    <recipe name="Alloy: Lumium Blend" required="false">
-    <alloying energy="2400">
-      <input name="dustLumium"/>
-      <input name="ore:sand"/>
-      <output name="ingotLumium"/>
-    </alloying>
-  </recipe>
-
   <recipe name="Sagmill: Lumium Block" required="false">
     <sagmilling energy="3600" bonus="none">
       <input name="blockLumium" />
@@ -282,14 +258,6 @@ XML editor will display that as tooltips when editing this file.
       <input name="ingotInvar" />
       <output name="dustInvar" />
     </sagmilling>
-  </recipe>
-
-  <recipe name="Alloy: Invar Blend" required="false">
-    <alloying energy="2400">
-      <input name="dustInvar"/>
-      <input name="ore:sand"/>
-      <output name="ingotInvar"/>
-    </alloying>
   </recipe>
 
   <recipe name="Sagmill: Invar Block" required="false">
