@@ -20,7 +20,7 @@ public class NiardFluidRenderer extends ManagedTESR<TileNiard> {
 
   @Override
   protected boolean shouldRender(@Nonnull TileNiard te, @Nonnull IBlockState blockState, int renderPass) {
-    return te.isActive() && !te.getInputTank().isEmpty();
+    return !te.getInputTank().isEmpty();
   }
 
   @Override

@@ -30,7 +30,6 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -57,7 +56,7 @@ public class TileNiard extends AbstractCapabilityMachineEntity implements ITankA
   protected int sleep = 20;
   protected boolean tanksDirty = false;
 
-  protected TileNiard() {
+  public TileNiard() {
     super(CapacitorKey.NIARD_POWER_INTAKE, CapacitorKey.NIARD_POWER_BUFFER, CapacitorKey.NIARD_POWER_USE);
     engine = new EngineNiard(this);
     inputTank.setTileEntity(this);
@@ -69,9 +68,7 @@ public class TileNiard extends AbstractCapabilityMachineEntity implements ITankA
 
   @Override
   public boolean isActive() {
-    return true;
-    // TODO: client-side
-    // return hasPower() && redstoneCheckPassed;
+    return false;
   }
 
   @Override
@@ -100,14 +97,10 @@ public class TileNiard extends AbstractCapabilityMachineEntity implements ITankA
   }
 
   protected void doTick() {
-
-    // TODO, 20-10-2, 1x1/3x3/7x7
-
     if (shouldDoWorkThisTick(CapacitorKey.NIARD_DELAY.get(getCapacitorData()))) {
       if (inputTank.getFluidNN().getFluid() == Fluids.XP_JUICE.getFluid()) {
         doWorkXP();
-      } else if (inputTank.getFluidAmount() >= ONE_BLOCK_OF_LIQUID
-          && engine.setFluid(inputTank.getFluidNN().getFluid()).setRadius(CapacitorKey.NIARD_RANGE.get(getCapacitorData())).work()) {
+      } else if (inputTank.getFluidAmount() >= ONE_BLOCK_OF_LIQUID && engine.setFluid(inputTank.getFluidNN().getFluid()).work()) {
         inputTank.setFluidAmount(inputTank.getFluidAmount() - ONE_BLOCK_OF_LIQUID);
         getEnergy().useEnergy(CapacitorKey.NIARD_POWER_WORK);
       } else {
@@ -117,11 +110,15 @@ public class TileNiard extends AbstractCapabilityMachineEntity implements ITankA
 
   }
 
+  protected int getRange() {
+    return CapacitorKey.NIARD_RANGE.get(getCapacitorData());
+  }
+
   protected void doWorkXP() {
     int amount = inputTank.getFluidAmount();
     boolean looping = true;
     while (looping) {
-      int remaining = engine.setRadius(CapacitorKey.NIARD_RANGE.get(getCapacitorData())).work(amount);
+      int remaining = engine.work(amount);
       if (remaining == amount || remaining == 0) {
         looping = false;
       }
@@ -258,32 +255,32 @@ public class TileNiard extends AbstractCapabilityMachineEntity implements ITankA
     }
     showingRange = showRange;
     if (showingRange) {
+      Vector4f color4f = fallbackColor;
       final FluidStack fluid = inputTank.getFluid();
       if (fluid != null) {
         final int color = fluid.getFluid().getColor(fluid);
         if (color != 0xFFFFFFFF) {
           final float r = ((color >> 16) & 0xFF) / 255f, g = ((color >> 8) & 0xFF) / 255f, b = (color & 0xFF) / 255f, a = ((color >> 24) & 0xFF) / 255f;
-          Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle<TileNiard>(this, new Vector4f(r, g, b, a * .4f)));
-          return;
+          color4f = new Vector4f(r, g, b, a * .4f);
+        } else {
+          color4f = FluidColorUtil.getFluidColor(fluid, color4f);
         }
-        // TODO: Find a way to color the range box from the fluid's texture
       }
-      Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle<TileNiard>(this, fallbackColor));
+      Minecraft.getMinecraft().effectRenderer.addEffect(new RangeParticle<TileNiard>(this, color4f));
     }
   }
 
   @Override
   @Nonnull
   public BoundingBox getBounds() {
-    int range = CapacitorKey.NIARD_RANGE.get(getCapacitorData());
-    return new BoundingBox(pos.down(), BlockCoord.withY(pos, 0)).expand(range, 0, range);
+    final FluidStack fluid = inputTank.getFluid();
+    if (fluid != null && fluid.getFluid().getDensity() <= 0) {
+      return new BoundingBox(pos.south().east().up(), BlockCoord.withY(pos, 256)).expand(getRange(), 0, getRange());
+    } else {
+      return new BoundingBox(pos.south().east(), BlockCoord.withY(pos, 0)).expand(getRange(), 0, getRange());
+    }
   }
 
   // RANGE END
-
-  @Nonnull
-  protected BlockPos offset() {
-    return pos;
-  }
 
 }

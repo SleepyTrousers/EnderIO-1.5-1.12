@@ -37,47 +37,44 @@ public class EngineNiard {
   private @Nonnull FluidType type = FluidType.VANILLA;
   private @Nonnull EnumFacing downflowDirection = EnumFacing.DOWN;
   private int radius = -1;
-  private RadiusIterator radiusItr;
+  private RadiusIterator radiusItr = new RadiusIterator(BlockPos.ORIGIN, 0);
 
   public EngineNiard(@Nonnull TileNiard owner) {
     this.owner = owner;
   }
 
   public EngineNiard setFluid(Fluid fluid) {
-    if (fluid.canBePlacedInWorld()) {
-      this.radiusItr = radius >= 0 ? new RadiusIterator(owner.offset(), radius) : null;
-      this.fluid = fluid;
-      this.downflowDirection = fluid.getDensity() > 0 ? EnumFacing.DOWN : EnumFacing.UP;
-      Block fluidBlock = fluid.getBlock();
-      if (fluidBlock instanceof BlockFluidClassic) {
-        this.type = FluidType.CLASSIC;
-        this.block = fluidBlock;
-      } else if (fluidBlock instanceof BlockFluidFinite) {
-        this.type = FluidType.FINITE;
-        this.block = fluidBlock;
-      } else if (fluidBlock instanceof BlockLiquid) {
-        this.type = FluidType.VANILLA;
-        this.block = fluidBlock;
+    if (fluid != this.fluid) {
+      if (fluid.canBePlacedInWorld()) {
+        this.fluid = fluid;
+        this.downflowDirection = fluid.getDensity() > 0 ? EnumFacing.DOWN : EnumFacing.UP;
+        Block fluidBlock = fluid.getBlock();
+        if (fluidBlock instanceof BlockFluidClassic) {
+          this.type = FluidType.CLASSIC;
+          this.block = fluidBlock;
+        } else if (fluidBlock instanceof BlockFluidFinite) {
+          this.type = FluidType.FINITE;
+          this.block = fluidBlock;
+        } else if (fluidBlock instanceof BlockLiquid) {
+          this.type = FluidType.VANILLA;
+          this.block = fluidBlock;
+        } else {
+          this.fluid = null;
+        }
       } else {
         this.fluid = null;
       }
-    } else {
-      this.fluid = null;
-    }
-    return this;
-  }
-
-  public EngineNiard setRadius(int radius) {
-    if (radius != this.radius) {
-      this.radius = radius;
-      this.radiusItr = new RadiusIterator(owner.offset(), radius);
     }
     return this;
   }
 
   public boolean work() {
-    if (fluid == null || radius < 0) {
+    if (fluid == null) {
       return false;
+    }
+    if (radius != owner.getRange()) {
+      radius = owner.getRange();
+      radiusItr = new RadiusIterator(owner.getLocation(), radius);
     }
     for (int i = 0; i < radiusItr.size(); i++) {
       NNList<BlockPos> seen = new NNList<>();
@@ -90,9 +87,9 @@ public class EngineNiard {
       if (!seen.isEmpty()) {
         setSourceBlock(seen.remove(0));
         seen.apply((Callback<BlockPos>) bc -> setVerticalBlock(bc, false));
+        // this complicated thing is needed for vanilla fluids to start flowing correctly
         owner.getWorld().getBlockState(base.offset(downflowDirection)).neighborChanged(owner.getWorld(), base.offset(downflowDirection),
             owner.getWorld().getBlockState(owner.getLocation()).getBlock(), owner.getLocation());
-        // owner.getWorld().notifyBlockUpdate(base, owner.getWorld().getBlockState(base), owner.getWorld().getBlockState(base), 3);
         return true;
       }
     }

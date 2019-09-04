@@ -22,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -122,4 +123,11 @@ public class BlockNiard extends AbstractCapabilityMachineBlock<TileNiard>
     return getSubItems(this, 0);
   }
 
+  @Override
+  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, EnumFacing side, float hitX,
+      float hitY, float hitZ) {
+    if (world.isRemote) // TODO delme after the gui is done
+      getTileEntity(world, pos).setShowRange(!getTileEntity(world, pos).isShowingRange());
+    return super.onBlockActivated(world, pos, state, entityPlayer, hand, side, hitX, hitY, hitZ);
+  }
 }
