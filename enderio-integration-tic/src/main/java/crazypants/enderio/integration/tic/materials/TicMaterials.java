@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.material.alloy.Alloy;
 import crazypants.enderio.base.material.alloy.IAlloy;
 import crazypants.enderio.integration.tic.traits.TraitPickup;
@@ -151,8 +152,8 @@ public class TicMaterials {
 
       @Override
       public void stats() {
-        TinkerRegistry.addMaterialStats(getMaterial(), new HeadMaterialStats(550, 7.00f, 6.00f, HarvestLevels.COBALT), new HandleMaterialStats(0.9f, 150),
-            new ExtraMaterialStats(250), new BowMaterialStats(0.3f, 2.5f, 9f));
+        TinkerRegistry.addMaterialStats(getMaterial(), new HeadMaterialStats(550, 7.00f, 6.00f, DarkSteelConfig.miningLevel.get(0).get()),
+            new HandleMaterialStats(0.9f, 150), new ExtraMaterialStats(250), new BowMaterialStats(0.3f, 2.5f, 9f));
       }
     });
 
@@ -183,8 +184,8 @@ public class TicMaterials {
 
       @Override
       public void stats() {
-        TinkerRegistry.addMaterialStats(getMaterial(), new HeadMaterialStats(400, 8.25f, 5.00f, HarvestLevels.COBALT), new HandleMaterialStats(0.9f, 50),
-            new ExtraMaterialStats(150), new BowMaterialStats(0.3f, 2.5f, 9f));
+        TinkerRegistry.addMaterialStats(getMaterial(), new HeadMaterialStats(400, 8.25f, 5.00f, DarkSteelConfig.miningLevel.get(1).get()),
+            new HandleMaterialStats(0.9f, 50), new ExtraMaterialStats(150), new BowMaterialStats(0.3f, 2.5f, 9f));
       }
     });
 
