@@ -300,4 +300,22 @@ public class UpgradeCap implements IItemHandlerModifiable {
   public boolean isAddOnly() {
     return addOnly;
   }
+
+  public void dropAll(boolean wipeOriginal) {
+    if (!player.world.isRemote) {
+      final NNPair<ItemStack, IDarkSteelItem> owner = getOwner();
+      for (int slot = 0; slot < getSlots(); slot++) {
+        final ItemStack stack = getStackInSlot(slot);
+        if (Prep.isValid(stack) && (isInventorySlot(slot) || owner.getRight().canUpgradeBeRemoved(owner.getLeft(), stacks.get(slot).upgrade))) {
+          if (!player.inventory.addItemStackToInventory(stack)) {
+            player.dropItem(stack, true);
+          }
+        }
+      }
+      if (wipeOriginal) {
+        owner.getLeft().setTagCompound(null);
+      }
+    }
+  }
+
 }
