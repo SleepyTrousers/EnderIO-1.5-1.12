@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
@@ -22,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 
@@ -307,6 +309,7 @@ public class UpgradeCap implements IItemHandlerModifiable {
       for (int slot = 0; slot < getSlots(); slot++) {
         final ItemStack stack = getStackInSlot(slot);
         if (Prep.isValid(stack) && (isInventorySlot(slot) || owner.getRight().canUpgradeBeRemoved(owner.getLeft(), stacks.get(slot).upgrade))) {
+          dropSubInventory(stack, stacks.get(slot).upgrade.getInventoryHandler(owner.getLeft()), wipeOriginal);
           if (!player.inventory.addItemStackToInventory(stack)) {
             player.dropItem(stack, true);
           }
@@ -314,6 +317,26 @@ public class UpgradeCap implements IItemHandlerModifiable {
       }
       if (wipeOriginal) {
         owner.getLeft().setTagCompound(null);
+      }
+    }
+  }
+
+  private void dropSubInventory(final ItemStack stack, @Nullable IItemHandler handler, boolean wipeOriginal) {
+    if (handler != null) {
+      for (int slot = 0; slot < handler.getSlots(); slot++) {
+        final ItemStack stack1 = handler.getStackInSlot(slot);
+        if (Prep.isValid(stack)) {
+          if (!player.inventory.addItemStackToInventory(stack1)) {
+            player.dropItem(stack1, true);
+          }
+          if (wipeOriginal) {
+            if (handler instanceof IItemHandlerModifiable) {
+              ((IItemHandlerModifiable) handler).setStackInSlot(slot, Prep.getEmpty());
+            } else {
+              handler.extractItem(slot, stack1.getCount(), false);
+            }
+          }
+        }
       }
     }
   }

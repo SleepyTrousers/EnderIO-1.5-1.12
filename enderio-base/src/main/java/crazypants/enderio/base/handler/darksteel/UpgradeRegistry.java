@@ -9,15 +9,20 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
+import crazypants.enderio.base.handler.darksteel.gui.SlotSelector;
+import crazypants.enderio.base.handler.darksteel.gui.UpgradeCap;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.material.upgrades.ItemUpgrades;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -96,6 +101,16 @@ public class UpgradeRegistry {
   @SuppressWarnings("null")
   public static @Nullable IDarkSteelUpgrade read(@Nonnull ByteBuf in) {
     return ByteBufUtils.readRegistryEntry(in, REGISTRY);
+  }
+
+  @SubscribeEvent
+  public static void onItemDesctroyed(PlayerDestroyItemEvent event) {
+    if (event.getOriginal().getItem() instanceof IDarkSteelItem) {
+      final EntityPlayer player = event.getEntityPlayer();
+      if (player != null) {
+        new UpgradeCap(new SlotSelector.RawItem(event.getOriginal()), player, false).dropAll(true);
+      }
+    }
   }
 
 }

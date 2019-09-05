@@ -74,6 +74,15 @@ public class StorageCap extends ItemStackHandler {
     }
   }
 
+  public StorageCap(@Nonnull NbtValue NBT, @Nonnull ItemStack owner) {
+    super(0);
+    this.NBT = NBT;
+    this.equipmentSlot = EntityEquipmentSlot.MAINHAND;
+    this.player = null;
+    this.owner = owner;
+    deserializeNBT(NBT.getTag(owner));
+  }
+
   /**
    * Have a fake inventory to use a client-side shadow
    */

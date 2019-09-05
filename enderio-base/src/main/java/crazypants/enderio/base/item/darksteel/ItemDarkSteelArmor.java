@@ -30,6 +30,8 @@ import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.handler.darksteel.DarkSteelTooltipManager;
 import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
+import crazypants.enderio.base.handler.darksteel.gui.SlotSelector;
+import crazypants.enderio.base.handler.darksteel.gui.UpgradeCap;
 import crazypants.enderio.base.integration.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.enderio.base.integration.thaumcraft.ThaumaturgeRobesUpgrade;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
@@ -378,7 +380,11 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   @Override
   public void damageArmor(EntityLivingBase entity, @Nonnull ItemStack stack, DamageSource source, int damage, int slot) {
     if (entity != null) {
+      ItemStack original = stack.copy();
       stack.damageItem(damage, entity);
+      if (Prep.isInvalid(stack) && entity instanceof EntityPlayer) {
+        new UpgradeCap(new SlotSelector.RawItem(original), (EntityPlayer) entity, false).dropAll(false);
+      }
     }
   }
 

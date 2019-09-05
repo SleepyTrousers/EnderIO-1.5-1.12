@@ -3,6 +3,7 @@ package crazypants.enderio.base.item.darksteel.upgrade.storage;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
 
@@ -16,11 +17,13 @@ import crazypants.enderio.base.handler.darksteel.Rules;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.lang.Lang;
+import crazypants.enderio.util.NbtValue;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.items.IItemHandler;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class StorageUpgrade extends AbstractUpgrade {
@@ -81,4 +84,9 @@ public class StorageUpgrade extends AbstractUpgrade {
     return DarkSteelConfig.inventoryUpgradeCols.get(slot.getIndex()).get().cols;
   }
 
+  @Override
+  @Nullable
+  public IItemHandler getInventoryHandler(@Nonnull ItemStack stack) {
+    return new StorageCap(NbtValue.INVENTORY, stack);
+  }
 }

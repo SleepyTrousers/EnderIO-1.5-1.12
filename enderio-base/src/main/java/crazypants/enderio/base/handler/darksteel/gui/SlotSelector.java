@@ -129,6 +129,58 @@ public enum SlotSelector implements ISlotSelector {
 
   }
 
+  public static class RawItem extends SlotItem {
+
+    private final ItemStack item;
+
+    public RawItem(ItemStack item) {
+      this.item = item;
+    }
+
+    @Override
+    public @Nonnull Slot setContainerSlot(@Nonnull Slot containerSlot) {
+      throw new RuntimeException(INTERNAL_LOGIC_ERROR);
+    }
+
+    @Override
+    public boolean isAnvil() {
+      return false;
+    }
+
+    @Override
+    public boolean isItem() {
+      return true;
+    }
+
+    @Override
+    public boolean isSlot() {
+      return false;
+    }
+
+    @Override
+    @Nonnull
+    public EntityEquipmentSlot getSlot() {
+      throw new RuntimeException(INTERNAL_LOGIC_ERROR);
+    }
+
+    @Override
+    public int getTabOrder() {
+      return 7;
+    }
+
+    @Override
+    @Nonnull
+    public ItemStack getItem(@Nonnull EntityPlayer player) {
+      return item;
+    }
+
+    @Override
+    public @Nullable Slot getContainerSlot() {
+      throw new RuntimeException(INTERNAL_LOGIC_ERROR);
+    }
+
+  }
+
   private final EntityEquipmentSlot slot;
   private final int tabOrder;
 

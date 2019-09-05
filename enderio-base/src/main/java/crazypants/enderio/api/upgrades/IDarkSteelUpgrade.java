@@ -3,6 +3,7 @@ package crazypants.enderio.api.upgrades;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -19,6 +20,7 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
@@ -152,8 +154,8 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
   }
 
   /**
-   * Called via server when another player activates the SFX for this upgrade. That activation has to send a {@link PacketDarkSteelSFX} to the server if
-   * it wants this to fire on other clients, that is not happening auto-magically.
+   * Called via server when another player activates the SFX for this upgrade. That activation has to send a {@link PacketDarkSteelSFX} to the server if it
+   * wants this to fire on other clients, that is not happening auto-magically.
    * 
    * @param otherPlayer
    *          The player that needs SFX.
@@ -186,5 +188,18 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
    */
   @Nonnull
   List<IRule> getRules();
+
+  /**
+   * If an upgrade provides an inventory (or wants to drop extras), it should return it here so it can be emptied when the item is destroyed.
+   * <p>
+   * This {@link IItemHandler} will not be used to access the inventory under normal circumstances.
+   * 
+   * @param stack
+   *          A stack that has the upgrade
+   * @return An {@link IItemHandler} that can be used to remove the contents of the inventory.
+   */
+  default @Nullable IItemHandler getInventoryHandler(@Nonnull ItemStack stack) {
+    return null;
+  }
 
 }
