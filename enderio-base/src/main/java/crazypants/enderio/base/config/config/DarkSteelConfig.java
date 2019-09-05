@@ -13,6 +13,22 @@ public final class DarkSteelConfig {
 
   public static final IValueFactoryEIO F_DARK_STEEL = ItemConfig.F.section(".darksteel");
 
+  public static final IValueFactory F_MATS = F_DARK_STEEL.section(".materials");
+
+  public static final IValueFactory F_MATS_DS = F_MATS.section(".dark_steel");
+
+  public static final IValueFactory F_MATS_ES = F_MATS.section(".end_steel");
+
+  public static final IValueFactory F_MATS_ST = F_MATS.section(".stellar_alloy");
+
+  public static final NNList<IValue<Integer>> miningLevel = new NNList<>( //
+      F_MATS_DS.make("miningLevel", 4, //
+          "Mining level for tools made out of Dark Steel. (highest vanilla level is 3, highest TiC level is 4 by default)").setRange(0, 10).sync(),
+      F_MATS_ES.make("miningLevel", 5, //
+          "Mining level for tools made out of End Steel. (highest vanilla level is 3, highest TiC level is 4 by default)").setRange(0, 10).sync(),
+      F_MATS_ST.make("miningLevel", 8, //
+          "Mining level for tools made out of Stellar Alloy. (highest vanilla level is 3, highest TiC level is 4 by default)").setRange(0, 10).sync());
+
   public static final IValueFactory F_PICKAXE = F_DARK_STEEL.section(".pickaxe");
 
   public static final IValue<Boolean> rightClickPlaceEnabled_pick = F_PICKAXE.make("rightClickPlaceEnabled", false, //
@@ -28,16 +44,6 @@ public final class DarkSteelConfig {
       "Energy use per damage/durability point avoided.").setRange(0, 99999999).sync();
   public static final IValue<Float> pickEfficiencyBoostWhenPowered = F_PICKAXE.make("efficiencyBoostWhenPowered", 2f, //
       "The increase in efficiency when powered.").setRange(1, 20).sync();
-
-  public static final IValueFactory F_DPICK = F_PICKAXE.section(".dark_steel_pickaxe");
-
-  public static final IValue<Boolean> darkSteelPickMinesTiCArdite = F_DPICK.make("canMineTiCArdite", true, //
-      "When true the dark steel pick will be able to mine TiC Ardite and Cobalt").sync();
-
-  public static final IValueFactory F_EPICK = F_PICKAXE.section(".end_steel_pickaxe");
-
-  public static final IValue<Boolean> endSteelPickMinesTiCArdite = F_EPICK.make("canMineTiCArdite", true, //
-      "When true the end steel pick will be able to mine TiC Ardite and Cobalt").sync();
 
   public static final IValueFactory F_AXE = F_DARK_STEEL.section(".axe");
 
