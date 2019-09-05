@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+These are the built-in recipes. You cannot change this file, it is a
+reference for you only and will be generated every time the game starts.
+To make changes to the recipes, copy the recipes you want to change to
+a file in the 'user' folder. To disable a recipe, add an attribute "disabled"
+and set it to true, e.g.: <recipe name="Alloy: Manyullyn" disabled="true" />
+You can also disable all built-in recipes with the setting "loadCoreRecipes"
+in the Ender IO config file, so that only your files in the 'user' folder will
+be loaded. Please be advised that a number of recipes are absolutely needed,
+so you will have to copy those over into a 'user' file for the game to load.
+Item specifications can reference an alias, an ore dictionary name, a
+block or an item. You can force the type by prefixing the value with
+"oredict:", "block:" or "item:". Recipes that have items that cannot be
+found in-game are either skipped or an error, depending on their "required"
+attribute.
+More information on the syntax can be found in the recipes.xsd file. An
+XML editor will display that as tooltips when editing this file.
+ -->
+ 
+ 
+  <recipe name="Alloy: Manyullyn" required="false">
+    <alloying energy="10000" exp="0.25">
+      <input name="ingotCobalt"/>
+      <input name="ingotArdite"/>
+      <output name="ingotManyullyn"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Steel" required="false">
+    <alloying energy="10000" exp="0">
+      <input name="ingotIron"/>
+      <input name="dustCoal" amount="4"/>
+      <output name="ingotSteel"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Electrum Ingot (Thermal Expansion)" required="false">
+    <alloying energy="2000" exp="0.25">
+      <input name="ingotGold"/>
+      <input name="ingotSilver"/>
+      <output name="ingotElectrum" amount="2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Invar Ingot (Thermal Expansion)" required="false">
+    <alloying energy="3000" exp="0.25">
+      <input name="ingotNickel"/>
+      <input name="ingotIron" amount="2"/>
+      <output name="ingotInvar" amount="3"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Bronze (Thermal Expansion)" required="false">
+    <alloying energy="4000" exp="0">
+      <input name="ingotCopper" amount="3"/>
+      <input name="ingotTin"/>
+      <output name="ingotBronze" amount="4"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Constantan (Thermal Expansion)" required="false">
+    <alloying energy="4000" exp="0">
+      <input name="ingotCopper"/>
+      <input name="ingotNickel"/>
+      <output name="ingotConstantan" amount="2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Signalum (Thermal Expansion)" required="false">
+    <alloying energy="32000" exp="0">
+      <input name="ingotCopper" amount="3"/>
+      <input name="ingotSilver"/>
+      <input name="dustRedstone" amount="10"/>
+      <output name="ingotSignalum" amount="4"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Lumium from dust (Thermal Expansion)" required="false">
+    <alloying energy="32000" exp="0">
+      <input name="ingotTin" amount="3"/>
+      <input name="ingotSilver"/>
+      <input name="dustGlowstone" amount="4"/>
+      <output name="ingotLumium" amount="4"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Lumium (Thermal Expansion)" required="false">
+    <alloying energy="32000" exp="0">
+      <input name="ingotTin" amount="3"/>
+      <input name="ingotSilver"/>
+      <input name="oredict:glowstone"/>
+      <output name="ingotLumium" amount="4"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enderium Base (Thermal Expansion)" required="false">
+    <alloying energy="4000" exp="0">
+      <input name="ingotLead" amount="3"/>
+      <input name="ingotPlatinum"/>
+      <input name="oredict:enderpearl" amount="4"/>
+      <output name="ingotEnderiumBase" amount="4"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enderium (Thermal Expansion)" required="false">
+    <alloying energy="25000" exp="0">
+      <input name="ingotEnderiumBase" amount="2"/>
+      <input name="oredict:sand"/>
+      <output name="ingotEnderium" amount="2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Steel (Oredict)" required="false">
+    <alloying energy="4000" exp="0">
+      <input name="ingotIron"/>
+      <input name="fuelCoke"/>
+      <output name="ingotSteel"/>
+    </alloying>
+  </recipe>
+ 
+  <recipe name="Alloy: FerroBoron (Nuclearcraft)" required="false">
+    <alloying energy="6000" exp="0">
+      <input name="ingotSteel"/>
+      <input name="ingotBoron"/>
+      <output name="ingotFerroboron" amount="2"/>
+    </alloying>
+  </recipe>
+ 
+  <recipe name="Alloy: Tough Alloy (Nuclearcraft)" required="false">
+    <alloying energy="9000" exp="0">
+      <input name="ingotFerroboron"/>
+      <input name="ingotLithium"/>
+      <output name="ingotTough" amount="2"/>
+    </alloying>
+  </recipe>
+ 
+  <recipe name="Alloy: Hard Carbon (Nuclearcraft)" required="false">
+    <alloying energy="8000" exp="0">
+      <input name="ingotGraphite" amount="2"/>
+      <input name="gemDiamond"/>
+      <output name="ingotHardCarbon" amount="2"/>
+    </alloying>
+  </recipe>
+ 
+  <recipe name="Alloy: Magnesium Diboride Alloy (Nuclearcraft)" required="false">
+    <alloying energy="4000" exp="0">
+      <input name="ingotMagnesium"/>
+      <input name="ingotBoron" amount="2"/>
+      <output name="ingotMagnesiumDiboride" amount="3"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Lithium Manganese Alloy (Nuclearcraft)" required="false">
+    <alloying energy="6000" exp="0">
+      <input name="ingotManganeseDioxide"/>
+      <input name="ingotLithium"/>
+      <output name="ingotLithiumManganeseDioxide" amount="2"/>
+    </alloying>
+  </recipe>
+ 
+  <recipe name="Alloy: EXTREME Alloy (Nuclearcraft)" required="false">
+    <alloying energy="16000" exp="0">
+      <input name="ingotTough"/>
+      <input name="ingotHardCarbon"/>
+      <output name="ingotExtreme"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Thermoconducting Alloy (Nuclearcraft)" required="false">
+    <alloying energy="9000" exp="0">
+      <input name="ingotExtreme"/>
+      <input name="gemBoronArsenide"/>
+      <output name="ingotThermoconducting" amount="2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enderium Blend" required="false">
+    <alloying energy="2400">
+      <input name="dustEnderium"/>
+      <input name="ore:sand"/>
+      <output name="ingotEnderium"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Signalum Blend" required="false">
+    <alloying energy="2400">
+      <input name="dustSignalum"/>
+      <input name="ore:sand"/>
+      <output name="ingotSignalum"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Lumium Blend" required="false">
+    <alloying energy="2400">
+      <input name="dustLumium"/>
+      <input name="ore:sand"/>
+      <output name="ingotLumium"/>
+    </alloying>
+  </recipe>
+  
+  <recipe name="Alloy: Invar Blend" required="false">
+    <alloying energy="2400">
+      <input name="dustInvar"/>
+      <input name="ore:sand"/>
+      <output name="ingotInvar"/>
+    </alloying>
+  </recipe>
+
+</enderio:recipes>

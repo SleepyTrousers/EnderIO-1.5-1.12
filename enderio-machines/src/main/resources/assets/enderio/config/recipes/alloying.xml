@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enderio:recipes xmlns:enderio="http://enderio.com/recipes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://enderio.com/recipes recipes.xsd ">
+
+<!-- 
+These are the built-in recipes. You cannot change this file, it is a
+reference for you only and will be generated every time the game starts.
+To make changes to the recipes, copy the recipes you want to change to
+a file in the 'user' folder. To disable a recipe, add an attribute "disabled"
+and set it to true, e.g.: <recipe name="Alloy: Electrical Steel" disabled="true" />
+You can also disable all built-in recipes with the setting "loadCoreRecipes"
+in the Ender IO config file, so that only your files in the 'user' folder will
+be loaded. Please be advised that a number of recipes are absolutely needed,
+so you will have to copy those over into a 'user' file for the game to load.
+Item specifications can reference an alias, an ore dictionary name, a
+block or an item. You can force the type by prefixing the value with
+"oredict:", "block:" or "item:". Recipes that have items that cannot be
+found in-game are either skipped or an error, depending on their "required"
+attribute.
+More information on the syntax can be found in the recipes.xsd file. An
+XML editor will display that as tooltips when editing this file.
+ -->
+ 
+  <recipe name="Alloy: Electrical Steel" required="true">
+    <alloying energy="10000" exp="0.5">
+      <input name="ingotIron"/>
+      <input name="dustCoal"/>
+      <input name="itemSilicon"/>
+      <output name="ingotElectricalSteel"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Energetic Alloy" required="true">
+    <alloying energy="10000" exp="0.7">
+      <input name="dustRedstone"/>
+      <input name="ingotGold"/>
+      <input name="dustGlowstone"/>
+      <output name="ingotEnergeticAlloy"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Vibrant Alloy" required="true">
+    <alloying energy="10000" exp="1">
+      <input name="ingotEnergeticAlloy"/>
+      <input name="oredict:enderpearl"/>
+      <output name="ingotVibrantAlloy"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Redstone Alloy" required="true">
+    <alloying energy="10000" exp="0.5">
+      <input name="dustRedstone"/>
+      <input name="itemSilicon"/>
+      <output name="ingotRedstoneAlloy"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Conductive Iron" required="true">
+    <alloying energy="10000" exp="0.5">
+      <input name="dustRedstone"/>
+      <input name="ingotIron"/>
+      <output name="ingotConductiveIron"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Pulsating Iron" required="true">
+    <alloying energy="10000" exp="0.7">
+      <input name="ingotIron"/>
+      <input name="oredict:enderpearl"/>
+      <output name="ingotPulsatingIron"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Dark Steel" required="true">
+    <alloying energy="20000" exp="0.5">
+      <input name="ingotIron"/>
+      <input name="dustCoal"/>
+      <input name="obsidian"/>
+      <output name="ingotDarkSteel"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Dark Steel, Variant" required="false">
+    <alloying energy="10500" exp="0.4">
+      <input name="ingotSteel"/>
+      <input name="obsidian"/>
+      <output name="ingotDarkSteel"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: End Steel" required="true">
+    <alloying energy="20000" exp="0.5">
+      <input name="oredict:endstone"/>
+      <input name="ingotDarkSteel"/>
+      <input name="obsidian"/>
+      <output name="ingotEndSteel"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Construction Alloy" required="false">
+    <alloying energy="10000" exp="0">
+      <input name="ingotLead,ingotCopper,ingotSilver,ingotAluminium,ingotAluminum,ingotTin,ingotNickel,ingotZinc,ingotPlatinum,ingotOsmium,ingotArdite,ingotCobalt,ingotTitanium,ingotMagnesium,ingotTungsten"/>
+      <input name="ingotIron"/>
+      <input name="ingotLead,ingotCopper,ingotSilver,ingotAluminium,ingotAluminum,ingotTin,ingotNickel,ingotZinc,ingotPlatinum,ingotOsmium,ingotArdite,ingotCobalt,ingotTitanium,ingotMagnesium,ingotTungsten"/>
+      <output name="CONSTRUCTION_ALLOY" amount="3" />
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Cookie" required="true">
+    <alloying energy="2000">
+      <input name="FLOUR"/>
+      <input name="minecraft:dye:3"/>
+      <output name="minecraft:cookie" amount="8"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Cake" required="true">
+    <alloying energy="2000">
+      <input name="FLOUR" amount="3"/>
+      <input name="oredict:egg" />
+      <output name="itemCakeBase" amount="2"/>
+    </alloying>
+  </recipe>
+
+
+  <recipe name="Alloy: Photovoltaic Plate" required="true">
+    <alloying energy="15000" exp="0.5">
+      <input name="itemPowderPhotovoltaic" amount="3"/>
+      <output name="itemPlatePhotovoltaic"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Soularium" required="true">
+    <alloying energy="10000" exp="0.7">
+      <input name="minecraft:soul_sand"/><!-- has no oredict entry -->
+      <input name="ingotGold"/>
+      <output name="ingotSoularium"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Fused Quartz" required="true">
+    <alloying energy="5000" exp="0.5">
+      <input name="gemQuartz" amount="4"/>
+      <output name="enderio:block_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Fused Quartz from Block" required="true">
+    <alloying energy="5000" exp="0.5">
+      <input name="blockQuartz"/>
+      <output name="enderio:block_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Fused Glass" required="true">
+    <alloying energy="2500" exp="0.1">
+      <input name="minecraft:glass"/><!-- don't oredict this one -->
+      <output name="enderio:block_fused_glass:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enlightened Fused Quartz" required="true">
+    <alloying energy="5000" exp="0.5">
+      <input name="gemQuartz" amount="4"/>
+      <input name="dustGlowstone" amount="4"/>
+      <output name="enderio:block_enlightened_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enlightened Fused Quartz, Upgrade" required="true">
+    <alloying energy="2500" exp="0.5">
+      <input name="enderio:block_fused_quartz:0"/>
+      <input name="dustGlowstone" amount="4"/>
+      <output name="enderio:block_enlightened_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enlightened Fused Quartz from Block, Variant 1" required="true">
+    <alloying energy="5000" exp="0.5">
+      <input name="blockQuartz"/>
+      <input name="dustGlowstone" amount="4"/>
+      <output name="enderio:block_enlightened_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enlightened Fused Quartz from Block, Variant 2" required="true">
+    <alloying energy="5000" exp="0.5">
+      <input name="blockQuartz"/>
+      <input name="oredict:glowstone"/>
+      <output name="enderio:block_enlightened_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enlightened Fused Quartz from Block, Variant 3" required="true">
+    <alloying energy="5000" exp="0.5">
+      <input name="gemQuartz" amount="4"/>
+      <input name="oredict:glowstone"/>
+      <output name="enderio:block_enlightened_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enlightened Fused Quartz from Block, Variant 4" required="true">
+    <alloying energy="2500" exp="0.5">
+      <input name="enderio:block_fused_quartz:0"/>
+      <input name="oredict:glowstone"/>
+      <output name="enderio:block_enlightened_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enlightened Fused Glass" required="true">
+    <alloying energy="2500" exp="0.2">
+      <input name="minecraft:glass"/><!-- don't oredict this one -->
+      <input name="dustGlowstone" amount="4"/>
+      <output name="enderio:block_enlightened_fused_glass:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Enlightened Fused Glass, Upgrade" required="true">
+    <alloying energy="1250" exp="0.2">
+      <input name="enderio:block_fused_glass:0"/>
+      <input name="dustGlowstone" amount="4"/>
+      <output name="enderio:block_enlightened_fused_glass:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Dark Fused Quartz" required="true">
+    <alloying energy="5000" exp="0.5">
+      <input name="gemQuartz" amount="4"/>
+      <input name="dyeBlack"/>
+      <output name="enderio:block_dark_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Dark Fused Quartz from Block, Variant 1" required="true">
+    <alloying energy="5000" exp="0.5">
+      <input name="blockQuartz"/>
+      <input name="dyeBlack"/>
+      <output name="enderio:block_dark_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Dark Fused Quartz from Block, Variant 2" required="true">
+    <alloying energy="2500" exp="0.5">
+      <input name="enderio:block_fused_quartz:0"/>
+      <input name="dyeBlack"/>
+      <output name="enderio:block_dark_fused_quartz:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Dark Fused Glass" required="true">
+    <alloying energy="2500" exp="0.2">
+      <input name="minecraft:glass"/><!-- don't oredict this one -->
+      <input name="dyeBlack" amount="2"/>
+      <output name="enderio:block_dark_fused_glass:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Dark Fused Glass, Upgrade" required="true">
+    <alloying energy="1250" exp="0.2">
+      <input name="enderio:block_fused_glass:0"/>
+      <input name="dyeBlack" amount="2"/>
+      <output name="enderio:block_dark_fused_glass:0"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Green Dye" required="true">
+    <alloying energy="2000" exp="0.25">
+      <input name="itemPlantgreen" amount="12"/>
+      <input name="oredict:slimeball"/>
+      <output name="ORGANIC_GREEN_DYE" amount="2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Green Dye, Variant" required="true">
+    <alloying energy="1500" exp="0.125">
+      <input name="itemPlantgreen" amount="6"/>
+      <input name="oredict:egg"/>
+      <output name="ORGANIC_GREEN_DYE"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Green Dye, Oredict" required="true">
+    <alloying energy="2000" exp="0.25">
+      <input name="dyeGreen,-ORGANIC_GREEN_DYE" amount="2"/>
+      <input name="oredict:slimeball"/>
+      <input name="dustCoal,dustCharcoal" amount="2"/>
+      <output name="ORGANIC_GREEN_DYE" amount="2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Green Dye, Oredict Variant" required="true">
+    <alloying energy="1500" exp="0.125">
+      <input name="dyeGreen,-ORGANIC_GREEN_DYE"/>
+      <input name="oredict:egg"/>
+      <input name="dustCoal,dustCharcoal"/>
+      <output name="ORGANIC_GREEN_DYE"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Brown Dye" required="true">
+    <alloying energy="2000" exp="0.25">
+      <input name="itemPlantbrown" amount="12"/>
+      <input name="oredict:slimeball"/>
+      <output name="ORGANIC_BROWN_DYE" amount="2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Brown Dye, Variant" required="true">
+    <alloying energy="1500" exp="0.125">
+      <input name="itemPlantbrown" amount="6"/>
+      <input name="oredict:egg"/>
+      <output name="ORGANIC_BROWN_DYE"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Brown Dye, Oredict" required="true">
+    <alloying energy="2000" exp="0.25">
+      <input name="dyeBrown,-ORGANIC_BROWN_DYE" amount="2"/>
+      <input name="oredict:slimeball"/>
+      <input name="dustCoal,dustCharcoal" amount="2"/>
+      <output name="ORGANIC_BROWN_DYE" amount="2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Brown Dye, Oredict Variant" required="true">
+    <alloying energy="1500" exp="0.125">
+      <input name="dyeBrown,-ORGANIC_BROWN_DYE"/>
+      <input name="oredict:egg"/>
+      <input name="dustCoal,dustCharcoal"/>
+      <output name="ORGANIC_BROWN_DYE"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Black Dye" required="true">
+    <alloying energy="2000" exp="0.25">
+      <input name="dustCoal,dustCharcoal" amount="6"/>
+      <input name="oredict:slimeball"/>
+      <output name="ORGANIC_BLACK_DYE" amount="2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Black Dye, Variant" required="true">
+    <alloying energy="1500" exp="0.125">
+      <input name="dustCoal,dustCharcoal" amount="3"/>
+      <input name="oredict:egg"/>
+      <output name="ORGANIC_BLACK_DYE"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Red Dye" required="true">
+    <alloying energy="15000" exp="1.0">
+      <input name="minecraft:beetroot"/>
+      <input name="itemClay" amount="3"/>
+      <input name="oredict:egg" amount="6"/>
+      <output name="dyeRed" amount="12"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Dead Tree" required="true">
+    <alloying energy="2000" exp="0.05">
+      <input name="treeSapling"/>
+      <output name="minecraft:deadbush"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Clayed Glowstone" required="true">
+    <alloying energy="5000">
+      <input name="dustGlowstone"/>
+      <input name="oredict:itemClay"/>
+      <output name="itemClayedGlowstone" amount="2"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Ender Pearl Nuggets" required="true">
+    <alloying energy="2000">
+      <input name="nuggetEnderpearl" amount="9"/>
+      <output name="oredict:enderpearl"/>
+    </alloying>
+    <!-- Note: The same inputs as a 'crafting' gives dustEnderPearl, see sagmill.xml -->
+  </recipe>
+
+  <recipe name="Chassis">
+    <alloying energy="3600" exp="1">
+      <input name="SIMPLE_CHASSIS"/>
+      <input name="dyeMachine"/>
+      <output name="CHASSIS"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Enhanced Chassis">
+    <alloying energy="3600" exp="1">
+      <input name="END_STEEL_CHASSIS"/>
+      <input name="dyeEnhancedMachine"/>
+      <output name="ENHANCED_CHASSIS"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Soul Chassis">
+    <alloying energy="3600" exp="1">
+      <input name="SIMPLE_CHASSIS"/>
+      <input name="dyeSoulMachine"/>
+      <output name="SOUL_CHASSIS"/>
+    </alloying>
+  </recipe>
+  
+  <recipe name="Alloy: Industrial Insulation" required="true">
+    <alloying energy="5000" exp="0.5">
+      <input name="dustLapis"/>
+      <input name="minecraft:wool"/>
+      <input name="INSULATION_METAL"/>
+      <output name="INDUSTRIAL_INSULATION"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Alloy: Nethercotta" required="true">
+    <alloying energy="20000" exp="1">
+      <input name="ingotBrickNether"/>
+      <input name="cropNetherWart" amount="4" />
+      <input name="oredict:itemClay" amount="6" />
+      <output name="ingotBrickNetherGlazed"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Infinity Goop" required="true">
+    <alloying energy="5000">
+      <input name="POWDER_INFINITY"/>
+      <input name="dustCoal"/>
+      <output name="INFINITY_GOOP"/>
+    </alloying>
+  </recipe>
+
+  <recipe name="Infinity Goop, Charcoal" required="false">
+    <alloying energy="5000">
+      <input name="POWDER_INFINITY"/>
+      <input name="dustCharcoal"/>
+      <output name="INFINITY_GOOP"/>
+    </alloying>
+  </recipe>
+
+</enderio:recipes>
