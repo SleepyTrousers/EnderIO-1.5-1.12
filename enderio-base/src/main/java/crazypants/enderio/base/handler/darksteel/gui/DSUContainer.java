@@ -39,7 +39,6 @@ import net.minecraftforge.fml.client.config.GuiUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
 
 public class DSUContainer extends ContainerEnderCap<EIOCombinedInvWrapper<UpgradeCap>, TileEntity> implements DSURemoteExec.Container {
 
@@ -87,7 +86,7 @@ public class DSUContainer extends ContainerEnderCap<EIOCombinedInvWrapper<Upgrad
 
   }
 
-  final class AutoSlot extends SlotItemHandler {
+  final class AutoSlot extends BaseSlotItemHandler {
     boolean noHead;
 
     AutoSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition, boolean noHead) {
@@ -129,7 +128,12 @@ public class DSUContainer extends ContainerEnderCap<EIOCombinedInvWrapper<Upgrad
     @Override
     public boolean isItemValid(@Nonnull ItemStack stack) {
       // stops shift-clicking items in. at least while activeTab is in sync between client and server
-      return isEnabled() && super.isItemValid(stack);
+      return isEnabled() && getHandler().isItemValid(getHandlerSlot(), stack);
+    }
+
+    @Override
+    public int getItemStackLimit(net.minecraft.item.ItemStack stack) {
+      return getHandler().getSlotLimit(getHandlerSlot());
     }
 
     ItemStack getUpgradeItem() {

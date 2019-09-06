@@ -13,7 +13,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.items.SlotItemHandler;
 
 public class StorageContainer extends ContainerEnderCap<EIOCombinedInvWrapper<StorageCap>, TileEntity> implements StorageRemoteExec.Container {
 
@@ -45,7 +44,7 @@ public class StorageContainer extends ContainerEnderCap<EIOCombinedInvWrapper<St
         y = 0;
         last = current;
       }
-      addSlotToContainer(new SlotItemHandler(getItemHandler(), i, X0 + 18 * (x + xoff), Y0 + 18 * y) {
+      addSlotToContainer(new BaseSlotItemHandler(getItemHandler(), i, X0 + 18 * (x + xoff), Y0 + 18 * y) {
         @Override
         public boolean isEnabled() {
           return activeTab == ((EIOCombinedInvWrapper<StorageCap>) getItemHandler()).getHandlerFromSlot(getSlotIndex()).getEquipmentSlot();

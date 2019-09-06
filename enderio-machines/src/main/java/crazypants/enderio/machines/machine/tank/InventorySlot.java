@@ -2,11 +2,13 @@ package crazypants.enderio.machines.machine.tank;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.ContainerEnder;
+import com.enderio.core.common.ContainerEnder.BaseSlot;
+
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class InventorySlot extends Slot {
+public class InventorySlot extends ContainerEnder.BaseSlot {
   public InventorySlot(@Nonnull IInventory inventoryIn, int index, int xPosition, int yPosition) {
     super(inventoryIn, index, xPosition, yPosition);
   }

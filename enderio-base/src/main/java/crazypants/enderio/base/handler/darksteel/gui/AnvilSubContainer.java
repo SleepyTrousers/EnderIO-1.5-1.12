@@ -6,6 +6,8 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.enderio.core.common.ContainerEnder;
+import com.enderio.core.common.ContainerEnder.BaseSlot;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.base.block.darksteel.anvil.BlockDarkSteelAnvil;
@@ -23,7 +25,6 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.InventoryCraftResult;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeHooks;
@@ -77,7 +78,7 @@ public class AnvilSubContainer {
     }
   }
 
-  class HidingSlot extends Slot {
+  class HidingSlot extends ContainerEnder.BaseSlot {
     HidingSlot(IInventory inventoryIn, int index, int xPosition, int yPosition) {
       super(inventoryIn, index, xPosition, yPosition);
     }

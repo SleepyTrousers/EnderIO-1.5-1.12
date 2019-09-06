@@ -139,6 +139,11 @@ public class UpgradeCap implements IItemHandlerModifiable {
     return ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - 1);
   }
 
+  @Override
+  public boolean isItemValid(int slot, ItemStack stack) {
+    return insertItem(slot, stack, true).getCount() != stack.getCount();
+  }
+
   /**
    * Checks if the slot should be drawn normal or should be drawn as "blocked".
    * <p>
