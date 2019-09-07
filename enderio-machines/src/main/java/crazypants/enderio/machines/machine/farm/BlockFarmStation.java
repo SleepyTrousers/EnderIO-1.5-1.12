@@ -16,6 +16,7 @@ import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.property.IOMode;
+import crazypants.enderio.machines.config.config.FarmConfig;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
@@ -157,6 +158,17 @@ public class BlockFarmStation extends AbstractPoweredTaskBlock<TileFarmStation>
       return 15;
     }
     return super.getLightValue(state, world, pos);
+  }
+
+  @Override
+  public void fillWithRain(@Nonnull World worldIn, @Nonnull BlockPos pos) {
+    if (worldIn.rand.nextFloat() < FarmConfig.rainWaterChance.get()
+        && worldIn.getBiomeProvider().getTemperatureAtHeight(worldIn.getBiome(pos).getTemperature(pos), pos.getY()) >= 0.15F) {
+      TileFarmStation farmStation = getTileEntity(worldIn, pos);
+      if (farmStation != null && farmStation.hasTank()) {
+        farmStation.tank.addFluidAmount(FarmConfig.rainWaterAmount.get());
+      }
+    }
   }
 
 }

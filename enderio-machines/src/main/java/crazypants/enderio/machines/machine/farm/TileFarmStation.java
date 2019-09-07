@@ -11,8 +11,10 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.client.render.BoundingBox;
-import info.loenwind.autosave.util.NBTAction;
+import com.enderio.core.common.fluid.SmartTank;
+import com.enderio.core.common.fluid.SmartTankFluidHandler;
 import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
@@ -33,12 +35,14 @@ import crazypants.enderio.base.capacitor.DefaultCapacitorData;
 import crazypants.enderio.base.farming.FarmingTool;
 import crazypants.enderio.base.farming.fertilizer.Fertilizer;
 import crazypants.enderio.base.farming.registry.Commune;
+import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.interfaces.INotifier;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.machine.task.ContinuousTask;
+import crazypants.enderio.base.network.PacketSpawnParticles;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
@@ -50,14 +54,22 @@ import crazypants.enderio.machines.network.PacketHandler;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.server.permission.PermissionAPI;
@@ -69,9 +81,12 @@ import static crazypants.enderio.machines.capacitor.CapacitorKey.FARM_POWER_BUFF
 import static crazypants.enderio.machines.capacitor.CapacitorKey.FARM_POWER_INTAKE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.FARM_POWER_USE;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.FARM_STACK_LIMIT;
+import static net.minecraft.util.EnumParticleTypes.PORTAL;
+import static net.minecraft.util.EnumParticleTypes.WATER_DROP;
+import static net.minecraft.util.EnumParticleTypes.WATER_SPLASH;
 
 @Storable
-public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity, IRanged, INotifier {
+public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaintable.IPaintableTileEntity, IRanged, INotifier, ITankAccess.IExtendedTankAccess {
 
   public static final int NUM_TOOL_SLOTS = 3;
 
@@ -100,6 +115,9 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
   public TileFarmStation() {
     super(new SlotDefinition(9, 6, 1), FARM_POWER_INTAKE, FARM_POWER_BUFFER, FARM_POWER_USE);
+    ticket = new TicketFarmingStation(this);
+    tank.setTileEntity(this);
+    addICap(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, this::getSmartTankFluidHandler);
   }
 
   public int getFarmSize() {
@@ -324,8 +342,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     IHarvestResult harvest = Commune.instance.harvestBlock(getFarmer(), farmingPos, bs);
     if (harvest != null && (!harvest.getHarvestedBlocks().isEmpty() || !harvest.getDrops().isEmpty())) {
       if (!harvest.getHarvestedBlocks().isEmpty()) {
-        PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());
-        PacketHandler.sendToAllAround(pkt, this);
+        PacketHandler.sendToAllAround(new PacketFarmAction(harvest.getHarvestedBlocks()), this);
       }
       NNList.wrap(harvest.getDrops()).apply(new Callback<EntityItem>() {
         @Override
@@ -397,20 +414,31 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   private void doBoost() {
+    ticket.prepare();
     if (FarmConfig.enableCarefulCare.get()) {
-      // capKey base is an int, so to give it a usable range, we scale it down by a factor of 100
-      float boost = CapacitorKey.FARM_BOOST.getFloat(getCapacitorData()) / 100f;
-      while (boost > 0) {
-        BlockPos boostPos = getNextBoostCoord();
-        if ((boost >= 1 || random.nextFloat() < boost) && world.isBlockLoaded(boostPos)) {
-          IBlockState blockState = world.getBlockState(boostPos);
-          Block block = blockState.getBlock();
+      if (FarmConfig.waterCarefulCare.get() == 0 || !hasTank() || !tank.isEmpty()) {
+        // capKey base is an int, so to give it a usable range, we scale it down by a factor of 100
+        float boost = CapacitorKey.FARM_BOOST.getFloat(getCapacitorData()) / 100f;
+        while (boost > 0) {
+          BlockPos boostPos = getNextBoostCoord();
+          if ((boost >= 1 || random.nextFloat() < boost) && world.isBlockLoaded(boostPos)) {
+            IBlockState blockState = world.getBlockState(boostPos);
+            Block block = blockState.getBlock();
 
-          if (block.getTickRandomly()) {
-            block.randomTick(world, boostPos, blockState, world.rand);
+            if (block.getTickRandomly()) {
+              block.randomTick(world, boostPos, blockState, world.rand);
+              tank.drainInternal(FarmConfig.waterCarefulCare.get(), true);
+              // much too noisy:
+              // PacketHandler.sendToAllAround(new PacketFarmAction(Collections.singletonList(boostPos)), this);
+            }
           }
+          boost--;
         }
-        boost--;
+        if (!tank.isEmpty()) {
+          removeNotification(FarmNotification.NO_WATER);
+        }
+      } else {
+        setNotification(FarmNotification.NO_WATER);
       }
     }
   }
@@ -452,6 +480,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   public void onCapacitorDataChange() {
     super.onCapacitorDataChange();
     currentTask = createTask(null, 0L);
+    wateringBounds = new BoundingBox(getPos().down()).expand(getRange(), 0, getRange());
   }
 
   @Override
@@ -516,9 +545,57 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
 
   // RANGE END
 
+  // WATER TICKET
+
+  private BoundingBox wateringBounds;
+  private final @Nonnull TicketFarmingStation ticket;
+  @Store
+  protected final @Nonnull SmartTank tank = new SmartTank(FluidRegistry.WATER, FarmConfig.waterTankSize.get());
+
+  public boolean hasTank() {
+    return FarmConfig.waterTankSize.get() > 0;
+  }
+
+  public boolean canWater(@Nonnull Vec3d toMatch) {
+    if (redstoneCheckPassed && wateringBounds != null && hasPower() && wateringBounds.contains(toMatch)) {
+      if (FarmConfig.waterPerFarmland.get() == 0 || !hasTank() || !tank.isEmpty()) {
+        tank.drainInternal(FarmConfig.waterPerFarmland.get(), true);
+        if (FarmConfig.waterFarmlandParticles.get()) {
+          PacketSpawnParticles.create(world, new BlockPos(toMatch).up(2), WATER_DROP, WATER_SPLASH, PORTAL);
+        }
+        if (!tank.isEmpty()) {
+          removeNotification(FarmNotification.NO_WATER);
+        }
+        return true;
+      } else {
+        setNotification(FarmNotification.NO_WATER);
+      }
+    }
+    return false;
+  }
+
+  @Override
+  public void invalidate() {
+    super.invalidate();
+    ticket.invalidate();
+  }
+
+  // WATER TICKET END
+
   @Override
   protected int usePower(int wantToUse) {
     return super.usePower(wantToUse);
+  }
+
+  // TANK
+
+  private SmartTankFluidHandler smartTankFluidHandler;
+
+  protected IFluidHandler getSmartTankFluidHandler(EnumFacing facingIn) {
+    if (smartTankFluidHandler == null) {
+      smartTankFluidHandler = new SmartTankFluidMachineHandler(this, tank);
+    }
+    return smartTankFluidHandler.get(facingIn);
   }
 
   @Override
@@ -529,5 +606,51 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   public void enQueueOverflow(@Nonnull ItemStack stack) {
     overflowQueue.add(stack);
   }
+
+  @Override
+  @Nullable
+  public FluidTank getInputTank(FluidStack forFluidType) {
+    if (tank.canFill(forFluidType)) {
+      return tank;
+    }
+    return null;
+  }
+
+  @Override
+  @Nonnull
+  public FluidTank[] getOutputTanks() {
+    return new FluidTank[0];
+  }
+
+  @Override
+  public void setTanksDirty() {
+    markDirty();
+  }
+
+  @Override
+  @Nonnull
+  public List<ITankData> getTankDisplayData() {
+    return Collections.<ITankData> singletonList(new ITankData() {
+
+      @Override
+      @Nonnull
+      public EnumTankType getTankType() {
+        return EnumTankType.INPUT;
+      }
+
+      @Override
+      @Nullable
+      public FluidStack getContent() {
+        return tank.getFluid();
+      }
+
+      @Override
+      public int getCapacity() {
+        return tank.getCapacity();
+      }
+    });
+  }
+
+  // TANK END
 
 }

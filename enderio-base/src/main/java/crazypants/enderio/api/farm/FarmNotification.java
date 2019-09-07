@@ -13,7 +13,8 @@ public enum FarmNotification implements ILocalizable {
   NO_TREETAP("noTreetap", true),
   NO_POWER("noPower"),
   NO_SHEARS("noShears", true),
-  NO_CAP("noCapacitor");
+  NO_CAP("noCapacitor"),
+  NO_WATER("noWater");
 
   private final @Nonnull String langStr;
   private final boolean autoCleanup;
