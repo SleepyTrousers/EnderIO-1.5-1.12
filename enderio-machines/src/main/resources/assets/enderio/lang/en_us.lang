@@ -377,6 +377,10 @@ tile.block_lava_generator.tooltip.detailed.line2=Make sure it doesn't overheat!
 tile.block_lava_generator.tooltip.detailed.line3=Can be cooled by placing cold liquids or ice around it.
 enderio.gui.lavagen.heat=Heat
 
+tile.block_niard.name=The Niard
+tile.block_niard.tooltip.detailed.line1=Releases fluids into the world
+tile.block_niard.tooltip.detailed.line2=We're looking for a better name. Send suggestions in Discord. Winner gets their name into this tooltip.
+
 
 # Types. smelting=Alloy Smelter Speed,
 # area=all machines "area" attribute (e.g. farm),

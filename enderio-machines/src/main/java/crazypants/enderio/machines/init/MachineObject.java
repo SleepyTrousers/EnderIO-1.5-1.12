@@ -28,6 +28,7 @@ import crazypants.enderio.machines.machine.ihopper.BlockImpulseHopper;
 import crazypants.enderio.machines.machine.killera.BlockKillerJoe;
 import crazypants.enderio.machines.machine.light.BlockElectricLight;
 import crazypants.enderio.machines.machine.light.BlockLightNode;
+import crazypants.enderio.machines.machine.niard.BlockNiard;
 import crazypants.enderio.machines.machine.obelisk.attractor.BlockAttractor;
 import crazypants.enderio.machines.machine.obelisk.aversion.BlockAversionObelisk;
 import crazypants.enderio.machines.machine.obelisk.inhibitor.BlockInhibitorObelisk;
@@ -119,6 +120,7 @@ public enum MachineObject implements IModObjectBase {
   block_transceiver(BlockTransceiver::create, MachineTileEntity.TileTransceiver),
   block_vacuum_chest(BlockVacuumChest::create, MachineTileEntity.TileVacuumChest),
   block_xp_vacuum(BlockXPVacuum::create, MachineTileEntity.TileXPVacuum),
+  block_niard(BlockNiard::create, MachineTileEntity.TileNiard),
 
   block_travel_anchor(BlockTravelAnchor::create, MachineTileEntity.TileTravelAnchor),
   block_tele_pad(BlockTelePad::create_telepad, MachineTileEntity.TileTelePad),
