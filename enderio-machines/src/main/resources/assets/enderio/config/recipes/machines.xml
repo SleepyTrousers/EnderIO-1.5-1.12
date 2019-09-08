@@ -891,5 +891,16 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Niard" required="true">
+    <crafting>
+      <grid size="3x3">
+        <item name="item:minecraft:bucket"/><item name="enderio:block_tank:0" /><item name="item:minecraft:bucket"/>
+        <item name="minecraft:piston"/><item name="CHASSIS" /><item name="minecraft:piston"/>
+        <item name="ELECTRICAL_STEEL" /><item name="enderio:block_dark_iron_bars" /><item name="ELECTRICAL_STEEL" />
+      </grid>
+      <output name="enderio:block_niard" />
+    </crafting>
+  </recipe>
+
 </enderio:recipes>
  

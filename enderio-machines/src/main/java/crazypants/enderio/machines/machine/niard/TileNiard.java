@@ -73,7 +73,7 @@ public class TileNiard extends AbstractCapabilityMachineEntity implements ITankA
 
   @Override
   protected boolean processTasks(boolean redstoneCheck) {
-    if (canTick(redstoneCheck)) {
+    if (getEnergy().hasCapacitor() && canTick(redstoneCheck)) {
       doTick();
     }
     if (tanksDirty && shouldDoWorkThisTick(5)) {

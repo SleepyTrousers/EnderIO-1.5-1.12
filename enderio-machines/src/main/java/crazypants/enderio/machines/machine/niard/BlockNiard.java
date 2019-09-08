@@ -17,12 +17,9 @@ import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -52,16 +49,16 @@ public class BlockNiard extends AbstractCapabilityMachineBlock<TileNiard>
   }
 
   @Override
-  public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
-      int param1, @Nonnull TileNiard te) {
-    return null; // new ContainerTank(player.inventory, te);
+  public @Nullable ContainerNiard<TileNiard> getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos,
+      @Nullable EnumFacing facing, int param1, @Nonnull TileNiard te) {
+    return new ContainerNiard<>(player.inventory, te);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
-  public @Nullable GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
+  public @Nullable GuiNiard getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
       int param1, @Nonnull TileNiard te) {
-    return null; // new GuiTank(player.inventory, te);
+    return new GuiNiard(player.inventory, te);
   }
 
   @Override
@@ -123,11 +120,4 @@ public class BlockNiard extends AbstractCapabilityMachineBlock<TileNiard>
     return getSubItems(this, 0);
   }
 
-  @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, EnumFacing side, float hitX,
-      float hitY, float hitZ) {
-    if (world.isRemote) // TODO delme after the gui is done
-      getTileEntity(world, pos).setShowRange(!getTileEntity(world, pos).isShowingRange());
-    return super.onBlockActivated(world, pos, state, entityPlayer, hand, side, hitX, hitY, hitZ);
-  }
 }
