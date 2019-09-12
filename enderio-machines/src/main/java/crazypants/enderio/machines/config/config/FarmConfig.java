@@ -1,8 +1,8 @@
 package crazypants.enderio.machines.config.config;
 
+import crazypants.enderio.machines.config.Config;
 import info.loenwind.autoconfig.factory.IValue;
 import info.loenwind.autoconfig.factory.IValueFactory;
-import crazypants.enderio.machines.config.Config;
 
 public final class FarmConfig {
 
@@ -54,5 +54,25 @@ public final class FarmConfig {
 
   public static final IValue<Boolean> enableCarefulCare = F.make("enableCarefulCare", true, //
       "If enabled, the farming area will receive some additional growth ticks. Disabling this can improve performance on budy servers").sync();
+
+  public static final IValue<Integer> waterTankSize = F.make("waterTankSize", 2000, //
+      "The size of the water tank in mB. Setting this to 0 disables the tank and forces waterPerFarmland/waterCarefulCare to 0.").setRange(0, 64000).sync();
+
+  public static final IValue<Integer> waterPerFarmland = F.make("waterPerFarmland", 1, //
+      "The amount of water in mB that is used every time a farmland block tries to dry out. Setting this to 0 disables the need for water in the tank.")
+      .setRange(0, 1000).sync();
+
+  public static final IValue<Integer> waterCarefulCare = F.make("waterCarefulCare", 0, //
+      "The amount of water in mB that is used every time the Farming Station boosts a plant. Setting this to 0 disables the need for water in the tank.")
+      .setRange(0, 1000).sync();
+
+  public static final IValue<Float> rainWaterChance = F.make("rainWaterChance", 1f, //
+      "The chance that rain will flow into the tank. Set to 0 to disable. (Note: Vanilla Cauldron=0.05)").setRange(0, 1).sync();
+
+  public static final IValue<Integer> rainWaterAmount = F.make("rainWaterAmount", 100, //
+      "The amount of water in mB that flows into the tankl when it rains. (Note: Vanilla Cauldron=333)").setRange(0, 1000).sync();
+
+  public static final IValue<Boolean> waterFarmlandParticles = F.make("waterFarmlandParticles", true, //
+      "If this is enabled the farm will show water particles when watering farmland.");
 
 }

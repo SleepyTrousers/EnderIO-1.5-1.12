@@ -148,7 +148,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
     if (super.doPull(dir)) {
       return true;
     }
-    if (dir != null && inputTank.getFluidAmount() < inputTank.getCapacity()) {
+    if (dir != null && !inputTank.isFull()) {
       if (FluidWrapper.transfer(world, getPos().offset(dir), dir.getOpposite(), inputTank, IO_MB_TICK) > 0) {
         setTanksDirty();
         return true;

@@ -45,6 +45,37 @@ public enum DefaultCapacitorData implements ICapacitorData {
 
   };
 
+  public static final @Nonnull ICapacitorData LVL10 = new ICapacitorData() {
+
+    @Override
+    public float getUnscaledValue(@Nonnull ICapacitorKey key) {
+      return 10;
+    }
+
+    @Override
+    @Nonnull
+    public String getUnlocalizedName() {
+      return "none";
+    }
+
+    @Override
+    @Nonnull
+    public String getLocalizedName() {
+      return "none";
+    }
+
+    @Override
+    public int hashCode() {
+      return 815;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      return this == obj;
+    }
+
+  };
+
   private final @Nonnull String unlocalizedName;
   private final int baselevel;
   private final boolean regular;

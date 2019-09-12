@@ -228,4 +228,33 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_tele_pad/buffer" base="100000" scaler="FIXED" />
   <capacitor key="enderio:block_tele_pad/use" base="4000" scaler="FIXED" />
 
+  <capacitor key="enderio:block_niard/intake" base="400" scaler="POWER" />
+  <capacitor key="enderio:block_niard/buffer" base="100000" scaler="POWER" />
+  <capacitor key="enderio:block_niard/use" base="5" scaler="POWER" />
+  <capacitor key="enderio:block_niard/range" base="1">
+    <indexed>
+      <data value="0"/>
+      <data value="0"/>
+      <data value="2"/>
+      <data value="3"/>
+      <data value="5"/>
+      <data value="10"/>
+      <data value="20"/>
+      <data value="40"/><!-- about here it gets insane -->
+      <data value="80"/>
+      <data value="160"/>
+      <data value="320"/>
+    </indexed>
+  </capacitor>
+  <capacitor key="enderio:block_niard/delay" base="1">
+    <indexed>
+      <data value="40"/>
+      <data value="20"/>
+      <data value="10"/>
+      <data value="2"/>
+      <data value="1"/><!-- run each tick -->
+    </indexed>
+  </capacitor>
+  <capacitor key="enderio:block_niard/work" base="400" scaler="POWER" />
+
 </enderio:recipes>
