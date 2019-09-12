@@ -112,10 +112,8 @@ public class UpgradeCap implements IItemHandlerModifiable {
   public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
     final NNPair<ItemStack, IDarkSteelItem> owner = getOwner();
     if (isInventorySlot(slot)) {
-      if (Prep.isValid(NbtValue.DSUINV.getStack(owner.getLeft(), slot - stacks.size()))) {
-        return stack;
-      }
-      if (stack.getItem() != ModObject.itemDarkSteelUpgrade.getItemNN()) {
+      if (isAddOnly() || Prep.isValid(NbtValue.DSUINV.getStack(owner.getLeft(), slot - stacks.size()))
+          || stack.getItem() != ModObject.itemDarkSteelUpgrade.getItemNN()) {
         return stack;
       }
       if (!simulate) {
