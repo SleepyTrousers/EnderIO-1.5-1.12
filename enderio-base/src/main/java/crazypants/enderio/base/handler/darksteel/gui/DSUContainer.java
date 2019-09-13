@@ -106,8 +106,8 @@ public class DSUContainer extends ContainerEnderCap<EIOCombinedInvWrapper<Upgrad
       return getHandler().isHead(getHandlerSlot()) && !noHead;
     }
 
-    public boolean isAddOnly() {
-      return getHandler().isAddOnly();
+    public boolean isLocked() {
+      return getHandler().isLocked(getHandlerSlot());
     }
 
     @SuppressWarnings("unchecked")

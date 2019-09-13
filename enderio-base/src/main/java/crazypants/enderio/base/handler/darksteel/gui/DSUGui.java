@@ -118,7 +118,7 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
             if (slot.isHead()) {
               drawTexturedModalRect(guiLeft + slot.getX() - 1 - 6, guiTop + slot.getY() - 1, 200, 18, 6, 18);
             }
-            if (slot.isAddOnly() && slot.getHasStack()) {
+            if (slot.isLocked()) {
               drawTexturedModalRect(guiLeft + slot.getX() - 1, guiTop + slot.getY() - 1, 236, 0, 18, 18);
             } else if (slot.isBlocked()) {
               drawTexturedModalRect(guiLeft + slot.getX() - 1, guiTop + slot.getY() - 1, 218, 0, 18, 18);
