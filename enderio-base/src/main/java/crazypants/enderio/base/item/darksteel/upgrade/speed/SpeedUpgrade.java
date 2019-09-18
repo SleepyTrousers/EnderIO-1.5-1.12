@@ -19,6 +19,7 @@ import crazypants.enderio.base.item.darksteel.attributes.DarkSteelAttributeModif
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
+import crazypants.enderio.util.NbtValue;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
@@ -94,7 +95,7 @@ public class SpeedUpgrade extends AbstractUpgrade {
 
   @Override
   public void addAttributeModifiers(@Nonnull EntityEquipmentSlot slot, @Nonnull ItemStack stack, @Nonnull Multimap<String, AttributeModifier> map) {
-    if (slot == EntityEquipmentSlot.LEGS) {
+    if (slot == EntityEquipmentSlot.LEGS && !NbtValue.SPEED_DISABLED.getBoolean(stack)) {
       EnergyUpgradeHolder upgradeHolder = EnergyUpgradeManager.loadFromItem(stack);
       if (upgradeHolder != null && upgradeHolder.getEnergy() > 0) {
         AttributeModifier modifier = DarkSteelAttributeModifiers.getWalkSpeed(getLevel(), upgradeHolder.getUpgrade().getLevel());
@@ -106,6 +107,14 @@ public class SpeedUpgrade extends AbstractUpgrade {
   @Override
   public void onPlayerTick(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item, @Nonnull EntityPlayer player) {
     if (player.world.isRemote) {
+      return;
+    }
+
+    final boolean isEnabled = DarkSteelController.isActive(player, this);
+    if (isEnabled == NbtValue.SPEED_DISABLED.getBoolean(stack)) {
+      NbtValue.SPEED_DISABLED.setBoolean(stack, !isEnabled);
+    }
+    if (!isEnabled) {
       return;
     }
 

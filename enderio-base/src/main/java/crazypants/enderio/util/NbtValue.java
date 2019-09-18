@@ -55,6 +55,7 @@ public enum NbtValue { // TODO: DONE111
   INVENTORY("inv"),
   DSU("dsu"),
   DSUINV("dsuinv"),
+  SPEED_DISABLED("spdst"),
 
   ;
 
