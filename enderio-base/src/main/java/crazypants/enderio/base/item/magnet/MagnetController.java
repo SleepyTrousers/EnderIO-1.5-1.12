@@ -119,12 +119,12 @@ public final class MagnetController {
       itemsRemaining = Integer.MAX_VALUE;
     }
 
-    final int minChunkX = MathHelper.floor((bb.minX) / 16.0D);
-    final int maxChunkX = MathHelper.floor((bb.maxX) / 16.0D);
-    final int minChunkZ = MathHelper.floor((bb.minZ) / 16.0D);
-    final int maxChunkZ = MathHelper.floor((bb.maxZ) / 16.0D);
-    final int minChunkY = MathHelper.floor((bb.minY) / 16.0D);
-    final int maxChunkY = MathHelper.floor((bb.maxY) / 16.0D);
+    final int minChunkX = ((int) bb.minX) >> 4;
+    final int maxChunkX = ((int) bb.maxX) >> 4;
+    final int minChunkZ = ((int) bb.minZ) >> 4;
+    final int maxChunkZ = ((int) bb.maxZ) >> 4;
+    final int minChunkY = ((int) bb.minY) >> 4;
+    final int maxChunkY = ((int) bb.maxY) >> 4;
 
     for (int chunkX = minChunkX; chunkX <= maxChunkX; ++chunkX) {
       for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; ++chunkZ) {
