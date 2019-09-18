@@ -40,4 +40,19 @@ public final class EnchantmentShimmer extends EnchantmentBase {
     return 1;
   }
 
+  @Override
+  public boolean isCurse() {
+    return true;
+  }
+
+  @Override
+  public boolean isTreasureEnchantment() {
+    return true;
+  }
+
+  @Override
+  public boolean isAllowedOnBooks() {
+    return false;
+  }
+
 }
