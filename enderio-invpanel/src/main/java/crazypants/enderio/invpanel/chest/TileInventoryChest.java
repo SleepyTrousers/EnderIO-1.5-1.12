@@ -10,6 +10,7 @@ import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
 import crazypants.enderio.base.machine.base.te.EnergyLogic;
 import crazypants.enderio.base.machine.base.te.ICap;
+import crazypants.enderio.base.machine.interfaces.IHasFillLevel;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.invpanel.capacitor.CapacitorKey;
 import crazypants.enderio.util.Prep;
@@ -18,7 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 @Storable
-public abstract class TileInventoryChest extends AbstractCapabilityMachineEntity implements IPaintable.IPaintableTileEntity {
+public abstract class TileInventoryChest extends AbstractCapabilityMachineEntity implements IPaintable.IPaintableTileEntity, IHasFillLevel {
 
   @Storable
   public static class Tiny extends TileInventoryChest {

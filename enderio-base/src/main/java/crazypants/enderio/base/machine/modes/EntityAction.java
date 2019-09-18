@@ -6,7 +6,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.util.CapturedMob;
 
-public enum EntityAction { // TODO 1.11 implement on obelisks and spawner
+public enum EntityAction {
   ATTRACT("entity_action.block_attractor_obelisk.action"),
   AVERT("entity_action.block_aversion_obelisk.action"),
   RELOCATE("entity_action.block_relocator_obelisk.action"),
@@ -25,7 +25,7 @@ public enum EntityAction { // TODO 1.11 implement on obelisks and spawner
     return langKey;
   }
 
-  public static interface Implementer {
+  public interface Implementer {
 
     @Nonnull
     NNList<CapturedMob> getEntities();

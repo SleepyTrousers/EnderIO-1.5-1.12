@@ -23,6 +23,7 @@ import crazypants.enderio.base.filter.ITileFilterContainer;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.items.IItemFilterItemUpgrade;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
+import crazypants.enderio.base.machine.interfaces.IHasFillLevel;
 import crazypants.enderio.base.machine.interfaces.IRedstoneModeControlable;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.paint.IPaintable;
@@ -49,7 +50,7 @@ import net.minecraftforge.items.IItemHandler;
 
 @Storable
 public class TileVacuumChest extends AbstractCapabilityMachineEntity
-    implements IRedstoneModeControlable, IPaintable.IPaintableTileEntity, IRanged, ITileFilterContainer {
+    implements IRedstoneModeControlable, IPaintable.IPaintableTileEntity, IRanged, ITileFilterContainer, IHasFillLevel {
 
   private static PredicateItemStack PREDICATE_FILTER = new PredicateItemStack() {
     @Override

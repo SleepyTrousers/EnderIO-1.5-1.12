@@ -1,7 +1,14 @@
 package crazypants.enderio.base.machine.interfaces;
 
-public interface IHasFillLevel {
+import com.enderio.core.common.inventory.EnderInventory.Type;
 
-  // TODO 1.11 implement on inventory chest
+import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
+
+/**
+ * Marker interface to tell the TOP integration that a {@link AbstractCapabilityMachineEntity} has {@link Type#INOUT} slots that can be summed up to give a fill
+ * level.
+ *
+ */
+public interface IHasFillLevel {
 
 }
