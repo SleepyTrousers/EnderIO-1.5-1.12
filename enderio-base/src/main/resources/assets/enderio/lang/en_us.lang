@@ -825,6 +825,9 @@ enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=Who needs a shovel when y
 enderio.darksteel.upgrade.hoe.name=Fork
 enderio.darksteel.upgrade.hoe.tooltip.detailed.line1=Who needs a hoe when you have a fork...
 
+enderio.darksteel.upgrade.tnt.enabled=Explosive Active
+enderio.darksteel.upgrade.tnt.disabled=Explosive Disabled
+
 enderio.darksteel.upgrade.tnt.0.name=Explosive I
 enderio.darksteel.upgrade.tnt.0.tooltip.detailed.line1=Adds explosive power to the pickaxe, damaging surrounding blocks while mining.
 # translator note: "nail" is referencing Tinkers' hammer---"if all you have is a hammer, everything looks like a nail"
@@ -1261,6 +1264,7 @@ enderio.keybind.gogglesofrevealing=Goggles of Revealing
 enderio.keybind.stepassist=Step Assist
 enderio.keybind.speed=Speed
 enderio.keybind.jump=Jump
+enderio.keybind.tnt=Explosive
 enderio.keybind.top=Toggle The One Probe (Helmet Upgrade)
 enderio.keybind.yetawrenchmode=Yeta Wrench Mode
 enderio.keybind.magnet=Toggle Electromagnet

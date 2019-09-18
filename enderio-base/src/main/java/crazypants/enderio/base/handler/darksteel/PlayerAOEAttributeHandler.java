@@ -16,6 +16,7 @@ import com.enderio.core.common.util.blockiterators.CubicBlockIterator;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelPickaxe;
+import crazypants.enderio.base.item.darksteel.upgrade.explosive.ExplosiveUpgrade;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -79,8 +80,8 @@ public class PlayerAOEAttributeHandler {
   }
 
   public static boolean hasAOE(@Nonnull EntityPlayer player) {
-    return player.getEntityAttribute(AOE_XZ).getAttributeValue() > 0 || player.getEntityAttribute(AOE_Y).getAttributeValue() > 0
-        || player.getEntityAttribute(AOE_XYZ).getAttributeValue() > 0;
+    return DarkSteelController.isActive(player, ExplosiveUpgrade.INSTANCE) && (player.getEntityAttribute(AOE_XZ).getAttributeValue() > 0
+        || player.getEntityAttribute(AOE_Y).getAttributeValue() > 0 || player.getEntityAttribute(AOE_XYZ).getAttributeValue() > 0);
   }
 
   public static @Nonnull AxisAlignedBB expandBBbyAOE(@Nonnull EntityPlayer player, @Nonnull AxisAlignedBB bb, RayTraceResult rtr) {

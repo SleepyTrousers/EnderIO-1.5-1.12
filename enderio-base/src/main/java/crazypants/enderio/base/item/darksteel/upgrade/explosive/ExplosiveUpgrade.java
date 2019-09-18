@@ -21,6 +21,7 @@ import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
 import crazypants.enderio.base.lang.Lang;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -70,6 +71,10 @@ public class ExplosiveUpgrade extends AbstractUpgrade {
     }
 
   };
+
+  public static boolean isEquipped(@Nonnull EntityPlayer player) {
+    return INSTANCE.hasAnyUpgradeVariant(player.getHeldItemMainhand());
+  }
 
   public ExplosiveUpgrade(int level) {
     super(UPGRADE_NAME, level, "enderio.darksteel.upgrade." + UPGRADE_NAME + "." + level, DarkSteelConfig.explosiveUpgradeCost.get(level));

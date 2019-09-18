@@ -18,6 +18,7 @@ import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.integration.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbeMode;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
+import crazypants.enderio.base.item.darksteel.upgrade.explosive.ExplosiveUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.jump.JumpUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.nightvision.NightVisionUpgrade;
@@ -79,6 +80,7 @@ public class KeyTracker {
     create("enderio.keybind.speed             ", Keyboard.KEY_NONE, "key.category.darksteelarmor    ", new SpeedAction());
     create("enderio.keybind.jump              ", Keyboard.KEY_NONE, "key.category.darksteelarmor    ", new JumpAction());
     create("enderio.keybind.top               ", Keyboard.KEY_NONE, "key.category.darksteelarmor    ", new TopAction());
+    create("enderio.keybind.tnt               ", Keyboard.KEY_NONE, "key.category.darksteelarmor    ", new KaBoomAction());
     yetaWrenchMode = //
         create("enderio.keybind.yetawrenchmode", Keyboard.KEY_Y, "   key.category.tools             ", new YetaWrenchAction());
     create("enderio.keybind.magnet            ", Keyboard.KEY_NONE, "key.category.tools             ", new MagnetAction());
@@ -201,6 +203,15 @@ public class KeyTracker {
       EntityPlayer player = Minecraft.getMinecraft().player;
       if (GogglesOfRevealingUpgrade.isUpgradeEquipped(player)) {
         toggleDarkSteelController(GogglesOfRevealingUpgrade.INSTANCE, "darksteel.upgrades.goggles");
+      }
+    }
+  }
+
+  private static class KaBoomAction implements Action {
+    @Override
+    public void execute() {
+      if (ExplosiveUpgrade.isEquipped(Minecraft.getMinecraft().player)) {
+        toggleDarkSteelController(StepAssistUpgrade.INSTANCE, "darksteel.upgrade.tnt");
       }
     }
   }

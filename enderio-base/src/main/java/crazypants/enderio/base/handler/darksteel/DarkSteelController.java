@@ -15,6 +15,7 @@ import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.integration.top.TheOneProbeUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
+import crazypants.enderio.base.item.darksteel.upgrade.explosive.ExplosiveUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.jump.JumpUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.nightvision.NightVisionUpgrade;
@@ -82,6 +83,7 @@ public class DarkSteelController {
       set.setBoolean(getNbtKey(SpeedUpgrade.SPEED_ONE), false);
       set.setBoolean(getNbtKey(StepAssistUpgrade.INSTANCE), false);
       set.setBoolean(getNbtKey(JumpUpgrade.JUMP_ONE), false);
+      set.setBoolean(getNbtKey(ExplosiveUpgrade.INSTANCE), false);
     }
     return set;
   }
