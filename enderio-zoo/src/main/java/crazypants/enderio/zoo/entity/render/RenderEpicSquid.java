@@ -6,18 +6,14 @@ import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.entity.EntityEpicSquid;
 import net.minecraft.client.model.ModelSquid;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderEpicSquid extends RenderLiving<EntityEpicSquid> {
-
-  public static final Factory FACTORY = new Factory();
 
   private static final @Nonnull ResourceLocation EPIC_TEXTURES = new ResourceLocation(EnderIOZoo.DOMAIN, "entity/epicsquid.png");
 
@@ -44,14 +40,6 @@ public class RenderEpicSquid extends RenderLiving<EntityEpicSquid> {
   @Override
   protected float handleRotationFloat(@Nonnull EntityEpicSquid livingBase, float partialTicks) {
     return livingBase.lastTentacleAngle + (livingBase.tentacleAngle - livingBase.lastTentacleAngle) * partialTicks;
-  }
-
-  public static class Factory implements IRenderFactory<EntityEpicSquid> {
-
-    @Override
-    public Render<? super EntityEpicSquid> createRenderFor(RenderManager manager) {
-      return new RenderEpicSquid(manager);
-    }
   }
 
 }

@@ -52,7 +52,7 @@ public class EntityEpicSquid extends EntitySquid implements IEnderZooEntity {
   @SubscribeEvent
   @SideOnly(Side.CLIENT)
   public static void onPreInit(EnderIOLifecycleEvent.PreInit event) {
-    RenderingRegistry.registerEntityRenderingHandler(EntityEpicSquid.class, RenderEpicSquid.FACTORY);
+    RenderingRegistry.registerEntityRenderingHandler(EntityEpicSquid.class, renderManager -> new RenderEpicSquid(renderManager));
   }
 
   public static final @Nonnull String NAME = "epicsquid";
