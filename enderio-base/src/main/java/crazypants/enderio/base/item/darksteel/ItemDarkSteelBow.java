@@ -137,85 +137,75 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
   }
 
   @Override
-  public void onPlayerStoppedUsing(@Nonnull ItemStack stack, @Nonnull World worldIn, @Nonnull EntityLivingBase entityLiving, int timeLeft) {
+  public void onPlayerStoppedUsing(@Nonnull ItemStack theBow, @Nonnull World worldIn, @Nonnull EntityLivingBase theShootingEntity, int timeLeft) {
 
-    if (!(entityLiving instanceof EntityPlayer)) {
+    if (!(theShootingEntity instanceof EntityPlayer)) {
       return;
     }
-    EntityPlayer entityplayer = (EntityPlayer) entityLiving;
-    boolean hasInfinateArrows = entityplayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
-    ItemStack itemstack = getArrowsToShoot(entityplayer);
-    int draw = getMaxItemUseDuration(stack) - timeLeft;
-    draw = ForgeEventFactory.onArrowLoose(stack, worldIn, (EntityPlayer) entityLiving, draw, Prep.isValid(itemstack) || hasInfinateArrows);
-    if (draw < 0) {
+    final EntityPlayer theShooter = (EntityPlayer) theShootingEntity;
+    final boolean isCreativeMode = theShooter.capabilities.isCreativeMode;
+    final ItemStack theArrows = getArrowsToShoot(theShooter, isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, theBow) > 0);
+    if (Prep.isInvalid(theArrows)) {
       return;
     }
-
-    if (itemstack.isEmpty() && hasInfinateArrows) {
-      itemstack = new ItemStack(Items.ARROW);
-    }
-
-    if (itemstack.isEmpty()) {
+    final int drawTime = ForgeEventFactory.onArrowLoose(theBow, worldIn, (EntityPlayer) theShootingEntity, getMaxItemUseDuration(theBow) - timeLeft, true);
+    if (drawTime < 0) {
       return;
     }
+    final float drawRatio = getCustomArrowVelocity(theBow, drawTime);
+    if (drawRatio < 0.1) {
+      return;
+    }
+    final ItemArrow theArrow = (ItemArrow) (theArrows.getItem() instanceof ItemArrow ? theArrows.getItem() : Items.ARROW);
+    final boolean arrowIsInfinite = isCreativeMode || theArrow.isInfinite(theArrows, theBow, theShooter);
 
-    float drawRatio = getCustumArrowVelocity(stack, draw);
-    if (drawRatio >= 0.1) {
-      boolean arrowIsInfinite = hasInfinateArrows && itemstack.getItem() instanceof ItemArrow;
-      if (!worldIn.isRemote) {
+    if (!worldIn.isRemote) {
+      final EnergyUpgradeHolder upgrade = EnergyUpgradeManager.loadFromItem(theBow);
 
-        EnergyUpgradeHolder upgrade = EnergyUpgradeManager.loadFromItem(stack);
+      final EntityArrow entityArrow = theArrow.createArrow(worldIn, theArrows, theShooter);
+      // ATTENTION: Doesn't actually shoot the arrow!
+      entityArrow.shoot(theShooter, theShooter.rotationPitch, theShooter.rotationYaw, 0.0F, drawRatio * 3.0F * getForceMultiplier(upgrade), 0.25F);
 
-        ItemArrow itemarrow = ((ItemArrow) (itemstack.getItem() instanceof ItemArrow ? itemstack.getItem() : Items.ARROW));
-        EntityArrow entityarrow = itemarrow.createArrow(worldIn, itemstack, entityplayer);
-        entityarrow.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, drawRatio * 3.0F * getForceMultiplier(upgrade), 0.25F); // ATTENTION:
-                                                                                                                                                            // Doesn't
-                                                                                                                                                            // actually
-                                                                                                                                                            // shoot
-                                                                                                                                                            // the
-                                                                                                                                                            // arrow!
-
-        if (drawRatio == 1.0F) {
-          entityarrow.setIsCritical(true);
-        }
-        int powerLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, stack);
-        if (powerLevel > 0) {
-          entityarrow.setDamage(entityarrow.getDamage() + powerLevel * 0.5D + 0.5D);
-        }
-        int knockBack = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, stack);
-        if (knockBack > 0) {
-          entityarrow.setKnockbackStrength(knockBack);
-        }
-        if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, stack) > 0) {
-          entityarrow.setFire(100);
-        }
-
-        stack.damageItem(1, entityplayer);
-
-        if (arrowIsInfinite) {
-          entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
-        }
-
-        entityarrow.setDamage(entityarrow.getDamage() + getDamageBonus(upgrade));
-
-        worldIn.spawnEntity(entityarrow);
-
-        int used = getRequiredPower(draw, upgrade);
-        if (used > 0) {
-          upgrade.setEnergy(upgrade.getEnergy() - used);
-          upgrade.writeToItem();
-        }
-
+      if (drawRatio == 1.0F) {
+        entityArrow.setIsCritical(true);
+      }
+      final int powerLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, theBow);
+      if (powerLevel > 0) {
+        entityArrow.setDamage(entityArrow.getDamage() + powerLevel * 0.5D + 0.5D);
+      }
+      final int knockBack = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, theBow);
+      if (knockBack > 0) {
+        entityArrow.setKnockbackStrength(knockBack);
+      }
+      if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, theBow) > 0) {
+        entityArrow.setFire(100);
       }
 
-      worldIn.playSound((EntityPlayer) null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL,
-          1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + drawRatio * 0.5F);
+      theBow.damageItem(1, theShooter);
 
-      if (!arrowIsInfinite) {
-        itemstack.shrink(1);
+      if (arrowIsInfinite) {
+        entityArrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
       }
-      supressed(entityplayer);
+
+      entityArrow.setDamage(entityArrow.getDamage() + getDamageBonus(upgrade));
+
+      worldIn.spawnEntity(entityArrow);
+
+      final int usedEnergy = getRequiredPower(drawTime, upgrade);
+      if (usedEnergy > 0) {
+        upgrade.setEnergy(upgrade.getEnergy() - usedEnergy);
+        upgrade.writeToItem();
+      }
+
     }
+
+    worldIn.playSound((EntityPlayer) null, theShooter.posX, theShooter.posY, theShooter.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F,
+        1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + drawRatio * 0.5F);
+
+    if (!arrowIsInfinite) {
+      theArrows.shrink(1);
+    }
+    supressed(theShooter);
 
   }
 
@@ -252,7 +242,7 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
     return powerRequired;
   }
 
-  public float getCustumArrowVelocity(@Nonnull ItemStack stack, int charge) {
+  public float getCustomArrowVelocity(@Nonnull ItemStack stack, int charge) {
     float f = charge / (float) getDrawTime(stack);
     f = (f * f + f * 2.0F) / 3.0F;
     if (f > 1.0F) {
@@ -262,20 +252,9 @@ public class ItemDarkSteelBow extends ItemBow implements IDarkSteelItem, IAdvanc
     return f;
   }
 
-  private @Nonnull ItemStack getArrowsToShoot(EntityPlayer player) {
-    if (isArrow(player.getHeldItem(EnumHand.OFF_HAND))) {
-      return player.getHeldItem(EnumHand.OFF_HAND);
-    } else if (isArrow(player.getHeldItem(EnumHand.MAIN_HAND))) {
-      return player.getHeldItem(EnumHand.MAIN_HAND);
-    } else {
-      for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
-        ItemStack itemstack = player.inventory.getStackInSlot(i);
-        if (isArrow(itemstack)) {
-          return itemstack;
-        }
-      }
-      return Prep.getEmpty();
-    }
+  private @Nonnull ItemStack getArrowsToShoot(@Nonnull EntityPlayer player, boolean hasInfiniteArrows) {
+    ItemStack result = findAmmo(player);
+    return Prep.isValid(result) ? result : hasInfiniteArrows ? new ItemStack(Items.ARROW) : Prep.getEmpty();
   }
 
   @SideOnly(Side.CLIENT)
