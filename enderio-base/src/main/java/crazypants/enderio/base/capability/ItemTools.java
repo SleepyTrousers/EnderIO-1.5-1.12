@@ -3,7 +3,6 @@ package crazypants.enderio.base.capability;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.util.ItemUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
@@ -220,7 +219,7 @@ public final class ItemTools {
     int count = 0;
     for (int i = 0; i < handler.getSlots(); i++) {
       ItemStack stack = handler.getStackInSlot(i);
-      if (ItemUtil.areStacksEqual(template, stack)) {
+      if (areStacksEqualIgnoringDamage(template, stack)) {
         count += stack.getCount();
       }
     }
@@ -242,7 +241,7 @@ public final class ItemTools {
     int count = 0;
     for (int i = 0; i < handler.getSlots(); i++) {
       ItemStack stack = handler.getStackInSlot(i);
-      if (ItemUtil.areStacksEqual(template, stack)) {
+      if (areStacksEqualIgnoringDamage(template, stack)) {
         count += stack.getCount();
         if (count >= limit) {
           return 0;
@@ -252,11 +251,22 @@ public final class ItemTools {
     return limit - count;
   }
 
+  // TODO: switch to com.enderio.core.common.util.ItemUtil.areStacksEqualIgnoringDamage(ItemStack, ItemStack)
+  public static boolean areStacksEqualIgnoringDamage(@Nonnull ItemStack s1, @Nonnull ItemStack s2) {
+    if (s1.isEmpty() || s2.isEmpty()) {
+      return false;
+    }
+    if (!s1.isItemEqualIgnoreDurability(s2)) {
+      return false;
+    }
+    return ItemStack.areItemStackTagsEqual(s1, s2);
+  }
+
   public static boolean hasAtLeast(@Nonnull IItemHandler handler, @Nonnull ItemStack template, int limit) {
     int count = 0;
     for (int i = 0; i < handler.getSlots(); i++) {
       ItemStack stack = handler.getStackInSlot(i);
-      if (com.enderio.core.common.util.ItemUtil.areStacksEqual(template, stack)) {
+      if (areStacksEqualIgnoringDamage(template, stack)) {
         count += stack.getCount();
         if (count >= limit) {
           return true;
