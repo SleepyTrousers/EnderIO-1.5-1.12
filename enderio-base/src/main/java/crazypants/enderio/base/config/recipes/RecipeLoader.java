@@ -212,12 +212,12 @@ public final class RecipeLoader {
           Log.error("IO error while parsing IMC:");
           e.printStackTrace();
           Log.error("IMC message:\n" + recipe.getValue().getValue());
-          recipeError("IMC from the mod '" + recipe.getKey() + "'", "IO error while parsing string:" + e.getMessage());
+          recipeError("IMC from the mod '" + recipe.getKey() + "'", "IO error while parsing string: " + e.getMessage());
         } catch (XMLStreamException e) {
           Log.error("IMC has malformed XML:");
           e.printStackTrace();
           Log.error("IMC message:\n" + recipe.getValue().getValue());
-          recipeError("IMC from the mod '" + recipe.getKey() + "'", "IMC has malformed XML:" + e.getMessage());
+          recipeError("IMC from the mod '" + recipe.getKey() + "'", "IMC has malformed XML: " + e.getMessage());
         }
       }
       ProgressManager.pop(bar);
@@ -271,11 +271,11 @@ public final class RecipeLoader {
     } catch (IOException e) {
       Log.error("IO error while reading file:");
       e.printStackTrace();
-      recipeError(filename, "IO error while reading file:" + e.getMessage());
+      recipeError(filename, "IO error while reading file: " + e.getMessage());
     } catch (XMLStreamException e) {
       Log.error("File has malformed XML:");
       e.printStackTrace();
-      recipeError(filename, "File has malformed XML:" + e.getMessage());
+      recipeError(filename, "File has malformed XML: " + e.getMessage());
     }
     return null;
   }
@@ -294,11 +294,11 @@ public final class RecipeLoader {
     } catch (IOException e) {
       Log.error("IO error while reading file:");
       e.printStackTrace();
-      recipeError(filename + EXT, "IO error while reading file:" + e.getMessage());
+      recipeError(filename + EXT, "IO error while reading file: " + e.getMessage());
     } catch (XMLStreamException e) {
       Log.error("File has malformed XML:");
       e.printStackTrace();
-      recipeError(filename + EXT, "File has malformed XML:" + e.getMessage());
+      recipeError(filename + EXT, "File has malformed XML: " + e.getMessage());
     }
     return target;
   }
@@ -324,11 +324,11 @@ public final class RecipeLoader {
       } catch (IOException e) {
         Log.error("IO error while parsing string:");
         e.printStackTrace();
-        recipeError("IMC from other mod", "IO error while parsing string:" + e.getMessage());
+        recipeError("IMC from other mod", "IO error while parsing string: " + e.getMessage());
       } catch (XMLStreamException e) {
         Log.error("IMC has malformed XML:");
         e.printStackTrace();
-        recipeError("IMC from other mod", "IMC has malformed XML:" + e.getMessage());
+        recipeError("IMC from other mod", "IMC has malformed XML: " + e.getMessage());
       }
     }
   }
