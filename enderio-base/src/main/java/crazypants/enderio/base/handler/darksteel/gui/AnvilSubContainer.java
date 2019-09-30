@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 import org.apache.commons.lang3.StringUtils;
 
 import com.enderio.core.common.ContainerEnder;
-import com.enderio.core.common.ContainerEnder.BaseSlot;
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.base.block.darksteel.anvil.BlockDarkSteelAnvil;
