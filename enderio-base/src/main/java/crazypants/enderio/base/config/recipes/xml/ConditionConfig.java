@@ -64,4 +64,18 @@ public class ConditionConfig implements IRecipeConfigElement {
   public void enforceValidity() throws InvalidRecipeConfigException {
   }
 
+  // json
+
+  protected String getName() {
+    return get(name);
+  }
+
+  protected String getSection() {
+    return get(section);
+  }
+
+  protected boolean getValue() {
+    return value;
+  }
+
 }

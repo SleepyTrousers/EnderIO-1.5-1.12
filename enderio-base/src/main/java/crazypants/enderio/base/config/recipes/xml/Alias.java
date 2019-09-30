@@ -18,7 +18,7 @@ public class Alias extends AbstractConditional {
   private Optional<String> item = empty();
 
   @Override
-  public @Nonnull String getName() {
+  public String getName() {
     return get(name);
   }
 
@@ -61,6 +61,12 @@ public class Alias extends AbstractConditional {
 
   @Override
   public void enforceValidity() throws InvalidRecipeConfigException {
+  }
+
+  // json
+
+  protected String getItem() {
+    return get(item);
   }
 
 }

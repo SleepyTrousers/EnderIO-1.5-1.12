@@ -7,6 +7,8 @@ import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.config.recipes.IRecipeRoot;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
@@ -56,7 +58,7 @@ public class Aliases implements IRecipeRoot {
   @Override
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("alias".equals(name)) {
-      factory.read(new Alias(), startElement);
+      aliases.add(factory.read(new Alias(), startElement));
     } else {
       factory.skip(startElement);
     }
@@ -70,6 +72,14 @@ public class Aliases implements IRecipeRoot {
   @Override
   public List<AbstractConditional> getRecipes() {
     return Collections.emptyList();
+  }
+
+  // json
+
+  private final NNList<Alias> aliases = new NNList<>();
+
+  protected NNList<Alias> getAliases() {
+    return aliases;
   }
 
 }

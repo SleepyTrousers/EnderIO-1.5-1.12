@@ -21,6 +21,7 @@ import org.apache.commons.io.IOUtils;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.config.recipes.xml.Serializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
@@ -184,13 +185,23 @@ public class RecipeFactory {
     }
   }
 
+  public static boolean ENABLE_TESTING = false;
+
   protected static <T extends IRecipeRoot> T readStax(T target, String rootElement, InputStream in, String source)
       throws XMLStreamException, InvalidRecipeConfigException {
     XMLInputFactory inputFactory = XMLInputFactory.newInstance();
     XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
     StaxFactory factory = new StaxFactory(eventReader, source);
 
-    return factory.readRoot(target, rootElement);
+    final T result = factory.readRoot(target, rootElement);
+    if (ENABLE_TESTING && result != null) {
+      try {
+        System.out.println(Serializer.serialize(result));
+      } catch (Exception e) {
+        // NOP
+      }
+    }
+    return result;
   }
 
   private void copyCore(ResourceLocation resourceLocation, File file) {

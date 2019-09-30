@@ -53,7 +53,7 @@
               </documentation>
             </annotation>
             <complexType>
-              <sequence minOccurs="0" maxOccurs="1">
+              <sequence minOccurs="1" maxOccurs="1">
                 <element minOccurs="0" maxOccurs="unbounded" name="config" type="enderio:configComplexType">
                   <annotation>
                     <documentation>
@@ -756,6 +756,7 @@
                   </element>
                   <element name="fuel" type="enderio:fuelType" minOccurs="1" maxOccurs="1"></element>
                   <element name="coolant" type="enderio:coolantType" minOccurs="1" maxOccurs="1"></element>
+                  <element name="disabled" type="enderio:disabledType" minOccurs="1" maxOccurs="1"></element>
                 </choice>
               </sequence>
               <attribute use="optional" name="required" type="boolean">
@@ -1168,6 +1169,16 @@
         </restriction>
       </simpleType>
     </attribute>
+  </complexType>
+
+  <complexType name="disabledType">
+    <annotation>
+      <documentation>A marker to disable a recipe. Can be used together or instead of the disabled attribute.</documentation>
+    </annotation>
+    <sequence>
+      <element name="config" type="enderio:configComplexType" maxOccurs="unbounded" minOccurs="0"></element>
+      <element name="dependency" type="enderio:dependencyComplexType" maxOccurs="unbounded" minOccurs="0"></element>
+    </sequence>
   </complexType>
 
   <complexType name="fuelType">

@@ -8,18 +8,18 @@
 
   <alias name="IRON" item="ingotIron" />
 
-  <recipe name="Alloy: Construction Alloy" disabled="true" />
+  <recipe name="Alloy: Construction Alloy"><disabled/></recipe>
 
   <grindingball name="Construction Alloy Ball" disabled="true" durability="1">
     <item name="CONSTRUCTION_ALLOY_BALL"/>
   </grindingball>
 
-  <recipe name="Construction Alloy Ball Crafting" disabled="true" />
+  <recipe name="Construction Alloy Ball Crafting"><disabled/></recipe>
 
-  <recipe name="Construction Alloy Casting" disabled="true" />
+  <recipe name="Construction Alloy Casting"><disabled/></recipe>
 
-  <recipe name="Construction Alloy Ball Smelting" disabled="true" />
+  <recipe name="Construction Alloy Ball Smelting"><disabled/></recipe>
 
-  <recipe name="Construction Alloy Ball Reverse Casting" disabled="true" />
+  <recipe name="Construction Alloy Ball Reverse Casting"><disabled/></recipe>
 
 </enderio:recipes>

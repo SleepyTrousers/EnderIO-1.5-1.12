@@ -12,8 +12,8 @@ While workarounds have been added, access to new content is not guaranteed.
 
 <!-- base.xml -->
 
-  <recipe name="Photovoltaic Powder" disabled="true" />
-  <recipe name="Alloy: Photovoltaic Plate" disabled="true" />
+  <recipe name="Photovoltaic Powder"><disabled/></recipe>
+  <recipe name="Alloy: Photovoltaic Plate"><disabled/></recipe>
   
 <!-- items.xml -->
 
@@ -30,15 +30,15 @@ While workarounds have been added, access to new content is not guaranteed.
   
 <!-- machines.xml -->
   
-  <recipe name="Simple Stirling Generator" disabled="true" />
-  <recipe name="Stirling Generator, Upgrade" disabled="true" />
-  <recipe name="Simple Alloy Smelter" disabled="true" />
-  <recipe name="Alloy Smelter, Upgrade" disabled="true" />
-  <recipe name="SimpleCrafter" disabled="true" />
-  <recipe name="Crafter, Upgrade" disabled="true" />
-  <recipe name="Solar Panel 2, Upgrade" disabled="true" />
-  <recipe name="Solar Panel 3, Upgrade" disabled="true" />
-  <recipe name="Solar Panel 4, Upgrade" disabled="true" />
+  <recipe name="Simple Stirling Generator"><disabled/></recipe>
+  <recipe name="Stirling Generator, Upgrade"><disabled/></recipe>
+  <recipe name="Simple Alloy Smelter"><disabled/></recipe>
+  <recipe name="Alloy Smelter, Upgrade"><disabled/></recipe>
+  <recipe name="SimpleCrafter"><disabled/></recipe>
+  <recipe name="Crafter, Upgrade"><disabled/></recipe>
+  <recipe name="Solar Panel 2, Upgrade"><disabled/></recipe>
+  <recipe name="Solar Panel 3, Upgrade"><disabled/></recipe>
+  <recipe name="Solar Panel 4, Upgrade"><disabled/></recipe>
   
   <recipe name="Stirling Generator" required="true">
     <crafting>
@@ -295,9 +295,9 @@ While workarounds have been added, access to new content is not guaranteed.
   
 <!-- materials.xml -->
 
-  <recipe name="Machine Dye" disabled="true" />
-  <recipe name="Enhanced Machine Dye" disabled="true" />
-  <recipe name="Soul Machine Dye" disabled="true" />
+  <recipe name="Machine Dye"><disabled/></recipe>
+  <recipe name="Enhanced Machine Dye"><disabled/></recipe>
+  <recipe name="Soul Machine Dye"><disabled/></recipe>
   
   <recipe name="Chassis" required="true">
     <crafting>
@@ -361,20 +361,20 @@ While workarounds have been added, access to new content is not guaranteed.
     </crafting>
   </recipe>
 
-  <recipe name="Infinity Dust Block 1" disabled="true" />
-  <recipe name="Infinity Dust Block 1, Uncrafting" disabled="true" />
-  <recipe name="Infinity Dust Block 1, Sagmilling" disabled="true" />
-  <recipe name="Infinity Dust Block 2" disabled="true" />
-  <recipe name="Infinity Dust Block 2, Uncrafting" disabled="true" />
-  <recipe name="Infinity Dust Block 2, Sagmilling" disabled="true" />
-  <recipe name="Infinity Dust Block 3" disabled="true" />
-  <recipe name="Infinity Dust Block 3, Uncrafting" disabled="true" />
-  <recipe name="Infinity Dust Block 3, Sagmilling" disabled="true" />
+  <recipe name="Infinity Dust Block 1"><disabled/></recipe>
+  <recipe name="Infinity Dust Block 1, Uncrafting"><disabled/></recipe>
+  <recipe name="Infinity Dust Block 1, Sagmilling"><disabled/></recipe>
+  <recipe name="Infinity Dust Block 2"><disabled/></recipe>
+  <recipe name="Infinity Dust Block 2, Uncrafting"><disabled/></recipe>
+  <recipe name="Infinity Dust Block 2, Sagmilling"><disabled/></recipe>
+  <recipe name="Infinity Dust Block 3"><disabled/></recipe>
+  <recipe name="Infinity Dust Block 3, Uncrafting"><disabled/></recipe>
+  <recipe name="Infinity Dust Block 3, Sagmilling"><disabled/></recipe>
 
 <!-- sagmill.xml -->
 
-  <recipe name="Simple SAG Mill" disabled="true" />
-  <recipe name="SAG Mill, Upgrade" disabled="true" />
+  <recipe name="Simple SAG Mill"><disabled/></recipe>
+  <recipe name="SAG Mill, Upgrade"><disabled/></recipe>
   
   <recipe name="SAG Mill" required="true">
     <crafting>

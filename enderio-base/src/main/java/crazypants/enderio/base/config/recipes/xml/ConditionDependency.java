@@ -91,4 +91,22 @@ public class ConditionDependency implements IRecipeConfigElement {
   public void enforceValidity() throws InvalidRecipeConfigException {
   }
 
+  // json
+
+  protected Optional<String> getItemString() {
+    return itemString;
+  }
+
+  protected Optional<String> getModString() {
+    return modString;
+  }
+
+  protected Optional<String> getUpgradeString() {
+    return upgradeString;
+  }
+
+  protected boolean isReverse() {
+    return reverse;
+  }
+
 }

@@ -23,15 +23,15 @@ public abstract class AbstractConditional implements IRecipeGameRecipe {
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
     active = true;
-      for (ConditionConfig configReference : configReferences) {
-        if (!configReference.isValid()) {
-          active = false;
-        }
+    for (ConditionConfig configReference : configReferences) {
+      if (!configReference.isValid()) {
+        active = false;
       }
-      for (ConditionDependency dependency : dependencies) {
-        if (!dependency.isValid()) {
-          active = false;
-        }
+    }
+    for (ConditionDependency dependency : dependencies) {
+      if (!dependency.isValid()) {
+        active = false;
+      }
     }
     return this;
   }
@@ -75,6 +75,16 @@ public abstract class AbstractConditional implements IRecipeGameRecipe {
   @Override
   public String getSource() {
     return NullHelper.first(source, "unknown");
+  }
+
+  // json
+
+  protected NNList<ConditionConfig> getConfigReferences() {
+    return configReferences;
+  }
+
+  protected NNList<ConditionDependency> getDependencies() {
+    return dependencies;
   }
 
 }
