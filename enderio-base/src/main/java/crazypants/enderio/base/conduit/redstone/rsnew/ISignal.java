@@ -1,5 +1,7 @@
 package crazypants.enderio.base.conduit.redstone.rsnew;
 
+import java.util.Optional;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -10,8 +12,17 @@ public interface ISignal {
   /**
    * Gets the current cached signal value
    */
+  @Nonnull
+  default Optional<Integer> get2(@Nonnull EnumDyeColor channel) {
+    return Optional.empty();
+  }
+
   @Nullable
   Integer get(@Nonnull EnumDyeColor channel);
+
+  default int get3(@Nonnull EnumDyeColor channel) {
+    return 0;
+  }
 
   /**
    * Acquires the signal value and caches it.
