@@ -1,47 +1,40 @@
 package crazypants.enderio.base.conduit.redstone.rsnew;
 
+import java.util.Set;
+
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import net.minecraft.item.EnumDyeColor;
 
-public class AndFilter implements ISignal {
+public class AndFilter implements ISingleSignal {
 
-  // needs to be an output, not a signal. oops.
+  protected final @Nonnull ISingleSignal parent;
+  protected final @Nonnull EnumDyeColor channelB;
 
-  protected final @Nonnull EnumDyeColor channel, channelA, channelB;
-
-  protected Integer value = null;
+  protected int value = 0;
   protected boolean dirty = true;
 
-  public AndFilter(@Nonnull EnumDyeColor channel, @Nonnull EnumDyeColor channelA, @Nonnull EnumDyeColor channelB) {
-    this.channel = channel;
-    this.channelA = channelA;
+  public AndFilter(@Nonnull ISingleSignal parent, @Nonnull EnumDyeColor channelB) {
+    this.parent = parent;
     this.channelB = channelB;
   }
 
   @Override
-  @Nullable
-  public Integer get(@Nonnull EnumDyeColor channelIn) {
-    if (channelIn == channel) {
+  public int get(@Nonnull EnumDyeColor channelIn) {
+    if (channelIn == parent.getChannel()) {
       return value;
     }
-    return null;
+    return 0;
   }
 
   @Override
   public boolean acquire(@Nonnull IRedstoneConduitNetwork network) {
-    if (dirty) {
-      Integer powerA = network.getSignalLevel(channelA);
-      Integer powerB = network.getSignalLevel(channelB);
-      Integer power = powerA;
-      if (powerB != null) {
-        if (power == null) {
-          power = powerB;
-        } else {
-          power = Math.min(power, powerB);
-        }
-      }
+    if (isDirty()) {
+      dirty = false;
+      parent.acquire(network);
+      int powerA = parent.get();
+      int powerB = network.getSignalLevel(channelB);
+      int power = Math.min(powerA, powerB);
       if (power != value) {
         value = power;
         return true;
@@ -57,13 +50,32 @@ public class AndFilter implements ISignal {
 
   @Override
   public boolean isDirty() {
-    return dirty;
+    return dirty || parent.isDirty();
+  }
+
+  @Override
+  public boolean needsTicking() {
+    return true;
+  }
+
+  @Override
+  public boolean tick(@Nonnull IRedstoneConduitNetwork network, @Nonnull Set<EnumDyeColor> changedChannels, boolean firstTick) {
+    if (changedChannels.contains(channelB)) {
+      dirty = true;
+    }
+    return firstTick && dirty;
   }
 
   @Override
   @Nonnull
   public UID getUID() {
-    return null; // new UID(pos, facing);
+    return parent.getUID();
+  }
+
+  @Override
+  @Nonnull
+  public EnumDyeColor getChannel() {
+    return parent.getChannel();
   }
 
 }

@@ -1,22 +1,24 @@
 package crazypants.enderio.base.conduit.redstone.rsnew;
 
-import java.util.Arrays;
 import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+
+import static net.minecraftforge.event.ForgeEventFactory.onNeighborNotify;
 
 public interface IRedstoneConduitNetwork {
 
@@ -63,11 +65,13 @@ public interface IRedstoneConduitNetwork {
    * Gets the cached signal level for the given channel.
    * 
    * @param channel
-   * @return <code>null</code> if there's no signal on that channel, a signal level otherwise
+   * @return a signal level
    */
-  Integer getSignalLevel(@Nonnull EnumDyeColor channel);
+  int getSignalLevel(@Nonnull EnumDyeColor channel);
 
   class Temp implements IRedstoneConduitNetwork {
+
+    private static final @Nonnull NNList<EnumDyeColor> CHANNELS = NNList.of(EnumDyeColor.class);
 
     private final @Nonnull Map<UID, ISignal> signals = new HashMap<>();
     private final @Nonnull Map<UID, ISignal> tickingSignals = new HashMap<>();
@@ -75,7 +79,6 @@ public interface IRedstoneConduitNetwork {
     private boolean signalsDirty = false;
 
     private final @Nonnull EnumMap<EnumDyeColor, Integer> levels = new EnumMap<>(EnumDyeColor.class);
-    private final @Nonnull Set<EnumDyeColor> changed = new HashSet<>();
 
     @Override
     public void addSignal(@Nonnull ISignal signal) {
@@ -120,74 +123,48 @@ public interface IRedstoneConduitNetwork {
     }
 
     @Override
-    public Integer getSignalLevel(@Nonnull EnumDyeColor channel) {
-      return levels.get(channel);
+    public int getSignalLevel(@Nonnull EnumDyeColor channel) {
+      return NullHelper.first(levels.get(channel), 0);
     }
 
     public void tick() {
-      // 1 send output
-      if (!changed.isEmpty()) {
-        Set<BlockPos> collect = outputs.values().stream().flatMap(output -> output.getNotificationTargets(this, changed).stream()).collect(Collectors.toSet());
-        // TODO notify each pos in collect
-      }
-      // 2 tick
-      boolean tickChanges = tickingSignals.values().stream().map(signal -> signal.tick(this, !changed.isEmpty())).reduce(false, (a, b) -> a || b);
-      changed.clear();
-      // 2 acquire input
-      if (signalsDirty || tickChanges) {
-
-        final NNList<EnumDyeColor> CHANNELS = NNList.of(EnumDyeColor.class); // -> static field
-        CHANNELS.apply(channel -> {
-          int value = 0;
-          for (ISignal signal : signals.values()) {
-            value = Math.max(value, signal.get3(channel));
-          }
-          if (levels.get(channel) != value) {
-            changed.add(channel);
-            levels.put(channel, value);
-          }
-        });
-
-        CHANNELS.apply(channel -> {
-          Integer value = null;
-          for (ISignal signal : signals.values()) {
-            Integer v = signal.get(channel);
-            if (v != null && (value == null || v > value)) {
-              value = v;
-            }
-          }
-          if (levels.get(channel) != value) {
-            changed.add(channel);
-            levels.put(channel, value);
-          }
-        });
-
-        if (signals.values().stream().filter(signal -> signal.isDirty()).map(signal -> signal.acquire(this)).reduce(false, (a, b) -> a || b) || tickChanges) {
+      // acquire input
+      int tickcount = 0;
+      Set<EnumDyeColor> changes = new HashSet<>();
+      do {
+        Set<EnumDyeColor> tickchanges = new HashSet<>();
+        if (signalsDirty
+            && signals.values().stream().filter(signal -> signal.isDirty()).map(signal -> signal.acquire(this)).reduce(false, this::anyMatchNoShortCircuit)) {
           CHANNELS.apply(channel -> {
-            Integer value = signals.values().stream().map(signal -> signal.get2(channel)).filter(v -> v.isPresent())
-                .reduce(Optional.empty(), (a, b) -> a.orElse(-1) > b.orElse(-1) ? a : b).orElse(null);
-            if (levels.get(channel) != value) {
-              changed.add(channel);
+            int value = 0;
+            for (ISignal signal : signals.values()) {
+              value = Math.max(value, signal.get(channel));
             }
-            levels.put(channel, value);
+            if (levels.get(channel) != value) {
+              levels.put(channel, value);
+              tickchanges.add(channel);
+            }
           });
-
-          changed.addAll(Arrays.stream(EnumDyeColor.values())
-              .map(channel -> Pair.of(channel,
-                  signals.values().stream().map(signal -> channel != null ? signal.get2(channel) : Optional.<Integer> empty()).filter(v -> v.isPresent())
-                      .reduce(Optional.empty(), (a, b) -> a.orElse(-1) > b.orElse(-1) ? a : b).orElse(null)))
-              .filter(pair -> levels.get(pair.getKey()) != pair.getValue()).peek(pair -> levels.put(pair.getKey(), pair.getValue())).map(pair -> pair.getKey())
-              .collect(Collectors.toSet()));
-
-          // changed.addAll(Arrays.stream(EnumDyeColor.values())
-          // .map(channel -> Pair.of(channel,
-          // signals.values().stream().map(signal -> channel != null ? signal.get(channel) : Optional.<Integer> empty()).filter(v -> v.isPresent())
-          // .reduce(Optional.empty(), (a, b) -> a.orElse(-1) > b.orElse(-1) ? a : b)))
-          // .filter(pair -> !levels.get(pair.getKey()).equals(pair.getValue())).peek(pair -> levels.put(pair.getKey(), pair.getValue()))
-          // .map(pair -> pair.getKey()).collect(Collectors.toSet()));
-
         }
+        final boolean firstTick = tickcount == 0;
+        signalsDirty = tickingSignals.values().stream().map(signal -> signal.tick(this, tickchanges, firstTick)).reduce(false, this::anyMatchNoShortCircuit);
+        changes.addAll(tickchanges);
+      } while (signalsDirty && tickcount++ < 4);
+      // send output
+      if (!changes.isEmpty()) {
+        outputs.values().stream().flatMap(output -> output.getNotificationTargets(this, changes).stream()).collect(Collectors.toSet()).stream()
+            .filter(t -> t.getWorld().isBlockLoaded(t.getFrom()) && t.getWorld().isBlockLoaded(t.getTo())
+                && !onNeighborNotify(t.getWorld(), t.getFrom(), t.getWorld().getBlockState(t.getFrom()), EnumSet.allOf(EnumFacing.class), false).isCanceled())
+            .forEach(t -> t.getWorld().neighborChanged(t.getTo(), ConduitRegistry.getConduitModObjectNN().getBlockNN(), t.getFrom()));
       }
+    }
+
+    /**
+     * Note: This can be used in <code>.reduce(false, this::anyMatchNoShortCircuit)</code> to have an <code>.anyMatch()</code> that doesn't short-circuit. This
+     * is needed if all elements of the stream need to be processed because there are side effects in the stream.
+     */
+    private boolean anyMatchNoShortCircuit(Boolean a, Boolean b) {
+      return a || b;
     }
 
   }

@@ -1,23 +1,24 @@
 package crazypants.enderio.base.conduit.redstone.rsnew;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import net.minecraft.item.EnumDyeColor;
 
-public class NotFilter implements ISignal {
+public class NotFilter implements ISingleSignal {
 
-  protected final @Nonnull ISignal parent;
+  protected final @Nonnull ISingleSignal parent;
 
-  public NotFilter(@Nonnull ISignal parent) {
+  public NotFilter(@Nonnull ISingleSignal parent) {
     this.parent = parent;
   }
 
   @Override
-  @Nullable
-  public Integer get(@Nonnull EnumDyeColor channelIn) {
-    Integer value = parent.get(channelIn);
-    return value == null ? null : value < 15 ? 15 : 0;
+  public int get(@Nonnull EnumDyeColor channelIn) {
+    if (channelIn == parent.getChannel()) {
+      int value = parent.get();
+      return value < 15 ? 15 : 0;
+    }
+    return 0;
   }
 
   @Override
@@ -39,6 +40,12 @@ public class NotFilter implements ISignal {
   @Nonnull
   public UID getUID() {
     return parent.getUID();
+  }
+
+  @Override
+  @Nonnull
+  public EnumDyeColor getChannel() {
+    return parent.getChannel();
   }
 
 }
