@@ -88,7 +88,7 @@ XML editor will display that as tooltips when editing this file.
   <item name="ballEndSteel"/>
 </grindingball>
 
-<grindingball name="Construction Alloy Ball" grinding="1.0" chance="0.25" power="0.25" durability="12000" >
+<grindingball name="Construction Alloy Ball" grinding="1.0" chance="0.33" power="0.25" durability="12000" >
   <item name="CONSTRUCTION_ALLOY_BALL"/>
 </grindingball>
 
