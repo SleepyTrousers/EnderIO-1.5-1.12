@@ -1,6 +1,8 @@
 package crazypants.enderio.base.handler.darksteel.gui;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -387,6 +389,24 @@ public class DSUContainer extends ContainerEnderCap<EIOCombinedInvWrapper<Upgrad
   @Override
   public void updateItemName(@Nonnull String newName) {
     anvil.updateItemName(newName);
+  }
+
+  @Override
+  protected @Nonnull Collection<Slot> mapSlotToTargets(int fromSlotId) {
+    Slot fromSlot = inventorySlots.get(fromSlotId);
+    if (fromSlot instanceof AutoSlot) {
+      boolean isInventory = ((AutoSlot) fromSlot).isInventorySlot();
+      List<Slot> result = new ArrayList<>();
+      for (int i = 0; i < startPlayerSlot; i++) {
+        Slot toSlot = inventorySlots.get(i);
+        if (toSlot instanceof AutoSlot && isInventory != ((AutoSlot) toSlot).isInventorySlot()) {
+          result.add(toSlot);
+        }
+      }
+      result.addAll(super.mapSlotToTargets(fromSlotId));
+      return result;
+    }
+    return super.mapSlotToTargets(fromSlotId);
   }
 
 }
