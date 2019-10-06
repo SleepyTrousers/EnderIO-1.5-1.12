@@ -103,6 +103,19 @@ public final class PersonalConfig {
   public static final IValue<Boolean> disableHiding = H.make("disableHiding", false, //
       "If true, nothing will be hidden in JEI regardless of the xml configuration for ingredient hiding.");
 
+  // Loot
+
+  public static final IValueFactory L = F.section(".loot");
+
+  public enum LootConfig {
+    VANILLA,
+    DEVELOPMENT,
+    DISABLED;
+  }
+
+  public static final IValue<LootConfig> lootGeneration = L.make("generation", LootConfig.VANILLA, //
+      "Selects which loot table configurations are injected.").sync();
+
   // Tooltips
 
   public static final IValueFactory T = F.section(".tooltips");

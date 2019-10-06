@@ -8,6 +8,8 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.config.PersonalConfig;
+import crazypants.enderio.base.config.config.PersonalConfig.LootConfig;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.init.ModObject;
@@ -53,16 +55,16 @@ public class LootManager {
   private static final @Nonnull LootCondition[] NO_CONDITIONS = new LootCondition[0];
 
   public static void init(@Nonnull EnderIOLifecycleEvent.Init.Post event) {
-    if (useTables) {
+    if (PersonalConfig.lootGeneration.get() == LootConfig.VANILLA) {
       for (ResourceLocation resourceLocation : MC_TABLES) {
         LootTableList.register(eio(resourceLocation));
       }
     }
   }
 
-  // to re-create the json tables from the code below, set this to false then run the game with https://minecraft.curseforge.com/projects/loottweaker and dump
-  // the tables with "/mt loottables all". Open the generated json files and remove the vanilla entries.
-  static boolean useTables = true;
+  // to re-create the json tables from the code below, set PersonalConfig.lootGeneration to DEVELOPMENT then run the game with
+  // https://minecraft.curseforge.com/projects/loottweaker and dump the tables with "/mt loottables all". Open the generated json files and remove the vanilla
+  // entries. Note that some tables may already be out of sync with this code...
 
   private static final @Nonnull Set<ResourceLocation> MC_TABLES = new HashSet<>();
   static {
@@ -89,9 +91,14 @@ public class LootManager {
   @SubscribeEvent
   public static void onLootTableLoad(@Nonnull LootTableLoadEvent evt) {
 
-    if (useTables) {
-      injectTables(evt);
+    switch (PersonalConfig.lootGeneration.get()) {
+    case VANILLA:
+      injectTables(evt); // fallthrough on purpose
+    case DISABLED:
       return;
+    case DEVELOPMENT:
+    default:
+      break;
     }
 
     LootTable table = evt.getTable();
