@@ -127,7 +127,7 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowered
 
   @Override
   public boolean canConnectEnergy(@Nonnull EnumFacing from) {
-    return from == EnumFacing.DOWN || !((BlockNormalWirelessCharger) world.getBlockState(pos).getBlock()).isAntenna();
+    return from == EnumFacing.DOWN || !((BlockNormalWirelessCharger) getBlockType()).isAntenna();
   }
 
   @Override
