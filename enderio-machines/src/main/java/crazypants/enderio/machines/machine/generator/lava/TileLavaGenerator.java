@@ -29,6 +29,9 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFrostedIce;
+import net.minecraft.block.BlockIce;
+import net.minecraft.block.BlockPackedIce;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -223,7 +226,7 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
           }
           // TODO 1.14: add Blue Ice
           // TODO 1.14: add separate chances for melting that reflect the recipes
-        } else if (block == Blocks.ICE || block == Blocks.FROSTED_ICE || block == Blocks.PACKED_ICE) {
+        } else if (block instanceof BlockIce || block instanceof BlockFrostedIce || block instanceof BlockPackedIce) {
           heat = Math.max(0, heat - LavaGenConfig.heatLossActive.get());
           obsidianPoints += LavaGenConfig.heatLossActive.get(); // ice is always cold
           if (world.rand.nextFloat() < LavaGenConfig.activeCoolingLiquefiesIce.get()) {

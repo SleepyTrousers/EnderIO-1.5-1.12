@@ -10,7 +10,6 @@ import crazypants.enderio.base.config.config.BlockConfig;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.render.PaintHelper;
-import crazypants.enderio.base.paint.render.PaintRegistry;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.painter.BasicPainterTemplate;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -37,7 +36,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
@@ -102,7 +100,6 @@ public abstract class BlockPaintedGlowstone extends BlockGlowstone
   private void init(@Nonnull IModObject modObject) {
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new BasicPainterTemplate<BlockPaintedGlowstone>(this, Blocks.GLOWSTONE));
     SmartModelAttacher.registerNoProps(this);
-    PaintRegistry.registerModel("cube_all", new ResourceLocation("minecraft", "block/cube_all"), PaintRegistry.PaintMode.ALL_TEXTURES);
   }
 
   @Override

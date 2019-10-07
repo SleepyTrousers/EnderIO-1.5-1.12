@@ -36,6 +36,7 @@ import crazypants.enderio.base.block.painted.BlockPaintedDoor;
 import crazypants.enderio.base.block.painted.BlockPaintedFence;
 import crazypants.enderio.base.block.painted.BlockPaintedFenceGate;
 import crazypants.enderio.base.block.painted.BlockPaintedGlowstone;
+import crazypants.enderio.base.block.painted.BlockPaintedPackedIce;
 import crazypants.enderio.base.block.painted.BlockPaintedPressurePlate;
 import crazypants.enderio.base.block.painted.BlockPaintedRedstone;
 import crazypants.enderio.base.block.painted.BlockPaintedReinforcedObsidian;
@@ -176,6 +177,8 @@ public enum ModObject implements IModObjectBase {
   blockPaintedDarkSteelDoor(BlockPaintedDoor::create_dark, ModTileEntity.TileEntityPaintedBlock),
   blockPaintedWorkbench(BlockPaintedWorkbench::create, ModTileEntity.TileEntityPaintedBlock),
   blockPaintedReinforcedObsidian(BlockPaintedReinforcedObsidian::create, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedPackedIce(BlockPaintedPackedIce::create, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedPackedIceSolid(BlockPaintedPackedIce::create_solid, ModTileEntity.TileEntityPaintedBlock),
 
   blockExitRail(BlockExitRail::create),
 

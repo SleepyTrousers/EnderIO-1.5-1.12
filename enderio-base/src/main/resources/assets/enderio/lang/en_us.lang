@@ -598,6 +598,8 @@ tile.block_painted_pressure_plate.wood.silent.tooltip.detailed.line1=Can be pain
 
 tile.block_painted_redstone.name=Painted Redstone
 tile.block_painted_redstone_solid.name=Painted Redstone
+tile.block_painted_packed_ice.name=Painted Packed Ice
+tile.block_painted_packed_ice_solid.name=Painted Packed Ice
 tile.block_painted_slab.name=Painted Slab
 tile.block_painted_stair.name=Painted Stairs
 tile.block_painted_stone.name=Painted Cobblestone

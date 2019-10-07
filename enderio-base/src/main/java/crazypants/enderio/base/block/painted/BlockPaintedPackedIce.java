@@ -17,11 +17,8 @@ import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.util.Prep;
-import net.minecraft.block.BlockCompressedPowered;
+import net.minecraft.block.BlockPackedIce;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.creativetab.CreativeTabs;
@@ -41,32 +38,32 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class BlockPaintedRedstone extends BlockCompressedPowered
+public abstract class BlockPaintedPackedIce extends BlockPackedIce
     implements ITileEntityProvider, IPaintable.IBlockPaintableBlock, IModObject.WithBlockItem, ICustomSubItems {
 
-  public static BlockPaintedRedstone create_solid(@Nonnull IModObject modObject) {
-    BlockPaintedRedstone result = new BlockPaintedRedstoneSolid(modObject);
+  public static BlockPaintedPackedIce create_solid(@Nonnull IModObject modObject) {
+    BlockPaintedPackedIce result = new BlockPaintedPackedIceSolid(modObject);
     result.init(modObject);
     return result;
   }
 
-  public static BlockPaintedRedstone create(@Nonnull IModObject modObject) {
-    BlockPaintedRedstone result = new BlockPaintedRedstoneNonSolid(modObject);
+  public static BlockPaintedPackedIce create(@Nonnull IModObject modObject) {
+    BlockPaintedPackedIce result = new BlockPaintedPackedIceNonSolid(modObject);
     result.init(modObject);
     return result;
   }
 
-  public static class BlockPaintedRedstoneSolid extends BlockPaintedRedstone implements IPaintable.ISolidBlockPaintableBlock {
+  public static class BlockPaintedPackedIceSolid extends BlockPaintedPackedIce implements IPaintable.ISolidBlockPaintableBlock {
 
-    protected BlockPaintedRedstoneSolid(@Nonnull IModObject modObject) {
+    protected BlockPaintedPackedIceSolid(@Nonnull IModObject modObject) {
       super(modObject);
     }
 
   }
 
-  public static class BlockPaintedRedstoneNonSolid extends BlockPaintedRedstone implements IPaintable.INonSolidBlockPaintableBlock {
+  public static class BlockPaintedPackedIceNonSolid extends BlockPaintedPackedIce implements IPaintable.INonSolidBlockPaintableBlock {
 
-    protected BlockPaintedRedstoneNonSolid(@Nonnull IModObject modObject) {
+    protected BlockPaintedPackedIceNonSolid(@Nonnull IModObject modObject) {
       super(modObject);
       useNeighborBrightness = true;
       setLightOpacity(0);
@@ -85,17 +82,14 @@ public abstract class BlockPaintedRedstone extends BlockCompressedPowered
 
   }
 
-  protected BlockPaintedRedstone(@Nonnull IModObject modObject) {
-    super(Material.IRON, MapColor.TNT);
-    setHardness(5.0F);
-    setResistance(10.0F);
-    setSoundType(SoundType.METAL);
+  protected BlockPaintedPackedIce(@Nonnull IModObject modObject) {
+    super();
     Prep.setNoCreativeTab(this);
     modObject.apply(this);
   }
 
   private void init(@Nonnull IModObject modObject) {
-    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new BasicPainterTemplate<BlockPaintedRedstone>(this, Blocks.REDSTONE_BLOCK));
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new BasicPainterTemplate<BlockPaintedPackedIce>(this, Blocks.PACKED_ICE));
     SmartModelAttacher.registerNoProps(this);
   }
 
