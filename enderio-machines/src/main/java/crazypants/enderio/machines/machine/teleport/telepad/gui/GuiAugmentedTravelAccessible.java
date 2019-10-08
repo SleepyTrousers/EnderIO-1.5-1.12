@@ -41,7 +41,7 @@ public class GuiAugmentedTravelAccessible extends GuiTravelAccessable<TileTelePa
   @Override
   public void actionPerformed(@Nonnull GuiButton button) {
     if (button.id == ID_CLOSE_WINDOW_BUTTON) {
-      PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, BlockTelePad.GUI_ID_TELEPAD));
+      PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(getOwner(), BlockTelePad.GUI_ID_TELEPAD));
       return;
     }
     super.actionPerformed(button);

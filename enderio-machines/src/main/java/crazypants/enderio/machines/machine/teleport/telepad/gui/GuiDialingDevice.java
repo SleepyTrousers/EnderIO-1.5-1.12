@@ -24,13 +24,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.text.TextFormatting;
 
-public class GuiDialingDevice extends GuiContainerBaseEIO implements IDialingDeviceRemoteExec.GUI {
+public class GuiDialingDevice extends GuiContainerBaseEIO<TileDialingDevice> implements IDialingDeviceRemoteExec.GUI {
 
   private static final int ID_TELEPORT_BUTTON = 96;
 
   private GuiButton teleportButton;
 
-  private final @Nonnull TileDialingDevice dialingDevice;
   private final @Nonnull TileTelePad telepad;
 
   private final static int powerX = 8;
@@ -44,8 +43,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO implements IDialingDev
   private final GuiTargetList targetList;
 
   public GuiDialingDevice(@Nonnull InventoryPlayer playerInv, @Nonnull TileDialingDevice te, @Nonnull TileTelePad telepad) {
-    super(new ContainerDialingDevice(playerInv, te), "dialing_device");
-    this.dialingDevice = te;
+    super(te, new ContainerDialingDevice(playerInv, te), "dialing_device");
     this.telepad = telepad;
     this.ySize = 220;
 
@@ -123,7 +121,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO implements IDialingDev
 
     super.drawGuiContainerBackgroundLayer(partialTick, mouseX, mouseY);
 
-    if (dialingDevice.getEnergy().getEnergyStored() < dialingDevice.getEnergy().getMaxUsage(CapacitorKey.DIALING_DEVICE_POWER_USE_TELEPORT)) {
+    if (getOwner().getEnergy().getEnergyStored() < getOwner().getEnergy().getMaxUsage(CapacitorKey.DIALING_DEVICE_POWER_USE_TELEPORT)) {
       String txt = TextFormatting.DARK_RED + "No Power"; // FIXME I18N
       renderInfoMessage(sx, sy, txt, 0x000000);
       return;
@@ -166,7 +164,7 @@ public class GuiDialingDevice extends GuiContainerBaseEIO implements IDialingDev
     if (button.id == ID_TELEPORT_BUTTON) {
       TelepadTarget target = targetList.getSelectedElement();
       if (target != null) {
-        int targetID = dialingDevice.getTargets().indexOf(target);
+        int targetID = getOwner().getTargets().indexOf(target);
         if (targetID >= 0) {
           doTeleport(telepad.getPos(), targetID, true);
         }

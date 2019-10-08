@@ -16,17 +16,15 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
-public class GuiTravelAuth extends GuiContainerBaseEIO implements IHaveGhostTargets<GuiTravelAuth> {
+public class GuiTravelAuth extends GuiContainerBaseEIO<ITravelAccessable> implements IHaveGhostTargets<GuiTravelAuth> {
 
   private final @Nonnull String title;
-  private final @Nonnull ITravelAccessable ta;
 
   private boolean failed = false;
   private final @Nonnull EntityPlayer player;
 
   public GuiTravelAuth(@Nonnull EntityPlayer player, @Nonnull ITravelAccessable te, @Nonnull World world) {
-    super(new ContainerTravelAuth(player.inventory), "travel_auth");
-    this.ta = te;
+    super(te, new ContainerTravelAuth(player.inventory), "travel_auth");
     title = Lang.GUI_AUTH_PROMPT.get();
     this.player = player;
   }
@@ -46,7 +44,7 @@ public class GuiTravelAuth extends GuiContainerBaseEIO implements IHaveGhostTarg
   @Override
   protected void actionPerformed(@Nonnull GuiButton par1GuiButton) {
     ContainerTravelAuth poo = (ContainerTravelAuth) inventorySlots;
-    if (ta.authoriseUser(player, poo.getInv().getInventory())) {
+    if (getOwner().authoriseUser(player, poo.getInv().getInventory())) {
       this.mc.displayGuiScreen((GuiScreen) null);
       this.mc.setIngameFocus();
     } else {

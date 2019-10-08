@@ -24,7 +24,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 
-public abstract class AbstractFilterGui extends GuiContainerBaseEIO implements IHaveGhostTargets<AbstractFilterGui>, ICloseFilterRemoteExec.GUI {
+public abstract class AbstractFilterGui extends GuiContainerBaseEIO<TileEntity> implements IHaveGhostTargets<AbstractFilterGui>, ICloseFilterRemoteExec.GUI {
 
   private static final int ID_CLOSE_WINDOW_BUTTON = 12615;
 
@@ -40,7 +40,7 @@ public abstract class AbstractFilterGui extends GuiContainerBaseEIO implements I
 
   protected AbstractFilterGui(@Nonnull InventoryPlayer playerInv, @Nonnull ContainerFilter filterContainer, TileEntity te, @Nonnull IFilter filter,
       @Nonnull String... texture) {
-    super(filterContainer, texture);
+    super(te, filterContainer, texture);
     this.filterContainer = filterContainer;
     xSize = 189;
     ySize = 207;

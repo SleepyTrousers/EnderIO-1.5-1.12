@@ -25,7 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiExternalConnection {
+public class GuiExternalConnection extends GuiContainerBaseEIO<IConduitBundle> implements IGuiExternalConnection {
 
   private static int nextButtonId = 1;
 
@@ -34,7 +34,6 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
   }
 
   final @Nonnull InventoryPlayer playerInv;
-  final @Nonnull IConduitBundle bundle;
   private final @Nonnull EnumFacing dir;
 
   private final @Nonnull List<ITabPanel> tabs = new ArrayList<ITabPanel>();
@@ -43,10 +42,9 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
   private final IExternalConnectionContainer container;
 
   public GuiExternalConnection(@Nonnull InventoryPlayer playerInv, @Nonnull IConduitBundle bundle, @Nonnull EnumFacing dir) {
-    super(new ExternalConnectionContainer(playerInv, dir, (TileConduitBundle) bundle.getEntity()).init(), "item_filter");
+    super(bundle, new ExternalConnectionContainer(playerInv, dir, (TileConduitBundle) bundle.getEntity()).init(), "item_filter");
     container = (ExternalConnectionContainer) inventorySlots;
     this.playerInv = playerInv;
-    this.bundle = bundle;
     this.dir = dir;
 
     ySize = 194;
@@ -96,7 +94,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO implements IGuiEx
     if (activeTab < tabs.size() && activeTab >= 0) {
       final ITabPanel tab = tabs.get(activeTab);
       if (tab != null) {
-        for (IClientConduit con : bundle.getClientConduits()) {
+        for (IClientConduit con : getOwner().getClientConduits()) {
           if (con.updateGuiPanel(tab)) {
             return tab;
           }

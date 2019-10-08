@@ -5,11 +5,8 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import javax.annotation.Nonnull;
-
-import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.client.gui.button.IconButton;
@@ -19,11 +16,9 @@ import com.enderio.core.common.ContainerEnderCap;
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.EnderInventory.Type;
 import com.enderio.core.common.inventory.EnderSlot;
-import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector4f;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
@@ -32,12 +27,11 @@ import crazypants.enderio.base.gui.RedstoneModeButton;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
 import crazypants.enderio.base.machine.modes.IoMode;
-import crazypants.enderio.base.scheduler.Celeb;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Slot;
 
-public class GuiCapMachineBase<T extends AbstractCapabilityMachineEntity> extends GuiContainerBaseEIO {
+public class GuiCapMachineBase<T extends AbstractCapabilityMachineEntity> extends GuiContainerBaseEIO<T> {
 
   public static final @Nonnull Vector4f PUSH_COLOR = new Vector4f(0.8f, 0.4f, 0.1f, 0.5f);
   public static final @Nonnull Vector4f PULL_COLOR = new Vector4f(0.1f, 0.4f, 0.8f, 0.5f);
@@ -45,8 +39,6 @@ public class GuiCapMachineBase<T extends AbstractCapabilityMachineEntity> extend
   public static final int BUTTON_SIZE = 16;
   private static final int CONFIG_ID = 8962349;
   private static final int RECIPE_ID = CONFIG_ID + 1;
-
-  private final @Nonnull T tileEntity;
 
   protected @Nonnull RedstoneModeButton<T> redstoneButton;
 
@@ -61,15 +53,14 @@ public class GuiCapMachineBase<T extends AbstractCapabilityMachineEntity> extend
   private final @Nonnull ContainerEnderCap<EnderInventory, T> capContainer;
 
   protected GuiCapMachineBase(@Nonnull T machine, @Nonnull ContainerEnderCap<EnderInventory, T> par1Container, @Nonnull String... guiTexture) {
-    super(par1Container, guiTexture);
-    tileEntity = machine;
+    super(machine, par1Container, guiTexture);
     capContainer = par1Container;
 
     xSize = getXSize();
     ySize = getYSize();
     int x = getButtonXPos() - 5 - BUTTON_SIZE;
     int y = 5;
-    redstoneButton = new RedstoneModeButton<T>(this, -1, x, y, tileEntity);
+    redstoneButton = new RedstoneModeButton<T>(this, -1, x, y, getOwner());
 
     configOverlay = new GuiOverlayIoConfig<T>(machine);
     addOverlay(configOverlay);
@@ -172,7 +163,7 @@ public class GuiCapMachineBase<T extends AbstractCapabilityMachineEntity> extend
   }
 
   protected @Nonnull T getTileEntity() {
-    return tileEntity;
+    return getOwner();
   }
 
   protected void addProgressTooltip(int x, int y, int w, int h) {
@@ -215,8 +206,8 @@ public class GuiCapMachineBase<T extends AbstractCapabilityMachineEntity> extend
   }
 
   protected boolean shouldRenderProgress() {
-    if (tileEntity instanceof IProgressTile) {
-      float progress = ((IProgressTile) tileEntity).getProgress();
+    if (getTileEntity() instanceof IProgressTile) {
+      float progress = ((IProgressTile) getTileEntity()).getProgress();
       if (progress >= 0 && progress < 1) {
         updateProgressTooltips(scaleProgressForTooltip(progress), progress);
         return true;
@@ -229,68 +220,14 @@ public class GuiCapMachineBase<T extends AbstractCapabilityMachineEntity> extend
   }
 
   protected int getProgressScaled(int scale) {
-    if (tileEntity instanceof IProgressTile) {
-      return Util.getProgressScaled(scale, (IProgressTile) tileEntity);
+    if (getTileEntity() instanceof IProgressTile) {
+      return Util.getProgressScaled(scale, (IProgressTile) getTileEntity());
     }
     return 0;
   }
 
   protected int getButtonXPos() {
     return getXSize();
-  }
-
-  static long[] LAYERSEED = null;
-
-  @Override
-  public void drawWorldBackground(int tint) {
-    if (Celeb.SPACE.isOn() && NullHelper.untrust(mc.world) != null && PersonalConfig.celebrateSpaceDay.get()) {
-      drawRect(0, 0, width, height, 0xDF000000);
-
-      long tickCount = EnderIO.proxy.getTickCount();
-      Random rand = new Random();
-
-      if (LAYERSEED == null) {
-        LAYERSEED = new long[10];
-        for (int i = 0; i < LAYERSEED.length; i++) {
-          LAYERSEED[i] = rand.nextLong();
-        }
-      }
-
-      for (int layer = 1; layer < 10; layer++) {
-        for (int star = 0; star < width - 1; star++) {
-          long seed = LAYERSEED[layer] + star + (tickCount / layer);
-          rand.setSeed(seed);
-          int y = rand.nextInt(height * 10 * layer / 3);
-          int r = rand.nextInt(64);
-          int g = rand.nextInt(64);
-          int b = rand.nextInt(32);
-          int color = ((0xFF - r) << 16) | ((0xFF - g) << 8) | (0xFF - b);
-          if (y < height) {
-            drawRect(star, y, star + 1, y + 1, 0xA0000000 | color);
-            drawRect(star + 1, y, star + 2, y + 1, 0x20000000 | color);
-          }
-        }
-      }
-      return;
-    }
-
-    super.drawWorldBackground(tint);
-
-    if (PersonalConfig.GUIBrandingEnabled.get()) {
-      GlStateManager.color(1.0F, 1.0F, 1.0F, PersonalConfig.GUIBrandingAlpha.get());
-      RenderUtil.bindTexture(PersonalConfig.GUIBrandingTexture.get());
-      GlStateManager.enableBlend();
-      GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-      GlStateManager.enableAlpha();
-      GlStateManager.alphaFunc(GL11.GL_GREATER, 0.01F);
-
-      int size = Math.min(width, height) / PersonalConfig.GUIBrandingTiles.get();
-
-      drawModalRectWithCustomSizedTexture(0, 0, 0, 0, width, height, size, size);
-
-      GlStateManager.disableAlpha();
-      GlStateManager.disableBlend();
-    }
   }
 
   @Nonnull

@@ -35,7 +35,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.math.BlockPos;
 
-public class GuiTelePad extends GuiContainerBaseEIO {
+public class GuiTelePad extends GuiContainerBaseEIO<TileTelePad> {
 
   private static final int ID_TELEPORT_BUTTON = 96;
   private static final int ID_TRAVEL_SETTINGS_BUTTON = 97;
@@ -43,8 +43,6 @@ public class GuiTelePad extends GuiContainerBaseEIO {
   GuiButton switchButton;
   GuiButton teleportButton;
   IconButton travelSettingsButton;
-
-  private final @Nonnull TileTelePad te;
 
   private final @Nonnull TextFieldEnder xTF, yTF, zTF, dimTF;
 
@@ -65,8 +63,7 @@ public class GuiTelePad extends GuiContainerBaseEIO {
   private static final @Nonnull Rectangle RECTANGLE_TANK = new Rectangle(fluidX, fluidY, 10, fluidScale);
 
   public GuiTelePad(@Nonnull InventoryPlayer playerInv, final @Nonnull TileTelePad te) {
-    super(new ContainerTelePad(playerInv, te), "tele_pad");
-    this.te = te;
+    super(te, new ContainerTelePad(playerInv, te), "tele_pad");
     ySize = 220;
 
     int settingsBX = guiLeft + xSize - (7 + 16);
@@ -79,7 +76,7 @@ public class GuiTelePad extends GuiContainerBaseEIO {
       @Override
       protected void updateText() {
         text.clear();
-        text.add(Math.round(GuiTelePad.this.te.getProgress() * 100) + "%");
+        text.add(Math.round(GuiTelePad.this.getOwner().getProgress() * 100) + "%");
       }
     });
 
@@ -124,18 +121,18 @@ public class GuiTelePad extends GuiContainerBaseEIO {
   @Nullable
   public Object getIngredientUnderMouse(int mouseX, int mouseY) {
     if (RECTANGLE_TANK.contains(mouseX, mouseY)) {
-      return te.getTank().getFluid();
+      return getOwner().getTank().getFluid();
     }
     return super.getIngredientUnderMouse(mouseX, mouseY);
   }
 
   protected int getPowerOutputValue() {
-    return te.getUsage();
+    return getOwner().getUsage();
   }
 
   protected void updatePowerBarTooltip(List<String> text) {
     text.add(Lang.GUI_TELEPAD_MAX.get(LangPower.RFt(getPowerOutputValue())));
-    text.add(LangPower.RF(te.getEnergy().getEnergyStored(), te.getEnergy().getMaxEnergyStored()));
+    text.add(LangPower.RF(getOwner().getEnergy().getEnergyStored(), getOwner().getEnergy().getMaxEnergyStored()));
   }
 
   @Override
@@ -161,16 +158,16 @@ public class GuiTelePad extends GuiContainerBaseEIO {
     super.updateScreen();
 
     if (!xTF.isFocused()) {
-      xTF.setText(Integer.toString(te.getX()));
+      xTF.setText(Integer.toString(getOwner().getX()));
     }
     if (!yTF.isFocused()) {
-      yTF.setText(Integer.toString(te.getY()));
+      yTF.setText(Integer.toString(getOwner().getY()));
     }
     if (!zTF.isFocused()) {
-      zTF.setText(Integer.toString(te.getZ()));
+      zTF.setText(Integer.toString(getOwner().getZ()));
     }
     if (!dimTF.isFocused()) {
-      dimTF.setText(Integer.toString(te.getTargetDim()));
+      dimTF.setText(Integer.toString(getOwner().getTargetDim()));
     }
   }
 
@@ -183,10 +180,10 @@ public class GuiTelePad extends GuiContainerBaseEIO {
   private void updateCoords() {
     BlockPos pos = new BlockPos(getIntFromTextBox(xTF), getIntFromTextBox(yTF), getIntFromTextBox(zTF));
     int targetDim = getIntFromTextBox(dimTF);
-    if (!pos.equals(te.getTarget().getLocation()) || targetDim != te.getTargetDim()) {
-      te.setCoords(pos);
-      te.setTargetDim(targetDim);
-      PacketHandler.INSTANCE.sendToServer(new PacketSetTarget(te, te.getTarget()));
+    if (!pos.equals(getOwner().getTarget().getLocation()) || targetDim != getOwner().getTargetDim()) {
+      getOwner().setCoords(pos);
+      getOwner().setTargetDim(targetDim);
+      PacketHandler.INSTANCE.sendToServer(new PacketSetTarget(getOwner(), getOwner().getTarget()));
     }
   }
 
@@ -212,13 +209,13 @@ public class GuiTelePad extends GuiContainerBaseEIO {
     int v = 0;
     drawTexturedModalRect(sx + powerX - 1, sy + powerY - 1, u, v, 12, 122);
 
-    if (TelePadConfig.telepadFluidUse.get() > 0 && te.getFluidAmount() > 0) {
-      RenderUtil.renderGuiTank(te.getTank(), sx + fluidX, sy + fluidY, 0, 10, fluidScale);
+    if (TelePadConfig.telepadFluidUse.get() > 0 && getOwner().getFluidAmount() > 0) {
+      RenderUtil.renderGuiTank(getOwner().getTank(), sx + fluidX, sy + fluidY, 0, 10, fluidScale);
       bindGuiTexture();
       drawTexturedModalRect(sx + fluidX, sy + fluidY, 213, v, 10, fluidScale);
     }
 
-    int progressScaled = Util.getProgressScaled(progressScale, te);
+    int progressScaled = Util.getProgressScaled(progressScale, getOwner());
     drawTexturedModalRect(sx + progressX, sy + progressY, 0, ySize, progressScaled, 10);
 
     FontRenderer fnt = getFontRenderer();
@@ -233,16 +230,16 @@ public class GuiTelePad extends GuiContainerBaseEIO {
       }
     }
 
-    Entity e = te.getCurrentTarget();
+    Entity e = getOwner().getCurrentTarget();
     if (e != null) {
       String name = e.getName();
       fnt.drawString(name, sx + xSize / 2 - fnt.getStringWidth(name) / 2, sy + progressY + fnt.FONT_HEIGHT + 6, 0x000000);
-    } else if (te.wasBlocked()) {
+    } else if (getOwner().wasBlocked()) {
       String s = Lang.GUI_TELEPAD_ERROR_BLOCKED.get();
       fnt.drawString(s, sx + xSize / 2 - fnt.getStringWidth(s) / 2, sy + progressY + fnt.FONT_HEIGHT + 6, 0xAA0000);
     }
 
-    String name = te.getTarget().getName();
+    String name = getOwner().getTarget().getName();
     fnt.drawStringWithShadow(name, sx + xSize / 2 - fnt.getStringWidth(name) / 2, getGuiTop() + 10, 0xffffff);
 
     super.drawGuiContainerBackgroundLayer(p_146976_1_, p_146976_2_, p_146976_3_);
@@ -252,9 +249,9 @@ public class GuiTelePad extends GuiContainerBaseEIO {
   protected void actionPerformed(@Nonnull GuiButton button) throws IOException {
     super.actionPerformed(button);
     if (button.id == ID_TELEPORT_BUTTON) {
-      te.teleportAll();
+      getOwner().teleportAll();
     } else if (button.id == ID_TRAVEL_SETTINGS_BUTTON) {
-      PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(te, BlockTelePad.GUI_ID_TELEPAD_TRAVEL));
+      PacketHandler.INSTANCE.sendToServer(new PacketOpenServerGui(getOwner(), BlockTelePad.GUI_ID_TELEPAD_TRAVEL));
     }
   }
 }

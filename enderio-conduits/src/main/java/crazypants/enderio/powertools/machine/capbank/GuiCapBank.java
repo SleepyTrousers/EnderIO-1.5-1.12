@@ -37,7 +37,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 
-public class GuiCapBank extends GuiContainerBaseEIO {
+public class GuiCapBank extends GuiContainerBaseEIO<TileCapBank> {
 
   private static final @Nonnull CapBankClientNetwork NULL_NETWORK = new CapBankClientNetwork(-1);
 
@@ -59,8 +59,6 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
   private int rightMargin = 8;
 
-  private final @Nonnull TileCapBank capBank;
-
   private final @Nonnull RedstoneModeButton<?> inputRsButton;
   private final @Nonnull RedstoneModeButton<?> outputRsButton;
 
@@ -80,8 +78,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
   @SuppressWarnings("rawtypes")
   public GuiCapBank(Entity player, InventoryPlayer playerInv, @Nonnull TileCapBank te, @Nonnull ContainerCapBank container) {
-    super(container, "capacitor_bank");
-    capBank = te;
+    super(te, container, "capacitor_bank");
 
     updateState();
 
@@ -246,7 +243,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
   protected void sendUpdateToServer() {
     if (network != NULL_NETWORK) {
-      PacketHandler.INSTANCE.sendToServer(new PacketGuiChange(capBank));
+      PacketHandler.INSTANCE.sendToServer(new PacketGuiChange(getOwner()));
     }
   }
 
@@ -305,7 +302,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
   private void requestStateUpdate() {
     if (EnderIO.proxy.getTickCount() % 2 == 0) {
       if (!updateState()) {
-        network.requestPowerUpdate(capBank, 2);
+        network.requestPowerUpdate(getOwner(), 2);
       }
     }
   }
@@ -315,18 +312,18 @@ public class GuiCapBank extends GuiContainerBaseEIO {
       return false;
     }
 
-    if (capBank.getNetwork() == null) {
+    if (getOwner().getNetwork() == null) {
       network = NULL_NETWORK;
       return true;
     }
     if (network == NULL_NETWORK) {
-      network = NullHelper.first((CapBankClientNetwork) capBank.getNetwork(), NULL_NETWORK);
+      network = NullHelper.first((CapBankClientNetwork) getOwner().getNetwork(), NULL_NETWORK);
       initialStateCount = network.getStateUpdateCount();
-      PacketHandler.INSTANCE.sendToServer(new PacketNetworkStateRequest(capBank));
+      PacketHandler.INSTANCE.sendToServer(new PacketNetworkStateRequest(getOwner()));
       return true;
     }
     if (network.getStateUpdateCount() == initialStateCount) {
-      PacketHandler.INSTANCE.sendToServer(new PacketNetworkStateRequest(capBank));
+      PacketHandler.INSTANCE.sendToServer(new PacketNetworkStateRequest(getOwner()));
       return true;
     }
     if (network.getStateUpdateCount() > initialStateCount) {

@@ -29,7 +29,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> extends GuiContainerBaseEIO
+public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> extends GuiContainerBaseEIO<T>
     implements IHaveGhostTargets<GuiTravelAccessable<T>>, ITravelAccessableRemoteExec.GUI {
 
   private static final int ID_PUBLIC = 0;
@@ -47,7 +47,6 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
   private final @Nonnull String privateStr;
   private final @Nonnull String protectedStr;
 
-  protected final @Nonnull T te;
   private final int col0x;
   private final int col1x;
   private final int col2x;
@@ -59,8 +58,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
   }
 
   public GuiTravelAccessable(@Nonnull T te, @Nonnull ContainerTravelAccessable container) {
-    super(container, "travel_accessable");
-    this.te = te;
+    super(te, container, "travel_accessable");
     this.world = container.world;
 
     ySize = 185;
@@ -111,11 +109,11 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
       publicCB.setSelected(b.id == ID_PUBLIC);
 
       AccessMode curMode = b.id == ID_PRIVATE ? AccessMode.PRIVATE : b.id == ID_PROTECTED ? AccessMode.PROTECTED : AccessMode.PUBLIC;
-      te.setAccessMode(curMode);
+      getOwner().setAccessMode(curMode);
 
       doSetAccessMode(curMode);
     } else if (b == visibleCB) {
-      te.setVisible(visibleCB.isSelected());
+      getOwner().setVisible(visibleCB.isSelected());
       doSetVisible(visibleCB.isSelected());
     }
 
@@ -134,7 +132,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
 
     tf.setMaxStringLength(32);
     tf.setFocused(true);
-    String txt = te.getLabel();
+    String txt = getOwner().getLabel();
     if (txt != null && txt.length() > 0) {
       tf.setText(txt);
     }
@@ -187,7 +185,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
       newTxt = null;
     }
 
-    String curText = te.getLabel();
+    String curText = getOwner().getLabel();
     if (curText != null && curText.length() == 0) {
       curText = null;
     }
@@ -205,7 +203,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
     if (!changed) {
       return;
     }
-    te.setLabel(newTxt);
+    getOwner().setLabel(newTxt);
     doSetLabel(newTxt);
   }
 
@@ -213,7 +211,7 @@ public class GuiTravelAccessable<T extends TileEntity & ITravelAccessable> exten
   protected void drawForegroundImpl(int mouseX, int mouseY) {
     super.drawForegroundImpl(mouseX, mouseY);
 
-    if (te.getAccessMode() != AccessMode.PROTECTED) {
+    if (getOwner().getAccessMode() != AccessMode.PROTECTED) {
       bindGuiTexture();
       GlStateManager.color(1, 1, 1, 0.75f);
       GlStateManager.enableBlend();

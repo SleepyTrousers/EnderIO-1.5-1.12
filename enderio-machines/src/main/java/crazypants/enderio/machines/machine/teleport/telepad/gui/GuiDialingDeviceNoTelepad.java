@@ -23,15 +23,13 @@ import net.minecraft.util.text.TextFormatting;
 
 import static crazypants.enderio.base.machine.gui.GuiMachineBase.BUTTON_SIZE;
 
-public class GuiDialingDeviceNoTelepad extends GuiContainerBaseEIO {
+public class GuiDialingDeviceNoTelepad extends GuiContainerBaseEIO<TileDialingDevice> {
 
-  private final @Nonnull TileDialingDevice dialingDevice;
   private final int progressY = 110;
   private final @Nonnull ToggleButton showRangeB;
 
   public GuiDialingDeviceNoTelepad(@Nonnull InventoryPlayer playerInv, @Nonnull TileDialingDevice te) {
-    super(new ContainerDialingDevice(playerInv, te), "dialing_device");
-    this.dialingDevice = te;
+    super(te, new ContainerDialingDevice(playerInv, te), "dialing_device");
     this.ySize = 220;
 
     int x = getXSize() - 5 - BUTTON_SIZE - 2;
@@ -46,19 +44,19 @@ public class GuiDialingDeviceNoTelepad extends GuiContainerBaseEIO {
   }
 
   protected int getPowerOutputValue() {
-    return dialingDevice.getEnergy().getMaxUsage();
+    return getOwner().getEnergy().getMaxUsage();
   }
 
   protected void updatePowerBarTooltip(List<String> text) {
     text.add(Lang.GUI_TELEPAD_MAX.get(LangPower.RFt(getPowerOutputValue())));
-    text.add(LangPower.RF(dialingDevice.getEnergy().getEnergyStored(), dialingDevice.getEnergy().getMaxEnergyStored()));
+    text.add(LangPower.RF(getOwner().getEnergy().getEnergyStored(), getOwner().getEnergy().getMaxEnergyStored()));
   }
 
   @Override
   public void initGui() {
     super.initGui();
     showRangeB.onGuiInit();
-    showRangeB.setSelected(dialingDevice.isShowingRange());
+    showRangeB.setSelected(getOwner().isShowingRange());
     ((ContainerDialingDevice) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
   }
 
@@ -66,7 +64,7 @@ public class GuiDialingDeviceNoTelepad extends GuiContainerBaseEIO {
   protected void actionPerformed(@Nonnull GuiButton b) throws IOException {
     super.actionPerformed(b);
     if (b == showRangeB) {
-      dialingDevice.setShowRange(showRangeB.isSelected());
+      getOwner().setShowRange(showRangeB.isSelected());
     }
   }
 

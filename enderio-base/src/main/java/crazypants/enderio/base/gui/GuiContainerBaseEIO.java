@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -19,14 +20,19 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.api.ILocalizable;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.IntegrationConfig;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.integration.jei.JeiAccessor;
+import crazypants.enderio.base.machine.interfaces.INotifier;
 import crazypants.enderio.base.network.IRemoteExec;
+import crazypants.enderio.base.scheduler.Celeb;
 import crazypants.enderio.base.sound.SoundHelper;
 import crazypants.enderio.base.sound.SoundRegistry;
 import crazypants.enderio.util.Prep;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -39,15 +45,32 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IRemoteExec.IGui {
+public abstract class GuiContainerBaseEIO<O> extends GuiContainerBase implements IRemoteExec.IGui {
 
   private final @Nonnull NNList<ResourceLocation> guiTextures = new NNList<ResourceLocation>();
+  private final @Nonnull O owner;
 
-  public GuiContainerBaseEIO(@Nonnull Container par1Container, String... guiTexture) {
+  /**
+   * Constructor.
+   * 
+   * @param owner
+   *          Any kind of object that the GUI wants to name as "owner". For TE-based GUIs it is recommended to use the TE here. Otherwise, the container is a
+   *          good choice.
+   * @param par1Container
+   *          The container, see {@link GuiContainer#inventorySlots}.
+   * @param guiTexture
+   *          A list of texture names (relative to Ender IO's GUI texture base) that can later be selected using their index.
+   */
+  public GuiContainerBaseEIO(@Nonnull O owner, @Nonnull Container par1Container, String... guiTexture) {
     super(par1Container);
+    this.owner = owner;
     for (String string : guiTexture) {
       guiTextures.add(EnderIO.proxy.getGuiTexture(NullHelper.notnull(string, "invalid gui texture name")));
     }
+  }
+
+  public @Nonnull O getOwner() {
+    return owner;
   }
 
   public void bindGuiTexture() {
@@ -271,6 +294,74 @@ public abstract class GuiContainerBaseEIO extends GuiContainerBase implements IR
   @Override
   public void drawGradientRect(int left, int top, int right, int bottom, int startColor, int endColor) {
     super.drawGradientRect(left, top, right, bottom, startColor, endColor);
+  }
+
+  static long[] LAYERSEED = null;
+
+  @Override
+  public void drawWorldBackground(int tint) {
+    if (Celeb.SPACE.isOn() && NullHelper.untrust(mc.world) != null && PersonalConfig.celebrateSpaceDay.get()) {
+      drawRect(0, 0, width, height, 0xDF000000);
+
+      long tickCount = EnderIO.proxy.getTickCount();
+      Random rand = new Random();
+
+      if (LAYERSEED == null) {
+        long[] tmp = new long[10];
+        for (int i = 0; i < tmp.length; i++) {
+          tmp[i] = rand.nextLong();
+        }
+        LAYERSEED = tmp;
+      }
+
+      for (int layer = 1; layer < 10; layer++) {
+        for (int star = 0; star < width - 1; star++) {
+          long seed = LAYERSEED[layer] + star + (tickCount / layer);
+          rand.setSeed(seed);
+          int y = rand.nextInt(height * 10 * layer / 3);
+          int r = rand.nextInt(64);
+          int g = rand.nextInt(64);
+          int b = rand.nextInt(32);
+          int color = ((0xFF - r) << 16) | ((0xFF - g) << 8) | (0xFF - b);
+          if (y < height) {
+            drawRect(star, y, star + 1, y + 1, 0xA0000000 | color);
+            drawRect(star + 1, y, star + 2, y + 1, 0x20000000 | color);
+          }
+        }
+      }
+      return;
+    }
+
+    super.drawWorldBackground(tint);
+
+    if (PersonalConfig.GUIBrandingEnabled.get()) {
+      GlStateManager.color(1.0F, 1.0F, 1.0F, PersonalConfig.GUIBrandingAlpha.get());
+      RenderUtil.bindTexture(PersonalConfig.GUIBrandingTexture.get());
+      GlStateManager.enableBlend();
+      GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+      GlStateManager.enableAlpha();
+      GlStateManager.alphaFunc(GL11.GL_GREATER, 0.01F);
+
+      int size = Math.min(width, height) / PersonalConfig.GUIBrandingTiles.get();
+
+      drawModalRectWithCustomSizedTexture(0, 0, 0, 0, width, height, size, size);
+
+      GlStateManager.disableAlpha();
+      GlStateManager.disableBlend();
+    }
+
+    if (getOwner() instanceof INotifier) {
+      int x = width / 2;
+      int y = 4;
+      for (ILocalizable notification : ((INotifier) getOwner()).getNotification()) {
+        String s = EnderIO.lang.localizeExact(notification.getUnlocalizedName());
+        int stringWidth = fontRenderer.getStringWidth(s);
+        int xPos = x - stringWidth / 2;
+        drawGradientRect(xPos - 1, y - 1, xPos + stringWidth + 1, y + fontRenderer.FONT_HEIGHT, 0xFFFF0000, 0xFFAF0000);
+        fontRenderer.drawString(s, xPos, y, 0xFFFFFF, true);
+        y += fontRenderer.FONT_HEIGHT + 2;
+      }
+    }
   }
 
 }

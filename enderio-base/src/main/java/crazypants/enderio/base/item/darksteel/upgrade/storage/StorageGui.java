@@ -17,19 +17,16 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class StorageGui extends GuiContainerBaseEIO implements StorageRemoteExec.GUI {
-
-  private final @Nonnull StorageContainer cont;
+public class StorageGui extends GuiContainerBaseEIO<StorageContainer> implements StorageRemoteExec.GUI {
 
   public StorageGui(@Nonnull StorageContainer par1Container) {
-    super(par1Container, "inventory_9x6");
-    this.cont = par1Container;
+    super(par1Container, par1Container, "inventory_9x6");
     ySize = 206;
   }
 
   @Override
   protected boolean doSwitchTab(int tab) {
-    setTab(cont.activeTab = NullHelper.first(StorageUpgrade.ARMOR[tab], EntityEquipmentSlot.HEAD));
+    setTab(getOwner().activeTab = NullHelper.first(StorageUpgrade.ARMOR[tab], EntityEquipmentSlot.HEAD));
     return true;
   }
 
@@ -45,14 +42,14 @@ public class StorageGui extends GuiContainerBaseEIO implements StorageRemoteExec
       hasSetTab = true;
       EntityEquipmentSlot found = null;
       for (EntityEquipmentSlot drawTab : StorageUpgrade.ARMOR) {
-        if (cont.getItemHandler().getHandlerFromIndex(drawTab.getIndex()).getSlots() > 0) {
+        if (getOwner().getItemHandler().getHandlerFromIndex(drawTab.getIndex()).getSlots() > 0) {
           if (found == null || drawTab == EntityEquipmentSlot.CHEST) {
             found = drawTab;
           }
         }
       }
       if (found != null) {
-        setTab(cont.activeTab = found);
+        setTab(getOwner().activeTab = found);
       }
     }
   }
@@ -65,8 +62,8 @@ public class StorageGui extends GuiContainerBaseEIO implements StorageRemoteExec
 
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-    int cols = StorageUpgrade.cols(cont.activeTab);
-    int rows = cont.getItemHandler().getHandlerFromIndex(cont.activeTab.getIndex()).getSlots() / cols;
+    int cols = StorageUpgrade.cols(getOwner().activeTab);
+    int rows = getOwner().getItemHandler().getHandlerFromIndex(getOwner().activeTab.getIndex()).getSlots() / cols;
 
     // Should we construct this from a single texture instead of having pre-baked textures for each size?
     // Pre-baked is probably better for texture packs...
@@ -78,8 +75,8 @@ public class StorageGui extends GuiContainerBaseEIO implements StorageRemoteExec
     startTabs();
     for (int i = 0; i < StorageUpgrade.ARMOR.length; i++) {
       EntityEquipmentSlot drawTab = StorageUpgrade.ARMOR[i];
-      if (cont.getItemHandler().getHandlerFromIndex(drawTab.getIndex()).getSlots() > 0) {
-        renderStdTab(sx, sy, i, Minecraft.getMinecraft().player.inventory.armorInventory.get(drawTab.getIndex()), drawTab == cont.activeTab);
+      if (getOwner().getItemHandler().getHandlerFromIndex(drawTab.getIndex()).getSlots() > 0) {
+        renderStdTab(sx, sy, i, Minecraft.getMinecraft().player.inventory.armorInventory.get(drawTab.getIndex()), drawTab == getOwner().activeTab);
       }
     }
   }

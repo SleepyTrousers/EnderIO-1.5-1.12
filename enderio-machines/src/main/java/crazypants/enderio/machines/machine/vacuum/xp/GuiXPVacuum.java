@@ -29,7 +29,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import static crazypants.enderio.base.machine.gui.GuiMachineBase.BUTTON_SIZE;
 
-public class GuiXPVacuum extends GuiContainerBaseEIO implements IVacuumRangeRemoteExec.GUI {
+public class GuiXPVacuum extends GuiContainerBaseEIO<TileXPVacuum> implements IVacuumRangeRemoteExec.GUI {
 
   private static final int RANGE_LEFT = 123;
   private static final int RANGE_TOP = 32;
@@ -48,11 +48,8 @@ public class GuiXPVacuum extends GuiContainerBaseEIO implements IVacuumRangeRemo
   private final @Nonnull String headerRange;
   private final @Nonnull String headerXPVacuum;
 
-  private final @Nonnull TileXPVacuum te;
-
   public GuiXPVacuum(@Nonnull Container container, @Nonnull TileXPVacuum te) {
-    super(container, "xp_vacuum");
-    this.te = te;
+    super(te, container, "xp_vacuum");
 
     ySize = 152;
     xSize = 176;
@@ -89,24 +86,24 @@ public class GuiXPVacuum extends GuiContainerBaseEIO implements IVacuumRangeRemo
     rangeUpB.onGuiInit();
     rangeDownB.onGuiInit();
     addToolTip(rangeTooltip);
-    if (!te.isFormed()) {
+    if (!getOwner().isFormed()) {
       addToolTip(primeTooltip);
     }
     showRangeB.onGuiInit();
-    showRangeB.setSelected(te.isShowingRange());
+    showRangeB.setSelected(getOwner().isShowingRange());
   }
 
   @Override
   public void actionPerformed(@Nonnull GuiButton guiButton) {
     switch (guiButton.id) {
     case ID_RANGE_UP:
-      doSetVacuumRange((int) (te.getRange() + 1));
+      doSetVacuumRange((int) (getOwner().getRange() + 1));
       break;
     case ID_RANGE_DOWN:
-      doSetVacuumRange((int) (te.getRange() - 1));
+      doSetVacuumRange((int) (getOwner().getRange() - 1));
       break;
     case ID_SHOW_RANGE:
-      te.setShowRange(showRangeB.isSelected());
+      getOwner().setShowRange(showRangeB.isSelected());
     }
   }
 
@@ -124,11 +121,11 @@ public class GuiXPVacuum extends GuiContainerBaseEIO implements IVacuumRangeRemo
     fr.drawString(headerXPVacuum, getGuiLeft() + 20, getGuiTop() + 6, ColorUtil.getRGB(Color.DARK_GRAY));
 
     IconEIO.map.render(EnderWidget.BUTTON_DOWN, sx + RANGE_LEFT, sy + RANGE_TOP, RANGE_WIDTH, 16, 0, true);
-    String str = Integer.toString((int) te.getRange());
+    String str = Integer.toString((int) getOwner().getRange());
     int sw = fr.getStringWidth(str);
     fr.drawString(str, sx + RANGE_LEFT + RANGE_WIDTH - sw - 5, sy + RANGE_TOP + 5, ColorUtil.getRGB(Color.black));
 
-    if (te.isFormed()) {
+    if (getOwner().isFormed()) {
       renderFluid(new FluidStack(Fluids.XP_JUICE.getFluid(), 1), getGuiLeft() + 26, getGuiTop() + 21);
     }
 

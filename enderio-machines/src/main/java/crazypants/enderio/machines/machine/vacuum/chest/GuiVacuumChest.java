@@ -28,7 +28,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import static crazypants.enderio.base.machine.gui.GuiMachineBase.BUTTON_SIZE;
 
-public class GuiVacuumChest extends GuiContainerBaseEIO implements IOpenFilterRemoteExec.GUI {
+public class GuiVacuumChest extends GuiContainerBaseEIO<TileVacuumChest> implements IOpenFilterRemoteExec.GUI {
 
   private static final int RANGE_LEFT = 145;
   private static final int RANGE_TOP = 86;
@@ -42,8 +42,6 @@ public class GuiVacuumChest extends GuiContainerBaseEIO implements IOpenFilterRe
   private static final int ID_REDSTONE = 4715;
   private static final int ID_OPEN_FILTER = 4713;
 
-  private final @Nonnull TileVacuumChest te;
-
   private final @Nonnull GuiToolTip rangeTooltip;
   private final @Nonnull MultiIconButton rangeUpB;
   private final @Nonnull MultiIconButton rangeDownB;
@@ -56,8 +54,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO implements IOpenFilterRe
   private final @Nonnull IconButton openFilterGuiB;
 
   public GuiVacuumChest(@Nonnull InventoryPlayer inventory, @Nonnull TileVacuumChest te) {
-    super(new ContainerVacuumChest(inventory, te), "vacuum_chest");
-    this.te = te;
+    super(te, new ContainerVacuumChest(inventory, te), "vacuum_chest");
 
     ySize = 206;
 
@@ -112,7 +109,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO implements IOpenFilterRe
     rsB.onGuiInit();
     addToolTip(rangeTooltip);
     showRangeB.onGuiInit();
-    showRangeB.setSelected(te.isShowingRange());
+    showRangeB.setSelected(getOwner().isShowingRange());
 
     filterChanged();
     ((ContainerVacuumChest) inventorySlots).createGhostSlots(getGhostSlotHandler().getGhostSlots());
@@ -121,15 +118,15 @@ public class GuiVacuumChest extends GuiContainerBaseEIO implements IOpenFilterRe
   @Override
   public void actionPerformed(@Nonnull GuiButton guiButton) {
     if (guiButton == showRangeB) {
-      te.setShowRange(showRangeB.isSelected());
+      getOwner().setShowRange(showRangeB.isSelected());
       return;
     }
     switch (guiButton.id) {
     case ID_RANGE_UP:
-      setRange((int) (te.getRange() + 1));
+      setRange((int) (getOwner().getRange() + 1));
       break;
     case ID_RANGE_DOWN:
-      setRange((int) (te.getRange() - 1));
+      setRange((int) (getOwner().getRange() - 1));
       break;
     case ID_OPEN_FILTER:
       doOpenFilterGui(FilterGuiUtil.INDEX_NONE);
@@ -138,11 +135,11 @@ public class GuiVacuumChest extends GuiContainerBaseEIO implements IOpenFilterRe
   }
 
   private void setRange(int range) {
-    PacketHandler.INSTANCE.sendToServer(PacketVaccumChest.setRange(te, range));
+    PacketHandler.INSTANCE.sendToServer(PacketVaccumChest.setRange(getOwner(), range));
   }
 
   void filterChanged() {
-    if (te.hasItemFilter()) {
+    if (getOwner().hasItemFilter()) {
       openFilterGuiB.setIsVisible(true);
     } else {
       openFilterGuiB.setIsVisible(false);
@@ -165,7 +162,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO implements IOpenFilterRe
     fr.drawString(headerInventory, sx + 7, sy + 111, headerColor);
 
     IconEIO.map.render(EnderWidget.BUTTON_DOWN, sx + RANGE_LEFT, sy + RANGE_TOP, RANGE_WIDTH, 16, 0, true);
-    String str = Integer.toString((int) te.getRange());
+    String str = Integer.toString((int) getOwner().getRange());
     int sw = fr.getStringWidth(str);
     fr.drawString(str, sx + RANGE_LEFT + RANGE_WIDTH - sw - 5, sy + RANGE_TOP + 5, ColorUtil.getRGB(Color.black));
 

@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
+public class DSUGui extends GuiContainerBaseEIO<DSUContainer> implements DSURemoteExec.GUI {
 
   private final static NNList<String> TEXTURES = new NNList<>(EnderIO.DOMAIN + ":items/paint_overlay", "minecraft:items/empty_armor_slot_shield");
 
@@ -30,13 +30,11 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
     TEXTURES.addAll(ItemArmor.EMPTY_SLOT_NAMES);
   }
 
-  private final DSUContainer cont;
   private final int initialTab;
   private final AnvilSubGui anvil;
 
   public DSUGui(DSUContainer par1Container, int initialTab) {
-    super(par1Container, "dsu");
-    this.cont = par1Container;
+    super(par1Container, par1Container, "dsu");
     this.initialTab = initialTab;
     this.anvil = new AnvilSubGui(par1Container, this);
     ySize = 206;
@@ -46,17 +44,17 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
   public void initGui() {
     super.initGui();
     anvil.initGui();
-    cont.createGhostSlots(getGhostSlotHandler().getGhostSlots());
+    getOwner().createGhostSlots(getGhostSlotHandler().getGhostSlots());
   }
 
   @Override
   protected boolean doSwitchTab(int tab) {
-    ISlotSelector oldTab = cont.activeTab;
-    setTab(cont.setTab(tab));
-    if (oldTab == cont.activeTab) {
+    ISlotSelector oldTab = getOwner().activeTab;
+    setTab(getOwner().setTab(tab));
+    if (oldTab == getOwner().activeTab) {
       return false;
     }
-    if (cont.activeTab.isItem()) {
+    if (getOwner().activeTab.isItem()) {
       // allow click-through to the slot
       SoundHelper.playSound(mc.world, mc.player, SoundRegistry.TAB_SWITCH, 1, 1);
       return false;
@@ -77,7 +75,7 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
       EntityEquipmentSlot preferedSlot = initialTab > -1 ? EnumReader.get(EntityEquipmentSlot.class, initialTab) : EntityEquipmentSlot.CHEST;
       boolean wantAnvil = initialTab == -2;
       int found = -1;
-      for (UpgradeCap cap : cont.caps) {
+      for (UpgradeCap cap : getOwner().caps) {
         if (cap.isAvailable()) {
           if (wantAnvil && cap.getSlotSelector().isAnvil()) {
             found = cap.getSlotSelector().getTabOrder();
@@ -89,7 +87,7 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
         }
       }
       if (found >= 0) {
-        setTab(cont.setTab(found));
+        setTab(getOwner().setTab(found));
       }
     }
   }
@@ -97,7 +95,7 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
   @Override
   protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
     setInitialTab();
-    cont.calcSlots();
+    getOwner().calcSlots();
 
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -106,11 +104,11 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
     // we have a dark gray background for the ghostslot grayout, let's overpaint it with light gray
     drawScaledCustomSizeModalRect(guiLeft, guiTop + 5, 0, 220, xSize, 1, xSize, 111, 256, 256);
 
-    if (cont.activeTab.isAnvil()) {
+    if (getOwner().activeTab.isAnvil()) {
       anvil.drawGuiContainerBackgroundLayer(par1, par2, par3);
     } else {
       boolean hasAnySlots = false;
-      for (Slot inventorySlot : cont.inventorySlots) {
+      for (Slot inventorySlot : getOwner().inventorySlots) {
         if (inventorySlot instanceof DSUContainer.AutoSlot) {
           final AutoSlot slot = (DSUContainer.AutoSlot) inventorySlot;
           if (slot.isEnabled()) {
@@ -132,7 +130,7 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
       if (hasAnySlots) {
         fontRenderer.drawString(Lang.GUI_DSU_STORAGE.get(), guiLeft + 7, guiTop + 99 - 11, 4210752);
       } else {
-        String str = (cont.activeTab.isItem() ? Lang.GUI_DSU_NOT_INSERTED : Lang.GUI_DSU_NOT_INSTALLED).get();
+        String str = (getOwner().activeTab.isItem() ? Lang.GUI_DSU_NOT_INSERTED : Lang.GUI_DSU_NOT_INSTALLED).get();
         int y = 0;
         for (String sub : fontRenderer.listFormattedStringToWidth(str, xSize)) {
           if (sub != null) {
@@ -151,9 +149,9 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
 
   private void drawTabs() {
     startTabs();
-    for (UpgradeCap cap : cont.caps) {
+    for (UpgradeCap cap : getOwner().caps) {
       if (cap.getSlotSelector().isItem()) {
-        Rectangle tabarea = renderStdTab(guiLeft, guiTop, cap.getSlotSelector().getTabOrder(), cap.getSlotSelector() == cont.activeTab);
+        Rectangle tabarea = renderStdTab(guiLeft, guiTop, cap.getSlotSelector().getTabOrder(), cap.getSlotSelector() == getOwner().activeTab);
         Slot slot = cap.getSlotSelector().getContainerSlot();
         if (slot != null) {
           slot.xPos = tabarea.x + tabarea.width - 5 - 16 - guiLeft;
@@ -162,18 +160,19 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
           drawTexturedModalRect(guiLeft + slot.xPos - 1, guiTop + slot.yPos - 1, 200, 0, 18, 18);
         }
       } else if (cap.isAvailable()) {
-        renderStdTab(guiLeft, guiTop, cap.getSlotSelector().getTabOrder(), cap.getSlotSelector().getItem(mc.player), cap.getSlotSelector() == cont.activeTab);
+        renderStdTab(guiLeft, guiTop, cap.getSlotSelector().getTabOrder(), cap.getSlotSelector().getItem(mc.player),
+            cap.getSlotSelector() == getOwner().activeTab);
       } else if (cap.getSlotSelector().isSlot()) {
         renderStdTab(guiLeft, guiTop, cap.getSlotSelector().getTabOrder(),
             new AtlasWidgetIcon(mc.getTextureMapBlocks().getAtlasSprite(TEXTURES.get(cap.getSlotSelector().getSlot().ordinal()))),
-            cap.getSlotSelector() == cont.activeTab);
+            cap.getSlotSelector() == getOwner().activeTab);
       }
     }
   }
 
   @Override
   protected void keyTyped(char c, int key) throws IOException {
-    if (cont.activeTab.isAnvil() && anvil.keyTyped(c, key)) {
+    if (getOwner().activeTab.isAnvil() && anvil.keyTyped(c, key)) {
       return;
     }
     if (key == KeyTracker.dsu.getKeyCode()) {
@@ -187,7 +186,7 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
 
   @Override
   protected void mouseClicked(int x, int y, int button) throws IOException {
-    if (cont.activeTab.isAnvil()) {
+    if (getOwner().activeTab.isAnvil()) {
       anvil.mouseClicked(x, y, button);
     }
     super.mouseClicked(x, y, button);
@@ -195,7 +194,7 @@ public class DSUGui extends GuiContainerBaseEIO implements DSURemoteExec.GUI {
 
   @Override
   protected void drawForegroundImpl(int mouseX, int mouseY) {
-    if (cont.activeTab.isAnvil()) {
+    if (getOwner().activeTab.isAnvil()) {
       anvil.drawGuiContainerForegroundLayer(mouseX, mouseY);
     }
     super.drawForegroundImpl(mouseX, mouseY);

@@ -13,16 +13,14 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 
-public class GuiEnchanter extends GuiContainerBaseEIO {
+public class GuiEnchanter extends GuiContainerBaseEIO<TileEnchanter> {
 
-  private TileEnchanter te;
   private ContainerEnchanter container;
   private IconButton recipeButton;
 
   public GuiEnchanter(EntityPlayer player, @Nonnull InventoryPlayer inventory, @Nonnull TileEnchanter te) {
-    super(new ContainerEnchanter(player, inventory, te), "enchanter");
+    super(te, new ContainerEnchanter(player, inventory, te), "enchanter");
     container = (ContainerEnchanter) inventorySlots;
-    this.te = te;
 
     if (PersonalConfig.recipeButtonInMachineGuis.get()) {
       recipeButton = new IconButton(this, 100, 154, 8, IconEIO.RECIPE_BOOK);
@@ -49,7 +47,7 @@ public class GuiEnchanter extends GuiContainerBaseEIO {
     int sy = (height - ySize) / 2;
     drawTexturedModalRect(sx, sy, 0, 0, this.xSize, this.ySize);
 
-    int curCost = te.getCurrentEnchantmentCost();
+    int curCost = getOwner().getCurrentEnchantmentCost();
     if (curCost > 0) {
       GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
