@@ -58,6 +58,7 @@ public final class RecipeLoader {
     final RecipeFactory recipeFactory = new RecipeFactory(EnderIO.getConfigHandler().getConfigDirectory(), EnderIO.DOMAIN);
 
     bar.step("Preparing Config Folder"); // 1
+    recipeFactory.cleanFolder(RECIPES_ROOT);
     recipeFactory.createFolder(RECIPES_ROOT);
     recipeFactory.createFolder(RECIPES_USER);
     recipeFactory.createFolder(RECIPES_EXAMPLES);

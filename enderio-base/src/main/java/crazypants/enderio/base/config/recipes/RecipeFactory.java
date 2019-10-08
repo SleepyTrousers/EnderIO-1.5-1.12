@@ -10,6 +10,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLEventReader;
@@ -204,10 +205,27 @@ public class RecipeFactory {
     return result;
   }
 
+  public void cleanFolder(String folderName) {
+    File folder = new File(configDirectory, folderName);
+    if (folder.exists()) {
+      String[] list = folder.list((file, name) -> name.toLowerCase(Locale.ENGLISH).endsWith(".xml"));
+      if (list != null) {
+        for (String name : list) {
+          File file = new File(folder, name);
+          Log.debug("Removing existing core recipe template file ", file);
+          file.setWritable(true, true);
+          file.delete();
+        }
+      }
+    }
+  }
+
   private void copyCore(ResourceLocation resourceLocation, File file) {
     try (InputStream schemaIn = getResource(resourceLocation)) {
+      file.setWritable(true, true);
       try (OutputStream schemaOut = new FileOutputStream(file)) {
         IOUtils.copy(schemaIn, schemaOut);
+        file.setWritable(false, false);
       }
     } catch (IOException e) {
       Log.error("Copying default recipe file from " + resourceLocation + " to " + file + " failed. Reason:");
