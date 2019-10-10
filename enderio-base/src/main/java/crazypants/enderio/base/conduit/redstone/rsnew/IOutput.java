@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 public interface IOutput {
 
   @Nonnull
-  Collection<Target> getNotificationTargets(@Nonnull IRedstoneConduitNetwork network, @Nonnull Set<EnumDyeColor> changedChannels);
+  Collection<Target> getNotificationTargets(@Nonnull ISignalNetwork network, @Nonnull Set<EnumDyeColor> changedChannels);
 
   @Nonnull
   UID getUID();

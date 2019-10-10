@@ -2,6 +2,9 @@ package crazypants.enderio.base.conduit.redstone.rsnew;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.block.BlockRedstoneWire;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -33,9 +36,19 @@ public class Signal implements ISingleSignal {
   }
 
   @Override
-  public boolean acquire(@Nonnull IRedstoneConduitNetwork network) {
+  public boolean acquire(@Nonnull ISignalNetwork network) {
     if (dirty) {
-      int power = world.getRedstonePower(pos, facing);
+      dirty = false;
+      int power = world.getStrongPower(pos, facing);
+      if (power == 0) {
+        power = world.getRedstonePower(pos, facing);
+        if (power < 15) {
+          IBlockState bs = world.getBlockState(pos);
+          if (bs.getBlock() == Blocks.REDSTONE_WIRE) {
+            power = Math.max(power, bs.getValue(BlockRedstoneWire.POWER));
+          }
+        }
+      }
       if (power != value) {
         value = power;
         return true;

@@ -13,6 +13,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
@@ -20,7 +21,7 @@ import net.minecraft.util.math.BlockPos;
 
 import static net.minecraftforge.event.ForgeEventFactory.onNeighborNotify;
 
-public interface IRedstoneConduitNetwork {
+public interface ISignalNetwork {
 
   /**
    * Adds or updates a signal.
@@ -53,6 +54,11 @@ public interface IRedstoneConduitNetwork {
     });
   }
 
+  default void removeConduit(@Nonnull IConduit conduit) {
+    removeAllSignals(conduit.getBundle().getLocation());
+    removeAllOutputs(conduit.getBundle().getLocation());
+  }
+
   /**
    * Notifies the network that one or more signals have become dirty. The network will find out which signals are dirty and acquire them later.
    * <p>
@@ -69,7 +75,7 @@ public interface IRedstoneConduitNetwork {
    */
   int getSignalLevel(@Nonnull EnumDyeColor channel);
 
-  class Temp implements IRedstoneConduitNetwork {
+  class Temp implements ISignalNetwork {
 
     private static final @Nonnull NNList<EnumDyeColor> CHANNELS = NNList.of(EnumDyeColor.class);
 

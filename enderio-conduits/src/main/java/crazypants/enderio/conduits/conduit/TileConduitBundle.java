@@ -146,7 +146,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   public int getInternalRedstoneSignalForColor(@Nonnull DyeColor col) {
     IRedstoneConduit redCon = getConduit(IRedstoneConduit.class);
     if (redCon != null) {
-      return redCon.getRedstoneSignalForColor(col);
+      return redCon.getInternalNetworkSignalForColor(col);
     }
     return 0;
   }

@@ -28,7 +28,7 @@ public class AndFilter implements ISingleSignal {
   }
 
   @Override
-  public boolean acquire(@Nonnull IRedstoneConduitNetwork network) {
+  public boolean acquire(@Nonnull ISignalNetwork network) {
     if (isDirty()) {
       dirty = false;
       parent.acquire(network);
@@ -59,7 +59,7 @@ public class AndFilter implements ISingleSignal {
   }
 
   @Override
-  public boolean tick(@Nonnull IRedstoneConduitNetwork network, @Nonnull Set<EnumDyeColor> changedChannels, boolean firstTick) {
+  public boolean tick(@Nonnull ISignalNetwork network, @Nonnull Set<EnumDyeColor> changedChannels, boolean firstTick) {
     if (changedChannels.contains(channelB)) {
       dirty = true;
     }

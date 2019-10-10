@@ -1,105 +1,66 @@
 package crazypants.enderio.conduits.conduit.redstone;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.EnumMap;
 import java.util.EnumSet;
-import java.util.List;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.NNList;
-import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.conduit.ConduitUtil.UnloadedBlockException;
-import crazypants.enderio.base.conduit.IConduitBundle;
-import crazypants.enderio.base.conduit.redstone.signals.BundledSignal;
-import crazypants.enderio.base.conduit.redstone.signals.Signal;
+import crazypants.enderio.base.conduit.redstone.rsnew.IOutput;
+import crazypants.enderio.base.conduit.redstone.rsnew.ISignal;
+import crazypants.enderio.base.conduit.redstone.rsnew.ISignalNetwork;
+import crazypants.enderio.base.conduit.redstone.rsnew.UID;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
-import crazypants.enderio.base.filter.redstone.IInputSignalFilter;
+import crazypants.enderio.base.diagnostics.Prof;
 import crazypants.enderio.conduits.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduits.config.ConduitConfig;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
-public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneConduit, IRedstoneConduit> {
+import static net.minecraftforge.event.ForgeEventFactory.onNeighborNotify;
 
-  private final @Nonnull BundledSignal bundledSignal = new BundledSignal();
+public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneConduit, IRedstoneConduit> implements ISignalNetwork {
 
   boolean updatingNetwork = false;
-
-  private boolean networkEnabled = true;
-
-  private int baseId = 0;
 
   public RedstoneConduitNetwork() {
     super(IRedstoneConduit.class, IRedstoneConduit.class);
   }
 
   @Override
-  public void init(@Nonnull IConduitBundle tile, Collection<IRedstoneConduit> connections, @Nonnull World world) throws UnloadedBlockException {
-    super.init(tile, connections, world);
-    updatingNetwork = true;
-    notifyNeigborsOfSignalUpdate();
-    updatingNetwork = false;
-  }
-
-  @Override
   public void destroyNetwork() {
-    updatingNetwork = true;
     for (IRedstoneConduit con : getConduits()) {
       con.setActive(false);
     }
-    // Notify neighbours that all signals have been lost
-    bundledSignal.clear();
-    notifyNeigborsOfSignalUpdate();
-    updatingNetwork = false;
     super.destroyNetwork();
+    levels.clear();
+    signals.clear();
+    tickingSignals.clear();
+    outputs.clear();
   }
 
   @Override
   public void addConduit(@Nonnull IRedstoneConduit con) {
     super.addConduit(con);
-    con.setSignalIdBase(baseId);
-    baseId += 6;
-    updateInputsFromConduit(con, true); // all call paths to here come from updateNetwork() which already notifies all neighbors
-  }
-
-  public void updateInputsFromConduit(@Nonnull IRedstoneConduit con, boolean delayUpdate) {
-    // Make my neighbors update as if we have no signals
-    updatingNetwork = true;
-    notifyConduitNeighbours(con);
-    updatingNetwork = false;
-
-    // Then ask them what inputs they have now
-    for (EnumFacing side : EnumFacing.values()) {
-      if (side != null && con.getConnectionMode(side).acceptsOutput()) {
-        updateInputsForSource(con, side);
-      }
-    }
-
-    if (!delayUpdate) {
-      // then tell the whole network about the change
-      notifyNeigborsOfSignalUpdate();
-    }
-
-    if (ConduitConfig.showState.get()) {
-      updateActiveState();
-    }
+    con.onAddedToNetwork();
   }
 
   private void updateActiveState() {
     boolean isActive = false;
-    for (Signal s : bundledSignal.getSignals()) {
-      if (s.getStrength() > 0) {
+    for (Integer i : levels.values()) {
+      if (i != null && i > 0) {
         isActive = true;
         break;
       }
@@ -109,38 +70,11 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     }
   }
 
-  private void updateInputsForSource(@Nonnull IRedstoneConduit con, @Nonnull EnumFacing dir) {
-    updatingNetwork = true;
-    Signal signal = con.getNetworkInput(dir);
-    bundledSignal.addSignal(con.getInputSignalColor(dir), signal);
-
-    // if (Loader.isModLoaded("computercraft")) {
-    // Map<DyeColor, Signal> ccSignals = con.getComputerCraftSignals(dir);
-    //
-    // if (!ccSignals.isEmpty()) {
-    // for (DyeColor color : ccSignals.keySet()) {
-    // Signal ccSig = ccSignals.get(color);
-    // bundledSignal.addSignal(color, ccSig);
-    // }
-    // }
-    // }
-
-    updatingNetwork = false;
-  }
-
-  public @Nonnull BundledSignal getBundledSignal() {
-    return bundledSignal;
-  }
-
-  // Need to disable the network when determining the strength of external
-  // signals
-  // to avoid feed back looops
-  void setNetworkEnabled(boolean enabled) {
-    networkEnabled = enabled;
-  }
-
-  public boolean isNetworkEnabled() {
-    return networkEnabled;
+  /**
+   * Conduits need to check this manually because they could have a filter in front of getSignalLevel which could turn any value into an active signal...
+   */
+  public boolean isUpdatingNetwork() {
+    return updatingNetwork;
   }
 
   @Override
@@ -159,114 +93,128 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
 
   String signalsString() {
     StringBuilder sb = new StringBuilder();
-    for (Signal s : bundledSignal.getSignals()) {
+    for (Entry<EnumDyeColor, Integer> e : levels.entrySet()) {
       sb.append("<");
-      sb.append(s);
+      sb.append(e.getKey());
+      sb.append(":");
+      sb.append(e.getValue());
       sb.append(">");
 
     }
     return sb.toString();
   }
 
-  public void notifyNeigborsOfSignalUpdate() {
-    ArrayList<IRedstoneConduit> conduitsCopy = new ArrayList<IRedstoneConduit>(getConduits());
-    for (IRedstoneConduit con : conduitsCopy) {
-      notifyConduitNeighbours(con);
+  ///////////////////////////////////////////////////////////////////////////////////////////////
+
+  private static final @Nonnull NNList<EnumDyeColor> CHANNELS = NNList.of(EnumDyeColor.class);
+
+  private final @Nonnull Map<UID, ISignal> signals = new HashMap<>();
+  private final @Nonnull Map<UID, ISignal> tickingSignals = new HashMap<>();
+  private final @Nonnull Map<UID, IOutput> outputs = new HashMap<>();
+  private boolean signalsDirty = false;
+
+  private final @Nonnull EnumMap<EnumDyeColor, Integer> levels = new EnumMap<>(EnumDyeColor.class);
+
+  @Override
+  public void addSignal(@Nonnull ISignal signal) {
+    signals.put(signal.getUID(), signal);
+    if (signal.needsTicking()) {
+      tickingSignals.put(signal.getUID(), signal);
     }
+    signalsDirty = true;
   }
 
-  private void notifyConduitNeighbours(@Nonnull IRedstoneConduit con) {
-    TileEntity te = con.getBundle().getEntity();
+  @Override
+  public void removeSignal(@Nonnull ISignal signal) {
+    removeSignal(signal.getUID());
+  }
 
-    World world = te.getWorld();
-
-    BlockPos bc1 = te.getPos();
-
-    if (!world.isBlockLoaded(bc1)) {
-      return;
+  @Override
+  public void removeSignal(@Nonnull UID uuid) {
+    if (signals.remove(uuid) != null) {
+      signalsDirty = true;
     }
-
-    // Done manually to avoid orphaning chunks
-    EnumSet<EnumFacing> cons = EnumSet.copyOf(con.getExternalConnections());
-    if (!neighborNotifyEvent(world, bc1, null, cons)) {
-      for (EnumFacing dir : con.getExternalConnections()) {
-        BlockPos bc2 = bc1.offset(NullHelper.notnull(dir, "Conduit external connections contains null"));
-        if (world.isBlockLoaded(bc2)) {
-          world.neighborChanged(bc2, ConduitRegistry.getConduitModObjectNN().getBlockNN(), bc1);
-          IBlockState bs = world.getBlockState(bc2);
-          if (bs.isBlockNormalCube() && !neighborNotifyEvent(world, bc2, bs, EnumSet.allOf(EnumFacing.class))) {
-            for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
-              EnumFacing dir2 = itr.next();
-              BlockPos bc3 = bc2.offset(dir2);
-              if (!bc3.equals(bc1) && world.isBlockLoaded(bc3)) {
-                world.neighborChanged(bc3, ConduitRegistry.getConduitModObjectNN().getBlockNN(), bc1);
-              }
-            }
-          }
-        }
-      }
-    }
+    tickingSignals.remove(uuid);
   }
 
-  private boolean neighborNotifyEvent(World world, @Nonnull BlockPos pos, @Nullable IBlockState state, EnumSet<EnumFacing> dirs) {
-    return ForgeEventFactory.onNeighborNotify(world, pos, state == null ? world.getBlockState(pos) : state, dirs, false).isCanceled();
+  @Override
+  public void addOutput(@Nonnull IOutput output) {
+    outputs.put(output.getUID(), output);
   }
 
-  /**
-   * This is a bit of a hack...avoids the network searching for inputs from unloaded chunks by only filtering out the invalid signals from the unloaded chunk.
-   * 
-   * @param conduits
-   * @param oldSignals
-   */
-  public void afterChunkUnload(@Nonnull List<IRedstoneConduit> conduits, @Nonnull BundledSignal oldSignals) {
-    // World world = null;
-    // for (IRedstoneConduit c : conduits) {
-    // if (world == null) {
-    // world = c.getBundle().getBundleworld();
-    // }
-    // BlockPos pos = c.getBundle().getLocation();
-    // if (world.isBlockLoaded(pos)) {
-    // this.getConduits().add(c);
-    // c.setNetwork(this);
-    // }
-    // }
-    //
-    // bundledSignal.clear();
-    // boolean signalsChanged = false;
-    // for (Entry<SignalSource, Signal> s : oldSignals.entries()) {
-    // if (world != null && world.isBlockLoaded(s.getKey().getSource())) {
-    // signals.put(s.getKey(), s.getValue());
-    // } else {
-    // signalsChanged = true;
-    // }
-    // }
-    // if (signalsChanged) {
-    // // broadcast out a change
-    // notifyNeigborsOfSignalUpdate();
-    // }
+  @Override
+  public void removeOutput(@Nonnull IOutput output) {
+    removeOutput(output.getUID());
   }
 
-  public int getSignalStrengthForColor(@Nonnull DyeColor color) {
-    return bundledSignal.getSignal(color).getStrength();
+  @Override
+  public void removeOutput(@Nonnull UID uuid) {
+    outputs.remove(uuid);
+  }
+
+  @Override
+  public void setSignalsDirty() {
+    signalsDirty = true;
+  }
+
+  @Override
+  public int getSignalLevel(@Nonnull EnumDyeColor channel) {
+    return NullHelper.first(levels.get(channel), 0);
   }
 
   @Override
   public void tickEnd(ServerTickEvent event, @Nullable Profiler profiler) {
     super.tickEnd(event, profiler);
 
-    for (IRedstoneConduit con : getConduits()) {
-      for (EnumFacing dir : EnumFacing.VALUES) {
-        if (dir != null && ((IInputSignalFilter) con.getSignalFilter(dir, false)).shouldUpdate()) {
-          updateInputsForSource(con, dir);
-
-          World world = con.getBundle().getBundleworld();
-          BlockPos pos = con.getBundle().getLocation();
-          world.notifyNeighborsOfStateChange(pos, world.getBlockState(pos).getBlock(), false);
-          break;
+    Prof.start(profiler, "input");
+    int tickcount = 0;
+    Set<EnumDyeColor> changes = new HashSet<>();
+    do {
+      Set<EnumDyeColor> tickchanges = new HashSet<>();
+      if (signalsDirty) {
+        try {
+          updatingNetwork = true;
+          if (signals.values().stream().filter(signal -> signal.isDirty()).map(signal -> signal.acquire(this)).reduce(false, this::anyMatchNoShortCircuit)) {
+            CHANNELS.apply(channel -> {
+              int value = 0;
+              for (ISignal signal : signals.values()) {
+                value = Math.max(value, signal.get(channel));
+              }
+              if (levels.get(channel) != value) {
+                levels.put(channel, value);
+                tickchanges.add(channel);
+              }
+            });
+          }
+        } finally {
+          updatingNetwork = false;
         }
       }
-      notifyConduitNeighbours(con);
+      final boolean firstTick = tickcount == 0;
+      signalsDirty = tickingSignals.values().stream().map(signal -> signal.tick(this, tickchanges, firstTick)).reduce(false, this::anyMatchNoShortCircuit);
+      changes.addAll(tickchanges);
+    } while (signalsDirty && tickcount++ < 4);
+
+    if (ConduitConfig.showState.get()) {
+      updateActiveState();
     }
+
+    Prof.next(profiler, "output");
+    if (!changes.isEmpty()) {
+      outputs.values().stream().flatMap(output -> output.getNotificationTargets(this, changes).stream()).collect(Collectors.toSet()).stream()
+          .filter(t -> t.getWorld().isBlockLoaded(t.getFrom()) && t.getWorld().isBlockLoaded(t.getTo())
+              && !onNeighborNotify(t.getWorld(), t.getFrom(), t.getWorld().getBlockState(t.getFrom()), EnumSet.allOf(EnumFacing.class), false).isCanceled())
+          .forEach(t -> t.getWorld().neighborChanged(t.getTo(), ConduitRegistry.getConduitModObjectNN().getBlockNN(), t.getFrom()));
+    }
+    Prof.stop(profiler);
+  }
+
+  /**
+   * Note: This can be used in <code>.reduce(false, this::anyMatchNoShortCircuit)</code> to have an <code>.anyMatch()</code> that doesn't short-circuit. This is
+   * needed if all elements of the stream need to be processed because there are side effects in the stream.
+   */
+  private boolean anyMatchNoShortCircuit(Boolean a, Boolean b) {
+    return a || b;
   }
 
 }

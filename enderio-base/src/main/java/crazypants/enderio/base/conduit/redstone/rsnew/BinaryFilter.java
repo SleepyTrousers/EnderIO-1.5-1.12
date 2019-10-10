@@ -22,7 +22,7 @@ public class BinaryFilter implements ISingleSignal {
   }
 
   @Override
-  public boolean acquire(@Nonnull IRedstoneConduitNetwork network) {
+  public boolean acquire(@Nonnull ISignalNetwork network) {
     return parent.acquire(network);
   }
 

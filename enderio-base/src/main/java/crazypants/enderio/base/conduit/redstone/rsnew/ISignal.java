@@ -18,7 +18,7 @@ public interface ISignal {
    * 
    * @return true if the value changed, false otherwise
    */
-  boolean acquire(@Nonnull IRedstoneConduitNetwork network);
+  boolean acquire(@Nonnull ISignalNetwork network);
 
   void setDirty();
 
@@ -43,7 +43,7 @@ public interface ISignal {
    *          true.
    * @return true if the signal needs to be acquired, false otherwise
    */
-  default boolean tick(@Nonnull IRedstoneConduitNetwork network, @Nonnull Set<EnumDyeColor> changedChannels, boolean firstTick) {
+  default boolean tick(@Nonnull ISignalNetwork network, @Nonnull Set<EnumDyeColor> changedChannels, boolean firstTick) {
     return false;
   }
 }

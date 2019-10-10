@@ -14,7 +14,6 @@ import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector4f;
-import com.google.common.collect.Lists;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitUtil;
@@ -29,7 +28,6 @@ import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.conduit.redstone.signals.BundledSignal;
 import crazypants.enderio.base.conduit.redstone.signals.CombinedSignal;
-import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.diagnostics.Prof;
 import crazypants.enderio.base.filter.FilterRegistry;
@@ -54,10 +52,9 @@ import crazypants.enderio.powertools.lang.Lang;
 import crazypants.enderio.util.EnumReader;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRedstoneWire;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -109,8 +106,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   private boolean connectionsDirty = false; // TODO: can this be merged with super.connectionsDirty?
 
-  private int signalIdBase = 0;
-
   @SuppressWarnings("unused")
   public InsulatedRedstoneConduit() {
   }
@@ -118,6 +113,17 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Override
   public @Nullable RedstoneConduitNetwork getNetwork() {
     return network;
+  }
+
+  @FunctionalInterface
+  private interface Callback<T> {
+    void accept(@Nonnull T t);
+  }
+
+  protected void withNetwork(@Nonnull Callback<RedstoneConduitNetwork> callback) {
+    if (network != null) {
+      callback.accept(network);
+    }
   }
 
   @Override
@@ -187,13 +193,8 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   public void onChunkUnload() {
-    RedstoneConduitNetwork networkR = getNetwork();
-    if (networkR != null) {
-      BundledSignal oldSignals = networkR.getBundledSignal();
-      List<IRedstoneConduit> conduits = Lists.newArrayList(networkR.getConduits());
-      super.onChunkUnload();
-      networkR.afterChunkUnload(conduits, oldSignals);
-    }
+    withNetwork(n -> n.removeConduit(this));
+    super.onChunkUnload();
   }
 
   @Override
@@ -239,9 +240,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
         } else {
           EnumFacing connDir = component.getDirection();
           if (externalConnections.contains(connDir)) {
-            if (network != null) {
-              network.destroyNetwork();
-            }
+            withNetwork(n -> n.destroyNetwork());
             externalConnectionRemoved(connDir);
             forceConnectionMode(connDir, ConnectionMode.getNext(getConnectionMode(connDir)));
             return true;
@@ -250,9 +249,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
             BlockPos pos = getBundle().getLocation().offset(connDir);
             IRedstoneConduit neighbour = ConduitUtil.getConduit(getBundle().getEntity().getWorld(), pos.getX(), pos.getY(), pos.getZ(), IRedstoneConduit.class);
             if (neighbour != null) {
-              if (network != null) {
-                network.destroyNetwork();
-              }
+              withNetwork(n -> n.destroyNetwork());
               final RedstoneConduitNetwork neighbourNetwork = neighbour.getNetwork();
               if (neighbourNetwork != null) {
                 neighbourNetwork.destroyNetwork();
@@ -382,11 +379,11 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   public int isProvidingWeakPower(@Nonnull EnumFacing toDirection) {
-    toDirection = toDirection.getOpposite();
-    if (!getConnectionMode(toDirection).acceptsInput()) {
+    if (network == null || !network.isUpdatingNetwork()) {
       return 0;
     }
-    if (network == null || !network.isNetworkEnabled()) {
+    toDirection = toDirection.getOpposite();
+    if (!getConnectionMode(toDirection).acceptsInput()) {
       return 0;
     }
     int result = 0;
@@ -453,59 +450,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     return input;
   }
 
-  protected int getExternalPowerLevel(@Nonnull EnumFacing dir) {
-    World world = getBundle().getBundleworld();
-    BlockPos loc = getBundle().getLocation().offset(dir);
-    int res = 0;
-
-    if (world.isBlockLoaded(loc)) {
-      int strong = world.getStrongPower(loc, dir);
-      if (strong > 0) {
-        return strong;
-      }
-
-      res = world.getRedstonePower(loc, dir);
-      IBlockState bs = world.getBlockState(loc);
-      Block block = bs.getBlock();
-      if (res <= 15 && block == Blocks.REDSTONE_WIRE) {
-        int wireIn = bs.getValue(BlockRedstoneWire.POWER);
-        res = Math.max(res, wireIn);
-      }
-    }
-
-    return res;
-  }
-
-  // @Optional.Method(modid = "computercraft")
-  // @Override
-  // @Nonnull
-  // public Map<DyeColor, Signal> getComputerCraftSignals(@Nonnull EnumFacing side) {
-  // Map<DyeColor, Signal> ccSignals = new EnumMap<DyeColor, Signal>(DyeColor.class);
-  //
-  // int bundledInput = getComputerCraftBundledPowerLevel(side);
-  // if (bundledInput >= 0) {
-  // for (int i = 0; i < 16; i++) {
-  // int color = bundledInput >>> i & 1;
-  // Signal signal = new Signal(color == 1 ? 16 : 0, signalIdBase + side.ordinal());
-  // ccSignals.put(DyeColor.fromIndex(Math.max(0, 15 - i)), signal);
-  // }
-  // }
-  //
-  // return ccSignals;
-  // }
-
-  // @Optional.Method(modid = "computercraft")
-  // private int getComputerCraftBundledPowerLevel(EnumFacing dir) {
-  // World world = getBundle().getBundleworld();
-  // BlockPos pos = getBundle().getLocation().offset(dir);
-  //
-  // if (world.isBlockLoaded(pos)) {
-  // return ComputerCraftAPI.getBundledRedstoneOutput(world, pos, dir.getOpposite());
-  // } else {
-  // return -1;
-  // }
-  // }
-
   @Override
   @Nonnull
   public ConnectionMode getConnectionMode(@Nonnull EnumFacing dir) {
@@ -568,9 +512,9 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   // ---------------------
 
   @Override
-  public int getRedstoneSignalForColor(@Nonnull DyeColor col) {
+  public int getInternalNetworkSignalForColor(@Nonnull DyeColor col) {
     if (network != null) {
-      return network.getSignalStrengthForColor(col);
+      return network.getSignalLevel(EnumDyeColor.byDyeDamage(col.ordinal()));
     }
     return 0;
   }
@@ -875,7 +819,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   // -------------------------------------------
 
   @Override
-  public void setSignalIdBase(int id) {
+  public void onAddedToNetwork() {
     signalIdBase = id;
   }
 
