@@ -26,6 +26,9 @@ import crazypants.enderio.base.conduit.IGuiExternalConnection;
 import crazypants.enderio.base.conduit.RaytraceResult;
 import crazypants.enderio.base.conduit.geom.CollidableComponent;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
+import crazypants.enderio.base.conduit.redstone.rsnew.IOutput;
+import crazypants.enderio.base.conduit.redstone.rsnew.ISingleSignal;
+import crazypants.enderio.base.conduit.redstone.rsnew.Signal;
 import crazypants.enderio.base.conduit.redstone.signals.BundledSignal;
 import crazypants.enderio.base.conduit.redstone.signals.CombinedSignal;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
@@ -51,6 +54,7 @@ import crazypants.enderio.conduits.render.ConduitTexture;
 import crazypants.enderio.powertools.lang.Lang;
 import crazypants.enderio.util.EnumReader;
 import crazypants.enderio.util.Prep;
+import crazypants.enderio.util.SidedObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -97,6 +101,34 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   private Map<EnumFacing, DyeColor> outputSignalColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
 
   private Map<EnumFacing, Boolean> signalStrengths = new EnumMap<EnumFacing, Boolean>(EnumFacing.class);
+
+  private SidedObject<ISingleSignal> signals = new SidedObject<ISingleSignal>() {
+    @Override
+    public ISingleSignal set(@Nonnull EnumFacing side, ISingleSignal value) {
+      ISingleSignal existing = this.get(side);
+      if (existing != null && existing != value) {
+        withNetwork(n -> n.removeSignal(existing));
+      }
+      if (value != null) {
+        withNetwork(n -> n.addSignal(value));
+      }
+      return super.set(side, value);
+    }
+  };
+
+  private SidedObject<IOutput> outputs = new SidedObject<IOutput>() {
+    @Override
+    public IOutput set(@Nonnull EnumFacing side, IOutput value) {
+      IOutput existing = this.get(side);
+      if (existing != null && existing != value) {
+        withNetwork(n -> n.removeOutput(existing));
+      }
+      if (value != null) {
+        withNetwork(n -> n.addOutput(value));
+      }
+      return super.set(side, value);
+    }
+  };
 
   private RedstoneConduitNetwork network;
 
@@ -165,7 +197,8 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
       if (connectionsDirty) {
         if (hasExternalConnections()) {
-          network.updateInputsFromConduit(this, false);
+          NNList.FACING.stream().map(side -> signals.get(side)).filter(signal -> signal != null).forEach(signal -> signal.setDirty());
+          withNetwork(n -> n.setSignalsDirty());
         }
         connectionsDirty = false;
       }
@@ -275,8 +308,22 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     setConnectionMode(dir, mode);
     forcedConnections.put(dir, mode);
     onAddedToBundle();
-    if (network != null) {
-      network.updateInputsFromConduit(this, false);
+  }
+
+  @Override
+  public void setConnectionMode(@Nonnull EnumFacing dir, @Nonnull ConnectionMode mode) {
+    super.setConnectionMode(dir, mode);
+    if (mode.acceptsInput()) {
+      signals.set(dir, new Signal(getBundle().getBundleworld(), getBundle().getLocation(), dir, c(getInputSignalColor(dir))));
+      // TODO wrap in filter
+    } else {
+      signals.set(dir, null);
+    }
+    if (mode.acceptsOutput()) {
+      outputs.set(dir, null); // TODO create output class
+      // TODO wrap in filter
+    } else {
+      outputs.set(dir, null);
     }
   }
 
@@ -517,6 +564,10 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       return network.getSignalLevel(EnumDyeColor.byDyeDamage(col.ordinal()));
     }
     return 0;
+  }
+
+  private @Nonnull EnumDyeColor c(@Nonnull DyeColor col) {
+    return EnumDyeColor.byDyeDamage(col.ordinal());
   }
 
   @SuppressWarnings("null")
@@ -820,7 +871,18 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   public void onAddedToNetwork() {
-    signalIdBase = id;
+    withNetwork(n -> {
+
+      NNList.FACING.stream().map(side -> signals.get(side)).filter(signal -> signal != null).forEach(signal -> {
+        signal.setDirty();
+        n.addSignal(signal);
+      });
+
+      NNList.FACING.stream().map(side -> outputs.get(side)).filter(output -> output != null).forEach(output -> {
+        n.addOutput(output);
+      });
+
+    });
   }
 
   @Override
