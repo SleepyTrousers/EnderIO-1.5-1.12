@@ -31,6 +31,11 @@ public class LeverStateMapper extends StateMapperBase {
     ModelLoader.setCustomStateMapper(ModObject.blockSelfResettingLever30.getBlockNN(), mapper);
     ModelLoader.setCustomStateMapper(ModObject.blockSelfResettingLever60.getBlockNN(), mapper);
     ModelLoader.setCustomStateMapper(ModObject.blockSelfResettingLever300.getBlockNN(), mapper);
+    ModelLoader.setCustomStateMapper(ModObject.blockSelfResettingLever5i.getBlockNN(), mapper);
+    ModelLoader.setCustomStateMapper(ModObject.blockSelfResettingLever10i.getBlockNN(), mapper);
+    ModelLoader.setCustomStateMapper(ModObject.blockSelfResettingLever30i.getBlockNN(), mapper);
+    ModelLoader.setCustomStateMapper(ModObject.blockSelfResettingLever60i.getBlockNN(), mapper);
+    ModelLoader.setCustomStateMapper(ModObject.blockSelfResettingLever300i.getBlockNN(), mapper);
   }
 
   @Override

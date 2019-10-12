@@ -538,6 +538,177 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Self-Resetting Lever, 5 seconds, inverted" required="true">
+    <crafting>
+      <shapeless>
+        <item name="minecraft:lever"/><item name="dustRedstone" /><item name="minecraft:redstone_torch" />
+      </shapeless>
+      <output name="enderio:block_self_resetting_lever5i" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Self-Resetting Lever, 5 seconds, crossgrade, inverted" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_self_resetting_lever5"/><item name="minecraft:redstone_torch" />
+      </shapeless>
+      <output name="enderio:block_self_resetting_lever5i" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Self-Resetting Lever, 5 seconds, crossgrade, uninverted" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_self_resetting_lever5i"/><item name="minecraft:redstone_torch" />
+      </shapeless>
+      <output name="enderio:block_self_resetting_lever5" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Self-Resetting Lever, 10 seconds, inverted" required="true">
+    <crafting>
+      <shapeless>
+        <item name="minecraft:lever"/><item name="dustRedstone" /><item name="dustRedstone" /><item name="minecraft:redstone_torch" />
+      </shapeless>
+      <output name="enderio:block_self_resetting_lever10i" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Self-Resetting Lever, 10 seconds, upgrade, inverted" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_self_resetting_lever5i"/><item name="dustRedstone" />
+      </shapeless>
+      <output name="enderio:block_self_resetting_lever10i" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Self-Resetting Lever, 10 seconds, crossgrade, inverted" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_self_resetting_lever10"/><item name="minecraft:redstone_torch" />
+      </shapeless>
+      <output name="enderio:block_self_resetting_lever10i" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Self-Resetting Lever, 10 seconds, crossgrade, uninverted" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_self_resetting_lever10i"/><item name="minecraft:redstone_torch" />
+      </shapeless>
+      <output name="enderio:block_self_resetting_lever10" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Self-Resetting Lever, 30 seconds, inverted" required="true">
+    <crafting>
+      <shapeless>
+        <item name="minecraft:lever"/><item name="dustRedstone" /><item name="dustRedstone" /><item name="dustRedstone" /><item name="minecraft:redstone_torch" />
+      </shapeless>
+      <output name="enderio:block_self_resetting_lever30i" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Self-Resetting Lever, 30 seconds, upgrade, inverted" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_self_resetting_lever10i"/><item name="dustRedstone" />
+      </shapeless>
+      <output name="enderio:block_self_resetting_lever30i" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Self-Resetting Lever, 30 seconds, crossgrade, inverted" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_self_resetting_lever30"/><item name="minecraft:redstone_torch" />
+      </shapeless>
+      <output name="enderio:block_self_resetting_lever30i" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Self-Resetting Lever, 30 seconds, crossgrade, uninverted" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_self_resetting_lever30i"/><item name="minecraft:redstone_torch" />
+      </shapeless>
+      <output name="enderio:block_self_resetting_lever30" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Self-Resetting Lever, 60 seconds, inverted" required="true">
+    <crafting>
+      <shapeless>
+        <item name="minecraft:lever"/><item name="dustRedstone" /><item name="dustRedstone" /><item name="dustRedstone" /><item name="dustRedstone" /><item name="minecraft:redstone_torch" />
+      </shapeless>
+      <output name="enderio:block_self_resetting_lever60i" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Self-Resetting Lever, 60 seconds, upgrade, inverted" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_self_resetting_lever30i"/><item name="dustRedstone" />
+      </shapeless>
+      <output name="enderio:block_self_resetting_lever60i" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Self-Resetting Lever, 60 seconds, crossgrade, inverted" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_self_resetting_lever60"/><item name="minecraft:redstone_torch" />
+      </shapeless>
+      <output name="enderio:block_self_resetting_lever60i" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Self-Resetting Lever, 60 seconds, crossgrade, uninverted" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_self_resetting_lever60i"/><item name="minecraft:redstone_torch" />
+      </shapeless>
+      <output name="enderio:block_self_resetting_lever60" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Self-Resetting Lever, 300 seconds, inverted" required="true">
+    <crafting>
+      <shapeless>
+        <item name="minecraft:lever"/><item name="dustRedstone" /><item name="dustRedstone" /><item name="dustRedstone" /><item name="dustRedstone" /><item name="dustRedstone" />
+      </shapeless>
+      <output name="enderio:block_self_resetting_lever300i" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Self-Resetting Lever, 300 seconds, upgrade, inverted" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_self_resetting_lever60i"/><item name="dustRedstone" />
+      </shapeless>
+      <output name="enderio:block_self_resetting_lever300i" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Self-Resetting Lever, 300 seconds, crossgrade, inverted" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_self_resetting_lever300"/><item name="minecraft:redstone_torch" />
+      </shapeless>
+      <output name="enderio:block_self_resetting_lever300i" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Self-Resetting Lever, 300 seconds, crossgrade, uninverted" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_self_resetting_lever300i"/><item name="minecraft:redstone_torch" />
+      </shapeless>
+      <output name="enderio:block_self_resetting_lever300" />
+    </crafting>
+  </recipe>
+
   <recipe name="Conduit Probe" required="true">
     <crafting>
       <grid size="3x3">

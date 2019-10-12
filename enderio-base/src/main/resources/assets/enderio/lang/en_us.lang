@@ -629,6 +629,11 @@ tile.block_self_resetting_lever30.name=Self-resetting Lever (30 seconds)
 tile.block_self_resetting_lever60.name=Self-resetting Lever (1 Minute)
 tile.block_self_resetting_lever300.name=Self-resetting Lever (5 Minutes)
 
+tile.block_self_resetting_lever5i.name=Inverted Self-resetting Lever (5 seconds)
+tile.block_self_resetting_lever10i.name=Inverted Self-resetting Lever (10 seconds)
+tile.block_self_resetting_lever30i.name=Inverted Self-resetting Lever (30 seconds)
+tile.block_self_resetting_lever60i.name=Inverted Self-resetting Lever (1 Minute)
+tile.block_self_resetting_lever300i.name=Inverted Self-resetting Lever (5 Minutes)
 
 
 enderio.machine.tooltip.configured=%s (Configured)
