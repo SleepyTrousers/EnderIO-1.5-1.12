@@ -30,4 +30,11 @@ public interface IWirelessCharger {
 
   @Nonnull
   BlockPos getLocation();
+
+  /**
+   * If true, this charger will force force the charging process to end if it reports true from chargeItems().
+   * <p>
+   * It is not expected that this value differs between chargers, it's here to allow the config value to propagate from machines to base.
+   */
+  boolean forceSingle();
 }

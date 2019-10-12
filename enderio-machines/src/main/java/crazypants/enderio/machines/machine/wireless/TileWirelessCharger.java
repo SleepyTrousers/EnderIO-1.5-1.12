@@ -17,6 +17,7 @@ import crazypants.enderio.base.power.wireless.WirelessChargerController;
 import crazypants.enderio.base.render.ranged.IRanged;
 import crazypants.enderio.base.render.ranged.RangeParticle;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
+import crazypants.enderio.machines.config.config.ChargerConfig;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.state.IBlockState;
@@ -49,7 +50,7 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowered
   @Override
   public void invalidate() {
     super.invalidate();
-    WirelessChargerController.instance.deregisterCharger(this);
+    WirelessChargerController.deregisterCharger(this);
     registered = false;
   }
 
@@ -61,7 +62,7 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowered
     }
 
     if (!registered) {
-      WirelessChargerController.instance.registerCharger(this);
+      WirelessChargerController.registerCharger(this);
       registered = true;
       disableTicking();
     }
@@ -200,4 +201,8 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowered
     return getRange();
   }
 
+  @Override
+  public boolean forceSingle() {
+    return ChargerConfig.singleCharger.get();
+  }
 }

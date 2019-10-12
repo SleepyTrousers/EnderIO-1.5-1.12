@@ -25,7 +25,7 @@ public class WirelessChargedLocation implements Comparator<IWirelessCharger> {
 
   private @Nonnull List<IWirelessCharger> getChargers() {
     List<IWirelessCharger> chargers = new ArrayList<>();
-    WirelessChargerController.instance.getChargers(te.getWorld(), te.getPos(), chargers);
+    WirelessChargerController.getChargers(te.getWorld(), te.getPos(), chargers);
     if (chargers.size() > 1) {
       chargers.sort(this);
     }
@@ -34,7 +34,7 @@ public class WirelessChargedLocation implements Comparator<IWirelessCharger> {
 
   public boolean chargeItems(@Nonnull NonNullList<ItemStack> items) {
     for (IWirelessCharger wc : getChargers()) {
-      if (wc.chargeItems(items)) {
+      if (wc.chargeItems(items) && wc.forceSingle()) {
         return true;
       }
     }

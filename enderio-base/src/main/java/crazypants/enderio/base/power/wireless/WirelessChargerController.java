@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -31,22 +30,14 @@ import net.minecraftforge.fml.relauncher.Side;
 @EventBusSubscriber(modid = EnderIO.MODID)
 public final class WirelessChargerController {
 
-  public static final @Nonnull WirelessChargerController instance = new WirelessChargerController();
+  private final static @Nonnull Map<Integer, Collection<BlockPos>> perWorldChargers = new HashMap<>();
 
-  private final @Nonnull Map<Integer, Collection<BlockPos>> perWorldChargers = new HashMap<>();
-  private int changeCount;
-
-  private WirelessChargerController() {
+  public static void registerCharger(@Nonnull IWirelessCharger charger) {
+    getChargers(charger.getworld()).add(charger.getLocation().toImmutable());
   }
 
-  public void registerCharger(@Nonnull IWirelessCharger charger) {
-    getChargersForWorld(charger.getworld()).add(charger.getLocation().toImmutable());
-    changeCount++;
-  }
-
-  public void deregisterCharger(@Nonnull IWirelessCharger charger) {
-    getChargersForWorld(charger.getworld()).remove(charger.getLocation());
-    changeCount++;
+  public static void deregisterCharger(@Nonnull IWirelessCharger charger) {
+    getChargers(charger.getworld()).remove(charger.getLocation());
   }
 
   @SubscribeEvent
@@ -54,50 +45,40 @@ public final class WirelessChargerController {
     if (event.side == Side.CLIENT || event.phase != TickEvent.Phase.END || event.player.isSpectator()) {
       return;
     }
-    instance.chargePlayersItems(NullHelper.notnullF(event.player, "TickEvent.PlayerTickEvent without player"));
+    chargePlayersItems(NullHelper.notnullF(event.player, "TickEvent.PlayerTickEvent without player"));
   }
 
-  public int getChangeCount() {
-    return changeCount;
-  }
-
-  public void getChargers(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Collection<IWirelessCharger> res) {
-    final Collection<BlockPos> chargers = getChargersForWorld(world);
+  public static @Nonnull Collection<IWirelessCharger> getChargers(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Collection<IWirelessCharger> res) {
+    final Collection<BlockPos> chargers = getChargers(world);
     for (Iterator<BlockPos> iterator = chargers.iterator(); iterator.hasNext();) {
       BlockPos chargerPos = iterator.next();
       IWirelessCharger charger = chargerPos != null ? BlockEnder.getAnyTileEntitySafe(world, chargerPos, IWirelessCharger.class) : null;
       if (charger != null) {
-        if (charger.getRange().contains(pos)) {
+        if (charger.isActive() && charger.getRange().contains(pos)) {
           res.add(charger);
         }
       } else {
         iterator.remove();
-        changeCount++;
+      }
+    }
+    return res;
+  }
+
+  private static void chargePlayersItems(@Nonnull EntityPlayer player) {
+    for (IWirelessCharger charger : getChargers(player.world, BlockCoord.get(player), new ArrayList<>())) {
+      if (charger != null && chargePlayersItems(player, charger) && charger.forceSingle()) {
+        return;
       }
     }
   }
 
-  public void chargePlayersItems(@Nonnull EntityPlayer player) {
-    List<IWirelessCharger> chargers = new ArrayList<>();
-    getChargers(player.world, new BlockPos(player), chargers);
-    if (chargers.isEmpty()) {
-      return;
-    }
-    BlockPos pos = BlockCoord.get(player);
-    for (IWirelessCharger charger : chargers) {
-      if (charger.isActive() && charger.getRange().contains(pos)) {
-        boolean done = chargeFromCapBank(player, charger);
-        if (done) {
-          return;
-        }
-      }
-    }
-  }
-
-  private boolean chargeFromCapBank(@Nonnull EntityPlayer player, @Nonnull IWirelessCharger charger) {
+  private static boolean chargePlayersItems(@Nonnull EntityPlayer player, @Nonnull IWirelessCharger charger) {
     boolean res = charger.chargeItems(player.inventory.armorInventory);
     res |= charger.chargeItems(player.inventory.mainInventory);
     res |= charger.chargeItems(player.inventory.offHandInventory);
+    if (res) {
+      player.inventoryContainer.detectAndSendChanges();
+    }
     IInventory baubles = BaublesUtil.instance().getBaubles(player);
     if (baubles != null) {
       for (int i = 0; i < baubles.getSizeInventory(); i++) {
@@ -112,19 +93,11 @@ public final class WirelessChargerController {
         }
       }
     }
-    if (res) {
-      player.inventoryContainer.detectAndSendChanges();
-    }
     return res;
   }
 
-  private @Nonnull Collection<BlockPos> getChargersForWorld(@Nonnull World world) {
-    Collection<BlockPos> res = perWorldChargers.get(world.provider.getDimension());
-    if (res == null) {
-      res = new HashSet<BlockPos>();
-      perWorldChargers.put(world.provider.getDimension(), res);
-    }
-    return res;
+  private static @Nonnull Collection<BlockPos> getChargers(@Nonnull World world) {
+    return NullHelper.notnull(perWorldChargers.computeIfAbsent(world.provider.getDimension(), dim -> new HashSet<BlockPos>()), "computeIfAbsent()");
   }
 
 }
