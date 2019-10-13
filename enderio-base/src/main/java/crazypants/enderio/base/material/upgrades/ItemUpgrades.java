@@ -202,6 +202,9 @@ public final class ItemUpgrades extends Item implements IHaveRenderers, IAdvance
       if (!isEnabled(itemstack)) {
         list.add(TextFormatting.LIGHT_PURPLE + Lang.DSU_TOOLTIP_LEVELS_1.get(upgrade.getLevelCost()));
         list.add(Lang.DSU_TOOLTIP_LEVELS_2.get());
+      } else {
+        list.add(TextFormatting.LIGHT_PURPLE + Lang.DSU_TOOLTIP_APPLY_1.get());
+        list.add(Lang.DSU_TOOLTIP_APPLY_2.get());
       }
     } else {
       SpecialTooltipHandler.addDetailedTooltipFromResources(list, getUnlocalizedName());

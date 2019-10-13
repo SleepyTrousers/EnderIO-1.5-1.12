@@ -886,6 +886,8 @@ enderio.darksteel.upgrades.tooltip.dependencies=Depends on:
 enderio.darksteel.upgrades.tooltip.itemclasses=Can be applied to:
 enderio.darksteel.upgrades.tooltip.levels.line1=%s levels needed to activate this upgrade
 enderio.darksteel.upgrades.tooltip.levels.line2=(Activate this upgrade by right-clicking)
+enderio.darksteel.upgrades.tooltip.apply.line1=Needs to be applied to an item
+enderio.darksteel.upgrades.tooltip.apply.line2=(Open the GUI with shift-right-click, using any Dark Anvil or with the Anvil upgrades)
 
 enderio.darksteel.upgrades.check.prerequisite.missing=Requires upgrade "%s" to be installed
 enderio.darksteel.upgrades.check.prerequisite.energy=Requires item to be empowered
