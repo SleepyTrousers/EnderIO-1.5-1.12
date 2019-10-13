@@ -6,6 +6,7 @@ import crazypants.enderio.zoo.EnderIOZoo;
 import crazypants.enderio.zoo.entity.EntityEpicSquid;
 import net.minecraft.client.model.ModelSquid;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
@@ -42,4 +43,23 @@ public class RenderEpicSquid extends RenderLiving<EntityEpicSquid> {
     return livingBase.lastTentacleAngle + (livingBase.tentacleAngle - livingBase.lastTentacleAngle) * partialTicks;
   }
 
+  @Override
+  protected boolean setBrightness(@Nonnull EntityEpicSquid entitylivingbaseIn, float partialTicks, boolean combineTextures) {
+    if (super.setBrightness(entitylivingbaseIn, partialTicks, combineTextures)) {
+      if (entitylivingbaseIn.hurtTime > 0 || entitylivingbaseIn.deathTime > 0) {
+        float amount = (entitylivingbaseIn.hurtTime) / (float) entitylivingbaseIn.maxHurtTime;
+        this.brightnessBuffer.position(0);
+        this.brightnessBuffer.put(0.0F);
+        this.brightnessBuffer.put(0.8f);
+        this.brightnessBuffer.put(0.2F);
+        this.brightnessBuffer.put(0.6F * amount);
+        this.brightnessBuffer.flip();
+        GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+        GlStateManager.glTexEnv(8960, 8705, this.brightnessBuffer);
+        GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
+      }
+      return true;
+    }
+    return false;
+  }
 }
