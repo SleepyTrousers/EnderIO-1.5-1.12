@@ -17,9 +17,6 @@ import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.recipe.spawner.EntityDataRegistry;
 import crazypants.enderio.base.scheduler.Celeb;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFence;
-import net.minecraft.block.BlockFenceGate;
-import net.minecraft.block.BlockWall;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -36,6 +33,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
@@ -224,14 +222,52 @@ public final class CapturedMob {
       return null;
     }
 
-    Block blk = world.getBlockState(pos).getBlock();
+    // defaults, adjusted for direction below
     double spawnX = pos.getX() + theSide.getFrontOffsetX() + 0.5;
     double spawnY = pos.getY() + theSide.getFrontOffsetY();
     double spawnZ = pos.getZ() + theSide.getFrontOffsetZ() + 0.5;
-    if (theSide == EnumFacing.UP && (blk instanceof BlockFence || blk instanceof BlockWall || blk instanceof BlockFenceGate)) {
-      spawnY += 0.5;
-    }
+
+    // set angles now because this changes the bounding box
     entity.setLocationAndAngles(spawnX, spawnY, spawnZ, world.rand.nextFloat() * 360.0F, 0);
+
+    AxisAlignedBB bb = entity.getEntityBoundingBox();
+    switch (theSide) {
+    case UP:
+      // upper bound of block, plus tiny gap
+      spawnY = pos.getY() + 1 + 0.01;
+      break;
+    case DOWN:
+      // lower bounds of block, minus height of entity, minus tiny gap
+      spawnY = pos.getY() - (bb.maxY - bb.minY) - 0.01;
+      break;
+    case EAST:
+      // east (+X) bound of block, plus half entity width, plus tiny gap
+      spawnX = pos.getX() + 1 + (bb.maxX - bb.minX) / 2 + 0.01;
+      break;
+    case WEST:
+      // west (-X) bound of block, minus half with of entity, minus tiny gap
+      spawnX = pos.getX() - (bb.maxX - bb.minX) / 2 - 0.01;
+      break;
+    case NORTH:
+      // north (-Z) bound of block, minus half with of entity, minus tiny gap
+      spawnZ = pos.getZ() - (bb.maxZ - bb.minZ) / 2 - 0.01;
+      break;
+    case SOUTH:
+      // youth (+Z) bound of block, plus half entity width, plus tiny gap
+      spawnZ = pos.getZ() + 1 + (bb.maxZ - bb.minZ) / 2 + 0.01;
+      break;
+    }
+
+    if (theSide != EnumFacing.DOWN) {
+      // we are aligned with out feet on the ground, so let the block below push us up if it is higher than 1 block
+      for (AxisAlignedBB blockBB : world.getCollisionBoxes((Entity) null, new AxisAlignedBB(new BlockPos(spawnX, spawnY, spawnZ).down()))) {
+        spawnY = Math.max(blockBB.maxY + 0.01, spawnY);
+      }
+    }
+
+    // set final position but doen't change angles.
+    // If we did the math correctly, the entity's bounding box now doesn't intersect 'pos'!
+    entity.setLocationAndAngles(spawnX, spawnY, spawnZ, entity.rotationYaw, entity.rotationPitch);
 
     if (!world.checkNoEntityCollision(entity.getEntityBoundingBox()) || !world.getCollisionBoxes(entity, entity.getEntityBoundingBox()).isEmpty()) {
       return null;

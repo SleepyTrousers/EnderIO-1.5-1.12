@@ -323,8 +323,8 @@ public class BlockInfinityFog extends BlockEio<TileEntityEio> implements IDefaul
           return spawn(pos.up()) || spawn(pos) || spawn(pos.down()) || spawn(pos.up().up()) || spawn(pos.up().down().down());
         }
 
-        private boolean spawn(@Nullable BlockPos pos) {
-          final Entity entity = capturedMob.doSpawn(world, pos, EnumFacing.DOWN, false);
+        private boolean spawn(@Nonnull BlockPos pos) {
+          final Entity entity = capturedMob.doSpawn(world, pos.down(), EnumFacing.UP, false);
           if (entity != null) {
             NbtValue.INFINITY.setBoolean(entity.getEntityData(), true);
           }
