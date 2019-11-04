@@ -69,7 +69,7 @@ public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHav
       CapturedMob capturedMob = CapturedMob.create(stack);
 
       if (capturedMob != null) {
-        if (capturedMob.spawn(source.getWorld(), source.getBlockPos().offset(enumfacing).down(), EnumFacing.UP, true)) {
+        if (capturedMob.spawn(source.getWorld(), source.getBlockPos(), enumfacing, true)) {
           stack.shrink(1);
           secondaryResult = new ItemStack(ItemSoulVial.this);
         }
