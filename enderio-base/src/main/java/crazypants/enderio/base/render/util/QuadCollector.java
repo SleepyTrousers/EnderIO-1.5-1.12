@@ -111,32 +111,21 @@ public class QuadCollector {
    * <p>
    * Any errors from the model will be returned.
    */
-  public List<String> addUnfriendlybakedModel(BlockRenderLayer pass, IBakedModel model, IBlockState state, long rand) {
+  public @Nullable String addUnfriendlybakedModel(BlockRenderLayer pass, IBakedModel model, IBlockState state, long rand) {
     if (model == null) {
       return null;
     }
-    List<String> errors = new ArrayList<String>();
 
     try {
-      List<BakedQuad> generalQuads = model.getQuads(state, null, rand);
-      if (!generalQuads.isEmpty()) {
-        addQuads(null, pass, generalQuads);
+      addQuads(null, pass, model.getQuads(state, null, rand));
+      for (EnumFacing face : EnumFacing.values()) {
+        addQuads(face, pass, model.getQuads(state, face, rand));
       }
     } catch (Throwable t) {
-      errors.add(Throwables.getStackTraceAsString(t));
-    }
-    for (EnumFacing face : EnumFacing.values()) {
-      try {
-        List<BakedQuad> faceQuads = model.getQuads(state, face, rand);
-        if (!faceQuads.isEmpty()) {
-          addQuads(face, pass, faceQuads);
-        }
-      } catch (Throwable t) {
-        errors.add(Throwables.getStackTraceAsString(t));
-      }
+      return Throwables.getStackTraceAsString(t);
     }
 
-    return errors.isEmpty() ? null : errors;
+    return null;
   }
 
   /**

@@ -1,6 +1,5 @@
 package crazypants.enderio.base.render.pipeline;
 
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nonnull;
@@ -42,14 +41,13 @@ public class PaintWrangler {
     }
     IBlockState actualPaintSource = paintSource;
     IBlockState extendedPaintSource = paintSource;
-    Block block = paintSource.getBlock();
-    Memory memory = cache.computeIfAbsent(block, x -> new Memory());
+    final Block block = paintSource.getBlock();
+    final Memory memory = cache.computeIfAbsent(block, x -> new Memory());
     if (!memory.doPaint) {
       return false;
     }
-    PaintedBlockAccessWrapper fakeWorld = null;
     if (memory.doActualState || memory.doExtendedState) {
-      fakeWorld = PaintedBlockAccessWrapper.instance(blockAccess);
+      final PaintedBlockAccessWrapper fakeWorld = PaintedBlockAccessWrapper.instance(blockAccess);
       if (memory.doActualState) {
         try {
           extendedPaintSource = actualPaintSource = paintSource.getActualState(fakeWorld, pos);
@@ -66,38 +64,30 @@ public class PaintWrangler {
           memory.doExtendedState = false;
         }
       }
+      fakeWorld.free();
     }
 
-    IBakedModel paintModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(actualPaintSource);
+    final IBakedModel paintModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(actualPaintSource);
     if (paintModel == Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel()) {
-      if (fakeWorld != null) {
-        fakeWorld.free();
-      }
       return false;
     }
 
     final long positionRandom = MathHelper.getPositionRandom(pos);
-    BlockRenderLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
+    final BlockRenderLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
     for (BlockRenderLayer layer : quads.getBlockLayers()) {
       if (layer == BREAKING
           || paintSource.getBlock().canRenderInLayer(extendedPaintSource, NullHelper.notnullJ(layer, "'a == null || b(a)' gave null to b()"))) {
         ForgeHooksClient.setRenderLayer(layer);
-        List<String> errors = quads.addUnfriendlybakedModel(layer, paintModel, extendedPaintSource, positionRandom);
+        final String errors = quads.addUnfriendlybakedModel(layer, paintModel, extendedPaintSource, positionRandom);
         if (errors != null) {
           memory.doPaint = false;
           Log.error("Failed to use block " + paintSource.getBlock() + " as paint. Error(s) while rendering: " + errors);
           ForgeHooksClient.setRenderLayer(oldRenderLayer);
-          if (fakeWorld != null) {
-            fakeWorld.free();
-          }
           return false;
         }
       }
     }
     ForgeHooksClient.setRenderLayer(oldRenderLayer);
-    if (fakeWorld != null) {
-      fakeWorld.free();
-    }
     return true;
   }
 
