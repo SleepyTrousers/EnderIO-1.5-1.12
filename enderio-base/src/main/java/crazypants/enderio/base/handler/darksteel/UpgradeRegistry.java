@@ -18,7 +18,9 @@ import crazypants.enderio.base.handler.darksteel.gui.UpgradeCap;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.material.upgrades.ItemUpgrades;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -108,6 +110,13 @@ public class UpgradeRegistry {
     if (event.getOriginal().getItem() instanceof IDarkSteelItem) {
       final EntityPlayer player = event.getEntityPlayer();
       if (player != null) {
+        if (event.getHand() != null && event.getOriginal().getItem() instanceof ItemArmor
+            && ItemStack.areItemStacksEqual(event.getOriginal(), player.getItemStackFromSlot(EntityLiving.getSlotForItemStack(event.getOriginal())))) {
+          // see https://github.com/SleepyTrousers/EnderIO/issues/5262#issuecomment-544238613
+          // Forge considers equipping armor an "item destroyed" case which will cause its contents to drop
+          return;
+        }
+
         new UpgradeCap(new SlotSelector.RawItem(event.getOriginal()), player, false).dropAll(true);
       }
     }
