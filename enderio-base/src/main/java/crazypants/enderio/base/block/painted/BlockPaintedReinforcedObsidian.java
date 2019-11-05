@@ -25,6 +25,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -33,13 +34,48 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockPaintedReinforcedObsidian extends BlockReinforcedObsidianBase
-    implements ITileEntityProvider, IPaintable.ISolidBlockPaintableBlock, IModObject.WithBlockItem, ICustomSubItems {
+public abstract class BlockPaintedReinforcedObsidian extends BlockReinforcedObsidianBase
+    implements ITileEntityProvider, IPaintable.IBlockPaintableBlock, IModObject.WithBlockItem, ICustomSubItems {
 
-  public static BlockPaintedReinforcedObsidian create(@Nonnull IModObject modObject) {
-    BlockPaintedReinforcedObsidian result = new BlockPaintedReinforcedObsidian(modObject);
+  public static BlockPaintedReinforcedObsidian create_solid(@Nonnull IModObject modObject) {
+    BlockPaintedReinforcedObsidian result = new BlockPaintedReinforcedObsidianSolid(modObject);
     result.init();
     return result;
+  }
+
+  public static BlockPaintedReinforcedObsidian create(@Nonnull IModObject modObject) {
+    BlockPaintedReinforcedObsidian result = new BlockPaintedReinforcedObsidianNonSolid(modObject);
+    result.init();
+    return result;
+  }
+
+  public static class BlockPaintedReinforcedObsidianSolid extends BlockPaintedReinforcedObsidian implements IPaintable.ISolidBlockPaintableBlock {
+
+    protected BlockPaintedReinforcedObsidianSolid(@Nonnull IModObject modObject) {
+      super(modObject);
+    }
+
+  }
+
+  public static class BlockPaintedReinforcedObsidianNonSolid extends BlockPaintedReinforcedObsidian implements IPaintable.INonSolidBlockPaintableBlock {
+
+    protected BlockPaintedReinforcedObsidianNonSolid(@Nonnull IModObject modObject) {
+      super(modObject);
+      useNeighborBrightness = true;
+      setLightOpacity(0);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public float getAmbientOcclusionLightValue(@Nonnull IBlockState bs) {
+      return 1;
+    }
+
+    @Override
+    public boolean doesSideBlockRendering(@Nonnull IBlockState bs, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing face) {
+      return false;
+    }
+
   }
 
   protected BlockPaintedReinforcedObsidian(@Nonnull IModObject modObject) {

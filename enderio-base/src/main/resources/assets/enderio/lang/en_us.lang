@@ -612,6 +612,8 @@ tile.block_painted_wooden_trapdoor.name=Painted Wooden Trapdoor
 tile.block_painted_workbench.name=Painted Crafting Table
 tile.block_painted_reinforced_obsidian.name=Painted Reinforced Obsidian
 tile.block_painted_reinforced_obsidian.tooltip.common.line1=Wither Proof
+tile.block_painted_reinforced_obsidian_nonsolid.name=Painted Reinforced Obsidian
+tile.block_painted_reinforced_obsidian_nonsolid.tooltip.common.line1=Wither Proof
 
 tile.block_painted_wooden_door.name=Painted Wooden Door
 tile.block_painted_iron_door.name=Painted Iron Door

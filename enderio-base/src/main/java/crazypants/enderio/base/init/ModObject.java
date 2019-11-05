@@ -181,7 +181,8 @@ public enum ModObject implements IModObjectBase {
   blockPaintedIronDoor(BlockPaintedDoor::create_iron, ModTileEntity.TileEntityPaintedBlock),
   blockPaintedDarkSteelDoor(BlockPaintedDoor::create_dark, ModTileEntity.TileEntityPaintedBlock),
   blockPaintedWorkbench(BlockPaintedWorkbench::create, ModTileEntity.TileEntityPaintedBlock),
-  blockPaintedReinforcedObsidian(BlockPaintedReinforcedObsidian::create, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedReinforcedObsidian(BlockPaintedReinforcedObsidian::create_solid, ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedReinforcedObsidianNonsolid(BlockPaintedReinforcedObsidian::create, ModTileEntity.TileEntityPaintedBlock),
   blockPaintedPackedIce(BlockPaintedPackedIce::create, ModTileEntity.TileEntityPaintedBlock),
   blockPaintedPackedIceSolid(BlockPaintedPackedIce::create_solid, ModTileEntity.TileEntityPaintedBlock),
 
