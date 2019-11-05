@@ -228,7 +228,10 @@ public final class CapturedMob {
     double spawnZ = pos.getZ() + theSide.getFrontOffsetZ() + 0.5;
 
     // set angles now because this changes the bounding box
-    entity.setLocationAndAngles(spawnX, spawnY, spawnZ, world.rand.nextFloat() * 360.0F, 0);
+    entity.setPositionAndRotation(spawnX, spawnY, spawnZ, MathHelper.wrapDegrees(world.rand.nextFloat() * 360.0F), 0);
+    if (entity instanceof EntityLiving) {
+      ((EntityLiving) entity).rotationYawHead = ((EntityLiving) entity).renderYawOffset = entity.rotationYaw;
+    }
 
     AxisAlignedBB bb = entity.getEntityBoundingBox();
     switch (theSide) {
