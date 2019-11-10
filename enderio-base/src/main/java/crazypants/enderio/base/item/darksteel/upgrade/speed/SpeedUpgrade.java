@@ -106,7 +106,7 @@ public class SpeedUpgrade extends AbstractUpgrade {
 
   @Override
   public void onPlayerTick(@Nonnull ItemStack stack, @Nonnull IDarkSteelItem item, @Nonnull EntityPlayer player) {
-    if (player.world.isRemote) {
+    if (player.world.isRemote || player.capabilities.isFlying || (!player.onGround && !player.isInWater())) {
       return;
     }
 
