@@ -386,7 +386,7 @@ public class ItemDarkSteelCrook extends ItemTool implements IAdvancedTooltipProv
 
     NNList<ItemStack> list = new NNList<>();
     final int start = exnihilo ? DarkSteelConfig.crookExtraDropsUnpowered.get() : 0;
-    final int loops = Math.min(start, (powered ? DarkSteelConfig.crookExtraDropsPowered : DarkSteelConfig.crookExtraDropsUnpowered).get());
+    final int loops = Math.max(start, (powered ? DarkSteelConfig.crookExtraDropsPowered : DarkSteelConfig.crookExtraDropsUnpowered).get());
     for (int i = start; i < loops; i++) {
       state.getBlock().getDrops(list, world, event.getPos(), state, event.getFortuneLevel());
     }
