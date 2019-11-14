@@ -105,7 +105,7 @@ public final class ZooConfig {
   public static final IValue<Boolean> fallKnightMountedArchersMaintainDistance = KNIGHT.make("mountedArchersMaintainDistance", true, //
       "When true mounted archer knights will attempt to keep distance between themselves and their target.").sync();
   public static final IValue<Boolean> fallenKnightArchersSwitchToMelee = KNIGHT.make("archersSwitchToMelee", true, //
-      "When true archer knights will switch to a sword when target is within melee range."
+      "When true archer knights will switch to a sword when target is within melee range. "
           + "Doesn't apply to mounted archers if fallKnightMountedArchersMaintainDistance is true")
       .sync();
   public static final IValue<Float> fallenKnightChanceMounted = KNIGHT.make("chanceMounted", .75f, //

@@ -331,21 +331,16 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     }
 
     void apply() {
-      if (amount != 0) {
-
+      if (amount != 0 && from != null && to != null) {
         // don't take more than it has
         int actual = Math.min(amount, from.getTank().getFluidAmount());
         // and don't add more than it can take
         actual = Math.min(actual, to.getTank().getAvailableSpace());
 
-        if (from != null && to != null) {
-          from.getTank().addAmount(-actual);
-          to.getTank().addAmount(actual);
-        }
-
+        from.getTank().addAmount(-actual);
+        to.getTank().addAmount(actual);
       }
     }
-
   }
 
   static class LocatedFluidHandler {

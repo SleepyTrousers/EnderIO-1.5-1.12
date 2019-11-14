@@ -245,21 +245,18 @@ public class LiquidConduit extends AbstractTankConduit {
 
   @Override
   public boolean canFill(EnumFacing from, FluidStack fluid) {
-    if (!getConnectionMode(from).acceptsInput() || network == null || fluid == null || fluid.amount <= 0) {
+    if (from == null || !getConnectionMode(from).acceptsInput() || network == null || fluid == null || fluid.amount <= 0) {
       return false;
     }
     if (tank.getFluid() == null) {
       return true;
     }
-    if (fluid != null && FluidUtil.areFluidsTheSame(fluid.getFluid(), tank.getFluid().getFluid())) {
-      return true;
-    }
-    return false;
+    return FluidUtil.areFluidsTheSame(fluid.getFluid(), tank.getFluid().getFluid());
   }
 
   @Override
   public boolean canDrain(EnumFacing from, FluidStack fluid) {
-    if (!getConnectionMode(from).acceptsOutput() || tank.getFluid() == null || fluid == null) {
+    if (from == null || !getConnectionMode(from).acceptsOutput() || tank.getFluid() == null || fluid == null) {
       return false;
     }
     return FluidUtil.areFluidsTheSame(tank.getFluid().getFluid(), fluid.getFluid());
@@ -393,22 +390,21 @@ public class LiquidConduit extends AbstractTankConduit {
 
   protected class ConnectionLiquidConduitSide extends ConnectionLiquidSide {
 
-    public ConnectionLiquidConduitSide(EnumFacing side) {
+    public ConnectionLiquidConduitSide(@Nonnull EnumFacing side) {
       super(side);
     }
 
     @Override
     public int fill(FluidStack resource, boolean doFill) {
-      if (canFill(side, resource) && network.lockNetworkForFill()) {
+      if (network != null && canFill(side, resource) && network.lockNetworkForFill()) {
         try {
-          int res = LiquidConduit.this.fill(side, resource, doFill, true, network == null ? -1 : network.getNextPushToken());
-          if (doFill && externalConnections.contains(side) && network != null) {
+          int res = LiquidConduit.this.fill(side, resource, doFill, true, network.getNextPushToken());
+          if (doFill && externalConnections.contains(side)) {
             network.addedFromExternal(res);
           }
           return res;
         } finally {
           network.unlockNetworkFromFill();
-
         }
       } else {
         return 0;

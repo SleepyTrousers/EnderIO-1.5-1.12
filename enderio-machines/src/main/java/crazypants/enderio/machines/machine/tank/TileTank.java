@@ -170,7 +170,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   private int sendPrio = 0;
 
   /*
-   * Limit sending of client updates because a group of tanks pushing into each other can severely kill the clients fps.
+   * Limit sending of client updates because a group of tanks pushing into each other can severely kill the client's fps.
    */
   private boolean canSendClientUpdate() {
     long tick = EnderIO.proxy.getServerTickCount();
@@ -180,7 +180,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
     if (tick == lastSendTickAll && sendPrio++ < 200) {
       return false;
     }
-    nextSendTickThis = (lastSendTickAll = tick) + 10 + sendPrio * 2;
+    nextSendTickThis = (lastSendTickAll = tick) + 10L + sendPrio * 2L;
     sendPrio = 0;
     return true;
   }

@@ -150,7 +150,7 @@ public class NetworkPowerManager {
     }
 
     Prof.next(profiler, "sendEnergy");
-    while (available > 0 && appliedCount < numReceptors) {
+    while (appliedCount < numReceptors) {
 
       if (!receptors.isEmpty() && !receptorIterator.hasNext()) {
         receptorIterator = NullHelper.notnullJ(receptors.listIterator(), "List.listIterator()");

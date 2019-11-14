@@ -87,7 +87,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
 
     } else if (heldItem.getItem() == Items.BUCKET) {
 
-      if (!getBundle().getEntity().getWorld().isRemote) {
+      if (!getBundle().getEntity().getWorld().isRemote && network != null) {
         long curTick = getBundle().getEntity().getWorld().getTotalWorldTime();
         if (curTick - lastEmptyTick < 20) {
           numEmptyEvents++;
@@ -102,7 +102,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
             numEmptyEvents = 0;
             player.sendStatusMessage(Lang.ITEM_LIQUID_CONDUIT_UNLOCKED_TYPE.toChatServer(), true);
           }
-        } else if (network != null) {
+        } else {
           network.setFluidType(null);
           numEmptyEvents = 0;
         }
