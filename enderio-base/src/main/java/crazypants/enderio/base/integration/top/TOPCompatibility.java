@@ -80,50 +80,51 @@ public class TOPCompatibility implements Function<ITheOneProbe, Void>, IProbeInf
 
   @Override
   public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World world, IBlockState blockState, IProbeHitData hitData) {
-    if (mode == ProbeMode.DEBUG) {
-      probeInfo.text(blockState.toString());
-    }
-    if (probeInfo != null && world != null && blockState != null && hitData != null
-        && (blockState.getBlock() instanceof BlockEio || blockState.getBlock() instanceof IPaintable)) {
-      TileEntity tileEntity = blockState.getBlock() instanceof ITEProxy
-          ? ((ITEProxy) blockState.getBlock()).getParent(world, NullHelper.notnull(hitData.getPos(), "hitData.getPos()"), blockState)
-          : BlockEnder.getAnyTileEntitySafe(world, NullHelper.notnull(hitData.getPos(), "hitData.getPos()/2"));
-      if (tileEntity != null) {
-        EioBox eiobox = new EioBox(probeInfo);
+    if (probeInfo != null && blockState != null) {
+      if (mode == ProbeMode.DEBUG) {
+        probeInfo.text(blockState.toString());
+      }
+      if (world != null && hitData != null && (blockState.getBlock() instanceof BlockEio || blockState.getBlock() instanceof IPaintable)) {
+        TileEntity tileEntity = blockState.getBlock() instanceof ITEProxy
+            ? ((ITEProxy) blockState.getBlock()).getParent(world, NullHelper.notnull(hitData.getPos(), "hitData.getPos()"), blockState)
+            : BlockEnder.getAnyTileEntitySafe(world, NullHelper.notnull(hitData.getPos(), "hitData.getPos()/2"));
+        if (tileEntity != null) {
+          EioBox eiobox = new EioBox(probeInfo);
 
-        TOPData data = new TOPData(tileEntity, hitData);
+          TOPData data = new TOPData(tileEntity, hitData);
 
-        mkOwner(mode, eiobox, data);
+          mkOwner(mode, eiobox, data);
 
-        mkPaint(mode, eiobox, data);
+          mkPaint(mode, eiobox, data);
 
-        mkNotificationLine(mode, eiobox, data);
+          mkNotificationLine(mode, eiobox, data);
 
-        mkProgressLine(mode, eiobox, data);
+          mkProgressLine(mode, eiobox, data);
 
-        mkEnergyLine(mode, eiobox, data);
+          mkEnergyLine(mode, eiobox, data);
 
-        mkXPLine(mode, eiobox, data);
+          mkXPLine(mode, eiobox, data);
 
-        mkRedstoneLine(mode, eiobox, data);
+          mkRedstoneLine(mode, eiobox, data);
 
-        mkSideConfigLine(mode, eiobox, data);
+          mkSideConfigLine(mode, eiobox, data);
 
-        mkRangeLine(mode, eiobox, data);
+          mkRangeLine(mode, eiobox, data);
 
-        mkTankLines(mode, eiobox, data);
+          mkTankLines(mode, eiobox, data);
 
-        mkItemFillLevelLine(mode, eiobox, data);
+          mkItemFillLevelLine(mode, eiobox, data);
 
-        mkChannelLine(mode, eiobox, data);
+          mkChannelLine(mode, eiobox, data);
 
-        eiobox.finish();
+          eiobox.finish();
 
-        EioBox mobbox = new EioBox(probeInfo);
+          EioBox mobbox = new EioBox(probeInfo);
 
-        mkMobsBox(mode, mobbox, world, data);
+          mkMobsBox(mode, mobbox, world, data);
 
-        mobbox.finish();
+          mobbox.finish();
+        }
       }
     }
   }
