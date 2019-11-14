@@ -75,8 +75,8 @@ public class IoConfigRenderer<E extends TileEntity & IIoConfigurable> {
   public static final TextureSupplier selectedFaceIcon = TextureRegistry.registerTexture("blocks/overlays/selected_face");
 
   private boolean dragging = false;
-  private float pitch = 0;
-  private float yaw = 0;
+  private double pitch = 0;
+  private double yaw = 0;
   private double distance;
   private long initTime;
 
