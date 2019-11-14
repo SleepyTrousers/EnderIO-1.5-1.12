@@ -42,8 +42,10 @@ public interface IExternalConnectionContainer {
    * 
    * @param ghostSlots
    *          The list of ghost slots to add to
-   * @param filters
-   *          The ItemStacks of the filters for the ghost slots
+   * @param filtersIn
+   *          The ItemStacks of the input filters for the ghost slots
+   * @param filtersOut
+   *          The ItemStacks of the output filters for the ghost slots
    * @param upgrades
    *          The ItemStacks of the upgrades for the ghost slot
    */
