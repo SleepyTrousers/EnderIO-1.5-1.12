@@ -145,7 +145,7 @@ public interface IFarmer {
   /**
    * Reverts the fake player back into its dormant state and returns all items it collected in the meantime.
    * 
-   * @param FarmingTool
+   * @param tool
    *          Where the main hand item (the one that was set with startUsingItem()) should be returned to.
    * @return A list of items that were in the fake player's inventory.
    */

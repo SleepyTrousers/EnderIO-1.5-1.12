@@ -58,8 +58,9 @@ public interface IMachineRecipe {
    * 
    * This method must not return null. If no output is generated an empty array should be returned.
    * 
-   * @param randomChance
+   * @param nextSeed
    *          a random number to be used as a seed for determining whether '% chance' outputs are returned. This value is in the range 0-1.
+   * @param chanceMultiplier
    * @param inputs
    * @return
    */
@@ -102,7 +103,7 @@ public interface IMachineRecipe {
   @Nonnull
   List<MachineRecipeInput> getQuantitiesConsumed(@Nonnull NNList<MachineRecipeInput> inputs);
 
-  public static class ResultStack {
+  static class ResultStack {
 
     public final @Nonnull ItemStack item;
     public final @Nullable FluidStack fluid;
