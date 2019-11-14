@@ -65,7 +65,7 @@ public abstract class AbstractInventory {
       if (taggedForScanning) {
         taggingbias += 1;
       } else {
-        taggingbias *= 0.5;
+        taggingbias *= 0.5f;
       }
     }
   }
