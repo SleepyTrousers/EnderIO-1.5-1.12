@@ -41,11 +41,11 @@ public final class SpawnerConfig {
 
   public static final IValueFactory C = F.section(".creative");
 
-  public static final IValue<Boolean> homeZoneEnabled = F.make("homeZoneEnabled", true, //
+  public static final IValue<Boolean> homeZoneEnabled = C.make("homeZoneEnabled", true, //
       "If true, creative spawners sill set the homezone on spawned creatures. Note that bats, ghast, slimes and squid are not creatures.").sync();
-  public static final IValue<Integer> homeZoneSize = F.make("homeZoneSize", 30, //
+  public static final IValue<Integer> homeZoneSize = C.make("homeZoneSize", 30, //
       "The size of the homezone. Radius in blocks. No effect if homeZoneEnabled is off.").sync();
-  public static final IValue<Integer> homeZoneLimit = F.make("homeZoneLimit", 16, //
+  public static final IValue<Integer> homeZoneLimit = C.make("homeZoneLimit", 16, //
       "The maximum number of mobs allowed in the homezone. When there are more, no new ones will be spawned. Radius in blocks. No effect if homeZoneEnabled is off. "
           + "Note that poweredSpawnerMaxNearbyEntities still applies for mobs within the poweredSpawnerSpawnRange.")
       .sync();
