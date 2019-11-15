@@ -17,15 +17,15 @@ public class EntityAIRangedAttack extends EntityAIBase {
   private EntityLivingBase attackTarget;
 
   private int timeUntilNextAttack;
-  private double entityMoveSpeed;
+  private final double entityMoveSpeed;
 
   private int timeTargetVisible;
   private int timeTargetHidden;
-  private int minRangedAttackTime;
-  private int maxRangedAttackTime;
+  private final int minRangedAttackTime;
+  private final int maxRangedAttackTime;
 
-  private float attackRange;
-  private float attackRangeSq;
+  private final float attackRange;
+  private final float attackRangeSq;
 
   public EntityAIRangedAttack(IRangedAttackMob host, double moveSpeed, int timeBetweenAttacks, float attackRange) {
     this(host, moveSpeed, timeBetweenAttacks, timeBetweenAttacks, attackRange);
@@ -33,7 +33,6 @@ public class EntityAIRangedAttack extends EntityAIBase {
 
   public EntityAIRangedAttack(IRangedAttackMob host, double moveSpeed, int minTimeBetweenAttacks, int maxTimeBetweenAttacks, float range) {
     timeUntilNextAttack = -1;
-
     rangedAttackEntityHost = host;
     entityHost = (EntityLiving) host;
     entityMoveSpeed = moveSpeed;
@@ -77,12 +76,12 @@ public class EntityAIRangedAttack extends EntityAIBase {
 
   @Override
   public void updateTask() {
-    final EntityLivingBase attackTarget2 = attackTarget;
-    if (attackTarget2 == null) {
+    final EntityLivingBase attackTargetNN = attackTarget;
+    if (attackTargetNN == null) {
       return;
     }
-    double distToTargetSq = entityHost.getDistanceSq(attackTarget.posX, attackTarget2.getEntityBoundingBox().minY, attackTarget.posZ);
-    boolean canSee = entityHost.getEntitySenses().canSee(attackTarget2);
+    final double distToTargetSq = entityHost.getDistanceSq(attackTarget.posX, attackTargetNN.getEntityBoundingBox().minY, attackTarget.posZ);
+    final boolean canSee = entityHost.getEntitySenses().canSee(attackTargetNN);
 
     if (canSee) {
       ++timeTargetVisible;
@@ -93,27 +92,18 @@ public class EntityAIRangedAttack extends EntityAIBase {
     if (distToTargetSq <= attackRangeSq && timeTargetVisible >= 20) {
       entityHost.getNavigator().clearPath();
     } else if (timeTargetHidden < 100) {
-      entityHost.getNavigator().tryMoveToEntityLiving(attackTarget2, entityMoveSpeed);
+      entityHost.getNavigator().tryMoveToEntityLiving(attackTargetNN, entityMoveSpeed);
     }
-    entityHost.getLookHelper().setLookPositionWithEntity(attackTarget2, 30.0F, 30.0F);
+    entityHost.getLookHelper().setLookPositionWithEntity(attackTargetNN, 30.0F, 30.0F);
 
     if (--timeUntilNextAttack <= 0) {
       if (distToTargetSq > attackRangeSq || !canSee) {
         return;
       }
-      float rangeRatio = MathHelper.sqrt(distToTargetSq) / attackRange;
-      if (rangeRatio < 0.1F) {
-        rangeRatio = 0.1F;
-      } else if (rangeRatio > 1.0F) {
-        rangeRatio = 1.0F;
-      }
-      rangedAttackEntityHost.attackEntityWithRangedAttack(attackTarget2, rangeRatio);
-      timeUntilNextAttack = MathHelper.floor(rangeRatio * (maxRangedAttackTime - minRangedAttackTime) + minRangedAttackTime);
-
-    } else if (timeUntilNextAttack < 0) {
-      entityHost.setAttackTarget(attackTarget2);
-      float rangeRatio = MathHelper.sqrt(distToTargetSq) / attackRange;
+      final float rangeRatio = MathHelper.clamp(MathHelper.sqrt(distToTargetSq) / attackRange, 0.1f, 1f);
+      rangedAttackEntityHost.attackEntityWithRangedAttack(attackTargetNN, rangeRatio);
       timeUntilNextAttack = MathHelper.floor(rangeRatio * (maxRangedAttackTime - minRangedAttackTime) + minRangedAttackTime);
     }
   }
+
 }
