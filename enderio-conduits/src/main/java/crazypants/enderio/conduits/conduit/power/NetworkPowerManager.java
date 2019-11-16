@@ -20,6 +20,7 @@ import crazypants.enderio.base.power.IPowerInterface;
 import crazypants.enderio.base.power.IPowerStorage;
 import crazypants.enderio.conduits.conduit.power.PowerConduitNetwork.ReceptorEntry;
 import crazypants.enderio.conduits.config.ConduitConfig;
+import crazypants.enderio.util.MathUtil;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -269,16 +270,15 @@ public class NetworkPowerManager {
       }
       return;
     }
-    energyStored = energyStored < 0 ? 0 : energyStored > maxEnergyStored ? maxEnergyStored : energyStored;
+    energyStored = MathUtil.clamp(energyStored, 0, maxEnergyStored);
 
     float filledRatio = (float) energyStored / maxEnergyStored;
     long energyLeft = energyStored;
 
     for (IPowerConduit con : network.getConduits()) {
       if (energyLeft > 0) {
-        // NB: use ceil to ensure we dont through away any energy due to
-        // rounding
-        // errors
+        // NB: use ceil() to ensure we don't throw away any energy due to
+        // rounding errors
         int give = (int) Math.ceil(con.getMaxEnergyStored() * filledRatio);
         give = Math.min(give, con.getMaxEnergyStored());
         give = Math.min(give, (int) Math.min(Integer.MAX_VALUE, energyLeft));
@@ -392,13 +392,13 @@ public class NetworkPowerManager {
           if (cb.isOutputEnabled(rec.direction.getOpposite())) {
             canGet = Math.min(cb.getEnergyStoredL(), cb.getMaxOutput());
             canGet = Math.min(canGet, rec.emmiter.getMaxEnergyRecieved(rec.direction));
-            canExtract += canGet;
+            canExtract += (int) canGet; // already clamped to int by ^
           }
 
           if (cb.isInputEnabled(rec.direction.getOpposite())) {
             canFillLocal = Math.min(cb.getMaxEnergyStoredL() - cb.getEnergyStoredL(), cb.getMaxInput());
             canFillLocal = Math.min(canFillLocal, rec.emmiter.getMaxEnergyExtracted(rec.direction));
-            this.canFill += canFillLocal;
+            this.canFill += (int) canFillLocal; // already clamped to int by ^
           }
           enteries.add(new CapBankSupplyEntry(cb, (int) canGet, (int) canFillLocal, rec.emmiter, rec.direction));
         }

@@ -65,7 +65,7 @@ public class FlyingPathFinder extends PathFinder {
     if (horizDist > 4 && entityIn.onGround) {
       climbY = 1 * MathHelper.clamp((int) (horizDist / 8), 1, 3);
       if (yDelta >= 1) {
-        climbY += yDelta;
+        climbY += (int) yDelta;
       } else {
         climbY++;
       }

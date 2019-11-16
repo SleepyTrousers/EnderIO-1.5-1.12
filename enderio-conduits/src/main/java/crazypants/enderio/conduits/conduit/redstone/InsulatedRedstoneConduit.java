@@ -618,7 +618,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   public void writeToNBT(@Nonnull NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
 
-    if (forcedConnections.size() >= 0) {
+    if (!forcedConnections.isEmpty()) {
       byte[] modes = new byte[6];
       int i = 0;
       for (EnumFacing dir : EnumFacing.VALUES) {
@@ -633,7 +633,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       nbtRoot.setByteArray("forcedConnections", modes);
     }
 
-    if (inputSignalColors.size() >= 0) {
+    if (!inputSignalColors.isEmpty()) {
       byte[] modes = new byte[6];
       int i = 0;
       for (EnumFacing dir : EnumFacing.VALUES) {
@@ -648,7 +648,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       nbtRoot.setByteArray("signalColors", modes);
     }
 
-    if (outputSignalColors.size() >= 0) {
+    if (!outputSignalColors.isEmpty()) {
       byte[] modes = new byte[6];
       int i = 0;
       for (EnumFacing dir : EnumFacing.VALUES) {
@@ -663,7 +663,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       nbtRoot.setByteArray("outputSignalColors", modes);
     }
 
-    if (signalStrengths.size() >= 0) {
+    if (!signalStrengths.isEmpty()) {
       byte[] modes = new byte[6];
       int i = 0;
       for (EnumFacing dir : EnumFacing.VALUES) {

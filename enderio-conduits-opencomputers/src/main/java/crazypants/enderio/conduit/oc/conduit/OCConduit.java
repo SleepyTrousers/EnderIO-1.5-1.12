@@ -116,7 +116,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit {
   @Override
   public void writeToNBT(@Nonnull NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
-    if (signalColors.size() >= 0) {
+    if (!signalColors.isEmpty()) {
       byte[] modes = new byte[6];
       int i = 0;
       for (EnumFacing dir : EnumFacing.values()) {
