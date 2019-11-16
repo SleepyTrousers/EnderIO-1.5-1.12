@@ -47,7 +47,7 @@ public class ToolUtil {
       if (MinecraftForge.EVENT_BUS.post(event)) {
         return false;
       }
-      if (block.removedByPlayer(bs, world, pos, entityPlayer, true)) {
+      if (!world.isRemote && block.removedByPlayer(bs, world, pos, entityPlayer, true)) {
         block.harvestBlock(world, entityPlayer, pos, world.getBlockState(pos), world.getTileEntity(pos), heldItem);
       }
       tool.used(hand, entityPlayer, pos);
