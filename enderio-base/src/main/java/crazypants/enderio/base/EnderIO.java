@@ -70,6 +70,8 @@ import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.network.NetworkCheckHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.server.permission.DefaultPermissionHandler;
+import net.minecraftforge.server.permission.PermissionAPI;
 
 @Mod(modid = EnderIO.MODID, name = EnderIO.MOD_NAME, version = EnderIO.VERSION, dependencies = EnderIO.DEPENDENCIES, guiFactory = "crazypants.enderio.base.config.GUIFactory")
 public class EnderIO implements IEnderIOAddon {
@@ -296,6 +298,11 @@ public class EnderIO implements IEnderIOAddon {
       ProfilerDebugger.init(event);
     } else if (DiagnosticsConfig.debugProfilerAntiNuclearActivist.get()) {
       ProfilerAntiReactor.init(event);
+    }
+    if (PermissionAPI.getPermissionHandler() == DefaultPermissionHandler.INSTANCE) {
+      Log.info("Permission Handler is: (default)");
+    } else {
+      Log.info("Permission Handler is: " + PermissionAPI.getPermissionHandler());
     }
   }
 
