@@ -85,42 +85,36 @@ public class TreeFarmer extends AbstractFarmerJoe {
   }
 
   @Override
-  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
+  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
     if (saplings.contains(state.getBlock())) {
       return true;
     }
-    return plantFromInventory(farm, bc, state);
+    if (!saplings.contains(farm.getSeedTypeInSuppliesFor(pos))) {
+      return false;
+    }
+    return plantFromInventory(farm, pos, state);
   }
 
-  protected boolean plantFromInventory(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
-    World world = farm.getWorld();
-    final ItemStack currentSapling = farm.getSeedTypeInSuppliesFor(bc);
-    if (canPlant(world, bc, currentSapling)) {
-      ItemStack seed = farm.takeSeedFromSupplies(bc, true);
-      if (Prep.isValid(seed) && plant(farm, world, bc, seed)) {
-        farm.takeSeedFromSupplies(bc, false);
-        return true;
-      }
+  protected boolean plantFromInventory(@Nonnull IFarmer farm, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+    if (plant(farm, farm.getWorld(), pos, farm.takeSeedFromSupplies(pos, true))) {
+      farm.takeSeedFromSupplies(pos, false);
+      return true;
     }
     return false;
   }
 
   protected boolean canPlant(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull ItemStack sapling) {
-    if (!saplings.contains(sapling)) {
-      return false;
-    }
-    BlockPos grnPos = pos.down();
-    IBlockState bs = world.getBlockState(grnPos);
-    Block ground = bs.getBlock();
-    Block saplingBlock = Block.getBlockFromItem(sapling.getItem());
-    if (saplingBlock == Blocks.AIR) {
-      return false;
-    }
-    if (saplingBlock.canPlaceBlockAt(world, pos)) {
-      if (saplingBlock instanceof IPlantable) {
-        return ground.canSustainPlant(bs, world, grnPos, EnumFacing.UP, (IPlantable) saplingBlock);
+    if (saplings.contains(sapling)) {
+      BlockPos grnPos = pos.down();
+      IBlockState bs = world.getBlockState(grnPos);
+      Block ground = bs.getBlock();
+      Block saplingBlock = Block.getBlockFromItem(sapling.getItem());
+      if (saplingBlock != Blocks.AIR && saplingBlock.canPlaceBlockAt(world, pos)) {
+        if (saplingBlock instanceof IPlantable) {
+          return ground.canSustainPlant(bs, world, grnPos, EnumFacing.UP, (IPlantable) saplingBlock);
+        }
+        return true;
       }
-      return true;
     }
     return false;
   }
@@ -268,7 +262,7 @@ public class TreeFarmer extends AbstractFarmerJoe {
     }
     for (EntityItem drop : res.getDrops()) {
       if (Prep.isInvalid(allowedSeed) || ItemStack.areItemsEqual(allowedSeed, drop.getItem())) {
-        if (canPlant(drop.getItem()) && plant(farm, world, bc, drop.getItem())) {
+        if (plant(farm, world, bc, drop.getItem())) {
           res.getDrops().remove(drop);
           return;
         }
