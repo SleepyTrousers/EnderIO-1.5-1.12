@@ -126,4 +126,9 @@ public class ExplosiveUpgrade extends AbstractUpgrade {
     }
   }
 
+  @Override
+  public boolean keybindingDefault() {
+    return true;
+  }
+
 }

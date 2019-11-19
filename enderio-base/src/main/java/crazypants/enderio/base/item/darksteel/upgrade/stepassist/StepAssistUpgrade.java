@@ -54,4 +54,9 @@ public class StepAssistUpgrade extends AbstractUpgrade {
     return !EnergyUpgradeManager.isLowestPowerUpgrade(other) && JumpUpgrade.JUMP_ONE != other;
   }
 
+  @Override
+  public boolean keybindingDefault() {
+    return true;
+  }
+
 }
