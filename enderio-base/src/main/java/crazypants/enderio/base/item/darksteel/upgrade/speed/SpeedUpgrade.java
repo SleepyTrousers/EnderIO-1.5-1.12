@@ -124,4 +124,9 @@ public class SpeedUpgrade extends AbstractUpgrade {
     DarkSteelController.usePlayerEnergy(player, EntityEquipmentSlot.LEGS, cost);
   }
 
+  @Override
+  public boolean keybindingDefault() {
+    return true;
+  }
+
 }

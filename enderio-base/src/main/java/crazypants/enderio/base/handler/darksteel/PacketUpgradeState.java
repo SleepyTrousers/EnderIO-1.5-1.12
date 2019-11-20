@@ -1,10 +1,13 @@
 package crazypants.enderio.base.handler.darksteel;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -21,35 +24,46 @@ public class PacketUpgradeState implements IMessage {
   public PacketUpgradeState() {
   }
 
-  private boolean isActive;
-  private IDarkSteelUpgrade type;
   private int entityID;
+  private final @Nonnull Map<String, Boolean> payload = new HashMap<>();
 
-  public PacketUpgradeState(@Nonnull IDarkSteelUpgrade type, boolean isActive) {
+  public PacketUpgradeState(@Nonnull String type, boolean isActive) {
     this(type, isActive, 0);
   }
 
-  public PacketUpgradeState(@Nonnull IDarkSteelUpgrade type, boolean isActive, int entityID) {
-    this.type = type;
-    this.isActive = isActive;
+  public PacketUpgradeState(@Nonnull String type, boolean isActive, int entityID) {
     this.entityID = entityID;
+    this.add(type, isActive);
+  }
+
+  public PacketUpgradeState(int entityID) {
+    this.entityID = entityID;
+  }
+
+  public void add(@Nonnull String type, boolean isActive) {
+    this.payload.put(type, isActive);
   }
 
   @Override
   public void toBytes(ByteBuf buf) {
     if (buf != null) {
-      ByteBufUtils.writeRegistryEntry(buf, NullHelper.notnullF(type, "packet uninitialized"));
-      buf.writeBoolean(isActive);
       buf.writeInt(entityID);
+      buf.writeInt(payload.size());
+      for (Entry<String, Boolean> pair : payload.entrySet()) {
+        ByteBufUtils.writeUTF8String(buf, pair.getKey());
+        buf.writeBoolean(pair.getValue());
+      }
     }
   }
 
   @Override
   public void fromBytes(ByteBuf buf) {
     if (buf != null) {
-      type = UpgradeRegistry.read(buf);
-      isActive = buf.readBoolean();
       entityID = buf.readInt();
+      int count = buf.readInt();
+      for (int i = 0; i < count; i++) {
+        payload.put(ByteBufUtils.readUTF8String(buf), buf.readBoolean());
+      }
     }
   }
 
@@ -59,9 +73,10 @@ public class PacketUpgradeState implements IMessage {
     @SideOnly(Side.CLIENT)
     public IMessage onMessage(PacketUpgradeState message, MessageContext ctx) {
       final Entity player = Minecraft.getMinecraft().world.getEntityByID(message.entityID);
-      final IDarkSteelUpgrade type = message.type;
-      if (player instanceof EntityPlayer && type != null) {
-        DarkSteelController.syncActive((EntityPlayer) player, type, message.isActive);
+      if (player instanceof EntityPlayer) {
+        for (Entry<String, Boolean> pair : message.payload.entrySet()) {
+          DarkSteelController.syncActive((EntityPlayer) player, NullHelper.first(pair.getKey(), ""), pair.getValue());
+        }
       }
       return null;
     }
@@ -72,9 +87,8 @@ public class PacketUpgradeState implements IMessage {
     @Override
     public IMessage onMessage(PacketUpgradeState message, MessageContext ctx) {
       EntityPlayer player = ctx.getServerHandler().player;
-      final IDarkSteelUpgrade type = message.type;
-      if (type != null) {
-        DarkSteelController.setActive(player, type, message.isActive);
+      for (Entry<String, Boolean> pair : message.payload.entrySet()) {
+        DarkSteelController.setActive(player, NullHelper.first(pair.getKey(), ""), pair.getValue());
       }
       return null;
     }

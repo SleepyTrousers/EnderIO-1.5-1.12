@@ -60,6 +60,12 @@ public abstract class AbstractUpgrade extends Impl<IDarkSteelUpgrade> implements
   }
 
   @Override
+  @Nonnull
+  public String getKeybindingID() {
+    return id;
+  }
+
+  @Override
   @SideOnly(Side.CLIENT)
   public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     SpecialTooltipHandler.addCommonTooltipFromResources(list, getUnlocalizedName());

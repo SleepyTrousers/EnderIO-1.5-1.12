@@ -58,6 +58,14 @@ public interface IDarkSteelUpgrade extends IForgeRegistryEntry<IDarkSteelUpgrade
     return Pair.of(getUnlocalizedName(), 0);
   }
 
+  default boolean keybindingDefault() {
+    return false;
+  }
+
+  default @Nonnull String getKeybindingID() {
+    return getUnlocalizedName();
+  }
+
   /**
    * @return The amount of levels it costs to apply this upgrade.
    */

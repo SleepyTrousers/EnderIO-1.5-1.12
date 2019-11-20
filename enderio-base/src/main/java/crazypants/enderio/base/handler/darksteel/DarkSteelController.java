@@ -15,11 +15,9 @@ import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.integration.top.TheOneProbeUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManager;
-import crazypants.enderio.base.item.darksteel.upgrade.explosive.ExplosiveUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.jump.JumpUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.nightvision.NightVisionUpgrade;
-import crazypants.enderio.base.item.darksteel.upgrade.speed.SpeedUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.stepassist.StepAssistUpgrade;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
@@ -75,17 +73,13 @@ public class DarkSteelController {
 
   private static NBTTagCompound getActiveSetNBT(@Nonnull EntityPlayer player) {
     NBTTagCompound entityData = player.getEntityData();
-    NBTTagCompound set;
     if (entityData.hasKey(ENDERIO_FLAGS, Constants.NBT.TAG_COMPOUND)) {
-      set = entityData.getCompoundTag(ENDERIO_FLAGS);
+      return entityData.getCompoundTag(ENDERIO_FLAGS);
     } else {
-      entityData.setTag(ENDERIO_FLAGS, set = new NBTTagCompound());
-      set.setBoolean(getNbtKey(SpeedUpgrade.SPEED_ONE), false);
-      set.setBoolean(getNbtKey(StepAssistUpgrade.INSTANCE), false);
-      set.setBoolean(getNbtKey(JumpUpgrade.JUMP_ONE), false);
-      set.setBoolean(getNbtKey(ExplosiveUpgrade.INSTANCE), false);
+      NBTTagCompound set = new NBTTagCompound();
+      entityData.setTag(ENDERIO_FLAGS, set);
+      return set;
     }
-    return set;
   }
 
   /**
@@ -114,19 +108,25 @@ public class DarkSteelController {
 
   private static void updateFlags(@Nonnull EntityPlayerMP toUpdate, @Nonnull EntityPlayer target) {
     final NBTTagCompound activeSet = getActiveSetNBT(target);
-    UpgradeRegistry.getUpgrades().apply((Callback<IDarkSteelUpgrade>) type -> PacketHandler
-        .sendTo(new PacketUpgradeState(type, activeSet.hasKey(getNbtKey(type)), target.getEntityId()), toUpdate));
+    final PacketUpgradeState packet = new PacketUpgradeState(target.getEntityId());
+    UpgradeRegistry.getUpgrades().apply((Callback<IDarkSteelUpgrade>) type -> {
+      if (activeSet.hasKey(type.getKeybindingID())) {
+        packet.add(type.getKeybindingID(), activeSet.getBoolean(type.getKeybindingID()));
+      }
+    });
+    PacketHandler.sendTo(packet, toUpdate);
   }
 
   public static boolean isActive(@Nonnull EntityPlayer player, @Nullable IDarkSteelUpgrade type) {
-    return type != null && getActiveSetNBT(player).hasKey(getNbtKey(type));
-  }
-
-  private static @Nonnull String getNbtKey(@Nonnull IDarkSteelUpgrade type) {
-    return NullHelper.first(type.getSortKey().getKey(), "nosuchupdate");
+    final NBTTagCompound activeSet = getActiveSetNBT(player);
+    return type != null && (activeSet.hasKey(type.getKeybindingID()) ? activeSet.getBoolean(type.getKeybindingID()) : type.keybindingDefault());
   }
 
   public static void setActive(@Nonnull EntityPlayer player, @Nonnull IDarkSteelUpgrade type, boolean isActive) {
+    setActive(player, type.getKeybindingID(), isActive);
+  }
+
+  public static void setActive(@Nonnull EntityPlayer player, @Nonnull String type, boolean isActive) {
     if (player.world.isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketUpgradeState(type, isActive));
     } else {
@@ -135,13 +135,8 @@ public class DarkSteelController {
     }
   }
 
-  public static void syncActive(@Nonnull EntityPlayer player, @Nonnull IDarkSteelUpgrade type, boolean isActive) {
-    NBTTagCompound set = getActiveSetNBT(player);
-    if (isActive) {
-      set.setBoolean(getNbtKey(type), isActive);
-    } else {
-      set.removeTag(getNbtKey(type));
-    }
+  public static void syncActive(@Nonnull EntityPlayer player, @Nonnull String type, boolean isActive) {
+    getActiveSetNBT(player).setBoolean(type, isActive);
   }
 
   @SubscribeEvent

@@ -141,4 +141,9 @@ public class JumpUpgrade extends AbstractUpgrade {
     }
   }
 
+  @Override
+  public boolean keybindingDefault() {
+    return true;
+  }
+
 }
