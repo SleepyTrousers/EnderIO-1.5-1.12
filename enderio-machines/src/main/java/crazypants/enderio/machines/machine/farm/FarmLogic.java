@@ -237,23 +237,26 @@ public class FarmLogic implements IFarmer {
 
   @Override
   public void handleExtraItem(@Nonnull ItemStack stack, @Nullable BlockPos drop) {
-    InsertCallback insertCallback = new InsertCallback(stack);
-    if (drop != null && Prep.isValid(stack)) {
-      insertCallback.apply(mapBlockPosToSeedSlot(drop));
-    }
     if (Prep.isValid(stack)) {
-      FarmSlots.SEEDS.apply(insertCallback);
-    }
-    if (Prep.isValid(stack)) {
-      FarmSlots.OUTPUTS.apply(insertCallback);
-    }
-    if (drop != null && Prep.isValid(stack)) {
-      if (FarmConfig.useOutputQueue.get()) {
-        owner.enQueueOverflow(stack.copy());
-      } else {
-        Block.spawnAsEntity(getWorld(), drop, stack.copy());
+      if (drop == null) {
+        drop = getLocation();
       }
-      stack.setCount(0);
+      InsertCallback insertCallback = new InsertCallback(stack);
+      insertCallback.apply(mapBlockPosToSeedSlot(drop));
+      if (Prep.isValid(stack)) {
+        FarmSlots.SEEDS.apply(insertCallback);
+        if (Prep.isValid(stack)) {
+          FarmSlots.OUTPUTS.apply(insertCallback);
+          if (Prep.isValid(stack)) {
+            if (FarmConfig.useOutputQueue.get()) {
+              owner.enQueueOverflow(stack.copy());
+            } else {
+              Block.spawnAsEntity(getWorld(), drop, stack.copy());
+            }
+            stack.setCount(0);
+          }
+        }
+      }
     }
   }
 

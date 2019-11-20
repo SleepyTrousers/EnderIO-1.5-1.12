@@ -17,7 +17,6 @@ import net.minecraft.block.BlockChorusFlower;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -130,7 +129,7 @@ public class ChorusFarmer extends AbstractFarmerJoe {
   }
 
   private void doHarvest(@Nonnull final IFarmer farm, @Nonnull final World world, @Nonnull IBlockState blockState, @Nonnull final BlockPos pos, int fortune,
-      @Nonnull final HarvestResult result) {
+      @Nonnull final IHarvestResult result) {
     FakePlayer joe = farm.startUsingItem(FarmingTool.AXE);
     NNList<ItemStack> drops = new NNList<>();
     blockState.getBlock().getDrops(drops, world, pos, blockState, fortune);
@@ -143,7 +142,7 @@ public class ChorusFarmer extends AbstractFarmerJoe {
       @Override
       public void apply(@Nonnull ItemStack drop) {
         if (farm.getWorld().rand.nextFloat() <= chance) {
-          result.getDrops().add(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop.copy()));
+          result.addDrop(pos, drop.copy());
         }
       }
     });
@@ -151,7 +150,7 @@ public class ChorusFarmer extends AbstractFarmerJoe {
     NNList.wrap(farm.endUsingItem(FarmingTool.AXE)).apply(new Callback<ItemStack>() {
       @Override
       public void apply(@Nonnull ItemStack drop) {
-        result.getDrops().add(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop.copy()));
+        result.addDrop(pos, drop.copy());
       }
     });
 

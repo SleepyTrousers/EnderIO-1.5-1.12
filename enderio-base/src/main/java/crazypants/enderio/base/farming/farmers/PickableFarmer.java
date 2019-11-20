@@ -12,13 +12,11 @@ import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.base.farming.FarmingTool;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public class PickableFarmer extends CustomSeedFarmer {
 
@@ -43,15 +41,14 @@ public class PickableFarmer extends CustomSeedFarmer {
       farm.setNotification(FarmNotification.NO_HOE);
       return null;
     }
-    final HarvestResult result = new HarvestResult();
-    final World world = farm.getWorld();
+    final IHarvestResult result = new HarvestResult();
 
     EntityPlayerMP joe = farm.startUsingItem(FarmingTool.HOE);
     joe.interactionManager.processRightClickBlock(joe, joe.world, joe.getHeldItemMainhand(), EnumHand.MAIN_HAND, pos, EnumFacing.DOWN, 0, 0, 0);
     NNList.wrap(farm.endUsingItem(FarmingTool.HOE)).apply(new Callback<ItemStack>() {
       @Override
       public void apply(@Nonnull ItemStack drop) {
-        result.getDrops().add(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop.copy()));
+        result.addDrop(pos, drop.copy());
       }
     });
     farm.registerAction(FarmingAction.HARVEST, FarmingTool.HOE, state, pos);

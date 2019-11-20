@@ -19,7 +19,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockStem;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -158,7 +157,7 @@ public class PlantableFarmer extends AbstractFarmerJoe {
     }
 
     final World world = farm.getWorld();
-    final NNList<EntityItem> result = new NNList<EntityItem>();
+    final IHarvestResult res = new HarvestResult(pos);
     final EntityPlayerMP fakePlayer = farm.startUsingItem(FarmingTool.HOE);
     final int fortune = farm.getLootingValue(FarmingTool.HOE);
 
@@ -176,7 +175,7 @@ public class PlantableFarmer extends AbstractFarmerJoe {
           stack.shrink(1);
         }
         if (Prep.isValid(stack)) {
-          result.add(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack.copy()));
+          res.addDrop(pos, stack.copy());
         }
       }
     }
@@ -184,20 +183,20 @@ public class PlantableFarmer extends AbstractFarmerJoe {
     NNList.wrap(farm.endUsingItem(FarmingTool.HOE)).apply(new Callback<ItemStack>() {
       @Override
       public void apply(@Nonnull ItemStack drop) {
-        result.add(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop.copy()));
+        res.addDrop(pos, drop.copy());
       }
     });
 
     if (Prep.isValid(removedPlantable)) {
       if (!plant(farm, world, pos, (IPlantable) removedPlantable.getItem())) {
-        result.add(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, removedPlantable.copy()));
+        res.addDrop(pos, removedPlantable.copy());
         world.setBlockState(pos, Blocks.AIR.getDefaultState(), 1 | 2);
       }
     } else {
       world.setBlockState(pos, Blocks.AIR.getDefaultState(), 1 | 2);
     }
 
-    return new HarvestResult(result, pos);
+    return res;
   }
 
   protected boolean isPlantableForBlock(@Nonnull IFarmer farm, @Nonnull ItemStack stack, @Nonnull Block block) {

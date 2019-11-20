@@ -14,7 +14,6 @@ import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.base.farming.FarmersRegistry;
 import crazypants.enderio.base.farming.FarmingTool;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -80,18 +79,18 @@ public class FlowerPicker extends AbstractFarmerJoe {
       farm.registerAction(FarmingAction.HARVEST, FarmingTool.HOE, state, pos);
     }
 
-    final NNList<EntityItem> result = new NNList<EntityItem>();
+    final IHarvestResult res = new HarvestResult(pos);
 
     NNList.wrap(drops).apply(new Callback<ItemStack>() {
       @Override
       public void apply(@Nonnull ItemStack drop) {
-        result.add(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop.copy()));
+        res.addDrop(pos, drop.copy());
       }
     });
 
     world.setBlockToAir(pos);
 
-    return new HarvestResult(result, pos);
+    return res;
   }
 
 }

@@ -8,14 +8,15 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 
-import crazypants.enderio.base.farming.farmers.HarvestResult;
+import crazypants.enderio.api.farm.IHarvestResult;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class TreeHarvester implements Callback<BlockPos> {
 
-  public static void harvest(@Nonnull final World world, @Nonnull final BlockPos pos, @Nonnull final HarvestResult res,
+  public static void harvest(@Nonnull final World world, @Nonnull final BlockPos pos, @Nonnull final IHarvestResult res,
       @Nonnull final IHarvestingTarget target) {
     final TreeHarvester visitor = new TreeHarvester(world, pos, res.getHarvestedBlocks(), target);
     while (visitor.hasNext()) {
@@ -26,11 +27,11 @@ public class TreeHarvester implements Callback<BlockPos> {
   private final @Nonnull NNList<BlockPos> candidates = new NNList<>();
   private final @Nonnull Set<BlockPos> seen = new HashSet<>();
   private final @Nonnull World world;
-  private final @Nonnull NNList<BlockPos> result;
+  private final @Nonnull NonNullList<BlockPos> result;
   private final @Nonnull IHarvestingTarget target;
   private @Nonnull BlockPos next;
 
-  private TreeHarvester(@Nonnull World world, @Nonnull BlockPos start, @Nonnull NNList<BlockPos> result, @Nonnull IHarvestingTarget target) {
+  private TreeHarvester(@Nonnull World world, @Nonnull BlockPos start, @Nonnull NonNullList<BlockPos> result, @Nonnull IHarvestingTarget target) {
     this.world = world;
     this.result = result;
     this.next = start;

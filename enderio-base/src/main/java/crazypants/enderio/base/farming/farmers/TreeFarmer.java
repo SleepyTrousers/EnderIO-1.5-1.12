@@ -22,10 +22,10 @@ import crazypants.enderio.base.farming.FarmingTool;
 import crazypants.enderio.base.farming.harvesters.FarmHarvestingTarget;
 import crazypants.enderio.base.farming.harvesters.IHarvestingTarget;
 import crazypants.enderio.base.farming.harvesters.TreeHarvester;
+import crazypants.enderio.util.NNPair;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -193,7 +193,7 @@ public class TreeFarmer extends AbstractFarmerJoe {
    * @param harvestPos
    *          The {@link BlockPos} to get the drops for. It <em>must</em> be part of the {@link HarvestResult}'s harvested blocks list!
    */
-  boolean harvestSingleBlock(@Nonnull IFarmer farm, final @Nonnull World world, final @Nonnull HarvestResult result, final @Nonnull BlockPos harvestPos) {
+  boolean harvestSingleBlock(@Nonnull IFarmer farm, final @Nonnull World world, final @Nonnull IHarvestResult result, final @Nonnull BlockPos harvestPos) {
     float chance = 1.0F;
     NNList<ItemStack> drops = new NNList<>();
     final IBlockState state = farm.getBlockState(harvestPos);
@@ -222,7 +222,7 @@ public class TreeFarmer extends AbstractFarmerJoe {
       NNList.wrap(farm.endUsingItem(tool)).apply(new Callback<ItemStack>() {
         @Override
         public void apply(@Nonnull ItemStack drop) {
-          result.getDrops().add(new EntityItem(world, harvestPos.getX() + 0.5, harvestPos.getY() + 0.5, harvestPos.getZ() + 0.5, drop.copy()));
+          result.addDrop(harvestPos, drop.copy());
         }
       });
       if (tool == FarmingTool.AXE) {
@@ -238,10 +238,9 @@ public class TreeFarmer extends AbstractFarmerJoe {
       }
     }
 
-    BlockPos farmPos = farm.getLocation();
     for (ItemStack drop : drops) {
       if (world.rand.nextFloat() <= chance) {
-        result.getDrops().add(new EntityItem(world, farmPos.getX() + 0.5, farmPos.getY() + 0.5, farmPos.getZ() + 0.5, drop.copy()));
+        result.addDrop(harvestPos, drop.copy());
       }
     }
 
@@ -260,9 +259,9 @@ public class TreeFarmer extends AbstractFarmerJoe {
         allowedSeed = seedTypeInSuppliesFor;
       }
     }
-    for (EntityItem drop : res.getDrops()) {
-      if (Prep.isInvalid(allowedSeed) || ItemStack.areItemsEqual(allowedSeed, drop.getItem())) {
-        if (plant(farm, world, bc, drop.getItem())) {
+    for (NNPair<BlockPos, ItemStack> drop : res.getDrops()) {
+      if (Prep.isInvalid(allowedSeed) || ItemStack.areItemsEqual(allowedSeed, drop.getValue())) {
+        if (plant(farm, world, bc, drop.getValue())) {
           res.getDrops().remove(drop);
           return;
         }

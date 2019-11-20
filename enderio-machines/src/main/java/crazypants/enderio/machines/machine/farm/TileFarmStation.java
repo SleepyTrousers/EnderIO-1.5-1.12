@@ -11,6 +11,8 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.fluid.SmartTank;
@@ -58,7 +60,6 @@ import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -344,15 +345,12 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
       if (!harvest.getHarvestedBlocks().isEmpty()) {
         PacketHandler.sendToAllAround(new PacketFarmAction(harvest.getHarvestedBlocks()), this);
       }
-      NNList.wrap(harvest.getDrops()).apply(new Callback<EntityItem>() {
+      NNList.wrap(harvest.getDrops()).apply(new Callback<Pair<BlockPos, ItemStack>>() {
         @Override
-        public void apply(@Nonnull EntityItem ei) {
-          if (!ei.isDead) {
-            ItemStack stack = ei.getItem();
-            if (Prep.isValid(stack)) {
-              getFarmer().handleExtraItem(stack, farmingPos);
-            }
-            ei.setDead();
+        public void apply(@Nonnull Pair<BlockPos, ItemStack> ei) {
+          ItemStack stack = ei.getValue();
+          if (stack != null && Prep.isValid(stack)) {
+            getFarmer().handleExtraItem(stack, ei.getLeft());
           }
         }
       });

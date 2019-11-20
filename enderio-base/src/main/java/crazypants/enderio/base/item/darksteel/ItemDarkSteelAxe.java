@@ -16,6 +16,7 @@ import com.enderio.core.common.util.OreDictionaryHelper;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.capacitor.ICapacitorKey;
+import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.api.upgrades.IEquipmentData;
@@ -151,7 +152,7 @@ public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvide
       if (FarmersRegistry.isLog(block)) {
         int powerStored = EnergyUpgradeManager.getEnergyStored(itemstack);
 
-        HarvestResult res = new HarvestResult();
+        IHarvestResult res = new HarvestResult();
         final IHarvestingTarget target = new AxeHarvestingTarget(bs, pos, DarkSteelConfig.axeHarvestRadius.get(), DarkSteelConfig.axeHarvestHeight.get());
         TreeHarvester.harvest(player.world, pos, res, target);
 

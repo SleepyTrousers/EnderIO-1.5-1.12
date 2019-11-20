@@ -19,6 +19,7 @@ import com.google.common.collect.ImmutableSet;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.capacitor.ICapacitorKey;
+import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.api.upgrades.IEquipmentData;
@@ -135,7 +136,7 @@ public class ItemDarkSteelCrook extends ItemTool implements IAdvancedTooltipProv
       if (IHarvestingTarget.isDefaultLeaves(bs)) {
         int powerStored = EnergyUpgradeManager.getEnergyStored(itemstack);
 
-        HarvestResult res = new HarvestResult();
+        IHarvestResult res = new HarvestResult();
         final IHarvestingTarget target = new CrookHarvestingTarget(pos);
         TreeHarvester.harvest(player.world, pos, res, target);
 
