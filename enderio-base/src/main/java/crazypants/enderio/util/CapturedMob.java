@@ -294,6 +294,10 @@ public final class CapturedMob {
     return entity;
   }
 
+  public @Nullable Class<? extends Entity> getEntityClass() {
+    return EntityList.getClass(entityId);
+  }
+
   public @Nullable Entity getEntity(@Nullable World world, boolean clone) {
     return getEntity(world, null, null, clone);
   }

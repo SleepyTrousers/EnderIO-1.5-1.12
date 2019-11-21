@@ -15,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants.WorldEvents;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 
@@ -55,55 +56,53 @@ public class SpawnerLogic {
   }
 
   public boolean isAreaClear() {
-    int spawnRange = spawner.getRange();
-    return isAreaClear(spawnRange, 2, SpawnerConfig.poweredSpawnerMaxNearbyEntities.get());
+    return isAreaClear(spawner.getRange(), 2, SpawnerConfig.poweredSpawnerMaxNearbyEntities.get());
   }
 
   public boolean isAreaClear(int spawnRangeXZ, int spawnRangeY, int amount) {
-    if (SpawnerConfig.poweredSpawnerMaxNearbyEntities.get() > 0) {
-      World world = spawner.getSpawnerWorld();
-      BlockPos pos = spawner.getSpawnerPos();
-      Entity entity = createEntity(world.getDifficultyForLocation(pos), true);
-      if (!(entity instanceof EntityLiving)) {
-        cleanupUnspawnedEntity(entity);
-        spawner.setNotification(SpawnerNotification.BAD_SOUL);
-        return false;
+    if (amount > 0) {
+      CapturedMob capturedMob = spawner.getEntity();
+      if (capturedMob != null) {
+        return isAreaClear(spawner.getSpawnerWorld(), capturedMob.getEntityClass(), spawnRangeXZ, spawnRangeY, amount);
       }
-      final boolean result = isAreaClear(world, entity, spawnRangeXZ, spawnRangeY, amount);
-      cleanupUnspawnedEntity(entity);
-      return result;
     }
     return true;
   }
 
-  private boolean isAreaClear(World world, Entity entity, int spawnRangeXZ, int spawnRangeY, int amount) {
-    if (SpawnerConfig.poweredSpawnerMaxNearbyEntities.get() > 0) {
-      int nearbyEntities = world
-          .getEntitiesWithinAABB(entity.getClass(), spawner.getBounds().expand(spawnRangeXZ, spawnRangeY, spawnRangeXZ), EntitySelectors.IS_ALIVE).size();
-      if (nearbyEntities >= amount) {
+  private boolean isAreaClear(World world, Class<? extends Entity> entityClass, int spawnRangeXZ, int spawnRangeY, int amount) {
+    if (amount > 0 && entityClass != null) {
+      if (world.getEntitiesWithinAABB(entityClass, new BoundingBox(spawner.getSpawnerPos()).expand(spawnRangeXZ, spawnRangeY, spawnRangeXZ),
+          EntitySelectors.IS_ALIVE).size() >= amount) {
         spawner.setNotification(SpawnerNotification.AREA_FULL);
         return false;
       }
-      spawner.removeNotification(SpawnerNotification.AREA_FULL);
     }
+    spawner.removeNotification(SpawnerNotification.AREA_FULL);
     return true;
   }
 
   public boolean trySpawnEntity() {
-    World world = spawner.getSpawnerWorld();
-    BlockPos pos = spawner.getSpawnerPos();
-    Entity entity = createEntity(world.getDifficultyForLocation(pos), true);
-    if (!(entity instanceof EntityLiving)) {
-      cleanupUnspawnedEntity(entity);
+    final CapturedMob capturedMob = spawner.getEntity();
+    if (capturedMob == null) {
+      return false;
+    }
+
+    final World world = spawner.getSpawnerWorld();
+    final int spawnRange = spawner.getRange();
+    final Class<? extends Entity> entityClass = capturedMob.getEntityClass();
+    if (!isAreaClear(world, entityClass, spawnRange, 2, SpawnerConfig.poweredSpawnerMaxNearbyEntities.get())) {
+      return false;
+    }
+
+    if (!EntityLiving.class.isAssignableFrom(entityClass)) {
       spawner.setNotification(SpawnerNotification.BAD_SOUL);
       return false;
     }
-    EntityLiving entityliving = (EntityLiving) entity;
 
-    int spawnRange = spawner.getRange();
-
-    if (!isAreaClear(world, entity, spawnRange, 2, SpawnerConfig.poweredSpawnerMaxNearbyEntities.get())) {
-      cleanupUnspawnedEntity(entity);
+    final BlockPos pos = spawner.getSpawnerPos();
+    final EntityLiving entity = (EntityLiving) createEntity(world.getDifficultyForLocation(pos), true);
+    if (entity == null) {
+      spawner.setNotification(SpawnerNotification.BAD_SOUL);
       return false;
     }
 
@@ -114,20 +113,14 @@ public class SpawnerLogic {
 
       entity.setLocationAndAngles(x, y, z, world.rand.nextFloat() * 360.0F, 0.0F);
 
-      if (canSpawnEntity(entityliving)) {
-        if (entityliving instanceof EntityCreature) {
-          spawner.setHome(((EntityCreature) entityliving));
+      if (canSpawnEntity(entity)) {
+        if (entity instanceof EntityCreature) {
+          spawner.setHome(((EntityCreature) entity));
         }
-        world.spawnEntity(entityliving);
-        world.playEvent(2004, pos, 0);
-        entityliving.spawnExplosionParticle();
-        final Entity ridingEntity = entity.getRidingEntity();
-        if (ridingEntity != null) {
-          ridingEntity.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, 0.0F);
-        }
-        for (Entity passenger : entity.getPassengers()) {
-          passenger.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, 0.0F);
-        }
+        world.spawnEntity(entity);
+        world.playEvent(WorldEvents.MOB_SPAWNER_PARTICLES, pos, 0);
+        entity.spawnExplosionParticle();
+        addDependends(world, entity);
         return true;
       }
     }
@@ -135,6 +128,28 @@ public class SpawnerLogic {
     cleanupUnspawnedEntity(entity);
     spawner.setNotification(SpawnerNotification.NO_LOCATION_FOUND);
     return false;
+  }
+
+  private void addDependends(final @Nonnull World world, final @Nonnull EntityLiving entity) {
+    final Entity ridingEntity = entity.getRidingEntity();
+    if (ridingEntity != null) {
+      ridingEntity.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, 0.0F);
+      if (ridingEntity instanceof EntityCreature) {
+        spawner.setHome(((EntityCreature) ridingEntity));
+      }
+      if (!ridingEntity.isAddedToWorld()) {
+        world.spawnEntity(ridingEntity);
+      }
+    }
+    for (Entity passenger : entity.getPassengers()) {
+      passenger.setLocationAndAngles(entity.posX, entity.posY, entity.posZ, entity.rotationYaw, 0.0F);
+      if (passenger instanceof EntityCreature) {
+        spawner.setHome(((EntityCreature) passenger));
+      }
+      if (!passenger.isAddedToWorld()) {
+        world.spawnEntity(passenger);
+      }
+    }
   }
 
   public boolean anyLocationInRange() {
