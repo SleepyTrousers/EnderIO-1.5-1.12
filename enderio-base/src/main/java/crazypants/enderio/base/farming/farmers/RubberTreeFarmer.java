@@ -20,7 +20,6 @@ import crazypants.enderio.base.farming.harvesters.TreeHarvester;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -90,7 +89,7 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
     }
 
     final World world = farm.getWorld();
-    final HarvestResult res = new HarvestResult();
+    final IHarvestResult res = new HarvestResult();
 
     final IHarvestingTarget target = new FarmHarvestingTarget(this, farm, FarmingConfig.rubbertreeHarvestRadius.get(),
         FarmingConfig.rubbertreeHarvestHeight.get());
@@ -134,11 +133,9 @@ public abstract class RubberTreeFarmer extends TreeFarmer {
     return res;
   }
 
-  private void harvest(@Nonnull HarvestResult res, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+  private void harvest(@Nonnull IHarvestResult res, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
     world.setBlockState(pos, removeResin(state), 3);
-    ItemStack drop = makeResin(world.rand);
-    EntityItem dropEnt = new EntityItem(world, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, drop);
-    res.getDrops().add(dropEnt);
+    res.addDrop(pos, makeResin(world.rand));
   }
 
   protected @Nonnull ItemStack makeResin(@Nonnull Random rand) {

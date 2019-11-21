@@ -16,7 +16,6 @@ import crazypants.enderio.base.farming.FarmingTool;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -59,7 +58,7 @@ public class StemFarmer extends CustomSeedFarmer {
     final World world = farm.getWorld();
     final EntityPlayerMP joe = farm.startUsingItem(FarmingTool.HOE);
     final int fortune = farm.getLootingValue(FarmingTool.HOE);
-    final HarvestResult result = new HarvestResult();
+    final IHarvestResult result = new HarvestResult();
     BlockPos harvestCoord = pos;
     boolean done = false;
     do {
@@ -71,10 +70,9 @@ public class StemFarmer extends CustomSeedFarmer {
         plantedBlock.getDrops(drops, world, harvestCoord, state, fortune);
         float chance = ForgeEventFactory.fireBlockHarvesting(drops, joe.world, harvestCoord, state, fortune, 1.0F, false, joe);
 
-        BlockPos farmPos = farm.getLocation();
         for (ItemStack drop : drops) {
           if (world.rand.nextFloat() <= chance) {
-            result.getDrops().add(new EntityItem(world, farmPos.getX() + 0.5, farmPos.getY() + 0.5, farmPos.getZ() + 0.5, drop.copy()));
+            result.addDrop(pos, drop.copy());
           }
         }
 
@@ -91,7 +89,7 @@ public class StemFarmer extends CustomSeedFarmer {
     NNList.wrap(farm.endUsingItem(FarmingTool.HOE)).apply(new Callback<ItemStack>() {
       @Override
       public void apply(@Nonnull ItemStack drop) {
-        result.getDrops().add(new EntityItem(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, drop.copy()));
+        result.addDrop(pos, drop.copy());
       }
     });
 
