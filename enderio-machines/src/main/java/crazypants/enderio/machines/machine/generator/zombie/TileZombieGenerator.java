@@ -10,7 +10,6 @@ import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.FluidWrapper;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
-import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.api.capacitor.ICapacitorKey;
 import crazypants.enderio.base.capacitor.DefaultCapacitorData;
@@ -224,9 +223,9 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
       return false;
     }
     if (powerDis == null) {
-      powerDis = new PowerDistributor(BlockCoord.get(this));
+      powerDis = new PowerDistributor(getPos());
     }
-    int transmitted = powerDis.transmitEnergy(world, Math.min(getPowerUsePerTick() * 2, getEnergyStored()));
+    int transmitted = powerDis.transmitEnergy(world, getMaxEnergySent());
     setEnergyStored(getEnergyStored() - transmitted);
     return transmitted > 0;
   }

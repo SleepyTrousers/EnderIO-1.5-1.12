@@ -43,10 +43,12 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_GEN;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_LOSS;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.COMBUSTION_POWER_SEND;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_BUFFER;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_EFFICIENCY;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_GEN;
 import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_LOSS;
+import static crazypants.enderio.machines.capacitor.CapacitorKey.ENHANCED_COMBUSTION_POWER_SEND;
 
 @Storable
 public class TileCombustionGenerator extends AbstractGeneratorEntity implements ITankAccess.IExtendedTankAccess, IPaintable.IPaintableTileEntity {
@@ -54,7 +56,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
   public static class Enhanced extends TileCombustionGenerator {
 
     public Enhanced() {
-      super(new SlotDefinition(0, 0, 1), ENHANCED_COMBUSTION_POWER_BUFFER, ENHANCED_COMBUSTION_POWER_GEN);
+      super(new SlotDefinition(0, 0, 1), ENHANCED_COMBUSTION_POWER_SEND, ENHANCED_COMBUSTION_POWER_BUFFER, ENHANCED_COMBUSTION_POWER_GEN);
       setEnergyLoss(ENHANCED_COMBUSTION_POWER_LOSS);
       setEfficiencyMultiplier(ENHANCED_COMBUSTION_POWER_EFFICIENCY);
     }
@@ -94,20 +96,19 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
 
   private boolean generatedDirty = false;
 
-  private int maxOutputTick = 1280;
-
   private static int IO_MB_TICK = 250;
 
   private IFluidFuel curFuel;
   private IFluidCoolant curCoolant;
 
   public TileCombustionGenerator() {
-    this(new SlotDefinition(0, 0, 1), COMBUSTION_POWER_BUFFER, COMBUSTION_POWER_GEN);
+    this(new SlotDefinition(0, 0, 1), COMBUSTION_POWER_SEND, COMBUSTION_POWER_BUFFER, COMBUSTION_POWER_GEN);
     setEnergyLoss(COMBUSTION_POWER_LOSS);
   }
 
-  protected TileCombustionGenerator(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
-    super(slotDefinition, maxEnergyStored, maxEnergyUsed);
+  protected TileCombustionGenerator(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergySent, @Nonnull ICapacitorKey maxEnergyStored,
+      @Nonnull ICapacitorKey maxEnergyUsed) {
+    super(slotDefinition, maxEnergySent, maxEnergyStored, maxEnergyUsed);
     coolantTank = new CoolantTank(Math.round(CombustionGenConfig.combGenTankSize.get() * getEfficiencyMultiplier()));
     fuelTank = new FuelTank(Math.round(CombustionGenConfig.combGenTankSize.get() * getEfficiencyMultiplier()));
     coolantTank.setTileEntity(this);
@@ -216,7 +217,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
     if (powerDis == null) {
       powerDis = new PowerDistributor(getPos());
     }
-    int transmitted = powerDis.transmitEnergy(world, Math.min(maxOutputTick, getEnergyStored()));
+    int transmitted = powerDis.transmitEnergy(world, getMaxEnergySent());
     setEnergyStored(getEnergyStored() - transmitted);
     return transmitted > 0;
   }

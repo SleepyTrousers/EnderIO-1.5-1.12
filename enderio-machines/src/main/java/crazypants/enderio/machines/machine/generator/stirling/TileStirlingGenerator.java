@@ -201,14 +201,13 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
   }
 
   private boolean transmitEnergy() {
+    if (getEnergyStored() <= 0) {
+      return false;
+    }
     if (powerDis == null) {
       powerDis = new PowerDistributor(getPos());
     }
-    int canTransmit = Math.min(getEnergyStored(), getPowerUsePerTick() * 2);
-    if (canTransmit <= 0) {
-      return false;
-    }
-    int transmitted = powerDis.transmitEnergy(world, canTransmit);
+    int transmitted = powerDis.transmitEnergy(world, getMaxEnergySent());
     setEnergyStored(getEnergyStored() - transmitted);
     return transmitted > 0;
   }

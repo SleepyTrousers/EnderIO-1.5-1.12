@@ -56,11 +56,13 @@ public enum CapacitorKey implements ICapacitorKey {
   COMBUSTION_POWER_LOSS(MachineObject.block_combustion_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),
   COMBUSTION_POWER_BUFFER(MachineObject.block_combustion_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   COMBUSTION_POWER_GEN(MachineObject.block_combustion_generator, CapacitorKeyType.ENERGY_GEN, "gen"),
+  COMBUSTION_POWER_SEND(MachineObject.block_combustion_generator, CapacitorKeyType.ENERGY_INTAKE, "send"),
   COMBUSTION_POWER_EFFICIENCY(MachineObject.block_combustion_generator, CapacitorKeyType.AMOUNT, "efficiency"),
 
   ENHANCED_COMBUSTION_POWER_LOSS(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),
   ENHANCED_COMBUSTION_POWER_BUFFER(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   ENHANCED_COMBUSTION_POWER_GEN(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_GEN, "gen"),
+  ENHANCED_COMBUSTION_POWER_SEND(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_INTAKE, "send"),
   ENHANCED_COMBUSTION_POWER_EFFICIENCY(MachineObject.block_enhanced_combustion_generator, CapacitorKeyType.ENERGY_EFFICIENCY, "efficiency"),
 
   STIRLING_POWER_LOSS(MachineObject.block_stirling_generator, CapacitorKeyType.ENERGY_LOSS, "loss"),

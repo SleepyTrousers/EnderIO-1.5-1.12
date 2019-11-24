@@ -214,19 +214,19 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
                       EnumParticleTypes.SMOKE_LARGE);
                 }
                 effect.send(world, pos2);
-                stonePoints += LavaGenConfig.heatLossActive.get() * factor; // water, consumed
+                stonePoints += Math.floor(LavaGenConfig.heatLossActive.get() * factor); // water, consumed
               } else {
-                cobblePoints += LavaGenConfig.heatLossActive.get() * factor; // water, not consumed
+                cobblePoints += Math.floor(LavaGenConfig.heatLossActive.get() * factor); // water, not consumed
               }
             } else if (fluidStack.getFluid().getTemperature(fluidStack) < C2K(0)) {
-              obsidianPoints += LavaGenConfig.heatLossActive.get() * factor; // other fluid, very cold
+              obsidianPoints += Math.floor(LavaGenConfig.heatLossActive.get() * factor); // other fluid, very cold
             } else {
-              cobblePoints += LavaGenConfig.heatLossActive.get() * factor; // other fluid, luke warm
+              cobblePoints += Math.floor(LavaGenConfig.heatLossActive.get() * factor); // other fluid, luke warm
             }
           }
           // TODO 1.14: add Blue Ice
           // TODO 1.14: add separate chances for melting that reflect the recipes
-        } else if (block instanceof BlockIce || block instanceof BlockFrostedIce || block instanceof BlockPackedIce) {
+        } else if (block instanceof BlockFrostedIce || block instanceof BlockPackedIce || block instanceof BlockIce) {
           heat = Math.max(0, heat - LavaGenConfig.heatLossActive.get());
           obsidianPoints += LavaGenConfig.heatLossActive.get(); // ice is always cold
           if (world.rand.nextFloat() < LavaGenConfig.activeCoolingLiquefiesIce.get()) {
