@@ -223,11 +223,6 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity
     return filter;
   }
 
-  @Override
-  public int hashCode() {
-    return super.hashCode();
-  }
-
   // RANGE
 
   private boolean showingRange;

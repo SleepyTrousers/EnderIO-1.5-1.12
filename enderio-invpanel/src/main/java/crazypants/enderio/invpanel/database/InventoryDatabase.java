@@ -98,7 +98,7 @@ public abstract class InventoryDatabase<ItemEntry extends IItemEntry> implements
   }
 
   private ItemEntry getSimpleItem(int itemID, int meta, boolean create) {
-    Integer dbID = (itemID << SIMPLE_META_BITS) | meta;
+    int dbID = (itemID << SIMPLE_META_BITS) | meta;
     ItemEntry entry = simpleRegsitry.get(dbID);
     if (entry == null && create) {
       entry = createItemEntry(dbID, dbID, itemID, meta, null);

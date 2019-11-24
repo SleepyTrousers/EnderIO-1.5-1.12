@@ -168,7 +168,7 @@ public class SolarPanelNetwork implements ISolarPanelNetwork {
               }
             }
             energyMaxPerTick += energyMaxPerTickPerPanel;
-            energyAvailablePerTick += energyMaxPerTickPerPanel * TileSolarPanel.calculateLocalLightRatio(world, panel, lightRatio);
+            energyAvailablePerTick += Math.floor(energyMaxPerTickPerPanel * TileSolarPanel.calculateLocalLightRatio(world, panel, lightRatio));
           }
         }
       }

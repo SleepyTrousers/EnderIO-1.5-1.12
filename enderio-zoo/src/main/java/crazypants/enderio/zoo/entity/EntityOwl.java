@@ -167,12 +167,10 @@ public class EntityOwl extends EntityAnimal implements IEnderZooEntity.Flying {
     }
     wingRotDelta = (float) (wingRotDelta * 0.9D);
     float flapSpeed = 2f;
-    double yDelta = Math.abs(posY - prevPosY);
+    float yDelta = (float) Math.abs(posY - prevPosY);
     if (yDelta != 0) {
       // normalise between 0 and 0.02
-      yDelta = Math.min(1, yDelta / 0.02);
-      yDelta = Math.max(yDelta, 0.75);
-      flapSpeed *= yDelta;
+      flapSpeed *= MathHelper.clamp(yDelta / 0.02f, 0.75f, 1f);
     }
     wingRotation += wingRotDelta * flapSpeed;
 

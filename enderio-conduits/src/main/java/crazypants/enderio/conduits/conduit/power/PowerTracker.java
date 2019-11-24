@@ -2,7 +2,6 @@ package crazypants.enderio.conduits.conduit.power;
 
 import crazypants.enderio.base.power.PerTickIntAverageCalculator;
 
-
 public class PowerTracker {
 
   private long previousStorageLevel = -1;
@@ -18,10 +17,10 @@ public class PowerTracker {
   public void tickStart(long storedEnergy) {
     long curStorage = storedEnergy;
 
-    if(previousStorageLevel > -1) {
+    if (previousStorageLevel > -1) {
       long recieved = curStorage - previousStorageLevel;
       recieved = Math.max(0, recieved);
-      recievedThisTick += recieved;
+      recievedThisTick += (int) recieved;
     }
   }
 
