@@ -197,6 +197,7 @@ public interface IConduit {
   Class<? extends IConduit> getCollidableType();
 
   // Actions (mostly relayed from the Block/TE methods of the same name)
+  // TODO 1.14: remove 'all' unless we really need it somewhere
   boolean onBlockActivated(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, @Nonnull RaytraceResult res, @Nonnull List<RaytraceResult> all);
 
   void updateEntity(@Nonnull World world); // Please, do not tick unless really, really needed!
