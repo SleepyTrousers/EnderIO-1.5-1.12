@@ -2,7 +2,6 @@ package crazypants.enderio.conduits.conduit;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -652,7 +651,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     // }
     if (stack.getItem() == ModObject.itemConduitFacade.getItem()) {
       return bundle.handleFacadeClick(world, pos, player, side, stack, hand, hitX, hitY, hitZ);
-
     } else if (ConduitUtil.isConduitEquipped(player, hand)) {
       // Add conduit
       if (player.isSneaking()) {
@@ -661,7 +659,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       if (handleConduitClick(world, pos, player, bundle, stack, hand)) {
         return true;
       }
-
     } else if (ConduitUtil.isProbeEquipped(player, hand)) {
       // Handle copy / paste of settings
       if (handleConduitProbeClick(world, pos, player, bundle, stack)) {
@@ -674,69 +671,34 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       }
     }
 
+    // TODO: most of the above should be called from below. The "which part was clicked"
+    // code shouldn't be duplicated all over the place...
+
     // Check conduit defined actions
-    RaytraceResult closest = doRayTrace(world, pos, player);
-    @Nonnull
-    List<RaytraceResult> all = NullHelper.notnullJ(Collections.emptyList(), "Collections#emptyList");
-    if (closest != null) {
-      all = doRayTraceAll(world, pos, player);
-    }
-
-    final CollidableComponent closestComponent = closest == null ? null : closest.component;
-    if (closestComponent != null && closestComponent.data instanceof ConduitConnectorType) {
-
-      ConduitConnectorType conType = (ConduitConnectorType) closestComponent.data;
-      if (conType == ConduitConnectorType.INTERNAL) {
-        boolean result = false;
-        // if its a connector pass the event on to all conduits
-        for (IConduit con : bundle.getConduits()) {
-          RaytraceResult res = getHitForConduitType(all, con.getCollidableType());
-          if (res != null && YetaUtil.renderConduit(player, con.getCollidableType()) && con.onBlockActivated(player, hand, res, all)) {
-            bundle.getEntity().markDirty();
-            result = true;
+    List<RaytraceResult> all = doRayTraceAll(world, pos, player);
+    for (RaytraceResult raytraceResult : RaytraceResult.sort(Util.getEyePosition(player), all)) {
+      if (raytraceResult.component.data instanceof ConduitConnectorType) {
+        if (raytraceResult.component.data == ConduitConnectorType.INTERNAL && YetaUtil.renderInternalComponent(player)) {
+          // this is the gray box that's enclosing cores
+          return false;
+        } else if (raytraceResult.component.isDirectional()) {
+          // this is a connector plate
+          if (!world.isRemote) {
+            openGui(world, pos, player, raytraceResult.component.getDirection(), raytraceResult.component.getDirection().ordinal());
           }
-
-        }
-        if (result) {
           return true;
         }
-      } else if (closestComponent.isDirectional()) {
-        if (!world.isRemote) {
-          openGui(world, pos, player, closestComponent.getDirection(), closestComponent.getDirection().ordinal());
-        }
-        return true;
-      }
-    }
-
-    if (closestComponent == null || closestComponent.conduitType == null && all.isEmpty()) {
-      // Nothing of interest hit
-      return false;
-    }
-
-    // Conduit specific actions
-    if (all.isEmpty()) {
-      RaytraceResult.sort(Util.getEyePosition(player), all);
-      for (RaytraceResult rr : all) {
-        final CollidableComponent component = rr.component;
-        if (component != null && YetaUtil.renderConduit(player, component.conduitType) && !(component.data instanceof ConduitConnectorType)) {
-
-          IConduit con = bundle.getConduit(component.conduitType);
-          if (con != null && con.onBlockActivated(player, hand, rr, all)) {
-            bundle.getEntity().markDirty();
-            return true;
-          }
+      } else if (raytraceResult.component.conduitType != null) {
+        final IConduit componentConduit = bundle.getConduit(raytraceResult.component.conduitType);
+        if (componentConduit != null && YetaUtil.renderConduit(player, componentConduit)
+            && componentConduit.onBlockActivated(player, hand, raytraceResult, all)) {
+          bundle.getEntity().markDirty();
+          return true;
         }
       }
-    } else {
-      IConduit closestConduit = bundle.getConduit(closestComponent.conduitType);
-      if (closest != null && closestConduit != null && YetaUtil.renderConduit(player, closestConduit)
-          && closestConduit.onBlockActivated(player, hand, closest, all)) {
-        bundle.getEntity().markDirty();
-        return true;
-      }
     }
+
     return false;
-
   }
 
   private boolean handleWrenchClick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player, @Nonnull EnumHand hand) {
@@ -826,16 +788,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
         return new GuiExternalConnectionSelector(te);
       }
       return new GuiExternalConnection(player.inventory, te, facing);
-    }
-    return null;
-  }
-
-  private RaytraceResult getHitForConduitType(List<RaytraceResult> all, Class<? extends IConduit> collidableType) {
-    for (RaytraceResult rr : all) {
-      CollidableComponent component = rr == null ? null : rr.component;
-      if (component != null && component.conduitType == collidableType) {
-        return rr;
-      }
     }
     return null;
   }
@@ -1014,7 +966,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
         setBlockBounds(0, 0, 0, 1, 1, 1);
         RayTraceResult hitPos = super.collisionRayTrace(bs, world, pos, origin, direction);
         if (hitPos != null) {
-          hits.add(new RaytraceResult(null, hitPos));
+          hits.add(new RaytraceResult(new CollidableComponent(null, BoundingBox.UNIT_CUBE, hitPos.sideHit, null), hitPos));
         }
       }
     }

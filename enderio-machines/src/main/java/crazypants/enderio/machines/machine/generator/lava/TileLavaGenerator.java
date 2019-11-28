@@ -42,6 +42,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -214,14 +215,14 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
                       EnumParticleTypes.SMOKE_LARGE);
                 }
                 effect.send(world, pos2);
-                stonePoints += Math.floor(LavaGenConfig.heatLossActive.get() * factor); // water, consumed
+                stonePoints += MathHelper.floor(LavaGenConfig.heatLossActive.get() * factor); // water, consumed
               } else {
-                cobblePoints += Math.floor(LavaGenConfig.heatLossActive.get() * factor); // water, not consumed
+                cobblePoints += MathHelper.floor(LavaGenConfig.heatLossActive.get() * factor); // water, not consumed
               }
             } else if (fluidStack.getFluid().getTemperature(fluidStack) < C2K(0)) {
-              obsidianPoints += Math.floor(LavaGenConfig.heatLossActive.get() * factor); // other fluid, very cold
+              obsidianPoints += MathHelper.floor(LavaGenConfig.heatLossActive.get() * factor); // other fluid, very cold
             } else {
-              cobblePoints += Math.floor(LavaGenConfig.heatLossActive.get() * factor); // other fluid, luke warm
+              cobblePoints += MathHelper.floor(LavaGenConfig.heatLossActive.get() * factor); // other fluid, luke warm
             }
           }
           // TODO 1.14: add Blue Ice

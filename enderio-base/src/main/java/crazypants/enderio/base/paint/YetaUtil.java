@@ -96,6 +96,13 @@ public class YetaUtil {
     return bundle.hasFacade() && !isFacadeHidden(bundle, player);
   }
 
+  public static boolean renderInternalComponent(EntityPlayer player) {
+    if (player == null || player.world.isRemote) {
+      return lastCheckResult.getDisplayMode().isAll();
+    }
+    return getDisplayMode(player).isAll();
+  }
+
   public static boolean renderConduit(EntityPlayer player, @Nullable Class<? extends IConduit> conduitType) {
     if (player == null || player.world.isRemote) {
       return lastCheckResult.renderConduit(conduitType);

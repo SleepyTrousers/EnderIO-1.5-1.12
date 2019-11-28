@@ -29,19 +29,20 @@ public class RaytraceResult {
     return closest;
   }
 
-  public static void sort(final @Nonnull Vec3d origin, @Nonnull List<RaytraceResult> toSort) {
+  public static @Nonnull List<RaytraceResult> sort(final @Nonnull Vec3d origin, @Nonnull List<RaytraceResult> toSort) {
     Collections.sort(toSort, new Comparator<RaytraceResult>() {
       @Override
       public int compare(RaytraceResult o1, RaytraceResult o2) {
         return Double.compare(o1.getDistanceTo(origin), o2.getDistanceTo(origin));
       }
     });
+    return toSort;
   }
 
-  public final @Nullable CollidableComponent component;
+  public final @Nonnull CollidableComponent component;
   public final @Nonnull RayTraceResult movingObjectPosition;
 
-  public RaytraceResult(@Nullable CollidableComponent component, @Nonnull RayTraceResult movingObjectPosition) {
+  public RaytraceResult(@Nonnull CollidableComponent component, @Nonnull RayTraceResult movingObjectPosition) {
     this.component = component;
     this.movingObjectPosition = movingObjectPosition;
   }
