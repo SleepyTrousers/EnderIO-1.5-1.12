@@ -5,28 +5,24 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.util.IoUtil;
+import crazypants.enderio.base.recipe.RecipeConfig;
 import crazypants.enderio.zoo.spawn.impl.SpawnEntry;
 
 public class SpawnConfig {
 
-  public static final String CONFIG_NAME_CORE = "SpawnConfig_Core.xml";
-  public static final String CONFIG_NAME_USER = "SpawnConfig_User.xml";
+  public static final @Nonnull String CONFIG_NAME_CORE = "SpawnConfig_Core.xml";
+  public static final @Nonnull String CONFIG_NAME_USER = "SpawnConfig_User.xml";
 
   public static List<SpawnEntry> loadSpawnConfig() {
-    try {
-      IoUtil.copyConfigFromJar(CONFIG_NAME_CORE, true);
-    } catch (IOException e) {
-      Log.error("Could not load core spawn config file " + CONFIG_NAME_CORE + " from jar: " + e.getMessage());
-      e.printStackTrace();
-      return null;
-    }
+    File coreFile = new File(EnderIO.getConfigHandler().getConfigDirectory(), CONFIG_NAME_CORE);
 
     String defaultVals = null;
     try {
-      defaultVals = IoUtil.readConfigFile(CONFIG_NAME_CORE);
+      defaultVals = RecipeConfig.readRecipes(coreFile, CONFIG_NAME_CORE, true);
     } catch (IOException e) {
       Log.error("Could not load core spawn config file " + CONFIG_NAME_CORE + " from jar: " + e.getMessage());
       e.printStackTrace();
@@ -42,19 +38,10 @@ public class SpawnConfig {
     }
     Log.info("Loaded " + result.size() + " entries from core spawn config.");
 
-    try {
-      IoUtil.copyConfigFromJar(CONFIG_NAME_USER, false);
-    } catch (IOException e) {
-      Log.error("Could not load user spawn config file " + CONFIG_NAME_USER + " from jar: " + e.getMessage());
-      e.printStackTrace();
-      return null;
-    }
-
     File userFile = new File(EnderIO.getConfigHandler().getConfigDirectory(), CONFIG_NAME_USER);
-    String userText = null;
     try {
-      userText = IoUtil.readConfigFile(CONFIG_NAME_USER);
-      if (userText == null || userText.trim().length() == 0) {
+      String userText = RecipeConfig.readRecipes(userFile, CONFIG_NAME_USER, false);
+      if (userText.trim().length() == 0) {
         Log.error("Empty user config file: " + userFile.getAbsolutePath());
       } else {
         List<SpawnEntry> userEntries = SpawnConfigParser.parseSpawnConfig(userText);
@@ -65,6 +52,7 @@ public class SpawnConfig {
       Log.error("Could not load user defined spawn entries from file: " + CONFIG_NAME_USER);
       e.printStackTrace();
     }
+
     return result;
   }
 
