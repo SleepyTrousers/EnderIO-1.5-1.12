@@ -792,16 +792,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     return null;
   }
 
-  private RaytraceResult getHitForConduitType(List<RaytraceResult> all, Class<? extends IConduit> collidableType) {
-    for (RaytraceResult rr : all) {
-      CollidableComponent component = rr == null ? null : rr.component;
-      if (component != null && component.conduitType == collidableType) {
-        return rr;
-      }
-    }
-    return null;
-  }
-
   @Deprecated
   @Override
   public void neighborChanged(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block neighborBlock,
