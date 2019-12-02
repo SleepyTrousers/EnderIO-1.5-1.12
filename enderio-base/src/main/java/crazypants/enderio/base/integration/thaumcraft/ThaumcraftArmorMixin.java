@@ -2,7 +2,7 @@ package crazypants.enderio.base.integration.thaumcraft;
 
 import com.enderio.core.common.mixin.SimpleMixin;
 
-import crazypants.enderio.base.handler.darksteel.DarkSteelController;
+import crazypants.enderio.base.handler.darksteel.StateController;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelArmor;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,13 +19,13 @@ public abstract class ThaumcraftArmorMixin extends Item implements IVisDiscountG
   @Override
   public boolean showNodes(ItemStack stack, EntityLivingBase player) {
     return stack != null && Prep.isValid(stack) && (player instanceof EntityPlayer)
-        && DarkSteelController.isActive((EntityPlayer) player, GogglesOfRevealingUpgrade.INSTANCE) && GogglesOfRevealingUpgrade.INSTANCE.hasUpgrade(stack);
+        && StateController.isActive((EntityPlayer) player, GogglesOfRevealingUpgrade.INSTANCE) && GogglesOfRevealingUpgrade.INSTANCE.hasUpgrade(stack);
   }
 
   @Override
   public boolean showIngamePopups(ItemStack stack, EntityLivingBase player) {
     return stack != null && Prep.isValid(stack) && (player instanceof EntityPlayer)
-        && DarkSteelController.isActive((EntityPlayer) player, GogglesOfRevealingUpgrade.INSTANCE) && GogglesOfRevealingUpgrade.INSTANCE.hasUpgrade(stack);
+        && StateController.isActive((EntityPlayer) player, GogglesOfRevealingUpgrade.INSTANCE) && GogglesOfRevealingUpgrade.INSTANCE.hasUpgrade(stack);
   }
 
   @Override

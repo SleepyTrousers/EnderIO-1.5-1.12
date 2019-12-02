@@ -75,7 +75,7 @@ public class PacketUpgradeState implements IMessage {
       final Entity player = Minecraft.getMinecraft().world.getEntityByID(message.entityID);
       if (player instanceof EntityPlayer) {
         for (Entry<String, Boolean> pair : message.payload.entrySet()) {
-          DarkSteelController.syncActive((EntityPlayer) player, NullHelper.first(pair.getKey(), ""), pair.getValue());
+          StateController.syncActive((EntityPlayer) player, NullHelper.first(pair.getKey(), ""), pair.getValue());
         }
       }
       return null;
@@ -88,7 +88,7 @@ public class PacketUpgradeState implements IMessage {
     public IMessage onMessage(PacketUpgradeState message, MessageContext ctx) {
       EntityPlayer player = ctx.getServerHandler().player;
       for (Entry<String, Boolean> pair : message.payload.entrySet()) {
-        DarkSteelController.setActive(player, NullHelper.first(pair.getKey(), ""), pair.getValue());
+        StateController.setActive(player, NullHelper.first(pair.getKey(), ""), pair.getValue());
       }
       return null;
     }

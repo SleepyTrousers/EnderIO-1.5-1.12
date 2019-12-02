@@ -80,7 +80,7 @@ public class PlayerAOEAttributeHandler {
   }
 
   public static boolean hasAOE(@Nonnull EntityPlayer player) {
-    return DarkSteelController.isActive(player, ExplosiveUpgrade.INSTANCE) && (player.getEntityAttribute(AOE_XZ).getAttributeValue() > 0
+    return StateController.isActive(player, ExplosiveUpgrade.INSTANCE) && (player.getEntityAttribute(AOE_XZ).getAttributeValue() > 0
         || player.getEntityAttribute(AOE_Y).getAttributeValue() > 0 || player.getEntityAttribute(AOE_XYZ).getAttributeValue() > 0);
   }
 

@@ -13,6 +13,7 @@ import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitDisplayMode;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
+import crazypants.enderio.base.handler.darksteel.StateController;
 import crazypants.enderio.base.handler.darksteel.gui.PacketOpenDSU;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.integration.thaumcraft.GogglesOfRevealingUpgrade;
@@ -121,9 +122,9 @@ public class KeyTracker {
   }
 
   public static void toggleDarkSteelController(@Nonnull IDarkSteelUpgrade type, @Nonnull String messageBase) {
-    boolean isActive = !DarkSteelController.isActive(Minecraft.getMinecraft().player, type);
+    boolean isActive = !StateController.isActive(Minecraft.getMinecraft().player, type);
     sendEnabledChatMessage(messageBase, isActive);
-    DarkSteelController.setActive(Minecraft.getMinecraft().player, type, isActive);
+    StateController.setActive(Minecraft.getMinecraft().player, type, isActive);
   }
 
   public static boolean isSoundDetectorUpgradeEquipped(EntityPlayerSP player) {
@@ -211,7 +212,7 @@ public class KeyTracker {
     @Override
     public void execute() {
       if (ExplosiveUpgrade.isEquipped(Minecraft.getMinecraft().player)) {
-        toggleDarkSteelController(StepAssistUpgrade.INSTANCE, "darksteel.upgrade.tnt");
+        toggleDarkSteelController(ExplosiveUpgrade.INSTANCE, "darksteel.upgrade.tnt");
       }
     }
   }
@@ -266,13 +267,13 @@ public class KeyTracker {
     public void execute() {
       EntityPlayer player = Minecraft.getMinecraft().player;
       if (DarkSteelController.isNightVisionUpgradeEquipped(player)) {
-        boolean isActive = !DarkSteelController.isActive(player, NightVisionUpgrade.INSTANCE);
+        boolean isActive = !StateController.isActive(player, NightVisionUpgrade.INSTANCE);
         if (isActive) {
           SoundHelper.playSound(player.world, player, SoundRegistry.NIGHTVISION_ON, 0.1f, player.world.rand.nextFloat() * 0.4f - 0.2f + 1.0f);
         } else {
           SoundHelper.playSound(player.world, player, SoundRegistry.NIGHTVISION_OFF, 0.1f, 1.0f);
         }
-        DarkSteelController.setActive(player, NightVisionUpgrade.INSTANCE, isActive);
+        StateController.setActive(player, NightVisionUpgrade.INSTANCE, isActive);
       }
     }
   }

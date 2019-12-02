@@ -15,6 +15,7 @@ import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.handler.darksteel.Rules;
+import crazypants.enderio.base.handler.darksteel.StateController;
 import crazypants.enderio.base.item.darksteel.attributes.DarkSteelAttributeModifiers;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
@@ -110,7 +111,7 @@ public class SpeedUpgrade extends AbstractUpgrade {
       return;
     }
 
-    final boolean isEnabled = DarkSteelController.isActive(player, this);
+    final boolean isEnabled = StateController.isActive(player, this);
     if (isEnabled == NbtValue.SPEED_DISABLED.getBoolean(stack)) {
       NbtValue.SPEED_DISABLED.setBoolean(stack, !isEnabled);
     }

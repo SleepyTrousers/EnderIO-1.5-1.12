@@ -29,6 +29,7 @@ import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.handler.darksteel.DarkSteelController;
 import crazypants.enderio.base.handler.darksteel.DarkSteelTooltipManager;
+import crazypants.enderio.base.handler.darksteel.StateController;
 import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
 import crazypants.enderio.base.handler.darksteel.gui.SlotSelector;
 import crazypants.enderio.base.handler.darksteel.gui.UpgradeCap;
@@ -412,9 +413,9 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
   @Override
   public boolean isElytraFlying(@Nonnull EntityLivingBase entity, @Nonnull ItemStack itemstack, boolean shouldStop) {
     if (entity instanceof EntityPlayer && DarkSteelController.isElytraUpgradeEquipped(itemstack)
-        && DarkSteelController.isActive((EntityPlayer) entity, ElytraUpgrade.INSTANCE)) {
+        && StateController.isActive((EntityPlayer) entity, ElytraUpgrade.INSTANCE)) {
       if (shouldStop && !entity.world.isRemote) {
-        DarkSteelController.setActive((EntityPlayer) entity, ElytraUpgrade.INSTANCE, false);
+        StateController.setActive((EntityPlayer) entity, ElytraUpgrade.INSTANCE, false);
       }
       return true;
     } else {
