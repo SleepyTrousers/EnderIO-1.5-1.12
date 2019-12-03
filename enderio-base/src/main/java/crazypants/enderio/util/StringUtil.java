@@ -25,8 +25,13 @@ public class StringUtil {
     }
   }
 
-  public static void sendEnabledChatMessage(final EntityPlayer player, String messageBase, boolean isActive) {
-    player.sendStatusMessage(new TextComponentTranslation(messageBase.concat(isActive ? ".enabled" : ".disabled")), true);
+  @SuppressWarnings("null")
+  public static final @Nonnull String trim(@Nonnull String s) {
+    return s.trim();
+  }
+
+  public static void sendEnabledChatMessage(final @Nonnull EntityPlayer player, @Nonnull String messageBase, boolean isActive) {
+    player.sendStatusMessage(new TextComponentTranslation(messageBase + (isActive ? ".enabled" : ".disabled")), true);
   }
 
 }

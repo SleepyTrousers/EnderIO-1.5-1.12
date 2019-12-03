@@ -175,7 +175,7 @@ public class DSUGui extends GuiContainerBaseEIO<DSUContainer> implements DSURemo
     if (getOwner().activeTab.isAnvil() && anvil.keyTyped(c, key)) {
       return;
     }
-    if (key == KeyTracker.dsu.getKeyCode()) {
+    if (key == KeyTracker.dsu.getBinding().getKeyCode()) {
       if (!hideOverlays()) {
         this.mc.player.closeScreen();
       }
