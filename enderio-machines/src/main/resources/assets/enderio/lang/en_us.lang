@@ -224,7 +224,7 @@ tile.block_aversion_obelisk.name=Aversion Obelisk
 tile.block_aversion_obelisk.tooltip.detailed.line1=Prevents mobs from spawning within its area of effect
 
 tile.block_inhibitor_obelisk.name=Inhibitor Obelisk
-tile.block_inhibitor_obelisk.tooltip.detailed.line1=Prevents teleporting within  its area of effect
+tile.block_inhibitor_obelisk.tooltip.detailed.line1=Prevents teleporting within its area of effect
 
 tile.block_relocator_obelisk.name=Relocator Obelisk
 tile.block_relocator_obelisk.tooltip.detailed.line1=Relocates mobs that spawn within its area of effect towards it
