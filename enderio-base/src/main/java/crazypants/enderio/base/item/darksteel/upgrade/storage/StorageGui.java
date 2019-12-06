@@ -83,7 +83,7 @@ public class StorageGui extends GuiContainerBaseEIO<StorageContainer> implements
 
   @Override
   protected void keyTyped(char c, int key) throws IOException {
-    if (key == KeyTracker.inventory.getKeyCode()) {
+    if (key == KeyTracker.inventory.getBinding().getKeyCode()) {
       if (!hideOverlays()) {
         this.mc.player.closeScreen();
       }

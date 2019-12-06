@@ -16,6 +16,7 @@ import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManage
 import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.jump.JumpUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.nightvision.NightVisionUpgrade;
+import crazypants.enderio.base.item.darksteel.upgrade.sound.SoundDetectorUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.stepassist.StepAssistUpgrade;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
@@ -311,6 +312,10 @@ public class DarkSteelController {
 
   public static boolean isTopActive(@Nonnull EntityPlayer player) {
     return ItemUtil.getOrCreateNBT(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD)).hasKey(TheOneProbeUpgrade.PROBETAG);
+  }
+
+  public static boolean isSoundDetectorUpgradeEquipped(EntityPlayer player) {
+    return SoundDetectorUpgrade.INSTANCE.hasUpgrade(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD));
   }
 
 }
