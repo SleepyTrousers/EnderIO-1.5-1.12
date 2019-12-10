@@ -43,7 +43,7 @@ public class RecipeFactory {
     this.domain = domain;
   }
 
-  private InputStream getResource(ResourceLocation resourceLocation) {
+  private InputStream getResource(ResourceLocation resourceLocation) throws IOException {
     final ModContainer container = Loader.instance().activeModContainer();
     if (container != null) {
       final String resourcePath = String.format("/%s/%s/%s", "assets", resourceLocation.getResourceDomain(), resourceLocation.getResourcePath());
@@ -51,7 +51,7 @@ public class RecipeFactory {
       if (resourceAsStream != null) {
         return resourceAsStream;
       } else {
-        throw new RuntimeException("Could not find resource " + resourceLocation);
+        throw new IOException("Could not find resource " + resourceLocation);
       }
     } else {
       throw new RuntimeException("Failed to find current mod while looking for resource " + resourceLocation);
@@ -85,8 +85,6 @@ public class RecipeFactory {
 
   public <T extends IRecipeRoot> T readCoreFile(T target, String rootElement, String fileName) throws IOException, XMLStreamException {
     final ResourceLocation coreRL = new ResourceLocation(domain, ASSETS_FOLDER_CONFIG + fileName);
-    final File coreFL = new File(configDirectory, fileName);
-    copyCore(coreRL, coreFL);
 
     Log.debug("Reading core recipe file " + fileName);
     try (InputStream coreFileStream = getResource(coreRL)) {
@@ -208,7 +206,7 @@ public class RecipeFactory {
   public void cleanFolder(String folderName) {
     File folder = new File(configDirectory, folderName);
     if (folder.exists()) {
-      String[] list = folder.list((file, name) -> name.toLowerCase(Locale.ENGLISH).endsWith(".xml"));
+      String[] list = folder.list((file, name) -> name.toLowerCase(Locale.ENGLISH).endsWith(".xml") || name.toLowerCase(Locale.ENGLISH).endsWith(".pdf"));
       if (list != null) {
         for (String name : list) {
           File file = new File(folder, name);
@@ -225,7 +223,7 @@ public class RecipeFactory {
       file.setWritable(true, true);
       try (OutputStream schemaOut = new FileOutputStream(file)) {
         IOUtils.copy(schemaIn, schemaOut);
-        file.setWritable(false, false);
+        // file.setWritable(false, false);
       }
     } catch (IOException e) {
       Log.error("Copying default recipe file from " + resourceLocation + " to " + file + " failed. Reason:");

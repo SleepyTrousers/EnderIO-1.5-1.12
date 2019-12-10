@@ -14,6 +14,7 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
         classpath "gradle.plugin.net.intellisun:modDependencies:1.0.1-alpha.2" // https://github.com/IntelliSun-MC/modDependencies
         classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.3'
+        classpath 'gradle.plugin.de.fntsoftware.gradle:markdown-to-pdf:1.1.0' // https://github.com/fntsoftware/gradle-plugin-markdown2pdf
     }
 }
 
@@ -27,6 +28,19 @@ apply plugin: 'eclipse'
 // We use these to mess with the eclipse .classpath file
 import org.gradle.plugins.ide.eclipse.model.AbstractClasspathEntry
 import org.gradle.plugins.ide.eclipse.model.ProjectDependency
+
+class CustomPdfTask extends de.fntsoftware.gradle.MarkdownToPdfTask {
+	// TODO: We shouldn't need to pull in markdown-to-pdf at all, with a bit of cleanup
+	// this task can be implemented from scratch using just flexmark.
+	protected String buildHtml() {
+		if (this.inputFile.exists()) {
+			return "<html><head></head><body><div style='white-space:pre-wrap; font-family:monospace;'>${groovy.xml.XmlUtil.escapeXml(this.inputFile.text)}</div></body></html>"
+		}
+		else {
+			throw new InvalidUserDataException("Inputfile does not exist.")
+		}
+	}
+}
 
 // More user properties
 ext.user = parseConfig(file('user.properties'))
@@ -168,6 +182,22 @@ allprojects {
        workingDir projectDir
        commandLine 'keytool', '-genkey', '-alias', 'signFiles', '-keystore', 'eiostore.jks', '-storepass', '123456', '-noprompt', '-dname', 'CN='+getCN(), '-keypass', '123456'
     }
+
+	// Convert the core recipes to pdf so the users won't have editable recipe files in their
+	// config folder. Crude, but it prevents a common mistake. BTW, setting those files to
+	// read-only works in theory, but all common launchers fail to handle read-only files
+	// correctly.
+	project.fileTree([dir: new File(project.sourceSets.main.output.resourcesDir, "assets/enderio/config/recipes"), include: '*.xml']).files.each { file ->
+	  def baseFilename = file.name.take(file.name.lastIndexOf('.'))
+	  def taskName = baseFilename.toLowerCase()
+	
+	  def pdfTask = project.tasks.create("${taskName}ToPDF", CustomPdfTask) {}
+	
+	  pdfTask.inputFile  = new File(new File(project.sourceSets.main.output.resourcesDir, "assets/enderio/config/recipes"), "${baseFilename}.xml")
+	  pdfTask.outputFile = new File(new File(project.sourceSets.main.output.resourcesDir, "assets/enderio/config/recipes"), "${baseFilename}.pdf")
+	
+	  jar.dependsOn pdfTask
+	}
 
     // Sign the jar with the new key store
     task signJar(type: SignJar, dependsOn: reobfJar) {

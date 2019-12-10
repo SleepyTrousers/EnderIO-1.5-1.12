@@ -62,7 +62,9 @@ public final class RecipeLoader {
     recipeFactory.createFolder(RECIPES_ROOT);
     recipeFactory.createFolder(RECIPES_USER);
     recipeFactory.createFolder(RECIPES_EXAMPLES);
-    recipeFactory.placeXSD(RECIPES_ROOT);
+    if (Log.isInDev()) {
+      recipeFactory.placeXSD(RECIPES_ROOT);
+    }
     recipeFactory.placeXSD(RECIPES_USER);
     recipeFactory.placeXSD(RECIPES_EXAMPLES);
 
@@ -283,6 +285,7 @@ public final class RecipeLoader {
 
   private static <T extends IRecipeRoot> T readCoreFile(T target, final RecipeFactory recipeFactory, String filename) {
     try {
+      recipeFactory.copyCore(filename + (Log.isInDev() ? EXT : ".pdf"));
       final T recipes = recipeFactory.readCoreFile(target, RECIPES_ROOT, filename + EXT);
       if (recipes.isValid()) {
         recipes.enforceValidity();
