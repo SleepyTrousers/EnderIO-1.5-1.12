@@ -168,7 +168,7 @@ allprojects {
     // Build the key store for jar signing
     task mkKeyStore(type: Exec) {
        workingDir projectDir
-       commandLine 'keytool', '-genkey', '-alias', 'signFiles', '-keystore', 'eiostore.jks', '-storepass', '123456', '-noprompt', '-dname', 'CN='+getCN(), '-keypass', '123456'
+       commandLine 'keytool', '-genkey', '-storetype', 'PKCS12', '-alias', 'signFiles', '-keystore', 'eiostore.jks', '-storepass', '123456', '-noprompt', '-dname', 'CN='+getCN(), '-keypass', '123456'
     }
 
 	// Convert the core recipes to pdf so the users won't have editable recipe files in their
@@ -272,7 +272,7 @@ allprojects {
                     allprojects { p ->
                         p.curseforge.curseProjects.findAll { it.uploadTask }.findAll { it.uploadTask.projectId == p.curse_projectId }.each { curseProject ->
                             Task reobfTask = p.tasks.findByName('rmKeyStore')
-                            println "Forcing dependency of ${curseProject.uploadTask} to ${reobfTask}"
+                            // println "Forcing dependency of ${curseProject.uploadTask} to ${reobfTask}"
                             curseProject.uploadTask.dependsOn.clear()
                             curseProject.uploadTask.dependsOn reobfTask
                         }
