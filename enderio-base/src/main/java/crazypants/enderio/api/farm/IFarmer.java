@@ -71,7 +71,7 @@ public interface IFarmer {
    * @return An itemstack with a size of one or an empty itemstack.
    */
   default @Nonnull ItemStack takeSeedFromSupplies(@Nonnull BlockPos pos, boolean simulate) {
-    return takeSeedFromSupplies(ItemStack.EMPTY, pos, false);
+    return takeSeedFromSupplies(ItemStack.EMPTY, pos, simulate);
   }
 
   default @Nonnull ItemStack takeSeedFromSupplies(@Nonnull BlockPos pos) {
