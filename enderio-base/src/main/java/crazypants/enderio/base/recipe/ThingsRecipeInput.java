@@ -104,12 +104,17 @@ public class ThingsRecipeInput implements IRecipeInput {
 
   @Override
   public boolean isValid() {
-    return things.isPotentiallyValid();
+    return stackSize > 0 && things.isPotentiallyValid();
   }
 
   @Override
   public void shrinkStack(int count) {
     stackSize -= count;
+  }
+
+  @Override
+  public int getStackSize() {
+    return stackSize;
   }
 
 }

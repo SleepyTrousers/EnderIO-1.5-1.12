@@ -273,7 +273,7 @@ public class VatRecipe implements IRecipe {
   public int getNumConsumed(ItemStack item) {
     for (IRecipeInput input : inputs) {
       if (item != null && input.isInput(item)) {
-        return input.getInput().getCount();
+        return input.getStackSize();
       }
     }
     return 1;

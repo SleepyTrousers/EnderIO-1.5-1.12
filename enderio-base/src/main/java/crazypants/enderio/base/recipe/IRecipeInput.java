@@ -12,6 +12,10 @@ public interface IRecipeInput {
 
   boolean isFluid();
 
+  /**
+   * 
+   * @return A copy of the {@link ItemStack} that primarily represents this input. This may not be a stack of the only item that this input accepts.
+   */
   @Nonnull
   ItemStack getInput();
 
@@ -28,6 +32,8 @@ public interface IRecipeInput {
   ItemStack[] getEquivelentInputs();
 
   boolean isValid();
+
+  int getStackSize();
 
   void shrinkStack(int count);
 

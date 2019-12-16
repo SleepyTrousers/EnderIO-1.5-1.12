@@ -122,7 +122,7 @@ public class AlloyRecipeManager extends ManyToOneRecipeManager {
     if (recipe.getInputs().length >= 2 && !recipe.isDedupeInput() && !recipe.isSynthetic()) {
       NNList<Things> inputs = new NNList<>();
       for (int i = 0; i < recipe.getInputs().length; i++) {
-        ItemStack input = recipe.getInputs()[i].getInput().copy();
+        ItemStack input = recipe.getInputs()[i].getInput();
         Things inputThing = new Things();
         inputThing.add(input);
         inputThing.setSize(input.getCount());

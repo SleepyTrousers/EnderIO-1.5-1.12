@@ -50,7 +50,7 @@ public class Recipe implements IRecipe {
 
     List<IRecipeInput> requiredInputs = new ArrayList<>();
     for (IRecipeInput input : inputs) {
-      if (input.getFluidInput() != null || Prep.isValid(input.getInput())) {
+      if (input.isValid()) {
         requiredInputs.add(input.copy()); // expensive (has ItemStack.copy() inside)
       }
     }
@@ -84,7 +84,7 @@ public class Recipe implements IRecipe {
           IRecipeInput required = iterator.next();
           if (required.isInput(input.item)) {
             required.shrinkStack(input.item.getCount());
-            if (Prep.isInvalid(required.getInput())) {
+            if (required.getStackSize() <= 0) {
               iterator.remove();
             }
             iterator = null;

@@ -65,7 +65,7 @@ public class RecipeInput implements IRecipeInput {
 
   @Override
   public @Nonnull ItemStack getInput() {
-    return input;
+    return input.copy();
   }
 
   @Override
@@ -126,17 +126,17 @@ public class RecipeInput implements IRecipeInput {
 
   @Override
   public boolean isValid() {
-    if (isFluid()) {
-      return fluid != null && fluid.getFluid() != null;
-    } else {
-      return Prep.isValid(input);
-    }
-
+    return (fluid != null && fluid.getFluid() != null) || Prep.isValid(input);
   }
 
   @Override
   public void shrinkStack(int count) {
     input.shrink(count);
+  }
+
+  @Override
+  public int getStackSize() {
+    return input.getCount();
   }
 
 }

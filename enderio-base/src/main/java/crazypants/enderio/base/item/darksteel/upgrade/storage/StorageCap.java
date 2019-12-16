@@ -147,20 +147,4 @@ public class StorageCap extends ItemStackHandler {
     return this;
   }
 
-  public void dropAll(boolean wipeOriginal) {
-    if (!player.world.isRemote) {
-      for (int slot = 0; slot < getSlots(); slot++) {
-        final ItemStack stack = getStackInSlot(slot);
-        if (Prep.isValid(stack)) {
-          if (!player.inventory.addItemStackToInventory(stack)) {
-            player.dropItem(stack, true);
-          }
-          if (wipeOriginal) {
-            setStackInSlot(slot, Prep.getEmpty());
-          }
-        }
-      }
-    }
-  }
-
 }

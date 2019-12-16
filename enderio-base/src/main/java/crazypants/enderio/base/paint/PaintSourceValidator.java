@@ -17,7 +17,7 @@ import net.minecraft.item.ItemStack;
 
 public class PaintSourceValidator {
 
-  public static PaintSourceValidator instance = new PaintSourceValidator();
+  public static final PaintSourceValidator instance = new PaintSourceValidator();
 
   private final List<RecipeInput> whitelist = new ArrayList<RecipeInput>();
   private final List<RecipeInput> blacklist = new ArrayList<RecipeInput>();

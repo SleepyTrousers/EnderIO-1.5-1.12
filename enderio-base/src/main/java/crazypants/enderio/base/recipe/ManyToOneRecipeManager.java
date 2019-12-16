@@ -34,7 +34,7 @@ public class ManyToOneRecipeManager {
       Log.warn("Invalid null recipe found for " + managerName);
     } else if (RecipeConfig.createSyntheticRecipes.get() //
         && rec.getInputs().length == 1 && !rec.getInputs()[0].isFluid()
-        && rec.getInputs()[0].getInput().getCount() <= (rec.getInputs()[0].getInput().getMaxStackSize() / 3) && rec.getOutputs().length == 1
+        && rec.getInputs()[0].getStackSize() <= (rec.getInputs()[0].getInput().getMaxStackSize() / 3) && rec.getOutputs().length == 1
         && !rec.getOutputs()[0].isFluid() //
         && rec.getOutputs()[0].getOutput().getCount() <= (rec.getOutputs()[0].getOutput().getMaxStackSize() / 3)) {
 
@@ -51,13 +51,13 @@ public class ManyToOneRecipeManager {
       IRecipeInput in = rec.getInputs()[0];
 
       IRecipeInput in2 = in.copy();
-      in2.shrinkStack(-in.getInput().getCount());
+      in2.shrinkStack(-in.getStackSize());
       RecipeOutput out2 = new RecipeOutput(out.getOutput(), out.getChance(), out.getExperiance());
       out2.getOutput().grow(out.getOutput().getCount());
 
       IRecipeInput in3 = in.copy();
-      in3.shrinkStack(-in.getInput().getCount());
-      in3.shrinkStack(-in.getInput().getCount());
+      in3.shrinkStack(-in.getStackSize());
+      in3.shrinkStack(-in.getStackSize());
       RecipeOutput out3 = new RecipeOutput(out.getOutput(), out.getChance(), out.getExperiance());
       out3.getOutput().grow(out.getOutput().getCount());
       out3.getOutput().grow(out.getOutput().getCount());
@@ -75,7 +75,7 @@ public class ManyToOneRecipeManager {
       if (managerName.equals("Alloy Smelter") && rec.getInputs().length >= 2) {
         NNList<Things> inputs = new NNList<>();
         for (int i = 0; i < rec.getInputs().length; i++) {
-          ItemStack input = rec.getInputs()[i].getInput().copy();
+          ItemStack input = rec.getInputs()[i].getInput();
           Things inputThing = new Things();
           inputThing.add(input);
           inputThing.setSize(input.getCount());
