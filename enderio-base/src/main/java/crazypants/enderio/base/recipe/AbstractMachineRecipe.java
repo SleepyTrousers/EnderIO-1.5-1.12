@@ -79,17 +79,17 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
     if (required.isInput(available.item) && (required.getSlotNumber() == -1 || required.getSlotNumber() == available.slotNumber)) {
 
       ItemStack availableStack = available.item;
-      ItemStack requiredStack = required.getInput();
+      ItemStack requiredStack = required.getInput(); // this can be a COPY!
 
       ItemStack consumedStack = requiredStack.copy();
       consumedStack.setCount(Math.min(requiredStack.getCount(), availableStack.getCount()));
 
-      requiredStack.shrink(consumedStack.getCount());
+      required.shrinkStack(consumedStack.getCount());
       availableStack.shrink(consumedStack.getCount());
 
       consumedInputs.add(new MachineRecipeInput(available.slotNumber, consumedStack));
 
-      if (Prep.isInvalid(requiredStack)) {
+      if (Prep.isInvalid(required.getInput())) {
         // Fully met the requirement
         return true;
       }
