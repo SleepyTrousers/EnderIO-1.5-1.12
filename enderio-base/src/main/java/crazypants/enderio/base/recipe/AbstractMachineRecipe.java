@@ -1,5 +1,6 @@
 package crazypants.enderio.base.recipe;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -7,11 +8,14 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.util.MathUtil;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public abstract class AbstractMachineRecipe implements IMachineRecipe {
+
+  private static final @Nonnull ResultStack[] EMPTY_RESULT = new ResultStack[0];
 
   @Override
   public int getEnergyRequired(@Nonnull NNList<MachineRecipeInput> inputs) {
@@ -40,20 +44,16 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
   @Override
   public @Nonnull NNList<MachineRecipeInput> getQuantitiesConsumed(@Nonnull NNList<MachineRecipeInput> inputs) {
     IRecipe recipe = getRecipeForInputs(RecipeLevel.IGNORE, inputs);
-    NNList<MachineRecipeInput> result = new NNList<MachineRecipeInput>();
+    NNList<MachineRecipeInput> result = new NNList<>();
 
     // Need to make copies so we can reduce their values as we go
-    MachineRecipeInput[] availableInputs = new MachineRecipeInput[inputs.size()];
-    int i = 0;
+    List<MachineRecipeInput> availableInputs = new ArrayList<>();
     for (MachineRecipeInput available : inputs) {
-      availableInputs[i] = available.copy();
-      ++i;
+      availableInputs.add(available.copy());
     }
-    IRecipeInput[] requiredIngredients = new IRecipeInput[recipe.getInputs().length];
-    i = 0;
+    List<IRecipeInput> requiredIngredients = new ArrayList<>();
     for (IRecipeInput ri : recipe.getInputs()) {
-      requiredIngredients[i] = ri.copy();
-      ++i;
+      requiredIngredients.add(ri.copy());
     }
 
     // For each input required by the recipe got through the available machine inputs and consume them
@@ -66,6 +66,7 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
         }
       }
     }
+
     return result;
   }
 
@@ -76,7 +77,7 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
       return true;
     }
 
-    if (required.isInput(available.item) && (required.getSlotNumber() == -1 || required.getSlotNumber() == available.slotNumber)) {
+    if (required.isInput(available.item) && MathUtil.isAny(required.getSlotNumber(), -1, available.slotNumber)) {
 
       ItemStack availableStack = available.item;
 
@@ -98,10 +99,7 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
   }
 
   protected boolean isValid(@Nonnull MachineRecipeInput input) {
-    if (Prep.isValid(input.item)) {
-      return true;
-    }
-    return input.fluid != null && input.fluid.amount > 0;
+    return Prep.isValid(input.item) || (input.fluid != null && input.fluid.amount > 0);
   }
 
   @Override
@@ -114,33 +112,32 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
     if (inputs.size() <= 0) {
       return false;
     }
-    IRecipe recipe = getRecipeForInputs(machineLevel, inputs);
-    return recipe != null;
+    return getRecipeForInputs(machineLevel, inputs) != null;
   }
 
   @Override
   public @Nonnull ResultStack[] getCompletedResult(long nextSeed, float chanceMultiplier, @Nonnull NNList<MachineRecipeInput> inputs) {
     if (inputs.size() <= 0) {
-      return new ResultStack[0];
+      return EMPTY_RESULT;
     }
     IRecipe recipe = getRecipeForInputs(RecipeLevel.IGNORE, inputs);
     if (recipe == null) {
-      return new ResultStack[0];
+      return EMPTY_RESULT;
     }
     RecipeOutput[] outputs = recipe.getOutputs();
     if (outputs.length == 0) {
-      return new ResultStack[0];
+      return EMPTY_RESULT;
     }
     NNList<ResultStack> result = new NNList<ResultStack>();
     Random rand = new Random(nextSeed);
     for (RecipeOutput output : outputs) {
       if (output.isFluid()) {
-        FluidStack fluidOutput = output.getFluidOutput();
+        final FluidStack fluidOutput = output.getFluidOutput();
         if (fluidOutput != null && (rand.nextFloat() < output.getChance() * chanceMultiplier)) {
-          result.add(new ResultStack(fluidOutput = fluidOutput.copy()));
+          result.add(new ResultStack(fluidOutput.copy()));
         }
       } else {
-        ItemStack stack = output.getOutput().copy();
+        final ItemStack stack = output.getOutput().copy();
         int stackSize = 0;
         for (int i = 0; i < stack.getCount(); i++) {
           if (rand.nextFloat() < output.getChance() * chanceMultiplier) {
@@ -153,7 +150,7 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
         }
       }
     }
-    return result.toArray(new ResultStack[0]);
+    return result.toArray(EMPTY_RESULT);
   }
 
 }

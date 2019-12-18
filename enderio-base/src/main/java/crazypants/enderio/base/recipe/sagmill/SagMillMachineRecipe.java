@@ -10,6 +10,7 @@ import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.RecipeBonusType;
 import crazypants.enderio.base.recipe.RecipeLevel;
+import crazypants.enderio.util.FuncUtil;
 
 public class SagMillMachineRecipe extends AbstractMachineRecipe {
 
@@ -35,15 +36,7 @@ public class SagMillMachineRecipe extends AbstractMachineRecipe {
 
   @Override
   public @Nonnull RecipeBonusType getBonusType(@Nonnull NNList<MachineRecipeInput> inputs) {
-    if (inputs.size() <= 0) {
-      return RecipeBonusType.NONE;
-    }
-    IRecipe recipe = getRecipeForInputs(RecipeLevel.IGNORE, inputs);
-    if (recipe == null) {
-      return RecipeBonusType.NONE;
-    } else {
-      return recipe.getBonusType();
-    }
+    return FuncUtil.runIf(getRecipeForInputs(RecipeLevel.IGNORE, inputs), recipe -> recipe.getBonusType(), RecipeBonusType.NONE);
   }
 
 }
