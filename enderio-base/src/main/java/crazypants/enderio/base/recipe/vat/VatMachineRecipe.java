@@ -35,6 +35,7 @@ public class VatMachineRecipe extends AbstractMachineRecipe {
     return MachineRecipeRegistry.VAT;
   }
 
+  // TODO: Check if this is really needed or if the super impl works as well
   @Override
   public @Nonnull NNList<MachineRecipeInput> getQuantitiesConsumed(@Nonnull NNList<MachineRecipeInput> inputs) {
     NNList<MachineRecipeInput> result = new NNList<MachineRecipeInput>();
@@ -53,6 +54,7 @@ public class VatMachineRecipe extends AbstractMachineRecipe {
     return result;
   }
 
+  // TODO: Check if this is really needed or if the super impl works as well
   @Override
   public @Nonnull ResultStack[] getCompletedResult(long nextSeed, float chanceMultiplier, @Nonnull NNList<MachineRecipeInput> inputs) {
     if (inputs.size() <= 0) {

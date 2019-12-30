@@ -44,4 +44,28 @@ public final class MathUtil {
     }
   }
 
+  public static boolean isAny(int valueToTest, int value1, int value2) {
+    return valueToTest == value1 || valueToTest == value2;
+  }
+
+  public static boolean isAny(int valueToTest, int value1, int value2, int value3) {
+    return valueToTest == value1 || valueToTest == value2 || valueToTest == value3;
+  }
+
+  public static boolean isAny(int valueToTest, int value1, int value2, int value3, int value4) {
+    return valueToTest == value1 || valueToTest == value2 || valueToTest == value3 || valueToTest == value4;
+  }
+
+  public static boolean isAny(long valueToTest, long value1, long value2) {
+    return valueToTest == value1 || valueToTest == value2;
+  }
+
+  public static boolean isAny(long valueToTest, long value1, long value2, long value3) {
+    return valueToTest == value1 || valueToTest == value2 || valueToTest == value3;
+  }
+
+  public static boolean isAny(long valueToTest, long value1, long value2, long value3, long value4) {
+    return valueToTest == value1 || valueToTest == value2 || valueToTest == value3 || valueToTest == value4;
+  }
+
 }
