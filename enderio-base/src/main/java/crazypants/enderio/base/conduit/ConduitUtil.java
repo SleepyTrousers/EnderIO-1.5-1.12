@@ -385,22 +385,24 @@ public class ConduitUtil {
     }
     IConduitBundle cb = (IConduitBundle) te;
     Set<EnumFacing> cons = new HashSet<EnumFacing>();
+    boolean conduitConnections = false;
     boolean hasInsulated = false;
     for (IClientConduit con : cb.getClientConduits()) {
       cons.addAll(con.getExternalConnections());
       if (ConduitRegistry.getNetwork(con).canConnectToAnything()) {
         hasInsulated = true;
       }
+      conduitConnections = conduitConnections || con.hasConduitConnections();
     }
-    if (cons.isEmpty() && !hasInsulated) {
+    if (cons.isEmpty() && !hasInsulated && !conduitConnections) {
       return;
     }
     if (cons.size() == 1) {
       EnumFacing facing = cons.iterator().next();
       if (facing != null) {
         PacketHandler.INSTANCE.sendToServer(new PacketOpenConduitUI(te, facing));
+        return;
       }
-      return;
     }
     ConduitRegistry.getConduitModObjectNN().openClientGui(world, new BlockPos(x, y, z), player, null, 0);
   }

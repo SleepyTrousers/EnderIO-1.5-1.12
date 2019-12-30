@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.io.IOException;
 import java.util.EnumMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -19,6 +20,7 @@ import crazypants.enderio.base.conduit.IClientConduit;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.PacketOpenConduitUI;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
@@ -30,6 +32,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -47,13 +50,16 @@ public class GuiExternalConnectionSelector extends GuiScreen {
   EnumMap<EnumFacing, Point> textPositions = new EnumMap<EnumFacing, Point>(EnumFacing.class);
   EnumMap<EnumFacing, ItemStack> stacks = new EnumMap<EnumFacing, ItemStack>(EnumFacing.class);
   EnumMap<EnumFacing, Point> stackPositions = new EnumMap<EnumFacing, Point>(EnumFacing.class);
+  EnumMap<EnumFacing, BlockPos> neighborPositions = new EnumMap<>(EnumFacing.class);
+
+  private long keyLock = Minecraft.getSystemTime() + 2000;
 
   public GuiExternalConnectionSelector(IConduitBundle cb) {
     this.cb = cb;
     cons = new HashSet<EnumFacing>();
-    for (IClientConduit con : cb.getClientConduits()) {
-      if (ConduitRegistry.getNetwork(con).canConnectToAnything()) {
-        Set<EnumFacing> conCons = con.getConduitConnections();
+    for (IClientConduit conduit : cb.getClientConduits()) {
+      if (ConduitRegistry.getNetwork(conduit).canConnectToAnything()) {
+        Set<EnumFacing> conCons = conduit.getConduitConnections();
         for (EnumFacing dir : EnumFacing.VALUES) {
           if (!conCons.contains(dir)) {
             cons.add(dir);
@@ -61,7 +67,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
         }
 
       } else {
-        cons.addAll(con.getExternalConnections());
+        cons.addAll(conduit.getExternalConnections());
       }
     }
   }
@@ -82,7 +88,8 @@ public class GuiExternalConnectionSelector extends GuiScreen {
       go(D);
     } else if (jon && keyCode == mc.gameSettings.keyBindJump.getKeyCode()) {
       go(EnumFacing.UP);
-    } else if (con && keyCode == mc.gameSettings.keyBindSneak.getKeyCode()) {
+    } else if (con && keyCode == mc.gameSettings.keyBindSneak.getKeyCode() && keyLock < Minecraft.getSystemTime()) {
+      // the player needs to hold this key to open the GUI, so don't close it on them instantly...
       go(EnumFacing.DOWN);
     }
   }
@@ -94,7 +101,23 @@ public class GuiExternalConnectionSelector extends GuiScreen {
   }
 
   private void go(EnumFacing dir) {
-    PacketHandler.INSTANCE.sendToServer(new PacketOpenConduitUI(cb.getEntity(), dir));
+    if (dir != null) {
+      if (neighborPositions.containsKey(dir)) {
+        final BlockPos goPos = neighborPositions.get(dir);
+
+        double d0 = goPos.getX() + .5 - mc.player.posX;
+        double d2 = goPos.getZ() + .5 - mc.player.posZ;
+        double d1 = goPos.getY() + .5 - (mc.player.posY + mc.player.getEyeHeight());
+
+        double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
+        mc.player.rotationPitch = MathHelper.wrapDegrees((float) (-(MathHelper.atan2(d1, d3) * (180D / Math.PI))));
+        mc.player.rotationYaw = MathHelper.wrapDegrees((float) (MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F);
+
+        ConduitRegistry.getConduitModObjectNN().openClientGui(mc.world, goPos, mc.player, null, 0);
+      } else {
+        PacketHandler.INSTANCE.sendToServer(new PacketOpenConduitUI(cb.getEntity(), dir));
+      }
+    }
   }
 
   protected void findBlockDataForDirection(@Nonnull EnumFacing direction) {
@@ -121,6 +144,21 @@ public class GuiExternalConnectionSelector extends GuiScreen {
           }
         } catch (Throwable t) {
         }
+      } else {
+        neighborPositions.put(direction, blockPos);
+        stacks.put(direction, new ItemStack(ModObject.itemConduitFacade.getItemNN())); // fallback
+        TileEntity te = world.getTileEntity(blockPos);
+        if (te instanceof IConduitBundle) {
+          IConduitBundle conduit = (IConduitBundle) te;
+          Iterator<IClientConduit> iterator = conduit.getClientConduits().iterator();
+          while (iterator.hasNext()) {
+            IClientConduit next = iterator.next();
+            if (next != null) {
+              stacks.put(direction, next.createItem());
+              break;
+            }
+          }
+        }
       }
     }
   }
@@ -129,14 +167,27 @@ public class GuiExternalConnectionSelector extends GuiScreen {
   public void initGui() {
     GuiButton b;
     for (EnumFacing dir : EnumFacing.VALUES) {
-      findBlockDataForDirection(dir);
-      Point p = getOffsetForDir(dir, cons.contains(dir));
-      textPositions.put(dir, new Point(p.x, p.y + BUTTON_HEIGHT + 1));
-      stackPositions.put(dir, new Point(p.x + 2, p.y + 2));
-      b = new GuiButton(dir.ordinal(), p.x, p.y, BUTTON_WIDTH, BUTTON_HEIGHT, (stacks.containsKey(dir) ? "  " : "") + dir.toString());
-      buttonList.add(b);
-      if (!cons.contains(dir)) {
-        b.enabled = false;
+      if (dir != null) {
+        findBlockDataForDirection(dir);
+        Point p = getOffsetForDir(dir, cons.contains(dir) || neighborPositions.containsKey(dir));
+        if (neighborPositions.containsKey(dir)) {
+          textPositions.put(dir, new Point(-3000, -3000));
+          int offset = (BUTTON_WIDTH - BUTTON_HEIGHT) / 2;
+          stackPositions.put(dir, new Point(p.x + 2 + offset, p.y + 2));
+          b = new GuiButton(dir.ordinal(), p.x + offset, p.y, BUTTON_HEIGHT, BUTTON_HEIGHT, "");
+          buttonList.add(b);
+        } else {
+          textPositions.put(dir, new Point(p.x, p.y + BUTTON_HEIGHT + 1));
+          stackPositions.put(dir, new Point(p.x + 2, p.y + 2));
+          b = new GuiButton(dir.ordinal(), p.x, p.y, BUTTON_WIDTH, BUTTON_HEIGHT, (stacks.containsKey(dir) ? "  " : "") + dir.toString());
+          buttonList.add(b);
+          if (!cons.contains(dir)) {
+            b.enabled = false;
+            if (dir.getFrontOffsetY() != 0 && !stacks.containsKey(dir)) {
+              b.visible = false;
+            }
+          }
+        }
       }
     }
   }
@@ -178,7 +229,7 @@ public class GuiExternalConnectionSelector extends GuiScreen {
     if (Minecraft.getMinecraft().player.getName().contains("direwolf20") && ((EnderIO.proxy.getTickCount() / 16) & 1) == 1) {
       txt = "You can also right-click the connector directly";
       x = width / 2 - (fontRenderer.getStringWidth(txt) / 2);
-      y = height / 2 + BUTTON_HEIGHT * 3 - 5;
+      y = (int) (height / 2 + BUTTON_HEIGHT * 2.75 - 5);
       drawString(fontRenderer, txt, x, y, ColorUtil.getARGB(Color.white));
     }
 
@@ -192,7 +243,9 @@ public class GuiExternalConnectionSelector extends GuiScreen {
       if (stacks.containsKey(dir)) {
         ItemStack stack = stacks.get(dir);
         Point p = stackPositions.get(dir);
-        itemRender.renderItemAndEffectIntoGUI(stack, p.x, p.y);
+        if (stack != null) {
+          itemRender.renderItemAndEffectIntoGUI(stack, p.x, p.y);
+        }
       }
     }
 
@@ -244,8 +297,8 @@ public class GuiExternalConnectionSelector extends GuiScreen {
       return new Point(x, y);
     } else {
 
-      int x = mx - BUTTON_WIDTH / 2 - dir.getFrontOffsetY() * (5 + BUTTON_WIDTH * 2);
-      int y = my - BUTTON_HEIGHT / 2 - (dir.getFrontOffsetY() * BUTTON_HEIGHT * 2);
+      int x = mx - BUTTON_WIDTH / 2;// - dir.getFrontOffsetY() * (5 + BUTTON_WIDTH * 2);
+      int y = (int) (my - BUTTON_HEIGHT / 2 - ((dir.getFrontOffsetY() * 4 + .5) * BUTTON_HEIGHT));
 
       if (dir == EnumFacing.DOWN) {
         con = enabled;
