@@ -20,7 +20,6 @@ import crazypants.enderio.base.gui.BlockSceneRenderer;
 import crazypants.enderio.base.item.coordselector.TelepadTarget;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.material.material.Material;
-import info.loenwind.autoconfig.factory.IValue;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
@@ -44,14 +43,12 @@ public class InfinityRecipeCategory implements IRecipeCategory<InfinityRecipeCat
   public static class InfinityRecipeWrapper implements IRecipeWrapper {
 
     private final @Nonnull BlockSceneRenderer bsr;
-    private final @Nonnull IValue<Float> dropchance;
     private int currentX = 0;
     private int currentY = 0;
 
-    public InfinityRecipeWrapper(@Nonnull Block block1, @Nonnull Block block2, @Nonnull IValue<Float> dropchance) {
+    public InfinityRecipeWrapper(@Nonnull Block block1, @Nonnull Block block2) {
       this.bsr = new BlockSceneRenderer(
           new NNList<>(Pair.of(new BlockPos(0, 0, 0), block1.getDefaultState()), Pair.of(new BlockPos(0, 1, 0), block2.getDefaultState())));
-      this.dropchance = dropchance;
     }
 
     @Override
@@ -70,7 +67,7 @@ public class InfinityRecipeCategory implements IRecipeCategory<InfinityRecipeCat
       bsr.drawScreen(x, y, w, h);
       GlStateManager.popMatrix();
 
-      final String text = "<" + (int) (dropchance.get() * 100) + "%";
+      final String text = "%";
       int stringWidth = minecraft.fontRenderer.getStringWidth(text);
       minecraft.fontRenderer.drawString(text, 59 - stringWidth / 2, 26, 0xFFFFFF, false);
 
@@ -139,10 +136,10 @@ public class InfinityRecipeCategory implements IRecipeCategory<InfinityRecipeCat
       @Override
       public void apply(@Nonnull Block block) {
         if (onFire) {
-          result.add(new InfinityRecipeWrapper(block, Blocks.FIRE, InfinityConfig.dropChance));
+          result.add(new InfinityRecipeWrapper(block, Blocks.FIRE));
         }
         if (onWater && fire_water != null) {
-          result.add(new InfinityRecipeWrapper(block, fire_water, InfinityConfig.dropChanceFirewater));
+          result.add(new InfinityRecipeWrapper(block, fire_water));
         }
       }
     });

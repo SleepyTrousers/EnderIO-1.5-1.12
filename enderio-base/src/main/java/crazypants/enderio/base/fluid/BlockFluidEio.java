@@ -11,6 +11,7 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.Callback;
 import com.enderio.core.common.util.NullHelper;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.FluidConfig;
 import crazypants.enderio.base.config.config.InfinityConfig;
 import crazypants.enderio.base.init.ModObject;
@@ -30,9 +31,11 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
@@ -77,13 +80,15 @@ public final class BlockFluidEio {
       return materialIn == Material.LAVA || materialIn == this.blockMaterial;
     }
 
+    public static final @Nonnull ResourceLocation LOOT_TABLE = new ResourceLocation(EnderIO.DOMAIN, "infinityfluid");
+
     @Override
     public void randomTick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Random random) {
       this.updateTick(world, pos, state, random);
-      if (InfinityConfig.inWorldCraftingFireWaterEnabled.get() && InfinityConfig.isEnabledInDimension(world.provider.getDimension())
-          && InfinityConfig.bedrock.get().contains(world.getBlockState(pos.down()).getBlock())
-          && RANDOM.nextFloat() <= InfinityConfig.dropChanceFirewater.get()) {
-        MaterialCraftingHandler.spawnInfinityPowder(world, pos);
+      if (world instanceof WorldServer && InfinityConfig.inWorldCraftingFireWaterEnabled.get()
+          && InfinityConfig.isEnabledInDimension(world.provider.getDimension())
+          && InfinityConfig.bedrock.get().contains(world.getBlockState(pos.down()).getBlock())) {
+        MaterialCraftingHandler.spawnInfinityPowder((WorldServer) world, pos, LOOT_TABLE);
       }
     }
 
@@ -215,6 +220,8 @@ public final class BlockFluidEio {
 
   static class NutrientDistillation extends BlockFluidEnder {
 
+    private static final @Nonnull String EIO_LAST_FOOD_BOOST = "eioLastFoodBoost";
+
     protected NutrientDistillation(@Nonnull Fluid fluid, @Nonnull Material material, int fogColor) {
       super(fluid, material, fogColor);
     }
@@ -224,9 +231,9 @@ public final class BlockFluidEio {
       if (!world.isRemote && entity instanceof EntityPlayerMP) {
         long time = entity.world.getTotalWorldTime();
         EntityPlayerMP player = (EntityPlayerMP) entity;
-        if (time % FluidConfig.nutrientFoodBoostDelay.get() == 0 && player.getEntityData().getLong("eioLastFoodBoost") != time) {
+        if (time % FluidConfig.nutrientFoodBoostDelay.get() == 0 && player.getEntityData().getLong(EIO_LAST_FOOD_BOOST) != time) {
           player.getFoodStats().addStats(1, 0.1f);
-          player.getEntityData().setLong("eioLastFoodBoost", time);
+          player.getEntityData().setLong(EIO_LAST_FOOD_BOOST, time);
         }
       }
       super.onEntityCollidedWithBlock(world, pos, state, entity);

@@ -1,0 +1,27 @@
+{
+  "pools": [
+    {
+      "rolls": 1,
+      "name": "infinityinworldcrafting",
+      "entries": [
+        {
+          "type": "item",
+          "name": "minecraft:air",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "enderio:use_things",
+              "name": "dustBedrock"
+            }
+          ],
+          "conditions": [
+            {
+              "chance": 0.5,
+              "condition": "minecraft:random_chance"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
