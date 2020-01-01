@@ -35,4 +35,9 @@ public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
     return new NNList<>(Rules.forSlot(EntityEquipmentSlot.HEAD), Rules.callbacksFor(this), Rules.itemTypeTooltip(EntityEquipmentSlot.HEAD));
   }
 
+  @Override
+  public boolean keybindingDefault() {
+    return true;
+  }
+
 }
