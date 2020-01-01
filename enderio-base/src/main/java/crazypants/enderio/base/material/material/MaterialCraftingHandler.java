@@ -1,14 +1,17 @@
 package crazypants.enderio.base.material.material;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.config.InfinityConfig;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.BlockFire;
@@ -22,6 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -33,6 +37,7 @@ public class MaterialCraftingHandler {
   private static final @Nonnull Random RANDOM = new Random();
   private static final @Nonnull Map<BlockPos, Long> fires = new HashMap<>();
   public static final @Nonnull ResourceLocation LOOT_TABLE = new ResourceLocation(EnderIO.DOMAIN, "infinity");
+  private static final @Nonnull Set<ResourceLocation> SEEN = new HashSet<>();
 
   @SubscribeEvent
   public static void on(NeighborNotifyEvent event) {
@@ -69,8 +74,17 @@ public class MaterialCraftingHandler {
   }
 
   public static void spawnInfinityPowder(final @Nonnull WorldServer world, final @Nonnull BlockPos pos, @Nonnull ResourceLocation table) {
-    for (ItemStack itemstack : world.getLootTableManager().getLootTableFromLocation(table).generateLootForPools(RANDOM,
-        new LootContext.Builder(world).build())) {
+    @SuppressWarnings("null")
+    final ResourceLocation subTable = new ResourceLocation(table.getResourceDomain(), table.getResourcePath() + "/"
+        + world.getBlockState(pos.down()).getBlock().getRegistryName().toString().replaceAll("[:]", "/").replaceAll("[^a-z0-9_/]", "_"));
+    LootTable lootTable = world.getLootTableManager().getLootTableFromLocation(subTable);
+    if (lootTable == LootTable.EMPTY_LOOT_TABLE) {
+      lootTable = world.getLootTableManager().getLootTableFromLocation(table);
+      if (SEEN.add(subTable)) {
+        Log.info("Would have used loot table " + subTable + " for infinity crafting but it doesn't exist.");
+      }
+    }
+    for (ItemStack itemstack : lootTable.generateLootForPools(RANDOM, new LootContext.Builder(world).build())) {
       if (itemstack != null && Prep.isValid(itemstack)) {
         double d0 = RANDOM.nextFloat() * 0.5F + 0.25D;
         double d1 = RANDOM.nextFloat() * 0.5F + 0.25D;
