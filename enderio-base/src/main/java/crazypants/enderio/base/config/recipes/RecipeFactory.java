@@ -61,7 +61,7 @@ public class RecipeFactory {
   public void placeXSD(String folderName) {
     final ResourceLocation xsdRL = new ResourceLocation(domain, "config/recipes/recipes.xsd");
     final File xsdFL = new File(configDirectory, folderName + "/recipes.xsd");
-    copyCore(xsdRL, xsdFL);
+    copyCore_dontMakeShittyCoreModsPlease(xsdRL, xsdFL);
   }
 
   public void createFolder(String name) {
@@ -103,7 +103,7 @@ public class RecipeFactory {
   public void copyCore(String fileName) {
     final ResourceLocation coreRL = new ResourceLocation(domain, ASSETS_FOLDER_CONFIG + fileName);
     final File coreFL = new File(configDirectory, fileName);
-    copyCore(coreRL, coreFL);
+    copyCore_dontMakeShittyCoreModsPlease(coreRL, coreFL);
   }
 
   public void createFileUser(String fileName) {
@@ -218,7 +218,7 @@ public class RecipeFactory {
     }
   }
 
-  private void copyCore(ResourceLocation resourceLocation, File file) {
+  private void copyCore_dontMakeShittyCoreModsPlease(ResourceLocation resourceLocation, File file) {
     try (InputStream schemaIn = getResource(resourceLocation)) {
       file.setWritable(true, true);
       try (OutputStream schemaOut = new FileOutputStream(file)) {
