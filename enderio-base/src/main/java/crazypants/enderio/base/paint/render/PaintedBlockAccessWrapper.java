@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.IBlockAccessWrapper;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.util.FacadeUtil;
@@ -17,16 +18,16 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
-public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
+public final class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
 
   private static final ConcurrentHashMap<Block, Boolean> teBlackList = new ConcurrentHashMap<Block, Boolean>();
 
   private static final ThreadLocal<PaintedBlockAccessWrapper> factory = new ThreadLocal<PaintedBlockAccessWrapper>() {
-	    @Override
-	    protected PaintedBlockAccessWrapper initialValue() {
-	      return new PaintedBlockAccessWrapper();
-	    }
-	  };
+    @Override
+    protected PaintedBlockAccessWrapper initialValue() {
+      return new PaintedBlockAccessWrapper();
+    }
+  };
 
   public static @Nonnull PaintedBlockAccessWrapper instance(@Nonnull IBlockAccess ba) {
     return factory.get().setWorld(ba);
@@ -49,20 +50,21 @@ public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
 
   @Override
   public boolean isSideSolid(@Nonnull BlockPos pos, @Nonnull EnumFacing side, boolean _default) {
-    IBlockState paintSource = getPaintSource(pos);
+    IBlockState paintSource = getPaintSource(wrapped.getBlockState(pos), pos);
     if (paintSource != null) {
       return paintSource.getBlock().isSideSolid(paintSource, this, pos, side);
     }
-    return super.isSideSolid(pos, side, _default);
+    return wrapped.isSideSolid(pos, side, _default);
   }
 
   @Override
   public TileEntity getTileEntity(@Nonnull BlockPos pos) {
-    IBlockState paintSource = getPaintSource(pos);
-    if (paintSource != null && paintSource != super.getBlockState(pos)) {
+    IBlockState state = wrapped.getBlockState(pos);
+    IBlockState paintSource = getPaintSource(state, pos);
+    if (paintSource != null && paintSource != state) {
       return createTileEntity(paintSource, pos.toImmutable());
     }
-    return super.getTileEntity(pos);
+    return wrapped.getTileEntity(pos);
   }
 
   public TileEntity getRealTileEntity(@Nonnull BlockPos pos) {
@@ -71,16 +73,11 @@ public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
 
   @Override
   public @Nonnull IBlockState getBlockState(@Nonnull BlockPos pos) {
-    IBlockState paintSource = getPaintSource(pos);
-    if (paintSource != null) {
-      return paintSource;
-    }
-    return super.getBlockState(pos);
+    IBlockState state = wrapped.getBlockState(pos);
+    return NullHelper.first(getPaintSource(state, pos), state);
   }
 
-  @SuppressWarnings("null")
-  private IBlockState getPaintSource(@Nonnull BlockPos pos) {
-    IBlockState state = super.getBlockState(pos);
+  private IBlockState getPaintSource(@Nonnull IBlockState state, @Nonnull BlockPos pos) {
     if (state.getBlock() instanceof IPaintable.IBlockPaintableBlock) {
       return ((IPaintable.IBlockPaintableBlock) state.getBlock()).getPaintSource(state, wrapped, pos);
     }
@@ -88,7 +85,7 @@ public class PaintedBlockAccessWrapper extends IBlockAccessWrapper {
   }
 
   private final Map<Block, TileEntity> teCache = new HashMap<Block, TileEntity>();
-  
+
   @SuppressWarnings("null")
   private TileEntity createTileEntity(IBlockState state, @Nonnull BlockPos pos) {
     Block block = state.getBlock();

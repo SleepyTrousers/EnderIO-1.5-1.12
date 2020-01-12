@@ -46,49 +46,54 @@ public class PaintWrangler {
     if (!memory.doPaint) {
       return false;
     }
-    if (memory.doActualState || memory.doExtendedState) {
-      final PaintedBlockAccessWrapper fakeWorld = PaintedBlockAccessWrapper.instance(blockAccess);
-      if (memory.doActualState) {
-        try {
-          extendedPaintSource = actualPaintSource = paintSource.getActualState(fakeWorld, pos);
-        } catch (Throwable t) {
-          Log.warn("Failed to get actual state of block " + paintSource.getBlock() + " to use as paint. Error while rendering: " + t);
-          memory.doActualState = false;
+    PaintedBlockAccessWrapper fakeWorld = null; // Mods may put this into their model, so we need to keep it around until we discard the model!
+    try {
+      if (memory.doActualState || memory.doExtendedState) {
+        fakeWorld = PaintedBlockAccessWrapper.instance(blockAccess);
+        if (memory.doActualState) {
+          try {
+            extendedPaintSource = actualPaintSource = paintSource.getActualState(fakeWorld, pos);
+          } catch (Throwable t) {
+            Log.warn("Failed to get actual state of block ", block, " to use as paint. Error while rendering: ", t);
+            memory.doActualState = false;
+          }
+        }
+        if (memory.doExtendedState) {
+          try {
+            extendedPaintSource = block.getExtendedState(actualPaintSource, fakeWorld, pos);
+          } catch (Throwable t) {
+            Log.warn("Failed to get extended state of block ", block, " to use as paint. Error while rendering: ", t);
+            memory.doExtendedState = false;
+          }
         }
       }
-      if (memory.doExtendedState) {
-        try {
-          extendedPaintSource = block.getExtendedState(actualPaintSource, fakeWorld, pos);
-        } catch (Throwable t) {
-          Log.warn("Failed to get extended state of block " + paintSource.getBlock() + " to use as paint. Error while rendering: " + t);
-          memory.doExtendedState = false;
-        }
-      }
-      fakeWorld.free();
-    }
 
-    final IBakedModel paintModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(actualPaintSource);
-    if (paintModel == Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel()) {
-      return false;
-    }
+      final IBakedModel paintModel = Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(actualPaintSource);
+      if (paintModel == Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getMissingModel()) {
+        return false;
+      }
 
-    final long positionRandom = MathHelper.getPositionRandom(pos);
-    final BlockRenderLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
-    for (BlockRenderLayer layer : quads.getBlockLayers()) {
-      if (layer == BREAKING
-          || paintSource.getBlock().canRenderInLayer(extendedPaintSource, NullHelper.notnullJ(layer, "'a == null || b(a)' gave null to b()"))) {
-        ForgeHooksClient.setRenderLayer(layer);
-        final String errors = quads.addUnfriendlybakedModel(layer, paintModel, extendedPaintSource, positionRandom);
-        if (errors != null) {
-          memory.doPaint = false;
-          Log.error("Failed to use block " + paintSource.getBlock() + " as paint. Error(s) while rendering: " + errors);
-          ForgeHooksClient.setRenderLayer(oldRenderLayer);
-          return false;
+      final long positionRandom = MathHelper.getPositionRandom(pos);
+      final BlockRenderLayer oldRenderLayer = MinecraftForgeClient.getRenderLayer();
+      for (BlockRenderLayer layer : quads.getBlockLayers()) {
+        if (layer == BREAKING || block.canRenderInLayer(paintSource, NullHelper.notnullJ(layer, "'a == null || b(a)' gave null to b()"))) {
+          ForgeHooksClient.setRenderLayer(layer);
+          final String errors = quads.addUnfriendlybakedModel(layer, paintModel, extendedPaintSource, positionRandom);
+          if (errors != null) {
+            memory.doPaint = false;
+            Log.error("Failed to use block ", block, " as paint. Error(s) while rendering: ", errors);
+            ForgeHooksClient.setRenderLayer(oldRenderLayer);
+            return false;
+          }
         }
       }
+      ForgeHooksClient.setRenderLayer(oldRenderLayer);
+      return true;
+    } finally {
+      if (fakeWorld != null) {
+        fakeWorld.free();
+      }
     }
-    ForgeHooksClient.setRenderLayer(oldRenderLayer);
-    return true;
   }
 
 }
