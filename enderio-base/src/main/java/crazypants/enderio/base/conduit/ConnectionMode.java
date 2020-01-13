@@ -49,6 +49,10 @@ public enum ConnectionMode {
     return this == IN_OUT || this == OUTPUT;
   }
 
+  public boolean isActive() {
+    return this != DISABLED;
+  }
+
   public @Nonnull String getLocalisedName() {
     return EnderIO.lang.localize(unlocalisedName);
   }
