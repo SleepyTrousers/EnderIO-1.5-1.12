@@ -183,6 +183,32 @@ public interface IConduit {
   @Nonnull
   ConnectionMode getConnectionMode(@Nonnull EnumFacing dir);
 
+  /**
+   * Gets the effective connection mode for the given direction.
+   * <p>
+   * This is a computed value that reflects both the selected mode and the state of the connection.
+   * 
+   * @param dir
+   *          the direction of the connection
+   * @return the connection mode (IN, OUT, IN_OUT, DISABLED or NONE)
+   */
+  default @Nonnull ConnectionMode getEffectiveConnectionMode(@Nonnull EnumFacing dir) {
+    return containsExternalConnection(dir) ? getConnectionMode(dir) : ConnectionMode.DISABLED;
+  }
+
+  /**
+   * Checks if the given direction has an external connection that can be acted upon.
+   * <p>
+   * Note that this does not mean that there is anything going on there, just that code is allowed to talk to the outside world there.
+   * 
+   * @param dir
+   *          the direction of the connection
+   * @return true if there is a connection that is not disabled
+   */
+  default boolean isActiveExternalConnection(@Nonnull EnumFacing dir) {
+    return getEffectiveConnectionMode(dir).isActive();
+  }
+
   // geometry (collision, a.k.a. server-side)
 
   boolean haveCollidablesChangedSinceLastCall();

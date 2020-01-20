@@ -136,7 +136,7 @@ public abstract class ContainerWiredCharger extends AbstractMachineContainer<Til
       }
     });
 
-    if (hasBaublesSlots()) {
+    if (hasBaublesSlots() && (baubles != null)) {
       for (int i = 0; i < baubles.getSizeInventory(); i++) {
         addSlotToContainer(new Slot(baubles, i, baublesOffset, 12 + i * 18) {
           @Override
