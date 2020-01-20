@@ -1,6 +1,5 @@
 package crazypants.enderio.powertools.machine.capbank;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -309,8 +308,8 @@ public class BlockCapBank extends BlockEio<TileCapBank>
       @Nonnull TileCapBank te) {
     super.onBlockPlaced(world, pos, state, player, te);
 
-    Collection<TileCapBank> neigbours = NetworkUtil.getNeigbours(te);
-    if (neigbours.isEmpty()) {
+    boolean neigbours = NetworkUtil.hasNeigbours(te);
+    if (!neigbours) {
       int heading = MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
       EnumFacing dir = getDirForHeading(heading);
       te.setDisplayType(dir, InfoDisplayType.LEVEL_BAR);

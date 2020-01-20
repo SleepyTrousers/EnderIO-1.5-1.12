@@ -125,9 +125,8 @@ public class TileCapBank extends TileEntityEio
     return network;
   }
 
-  public boolean setNetwork(ICapBankNetwork network) {
+  public void setNetwork(ICapBankNetwork network) {
     this.network = network;
-    return true;
   }
 
   public boolean canConnectTo(@Nonnull TileCapBank cap) {
