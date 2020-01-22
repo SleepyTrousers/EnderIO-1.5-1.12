@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
@@ -13,7 +14,7 @@ public final class Log {
 
   // private static final boolean inDev = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
   private static boolean inDev = System.getProperty("INDEV") != null;
-  // private static final boolean inDev = false;
+  private static boolean suppressDebugMessages = false;
 
   public static final Logger LOGGER = LogManager.getLogger(EnderIO.MODID);
 
@@ -32,7 +33,7 @@ public final class Log {
   public static void debug(Object... msg) {
     if (inDev) {
       LOGGER.info(() -> "INDEV: " + join(msg));
-    } else if (LOGGER.isDebugEnabled()) {
+    } else if (!suppressDebugMessages) {
       LOGGER.debug(() -> join(msg));
     }
   }
@@ -65,22 +66,46 @@ public final class Log {
   private Log() {
   }
 
-  @SubscribeEvent
-  public static void preInit(EnderIOLifecycleEvent.Config.Pre event) {
-    if (LOGGER.isDebugEnabled()) {
-      warn("========================================================");
-      warn("== Debug Logging is ENABLED ============================");
-      warn("======================================================== ");
-      warn("== This WILL slow down the game, so we recommend you  ==");
-      warn("== disable it unless you need it. A log level of INFO ==");
-      warn("== is enough for normal operation.                    ==");
-      warn("========================================================  ");
-    }
-  }
-
-  @SubscribeEvent
-  public static void preInit2(EnderIOLifecycleEvent.Config.Post event) {
+  @SubscribeEvent(priority = EventPriority.HIGHEST)
+  public static void preInit(EnderIOLifecycleEvent.Config.Post event) {
+    suppressDebugMessages = DiagnosticsConfig.debugSuppressDebugMessages.get();
     inDev |= DiagnosticsConfig.debugUpgradeDebugMessagesToInfo.get();
+    if (LOGGER.isDebugEnabled()) {
+      if (DiagnosticsConfig.debugComplainAboutForgeLogging.get()) {
+        Logger temp = LogManager.getLogger("");
+        temp.warn("========================================================");
+        temp.warn("== Forge Debug Logging is ENABLED ======================");
+        temp.warn("========================================================");
+        temp.warn("== This WILL slow down the game, so we recommend you  ==");
+        temp.warn("== disable it unless you need it. See:                ==");
+        temp.warn("== https://github.com/MinecraftForge/MinecraftForge/issues/6271");
+        temp.warn("========================================================");
+      }
+      if (suppressDebugMessages) {
+        info("========================================================");
+        info("== Ender IO Debug Logging is DISABLED ==================");
+        info("========================================================");
+        info("== This will not slow down the game, but you may miss ==");
+        info("== out on information needed to diagnose issues. For  ==");
+        info("== normal operation this is fine.                     ==");
+        info("========================================================");
+      } else {
+        warn("========================================================");
+        warn("== Ender IO Debug Logging is ENABLED ===================");
+        warn("========================================================");
+        warn("== This WILL slow down the game, so we recommend you  ==");
+        warn("== disable it unless you need it.                     ==");
+        warn("========================================================");
+      }
+    } else if (!suppressDebugMessages) {
+      warn("========================================================");
+      warn("== Forge Debug Logging is DISABLED but =================");
+      warn("== Ender IO Debug Logging is ENABLED ===================");
+      warn("========================================================");
+      warn("== This means that Forge will throw away those log    ==");
+      warn("== messages you asked Ender IO to generate.           ==");
+      warn("========================================================");
+    }
   }
 
   public static boolean isInDev() {

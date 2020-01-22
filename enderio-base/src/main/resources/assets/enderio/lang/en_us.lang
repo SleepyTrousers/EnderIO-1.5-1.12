@@ -1240,7 +1240,7 @@ enderio.loot.capacitor.entry.6=This "%s" is the property of Randalf the Ex-Tinke
 enderio.loot.capacitor.entry.7=Your "%s" can now be upgraded free of charge to "Capacitor 1". Press ok or abort to do so.
 enderio.loot.capacitor.entry.8=Put this "%s" into different machines to find out what it does. Or ask aunt Google.
 
-enderio.loot.capacitor.title.count=23
+enderio.loot.capacitor.title.count=24
 enderio.loot.capacitor.title.0=Remarkable Capacitor
 enderio.loot.capacitor.title.1=Unremarkable Capacitor
 enderio.loot.capacitor.title.2=Found Capacitor
@@ -1264,6 +1264,7 @@ enderio.loot.capacitor.title.19=Thing
 enderio.loot.capacitor.title.20=Something
 enderio.loot.capacitor.title.21=Nothing
 enderio.loot.capacitor.title.22=Help! I'm trapped in a video game!
+enderio.loot.capacitor.title.23=Help! I'm trapped in a video game factory!
 
 enderio.keybind.inventory=Open Armor Inventory
 enderio.keybind.inventory.none_equipped=No armor with inventory equipped
