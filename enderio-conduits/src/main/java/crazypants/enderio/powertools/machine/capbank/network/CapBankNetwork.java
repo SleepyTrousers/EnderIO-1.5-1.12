@@ -35,7 +35,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
@@ -85,65 +84,35 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
 
   // --------- Network Management
 
-  public void init(TileCapBank cap, Collection<TileCapBank> neighbours, World world) {
-    if (world.isRemote) {
+  public void init(TileCapBank cap) {
+    if (cap.getWorld().isRemote) {
       throw new UnsupportedOperationException();
     }
 
     type = cap.getType();
     inputControlMode = cap.getInputControlMode();
     outputControlMode = cap.getOutputControlMode();
-    for (TileCapBank con : neighbours) {
+    for (TileCapBank con : NetworkUtil.getAllNeigbours(cap)) {
       ICapBankNetwork network = con.getNetwork();
       if (network != null) {
         network.destroyNetwork();
       }
+      con.setNetwork(this);
+      addMember(con);
     }
-    setNetwork(world, cap);
     addEnergy(0); // ensure energy level is within bounds
     ServerTickHandler.addListener(this);
-  }
-
-  protected void setNetwork(World world, TileCapBank cap) {
-    if (cap == null) {
-      return;
-    }
-    Set<TileCapBank> work = new HashSet<TileCapBank>();
-    for (;;) {
-      ICapBankNetwork network = cap.getNetwork();
-      if (network != this) {
-        if (network != null) {
-          network.destroyNetwork();
-        }
-        if (cap.setNetwork(this)) {
-          addMember(cap);
-          NetworkUtil.getNeigbours(cap, work);
-        }
-      }
-      if (work.isEmpty()) {
-        return;
-      }
-      Iterator<TileCapBank> iter = work.iterator();
-      cap = iter.next();
-      iter.remove();
-    }
   }
 
   @Override
   public void destroyNetwork() {
     ServerTickHandler.removeListener(this);
     distributeEnergyToBanks();
-    TileCapBank cap = null;
     for (TileCapBank cb : capBanks) {
       cb.setNetwork(null);
-      if (cap == null) {
-        cap = cb;
-      }
     }
     capBanks.clear();
-    if (cap != null) {
-      PacketHandler.INSTANCE.sendToAll(new PacketNetworkStateResponse(this, true));
-    }
+    PacketHandler.INSTANCE.sendToAll(new PacketNetworkStateResponse(this, true));
   }
 
   @Override
@@ -190,7 +159,6 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
       if (!recs.isEmpty()) {
         addReceptors(recs);
       }
-
     }
   }
 
@@ -322,10 +290,8 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
     int energyPerCapBank = (int) (energyStored / capBanks.size());
     int remaining = (int) (energyStored % capBanks.size());
     for (TileCapBank cb : capBanks) {
-      cb.setEnergyStored(energyPerCapBank);
+      cb.setEnergyStored(energyPerCapBank + (remaining-- > 0 ? 1 : 0));
     }
-    TileCapBank cb = capBanks.get(0);
-    cb.setEnergyStored(cb.getEnergyStored() + remaining);
   }
 
   // ------ Power
