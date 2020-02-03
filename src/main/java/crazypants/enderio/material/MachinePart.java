@@ -9,7 +9,10 @@ import org.apache.commons.lang3.StringUtils;
 public enum MachinePart {
 
   MACHINE_CHASSI("machineChassi"),
-  BASIC_GEAR("basicGear");
+  BASIC_GEAR("basicGear"),
+  SOUL_MACHINE_CHASSIS("soulMachineChassi"),
+  END_STEEL_MACHINE_CHASSIS("endSteelMachineChassi");
+
 
   public final String unlocalisedName;
   public final String iconKey;
@@ -20,7 +23,7 @@ public enum MachinePart {
     this.iconKey = "enderio:" + unlocalisedName;
     this.oreDict = "item" + StringUtils.capitalize(unlocalisedName);
   }
-  
+
   public static void registerOres(Item item) {
     for (MachinePart m : values()) {
       OreDictionary.registerOre(m.oreDict, new ItemStack(item, 1, m.ordinal()));

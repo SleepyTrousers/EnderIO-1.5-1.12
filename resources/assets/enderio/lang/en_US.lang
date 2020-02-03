@@ -190,12 +190,22 @@ enderio.gas.gasTick=Gas/t
 enderio.itemMachinePart.name=Machine Parts
 enderio.machineChassi.name=Machine Chassis
 enderio.basicGear.name=Basic Gear
+enderio.soulMachineChassi.name=Soul Machine Chassis
+enderio.endSteelMachineChassi.name=End Steel Chassis
 enderio.pulsatingCrystal.name=Pulsating Crystal
 enderio.vibrantCrystal.name=Vibrant Crystal
 enderio.enderCrystal.name=Ender Crystal
 enderio.attractorCrystal.name=Enticing Crystal
 enderio.weatherCrystal.name=Weather Crystal
 enderio.darkGrindingBall.name=Dark Steel Ball
+enderio.electricalGrindingBall.name=Electrical Steel Ball
+enderio.energeticGrindingBall.name=Energetic Alloy Ball
+enderio.vibrantGrindingBall.name=Vibrant Alloy Ball
+enderio.redstoneGrindingBall.name=Redstone Alloy Ball
+enderio.conductiveGrindingBall.name=Conductive Iron Ball
+enderio.pulsatingGrindingBall.name=Pulsating Iron Ball
+enderio.soulariumGrindingBall.name=Soularium Ball
+enderio.endSteelGrindingBall.name=End Steel Ball
 enderio.darkGrindingBall.tooltip.detailed.line1=SAG Mill Grinding Ball
 enderio.darkGrindingBall.tooltip.detailed.line2=Main Output
 enderio.darkGrindingBall.tooltip.detailed.line3=Bonus Output
@@ -227,6 +237,9 @@ enderio.phasedIron.name=Pulsating Iron
 enderio.vibrantNugget.name=Vibrant Alloy Nugget
 enderio.darkSteel.name=Dark Steel
 enderio.soularium.name=Soularium
+enderio.endSteel.name=End Steel
+enderio.endSteelNugget.name=End Steel Nugget
+
 
 tile.blockIngotStorage.name=Ingot Storage
 tile.enderio.electricalSteel.name=Electrical Steel Block
@@ -238,6 +251,7 @@ tile.enderio.phasedIron.name=Pulsating Iron Block
 tile.enderio.vibrantNugget.name=Vibrant Nugget Block
 tile.enderio.darkSteel.name=Dark Steel Block
 tile.enderio.soularium.name=Soularium Block
+tile.enderio.endSteel.name=End Steel Block
 
 //Powder / Ingot
 enderio.powderCoal.name=Coal Powder

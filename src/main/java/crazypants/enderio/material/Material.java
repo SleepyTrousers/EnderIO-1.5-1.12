@@ -20,7 +20,17 @@ public enum Material {
   DARK_GRINDING_BALL("darkGrindingBall"),
   ENDER_CRYSTAL("enderCrystal", true),
   ATTRACTOR_CRYSTAL("attractorCrystal", true),
-  WEATHER_CRYSTAL("weatherCrystal", true);
+  WEATHER_CRYSTAL("weatherCrystal", true),
+  END_STEEL_NUGGET("endSteelNugget"),
+  ELECTRICAL_GRINDING_BALL("electricalGrindingBall"),
+  ENERGETIC_GRINDING_BALL("energeticGrindingBall"),
+  VIBRANT_GRINDING_BALL("vibrantGrindingBall"),
+  REDSTONE_GRINDING_BALL("redstoneGrindingBall"),
+  CONDUCTIVE_GRINDING_BALL("conductiveGrindingBall"),
+  PULSATING_GRINDING_BALL("pulsatingGrindingBall"),
+  SOULARIUM_GRINDING_BALL("soulariumGrindingBall"),
+  END_STEEL_GRINDING_BALL("endSteelGrindingBall");
+
 
   public final String unlocalisedName;
   public final String iconKey;
@@ -47,7 +57,7 @@ public enum Material {
   public ItemStack getStack() {
     return getStack(1);
   }
-  
+
   public ItemStack getStack(int size) {
     return new ItemStack(EnderIO.itemMaterial, size, ordinal());
   }

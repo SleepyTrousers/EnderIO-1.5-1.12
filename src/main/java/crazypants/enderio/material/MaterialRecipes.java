@@ -41,7 +41,7 @@ public class MaterialRecipes {
         OreDictionary.registerOre(powder.oreDictName, new ItemStack(EnderIO.itemPowderIngot, 1, powder.ordinal()));
       }
     }
-    
+
     for (Alloy alloy : Alloy.values()) {
       boolean isPrimaryName = true;
       for (String oreDictName : alloy.getOreIngots()) {
@@ -141,6 +141,22 @@ public class MaterialRecipes {
     //Balls
     ItemStack darkBall = new ItemStack(EnderIO.itemMaterial, 5, Material.DARK_GRINDING_BALL.ordinal());
     addShaped(darkBall, " s ", "sss", " s ", 's', darkSteel);
+    ItemStack electricalBall = new ItemStack(EnderIO.itemMaterial, 5, Material.ELECTRICAL_GRINDING_BALL.ordinal());
+    addShaped(electricalBall, " s ", "sss", " s ", 's', ELECTRICAL_STEEL.getStackIngot());
+    ItemStack energeticBall = new ItemStack(EnderIO.itemMaterial, 5, Material.ENERGETIC_GRINDING_BALL.ordinal());
+    addShaped(energeticBall, " s ", "sss", " s ", 's', ENERGETIC_ALLOY.getStackIngot());
+    ItemStack vibrantBall = new ItemStack(EnderIO.itemMaterial, 5, Material.VIBRANT_GRINDING_BALL.ordinal());
+    addShaped(vibrantBall, " s ", "sss", " s ", 's', PHASED_GOLD.getStackIngot());
+    ItemStack redstoneBall = new ItemStack(EnderIO.itemMaterial, 5, Material.REDSTONE_GRINDING_BALL.ordinal());
+    addShaped(redstoneBall, " s ", "sss", " s ", 's', REDSTONE_ALLOY.getStackIngot());
+    ItemStack conductiveBall = new ItemStack(EnderIO.itemMaterial, 5, Material.CONDUCTIVE_GRINDING_BALL.ordinal());
+    addShaped(conductiveBall, " s ", "sss", " s ", 's', CONDUCTIVE_IRON.getStackIngot());
+    ItemStack pulsatingBall = new ItemStack(EnderIO.itemMaterial, 5, Material.PULSATING_GRINDING_BALL.ordinal());
+    addShaped(pulsatingBall, " s ", "sss", " s ", 's', PHASED_IRON.getStackIngot());
+    ItemStack soulariumBall = new ItemStack(EnderIO.itemMaterial, 5, Material.SOULARIUM_GRINDING_BALL.ordinal());
+    addShaped(soulariumBall, " s ", "sss", " s ", 's', SOULARIUM.getStackIngot());
+    ItemStack endBall = new ItemStack(EnderIO.itemMaterial, 5, Material.END_STEEL_GRINDING_BALL.ordinal());
+    addShaped(endBall, " s ", "sss", " s ", 's', END_STEEL.getStackIngot());
 
     //Smelting
     ItemStack dustIron = new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_IRON.ordinal());
@@ -170,6 +186,13 @@ public class MaterialRecipes {
     ItemStack chassis = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.MACHINE_CHASSI.ordinal());
     String mat = Config.useSteelInChassi == true && steelIngots != null && !steelIngots.isEmpty() ? "ingotSteel" : "ingotIron";
     addShaped(chassis, "fif", "ici", "fif", 'f', Blocks.iron_bars, 'i', mat, 'c', capacitor);
+
+    ItemStack soulchassis = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.SOUL_MACHINE_CHASSIS.ordinal());
+    addShaped(soulchassis, "fif", "ici", "fif", 'f', Blocks.iron_bars, 'i', Alloy.SOULARIUM.getOreIngot(), 'c', capacitor);
+
+    ItemStack endchassis = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.END_STEEL_MACHINE_CHASSIS.ordinal());
+    addShaped(endchassis, "fif", "ici", "fif", 'f', Blocks.iron_bars, 'i', Alloy.END_STEEL.getOreIngot(), 'c', capacitor);
+
 
     // Basic Gear
     ItemStack gear = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.BASIC_GEAR.ordinal());
@@ -212,7 +235,7 @@ public class MaterialRecipes {
     ItemStack bread = new ItemStack(Items.bread, 1, 0);
 
     GameRegistry.addSmelting(flour, bread, 0.35f);
-    
+
     ItemStack enderios = EnderFood.ENDERIOS.getStack();
     addShapeless(enderios, Items.bowl, Items.milk_bucket, "cropWheat", "dustEnderPearl");
 
