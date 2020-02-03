@@ -2959,12 +2959,46 @@
   </recipeGroup>
 
   <grindingBalls>
+  
     <grindingBall id="Flint" grindingMultiplier="1.2" chanceMultiplier="1.25" powerMultiplier="0.85" durationRF="24000" >
       <itemStack oreDictionary="itemFlint" />
     </grindingBall>
+	
     <grindingBall id="DarkSteelBall" grindingMultiplier="1.5" chanceMultiplier="2" powerMultiplier="0.7" durationRF="100000" >
       <itemStack oreDictionary="itemDarkGrindingBall" />
     </grindingBall>
+	
+	<grindingBall id="ElectricalSteelBall" grindingMultiplier="1.2" chanceMultiplier="1.65" powerMultiplier="0.8" durationRF="40000" >
+      <itemStack oreDictionary="itemElectricalGrindingBall" />
+	</grindingBall>
+
+	<grindingBall id="EnergeticAlloyBall" grindingMultiplier="1.6" chanceMultiplier="1.1" powerMultiplier="1.1" durationRF="80000" >
+      <itemStack oreDictionary="itemEnergeticGrindingBall" />
+	</grindingBall>
+
+	<grindingBall id="VibrantAlloyBall" grindingMultiplier="1.75" chanceMultiplier="1.35" powerMultiplier="1.35" durationRF="80000" >
+      <itemStack oreDictionary="itemVibrantGrindingBall" />
+	</grindingBall>
+
+	<grindingBall id="RedstoneAlloyBall" grindingMultiplier="1.00" chanceMultiplier="1.00" powerMultiplier="0.35" durationRF="30000" >
+      <itemStack oreDictionary="itemRedstoneGrindingBall" />
+	</grindingBall>
+
+	<grindingBall id="ConductiveIronBall" grindingMultiplier="1.35" chanceMultiplier="1.00" powerMultiplier="1.0" durationRF="40000" >
+      <itemStack oreDictionary="itemConductiveGrindingBall" />
+	</grindingBall>
+
+	<grindingBall id="PulsatingIronBall" grindingMultiplier="1.0" chanceMultiplier="1.85" powerMultiplier="1.0" durationRF="100000" >
+      <itemStack oreDictionary="itemPulsatingGrindingBall" />
+	</grindingBall>
+
+	<grindingBall id="SoulariumBall" grindingMultiplier="1.2" chanceMultiplier="2.15" powerMultiplier="0.9" durationRF="80000" >
+      <itemStack oreDictionary="itemSoulariumGrindingBall" />
+	</grindingBall>
+
+	<grindingBall id="EndSteelBall" grindingMultiplier="1.4" chanceMultiplier="2.4" powerMultiplier="0.7" durationRF="75000" >
+      <itemStack oreDictionary="itemEndSteelGrindingBall" />
+	</grindingBall>
 
     <excludes>
       <itemStack modID="minecraft" itemName="glowstone" />
