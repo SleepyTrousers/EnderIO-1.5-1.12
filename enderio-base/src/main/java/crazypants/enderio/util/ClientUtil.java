@@ -4,6 +4,8 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIO;
 import net.minecraft.block.Block;
@@ -12,6 +14,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 
 public class ClientUtil {
@@ -45,9 +48,13 @@ public class ClientUtil {
     regRenderer(item, 0, name);
   }
 
-  private static final Random rand = new Random();
-
   public static void spawnParcticles(double posX, double posY, double posZ, int count, @Nonnull EnumParticleTypes particle) {
+    final World world = Minecraft.getMinecraft().world;
+    if (NullHelper.untrust(world) == null) {
+      // possible race condition during world join and/or disconnect
+      return;
+    }
+    final Random rand = world.rand;
     for (int i = 0; i < count; ++i) {
       double xOff, yOff, zOff, d0, d1, d2;
       if (particle == EnumParticleTypes.PORTAL) {
@@ -68,7 +75,7 @@ public class ClientUtil {
         d1 = rand.nextGaussian() * 0.02D;
         d2 = rand.nextGaussian() * 0.02D;
       }
-      Minecraft.getMinecraft().world.spawnParticle(particle, posX + xOff, posY + yOff, posZ + zOff, d0, d1, d2);
+      world.spawnParticle(particle, posX + xOff, posY + yOff, posZ + zOff, d0, d1, d2);
     }
   }
 
