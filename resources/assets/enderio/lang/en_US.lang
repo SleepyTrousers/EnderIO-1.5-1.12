@@ -210,6 +210,7 @@ enderio.darkGrindingBall.tooltip.detailed.line1=SAG Mill Grinding Ball
 enderio.darkGrindingBall.tooltip.detailed.line2=Main Output
 enderio.darkGrindingBall.tooltip.detailed.line3=Bonus Output
 enderio.darkGrindingBall.tooltip.detailed.line4=Power Reduction
+enderio.darkSteelRod.name=Dark Steel Rod
 
 tile.blockReinforcedObsidian.name=Reinforced Obsidian
 tile.blockReinforcedObsidian.tooltip.common.line1=Wither Proof
@@ -268,6 +269,7 @@ enderio.itemBasicCapacitor.name=Capacitor
 enderio.basicCapacitor.name=Basic Capacitor
 enderio.activatedCapacitor.name=Double-Layer Capacitor
 enderio.enderCapacitor.name=Octadic Capacitor
+enderio.melodicCapacitor.name=Melodic Capacitor
 
 enderio.machine.tooltip.upgrade=Machine Upgrade
 enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Increases energy storage and
@@ -712,6 +714,8 @@ skullZombieController.name=Z-Logic Controller
 skullZombieFrankenstien.name=Frank'N'Zombie
 skullEnderResonator.name=Ender Resonator 
 skullSentientEnder.name=Sentient Ender
+skullSkeletalContractor.name=Skeletal Contractor
+skullGuardianDiode.name=Guardian Diode
 
 item.itemSpawnEggEnderIO.name=Spawn
 
@@ -725,13 +729,28 @@ item.darkSteel_pickaxe.name=Dark Pick
 item.darkSteel_axe.name=Dark Axe
 item.darkSteel_shears.name=Dark Shears
 
+//End Steel
+item.endSteel_helmet.name=End Steel Helm
+item.endSteel_chestplate.name=End Steel Plate
+item.endSteel_leggings.name=End Steel Leggings
+item.endSteel_boots.name=End Steel Boots
+item.endSteel_sword.name=The Ender MKII
+item.endSteel_pickaxe.name=End Steel Pick
+item.endSteel_axe.name=End Steel Axe
+
 enderio.item.darkSteel.tooltip.lvs=lvs
 
 enderio.item.darkSteel_pickaxe.tooltip.effPowered=Efficiency when powered
 enderio.item.darkSteel_pickaxe.tooltip.effObs=Efficiency breaking obsidian
 enderio.item.darkSteel_pickaxe.tooltip.cost=cost
 
+enderio.item.endSteel_pickaxe.tooltip.effPowered=Efficiency when powered
+enderio.item.endSteel_pickaxe.tooltip.effObs=Efficiency breaking obsidian
+enderio.item.endSteel_pickaxe.tooltip.cost=cost
+
 enderio.item.darkSteel_axe.tooltip.multiHarvest=Sneak to harvest multiple logs
+enderio.item.endSteel_axe.tooltip.multiHarvest=Sneak to harvest multiple logs
+
 
 enderio.item.darkSteel_shears.tooltip.multiHarvest=Shears multiple blocks/sheep when empowered
 
@@ -739,11 +758,18 @@ enderio.item.darkSteel_sword.tooltip.line1=Increased skull and ender pearl drops
 enderio.item.darkSteel_sword.tooltip.line2=Endermen can't teleport once hit
 enderio.item.darkSteel_sword.tooltip.line3=+2 Damage when Powered
 
+enderio.item.endSteel_sword.tooltip.line1=Increased skull and ender pearl drops
+enderio.item.endSteel_sword.tooltip.line2=Endermen can't teleport once hit
+enderio.item.endSteel_sword.tooltip.line3=+2 Damage when Powered
+
 enderio.item.darkSteel_armor.tooltip.line1=Diamond level protection
 enderio.item.darkSteel_armor.tooltip.line2=when powered
 
-enderio.item.darkSteel_boots.tooltip.line1=Fall damage negated
-enderio.item.darkSteel_boots.tooltip.line2=when powered
+enderio.item.endSteel_armor.tooltip.line1=Diamond+ level protection
+enderio.item.endSteel_armor.tooltip.line2=when powered
+
+enderio.item.endSteel_boots.tooltip.line1=Fall damage negated
+enderio.item.endSteel_boots.tooltip.line2=when powered
 
 enderio.darksteel.upgrade.empowered_one.name=Empowered
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Power: $P
@@ -764,6 +790,11 @@ enderio.darksteel.upgrade.empowered_four.name=Empowered IV
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Power: $P
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D% damage absorbed
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=by power
+
+enderio.darksteel.upgrade.empowered_five.name=Empowered V
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line1=Power: $P
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line2=$D% damage absorbed
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line3=by power
 
 enderio.darksteel.upgrade.travel.name=Travel
 enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Hold shift and R-Click to teleport or

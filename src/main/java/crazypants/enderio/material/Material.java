@@ -29,7 +29,9 @@ public enum Material {
   CONDUCTIVE_GRINDING_BALL("conductiveGrindingBall"),
   PULSATING_GRINDING_BALL("pulsatingGrindingBall"),
   SOULARIUM_GRINDING_BALL("soulariumGrindingBall"),
-  END_STEEL_GRINDING_BALL("endSteelGrindingBall");
+  END_STEEL_GRINDING_BALL("endSteelGrindingBall"),
+  DARK_STEEL_ROD("darkSteelRod");
+
 
 
   public final String unlocalisedName;

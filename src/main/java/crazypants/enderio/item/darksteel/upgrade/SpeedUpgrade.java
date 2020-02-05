@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionHelper;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.item.endsteel.EndSteelItems;
 
 public class SpeedUpgrade extends AbstractUpgrade {
 
@@ -37,10 +38,10 @@ public class SpeedUpgrade extends AbstractUpgrade {
   protected float sprintMultiplier;
 
   public static boolean isEquipped(EntityPlayer player) {
-    ItemStack legs = player.getEquipmentInSlot(2);    
+    ItemStack legs = player.getEquipmentInSlot(2);
     return loadFromItem(legs) != null;
   }
-  
+
   public static SpeedUpgrade loadFromItem(ItemStack stack) {
     if(stack == null) {
       return null;
@@ -57,7 +58,7 @@ public class SpeedUpgrade extends AbstractUpgrade {
   private static ItemStack createUpgradeItem() {
     ItemStack pot = new ItemStack(Items.potionitem, 1, 0);
     int res = PotionHelper.applyIngredient(0, Items.nether_wart.getPotionEffect(new ItemStack(Items.nether_wart)));
-    res = PotionHelper.applyIngredient(res, PotionHelper.sugarEffect);    
+    res = PotionHelper.applyIngredient(res, PotionHelper.sugarEffect);
     pot.setItemDamage(res);
     return pot;
   }
@@ -74,7 +75,7 @@ public class SpeedUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelLeggings || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
+    if(stack == null || (stack.getItem() != DarkSteelItems.itemDarkSteelLeggings && stack.getItem() != EndSteelItems.itemEndSteelLeggings) || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
       return false;
     }
     SpeedUpgrade up = loadFromItem(stack);

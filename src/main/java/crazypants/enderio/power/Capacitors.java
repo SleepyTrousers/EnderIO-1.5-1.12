@@ -15,7 +15,10 @@ public enum Capacitors {
 
   ENDER_CAPACITOR(
       new BasicCapacitor(400, 500000, 100),
-      "enderCapacitor");
+      "enderCapacitor"),
+  MELODIC_CAPACITOR(
+	  new BasicCapacitor(640, 1000000, 180),
+	  "melodicCapacitor");
 
   public final ICapacitor capacitor;
   public final String unlocalisedName;

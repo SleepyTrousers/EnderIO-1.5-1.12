@@ -16,6 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.IDarkSteelItem;
+import crazypants.enderio.item.endsteel.IEndSteelItem;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.material.Material;
 
@@ -45,6 +46,12 @@ public class EnergyUpgrade extends AbstractUpgrade {
       Config.darkSteelPowerStorageLevelThree,
       Config.darkSteelPowerStorageLevelThree / 100);
 
+  public static final AbstractUpgrade EMPOWERED_FIVE = new EnergyUpgrade(
+	      "enderio.darksteel.upgrade.empowered_five", Config.darkSteelUpgradePowerFourCost,
+	      new ItemStack(EnderIO.itemBasicCapacitor, 1, 3),
+	      Config.darkSteelPowerStorageLevelFour,
+	      Config.darkSteelPowerStorageLevelFour / 100);
+
   private static final String UPGRADE_NAME = "energyUpgrade";
   private static final String KEY_CAPACITY = "capacity";
   private static final String KEY_ENERGY = "energy";
@@ -54,7 +61,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
 
 
   private static final Random RANDOM = new Random();
-  
+
   public static EnergyUpgrade loadFromItem(ItemStack stack) {
     if(stack == null) {
       return null;
@@ -81,6 +88,8 @@ public class EnergyUpgrade extends AbstractUpgrade {
       return EMPOWERED_THREE;
     } else if(upgrade.unlocName.equals(EMPOWERED_THREE.unlocName)) {
       return EMPOWERED_FOUR;
+    } else if(upgrade.unlocName.equals(EMPOWERED_FOUR.unlocName)) {
+      return EMPOWERED_FIVE;
     }
     return null;
   }
@@ -108,7 +117,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
     }
     return res;
   }
-  
+
   public static void setPowerLevel(ItemStack item, int amount) {
     if(item == null || !itemHasAnyPowerUpgrade(item)) {
       return;
@@ -118,13 +127,13 @@ public class EnergyUpgrade extends AbstractUpgrade {
     eu.setEnergy(amount);
     eu.writeToItem(item);
   }
-  
+
   public static void setPowerFull(ItemStack item) {
     if(item == null || !itemHasAnyPowerUpgrade(item)) {
       return;
     }
-    EnergyUpgrade eu = loadFromItem(item);    
-    eu.setEnergy(eu.getCapacity());   
+    EnergyUpgrade eu = loadFromItem(item);
+    eu.setEnergy(eu.getCapacity());
     eu.writeToItem(item);
   }
 
@@ -153,7 +162,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
   }
 
   protected int capacity;
-  protected int energy;  
+  protected int energy;
 
   protected int maxInRF;
   protected int maxOutRF;
@@ -169,7 +178,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
   public EnergyUpgrade(NBTTagCompound tag) {
     super(UPGRADE_NAME, tag);
     capacity = tag.getInteger(KEY_CAPACITY);
-    energy = tag.getInteger(KEY_ENERGY);    
+    energy = tag.getInteger(KEY_ENERGY);
     maxInRF = tag.getInteger(KEY_MAX_IN);
     maxOutRF = tag.getInteger(KEY_MAX_OUT);
   }
@@ -195,6 +204,10 @@ public class EnergyUpgrade extends AbstractUpgrade {
     if(up == null) {
       return false;
     }
+
+    if(!(stack.getItem() instanceof IEndSteelItem) && up.unlocName.equals(EMPOWERED_FIVE.unlocName))
+    	return false;
+
     return up.unlocName.equals(unlocName);
   }
 
@@ -222,7 +235,7 @@ public class EnergyUpgrade extends AbstractUpgrade {
   public void writeUpgradeToNBT(NBTTagCompound upgradeRoot) {
     upgradeRoot.setInteger(KEY_CAPACITY, capacity);
     upgradeRoot.setInteger(KEY_ENERGY, energy);
-    
+
     upgradeRoot.setInteger(KEY_MAX_IN, maxInRF);
     upgradeRoot.setInteger(KEY_MAX_OUT, maxOutRF);
   }
@@ -241,6 +254,8 @@ public class EnergyUpgrade extends AbstractUpgrade {
       index = 2;
     } else if (upgrade.unlocName.equals(EMPOWERED_FOUR.unlocName)) {
       index = 3;
+    } else if (upgrade.unlocName.equals(EMPOWERED_FIVE.unlocName)) {
+      index = 4;
     }
     return Config.darkSteelPowerDamgeAbsorptionRatios[index];
   }

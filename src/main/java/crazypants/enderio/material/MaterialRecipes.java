@@ -106,6 +106,7 @@ public class MaterialRecipes {
     String phasedGold = PHASED_GOLD.getOreIngot();
     String phasedIron = PHASED_IRON.getOreIngot();
     String darkSteel = DARK_STEEL.getOreIngot();
+    String endSteel = END_STEEL.getOreIngot();
 
     ItemStack capacitor = new ItemStack(itemBasicCapacitor, 1, 0);
 
@@ -130,6 +131,12 @@ public class MaterialRecipes {
     vibrantNugget = vibrantNugget.copy();
     vibrantNugget.stackSize = 1;
     addShaped(PHASED_GOLD.getStackIngot(), "eee", "eee", "eee", 'e', vibrantNugget);
+
+    ItemStack endSteelNugget = new ItemStack(EnderIO.itemMaterial, 9, Material.END_STEEL_NUGGET.ordinal());
+    addShapeless(endSteelNugget, endSteel);
+    endSteelNugget = endSteelNugget.copy();
+    endSteelNugget.stackSize = 1;
+    addShaped(END_STEEL.getStackIngot(), "eee", "eee", "eee", 'e', endSteelNugget);
 
     //Crystals
     ItemStack pulsCry = new ItemStack(EnderIO.itemMaterial, 1, Material.PULSATING_CYSTAL.ordinal());
@@ -208,6 +215,14 @@ public class MaterialRecipes {
       addShaped(enderCapacitor, " e ", "cgc", " e ", 'e', phasedGold, 'c', activatedCapacitor, 'g', "glowstone");
     }
 
+    //Melodic Capacitor
+    ItemStack melodicCapacitor = new ItemStack(EnderIO.itemBasicCapacitor, 1, 3);
+    if (Config.useHardRecipes) {
+        addShaped(melodicCapacitor, "eee", "cgc", "eee", 'e', endSteel, 'c', enderCapacitor, 'g', new ItemStack(Items.ender_eye));
+      } else {
+        addShaped(melodicCapacitor, " e ", "cgc", " e ", 'e', endSteel, 'c', enderCapacitor, 'g', new ItemStack(Items.ender_eye));
+      }
+
     // Weather Crystal
     ItemStack main = Config.useHardRecipes ? new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal()) : new ItemStack(Items.diamond);
     GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(EnderIO.itemMaterial, 1, Material.WEATHER_CRYSTAL.ordinal()), main /* TODO figure out new weather crystal recipe */));
@@ -229,6 +244,10 @@ public class MaterialRecipes {
       addShaped(alloy.getStackBlock(), "iii", "iii", "iii", 'i', alloy.getOreIngot());
       addShapeless(alloy.getStackIngot(9), alloy.getOreBlock());
     }
+
+    //DS Rod
+    ItemStack darkRod = new ItemStack(EnderIO.itemMaterial, 1, Material.DARK_STEEL_ROD.ordinal());
+    addShaped(darkRod, " ns", "nsn", "sn ", 's', darkSteel,'n', endSteelNugget);
 
     //Food
     ItemStack flour = new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.FLOUR.ordinal());

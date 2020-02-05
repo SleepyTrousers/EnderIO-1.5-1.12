@@ -33,6 +33,7 @@ import crazypants.enderio.item.darksteel.upgrade.SpeedUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SpoonUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
+import crazypants.enderio.item.endsteel.IEndSteelItem;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 
@@ -47,6 +48,7 @@ public class DarkSteelRecipeManager {
     upgrades.add(EnergyUpgrade.EMPOWERED_TWO);
     upgrades.add(EnergyUpgrade.EMPOWERED_THREE);
     upgrades.add(EnergyUpgrade.EMPOWERED_FOUR);
+    upgrades.add(EnergyUpgrade.EMPOWERED_FIVE);
     upgrades.add(JumpUpgrade.JUMP_ONE);
     upgrades.add(JumpUpgrade.JUMP_TWO);
     upgrades.add(JumpUpgrade.JUMP_THREE);
@@ -79,9 +81,11 @@ public class DarkSteelRecipeManager {
       return;
     }
 
-    if(evt.left.getItem() instanceof IDarkSteelItem && OreDictionaryHelper.hasName(evt.right, Alloy.DARK_STEEL.getOreIngot())) {
+    if(evt.left.getItem() instanceof IEndSteelItem && OreDictionaryHelper.hasName(evt.right, Alloy.END_STEEL.getOreIngot())) {
+        handleRepair(evt);
+    }else if(evt.left.getItem() instanceof IDarkSteelItem && OreDictionaryHelper.hasName(evt.right, Alloy.DARK_STEEL.getOreIngot())) {
       handleRepair(evt);
-    } else {    
+    } else {
       handleUpgrade(evt);
     }
   }
@@ -89,23 +93,23 @@ public class DarkSteelRecipeManager {
   private void handleRepair(AnvilUpdateEvent evt) {
     ItemStack targetStack = evt.left;
     ItemStack ingots = evt.right;
-    
+
     //repair event
     IDarkSteelItem targetItem = (IDarkSteelItem)targetStack.getItem();
     int maxIngots = targetItem.getIngotsRequiredForFullRepair();
-    
+
     double damPerc = (double)targetStack.getItemDamage()/ targetStack.getMaxDamage();
     int requiredIngots = (int)Math.ceil(damPerc * maxIngots);
     if(ingots.stackSize > requiredIngots) {
       return;
     }
-    
+
     int damageAddedPerIngot = (int)Math.ceil((double)targetStack.getMaxDamage()/maxIngots);
     int totalDamageRemoved = damageAddedPerIngot * ingots.stackSize;
-    
+
     ItemStack resultStack = targetStack.copy();
     resultStack.setItemDamage(Math.max(0, resultStack.getItemDamage() - totalDamageRemoved));
-    
+
     evt.output = resultStack;
     evt.cost = ingots.stackSize + (int)Math.ceil(getEnchantmentRepairCost(resultStack)/2);
   }
