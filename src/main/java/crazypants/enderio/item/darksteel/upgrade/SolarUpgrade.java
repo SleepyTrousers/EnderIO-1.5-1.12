@@ -30,6 +30,7 @@ public class SolarUpgrade extends AbstractUpgrade {
 
   public static final SolarUpgrade SOLAR_ONE = new SolarUpgrade("enderio.darksteel.upgrade.solar_one", (byte) 1, Config.darkSteelSolarOneCost);
   public static final SolarUpgrade SOLAR_TWO = new SolarUpgrade("enderio.darksteel.upgrade.solar_two", (byte) 2, Config.darkSteelSolarTwoCost);
+  public static final SolarUpgrade SOLAR_THREE = new SolarUpgrade("enderio.darksteel.upgrade.solar_three", (byte) 3, Config.darkSteelSolarThreeCost);
 
   private Render render;
 
@@ -46,12 +47,8 @@ public class SolarUpgrade extends AbstractUpgrade {
     return new SolarUpgrade((NBTTagCompound) stack.stackTagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
   }
 
-  private static ItemStack createUpgradeItem() {
-    ItemStack pot = new ItemStack(Items.potionitem, 1, 0);
-    int res = PotionHelper.applyIngredient(0, Items.nether_wart.getPotionEffect(new ItemStack(Items.nether_wart)));
-    res = PotionHelper.applyIngredient(res, PotionHelper.sugarEffect);
-    pot.setItemDamage(res);
-    return pot;
+  private static ItemStack createUpgradeItem(int level) {
+	  return new ItemStack(EnderIO.blockSolarPanel,1,level-1);
   }
 
   private byte level;
@@ -62,7 +59,7 @@ public class SolarUpgrade extends AbstractUpgrade {
   }
 
   public SolarUpgrade(String unlocName, byte level, int levelCost) {
-    super(UPGRADE_NAME, unlocName, createUpgradeItem(), levelCost);
+    super(UPGRADE_NAME, unlocName, createUpgradeItem(level), levelCost);
     this.level = (byte) level;
   }
 
@@ -101,7 +98,10 @@ public class SolarUpgrade extends AbstractUpgrade {
   }
 
   public int getRFPerSec() {
-    return level == 1 ? Config.darkSteelSolarOneGen : Config.darkSteelSolarTwoGen;
+	  if(level==0) return Config.darkSteelSolarOneGen;
+	  if(level==1) return Config.darkSteelSolarTwoGen;
+	  else return Config.darkSteelSolarThreeGen;
+
   }
 
   @Override
@@ -114,8 +114,6 @@ public class SolarUpgrade extends AbstractUpgrade {
   private class Render implements IRenderUpgrade {
 
     private EntityItem item = new EntityItem(Minecraft.getMinecraft().theWorld);
-    private ItemStack panel1 = new ItemStack(EnderIO.blockSolarPanel, 1, 0);
-    private ItemStack panel2 = new ItemStack(EnderIO.blockSolarPanel, 1, 1);
 
     @Override
     public void render(RenderPlayerEvent event, ItemStack stack, boolean head) {
@@ -128,7 +126,7 @@ public class SolarUpgrade extends AbstractUpgrade {
         GL11.glRotated(180, 1, 0, 0);
         GL11.glScalef(2.1f, 2.1f, 2.1f);
         byte level = loadFromItem(stack).level;
-        item.setEntityItemStack(level == 0 ? panel1 : panel2);
+        item.setEntityItemStack(new ItemStack(EnderIO.blockSolarPanel, 1, level-1));
         RenderManager.instance.renderEntityWithPosYaw(item, 0, 0, 0, 0, 0);
       }
     }

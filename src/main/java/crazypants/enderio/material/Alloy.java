@@ -56,6 +56,10 @@ public enum Alloy {
     return new ItemStack(EnderIO.itemAlloy, size, ordinal());
   }
 
+  public ItemStack getStackBall(int size) {
+		return new ItemStack(EnderIO.itemGrindingBall, size, ordinal());
+  }
+
   public ItemStack getStackBlock() {
     return getStackBlock(1);
   }
@@ -79,4 +83,5 @@ public enum Alloy {
   public List<String> getOreBlocks() {
     return oreBlocks;
   }
+
 }

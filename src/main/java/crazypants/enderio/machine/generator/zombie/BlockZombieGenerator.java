@@ -18,8 +18,47 @@ import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.generator.zombie.TileZombieGenerator.TileFrankenZombieGenerator;
+import crazypants.enderio.machine.generator.zombie.TileZombieGenerator.TileEnderGenerator;
+
 
 public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerator> {
+
+	public static class BlockFrankenZombieGenerator extends BlockZombieGenerator {
+
+		public BlockFrankenZombieGenerator() {
+			super(ModObject.blockFrankenzombieGenerator, TileFrankenZombieGenerator.class);
+		}
+
+		  public static BlockFrankenZombieGenerator create() {
+			  BlockFrankenZombieGenerator gen = new BlockFrankenZombieGenerator();
+			    gen.init();
+			    return gen;
+			  }
+
+		  public GeneratorType getGeneratorType(){
+			  return GeneratorType.FRANKENZOMBIE;
+		  }
+
+	}
+
+	public static class BlockEnderGenerator extends BlockZombieGenerator {
+
+		public BlockEnderGenerator() {
+			super(ModObject.blockEnderGenerator, TileEnderGenerator.class);
+		}
+
+		  public static BlockEnderGenerator create() {
+			  BlockEnderGenerator gen = new BlockEnderGenerator();
+			    gen.init();
+			    return gen;
+			  }
+
+		  public GeneratorType getGeneratorType(){
+			  return GeneratorType.ENDER;
+		  }
+
+	}
 
   public static BlockZombieGenerator create() {
     BlockZombieGenerator gen = new BlockZombieGenerator();
@@ -28,7 +67,11 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
   }
 
   protected BlockZombieGenerator() {
-    super(ModObject.blockZombieGenerator, TileZombieGenerator.class, Material.anvil);
+    this(ModObject.blockZombieGenerator, TileZombieGenerator.class);
+  }
+
+  protected BlockZombieGenerator(ModObject obj, Class<? extends TileZombieGenerator> clazz) {
+    super(obj, (Class<TileZombieGenerator>) clazz, Material.anvil);
   }
 
   @Override
@@ -115,6 +158,10 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
     if(te != null && te instanceof TileZombieGenerator) {
       tooltip.add(((TileZombieGenerator) te).getFluidStored(ForgeDirection.UNKNOWN) + " " + EnderIO.lang.localize("fluid.millibucket.abr"));
     }
+  }
+
+  public GeneratorType getGeneratorType(){
+	  return GeneratorType.ZOMBIE;
   }
 
 }

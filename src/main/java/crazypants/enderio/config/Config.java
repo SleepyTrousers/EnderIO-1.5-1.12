@@ -253,6 +253,9 @@ public final class Config {
   public static int darkSteelSolarOneCost = 15;
   public static int darkSteelSolarTwoGen = 40;
   public static int darkSteelSolarTwoCost = 30;
+  public static int darkSteelSolarThreeGen = 160;
+  public static int darkSteelSolarThreeCost = 40;
+
   public static boolean darkSteelSolarChargeOthers = true;
 
   public static float darkSteelAnvilDamageChance = 0.024f;
@@ -269,9 +272,16 @@ public final class Config {
 
   public static int maxPhotovoltaicOutputRF = 10;
   public static int maxPhotovoltaicAdvancedOutputRF = 40;
+  public static int maxPhotovoltaicVibrantOutputRF = 160;
 
   public static int zombieGeneratorRfPerTick = 80;
-  public static int zombieGeneratorTicksPerBucketFuel = 10000;
+  public static int zombieGeneratorTicksPerBucketFuel = 12000;
+
+  public static int frankenzombieGeneratorRfPerTick = 120;
+  public static int frankenzombieGeneratorTicksPerBucketFuel = 12000;
+
+  public static int enderGeneratorRfPerTick = 360;
+  public static int enderGeneratorTicksPerBucketFuel = 96000;
 
   public static int stirlingGeneratorBaseRfPerTick = 20;
   public static float stirlingGeneratorEnergyMultiplierT1 = 1f;
@@ -420,6 +430,8 @@ public final class Config {
   public static int soulBinderReanimationLevels = 10;
   public static int soulBinderEnderCystalRF = 100000;
   public static int soulBinderEnderCystalLevels = 10;
+  public static int soulBinderPrecientCystalRF = 100000;
+  public static int soulBinderPrecientCystalLevels = 10;
   public static int soulBinderAttractorCystalRF = 100000;
   public static int soulBinderAttractorCystalLevels = 10;
   public static int soulBinderEnderRailRF = 100000;
@@ -1037,6 +1049,16 @@ public final class Config {
     zombieGeneratorTicksPerBucketFuel = config.get(sectionPower.name, "zombieGeneratorTicksPerMbFuel", zombieGeneratorTicksPerBucketFuel,
         "The number of ticks one bucket of fuel lasts.").getInt(zombieGeneratorTicksPerBucketFuel);
 
+    frankenzombieGeneratorRfPerTick = config.get(sectionPower.name, "frankenzombieGeneratorRfPerTick", frankenzombieGeneratorRfPerTick,
+            "The amount of power generated per tick.").getInt(frankenzombieGeneratorRfPerTick);
+    frankenzombieGeneratorTicksPerBucketFuel = config.get(sectionPower.name, "frankenzombieGeneratorTicksPerMbFuel", frankenzombieGeneratorTicksPerBucketFuel,
+            "The number of ticks one bucket of fuel lasts.").getInt(frankenzombieGeneratorTicksPerBucketFuel);
+
+    enderGeneratorRfPerTick = config.get(sectionPower.name, "enderGeneratorRfPerTick", enderGeneratorRfPerTick,
+            "The amount of power generated per tick.").getInt(enderGeneratorRfPerTick);
+    enderGeneratorTicksPerBucketFuel = config.get(sectionPower.name, "enderGeneratorTicksPerMbFuel", enderGeneratorTicksPerBucketFuel,
+            "The number of ticks one bucket of fuel lasts.").getInt(enderGeneratorTicksPerBucketFuel);
+
     stirlingGeneratorBaseRfPerTick = config.get(sectionPower.name, "stirlingGeneratorBaseRfPerTick", stirlingGeneratorBaseRfPerTick,
         "The amount of power generated per tick.").getInt(stirlingGeneratorBaseRfPerTick);
 
@@ -1232,6 +1254,8 @@ public final class Config {
         "The number of RF required to to re-animated a mob head.").getInt(soulBinderReanimationRF);
     soulBinderEnderCystalRF = config.get(sectionSoulBinder.name, "soulBinderEnderCystalRF", soulBinderEnderCystalRF,
         "The number of RF required to create an ender crystal.").getInt(soulBinderEnderCystalRF);
+    soulBinderPrecientCystalRF = config.get(sectionSoulBinder.name, "soulBinderPrecientCystalRF", soulBinderPrecientCystalRF,
+            "The number of RF required to create an precient crystal.").getInt(soulBinderPrecientCystalRF);
     soulBinderAttractorCystalRF = config.get(sectionSoulBinder.name, "soulBinderAttractorCystalRF", soulBinderAttractorCystalRF,
         "The number of RF required to create an attractor crystal.").getInt(soulBinderAttractorCystalRF);
     soulBinderEnderRailRF = config.get(sectionSoulBinder.name, "soulBinderEnderRailRF", soulBinderEnderRailRF,
@@ -1241,6 +1265,8 @@ public final class Config {
         "The number of levels required to create an attractor crystal.").getInt(soulBinderAttractorCystalLevels);
     soulBinderEnderCystalLevels = config.get(sectionSoulBinder.name, "soulBinderEnderCystalLevels", soulBinderEnderCystalLevels,
         "The number of levels required to create an ender crystal.").getInt(soulBinderEnderCystalLevels);
+    soulBinderPrecientCystalLevels = config.get(sectionSoulBinder.name, "soulBinderPrecientCystalLevels", soulBinderPrecientCystalLevels,
+            "The number of levels required to create an precient crystal.").getInt(soulBinderPrecientCystalLevels);
     soulBinderReanimationLevels = config.get(sectionSoulBinder.name, "soulBinderReanimationLevels", soulBinderReanimationLevels,
         "The number of levels required to re-animate a mob head.").getInt(soulBinderReanimationLevels);
     soulBinderBrokenSpawnerLevels = config.get(sectionSoulBinder.name, "soulBinderBrokenSpawnerLevels", soulBinderBrokenSpawnerLevels,

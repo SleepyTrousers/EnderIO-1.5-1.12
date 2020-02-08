@@ -63,6 +63,7 @@ public class DarkSteelRecipeManager {
     upgrades.add(SpoonUpgrade.INSTANCE);
     upgrades.add(SolarUpgrade.SOLAR_ONE);
     upgrades.add(SolarUpgrade.SOLAR_TWO);
+    upgrades.add(SolarUpgrade.SOLAR_THREE);
     if(Loader.isModLoaded("Thaumcraft")) {
       ThaumcraftCompat.loadUpgrades(upgrades);
     }

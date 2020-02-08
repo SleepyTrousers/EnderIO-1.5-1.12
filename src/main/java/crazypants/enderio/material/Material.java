@@ -22,15 +22,13 @@ public enum Material {
   ATTRACTOR_CRYSTAL("attractorCrystal", true),
   WEATHER_CRYSTAL("weatherCrystal", true),
   END_STEEL_NUGGET("endSteelNugget"),
-  ELECTRICAL_GRINDING_BALL("electricalGrindingBall"),
-  ENERGETIC_GRINDING_BALL("energeticGrindingBall"),
-  VIBRANT_GRINDING_BALL("vibrantGrindingBall"),
-  REDSTONE_GRINDING_BALL("redstoneGrindingBall"),
-  CONDUCTIVE_GRINDING_BALL("conductiveGrindingBall"),
-  PULSATING_GRINDING_BALL("pulsatingGrindingBall"),
-  SOULARIUM_GRINDING_BALL("soulariumGrindingBall"),
-  END_STEEL_GRINDING_BALL("endSteelGrindingBall"),
-  DARK_STEEL_ROD("darkSteelRod");
+  DARK_STEEL_ROD("darkSteelRod"),
+  PRECIENT_CRYSTAL("precientCrystal",true),
+  PULSATING_POWDER("pulsatingPowder", true),
+  VIBRANT_POWDER("vibrantPowder", true),
+  ENDER_POWDER("enderCrystalPowder", true),
+  PRECIENT_POWDER("precientPowder",true);
+
 
 
 
