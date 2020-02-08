@@ -461,8 +461,8 @@ tile.blockFrankenzombieGenerator.tooltip.detailed.line2=to generate even more po
 enderio.frankenzombieGenerator.fuelTank=Nutrient Tank
 
 tile.blockEnderGenerator.name=Ender Generator
-tile.blockZombieGenerator.tooltip.detailed.line1=Consumes Dew of the Void
-tile.blockZombieGenerator.tooltip.detailed.line2=to generate power
+tile.blockEnderGenerator.tooltip.detailed.line1=Consumes Dew of the Void
+tile.blockEnderGenerator.tooltip.detailed.line2=to generate power
 enderio.enderGenerator.fuelTank=Void Tank
 
 tile.blockKillerJoe.name=Killer Joe
@@ -915,6 +915,9 @@ enderio.darksteel.upgrade.solar_one.tooltip.detailed.line1=Generates power from 
 
 enderio.darksteel.upgrade.solar_two.name=Solar II
 enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1=Generates power from the sun.
+
+enderio.darksteel.upgrade.solar_three.name=Solar III
+enderio.darksteel.upgrade.solar_three.tooltip.detailed.line1=Generates power from the sun.
 
 //------GUI
 
