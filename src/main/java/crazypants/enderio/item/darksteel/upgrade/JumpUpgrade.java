@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.item.endsteel.EndSteelItems;
 
 public class JumpUpgrade extends AbstractUpgrade {
 
@@ -20,10 +21,10 @@ public class JumpUpgrade extends AbstractUpgrade {
   private short level;
 
   public static boolean isEquipped(EntityPlayer player) {
-    ItemStack boots = player.getEquipmentInSlot(1);    
+    ItemStack boots = player.getEquipmentInSlot(1);
     return loadFromItem(boots) != null;
   }
-  
+
   public static JumpUpgrade loadFromItem(ItemStack stack) {
     if(stack == null) {
       return null;
@@ -49,7 +50,7 @@ public class JumpUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelBoots || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
+    if(stack == null || (stack.getItem() != DarkSteelItems.itemDarkSteelBoots && stack.getItem() != EndSteelItems.itemEndSteelBoots) || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
       return false;
     }
     JumpUpgrade up = loadFromItem(stack);

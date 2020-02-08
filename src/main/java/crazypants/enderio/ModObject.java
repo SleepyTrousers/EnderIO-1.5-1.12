@@ -30,17 +30,22 @@ public enum ModObject {
   // Materials
   itemBasicCapacitor,
   itemAlloy,
+  itemGrindingBall,
   itemMaterial,
   itemMachinePart,
   itemPowderIngot,
   blockFusedQuartz,
   itemFusedQuartzFrame,
   blockDarkIronBars,
+  blockSoulariumBars,
+  blockEndSteelBars,
 
   // Machines
   blockStirlingGenerator,
   blockCombustionGenerator,
   blockZombieGenerator,
+  blockFrankenzombieGenerator,
+  blockEnderGenerator,
   blockReservoir,
   blockAlloySmelter,
   blockSolarPanel,
@@ -104,12 +109,12 @@ public enum ModObject {
   itemTravelStaff,
   itemMagnet,
   itemGliderWing,
-  blockEndermanSkull, 
-  itemSoulVessel, 
-  itemFrankenSkull, 
-  
+  blockEndermanSkull,
+  itemSoulVessel,
+  itemFrankenSkull,
+
   blockEnderRail,
-  
+
   itemEnderFood;
 
   public final String unlocalisedName;

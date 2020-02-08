@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.item.endsteel.EndSteelItems;
 
 public class NaturalistEyeUpgrade extends AbstractUpgrade {
 
@@ -50,7 +51,7 @@ public class NaturalistEyeUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelHelmet || getUpgradeItem() == null) {
+    if(stack == null || (stack.getItem() != DarkSteelItems.itemDarkSteelHelmet && stack.getItem() != EndSteelItems.itemEndSteelHelmet)|| getUpgradeItem() == null) {
       return false;
     }
     NaturalistEyeUpgrade up = loadFromItem(stack);

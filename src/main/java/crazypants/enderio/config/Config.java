@@ -116,7 +116,7 @@ public final class Config {
   public static boolean useSneakMouseWheelYetaWrench = true;
   public static boolean useSneakRightClickYetaWrench = false;
   public static int     yetaWrenchOverlayMode = 0;
-  
+
   public static boolean itemConduitUsePhyscialDistance = false;
 
   public static int enderFluidConduitExtractRate = 200;
@@ -157,11 +157,13 @@ public final class Config {
   public static int enderIoRange = 8;
   public static boolean enderIoMeAccessEnabled = true;
 
-  public static double[] darkSteelPowerDamgeAbsorptionRatios = {0.5, 0.6, 0.75, 0.95};
+  public static double[] darkSteelPowerDamgeAbsorptionRatios = {0.5, 0.6, 0.7, 0.85, 0.95};
   public static int darkSteelPowerStorageBase = 100000;
   public static int darkSteelPowerStorageLevelOne = 150000;
   public static int darkSteelPowerStorageLevelTwo = 250000;
   public static int darkSteelPowerStorageLevelThree = 1000000;
+  public static int darkSteelPowerStorageLevelFour = 2500000;
+
 
   public static float darkSteelSpeedOneWalkModifier = 0.1f;
   public static float darkSteelSpeedTwoWalkMultiplier = 0.2f;
@@ -225,6 +227,7 @@ public final class Config {
   public static int darkSteelUpgradePowerOneCost = 10;
   public static int darkSteelUpgradePowerTwoCost = 15;
   public static int darkSteelUpgradePowerThreeCost = 20;
+  public static int darkSteelUpgradePowerFourCost = 25;
 
   public static int darkSteelGliderCost = 10;
   public static double darkSteelGliderHorizontalSpeed = 0.03;
@@ -250,6 +253,9 @@ public final class Config {
   public static int darkSteelSolarOneCost = 15;
   public static int darkSteelSolarTwoGen = 40;
   public static int darkSteelSolarTwoCost = 30;
+  public static int darkSteelSolarThreeGen = 160;
+  public static int darkSteelSolarThreeCost = 40;
+
   public static boolean darkSteelSolarChargeOthers = true;
 
   public static float darkSteelAnvilDamageChance = 0.024f;
@@ -266,9 +272,16 @@ public final class Config {
 
   public static int maxPhotovoltaicOutputRF = 10;
   public static int maxPhotovoltaicAdvancedOutputRF = 40;
+  public static int maxPhotovoltaicVibrantOutputRF = 160;
 
   public static int zombieGeneratorRfPerTick = 80;
-  public static int zombieGeneratorTicksPerBucketFuel = 10000;
+  public static int zombieGeneratorTicksPerBucketFuel = 12000;
+
+  public static int frankenzombieGeneratorRfPerTick = 120;
+  public static int frankenzombieGeneratorTicksPerBucketFuel = 12000;
+
+  public static int enderGeneratorRfPerTick = 360;
+  public static int enderGeneratorTicksPerBucketFuel = 96000;
 
   public static int stirlingGeneratorBaseRfPerTick = 20;
   public static float stirlingGeneratorEnergyMultiplierT1 = 1f;
@@ -336,7 +349,7 @@ public final class Config {
   public static boolean magnetAllowDeactivatedInBaublesSlot = false;
   public static boolean magnetAllowPowerExtraction = false;
   public static String  magnetBaublesType = "AMULET";
-  
+
   public static boolean useCombustionGenModel = false;
 
   public static int crafterRfPerCraft = 2500;
@@ -417,6 +430,8 @@ public final class Config {
   public static int soulBinderReanimationLevels = 10;
   public static int soulBinderEnderCystalRF = 100000;
   public static int soulBinderEnderCystalLevels = 10;
+  public static int soulBinderPrecientCystalRF = 100000;
+  public static int soulBinderPrecientCystalLevels = 10;
   public static int soulBinderAttractorCystalRF = 100000;
   public static int soulBinderAttractorCystalLevels = 10;
   public static int soulBinderEnderRailRF = 100000;
@@ -505,7 +520,7 @@ public final class Config {
   public static float inventoryPanelExtractCostPerItem = 12.0f;
   public static float inventoryPanelExtractCostPerOperation = 32.0f;
 
-  
+
   public static void load(FMLPreInitializationEvent event) {
     PacketHandler.INSTANCE.registerMessage(PacketConfigSync.class, PacketConfigSync.class, PacketHandler.nextID(), Side.CLIENT);
 
@@ -816,6 +831,8 @@ public final class Config {
         "Amount of power stored by dark steel items with a level 2 upgrade.").getInt(darkSteelPowerStorageLevelTwo);
     darkSteelPowerStorageLevelThree = config.get(sectionDarkSteel.name, "darkSteelPowerStorageLevelThree", darkSteelPowerStorageLevelThree,
         "Amount of power stored by dark steel items with a level 3 upgrade.").getInt(darkSteelPowerStorageLevelThree);
+    darkSteelPowerStorageLevelFour = config.get(sectionDarkSteel.name, "darkSteelPowerStorageLevelFour", darkSteelPowerStorageLevelFour,
+            "Amount of power stored by dark steel items with a level 4 upgrade.").getInt(darkSteelPowerStorageLevelFour);
 
     darkSteelUpgradeVibrantCost = config.get(sectionDarkSteel.name, "darkSteelUpgradeVibrantCost", darkSteelUpgradeVibrantCost,
         "Number of levels required for the 'Empowered.").getInt(darkSteelUpgradeVibrantCost);
@@ -825,6 +842,8 @@ public final class Config {
         "Number of levels required for the 'Power 2.").getInt(darkSteelUpgradePowerTwoCost);
     darkSteelUpgradePowerThreeCost = config.get(sectionDarkSteel.name, "darkSteelUpgradePowerThreeCost", darkSteelUpgradePowerThreeCost,
         "Number of levels required for the 'Power 3' upgrade.").getInt(darkSteelUpgradePowerThreeCost);
+    darkSteelUpgradePowerFourCost = config.get(sectionDarkSteel.name, "darkSteelUpgradePowerFourCost", darkSteelUpgradePowerFourCost,
+            "Number of levels required for the 'Power 4' upgrade.").getInt(darkSteelUpgradePowerFourCost);
 
     darkSteelJumpOneCost = config.get(sectionDarkSteel.name, "darkSteelJumpOneCost", darkSteelJumpOneCost,
         "Number of levels required for the 'Jump 1' upgrade.").getInt(darkSteelJumpOneCost);
@@ -1030,6 +1049,16 @@ public final class Config {
     zombieGeneratorTicksPerBucketFuel = config.get(sectionPower.name, "zombieGeneratorTicksPerMbFuel", zombieGeneratorTicksPerBucketFuel,
         "The number of ticks one bucket of fuel lasts.").getInt(zombieGeneratorTicksPerBucketFuel);
 
+    frankenzombieGeneratorRfPerTick = config.get(sectionPower.name, "frankenzombieGeneratorRfPerTick", frankenzombieGeneratorRfPerTick,
+            "The amount of power generated per tick.").getInt(frankenzombieGeneratorRfPerTick);
+    frankenzombieGeneratorTicksPerBucketFuel = config.get(sectionPower.name, "frankenzombieGeneratorTicksPerMbFuel", frankenzombieGeneratorTicksPerBucketFuel,
+            "The number of ticks one bucket of fuel lasts.").getInt(frankenzombieGeneratorTicksPerBucketFuel);
+
+    enderGeneratorRfPerTick = config.get(sectionPower.name, "enderGeneratorRfPerTick", enderGeneratorRfPerTick,
+            "The amount of power generated per tick.").getInt(enderGeneratorRfPerTick);
+    enderGeneratorTicksPerBucketFuel = config.get(sectionPower.name, "enderGeneratorTicksPerMbFuel", enderGeneratorTicksPerBucketFuel,
+            "The number of ticks one bucket of fuel lasts.").getInt(enderGeneratorTicksPerBucketFuel);
+
     stirlingGeneratorBaseRfPerTick = config.get(sectionPower.name, "stirlingGeneratorBaseRfPerTick", stirlingGeneratorBaseRfPerTick,
         "The amount of power generated per tick.").getInt(stirlingGeneratorBaseRfPerTick);
 
@@ -1097,7 +1126,7 @@ public final class Config {
         "The amount of saplings the farm has to have in reserve to switch to shearing all leaves. If there are less " +
         "saplings in store, it will only shear part the leaves and break the others for spalings. Set this to 0 to " +
         "always shear all leaves.").getInt(farmSaplingReserveAmount);
-    
+
     combustionGeneratorUseOpaqueModel = config.get(sectionAesthetic.name, "combustionGeneratorUseOpaqueModel", combustionGeneratorUseOpaqueModel,
         "If set to true: fluid will not be shown in combustion generator tanks. Improves FPS. ").getBoolean(combustionGeneratorUseOpaqueModel);
 
@@ -1115,18 +1144,18 @@ public final class Config {
 
     magnetAllowInMainInventory = config.get(sectionMagnet.name, "magnetAllowInMainInventory", magnetAllowInMainInventory,
         "If true the magnet will also work in the main inventory, not just the hotbar").getBoolean(magnetAllowInMainInventory);
-    
+
     magnetAllowInBaublesSlot = config.get(sectionMagnet.name, "magnetAllowInBaublesSlot", magnetAllowInBaublesSlot,
         "If true the magnet can be put into the 'amulet' Baubles slot (requires Baubles to be installed)").getBoolean(magnetAllowInBaublesSlot);
     magnetAllowDeactivatedInBaublesSlot = config.get(sectionMagnet.name, "magnetAllowDeactivatedInBaublesSlot", magnetAllowDeactivatedInBaublesSlot,
         "If true the magnet can be put into the 'amulet' Baubles slot even if switched off (requires Baubles to be installed and magnetAllowInBaublesSlot to be on)").getBoolean(magnetAllowDeactivatedInBaublesSlot);
-    
+
     magnetAllowPowerExtraction = config.get(sectionMagnet.name, "magnetAllowPowerExtraction", magnetAllowPowerExtraction,
         "If true the magnet can be used as a battery.").getBoolean(magnetAllowPowerExtraction);
 
     magnetBaublesType = config.get(sectionMagnet.name, "magnetBaublesType", magnetBaublesType,
         "The BaublesType the magnet should be, 'AMULET', 'RING' or 'BELT' (requires Baubles to be installed and magnetAllowInBaublesSlot to be on)").getString();
-    
+
     useCombustionGenModel = config.get(sectionAesthetic.name, "useCombustionGenModel", useCombustionGenModel,
         "If set to true: WIP Combustion Generator model will be used").getBoolean(useCombustionGenModel);
 
@@ -1206,7 +1235,7 @@ public final class Config {
         "Allows OC conduits. Only has an effect with OpenComputers installed.");
     enableOCConduitsAnimatedTexture = config.getBoolean("enableOCConduitsAnimatedTexture", sectionItems.name,
         enableOCConduitsAnimatedTexture, "Use the animated texture for OC conduits.");
-    
+
     soulVesselBlackList = config.getStringList("soulVesselBlackList", sectionSoulBinder.name, soulVesselBlackList,
         "Entities listed here will can not be captured in a Soul Vial");
 
@@ -1225,6 +1254,8 @@ public final class Config {
         "The number of RF required to to re-animated a mob head.").getInt(soulBinderReanimationRF);
     soulBinderEnderCystalRF = config.get(sectionSoulBinder.name, "soulBinderEnderCystalRF", soulBinderEnderCystalRF,
         "The number of RF required to create an ender crystal.").getInt(soulBinderEnderCystalRF);
+    soulBinderPrecientCystalRF = config.get(sectionSoulBinder.name, "soulBinderPrecientCystalRF", soulBinderPrecientCystalRF,
+            "The number of RF required to create an precient crystal.").getInt(soulBinderPrecientCystalRF);
     soulBinderAttractorCystalRF = config.get(sectionSoulBinder.name, "soulBinderAttractorCystalRF", soulBinderAttractorCystalRF,
         "The number of RF required to create an attractor crystal.").getInt(soulBinderAttractorCystalRF);
     soulBinderEnderRailRF = config.get(sectionSoulBinder.name, "soulBinderEnderRailRF", soulBinderEnderRailRF,
@@ -1234,6 +1265,8 @@ public final class Config {
         "The number of levels required to create an attractor crystal.").getInt(soulBinderAttractorCystalLevels);
     soulBinderEnderCystalLevels = config.get(sectionSoulBinder.name, "soulBinderEnderCystalLevels", soulBinderEnderCystalLevels,
         "The number of levels required to create an ender crystal.").getInt(soulBinderEnderCystalLevels);
+    soulBinderPrecientCystalLevels = config.get(sectionSoulBinder.name, "soulBinderPrecientCystalLevels", soulBinderPrecientCystalLevels,
+            "The number of levels required to create an precient crystal.").getInt(soulBinderPrecientCystalLevels);
     soulBinderReanimationLevels = config.get(sectionSoulBinder.name, "soulBinderReanimationLevels", soulBinderReanimationLevels,
         "The number of levels required to re-animate a mob head.").getInt(soulBinderReanimationLevels);
     soulBinderBrokenSpawnerLevels = config.get(sectionSoulBinder.name, "soulBinderBrokenSpawnerLevels", soulBinderBrokenSpawnerLevels,

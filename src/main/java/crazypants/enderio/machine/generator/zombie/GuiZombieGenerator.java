@@ -15,6 +15,7 @@ import com.enderio.core.client.render.RenderUtil;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.generator.zombie.TileZombieGenerator.TileEnderGenerator;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 
@@ -22,13 +23,13 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
 
   public GuiZombieGenerator(InventoryPlayer inventory, final TileZombieGenerator tileEntity) {
     super(tileEntity, new ContainerZombieGenerator(inventory, tileEntity), "zombieGenerator");
-    
+
     addToolTip(new GuiToolTip(new Rectangle(80, 21, 15, 47), "") {
 
       @Override
       protected void updateText() {
         text.clear();
-        String heading = EnderIO.lang.localize("zombieGenerator.fuelTank");
+        String heading = (tileEntity instanceof TileEnderGenerator) ? EnderIO.lang.localize("enderGenerator.fuelTank") : EnderIO.lang.localize("zombieGenerator.fuelTank");
         text.add(heading);
         text.add(Fluids.toCapactityString(getTileEntity().fuelTank));
         if(tileEntity.fuelTank.getFluidAmount() < tileEntity.getActivationAmount()) {
@@ -70,7 +71,7 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
     FontRenderer fr = getFontRenderer();
     int output = 0;
     if(gen.isActive()) {
-      output = gen.outputPerTick;
+      output = gen.getOutputPerTick();
     }
     String txt = EnderIO.lang.localize("combustionGenerator.output") + " " + PowerDisplayUtil.formatPower(output) + " " + PowerDisplayUtil.abrevation()
         + PowerDisplayUtil.perTickStr();
@@ -92,21 +93,6 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
 
     bindGuiTexture();
     super.drawGuiContainerBackgroundLayer(par1, par2, par3);
-  }
-
-  @Override
-  protected int getPowerX() {
-    return 15;
-  }
-
-  @Override
-  protected int getPowerY() {
-    return 20;
-  }
-
-  @Override
-  protected int getPowerHeight() {
-    return 48;
   }
 
 }

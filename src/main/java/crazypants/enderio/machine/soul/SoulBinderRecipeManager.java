@@ -30,6 +30,7 @@ public class SoulBinderRecipeManager {
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderSentientRecipe.instance);
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderEnderCystalRecipe.instance);
     MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderAttractorCystalRecipe.instance);
+    MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderPrecientCystalRecipe.instance);
 
     //Ender Rail
     if(Config.transceiverEnabled && Config.enderRailEnabled) {
@@ -40,7 +41,7 @@ public class SoulBinderRecipeManager {
   }
 
   // Example of how to add a recipe:
-  //  
+  //
   //  NBTTagCompound root = new NBTTagCompound();
   //  root.setString(SoulBinderRecipeManager.KEY_RECIPE_UID, "diamondToWood");
   //  root.setInteger(SoulBinderRecipeManager.KEY_REQUIRED_ENERGY, 50000);
@@ -54,14 +55,14 @@ public class SoulBinderRecipeManager {
   //  stackRoot = new NBTTagCompound();
   //  is.writeToNBT(stackRoot);
   //  root.setTag(SoulBinderRecipeManager.KEY_OUTPUT_STACK, stackRoot);
-  //  
+  //
   //  SoulBinderRecipeManager.getInstance().addRecipeFromNBT(root);
   //  FMLInterModComms.sendMessage("EnderIO",  "recipe:soulbinder", root);
 
   //@formatter:off
   /**
    * Example of how to add a recipe:
-   * 
+   *
    * NBTTagCompound root = new NBTTagCompound();
    * root.setString(SoulBinderRecipeManager.KEY_RECIPE_UID, "diamondToWood");
    * root.setInteger(SoulBinderRecipeManager.KEY_REQUIRED_ENERGY, 50000);
@@ -75,10 +76,10 @@ public class SoulBinderRecipeManager {
    * stackRoot = new NBTTagCompound();
    * is.writeToNBT(stackRoot);
    * root.setTag(SoulBinderRecipeManager.KEY_OUTPUT_STACK, stackRoot);
-   * 
+   *
    * SoulBinderRecipeManager.getInstance().addRecipeFromNBT(root);
    * FMLInterModComms.sendMessage("EnderIO",  "recipe:soulbinder", root);
-   * 
+   *
    * @param root
    * @return
    */

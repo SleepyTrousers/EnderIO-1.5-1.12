@@ -106,6 +106,8 @@ public class MaterialRecipes {
     String phasedGold = PHASED_GOLD.getOreIngot();
     String phasedIron = PHASED_IRON.getOreIngot();
     String darkSteel = DARK_STEEL.getOreIngot();
+    String soularium = SOULARIUM.getOreIngot();
+    String endSteel = END_STEEL.getOreIngot();
 
     ItemStack capacitor = new ItemStack(itemBasicCapacitor, 1, 0);
 
@@ -131,32 +133,18 @@ public class MaterialRecipes {
     vibrantNugget.stackSize = 1;
     addShaped(PHASED_GOLD.getStackIngot(), "eee", "eee", "eee", 'e', vibrantNugget);
 
+    ItemStack endSteelNugget = new ItemStack(EnderIO.itemMaterial, 9, Material.END_STEEL_NUGGET.ordinal());
+    addShapeless(endSteelNugget, endSteel);
+    endSteelNugget = endSteelNugget.copy();
+    endSteelNugget.stackSize = 1;
+    addShaped(END_STEEL.getStackIngot(), "eee", "eee", "eee", 'e', endSteelNugget);
+
     //Crystals
     ItemStack pulsCry = new ItemStack(EnderIO.itemMaterial, 1, Material.PULSATING_CYSTAL.ordinal());
     addShaped(pulsCry, "nnn", "ngn", "nnn", 'n', phasedIronNugget, 'g', "gemDiamond");
 
     ItemStack vibCry = new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal());
     addShaped(vibCry, "nnn", "ngn", "nnn", 'n', vibrantNugget, 'g', "gemEmerald");
-
-    //Balls
-    ItemStack darkBall = new ItemStack(EnderIO.itemMaterial, 5, Material.DARK_GRINDING_BALL.ordinal());
-    addShaped(darkBall, " s ", "sss", " s ", 's', darkSteel);
-    ItemStack electricalBall = new ItemStack(EnderIO.itemMaterial, 5, Material.ELECTRICAL_GRINDING_BALL.ordinal());
-    addShaped(electricalBall, " s ", "sss", " s ", 's', ELECTRICAL_STEEL.getStackIngot());
-    ItemStack energeticBall = new ItemStack(EnderIO.itemMaterial, 5, Material.ENERGETIC_GRINDING_BALL.ordinal());
-    addShaped(energeticBall, " s ", "sss", " s ", 's', ENERGETIC_ALLOY.getStackIngot());
-    ItemStack vibrantBall = new ItemStack(EnderIO.itemMaterial, 5, Material.VIBRANT_GRINDING_BALL.ordinal());
-    addShaped(vibrantBall, " s ", "sss", " s ", 's', PHASED_GOLD.getStackIngot());
-    ItemStack redstoneBall = new ItemStack(EnderIO.itemMaterial, 5, Material.REDSTONE_GRINDING_BALL.ordinal());
-    addShaped(redstoneBall, " s ", "sss", " s ", 's', REDSTONE_ALLOY.getStackIngot());
-    ItemStack conductiveBall = new ItemStack(EnderIO.itemMaterial, 5, Material.CONDUCTIVE_GRINDING_BALL.ordinal());
-    addShaped(conductiveBall, " s ", "sss", " s ", 's', CONDUCTIVE_IRON.getStackIngot());
-    ItemStack pulsatingBall = new ItemStack(EnderIO.itemMaterial, 5, Material.PULSATING_GRINDING_BALL.ordinal());
-    addShaped(pulsatingBall, " s ", "sss", " s ", 's', PHASED_IRON.getStackIngot());
-    ItemStack soulariumBall = new ItemStack(EnderIO.itemMaterial, 5, Material.SOULARIUM_GRINDING_BALL.ordinal());
-    addShaped(soulariumBall, " s ", "sss", " s ", 's', SOULARIUM.getStackIngot());
-    ItemStack endBall = new ItemStack(EnderIO.itemMaterial, 5, Material.END_STEEL_GRINDING_BALL.ordinal());
-    addShaped(endBall, " s ", "sss", " s ", 's', END_STEEL.getStackIngot());
 
     //Smelting
     ItemStack dustIron = new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_IRON.ordinal());
@@ -175,6 +163,14 @@ public class MaterialRecipes {
     ItemStack diBars = new ItemStack(EnderIO.blockDarkIronBars, 16, 0);
     addShaped(diBars, "ddd", "ddd", 'd', darkSteel);
 
+    //Dark Iron Bars
+    ItemStack soBars = new ItemStack(EnderIO.blockSoulariumBars, 16, 0);
+    addShaped(soBars, "ddd", "ddd", 'd', soularium);
+
+    //Dark Iron Bars
+    ItemStack esBars = new ItemStack(EnderIO.blockEndSteelBars, 16, 0);
+    addShaped(esBars, "ddd", "ddd", 'd', endSteel);
+
     // Fused Quartz Frame
     addShaped(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', "stickWood");
     addShaped(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', "woodStick");
@@ -188,10 +184,10 @@ public class MaterialRecipes {
     addShaped(chassis, "fif", "ici", "fif", 'f', Blocks.iron_bars, 'i', mat, 'c', capacitor);
 
     ItemStack soulchassis = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.SOUL_MACHINE_CHASSIS.ordinal());
-    addShaped(soulchassis, "fif", "ici", "fif", 'f', Blocks.iron_bars, 'i', Alloy.SOULARIUM.getOreIngot(), 'c', capacitor);
+    addShaped(soulchassis, "fif", "ici", "fif", 'f', EnderIO.blockSoulariumBars, 'i', Alloy.SOULARIUM.getOreIngot(), 'c', capacitor);
 
     ItemStack endchassis = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.END_STEEL_MACHINE_CHASSIS.ordinal());
-    addShaped(endchassis, "fif", "ici", "fif", 'f', Blocks.iron_bars, 'i', Alloy.END_STEEL.getOreIngot(), 'c', capacitor);
+    addShaped(endchassis, "fif", "ici", "fif", 'f', EnderIO.blockEndSteelBars, 'i', Alloy.END_STEEL.getOreIngot(), 'c', capacitor);
 
 
     // Basic Gear
@@ -207,6 +203,14 @@ public class MaterialRecipes {
     } else {
       addShaped(enderCapacitor, " e ", "cgc", " e ", 'e', phasedGold, 'c', activatedCapacitor, 'g', "glowstone");
     }
+
+    //Melodic Capacitor
+    ItemStack melodicCapacitor = new ItemStack(EnderIO.itemBasicCapacitor, 1, 3);
+    if (Config.useHardRecipes) {
+        addShaped(melodicCapacitor, "eee", "cgc", "eee", 'e', endSteel, 'c', enderCapacitor, 'g', new ItemStack(Items.ender_eye));
+      } else {
+        addShaped(melodicCapacitor, " e ", "cgc", " e ", 'e', endSteel, 'c', enderCapacitor, 'g', new ItemStack(Items.ender_eye));
+      }
 
     // Weather Crystal
     ItemStack main = Config.useHardRecipes ? new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal()) : new ItemStack(Items.diamond);
@@ -227,8 +231,13 @@ public class MaterialRecipes {
 
     for (Alloy alloy : Alloy.values()) {
       addShaped(alloy.getStackBlock(), "iii", "iii", "iii", 'i', alloy.getOreIngot());
+      addShaped(alloy.getStackBall(5), " i ", "iii", " i ", 'i', alloy.getOreIngot());
       addShapeless(alloy.getStackIngot(9), alloy.getOreBlock());
     }
+
+    //DS Rod
+    ItemStack darkRod = new ItemStack(EnderIO.itemMaterial, 1, Material.DARK_STEEL_ROD.ordinal());
+    addShaped(darkRod, " ns", "nsn", "sn ", 's', darkSteel,'n', endSteelNugget);
 
     //Food
     ItemStack flour = new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.FLOUR.ordinal());

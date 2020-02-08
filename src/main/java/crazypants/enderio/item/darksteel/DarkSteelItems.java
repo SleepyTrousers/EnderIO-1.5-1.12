@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.ItemMagnet;
+import crazypants.enderio.item.endsteel.EndSteelItems;
 
 public class DarkSteelItems {
 
@@ -41,6 +42,8 @@ public class DarkSteelItems {
     itemDarkSteelShears = ItemDarkSteelShears.create();
 
     itemMagnet = ItemMagnet.create();
+
+    EndSteelItems.createEndSteelArmorItems();
   }
 
   public static void addLoot() {
@@ -70,5 +73,7 @@ public class DarkSteelItems {
     MinecraftForgeClient.registerItemRenderer(itemDarkSteelPickaxe, dsr);
     MinecraftForgeClient.registerItemRenderer(itemDarkSteelAxe, dsr);
     MinecraftForgeClient.registerItemRenderer(itemDarkSteelShears, dsr);
+
+    EndSteelItems.registerItemRenderer();
   }
 }

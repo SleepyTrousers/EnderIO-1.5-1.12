@@ -45,6 +45,10 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   IIcon borderIcon;
   IIcon advancedBorderIcon;
 
+  IIcon vibrantIcon;
+  IIcon vibrantSideIcon;
+  IIcon vibrantBorderIcon;
+
   private BlockSolarPanel() {
     super(ModObject.blockSolarPanel.unlocalisedName, TileEntitySolarPanel.class);
     if(!Config.photovoltaicCellEnabled) {
@@ -80,13 +84,28 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   @SideOnly(Side.CLIENT)
   public IIcon getIcon(int side, int meta) {
     if(side == ForgeDirection.UP.ordinal()) {
-      return meta == 0 ? blockIcon : advancedIcon;
+  	  switch(meta){
+  	  case 0:return blockIcon;
+  	  case 1:return advancedIcon;
+  	  case 2:return vibrantIcon;
+  	  default: return blockIcon;
+  	  }
     }
-    return meta == 0 ? sideIcon : advancedSideIcon;
+	  switch(meta){
+	  case 0:return sideIcon;
+	  case 1:return advancedSideIcon;
+	  case 2:return vibrantSideIcon;
+  	  default: return sideIcon;
+	  }
   }
 
   public IIcon getBorderIcon(int i, int meta) {
-    return meta == 0 ? borderIcon : advancedBorderIcon;
+	  switch(meta){
+	  case 0:return borderIcon;
+	  case 1:return advancedBorderIcon;
+	  case 2:return vibrantBorderIcon;
+	  default: return borderIcon;
+	  }
   }
 
   @Override
@@ -107,10 +126,14 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
   public void registerBlockIcons(IIconRegister register) {
     blockIcon = register.registerIcon("enderio:solarPanelTop");
     advancedIcon = register.registerIcon("enderio:solarPanelAdvancedTop");
+    vibrantIcon = register.registerIcon("enderio:solarPanelVibrantTop");
     sideIcon = register.registerIcon("enderio:solarPanelSide");
     advancedSideIcon = register.registerIcon("enderio:solarPanelAdvancedSide");
+    vibrantSideIcon = register.registerIcon("enderio:solarPanelVibrantSide");
     borderIcon = register.registerIcon("enderio:solarPanelBorder");
     advancedBorderIcon = register.registerIcon("enderio:solarPanelAdvancedBorder");
+    vibrantBorderIcon = register.registerIcon("enderio:solarPanelVibrantBorder");
+
   }
 
   @Override

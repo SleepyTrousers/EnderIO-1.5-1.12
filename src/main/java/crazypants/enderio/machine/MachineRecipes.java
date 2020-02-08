@@ -42,12 +42,14 @@ public class MachineRecipes {
     ItemStack sentientEnder = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.SENTIENT_ENDER.ordinal());
     ItemStack obsidian = new ItemStack(Blocks.obsidian);
 
+    String redstoneAlloy = REDSTONE_ALLOY.getOreIngot();
     String electricalSteel = ELECTRICAL_STEEL.getOreIngot();
     String darkSteel = DARK_STEEL.getOreIngot();
     String energeticAlloy = ENERGETIC_ALLOY.getOreIngot();
     String phasedGold = PHASED_GOLD.getOreIngot();
     String phasedIron = PHASED_IRON.getOreIngot();
     String soularium = SOULARIUM.getOreIngot();
+    String endSteel = END_STEEL.getOreIngot();
 
     String vibCry = VIBRANT_CYSTAL.oreDict;
     String pulCry = PULSATING_CYSTAL.oreDict;
@@ -73,6 +75,14 @@ public class MachineRecipes {
     ItemStack zg = new ItemStack(EnderIO.blockZombieGenerator, 1, 0);
     addShaped(zg, "eee", "qzq", "qqq", 'e', electricalSteel, 'q', fusedQuartz, 'z', new ItemStack(EnderIO.itemFrankenSkull, 1, 0));
 
+    //FrankenzombieGen
+    ItemStack fg = new ItemStack(EnderIO.blockFrankenZombieGenerator, 1, 0);
+    addShaped(fg, "eee", "qzq", "qqq", 'e', soularium, 'q', fusedQuartz, 'z', new ItemStack(EnderIO.itemFrankenSkull, 1, 2));
+
+    //EnderGen
+    ItemStack eg = new ItemStack(EnderIO.blockEnderGenerator, 1, 0);
+    addShaped(eg, "eee", "qzq", "qqq", 'e', endSteel, 'q', fusedQuartz, 'z', new ItemStack(EnderIO.itemFrankenSkull, 1, 3));
+
     //KillerJoe
     ItemStack kj = new ItemStack(EnderIO.blockKillerJoe, 1, 0);
     addShaped(kj, "sss", "qzq", "qqq", 's', darkSteel, 'q', fusedQuartz, 'z', frankenZombie);
@@ -97,7 +107,7 @@ public class MachineRecipes {
     addShaped(poweredSpawner, "ese", "eme", "vzv", 'e', electricalSteel, 's', "itemSkull", 'v', vibCry, 'm', machineChassi, 'z', zombieBit);
 
     if (Config.reservoirEnabled) {
-      //reservoir    
+      //reservoir
       ItemStack reservoir = new ItemStack(EnderIO.blockReservoir, 2, 0);
       Object glassSides;
       if (Config.useHardRecipes) {
@@ -185,14 +195,17 @@ public class MachineRecipes {
 
       ItemStack solarPanel = new ItemStack(EnderIO.blockSolarPanel, 1, 0);
       ItemStack advSolarPanel = new ItemStack(EnderIO.blockSolarPanel, 1, 1);
+      ItemStack vibSolarPanel = new ItemStack(EnderIO.blockSolarPanel, 1, 2);
+
       if (Config.useHardRecipes) {
-        addShaped(solarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', "blockGlassHardened", 'c', capacitor, 'e', energeticAlloy, 'p',
-            phasedGold);
+        addShaped(solarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', "blockGlassHardened", 'c', capacitor, 'e', energeticAlloy, 'p', phasedGold);
         addShaped(advSolarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', enlightedQuartz, 'c', capacitor2, 'e', phasedIron, 'p', phasedGold);
+        addShaped(vibSolarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', enlightedQuartz, 'c', capacitor3, 'e', endSteel, 'p', phasedGold);
       } else {
-        addShaped(solarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', "blockGlassHardened", 'p', silicon, 'e', energeticAlloy, 'c',
-            electricalSteel);
-        addShaped(advSolarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', enlightedQuartz, 'p', vibCry, 'e', phasedGold, 'c', phasedIron);
+        addShaped(solarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', "blockGlassHardened", 'p', silicon, 'e', energeticAlloy, 'c', redstoneAlloy);
+        addShaped(advSolarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', enlightedQuartz, 'p', pulCry, 'e', phasedIron, 'c', electricalSteel);
+        addShaped(vibSolarPanel, "efe", "pfp", "cdc", 'd', Blocks.daylight_detector, 'f', enlightedQuartz, 'p', vibCry, 'e', phasedGold, 'c', endSteel);
+
       }
     }
 

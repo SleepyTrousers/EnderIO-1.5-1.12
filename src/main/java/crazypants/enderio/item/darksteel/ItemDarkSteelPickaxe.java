@@ -65,13 +65,19 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
   }
 
   private long lastBlickTick = -1;
+  protected String name;
 
-  public ItemDarkSteelPickaxe() {
-    super(ItemDarkSteelSword.MATERIAL);
+  public ItemDarkSteelPickaxe(String name, ToolMaterial mat) {
+    super(mat);
+    this.name = name;
     setCreativeTab(EnderIOTab.tabEnderIO);
-    String str = "darkSteel_pickaxe";
+    String str = name+"_pickaxe";
     setUnlocalizedName(str);
     setTextureName(EnderIO.DOMAIN + ":" + str);
+  }
+
+  public ItemDarkSteelPickaxe(){
+	  this("darkSteel",ItemDarkSteelSword.MATERIAL);
   }
 
   @Override
@@ -153,7 +159,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
       super.setDamage(stack, newDamage);
     } else {
       int damage = newDamage - oldDamage;
-  
+
       if (!absorbDamageWithEnergy(stack, damage * Config.darkSteelPickPowerUsePerDamagePoint)) {
         super.setDamage(stack, newDamage);
       }
@@ -171,7 +177,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     }
   }
 
-  
+
   @Override
   public boolean canHarvestBlock(Block block, ItemStack item) {
     if(hasSpoonUpgrade(item) && getEnergyStored(item) > 0) {
@@ -283,10 +289,10 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     }
     if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
       list.add(EnumChatFormatting.WHITE + "+" + Config.darkSteelPickEffeciencyBoostWhenPowered + " "
-          + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
+          + EnderIO.lang.localize("item."+name+"_pickaxe.tooltip.effPowered"));
       list.add(EnumChatFormatting.WHITE + "+" + Config.darkSteelPickEffeciencyObsidian + " "
-          + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effObs") + " ");
-      list.add(EnumChatFormatting.WHITE + "     " + "(" + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.cost") + " "
+          + EnderIO.lang.localize("item."+name+"_pickaxe.tooltip.effObs") + " ");
+      list.add(EnumChatFormatting.WHITE + "     " + "(" + EnderIO.lang.localize("item."+name+"_pickaxe.tooltip.cost") + " "
           + PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian) + " "
           + PowerDisplayUtil.abrevation() + ")");
     }

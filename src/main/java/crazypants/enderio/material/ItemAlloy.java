@@ -18,8 +18,8 @@ public class ItemAlloy extends Item {
 
   static final boolean useNuggets = false;
 
-  private final IIcon[] icons;
-  private final int numItems;
+  protected final IIcon[] icons;
+  protected final int numItems;
 
   public static ItemAlloy create() {
     ItemAlloy alloy = new ItemAlloy();
@@ -27,7 +27,7 @@ public class ItemAlloy extends Item {
     return alloy;
   }
 
-  private ItemAlloy() {
+  protected ItemAlloy() {
     setHasSubtypes(true);
     setMaxDamage(0);
     setCreativeTab(EnderIOTab.tabEnderIO);

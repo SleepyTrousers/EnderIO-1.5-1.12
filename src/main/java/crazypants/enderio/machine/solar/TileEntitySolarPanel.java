@@ -25,24 +25,24 @@ import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.waila.IWailaNBTProvider;
 
 public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowerProvider, IWailaNBTProvider {
-  
+
   private final List<Receptor> receptors = new ArrayList<Receptor>();
   private ListIterator<Receptor> receptorIterator = receptors.listIterator();
   private boolean receptorsDirty = true;
 
   private int lastCollectionValue = -1;
-  
+
   private static final int CHECK_INTERVAL = 100;
-  
+
   EnergyStorage destroyedNetworkBuffer = null;
-  
+
   protected SolarPanelNetwork network = new SolarPanelNetwork();
 
   public void onNeighborBlockChange() {
     receptorsDirty = true;
   }
 
-  
+
 
   // RF Power
 
@@ -65,7 +65,7 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   public int getMaxEnergyStored(ForgeDirection from) {
     return getMaxEnergyStored();
   }
-  
+
   @Override
   public int getMaxEnergyRecieved(ForgeDirection dir) {
     return 0;
@@ -93,7 +93,7 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
     }
     collectEnergy();
     transmitEnergy();
-    
+
     if (network.isValid()) {
       if (destroyedNetworkBuffer != null) {
         network.addBuffer(destroyedNetworkBuffer);
@@ -101,12 +101,12 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
       }
       network.onUpdate(this);
     }
-    
+
     if (!network.isValid() || (shouldDoWorkThisTick(20, 1) && network.addToNetwork(this))) {
       findNetwork();
     }
   }
-  
+
   @Override
   public void invalidate() {
     network.removeFromNetwork(this);
@@ -147,16 +147,17 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
 
   private int getEnergyPerTick() {
     int meta = getBlockMetadata();
-    if(meta == 0) {
+    if(meta == 0)
       return Config.maxPhotovoltaicOutputRF;
-    }
-    return Config.maxPhotovoltaicAdvancedOutputRF;
+    if(meta == 1)
+      return Config.maxPhotovoltaicAdvancedOutputRF;
+    return Config.maxPhotovoltaicVibrantOutputRF;
   }
 
   float calculateLightRatio() {
     return calculateLightRatio(worldObj, xCoord, yCoord, zCoord);
   }
-  
+
   boolean canSeeSun() {
     return worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord);
   }
@@ -211,7 +212,7 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
       appliedCount++;
     }
 
-    setEnergyStored(getEnergyStored() - transmitted);    
+    setEnergyStored(getEnergyStored() - transmitted);
 
     return transmitted > 0;
 
@@ -269,7 +270,7 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
     readFromNBT(pkt.func_148857_g());
   }
-  
+
   @Override
   public boolean displayPower() {
     return true;
@@ -278,7 +279,7 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
   public void setNetwork(SolarPanelNetwork network) {
     this.network = network;
   }
-  
+
   public boolean isMaster() {
     return network.getMaster() == this;
   }

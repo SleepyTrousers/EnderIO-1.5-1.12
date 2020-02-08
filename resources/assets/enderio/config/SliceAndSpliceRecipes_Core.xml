@@ -62,6 +62,32 @@
         <itemStack modID="EnderIO" itemName="itemFrankenSkull" itemMeta="3" />
       </output>
     </recipe>
+	<recipe name="Skeletal Contractor" energyCost="20000" >
+      <input>
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="7" slot="0" />
+        <itemStack modID="minecraft" itemName="skull" itemMeta="0" slot="1" />
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="7" slot="2" />
+        <itemStack modID="minecraft" itemName="rotten_flesh" itemMeta="0" slot="3" />
+        <itemStack oreDictionary="itemSilicon" slot="4" />
+        <itemStack modID="minecraft" itemName="rotten_flesh" itemMeta="0" slot="5" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="itemFrankenSkull" itemMeta="5" />
+      </output>
+    </recipe>	
+	<recipe name="Guardian Diode" energyCost="20000" >
+      <input>
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="1" slot="0" />
+        <itemStack oreDictionary="gemDiamond" slot="1" />
+        <itemStack modID="EnderIO" itemName="itemAlloy" itemMeta="1" slot="2" />
+        <itemStack modID="EnderIO" itemName="itemMaterial" itemMeta="5" slot="3" />
+        <itemStack oreDictionary="itemSilicon" slot="4" />
+        <itemStack modID="EnderIO" itemName="itemMaterial" itemMeta="5" slot="5" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="itemFrankenSkull" itemMeta="6" />
+      </output>
+    </recipe>
   </recipeGroup>
 
 </SliceAndSpliceRecipes>
