@@ -47,7 +47,7 @@ public class PlaceableFarmer extends AbstractFarmerJoe {
   }
 
   public boolean isValid() {
-    return !SEEDS.isEmpty() && !DIRT.isEmpty();
+    return !SEEDS.isValid() && !DIRT.isValid();
   }
 
   @Override
