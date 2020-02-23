@@ -3,10 +3,11 @@ package crazypants.enderio.machines.machine.light;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.BlockEnder;
+
 import crazypants.enderio.base.TileEntityEio;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 
 import static crazypants.enderio.machines.init.MachineObject.block_electric_light;
@@ -21,11 +22,7 @@ public class TileLightNode extends TileEntityEio {
     if (parent == BlockPos.ORIGIN) { // yes, identity check. Could be a real parent at 0,0,0 instead
       return null;
     }
-    TileEntity te = world.getTileEntity(parent);
-    if (te instanceof TileElectricLight) {
-      return (TileElectricLight) te;
-    }
-    return null;
+    return BlockEnder.getAnyTileEntitySafe(world, parent, TileElectricLight.class);
   }
 
   public void checkParent() {

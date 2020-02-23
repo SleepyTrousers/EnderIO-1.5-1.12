@@ -30,7 +30,9 @@ public class PaddingHandler {
   @SubscribeEvent(priority = EventPriority.LOWEST)
   public static void onPlaySoundEvent(PlaySoundEvent event) {
     final EntityPlayerSP player = Minecraft.getMinecraft().player;
-    if (NullHelper.untrust(player) != null && PaddingUpgrade.INSTANCE.hasUpgrade(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD))) {
+    if (NullHelper.untrust(player) != null && PaddingUpgrade.INSTANCE.hasUpgrade(player.getItemStackFromSlot(EntityEquipmentSlot.HEAD))
+        && event.getResultSound() != null /* && !event.isCanceled() && event.getResult() != Result.DENY */) {
+      // really Forge, how many different ways of canceling an event do you need?
       event.setResultSound(make(NullHelper.first(event.getResultSound(), event.getSound())));
     }
   }

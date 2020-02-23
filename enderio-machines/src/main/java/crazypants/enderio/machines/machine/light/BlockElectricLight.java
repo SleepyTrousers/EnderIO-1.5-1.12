@@ -188,6 +188,7 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
     if (te != null) {
       te.onBlockRemoved();
     }
+    super.breakBlock(worldIn, pos, state);
   }
 
   @Override
