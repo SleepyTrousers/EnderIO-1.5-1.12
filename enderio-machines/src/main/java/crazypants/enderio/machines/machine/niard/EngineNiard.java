@@ -108,6 +108,10 @@ public class EngineNiard {
 
   public int work(int xp_in_mb) {
     int remaining = XpUtil.liquidToExperience(xp_in_mb);
+    if (radius != owner.getRange()) {
+      radius = owner.getRange();
+      radiusItr = new RadiusIterator(owner.getLocation(), radius);
+    }
     if (radius >= 0) {
       for (int i = 0; i < radiusItr.size(); i++) {
         BlockPos next = radiusItr.next().offset(EnumFacing.DOWN);
