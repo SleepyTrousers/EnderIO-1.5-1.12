@@ -86,10 +86,10 @@ public final class Rules {
   }
 
   /**
-   * Generates a rule that always success but will list the given language element in the "can be applied to" list of the upgrade's tooltips. You need to add
+   * Generates a rule that always succeeds but will list the given language element in the "can be applied to" list of the upgrade's tooltips. You need to add
    * additional rules to actually implement the check(s).
    * <p>
-   * This is a separate rule because the tooltip list is considered an "or" list, but rules are checked "and".
+   * This is a separate rule from the actual check because the tooltip list is considered an "or" list, but rules are checked "and".
    * 
    * @param lang
    *          And {@link ILang} to add to the tooltip
@@ -113,10 +113,10 @@ public final class Rules {
   }
 
   /**
-   * Generates a rule that always success but will list the given language element in the "can be applied to" list of the upgrade's tooltips. You need to add
+   * Generates a rule that always succeeds but will list the given language element in the "can be applied to" list of the upgrade's tooltips. You need to add
    * additional rules to actually implement the check(s).
    * <p>
-   * This is a separate rule because the tooltip list is considered an "or" list, but rules are checked "and".
+   * This is a separate rule from the actual check because the tooltip list is considered an "or" list, but rules are checked "and".
    * 
    * @param slot
    *          And {@link EntityEquipmentSlot} to add to the tooltip. Note that only the armor values have meaningful results.

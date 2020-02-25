@@ -69,7 +69,7 @@ public class StorageUpgrade extends AbstractUpgrade {
   /**
    * How many inventory slots does an item for the given slot have with an upgrade of the given level?
    * <p>
-   * This will always be a multiple of the column count. Or 0 if the given levelk is invalid.
+   * This will always be a multiple of the column count. Or 0 if the given level is invalid.
    */
   protected static int slots(@Nonnull EntityEquipmentSlot slot, int level) {
     return level < 0 ? 0 : cols(slot) * DarkSteelConfig.inventoryUpgradeRows.get(level).get();
