@@ -188,6 +188,30 @@ allprojects {
 		}
 	}
 
+	// Minimize/optimize all png files
+	// Requires optipng on the PATH
+	task optimizePng {
+		def pngPatterns = ["**/*.png"]
+
+		doLast {
+			sourceSets.main.resources.srcDirs.each {
+				dir -> fileTree(dir: dir, includes: pngPatterns).each { File file ->
+					long size = file.length()
+
+					exec {
+						executable "optipng"
+						args "-q", "-o7", "-zm1-9", "-strip", "all", file
+					}
+
+					long newSize = file.length()
+
+					if (newSize < size)
+						System.out.format "Reduced File size of %s from %d bytes to %d bytes (reduced by %.2f%%)\n", file, size, newSize, ((double) (size - newSize)) / ((double) size) * 100.0
+				}
+			}
+		}
+	}
+
     // Sign the jar with the new key store
     task signJar(type: SignJar, dependsOn: reobfJar) {
         inputFile = jar.archivePath
