@@ -242,7 +242,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit {
   public boolean onBlockActivated(@Nonnull EntityPlayer player, @Nonnull EnumHand hand, @Nonnull RaytraceResult res, @Nonnull List<RaytraceResult> all) {
     DyeColor col = DyeColor.getColorFromDye(player.getHeldItem(hand));
     final CollidableComponent component = res.component;
-    if (col != null && component != null && component.isDirectional()) {
+    if (col != null && component.isDirectional()) {
       setSignalColor(component.getDirection(), col);
       return true;
     } else if (ConduitUtil.isProbeEquipped(player, hand)) {
@@ -275,28 +275,26 @@ public class OCConduit extends AbstractConduit implements IOCConduit {
       return true;
     } else if (ToolUtil.isToolEquipped(player, hand)) {
       if (!getBundle().getEntity().getWorld().isRemote) {
-        if (component != null) {
-          EnumFacing faceHit = res.movingObjectPosition.sideHit;
-          if (component.isCore()) {
-            if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
-              setConnectionMode(faceHit, ConnectionMode.IN_OUT);
-              return true;
-            }
-            return ConduitUtil.connectConduits(this, faceHit);
-          } else {
-            EnumFacing connDir = component.getDirection();
-            if (containsExternalConnection(connDir)) {
-              for (RaytraceResult rtr : all) {
-                if (rtr != null && rtr.component != null && COLOR_CONTROLLER_ID.equals(rtr.component.data)) {
-                  setSignalColor(connDir, DyeColor.getNext(getSignalColor(connDir)));
-                  return true;
-                }
+        EnumFacing faceHit = res.movingObjectPosition.sideHit;
+        if (component.isCore()) {
+          if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
+            setConnectionMode(faceHit, ConnectionMode.IN_OUT);
+            return true;
+          }
+          return ConduitUtil.connectConduits(this, faceHit);
+        } else {
+          EnumFacing connDir = component.getDirection();
+          if (containsExternalConnection(connDir)) {
+            for (RaytraceResult rtr : all) {
+              if (rtr != null && COLOR_CONTROLLER_ID.equals(rtr.component.data)) {
+                setSignalColor(connDir, DyeColor.getNext(getSignalColor(connDir)));
+                return true;
               }
-              setConnectionMode(connDir, getNextConnectionMode(connDir));
-            } else if (containsConduitConnection(connDir)) {
-              ConduitUtil.disconnectConduits(this, connDir);
-              addMissingNodeConnections();
             }
+            setConnectionMode(connDir, getNextConnectionMode(connDir));
+          } else if (containsConduitConnection(connDir)) {
+            ConduitUtil.disconnectConduits(this, connDir);
+            addMissingNodeConnections();
           }
         }
       }

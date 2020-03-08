@@ -16,10 +16,13 @@ import crazypants.enderio.conduit.oc.OCUtil;
 import crazypants.enderio.conduit.oc.init.ConduitOpenComputersObject;
 import crazypants.enderio.conduits.conduit.AbstractItemConduit;
 import crazypants.enderio.conduits.conduit.ItemConduitSubtype;
+import crazypants.enderio.conduits.render.ConduitBundleRenderManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemOCConduit extends AbstractItemConduit {
 
@@ -36,6 +39,13 @@ public class ItemOCConduit extends AbstractItemConduit {
         .setOffsets(Offset.WEST_DOWN, Offset.NORTH_DOWN, Offset.SOUTH_WEST, Offset.WEST_DOWN).build()
         .setUUID(new ResourceLocation(EnderIO.DOMAIN, "opencomputers_conduit")).setClass(OCConduit.class).build().finish());
     ConduitDisplayMode.registerDisplayMode(new ConduitDisplayMode(getBaseConduitType(), IconEIO.WRENCH_OVERLAY_OC, IconEIO.WRENCH_OVERLAY_OC_OFF));
+  }
+
+  @Override
+  @SideOnly(Side.CLIENT)
+  public void registerRenderers(@Nonnull IModObject modObject) {
+    super.registerRenderers(modObject);
+    ConduitBundleRenderManager.instance.getConduitBundleRenderer().registerRenderer(new OCConduitRenderer());
   }
 
   @Override

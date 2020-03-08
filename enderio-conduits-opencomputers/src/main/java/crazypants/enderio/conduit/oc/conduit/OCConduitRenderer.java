@@ -24,6 +24,11 @@ public class OCConduitRenderer extends DefaultConduitRenderer {
     return conduit instanceof IOCConduit;
   }
 
+  /*
+   * TODO: HL 2020-03-08: I just re-enabled this render because it seems its registration got lost. I have no setup to test it, so if there's a weird rendering
+   * issue...
+   */
+
   @Override
   protected void addConduitQuads(@Nonnull IConduitBundle bundle, @Nonnull IClientConduit conduit, @Nonnull IConduitTexture tex,
       @Nonnull CollidableComponent component, float selfIllum, BlockRenderLayer layer, @Nonnull List<BakedQuad> quads) {
