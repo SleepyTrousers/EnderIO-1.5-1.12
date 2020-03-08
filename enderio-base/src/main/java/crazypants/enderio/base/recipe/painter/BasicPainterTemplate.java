@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 
 public class BasicPainterTemplate<T extends Block & IPaintable> extends AbstractPainterTemplate<T> {
 
+  private static final @Nonnull String ITEM_STACK_GET_TAG_COMPOUND_AFTER_HAS_TAG_COMPOUND = "ItemStack.getTagCompound() after .hasTagCompound()";
   protected final @Nullable T resultBlock;
   protected final @Nonnull Block[] validTargets;
   protected final boolean allowEasyConversion;
@@ -67,11 +68,11 @@ public class BasicPainterTemplate<T extends Block & IPaintable> extends Abstract
     if (Prep.isInvalid(outputStack)) {
       outputStack = mkItemStack(inputStack, outputBlock);
       if (outputBlock == Block.getBlockFromItem(inputStack.getItem()) && inputStack.hasTagCompound()) {
-        outputStack.setTagCompound(NullHelper.notnullM(inputStack.getTagCompound(), "ItemStack.getTagCompound() after .hasTagCompound()").copy());
+        outputStack.setTagCompound(NullHelper.notnullM(inputStack.getTagCompound(), ITEM_STACK_GET_TAG_COMPOUND_AFTER_HAS_TAG_COMPOUND).copy());
       }
       ((IPaintable) outputBlock).setPaintSource(outputBlock, outputStack, paintState);
     } else if (outputStack.getItem() == inputStack.getItem() && inputStack.hasTagCompound()) {
-      outputStack.setTagCompound(NullHelper.notnullM(inputStack.getTagCompound(), "ItemStack.getTagCompound() after .hasTagCompound()").copy());
+      outputStack.setTagCompound(NullHelper.notnullM(inputStack.getTagCompound(), ITEM_STACK_GET_TAG_COMPOUND_AFTER_HAS_TAG_COMPOUND).copy());
 
       Block realresult = PaintUtil.getBlockFromItem(outputStack);
       if (realresult instanceof IPaintable) {

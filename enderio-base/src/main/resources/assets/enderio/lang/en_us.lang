@@ -312,6 +312,8 @@ item.item_material.infinity_goop.tooltip.detailed.line1=An infinitely sticky sub
 item.item_material.infinity_goop.tooltip.detailed.line2=Randalf got some on him once, and was stuck to his staff of travelling for 6 months...
 item.item_material.clayed_glowstone.name=Clay-Coated Glowstone Dust
 item.item_material.black_paper.name=Black Paper
+item.item_material.token_animal.name=Animal Token
+item.item_material.token_monster.name=Monster Token
 
 item.item_alloy_endergy_ingot_crude_steel.name=Crude Steel Ingot
 item.item_alloy_endergy_ingot_crystalline_alloy.name=Crystalline Alloy Ingot
@@ -429,10 +431,6 @@ tile.block_alloy_endergy.vivid_alloy.name=Vivid Alloy Block
 
 tile.block_cold_fire.name=Cold Fire
 
-tile.block_dark_fused_glass.name=Dark Clear Glass
-
-tile.block_dark_fused_quartz.name=Dark Fused Quartz
-
 tile.block_dark_iron_bars.name=Dark Iron Bars
 
 tile.block_end_iron_bars.name=End Steel Bars
@@ -526,15 +524,60 @@ tile.block_enderman_skull.tormented.name=Tormented Enderman Head
 tile.block_enderman_skull.reanimated.name=Reanimated Enderman Head
 tile.block_enderman_skull.reanimated_tormented.name=Reanimated Tormented Enderman Head
 
-tile.block_enlightened_fused_glass.name=Enlightened Clear Glass
-
-tile.block_enlightened_fused_quartz.name=Enlightened Fused Quartz
-
 tile.block_exit_rail.name=Exit Rail
 
-tile.block_fused_glass.name=Quite Clear Glass
-
 tile.block_fused_quartz.name=Fused Quartz
+tile.block_fused_glass.name=Quite Clear Glass
+tile.block_enlightened_fused_quartz.name=Enlightened Fused Quartz
+tile.block_enlightened_fused_glass.name=Enlightened Clear Glass
+tile.block_dark_fused_quartz.name=Dark Fused Quartz
+tile.block_dark_fused_glass.name=Dark Clear Glass
+
+tile.block_holy_fused_quartz.name=Fused Quartz
+tile.block_holy_fused_glass.name=Quite Clear Glass
+tile.block_holy_enlightened_fused_quartz.name=Enlightened Fused Quartz
+tile.block_holy_enlightened_fused_glass.name=Enlightened Clear Glass
+tile.block_holy_dark_fused_quartz.name=Dark Fused Quartz
+tile.block_holy_dark_fused_glass.name=Dark Clear Glass
+
+tile.block_unholy_fused_quartz.name=Fused Quartz
+tile.block_unholy_fused_glass.name=Quite Clear Glass
+tile.block_unholy_enlightened_fused_quartz.name=Enlightened Fused Quartz
+tile.block_unholy_enlightened_fused_glass.name=Enlightened Clear Glass
+tile.block_unholy_dark_fused_quartz.name=Dark Fused Quartz
+tile.block_unholy_dark_fused_glass.name=Dark Clear Glass
+
+tile.block_pasture_fused_quartz.name=Fused Quartz
+tile.block_pasture_fused_glass.name=Quite Clear Glass
+tile.block_pasture_enlightened_fused_quartz.name=Enlightened Fused Quartz
+tile.block_pasture_enlightened_fused_glass.name=Enlightened Clear Glass
+tile.block_pasture_dark_fused_quartz.name=Dark Fused Quartz
+tile.block_pasture_dark_fused_glass.name=Dark Clear Glass
+
+tile.block_not_holy_fused_quartz.name=Fused Quartz
+tile.block_not_holy_fused_glass.name=Quite Clear Glass
+tile.block_not_holy_enlightened_fused_quartz.name=Enlightened Fused Quartz
+tile.block_not_holy_enlightened_fused_glass.name=Enlightened Clear Glass
+tile.block_not_holy_dark_fused_quartz.name=Dark Fused Quartz
+tile.block_not_holy_dark_fused_glass.name=Dark Clear Glass
+
+tile.block_not_unholy_fused_quartz.name=Fused Quartz
+tile.block_not_unholy_fused_glass.name=Quite Clear Glass
+tile.block_not_unholy_enlightened_fused_quartz.name=Enlightened Fused Quartz
+tile.block_not_unholy_enlightened_fused_glass.name=Enlightened Clear Glass
+tile.block_not_unholy_dark_fused_quartz.name=Dark Fused Quartz
+tile.block_not_unholy_dark_fused_glass.name=Dark Clear Glass
+
+tile.block_not_pasture_fused_quartz.name=Fused Quartz
+tile.block_not_pasture_fused_glass.name=Quite Clear Glass
+tile.block_not_pasture_enlightened_fused_quartz.name=Enlightened Fused Quartz
+tile.block_not_pasture_enlightened_fused_glass.name=Enlightened Clear Glass
+tile.block_not_pasture_dark_fused_quartz.name=Dark Fused Quartz
+tile.block_not_pasture_dark_fused_glass.name=Dark Clear Glass
+
+tile.block_painted_fused_quartz.name=Painted Fused Quartz
+tile.block_painted_fused_quartz1.name=Painted Fused Quartz
+tile.block_painted_fused_quartz2.name=Painted Fused Quartz
 
 tile.block_machine_base.name=(technical block)
 tile.block_machine_io.name=(technical block)
@@ -544,7 +587,6 @@ tile.block_painted_dark_steel_trapdoor.name=Painted Dark Steel Trapdoor
 tile.block_painted_double_slab.name=Painted Slab
 tile.block_painted_fence.name=Painted Fence
 tile.block_painted_fence_gate.name=Painted Gate
-tile.block_painted_fused_quartz.name=Painted Fused Quartz
 tile.block_painted_glowstone.name=Painted Glowstone
 tile.block_painted_glowstone_solid.name=Painted Glowstone
 tile.block_painted_iron_trapdoor.name=Painted Iron Trapdoor
@@ -645,6 +687,13 @@ enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Increases energy storage 
 enderio.block.tooltip.blastResistant=Blast Resistant
 enderio.block.tooltip.lightEmitter=Emits Light
 enderio.block.tooltip.lightBlocker=Blocks Light
+
+enderio.block.tooltip.allowPlayers=Not solid for players
+enderio.block.tooltip.allowMonsters=Not solid for monsters
+enderio.block.tooltip.allowAnimals=Not solid for animals
+enderio.block.tooltip.disallowPlayers=Solid only for players
+enderio.block.tooltip.disallowMonsters=Solid only for monsters
+enderio.block.tooltip.disallowAnimals=Solid only for animals
 
 
 enderio.grindingball.tooltip.line1=%sSAG Mill Grinding Ball

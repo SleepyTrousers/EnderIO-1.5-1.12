@@ -65,6 +65,10 @@ public class Crafting extends AbstractCrafting {
     }
   }
 
+  public static ResourceLocation mkRL(String recipeName, Object... params) {
+    return mkRL(String.format(recipeName, params));
+  }
+
   public static ResourceLocation mkRL(String recipeName) {
     String s = recipeName.replaceAll("[^A-Za-z0-9]", "_").replaceAll("([A-Z])", "_$0").replaceAll("__+", "_").replaceFirst("^_", "").replaceFirst("_$", "")
         .toLowerCase(Locale.ENGLISH);
@@ -136,8 +140,7 @@ public class Crafting extends AbstractCrafting {
   @Override
   public boolean setAttribute(StaxFactory factory, String name, String value) throws InvalidRecipeConfigException, XMLStreamException {
     if ("upgrade".equals(name)) {
-      upgrade = !Strings.isBlank(value) && !"no".equals(value.toLowerCase(Locale.ENGLISH))
-          && !"false".equals(value.toLowerCase(Locale.ENGLISH));
+      upgrade = !Strings.isBlank(value) && !"no".equals(value.toLowerCase(Locale.ENGLISH)) && !"false".equals(value.toLowerCase(Locale.ENGLISH));
       return true;
     }
     return super.setAttribute(factory, name, value);

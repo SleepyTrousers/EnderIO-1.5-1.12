@@ -116,7 +116,10 @@ public enum Material {
 
   CLAYED_GLOWSTONE("clayedGlowstone"),
 
-  BLACK_PAPER("blackPaper", "paperBlack")
+  BLACK_PAPER("blackPaper", "paperBlack"),
+
+  TOKEN_ANIMAL("tokenAnimal", true),
+  TOKEN_MONSTER("tokenMonster", true),
 
   ;
 

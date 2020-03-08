@@ -21,6 +21,10 @@ import crazypants.enderio.base.recipe.soul.BasicSoulBinderRecipe;
 import crazypants.enderio.base.recipe.soul.DynamicSoulBinderRecipe;
 import crazypants.enderio.base.recipe.spawner.EntityDataRegistry;
 import crazypants.enderio.util.CapturedMob;
+import crazypants.enderio.util.FuncUtil;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.passive.IAnimals;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -52,7 +56,9 @@ public class Soulbinding extends AbstractCrafting {
   private enum SoulHandling {
     ALL,
     LISTED,
-    SPAWNABLE;
+    SPAWNABLE,
+    MONSTERS,
+    ANIMALS;
   }
 
   private int energy, levels;
@@ -118,6 +124,13 @@ public class Soulbinding extends AbstractCrafting {
         break;
       case SPAWNABLE:
         entityFilter = name -> name != null && !EntityDataRegistry.getInstance().isBlackListedForSpawning(name);
+        break;
+      case MONSTERS:
+        entityFilter = name -> FuncUtil.runIf(FuncUtil.runIf(name, n -> EntityList.getClass(n)), eclass -> IMob.class.isAssignableFrom(eclass), false);
+        break;
+      case ANIMALS:
+        entityFilter = name -> FuncUtil.runIf(FuncUtil.runIf(name, n -> EntityList.getClass(n)),
+            eclass -> IAnimals.class.isAssignableFrom(eclass) && !IMob.class.isAssignableFrom(eclass), false);
         break;
       default:
       case LISTED:

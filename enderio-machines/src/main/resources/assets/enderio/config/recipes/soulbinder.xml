@@ -105,4 +105,6 @@ XML editor will display that as tooltips when editing this file.
     </soulbinding>
   </recipe>
 
+  <!-- Note: There are some more soulbinding recipes in glass.xml -->
+
 </enderio:recipes>

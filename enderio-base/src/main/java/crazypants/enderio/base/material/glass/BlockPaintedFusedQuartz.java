@@ -1,9 +1,12 @@
 package crazypants.enderio.base.material.glass;
 
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
-import com.enderio.core.common.util.NNList.NNIterator;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.block.painted.BlockItemPaintedBlock.INamedSubBlocks;
@@ -16,13 +19,15 @@ import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
+import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -38,39 +43,75 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPaintedBlock>
     implements ITileEntityProvider, IPaintable.IBlockPaintableBlock, INamedSubBlocks, ICustomSubItems {
 
-  public static BlockPaintedFusedQuartz create(@Nonnull IModObject modObject) {
-    BlockPaintedFusedQuartz result = new BlockPaintedFusedQuartz(modObject);
-    result.init();
-    return result;
+  public static @Nonnull Function<IModObject, Block> create(@Nonnull PropertyEnum<FusedQuartzType> kind) {
+    return modObject -> {
+      BlockPaintedFusedQuartz result = new BlockPaintedFusedQuartz(NullHelper.notnull(modObject)) {
+        @Override
+        protected @Nonnull PropertyEnum<FusedQuartzType> getKind() {
+          return kind;
+        }
+      };
+      result.init();
+      return result;
+    };
+  }
+
+  protected BlockPaintedFusedQuartz(@Nonnull IModObject modObject) {
+    super(modObject);
+    Prep.setNoCreativeTab(this);
+    setDefaultState(getBlockState().getBaseState().withProperty(getKind(), NullHelper.first(getKind().getAllowedValues().iterator().next())));
+  }
+
+  @Override
+  public BlockItemFusedQuartzBase createBlockItem(@Nonnull IModObject modObject) {
+    return modObject.apply(new BlockItemFusedQuartzBase(this));
+  }
+
+  @Override
+  public @Nonnull IBlockState getStateFromMeta(int meta) {
+    return getDefaultState().withProperty(getKind(), FusedQuartzType.getTypeFromMeta(getKind(), meta));
   }
 
   @SuppressWarnings("null")
-  protected BlockPaintedFusedQuartz(@Nonnull IModObject modObject) {
-    super(modObject);
-    setCreativeTab(null);
-    setDefaultState(getBlockState().getBaseState().withProperty(FusedQuartzType.KIND, FusedQuartzType.FUSED_QUARTZ));
+  @Override
+  public int getMetaFromState(@Nonnull IBlockState state) {
+    return FusedQuartzType.getMetaFromType(state.getValue(getKind()));
   }
 
   @Override
   public @Nonnull String getUnlocalizedName(int meta) {
-    return FusedQuartzType.getTypeFromMeta(meta).getBlock().getUnlocalizedName();
+    return FusedQuartzType.getTypeFromMeta(getKind(), meta).getBlock().getUnlocalizedName();
+  }
+
+  @Override
+  public @Nonnull IFusedBlockstate getFusedBlockstate(@Nonnull IBlockState state) {
+    return new IFusedBlockstate() {
+
+      @Override
+      @Nonnull
+      public FusedQuartzType getType() {
+        return state.getValue(getKind());
+      }
+
+      @Override
+      @Nonnull
+      public EnumDyeColor getColor() {
+        return EnumDyeColor.WHITE;
+      }
+    };
   }
 
   @Override
   protected void init() {
     super.init();
     SmartModelAttacher.registerNoProps(this);
-    NNList<Block> blocks = new NNList<Block>();
-    NNIterator<FusedQuartzType> iterator = NNList.of(FusedQuartzType.class).iterator();
-    while (iterator.hasNext()) {
-      blocks.add(iterator.next().getBlock());
-    }
-    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER, new GlassPaintingRecipe(this, blocks.toArray(new Block[0])));
+    MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.PAINTER,
+        new GlassPaintingRecipe(this, getKind().getAllowedValues().stream().map(type -> type.getBlock()).collect(Collectors.toList()).toArray(new Block[0])));
   }
 
   @Override
   protected @Nonnull BlockStateContainer createBlockState() {
-    return new BlockStateContainer(this, new IProperty[] { FusedQuartzType.KIND });
+    return new BlockStateContainer(this, getKind());
   }
 
   @Override
@@ -99,7 +140,7 @@ public class BlockPaintedFusedQuartz extends BlockFusedQuartzBase<TileEntityPain
   @Override
   @Nonnull
   public NNList<ItemStack> getSubItems() {
-    return getSubItems(this, 0, FusedQuartzType.values().length - 1);
+    return getSubItems(this, 0, getKind().getAllowedValues().size() - 1);
   }
 
   @Override

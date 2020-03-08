@@ -61,10 +61,7 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlock
 
   protected boolean isSameKind(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull BlockPos other) {
     IBlockState otherState = world.getBlockState(other).getActualState(world, other);
-    if (isSameKind(state, otherState)) {
-      return true;
-    }
-    if (FacadeUtil.instance.isFacaded(otherState)) {
+    if (FacadeUtil.instance.isFacaded(otherState)) { // TODO: shouldn't we also check our own paint here?
       try {
         IBlockState facade = FacadeUtil.instance.getFacade(otherState, world, other, null);
         if (facade != null) {
@@ -73,7 +70,7 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlock
       } catch (Throwable t) {
       }
     }
-    return false;
+    return isSameKind(state, otherState);
   }
 
   protected boolean getNeighbor(@Nonnull BlockPos pos, @Nonnull BlockPos npos) {
@@ -110,12 +107,15 @@ public abstract class ConnectedBlockRenderMapper implements IRenderMapper.IBlock
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
+    if (this == obj) {
       return true;
-    if (obj == null)
+    }
+    if (obj == null) {
       return false;
-    if (getClass() != obj.getClass())
+    }
+    if (getClass() != obj.getClass()) {
       return false;
+    }
     ConnectedBlockRenderMapper other = (ConnectedBlockRenderMapper) obj;
     return Arrays.deepEquals(neighborKinds, other.neighborKinds);
   }

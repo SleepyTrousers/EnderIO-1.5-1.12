@@ -180,6 +180,13 @@ public enum IconEIO implements IWidgetIcon {
   RECIPE_BOOK(48, 144),
   INFO(64, 144),
 
+  GLASS_LIGHT(80, 144),
+  GLASS_DARK(96, 144),
+  GLASS_PLAYER(112, 144),
+  GLASS_MONSTER(128, 144),
+  GLASS_ANIMAL(144, 144),
+  GLASS_NOT(160, 144),
+
   ;
 
   // Texture size is actually 512 but everything is aligned to a 256 grid

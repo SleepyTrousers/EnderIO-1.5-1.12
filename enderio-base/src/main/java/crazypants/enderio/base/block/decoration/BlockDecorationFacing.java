@@ -40,7 +40,7 @@ public class BlockDecorationFacing extends BlockDecoration {
   public static final @Nonnull PropertyEnum<EnumFacing> FACING = PropertyEnum.create("facing", EnumFacing.class, EnumFacing.HORIZONTALS);
   public static final @Nonnull PropertyBool ACTIVE = PropertyBool.create("active");
 
-  private BlockDecorationFacing(@Nonnull IModObject modObject, @Nonnull EnumDecoBlock maxMeta) {
+  protected BlockDecorationFacing(@Nonnull IModObject modObject, @Nonnull EnumDecoBlock maxMeta) {
     super(modObject, maxMeta);
   }
 

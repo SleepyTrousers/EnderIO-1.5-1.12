@@ -508,6 +508,16 @@
         "textures": {
           "layer0": "enderio:items/item_material_black_paper"
         }
+      },
+      "token_animal": {
+        "textures": {
+          "layer0": "enderio:items/item_material_token_animal"
+        }
+      },
+      "token_monster": {
+        "textures": {
+          "layer0": "enderio:items/item_material_token_monster"
+        }
       }
     }
   }

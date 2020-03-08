@@ -1087,7 +1087,7 @@
       </annotation>
       <simpleType>
         <restriction base="int">
-          <minExclusive value="1"></minExclusive>
+          <minInclusive value="1"></minInclusive>
           <maxInclusive value="21862"></maxInclusive>
         </restriction>
       </simpleType>
@@ -1107,13 +1107,18 @@
 
 * LISTED: Souls will be given with the 'soul' tag
 * ALL: All souls can be used
-* SPAWNABLE: All souls that can be used with the Powered Spawner can be used.</documentation>
+* SPAWNABLE: All souls that can be used with the Powered Spawner can be used.
+* MONSTERS: All souls that are tagged as monster.
+* ANIMALS: All souls that are tagged as animals.
+</documentation>
             </annotation>
             <simpleType>
         <restriction base="string">
           <enumeration value="LISTED"></enumeration>
           <enumeration value="ALL"></enumeration>
           <enumeration value="SPAWNABLE"></enumeration>
+          <enumeration value="MONSTERS"></enumeration>
+          <enumeration value="ANIMALS"></enumeration>
         </restriction>
       </simpleType>
     </attribute>

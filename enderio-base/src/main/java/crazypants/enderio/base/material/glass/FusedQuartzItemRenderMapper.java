@@ -45,8 +45,6 @@ public class FusedQuartzItemRenderMapper implements IItemRenderMapper.IDynamicOv
 
     List<Pair<IBlockState, ItemStack>> states = new ArrayList<Pair<IBlockState, ItemStack>>();
     IBlockState defaultState = block.getDefaultState();
-    FusedQuartzType bankType = FusedQuartzType.getTypeFromMeta(stack.getItemDamage());
-    defaultState = defaultState.withProperty(FusedQuartzType.KIND, bankType);
 
     states.add(Pair.of(defaultState.withProperty(RENDER, EnumMergingBlockRenderMode.sides), (ItemStack) null));
 

@@ -11,7 +11,6 @@ import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.property.EnumMergingBlockRenderMode;
 import crazypants.enderio.base.render.rendermapper.ConnectedBlockRenderMapper;
 import crazypants.enderio.base.render.util.QuadCollector;
-import net.minecraft.block.BlockColored;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
@@ -36,8 +35,15 @@ public class FusedQuartzBlockRenderMapper extends ConnectedBlockRenderMapper {
 
   @Override
   protected boolean isSameKind(@Nonnull IBlockState state, @Nonnull IBlockState other) {
-    return other.getBlock() instanceof BlockFusedQuartz && state.getValue(FusedQuartzType.KIND).connectTo(other.getValue(FusedQuartzType.KIND))
-        && (BlockConfig.glassConnectToTheirColorVariants.get() || (state.getValue(BlockColored.COLOR) == other.getValue(BlockColored.COLOR)));
+    if (!(other.getBlock() instanceof BlockFusedQuartz)) {
+      return false;
+    }
+
+    IFusedBlockstate ourFState = IFusedBlockstate.get(state);
+    IFusedBlockstate otherFState = IFusedBlockstate.get(other);
+
+    return ourFState.getType().connectTo(otherFState.getType())
+        && (BlockConfig.glassConnectToTheirColorVariants.get() || (ourFState.getColor() == otherFState.getColor()));
   }
 
   @Override

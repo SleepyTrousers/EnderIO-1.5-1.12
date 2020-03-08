@@ -43,6 +43,14 @@ public enum Lang implements ILang {
   BLOCK_BLAST_RESISTANT(".block.tooltip.blastResistant"),
   BLOCK_LIGHT_EMITTER(".block.tooltip.lightEmitter"),
   BLOCK_LIGHT_BLOCKER(".block.tooltip.lightBlocker"),
+
+  BLOCK_ALLOW_PLAYERS(".block.tooltip.allowPlayers"),
+  BLOCK_ALLOW_MONSTERS(".block.tooltip.allowMonsters"),
+  BLOCK_ALLOW_ANIMALS(".block.tooltip.allowAnimals"),
+  BLOCK_DISALLOW_PLAYERS(".block.tooltip.disallowPlayers"),
+  BLOCK_DISALLOW_MONSTERS(".block.tooltip.disallowMonsters"),
+  BLOCK_DISALLOW_ANIMALS(".block.tooltip.disallowAnimals"),
+
   MACHINE_UPGRADE(".machine.tooltip.upgrade"),
   FLUID_TICKPER(".fluid.millibucket.format.tickper"),
   FLUID_AMOUNT(".fluid.millibucket.format"),

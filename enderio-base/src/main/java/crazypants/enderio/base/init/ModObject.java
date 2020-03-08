@@ -95,6 +95,7 @@ import crazypants.enderio.base.material.alloy.endergy.ItemEndergyAlloy;
 import crazypants.enderio.base.material.food.ItemEnderFood;
 import crazypants.enderio.base.material.glass.BlockFusedQuartz;
 import crazypants.enderio.base.material.glass.BlockPaintedFusedQuartz;
+import crazypants.enderio.base.material.glass.FusedQuartzType;
 import crazypants.enderio.base.material.material.ItemMaterial;
 import crazypants.enderio.base.material.upgrades.ItemUpgrades;
 import crazypants.enderio.base.render.dummy.BlockMachineBase;
@@ -230,13 +231,58 @@ public enum ModObject implements IModObjectBase {
   itemRedstoneSensorFilter(ItemComparatorInputSignalFilter::create),
   itemRedstoneTimerFilter(ItemTimerInputSignalFilter::create),
 
-  blockFusedQuartz(BlockFusedQuartz::createFusedQuartz),
-  blockFusedGlass(BlockFusedQuartz::createFusedGlass),
-  blockEnlightenedFusedQuartz(BlockFusedQuartz::createEnlightenedFusedQuartz),
-  blockEnlightenedFusedGlass(BlockFusedQuartz::createEnlightenedFusedGlass),
-  blockDarkFusedQuartz(BlockFusedQuartz::createDarkFusedQuartz),
-  blockDarkFusedGlass(BlockFusedQuartz::createDarkFusedGlass),
-  blockPaintedFusedQuartz(BlockPaintedFusedQuartz::create, ModTileEntity.TileEntityPaintedBlock),
+  blockFusedQuartz(BlockFusedQuartz.create(FusedQuartzType.FUSED_QUARTZ)),
+  blockFusedGlass(BlockFusedQuartz.create(FusedQuartzType.FUSED_GLASS)),
+  blockEnlightenedFusedQuartz(BlockFusedQuartz.create(FusedQuartzType.ENLIGHTENED_FUSED_QUARTZ)),
+  blockEnlightenedFusedGlass(BlockFusedQuartz.create(FusedQuartzType.ENLIGHTENED_FUSED_GLASS)),
+  blockDarkFusedQuartz(BlockFusedQuartz.create(FusedQuartzType.DARK_FUSED_QUARTZ)),
+  blockDarkFusedGlass(BlockFusedQuartz.create(FusedQuartzType.DARK_FUSED_GLASS)),
+
+  blockHolyFusedQuartz(BlockFusedQuartz.create(FusedQuartzType.HOLY_FUSED_QUARTZ)),
+  blockHolyFusedGlass(BlockFusedQuartz.create(FusedQuartzType.HOLY_FUSED_GLASS)),
+  blockHolyEnlightenedFusedQuartz(BlockFusedQuartz.create(FusedQuartzType.HOLY_ENLIGHTENED_FUSED_QUARTZ)),
+  blockHolyEnlightenedFusedGlass(BlockFusedQuartz.create(FusedQuartzType.HOLY_ENLIGHTENED_FUSED_GLASS)),
+  blockHolyDarkFusedQuartz(BlockFusedQuartz.create(FusedQuartzType.HOLY_DARK_FUSED_QUARTZ)),
+  blockHolyDarkFusedGlass(BlockFusedQuartz.create(FusedQuartzType.HOLY_DARK_FUSED_GLASS)),
+
+  blockUnholyFusedQuartz(BlockFusedQuartz.create(FusedQuartzType.UNHOLY_FUSED_QUARTZ)),
+  blockUnholyFusedGlass(BlockFusedQuartz.create(FusedQuartzType.UNHOLY_FUSED_GLASS)),
+  blockUnholyEnlightenedFusedQuartz(BlockFusedQuartz.create(FusedQuartzType.UNHOLY_ENLIGHTENED_FUSED_QUARTZ)),
+  blockUnholyEnlightenedFusedGlass(BlockFusedQuartz.create(FusedQuartzType.UNHOLY_ENLIGHTENED_FUSED_GLASS)),
+  blockUnholyDarkFusedQuartz(BlockFusedQuartz.create(FusedQuartzType.UNHOLY_DARK_FUSED_QUARTZ)),
+  blockUnholyDarkFusedGlass(BlockFusedQuartz.create(FusedQuartzType.UNHOLY_DARK_FUSED_GLASS)),
+
+  blockPastureFusedQuartz(BlockFusedQuartz.create(FusedQuartzType.PASTURE_FUSED_QUARTZ)),
+  blockPastureFusedGlass(BlockFusedQuartz.create(FusedQuartzType.PASTURE_FUSED_GLASS)),
+  blockPastureEnlightenedFusedQuartz(BlockFusedQuartz.create(FusedQuartzType.PASTURE_ENLIGHTENED_FUSED_QUARTZ)),
+  blockPastureEnlightenedFusedGlass(BlockFusedQuartz.create(FusedQuartzType.PASTURE_ENLIGHTENED_FUSED_GLASS)),
+  blockPastureDarkFusedQuartz(BlockFusedQuartz.create(FusedQuartzType.PASTURE_DARK_FUSED_QUARTZ)),
+  blockPastureDarkFusedGlass(BlockFusedQuartz.create(FusedQuartzType.PASTURE_DARK_FUSED_GLASS)),
+
+  blockNotHolyFusedQuartz(BlockFusedQuartz.create(FusedQuartzType.NOT_HOLY_FUSED_QUARTZ)),
+  blockNotHolyFusedGlass(BlockFusedQuartz.create(FusedQuartzType.NOT_HOLY_FUSED_GLASS)),
+  blockNotHolyEnlightenedFusedQuartz(BlockFusedQuartz.create(FusedQuartzType.NOT_HOLY_ENLIGHTENED_FUSED_QUARTZ)),
+  blockNotHolyEnlightenedFusedGlass(BlockFusedQuartz.create(FusedQuartzType.NOT_HOLY_ENLIGHTENED_FUSED_GLASS)),
+  blockNotHolyDarkFusedQuartz(BlockFusedQuartz.create(FusedQuartzType.NOT_HOLY_DARK_FUSED_QUARTZ)),
+  blockNotHolyDarkFusedGlass(BlockFusedQuartz.create(FusedQuartzType.NOT_HOLY_DARK_FUSED_GLASS)),
+
+  blockNotUnholyFusedQuartz(BlockFusedQuartz.create(FusedQuartzType.NOT_UNHOLY_FUSED_QUARTZ)),
+  blockNotUnholyFusedGlass(BlockFusedQuartz.create(FusedQuartzType.NOT_UNHOLY_FUSED_GLASS)),
+  blockNotUnholyEnlightenedFusedQuartz(BlockFusedQuartz.create(FusedQuartzType.NOT_UNHOLY_ENLIGHTENED_FUSED_QUARTZ)),
+  blockNotUnholyEnlightenedFusedGlass(BlockFusedQuartz.create(FusedQuartzType.NOT_UNHOLY_ENLIGHTENED_FUSED_GLASS)),
+  blockNotUnholyDarkFusedQuartz(BlockFusedQuartz.create(FusedQuartzType.NOT_UNHOLY_DARK_FUSED_QUARTZ)),
+  blockNotUnholyDarkFusedGlass(BlockFusedQuartz.create(FusedQuartzType.NOT_UNHOLY_DARK_FUSED_GLASS)),
+
+  blockNotPastureFusedQuartz(BlockFusedQuartz.create(FusedQuartzType.NOT_PASTURE_FUSED_QUARTZ)),
+  blockNotPastureFusedGlass(BlockFusedQuartz.create(FusedQuartzType.NOT_PASTURE_FUSED_GLASS)),
+  blockNotPastureEnlightenedFusedQuartz(BlockFusedQuartz.create(FusedQuartzType.NOT_PASTURE_ENLIGHTENED_FUSED_QUARTZ)),
+  blockNotPastureEnlightenedFusedGlass(BlockFusedQuartz.create(FusedQuartzType.NOT_PASTURE_ENLIGHTENED_FUSED_GLASS)),
+  blockNotPastureDarkFusedQuartz(BlockFusedQuartz.create(FusedQuartzType.NOT_PASTURE_DARK_FUSED_QUARTZ)),
+  blockNotPastureDarkFusedGlass(BlockFusedQuartz.create(FusedQuartzType.NOT_PASTURE_DARK_FUSED_GLASS)),
+
+  blockPaintedFusedQuartz(BlockPaintedFusedQuartz.create(FusedQuartzType.KIND0), ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedFusedQuartz1(BlockPaintedFusedQuartz.create(FusedQuartzType.KIND1), ModTileEntity.TileEntityPaintedBlock),
+  blockPaintedFusedQuartz2(BlockPaintedFusedQuartz.create(FusedQuartzType.KIND2), ModTileEntity.TileEntityPaintedBlock),
 
   itemSoulVial(ItemSoulVial::create),
 

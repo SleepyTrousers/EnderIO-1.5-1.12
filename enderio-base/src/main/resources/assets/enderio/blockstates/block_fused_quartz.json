@@ -8,12 +8,8 @@
   "variants":{
   	"inventory":[{}],
     "kind":{
-      "fused_quartz":             { "textures": { "side": "enderio:blocks/block_fused_quartz" } },
-      "fused_glass":              { "textures": { "side": "enderio:blocks/block_fused_glass" } },
-      "enlightened_fused_quartz": { "textures": { "side": "enderio:blocks/block_fused_quartz" } },
-      "enlightened_fused_glass":  { "textures": { "side": "enderio:blocks/block_fused_glass" } },
-      "dark_fused_quartz":        { "textures": { "side": "enderio:blocks/block_fused_quartz" } },
-      "dark_fused_glass":         { "textures": { "side": "enderio:blocks/block_fused_glass" } }
+      "quartz":             { "textures": { "side": "enderio:blocks/block_fused_quartz" } },
+      "glass":              { "textures": { "side": "enderio:blocks/block_fused_glass" } }
     },
     "render":{
       "auto":{ "model":"enderio:null" },
