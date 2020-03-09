@@ -20,6 +20,7 @@ import crazypants.enderio.machines.machine.buffer.BlockBuffer;
 import crazypants.enderio.machines.machine.crafter.BlockCrafter;
 import crazypants.enderio.machines.machine.enchanter.BlockEnchanter;
 import crazypants.enderio.machines.machine.farm.BlockFarmStation;
+import crazypants.enderio.machines.machine.fracker.BlockFracker;
 import crazypants.enderio.machines.machine.generator.combustion.BlockCombustionGenerator;
 import crazypants.enderio.machines.machine.generator.lava.BlockLavaGenerator;
 import crazypants.enderio.machines.machine.generator.stirling.BlockStirlingGenerator;
@@ -121,6 +122,7 @@ public enum MachineObject implements IModObjectBase {
   block_vacuum_chest(BlockVacuumChest::create, MachineTileEntity.TileVacuumChest),
   block_xp_vacuum(BlockXPVacuum::create, MachineTileEntity.TileXPVacuum),
   block_niard(BlockNiard::create, MachineTileEntity.TileNiard),
+  block_fracker(BlockFracker::create, MachineTileEntity.TileFracker),
 
   block_travel_anchor(BlockTravelAnchor::create, MachineTileEntity.TileTravelAnchor),
   block_tele_pad(BlockTelePad::create_telepad, MachineTileEntity.TileTelePad),
