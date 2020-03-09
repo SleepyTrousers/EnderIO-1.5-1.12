@@ -518,6 +518,11 @@
         "textures": {
           "layer0": "enderio:items/item_material_token_monster"
         }
+      },
+      "token_player": {
+        "textures": {
+          "layer0": "enderio:items/item_material_token_player"
+        }
       }
     }
   }

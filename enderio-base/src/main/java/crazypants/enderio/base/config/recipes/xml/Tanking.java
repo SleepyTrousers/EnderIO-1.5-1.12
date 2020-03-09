@@ -57,13 +57,13 @@ public class Tanking extends AbstractConditional {
   public void enforceValidity() throws InvalidRecipeConfigException {
     input.get().enforceValidity();
     if (input.get().getThing().isEmpty()) {
-      throw new InvalidRecipeConfigException("Valid child elements are invalid in <tanking>");
+      throw new InvalidRecipeConfigException("Valid <input> child elements are invalid in <tanking>");
     }
     fluid.get().enforceValidity();
     if (output.isPresent()) {
       output.get().enforceValidity();
       if (output.get().getThing().isEmpty()) {
-        throw new InvalidRecipeConfigException("Valid child elements are invalid in <tanking>");
+        throw new InvalidRecipeConfigException("Valid <output> child elements are invalid in <tanking>");
       }
     }
   }
@@ -108,15 +108,15 @@ public class Tanking extends AbstractConditional {
   public boolean setElement(StaxFactory factory, String name, StartElement startElement) throws InvalidRecipeConfigException, XMLStreamException {
     if ("input".equals(name) && !input.isPresent()) {
       input = of(factory.read(new Item().setAllowDelaying(false), startElement));
-        return true;
+      return true;
     }
     if ("fluid".equals(name) && !fluid.isPresent()) {
       fluid = of(factory.read(new FluidAmount(), startElement));
-        return true;
+      return true;
     }
     if ("output".equals(name) && !output.isPresent()) {
       output = of(factory.read(new ItemIntegerAmount().setAllowDelaying(false), startElement));
-        return true;
+      return true;
     }
 
     return super.setElement(factory, name, startElement);

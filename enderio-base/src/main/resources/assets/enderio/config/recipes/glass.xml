@@ -28,69 +28,84 @@ XML editor will display that as tooltips when editing this file.
 
   <!-- HOLY -->
 
+  <recipe name="Tank: Player Token" required="true">
+    <soulbinding energy="25000" levels="1" logic="NONE" souls="ALL">
+      <input name="ballDarkSteel" />
+      <output name="itemTokenPlayer" />
+    </soulbinding>
+  </recipe>
+
+  <recipe name="Tank: Player Token Alternative" required="true" disabled="true">
+    <tanking type="FILL" logic="LEVELS">
+      <input name="ballDarkSteel"/>
+      <fluid name="xpjuice" amount="10"/>
+      <output name="itemTokenPlayer"/>
+    </tanking>
+  </recipe>
+
   <recipe name="Holy 1" required="true">
     <crafting>
       <grid>
-        <item name="minecraft:feather"/><item name="enderio:block_fused_glass"/><item name="minecraft:feather"/>
         <item name="enderio:block_fused_glass"/><item name="enderio:block_fused_glass"/><item name="enderio:block_fused_glass"/>
-        <item name="enderio:block_fused_glass"/><item name="PPP_DARK_STEEL"/><item name="enderio:block_fused_glass"/>
+        <item name="enderio:block_fused_glass"/><item name="itemTokenPlayer"/><item name="enderio:block_fused_glass"/>
+        <item name="enderio:block_fused_glass"/><item name="enderio:block_fused_glass"/><item name="enderio:block_fused_glass"/>
       </grid>
-      <output name="enderio:block_holy_fused_glass" amount="6" />
+      <output name="enderio:block_holy_fused_glass" amount="8" />
     </crafting>
   </recipe>
 
   <recipe name="Holy 2" required="true">
     <crafting>
       <grid>
-        <item name="minecraft:feather"/><item name="enderio:block_fused_quartz"/><item name="minecraft:feather"/>
         <item name="enderio:block_fused_quartz"/><item name="enderio:block_fused_quartz"/><item name="enderio:block_fused_quartz"/>
-        <item name="enderio:block_fused_quartz"/><item name="PPP_DARK_STEEL"/><item name="enderio:block_fused_quartz"/>
+        <item name="enderio:block_fused_quartz"/><item name="itemTokenPlayer"/><item name="enderio:block_fused_quartz"/>
+        <item name="enderio:block_fused_quartz"/><item name="enderio:block_fused_quartz"/><item name="enderio:block_fused_quartz"/>
       </grid>
-      <output name="enderio:block_holy_fused_quartz" amount="6" />
+      <output name="enderio:block_holy_fused_quartz" amount="8" />
     </crafting>
   </recipe>
 
   <recipe name="Holy 3" required="true">
     <crafting>
       <grid>
-        <item name="minecraft:feather"/><item name="enderio:block_enlightened_fused_glass"/><item name="minecraft:feather"/>
         <item name="enderio:block_enlightened_fused_glass"/><item name="enderio:block_enlightened_fused_glass"/><item name="enderio:block_enlightened_fused_glass"/>
-        <item name="enderio:block_enlightened_fused_glass"/><item name="PPP_DARK_STEEL"/><item name="enderio:block_enlightened_fused_glass"/>
+        <item name="enderio:block_enlightened_fused_glass"/><item name="itemTokenPlayer"/><item name="enderio:block_enlightened_fused_glass"/>
+        <item name="enderio:block_enlightened_fused_glass"/><item name="enderio:block_enlightened_fused_glass"/><item name="enderio:block_enlightened_fused_glass"/>
       </grid>
-      <output name="enderio:block_holy_enlightened_fused_glass" amount="6" />
+      <output name="enderio:block_holy_enlightened_fused_glass" amount="8" />
     </crafting>
   </recipe>
 
   <recipe name="Holy 4" required="true">
     <crafting>
       <grid>
-        <item name="minecraft:feather"/><item name="enderio:block_enlightened_fused_quartz"/><item name="minecraft:feather"/>
         <item name="enderio:block_enlightened_fused_quartz"/><item name="enderio:block_enlightened_fused_quartz"/><item name="enderio:block_enlightened_fused_quartz"/>
-        <item name="enderio:block_enlightened_fused_quartz"/><item name="PPP_DARK_STEEL"/><item name="enderio:block_enlightened_fused_quartz"/>
+        <item name="enderio:block_enlightened_fused_quartz"/><item name="itemTokenPlayer"/><item name="enderio:block_enlightened_fused_quartz"/>
+        <item name="enderio:block_enlightened_fused_quartz"/><item name="enderio:block_enlightened_fused_quartz"/><item name="enderio:block_enlightened_fused_quartz"/>
       </grid>
-      <output name="enderio:block_holy_enlightened_fused_quartz" amount="6" />
+      <output name="enderio:block_holy_enlightened_fused_quartz" amount="8" />
     </crafting>
   </recipe>
 
   <recipe name="Holy 5" required="true">
     <crafting>
       <grid>
-        <item name="minecraft:feather"/><item name="enderio:block_dark_fused_glass"/><item name="minecraft:feather"/>
         <item name="enderio:block_dark_fused_glass"/><item name="enderio:block_dark_fused_glass"/><item name="enderio:block_dark_fused_glass"/>
-        <item name="enderio:block_dark_fused_glass"/><item name="PPP_DARK_STEEL"/><item name="enderio:block_dark_fused_glass"/>
+        <item name="enderio:block_dark_fused_glass"/><item name="itemTokenPlayer"/><item name="enderio:block_dark_fused_glass"/>
+        <item name="enderio:block_dark_fused_glass"/><item name="enderio:block_dark_fused_glass"/><item name="enderio:block_dark_fused_glass"/>
       </grid>
-      <output name="enderio:block_holy_dark_fused_glass" amount="6" />
+      <output name="enderio:block_holy_dark_fused_glass" amount="8" />
     </crafting>
   </recipe>
 
   <recipe name="Holy 6" required="true">
     <crafting>
       <grid>
-        <item name="minecraft:feather"/><item name="enderio:block_dark_fused_quartz"/><item name="minecraft:feather"/>
         <item name="enderio:block_dark_fused_quartz"/><item name="enderio:block_dark_fused_quartz"/><item name="enderio:block_dark_fused_quartz"/>
-        <item name="enderio:block_dark_fused_quartz"/><item name="PPP_DARK_STEEL"/><item name="enderio:block_dark_fused_quartz"/>
+        <item name="enderio:block_dark_fused_quartz"/><item name="itemTokenPlayer"/><item name="enderio:block_dark_fused_quartz"/>
+        <item name="enderio:block_dark_fused_quartz"/><item name="enderio:block_dark_fused_quartz"/><item name="enderio:block_dark_fused_quartz"/>
       </grid>
-      <output name="enderio:block_holy_dark_fused_quartz" amount="6" />
+      <output name="enderio:block_holy_dark_fused_quartz" amount="8" />
     </crafting>
   </recipe>
 

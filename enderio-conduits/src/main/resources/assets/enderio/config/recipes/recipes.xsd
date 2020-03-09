@@ -1171,6 +1171,7 @@
           <enumeration value="XPBOTTLE"></enumeration>
           <enumeration value="XP"></enumeration>
           <enumeration value="DSU"></enumeration>
+          <enumeration value="LEVELS"></enumeration>
         </restriction>
       </simpleType>
     </attribute>

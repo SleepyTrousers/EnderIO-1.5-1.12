@@ -314,6 +314,7 @@ item.item_material.clayed_glowstone.name=Clay-Coated Glowstone Dust
 item.item_material.black_paper.name=Black Paper
 item.item_material.token_animal.name=Animal Token
 item.item_material.token_monster.name=Monster Token
+item.item_material.token_player.name=Player Token
 
 item.item_alloy_endergy_ingot_crude_steel.name=Crude Steel Ingot
 item.item_alloy_endergy_ingot_crystalline_alloy.name=Crystalline Alloy Ingot

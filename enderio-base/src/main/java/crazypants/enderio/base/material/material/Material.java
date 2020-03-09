@@ -120,6 +120,7 @@ public enum Material {
 
   TOKEN_ANIMAL("tokenAnimal", true),
   TOKEN_MONSTER("tokenMonster", true),
+  TOKEN_PLAYER("tokenPlayer", true),
 
   ;
 

@@ -65,6 +65,16 @@ public class TankMachineRecipe implements IMachineRecipe {
         return copy;
       }
     },
+    LEVELS {
+      @Override
+      @Nonnull
+      public FluidStack convertFluidResult(boolean isFilling, @Nonnull ItemStack input, @Nonnull FluidStack machineFluid, @Nonnull FluidStack recipeFluid,
+          @Nonnull ItemStack output) {
+        FluidStack copy = recipeFluid.copy();
+        copy.amount = XpUtil.experienceToLiquid(XpUtil.getExperienceForLevel(copy.amount));
+        return copy;
+      }
+    },
     /**
      * Calculates the fluid amount based on the Dark Steel Upgrade's level cost. Only looks at the output item. Forces the output item to be "enabled" if it not
      * already is.
