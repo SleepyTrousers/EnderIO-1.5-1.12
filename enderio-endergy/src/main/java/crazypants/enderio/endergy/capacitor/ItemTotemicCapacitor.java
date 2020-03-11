@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.CompoundCapabilityProvider;
-import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.capacitor.CapabilityCapacitorData;
@@ -12,18 +11,16 @@ import crazypants.enderio.api.capacitor.ICapacitorData;
 import crazypants.enderio.base.capacitor.CapacitorHelper;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class ItemTotemicCapacitor extends ItemEndergyCapacitor {
-
-  private static final int ENCHANT_ID_EFFICIENCY = 32;
 
   public static ItemTotemicCapacitor create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemTotemicCapacitor(modObject, EndergyCapacitorData.TOTEMIC_CAPACITOR, 512);
@@ -56,7 +53,7 @@ public class ItemTotemicCapacitor extends ItemEndergyCapacitor {
       @Nullable
       public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityCapacitorData.getCapNN()) {
-          return CapabilityCapacitorData.getCapNN().cast(NullHelper.notnullJ(getDataFromStack(stack), "Enum.values() has a null"));
+          return CapabilityCapacitorData.getCapNN().cast(getDataFromStack(stack));
         }
         return null;
       }
@@ -67,13 +64,9 @@ public class ItemTotemicCapacitor extends ItemEndergyCapacitor {
   @Override
   @Nonnull
   protected ICapacitorData getDataFromStack(@Nonnull ItemStack stack) {
-    NBTTagList enchantments = stack.getEnchantmentTagList();
-
-    for (int i = 0; i < enchantments.tagCount(); i++) {
-      NBTTagCompound ench = enchantments.getCompoundTagAt(i);
-      if (ench.hasKey("id") && ench.getInteger("id") == ENCHANT_ID_EFFICIENCY) {
-        return CapacitorHelper.increaseCapacitorLevel(EndergyCapacitorData.TOTEMIC_CAPACITOR, ench.getInteger("lvl") / 2f);
-      }
+    int level = EnchantmentHelper.getEnchantmentLevel(Enchantments.EFFICIENCY, stack);
+    if (level > 0) {
+      return CapacitorHelper.increaseCapacitorLevel(getData(), level / 2f);
     }
     return getData();
   }
