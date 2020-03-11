@@ -43,7 +43,10 @@ public class EnchantmentFilter implements IItemFilter.WithGhostSlots {
 
   @Override
   public boolean isValid() {
-    return !isEmpty();
+    return true;
+    /*
+     * Always valid. isEmpty() matches any enchants in whitelist and unenchanted in blacklist mode
+     */
   }
 
   @Override
@@ -107,6 +110,9 @@ public class EnchantmentFilter implements IItemFilter.WithGhostSlots {
   public boolean doesItemPassFilter(@Nullable IItemHandler inv, @Nonnull ItemStack item) {
     Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(item);
     if (!map.isEmpty()) {
+      if (isEmpty()) {
+        return !blacklist;
+      }
       for (Enchantment enchantment : enchantments) {
         if (map.containsKey(enchantment)) {
           return !blacklist;
