@@ -3,7 +3,6 @@ package crazypants.enderio.machines.machine.tank;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.ContainerEnder;
-import com.enderio.core.common.ContainerEnder.BaseSlot;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;

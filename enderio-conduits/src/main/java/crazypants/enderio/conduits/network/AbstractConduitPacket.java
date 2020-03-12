@@ -14,23 +14,19 @@ import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.conduits.conduit.TileConduitBundle;
 import crazypants.enderio.conduits.gui.ExternalConnectionContainer;
+import crazypants.enderio.util.EnumReader;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class AbstractConduitPacket<T extends IConduit> extends AbstractConduitBundlePacket {
+public abstract class AbstractConduitPacket<T extends IConduit> extends AbstractConduitBundlePacket {
 
   private UUID uuid;
 
   public AbstractConduitPacket() {
-  }
-
-  @Deprecated
-  public AbstractConduitPacket(@Nonnull TileEntity tile, @Nonnull T conduit) {
-    super(tile);
-    this.uuid = ConduitRegistry.getNetwork(conduit).getUUID();
   }
 
   public AbstractConduitPacket(@Nonnull T conduit) {
@@ -43,15 +39,13 @@ public class AbstractConduitPacket<T extends IConduit> extends AbstractConduitBu
   }
 
   @Override
-  public void toBytes(ByteBuf buf) {
-    super.toBytes(buf);
+  public void write(@SuppressWarnings("null") @Nonnull ByteBuf buf) {
     buf.writeLong(uuid.getMostSignificantBits());
     buf.writeLong(uuid.getLeastSignificantBits());
   }
 
   @Override
-  public void fromBytes(ByteBuf buf) {
-    super.fromBytes(buf);
+  public void read(@SuppressWarnings("null") @Nonnull ByteBuf buf) {
     uuid = new UUID(buf.readLong(), buf.readLong());
   }
 
@@ -78,4 +72,31 @@ public class AbstractConduitPacket<T extends IConduit> extends AbstractConduitBu
     }
     return null;
   }
+
+  public static abstract class Sided<T extends IConduit> extends AbstractConduitPacket<T> {
+
+    protected @Nonnull EnumFacing dir = EnumFacing.DOWN;
+
+    public Sided() {
+    }
+
+    public Sided(@Nonnull T con, @Nonnull EnumFacing dir) {
+      super(con);
+      this.dir = dir;
+    }
+
+    @Override
+    public void write(@Nonnull ByteBuf buf) {
+      super.write(buf);
+      buf.writeShort(dir.ordinal());
+    }
+
+    @Override
+    public void read(@Nonnull ByteBuf buf) {
+      super.read(buf);
+      dir = EnumReader.get(EnumFacing.class, buf.readShort());
+    }
+
+  }
+
 }

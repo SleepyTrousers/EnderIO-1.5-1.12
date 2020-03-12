@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.DyeColor;
 
 import crazypants.enderio.conduits.conduit.redstone.IRedstoneConduit;
+import crazypants.enderio.util.EnumReader;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
@@ -12,48 +13,31 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketRedstoneConduitSignalColor extends AbstractConduitPacket<IRedstoneConduit> {
+public class PacketRedstoneConduitSignalColor extends AbstractConduitPacket.Sided<IRedstoneConduit> {
 
-  private EnumFacing dir;
-  private DyeColor col;
+  private @Nonnull DyeColor col = DyeColor.BLACK;
   private boolean isInput;
 
   public PacketRedstoneConduitSignalColor() {
   }
 
-  public PacketRedstoneConduitSignalColor(@Nonnull IRedstoneConduit con, EnumFacing dir, boolean isInput) {
-    super(con);
-    this.dir = dir;
-    if (isInput) {
-      col = con.getInputSignalColor(dir);
-    } else {
-      col = con.getOutputSignalColor(dir);
-    }
+  public PacketRedstoneConduitSignalColor(@Nonnull IRedstoneConduit con, @Nonnull EnumFacing dir, boolean isInput) {
+    super(con, dir);
+    this.col = isInput ? con.getInputSignalColor(dir) : con.getOutputSignalColor(dir);
     this.isInput = isInput;
   }
 
   @Override
-  public void toBytes(ByteBuf buf) {
-    super.toBytes(buf);
-    if (dir == null) {
-      buf.writeShort(-1);
-    } else {
-      buf.writeShort(dir.ordinal());
-    }
+  public void write(@Nonnull ByteBuf buf) {
+    super.write(buf);
     buf.writeShort(col.ordinal());
     buf.writeBoolean(isInput);
   }
 
   @Override
-  public void fromBytes(ByteBuf buf) {
-    super.fromBytes(buf);
-    short ord = buf.readShort();
-    if (ord < 0) {
-      dir = null;
-    } else {
-      dir = EnumFacing.values()[ord];
-    }
-    col = DyeColor.values()[buf.readShort()];
+  public void read(@Nonnull ByteBuf buf) {
+    super.read(buf);
+    col = EnumReader.get(DyeColor.class, buf.readShort());
     isInput = buf.readBoolean();
   }
 

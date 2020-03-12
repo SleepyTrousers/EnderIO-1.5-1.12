@@ -25,18 +25,18 @@ public class PacketSlotVisibility extends AbstractConduitPacket<IConduit> {
   }
 
   @Override
-  public void fromBytes(ByteBuf bb) {
-    super.fromBytes(bb);
-    int value = bb.readUnsignedByte();
-    filterVisible = (value & 1) != 0;
-    upgradeVisible = (value & 2) != 0;
+  public void write(@Nonnull ByteBuf bb) {
+    super.write(bb);
+    int value = (filterVisible ? 1 : 0) | (upgradeVisible ? 2 : 0);
+    bb.writeByte(value);
   }
 
   @Override
-  public void toBytes(ByteBuf bb) {
-    super.toBytes(bb);
-    int value = (filterVisible ? 1 : 0) | (upgradeVisible ? 2 : 0);
-    bb.writeByte(value);
+  public void read(@Nonnull ByteBuf bb) {
+    super.read(bb);
+    int value = bb.readUnsignedByte();
+    filterVisible = (value & 1) != 0;
+    upgradeVisible = (value & 2) != 0;
   }
 
   public static class Handler implements IMessageHandler<PacketSlotVisibility, IMessage> {

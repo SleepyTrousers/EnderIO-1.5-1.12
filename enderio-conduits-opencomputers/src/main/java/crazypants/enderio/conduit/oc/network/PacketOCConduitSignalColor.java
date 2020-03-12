@@ -14,33 +14,28 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketOCConduitSignalColor extends AbstractConduitPacket<IOCConduit> {
+public class PacketOCConduitSignalColor extends AbstractConduitPacket.Sided<IOCConduit> {
 
-  private @Nonnull EnumFacing dir;
   private @Nonnull DyeColor col;
 
   public PacketOCConduitSignalColor() {
-    dir = EnumFacing.DOWN;
     col = DyeColor.BLACK;
   }
 
   public PacketOCConduitSignalColor(@Nonnull IOCConduit con, @Nonnull EnumFacing dir) {
-    super(con);
-    this.dir = dir;
+    super(con, dir);
     this.col = con.getSignalColor(dir);
   }
 
   @Override
-  public void toBytes(ByteBuf buf) {
-    super.toBytes(buf);
-    buf.writeShort(dir.ordinal());
+  public void write(@Nonnull ByteBuf buf) {
+    super.write(buf);
     buf.writeShort(col.ordinal());
   }
 
   @Override
-  public void fromBytes(ByteBuf buf) {
-    super.fromBytes(buf);
-    dir = EnumReader.get(EnumFacing.class, buf.readShort());
+  public void read(@Nonnull ByteBuf buf) {
+    super.read(buf);
     col = EnumReader.get(DyeColor.class, buf.readShort());
   }
 

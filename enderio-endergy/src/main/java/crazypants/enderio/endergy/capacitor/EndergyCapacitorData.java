@@ -21,37 +21,6 @@ public enum EndergyCapacitorData implements ICapacitorData {
 
   ;
 
-  public static final @Nonnull ICapacitorData NONE = new ICapacitorData() {
-
-    @Override
-    public float getUnscaledValue(@Nonnull ICapacitorKey key) {
-      return 0;
-    }
-
-    @Override
-    @Nonnull
-    public String getUnlocalizedName() {
-      return "none";
-    }
-
-    @Override
-    @Nonnull
-    public String getLocalizedName() {
-      return "none";
-    }
-
-    @Override
-    public int hashCode() {
-      return 42;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-      return this == obj;
-    }
-
-  };
-
   private final @Nonnull String unlocalizedName;
   private final float baselevel;
   private final boolean regular;

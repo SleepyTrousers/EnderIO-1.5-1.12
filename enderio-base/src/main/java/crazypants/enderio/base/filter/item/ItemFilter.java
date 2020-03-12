@@ -30,6 +30,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemFilter implements IItemFilter.WithGhostSlots {
 
+  private static final @Nonnull String NBT_ITEMS_KEY = "items";
+
   private static final boolean DEFAULT_BLACKLIST = false;
 
   private static final boolean DEFAULT_META = true;
@@ -281,7 +283,7 @@ public class ItemFilter implements IItemFilter.WithGhostSlots {
         }
       }
     });
-    nbtRoot.setTag("items", tagList);
+    nbtRoot.setTag(NBT_ITEMS_KEY, tagList);
   }
 
   @Override
@@ -297,7 +299,7 @@ public class ItemFilter implements IItemFilter.WithGhostSlots {
     damageMode = NullHelper.notnullJ(DamageMode.values()[NbtValue.FILTER_DAMAGE.getInt(nbtRoot) & 255], "Enum.values()");
 
     items.clear();
-    NBTTagList tagList = nbtRoot.getTagList("items", nbtRoot.getId());
+    NBTTagList tagList = nbtRoot.getTagList(NBT_ITEMS_KEY, nbtRoot.getId());
     for (int i = 0; i < tagList.tagCount(); i++) {
       items.add(new ItemStack(tagList.getCompoundTagAt(i)));
     }

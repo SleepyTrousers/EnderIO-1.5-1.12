@@ -11,14 +11,12 @@ import info.loenwind.autoconfig.util.NullHelper;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit> {
+public class PacketItemConduitFilter extends AbstractConduitPacket.Sided<IItemConduit> {
 
-  private @Nonnull EnumFacing dir = EnumFacing.DOWN;
   private boolean loopMode;
   private boolean roundRobin;
   private DyeColor colIn;
@@ -32,8 +30,7 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   }
 
   public PacketItemConduitFilter(@Nonnull IItemConduit con, @Nonnull EnumFacing dir) {
-    super(con.getBundle().getEntity(), con);
-    this.dir = dir;
+    super(con, dir);
     loopMode = con.isSelfFeedEnabled(dir);
     roundRobin = con.isRoundRobinEnabled(dir);
     colIn = con.getInputColor(dir);
@@ -45,9 +42,8 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   }
 
   @Override
-  public void toBytes(ByteBuf buf) {
-    super.toBytes(buf);
-    buf.writeShort(dir.ordinal());
+  public void write(@Nonnull ByteBuf buf) {
+    super.write(buf);
     buf.writeBoolean(loopMode);
     buf.writeBoolean(roundRobin);
     buf.writeInt(priority);
@@ -58,9 +54,8 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
   }
 
   @Override
-  public void fromBytes(ByteBuf buf) {
-    super.fromBytes(buf);
-    dir = NullHelper.first(EnumFacing.values()[MathHelper.clamp(buf.readShort(), 0, 5)], EnumFacing.DOWN);
+  public void read(@Nonnull ByteBuf buf) {
+    super.read(buf);
     loopMode = buf.readBoolean();
     roundRobin = buf.readBoolean();
     priority = buf.readInt();
@@ -91,12 +86,13 @@ public class PacketItemConduitFilter extends AbstractConduitPacket<IItemConduit>
     }
 
     private void applyFilter(@Nonnull EnumFacing dir, @Nonnull IItemConduit conduit, IItemFilter filter, boolean isInput) {
-      if (isInput) {
-        conduit.setInputFilter(dir, filter);
-      } else {
-        conduit.setOutputFilter(dir, filter);
+      if (filter != null) {
+        if (isInput) {
+          conduit.setInputFilter(dir, filter);
+        } else {
+          conduit.setOutputFilter(dir, filter);
+        }
       }
-      return;
     }
   }
 }

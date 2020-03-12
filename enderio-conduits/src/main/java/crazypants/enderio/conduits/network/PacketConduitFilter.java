@@ -7,7 +7,6 @@ import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.capability.CapabilityFilterHolder;
 import crazypants.enderio.base.filter.capability.IFilterHolder;
-import crazypants.enderio.util.EnumReader;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
@@ -15,9 +14,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class PacketConduitFilter<T extends IConduit> extends AbstractConduitPacket<T> {
+public class PacketConduitFilter<T extends IConduit> extends AbstractConduitPacket.Sided<T> {
 
-  protected @Nonnull EnumFacing dir = EnumFacing.DOWN;
   protected IFilter inputFilter;
   protected IFilter outputFilter;
 
@@ -26,8 +24,7 @@ public class PacketConduitFilter<T extends IConduit> extends AbstractConduitPack
   }
 
   public PacketConduitFilter(@Nonnull T con, @Nonnull EnumFacing dir) {
-    super(con);
-    this.dir = dir;
+    super(con, dir);
 
     if (con.hasInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir)) {
       IFilterHolder<IFilter> filterHolder = con.getInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
@@ -39,17 +36,15 @@ public class PacketConduitFilter<T extends IConduit> extends AbstractConduitPack
   }
 
   @Override
-  public void toBytes(ByteBuf buf) {
-    super.toBytes(buf);
-    buf.writeShort(dir.ordinal());
+  public void write(@Nonnull ByteBuf buf) {
+    super.write(buf);
     FilterRegistry.writeFilter(buf, inputFilter);
     FilterRegistry.writeFilter(buf, outputFilter);
   }
 
   @Override
-  public void fromBytes(ByteBuf buf) {
-    super.fromBytes(buf);
-    dir = EnumReader.get(EnumFacing.class, buf.readShort());
+  public void read(@Nonnull ByteBuf buf) {
+    super.read(buf);
     inputFilter = FilterRegistry.readFilter(buf);
     outputFilter = FilterRegistry.readFilter(buf);
   }

@@ -24,14 +24,14 @@ public class PacketConduitFluidLevel extends AbstractConduitPacket<ILiquidCondui
   }
 
   @Override
-  public void toBytes(ByteBuf buf) {
-    super.toBytes(buf);
+  public void write(@Nonnull ByteBuf buf) {
+    super.write(buf);
     ByteBufUtils.writeTag(buf, tc);
   }
 
   @Override
-  public void fromBytes(ByteBuf buf) {
-    super.fromBytes(buf);
+  public void read(@Nonnull ByteBuf buf) {
+    super.read(buf);
     tc = ByteBufUtils.readTag(buf);
   }
 

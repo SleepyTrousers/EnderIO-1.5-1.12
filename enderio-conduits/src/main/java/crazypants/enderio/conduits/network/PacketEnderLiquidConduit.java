@@ -38,8 +38,8 @@ public class PacketEnderLiquidConduit extends PacketConduitFilter<EnderLiquidCon
   }
 
   @Override
-  public void toBytes(ByteBuf buf) {
-    super.toBytes(buf);
+  public void write(@Nonnull ByteBuf buf) {
+    super.write(buf);
     buf.writeShort(colIn.ordinal());
     buf.writeShort(colOut.ordinal());
     buf.writeInt(priority);
@@ -48,8 +48,8 @@ public class PacketEnderLiquidConduit extends PacketConduitFilter<EnderLiquidCon
   }
 
   @Override
-  public void fromBytes(ByteBuf buf) {
-    super.fromBytes(buf);
+  public void read(@Nonnull ByteBuf buf) {
+    super.read(buf);
     colIn = EnumReader.get(DyeColor.class, buf.readShort());
     colOut = EnumReader.get(DyeColor.class, buf.readShort());
     priority = buf.readInt();
