@@ -37,3 +37,4 @@
 ## translation reports
 resources/assets/enderio/lang/*.lang.txt
 *.bat
+libs/
