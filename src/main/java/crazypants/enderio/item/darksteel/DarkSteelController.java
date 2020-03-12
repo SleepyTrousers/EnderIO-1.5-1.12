@@ -68,7 +68,7 @@ public class DarkSteelController {
   private final AttributeModifier[] sprintModifiers = new AttributeModifier[] {
       new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[0], 1),
       new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[1], 1),
-      new AttributeModifier(new UUID  (12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[2], 1),
+      new AttributeModifier(new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[2], 1),
   };
 
   private final AttributeModifier swordDamageModifierPowered = new AttributeModifier(new UUID(63242325, 320981923), "Weapon modifier",
@@ -121,19 +121,19 @@ public class DarkSteelController {
   public boolean isGlideActive(EntityPlayer player) {
     return isActive(player, Type.GLIDE);
   }
-  
+
   public boolean isSpeedActive(EntityPlayer player) {
     return isActive(player, Type.SPEED);
   }
-  
+
   public boolean isStepAssistActive(EntityPlayer player) {
     return isActive(player, Type.STEP_ASSIST);
   }
-  
+
   public boolean isJumpActive(EntityPlayer player) {
     return isActive(player, Type.JUMP);
   }
-  
+
   @SubscribeEvent
   public void onPlayerTick(TickEvent.PlayerTickEvent event) {
     EntityPlayer player = event.player;
@@ -151,9 +151,9 @@ public class DarkSteelController {
       updateGlide(player);
 
       updateSwim(player);
-      
+
       updateSolar(player);
-      
+
     }
 
   }
@@ -163,18 +163,18 @@ public class DarkSteelController {
     if (player.worldObj.isRemote) {
       return;
     }
-    
+
     ItemStack helm = player.getEquipmentInSlot(4);
     SolarUpgrade upgrade = SolarUpgrade.loadFromItem(helm);
     if(upgrade == null) {
       return;
     }
-    
+
     int RFperSecond = Math.round((float) upgrade.getRFPerSec() * TileEntitySolarPanel.calculateLightRatio(player.worldObj, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY + 1), MathHelper.floor_double(player.posZ)));
-    
+
     int leftover = RFperSecond % 20;
     boolean addExtraRF = player.worldObj.getTotalWorldTime() % 20 < leftover;
-    
+
     int toAdd = (RFperSecond / 20) + (addExtraRF ? 1 : 0);
 
     if(toAdd != 0) {
@@ -188,7 +188,7 @@ public class DarkSteelController {
         }
         nextIndex = (nextIndex + 1) % 4;
       }
-      
+
       player.getEntityData().setInteger("dsarmor:solar", nextIndex);
     }
   }
@@ -286,7 +286,7 @@ public class DarkSteelController {
 
     ItemStack leggings = player.getEquipmentInSlot(2);
     SpeedUpgrade speedUpgrade = SpeedUpgrade.loadFromItem(leggings);
-    if(leggings != null && leggings.getItem() == DarkSteelItems.itemDarkSteelLeggings && speedUpgrade != null && isSpeedActive(player)) {
+    if(leggings != null && DarkSteelItems.isArmorPart(leggings.getItem(),2) && speedUpgrade != null && isSpeedActive(player)) {
 
       double horzMovement = Math.abs(player.distanceWalkedModified - player.prevDistanceWalkedModified);
       double costModifier = player.isSprinting() ? Config.darkSteelSprintPowerCost : Config.darkSteelWalkPowerCost;
@@ -308,7 +308,7 @@ public class DarkSteelController {
   private void updateStepHeightAndFallDistance(EntityPlayer player) {
     ItemStack boots = player.getEquipmentInSlot(1);
 
-    if(boots != null && boots.getItem() == DarkSteelItems.itemDarkSteelBoots && !player.capabilities.allowFlying) {
+    if(boots != null && !DarkSteelItems.isArmorPart(boots.getItem(), 3) && !player.capabilities.allowFlying) {
       int costedDistance = (int) player.fallDistance;
       if(costedDistance > 0) {
         int energyCost = costedDistance * Config.darkSteelFallDistanceCost;
@@ -339,7 +339,7 @@ public class DarkSteelController {
           IEnergyContainerItem cont = (IEnergyContainerItem) stack.getItem();
           int used = cont.extractEnergy(stack, remaining, false);
           remaining -= used;
-          if(remaining <= 0) {    
+          if(remaining <= 0) {
             return;
           }
         }
@@ -370,7 +370,7 @@ public class DarkSteelController {
     }
     return res;
   }
-  
+
   @SubscribeEvent
   public void onStartTracking(PlayerEvent.StartTracking event) {
     if (event.target instanceof EntityPlayerMP) {
@@ -462,11 +462,11 @@ public class DarkSteelController {
     if (!isJumpActive(player)) {
       return;
     }
-    
+
     ItemStack boots = player.getEquipmentInSlot(1);
     JumpUpgrade jumpUpgrade = JumpUpgrade.loadFromItem(boots);
 
-    if(jumpUpgrade == null || boots == null || boots.getItem() != DarkSteelItems.itemDarkSteelBoots) {
+    if(jumpUpgrade == null || boots == null || !DarkSteelItems.isArmorPart(boots.getItem(), 3)) {
       return;
     }
 
@@ -490,12 +490,12 @@ public class DarkSteelController {
     }
 
   }
-  
-  
+
+
   private void updateNightvision(EntityPlayer player) {
     if(isNightVisionUpgradeOrEnchEquipped(player) && nightVisionActive) {
       player.addPotionEffect(new PotionEffect(Potion.nightVision.getId(), 210, 0, true));
-    } 
+    }
     if(!isNightVisionUpgradeOrEnchEquipped(player) && nightVisionActive) {
       nightVisionActive = false;
       removeNightvision = true;
@@ -541,14 +541,14 @@ public class DarkSteelController {
 
   public boolean isNightVisionUpgradeOrEnchEquipped(EntityPlayer player) {
     ItemStack helmet = player.getEquipmentInSlot(4);
-    return (NightVisionUpgrade.loadFromItem(helmet) != null || isNightVisionEnch(helmet));    
+    return (NightVisionUpgrade.loadFromItem(helmet) != null || isNightVisionEnch(helmet));
   }
 
   public void setNightVisionActive(boolean isNightVisionActive) {
     if(nightVisionActive && !isNightVisionActive) {
       removeNightvision = true;
     }
-    this.nightVisionActive = isNightVisionActive;    
+    this.nightVisionActive = isNightVisionActive;
   }
 
   public boolean isNightVisionActive() {

@@ -1,13 +1,6 @@
 package crazypants.enderio.item.darksteel.upgrade;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionHelper;
-import net.minecraftforge.client.event.RenderPlayerEvent;
+import static org.lwjgl.opengl.GL11.glDepthMask;
 
 import org.lwjgl.opengl.GL11;
 
@@ -18,9 +11,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.item.endsteel.EndSteelItems;
-
-import static org.lwjgl.opengl.GL11.glDepthMask;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 
 public class SolarUpgrade extends AbstractUpgrade {
 
@@ -65,7 +61,7 @@ public class SolarUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean canAddToItem(ItemStack stack) {
-      if(stack == null || (stack.getItem() != DarkSteelItems.itemDarkSteelHelmet && stack.getItem() != EndSteelItems.itemEndSteelHelmet)|| !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
+      if(stack == null || !DarkSteelItems.isArmorPart(stack.getItem(), 0)|| !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
         return false;
       }
       SolarUpgrade up = loadFromItem(stack);

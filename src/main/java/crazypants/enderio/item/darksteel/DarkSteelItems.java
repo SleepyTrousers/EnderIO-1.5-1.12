@@ -1,5 +1,6 @@
 package crazypants.enderio.item.darksteel;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -8,7 +9,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.ItemMagnet;
-import crazypants.enderio.item.endsteel.EndSteelItems;
 
 public class DarkSteelItems {
 
@@ -22,6 +22,14 @@ public class DarkSteelItems {
   public static ItemDarkSteelPickaxe itemDarkSteelPickaxe;
   public static ItemDarkSteelAxe itemDarkSteelAxe;
   public static ItemDarkSteelShears itemDarkSteelShears;
+
+  public static ItemEndSteelArmor itemEndSteelHelmet;
+  public static ItemEndSteelArmor itemEndSteelChestplate;
+  public static ItemEndSteelArmor itemEndSteelLeggings;
+  public static ItemEndSteelArmor itemEndSteelBoots;
+  public static ItemEndSteelSword itemEndSteelSword;
+  public static ItemEndSteelPickaxe itemEndSteelPickaxe;
+  public static ItemEndSteelAxe itemEndSteelAxe;
 
   public static ItemMagnet itemMagnet;
 
@@ -41,9 +49,27 @@ public class DarkSteelItems {
     itemDarkSteelAxe = ItemDarkSteelAxe.create();
     itemDarkSteelShears = ItemDarkSteelShears.create();
 
+	itemEndSteelHelmet = ItemEndSteelArmor.create(0);
+	itemEndSteelChestplate = ItemEndSteelArmor.create(1);
+    itemEndSteelLeggings = ItemEndSteelArmor.create(2);
+	itemEndSteelBoots = ItemEndSteelArmor.create(3);
+
+	itemEndSteelSword = ItemEndSteelSword.create();
+	itemEndSteelPickaxe = ItemEndSteelPickaxe.create();
+	itemEndSteelAxe = ItemEndSteelAxe.create();
+
     itemMagnet = ItemMagnet.create();
 
-    EndSteelItems.createEndSteelArmorItems();
+  }
+
+  public static boolean isArmorPart(Item item, int type){
+	  switch(type){
+	  case 0:return item == itemDarkSteelHelmet||item == itemEndSteelHelmet;
+	  case 1:return item == itemDarkSteelChestplate||item == itemEndSteelChestplate;
+	  case 2:return item == itemDarkSteelLeggings||item == itemEndSteelLeggings;
+	  case 3:return item == itemDarkSteelBoots||item == itemEndSteelBoots;
+      default: return false;
+	  }
   }
 
   public static void addLoot() {
@@ -74,6 +100,12 @@ public class DarkSteelItems {
     MinecraftForgeClient.registerItemRenderer(itemDarkSteelAxe, dsr);
     MinecraftForgeClient.registerItemRenderer(itemDarkSteelShears, dsr);
 
-    EndSteelItems.registerItemRenderer();
+    MinecraftForgeClient.registerItemRenderer(itemEndSteelBoots, dsr);
+    MinecraftForgeClient.registerItemRenderer(itemEndSteelLeggings, dsr);
+    MinecraftForgeClient.registerItemRenderer(itemEndSteelChestplate, dsr);
+    MinecraftForgeClient.registerItemRenderer(itemEndSteelHelmet, dsr);
+    MinecraftForgeClient.registerItemRenderer(itemEndSteelSword, dsr);
+    MinecraftForgeClient.registerItemRenderer(itemEndSteelPickaxe, dsr);
+    MinecraftForgeClient.registerItemRenderer(itemEndSteelAxe, dsr);
   }
 }

@@ -57,7 +57,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
     if(equipped == null) {
       return false;
     }
-    return equipped.getItem() == DarkSteelItems.itemDarkSteelSword;
+    return equipped.getItem() instanceof ItemDarkSteelSword;
   }
 
   public static boolean isEquippedAndPowered(EntityPlayer player, int requiredPower) {

@@ -16,7 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.IDarkSteelItem;
-import crazypants.enderio.item.endsteel.IEndSteelItem;
+import crazypants.enderio.item.darksteel.IDarkSteelItem.IEndSteelItem;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.material.Material;
 

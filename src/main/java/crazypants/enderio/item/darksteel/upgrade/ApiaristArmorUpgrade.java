@@ -2,8 +2,9 @@ package crazypants.enderio.item.darksteel.upgrade;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
-import crazypants.enderio.item.endsteel.ItemEndSteelArmor;
+import crazypants.enderio.item.darksteel.ItemEndSteelArmor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -57,7 +58,7 @@ public class ApiaristArmorUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || (stack.getItem() != ItemDarkSteelArmor.forArmorType(slot) && stack.getItem() != ItemEndSteelArmor.forArmorType(slot)) || getUpgradeItem() == null) {
+    if(stack == null || ! DarkSteelItems.isArmorPart(stack.getItem(), slot) || getUpgradeItem() == null) {
       return false;
     }
     ApiaristArmorUpgrade up = loadFromItem(stack);
@@ -66,7 +67,7 @@ public class ApiaristArmorUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean hasUpgrade(ItemStack stack) {
-    return super.hasUpgrade(stack) && stack.getItem() == ItemDarkSteelArmor.forArmorType(slot);
+    return super.hasUpgrade(stack) && stack.getItem() instanceof ItemDarkSteelArmor;
   }
 
   @Override

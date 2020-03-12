@@ -1,11 +1,10 @@
 package crazypants.enderio.item.darksteel.upgrade;
 
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.item.endsteel.EndSteelItems;
 
 public class SpoonUpgrade extends AbstractUpgrade {
 
@@ -37,7 +36,7 @@ public class SpoonUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || (stack.getItem() != DarkSteelItems.itemDarkSteelPickaxe && stack.getItem() != EndSteelItems.itemEndSteelPickaxe) || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
+    if(stack == null || (stack.getItem() != DarkSteelItems.itemDarkSteelPickaxe && stack.getItem() != DarkSteelItems.itemEndSteelPickaxe) || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
       return false;
     }
     SpoonUpgrade up = loadFromItem(stack);

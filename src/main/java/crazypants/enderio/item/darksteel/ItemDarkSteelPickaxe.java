@@ -47,7 +47,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe implements IEnergyContaine
     if(equipped == null) {
       return false;
     }
-    return equipped.getItem() == DarkSteelItems.itemDarkSteelPickaxe;
+    return equipped.getItem() instanceof ItemDarkSteelPickaxe;
   }
 
   public static boolean isEquippedAndPowered(EntityPlayer player, int requiredPower) {
