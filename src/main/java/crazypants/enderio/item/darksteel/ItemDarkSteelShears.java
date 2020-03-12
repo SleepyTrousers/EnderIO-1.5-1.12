@@ -45,7 +45,7 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
     if(equipped == null) {
       return false;
     }
-    return equipped.getItem() == DarkSteelItems.itemDarkSteelShears;
+    return equipped.getItem() instanceof ItemDarkSteelShears;
   }
 
   public static boolean isEquippedAndPowered(EntityPlayer player, int requiredPower) {

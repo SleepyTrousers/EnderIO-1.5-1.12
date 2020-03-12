@@ -35,10 +35,10 @@ public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
     }
     return new GogglesOfRevealingUpgrade((NBTTagCompound) stack.stackTagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
   }
-  
+
   public static boolean isUpgradeEquipped(EntityPlayer player) {
-    ItemStack helmet = player.getEquipmentInSlot(4);    
-    return GogglesOfRevealingUpgrade.loadFromItem(helmet) != null;  
+    ItemStack helmet = player.getEquipmentInSlot(4);
+    return GogglesOfRevealingUpgrade.loadFromItem(helmet) != null;
   }
 
   public GogglesOfRevealingUpgrade(NBTTagCompound tag) {
@@ -51,7 +51,7 @@ public class GogglesOfRevealingUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelHelmet || getGoggles() == null) {
+    if(stack == null || !DarkSteelItems.isArmorPart(stack.getItem(), 0) || getGoggles() == null) {
       return false;
     }
     GogglesOfRevealingUpgrade up = loadFromItem(stack);

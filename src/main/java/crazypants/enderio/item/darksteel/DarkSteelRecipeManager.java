@@ -20,6 +20,7 @@ import com.google.common.collect.ImmutableList;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.item.darksteel.IDarkSteelItem.IEndSteelItem;
 import crazypants.enderio.item.darksteel.upgrade.ApiaristArmorUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.GliderUpgrade;
@@ -33,7 +34,6 @@ import crazypants.enderio.item.darksteel.upgrade.SpeedUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SpoonUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
-import crazypants.enderio.item.endsteel.IEndSteelItem;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 

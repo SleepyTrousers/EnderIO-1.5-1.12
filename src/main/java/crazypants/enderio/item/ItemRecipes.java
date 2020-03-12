@@ -7,7 +7,6 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.item.endsteel.EndSteelItems;
 import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.MachinePart;
 
@@ -45,10 +44,10 @@ public class ItemRecipes {
     addShaped(DarkSteelItems.itemDarkSteelBoots.createItemStack(), "s s", "s s", 's', darkSteel);
 
     //End Steel
-    addShaped(EndSteelItems.itemEndSteelHelmet.createItemStack(), "sss", "sds", 's', endSteel, 'd', diode);
-    addShaped(EndSteelItems.itemEndSteelChestplate.createItemStack(), "sds", "sss", "sss", 's', endSteel, 'd', diode);
-    addShaped(EndSteelItems.itemEndSteelLeggings.createItemStack(), "sss", "sds", "s s", 's', endSteel, 'd', diode);
-    addShaped(EndSteelItems.itemEndSteelBoots.createItemStack(), "s s", "sds", 's', endSteel, 'd', diode);
+    addShaped(DarkSteelItems.itemEndSteelHelmet.createItemStack(), "sss", "sds", 's', endSteel, 'd', diode);
+    addShaped(DarkSteelItems.itemEndSteelChestplate.createItemStack(), "sds", "sss", "sss", 's', endSteel, 'd', diode);
+    addShaped(DarkSteelItems.itemEndSteelLeggings.createItemStack(), "sss", "sds", "s s", 's', endSteel, 'd', diode);
+    addShaped(DarkSteelItems.itemEndSteelBoots.createItemStack(), "s s", "sds", 's', endSteel, 'd', diode);
 
     ItemStack wing = new ItemStack(DarkSteelItems.itemGliderWing, 1, 0);
     addShaped(wing, "  s", " sl", "sll", 's', darkSteel, 'l', Items.leather);
@@ -79,12 +78,12 @@ public class ItemRecipes {
     addShaped(DarkSteelItems.itemDarkSteelAxe.createItemStack(), "ss ", "sw ", " w ", 's', darkSteel, 'w', "stickWood");
 
     // ES Tools
-    addShaped(EndSteelItems.itemEndSteelSword.createItemStack(), " s ", " s ", " w ", 's', endSteel, 'w', "stickDarkSteel");
-    addShaped(EndSteelItems.itemEndSteelSword.createItemStack(), " s ", " s ", " w ", 's', endSteel, 'w', "itemDarkSteelRod");
-    addShaped(EndSteelItems.itemEndSteelPickaxe.createItemStack(), "sss", " w ", " w ", 's', endSteel, 'w', "stickDarkSteel");
-    addShaped(EndSteelItems.itemEndSteelPickaxe.createItemStack(), "sss", " w ", " w ", 's', endSteel, 'w', "itemDarkSteelRod");
-    addShaped(EndSteelItems.itemEndSteelAxe.createItemStack(), "ss ", "sw ", " w ", 's', endSteel, 'w', "stickDarkSteel");
-    addShaped(EndSteelItems.itemEndSteelAxe.createItemStack(), "ss ", "sw ", " w ", 's', endSteel, 'w', "itemDarkSteelRod");
+    addShaped(DarkSteelItems.itemEndSteelSword.createItemStack(), " s ", " s ", " w ", 's', endSteel, 'w', "stickDarkSteel");
+    addShaped(DarkSteelItems.itemEndSteelSword.createItemStack(), " s ", " s ", " w ", 's', endSteel, 'w', "itemDarkSteelRod");
+    addShaped(DarkSteelItems.itemEndSteelPickaxe.createItemStack(), "sss", " w ", " w ", 's', endSteel, 'w', "stickDarkSteel");
+    addShaped(DarkSteelItems.itemEndSteelPickaxe.createItemStack(), "sss", " w ", " w ", 's', endSteel, 'w', "itemDarkSteelRod");
+    addShaped(DarkSteelItems.itemEndSteelAxe.createItemStack(), "ss ", "sw ", " w ", 's', endSteel, 'w', "stickDarkSteel");
+    addShaped(DarkSteelItems.itemEndSteelAxe.createItemStack(), "ss ", "sw ", " w ", 's', endSteel, 'w', "itemDarkSteelRod");
 
   }
 }

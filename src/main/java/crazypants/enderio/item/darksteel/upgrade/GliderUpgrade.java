@@ -16,7 +16,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelController;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.item.endsteel.EndSteelItems;
 
 import static org.lwjgl.opengl.GL11.glDepthMask;
 
@@ -53,7 +52,7 @@ public class GliderUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || (stack.getItem() != DarkSteelItems.itemDarkSteelChestplate && stack.getItem() != EndSteelItems.itemEndSteelChestplate)) {
+    if(stack == null || !DarkSteelItems.isArmorPart(stack.getItem(), 1)) {
       return false;
     }
     GliderUpgrade up = loadFromItem(stack);

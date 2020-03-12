@@ -1,12 +1,11 @@
 package crazypants.enderio.item.darksteel.upgrade;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.item.endsteel.EndSteelItems;
 import crazypants.enderio.material.Material;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class TravelUpgrade extends AbstractUpgrade {
 
@@ -38,7 +37,7 @@ public class TravelUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || (stack.getItem() != DarkSteelItems.itemDarkSteelSword && stack.getItem() != EndSteelItems.itemEndSteelPickaxe && stack.getItem() != EndSteelItems.itemEndSteelSword && stack.getItem() != DarkSteelItems.itemDarkSteelPickaxe)|| !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
+    if(stack == null || (stack.getItem() != DarkSteelItems.itemDarkSteelSword && stack.getItem() != DarkSteelItems.itemEndSteelPickaxe && stack.getItem() != DarkSteelItems.itemEndSteelSword && stack.getItem() != DarkSteelItems.itemDarkSteelPickaxe)|| !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
       return false;
     }
     TravelUpgrade up = loadFromItem(stack);

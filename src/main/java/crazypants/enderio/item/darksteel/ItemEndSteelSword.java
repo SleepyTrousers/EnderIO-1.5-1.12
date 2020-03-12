@@ -1,19 +1,23 @@
-package crazypants.enderio.item.endsteel;
+package crazypants.enderio.item.darksteel;
 
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.item.darksteel.ItemDarkSteelAxe;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
+import crazypants.enderio.item.darksteel.IDarkSteelItem.IEndSteelItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.EnumHelper;
 
-public class ItemEndSteelAxe extends ItemDarkSteelAxe implements IEndSteelItem {
+public class ItemEndSteelSword extends ItemDarkSteelSword implements IEndSteelItem {
+
+	  static final ToolMaterial MATERIAL = EnumHelper.addToolMaterial("endSteel", Config.darkSteelPickMinesTiCArdite ? 5 : 3, 2000, 12, 5, 30);
 
 	  public static boolean isEquipped(EntityPlayer player) {
 		    if(player == null) {
@@ -23,18 +27,19 @@ public class ItemEndSteelAxe extends ItemDarkSteelAxe implements IEndSteelItem {
 		    if(equipped == null) {
 		      return false;
 		    }
-		    return equipped.getItem() == EndSteelItems.itemEndSteelAxe;
-	  }
+		    return equipped.getItem() == DarkSteelItems.itemEndSteelSword;
+		  }
 
-	  public static ItemEndSteelAxe create() {
-		  ItemEndSteelAxe res = new ItemEndSteelAxe();
+
+	  public static ItemEndSteelSword create() {
+		  ItemEndSteelSword res = new ItemEndSteelSword();
 		    res.init();
 		    MinecraftForge.EVENT_BUS.register(res);
 		    return res;
 	  }
 
-	  public ItemEndSteelAxe() {
-		  super("endSteel", ItemEndSteelSword.MATERIAL);
+	  public ItemEndSteelSword() {
+		  super("endSteel",MATERIAL);
 	  }
 
 	  @Override
@@ -49,5 +54,4 @@ public class ItemEndSteelAxe extends ItemDarkSteelAxe implements IEndSteelItem {
 	    TravelUpgrade.INSTANCE.writeToItem(is);
 	    par3List.add(is);
 	  }
-
 }

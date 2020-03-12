@@ -1,11 +1,10 @@
 package crazypants.enderio.item.darksteel.upgrade;
 
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.item.endsteel.EndSteelItems;
 
 public class SoundDetectorUpgrade extends AbstractUpgrade {
 
@@ -37,7 +36,7 @@ public class SoundDetectorUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || (stack.getItem() != EndSteelItems.itemEndSteelHelmet && stack.getItem() != DarkSteelItems.itemDarkSteelHelmet)) {
+    if(stack == null || !DarkSteelItems.isArmorPart(stack.getItem(), 0)) {
       return false;
     }
     SoundDetectorUpgrade up = loadFromItem(stack);

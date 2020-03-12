@@ -1,21 +1,16 @@
-package crazypants.enderio.item.endsteel;
+package crazypants.enderio.item.darksteel;
 
 import java.util.Iterator;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.item.darksteel.DarkSteelRecipeManager;
-import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
+import crazypants.enderio.item.darksteel.IDarkSteelItem.IEndSteelItem;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.common.util.EnumHelper;
 
 public class ItemEndSteelArmor extends ItemDarkSteelArmor implements IEndSteelItem {
@@ -35,10 +30,10 @@ public class ItemEndSteelArmor extends ItemDarkSteelArmor implements IEndSteelIt
 
 	  public static ItemEndSteelArmor forArmorType(int armorType) {
 		  switch (armorType) {
-		    case 0: return EndSteelItems.itemEndSteelHelmet;
-		    case 1: return EndSteelItems.itemEndSteelChestplate;
-		    case 2: return EndSteelItems.itemEndSteelLeggings;
-		    case 3: return EndSteelItems.itemEndSteelBoots;
+		    case 0: return DarkSteelItems.itemEndSteelHelmet;
+		    case 1: return DarkSteelItems.itemEndSteelChestplate;
+		    case 2: return DarkSteelItems.itemEndSteelLeggings;
+		    case 3: return DarkSteelItems.itemEndSteelBoots;
 		    }
 		    return null;
 	}

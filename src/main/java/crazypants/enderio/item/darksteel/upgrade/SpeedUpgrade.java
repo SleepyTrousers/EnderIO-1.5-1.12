@@ -7,7 +7,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionHelper;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.item.endsteel.EndSteelItems;
 
 public class SpeedUpgrade extends AbstractUpgrade {
 
@@ -75,7 +74,7 @@ public class SpeedUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || (stack.getItem() != DarkSteelItems.itemDarkSteelLeggings && stack.getItem() != EndSteelItems.itemEndSteelLeggings) || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
+    if(stack == null || !DarkSteelItems.isArmorPart(stack.getItem(), 2) || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
       return false;
     }
     SpeedUpgrade up = loadFromItem(stack);
