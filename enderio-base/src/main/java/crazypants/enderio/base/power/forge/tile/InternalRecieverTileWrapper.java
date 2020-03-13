@@ -6,6 +6,8 @@ import java.util.WeakHashMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NullHelper;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
 import net.minecraft.tileentity.TileEntity;
@@ -15,11 +17,12 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class InternalRecieverTileWrapper extends InternalPoweredTileWrapper {
 
-  public static final @Nonnull WeakHashMap<ILegacyPoweredTile.Receiver, EnumMap<EnumFacing, IEnergyStorage>> CACHE = new WeakHashMap<>();
+  private static final @Nonnull ThreadLocal<WeakHashMap<ILegacyPoweredTile.Receiver, EnumMap<EnumFacing, IEnergyStorage>>> CACHE = NullHelper
+      .notnullJ(ThreadLocal.withInitial(() -> new WeakHashMap<>()), "ThreadLocal.withInitial()");
 
   public static @Nullable IEnergyStorage get(@Nonnull ILegacyPoweredTile.Receiver tile, @Nullable EnumFacing facing) {
     if (facing != null && tile.canConnectEnergy(facing)) {
-      EnumMap<EnumFacing, IEnergyStorage> sideMap = CACHE.computeIfAbsent(tile, theTile -> new EnumMap<>(EnumFacing.class));
+      EnumMap<EnumFacing, IEnergyStorage> sideMap = CACHE.get().computeIfAbsent(tile, theTile -> new EnumMap<>(EnumFacing.class));
       IEnergyStorage energyStorage = sideMap.get(facing);
       if (energyStorage == null) { // no computeIfAbsent() here as it would need to create a new Function every time to capture the tile
         sideMap.put(facing, energyStorage = getInternal(tile, facing));
