@@ -186,7 +186,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
       list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item."+name+"_armor.tooltip.line1"));
       list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item."+name+"_armor.tooltip.line2"));
-      if(itemstack.getItem() == DarkSteelItems.itemDarkSteelBoots) {
+      if(DarkSteelItems.isArmorPart(itemstack.getItem(), 3)) {
         list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item."+name+"_boots.tooltip.line1"));
         list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item."+name+"_boots.tooltip.line2"));
       }

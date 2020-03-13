@@ -442,6 +442,7 @@ public final class Config {
   public static int powerConduitTierOneRF = 640;
   public static int powerConduitTierTwoRF = 5120;
   public static int powerConduitTierThreeRF = 20480;
+//public static int powerConduitTierFourRF = 81920;
   public static boolean powerConduitOutputMJ = true;
 
   public static int sliceAndSpliceLevelOnePowerPerTickRF = 80;
@@ -519,6 +520,7 @@ public final class Config {
   public static float inventoryPanelScanCostPerSlot = 0.1f;
   public static float inventoryPanelExtractCostPerItem = 12.0f;
   public static float inventoryPanelExtractCostPerOperation = 32.0f;
+
 
 
   public static void load(FMLPreInitializationEvent event) {

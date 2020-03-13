@@ -308,7 +308,7 @@ public class DarkSteelController {
   private void updateStepHeightAndFallDistance(EntityPlayer player) {
     ItemStack boots = player.getEquipmentInSlot(1);
 
-    if(boots != null && !DarkSteelItems.isArmorPart(boots.getItem(), 3) && !player.capabilities.allowFlying) {
+    if(boots != null && DarkSteelItems.isArmorPart(boots.getItem(), 3) && !player.capabilities.allowFlying) {
       int costedDistance = (int) player.fallDistance;
       if(costedDistance > 0) {
         int energyCost = costedDistance * Config.darkSteelFallDistanceCost;
@@ -321,7 +321,7 @@ public class DarkSteelController {
     }
 
     JumpUpgrade jumpUpgrade = JumpUpgrade.loadFromItem(boots);
-    if(jumpUpgrade != null && boots != null && boots.getItem() == DarkSteelItems.itemDarkSteelBoots && isStepAssistActive(player)) {
+    if(jumpUpgrade != null && boots != null && DarkSteelItems.isArmorPart(boots.getItem(), 3) && isStepAssistActive(player)) {
       player.stepHeight = 1.0023F;
     } else if(player.stepHeight == 1.0023F) {
       player.stepHeight = 0.5001F;
