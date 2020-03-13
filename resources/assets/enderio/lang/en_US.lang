@@ -805,6 +805,9 @@ enderio.item.darkSteel_armor.tooltip.line2=when powered
 enderio.item.endSteel_armor.tooltip.line1=Diamond+ level protection
 enderio.item.endSteel_armor.tooltip.line2=when powered
 
+enderio.item.darkSteel_boots.tooltip.line1=Fall damage negated
+enderio.item.darkSteel_boots.tooltip.line2=when powered
+
 enderio.item.endSteel_boots.tooltip.line1=Fall damage negated
 enderio.item.endSteel_boots.tooltip.line2=when powered
 
