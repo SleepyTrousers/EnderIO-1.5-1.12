@@ -67,7 +67,7 @@ public class ApiaristArmorUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean hasUpgrade(ItemStack stack) {
-    return super.hasUpgrade(stack) && stack.getItem() instanceof ItemDarkSteelArmor;
+    return super.hasUpgrade(stack) && DarkSteelItems.isArmorPart(stack.getItem(), slot);
   }
 
   @Override
