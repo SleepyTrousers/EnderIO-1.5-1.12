@@ -293,7 +293,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   @Override
   @Method(modid = "Thaumcraft")
   public int getVisDiscount(ItemStack stack, EntityPlayer player, Aspect aspect) {
-    if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelHelmet) {
+    if(stack == null || !DarkSteelItems.isArmorPart(stack.getItem(), 0)) {
       return 0;
     }
     return GogglesOfRevealingUpgrade.isUpgradeEquipped(player) ? 5 : 0;
@@ -318,7 +318,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   @Override
   @Method(modid = "Forestry")
   public boolean canSeePollination(EntityPlayer player, ItemStack armor, boolean doSee) {
-    if(armor == null || armor.getItem() != DarkSteelItems.itemDarkSteelHelmet) {
+    if(armor == null ||  DarkSteelItems.isArmorPart(armor.getItem(), 0)) {
       return false;
     }
     return NaturalistEyeUpgrade.isUpgradeEquipped(player);
