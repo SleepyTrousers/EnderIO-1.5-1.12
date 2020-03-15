@@ -14,6 +14,7 @@ import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.powertools.machine.capbank.TileCapBank;
+import crazypants.enderio.util.FuncUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -67,21 +68,20 @@ public class NetworkUtil {
 
   public static Collection<TileCapBank> getAllNeigbours(TileCapBank cap) {
     if (!cap.getType().isMultiblock()) {
-      return Collections.emptySet();
+      return Collections.singleton(cap);
     }
     Set<TileCapBank> result = new HashSet<>();
     Set<BlockPos> seen = new HashSet<>();
     List<BlockPos> todo = new ArrayList<>();
     todo.add(cap.getLocation());
     while (!todo.isEmpty()) {
-      BlockPos next = todo.remove(0);
-      for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
-        BlockPos candidate = next.offset(itr.next());
-        if (!seen.contains(candidate)) {
-          seen.add(candidate);
-          TileCapBank te = BlockEnder.getAnyTileEntitySafe(cap.getWorld(), candidate, TileCapBank.class);
-          if (te != null && te.canConnectTo(cap)) {
-            result.add(te);
+      TileCapBank te = FuncUtil.runIf(todo.remove(0), next -> BlockEnder.getAnyTileEntitySafe(cap.getWorld(), next, TileCapBank.class));
+      if (te != null && te.canConnectTo(cap)) {
+        result.add(te);
+        for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
+          BlockPos candidate = te.getPos().offset(itr.next());
+          if (!seen.contains(candidate)) {
+            seen.add(candidate);
             todo.add(candidate);
           }
         }
