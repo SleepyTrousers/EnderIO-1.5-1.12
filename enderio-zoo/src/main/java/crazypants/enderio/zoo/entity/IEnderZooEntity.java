@@ -44,8 +44,8 @@ public interface IEnderZooEntity extends IAnimals {
       IMobID id) {
     ResourceLocation rl = new ResourceLocation(EnderIOZoo.MODID, name);
     EntityEntry entry = new EntityEntry(clazz, EnderIOZoo.MODID + "." + name);
-    entry.setEgg(new EntityEggInfo(rl, eggBgCol, eggFgCol));
     event.getRegistry().register(entry.setRegistryName(rl));
+    entry.setEgg(new EntityEggInfo(rl, eggBgCol, eggFgCol));
 
     EntityRegistry.registerModEntity(entry.getRegistryName(), entry.getEntityClass(), entry.getName(), id.getID(), EnderIOZoo.MODID, 64, 3, true);
   }
