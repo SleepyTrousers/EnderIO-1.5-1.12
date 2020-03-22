@@ -388,6 +388,19 @@ sourceJar {
     }
 }
 
+task recipeJar(type: Jar, dependsOn: jar) {
+    classifier = 'recipes'
+    extension = 'zip'
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    combjarprojects.each { subproject ->
+        from subproject.sourceSets.main.output.resourcesDir, {
+		    include 'assets/enderio/config/recipes/*.xml'
+		    include 'assets/enderio/config/recipes/*.xsd'
+	    }
+    }
+}
+    
 // Copy all the jars to `libs`
 task copyJars(type: Copy, dependsOn: subprojects.tasks['signJar']) {
     from buildprojects.collect { it.tasks.withType(Jar) }
@@ -408,7 +421,7 @@ artifacts {
     archives combApiJar
 }
 
-build.dependsOn sourceJar, combApiJar
+build.dependsOn sourceJar, combApiJar, recipeJar
 
 apply plugin: 'maven-publish'
 
@@ -420,6 +433,7 @@ publishing {
             version minecraft_version + "-" + project.version
             artifact sourceJar
             artifact combApiJar
+            artifact recipeJar
 
             pom.withXml { //Here we can add custom nodes to the pom file
                 def dependenciesNode = asNode().getAt("dependencies")[0]
