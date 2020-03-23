@@ -263,7 +263,7 @@ public class EntityOwl extends EntityAnimal implements IEnderZooEntity.Flying {
 
   @Override
   public void playLivingSound() {
-    if (!world.isRemote || world.isDaytime() || getAttackTarget() != null) {
+    if (world.isDaytime() || getAttackTarget() != null) {
       return;
     }
 
