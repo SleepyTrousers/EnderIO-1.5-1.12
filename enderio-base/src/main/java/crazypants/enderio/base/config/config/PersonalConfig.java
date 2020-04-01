@@ -114,7 +114,11 @@ public final class PersonalConfig {
   }
 
   public static final IValue<LootConfig> lootGeneration = L.make("generation", LootConfig.VANILLA, //
-      "Selects which loot table configurations are injected.").sync();
+      "Selects which loot table configurations are injected for dungeon loot. "
+          + "Possible values are VANILLA (inject standard loot tables from the mod jar and/or world folder), "
+          + "DEVELOPMENT (inject programmatic tables used in development) and DISABLED (don't add any loot tables). "
+          + "Please don't use DEVELOPMENT, those tables are only templates we use to create the real ones.")
+      .sync();
 
   // Tooltips
 
