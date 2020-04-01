@@ -311,8 +311,15 @@ public class UpgradeCap implements IItemHandlerModifiable {
       final NNPair<ItemStack, IDarkSteelItem> owner = getOwner();
       for (int slot = 0; slot < getSlots(); slot++) {
         final ItemStack stack = getStackInSlot(slot);
-        if (Prep.isValid(stack) && (isInventorySlot(slot) || owner.getRight().canUpgradeBeRemoved(owner.getLeft(), stacks.get(slot).upgrade))) {
-          dropSubInventory(stack, stacks.get(slot).upgrade.getInventoryHandler(owner.getLeft()), wipeOriginal);
+        if (Prep.isValid(stack)) {
+          if (isInventorySlot(slot)) {
+            // No special action needed, we just need to shield the stacks.get() calls
+          } else if (owner.getRight().canUpgradeBeRemoved(owner.getLeft(), stacks.get(slot).upgrade)) {
+            dropSubInventory(stack, stacks.get(slot).upgrade.getInventoryHandler(owner.getLeft()), wipeOriginal);
+          } else {
+            // some unremovable upgrade exists. It will be destroyed
+            continue;
+          }
           if (!player.inventory.addItemStackToInventory(stack)) {
             player.dropItem(stack, true);
           }
