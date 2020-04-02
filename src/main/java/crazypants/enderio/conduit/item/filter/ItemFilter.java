@@ -45,6 +45,7 @@ public class ItemFilter implements IInventory, IItemFilter {
   boolean sticky = false;
   FuzzyMode fuzzyMode = FuzzyMode.DISABLED;
 
+  int numItems;
   ItemStack[] items;
 
   final List<int[]> oreIds;
@@ -74,6 +75,7 @@ public class ItemFilter implements IInventory, IItemFilter {
 
   public ItemFilter(int numItems, boolean isAdvanced) {
     this.isAdvanced = isAdvanced;
+    this.numItems = numItems;
     items = new ItemStack[numItems];
     oreIds = new ArrayList<int[]>(numItems);
     for(int i=0;i<numItems;i++) {
@@ -248,6 +250,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     nbtRoot.setBoolean("sticky", sticky);
     nbtRoot.setBoolean("isAdvanced", isAdvanced);
     nbtRoot.setByte("fuzzyMode", (byte) fuzzyMode.ordinal());
+    nbtRoot.setInteger("numItems", numItems);
 
     int i = 0;
     for (ItemStack item : items) {
@@ -279,8 +282,10 @@ public class ItemFilter implements IInventory, IItemFilter {
     sticky = nbtRoot.getBoolean("sticky");
     isAdvanced = nbtRoot.getBoolean("isAdvanced");
     fuzzyMode = FuzzyMode.values()[nbtRoot.getByte("fuzzyMode") & 255];
+    numItems = nbtRoot.getInteger("numItems");
 
-    int numItems = items.length;
+    if(numItems<10 && isAdvanced) numItems = 10;
+
     items = new ItemStack[numItems];
     oreIds.clear();
     for(int i=0;i<numItems;i++) {
