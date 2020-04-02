@@ -58,6 +58,8 @@ enderio.itemItemConduit.name=Item Conduit
 
 enderio.filterUpgradeBasic.name=Basic Item Filter
 enderio.filterUpgradeAdvanced.name=Advanced Item Filter
+enderio.filterUpgradeBig.name=Big Item Filter
+enderio.filterUpgradeBigAdvanced.name=Big Advanced Item Filter
 enderio.itemConduitFilterUpgrade=Upgrade for item conduits
 
 enderio.itemConduitFilterUpgrade.configured=Configured

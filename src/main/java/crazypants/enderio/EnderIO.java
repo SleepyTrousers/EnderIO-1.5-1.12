@@ -450,7 +450,7 @@ public class EnderIO {
     itemOCConduit = ItemOCConduit.create();
 
     itemBasicFilterUpgrade = ItemBasicItemFilter.create();
- // itemBigFilterUpgrade = ItemBigItemFilter.create();
+    itemBigFilterUpgrade = ItemBigItemFilter.create();
     itemExistingItemFilter = ItemExistingItemFilter.create();
     itemModItemFilter = ItemModItemFilter.create();
     itemPowerItemFilter = ItemPowerItemFilter.create();

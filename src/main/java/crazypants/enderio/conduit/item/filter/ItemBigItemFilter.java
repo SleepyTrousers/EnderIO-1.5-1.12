@@ -50,6 +50,13 @@ public class ItemBigItemFilter extends ItemBasicItemFilter {
 
 	  @Override
 	  @SideOnly(Side.CLIENT)
+	  public IIcon getIconFromDamage(int damage) {
+	    damage = MathHelper.clamp_int(damage, 0, 1);
+	    return icons[damage];
+	  }
+
+	  @Override
+	  @SideOnly(Side.CLIENT)
 	  public void registerIcons(IIconRegister IIconRegister) {
 	    icons[0] = IIconRegister.registerIcon("enderio:filterUpgradeBig");
 	    icons[1] = IIconRegister.registerIcon("enderio:filterUpgradeBigAdvanced");
