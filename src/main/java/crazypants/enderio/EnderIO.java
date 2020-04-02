@@ -152,6 +152,9 @@ import crazypants.enderio.material.ItemMaterial;
 import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.material.OreDictionaryPreferences;
+import crazypants.enderio.material.endergy.BlockIngotStorageEndergy;
+import crazypants.enderio.material.endergy.ItemAlloyEndergy;
+import crazypants.enderio.material.endergy.ItemGrindingBallEndergy;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.rail.BlockEnderRail;
 import crazypants.enderio.teleport.ItemTravelStaff;
@@ -195,13 +198,16 @@ public class EnderIO {
   // Materials
   public static ItemCapacitor itemBasicCapacitor;
   public static ItemAlloy itemAlloy;
-  public static ItemAlloy itemGrindingBall;
+  public static ItemGrindingBall itemGrindingBall;
+  public static ItemAlloyEndergy itemAlloyEndergy;
+  public static ItemGrindingBallEndergy itemGrindingBallEndergy;
   public static BlockFusedQuartz blockFusedQuartz;
   public static ItemFusedQuartzFrame itemFusedQuartzFrame;
   public static ItemMachinePart itemMachinePart;
   public static ItemPowderIngot itemPowderIngot;
   public static ItemMaterial itemMaterial;
   public static BlockIngotStorage blockIngotStorage;
+  public static BlockIngotStorageEndergy blockIngotStorageEndergy;
   public static BlockDarkSteelBars blockDarkIronBars;
   public static BlockSoulariumBars blockSoulariumBars;
   public static BlockEndSteelBars blockEndSteelBars;
@@ -456,6 +462,8 @@ public class EnderIO {
     itemMaterial = ItemMaterial.create();
     itemAlloy = ItemAlloy.create();
     itemGrindingBall = ItemGrindingBall.create();
+    itemAlloyEndergy = ItemAlloyEndergy.create();
+    itemGrindingBallEndergy = ItemGrindingBallEndergy.create();
     itemPowderIngot = ItemPowderIngot.create();
 
     registerFluids();
@@ -470,6 +478,7 @@ public class EnderIO {
     itemSoulVessel = ItemSoulVessel.create();
 
     blockIngotStorage = BlockIngotStorage.create();
+    blockIngotStorageEndergy = BlockIngotStorageEndergy.create();
 
     blockDarkIronBars = BlockDarkSteelBars.create();
     blockSoulariumBars = BlockSoulariumBars.create();

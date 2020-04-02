@@ -207,6 +207,7 @@ enderio.vibrantCrystal.name=Vibrant Crystal
 enderio.enderCrystal.name=Ender Crystal
 enderio.attractorCrystal.name=Enticing Crystal
 enderio.weatherCrystal.name=Weather Crystal
+
 enderio.darkGrindingBall.name=Dark Steel Ball
 enderio.electricalGrindingBall.name=Electrical Steel Ball
 enderio.energeticGrindingBall.name=Energetic Alloy Ball
@@ -216,6 +217,7 @@ enderio.conductiveGrindingBall.name=Conductive Iron Ball
 enderio.pulsatingGrindingBall.name=Pulsating Iron Ball
 enderio.soulariumGrindingBall.name=Soularium Ball
 enderio.endSteelGrindingBall.name=End Steel Ball
+
 enderio.darkGrindingBall.tooltip.detailed.line1=SAG Mill Grinding Ball
 enderio.darkGrindingBall.tooltip.detailed.line2=Main Output
 enderio.darkGrindingBall.tooltip.detailed.line3=Bonus Output
@@ -250,6 +252,23 @@ enderio.darkSteel.name=Dark Steel
 enderio.soularium.name=Soularium
 enderio.endSteel.name=End Steel
 enderio.endSteelNugget.name=End Steel Nugget
+
+enderio.crudeSteel.name=Crude Steel
+enderio.crystallineAlloy.name=Crystalline Alloy
+enderio.melodicAlloy.name=Melodic Alloy
+enderio.stellarAlloy.name=Stellar Alloy
+enderio.crystallinePinkSlime.name=Crystalline Pink Slime
+enderio.energeticSilver.name=Energetic Silver
+enderio.vividAlloy.name=Vivid Alloy
+
+enderio.crudeSteelGrindingBall.name=Crude Steel Grinding Ball
+enderio.crystallineAlloyGrindingBall.name=Crystalline Alloy Grinding Ball
+enderio.melodicAlloyGrindingBall.name=Melodic Alloy Grinding Ball
+enderio.stellarAlloyGrindingBall.name=Stellar Alloy Grinding Ball
+enderio.crystallinePinkSlimeGrindingBall.name=Crystalline Pink Slime Grinding Ball
+enderio.energeticSilverGrindingBall.name=Energetic Silver Grinding Ball
+enderio.vividAlloyGrindingBall.name=Vivid Alloy Grinding Ball
+
 enderio.precientCrystal.name=Precient Crystal
 enderio.pulsatingPowder.name=Grains of Piezallity
 enderio.vibrantPowder.name=Grains of Vibrancy
@@ -279,6 +298,14 @@ tile.enderio.vibrantNugget.name=Vibrant Nugget Block
 tile.enderio.darkSteel.name=Dark Steel Block
 tile.enderio.soularium.name=Soularium Block
 tile.enderio.endSteel.name=End Steel Block
+
+tile.enderio.crudeSteel.name=Crude Steel Block
+tile.enderio.crystallineAlloy.name=Crystalline Alloy Block
+tile.enderio.melodicAlloy.name=Melodic Alloy Block
+tile.enderio.stellarAlloy.name=Stellar Alloy Block
+tile.enderio.crystallinePinkSlime.name=Crystalline Pink Slime Block
+tile.enderio.energeticSilver.name=Energetic Silver Block
+tile.enderio.vividAlloy.name=Vivid Alloy Block
 
 //Powder / Ingot
 enderio.powderCoal.name=Coal Powder

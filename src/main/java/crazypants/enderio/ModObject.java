@@ -31,7 +31,9 @@ public enum ModObject {
   // Materials
   itemBasicCapacitor,
   itemAlloy,
+  itemAlloyEndergy,
   itemGrindingBall,
+  itemGrindingBallEndergy,
   itemMaterial,
   itemMachinePart,
   itemPowderIngot,
@@ -88,6 +90,7 @@ public enum ModObject {
   blockDarkSteelLadder,
   blockReinforcedObsidian,
   blockIngotStorage,
+  blockIngotStorageEndergy,
 
   // Painter
   blockPainter,
