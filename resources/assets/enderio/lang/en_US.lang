@@ -33,7 +33,7 @@ enderio.itemPowerConduit.name=Energy Conduit
 enderio.itemPowerConduitEnhanced.name=Enhanced Energy Conduit
 enderio.itemPowerConduitEnder.name=Ender Energy Conduit
 
-enderio.itemPowerConduitEndergyCrude.name=Crude Energy Conduit
+enderio.itemPowerConduitEndergyCrude.name=Clay Compound Energy Conduit
 enderio.itemPowerConduitEndergyIron.name=Iron Energy Conduit
 enderio.itemPowerConduitEndergyAluminum.name=Aluminum Energy Conduit
 enderio.itemPowerConduitEndergyGold.name=Gold Energy Conduit
@@ -267,7 +267,7 @@ enderio.soularium.name=Soularium
 enderio.endSteel.name=End Steel
 enderio.endSteelNugget.name=End Steel Nugget
 
-enderio.crudeSteel.name=Crude Steel
+enderio.crudeSteel.name=Clay Compound
 enderio.crystallineAlloy.name=Crystalline Alloy
 enderio.melodicAlloy.name=Melodic Alloy
 enderio.stellarAlloy.name=Stellar Alloy
@@ -275,7 +275,7 @@ enderio.crystallinePinkSlime.name=Crystalline Pink Slime
 enderio.energeticSilver.name=Energetic Silver
 enderio.vividAlloy.name=Vivid Alloy
 
-enderio.crudeSteelGrindingBall.name=Crude Steel Grinding Ball
+enderio.crudeSteelGrindingBall.name=Clay Compound Grinding Ball
 enderio.crystallineAlloyGrindingBall.name=Crystalline Alloy Grinding Ball
 enderio.melodicAlloyGrindingBall.name=Melodic Alloy Grinding Ball
 enderio.stellarAlloyGrindingBall.name=Stellar Alloy Grinding Ball
@@ -313,7 +313,7 @@ tile.enderio.darkSteel.name=Dark Steel Block
 tile.enderio.soularium.name=Soularium Block
 tile.enderio.endSteel.name=End Steel Block
 
-tile.enderio.crudeSteel.name=Crude Steel Block
+tile.enderio.crudeSteel.name=Clay Compound Block
 tile.enderio.crystallineAlloy.name=Crystalline Alloy Block
 tile.enderio.melodicAlloy.name=Melodic Alloy Block
 tile.enderio.stellarAlloy.name=Stellar Alloy Block
