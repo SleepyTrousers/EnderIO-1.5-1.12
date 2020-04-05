@@ -99,6 +99,7 @@ public class MaterialRecipes {
 
     OreDictionary.registerOre("nuggetPulsatingIron", new ItemStack(EnderIO.itemMaterial, 1, Material.PHASED_IRON_NUGGET.ordinal()));
     OreDictionary.registerOre("nuggetVibrantAlloy", new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_NUGGET.ordinal()));
+    OreDictionary.registerOre("nuggetEndSteel", new ItemStack(EnderIO.itemMaterial, 1, Material.END_STEEL_NUGGET.ordinal()));
 
     OreDictionary.registerOre("glass", Blocks.glass);
     OreDictionary.registerOre("stickWood", Items.stick);
