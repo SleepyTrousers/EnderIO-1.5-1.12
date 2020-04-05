@@ -841,9 +841,13 @@ enderio.item.endSteel_pickaxe.tooltip.effPowered=Efficiency when powered
 enderio.item.endSteel_pickaxe.tooltip.effObs=Efficiency breaking obsidian
 enderio.item.endSteel_pickaxe.tooltip.cost=cost
 
+enderio.item.stellar_pickaxe.tooltip.effPowered=Efficiency when powered
+enderio.item.stellar_pickaxe.tooltip.effObs=Efficiency breaking obsidian
+enderio.item.stellar_pickaxe.tooltip.cost=cost
+
 enderio.item.darkSteel_axe.tooltip.multiHarvest=Sneak to harvest multiple logs
 enderio.item.endSteel_axe.tooltip.multiHarvest=Sneak to harvest multiple logs
-
+enderio.item.stellar_axe.tooltip.multiHarvest=Sneak to harvest multiple logs
 
 enderio.item.darkSteel_shears.tooltip.multiHarvest=Shears multiple blocks/sheep when empowered
 
@@ -855,17 +859,27 @@ enderio.item.endSteel_sword.tooltip.line1=Increased skull and ender pearl drops
 enderio.item.endSteel_sword.tooltip.line2=Endermen can't teleport once hit
 enderio.item.endSteel_sword.tooltip.line3=+2 Damage when Powered
 
+enderio.item.stellar_sword.tooltip.line1=Increased skull and ender pearl drops
+enderio.item.stellar_sword.tooltip.line2=Endermen can't teleport once hit
+enderio.item.stellar_sword.tooltip.line3=+2 Damage when Powered
+
 enderio.item.darkSteel_armor.tooltip.line1=Diamond level protection
 enderio.item.darkSteel_armor.tooltip.line2=when powered
 
 enderio.item.endSteel_armor.tooltip.line1=Diamond+ level protection
 enderio.item.endSteel_armor.tooltip.line2=when powered
 
+enderio.item.stellar_armor.tooltip.line1=Diamond+ level protection
+enderio.item.stellar_armor.tooltip.line2=when powered
+
 enderio.item.darkSteel_boots.tooltip.line1=Fall damage negated
 enderio.item.darkSteel_boots.tooltip.line2=when powered
 
 enderio.item.endSteel_boots.tooltip.line1=Fall damage negated
 enderio.item.endSteel_boots.tooltip.line2=when powered
+
+enderio.item.stellar_boots.tooltip.line1=Fall damage negated
+enderio.item.stellar_boots.tooltip.line2=when powered
 
 enderio.darksteel.upgrade.empowered_one.name=Empowered
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Power: $P
