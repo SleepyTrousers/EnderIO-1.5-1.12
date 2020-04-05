@@ -8,4 +8,6 @@ public interface ICapacitor {
 
   int getMaxEnergyExtracted();
 
+  int getTier();
+
 }

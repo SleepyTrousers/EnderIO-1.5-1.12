@@ -31,6 +31,14 @@ public class DarkSteelItems {
   public static ItemEndSteelPickaxe itemEndSteelPickaxe;
   public static ItemEndSteelAxe itemEndSteelAxe;
 
+  public static ItemStellarArmor itemStellarHelmet;
+  public static ItemStellarArmor itemStellarChestplate;
+  public static ItemStellarArmor itemStellarLeggings;
+  public static ItemStellarArmor itemStellarBoots;
+  public static ItemStellarSword itemStellarSword;
+  public static ItemStellarPickaxe itemStellarPickaxe;
+  public static ItemStellarAxe itemStellarAxe;
+
   public static ItemMagnet itemMagnet;
 
   private DarkSteelItems() {
@@ -58,16 +66,25 @@ public class DarkSteelItems {
 	itemEndSteelPickaxe = ItemEndSteelPickaxe.create();
 	itemEndSteelAxe = ItemEndSteelAxe.create();
 
+	itemStellarHelmet = ItemStellarArmor.create(0);
+	itemStellarChestplate = ItemStellarArmor.create(1);
+    itemStellarLeggings = ItemStellarArmor.create(2);
+	itemStellarBoots = ItemStellarArmor.create(3);
+
+	itemStellarSword = ItemStellarSword.create();
+	itemStellarPickaxe = ItemStellarPickaxe.create();
+	itemStellarAxe = ItemStellarAxe.create();
+
     itemMagnet = ItemMagnet.create();
 
   }
 
   public static boolean isArmorPart(Item item, int type){
 	  switch(type){
-	  case 0:return item == itemDarkSteelHelmet||item == itemEndSteelHelmet;
-	  case 1:return item == itemDarkSteelChestplate||item == itemEndSteelChestplate;
-	  case 2:return item == itemDarkSteelLeggings||item == itemEndSteelLeggings;
-	  case 3:return item == itemDarkSteelBoots||item == itemEndSteelBoots;
+	  case 0:return item == itemDarkSteelHelmet||item == itemEndSteelHelmet||item == itemStellarHelmet;
+	  case 1:return item == itemDarkSteelChestplate||item == itemEndSteelChestplate||item == itemStellarChestplate;
+	  case 2:return item == itemDarkSteelLeggings||item == itemEndSteelLeggings||item == itemStellarLeggings;
+	  case 3:return item == itemDarkSteelBoots||item == itemEndSteelBoots||item == itemStellarBoots;
       default: return false;
 	  }
   }
@@ -107,5 +124,13 @@ public class DarkSteelItems {
     MinecraftForgeClient.registerItemRenderer(itemEndSteelSword, dsr);
     MinecraftForgeClient.registerItemRenderer(itemEndSteelPickaxe, dsr);
     MinecraftForgeClient.registerItemRenderer(itemEndSteelAxe, dsr);
+
+    MinecraftForgeClient.registerItemRenderer(itemStellarBoots, dsr);
+    MinecraftForgeClient.registerItemRenderer(itemStellarLeggings, dsr);
+    MinecraftForgeClient.registerItemRenderer(itemStellarChestplate, dsr);
+    MinecraftForgeClient.registerItemRenderer(itemStellarHelmet, dsr);
+    MinecraftForgeClient.registerItemRenderer(itemStellarSword, dsr);
+    MinecraftForgeClient.registerItemRenderer(itemStellarPickaxe, dsr);
+    MinecraftForgeClient.registerItemRenderer(itemStellarAxe, dsr);
   }
 }

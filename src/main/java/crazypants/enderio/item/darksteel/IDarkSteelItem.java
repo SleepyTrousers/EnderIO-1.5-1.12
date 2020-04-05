@@ -8,4 +8,8 @@ public interface IDarkSteelItem {
 
   }
 
+  public interface IStellarItem extends IEndSteelItem {
+
+  }
+
 }

@@ -88,6 +88,19 @@
         <itemStack modID="EnderIO" itemName="itemFrankenSkull" itemMeta="6" />
       </output>
     </recipe>
+		<recipe name="Totemic Capacitor" energyCost="20000" >
+      <input>
+        <itemStack oreDictionary="ingotSoularium" slot="0" />
+        <itemStack modID="minecraft" itemName="golden_apple" itemMeta="1" slot="1" />
+        <itemStack oreDictionary="ingotSoularium" slot="2" />
+        <itemStack oreDictionary="itemVibrantPowder" slot="3" />
+        <itemStack oreDictionary="capacitorCrystalline" slot="4" />
+        <itemStack oreDictionary="itemVibrantPowder" slot="5" />
+      </input>
+      <output>
+        <itemStack modID="EnderIO" itemName="itemBasicCapacitor" itemMeta="6" />
+      </output>
+    </recipe>
   </recipeGroup>
 
 </SliceAndSpliceRecipes>

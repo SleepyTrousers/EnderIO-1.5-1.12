@@ -283,6 +283,9 @@ public final class Config {
   public static int enderGeneratorRfPerTick = 360;
   public static int enderGeneratorTicksPerBucketFuel = 96000;
 
+  public static double[] zombieGeneratorsEnergyMultipliers = {1f,2f,3f,5f,8f,13f,21f};
+  public static double[] zombieGeneratorsBurnTimeMultipliers = {0.5f,1f/1.5f};
+
   public static int stirlingGeneratorBaseRfPerTick = 20;
   public static float stirlingGeneratorEnergyMultiplierT1 = 1f;
   public static float stirlingGeneratorEnergyMultiplierT2 = 2f;
@@ -290,6 +293,10 @@ public final class Config {
   public static float stirlingGeneratorBurnTimeMultiplierT1 = 1f / 2f;
   public static float stirlingGeneratorBurnTimeMultiplierT2 = 1f / 1.5f;
   public static float stirlingGeneratorBurnTimeMultiplierT3 = 1f / 1.5f;
+
+  public static double[] stirlingGeneratorEnergyMultipliers = {1f,2f,3f,5f,8f,13f,21f};
+  public static double[] stirlingGeneratorBurnTimeMultipliers = {0.5f,1f/1.5f};
+
 
   public static boolean combustionGeneratorUseOpaqueModel = true;
 
@@ -442,7 +449,7 @@ public final class Config {
   public static int powerConduitTierOneRF = 640;
   public static int powerConduitTierTwoRF = 5120;
   public static int powerConduitTierThreeRF = 20480;
-//public static int powerConduitTierFourRF = 81920;
+  public static int[] powerConduitEndergyTiers = {20, 40, 80, 160, 320, 1280, 2560, 10240, 40960, 81920, 327680, 2000000000};
   public static boolean powerConduitOutputMJ = true;
 
   public static int sliceAndSpliceLevelOnePowerPerTickRF = 80;
@@ -614,6 +621,9 @@ public final class Config {
         .getInt(powerConduitTierTwoRF);
     powerConduitTierThreeRF = config.get(sectionPower.name, "powerConduitTierThreeRF", powerConduitTierThreeRF, "The maximum IO for the tier 3 power conduit")
         .getInt(powerConduitTierThreeRF);
+	powerConduitEndergyTiers = config.get(sectionPower.name, "powerConduitTiersEndergy", powerConduitEndergyTiers, "The maximum IO for the endergy power conduit")
+		.getIntList();
+
     powerConduitCanDifferentTiersConnect = config
         .getBoolean("powerConduitCanDifferentTiersConnect", sectionPower.name, powerConduitCanDifferentTiersConnect,
             "If set to false power conduits of different tiers cannot be connected. in this case a block such as a cap. bank is needed to bridge different tiered networks");
@@ -1061,22 +1071,36 @@ public final class Config {
     enderGeneratorTicksPerBucketFuel = config.get(sectionPower.name, "enderGeneratorTicksPerMbFuel", enderGeneratorTicksPerBucketFuel,
             "The number of ticks one bucket of fuel lasts.").getInt(enderGeneratorTicksPerBucketFuel);
 
+    zombieGeneratorsEnergyMultipliers = config.get(sectionPower.name, "zombieGeneratorsEnergyMultipliers",
+    		zombieGeneratorsEnergyMultipliers, "Energy multipliers for the Zombie-Type Generators").getDoubleList();
+
+    zombieGeneratorsBurnTimeMultipliers = config.get(sectionPower.name, "zombieGeneratorsBurnTimeMultipliers",
+    		zombieGeneratorsBurnTimeMultipliers, "Burn time multipliers for the Zombie-Type Generators").getDoubleList();
+
+
     stirlingGeneratorBaseRfPerTick = config.get(sectionPower.name, "stirlingGeneratorBaseRfPerTick", stirlingGeneratorBaseRfPerTick,
         "The amount of power generated per tick.").getInt(stirlingGeneratorBaseRfPerTick);
 
     stirlingGeneratorEnergyMultiplierT1 = (float) config.get(sectionPower.name, "stirlingGeneratorEnergyMultiplierT1",
-        stirlingGeneratorEnergyMultiplierT1, "Energy multiplier for the Stirling Generator, Tier 1 machine").getDouble();
+        stirlingGeneratorEnergyMultiplierT1, "[Deprecated]Energy multiplier for the Stirling Generator, Tier 1 machine").getDouble();
     stirlingGeneratorEnergyMultiplierT2 = (float) config.get(sectionPower.name, "stirlingGeneratorEnergyMultiplierT2",
-        stirlingGeneratorEnergyMultiplierT2, "Energy multiplier for the Stirling Generator, Tier 2 machine").getDouble();
+        stirlingGeneratorEnergyMultiplierT2, "[Deprecated]Energy multiplier for the Stirling Generator, Tier 2 machine").getDouble();
     stirlingGeneratorEnergyMultiplierT3 = (float) config.get(sectionPower.name, "stirlingGeneratorEnergyMultiplierT3",
-        stirlingGeneratorEnergyMultiplierT3, "Energy multiplier for the Stirling Generator, Tier 3 machine").getDouble();
+        stirlingGeneratorEnergyMultiplierT3, "[Deprecated]Energy multiplier for the Stirling Generator, Tier 3 machine").getDouble();
+
+    stirlingGeneratorEnergyMultipliers = config.get(sectionPower.name, "stirlingGeneratorEnergyMultipliers",
+		stirlingGeneratorEnergyMultipliers, "Energy multipliers for the Stirling Generator").getDoubleList();
 
     stirlingGeneratorBurnTimeMultiplierT1 = (float) config.get(sectionPower.name, "stirlingGeneratorBurnTimeMultiplierT1",
-        stirlingGeneratorBurnTimeMultiplierT1, "Burn time multiplier for the Stirling Generator, Tier 1 machine").getDouble();
+        stirlingGeneratorBurnTimeMultiplierT1, "[Deprecated]Burn time multiplier for the Stirling Generator, Tier 1 machine").getDouble();
     stirlingGeneratorBurnTimeMultiplierT2 = (float) config.get(sectionPower.name, "stirlingGeneratorBurnTimeMultiplierT2",
-        stirlingGeneratorBurnTimeMultiplierT2, "Burn time multiplier for the Stirling Generator, Tier 2 machine").getDouble();
+        stirlingGeneratorBurnTimeMultiplierT2, "[Deprecated]Burn time multiplier for the Stirling Generator, Tier 2 machine").getDouble();
     stirlingGeneratorBurnTimeMultiplierT3 = (float) config.get(sectionPower.name, "stirlingGeneratorBurnTimeMultiplierT3",
-        stirlingGeneratorBurnTimeMultiplierT3, "Burn time multiplier for the Stirling Generator, Tier 3 machine").getDouble();
+        stirlingGeneratorBurnTimeMultiplierT3, "[Deprecated]Burn time multiplier for the Stirling Generator, Tier 3 machine").getDouble();
+
+    stirlingGeneratorBurnTimeMultipliers = config.get(sectionPower.name, "stirlingGeneratorBurnTimeMultipliers",
+    		stirlingGeneratorBurnTimeMultipliers, "Burn time multipliers for the Stirling Generator").getDoubleList();
+
 
     addFuelTooltipsToAllFluidContainers = config.get(sectionPersonal.name, "addFuelTooltipsToAllFluidContainers", addFuelTooltipsToAllFluidContainers,
         "If true, the RF/t and burn time of the fuel will be displayed in all tooltips for fluid containers with fuel.").getBoolean(

@@ -45,12 +45,12 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
     addProgressTooltip(80, 52, 14, 14);
   }
 
-  private static float getFactor(Capacitors upgrade) {
-    return TileEntityStirlingGenerator.getEnergyMultiplier(upgrade) *
-            TileEntityStirlingGenerator.getBurnTimeMultiplier(upgrade);
+  private float getFactor(Capacitors upgrade) {
+    return getTileEntity().getEnergyMultiplier() *
+           getTileEntity().getBurnTimeMultiplier();
   }
 
-  private static String formatUpgrade(MessageFormat fmt, Capacitors upgrade) {
+  private String formatUpgrade(MessageFormat fmt, Capacitors upgrade) {
     float efficiency = getFactor(upgrade) / getFactor(Capacitors.BASIC_CAPACITOR);
     Object[] args = new Object[] {
       EnderIO.lang.localizeExact(upgrade.unlocalisedName.concat(".name")),
@@ -113,7 +113,7 @@ public class GuiStirlingGenerator extends GuiPoweredMachineBase<TileEntityStirli
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));
 
     txt = String.format("%s %d%%", EnderIO.lang.localize("stirlingGenerator.burnRate"),
-        Math.round(getTileEntity().getBurnTimeMultiplier() / Config.stirlingGeneratorBurnTimeMultiplierT1 * 100));
+        Math.round(getTileEntity().getBurnTimeMultiplier() / Config.stirlingGeneratorBurnTimeMultipliers[0] * 100));
     sw = fr.getStringWidth(txt);
     y += fr.FONT_HEIGHT + 3;
     fr.drawStringWithShadow(txt, guiLeft + xSize / 2 - sw / 2, y, ColorUtil.getRGB(Color.WHITE));

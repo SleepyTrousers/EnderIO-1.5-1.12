@@ -56,6 +56,7 @@ import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.me.ItemMEConduit;
 import crazypants.enderio.conduit.oc.ItemOCConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
+import crazypants.enderio.conduit.power.endergy.ItemPowerConduitEndergy;
 import crazypants.enderio.conduit.redstone.ConduitBundledRedstoneProvider;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
@@ -240,6 +241,7 @@ public class EnderIO {
   public static ItemConduitFacade itemConduitFacade;
   public static ItemRedstoneConduit itemRedstoneConduit;
   public static ItemPowerConduit itemPowerConduit;
+  public static ItemPowerConduitEndergy itemPowerConduitEndergy;
   public static ItemLiquidConduit itemLiquidConduit;
   public static ItemItemConduit itemItemConduit;
   public static ItemGasConduit itemGasConduit;
@@ -443,6 +445,7 @@ public class EnderIO {
 
     itemRedstoneConduit = ItemRedstoneConduit.create();
     itemPowerConduit = ItemPowerConduit.create();
+    itemPowerConduitEndergy = ItemPowerConduitEndergy.create();
     itemLiquidConduit = ItemLiquidConduit.create();
     itemItemConduit = ItemItemConduit.create();
     itemGasConduit = ItemGasConduit.create();

@@ -38,12 +38,12 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
   private boolean bufferStacks = true;
 
   private long ticksSinceLastCraft = 0;
-  
+
   private FakePlayer playerInst;
 
   public TileCrafter() {
     super(new SlotDefinition(9, 1));
-    containerItems = new ArrayList<ItemStack>();    
+    containerItems = new ArrayList<ItemStack>();
   }
 
   @Override
@@ -51,7 +51,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
     ICapacitor refCap = getCapacitor();
     int maxUse = getPowerUsePerTick(getCapacitorType());
     int io = Math.max(maxUse, refCap.getMaxEnergyExtracted());
-    setCapacitor(new BasicCapacitor(io * 4, refCap.getMaxEnergyStored(), io));
+    setCapacitor(new BasicCapacitor(0, io * 4, refCap.getMaxEnergyStored(), io));
   }
 
   @Override
@@ -115,9 +115,9 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
   public int getPowerUsePerTick() {
     return getPowerUsePerTick(getCapacitorType());
   }
-  
+
   public int getPowerUsePerTick(Capacitors type) {
-    int ticks = getTicksPerCraft(type);    
+    int ticks = getTicksPerCraft(type);
     return (int)Math.ceil(Config.crafterRfPerCraft / (double)ticks);
   }
 
@@ -128,7 +128,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
       return 10;
     } else {
       return 2;
-    }    
+    }
   }
 
   static boolean compareDamageable(ItemStack stack, ItemStack req) {
@@ -156,7 +156,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
     }, 3, 3);
 
     int[] usedItems = new int[9];
-    
+
     for (int j = 0; j < 9; j++) {
       ItemStack req = craftingGrid.getStackInSlot(j);
       if (req != null) {

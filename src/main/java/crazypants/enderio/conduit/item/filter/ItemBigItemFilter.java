@@ -38,9 +38,9 @@ public class ItemBigItemFilter extends ItemBasicItemFilter {
 	    int damage = MathHelper.clamp_int(stack.getItemDamage(), 0, 1);
 	    ItemFilter filter;
 	    if(damage == 0) {
-		      filter = new ItemFilter(30,false);
+		      filter = new ItemFilterBig(24, false);
 	    } else {
-	      filter = new ItemFilter(30,true);
+	      filter = new ItemFilterBig(24, true);
 	    }
 	    if(stack.stackTagCompound != null && stack.stackTagCompound.hasKey("filter")) {
 	      filter.readFromNBT(stack.stackTagCompound.getCompoundTag("filter"));

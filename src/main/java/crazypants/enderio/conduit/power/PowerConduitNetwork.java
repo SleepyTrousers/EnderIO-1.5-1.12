@@ -21,7 +21,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
 
   // ----------------------------------------------------------------------
 
-  NetworkPowerManager powerManager;
+  public NetworkPowerManager powerManager;
 
   private final Map<ReceptorKey, ReceptorEntry> powerReceptors = new HashMap<ReceptorKey, ReceptorEntry>();
 

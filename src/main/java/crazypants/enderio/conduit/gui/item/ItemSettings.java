@@ -69,7 +69,7 @@ public class ItemSettings extends BaseSettingsPanel {
 
   private final RedstoneModeButton rsB;
   private final ColorButton colorB;
-  
+
   private ColorButton channelB;
 
   boolean inOutShowIn = false;
@@ -98,18 +98,18 @@ public class ItemSettings extends BaseSettingsPanel {
 
     nextFilterB = MultiIconButton.createRightArrowButton(gui, NEXT_FILTER_ID, x, y);
 
-    x = 66;    
+    x = 66;
     channelB = new ColorButton(gui, ID_CHANNEL, x, y);
     channelB.setColorIndex(0);
     channelB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.item.channel"));
-    
+
     filterUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18 * 2, customTop + 3 + 16, 18, 18), EnderIO.lang.localize("gui.conduit.item.filterupgrade")) {
       @Override
       public boolean shouldDraw() {
         return !gui.getContainer().hasFilterUpgrades(isInputVisible()) && super.shouldDraw();
       }
     };
-    speedUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18, customTop + 3 + 16, 18, 18), EnderIO.lang.localize("gui.conduit.item.speedupgrade"), EnderIO.lang.localize("gui.conduit.item.speedupgrade2")) {
+    speedUpgradeTooltip = new GuiToolTip(new Rectangle(x - 21 - 18*2, customTop + 3 + 16 + 36, 18, 18), EnderIO.lang.localize("gui.conduit.item.speedupgrade"), EnderIO.lang.localize("gui.conduit.item.speedupgrade2")) {
       @Override
       public boolean shouldDraw() {
         return !gui.getContainer().hasSpeedUpgrades() && super.shouldDraw();
@@ -130,7 +130,7 @@ public class ItemSettings extends BaseSettingsPanel {
 
     x += channelB.getWidth() + 4;
     priLeft = x - 8;
-    
+
     rsB = new RedstoneModeButton(gui, ID_REDSTONE_BUTTON, x, y, new IRedstoneModeControlable() {
 
       @Override
@@ -167,8 +167,8 @@ public class ItemSettings extends BaseSettingsPanel {
     loopB.setPaintSelectedBorder(false);
 
     priorityTooltip = new GuiToolTip(new Rectangle(priLeft + 9, y, priWidth, 16), EnderIO.lang.localize("gui.conduit.item.priority"));
-    
-    x = priLeft + priWidth + 9;    
+
+    x = priLeft + priWidth + 9;
     priUpB = MultiIconButton.createAddButton(gui, ID_PRIORITY_UP, x, y);
     priDownB = MultiIconButton.createMinusButton(gui, ID_PRIORITY_DOWN, x, y+8);
 
@@ -212,7 +212,7 @@ public class ItemSettings extends BaseSettingsPanel {
 
     ConnectionMode mode = con.getConnectionMode(gui.getDir());
     if(mode == ConnectionMode.INPUT) {
-      showInput = true;     
+      showInput = true;
     } else if(mode == ConnectionMode.OUTPUT) {
       showOutput = true;
     } else if(mode == ConnectionMode.IN_OUT) {
@@ -257,7 +257,7 @@ public class ItemSettings extends BaseSettingsPanel {
       return;
     }
     boolean outputActive = (mode == ConnectionMode.IN_OUT && !inOutShowIn) || (mode == ConnectionMode.OUTPUT);
-    
+
     if(!outputActive) {
 
       rsB.onGuiInit();
@@ -286,12 +286,12 @@ public class ItemSettings extends BaseSettingsPanel {
       priDownB.onGuiInit();
       gui.addToolTip(priorityTooltip);
     }
-    
+
     int chanCol;
     if(!outputActive) {
-      chanCol = itemConduit.getInputColor(gui.getDir()).ordinal();      
-    } else {      
-      chanCol = itemConduit.getOutputColor(gui.getDir()).ordinal();      
+      chanCol = itemConduit.getInputColor(gui.getDir()).ordinal();
+    } else {
+      chanCol = itemConduit.getOutputColor(gui.getDir()).ordinal();
     }
     channelB.onGuiInit();
     channelB.setColorIndex(chanCol);
@@ -324,12 +324,12 @@ public class ItemSettings extends BaseSettingsPanel {
       sendFilterChange();
     } else if(guiButton.id == ID_CHANNEL) {
 
-      DyeColor col = DyeColor.values()[channelB.getColorIndex()];      
+      DyeColor col = DyeColor.values()[channelB.getColorIndex()];
       if(isInputVisible()) {
         itemConduit.setInputColor(gui.getDir(), col);
       } else  {
         itemConduit.setOutputColor(gui.getDir(), col);
-      } 
+      }
       sendFilterChange();
     }
 
@@ -343,7 +343,7 @@ public class ItemSettings extends BaseSettingsPanel {
   }
 
   @Override
-  public void mouseClicked(int x, int y, int par3) {    
+  public void mouseClicked(int x, int y, int par3) {
     super.mouseClicked(x, y, par3);
     if(filterGui != null) {
       filterGui.mouseClicked(x, y, par3);
@@ -351,7 +351,7 @@ public class ItemSettings extends BaseSettingsPanel {
   }
 
   private boolean isInputVisible() {
-    ConnectionMode mode = con.getConnectionMode(gui.getDir());    
+    ConnectionMode mode = con.getConnectionMode(gui.getDir());
     return (mode == ConnectionMode.IN_OUT && inOutShowIn) || (mode == ConnectionMode.INPUT);
   }
 
@@ -388,9 +388,9 @@ public class ItemSettings extends BaseSettingsPanel {
       //draw speed upgrade slot
       GL11.glColor3f(1, 1, 1);
       gui.bindGuiTexture(1);
-      gui.drawTexturedModalRect(gui.getGuiLeft() + 9 + 18, gui.getGuiTop() + 46, 94, 238, 18, 18);      
+      gui.drawTexturedModalRect(gui.getGuiLeft() + 9, gui.getGuiTop() + 46 +18 +18, 94, 238, 18, 18);
     }
-    
+
     //filter upgrade slot
     GL11.glColor3f(1, 1, 1);
     gui.bindGuiTexture(1);
