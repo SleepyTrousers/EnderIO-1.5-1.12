@@ -11,6 +11,7 @@ import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.MachinePart;
 
 import static crazypants.enderio.material.Alloy.*;
+import static crazypants.enderio.material.endergy.AlloyEndergy.*;
 import static crazypants.enderio.material.Material.VIBRANT_CYSTAL;
 import static crazypants.util.RecipeUtil.addShaped;
 
@@ -19,6 +20,7 @@ public class ItemRecipes {
   public static void addRecipes() {
     ItemStack basicGear = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.BASIC_GEAR.ordinal());
     ItemStack diode = new ItemStack(EnderIO.itemFrankenSkull,1,FrankenSkull.GUARDIAN_DIODE.ordinal());
+    ItemStack sentient = new ItemStack(EnderIO.itemFrankenSkull,1,FrankenSkull.SENTIENT_ENDER.ordinal());
     String electricalSteel = ELECTRICAL_STEEL.getOreIngot();
     String conductiveIron = CONDUCTIVE_IRON.getOreIngot();
     String vibCry = VIBRANT_CYSTAL.oreDict;
@@ -26,7 +28,7 @@ public class ItemRecipes {
     String darkSteel = DARK_STEEL.getOreIngot();
     String soularium = SOULARIUM.getOreIngot();
     String endSteel = END_STEEL.getOreIngot();
-
+    String stellarAlloy = STELLAR_ALLOY.getOreIngot();
 
     // Wrench
     ItemStack wrench = new ItemStack(EnderIO.itemYetaWench, 1, 0);
@@ -48,6 +50,12 @@ public class ItemRecipes {
     addShaped(DarkSteelItems.itemEndSteelChestplate.createItemStack(), "sds", "sss", "sss", 's', endSteel, 'd', diode);
     addShaped(DarkSteelItems.itemEndSteelLeggings.createItemStack(), "sss", "sds", "s s", 's', endSteel, 'd', diode);
     addShaped(DarkSteelItems.itemEndSteelBoots.createItemStack(), "s s", "sds", 's', endSteel, 'd', diode);
+
+    //Stellar
+    addShaped(DarkSteelItems.itemStellarHelmet.createItemStack(), "sss", "sds", 's', stellarAlloy, 'd', sentient);
+    addShaped(DarkSteelItems.itemStellarChestplate.createItemStack(), "sds", "sss", "sss", 's', stellarAlloy, 'd', sentient);
+    addShaped(DarkSteelItems.itemStellarLeggings.createItemStack(), "sss", "sds", "s s", 's', stellarAlloy, 'd', sentient);
+    addShaped(DarkSteelItems.itemStellarBoots.createItemStack(), "s s", "sds", 's', stellarAlloy, 'd', sentient);
 
     ItemStack wing = new ItemStack(DarkSteelItems.itemGliderWing, 1, 0);
     addShaped(wing, "  s", " sl", "sll", 's', darkSteel, 'l', Items.leather);
@@ -84,6 +92,13 @@ public class ItemRecipes {
     addShaped(DarkSteelItems.itemEndSteelPickaxe.createItemStack(), "sss", " w ", " w ", 's', endSteel, 'w', "itemDarkSteelRod");
     addShaped(DarkSteelItems.itemEndSteelAxe.createItemStack(), "ss ", "sw ", " w ", 's', endSteel, 'w', "stickDarkSteel");
     addShaped(DarkSteelItems.itemEndSteelAxe.createItemStack(), "ss ", "sw ", " w ", 's', endSteel, 'w', "itemDarkSteelRod");
+
+    // Stellar Tools
+    addShaped(DarkSteelItems.itemStellarSword.createItemStack(), " s ", " s ", " e ", 's', stellarAlloy,'e', sentient, 'w', "itemDarkSteelRod");
+    addShaped(DarkSteelItems.itemStellarPickaxe.createItemStack(), "sss", " e ", " w ", 's', stellarAlloy,'e', sentient, 'w', "stickDarkSteel");
+    addShaped(DarkSteelItems.itemStellarPickaxe.createItemStack(), "sss", " e ", " w ", 's', stellarAlloy,'e', sentient, 'w', "itemDarkSteelRod");
+    addShaped(DarkSteelItems.itemStellarAxe.createItemStack(), "ss ", "se ", " w ", 's', stellarAlloy,'e', sentient, 'w', "stickDarkSteel");
+    addShaped(DarkSteelItems.itemStellarAxe.createItemStack(), "ss ", "se ", " w ", 's', stellarAlloy,'e', sentient, 'w', "itemDarkSteelRod");
 
   }
 }

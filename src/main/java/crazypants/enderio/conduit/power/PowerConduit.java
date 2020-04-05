@@ -50,7 +50,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   private static ICapacitor[] capacitors;
 
-  static final String[] POSTFIX = new String[] { "", "Enhanced", "Ender", /*"Stellar"*/};
+  static final String[] POSTFIX = new String[] { "", "Enhanced", "Ender"};
 
   static ICapacitor[] getCapacitors() {
     if(capacitors == null) {
@@ -58,7 +58,6 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
         new BasicCapacitor(Config.powerConduitTierOneRF, Config.powerConduitTierOneRF),
         new BasicCapacitor(Config.powerConduitTierTwoRF, Config.powerConduitTierTwoRF),
         new BasicCapacitor(Config.powerConduitTierThreeRF, Config.powerConduitTierThreeRF),
-       // new BasicCapacitor(Config.powerConduitTierFourRF, Config.powerConduitTierFourRF)
       };
     }
     return capacitors;
@@ -76,8 +75,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
       public void registerIcons(IIconRegister register) {
         for (String pf : POSTFIX) {
           ICONS.put(ICON_KEY + pf, register.registerIcon(ICON_KEY + pf));
-          ICONS.put(ICON_KEY_INPUT + pf, register.registerIcon(ICON_KEY_INPUT + pf));
-          ICONS.put(ICON_KEY_OUTPUT + pf, register.registerIcon(ICON_KEY_OUTPUT + pf));
+          ICONS.put(ICON_KEY_INPUT + pf, register.registerIcon(ICON_KEY_INPUT));
+          ICONS.put(ICON_KEY_OUTPUT + pf, register.registerIcon(ICON_KEY_OUTPUT));
           ICONS.put(ICON_CORE_KEY + pf, register.registerIcon(ICON_CORE_KEY + pf));
         }
         ICONS.put(ICON_TRANSMISSION_KEY, register.registerIcon(ICON_TRANSMISSION_KEY));
@@ -503,12 +502,12 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public IIcon getTextureForInputMode() {
-    return ICONS.get(ICON_KEY_INPUT + POSTFIX[subtype]);
+    return ICONS.get(ICON_KEY_INPUT);
   }
 
   @Override
   public IIcon getTextureForOutputMode() {
-    return ICONS.get(ICON_KEY_OUTPUT + POSTFIX[subtype]);
+    return ICONS.get(ICON_KEY_OUTPUT);
   }
 
   @Override

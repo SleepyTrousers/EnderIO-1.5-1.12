@@ -33,6 +33,19 @@ enderio.itemPowerConduit.name=Energy Conduit
 enderio.itemPowerConduitEnhanced.name=Enhanced Energy Conduit
 enderio.itemPowerConduitEnder.name=Ender Energy Conduit
 
+enderio.itemPowerConduitEndergyCrude.name=Crude Energy Conduit
+enderio.itemPowerConduitEndergyIron.name=Iron Energy Conduit
+enderio.itemPowerConduitEndergyAluminum.name=Aluminum Energy Conduit
+enderio.itemPowerConduitEndergyGold.name=Gold Energy Conduit
+enderio.itemPowerConduitEndergyCopper.name=Copper Energy Conduit
+enderio.itemPowerConduitEndergySilver.name=Silver Energy Conduit
+enderio.itemPowerConduitEndergyElectrum.name=Electrum Energy Conduit
+enderio.itemPowerConduitEndergyEnergeticSilver.name=Energetic Silver Energy Conduit
+enderio.itemPowerConduitEndergyCrystalline.name=Crystalline Energy Conduit
+enderio.itemPowerConduitEndergyCrystallinePinkSlime.name=Crystalline Pink Slime Energy Conduit
+enderio.itemPowerConduitEndergyMelodic.name=Melodic Energy Conduit
+enderio.itemPowerConduitEndergyStellar.name=Stellar Energy Conduit
+
 enderio.itemRedstoneConduit.name=Redstone Conduit
 enderio.itemRedstoneConduitSwitch.name=Conduit Switch
 enderio.itemRedstoneConduitInsulated.name=Insulated Redstone Conduit
@@ -61,7 +74,6 @@ enderio.filterUpgradeAdvanced.name=Advanced Item Filter
 enderio.filterUpgradeBig.name=Big Item Filter
 enderio.filterUpgradeBigAdvanced.name=Big Advanced Item Filter
 enderio.itemConduitFilterUpgrade=Upgrade for item conduits
-
 enderio.itemConduitFilterUpgrade.configured=Configured
 enderio.itemConduitFilterUpgrade.clearConfigMethod=Place in crafting grid to clear
 enderio.itemConduitFilterUpgrade.clearConfigWarning=This will clear all stored filter settings!
@@ -324,7 +336,13 @@ enderio.itemBasicCapacitor.name=Capacitor
 enderio.basicCapacitor.name=Basic Capacitor
 enderio.activatedCapacitor.name=Double-Layer Capacitor
 enderio.enderCapacitor.name=Octadic Capacitor
+enderio.crystallineCapacitor.name=Crystalline Capacitor
 enderio.melodicCapacitor.name=Melodic Capacitor
+enderio.stellarCapacitor.name=Stellar Capacitor
+enderio.silverCapacitor.name=Silver Capacitor
+enderio.endergeticCapacitor.name=Endergetic Capacitor
+enderio.endergisedCapacitor.name=Endergised Capacitor
+enderio.totemicCapacitor.name=Totemic Capacitor
 
 enderio.machine.tooltip.upgrade=Machine Upgrade
 enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Increases energy storage and
@@ -803,6 +821,15 @@ item.endSteel_boots.name=End Steel Boots
 item.endSteel_sword.name=The Ender MKII
 item.endSteel_pickaxe.name=End Steel Pick
 item.endSteel_axe.name=End Steel Axe
+
+//Stellar
+item.stellar_helmet.name=Stellar Helm
+item.stellar_chestplate.name=Stellar Plate
+item.stellar_leggings.name=Stellar Leggings
+item.stellar_boots.name=Stellar Boots
+item.stellar_sword.name=The Ender MKIV
+item.stellar_pickaxe.name=Stellar Pick
+item.stellar_axe.name=Stellar Axe
 
 enderio.item.darkSteel.tooltip.lvs=lvs
 

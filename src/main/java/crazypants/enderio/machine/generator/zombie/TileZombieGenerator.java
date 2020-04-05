@@ -3,6 +3,7 @@ package crazypants.enderio.machine.generator.zombie;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -328,9 +329,9 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
   }
 
   public int getOutputPerTick(){
-	  if(inventory[slotDefinition.getMaxUpgradeSlot()] != null)
-		  return baseOutputPerTick*(4+inventory[slotDefinition.getMaxUpgradeSlot()].getItemDamage())/4;
-	  else return baseOutputPerTick;
+	  int tier = MathHelper.clamp_int(getCapacitor().getTier(), 1, Config.zombieGeneratorsEnergyMultipliers.length);
+		  return (int)(baseOutputPerTick*Config.zombieGeneratorsEnergyMultipliers[tier-1]);
+
   }
 
 }

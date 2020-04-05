@@ -23,8 +23,6 @@ public class ItemPowerConduit extends AbstractItemConduit {
       new ItemConduitSubtype(ModObject.itemPowerConduit.name(), "enderio:itemPowerConduit"),
       new ItemConduitSubtype(ModObject.itemPowerConduit.name() + "Enhanced", "enderio:itemPowerConduitEnhanced"),
       new ItemConduitSubtype(ModObject.itemPowerConduit.name() + "Ender", "enderio:itemPowerConduitEnder"),
-  //    new ItemConduitSubtype(ModObject.itemPowerConduit.name() + "Stellar", "enderio:itemPowerConduitStellar")
-
   };
 
   public static ItemPowerConduit create() {
@@ -35,6 +33,10 @@ public class ItemPowerConduit extends AbstractItemConduit {
 
   protected ItemPowerConduit() {
     super(ModObject.itemPowerConduit, subtypes);
+  }
+
+  protected ItemPowerConduit(ModObject modObject, ItemConduitSubtype[] subtypes) {
+    super(modObject, subtypes);
   }
 
   @Override

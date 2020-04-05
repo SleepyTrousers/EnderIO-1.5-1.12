@@ -66,8 +66,8 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
       slotLocations.add(new Point(x, y));
       bgSlots.add(new GhostBackgroundItemSlot(EnderIO.itemBasicFilterUpgrade, slotInputFilterUpgrades));
 
-      x = 28;
-      y = 47;
+      x = 10;
+      y = 83;
       slotSpeedUpgrades = addSlotToContainer(new Slot(getInv(), 0, x, y) {
         @Override
         public boolean isItemValid(ItemStack par1ItemStack) {
@@ -108,7 +108,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
   public Point getPlayerInventoryOffset() {
     return new Point(23, 113);
   }
-  
+
   public void addFilterListener(FilterChangeListener list) {
     filterListeners.add(list);
   }
@@ -279,7 +279,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
     public boolean isItemValid(ItemStack par1ItemStack) {
       return inventory.isItemValidForSlot(getSlotIndex(), par1ItemStack);
     }
-    
+
   }
 
 }

@@ -6,11 +6,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.common.util.BlockCoord;
 
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.SlotDefinition;
@@ -29,9 +31,9 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   public int totalBurnTime;
 
   private PowerDistributor powerDis;
-  
+
   public TileEntityStirlingGenerator() {
-    super(new SlotDefinition(1, 0));        
+    super(new SlotDefinition(1, 0));
   }
 
   @Override
@@ -86,12 +88,12 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   public TileEntity getTileEntity() {
     return this;
   }
-  
+
   @Override
   public String getSoundName() {
     return SOUND_NAME;
   }
-  
+
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
@@ -127,13 +129,13 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   protected boolean processTasks(boolean redstoneCheckPassed) {
     boolean needsUpdate = false;
     boolean sendBurnTimePacket = false;
-    
+
     if(burnTime > 0) {
       if(getEnergyStored() < getMaxEnergyStored()) {
-        setEnergyStored(getEnergyStored() + getPowerUsePerTick());        
+        setEnergyStored(getEnergyStored() + getPowerUsePerTick());
       }
       burnTime--;
-      sendBurnTimePacket = shouldDoWorkThisTick(20,-1) || burnTime == 0;    
+      sendBurnTimePacket = shouldDoWorkThisTick(20,-1) || burnTime == 0;
     }
 
     transmitEnergy();
@@ -183,31 +185,16 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     return doPush(dir, te, 0, 0);
   }
 
-  public static float getEnergyMultiplier(Capacitors capacitorType) {
-    if(capacitorType == Capacitors.ACTIVATED_CAPACITOR) {
-      return Config.stirlingGeneratorEnergyMultiplierT2;
-    } else if(capacitorType == Capacitors.ENDER_CAPACITOR) {
-      return Config.stirlingGeneratorEnergyMultiplierT3;
-    }
-    return Config.stirlingGeneratorEnergyMultiplierT1;
-  }
-
-  private float getEnergyMultiplier() {
-    return getEnergyMultiplier(getCapacitorType());
-  }
-
-  public static float getBurnTimeMultiplier(Capacitors capacitorType) {
-    if(capacitorType == Capacitors.ACTIVATED_CAPACITOR) {
-      return Config.stirlingGeneratorBurnTimeMultiplierT2;
-    } else if(capacitorType == Capacitors.ENDER_CAPACITOR) {
-      return Config.stirlingGeneratorBurnTimeMultiplierT3;
-    }
-    return Config.stirlingGeneratorBurnTimeMultiplierT1;
+  public float getEnergyMultiplier() {
+	  int tier = MathHelper.clamp_int(getCapacitor().getTier(), 1, Config.stirlingGeneratorEnergyMultipliers.length);
+	  return (float)Config.stirlingGeneratorEnergyMultipliers[tier-1];
   }
 
   public float getBurnTimeMultiplier() {
-    return getBurnTimeMultiplier(getCapacitorType());
+	  int tier = MathHelper.clamp_int(getCapacitor().getTier(), 1, Config.stirlingGeneratorBurnTimeMultipliers.length);
+	  return (float)Config.stirlingGeneratorBurnTimeMultipliers[tier-1];
   }
+
 
   //private PowerDistributor powerDis;
   private boolean transmitEnergy() {
@@ -219,7 +206,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
       return false;
     }
     int transmitted = powerDis.transmitEnergy(worldObj, canTransmit);
-    setEnergyStored(getEnergyStored() - transmitted);    
+    setEnergyStored(getEnergyStored() - transmitted);
     return transmitted > 0;
   }
 
@@ -227,6 +214,6 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
   public boolean hasCustomInventoryName() {
     return false;
   }
-  
-  
+
+
 }

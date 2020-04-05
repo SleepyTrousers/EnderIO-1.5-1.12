@@ -34,6 +34,7 @@ import crazypants.enderio.machine.farm.farmers.IHarvestResult;
 import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
+import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.tool.ArrayMappingTool;
 
 public class TileFarmStation extends AbstractPoweredTaskEntity {
@@ -195,7 +196,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     if(inventory[upg] == null) {
       return 0;
     } else {
-      return Config.farmBonusSize * inventory[upg].getItemDamage();
+      return Config.farmBonusSize * EnderIO.itemBasicCapacitor.getCapacitor(inventory[upg]).getTier();
     }
   }
 
@@ -709,13 +710,13 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     int ppt = calcPowerUsePerTick();
     switch (getCapacitorType()) {
     case BASIC_CAPACITOR:
-      setCapacitor(new BasicCapacitor(ppt * 40, 250000, ppt));
+      setCapacitor(new BasicCapacitor(0, ppt * 40, 250000, ppt));
       break;
     case ACTIVATED_CAPACITOR:
-      setCapacitor(new BasicCapacitor(ppt * 40, 500000, ppt));
+      setCapacitor(new BasicCapacitor(0, ppt * 40, 500000, ppt));
       break;
     case ENDER_CAPACITOR:
-      setCapacitor(new BasicCapacitor(ppt * 40, 1000000, ppt));
+      setCapacitor(new BasicCapacitor(0, ppt * 40, 1000000, ppt));
       break;
 	default:
 		break;

@@ -24,6 +24,7 @@ public enum ModObject {
 
   // Power
   itemPowerConduit,
+  itemPowerConduitEndergy,
 
   // Liquid
   itemLiquidConduit,

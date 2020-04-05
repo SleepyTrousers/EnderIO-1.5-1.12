@@ -3035,6 +3035,36 @@
 	<grindingBall id="EndSteelBall" grindingMultiplier="1.4" chanceMultiplier="2.4" powerMultiplier="0.7" durationRF="75000" >
       <itemStack modID="EnderIO" itemName="itemGrindingBall" itemMeta="8" />
 	</grindingBall>
+	
+	<!-- Endergy Balls	!-->
+	
+	<grindingBall id="CrudeSteelBall" grindingMultiplier="1.2" chanceMultiplier="1.25" powerMultiplier="0.85" durationRF="24000" >
+      <itemStack modID="EnderIO" itemName="itemGrindingBallEndergy" itemMeta="0" />
+	</grindingBall>
+	
+	<grindingBall id="CrystallineAlloyBall" grindingMultiplier="1.8" chanceMultiplier="1.4" powerMultiplier="1.45" durationRF="80000" >
+      <itemStack modID="EnderIO" itemName="itemGrindingBallEndergy" itemMeta="1" />
+	</grindingBall>
+	
+	<grindingBall id="MelodicAlloyBall" grindingMultiplier="2.0" chanceMultiplier="1.45" powerMultiplier="1.55" durationRF="80000" >
+      <itemStack modID="EnderIO" itemName="itemGrindingBallEndergy" itemMeta="2" />
+	</grindingBall>
+	
+	<grindingBall id="StellarAlloyBall" grindingMultiplier="2.3" chanceMultiplier="2.25" powerMultiplier="2.2" durationRF="160000" >
+      <itemStack modID="EnderIO" itemName="itemGrindingBallEndergy" itemMeta="3" />
+	</grindingBall>
+	
+	<grindingBall id="CrystallinePinkSlimeBall" grindingMultiplier="1.75" chanceMultiplier="1.55" powerMultiplier="1.55" durationRF="80000" >
+      <itemStack modID="EnderIO" itemName="itemGrindingBallEndergy" itemMeta="4" />
+	</grindingBall>
+	
+	<grindingBall id="EnergeticSilverBall" grindingMultiplier="1.6" chanceMultiplier="1.1" powerMultiplier="1.1" durationRF="80000" >
+      <itemStack modID="EnderIO" itemName="itemGrindingBallEndergy" itemMeta="5" />
+	</grindingBall>
+	
+	<grindingBall id="VividAlloyBall" grindingMultiplier="1.75" chanceMultiplier="1.35" powerMultiplier="1.35" durationRF="80000" >
+      <itemStack modID="EnderIO" itemName="itemGrindingBallEndergy" itemMeta="6" />
+	</grindingBall>
 
     <excludes>
       <itemStack modID="minecraft" itemName="glowstone" />
