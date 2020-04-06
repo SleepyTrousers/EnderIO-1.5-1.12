@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.MappedCapabilityProvider;
+import com.enderio.core.common.interfaces.INotDestroyedInItemFrames;
 
 import crazypants.enderio.api.capacitor.ICapacitorKey;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +22,7 @@ import net.minecraft.util.EnumHand;
  * @author Henry Loenwind
  *
  */
-public interface IDarkSteelItem {
+public interface IDarkSteelItem extends INotDestroyedInItemFrames {
 
   /**
    * @return The number of {@link #isItemForRepair(ItemStack)} items it takes to repair this item fully. Usually as many as are used in the crafting recipe.
