@@ -37,18 +37,22 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class AbstractItemConduit extends Item implements IConduitItem, IHaveRenderers {
 
-  protected IModObject modObj;
-
-  protected ItemConduitSubtype[] subtypes;
+  protected final ItemConduitSubtype[] subtypes;
 
   protected AbstractItemConduit(@Nonnull IModObject modObj, ItemConduitSubtype... subtypes) {
-    this.modObj = modObj;
+    this(modObj.getUnlocalisedName(), subtypes);
+  }
+
+  /**
+   * Constructor for addons that don't use the modObject system
+   */
+  protected AbstractItemConduit(@Nonnull String name, ItemConduitSubtype... subtypes) {
     this.subtypes = subtypes;
     setCreativeTab(EnderIOTab.tabEnderIOConduits);
-    setUnlocalizedName(modObj.getUnlocalisedName());
+    setUnlocalizedName(name);
     setMaxStackSize(64);
     setHasSubtypes(true);
-    setRegistryName(modObj.getUnlocalisedName());
+    setRegistryName(name);
   }
 
   @Override
