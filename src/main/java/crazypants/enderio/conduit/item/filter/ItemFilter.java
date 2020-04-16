@@ -285,6 +285,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     numItems = nbtRoot.getInteger("numItems");
 
     if(numItems<10 && isAdvanced) numItems = 10;
+    else if(numItems<5 && !isAdvanced) numItems = 5;
 
     items = new ItemStack[numItems];
     oreIds.clear();
