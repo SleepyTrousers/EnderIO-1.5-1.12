@@ -55,6 +55,7 @@ public class ConduitRecipes {
     String binder = CONDUIT_BINDER.oreDict;
 
     ItemStack zombieController = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_CONTROLLER.ordinal());
+    ItemStack skeletalContractor = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.SKELETAL_CONTRACTOR.ordinal());
 
     //Recipes
     addShaped(new ItemStack(EnderIO.itemConduitFacade, 1, FacadeType.BASIC.ordinal()), "bbb", "b b", "bbb", 'b', binder);
@@ -166,6 +167,12 @@ public class ConduitRecipes {
 
     ItemStack advFilter = new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, 1);
     addShaped(advFilter, "rpr", "pzp", "rpr", 'p', Items.paper, 'z', zombieController, 'r', "dustRedstone");
+
+    ItemStack bigFilter = new ItemStack(EnderIO.itemBigFilterUpgrade, 1, 0);
+    addShaped(bigFilter, "opo", "psp", "opo", 'p', Items.paper, 's', skeletalContractor, 'o', "dustObsidian");
+
+    ItemStack bigAdvFilter = new ItemStack(EnderIO.itemBigFilterUpgrade, 1, 1);
+    addShaped(bigAdvFilter, "eme", "mfm", "eme", 'm', melodicAlloy, 'f', bigFilter, 'e', END_STEEL.getOreIngot());
 
     ItemStack modFilter = new ItemStack(EnderIO.itemModItemFilter, 1, 0);
     addShaped(modFilter, " p ", "pwp", " p ", 'p', Items.paper, 'w', EnderIO.itemYetaWench);
