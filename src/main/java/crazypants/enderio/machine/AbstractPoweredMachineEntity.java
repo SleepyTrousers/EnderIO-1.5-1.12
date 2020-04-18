@@ -19,10 +19,10 @@ import crazypants.enderio.power.PowerHandlerUtil;
 public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity implements IInternalPoweredTile {
 
   // Power
-  private Capacitors capacitorType;
-  private ICapacitor capacitor;
+  private Capacitors capacitorType = Capacitors.BASIC_CAPACITOR;
+  private ICapacitor capacitor = Capacitors.BASIC_CAPACITOR.capacitor;
 
-  private int storedEnergyRF;
+  private int storedEnergyRF = 0;
   protected float lastSyncPowerStored = -1;
 
   protected AbstractPoweredMachineEntity(SlotDefinition slotDefinition) {
