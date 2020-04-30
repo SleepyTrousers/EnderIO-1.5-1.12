@@ -5,38 +5,25 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
 import crazypants.enderio.api.EnderIOAPIProps;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import net.minecraft.block.Block;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ICrashCallable;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.ModAPIManager;
 import net.minecraftforge.fml.common.ModContainer;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.server.FMLServerHandler;
 
-@EventBusSubscriber(modid = EnderIO.MODID)
 public class EnderIOCrashCallable implements ICrashCallable {
-
-  @SubscribeEvent(priority = EventPriority.HIGHEST)
-  public static void register(@Nonnull RegistryEvent.Register<Block> event) {
-    FMLCommonHandler.instance().registerCrashCallable(new EnderIOCrashCallable());
-  }
 
   private List<String> collectData() {
     List<String> result = new ArrayList<String>();
     if (FMLCommonHandler.instance().getSide() == Side.CLIENT && FMLClientHandler.instance().hasOptifine()) {
       result.add(" * Optifine is installed. This is NOT supported.");
     }
-    if (EnderIO.proxy.isDedicatedServer()) {
+    if (EnderIO.proxy != null && EnderIO.proxy.isDedicatedServer()) {
       if (!FMLServerHandler.instance().getServer().isServerInOnlineMode() && System.getProperty("INDEV") == null) {
         Log.warn("@Devs: See github for dev env setup; set INDEV if needed.");
         result.add(" * Offline mode for dedicated servers is NOT supported by Ender IO.");
@@ -107,6 +94,9 @@ public class EnderIOCrashCallable implements ICrashCallable {
     // for (String string : teslaDiagnostics()) {
     // msg += " " + string + "\n";
     // }
+    msg += "\tAuthlib is : "
+        + whereFrom(com.mojang.authlib.minecraft.MinecraftProfileTexture.class).replace("jar:", "").replace("file:", "").replaceFirst("![^!]+$", "") + "\n";
+
     if (stopScreenMessage != null) {
       for (String s : stopScreenMessage) {
         msg += s + "\n";
@@ -191,7 +181,7 @@ public class EnderIOCrashCallable implements ICrashCallable {
         result.add(" * " + displayName + " API class '" + clazz + "' could not be loaded (reason: " + e + ")");
         if (Log.LOGGER.isDebugEnabled()) {
           // e.printStackTrace();
-          Log.debug("Hey, you wanted diagnostics output? Guess what you're not getting it. Too many people reported it as bug. Deal with it.");
+          Log.debug("Hey, you wanted diagnostics output? Guess what, you're not getting it. Too many people reported it as bug. Deal with it.");
         }
       }
     }
@@ -202,4 +192,5 @@ public class EnderIOCrashCallable implements ICrashCallable {
   public static void registerStopScreenMessage(String... message) {
     stopScreenMessage = message;
   }
+
 }

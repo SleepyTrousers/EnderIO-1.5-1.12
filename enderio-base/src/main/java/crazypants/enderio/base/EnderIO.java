@@ -23,6 +23,7 @@ import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.config.config.TeleportConfig;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.base.config.recipes.RecipeLoader;
+import crazypants.enderio.base.diagnostics.EnderIOCrashCallable;
 import crazypants.enderio.base.diagnostics.ProfilerAntiReactor;
 import crazypants.enderio.base.diagnostics.ProfilerDebugger;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
@@ -54,6 +55,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -117,6 +119,7 @@ public class EnderIO implements IEnderIOAddon {
 
   public EnderIO() {
     SimpleMixinLoader.loadMixinSources(this);
+    startupChecks();
   }
 
   @EventHandler
@@ -334,7 +337,8 @@ public class EnderIO implements IEnderIOAddon {
     CrashReportCategory.addBlockInfo(crashreportcategory, new BlockPos(0, 0, 0), ModObject.block_machine_base.getBlockNN().getDefaultState());
   }
 
-  static {
+  private static void startupChecks() {
+    FMLCommonHandler.instance().registerCrashCallable(new EnderIOCrashCallable());
     if (com.mojang.authlib.minecraft.MinecraftProfileTexture.Type.ELYTRA.getClass().toString().equals("force a classload real hard")) {
       // this will crash some pirated clients.
       // better now than some weird and seemingly random crashes later in the game.
