@@ -78,4 +78,10 @@ public class RecipeOutput {
     return Prep.isValid(output) || (outputFluid != null && outputFluid.getFluid() != null);
   }
 
+  @Override
+  public String toString() {
+    return "RecipeOutput [output=" + (isFluid() ? outputFluid : output) + (chance != 1f ? ", chance=" + chance : "")
+        + (exp != 0 ? ", exp=" + exp : "") + "]";
+  }
+
 }
