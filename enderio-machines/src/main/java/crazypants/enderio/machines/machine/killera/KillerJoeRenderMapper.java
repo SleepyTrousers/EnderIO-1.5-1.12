@@ -69,21 +69,25 @@ public class KillerJoeRenderMapper extends MachineRenderMapper
   @SideOnly(Side.CLIENT)
   public List<IBlockState> mapBlockRender(@Nonnull IBlockStateWrapper state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, BlockRenderLayer blockLayer,
       @Nonnull QuadCollector quadCollector) {
-    Block block = state.getBlock();
     if (blockLayer == BlockRenderLayer.TRANSLUCENT) {
-      return Collections.singletonList(block.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON));
+      return Collections.singletonList(state.getBlock().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT_ON));
     } else if (blockLayer == BlockRenderLayer.SOLID) {
       quadCollector.addQuads(null, BlockRenderLayer.SOLID, renderHead(state));
-      return Collections.singletonList(block.getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT));
+      return Collections.singletonList(state.getBlock().getDefaultState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.FRONT));
     }
     return null;
   }
 
-  @Nonnull
-  private static final Double px = 1d / 16d;
-  @Nonnull
-  private static final Vector3d CENTER = new Vector3d(8 * px, 8 * px, 8 * px);
-  private static final double[] ROTS = { 0, Math.PI / 2, Math.PI, Math.PI / 2 * 3 };
+  private static final double px = 1d / 16d;
+  private static final @Nonnull Vector3d CENTER = new Vector3d(8 * px, 8 * px, 8 * px);
+  private static final @Nonnull double[] ROTS = { 0, Math.PI / 2, Math.PI, Math.PI / 2 * 3 };
+
+  private static final @Nonnull BoundingBox bb = new BoundingBox(4 * px, 4 * px, 4 * px, 12 * px, 12 * px, 12 * px);
+  private static final @Nonnull VertexTransform sca = new VertexScale(.9, .9, .9, CENTER);
+  private static final @Nonnull VertexTransform rotx = new VertexRotation(0.03054326, new Vector3d(1, 0, 0), CENTER);
+  private static final @Nonnull VertexTransform roty = new VertexRotation(0.17453290, new Vector3d(0, 1, 0), CENTER);
+  private static final @Nonnull VertexTransform rotz = new VertexRotation(0.23928460, new Vector3d(0, 0, 1), CENTER);
+  private static final @Nonnull VertexTransform mov = new VertexTranslation(0.25 * px, -1 * px, 0);
 
   private List<BakedQuad> renderHead(@Nullable IBlockStateWrapper state) {
     EnumFacing facing = EnumFacing.NORTH;
@@ -101,12 +105,6 @@ public class KillerJoeRenderMapper extends MachineRenderMapper
     rot.setCenter(CENTER);
     rot.setRotation(facing);
 
-    BoundingBox bb = new BoundingBox(4 * px, 4 * px, 4 * px, 12 * px, 12 * px, 12 * px);
-    VertexTransform sca = new VertexScale(.9, .9, .9, CENTER);
-    VertexTransform rotx = new VertexRotation(0.03054326, new Vector3d(1, 0, 0), CENTER);
-    VertexTransform roty = new VertexRotation(0.17453290, new Vector3d(0, 1, 0), CENTER);
-    VertexTransform rotz = new VertexRotation(0.23928460, new Vector3d(0, 0, 1), CENTER);
-    VertexTransform mov = new VertexTranslation(0.25 * px, -1 * px, 0);
     TextureAtlasSprite tex1 = head1.get(TextureAtlasSprite.class);
     TextureAtlasSprite tex2 = head2.get(TextureAtlasSprite.class);
 

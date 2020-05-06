@@ -73,7 +73,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
 
   protected @Nonnull BoundingBox killBounds = NULL_AABB;
 
-  protected Attackera attackera;
+  protected FakePlayerKillerJoe fakePlayer;
 
   @Store
   final SmartTank tank = new SmartTank(Fluids.NUTRIENT_DISTILLATION.getFluid(), Fluid.BUCKET_VOLUME * 2);
@@ -168,9 +168,9 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
       }
     }
 
-    getAttackera().onUpdate();
+    getFakePlayer().onUpdate();
 
-    Attackera atackera = getAttackera();
+    FakePlayerKillerJoe atackera = getFakePlayer();
     if (atackera.getTicksSinceLastSwing() < atackera.getCooldownPeriod()) {
       // System.out.println("Cannot attack yet, it's only been " + atackera.getTicksSinceLastSwing() + " tick(s) but the cooldown is "
       // + atackera.getCooldownPeriod() + " ticks. The attack would be limited to " + attackera.getCooledAttackStrength(0.5F) + " effectiveness.");
@@ -360,11 +360,11 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     return 6;
   }
 
-  private Attackera getAttackera() {
-    if (attackera == null) {
-      attackera = new Attackera(this, getOwner());
+  private FakePlayerKillerJoe getFakePlayer() {
+    if (fakePlayer == null) {
+      fakePlayer = new FakePlayerKillerJoe(this, getOwner());
     }
-    return attackera;
+    return fakePlayer;
   }
 
   private @Nonnull BoundingBox getKillBounds() {

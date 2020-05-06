@@ -27,26 +27,30 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = EnderIOMachines.MODID)
-class Attackera extends FakePlayerEIO implements ICreeperTarget {
+class FakePlayerKillerJoe extends FakePlayerEIO implements ICreeperTarget {
 
   private static final UUID uuid = UUID.fromString("3baa66fa-a69a-11e4-89d3-123b93f75cba");
   private static final GameProfile DUMMY_PROFILE = new GameProfile(uuid, "[Killer Joe]");
 
-  private final @Nonnull TileKillerJoe killerJoe;
+  private final @Nonnull TileKillerJoe te;
   protected WirelessChargedLocation chargedLocation;
 
   @Nonnull
   ItemStack prevWeapon = ItemStack.EMPTY;
 
-  public Attackera(@Nonnull TileKillerJoe killerJoe, @Nonnull UserIdent owner) {
-    super(killerJoe.getWorld(), killerJoe.getLocation(), (owner == UserIdent.NOBODY || StringUtils.isBlank(owner.getPlayerName())) ? DUMMY_PROFILE
-        : new GameProfile(uuid, "[" + owner.getPlayerName() + "'s Killer Joe]"));
-    this.killerJoe = killerJoe;
+  public FakePlayerKillerJoe(@Nonnull TileKillerJoe te, @Nonnull UserIdent owner) {
+    super(te.getWorld(), te.getLocation(), makeGameProfile(owner));
+    this.te = te;
     setOwner(owner);
-    inventory = new InventoryKillerJoe(this, killerJoe);
+    inventory = new InventoryKillerJoe(this, te);
     if (!world.isRemote) {
-      chargedLocation = new WirelessChargedLocation(killerJoe);
+      chargedLocation = new WirelessChargedLocation(te);
     }
+  }
+
+  private static @Nonnull GameProfile makeGameProfile(UserIdent owner) {
+    return (owner == UserIdent.NOBODY || StringUtils.isBlank(owner.getPlayerName())) ? DUMMY_PROFILE
+        : new GameProfile(uuid, "[" + owner.getPlayerName() + "'s Killer Joe]");
   }
 
   @Override
@@ -65,7 +69,7 @@ class Attackera extends FakePlayerEIO implements ICreeperTarget {
     }
 
     if (chargedLocation != null && chargedLocation.chargeItems(new NNList<>(cur))) {
-      killerJoe.markDirty();
+      te.markDirty();
     }
     ticksSinceLastSwing++;
   }
@@ -103,14 +107,14 @@ class Attackera extends FakePlayerEIO implements ICreeperTarget {
 
   @Override
   public boolean isCreeperTarget(@Nonnull EntityCreeper swellingCreeper) {
-    return KillerJoeConfig.killerProvokesCreeperExpolosions.get();
+    return KillerJoeConfig.killerProvokesCreeperExplosions.get();
   }
 
   // don't let Zombies summon aid
 
   @SubscribeEvent
   public static void onSummonAid(SummonAidEvent event) {
-    if (event.getAttacker() instanceof Attackera) {
+    if (event.getAttacker() instanceof FakePlayerKillerJoe && !KillerJoeConfig.killerProvokesZombieHordes.get()) {
       event.setResult(Result.DENY);
     }
   }

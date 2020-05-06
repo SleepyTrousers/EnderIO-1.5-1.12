@@ -1,8 +1,8 @@
 package crazypants.enderio.machines.config.config;
 
+import crazypants.enderio.machines.config.Config;
 import info.loenwind.autoconfig.factory.IValue;
 import info.loenwind.autoconfig.factory.IValueFactory;
-import crazypants.enderio.machines.config.Config;
 
 public final class KillerJoeConfig {
 
@@ -30,7 +30,9 @@ public final class KillerJoeConfig {
       "If enabled, the Killer Joe will pick up XP for the enchantement 'Mending' on the weapon.").sync();
   public static final IValue<Integer> killerJoeNutrientUsePerAttackMb = F.make("killerJoeNutrientUsePerAttackMb", 5, //
       "The number of millibuckets of nutrient fluid used per attack.").setMin(1).sync();
-  public static final IValue<Boolean> killerProvokesCreeperExpolosions = F.make("killerProvokesCreeperExpolosions", false, //
+  public static final IValue<Boolean> killerProvokesCreeperExplosions = F.make("killerProvokesCreeperExplosions", false, //
       "If enabled, Creepers will explode for the Killer Joe just like for any player.").sync();
+  public static final IValue<Boolean> killerProvokesZombieHordes = F.make("killerProvokesZombieHordes", false, //
+      "If enabled, Zombies will summon help for the Killer Joe just like for any player.").sync();
 
 }
