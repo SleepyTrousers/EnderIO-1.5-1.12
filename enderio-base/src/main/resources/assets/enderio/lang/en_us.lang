@@ -1242,6 +1242,7 @@ enderio.generic.tooltip.paintedWith=Painted with: %s
 enderio.generic.tooltip.unpainted=Not painted
 
 enderio.wrench.permission.denied=Permission §cdenied§r!
+enderio.wrench.permission.denied.blockbreak=Block breaking §cdenied§r!
 enderio.soulvial.denied=Permission §cdenied§r!
 enderio.soulvial.owned.denied=Permission §cdenied§r - only owners may pick up owned animals
 enderio.soulvial.player.denied=§cNo!$r How would you feel if you had to play this game from inside a bottle?

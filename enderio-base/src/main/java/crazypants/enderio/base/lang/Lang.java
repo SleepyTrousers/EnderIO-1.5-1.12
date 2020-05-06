@@ -91,6 +91,7 @@ public enum Lang implements ILang {
   PAINTED_WITH(".generic.tooltip.paintedWith"),
   PAINTED_NOT(".generic.tooltip.unpainted"),
   WRENCH_DENIED(".wrench.permission.denied"),
+  WRENCH_DENIED_BLOCKBREAK(".wrench.permission.denied.blockbreak"),
   EASTER_PIGGY(".easteregg.piginabottle"),
   SOUL_VIAL_DENIED(".soulvial.denied"),
   SOUL_VIAL_DENIED_OWNED_PET(".soulvial.owned.denied"),

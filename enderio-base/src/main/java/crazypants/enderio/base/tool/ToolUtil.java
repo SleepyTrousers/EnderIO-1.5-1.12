@@ -45,6 +45,7 @@ public class ToolUtil {
       BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(world, pos, bs, entityPlayer);
       event.setExpToDrop(0);
       if (MinecraftForge.EVENT_BUS.post(event)) {
+        entityPlayer.sendMessage(Lang.WRENCH_DENIED_BLOCKBREAK.toChatServer());
         return false;
       }
       if (!world.isRemote && block.removedByPlayer(bs, world, pos, entityPlayer, true)) {
