@@ -20,6 +20,8 @@ import com.google.common.collect.ImmutableList;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.item.darksteel.IDarkSteelItem.IEndSteelItem;
+import crazypants.enderio.item.darksteel.IDarkSteelItem.IStellarItem;
 import crazypants.enderio.item.darksteel.upgrade.ApiaristArmorUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.GliderUpgrade;
@@ -34,6 +36,7 @@ import crazypants.enderio.item.darksteel.upgrade.SpoonUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
 import crazypants.enderio.material.Alloy;
+import crazypants.enderio.material.endergy.AlloyEndergy;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 
 public class DarkSteelRecipeManager {
@@ -47,6 +50,7 @@ public class DarkSteelRecipeManager {
     upgrades.add(EnergyUpgrade.EMPOWERED_TWO);
     upgrades.add(EnergyUpgrade.EMPOWERED_THREE);
     upgrades.add(EnergyUpgrade.EMPOWERED_FOUR);
+    upgrades.add(EnergyUpgrade.EMPOWERED_FIVE);
     upgrades.add(JumpUpgrade.JUMP_ONE);
     upgrades.add(JumpUpgrade.JUMP_TWO);
     upgrades.add(JumpUpgrade.JUMP_THREE);
@@ -61,6 +65,7 @@ public class DarkSteelRecipeManager {
     upgrades.add(SpoonUpgrade.INSTANCE);
     upgrades.add(SolarUpgrade.SOLAR_ONE);
     upgrades.add(SolarUpgrade.SOLAR_TWO);
+    upgrades.add(SolarUpgrade.SOLAR_THREE);
     if(Loader.isModLoaded("Thaumcraft")) {
       ThaumcraftCompat.loadUpgrades(upgrades);
     }
@@ -79,9 +84,19 @@ public class DarkSteelRecipeManager {
       return;
     }
 
-    if(evt.left.getItem() instanceof IDarkSteelItem && OreDictionaryHelper.hasName(evt.right, Alloy.DARK_STEEL.getOreIngot())) {
+    if(evt.left.getItem() instanceof IStellarItem && OreDictionaryHelper.hasName(evt.right, AlloyEndergy.STELLAR_ALLOY.getOreIngot())) {
+        handleRepair(evt);
+    }
+
+    else if(evt.left.getItem() instanceof IEndSteelItem && OreDictionaryHelper.hasName(evt.right, Alloy.END_STEEL.getOreIngot())) {
+        handleRepair(evt);
+    }
+
+    else if(evt.left.getItem() instanceof IDarkSteelItem && OreDictionaryHelper.hasName(evt.right, Alloy.DARK_STEEL.getOreIngot())) {
       handleRepair(evt);
-    } else {    
+    }
+
+    else {
       handleUpgrade(evt);
     }
   }
@@ -89,23 +104,23 @@ public class DarkSteelRecipeManager {
   private void handleRepair(AnvilUpdateEvent evt) {
     ItemStack targetStack = evt.left;
     ItemStack ingots = evt.right;
-    
+
     //repair event
     IDarkSteelItem targetItem = (IDarkSteelItem)targetStack.getItem();
     int maxIngots = targetItem.getIngotsRequiredForFullRepair();
-    
+
     double damPerc = (double)targetStack.getItemDamage()/ targetStack.getMaxDamage();
     int requiredIngots = (int)Math.ceil(damPerc * maxIngots);
     if(ingots.stackSize > requiredIngots) {
       return;
     }
-    
+
     int damageAddedPerIngot = (int)Math.ceil((double)targetStack.getMaxDamage()/maxIngots);
     int totalDamageRemoved = damageAddedPerIngot * ingots.stackSize;
-    
+
     ItemStack resultStack = targetStack.copy();
     resultStack.setItemDamage(Math.max(0, resultStack.getItemDamage() - totalDamageRemoved));
-    
+
     evt.output = resultStack;
     evt.cost = ingots.stackSize + (int)Math.ceil(getEnchantmentRepairCost(resultStack)/2);
   }

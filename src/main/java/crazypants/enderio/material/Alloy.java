@@ -18,7 +18,9 @@ public enum Alloy {
   CONDUCTIVE_IRON("conductiveIron", 5.2f),
   PHASED_IRON("phasedIron", 7.0f, "pulsatingIron"),
   DARK_STEEL("darkSteel", 10.0f),
-  SOULARIUM("soularium", 10.0f);
+  SOULARIUM("soularium", 10.0f),
+  END_STEEL("endSteel", 10.0f);
+
 
   public final String unlocalisedName;
   public final String iconKey;
@@ -54,6 +56,10 @@ public enum Alloy {
     return new ItemStack(EnderIO.itemAlloy, size, ordinal());
   }
 
+  public ItemStack getStackBall(int size) {
+		return new ItemStack(EnderIO.itemGrindingBall, size, ordinal());
+  }
+
   public ItemStack getStackBlock() {
     return getStackBlock(1);
   }
@@ -77,4 +83,5 @@ public enum Alloy {
   public List<String> getOreBlocks() {
     return oreBlocks;
   }
+
 }

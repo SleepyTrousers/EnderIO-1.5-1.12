@@ -165,7 +165,7 @@ public class KeyTracker {
     }
     if(gogglesKey.isPressed()) {
       boolean isActive = !DarkSteelItems.itemDarkSteelHelmet.isGogglesUgradeActive();
-      sendEnabledChatMessage("darksteel.upgrade.goggles", isActive);
+      sendEnabledChatMessage("darksteel.upgrade.gogglesOfRevealing", isActive);
       DarkSteelItems.itemDarkSteelHelmet.setGogglesUgradeActive(isActive);
     }
   }
@@ -223,7 +223,7 @@ public class KeyTracker {
   
   private void handleNightVision() {
     EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-    if(!DarkSteelController.instance.isNightVisionUpgradeEquipped(player)){
+    if(!DarkSteelController.instance.isNightVisionUpgradeOrEnchEquipped(player)){
       return;
     }
     if(nightVisionKey.isPressed()) {

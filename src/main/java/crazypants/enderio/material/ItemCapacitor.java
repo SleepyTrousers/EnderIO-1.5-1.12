@@ -4,6 +4,8 @@ import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -76,14 +78,25 @@ public class ItemCapacitor extends Item implements ICapacitorItem {
   public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
     for (int j = 0; j < Capacitors.values().length; ++j) {
       par3List.add(new ItemStack(par1, 1, j));
+      if(Capacitors.values()[j] == Capacitors.TOTEMIC_CAPACITOR) {
+    	  ItemStack stack = new ItemStack(par1, 1, j);
+    	  	stack.addEnchantment(Enchantment.efficiency, 5);
+    	  	par3List.add(stack);
+      }
     }
   }
 
   @Override
   public ICapacitor getCapacitor(ItemStack stack) {
     int damage = MathHelper.clamp_int(stack.getItemDamage(), 0, Capacitors.values().length - 1);
+
+    if(Capacitors.values()[damage] == Capacitors.TOTEMIC_CAPACITOR) {
+    	damage = MathHelper.clamp_int(EnchantmentHelper.getEnchantmentLevel(Enchantment.efficiency.effectId, stack)+1, 1, Capacitors.TOTEMIC_CAPACITOR.ordinal());
+    }
+
     return Capacitors.values()[damage].capacitor;
   }
+
 
   @Override
   @SideOnly(Side.CLIENT)

@@ -48,6 +48,7 @@ import crazypants.enderio.conduit.item.ItemExtractSpeedUpgrade;
 import crazypants.enderio.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.conduit.item.ItemItemConduit;
 import crazypants.enderio.conduit.item.filter.ItemBasicItemFilter;
+import crazypants.enderio.conduit.item.filter.ItemBigItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemExistingItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemModItemFilter;
 import crazypants.enderio.conduit.item.filter.ItemPowerItemFilter;
@@ -55,6 +56,7 @@ import crazypants.enderio.conduit.liquid.ItemLiquidConduit;
 import crazypants.enderio.conduit.me.ItemMEConduit;
 import crazypants.enderio.conduit.oc.ItemOCConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
+import crazypants.enderio.conduit.power.endergy.ItemPowerConduitEndergy;
 import crazypants.enderio.conduit.redstone.ConduitBundledRedstoneProvider;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.ItemRedstoneConduit;
@@ -92,6 +94,8 @@ import crazypants.enderio.machine.farm.FarmersRegistry;
 import crazypants.enderio.machine.generator.combustion.BlockCombustionGenerator;
 import crazypants.enderio.machine.generator.stirling.BlockStirlingGenerator;
 import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator;
+import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator.BlockEnderGenerator;
+import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator.BlockFrankenZombieGenerator;
 import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
 import crazypants.enderio.machine.hypercube.BlockHyperCube;
 import crazypants.enderio.machine.hypercube.HyperCubeRegister;
@@ -134,18 +138,24 @@ import crazypants.enderio.machine.vat.BlockVat;
 import crazypants.enderio.machine.vat.VatRecipeManager;
 import crazypants.enderio.machine.wireless.BlockWirelessCharger;
 import crazypants.enderio.material.Alloy;
-import crazypants.enderio.material.BlockDarkIronBars;
+import crazypants.enderio.material.BlockDarkSteelBars;
+import crazypants.enderio.material.BlockDarkSteelBars.BlockEndSteelBars;
+import crazypants.enderio.material.BlockDarkSteelBars.BlockSoulariumBars;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.BlockIngotStorage;
 import crazypants.enderio.material.ItemAlloy;
 import crazypants.enderio.material.ItemCapacitor;
 import crazypants.enderio.material.ItemFrankenSkull;
 import crazypants.enderio.material.ItemFusedQuartzFrame;
+import crazypants.enderio.material.ItemGrindingBall;
 import crazypants.enderio.material.ItemMachinePart;
 import crazypants.enderio.material.ItemMaterial;
 import crazypants.enderio.material.ItemPowderIngot;
 import crazypants.enderio.material.MaterialRecipes;
 import crazypants.enderio.material.OreDictionaryPreferences;
+import crazypants.enderio.material.endergy.BlockIngotStorageEndergy;
+import crazypants.enderio.material.endergy.ItemAlloyEndergy;
+import crazypants.enderio.material.endergy.ItemGrindingBallEndergy;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.rail.BlockEnderRail;
 import crazypants.enderio.teleport.ItemTravelStaff;
@@ -189,13 +199,19 @@ public class EnderIO {
   // Materials
   public static ItemCapacitor itemBasicCapacitor;
   public static ItemAlloy itemAlloy;
+  public static ItemGrindingBall itemGrindingBall;
+  public static ItemAlloyEndergy itemAlloyEndergy;
+  public static ItemGrindingBallEndergy itemGrindingBallEndergy;
   public static BlockFusedQuartz blockFusedQuartz;
   public static ItemFusedQuartzFrame itemFusedQuartzFrame;
   public static ItemMachinePart itemMachinePart;
   public static ItemPowderIngot itemPowderIngot;
   public static ItemMaterial itemMaterial;
   public static BlockIngotStorage blockIngotStorage;
-  public static BlockDarkIronBars blockDarkIronBars;
+  public static BlockIngotStorageEndergy blockIngotStorageEndergy;
+  public static BlockDarkSteelBars blockDarkIronBars;
+  public static BlockSoulariumBars blockSoulariumBars;
+  public static BlockEndSteelBars blockEndSteelBars;
   public static ItemEnderFood itemEnderFood;
 
   // Enderface
@@ -225,12 +241,14 @@ public class EnderIO {
   public static ItemConduitFacade itemConduitFacade;
   public static ItemRedstoneConduit itemRedstoneConduit;
   public static ItemPowerConduit itemPowerConduit;
+  public static ItemPowerConduitEndergy itemPowerConduitEndergy;
   public static ItemLiquidConduit itemLiquidConduit;
   public static ItemItemConduit itemItemConduit;
   public static ItemGasConduit itemGasConduit;
   public static ItemMEConduit itemMEConduit;
   public static ItemOCConduit itemOCConduit;
   public static ItemBasicItemFilter itemBasicFilterUpgrade;
+  public static ItemBigItemFilter itemBigFilterUpgrade;
   public static ItemExistingItemFilter itemExistingItemFilter;
   public static ItemModItemFilter itemModItemFilter;
   public static ItemPowerItemFilter itemPowerItemFilter;
@@ -241,6 +259,8 @@ public class EnderIO {
   public static BlockStirlingGenerator blockStirlingGenerator;
   public static BlockCombustionGenerator blockCombustionGenerator;
   public static BlockZombieGenerator blockZombieGenerator;
+  public static BlockFrankenZombieGenerator blockFrankenZombieGenerator;
+  public static BlockEnderGenerator blockEnderGenerator;
   public static BlockSolarPanel blockSolarPanel;
   public static BlockReservoir blockReservoir;
   public static BlockAlloySmelter blockAlloySmelter;
@@ -299,19 +319,27 @@ public class EnderIO {
   public static Fluid fluidFireWater;
   public static BlockFluidEio blockFireWater;
   public static ItemBucketEio itemBucketFireWater;
-  
-  public static Fluid fluidLiquidSunshine;
-  public static Fluid fluidCloudSeed;
-  public static Fluid fluidCloudSeedConcentrated;
-  
-  public static BlockFluidEio blockLiquidSunshine;
-  public static BlockFluidEio blockCloudSeed;
-  public static BlockFluidEio blockCloudSeedConcentrated;
 
+  public static Fluid fluidLiquidSunshine;
+  public static BlockFluidEio blockLiquidSunshine;
   public static ItemBucketEio itemBucketLiquidSunshine;
+
+  public static Fluid fluidCloudSeed;
+  public static BlockFluidEio blockCloudSeed;
   public static ItemBucketEio itemBucketCloudSeed;
+
+  public static Fluid fluidCloudSeedConcentrated;
+  public static BlockFluidEio blockCloudSeedConcentrated;
   public static ItemBucketEio itemBucketCloudSeedConcentrated;
-  
+
+  public static Fluid fluidEnderDistillation;
+  public static BlockFluidEio blockEnderDistillation;
+  public static ItemBucketEio itemBucketEnderDistillation;
+
+  public static Fluid fluidVapourOfLevity;
+  public static BlockFluidEio blockVapourOfLevity;
+  public static ItemBucketEio itemBucketVapourOfLevity;
+
   //Open block compatable liquid XP
   public static Fluid fluidXpJuice;
   public static ItemBucketEio itemBucketXpJuice;
@@ -328,11 +356,11 @@ public class EnderIO {
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
-  
+
     EnderIOCrashCallable.create();
 
     Config.load(event);
-    
+
     proxy.loadIcons();
 
     ConduitGeometryUtil.setupBounds((float) Config.conduitScale);
@@ -340,6 +368,8 @@ public class EnderIO {
     blockStirlingGenerator = BlockStirlingGenerator.create();
     blockCombustionGenerator = BlockCombustionGenerator.create();
     blockZombieGenerator = BlockZombieGenerator.create();
+    blockFrankenZombieGenerator = BlockFrankenZombieGenerator.create();
+    blockEnderGenerator = BlockEnderGenerator.create();
     blockSolarPanel = BlockSolarPanel.create();
 
     blockCrusher = BlockCrusher.create();
@@ -415,6 +445,7 @@ public class EnderIO {
 
     itemRedstoneConduit = ItemRedstoneConduit.create();
     itemPowerConduit = ItemPowerConduit.create();
+    itemPowerConduitEndergy = ItemPowerConduitEndergy.create();
     itemLiquidConduit = ItemLiquidConduit.create();
     itemItemConduit = ItemItemConduit.create();
     itemGasConduit = ItemGasConduit.create();
@@ -422,6 +453,7 @@ public class EnderIO {
     itemOCConduit = ItemOCConduit.create();
 
     itemBasicFilterUpgrade = ItemBasicItemFilter.create();
+    itemBigFilterUpgrade = ItemBigItemFilter.create();
     itemExistingItemFilter = ItemExistingItemFilter.create();
     itemModItemFilter = ItemModItemFilter.create();
     itemPowerItemFilter = ItemPowerItemFilter.create();
@@ -432,6 +464,9 @@ public class EnderIO {
     itemMachinePart = ItemMachinePart.create();
     itemMaterial = ItemMaterial.create();
     itemAlloy = ItemAlloy.create();
+    itemGrindingBall = ItemGrindingBall.create();
+    itemAlloyEndergy = ItemAlloyEndergy.create();
+    itemGrindingBallEndergy = ItemGrindingBallEndergy.create();
     itemPowderIngot = ItemPowderIngot.create();
 
     registerFluids();
@@ -446,9 +481,13 @@ public class EnderIO {
     itemSoulVessel = ItemSoulVessel.create();
 
     blockIngotStorage = BlockIngotStorage.create();
+    blockIngotStorageEndergy = BlockIngotStorageEndergy.create();
 
-    blockDarkIronBars = BlockDarkIronBars.create();
-    
+    blockDarkIronBars = BlockDarkSteelBars.create();
+    blockSoulariumBars = BlockSoulariumBars.create();
+    blockEndSteelBars = BlockEndSteelBars.create();
+
+
     itemEnderFood = ItemEnderFood.create();
 
     DarkSteelItems.createDarkSteelArmorItems();
@@ -467,52 +506,63 @@ public class EnderIO {
   }
 
   private void registerFluids() {
-    Fluid f = new Fluid(Fluids.NUTRIENT_DISTILLATION_NAME).setDensity(1500).setViscosity(3000);
+    Fluid f = new Fluid(Fluids.NUTRIENT_DISTILLATION).setDensity(1500).setViscosity(3000);
     FluidRegistry.registerFluid(f);
     fluidNutrientDistillation = FluidRegistry.getFluid(f.getName());
-    blockNutrientDistillation = BlockFluidEio.create(fluidNutrientDistillation, Material.water);
+    blockNutrientDistillation = BlockFluidEio.NutrientDistillation.create(fluidNutrientDistillation, Material.water);
 
     PacketHandler.INSTANCE.registerMessage(PacketNutrientTank.class, PacketNutrientTank.class, PacketHandler.nextID(), Side.CLIENT);
 
-    f = new Fluid(Fluids.HOOTCH_NAME).setDensity(900).setViscosity(1000);
+    f = new Fluid(Fluids.HOOTCH).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidHootch = FluidRegistry.getFluid(f.getName());
-    blockHootch = BlockFluidEio.create(fluidHootch, Material.water);
+    blockHootch = BlockFluidEio.Hootch.create(fluidHootch, Material.water);
     FluidFuelRegister.instance.addFuel(f, Config.hootchPowerPerCycleRF, Config.hootchPowerTotalBurnTime);
-    FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.HOOTCH_NAME + "@"
+    FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.HOOTCH + "@"
         + (Config.hootchPowerPerCycleRF / 10 * Config.hootchPowerTotalBurnTime));
 
-    f = new Fluid(Fluids.ROCKET_FUEL_NAME).setDensity(900).setViscosity(1000);
+    f = new Fluid(Fluids.ROCKET_FUEL).setDensity(900).setViscosity(1000);
     FluidRegistry.registerFluid(f);
     fluidRocketFuel = FluidRegistry.getFluid(f.getName());
-    blockRocketFuel = BlockFluidEio.create(fluidRocketFuel, Material.water);
+    blockRocketFuel = BlockFluidEio.RocketFuel.create(fluidRocketFuel, Material.water);
     FluidFuelRegister.instance.addFuel(f, Config.rocketFuelPowerPerCycleRF, Config.rocketFuelPowerTotalBurnTime);
-    FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.ROCKET_FUEL_NAME + "@"
+    FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.ROCKET_FUEL + "@"
         + (Config.rocketFuelPowerPerCycleRF / 10 * Config.rocketFuelPowerTotalBurnTime));
 
-    f = new Fluid(Fluids.FIRE_WATER_NAME).setDensity(900).setViscosity(1000).setTemperature(FluidRegistry.LAVA.getTemperature() * 2);
+    f = new Fluid(Fluids.FIRE_WATER).setDensity(900).setViscosity(1000).setTemperature(FluidRegistry.LAVA.getTemperature() * 2);
     FluidRegistry.registerFluid(f);
     fluidFireWater = FluidRegistry.getFluid(f.getName());
-    blockFireWater = BlockFluidEio.create(fluidFireWater, Material.lava);
+    blockFireWater = BlockFluidEio.FireWater.create(fluidFireWater, Material.lava);
     FluidFuelRegister.instance.addFuel(f, Config.fireWaterPowerPerCycleRF, Config.fireWaterPowerTotalBurnTime);
-    FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.FIRE_WATER_NAME + "@"
+    FMLInterModComms.sendMessage("Railcraft", "boiler-fuel-liquid", Fluids.FIRE_WATER + "@"
         + (Config.fireWaterPowerPerCycleRF / 10 * Config.fireWaterPowerTotalBurnTime));
 
-    f = new Fluid(Fluids.LIQUID_SUNSHINE_NAME).setDensity(200).setViscosity(400);
+    f = new Fluid(Fluids.LIQUID_SUNSHINE).setDensity(200).setViscosity(400);
     FluidRegistry.registerFluid(f);
     fluidLiquidSunshine = FluidRegistry.getFluid(f.getName());
     blockLiquidSunshine = BlockFluidEio.create(fluidLiquidSunshine, Material.water);
 
-    f = new Fluid(Fluids.CLOUD_SEED_NAME).setDensity(500).setViscosity(800);
+    f = new Fluid(Fluids.CLOUD_SEED).setDensity(500).setViscosity(800);
     FluidRegistry.registerFluid(f);
     fluidCloudSeed = FluidRegistry.getFluid(f.getName());
     blockCloudSeed = BlockFluidEio.create(fluidCloudSeed, Material.water);
-    
-    f = new Fluid(Fluids.CLOUD_SEED_CONCENTRATED_NAME).setDensity(1000).setViscosity(1200);
+
+    f = new Fluid(Fluids.CLOUD_SEED_CONCENTRATED).setDensity(1000).setViscosity(1200);
     FluidRegistry.registerFluid(f);
     fluidCloudSeedConcentrated = FluidRegistry.getFluid(f.getName());
-    blockCloudSeedConcentrated = BlockFluidEio.create(fluidCloudSeedConcentrated, Material.water);
-    
+    blockCloudSeedConcentrated = BlockFluidEio.CloudSeedConcentrated.create(fluidCloudSeedConcentrated, Material.water);
+
+    f = new Fluid(Fluids.ENDER_DISTILLATION).setDensity(200).setViscosity(1000).setTemperature(175);
+    FluidRegistry.registerFluid(f);
+    fluidEnderDistillation = FluidRegistry.getFluid(f.getName());
+    blockEnderDistillation = BlockFluidEio.create(fluidEnderDistillation, Material.water);
+
+    f = new Fluid(Fluids.VAPOR_OF_LEVITY).setDensity(-10).setViscosity(100).setTemperature(5).setGaseous(true);
+    FluidRegistry.registerFluid(f);
+    fluidVapourOfLevity = FluidRegistry.getFluid(f.getName());
+    blockVapourOfLevity = BlockFluidEio.VapourOfLevity.create(fluidVapourOfLevity, Material.water);
+    FluidFuelRegister.instance.addCoolant(f, 0.0314f);
+
     if (!Loader.isModLoaded("OpenBlocks")) {
       Log.info("XP Juice registered by Ender IO.");
       fluidXpJuice = new Fluid(Config.xpJuiceName).setLuminosity(10).setDensity(800).setViscosity(1500).setUnlocalizedName("eio.xpjuice");
@@ -529,6 +579,9 @@ public class EnderIO {
     itemBucketLiquidSunshine = ItemBucketEio.create(fluidLiquidSunshine);
     itemBucketCloudSeed = ItemBucketEio.create(fluidCloudSeed);
     itemBucketCloudSeedConcentrated = ItemBucketEio.create(fluidCloudSeedConcentrated);
+    itemBucketEnderDistillation = ItemBucketEio.create(fluidEnderDistillation);
+    itemBucketVapourOfLevity = ItemBucketEio.create(fluidVapourOfLevity);
+
   }
 
   @EventHandler
@@ -617,7 +670,7 @@ public class EnderIO {
     ItemRecipes.addRecipes();
     TeleportRecipes.addRecipes();
     EE3Util.registerMiscRecipes();
-    
+
     proxy.load();
   }
 
@@ -628,7 +681,7 @@ public class EnderIO {
 
     //Regsiter the enchants
     Enchantments.getInstance();
-    
+
     //This must be loaded before parsing the recipes so we get the preferred outputs
     OreDictionaryPreferences.loadConfig();
 
@@ -641,7 +694,7 @@ public class EnderIO {
     SoulBinderRecipeManager.getInstance().addDefaultRecipes();
     PaintSourceValidator.instance.loadConfig();
 
-    if(fluidXpJuice == null) { //should have been registered by open blocks 
+    if(fluidXpJuice == null) { //should have been registered by open blocks
       fluidXpJuice = FluidRegistry.getFluid(getXPJuiceName());
       if(fluidXpJuice == null) {
         Log.error("Liquid XP Juice registration left to open blocks but could not be found.");
@@ -667,7 +720,7 @@ public class EnderIO {
     }
 
     addModIntegration();
-    
+
     //Register villagers
     FMLInterModComms.sendMessage("EnderStructures", "addResourcePath", "/assets/enderio/villagers");
     FMLInterModComms.sendMessage("EnderStructures", "registerVillageGenerator", "enderioMobDropVillager");
@@ -714,7 +767,7 @@ public class EnderIO {
         Log.info("Failed to registered Capacitor Banks as Tinkers Construct Flux Upgrades");
       }
     }
-    
+
     ThaumcraftCompat.load();
   }
 

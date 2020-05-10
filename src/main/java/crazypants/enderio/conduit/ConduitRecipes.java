@@ -4,6 +4,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import appeng.api.AEApi;
 import cpw.mods.fml.common.Optional.Method;
@@ -20,8 +21,10 @@ import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.Material;
+
 import static crazypants.enderio.ModObject.blockPainter;
 import static crazypants.enderio.material.Alloy.*;
+import static crazypants.enderio.material.endergy.AlloyEndergy.*;
 import static crazypants.enderio.material.Material.*;
 import static crazypants.util.RecipeUtil.addShaped;
 
@@ -35,6 +38,13 @@ public class ConduitRecipes {
     ItemStack fusedQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, 0);
     ItemStack fusedGlass = new ItemStack(EnderIO.blockFusedQuartz, 1, BlockFusedQuartz.Type.GLASS.ordinal());
 
+    String crudeSteel = CRUDE_STEEL.getOreIngot();
+    String energeticSilver = ENERGETIC_SILVER.getOreIngot();
+    String crystallineAlloy = CRYSTALLINE_ALLOY.getOreIngot();
+    String crystallinePinkSlime = CRYSTALLINE_PINK_SLIME.getOreIngot();
+    String melodicAlloy = MELODIC_ALLOY.getOreIngot();
+    String stellarAlloy = STELLAR_ALLOY.getOreIngot();
+
     String electricalSteel = ELECTRICAL_STEEL.getOreIngot();
     String phasedGold = PHASED_GOLD.getOreIngot();
     String conductiveIron = CONDUCTIVE_IRON.getOreIngot();
@@ -45,6 +55,7 @@ public class ConduitRecipes {
     String binder = CONDUIT_BINDER.oreDict;
 
     ItemStack zombieController = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_CONTROLLER.ordinal());
+    ItemStack skeletalContractor = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.SKELETAL_CONTRACTOR.ordinal());
 
     //Recipes
     addShaped(new ItemStack(EnderIO.itemConduitFacade, 1, FacadeType.BASIC.ordinal()), "bbb", "b b", "bbb", 'b', binder);
@@ -55,13 +66,92 @@ public class ConduitRecipes {
     addShaped(new ItemStack(EnderIO.itemLiquidConduit, numConduits, 0), "bbb", "###", "bbb", 'b', binder, '#', fusedGlass);
     addShaped(new ItemStack(EnderIO.itemLiquidConduit, numConduits, 1), "bbb", "###", "bbb", 'b', binder, '#', fusedQuartz);
     addShaped(new ItemStack(EnderIO.itemLiquidConduit, numConduits, 2), "bbb", "#p#", "bbb", 'b', binder, '#', fusedQuartz, 'p', phasedGold);
-    addShaped(new ItemStack(EnderIO.itemPowerConduit, numConduits, 0), "bbb", "###", "bbb", 'b', binder, '#', conductiveIron);
-    addShaped(new ItemStack(EnderIO.itemPowerConduit, numConduits, 1), "bbb", "###", "bbb", 'b', binder, '#', energeticGold);
-    addShaped(new ItemStack(EnderIO.itemPowerConduit, numConduits, 2), "bbb", "###", "bbb", 'b', binder, '#', phasedGold);
     addShaped(new ItemStack(EnderIO.itemRedstoneConduit, numConduits, 0), "###", '#', redstoneAlloy);
     addShaped(new ItemStack(EnderIO.itemRedstoneConduit, 1, 1), "lbl", "bcb", "lbl", 'b', binder, 'c', redstoneConduit, 'l', Blocks.lever);
     addShaped(new ItemStack(EnderIO.itemRedstoneConduit, numConduits, 2), "bbb", "###", "bbb", 'b', binder, '#', redstoneAlloy);
 
+    if(Config.useHardRecipes) {
+
+    	ItemStack lastTier;
+
+		addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 0), "bbb", "###", "bbb", 'b', binder, '#', crudeSteel);
+			lastTier = new ItemStack(EnderIO.itemPowerConduitEndergy, 1, 0);
+
+		addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 1), "b#b", "ccc", "b#b", 'c', lastTier, 'b', binder, '#', "ingotIron");
+			lastTier = new ItemStack(EnderIO.itemPowerConduitEndergy, 1, 1);
+
+        if(OreDictionary.doesOreNameExist("ingotAluminum")||OreDictionary.doesOreNameExist("ingotAluminium")) {
+        	addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 2), "b#b", "ccc", "b#b", 'c', lastTier, 'b', binder, '#', "ingotAluminum");
+        	addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 2), "b#b", "ccc", "b#b", 'c', lastTier, 'b', binder, '#', "ingotAluminium");
+        	lastTier = new ItemStack(EnderIO.itemPowerConduitEndergy, 1, 2);
+        }
+
+    	addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 3), "b#b", "ccc", "b#b", 'c', lastTier, 'b', binder, '#', "ingotGold");
+			lastTier = new ItemStack(EnderIO.itemPowerConduitEndergy, 1, 3);
+
+		if(OreDictionary.doesOreNameExist("ingotCopper") && OreDictionary.getOres("ingotCopper").size()>0) {
+			addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 4), "b#b", "ccc", "b#b", 'c', lastTier, 'b', binder, '#', "ingotCopper");
+			lastTier = new ItemStack(EnderIO.itemPowerConduitEndergy, 1, 4);
+		}
+
+        addShaped(new ItemStack(EnderIO.itemPowerConduit, numConduits, 0), "b#b", "ccc", "b#b", 'c', lastTier, 'b', binder, '#', conductiveIron);
+			lastTier = new ItemStack(EnderIO.itemPowerConduit, 1, 0);
+
+		if(OreDictionary.doesOreNameExist("ingotSilver")) {
+			addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 5), "b#b", "ccc", "b#b", 'c', lastTier, 'b', binder, '#', "ingotSilver");
+			lastTier = new ItemStack(EnderIO.itemPowerConduitEndergy, 1, 5);
+		}
+
+		if(OreDictionary.doesOreNameExist("ingotElectrum")) {
+			addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 6), "b#b", "ccc", "b#b", 'c', lastTier, 'b', binder, '#', "ingotElectrum");
+			lastTier = new ItemStack(EnderIO.itemPowerConduitEndergy, 1, 6);
+		}
+
+        addShaped(new ItemStack(EnderIO.itemPowerConduit, numConduits, 1), "b#b", "ccc", "b#b", 'c', lastTier, 'b', binder, '#', energeticGold);
+			lastTier = new ItemStack(EnderIO.itemPowerConduit, 1, 1);
+
+		if(OreDictionary.doesOreNameExist("ingotSilver")) {
+        addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 7), "b#b", "ccc", "b#b", 'c', lastTier, 'b', binder, '#', energeticSilver);
+			lastTier = new ItemStack(EnderIO.itemPowerConduitEndergy, 1, 7);
+		}
+
+        addShaped(new ItemStack(EnderIO.itemPowerConduit, numConduits, 2), "b#b", "ccc", "b#b", 'c', lastTier, 'b', binder, '#', phasedGold);
+			lastTier = new ItemStack(EnderIO.itemPowerConduit, 1, 2);
+
+        addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 8), "b#b", "ccc", "b#b", 'c', lastTier, 'b', binder, '#', crystallineAlloy);
+			lastTier = new ItemStack(EnderIO.itemPowerConduitEndergy, 1, 8);
+
+		if(OreDictionary.doesOreNameExist("slimeballPink")) {
+        addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 9), "b#b", "ccc", "b#b", 'c', lastTier, 'b', binder, '#', crystallinePinkSlime);
+			lastTier = new ItemStack(EnderIO.itemPowerConduitEndergy, 1, 9);
+		}
+
+        addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 10), "b#b", "ccc", "b#b", 'c', lastTier, 'b', binder, '#', melodicAlloy);
+			lastTier = new ItemStack(EnderIO.itemPowerConduitEndergy, 1, 10);
+
+        addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 11), "b#b", "ccc", "b#b", 'c', lastTier, 'b', binder, '#', stellarAlloy);
+
+    }
+
+    else {
+        addShaped(new ItemStack(EnderIO.itemPowerConduit, numConduits, 0), "bbb", "###", "bbb", 'b', binder, '#', conductiveIron);
+        addShaped(new ItemStack(EnderIO.itemPowerConduit, numConduits, 1), "bbb", "###", "bbb", 'b', binder, '#', energeticGold);
+        addShaped(new ItemStack(EnderIO.itemPowerConduit, numConduits, 2), "bbb", "###", "bbb", 'b', binder, '#', phasedGold);
+
+        addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 0), "bbb", "###", "bbb", 'b', binder, '#', crudeSteel);
+        addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 1), "bbb", "###", "bbb", 'b', binder, '#', "ingotIron");
+        addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 2), "bbb", "###", "bbb", 'b', binder, '#', "ingotAluminum");
+        addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 3), "bbb", "###", "bbb", 'b', binder, '#', "ingotGold");
+        addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 4), "bbb", "###", "bbb", 'b', binder, '#', "ingotCopper");
+        addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 5), "bbb", "###", "bbb", 'b', binder, '#', "ingotSilver");
+        addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 6), "bbb", "###", "bbb", 'b', binder, '#', "ingotElectrum");
+        addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 7), "bbb", "###", "bbb", 'b', binder, '#', energeticSilver);
+        addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 8), "bbb", "###", "bbb", 'b', binder, '#', crystallineAlloy);
+        addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 9), "bbb", "###", "bbb", 'b', binder, '#', crystallinePinkSlime);
+        addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 10), "bbb", "###", "bbb", 'b', binder, '#', melodicAlloy);
+        addShaped(new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 11), "bbb", "###", "bbb", 'b', binder, '#', stellarAlloy);
+
+    }
     if (GasUtil.isGasConduitEnabled()) {
       addShaped(new ItemStack(EnderIO.itemGasConduit, numConduits, 0), "bbb", "#g#", "bbb", 'b', binder, '#', electricalSteel, 'g', fusedGlass);
     }
@@ -77,6 +167,12 @@ public class ConduitRecipes {
 
     ItemStack advFilter = new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, 1);
     addShaped(advFilter, "rpr", "pzp", "rpr", 'p', Items.paper, 'z', zombieController, 'r', "dustRedstone");
+
+    ItemStack bigFilter = new ItemStack(EnderIO.itemBigFilterUpgrade, 1, 0);
+    addShaped(bigFilter, "opo", "psp", "opo", 'p', Items.paper, 's', skeletalContractor, 'o', "dustObsidian");
+
+    ItemStack bigAdvFilter = new ItemStack(EnderIO.itemBigFilterUpgrade, 1, 1);
+    addShaped(bigAdvFilter, "eme", "mfm", "eme", 'm', melodicAlloy, 'f', bigFilter, 'e', END_STEEL.getOreIngot());
 
     ItemStack modFilter = new ItemStack(EnderIO.itemModItemFilter, 1, 0);
     addShaped(modFilter, " p ", "pwp", " p ", 'p', Items.paper, 'w', EnderIO.itemYetaWench);

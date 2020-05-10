@@ -34,6 +34,7 @@ import crazypants.enderio.machine.farm.farmers.IHarvestResult;
 import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
+import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.tool.ArrayMappingTool;
 
 public class TileFarmStation extends AbstractPoweredTaskEntity {
@@ -129,7 +130,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   public static final int maxFirtSlot = maxToolSlot + NUM_FERTILIZER_SLOTS;
 
   public static final int NUM_SUPPLY_SLOTS = 4;
-  
+
   public static final int minSupSlot = maxFirtSlot + 1;
   public static final int maxSupSlot = maxFirtSlot + NUM_SUPPLY_SLOTS;
 
@@ -195,7 +196,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     if(inventory[upg] == null) {
       return 0;
     } else {
-      return Config.farmBonusSize * inventory[upg].getItemDamage();
+      return Config.farmBonusSize * EnderIO.itemBasicCapacitor.getCapacitor(inventory[upg]).getTier();
     }
   }
 
@@ -486,7 +487,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   }
 
   private int bonemealCooldown = 5; // no need to persist this
-  
+
   private boolean hasBonemeal() {
     if (inventory[minFirtSlot] != null) {
       return true;
@@ -519,7 +520,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
   /*
    * Returns a fuzzy boolean:
-   * 
+   *
    * <=0 - break no leaves for saplings
    *  50 - break half the leaves for saplings
    *  90 - break 90% of the leaves for saplings
@@ -527,7 +528,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
   public int isLowOnSaplings(BlockCoord bc) {
     int slot = getSupplySlotForCoord(bc);
     ItemStack inv = inventory[slot];
-    
+
     return 90 * (Config.farmSaplingReserveAmount - (inv == null ? 0 : inv.stackSize)) / Config.farmSaplingReserveAmount;
   }
 
@@ -614,7 +615,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     for (int j = minSupSlot; j < slot; j++) {
       slots[k++] = j;
     }
-    
+
     int origSize = stack.stackSize;
     stack = stack.copy();
 
@@ -709,14 +710,16 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     int ppt = calcPowerUsePerTick();
     switch (getCapacitorType()) {
     case BASIC_CAPACITOR:
-      setCapacitor(new BasicCapacitor(ppt * 40, 250000, ppt));
+      setCapacitor(new BasicCapacitor(0, ppt * 40, 250000, ppt));
       break;
     case ACTIVATED_CAPACITOR:
-      setCapacitor(new BasicCapacitor(ppt * 40, 500000, ppt));
+      setCapacitor(new BasicCapacitor(0, ppt * 40, 500000, ppt));
       break;
     case ENDER_CAPACITOR:
-      setCapacitor(new BasicCapacitor(ppt * 40, 1000000, ppt));
+      setCapacitor(new BasicCapacitor(0, ppt * 40, 1000000, ppt));
       break;
+	default:
+		break;
     }
     currentTask = createTask();
   }
@@ -781,6 +784,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
         return 32;
       case ENDER_CAPACITOR:
         return 64;
+      default:
+		break;
       }
     }
     return 64;

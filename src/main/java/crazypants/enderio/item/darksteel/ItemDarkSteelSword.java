@@ -57,7 +57,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
     if(equipped == null) {
       return false;
     }
-    return equipped.getItem() == DarkSteelItems.itemDarkSteelSword;
+    return equipped.getItem() instanceof ItemDarkSteelSword;
   }
 
   public static boolean isEquippedAndPowered(EntityPlayer player, int requiredPower) {
@@ -74,17 +74,23 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
     return res;
   }
 
-  private final int powerPerDamagePoint = Config.darkSteelPowerStorageBase / MATERIAL.getMaxUses();
-  private long lastBlickTick = -1;
+  protected final int powerPerDamagePoint = Config.darkSteelPowerStorageBase / MATERIAL.getMaxUses();
+  protected long lastBlickTick = -1;
+  protected String name;
 
-  public ItemDarkSteelSword() {
-    super(MATERIAL);
+  public ItemDarkSteelSword(String name, ToolMaterial mat) {
+    super(mat);
+    this.name = name;
     setCreativeTab(EnderIOTab.tabEnderIO);
 
-    String str = "darkSteel_sword";
+    String str = name+"_sword";
     setUnlocalizedName(str);
     setTextureName(EnderIO.DOMAIN + ":" + str);
   }
+
+   public ItemDarkSteelSword() {
+	 this("darkSteel",MATERIAL);
+   }
 
   @Override
   @SideOnly(Side.CLIENT)
@@ -116,7 +122,7 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
     }
   }
 
-  //Set priorty to lowest in the hope any other mod adding head drops will have already added them 
+  //Set priorty to lowest in the hope any other mod adding head drops will have already added them
   //by the time this is called to prevent multiple head drops
   @SubscribeEvent(priority = EventPriority.LOWEST)
   public void onEntityDrop(LivingDropsEvent evt) {
@@ -355,10 +361,10 @@ public class ItemDarkSteelSword extends ItemSword implements IEnergyContainerIte
     if(str != null) {
       list.add(str);
     }
-    list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line1"));
+    list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item."+name+"_sword.tooltip.line1"));
     if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line2"));
-      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_sword.tooltip.line3"));
+      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item."+name+"_sword.tooltip.line2"));
+      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item."+name+"_sword.tooltip.line3"));
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }

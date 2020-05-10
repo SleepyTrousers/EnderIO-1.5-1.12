@@ -8,24 +8,26 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
 import crazypants.enderio.EnderIO;
+import crazypants.enderio.material.ItemCapacitor;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
+import crazypants.enderio.power.ICapacitorItem;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.PowerHandlerUtil;
 
 public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity implements IInternalPoweredTile {
 
   // Power
-  private Capacitors capacitorType;
-  private ICapacitor capacitor;
+  private Capacitors capacitorType = Capacitors.BASIC_CAPACITOR;
+  private ICapacitor capacitor = Capacitors.BASIC_CAPACITOR.capacitor;
 
-  private int storedEnergyRF;
+  private int storedEnergyRF = 0;
   protected float lastSyncPowerStored = -1;
 
   protected AbstractPoweredMachineEntity(SlotDefinition slotDefinition) {
     super(slotDefinition);
-    capacitorType = Capacitors.BASIC_CAPACITOR;
+    setCapacitor(Capacitors.BASIC_CAPACITOR);
   }
 
   @Override
@@ -95,7 +97,20 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   }
 
   public ICapacitor getCapacitor() {
-    return capacitor != null ? capacitor : capacitorType.capacitor;
+
+	  if(capacitor != null) {
+		    return capacitor;
+	  }
+
+	  else if(capacitorType == Capacitors.TOTEMIC_CAPACITOR) {
+        ItemStack contents = inventory[slotDefinition.minUpgradeSlot];
+        if(contents != null && contents.getItem() == EnderIO.itemBasicCapacitor) {
+        	return EnderIO.itemBasicCapacitor.getCapacitor(contents);
+        }
+	  }
+
+	  return capacitorType.capacitor;
+
   }
 
   public int getEnergyStoredScaled(int scale) {
@@ -111,7 +126,18 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
 
   public void setCapacitor(Capacitors capacitorType) {
     this.capacitorType = capacitorType;
-    this.capacitor = null;
+
+    if(capacitorType == Capacitors.TOTEMIC_CAPACITOR) {
+        ItemStack contents = inventory[slotDefinition.minUpgradeSlot];
+        if(contents != null && contents.getItem() == EnderIO.itemBasicCapacitor) {
+        	setCapacitor(EnderIO.itemBasicCapacitor.getCapacitor(contents));
+        }
+    }
+
+    else {
+    	this.capacitor = capacitorType.capacitor;
+    }
+
     onCapacitorTypeChange();
     //Force a check that the new value is in bounds
     setEnergyStored(getEnergyStored());

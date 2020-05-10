@@ -38,9 +38,9 @@ public class BlockItemSolarPanel extends ItemBlockWithMetadata implements IAdvan
   public String getUnlocalizedName(ItemStack par1ItemStack) {
     int meta = par1ItemStack.getItemDamage();
     String result = super.getUnlocalizedName(par1ItemStack);
-    if(meta == 1) {
-      result += ".advanced";
-    }
+    if(meta == 1) result += ".advanced";
+    if(meta == 2) result += ".vibrant";
+
     return result;
   }
 
@@ -51,6 +51,8 @@ public class BlockItemSolarPanel extends ItemBlockWithMetadata implements IAdvan
     ItemStack stack = new ItemStack(this, 1,0);
     par3List.add(stack);
     stack = new ItemStack(this, 1,1);
+    par3List.add(stack);
+    stack = new ItemStack(this, 1,2);
     par3List.add(stack);
   }
 
@@ -70,9 +72,11 @@ public class BlockItemSolarPanel extends ItemBlockWithMetadata implements IAdvan
   public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
     int prod = Config.maxPhotovoltaicOutputRF;
-    if(itemstack.getItemDamage() == 1) {
+    if(itemstack.getItemDamage() == 1)
       prod = Config.maxPhotovoltaicAdvancedOutputRF;
-    }
+    if(itemstack.getItemDamage() == 2)
+        prod = Config.maxPhotovoltaicVibrantOutputRF;
+
     list.add(EnderIO.lang.localize("maxSolorProduction") + " " + PowerDisplayUtil.formatPowerPerTick(prod));
   }
 

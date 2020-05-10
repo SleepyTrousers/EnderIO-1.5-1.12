@@ -22,7 +22,7 @@ public class ItemPowerConduit extends AbstractItemConduit {
   static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
       new ItemConduitSubtype(ModObject.itemPowerConduit.name(), "enderio:itemPowerConduit"),
       new ItemConduitSubtype(ModObject.itemPowerConduit.name() + "Enhanced", "enderio:itemPowerConduitEnhanced"),
-      new ItemConduitSubtype(ModObject.itemPowerConduit.name() + "Ender", "enderio:itemPowerConduitEnder")
+      new ItemConduitSubtype(ModObject.itemPowerConduit.name() + "Ender", "enderio:itemPowerConduitEnder"),
   };
 
   public static ItemPowerConduit create() {
@@ -33,6 +33,10 @@ public class ItemPowerConduit extends AbstractItemConduit {
 
   protected ItemPowerConduit() {
     super(ModObject.itemPowerConduit, subtypes);
+  }
+
+  protected ItemPowerConduit(ModObject modObject, ItemConduitSubtype[] subtypes) {
+    super(modObject, subtypes);
   }
 
   @Override
@@ -56,7 +60,7 @@ public class ItemPowerConduit extends AbstractItemConduit {
     ICapacitor cap = PowerConduit.getCapacitors()[itemStack.getItemDamage()];
     list.add(PREFIX + PowerDisplayUtil.formatPower(cap.getMaxEnergyExtracted()) + POSTFIX);
   }
-  
+
   @Override
   public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
     return true;

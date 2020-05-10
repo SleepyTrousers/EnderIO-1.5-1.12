@@ -45,11 +45,12 @@ public class ItemFilter implements IInventory, IItemFilter {
   boolean sticky = false;
   FuzzyMode fuzzyMode = FuzzyMode.DISABLED;
 
+  int numItems;
   ItemStack[] items;
 
   final List<int[]> oreIds;
 
-  private boolean isAdvanced; 
+  private boolean isAdvanced;
 
   public void copyFrom(ItemFilter o) {
     isBlacklist = o.isBlacklist;
@@ -67,13 +68,14 @@ public class ItemFilter implements IInventory, IItemFilter {
   public ItemFilter() {
     this(5, false);
   }
-  
+
   public ItemFilter(boolean advanced) {
     this(advanced ? 10 : 5, advanced);
   }
 
-  private ItemFilter(int numItems, boolean isAdvanced) {
+  public ItemFilter(int numItems, boolean isAdvanced) {
     this.isAdvanced = isAdvanced;
+    this.numItems = numItems;
     items = new ItemStack[numItems];
     oreIds = new ArrayList<int[]>(numItems);
     for(int i=0;i<numItems;i++) {
@@ -119,7 +121,7 @@ public class ItemFilter implements IInventory, IItemFilter {
           matched = false;
         } else if(matchNBT && !isNBTMatch(item, it)) {
           matched = false;
-        }        
+        }
       }
       if(!matched && useOreDict && isOreDicMatch(i, item)) {
         matched = true;
@@ -147,10 +149,10 @@ public class ItemFilter implements IInventory, IItemFilter {
           return true;
         }
       }
-    }    
+    }
     return false;
   }
-  
+
   private boolean isNBTMatch(ItemStack filter, ItemStack item)
   {
     if (filter.stackTagCompound == null && item.stackTagCompound == null) return true;
@@ -163,7 +165,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     return filterTag.equals(itemTag);
   }
 
-  private int[] getCachedIds(int filterItemIndex) {   
+  private int[] getCachedIds(int filterItemIndex) {
     int[] res = oreIds.get(filterItemIndex);
     if(res == null) {
       ItemStack item = items[filterItemIndex];
@@ -248,6 +250,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     nbtRoot.setBoolean("sticky", sticky);
     nbtRoot.setBoolean("isAdvanced", isAdvanced);
     nbtRoot.setByte("fuzzyMode", (byte) fuzzyMode.ordinal());
+    nbtRoot.setInteger("numItems", numItems);
 
     int i = 0;
     for (ItemStack item : items) {
@@ -279,14 +282,17 @@ public class ItemFilter implements IInventory, IItemFilter {
     sticky = nbtRoot.getBoolean("sticky");
     isAdvanced = nbtRoot.getBoolean("isAdvanced");
     fuzzyMode = FuzzyMode.values()[nbtRoot.getByte("fuzzyMode") & 255];
+    numItems = nbtRoot.getInteger("numItems");
 
-    int numItems = isAdvanced ? 10 : 5;
+    if(numItems<10 && isAdvanced) numItems = 10;
+    else if(numItems<5 && !isAdvanced) numItems = 5;
+
     items = new ItemStack[numItems];
     oreIds.clear();
     for(int i=0;i<numItems;i++) {
       oreIds.add(null);
     }
-    for (int i = 0; i < numItems; i++) {      
+    for (int i = 0; i < numItems; i++) {
       NBTBase tag = nbtRoot.getTag("item" + i);
       if(tag instanceof NBTTagCompound) {
         items[i] = ItemStack.loadItemStackFromNBT((NBTTagCompound) tag);
@@ -366,7 +372,7 @@ public class ItemFilter implements IInventory, IItemFilter {
   }
 
   @Override
-  public void markDirty() {    
+  public void markDirty() {
   }
 
   @Override
@@ -391,8 +397,8 @@ public class ItemFilter implements IInventory, IItemFilter {
   public void createGhostSlots(List<GhostSlot> slots, int xOffset, int yOffset, Runnable cb) {
     int topY = yOffset;
     int leftX = xOffset;
-    int index = 0;    
-    int numRows = isAdvanced ? 2 : 1;
+    int index = 0;
+    int numRows = (int) Math.ceil(items.length/5);
     for (int row = 0; row < numRows; ++row) {
       for (int col = 0; col < 5; ++col) {
         int x = leftX + col * 18;
@@ -404,14 +410,14 @@ public class ItemFilter implements IInventory, IItemFilter {
   }
 
   @Override
-  public int getSlotCount() { 
+  public int getSlotCount() {
     return getSizeInventory();
   }
 
-  public boolean isAdvanced() {    
+  public boolean isAdvanced() {
     return isAdvanced;
   }
-  
+
   public boolean isDefault() {
     return !isAdvanced && !isValid() && isBlacklist == DEFAULT_BLACKLIST &&
         matchMeta == DEFAULT_META &&

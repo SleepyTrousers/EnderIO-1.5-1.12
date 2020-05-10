@@ -14,11 +14,14 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.ItemEnderFood.EnderFood;
+import crazypants.enderio.material.endergy.AlloyEndergy;
+import crazypants.enderio.power.Capacitors;
 
+import static crazypants.enderio.power.Capacitors.*;
 import static com.enderio.core.common.util.OreDictionaryHelper.*;
-import static crazypants.enderio.EnderIO.itemBasicCapacitor;
 import static crazypants.enderio.material.Alloy.*;
 import static crazypants.enderio.material.Material.*;
+import static crazypants.enderio.material.endergy.AlloyEndergy.*;
 import static crazypants.util.RecipeUtil.*;
 
 public class MaterialRecipes {
@@ -41,7 +44,11 @@ public class MaterialRecipes {
         OreDictionary.registerOre(powder.oreDictName, new ItemStack(EnderIO.itemPowderIngot, 1, powder.ordinal()));
       }
     }
-    
+
+    for(Capacitors capacitor: Capacitors.values()){
+    	OreDictionary.registerOre(capacitor.getOreTag(), new ItemStack(EnderIO.itemBasicCapacitor,1,capacitor.ordinal()));
+    }
+
     for (Alloy alloy : Alloy.values()) {
       boolean isPrimaryName = true;
       for (String oreDictName : alloy.getOreIngots()) {
@@ -66,8 +73,33 @@ public class MaterialRecipes {
       }
     }
 
+    for (AlloyEndergy alloy : AlloyEndergy.values()) {
+        boolean isPrimaryName = true;
+        for (String oreDictName : alloy.getOreIngots()) {
+          OreDictionary.registerOre(oreDictName, alloy.getStackIngot());
+          if (isPrimaryName) {
+            isPrimaryName = false;
+          } else {
+            // Allow free conversion of additional/legacy oreDict name items into
+            // our item because we only register recipes for the primary oreDict
+            // name. Use a 2-to-2 recipe because the 1-to-n is already in use.
+            addShapeless(alloy.getStackIngot(2), oreDictName, oreDictName);
+          }
+        }
+        isPrimaryName = true;
+        for (String oreDictName : alloy.getOreBlocks()) {
+          OreDictionary.registerOre(oreDictName, alloy.getStackBlock());
+          if (isPrimaryName) {
+            isPrimaryName = false;
+          } else {
+            addShapeless(alloy.getStackBlock(2), oreDictName, oreDictName);
+          }
+        }
+      }
+
     OreDictionary.registerOre("nuggetPulsatingIron", new ItemStack(EnderIO.itemMaterial, 1, Material.PHASED_IRON_NUGGET.ordinal()));
     OreDictionary.registerOre("nuggetVibrantAlloy", new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_NUGGET.ordinal()));
+    OreDictionary.registerOre("nuggetEndSteel", new ItemStack(EnderIO.itemMaterial, 1, Material.END_STEEL_NUGGET.ordinal()));
 
     OreDictionary.registerOre("glass", Blocks.glass);
     OreDictionary.registerOre("stickWood", Items.stick);
@@ -106,8 +138,54 @@ public class MaterialRecipes {
     String phasedGold = PHASED_GOLD.getOreIngot();
     String phasedIron = PHASED_IRON.getOreIngot();
     String darkSteel = DARK_STEEL.getOreIngot();
+    String soularium = SOULARIUM.getOreIngot();
+    String endSteel = END_STEEL.getOreIngot();
 
-    ItemStack capacitor = new ItemStack(itemBasicCapacitor, 1, 0);
+    String energeticSilver = ENERGETIC_SILVER.getOreIngot();
+    String vividAlloy = VIVID_ALLOY.getOreIngot();
+    String crystallineAlloy = CRYSTALLINE_ALLOY.getOreIngot();
+    String melodicAlloy = MELODIC_ALLOY.getOreIngot();
+    String stellarAlloy = STELLAR_ALLOY.getOreIngot();
+
+    String capacitor = Capacitors.BASIC_CAPACITOR.getOreTag();
+    String capacitorAdv = Capacitors.ACTIVATED_CAPACITOR.getOreTag();
+    String capacitorEnder = Capacitors.ENDER_CAPACITOR.getOreTag();
+    String capacitorCrystal = Capacitors.CRYSTALLINE_CAPACITOR.getOreTag();
+    String capacitorMelodic = Capacitors.MELODIC_CAPACITOR.getOreTag();
+
+	String ingotCopper = OreDictionary.doesOreNameExist("ingotCopper") && Config.useModMetals ? "ingotCopper": "ingotIron";
+
+    //Capacitors
+    if (Config.useHardRecipes) {
+        addShaped(BASIC_CAPACITOR.getItemStack(), " gr", "gig", "rg ", 'r', "dustRedstone", 'g', "ingotGold", 'i', ingotCopper);
+        addShaped(ACTIVATED_CAPACITOR.getItemStack(), "iii", "cCc", "iii", 'i', energeticAlloy, 'c', BASIC_CAPACITOR.getItemStack(), 'C', "dustCoal");
+        addShaped(ENDER_CAPACITOR.getItemStack(), "iii", "cCc", "iii", 'i', phasedGold, 'c', ACTIVATED_CAPACITOR.getItemStack(), 'C', "glowstone");
+
+        String prismarine = OreDictionary.doesOreNameExist("shardPrismarine") ? "shardPrismarine": "itemPulsatingCrystal";
+        addShaped(CRYSTALLINE_CAPACITOR.getItemStack(), "iii", "cCc", "iii", 'i', crystallineAlloy, 'c', capacitorEnder, 'C', prismarine);
+        addShaped(MELODIC_CAPACITOR.getItemStack(), "iii", "cCc", "iii", 'i', melodicAlloy, 'c', CRYSTALLINE_CAPACITOR.getItemStack(), 'C', endSteel);
+        addShaped(STELLAR_CAPACITOR.getItemStack(), "iii", "cCc", "iii", 'i', stellarAlloy, 'c', MELODIC_CAPACITOR.getItemStack(), 'C', PRECIENT_CRYSTAL.oreDict);
+
+        addShaped(SILVER_CAPACITOR.getItemStack(), " sr", "sis", "rs ", 'r', "dustRedstone", 's', "ingotSilver", 'i', "ingotLead");
+        addShaped(ENDERGETIC_CAPACITOR.getItemStack(), "iii", "cCc", "iii", 'i', energeticSilver, 'c', SILVER_CAPACITOR.getItemStack(), 'C', "dustCoal");
+        addShaped(ENDERGISED_CAPACITOR.getItemStack(), "iii", "cCc", "iii", 'i', vividAlloy, 'c', ENDERGETIC_CAPACITOR.getItemStack(), 'C', "glowstone");
+
+    }
+
+    else {
+        addShaped(BASIC_CAPACITOR.getItemStack(), " gr", "gig", "rg ", 'r', "dustRedstone", 'g', "ingotGold", 'i', ingotCopper);
+        addShaped(ACTIVATED_CAPACITOR.getItemStack(), " i ", "cCc", " i ", 'i', energeticAlloy, 'c', BASIC_CAPACITOR.getItemStack(), 'C', "dustCoal");
+        addShaped(ENDER_CAPACITOR.getItemStack(), " i ", "cCc", " i ", 'i', phasedGold, 'c', ACTIVATED_CAPACITOR.getItemStack(), 'C', "glowstone");
+
+        String prismarine = OreDictionary.doesOreNameExist("shardPrismarine") ? "shardPrismarine": "itemPulsatingCrystal";
+        addShaped(CRYSTALLINE_CAPACITOR.getItemStack(), " i ", "cCc", " i ", 'i', crystallineAlloy, 'c', capacitorEnder, 'C', prismarine);
+        addShaped(MELODIC_CAPACITOR.getItemStack(), " i ", "cCc", " i ", 'i', melodicAlloy, 'c', CRYSTALLINE_CAPACITOR.getItemStack(), 'C', endSteel);
+        addShaped(STELLAR_CAPACITOR.getItemStack(), " i ", "cCc", " i ", 'i', stellarAlloy, 'c', MELODIC_CAPACITOR.getItemStack(), 'C', PRECIENT_CRYSTAL.oreDict);
+
+        addShaped(SILVER_CAPACITOR.getItemStack(), " sr", "sis", "rs ", 'r', "dustRedstone", 's', "ingotSilver", 'i', "ingotLead");
+        addShaped(ENDERGETIC_CAPACITOR.getItemStack(), " i ", "cCc", " i ", 'i', energeticSilver, 'c', SILVER_CAPACITOR.getItemStack(), 'C', "dustCoal");
+        addShaped(ENDERGISED_CAPACITOR.getItemStack(), " i ", "cCc", " i ", 'i', vividAlloy, 'c', ENDERGETIC_CAPACITOR.getItemStack(), 'C', "glowstone");
+    }
 
     //Conduit Binder
     ItemStack cbc = BINDER_COMPOSITE.getStack(8);
@@ -131,16 +209,18 @@ public class MaterialRecipes {
     vibrantNugget.stackSize = 1;
     addShaped(PHASED_GOLD.getStackIngot(), "eee", "eee", "eee", 'e', vibrantNugget);
 
+    ItemStack endSteelNugget = new ItemStack(EnderIO.itemMaterial, 9, Material.END_STEEL_NUGGET.ordinal());
+    addShapeless(endSteelNugget, endSteel);
+    endSteelNugget = endSteelNugget.copy();
+    endSteelNugget.stackSize = 1;
+    addShaped(END_STEEL.getStackIngot(), "eee", "eee", "eee", 'e', endSteelNugget);
+
     //Crystals
     ItemStack pulsCry = new ItemStack(EnderIO.itemMaterial, 1, Material.PULSATING_CYSTAL.ordinal());
     addShaped(pulsCry, "nnn", "ngn", "nnn", 'n', phasedIronNugget, 'g', "gemDiamond");
 
     ItemStack vibCry = new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal());
     addShaped(vibCry, "nnn", "ngn", "nnn", 'n', vibrantNugget, 'g', "gemEmerald");
-
-    //Balls
-    ItemStack darkBall = new ItemStack(EnderIO.itemMaterial, 5, Material.DARK_GRINDING_BALL.ordinal());
-    addShaped(darkBall, " s ", "sss", " s ", 's', darkSteel);
 
     //Smelting
     ItemStack dustIron = new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_IRON.ordinal());
@@ -159,6 +239,14 @@ public class MaterialRecipes {
     ItemStack diBars = new ItemStack(EnderIO.blockDarkIronBars, 16, 0);
     addShaped(diBars, "ddd", "ddd", 'd', darkSteel);
 
+    //Dark Iron Bars
+    ItemStack soBars = new ItemStack(EnderIO.blockSoulariumBars, 16, 0);
+    addShaped(soBars, "ddd", "ddd", 'd', soularium);
+
+    //Dark Iron Bars
+    ItemStack esBars = new ItemStack(EnderIO.blockEndSteelBars, 16, 0);
+    addShaped(esBars, "ddd", "ddd", 'd', endSteel);
+
     // Fused Quartz Frame
     addShaped(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', "stickWood");
     addShaped(fusedQuartzFrame, "bsb", "s s", "bsb", 'b', conduitBinder, 's', "woodStick");
@@ -171,19 +259,17 @@ public class MaterialRecipes {
     String mat = Config.useSteelInChassi == true && steelIngots != null && !steelIngots.isEmpty() ? "ingotSteel" : "ingotIron";
     addShaped(chassis, "fif", "ici", "fif", 'f', Blocks.iron_bars, 'i', mat, 'c', capacitor);
 
+    ItemStack soulchassis = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.SOUL_MACHINE_CHASSIS.ordinal());
+    addShaped(soulchassis, "fif", "ici", "fif", 'f', EnderIO.blockSoulariumBars, 'i', Alloy.SOULARIUM.getOreIngot(), 'c', capacitor);
+
+    ItemStack endchassis = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.END_STEEL_MACHINE_CHASSIS.ordinal());
+    addShaped(endchassis, "fif", "ici", "fif", 'f', EnderIO.blockEndSteelBars, 'i', Alloy.END_STEEL.getOreIngot(), 'c', capacitor);
+
+
     // Basic Gear
     ItemStack gear = new ItemStack(EnderIO.itemMachinePart, 1, MachinePart.BASIC_GEAR.ordinal());
     addShaped(gear, "scs", "c c", "scs", 's', "stickWood", 'c', "cobblestone");
     addShaped(gear, "scs", "c c", "scs", 's', "woodStick", 'c', "cobblestone");
-
-    //Ender Capacitor
-    ItemStack enderCapacitor = new ItemStack(EnderIO.itemBasicCapacitor, 1, 2);
-    ItemStack activatedCapacitor = new ItemStack(EnderIO.itemBasicCapacitor, 1, 1);
-    if (Config.useHardRecipes) {
-      addShaped(enderCapacitor, "eee", "cgc", "eee", 'e', phasedGold, 'c', activatedCapacitor, 'g', "glowstone");
-    } else {
-      addShaped(enderCapacitor, " e ", "cgc", " e ", 'e', phasedGold, 'c', activatedCapacitor, 'g', "glowstone");
-    }
 
     // Weather Crystal
     ItemStack main = Config.useHardRecipes ? new ItemStack(EnderIO.itemMaterial, 1, Material.VIBRANT_CYSTAL.ordinal()) : new ItemStack(Items.diamond);
@@ -204,46 +290,38 @@ public class MaterialRecipes {
 
     for (Alloy alloy : Alloy.values()) {
       addShaped(alloy.getStackBlock(), "iii", "iii", "iii", 'i', alloy.getOreIngot());
+      addShaped(alloy.getStackBall(5), " i ", "iii", " i ", 'i', alloy.getOreIngot());
       addShapeless(alloy.getStackIngot(9), alloy.getOreBlock());
     }
+
+    for (AlloyEndergy alloy : AlloyEndergy.values()) {
+        addShaped(alloy.getStackBlock(), "iii", "iii", "iii", 'i', alloy.getOreIngot());
+        addShaped(alloy.getStackBall(5), " i ", "iii", " i ", 'i', alloy.getOreIngot());
+        addShapeless(alloy.getStackIngot(9), alloy.getOreBlock());
+      }
+
+    //DS Rod
+    ItemStack darkRod = new ItemStack(EnderIO.itemMaterial, 1, Material.DARK_STEEL_ROD.ordinal());
+    addShaped(darkRod, " ns", "nsn", "sn ", 's', darkSteel,'n', endSteelNugget);
 
     //Food
     ItemStack flour = new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.FLOUR.ordinal());
     ItemStack bread = new ItemStack(Items.bread, 1, 0);
 
     GameRegistry.addSmelting(flour, bread, 0.35f);
-    
+
     ItemStack enderios = EnderFood.ENDERIOS.getStack();
     addShapeless(enderios, Items.bowl, Items.milk_bucket, "cropWheat", "dustEnderPearl");
 
     if (hasCopper()) {
       ItemStack dustCopper = new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_COPPER.ordinal());
-      ItemStack ingotCopper = OreDictionaryPreferences.instance.getPreferred(OreDictionaryHelper.INGOT_COPPER);
-      GameRegistry.addSmelting(dustCopper, ingotCopper, 0);
+      ItemStack ingotCoppper = OreDictionaryPreferences.instance.getPreferred(OreDictionaryHelper.INGOT_COPPER);
+      GameRegistry.addSmelting(dustCopper, ingotCoppper, 0);
     }
     if (hasTin()) {
       ItemStack dustTin = new ItemStack(EnderIO.itemPowderIngot, 1, PowderIngot.POWDER_TIN.ordinal());
       ItemStack ingotTin = OreDictionaryPreferences.instance.getPreferred(OreDictionaryHelper.INGOT_TIN);
       GameRegistry.addSmelting(dustTin, ingotTin, 0);
     }
-
-    ArrayList<ItemStack> copperIngots = OreDictionary.getOres("ingotCopper");
-    String gold;
-    if (Config.useHardRecipes) {
-      gold = "ingotGold";
-    } else {
-      gold = "nuggetGold";
-    }
-    if (copperIngots != null && !copperIngots.isEmpty() && Config.useModMetals) {
-      addShaped(capacitor, " gr", "gcg", "rg ", 'r', "dustRedstone", 'g', gold, 'c', "ingotCopper");
-    } else {
-      addShaped(capacitor, " gr", "gig", "rg ", 'r', "dustRedstone", 'g', gold, 'i', "ingotIron");
-    }
-
-    if (Config.useHardRecipes) {
-      addShaped(activatedCapacitor, "eee", "cCc", "eee", 'e', energeticAlloy, 'c', capacitor, 'C', "dustCoal");
-    } else {
-      addShaped(activatedCapacitor, " e ", "cCc", " e ", 'e', energeticAlloy, 'c', capacitor, 'C', "dustCoal");
-    }
   }
-}
+  }

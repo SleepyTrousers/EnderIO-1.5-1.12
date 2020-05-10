@@ -47,22 +47,22 @@ import crazypants.enderio.tool.ToolUtil;
 public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   static final Map<String, IIcon> ICONS = new HashMap<String, IIcon>();
-  
+
   private static ICapacitor[] capacitors;
 
-  static final String[] POSTFIX = new String[] { "", "Enhanced", "Ender" };
+  static final String[] POSTFIX = new String[] { "", "Enhanced", "Ender"};
 
   static ICapacitor[] getCapacitors() {
     if(capacitors == null) {
       capacitors = new BasicCapacitor[] {
         new BasicCapacitor(Config.powerConduitTierOneRF, Config.powerConduitTierOneRF),
         new BasicCapacitor(Config.powerConduitTierTwoRF, Config.powerConduitTierTwoRF),
-        new BasicCapacitor(Config.powerConduitTierThreeRF, Config.powerConduitTierThreeRF)
+        new BasicCapacitor(Config.powerConduitTierThreeRF, Config.powerConduitTierThreeRF),
       };
     }
     return capacitors;
   }
-  
+
   static ItemStack createItemStackForSubtype(int subtype) {
     ItemStack result = new ItemStack(EnderIO.itemPowerConduit, 1, subtype);
     return result;
@@ -75,8 +75,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
       public void registerIcons(IIconRegister register) {
         for (String pf : POSTFIX) {
           ICONS.put(ICON_KEY + pf, register.registerIcon(ICON_KEY + pf));
-          ICONS.put(ICON_KEY_INPUT + pf, register.registerIcon(ICON_KEY_INPUT + pf));
-          ICONS.put(ICON_KEY_OUTPUT + pf, register.registerIcon(ICON_KEY_OUTPUT + pf));
+          ICONS.put(ICON_KEY_INPUT + pf, register.registerIcon(ICON_KEY_INPUT));
+          ICONS.put(ICON_KEY_OUTPUT + pf, register.registerIcon(ICON_KEY_OUTPUT));
           ICONS.put(ICON_CORE_KEY + pf, register.registerIcon(ICON_CORE_KEY + pf));
         }
         ICONS.put(ICON_TRANSMISSION_KEY, register.registerIcon(ICON_TRANSMISSION_KEY));
@@ -199,13 +199,13 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     }
     return res;
   }
-    
+
   @Override
-  protected void readTypeSettings(ForgeDirection dir, NBTTagCompound dataRoot) {    
+  protected void readTypeSettings(ForgeDirection dir, NBTTagCompound dataRoot) {
     setExtractionSignalColor(dir, DyeColor.values()[dataRoot.getShort("extractionSignalColor")]);
     setExtractionRedstoneMode(RedstoneControlMode.values()[dataRoot.getShort("extractionRedstoneMode")], dir);
   }
-  
+
   @Override
   protected void writeTypeSettingsToNbt(ForgeDirection dir, NBTTagCompound dataRoot) {
     dataRoot.setShort("extractionSignalColor", (short)getExtractionSignalColor(dir).ordinal());
@@ -240,9 +240,9 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
     if(nbtRoot.hasKey("energyStored")) {
       nbtRoot.setInteger("energyStoredRF", (int)(nbtRoot.getFloat("energyStored") * 10));
-      
+
     }
-    setEnergyStored(nbtRoot.getInteger("energyStoredRF"));    
+    setEnergyStored(nbtRoot.getInteger("energyStoredRF"));
 
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       String key = "pRsMode." + dir.name();
@@ -263,7 +263,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   }
 
   @Override
-  public void onTick() {   
+  public void onTick() {
   }
 
   @Override
@@ -273,10 +273,10 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public void setEnergyStored(int energyStored) {
-    energyStoredRF = MathHelper.clamp_int(energyStored, 0, getMaxEnergyStored());     
+    energyStoredRF = MathHelper.clamp_int(energyStored, 0, getMaxEnergyStored());
   }
 
- 
+
   private boolean isRedstoneEnabled(ForgeDirection dir) {
     boolean result;
     RedstoneControlMode mode = getExtractionRedstoneMode(dir);
@@ -293,8 +293,8 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     boolean res;
     if(mode == RedstoneControlMode.OFF) {
       //if checking for no signal, must be no signal from both
-      res = mode.isConditionMet(mode, signal) && (col != DyeColor.RED || mode.isConditionMet(mode, exSig));     
-    } else {      
+      res = mode.isConditionMet(mode, signal) && (col != DyeColor.RED || mode.isConditionMet(mode, exSig));
+    } else {
       //if checking for a signal, either is fine
       res = mode.isConditionMet(mode, signal) || (col == DyeColor.RED && mode.isConditionMet(mode, exSig));
     }
@@ -375,7 +375,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     int freeSpace = getMaxEnergyStored() - getEnergyStored();
     int result = (int) Math.min(maxReceive, freeSpace);
     if(!simulate && result > 0) {
-      setEnergyStored(getEnergyStored() + result);      
+      setEnergyStored(getEnergyStored() + result);
 
       if(getBundle() != null) {
         if(recievedTicks == null) {
@@ -422,10 +422,10 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
   @Override
   public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreDisabled) {
     IPowerInterface rec = getExternalPowerReceptor(direction);
-    
+
     return rec != null && rec.canConduitConnect(direction);
   }
-  
+
   @Override
   public boolean canConnectToConduit(ForgeDirection direction, IConduit conduit) {
     boolean res = super.canConnectToConduit(direction, conduit);
@@ -438,7 +438,7 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
     if( !(conduit instanceof IPowerConduit)) {
       return false;
     }
-    IPowerConduit pc = (IPowerConduit)conduit;    
+    IPowerConduit pc = (IPowerConduit)conduit;
     return pc.getMaxEnergyStored() == getMaxEnergyStored();
   }
 
@@ -502,12 +502,12 @@ public class PowerConduit extends AbstractConduit implements IPowerConduit {
 
   @Override
   public IIcon getTextureForInputMode() {
-    return ICONS.get(ICON_KEY_INPUT + POSTFIX[subtype]);
+    return ICONS.get(ICON_KEY_INPUT);
   }
 
   @Override
   public IIcon getTextureForOutputMode() {
-    return ICONS.get(ICON_KEY_OUTPUT + POSTFIX[subtype]);
+    return ICONS.get(ICON_KEY_OUTPUT);
   }
 
   @Override

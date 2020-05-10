@@ -27,5 +27,15 @@
 ## gedit
 *~
 
+## minecraft files
+/asm
+/config
+/saves
+/logs
+/crash-reports
+
 ## translation reports
 resources/assets/enderio/lang/*.lang.txt
+*.bat
+libs/
+options.txt

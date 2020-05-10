@@ -24,7 +24,7 @@ public class MachinePartRenderer implements IItemRenderer {
 
   @Override
   public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-    if(item != null && item.getItemDamage() == MachinePart.MACHINE_CHASSI.ordinal()) {
+    if(item != null && item.getItemDamage() != MachinePart.BASIC_GEAR.ordinal()) {
       return type == ItemRenderType.ENTITY || type == ItemRenderType.EQUIPPED || type == ItemRenderType.INVENTORY
           || type == ItemRenderType.EQUIPPED_FIRST_PERSON;
     } else {

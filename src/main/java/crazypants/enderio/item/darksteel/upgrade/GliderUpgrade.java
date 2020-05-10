@@ -22,12 +22,12 @@ import static org.lwjgl.opengl.GL11.glDepthMask;
 public class GliderUpgrade extends AbstractUpgrade {
 
   private static String UPGRADE_NAME = "glide";
-  
+
   public static final GliderUpgrade INSTANCE = new GliderUpgrade();
-  
+
   @SideOnly(Side.CLIENT)
   private Render render;
-  
+
   public static GliderUpgrade loadFromItem(ItemStack stack) {
     if(stack == null) {
       return null;
@@ -40,19 +40,19 @@ public class GliderUpgrade extends AbstractUpgrade {
     }
     return new GliderUpgrade((NBTTagCompound) stack.stackTagCompound.getTag(KEY_UPGRADE_PREFIX + UPGRADE_NAME));
   }
-  
-  
+
+
   public GliderUpgrade(NBTTagCompound tag) {
-    super(UPGRADE_NAME, tag);    
+    super(UPGRADE_NAME, tag);
   }
 
   public GliderUpgrade() {
     super(UPGRADE_NAME, "enderio.darksteel.upgrade.glider", new ItemStack(DarkSteelItems.itemGliderWing,1,1), Config.darkSteelGliderCost);
-  }  
-  
+  }
+
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelChestplate) {
+    if(stack == null || !DarkSteelItems.isArmorPart(stack.getItem(), 1)) {
       return false;
     }
     GliderUpgrade up = loadFromItem(stack);

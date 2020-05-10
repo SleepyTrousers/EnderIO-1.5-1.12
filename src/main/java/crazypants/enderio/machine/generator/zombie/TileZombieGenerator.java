@@ -3,6 +3,7 @@ package crazypants.enderio.machine.generator.zombie;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -27,12 +28,44 @@ import crazypants.enderio.tool.SmartTank;
 
 public class TileZombieGenerator extends AbstractGeneratorEntity implements IFluidHandler, ITankAccess, IHasNutrientTank {
 
+  public static class TileFrankenZombieGenerator extends TileZombieGenerator {
+
+    public TileFrankenZombieGenerator() {
+    	baseOutputPerTick = Config.frankenzombieGeneratorRfPerTick;
+        tickPerBucketOfFuel = Config.frankenzombieGeneratorTicksPerBucketFuel;
+    }
+
+    @Override
+    public String getMachineName() {
+      return ModObject.blockFrankenzombieGenerator.unlocalisedName;
+    }
+  }
+
+  public static class TileEnderGenerator extends TileZombieGenerator {
+
+    public TileEnderGenerator() {
+    	baseOutputPerTick = Config.enderGeneratorRfPerTick;
+    	tickPerBucketOfFuel = Config.enderGeneratorTicksPerBucketFuel;
+    }
+
+    @Override
+    public String getMachineName() {
+      return ModObject.blockEnderGenerator.unlocalisedName;
+    }
+
+    @Override
+    protected Fluid getFluidType() {
+      return EnderIO.fluidEnderDistillation;
+    }
+  }
+
   private static int IO_MB_TICK = 250;
 
-  final SmartTank fuelTank = new SmartTank(EnderIO.fluidNutrientDistillation, FluidContainerRegistry.BUCKET_VOLUME * 2);
+  final SmartTank fuelTank;
 
-  int outputPerTick = Config.zombieGeneratorRfPerTick;
-  int tickPerBucketOfFuel = Config.zombieGeneratorTicksPerBucketFuel;
+  int baseOutputPerTick;
+  int tickPerBucketOfFuel;
+  int minimumTankLevel;
 
   private boolean tanksDirty;
   private boolean active = false;
@@ -42,8 +75,13 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
   private boolean inPause;
 
   public TileZombieGenerator() {
-    super(new SlotDefinition(0, 0, 0));    
+    super(new SlotDefinition(0, 0, 1));
+     fuelTank = new SmartTank(getFluidType(), FluidContainerRegistry.BUCKET_VOLUME * 2);
+     baseOutputPerTick = Config.zombieGeneratorRfPerTick;
+     tickPerBucketOfFuel = Config.zombieGeneratorTicksPerBucketFuel;
+     minimumTankLevel = (int) (fuelTank.getCapacity()*0.7F);
   }
+
 
   @Override
   public String getMachineName() {
@@ -88,7 +126,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
 
   @Override
   public int getPowerUsePerTick() {
-    return outputPerTick;
+    return getOutputPerTick();
   }
 
   @Override
@@ -146,28 +184,28 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
 
     //once full, don't start again until we have drained 10 seconds worth of power to prevent
     //flickering on and off constantly when powering a machine that draws less than this produces
-    if (inPause && getEnergyStored() >= (getMaxEnergyStored() - (outputPerTick * 200)) && getEnergyStored() > (getMaxEnergyStored() / 8)) {
+    if (inPause && getEnergyStored() >= (getMaxEnergyStored() - (getOutputPerTick() * 200)) && getEnergyStored() > (getMaxEnergyStored() / 8)) {
       return false;
     }
     inPause = false;
 
-    if(fuelTank.getFluidAmount() < getActivationAmount()) {      
+    if(fuelTank.getFluidAmount() < getActivationAmount()) {
       return false;
     }
-    
-    
-    ticksRemaingFuel--;    
+
+
+    ticksRemaingFuel--;
     if(ticksRemaingFuel <= 0) {
       fuelTank.drain(1, true);
-      ticksRemaingFuel = tickPerBucketOfFuel/1000;    
+      ticksRemaingFuel = tickPerBucketOfFuel/1000;
       tanksDirty = true;
-    }    
-    setEnergyStored(getEnergyStored() + outputPerTick);     
+    }
+    setEnergyStored(getEnergyStored() + getOutputPerTick());
     return true;
   }
-  
+
   int getActivationAmount() {
-    return (int) (fuelTank.getCapacity() * 0.7f);
+    return minimumTankLevel;
   }
 
   private boolean transmitEnergy() {
@@ -177,8 +215,8 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
     if(powerDis == null) {
       powerDis = new PowerDistributor(new BlockCoord(this));
     }
-    int transmitted = powerDis.transmitEnergy(worldObj, Math.min(outputPerTick * 2, getEnergyStored()));
-    setEnergyStored(getEnergyStored() - transmitted);    
+    int transmitted = powerDis.transmitEnergy(worldObj, Math.min(getOutputPerTick() * 2, getEnergyStored()));
+    setEnergyStored(getEnergyStored() - transmitted);
     return transmitted > 0;
   }
 
@@ -219,7 +257,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
   public int getFluidStored(ForgeDirection from) {
     return fuelTank.getFluidAmount();
   }
-  
+
   @Override
   public void readCustomNBT(NBTTagCompound nbtRoot) {
     super.readCustomNBT(nbtRoot);
@@ -257,7 +295,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
 
   @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
-    if (forFluidType != null && forFluidType.getFluid() == EnderIO.fluidNutrientDistillation) {
+    if (forFluidType != null && forFluidType.getFluid() == getFluidType()) {
       return fuelTank;
     }
     return null;
@@ -276,6 +314,24 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements IFlu
   @Override
   public SmartTank getNutrientTank() {
     return fuelTank;
+  }
+
+  protected Fluid getFluidType() {
+	    return EnderIO.fluidNutrientDistillation;
+  }
+
+  public int getTicksPerBucketOfFuel() {
+    return tickPerBucketOfFuel;
+  }
+
+  public GeneratorType getGeneratorType(){
+	 return ((BlockZombieGenerator) worldObj.getBlock(xCoord, yCoord, zCoord)).getGeneratorType();
+  }
+
+  public int getOutputPerTick(){
+	  int tier = MathHelper.clamp_int(getCapacitor().getTier(), 1, Config.zombieGeneratorsEnergyMultipliers.length);
+		  return (int)(baseOutputPerTick*Config.zombieGeneratorsEnergyMultipliers[tier-1]);
+
   }
 
 }

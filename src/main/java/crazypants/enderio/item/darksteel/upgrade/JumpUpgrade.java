@@ -20,10 +20,10 @@ public class JumpUpgrade extends AbstractUpgrade {
   private short level;
 
   public static boolean isEquipped(EntityPlayer player) {
-    ItemStack boots = player.getEquipmentInSlot(1);    
+    ItemStack boots = player.getEquipmentInSlot(1);
     return loadFromItem(boots) != null;
   }
-  
+
   public static JumpUpgrade loadFromItem(ItemStack stack) {
     if(stack == null) {
       return null;
@@ -49,7 +49,7 @@ public class JumpUpgrade extends AbstractUpgrade {
 
   @Override
   public boolean canAddToItem(ItemStack stack) {
-    if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelBoots || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
+    if(stack == null || !DarkSteelItems.isArmorPart(stack.getItem(), 3) || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
       return false;
     }
     JumpUpgrade up = loadFromItem(stack);

@@ -13,8 +13,9 @@ public enum ModObject {
   itemItemConduit,
   itemGasConduit,
   itemMEConduit,
- itemOCConduit,
+  itemOCConduit,
   itemBasicFilterUpgrade,
+  itemBigFilterUpgrade,
   itemExistingItemFilter,
   itemModItemFilter,
   itemPowerItemFilter,
@@ -23,6 +24,7 @@ public enum ModObject {
 
   // Power
   itemPowerConduit,
+  itemPowerConduitEndergy,
 
   // Liquid
   itemLiquidConduit,
@@ -30,17 +32,24 @@ public enum ModObject {
   // Materials
   itemBasicCapacitor,
   itemAlloy,
+  itemAlloyEndergy,
+  itemGrindingBall,
+  itemGrindingBallEndergy,
   itemMaterial,
   itemMachinePart,
   itemPowderIngot,
   blockFusedQuartz,
   itemFusedQuartzFrame,
   blockDarkIronBars,
+  blockSoulariumBars,
+  blockEndSteelBars,
 
   // Machines
   blockStirlingGenerator,
   blockCombustionGenerator,
   blockZombieGenerator,
+  blockFrankenzombieGenerator,
+  blockEnderGenerator,
   blockReservoir,
   blockAlloySmelter,
   blockSolarPanel,
@@ -82,6 +91,7 @@ public enum ModObject {
   blockDarkSteelLadder,
   blockReinforcedObsidian,
   blockIngotStorage,
+  blockIngotStorageEndergy,
 
   // Painter
   blockPainter,
@@ -104,12 +114,12 @@ public enum ModObject {
   itemTravelStaff,
   itemMagnet,
   itemGliderWing,
-  blockEndermanSkull, 
-  itemSoulVessel, 
-  itemFrankenSkull, 
-  
+  blockEndermanSkull,
+  itemSoulVessel,
+  itemFrankenSkull,
+
   blockEnderRail,
-  
+
   itemEnderFood;
 
   public final String unlocalisedName;

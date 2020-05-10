@@ -32,17 +32,17 @@ import crazypants.enderio.xp.XpUtil;
 public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveExperience, IFluidHandler, ITankAccess {
 
   public static final int POWER_PER_TICK_ONE = Config.soulBinderLevelOnePowerPerTickRF;
-  private static final BasicCapacitor CAP_ONE = new BasicCapacitor(POWER_PER_TICK_ONE * 2, 
+  private static final BasicCapacitor CAP_ONE = new BasicCapacitor(0,POWER_PER_TICK_ONE * 2,
       Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_ONE);
 
   public static final int POWER_PER_TICK_TWO = Config.soulBinderLevelTwoPowerPerTickRF;
-  private static final BasicCapacitor CAP_TWO = new BasicCapacitor(POWER_PER_TICK_TWO * 2,
+  private static final BasicCapacitor CAP_TWO = new BasicCapacitor(0,POWER_PER_TICK_TWO * 2,
       Capacitors.ACTIVATED_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_TWO);
 
   public static final int  POWER_PER_TICK_THREE = Config.soulBinderLevelThreePowerPerTickRF;
-  private static final BasicCapacitor CAP_THREE = new BasicCapacitor(POWER_PER_TICK_THREE * 2,
+  private static final BasicCapacitor CAP_THREE = new BasicCapacitor(0,POWER_PER_TICK_THREE * 2,
       Capacitors.ENDER_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_THREE);
-  
+
   private final ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.soulBinderMaxXpLevel));
 
   public TileSoulBinder() {
@@ -50,20 +50,20 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   }
 
   @Override
-  public ExperienceContainer getContainer() {  
+  public ExperienceContainer getContainer() {
     return xpCont;
   }
 
   @Override
-  public String getMachineName() {    
+  public String getMachineName() {
     return ModObject.blockSoulBinder.unlocalisedName;
   }
-    
+
   @Override
   public int getInventoryStackLimit() {
     return 1;
   }
-  
+
   @Override
   protected boolean processTasks(boolean redstoneChecksPassed) {
     if(xpCont.isDirty()) {
@@ -115,7 +115,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     }
     return ((ISoulBinderRecipe)nextRecipe).getExperienceLevelsRequired();
   }
-  
+
 
   @Override
   protected boolean startNextTask(IMachineRecipe nextRecipe, float chance) {
@@ -136,17 +136,17 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
       return false;
     }
     MachineRecipeInput newInput = new MachineRecipeInput(slot, item);
-    int otherSlot = slot == 0 ? 1 : 0;    
+    int otherSlot = slot == 0 ? 1 : 0;
     if(inventory[otherSlot] == null) {
       List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineName(), newInput);
       if(recipes.isEmpty()) {
         return false;
-      }    
+      }
       for(IMachineRecipe rec : recipes) {
         if(rec != null && rec.isValidInput(newInput)) {
           return true;
         }
-      }  
+      }
     } else {
       MachineRecipeInput[] inputs = new MachineRecipeInput[] {
           newInput,
@@ -169,6 +169,22 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     case ENDER_CAPACITOR:
       setCapacitor(CAP_THREE);
       break;
+	case CRYSTALLINE_CAPACITOR:
+		break;
+	case ENDERGETIC_CAPACITOR:
+		break;
+	case ENDERGISED_CAPACITOR:
+		break;
+	case MELODIC_CAPACITOR:
+		break;
+	case SILVER_CAPACITOR:
+		break;
+	case STELLAR_CAPACITOR:
+		break;
+	case TOTEMIC_CAPACITOR:
+		break;
+	default:
+		break;
     }
   }
 
@@ -181,7 +197,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     }
     return res;
   }
-  
+
   @Override
   protected boolean doPush(ForgeDirection dir) {
     boolean res = super.doPush(dir);
@@ -195,7 +211,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   /**
    * Determines how much stored XP can/should be removed because it is not
    * needed for the next recipe.
-   * 
+   *
    * @return A number between 0 and the amount of stored XP
    */
   private int getExcessXP() {
@@ -209,10 +225,10 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   }
 
   @Override
-  public boolean canFill(ForgeDirection from, Fluid fluid) {    
+  public boolean canFill(ForgeDirection from, Fluid fluid) {
     return xpCont.canFill(from, fluid);
   }
-  
+
   @Override
   public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
     int max = XpUtil.experienceToLiquid(getXPRequired());
@@ -240,17 +256,17 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   }
 
   @Override
-  public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {    
+  public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
     return xpCont.drain(from, Math.min(XpUtil.experienceToLiquid(getExcessXP()), maxDrain), doDrain);
   }
 
   @Override
-  public boolean canDrain(ForgeDirection from, Fluid fluid) {    
+  public boolean canDrain(ForgeDirection from, Fluid fluid) {
     return xpCont.canDrain(from, fluid);
   }
 
   @Override
-  public FluidTankInfo[] getTankInfo(ForgeDirection from) {    
+  public FluidTankInfo[] getTankInfo(ForgeDirection from) {
     return xpCont.getTankInfo(from);
   }
 
@@ -261,11 +277,11 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   }
 
   @Override
-  public void writeCommon(NBTTagCompound nbtRoot) { 
+  public void writeCommon(NBTTagCompound nbtRoot) {
     super.writeCommon(nbtRoot);
     xpCont.writeToNBT(nbtRoot);
   }
-  
+
   @Override
   public FluidTank getInputTank(FluidStack forFluidType) {
     return xpCont;
@@ -280,5 +296,5 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   public void setTanksDirty() {
     xpCont.setDirty(true);
   }
-  
+
 }

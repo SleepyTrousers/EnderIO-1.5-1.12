@@ -1,24 +1,36 @@
 package crazypants.enderio.power;
 
 public class BasicCapacitor implements ICapacitor {
-  
+
   private int maxEnergyReceived = 40;
-  private int maxEnergyStored = 100000;  
+  private int maxEnergyStored = 100000;
   private int maxEnergyExtracted = 20;
+  private int tier = 1;
 
   public BasicCapacitor() {
   }
 
+  public BasicCapacitor(int maxEnergyIO) {
+    this(0, maxEnergyIO, maxEnergyIO, maxEnergyIO);
+  }
+
   public BasicCapacitor(int maxEnergyIO, int maxEnergyStored) {
-    this(maxEnergyIO, maxEnergyStored, maxEnergyIO);
+    this(0, maxEnergyIO, maxEnergyStored, maxEnergyIO);
   }
 
-  public BasicCapacitor(int maxEnergyIn, int maxEnergyStored, int maxEnergyOut) {
-    configure(maxEnergyIn, maxEnergyStored, maxEnergyOut);
+  public BasicCapacitor(int tier, int maxEnergyIO, int maxEnergyStored) {
+    this(tier, maxEnergyIO, maxEnergyStored, maxEnergyIO);
   }
 
-  
-  protected void configure(int maxEnergyReceived, int maxEnergyStored, int maxEnergyExtracted) {
+  public BasicCapacitor(int tier, int maxEnergyIn, int maxEnergyStored, int maxEnergyOut) {
+    configure(tier, maxEnergyIn, maxEnergyStored, maxEnergyOut);
+  }
+
+
+
+
+protected void configure(int tier, int maxEnergyReceived, int maxEnergyStored, int maxEnergyExtracted) {
+	this.tier = tier;
     this.maxEnergyReceived = maxEnergyReceived;
     this.maxEnergyStored = maxEnergyStored;
     this.maxEnergyExtracted = maxEnergyExtracted;
@@ -42,10 +54,15 @@ public class BasicCapacitor implements ICapacitor {
   protected void setMaxEnergyStored(int maxEnergyStored) {
     this.maxEnergyStored = maxEnergyStored;
   }
-  
+
   @Override
   public int getMaxEnergyExtracted() {
     return maxEnergyExtracted;
+  }
+
+  @Override
+  public int getTier() {
+	return tier;
   }
 
 }

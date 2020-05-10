@@ -99,23 +99,29 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   }
 
   public static ItemDarkSteelArmor create(int armorType) {
-    ItemDarkSteelArmor res = new ItemDarkSteelArmor(armorType);
+	  ItemDarkSteelArmor res = new ItemDarkSteelArmor(armorType);
     res.init();
     return res;
   }
 
-  private final int powerPerDamagePoint;
+  protected int powerPerDamagePoint;
+  protected String name;
 
-  protected ItemDarkSteelArmor(int armorType) {
-    super(MATERIAL, 0, armorType);
-    setCreativeTab(EnderIOTab.tabEnderIO);
-
-    String str = "darkSteel_" + NAMES[armorType];
-    setUnlocalizedName(str);
-    setTextureName(EnderIO.DOMAIN+ ":" + str);
-
+  public ItemDarkSteelArmor(int armorType) {
+    this(MATERIAL, "darkSteel", armorType);
     powerPerDamagePoint = Config.darkSteelPowerStorageBase / MATERIAL.getDurability(armorType);
+
   }
+
+  public ItemDarkSteelArmor(ArmorMaterial mat, String name, int armorType) {
+	    super(mat, 0, armorType);
+	    this.name = name;
+	    setCreativeTab(EnderIOTab.tabEnderIO);
+	    String str = name + "_" + NAMES[armorType];
+	    setUnlocalizedName(str);
+	    setTextureName(EnderIO.DOMAIN+ ":" + str);
+
+	  }
 
   protected void init() {
     GameRegistry.registerItem(this, getUnlocalizedName());
@@ -131,7 +137,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
     is = new ItemStack(this);
     EnergyUpgrade.EMPOWERED_FOUR.writeToItem(is);
     EnergyUpgrade.setPowerFull(is);
-    
+
     Iterator<IDarkSteelUpgrade> iter = DarkSteelRecipeManager.instance.recipeIterator();
     while (iter.hasNext()) {
       IDarkSteelUpgrade upgrade = iter.next();
@@ -139,7 +145,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
         upgrade.writeToItem(is);
       }
     }
-    
+
     par3List.add(is);
   }
 
@@ -178,11 +184,11 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
       list.add(str);
     }
     if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_armor.tooltip.line1"));
-      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_armor.tooltip.line2"));
-      if(itemstack.getItem() == DarkSteelItems.itemDarkSteelBoots) {
-        list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_boots.tooltip.line1"));
-        list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item.darkSteel_boots.tooltip.line2"));
+      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item."+name+"_armor.tooltip.line1"));
+      list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item."+name+"_armor.tooltip.line2"));
+      if(DarkSteelItems.isArmorPart(itemstack.getItem(), 3)) {
+        list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item."+name+"_boots.tooltip.line1"));
+        list.add(EnumChatFormatting.WHITE + EnderIO.lang.localize("item."+name+"_boots.tooltip.line2"));
       }
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
@@ -196,9 +202,9 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   @Override
   public String getArmorTexture(ItemStack itemStack, Entity entity, int slot, String layer) {
     if(armorType == 2) {
-      return "enderio:textures/models/armor/darkSteel_layer_2.png";
+      return "enderio:textures/models/armor/"+name+"_layer_2.png";
     }
-    return "enderio:textures/models/armor/darkSteel_layer_1.png";
+    return "enderio:textures/models/armor/"+name+"_layer_1.png";
   }
 
   public ItemStack createItemStack() {
@@ -287,7 +293,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   @Override
   @Method(modid = "Thaumcraft")
   public int getVisDiscount(ItemStack stack, EntityPlayer player, Aspect aspect) {
-    if(stack == null || stack.getItem() != DarkSteelItems.itemDarkSteelHelmet) {
+    if(stack == null || !DarkSteelItems.isArmorPart(stack.getItem(), 0)) {
       return 0;
     }
     return GogglesOfRevealingUpgrade.isUpgradeEquipped(player) ? 5 : 0;
@@ -312,7 +318,7 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   @Override
   @Method(modid = "Forestry")
   public boolean canSeePollination(EntityPlayer player, ItemStack armor, boolean doSee) {
-    if(armor == null || armor.getItem() != DarkSteelItems.itemDarkSteelHelmet) {
+    if(armor == null ||  DarkSteelItems.isArmorPart(armor.getItem(), 0)) {
       return false;
     }
     return NaturalistEyeUpgrade.isUpgradeEquipped(player);

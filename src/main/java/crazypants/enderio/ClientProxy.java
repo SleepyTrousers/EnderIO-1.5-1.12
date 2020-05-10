@@ -49,6 +49,7 @@ import crazypants.enderio.conduit.oc.OCConduitRenderer;
 import crazypants.enderio.conduit.oc.OCUtil;
 import crazypants.enderio.conduit.power.PowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitRenderer;
+import crazypants.enderio.conduit.power.endergy.PowerConduitEndergy;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduitRenderer;
 import crazypants.enderio.conduit.redstone.RedstoneConduit;
@@ -151,12 +152,12 @@ public class ClientProxy extends CommonProxy {
 
   // @formatter:off
   public static int[][] sideAndFacingToSpriteOffset = new int[][] {
-    { 3, 2, 0, 0, 0, 0 }, 
-    { 2, 3, 1, 1, 1, 1 }, 
-    { 1, 1, 3, 2, 5, 4 }, 
-    { 0, 0, 2, 3, 4, 5 }, 
-    { 4, 5, 4, 5, 3, 2 }, 
-    { 5, 4, 5, 4, 2, 3 } 
+    { 3, 2, 0, 0, 0, 0 },
+    { 2, 3, 1, 1, 1, 1 },
+    { 1, 1, 3, 2, 5, 4 },
+    { 0, 0, 2, 3, 4, 5 },
+    { 4, 5, 4, 5, 3, 2 },
+    { 5, 4, 5, 4, 2, 3 }
   };
   // @formatter:on
 
@@ -201,13 +202,14 @@ public class ClientProxy extends CommonProxy {
   public void setCbr(ConduitBundleRenderer cbr) {
     this.cbr = cbr;
   }
-  
+
   @Override
   public void loadIcons() {
     RedstoneConduit.initIcons();
     InsulatedRedstoneConduit.initIcons();
     RedstoneSwitch.initIcons();
     PowerConduit.initIcons();
+    PowerConduitEndergy.initIcons();
     LiquidConduit.initIcons();
     AdvancedLiquidConduit.initIcons();
     EnderLiquidConduit.initIcons();
@@ -295,6 +297,8 @@ public class ClientProxy extends CommonProxy {
     ZombieGeneratorRenderer zgr = new ZombieGeneratorRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileZombieGenerator.class, zgr);
     MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockZombieGenerator), zgr);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockFrankenZombieGenerator), zgr);
+    MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockEnderGenerator), zgr);
 
     KillerJoeRenderer kjr = new KillerJoeRenderer();
     ClientRegistry.bindTileEntitySpecialRenderer(TileKillerJoe.class, kjr);
@@ -333,6 +337,7 @@ public class ClientProxy extends CommonProxy {
     ItemConduitRenderer itemConRenderer = new ItemConduitRenderer();
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemLiquidConduit, itemConRenderer);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemPowerConduit, itemConRenderer);
+    MinecraftForgeClient.registerItemRenderer(EnderIO.itemPowerConduitEndergy, itemConRenderer);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemRedstoneConduit, itemConRenderer);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemItemConduit, itemConRenderer);
     MinecraftForgeClient.registerItemRenderer(EnderIO.itemGasConduit, itemConRenderer);

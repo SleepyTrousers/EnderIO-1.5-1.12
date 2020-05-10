@@ -25,14 +25,14 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   public static final int MAX_SPAWN_DELAY_BASE = Config.poweredSpawnerMaxDelayTicks;
 
   public static final int POWER_PER_TICK_ONE = Config.poweredSpawnerLevelOnePowerPerTickRF;
-  private static final BasicCapacitor CAP_ONE = new BasicCapacitor((int) (POWER_PER_TICK_ONE * 1.25), Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyStored());
+  private static final BasicCapacitor CAP_ONE = new BasicCapacitor(0, (int) (POWER_PER_TICK_ONE * 1.25), Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyStored());
 
   public static final int POWER_PER_TICK_TWO = Config.poweredSpawnerLevelTwoPowerPerTickRF;
-  private static final BasicCapacitor CAP_TWO = new BasicCapacitor((int) (POWER_PER_TICK_TWO * 1.25),
+  private static final BasicCapacitor CAP_TWO = new BasicCapacitor(0,(int) (POWER_PER_TICK_TWO * 1.25),
       Capacitors.ACTIVATED_CAPACITOR.capacitor.getMaxEnergyStored());
 
   public static final int POWER_PER_TICK_THREE = Config.poweredSpawnerLevelThreePowerPerTickRF;
-  private static final BasicCapacitor CAP_THREE = new BasicCapacitor((int) (POWER_PER_TICK_THREE * 1.25),
+  private static final BasicCapacitor CAP_THREE = new BasicCapacitor(0,(int) (POWER_PER_TICK_THREE * 1.25),
       Capacitors.ENDER_CAPACITOR.capacitor.getMaxEnergyStored());
 
   public static final int MIN_PLAYER_DISTANCE = Config.poweredSpawnerMaxPlayerDistance;
@@ -226,7 +226,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
         && worldObj.getCollidingBoundingBoxes(entityliving, entityliving.boundingBox).isEmpty()
         && (!worldObj.isAnyLiquid(entityliving.boundingBox) || entityliving.isCreatureType(EnumCreatureType.waterCreature, false));
     if(spaceClear && USE_VANILLA_SPAWN_CHECKS) {
-      //Full checks for lighting, dimension etc 
+      //Full checks for lighting, dimension etc
       spaceClear = entityliving.getCanSpawnHere();
     }
     return spaceClear;

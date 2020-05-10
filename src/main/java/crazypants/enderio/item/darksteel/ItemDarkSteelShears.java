@@ -45,7 +45,7 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
     if(equipped == null) {
       return false;
     }
-    return equipped.getItem() == DarkSteelItems.itemDarkSteelShears;
+    return equipped.getItem() instanceof ItemDarkSteelShears;
   }
 
   public static boolean isEquippedAndPowered(EntityPlayer player, int requiredPower) {
@@ -66,16 +66,22 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
     return res;
   }
 
-  private final MultiHarvestComparator harvestComparator = new MultiHarvestComparator();
-  private final EntityComparator entityComparator = new EntityComparator();
+  protected final MultiHarvestComparator harvestComparator = new MultiHarvestComparator();
+  protected final EntityComparator entityComparator = new EntityComparator();
+  protected String name;
 
-  protected ItemDarkSteelShears() {
+  protected ItemDarkSteelShears(String name) {
     super();
+    this.name = name;
     this.setMaxDamage(this.getMaxDamage() * Config.darkSteelShearsDurabilityFactor);
     setCreativeTab(EnderIOTab.tabEnderIO);
-    String str = "darkSteel_shears";
+    String str = name+"_shears";
     setUnlocalizedName(str);
     setTextureName("enderIO:" + str);
+  }
+
+  protected ItemDarkSteelShears() {
+	this("darkSteel");
   }
 
   @Override
@@ -265,9 +271,9 @@ public class ItemDarkSteelShears extends ItemShears implements IEnergyContainerI
       list.add(str);
     }
     if(EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
-      list.add(EnderIO.lang.localize("item.darkSteel_shears.tooltip.multiHarvest"));
+      list.add(EnderIO.lang.localize("item."+name+"_shears.tooltip.multiHarvest"));
       list.add(EnumChatFormatting.WHITE + "+" + Config.darkSteelShearsEffeciencyBoostWhenPowered + " "
-          + EnderIO.lang.localize("item.darkSteel_pickaxe.tooltip.effPowered"));
+          + EnderIO.lang.localize("item."+name+"_pickaxe.tooltip.effPowered"));
     }
     DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
   }

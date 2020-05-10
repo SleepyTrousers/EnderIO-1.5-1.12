@@ -33,6 +33,19 @@ enderio.itemPowerConduit.name=Energy Conduit
 enderio.itemPowerConduitEnhanced.name=Enhanced Energy Conduit
 enderio.itemPowerConduitEnder.name=Ender Energy Conduit
 
+enderio.itemPowerConduitEndergyCrude.name=Clay Compound Energy Conduit
+enderio.itemPowerConduitEndergyIron.name=Iron Energy Conduit
+enderio.itemPowerConduitEndergyAluminum.name=Aluminum Energy Conduit
+enderio.itemPowerConduitEndergyGold.name=Gold Energy Conduit
+enderio.itemPowerConduitEndergyCopper.name=Copper Energy Conduit
+enderio.itemPowerConduitEndergySilver.name=Silver Energy Conduit
+enderio.itemPowerConduitEndergyElectrum.name=Electrum Energy Conduit
+enderio.itemPowerConduitEndergyEnergeticSilver.name=Energetic Silver Energy Conduit
+enderio.itemPowerConduitEndergyCrystalline.name=Crystalline Energy Conduit
+enderio.itemPowerConduitEndergyCrystallinePinkSlime.name=Crystalline Pink Slime Energy Conduit
+enderio.itemPowerConduitEndergyMelodic.name=Melodic Energy Conduit
+enderio.itemPowerConduitEndergyStellar.name=Stellar Energy Conduit
+
 enderio.itemRedstoneConduit.name=Redstone Conduit
 enderio.itemRedstoneConduitSwitch.name=Conduit Switch
 enderio.itemRedstoneConduitInsulated.name=Insulated Redstone Conduit
@@ -58,8 +71,9 @@ enderio.itemItemConduit.name=Item Conduit
 
 enderio.filterUpgradeBasic.name=Basic Item Filter
 enderio.filterUpgradeAdvanced.name=Advanced Item Filter
+enderio.filterUpgradeBig.name=Big Item Filter
+enderio.filterUpgradeBigAdvanced.name=Big Advanced Item Filter
 enderio.itemConduitFilterUpgrade=Upgrade for item conduits
-
 enderio.itemConduitFilterUpgrade.configured=Configured
 enderio.itemConduitFilterUpgrade.clearConfigMethod=Place in crafting grid to clear
 enderio.itemConduitFilterUpgrade.clearConfigWarning=This will clear all stored filter settings!
@@ -127,6 +141,8 @@ enderio.conduitBinder.name=Conduit Binder
 enderio.binderComposite.name=Binder Composite
 enderio.phasedIronNugget.name=Pulsating Iron Nugget
 tile.blockDarkIronBars.name=Dark Iron Bars
+tile.blockSoulariumBars.name=Soularium Bars
+tile.blockEndSteelBars.name=End Steel Bars
 tile.blockEndermanSkull.name=Enderman Skull
 tile.blockEndermanSkull.base.name=Enderman Head
 tile.blockEndermanSkull.reanimated.name=Reanimated Enderman Head
@@ -173,6 +189,14 @@ fluid.cloud_seed_concentrated=Concentrated Cloud Seed
 tile.fluid.cloud_seed_concentrated.name=Concentrated Cloud Seed
 item.bucketCloud_seed_concentrated.name=Concentrated Cloud Seed Bucket
 
+fluid.ender_distillation=Dew of the Void
+tile.fluid.ender_distillation.name=Dew of the Void
+item.bucketEnder_distillation.name=Dew of the Void Bucket
+
+fluid.vapor_of_levity=Vapor of Levity
+tile.fluid.vapor_of_levity.name=Vapor of Levity
+item.bucketVapor_of_levity.name=Vapor of Levity Bucket
+
 fluid.eio.xpjuice=Liquid XP
 tile.fluid.eio.xpjuice.name=Liquid XP
 item.bucketXpjuice.name=XP Bucket
@@ -190,16 +214,29 @@ enderio.gas.gasTick=Gas/t
 enderio.itemMachinePart.name=Machine Parts
 enderio.machineChassi.name=Machine Chassis
 enderio.basicGear.name=Basic Gear
+enderio.soulMachineChassi.name=Soul Machine Chassis
+enderio.endSteelMachineChassi.name=End Steel Chassis
 enderio.pulsatingCrystal.name=Pulsating Crystal
 enderio.vibrantCrystal.name=Vibrant Crystal
 enderio.enderCrystal.name=Ender Crystal
 enderio.attractorCrystal.name=Enticing Crystal
 enderio.weatherCrystal.name=Weather Crystal
+
 enderio.darkGrindingBall.name=Dark Steel Ball
+enderio.electricalGrindingBall.name=Electrical Steel Ball
+enderio.energeticGrindingBall.name=Energetic Alloy Ball
+enderio.vibrantGrindingBall.name=Vibrant Alloy Ball
+enderio.redstoneGrindingBall.name=Redstone Alloy Ball
+enderio.conductiveGrindingBall.name=Conductive Iron Ball
+enderio.pulsatingGrindingBall.name=Pulsating Iron Ball
+enderio.soulariumGrindingBall.name=Soularium Ball
+enderio.endSteelGrindingBall.name=End Steel Ball
+
 enderio.darkGrindingBall.tooltip.detailed.line1=SAG Mill Grinding Ball
 enderio.darkGrindingBall.tooltip.detailed.line2=Main Output
 enderio.darkGrindingBall.tooltip.detailed.line3=Bonus Output
 enderio.darkGrindingBall.tooltip.detailed.line4=Power Reduction
+enderio.darkSteelRod.name=Dark Steel Rod
 
 tile.blockReinforcedObsidian.name=Reinforced Obsidian
 tile.blockReinforcedObsidian.tooltip.common.line1=Wither Proof
@@ -227,6 +264,42 @@ enderio.phasedIron.name=Pulsating Iron
 enderio.vibrantNugget.name=Vibrant Alloy Nugget
 enderio.darkSteel.name=Dark Steel
 enderio.soularium.name=Soularium
+enderio.endSteel.name=End Steel
+enderio.endSteelNugget.name=End Steel Nugget
+
+enderio.crudeSteel.name=Clay Compound
+enderio.crystallineAlloy.name=Crystalline Alloy
+enderio.melodicAlloy.name=Melodic Alloy
+enderio.stellarAlloy.name=Stellar Alloy
+enderio.crystallinePinkSlime.name=Crystalline Pink Slime
+enderio.energeticSilver.name=Energetic Silver
+enderio.vividAlloy.name=Vivid Alloy
+
+enderio.crudeSteelGrindingBall.name=Clay Compound Grinding Ball
+enderio.crystallineAlloyGrindingBall.name=Crystalline Alloy Grinding Ball
+enderio.melodicAlloyGrindingBall.name=Melodic Alloy Grinding Ball
+enderio.stellarAlloyGrindingBall.name=Stellar Alloy Grinding Ball
+enderio.crystallinePinkSlimeGrindingBall.name=Crystalline Pink Slime Grinding Ball
+enderio.energeticSilverGrindingBall.name=Energetic Silver Grinding Ball
+enderio.vividAlloyGrindingBall.name=Vivid Alloy Grinding Ball
+
+enderio.precientCrystal.name=Precient Crystal
+enderio.pulsatingPowder.name=Grains of Piezallity
+enderio.vibrantPowder.name=Grains of Vibrancy
+enderio.enderCrystalPowder.name=Grains of the End
+enderio.precientPowder.name=Grains of Prescience
+
+//Balls
+enderio.electricalSteel_ball.name=Electrical Steel Ball
+enderio.energeticAlloy_ball.name=Energetic Alloy Ball
+enderio.phasedGold_ball.name=Vibrant Alloy Ball
+enderio.redstoneAlloy_ball.name=Redstone Alloy Ball
+enderio.conductiveIron_ball.name=Conductive Iron Ball
+enderio.phasedIron_ball.name=Pulsating Iron Ball
+enderio.vibrantNugget_ball.name=Vibrant Alloy Nugget Ball
+enderio.darkSteel_ball.name=Dark Steel Ball
+enderio.soularium_ball.name=Soularium Ball
+enderio.endSteel_ball.name=End Steel Ball
 
 tile.blockIngotStorage.name=Ingot Storage
 tile.enderio.electricalSteel.name=Electrical Steel Block
@@ -238,6 +311,15 @@ tile.enderio.phasedIron.name=Pulsating Iron Block
 tile.enderio.vibrantNugget.name=Vibrant Nugget Block
 tile.enderio.darkSteel.name=Dark Steel Block
 tile.enderio.soularium.name=Soularium Block
+tile.enderio.endSteel.name=End Steel Block
+
+tile.enderio.crudeSteel.name=Clay Compound Block
+tile.enderio.crystallineAlloy.name=Crystalline Alloy Block
+tile.enderio.melodicAlloy.name=Melodic Alloy Block
+tile.enderio.stellarAlloy.name=Stellar Alloy Block
+tile.enderio.crystallinePinkSlime.name=Crystalline Pink Slime Block
+tile.enderio.energeticSilver.name=Energetic Silver Block
+tile.enderio.vividAlloy.name=Vivid Alloy Block
 
 //Powder / Ingot
 enderio.powderCoal.name=Coal Powder
@@ -254,6 +336,13 @@ enderio.itemBasicCapacitor.name=Capacitor
 enderio.basicCapacitor.name=Basic Capacitor
 enderio.activatedCapacitor.name=Double-Layer Capacitor
 enderio.enderCapacitor.name=Octadic Capacitor
+enderio.crystallineCapacitor.name=Crystalline Capacitor
+enderio.melodicCapacitor.name=Melodic Capacitor
+enderio.stellarCapacitor.name=Stellar Capacitor
+enderio.silverCapacitor.name=Silver Capacitor
+enderio.endergeticCapacitor.name=Endergetic Capacitor
+enderio.endergisedCapacitor.name=Endergised Capacitor
+enderio.totemicCapacitor.name=Totemic Capacitor
 
 enderio.machine.tooltip.upgrade=Machine Upgrade
 enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Increases energy storage and
@@ -283,6 +372,7 @@ tile.blockAlloySmelter.tooltip.detailed.line5=speed and energy storage
 
 tile.blockSolarPanel.name=Photovoltaic Cell
 tile.blockSolarPanel.advanced.name=Advanced Photovoltaic Cell
+tile.blockSolarPanel.vibrant.name=Vibrant Photovoltaic Cell
 tile.blockSolarPanel.tooltip.common.line1=Solar Power!
 tile.blockSolarPanel.tooltip.detailed.line1=Produces power during daylight hours
 tile.blockSolarPanel.tooltip.detailed.line2=Must have a clear line of sight to
@@ -411,6 +501,16 @@ tile.blockZombieGenerator.tooltip.detailed.line1=Consumes Nutrient Distillation
 tile.blockZombieGenerator.tooltip.detailed.line2=to generate power
 enderio.zombieGenerator.fuelTank=Nutrient Tank
 enderio.gui.fluid.minReq=%s Required for activation
+
+tile.blockFrankenzombieGenerator.name=Frank'N'Zombie Generator
+tile.blockFrankenzombieGenerator.tooltip.detailed.line1=Consumes Nutrient Distillation
+tile.blockFrankenzombieGenerator.tooltip.detailed.line2=to generate even more power
+enderio.frankenzombieGenerator.fuelTank=Nutrient Tank
+
+tile.blockEnderGenerator.name=Ender Generator
+tile.blockEnderGenerator.tooltip.detailed.line1=Consumes Dew of the Void
+tile.blockEnderGenerator.tooltip.detailed.line2=to generate power
+enderio.enderGenerator.fuelTank=Void Tank
 
 tile.blockKillerJoe.name=Killer Joe
 tile.blockKillerJoe.tooltip.detailed.line1=Attacks nearby creatures when
@@ -698,6 +798,8 @@ skullZombieController.name=Z-Logic Controller
 skullZombieFrankenstien.name=Frank'N'Zombie
 skullEnderResonator.name=Ender Resonator 
 skullSentientEnder.name=Sentient Ender
+skullSkeletalContractor.name=Skeletal Contractor
+skullGuardianDiode.name=Guardian Diode
 
 item.itemSpawnEggEnderIO.name=Spawn
 
@@ -711,13 +813,41 @@ item.darkSteel_pickaxe.name=Dark Pick
 item.darkSteel_axe.name=Dark Axe
 item.darkSteel_shears.name=Dark Shears
 
+//End Steel
+item.endSteel_helmet.name=End Steel Helm
+item.endSteel_chestplate.name=End Steel Plate
+item.endSteel_leggings.name=End Steel Leggings
+item.endSteel_boots.name=End Steel Boots
+item.endSteel_sword.name=The Ender MKII
+item.endSteel_pickaxe.name=End Steel Pick
+item.endSteel_axe.name=End Steel Axe
+
+//Stellar
+item.stellar_helmet.name=Stellar Helm
+item.stellar_chestplate.name=Stellar Plate
+item.stellar_leggings.name=Stellar Leggings
+item.stellar_boots.name=Stellar Boots
+item.stellar_sword.name=The Ender MKIV
+item.stellar_pickaxe.name=Stellar Pick
+item.stellar_axe.name=Stellar Axe
+
 enderio.item.darkSteel.tooltip.lvs=lvs
 
 enderio.item.darkSteel_pickaxe.tooltip.effPowered=Efficiency when powered
 enderio.item.darkSteel_pickaxe.tooltip.effObs=Efficiency breaking obsidian
 enderio.item.darkSteel_pickaxe.tooltip.cost=cost
 
+enderio.item.endSteel_pickaxe.tooltip.effPowered=Efficiency when powered
+enderio.item.endSteel_pickaxe.tooltip.effObs=Efficiency breaking obsidian
+enderio.item.endSteel_pickaxe.tooltip.cost=cost
+
+enderio.item.stellar_pickaxe.tooltip.effPowered=Efficiency when powered
+enderio.item.stellar_pickaxe.tooltip.effObs=Efficiency breaking obsidian
+enderio.item.stellar_pickaxe.tooltip.cost=cost
+
 enderio.item.darkSteel_axe.tooltip.multiHarvest=Sneak to harvest multiple logs
+enderio.item.endSteel_axe.tooltip.multiHarvest=Sneak to harvest multiple logs
+enderio.item.stellar_axe.tooltip.multiHarvest=Sneak to harvest multiple logs
 
 enderio.item.darkSteel_shears.tooltip.multiHarvest=Shears multiple blocks/sheep when empowered
 
@@ -725,11 +855,31 @@ enderio.item.darkSteel_sword.tooltip.line1=Increased skull and ender pearl drops
 enderio.item.darkSteel_sword.tooltip.line2=Endermen can't teleport once hit
 enderio.item.darkSteel_sword.tooltip.line3=+2 Damage when Powered
 
+enderio.item.endSteel_sword.tooltip.line1=Increased skull and ender pearl drops
+enderio.item.endSteel_sword.tooltip.line2=Endermen can't teleport once hit
+enderio.item.endSteel_sword.tooltip.line3=+2 Damage when Powered
+
+enderio.item.stellar_sword.tooltip.line1=Increased skull and ender pearl drops
+enderio.item.stellar_sword.tooltip.line2=Endermen can't teleport once hit
+enderio.item.stellar_sword.tooltip.line3=+2 Damage when Powered
+
 enderio.item.darkSteel_armor.tooltip.line1=Diamond level protection
 enderio.item.darkSteel_armor.tooltip.line2=when powered
 
+enderio.item.endSteel_armor.tooltip.line1=Diamond+ level protection
+enderio.item.endSteel_armor.tooltip.line2=when powered
+
+enderio.item.stellar_armor.tooltip.line1=Diamond+ level protection
+enderio.item.stellar_armor.tooltip.line2=when powered
+
 enderio.item.darkSteel_boots.tooltip.line1=Fall damage negated
 enderio.item.darkSteel_boots.tooltip.line2=when powered
+
+enderio.item.endSteel_boots.tooltip.line1=Fall damage negated
+enderio.item.endSteel_boots.tooltip.line2=when powered
+
+enderio.item.stellar_boots.tooltip.line1=Fall damage negated
+enderio.item.stellar_boots.tooltip.line2=when powered
 
 enderio.darksteel.upgrade.empowered_one.name=Empowered
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Power: $P
@@ -750,6 +900,11 @@ enderio.darksteel.upgrade.empowered_four.name=Empowered IV
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Power: $P
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D% damage absorbed
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=by power
+
+enderio.darksteel.upgrade.empowered_five.name=Empowered V
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line1=Power: $P
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line2=$D% damage absorbed
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line3=by power
 
 enderio.darksteel.upgrade.travel.name=Travel
 enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Hold shift and R-Click to teleport or
@@ -833,6 +988,9 @@ enderio.darksteel.upgrade.solar_one.tooltip.detailed.line1=Generates power from 
 
 enderio.darksteel.upgrade.solar_two.name=Solar II
 enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1=Generates power from the sun.
+
+enderio.darksteel.upgrade.solar_three.name=Solar III
+enderio.darksteel.upgrade.solar_three.tooltip.detailed.line1=Generates power from the sun.
 
 //------GUI
 

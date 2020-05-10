@@ -1,18 +1,5 @@
 package crazypants.enderio.machine.generator.zombie;
 
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidTank;
-
 import org.lwjgl.opengl.GL11;
 
 import com.enderio.core.client.render.BoundingBox;
@@ -23,12 +10,26 @@ import com.enderio.core.common.vecmath.Vector3d;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator.BlockFrankenZombieGenerator;
+import crazypants.enderio.machine.generator.zombie.BlockZombieGenerator.BlockEnderGenerator;
+import crazypants.enderio.machine.generator.zombie.TileZombieGenerator.TileEnderGenerator;
+import crazypants.enderio.machine.generator.zombie.TileZombieGenerator.TileFrankenZombieGenerator;
 import crazypants.util.RenderPassHelper;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidTank;
 
 @SideOnly(Side.CLIENT)
 public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
-
-  private static final String TEXTURE = "enderio:models/ZombieJar.png";
 
   private ModelZombieJar model = new ModelZombieJar();
 
@@ -48,7 +49,7 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implement
     GL11.glPushMatrix();
     GL11.glTranslatef((float) x, (float) y, (float) z);
     if (RenderPassHelper.getEntityRenderPass() == 0) {
-      renderModel(gen.facing);
+      renderModel(gen.getGeneratorType(), gen.facing);
     } else if (RenderPassHelper.getEntityRenderPass() == 1) {
       renderFluid(gen);
     }
@@ -106,7 +107,7 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implement
     }
   }
 
-  private void renderModel(int facing) {
+  private void renderModel(GeneratorType gen, int facing) {
 
     GL11.glPushMatrix();
 
@@ -123,7 +124,7 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implement
     }
     GL11.glRotatef(facing * -90F, 0F, 1F, 0F);
 
-    RenderUtil.bindTexture(TEXTURE);
+    RenderUtil.bindTexture(gen.getTexture());
     model.render((Entity) null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
     GL11.glTranslatef(-0.5F, 0, -0.5F);
@@ -143,15 +144,16 @@ public class ZombieGeneratorRenderer extends TileEntitySpecialRenderer implement
 
   @Override
   public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-    renderItem(0, 0, 0);
+	  renderItem(((BlockZombieGenerator) Block.getBlockFromItem(item.getItem())).getGeneratorType(),0,0,0);
+
   }
 
-  private void renderItem(float x, float y, float z) {
+  private void renderItem(GeneratorType gen, float x, float y, float z) {
     GL11.glPushMatrix();
     GL11.glTranslatef(x, y, z);
     GL11.glEnable(GL11.GL_BLEND);
     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-    renderModel(ForgeDirection.SOUTH.ordinal());
+    renderModel(gen,ForgeDirection.SOUTH.ordinal());
     GL11.glDisable(GL11.GL_BLEND);
     GL11.glPopMatrix();
   }
