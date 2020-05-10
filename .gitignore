@@ -38,3 +38,4 @@
 resources/assets/enderio/lang/*.lang.txt
 *.bat
 libs/
+options.txt
