@@ -1,8 +1,10 @@
-EnderIO [![Build Status](http://ci.tterrag.com/buildStatus/icon?job=EnderIO)](http://ci.tterrag.com/job/EnderIO/)
+EnderIO-Unofficial
 =======
+[![Build Status](http://jenkins.usrv.eu:8080/buildStatus/icon?job=Ender-IO)](http://jenkins.usrv.eu:8080/job/Ender-IO/)
+This is a unofficial version of EndeIO for 1.7.10, in case of any bugs or problems please do not contact the original developers of EnderIO!
 
 All code (excluding the bundled APIs from other mods, which are covered by their respective licenses) are released without restriction into the public domain under the CC0 1.0 license (http://creativecommons.org/publicdomain/zero/1.0/legalcode) FAQ (https://wiki.creativecommons.org/CC0_FAQ).
-Do what you want with it, as long as you smile while doing so. While it is not a requirement, it would be nice to know if it is being used and how, so send me hello to **crazypants.mc at gmail.com**.
+Do what you want with it, as long as you smile while doing so.
 
 
 

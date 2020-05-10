@@ -32,15 +32,15 @@ import crazypants.enderio.xp.XpUtil;
 public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveExperience, IFluidHandler, ITankAccess {
 
   public static final int POWER_PER_TICK_ONE = Config.soulBinderLevelOnePowerPerTickRF;
-  private static final BasicCapacitor CAP_ONE = new BasicCapacitor(POWER_PER_TICK_ONE * 2,
+  private static final BasicCapacitor CAP_ONE = new BasicCapacitor(0,POWER_PER_TICK_ONE * 2,
       Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_ONE);
 
   public static final int POWER_PER_TICK_TWO = Config.soulBinderLevelTwoPowerPerTickRF;
-  private static final BasicCapacitor CAP_TWO = new BasicCapacitor(POWER_PER_TICK_TWO * 2,
+  private static final BasicCapacitor CAP_TWO = new BasicCapacitor(0,POWER_PER_TICK_TWO * 2,
       Capacitors.ACTIVATED_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_TWO);
 
   public static final int  POWER_PER_TICK_THREE = Config.soulBinderLevelThreePowerPerTickRF;
-  private static final BasicCapacitor CAP_THREE = new BasicCapacitor(POWER_PER_TICK_THREE * 2,
+  private static final BasicCapacitor CAP_THREE = new BasicCapacitor(0,POWER_PER_TICK_THREE * 2,
       Capacitors.ENDER_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_THREE);
 
   private final ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.soulBinderMaxXpLevel));
