@@ -28,7 +28,7 @@ enderio.gui.ranged.hideRange=範囲を非表示
 enderio.gui.ranged.range=範囲：%s
 
 enderio.gui.stirling_generator.output=発電中：%s
-enderio.gui.stirling_generator.burnRate=燃焼効率：%s%%
+enderio.gui.stirling_generator.efficiency=燃焼効率：%s％
 enderio.gui.stirling_generator.upgradeslot=アップグレードスロット
 enderio.gui.stirling_generator.upgrades={0}：{2}{1,number,#.#}x{3} 効率上昇
 enderio.gui.stirling_generator.remaining=残り {0,number,percent}|{1,choice,0#|0<{1} 分 }{2,number} 秒|{3,number,#,###} µI
@@ -58,8 +58,6 @@ enderio.gui.xp_obelisk.button.retrieve.all.line3=§a%d レベルが回収可能
 enderio.gui.xp_obelisk.button.retrieve.empty=§4オベリスク内に経験値なし
 enderio.gui.xp_obelisk.button.store.empty=§4経験値未所持
 
-enderio.block_solar_panel.tooltip.maxoutput=最大出力：%s
-
 enderio.gui.soul_binder.useplayerxp=プレイヤー経験値を消費
 
 enderio.block_powered_spawner.tooltip.empty=空
@@ -70,6 +68,8 @@ enderio.block_powered_spawner.note.noLocationFound=スポーン可能領域が�
 enderio.block_powered_spawner.note.noLocationAtAll=稼働領域が不足
 enderio.block_powered_spawner.note.badSoul=エンティティはスポーン不可
 enderio.block_powered_spawner.note.noPlayer=範囲内にプレイヤー不在
+enderio.block_powered_spawner.note.denied=別の Mod により制限中
+enderio.status.powered_spawner.unbound=§4空の状態では稼働できません
 
 enderio.gui.tank.tank=タンク
 enderio.gui.tank.void.slot=廃棄スロット
@@ -127,7 +127,7 @@ enderio.gui.telepad.configure.telepad=テレパッド設定
 enderio.gui.telepad.blocked=テレポート失敗
 enderio.gui.telepad.teleport=テレポート
 enderio.gui.telepad.tank=試液タンク
-enderio.gui.telepad.max=Max: %s
+enderio.gui.telepad.max=最大：%s
 enderio.status.telepad.unformed=§4テレパッドは３×３の構造で設置してください
 enderio.gui.telepad.unnamed_location=無名
 enderio.gui.telepad_travel_settings.close=トラベル設定を閉じる
@@ -139,6 +139,7 @@ enderio.gui.impulse_hopper.locked.tooltip=搬出スロットにアイテムが�
 
 enderio.gui.crafter.buffering_stack=アイテムをスタック単位で扱う
 enderio.gui.crafter.buffering_single=アイテムを単一で扱う
+enderio.gui.crafter.use_per_craft=クラフトごとの消費電力：%s
 
 tile.block_alloy_smelter.name=合金精錬機
 tile.block_alloy_smelter.tooltip.detailed.line1=Ender IO の合金作成に使用。
@@ -147,6 +148,9 @@ tile.block_alloy_smelter.tooltip.detailed.line3=コンデンサのグレード�
 
 tile.block_simple_alloy_smelter.name=簡易型合金精錬機
 tile.block_simple_alloy_smelter.tooltip.detailed.line1=Ender IO の合金作成に使用。
+
+tile.block_simple_furnace.name=簡易型電気かまど
+tile.block_simple_furnace.tooltip.detailed.line1=アイテムを電気で製錬することが可能。
 
 tile.block_enhanced_alloy_smelter.name=改良型合金精錬機
 tile.block_enhanced_alloy_smelter.tooltip.detailed.line1=Ender IO の合金作成に使用。
@@ -188,18 +192,24 @@ tile.block_electric_light.wireless.inverted.name=無線ライト（反転）
 tile.block_enhanced_combustion_generator.name=改良型燃焼発電機
 
 tile.block_combustion_generator.name=燃焼発電機
-tile.block_combustion_generator.tooltip.detailed.line1=液体燃料を燃焼して電力を発電。
+tile.block_combustion_generator.tooltip.detailed.line1=液体燃料を燃焼することで発電。
 tile.block_combustion_generator.tooltip.detailed.line2=水などでの冷却が必要。
 tile.block_combustion_generator.tooltip.detailed.line3=発電量は燃料によって変動。
 
 tile.block_simple_stirling_generator.name=簡易型スターリング発電機
 
 tile.block_stirling_generator.name=スターリング発電機
-tile.block_stirling_generator.tooltip.detailed.line1=固体燃料を燃焼して電力を発電。
+tile.block_stirling_generator.tooltip.detailed.line1=固体燃料を燃焼することで発電。
 tile.block_stirling_generator.tooltip.detailed.line2=コンデンサのグレードを上げることで、発電量と燃焼効率が増加。
 
 tile.block_zombie_generator.name=ゾンビ発電機
-tile.block_zombie_generator.tooltip.detailed.line1=栄養蒸留液を消費して電力を発電。
+tile.block_zombie_generator.tooltip.detailed.line1=栄養蒸留液を消費することで発電。
+
+tile.block_franken_zombie_generator.name=フランケンゾンビ発電機
+tile.block_franken_zombie_generator.tooltip.detailed.line1=栄養蒸留液を消費することでより多く発電。
+
+tile.block_ender_generator.name=エンダー発電機
+tile.block_ender_generator.tooltip.detailed.line1=無のしずくを消費することで発電。
 
 tile.block_killer_joe.name=キラージョー
 tile.block_killer_joe.tooltip.detailed.line1=剣が装着され、栄養蒸留液が供給されている時、付近の Mob を攻撃する。
@@ -217,7 +227,7 @@ tile.block_inhibitor_obelisk.name=抑制のオベリスク
 tile.block_inhibitor_obelisk.tooltip.detailed.line1=効果範囲内でのテレポートを阻止。
 
 tile.block_relocator_obelisk.name=転送のオベリスク
-tile.block_relocator_obelisk.tooltip.detailed.line1=効果範囲内にいる Mob を瞬間的に引き寄せる。
+tile.block_relocator_obelisk.tooltip.detailed.line1=効果範囲内でスポーンした Mob を瞬間的に引き寄せる。
 
 tile.block_weather_obelisk.name=天候のオベリスク
 tile.block_weather_obelisk.tooltip.detailed.line1=現在の天候を変える。
@@ -230,11 +240,16 @@ tile.block_experience_obelisk.tooltip.detailed.line2=タンクを隣接するこ
 # no description
 tile.block_painter.name=塗装機
 
-tile.block_reservoir.name=リザーバータンク
-tile.block_reservoir.tooltip.detailed.line1=他のリザーバータンクと併設時、バケツ２杯分の水を
-tile.block_reservoir.tooltip.detailed.line2=入れることで無限水源とすることが可能。
-tile.block_reservoir.tooltip.detailed.line3=１秒にバケツ１杯分を生成。
-tile.block_reservoir.tooltip.detailed.line4=レンチで右クリックすると、自動搬出設定が可能。
+tile.block_reservoir.name=エンダーバータンク
+tile.block_reservoir.tooltip.common.line1=水を無限に汲み取り可能。
+tile.block_reservoir.tooltip.detailed.line1=他のエンダーバータンクと併設時、以下の効果を得る。
+tile.block_reservoir.tooltip.detailed.line2=- バケツ２杯分の水を入れることで無限水源とすることが可能。
+tile.block_reservoir.tooltip.detailed.line3=- １秒にバケツ１杯分を生成。
+tile.block_reservoir.tooltip.detailed.line4=- レンチで右クリックすることで自動搬出設定が可能。
+
+tile.block_omni_reservoir.name=オムニバータンク
+tile.block_omni_reservoir.tooltip.common.line1=すべての液体の貯蔵が可能。
+tile.block_omni_reservoir.tooltip.detailed.line1=- レンチで右クリックすることで自動搬出設定が可能。
 
 tile.block_sag_mill.name=準自生粉砕機
 tile.block_sag_mill.tooltip.detailed.line1=鉱石などのアイテムを粉砕。
@@ -243,6 +258,11 @@ tile.block_sag_mill.tooltip.detailed.line3=コンデンサのグレードを上�
 
 tile.block_simple_sag_mill.name=簡易型準自生粉砕機
 tile.block_simple_sag_mill.tooltip.detailed.line1=鉱石などのアイテムを粉砕。
+
+tile.block_enhanced_sag_mill.name=改良型準自生粉砕機
+tile.block_enhanced_sag_mill.tooltip.detailed.line1=鉱石などのアイテムを粉砕。
+tile.block_enhanced_sag_mill.tooltip.detailed.line2=粉砕用ボールを用いることで、出力と粉砕効率を増加。
+tile.block_enhanced_sag_mill.tooltip.detailed.line3=コンデンサのグレードを上げることで、粉砕速度と蓄電量が増加。
 
 tile.block_slice_and_splice.name=スライスンスプライス
 tile.block_slice_and_splice.tooltip.detailed.line1=カットした頭とあらゆる素材を接合。
@@ -256,6 +276,13 @@ tile.block_solar_panel.tooltip.detailed.line1=日中に電力を発電。
 tile.block_solar_panel.tooltip.detailed.line2=上空に遮るものがあると発電不可。
 enderio.jei.solar_panel.output=各発電量
 enderio.jei.solar_panel.range.line1=実際の発電量は、天候や太陽の角度に影響。
+enderio.block_solar_panel.tooltip.maxoutput=最大出力：%s
+
+# These 4 use the brain-dead TextComponentTranslation format
+enderio.block_solar_panel.probe.production=%1$s 個の太陽電池の現在発電量：%2$s µI/t（最大発電量：%3$s µI/t）
+enderio.block_solar_panel.probe.last_access=\u0020最後の電力情報参照から %s ティック経過
+enderio.block_solar_panel.probe.no_sun=\u0020%s に位置する太陽電池は太陽から遮られています
+enderio.block_solar_panel.probe.all_sun=\u0020すべての太陽電池が発電可能です
 
 tile.block_soul_binder.name=ソウルバインダー
 tile.block_soul_binder.tooltip.detailed.line1=魂とアイテムの結束機。壊れたスポナーに魂を込めることも可能。
@@ -265,6 +292,15 @@ tile.block_powered_spawner.name=電動スポナー
 tile.block_powered_spawner.empty.tooltip.detailed.line1=金床で壊れたスポナーとの組み合わせが必要。
 tile.block_powered_spawner.tooltip.detailed.line1=電力を消費して Mob をスポーン。
 tile.block_powered_spawner.tooltip.detailed.line2=コンデンサのグレードを上げることで、スポーン速度と蓄電量が増加。
+enderio.block_powered_spawner.tooltip.cost=稼働コスト：%sx
+
+tile.block_creative_spawner.name=クリエイティブ専用スポナー
+tile.block_creative_spawner.tooltip.common.line1=クリエイティブモードまたはサーバー管理者専用のスポナー
+tile.block_creative_spawner.tooltip.detailed.line1=管理者は、魂の小瓶による Mob の指定および対価の設定（任意）が可能。
+tile.block_creative_spawner.tooltip.detailed.line2=対価が設定されている場合、他プレイヤーはそれを支払うことで稼働。
+enderio.block_creative_spawner.gui.vial=魂
+enderio.block_creative_spawner.gui.template=要求品
+enderio.block_creative_spawner.gui.offering=納品
 
 tile.block_tank.name=液体タンク
 tile.block_tank.advanced.name=加圧式液体タンク
@@ -302,8 +338,19 @@ tile.block_xp_vacuum.tooltip.detailed.line2=稼働には液体経験値が必要
 tile.block_vat.name=醸造装置
 tile.block_vat.tooltip.detailed.line1=Ender IO の液体を醸造。
 
+tile.block_enhanced_vat.name=改良型醸造装置
+tile.block_enhanced_vat.tooltip.detailed.line1=Ender IO の液体を醸造。
+
 tile.block_wired_charger.name=有線充電装置
 tile.block_wired_charger.tooltip.detailed.line1=アイテムを µI で充電。
+tile.block_wired_charger.tooltip.detailed.line2=充電速度は蓄電容量に比例。
+
+tile.block_simple_wired_charger.name=簡易型有線充電装置
+tile.block_simple_wired_charger.tooltip.detailed.line2=アイテムを µI で充電。
+
+tile.block_enhanced_wired_charger.name=改良型有線充電装置
+tile.block_enhanced_wired_charger.tooltip.detailed.line1=アイテムを µI で充電。
+tile.block_enhanced_wired_charger.tooltip.detailed.line2=充電速度は蓄電容量に比例。
 
 tile.block_wireless_charger.name=無線充電装置
 tile.block_wireless_charger.tooltip.detailed.line1=付近のプレイヤーが持つアイテムを充電。範囲は狭い。塗装が可能。
@@ -314,7 +361,7 @@ tile.block_normal_wireless_charger.tooltip.detailed.line1=付近のプレイヤ�
 tile.block_enhanced_wireless_charger.name=無線充電強化アンテナ
 tile.block_enhanced_wireless_charger.tooltip.detailed.line1=付近のプレイヤーが持つアイテムを充電。無線充電アンテナの２倍の範囲をカバー。
 
-tile.block_wireless_charger_extension.name=無線充電アンテナ拡張機能
+tile.block_wireless_charger_extension.name=指向性無線充電アンテナ
 tile.block_wireless_charger_extension.tooltip.detailed.line1=無線充電強化アンテナの充電範囲を一方向に倍増。
 
 tile.block_impulse_hopper.name=インパルスホッパー
@@ -323,6 +370,17 @@ tile.block_impulse_hopper.tooltip.detailed.line1=指定数揃った登録され�
 tile.block_crafter.name=クラフト装置
 
 tile.block_simple_crafter.name=簡易型クラフト装置
+
+tile.block_lava_generator.name=溶岩熱交換器
+tile.block_lava_generator.tooltip.detailed.line1=溶岩を冷却することで発電。
+tile.block_lava_generator.tooltip.detailed.line2=過熱に注意。
+tile.block_lava_generator.tooltip.detailed.line3=周囲に冷たい液体や氷を設置することで冷却可能。
+enderio.gui.lavagen.heat=熱量
+
+tile.block_niard.name=排水装置
+tile.block_niard.tooltip.detailed.line1=液体を周囲に放流。
+tile.block_niard.tooltip.detailed.line2=このアイテム（The Niard）の改名提案を Discord にて受け付けています。採用された場合は、このツールチップの場所に名前を掲載します。
+
 
 # Types. smelting=Alloy Smelter Speed,
 # area=all machines "area" attribute (e.g. farm),
@@ -343,7 +401,9 @@ enderio.loot.capacitor.wet=料理用の%s
 enderio.loot.capacitor.kaboom=短気な%s
 enderio.loot.capacitor.fatman=原子力的%s
 
-enderio.jei.sagmill.outputchance=副産確率：{0,choice,0#'<1'|0<{0,number}}%
+enderio.jei.sagmill.outputchance=副産確率：{0,choice,0#'<1'|0<{0,number}}％
+enderio.jei.sagmill.outputchance.ball=%s（粉砕ボールにより変動）
+enderio.jei.sagmill.nomains=レシピにより副産無効化中。100
 enderio.jei.combustion_generator.range.line1=発電量はコンデンサと発電機のグレードに依存
 enderio.jei.combustion_generator.range.line2=コンデンサがハイグレードなほど、発電量とともに燃料消費量も増加する。
 enderio.jei.combustion_generator.range.line3=また、上位モデルであれば燃料消費量はそのままに発電量を増加させることが可能。
@@ -355,18 +415,23 @@ enderio.jei.stirling_generator.notSimple.line2=
 enderio.jei.alloy_smelter.notSimple.line1=このレシピは、簡易型合金精錬機では扱えない。
 enderio.jei.alloy_smelter.notSimple.line2=
 enderio.jei.grinding_ball.main.line1=粉砕したアイテムを確率で増加させる。
-enderio.jei.grinding_ball.bonus.line1=副産確率を増加させるが、１００%% を上回る、すなわち個数が増加することはない。
-enderio.jei.grinding_ball.bonus.line2=元の確率 * ボーナス確率（この値）で計算される。
+enderio.jei.grinding_ball.bonus.line1=副産確率を増加させるが、１００％を上回る、すなわち個数が増加することはない。
+enderio.jei.grinding_ball.bonus.line2=元の確率 * 副産確率（この値）で計算される。
 enderio.jei.grinding_ball.power.line1=稼働時の消費電力に影響を与え、粉砕速度も伴って増減する。
+enderio.jei.recipe=レシピ："%s"
+enderio.jei.lavagen.cooling=冷却材は任意
+enderio.jei.lavagen.heat=熱量の増加に伴い発電量減少
 
+enderio.darksteel.upgrade.solar_0.name=簡易ソーラー
+enderio.darksteel.upgrade.solar_0.tooltip.detailed.line1=太陽光から発電。
 
 enderio.darksteel.upgrade.solar_1.name=ソーラー
 enderio.darksteel.upgrade.solar_1.tooltip.detailed.line1=太陽光から発電。
 
-enderio.darksteel.upgrade.solar_2.name=ソーラーⅡ
+enderio.darksteel.upgrade.solar_2.name=ソーラー Ⅱ
 enderio.darksteel.upgrade.solar_2.tooltip.detailed.line1=太陽光から発電。
 
-enderio.darksteel.upgrade.solar_3.name=ソーラーⅢ
+enderio.darksteel.upgrade.solar_3.name=ソーラー Ⅲ
 enderio.darksteel.upgrade.solar_3.tooltip.detailed.line1=太陽光から発電。
 
 enderio.config.capacitor=コンデンサの値

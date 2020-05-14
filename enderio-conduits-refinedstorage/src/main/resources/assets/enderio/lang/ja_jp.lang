@@ -8,3 +8,14 @@
 
 # Conduits
 enderio.item_refined_storage_conduit.name=Refined Storage 用導管
+item.item_rs_crafting_upgrade.name=Refined Storage クラフトアップグレード
+item.item_rs_crafting_speed_upgrade.name=Refined Storage クラフト速度アップグレード
+item.item_rs_crafting_speed_downgrade.name=Refined Storage クラフト速度ダウングレード
+
+enderio.gui.rs_filter_upgrade_in=Importer フィルター
+enderio.gui.rs_filter_upgrade_in2=このスロットに任意のフィルターを配置することで
+enderio.gui.rs_filter_upgrade_in3=Refined Storage へのインポートをフィルタリングすることが可能。
+
+enderio.gui.rs_filter_upgrade_out=Exporter フィルター
+enderio.gui.rs_filter_upgrade_out2=このスロットに任意のフィルターを配置することで
+enderio.gui.rs_filter_upgrade_out3=Refined Storage からのエクスポートをフィルタリングすることが可能。

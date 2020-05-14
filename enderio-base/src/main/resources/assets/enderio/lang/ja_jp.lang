@@ -12,6 +12,8 @@ itemGroup.enderio.items=Ender IO - アイテム
 itemGroup.enderio.materials=Ender IO - 材料
 itemGroup.enderio.main=Ender IO - ブロック
 itemGroup.enderio.mobs=Ender IO - 魂
+itemGroup.enderio.conduits=Ender IO - 導管
+itemGroup.enderio.invpanel=Ender IO - インベントリパネル
 
 item.item_alloy_ingot_conductive_iron.name=電導鉄インゴット
 item.item_alloy_ingot_dark_steel.name=ダークスチールインゴット
@@ -22,6 +24,7 @@ item.item_alloy_ingot_redstone_alloy.name=レッドストーン合金インゴ�
 item.item_alloy_ingot_soularium.name=ソウラリウムインゴット
 item.item_alloy_ingot_vibrant_alloy.name=ヴァイブラント合金インゴット
 item.item_alloy_ingot_end_steel.name=エンドスチールインゴット
+item.item_alloy_ingot_construction_alloy.name=鉄合金インゴット
 
 item.item_alloy_ball_conductive_iron.name=電導鉄の粉砕用ボール
 item.item_alloy_ball_dark_steel.name=ダークスチールの粉砕用ボール
@@ -32,6 +35,7 @@ item.item_alloy_ball_redstone_alloy.name=レッドストーン合金の粉砕用
 item.item_alloy_ball_soularium.name=ソウラリウムの粉砕用ボール
 item.item_alloy_ball_vibrant_alloy.name=ヴァイブラント合金の粉砕用ボール
 item.item_alloy_ball_end_steel.name=エンドスチールの粉砕用ボール
+item.item_alloy_ball_construction_alloy.name=鉄合金の粉砕用ボール
 
 item.item_alloy_nugget_conductive_iron.name=電導鉄の塊
 item.item_alloy_nugget_dark_steel.name=ダークスチールの塊
@@ -42,11 +46,12 @@ item.item_alloy_nugget_redstone_alloy.name=レッドストーン合金の塊
 item.item_alloy_nugget_soularium.name=ソウラリウムの塊
 item.item_alloy_nugget_vibrant_alloy.name=ヴァイブラント合金の塊
 item.item_alloy_nugget_end_steel.name=エンドスチールの塊
+item.item_alloy_nugget_construction_alloy.name=鉄合金の塊
 
-item.item_basic_capacitor.activated.name=二重コンデンサ
+item.item_basic_capacitor.activated.name=二重層コンデンサ
 item.item_basic_capacitor.basic.name=ベーシックコンデンサ
 item.item_basic_capacitor.ender.name=八重コンデンサ
-enderio.activated.name=二重コンデンサ
+enderio.activated.name=二重層コンデンサ
 enderio.ender.name=八重コンデンサ
 
 item.item_broken_spawner.name=壊れたスポナー
@@ -103,15 +108,26 @@ item.item_dark_steel_axe.name=ダークスチールの斧
 item.item_dark_steel_axe.tooltip.effPowered=%s採掘速度 +%s（電力保有時）
 item.item_dark_steel_axe.tooltip.multiHarvest=スニークすることで樹木の一括伐採が可能（電力保有時）。
 
+item.item_dark_steel_crook.name=ダークスチールの収穫鎌
+item.item_dark_steel_crook.tooltip.multiHarvest=スニークすることで作物の一括収穫が可能（電力保有時）。
+
 item.item_dark_steel_shears.name=ダークスチールのハサミ
 item.item_dark_steel_shears.tooltip.effPowered=%s採掘速度 +%s（電力保有時）
 item.item_dark_steel_shears.tooltip.multiHarvest=広範囲のブロック・ヒツジの刈り取りが可能（電力保有時）。
 
+item.item_dark_steel_treetap.name=ダークスチールのツリータップ
+item.item_dark_steel_treetap.tooltip.common.line1=農業装置でのみ使用可能。
+
+item.item_dark_steel_hand.name=ダークスチールのバックホー
+item.item_dark_steel_hand.tooltip.common.line1=農業装置でのみ使用可能。
+item.item_dark_steel_hand.tooltip.detailed.line1=クワを装置用途に改良したもの。
+
 item.item_dark_steel_bow.name=ダークスチールの弓
+item.item_end_steel_bow.name=エンドスチールの弓
 
 item.item_dark_steel_armor.tooltip.line1=%s高い防御力を持つ（電力保有時）。
 item.item_dark_steel_armor.tooltip.levelcost.line1=%s%s：
-item.item_dark_steel_armor.tooltip.levelcost.line2=%s%s  %s + %s レベル
+item.item_dark_steel_armor.tooltip.levelcost.line2=%s%s  %s
 
 item.item_dark_steel_boots.name=ダークスチールのブーツ
 item.item_dark_steel_boots.tooltip.line1=落下ダメージを無効化（電力保有時）。
@@ -122,14 +138,54 @@ item.item_dark_steel_helmet.name=ダークスチールのヘルメット
 
 item.item_dark_steel_leggings.name=ダークスチールのレギンス
 
-item.item_end_steel_boots.name=エンダーブーツ
+item.item_dark_steel_shield.name=ダークスチールの盾
+item.item_dark_steel_shield.black.name=黒色のダークスチールの盾
+item.item_dark_steel_shield.red.name=赤色のダークスチールの盾
+item.item_dark_steel_shield.green.name=緑色のダークスチールの盾
+item.item_dark_steel_shield.brown.name=茶色のダークスチールの盾
+item.item_dark_steel_shield.blue.name=青色のダークスチールの盾
+item.item_dark_steel_shield.purple.name=紫色のダークスチールの盾
+item.item_dark_steel_shield.cyan.name=青緑色のダークスチールの盾
+item.item_dark_steel_shield.silver.name=銀色のダークスチールの盾
+item.item_dark_steel_shield.gray.name=灰色のダークスチールの盾
+item.item_dark_steel_shield.pink.name=桃色のダークスチールの盾
+item.item_dark_steel_shield.lime.name=黄緑色のダークスチールの盾
+item.item_dark_steel_shield.yellow.name=黄色のダークスチールの盾
+item.item_dark_steel_shield.lightBlue.name=空色のダークスチールの盾
+item.item_dark_steel_shield.magenta.name=赤紫色のダークスチールの盾
+item.item_dark_steel_shield.orange.name=橙色のダークスチールの盾
+item.item_dark_steel_shield.white.name=白色のダークスチールの盾
+
+item.item_end_steel_boots.name=エンドスチールのブーツ
 item.item_end_steel_boots.tooltip.line1=落下ダメージを無効化（電力保有時）。
 
-item.item_end_steel_chestplate.name=エンダーチェストプレート
+item.item_end_steel_chestplate.name=エンドスチールのチェストプレート
 
-item.item_end_steel_helmet.name=エンダーヘルメット
+item.item_end_steel_helmet.name=エンドスチールのヘルメット
 
-item.item_end_steel_leggings.name=エンダーレギンス
+item.item_end_steel_leggings.name=エンドスチールのレギンス
+
+item.item_end_steel_shield.name=エンドスチールの盾
+item.item_end_steel_shield.black.name=黒色のエンドスチールの盾
+item.item_end_steel_shield.red.name=赤色のエンドスチールの盾
+item.item_end_steel_shield.green.name=緑色のエンドスチールの盾
+item.item_end_steel_shield.brown.name=茶色のエンドスチールの盾
+item.item_end_steel_shield.blue.name=青色のエンドスチールの盾
+item.item_end_steel_shield.purple.name=紫色のエンドスチールの盾
+item.item_end_steel_shield.cyan.name=青緑色のエンドスチールの盾
+item.item_end_steel_shield.silver.name=銀色のエンドスチールの盾
+item.item_end_steel_shield.gray.name=灰色のエンドスチールの盾
+item.item_end_steel_shield.pink.name=桃色のエンドスチールの盾
+item.item_end_steel_shield.lime.name=黄緑色のエンドスチールの盾
+item.item_end_steel_shield.yellow.name=黄色のエンドスチールの盾
+item.item_end_steel_shield.lightBlue.name=空色のエンドスチールの盾
+item.item_end_steel_shield.magenta.name=赤紫色のエンドスチールの盾
+item.item_end_steel_shield.orange.name=橙色のエンドスチールの盾
+item.item_end_steel_shield.white.name=白色のエンドスチールの盾
+
+item.item_end_steel_sword.name=ジ・エンダー Mk2
+item.item_end_steel_pickaxe.name=エンドスチールのツルハシ
+item.item_end_steel_axe.name=エンドスチールの斧
 
 item.item_ender_food.enderios.name="エンデリオス"
 item.item_ender_food.enderios.tooltip.common.line1=栄養バランス抜群の朝食の一品。
@@ -153,9 +209,11 @@ item.item_magnet.everywhere.tooltip.detailed.line1=付近のアイテムを磁�
 item.item_magnet.everywhere.tooltip.detailed.line2=Shift 右クリックすることでオン・オフ切り替え。
 item.item_magnet.everywhere.tooltip.detailed.line3=動作には電力が必要で、ホットバーまたは
 item.item_magnet.everywhere.tooltip.detailed.line4=Baubles のスロットに配置するだけで機能。
+item.item_magnet.enabled=電磁石を起動しました
+item.item_magnet.disabled=電磁石を停止しました
 
 item.item_material.attractor_crystal.name=エンタイスクリスタル
-item.item_material.binder_composite.name=接合剤の複合原料
+item.item_material.binder_composite.name=導管接合剤の複合原料
 item.item_material.chassi_parts.name=マシンパーツ
 item.item_material.conduit_binder.name=導管接合材
 item.item_material.dust_wheat.name=小麦粉
@@ -166,6 +224,7 @@ item.item_material.gear_iron.name=インフィニティバイメタルの歯車
 item.item_material.gear_stone.name=石の複合歯車
 item.item_material.gear_vibrant.name=ヴァイブラントバイメタルの歯車
 item.item_material.gear_wood.name=木の歯車
+item.item_material.gear_darksteel.name=ダークバイメタルの歯車
 item.item_material.glider_wing.name=グライダーの片翼
 item.item_material.glider_wings.name=グライダーの両翼
 item.item_material.glider_wings.tooltip.detailed.line1=ダークスチールチェストプレートへのアップグレードが可能。
@@ -184,6 +243,7 @@ item.item_material.powder_infinity.name=インフィニティの粒
 item.item_material.powder_iron.name=鉄の粉
 item.item_material.powder_obsidian.name=黒曜石の粉
 item.item_material.powder_tin.name=錫の粉
+item.item_material.powder_soul.name=ソウルの粉
 item.item_material.precient_crystal.name=プレシェントクリスタル
 item.item_material.precient_powder.name=プレシェンスの粒
 item.item_material.pulsating_crystal.name=パルセートクリスタル
@@ -211,8 +271,8 @@ item.item_material.organic_black_dye.name=黒色の有機染料
 item.item_material.organic_black_dye.tooltip.detailed.line1=工業的に加工され、自然の色をそのまま抽出した化石植物物質。
 item.item_material.organic_black_dye.tooltip.detailed.line2=§7食べ物ではありません。目に入った場合はこすらずに水でよく洗う等応急処置をし、医師に相談してください。
 item.item_material.powder_lapis_lazuli.name=ラピスラズリの粉
-item.item_material.powder_quartz.name=石英の粉
-item.item_material.machine_dye.name=工業用コーティング材
+item.item_material.powder_quartz.name=クォーツの粉
+item.item_material.machine_dye.name=工業用混合粉
 item.item_material.machine_dye.tooltip.detailed.line1=有機および無機成分を含む工業的に生産された染料。生分解性はない。
 item.item_material.machine_dye.tooltip.detailed.line2=§7食べ物ではありません。目に入った場合はこすらずに水でよく洗う等応急処置をし、医師に相談してください。
 item.item_material.simple_machine_chassi.name=簡易型マシンシャーシ
@@ -222,7 +282,7 @@ item.item_material.simple_machine_chassi.tooltip.detailed.line2=§7ステンレ�
 item.item_material.soul_machine_chassi.name=ソウルマシンシャーシ
 item.item_material.soul_machine_chassi.tooltip.detailed.line1=鋼鉄の強度と魂の弾性を組み合わせた複雑なフレームワーク。
 item.item_material.soul_machine_chassi.tooltip.detailed.line2=§7機械が使用中にうめき声を上げるようになったら、ガストバスターズ １８００-GHASTS（１８００-４４２７８７）までお電話ください。
-item.item_material.soul_machine_dye.name=ソウル用コーティング材
+item.item_material.soul_machine_dye.name=ソウル用混合粉
 item.item_material.soul_machine_dye.tooltip.detailed.line1=有機および無機成分を含む工業的に生産された染料。生分解性はない。心霊体の未練を含んでいることがある。
 item.item_material.soul_machine_dye.tooltip.detailed.line2=§7食べ物ではありません。目に入った場合はこすらずに聖水でよく洗う等応急処置をし、神のお告げを受けてください。
 item.item_material.enhanced_machine_chassi.name=強化マシンシャーシ
@@ -239,9 +299,47 @@ item.item_material.withering_dust.name=枯凋の粉
 item.item_material.remote_awareness_upgrade.name=遠隔認識アップグレード
 item.item_material.dish.name=無線電力送信用パラボラアンテナ
 item.item_material.end_steel_machine_chassi.name=エンドスチールシャーシ
-item.item_material.enhanced_machine_dye.name=改良型マシンコーティング剤
+item.item_material.enhanced_machine_dye.name=改良型混合剤
 item.item_material.enhanced_machine_dye.tooltip.detailed.line1=魔法および無機成分を含む工業的に生産された染料。
 item.item_material.enhanced_machine_dye.tooltip.detailed.line2=§7注意：微量のダイヤモンドが混入している可能性があります。よく噛んでから飲み込んでください。グルテンフリーではありません。
+item.item_material.simple_chassi_parts.name=簡易型マシンパーツ
+item.item_material.enhanced_chassi_parts.name=改良型マシンパーツ
+item.item_material.cake_base.name=スポンジ生地
+item.item_material.infinity_rod.name=インフィニティロッド
+item.item_material.glazed_nether_brick.name=ネザーコッタ
+item.item_material.infinity_goop.name=インフィニティ試薬
+item.item_material.infinity_goop.tooltip.detailed.line1=永続的な粘着性を持ったエネルギーを伝導する物質。
+item.item_material.infinity_goop.tooltip.detailed.line2=ランドルフという人物はかつてこの試薬を所持していたとされ、彼の持つトラベルスタッフに６ヶ月もの間付着し続け、離れなかったという。
+item.item_material.clayed_glowstone.name=粘土入りグロウストーンダスト
+item.item_material.black_paper.name=黒紙
+item.item_material.token_animal.name=動物の証
+item.item_material.token_monster.name=モンスターの証
+item.item_material.token_player.name=プレイヤーの証
+
+item.item_alloy_endergy_ingot_crude_steel.name=粗鋼インゴット
+item.item_alloy_endergy_ingot_crystalline_alloy.name=結晶性合金インゴット
+item.item_alloy_endergy_ingot_melodic_alloy.name=メロディック合金インゴット
+item.item_alloy_endergy_ingot_stellar_alloy.name=ステラ合金インゴット
+item.item_alloy_endergy_ingot_crystalline_pink_slime.name=結晶性ピンクスライムインゴット
+item.item_alloy_endergy_ingot_crystalline_pink_slime.tooltip.detailed.line1=冷蔵庫にゼリーを放置すると現れるようだ。
+item.item_alloy_endergy_ingot_energetic_silver.name=エナジェティックシルバーインゴット
+item.item_alloy_endergy_ingot_vivid_alloy.name=ビビッド合金インゴット
+
+item.item_alloy_endergy_ball_crude_steel.name=粗鋼の粉砕用ボール
+item.item_alloy_endergy_ball_crystalline_alloy.name=結晶性合金の粉砕用ボール
+item.item_alloy_endergy_ball_melodic_alloy.name=メロディック合金の粉砕用ボール
+item.item_alloy_endergy_ball_stellar_alloy.name=ステラ合金の粉砕用ボール
+item.item_alloy_endergy_ball_crystalline_pink_slime.name=結晶性ピンクスライムの粉砕用ボール
+item.item_alloy_endergy_ball_energetic_silver.name=エナジェティックシルバーの粉砕用ボール
+item.item_alloy_endergy_ball_vivid_alloy.name=ビビッド合金の粉砕用ボール
+
+item.item_alloy_endergy_nugget_crude_steel.name=粗鋼の塊
+item.item_alloy_endergy_nugget_crystalline_alloy.name=結晶性合金の塊
+item.item_alloy_endergy_nugget_melodic_alloy.name=メロディック合金の塊
+item.item_alloy_endergy_nugget_stellar_alloy.name=ステラ合金の塊
+item.item_alloy_endergy_nugget_crystalline_pink_slime.name=結晶性ピンクスライムの塊
+item.item_alloy_endergy_nugget_energetic_silver.name=エナジェティックシルバーの塊
+item.item_alloy_endergy_nugget_vivid_alloy.name=ビビッド合金の塊
 
 item.item_rod_of_return.name=リターンロッド
 item.item_rod_of_return.tooltip.detailed.line1=使用することでテレパッドへテレポート。
@@ -298,6 +396,19 @@ tile.block_infinity_fog.tooltip.detailed.line1=インフィニティの粒が破
 tile.block_infinity_fog.tooltip.detailed.line2=空気中に放出されれば、即座に粉塵雲を形成し蔓延してしまう。形態は非常に不規則。触れることは、少なくとも健康に害を及ぼす危険があり、その影響は計り知れない。
 tile.block_infinity_fog.tooltip.detailed.line3=粉が降り積もろうものなら、その地は悪に侵されるであろう。§6§lエンダーマン§r§6を中心としたモンスターが現れ始めたらそれが最後だ。
 
+tile.block_holy_fog.name=グロウストーンナノ粒子
+tile.block_holy_fog.tooltip.common.line1=（PM2.5）
+tile.block_holy_fog.tooltip.detailed.line1=グロウストーンをナノレベルにまで粉砕することで、永続的に空中に存在させることが可能となる。
+tile.block_holy_fog.tooltip.detailed.line2=片手一杯の量で１６ブロックの範囲を覆う。
+tile.block_holy_fog.tooltip.detailed.line3=§lアンデッド§rに対して有効な場合がある。
+
+tile.block_infinity_0.name=インフィニティダストブロック
+tile.block_infinity_0.tooltip.common.line1=今にも崩れそうだ。
+tile.block_infinity_1.name=圧縮インフィニティダストブロック
+tile.block_infinity_1.tooltip.common.line1=今にも崩れそうだ。
+tile.block_infinity_2.name=重圧縮インフィニティダストブロック
+tile.block_infinity_2.tooltip.common.line1=今にも崩れそうだ。
+
 tile.block_alloy.name=合金ブロック
 tile.block_alloy.conductive_iron.name=融解電導鉄ブロック
 tile.block_alloy.dark_steel.name=ダークスチールブロック
@@ -308,12 +419,18 @@ tile.block_alloy.redstone_alloy.name=レッドストーン合金ブロック
 tile.block_alloy.soularium.name=ソウラリウムブロック
 tile.block_alloy.vibrant_alloy.name=ヴァイブラント合金ブロック
 tile.block_alloy.end_steel.name=エンドスチールブロック
+tile.block_alloy.construction_alloy.name=鉄合金ブロック
+
+tile.block_alloy_endergy.name=エンデルギー合金ブロック
+tile.block_alloy_endergy.crude_steel.name=粗鋼ブロック
+tile.block_alloy_endergy.crystalline_alloy.name=結晶性合金ブロック
+tile.block_alloy_endergy.melodic_alloy.name=メロディック合金ブロック
+tile.block_alloy_endergy.stellar_alloy.name=ステラ合金ブロック
+tile.block_alloy_endergy.crystalline_pink_slime.name=結晶性ピンクスライムブロック
+tile.block_alloy_endergy.energetic_silver.name=エナジェティックシルバーブロック
+tile.block_alloy_endergy.vivid_alloy.name=ビビッド合金ブロック
 
 tile.block_cold_fire.name=冷たい炎
-
-tile.block_dark_fused_glass.name=遮光高透過ガラス
-
-tile.block_dark_fused_quartz.name=遮光石英ガラス
 
 tile.block_dark_iron_bars.name=ダークスチール鉄格子
 
@@ -322,9 +439,20 @@ tile.block_end_iron_bars.name=エンドスチールの格子
 tile.block_dark_steel_anvil.name=ダークスチールの金床
 tile.block_dark_steel_anvil.tooltip.common.line1=高耐久。
 tile.block_dark_steel_anvil.tooltip.detailed.line1=通常の金床より長持ち。
+tile.block_dark_steel_anvil.tooltip.detailed.line2=アップグレードの適用・削除が行える。
 tile.block_dark_steel_anvil.intact.name=ダークスチールの金床
 tile.block_dark_steel_anvil.slightlyDamaged.name=少し壊れたダークスチールの金床
 tile.block_dark_steel_anvil.veryDamaged.name=かなり壊れたダークスチールの金床
+
+tile.block_dark_paper_anvil.name=黒紙の金床
+tile.block_dark_paper_anvil.tooltip.common.line1=低耐久。
+tile.block_dark_paper_anvil.tooltip.detailed.line1=通常の金床よりとても脆い。
+tile.block_dark_paper_anvil.tooltip.detailed.line2=アップグレードの適用・削除が行える。
+tile.block_dark_paper_anvil.intact.name=黒紙の金床
+tile.block_dark_paper_anvil.slightlyDamaged.name=少し壊れた黒紙の金床
+tile.block_dark_paper_anvil.veryDamaged.name=かなり壊れた黒紙の金床
+
+tile.block_broken_anvil.name=壊れたダークスチールの金床
 
 tile.block_dark_steel_ladder.name=ダークスチールのはしご
 tile.block_dark_steel_ladder.tooltip.common.line1=通常のはしごより速く昇り降りが可能。
@@ -397,15 +525,60 @@ tile.block_enderman_skull.tormented.name=悩めるエンダーマンの頭
 tile.block_enderman_skull.reanimated.name=蘇生したエンダーマンの頭
 tile.block_enderman_skull.reanimated_tormented.name=蘇生した悩めるエンダーマンの頭
 
-tile.block_enlightened_fused_glass.name=発光高透過ガラス
-
-tile.block_enlightened_fused_quartz.name=発光石英ガラス
-
 tile.block_exit_rail.name=脱線レール
 
+tile.block_fused_quartz.name=クォーツガラス
 tile.block_fused_glass.name=高透過ガラス
+tile.block_enlightened_fused_quartz.name=発光クォーツガラス
+tile.block_enlightened_fused_glass.name=発光高透過ガラス
+tile.block_dark_fused_quartz.name=遮光クォーツガラス
+tile.block_dark_fused_glass.name=遮光高透過ガラス
 
-tile.block_fused_quartz.name=石英ガラス
+tile.block_holy_fused_quartz.name=クォーツガラス
+tile.block_holy_fused_glass.name=高透過ガラス
+tile.block_holy_enlightened_fused_quartz.name=発光クォーツガラス
+tile.block_holy_enlightened_fused_glass.name=発光高透過ガラス
+tile.block_holy_dark_fused_quartz.name=遮光クォーツガラス
+tile.block_holy_dark_fused_glass.name=遮光高透過ガラス
+
+tile.block_unholy_fused_quartz.name=クォーツガラス
+tile.block_unholy_fused_glass.name=高透過ガラス
+tile.block_unholy_enlightened_fused_quartz.name=発光クォーツガラス
+tile.block_unholy_enlightened_fused_glass.name=発光高透過ガラス
+tile.block_unholy_dark_fused_quartz.name=遮光クォーツガラス
+tile.block_unholy_dark_fused_glass.name=遮光高透過ガラス
+
+tile.block_pasture_fused_quartz.name=クォーツガラス
+tile.block_pasture_fused_glass.name=高透過ガラス
+tile.block_pasture_enlightened_fused_quartz.name=発光クォーツガラス
+tile.block_pasture_enlightened_fused_glass.name=発光高透過ガラス
+tile.block_pasture_dark_fused_quartz.name=遮光クォーツガラス
+tile.block_pasture_dark_fused_glass.name=遮光高透過ガラス
+
+tile.block_not_holy_fused_quartz.name=クォーツガラス
+tile.block_not_holy_fused_glass.name=高透過ガラス
+tile.block_not_holy_enlightened_fused_quartz.name=発光クォーツガラス
+tile.block_not_holy_enlightened_fused_glass.name=発光高透過ガラス
+tile.block_not_holy_dark_fused_quartz.name=遮光クォーツガラス
+tile.block_not_holy_dark_fused_glass.name=遮光高透過ガラス
+
+tile.block_not_unholy_fused_quartz.name=クォーツガラス
+tile.block_not_unholy_fused_glass.name=高透過ガラス
+tile.block_not_unholy_enlightened_fused_quartz.name=発光クォーツガラス
+tile.block_not_unholy_enlightened_fused_glass.name=発光高透過ガラス
+tile.block_not_unholy_dark_fused_quartz.name=遮光クォーツガラス
+tile.block_not_unholy_dark_fused_glass.name=遮光高透過ガラス
+
+tile.block_not_pasture_fused_quartz.name=クォーツガラス
+tile.block_not_pasture_fused_glass.name=高透過ガラス
+tile.block_not_pasture_enlightened_fused_quartz.name=発光クォーツガラス
+tile.block_not_pasture_enlightened_fused_glass.name=発光高透過ガラス
+tile.block_not_pasture_dark_fused_quartz.name=遮光クォーツガラス
+tile.block_not_pasture_dark_fused_glass.name=遮光高透過ガラス
+
+tile.block_painted_fused_quartz.name=塗装したクォーツガラス
+tile.block_painted_fused_quartz1.name=塗装したクォーツガラス
+tile.block_painted_fused_quartz2.name=塗装したクォーツガラス
 
 tile.block_machine_base.name=（テクニカルブロック）
 tile.block_machine_io.name=（テクニカルブロック）
@@ -415,7 +588,6 @@ tile.block_painted_dark_steel_trapdoor.name=塗装したダークスチールの
 tile.block_painted_double_slab.name=塗装したハーフブロック
 tile.block_painted_fence.name=塗装したフェンス
 tile.block_painted_fence_gate.name=塗装したフェンスゲート
-tile.block_painted_fused_quartz.name=塗装した石英ガラス
 tile.block_painted_glowstone.name=塗装したグロウストーン
 tile.block_painted_glowstone_solid.name=塗装したグロウストーン
 tile.block_painted_iron_trapdoor.name=塗装した鉄のトラップドア
@@ -469,6 +641,8 @@ tile.block_painted_pressure_plate.wood.silent.tooltip.detailed.line1=塗装機�
 
 tile.block_painted_redstone.name=塗装したレッドストーン
 tile.block_painted_redstone_solid.name=塗装したレッドストーン
+tile.block_painted_packed_ice.name=塗装した氷塊
+tile.block_painted_packed_ice_solid.name=塗装した氷塊
 tile.block_painted_slab.name=塗装したハーフブロック
 tile.block_painted_stair.name=塗装した階段
 tile.block_painted_stone.name=塗装した丸石
@@ -478,6 +652,11 @@ tile.block_painted_stone_slab.name=塗装した石のハーフブロック
 tile.block_painted_stone_stair.name=塗装した石の階段
 tile.block_painted_wall.name=塗装した壁
 tile.block_painted_wooden_trapdoor.name=塗装した木のトラップドア
+tile.block_painted_workbench.name=塗装した作業台
+tile.block_painted_reinforced_obsidian.name=塗装した強化黒曜石
+tile.block_painted_reinforced_obsidian.tooltip.common.line1=ウィザーによる攻撃への耐性を持つ。
+tile.block_painted_reinforced_obsidian_nonsolid.name=塗装した強化黒曜石
+tile.block_painted_reinforced_obsidian_nonsolid.tooltip.common.line1=ウィザーによる攻撃への耐性を持つ。
 
 tile.block_painted_wooden_door.name=塗装した木のドア
 tile.block_painted_iron_door.name=塗装した鉄のドア
@@ -485,6 +664,7 @@ tile.block_painted_dark_steel_door.name=塗装したダークスチールのド�
 
 tile.block_reinforced_obsidian.name=強化黒曜石
 tile.block_reinforced_obsidian.tooltip.common.line1=ウィザーによる攻撃への耐性を持つ。
+
 tile.block_industrial_insulation.name=工業用断熱材
 tile.block_industrial_insulation.tooltip.common.line1=周囲の水を、スポンジのように吸収。
 
@@ -494,6 +674,11 @@ tile.block_self_resetting_lever30.name=セルフリセットレバー（３０�
 tile.block_self_resetting_lever60.name=セルフリセットレバー（１分）
 tile.block_self_resetting_lever300.name=セルフリセットレバー（５分）
 
+tile.block_self_resetting_lever5i.name=セルフリセットレバー（５秒・反転）
+tile.block_self_resetting_lever10i.name=セルフリセットレバー（１０秒・反転）
+tile.block_self_resetting_lever30i.name=セルフリセットレバー（３０秒・反転）
+tile.block_self_resetting_lever60i.name=セルフリセットレバー（１分・反転）
+tile.block_self_resetting_lever300i.name=セルフリセットレバー（５分・反転）
 
 
 enderio.machine.tooltip.configured=%s（設定済み）
@@ -504,11 +689,19 @@ enderio.block.tooltip.blastResistant=爆発耐性
 enderio.block.tooltip.lightEmitter=発光
 enderio.block.tooltip.lightBlocker=遮光
 
+enderio.block.tooltip.allowPlayers=Not solid for players
+enderio.block.tooltip.allowMonsters=Not solid for monsters
+enderio.block.tooltip.allowAnimals=Not solid for animals
+enderio.block.tooltip.disallowPlayers=Solid only for players
+enderio.block.tooltip.disallowMonsters=Solid only for monsters
+enderio.block.tooltip.disallowAnimals=Solid only for animals
+
 
 enderio.grindingball.tooltip.line1=%s準自生粉砕機の粉砕用ボール
-enderio.grindingball.tooltip.line2=%s出力：%s
-enderio.grindingball.tooltip.line3=%sボーナス出力：%s
-enderio.grindingball.tooltip.line4=%s消費電力：%s
+enderio.grindingball.tooltip.line2=%s出力：%s％
+enderio.grindingball.tooltip.line3=%s副産出力：%s％
+enderio.grindingball.tooltip.line4=%s消費電力：%s％
+enderio.grindingball.gui.durability=残量：%s％
 
 enderio.gui.permission.denied=アクセス権がありません
 
@@ -521,33 +714,30 @@ enderio.gui.conduit.io_mode.not_set=既定
 enderio.gui.tooltip.redstoneControlMode=レッドストーンモード
 
 enderio.config.title=Ender IO 設定
-enderio.config.power=電力設定
-enderio.config.power.tooltip=数字ばっかり…
-enderio.config.item=アイテム設定
-enderio.config.item.tooltip=気に入らないモノでも？
-enderio.config.efficiency=効率設定
-enderio.config.efficiency.tooltip=数字にはお引取り願いたい
+#enderio.config.power=電力設定
+#enderio.config.power.tooltip=数字ばっかり…
+#enderio.config.item=アイテム設定
+#enderio.config.item.tooltip=気に入らないモノでも？
 enderio.config.personal=個人設定
 enderio.config.personal.tooltip=案ずるな、口は堅い方だ
-enderio.config.anchor=トラベルアンカー
-enderio.config.anchor.tooltip=どこまでも続く
-enderio.config.staff=トラベルスタッフ
-enderio.config.staff.tooltip=いいか、使い方をちゃんと守るんだ 顔が吹っ飛ぶぞ
+#enderio.config.anchor=トラベルアンカー
+#enderio.config.anchor.tooltip=どこまでも続く
+#enderio.config.staff=トラベルスタッフ
+#enderio.config.staff.tooltip=いいか、使い方をちゃんと守るんだ 顔が吹っ飛ぶぞ
 enderio.config.darksteel=ダークスチール
 enderio.config.darksteel.tooltip=スチールと§oダーク§r§eスチールは全くの別物だとなんども・・・
 enderio.config.aesthetic=外観設定
 enderio.config.aesthetic.tooltip=かわいいよね？
-enderio.config.advanced=詳細設定
-enderio.config.advanced.tooltip=普通の設定じゃ満足できない人のために
-enderio.config.magnet=電磁石
-enderio.config.magnet.tooltip=はてさて、どう使うのやら
+#enderio.config.advanced=詳細設定
+#enderio.config.advanced.tooltip=普通の設定じゃ満足できない人のために
+enderio.config.items.magnet=電磁石
+enderio.config.items.magnet.tooltip=はてさて、どう使うのやら
 enderio.config.fluid=液体
 enderio.config.fluid.tooltip=リキッドはピュアなやつだ
 
-enderio.config.capacitor=コンデンサの値
 enderio.config.enchanter=エンチャント装置
 enderio.config.enchantments=エンチャント
-enderio.config.hoes=農業装置へのクワ使用可否
+#enderio.config.hoes=農業装置へのクワ使用可否
 enderio.config.misc=その他の設定
 enderio.config.rod=リターンロッド
 enderio.config.soulbinder=ソウルバインダーのレシピ
@@ -564,9 +754,28 @@ enderio.config.items.darksteel.tooltip=スチールと§oダーク§r§eスチ�
 enderio.config.items.darksteel.sword=ジ・エンダー
 enderio.config.items.darksteel.pickaxe=ツルハシ
 enderio.config.items.darksteel.axe=斧
+enderio.config.items.darksteel.crook=収穫鎌
+enderio.config.items.darksteel.bow=弓
+enderio.config.items.darksteel.treetap=ツリータップ
+enderio.config.items.darksteel.shears=ハサミ
+enderio.config.items.darksteel.armor=防具
 enderio.config.items.darksteel.upgrades=ダークスチールアップグレード
-enderio.config.items.darksteel.upgrades.explosive=爆破アップグレード
-enderio.config.items.darksteel.upgrades.speed=俊足アップグレード
+enderio.config.items.darksteel.upgrades.explosive=爆破アップグレード（ツルハシ）
+enderio.config.items.darksteel.upgrades.speed=俊足アップグレード（レギンス）
+enderio.config.items.darksteel.upgrades.hoe=フォークアップグレード（斧）
+enderio.config.items.darksteel.upgrades.empowered=エンパワーアップグレード
+enderio.config.items.darksteel.upgrades.jump=ジャンプアップグレード（ブーツ）
+enderio.config.items.darksteel.upgrades.swim=フィンアップグレード（ブーツ）
+enderio.config.items.darksteel.upgrades.nightvision=暗視アップグレード（ヘルメット）
+enderio.config.items.darksteel.upgrades.theoneprobe=The One Probe アップグレード（ヘルメット）
+enderio.config.items.darksteel.upgrades.glider=グライダーアップグレード（チェストプレート）
+enderio.config.items.darksteel.upgrades.elytra=エリトラアップグレード（チェストプレート）
+enderio.config.items.darksteel.upgrades.thaumaturgerobes=魔道士のローブアップグレード（防具）
+enderio.config.items.darksteel.upgrades.gogglesofrevealing=洞察の眼鏡アップグレード（ヘルメット）
+enderio.config.items.darksteel.upgrades.soundlocator=音響探知アップグレード（ヘルメット）
+enderio.config.items.darksteel.upgrades.travel=トラベルアップグレード（ツルハシ・剣）
+enderio.config.items.darksteel.upgrades.spoon=スプーンアップグレード（ツルハシ）
+enderio.config.items.darksteel.upgrades.padding=耳あてアップグレード（ヘルメット）
 
 enderio.config.recipe=レシピ設定
 enderio.config.recipe.tooltip=なんでも設定できるぞ
@@ -584,9 +793,15 @@ enderio.config.blocks.charges.ender=エンダー爆薬
 
 
 enchantment.enderio.soulbound=ソウルバウンド
-description.enchantment.enderio.soulbound=死んでしまってもアイテムが失われなくなる。
+description.enchantment.enderio.soulbound=死んでしまってもアイテムが失われなくなる。|死亡時に墓石を生成する Mod は機能しない。
 enchantment.enderio.witherarrow=ウィザリング
+description.enchantment.enderio.witherarrow=ウィザーを付与。|弓に適用可能。
 enchantment.enderio.witherweapon=衰退
+description.enchantment.enderio.witherweapon=ウィザーを付与。|近接武器に適用可能。
+enchantment.enderio.repellent=魔除け
+description.enchantment.enderio.repellent=攻撃してきた相手をまれにテレポートさせる。|高レベルなほど頻度とテレポート距離が増加。
+enchantment.enderio.shimmer=放光
+description.enchantment.enderio.shimmer=エンチャントされているかのようにアイテムを光り輝かせる。|それだけ。|本当に。|他に何もない。|役立たずだって？|そうともさ。
 
 potion.effect.enderio.withering=衰退のポーション
 splash_potion.effect.enderio.withering=衰退のスプラッシュポーション
@@ -603,6 +818,7 @@ splash_potion.effect.enderio.floating=昇天のスプラッシュポーション
 lingering_potion.effect.enderio.floating=昇天の残留ポーション
 tipped_arrow.effect.enderio.floating=昇天の矢
 
+
 enderio.farm.note.outputFull=収穫物満杯
 enderio.farm.note.noSeeds=種不足
 enderio.farm.note.noAxe=斧不足
@@ -610,6 +826,8 @@ enderio.farm.note.noHoe=クワ不足
 enderio.farm.note.noShears=ハサミ不足
 enderio.farm.note.noTreetap=ツリータップ不足
 enderio.farm.note.noPower=電力不足
+enderio.farm.note.noCapacitor=コンデンサ未挿入
+enderio.farm.note.noWater=水不足
 
 enderio.power.symbol=µI
 enderio.power.format=%s µI
@@ -617,6 +835,10 @@ enderio.power.format.of=%s / %s µI
 enderio.power.format.pertick=%s µI/t
 enderio.power.format.name=マイクロ・インフィニティ（%s）
 enderio.power.format.details=エネルギーの単位
+
+enderio.temperature.format.deg_c=%s ℃
+
+enderio.format.percent_efficiency=効率：%s％
 
 enderio.fluid.millibucket.format=%s mB
 enderio.fluid.millibucket.format.name=%s mB / %s
@@ -628,55 +850,164 @@ enderio.fuel.tooltip.heading=燃料情報
 enderio.fuel.tooltip.generates=発電量：%s（%s）
 enderio.fuel.tooltip.burnTime=燃焼時間：%s ティック
 enderio.coolant.tooltip.heading=冷却材
-enderio.coolant.tooltip.degreesPerBucket=バケツ一杯分 %s°C
+enderio.coolant.tooltip.degreesPerBucket=%s ℃（バケツ一杯分）
 
+enderio.tooltip.anvilupgrades=アップグレード可能な機能：
+enderio.tooltip.anvilupgrades.all=すべてのアップグレード：
 
-enderio.tooltip.anvilupgrades=金床でアップグレード可能な機能：
-
-enderio.darksteel.upgrade.empowered_one.name=エンパワー
+enderio.darksteel.upgrade.empowered_one.name=エンパワー Ⅰ
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=電力：$P
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=電気のよりダメージを $D% 吸収。
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=電気により耐久値の消耗を $D% 軽減。
 
-enderio.darksteel.upgrade.empowered_two.name=エンパワーⅡ
+enderio.darksteel.upgrade.empowered_two.name=エンパワー Ⅱ
 enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=電力：$P
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=電気のよりダメージを $D% 吸収。
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=電気により耐久値の消耗を $D% 軽減。
 
-enderio.darksteel.upgrade.empowered_three.name=エンパワーⅢ
+enderio.darksteel.upgrade.empowered_three.name=エンパワー Ⅲ
 enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=電力：$P
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=電気のよりダメージを $D% 吸収。
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=電気により耐久値の消耗を $D% 軽減。
 
-enderio.darksteel.upgrade.empowered_four.name=エンパワーⅣ
+enderio.darksteel.upgrade.empowered_four.name=エンパワー Ⅳ
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=電力：$P
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=電気によりダメージを $D% 吸収。
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=電気により耐久値の消耗を $D% 軽減。
+
+enderio.darksteel.upgrade.empowered_five.name=エンパワー Ⅴ
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line1=電力：$P
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line2=電気により耐久値の消耗を $D% 軽減。
 
 enderio.darksteel.upgrade.travel.name=トラベル
 enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Shift 右クリックで短距離テレポート、また、トラベルアンカーや Ender IO の使用が可能。
 
 enderio.darksteel.upgrade.spoon.name=スプーン
-enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=スプーンがあるなら、それはシャベルだ。
+enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=スプーンがあれば、シャベルを必要とする人の役に立てるだろう。
 
 enderio.darksteel.upgrade.hoe.name=フォーク
-enderio.darksteel.upgrade.hoe.tooltip.detailed.line1=フォークを持っていれば、誰もがクワが欲しくなるものだ。
+enderio.darksteel.upgrade.hoe.tooltip.detailed.line1=フォークがあれば、耕すのに苦労しないだろう。
 
-enderio.darksteel.upgrade.tnt.name=爆破
-enderio.darksteel.upgrade.tnt.tooltip.detailed.line1=ツルハシに爆発性を加え、採掘時に周囲のブロックを巻き込む。
-enderio.darksteel.upgrade.tnt.tooltip.detailed.line2=爆風が爪のような弧を描く問題の改修が懸案となっている。
+enderio.darksteel.upgrade.tnt.enabled=爆破を起動しました
+enderio.darksteel.upgrade.tnt.disabled=爆破を停止しました
+
+enderio.darksteel.upgrade.tnt.0.name=爆破 Ⅰ
+enderio.darksteel.upgrade.tnt.0.tooltip.detailed.line1=ツルハシに爆発性を加え、採掘時に周囲のブロックを巻き込む。
+# translator note: "nail" is referencing Tinkers' hammer---"if all you have is a hammer, everything looks like a nail"
+enderio.darksteel.upgrade.tnt.0.tooltip.detailed.line2=爆風が爪のような弧を描く問題の改修が懸案となっている。
+
+enderio.darksteel.upgrade.tnt.1.name=爆破 Ⅱ
+enderio.darksteel.upgrade.tnt.1.tooltip.detailed.line1=ツルハシに爆発性を加え、採掘時に周囲のブロックを巻き込む。
+enderio.darksteel.upgrade.tnt.1.tooltip.detailed.line2=爆風が爪のような弧を描く問題の改修が懸案となっている。
+
+enderio.darksteel.upgrade.tnt.2.name=爆破 Ⅲ
+enderio.darksteel.upgrade.tnt.2.tooltip.detailed.line1=ツルハシに爆発性を加え、採掘時に周囲のブロックを巻き込む。
+enderio.darksteel.upgrade.tnt.2.tooltip.detailed.line2=爆風が爪のような弧を描く問題の改修が懸案となっている。
+
+enderio.darksteel.upgrade.tnt.3.name=爆破 Ⅳ
+enderio.darksteel.upgrade.tnt.3.tooltip.detailed.line1=ツルハシに爆発性を加え、採掘時に周囲のブロックを巻き込む。
+enderio.darksteel.upgrade.tnt.3.tooltip.detailed.line2=爆風が爪のような弧を描く問題の改修が懸案となっている。
+
+enderio.darksteel.upgrade.tnt.4.name=爆破 Ⅴ
+enderio.darksteel.upgrade.tnt.4.tooltip.detailed.line1=ツルハシに爆発性を加え、採掘時に周囲のブロックを巻き込む。
+# translator note: "ridiculous", "combs" and "ludicrous" are Spaceballs references, see video.
+enderio.darksteel.upgrade.tnt.4.tooltip.detailed.line2=出典：https://youtu.be/ygE01sOhzz0
+
+attribute.name.enderio.aoe.xz=採掘範囲
+attribute.name.enderio.aoe.y=採掘深度
+attribute.name.enderio.aoe.xyz=採掘量
+
+enderio.darksteel.upgrade.anvil.0.name=簡易金床
+enderio.darksteel.upgrade.anvil.0.tooltip.detailed.line1=これを適用中のアイテムのアップグレード着脱が可能になる。
+enderio.darksteel.upgrade.anvil.0.tooltip.detailed.line2=ホットキーまたはアップグレードを持って Shift 右クリックすることで GUI を開く。
+
+enderio.darksteel.upgrade.anvil.1.name=小型金床
+enderio.darksteel.upgrade.anvil.1.tooltip.detailed.line1=装備中のアイテムのアップグレード着脱が可能になる。
+enderio.darksteel.upgrade.anvil.1.tooltip.detailed.line2=ホットキーまたはアップグレードを持って Shift 右クリックすることで GUI を開く。
+
+enderio.darksteel.upgrade.anvil.2.name=携帯金床
+enderio.darksteel.upgrade.anvil.2.tooltip.detailed.line1=金床同様の機能が扱え、全アイテムのアップグレード着脱が可能になる。
+enderio.darksteel.upgrade.anvil.2.tooltip.detailed.line2=ホットキーまたはアップグレードを持って Shift 右クリックすることで GUI を開く。
+
+enderio.darksteel.upgrade.step_assist.name=ステップアシスト
+enderio.darksteel.upgrade.step_assist.tooltip.detailed.line1=ブロックを階段のように乗り越えられるようになる。
+
+item.item_dark_steel_upgrade.name=ダークスチールアップグレードの型
+item.item_dark_steel_upgrade.with=ダークスチールアップグレード（%s）
+
+# These are for the tooltips of item_dark_steel_upgrade:
+enderio.darksteel.upgrades.tooltip.lineitem=\u0020*\u0020%s
+enderio.darksteel.upgrades.tooltip.main=ダークスチール製アイテム専用のアップグレード。
+enderio.darksteel.upgrades.tooltip.dependencies=前提：
+enderio.darksteel.upgrades.tooltip.itemclasses=適用可能アイテム：
+enderio.darksteel.upgrades.tooltip.levels.line1=このアップグレードの使用には %s レベルが必要。
+enderio.darksteel.upgrades.tooltip.levels.line2=（手に持って右クリックで有効化可能）
+enderio.darksteel.upgrades.tooltip.apply.line1=アイテムへの適用が必要。
+enderio.darksteel.upgrades.tooltip.apply.line2=（手に持って Shift 右クリックするか、ダークスチールの金床で開く GUI から適用可能）
+
+enderio.darksteel.upgrades.check.prerequisite.missing=「%s」の適用が必要
+enderio.darksteel.upgrades.check.prerequisite.energy=エンパワー化が必要
+
+enderio.darksteel.upgrades.gui.not_levels=このアップグレードの使用には %s レベルが必要です
+enderio.darksteel.upgrades.gui.activated=アップグレードを有効化しました
+enderio.darksteel.upgrades.gui.no_items=アップグレード可能なダークスチール製アイテムを持っていません
+
+enderio.darksteel.upgrades.gui.not_installed=アップグレード可能なアイテムを持っていません
+enderio.darksteel.upgrades.gui.not_inserted=アップグレード可能なアイテムをスロットに配置してください
+enderio.darksteel.upgrades.gui.storage=ストレージ
+
+enderio.darksteel.upgrades.everything=全ダークスチール製アイテム
+enderio.darksteel.upgrades.weapons=ダークスチール製武器
+enderio.darksteel.upgrades.weapons.sword=ダークスチールの剣
+enderio.darksteel.upgrades.tools=ダークスチール製道具
+enderio.darksteel.upgrades.tools.axe=ダークスチールの斧
+enderio.darksteel.upgrades.tools.crook=ダークスチールの収穫鎌
+enderio.darksteel.upgrades.tools.pickaxe=ダークスチールのツルハシ
+enderio.darksteel.upgrades.armor=ダークスチール製防具
+enderio.darksteel.upgrades.armor.head=ダークスチールのヘルメット
+enderio.darksteel.upgrades.armor.chest=ダークスチールのチェストプレート
+enderio.darksteel.upgrades.armor.legs=ダークスチールのレギンス
+enderio.darksteel.upgrades.armor.feet=ダークスチールのブーツ
+
+enderio.darksteel.upgrade.carpet.name=平坦化
+enderio.darksteel.upgrade.carpet.tooltip.detailed.line1=爆破をカーペットのように平らにする。
+
+enderio.darksteel.upgrade.depth.name=深化
+enderio.darksteel.upgrade.depth.tooltip.detailed.line1=爆破をプレイヤーからなるべく離れた位置で発生させる。
 
 enderio.darksteel.upgrade.glider.name=グライダー
 enderio.darksteel.upgrade.glider.tooltip.detailed.line1=滑空を可能にする。
-enderio.darksteel.upgrade.glider.enabled=グライダーを展開
-enderio.darksteel.upgrade.glider.disabled=グライダーを収納
+enderio.darksteel.upgrade.glider.enabled=グライダーを展開しました
+enderio.darksteel.upgrade.glider.disabled=グライダーを収納しました
 
 enderio.darksteel.upgrade.elytra.name=エリトラ
 enderio.darksteel.upgrade.elytra.tooltip.detailed.line1=防具をエリトラとして機能させる。
 enderio.darksteel.upgrade.elytra.tooltip.detailed.line2=§4（エリトラ装備時のように飛行し、クリエイティブのような飛行は不可）
-enderio.darksteel.upgrade.elytra.enabled=エリトラを展開
-enderio.darksteel.upgrade.elytra.disabled=エリトラを収納
+enderio.darksteel.upgrade.elytra.enabled=エリトラを展開しました
+enderio.darksteel.upgrade.elytra.disabled=エリトラを収納しました
 
 enderio.darksteel.upgrade.sound.name=音響探知
-enderio.darksteel.upgrade.sound.tooltip.detailed.line1=付近で発声する音の位置を可視化。
-enderio.darksteel.upgrade.sound.enabled=音響探知を起動
-enderio.darksteel.upgrade.sound.disabled=音響探知を停止
+enderio.darksteel.upgrade.sound.tooltip.detailed.line1=付近で発声する音の位置を可視化する。
+enderio.darksteel.upgrade.sound.enabled=音響探知を起動しました
+enderio.darksteel.upgrade.sound.disabled=音響探知を停止しました
+
+enderio.darksteel.upgrade.padding.name=耳あて
+enderio.darksteel.upgrade.padding.tooltip.detailed.line1=付近で発生する音を防ぐ。
+
+enderio.darksteel.upgrade.direct.name=直送
+enderio.darksteel.upgrade.direct.tooltip.detailed.line1=採掘物を自身のインベントリへ直接テレポートさせる。
+
+enderio.darksteel.upgrade.inv.0.name=収納 Ⅰ
+enderio.darksteel.upgrade.inv.0.tooltip.detailed.line1=防具内にアイテムを収納可能にする。
+enderio.darksteel.upgrade.inv.0.tooltip.detailed.line2=収納量は部位によって異なる。
+enderio.darksteel.upgrade.inv.0.tooltip.detailed.line3=ホットキーを設定することで開くことが可能。
+
+enderio.darksteel.upgrade.inv.container=バッグ系アイテムは収納できません
+enderio.darksteel.upgrade.inv.big=アイテムが大きすぎます
+
+enderio.darksteel.upgrade.inv.1.name=収納 Ⅱ
+enderio.darksteel.upgrade.inv.1.tooltip.detailed.line1=防具内にアイテムをさらに収納可能にする。
+enderio.darksteel.upgrade.inv.1.tooltip.detailed.line2=ホットキーを設定することで開くことが可能。
+
+enderio.darksteel.upgrade.inv.2.name=収納 Ⅲ
+enderio.darksteel.upgrade.inv.2.tooltip.detailed.line1=防具内にアイテムをさらに収納可能にする。
+enderio.darksteel.upgrade.inv.2.tooltip.detailed.line2=ホットキーを設定することで開くことが可能。
 
 enderio.darksteel.upgrade.gogglesOfRevealing.name=洞察
 enderio.darksteel.upgrade.gogglesOfRevealing.tooltip.detailed.line1=Vis 軽減：5%
@@ -690,38 +1021,40 @@ enderio.darksteel.upgrade.thaumaturge_robes.legs.tooltip.detailed.line1=Vis 軽�
 enderio.darksteel.upgrade.thaumaturge_robes.feet.name=魔道士のブーツ
 enderio.darksteel.upgrade.thaumaturge_robes.feet.tooltip.detailed.line1=Vis 軽減：2%
 
-enderio.darksteel.upgrade.jump.enabled=跳躍を起動
-enderio.darksteel.upgrade.jump.disabled=跳躍を停止
+enderio.darksteel.upgrade.jump.enabled=跳躍を起動しました
+enderio.darksteel.upgrade.jump.disabled=跳躍を停止しました
 
 enderio.darksteel.upgrade.jump_one.name=跳躍
 enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=段差超えが可能になり、ジャンプ力が増加。
-enderio.darksteel.upgrade.stepAssist.enabled=段差アシストを起動
-enderio.darksteel.upgrade.stepAssist.disabled=段差アシストを停止
+enderio.darksteel.upgrade.stepAssist.enabled=ステップアシストを起動しました
+enderio.darksteel.upgrade.stepAssist.disabled=ステップアシストを停止しました
 
-enderio.darksteel.upgrade.jump_two.name=跳躍Ⅱ
+enderio.gui.step_assis_unavailable=ステップアシストは他の Mod により制限されている可能性があります
+
+enderio.darksteel.upgrade.jump_two.name=跳躍 Ⅱ
 enderio.darksteel.upgrade.jump_two.tooltip.detailed.line1=段差超えが可能になり、ジャンプ力が増加。
 enderio.darksteel.upgrade.jump_two.tooltip.detailed.line2=二段ジャンプが可能。
 
-enderio.darksteel.upgrade.jump_three.name=跳躍Ⅲ
+enderio.darksteel.upgrade.jump_three.name=跳躍 Ⅲ
 enderio.darksteel.upgrade.jump_three.tooltip.detailed.line1=段差超えが可能になり、ジャンプ力が増加。
 enderio.darksteel.upgrade.jump_three.tooltip.detailed.line2=三段ジャンプが可能。
 
 enderio.darksteel.upgrade.speed_one.name=俊足
 enderio.darksteel.upgrade.speed_one.tooltip.detailed.line1=移動速度が増加。
-enderio.darksteel.upgrade.speed.enabled=俊足を起動
-enderio.darksteel.upgrade.speed.disabled=俊足を停止
+enderio.darksteel.upgrade.speed.enabled=俊足を起動しました
+enderio.darksteel.upgrade.speed.disabled=俊足を停止しました
 
-enderio.darksteel.upgrade.speed_two.name=俊足Ⅱ
+enderio.darksteel.upgrade.speed_two.name=俊足 Ⅱ
 enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=移動速度が増加。
 
-enderio.darksteel.upgrade.speed_three.name=俊足Ⅲ
+enderio.darksteel.upgrade.speed_three.name=俊足 Ⅲ
 enderio.darksteel.upgrade.speed_three.tooltip.detailed.line1=移動速度が増加。
 
 enderio.darksteel.upgrade.swim.name=フィン
 
 enderio.darksteel.upgrade.nightVision.name=暗視
-enderio.darksteel.upgrade.nightVision.enabled=暗視を起動
-enderio.darksteel.upgrade.nightVision.disabled=暗視を停止
+enderio.darksteel.upgrade.nightVision.enabled=暗視を起動しました
+enderio.darksteel.upgrade.nightVision.disabled=暗視を停止しました
 
 enderio.darksteel.upgrade.top.name=The One Probe
 
@@ -748,6 +1081,12 @@ enderio.top.machine.ioMode.post=
 enderio.top.machine.outofpower=§4電力なし
 enderio.top.machine.active=稼働中
 enderio.top.machine.idle=待機中
+
+enderio.top.channel.send.pre=§e送信：§f
+enderio.top.channel.send.post=
+enderio.top.channel.recv.pre=§e受信：§f
+enderio.top.channel.recv.post=
+enderio.top.channel.none=§7なし
 
 enderio.top.progress.outofpower=§4電力不足
 
@@ -834,7 +1173,8 @@ enderio.item_item_filter_upgrade.clear_config_method=%sクラフトで初期化�
 enderio.item_item_filter_upgrade.clear_config_warning=%sフィルターの設定がすべて消去されます
 
 enderio.gui.generic.max=最大発電・消費電力：%s
-enderio.gui.generic.progress=進捗状況：%s%%
+enderio.gui.generic.loss=減衰：%s
+enderio.gui.generic.progress=進捗状況：%s ％
 enderio.gui.generic.ioMode.overlay.tooltip=搬入出設定
 enderio.gui.generic.ioMode.overlay.tooltip.visible.line1=搬入出設定
 enderio.gui.generic.ioMode.overlay.tooltip.visible.line2=Shift クリックすると
@@ -890,14 +1230,25 @@ enderio.color.magenta=赤紫色
 enderio.color.orange=橙色
 enderio.color.white=白色
 
+# EnumFacing
+enderio.facing.north=北
+enderio.facing.south=南
+enderio.facing.west=西
+enderio.facing.east=東
+enderio.facing.up=上
+enderio.facing.down=下
+
 enderio.generic.tooltip.paintedWith=%sで塗装済み
 enderio.generic.tooltip.unpainted=塗装なし
 
 enderio.wrench.permission.denied=操作権が§cありません
+enderio.wrench.permission.denied.blockbreak=ブロック破壊権が§cありません
 enderio.soulvial.denied=使用権が§cありません
 enderio.soulvial.owned.denied=使用権が§cありません§r - 所有者のいる動物は当人のみが捕獲できます
 enderio.soulvial.player.denied=§cプレイヤーは捕獲できません。§r瓶の中でゲームを楽しめると思いますか？
 enderio.soulvial.blacklisted.denied=使用権が§cありません§r - このエンティティは捕獲不可に設定されています
+enderio.soulvial.dead.denied=捕獲できませんでした。このエンティティはオウムのように§c死んでいます
+enderio.soulvial.unknown.denied=捕獲できませんでした。原因は不明です
 
 # There's a 1% change that a soul vial containing a pig is named this:
 enderio.easteregg.piginabottle=ベーコン入りの瓶
@@ -933,14 +1284,14 @@ enderio.loot.capacitor.entry.count=9
 enderio.loot.capacitor.entry.0=付属のメモには「%s」と記されている。
 enderio.loot.capacitor.entry.1=古代文字で書かれた文章を簡単に解読すると、「%s」と記されていることが判明した。これはなんだろう…
 enderio.loot.capacitor.entry.2=エンダースカルのチカラで、%s を手に入れたようだ。
-enderio.loot.capacitor.entry.3=強いてこれを説明するなら、「%s」という名前が良いだろう。
-enderio.loot.capacitor.entry.4=強いてこれを説明するなら、「%s」という名前にするのが精一杯だろう。
-enderio.loot.capacitor.entry.5=この「%s」は修繕屋ランドルフのものだ。不法投棄は許されないだろう。
-enderio.loot.capacitor.entry.6=この「%s」は元修繕屋ランドルフのものだ。不法投棄はむしろ歓迎されるだろう。
+enderio.loot.capacitor.entry.3=強いてこれを言い表すなら、「%s」という名前が良いだろう。
+enderio.loot.capacitor.entry.4=強いてこれを言い表すなら、「%s」という名前にするのが精一杯だろう。
+enderio.loot.capacitor.entry.5=この「%s」は修繕屋ランドルフのものだ。安易に捨てることは許されないだろう。
+enderio.loot.capacitor.entry.6=この「%s」は元修繕屋ランドルフのものだ。捨てても問題ないだろう。
 enderio.loot.capacitor.entry.7=「%s」から Capacitor 1 への無償アップグレードが可能になりました。OK を押すか、キャンセルしてください。
 enderio.loot.capacitor.entry.8=この「%s」を別の機械に入れて、どう機能するのか探るといい。Google 先生に頼るのも悪くないだろう。
 
-enderio.loot.capacitor.title.count=22
+enderio.loot.capacitor.title.count=24
 enderio.loot.capacitor.title.0=珍しいコンデンサ
 enderio.loot.capacitor.title.1=平凡なコンデンサ
 enderio.loot.capacitor.title.2=発見されしコンデンサ
@@ -963,14 +1314,20 @@ enderio.loot.capacitor.title.18=名無し
 enderio.loot.capacitor.title.19=物体
 enderio.loot.capacitor.title.20=何か
 enderio.loot.capacitor.title.21=つまらない物
+enderio.loot.capacitor.title.22=助けて！ゲームに閉じ込められちゃったの！
+enderio.loot.capacitor.title.23=助けて！ゲーム工場に閉じ込められちゃったの！                                                         
 
+enderio.keybind.inventory=防具収納の開閉
+enderio.keybind.inventory.none_equipped=収納可能な防具を装備していません
+enderio.keybind.dsu=ダークスチールアップグレードインベントリの開閉
 enderio.keybind.glidertoggle=グライダー/エリトラの切り替え
 enderio.keybind.soundlocator=音響探知
 enderio.keybind.nightvision=暗視
 enderio.keybind.gogglesofrevealing=洞察の眼鏡
-enderio.keybind.stepassist=段差アシスト
+enderio.keybind.stepassist=ステップアシスト
 enderio.keybind.speed=俊足
 enderio.keybind.jump=跳躍
+enderio.keybind.tnt=爆破
 enderio.keybind.top=The One Probe の切り替え（ヘルメットアップグレード）
 enderio.keybind.yetawrenchmode=イェタレンチのモード切り替え
 enderio.keybind.magnet=電磁石の切り替え
@@ -983,6 +1340,7 @@ key.category.darksteelarmor=ダークスチール防具
 key.category.tools=Ender IO 道具
 
 enderio.gui.probe.copied=導管の設定をコピーしました
+enderio.gui.probe.pasted=導管の設定をペーストしました
 
 # unless we want to copy the sound, it will always show this subtitle.
 subtitles.entity.enderman.teleport=何かがテレポートする
@@ -1017,12 +1375,12 @@ enderio.advancement.gear.g5_vibrant_gear.desc=ヴァイブラントバイメタ�
 
 # Filters
 enderio.gui.item_filter.damage.disabled=耐久消耗無視
-enderio.gui.item_filter.damage.damage_00_25=２５% 以下耐久消耗
-enderio.gui.item_filter.damage.damage_25_00=２６% 以上耐久消耗
-enderio.gui.item_filter.damage.damage_00_50=５０% 以下耐久消耗
-enderio.gui.item_filter.damage.damage_50_00=５１% 以上耐久消耗
-enderio.gui.item_filter.damage.damage_00_75=７５% 以下耐久消耗
-enderio.gui.item_filter.damage.damage_75_00=７６% 以上耐久消耗
+enderio.gui.item_filter.damage.damage_00_25=２５％以下耐久消耗
+enderio.gui.item_filter.damage.damage_25_00=２６％以上耐久消耗
+enderio.gui.item_filter.damage.damage_00_50=５０％以下耐久消耗
+enderio.gui.item_filter.damage.damage_50_00=５１％以上耐久消耗
+enderio.gui.item_filter.damage.damage_00_75=７５％以下耐久消耗
+enderio.gui.item_filter.damage.damage_75_00=７６％以上耐久消耗
 enderio.gui.item_filter.damage.damage_00_00=耐久消耗なし
 enderio.gui.item_filter.damage.damage_01_00=耐久消耗あり
 enderio.gui.item_filter.damage.damage_yes=耐久消耗する
@@ -1059,13 +1417,18 @@ enderio.gui.basic_item_filter=基本アイテムフィルター
 enderio.gui.advanced_item_filter=強化アイテムフィルター
 enderio.gui.limited_item_filter=搬入数制限アイテムフィルター
 enderio.gui.big_item_filter=大容量アイテムフィルター
+# Note big_advanced_item_filter doesn't have enough space for the full name
 enderio.gui.big_advanced_item_filter=フィルター
 enderio.gui.existing_item_filter=既存アイテムフィルター
 enderio.gui.mod_item_filter=Mod アイテムフィルター
 enderio.gui.power_item_filter=電力保有アイテムフィルター
 enderio.gui.species_item_filter=品種アイテムフィルター
+enderio.gui.soul_filter_normal=ソウルアイテムフィルター
+enderio.gui.soul_filter_big=大容量ソウルアイテムフィルター
+enderio.gui.enchantment_filter_normal=エンチャントアイテムフィルター
+enderio.gui.enchantment_filter_big=大容量エンチャントアイテムフィルター
 
-enderio.gui.fluid_filter=液体フィルター
+enderio.gui.fluid_filter=基本液体フィルター
 
 enderio.gui.redstone_filter.and=レッドストーン AND フィルター
 enderio.gui.redstone_filter.or=レッドストーン OR フィルター
@@ -1088,6 +1451,11 @@ enderio.gui.redstone_filter.count=計測回数：
 enderio.gui.redstone_filter.time=時間：
 
 enderio.gui.infinity_recipe_dimensions=オーバーワールド限定
+enderio.gui.infinity_recipe_dimensions.multi=一部ディメンション
+enderio.gui.infinity_recipe_dimensions.these=以下で入手可能：
+enderio.gui.infinity_recipe_dimensions.list.here=- %s <-- 現在地
+enderio.gui.infinity_recipe_dimensions.list=- %s
+enderio.gui.infinity_recipe_dimensions.nothere=現在のディメンションでは入手できません
 
 item.item_basic_item_filter.name=基本アイテムフィルター
 item.item_advanced_item_filter.name=強化アイテムフィルター
@@ -1097,8 +1465,12 @@ item.item_big_advanced_item_filter.name=強化大容量アイテムフィルタ�
 item.item_existing_item_filter.name=既存アイテムフィルター
 item.item_mod_item_filter.name=Mod アイテムフィルター
 item.item_power_item_filter.name=電力保有アイテムフィルター
+item.item_soul_filter_normal.name=ソウルアイテムフィルター
+item.item_soul_filter_big.name=大容量ソウルアイテムフィルター
+item.item_enchantment_filter_normal.name=エンチャントアイテムフィルター
+item.item_enchantment_filter_big.name=大容量エンチャントアイテムフィルター
 
-item.item_fluid_filter.name=液体フィルター
+item.item_fluid_filter.name=基本液体フィルター
 
 item.item_redstone_not_filter.name=レッドストーン NOT フィルター
 item.item_redstone_or_filter.name=レッドストーン OR フィルター
@@ -1114,9 +1486,9 @@ item.item_redstone_timer_filter.name=レッドストーンタイマーフィル�
 
 tile.block_confusion_charge.name=眩惑の爆薬
 tile.block_ender_charge.name=エンダー爆薬
-tile.block_concussion_charge.name=脳震盪の爆薬
+tile.block_concussion_charge.name=震動の爆薬
 
-enderio.owlegg.no_owl=フクロウは存在しません（要 Ender IO Zoo）
+enderio.owlegg.no_owl=フクロウが存在しません（要 Ender IO Zoo）
 item.item_owl_egg.name=フクロウの卵
 
 entity.enderio.owl_egg.name=フクロウの卵
@@ -1124,3 +1496,21 @@ entity.enderio.enderio.owl_egg.name=フクロウの卵
 
 entity.enderio.primed_charge.name=着火した爆薬
 entity.enderio.enderio.primed_charge.name=着火した爆薬
+
+enderio.tooltip.inventory_charger.need_upgrade=§4エネルギークリスタルが設置されていません
+enderio.tooltip.inventory_charger.enabled=アイテム充電器を起動しました
+enderio.tooltip.inventory_charger.disabled=アイテム充電器を停止しました
+
+item.item_inventory_charger_simple.name=簡易型アイテム充電器
+item.item_inventory_charger_simple.tooltip.detailed.line1=インベントリ内で隣に置いたアイテムを充電。右クリックで切り替え可能。
+item.item_inventory_charger_basic.name=初期型アイテム充電器
+item.item_inventory_charger_basic.tooltip.detailed.line1=インベントリ内で隣に置いたアイテムを充電。右クリックで切り替え可能。
+item.item_inventory_charger.name=アイテム充電器
+item.item_inventory_charger.tooltip.detailed.line1=インベントリ内で隣に置いたアイテムを充電。右クリックで切り替え可能。
+item.item_inventory_charger_vibrant.name=ヴァイブラントアイテム充電器
+item.item_inventory_charger_vibrant.tooltip.detailed.line1=インベントリ内で隣に置いたアイテムを充電。右クリックで切り替え可能。
+
+enderio.network.bad_config=エラー：Ender IO 設定の "%s.%s" の値は接続サーバーの設定値と異なります。この値はゲームの起動に影響し、サーバー側の値に対して低速となるため、プレイはできません。これを解決するには、サーバーとクライアントの Ender IO 設定ファイルを手動で同じものにするか、当該設定の値を「%s」に変更してください。
+enderio.network.autosync.connected=§4§l以下の値はサーバー側で固定されています。\u000a§e%s
+enderio.network.autosync.offline=%s\u000a§o以上の値はサーバー側と同様に設定してください。
+enderio.network.manusync=%s\u000a§o以上の値はサーバー側で固定されています。
