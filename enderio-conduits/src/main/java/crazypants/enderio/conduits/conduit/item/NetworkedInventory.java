@@ -291,17 +291,29 @@ public class NetworkedInventory {
     if (!canExtract()) {
       return;
     }
+
     List<Target> result = new ArrayList<NetworkedInventory.Target>();
-
     for (NetworkedInventory other : network.getInventories()) {
-      if ((con.isSelfFeedEnabled(conDir) || (other != this)) && other.canInsert()
-          && con.getInputColor(conDir) == other.getCon().getOutputColor(other.getConDir())) {
+      if (!other.canInsert())
+        continue;
+      if (con.getInputColor(conDir) != other.getCon().getOutputColor(other.getConDir()))
+        continue;
 
-        if (ConduitConfig.usePhyscialDistance.get()) {
-          sendPriority.add(new Target(other, distanceTo(other), other.isSticky(), other.getPriority()));
-        } else {
-          result.add(new Target(other, 9999999, other.isSticky(), other.getPriority()));
+      if (other == this) {
+        if (!con.isSelfFeedEnabled(conDir))
+          continue;
+      } else {
+        // If the source have enabled input and have higher or equal priority
+        // than the potential target, don't transfer there
+        if (this.canInsert() && Integer.compare(this.getPriority(), other.getPriority()) >= 0) {
+          continue;
         }
+      }
+
+      if (ConduitConfig.usePhyscialDistance.get()) {
+        sendPriority.add(new Target(other, distanceTo(other), other.isSticky(), other.getPriority()));
+      } else {
+        result.add(new Target(other, 9999999, other.isSticky(), other.getPriority()));
       }
     }
 
@@ -319,7 +331,6 @@ public class NetworkedInventory {
         Collections.sort(sendPriority);
       }
     }
-
   }
 
   private void calculateDistances(@Nonnull List<Target> targets, @Nonnull Map<BlockPos, Integer> visited, @Nonnull List<BlockPos> steps, int distance) {
