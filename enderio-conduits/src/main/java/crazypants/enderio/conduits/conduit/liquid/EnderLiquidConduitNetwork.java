@@ -118,15 +118,24 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     return tankMap.get(new NetworkTankKey(con, conDir));
   }
 
+  // this is called when a neighbor block pushes fluid into the conduit
   public int fillFrom(@Nonnull EnderLiquidConduit con, @Nonnull EnumFacing conDir, FluidStack resource, boolean doFill) {
     return fillFrom(getTank(con, conDir), resource, doFill);
   }
 
   public int fillFrom(@Nonnull NetworkTank tank, FluidStack resource, boolean doFill) {
 
-    if (filling) {
+    if (filling || resource == null) {
       return 0;
     }
+
+    /**
+     * Some targets change dependent on other targets (e.g. 2 conduit connections to the same tank). Simulation will differ from execution in this case. To
+     * prevent simulation from reporting higher amounts that execution can really move, we stop simulation after the first target. This limits throughput, but
+     * prevents errors (including voiding fluids and backspill into blocks with separate input and output tanks). It also makes sure that higher priority
+     * targets must be full before lower priority tanks get filled.
+     */
+    boolean firstOnly = !doFill;
 
     RoundRobinIterator<NetworkTank> iteratorForTank = getIteratorForTank(tank);
     if (!doFill) {
@@ -151,7 +160,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
           int vol = doFill ? target.externalTank.fill(resource.copy()) : target.externalTank.offer(resource.copy());
           remaining -= vol;
           filled += vol;
-          if (remaining <= 0) {
+          if (remaining <= 0 || (firstOnly && filled > 0)) {
             return filled;
           }
           resource.amount = remaining;
