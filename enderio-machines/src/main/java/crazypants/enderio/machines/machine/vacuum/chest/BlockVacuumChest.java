@@ -7,7 +7,6 @@ import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.inventory.EnderInventory;
 
 import crazypants.enderio.api.IModObject;
-import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.paint.IPaintable;
@@ -42,7 +41,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements ISmartRenderAwareBlock, IEioGuiHandler.WithPos, IResourceTooltipProvider,
-    IRedstoneConnectable, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveRenderers {
+    IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint, IHaveRenderers {
 
   public static BlockVacuumChest create(@Nonnull IModObject modObject) {
     BlockVacuumChest res = new BlockVacuumChest(modObject);
@@ -58,11 +57,6 @@ public class BlockVacuumChest extends BlockEio<TileVacuumChest> implements ISmar
 
   protected void initDefaultState() {
     setDefaultState(getBlockState().getBaseState().withProperty(EnumRenderMode.RENDER, EnumRenderMode.AUTO));
-  }
-
-  @Override
-  public boolean shouldRedstoneConduitConnect(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing from) {
-    return true;
   }
 
   @Override

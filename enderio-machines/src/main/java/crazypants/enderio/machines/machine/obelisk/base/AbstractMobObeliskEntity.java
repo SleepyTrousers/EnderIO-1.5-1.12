@@ -42,6 +42,7 @@ public abstract class AbstractMobObeliskEntity extends AbstractRangedObeliskEnti
   }
 
   protected boolean isMobInRange(EntityLivingBase mob) {
+    // TODO: after next endercore dep inc, change to contains(Entity)
     return mob != null && getBounds().contains(new Vec3d(mob.posX, mob.posY, mob.posZ));
   }
 

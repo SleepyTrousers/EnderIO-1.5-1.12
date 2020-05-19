@@ -25,10 +25,7 @@ public class ConnectivityTool {
   }
 
   public static boolean shouldAutoConnectRedstone(@Nonnull World world, @Nonnull IBlockState state, @Nonnull BlockPos pos, @Nonnull EnumFacing from) {
-    if (state.getBlock().canConnectRedstone(state, world, pos, from) || shouldAutoConnectRedstone(state)) {
-      return true;
-    }
-    return false;
+    return state.getBlock().canConnectRedstone(state, world, pos, from) || shouldAutoConnectRedstone(state);
   }
 
   public static void registerRedstoneAware(@Nonnull Block block) {

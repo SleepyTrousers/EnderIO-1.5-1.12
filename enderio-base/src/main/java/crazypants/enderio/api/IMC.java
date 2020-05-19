@@ -1,6 +1,5 @@
 package crazypants.enderio.api;
 
-import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import crazypants.enderio.base.conduit.redstone.ConnectivityTool;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
@@ -98,8 +97,7 @@ public final class IMC {
    * Key for an string message to register a block as connectable to insulated redstone conduits. Calls {@link ConnectivityTool#registerRedstoneAware(String)}
    * with the value of the message. The value has the same syntax that is used in the xml config files.
    * 
-   * @deprecated Using {@link Block#canConnectRedstone} or {@link IRedstoneConnectable} (deprecated) is generally preferred to this because those allow
-   *             location-, state- and side-awareness.
+   * @deprecated Using {@link Block#canConnectRedstone} is generally preferred to this because those allow location-, state- and side-awareness.
    */
   @Deprecated
   public static final String REDSTONE_CONNECTABLE_ADD = "redstone:connectable:add";
