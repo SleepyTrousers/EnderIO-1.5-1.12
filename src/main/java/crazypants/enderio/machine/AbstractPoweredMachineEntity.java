@@ -1,5 +1,6 @@
 package crazypants.enderio.machine;
 
+import crazypants.enderio.power.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
@@ -8,13 +9,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.enderio.core.common.vecmath.VecmathUtil;
 
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.material.ItemCapacitor;
 import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.ICapacitor;
-import crazypants.enderio.power.ICapacitorItem;
-import crazypants.enderio.power.IInternalPoweredTile;
-import crazypants.enderio.power.PowerHandlerUtil;
 
 public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity implements IInternalPoweredTile {
 
@@ -188,15 +183,8 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   @Override
   public void readCommon(NBTTagCompound nbtRoot) {
     super.readCommon(nbtRoot);
-    setCapacitor(Capacitors.values()[nbtRoot.getShort("capacitorType")]);
-    int energy;
-    if(nbtRoot.hasKey("storedEnergy")) {
-      float storedEnergyMJ = nbtRoot.getFloat("storedEnergy");
-      energy = (int) (storedEnergyMJ * 10);
-    } else {
-      energy = nbtRoot.getInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY);
-    }
-    setEnergyStored(energy);
+    handleCapacitorLoading(nbtRoot);
+    handleStoredEnergyLoading(nbtRoot);
   }
 
   /**
@@ -205,8 +193,51 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   @Override
   public void writeCommon(NBTTagCompound nbtRoot) {
     super.writeCommon(nbtRoot);
+
+    //Write Energy
     nbtRoot.setInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY, storedEnergyRF);
+    //Write Capacitor Type DEPRECATED
     nbtRoot.setShort("capacitorType", (short) capacitorType.ordinal());
+    //Write Actual Capacitor
+    writeCap(nbtRoot);
   }
 
+  private static final String CAPACITOR_TAG_STRING = "internalCapacitor";
+
+  private void writeCap(NBTTagCompound nbtRoot) {
+    NBTTagCompound cap = new NBTTagCompound();
+    cap.setInteger("MaxEnergyStored", capacitor.getMaxEnergyStored());
+    cap.setInteger("MaxEnergyExtracted", capacitor.getMaxEnergyExtracted());
+    cap.setInteger("MaxEnergyReceived", capacitor.getMaxEnergyReceived());
+    cap.setInteger("Tier", capacitor.getTier());
+    nbtRoot.setTag(CAPACITOR_TAG_STRING, cap);
+  }
+
+  private void readCap(NBTTagCompound nbtRoot) {
+    NBTTagCompound cap = nbtRoot.getCompoundTag(CAPACITOR_TAG_STRING);
+    setCapacitor(new BasicCapacitor(
+            cap.getInteger("Tier"),
+            cap.getInteger("MaxEnergyExtracted"),
+            cap.getInteger("MaxEnergyStored"),
+            cap.getInteger("MaxEnergyReceived")
+    ));
+  }
+
+  private void handleCapacitorLoading(NBTTagCompound nbtRoot){
+    if (nbtRoot.hasKey(CAPACITOR_TAG_STRING))
+      readCap(nbtRoot);
+    else  //Read Capacitor Type DEPRECATED
+      setCapacitor(Capacitors.values()[nbtRoot.getShort("capacitorType")]);
+  }
+
+  private void handleStoredEnergyLoading(NBTTagCompound nbtRoot){
+    int energy;
+    if (nbtRoot.hasKey("storedEnergy")) {
+      float storedEnergyMJ = nbtRoot.getFloat("storedEnergy");
+      energy = (int) (storedEnergyMJ * 10);
+    } else {
+      energy = nbtRoot.getInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY);
+    }
+    setEnergyStored(energy);
+  }
 }
