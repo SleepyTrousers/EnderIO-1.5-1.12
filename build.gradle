@@ -6,10 +6,24 @@ buildscript {
     }
     dependencies { classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT' }
 }
+plugins {
+    id 'idea'
+    id 'java'
+}
+
 
 apply plugin: 'forge'
 apply plugin: 'maven-publish'
 apply plugin: 'curseforge'
+
+idea.module.downloadJavadoc = true
+idea.module.downloadSources = true
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+compileJava.options.encoding = 'UTF-8'
 
 ext.buildnumber = 0
 if (System.getenv('BUILD_NUMBER') != null)
@@ -46,6 +60,7 @@ configurations {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
     maven { url = "http://mobiusstrip.eu/maven" }
     maven { url = "http://chickenbones.net/maven/" }
@@ -65,15 +80,26 @@ dependencies {
     compile "com.mod-buildcraft:buildcraft:${buildcraft_version}:api"
     compile "mcp.mobius.waila:Waila:${waila_version}_${minecraft_version}:dev"
     compile "net.sengir.forestry:${forestry_version}:api"
-    compile ("com.pahimar.ee3:EquivalentExchange3:${ee3_version}:dev") {
+    compileOnly ("com.pahimar.ee3:EquivalentExchange3:${ee3_version}:dev") {
         transitive = false
     }
     
     // WAILA ships really old CCC/CCL versions, so we force the new versions
     compile "codechicken:CodeChickenLib:${minecraft_version}-${ccl_version}:dev"
     compile "codechicken:CodeChickenCore:${minecraft_version}-${ccc_version}:dev"
-    
-    compile "li.cil.oc:OpenComputers:${opencomputers_version}:api"
+
+    compileOnly "li.cil.oc:OpenComputers:${opencomputers_version}:api"
+
+    // Missing Libs -_-' -bart
+    compileOnly "mekanism:MekanismAll:1.7.10-9.1.1.283:dev"
+    compileOnly "appeng:appliedenergistics2:rv3-beta-6:dev"
+    compileOnly "powercrystals:MineFactoryReloaded:[1.7.10]2.8.2B1-201:dev"
+    compileOnly "thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev"
+    compileOnly "dan200.computercraft:ComputerCraft:1.75"
+    compileOnly "com.azanor.baubles:Baubles:1.7.10-1.0.1.10:deobf"
+    compileOnly "mods.railcraft:Railcraft_1.7.10:9.12.3.0:dev"
+    compileOnly "codechicken:ForgeMultipart:1.7.10-1.2.0.347:dev"
+
 }
 
 sourceSets {
