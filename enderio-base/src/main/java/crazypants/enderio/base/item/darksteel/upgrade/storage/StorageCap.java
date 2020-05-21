@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
@@ -124,7 +125,7 @@ public class StorageCap extends ItemStackHandler {
   private boolean isLarge(@Nonnull ItemStack stack) {
     ByteBuf buffer = Unpooled.buffer();
     ByteBufUtils.writeItemStack(buffer, stack);
-    boolean result = buffer.writerIndex() > 500;
+    boolean result = buffer.writerIndex() > DarkSteelConfig.slotLimitBytes.get();
     buffer.release();
     return result;
   }
