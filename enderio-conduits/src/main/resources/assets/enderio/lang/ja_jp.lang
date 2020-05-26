@@ -78,37 +78,50 @@ tile.block_advanced_power_monitor.tooltip.detailed.line5=EnderIO のエネルギ
 
 enderio.gui.power_monitor.engine_control=エンジン制御
 enderio.gui.power_monitor.emit=Emit
-enderio.gui.power_monitor.engine_section1=ストレージが次より少ない際に信号を
+enderio.gui.power_monitor.engine_section1=ストレージが以下より少ない際に信号を
 enderio.gui.power_monitor.engine_section2=出力：
-enderio.gui.power_monitor.engine_section3=%。
-enderio.gui.power_monitor.engine_section4=ストレージが次の割合以上で停止：
+enderio.gui.power_monitor.engine_section3=％
+enderio.gui.power_monitor.engine_section4=ストレージが以下の割合以上で停止：
 enderio.gui.power_monitor.engine_section5=
 enderio.gui.power_monitor.of=/
-enderio.gui.power_monitor.conduit_storage=導管の通電量
-enderio.gui.power_monitor.capbank_storage=蓄電装置の蓄電量
-enderio.gui.power_monitor.machine_buffer=機械の蓄電量
+enderio.gui.power_monitor.conduit_storage=導管の総通電量
+enderio.gui.power_monitor.capbank_storage=蓄電装置の総蓄電量
+enderio.gui.power_monitor.machine_buffer=機械の総蓄電量
 enderio.gui.power_monitor.average_output=５秒間の平均出力
 enderio.gui.power_monitor.average_input=５秒間の平均入力
 enderio.gui.power_monitor.no_network_error=導管に接続されていません。データを表示するには導管に接続してください。
 
 # Conduit Probe
-enderio.gui.conduit_probe.network_heading=電力ネットワーク
-enderio.gui.conduit_probe.conduit_buffer=内部バッファ
-enderio.gui.conduit_probe.request_range=１ティックの要求量
-enderio.gui.conduit_probe.current_request=現在の要求
-enderio.gui.conduit_probe.item_heading=アイテム導管
-enderio.gui.conduit_probe.item_no_connections=には何も接続されていません
-enderio.gui.conduit_probe.no_power_from_side=はこの面から給電できません
-enderio.gui.conduit_probe.connection_dir=は次の面と接続しています：
-enderio.gui.conduit_probe.extracted_items=搬入アイテム
-enderio.gui.conduit_probe.extracted_item=アイテム
-enderio.gui.conduit_probe.no_outputs=の搬入先がありません
-enderio.gui.conduit_probe.inserted_into=は次のストレージに搬入されます：
-enderio.gui.conduit_probe.no_items=この導管にアイテムは運搬されません
-enderio.gui.conduit_probe.no_item=運搬できません
-enderio.gui.conduit_probe.receive_items=次のストレージからアイテムを運搬できます：
-enderio.gui.conduit_probe.receive_item1=次のストレージから
-enderio.gui.conduit_probe.receive_item2=運搬できます：
+enderio.gui.conduit_probe.item.heading=アイテム導管の接続面：%s
+enderio.gui.conduit_probe.item.heading.no_connections=このアイテム導管には何も接続されていません
+
+enderio.gui.conduit_probe.item.receive.no_items=\u0020- 搬入元なし
+enderio.gui.conduit_probe.item.receive.no_item=\u0020- アイテム %s の搬入元なし
+enderio.gui.conduit_probe.item.receive.items=\u0020- 以下から搬入可能：
+enderio.gui.conduit_probe.item.receive.item=\u0020- アイテム %s を以下から搬入可能：
+
+enderio.gui.conduit_probe.item.extract.no_item.no_targets=\u0020- 搬出先なし
+enderio.gui.conduit_probe.item.extract.no_item.targets=\u0020- 以下に搬出可能：
+enderio.gui.conduit_probe.item.extract.item.no_targets=\u0020- アイテム %s の搬出先なし
+enderio.gui.conduit_probe.item.extract.item.targets=\u0020- アイテム %s を以下に搬出可能：
+
+enderio.gui.conduit_probe.power.tracked_conduit.line1=エネルギー導管
+enderio.gui.conduit_probe.power.tracked_conduit.line2=\u0020- 内部バッファ：%s
+enderio.gui.conduit_probe.power.tracked_conduit.line3=\u0020- ５秒間の平均出力：%s
+enderio.gui.conduit_probe.power.tracked_conduit.line4=\u0020- ５秒間の平均入力：%s
+
+enderio.gui.conduit_probe.power.tracked_network.line1=エネルギーネットワーク
+enderio.gui.conduit_probe.power.tracked_network.line2=\u0020- 導管内の総通電量：%s
+enderio.gui.conduit_probe.power.tracked_network.line3=\u0020- 蓄電装置の総蓄電量：%s
+enderio.gui.conduit_probe.power.tracked_network.line4=\u0020- 接続装置の総蓄電量：%s
+enderio.gui.conduit_probe.power.tracked_network.line5=\u0020- ５秒間の平均出力：%s
+enderio.gui.conduit_probe.power.tracked_network.line6=\u0020- ５秒間の平均入力：%s
+
+enderio.gui.conduit_probe.redstone.heading=レッドストーン導管の接続面：%s
+enderio.gui.conduit_probe.redstone.heading.no_connections=このレッドストーン導管には何も接続されていません
+enderio.gui.conduit_probe.redstone.strong=\u0020- 強度 %s の強信号を出力中
+enderio.gui.conduit_probe.redstone.weak=\u0020- 強度 %s の弱信号を出力中
+enderio.gui.conduit_probe.redstone.external=\u0020- 強度 %s の信号を伝達中
 
 enderio.gui.conduit_energy.header=エネルギー導管
 enderio.gui.conduit_item.header=アイテム導管
@@ -151,7 +164,9 @@ enderio.gui.self_feed_disabled=循環無効
 enderio.gui.item_filter_upgrade=フィルターアップグレード
 enderio.gui.item_function_upgrade=機能アップグレード
 enderio.gui.item_function_upgrade2=速度アップグレードは１５個まで、
-enderio.gui.item_function_upgrade3=速度ダウングレードは１個まで搭載可能。
+enderio.gui.item_function_upgrade3=速度ダウングレードは３個まで搭載可能。
+enderio.gui.item_function_upgrade.details=出力量：
+enderio.gui.item_function_upgrade.details2=一度に %s 個
 enderio.gui.signal_color=信号色
 enderio.gui.priority=優先度
 
@@ -159,15 +174,22 @@ enderio.gui.liquid_auto_extract=自動搬出
 enderio.gui.liquid_filter=フィルター
 enderio.gui.liquid_whitelist=ホワイトリスト
 enderio.gui.liquid_blacklist=ブラックリスト
+enderio.gui.liquid_function_upgrade.details=出力量：
+enderio.gui.liquid_function_upgrade.details2=一度に %s％ / %s
 
 enderio.gui.redstone_signal_strength=強信号
+
+enderio.gui.enabled=有効
+enderio.gui.disabled=無効
+
+enderio.gui.conduit.network.unloaded=導管の一部がアンロードチャンクに設置されています
 
 # Advancements
 
 enderio.advancement.conduits.root.name=Ender IO 導管
 enderio.advancement.conduits.root.desc=一箇所にいくつパイプがあるんだ？
 
-enderio.advancement.conduits.binder_composite.name=モルタルなんかとは違う
+enderio.advancement.conduits.binder_composite.name=私はグラウトではない
 enderio.advancement.conduits.binder_composite.desc=導管接合材を作る
 
 # Temp?
