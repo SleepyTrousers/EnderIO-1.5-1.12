@@ -33,7 +33,7 @@ public class BlockItemElectricLight extends ItemEIO implements IResourceTooltipP
       float hitX, float hitY, float hitZ, @Nonnull IBlockState newState) {
 
     LightType type = LightType.fromMetadata(stack.getItemDamage());
-    IBlockState state = newState.withProperty(BlockElectricLight.TYPE, type);
+    IBlockState state = newState.withProperty(BlockElectricLight.TYPE, type).withProperty(BlockElectricLight.FACING, side.getOpposite());
     if (!world.setBlockState(pos, state, 3)) {
       return false;
     }

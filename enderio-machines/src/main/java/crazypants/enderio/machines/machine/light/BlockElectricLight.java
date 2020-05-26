@@ -126,7 +126,7 @@ public class BlockElectricLight extends BlockEio<TileElectricLight> implements I
   @Override
   public @Nonnull IBlockState getActualState(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     TileElectricLight te = getTileEntitySafe(world, pos);
-    return state.withProperty(FACING, te == null ? EnumFacing.DOWN : te.getFace());
+    return te == null ? state : state.withProperty(FACING, te.getFace());
   }
 
   @Override

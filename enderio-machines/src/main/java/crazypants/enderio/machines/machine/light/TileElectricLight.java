@@ -43,8 +43,6 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPoweredTi
 
   private boolean updatingLightNodes = false;
 
-  private boolean lastActive = false;
-
   private WirelessChargedLocation chargedLocation;
 
   @Store({ NBTAction.SAVE, NBTAction.CLIENT })
@@ -105,59 +103,59 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPoweredTi
       return;
     }
 
-    boolean isActivated = init ? world.isBlockPowered(pos) ^ isInverted() : lastActive;
-    if (requiresPower()) {
-      if (isActivated) {
-        if (!hasPower()) {
-          isActivated = false;
-        } else {
-          setEnergyStored(getEnergyStored() - RF_USE_PER_TICK);
-        }
-      }
+    final boolean isActive = world.getBlockState(pos).getValue(BlockElectricLight.ACTIVE);
+    boolean shouldActive = (world.isBlockPowered(pos) ^ isInverted()) && (!requiresPower() || hasPower());
 
+    if (requiresPower()) {
       if (init) {
         updateLightNodes();
       }
-    }
-
-    if (isActivated != lastActive || init) {
-
-      IBlockState bs = world.getBlockState(pos);
-      bs = bs.withProperty(BlockElectricLight.ACTIVE, isActivated);
-      world.setBlockState(pos, bs, 2);
-
-      if (requiresPower()) {
-        for (BlockPos ln : lightNodes) {
-          if (ln != null) {
-            bs = world.getBlockState(ln);
-            if (bs.getBlock() == block_light_node.getBlock()) {
-              bs = bs.withProperty(BlockLightNode.ACTIVE, isActivated);
-              world.setBlockState(ln, bs, 2);
-              world.notifyBlockUpdate(ln, bs, bs, 3);
-              world.checkLightFor(EnumSkyBlock.BLOCK, ln);
-            }
-          }
-        }
+      if (isWireless()) {
+        executeWirelessCharging();
       }
-      world.notifyBlockUpdate(pos, bs, bs, 3);
-      world.checkLightFor(EnumSkyBlock.BLOCK, pos);
-      init = false;
-      lastActive = isActivated;
+      if (shouldActive) {
+        setEnergyStored(getEnergyStored() - RF_USE_PER_TICK);
+      }
 
     }
 
-    if (isWireless()) {
+    if (init || (isActive != shouldActive)) {
+      setBlockstateAndNodes(shouldActive);
+    }
+
+    init = false;
+  }
+
+  private void executeWirelessCharging() {
+    if (energyStoredRF < getMaxEnergyStored()) {
       if (chargedLocation == null) {
         chargedLocation = new WirelessChargedLocation(this);
       }
-      if (energyStoredRF < getMaxEnergyStored()) {
-        boolean needInit = energyStoredRF == 0;
-        energyStoredRF += chargedLocation.takeEnergy(Math.min(getMaxEnergyStored() - energyStoredRF, 10));
-        if (needInit && energyStoredRF > 0) {
-          init = true;
+      energyStoredRF += chargedLocation.takeEnergy(Math.min(getMaxEnergyStored() - energyStoredRF, 10));
+    }
+  }
+
+  private void setBlockstateAndNodes(boolean isActivated) {
+    IBlockState bs = world.getBlockState(pos);
+    IBlockState bsnew = bs.withProperty(BlockElectricLight.ACTIVE, isActivated);
+    world.setBlockState(pos, bsnew, 2);
+
+    if (requiresPower()) {
+      for (BlockPos ln : lightNodes) {
+        if (ln != null) {
+          IBlockState lnbs = world.getBlockState(ln);
+          if (lnbs.getBlock() == block_light_node.getBlock()) {
+            IBlockState lnbsnew = lnbs.withProperty(BlockLightNode.ACTIVE, isActivated);
+            world.setBlockState(ln, lnbsnew, 2);
+            world.notifyBlockUpdate(ln, lnbs, lnbsnew, 3);
+            world.checkLightFor(EnumSkyBlock.BLOCK, ln);
+          }
         }
       }
     }
+
+    world.notifyBlockUpdate(pos, bs, bsnew, 3);
+    world.checkLightFor(EnumSkyBlock.BLOCK, pos);
   }
 
   public void onBlockRemoved() {
