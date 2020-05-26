@@ -195,4 +195,10 @@ public enum TransceiverRegistry {
     }
     return contents;
   }
+
+  public void reset() {
+    transceivers.clear();
+    iterators.clear();
+  }
+
 }

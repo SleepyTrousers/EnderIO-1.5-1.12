@@ -15,6 +15,7 @@ import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.config.ConfigHandlerEIO;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.machines.config.Config;
+import crazypants.enderio.machines.machine.transceiver.TransceiverRegistry;
 import crazypants.enderio.machines.network.PacketHandler;
 import info.loenwind.autoconfig.ConfigHandler;
 import net.minecraftforge.common.config.Configuration;
@@ -22,6 +23,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.network.NetworkCheckHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -74,6 +77,16 @@ public class EnderIOMachines implements IEnderIOAddon {
   @Nullable
   public Configuration getConfiguration() {
     return Config.F.getConfig();
+  }
+
+  @EventHandler
+  public void serverStopped(@Nonnull FMLServerStoppedEvent event) {
+    TransceiverRegistry.INSTANCE.reset();
+  }
+
+  @EventHandler
+  public static void onServerStart(FMLServerAboutToStartEvent event) {
+    TransceiverRegistry.INSTANCE.reset();
   }
 
   @Override
