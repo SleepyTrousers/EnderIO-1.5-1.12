@@ -220,6 +220,8 @@ tile.block_attractor_obelisk.name=Attractor Obelisk
 tile.block_attractor_obelisk.tooltip.detailed.line1=Entices mobs to walk to it
 tile.block_attractor_obelisk.tooltip.detailed.line2=Specify the mobs to effect by placing their souls within the device
 
+enderio.status.attractor_obelisk.unknown_mob=Attractor Obelisk at %s: Don't know how to attract %s
+
 tile.block_aversion_obelisk.name=Aversion Obelisk
 tile.block_aversion_obelisk.tooltip.detailed.line1=Prevents mobs from spawning within its area of effect
 

@@ -138,6 +138,7 @@ public enum Lang implements ILang {
   PROBE_SOLAR_LAST(".block_solar_panel.probe.last_access"),
   PROBE_SOLAR_NOSUN(".block_solar_panel.probe.no_sun"),
   PROBE_SOLAR_ALLSUN(".block_solar_panel.probe.all_sun"),
+  STATUS_ATTRACTOR_UNKNOWN_MOB(".status.attractor_obelisk.unknown_mob"),
 
   ;
 

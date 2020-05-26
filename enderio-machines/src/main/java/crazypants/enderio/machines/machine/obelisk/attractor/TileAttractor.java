@@ -1,9 +1,11 @@
 package crazypants.enderio.machines.machine.obelisk.attractor;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
@@ -17,15 +19,20 @@ import crazypants.enderio.base.machine.modes.EntityAction;
 import crazypants.enderio.base.network.PacketSpawnParticles;
 import crazypants.enderio.machines.config.config.AttractorConfig;
 import crazypants.enderio.machines.init.MachineObject;
+import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.obelisk.attractor.handlers.AttractionHandlers;
 import crazypants.enderio.machines.machine.obelisk.attractor.handlers.IMobAttractionHandler;
+import crazypants.enderio.machines.machine.obelisk.attractor.handlers.IMobAttractionHandler.State;
 import crazypants.enderio.machines.machine.obelisk.base.AbstractMobObeliskEntity;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fml.server.FMLServerHandler;
 import net.minecraftforge.server.permission.PermissionAPI;
 import net.minecraftforge.server.permission.context.TargetContext;
 
@@ -66,12 +73,10 @@ public class TileAttractor extends AbstractMobObeliskEntity {
     Iterator<Entry<EntityLiving, IMobAttractionHandler>> iterator = tracking.entrySet().iterator();
     while (iterator.hasNext()) {
       Entry<EntityLiving, IMobAttractionHandler> next = iterator.next();
-      if (next.getKey().isDead) {
-        iterator.remove();
-      } else if (!canAttract(next.getKey())) {
+      if (next.getKey().isDead || !canAttract(next.getKey())) {
         next.getValue().release(this, next.getKey());
         iterator.remove();
-      } else if (next.getKey().world.rand.nextInt(4) == 0) {
+      } else if (world.rand.nextInt(4) == 0) {
         PacketSpawnParticles.create(next.getKey(), EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL, EnumParticleTypes.VILLAGER_HAPPY);
       }
     }
@@ -97,17 +102,30 @@ public class TileAttractor extends AbstractMobObeliskEntity {
     }
   }
 
+  private static final @Nonnull Set<ResourceLocation> FAILED_MOBS = new HashSet<>();
+
   private void collectEntity(@Nonnull EntityLiving ent) {
-    for (IMobAttractionHandler handler : AttractionHandlers.instance.getRegistry()) {
-      if (handler.canAttract(this, ent)) {
-        handler.startAttracting(this, ent);
-        tracking.put(ent, handler);
-        PacketSpawnParticles.create(ent, EnumParticleTypes.HEART, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL,
-            EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL, EnumParticleTypes.VILLAGER_HAPPY);
-        return;
+    final ResourceLocation key = EntityList.getKey(ent);
+    if (!FAILED_MOBS.contains(key)) {
+      for (IMobAttractionHandler handler : AttractionHandlers.instance.getRegistry()) {
+        State state = handler.canAttract(this, ent);
+        if (state == State.CAN_ATTRACT) {
+          handler.startAttracting(this, ent);
+          tracking.put(ent, handler);
+          PacketSpawnParticles.create(ent, EnumParticleTypes.HEART, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL,
+              EnumParticleTypes.PORTAL, EnumParticleTypes.PORTAL, EnumParticleTypes.VILLAGER_HAPPY);
+          return;
+        } else if (state == State.ALREADY_ATTRACTING) {
+          return;
+        }
       }
+      Log.warn("Attractor Obelisk: Don't know how to attract " + key);
+      EntityPlayerMP player = FMLServerHandler.instance().getServer().getPlayerList().getPlayerByUUID(getOwner().getAsGameProfile().getId());
+      if (player != null) {
+        player.sendMessage(Lang.STATUS_ATTRACTOR_UNKNOWN_MOB.toChatServer(pos, key));
+      }
+      FAILED_MOBS.add(key);
     }
-    Log.warn("Attractor Obelisk: Don't know how to attract " + EntityList.getKey(ent));
   }
 
   @Override

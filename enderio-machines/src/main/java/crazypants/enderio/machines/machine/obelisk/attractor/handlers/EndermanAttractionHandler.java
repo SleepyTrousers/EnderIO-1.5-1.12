@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.obelisk.attractor.handlers;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.machines.machine.obelisk.attractor.TileAttractor;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityEnderman;
@@ -7,8 +9,12 @@ import net.minecraft.entity.monster.EntityEnderman;
 public class EndermanAttractionHandler extends AIAttractionHandler {
 
   @Override
-  public boolean canAttract(TileAttractor attractor, EntityLiving entity) {
-    return entity instanceof EntityEnderman && findAITask(null, entity) == null;
+  public @Nonnull State canAttract(TileAttractor attractor, EntityLiving entity) {
+    if (entity instanceof EntityEnderman) {
+      return super.canAttract(attractor, entity);
+    }
+    ;
+    return State.CANNOT_ATTRACT;
   }
 
   @Override

@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.obelisk.attractor.handlers;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.machines.machine.obelisk.attractor.TileAttractor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -14,8 +16,14 @@ import net.minecraft.util.math.MathHelper;
 public class SilverfishAttractorHandler implements IMobAttractionHandler {
 
   @Override
-  public boolean canAttract(TileAttractor attractor, EntityLiving entity) {
-    return entity instanceof EntitySilverfish;
+  public @Nonnull State canAttract(TileAttractor attractor, EntityLiving entity) {
+    if (entity instanceof EntitySilverfish) {
+      if (((EntityMob) entity).getAttackTarget() == attractor.getTarget()) {
+        return State.ALREADY_ATTRACTING;
+      }
+      return State.CAN_ATTRACT;
+    }
+    return State.CANNOT_ATTRACT;
   }
 
   @Override

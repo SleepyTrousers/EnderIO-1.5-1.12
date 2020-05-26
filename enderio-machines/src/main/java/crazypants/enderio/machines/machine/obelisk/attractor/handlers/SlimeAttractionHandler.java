@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.machine.obelisk.attractor.handlers;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.machines.machine.obelisk.attractor.TileAttractor;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntitySlime;
@@ -7,8 +9,11 @@ import net.minecraft.entity.monster.EntitySlime;
 public class SlimeAttractionHandler implements IMobAttractionHandler {
 
   @Override
-  public boolean canAttract(TileAttractor attractor, EntityLiving entity) {
-    return entity instanceof EntitySlime;
+  public @Nonnull State canAttract(TileAttractor attractor, EntityLiving entity) {
+    if (entity instanceof EntitySlime) {
+      return State.CAN_ATTRACT;
+    }
+    return State.CANNOT_ATTRACT;
   }
 
   @Override

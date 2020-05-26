@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.machines.machine.obelisk.attractor.TileAttractor;
@@ -15,8 +17,14 @@ import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 public class AIAttractionHandler implements IMobAttractionHandler {
 
   @Override
-  public boolean canAttract(TileAttractor attractor, EntityLiving entity) {
-    return !entity.isAIDisabled() && findAITask(null, entity) == null;
+  public @Nonnull State canAttract(TileAttractor attractor, EntityLiving entity) {
+    if (entity.isAIDisabled()) {
+      return State.CANNOT_ATTRACT;
+    }
+    if (findAITask(null, entity) == null) {
+      return State.ALREADY_ATTRACTING;
+    }
+    return State.CAN_ATTRACT;
   }
 
   @Override
