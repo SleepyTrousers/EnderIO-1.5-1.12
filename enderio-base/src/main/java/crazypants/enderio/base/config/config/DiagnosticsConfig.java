@@ -28,6 +28,9 @@ public final class DiagnosticsConfig {
   public static final IValue<Boolean> debugProfilerAntiNuclearActivist = F.make("debugProfilerAntiNuclearActivist", true, //
       "This will change profiler interactions. DO NOT change unless asked by an Ender IO developer!");
 
+  public static final IValue<Boolean> debugProfilerResetOnServerTick = F.make("debugProfilerResetOnServerTick", true, //
+      "This will change profiler interactions. DO NOT change unless asked by an Ender IO developer!");
+
   public static final IValue<Boolean> experimentalChunkLoadTeleport = F.make("experimentalChunkLoadTeleport", true, //
       "Experimental: When enabled, this will chunkload the involved chunks of a (potential) long-range teleport for 5 seconds. "
           + "This is intended to prevent the server from losing track of the player. Symptoms would be the player being invisible to other players, "

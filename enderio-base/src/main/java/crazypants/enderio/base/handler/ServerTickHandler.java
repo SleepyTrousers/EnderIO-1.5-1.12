@@ -10,6 +10,7 @@ import com.enderio.core.common.util.NullHelper;
 import com.google.common.collect.ImmutableSet;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.config.DiagnosticsConfig;
 import crazypants.enderio.base.diagnostics.Prof;
 import net.minecraft.profiler.Profiler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -46,8 +47,17 @@ public class ServerTickHandler {
     Profiler profiler = FMLCommonHandler.instance().getMinecraftServerInstance().profiler;
     if (!profiler.profilingEnabled) {
       profiler = null;
+    } else if (DiagnosticsConfig.debugProfilerResetOnServerTick.get()) {
+      // The profiler should be empty here, we are outside the area profiled by vanilla code.
+      // Most likely cause for this is that there's a mod overflowing the profiler.
+      // Reset it, so at least our data in here is recorded properly...
+      String lastSection = profiler.getNameOfLastSection();
+      while (!"[UNKNOWN]".equals(lastSection)) {
+        profiler.endSection();
+        lastSection = profiler.getNameOfLastSection();
+      }
     }
-    Prof.start(profiler, "root"); // this event is fired outside the profiler's normal coverage...
+    Prof.start(profiler, "root"); // profiler needs a "root" element to record anything
     Prof.start(profiler, "ServerTickEvent_" + event.phase);
     for (Entry<ITickListener, String> entry : ImmutableSet.copyOf(NullHelper.notnullJ(listeners.entrySet(), "IdentityHashMap.entrySet()"))) {
       Prof.start(profiler, NullHelper.first(entry.getValue(), "(unnamed)"));
