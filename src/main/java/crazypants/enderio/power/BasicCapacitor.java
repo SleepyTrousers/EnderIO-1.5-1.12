@@ -22,8 +22,8 @@ public class BasicCapacitor implements ICapacitor {
     this(tier, maxEnergyIO, maxEnergyStored, maxEnergyIO);
   }
 
-  public BasicCapacitor(int tier, int maxEnergyIn, int maxEnergyStored, int maxEnergyOut) {
-    configure(tier, maxEnergyIn, maxEnergyStored, maxEnergyOut);
+  public BasicCapacitor(int tier, int maxEnergyReceived, int maxEnergyStored, int maxEnergyExtracted) {
+    configure(tier, maxEnergyReceived, maxEnergyStored, maxEnergyExtracted);
   }
 
 

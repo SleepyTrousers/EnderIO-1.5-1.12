@@ -217,9 +217,9 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
     NBTTagCompound cap = nbtRoot.getCompoundTag(CAPACITOR_TAG_STRING);
     setCapacitor(new BasicCapacitor(
             cap.getInteger("Tier"),
-            cap.getInteger("MaxEnergyExtracted"),
+            cap.getInteger("MaxEnergyReceived"),
             cap.getInteger("MaxEnergyStored"),
-            cap.getInteger("MaxEnergyReceived")
+            cap.getInteger("MaxEnergyExtracted")
     ));
   }
 

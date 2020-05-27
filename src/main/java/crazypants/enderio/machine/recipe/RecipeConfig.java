@@ -128,25 +128,25 @@ public class RecipeConfig {
     for (RecipeGroup group : userConfig.getRecipeGroups().values()) {
       if(!group.enabled) {
         if(recipeGroups.remove(group.name) != null) {
-          Log.info("Disabled core recipe group " + group.name + " due to user config.");
+          Log.debug("Disabled core recipe group " + group.name + " due to user config.");
         }
       } else {
         RecipeGroup modifyGroup = recipeGroups.get(group.name);
         if(modifyGroup == null) {
-          Log.info("Added user defined recipe group " + group.name);
+          Log.debug("Added user defined recipe group " + group.name);
           modifyGroup = new RecipeGroup(group.name);
           recipeGroups.put(group.name, modifyGroup);
         }
         for (RecipeElement recipe : group.recipes.values()) {
           if(recipe.isValid()) {
             if(modifyGroup.recipes.containsKey(recipe.name)) {
-              Log.info("Replacing core recipe " + recipe.name + "  with user defined recipe.");
+              Log.debug("Replacing core recipe " + recipe.name + "  with user defined recipe.");
             } else {
-              Log.info("Added user defined recipe " + recipe.name);
+              Log.debug("Added user defined recipe " + recipe.name);
             }
             modifyGroup.addRecipe(recipe);
           } else {
-            Log.info("Removed recipe " + recipe.name + " due to user config.");
+            Log.debug("Removed recipe " + recipe.name + " due to user config.");
             modifyGroup.recipes.remove(recipe.name);
           }
         }
