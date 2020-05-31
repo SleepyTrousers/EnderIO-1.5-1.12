@@ -140,6 +140,7 @@ enderio.gui.impulse_hopper.locked.tooltip=Останавливает импул�
 
 enderio.gui.crafter.buffering_stack=Буферизация стаков
 enderio.gui.crafter.buffering_single=Буферизация одиночных предметов
+enderio.gui.crafter.use_per_craft=За создание: %s
 
 tile.block_alloy_smelter.name=Завод сплавов
 tile.block_alloy_smelter.tooltip.detailed.line1=Используется для создания сплавов EnderIO
@@ -219,6 +220,8 @@ tile.block_killer_joe.tooltip.detailed.line1=Атакует ближайших �
 tile.block_attractor_obelisk.name=Притягивающий обелиск
 tile.block_attractor_obelisk.tooltip.detailed.line1=Притягивает мобов к себе
 tile.block_attractor_obelisk.tooltip.detailed.line2=Укажите мобов для притягивания, положив их души внутрь механизма
+
+enderio.status.attractor_obelisk.unknown_mob=Притягивающий обелиск в %s: Не знает как притянуть %s
 
 tile.block_aversion_obelisk.name=Обелиск отвращения
 tile.block_aversion_obelisk.tooltip.detailed.line1=Запрещает мобам появляться в пределах действия обелиска
@@ -363,6 +366,16 @@ tile.block_crafter.name=Создатель
 
 tile.block_simple_crafter.name=Простой создатель
 
+tile.block_lava_generator.name=Лавовый теплообменник
+tile.block_lava_generator.tooltip.detailed.line1=Генерирует энергию охлаждением лавы.
+tile.block_lava_generator.tooltip.detailed.line2=Убедитесь, что оно не перегреется!
+tile.block_lava_generator.tooltip.detailed.line3=Может быть охлаждено путём размещения холодных жидкостей или льда вокруг.
+enderio.gui.lavagen.heat=Нагрев
+
+tile.block_niard.name=Разливщик
+tile.block_niard.tooltip.detailed.line1=Выпускает жидкости в мир
+tile.block_niard.tooltip.detailed.line2=Мы ищем другое, более хорошее название. Присылайте любые идеи в Discord. Имя победителя будет в этой подсказке.
+
 # Types. smelting=Alloy Smelter Speed,
 # area=all machines "area" attribute (e.g. farm),
 # green=Farming Station area, red=Stirling Generator power generation, mobby=spawner speedup,
@@ -398,6 +411,12 @@ enderio.jei.grinding_ball.bonus.line1=Увеличивает шансы на л�
 enderio.jei.grinding_ball.bonus.line2=Рассчитан как оригинальный шанс * бонус шанс.
 enderio.jei.grinding_ball.power.line1=Влияет на мощность, используемую для каждой операции, ускоряя или замедляя работу машины
 
+enderio.jei.recipe=Рецепт: "%s"
+enderio.jei.lavagen.cooling=Охлаждение необязательно
+enderio.jei.lavagen.heat=уменьшается с накоплением тепла
+
+enderio.darksteel.upgrade.solar_0.name=Простое Солнце
+enderio.darksteel.upgrade.solar_0.tooltip.detailed.line1=Генерирует энергию от солнца.
 
 enderio.darksteel.upgrade.solar_1.name=Солнце I
 enderio.darksteel.upgrade.solar_1.tooltip.detailed.line1=Генерирует энергию от солнца.
