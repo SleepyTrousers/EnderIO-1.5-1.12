@@ -1,23 +1,22 @@
 package crazypants.enderio.base.conduit.geom;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 
 import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.conduit.IConduit;
-import info.loenwind.autosave.util.NullHelper;
 import net.minecraft.util.EnumFacing;
 
-@ParametersAreNonnullByDefault
 public class CollidableComponent {
 
   public final @Nullable Class<? extends IConduit> conduitType;
-  public final BoundingBox bound;
+  public final @Nonnull BoundingBox bound;
   private final @Nullable EnumFacing dir;
   public final @Nullable Object data;
 
-  public CollidableComponent(@Nullable Class<? extends IConduit> conduitType, BoundingBox bound, @Nullable EnumFacing id, @Nullable Object data) {
+  public CollidableComponent(@Nullable Class<? extends IConduit> conduitType, @Nonnull BoundingBox bound, @Nullable EnumFacing id, @Nullable Object data) {
     this.conduitType = conduitType;
     this.bound = bound;
     this.dir = id;
@@ -25,7 +24,7 @@ public class CollidableComponent {
   }
 
   @Override
-  public String toString() {
+  public @Nonnull String toString() {
     return "CollidableComponent [conduitType=" + conduitType + ", bound=" + bound + ", id=" + dir + "]";
   }
 
@@ -50,7 +49,7 @@ public class CollidableComponent {
     return result;
   }
 
-  public EnumFacing getDirection() {
+  public @Nonnull EnumFacing getDirection() {
     return NullHelper.notnull(dir, "core element is not directional");
   }
 

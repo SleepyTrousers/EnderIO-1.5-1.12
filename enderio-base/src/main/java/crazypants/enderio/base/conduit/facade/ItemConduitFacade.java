@@ -23,7 +23,6 @@ import crazypants.enderio.base.render.registry.ItemModelRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -48,7 +47,6 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
   }
 
   public ItemConduitFacade(@Nonnull IModObject modObject) {
-    super();
     setCreativeTab(EnderIOTab.tabEnderIOItems);
     setMaxStackSize(64);
     setHasSubtypes(true);
@@ -110,26 +108,8 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
-  public void addInformation(@Nonnull ItemStack stack, @Nullable World worldIn, @Nonnull List<String> tooltip, @Nonnull ITooltipFlag flagIn) {
-    super.addInformation(stack, worldIn, tooltip, flagIn);
-    // TOD? why is this here? Paint data?
-  }
-
-  @Override
   public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
     return getUnlocalizedName();
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void addCommonEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
-
-  }
-
-  @Override
-  @SideOnly(Side.CLIENT)
-  public void addBasicEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })

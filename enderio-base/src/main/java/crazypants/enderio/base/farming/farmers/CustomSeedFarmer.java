@@ -85,6 +85,11 @@ public class CustomSeedFarmer extends AbstractFarmerJoe {
     return this;
   }
 
+  protected @Nonnull IBlockState getPlantedBlockState() {
+    return getPlantedBlock().getStateFromMeta(getPlantedBlockMeta());
+  }
+
+  @Deprecated
   public int getPlantedBlockMeta() {
     return plantedBlockMeta;
   }
@@ -223,7 +228,7 @@ public class CustomSeedFarmer extends AbstractFarmerJoe {
   protected boolean plant(@Nonnull IFarmer farm, @Nonnull World world, @Nonnull BlockPos bc) {
     world.setBlockState(bc, Blocks.AIR.getDefaultState(), 1 | 2);
     if (canPlant(farm, world, bc) && farm.checkAction(FarmingAction.PLANT, FarmingTool.HOE)) {
-      world.setBlockState(bc, getPlantedBlock().getStateFromMeta(getPlantedBlockMeta()), 1 | 2);
+      world.setBlockState(bc, getPlantedBlockState(), 1 | 2);
       farm.registerAction(FarmingAction.PLANT, FarmingTool.HOE, Blocks.AIR.getDefaultState(), bc);
       return true;
     }

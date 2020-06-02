@@ -523,7 +523,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   // Geometry
 
   @Override
-  public @Nonnull Offset getOffset(@Nonnull Class<? extends IConduit> type, @Nullable EnumFacing dir) {
+  public @Nonnull Offset getOffset(@Nonnull Class<? extends IConduit> type, @SuppressWarnings("null") @Nullable EnumFacing dir) {
     if (getConnectionCount(dir) < 2) {
       return Offset.NONE;
     }
