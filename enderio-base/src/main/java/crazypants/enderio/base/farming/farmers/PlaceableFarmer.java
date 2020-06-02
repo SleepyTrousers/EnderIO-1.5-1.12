@@ -8,6 +8,7 @@ import crazypants.enderio.api.farm.AbstractFarmerJoe;
 import crazypants.enderio.api.farm.FarmNotification;
 import crazypants.enderio.api.farm.FarmingAction;
 import crazypants.enderio.api.farm.IFarmer;
+import crazypants.enderio.api.farm.IFarmerJoe;
 import crazypants.enderio.api.farm.IHarvestResult;
 import crazypants.enderio.base.farming.FarmingTool;
 import crazypants.enderio.util.Prep;
@@ -24,6 +25,7 @@ public class PlaceableFarmer extends AbstractFarmerJoe {
 
   private final @Nonnull Things DIRT;
   private final @Nonnull Things SEEDS;
+  private boolean doTill = false;
 
   public PlaceableFarmer(@Nonnull String... seeds) {
     this("block:minecraft:dirt", seeds);
@@ -46,8 +48,15 @@ public class PlaceableFarmer extends AbstractFarmerJoe {
     DIRT.add(dirt);
   }
 
+  /**
+   * Configures the farmer to till the ground instead of checking for usable soil. This means the {@link #DIRT} is ignored!
+   */
+  public void enableTilling() {
+    doTill = true;
+  }
+
   public boolean isValid() {
-    return !SEEDS.isValid() && !DIRT.isValid();
+    return SEEDS.isValid() && DIRT.isValid();
   }
 
   @Override
@@ -56,25 +65,25 @@ public class PlaceableFarmer extends AbstractFarmerJoe {
   }
 
   @Override
-  public boolean prepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
-    IBlockState blockStateGround = farm.getBlockState(bc.down());
-    Block ground = blockStateGround.getBlock();
-    if (!DIRT.contains(ground)) {
-      return false;
-    }
-
+  public IFarmerJoe.Result tryPrepareBlock(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
     ItemStack seedStack = farm.getSeedTypeInSuppliesFor(bc);
     if (!canPlant(seedStack)) {
       if (Prep.isInvalid(seedStack)) {
         farm.setNotification(FarmNotification.NO_SEEDS);
       }
-      return false;
+      return Result.NEXT;
+    }
+
+    IBlockState blockStateGround = farm.getBlockState(bc.down());
+    Block ground = blockStateGround.getBlock();
+    if (doTill ? !farm.tillBlock(bc) : !DIRT.contains(ground)) {
+      return Result.CLAIM;
     }
 
     return plant(farm, bc, state);
   }
 
-  protected boolean plant(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
+  protected IFarmerJoe.Result plant(@Nonnull IFarmer farm, @Nonnull BlockPos bc, @Nonnull IBlockState state) {
     if (Prep.isValid(farm.takeSeedFromSupplies(bc, true)) && farm.checkAction(FarmingAction.PLANT, FarmingTool.HOE)) {
       final ItemStack seedStack = farm.takeSeedFromSupplies(bc, false);
       EntityPlayerMP joe = farm.startUsingItem(seedStack);
@@ -82,10 +91,10 @@ public class PlaceableFarmer extends AbstractFarmerJoe {
       farm.handleExtraItems(farm.endUsingItem(FarmingTool.HOE), bc);
       if (res == EnumActionResult.SUCCESS) {
         farm.registerAction(FarmingAction.PLANT, FarmingTool.HOE, state, bc);
-        return true;
+        return Result.ACTION;
       }
     }
-    return false;
+    return Result.CLAIM;
   }
 
   @Override
