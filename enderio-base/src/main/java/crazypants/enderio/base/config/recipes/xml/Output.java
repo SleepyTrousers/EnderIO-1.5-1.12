@@ -24,6 +24,8 @@ public class Output extends AbstractConditional {
 
   private boolean required = true;
 
+  private boolean invalidStackSize = false;
+
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
     super.readResolve();
@@ -32,14 +34,13 @@ public class Output extends AbstractConditional {
     }
     if (amount < 0) {
       throw new InvalidRecipeConfigException("Invalid negative amount in <output>");
-    }
-    if (amount > item.get().getItemStack().getMaxStackSize()) {
-      throw new InvalidRecipeConfigException("Invalid amount in <output>, bigger than maximum stack size");
-    }
-    if (amount == 0) {
+    } else if (amount == 0) {
       amount = 1;
+    } else if (amount > item.get().getItemStack().getMaxStackSize()) {
+      invalidStackSize = true;
+    } else {
+      item.get().getThing().setSize(amount);
     }
-    item.get().getThing().setSize(amount);
     if (nbt.isPresent()) {
       try {
         item.get().getThing().setNbt(JsonToNBT.getTagFromJson(get(nbt)));
@@ -53,13 +54,16 @@ public class Output extends AbstractConditional {
   @Override
   public void enforceValidity() throws InvalidRecipeConfigException {
     item.get().enforceValidity();
+    if (invalidStackSize) {
+      throw new InvalidRecipeConfigException("Invalid amount in <output>, bigger than maximum stack size");
+    }
   }
 
   // Items can be potentially valid with an oredict value that doesn't yet have any items. We cannot use that for the output, so we force it to have at least
   // one valid stack.
   @Override
   public boolean isValid() {
-    return item.isPresent() && item.get().isValid();
+    return item.isPresent() && item.get().isValid() && !invalidStackSize;
   }
 
   @Override
