@@ -80,12 +80,7 @@ item.item_conduit_facade.transparent.hardened.tooltip.detailed.line1=Transparent
 item.item_conduit_facade.transparent.hardened.tooltip.detailed.line2=Hardened: Resists breaking and explosions
 
 item.item_conduit_probe.name=Conduit Probe
-item.item_conduit_probe.tooltip.detailed.line1=In probe mode R-Click on a conduit
-item.item_conduit_probe.tooltip.detailed.line2=to display details about its network
-item.item_conduit_probe.tooltip.detailed.line3=In copy/paste mode Shift-R-Click to
-item.item_conduit_probe.tooltip.detailed.line4=copy a conduit bundles connection settings 
-item.item_conduit_probe.tooltip.detailed.line5=R-Click to paste them
-item.item_conduit_probe.tooltip.detailed.line6=Use Shift-Mouse Wheel or 'Y' to change mode
+item.item_conduit_probe.tooltip.detailed=In probe mode R-Click on a conduit to display details about its network|In copy/paste mode Shift-R-Click to copy a conduit bundle's connection settings|R-Click to paste them|Use Shift-Mouse Wheel or 'Y' to change mode
 
 item.item_coord_selector.name=Coordinate Selector
 item.item_coord_selector.tooltip.detailed.line1=Prints coordinates of a block.
