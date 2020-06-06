@@ -1,9 +1,7 @@
 package crazypants.enderio.base.init;
 
 import java.util.Arrays;
-import java.util.IdentityHashMap;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -17,6 +15,7 @@ import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
+import crazypants.enderio.util.O2OMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.BlockStairs;
@@ -56,8 +55,10 @@ public class ModObjectRegistry {
 
   // ---
 
-  private static final Map<Object, IModObject> reverseMapping = new IdentityHashMap<>();
-  private static final NNList<IModTileEntity> tileEntities = new NNList<>();
+  private static final @Nonnull NNList<IModTileEntity> tileEntities = new NNList<>();
+
+  private static final @Nonnull O2OMap<ResourceLocation, IModObject> blockMap = new O2OMap<>();
+  private static final @Nonnull O2OMap<ResourceLocation, IModObject> itemMap = new O2OMap<>();
 
   public static <T extends Enum<T> & IModTileEntity> void addModTileEntities(Class<T> enumClass) {
     tileEntities.addAll(Arrays.asList(enumClass.getEnumConstants()));
@@ -73,9 +74,8 @@ public class ModObjectRegistry {
     for (IModObject mo : REGISTRY) {
       Block block = mo.getBlockCreator().apply(mo);
       if (block != null) {
-        mo.setBlock(block);
         event.getRegistry().register(block);
-        reverseMapping.put(block, mo);
+        blockMap.putNoOverride(block.getRegistryName(), mo);
         checkUseNeighborBrightness(mo, block);
       }
     }
@@ -114,9 +114,8 @@ public class ModObjectRegistry {
     for (IModObject mo : REGISTRY) {
       Item item = mo.getItemCreator().apply(mo, mo.getBlock());
       if (item != null) {
-        mo.setItem(item);
         event.getRegistry().register(item);
-        reverseMapping.put(item, mo);
+        itemMap.putNoOverride(item.getRegistryName(), mo);
       }
     }
   }
@@ -190,19 +189,37 @@ public class ModObjectRegistry {
   }
 
   public static @Nullable IModObject getModObject(@Nonnull Block forBlock) {
-    return reverseMapping.get(forBlock);
+    return blockMap.getValue(forBlock.getRegistryName());
   }
 
   public static @Nonnull IModObject getModObjectNN(@Nonnull Block forBlock) {
-    return NullHelper.notnull(reverseMapping.get(forBlock), "missing modObject");
+    return NullHelper.notnull(getModObject(forBlock), "missing modObject for block " + forBlock.getRegistryName());
+  }
+
+  public static @Nullable Block getBlock(@Nonnull IModObject forBlock) {
+    final ResourceLocation key = blockMap.getKey(forBlock);
+    return key != null && Block.REGISTRY.containsKey(key) ? Block.REGISTRY.getObject(key) : null;
+  }
+
+  public static @Nonnull Block getBlockNN(@Nonnull IModObject forBlock) {
+    return NullHelper.notnull(getBlock(forBlock), "missing block for modObject " + forBlock.getRegistryName());
   }
 
   public static @Nullable IModObject getModObject(@Nonnull Item forItem) {
-    return reverseMapping.get(forItem);
+    return itemMap.getValue(forItem.getRegistryName());
   }
 
   public static @Nonnull IModObject getModObjectNN(@Nonnull Item forItem) {
-    return NullHelper.notnull(reverseMapping.get(forItem), "missing modObject");
+    return NullHelper.notnull(getModObject(forItem), "missing modObject for item " + forItem.getRegistryName());
+  }
+
+  public static @Nullable Item getItem(@Nonnull IModObject forItem) {
+    final ResourceLocation key = itemMap.getKey(forItem);
+    return key != null && Item.REGISTRY.containsKey(key) ? Item.REGISTRY.getObject(key) : null;
+  }
+
+  public static @Nonnull Item getItemNN(@Nonnull IModObject forItem) {
+    return NullHelper.notnull(getItem(forItem), "missing item for modObject " + forItem.getRegistryName());
   }
 
   public static @Nonnull ForgeRegistry<IModObject> getRegistry() {

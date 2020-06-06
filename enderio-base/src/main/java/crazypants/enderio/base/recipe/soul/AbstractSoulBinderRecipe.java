@@ -113,7 +113,7 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
     ItemStack item = input.item;
     if (slot == 0) {
       CapturedMob mobType = CapturedMob.create(item);
-      return mobType != null && item.getItem() == itemSoulVial.getItem() && isValidInputSoul(mobType);
+      return mobType != null && item.getItem() == itemSoulVial.getItemNN() && isValidInputSoul(mobType);
     }
     if (slot == 1) {
       return isValidInputItem(item);

@@ -29,7 +29,7 @@ public class Filters {
   public static final @Nonnull Predicate<ItemStack> SOUL_VIALS = new PredicateItemStack() {
     @Override
     public boolean doApply(@Nonnull ItemStack input) {
-      return input.getItem() == itemSoulVial.getItem();
+      return input.getItem() == itemSoulVial.getItemNN();
     }
   };
 
@@ -54,7 +54,7 @@ public class Filters {
   public static final @Nonnull Predicate<ItemStack> CAPACITORS = new PredicateItemStack() {
     @Override
     public boolean doApply(@Nonnull ItemStack input) {
-      return input.getItem() == itemBasicCapacitor.getItem() || CapacitorHelper.getCapacitorDataFromItemStack(input) != null;
+      return input.getItem() == itemBasicCapacitor.getItemNN() || CapacitorHelper.getCapacitorDataFromItemStack(input) != null;
     }
   };
 

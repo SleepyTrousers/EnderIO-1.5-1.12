@@ -226,7 +226,7 @@ public class ConduitUtil {
       return false;
     }
     ItemStack equipped = player.getHeldItem(hand);
-    return equipped.getItem() == itemConduitProbe.getItem();
+    return equipped.getItem() == itemConduitProbe.getItemNN();
   }
 
   public static <T extends IConduit> T getConduit(@Nonnull World world, int x, int y, int z, @Nonnull Class<T> type) {

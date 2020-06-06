@@ -133,7 +133,7 @@ public final class CapturedMob {
   public @Nonnull ItemStack toStack(@Nonnull Item item, int meta, int amount) {
     ItemStack stack = new ItemStack(item, amount, meta);
     stack.setTagCompound(toNbt(null));
-    if (item == itemSoulVial.getItem() && customName == null && PIG.equals(entityId) && Math.random() < 0.01) {
+    if (item == itemSoulVial.getItemNN() && customName == null && PIG.equals(entityId) && Math.random() < 0.01) {
       NullHelper.notnullM(stack.getTagCompound(), "getTagCompound() doesn't produce value that was set with setTagCompound()").setString(CUSTOM_NAME_KEY,
           Lang.EASTER_PIGGY.get());
     }
@@ -152,7 +152,7 @@ public final class CapturedMob {
       return toStack(item, meta, amount);
     }
     data.setString(ENTITY_ID_KEY, entityId.toString());
-    if (item == itemSoulVial.getItem() && customName == null && PIG.equals(entityId) && Math.random() < 0.01) {
+    if (item == itemSoulVial.getItemNN() && customName == null && PIG.equals(entityId) && Math.random() < 0.01) {
       data.setString(CUSTOM_NAME_KEY, Lang.EASTER_PIGGY.get());
     }
     ItemStack stack = new ItemStack(item, amount, meta);

@@ -57,6 +57,26 @@ public interface IModObjectBase extends IModObject {
   }
 
   @Override
+  default Block getBlock() {
+    return ModObjectRegistry.getBlock(this);
+  }
+
+  @Override
+  default @Nonnull Block getBlockNN() {
+    return ModObjectRegistry.getBlockNN(this);
+  }
+
+  @Override
+  default Item getItem() {
+    return ModObjectRegistry.getItem(this);
+  }
+
+  @Override
+  default @Nonnull Item getItemNN() {
+    return ModObjectRegistry.getItemNN(this);
+  }
+
+  @Override
   default boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer) {
     return openGui(world, pos, entityPlayer, null, 0);
   }

@@ -71,7 +71,7 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
 
       if (Prep.isValid(inputStack)) {
         inputItemList.add(inputStack);
-        if (itemBrokenSpawner.getItem() == inputStack.getItem()) {
+        if (itemBrokenSpawner.getItemNN() == inputStack.getItem()) {
           // a Broken Spawner on the input side always means "any kind of", so put any kind of broken spawner into the input list. Skip the same type as the
           // output, that would be a wasteful NOP recipe
           CapturedMob resultMob = CapturedMob.create(outputStack);

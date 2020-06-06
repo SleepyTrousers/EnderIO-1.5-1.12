@@ -39,59 +39,14 @@ public interface IModObject extends IProducer, IForgeRegistryEntry<IModObject> {
   @Nullable
   Class<? extends TileEntity> getTEClass();
 
-  @Deprecated
-  @Nullable
-  Class<?> getClazz();
+  @Nonnull
+  Function<IModObject, Block> getBlockCreator();
 
-  @Deprecated
-  @Nullable
-  String getBlockMethodName();
-
-  @Deprecated
-  @Nullable
-  String getItemMethodName();
-
-  default @Nonnull Function<IModObject, Block> getBlockCreator() {
-    return modobject -> {
-      final Class<?> clazz = modobject.getClazz();
-      try {
-        if (modobject.getBlockMethodName() == null || clazz == null) {
-          return null;
-        }
-        return (Block) clazz.getDeclaredMethod(modobject.getBlockMethodName(), IModObject.class).invoke(null, modobject);
-      } catch (Exception | Error e) {
-        throw new RuntimeException("ModObject:create: Could not create instance for " + clazz + " using method " + modobject.getBlockMethodName(), e);
-      }
-    };
-  }
-
-  default @Nonnull BiFunction<IModObject, Block, Item> getItemCreator() {
-    return (modobject, block) -> {
-      if (modobject == null) {
-        throw new NullPointerException();
-      }
-      final Class<?> clazz = modobject.getClazz();
-      if (modobject.getItemMethodName() == null || clazz == null) {
-        return IModObject.WithBlockItem.itemCreator.apply(modobject, block);
-      }
-      try {
-        return (Item) clazz.getDeclaredMethod(modobject.getItemMethodName(), IModObject.class, Block.class).invoke(null, modobject, block);
-      } catch (Exception | Error e0) {
-        try {
-          return (Item) clazz.getDeclaredMethod(modobject.getItemMethodName(), IModObject.class).invoke(null, modobject);
-        } catch (Exception | Error e) {
-          throw new RuntimeException("ModObject:create: Could not create instance for " + clazz + " using method " + modobject.getItemMethodName(), e);
-        }
-      }
-    };
-  }
+  @Nonnull
+  BiFunction<IModObject, Block, Item> getItemCreator();
 
   @Nullable
   IModTileEntity getTileEntity();
-
-  void setItem(@Nullable Item obj);
-
-  void setBlock(@Nullable Block obj);
 
   boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer);
 

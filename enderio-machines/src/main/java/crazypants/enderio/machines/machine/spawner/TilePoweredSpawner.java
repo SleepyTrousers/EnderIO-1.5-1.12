@@ -6,7 +6,6 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.client.render.BoundingBox;
-import info.loenwind.autosave.util.NBTAction;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.vecmath.Vector4f;
 
@@ -31,6 +30,7 @@ import crazypants.enderio.util.CapturedMob;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
+import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -140,7 +140,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity
       return false;
     }
     if (slotDefinition.isInputSlot(i)) {
-      return itemstack.getItem() == ModObject.itemSoulVial.getItem() && !CapturedMob.containsSoul(itemstack);
+      return itemstack.getItem() == ModObject.itemSoulVial.getItemNN() && !CapturedMob.containsSoul(itemstack);
     }
     return false;
   }

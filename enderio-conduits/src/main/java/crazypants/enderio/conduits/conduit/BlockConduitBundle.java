@@ -649,7 +649,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
     // if (stack.getItem() == Items.STICK) { // TODO: remove this later!
     // player.sendMessage(new TextComponentString("You clicked on " + bundle));
     // }
-    if (stack.getItem() == ModObject.itemConduitFacade.getItem()) {
+    if (stack.getItem() == ModObject.itemConduitFacade.getItemNN()) {
       return bundle.handleFacadeClick(world, pos, player, side, stack, hand, hitX, hitY, hitZ);
     } else if (ConduitUtil.isConduitEquipped(player, hand)) {
       // Add conduit

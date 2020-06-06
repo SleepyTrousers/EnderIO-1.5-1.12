@@ -180,7 +180,7 @@ public final class MagnetController {
     }
   }
 
-  public static void setMagnetActive(EntityPlayerMP player, SlotType type, int slot, boolean isActive) {
+  public static void setMagnetActive(@Nonnull EntityPlayerMP player, @Nonnull SlotType type, int slot, boolean isActive) {
     ItemStack stack = Prep.getEmpty();
     IInventory baubles = null;
     int dropOff = -1;
@@ -201,7 +201,7 @@ public final class MagnetController {
       }
       break;
     }
-    if (stack.getItem() != ModObject.itemMagnet.getItem() || ItemMagnet.isActive(stack) == isActive) {
+    if (stack.getItem() != ModObject.itemMagnet.getItemNN() || ItemMagnet.isActive(stack) == isActive) {
       return;
     }
     if (!ItemConfig.magnetAllowDeactivatedInBaublesSlot.get() && type == SlotType.BAUBLES && !isActive) {

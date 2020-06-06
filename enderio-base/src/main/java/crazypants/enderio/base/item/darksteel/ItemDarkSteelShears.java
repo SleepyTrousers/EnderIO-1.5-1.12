@@ -65,7 +65,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class ItemDarkSteelShears extends ItemShears implements IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
 
   public static boolean isEquipped(EntityPlayer player) {
-    return player != null && player.getHeldItemMainhand().getItem() == ModObject.itemDarkSteelAxe.getItem();
+    return player != null && player.getHeldItemMainhand().getItem() == ModObject.itemDarkSteelAxe.getItemNN();
   }
 
   public static boolean isEquippedAndPowered(EntityPlayer player, int requiredPower) {

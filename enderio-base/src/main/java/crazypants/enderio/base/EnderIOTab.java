@@ -43,7 +43,7 @@ public class EnderIOTab extends CreativeTabs {
   @Override
   @SideOnly(Side.CLIENT)
   public @Nonnull ItemStack getTabIconItem() {
-    return new ItemStack(itemEnderface.getItem(), 1, meta);
+    return new ItemStack(itemEnderface.getItemNN(), 1, meta);
   }
 
 }

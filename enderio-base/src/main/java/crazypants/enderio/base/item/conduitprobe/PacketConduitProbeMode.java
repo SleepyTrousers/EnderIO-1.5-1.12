@@ -26,13 +26,13 @@ public class PacketConduitProbeMode implements IMessage {
     @Override
     public IMessage onMessage(PacketConduitProbeMode message, MessageContext ctx) {
       ItemStack stack = ctx.getServerHandler().player.getHeldItemMainhand();
-      if (stack.getItem() == itemConduitProbe.getItem()) {
+      if (stack.getItem() == itemConduitProbe.getItemNN()) {
         int newMeta = stack.getItemDamage() == 0 ? 1 : 0;
         stack.setItemDamage(newMeta);
         return null;
       }
       stack = ctx.getServerHandler().player.getHeldItemOffhand();
-      if (stack.getItem() == itemConduitProbe.getItem()) {
+      if (stack.getItem() == itemConduitProbe.getItemNN()) {
         int newMeta = stack.getItemDamage() == 0 ? 1 : 0;
         stack.setItemDamage(newMeta);
         return null;

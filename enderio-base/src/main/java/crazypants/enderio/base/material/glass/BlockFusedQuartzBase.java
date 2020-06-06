@@ -142,7 +142,7 @@ public abstract class BlockFusedQuartzBase<T extends TileEntityEio> extends Bloc
     @Override
     @Nonnull
     public ResourceLocation getRegistryNameForCustomModelResourceLocation() {
-      return ModObject.blockFusedQuartz.getItem().getRegistryName();
+      return ModObject.blockFusedQuartz.getItemNN().getRegistryName();
     }
 
     @Override

@@ -38,7 +38,6 @@ public class DescriptionRecipeCategory {
     Set<IDarkSteelItem> dsitems = new HashSet<>();
     for (IModObject mo : ModObjectRegistry.getRegistry()) {
       final Item item = mo.getItem();
-      Log.debug(item);
       if (item != null) {
         final CreativeTabs creativeTab = item.getCreativeTab();
         if (creativeTab != null) {

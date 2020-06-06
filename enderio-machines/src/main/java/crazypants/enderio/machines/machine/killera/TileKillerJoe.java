@@ -111,8 +111,8 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
       "tconstruct:broadsword", "tconstruct:longsword", "tconstruct:rapier", "tconstruct:frypan", "tconstruct:cleaver", "minecraft:stick")
           // for the ghost slot:
           .add(Items.WOODEN_SWORD).add(Items.STONE_SWORD).add(Items.IRON_SWORD).add(Items.GOLDEN_SWORD).add(Items.DIAMOND_SWORD)
-          .add(ModObject.itemDarkSteelSword.getItem()).add(Items.WOODEN_AXE).add(Items.IRON_AXE).add(Items.GOLDEN_AXE).add(Items.DIAMOND_AXE)
-          .add(ModObject.itemDarkSteelAxe.getItem());
+          .add(ModObject.itemDarkSteelSword.getItemNN()).add(Items.WOODEN_AXE).add(Items.IRON_AXE).add(Items.GOLDEN_AXE).add(Items.DIAMOND_AXE)
+          .add(ModObject.itemDarkSteelAxe.getItemNN());
 
   @Override
   public boolean isMachineItemValidForSlot(int i, @Nonnull ItemStack itemstack) {

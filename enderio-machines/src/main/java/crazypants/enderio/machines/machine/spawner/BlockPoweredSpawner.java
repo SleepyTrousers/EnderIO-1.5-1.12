@@ -87,10 +87,10 @@ public class BlockPoweredSpawner extends AbstractPoweredTaskBlock<TilePoweredSpa
 
   @SubscribeEvent
   public void handleAnvilEvent(AnvilUpdateEvent evt) {
-    if (Prep.isInvalid(evt.getLeft()) || evt.getLeft().getCount() != 1 || evt.getLeft().getItem() != block_powered_spawner.getItem()) {
+    if (Prep.isInvalid(evt.getLeft()) || evt.getLeft().getCount() != 1 || evt.getLeft().getItem() != block_powered_spawner.getItemNN()) {
       return;
     }
-    if (Prep.isInvalid(evt.getRight()) || evt.getRight().getCount() != 1 || evt.getRight().getItem() != ModObject.itemBrokenSpawner.getItem()) {
+    if (Prep.isInvalid(evt.getRight()) || evt.getRight().getCount() != 1 || evt.getRight().getItem() != ModObject.itemBrokenSpawner.getItemNN()) {
       return;
     }
 

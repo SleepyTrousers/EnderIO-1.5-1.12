@@ -10,8 +10,8 @@ import crazypants.enderio.base.EnderIO;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 
 @EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
@@ -24,7 +24,7 @@ public class SplashTextHandler {
   @SubscribeEvent
   public static void handle(GuiScreenEvent.InitGuiEvent.Pre event) {
     if (event.getGui() instanceof GuiMainMenu && RANDOM.nextFloat() < 0.01f) {
-      ReflectionHelper.setPrivateValue(GuiMainMenu.class, (GuiMainMenu) event.getGui(), TEXTS.get(RANDOM.nextInt(TEXTS.size())), "splashText", "field_73975_c");
+      ObfuscationReflectionHelper.setPrivateValue(GuiMainMenu.class, (GuiMainMenu) event.getGui(), TEXTS.get(RANDOM.nextInt(TEXTS.size())), "field_73975_c"); // "splashText"
     }
   }
 

@@ -62,7 +62,7 @@ public class PacketUpdateLocationPrintout implements IMessage {
       ItemStack stack = message.stack;
       EntityEquipmentSlot slot = message.slot;
       int paperSlot = message.paperSlot;
-      if (Prep.isInvalid(stack) || stack.getItem() != itemLocationPrintout.getItem()) {
+      if (Prep.isInvalid(stack) || stack.getItem() != itemLocationPrintout.getItemNN()) {
         return null;
       }
       TelepadTarget telepadTarget = TelepadTarget.readFromNBT(stack);
@@ -100,7 +100,7 @@ public class PacketUpdateLocationPrintout implements IMessage {
 
     private void updatePrintout(@Nonnull EntityPlayerMP player, @Nonnull EntityEquipmentSlot slot, @Nonnull TelepadTarget telepadTarget) {
       ItemStack existingStack = player.getItemStackFromSlot(slot);
-      if (Prep.isInvalid(existingStack) || existingStack.getItem() != itemLocationPrintout.getItem()) {
+      if (Prep.isInvalid(existingStack) || existingStack.getItem() != itemLocationPrintout.getItemNN()) {
         return;
       }
       TelepadTarget existingTarget = TelepadTarget.readFromNBT(existingStack);

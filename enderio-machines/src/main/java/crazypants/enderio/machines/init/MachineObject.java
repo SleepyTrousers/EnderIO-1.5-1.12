@@ -141,9 +141,6 @@ public enum MachineObject implements IModObjectBase {
 
   final @Nonnull String unlocalisedName;
 
-  protected @Nullable Block block;
-  protected @Nullable Item item;
-
   protected final @Nullable IModTileEntity modTileEntity;
 
   protected final @Nullable Function<IModObject, Block> blockMaker;
@@ -179,41 +176,6 @@ public enum MachineObject implements IModObjectBase {
   @Override
   public final @Nonnull String getUnlocalisedName() {
     return unlocalisedName;
-  }
-
-  @Override
-  public final @Nullable Block getBlock() {
-    return block;
-  }
-
-  @Override
-  public final @Nullable Item getItem() {
-    return item;
-  }
-
-  @Override
-  public final @Nullable Class<?> getClazz() {
-    return null;
-  }
-
-  @Override
-  public final String getBlockMethodName() {
-    return null;
-  }
-
-  @Override
-  public final String getItemMethodName() {
-    return null;
-  }
-
-  @Override
-  public final void setItem(@Nullable Item obj) {
-    item = obj;
-  }
-
-  @Override
-  public final void setBlock(@Nullable Block obj) {
-    block = obj;
   }
 
   @Override

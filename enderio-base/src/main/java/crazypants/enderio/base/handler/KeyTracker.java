@@ -185,12 +185,11 @@ public enum KeyTracker {
         ConduitDisplayMode newMode = player.isSneaking() ? curMode.previous() : curMode.next();
         ConduitDisplayMode.setDisplayMode(equipped, newMode);
         PacketHandler.INSTANCE.sendToServer(new PacketYetaWrenchDisplayMode(player.inventory.currentItem, newMode));
-      } else if (equipped.getItem() == itemConduitProbe.getItem()) {
+      } else if (equipped.getItem() == itemConduitProbe.getItemNN()) {
         int newMeta = equipped.getItemDamage() == 0 ? 1 : 0;
         equipped.setItemDamage(newMeta);
         PacketHandler.INSTANCE.sendToServer(new PacketConduitProbeMode());
         player.swingArm(EnumHand.MAIN_HAND);
-
       }
     }
   }

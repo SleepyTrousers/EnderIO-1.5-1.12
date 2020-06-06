@@ -72,7 +72,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class ItemDarkSteelAxe extends ItemAxe implements IAdvancedTooltipProvider, IDarkSteelItem, IOverlayRenderAware {
 
   public static boolean isEquipped(EntityPlayer player) {
-    return player != null && player.getHeldItemMainhand().getItem() == ModObject.itemDarkSteelAxe.getItem();
+    return player != null && player.getHeldItemMainhand().getItem() == ModObject.itemDarkSteelAxe.getItemNN();
   }
 
   public static boolean isPowered(EntityPlayer player, int requiredPower) {
