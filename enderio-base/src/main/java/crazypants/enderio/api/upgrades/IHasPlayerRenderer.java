@@ -20,21 +20,11 @@ public interface IHasPlayerRenderer {
 
   /**
    * Returns a renderer that will be used to render the player model. The calling code will only use this renderer once and will ask any time it needs one. The
-   * implementing code should cache it---using a single instance and configuring it for the specific item is fine.
-   */
-  @SideOnly(Side.CLIENT)
-  @Deprecated
-  default @Nonnull IRenderUpgrade getRender() {
-    return RenderUpgradeHelper.NULL_RENDERER;
-  }
-
-  /**
-   * Returns a renderer that will be used to render the player model. The calling code will only use this renderer once and will ask any time it needs one. The
    * implementing code should cache it---using a single instance and configuring it for the specific item and player is fine.
    */
   @SideOnly(Side.CLIENT)
   default @Nonnull IRenderUpgrade getRender(@Nonnull AbstractClientPlayer player) {
-    return getRender();
+    return RenderUpgradeHelper.NULL_RENDERER;
   }
 
 }

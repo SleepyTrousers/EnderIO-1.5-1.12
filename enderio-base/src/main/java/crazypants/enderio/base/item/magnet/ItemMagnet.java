@@ -21,6 +21,7 @@ import crazypants.enderio.base.power.forge.item.AbstractPoweredItem;
 import crazypants.enderio.base.power.forge.item.IInternalPoweredItem;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import net.minecraft.block.Block;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -197,7 +198,7 @@ public class ItemMagnet extends AbstractPoweredItem implements IResourceTooltipP
 
   @Override
   @SideOnly(Side.CLIENT)
-  public @Nonnull IRenderUpgrade getRender() {
+  public @Nonnull IRenderUpgrade getRender(@Nonnull AbstractClientPlayer player) {
     return MagnetLayer.instance;
   }
 

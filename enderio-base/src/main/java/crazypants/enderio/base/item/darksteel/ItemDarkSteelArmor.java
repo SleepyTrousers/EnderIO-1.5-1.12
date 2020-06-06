@@ -56,6 +56,7 @@ import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.creativetab.CreativeTabs;
@@ -311,8 +312,8 @@ public class ItemDarkSteelArmor extends ItemArmor implements ISpecialArmor, IAdv
 
   @Override
   @SideOnly(Side.CLIENT)
-  public @Nonnull IRenderUpgrade getRender() {
-    return armorType == EntityEquipmentSlot.HEAD ? PaintedHelmetLayer.instance : IHasPlayerRenderer.super.getRender();
+  public @Nonnull IRenderUpgrade getRender(@Nonnull AbstractClientPlayer player) {
+    return armorType == EntityEquipmentSlot.HEAD ? PaintedHelmetLayer.instance : IHasPlayerRenderer.super.getRender(player);
   }
 
   @Override

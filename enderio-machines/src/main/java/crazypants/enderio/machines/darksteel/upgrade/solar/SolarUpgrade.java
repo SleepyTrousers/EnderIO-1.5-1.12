@@ -20,6 +20,7 @@ import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.SolarConfig;
 import crazypants.enderio.machines.machine.solar.SolarType;
 import crazypants.enderio.machines.machine.solar.TileSolarPanel;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -67,7 +68,7 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
 
   @Override
   @SideOnly(Side.CLIENT)
-  public @Nonnull IRenderUpgrade getRender() {
+  public @Nonnull IRenderUpgrade getRender(@Nonnull AbstractClientPlayer player) {
     return SolarUpgradeLayer.withUpgrade(this);
   }
 

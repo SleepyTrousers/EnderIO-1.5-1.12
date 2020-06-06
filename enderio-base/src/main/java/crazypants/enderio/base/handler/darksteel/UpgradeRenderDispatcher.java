@@ -38,13 +38,15 @@ public class UpgradeRenderDispatcher implements LayerRenderer<AbstractClientPlay
         if (item.getItem() instanceof IDarkSteelItem) {
           for (IDarkSteelUpgrade upgrade : UpgradeRegistry.getUpgrades()) {
             if (upgrade instanceof IHasPlayerRenderer && upgrade.hasUpgrade(item)) {
-              ((IHasPlayerRenderer) upgrade).getRender().doRenderLayer(renderPlayer, slot, item, player, limbSwing, limbSwingAmount, partialTicks, ageInTicks,
+              ((IHasPlayerRenderer) upgrade).getRender(player).doRenderLayer(renderPlayer, slot, item, player, limbSwing, limbSwingAmount, partialTicks,
+                  ageInTicks,
                   netHeadYaw, headPitch, scale);
             }
           }
         }
         if (item.getItem() instanceof IHasPlayerRenderer) {
-          ((IHasPlayerRenderer) item.getItem()).getRender().doRenderLayer(renderPlayer, slot, item, player, limbSwing, limbSwingAmount, partialTicks,
+          ((IHasPlayerRenderer) item.getItem()).getRender(player).doRenderLayer(renderPlayer, slot, item, player, limbSwing, limbSwingAmount,
+              partialTicks,
               ageInTicks, netHeadYaw, headPitch, scale);
         }
       }
@@ -55,7 +57,8 @@ public class UpgradeRenderDispatcher implements LayerRenderer<AbstractClientPlay
       for (int i = 0; i < baubles.getSizeInventory(); i++) {
         ItemStack piece = baubles.getStackInSlot(i);
         if (piece.getItem() instanceof IHasPlayerRenderer) {
-          ((IHasPlayerRenderer) piece.getItem()).getRender().doRenderLayer(renderPlayer, null, piece, player, limbSwing, limbSwingAmount, partialTicks,
+          ((IHasPlayerRenderer) piece.getItem()).getRender(player).doRenderLayer(renderPlayer, null, piece, player, limbSwing, limbSwingAmount,
+              partialTicks,
               ageInTicks, netHeadYaw, headPitch, scale);
         }
       }
