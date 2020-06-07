@@ -12,30 +12,27 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capacitor.CapacitorHelper;
 import crazypants.enderio.base.capacitor.CapacitorHelper.SetType;
+import crazypants.enderio.base.config.config.RecipeConfig;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.loot.WeightedUpgrade.WeightedUpgradeImpl;
 import crazypants.enderio.util.NbtValue;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import static crazypants.enderio.base.init.ModObject.itemBasicCapacitor;
-
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class AnvilCapacitorRecipe {
-
-  public static void create() {
-    MinecraftForge.EVENT_BUS.register(AnvilCapacitorRecipe.class);
-  }
 
   @SubscribeEvent
   public static void handleAnvilEvent(AnvilUpdateEvent evt) {
     ItemStack left = evt.getLeft();
     ItemStack right = evt.getRight();
 
-    if (Prep.isInvalid(left) || Prep.isInvalid(right) || left.getItem() != itemBasicCapacitor.getItemNN() || right.getItem() != itemBasicCapacitor
-        .getItemNN()
-        || left.getMetadata() < 3 || right.getMetadata() < 3 || left.getMetadata() != right.getMetadata() || left.getCount() > right.getCount()) {
+    if (!RecipeConfig.enableLootCapCombining.get() || Prep.isInvalid(left) || Prep.isInvalid(right)
+        || left.getItem() != ModObject.itemBasicCapacitor.getItemNN() || left.getItem() != right.getItem() || left.getMetadata() < 3 || right.getMetadata() < 3
+        || (RecipeConfig.requireSameType.get() && left.getMetadata() != right.getMetadata()) || left.getCount() > right.getCount()) {
       return;
     }
 
@@ -85,8 +82,9 @@ public class AnvilCapacitorRecipe {
     }
 
     float baselevel = Math.max(CapacitorHelper.getCapLevelRaw(left), CapacitorHelper.getCapLevelRaw(right));
-    if (baselevel < 5 && rand.nextFloat() < .5f) {
-      baselevel++;
+    if (baselevel < RecipeConfig.baseLevelIncrementMax.get() - RecipeConfig.baseLevelIncrement.get()
+        && rand.nextFloat() <= RecipeConfig.baseLevelIncrementChance.get()) {
+      baselevel += RecipeConfig.baseLevelIncrement.get();
     }
 
     ItemStack stack = left.copy();
@@ -103,7 +101,7 @@ public class AnvilCapacitorRecipe {
 
     evt.setOutput(stack);
     evt.setMaterialCost(stack.getCount());
-    evt.setCost((int) (baselevel * baselevel) * stack.getCount());
+    evt.setCost((int) (baselevel * baselevel * RecipeConfig.levelCostFactor.get()) * stack.getCount());
   }
 
   static private float combine(Random rand, Pair<Float, Float> pair) {
@@ -116,11 +114,11 @@ public class AnvilCapacitorRecipe {
   static private float combine(Random rand, float a, float b) {
     float min = a < b ? a : b;
     float center = a < b ? b : a;
-    float offsetLow = Math.max(center - min, 0.1f);
-    float max = Math.min(center + offsetLow, 4.75f);
+    float offsetLow = Math.max(center - min, RecipeConfig.specialityLevelMin.get());
+    float max = Math.min(center + offsetLow, RecipeConfig.specialityLevelMax.get());
     float offsetHigh = max - center;
 
-    float gaussian = (float) rand.nextGaussian();
+    float gaussian = (float) rand.nextGaussian() + RecipeConfig.specialityLevelBias.get();
     if (gaussian <= 0) {
       return Math.max(min, center + gaussian * offsetLow);
     } else {
