@@ -60,6 +60,6 @@ public final class RecipeConfig {
       "Bias to the speciality level change when combining Loot Capacitors.").setRange(-.25, .25).sync();
 
   public static final IValue<Float> levelCostFactor = FL.make("levelCostFactor", 1f, //
-      "Facor to the level cost when combining Loot Capacitors.").setRange(.1, .10).sync();
+      "Facor to the level cost when combining Loot Capacitors.").setRange(.1, 10).sync();
 
 }
