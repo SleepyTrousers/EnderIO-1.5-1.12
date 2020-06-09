@@ -253,7 +253,7 @@ XML editor will display that as tooltips when editing this file.
    <recipe name="Skeletal Contractor">
     <slicing energy="20000">
       <input name="ingotSoularium"/><input name="minecraft:skull:0"/><input name="ingotSoularium"/>
-      <input name="minecraft:rotten_flesh"/><input name="itemSilicon"/><input name="minecraft:rotten_flesh"/>
+      <input name="minecraft:rotten_flesh"/><input name="CAPACITOR1"/><input name="minecraft:rotten_flesh"/>
       <output name="skullSkeletalContractor"/>
     </slicing>
   </recipe>
@@ -261,7 +261,7 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Guardian Diode">
     <slicing energy="20000">
       <input name="ingotEnergeticAlloy"/><input name="gemPrismarine"/><input name="ingotEnergeticAlloy"/>
-      <input name="dustPrismarine"/><input name="itemSilicon"/><input name="dustPrismarine"/>
+      <input name="dustPrismarine"/><input name="CAPACITOR1"/><input name="dustPrismarine"/>
       <output name="skullGuardianDiode"/>
     </slicing>
   </recipe>
