@@ -123,7 +123,7 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
   public void updateTick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Random rand) {
     TileLightNode te = getTileEntity(world, pos);
     if (te != null) {
-      te.checkParent();
+      te.checkSelf();
     }
   }
 
