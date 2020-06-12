@@ -137,4 +137,15 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
   public void getSubBlocks(@Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
   }
 
+  /*
+   * This code will visualize the light nodes in the world:
+   * 
+   * @SideOnly(Side.CLIENT)
+   * 
+   * @Override public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rnd) { float offsetX = .5f;
+   * float offsetY = .75f; float offsetZ = .5f; float maxSize = .25f; Minecraft.getMinecraft().effectRenderer .addEffect(new InfinityParticle(world, pos, new
+   * Vector4f(0xFD / 255f, 1, 0, 1f), new Vector4f(offsetX, offsetY, offsetZ, maxSize))); }
+   * 
+   */
+
 }
