@@ -75,7 +75,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   private boolean updateReturnAreaSlots;
   private boolean storedRecipeExists;
 
-  private @Nonnull World playerWorld;
+  private @Nonnull final World playerWorld;
 
   private SlotCraftingWrapper slotCraft;
 
@@ -401,8 +401,11 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
           if (slot != null) {
             slot.putStack(targetStack);
           } else {
-            player.inventory.setItemStack(targetStack);
-            player.updateHeldItem();
+            System.out.println(targetStack + " STACKED");
+            if (player.inventory.getItemStack().isEmpty()) {
+              player.inventory.setItemStack(targetStack);
+              player.updateHeldItem();
+            }
           }
         }
       }

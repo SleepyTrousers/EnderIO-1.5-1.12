@@ -12,6 +12,7 @@ import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 
 import crazypants.enderio.base.filter.FilterRegistry;
+import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.fluid.SmartTankFluidMachineHandler;
 import crazypants.enderio.base.invpanel.capability.CapabilityDatabaseHandler;
@@ -70,7 +71,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   public InventoryPanelContainer eventHandler;
 
   // TODO: Filter
-  // private IItemFilter itemFilter;
+   private IItemFilter itemFilter;
 
   @Store
   private int guiSortMode;
@@ -138,17 +139,17 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
       eventHandler.onCraftMatrixChanged(emptyInventory);
     }
     if (slot == SLOT_VIEW_FILTER) {
-      // updateItemFilter();
+       updateItemFilter();
     }
   }
 
-  // private void updateItemFilter() {
-  // itemFilter = FilterRegistry.<IItemFilter> getFilterForUpgrade(inventory[SLOT_VIEW_FILTER]);
-  // }
-  //
-  // public IItemFilter getItemFilter() {
-  // return itemFilter;
-  // }
+   private void updateItemFilter() {
+   itemFilter = FilterRegistry.<IItemFilter> getFilterForUpgrade(inventory[SLOT_VIEW_FILTER]);
+   }
+
+   public IItemFilter getItemFilter() {
+    return itemFilter;
+   }
 
   @Override
   public boolean isActive() {
@@ -276,7 +277,8 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   public void addStoredCraftingRecipe(@Nullable StoredCraftingRecipe recipe) {
     storedCraftingRecipes.add(recipe);
-    if (world.isRemote) {
+    // sic! fake TE or client TE
+    if (world == null || world.isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketStoredCraftingRecipe(PacketStoredCraftingRecipe.ACTION_ADD, 0, recipe));
     } else {
       markDirty();
@@ -287,7 +289,8 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   public void removeStoredCraftingRecipe(int index) {
     if (index >= 0 && index < storedCraftingRecipes.size()) {
       storedCraftingRecipes.remove(index);
-      if (world.isRemote) {
+      // sic! fake TE or client TE
+      if (world == null || world.isRemote) {
         PacketHandler.INSTANCE.sendToServer(new PacketStoredCraftingRecipe(PacketStoredCraftingRecipe.ACTION_DELETE, index, null));
       } else {
         markDirty();
@@ -302,7 +305,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   public void setExtractionDisabled(boolean extractionDisabled) {
     this.extractionDisabled = extractionDisabled;
-    if (!world.isRemote) {
+    if (world != null && !world.isRemote) {
       PacketHandler.INSTANCE.sendToDimension(new PacketUpdateExtractionDisabled(this, extractionDisabled), world.provider.getDimension());
     }
   }
@@ -323,7 +326,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
     if (eventHandler != null) {
       eventHandler.checkCraftingRecipes();
     }
-    // updateItemFilter();
+     updateItemFilter();
   }
 
   @Override

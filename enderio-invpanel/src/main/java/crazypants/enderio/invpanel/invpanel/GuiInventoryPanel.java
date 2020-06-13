@@ -423,7 +423,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     view.setDatabase(getDatabase());
     // TODO: Filter
-    // view.setItemFilter(te.getItemFilter());
+    view.setItemFilter(te.getItemFilter());
+
     view.updateFilter(tfFilter.getText());
 
     boolean update = view.sortItems();

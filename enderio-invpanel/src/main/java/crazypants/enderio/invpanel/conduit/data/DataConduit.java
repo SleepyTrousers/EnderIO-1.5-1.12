@@ -29,6 +29,7 @@ import crazypants.enderio.base.tool.ToolUtil;
 import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.render.ConduitTexture;
 import crazypants.enderio.invpanel.init.InvpanelObject;
+import crazypants.enderio.invpanel.invpanel.TileInventoryPanel;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -218,7 +219,8 @@ public class DataConduit extends AbstractConduit implements IDataConduit {
       BlockPos pos = getBundle().getLocation();
 
       TileEntity te = world.getTileEntity(pos.offset(dir));
-      if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, dir.getOpposite())) {
+      // Ghost items bug. Missing if check caused INV panel to scan it's own inventory, so placing items in the return area causes it to show up instantly in the inventory
+      if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, dir.getOpposite()) && !(te instanceof TileInventoryPanel)) {
         return te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, dir.getOpposite());
       }
     }
