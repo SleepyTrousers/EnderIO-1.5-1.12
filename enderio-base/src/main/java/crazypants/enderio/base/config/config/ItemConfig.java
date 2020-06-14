@@ -55,6 +55,9 @@ public class ItemConfig {
       "Ticks that must pass between activations of the Staff of Levity.").setRange(1, 20 * 60 * 10).sync();
   public static final IValue<Fluid> staffOfLevityFluidType = STAFF.makeFluid("fluidType", "vapor_of_levity", //
       "Type of fluid used by the Staff of Levity.").sync();
+  public static final IValue<Integer> staffOfLevityDurationSeconds = STAFF.make("durationSeconds", 255, //
+      "Duration for the levitation effect of the Staff of Levity. This is just a failsafe to prevent players from floating forever.").setRange(1, 60 * 60 * 24)
+      .sync();
 
   public static final IValueFactory ROD = F.section(".rodofreturn");
 
