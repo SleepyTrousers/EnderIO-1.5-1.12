@@ -221,6 +221,8 @@ public enum Lang implements ILang {
   GUI_DSU_NOT_INSERTED(".darksteel.upgrades.gui.not_inserted"),
   GUI_DSU_STORAGE(".darksteel.upgrades.gui.storage"),
 
+  GUI_ZOOM_STORED(".keybind.zoom.stored"),
+
   ;
 
   private final @Nonnull String key;

@@ -1331,6 +1331,12 @@ enderio.keybind.fovminus=Camera: Zoom in
 enderio.keybind.fovplusfast=Camera: Zoom out fast
 enderio.keybind.fovminusfast=Camera: Zoom in fast
 enderio.keybind.fovreset=Camera: Reset Zoom
+enderio.keybind.fovunreset=Camera: Revert Zoom (to level before last reset)
+enderio.keybind.fovstore=Camera: Store Zoom Level
+enderio.keybind.fovrecall=Camera: Recall Zoom Level
+
+enderio.keybind.zoom.stored: Zoom level stored
+
 key.category.darksteelarmor=Dark Steel Armor 
 key.category.tools=Tools
 
