@@ -172,8 +172,8 @@ enderio.gui.priority=Priority
 
 enderio.gui.liquid_auto_extract=Auto Extract
 enderio.gui.liquid_filter=Filter
-enderio.gui.liquid_whitelist=Whitelist
-enderio.gui.liquid_blacklist=Blacklist
+enderio.gui.liquid_whitelist=Caucasian-List
+enderio.gui.liquid_blacklist=African-American-List
 enderio.gui.liquid_function_upgrade.details=Effective speed:
 enderio.gui.liquid_function_upgrade.details2=%s %% / %s per operation
 

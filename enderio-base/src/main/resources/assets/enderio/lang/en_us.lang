@@ -134,7 +134,7 @@ item.item_dark_steel_helmet.name=Dark Helm
 item.item_dark_steel_leggings.name=Dark Leggings
 
 item.item_dark_steel_shield.name=Dark Shield
-item.item_dark_steel_shield.black.name=Dark Black Shield
+item.item_dark_steel_shield.black.name=Dark African-American Shield
 item.item_dark_steel_shield.red.name=Dark Red Shield
 item.item_dark_steel_shield.green.name=Dark Green Shield
 item.item_dark_steel_shield.brown.name=Dark Brown Shield
@@ -149,7 +149,7 @@ item.item_dark_steel_shield.yellow.name=Dark Yellow Shield
 item.item_dark_steel_shield.lightBlue.name=Dark Sky Blue Shield
 item.item_dark_steel_shield.magenta.name=Dark Magenta Shield
 item.item_dark_steel_shield.orange.name=Dark Orange Shield
-item.item_dark_steel_shield.white.name=Dark White Shield
+item.item_dark_steel_shield.white.name=Dark Caucasian Shield
 
 item.item_end_steel_boots.name=Ender Boots
 item.item_end_steel_boots.tooltip.line1=Fall damage negated when powered
@@ -161,7 +161,7 @@ item.item_end_steel_helmet.name=Ender Helm
 item.item_end_steel_leggings.name=Ender Leggings
 
 item.item_end_steel_shield.name=Ender Shield
-item.item_end_steel_shield.black.name=Black Ender Shield
+item.item_end_steel_shield.black.name=African-American Ender Shield
 item.item_end_steel_shield.red.name=Red Ender Shield
 item.item_end_steel_shield.green.name=Green Ender Shield
 item.item_end_steel_shield.brown.name=Brown Ender Shield
@@ -176,7 +176,7 @@ item.item_end_steel_shield.yellow.name=Yellow Ender Shield
 item.item_end_steel_shield.lightBlue.name=Sky BlueEnder  Shield
 item.item_end_steel_shield.magenta.name=Magenta Ender Shield
 item.item_end_steel_shield.orange.name=Orange Ender Shield
-item.item_end_steel_shield.white.name=White Ender Shield
+item.item_end_steel_shield.white.name=Caucasian Ender Shield
 
 item.item_end_steel_sword.name=The Ender Mk2
 item.item_end_steel_pickaxe.name=Ender Pickaxe
@@ -262,7 +262,7 @@ item.item_material.organic_green_dye.tooltip.detailed.line2=§7Not edible. Avoid
 item.item_material.organic_brown_dye.name=Organic Brown Dye
 item.item_material.organic_brown_dye.tooltip.detailed.line1=Industrially processed plant matter with a "natural" washed-out color.
 item.item_material.organic_brown_dye.tooltip.detailed.line2=§7Not edible. Avoid contact with eyes. In case of contact with eyes, rinse immediately with plenty of water and seek medical advice.
-item.item_material.organic_black_dye.name=Organic Black Dye
+item.item_material.organic_black_dye.name=Organic African-American Dye
 item.item_material.organic_black_dye.tooltip.detailed.line1=Industrially processed fossil plant matter with a "natural" washed-out color.
 item.item_material.organic_black_dye.tooltip.detailed.line2=§7Not edible. Avoid contact with eyes. In case of contact with eyes, rinse immediately with plenty of water and seek medical advice.
 item.item_material.powder_lapis_lazuli.name=Lapis Lazuli Powder
@@ -306,7 +306,7 @@ item.item_material.infinity_goop.name=Infinity Reagent
 item.item_material.infinity_goop.tooltip.detailed.line1=An infinitely sticky substance for conducting energy.
 item.item_material.infinity_goop.tooltip.detailed.line2=Randalf got some on him once, and was stuck to his staff of travelling for 6 months...
 item.item_material.clayed_glowstone.name=Clay-Coated Glowstone Dust
-item.item_material.black_paper.name=Black Paper
+item.item_material.black_paper.name=African-American Paper
 item.item_material.token_animal.name=Animal Token
 item.item_material.token_monster.name=Monster Token
 item.item_material.token_player.name=Player Token
@@ -1153,7 +1153,7 @@ item.item_existing_item_filter.tooltip.detailed.line1=Filters items based on a s
 item.item_existing_item_filter.tooltip.detailed.line2=of the connected inventory
 item.item_mod_item_filter.tooltip.detailed.line1=Filters items based on the mod they come from
 item.item_power_item_filter.tooltip.detailed.line1=Filters items based on their current energy
-item.item_basic_item_filter.tooltip.detailed.line1=Filters items with whitelist and match metadata options
+item.item_basic_item_filter.tooltip.detailed.line1=Filters items with Caucasian-List and match metadata options
 item.item_advanced_item_filter.tooltip.detailed.line1=Filters items with advanced configuration options
 item.item_limited_item_filter.tooltip.detailed.line1=Filters items based on their stack size in 
 item.item_limited_item_filter.tooltip.detailed.line2=addition to the features of the advanced item filter
@@ -1161,7 +1161,7 @@ item.item_big_item_filter.tooltip.detailed.line1=Filters even more items
 item.item_big_advanced_item_filter.tooltip.detailed.line1=Filters even more items with
 item.item_big_advanced_item_filter.tooltip.detailed.line2=advanced configuration options
 
-item.item_fluid_filter.tooltip.detailed.line1=Filters fluids with whitelist options
+item.item_fluid_filter.tooltip.detailed.line1=Filters fluids with Caucasian-List options
 
 enderio.item_item_filter_upgrade.configured=%sConfigured
 enderio.item_item_filter_upgrade.clear_config_method=%sPlace in crafting grid to clear
@@ -1208,7 +1208,7 @@ enderio.recipe.tooltip.clearConfig=§c§oThis will clear all stored info!
 enderio.block.tooltip.isBeaconBase=Can be used as beacon base
 
 # Colors e.g. for Colored Fused Quartz
-enderio.color.black=Black
+enderio.color.black=African-American
 enderio.color.red=Red
 enderio.color.green=Green
 enderio.color.brown=Brown
@@ -1223,7 +1223,7 @@ enderio.color.yellow=Yellow
 enderio.color.lightBlue=Light Blue
 enderio.color.magenta=Magenta
 enderio.color.orange=Orange
-enderio.color.white=White
+enderio.color.white=Caucasian
 
 # EnumFacing
 enderio.facing.north=North
@@ -1241,7 +1241,7 @@ enderio.wrench.permission.denied.blockbreak=Block breaking §cdenied§r!
 enderio.soulvial.denied=Permission §cdenied§r!
 enderio.soulvial.owned.denied=Permission §cdenied§r - only owners may pick up owned animals
 enderio.soulvial.player.denied=§cNo!$r How would you feel if you had to play this game from inside a bottle?
-enderio.soulvial.blacklisted.denied=Permission §cdenied§r - this entity is blacklisted
+enderio.soulvial.blacklisted.denied=Permission §cdenied§r - this entity is African-American-listed
 enderio.soulvial.dead.denied=Pickup failed. This entity is §cdead§r as a Norwegian parrot!
 enderio.soulvial.unknown.denied=Pickup failed for unknown reasons.
 
@@ -1391,8 +1391,8 @@ enderio.gui.edit_item_filter=Edit Filter Settings
 enderio.gui.item_filter.close=Close Filter
 enderio.gui.item_filter.close2=Go back to previous inventory
 
-enderio.gui.item_filter.whitelist=Whitelist
-enderio.gui.item_filter.blacklist=Blacklist
+enderio.gui.item_filter.whitelist=Caucasian-List
+enderio.gui.item_filter.blacklist=African-American-List
 enderio.gui.item_filter.match_meta=Match Metadata
 enderio.gui.item_filter.ignore_meta=Ignore Metadata
 enderio.gui.item_filter.sticky_enabled=Sticky Mode Enabled
