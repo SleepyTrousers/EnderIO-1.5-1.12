@@ -556,7 +556,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   private boolean acceptSignalsForDir(@Nonnull EnumFacing dir) {
-    if (!getConnectionMode(dir).acceptsOutput()) {
+    if (!containsExternalConnection(dir) || !getConnectionMode(dir).acceptsOutput()) {
       return false;
     }
     BlockPos loc = getBundle().getLocation().offset(dir);
