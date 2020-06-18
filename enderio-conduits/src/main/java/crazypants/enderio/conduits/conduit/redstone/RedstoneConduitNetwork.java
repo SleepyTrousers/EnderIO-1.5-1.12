@@ -14,6 +14,7 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.base.conduit.ConduitUtil.UnloadedBlockException;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.redstone.signals.BundledSignal;
+import crazypants.enderio.base.conduit.redstone.signals.CombinedSignal;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
 import crazypants.enderio.base.diagnostics.Prof;
@@ -95,7 +96,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
 
   private void updateActiveState() {
     boolean isActive = false;
-    for (Signal s : bundledSignal.getSignals()) {
+    for (CombinedSignal s : bundledSignal.getSignals()) {
       if (s.getStrength() > 0) {
         isActive = true;
         break;
@@ -156,7 +157,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
 
   String signalsString() {
     StringBuilder sb = new StringBuilder();
-    for (Signal s : bundledSignal.getSignals()) {
+    for (CombinedSignal s : bundledSignal.getSignals()) {
       sb.append("<");
       sb.append(s);
       sb.append(">");
