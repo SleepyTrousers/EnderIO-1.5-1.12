@@ -113,7 +113,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
       return false;
     }
     RedstoneControlMode mode = getExtractionRedstoneMode(dir);
-    return ConduitUtil.isRedstoneControlModeMet(this, mode, getExtractionSignalColor(dir));
+    return ConduitUtil.isRedstoneControlModeMet(this, mode, getExtractionSignalColor(dir), dir);
   }
 
   @Override
