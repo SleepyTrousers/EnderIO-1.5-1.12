@@ -5,15 +5,19 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.vecmath.Vector4f;
+
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.ItemEIO;
+import crazypants.enderio.base.render.ranged.InfinityParticle;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
@@ -96,9 +100,11 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
 
   @Override
   public void breakBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
+    if (!world.isRemote) {
     TileLightNode te = getTileEntity(world, pos);
-    if (te != null) {
-      te.onBlockRemoved();
+      if (te != null) {
+        te.onBlockRemoved();
+      }
     }
   }
 
@@ -113,17 +119,21 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
   @Override
   public void neighborChanged(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Block neighborBlock,
       @Nonnull BlockPos fromPos) {
-    TileLightNode te = getTileEntity(world, pos);
-    if (te != null) {
-      te.onNeighbourChanged();
+    if (!world.isRemote) {
+      TileLightNode te = getTileEntity(world, pos);
+      if (te != null) {
+        te.onNeighbourChanged();
+      }
     }
   }
 
   @Override
   public void updateTick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Random rand) {
+    if (!world.isRemote) {
     TileLightNode te = getTileEntity(world, pos);
-    if (te != null) {
-      te.checkSelf();
+      if (te != null) {
+        te.checkSelf();
+      }
     }
   }
 
@@ -137,15 +147,21 @@ public class BlockLightNode extends BlockEio<TileLightNode> {
   public void getSubBlocks(@Nullable CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
   }
 
+  private final boolean doDebugStuff = false;
   /*
    * This code will visualize the light nodes in the world:
-   * 
-   * @SideOnly(Side.CLIENT)
-   * 
-   * @Override public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rnd) { float offsetX = .5f;
-   * float offsetY = .75f; float offsetZ = .5f; float maxSize = .25f; Minecraft.getMinecraft().effectRenderer .addEffect(new InfinityParticle(world, pos, new
-   * Vector4f(0xFD / 255f, 1, 0, 1f), new Vector4f(offsetX, offsetY, offsetZ, maxSize))); }
-   * 
    */
+  @SideOnly(Side.CLIENT)
+  @Override
+  public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rnd) {
+    if (doDebugStuff) {
+      float offsetX = .5f;
+      float offsetY = .75f;
+      float offsetZ = .5f;
+      float maxSize = .25f;
+      Minecraft.getMinecraft().effectRenderer
+          .addEffect(new InfinityParticle(world, pos, new Vector4f(0xFD / 255f, 1, 0, 1f), new Vector4f(offsetX, offsetY, offsetZ, maxSize)));
+    }
+}
 
 }
