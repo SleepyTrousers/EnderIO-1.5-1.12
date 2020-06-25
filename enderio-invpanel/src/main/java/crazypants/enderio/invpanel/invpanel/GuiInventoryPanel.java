@@ -448,7 +448,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     } else {
       tfFilter.setEnabled(false);
       setText(tfFilter, "");
-      fr.drawString("<No Connection>", tfFilter.x, tfFilter.y, 0x707070);
+      fr.drawString(infoTextNoConnection, tfFilter.x, tfFilter.y, 0x707070);
     }
   }
 
