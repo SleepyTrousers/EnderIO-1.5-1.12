@@ -101,7 +101,7 @@ public class DataConduit extends AbstractConduit implements IDataConduit {
 
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-    if (capability == CapabilityDatabaseHandler.DATABASE_HANDLER_CAPABILITY && externalConnections.contains(facing)) {
+    if (capability == CapabilityDatabaseHandler.DATABASE_HANDLER_CAPABILITY && externalConnections.contains(facing) && getConnectionMode(facing) != ConnectionMode.DISABLED) {
       return true;
     }
     return false;
@@ -214,7 +214,7 @@ public class DataConduit extends AbstractConduit implements IDataConduit {
   @Override
   @Nullable
   public IItemHandler getExternalInventory(@Nonnull EnumFacing dir) {
-    if (getConnectionMode(dir) == ConnectionMode.IN_OUT) {
+    if (getConnectionMode(dir) != ConnectionMode.DISABLED) {
       World world = getBundle().getBundleworld();
       BlockPos pos = getBundle().getLocation();
 
@@ -241,6 +241,15 @@ public class DataConduit extends AbstractConduit implements IDataConduit {
       network.removeSource(sources.get(dir));
     }
     sources.remove(dir);
+  }
+
+  @Override
+  public void connectionsChanged() {
+    super.connectionsChanged();
+    this.invalidate();
+    for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
+      checkConnections(itr.next());
+    }
   }
 
   // TEXTURES

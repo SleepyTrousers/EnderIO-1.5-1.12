@@ -92,6 +92,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private final @Nonnull String headerInventory;
   private final @Nonnull String infoTextFilter;
   private final @Nonnull String infoTextOffline;
+  private final @Nonnull String infoTextNoConnection;
 
   private CraftingHelper craftingHelper;
 
@@ -209,6 +210,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     headerInventory = EnderIO.lang.localizeExact("container.inventory");
     infoTextFilter = EnderIO.lang.localize("gui.inventorypanel.info.filter");
     infoTextOffline = EnderIO.lang.localize("gui.inventorypanel.info.offline");
+    infoTextNoConnection = EnderIO.lang.localize("gui.inventorypanel.info.noconnection");
 
     ArrayList<String> list = new ArrayList<String>();
 
@@ -422,6 +424,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     }
 
     view.setDatabase(getDatabase());
+
     // TODO: Filter
     view.setItemFilter(te.getItemFilter());
 
@@ -438,10 +441,14 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       if (!tfFilter.isFocused() && tfFilter.getText().isEmpty()) {
         fr.drawString(infoTextFilter, tfFilter.x, tfFilter.y, 0x707070);
       }
-    } else {
+    } else if (!te.isActive() && te.hasConnection()) {
       tfFilter.setEnabled(false);
       setText(tfFilter, "");
       fr.drawString(infoTextOffline, tfFilter.x, tfFilter.y, 0x707070);
+    } else {
+      tfFilter.setEnabled(false);
+      setText(tfFilter, "");
+      fr.drawString("<No Connection>", tfFilter.x, tfFilter.y, 0x707070);
     }
   }
 

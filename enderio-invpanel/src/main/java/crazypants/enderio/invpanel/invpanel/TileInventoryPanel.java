@@ -60,7 +60,8 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   protected final SmartTank fuelTank;
   protected boolean tanksDirty;
 
-  private IInventoryDatabaseServer dbServer;
+  //private IInventoryDatabaseServer dbServer;
+  IDatabaseHandler dbServer = null;
   private InventoryDatabaseClient dbClient;
 
   @Store({ NBTAction.CLIENT, NBTAction.SAVE })
@@ -69,6 +70,8 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   private boolean extractionDisabled;
 
   public InventoryPanelContainer eventHandler;
+  @Store({ NBTAction.CLIENT, NBTAction.SAVE })
+  private boolean hasConnection = false;
 
   // TODO: Filter
    private IItemFilter itemFilter;
@@ -93,7 +96,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   }
 
   public IInventoryDatabaseServer getDatabaseServer() {
-    return dbServer;
+    return dbServer != null ? dbServer.getDatabase() : null;
   }
 
   public InventoryDatabaseClient getDatabaseClient(int generation) {
@@ -109,7 +112,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   @Nullable
   public InventoryDatabaseClient getDatabaseClient() {
-    return dbClient;
+    return this.hasConnection ? dbClient : null;
   }
 
   @Override
@@ -156,6 +159,10 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
     return InvpanelConfig.inventoryPanelFree.get() || active;
   }
 
+  public boolean hasConnection() {
+    return this.hasConnection;
+  }
+
   @Override
   public void doUpdate() {
     if (world.isRemote) {
@@ -180,6 +187,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   }
 
   private void scanNetwork() {
+    //System.out.println("SCANNING NETWORK");
     EnumFacing facingDir = getFacing();
     EnumFacing backside = facingDir.getOpposite();
 
@@ -192,20 +200,25 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
     }
 
     if (dbHandler != null) {
-      dbServer = dbHandler.getDatabase();
-      dbServer.sendChangeLogs();
-      refuelPower(dbServer);
+      dbServer = dbHandler;
+      getDatabaseServer().sendChangeLogs();
+      refuelPower(dbServer.getDatabase());
 
-      if (active != dbServer.isOperational()) {
-        active = dbServer.isOperational();
+      this.hasConnection = true;
+
+      if (active != getDatabaseServer().isOperational()) {
+        active = getDatabaseServer().isOperational();
         updateClients = true;
       }
     } else {
       if (active) {
         updateClients = true;
       }
+      this.hasConnection = false;
       dbServer = null;
+      dbClient = null;
       active = false;
+
     }
   }
 
@@ -222,7 +235,9 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
       amount = Math.min(amount, getPower());
       if (amount > 0) {
         useNutrient(amount);
-        dbServer.addPower(amount * InvpanelConfig.inventoryPanelPowerPerMB.get());
+        if (getDatabaseServer() != null) {
+          getDatabaseServer().addPower(amount * InvpanelConfig.inventoryPanelPowerPerMB.get());
+        }
       }
     }
   }
