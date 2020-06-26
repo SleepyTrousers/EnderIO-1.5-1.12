@@ -54,7 +54,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   public static final int SLOT_VIEW_FILTER = 10;
   public static final int SLOT_RETURN_START = 11;
 
-  public static final int MAX_STORED_CRAFTING_RECIPES = 6;
+  public static final int MAX_STORED_CRAFTING_RECIPES = 10;
 
   @Store
   protected final SmartTank fuelTank;
@@ -82,6 +82,9 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   private @Nonnull String guiFilterString = "";
   @Store
   private boolean guiSync;
+
+  @Store
+  private float power;
 
   @Store
   private final ArrayList<StoredCraftingRecipe> storedCraftingRecipes;
@@ -122,7 +125,8 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   @Override
   public boolean isValidOutput(@Nonnull ItemStack itemstack) {
-    return !extractionDisabled && super.isValidOutput(itemstack);
+    return false;
+    //return !extractionDisabled && super.isValidOutput(itemstack);
   }
 
   @Override
@@ -165,6 +169,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   @Override
   public void doUpdate() {
+    //System.out.println(this.getPowerLevel());
     if (world.isRemote) {
       updateEntityClient();
       return;
@@ -172,6 +177,10 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
     if (shouldDoWorkThisTick(20)) {
       scanNetwork();
+    }
+
+    if (getDatabaseServer() != null) {
+      getDatabaseServer().tick(this);
     }
 
     if (updateClients) {
@@ -206,8 +215,8 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
       this.hasConnection = true;
 
-      if (active != getDatabaseServer().isOperational()) {
-        active = getDatabaseServer().isOperational();
+      if (active != getDatabaseServer().isOperational(this)) {
+        active = getDatabaseServer().isOperational(this);
         updateClients = true;
       }
     } else {
@@ -229,17 +238,34 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   @Override
   public void refuelPower(@Nonnull IInventoryDatabaseServer db) {
-    float missingPower = InvpanelConfig.inventoryPanelPowerPerMB.get() * 0.5f - db.getPower();
+    float missingPower = InvpanelConfig.inventoryPanelPowerPerMB.get() * 0.5f - this.getPowerLevel();
     if (missingPower > 0) {
       int amount = (int) Math.ceil(missingPower / InvpanelConfig.inventoryPanelPowerPerMB.get());
       amount = Math.min(amount, getPower());
       if (amount > 0) {
         useNutrient(amount);
-        if (getDatabaseServer() != null) {
-          getDatabaseServer().addPower(amount * InvpanelConfig.inventoryPanelPowerPerMB.get());
-        }
+        this.addPower(amount * InvpanelConfig.inventoryPanelPowerPerMB.get());
       }
     }
+  }
+
+  @Override
+  public float getPowerLevel() {
+    return this.power;
+  }
+
+  @Override
+  public boolean usePower(float amount) {
+    if (this.power > 0) {
+      this.power = Math.max(this.power - amount, 0);
+      return true;
+    }
+    return false;
+  }
+
+  @Override
+  public void addPower(float amount) {
+    this.power += amount;
   }
 
   public void useNutrient(int amount) {
@@ -332,6 +358,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
    *          if extraction is disabled
    */
   public void updateExtractionDisabled(boolean extractionDisabledIn) {
+    System.out.println("Extraction is " + extractionDisabledIn);
     this.extractionDisabled = extractionDisabledIn;
   }
 
@@ -423,5 +450,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
     }
     return smartTankFluidHandler;
   }
+
+
 
 }

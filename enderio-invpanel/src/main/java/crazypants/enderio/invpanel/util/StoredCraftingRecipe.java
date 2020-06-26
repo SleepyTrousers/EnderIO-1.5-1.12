@@ -44,6 +44,7 @@ public class StoredCraftingRecipe {
         count++;
       }
     }
+    updateResult = true;
     return count > 0;
   }
 
