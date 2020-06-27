@@ -364,4 +364,10 @@ public abstract class GuiContainerBaseEIO<O> extends GuiContainerBase implements
     }
   }
 
+  public float setZLevel(float level) {
+    float old = zLevel;
+    zLevel = level;
+    return old;
+  }
+
 }

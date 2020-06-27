@@ -28,6 +28,7 @@ import com.enderio.core.common.util.ItemUtil;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.gui.RecipeTooltipFontRenderer;
 import crazypants.enderio.base.integration.jei.JeiAccessor;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.machine.gui.GuiMachineBase;
@@ -61,20 +62,20 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
-  private static final @Nonnull Rectangle RECTANGLE_FUEL_TANK = new Rectangle(36, 133, 16, 47);
+  private static final @Nonnull Rectangle RECTANGLE_FUEL_TANK = new Rectangle(36, 149, 16, 47);
 
-  private static final @Nonnull Rectangle inventoryArea = new Rectangle(24 + 107, 27, 108, 90);
+  private static final @Nonnull Rectangle inventoryArea = new Rectangle( 107, 27, 108, 90);
 
-  private static final @Nonnull Rectangle btnRefill = new Rectangle(24 + 85, 32, 20, 20);
+  private static final @Nonnull Rectangle btnRefill = new Rectangle( 85, 32, 20, 20);
 
-  private static final @Nonnull Rectangle btnReturnArea = new Rectangle(24 + 6, 72, 5 * 18, 8);
+  private static final @Nonnull Rectangle btnReturnArea = new Rectangle( 6, 72, 5 * 18, 8);
 
   private static final int ID_SORT = 9876;
   private static final int ID_CLEAR = 9877;
   private static final int ID_SYNC = 9878;
 
   private static final int GHOST_COLUMNS = 6;
-  private static final int GHOST_ROWS = 5;
+  private static final int GHOST_ROWS = 6;
 
   private final DatabaseView view;
 
@@ -101,6 +102,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   private CraftingHelper craftingHelper;
 
+  final @Nonnull RecipeTooltipFontRenderer rtfr;
+
   @Nonnull
   private final Rectangle btnAddStoredRecipe = new Rectangle();
 
@@ -108,6 +111,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     super(te, container, "inv_panel", "inv_panel_extended");
     redstoneButton.visible = false;
     configB.visible = false;
+
+    rtfr = new RecipeTooltipFontRenderer(this);
 
     this.ghostSlotHandler = new GhostSlotHandler() {
       @Override
@@ -136,19 +141,44 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     for (int y = 0; y < GHOST_ROWS; y++) {
       for (int x = 0; x < GHOST_COLUMNS; x++) {
-        getGhostSlotHandler().add(new InvSlot(24 + 108 + x * 18, 28 + y * 18));
+        getGhostSlotHandler().add(new InvSlot( 24 + 108 + x * 18, 28 + y * 18));
       }
     }
 
     for (int i = 0; i < TileInventoryPanel.MAX_STORED_CRAFTING_RECIPES; i++) {
+      int index = i;
       TileInventoryPanel te1 = getTileEntity();
-      StoredCraftingRecipe recipe = te1.getStoredCraftingRecipe(i);
-      repButtons[i] = new ItemStackButton(this, 22 + i, -11, 8 + i * 20, IconEIO.CROSS, null);
-      repButtons[i].setToolTip("Click to save recipe");
+      StoredCraftingRecipe recipe = te1.getStoredCraftingRecipe(index);
+      repButtons[index] = new ItemStackButton(this, 22 + index, -11, 18 + index * 20, IconEIO.CROSS, null);
+      addToolTip(new GuiToolTip(repButtons[index].getBounds(), "CLICK to store recipe") {
+        @Override
+        public boolean shouldDraw() {
+          return super.shouldDraw() && !repButtons[index].hasItemStack() && repButtons[index].enabled;
+        }
+      });
       if (recipe != null) {
         ItemStack icon = recipe.getResult(te1);
-        repButtons[i].setStack(icon);
-        repButtons[i].setToolTip(TextFormatting.YELLOW + repButtons[i].itemStackName(), "Click to load recipe", "Shift-Click to load recipe with as many ingredients as possible", "Ctrl-Right-Click to delete recipe");
+        repButtons[index].setStack(icon);
+
+        rtfr.registerRecipe("invprecipe" + index, recipe.getIngredients());
+        addToolTip(new GuiToolTip(repButtons[index].getBounds(), "") {
+          @Override
+          protected void updateText() {
+            text.clear();
+            text.add(TextFormatting.YELLOW + repButtons[index].itemStackName());
+            text.add("#RECIPE=invprecipe" + index + "#" + TextFormatting.GRAY + "CLICK to load recipe");
+            text.add("#RECIPE#" + TextFormatting.GRAY + "SHIFT-CLICK to load recipe with stacks");
+            text.add("#RECIPE#" + TextFormatting.GRAY + "CTRL-RIGHT-CLICK to delete recipe");
+            text.add("#RECIPE#");
+            text.add("#RECIPE#");
+            text.add("#RECIPE#");
+          }
+
+          @Override
+          public boolean shouldDraw() {
+            return super.shouldDraw() && repButtons[index].hasItemStack() && repButtons[index].enabled;
+          }
+        });
       }
     }
 
@@ -163,11 +193,11 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
-    tfFilter = new TextFieldEnder(fr, 24 + 108, 11, 106, 10);
+    tfFilter = new TextFieldEnder(fr,  24 + 108, 11, 106, 10);
     tfFilter.setEnableBackgroundDrawing(false);
     tfFilter.setText(te.getGuiFilterString());
 
-    btnSync = new ToggleButton(this, ID_SYNC, 24 + 233, 46, IconEIO.CROSS, IconEIO.TICK);
+    btnSync = new ToggleButton(this, ID_SYNC,  24 + 233, 46, IconEIO.CROSS, IconEIO.TICK);
     btnSync.setSelected(getTileEntity().getGuiSync());
     btnSync.setSelectedToolTip(EnderIO.lang.localize("gui.enabled"));
     btnSync.setUnselectedToolTip(EnderIO.lang.localize("gui.disabled"));
@@ -196,7 +226,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       btnSync.enabled = false;
     }
 
-    btnSort = new IconButton(this, ID_SORT, 24 + 233, 27, getSortOrderIcon()) {
+    btnSort = new IconButton(this, ID_SORT,  24 + 233, 27, getSortOrderIcon()) {
       @Override
       public boolean mousePressed(@Nonnull Minecraft mc1, int xIn, int yIn) {
         return mousePressedButton(mc1, xIn, yIn, 0);
@@ -212,8 +242,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       }
     };
 
-    scrollbar = new VScrollbar(this, 24 + 215, 27, 90);
-    btnClear = new MultiIconButton(this, ID_CLEAR, 24 + 65, 60, EnderWidget.X_BUT, EnderWidget.X_BUT_PRESSED, EnderWidget.X_BUT_HOVER);
+    scrollbar = new VScrollbar(this,  24 + 215, 27, 108);
+    btnClear = new MultiIconButton(this, ID_CLEAR,  24 + 65, 60, EnderWidget.X_BUT, EnderWidget.X_BUT_PRESSED, EnderWidget.X_BUT_HOVER);
 
     textFields.add(tfFilter);
 
@@ -393,16 +423,18 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     syncSettingsChange();
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture(0);
-    int sx = guiLeft;
+    int sx = guiLeft + 24;
     int sy = guiTop;
 
-    drawTexturedModalRect(sx + 24, sy, 0, 0, 232, ySize);
-    drawTexturedModalRect(sx + 24 + 232, sy, 232, 0, 24, 68);
+    drawTexturedModalRect(sx , sy, 0, 0, 232, 232);
+    drawTexturedModalRect(sx +  232, sy, 232, 0, 24, 68);
 
     if (craftingHelper != null || getContainer().hasCraftingRecipe()) {
       boolean hover = btnRefill.contains(mouseX - sx, mouseY - sy);
       int iconX = hover ? (isShiftKeyDown() ? 48 : 24) : 0;
+      bindGuiTexture(1);
       drawTexturedModalRect(sx + btnRefill.x - 2, sy + btnRefill.y - 2, iconX, 232, 24, 24);
+      bindGuiTexture(0);
     }
 
     TileInventoryPanel te = getTileEntity();
@@ -422,7 +454,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     drawTexturedModalRect(sx, y, 198, 229, 28, 26);
     y += 26;*/
     bindGuiTexture(1);
-    drawTexturedModalRect(sx - 18, (this.height - 208) / 2, 0, 0, 42, 208);
+    drawTexturedModalRect(sx - 42, (this.height - 208) / 2, 0, 0, 42, 208);
     bindGuiTexture(0);
 
     for (int i = 0; i < TileInventoryPanel.MAX_STORED_CRAFTING_RECIPES; ++i) {
@@ -439,9 +471,9 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     SmartTank fuelTank = te.fuelTank;
     if (!InvpanelConfig.inventoryPanelFree.get()) {
-      drawTexturedModalRect(sx + 35, sy + 132, 232, 163, 18, 49);
+      drawTexturedModalRect(sx + 11, sy + 147, 232, 163, 18, 49);
       if (fuelTank.getFluidAmount() > 0) {
-        RenderUtil.renderGuiTank(fuelTank.getFluid(), fuelTank.getCapacity(), fuelTank.getFluidAmount(), sx + 24 + 12, sy + 133, zLevel, 16, 47);
+        RenderUtil.renderGuiTank(fuelTank.getFluid(), fuelTank.getCapacity(), fuelTank.getFluidAmount(), sx +  12, sy + 148, zLevel, 16, 47);
       }
     }
 
@@ -449,15 +481,15 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         ? btnReturnArea.contains(mouseX - sx, mouseY - sy) ? EnderWidget.STOP_BUT_HOVER : EnderWidget.STOP_BUT
         : btnReturnArea.contains(mouseX - sx, mouseY - sy) ? EnderWidget.RETURN_BUT_HOVER : EnderWidget.RETURN_BUT;
     GlStateManager.color(1, 1, 1, 1);
-    EnderWidget.RETURN_BUT.getMap().render(returnButton, sx + 24 + 7, sy + 72, true);
+    EnderWidget.RETURN_BUT.getMap().render(returnButton, sx +  7, sy + 72, true);
 
     int headerColor = 0x404040;
     int focusedColor = 0x648494;
     FontRenderer fr = getFontRenderer();
-    fr.drawString(headerCrafting, sx + 24 + 7, sy + 6, headerColor);
-    fr.drawString(te.isExtractionDisabled() ? headerStorage : headerReturn, sx + 24 + 7 + 10, sy + 72,
+    fr.drawString(headerCrafting, sx +  7, sy + 6, headerColor);
+    fr.drawString(te.isExtractionDisabled() ? headerStorage : headerReturn, sx +  7 + 10, sy + 72,
         btnReturnArea.contains(mouseX - sx, mouseY - sy) ? focusedColor : headerColor);
-    fr.drawString(headerInventory, sx + 24 + 38, sy + 120, headerColor);
+    fr.drawString(headerInventory, sx +  38, sy + 138, headerColor);
 
     super.drawGuiContainerBackgroundLayer(par1, mouseX, mouseY);
 
@@ -680,7 +712,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   @Override
   public int getYSize() {
-    return 212;
+    return 232;
   }
 
   @Override
@@ -743,6 +775,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
             if (itemStack.isEmpty() || ItemUtil.areStackMergable(itemStack, invSlot.getStack())) {
               PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(db.getGeneration(), invSlot.entry, -1, 1));
             }
+
           }
         }
       }
@@ -878,5 +911,11 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       }
 
     }
+  }
+
+  @Nonnull
+  @Override
+  public FontRenderer getFontRenderer() {
+    return rtfr;
   }
 }

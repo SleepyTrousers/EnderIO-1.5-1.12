@@ -118,4 +118,8 @@ public class StoredCraftingRecipe {
     }
     updateResult = false;
   }
+
+  public NNList<ItemStack> getIngredients() {
+    return this.slots;
+  }
 }

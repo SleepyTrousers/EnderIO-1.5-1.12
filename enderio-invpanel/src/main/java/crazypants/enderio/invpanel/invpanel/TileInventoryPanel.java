@@ -90,7 +90,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   private final ArrayList<StoredCraftingRecipe> storedCraftingRecipes;
 
   public TileInventoryPanel() {
-    super(new SlotDefinition(0, 8, 11, 20, 21, 20));
+    super(new SlotDefinition(0, 8, 11, 25, 21, 20));
     this.fuelTank = new SmartTank(Fluids.NUTRIENT_DISTILLATION.getFluid(), InvpanelConfig.inventoryPanelFree.get() ? 0 : 2000);
     this.fuelTank.setTileEntity(this);
     this.fuelTank.setCanDrain(false);
