@@ -2,7 +2,10 @@ package crazypants.enderio.base.gui;
 
 import java.awt.Point;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 
@@ -13,6 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -33,19 +37,28 @@ import net.minecraft.util.ResourceLocation;
  * The ID can be any string, it is fine to replace already registered recipes. The NNList should have up to 9 ItemStacks for the 9 slots of the crafting grid
  * (in reading order).
  * <li>Add 6(!) lines to any tooltip that is part of your GUI. The first one has {@link #RECIPE_ID} followed directly by the ID you used to register the recipe
- * to be rendered. The other 5 have {@link #RECIPE}, those only provide enough space for the recipe to be rendered.
+ * to be rendered followed by {@link #RECIPE_END}. The other 5 have {@link #RECIPE}, those only provide enough space for the recipe to be rendered. Both types
+ * of lines can have extra text which is rendered to the right of the recipe grid (even if it was in front of the marker).
  * </ul>
  */
 public class RecipeTooltipFontRenderer extends FontRenderer {
 
-  private static final @Nonnull String RECIPE = "#RECIPE";
-  private static final @Nonnull String RECIPE_ID = RECIPE + "=";
+  private static final @Nonnull String RECIPE_BASE = "#RECIPE";
+  public static final @Nonnull String RECIPE_END = "#";
+  private static final @Nonnull String RECIPE_ID_MARKER = "=";
+
+  public static final @Nonnull String RECIPE = RECIPE_BASE + RECIPE_END;
+  public static final @Nonnull String RECIPE_ID = RECIPE_BASE + RECIPE_ID_MARKER;
+
+  private static final @Nonnull String MATCHER = RECIPE_BASE + RECIPE_ID_MARKER + "?([^" + RECIPE_END + "]*)" + RECIPE_END;
+  private static final Pattern PATTERN = Pattern.compile(MATCHER);
 
   private static final int BORDER = 1, MARGIN = 1, ITEM = 16;
   private static final int S1 = BORDER + MARGIN;
   private static final int S2 = S1 + ITEM + MARGIN + BORDER + MARGIN;
   private static final int S3 = S2 + ITEM + MARGIN + BORDER + MARGIN;
   private static final int WIDTH = BORDER + MARGIN + ITEM + MARGIN;
+  private static final int FULL_WIDTH = 3 * WIDTH + BORDER;
 
   private static final @Nonnull NNList<Point> LOCS = new NNList<>( //
       new Point(S1, S1), new Point(S2, S1), new Point(S3, S1), //
@@ -75,19 +88,36 @@ public class RecipeTooltipFontRenderer extends FontRenderer {
 
   @Override
   public int getStringWidth(@Nonnull String text) {
-    if (text.contains(RECIPE)) {
-      return 3 * WIDTH + BORDER;
+    final Matcher match = PATTERN.matcher(text);
+    if (match.find()) {
+      final int width = super.getStringWidth(match.replaceFirst(""));
+      return FULL_WIDTH + (width > 0 ? width + 2 : 0);
     }
     return super.getStringWidth(text);
   }
 
   @Override
-  public int drawStringWithShadow(@Nonnull String text, float x, float y, int color) {
-    if (text.contains(RECIPE)) {
-      if (text.contains(RECIPE_ID)) {
-        drawRecipeAt((int) x, (int) y, text.substring(text.indexOf(RECIPE_ID) + RECIPE_ID.length()), color);
+  public @Nonnull List<String> listFormattedStringToWidth(@Nonnull String text, int wrapWidth) {
+    final List<String> result = super.listFormattedStringToWidth(text, wrapWidth);
+    if (result.size() > 1 && PATTERN.matcher(text).find()) {
+      for (int i = 0; i < result.size(); i++) {
+        if (!PATTERN.matcher(result.get(i)).find()) {
+          result.set(i, RECIPE + result.get(i));
+        }
       }
-      return (int) (x + getStringWidth(text));
+    }
+    return result;
+  }
+
+  @Override
+  public int drawStringWithShadow(@Nonnull String text, float x, float y, int color) {
+    final Matcher match = PATTERN.matcher(text);
+    if (match.find()) {
+      String id = match.group(1);
+      if (id != null && !id.isEmpty()) {
+        drawRecipeAt((int) x, (int) y, id, color);
+      }
+      return super.drawStringWithShadow(match.replaceFirst(""), x + FULL_WIDTH + 2, y, color);
     } else {
       return super.drawStringWithShadow(text, x, y, color);
     }
@@ -109,11 +139,15 @@ public class RecipeTooltipFontRenderer extends FontRenderer {
     RenderHelper.enableGUIStandardItemLighting();
     GlStateManager.enableRescaleNormal();
 
+    final RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
+    old = renderItem.zLevel;
+    renderItem.zLevel = 400;
     int pos = 0;
     for (ItemStack stack : NullHelper.first(recipes.get(id), NNList.<ItemStack> emptyList())) {
       Point point = LOCS.get(pos++);
       gui.drawFakeItemStack(x + point.x, y + point.y, stack);
     }
+    renderItem.zLevel = old;
     
     GlStateManager.disableRescaleNormal();
     RenderHelper.disableStandardItemLighting();
