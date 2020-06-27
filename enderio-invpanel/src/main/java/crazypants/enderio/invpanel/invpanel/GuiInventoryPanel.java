@@ -387,12 +387,6 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       if (getContainer().clearCraftingGrid()) {
         setCraftingHelper(null);
       }
-    } else if (b.id == ID_SYNC) {
-
-      // TODO: Mod NEI
-      // if (Loader.isModLoaded("NotEnoughItems")) {
-      // updateNEI(((ToggleButton) b).isSelected() ? tfFilter.getText() : "");
-      // }
     }
 
     if (b instanceof ItemStackButton) {
