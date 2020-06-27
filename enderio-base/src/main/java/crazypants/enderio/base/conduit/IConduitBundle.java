@@ -140,7 +140,7 @@ public interface IConduitBundle extends IPaintable.IPaintableTileEntity, IHasCon
   @Nonnull
   World getBundleworld();
 
-  int getInternalRedstoneSignalForColor(@Nonnull DyeColor col);
+  int getInternalRedstoneSignalForColor(@Nonnull DyeColor col, @Nonnull EnumFacing dir);
 
   boolean handleFacadeClick(@Nonnull World world, @Nonnull BlockPos placeAt, @Nonnull EntityPlayer player, @Nonnull EnumFacing opposite,
       @Nonnull ItemStack stack, @Nonnull EnumHand hand, float hitX, float hitY, float hitZ);

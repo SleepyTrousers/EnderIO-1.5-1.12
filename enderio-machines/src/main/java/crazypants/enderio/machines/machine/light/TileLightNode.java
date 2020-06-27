@@ -12,11 +12,13 @@ import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.Constants;
 
 import static crazypants.enderio.machines.init.MachineObject.block_electric_light;
+import static crazypants.enderio.machines.init.MachineObject.block_light_node;
 
 @Storable
 public class TileLightNode extends TileEntityEio {
@@ -50,14 +52,23 @@ public class TileLightNode extends TileEntityEio {
   }
 
   protected void checkSelf() {
-    for (NNIterator<BlockPos> iterator = parents.iterator(); iterator.hasNext();) {
-      BlockPos parent = iterator.next();
-      if (world.isBlockLoaded(parent) && world.getBlockState(parent).getBlock() != block_electric_light.getBlock()) {
-        iterator.remove();
+    if (!world.isRemote) {
+      for (NNIterator<BlockPos> iterator = parents.iterator(); iterator.hasNext();) {
+        BlockPos parent = iterator.next();
+        if (world.isBlockLoaded(parent) && world.getBlockState(parent).getBlock() != block_electric_light.getBlock()) {
+          iterator.remove();
+        }
       }
-    }
-    if (parents.isEmpty()) {
-      world.setBlockToAir(pos);
+      if (parents.isEmpty()) {
+        IBlockState lnbs = world.getBlockState(pos);
+        if (lnbs.getBlock() == block_light_node.getBlockNN()) {
+          world.setBlockToAir(pos);
+        } else if (world.getTileEntity(pos) == this) {
+          world.removeTileEntity(pos);
+        } else {
+          // Now stuff got really weird...
+        }
+      }
     }
   }
 
@@ -66,19 +77,31 @@ public class TileLightNode extends TileEntityEio {
   }
 
   public void calculateLight() {
-    boolean isPowered = false;
-    for (NNIterator<BlockPos> iterator = parents.iterator(); !isPowered && iterator.hasNext();) {
-      BlockPos parent = iterator.next();
-      TileElectricLight light = BlockEnder.getAnyTileEntitySafe(world, parent, TileElectricLight.class);
-      if (light != null) {
-        isPowered = light.providesPoweredLight();
+    if (!world.isRemote) {
+      boolean isPowered = false;
+      for (NNIterator<BlockPos> iterator = parents.iterator(); !isPowered && iterator.hasNext();) {
+        BlockPos parent = iterator.next();
+        TileElectricLight light = BlockEnder.getAnyTileEntitySafe(world, parent, TileElectricLight.class);
+        if (light != null) {
+          isPowered = light.providesPoweredLight();
+        }
       }
+      IBlockState lnbs = world.getBlockState(pos);
+      if (lnbs.getBlock() != block_light_node.getBlockNN()) {
+        if (lnbs.getBlock() == Blocks.AIR) {
+          lnbs = block_light_node.getBlockNN().getDefaultState();
+        } else {
+          if (world.getTileEntity(pos) == this) {
+            world.removeTileEntity(pos);
+          }
+          return;
+        }
+      }
+      IBlockState lnbsnew = lnbs.withProperty(BlockLightNode.ACTIVE, isPowered);
+      world.setBlockState(pos, lnbsnew, Constants.BlockFlags.SEND_TO_CLIENTS);
+      world.notifyBlockUpdate(pos, lnbs, lnbsnew, Constants.BlockFlags.DEFAULT);
+      world.checkLightFor(EnumSkyBlock.BLOCK, pos);
     }
-    IBlockState lnbs = world.getBlockState(pos);
-    IBlockState lnbsnew = lnbs.withProperty(BlockLightNode.ACTIVE, isPowered);
-    world.setBlockState(pos, lnbsnew, Constants.BlockFlags.SEND_TO_CLIENTS);
-    world.notifyBlockUpdate(pos, lnbs, lnbsnew, Constants.BlockFlags.DEFAULT);
-    world.checkLightFor(EnumSkyBlock.BLOCK, pos);
   }
 
 }

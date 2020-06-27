@@ -14,7 +14,6 @@ import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector4f;
-import com.google.common.collect.Lists;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitUtil;
@@ -52,6 +51,7 @@ import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduits.render.ConduitTexture;
 import crazypants.enderio.powertools.lang.Lang;
 import crazypants.enderio.util.EnumReader;
+import crazypants.enderio.util.FuncUtil;
 import crazypants.enderio.util.Prep;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRedstoneWire;
@@ -139,10 +139,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
 
   @Override
   public void updateNetwork() {
-    World world = getBundle().getEntity().getWorld();
-    if (NullHelper.untrust(world) != null) {
-      updateNetwork(world);
-    }
+    FuncUtil.doIf(getBundle().getEntity().getWorld(), world -> updateNetwork(world));
   }
 
   @Override
@@ -158,10 +155,12 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       }
 
       if (connectionsDirty) {
+        Prof.start(world, "updateDirtyConnections");
         if (hasExternalConnections()) {
           network.updateInputsFromConduit(this, false);
         }
         connectionsDirty = false;
+        Prof.stop(world);
       }
 
     }
@@ -171,10 +170,9 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   public void setActive(boolean active) {
     if (active != this.active) {
       activeDirty = true;
+      this.active = active;
+      updateActiveState();
     }
-    this.active = active;
-
-    updateActiveState();
   }
 
   private void updateActiveState() {
@@ -182,17 +180,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       setClientStateDirty();
       activeDirty = false;
       activeUpdateCooldown = 4;
-    }
-  }
-
-  @Override
-  public void onChunkUnload() {
-    RedstoneConduitNetwork networkR = getNetwork();
-    if (networkR != null) {
-      BundledSignal oldSignals = networkR.getBundledSignal();
-      List<IRedstoneConduit> conduits = Lists.newArrayList(networkR.getConduits());
-      super.onChunkUnload();
-      networkR.afterChunkUnload(conduits, oldSignals);
     }
   }
 
@@ -300,19 +287,13 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Override
   @Nonnull
   public DyeColor getInputSignalColor(@Nonnull EnumFacing dir) {
-    DyeColor res = inputSignalColors.get(dir);
-    if (res == null) {
-      return DyeColor.RED;
-    }
-    return res;
+    return NullHelper.first(inputSignalColors.get(dir), DyeColor.RED);
   }
 
   @Override
   public void setInputSignalColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col) {
     inputSignalColors.put(dir, col);
-    if (network != null) {
-      network.updateInputsFromConduit(this, false);
-    }
+    FuncUtil.doIf(getNetwork(), net -> net.updateInputsFromConduit(this, false));
     setClientStateDirty();
     collidablesDirty = true;
   }
@@ -320,29 +301,20 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   @Override
   @Nonnull
   public DyeColor getOutputSignalColor(@Nonnull EnumFacing dir) {
-    DyeColor res = outputSignalColors.get(dir);
-    if (res == null) {
-      return DyeColor.GREEN;
-    }
-    return res;
+    return NullHelper.first(outputSignalColors.get(dir), DyeColor.GREEN);
   }
 
   @Override
   public void setOutputSignalColor(@Nonnull EnumFacing dir, @Nonnull DyeColor col) {
     outputSignalColors.put(dir, col);
-    if (network != null) {
-      network.updateInputsFromConduit(this, false);
-    }
+    FuncUtil.doIf(getNetwork(), net -> net.updateInputsFromConduit(this, false));
     setClientStateDirty();
     collidablesDirty = true;
   }
 
   @Override
   public boolean isOutputStrong(@Nonnull EnumFacing dir) {
-    if (signalStrengths.containsKey(dir)) {
-      return signalStrengths.get(dir);
-    }
-    return false;
+    return NullHelper.first(signalStrengths.get(dir), Boolean.FALSE);
   }
 
   @Override
@@ -353,9 +325,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       } else {
         signalStrengths.remove(dir);
       }
-      if (network != null) {
-        network.notifyNeigborsOfSignalUpdate();
-      }
+      FuncUtil.doIf(getNetwork(), net -> net.notifyNeigborsOfSignalUpdate());
     }
   }
 
@@ -546,7 +516,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
       return false;
     }
     boolean res = super.onNeighborBlockChange(blockId);
-    if (network == null || network.updatingNetwork) {
+    if (network == null || !network.isNetworkEnabled()) {
       return false;
     }
     if (blockId != ConduitRegistry.getConduitModObjectNN().getBlock()) {
@@ -556,7 +526,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   }
 
   private boolean acceptSignalsForDir(@Nonnull EnumFacing dir) {
-    if (!getConnectionMode(dir).acceptsOutput()) {
+    if (!containsExternalConnection(dir) || !getConnectionMode(dir).acceptsOutput()) {
       return false;
     }
     BlockPos loc = getBundle().getLocation().offset(dir);
@@ -566,14 +536,6 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
   // ---------------------
   // TEXTURES
   // ---------------------
-
-  @Override
-  public int getRedstoneSignalForColor(@Nonnull DyeColor col) {
-    if (network != null) {
-      return network.getSignalStrengthForColor(col);
-    }
-    return 0;
-  }
 
   @SuppressWarnings("null")
   @Override
@@ -897,6 +859,7 @@ public class InsulatedRedstoneConduit extends AbstractConduit implements IRedsto
     }
     setClientStateDirty();
     connectionsDirty = true;
+    FuncUtil.doIf(getNetwork(), net -> net.updateInputsFromConduit(this, false));
   }
 
   @Override

@@ -117,7 +117,7 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
         IFilter outputFilter = con.getOutputFilter(dir);
         IFilter inputFilter = con.getInputFilter(dir);
         if (outputFilter != null || inputFilter != null) {
-          TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos);
+          TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos.offset(dir));
           if (te != null && !(te instanceof IStorageProvider)) {
             if (outputFilter instanceof IItemFilter || inputFilter instanceof IItemFilter) {
               updateDirItems(dir, outputFilter, inputFilter, te);
