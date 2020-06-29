@@ -112,16 +112,6 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   }
 
   @Override
-  public boolean isValidInput(@Nonnull ItemStack itemstack) {
-    return false;
-  }
-
-  @Override
-  public boolean isValidOutput(@Nonnull ItemStack itemstack) {
-    return !extractionDisabled && super.isValidOutput(itemstack);
-  }
-
-  @Override
   public boolean isMachineItemValidForSlot(int slot, @Nonnull ItemStack stack) {
     if (slot == SLOT_VIEW_FILTER && !stack.isEmpty()) {
       return FilterRegistry.isItemFilter(stack) && FilterRegistry.isFilterSet(stack);
