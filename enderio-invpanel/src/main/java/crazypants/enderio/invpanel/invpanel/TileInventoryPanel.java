@@ -11,6 +11,7 @@ import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
 
+import crazypants.enderio.base.capability.LegacyMachineWrapper;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.fluid.Fluids;
@@ -19,6 +20,7 @@ import crazypants.enderio.base.invpanel.capability.CapabilityDatabaseHandler;
 import crazypants.enderio.base.invpanel.capability.IDatabaseHandler;
 import crazypants.enderio.base.invpanel.database.IInventoryDatabaseServer;
 import crazypants.enderio.base.invpanel.database.IInventoryPanel;
+import crazypants.enderio.base.machine.base.te.ICap;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
 import crazypants.enderio.base.machine.modes.IoMode;
@@ -31,6 +33,7 @@ import crazypants.enderio.invpanel.network.PacketGuiSettingsUpdated;
 import crazypants.enderio.invpanel.network.PacketStoredCraftingRecipe;
 import crazypants.enderio.invpanel.network.PacketUpdateExtractionDisabled;
 import crazypants.enderio.invpanel.util.StoredCraftingRecipe;
+import crazypants.enderio.machines.capability.LegacyStirlingWrapper;
 import crazypants.enderio.machines.machine.generator.zombie.IHasNutrientTank;
 import crazypants.enderio.machines.machine.generator.zombie.PacketNutrientTank;
 import info.loenwind.autosave.annotations.Storable;
@@ -45,6 +48,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 @Storable
 public class TileInventoryPanel extends AbstractInventoryMachineEntity implements IInventoryPanel, ITankAccess.IExtendedTankAccess, IHasNutrientTank {
@@ -96,6 +100,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
     this.fuelTank.setCanDrain(false);
     this.storedCraftingRecipes = new ArrayList<StoredCraftingRecipe>();
     addICap(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facingIn -> getSmartTankFluidHandler().get(facingIn));
+    addICap(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, ICap.facedOnly(facingIn -> extractionDisabled ? ICap.DENY : ICap.NEXT));
   }
 
   public IInventoryDatabaseServer getDatabaseServer() {
@@ -119,22 +124,39 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   }
 
   @Override
-  public boolean isValidInput(@Nonnull ItemStack itemstack) {
-    return false;
-  }
-
-  @Override
-  public boolean isValidOutput(@Nonnull ItemStack itemstack) {
-    return false;
-    //return !extractionDisabled && super.isValidOutput(itemstack);
-  }
-
-  @Override
   public boolean isMachineItemValidForSlot(int slot, @Nonnull ItemStack stack) {
     if (slot == SLOT_VIEW_FILTER && !stack.isEmpty()) {
       return FilterRegistry.isItemFilter(stack) && FilterRegistry.isFilterSet(stack);
     }
-    return true;
+    return false;
+  }
+
+  @Override
+  protected boolean hasStuffToPush() {
+    //System.out.println("PUSH ME. AND THEN JUST TOUCH ME. TILL I CAN GET MY... ITEMSTACKS");
+    return !extractionDisabled && super.hasStuffToPush();
+  }
+
+  @Override
+  protected boolean shouldProcessOutputQueue() {
+    //System.out.println("PUSH ME. AND THEN JUST TOUCH ME. TILL I CAN GET MY... ITEMSTACKS EXTRACTED");
+    return !extractionDisabled && super.shouldProcessOutputQueue();
+  }
+
+
+
+  @Override
+  protected boolean hasSpaceToPull() {
+    return false;
+  }
+
+  @Override
+  public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
+    //System.out.println(mode);
+    if (mode == IoMode.PUSH) {
+      return !extractionDisabled;
+    }
+    return false;
   }
 
   private static @Nonnull IInventory emptyInventory = new InventoryBasic("[Null]", true, 0);
@@ -358,7 +380,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
    *          if extraction is disabled
    */
   public void updateExtractionDisabled(boolean extractionDisabledIn) {
-    System.out.println("Extraction is " + extractionDisabledIn);
+    //System.out.println("Extraction is " + extractionDisabledIn);
     this.extractionDisabled = extractionDisabledIn;
   }
 

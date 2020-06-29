@@ -46,7 +46,7 @@ public class PacketPrimeInventoryPanelRemote implements IMessage {
       TileInventoryPanel te = new TileInventoryPanel();
       Reader.read(BaseHandlers.REGISTRY, NBTAction.CLIENT, message.tag, te);
       ItemRemoteInvAccess.targetTE = te;
-      System.out.println("Got Prime Packet with " + te);
+      //System.out.println("Got Prime Packet with " + te);
       return null;
     }
   }
