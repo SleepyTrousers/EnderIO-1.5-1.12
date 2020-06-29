@@ -68,24 +68,6 @@ public abstract class AbstractInventoryMachineEntity extends AbstractMachineEnti
     return false;
   }
 
-  public boolean isValidInput(@Nonnull ItemStack itemstack) {
-    for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
-      if (isItemValidForSlot(i, itemstack)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  public boolean isValidOutput(@Nonnull ItemStack itemstack) {
-    for (int i = slotDefinition.getMinOutputSlot(); i <= slotDefinition.getMaxOutputSlot(); i++) {
-      if (isItemValidForSlot(i, itemstack)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   public final boolean isItemValidForSlot(int i, @Nonnull ItemStack itemstack) {
     if (i < 0 || Prep.isInvalid(itemstack) || i >= slotDefinition.getNumSlots()) {
       return false;
