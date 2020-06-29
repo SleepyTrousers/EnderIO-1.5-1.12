@@ -1,5 +1,6 @@
 package crazypants.enderio.invpanel.network;
 
+import com.ibm.icu.lang.UScript;
 import crazypants.enderio.invpanel.client.ItemEntry;
 import crazypants.enderio.invpanel.invpanel.InventoryPanelContainer;
 import io.netty.buffer.ByteBuf;
@@ -47,6 +48,7 @@ public class PacketFetchItem implements IMessage {
     public IMessage onMessage(PacketFetchItem message, MessageContext ctx) {
       EntityPlayerMP player = ctx.getServerHandler().player;
       if(player.openContainer instanceof InventoryPanelContainer) {
+        //System.out.println("FETCHING " + message.dbID + " TO " + message.targetSlot + " COUNT " + message.count);
         InventoryPanelContainer ipc = (InventoryPanelContainer) player.openContainer;
         ipc.executeFetchItems(player, message.generation, message.dbID, message.targetSlot, message.count);
       }

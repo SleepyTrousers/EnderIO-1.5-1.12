@@ -62,13 +62,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
-  private static final @Nonnull Rectangle RECTANGLE_FUEL_TANK = new Rectangle(36, 149, 16, 47);
+  private static final @Nonnull Rectangle RECTANGLE_FUEL_TANK = new Rectangle(12, 149, 16, 47);
 
-  private static final @Nonnull Rectangle inventoryArea = new Rectangle( 107, 27, 108, 90);
+  private static final @Nonnull Rectangle inventoryArea = new Rectangle(107, 27, 108, 90);
 
-  private static final @Nonnull Rectangle btnRefill = new Rectangle( 85, 32, 20, 20);
+  private static final @Nonnull Rectangle btnRefill = new Rectangle(85, 32, 20, 20);
 
-  private static final @Nonnull Rectangle btnReturnArea = new Rectangle( 6, 72, 5 * 18, 8);
+  private static final @Nonnull Rectangle btnReturnArea = new Rectangle(6, 72, 5 * 18, 8);
 
   private static final int ID_SORT = 9876;
   private static final int ID_CLEAR = 9877;
@@ -141,7 +141,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     for (int y = 0; y < GHOST_ROWS; y++) {
       for (int x = 0; x < GHOST_COLUMNS; x++) {
-        getGhostSlotHandler().add(new InvSlot( 24 + 108 + x * 18, 28 + y * 18));
+        getGhostSlotHandler().add(new InvSlot( 108 + x * 18, 28 + y * 18));
       }
     }
 
@@ -149,7 +149,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       int index = i;
       TileInventoryPanel te1 = getTileEntity();
       StoredCraftingRecipe recipe = te1.getStoredCraftingRecipe(index);
-      repButtons[index] = new ItemStackButton(this, 22 + index, -11, 18 + index * 20, IconEIO.CROSS, null);
+      repButtons[index] = new ItemStackButton(this, 22 + index, -35, 18 + index * 20, IconEIO.QUESTION, null);
       addToolTip(new GuiToolTip(repButtons[index].getBounds(), "CLICK to store recipe") {
         @Override
         public boolean shouldDraw() {
@@ -193,11 +193,11 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
-    tfFilter = new TextFieldEnder(fr,  24 + 108, 11, 106, 10);
+    tfFilter = new TextFieldEnder(fr,108, 11, 106, 10);
     tfFilter.setEnableBackgroundDrawing(false);
     tfFilter.setText(te.getGuiFilterString());
 
-    btnSync = new ToggleButton(this, ID_SYNC,  24 + 233, 46, IconEIO.CROSS, IconEIO.TICK);
+    btnSync = new ToggleButton(this, ID_SYNC,233, 46, IconEIO.CROSS, IconEIO.TICK);
     btnSync.setSelected(getTileEntity().getGuiSync());
     btnSync.setSelectedToolTip(EnderIO.lang.localize("gui.enabled"));
     btnSync.setUnselectedToolTip(EnderIO.lang.localize("gui.disabled"));
@@ -226,7 +226,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       btnSync.enabled = false;
     }
 
-    btnSort = new IconButton(this, ID_SORT,  24 + 233, 27, getSortOrderIcon()) {
+    btnSort = new IconButton(this, ID_SORT, 233, 27, getSortOrderIcon()) {
       @Override
       public boolean mousePressed(@Nonnull Minecraft mc1, int xIn, int yIn) {
         return mousePressedButton(mc1, xIn, yIn, 0);
@@ -242,8 +242,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       }
     };
 
-    scrollbar = new VScrollbar(this,  24 + 215, 27, 108);
-    btnClear = new MultiIconButton(this, ID_CLEAR,  24 + 65, 60, EnderWidget.X_BUT, EnderWidget.X_BUT_PRESSED, EnderWidget.X_BUT_HOVER);
+    scrollbar = new VScrollbar(this, 215, 27, 108);
+    btnClear = new MultiIconButton(this, ID_CLEAR, 65, 60, EnderWidget.X_BUT, EnderWidget.X_BUT_PRESSED, EnderWidget.X_BUT_HOVER);
 
     textFields.add(tfFilter);
 
@@ -417,11 +417,11 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     syncSettingsChange();
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     bindGuiTexture(0);
-    int sx = guiLeft + 24;
+    int sx = guiLeft;
     int sy = guiTop;
 
     drawTexturedModalRect(sx , sy, 0, 0, 232, 232);
-    drawTexturedModalRect(sx +  232, sy, 232, 0, 24, 68);
+    drawTexturedModalRect(sx + 232, sy, 232, 0, 24, 68);
 
     if (craftingHelper != null || getContainer().hasCraftingRecipe()) {
       boolean hover = btnRefill.contains(mouseX - sx, mouseY - sy);
@@ -701,7 +701,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   @Override
   public int getXSize() {
-    return 280;
+    return 230;
   }
 
   @Override
@@ -911,5 +911,23 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   @Override
   public FontRenderer getFontRenderer() {
     return rtfr;
+  }
+
+  @Override
+  public List<Rectangle> getBlockingAreas() {
+    List<Rectangle> rectangles = super.getBlockingAreas();
+    rectangles.add(new Rectangle(guiLeft - 42, (this.height - 208) / 2, 42, 208));
+    rectangles.add(new Rectangle(guiLeft + 232, guiTop, 24, 68));
+    return rectangles;
+  }
+
+  @Override
+  public Rectangle getDocumentationButtonArea() {
+    return new Rectangle(guiLeft - 42, guiTop + 3, 25, 25);
+  }
+
+  @Override
+  public Rectangle getDocumentationArea() {
+    return super.getDocumentationArea();
   }
 }

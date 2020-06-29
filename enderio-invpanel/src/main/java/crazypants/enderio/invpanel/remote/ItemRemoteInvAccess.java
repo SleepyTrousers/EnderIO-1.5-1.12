@@ -337,7 +337,7 @@ public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvide
   @Nullable
   @Override
   public Object getGuiElement(boolean server, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1, int param2, int param3) {
-    System.out.println("YEET!");
+    //System.out.println("YEET!");
     if (server) {
       return getServerGuiElement(player, world, pos, facing, param1);
     } else {
@@ -358,7 +358,7 @@ public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvide
     }
     TileEntity te = targetWorld.getTileEntity(pos);
     if (te instanceof TileInventoryPanel) {
-      System.out.println("SETTING TE " + te);
+      //System.out.println("SETTING TE " + te);
       return new InventoryPanelContainer(player.inventory, (TileInventoryPanel) te);
 
     }
@@ -372,7 +372,7 @@ public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvide
   public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
     TileInventoryPanel te;
     if (targetTE != null && targetTEtime >= EnderIO.proxy.getTickCount()) {
-      System.out.println("SETTING TE " + targetTE);
+      //System.out.println("SETTING TE " + targetTE);
       return new GuiInventoryPanel(targetTE, new InventoryPanelContainer(player.inventory, targetTE));
     } else {
       return null;

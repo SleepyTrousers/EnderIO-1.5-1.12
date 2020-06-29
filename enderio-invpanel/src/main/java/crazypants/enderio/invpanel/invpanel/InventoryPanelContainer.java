@@ -56,13 +56,13 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
    * startPlayerSlot=21 endPlayerSlot=48
    */
 
-  public static final int CRAFTING_GRID_X = 24 + 7;
+  public static final int CRAFTING_GRID_X = 7;
   public static final int CRAFTING_GRID_Y = 16;
 
-  public static final int RETURN_INV_X = 24 + 7;
+  public static final int RETURN_INV_X = 7;
   public static final int RETURN_INV_Y = 82;
 
-  public static final int FILTER_SLOT_X = 24 + 233;
+  public static final int FILTER_SLOT_X = 233;
   public static final int FILTER_SLOT_Y = 7;
 
   private final HashSet<IServerItemEntry> changedItems;
@@ -136,7 +136,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   @Override
   @Nonnull
   public Point getPlayerInventoryOffset() {
-    return new Point(24 + 39, 148);
+    return new Point(39, 148);
   }
 
   @Override
@@ -398,24 +398,23 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
           targetStack.setCount(extracted);
 
           // TODO Debug stuff
-          // if (DebugCommand.SERVER.isEnabled(player)) {
-          // DebugCommand.SERVER.debug("extracted " + targetStack + " for dbid=" + dbID + " " + entry);
-          // }
+           //if (DebugCommand.SERVER.isEnabled(player)) {
+           //DebugCommand.SERVER.debug("extracted " + targetStack + " for dbid=" + dbID + " " + entry);
+           //}
+          //System.out.println("extracted " + targetStack + " for dbid=" + dbID + " " + entry);
 
           sendChangeLog();
 
           if (slot != null) {
             slot.putStack(targetStack);
           } else {
-            System.out.println(targetStack + " STACKED");
-            if (player.inventory.getItemStack().isEmpty()) {
-              player.inventory.setItemStack(targetStack);
-              player.updateHeldItem();
-            }
+            player.inventory.setItemStack(targetStack);
+            player.updateHeldItem();
           }
         }
       }
     }
+    this.detectAndSendChanges();
   }
 
   public boolean moveItemsToReturnArea(int fromSlot) {
