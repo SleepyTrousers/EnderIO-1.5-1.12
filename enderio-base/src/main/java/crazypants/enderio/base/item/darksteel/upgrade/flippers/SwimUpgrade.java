@@ -15,8 +15,10 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.handler.darksteel.AbstractUpgrade;
 import crazypants.enderio.base.handler.darksteel.Rules;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.Constants;
@@ -40,6 +42,14 @@ public class SwimUpgrade extends AbstractUpgrade {
     }
   };
 
+  private static final @Nonnull AttributeModifier BOOST_DS = new AttributeModifier(UPGRADE_UUID, UPGRADE_NAME, DarkSteelConfig.swimSpeedDepthStrider.get(),
+      Constants.AttributeModifierOperation.ADD) {
+    @Override
+    public double getAmount() {
+      return DarkSteelConfig.swimSpeedDepthStrider.get();
+    }
+  };
+
   @SubscribeEvent
   public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
     event.getRegistry().register(INSTANCE);
@@ -57,7 +67,11 @@ public class SwimUpgrade extends AbstractUpgrade {
 
   @Override
   public void addAttributeModifiers(@Nonnull EntityEquipmentSlot slot, @Nonnull ItemStack stack, @Nonnull Multimap<String, AttributeModifier> map) {
-    map.put(EntityLivingBase.SWIM_SPEED.getName(), BOOST);
+    if (EnchantmentHelper.getEnchantmentLevel(Enchantments.DEPTH_STRIDER, stack) > 0) {
+      map.put(EntityLivingBase.SWIM_SPEED.getName(), BOOST_DS);
+    } else {
+      map.put(EntityLivingBase.SWIM_SPEED.getName(), BOOST);
+    }
   }
 
 }
