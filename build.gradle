@@ -456,7 +456,18 @@ publishing {
     }
 
     repositories {
-        if (project.hasProperty('maven2_url')) {
+        def pub_github = System.getenv('MAVEN_GITHUB_USER') != null && System.getenv('MAVEN_GITHUB_TOKEN') != null
+        if (pub_github) {
+            maven {
+                url uri("https://maven.pkg.github.com/SleepyTrousers")
+                credentials {
+                    username System.getenv('MAVEN_GITHUB_USER')
+                    password System.getenv('MAVEN_GITHUB_TOKEN')
+                }
+            }
+        }
+        def pub_maven = project.hasProperty('maven2_url')
+        if (pub_maven) {
             if (project.hasProperty('maven2_user') && project.hasProperty('maven2_pass')) {
                 maven {
                     url maven2_url
@@ -468,7 +479,8 @@ publishing {
             } else {
                 maven { url maven2_url }
             }
-        } else {
+        }
+        if (!pub_github && !pub_maven) {
             mavenLocal()
         }
     }
