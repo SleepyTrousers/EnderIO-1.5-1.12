@@ -117,7 +117,12 @@ public class TeleportUtil {
 
       @Override
       public void placeEntity(World world, Entity entity, float yaw) {
+        // like Forge's teleport command:
         entity.setLocationAndAngles(pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, entity.rotationYaw, entity.rotationPitch);
+        // like vanilla's nether teleporter:
+        ((EntityPlayerMP)entity).connection.setPlayerLocation(pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, entity.rotationYaw, entity.rotationPitch);
+        // Note: Each one of the above should be enough, but there have been issues with setting the player position after a dimension change, so we're doing
+        // both to be on the safe side...
         entity.motionX = 0;
         entity.motionY = 0;
         entity.motionZ = 0;
