@@ -641,6 +641,7 @@ tile.block_painted_packed_ice_solid.name=Painted Packed Ice
 tile.block_painted_slab.name=Painted Slab
 tile.block_painted_stair.name=Painted Stairs
 tile.block_painted_stone.name=Painted Cobblestone
+tile.block_painted_sand.name=Painted Sand
 tile.block_painted_stone_double_slab.name=Painted Stone Slab
 tile.block_painted_stone_fence.name=Painted Stone Fence
 tile.block_painted_stone_slab.name=Painted Stone Slab
