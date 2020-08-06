@@ -47,6 +47,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -54,7 +55,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     implements IEioGuiHandler.WithPos, IResourceTooltipProvider, ISmartRenderAwareBlock, IClearableConfiguration {
 
   protected final @Nonnull Random random;
-  protected boolean isEnhanced = false, respectsGravity = false;
+  protected boolean isEnhanced = false, respectsGravity = true;
 
   protected AbstractMachineBlock(@Nonnull IModObject mo, @Nonnull Material mat) {
     super(mo, mat);
@@ -346,30 +347,16 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     return null;
   }
 
-  protected void checkFallable(@Nonnull World worldIn, @Nonnull BlockPos pos) {
+  protected void checkFallable(@Nonnull WorldServer worldIn, @Nonnull BlockPos pos) {
     if ((worldIn.isAirBlock(pos.down()) || BlockFalling.canFallThrough(worldIn.getBlockState(pos.down()))) && pos.getY() >= 0) {
-      if (!BlockFalling.fallInstantly && worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32))) {
         worldIn.spawnEntity(new EntityFallingMachine(worldIn, pos, this));
-      } else {
-        IBlockState state = worldIn.getBlockState(pos);
-        worldIn.setBlockToAir(pos);
-        BlockPos blockpos;
-
-        for (blockpos = pos.down(); (worldIn.isAirBlock(blockpos) || BlockFalling.canFallThrough(worldIn.getBlockState(blockpos)))
-            && blockpos.getY() > 0; blockpos = blockpos.down()) {
-        }
-
-        if (blockpos.getY() > 0) {
-          worldIn.setBlockState(blockpos.up(), state);
-        }
-      }
     }
   }
 
   @Override
   public void updateTick(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Random rand) {
     if (respectsGravity && !worldIn.isRemote) {
-      this.checkFallable(worldIn, pos);
+      this.checkFallable((WorldServer) worldIn, pos);
     }
   }
 

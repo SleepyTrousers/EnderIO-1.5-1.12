@@ -17,13 +17,14 @@ import crazypants.enderio.base.handler.darksteel.StateController;
 import crazypants.enderio.base.handler.darksteel.gui.PacketOpenDSU;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.integration.thaumcraft.GogglesOfRevealingUpgrade;
+import crazypants.enderio.base.integration.top.TheOneProbeUpgrade;
 import crazypants.enderio.base.item.conduitprobe.PacketConduitProbeMode;
 import crazypants.enderio.base.item.darksteel.upgrade.elytra.ElytraUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.explosive.ExplosiveUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.glider.GliderUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.jump.JumpUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.nightvision.NightVisionUpgrade;
-import crazypants.enderio.base.item.darksteel.upgrade.sound.SoundDetector;
+import crazypants.enderio.base.item.darksteel.upgrade.sound.SoundDetectorUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.speed.SpeedUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.stepassist.StepAssistUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.storage.PacketOpenInventory;
@@ -58,31 +59,37 @@ public enum KeyTracker {
 
   inventory(Keyboard.KEY_I, CATEGORY.DARKSTEELARMOR, new InventoryAction()),
   dsu(Keyboard.KEY_NONE, CATEGORY.DARKSTEELARMOR, new DSUAction()),
-  glidertoggle(Keyboard.KEY_G, CATEGORY.DARKSTEELARMOR, new GlideAction()),
-  soundlocator(Keyboard.KEY_NONE, CATEGORY.DARKSTEELARMOR, new SoundDetectorAction()),
+  glidertoggle(Keyboard.KEY_G, CATEGORY.DARKSTEELARMOR, all( //
+      toggleStateAction(DarkSteelController::isGliderUpgradeEquipped, GliderUpgrade.INSTANCE), //
+      toggleStateAction(DarkSteelController::isElytraUpgradeEquipped, ElytraUpgrade.INSTANCE) //
+  )),
+  soundlocator(Keyboard.KEY_NONE, CATEGORY.DARKSTEELARMOR,
+      toggleStateAction(DarkSteelController::isSoundDetectorUpgradeEquipped, SoundDetectorUpgrade.INSTANCE)),
   nightvision(Keyboard.KEY_P, CATEGORY.DARKSTEELARMOR, new NightVisionAction()),
   gogglesofrevealing(Keyboard.KEY_NONE, CATEGORY.DARKSTEELARMOR,
-      toggleStateAction(GogglesOfRevealingUpgrade::isUpgradeEquipped, GogglesOfRevealingUpgrade.INSTANCE, "darksteel.upgrade.gogglesOfRevealing")),
-  stepassist(Keyboard.KEY_NONE, CATEGORY.DARKSTEELARMOR,
-      toggleStateAction(JumpUpgrade::isEquipped, StepAssistUpgrade.INSTANCE, "darksteel.upgrade.stepAssist")),
-  speed(Keyboard.KEY_NONE, CATEGORY.DARKSTEELARMOR, toggleStateAction(SpeedUpgrade::isEquipped, SpeedUpgrade.SPEED_ONE, "darksteel.upgrade.speed")),
-  jump(Keyboard.KEY_NONE, CATEGORY.DARKSTEELARMOR, toggleStateAction(JumpUpgrade::isEquipped, JumpUpgrade.JUMP_ONE, "darksteel.upgrade.jump")),
+      toggleStateAction(GogglesOfRevealingUpgrade::isUpgradeEquipped, GogglesOfRevealingUpgrade.INSTANCE)),
+  stepassist(Keyboard.KEY_NONE, CATEGORY.DARKSTEELARMOR, toggleStateAction(StepAssistUpgrade::isEquipped, StepAssistUpgrade.INSTANCE)),
+  speed(Keyboard.KEY_NONE, CATEGORY.DARKSTEELARMOR, toggleStateAction(SpeedUpgrade::isEquipped, SpeedUpgrade.SPEED_ONE)),
+  jump(Keyboard.KEY_NONE, CATEGORY.DARKSTEELARMOR, toggleStateAction(JumpUpgrade::isEquipped, JumpUpgrade.JUMP_ONE)),
   top(Keyboard.KEY_NONE, CATEGORY.DARKSTEELARMOR, new TopAction()),
-  tnt(Keyboard.KEY_NONE, CATEGORY.DARKSTEELARMOR, toggleStateAction(ExplosiveUpgrade::isEquipped, ExplosiveUpgrade.INSTANCE, "darksteel.upgrade.tnt")),
+  tnt(Keyboard.KEY_NONE, CATEGORY.DARKSTEELARMOR, toggleStateAction(ExplosiveUpgrade::isEquipped, ExplosiveUpgrade.INSTANCE)),
   yetawrenchmode(Keyboard.KEY_Y, CATEGORY.TOOLS, new YetaWrenchAction()),
   magnet(Keyboard.KEY_NONE, CATEGORY.TOOLS, new MagnetAction()),
-  fovReset(Keyboard.KEY_NONE, CATEGORY.MISC, new FovZoomHandler.FovAction()),
-  fovPlus(Keyboard.KEY_NONE, CATEGORY.MISC, null),
-  fovMinus(Keyboard.KEY_NONE, CATEGORY.MISC, null),
-  fovPlusFast(Keyboard.KEY_NONE, CATEGORY.MISC, null),
-  fovMinusFast(Keyboard.KEY_NONE, CATEGORY.MISC, null),
+  fovReset(Keyboard.KEY_NONE, CATEGORY.CAMERA, new FovZoomHandler.FovResetAction()),
+  fovUnReset(Keyboard.KEY_NONE, CATEGORY.CAMERA, new FovZoomHandler.FovUnresetAction()),
+  fovStore(Keyboard.KEY_NONE, CATEGORY.CAMERA, new FovZoomHandler.FovStoreAction()),
+  fovRecall(Keyboard.KEY_NONE, CATEGORY.CAMERA, new FovZoomHandler.FovRecallAction()),
+  fovPlus(Keyboard.KEY_NONE, CATEGORY.CAMERA, null),
+  fovMinus(Keyboard.KEY_NONE, CATEGORY.CAMERA, null),
+  fovPlusFast(Keyboard.KEY_NONE, CATEGORY.CAMERA, null),
+  fovMinusFast(Keyboard.KEY_NONE, CATEGORY.CAMERA, null),
 
   ;
 
   private static final class CATEGORY {
     private static final @Nonnull String DARKSTEELARMOR = "key.category.darksteelarmor";
     private static final @Nonnull String TOOLS = "key.category.tools";
-    private static final @Nonnull String MISC = "key.categories.misc";
+    private static final @Nonnull String CAMERA = "key.category.camera";
   }
 
   public interface Action {
@@ -109,26 +116,22 @@ public enum KeyTracker {
         tracker.action.execute();
       }
     }
-
-    if (!DarkSteelController.isSoundDetectorUpgradeEquipped(Minecraft.getMinecraft().player)) {
-      SoundDetector.setEnabled(false);
-    }
   }
 
-  public static void sendEnabledChatMessage(@Nonnull String messageBase, boolean isActive) {
-    StringUtil.sendEnabledChatMessage(Minecraft.getMinecraft().player, EnderIO.lang.addPrefix(messageBase), isActive);
-  }
-
-  public static void toggleDarkSteelController(@Nonnull IDarkSteelUpgrade type, @Nonnull String messageBase) {
-    boolean isActive = !StateController.isActive(Minecraft.getMinecraft().player, type);
-    sendEnabledChatMessage(messageBase, isActive);
-    StateController.setActive(Minecraft.getMinecraft().player, type, isActive);
-  }
-
-  public static @Nonnull Action toggleStateAction(@Nonnull Predicate<EntityPlayer> condition, @Nonnull IDarkSteelUpgrade type, @Nonnull String messageBase) {
+  public static @Nonnull Action toggleStateAction(@Nonnull Predicate<EntityPlayer> condition, @Nonnull IDarkSteelUpgrade type) {
     return () -> {
       if (condition.test(Minecraft.getMinecraft().player)) {
-        toggleDarkSteelController(type, messageBase);
+        boolean isActive = !StateController.isActive(Minecraft.getMinecraft().player, type);
+        StringUtil.sendEnabledChatMessage(Minecraft.getMinecraft().player, type.getUnlocalizedName(), isActive);
+        StateController.setActive(Minecraft.getMinecraft().player, type, isActive);
+      }
+    };
+  }
+
+  public static @Nonnull Action all(@Nonnull Action... actions) {
+    return () -> {
+      for (Action action : actions) {
+        action.execute();
       }
     };
   }
@@ -194,28 +197,6 @@ public enum KeyTracker {
     }
   }
 
-  private static class SoundDetectorAction implements Action {
-    @Override
-    public void execute() {
-      if (DarkSteelController.isSoundDetectorUpgradeEquipped(Minecraft.getMinecraft().player)) {
-        boolean isActive = !SoundDetector.isEnabled();
-        sendEnabledChatMessage("darksteel.upgrade.sound", isActive);
-        SoundDetector.setEnabled(isActive);
-      }
-    }
-  }
-
-  private static class GlideAction implements Action {
-    @Override
-    public void execute() {
-      if (DarkSteelController.isGliderUpgradeEquipped(Minecraft.getMinecraft().player)) {
-        toggleDarkSteelController(GliderUpgrade.INSTANCE, "darksteel.upgrade.glider");
-      } else if (DarkSteelController.isElytraUpgradeEquipped(Minecraft.getMinecraft().player)) {
-        toggleDarkSteelController(ElytraUpgrade.INSTANCE, "darksteel.upgrade.elytra");
-      }
-    }
-  }
-
   private static class NightVisionAction implements Action {
     @Override
     public void execute() {
@@ -228,6 +209,7 @@ public enum KeyTracker {
           SoundHelper.playSound(player.world, player, SoundRegistry.NIGHTVISION_OFF, 0.1f, 1.0f);
         }
         StateController.setActive(player, NightVisionUpgrade.INSTANCE, isActive);
+        StringUtil.sendEnabledChatMessage(Minecraft.getMinecraft().player, NightVisionUpgrade.INSTANCE.getUnlocalizedName(), isActive);
       }
     }
   }
@@ -239,6 +221,7 @@ public enum KeyTracker {
       if (DarkSteelController.isTopUpgradeEquipped(player)) {
         boolean isActive = !DarkSteelController.isTopActive(player);
         DarkSteelController.setTopActive(player, isActive);
+        StringUtil.sendEnabledChatMessage(Minecraft.getMinecraft().player, TheOneProbeUpgrade.INSTANCE.getUnlocalizedName(), isActive);
       }
     }
   }

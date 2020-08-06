@@ -202,7 +202,7 @@ XML editor will display that as tooltips when editing this file.
     <dependency upgrade="enderio:energyupgrade4"/>
     <crafting>
       <shapeless>
-        <item name="enderio:item_dark_steel_upgrade:0"/><item name="HEAD_ENDERMAN_TORMENTED"/>
+        <item name="enderio:item_dark_steel_upgrade:0"/><item name="skullEnderResonator"/>
       </shapeless>
       <output name="enderio:item_dark_steel_upgrade:1" nbt='{"enderio:dsu":"enderio:energyupgrade4"}'/>
     </crafting>

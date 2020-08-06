@@ -160,7 +160,7 @@ public class TreeFarmer extends AbstractFarmerJoe {
     final HarvestResult res = new HarvestResult();
     final IHarvestingTarget target = new FarmHarvestingTarget(this, farm, FarmingConfig.treeHarvestRadius.get(), FarmingConfig.treeHarvestHeight.get());
     TreeHarvester.harvest(world, bc, res, target);
-    Collections.sort(res.getHarvestedBlocks(), comp);
+    Collections.sort(res.getHarvestedBlocks(), getComperator(bc));
 
     List<BlockPos> actualHarvests = new ArrayList<BlockPos>();
 
@@ -179,6 +179,10 @@ public class TreeFarmer extends AbstractFarmerJoe {
     tryReplanting(farm, world, bc, res);
 
     return res;
+  }
+
+  protected Comparator<BlockPos> getComperator(@Nonnull BlockPos base) {
+    return comp;
   }
 
   /**
@@ -282,6 +286,21 @@ public class TreeFarmer extends AbstractFarmerJoe {
     @Override
     public int compare(BlockPos o1, BlockPos o2) {
       return Integer.compare(o2.getY(), o1.getY()); // reverse order
+    }
+
+  }
+
+  protected static class DistanceComparator implements Comparator<BlockPos> {
+
+    private final @Nonnull BlockPos base;
+
+    public DistanceComparator(@Nonnull BlockPos base) {
+      this.base = base;
+    }
+
+    @Override
+    public int compare(BlockPos o1, BlockPos o2) {
+      return Double.compare(o2.distanceSq(base), o1.distanceSq(base)); // reverse order
     }
 
   }

@@ -13,23 +13,22 @@ import crazypants.enderio.base.filter.redstone.IOutputSignalFilter;
 
 public class BundledSignal {
 
-  private final @Nonnull Map<DyeColor, Signal> bundle;
+  private final @Nonnull Map<DyeColor, CombinedSignal> bundle;
   private final @Nonnull Map<DyeColor, Map<Integer, Signal>> bundleSignals;
 
   public BundledSignal() {
-    bundle = new EnumMap<DyeColor, Signal>(DyeColor.class);
-    bundleSignals = new EnumMap<DyeColor, Map<Integer, Signal>>(DyeColor.class);
+    bundle = new EnumMap<>(DyeColor.class);
+    bundleSignals = new EnumMap<>(DyeColor.class);
     for (DyeColor color : DyeColor.values()) {
-      bundle.put(color, new Signal(CombinedSignal.NONE, -1));
+      bundle.put(color, new CombinedSignal(0));
       bundleSignals.put(color, new HashMap<Integer, Signal>());
     }
   }
 
   @SuppressWarnings("null")
   @Nonnull
-  public Signal getSignal(@Nonnull DyeColor color) {
-    Signal result = bundle.get(color);
-    return result;
+  public CombinedSignal getSignal(@Nonnull DyeColor color) {
+    return bundle.get(color);
   }
 
   public void addSignal(@Nonnull DyeColor color, @Nonnull Signal signal) {
@@ -52,18 +51,12 @@ public class BundledSignal {
     bundle.get(color).setStrength(str);
   }
 
-  public void set(@Nonnull DyeColor color, @Nonnull Signal signal) {
+  public void set(@Nonnull DyeColor color, @Nonnull CombinedSignal signal) {
     bundle.put(color, signal);
   }
 
   public void reset(@Nonnull DyeColor color) {
     bundle.remove(color);
-  }
-
-  public void clear() {
-    for (Signal sig : bundle.values()) {
-      sig.resetSignal();
-    }
   }
 
   @Nonnull
@@ -72,8 +65,14 @@ public class BundledSignal {
   }
 
   @Nonnull
-  public Collection<Signal> getSignals() {
+  public Collection<CombinedSignal> getSignals() {
     return bundle.values();
+  }
+
+  public void clear() {
+    for (CombinedSignal sig : bundle.values()) {
+      sig.setStrength(0);
+    }
   }
 
 }

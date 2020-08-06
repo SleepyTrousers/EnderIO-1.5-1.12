@@ -77,7 +77,7 @@ public class ItemStaffOfLevity extends Item implements IAdvancedTooltipProvider,
       if (world.isRemote && (ticksSinceActivation == 0 || ticksSinceActivation >= ItemConfig.staffOfLevityTicksBetweenActivation.get())) {
         if (!isEffectActive && hasFluid(stack)) {
           useFluid(stack);
-          player.addPotionEffect(new PotionEffect(MobEffects.LEVITATION));
+          player.addPotionEffect(new PotionEffect(MobEffects.LEVITATION, ItemConfig.staffOfLevityDurationSeconds.get() * 20));
         } else {
           player.removePotionEffect(MobEffects.LEVITATION);
         }

@@ -20,6 +20,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class NightVisionUpgrade extends AbstractUpgrade {
 
+  // TODO 1.13 change IDs to nicht_vision
   private static final @Nonnull String UPGRADE_NAME = "nightVision";
 
   public static final @Nonnull NightVisionUpgrade INSTANCE = new NightVisionUpgrade();

@@ -326,7 +326,8 @@ public class ConduitUtil {
     return null;
   }
 
-  public static boolean isRedstoneControlModeMet(@Nonnull IServerConduit conduit, @Nonnull RedstoneControlMode mode, @Nonnull DyeColor col) {
+  public static boolean isRedstoneControlModeMet(@Nonnull IServerConduit conduit, @Nonnull RedstoneControlMode mode, @Nonnull DyeColor col,
+      @Nonnull EnumFacing dir) {
 
     if (mode == RedstoneControlMode.IGNORE) {
       return true;
@@ -334,7 +335,7 @@ public class ConduitUtil {
       return false;
     }
 
-    int signalStrength = conduit.getBundle().getInternalRedstoneSignalForColor(col);
+    int signalStrength = conduit.getBundle().getInternalRedstoneSignalForColor(col, dir);
     if (signalStrength < RedstoneControlMode.MIN_ON_LEVEL && DyeColor.RED == col) {
       signalStrength = Math.max(signalStrength, conduit.getExternalRedstoneLevel());
     }

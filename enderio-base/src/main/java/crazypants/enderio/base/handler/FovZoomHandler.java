@@ -2,6 +2,8 @@ package crazypants.enderio.base.handler;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.handler.KeyTracker.Action;
+import crazypants.enderio.base.lang.Lang;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FOVModifier;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -11,16 +13,42 @@ import net.minecraftforge.fml.relauncher.Side;
 @EventBusSubscriber(modid = EnderIO.MODID, value = Side.CLIENT)
 public class FovZoomHandler {
 
-  static class FovAction implements Action {
+  static class FovResetAction implements Action {
     @Override
     public void execute() {
+      fovLevelPreReset = fovLevelNext;
       fovLevelLast = fovLevelNext = 1;
+    }
+  }
+
+  static class FovUnresetAction implements Action {
+    @Override
+    public void execute() {
+      fovLevelNext = fovLevelPreReset;
+    }
+  }
+
+  static class FovStoreAction implements Action {
+    @Override
+    public void execute() {
+      fovLevelSaved = fovLevelNext;
+      Minecraft.getMinecraft().player.sendStatusMessage(Lang.GUI_ZOOM_STORED.toChat(), true);
+    }
+  }
+
+  static class FovRecallAction implements Action {
+    @Override
+    public void execute() {
+      fovLevelNext = fovLevelSaved;
     }
   }
 
   private static double fovLevelLast = 1;
   private static double fovLevelNext = 1;
   private static long lastWorldTime = 0;
+
+  private static double fovLevelPreReset = 1;
+  private static double fovLevelSaved = 1;
 
   @SubscribeEvent
   public static void onFov(FOVModifier event) {

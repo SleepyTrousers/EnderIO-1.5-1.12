@@ -301,7 +301,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
   @Override
   public boolean isExtractionRedstoneConditionMet(@Nonnull EnumFacing dir) {
     RedstoneControlMode mode = getExtractionRedstoneMode(dir);
-    return ConduitUtil.isRedstoneControlModeMet(this, mode, getExtractionSignalColor(dir));
+    return ConduitUtil.isRedstoneControlModeMet(this, mode, getExtractionSignalColor(dir), dir);
   }
 
   @Override

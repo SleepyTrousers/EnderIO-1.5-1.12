@@ -222,7 +222,7 @@ XML editor will display that as tooltips when editing this file.
     <slicing energy="20000">
       <input name="ingotSoularium"/><input name="enderio:block_enderman_skull:0"/><input name="ingotSoularium"/>
       <input name="minecraft:potion" nbt='{Potion:"minecraft:water"}'/><input name="CAPACITOR1"/><input name="minecraft:potion" nbt='{Potion:"minecraft:water"}'/>
-      <output name="enderio:block_enderman_skull:2"/>
+      <output name="HEAD_ENDERMAN_TORMENTED"/>
     </slicing>
   </recipe>
 

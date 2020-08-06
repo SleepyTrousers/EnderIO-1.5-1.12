@@ -3,12 +3,10 @@ package crazypants.enderio.conduits.conduit.redstone;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.util.NullHelper;
@@ -16,8 +14,10 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.base.conduit.ConduitUtil.UnloadedBlockException;
 import crazypants.enderio.base.conduit.IConduitBundle;
 import crazypants.enderio.base.conduit.redstone.signals.BundledSignal;
+import crazypants.enderio.base.conduit.redstone.signals.CombinedSignal;
 import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import crazypants.enderio.base.conduit.registry.ConduitRegistry;
+import crazypants.enderio.base.diagnostics.Prof;
 import crazypants.enderio.base.filter.redstone.IInputSignalFilter;
 import crazypants.enderio.conduits.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduits.config.ConduitConfig;
@@ -34,9 +34,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
 
   private final @Nonnull BundledSignal bundledSignal = new BundledSignal();
 
-  boolean updatingNetwork = false;
-
-  private boolean networkEnabled = true;
+  int updatingNetwork = 0;
 
   private int baseId = 0;
 
@@ -47,21 +45,21 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   @Override
   public void init(@Nonnull IConduitBundle tile, Collection<IRedstoneConduit> connections, @Nonnull World world) throws UnloadedBlockException {
     super.init(tile, connections, world);
-    updatingNetwork = true;
+    updatingNetwork++;
     notifyNeigborsOfSignalUpdate();
-    updatingNetwork = false;
+    updatingNetwork--;
   }
 
   @Override
   public void destroyNetwork() {
-    updatingNetwork = true;
+    updatingNetwork++;
     for (IRedstoneConduit con : getConduits()) {
       con.setActive(false);
     }
     // Notify neighbours that all signals have been lost
     bundledSignal.clear();
     notifyNeigborsOfSignalUpdate();
-    updatingNetwork = false;
+    updatingNetwork--;
     super.destroyNetwork();
   }
 
@@ -75,9 +73,9 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
 
   public void updateInputsFromConduit(@Nonnull IRedstoneConduit con, boolean delayUpdate) {
     // Make my neighbors update as if we have no signals
-    updatingNetwork = true;
+    updatingNetwork++;
     notifyConduitNeighbours(con);
-    updatingNetwork = false;
+    updatingNetwork--;
 
     // Then ask them what inputs they have now
     for (EnumFacing side : EnumFacing.values()) {
@@ -98,7 +96,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
 
   private void updateActiveState() {
     boolean isActive = false;
-    for (Signal s : bundledSignal.getSignals()) {
+    for (CombinedSignal s : bundledSignal.getSignals()) {
       if (s.getStrength() > 0) {
         isActive = true;
         break;
@@ -110,7 +108,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   }
 
   private void updateInputsForSource(@Nonnull IRedstoneConduit con, @Nonnull EnumFacing dir) {
-    updatingNetwork = true;
+    updatingNetwork++;
     Signal signal = con.getNetworkInput(dir);
     bundledSignal.addSignal(con.getInputSignalColor(dir), signal);
 
@@ -125,7 +123,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     // }
     // }
 
-    updatingNetwork = false;
+    updatingNetwork--;
   }
 
   public @Nonnull BundledSignal getBundledSignal() {
@@ -136,11 +134,11 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   // signals
   // to avoid feed back looops
   void setNetworkEnabled(boolean enabled) {
-    networkEnabled = enabled;
+    updatingNetwork += enabled ? -1 : 1;
   }
 
   public boolean isNetworkEnabled() {
-    return networkEnabled;
+    return updatingNetwork == 0;
   }
 
   @Override
@@ -159,7 +157,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
 
   String signalsString() {
     StringBuilder sb = new StringBuilder();
-    for (Signal s : bundledSignal.getSignals()) {
+    for (CombinedSignal s : bundledSignal.getSignals()) {
       sb.append("<");
       sb.append(s);
       sb.append(">");
@@ -169,8 +167,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   }
 
   public void notifyNeigborsOfSignalUpdate() {
-    ArrayList<IRedstoneConduit> conduitsCopy = new ArrayList<IRedstoneConduit>(getConduits());
-    for (IRedstoneConduit con : conduitsCopy) {
+    for (IRedstoneConduit con : new ArrayList<IRedstoneConduit>(getConduits())) {
       notifyConduitNeighbours(con);
     }
   }
@@ -212,61 +209,26 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     return ForgeEventFactory.onNeighborNotify(world, pos, state == null ? world.getBlockState(pos) : state, dirs, false).isCanceled();
   }
 
-  /**
-   * This is a bit of a hack...avoids the network searching for inputs from unloaded chunks by only filtering out the invalid signals from the unloaded chunk.
-   * 
-   * @param conduits
-   * @param oldSignals
-   */
-  public void afterChunkUnload(@Nonnull List<IRedstoneConduit> conduits, @Nonnull BundledSignal oldSignals) {
-    // World world = null;
-    // for (IRedstoneConduit c : conduits) {
-    // if (world == null) {
-    // world = c.getBundle().getBundleworld();
-    // }
-    // BlockPos pos = c.getBundle().getLocation();
-    // if (world.isBlockLoaded(pos)) {
-    // this.getConduits().add(c);
-    // c.setNetwork(this);
-    // }
-    // }
-    //
-    // bundledSignal.clear();
-    // boolean signalsChanged = false;
-    // for (Entry<SignalSource, Signal> s : oldSignals.entries()) {
-    // if (world != null && world.isBlockLoaded(s.getKey().getSource())) {
-    // signals.put(s.getKey(), s.getValue());
-    // } else {
-    // signalsChanged = true;
-    // }
-    // }
-    // if (signalsChanged) {
-    // // broadcast out a change
-    // notifyNeigborsOfSignalUpdate();
-    // }
-  }
-
-  public int getSignalStrengthForColor(@Nonnull DyeColor color) {
-    return bundledSignal.getSignal(color).getStrength();
-  }
-
   @Override
   public void tickEnd(ServerTickEvent event, @Nullable Profiler profiler) {
-    super.tickEnd(event, profiler);
-
+    Prof.start(profiler, "checkTickingFilters");
+    String oldSignals = null;
     for (IRedstoneConduit con : getConduits()) {
       for (EnumFacing dir : EnumFacing.VALUES) {
         if (dir != null && ((IInputSignalFilter) con.getSignalFilter(dir, false)).shouldUpdate()) {
-          updateInputsForSource(con, dir);
-
-          World world = con.getBundle().getBundleworld();
-          BlockPos pos = con.getBundle().getLocation();
-          world.notifyNeighborsOfStateChange(pos, world.getBlockState(pos).getBlock(), false);
-          break;
+          if (oldSignals == null) {
+            oldSignals = signalsString();
+          }
+          updateInputsFromConduit(con, true);
+          break; // updateInputsFromConduit does all sides
         }
       }
-      notifyConduitNeighbours(con);
     }
+    if (oldSignals != null && !oldSignals.equals(signalsString())) {
+      Prof.next(profiler, "notifyNeighborsForTickingFilters");
+      notifyNeigborsOfSignalUpdate();
+    }
+    Prof.stop(profiler);
   }
 
 }
