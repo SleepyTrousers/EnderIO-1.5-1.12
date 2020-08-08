@@ -94,10 +94,10 @@ public class BlockEndermanSkull extends BlockEio<TileEndermanSkull> implements I
     return false;
   }
 
+  public static boolean guiRender = false;
+
   @Override
-  public @Nonnull EnumBlockRenderType getRenderType(@Nonnull IBlockState bs) {
-    return EnumBlockRenderType.INVISIBLE;
-  }
+  public @Nonnull EnumBlockRenderType getRenderType(@Nonnull IBlockState bs) { return guiRender ? EnumBlockRenderType.MODEL : EnumBlockRenderType.INVISIBLE; }
 
   @Override
   public @Nonnull IBlockState getStateForPlacement(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ,

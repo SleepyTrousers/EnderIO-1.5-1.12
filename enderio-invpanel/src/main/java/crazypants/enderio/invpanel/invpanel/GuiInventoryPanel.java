@@ -26,9 +26,14 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.util.ItemUtil;
 
+import com.enderio.core.common.util.NNList;
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.block.skull.BlockEndermanSkull;
+import crazypants.enderio.base.block.skull.SkullType;
+import crazypants.enderio.base.gui.BlockSceneRenderer;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RecipeTooltipFontRenderer;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.jei.JeiAccessor;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.machine.gui.GuiMachineBase;
@@ -37,6 +42,7 @@ import crazypants.enderio.invpanel.client.DatabaseView;
 import crazypants.enderio.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.invpanel.client.ItemEntry;
 import crazypants.enderio.invpanel.client.SortOrder;
+import crazypants.enderio.invpanel.config.Config;
 import crazypants.enderio.invpanel.config.InvpanelConfig;
 import crazypants.enderio.invpanel.network.PacketFetchItem;
 import crazypants.enderio.invpanel.network.PacketGuiSettings;
@@ -54,10 +60,12 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.tuple.Pair;
 
 @SideOnly(Side.CLIENT)
 public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
@@ -103,6 +111,9 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private CraftingHelper craftingHelper;
 
   final @Nonnull RecipeTooltipFontRenderer rtfr;
+
+  private final @Nonnull BlockSceneRenderer bsr_active = new BlockSceneRenderer(new NNList<>(Pair.of(new BlockPos(0, 0, 0), ModObject.blockEndermanSkull.getBlock().getDefaultState().withProperty(BlockEndermanSkull.VARIANT, SkullType.REANIMATED_TORMENTED))));
+  private final @Nonnull BlockSceneRenderer bsr_offline = new BlockSceneRenderer(new NNList<>(Pair.of(new BlockPos(0, 0, 0), ModObject.blockEndermanSkull.getBlock().getDefaultState().withProperty(BlockEndermanSkull.VARIANT, SkullType.TORMENTED))));
 
   @Nonnull
   private final Rectangle btnAddStoredRecipe = new Rectangle();
@@ -201,12 +212,9 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     btnSync.setSelected(getTileEntity().getGuiSync());
     btnSync.setSelectedToolTip(EnderIO.lang.localize("gui.enabled"));
     btnSync.setUnselectedToolTip(EnderIO.lang.localize("gui.disabled"));
+
     if (Loader.isModLoaded("NotEnoughItems")) {
       btnSync.setToolTip(EnderIO.lang.localize("gui.inventorypanel.tooltip.sync.nei"));
-      // TODO: Mod NEI
-      // if (getTileEntity().getGuiSync()) {
-      // updateNEI(tfFilter.getText());
-      // }
     } else if (JeiAccessor.isJeiRuntimeAvailable()) {
       btnSync.setToolTip(EnderIO.lang.localize("gui.inventorypanel.tooltip.sync.jei"));
       btnSync.setSelectedToolTip(EnderIO.lang.localize("gui.enabled"), EnderIO.lang.localize("gui.inventorypanel.tooltip.sync.jei.line1"),
@@ -433,20 +441,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     TileInventoryPanel te = getTileEntity();
 
-    int y = sy;
     int numStoredRecipes = te.getStoredCraftingRecipes();
-    /*if (numStoredRecipes == 1) {
-      drawTexturedModalRect(sx, y, 227, 225, 28, 30);
-      y += 30;
-    } else*/
-    /*drawTexturedModalRect(sx, y, 227, 225, 28, 24);
-    y += 24;
-    for (int i = 1; i < 5; i++) {
-      drawTexturedModalRect(sx, y, 198, 229, 28, 20);
-      y += 20;
-    }
-    drawTexturedModalRect(sx, y, 198, 229, 28, 26);
-    y += 26;*/
     bindGuiTexture(1);
     drawTexturedModalRect(sx - 42, (this.height - 208) / 2, 0, 0, 42, 208);
     bindGuiTexture(0);
@@ -518,22 +513,25 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       setText(tfFilter, "");
       fr.drawString(infoTextNoConnection, tfFilter.x, tfFilter.y, 0x707070);
     }
+
+    if (!InvpanelConfig.inventoryPanelFree.get()) {
+      GlStateManager.pushMatrix();
+      BlockEndermanSkull.guiRender = true;
+      (te.isActive() && te.hasConnection() ? bsr_active : bsr_offline).drawScreen(sx - 4, sy + 132 + 49, 48, 48);
+      BlockEndermanSkull.guiRender = false;
+      GlStateManager.popMatrix();
+    }
+
   }
 
   @Override
   protected void onTextFieldChanged(@Nonnull TextFieldEnder tf, @Nonnull String old) {
     if (tf == tfFilter && btnSync.isSelected() && tfFilter.isFocused()) {
-      // if (Loader.isModLoaded("NotEnoughItems")) {
-      // updateNEI(tfFilter.getText());
       if (JeiAccessor.isJeiRuntimeAvailable()) {
         updateToJEI(tfFilter.getText());
       }
     }
   }
-
-  // private void updateNEI(String text) {
-  // LayoutManager.searchField.setText(text);
-  // }
 
   private void updateToJEI(String text) {
     if (text != null && !text.isEmpty()) {
@@ -849,7 +847,6 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         this.icon = null;
         GlStateManager.enableLighting();
         RenderHelper.enableGUIStandardItemLighting();
-        //RenderHelper.disableStandardItemLighting();
         GlStateManager.disableBlend();
         GlStateManager.enableRescaleNormal();
         GlStateManager.enableDepth();
@@ -865,7 +862,6 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
         GlStateManager.disableLighting();
         GlStateManager.enableBlend();
-        //RenderHelper.enableStandardItemLighting();
         RenderHelper.enableGUIStandardItemLighting();
 
       } else {
