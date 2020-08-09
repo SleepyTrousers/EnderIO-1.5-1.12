@@ -18,7 +18,6 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
-import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.soul.ISoulBinderRecipe;
 import crazypants.enderio.base.xp.ExperienceContainer;
 import crazypants.enderio.base.xp.IHaveExperience;
@@ -173,18 +172,18 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     MachineRecipeInput newInput = new MachineRecipeInput(slot, item);
     int otherSlot = slot == 0 ? 1 : 0;
     if (Prep.isInvalid(getStackInSlot(otherSlot))) {
-      List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(RecipeLevel.IGNORE, getMachineName(), newInput);
+      List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineLevel(), getMachineName(), newInput);
       if (recipes.isEmpty()) {
         return false;
       }
       for (IMachineRecipe rec : recipes) {
-        if (rec != null && rec.isValidInput(RecipeLevel.IGNORE, newInput)) {
+        if (rec != null && rec.isValidInput(getMachineLevel(), newInput)) {
           return true;
         }
       }
     } else {
       NNList<MachineRecipeInput> inputs = new NNList<>(newInput, new MachineRecipeInput(otherSlot, getStackInSlot(otherSlot)));
-      return MachineRecipeRegistry.instance.getRecipeForInputs(RecipeLevel.IGNORE, getMachineName(), inputs) != null;
+      return MachineRecipeRegistry.instance.getRecipeForInputs(getMachineLevel(), getMachineName(), inputs) != null;
     }
     return false;
   }

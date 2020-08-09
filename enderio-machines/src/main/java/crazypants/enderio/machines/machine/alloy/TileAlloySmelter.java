@@ -19,6 +19,7 @@ import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.ManyToOneMachineRecipe;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
 import crazypants.enderio.base.recipe.alloysmelter.VanillaSmeltingRecipe;
 import crazypants.enderio.machines.config.config.AlloySmelterConfig;
@@ -53,6 +54,11 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
       setEnergyLoss(SIMPLE_ALLOY_SMELTER_POWER_LOSS);
     }
 
+    @Override
+    protected @Nonnull RecipeLevel getMachineLevel() {
+      return RecipeLevel.SIMPLE;
+    }
+
   }
 
   public static class Furnace extends TileAlloySmelter {
@@ -61,6 +67,11 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
       super(AlloySmelterConfig.profileSimpleFurnace.get().get(), new SlotDefinition(3, 1, 0), SIMPLE_ALLOY_SMELTER_POWER_INTAKE,
           SIMPLE_ALLOY_SMELTER_POWER_BUFFER, SIMPLE_ALLOY_SMELTER_POWER_USE);
       setEnergyLoss(SIMPLE_STIRLING_POWER_LOSS);
+    }
+
+    @Override
+    protected @Nonnull RecipeLevel getMachineLevel() {
+      return RecipeLevel.SIMPLE;
     }
 
   }
@@ -92,6 +103,11 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
       return (faceHit != EnumFacing.UP || modeIn == IoMode.NONE) && super.supportsMode(faceHit, modeIn);
     }
 
+    @Override
+    protected @Nonnull RecipeLevel getMachineLevel() {
+      return RecipeLevel.ADVANCED;
+    }
+
   }
 
   protected final @Nonnull OperatingProfile operatingProfile;
@@ -108,6 +124,11 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
       @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
     this.operatingProfile = operatingProfile;
+  }
+
+  @Override
+  protected @Nonnull RecipeLevel getMachineLevel() {
+    return RecipeLevel.NORMAL;
   }
 
   public @Nonnull OperatingProfile getOperatingProfile() {
