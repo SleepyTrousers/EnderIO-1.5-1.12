@@ -755,18 +755,28 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
 
     @Override
     public int fill(FluidStack resource, boolean doFill) {
-      if (canFill(side, resource)) {
-        return network.fillFrom(EnderLiquidConduit.this, side, resource, doFill);
+      if (!reenter && canFill(side, resource)) {
+        try {
+          reenter = true;
+          return network.fillFrom(EnderLiquidConduit.this, side, resource, doFill);
+        } finally {
+          reenter = false;
+        }
       }
       return 0;
     }
 
     @Override
     public IFluidTankProperties[] getTankProperties() {
-      if (network == null) {
+      if (reenter || network == null) {
         return new FluidTankProperties[0];
       }
-      return network.getTankProperties(EnderLiquidConduit.this, side);
+      try {
+        reenter = true;
+        return network.getTankProperties(EnderLiquidConduit.this, side);
+      } finally {
+        reenter = false;
+      }
     }
   }
 
