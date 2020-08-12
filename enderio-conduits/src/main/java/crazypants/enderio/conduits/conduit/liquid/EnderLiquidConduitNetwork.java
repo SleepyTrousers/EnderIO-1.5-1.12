@@ -145,7 +145,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
       filling = true;
 
-      if (resource == null || !matchedFilter(resource, tank.con, tank.conDir, true)) {
+      if (!matchedFilter(resource, tank.con, tank.conDir, true)) {
         return 0;
       }
 
