@@ -28,10 +28,6 @@ public interface IInventoryDatabaseServer extends IInventoryDatabase<IServerItem
 
   int getNumInventories();
 
-  //float getPower();
-
-  //void addPower(float power);
-
   boolean isOperational(IInventoryPanel te);
 
   int extractItems(IServerItemEntry entry, int count, @Nonnull IInventoryPanel te);

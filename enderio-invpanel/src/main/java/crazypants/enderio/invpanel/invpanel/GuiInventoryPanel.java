@@ -9,6 +9,8 @@ import java.util.Locale;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.GhostSlotHandler;
@@ -25,8 +27,8 @@ import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.util.ItemUtil;
-
 import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.block.skull.BlockEndermanSkull;
 import crazypants.enderio.base.block.skull.SkullType;
@@ -42,7 +44,6 @@ import crazypants.enderio.invpanel.client.DatabaseView;
 import crazypants.enderio.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.invpanel.client.ItemEntry;
 import crazypants.enderio.invpanel.client.SortOrder;
-import crazypants.enderio.invpanel.config.Config;
 import crazypants.enderio.invpanel.config.InvpanelConfig;
 import crazypants.enderio.invpanel.network.PacketFetchItem;
 import crazypants.enderio.invpanel.network.PacketGuiSettings;
@@ -62,10 +63,12 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.commons.lang3.tuple.Pair;
+
+import static crazypants.enderio.base.gui.RecipeTooltipFontRenderer.RECIPE;
+import static crazypants.enderio.base.gui.RecipeTooltipFontRenderer.RECIPE_END;
+import static crazypants.enderio.base.gui.RecipeTooltipFontRenderer.RECIPE_ID;
 
 @SideOnly(Side.CLIENT)
 public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
@@ -85,7 +88,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private static final int GHOST_COLUMNS = 6;
   private static final int GHOST_ROWS = 6;
 
-  private final DatabaseView view;
+  private final @Nonnull DatabaseView view;
 
   private final @Nonnull TextFieldEnder tfFilter;
   private String tfFilterExternalValue = null;
@@ -95,7 +98,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private final @Nonnull VScrollbar scrollbar;
   private final @Nonnull MultiIconButton btnClear;
 
-  private final ItemStackButton[] repButtons = new ItemStackButton[TileInventoryPanel.MAX_STORED_CRAFTING_RECIPES];
+  private final @Nonnull ItemStackButton[] repButtons = new ItemStackButton[TileInventoryPanel.MAX_STORED_CRAFTING_RECIPES];
 
   private int scrollPos;
   private int ghostSlotTooltipStacksize;
@@ -110,13 +113,16 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   private CraftingHelper craftingHelper;
 
-  final @Nonnull RecipeTooltipFontRenderer rtfr;
+  private final @Nonnull RecipeTooltipFontRenderer rtfr;
 
-  private final @Nonnull BlockSceneRenderer bsr_active = new BlockSceneRenderer(new NNList<>(Pair.of(new BlockPos(0, 0, 0), ModObject.blockEndermanSkull.getBlock().getDefaultState().withProperty(BlockEndermanSkull.VARIANT, SkullType.REANIMATED_TORMENTED))));
-  private final @Nonnull BlockSceneRenderer bsr_offline = new BlockSceneRenderer(new NNList<>(Pair.of(new BlockPos(0, 0, 0), ModObject.blockEndermanSkull.getBlock().getDefaultState().withProperty(BlockEndermanSkull.VARIANT, SkullType.TORMENTED))));
+  private final @Nonnull BlockSceneRenderer bsr_active = new BlockSceneRenderer(new NNList<>( //
+      Pair.of(new BlockPos(0, 0, 0), //
+          ModObject.blockEndermanSkull.getBlock().getDefaultState().withProperty(BlockEndermanSkull.VARIANT, SkullType.REANIMATED_TORMENTED))));
+  private final @Nonnull BlockSceneRenderer bsr_offline = new BlockSceneRenderer(new NNList<>( //
+      Pair.of(new BlockPos(0, 0, 0), //
+          ModObject.blockEndermanSkull.getBlock().getDefaultState().withProperty(BlockEndermanSkull.VARIANT, SkullType.TORMENTED))));
 
-  @Nonnull
-  private final Rectangle btnAddStoredRecipe = new Rectangle();
+  private final @Nonnull Rectangle btnAddStoredRecipe = new Rectangle();
 
   public GuiInventoryPanel(@Nonnull TileInventoryPanel te, @Nonnull Container container) {
     super(te, container, "inv_panel", "inv_panel_extended");
@@ -128,8 +134,11 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     this.ghostSlotHandler = new GhostSlotHandler() {
       @Override
       protected void ghostSlotClicked(@Nonnull GuiContainerBase gui, @Nonnull GhostSlot slot, int x, int y, int button) {
-        GuiInventoryPanel.this.ghostSlotClicked(slot, x, y, button);
-        // super.ghostSlotClicked(gui, slot, x, y, button);
+        if (slot instanceof InvSlot) {
+          GuiInventoryPanel.this.ghostSlotClicked(((InvSlot) slot), x, y, button);
+        } else {
+          super.ghostSlotClicked(gui, slot, x, y, button);
+        }
       }
 
       // @Override
@@ -152,7 +161,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     for (int y = 0; y < GHOST_ROWS; y++) {
       for (int x = 0; x < GHOST_COLUMNS; x++) {
-        getGhostSlotHandler().add(new InvSlot( 108 + x * 18, 28 + y * 18));
+        getGhostSlotHandler().add(new InvSlot(108 + x * 18, 28 + y * 18));
       }
     }
 
@@ -161,7 +170,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       TileInventoryPanel te1 = getTileEntity();
       StoredCraftingRecipe recipe = te1.getStoredCraftingRecipe(index);
       repButtons[index] = new ItemStackButton(this, 22 + index, -35, 18 + index * 20, IconEIO.QUESTION, null);
-      addToolTip(new GuiToolTip(repButtons[index].getBounds(), "CLICK to store recipe") {
+      addToolTip(new GuiToolTip(repButtons[index].getBounds(), "CLICK to store recipe") { // TODO i18n
         @Override
         public boolean shouldDraw() {
           return super.shouldDraw() && !repButtons[index].hasItemStack() && repButtons[index].enabled;
@@ -177,12 +186,12 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
           protected void updateText() {
             text.clear();
             text.add(TextFormatting.YELLOW + repButtons[index].itemStackName());
-            text.add("#RECIPE=invprecipe" + index + "#" + TextFormatting.GRAY + "CLICK to load recipe");
-            text.add("#RECIPE#" + TextFormatting.GRAY + "SHIFT-CLICK to load recipe with stacks");
-            text.add("#RECIPE#" + TextFormatting.GRAY + "CTRL-RIGHT-CLICK to delete recipe");
-            text.add("#RECIPE#");
-            text.add("#RECIPE#");
-            text.add("#RECIPE#");
+            text.add(RECIPE_ID + "invprecipe" + index + RECIPE_END + TextFormatting.GRAY + "CLICK to load recipe"); // TODO i18n
+            text.add(RECIPE + TextFormatting.GRAY + "SHIFT-CLICK to load recipe with stacks"); // TODO i18n
+            text.add(RECIPE + TextFormatting.GRAY + "CTRL-RIGHT-CLICK to delete recipe"); // TODO i18n
+            text.add(RECIPE);
+            text.add(RECIPE);
+            text.add(RECIPE);
           }
 
           @Override
@@ -202,20 +211,16 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       view.setSortOrder(orders[sortOrderIdx], (sortMode & 1) != 0);
     }
 
-    FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
-
-    tfFilter = new TextFieldEnder(fr,108, 11, 106, 10);
+    tfFilter = new TextFieldEnder(fontRenderer, 108, 11, 106, 10);
     tfFilter.setEnableBackgroundDrawing(false);
     tfFilter.setText(te.getGuiFilterString());
 
-    btnSync = new ToggleButton(this, ID_SYNC,233, 46, IconEIO.CROSS, IconEIO.TICK);
+    btnSync = new ToggleButton(this, ID_SYNC, 233, 46, IconEIO.CROSS, IconEIO.TICK);
     btnSync.setSelected(getTileEntity().getGuiSync());
     btnSync.setSelectedToolTip(EnderIO.lang.localize("gui.enabled"));
     btnSync.setUnselectedToolTip(EnderIO.lang.localize("gui.disabled"));
 
-    if (Loader.isModLoaded("NotEnoughItems")) {
-      btnSync.setToolTip(EnderIO.lang.localize("gui.inventorypanel.tooltip.sync.nei"));
-    } else if (JeiAccessor.isJeiRuntimeAvailable()) {
+    if (JeiAccessor.isJeiRuntimeAvailable()) {
       btnSync.setToolTip(EnderIO.lang.localize("gui.inventorypanel.tooltip.sync.jei"));
       btnSync.setSelectedToolTip(EnderIO.lang.localize("gui.enabled"), EnderIO.lang.localize("gui.inventorypanel.tooltip.sync.jei.line1"),
           EnderIO.lang.localize("gui.inventorypanel.tooltip.sync.jei.line2"));
@@ -380,9 +385,9 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     btnClear.onGuiInit();
     btnSync.onGuiInit();
     addScrollbar(scrollbar);
-    for (ItemStackButton recipeButton : repButtons) {
-      if (recipeButton != null) {
-        recipeButton.onGuiInit();
+    for (ItemStackButton button : repButtons) {
+      if (button != null) {
+        button.onGuiInit();
       }
     }
     ((InventoryPanelContainer) inventorySlots).createGhostSlots(getGhostSlotHandler());
@@ -428,7 +433,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     int sx = guiLeft;
     int sy = guiTop;
 
-    drawTexturedModalRect(sx , sy, 0, 0, 232, 232);
+    drawTexturedModalRect(sx, sy, 0, 0, 232, 232);
     drawTexturedModalRect(sx + 232, sy, 232, 0, 24, 68);
 
     if (craftingHelper != null || getContainer().hasCraftingRecipe()) {
@@ -462,7 +467,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     if (!InvpanelConfig.inventoryPanelFree.get()) {
       drawTexturedModalRect(sx + 11, sy + 147, 232, 163, 18, 49);
       if (fuelTank.getFluidAmount() > 0) {
-        RenderUtil.renderGuiTank(fuelTank.getFluid(), fuelTank.getCapacity(), fuelTank.getFluidAmount(), sx +  12, sy + 148, zLevel, 16, 47);
+        RenderUtil.renderGuiTank(fuelTank.getFluid(), fuelTank.getCapacity(), fuelTank.getFluidAmount(), sx + 12, sy + 148, zLevel, 16, 47);
       }
     }
 
@@ -470,15 +475,15 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         ? btnReturnArea.contains(mouseX - sx, mouseY - sy) ? EnderWidget.STOP_BUT_HOVER : EnderWidget.STOP_BUT
         : btnReturnArea.contains(mouseX - sx, mouseY - sy) ? EnderWidget.RETURN_BUT_HOVER : EnderWidget.RETURN_BUT;
     GlStateManager.color(1, 1, 1, 1);
-    EnderWidget.RETURN_BUT.getMap().render(returnButton, sx +  7, sy + 72, true);
+    EnderWidget.RETURN_BUT.getMap().render(returnButton, sx + 7, sy + 72, true);
 
     int headerColor = 0x404040;
     int focusedColor = 0x648494;
     FontRenderer fr = getFontRenderer();
-    fr.drawString(headerCrafting, sx +  7, sy + 6, headerColor);
-    fr.drawString(te.isExtractionDisabled() ? headerStorage : headerReturn, sx +  7 + 10, sy + 72,
+    fr.drawString(headerCrafting, sx + 7, sy + 6, headerColor);
+    fr.drawString(te.isExtractionDisabled() ? headerStorage : headerReturn, sx + 7 + 10, sy + 72,
         btnReturnArea.contains(mouseX - sx, mouseY - sy) ? focusedColor : headerColor);
-    fr.drawString(headerInventory, sx +  38, sy + 138, headerColor);
+    fr.drawString(headerInventory, sx + 38, sy + 138, headerColor);
 
     super.drawGuiContainerBackgroundLayer(par1, mouseX, mouseY);
 
@@ -774,40 +779,37 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     }
   }
 
-  protected void ghostSlotClicked(@Nonnull GhostSlot slot, int x, int y, int button) {
-    if (slot instanceof InvSlot) {
-      InvSlot invSlot = (InvSlot) slot;
-      InventoryDatabaseClient db = getDatabase();
-      if (invSlot.entry != null && !invSlot.getStack().isEmpty() && db != null) {
-        int targetSlot;
-        int count = Math.min(invSlot.getStack().getCount(), invSlot.getStack().getMaxStackSize());
+  protected void ghostSlotClicked(@Nonnull InvSlot invSlot, int x, int y, int button) {
+    InventoryDatabaseClient db = getDatabase();
+    if (invSlot.entry != null && !invSlot.getStack().isEmpty() && db != null) {
+      int targetSlot;
+      int count = Math.min(invSlot.getStack().getCount(), invSlot.getStack().getMaxStackSize());
 
-        if (button == 0) {
-          if (isShiftKeyDown()) {
-            InventoryPlayer playerInv = mc.player.inventory;
-            targetSlot = playerInv.getFirstEmptyStack();
-            if (targetSlot >= 0) {
-              targetSlot = getContainer().getSlotIndex(playerInv, targetSlot);
-            }
-            if (targetSlot < 0) {
-              return;
-            }
-          } else {
-            targetSlot = -1;
+      if (button == 0) {
+        if (isShiftKeyDown()) {
+          InventoryPlayer playerInv = mc.player.inventory;
+          targetSlot = playerInv.getFirstEmptyStack();
+          if (targetSlot >= 0) {
+            targetSlot = getContainer().getSlotIndex(playerInv, targetSlot);
           }
-        } else if (button == 1) {
-          targetSlot = -1;
-          if (isCtrlKeyDown()) {
-            count = 1;
-          } else {
-            count = (count + 1) / 2;
+          if (targetSlot < 0) {
+            return;
           }
         } else {
-          return;
+          targetSlot = -1;
         }
-
-        PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(db.getGeneration(), invSlot.entry, targetSlot, count));
+      } else if (button == 1) {
+        targetSlot = -1;
+        if (isCtrlKeyDown()) {
+          count = 1;
+        } else {
+          count = (count + 1) / 2;
+        }
+      } else {
+        return;
       }
+
+      PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(db.getGeneration(), invSlot.entry, targetSlot, count));
     }
   }
 
@@ -829,7 +831,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   }
 
   public class ItemStackButton extends IconButton {
-    private ItemStack stack;
+    private ItemStack stack; // TODO: Check if we really need nulls here
     private boolean rightClick = false;
     private final IWidgetIcon backupIcon;
 
@@ -840,8 +842,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     }
 
     @Override
-    public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
-
+    public void drawButton(@Nonnull Minecraft mc, int mouseX, int mouseY, float partialTicks) {
 
       if (hasItemStack()) {
         this.icon = null;
@@ -854,7 +855,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, 0);
         GlStateManager.scale(0.7, 0.7, 0.7);
-        itemRender.zLevel = this.id +1;
+        itemRender.zLevel = this.id + 1;
 
         itemRender.renderItemAndEffectIntoGUI(this.stack, 3, 3);
         itemRender.renderItemOverlayIntoGUI(fontRenderer, this.stack, 3, 3, "");

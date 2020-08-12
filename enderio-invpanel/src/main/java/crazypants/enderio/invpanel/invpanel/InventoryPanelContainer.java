@@ -10,13 +10,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.client.gui.GhostSlotHandler;
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.common.util.ItemUtil;
 
-import crazypants.enderio.base.gui.RecipeTooltipFontRenderer;
 import crazypants.enderio.base.invpanel.database.IChangeLog;
 import crazypants.enderio.base.invpanel.database.IInventoryDatabaseServer;
 import crazypants.enderio.base.invpanel.database.IServerItemEntry;
@@ -27,7 +25,6 @@ import crazypants.enderio.invpanel.network.PacketMoveItems;
 import crazypants.enderio.invpanel.remote.ItemRemoteInvAccess;
 import crazypants.enderio.invpanel.util.SlotCraftingWrapper;
 import crazypants.enderio.invpanel.util.StoredCraftingRecipe;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -81,8 +78,6 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   private @Nonnull final World playerWorld;
 
   private SlotCraftingWrapper slotCraft;
-
-
 
   public InventoryPanelContainer(@Nonnull InventoryPlayer playerInv, @Nonnull TileInventoryPanel te) {
     super(playerInv, te);
@@ -358,7 +353,6 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   }
 
   public void executeFetchItems(EntityPlayerMP player, int generation, int dbID, int targetSlot, int count) {
-    TileInventoryPanel te = getTe();
     IInventoryDatabaseServer db = te.getDatabaseServer();
     if (db == null || db.getGeneration() != generation || !db.isCurrent()) {
       return;
@@ -398,10 +392,10 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
           targetStack.setCount(extracted);
 
           // TODO Debug stuff
-           //if (DebugCommand.SERVER.isEnabled(player)) {
-           //DebugCommand.SERVER.debug("extracted " + targetStack + " for dbid=" + dbID + " " + entry);
-           //}
-          //System.out.println("extracted " + targetStack + " for dbid=" + dbID + " " + entry);
+          // if (DebugCommand.SERVER.isEnabled(player)) {
+          // DebugCommand.SERVER.debug("extracted " + targetStack + " for dbid=" + dbID + " " + entry);
+          // }
+          // System.out.println("extracted " + targetStack + " for dbid=" + dbID + " " + entry);
 
           sendChangeLog();
 

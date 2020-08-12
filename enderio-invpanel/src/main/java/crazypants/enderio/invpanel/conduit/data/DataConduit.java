@@ -9,8 +9,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.api.client.gui.ITabPanel;
+import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.NNList;
-import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.vecmath.Vector4f;
 
 import crazypants.enderio.base.conduit.ConduitUtil;
@@ -101,7 +101,8 @@ public class DataConduit extends AbstractConduit implements IDataConduit {
 
   @Override
   public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-    if (capability == CapabilityDatabaseHandler.DATABASE_HANDLER_CAPABILITY && externalConnections.contains(facing) && getConnectionMode(facing) != ConnectionMode.DISABLED) {
+    if (facing != null && capability == CapabilityDatabaseHandler.DATABASE_HANDLER_CAPABILITY && externalConnections.contains(facing)
+        && getConnectionMode(facing) != ConnectionMode.DISABLED) {
       return true;
     }
     return false;
@@ -144,21 +145,19 @@ public class DataConduit extends AbstractConduit implements IDataConduit {
     if (ToolUtil.isToolEquipped(player, hand)) {
       if (!getBundle().getEntity().getWorld().isRemote) {
         final CollidableComponent component = res.component;
-        if (component != null) {
-          EnumFacing faceHit = res.movingObjectPosition.sideHit;
-          if (component.isCore()) {
-            if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
-              setConnectionMode(faceHit, ConnectionMode.IN_OUT);
-              return true;
-            }
-            return ConduitUtil.connectConduits(this, faceHit);
-          } else {
-            EnumFacing connDir = component.getDirection();
-            if (externalConnections.contains(connDir)) {
-              setConnectionMode(connDir, getNextConnectionMode(connDir));
-            } else if (containsConduitConnection(connDir)) {
-              ConduitUtil.disconnectConduits(this, connDir);
-            }
+        EnumFacing faceHit = res.movingObjectPosition.sideHit;
+        if (component.isCore()) {
+          if (getConnectionMode(faceHit) == ConnectionMode.DISABLED) {
+            setConnectionMode(faceHit, ConnectionMode.IN_OUT);
+            return true;
+          }
+          return ConduitUtil.connectConduits(this, faceHit);
+        } else {
+          EnumFacing connDir = component.getDirection();
+          if (externalConnections.contains(connDir)) {
+            setConnectionMode(connDir, getNextConnectionMode(connDir));
+          } else if (containsConduitConnection(connDir)) {
+            ConduitUtil.disconnectConduits(this, connDir);
           }
         }
       }
@@ -180,9 +179,7 @@ public class DataConduit extends AbstractConduit implements IDataConduit {
   @Override
   public void onAddedToBundle() {
     super.onAddedToBundle();
-    for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
-      checkConnections(itr.next());
-    }
+    NNList.FACING.apply(this::checkConnections);
   }
 
   @Override
@@ -199,27 +196,26 @@ public class DataConduit extends AbstractConduit implements IDataConduit {
 
   @Override
   public void checkConnections(@Nonnull EnumFacing dir) {
-    BlockPos pos = getBundle().getLocation();
-    if (getExternalConnections().contains(dir) && getConnectionMode(dir) != ConnectionMode.DISABLED) {
+    if (getExternalConnections().contains(dir) && getConnectionMode(dir).isActive()) {
       IItemHandler inv = getExternalInventory(dir);
       if (inv != null) {
-        addSource(dir, new InventoryDatabaseSource(pos, inv));
+        addSource(dir, new InventoryDatabaseSource(getBundle().getLocation(), inv));
+        return;
       }
-    } else {
-      removeSource(dir);
     }
+    removeSource(dir);
   }
 
   @SuppressWarnings("null")
   @Override
-  @Nullable
-  public IItemHandler getExternalInventory(@Nonnull EnumFacing dir) {
-    if (getConnectionMode(dir) != ConnectionMode.DISABLED) {
+  public @Nullable IItemHandler getExternalInventory(@Nonnull EnumFacing dir) {
+    if (getConnectionMode(dir).isActive()) {
       World world = getBundle().getBundleworld();
       BlockPos pos = getBundle().getLocation();
 
-      TileEntity te = world.getTileEntity(pos.offset(dir));
-      // Ghost items bug. Missing if check caused INV panel to scan it's own inventory, so placing items in the return area causes it to show up instantly in the inventory
+      TileEntity te = BlockEnder.getAnyTileEntitySafe(world, pos.offset(dir));
+      // Ghost items bug. Missing if check caused INV panel to scan it's own inventory, so placing items in the return area causes it to show up instantly in
+      // the inventory
       if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, dir.getOpposite()) && !(te instanceof TileInventoryPanel)) {
         return te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, dir.getOpposite());
       }
@@ -247,20 +243,16 @@ public class DataConduit extends AbstractConduit implements IDataConduit {
   public void connectionsChanged() {
     super.connectionsChanged();
     this.invalidate();
-    for (NNIterator<EnumFacing> itr = NNList.FACING.fastIterator(); itr.hasNext();) {
-      checkConnections(itr.next());
-    }
+    NNList.FACING.apply(this::checkConnections);
   }
 
   // TEXTURES
 
+  @SuppressWarnings("null")
   @Override
   @Nonnull
   public IConduitTexture getTextureForState(@Nonnull CollidableComponent component) {
-    if (component.isCore()) {
-      return ICONS.get(ICON_CORE_KEY);
-    }
-    return ICONS.get(ICON_KEY);
+    return ICONS.get(component.isCore() ? ICON_CORE_KEY : ICON_KEY);
   }
 
   @Override
