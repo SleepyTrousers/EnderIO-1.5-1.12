@@ -44,6 +44,7 @@ public class StoredCraftingRecipe {
         count++;
       }
     }
+    updateResult = true;
     return count > 0;
   }
 
@@ -116,5 +117,9 @@ public class StoredCraftingRecipe {
       result.setCount(1);
     }
     updateResult = false;
+  }
+
+  public NNList<ItemStack> getIngredients() {
+    return this.slots;
   }
 }

@@ -10,11 +10,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.client.gui.GhostSlotHandler;
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.common.util.ItemUtil;
 
+import crazypants.enderio.base.gui.RecipeTooltipFontRenderer;
 import crazypants.enderio.base.invpanel.database.IChangeLog;
 import crazypants.enderio.base.invpanel.database.IInventoryDatabaseServer;
 import crazypants.enderio.base.invpanel.database.IServerItemEntry;
@@ -25,6 +27,7 @@ import crazypants.enderio.invpanel.network.PacketMoveItems;
 import crazypants.enderio.invpanel.remote.ItemRemoteInvAccess;
 import crazypants.enderio.invpanel.util.SlotCraftingWrapper;
 import crazypants.enderio.invpanel.util.StoredCraftingRecipe;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -53,13 +56,13 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
    * startPlayerSlot=21 endPlayerSlot=48
    */
 
-  public static final int CRAFTING_GRID_X = 24 + 7;
+  public static final int CRAFTING_GRID_X = 7;
   public static final int CRAFTING_GRID_Y = 16;
 
-  public static final int RETURN_INV_X = 24 + 7;
+  public static final int RETURN_INV_X = 7;
   public static final int RETURN_INV_Y = 82;
 
-  public static final int FILTER_SLOT_X = 24 + 233;
+  public static final int FILTER_SLOT_X = 233;
   public static final int FILTER_SLOT_Y = 7;
 
   private final HashSet<IServerItemEntry> changedItems;
@@ -75,9 +78,11 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   private boolean updateReturnAreaSlots;
   private boolean storedRecipeExists;
 
-  private @Nonnull World playerWorld;
+  private @Nonnull final World playerWorld;
 
   private SlotCraftingWrapper slotCraft;
+
+
 
   public InventoryPanelContainer(@Nonnull InventoryPlayer playerInv, @Nonnull TileInventoryPanel te) {
     super(playerInv, te);
@@ -112,10 +117,11 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
       public int getSlotStackLimit() {
         return 1;
       }
+
     });
 
     firstSlotReturn = inventorySlots.size();
-    for (int y = 0, i = TileInventoryPanel.SLOT_RETURN_START; y < 2; y++) {
+    for (int y = 0, i = TileInventoryPanel.SLOT_RETURN_START; y < 3; y++) {
       for (int x = 0; x < 5; x++, i++) {
         addSlotToContainer(new Slot(getInv(), i, RETURN_INV_X + x * 18, RETURN_INV_Y + y * 18));
       }
@@ -130,7 +136,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
   @Override
   @Nonnull
   public Point getPlayerInventoryOffset() {
-    return new Point(24 + 39, 130);
+    return new Point(39, 148);
   }
 
   @Override
@@ -392,9 +398,10 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
           targetStack.setCount(extracted);
 
           // TODO Debug stuff
-          // if (DebugCommand.SERVER.isEnabled(player)) {
-          // DebugCommand.SERVER.debug("extracted " + targetStack + " for dbid=" + dbID + " " + entry);
-          // }
+           //if (DebugCommand.SERVER.isEnabled(player)) {
+           //DebugCommand.SERVER.debug("extracted " + targetStack + " for dbid=" + dbID + " " + entry);
+           //}
+          //System.out.println("extracted " + targetStack + " for dbid=" + dbID + " " + entry);
 
           sendChangeLog();
 
@@ -407,6 +414,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
         }
       }
     }
+    this.detectAndSendChanges();
   }
 
   public boolean moveItemsToReturnArea(int fromSlot) {

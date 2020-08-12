@@ -8,4 +8,10 @@ public interface IInventoryPanel {
 
   void refuelPower(@Nonnull IInventoryDatabaseServer db);
 
+  float getPowerLevel();
+
+  boolean usePower(float amount);
+
+  void addPower(float amount);
+
 }

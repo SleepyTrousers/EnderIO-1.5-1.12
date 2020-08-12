@@ -90,9 +90,7 @@ public class DataConduitNetwork extends AbstractConduitNetwork<IDataConduit, IDa
   public void tickStart(ServerTickEvent event, @Nullable Profiler profiler) {
     super.tickStart(event, profiler);
 
-    if (database != null) {
-      database.tick();
-    }
+
   }
 
 }

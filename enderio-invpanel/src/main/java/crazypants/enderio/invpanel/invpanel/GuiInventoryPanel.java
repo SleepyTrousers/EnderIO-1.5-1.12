@@ -9,6 +9,8 @@ import java.util.Locale;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.api.client.gui.IGuiScreen;
+import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.GhostSlotHandler;
 import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.gui.button.IconButton;
@@ -24,8 +26,14 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.util.ItemUtil;
 
+import com.enderio.core.common.util.NNList;
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.block.skull.BlockEndermanSkull;
+import crazypants.enderio.base.block.skull.SkullType;
+import crazypants.enderio.base.gui.BlockSceneRenderer;
 import crazypants.enderio.base.gui.IconEIO;
+import crazypants.enderio.base.gui.RecipeTooltipFontRenderer;
+import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.jei.JeiAccessor;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.machine.gui.GuiMachineBase;
@@ -34,6 +42,7 @@ import crazypants.enderio.invpanel.client.DatabaseView;
 import crazypants.enderio.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.invpanel.client.ItemEntry;
 import crazypants.enderio.invpanel.client.SortOrder;
+import crazypants.enderio.invpanel.config.Config;
 import crazypants.enderio.invpanel.config.InvpanelConfig;
 import crazypants.enderio.invpanel.network.PacketFetchItem;
 import crazypants.enderio.invpanel.network.PacketGuiSettings;
@@ -46,32 +55,35 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.commons.lang3.tuple.Pair;
 
 @SideOnly(Side.CLIENT)
 public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
-  private static final @Nonnull Rectangle RECTANGLE_FUEL_TANK = new Rectangle(36, 133, 16, 47);
+  private static final @Nonnull Rectangle RECTANGLE_FUEL_TANK = new Rectangle(12, 149, 16, 47);
 
-  private static final @Nonnull Rectangle inventoryArea = new Rectangle(24 + 107, 27, 108, 90);
+  private static final @Nonnull Rectangle inventoryArea = new Rectangle(107, 27, 108, 90);
 
-  private static final @Nonnull Rectangle btnRefill = new Rectangle(24 + 85, 32, 20, 20);
+  private static final @Nonnull Rectangle btnRefill = new Rectangle(85, 32, 20, 20);
 
-  private static final @Nonnull Rectangle btnReturnArea = new Rectangle(24 + 6, 72, 5 * 18, 8);
+  private static final @Nonnull Rectangle btnReturnArea = new Rectangle(6, 72, 5 * 18, 8);
 
   private static final int ID_SORT = 9876;
   private static final int ID_CLEAR = 9877;
   private static final int ID_SYNC = 9878;
 
   private static final int GHOST_COLUMNS = 6;
-  private static final int GHOST_ROWS = 5;
+  private static final int GHOST_ROWS = 6;
 
   private final DatabaseView view;
 
@@ -83,6 +95,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private final @Nonnull VScrollbar scrollbar;
   private final @Nonnull MultiIconButton btnClear;
 
+  private final ItemStackButton[] repButtons = new ItemStackButton[TileInventoryPanel.MAX_STORED_CRAFTING_RECIPES];
+
   private int scrollPos;
   private int ghostSlotTooltipStacksize;
 
@@ -92,16 +106,24 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   private final @Nonnull String headerInventory;
   private final @Nonnull String infoTextFilter;
   private final @Nonnull String infoTextOffline;
+  private final @Nonnull String infoTextNoConnection;
 
   private CraftingHelper craftingHelper;
+
+  final @Nonnull RecipeTooltipFontRenderer rtfr;
+
+  private final @Nonnull BlockSceneRenderer bsr_active = new BlockSceneRenderer(new NNList<>(Pair.of(new BlockPos(0, 0, 0), ModObject.blockEndermanSkull.getBlock().getDefaultState().withProperty(BlockEndermanSkull.VARIANT, SkullType.REANIMATED_TORMENTED))));
+  private final @Nonnull BlockSceneRenderer bsr_offline = new BlockSceneRenderer(new NNList<>(Pair.of(new BlockPos(0, 0, 0), ModObject.blockEndermanSkull.getBlock().getDefaultState().withProperty(BlockEndermanSkull.VARIANT, SkullType.TORMENTED))));
 
   @Nonnull
   private final Rectangle btnAddStoredRecipe = new Rectangle();
 
   public GuiInventoryPanel(@Nonnull TileInventoryPanel te, @Nonnull Container container) {
-    super(te, container, "inv_panel");
+    super(te, container, "inv_panel", "inv_panel_extended");
     redstoneButton.visible = false;
     configB.visible = false;
+
+    rtfr = new RecipeTooltipFontRenderer(this);
 
     this.ghostSlotHandler = new GhostSlotHandler() {
       @Override
@@ -130,12 +152,45 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     for (int y = 0; y < GHOST_ROWS; y++) {
       for (int x = 0; x < GHOST_COLUMNS; x++) {
-        getGhostSlotHandler().add(new InvSlot(24 + 108 + x * 18, 28 + y * 18));
+        getGhostSlotHandler().add(new InvSlot( 108 + x * 18, 28 + y * 18));
       }
     }
 
     for (int i = 0; i < TileInventoryPanel.MAX_STORED_CRAFTING_RECIPES; i++) {
-      getGhostSlotHandler().add(new RecipeSlot(i, 7, 7 + i * 20));
+      int index = i;
+      TileInventoryPanel te1 = getTileEntity();
+      StoredCraftingRecipe recipe = te1.getStoredCraftingRecipe(index);
+      repButtons[index] = new ItemStackButton(this, 22 + index, -35, 18 + index * 20, IconEIO.QUESTION, null);
+      addToolTip(new GuiToolTip(repButtons[index].getBounds(), "CLICK to store recipe") {
+        @Override
+        public boolean shouldDraw() {
+          return super.shouldDraw() && !repButtons[index].hasItemStack() && repButtons[index].enabled;
+        }
+      });
+      if (recipe != null) {
+        ItemStack icon = recipe.getResult(te1);
+        repButtons[index].setStack(icon);
+
+        rtfr.registerRecipe("invprecipe" + index, recipe.getIngredients());
+        addToolTip(new GuiToolTip(repButtons[index].getBounds(), "") {
+          @Override
+          protected void updateText() {
+            text.clear();
+            text.add(TextFormatting.YELLOW + repButtons[index].itemStackName());
+            text.add("#RECIPE=invprecipe" + index + "#" + TextFormatting.GRAY + "CLICK to load recipe");
+            text.add("#RECIPE#" + TextFormatting.GRAY + "SHIFT-CLICK to load recipe with stacks");
+            text.add("#RECIPE#" + TextFormatting.GRAY + "CTRL-RIGHT-CLICK to delete recipe");
+            text.add("#RECIPE#");
+            text.add("#RECIPE#");
+            text.add("#RECIPE#");
+          }
+
+          @Override
+          public boolean shouldDraw() {
+            return super.shouldDraw() && repButtons[index].hasItemStack() && repButtons[index].enabled;
+          }
+        });
+      }
     }
 
     this.view = new DatabaseView();
@@ -149,20 +204,17 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
-    tfFilter = new TextFieldEnder(fr, 24 + 108, 11, 106, 10);
+    tfFilter = new TextFieldEnder(fr,108, 11, 106, 10);
     tfFilter.setEnableBackgroundDrawing(false);
     tfFilter.setText(te.getGuiFilterString());
 
-    btnSync = new ToggleButton(this, ID_SYNC, 24 + 233, 46, IconEIO.CROSS, IconEIO.TICK);
+    btnSync = new ToggleButton(this, ID_SYNC,233, 46, IconEIO.CROSS, IconEIO.TICK);
     btnSync.setSelected(getTileEntity().getGuiSync());
     btnSync.setSelectedToolTip(EnderIO.lang.localize("gui.enabled"));
     btnSync.setUnselectedToolTip(EnderIO.lang.localize("gui.disabled"));
+
     if (Loader.isModLoaded("NotEnoughItems")) {
       btnSync.setToolTip(EnderIO.lang.localize("gui.inventorypanel.tooltip.sync.nei"));
-      // TODO: Mod NEI
-      // if (getTileEntity().getGuiSync()) {
-      // updateNEI(tfFilter.getText());
-      // }
     } else if (JeiAccessor.isJeiRuntimeAvailable()) {
       btnSync.setToolTip(EnderIO.lang.localize("gui.inventorypanel.tooltip.sync.jei"));
       btnSync.setSelectedToolTip(EnderIO.lang.localize("gui.enabled"), EnderIO.lang.localize("gui.inventorypanel.tooltip.sync.jei.line1"),
@@ -182,7 +234,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       btnSync.enabled = false;
     }
 
-    btnSort = new IconButton(this, ID_SORT, 24 + 233, 27, getSortOrderIcon()) {
+    btnSort = new IconButton(this, ID_SORT, 233, 27, getSortOrderIcon()) {
       @Override
       public boolean mousePressed(@Nonnull Minecraft mc1, int xIn, int yIn) {
         return mousePressedButton(mc1, xIn, yIn, 0);
@@ -198,8 +250,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       }
     };
 
-    scrollbar = new VScrollbar(this, 24 + 215, 27, 90);
-    btnClear = new MultiIconButton(this, ID_CLEAR, 24 + 65, 60, EnderWidget.X_BUT, EnderWidget.X_BUT_PRESSED, EnderWidget.X_BUT_HOVER);
+    scrollbar = new VScrollbar(this, 215, 27, 108);
+    btnClear = new MultiIconButton(this, ID_CLEAR, 65, 60, EnderWidget.X_BUT, EnderWidget.X_BUT_PRESSED, EnderWidget.X_BUT_HOVER);
 
     textFields.add(tfFilter);
 
@@ -209,6 +261,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     headerInventory = EnderIO.lang.localizeExact("container.inventory");
     infoTextFilter = EnderIO.lang.localize("gui.inventorypanel.info.filter");
     infoTextOffline = EnderIO.lang.localize("gui.inventorypanel.info.offline");
+    infoTextNoConnection = EnderIO.lang.localize("gui.inventorypanel.info.noconnection");
 
     ArrayList<String> list = new ArrayList<String>();
 
@@ -262,6 +315,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     list.clear();
     SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.addrecipe.line");
     addToolTip(new GuiToolTip(btnAddStoredRecipe, list));
+
   }
 
   @Override
@@ -271,7 +325,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       return getTileEntity().fuelTank.getFluid();
     }
     GhostSlot slot = getGhostSlotHandler().getGhostSlotAt(this, mouseX + getGuiLeft(), mouseY + getGuiTop());
-    if (slot instanceof InvSlot || slot instanceof RecipeSlot) {
+    if (slot instanceof InvSlot) {
       return slot.getStack();
     }
     return super.getIngredientUnderMouse(mouseX, mouseY);
@@ -326,6 +380,11 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     btnClear.onGuiInit();
     btnSync.onGuiInit();
     addScrollbar(scrollbar);
+    for (ItemStackButton recipeButton : repButtons) {
+      if (recipeButton != null) {
+        recipeButton.onGuiInit();
+      }
+    }
     ((InventoryPanelContainer) inventorySlots).createGhostSlots(getGhostSlotHandler());
   }
 
@@ -336,12 +395,28 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       if (getContainer().clearCraftingGrid()) {
         setCraftingHelper(null);
       }
-    } else if (b.id == ID_SYNC) {
+    }
 
-      // TODO: Mod NEI
-      // if (Loader.isModLoaded("NotEnoughItems")) {
-      // updateNEI(((ToggleButton) b).isSelected() ? tfFilter.getText() : "");
-      // }
+    if (b instanceof ItemStackButton) {
+      ItemStackButton recipeClicked = (ItemStackButton) b;
+      if (recipeClicked.hasItemStack()) {
+        if (isCtrlKeyDown() && recipeClicked.isRightClick()) {
+          getTileEntity().removeStoredCraftingRecipe(recipeClicked.id - 22);
+          recipeClicked.clearStack();
+        } else if (!recipeClicked.isRightClick()) {
+          fillFromStoredRecipe(recipeClicked.id - 22, isShiftKeyDown());
+        }
+      } else if (!isCtrlKeyDown()) {
+        TileInventoryPanel te = getTileEntity();
+        if (te.getStoredCraftingRecipes() < TileInventoryPanel.MAX_STORED_CRAFTING_RECIPES && getContainer().hasNewCraftingRecipe()) {
+          StoredCraftingRecipe recipe = new StoredCraftingRecipe();
+          if (recipe.loadFromCraftingGrid(getContainer().getCraftingGridSlots())) {
+            playClickSound();
+            te.addStoredCraftingRecipe(recipe);
+            recipeClicked.setStack(recipe.getResult(te));
+          }
+        }
+      }
     }
   }
 
@@ -349,55 +424,45 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
   protected void drawGuiContainerBackgroundLayer(float par1, int mouseX, int mouseY) {
     syncSettingsChange();
     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-    bindGuiTexture();
+    bindGuiTexture(0);
     int sx = guiLeft;
     int sy = guiTop;
 
-    drawTexturedModalRect(sx + 24, sy, 0, 0, 232, ySize);
-    drawTexturedModalRect(sx + 24 + 232, sy, 232, 0, 24, 68);
+    drawTexturedModalRect(sx , sy, 0, 0, 232, 232);
+    drawTexturedModalRect(sx + 232, sy, 232, 0, 24, 68);
 
     if (craftingHelper != null || getContainer().hasCraftingRecipe()) {
       boolean hover = btnRefill.contains(mouseX - sx, mouseY - sy);
       int iconX = hover ? (isShiftKeyDown() ? 48 : 24) : 0;
+      bindGuiTexture(1);
       drawTexturedModalRect(sx + btnRefill.x - 2, sy + btnRefill.y - 2, iconX, 232, 24, 24);
+      bindGuiTexture(0);
     }
 
     TileInventoryPanel te = getTileEntity();
 
-    int y = sy;
     int numStoredRecipes = te.getStoredCraftingRecipes();
-    if (numStoredRecipes == 1) {
-      drawTexturedModalRect(sx, y, 227, 225, 28, 30);
-      y += 30;
-    } else if (numStoredRecipes > 1) {
-      drawTexturedModalRect(sx, y, 227, 225, 28, 24);
-      y += 24;
-      for (int i = 1; i < numStoredRecipes - 1; i++) {
-        drawTexturedModalRect(sx, y, 198, 229, 28, 20);
-        y += 20;
+    bindGuiTexture(1);
+    drawTexturedModalRect(sx - 42, (this.height - 208) / 2, 0, 0, 42, 208);
+    bindGuiTexture(0);
+
+    for (int i = 0; i < TileInventoryPanel.MAX_STORED_CRAFTING_RECIPES; ++i) {
+      if (repButtons[i] != null && !repButtons[i].hasItemStack()) {
+        repButtons[i].setEnabled(false);
       }
-      drawTexturedModalRect(sx, y, 198, 229, 28, 26);
-      y += 26;
     }
 
     if (numStoredRecipes < TileInventoryPanel.MAX_STORED_CRAFTING_RECIPES && getContainer().hasNewCraftingRecipe()) {
-      y += 2;
-      btnAddStoredRecipe.x = 13;
-      btnAddStoredRecipe.y = y - sy;
-      btnAddStoredRecipe.width = 12;
-      btnAddStoredRecipe.height = 14;
-      boolean hover = btnAddStoredRecipe.contains(mouseX - sx, mouseY - sy);
-      drawTexturedModalRect(sx + 13, y, 182, hover ? 241 : 225, 15, 14);
-    } else {
-      btnAddStoredRecipe.width = 0;
-      btnAddStoredRecipe.height = 0;
+      if (repButtons[numStoredRecipes] != null) {
+        repButtons[numStoredRecipes].setEnabled(true);
+      }
     }
 
     SmartTank fuelTank = te.fuelTank;
     if (!InvpanelConfig.inventoryPanelFree.get()) {
-      drawTexturedModalRect(sx + 35, sy + 132, 232, 163, 18, 49);
+      drawTexturedModalRect(sx + 11, sy + 147, 232, 163, 18, 49);
       if (fuelTank.getFluidAmount() > 0) {
-        RenderUtil.renderGuiTank(fuelTank.getFluid(), fuelTank.getCapacity(), fuelTank.getFluidAmount(), sx + 24 + 12, sy + 133, zLevel, 16, 47);
+        RenderUtil.renderGuiTank(fuelTank.getFluid(), fuelTank.getCapacity(), fuelTank.getFluidAmount(), sx +  12, sy + 148, zLevel, 16, 47);
       }
     }
 
@@ -405,15 +470,15 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         ? btnReturnArea.contains(mouseX - sx, mouseY - sy) ? EnderWidget.STOP_BUT_HOVER : EnderWidget.STOP_BUT
         : btnReturnArea.contains(mouseX - sx, mouseY - sy) ? EnderWidget.RETURN_BUT_HOVER : EnderWidget.RETURN_BUT;
     GlStateManager.color(1, 1, 1, 1);
-    EnderWidget.RETURN_BUT.getMap().render(returnButton, sx + 24 + 7, sy + 72, true);
+    EnderWidget.RETURN_BUT.getMap().render(returnButton, sx +  7, sy + 72, true);
 
     int headerColor = 0x404040;
     int focusedColor = 0x648494;
     FontRenderer fr = getFontRenderer();
-    fr.drawString(headerCrafting, sx + 24 + 7, sy + 6, headerColor);
-    fr.drawString(te.isExtractionDisabled() ? headerStorage : headerReturn, sx + 24 + 7 + 10, sy + 72,
+    fr.drawString(headerCrafting, sx +  7, sy + 6, headerColor);
+    fr.drawString(te.isExtractionDisabled() ? headerStorage : headerReturn, sx +  7 + 10, sy + 72,
         btnReturnArea.contains(mouseX - sx, mouseY - sy) ? focusedColor : headerColor);
-    fr.drawString(headerInventory, sx + 24 + 38, sy + 120, headerColor);
+    fr.drawString(headerInventory, sx +  38, sy + 138, headerColor);
 
     super.drawGuiContainerBackgroundLayer(par1, mouseX, mouseY);
 
@@ -422,8 +487,10 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     }
 
     view.setDatabase(getDatabase());
+
     // TODO: Filter
-    // view.setItemFilter(te.getItemFilter());
+    view.setItemFilter(te.getItemFilter());
+
     view.updateFilter(tfFilter.getText());
 
     boolean update = view.sortItems();
@@ -437,27 +504,34 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       if (!tfFilter.isFocused() && tfFilter.getText().isEmpty()) {
         fr.drawString(infoTextFilter, tfFilter.x, tfFilter.y, 0x707070);
       }
-    } else {
+    } else if (!te.isActive() && te.hasConnection()) {
       tfFilter.setEnabled(false);
       setText(tfFilter, "");
       fr.drawString(infoTextOffline, tfFilter.x, tfFilter.y, 0x707070);
+    } else {
+      tfFilter.setEnabled(false);
+      setText(tfFilter, "");
+      fr.drawString(infoTextNoConnection, tfFilter.x, tfFilter.y, 0x707070);
     }
+
+    if (!InvpanelConfig.inventoryPanelFree.get()) {
+      GlStateManager.pushMatrix();
+      BlockEndermanSkull.guiRender = true;
+      (te.isActive() && te.hasConnection() ? bsr_active : bsr_offline).drawScreen(sx - 4, sy + 132 + 49, 48, 48);
+      BlockEndermanSkull.guiRender = false;
+      GlStateManager.popMatrix();
+    }
+
   }
 
   @Override
   protected void onTextFieldChanged(@Nonnull TextFieldEnder tf, @Nonnull String old) {
     if (tf == tfFilter && btnSync.isSelected() && tfFilter.isFocused()) {
-      // if (Loader.isModLoaded("NotEnoughItems")) {
-      // updateNEI(tfFilter.getText());
       if (JeiAccessor.isJeiRuntimeAvailable()) {
         updateToJEI(tfFilter.getText());
       }
     }
   }
-
-  // private void updateNEI(String text) {
-  // LayoutManager.searchField.setText(text);
-  // }
 
   private void updateToJEI(String text) {
     if (text != null && !text.isEmpty()) {
@@ -469,14 +543,14 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   /*
    * A note on the JEI sync:
-   * 
+   *
    * When the GUI is opened, any text stored in the invPanel will take precedence. If there's no stored text, the text from the JEI field will be used.
-   * 
+   *
    * When text is entered into the search field, it is synced to JEI. When the field is cleared, that is synced, too.
-   * 
+   *
    * When text is entered into the JEI field, it is synced to the search field. But when it is cleared, that is not synced. This in on purpose, to give the user
    * a way to quickly look up (or cheat in) something without having to disable syncing.
-   * 
+   *
    * When the GUI is closed, text will be remembered if it was entered into the search field. If it was entered into the JEI field, it is not remembered. This
    * is important because it allows "locking" an invPanel to a search text and still have JEI sync.
    */
@@ -625,12 +699,12 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
   @Override
   public int getXSize() {
-    return 280;
+    return 230;
   }
 
   @Override
   public int getYSize() {
-    return 212;
+    return 232;
   }
 
   @Override
@@ -693,6 +767,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
             if (itemStack.isEmpty() || ItemUtil.areStackMergable(itemStack, invSlot.getStack())) {
               PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(db.getGeneration(), invSlot.entry, -1, 1));
             }
+
           }
         }
       }
@@ -733,15 +808,6 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
         PacketHandler.INSTANCE.sendToServer(new PacketFetchItem(db.getGeneration(), invSlot.entry, targetSlot, count));
       }
-    } else if (slot instanceof RecipeSlot) {
-      RecipeSlot recipeSlot = (RecipeSlot) slot;
-      if (recipeSlot.isVisible()) {
-        if (button == 0) {
-          fillFromStoredRecipe(recipeSlot.index, isShiftKeyDown());
-        } else if (button == 1) {
-          getTileEntity().removeStoredCraftingRecipe(recipeSlot.index);
-        }
-      }
     }
   }
 
@@ -762,26 +828,102 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     }
   }
 
-  class RecipeSlot extends GhostSlot {
-    final int index;
+  public class ItemStackButton extends IconButton {
+    private ItemStack stack;
+    private boolean rightClick = false;
+    private final IWidgetIcon backupIcon;
 
-    RecipeSlot(int index, int x, int y) {
-      this.index = index;
-      this.setX(x);
-      this.setY(y);
+    public ItemStackButton(@Nonnull IGuiScreen gui, int id, int x, int y, @Nullable IWidgetIcon icon, @Nullable ItemStack itm) {
+      super(gui, id, x, y, icon);
+      this.backupIcon = icon;
+      this.stack = itm;
     }
 
     @Override
-    @Nonnull
-    public ItemStack getStack() {
-      TileInventoryPanel te1 = getTileEntity();
-      StoredCraftingRecipe recipe = te1.getStoredCraftingRecipe(index);
-      return recipe != null ? recipe.getResult(te1) : ItemStack.EMPTY;
+    public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+
+
+      if (hasItemStack()) {
+        this.icon = null;
+        GlStateManager.enableLighting();
+        RenderHelper.enableGUIStandardItemLighting();
+        GlStateManager.disableBlend();
+        GlStateManager.enableRescaleNormal();
+        GlStateManager.enableDepth();
+
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y, 0);
+        GlStateManager.scale(0.7, 0.7, 0.7);
+        itemRender.zLevel = this.id +1;
+
+        itemRender.renderItemAndEffectIntoGUI(this.stack, 3, 3);
+        itemRender.renderItemOverlayIntoGUI(fontRenderer, this.stack, 3, 3, "");
+        GlStateManager.popMatrix();
+
+        GlStateManager.disableLighting();
+        GlStateManager.enableBlend();
+        RenderHelper.enableGUIStandardItemLighting();
+
+      } else {
+        this.icon = this.backupIcon;
+      }
+      super.drawButton(mc, mouseX, mouseY, partialTicks);
+    }
+
+    private boolean hasItemStack() {
+      return this.stack != null && !this.stack.isEmpty();
+    }
+
+    private String itemStackName() {
+      return this.hasItemStack() ? this.stack.getDisplayName() : "";
+    }
+
+    public boolean isRightClick() {
+      return rightClick;
+    }
+
+    public void setStack(ItemStack stack) {
+      this.stack = stack;
+    }
+
+    public void clearStack() {
+      this.stack = null;
     }
 
     @Override
-    public boolean isVisible() {
-      return index < getTileEntity().getStoredCraftingRecipes();
+    public boolean mousePressedButton(@Nonnull Minecraft mc, int mouseX, int mouseY, int button) {
+      if (button == 1 && super.checkMousePress(mc, mouseX, mouseY)) {
+        this.rightClick = true;
+        return true;
+      } else {
+        this.rightClick = false;
+        return false;
+      }
+
     }
+  }
+
+  @Nonnull
+  @Override
+  public FontRenderer getFontRenderer() {
+    return rtfr;
+  }
+
+  @Override
+  public List<Rectangle> getBlockingAreas() {
+    List<Rectangle> rectangles = super.getBlockingAreas();
+    rectangles.add(new Rectangle(guiLeft - 42, (this.height - 208) / 2, 42, 208));
+    rectangles.add(new Rectangle(guiLeft + 232, guiTop, 24, 68));
+    return rectangles;
+  }
+
+  @Override
+  public Rectangle getDocumentationButtonArea() {
+    return new Rectangle(guiLeft - 42, guiTop + 3, 25, 25);
+  }
+
+  @Override
+  public Rectangle getDocumentationArea() {
+    return super.getDocumentationArea();
   }
 }
