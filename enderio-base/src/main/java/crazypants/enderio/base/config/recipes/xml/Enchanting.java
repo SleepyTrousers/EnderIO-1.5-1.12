@@ -6,11 +6,10 @@ import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
-import com.enderio.core.common.util.stackable.Things;
-
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.enchanter.EnchanterRecipe;
 
 public class Enchanting extends AbstractConditional {
@@ -49,11 +48,8 @@ public class Enchanting extends AbstractConditional {
   @Override
   public void register(@Nonnull String recipeName) {
     if (isValid() && isActive()) {
-      final Things thing = input.get().getThing();
-      if (!thing.isEmpty()) {
-        EnchanterRecipe recipe = new EnchanterRecipe(thing, input.get().getAmount(), enchantment.get().getEnchantment(), enchantment.get().getCostMultiplier());
-        MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.ENCHANTER, recipe);
-      }
+      MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.ENCHANTER, new EnchanterRecipe(RecipeLevel.IGNORE, input.get().getThing(), input.get().getAmount(), enchantment.get().getEnchantment(),
+          enchantment.get().getCostMultiplier()));
     }
   }
 
