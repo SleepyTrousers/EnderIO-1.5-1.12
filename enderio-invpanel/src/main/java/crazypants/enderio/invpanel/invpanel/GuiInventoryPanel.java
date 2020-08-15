@@ -170,7 +170,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       TileInventoryPanel te1 = getTileEntity();
       StoredCraftingRecipe recipe = te1.getStoredCraftingRecipe(index);
       repButtons[index] = new ItemStackButton(this, 22 + index, -35, 18 + index * 20, IconEIO.QUESTION, null);
-      addToolTip(new GuiToolTip(repButtons[index].getBounds(), "CLICK to store recipe") { // TODO i18n
+      addToolTip(new GuiToolTip(repButtons[index].getBounds(), EnderIO.lang.localize("gui.inventorypanel.tooltip.recipe.store")) {
         @Override
         public boolean shouldDraw() {
           return super.shouldDraw() && !repButtons[index].hasItemStack() && repButtons[index].enabled;
@@ -186,9 +186,9 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
           protected void updateText() {
             text.clear();
             text.add(TextFormatting.YELLOW + repButtons[index].itemStackName());
-            text.add(RECIPE_ID + "invprecipe" + index + RECIPE_END + TextFormatting.GRAY + "CLICK to load recipe"); // TODO i18n
-            text.add(RECIPE + TextFormatting.GRAY + "SHIFT-CLICK to load recipe with stacks"); // TODO i18n
-            text.add(RECIPE + TextFormatting.GRAY + "CTRL-RIGHT-CLICK to delete recipe"); // TODO i18n
+            text.add(RECIPE_ID + "invprecipe" + index + RECIPE_END + TextFormatting.GRAY + EnderIO.lang.localize("gui.inventorypanel.tooltip.recipe.load"));
+            text.add(RECIPE + TextFormatting.GRAY + EnderIO.lang.localize("gui.inventorypanel.tooltip.recipe.loadstacks"));
+            text.add(RECIPE + TextFormatting.GRAY + EnderIO.lang.localize("gui.inventorypanel.tooltip.recipe.delete"));
             text.add(RECIPE);
             text.add(RECIPE);
             text.add(RECIPE);
