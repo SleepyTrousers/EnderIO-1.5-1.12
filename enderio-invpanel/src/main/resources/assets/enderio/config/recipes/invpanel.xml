@@ -163,7 +163,7 @@ XML editor will display that as tooltips when editing this file.
         <item name="minecraft:heavy_weighted_pressure_plate, PPP_IRON" /><item name="enderio:block_inventory_panel" /><item name="minecraft:heavy_weighted_pressure_plate, PPP_IRON" />
         <item name="minecraft:heavy_weighted_pressure_plate, PPP_IRON" /><item name="enderio:block_travel_anchor" /><item name="minecraft:heavy_weighted_pressure_plate, PPP_IRON" />
       </grid>
-      <output name="enderio:item_remote_inv_access:0" />
+      <output name="enderio:item_inventory_remote:0" />
     </crafting>
   </recipe>
 
@@ -171,10 +171,10 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item/><item/><item name="PPP_DARK_STEEL" />
-        <item name="PPP_DARK_STEEL" /><item name="enderio:item_remote_inv_access:0" /><item name="PPP_DARK_STEEL" />
+        <item name="PPP_DARK_STEEL" /><item name="enderio:item_inventory_remote:0" /><item name="PPP_DARK_STEEL" />
         <item name="PPP_DARK_STEEL" /><item name="enderio:item_travel_staff" /><item name="PPP_DARK_STEEL" />
       </grid>
-      <output name="enderio:item_remote_inv_access:1" />
+      <output name="enderio:item_inventory_remote:1" />
     </crafting>
   </recipe>
 
@@ -182,10 +182,10 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid size="3x3">
         <item/><item/><item name="PPP_SOULARIUM" />
-        <item name="PPP_SOULARIUM" /><item name="enderio:item_remote_inv_access:1" /><item name="PPP_SOULARIUM" />
+        <item name="PPP_SOULARIUM" /><item name="enderio:item_inventory_remote:1" /><item name="PPP_SOULARIUM" />
         <item name="PPP_SOULARIUM" /><item name="enderio:block_transceiver" /><item name="PPP_SOULARIUM" />
       </grid>
-      <output name="enderio:item_remote_inv_access:2" />
+      <output name="enderio:item_inventory_remote:2" />
     </crafting>
   </recipe>
 

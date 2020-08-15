@@ -211,7 +211,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       view.setSortOrder(orders[sortOrderIdx], (sortMode & 1) != 0);
     }
 
-    tfFilter = new TextFieldEnder(fontRenderer, 108, 11, 106, 10);
+    tfFilter = new TextFieldEnder(getFontRenderer(), 108, 11, 106, 10);
     tfFilter.setEnableBackgroundDrawing(false);
     tfFilter.setText(te.getGuiFilterString());
 
@@ -490,6 +490,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     if (JeiAccessor.isJeiRuntimeAvailable() && btnSync.isSelected()) {
       updateFromJEI();
     }
+
 
     view.setDatabase(getDatabase());
 
