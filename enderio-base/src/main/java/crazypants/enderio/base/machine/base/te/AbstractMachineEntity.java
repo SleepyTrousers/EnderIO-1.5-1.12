@@ -22,6 +22,7 @@ import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import crazypants.enderio.base.machine.sound.MachineSound;
 import crazypants.enderio.base.paint.YetaUtil;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.util.NBTAction;
@@ -359,6 +360,10 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IMa
   }
 
   protected abstract boolean processTasks(boolean redstoneCheck);
+
+  protected @Nonnull RecipeLevel getMachineLevel() {
+    return RecipeLevel.IGNORE;
+  }
 
   // ---- Tile Entity
   // ------------------------------------------------------------------------------

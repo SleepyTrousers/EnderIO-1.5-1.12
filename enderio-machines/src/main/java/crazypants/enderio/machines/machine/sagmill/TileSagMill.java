@@ -16,6 +16,7 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.sagmill.IGrindingMultiplier;
 import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
 import crazypants.enderio.machines.network.PacketHandler;
@@ -55,6 +56,12 @@ public abstract class TileSagMill extends AbstractPoweredTaskEntity implements I
       // Reject everything for the invisible ball slot
       return i != 1 && super.isMachineItemValidForSlot(i, itemstack);
     }
+
+    @Override
+    protected @Nonnull RecipeLevel getMachineLevel() {
+      return RecipeLevel.SIMPLE;
+    }
+
   }
 
   @Storable
@@ -62,6 +69,12 @@ public abstract class TileSagMill extends AbstractPoweredTaskEntity implements I
     public Normal() {
       super(new SlotDefinition(2, 4), SAG_MILL_POWER_INTAKE, SAG_MILL_POWER_BUFFER, SAG_MILL_POWER_USE);
     }
+
+    @Override
+    protected @Nonnull RecipeLevel getMachineLevel() {
+      return RecipeLevel.NORMAL;
+    }
+
   }
 
   @Storable
@@ -89,6 +102,11 @@ public abstract class TileSagMill extends AbstractPoweredTaskEntity implements I
     @Override
     public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
       return (faceHit != EnumFacing.UP || mode == IoMode.NONE) && super.supportsMode(faceHit, mode);
+    }
+
+    @Override
+    protected @Nonnull RecipeLevel getMachineLevel() {
+      return RecipeLevel.ADVANCED;
     }
 
   }

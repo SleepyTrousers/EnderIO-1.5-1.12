@@ -335,6 +335,12 @@ public class EnderIO implements IEnderIOAddon {
       }
     });
     CrashReportCategory.addBlockInfo(crashreportcategory, new BlockPos(0, 0, 0), ModObject.block_machine_base.getBlockNN().getDefaultState());
+    // the one failing usually is in net.minecraft.world.World.neighborChanged(BlockPos, Block, BlockPos). That one's $2.
+    try {
+      net.minecraft.world.World.class.getClassLoader().loadClass("net/minecraft/world/World$2");
+    } catch (ClassNotFoundException e) {
+      // This is unexpected but not our problem.
+    }
   }
 
   private static void startupChecks() {

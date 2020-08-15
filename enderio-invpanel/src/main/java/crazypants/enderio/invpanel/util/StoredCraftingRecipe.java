@@ -119,7 +119,7 @@ public class StoredCraftingRecipe {
     updateResult = false;
   }
 
-  public NNList<ItemStack> getIngredients() {
+  public @Nonnull NNList<ItemStack> getIngredients() {
     return this.slots;
   }
 }

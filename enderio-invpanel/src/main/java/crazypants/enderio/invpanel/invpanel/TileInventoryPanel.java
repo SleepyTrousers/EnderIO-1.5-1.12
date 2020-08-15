@@ -10,8 +10,8 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.fluid.SmartTank;
 import com.enderio.core.common.fluid.SmartTankFluidHandler;
+import com.enderio.core.common.util.NullHelper;
 
-import crazypants.enderio.base.capability.LegacyMachineWrapper;
 import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.fluid.Fluids;
@@ -28,12 +28,10 @@ import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.invpanel.client.ClientDatabaseManager;
 import crazypants.enderio.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.invpanel.config.InvpanelConfig;
-import crazypants.enderio.invpanel.init.InvpanelObject;
 import crazypants.enderio.invpanel.network.PacketGuiSettingsUpdated;
 import crazypants.enderio.invpanel.network.PacketStoredCraftingRecipe;
 import crazypants.enderio.invpanel.network.PacketUpdateExtractionDisabled;
 import crazypants.enderio.invpanel.util.StoredCraftingRecipe;
-import crazypants.enderio.machines.capability.LegacyStirlingWrapper;
 import crazypants.enderio.machines.machine.generator.zombie.IHasNutrientTank;
 import crazypants.enderio.machines.machine.generator.zombie.PacketNutrientTank;
 import info.loenwind.autosave.annotations.Storable;
@@ -64,7 +62,6 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   protected final SmartTank fuelTank;
   protected boolean tanksDirty;
 
-  //private IInventoryDatabaseServer dbServer;
   IDatabaseHandler dbServer = null;
   private InventoryDatabaseClient dbClient;
 
@@ -78,7 +75,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   private boolean hasConnection = false;
 
   // TODO: Filter
-   private IItemFilter itemFilter;
+  private IItemFilter itemFilter;
 
   @Store
   private int guiSortMode;
@@ -95,7 +92,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   public TileInventoryPanel() {
     super(new SlotDefinition(0, 8, 11, 25, 21, 20));
-    this.fuelTank = new SmartTank(Fluids.NUTRIENT_DISTILLATION.getFluid(), InvpanelConfig.inventoryPanelFree.get() ? 0 : 2000);
+    this.fuelTank = new SmartTank(Fluids.NUTRIENT_DISTILLATION.getFluid(), InvpanelConfig.inventoryPanelFree.get() ? 0 : 2000); // TODO fluid config
     this.fuelTank.setTileEntity(this);
     this.fuelTank.setCanDrain(false);
     this.storedCraftingRecipes = new ArrayList<StoredCraftingRecipe>();
@@ -133,17 +130,15 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   @Override
   protected boolean hasStuffToPush() {
-    //System.out.println("PUSH ME. AND THEN JUST TOUCH ME. TILL I CAN GET MY... ITEMSTACKS");
+    // System.out.println("PUSH ME. AND THEN JUST TOUCH ME. TILL I CAN GET MY... ITEMSTACKS");
     return !extractionDisabled && super.hasStuffToPush();
   }
 
   @Override
   protected boolean shouldProcessOutputQueue() {
-    //System.out.println("PUSH ME. AND THEN JUST TOUCH ME. TILL I CAN GET MY... ITEMSTACKS EXTRACTED");
+    // System.out.println("PUSH ME. AND THEN JUST TOUCH ME. TILL I CAN GET MY... ITEMSTACKS EXTRACTED");
     return !extractionDisabled && super.shouldProcessOutputQueue();
   }
-
-
 
   @Override
   protected boolean hasSpaceToPull() {
@@ -152,14 +147,13 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   @Override
   public boolean supportsMode(@Nullable EnumFacing faceHit, @Nullable IoMode mode) {
-    //System.out.println(mode);
     if (mode == IoMode.PUSH) {
       return !extractionDisabled;
     }
     return false;
   }
 
-  private static @Nonnull IInventory emptyInventory = new InventoryBasic("[Null]", true, 0);
+  private static final @Nonnull IInventory emptyInventory = new InventoryBasic("[Null]", true, 0);
 
   @Override
   public void setInventorySlotContents(int slot, @Nonnull ItemStack contents) {
@@ -168,17 +162,17 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
       eventHandler.onCraftMatrixChanged(emptyInventory);
     }
     if (slot == SLOT_VIEW_FILTER) {
-       updateItemFilter();
+      updateItemFilter();
     }
   }
 
-   private void updateItemFilter() {
-   itemFilter = FilterRegistry.<IItemFilter> getFilterForUpgrade(inventory[SLOT_VIEW_FILTER]);
-   }
+  private void updateItemFilter() {
+    itemFilter = FilterRegistry.<IItemFilter> getFilterForUpgrade(inventory[SLOT_VIEW_FILTER]);
+  }
 
-   public IItemFilter getItemFilter() {
+  public IItemFilter getItemFilter() {
     return itemFilter;
-   }
+  }
 
   @Override
   public boolean isActive() {
@@ -191,7 +185,6 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   @Override
   public void doUpdate() {
-    //System.out.println(this.getPowerLevel());
     if (world.isRemote) {
       updateEntityClient();
       return;
@@ -218,7 +211,6 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   }
 
   private void scanNetwork() {
-    //System.out.println("SCANNING NETWORK");
     EnumFacing facingDir = getFacing();
     EnumFacing backside = facingDir.getOpposite();
 
@@ -235,7 +227,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
       getDatabaseServer().sendChangeLogs();
       refuelPower(dbServer.getDatabase());
 
-      this.hasConnection = true;
+      hasConnection = true;
 
       if (active != getDatabaseServer().isOperational(this)) {
         active = getDatabaseServer().isOperational(this);
@@ -245,7 +237,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
       if (active) {
         updateClients = true;
       }
-      this.hasConnection = false;
+      hasConnection = false;
       dbServer = null;
       dbClient = null;
       active = false;
@@ -255,7 +247,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   @Override
   public float getAvailablePower() {
-    return getPower() * InvpanelConfig.inventoryPanelPowerPerMB.get();
+    return getFluidReserve() * InvpanelConfig.inventoryPanelPowerPerMB.get();
   }
 
   @Override
@@ -263,7 +255,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
     float missingPower = InvpanelConfig.inventoryPanelPowerPerMB.get() * 0.5f - this.getPowerLevel();
     if (missingPower > 0) {
       int amount = (int) Math.ceil(missingPower / InvpanelConfig.inventoryPanelPowerPerMB.get());
-      amount = Math.min(amount, getPower());
+      amount = Math.min(amount, getFluidReserve());
       if (amount > 0) {
         useNutrient(amount);
         this.addPower(amount * InvpanelConfig.inventoryPanelPowerPerMB.get());
@@ -273,13 +265,13 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   @Override
   public float getPowerLevel() {
-    return this.power;
+    return power;
   }
 
   @Override
   public boolean usePower(float amount) {
-    if (this.power > 0) {
-      this.power = Math.max(this.power - amount, 0);
+    if (power > 0) {
+      power = Math.max(power - amount, 0);
       return true;
     }
     return false;
@@ -287,14 +279,14 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   @Override
   public void addPower(float amount) {
-    this.power += amount;
+    power += amount;
   }
 
   public void useNutrient(int amount) {
     fuelTank.removeFluidAmount(amount);
   }
 
-  private int getPower() {
+  private int getFluidReserve() {
     return InvpanelConfig.inventoryPanelFree.get() ? 100 : fuelTank.getFluidAmount();
   }
 
@@ -341,7 +333,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   public void addStoredCraftingRecipe(@Nullable StoredCraftingRecipe recipe) {
     storedCraftingRecipes.add(recipe);
     // sic! fake TE or client TE
-    if (world == null || world.isRemote) {
+    if (NullHelper.untrust(world) == null || world.isRemote) {
       PacketHandler.INSTANCE.sendToServer(new PacketStoredCraftingRecipe(PacketStoredCraftingRecipe.ACTION_ADD, 0, recipe));
     } else {
       markDirty();
@@ -353,7 +345,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
     if (index >= 0 && index < storedCraftingRecipes.size()) {
       storedCraftingRecipes.remove(index);
       // sic! fake TE or client TE
-      if (world == null || world.isRemote) {
+      if (NullHelper.untrust(world) == null || world.isRemote) {
         PacketHandler.INSTANCE.sendToServer(new PacketStoredCraftingRecipe(PacketStoredCraftingRecipe.ACTION_DELETE, index, null));
       } else {
         markDirty();
@@ -368,7 +360,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   public void setExtractionDisabled(boolean extractionDisabled) {
     this.extractionDisabled = extractionDisabled;
-    if (world != null && !world.isRemote) {
+    if (NullHelper.untrust(world) != null && !world.isRemote) {
       PacketHandler.INSTANCE.sendToDimension(new PacketUpdateExtractionDisabled(this, extractionDisabled), world.provider.getDimension());
     }
   }
@@ -380,7 +372,6 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
    *          if extraction is disabled
    */
   public void updateExtractionDisabled(boolean extractionDisabledIn) {
-    //System.out.println("Extraction is " + extractionDisabledIn);
     this.extractionDisabled = extractionDisabledIn;
   }
 
@@ -390,12 +381,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
     if (eventHandler != null) {
       eventHandler.checkCraftingRecipes();
     }
-     updateItemFilter();
-  }
-
-  @Override
-  public @Nonnull String getMachineName() {
-    return InvpanelObject.blockInventoryPanel.getUnlocalisedName();
+    updateItemFilter();
   }
 
   @Override
@@ -472,7 +458,5 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
     }
     return smartTankFluidHandler;
   }
-
-
 
 }

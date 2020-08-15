@@ -55,7 +55,6 @@ enderio.gui.inventorypanel.tooltip.addrecipe.line5=Shift left clicking tries to 
 enderio.gui.inventorypanel.tooltip.addrecipe.line6=grid to the maximum.
 enderio.gui.inventorypanel.tooltip.addrecipe.line7=Right click a stored recipe to delete it.
 enderio.gui.inventorypanel.tooltip.sync=NEI/JEI Sync
-enderio.gui.inventorypanel.tooltip.sync.nei=NEI Sync
 enderio.gui.inventorypanel.tooltip.sync.jei=JEI Sync
 enderio.gui.inventorypanel.tooltip.sync.jei.line1=Text entered into filter field will be remembered.
 enderio.gui.inventorypanel.tooltip.sync.jei.line2=Text entered into JEI field will not be remembered.

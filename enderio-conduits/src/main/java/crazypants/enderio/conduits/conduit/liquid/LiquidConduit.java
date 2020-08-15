@@ -396,15 +396,17 @@ public class LiquidConduit extends AbstractTankConduit {
 
     @Override
     public int fill(FluidStack resource, boolean doFill) {
-      if (network != null && canFill(side, resource) && network.lockNetworkForFill()) {
+      if (!reenter && network != null && canFill(side, resource) && network.lockNetworkForFill()) {
         try {
+          reenter = true;
           int res = LiquidConduit.this.fill(side, resource, doFill, true, network.getNextPushToken());
           if (doFill && externalConnections.contains(side)) {
             network.addedFromExternal(res);
           }
           return res;
         } finally {
-          network.unlockNetworkFromFill();
+          reenter = false;
+          network.unlockNetworkFromFill(); // this locks the whole network, that's different from 'reenter'
         }
       } else {
         return 0;

@@ -190,7 +190,7 @@ public enum CapacitorKey implements ICapacitorKey {
   IMPULSE_HOPPER_POWER_INTAKE(MachineObject.block_impulse_hopper, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   IMPULSE_HOPPER_POWER_BUFFER(MachineObject.block_impulse_hopper, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   IMPULSE_HOPPER_POWER_USE(MachineObject.block_impulse_hopper, CapacitorKeyType.ENERGY_USE, "use"),
-  IMPULSE_HOPPER_POWER_USE_PER_ITEM(MachineObject.block_impulse_hopper, CapacitorKeyType.ENERGY_USE, "user_item"),
+  IMPULSE_HOPPER_POWER_USE_PER_ITEM(MachineObject.block_impulse_hopper, CapacitorKeyType.ENERGY_USE, "use_item"),
   IMPULSE_HOPPER_SPEED(MachineObject.block_impulse_hopper, CapacitorKeyType.SPEED, "speed"),
 
   CRAFTER_POWER_INTAKE(MachineObject.block_crafter, CapacitorKeyType.ENERGY_INTAKE, "intake"),

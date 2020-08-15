@@ -11,7 +11,6 @@ import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
-import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.enchanter.EnchanterRecipe;
 import crazypants.enderio.machines.init.MachineObject;
 import info.loenwind.autosave.annotations.Storable;
@@ -106,7 +105,7 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
     if (stack.isEmpty()) {
       return false;
     }
-    return !MachineRecipeRegistry.instance.getRecipesForInput(RecipeLevel.IGNORE, MachineRecipeRegistry.ENCHANTER, new MachineRecipeInput(slot, stack))
+    return !MachineRecipeRegistry.instance.getRecipesForInput(getMachineLevel(), MachineRecipeRegistry.ENCHANTER, new MachineRecipeInput(slot, stack))
         .isEmpty();
   }
 
@@ -119,7 +118,7 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
     if (inv.get(0).isEmpty() || inv.get(1).isEmpty() || inv.get(2).isEmpty()) {
       return null;
     }
-    return (EnchanterRecipe) MachineRecipeRegistry.instance.getRecipeForInputs(RecipeLevel.IGNORE, MachineRecipeRegistry.ENCHANTER,
+    return (EnchanterRecipe) MachineRecipeRegistry.instance.getRecipeForInputs(getMachineLevel(), MachineRecipeRegistry.ENCHANTER,
         getInvAsMachineRecipeInput());
   }
 

@@ -28,6 +28,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.relauncher.Side;
@@ -234,6 +235,12 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   }
 
   /**
+   * While locking on the level of a conduit is not perfect, it will prevent loops from being infinite. There still are some ways to build loops that loop for a
+   * long time (the more connection points between 2 networks...), but a slow down is much better than a stack overflow...
+   */
+  protected boolean reenter = false;
+
+  /**
    * Inner class for holding the direction of capabilities.
    */
   protected class ConnectionLiquidSide implements IFluidHandler {
@@ -245,13 +252,26 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
 
     @Override
     public IFluidTankProperties[] getTankProperties() {
-      return AbstractLiquidConduit.this.getTankProperties();
+      if (reenter) {
+        return new FluidTankProperties[0];
+      }
+      try {
+        reenter = true;
+        return AbstractLiquidConduit.this.getTankProperties();
+      } finally {
+        reenter = false;
+      }
     }
 
     @Override
     public int fill(FluidStack resource, boolean doFill) {
-      if (canFill(side, resource)) {
-        return AbstractLiquidConduit.this.fill(resource, doFill);
+      if (!reenter && canFill(side, resource)) {
+        try {
+          reenter = true;
+          return AbstractLiquidConduit.this.fill(resource, doFill);
+        } finally {
+          reenter = false;
+        }
       }
       return 0;
     }
@@ -259,8 +279,13 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
     @Nullable
     @Override
     public FluidStack drain(FluidStack resource, boolean doDrain) {
-      if (canDrain(side, resource)) {
-        return AbstractLiquidConduit.this.drain(resource, doDrain);
+      if (!reenter && canDrain(side, resource)) {
+        try {
+          reenter = true;
+          return AbstractLiquidConduit.this.drain(resource, doDrain);
+        } finally {
+          reenter = false;
+        }
       }
       return null;
     }
@@ -268,8 +293,13 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
     @Nullable
     @Override
     public FluidStack drain(int maxDrain, boolean doDrain) {
-      if (canDrain(side, null)) {
-        return AbstractLiquidConduit.this.drain(maxDrain, doDrain);
+      if (!reenter && canDrain(side, null)) {
+        try {
+          reenter = true;
+          return AbstractLiquidConduit.this.drain(maxDrain, doDrain);
+        } finally {
+          reenter = false;
+        }
       }
       return null;
     }

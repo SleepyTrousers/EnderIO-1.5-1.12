@@ -18,6 +18,7 @@ import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
 import crazypants.enderio.base.machine.base.te.EnergyLogic;
 import crazypants.enderio.base.machine.fakeplayer.FakePlayerEIO;
 import crazypants.enderio.base.paint.IPaintable;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
@@ -45,6 +46,11 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
     @Override
     public int getTicksPerCraft() {
       return 20;
+    }
+
+    @Override
+    protected @Nonnull RecipeLevel getMachineLevel() {
+      return RecipeLevel.SIMPLE;
     }
 
   }
@@ -96,6 +102,11 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
     }
 
     getInventory().add(Type.OUTPUT, OUTPUT_SLOT, new InventorySlot(Filters.ALWAYS_TRUE, Filters.ALWAYS_TRUE));
+  }
+
+  @Override
+  protected @Nonnull RecipeLevel getMachineLevel() {
+    return RecipeLevel.NORMAL;
   }
 
   @Override

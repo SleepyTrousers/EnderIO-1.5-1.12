@@ -149,8 +149,13 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   }
 
   private IMachineRecipe getRecipe(boolean isFilling, @Nonnull NNList<MachineRecipeInput> inputs) {
-    return MachineRecipeRegistry.instance.getRecipeForInputs(tankType.isExplosionResistant() ? RecipeLevel.ADVANCED : RecipeLevel.NORMAL,
+    return MachineRecipeRegistry.instance.getRecipeForInputs(getMachineLevel(),
         isFilling ? MachineRecipeRegistry.TANK_FILLING : MachineRecipeRegistry.TANK_EMPTYING, inputs);
+  }
+
+  @Override
+  protected @Nonnull RecipeLevel getMachineLevel() {
+    return tankType.isExplosionResistant() ? RecipeLevel.ADVANCED : RecipeLevel.NORMAL;
   }
 
   private @Nonnull NNList<MachineRecipeInput> getRecipeInputs(boolean isFilling) {

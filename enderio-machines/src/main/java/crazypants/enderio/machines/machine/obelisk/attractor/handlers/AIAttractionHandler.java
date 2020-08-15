@@ -21,7 +21,7 @@ public class AIAttractionHandler implements IMobAttractionHandler {
     if (entity.isAIDisabled()) {
       return State.CANNOT_ATTRACT;
     }
-    if (findAITask(null, entity) == null) {
+    if (findAITask(null, entity) != null) {
       return State.ALREADY_ATTRACTING;
     }
     return State.CAN_ATTRACT;
@@ -34,7 +34,11 @@ public class AIAttractionHandler implements IMobAttractionHandler {
       entity.tasks.removeTask(remove);
     }
     cancelCurrentTasks(entity);
-    entity.tasks.addTask(0, new AttractTask(entity, attractor.getTarget(), attractor.getPos()));
+    entity.tasks.addTask(0, makeAITask(attractor, entity));
+  }
+
+  protected @Nonnull AttractTask makeAITask(TileAttractor attractor, @Nonnull EntityLiving entity) {
+    return new AttractTask(entity, attractor.getTarget(), attractor.getPos());
   }
 
   protected EntityAIBase findAITask(TileAttractor attractor, EntityLiving entity) {

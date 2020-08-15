@@ -42,7 +42,6 @@ public class InventoryDatabaseServer extends InventoryDatabase<IServerItemEntry>
   private IChangeLog changeLog;
   private boolean sentToClient;
   private int tickPause;
-  //private float power;
 
   public InventoryDatabaseServer(IDatabaseHandler... dbHandlers) {
     this.dbHandlers = dbHandlers;

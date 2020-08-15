@@ -1,10 +1,8 @@
 package crazypants.enderio.machines.integration.jei;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -12,33 +10,30 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
+import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.enchanter.EnchanterRecipe;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.PersonalConfig;
+import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.enchanter.ContainerEnchanter;
 import crazypants.enderio.machines.machine.enchanter.GuiEnchanter;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IDrawable;
-import mezz.jei.api.gui.IGuiIngredient;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.BlankRecipeCategory;
-import mezz.jei.api.recipe.BlankRecipeWrapper;
-import mezz.jei.api.recipe.IFocus;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 
 import static crazypants.enderio.machines.init.MachineObject.block_enchanter;
 import static crazypants.enderio.machines.machine.enchanter.ContainerEnchanter.FIRST_INVENTORY_SLOT;
@@ -52,130 +47,87 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
 
   // ------------ Recipes
 
-  public static class EnchanterRecipeWrapper extends BlankRecipeWrapper {
+  public static class EnchanterRecipeWrapper implements IRecipeWrapper {
 
     private static final @Nonnull ResourceLocation XP_ORB_TEXTURE = new ResourceLocation("textures/entity/experience_orb.png");
 
-    private final EnchanterRecipe rec;
+    private final @Nonnull EnchanterRecipe rec;
+    private final @Nonnull NNList<ItemStack> bookInputs, itemInputs, lapisInputs;
+    private final int level;
 
-    Map<Integer, ? extends IGuiIngredient<ItemStack>> currentIngredients;
-
-    public EnchanterRecipeWrapper(EnchanterRecipe rec) {
-      this.rec = rec;
+    protected static @Nonnull List<EnchanterRecipeWrapper> create(IMachineRecipe imr) {
+      if (!(imr instanceof EnchanterRecipe)) {
+        return NNList.emptyList();
+      }
+      EnchanterRecipe rec = (EnchanterRecipe) imr;
+      final @Nonnull List<EnchanterRecipeWrapper> result = new NNList<>();
+      Enchantment enchantment = rec.getEnchantment();
+      LEVEL: for (int level = 1; level <= enchantment.getMaxLevel(); level++) {
+        // Books
+        NNList<ItemStack> bookInputs = new NNList<>();
+        for (ItemStack book : rec.getBook().getItemStacks()) {
+          bookInputs.add(book.copy());
+        }
+        // Lapis Lazulis
+        NNList<ItemStack> lapisInputs = new NNList<>();
+        for (ItemStack lapis : rec.getLapis().getItemStacks()) {
+          lapis = lapis.copy();
+          lapis.setCount(rec.getLapizForLevel(level));
+          if (lapis.getCount() <= lapis.getMaxStackSize()) {
+            lapisInputs.add(lapis);
+          }
+        }
+        if (lapisInputs.isEmpty()) {
+          break LEVEL;
+        }
+        // Items
+        NNList<ItemStack> itemInputs = new NNList<>();
+        for (ItemStack item : rec.getInput().getItemStacks()) {
+          item = item.copy();
+          item.setCount(rec.getItemsPerLevel() * level);
+          if (item.getCount() <= item.getMaxStackSize()) {
+            itemInputs.add(item);
+          }
+          if (itemInputs.isEmpty()) {
+            break LEVEL;
+          }
+        }
+        // create recipe
+        result.add(new EnchanterRecipeWrapper(rec, level, bookInputs, lapisInputs, itemInputs));
+      }
+      return NullHelper.notnullJ(result, "Eclipse is stupid");
     }
 
-    public boolean isValid() {
-      return rec != null;
+    private EnchanterRecipeWrapper(@Nonnull EnchanterRecipe rec, int level, @Nonnull NNList<ItemStack> bookInputs, @Nonnull NNList<ItemStack> lapisInputs,
+        @Nonnull NNList<ItemStack> itemInputs) {
+      this.rec = rec;
+      this.level = level;
+      this.bookInputs = bookInputs;
+      this.lapisInputs = lapisInputs;
+      this.itemInputs = itemInputs;
     }
 
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-      if (currentIngredients == null) {
-        return;
-      }
+      Enchantment enchantment = rec.getEnchantment();
+      String name = enchantment.getTranslatedName(level);
+      minecraft.fontRenderer.drawString(name, 147 - minecraft.fontRenderer.getStringWidth(name), 0, 0x8b8b8b);
 
-      final IGuiIngredient<ItemStack> in0 = currentIngredients.get(0);
-      final IGuiIngredient<ItemStack> in1 = currentIngredients.get(1);
-      final IGuiIngredient<ItemStack> in2 = currentIngredients.get(2);
-      final IGuiIngredient<ItemStack> out = currentIngredients.get(3);
-      int enchLvl = 0;
-      if (out != null) {
-        final ItemStack slot3 = out.getDisplayedIngredient();
-        if (slot3 != null) {
-          Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(slot3);
-          if (enchants.size() == 1) {
-            Entry<Enchantment, Integer> ench = enchants.entrySet().iterator().next();
-            enchLvl = ench.getValue();
-            String name = ench.getKey().getTranslatedName(enchLvl);
-            String referenceName = getTranslatedName(ench.getKey(), enchLvl);
-            if (referenceName.equals(name)) {
-              name = getTranslatedNameBase(ench.getKey(), enchLvl);
-              minecraft.fontRenderer.drawString(name, 147 - minecraft.fontRenderer.getStringWidth(name), 0, 0x8b8b8b);
-              name = getTranslatedNameLevel(ench.getKey(), enchLvl);
-              minecraft.fontRenderer.drawString(name, 147, 0, 0x8b8b8b);
-            } else {
-              // modded enchantment that overrides getTranslatedName()
-              minecraft.fontRenderer.drawString(name, 147 - minecraft.fontRenderer.getStringWidth(name), 0, 0x8b8b8b);
-            }
-          }
-        }
-      }
-      if (in0 != null && in1 != null && in2 != null) {
-        final ItemStack slot0 = in0.getDisplayedIngredient();
-        final ItemStack slot1 = in1.getDisplayedIngredient();
-        final ItemStack slot2 = in2.getDisplayedIngredient();
-        if (slot0 != null && slot1 != null && slot2 != null) {
-          int xpCost = rec.getXPCost(new NNList<>(new MachineRecipeInput(0, slot0), new MachineRecipeInput(1, slot1), new MachineRecipeInput(1, slot2)));
-          if (xpCost != 0) {
-
-            minecraft.getTextureManager().bindTexture(XP_ORB_TEXTURE);
-            GlStateManager.color(0x80 / 255f, 0xFF / 255f, 0x20 / 255f);
-            Gui.drawScaledCustomSizeModalRect(-4, 26, 0, 0, 16, 16, 16, 16, 64, 64);
-
-            minecraft.fontRenderer.drawString("" + xpCost, 9, 31, 0x404040);
-          }
-        }
-      }
+      int xpCost = rec.getXPCost(getMachineInputs());
+      minecraft.getTextureManager().bindTexture(XP_ORB_TEXTURE);
+      GlStateManager.color(0x80 / 255f, 0xFF / 255f, 0x20 / 255f);
+      Gui.drawScaledCustomSizeModalRect(0, 29, 0, 0, 16, 16, 16, 16, 64, 64);
+      minecraft.fontRenderer.drawStringWithShadow("  " + Lang.GUI_VANILLA_REPAIR_COST.get(xpCost), 9, 33, 8453920);
     }
 
-    // copy of Enchantment.getTranslatedName()
-    public static @Nonnull String getTranslatedName(Enchantment e, int level) {
-      String s = I18n.translateToLocal(e.getName());
-
-      if (e.isCurse()) {
-        s = TextFormatting.RED + s;
-      }
-
-      return level == 1 && e.getMaxLevel() == 1 ? s : s + " " + I18n.translateToLocal("enchantment.level." + level);
+    private @Nonnull NNList<MachineRecipeInput> getMachineInputs() {
+      return new NNList<>(new MachineRecipeInput(0, bookInputs.get(0)), new MachineRecipeInput(1, itemInputs.get(0)),
+          new MachineRecipeInput(1, lapisInputs.get(0)));
     }
-
-    public static @Nonnull String getTranslatedNameBase(Enchantment e, int level) {
-      String s = I18n.translateToLocal(e.getName());
-
-      if (e.isCurse()) {
-        s = TextFormatting.RED + s;
-      }
-
-      return s;
-    }
-
-    public static @Nonnull String getTranslatedNameLevel(Enchantment e, int level) {
-      return level == 1 && e.getMaxLevel() == 1 ? "" : " " + I18n.translateToLocal("enchantment.level." + level);
-    }
-
-    public void setInfoData(Map<Integer, ? extends IGuiIngredient<ItemStack>> ings) {
-      currentIngredients = ings;
-    }
-
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
-      List<ItemStack> bookInputs = new ArrayList<ItemStack>();
-      List<ItemStack> itemInputs = new ArrayList<ItemStack>();
-      List<ItemStack> lapizInputs = new ArrayList<ItemStack>();
-      List<ItemStack> itemOutputs = new ArrayList<ItemStack>();
-
-      NNList<NNList<MachineRecipeInput>> variants = rec.getVariants();
-      for (NNList<MachineRecipeInput> variant : variants) {
-        for (MachineRecipeInput machineRecipeInput : variant) {
-          if (machineRecipeInput.slotNumber == 0) {
-            bookInputs.add(machineRecipeInput.item);
-          } else if (machineRecipeInput.slotNumber == 1) {
-            itemInputs.add(machineRecipeInput.item);
-          } else if (machineRecipeInput.slotNumber == 2) {
-            lapizInputs.add(machineRecipeInput.item);
-          }
-        }
-        ResultStack[] completedResult = rec.getCompletedResult(0, 1F, NullHelper.notnullM(variant, "NNList iterated to null"));
-        itemOutputs.add(completedResult[0].item);
-      }
-
-      List<List<ItemStack>> inputs = new ArrayList<List<ItemStack>>();
-      inputs.add(bookInputs);
-      inputs.add(itemInputs);
-      inputs.add(lapizInputs);
-
-      ingredients.setInputLists(ItemStack.class, inputs);
-      ingredients.setOutputLists(ItemStack.class, NullHelper.notnullJ(Collections.singletonList(itemOutputs), "Collections.singletonList()"));
+      ingredients.setInputLists(VanillaTypes.ITEM, new NNList<List<ItemStack>>(bookInputs, itemInputs, lapisInputs));
+      ingredients.setOutput(VanillaTypes.ITEM, rec.getCompletedResult(0, 1F, getMachineInputs())[0].item);
     }
 
   }
@@ -187,12 +139,11 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
     }
 
     registry.addRecipeCategories(new EnchanterRecipeCategory(guiHelper));
-    registry.handleRecipes(EnchanterRecipe.class, EnchanterRecipeWrapper::new, EnchanterRecipeCategory.UID);
     registry.addRecipeClickArea(GuiEnchanter.class, 155, 8, 16, 16, EnchanterRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(block_enchanter.getBlockNN()), EnchanterRecipeCategory.UID);
+    registry.addRecipeCatalyst(new ItemStack(block_enchanter.getBlockNN()), EnchanterRecipeCategory.UID);
 
-    registry.addRecipes(NullHelper.notnullJ(MachineRecipeRegistry.instance.getRecipesForMachine(MachineRecipeRegistry.ENCHANTER).values(), "Map.values()"),
-        UID);
+    registry.addRecipes(NullHelper.notnullJ(MachineRecipeRegistry.instance.getRecipesForMachine(MachineRecipeRegistry.ENCHANTER).values().stream()
+        .map(EnchanterRecipeWrapper::create).flatMap(Collection::stream).collect(Collectors.toList()), "Stream::collect"), UID);
 
     registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerEnchanter.class, EnchanterRecipeCategory.UID, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT,
         FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
@@ -200,19 +151,15 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
 
   // ------------ Category
 
-  // Offsets from full size gui, makes it much easier to get the location
-  // correct
-  private int xOff = 15;
-  private int yOff = 24;
+  // Offsets from full size gui, makes it much easier to get the location correct
+  private static final int xOff = 16;
+  private static final int yOff = 24;
 
-  @Nonnull
-  private final IDrawable background;
-
-  private EnchanterRecipeWrapper currentRecipe;
+  private final @Nonnull IDrawable background;
 
   public EnchanterRecipeCategory(IGuiHelper guiHelper) {
     ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("enchanter");
-    background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 146, 48);
+    background = guiHelper.drawableBuilder(backgroundLocation, xOff - 1, yOff, 146, 48).build();
   }
 
   @Override
@@ -235,24 +182,12 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
   public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull EnchanterRecipeCategory.EnchanterRecipeWrapper recipeWrapper,
       @Nonnull IIngredients ingredients) {
 
-    currentRecipe = recipeWrapper;
-
     IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
-    IFocus<?> focus = recipeLayout.getFocus();
-    if (focus != null) {
-      // we cycle through different variants of the same output items here, keeping one of them in focus
-      // would trash our recipe.
-      guiItemStacks.setOverrideDisplayFocus(null);
-      // TODO: Re-build the ingredient lists to satisfy the focus.
-    }
 
-    Map<Integer, ? extends IGuiIngredient<ItemStack>> ings = guiItemStacks.getGuiIngredients();
-    currentRecipe.setInfoData(ings);
-
-    guiItemStacks.init(0, true, 16 - xOff - 1, 34 - yOff);
-    guiItemStacks.init(1, true, 65 - xOff - 1, 34 - yOff);
-    guiItemStacks.init(2, true, 85 - xOff - 1, 34 - yOff);
-    guiItemStacks.init(3, false, 144 - xOff - 1, 34 - yOff);
+    guiItemStacks.init(0, true, 16 - xOff, 34 - yOff);
+    guiItemStacks.init(1, true, 65 - xOff, 34 - yOff);
+    guiItemStacks.init(2, true, 85 - xOff, 34 - yOff);
+    guiItemStacks.init(3, false, 144 - xOff, 34 - yOff);
 
     guiItemStacks.set(ingredients);
   }

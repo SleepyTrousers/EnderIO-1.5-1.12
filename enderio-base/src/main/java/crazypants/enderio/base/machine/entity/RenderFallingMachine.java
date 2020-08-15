@@ -53,7 +53,7 @@ public class RenderFallingMachine extends Render<EntityFallingMachine> {
     IBlockState extendedState = iblockstate;
     if (iblockstate instanceof IBlockStateWrapper) {
       extendedState = iblockstate;
-      // only reason to copy this whole class: we need to dig out the real blockstate from the wrapper so blockrendererdispatcher.getModelForState() will below
+      // only reason to copy this whole class: we need to dig out the real blockstate from the wrapper so blockrendererdispatcher.getModelForState() below
       // will work
       iblockstate = ((IBlockStateWrapper) iblockstate).getState();
     }

@@ -211,7 +211,7 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_impulse_hopper/intake" base="120" scaler="POWER" />
   <capacitor key="enderio:block_impulse_hopper/buffer" base="100000" scaler="POWER" />
   <capacitor key="enderio:block_impulse_hopper/use" base="16" scaler="POWER" />
-  <capacitor key="enderio:block_impulse_hopper/user_item" base="10" scaler="FIXED" />
+  <capacitor key="enderio:block_impulse_hopper/use_item" base="10" scaler="FIXED" />
   <capacitor key="enderio:block_impulse_hopper/speed" base="1" scaler="QUADRATIC" />
   
   <capacitor key="enderio:block_crafter/intake" base="120" scaler="POWER" />
