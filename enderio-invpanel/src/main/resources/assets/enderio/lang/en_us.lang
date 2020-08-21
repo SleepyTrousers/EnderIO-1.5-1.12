@@ -58,6 +58,10 @@ enderio.gui.inventorypanel.tooltip.sync=NEI/JEI Sync
 enderio.gui.inventorypanel.tooltip.sync.jei=JEI Sync
 enderio.gui.inventorypanel.tooltip.sync.jei.line1=Text entered into filter field will be remembered.
 enderio.gui.inventorypanel.tooltip.sync.jei.line2=Text entered into JEI field will not be remembered.
+enderio.gui.inventorypanel.tooltip.recipe.store=CLICK to store recipe
+enderio.gui.inventorypanel.tooltip.recipe.load=CLICK to load recipe
+enderio.gui.inventorypanel.tooltip.recipe.loadstacks=SHIFT-CLICK to load recipe with stacks
+enderio.gui.inventorypanel.tooltip.recipe.delete=CTRL-RIGHT-CLICK to delete recipe
 
 // Sensor
 tile.block_inventory_panel_sensor.name=Inventory Sensor
