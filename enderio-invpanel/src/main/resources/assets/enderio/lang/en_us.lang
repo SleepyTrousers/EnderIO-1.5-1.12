@@ -2,7 +2,7 @@
 tile.block_inventory_panel.name=Inventory Panel
 tile.block_inventory_panel.tooltip.basic.line1=Remote access and crafting
 tile.block_inventory_panel.tooltip.detailed.line1=Allows remote access to inventories via
-tile.block_inventory_panel.tooltip.detailed.line2=Remote Awareness Upgrades in item conduits.
+tile.block_inventory_panel.tooltip.detailed.line2=Data and Item conduits.
 tile.block_inventory_panel.tooltip.detailed.line3=Uses Nutrient Distillation for power.
 tile.block_inventory_panel.tooltip.detailed.line4=Offers a persistent crafting grid.
 
@@ -89,12 +89,12 @@ item.item_inventory_remote_basic.tooltip.detailed.line2=Crouch-Right-Click a pan
 item.item_inventory_remote_basic.tooltip.detailed.line3=Uses {FLUIDNAME} to open a connection and RF to keep it open.
 
 item.item_inventory_remote_advanced.name=Advanced Inventory Panel Remote
-item.item_inventory_remote_advanced.tooltip.detailed.line1=Allows you to access an Inventory Panel from anywhere in the same dimension.
+item.item_inventory_remote_advanced.tooltip.detailed.line1=Allows you to access an Inventory Panel from anywhere in the same dimension when Chunkloaded.
 item.item_inventory_remote_advanced.tooltip.detailed.line2=Crouch-Right-Click a panel to bind the remote to it.
 item.item_inventory_remote_advanced.tooltip.detailed.line3=Uses {FLUIDNAME} to open a connection and RF to keep it open.
 
 item.item_inventory_remote_ender.name=Ender Inventory Panel Remote
-item.item_inventory_remote_ender.tooltip.detailed.line1=Allows you to access an Inventory Panel from anywhere.
+item.item_inventory_remote_ender.tooltip.detailed.line1=Allows you to access an Inventory Panel from anywhere when Chunkloaded.
 item.item_inventory_remote_ender.tooltip.detailed.line2=Crouch-Right-Click a panel to bind the remote to it.
 item.item_inventory_remote_ender.tooltip.detailed.line3=Uses {FLUIDNAME} to open a connection and RF to keep it open.
 
