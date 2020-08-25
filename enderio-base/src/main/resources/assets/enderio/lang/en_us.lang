@@ -1501,7 +1501,7 @@ entity.enderio.enderio.owl_egg.name=Owl Egg
 entity.enderio.primed_charge.name=Primed Charge
 entity.enderio.enderio.primed_charge.name=Primed Charge
 
-enderio.tooltip.inventory_charger.need_upgrade=§4No energy crystal installed!
+enderio.tooltip.inventory_charger.need_upgrade=§4No Empowered Upgrade installed!
 enderio.tooltip.inventory_charger.enabled=Inventory Charger enabled
 enderio.tooltip.inventory_charger.disabled=Inventory Charger disabled
 
