@@ -185,7 +185,7 @@ public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvide
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }
 
-      if (!(world instanceof WorldServer) || !(player instanceof EntityPlayerMP)) {
+      if (!(targetWorld instanceof WorldServer) || !(player instanceof EntityPlayerMP)) {
         Log.warn("Unexpected world or player: " + world + " " + player);
         player.sendStatusMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.error")), true);
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
@@ -203,11 +203,11 @@ public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvide
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }
 
-      TileEntity te = world.getTileEntity(pos);
+      TileEntity te = targetWorld.getTileEntity(pos);
       if (te instanceof TileInventoryPanel) {
         PacketHandler.INSTANCE.sendTo(new PacketPrimeInventoryPanelRemote((TileInventoryPanel) te), (EntityPlayerMP) player);
       }
-      ModObjectRegistry.getModObjectNN(this).openGui(player.world, pos, player, null, world.provider.getDimension());
+      ModObjectRegistry.getModObjectNN(this).openGui(player.world, pos, player, null, d);
       Ticker.create();
       //InvpanelObject.itemInventoryRemote.openGui(player.world, pos, player, null, world.provider.getDimension());
 
@@ -356,6 +356,7 @@ public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvide
         return null;
       }
     }
+    targetWorld.getBlockState(pos);
     TileEntity te = targetWorld.getTileEntity(pos);
     if (te instanceof TileInventoryPanel) {
       //System.out.println("SETTING TE " + te);
