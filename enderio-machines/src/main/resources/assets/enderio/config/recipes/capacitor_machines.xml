@@ -165,9 +165,10 @@ XML editor will display that as tooltips when editing this file.
   
   <capacitor key="enderio:block_transceiver/intake" base="40960" scaler="POWER" />
   <capacitor key="enderio:block_transceiver/buffer" base="500000" scaler="CUBIC" />
+  <!-- above is the size of the buffer, below how it is split into machine and transfer parts -->
   <capacitor key="enderio:block_transceiver/ratio" base="1">
   <indexed step="1">
-    <data value=".75"/>
+    <data value=".75"/><!-- lower is more transfer buffer, higher is more machine buffer -->
     <data value=".5"/>
     <data value=".15"/>
     <data value=".025"/>
