@@ -19,6 +19,8 @@ import mods.immibis.microblocks.api.IMicroblockSystem;
 import mods.immibis.microblocks.api.MicroblockAPIUtils;
 import mods.immibis.microblocks.api.Part;
 import mods.immibis.microblocks.api.PartType;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -162,7 +164,19 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     facadeMeta = nbtRoot.getInteger("facadeMeta");
 
     if(worldObj != null && worldObj.isRemote) {
-      clientUpdated = true;
+      if (conduits.size() == 1 && conduits.get(0) instanceof ItemConduit) {
+        boolean itemConduitClientUpdated = false;
+        for (Object o : Minecraft.getMinecraft().theWorld.playerEntities) {
+          Entity e = ((Entity) o);
+          if (e.getDistanceSq(this.xCoord, yCoord, zCoord) < 36) {
+            itemConduitClientUpdated = true;
+            break;
+          }
+        }
+        if (itemConduitClientUpdated) clientUpdated = true;
+      } else {
+        clientUpdated = true;
+      }
     }
 
     if (MicroblocksUtil.supportMicroblocks()) {
