@@ -24,7 +24,9 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.server.management.PlayerChunkMap;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -269,6 +271,20 @@ public abstract class AbstractMachineContainer<E extends AbstractInventoryMachin
     return guiID;
   }
 
+  protected boolean doesClientSeeTileEntity(EntityPlayerMP player) {
+    if (!te.getWorld().equals(player.getEntityWorld())) {
+      return false;
+    }
+
+    WorldServer world = player.getServerWorld();
+    PlayerChunkMap playerManager = world.getPlayerChunkMap();
+
+    int chunkX = te.getPos().getX() >> 4;
+    int chunkZ = te.getPos().getZ() >> 4;
+
+    return playerManager.isPlayerWatchingChunk(player, chunkX, chunkZ);
+  }
+
   @Override
   public void detectAndSendChanges() {
     super.detectAndSendChanges();
@@ -276,7 +292,7 @@ public abstract class AbstractMachineContainer<E extends AbstractInventoryMachin
     final SPacketUpdateTileEntity updatePacket = te.getUpdatePacket();
     if (updatePacket != null) {
       for (IContainerListener containerListener : listeners) {
-        if (containerListener instanceof EntityPlayerMP) {
+        if (containerListener instanceof EntityPlayerMP && doesClientSeeTileEntity((EntityPlayerMP) containerListener)) {
           ((EntityPlayerMP) containerListener).connection.sendPacket(updatePacket);
         }
       }
