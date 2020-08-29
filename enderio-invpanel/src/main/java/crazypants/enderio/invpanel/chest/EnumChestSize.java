@@ -25,7 +25,7 @@ public enum EnumChestSize implements IStringSerializable {
   WAREHOUSE13(60),
 
   // Be honest, you expected a bra size joke here, didn't you?
-
+  // TODO add bad bra joke here
   ;
 
   private final int slots;

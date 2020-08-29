@@ -17,7 +17,6 @@ import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
-import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.util.NBTAction;
@@ -269,10 +268,6 @@ public abstract class AbstractCapabilityPoweredTaskEntity extends AbstractCapabi
       cachedNextRecipe = MachineRecipeRegistry.instance.getRecipeForInputs(getMachineLevel(), getMachineName(), getRecipeInputs());
     }
     return cachedNextRecipe;
-  }
-
-  protected @Nonnull RecipeLevel getMachineLevel() {
-    return RecipeLevel.IGNORE;
   }
 
   @Nullable

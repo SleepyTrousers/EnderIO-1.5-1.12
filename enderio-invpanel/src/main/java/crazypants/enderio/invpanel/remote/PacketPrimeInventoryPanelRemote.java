@@ -42,10 +42,11 @@ public class PacketPrimeInventoryPanelRemote implements IMessage {
     
     @Override
     public IMessage onMessage(PacketPrimeInventoryPanelRemote message, MessageContext ctx) {
-      ClientRemoteGuiManager.targetTEtime = EnderIO.proxy.getTickCount() + 10;
+      ItemRemoteInvAccess.targetTEtime = EnderIO.proxy.getTickCount() + 10;
       TileInventoryPanel te = new TileInventoryPanel();
       Reader.read(BaseHandlers.REGISTRY, NBTAction.CLIENT, message.tag, te);
-      ClientRemoteGuiManager.targetTE = te;
+      ItemRemoteInvAccess.targetTE = te;
+      //System.out.println("Got Prime Packet with " + te);
       return null;
     }
   }

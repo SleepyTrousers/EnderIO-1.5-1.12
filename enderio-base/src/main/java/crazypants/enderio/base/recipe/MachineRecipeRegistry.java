@@ -78,8 +78,7 @@ public class MachineRecipeRegistry {
 
   public @Nonnull NNList<IMachineRecipe> getRecipesForInput(@Nonnull RecipeLevel machineLevel, @Nonnull String machineName, @Nonnull MachineRecipeInput input) {
     NNList<IMachineRecipe> result = new NNList<IMachineRecipe>();
-    Map<String, IMachineRecipe> recipes = getRecipesForMachine(machineName);
-    for (IMachineRecipe recipe : recipes.values()) {
+    for (IMachineRecipe recipe : getRecipesForMachine(machineName).values()) {
       if (recipe.isValidInput(machineLevel, input)) {
         result.add(recipe);
       }

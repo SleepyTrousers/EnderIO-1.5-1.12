@@ -5,7 +5,6 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.fluid.IFluidWrapper;
 import com.enderio.core.common.util.DyeColor;
 
-import crazypants.enderio.base.conduit.ConnectionMode;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 
@@ -40,7 +39,7 @@ public class NetworkTank {
   }
 
   public boolean isValid() {
-    return externalTank != null && con.getConnectionMode(conDir) != ConnectionMode.DISABLED;
+    return externalTank != null && con.getConnectionMode(conDir).isActive();
   }
 
   @Override

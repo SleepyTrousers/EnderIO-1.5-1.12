@@ -42,7 +42,6 @@ public class InventoryDatabaseServer extends InventoryDatabase<IServerItemEntry>
   private IChangeLog changeLog;
   private boolean sentToClient;
   private int tickPause;
-  private float power;
 
   public InventoryDatabaseServer(IDatabaseHandler... dbHandlers) {
     this.dbHandlers = dbHandlers;
@@ -218,23 +217,13 @@ public class InventoryDatabaseServer extends InventoryDatabase<IServerItemEntry>
   }
 
   @Override
-  public float getPower() {
-    return power;
-  }
-
-  @Override
-  public void addPower(@SuppressWarnings("hiding") float power) {
-    this.power += power;
-  }
-
-  @Override
-  public boolean isOperational() {
-    return power > 0 && inventories != null;
+  public boolean isOperational(IInventoryPanel te) {
+    return te.getPowerLevel() > 0 && inventories != null;
   }
 
   @Override
   public int extractItems(IServerItemEntry entry, int count, @Nonnull IInventoryPanel te) {
-    float availablePower = power + te.getAvailablePower();
+    float availablePower = te.getPowerLevel() + te.getAvailablePower();
     availablePower -= InvpanelConfig.inventoryPanelExtractCostPerOperation.get();
     if (availablePower <= 0) {
       return 0;
@@ -245,15 +234,15 @@ public class InventoryDatabaseServer extends InventoryDatabase<IServerItemEntry>
     }
     if (count > 0) {
       int extracted = entry.extractItems(this, count);
-      power -= InvpanelConfig.inventoryPanelExtractCostPerOperation.get() + extracted * InvpanelConfig.inventoryPanelExtractCostPerOperation.get();
+      te.usePower(InvpanelConfig.inventoryPanelExtractCostPerOperation.get() + extracted * InvpanelConfig.inventoryPanelExtractCostPerOperation.get());
       te.refuelPower(this);
       return extracted;
     }
     return 0;
   }
 
-  private void scanNextInventory() {
-    if (!isOperational()) {
+  private void scanNextInventory(IInventoryPanel te) {
+    if (!isOperational(te)) {
       tickPause = 20;
       return;
     }
@@ -268,7 +257,7 @@ public class InventoryDatabaseServer extends InventoryDatabase<IServerItemEntry>
         int slots = inv.scanInventory(this);
         inv.markScanned();
         tickPause += Math.min(1 + (slots + 8) / 9, 20);
-        power -= slots * InvpanelConfig.inventoryPanelScanCostPerSlot.get();
+        te.usePower(slots * InvpanelConfig.inventoryPanelScanCostPerSlot.get());
         return;
       }
     } while (currentInventoryIn != currentInventory);
@@ -281,9 +270,9 @@ public class InventoryDatabaseServer extends InventoryDatabase<IServerItemEntry>
    * @see crazypants.enderio.machine.invpanel.server.IInventoryDatabaseServer#tick()
    */
   @Override
-  public void tick() {
+  public void tick(IInventoryPanel te) {
     if (--tickPause <= 0) {
-      scanNextInventory();
+      scanNextInventory(te);
     }
   }
 

@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.Locale;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import crazypants.enderio.base.filter.item.IItemFilter;
 import net.minecraft.client.Minecraft;
@@ -71,7 +72,7 @@ public class DatabaseView {
     }
   }
 
-  public void setItemFilter(@Nonnull IItemFilter itemFilter) {
+  public void setItemFilter(@Nullable IItemFilter itemFilter) {
     if(this.itemFilter != itemFilter) {
       this.itemFilter = itemFilter;
       needsNewFiltering = true;
