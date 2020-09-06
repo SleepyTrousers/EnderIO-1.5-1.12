@@ -314,7 +314,7 @@ public class EnderIO implements IEnderIOAddon {
   public NNList<Triple<Integer, RecipeFactory, String>> getRecipeFiles() {
     return new NNList<>(Triple.of(0, null, "aliases"), Triple.of(1, null, "materials"), Triple.of(1, null, "items"), Triple.of(1, null, "base"),
         Triple.of(1, null, "balls"), Triple.of(9, null, "misc"), Triple.of(9, null, "capacitor"), Triple.of(1, null, "hiding_base"),
-        Triple.of(1, null, "darksteel_upgrades"), Triple.of(1, null, "fuels"), Triple.of(1, null, "glass"));
+        Triple.of(1, null, "darksteel_upgrades"), Triple.of(1, null, "fuels"), Triple.of(1, null, "glass"), Triple.of(1, null, "generated"));
   }
 
   @Override
