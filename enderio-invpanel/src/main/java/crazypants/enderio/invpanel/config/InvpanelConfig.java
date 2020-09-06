@@ -5,10 +5,10 @@ import java.util.List;
 
 import com.enderio.core.common.util.NullHelper;
 
-import info.loenwind.autoconfig.factory.IValue;
-import info.loenwind.autoconfig.factory.IValueFactory;
 import crazypants.enderio.invpanel.remote.ItemRemoteInvAccessType;
 import crazypants.enderio.machines.config.Config;
+import info.loenwind.autoconfig.factory.IValue;
+import info.loenwind.autoconfig.factory.IValueFactory;
 
 public final class InvpanelConfig {
 
@@ -58,4 +58,8 @@ public final class InvpanelConfig {
       remoteInventoryFluidTypes.add(F.make("remoteInventoryFluidTypesTier" + i, NullHelper.notnull(DEF_FLUID[i], "DEF_FLUID"), "The type of fluid required"));
     }
   }
+
+  public static final IValue<Boolean> respectsGravity = F.make("respectsGravity", true,
+      "If true, the inv panel will respect gravity and fall like an anvil when not attached to a block.");
+
 }

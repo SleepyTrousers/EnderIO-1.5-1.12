@@ -25,6 +25,7 @@ import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.base.render.property.IOMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
+import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.SoundType;
@@ -55,7 +56,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     implements IEioGuiHandler.WithPos, IResourceTooltipProvider, ISmartRenderAwareBlock, IClearableConfiguration {
 
   protected final @Nonnull Random random;
-  protected boolean isEnhanced = false, respectsGravity = true;
+  protected boolean isEnhanced = false;
+  protected IValue<Boolean> respectsGravity = () -> false;
 
   protected AbstractMachineBlock(@Nonnull IModObject mo, @Nonnull Material mat) {
     super(mo, mat);
@@ -160,7 +162,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public void onBlockAdded(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
     super.onBlockAdded(world, pos, state);
     world.notifyBlockUpdate(pos, state, state, 3);
-    if (respectsGravity) {
+    if (respectsGravity.get()) {
       world.scheduleUpdate(pos, this, tickRate(world));
     }
   }
@@ -188,7 +190,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
         }
       }
     }
-    if (respectsGravity) {
+    if (respectsGravity.get()) {
       worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
     }
   }
@@ -355,8 +357,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
 
   @Override
   public void updateTick(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Random rand) {
-    if (respectsGravity && !worldIn.isRemote) {
-      this.checkFallable((WorldServer) worldIn, pos);
+    if (!worldIn.isRemote && respectsGravity.get()) {
+      checkFallable((WorldServer) worldIn, pos);
     }
   }
 
