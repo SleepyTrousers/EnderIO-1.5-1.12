@@ -43,6 +43,14 @@ public abstract class EnergyUpgradeManager {
     return EnergyUpgrade.loadAnyFromItem(itemstack) != null;
   }
 
+  /**
+   * Returns the level of Empowered (0-4) on the given item or -1 if it isn't Empowered.
+   */
+  public static int getPowerUpgradeLevel(@Nonnull ItemStack itemstack) {
+    final EnergyUpgrade upgrade = EnergyUpgrade.loadAnyFromItem(itemstack);
+    return upgrade != null ? upgrade.getLevel() : -1;
+  }
+
   public static boolean isLowestPowerUpgrade(@Nonnull IDarkSteelUpgrade upgrade) {
     return (upgrade instanceof EnergyUpgrade) && ((EnergyUpgrade) upgrade).getLevel() == 0;
   }

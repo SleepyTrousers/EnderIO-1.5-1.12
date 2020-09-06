@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.config.config.BlockConfig;
+import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelSword;
@@ -66,18 +66,8 @@ public class SwordHandler {
 
     EntityPlayer player = (EntityPlayer) attacker;
 
-    // Handle TiC weapons with beheading differently
-    if (handleBeheadingWeapons(player, evt)) {
-      return;
-    }
-
     double skullDropChance = getSkullDropChance(player, evt);
-    if (player instanceof FakePlayer) {
-      skullDropChance *= BlockConfig.fakePlayerSkullChance.get();
-    }
-    if (killedMob.world.rand.nextFloat() < skullDropChance) {
-      dropSkull(evt, player);
-    }
+    dropSkull(evt, player, ((int) skullDropChance) + (killedMob.world.rand.nextDouble() < (skullDropChance % 1) ? 1 : 0));
 
     // Special handling for ender pearl drops
     if (isEquipped(player)) {
@@ -123,66 +113,43 @@ public class SwordHandler {
 
   }
 
-  private static boolean handleBeheadingWeapons(EntityPlayer player, LivingDropsEvent evt) {
-    if (player == null) {
-      return false;
-    }
+  private static double getSkullDropChance(@Nonnull EntityPlayer player, LivingDropsEvent evt) {
     ItemStack equipped = player.getHeldItemMainhand();
-    if (!equipped.hasTagCompound()) {
-      return false;
-    }
+    boolean isWitherSkeleton = evt.getEntityLiving() instanceof EntityWitherSkeleton;
+    boolean isEnderman = !isWitherSkeleton && evt.getEntityLiving() instanceof EntityEnderman;
 
-    int beheading = TicProxy.getBehadingLevel(equipped);
-
-    if (beheading <= 0) {
-      // Use default behavior if it is not a cleaver and doesn't have beheading
-      return false;
+    if (isEquipped(player)) {
+      return (iee(isWitherSkeleton, isEnderman, CapacitorKey.HEAD_CHANCE, CapacitorKey.HEAD_CHANCE_WITHER, CapacitorKey.HEAD_CHANCE_ENDERMAN)
+          .get(evt.getLootingLevel())
+          + iee(isWitherSkeleton, isEnderman, CapacitorKey.HEAD_EMPOWERED_CHANCE, CapacitorKey.HEAD_EMPOWERED_CHANCE_WITHER,
+              CapacitorKey.HEAD_EMPOWERED_CHANCE_ENDERMAN).get(
+                  isEquippedAndPowered(player, DarkSteelConfig.darkSteelSwordPowerUsePerHit) ? EnergyUpgradeManager.getPowerUpgradeLevel(equipped) + 1 : 0))
+          * CapacitorKey.HEAD_TIER_CHANCE.get(((ItemDarkSteelSword) equipped.getItem()).getEquipmentData().getTier())
+          * (double) iee(isWitherSkeleton, isEnderman, CapacitorKey.HEAD_FAKEPLAYER_CHANCE, CapacitorKey.HEAD_FAKEPLAYER_CHANCE_WITHER,
+              CapacitorKey.HEAD_FAKEPLAYER_CHANCE_ENDERMAN).get(player instanceof FakePlayer ? 0 : 1);
+    } else {
+      return (CapacitorKey.HEAD_BEHEADING_CHANCE_ENDERMAN.get(TicProxy.getBehadingLevel(equipped)) + iee(isWitherSkeleton, isEnderman,
+          CapacitorKey.HEAD_VANILLA_CHANCE, CapacitorKey.HEAD_VANILLA_CHANCE_WITHER, CapacitorKey.HEAD_VANILLA_CHANCE_ENDERMAN).get(evt.getLootingLevel()))
+          * (double) iee(isWitherSkeleton, isEnderman, CapacitorKey.HEAD_FAKEPLAYER_CHANCE, CapacitorKey.HEAD_FAKEPLAYER_CHANCE_WITHER,
+              CapacitorKey.HEAD_FAKEPLAYER_CHANCE_ENDERMAN).get(player instanceof FakePlayer ? 0 : 1);
     }
-
-    if (!(evt.getEntityLiving() instanceof EntityEnderman)) {
-      // If its not an enderman just let TiC do its thing
-      // We wont modify head drops at all
-      return true;
-    }
-
-    float chance = Math.max(BlockConfig.vanillaSwordSkullChance.get(), BlockConfig.ticBeheadingSkullModifier.get() * beheading);
-    if (player instanceof FakePlayer) {
-      chance *= BlockConfig.fakePlayerSkullChance.get();
-    }
-    while (chance >= 1) {
-      dropSkull(evt, player);
-      chance--;
-    }
-    if (chance > 0 && Math.random() <= chance) {
-      dropSkull(evt, player);
-    }
-    return true;
   }
 
-  private static double getSkullDropChance(@Nonnull EntityPlayer player, LivingDropsEvent evt) {
-    if (evt.getEntityLiving() instanceof EntityWitherSkeleton) {
-      if (isEquippedAndPowered(player, DarkSteelConfig.darkSteelSwordPowerUsePerHit)) {
-        return BlockConfig.darkSteelSwordWitherSkullChance.get() + BlockConfig.darkSteelSwordWitherSkullLootingModifier.get() * evt.getLootingLevel();
-      } else {
-        return 0.01;
-      }
-    } else {
-      if (isEquippedAndPowered(player, DarkSteelConfig.darkSteelSwordPowerUsePerHit)) {
-        return BlockConfig.darkSteelSwordSkullChance.get() + BlockConfig.darkSteelSwordSkullLootingModifier.get() * evt.getLootingLevel();
-      } else {
-        return BlockConfig.vanillaSwordSkullChance.get() + BlockConfig.vanillaSwordSkullLootingModifier.get() * evt.getLootingLevel();
-      }
-    }
+  private static <X> @Nonnull X iee(boolean a, boolean b, X neither, X A, X B) {
+    return a ? A : b ? B : neither;
   }
 
   public static boolean isEquippedAndPowered(EntityPlayer player, IValue<Integer> requiredPower) {
     return isEquipped(player) && getStoredPower(player) >= requiredPower.get();
   }
 
-  private static void dropSkull(LivingDropsEvent evt, EntityPlayer player) {
-    ItemStack skull = getSkullForEntity(evt.getEntityLiving());
-    if (skull != null && !skull.isEmpty() && !containsDrop(evt, skull)) {
-      evt.getDrops().add(Util.createEntityItem(player.world, skull, evt.getEntityLiving().posX, evt.getEntityLiving().posY, evt.getEntityLiving().posZ));
+  private static void dropSkull(LivingDropsEvent evt, EntityPlayer player, int amount) {
+    if (amount > 0) {
+      ItemStack skull = getSkullForEntity(evt.getEntityLiving());
+      if (skull != null && !skull.isEmpty() && !containsDrop(evt, skull)) {
+        skull.setCount(amount);
+        evt.getDrops().add(Util.createEntityItem(player.world, skull, evt.getEntityLiving().posX, evt.getEntityLiving().posY, evt.getEntityLiving().posZ));
+      }
     }
   }
 
