@@ -35,13 +35,16 @@ public final class PersonalConfig {
           + "1 - Vertical icon bar in bottom right\n" + "2 - Old-style group of icons in bottom right")
       .setRange(0, 2);
 
-  // Sounds
+  // SFX
 
   public static final IValue<Boolean> machineSoundsEnabled = F.make("machineSoundsEnabled", true, //
       "If true, machines will make sounds.");
 
   public static final IValue<Float> machineSoundsVolume = F.make("machineSoundsVolume", 1F, //
       "Volume of machine sounds.");
+
+  public static final IValue<Boolean> machineParticlesEnabled = F.make("machineParticlesEnabled", true, //
+      "If true, machines will make particles. This has no effect on entities and important particles like Concussion TNT's explosion.");
 
   // Colors
 

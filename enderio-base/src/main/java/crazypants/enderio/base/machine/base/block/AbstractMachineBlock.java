@@ -10,6 +10,7 @@ import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.machine.entity.EntityFallingMachine;
@@ -199,7 +200,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     // If active, randomly throw some smoke around
-    if (isActive(world, pos)) {
+    if (PersonalConfig.machineParticlesEnabled.get() && isActive(world, pos)) {
       float startX = pos.getX() + 1.0F;
       float startY = pos.getY() + 1.0F;
       float startZ = pos.getZ() + 1.0F;

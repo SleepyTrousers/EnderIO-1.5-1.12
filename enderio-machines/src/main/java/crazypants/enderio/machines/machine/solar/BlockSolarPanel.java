@@ -10,6 +10,7 @@ import com.enderio.core.common.util.NNList.Callback;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
@@ -157,7 +158,7 @@ public class BlockSolarPanel extends BlockEio<TileSolarPanel> implements IResour
   @Override
   @SideOnly(Side.CLIENT)
   public void randomDisplayTick(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
-    if (state.getValue(SolarType.KIND) == SolarType.VIBRANT && TileSolarPanel.isPowered(world, pos)
+    if (PersonalConfig.machineParticlesEnabled.get() && state.getValue(SolarType.KIND) == SolarType.VIBRANT && TileSolarPanel.isPowered(world, pos)
         && TileSolarPanel.calculateLocalLightRatio(world, pos, TileSolarPanel.calculateLightRatio(world)) / 3 > rand.nextFloat()) {
       double d0 = pos.getX() + 0.5D + (Math.random() - 0.5D) * 0.5D;
       double d1 = pos.getY() + BLOCK_HEIGHT;
