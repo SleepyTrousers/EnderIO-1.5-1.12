@@ -1179,6 +1179,9 @@ enderio.gui.generic.ioMode.overlay.tooltip.visible.line3=to their default settin
 enderio.gui.generic.nocap.line1=§3Capacitor missing
 enderio.gui.generic.nocap.line2=Insert any capacitor so
 enderio.gui.generic.nocap.line3=this machine can work!
+enderio.gui.conduit.item.species.primary_icon=Filter Primary Species
+enderio.gui.conduit.item.species.secondary_icon=Filter Secondary Species
+enderio.gui.conduit.item.species.both_icon=Filter Both Species
 
 
 # consumed by EntityAction, displayed in TOP
