@@ -81,7 +81,7 @@ public class TicProxy {
     return false;
   }
 
-  public static int getBehadingLevel(@Nonnull ItemStack itemStack) {
+  public static int getBeheadingLevel(@Nonnull ItemStack itemStack) {
     if (isLoaded()) {
       return mhandler.getBehadingLevel(itemStack);
     }

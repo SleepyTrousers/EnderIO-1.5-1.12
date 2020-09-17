@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.base.EnderIO;
-import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.config.config.DarkSteelConfig;
 import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.base.item.darksteel.ItemDarkSteelSword;
@@ -37,6 +36,20 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
+import static crazypants.enderio.base.capacitor.CapacitorKey.HEAD_BEHEADING_CHANCE_ENDERMAN;
+import static crazypants.enderio.base.capacitor.CapacitorKey.HEAD_CHANCE;
+import static crazypants.enderio.base.capacitor.CapacitorKey.HEAD_CHANCE_ENDERMAN;
+import static crazypants.enderio.base.capacitor.CapacitorKey.HEAD_CHANCE_WITHER;
+import static crazypants.enderio.base.capacitor.CapacitorKey.HEAD_EMPOWERED_CHANCE;
+import static crazypants.enderio.base.capacitor.CapacitorKey.HEAD_EMPOWERED_CHANCE_ENDERMAN;
+import static crazypants.enderio.base.capacitor.CapacitorKey.HEAD_EMPOWERED_CHANCE_WITHER;
+import static crazypants.enderio.base.capacitor.CapacitorKey.HEAD_FAKEPLAYER_CHANCE;
+import static crazypants.enderio.base.capacitor.CapacitorKey.HEAD_FAKEPLAYER_CHANCE_ENDERMAN;
+import static crazypants.enderio.base.capacitor.CapacitorKey.HEAD_FAKEPLAYER_CHANCE_WITHER;
+import static crazypants.enderio.base.capacitor.CapacitorKey.HEAD_TIER_CHANCE;
+import static crazypants.enderio.base.capacitor.CapacitorKey.HEAD_VANILLA_CHANCE;
+import static crazypants.enderio.base.capacitor.CapacitorKey.HEAD_VANILLA_CHANCE_ENDERMAN;
+import static crazypants.enderio.base.capacitor.CapacitorKey.HEAD_VANILLA_CHANCE_WITHER;
 import static crazypants.enderio.base.init.ModObject.blockEndermanSkull;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
@@ -118,21 +131,24 @@ public class SwordHandler {
     boolean isWitherSkeleton = evt.getEntityLiving() instanceof EntityWitherSkeleton;
     boolean isEnderman = !isWitherSkeleton && evt.getEntityLiving() instanceof EntityEnderman;
 
+    float looting, empowered, tier;
+    final float beheading = HEAD_BEHEADING_CHANCE_ENDERMAN.getFloat(TicProxy.getBeheadingLevel(equipped));
+    final float fakeplayer = iee(isWitherSkeleton, isEnderman, HEAD_FAKEPLAYER_CHANCE, HEAD_FAKEPLAYER_CHANCE_WITHER, HEAD_FAKEPLAYER_CHANCE_ENDERMAN)
+        .getFloat(player instanceof FakePlayer ? 0 : 1);
+
     if (isEquipped(player)) {
-      return (iee(isWitherSkeleton, isEnderman, CapacitorKey.HEAD_CHANCE, CapacitorKey.HEAD_CHANCE_WITHER, CapacitorKey.HEAD_CHANCE_ENDERMAN)
-          .get(evt.getLootingLevel())
-          + iee(isWitherSkeleton, isEnderman, CapacitorKey.HEAD_EMPOWERED_CHANCE, CapacitorKey.HEAD_EMPOWERED_CHANCE_WITHER,
-              CapacitorKey.HEAD_EMPOWERED_CHANCE_ENDERMAN).get(
-                  isEquippedAndPowered(player, DarkSteelConfig.darkSteelSwordPowerUsePerHit) ? EnergyUpgradeManager.getPowerUpgradeLevel(equipped) + 1 : 0))
-          * CapacitorKey.HEAD_TIER_CHANCE.get(((ItemDarkSteelSword) equipped.getItem()).getEquipmentData().getTier())
-          * (double) iee(isWitherSkeleton, isEnderman, CapacitorKey.HEAD_FAKEPLAYER_CHANCE, CapacitorKey.HEAD_FAKEPLAYER_CHANCE_WITHER,
-              CapacitorKey.HEAD_FAKEPLAYER_CHANCE_ENDERMAN).get(player instanceof FakePlayer ? 0 : 1);
+      looting = iee(isWitherSkeleton, isEnderman, HEAD_CHANCE, HEAD_CHANCE_WITHER, HEAD_CHANCE_ENDERMAN).getFloat(evt.getLootingLevel());
+      empowered = iee(isWitherSkeleton, isEnderman, HEAD_EMPOWERED_CHANCE, HEAD_EMPOWERED_CHANCE_WITHER, HEAD_EMPOWERED_CHANCE_ENDERMAN)
+          .getFloat(isEquippedAndPowered(player, DarkSteelConfig.darkSteelSwordPowerUsePerHit) ? EnergyUpgradeManager.getPowerUpgradeLevel(equipped) + 1 : 0);
+      tier = HEAD_TIER_CHANCE.getFloat(((ItemDarkSteelSword) equipped.getItem()).getEquipmentData().getTier());
     } else {
-      return (CapacitorKey.HEAD_BEHEADING_CHANCE_ENDERMAN.get(TicProxy.getBehadingLevel(equipped)) + iee(isWitherSkeleton, isEnderman,
-          CapacitorKey.HEAD_VANILLA_CHANCE, CapacitorKey.HEAD_VANILLA_CHANCE_WITHER, CapacitorKey.HEAD_VANILLA_CHANCE_ENDERMAN).get(evt.getLootingLevel()))
-          * (double) iee(isWitherSkeleton, isEnderman, CapacitorKey.HEAD_FAKEPLAYER_CHANCE, CapacitorKey.HEAD_FAKEPLAYER_CHANCE_WITHER,
-              CapacitorKey.HEAD_FAKEPLAYER_CHANCE_ENDERMAN).get(player instanceof FakePlayer ? 0 : 1);
+      looting = iee(isWitherSkeleton, isEnderman, HEAD_VANILLA_CHANCE, HEAD_VANILLA_CHANCE_WITHER, HEAD_VANILLA_CHANCE_ENDERMAN)
+          .getFloat(evt.getLootingLevel());
+      empowered = 0;
+      tier = 1;
     }
+
+    return (beheading + looting + empowered) * tier * fakeplayer / 1000d;
   }
 
   private static <X> @Nonnull X iee(boolean a, boolean b, X neither, X A, X B) {
