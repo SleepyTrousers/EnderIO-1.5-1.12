@@ -12,17 +12,16 @@ import net.minecraftforge.common.util.FakePlayer;
 
 class AttractTask extends EntityAIBase {
 
-  private final @Nonnull EntityLiving mob;
-  final @Nonnull BlockPos coord;
-  private final @Nonnull FakePlayer target;
+  protected final @Nonnull EntityLiving mob;
+  protected final @Nonnull BlockPos coord;
+  protected final @Nonnull FakePlayer target;
   private int updatesSincePathing;
-
-  private boolean started = false;
 
   AttractTask(@Nonnull EntityLiving mob, @Nonnull FakePlayer target, @Nonnull BlockPos coord) {
     this.mob = mob;
     this.coord = coord;
     this.target = target;
+    setMutexBits(2);
   }
 
   @Override
@@ -32,7 +31,6 @@ class AttractTask extends EntityAIBase {
 
   @Override
   public void resetTask() {
-    started = false;
     updatesSincePathing = 0;
   }
 
@@ -54,22 +52,23 @@ class AttractTask extends EntityAIBase {
 
   @Override
   public void updateTask() {
-    if (!started || updatesSincePathing > 20) {
-      started = true;
-      int speed = 1;
-      // mob.getNavigator().setAvoidsWater(false);
-      boolean res = mob.getNavigator().tryMoveToEntityLiving(target, speed);
-      if (!res) {
-        for (EnumFacing dir : EnumFacing.values()) {
-          if (!res) {
-            res = mob.getNavigator().tryMoveToXYZ(target.posX + dir.getFrontOffsetX(), target.posY + dir.getFrontOffsetY(), target.posZ + dir.getFrontOffsetZ(),
-                speed);
-          }
+    if (--updatesSincePathing <= 0) {
+      doUpdateTask();
+      updatesSincePathing = 20;
+    }
+  }
+
+  protected void doUpdateTask() {
+    int speed = 1;
+    // mob.getNavigator().setAvoidsWater(false);
+    boolean res = mob.getNavigator().tryMoveToEntityLiving(target, speed);
+    if (!res) {
+      for (EnumFacing dir : EnumFacing.values()) {
+        if (!res) {
+          res = mob.getNavigator().tryMoveToXYZ(target.posX + dir.getFrontOffsetX(), target.posY + dir.getFrontOffsetY(), target.posZ + dir.getFrontOffsetZ(),
+              speed);
         }
       }
-      updatesSincePathing = 0;
-    } else {
-      updatesSincePathing++;
     }
   }
 

@@ -52,8 +52,6 @@ public interface IRedstoneConduit extends IServerConduit, IClientConduit {
 
   void setOutputStrength(@Nonnull EnumFacing dir, boolean isStrong);
 
-  int getRedstoneSignalForColor(@Nonnull DyeColor col);
-
   @Nonnull
   DyeColor getOutputSignalColor(@Nonnull EnumFacing dir);
 

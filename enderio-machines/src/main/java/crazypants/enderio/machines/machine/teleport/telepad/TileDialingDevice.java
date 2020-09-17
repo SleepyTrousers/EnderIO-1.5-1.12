@@ -30,6 +30,8 @@ import info.loenwind.autosave.annotations.Store;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Mirror;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -109,6 +111,22 @@ public class TileDialingDevice extends AbstractCapabilityMachineEntity implement
   public void setDialerFacing(DialerFacing facing) {
     this.dialerFacing = facing;
     markDirty();
+  }
+
+  @Override
+  public void rotate(final @Nonnull Rotation rotation) {
+    if (rotation == Rotation.NONE) {
+      return;
+    }
+    setDialerFacing(getDialerFacing().rotate(rotation));
+  }
+
+  @Override
+  public void mirror(final @Nonnull Mirror mirror) {
+    if (mirror == Mirror.NONE) {
+      return;
+    }
+    setDialerFacing(getDialerFacing().mirror(mirror));
   }
 
   public @Nullable TileTelePad findTelepad() {

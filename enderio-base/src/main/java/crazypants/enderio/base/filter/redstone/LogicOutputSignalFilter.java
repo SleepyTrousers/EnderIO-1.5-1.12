@@ -10,7 +10,6 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.conduit.redstone.signals.BundledSignal;
 import crazypants.enderio.base.conduit.redstone.signals.CombinedSignal;
-import crazypants.enderio.base.conduit.redstone.signals.Signal;
 import crazypants.enderio.base.lang.ILang;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.EnumReader;
@@ -36,7 +35,7 @@ public class LogicOutputSignalFilter implements IOutputSignalFilter {
       @Nonnull
       public CombinedSignal apply(@Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
         for (DyeColor sigColor : signalColors) {
-          if (sigColor != null && bundledSignal.getSignal(sigColor).getStrength() > Signal.NONE.getStrength()) {
+          if (sigColor != null && bundledSignal.getSignal(sigColor).getStrength() > CombinedSignal.NONE.getStrength()) {
             return CombinedSignal.MAX;
           }
         }
@@ -50,7 +49,7 @@ public class LogicOutputSignalFilter implements IOutputSignalFilter {
       @Nonnull
       public CombinedSignal apply(@Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
         for (DyeColor sigColor : signalColors) {
-          if (sigColor != null && !(bundledSignal.getSignal(sigColor).getStrength() > Signal.NONE.getStrength())) {
+          if (sigColor != null && !(bundledSignal.getSignal(sigColor).getStrength() > CombinedSignal.NONE.getStrength())) {
             return CombinedSignal.NONE;
           }
         }
@@ -86,7 +85,7 @@ public class LogicOutputSignalFilter implements IOutputSignalFilter {
       public CombinedSignal apply(@Nonnull BundledSignal bundledSignal, @Nonnull List<DyeColor> signalColors) {
         boolean output = false;
         for (DyeColor sigColor : signalColors) {
-          if (sigColor != null && bundledSignal.getSignal(sigColor).getStrength() > Signal.NONE.getStrength()) {
+          if (sigColor != null && bundledSignal.getSignal(sigColor).getStrength() > CombinedSignal.NONE.getStrength()) {
             output = !output;
           }
         }

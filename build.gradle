@@ -90,7 +90,7 @@ allprojects {
 
     repositories {
         mavenCentral()
-        maven { url = "http://tehnut.info/maven" }
+        //maven { url = "http://tehnut.info/maven" }
         maven { url = "http://maven.tterrag.com" }
         maven { url = "http://maven2.tterrag.com" }
         maven { url = "http://dvs1.progwml6.com/files/maven" }
@@ -426,6 +426,9 @@ build.dependsOn sourceJar, combApiJar, recipeJar
 
 apply plugin: 'maven-publish'
 
+def release = System.getenv("RELEASE") != null &&
+              !System.getenv("RELEASE").equalsIgnoreCase("false")
+
 publishing {
     tasks.publish.dependsOn 'build'
     publications {
@@ -456,7 +459,18 @@ publishing {
     }
 
     repositories {
-        if (project.hasProperty('maven2_url')) {
+        def pub_github = System.getenv('MAVEN_GITHUB_USER') != null && System.getenv('MAVEN_GITHUB_TOKEN') != null
+        if (pub_github) {
+            maven {
+                url uri("https://maven.pkg.github.com/sleepytrousers/enderio")
+                credentials {
+                    username System.getenv('MAVEN_GITHUB_USER')
+                    password System.getenv('MAVEN_GITHUB_TOKEN')
+                }
+            }
+        }
+        def pub_maven = release && project.hasProperty('maven2_url')
+        if (pub_maven) {
             if (project.hasProperty('maven2_user') && project.hasProperty('maven2_pass')) {
                 maven {
                     url maven2_url
@@ -468,14 +482,12 @@ publishing {
             } else {
                 maven { url maven2_url }
             }
-        } else {
+        }
+        if (!pub_github && !pub_maven) {
             mavenLocal()
         }
     }
 }
-
-def release = System.getenv("RELEASE") != null &&
-              !System.getenv("RELEASE").equalsIgnoreCase("false")
 
 tasks.curseforge.enabled = release && project.hasProperty('curseforge_key')
 

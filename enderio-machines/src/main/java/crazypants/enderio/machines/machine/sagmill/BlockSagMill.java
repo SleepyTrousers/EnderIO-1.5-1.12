@@ -6,12 +6,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.machine.base.block.BlockMachineExtension;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
+import crazypants.enderio.machines.config.config.SagmillConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockFaceShape;
@@ -51,6 +53,7 @@ public class BlockSagMill<T extends TileSagMill> extends AbstractPoweredTaskBloc
         return RenderMappers.SIMPLE_BODY_MAPPER;
       }
     };
+    res.respectsGravity = SagmillConfig.respectsGravity;
     res.init();
     return res;
   }
@@ -99,7 +102,7 @@ public class BlockSagMill<T extends TileSagMill> extends AbstractPoweredTaskBloc
   @Override
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     TileSagMill te = getTileEntity(world, pos);
-    if (te != null && te.isActive()) {
+    if (PersonalConfig.machineParticlesEnabled.get() && te != null && te.isActive()) {
       EnumFacing front = te.getFacing();
 
       for (int i = 0; i < 3; i++) {

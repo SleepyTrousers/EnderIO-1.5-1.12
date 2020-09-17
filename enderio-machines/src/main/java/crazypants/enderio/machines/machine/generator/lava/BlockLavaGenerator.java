@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.machine.base.block.AbstractCapabilityGeneratorBlock;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -53,7 +54,7 @@ public class BlockLavaGenerator<T extends TileLavaGenerator> extends AbstractCap
   @SideOnly(Side.CLIENT)
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     T te = getTileEntity(world, pos);
-    if (te != null && te.isActive()) {
+    if (PersonalConfig.machineParticlesEnabled.get() && te != null && te.isActive()) {
       EnumFacing front = te.getFacing();
       for (int i = 0; i < 2; i++) {
         double px = pos.getX() + 0.5 + front.getFrontOffsetX() * 0.6;

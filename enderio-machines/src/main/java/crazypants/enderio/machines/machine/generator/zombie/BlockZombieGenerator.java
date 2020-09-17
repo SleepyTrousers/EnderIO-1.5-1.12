@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.machine.baselegacy.AbstractGeneratorBlock;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
@@ -157,15 +158,16 @@ public class BlockZombieGenerator<T extends TileZombieGenerator> extends Abstrac
     if (rand.nextInt(3) == 0) {
       TileZombieGenerator te = getTileEntity(world, pos);
       if (te != null && te.isActive()) {
-        for (int i = 0; i < 2; i++) {
+        if (PersonalConfig.machineParticlesEnabled.get()) {
+          for (int i = 0; i < 2; i++) {
           float xOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.3f;
           float yOffset = 0.1f;
           float zOffset = 0.5f + (world.rand.nextFloat() * 2.0F - 1.0F) * 0.3f;
 
           BubbleFX fx = new BubbleFX(world, pos.getX() + xOffset, pos.getY() + yOffset, pos.getZ() + zOffset, 0, 0.5, 0);
           Minecraft.getMinecraft().effectRenderer.addEffect(fx);
-
         }
+      }
 
         if (ClientConfig.machineSoundsEnabled.get()) {
           SoundHelper.playSound(world, pos, SoundHelper.BLOCK_TOP, SoundRegistry.ZOMBIE_BUBBLE, ClientConfig.machineSoundVolume.get() * 0.045f,

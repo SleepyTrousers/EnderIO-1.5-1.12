@@ -25,6 +25,7 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.IMachineRecipe.ResultStack;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.vat.VatRecipeManager;
 import crazypants.enderio.machines.config.config.VatConfig;
 import crazypants.enderio.machines.network.PacketHandler;
@@ -90,6 +91,11 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
       return super.shouldDoubleTick(task, usedEnergy);
     }
 
+    @Override
+    protected @Nonnull RecipeLevel getMachineLevel() {
+      return RecipeLevel.ADVANCED;
+    }
+
   }
 
   public TileVat(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
@@ -104,6 +110,11 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
 
   public TileVat() {
     this(new SlotDefinition(2, 0, 1), VAT_POWER_INTAKE, VAT_POWER_BUFFER, VAT_POWER_USE);
+  }
+
+  @Override
+  protected @Nonnull RecipeLevel getMachineLevel() {
+    return RecipeLevel.NORMAL;
   }
 
   @Override

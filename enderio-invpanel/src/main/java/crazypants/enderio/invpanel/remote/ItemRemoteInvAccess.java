@@ -15,24 +15,32 @@ import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.gui.handler.IEioGuiHandler;
+import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.lang.LangFluid;
 import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.base.power.forge.item.IInternalPoweredItem;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.base.render.itemoverlay.PowerBarOverlayRenderHelper;
 import crazypants.enderio.invpanel.init.InvpanelObject;
+import crazypants.enderio.invpanel.invpanel.GuiInventoryPanel;
+import crazypants.enderio.invpanel.invpanel.InventoryPanelContainer;
 import crazypants.enderio.invpanel.invpanel.TileInventoryPanel;
+import crazypants.enderio.invpanel.network.PacketHandler;
 import crazypants.enderio.util.ClientUtil;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -50,6 +58,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -60,7 +69,11 @@ import static crazypants.enderio.util.NbtValue.REMOTE_X;
 import static crazypants.enderio.util.NbtValue.REMOTE_Y;
 import static crazypants.enderio.util.NbtValue.REMOTE_Z;
 
-public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvider, IOverlayRenderAware, IInternalPoweredItem, IHaveRenderers {
+public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvider, IOverlayRenderAware, IInternalPoweredItem, IHaveRenderers, IEioGuiHandler.WithPos {
+
+  // Moved this to the top of the class so it's not in the middle of nowhere
+  static TileInventoryPanel targetTE;
+  static long targetTEtime;
 
   public static ItemRemoteInvAccess create(@Nonnull IModObject modObject, @Nullable Block block) {
     ItemRemoteInvAccess result = new ItemRemoteInvAccess(modObject);
@@ -172,7 +185,7 @@ public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvide
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }
 
-      if (!(world instanceof WorldServer) || !(player instanceof EntityPlayerMP)) {
+      if (!(targetWorld instanceof WorldServer) || !(player instanceof EntityPlayerMP)) {
         Log.warn("Unexpected world or player: " + world + " " + player);
         player.sendStatusMessage(new TextComponentString(EnderIO.lang.localize("remoteinv.chat.error")), true);
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
@@ -190,7 +203,14 @@ public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvide
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
       }
 
-      ServerRemoteGuiManager.openGui((EntityPlayerMP) player, targetWorld, pos);
+      TileEntity te = targetWorld.getTileEntity(pos);
+      if (te instanceof TileInventoryPanel) {
+        PacketHandler.INSTANCE.sendTo(new PacketPrimeInventoryPanelRemote((TileInventoryPanel) te), (EntityPlayerMP) player);
+      }
+      ModObjectRegistry.getModObjectNN(this).openGui(player.world, pos, player, null, d);
+      Ticker.create();
+      //InvpanelObject.itemInventoryRemote.openGui(player.world, pos, player, null, world.provider.getDimension());
+
       return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, equipped);
     }
     return super.onItemRightClick(world, player, hand);
@@ -312,6 +332,53 @@ public class ItemRemoteInvAccess extends Item implements IAdvancedTooltipProvide
   @Nonnull
   public MappedCapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable NBTTagCompound nbt, @Nonnull MappedCapabilityProvider capProv) {
     return capProv.add(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, new CapabilityProvider(stack));
+  }
+
+  @Nullable
+  @Override
+  public Object getGuiElement(boolean server, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1, int param2, int param3) {
+    //System.out.println("YEET!");
+    if (server) {
+      return getServerGuiElement(player, world, pos, facing, param1);
+    } else {
+      return getClientGuiElement(player, world, pos, facing, param1);
+    }
+  }
+
+  @Nullable
+  @Override
+  public Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
+    World targetWorld = world;
+    if (world.provider.getDimension() != param1) {
+      targetWorld = DimensionManager.getWorld(param1);
+      if (targetWorld == null) {
+        Log.warn("Unexpected failure to get dimension " + param1 + " for the Inventory Panel Remote");
+        return null;
+      }
+    }
+    targetWorld.getBlockState(pos);
+    TileEntity te = targetWorld.getTileEntity(pos);
+    if (te instanceof TileInventoryPanel) {
+      //System.out.println("SETTING TE " + te);
+      return new InventoryPanelContainer(player.inventory, (TileInventoryPanel) te);
+
+    }
+    Log.warn("Unexpected failure to get tileentity at " + pos + " in dimension " + param1 + " for the Inventory Panel Remote. Got: " + te);
+    return null;
+  }
+
+  @Nullable
+  @Override
+  @SideOnly(Side.CLIENT)
+  public GuiScreen getClientGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing, int param1) {
+    TileInventoryPanel te;
+    if (targetTE != null && targetTEtime >= EnderIO.proxy.getTickCount()) {
+      //System.out.println("SETTING TE " + targetTE);
+      return new GuiInventoryPanel(targetTE, new InventoryPanelContainer(player.inventory, targetTE));
+    } else {
+      return null;
+    }
+    //return new GuiInventoryPanel(te, new InventoryPanelContainer(player.inventory, te));
   }
 
   private class CapabilityProvider implements IFluidHandlerItem {

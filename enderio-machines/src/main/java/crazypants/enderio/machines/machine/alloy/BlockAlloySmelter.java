@@ -10,6 +10,7 @@ import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
+import crazypants.enderio.machines.config.config.AlloySmelterConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockFaceShape;
@@ -47,6 +48,7 @@ public class BlockAlloySmelter<T extends TileAlloySmelter> extends AbstractPower
         return RenderMappers.SIMPLE_BODY_MAPPER;
       }
     };
+    res.respectsGravity = AlloySmelterConfig.respectsGravity;
     res.init();
     return res;
   }

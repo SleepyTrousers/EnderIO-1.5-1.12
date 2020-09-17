@@ -1,10 +1,11 @@
 package crazypants.enderio.invpanel.conduit.data;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.invpanel.capability.IDatabaseHandler;
 import crazypants.enderio.base.invpanel.capability.InventoryDatabaseSource;
@@ -17,7 +18,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public class DataConduitNetwork extends AbstractConduitNetwork<IDataConduit, IDataConduit> implements IDatabaseHandler {
 
-  private final @Nonnull List<InventoryDatabaseSource> inventories = new ArrayList<InventoryDatabaseSource>();
+  private final @Nonnull NNList<InventoryDatabaseSource> inventories = new NNList<InventoryDatabaseSource>();
 
   private @Nullable IInventoryDatabaseServer database = null;
 
@@ -90,9 +91,6 @@ public class DataConduitNetwork extends AbstractConduitNetwork<IDataConduit, IDa
   public void tickStart(ServerTickEvent event, @Nullable Profiler profiler) {
     super.tickStart(event, profiler);
 
-    if (database != null) {
-      database.tick();
-    }
   }
 
 }

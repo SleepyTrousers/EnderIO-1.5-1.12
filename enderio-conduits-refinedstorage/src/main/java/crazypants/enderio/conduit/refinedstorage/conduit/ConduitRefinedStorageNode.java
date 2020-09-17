@@ -100,7 +100,7 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
 
   @Override
   public boolean canUpdate() {
-    return con.hasExternalConnections();
+    return con.hasExternalConnections() && rsNetwork != null;
   }
 
   @Nullable
@@ -132,9 +132,10 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
   }
 
   private void updateDirFluids(@Nonnull EnumFacing dir, IFilter outputFilter, IFilter inputFilter, @Nonnull TileEntity te) {
+    final INetwork network = rsNetwork;
     IFluidHandler handler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, dir.getOpposite());
 
-    if (handler != null) {
+    if (network != null && handler != null) {
 
       // Export
       if (outputFilter instanceof IFluidFilter) {
@@ -165,18 +166,18 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
           int toExtract = Fluid.BUCKET_VOLUME;
 
           int compare = IComparer.COMPARE_DAMAGE;
-          FluidStack stackInStorage = rsNetwork.getFluidStorageCache().getList().get(stack, compare);
+          FluidStack stackInStorage = network.getFluidStorageCache().getList().get(stack, compare);
 
           if (stackInStorage != null) {
             toExtract = Math.min(toExtract, stackInStorage.amount);
 
-            FluidStack took = rsNetwork.extractFluid(stack, toExtract, compare, Action.SIMULATE);
+            FluidStack took = network.extractFluid(stack, toExtract, compare, Action.SIMULATE);
 
             if (took != null) {
               int filled = handler.fill(took, false);
 
               if (filled > 0) {
-                took = rsNetwork.extractFluid(stack, filled, compare, Action.PERFORM);
+                took = network.extractFluid(stack, filled, compare, Action.PERFORM);
 
                 handler.fill(took, true);
                 exportFilterSlot.set(dir, exportFilterSlot.get(dir) + 1);
@@ -184,7 +185,7 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
               }
             }
           } else if (up != null && isCraftingUpgrade(up)) {
-            rsNetwork.getCraftingManager().request(stack, toExtract);
+            network.getCraftingManager().request(stack, toExtract);
           }
         }
       }
@@ -213,7 +214,7 @@ public class ConduitRefinedStorageNode implements INetworkNode, INetworkNodeVisi
         if (all || (stack != null && toDrain != null && stack.isFluidEqual(toDrain))) {
 
           if (toDrain != null) {
-            FluidStack remainder = rsNetwork.insertFluidTracked(toDrain, toDrain.amount);
+            FluidStack remainder = network.insertFluidTracked(toDrain, toDrain.amount);
             if (remainder != null) {
               toDrain.amount -= remainder.amount;
             }

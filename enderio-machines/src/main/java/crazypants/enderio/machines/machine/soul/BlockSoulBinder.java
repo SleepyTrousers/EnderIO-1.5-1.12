@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.client.ClientUtil;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskBlock;
 import crazypants.enderio.base.machine.render.SoulBinderBlockRenderMapper;
 import crazypants.enderio.base.paint.IPaintable;
@@ -71,14 +72,11 @@ public class BlockSoulBinder extends AbstractPoweredTaskBlock<TileSoulBinder>
   @SideOnly(Side.CLIENT)
   @Override
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
     // If active, randomly throw some smoke around
-    if (isActive(world, pos)) {
-      float startX = x + 1.0F;
-      float startY = y + 1.0F;
-      float startZ = z + 1.0F;
+    if (PersonalConfig.machineParticlesEnabled.get() && isActive(world, pos)) {
+      float startX = pos.getX() + 1.0F;
+      float startY = pos.getY() + 1.0F;
+      float startZ = pos.getZ() + 1.0F;
       for (int i = 0; i < 2; i++) {
         float xOffset = -0.2F - rand.nextFloat() * 0.6F;
         float yOffset = -0.1F + rand.nextFloat() * 0.2F;

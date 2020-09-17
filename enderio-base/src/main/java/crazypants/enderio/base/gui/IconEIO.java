@@ -25,6 +25,7 @@ public enum IconEIO implements IWidgetIcon {
   LOCK_LOCKED(48, 192),
   CROSS(64, 192),
   PLUS(80, 192),
+  QUESTION(16, 208),
   ARROWS(176, 192),
   ADD(112, 240),
   SUBTRACT(96, 240),

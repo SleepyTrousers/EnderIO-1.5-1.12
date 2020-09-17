@@ -13,10 +13,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.StartTracking;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 
 @EventBusSubscriber(modid = EnderIO.MODID)
 public class StateController {
@@ -40,7 +43,7 @@ public class StateController {
    * That way you'll see another player's glider wings when you log on and the other player has them active already.
    */
   @SubscribeEvent
-  public static void onTracking(PlayerEvent.StartTracking event) {
+  public static void onTracking(StartTracking event) {
     final EntityPlayer toUpdate = event.getEntityPlayer();
     if (toUpdate instanceof EntityPlayerMP) {
       final Entity target = event.getTarget();
@@ -52,6 +55,21 @@ public class StateController {
 
   @SubscribeEvent
   public static void onLogin(PlayerLoggedInEvent event) {
+    onPlayerEvent(event);
+  }
+
+  @SubscribeEvent
+  public static void onRespawn(PlayerRespawnEvent event) {
+    onPlayerEvent(event);
+  }
+
+  @SubscribeEvent
+  public static void onChangedDimension(PlayerChangedDimensionEvent event) {
+    onPlayerEvent(event);
+  }
+
+  // sic! no SubscribeEvent!
+  public static void onPlayerEvent(PlayerEvent event) {
     final EntityPlayer player = event.player;
     if (player instanceof EntityPlayerMP) {
       StateController.updateFlags((EntityPlayerMP) player, player);

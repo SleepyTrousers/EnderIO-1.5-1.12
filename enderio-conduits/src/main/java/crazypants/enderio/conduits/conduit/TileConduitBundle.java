@@ -56,6 +56,7 @@ import crazypants.enderio.conduits.config.ConduitConfig;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle.ConduitCacheKey;
 import crazypants.enderio.conduits.render.ConduitRenderMapper;
+import crazypants.enderio.util.FuncUtil;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import net.minecraft.block.Block;
@@ -143,12 +144,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
   }
 
   @Override
-  public int getInternalRedstoneSignalForColor(@Nonnull DyeColor col) {
-    IRedstoneConduit redCon = getConduit(IRedstoneConduit.class);
-    if (redCon != null) {
-      return redCon.getRedstoneSignalForColor(col);
-    }
-    return 0;
+  public int getInternalRedstoneSignalForColor(@Nonnull DyeColor col, @Nonnull EnumFacing dir) {
+    return FuncUtil.runIf(getConduit(IRedstoneConduit.class), con -> con.isProvidingWeakPower(dir.getOpposite()), 0);
   }
 
   @Override

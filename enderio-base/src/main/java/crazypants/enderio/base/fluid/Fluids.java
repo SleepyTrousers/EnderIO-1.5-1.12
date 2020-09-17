@@ -282,8 +282,11 @@ public enum Fluids {
   @SideOnly(Side.CLIENT)
   @SubscribeEvent
   public static void onIconLoad(TextureStitchEvent.Pre event) {
-    event.getMap().registerSprite(XP_JUICE.getFluid().getStill());
-    event.getMap().registerSprite(XP_JUICE.getFluid().getFlowing());
+    for (Fluids fluid : values()) {
+      // Always add textures for our Fluid, avoids bugs when EIO is installed to an existing world
+      event.getMap().registerSprite(fluid.fluidUnsafe.getStill());
+      event.getMap().registerSprite(fluid.fluidUnsafe.getFlowing());
+    }
   }
 
   public @Nonnull String getName() {

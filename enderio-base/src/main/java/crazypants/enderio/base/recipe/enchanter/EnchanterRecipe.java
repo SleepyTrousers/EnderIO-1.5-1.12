@@ -20,15 +20,18 @@ import net.minecraft.item.ItemStack;
 
 public class EnchanterRecipe implements IMachineRecipe {
 
+  private final @Nonnull RecipeLevel recipeLevel;
   private static final @Nonnull Things BOOK = new Things().add(Items.WRITABLE_BOOK);
   private static final @Nonnull Things LAPIS = new Things("oredict:gemLapis");
   private final @Nonnull Things input;
-  private final @Nonnull Enchantment enchantment;
   private final int stackSizePerLevel;
+  private final @Nonnull Enchantment enchantment;
   private final double costMultiplier;
   private final @Nonnull String uuid;
 
-  public EnchanterRecipe(@Nonnull Things input, int stackSizePerLevel, @Nonnull Enchantment enchantment, double costMultiplier) {
+  public EnchanterRecipe(@Nonnull RecipeLevel recipeLevel, @Nonnull Things input, int stackSizePerLevel, @Nonnull Enchantment enchantment,
+      double costMultiplier) {
+    this.recipeLevel = recipeLevel;
     this.input = input;
     this.stackSizePerLevel = stackSizePerLevel;
     this.enchantment = enchantment;
@@ -38,6 +41,18 @@ public class EnchanterRecipe implements IMachineRecipe {
 
   public @Nonnull Enchantment getEnchantment() {
     return enchantment;
+  }
+
+  public @Nonnull Things getBook() {
+    return BOOK;
+  }
+
+  public @Nonnull Things getLapis() {
+    return LAPIS;
+  }
+
+  public @Nonnull Things getInput() {
+    return input;
   }
 
   private int getLevelForStackSize(int size) {
@@ -61,7 +76,7 @@ public class EnchanterRecipe implements IMachineRecipe {
 
   @Override
   public boolean isRecipe(@Nonnull RecipeLevel machineLevel, @Nonnull NNList<MachineRecipeInput> inputs) {
-    if (!RecipeLevel.IGNORE.canMake(machineLevel)) {
+    if (!recipeLevel.canMake(machineLevel)) {
       return false;
     }
     ItemStack slot0 = MachineRecipeInput.getInputForSlot(0, inputs);
@@ -96,7 +111,9 @@ public class EnchanterRecipe implements IMachineRecipe {
     ItemStack slot0 = MachineRecipeInput.getInputForSlot(0, inputs);
     ItemStack slot1 = MachineRecipeInput.getInputForSlot(1, inputs);
     ItemStack slot2 = MachineRecipeInput.getInputForSlot(2, inputs);
-    return (Prep.isValid(slot0) && BOOK.contains(slot0)) || (Prep.isValid(slot1) && input.contains(slot1)) || (Prep.isValid(slot2) && LAPIS.contains(slot2));
+    return (Prep.isInvalid(slot0) || BOOK.contains(slot0)) //
+        && (Prep.isInvalid(slot1) || input.contains(slot1)) //
+        && (Prep.isInvalid(slot2) || LAPIS.contains(slot2));
   }
 
   @Override
@@ -124,44 +141,24 @@ public class EnchanterRecipe implements IMachineRecipe {
     return result;
   }
 
-  public NNList<NNList<MachineRecipeInput>> getVariants() {
-    NNList<NNList<MachineRecipeInput>> result = new NNList<>();
-    for (int level = 1; level <= enchantment.getMaxLevel(); level++) {
-      for (ItemStack item : input.getItemStacks()) {
-        item = item.copy();
-        for (ItemStack lapis : LAPIS.getItemStacks()) {
-          lapis = lapis.copy();
-          item.setCount(stackSizePerLevel * level);
-          lapis.setCount(getLapizForLevel(level));
-          if (item.getCount() <= item.getMaxStackSize() && lapis.getCount() <= lapis.getMaxStackSize()) {
-            result.add(getQuantitiesConsumed(
-                new NNList<>(new MachineRecipeInput(0, BOOK.getItemStacks().get(0)), new MachineRecipeInput(1, item), new MachineRecipeInput(2, lapis))));
-          }
-        }
-      }
-    }
-    return result;
-  }
-
   public int getXPCost(@Nonnull NNList<MachineRecipeInput> inputs) {
     ItemStack slot1 = MachineRecipeInput.getInputForSlot(1, inputs);
     int level = getLevelForStackSize(slot1.getCount());
-    return getCostForLevel(level);
+    return getXPCostForLevel(level);
   }
 
-  private int getCostForLevel(int level) {
+  private int getXPCostForLevel(int level) {
     level = Math.min(level, enchantment.getMaxLevel());
-    int cost = getRawCostForLevel(level);
+    int cost = getRawXPCostForLevel(level);
     if (level < enchantment.getMaxLevel()) {
       // min cost of half the next levels XP cause books combined in anvil
-      int nextCost = getRawCostForLevel(level + 1);
+      int nextCost = getXPCostForLevel(level + 1);
       cost = Math.max(nextCost / 2, cost);
-
     }
-    return cost;
+    return Math.max(1, cost);
   }
 
-  private int getRawCostForLevel(int level) {
+  private int getRawXPCostForLevel(int level) {
     // -1 cause its the index
     double min = Math.max(1, enchantment.getMinEnchantability(level));
     min *= costMultiplier; // per recipe scaling
@@ -170,13 +167,9 @@ public class EnchanterRecipe implements IMachineRecipe {
     return cost;
   }
 
-  private int getLapizForLevel(int level) {
+  public int getLapizForLevel(int level) {
     int res = enchantment.getMaxLevel() == 1 ? 5 : level;
     return (int) Math.max(1, Math.round(res * EnchanterConfig.lapisCostFactor.get()));
-  }
-
-  public int getLapizForStackSize(int stackSize) {
-    return getLapizForLevel(getLevelForStackSize(stackSize));
   }
 
 }

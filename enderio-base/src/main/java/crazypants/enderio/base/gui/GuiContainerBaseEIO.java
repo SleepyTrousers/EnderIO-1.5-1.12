@@ -159,6 +159,20 @@ public abstract class GuiContainerBaseEIO<O> extends GuiContainerBase implements
   }
 
   @Override
+  protected boolean hasClickedOutside(int mouseX, int mouseY, int guileft, int guitop) {
+    if (super.hasClickedOutside(mouseX, mouseY, guileft, guitop)) {
+      for (Rectangle r : getBlockingAreas()) {
+        if (r.contains(mouseX, mouseY)) {
+          return false;
+        }
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @Override
   protected void mouseClicked(int x, int y, int button) throws IOException {
     if (button == 0) {
       int tabFromCoords = getTabFromCoords(x, y);
@@ -362,6 +376,12 @@ public abstract class GuiContainerBaseEIO<O> extends GuiContainerBase implements
         y += fontRenderer.FONT_HEIGHT + 2;
       }
     }
+  }
+
+  public float setZLevel(float level) {
+    float old = zLevel;
+    zLevel = level;
+    return old;
   }
 
 }

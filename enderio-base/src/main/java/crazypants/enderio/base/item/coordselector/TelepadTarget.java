@@ -132,7 +132,7 @@ public class TelepadTarget {
   }
 
   public boolean isValid() {
-    return location.getY() >= 0;
+    return location.getY() >= 0 && dimension != Integer.MIN_VALUE;
   }
 
   @Override

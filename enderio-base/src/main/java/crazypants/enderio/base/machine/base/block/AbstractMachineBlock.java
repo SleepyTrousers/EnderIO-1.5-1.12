@@ -10,6 +10,7 @@ import com.enderio.core.common.util.Util;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.gui.handler.IEioGuiHandler;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.machine.entity.EntityFallingMachine;
@@ -25,6 +26,7 @@ import crazypants.enderio.base.render.pipeline.BlockStateWrapperBase;
 import crazypants.enderio.base.render.property.EnumRenderMode;
 import crazypants.enderio.base.render.property.IOMode;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
+import info.loenwind.autoconfig.factory.IValue;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.SoundType;
@@ -47,6 +49,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -54,7 +57,8 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     implements IEioGuiHandler.WithPos, IResourceTooltipProvider, ISmartRenderAwareBlock, IClearableConfiguration {
 
   protected final @Nonnull Random random;
-  protected boolean isEnhanced = false, respectsGravity = false;
+  protected boolean isEnhanced = false;
+  protected IValue<Boolean> respectsGravity = () -> false;
 
   protected AbstractMachineBlock(@Nonnull IModObject mo, @Nonnull Material mat) {
     super(mo, mat);
@@ -159,7 +163,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   public void onBlockAdded(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
     super.onBlockAdded(world, pos, state);
     world.notifyBlockUpdate(pos, state, state, 3);
-    if (respectsGravity) {
+    if (respectsGravity.get()) {
       world.scheduleUpdate(pos, this, tickRate(world));
     }
   }
@@ -187,7 +191,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
         }
       }
     }
-    if (respectsGravity) {
+    if (respectsGravity.get()) {
       worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
     }
   }
@@ -196,7 +200,7 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
   @Override
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     // If active, randomly throw some smoke around
-    if (isActive(world, pos)) {
+    if (PersonalConfig.machineParticlesEnabled.get() && isActive(world, pos)) {
       float startX = pos.getX() + 1.0F;
       float startY = pos.getY() + 1.0F;
       float startZ = pos.getZ() + 1.0F;
@@ -346,30 +350,16 @@ public abstract class AbstractMachineBlock<T extends AbstractMachineEntity> exte
     return null;
   }
 
-  protected void checkFallable(@Nonnull World worldIn, @Nonnull BlockPos pos) {
+  protected void checkFallable(@Nonnull WorldServer worldIn, @Nonnull BlockPos pos) {
     if ((worldIn.isAirBlock(pos.down()) || BlockFalling.canFallThrough(worldIn.getBlockState(pos.down()))) && pos.getY() >= 0) {
-      if (!BlockFalling.fallInstantly && worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32))) {
         worldIn.spawnEntity(new EntityFallingMachine(worldIn, pos, this));
-      } else {
-        IBlockState state = worldIn.getBlockState(pos);
-        worldIn.setBlockToAir(pos);
-        BlockPos blockpos;
-
-        for (blockpos = pos.down(); (worldIn.isAirBlock(blockpos) || BlockFalling.canFallThrough(worldIn.getBlockState(blockpos)))
-            && blockpos.getY() > 0; blockpos = blockpos.down()) {
-        }
-
-        if (blockpos.getY() > 0) {
-          worldIn.setBlockState(blockpos.up(), state);
-        }
-      }
     }
   }
 
   @Override
   public void updateTick(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Random rand) {
-    if (respectsGravity && !worldIn.isRemote) {
-      this.checkFallable(worldIn, pos);
+    if (!worldIn.isRemote && respectsGravity.get()) {
+      checkFallable((WorldServer) worldIn, pos);
     }
   }
 

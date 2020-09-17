@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.client.ClientUtil;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.machine.base.block.BlockMachineExtension;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
@@ -92,7 +93,7 @@ public class BlockVat<T extends TileVat> extends AbstractPoweredTaskBlock<T> imp
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     // Spit some "steam" out the spout
     TileVat te = getTileEntity(world, pos);
-    if (te != null && te.isActive()) {
+    if (PersonalConfig.machineParticlesEnabled.get() && te != null && te.isActive()) {
       float pX = pos.getX() + 0.5f;
       float pY = pos.getY() + 0.7f;
       float pZ = pos.getZ() + 0.5f;

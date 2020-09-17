@@ -2,7 +2,7 @@
 tile.block_inventory_panel.name=Inventory Panel
 tile.block_inventory_panel.tooltip.basic.line1=Remote access and crafting
 tile.block_inventory_panel.tooltip.detailed.line1=Allows remote access to inventories via
-tile.block_inventory_panel.tooltip.detailed.line2=Remote Awareness Upgrades in item conduits.
+tile.block_inventory_panel.tooltip.detailed.line2=Data and Item conduits.
 tile.block_inventory_panel.tooltip.detailed.line3=Uses Nutrient Distillation for power.
 tile.block_inventory_panel.tooltip.detailed.line4=Offers a persistent crafting grid.
 
@@ -13,7 +13,8 @@ enderio.gui.inventorypanel.header.crafting=Crafting grid
 enderio.gui.inventorypanel.header.return=Return area
 enderio.gui.inventorypanel.header.storage=Storage area
 enderio.gui.inventorypanel.info.filter=<filter by name>
-enderio.gui.inventorypanel.info.offline=<OFFLINE>
+enderio.gui.inventorypanel.info.offline=<Out of Fuel>
+enderio.gui.inventorypanel.info.noconnection=<No Connection>
 enderio.gui.inventorypanel.tooltip.return.line1=Item return area
 enderio.gui.inventorypanel.tooltip.return.line2=Items placed here can be extracted
 enderio.gui.inventorypanel.tooltip.return.line3=by an item conduit, but will not be
@@ -54,10 +55,13 @@ enderio.gui.inventorypanel.tooltip.addrecipe.line5=Shift left clicking tries to 
 enderio.gui.inventorypanel.tooltip.addrecipe.line6=grid to the maximum.
 enderio.gui.inventorypanel.tooltip.addrecipe.line7=Right click a stored recipe to delete it.
 enderio.gui.inventorypanel.tooltip.sync=NEI/JEI Sync
-enderio.gui.inventorypanel.tooltip.sync.nei=NEI Sync
 enderio.gui.inventorypanel.tooltip.sync.jei=JEI Sync
 enderio.gui.inventorypanel.tooltip.sync.jei.line1=Text entered into filter field will be remembered.
 enderio.gui.inventorypanel.tooltip.sync.jei.line2=Text entered into JEI field will not be remembered.
+enderio.gui.inventorypanel.tooltip.recipe.store=CLICK to store recipe
+enderio.gui.inventorypanel.tooltip.recipe.load=CLICK to load recipe
+enderio.gui.inventorypanel.tooltip.recipe.loadstacks=SHIFT-CLICK to load recipe with stacks
+enderio.gui.inventorypanel.tooltip.recipe.delete=CTRL-RIGHT-CLICK to delete recipe
 
 // Sensor
 tile.block_inventory_panel_sensor.name=Inventory Sensor
@@ -85,12 +89,12 @@ item.item_inventory_remote_basic.tooltip.detailed.line2=Crouch-Right-Click a pan
 item.item_inventory_remote_basic.tooltip.detailed.line3=Uses {FLUIDNAME} to open a connection and RF to keep it open.
 
 item.item_inventory_remote_advanced.name=Advanced Inventory Panel Remote
-item.item_inventory_remote_advanced.tooltip.detailed.line1=Allows you to access an Inventory Panel from anywhere in the same dimension.
+item.item_inventory_remote_advanced.tooltip.detailed.line1=Allows you to access an Inventory Panel from anywhere in the same dimension when Chunkloaded.
 item.item_inventory_remote_advanced.tooltip.detailed.line2=Crouch-Right-Click a panel to bind the remote to it.
 item.item_inventory_remote_advanced.tooltip.detailed.line3=Uses {FLUIDNAME} to open a connection and RF to keep it open.
 
 item.item_inventory_remote_ender.name=Ender Inventory Panel Remote
-item.item_inventory_remote_ender.tooltip.detailed.line1=Allows you to access an Inventory Panel from anywhere.
+item.item_inventory_remote_ender.tooltip.detailed.line1=Allows you to access an Inventory Panel from anywhere when Chunkloaded.
 item.item_inventory_remote_ender.tooltip.detailed.line2=Crouch-Right-Click a panel to bind the remote to it.
 item.item_inventory_remote_ender.tooltip.detailed.line3=Uses {FLUIDNAME} to open a connection and RF to keep it open.
 
