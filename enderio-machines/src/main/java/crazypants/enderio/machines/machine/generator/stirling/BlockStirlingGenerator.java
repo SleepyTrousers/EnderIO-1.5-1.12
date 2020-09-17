@@ -14,6 +14,7 @@ import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
+import crazypants.enderio.machines.config.config.StirlingConfig;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
@@ -51,6 +52,7 @@ public class BlockStirlingGenerator<T extends TileStirlingGenerator> extends Abs
         return RenderMappers.SIMPLE_BODY_MAPPER;
       }
     };
+    gen.respectsGravity = StirlingConfig.respectsGravity;
     gen.init();
     return gen;
   }

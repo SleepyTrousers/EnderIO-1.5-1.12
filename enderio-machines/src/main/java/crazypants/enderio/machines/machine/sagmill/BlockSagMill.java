@@ -13,6 +13,7 @@ import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
+import crazypants.enderio.machines.config.config.SagmillConfig;
 import crazypants.enderio.machines.init.MachineObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockFaceShape;
@@ -52,6 +53,7 @@ public class BlockSagMill<T extends TileSagMill> extends AbstractPoweredTaskBloc
         return RenderMappers.SIMPLE_BODY_MAPPER;
       }
     };
+    res.respectsGravity = SagmillConfig.respectsGravity;
     res.init();
     return res;
   }
