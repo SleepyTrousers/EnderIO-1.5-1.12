@@ -82,7 +82,7 @@ public class ModObjectRegistry {
   }
 
   private static void checkUseNeighborBrightness(IModObject mo, Block block) {
-    if (System.getProperty("INDEV") != null && !block.getUseNeighborBrightness(block.getDefaultState())) {
+    if (Log.isInDev() && !block.getUseNeighborBrightness(block.getDefaultState())) {
       boolean flag1 = block instanceof BlockStairs;
       boolean flag2 = block instanceof BlockSlab;
       boolean flag4 = !block.getMaterial(block.getDefaultState()).blocksLight();
@@ -196,13 +196,13 @@ public class ModObjectRegistry {
     return NullHelper.notnull(getModObject(forBlock), "missing modObject for block " + forBlock.getRegistryName());
   }
 
-  public static @Nullable Block getBlock(@Nonnull IModObject forBlock) {
-    final ResourceLocation key = blockMap.getKey(forBlock);
+  public static @Nullable Block getBlock(@Nonnull IModObject forModObject) {
+    final ResourceLocation key = blockMap.getKey(forModObject);
     return key != null && Block.REGISTRY.containsKey(key) ? Block.REGISTRY.getObject(key) : null;
   }
 
-  public static @Nonnull Block getBlockNN(@Nonnull IModObject forBlock) {
-    return NullHelper.notnull(getBlock(forBlock), "missing block for modObject " + forBlock.getRegistryName());
+  public static @Nonnull Block getBlockNN(@Nonnull IModObject forModObject) {
+    return NullHelper.notnull(getBlock(forModObject), "missing block for modObject " + forModObject.getRegistryName());
   }
 
   public static @Nullable IModObject getModObject(@Nonnull Item forItem) {
@@ -213,13 +213,13 @@ public class ModObjectRegistry {
     return NullHelper.notnull(getModObject(forItem), "missing modObject for item " + forItem.getRegistryName());
   }
 
-  public static @Nullable Item getItem(@Nonnull IModObject forItem) {
-    final ResourceLocation key = itemMap.getKey(forItem);
+  public static @Nullable Item getItem(@Nonnull IModObject forModObject) {
+    final ResourceLocation key = itemMap.getKey(forModObject);
     return key != null && Item.REGISTRY.containsKey(key) ? Item.REGISTRY.getObject(key) : null;
   }
 
-  public static @Nonnull Item getItemNN(@Nonnull IModObject forItem) {
-    return NullHelper.notnull(getItem(forItem), "missing item for modObject " + forItem.getRegistryName());
+  public static @Nonnull Item getItemNN(@Nonnull IModObject forModObject) {
+    return NullHelper.notnull(getItem(forModObject), "missing item for modObject " + forModObject.getRegistryName());
   }
 
   public static @Nonnull ForgeRegistry<IModObject> getRegistry() {
