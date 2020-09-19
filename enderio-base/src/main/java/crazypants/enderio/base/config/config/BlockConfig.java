@@ -45,4 +45,15 @@ public final class BlockConfig {
   public static final IValue<Integer> dsaMaxCost = DSA.make("maxCost", 80, //
       "Maximum enchantment cost the Dark Steel Anvil can handle. Also applies to the Anvil Upgrade.").setRange(40, 400).sync();
 
+  public static final IValue<Integer> dsaMaterialWorth = DSA.make("materialWorth", 3 * 9 * 9 + 4 * 9, //
+      "Total amount of Dark Steel (in nuggets) that goes into the Dark Steel Anvil's crafting recipe. Used when recycling the broken anvil."
+          + " Default is 3 blocks and 4 ingots.")
+      .setRange(0, 9 * 9 * 9 /* 9 slots with one block each, max the crafting grid can handle */).sync();
+
+  public static final IValue<Float> dsaMinDrop = DSA.make("minDrop", 0.25f, //
+      "Minimum amount of materials that will drop when recycling a broken Dark Steel Anvil. (0 = nothing, 1 = everything)").setRange(0, 1).sync();
+
+  public static final IValue<Float> dsaMaxDrop = DSA.make("maxDrop", 1f, //
+      "Maximum amount of materials that will drop when recycling a broken Dark Steel Anvil. (0 = nothing, 1 = everything)").setRange(0, 1).sync();
+
 }
