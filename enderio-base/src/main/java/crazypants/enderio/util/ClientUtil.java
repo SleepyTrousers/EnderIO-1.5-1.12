@@ -8,6 +8,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -50,7 +51,7 @@ public class ClientUtil {
 
   public static void spawnParcticles(double posX, double posY, double posZ, int count, @Nonnull EnumParticleTypes particle) {
     final World world = Minecraft.getMinecraft().world;
-    if (NullHelper.untrust(world) == null) {
+    if (!PersonalConfig.machineParticlesEnabled.get() || NullHelper.untrust(world) == null) {
       // possible race condition during world join and/or disconnect
       return;
     }

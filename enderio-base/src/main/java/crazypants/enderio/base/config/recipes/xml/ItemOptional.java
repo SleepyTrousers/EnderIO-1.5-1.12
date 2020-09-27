@@ -71,7 +71,7 @@ public class ItemOptional implements IRecipeConfigElement {
   @Override
   public void enforceValidity() throws InvalidRecipeConfigException {
     if (!isValid()) {
-      throw new InvalidRecipeConfigException("Could not find a crafting ingredient for '" + name.get());
+      throw new InvalidRecipeConfigException("Could not find a crafting ingredient for '" + name.get() + "'");
     }
   }
 

@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.client.ClientUtil;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineBlock;
 import crazypants.enderio.base.machine.baselegacy.AbstractInventoryMachineEntity;
 import crazypants.enderio.base.render.IBlockStateWrapper;
@@ -61,7 +62,7 @@ public abstract class AbstractBlockObelisk<T extends AbstractInventoryMachineEnt
   @Override
   @SideOnly(Side.CLIENT)
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
-    if (isActive(world, pos) && shouldDoWorkThisTick(world, pos, 5)) {
+    if (PersonalConfig.machineParticlesEnabled.get() && isActive(world, pos) && shouldDoWorkThisTick(world, pos, 5)) {
       float startX = pos.getX() + 1.0F;
       float startY = pos.getY() + 0.85F;
       float startZ = pos.getZ() + 1.0F;

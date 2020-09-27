@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import crazypants.enderio.base.config.config.PersonalConfig;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.EnumParticleTypes;
@@ -53,13 +54,15 @@ public class PacketFarmAction implements IMessage {
 
     @Override
     public IMessage onMessage(PacketFarmAction message, MessageContext ctx) {
-      for (BlockPos bc : message.coords) {
-        for (int i = 0; i < 15; i++) {
-          double xOff = 0.5 + (rand.nextDouble() - 0.5) * 1.1;
-          double yOff = 0.5 + (rand.nextDouble() - 0.5) * 0.2;
-          double zOff = 0.5 + (rand.nextDouble() - 0.5) * 1.1;
-          Minecraft.getMinecraft().world.spawnParticle(EnumParticleTypes.PORTAL, bc.getX() + xOff, bc.getY() + yOff, bc.getZ() + zOff,
-              (rand.nextDouble() - 0.5) * 1.5, -rand.nextDouble(), (rand.nextDouble() - 0.5) * 1.5);
+      if (PersonalConfig.machineParticlesEnabled.get()) {
+        for (BlockPos bc : message.coords) {
+          for (int i = 0; i < 15; i++) {
+            double xOff = 0.5 + (rand.nextDouble() - 0.5) * 1.1;
+            double yOff = 0.5 + (rand.nextDouble() - 0.5) * 0.2;
+            double zOff = 0.5 + (rand.nextDouble() - 0.5) * 1.1;
+            Minecraft.getMinecraft().world.spawnParticle(EnumParticleTypes.PORTAL, bc.getX() + xOff, bc.getY() + yOff, bc.getZ() + zOff,
+                (rand.nextDouble() - 0.5) * 1.5, -rand.nextDouble(), (rand.nextDouble() - 0.5) * 1.5);
+          }
         }
       }
       return null;

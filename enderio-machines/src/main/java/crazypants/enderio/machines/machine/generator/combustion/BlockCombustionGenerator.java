@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.machine.base.block.BlockMachineExtension;
 import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.machine.baselegacy.AbstractGeneratorBlock;
@@ -85,7 +86,7 @@ public class BlockCombustionGenerator<T extends TileCombustionGenerator> extends
   @Override
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     // If active, randomly throw some smoke around
-    if (isActive(world, pos)) {
+    if (PersonalConfig.machineParticlesEnabled.get() && isActive(world, pos)) {
 
       TileEntity te = world.getTileEntity(pos);
       EnumFacing facing = EnumFacing.SOUTH;

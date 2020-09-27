@@ -19,6 +19,7 @@ import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.config.config.TeleportConfig;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
@@ -359,7 +360,7 @@ public class TravelController {
       }
       return false;
     }
-    if (doClientTeleport(player, hand, coord, source, requiredPower, conserveMomentum)) {
+    if (doClientTeleport(player, hand, coord, source, requiredPower, conserveMomentum) && PersonalConfig.machineParticlesEnabled.get()) {
       for (int i = 0; i < 6; ++i) {
         player.world.spawnParticle(EnumParticleTypes.PORTAL, player.posX + (rand.nextDouble() - 0.5D), player.posY + rand.nextDouble() * player.height - 0.25D,
             player.posZ + (rand.nextDouble() - 0.5D), (rand.nextDouble() - 0.5D) * 2.0D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2.0D);

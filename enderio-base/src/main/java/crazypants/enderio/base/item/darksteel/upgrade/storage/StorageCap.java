@@ -41,6 +41,7 @@ public class StorageCap extends ItemStackHandler {
   protected final @Nonnull NbtValue NBT;
   protected final @Nonnull EntityEquipmentSlot equipmentSlot;
   protected final @Nonnull ItemStack owner;
+  protected final boolean isOwnerEmpty; // needed because other mods can manipulate the stack in the inventory
   protected final EntityPlayer player;
   protected Function<ItemStack, Boolean> validator = x -> true;
 
@@ -54,6 +55,7 @@ public class StorageCap extends ItemStackHandler {
     this.equipmentSlot = equipmentSlot;
     this.player = size > 0 ? player : null;
     this.owner = size > 0 ? player.getItemStackFromSlot(equipmentSlot) : Prep.getEmpty();
+    this.isOwnerEmpty = owner.isEmpty();
     size = Prep.isValid(owner) ? size : 0;
     deserializeNBT(NBT.getTag(owner));
     if (size != super.getSlots()) {
@@ -81,6 +83,7 @@ public class StorageCap extends ItemStackHandler {
     this.equipmentSlot = EntityEquipmentSlot.MAINHAND;
     this.player = null;
     this.owner = owner;
+    this.isOwnerEmpty = owner.isEmpty();
     deserializeNBT(NBT.getTag(owner));
   }
 
@@ -92,11 +95,12 @@ public class StorageCap extends ItemStackHandler {
     this.NBT = NbtValue.INVENTORY;
     this.equipmentSlot = equipmentSlot;
     this.owner = Prep.getEmpty();
+    this.isOwnerEmpty = owner.isEmpty();
     this.player = null;
   }
 
   public boolean isStillConnectedToPlayer() {
-    return player == null || Prep.isInvalid(owner) || owner == player.getItemStackFromSlot(equipmentSlot);
+    return Prep.isInvalid(owner) == isOwnerEmpty && (player == null || Prep.isInvalid(owner) || owner == player.getItemStackFromSlot(equipmentSlot));
   }
 
   public @Nonnull EntityEquipmentSlot getEquipmentSlot() {

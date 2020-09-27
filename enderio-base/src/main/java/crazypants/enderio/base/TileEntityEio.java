@@ -253,4 +253,10 @@ public abstract class TileEntityEio extends TileEntityBase {
     return iCaps.first(capability, facingIn);
   }
 
+  public final void TickCentral_TrueITickableUpdate() {
+    // System.out.println("Attach to net.minecraftforge.server.timings.TimeTracker.TILE_ENTITY_UPDATE instead of asm'ing mod code. That's rude and
+    // unnecessary.");
+    disableTicking();
+  }
+
 }

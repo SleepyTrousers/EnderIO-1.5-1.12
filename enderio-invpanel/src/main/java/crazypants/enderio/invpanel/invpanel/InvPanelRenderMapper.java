@@ -28,7 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class InvPanelRenderMapper extends MachineRenderMapper {
 
-  public static final MachineRenderMapper instance = new InvPanelRenderMapper();
+  public static final @Nonnull MachineRenderMapper instance = new InvPanelRenderMapper();
 
   public InvPanelRenderMapper() {
     super(null);
@@ -67,7 +67,7 @@ public class InvPanelRenderMapper extends MachineRenderMapper {
 
   @Override
   @SideOnly(Side.CLIENT)
-  public List<Pair<IBlockState, ItemStack>> mapItemRender(Block block, ItemStack stack, ItemQuadCollector itemQuadCollector) {
+  public List<Pair<IBlockState, ItemStack>> mapItemRender(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ItemQuadCollector itemQuadCollector) {
     return Collections.singletonList(Pair.of(block.getStateFromMeta(stack.getMetadata()).withProperty(EnumRenderMode6.RENDER, EnumRenderMode6.FRONT_ON_NORTH),
         stack));
   }

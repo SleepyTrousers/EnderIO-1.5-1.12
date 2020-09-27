@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.ProgressManager;
 
 public class Recipes implements IRecipeRoot {
 
-  private final NNList<AbstractConditional> recipes = new NNList<AbstractConditional>();
+  protected final NNList<AbstractConditional> recipes = new NNList<AbstractConditional>();
 
   @Override
   public List<AbstractConditional> getRecipes() {
@@ -122,7 +122,7 @@ public class Recipes implements IRecipeRoot {
     return false;
   }
 
-  private <T extends AbstractConditional> void addRecipe(T element, StaxFactory factory, StartElement startElement)
+  protected <T extends AbstractConditional> void addRecipe(T element, StaxFactory factory, StartElement startElement)
       throws InvalidRecipeConfigException, XMLStreamException {
     final AbstractConditional recipe = factory.read(element, startElement);
     for (AbstractConditional existingRecipe : recipes) {

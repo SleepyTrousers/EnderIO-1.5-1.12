@@ -100,6 +100,26 @@ public enum CapacitorKey implements ICapacitorKey {
   DARK_STEEL_CHARGER_VIBRANT_ENERGY_INPUT(ModObject.itemInventoryChargerVibrant, CapacitorKeyType.ENERGY_INTAKE),
   DARK_STEEL_CHARGER_VIBRANT_ENERGY_USE(ModObject.itemInventoryChargerVibrant, CapacitorKeyType.ENERGY_USE),
 
+  HEAD_VANILLA_CHANCE(ModObject.itemDarkSteelSword, CapacitorKeyType.AMOUNT, true),
+  HEAD_VANILLA_CHANCE_WITHER(ModObject.itemDarkSteelSword, CapacitorKeyType.AMOUNT, true),
+  HEAD_VANILLA_CHANCE_ENDERMAN(ModObject.itemDarkSteelSword, CapacitorKeyType.AMOUNT, true),
+
+  HEAD_CHANCE(ModObject.itemDarkSteelSword, CapacitorKeyType.AMOUNT, true),
+  HEAD_CHANCE_WITHER(ModObject.itemDarkSteelSword, CapacitorKeyType.AMOUNT, true),
+  HEAD_CHANCE_ENDERMAN(ModObject.itemDarkSteelSword, CapacitorKeyType.AMOUNT, true),
+
+  HEAD_EMPOWERED_CHANCE(ModObject.itemDarkSteelSword, CapacitorKeyType.AMOUNT, true),
+  HEAD_EMPOWERED_CHANCE_WITHER(ModObject.itemDarkSteelSword, CapacitorKeyType.AMOUNT, true),
+  HEAD_EMPOWERED_CHANCE_ENDERMAN(ModObject.itemDarkSteelSword, CapacitorKeyType.AMOUNT, true),
+
+  HEAD_TIER_CHANCE(ModObject.itemDarkSteelSword, CapacitorKeyType.AMOUNT, true),
+
+  HEAD_BEHEADING_CHANCE_ENDERMAN(ModObject.itemDarkSteelSword, CapacitorKeyType.AMOUNT, true),
+
+  HEAD_FAKEPLAYER_CHANCE(ModObject.itemDarkSteelSword, CapacitorKeyType.AMOUNT, true),
+  HEAD_FAKEPLAYER_CHANCE_WITHER(ModObject.itemDarkSteelSword, CapacitorKeyType.AMOUNT, true),
+  HEAD_FAKEPLAYER_CHANCE_ENDERMAN(ModObject.itemDarkSteelSword, CapacitorKeyType.AMOUNT, true),
+
   ;
 
   // /////////////////////////////////////////////////////////////////// //
@@ -122,6 +142,13 @@ public enum CapacitorKey implements ICapacitorKey {
 
   private CapacitorKey(@Nonnull IModObject owner, @Nonnull CapacitorKeyType valueType) {
     this(owner, valueType, valueType.name().toLowerCase(Locale.ENGLISH));
+  }
+
+  private CapacitorKey(@Nonnull IModObject owner, @Nonnull CapacitorKeyType valueType, boolean unused) {
+    this.owner = owner;
+    this.valueType = valueType;
+    this.registryName = new ResourceLocation(owner.getRegistryName().getResourceDomain(),
+        owner.getRegistryName().getResourcePath() + "/" + name().toLowerCase(Locale.ENGLISH).toLowerCase(Locale.ENGLISH));
   }
 
   @Override

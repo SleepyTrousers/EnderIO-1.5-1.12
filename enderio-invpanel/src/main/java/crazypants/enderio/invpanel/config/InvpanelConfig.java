@@ -5,29 +5,31 @@ import java.util.List;
 
 import com.enderio.core.common.util.NullHelper;
 
-import info.loenwind.autoconfig.factory.IValue;
-import info.loenwind.autoconfig.factory.IValueFactory;
 import crazypants.enderio.invpanel.remote.ItemRemoteInvAccessType;
 import crazypants.enderio.machines.config.Config;
+import info.loenwind.autoconfig.factory.IValue;
+import info.loenwind.autoconfig.factory.IValueFactory;
 
 public final class InvpanelConfig {
 
   public static final IValueFactory F = Config.F.section("invpanel");
 
   public static final IValue<Boolean> inventoryPanelFree = F.make("inventoryPanelFree", false,
-      "If true, the inv panel will not accept fluids and will be active permanently.");
+      "If true, the inv panel will not accept fluids and will be active permanently.").sync();
 
   public static final IValue<Float> inventoryPanelPowerPerMB = F.make("inventoryPanelPowerPerMB", 800F,
       "Internal power generated per mB. The default of 800/mB matches the RF generation of the Zombie generator. "
-          + "A panel tries to refill only once every second - setting this value too low slows down the scanning speed.");
+          + "A panel tries to refill only once every second - setting this value too low slows down the scanning speed.")
+      .sync().setMin(1);
 
-  public static final IValue<Float> inventoryPanelScanCostPerSlot = F.make("inventoryPanelScanCostPerSlot", 0.1F, "Internal power used for scanning a slot");
+  public static final IValue<Float> inventoryPanelScanCostPerSlot = F.make("inventoryPanelScanCostPerSlot", 0.1F, "Internal power used for scanning a slot")
+      .sync().setMin(0);
 
   public static final IValue<Float> inventoryPanelExtractCostPerItem = F.make("inventoryPanelExtractCostPerItem", 12F,
-      "Internal power used per item extracted (not a stack of items)");
+      "Internal power used per item extracted (not a stack of items)").sync().setMin(0);
 
   public static final IValue<Float> inventoryPanelExtractCostPerOperation = F.make("inventoryPanelExtractCostPerOperation", 32F,
-      "Internal power used per extract operation (independent of stack size)");
+      "Internal power used per extract operation (independent of stack size)").sync().setMin(0);
 
   public static final IValue<Boolean> inventoryPanelScaleText = F.make("inventoryPanelScaleText", true,
       "If true stack sizes will be drawn at a smaller size with a little more detail.");
@@ -47,15 +49,20 @@ public final class InvpanelConfig {
   static {
     for (ItemRemoteInvAccessType type : ItemRemoteInvAccessType.values()) {
       int i = type.ordinal();
-      remoteInventoryMBPerOpen.add(F.make("remoteInventoryMBPerOpenTier" + i, DEF_MB_OPEN[i], "MB required to open the panel"));
+      remoteInventoryMBPerOpen.add(F.make("remoteInventoryMBPerOpenTier" + i, DEF_MB_OPEN[i], "MB required to open the panel").sync().setMin(0));
 
-      remoteInventoryRFPerTick.add(F.make("remoteInventoryRFPerTickTier" + i, DEF_RF_TICK[i], "RF used per tick when the panel is open"));
+      remoteInventoryRFPerTick.add(F.make("remoteInventoryRFPerTickTier" + i, DEF_RF_TICK[i], "RF used per tick when the panel is open").sync().setMin(0));
 
-      remoteInventoryMBCapacity.add(F.make("remoteInventoryMBCapacityTier" + i, DEF_MB_CAP[i], "Capacity of the intrenal tank in MB"));
+      remoteInventoryMBCapacity.add(F.make("remoteInventoryMBCapacityTier" + i, DEF_MB_CAP[i], "Capacity of the internal tank in MB").sync().setMin(0));
 
-      remoteInventoryRFCapacity.add(F.make("remoteInventoryRFCapacityTier" + i, DEF_RF_CAP[i], "Capacity of the intrenal energy storage in RF"));
+      remoteInventoryRFCapacity.add(F.make("remoteInventoryRFCapacityTier" + i, DEF_RF_CAP[i], "Capacity of the internal energy storage").sync().setMin(0));
 
-      remoteInventoryFluidTypes.add(F.make("remoteInventoryFluidTypesTier" + i, NullHelper.notnull(DEF_FLUID[i], "DEF_FLUID"), "The type of fluid required"));
+      remoteInventoryFluidTypes
+          .add(F.make("remoteInventoryFluidTypesTier" + i, NullHelper.notnull(DEF_FLUID[i], "DEF_FLUID"), "The type of fluid required").sync());
     }
   }
+
+  public static final IValue<Boolean> respectsGravity = F.make("respectsGravity", true,
+      "If true, the inv panel will respect gravity and fall like an anvil when not attached to a block.").sync();
+
 }

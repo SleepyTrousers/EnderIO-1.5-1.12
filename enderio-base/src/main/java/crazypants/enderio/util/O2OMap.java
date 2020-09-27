@@ -56,6 +56,18 @@ public class O2OMap<K, V> implements Map<K, V> {
     return value2;
   }
 
+  /**
+   * Adds a value mapping given that neither key nor value is already mapped. If that constraint is violated, a {@link RuntimeException} is thrown.
+   * <p>
+   * This methods otherwise follows the definition of {@link #put(Object,Object) put(k, v)}.
+   * 
+   * @param key
+   *          key with which the specified value is to be associated
+   * @param value
+   *          value to be associated with the specified key
+   * @return <code>null</code> (the previous value associated with <tt>key</tt>)
+   * @throws RuntimeException
+   */
   public V putNoOverride(K key, V value) {
     K key2 = valueMap.get(value);
     if (key2 != null) {
