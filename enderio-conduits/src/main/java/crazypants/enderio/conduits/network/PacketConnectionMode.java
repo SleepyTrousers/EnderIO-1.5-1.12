@@ -8,7 +8,6 @@ import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.conduits.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.util.EnumReader;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -49,8 +48,6 @@ public class PacketConnectionMode extends AbstractConduitPacket.Sided<IConduit> 
         } else if (conduit instanceof IServerConduit) {
           ((IServerConduit) conduit).setConnectionMode(message.dir, message.mode);
         }
-        IBlockState bs = message.getWorld(ctx).getBlockState(message.getPos());
-        message.getWorld(ctx).notifyBlockUpdate(message.getPos(), bs, bs, 3);
       }
       return null;
     }

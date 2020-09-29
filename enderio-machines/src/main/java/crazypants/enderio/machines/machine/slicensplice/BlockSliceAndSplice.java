@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskBlock;
 import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
@@ -60,7 +61,7 @@ public class BlockSliceAndSplice extends AbstractPoweredTaskBlock<TileSliceAndSp
   @Override
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     TileSliceAndSplice te = getTileEntity(world, pos);
-    if (te != null && isActive(world, pos)) {
+    if (PersonalConfig.machineParticlesEnabled.get() && te != null && isActive(world, pos)) {
       int x = pos.getX();
       int y = pos.getY();
       int z = pos.getZ();

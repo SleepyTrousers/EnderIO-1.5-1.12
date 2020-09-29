@@ -36,4 +36,7 @@ public final class AlloySmelterConfig {
   public static final IValue<Profile> profileEnhancedAlloy = F.make("profileEnhancedAlloy", Profile.AUTO, //
       "Operating profile for the Enhanced Alloy Smelter. Restaring the game is needed for a change to be reflected in JEI.").sync();
 
+  public static final IValue<Boolean> respectsGravity = F.make("respectsGravitySimple", true,
+      "If true, the Simple Alloy Smelter will respect gravity and fall like an anvil when not attached to a block.").sync();
+
 }

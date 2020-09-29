@@ -23,32 +23,6 @@ public final class BlockConfig {
   public static final IValue<Float> darkSteelLadderSpeedBoost = F.make("darkSteelLadderSpeedBoost", 0.06f, //
       "Speed boost, in blocks per tick, that the DS ladder gives over the vanilla ladder.").setRange(0, 0.6).sync();
 
-  public static final IValueFactoryEIO F_SKULLS = F.section(".skulls");
-
-  public static final IValue<Float> darkSteelSwordSkullChance = F_SKULLS.make("darkSteelSwordSkullChance", 0.05f, //
-      "The base chance that a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance; can go over 100%)").setMin(0).sync();
-  public static final IValue<Float> darkSteelSwordSkullLootingModifier = F_SKULLS.make("darkSteelSwordSkullLootingModifier", 0.05f, //
-      "The added chance per looting level that a skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance; can go over 100%)")
-      .setMin(0).sync();
-  public static final IValue<Float> darkSteelSwordWitherSkullChance = F_SKULLS.make("darkSteelSwordWitherSkullChance", 0.1f, //
-      "The base chance that a wither skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance; can go over 100%)").setMin(0)
-      .sync();
-  public static final IValue<Float> darkSteelSwordWitherSkullLootingModifier = F_SKULLS.make("darkSteelSwordWitherSkullLootingModifier", 0.05f, //
-      "The added chance per looting level that a wither skull will be dropped when using a powered dark steel sword (0 = no chance, 1 = 100% chance; can go over 100%)")
-      .setMin(0).sync();
-
-  public static final IValue<Float> vanillaSwordSkullChance = F_SKULLS.make("vanillalSwordSkullChance", 0.05f, //
-      "The base chance that a skull will be dropped when using a non dark steel sword (0 = no chance, 1 = 100% chance; can go over 100%)").setMin(0).sync();
-  public static final IValue<Float> vanillaSwordSkullLootingModifier = F_SKULLS.make("vanillaSwordSkullLootingModifier", 0.05f, //
-      "The added chance per looting level that a skull will be dropped when using a non dark steel sword (0 = no chance, 1 = 100% chance; can go over 100%)")
-      .setMin(0).sync();
-  public static final IValue<Float> ticBeheadingSkullModifier = F_SKULLS.make("ticBeheadingSkullModifier", 0.75f, //
-      "The added chance per level of beaheading that a skull will be dropped when using a TiC weapon (0 = no chance, 1 = 100% chance; can go over 100%)")
-      .setMin(0).sync();
-  public static final IValue<Float> fakePlayerSkullChance = F_SKULLS.make("fakePlayerSkullChance", 0.5f, //
-      "The ratio of skull drops when a mob is killed by a 'FakePlayer', such as Killer Joe. When set to 0 no skulls will drop, at 1 the rate of skull drops is not modified")
-      .setRange(0, 1).sync();
-
   public static final IValueFactoryEIO GLASS = F.section(".glass");
 
   public static final IValue<Boolean> clearGlassConnectToFusedQuartz = GLASS.make("clearGlassConnectToFusedQuartz", false, //
@@ -70,5 +44,16 @@ public final class BlockConfig {
 
   public static final IValue<Integer> dsaMaxCost = DSA.make("maxCost", 80, //
       "Maximum enchantment cost the Dark Steel Anvil can handle. Also applies to the Anvil Upgrade.").setRange(40, 400).sync();
+
+  public static final IValue<Integer> dsaMaterialWorth = DSA.make("materialWorth", 3 * 9 * 9 + 4 * 9, //
+      "Total amount of Dark Steel (in nuggets) that goes into the Dark Steel Anvil's crafting recipe. Used when recycling the broken anvil."
+          + " Default is 3 blocks and 4 ingots.")
+      .setRange(0, 9 * 9 * 9 /* 9 slots with one block each, max the crafting grid can handle */).sync();
+
+  public static final IValue<Float> dsaMinDrop = DSA.make("minDrop", 0.25f, //
+      "Minimum amount of materials that will drop when recycling a broken Dark Steel Anvil. (0 = nothing, 1 = everything)").setRange(0, 1).sync();
+
+  public static final IValue<Float> dsaMaxDrop = DSA.make("maxDrop", 1f, //
+      "Maximum amount of materials that will drop when recycling a broken Dark Steel Anvil. (0 = nothing, 1 = everything)").setRange(0, 1).sync();
 
 }

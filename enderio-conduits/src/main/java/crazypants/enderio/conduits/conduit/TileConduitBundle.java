@@ -183,9 +183,6 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     if (!player.capabilities.isCreativeMode) {
       stack.shrink(1);
     }
-    IBlockState bs = world.getBlockState(pos);
-    world.notifyBlockUpdate(pos, bs, bs, 3);
-    markDirty();
     return true;
   }
 
@@ -268,12 +265,14 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
     }
     world.setBlockState(getPos(), newBs);
     forceUpdatePlayers(); // send the packet now so the re-render we just triggered will render with the new data
+    dirty(); // and update next tick, too
   }
 
   @Override
   public void setFacadeType(@Nonnull EnumFacadeType type) {
     facadeType = type;
     markDirty();
+    dirty();
   }
 
   @Override
@@ -356,8 +355,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   private void doConduitsDirty() {
     IBlockState bs = world.getBlockState(pos);
-    world.notifyBlockUpdate(pos, bs, bs, 3);
-    world.neighborChanged(pos, getBlockType(), pos);
+    world.markAndNotifyBlock(pos, null, bs, bs, 3);
     markDirty();
     forceUpdatePlayers();
     conduitsDirty = false;

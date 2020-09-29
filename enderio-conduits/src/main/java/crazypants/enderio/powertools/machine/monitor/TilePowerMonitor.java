@@ -3,10 +3,11 @@ package crazypants.enderio.powertools.machine.monitor;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.enderio.core.common.util.NullHelper;
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.conduit.ConduitUtil;
+import crazypants.enderio.base.conduit.ConnectionMode;
 import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
@@ -168,20 +169,58 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
     return 0;
   }
 
+  @Store(SAVE)
+  private EnumFacing lastConduitConnection = null;
+  private boolean lastConduitConnectionDirty = true;
+
+  protected void onNeighbor() {
+    lastConduitConnectionDirty = true;
+  }
+
+  // Side.SERVER
   public NetworkPowerManager getPowerManager() {
-    for (EnumFacing dir : EnumFacing.values()) {
-      IPowerConduit con = ConduitUtil.getConduit(world, this, NullHelper.first(dir, EnumFacing.DOWN), IPowerConduit.class);
-      if (con != null) {
-        IConduitNetwork<?, ?> n = con.getNetwork();
-        if (n instanceof PowerConduitNetwork) {
-          NetworkPowerManager pm = ((PowerConduitNetwork) n).getPowerManager();
-          if (pm != null) {
-            return pm;
+    class Finder {
+      NetworkPowerManager pmFound = null;
+      EnumFacing found = null;
+
+      void find(EnumFacing dir) {
+        if (dir != null && dir != found) {
+          IPowerConduit con = ConduitUtil.getConduit(world, TilePowerMonitor.this, dir, IPowerConduit.class);
+          if (con != null && con.getEffectiveConnectionMode(dir.getOpposite()).isActive()) {
+            IConduitNetwork<?, ?> n = con.getNetwork();
+            if (n instanceof PowerConduitNetwork) {
+              NetworkPowerManager pm = ((PowerConduitNetwork) n).getPowerManager();
+              if (pm != null) {
+                if (pmFound == null) {
+                  pmFound = pm;
+                  found = dir;
+                } else {
+                  con.setConnectionMode(dir.getOpposite(), ConnectionMode.DISABLED);
+                }
+              }
+            }
           }
         }
       }
     }
-    return null;
+    Finder f = new Finder();
+
+    // prio 1: existing connection
+    f.find(lastConduitConnection);
+    if (!lastConduitConnectionDirty && f.pmFound != null) {
+      // stop wasting time if no neighbor was updated since the last full check
+      return f.pmFound;
+    }
+
+    // prio 2: backside connection
+    f.find(getFacing().getOpposite());
+
+    // prio 3: enum order
+    NNList.FACING.apply(f::find);
+
+    lastConduitConnection = f.found;
+    lastConduitConnectionDirty = false;
+    return f.pmFound;
   }
 
   @Override

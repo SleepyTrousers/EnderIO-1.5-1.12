@@ -34,6 +34,7 @@ import crazypants.enderio.invpanel.network.PacketUpdateExtractionDisabled;
 import crazypants.enderio.invpanel.util.StoredCraftingRecipe;
 import crazypants.enderio.machines.machine.generator.zombie.IHasNutrientTank;
 import crazypants.enderio.machines.machine.generator.zombie.PacketNutrientTank;
+import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.util.NBTAction;
@@ -167,7 +168,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   }
 
   private void updateItemFilter() {
-    itemFilter = FilterRegistry.<IItemFilter> getFilterForUpgrade(inventory[SLOT_VIEW_FILTER]);
+    itemFilter = FilterRegistry.<IItemFilter> getFilterForUpgrade(NullHelper.first(inventory[SLOT_VIEW_FILTER], Prep.getEmpty()));
   }
 
   public IItemFilter getItemFilter() {

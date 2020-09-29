@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.BaseConfig;
+import crazypants.enderio.base.config.config.BlockConfig;
 import crazypants.enderio.base.material.alloy.Alloy;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.BlockFalling;
@@ -20,6 +21,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -53,7 +55,7 @@ public class BlockBrokenAnvil extends BlockFalling {
 
   @Override
   public @Nonnull BlockFaceShape getBlockFaceShape(@Nonnull IBlockAccess worldIn, @Nonnull IBlockState state, @Nonnull BlockPos pos, @Nonnull EnumFacing face) {
-    return BlockFaceShape.UNDEFINED;
+    return face == EnumFacing.DOWN ? BlockFaceShape.CENTER : BlockFaceShape.UNDEFINED;
   }
 
   @Override
@@ -90,8 +92,13 @@ public class BlockBrokenAnvil extends BlockFalling {
 
   @Override
   public void getDrops(@Nonnull NonNullList<ItemStack> drops, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull IBlockState state, int fortune) {
-    int totalValue = 3 * 9 * 9 + 4 * 9; // 3 blocks + 4 ingots converted to nuggets
-    totalValue = (int) (totalValue * .75f * RANDOM.nextFloat() + totalValue * .25f);
+    int totalValue = BlockConfig.dsaMaterialWorth.get();
+    float min = MathHelper.clamp(Math.min(BlockConfig.dsaMinDrop.get(), BlockConfig.dsaMaxDrop.get()), 0, 1); // don't trust users to
+    float max = MathHelper.clamp(Math.max(BlockConfig.dsaMinDrop.get(), BlockConfig.dsaMaxDrop.get()), 0, 1); // give us valid values
+    if (totalValue <= 0 || max <= 0) {
+      return;
+    }
+    totalValue = (int) (totalValue * (max - min) * RANDOM.nextFloat() + totalValue * min);
     int blocks = 0, ingots = 0, nuggets = 0;
     while (totalValue > 0) {
       if (RANDOM.nextBoolean()) {
@@ -108,16 +115,18 @@ public class BlockBrokenAnvil extends BlockFalling {
         totalValue--;
       }
     }
-    if (blocks > 0) {
-      drops.add(Alloy.DARK_STEEL.getStackBlock(blocks));
+    while (blocks > 0) {
+      drops.add(Alloy.DARK_STEEL.getStackBlock(Math.min(blocks, Alloy.DARK_STEEL.getStackBlock().getMaxStackSize())));
+      blocks -= Alloy.DARK_STEEL.getStackBlock().getMaxStackSize();
     }
     while (ingots > 0) {
-      drops.add(Alloy.DARK_STEEL.getStackIngot(ingots > 64 ? 64 : ingots));
-      ingots -= 64;
+      drops.add(Alloy.DARK_STEEL.getStackIngot(Math.min(ingots, Alloy.DARK_STEEL.getStackIngot().getMaxStackSize())));
+      ingots -= Alloy.DARK_STEEL.getStackIngot().getMaxStackSize();
     }
     while (nuggets > 0) {
-      drops.add(Alloy.DARK_STEEL.getStackNugget(nuggets > 64 ? 64 : nuggets));
-      nuggets -= 64;
+      drops.add(Alloy.DARK_STEEL.getStackNugget(Math.min(nuggets, Alloy.DARK_STEEL.getStackNugget().getMaxStackSize())));
+      nuggets -= Alloy.DARK_STEEL.getStackNugget().getMaxStackSize();
     }
   }
+
 }

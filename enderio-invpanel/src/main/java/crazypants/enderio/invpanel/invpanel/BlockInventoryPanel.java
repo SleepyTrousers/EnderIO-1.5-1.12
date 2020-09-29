@@ -8,12 +8,15 @@ import javax.annotation.Nullable;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
+import crazypants.enderio.base.machine.entity.EntityFallingMachine;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.property.EnumRenderMode6;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
+import crazypants.enderio.invpanel.config.InvpanelConfig;
 import crazypants.enderio.invpanel.init.InvpanelObject;
+import net.minecraft.block.BlockFalling;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -27,6 +30,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -44,6 +48,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
     super(InvpanelObject.blockInventoryPanel);
     setCreativeTab(EnderIOTab.tabEnderIOInvpanel);
     setShape(mkShape(BlockFaceShape.SOLID));
+    respectsGravity = InvpanelConfig.respectsGravity;
   }
 
   @Override
@@ -82,12 +87,12 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   }
 
   @Override
-  public AxisAlignedBB getBoundingBox(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
+  public @Nonnull AxisAlignedBB getBoundingBox(@Nonnull IBlockState state, @Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     EnumFacing facing = getFacing(world, pos);
     return getBoundingBox(facing);
   }
 
-  public AxisAlignedBB getBoundingBox(EnumFacing facing) {
+  public @Nonnull AxisAlignedBB getBoundingBox(EnumFacing facing) {
     int x = 0;
     int y = 0;
     int z = 0;
@@ -109,7 +114,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
     }
   }
 
-  private EnumFacing getFacing(IBlockAccess world, BlockPos pos) {
+  private EnumFacing getFacing(@Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
     TileEntity te = getTileEntitySafe(world, pos);
     if (te instanceof TileInventoryPanel) {
       return ((TileInventoryPanel) te).getFacing();
@@ -137,7 +142,7 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
 
   @Override
   @SideOnly(Side.CLIENT)
-  public IItemRenderMapper getItemRenderMapper() {
+  public @Nonnull IItemRenderMapper getItemRenderMapper() {
     return InvPanelRenderMapper.instance;
   }
 
@@ -156,6 +161,21 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
   @Override
   public boolean openGui(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer entityPlayer, @Nonnull EnumFacing side) {
     return super.openGui(world, pos, entityPlayer, side);
+  }
+
+  @Override
+  protected void checkFallable(@Nonnull WorldServer worldIn, @Nonnull BlockPos pos) {
+    if (pos.getY() >= 0 && BlockFalling.canFallThrough(worldIn.getBlockState(pos.down()))
+        && BlockFalling.canFallThrough(getAttachmentBlockState(worldIn, pos))) {
+      worldIn.spawnEntity(new EntityFallingMachine(worldIn, pos, this));
+    }
+  }
+
+  /**
+   * Returns the blockstate of the tile the panel is "attached" to
+   */
+  private @Nonnull IBlockState getAttachmentBlockState(WorldServer worldIn, BlockPos pos) {
+    return worldIn.getBlockState(pos.offset(getFacing(worldIn, pos).getOpposite()));
   }
 
 }

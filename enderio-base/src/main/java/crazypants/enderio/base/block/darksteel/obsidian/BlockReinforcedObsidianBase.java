@@ -10,6 +10,7 @@ import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.TileEntityEio;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.util.EnumReader;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
@@ -46,7 +47,7 @@ public abstract class BlockReinforcedObsidianBase extends BlockEio<TileEntityEio
   @Override
   @SideOnly(Side.CLIENT)
   public void randomDisplayTick(@Nonnull IBlockState state, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull Random rand) {
-    if (rand.nextFloat() < .25f) {
+    if (PersonalConfig.machineParticlesEnabled.get() && rand.nextFloat() < .25f) {
       EnumFacing face = EnumReader.get(EnumFacing.class, rand.nextInt(EnumFacing.values().length));
       if (!worldIn.isBlockNormalCube(pos.offset(face), false)) {
         double xd = face.getFrontOffsetX() == 0 ? rand.nextDouble() : face.getFrontOffsetX() < 0 ? -0.05 : 1.05;

@@ -229,6 +229,7 @@ public class ConduitUtil {
     return equipped.getItem() == itemConduitProbe.getItemNN();
   }
 
+  @Deprecated
   public static <T extends IConduit> T getConduit(@Nonnull World world, int x, int y, int z, @Nonnull Class<T> type) {
     return getConduit(world, new BlockPos(x, y, z), type);
   }
@@ -324,6 +325,11 @@ public class ConduitUtil {
       return result;
     }
     return null;
+  }
+
+  @Deprecated
+  public static boolean isRedstoneControlModeMet(@Nonnull IServerConduit conduit, @Nonnull RedstoneControlMode mode, @Nonnull DyeColor col) {
+    return mode != RedstoneControlMode.NEVER;
   }
 
   public static boolean isRedstoneControlModeMet(@Nonnull IServerConduit conduit, @Nonnull RedstoneControlMode mode, @Nonnull DyeColor col,

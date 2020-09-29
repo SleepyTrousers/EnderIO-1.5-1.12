@@ -24,7 +24,7 @@ public class EnderIOCrashCallable implements ICrashCallable {
       result.add(" * Optifine is installed. This is NOT supported.");
     }
     if (EnderIO.proxy != null && EnderIO.proxy.isDedicatedServer()) {
-      if (!FMLServerHandler.instance().getServer().isServerInOnlineMode() && System.getProperty("INDEV") == null) {
+      if (!FMLServerHandler.instance().getServer().isServerInOnlineMode() && !Log.isInDev()) {
         Log.warn("@Devs: See github for dev env setup; set INDEV if needed.");
         result.add(" * Offline mode for dedicated servers is NOT supported by Ender IO.");
       }

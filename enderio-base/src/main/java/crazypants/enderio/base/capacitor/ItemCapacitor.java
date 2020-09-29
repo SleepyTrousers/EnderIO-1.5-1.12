@@ -15,6 +15,7 @@ import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.capacitor.CapabilityCapacitorData;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.render.IHaveRenderers;
 import crazypants.enderio.util.NbtValue;
@@ -142,7 +143,7 @@ public class ItemCapacitor extends Item implements IHaveRenderers {
   public @Nonnull EnumActionResult onItemUseFirst(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing side,
       float hitX, float hitY, float hitZ, @Nonnull EnumHand hand) {
 
-    if (world.isRemote || System.getProperty("INDEV") == null || !player.isCreative()) {
+    if (world.isRemote || !Log.isInDev() || !player.isCreative()) {
       return EnumActionResult.PASS;
     }
 

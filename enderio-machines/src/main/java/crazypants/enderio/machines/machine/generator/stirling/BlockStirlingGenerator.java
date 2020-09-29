@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.machine.baselegacy.AbstractGeneratorBlock;
 import crazypants.enderio.base.machine.fuel.ISolidFuelHandler;
 import crazypants.enderio.base.machine.fuel.SolidFuelCenter;
@@ -13,6 +14,7 @@ import crazypants.enderio.base.machine.render.RenderMappers;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
+import crazypants.enderio.machines.config.config.StirlingConfig;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
@@ -50,6 +52,7 @@ public class BlockStirlingGenerator<T extends TileStirlingGenerator> extends Abs
         return RenderMappers.SIMPLE_BODY_MAPPER;
       }
     };
+    gen.respectsGravity = StirlingConfig.respectsGravity;
     gen.init();
     return gen;
   }
@@ -76,7 +79,7 @@ public class BlockStirlingGenerator<T extends TileStirlingGenerator> extends Abs
   @SideOnly(Side.CLIENT)
   public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     T te = getTileEntity(world, pos);
-    if (te != null && te.isActive()) {
+    if (PersonalConfig.machineParticlesEnabled.get() && te != null && te.isActive()) {
       EnumFacing front = te.getFacing();
       for (int i = 0; i < 2; i++) {
         double px = pos.getX() + 0.5 + front.getFrontOffsetX() * 0.6;

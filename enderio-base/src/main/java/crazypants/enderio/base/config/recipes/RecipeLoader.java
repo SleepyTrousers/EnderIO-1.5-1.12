@@ -31,6 +31,7 @@ import crazypants.enderio.base.config.config.RecipeConfig;
 import crazypants.enderio.base.config.recipes.IRecipeRoot.Overrides;
 import crazypants.enderio.base.config.recipes.xml.AbstractConditional;
 import crazypants.enderio.base.config.recipes.xml.Aliases;
+import crazypants.enderio.base.config.recipes.xml.Capacitors;
 import crazypants.enderio.base.config.recipes.xml.Recipes;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
@@ -135,19 +136,21 @@ public final class RecipeLoader {
 
     bar.step("Core Recipes"); // 7
     Recipes config = new Recipes();
-    if (RecipeConfig.loadCoreRecipes.get()) {
-      try {
-        bar2 = ProgressManager.push("File", coreFiles.size());
-        for (Triple<Integer, RecipeFactory, String> triple : coreFiles) {
-          bar2.step(triple.getRight());
-          config = readCoreFile(new Recipes(), NullHelper.first(triple.getMiddle(), recipeFactory), RECIPES_ROOT + "/" + triple.getRight()).addRecipes(config,
-              Overrides.DENY);
-        }
-        ProgressManager.pop(bar2);
-      } catch (InvalidRecipeConfigException e) {
-        recipeError(NullHelper.first(e.getFilename(), "Core Recipes"), e.getMessage());
+    try {
+      bar2 = ProgressManager.push("File", coreFiles.size());
+      for (Triple<Integer, RecipeFactory, String> triple : coreFiles) {
+        bar2.step(triple.getRight());
+        /*
+         * Always load core capacitors, even if core recipes are disabled -- none of those are optional.
+         */
+        config = readCoreFile(RecipeConfig.loadCoreRecipes.get() ? new Recipes() : new Capacitors(), NullHelper.first(triple.getMiddle(), recipeFactory),
+            RECIPES_ROOT + "/" + triple.getRight()).addRecipes(config, Overrides.DENY);
       }
-    } else {
+      ProgressManager.pop(bar2);
+    } catch (InvalidRecipeConfigException e) {
+      recipeError(NullHelper.first(e.getFilename(), "Core Recipes"), e.getMessage());
+    }
+    if (!RecipeConfig.loadCoreRecipes.get()) {
       Log.warn("Ender IO core recipe loading has been disabled in the configuration.");
       Log.warn("This is valid, but do NOT report recipe errors to the Ender IO team!");
     }
@@ -285,7 +288,7 @@ public final class RecipeLoader {
 
   private static <T extends IRecipeRoot> T readCoreFile(T target, final RecipeFactory recipeFactory, String filename) {
     try {
-      recipeFactory.copyCore(filename + (Log.isInDev() ? EXT : ".pdf"));
+      recipeFactory.copyCore(filename + (Log.isInDev() ? EXT : ".pdf"), Log.isInDev() ? null : (filename + EXT));
       final T recipes = recipeFactory.readCoreFile(target, RECIPES_ROOT, filename + EXT);
       if (recipes.isValid()) {
         recipes.enforceValidity();

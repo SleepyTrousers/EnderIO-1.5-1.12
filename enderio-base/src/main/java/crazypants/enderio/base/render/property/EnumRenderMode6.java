@@ -42,7 +42,7 @@ public enum EnumRenderMode6 implements IStringSerializable {
   FRONT_ON_WEST(FRONT_ON),
   FRONT_ON_EAST(FRONT_ON);
 
-  public static final PropertyEnum<EnumRenderMode6> RENDER = PropertyEnum.<EnumRenderMode6> create("render", EnumRenderMode6.class);
+  public static final @Nonnull PropertyEnum<EnumRenderMode6> RENDER = PropertyEnum.<EnumRenderMode6> create("render", EnumRenderMode6.class);
 
   private final int parentid;
   private final boolean rotates;

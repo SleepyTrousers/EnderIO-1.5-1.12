@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.machine.base.block.AbstractCapabilityPoweredMachineBlock;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
@@ -75,7 +76,7 @@ public class BlockImpulseHopper extends AbstractCapabilityPoweredMachineBlock<Ti
   public void randomDisplayTick(@Nonnull IBlockState stateIn, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
     TileImpulseHopper te = getTileEntity(world, pos);
 
-    if (te != null && te.isActive() && !world.getBlockState(pos.up()).isOpaqueCube()) {
+    if (PersonalConfig.machineParticlesEnabled.get() && te != null && te.isActive() && !world.getBlockState(pos.up()).isOpaqueCube()) {
       if (rand.nextInt(8) == 0) {
         float startX = pos.getX() + 0.8F - rand.nextFloat() * 0.6F;
         float startY = pos.getY() + 1.0F;
