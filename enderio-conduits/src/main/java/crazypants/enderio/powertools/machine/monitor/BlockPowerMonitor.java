@@ -14,6 +14,7 @@ import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IHaveTESR;
+import crazypants.enderio.util.FuncUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
@@ -167,6 +168,18 @@ public class BlockPowerMonitor extends AbstractMachineBlock<TilePowerMonitor>
   @SideOnly(Side.CLIENT)
   public void bindTileEntitySpecialRenderer() {
     ClientRegistry.bindTileEntitySpecialRenderer(TilePowerMonitor.class, new TESRPowerMonitor());
+  }
+
+  @Override
+  public void onNeighborChange(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull BlockPos neighbor) {
+    FuncUtil.doIf(getTileEntitySafe(world, pos), te -> te.onNeighbor());
+    super.onNeighborChange(world, pos, neighbor);
+  }
+
+  @Override
+  public void neighborChanged(@Nonnull IBlockState state, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull Block blockIn, @Nonnull BlockPos fromPos) {
+    FuncUtil.doIf(getTileEntitySafe(worldIn, pos), te -> te.onNeighbor());
+    super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
   }
 
 }

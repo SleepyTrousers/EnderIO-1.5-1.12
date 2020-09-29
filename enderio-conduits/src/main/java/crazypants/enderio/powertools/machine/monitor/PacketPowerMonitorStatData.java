@@ -82,6 +82,8 @@ public class PacketPowerMonitorStatData extends MessageTileEntity<TilePowerMonit
         NetworkPowerManager powerManager = te.getPowerManager();
         if (powerManager != null) {
           return sendUpdate(te, new StatData(powerManager));
+        } else {
+          return sendUpdate(te, null);
         }
       }
       return null;
