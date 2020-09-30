@@ -122,7 +122,7 @@ allprojects {
     // Common dependencies for all modules
     dependencies {
         // Remote / local endercore
-        if (!localEnderCore) {
+        if (!localEnderCore || gradle.startParameter.taskNames.contains("runClient")) {
             deobfCompile "com.enderio.core:EnderCore:${endercore_version}"
         }
 
