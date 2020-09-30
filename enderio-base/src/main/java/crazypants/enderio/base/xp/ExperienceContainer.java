@@ -22,8 +22,6 @@ public class ExperienceContainer extends FluidTank {
   // Note: We extend FluidTank instead of implementing IFluidTank because it has
   // some methods we need.
 
-  private int experienceLevel;
-  private float experience;
   private int experienceTotal;
   private boolean xpDirty;
   private final int maxXp;
@@ -42,11 +40,11 @@ public class ExperienceContainer extends FluidTank {
   }
 
   public int getExperienceLevel() {
-    return experienceLevel;
+    return XpUtil.getLevelForExperience(experienceTotal);
   }
 
   public float getExperience() {
-    return experience;
+    return (experienceTotal - XpUtil.getExperienceForLevel(getExperienceLevel())) / (float) getXpBarCapacity();
   }
 
   public int getExperienceTotal() {
@@ -63,8 +61,6 @@ public class ExperienceContainer extends FluidTank {
 
   public void set(@Nonnull ExperienceContainer xpCon) {
     experienceTotal = xpCon.experienceTotal;
-    experienceLevel = xpCon.experienceLevel;
-    experience = xpCon.experience;
     onContentsChanged();
   }
 
@@ -75,19 +71,17 @@ public class ExperienceContainer extends FluidTank {
     }
 
     experienceTotal += xpToAdd;
-    experienceLevel = XpUtil.getLevelForExperience(experienceTotal);
-    experience = (experienceTotal - XpUtil.getExperienceForLevel(experienceLevel)) / (float) getXpBarCapacity();
     xpDirty = true;
     onContentsChanged();
     return xpToAdd;
   }
 
   private int getXpBarCapacity() {
-    return XpUtil.getXpBarCapacity(experienceLevel);
+    return XpUtil.getXpBarCapacity(getExperienceLevel());
   }
 
   public int getXpBarScaled(int scale) {
-    int result = (int) (experience * scale);
+    int result = (int) (getExperience() * scale);
     return result;
   }
 
@@ -106,8 +100,6 @@ public class ExperienceContainer extends FluidTank {
     XpUtil.addPlayerXP(player, requiredXP);
 
     int newXp = experienceTotal - requiredXP;
-    experience = 0;
-    experienceLevel = 0;
     experienceTotal = 0;
     addExperience(newXp);
   }
@@ -152,8 +144,6 @@ public class ExperienceContainer extends FluidTank {
     final int xpToExtract = XpUtil.liquidToExperience(fluidToExtract);
     if (doDrain) {
       int newXp = experienceTotal - xpToExtract;
-      experience = 0;
-      experienceLevel = 0;
       experienceTotal = 0;
       addExperience(newXp);
     }
@@ -210,30 +200,22 @@ public class ExperienceContainer extends FluidTank {
 
   @Override
   public @Nonnull FluidTank readFromNBT(NBTTagCompound nbtRoot) {
-    experienceLevel = nbtRoot.getInteger("experienceLevel");
     experienceTotal = nbtRoot.getInteger("experienceTotal");
-    experience = nbtRoot.getFloat("experience");
     return this;
   }
 
   @Override
   public NBTTagCompound writeToNBT(NBTTagCompound nbtRoot) {
-    nbtRoot.setInteger("experienceLevel", experienceLevel);
     nbtRoot.setInteger("experienceTotal", experienceTotal);
-    nbtRoot.setFloat("experience", experience);
     return nbtRoot;
   }
 
   public void toBytes(ByteBuf buf) {
     buf.writeInt(experienceTotal);
-    buf.writeInt(experienceLevel);
-    buf.writeFloat(experience);
   }
 
   public void fromBytes(ByteBuf buf) {
     experienceTotal = buf.readInt();
-    experienceLevel = buf.readInt();
-    experience = buf.readFloat();
   }
 
   @Override
@@ -263,8 +245,6 @@ public class ExperienceContainer extends FluidTank {
 
   @Override
   public void setFluid(@Nullable FluidStack fluid) {
-    experience = 0;
-    experienceLevel = 0;
     experienceTotal = 0;
     if (fluid != null && fluid.getFluid() != null) {
       if (Fluids.XP_JUICE.getFluid() == fluid.getFluid()) {
