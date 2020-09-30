@@ -124,8 +124,7 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
           fluids.add(copy);
         }
       } else {
-        fluids.add(recipe.getLogic().convertFluidResult(recipe.isFilling(), recipe.getInput().getItemStack(), fluid, fluid,
-            recipe.getOutput().getItemStack()));
+        fluids.add(recipe.getLogic().convertFluidResult(recipe.isFilling(), recipe.getInput().getItemStack(), fluid, fluid, recipe.getOutput().getItemStack()));
       }
       if (recipe.isFilling()) {
         ingredients.setInputLists(FluidStack.class, new NNList<List<FluidStack>>(fluids));
