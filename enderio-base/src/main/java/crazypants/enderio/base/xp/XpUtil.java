@@ -8,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 /**
  * Values taken from OpenMods EnchantmentUtils to ensure consistent behavior
  * 
- * @see <a href="https://github.com/OpenMods/OpenModsLib/blob/master/src/main/java/openmods/utils/EnchantmentUtils.java">OpenMods</a>
+ * @see <a href="https://github.com/OpenMods/OpenModsLib/blob/1.7.2/src/main/java/openmods/utils/EnchantmentUtils.java">OpenMods</a>
  *
  */
 public class XpUtil {
