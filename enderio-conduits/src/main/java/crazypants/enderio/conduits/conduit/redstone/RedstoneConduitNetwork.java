@@ -219,7 +219,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
           if (oldSignals == null) {
             oldSignals = signalsString();
           }
-          updateInputsFromConduit(con, true);
+          updateInputsFromConduit(con, false);
           break; // updateInputsFromConduit does all sides
         }
       }
