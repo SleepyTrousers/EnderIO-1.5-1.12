@@ -68,7 +68,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     super.addConduit(con);
     con.setSignalIdBase(baseId);
     baseId += 6;
-    updateInputsFromConduit(con, false); // all call paths to here come from updateNetwork() which already notifies all neighbors
+    updateInputsFromConduit(con, true); // all call paths to here come from updateNetwork() which already notifies all neighbors
   }
 
   public void updateInputsFromConduit(@Nonnull IRedstoneConduit con, boolean delayUpdate) {
@@ -219,7 +219,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
           if (oldSignals == null) {
             oldSignals = signalsString();
           }
-          updateInputsFromConduit(con, false);
+          updateInputsFromConduit(con, true);
           break; // updateInputsFromConduit does all sides
         }
       }
