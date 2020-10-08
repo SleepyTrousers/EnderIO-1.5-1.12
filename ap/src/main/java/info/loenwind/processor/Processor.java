@@ -32,7 +32,6 @@ import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.MethodSpec.Builder;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
@@ -137,12 +136,14 @@ public class Processor extends AbstractProcessor {
 
       CodeBlock.Builder parameterListCode = null;
 
-      Builder writerBuilder = MethodSpec.methodBuilder("makeWriter").addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+      MethodSpec.Builder writerBuilder = MethodSpec.methodBuilder("makeWriter").addModifiers(Modifier.PUBLIC, Modifier.STATIC)
           .returns(ParameterizedTypeName.get(CONSUMER, BYTE_BUF)).beginControlFlow("return buf ->")
           .addStatement("buf.writeInt($T.getMinecraft().player.openContainer.windowId)", MINECRAFT);
 
-      Builder runnerBuilder = MethodSpec.methodBuilder("apply").addModifiers(Modifier.PUBLIC).addAnnotation(Override.class)
+      MethodSpec.Builder runnerBuilder = MethodSpec.methodBuilder("apply").addModifiers(Modifier.PUBLIC).addAnnotation(Override.class)
           .returns(ParameterizedTypeName.get(CONSUMER, ENTITY_PLAYER_MP)).addParameter(BYTE_BUF, "buf").addStatement("final int _windowId = buf.readInt()");
+
+      Networkbuilder b = Networkbuilder.builder(writerBuilder, runnerBuilder);
 
       for (VariableElement parameter : method.getParameters()) {
         TypeMirror paramTypeMirror = parameter.asType();
@@ -159,45 +160,39 @@ public class Processor extends AbstractProcessor {
 
         if (typeName.isPrimitive()) {
           String byteBuffCall = ucfirst(typeName.toString());
-          writerBuilder.addStatement("buf.write$2L($1N)", parameterSpec, byteBuffCall);
-          runnerBuilder.addStatement("final $2T $1N = buf.read$3L()", parameterSpec, typeName, byteBuffCall);
+          b.addWriterStatement("buf.write$2L($1N)", parameterSpec, byteBuffCall);
+          b.addReaderStatement("final $2T $1N = buf.read$3L()", parameterSpec, typeName, byteBuffCall);
         } else {
-          boolean nonnull = isNonnull(parameter);
-          String nullcheck = "";
-          if (!nonnull) {
-            writerBuilder.beginControlFlow("if ($1N == null)", parameterSpec);
-            writerBuilder.addStatement("buf.writeBoolean(true)");
-            writerBuilder.nextControlFlow("else");
-            writerBuilder.addStatement("buf.writeBoolean(false)");
-            nullcheck = " buf.readBoolean() ? null :";
+          if (!isNonnull(parameter)) {
+            b.beginNullable(parameterSpec);
           }
           if (typeName.isBoxedPrimitive()) {
             String byteBuffCall = ucfirst(typeName.unbox().toString());
-            writerBuilder.addStatement("buf.write$1L($2N)", byteBuffCall, parameterSpec);
-            runnerBuilder.addStatement("final $3T $2N =$4L buf.read$1L()", byteBuffCall, parameterSpec, typeName, nullcheck);
+            b.addWriterStatement("buf.write$1L($2N)", byteBuffCall, parameterSpec);
+            b.addReaderStatement(typeName, parameterSpec, "buf.read$1L()", byteBuffCall);
           } else if (paramTypeMirror.getKind() == TypeKind.DECLARED
               && ((TypeElement) ((DeclaredType) paramTypeMirror).asElement()).getKind() == ElementKind.ENUM) {
-            writerBuilder.addStatement("buf.writeInt($1T.put($2N))", ENUM_READER, parameterSpec);
-            runnerBuilder.addStatement("final $3T $2N =$4L $1T.get($3T.class, buf.readInt())", ENUM_READER, parameterSpec, typeName, nullcheck);
+            b.addWriterStatement("buf.writeInt($1T.put($2N))", ENUM_READER, parameterSpec);
+            b.addReaderStatement(typeName, parameterSpec, "$1T.get($2T.class, buf.readInt())", ENUM_READER);
           } else if (typeName.equals(STRING)) {
-            writerBuilder.addStatement("$T.writeUTF8String(buf, $N)", BYTE_BUF_UTILS, parameterSpec);
-            runnerBuilder.addStatement("final $3T $2N =$4L $1T.readUTF8String(buf)", BYTE_BUF_UTILS, parameterSpec, typeName, nullcheck);
+            b.addWriterStatement("$T.writeUTF8String(buf, $N)", BYTE_BUF_UTILS, parameterSpec);
+            b.addReaderStatement(typeName, parameterSpec, "$1T.readUTF8String(buf)", BYTE_BUF_UTILS);
           } else if (typeName.equals(ITEM_STACK)) {
-            writerBuilder.addStatement("$T.writeItemStack(buf, $N)", BYTE_BUF_UTILS, parameterSpec);
-            runnerBuilder.addStatement("final $3T $2N =$4L $1T.readItemStack(buf)", BYTE_BUF_UTILS, parameterSpec, typeName, nullcheck);
+            b.addWriterStatement("$T.writeItemStack(buf, $N)", BYTE_BUF_UTILS, parameterSpec);
+            b.addReaderStatement(typeName, parameterSpec, "$1T.readItemStack(buf)", BYTE_BUF_UTILS);
           } else if (typeName.equals(NBT_TAG_COMPOUND)) {
-            writerBuilder.addStatement("$T.writeTag(buf, $N)", BYTE_BUF_UTILS, parameterSpec);
-            runnerBuilder.addStatement("final $3T $2N =$4L $1T.readTag(buf)", BYTE_BUF_UTILS, parameterSpec, typeName, nullcheck);
+            b.addWriterStatement("$T.writeTag(buf, $N)", BYTE_BUF_UTILS, parameterSpec);
+            b.addReaderStatement(typeName, parameterSpec, "$1T.readTag(buf)", BYTE_BUF_UTILS);
           } else {
             // TODO: []/List<>/NNList<> of supported types.
             processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Cannot serialize '" + typeName + "' into a byte stream", parameter);
             return;
           }
-          if (!nonnull) {
-            writerBuilder.endControlFlow();
-          }
+          b.endNullable();
         }
       }
+
+      b.build();
 
       writerBuilder.endControlFlow(""/* "" to add a ; */);
 
