@@ -18,6 +18,8 @@
 **/.classpath
 **/.project
 **/bin
+**/.apt_generated/
+**/.factorypath
 
 ## intellij
 /out
