@@ -9,11 +9,8 @@ import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.EnderInventory.Type;
 import com.enderio.core.common.inventory.EnderSlot;
 
-import crazypants.enderio.base.EnderIO;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
-@EventBusSubscriber(modid = EnderIO.MODID)
 public class ContainerCreativeSpawner extends ContainerEnderCap<EnderInventory, TileCreativeSpawner> {
 
   public ContainerCreativeSpawner(@Nonnull InventoryPlayer playerInv, @Nonnull TileCreativeSpawner te) {
