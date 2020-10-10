@@ -36,6 +36,7 @@ public class NEIEnderIOConfig implements IConfigureNEI {
     API.registerGuiOverlayHandler(GuiInventoryPanel.class, new InventoryPanelNEIOverlayHandler(), "crafting");
 
     API.hideItem(new ItemStack(EnderIO.blockConduitFacade));
+    API.hideItem(new ItemStack(EnderIO.blockLightNode));
     API.hideItem(new ItemStack(EnderIO.itemEnderface));
     API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EnderIO.blockPaintedCarpet)));
     API.hideItem(PainterUtil.applyDefaultPaintedState(new ItemStack(EnderIO.blockPaintedSlab)));
