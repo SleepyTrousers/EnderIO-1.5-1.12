@@ -173,7 +173,7 @@ public class Processor extends AbstractProcessor {
           } else if (paramTypeMirror.getKind() == TypeKind.DECLARED
               && ((TypeElement) ((DeclaredType) paramTypeMirror).asElement()).getKind() == ElementKind.ENUM) {
             b.addWriterStatement("buf.writeInt($1T.put($2N))", ENUM_READER, parameterSpec);
-            b.addReaderStatement(typeName, parameterSpec, "$1T.get($2T.class, buf.readInt())", ENUM_READER);
+            b.addReaderStatement(typeName, parameterSpec, "$1T.get($2T.class, buf.readInt())", ENUM_READER, typeName);
           } else if (typeName.equals(STRING)) {
             b.addWriterStatement("$T.writeUTF8String(buf, $N)", BYTE_BUF_UTILS, parameterSpec);
             b.addReaderStatement(typeName, parameterSpec, "$1T.readUTF8String(buf)", BYTE_BUF_UTILS);
