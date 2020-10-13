@@ -99,8 +99,8 @@ public class NetworkedInventory {
       tickDeficit--;
       return false;
     }
-    if (!canExtract() || !con.isExtractionRedstoneConditionMet(conDir)) {
-      // Cannot extract, sleep for a second before checking again.
+    if (!canExtract() || !con.isExtractionRedstoneConditionMet(conDir) || sendPriority.isEmpty()) {
+      // Cannot extract or has no targets to insert, sleep for a second before checking again.
       tickDeficit = ConduitConfig.sleepBetweenTries.get();
       return false;
     }
@@ -199,7 +199,7 @@ public class NetworkedInventory {
             + extracted.getCount() + " " + extracted.getDisplayName() + " from " + inventory + " at " + location + ". This means that "
             + (numInserted - extracted.getCount()) + " items were just duped by " + inventory + "!");
       } else {
-      Log.warn("NetworkedInventory.itemExtracted: Inserted " + numInserted + " " + extractedItem.getDisplayName() + " but only removed "
+        Log.warn("NetworkedInventory.itemExtracted: Inserted " + numInserted + " " + extractedItem.getDisplayName() + " but only removed "
             + extracted.getCount() + " " + extracted.getDisplayName() + " from " + inventory + " at " + location);
       }
     }
