@@ -71,9 +71,7 @@ public class ServerTickHandler {
 
   @SubscribeEvent
   public static void onWorldTick(@Nonnull TickEvent.WorldTickEvent event) {
-    final Profiler profiler = FMLCommonHandler.instance().getMinecraftServerInstance().profiler.profilingEnabled
-        ? FMLCommonHandler.instance().getMinecraftServerInstance().profiler
-        : null;
+    final Profiler profiler = event.world.profiler.profilingEnabled ? event.world.profiler : null;
     Prof.start(profiler, "WorldTickEvent_" + event.world.provider.getDimension() + "_" + event.phase);
     worldListeners.computeIfAbsent((WorldServer) event.world, k -> new IdentityHashMap<>()).forEach((listener, name) -> {
       Prof.start(profiler, NullHelper.first(name, "(unnamed)"));
