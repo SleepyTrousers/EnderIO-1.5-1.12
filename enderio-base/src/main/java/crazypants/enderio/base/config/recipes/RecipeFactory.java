@@ -62,7 +62,7 @@ public class RecipeFactory {
   public void placeXSD(String folderName) {
     final ResourceLocation xsdRL = new ResourceLocation(domain, "config/recipes/recipes.xsd");
     final File xsdFL = new File(configDirectory, folderName + "/recipes.xsd");
-    copyCore_dontMakeShittyCoreModsPlease(xsdRL, xsdFL);
+    copyCore_dontMakeShittyCoreModsPlease_thisIncludesShittyMixins(xsdRL, xsdFL);
   }
 
   public void createFolder(String name) {
@@ -108,7 +108,7 @@ public class RecipeFactory {
   public void copyCore(String fileName, @Nullable String fallback) {
     final ResourceLocation coreRL = new ResourceLocation(domain, ASSETS_FOLDER_CONFIG + fileName);
     final File coreFL = new File(configDirectory, fileName);
-    if (!copyCore_dontMakeShittyCoreModsPlease(coreRL, coreFL) && fallback != null) {
+    if (!copyCore_dontMakeShittyCoreModsPlease_thisIncludesShittyMixins(coreRL, coreFL) && fallback != null) {
       copyCore(fallback, null);
     }
   }
@@ -225,7 +225,7 @@ public class RecipeFactory {
     }
   }
 
-  private boolean copyCore_dontMakeShittyCoreModsPlease(ResourceLocation resourceLocation, File file) {
+  private boolean copyCore_dontMakeShittyCoreModsPlease_thisIncludesShittyMixins(ResourceLocation resourceLocation, File file) {
     try (InputStream schemaIn = getResource(resourceLocation)) {
       file.setWritable(true, true);
       try (OutputStream schemaOut = new FileOutputStream(file)) {
