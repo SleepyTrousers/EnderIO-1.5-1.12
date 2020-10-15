@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class DSUGui extends GuiContainerBaseEIO<DSUContainer> implements DSURemoteExec.GUI {
+public class DSUGui extends GuiContainerBaseEIO<DSUContainer> implements DSUContainerProxy {
 
   private final static NNList<String> TEXTURES = new NNList<>(EnderIO.DOMAIN + ":items/paint_overlay", "minecraft:items/empty_armor_slot_shield");
 
@@ -50,7 +50,7 @@ public class DSUGui extends GuiContainerBaseEIO<DSUContainer> implements DSURemo
   @Override
   protected boolean doSwitchTab(int tab) {
     ISlotSelector oldTab = getOwner().activeTab;
-    setTab(getOwner().setTab(tab));
+    setTab(getOwner().setTab(tab).getTabOrder());
     if (oldTab == getOwner().activeTab) {
       return false;
     }
@@ -87,7 +87,7 @@ public class DSUGui extends GuiContainerBaseEIO<DSUContainer> implements DSURemo
         }
       }
       if (found >= 0) {
-        setTab(getOwner().setTab(found));
+        setTab(getOwner().setTab(found).getTabOrder());
       }
     }
   }

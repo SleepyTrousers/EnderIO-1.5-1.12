@@ -3,10 +3,13 @@ package crazypants.enderio.powertools.machine.monitor;
 import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.powertools.EnderIOPowerTools;
+import info.loenwind.processor.RemoteCall;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-class ContainerPowerMonitor extends AbstractMachineContainer<TilePowerMonitor> implements IPowerMonitorRemoteExec.Container {
+@RemoteCall(modid = EnderIOPowerTools.MODID)
+class ContainerPowerMonitor extends AbstractMachineContainer<TilePowerMonitor> {
 
   public ContainerPowerMonitor(@Nonnull InventoryPlayer playerInv, @Nonnull TilePowerMonitor te) {
     super(playerInv, te);
@@ -16,7 +19,7 @@ class ContainerPowerMonitor extends AbstractMachineContainer<TilePowerMonitor> i
   protected void addMachineSlots(@Nonnull InventoryPlayer playerInv) {
   }
 
-  @Override
+  @RemoteCall
   public IMessage doSetConfig(boolean engineControlEnabled, float startLevel, float stopLevel) {
     getTe().setEngineControlEnabled(engineControlEnabled);
     getTe().setStartLevel(startLevel);
