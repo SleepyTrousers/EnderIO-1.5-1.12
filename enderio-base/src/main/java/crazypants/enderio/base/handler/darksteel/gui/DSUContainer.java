@@ -16,7 +16,6 @@ import com.enderio.core.common.ContainerEnderCap;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.block.darksteel.anvil.BlockDarkSteelAnvil;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.item.darksteel.upgrade.anvil.AnvilUpgrade;
@@ -44,7 +43,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 
-@RemoteCall(modid = EnderIO.MODID)
+@RemoteCall
 public class DSUContainer extends ContainerEnderCap<EIOCombinedInvWrapper<UpgradeCap>, TileEntity> {
 
   static final class UpgradeSlot extends GhostBackgroundItemSlot {

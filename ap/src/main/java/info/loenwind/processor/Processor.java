@@ -1,7 +1,10 @@
 package info.loenwind.processor;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -13,10 +16,12 @@ import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
+import javax.lang.model.element.Name;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -61,6 +66,7 @@ public class Processor extends AbstractProcessor {
   private final static ClassName I_FORGE_REGISTRY_ENTRY__IMPL = ClassName.get("net.minecraftforge.registries", "IForgeRegistryEntry", "Impl");
   private final static ClassName REGISTRY_EVENT__REGISTER = ClassName.get("net.minecraftforge.event.RegistryEvent", "Register");
   private final static ClassName BYTE_BUF_UTILS = ClassName.get("net.minecraftforge.fml.common.network", "ByteBufUtils");
+  private final static ClassName MOD = ClassName.get("net.minecraftforge.fml.common", "Mod");
 
   // Ender IO
   private final static ClassName I_REMOTE_EXEC = ClassName.get("crazypants.enderio.base.network.ExecPacket", "IServerExec");
@@ -80,7 +86,8 @@ public class Processor extends AbstractProcessor {
             try {
               generateContainerProxy(typeElement);
             } catch (IOException e) {
-              throw new RuntimeException(e);
+              processingEnv.getMessager().printMessage(Diagnostic.Kind.OTHER, "Internal error: " + e.getMessage(), element);
+              e.printStackTrace();
             }
           } else {
             processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Unsupported type '" + typeMirror + "' for @RemoteCall", element);
@@ -91,12 +98,60 @@ public class Processor extends AbstractProcessor {
     return false;
   }
 
+  private String findModid(Element e) {
+    for (Entry<String, String> entry : PREMAPPED.entrySet()) {
+      if (e.toString().startsWith(entry.getKey())) {
+        return entry.getValue();
+      }
+    }
+    // processingEnv.getMessager().printMessage(Diagnostic.Kind.OTHER, "Looking for " + e);
+    e = e.getEnclosingElement();
+    // processingEnv.getMessager().printMessage(Diagnostic.Kind.OTHER, "Looking at " + e);
+    while (true) {
+      if (e == null) {
+        return null;
+      }
+      if (e instanceof PackageElement) {
+        Name qualifiedName = ((PackageElement) e).getQualifiedName();
+        if (!qualifiedName.toString().contains(".")) {
+          // technically there are still 2 packages to look at, but we never go that far up with our mod classes
+          return null;
+        }
+        String sup = qualifiedName.toString().replaceFirst("\\.[^.]+$", ""); // is there a better way?
+        e = processingEnv.getElementUtils().getPackageElement(sup);
+        // processingEnv.getMessager().printMessage(Diagnostic.Kind.OTHER, "Looking at " + e);
+      }
+      for (Element c : e.getEnclosedElements()) {
+        // processingEnv.getMessager().printMessage(Diagnostic.Kind.OTHER, "Looking at " + c);
+        for (AnnotationMirror m : c.getAnnotationMirrors()) {
+          // processingEnv.getMessager().printMessage(Diagnostic.Kind.OTHER, "Looking at " + m);
+          if (MOD.equals(ClassName.get(m.getAnnotationType()))) {
+            for (Entry<? extends ExecutableElement, ? extends AnnotationValue> b : m.getElementValues().entrySet()) {
+              // processingEnv.getMessager().printMessage(Diagnostic.Kind.OTHER, "Looking at " + b.getKey());
+              if (b.getKey().getSimpleName().toString().equals("modid")) { // is there a better way?
+                return b.getValue().getValue().toString();
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   private void generateContainerProxy(TypeElement typeElement) throws IOException {
     Filer filer = processingEnv.getFiler();
     String modid = typeElement.getAnnotation(RemoteCall.class).modid();
-    if (modid.isEmpty()) {
-      processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Parameter 'modid' must be set on class level", typeElement);
-      return;
+    if (modid == null || modid.isEmpty()) {
+      modid = findModid(typeElement);
+      if (modid == null || modid.isEmpty()) {
+        processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Parameter 'modid' must be set on class level if there's no @Mod class in hierarchy",
+            typeElement);
+        return;
+      }
+    }
+    if (modid.equals("enderiobase")) {
+      // I hate hardcoding this stuff
+      modid = "enderio";
     }
     String packageName = ((PackageElement) typeElement.getEnclosingElement()).getQualifiedName().toString();
     String sourceClassName = typeElement.getSimpleName().toString();
@@ -109,7 +164,7 @@ public class Processor extends AbstractProcessor {
       String methodName = method.getSimpleName().toString();
       String methodProxyClassName = proxyInterfaceClassName + "$" + methodName;
 
-      if (!method.getAnnotation(RemoteCall.class).modid().isEmpty()) {
+      if (method.getAnnotation(RemoteCall.class).modid() != null && !method.getAnnotation(RemoteCall.class).modid().isEmpty()) {
         processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Parameter 'modid' must NOT be set on method level", method);
         return;
       }
@@ -246,4 +301,17 @@ public class Processor extends AbstractProcessor {
     return ParameterSpec.builder(TypeName.get(element.asType()), element.getSimpleName().toString()).addModifiers(element.getModifiers())
         .addAnnotations(element.getAnnotationMirrors().stream().map((mirror) -> AnnotationSpec.get(mirror)).collect(Collectors.toList())).build();
   }
+
+  /**
+   * {@link #findModid(Element)} would find these on its own in a full compile but Eclipse's partial compile of single changed class files hides the mod class
+   * from us. So we keep this precompiled list here to avoid having to do a complete project build every single time we change one of the remote call classes...
+   */
+  private static final Map<String, String> PREMAPPED = new HashMap<>();
+
+  static {
+    PREMAPPED.put("crazypants.enderio.base.", "enderio");
+    PREMAPPED.put("crazypants.enderio.conduits.", "enderiomconduits");
+    PREMAPPED.put("crazypants.enderio.machines.", "enderiomachines");
+  }
+
 }

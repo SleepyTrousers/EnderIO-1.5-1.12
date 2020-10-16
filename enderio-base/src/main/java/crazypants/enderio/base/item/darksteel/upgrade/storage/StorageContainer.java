@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.ContainerEnderCap;
 
-import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.util.EIOCombinedInvWrapper;
 import info.loenwind.processor.RemoteCall;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-@RemoteCall(modid = EnderIO.MODID)
+@RemoteCall
 public class StorageContainer extends ContainerEnderCap<EIOCombinedInvWrapper<StorageCap>, TileEntity> {
 
   private static final int X0 = 8;

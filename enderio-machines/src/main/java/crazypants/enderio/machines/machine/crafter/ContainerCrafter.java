@@ -15,12 +15,11 @@ import com.enderio.core.common.inventory.EnderInventory.Type;
 import com.enderio.core.common.inventory.EnderSlot;
 
 import crazypants.enderio.base.network.PacketHandler;
-import crazypants.enderio.machines.EnderIOMachines;
 import info.loenwind.processor.RemoteCall;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
-@RemoteCall(modid = EnderIOMachines.MODID)
+@RemoteCall
 public class ContainerCrafter<T extends TileCrafter> extends ContainerEnderCap<EnderInventory, TileCrafter> {
 
   public static class Normal extends ContainerCrafter<TileCrafter> {
