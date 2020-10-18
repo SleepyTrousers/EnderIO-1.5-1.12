@@ -20,6 +20,7 @@ import crazypants.enderio.base.recipe.ManyToOneRecipeManager;
 import crazypants.enderio.base.recipe.Recipe;
 import crazypants.enderio.base.recipe.RecipeBonusType;
 import crazypants.enderio.base.recipe.RecipeInput;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
@@ -51,13 +52,14 @@ public class AlloyRecipeManager extends ManyToOneRecipeManager {
     MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.ALLOYSMELTER, vanillaRecipe);
   }
 
-  public void addRecipe(boolean prohibitDupes, @Nonnull NNList<IRecipeInput> input, @Nonnull ItemStack output, int energyCost, float xpChance) {
+  public void addRecipe(boolean prohibitDupes, @Nonnull NNList<IRecipeInput> input, @Nonnull ItemStack output, int energyCost, float xpChance,
+      @Nonnull RecipeLevel recipeLevel) {
     RecipeOutput recipeOutput = new RecipeOutput(output, 1, xpChance);
 
     if (prohibitDupes && input.size() > 1) {
       Log.debug("Beginning de-duping loop for recipe that outputs ", output);
       // display recipe for JEI only (AlloyRecipeWrapper will explode this into a single display recipe with rotating inputs)
-      final Recipe recipe = new Recipe(recipeOutput, energyCost, RecipeBonusType.NONE, input.toArray(new IRecipeInput[input.size()])) {
+      final Recipe recipe = new Recipe(recipeOutput, energyCost, RecipeBonusType.NONE, recipeLevel, input.toArray(new IRecipeInput[input.size()])) {
         @Override
         public boolean isValidInput(int slot, @Nonnull ItemStack item) {
           return false;
@@ -90,7 +92,7 @@ public class AlloyRecipeManager extends ManyToOneRecipeManager {
             if (t.isValid() && !list.contains(t)) {
               list.add(t);
               Log.debug("Found valid combination ", stack0, " / ", stack1, " / ", stack2);
-              addRecipe(new BasicManyToOneRecipe(new Recipe(recipeOutput, energyCost, RecipeBonusType.NONE,
+              addRecipe(new BasicManyToOneRecipe(new Recipe(recipeOutput, energyCost, RecipeBonusType.NONE, recipeLevel,
                   new NNList<>().addIf(rinp0).addIf(rinp1).addIf(input.size() >= 3 ? new RecipeInput(stack2,
                       stack2.getItemDamage() != OreDictionary.WILDCARD_VALUE, input.get(2).getMulitplier(), input.get(2).getSlotNumber()) : null)
                       .toArray(new IRecipeInput[0]))).setSynthetic());
@@ -108,7 +110,7 @@ public class AlloyRecipeManager extends ManyToOneRecipeManager {
         addRecipe(new BasicManyToOneRecipe(recipe).setDedupeInput());
       }
     } else {
-      addRecipe(new Recipe(recipeOutput, energyCost, RecipeBonusType.NONE, input.toArray(new IRecipeInput[input.size()])));
+      addRecipe(new Recipe(recipeOutput, energyCost, RecipeBonusType.NONE, recipeLevel, input.toArray(new IRecipeInput[input.size()])));
     }
   }
 

@@ -158,4 +158,10 @@ public class BasicManyToOneRecipe implements IManyToOneRecipe {
     return this;
   }
 
+  @Override
+  @Nonnull
+  public RecipeLevel getRecipeLevel() {
+    return recipe.getRecipeLevel();
+  }
+
 }

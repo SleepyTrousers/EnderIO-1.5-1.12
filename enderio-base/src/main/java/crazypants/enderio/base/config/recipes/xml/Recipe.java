@@ -15,6 +15,7 @@ import com.enderio.core.common.util.NNList;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import info.loenwind.autoconfig.util.NullHelper;
 
 public class Recipe extends AbstractConditional {
@@ -27,6 +28,9 @@ public class Recipe extends AbstractConditional {
 
   private final NNList<AbstractConditional> craftings = new NNList<AbstractConditional>();
 
+  private Optional<String> levelName = empty();
+  private Optional<RecipeLevel> level = empty();
+
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
     if (disabled) {
@@ -36,6 +40,12 @@ public class Recipe extends AbstractConditional {
       super.readResolve();
       if (craftings.isEmpty()) {
         throw new InvalidRecipeConfigException("No recipe elements");
+      }
+      if (levelName.isPresent()) {
+        level = ofNullable(RecipeLevel.valueOf(get(levelName)));
+        if (!level.isPresent()) {
+          throw new InvalidRecipeConfigException("'level' '" + levelName.get() + "' is invalid");
+        }
       }
     } catch (InvalidRecipeConfigException e) {
       throw new InvalidRecipeConfigException(e, "in <recipe> '" + getName() + "'");
@@ -81,12 +91,12 @@ public class Recipe extends AbstractConditional {
   }
 
   @Override
-  public void register(@Nonnull String recipeName) {
+  public void register(@Nonnull String recipeName, @Nonnull RecipeLevel recipeLevel) {
     if (!disabled && valid && active) {
       Log.debug("Registering XML recipe '" + getName() + "'");
       for (AbstractConditional crafting : craftings) {
         if (crafting.isValid() && crafting.isActive()) {
-          crafting.register(recipeName);
+          crafting.register(recipeName, level.isPresent() ? get(level) : recipeLevel);
           return;
         }
       }
@@ -113,6 +123,10 @@ public class Recipe extends AbstractConditional {
     }
     if ("disabled".equals(name)) {
       this.disabled = Boolean.parseBoolean(value);
+      return true;
+    }
+    if ("level".equals(name)) {
+      this.levelName = ofString(value);
       return true;
     }
 

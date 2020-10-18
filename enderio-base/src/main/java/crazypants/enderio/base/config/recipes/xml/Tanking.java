@@ -69,7 +69,7 @@ public class Tanking extends AbstractConditional {
   }
 
   @Override
-  public void register(@Nonnull String recipeName) {
+  public void register(@Nonnull String recipeName, @Nonnull RecipeLevel recipeLevel) {
     if (isValid() && isActive()) {
       final Things inThing = input.get().getThing();
       if (!inThing.isEmpty()) {
@@ -77,7 +77,7 @@ public class Tanking extends AbstractConditional {
         final FluidStack fluidStack = fluid.get().getFluidStack();
         final boolean isFilling = type.get() == Type.FILL;
 
-        TankMachineRecipe recipe = new TankMachineRecipe(recipeName, isFilling, inThing, fluidStack, outThing, logic, RecipeLevel.IGNORE);
+        TankMachineRecipe recipe = new TankMachineRecipe(recipeName, isFilling, inThing, fluidStack, outThing, logic, recipeLevel);
         MachineRecipeRegistry.instance.registerRecipe(recipe);
       }
     }

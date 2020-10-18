@@ -40,7 +40,6 @@ import crazypants.enderio.base.paint.PaintSourceValidator;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
 import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
 import crazypants.enderio.base.recipe.slicensplice.SliceAndSpliceRecipeManager;
-import crazypants.enderio.base.recipe.soul.SoulBinderRecipeManager;
 import crazypants.enderio.base.recipe.spawner.EntityDataRegistry;
 import crazypants.enderio.base.recipe.vat.VatRecipeManager;
 import crazypants.enderio.base.scheduler.Celeb;
@@ -261,9 +260,7 @@ public class EnderIO implements IEnderIOAddon {
           if (nbtValue == null) {
             return;
           }
-          if (IMC.SOUL_BINDER_RECIPE.equals(key)) {
-            SoulBinderRecipeManager.getInstance().addRecipeFromNBT(nbtValue);
-          } else if (IMC.FLUID_FUEL_ADD.equals(key)) {
+          if (IMC.FLUID_FUEL_ADD.equals(key)) {
             FluidFuelRegister.instance.addFuel(nbtValue);
           } else if (IMC.FLUID_COOLANT_ADD.equals(key)) {
             FluidFuelRegister.instance.addCoolant(nbtValue);

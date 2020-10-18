@@ -92,7 +92,9 @@ public class RecipeFactory {
       try {
         return readStax(target, rootElement, coreFileStream, "core recipe file '" + fileName + "'");
       } catch (XMLStreamException e) {
-        printContentsOnError(getResource(coreRL), coreRL.toString());
+        try (InputStream resource = getResource(coreRL)) {
+          printContentsOnError(resource, coreRL.toString());
+        }
         throw e;
       } catch (InvalidRecipeConfigException irce) {
         irce.setFilename(fileName);

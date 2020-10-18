@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
+import crazypants.enderio.base.recipe.RecipeLevel;
 
 public class Disabled extends AbstractConditional {
 
@@ -23,7 +24,7 @@ public class Disabled extends AbstractConditional {
   }
 
   @Override
-  public void register(@Nonnull String recipeName) {
+  public void register(@Nonnull String recipeName, @Nonnull RecipeLevel recipeLevel) {
     if (isValid() && isActive()) {
       Log.debug("Recipe '" + recipeName + "' is disabled");
     }

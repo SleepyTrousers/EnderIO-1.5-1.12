@@ -10,6 +10,7 @@ import com.enderio.core.common.util.stackable.Things;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
+import crazypants.enderio.base.recipe.RecipeLevel;
 
 public class Alias extends AbstractConditional {
 
@@ -43,7 +44,7 @@ public class Alias extends AbstractConditional {
   }
 
   @Override
-  public void register(@Nonnull String recipeName) {
+  public void register(@Nonnull String recipeName, @Nonnull RecipeLevel recipeLevel) {
   }
 
   @Override

@@ -13,6 +13,7 @@ import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.recipes.IRecipeRoot;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import net.minecraftforge.fml.common.ProgressManager;
 
 public class Recipes implements IRecipeRoot {
@@ -40,13 +41,13 @@ public class Recipes implements IRecipeRoot {
   }
 
   @Override
-  public void register(String recipeName) {
+  public void register(String recipeName, RecipeLevel recipeLevel) {
     final String prefix = recipeName.isEmpty() ? "" : recipeName + ": ";
     Log.debug("Starting registering XML recipes");
     ProgressManager.ProgressBar bar = ProgressManager.push("Recipe", recipes.size());
     for (AbstractConditional recipe : recipes) {
       bar.step(prefix + recipe.getName());
-      recipe.register(prefix + recipe.getName());
+      recipe.register(prefix + recipe.getName(), recipeLevel);
     }
     ProgressManager.pop(bar);
     Log.debug("Done registering XML recipes");

@@ -26,22 +26,27 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   private final int energyRequired;
   private final @Nonnull String uid;
   private final int xpLevelsRequired;
+  private final @Nonnull RecipeLevel recipeLevel;
 
   private final @Nonnull NNList<ResourceLocation> supportedEntities;
 
-  protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, @Nonnull String uid, @Nonnull Class<? extends Entity> entityClass) {
-    this(energyRequired, xpLevelsRequired, uid, EntityList.getKey(entityClass));
+  protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, @Nonnull String uid, @Nonnull RecipeLevel recipeLevel,
+      @Nonnull Class<? extends Entity> entityClass) {
+    this(energyRequired, xpLevelsRequired, uid, recipeLevel, EntityList.getKey(entityClass));
   }
 
-  protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, @Nonnull String uid, @Nonnull ResourceLocation... entityNames) {
-    this(energyRequired, xpLevelsRequired, uid, new NNList<>(entityNames));
+  protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, @Nonnull String uid, @Nonnull RecipeLevel recipeLevel,
+      @Nonnull ResourceLocation... entityNames) {
+    this(energyRequired, xpLevelsRequired, uid, recipeLevel, new NNList<>(entityNames));
   }
 
-  protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, @Nonnull String uid, @Nonnull NNList<ResourceLocation> entityNames) {
+  protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, @Nonnull String uid, @Nonnull RecipeLevel recipeLevel,
+      @Nonnull NNList<ResourceLocation> entityNames) {
     this.energyRequired = energyRequired;
     this.xpLevelsRequired = xpLevelsRequired;
     this.uid = uid;
     this.supportedEntities = entityNames;
+    this.recipeLevel = recipeLevel;
   }
 
   @Override
@@ -103,7 +108,7 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
 
   @Override
   public boolean isValidInput(@Nonnull RecipeLevel machineLevel, @Nonnull MachineRecipeInput input) {
-    if (!RecipeLevel.IGNORE.canMake(machineLevel)) {
+    if (!recipeLevel.canMake(machineLevel)) {
       return false;
     }
     if (Prep.isInvalid(input.item)) {

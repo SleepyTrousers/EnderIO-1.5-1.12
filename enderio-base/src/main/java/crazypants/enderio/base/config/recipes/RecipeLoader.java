@@ -33,6 +33,7 @@ import crazypants.enderio.base.config.recipes.xml.AbstractConditional;
 import crazypants.enderio.base.config.recipes.xml.Aliases;
 import crazypants.enderio.base.config.recipes.xml.Capacitors;
 import crazypants.enderio.base.config.recipes.xml.Recipes;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.ProgressManager;
@@ -177,7 +178,7 @@ public final class RecipeLoader {
     ProgressManager.pop(bar2);
 
     bar.step("Registering Recipes"); // 10
-    config.register("");
+    config.register("", RecipeLevel.IGNORE);
 
     bar.step("Post Registration"); // 11
     bar2 = ProgressManager.push("Mod", modList.size());
@@ -324,7 +325,7 @@ public final class RecipeLoader {
           recipes = RecipeFactory.readFileIMC(new Recipes(), RECIPES_ROOT, recipe);
         }
         recipes.enforceValidity();
-        recipes.register("IMC recipes");
+        recipes.register("IMC recipes", RecipeLevel.IGNORE);
         return;
       } catch (InvalidRecipeConfigException e) {
         recipeError(recipe + " (IMC from other mod)", e.getMessage());

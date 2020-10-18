@@ -9,6 +9,7 @@ import javax.xml.stream.events.StartElement;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.ThingsRecipeInput;
 import crazypants.enderio.base.recipe.sagmill.GrindingBall;
 import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
@@ -70,7 +71,7 @@ public class Grindingball extends AbstractConditional {
   }
 
   @Override
-  public void register(@Nonnull String recipeName) {
+  public void register(@Nonnull String recipeName, @Nonnull RecipeLevel recipeLevel) {
     if (!disabled && valid && active) {
       Log.debug("Registering XML recipe '" + getName() + "'");
 
