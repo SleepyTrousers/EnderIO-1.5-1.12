@@ -17,14 +17,13 @@ import crazypants.enderio.base.filter.IFilterContainer;
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
 import crazypants.enderio.base.filter.item.IItemFilter;
 import crazypants.enderio.base.filter.item.items.BasicFilterTypes;
-import crazypants.enderio.base.filter.network.IOpenFilterRemoteExec;
+import info.loenwind.processor.RemoteCall;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class ContainerVacuumChest extends ContainerEnderCap<EnderInventory, TileVacuumChest>
-    implements IOpenFilterRemoteExec.Container, IFilterContainer<IItemFilter> {
+@RemoteCall
+public class ContainerVacuumChest extends ContainerEnderCap<EnderInventory, TileVacuumChest> implements IFilterContainer<IItemFilter> {
 
   private Slot filterSlot;
   private Runnable filterChangedCB;
@@ -74,32 +73,19 @@ public class ContainerVacuumChest extends ContainerEnderCap<EnderInventory, Tile
     }
   }
 
-  private int guiId = -1;
-
-  @Override
-  public void setGuiID(int id) {
-    guiId = id;
-  }
-
-  @Override
-  public int getGuiID() {
-    return guiId;
-  }
-
-  @Override
-  public IMessage doOpenFilterGui(int filterIndex) {
+  @RemoteCall
+  public void doOpenFilterGui(int filterIndex) {
     TileVacuumChest te = getTileEntity();
     if (te != null) {
       if (filterIndex == FilterGuiUtil.INDEX_NONE) {
         te.getItemFilter().openGui(player, filterSlot.getStack(), te.getWorld(), te.getPos());
       }
     }
-    return null;
   }
 
   @Override
   public @Nonnull IItemFilter getFilter(int index) {
-    return getTileEntity().getItemFilter();
+    return NullHelper.notnull(NullHelper.notnull(getTileEntity(), "te-less container").getItemFilter(), "logic error in filter access");
   }
 
 }
