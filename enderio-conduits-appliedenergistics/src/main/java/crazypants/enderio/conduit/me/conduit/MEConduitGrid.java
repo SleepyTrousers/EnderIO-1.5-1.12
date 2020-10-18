@@ -2,6 +2,8 @@ package crazypants.enderio.conduit.me.conduit;
 
 import java.util.EnumSet;
 
+import javax.annotation.Nonnull;
+
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.GridNotification;
 import appeng.api.networking.IGrid;
@@ -29,12 +31,12 @@ public class MEConduitGrid implements IGridBlock {
   }
 
   @Override
-  public AEColor getGridColor() {
+  public @Nonnull AEColor getGridColor() {
     return AEColor.TRANSPARENT;
   }
 
   @Override
-  public EnumSet<EnumFacing> getConnectableSides() {
+  public @Nonnull EnumSet<EnumFacing> getConnectableSides() {
     return conduit.getConnections();
   }
 
@@ -44,7 +46,7 @@ public class MEConduitGrid implements IGridBlock {
   }
 
   @Override
-  public EnumSet<GridFlags> getFlags() {
+  public @Nonnull EnumSet<GridFlags> getFlags() {
     return conduit.isDense() ? EnumSet.of(GridFlags.DENSE_CAPACITY) : EnumSet.noneOf(GridFlags.class);
   }
 
@@ -54,12 +56,12 @@ public class MEConduitGrid implements IGridBlock {
   }
 
   @Override
-  public DimensionalCoord getLocation() {
+  public @Nonnull DimensionalCoord getLocation() {
     return new DimensionalCoord(conduit.getBundle().getEntity());
   }
 
   @Override
-  public void onGridNotification(GridNotification notification) {
+  public void onGridNotification(@Nonnull GridNotification notification) {
     ;
   }
 
@@ -69,7 +71,7 @@ public class MEConduitGrid implements IGridBlock {
   }
 
   @Override
-  public IGridHost getMachine() {
+  public @Nonnull IGridHost getMachine() {
     IConduitBundle bundle = conduit.getBundle();
     if (bundle instanceof IGridHost) {
       return ((IGridHost) bundle);

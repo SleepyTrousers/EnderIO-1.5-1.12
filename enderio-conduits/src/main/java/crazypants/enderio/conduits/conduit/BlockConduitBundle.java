@@ -577,9 +577,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       return false;
     }
     CollidableComponent component = rt.component;
-    if (component == null) {
-      return false;
-    }
     Class<? extends IConduit> type = component.conduitType;
     if (!YetaUtil.renderConduit(player, type)) {
       return false;
@@ -735,9 +732,6 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       return false;
     }
     CollidableComponent component = rr.component;
-    if (component == null) {
-      return false;
-    }
     if (component.isCore()) {
       return false;
     }
@@ -863,7 +857,7 @@ public class BlockConduitBundle extends BlockEio<TileConduitBundle>
       Iterator<RaytraceResult> iter = results.iterator();
       while (iter.hasNext()) {
         CollidableComponent component = iter.next().component;
-        if (component != null && component.conduitType == null && component.data != ConduitConnectorType.EXTERNAL) {
+        if (component.conduitType == null && component.data != ConduitConnectorType.EXTERNAL) {
           iter.remove();
         }
       }
