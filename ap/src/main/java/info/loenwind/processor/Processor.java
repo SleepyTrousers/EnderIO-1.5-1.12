@@ -56,6 +56,7 @@ public class Processor extends AbstractProcessor {
   private final static ClassName ITEM_STACK = ClassName.get("net.minecraft.item", "ItemStack");
   private final static ClassName NBT_TAG_COMPOUND = ClassName.get("net.minecraft.nbt", "NBTTagCompound");
   private final static ClassName ENTITY_PLAYER_MP = ClassName.get("net.minecraft.entity.player", "EntityPlayerMP");
+  private final static ClassName BLOCKPOS = ClassName.get("net.minecraft.util.math", "BlockPos");
 
   // Minecraft libs
   private final static ClassName BYTE_BUF = ClassName.get("io.netty.buffer", "ByteBuf");
@@ -238,6 +239,9 @@ public class Processor extends AbstractProcessor {
           } else if (typeName.equals(NBT_TAG_COMPOUND)) {
             b.addWriterStatement("$T.writeTag(buf, $N)", BYTE_BUF_UTILS, parameterSpec);
             b.addReaderStatement(typeName, parameterSpec, "$1T.readTag(buf)", BYTE_BUF_UTILS);
+          } else if (typeName.equals(BLOCKPOS)) {
+            b.addWriterStatement("buf.writeLong($1N.toLong())", parameterSpec);
+            b.addReaderStatement(typeName, parameterSpec, "$1T.fromLong(buf.readLong())", BLOCKPOS);
           } else {
             // TODO: []/List<>/NNList<> of supported types.
             processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Cannot serialize '" + typeName + "' into a byte stream", parameter);
