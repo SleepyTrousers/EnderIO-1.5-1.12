@@ -291,7 +291,9 @@ public class Processor extends AbstractProcessor {
     for (AnnotationMirror annotation : el.getAnnotationMirrors()) {
       Element element = annotation.getAnnotationType().asElement();
       // assert element.getKind().equals(ElementKind.ANNOTATION_TYPE);
-      return ((TypeElement) element).getQualifiedName().contentEquals("javax.annotation.Nonnull");
+      if (((TypeElement) element).getQualifiedName().contentEquals("javax.annotation.Nonnull")) {
+        return true;
+      }
     }
     return false;
   }
