@@ -160,4 +160,9 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     return result;
   }
 
+  @Override
+  public @Nonnull RecipeLevel getRecipeLevel() {
+    return RECIPE_LEVEL;
+  }
+
 }

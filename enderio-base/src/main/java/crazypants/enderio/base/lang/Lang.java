@@ -223,6 +223,9 @@ public enum Lang implements ILang {
 
   GUI_ZOOM_STORED(".keybind.zoom.stored"),
 
+  JEI_NOTSIMPLE(".jei.notSimple"),
+  JEI_NOTNORMAL(".jei.notNormal"),
+
   ;
 
   private final @Nonnull String key;

@@ -10,19 +10,16 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.gui.IconEIO;
-import crazypants.enderio.base.integration.jei.RecipeWrapper;
+import crazypants.enderio.base.integration.jei.RecipeWrapperIRecipe;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.recipe.IManyToOneRecipe;
 import crazypants.enderio.base.recipe.IRecipe;
-import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.AlloySmelterConfig;
 import crazypants.enderio.machines.config.config.PersonalConfig;
-import crazypants.enderio.machines.lang.Lang;
 import crazypants.enderio.machines.machine.alloy.ContainerAlloySmelter;
 import crazypants.enderio.machines.machine.alloy.GuiAlloySmelter;
 import crazypants.enderio.util.Prep;
@@ -60,15 +57,10 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
 
   // ------------ Recipes
 
-  public static class AlloyRecipeWrapper extends RecipeWrapper {
+  public static class AlloyRecipeWrapper extends RecipeWrapperIRecipe {
 
-    private IDrawable alloyFront;
-
-    public AlloyRecipeWrapper(IRecipe recipe, @Nonnull IGuiHelper guiHelper) {
+    public AlloyRecipeWrapper(IRecipe recipe) {
       super(recipe);
-      if (!RecipeLevel.SIMPLE.canMake(recipe.getRecipeLevel())) {
-        alloyFront = guiHelper.createDrawable(new ResourceLocation(EnderIO.DOMAIN, "textures/blocks/alloy_smelter_simple_front.png"), 0, 0, 16, 16, 16, 16);
-      }
     }
 
     @Override
@@ -128,22 +120,6 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
       return a.getItem() == b.getItem()
           && (a.getItemDamage() == b.getItemDamage() || a.getItemDamage() == OreDictionary.WILDCARD_VALUE || b.getItemDamage() == OreDictionary.WILDCARD_VALUE);
     }
-
-    @Override
-    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-      if (alloyFront != null) {
-        alloyFront.draw(minecraft, 129 - xOff, 40 - yOff - 5);
-        IconEIO.map.render(IconEIO.GENERIC_VERBOTEN, 135 - xOff, 34 - yOff - 5, true);
-      }
-    }
-
-    @Override
-    public @Nonnull List<String> getTooltipStrings(int mouseX, int mouseY) {
-      if (alloyFront != null && mouseX >= (121 - xOff) && mouseX <= (121 - xOff + 32) && mouseY >= 32 - yOff - 5 && mouseY <= 32 - yOff + 32 - 5) {
-        return Lang.JEI_ALLOY_NOTSIMPLE.getLines();
-      }
-      return super.getTooltipStrings(mouseX, mouseY);
-    }
   }
 
   public static void register(IModRegistry registry, @Nonnull IGuiHelper guiHelper) {
@@ -165,17 +141,20 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
 
     long start = System.nanoTime();
 
+    RecipeWrapperIRecipe.setLevelData(AlloyRecipeWrapper.class, guiHelper, 129 - xOff, 40 - yOff - 5, "textures/blocks/alloy_smelter_simple_front.png",
+        "textures/blocks/alloy_smelter_front.png");
+
     List<AlloyRecipeWrapper> result = new ArrayList<>();
     if (PersonalConfig.enableAlloySmelterAlloyingJEIRecipes.get()) {
       for (IManyToOneRecipe rec : AlloyRecipeManager.getInstance().getRecipes()) {
         if (!rec.isSynthetic()) {
-          result.add(new AlloyRecipeWrapper(rec, guiHelper));
+          result.add(new AlloyRecipeWrapper(rec));
         }
       }
     }
     if (PersonalConfig.enableAlloySmelterFurnaceJEIRecipes.get()) {
       for (IRecipe rec : AlloyRecipeManager.getInstance().getVanillaRecipe().getAllRecipes()) {
-        result.add(new AlloyRecipeWrapper(rec, guiHelper));
+        result.add(new AlloyRecipeWrapper(rec));
       }
     }
 

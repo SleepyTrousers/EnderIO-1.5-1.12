@@ -4,12 +4,13 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.xp.XpUtil;
 import crazypants.enderio.util.CapturedMob;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public interface ISoulBinderRecipe {
+public interface ISoulBinderRecipe extends IMachineRecipe {
 
   @Nonnull
   ItemStack getInputStack();

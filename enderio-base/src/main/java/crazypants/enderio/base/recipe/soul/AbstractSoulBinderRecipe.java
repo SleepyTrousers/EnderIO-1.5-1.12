@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.RecipeBonusType;
@@ -21,7 +20,7 @@ import net.minecraft.util.ResourceLocation;
 
 import static crazypants.enderio.base.init.ModObject.itemSoulVial;
 
-public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulBinderRecipe {
+public abstract class AbstractSoulBinderRecipe implements ISoulBinderRecipe {
 
   private final int energyRequired;
   private final @Nonnull String uid;
@@ -161,6 +160,11 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   @Override
   public final int getEnergyRequired() {
     return energyRequired;
+  }
+
+  @Override
+  public @Nonnull RecipeLevel getRecipeLevel() {
+    return recipeLevel;
   }
 
 }

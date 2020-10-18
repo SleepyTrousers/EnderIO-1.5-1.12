@@ -344,7 +344,8 @@ public class TankMachineRecipe implements IMachineRecipe {
     return output;
   }
 
-  public @Nonnull RecipeLevel getRecipelevel() {
+  @Override
+  public @Nonnull RecipeLevel getRecipeLevel() {
     return recipelevel;
   }
 

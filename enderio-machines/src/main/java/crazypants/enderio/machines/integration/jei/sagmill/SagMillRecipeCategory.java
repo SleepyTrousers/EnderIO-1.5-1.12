@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.gui.tooltip.TooltipHandlerGrinding;
+import crazypants.enderio.base.integration.jei.RecipeWrapperIRecipe;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.recipe.IRecipe;
@@ -43,7 +44,10 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagRecipe> {
 
   public static final @Nonnull String UID = "SagMill";
 
-  public static void register(IModRegistry registry, IGuiHelper guiHelper) {
+  public static void register(IModRegistry registry, @Nonnull IGuiHelper guiHelper) {
+
+    RecipeWrapperIRecipe.setLevelData(SagRecipe.class, guiHelper, 129 - xOff, 40 - yOff - 5, "textures/blocks/block_simple_sagmill_front.png",
+        "textures/blocks/block_sagmill_front.png");
 
     registry.addRecipeCategories(new SagMillRecipeCategory(guiHelper));
     registry.handleRecipes(IRecipe.class, SagRecipe::new, SagMillRecipeCategory.UID);
@@ -63,8 +67,8 @@ public class SagMillRecipeCategory extends BlankRecipeCategory<SagRecipe> {
 
   // Offsets from full size gui, makes it much easier to get the location
   // correct
-  private int xOff = 45;
-  private int yOff = 3;
+  private static int xOff = 45;
+  private static int yOff = 3;
 
   @Nonnull
   private final IDrawable background;

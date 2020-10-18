@@ -109,7 +109,6 @@ public enum Lang implements ILang {
   JEI_COMBGEN_RANGE(".jei.combustion_generator.range"),
   JEI_STIRGEN_RANGE(".jei.stirling_generator.range"),
   JEI_STIRGEN_NOTSIMPLE(".jei.stirling_generator.notSimple"),
-  JEI_ALLOY_NOTSIMPLE(".jei.alloy_smelter.notSimple"),
   JEI_SOLAR_OUTPUT(".jei.solar_panel.output"),
   JEI_SOLAR_RANGE(".jei.solar_panel.range"),
   JEI_GRINDING_BALL_MAIN(".jei.grinding_ball.main"),

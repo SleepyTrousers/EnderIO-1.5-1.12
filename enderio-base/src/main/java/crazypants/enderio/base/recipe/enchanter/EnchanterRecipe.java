@@ -172,4 +172,9 @@ public class EnchanterRecipe implements IMachineRecipe {
     return (int) Math.max(1, Math.round(res * EnchanterConfig.lapisCostFactor.get()));
   }
 
+  @Override
+  public @Nonnull RecipeLevel getRecipeLevel() {
+    return recipeLevel;
+  }
+
 }
