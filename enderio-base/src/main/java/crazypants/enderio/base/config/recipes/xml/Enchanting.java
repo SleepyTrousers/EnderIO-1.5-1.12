@@ -46,10 +46,10 @@ public class Enchanting extends AbstractConditional {
   }
 
   @Override
-  public void register(@Nonnull String recipeName) {
+  public void register(@Nonnull String recipeName, @Nonnull RecipeLevel recipeLevel) {
     if (isValid() && isActive()) {
-      MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.ENCHANTER, new EnchanterRecipe(RecipeLevel.IGNORE, input.get().getThing(), input.get().getAmount(), enchantment.get().getEnchantment(),
-          enchantment.get().getCostMultiplier()));
+      MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.ENCHANTER, new EnchanterRecipe(recipeLevel, input.get().getThing(),
+          input.get().getAmount(), enchantment.get().getEnchantment(), enchantment.get().getCostMultiplier()));
     }
   }
 

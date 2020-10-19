@@ -1,9 +1,10 @@
 package crazypants.enderio.base.invpanel.database;
 
+import crazypants.enderio.util.IMapKey;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 
-public interface IItemEntry {
+public interface IItemEntry extends IMapKey {
 
   Item getItem();
 

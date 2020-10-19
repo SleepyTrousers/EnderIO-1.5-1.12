@@ -40,8 +40,7 @@ public interface IRecipe {
 
   boolean isSynthetic();
 
-  default @Nonnull RecipeLevel getRecipeLevel() {
-    return RecipeLevel.IGNORE;
-  }
+  @Nonnull
+  RecipeLevel getRecipeLevel();
 
 }

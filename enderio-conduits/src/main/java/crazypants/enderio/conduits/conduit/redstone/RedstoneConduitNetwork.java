@@ -28,7 +28,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneConduit, IRedstoneConduit> {
 
@@ -210,7 +209,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
   }
 
   @Override
-  public void tickEnd(ServerTickEvent event, @Nullable Profiler profiler) {
+  public void tickEnd(@Nullable Profiler profiler) {
     Prof.start(profiler, "checkTickingFilters");
     String oldSignals = null;
     for (IRedstoneConduit con : getConduits()) {

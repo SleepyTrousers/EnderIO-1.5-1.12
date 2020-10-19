@@ -13,6 +13,7 @@ import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.recipes.IRecipeConfigElement;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.spawner.EntityDataRegistry;
 import crazypants.enderio.util.CapturedMob;
 import net.minecraft.util.ResourceLocation;
@@ -28,7 +29,7 @@ public class Entity implements IRecipeConfigElement {
   private boolean soulvial = true;
   protected transient Predicate<ResourceLocation> filter = always -> false;
 
-  public void register(String recipeName) {
+  public void register(String recipeName, RecipeLevel recipeLevel) {
     if (isDefault()) {
       EntityDataRegistry.getInstance().setDefaults(getCostMultiplier(), isDisabled(), !isSoulvial(), isClone());
     } else if (isBoss()) {

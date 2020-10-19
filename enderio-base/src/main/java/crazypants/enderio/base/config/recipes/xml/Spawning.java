@@ -8,6 +8,7 @@ import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
+import crazypants.enderio.base.recipe.RecipeLevel;
 
 public class Spawning extends AbstractConditional {
 
@@ -40,10 +41,10 @@ public class Spawning extends AbstractConditional {
   }
 
   @Override
-  public void register(@Nonnull String recipeName) {
+  public void register(@Nonnull String recipeName, @Nonnull RecipeLevel recipeLevel) {
     if (isValid() && isActive()) {
       for (Entity entity : entities) {
-        entity.register(recipeName);
+        entity.register(recipeName, recipeLevel);
       }
     }
   }

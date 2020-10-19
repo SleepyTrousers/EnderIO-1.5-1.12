@@ -12,6 +12,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.IRecipe;
+import crazypants.enderio.base.recipe.MachineLevel;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.Recipe;
@@ -26,6 +27,9 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntityFurnace;
 
 public class VanillaSmeltingRecipe implements IMachineRecipe {
+
+  // Not a config because this would mess up the Simple Furnace if it was changed.
+  private static final @Nonnull RecipeLevel RECIPE_LEVEL = RecipeLevel.SIMPLE;
 
   // We will use the same energy as per a standard furnace.
   // To do the conversion between fuel burning and RF, use the Stirling Gen
@@ -51,7 +55,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   private int getNumInputs(@Nonnull NNList<MachineRecipeInput> inputs) {
     int numInputs = 0;
     for (MachineRecipeInput input : inputs) {
-      if (input != null && isValidInput(RecipeLevel.IGNORE, input)) {
+      if (input != null && isValidInput(MachineLevel.IGNORE, input)) {
         numInputs += input.item.getCount();
       }
     }
@@ -60,7 +64,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
 
   @Override
   public boolean isRecipe(@Nonnull RecipeLevel machineLevel, @Nonnull NNList<MachineRecipeInput> inputs) {
-    if (!machineLevel.canMake(RecipeLevel.NORMAL)) {
+    if (!machineLevel.canMake(RECIPE_LEVEL)) {
       return false;
     }
     ItemStack output = Prep.getEmpty();
@@ -111,7 +115,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
 
   @Override
   public boolean isValidInput(@Nonnull RecipeLevel machineLevel, @Nonnull MachineRecipeInput input) {
-    if (!machineLevel.canMake(RecipeLevel.NORMAL)) {
+    if (!machineLevel.canMake(RECIPE_LEVEL)) {
       return false;
     }
     ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(input.item);
@@ -128,7 +132,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
     int consumed = 0;
     List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>();
     for (MachineRecipeInput ri : inputs) {
-      if (ri != null && Prep.isValid(ri.item) && isValidInput(RecipeLevel.IGNORE, new MachineRecipeInput(ri.slotNumber, ri.item)) && consumed < 3) {
+      if (ri != null && Prep.isValid(ri.item) && isValidInput(MachineLevel.IGNORE, new MachineRecipeInput(ri.slotNumber, ri.item)) && consumed < 3) {
         int available = ri.item.getCount();
         int canUse = 3 - consumed;
         int use = Math.min(canUse, available);
@@ -151,14 +155,14 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
       int stackSize = output.getCount();
       output.setCount(stackSize);
       final ItemStack key = NullHelper.notnullM(entry.getKey(), "null item stack in furnace recipes");
-      result.add(new Recipe(new RecipeInput(key), RF_PER_ITEM, RecipeBonusType.NONE, new RecipeOutput(output)) {
-        @Override
-        public @Nonnull RecipeLevel getRecipeLevel() {
-          return RecipeLevel.NORMAL;
-        }
-      });
+      result.add(new Recipe(new RecipeInput(key), RF_PER_ITEM, RecipeBonusType.NONE, RECIPE_LEVEL, new RecipeOutput(output)));
     }
     return result;
+  }
+
+  @Override
+  public @Nonnull RecipeLevel getRecipeLevel() {
+    return RECIPE_LEVEL;
   }
 
 }

@@ -2,6 +2,7 @@ package crazypants.enderio.machines.machine.vacuum.chest;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -12,10 +13,8 @@ import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.EnderWidget;
-import com.google.common.collect.Lists;
 
 import crazypants.enderio.base.filter.gui.FilterGuiUtil;
-import crazypants.enderio.base.filter.network.IOpenFilterRemoteExec;
 import crazypants.enderio.base.gui.GuiContainerBaseEIO;
 import crazypants.enderio.base.gui.IconEIO;
 import crazypants.enderio.base.gui.RedstoneModeButton;
@@ -28,7 +27,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 
 import static crazypants.enderio.base.machine.gui.GuiMachineBase.BUTTON_SIZE;
 
-public class GuiVacuumChest extends GuiContainerBaseEIO<TileVacuumChest> implements IOpenFilterRemoteExec.GUI {
+public class GuiVacuumChest extends GuiContainerBaseEIO<TileVacuumChest> implements ContainerVacuumChestProxy {
 
   private static final int RANGE_LEFT = 145;
   private static final int RANGE_TOP = 86;
@@ -79,7 +78,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO<TileVacuumChest> impleme
     addToolTip(new GuiToolTip(showRangeB.getBounds(), "null") {
       @Override
       public @Nonnull List<String> getToolTipText() {
-        return Lists.newArrayList((showRangeB.isSelected() ? Lang.GUI_HIDE_RANGE : Lang.GUI_SHOW_RANGE).get());
+        return Collections.singletonList((showRangeB.isSelected() ? Lang.GUI_HIDE_RANGE : Lang.GUI_SHOW_RANGE).get());
       }
     });
 

@@ -16,6 +16,7 @@ import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.IMachineRecipe;
+import crazypants.enderio.base.recipe.MachineLevel;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.ManyToOneMachineRecipe;
@@ -56,7 +57,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
 
     @Override
     protected @Nonnull RecipeLevel getMachineLevel() {
-      return RecipeLevel.SIMPLE;
+      return MachineLevel.SIMPLE;
     }
 
   }
@@ -71,7 +72,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
 
     @Override
     protected @Nonnull RecipeLevel getMachineLevel() {
-      return RecipeLevel.SIMPLE;
+      return MachineLevel.SIMPLE;
     }
 
   }
@@ -105,7 +106,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
 
     @Override
     protected @Nonnull RecipeLevel getMachineLevel() {
-      return RecipeLevel.ADVANCED;
+      return MachineLevel.ADVANCED;
     }
 
   }
@@ -128,7 +129,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
 
   @Override
   protected @Nonnull RecipeLevel getMachineLevel() {
-    return RecipeLevel.NORMAL;
+    return MachineLevel.NORMAL;
   }
 
   public @Nonnull OperatingProfile getOperatingProfile() {

@@ -10,6 +10,8 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.integration.jei.RecipeWrapperBase;
+import crazypants.enderio.base.integration.jei.RecipeWrapperIMachineRecipe;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
@@ -27,7 +29,6 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.BlankRecipeCategory;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
@@ -47,11 +48,10 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
 
   // ------------ Recipes
 
-  public static class EnchanterRecipeWrapper implements IRecipeWrapper {
+  public static class EnchanterRecipeWrapper extends RecipeWrapperIMachineRecipe<EnchanterRecipe> {
 
     private static final @Nonnull ResourceLocation XP_ORB_TEXTURE = new ResourceLocation("textures/entity/experience_orb.png");
 
-    private final @Nonnull EnchanterRecipe rec;
     private final @Nonnull NNList<ItemStack> bookInputs, itemInputs, lapisInputs;
     private final int level;
 
@@ -100,7 +100,7 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
 
     private EnchanterRecipeWrapper(@Nonnull EnchanterRecipe rec, int level, @Nonnull NNList<ItemStack> bookInputs, @Nonnull NNList<ItemStack> lapisInputs,
         @Nonnull NNList<ItemStack> itemInputs) {
-      this.rec = rec;
+      super(rec);
       this.level = level;
       this.bookInputs = bookInputs;
       this.lapisInputs = lapisInputs;
@@ -109,34 +109,38 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
 
     @Override
     public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-      Enchantment enchantment = rec.getEnchantment();
+      Enchantment enchantment = recipe.getEnchantment();
       String name = enchantment.getTranslatedName(level);
       minecraft.fontRenderer.drawString(name, 147 - minecraft.fontRenderer.getStringWidth(name), 0, 0x8b8b8b);
 
-      int xpCost = rec.getXPCost(getMachineInputs());
+      int xpCost = recipe.getXPCost(getMachineInputs());
       minecraft.getTextureManager().bindTexture(XP_ORB_TEXTURE);
       GlStateManager.color(0x80 / 255f, 0xFF / 255f, 0x20 / 255f);
       Gui.drawScaledCustomSizeModalRect(0, 29, 0, 0, 16, 16, 16, 16, 64, 64);
       minecraft.fontRenderer.drawStringWithShadow("  " + Lang.GUI_VANILLA_REPAIR_COST.get(xpCost), 9, 33, 8453920);
+      super.drawInfo(minecraft, recipeWidth, recipeHeight, mouseX, mouseY);
     }
 
     private @Nonnull NNList<MachineRecipeInput> getMachineInputs() {
       return new NNList<>(new MachineRecipeInput(0, bookInputs.get(0)), new MachineRecipeInput(1, itemInputs.get(0)),
           new MachineRecipeInput(1, lapisInputs.get(0)));
     }
+
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
       ingredients.setInputLists(VanillaTypes.ITEM, new NNList<List<ItemStack>>(bookInputs, itemInputs, lapisInputs));
-      ingredients.setOutput(VanillaTypes.ITEM, rec.getCompletedResult(0, 1F, getMachineInputs())[0].item);
+      ingredients.setOutput(VanillaTypes.ITEM, recipe.getCompletedResult(0, 1F, getMachineInputs())[0].item);
     }
 
   }
 
-  public static void register(IModRegistry registry, IGuiHelper guiHelper) {
+  public static void register(IModRegistry registry, @Nonnull IGuiHelper guiHelper) {
     // Check JEI recipes are enabled
     if (!PersonalConfig.enableEnchanterJEIRecipes.get()) {
       return;
     }
+
+    RecipeWrapperBase.setLevelData(EnchanterRecipeWrapper.class, guiHelper, 129 - xOff, 40 - yOff - 5, null, null);
 
     registry.addRecipeCategories(new EnchanterRecipeCategory(guiHelper));
     registry.addRecipeClickArea(GuiEnchanter.class, 155, 8, 16, 16, EnchanterRecipeCategory.UID);

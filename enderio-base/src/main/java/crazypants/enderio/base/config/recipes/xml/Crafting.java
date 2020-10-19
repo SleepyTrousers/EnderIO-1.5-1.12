@@ -18,6 +18,7 @@ import crazypants.enderio.base.config.recipes.ShapedRecipe;
 import crazypants.enderio.base.config.recipes.ShapelessRecipe;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import crazypants.enderio.base.integration.jei.JeiAccessor;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
@@ -89,7 +90,7 @@ public class Crafting extends AbstractCrafting {
   }
 
   @Override
-  public void register(@Nonnull String recipeName) {
+  public void register(@Nonnull String recipeName, @Nonnull RecipeLevel recipeLevel) {
     if (valid && active) {
       final ResourceLocation recipeRL = mkRL(recipeName);
       final IForgeRegistry<IRecipe> registry = ForgeRegistries.RECIPES;
@@ -131,6 +132,13 @@ public class Crafting extends AbstractCrafting {
             }
           });
         }
+      }
+
+      if (recipeLevel != RecipeLevel.IGNORE) {
+        Log.warn("Ignoring recipe level " + recipeLevel + " configured for vanilla crafting recipe '" + recipeName
+            + "'---the vanilla crafting table doesn't have (or support) levels");
+        // TODO: We could add the level to the crafting recipes for our Crafter. But unless we also get to show that in JEI it would make thsi weird for
+        // players. So I'm skipping this for now.
       }
     } else {
       Log.debug("Skipping Crafting '" + (getOutputs().isEmpty() ? "null" : getOutput().getItemStack()) + "' (valid=" + valid + ", active=" + active + ")");

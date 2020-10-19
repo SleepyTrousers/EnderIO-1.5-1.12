@@ -10,6 +10,7 @@ import com.enderio.core.common.util.NNList.NNIterator;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import crazypants.enderio.base.recipe.IRecipeInput;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.ThingsRecipeInput;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
 import net.minecraft.item.ItemStack;
@@ -90,14 +91,14 @@ public class Alloying extends AbstractCrafting {
   }
 
   @Override
-  public void register(@Nonnull String recipeName) {
+  public void register(@Nonnull String recipeName, @Nonnull RecipeLevel recipeLevel) {
     if (isValid() && isActive()) {
       NNList<IRecipeInput> inputStacks = new NNList<>();
       for (NNIterator<ItemIntegerAmount> itr = input.fastIterator(); itr.hasNext();) {
         final ItemIntegerAmount item = itr.next();
         inputStacks.add(new ThingsRecipeInput(item.getThing()).setCount(item.getAmount()));
       }
-      AlloyRecipeManager.getInstance().addRecipe(needsDeduping, inputStacks, getOutput().getItemStack(), energy, exp);
+      AlloyRecipeManager.getInstance().addRecipe(needsDeduping, inputStacks, getOutput().getItemStack(), energy, exp, recipeLevel);
     }
   }
 

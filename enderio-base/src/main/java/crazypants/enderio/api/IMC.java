@@ -34,12 +34,6 @@ public final class IMC {
   public static final String XML_RECIPE_FILE = "recipe:xml:file";
 
   /**
-   * @deprecated Use {@link #XML_RECIPE}
-   */
-  @Deprecated
-  public static final String SOUL_BINDER_RECIPE = "recipe:soulbinder";
-
-  /**
    * Key for an ItemStack message to add an item to the Painters paint source whitelist. Calls
    * {@link PaintSourceValidator#addToWhitelist(net.minecraft.item.ItemStack)}
    */

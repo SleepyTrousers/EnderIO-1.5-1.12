@@ -1518,3 +1518,8 @@ enderio.network.bad_config=ERROR: The Ender IO config value "%s.%s" has differen
 enderio.network.autosync.connected=§4§lThis value is determined by the server!\u000a§e%s
 enderio.network.autosync.offline=%s\u000a§oThis value must be kept in sync with the server!
 enderio.network.manusync=%s\u000a§oThis value will be determined by the server.
+
+enderio.jei.notSimple.line1=This recipe cannot be made in
+enderio.jei.notSimple.line2=a Simple Machine
+enderio.jei.notNormal.line1=This recipe cannot be made in
+enderio.jei.notNormal.line2=a Simple or Normal machine

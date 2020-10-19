@@ -100,8 +100,12 @@ public class TileXPVacuum extends TileEntityEio implements Predicate<EntityXPOrb
       if (distance < 1.25) {
         if (pickUpThisTick && !world.isRemote && !entity.isDead) {
           int xpValue = entity.getXpValue();
-          xpCon.addExperience(xpValue);
-          entity.setDead();
+          int remaining = xpValue - xpCon.addExperience(xpValue);
+          if (remaining <= 0) {
+            entity.setDead();
+          } else {
+            entity.xpValue = remaining;
+          }
         }
       } else {
         double distScale = Math.min(1d, Math.max(0.25d, 1d - distance / VacuumConfig.vacuumXPRange.get()));

@@ -17,7 +17,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 
-public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> implements IExperienceObeliskRemoteExec.GUI {
+public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> implements ContainerExperienceObeliskProxy {
 
   private @Nonnull IconButton p;
   private @Nonnull IconButton pp;
@@ -28,7 +28,7 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
   private @Nonnull IconButton mmm;
 
   public GuiExperienceObelisk(@Nonnull InventoryPlayer playerInv, @Nonnull TileExperienceObelisk te) {
-    super(te, new ContainerExperienceObelisk(te), "experience_obelisk");
+    super(te, new ContainerExperienceObelisk(Minecraft.getMinecraft().player, te), "experience_obelisk");
     ySize = 116;
 
     int spacing = 5;

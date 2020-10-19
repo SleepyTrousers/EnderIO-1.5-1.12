@@ -5,4 +5,5 @@ modDependencies {
 	buildcraft { loadAfter(buildcraft_version) }
 	baubles { loadAfter(baubles_version) }
 	thaumcraft { loadAfter(thaumcraft_version)}
+	tickcentral { loadAfter("3.1")} // there's a mod incompatibility with 2.x https://github.com/TerminatorNL/TickCentral/issues/13
 }

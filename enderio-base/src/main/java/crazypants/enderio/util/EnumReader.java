@@ -14,4 +14,8 @@ public class EnumReader {
     return NullHelper.first(values[0]);
   }
 
+  public static <E extends Enum<E>> int put(E e) {
+    return e.ordinal();
+  }
+
 }

@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.util.CapturedMob;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -15,8 +16,8 @@ public class BasicSoulBinderRecipe extends AbstractSoulBinderRecipe {
   private @Nonnull OutputFilter filter;
 
   public BasicSoulBinderRecipe(@Nonnull ItemStack inputStack, @Nonnull ItemStack outputStack, int energyRequired, int xpRequired, @Nonnull String uid,
-      @Nonnull ResourceLocation... entityNames) {
-    super(energyRequired, xpRequired, uid, entityNames);
+      @Nonnull RecipeLevel recipeLevel, @Nonnull ResourceLocation... entityNames) {
+    super(energyRequired, xpRequired, uid, recipeLevel, entityNames);
     this.inputStack = inputStack.copy();
     this.outputStack = outputStack.copy();
     this.filter = new OutputFilter() {
@@ -24,8 +25,8 @@ public class BasicSoulBinderRecipe extends AbstractSoulBinderRecipe {
   }
 
   public BasicSoulBinderRecipe(@Nonnull ItemStack inputStack, @Nonnull ItemStack outputStack, int energyRequired, int xpRequired, @Nonnull String uid,
-      @Nonnull NNList<ResourceLocation> entityNames, @Nonnull OutputFilter filter) {
-    super(energyRequired, xpRequired, uid, entityNames);
+      @Nonnull RecipeLevel recipeLevel, @Nonnull NNList<ResourceLocation> entityNames, @Nonnull OutputFilter filter) {
+    super(energyRequired, xpRequired, uid, recipeLevel, entityNames);
     this.inputStack = inputStack.copy();
     this.outputStack = outputStack.copy();
     this.filter = filter;

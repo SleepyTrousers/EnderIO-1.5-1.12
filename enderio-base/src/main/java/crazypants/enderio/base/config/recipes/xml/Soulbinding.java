@@ -17,6 +17,7 @@ import crazypants.enderio.base.filter.FilterRegistry;
 import crazypants.enderio.base.filter.IFilter;
 import crazypants.enderio.base.filter.item.SoulFilter;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.soul.BasicSoulBinderRecipe;
 import crazypants.enderio.base.recipe.soul.DynamicSoulBinderRecipe;
 import crazypants.enderio.base.recipe.spawner.EntityDataRegistry;
@@ -112,7 +113,7 @@ public class Soulbinding extends AbstractCrafting {
   }
 
   @Override
-  public void register(@Nonnull String recipeName) {
+  public void register(@Nonnull String recipeName, @Nonnull RecipeLevel recipeLevel) {
     if (isValid() && isActive()) {
 
       NNList<ResourceLocation> soulnames = new NNList<>();
@@ -151,10 +152,10 @@ public class Soulbinding extends AbstractCrafting {
         public void apply(@Nonnull ItemStack anInput) {
           if (entityFilter2 != null) {
             MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.SOULBINDER, //
-                new DynamicSoulBinderRecipe(anInput, getOutput().getItemStack(), energy, levels, recipeName + i++, entityFilter2, logic));
+                new DynamicSoulBinderRecipe(anInput, getOutput().getItemStack(), energy, levels, recipeName + i++, recipeLevel, entityFilter2, logic));
           } else {
             MachineRecipeRegistry.instance.registerRecipe(MachineRecipeRegistry.SOULBINDER, //
-                new BasicSoulBinderRecipe(anInput, getOutput().getItemStack(), energy, levels, recipeName + i++, soulnames, logic));
+                new BasicSoulBinderRecipe(anInput, getOutput().getItemStack(), energy, levels, recipeName + i++, recipeLevel, soulnames, logic));
           }
         }
       });

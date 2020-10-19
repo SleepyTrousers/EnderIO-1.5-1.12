@@ -16,8 +16,8 @@ dependencies {
 	compile "info.loenwind.autosave:AutoSave:${minecraft_version}-${autosave_version}"
 	embed "info.loenwind.autosave:AutoSave:${minecraft_version}-${autosave_version}"
 	
-	if (!localAutoConfig) {
-    compile "info.loenwind.autoconfig:AutoConfig:${minecraft_version}-${autoconfig_version}"
-    embed "info.loenwind.autoconfig:AutoConfig:${minecraft_version}-${autoconfig_version}"
-  }
+	if (!localAutoConfig || gradle.startParameter.taskNames.contains("runClient")) {
+    	compile "info.loenwind.autoconfig:AutoConfig:${minecraft_version}-${autoconfig_version}"
+    	embed "info.loenwind.autoconfig:AutoConfig:${minecraft_version}-${autoconfig_version}"
+  	}
 }

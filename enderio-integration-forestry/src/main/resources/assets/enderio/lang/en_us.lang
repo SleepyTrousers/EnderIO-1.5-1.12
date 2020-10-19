@@ -26,3 +26,7 @@ enderio.darksteel.upgrade.apiarist_armor.feet.tooltip.detailed.line1=Protection 
 enderio.config.items.darksteel.upgrades.forestry=Forestry Upgrades
 
 item.item_species_item_filter.name=Species Item Filter
+
+enderio.gui.conduit.item.species.primary_icon=Filter Primary Species
+enderio.gui.conduit.item.species.secondary_icon=Filter Secondary Species
+enderio.gui.conduit.item.species.both_icon=Filter Both Species

@@ -5,13 +5,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
@@ -44,8 +44,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import static crazypants.enderio.base.init.ModObject.itemConduitProbe;
 
 public class ConduitUtil {
-
-  public static final Random RANDOM = new Random();
 
   @SuppressWarnings({ "rawtypes", "unchecked" })
   public static void ensureValidNetwork(IServerConduit conduit) {
@@ -116,7 +114,7 @@ public class ConduitUtil {
   public static <T extends IServerConduit> void disconnectConduits(@Nonnull T con, @Nonnull EnumFacing connDir) {
     con.conduitConnectionRemoved(connDir);
     BlockPos pos = con.getBundle().getLocation().offset(connDir);
-    IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().getWorld(), pos.getX(), pos.getY(), pos.getZ(), con.getBaseConduitType());
+    IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().getWorld(), pos, con.getBaseConduitType());
     if (neighbour instanceof IServerConduit) {
       ((IServerConduit) neighbour).conduitConnectionRemoved(connDir.getOpposite());
       final IConduitNetwork<?, ?> neighbourNetwork = ((IServerConduit) neighbour).getNetwork();
@@ -150,7 +148,7 @@ public class ConduitUtil {
 
   public static <T extends IServerConduit> boolean connectConduits(@Nonnull T con, @Nonnull EnumFacing faceHit) {
     BlockPos pos = con.getBundle().getLocation().offset(faceHit);
-    IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().getWorld(), pos.getX(), pos.getY(), pos.getZ(), con.getBaseConduitType());
+    IConduit neighbour = ConduitUtil.getConduit(con.getBundle().getEntity().getWorld(), pos, con.getBaseConduitType());
     if (neighbour instanceof IServerConduit && con.canConnectToConduit(faceHit, neighbour)
         && ((IServerConduit) neighbour).canConnectToConduit(faceHit.getOpposite(), con)) {
       con.conduitConnectionAdded(faceHit);
@@ -229,22 +227,21 @@ public class ConduitUtil {
     return equipped.getItem() == itemConduitProbe.getItemNN();
   }
 
+  @Deprecated
   public static <T extends IConduit> T getConduit(@Nonnull World world, int x, int y, int z, @Nonnull Class<T> type) {
     return getConduit(world, new BlockPos(x, y, z), type);
   }
 
   public static <T extends IConduit> T getConduit(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Class<T> type) {
-    TileEntity te = world.getTileEntity(pos);
-    if (te instanceof IConduitBundle) {
-      IConduitBundle con = (IConduitBundle) te;
+    IConduitBundle con = BlockEnder.getAnyTileEntitySafe(world, pos, IConduitBundle.class);
+    if (con != null) {
       return con.getConduit(type);
     }
     return null;
   }
 
   public static <T extends IConduit> T getConduit(@Nonnull World world, @Nonnull TileEntity te, @Nonnull EnumFacing dir, @Nonnull Class<T> type) {
-    return ConduitUtil.getConduit(world, te.getPos().getX() + dir.getFrontOffsetX(), te.getPos().getY() + dir.getFrontOffsetY(),
-        te.getPos().getZ() + dir.getFrontOffsetZ(), type);
+    return ConduitUtil.getConduit(world, te.getPos().offset(dir), type);
   }
 
   public static <T extends IServerConduit> Collection<T> getConnectedConduits(@Nonnull World world, int x, int y, int z, @Nonnull Class<T> type)
@@ -254,12 +251,11 @@ public class ConduitUtil {
 
   public static <T extends IServerConduit> Collection<T> getConnectedConduits(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Class<T> type)
       throws UnloadedBlockException {
-    TileEntity te = world.getTileEntity(pos);
-    if (!(te instanceof IConduitBundle)) {
+    IConduitBundle root = BlockEnder.getAnyTileEntitySafe(world, pos, IConduitBundle.class);
+    if (root == null) {
       return Collections.emptyList();
     }
     List<T> result = new ArrayList<T>();
-    IConduitBundle root = (IConduitBundle) te;
     T con = root.getConduit(type);
     if (con != null) {
       for (EnumFacing dir : con.getConduitConnections()) {
@@ -324,6 +320,11 @@ public class ConduitUtil {
       return result;
     }
     return null;
+  }
+
+  @Deprecated
+  public static boolean isRedstoneControlModeMet(@Nonnull IServerConduit conduit, @Nonnull RedstoneControlMode mode, @Nonnull DyeColor col) {
+    return mode != RedstoneControlMode.NEVER;
   }
 
   public static boolean isRedstoneControlModeMet(@Nonnull IServerConduit conduit, @Nonnull RedstoneControlMode mode, @Nonnull DyeColor col,

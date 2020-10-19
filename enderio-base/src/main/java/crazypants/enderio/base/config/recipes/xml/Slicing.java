@@ -12,6 +12,7 @@ import crazypants.enderio.base.config.recipes.StaxFactory;
 import crazypants.enderio.base.recipe.IRecipeInput;
 import crazypants.enderio.base.recipe.Recipe;
 import crazypants.enderio.base.recipe.RecipeBonusType;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.base.recipe.ThingsRecipeInput;
 import crazypants.enderio.base.recipe.slicensplice.SliceAndSpliceRecipeManager;
@@ -51,7 +52,7 @@ public class Slicing extends AbstractCrafting {
   }
 
   @Override
-  public void register(@Nonnull String recipeName) {
+  public void register(@Nonnull String recipeName, @Nonnull RecipeLevel recipeLevel) {
     if (isValid() && isActive()) {
       NNList<IRecipeInput> inputStacks = new NNList<>();
       for (NNIterator<Item> itr = inputs.fastIterator(); itr.hasNext();) {
@@ -60,7 +61,7 @@ public class Slicing extends AbstractCrafting {
       }
       RecipeOutput recipeOutput = new RecipeOutput(getOutput().getItemStack());
       SliceAndSpliceRecipeManager.getInstance()
-          .addRecipe(new Recipe(recipeOutput, energy, RecipeBonusType.NONE, inputStacks.toArray(new IRecipeInput[inputStacks.size()])));
+          .addRecipe(new Recipe(recipeOutput, energy, RecipeBonusType.NONE, recipeLevel, inputStacks.toArray(new IRecipeInput[inputStacks.size()])));
     }
   }
 

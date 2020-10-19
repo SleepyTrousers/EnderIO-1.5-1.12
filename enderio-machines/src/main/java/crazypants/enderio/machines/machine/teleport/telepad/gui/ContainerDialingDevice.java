@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
-import com.enderio.core.common.BlockEnder;
 import com.enderio.core.common.ContainerEnderCap;
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.EnderInventory.Type;
@@ -19,14 +18,16 @@ import crazypants.enderio.machines.capacitor.CapacitorKey;
 import crazypants.enderio.machines.machine.teleport.telepad.TileDialingDevice;
 import crazypants.enderio.machines.machine.teleport.telepad.TileTelePad;
 import crazypants.enderio.machines.machine.teleport.telepad.packet.PacketSetTarget;
+import crazypants.enderio.machines.network.PacketHandler;
+import info.loenwind.processor.RemoteCall;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 import static crazypants.enderio.base.init.ModObject.itemLocationPrintout;
 
-public class ContainerDialingDevice extends ContainerEnderCap<EnderInventory, TileDialingDevice> implements IDialingDeviceRemoteExec.Container {
+@RemoteCall
+public class ContainerDialingDevice extends ContainerEnderCap<EnderInventory, TileDialingDevice> {
 
   public ContainerDialingDevice(@Nonnull InventoryPlayer playerInv, @Nonnull TileDialingDevice itemHandler) {
     super(playerInv, itemHandler.getInventory(), itemHandler);
@@ -50,36 +51,23 @@ public class ContainerDialingDevice extends ContainerEnderCap<EnderInventory, Ti
     }
   }
 
-  private int guiID = -1;
-
-  @Override
-  public void setGuiID(int id) {
-    guiID = id;
-  }
-
-  @Override
-  public int getGuiID() {
-    return guiID;
-  }
-
-  @Override
-  public IMessage doTeleport(@Nonnull BlockPos telepad, int targetID, boolean initiateTeleport) {
+  @RemoteCall
+  public void doTeleport(@Nonnull BlockPos telepad, int targetID, boolean initiateTeleport) {
     final TileDialingDevice dialer = getTileEntity();
-    if (dialer != null && dialer.getEnergy().canUseEnergy(CapacitorKey.DIALING_DEVICE_POWER_USE_TELEPORT)) {
-      TileTelePad tp = BlockEnder.getAnyTileEntitySafe(dialer.getWorld(), telepad, TileTelePad.class);
-      if (tp != null) {
+    if (dialer != null) {
+      TileTelePad tp = getTileEntityNN().findTelepad();
+      if (tp != null && tp.getPos().equals(telepad)) {
         ArrayList<TelepadTarget> targets = dialer.getTargets();
         if (targetID >= 0 && targetID < targets.size()) {
           tp.setTarget(targets.get(targetID));
-          if (initiateTeleport) {
+          PacketHandler.sendToAllAround(new PacketSetTarget(tp, tp.getTarget()), tp);
+          if (initiateTeleport && dialer.getEnergy().canUseEnergy(CapacitorKey.DIALING_DEVICE_POWER_USE_TELEPORT)) {
             tp.teleportAll();
             dialer.getEnergy().useEnergy(CapacitorKey.DIALING_DEVICE_POWER_USE_TELEPORT);
           }
         }
-        return new PacketSetTarget(tp, tp.getTarget());
       }
     }
-    return null;
   }
 
 }

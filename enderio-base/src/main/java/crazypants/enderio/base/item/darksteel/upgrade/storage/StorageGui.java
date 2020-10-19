@@ -17,7 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class StorageGui extends GuiContainerBaseEIO<StorageContainer> implements StorageRemoteExec.GUI {
+public class StorageGui extends GuiContainerBaseEIO<StorageContainer> implements StorageContainerProxy {
 
   public StorageGui(@Nonnull StorageContainer par1Container) {
     super(par1Container, par1Container, "inventory_9x6");

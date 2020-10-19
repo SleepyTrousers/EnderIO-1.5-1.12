@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.base.invpanel.database.IInventoryDatabase;
 import crazypants.enderio.base.invpanel.database.IItemEntry;
 import crazypants.enderio.base.invpanel.database.ItemEntryBase;
+import crazypants.enderio.util.IMapKey;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,16 +26,13 @@ public abstract class InventoryDatabase<ItemEntry extends IItemEntry> implements
 
   public static final int COMPLEX_DBINDEX_START = 1 << (SIMPLE_ITEMID_BITS + SIMPLE_META_BITS);
 
-  protected final HashMap<Integer, ItemEntry> simpleRegsitry;
-  protected final HashMap<ItemEntry, ItemEntry> complexRegistry;
-  protected final ArrayList<ItemEntry> complexItems;
+  protected final @Nonnull HashMap<Integer, ItemEntry> simpleRegsitry = new HashMap<>();
+  protected final @Nonnull HashMap<IMapKey, ItemEntry> complexRegistry = new HashMap<>();
+  protected final @Nonnull ArrayList<ItemEntry> complexItems = new ArrayList<>();
 
   protected int generation;
 
   public InventoryDatabase() {
-    simpleRegsitry = new HashMap<Integer, ItemEntry>();
-    complexRegistry = new HashMap<ItemEntry, ItemEntry>();
-    complexItems = new ArrayList<ItemEntry>();
   }
 
   @Override
@@ -134,7 +132,7 @@ public abstract class InventoryDatabase<ItemEntry extends IItemEntry> implements
     return getItem(dbID);
   }
 
-  static final class ItemEntryKey {
+  static final class ItemEntryKey implements IMapKey {
     public final int hash;
     public final int itemID;
     public final int meta;
