@@ -12,6 +12,7 @@ import com.enderio.core.common.util.NNList;
 import crazypants.enderio.base.config.recipes.IRecipeRoot;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
+import crazypants.enderio.base.recipe.RecipeLevel;
 
 public class Aliases implements IRecipeRoot {
 
@@ -31,7 +32,7 @@ public class Aliases implements IRecipeRoot {
   }
 
   @Override
-  public void register(@Nonnull String recipeName) {
+  public void register(@Nonnull String recipeName, @Nonnull RecipeLevel recipeLevel) {
   }
 
   @SuppressWarnings("unchecked")

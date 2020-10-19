@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.ContainerEnderCap;
 
 import crazypants.enderio.util.EIOCombinedInvWrapper;
+import info.loenwind.processor.RemoteCall;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -14,7 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class StorageContainer extends ContainerEnderCap<EIOCombinedInvWrapper<StorageCap>, TileEntity> implements StorageRemoteExec.Container {
+@RemoteCall
+public class StorageContainer extends ContainerEnderCap<EIOCombinedInvWrapper<StorageCap>, TileEntity> {
 
   private static final int X0 = 8;
   private static final int Y0 = 10;
@@ -80,19 +82,7 @@ public class StorageContainer extends ContainerEnderCap<EIOCombinedInvWrapper<St
     super.onContainerClosed(playerIn);
   }
 
-  private int guid = 0;
-
-  @Override
-  public void setGuiID(int id) {
-    guid = id;
-  }
-
-  @Override
-  public int getGuiID() {
-    return guid;
-  }
-
-  @Override
+  @RemoteCall
   public IMessage setTab(@Nonnull EntityEquipmentSlot tab) {
     activeTab = tab;
     return null;

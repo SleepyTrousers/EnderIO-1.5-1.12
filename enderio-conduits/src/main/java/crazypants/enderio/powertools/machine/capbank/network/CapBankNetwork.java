@@ -36,10 +36,8 @@ import net.minecraft.profiler.Profiler;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
-public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickListener {
+public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.IServerTickListener {
 
   private static final int IO_CAP = 2000000000;
 
@@ -101,7 +99,7 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
       addMember(con);
     }
     addEnergy(0); // ensure energy level is within bounds
-    ServerTickHandler.addListener(this);
+    ServerTickHandler.addListener(cap.getWorld(), this);
   }
 
   @Override
@@ -175,7 +173,7 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
   // --------- Tick Handling
 
   @Override
-  public void tickEnd(TickEvent.ServerTickEvent evt, @Nullable Profiler profiler) {
+  public void tickEnd(@Nullable Profiler profiler) {
     Prof.start(profiler, "EnergyTransmitting");
     transmitEnergy();
 
@@ -552,10 +550,6 @@ public class CapBankNetwork implements ICapBankNetwork, ServerTickHandler.ITickL
 
   @Override
   public void invalidateDisplayInfoCache() {
-  }
-
-  @Override
-  public void tickStart(ServerTickEvent event, @Nullable Profiler profiler) {
   }
 
 }

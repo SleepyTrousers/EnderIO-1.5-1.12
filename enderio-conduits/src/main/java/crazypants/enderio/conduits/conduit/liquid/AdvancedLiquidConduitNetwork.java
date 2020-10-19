@@ -18,7 +18,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
 public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<AdvancedLiquidConduit> {
 
@@ -101,7 +100,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
   }
 
   @Override
-  public void tickEnd(ServerTickEvent event, @Nullable Profiler profiler) {
+  public void tickEnd(@Nullable Profiler profiler) {
     if (liquidType == null || outputs.isEmpty() || !tank.containsValidLiquid() || tank.isEmpty()) {
       Prof.start(profiler, "updateActiveState");
       updateActiveState();

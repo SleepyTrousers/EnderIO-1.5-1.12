@@ -19,20 +19,23 @@ public class Recipe implements IRecipe {
   private final @Nonnull RecipeOutput[] outputs;
   private final int energyRequired;
   private final @Nonnull RecipeBonusType bonusType;
+  private final @Nonnull RecipeLevel recipeLevel;
 
-  public Recipe(RecipeOutput output, int energyRequired, @Nonnull RecipeBonusType bonusType, @Nonnull IRecipeInput... input) {
-    this(input, new RecipeOutput[] { output }, energyRequired, bonusType);
+  public Recipe(RecipeOutput output, int energyRequired, @Nonnull RecipeBonusType bonusType, @Nonnull RecipeLevel recipeLevel, @Nonnull IRecipeInput... input) {
+    this(input, new RecipeOutput[] { output }, energyRequired, bonusType, recipeLevel);
   }
 
-  public Recipe(IRecipeInput input, int energyRequired, @Nonnull RecipeBonusType bonusType, @Nonnull RecipeOutput... output) {
-    this(new IRecipeInput[] { input }, output, energyRequired, bonusType);
+  public Recipe(IRecipeInput input, int energyRequired, @Nonnull RecipeBonusType bonusType, @Nonnull RecipeLevel recipeLevel, @Nonnull RecipeOutput... output) {
+    this(new IRecipeInput[] { input }, output, energyRequired, bonusType, recipeLevel);
   }
 
-  public Recipe(@Nonnull IRecipeInput[] input, @Nonnull RecipeOutput[] output, int energyRequired, @Nonnull RecipeBonusType bonusType) {
+  public Recipe(@Nonnull IRecipeInput[] input, @Nonnull RecipeOutput[] output, int energyRequired, @Nonnull RecipeBonusType bonusType,
+      @Nonnull RecipeLevel recipeLevel) {
     this.inputs = input;
     this.outputs = output;
     this.energyRequired = energyRequired;
     this.bonusType = bonusType;
+    this.recipeLevel = recipeLevel;
   }
 
   @Override
@@ -259,6 +262,12 @@ public class Recipe implements IRecipe {
   @Override
   public boolean isSynthetic() {
     return false;
+  }
+
+  @Override
+  @Nonnull
+  public RecipeLevel getRecipeLevel() {
+    return recipeLevel;
   }
 
 }

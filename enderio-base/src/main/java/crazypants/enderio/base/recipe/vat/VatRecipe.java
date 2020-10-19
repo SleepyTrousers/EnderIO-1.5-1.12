@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NullHelper;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
@@ -13,6 +14,7 @@ import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.IRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.RecipeBonusType;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
@@ -26,13 +28,16 @@ public class VatRecipe implements IRecipe {
   private final @Nonnull NNList<List<ItemStack>> inputStackAlternatives;
   protected final boolean valid;
 
-  protected final @Nonnull Table<IRecipeInput, IRecipeInput, FluidStack> inputFluidStacks = HashBasedTable.create();
-  protected final @Nonnull Table<IRecipeInput, IRecipeInput, FluidStack> outputFluidStacks = HashBasedTable.create();
+  protected final @Nonnull Table<IRecipeInput, IRecipeInput, FluidStack> inputFluidStacks = NullHelper.notnull(HashBasedTable.create(),
+      "HashBasedTable.create()");
+  protected final @Nonnull Table<IRecipeInput, IRecipeInput, FluidStack> outputFluidStacks = NullHelper.notnull(HashBasedTable.create(),
+      "HashBasedTable.create()");
 
   protected final @Nonnull IRecipeInput[] inputs;
   protected final @Nonnull RecipeOutput[] output;
   protected final int energyRequired;
   private int requiredItems;
+  private final @Nonnull RecipeLevel recipeLevel;
 
   public VatRecipe(@Nonnull IRecipe recipe) {
     FluidStack inputFluidStack = null, outputFluidStack = null;
@@ -107,6 +112,7 @@ public class VatRecipe implements IRecipe {
     }
 
     energyRequired = recipe.getEnergyRequired();
+    recipeLevel = recipe.getRecipeLevel();
 
     this.inputStacks = recipe.getInputStacks();
     valid = inputFluidStack != null && !inputStacks.isEmpty() && inputStacks.size() > 0 && outputFluidStack != null;
@@ -287,6 +293,12 @@ public class VatRecipe implements IRecipe {
   @Override
   public boolean isSynthetic() {
     return false;
+  }
+
+  @Override
+  @Nonnull
+  public RecipeLevel getRecipeLevel() {
+    return recipeLevel;
   }
 
 }

@@ -24,6 +24,7 @@ import crazypants.enderio.base.material.upgrades.ItemUpgrades;
 import crazypants.enderio.util.EIOCombinedInvWrapper;
 import crazypants.enderio.util.Prep;
 import crazypants.enderio.util.WorldTarget;
+import info.loenwind.processor.RemoteCall;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IContainerListener;
@@ -42,7 +43,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 
-public class DSUContainer extends ContainerEnderCap<EIOCombinedInvWrapper<UpgradeCap>, TileEntity> implements DSURemoteExec.Container {
+@RemoteCall
+public class DSUContainer extends ContainerEnderCap<EIOCombinedInvWrapper<UpgradeCap>, TileEntity> {
 
   static final class UpgradeSlot extends GhostBackgroundItemSlot {
     private final AutoSlot slot;
@@ -310,20 +312,8 @@ public class DSUContainer extends ContainerEnderCap<EIOCombinedInvWrapper<Upgrad
     return p;
   }
 
-  private int guid = 0;
-
-  @Override
-  public void setGuiID(int id) {
-    guid = id;
-  }
-
-  @Override
-  public int getGuiID() {
-    return guid;
-  }
-
-  @Override
-  public @Nonnull ISlotSelector setTab(int tab) {
+  @RemoteCall
+  public ISlotSelector setTab(int tab) {
     for (UpgradeCap cap : caps) {
       if (cap.getSlotSelector().getTabOrder() == tab) {
         return activeTab = cap.getSlotSelector();
@@ -386,8 +376,8 @@ public class DSUContainer extends ContainerEnderCap<EIOCombinedInvWrapper<Upgrad
     anvil.updateProgressBar(id, data);
   }
 
-  @Override
-  public void updateItemName(@Nonnull String newName) {
+  @RemoteCall
+  public void updateItemName(@SuppressWarnings("null") @Nonnull String newName) {
     anvil.updateItemName(newName);
   }
 

@@ -17,7 +17,6 @@ import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 import net.minecraftforge.items.IItemHandler;
 
 public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IItemConduit> {
@@ -137,7 +136,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
   }
 
   @Override
-  public void tickEnd(ServerTickEvent event, @Nullable Profiler profiler) {
+  public void tickEnd(@Nullable Profiler profiler) {
     if (requiresSort) {
       for (NetworkedInventory ni : inventories) {
         Prof.start(profiler, "updateInsertOrder_", ni.getInventory());

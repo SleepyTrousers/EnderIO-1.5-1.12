@@ -20,7 +20,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
 
-public abstract class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInventoryMachineBase<T> implements IAlloySmelterRemoteExec.GUI {
+public abstract class GuiAlloySmelter<T extends TileAlloySmelter> extends GuiInventoryMachineBase<T> implements ContainerAlloySmelterProxy {
 
   // Multiple classes so JEI can see the difference
   @SuppressWarnings("unchecked")

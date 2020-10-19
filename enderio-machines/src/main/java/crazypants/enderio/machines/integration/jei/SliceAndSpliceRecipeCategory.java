@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.init.ModObject;
-import crazypants.enderio.base.integration.jei.RecipeWrapper;
+import crazypants.enderio.base.integration.jei.RecipeWrapperIRecipe;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredientRenderer;
 import crazypants.enderio.base.recipe.IRecipe;
@@ -43,7 +43,7 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
 
   // ------------ Recipes
 
-  public static class SliceAndSpliceRecipe extends RecipeWrapper {
+  public static class SliceAndSpliceRecipe extends RecipeWrapperIRecipe {
     public SliceAndSpliceRecipe(IRecipe recipe) {
       super(recipe);
     }
@@ -85,6 +85,10 @@ public class SliceAndSpliceRecipeCategory extends BlankRecipeCategory<SliceAndSp
   protected final IDrawableAnimated arrow;
 
   public SliceAndSpliceRecipeCategory(IGuiHelper guiHelper) {
+
+    RecipeWrapperIRecipe.setLevelData(SliceAndSpliceRecipe.class, guiHelper, 129 - xOff, 40 - yOff - 5, "textures/blocks/block_slice_and_splice_front.png",
+        "textures/blocks/block_slice_and_splice_front.png");
+
     ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("slice_and_splice");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 125, 70);
 

@@ -2,6 +2,8 @@ package crazypants.enderio.util;
 
 import java.util.List;
 
+import com.google.common.math.BigIntegerMath;
+
 public final class MathUtil {
 
   public static int cycle(int last, int min, int max) {
@@ -66,6 +68,15 @@ public final class MathUtil {
 
   public static boolean isAny(long valueToTest, long value1, long value2, long value3, long value4) {
     return valueToTest == value1 || valueToTest == value2 || valueToTest == value3 || valueToTest == value4;
+  }
+
+  public static long fac(int l) {
+    return BigIntegerMath.factorial(l).longValue();
+  }
+
+  public static long termial(long level) {
+    // ∑ 0 ... level
+    return (level * level + level) / 2l;
   }
 
 }

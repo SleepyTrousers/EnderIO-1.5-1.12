@@ -68,7 +68,8 @@ public class SwordHandler {
 
   // Set priority to lowest in the hope any other mod adding head drops will have already added them
   // by the time this is called to prevent multiple head drops
-  @SubscribeEvent(priority = EventPriority.LOWEST)
+  // Update: Raised priority to LOW for DirectUpgrade.livingDropsEvent(LivingDropsEvent)
+  @SubscribeEvent(priority = EventPriority.LOW)
   public static void onEntityDrop(LivingDropsEvent evt) {
 
     final Entity attacker = evt.getSource().getTrueSource();

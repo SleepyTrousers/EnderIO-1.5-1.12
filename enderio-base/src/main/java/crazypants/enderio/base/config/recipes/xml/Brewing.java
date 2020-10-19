@@ -8,8 +8,10 @@ import javax.xml.stream.events.StartElement;
 
 import com.enderio.core.common.util.stackable.Things;
 
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import net.minecraft.potion.PotionHelper;
 import net.minecraft.potion.PotionType;
 
@@ -51,13 +53,17 @@ public class Brewing extends AbstractConditional {
   }
 
   @Override
-  public void register(@Nonnull String recipeName) {
+  public void register(@Nonnull String recipeName, @Nonnull RecipeLevel recipeLevel) {
     if (isValid() && isActive()) {
       final Things thing = input.get().getThing();
       PotionType inPotion = in.get().getPotion();
       PotionType outPotion = out.get().getPotion();
       if (!thing.isEmpty()) {
         PotionHelper.addMix(inPotion, thing.asIngredient(), outPotion);
+        if (recipeLevel != RecipeLevel.IGNORE) {
+          Log.warn("Ignoring recipe level " + recipeLevel + " configured for vanilla brewing recipe '" + recipeName
+              + "'---the vanilla brewing stand doesn't have (or support) levels");
+        }
       }
     }
   }

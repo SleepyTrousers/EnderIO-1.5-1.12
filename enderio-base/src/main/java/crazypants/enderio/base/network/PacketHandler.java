@@ -60,6 +60,7 @@ public final class PacketHandler {
   }
 
   public static void init(FMLInitializationEvent event) {
+    INSTANCE.registerMessage(ExecPacket.Handler.class, ExecPacket.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketRedstoneMode.Handler.class, PacketRedstoneMode.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(GuiPacket.Handler.class, GuiPacket.class, nextID(), Side.SERVER);
     INSTANCE.registerMessage(PacketExperienceContainer.Handler.class, PacketExperienceContainer.class, nextID(), Side.CLIENT);

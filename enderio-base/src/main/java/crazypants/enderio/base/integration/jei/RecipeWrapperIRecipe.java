@@ -7,18 +7,18 @@ import javax.annotation.Nonnull;
 
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.RecipeBonusType;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.util.Prep;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class RecipeWrapper implements IRecipeWrapper {
+public abstract class RecipeWrapperIRecipe extends RecipeWrapperBase {
 
   protected final IRecipe recipe;
 
-  public RecipeWrapper(IRecipe recipe) {
+  public RecipeWrapperIRecipe(IRecipe recipe) {
     this.recipe = recipe;
   }
 
@@ -64,4 +64,10 @@ public class RecipeWrapper implements IRecipeWrapper {
   public RecipeBonusType getBonusType() {
     return recipe.getBonusType();
   }
+
+  @Override
+  protected RecipeLevel getRecipeLevel() {
+    return recipe.getRecipeLevel();
+  }
+
 }

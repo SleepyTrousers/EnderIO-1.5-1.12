@@ -24,7 +24,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.text.TextFormatting;
 
-public class GuiDialingDevice extends GuiContainerBaseEIO<TileDialingDevice> implements IDialingDeviceRemoteExec.GUI {
+public class GuiDialingDevice extends GuiContainerBaseEIO<TileDialingDevice> implements ContainerDialingDeviceProxy {
 
   private static final int ID_TELEPORT_BUTTON = 96;
 

@@ -14,14 +14,13 @@ import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.EnderInventory.Type;
 import com.enderio.core.common.inventory.EnderSlot;
 
-import crazypants.enderio.base.network.GuiPacket;
-import crazypants.enderio.base.network.IRemoteExec;
 import crazypants.enderio.base.network.PacketHandler;
+import info.loenwind.processor.RemoteCall;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public class ContainerCrafter<T extends TileCrafter> extends ContainerEnderCap<EnderInventory, TileCrafter> implements IRemoteExec.IContainer {
+@RemoteCall
+public class ContainerCrafter<T extends TileCrafter> extends ContainerEnderCap<EnderInventory, TileCrafter> {
 
   public static class Normal extends ContainerCrafter<TileCrafter> {
     public Normal(@Nonnull InventoryPlayer playerInv, @Nonnull TileCrafter te) {
@@ -51,8 +50,6 @@ public class ContainerCrafter<T extends TileCrafter> extends ContainerEnderCap<E
       return (ContainerCrafter<E>) new Normal(playerInv, te);
     }
   }
-
-  public static final int EXEC_SET_BUFFER = 0;
 
   private final List<DummySlot> dummySlots = new ArrayList<DummySlot>();
 
@@ -112,28 +109,9 @@ public class ContainerCrafter<T extends TileCrafter> extends ContainerEnderCap<E
     return dummySlots;
   }
 
-  @Override
-  public IMessage networkExec(int id, @Nonnull GuiPacket message) {
-    switch (id) {
-    case EXEC_SET_BUFFER:
-      getTileEntityNN().setBufferStacks(message.getBoolean(0));
-      break;
-    default:
-      break;
-    }
-    return null;
-  }
-
-  private int guiId = -1;
-
-  @Override
-  public void setGuiID(int id) {
-    guiId = id;
-  }
-
-  @Override
-  public int getGuiID() {
-    return guiId;
+  @RemoteCall
+  public void setBufferStacks(boolean enable) {
+    getTileEntityNN().setBufferStacks(enable);
   }
 
   public class DummySlot extends GhostSlot {

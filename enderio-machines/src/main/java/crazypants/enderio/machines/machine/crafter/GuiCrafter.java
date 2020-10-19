@@ -14,7 +14,6 @@ import crazypants.enderio.base.machine.gui.GuiCapMachineBase;
 import crazypants.enderio.base.machine.gui.PowerBar;
 import crazypants.enderio.base.machine.gui.PowerBar.Op;
 import crazypants.enderio.base.machine.gui.PowerBar.What;
-import crazypants.enderio.base.network.GuiPacket;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -22,7 +21,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
-public class GuiCrafter extends GuiCapMachineBase<TileCrafter> implements IHaveGhostTargets<GuiCrafter> {
+public class GuiCrafter extends GuiCapMachineBase<TileCrafter> implements IHaveGhostTargets<GuiCrafter>, ContainerCrafterProxy {
 
   private static final int POWERX = 10;
   private static final int POWERY = 14;
@@ -74,7 +73,7 @@ public class GuiCrafter extends GuiCapMachineBase<TileCrafter> implements IHaveG
   protected void actionPerformed(@Nonnull GuiButton b) throws IOException {
     super.actionPerformed(b);
     if (b == bufferSizeB) {
-      GuiPacket.send(this, ContainerCrafter.EXEC_SET_BUFFER, bufferSizeB.isSelected());
+      setBufferStacks(bufferSizeB.isSelected());
     }
   }
 

@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.base.integration.jei.RecipeWrapper;
+import crazypants.enderio.base.integration.jei.RecipeWrapperIRecipe;
 import crazypants.enderio.base.integration.jei.energy.EnergyIngredient;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.RecipeOutput;
@@ -18,7 +18,7 @@ import crazypants.enderio.util.Prep;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.item.ItemStack;
 
-public class SagRecipe extends RecipeWrapper {
+public class SagRecipe extends RecipeWrapperIRecipe {
 
   public SagRecipe(IRecipe recipe) {
     super(recipe);

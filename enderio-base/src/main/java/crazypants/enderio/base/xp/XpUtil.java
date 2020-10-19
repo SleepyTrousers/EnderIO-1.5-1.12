@@ -2,19 +2,19 @@ package crazypants.enderio.base.xp;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.Log;
+import crazypants.enderio.util.MathUtil;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * Values taken from OpenMods EnchantmentUtils to ensure consistent behavior
  * 
- * @see <a href="https://github.com/OpenMods/OpenModsLib/blob/master/src/main/java/openmods/utils/EnchantmentUtils.java">OpenMods</a>
+ * @see <a href="https://github.com/OpenMods/OpenModsLib/blob/1.7.2/src/main/java/openmods/utils/EnchantmentUtils.java">OpenMods</a>
  *
  */
 public class XpUtil {
 
   // Values taken from OpenBlocks to ensure compatibility
-  public static final int RATIO = 20;
+  public static final long RATIO = 20;
 
   /**
    * Converts the given fluid amount into experience points.
@@ -26,6 +26,19 @@ public class XpUtil {
    * @return experience
    */
   public static int liquidToExperience(int liquid) {
+    return (int) (liquid / RATIO);
+  }
+
+  /**
+   * Converts the given fluid amount into experience points.
+   * <p>
+   * Note that this calculation has a remainder!
+   * 
+   * @param liquid
+   *          fluid amount (in mB)
+   * @return experience
+   */
+  public static long liquidToExperience(long liquid) {
     return liquid / RATIO;
   }
 
@@ -39,20 +52,37 @@ public class XpUtil {
    * @return fluid amount (in mB)
    */
   public static int experienceToLiquid(int xp) {
-    return xp * RATIO;
+    return Math.multiplyExact(xp, (int) RATIO);
   }
 
   /**
-   * The highest level that can be converted into experience points that can be stored as an {@link Integer}.
+   * Converts the given experience into fluid.
+   * <p>
+   * This conversion is lossless.
+   * 
+   * @param xp
+   *          experience
+   * @return fluid amount (in mB)
    */
-  private static final int MAX_LEVEL = 21862;
-  private static final int[] xpmap = new int[MAX_LEVEL + 1];
+  public static long experienceToLiquid(long xp) {
+    return Math.multiplyExact(xp, RATIO);
+  }
 
   /**
-   * The highest level that can be converted into experience points that can be stored as an {@link Integer}.
+   * The highest level that can be converted into experience points that can be stored as an {@link Long}.
+   */
+  private static final int MAX_LEVEL_INT = 21862;
+  private static final int MAX_LEVEL_LONG = 1431655782;
+
+  /**
+   * The highest level that can be converted into experience points that can be stored as an {@link Long}.
    */
   public static int getMaxLevelsStorable() {
-    return MAX_LEVEL;
+    return MAX_LEVEL_INT;
+  }
+
+  public static int getMaxLevelsStorableL() {
+    return MAX_LEVEL_LONG;
   }
 
   /**
@@ -62,24 +92,24 @@ public class XpUtil {
    */
   public static int getExperienceForLevel(int level) {
     if (level <= 0) {
-      return 0;
+      throw new ArithmeticException("level underflow");
     }
-    if (level > MAX_LEVEL) {
-      return Integer.MAX_VALUE;
-    }
-    return xpmap[level];
+    return Math.toIntExact(calculateXPfromLevel(level));
   }
 
-  static {
-    int res = 0;
-    for (int i = 0; i <= MAX_LEVEL; i++) {
-      if (res < 0) {
-        res = Integer.MAX_VALUE;
-        Log.error("Internal XP calculation is wrong. Level " + i + " already maxes out.");
-      }
-      xpmap[i] = res;
-      res += getXpBarCapacity(i);
+  /**
+   * 
+   * @param level
+   * @return The amount of XP a player needs to get from level 0 to the given level
+   */
+  public static long getExperienceForLevelL(int level) {
+    if (level <= 0) {
+      throw new ArithmeticException("level underflow");
     }
+    if (level > MAX_LEVEL_LONG) {
+      return Long.MAX_VALUE;
+    }
+    return calculateXPfromLevel(level);
   }
 
   /**
@@ -90,9 +120,43 @@ public class XpUtil {
    */
   public static int getXpBarCapacity(int level) {
     if (level >= 30) {
-      return 112 + (level - 30) * 9;
+      return -158 + level * 9;
+    } else if (level >= 15) {
+      return -38 + level * 5;
+    } else if (level >= 0) {
+      return 7 + level * 2;
     } else {
-      return level >= 15 ? 37 + (level - 15) * 5 : 7 + level * 2;
+      throw new ArithmeticException("level underflow");
+    }
+  }
+
+  /*
+   * The level has 3 ranges with different formula. For the highest range, we can use a neat reverse formula but that one would ignore the lower levels. So we
+   * calculate the offset from the real value beforehand using using the "not that good" formulas.
+   */
+  private static final long LVLOFFSET32 = -calculateXPfromLevelHigh(32) + calculateXPfromLevelLow(32);
+
+  private static long calculateXPfromLevel(int level) {
+    if (level >= 32) {
+      return calculateXPfromLevelHigh(level) + LVLOFFSET32;
+    } else {
+      return calculateXPfromLevelLow(level);
+    }
+  }
+
+  private static long calculateXPfromLevelHigh(int level) {
+    return -158L * (level + 1L) + MathUtil.termial(level - 1) * 9L; // correct in long, but offset by LVLOFFSET32
+  }
+
+  private static long calculateXPfromLevelLow(int level) {
+    if (level >= 1 && level <= 16) {
+      return (long) (Math.pow(level, 2) + 6 * level);
+    } else if (level >= 17 && level <= 31) {
+      return (long) (2.5 * Math.pow(level, 2) - 40.5 * level + 360);
+    } else if (level >= 32) {
+      return (long) (4.5 * Math.pow(level, 2) - 162.5 * level + 2220); // bad formula in long
+    } else {
+      return 0;
     }
   }
 
@@ -101,26 +165,60 @@ public class XpUtil {
    * @param experience
    * @return The level a player with the given experience has.
    */
-  public static int getLevelForExperience(int experience) {
-    for (int i = 1; i < xpmap.length; i++) {
-      if (xpmap[i] > experience) {
-        return i - 1;
-      }
+  public static int getLevelForExperience(long experience) {
+    int guess = getLevelFromExp(experience);
+    while (guess < MAX_LEVEL_LONG && calculateXPfromLevel(guess + 1) < experience) {
+      guess++;
     }
-    return xpmap.length;
+    while (guess > 0 && calculateXPfromLevel(guess) > experience) {
+      guess--;
+    }
+    return guess;
   }
 
   /**
-   * 
-   * @param player
-   * @return The total amount of experience (from both their level and their xp bar) the given player has
+   * Found this on Google. It seems to work fine, but I do not trust it---getXPfromLevelLow() also has issues...
    */
-  public static int getPlayerXP(@Nonnull EntityPlayer player) {
-    return (int) (getExperienceForLevel(player.experienceLevel) + (player.experience * player.xpBarCap()));
+  private static int getLevelFromExp(long exp) {
+    if (exp > 1395) {
+      return (int) ((Math.sqrt(72 * exp - 54215) + 325) / 18);
+    }
+    if (exp > 315) {
+      return (int) (Math.sqrt(40 * exp - 7839) / 10 + 8.1);
+    }
+    if (exp > 0) {
+      return (int) (Math.sqrt(exp + 9) - 3);
+    }
+    return 0;
   }
 
+  /**
+   * Gets the total amount of XP a player has, calculating it from their level and XP bar. Note that the player object has the field
+   * {@link EntityPlayer#experienceTotal} that should already contain this number.
+   * 
+   * @param player
+   *          the player
+   * @return The total amount of experience (from both their level and their xp bar) the given player has
+   * @throws ArithmeticException
+   *           if the total experience of the player would overflow an int (very unexpected)
+   */
+  public static int getPlayerXP(@Nonnull EntityPlayer player) {
+    return Math.addExact(getExperienceForLevel(player.experienceLevel), (int) (player.experience * player.xpBarCap()));
+  }
+
+  /**
+   * Adds the given experience to the player, throwing an exception if the total experience of the player would overflow an {@code int}. In this case the player
+   * will not be changed.
+   *
+   * @param player
+   *          the player
+   * @param amount
+   *          the amount to add
+   * @throws ArithmeticException
+   *           if the total experience of the player would overflow an int
+   */
   public static void addPlayerXP(@Nonnull EntityPlayer player, int amount) {
-    int experience = Math.max(0, getPlayerXP(player) + amount);
+    int experience = Math.max(0, Math.addExact(getPlayerXP(player), amount));
     player.experienceTotal = experience;
     player.experienceLevel = getLevelForExperience(experience);
     int expForLevel = getExperienceForLevel(player.experienceLevel);

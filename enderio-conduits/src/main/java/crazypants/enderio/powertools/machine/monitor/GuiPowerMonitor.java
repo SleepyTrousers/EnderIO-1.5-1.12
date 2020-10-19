@@ -35,7 +35,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements IPowerMonitorRemoteExec.GUI {
+public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements ContainerPowerMonitorProxy {
 
   private static enum Tab {
     GRAPH(2, new ItemStack(PowerToolObject.block_advanced_power_monitor.getBlockNN())),
@@ -176,7 +176,7 @@ public class GuiPowerMonitor extends GuiMachineBase<TilePowerMonitor> implements
 
       if (engineControlEnabled_value != engineControlEnabled.isSelected() || !engineControlStart_value.equals(engineControlStart.getText())
           || !engineControlStop_value.equals(engineControlStop.getText())) {
-        doSetConfig(getTileEntity(), engineControlEnabled.isSelected(), getInt(engineControlStart) / 100f, getInt(engineControlStop) / 100f);
+        doSetConfig(engineControlEnabled.isSelected(), getInt(engineControlStart) / 100f, getInt(engineControlStop) / 100f);
       }
 
       if (engineControlEnabled_value != getTileEntity().isEngineControlEnabled()

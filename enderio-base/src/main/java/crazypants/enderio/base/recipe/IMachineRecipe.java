@@ -125,4 +125,12 @@ public interface IMachineRecipe {
 
   }
 
+  /**
+   * returns the recipe level of this recipe. If this recipe is a wrapper that handles multiple recipes with possibly different level, this will return
+   * {@link RecipeLevel#IGNORE}.
+   */
+  default @Nonnull RecipeLevel getRecipeLevel() {
+    return RecipeLevel.IGNORE;
+  }
+
 }

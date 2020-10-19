@@ -13,6 +13,7 @@ import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import crazypants.enderio.base.recipe.Recipe;
 import crazypants.enderio.base.recipe.RecipeBonusType;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.base.recipe.ThingsRecipeInput;
 import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
@@ -54,7 +55,7 @@ public class Sagmilling extends AbstractCrafting {
   }
 
   @Override
-  public void register(@Nonnull String recipeName) {
+  public void register(@Nonnull String recipeName, @Nonnull RecipeLevel recipeLevel) {
     if (isValid() && isActive()) {
       ThingsRecipeInput recipeInput = new ThingsRecipeInput(input.get().getThing());
       NNList<RecipeOutput> recipeOutputs = new NNList<>();
@@ -65,7 +66,7 @@ public class Sagmilling extends AbstractCrafting {
           recipeOutputs.add(new RecipeOutput(output.getItemStack(), 1));
         }
       }
-      Recipe recipe = new Recipe(recipeInput, energy, bonus, recipeOutputs.toArray(new RecipeOutput[0]));
+      Recipe recipe = new Recipe(recipeInput, energy, bonus, recipeLevel, recipeOutputs.toArray(new RecipeOutput[0]));
       SagMillRecipeManager.getInstance().addRecipe(recipe);
     }
   }

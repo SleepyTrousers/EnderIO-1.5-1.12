@@ -108,6 +108,7 @@ public abstract class AbstractConduitNetwork<T extends IServerConduit, I extends
   public void addConduit(@Nonnull I newConduit) {
     if (conduits.isEmpty()) {
       ServerTickHandler.addListener(this);
+      ServerTickHandler.addListener(newConduit.getBundle().getBundleworld(), this);
     }
     boolean doFullCheck = !isSameTick();
     BlockPos newPos = null;
@@ -290,10 +291,12 @@ public abstract class AbstractConduitNetwork<T extends IServerConduit, I extends
   }
 
   @Override
+  @Deprecated // use WorldTickEvent: tickStart(profiler)
   public void tickStart(ServerTickEvent event, @Nullable Profiler profiler) {
   }
 
   @Override
+  @Deprecated // use WorldTickEvent: tickEnd(profiler)
   public void tickEnd(ServerTickEvent event, @Nullable Profiler profiler) {
   }
 

@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
 
-import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.RecipeBonusType;
@@ -21,27 +20,32 @@ import net.minecraft.util.ResourceLocation;
 
 import static crazypants.enderio.base.init.ModObject.itemSoulVial;
 
-public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulBinderRecipe {
+public abstract class AbstractSoulBinderRecipe implements ISoulBinderRecipe {
 
   private final int energyRequired;
   private final @Nonnull String uid;
   private final int xpLevelsRequired;
+  private final @Nonnull RecipeLevel recipeLevel;
 
   private final @Nonnull NNList<ResourceLocation> supportedEntities;
 
-  protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, @Nonnull String uid, @Nonnull Class<? extends Entity> entityClass) {
-    this(energyRequired, xpLevelsRequired, uid, EntityList.getKey(entityClass));
+  protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, @Nonnull String uid, @Nonnull RecipeLevel recipeLevel,
+      @Nonnull Class<? extends Entity> entityClass) {
+    this(energyRequired, xpLevelsRequired, uid, recipeLevel, EntityList.getKey(entityClass));
   }
 
-  protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, @Nonnull String uid, @Nonnull ResourceLocation... entityNames) {
-    this(energyRequired, xpLevelsRequired, uid, new NNList<>(entityNames));
+  protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, @Nonnull String uid, @Nonnull RecipeLevel recipeLevel,
+      @Nonnull ResourceLocation... entityNames) {
+    this(energyRequired, xpLevelsRequired, uid, recipeLevel, new NNList<>(entityNames));
   }
 
-  protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, @Nonnull String uid, @Nonnull NNList<ResourceLocation> entityNames) {
+  protected AbstractSoulBinderRecipe(int energyRequired, int xpLevelsRequired, @Nonnull String uid, @Nonnull RecipeLevel recipeLevel,
+      @Nonnull NNList<ResourceLocation> entityNames) {
     this.energyRequired = energyRequired;
     this.xpLevelsRequired = xpLevelsRequired;
     this.uid = uid;
     this.supportedEntities = entityNames;
+    this.recipeLevel = recipeLevel;
   }
 
   @Override
@@ -103,7 +107,7 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
 
   @Override
   public boolean isValidInput(@Nonnull RecipeLevel machineLevel, @Nonnull MachineRecipeInput input) {
-    if (!RecipeLevel.IGNORE.canMake(machineLevel)) {
+    if (!recipeLevel.canMake(machineLevel)) {
       return false;
     }
     if (Prep.isInvalid(input.item)) {
@@ -156,6 +160,11 @@ public abstract class AbstractSoulBinderRecipe implements IMachineRecipe, ISoulB
   @Override
   public final int getEnergyRequired() {
     return energyRequired;
+  }
+
+  @Override
+  public @Nonnull RecipeLevel getRecipeLevel() {
+    return recipeLevel;
   }
 
 }

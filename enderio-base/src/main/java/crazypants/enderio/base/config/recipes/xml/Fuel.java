@@ -8,6 +8,7 @@ import javax.xml.stream.XMLStreamException;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
+import crazypants.enderio.base.recipe.RecipeLevel;
 
 public class Fuel extends AbstractConditional {
 
@@ -42,7 +43,7 @@ public class Fuel extends AbstractConditional {
   }
 
   @Override
-  public void register(@Nonnull String recipeName) {
+  public void register(@Nonnull String recipeName, @Nonnull RecipeLevel recipeLevel) {
     if (isValid() && isActive()) {
       FluidFuelRegister.instance.addFuel(fluid.get().getFluid(), perTick.get(), ticks.get());
     }

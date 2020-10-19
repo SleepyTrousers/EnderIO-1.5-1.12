@@ -15,6 +15,7 @@ import crazypants.enderio.base.recipe.IRecipeInput;
 import crazypants.enderio.base.recipe.Recipe;
 import crazypants.enderio.base.recipe.RecipeBonusType;
 import crazypants.enderio.base.recipe.RecipeInput;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.base.recipe.ThingsRecipeInput;
 import crazypants.enderio.base.recipe.vat.VatRecipeManager;
@@ -64,7 +65,7 @@ public class Fermenting extends AbstractConditional {
   }
 
   @Override
-  public void register(@Nonnull String recipeName) {
+  public void register(@Nonnull String recipeName, @Nonnull RecipeLevel recipeLevel) {
     if (isValid() && isActive()) {
       NNList<IRecipeInput> inputStacks = new NNList<>();
       int slot = 0;
@@ -78,7 +79,7 @@ public class Fermenting extends AbstractConditional {
       inputStacks.add(new RecipeInput(inputfluid.get().getFluidStack(), inputfluid.get().multiplier));
       RecipeOutput recipeOutput = new RecipeOutput(outputfluid.get().getFluidStack());
       VatRecipeManager.getInstance()
-          .addRecipe(new Recipe(recipeOutput, energy, RecipeBonusType.NONE, inputStacks.toArray(new IRecipeInput[inputStacks.size()])));
+          .addRecipe(new Recipe(recipeOutput, energy, RecipeBonusType.NONE, recipeLevel, inputStacks.toArray(new IRecipeInput[inputStacks.size()])));
     }
   }
 

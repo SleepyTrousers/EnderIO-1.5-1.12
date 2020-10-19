@@ -274,6 +274,7 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
       }
     }
     this.bufferStacks = bufferStacks;
+    markDirty();
   }
 
   public void updateCraftingOutput() {

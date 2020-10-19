@@ -12,6 +12,7 @@ import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capacitor.CapacitorKeyRegistry;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
+import crazypants.enderio.base.recipe.RecipeLevel;
 import net.minecraft.util.ResourceLocation;
 
 public class Capacitor extends AbstractConditional {
@@ -72,7 +73,7 @@ public class Capacitor extends AbstractConditional {
 
   @SuppressWarnings("null")
   @Override
-  public void register(@Nonnull String recipeName) {
+  public void register(@Nonnull String recipeName, @Nonnull RecipeLevel recipeLevel) {
     if (!disabled && valid && active) {
       Log.debug("Registering XML recipe '" + getName() + "'");
 

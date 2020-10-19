@@ -44,7 +44,7 @@ public class BlockExperienceObelisk extends AbstractBlockObelisk<TileExperienceO
   @Override
   public @Nullable Container getServerGuiElement(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nullable EnumFacing facing,
       int param1, @Nonnull TileExperienceObelisk te) {
-    return new ContainerExperienceObelisk(te);
+    return new ContainerExperienceObelisk(player, te);
   }
 
   @Override
