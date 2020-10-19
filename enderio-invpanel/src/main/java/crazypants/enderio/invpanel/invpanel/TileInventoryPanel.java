@@ -75,7 +75,6 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   @Store({ NBTAction.CLIENT, NBTAction.SAVE })
   private boolean hasConnection = false;
 
-  // TODO: Filter
   private IItemFilter itemFilter;
 
   @Store
@@ -131,13 +130,11 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   @Override
   protected boolean hasStuffToPush() {
-    // System.out.println("PUSH ME. AND THEN JUST TOUCH ME. TILL I CAN GET MY... ITEMSTACKS");
     return !extractionDisabled && super.hasStuffToPush();
   }
 
   @Override
   protected boolean shouldProcessOutputQueue() {
-    // System.out.println("PUSH ME. AND THEN JUST TOUCH ME. TILL I CAN GET MY... ITEMSTACKS EXTRACTED");
     return !extractionDisabled && super.shouldProcessOutputQueue();
   }
 

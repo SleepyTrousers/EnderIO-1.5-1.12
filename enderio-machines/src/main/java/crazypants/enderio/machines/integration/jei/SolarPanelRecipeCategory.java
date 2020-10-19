@@ -86,18 +86,18 @@ public class SolarPanelRecipeCategory extends BlankRecipeCategory<SolarPanelReci
 
   // -------------------------------------
 
-  public static void register(@Nonnull IModRegistry registry, @Nonnull IGuiHelper guiHelper) {
+  public static void register() {
     // Check JEI Recipes are enabled
     if (!PersonalConfig.enableSolarJEIRecipes.get()) {
       return;
     }
 
-    registry.addRecipeCategories(new SolarPanelRecipeCategory(guiHelper));
-    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 3), SolarPanelRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 2), SolarPanelRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 1), SolarPanelRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 0), SolarPanelRecipeCategory.UID);
-    registry.addRecipes(Collections.singletonList(new SolarPanelRecipeWrapper(guiHelper)), UID);
+    MachinesPlugin.iModRegistry.addRecipeCategories(new SolarPanelRecipeCategory(MachinesPlugin.iGuiHelper));
+    MachinesPlugin.iModRegistry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 3), SolarPanelRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 2), SolarPanelRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 1), SolarPanelRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_solar_panel.getBlockNN(), 1, 0), SolarPanelRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipes(Collections.singletonList(new SolarPanelRecipeWrapper(MachinesPlugin.iGuiHelper)), UID);
   }
 
   // ------------ Category

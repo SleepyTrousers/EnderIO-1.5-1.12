@@ -77,18 +77,18 @@ public class PainterRecipeCategory implements IRecipeCategory<PainterRecipeCateg
     }
   }
 
-  public static void register(IModRegistry registry) {
+  public static void register() {
     // Check the config to see if Painter recipes are enabled
     if (!PersonalConfig.enablePainterJEIRecipes.get()) {
       return;
     }
 
-    registry.addRecipeClickArea(GuiPainter.class, 155, 42, 16, 16, PainterRecipeCategory.UID);
-    registry.addRecipeCatalyst(new ItemStack(block_painter.getBlockNN()), PainterRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeClickArea(GuiPainter.class, 155, 42, 16, 16, PainterRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeCatalyst(new ItemStack(block_painter.getBlockNN()), PainterRecipeCategory.UID);
 
-    registry.addRecipeRegistryPlugin(new PainterRegistryPlugin(registry));
+    MachinesPlugin.iModRegistry.addRecipeRegistryPlugin(new PainterRegistryPlugin(MachinesPlugin.iModRegistry));
 
-    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerPainter.class, PainterRecipeCategory.UID, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT,
+    MachinesPlugin.iModRegistry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerPainter.class, PainterRecipeCategory.UID, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT,
         FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
   }
 
