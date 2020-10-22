@@ -271,7 +271,6 @@ public class TankRecipeCategory extends BlankRecipeCategory<TankRecipeCategory.T
   public TankRecipeCategory(IGuiHelper guiHelper) {
     ResourceLocation backgroundLocation = EnderIO.proxy.getGuiTexture("tank");
     background = guiHelper.createDrawable(backgroundLocation, xOff, yOff, 146, 49);
-
   }
 
   @Override
