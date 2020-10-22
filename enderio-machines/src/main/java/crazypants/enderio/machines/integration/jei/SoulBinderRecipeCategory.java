@@ -109,23 +109,23 @@ public class SoulBinderRecipeCategory extends BlankRecipeCategory<SoulBinderReci
   }
 
   @SuppressWarnings("null")
-  public static void register(IModRegistry registry, IGuiHelper guiHelper) {
+  public static void register() {
     // Check JEI Recipes are enabled
     if (!PersonalConfig.enableSoulBinderJEIRecipes.get()) {
       return;
     }
 
-    RecipeWrapperBase.setLevelData(SoulBinderRecipeWrapper.class, guiHelper, 129 - xOff, 40 - yOff - 5, null, null);
+    RecipeWrapperBase.setLevelData(SoulBinderRecipeWrapper.class, MachinesPlugin.iGuiHelper, 129 - xOff, 72 - yOff - 5, null, null);
 
-    registry.addRecipeCategories(new SoulBinderRecipeCategory(guiHelper));
-    registry.handleRecipes(ISoulBinderRecipe.class, SoulBinderRecipeWrapper::new, SoulBinderRecipeCategory.UID);
-    registry.addRecipeClickArea(GuiSoulBinder.class, 155, 42, 16, 16, SoulBinderRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(block_soul_binder.getBlockNN()), SoulBinderRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeCategories(new SoulBinderRecipeCategory(MachinesPlugin.iGuiHelper));
+    MachinesPlugin.iModRegistry.handleRecipes(ISoulBinderRecipe.class, SoulBinderRecipeWrapper::new, SoulBinderRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeClickArea(GuiSoulBinder.class, 155, 42, 16, 16, SoulBinderRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeCategoryCraftingItem(new ItemStack(block_soul_binder.getBlockNN()), SoulBinderRecipeCategory.UID);
 
-    registry.addRecipes(MachineRecipeRegistry.instance.getRecipesForMachine(MachineRecipeRegistry.SOULBINDER).values().stream()
+    MachinesPlugin.iModRegistry.addRecipes(MachineRecipeRegistry.instance.getRecipesForMachine(MachineRecipeRegistry.SOULBINDER).values().stream()
         .filter(r -> r instanceof ISoulBinderRecipe).collect(Collectors.toList()), UID);
 
-    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerSoulBinder.class, SoulBinderRecipeCategory.UID, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT,
+    MachinesPlugin.iModRegistry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerSoulBinder.class, SoulBinderRecipeCategory.UID, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT,
         FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
   }
 

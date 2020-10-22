@@ -134,22 +134,22 @@ public class EnchanterRecipeCategory extends BlankRecipeCategory<EnchanterRecipe
 
   }
 
-  public static void register(IModRegistry registry, @Nonnull IGuiHelper guiHelper) {
+  public static void register() {
     // Check JEI recipes are enabled
     if (!PersonalConfig.enableEnchanterJEIRecipes.get()) {
       return;
     }
 
-    RecipeWrapperBase.setLevelData(EnchanterRecipeWrapper.class, guiHelper, 129 - xOff, 40 - yOff - 5, null, null);
+    RecipeWrapperBase.setLevelData(EnchanterRecipeWrapper.class, MachinesPlugin.iGuiHelper, 139 - xOff, 66 - yOff - 5, null, null);
 
-    registry.addRecipeCategories(new EnchanterRecipeCategory(guiHelper));
-    registry.addRecipeClickArea(GuiEnchanter.class, 155, 8, 16, 16, EnchanterRecipeCategory.UID);
-    registry.addRecipeCatalyst(new ItemStack(block_enchanter.getBlockNN()), EnchanterRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeCategories(new EnchanterRecipeCategory(MachinesPlugin.iGuiHelper));
+    MachinesPlugin.iModRegistry.addRecipeClickArea(GuiEnchanter.class, 155, 8, 16, 16, EnchanterRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeCatalyst(new ItemStack(block_enchanter.getBlockNN()), EnchanterRecipeCategory.UID);
 
-    registry.addRecipes(NullHelper.notnullJ(MachineRecipeRegistry.instance.getRecipesForMachine(MachineRecipeRegistry.ENCHANTER).values().stream()
+    MachinesPlugin.iModRegistry.addRecipes(NullHelper.notnullJ(MachineRecipeRegistry.instance.getRecipesForMachine(MachineRecipeRegistry.ENCHANTER).values().stream()
         .map(EnchanterRecipeWrapper::create).flatMap(Collection::stream).collect(Collectors.toList()), "Stream::collect"), UID);
 
-    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerEnchanter.class, EnchanterRecipeCategory.UID, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT,
+    MachinesPlugin.iModRegistry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerEnchanter.class, EnchanterRecipeCategory.UID, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT,
         FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
   }
 

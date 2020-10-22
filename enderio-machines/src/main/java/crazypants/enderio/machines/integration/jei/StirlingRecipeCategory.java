@@ -126,23 +126,23 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
 
   } // -------------------------------------
 
-  public static void register(@Nonnull IModRegistry registry, @Nonnull IGuiHelper guiHelper) {
+  public static void register() {
     // Check to see if the JEI recipes are enabled
     if (!PersonalConfig.enableStirlingJEIRecipes.get()) {
       return;
     }
 
-    registry.addRecipeCategories(new StirlingRecipeCategory(guiHelper));
-    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_stirling_generator.getBlockNN(), 1, 0), StirlingRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_simple_stirling_generator.getBlockNN(), 1, 0), StirlingRecipeCategory.UID);
-    registry.addRecipeClickArea(GuiStirlingGenerator.class, 155, 42, 16, 16, StirlingRecipeCategory.UID);
-    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerStirlingGenerator.Normal.class, StirlingRecipeCategory.UID, 0, 1, 2, 4 * 9);
-    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerStirlingGenerator.Simple.class, StirlingRecipeCategory.UID, 0, 1, 1, 4 * 9);
+    MachinesPlugin.iModRegistry.addRecipeCategories(new StirlingRecipeCategory(MachinesPlugin.iGuiHelper));
+    MachinesPlugin.iModRegistry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_stirling_generator.getBlockNN(), 1, 0), StirlingRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_simple_stirling_generator.getBlockNN(), 1, 0), StirlingRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeClickArea(GuiStirlingGenerator.class, 155, 42, 16, 16, StirlingRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerStirlingGenerator.Normal.class, StirlingRecipeCategory.UID, 0, 1, 2, 4 * 9);
+    MachinesPlugin.iModRegistry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerStirlingGenerator.Simple.class, StirlingRecipeCategory.UID, 0, 1, 1, 4 * 9);
 
     long start = System.nanoTime();
 
     // Put valid fuel to "buckets" based on their burn time (energy production)
-    FuelCache.initialize(registry.getIngredientRegistry().getAllIngredients(ItemStack.class));
+    FuelCache.initialize(MachinesPlugin.iModRegistry.getIngredientRegistry().getAllIngredients(ItemStack.class));
     NNMap<Integer, NNList<ItemStack>> recipeInputs = new NNMap.Brutal<>();
 
     FuelCache.getFuels().apply(new Callback<ItemStack>() {
@@ -166,9 +166,9 @@ public class StirlingRecipeCategory extends BlankRecipeCategory<StirlingRecipeCa
     TreeSet<Integer> recipeOrder = new TreeSet<Integer>(recipeInputs.keySet());
     Iterator<Integer> it = recipeOrder.descendingIterator();
     while (it.hasNext())
-      recipeList.add(new StirlingRecipeWrapper(recipeInputs.get(it.next()), guiHelper));
+      recipeList.add(new StirlingRecipeWrapper(recipeInputs.get(it.next()), MachinesPlugin.iGuiHelper));
 
-    registry.addRecipes(recipeList, UID);
+    MachinesPlugin.iModRegistry.addRecipes(recipeList, UID);
 
     long end = System.nanoTime();
     Log.info(String.format("StirlingRecipeCategory: Added %d stirling generator recipes for %d solid fuels to JEI in %.3f seconds.", recipeList.size(),

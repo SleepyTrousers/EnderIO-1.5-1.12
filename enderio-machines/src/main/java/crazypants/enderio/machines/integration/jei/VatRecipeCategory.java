@@ -86,22 +86,22 @@ public class VatRecipeCategory extends BlankRecipeCategory<VatRecipeCategory.Vat
 
   }
 
-  public static void register(IModRegistry registry, @Nonnull IGuiHelper guiHelper) {
+  public static void register() {
     // Check JEI recipes are enabled
     if (!PersonalConfig.enableVatJEIRecipes.get()) {
       return;
     }
 
-    RecipeWrapperIRecipe.setLevelData(VatRecipeWrapper.class, guiHelper, 129 - xOff, 40 - yOff - 5, null, null);
+    RecipeWrapperIRecipe.setLevelData(VatRecipeWrapper.class, MachinesPlugin.iGuiHelper, -1, 73 - yOff - 5, null, null);
 
-    registry.addRecipeCategories(new VatRecipeCategory(guiHelper));
-    registry.handleRecipes(IRecipe.class, VatRecipeWrapper::new, VatRecipeCategory.UID);
-    registry.addRecipeClickArea(GuiVat.class, 155, 42, 16, 16, VatRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(block_vat.getBlockNN()), VatRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeCategories(new VatRecipeCategory(MachinesPlugin.iGuiHelper));
+    MachinesPlugin.iModRegistry.handleRecipes(IRecipe.class, VatRecipeWrapper::new, VatRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeClickArea(GuiVat.class, 155, 42, 16, 16, VatRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeCategoryCraftingItem(new ItemStack(block_vat.getBlockNN()), VatRecipeCategory.UID);
 
-    registry.addRecipes(VatRecipeManager.getInstance().getRecipes(), UID);
+    MachinesPlugin.iModRegistry.addRecipes(VatRecipeManager.getInstance().getRecipes(), UID);
 
-    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerVat.class, VatRecipeCategory.UID, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT,
+    MachinesPlugin.iModRegistry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerVat.class, VatRecipeCategory.UID, FIRST_RECIPE_SLOT, NUM_RECIPE_SLOT,
         FIRST_INVENTORY_SLOT, NUM_INVENTORY_SLOT);
   }
 

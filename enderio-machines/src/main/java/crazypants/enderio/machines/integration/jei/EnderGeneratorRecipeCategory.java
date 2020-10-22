@@ -76,16 +76,16 @@ public class EnderGeneratorRecipeCategory extends BlankRecipeCategory<EnderGener
 
   // -------------------------------------
 
-  public static void register(@Nonnull IModRegistry registry, @Nonnull IGuiHelper guiHelper) {
+  public static void register() {
     // Check JEI recipes are enabled
     if (!PersonalConfig.enableEnderGenJEIRecipes.get()) {
       return;
     }
 
-    registry.addRecipeCategories(new EnderGeneratorRecipeCategory(guiHelper));
-    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_ender_generator.getBlockNN(), 1, 0), EnderGeneratorRecipeCategory.UID);
-    registry.addRecipeClickArea(GuiZombieGenerator.class, 155, 42, 16, 16, EnderGeneratorRecipeCategory.UID);
-    registry.addRecipes(Collections.singletonList(new EnderGeneratorRecipeWrapper()), UID);
+    MachinesPlugin.iModRegistry.addRecipeCategories(new EnderGeneratorRecipeCategory(MachinesPlugin.iGuiHelper));
+    MachinesPlugin.iModRegistry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_ender_generator.getBlockNN(), 1, 0), EnderGeneratorRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeClickArea(GuiZombieGenerator.class, 155, 42, 16, 16, EnderGeneratorRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipes(Collections.singletonList(new EnderGeneratorRecipeWrapper()), UID);
   }
 
   // ------------ Category

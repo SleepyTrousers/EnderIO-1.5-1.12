@@ -170,12 +170,14 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
       TileInventoryPanel te1 = getTileEntity();
       StoredCraftingRecipe recipe = te1.getStoredCraftingRecipe(index);
       repButtons[index] = new ItemStackButton(this, 22 + index, -35, 18 + index * 20, IconEIO.QUESTION, null);
+
       addToolTip(new GuiToolTip(repButtons[index].getBounds(), EnderIO.lang.localize("gui.inventorypanel.tooltip.recipe.store")) {
         @Override
         public boolean shouldDraw() {
           return super.shouldDraw() && !repButtons[index].hasItemStack() && repButtons[index].enabled;
         }
       });
+
       if (recipe != null) {
         ItemStack icon = recipe.getResult(te1);
         repButtons[index].setStack(icon);
