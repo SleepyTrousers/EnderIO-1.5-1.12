@@ -185,6 +185,9 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     if(entity instanceof EntityPlayer) {
       return false;
     }
+    if(entity.isDead) {
+      return false;
+    }
 
     String entityId = EntityList.getEntityString(entity);
     if(isBlackListed(entityId)) {
