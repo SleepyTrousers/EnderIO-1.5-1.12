@@ -724,7 +724,7 @@ XML editor will display that as tooltips when editing this file.
     <crafting>
       <grid>
         <item /><item name="oredict:paper, paperBlack" /><item />
-        <item name="oredict:paper, paperBlack" /><item name="blockHopper" /><item name="oredict:paper, paperBlack" />
+        <item name="oredict:paper, paperBlack" /><item name="Hopper" /><item name="oredict:paper, paperBlack" />
         <item /><item name="oredict:paper, paperBlack" /><item/>
       </grid>
       <output name="enderio:item_basic_item_filter" />
