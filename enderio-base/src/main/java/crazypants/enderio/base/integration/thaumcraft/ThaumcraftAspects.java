@@ -110,7 +110,7 @@ public class ThaumcraftAspects {
     // }
     // }
 
-    Log.info("Thaumcraft integration: Added aspects for " + countItem + " items and " + countOredict + " ore dictionary entrties");
+    Log.info("Thaumcraft integration: Added aspects for " + countItem + " items and " + countOredict + " ore dictionary entries");
   }
 
   private static @Nonnull AspectList getAspects(@Nonnull Block block) {
