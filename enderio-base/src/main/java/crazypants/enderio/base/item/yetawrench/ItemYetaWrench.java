@@ -1,16 +1,10 @@
 package crazypants.enderio.base.item.yetawrench;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.client.handlers.SpecialTooltipHandler;
-
 import buildcraft.api.tools.IToolWrench;
 import cofh.api.item.IToolHammer;
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.vecmath.Vector4d;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.api.tool.ITool;
@@ -23,10 +17,13 @@ import crazypants.enderio.base.machine.interfaces.IYetaAwareBlock;
 import crazypants.enderio.base.paint.IPaintable.IBlockPaintableBlock;
 import crazypants.enderio.base.paint.PaintUtil;
 import crazypants.enderio.base.paint.YetaUtil;
+import crazypants.enderio.base.render.IHaveRenderers;
+import crazypants.enderio.base.render.registry.ItemModelRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDoor.EnumDoorHalf;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,6 +38,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.fml.common.Optional;
@@ -49,9 +47,14 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+
 @Optional.InterfaceList({ @Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraftAPI|core"),
     @Interface(iface = "cofh.api.item.IToolHammer", modid = "cofhcore") })
-public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdvancedTooltipProvider, IToolWrench, IToolHammer {
+public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdvancedTooltipProvider, IToolWrench, IToolHammer, IHaveRenderers {
 
   public static ItemYetaWrench create(@Nonnull IModObject modObject, @Nullable Block block) {
     return new ItemYetaWrench(modObject);
@@ -234,4 +237,21 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   public void toolUsed(ItemStack item, EntityLivingBase user, Entity entity) {
   }
 
+  @Override
+  public void registerRenderers(@Nonnull IModObject modObject) {
+    ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(modObject.getRegistryName(), "#inventory"));
+      if (PersonalConfig.animatedYeta.get()) {
+
+        ItemModelRegistry.registerRotating(new ModelResourceLocation(modObject.getRegistryName(), "#inventory"), transformType -> {
+          switch (transformType) {
+            case THIRD_PERSON_RIGHT_HAND:
+              return new Vector4d(1, 1, 0, 1);
+            case THIRD_PERSON_LEFT_HAND:
+              return new Vector4d(-1, 1, 0, 1);
+          }
+          return null;
+        });
+
+      }
+  }
 }
