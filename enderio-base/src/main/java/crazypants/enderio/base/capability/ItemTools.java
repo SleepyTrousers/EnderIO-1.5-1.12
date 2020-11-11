@@ -11,6 +11,7 @@ import crazypants.enderio.base.machine.base.te.AbstractMachineEntity;
 import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
@@ -391,6 +392,17 @@ public final class ItemTools {
     }
 
     return stack;
+  }
+
+  public static @Nonnull ItemStack oneOf(@Nonnull EntityPlayer player, @Nonnull ItemStack stack) {
+    if (player.isCreative()) {
+      ItemStack copy = stack.copy();
+      copy.setCount(1);
+      return copy;
+    } else {
+      player.inventory.markDirty();
+      return stack.splitStack(1);
+    }
   }
 
 }

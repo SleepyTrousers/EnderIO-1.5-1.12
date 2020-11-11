@@ -178,8 +178,7 @@ public final class RecipeLoader {
     ProgressManager.pop(bar2);
 
     bar.step("Registering Recipes"); // 10
-    //config.register("", RecipeLevel.IGNORE);
-    config.register("", RecipeLevel.ADVANCED);
+    config.register("", RecipeLevel.IGNORE);
 
     bar.step("Post Registration"); // 11
     bar2 = ProgressManager.push("Mod", modList.size());
