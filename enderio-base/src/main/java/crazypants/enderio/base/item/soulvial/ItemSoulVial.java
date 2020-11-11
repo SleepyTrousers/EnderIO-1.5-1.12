@@ -202,8 +202,10 @@ public class ItemSoulVial extends Item implements IResourceTooltipProvider, IHav
     // check the cases we have a message for first
     if (entity instanceof EntityPlayer) {
       player.sendMessage(Lang.SOUL_VIAL_DENIED_PLAYER.toChatServer());
+      return false;
     } else if (CapturedMob.isBlacklisted(entity)) {
       player.sendMessage(Lang.SOUL_VIAL_DENIED_AALISTED.toChatServer());
+      return false;
     } else if (entity instanceof IEntityOwnable && ((IEntityOwnable) entity).getOwnerId() != null && !player.equals(((IEntityOwnable) entity).getOwner())
         && !PermissionAPI.hasPermission(player.getGameProfile(), permissionPickupOwned, new TargetContext(player, entity))) {
       player.sendMessage(Lang.SOUL_VIAL_DENIED_OWNED_PET.toChatServer());

@@ -42,6 +42,8 @@ import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
+import info.loenwind.processor.Networkbuilder.TooManyNullableParametersException;
+
 @SupportedAnnotationTypes("info.loenwind.processor.RemoteCall")
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class Processor extends AbstractProcessor {
@@ -220,7 +222,11 @@ public class Processor extends AbstractProcessor {
           b.addReaderStatement("final $2T $1N = buf.read$3L()", parameterSpec, typeName, byteBuffCall);
         } else {
           if (!isNonnull(parameter)) {
-            b.beginNullable(parameterSpec);
+            try {
+              b.beginNullable(parameterSpec);
+            } catch (TooManyNullableParametersException e) {
+              processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Too many nullable parameters", parameter);
+            }
           }
           if (typeName.isBoxedPrimitive()) {
             String byteBuffCall = ucfirst(typeName.unbox().toString());
