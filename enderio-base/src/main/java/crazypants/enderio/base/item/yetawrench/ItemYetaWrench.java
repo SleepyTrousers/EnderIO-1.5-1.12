@@ -237,10 +237,12 @@ public class ItemYetaWrench extends Item implements ITool, IConduitControl, IAdv
   public void toolUsed(ItemStack item, EntityLivingBase user, Entity entity) {
   }
 
+  @SideOnly(Side.CLIENT)
   @Override
   public void registerRenderers(@Nonnull IModObject modObject) {
     ModelLoader.setCustomModelResourceLocation(this, 0, new ModelResourceLocation(modObject.getRegistryName(), "#inventory"));
-      if (PersonalConfig.animatedYeta.get()) {
+      if (PersonalConfig.animatedYeta.get())
+      {
 
         ItemModelRegistry.registerRotating(new ModelResourceLocation(modObject.getRegistryName(), "#inventory"), transformType -> {
           switch (transformType) {

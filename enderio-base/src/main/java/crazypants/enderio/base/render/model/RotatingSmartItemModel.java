@@ -79,7 +79,6 @@ public class RotatingSmartItemModel implements IBakedModel {
 
     double r = (EnderIO.proxy.getTickCount() % 360) + (Minecraft.getMinecraft().isGamePaused() ? 0 : Minecraft.getMinecraft().getRenderPartialTicks());
 
-
     TRSRTransformation transformOrig = new TRSRTransformation(perspective.getRight());
     Quat4f leftRot = transformOrig.getLeftRot();
     Quat4f dynamicRotation = new Quat4f();
