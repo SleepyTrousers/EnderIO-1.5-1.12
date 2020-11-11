@@ -3,11 +3,9 @@ package crazypants.enderio.base.render.registry;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.enderio.core.common.vecmath.Vector4d;
 
@@ -60,7 +58,8 @@ public final class ItemModelRegistry {
     });
   }
 
-  public static void registerRotating(@Nonnull ModelResourceLocation resource, Function<ItemCameraTransforms.TransformType, Vector4d> targetTransforms) {
+  public static void registerRotating(@Nonnull ModelResourceLocation resource,
+      @Nonnull Function<ItemCameraTransforms.TransformType, Vector4d> targetTransforms) {
     register(resource, new Registry() {
       @Override
       public @Nonnull IBakedModel wrap(@Nonnull IBakedModel model) {
