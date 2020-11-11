@@ -1,6 +1,17 @@
 {
-    "parent": "item/handheld",
-    "textures": {
-        "layer0": "enderio:items/item_yeta_wrench"
-    }
+	"credit": "Made with Blockbench",
+	"parent": "item/handheld",
+	"textures": {
+		"layer0": "enderio:items/item_yeta_wrench"
+	},
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [6, 0, 43],
+			"translation": [0, 1, 2]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [6, 0, -43],
+			"translation": [0, 1, 2]
+		}
+	}
 }

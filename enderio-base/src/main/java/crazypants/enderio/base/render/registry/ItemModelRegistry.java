@@ -3,8 +3,11 @@ package crazypants.enderio.base.render.registry;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.function.Function;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.enderio.core.common.vecmath.Vector4d;
 
@@ -12,6 +15,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.render.model.FacadeSmartItemModel;
 import crazypants.enderio.base.render.model.RotatingSmartItemModel;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -42,7 +46,7 @@ public final class ItemModelRegistry {
     register(resource, new Registry() {
       @Override
       public @Nonnull IBakedModel wrap(@Nonnull IBakedModel model) {
-        return new RotatingSmartItemModel(model, rot);
+        return new RotatingSmartItemModel(model, transformType -> rot);
       }
     });
   }
@@ -51,7 +55,16 @@ public final class ItemModelRegistry {
     register(resource, new Registry() {
       @Override
       public @Nonnull IBakedModel wrap(@Nonnull IBakedModel model) {
-        return new RotatingSmartItemModel(model, rot);
+        return new RotatingSmartItemModel(model, transformType -> rot);
+      }
+    });
+  }
+
+  public static void registerRotating(@Nonnull ModelResourceLocation resource, Function<ItemCameraTransforms.TransformType, Vector4d> targetTransforms) {
+    register(resource, new Registry() {
+      @Override
+      public @Nonnull IBakedModel wrap(@Nonnull IBakedModel model) {
+        return new RotatingSmartItemModel(model, targetTransforms);
       }
     });
   }

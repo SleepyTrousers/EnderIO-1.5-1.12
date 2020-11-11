@@ -91,6 +91,9 @@ public final class PersonalConfig {
   public static final IValue<Boolean> animatedGears = F.make("animatedGears", true, //
       "Should the Gear item be animated?");
 
+  public static final IValue<Boolean> animatedYeta = F.make("animatedYeta", true, //
+          "Should the Yeta wrench rotate in Third-person view?");
+
   // Item Hiding
 
   public static final IValueFactory H = F.section(".hiding");
