@@ -72,6 +72,11 @@ public interface IPaintable {
 
   }
 
+  /**
+   * A block that can be painted with any block. It renders the paint source's model instead of its own. The paint source can be any block.
+   * <p>
+   * Note that this only applies if non of the sub-interfaces {@link ISolidBlockPaintableBlock} / {@link INonSolidBlockPaintableBlock} are used.
+   */
   @Interface(iface = "team.chisel.ctm.api.IFacade", modid = "ctm-api")
   public interface IBlockPaintableBlock extends IPaintable, team.chisel.ctm.api.IFacade {
 
@@ -87,13 +92,17 @@ public interface IPaintable {
 
   /**
    * A block that can be painted with a full block. It renders the paint source's model instead of its own. The paint source must be a full, solid block.
+   * <p>
+   * This is for blocks that block out what is behind them and don't let light through.
    */
   public interface ISolidBlockPaintableBlock extends IBlockPaintableBlock {
 
   }
 
   /**
-   * A block that can be painted with any block. It renders the paint source's model instead of its own. The paint source can be any block.
+   * A block that can be painted with any non-solid block. It renders the paint source's model instead of its own. The paint source can be any non-solid block.
+   * <p>
+   * This is for blocks that you can see through or that let light through.
    */
   public interface INonSolidBlockPaintableBlock extends IBlockPaintableBlock {
 
