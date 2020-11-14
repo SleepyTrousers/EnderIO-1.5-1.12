@@ -5,6 +5,7 @@ tile.block_inventory_panel.tooltip.detailed.line1=Allows remote access to invent
 tile.block_inventory_panel.tooltip.detailed.line2=Data and Item conduits.
 tile.block_inventory_panel.tooltip.detailed.line3=Uses Nutrient Distillation for power.
 tile.block_inventory_panel.tooltip.detailed.line4=Offers a persistent crafting grid.
+tile.block_inventory_panel.tooltip.detailed.line5=Sneak-Click with a dye to color.
 
 enderio.item_data_conduit.name=Data Conduit
 

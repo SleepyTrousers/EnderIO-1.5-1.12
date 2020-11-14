@@ -52,14 +52,4 @@ public interface IItemConduit extends IExtractor, IServerConduit, IClientConduit
 
   boolean isExtractionRedstoneConditionMet(@Nonnull EnumFacing dir);
 
-  // TODO Inventory
-  // boolean isConnectedToNetworkAwareBlock(@Nonnull EnumFacing dir);
-  //
-  // boolean hasInventoryPanelUpgrade(@Nonnull EnumFacing dir);
-  //
-  // void setFunctionUpgrade(@Nonnull EnumFacing dir, @Nonnull ItemStack upgrade);
-  //
-  // @Nonnull
-  // ItemStack getFunctionUpgrade(@Nonnull EnumFacing dir);
-
 }

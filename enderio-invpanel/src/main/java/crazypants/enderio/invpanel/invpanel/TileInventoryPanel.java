@@ -40,6 +40,7 @@ import info.loenwind.autosave.annotations.Store;
 import info.loenwind.autosave.util.NBTAction;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -89,6 +90,9 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   @Store
   private final ArrayList<StoredCraftingRecipe> storedCraftingRecipes;
+
+  @Store
+  private EnumDyeColor color;
 
   public TileInventoryPanel() {
     super(new SlotDefinition(0, 8, 11, 25, 21, 20));
@@ -210,7 +214,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   private void scanNetwork() {
     EnumFacing facingDir = getFacing();
-    EnumFacing backside = facingDir.getOpposite();
+    EnumFacing backside = getIODirection();
 
     BlockPos p = pos.offset(backside);
     TileEntity te = world.getTileEntity(p);
@@ -380,6 +384,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
       eventHandler.checkCraftingRecipes();
     }
     updateItemFilter();
+    world.markBlockRangeForRenderUpdate(pos, pos); // TODO does this work?
   }
 
   @Override
@@ -398,6 +403,17 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
 
   private EnumFacing getIODirection() {
     return getFacing().getOpposite();
+  }
+
+  protected EnumDyeColor getColor() {
+    return color;
+  }
+
+  protected void setColor(EnumDyeColor color) {
+    this.color = color;
+    markDirty();
+    forceUpdatePlayers();
+    world.markBlockRangeForRenderUpdate(pos, pos); // TODO does this work?
   }
 
   @Override
