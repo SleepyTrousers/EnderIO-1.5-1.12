@@ -4,6 +4,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 
@@ -16,6 +17,7 @@ import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.tank.TankMachineRecipe;
 import crazypants.enderio.base.recipe.tank.TankMachineRecipe.Logic;
+import crazypants.enderio.util.FuncUtil;
 import net.minecraftforge.fluids.FluidStack;
 
 public class Tanking extends AbstractConditional {
@@ -30,6 +32,8 @@ public class Tanking extends AbstractConditional {
   private Optional<FluidAmount> fluid = empty();
   private Logic logic = Logic.NONE;
   private Optional<Type> type = empty();
+
+  private volatile @Nullable TankMachineRecipe registered = null;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -78,9 +82,15 @@ public class Tanking extends AbstractConditional {
         final boolean isFilling = type.get() == Type.FILL;
 
         TankMachineRecipe recipe = new TankMachineRecipe(recipeName, isFilling, inThing, fluidStack, outThing, logic, recipeLevel);
-        MachineRecipeRegistry.instance.registerRecipe(recipe);
+        MachineRecipeRegistry.instance.registerRecipe(registered = recipe);
       }
     }
+  }
+
+  @Override
+  public void unregister() {
+    FuncUtil.doIf(registered, MachineRecipeRegistry.instance::removeRecipe);
+    registered = null;
   }
 
   @Override

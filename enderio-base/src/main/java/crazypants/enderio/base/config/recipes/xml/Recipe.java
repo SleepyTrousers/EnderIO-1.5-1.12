@@ -16,6 +16,7 @@ import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.recipes.InvalidRecipeConfigException;
 import crazypants.enderio.base.config.recipes.StaxFactory;
 import crazypants.enderio.base.recipe.RecipeLevel;
+import crazypants.enderio.util.FuncUtil;
 import info.loenwind.autoconfig.util.NullHelper;
 
 public class Recipe extends AbstractConditional {
@@ -30,6 +31,8 @@ public class Recipe extends AbstractConditional {
 
   private Optional<String> levelName = empty();
   private Optional<RecipeLevel> level = empty();
+
+  private volatile @Nullable AbstractConditional registered = null;
 
   @Override
   public Object readResolve() throws InvalidRecipeConfigException {
@@ -97,12 +100,20 @@ public class Recipe extends AbstractConditional {
       for (AbstractConditional crafting : craftings) {
         if (crafting.isValid() && crafting.isActive()) {
           crafting.register(recipeName, level.isPresent() ? get(level) : recipeLevel);
+          registered = crafting;
           return;
         }
       }
     } else {
       Log.debug("Skipping XML recipe '" + getName() + "' (valid=" + valid + ", active=" + active + ", required=" + required + ", disabled=" + disabled + ")");
     }
+  }
+
+  @Override
+  public void unregister() {
+    Log.debug("Unregistering XML recipe '" + getName() + "'");
+    FuncUtil.doIf(registered, AbstractConditional::unregister);
+    registered = null;
   }
 
   @SuppressWarnings("null")

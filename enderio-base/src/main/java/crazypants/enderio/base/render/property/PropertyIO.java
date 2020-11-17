@@ -2,6 +2,7 @@ package crazypants.enderio.base.render.property;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,18 +12,15 @@ import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NNList.NNIterator;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
 
 import crazypants.enderio.base.render.property.IOMode.EnumIOMode;
 import net.minecraft.block.properties.PropertyHelper;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PropertyIO extends PropertyHelper<IOMode> {
 
   private final static @Nonnull ImmutableSet<IOMode> allowedValues;
-  private final static @Nonnull Map<String, IOMode> nameToValue = Maps.<String, IOMode> newHashMap();
+  private final static @Nonnull Map<String, IOMode> nameToValue = new HashMap<>();
   static {
     List<IOMode> values = new ArrayList<IOMode>();
     NNIterator<EnumFacing> faces = NNList.FACING.iterator();
@@ -59,9 +57,8 @@ public class PropertyIO extends PropertyHelper<IOMode> {
   }
 
   @Override
-  @SideOnly(Side.CLIENT)
   public @Nonnull Optional<IOMode> parseValue(@Nonnull String value) {
     return Optional.<IOMode> fromNullable(nameToValue.get(value));
   }
- 
+
 }
