@@ -50,6 +50,13 @@ public final class ZooConfig {
   public static final IValue<Float> direSlime3Chance = SLIME.make("direSlime3Chance", .2f, //
       "The chance that a large Dire Slime will spawn when a medium Dire Slime is killed (eg 0.12 for a 12% chance).").setRange(0, 1).sync();
 
+  public static final IValueFactory VOID = F0.section(".void_slime");
+
+  public static final IValue<Float> voidSlime1Health = SLIME.make("dvoidSlime1Health", 10f, //
+      "Base health of the Void Slime.").setRange(1, 99).sync();
+  public static final IValue<Float> voidSlime1AttackDamage = SLIME.make("voidSlime1AttackDamage", 3f, //
+      "Base attack damage of the Void Slime.").setRange(1, 99).sync();
+
   public static final IValueFactory WOLF = F0.section(".dire_wolf");
 
   public static final IValue<Boolean> packAttackEnabled = WOLF.make("packAttackEnabled", true, //
