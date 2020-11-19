@@ -74,4 +74,8 @@ public class CommonProxy {
     return null;
   }
 
+  public boolean isGamePaused() {
+    return false;
+  }
+
 }

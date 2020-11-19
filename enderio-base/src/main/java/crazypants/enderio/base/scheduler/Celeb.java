@@ -19,6 +19,7 @@ public class Celeb implements Event {
     Scheduler.instance.registerEvent(C06);
     Scheduler.instance.registerEvent(C24);
     Scheduler.instance.registerEvent(SPACE);
+    Celeb11.create();
   }
 
   private boolean on = false;
