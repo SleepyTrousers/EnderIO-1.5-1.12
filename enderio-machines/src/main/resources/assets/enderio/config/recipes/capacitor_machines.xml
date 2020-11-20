@@ -161,6 +161,7 @@ XML editor will display that as tooltips when editing this file.
   <capacitor key="enderio:block_powered_spawner/intake" base="200" scaler="SPAWNER" />
   <capacitor key="enderio:block_powered_spawner/buffer" base="100000" scaler="POWER" />
   <capacitor key="enderio:block_powered_spawner/use" base="160" scaler="SPAWNER" />
+  <!-- spawners have a variability to the cost of a task. it is defined by some config values and further modified by this key. higher values will make spawning cheaper energywise, indirectly making it faster -->
   <capacitor key="enderio:block_powered_spawner/speed" base="1" scaler="QUADRATIC" />
   
   <capacitor key="enderio:block_transceiver/intake" base="40960" scaler="POWER" />
