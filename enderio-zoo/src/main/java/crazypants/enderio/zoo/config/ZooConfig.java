@@ -52,10 +52,12 @@ public final class ZooConfig {
 
   public static final IValueFactory VOID = F0.section(".void_slime");
 
-  public static final IValue<Float> voidSlime1Health = SLIME.make("dvoidSlime1Health", 10f, //
+  public static final IValue<Float> voidSlimeHealth = SLIME.make("dvoidSlimeHealth", 10f, //
       "Base health of the Void Slime.").setRange(1, 99).sync();
-  public static final IValue<Float> voidSlime1AttackDamage = SLIME.make("voidSlime1AttackDamage", 3f, //
+  public static final IValue<Float> voidSlimeAttackDamage = SLIME.make("voidSlimeAttackDamage", 3f, //
       "Base attack damage of the Void Slime.").setRange(1, 99).sync();
+  public static final IValue<Integer> voidSlimeRange = SLIME.make("voidSlimeRange", 8, //
+      "Darkness range of the Void Slime.").setRange(4, 32).sync();
 
   public static final IValueFactory WOLF = F0.section(".dire_wolf");
 

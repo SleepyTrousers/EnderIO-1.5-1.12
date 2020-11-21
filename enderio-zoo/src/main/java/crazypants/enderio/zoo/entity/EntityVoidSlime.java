@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.base.Predicate;
 
@@ -20,8 +21,9 @@ import crazypants.enderio.zoo.config.ZooConfig;
 import crazypants.enderio.zoo.entity.render.RenderVoidSlime;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMagmaCube;
 import net.minecraft.entity.monster.EntitySlime;
@@ -37,7 +39,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldEntitySpawner;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -49,10 +53,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @EventBusSubscriber(modid = EnderIOZoo.MODID)
 public class EntityVoidSlime extends EntityMagmaCube implements IEnderZooEntity.Aggressive {
 
+  private static final @Nonnull EntityLiving.SpawnPlacementType ON_BEDROCK = NullHelper.first(EnumHelper.addSpawnPlacementType("ON_BEDROCK",
+      (world, pos) -> pos != null && pos.getY() < 32 && world.getBlockState(pos.down()).getBlock() == Blocks.BEDROCK
+          && WorldEntitySpawner.isValidEmptySpawnBlock(world.getBlockState(pos)) && WorldEntitySpawner.isValidEmptySpawnBlock(world.getBlockState(pos.up()))
+          && !(world instanceof World && ((World) world).canBlockSeeSky(pos))),
+      EntityLiving.SpawnPlacementType.ON_GROUND);
+
   @SubscribeEvent
   public static void onEntityRegister(@Nonnull Register<EntityEntry> event) {
     LootTableList.register(new ResourceLocation(EnderIOZoo.DOMAIN, NAME));
     IEnderZooEntity.register(event, NAME, EntityVoidSlime.class, EGG_BG_COL, EGG_FG_COL, MobID.VSLIME);
+    EntitySpawnPlacementRegistry.setPlacementType(EntityVoidSlime.class, ON_BEDROCK);
   }
 
   @SubscribeEvent
@@ -72,9 +83,9 @@ public class EntityVoidSlime extends EntityMagmaCube implements IEnderZooEntity.
 
   @Override
   public void setSlimeSize(int size, boolean doFullHeal) {
-    super.setSlimeSize(size, doFullHeal);
-    getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(ZooConfig.voidSlime1AttackDamage.get());
-    getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(ZooConfig.voidSlime1Health.get());
+    super.setSlimeSize(1, doFullHeal);
+    getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(ZooConfig.voidSlimeAttackDamage.get());
+    getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(ZooConfig.voidSlimeHealth.get());
     setHealth(getMaxHealth());
   }
 
@@ -159,32 +170,20 @@ public class EntityVoidSlime extends EntityMagmaCube implements IEnderZooEntity.
 
   @Override
   protected int getAttackStrength() {
-    int res = (int) getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
-    return res;
+    return (int) getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
   }
 
   // This is called every tick on onUpdate(), so avoid moving the slime around twice per tick.
   @Override
   protected void setSize(float p_70105_1_, float p_70105_2_) {
-    int i = this.getSlimeSize();
-    super.setSize(i, i);
+    super.setSize(1, 1);
   }
 
   @Override
-  public void onCollideWithPlayer(@Nonnull EntityPlayer p_70100_1_) {
-    int i = getSlimeSize();
-    if (canEntityBeSeen(p_70100_1_) && this.getDistanceSq(p_70100_1_) < (double) i * (double) i
-        && p_70100_1_.attackEntityFrom(DamageSource.causeMobDamage(this), getAttackStrength())) {
+  public void onCollideWithPlayer(@Nonnull EntityPlayer player) {
+    if (canEntityBeSeen(player) && player.attackEntityFrom(DamageSource.causeMobDamage(this), getAttackStrength())) {
       playSound(SoundEvents.ENTITY_SLIME_ATTACK, 1.0F, (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
     }
-  }
-
-  @Override
-  protected float applyArmorCalculations(@Nonnull DamageSource p_70655_1_, float p_70655_2_) {
-    if (!p_70655_1_.isUnblockable()) {
-      return Math.min(Math.max(p_70655_2_ - 3 - this.getSlimeSize(), this.getSlimeSize()) / 2, p_70655_2_);
-    }
-    return p_70655_2_;
   }
 
   // Object because of sidedness
@@ -205,9 +204,8 @@ public class EntityVoidSlime extends EntityMagmaCube implements IEnderZooEntity.
 
   private void onLivingUpdateServer() {
     if (actionDelay-- <= 0) {
-      for (EntityPlayer player : getClosestPlayers(8)) {
+      for (EntityPlayer player : getClosestPlayers(ZooConfig.voidSlimeRange.get())) {
         player.addPotionEffect(new BlindEffect());
-        // System.out.println(player);
       }
       actionDelay = (int) (20 * (.5f + .5f * rand.nextFloat()));
     }
@@ -225,26 +223,28 @@ public class EntityVoidSlime extends EntityMagmaCube implements IEnderZooEntity.
         float offsetX = (-5f + 10f * rand.nextFloat());
         float offsetY = (-5f + 10f * rand.nextFloat());
         float offsetZ = (-5f + 10f * rand.nextFloat());
-        float maxSize = rand.nextFloat() * (rand.nextBoolean() ? 16.1f : 3.9f);// 8 * (.25f + .75f * rand.nextFloat()) * 2;
+        float maxSize = rand.nextFloat() * (rand.nextBoolean() ? (2 * ZooConfig.voidSlimeRange.get() + 0.1f) : 3.9f);
         float color = rand.nextBoolean() ? 0 : rand.nextFloat() / 10;
         final InfinityParticle particle = new InfinityParticle(world, BlockCoord.get(this), new Vector4f(color, color, color, 1f),
             new Vector4f(offsetX, offsetY, offsetZ, maxSize));
+        particle.setMaxAge(20 * 10);
         Minecraft.getMinecraft().effectRenderer.addEffect(particle);
         particles.add(particle);
-        particle.setMaxAge(20 * 10);
         actionDelay = (int) (20 * (.5f + .5f * rand.nextFloat()));
       }
 
     }
   }
 
+  /**
+   * Get a list of all players in range. Derived from {@link World#getClosestPlayer(double, double, double, double, Predicate)}.
+   */
   public List<EntityPlayer> getClosestPlayers(double distance) {
-    Predicate<Entity> predicate = EntitySelectors.NOT_SPECTATING;
     List<EntityPlayer> entityplayers = null;
     final double distanceSq = distance * distance;
 
     for (EntityPlayer entityplayer : world.playerEntities) {
-      if (predicate.apply(entityplayer)) {
+      if (EntitySelectors.NOT_SPECTATING.apply(entityplayer)) {
         if ((distance < 0.0D || entityplayer.getDistanceSq(posX, posY, posZ) < distanceSq)) {
           if (entityplayers == null) {
             entityplayers = new ArrayList<>();
@@ -257,6 +257,9 @@ public class EntityVoidSlime extends EntityMagmaCube implements IEnderZooEntity.
     return entityplayers != null ? entityplayers : Collections.emptyList();
   }
 
+  /**
+   * Server-side subclass that keeps track of the originating mob and suicides when that mob is too far away or dies.
+   */
   private class BlindEffect extends PotionEffect {
 
     private boolean combined = false;
@@ -267,7 +270,7 @@ public class EntityVoidSlime extends EntityMagmaCube implements IEnderZooEntity.
 
     @Override
     public boolean onUpdate(@Nonnull EntityLivingBase entityplayer) {
-      if (combined || entityplayer.getDistanceSq(posX, posY, posZ) < 8 * 8) {
+      if (combined || (!dead && entityplayer.getDistanceSq(posX, posY, posZ) < ZooConfig.voidSlimeRange.get() * ZooConfig.voidSlimeRange.get())) {
         return super.onUpdate(entityplayer);
       } else {
         return false;

@@ -20,7 +20,7 @@ public class RenderVoidSlime extends RenderLiving<EntityVoidSlime> {
 
   public static final Factory FACTORY = new Factory();
 
-  private static final ResourceLocation magmaCubeTextures = new ResourceLocation(EnderIOZoo.DOMAIN, "entity/direslime.png");
+  private static final ResourceLocation magmaCubeTextures = new ResourceLocation(EnderIOZoo.DOMAIN, "entity/voidslime.png");
 
   public RenderVoidSlime(RenderManager p_i46186_1_) {
     super(p_i46186_1_, new ModelDireSlime(), 0.25F);

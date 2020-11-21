@@ -187,4 +187,10 @@ Examples:
     <dimensionInclude name="the_nether"/>
   </entry>
 
+  <entry id="VoidSlime" mobName="enderiozoo:voidslime" creatureType="MONSTER" rate="1" minGroupSize="1" maxGroupSize="1" remove="false">
+    <biomeFilter type="any" />
+    <dimensionExclude/>
+    <dimensionInclude name="overworld"/>
+  </entry>
+
 </SpawnConfig>
