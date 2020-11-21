@@ -242,7 +242,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity
     }
     ticksDelay /= SPAWNER_SPEEDUP.getFloat(getCapacitorData());
     int powerPerTick = getPowerUsePerTick();
-    res.setRequiredEnergy(powerPerTick * ticksDelay);
+    res.setRequiredEnergy(powerPerTick * Math.max(1, ticksDelay));
     return res;
   }
 

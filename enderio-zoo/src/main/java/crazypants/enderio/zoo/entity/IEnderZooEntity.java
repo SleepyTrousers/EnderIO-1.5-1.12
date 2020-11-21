@@ -84,7 +84,8 @@ public interface IEnderZooEntity extends IAnimals {
     WCAT,
     WWITCH,
     LCHILD,
-    ESQUID;
+    ESQUID,
+    VSLIME;
 
     @Override
     public int getID() {
