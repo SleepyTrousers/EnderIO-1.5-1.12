@@ -1,6 +1,7 @@
 package crazypants.enderio.zoo.entity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.vecmath.Vector4f;
+import com.google.common.base.Predicate;
 
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.loot.EntityLootHelper;
@@ -18,13 +20,18 @@ import crazypants.enderio.zoo.config.ZooConfig;
 import crazypants.enderio.zoo.entity.render.RenderVoidSlime;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMagmaCube;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -182,13 +189,33 @@ public class EntityVoidSlime extends EntityMagmaCube implements IEnderZooEntity.
 
   // Object because of sidedness
   private final @Nonnull List<Object> particles = new ArrayList<>();
-  private int particleDelay = 0;
+  private int actionDelay = 0;
 
   @Override
-  @SideOnly(Side.CLIENT)
   public void onLivingUpdate() {
     super.onLivingUpdate();
-    if (this.world.isRemote && !this.dead && particleDelay-- <= 0) {
+    if (!dead) {
+      if (world.isRemote) {
+        onLivingUpdateClient();
+      } else {
+        onLivingUpdateServer();
+      }
+    }
+  }
+
+  private void onLivingUpdateServer() {
+    if (actionDelay-- <= 0) {
+      for (EntityPlayer player : getClosestPlayers(8)) {
+        player.addPotionEffect(new BlindEffect());
+        // System.out.println(player);
+      }
+      actionDelay = (int) (20 * (.5f + .5f * rand.nextFloat()));
+    }
+  }
+
+  @SideOnly(Side.CLIENT)
+  private void onLivingUpdateClient() {
+    if (actionDelay-- <= 0) {
       for (Iterator<Object> i = particles.iterator(); i.hasNext();) {
         if (!((InfinityParticle) i.next()).isAlive()) {
           i.remove();
@@ -198,17 +225,64 @@ public class EntityVoidSlime extends EntityMagmaCube implements IEnderZooEntity.
         float offsetX = (-5f + 10f * rand.nextFloat());
         float offsetY = (-5f + 10f * rand.nextFloat());
         float offsetZ = (-5f + 10f * rand.nextFloat());
-        float maxSize = 8 * (.25f + .75f * rand.nextFloat()) * 2;
-        float color = (rand.nextBoolean()) ? 0 : rand.nextFloat() / 10;
+        float maxSize = rand.nextFloat() * (rand.nextBoolean() ? 16.1f : 3.9f);// 8 * (.25f + .75f * rand.nextFloat()) * 2;
+        float color = rand.nextBoolean() ? 0 : rand.nextFloat() / 10;
         final InfinityParticle particle = new InfinityParticle(world, BlockCoord.get(this), new Vector4f(color, color, color, 1f),
             new Vector4f(offsetX, offsetY, offsetZ, maxSize));
         Minecraft.getMinecraft().effectRenderer.addEffect(particle);
         particles.add(particle);
         particle.setMaxAge(20 * 10);
-        particleDelay = (int) (20 * (.5f + .5f * rand.nextFloat()));
+        actionDelay = (int) (20 * (.5f + .5f * rand.nextFloat()));
       }
 
     }
+  }
+
+  public List<EntityPlayer> getClosestPlayers(double distance) {
+    Predicate<Entity> predicate = EntitySelectors.NOT_SPECTATING;
+    List<EntityPlayer> entityplayers = null;
+    final double distanceSq = distance * distance;
+
+    for (EntityPlayer entityplayer : world.playerEntities) {
+      if (predicate.apply(entityplayer)) {
+        if ((distance < 0.0D || entityplayer.getDistanceSq(posX, posY, posZ) < distanceSq)) {
+          if (entityplayers == null) {
+            entityplayers = new ArrayList<>();
+          }
+          entityplayers.add(entityplayer);
+        }
+      }
+    }
+
+    return entityplayers != null ? entityplayers : Collections.emptyList();
+  }
+
+  private class BlindEffect extends PotionEffect {
+
+    private boolean combined = false;
+
+    public BlindEffect() {
+      super(MobEffects.BLINDNESS, 100, 0, true, false);
+    }
+
+    @Override
+    public boolean onUpdate(@Nonnull EntityLivingBase entityplayer) {
+      if (combined || entityplayer.getDistanceSq(posX, posY, posZ) < 8 * 8) {
+        return super.onUpdate(entityplayer);
+      } else {
+        return false;
+      }
+    }
+
+    @Override
+    public void combine(@Nonnull PotionEffect other) {
+      if (!(other instanceof BlindEffect)) {
+        // we got combined with a normal blindness effect. this means we should no longer vanish when the player gets out of range.
+        combined = true;
+      }
+      super.combine(other);
+    }
+
   }
 
 }
