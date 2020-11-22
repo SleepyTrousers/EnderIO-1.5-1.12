@@ -178,12 +178,15 @@ public class PoweredTask implements IPoweredTask {
     String uid = nbtRoot.getString(KEY_RECIPE);
     recipe = MachineRecipeRegistry.instance.getRecipeForUid(uid);
     if (recipe != null) {
+      // TODO: Check if it is harmful if the recipe changed its input items in the meantime. Do we use the items we got from our nbt when the task is complete?
+      // If not, why do we store them?
       final PoweredTask poweredTask = new PoweredTask(recipe, usedEnergy, seed, outputMultiplier, chanceMultiplier, ins);
       if (hasCustomEnergyCost) {
         poweredTask.setRequiredEnergy(requiredEnergy);
       }
       return poweredTask;
     }
+    // TODO: Do something with the items we have here. Currently they are voided, which is not ideal.
     return null;
 
   }
