@@ -1,6 +1,6 @@
 if (project.include_in_build || !gradle.startParameter.taskNames.contains("build")) {
 	dependencies {
-	  compile "refinedstorage:refinedstorage:${refinedstorage_maven_version}:api"
+	  //compile "refinedstorage:refinedstorage:${refinedstorage_maven_version}:api"
 	
 	  compile project(":enderio-base")
 	  compile project(":enderio-conduits")
