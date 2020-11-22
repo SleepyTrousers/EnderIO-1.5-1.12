@@ -1523,3 +1523,10 @@ enderio.jei.notSimple.line1=This recipe cannot be made in
 enderio.jei.notSimple.line2=a Simple Machine
 enderio.jei.notNormal.line1=This recipe cannot be made in
 enderio.jei.notNormal.line2=a Simple or Normal machine
+
+enderio.gui.travel_accessable.skip.locked=Skipped locked anchor
+enderio.gui.travel_accessable.skip.private=Skipped obstructed anchor
+enderio.gui.travel_accessable.skip.obstructed=Skipped private anchor
+enderio.gui.travel_accessable.unauthorized=You are not allowed to access this block
+enderio.gui.travel_accessable.outofrange=Destination out of range
+enderio.gui.travel_accessable.invalidtarget=Destination is obstructed

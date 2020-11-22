@@ -71,15 +71,15 @@ public class WeatherObeliskRecipeCategory extends BlankRecipeCategory<WeatherObe
 
   } // -------------------------------------
 
-  public static void register(IModRegistry registry, @Nonnull IGuiHelper guiHelper) {
+  public static void register() {
     // Check JEI recipes are enabled
     if (!PersonalConfig.enableWeatherObeliskJEIRecipes.get()) {
       return;
     }
 
-    registry.addRecipeCategories(new WeatherObeliskRecipeCategory(guiHelper));
-    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_weather_obelisk.getBlockNN()), WeatherObeliskRecipeCategory.UID);
-    registry.addRecipeClickArea(GuiWeatherObelisk.class, 155, 42, 16, 16, WeatherObeliskRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeCategories(new WeatherObeliskRecipeCategory(MachinesPlugin.iGuiHelper));
+    MachinesPlugin.iModRegistry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_weather_obelisk.getBlockNN()), WeatherObeliskRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeClickArea(GuiWeatherObelisk.class, 155, 42, 16, 16, WeatherObeliskRecipeCategory.UID);
 
     long start = System.nanoTime();
 
@@ -89,24 +89,24 @@ public class WeatherObeliskRecipeCategory extends BlankRecipeCategory<WeatherObe
         new FluidStack(TileWeatherObelisk.WeatherTask.CLEAR.getRequiredFluidAmountType(), TileWeatherObelisk.WeatherTask.CLEAR.getRequiredFluidAmount()),
         TileWeatherObelisk.WeatherTask.CLEAR.getRequiredFluidAmount() / CapacitorKey.WEATHER_POWER_FLUID_USE.getDefault()
             * CapacitorKey.WEATHER_POWER_USE.getDefault(),
-        "weather_sun", guiHelper));
+        "weather_sun", MachinesPlugin.iGuiHelper));
 
     result.add(new WeatherObeliskRecipeWrapper(new ItemStack(Items.FIREWORKS),
         new FluidStack(TileWeatherObelisk.WeatherTask.RAIN.getRequiredFluidAmountType(), TileWeatherObelisk.WeatherTask.RAIN.getRequiredFluidAmount()),
         TileWeatherObelisk.WeatherTask.RAIN.getRequiredFluidAmount() / CapacitorKey.WEATHER_POWER_FLUID_USE.getDefault()
             * CapacitorKey.WEATHER_POWER_USE.getDefault(),
-        "weather_rain", guiHelper));
+        "weather_rain", MachinesPlugin.iGuiHelper));
 
     result.add(new WeatherObeliskRecipeWrapper(new ItemStack(Items.FIREWORKS),
         new FluidStack(TileWeatherObelisk.WeatherTask.STORM.getRequiredFluidAmountType(), TileWeatherObelisk.WeatherTask.STORM.getRequiredFluidAmount()),
         TileWeatherObelisk.WeatherTask.STORM.getRequiredFluidAmount() / CapacitorKey.WEATHER_POWER_FLUID_USE.getDefault()
             * CapacitorKey.WEATHER_POWER_USE.getDefault(),
-        "weather_thunder", guiHelper));
+        "weather_thunder", MachinesPlugin.iGuiHelper));
 
     long end = System.nanoTime();
-    registry.addRecipes(result, UID);
+    MachinesPlugin.iModRegistry.addRecipes(result, UID);
 
-    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerWeatherObelisk.class, WeatherObeliskRecipeCategory.UID, 0, 1, 1, 4 * 9);
+    MachinesPlugin.iModRegistry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerWeatherObelisk.class, WeatherObeliskRecipeCategory.UID, 0, 1, 1, 4 * 9);
 
     Log.info(
         String.format("WeatherObeliskRecipeCategory: Added %d weather changing recipes to JEI in %.3f seconds.", result.size(), (end - start) / 1000000000d));

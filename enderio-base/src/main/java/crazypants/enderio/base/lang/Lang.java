@@ -226,6 +226,13 @@ public enum Lang implements ILang {
   JEI_NOTSIMPLE(".jei.notSimple"),
   JEI_NOTNORMAL(".jei.notNormal"),
 
+  GUI_TRAVEL_SKIP_LOCKED(".gui.travel_accessable.skip.locked"),
+  GUI_TRAVEL_SKIP_PRIVATE(".gui.travel_accessable.skip.private"),
+  GUI_TRAVEL_SKIP_OBSTRUCTED(".gui.travel_accessable.skip.obstructed"),
+  GUI_TRAVEL_UNAUTHORIZED(".gui.travel_accessable.unauthorized"),
+  GUI_TRAVEL_OUT_OF_RANGE(".gui.travel_accessable.outofrange"),
+  GUI_TRAVEL_INVALID_TARGET(".gui.travel_accessable.invalidtarget"),
+
   ;
 
   private final @Nonnull String key;

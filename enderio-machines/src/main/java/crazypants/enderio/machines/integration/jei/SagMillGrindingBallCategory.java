@@ -85,17 +85,17 @@ public class SagMillGrindingBallCategory extends BlankRecipeCategory<SagMillGrin
     }
   }
 
-  public static void register(IModRegistry registry, IGuiHelper guiHelper) {
+  public static void register() {
     // Check JEI recipes are enabled
     if (!PersonalConfig.enableGrindingBallJEIRecipes.get()) {
       return;
     }
 
-    registry.addRecipeCategories(new SagMillGrindingBallCategory(guiHelper));
-    registry.addRecipeCategoryCraftingItem(new ItemStack(block_sag_mill.getBlockNN()), SagMillGrindingBallCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeCategories(new SagMillGrindingBallCategory(MachinesPlugin.iGuiHelper));
+    MachinesPlugin.iModRegistry.addRecipeCategoryCraftingItem(new ItemStack(block_sag_mill.getBlockNN()), SagMillGrindingBallCategory.UID);
 
-    registry.handleRecipes(GrindingBall.class, SagMillGrindingBallCategory.GrindingBallWrapper::new, SagMillGrindingBallCategory.UID);
-    registry.addRecipes(SagMillRecipeManager.getInstance().getBalls(), UID);
+    MachinesPlugin.iModRegistry.handleRecipes(GrindingBall.class, SagMillGrindingBallCategory.GrindingBallWrapper::new, SagMillGrindingBallCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipes(SagMillRecipeManager.getInstance().getBalls(), UID);
   }
 
   // ------------ Category

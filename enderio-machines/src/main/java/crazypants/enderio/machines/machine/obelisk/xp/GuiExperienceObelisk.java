@@ -31,9 +31,9 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
     super(te, new ContainerExperienceObelisk(Minecraft.getMinecraft().player, te), "experience_obelisk");
     ySize = 116;
 
-    int spacing = 5;
-    int bw = 20;
-    int startX = xSize / 2 - bw / 2 - spacing - bw;
+    final int spacing = 5;
+    final int bw = 20;
+    final int startX = xSize / 2 - bw / 2 - spacing - bw;
 
     int x;
     int y;

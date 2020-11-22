@@ -108,16 +108,16 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
 
   } // -------------------------------------
 
-  public static void register(IModRegistry registry, IGuiHelper guiHelper) {
+  public static void register() {
     // Check JEI recipes are enabled
     if (!PersonalConfig.enableCombustionGenJEIRecipes.get()) {
       return;
     }
 
-    registry.addRecipeCategories(new CombustionRecipeCategory(guiHelper));
-    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_combustion_generator.getBlockNN(), 1, 0), CombustionRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_enhanced_combustion_generator.getBlockNN(), 1, 0), CombustionRecipeCategory.UID);
-    registry.addRecipeClickArea(GuiCombustionGenerator.class, 155, 42, 16, 16, CombustionRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeCategories(new CombustionRecipeCategory(MachinesPlugin.iGuiHelper));
+    MachinesPlugin.iModRegistry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_combustion_generator.getBlockNN(), 1, 0), CombustionRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_enhanced_combustion_generator.getBlockNN(), 1, 0), CombustionRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeClickArea(GuiCombustionGenerator.class, 155, 42, 16, 16, CombustionRecipeCategory.UID);
 
     long start = System.nanoTime();
 
@@ -142,7 +142,7 @@ public class CombustionRecipeCategory extends BlankRecipeCategory<CombustionReci
     }
 
     long end = System.nanoTime();
-    registry.addRecipes(result, UID);
+    MachinesPlugin.iModRegistry.addRecipes(result, UID);
 
     Log.info(
         String.format("CombustionRecipeCategory: Added %d combustion generator recipes to JEI in %.3f seconds.", result.size(), (end - start) / 1000000000d));

@@ -57,14 +57,21 @@ public class Networkbuilder {
     return CodeBlock.builder().add(readerPre.build()).add(reader.build()).add(readerPost.build()).build();
   }
 
-  Networkbuilder beginNullable(ParameterSpec parameter) {
+  public static class TooManyNullableParametersException extends Exception {
+    private static final long serialVersionUID = -5987343144369714864L;
+  }
+
+  Networkbuilder beginNullable(ParameterSpec parameter) throws TooManyNullableParametersException {
     setupNuller();
+    if (nextNullerBit == 0) {
+      throw new TooManyNullableParametersException();
+    }
     writerPre.beginControlFlow("if ($N == null)", parameter);
     writerPre.addStatement("$L |= 0b$L", NULLER, Integer.toBinaryString(nextNullerBit));
     writerPre.endControlFlow();
 
     writer.beginControlFlow("if ($N != null)", parameter);
-    isInNuller = CodeBlock.builder().add("(($L & 0b$L) == 1) ? null : ", NULLER, Integer.toBinaryString(nextNullerBit)).build();
+    isInNuller = CodeBlock.builder().add("(($L & 0b$L) != 0) ? null : ", NULLER, Integer.toBinaryString(nextNullerBit)).build();
 
     nextNullerBit <<= 1;
     return this;

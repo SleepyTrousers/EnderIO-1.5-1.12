@@ -142,4 +142,9 @@ public class ClientProxy extends CommonProxy {
     return res;
   }
 
+  @Override
+  public boolean isGamePaused() {
+    return Minecraft.getMinecraft().isSingleplayer() && Minecraft.getMinecraft().isGamePaused();
+  }
+
 }

@@ -120,15 +120,15 @@ public class LavaGeneratorRecipeCategory extends BlankRecipeCategory<LavaGenerat
 
   // -------------------------------------
 
-  public static void register(@Nonnull IModRegistry registry, @Nonnull IGuiHelper guiHelper) {
+  public static void register() {
     // Check JEI Recipes are enabled
     if (!PersonalConfig.enableLavaGeneratorRecipes.get()) {
       return;
     }
 
-    registry.addRecipeCategories(new LavaGeneratorRecipeCategory(guiHelper));
-    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_lava_generator.getBlockNN()), LavaGeneratorRecipeCategory.UID);
-    registry.addRecipes(Collections.singletonList(new LavaGeneratorRecipeWrapper(guiHelper)), UID);
+    MachinesPlugin.iModRegistry.addRecipeCategories(new LavaGeneratorRecipeCategory(MachinesPlugin.iGuiHelper));
+    MachinesPlugin.iModRegistry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_lava_generator.getBlockNN()), LavaGeneratorRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipes(Collections.singletonList(new LavaGeneratorRecipeWrapper(MachinesPlugin.iGuiHelper)), UID);
   }
 
   // ------------ Category

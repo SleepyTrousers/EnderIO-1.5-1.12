@@ -28,13 +28,13 @@ import net.minecraft.item.ItemStack;
 
 public abstract class CrafterRecipeTransferHandler<E extends ContainerCrafter<?>> implements IRecipeTransferHandler<E> {
 
-  public static void register(IModRegistry registry) {
-    IRecipeTransferRegistry recipeTransferRegistry = registry.getRecipeTransferRegistry();
+  public static void register() {
+    IRecipeTransferRegistry recipeTransferRegistry = MachinesPlugin.iModRegistry.getRecipeTransferRegistry();
     recipeTransferRegistry.addRecipeTransferHandler(new CrafterRecipeTransferHandler.Simple(), VanillaRecipeCategoryUid.CRAFTING);
     recipeTransferRegistry.addRecipeTransferHandler(new CrafterRecipeTransferHandler.Normal(), VanillaRecipeCategoryUid.CRAFTING);
-    registry.addRecipeClickArea(GuiCrafter.class, 219 - 21, 43, 16, 16, VanillaRecipeCategoryUid.CRAFTING);
-    registry.addRecipeCatalyst(new ItemStack(MachineObject.block_crafter.getBlockNN()), VanillaRecipeCategoryUid.CRAFTING);
-    registry.addRecipeCatalyst(new ItemStack(MachineObject.block_simple_crafter.getBlockNN()), VanillaRecipeCategoryUid.CRAFTING);
+    MachinesPlugin.iModRegistry.addRecipeClickArea(GuiCrafter.class, 219 - 21, 43, 16, 16, VanillaRecipeCategoryUid.CRAFTING);
+    MachinesPlugin.iModRegistry.addRecipeCatalyst(new ItemStack(MachineObject.block_crafter.getBlockNN()), VanillaRecipeCategoryUid.CRAFTING);
+    MachinesPlugin.iModRegistry.addRecipeCatalyst(new ItemStack(MachineObject.block_simple_crafter.getBlockNN()), VanillaRecipeCategoryUid.CRAFTING);
   }
 
   public static class Simple extends CrafterRecipeTransferHandler<ContainerCrafter.Simple> {

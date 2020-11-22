@@ -77,8 +77,10 @@ public class Capacitor extends AbstractConditional {
     if (!disabled && valid && active) {
       Log.debug("Registering XML recipe '" + getName() + "'");
 
+      // TODO 1.16: we need to know if this is the base value (setValue) or an override (setOverride) here. Alternatively we can remove the registry's override
+      // funtionality and rely on re-registering core values. That's what other registries will be doing. It's just that we always need default values, unlike
+      // real recipe registries.
       CapacitorKeyRegistry.setValue(key.get(), base, scaler.get().getScaler(), scaler.get().getScalerString());
-
     } else {
       Log.debug("Skipping XML recipe '" + getName() + "' (valid=" + valid + ", active=" + active + ", required=" + required + ", disabled=" + disabled + ")");
     }

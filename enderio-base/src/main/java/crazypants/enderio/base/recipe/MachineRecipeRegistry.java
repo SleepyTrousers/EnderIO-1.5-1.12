@@ -26,14 +26,30 @@ public class MachineRecipeRegistry {
 
   public static final @Nonnull MachineRecipeRegistry instance = new MachineRecipeRegistry();
 
-  private final Map<String, Map<String, IMachineRecipe>> machineRecipes = new HashMap<String, Map<String, IMachineRecipe>>();
+  private final Map<String, Map<String, IMachineRecipe>> machineRecipes = new HashMap<>();
 
   public void registerRecipe(@Nonnull IMachineRecipe recipe) {
     getRecipesForMachine(recipe.getMachineName()).put(recipe.getUid(), recipe);
   }
 
+  /**
+   * @deprecated use {@link #registerRecipe(IMachineRecipe)}
+   */
+  @Deprecated
   public void registerRecipe(@Nonnull String machine, @Nonnull IMachineRecipe recipe) {
     getRecipesForMachine(machine).put(recipe.getUid(), recipe);
+  }
+
+  /**
+   * Removes the recipe only if it is currently mapped by its UID.
+   *
+   * @param recipe
+   * @return {@code true} if the value was removed
+   */
+  public boolean removeRecipe(@Nonnull IMachineRecipe recipe) {
+    // TODO 1.12: If we start using this: add a JEI hook to remove the recipe there, too
+    // TODO 1.16: Check JEI API, do we need to actively add/remove recipes or do we link in a registry?
+    return getRecipesForMachine(recipe.getMachineName()).remove(recipe.getUid(), recipe);
   }
 
   public @Nonnull Map<String, IMachineRecipe> getRecipesForMachine(@Nonnull String machineName) {

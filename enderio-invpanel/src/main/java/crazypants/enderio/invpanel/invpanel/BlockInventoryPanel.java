@@ -5,18 +5,24 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.DyeColor;
+
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIOTab;
+import crazypants.enderio.base.config.config.PersonalConfig;
 import crazypants.enderio.base.machine.base.block.AbstractMachineBlock;
 import crazypants.enderio.base.machine.entity.EntityFallingMachine;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
+import crazypants.enderio.base.render.ITintedBlock;
 import crazypants.enderio.base.render.property.EnumRenderMode6;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.invpanel.config.InvpanelConfig;
 import crazypants.enderio.invpanel.init.InvpanelObject;
+import crazypants.enderio.util.FuncUtil;
 import net.minecraft.block.BlockFalling;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -24,6 +30,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -34,7 +41,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel> {
+public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel> implements ITintedBlock {
 
   private static final float BLOCK_SIZE = 4f / 16f;
 
@@ -176,6 +183,22 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
    */
   private @Nonnull IBlockState getAttachmentBlockState(WorldServer worldIn, BlockPos pos) {
     return worldIn.getBlockState(pos.offset(getFacing(worldIn, pos).getOpposite()));
+  }
+
+  @Override
+  public int getBlockTint(@Nonnull IBlockState state, @Nullable IBlockAccess world, @Nullable BlockPos pos, int tintIndex) {
+    return (tintIndex > 0 && world != null && pos != null) ? FuncUtil.runIf(getTileEntitySafe(world, pos),
+        te -> FuncUtil.runIf(te.getColor(), color -> PersonalConfig.candyColors.get() ? color.getColorValue() : MapColor.getBlockColor(color).colorValue, -1),
+        -1) : -1;
+  }
+
+  @Override
+  public void onBlockClicked(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player) {
+    if (player.isSneaking()) {
+      FuncUtil.doIf(DyeColor.getColorFromDye(player.getHeldItemMainhand()),
+          col -> FuncUtil.doIf(getTileEntitySafe(world, pos), te -> te.setColor(EnumDyeColor.byDyeDamage(col.ordinal()))));
+    }
+    super.onBlockClicked(world, pos, player);
   }
 
 }

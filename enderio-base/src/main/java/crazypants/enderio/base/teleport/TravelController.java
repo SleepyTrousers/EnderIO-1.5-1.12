@@ -43,7 +43,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -336,7 +335,7 @@ public class TravelController {
       if (te instanceof ITravelAccessable) {
         ITravelAccessable ta = (ITravelAccessable) te;
         if (!ta.canBlockBeAccessed(player)) {
-          player.sendMessage(new TextComponentTranslation("enderio.gui.travelAccessable.unauthorised"));
+          player.sendMessage(Lang.GUI_TRAVEL_UNAUTHORIZED.toChatServer());
           return false;
         }
       }
@@ -350,13 +349,13 @@ public class TravelController {
 
     if (!isInRangeTarget(player, coord, source.getMaxDistanceTravelledSq())) {
       if (source != TravelSource.STAFF_BLINK) {
-        player.sendStatusMessage(new TextComponentTranslation("enderio.blockTravelPlatform.outOfRange"), true);
+        player.sendStatusMessage(Lang.GUI_TRAVEL_OUT_OF_RANGE.toChatServer(), true);
       }
       return false;
     }
     if (!isValidTarget(player, coord, source)) {
       if (source != TravelSource.STAFF_BLINK) {
-        player.sendStatusMessage(new TextComponentTranslation("enderio.blockTravelPlatform.invalidTarget"), true);
+        player.sendStatusMessage(Lang.GUI_TRAVEL_INVALID_TARGET.toChatServer(), true);
       }
       return false;
     }
@@ -488,11 +487,11 @@ public class TravelController {
           selectedCoord = targetBlock;
           return;
         } else if (travelBlock.getRequiresPassword(player)) {
-          player.sendStatusMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipLocked"), true);
+          player.sendStatusMessage(Lang.GUI_TRAVEL_SKIP_LOCKED.toChatServer(), true);
         } else if (travelBlock.getAccessMode() == ITravelAccessable.AccessMode.PRIVATE && !travelBlock.canUiBeAccessed(player)) {
-          player.sendStatusMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipPrivate"), true);
+          player.sendStatusMessage(Lang.GUI_TRAVEL_SKIP_PRIVATE.toChatServer(), true);
         } else if (!isValidTarget(player, targetBlock, TravelSource.BLOCK)) {
-          player.sendStatusMessage(new TextComponentTranslation("enderio.gui.travelAccessable.skipObstructed"), true);
+          player.sendStatusMessage(Lang.GUI_TRAVEL_SKIP_OBSTRUCTED.toChatServer(), true);
         }
       }
     }

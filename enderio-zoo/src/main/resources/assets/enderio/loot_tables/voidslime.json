@@ -1,0 +1,29 @@
+{
+  "pools": [
+    {
+      "name": "17cb23d0-508a-4fce-bcaf-21e272132c92",
+      "rolls": {
+        "min": 0,
+        "max": 5
+      },
+      "bonus_rolls": {
+        "min": 0,
+        "max": 1
+      },
+      "entries": [
+        {
+          "entryName": "7cc5285b-f880-4282-9679-f216e7335f7b",
+          "type": "item",
+          "name": "minecraft:air",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "enderio:use_things",
+              "name": "dustBedrock"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

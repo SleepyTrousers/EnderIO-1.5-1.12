@@ -14,6 +14,10 @@ import net.minecraftforge.fml.common.ProgressManager;
 @JEIPlugin
 public class MachinesPlugin implements IModPlugin {
 
+
+  public static IModRegistry iModRegistry;
+  public static IGuiHelper iGuiHelper;
+
   @Override
   public void registerCategories(@Nonnull IRecipeCategoryRegistration registry) {
     IJeiHelpers jeiHelpers = registry.getJeiHelpers();
@@ -22,46 +26,46 @@ public class MachinesPlugin implements IModPlugin {
 
   @Override
   public void register(@Nonnull IModRegistry registry) {
+    iModRegistry = registry;
     ProgressManager.ProgressBar bar = ProgressManager.push("Ender IO Machines", 18, true);
-
-    IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
+    iGuiHelper = registry.getJeiHelpers().getGuiHelper();
 
     bar.step("Alloy Smelter");
-    AlloyRecipeCategory.register(registry, guiHelper);
+    AlloyRecipeCategory.register();
     bar.step("Combustion Generator");
-    CombustionRecipeCategory.register(registry, guiHelper);
+    CombustionRecipeCategory.register();
     bar.step("Crafter");
-    CrafterRecipeTransferHandler.register(registry);
+    CrafterRecipeTransferHandler.register();
     bar.step("Enchanter");
-    EnchanterRecipeCategory.register(registry, guiHelper);
+    EnchanterRecipeCategory.register();
     bar.step("Painter");
-    PainterRecipeCategory.register(registry);
+    PainterRecipeCategory.register();
     bar.step("Sag Mill");
-    SagMillRecipeCategory.register(registry, guiHelper);
+    SagMillRecipeCategory.register();
     bar.step("Grinding Balls");
-    SagMillGrindingBallCategory.register(registry, guiHelper);
+    SagMillGrindingBallCategory.register();
     bar.step("Slice'n'Splice");
-    SliceAndSpliceRecipeCategory.register(registry, guiHelper);
+    SliceAndSpliceRecipeCategory.register();
     bar.step("Solar Panels");
-    SolarPanelRecipeCategory.register(registry, guiHelper);
+    SolarPanelRecipeCategory.register();
     bar.step("Soul Binder");
-    SoulBinderRecipeCategory.register(registry, guiHelper);
+    SoulBinderRecipeCategory.register();
     bar.step("Stirling Generator");
-    StirlingRecipeCategory.register(registry, guiHelper);
+    StirlingRecipeCategory.register();
     bar.step("Tank");
-    TankRecipeCategory.register(registry, guiHelper);
+    TankRecipeCategory.register();
     bar.step("The Vat");
-    VatRecipeCategory.register(registry, guiHelper);
+    VatRecipeCategory.register();
     bar.step("Wired Charger");
-    WiredChargerRecipeCategory.register(registry, guiHelper);
+    WiredChargerRecipeCategory.register();
     bar.step("Weather Obelisk");
-    WeatherObeliskRecipeCategory.register(registry, guiHelper);
+    WeatherObeliskRecipeCategory.register();
     bar.step("Zombie Generator");
-    ZombieGeneratorRecipeCategory.register(registry, guiHelper);
+    ZombieGeneratorRecipeCategory.register();
     bar.step("Ender Generator");
-    EnderGeneratorRecipeCategory.register(registry, guiHelper);
+    EnderGeneratorRecipeCategory.register();
     bar.step("Lava Generator");
-    LavaGeneratorRecipeCategory.register(registry, guiHelper);
+    LavaGeneratorRecipeCategory.register();
 
     ProgressManager.pop(bar);
   }

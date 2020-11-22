@@ -53,6 +53,17 @@ public class Recipes implements IRecipeRoot {
     Log.debug("Done registering XML recipes");
   }
 
+  @Override
+  public void unregister() {
+    ProgressManager.ProgressBar bar = ProgressManager.push("Recipe Removal", recipes.size());
+    for (AbstractConditional recipe : recipes) {
+      bar.step(recipe.getName());
+      recipe.unregister();
+    }
+    ProgressManager.pop(bar);
+    Log.debug("Done registering XML recipes");
+  }
+
   @SuppressWarnings("unchecked")
   @Override
   public <T extends IRecipeRoot> T addRecipes(IRecipeRoot other, Overrides overrides) throws InvalidRecipeConfigException {

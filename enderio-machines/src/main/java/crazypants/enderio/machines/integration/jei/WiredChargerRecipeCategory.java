@@ -58,20 +58,20 @@ public class WiredChargerRecipeCategory extends BlankRecipeCategory<WiredCharger
 
   } // -------------------------------------
 
-  public static void register(IModRegistry registry, IGuiHelper guiHelper) {
+  public static void register() {
     // Check JEI recipes are enabled
     if (!PersonalConfig.enableWiredChargerJEIRecipes.get()) {
       return;
     }
 
-    registry.addRecipeCategories(new WiredChargerRecipeCategory(guiHelper));
-    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_wired_charger.getBlockNN()), WiredChargerRecipeCategory.UID);
-    registry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_normal_wireless_charger.getBlockNN()), WiredChargerRecipeCategory.UID);
-    registry.addRecipeClickArea(GuiWiredCharger.class, 176, 42, 16, 16, WiredChargerRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeCategories(new WiredChargerRecipeCategory(MachinesPlugin.iGuiHelper));
+    MachinesPlugin.iModRegistry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_wired_charger.getBlockNN()), WiredChargerRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeCategoryCraftingItem(new ItemStack(MachineObject.block_normal_wireless_charger.getBlockNN()), WiredChargerRecipeCategory.UID);
+    MachinesPlugin.iModRegistry.addRecipeClickArea(GuiWiredCharger.class, 176, 42, 16, 16, WiredChargerRecipeCategory.UID);
 
     long start = System.nanoTime();
 
-    List<ItemStack> validItems = registry.getIngredientRegistry().getIngredients(ItemStack.class);
+    List<ItemStack> validItems = MachinesPlugin.iModRegistry.getIngredientRegistry().getIngredients(ItemStack.class);
 
     List<WiredChargerRecipeWrapper> result = new ArrayList<WiredChargerRecipeWrapper>();
     ContainerWiredCharger.getValidPair(validItems).apply(new Callback<Triple<ItemStack, ItemStack, Integer>>() {
@@ -83,9 +83,9 @@ public class WiredChargerRecipeCategory extends BlankRecipeCategory<WiredCharger
     });
 
     long end = System.nanoTime();
-    registry.addRecipes(result, UID);
+    MachinesPlugin.iModRegistry.addRecipes(result, UID);
 
-    registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerWiredCharger.class, WiredChargerRecipeCategory.UID,
+    MachinesPlugin.iModRegistry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerWiredCharger.class, WiredChargerRecipeCategory.UID,
         ContainerWiredCharger.FIRST_RECIPE_SLOT, ContainerWiredCharger.NUM_RECIPE_SLOT, ContainerWiredCharger.FIRST_INVENTORY_SLOT,
         ContainerWiredCharger.NUM_INVENTORY_SLOT);
 

@@ -65,6 +65,9 @@ public final class PersonalConfig {
   public static final IValue<Boolean> celebrateReformation = F.make("celebrateReformation", true, //
       "Celebrate Reformation Day?").sync(); // HL: yes, it's actually Halloween, but I'm a troll ;)
 
+  public static final IValue<Boolean> celebrateNewYear = F.make("celebrateNewYear", true, //
+      "Celebrate (western calendar) New Year?").sync();
+
   // GUI Branding
 
   public static final IValue<Boolean> GUIBrandingEnabled = F.make("GUIBrandingEnabled", true, //
@@ -90,6 +93,9 @@ public final class PersonalConfig {
 
   public static final IValue<Boolean> animatedGears = F.make("animatedGears", true, //
       "Should the Gear item be animated?");
+
+  public static final IValue<Boolean> animatedYeta = F.make("animatedYeta", true, //
+      "Should the Yeta wrench rotate in Third-person view?");
 
   // Item Hiding
 

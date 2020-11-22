@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.inventory.InventorySlot;
 
 import crazypants.enderio.api.IModObject;
+import crazypants.enderio.base.capability.ItemTools;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
 import crazypants.enderio.base.machine.base.te.EnergyLogic;
 import crazypants.enderio.base.power.forge.item.PoweredBlockItem;
@@ -35,19 +36,15 @@ public abstract class AbstractCapabilityPoweredMachineBlock<T extends AbstractCa
     ItemStack heldItem = entityPlayer.getHeldItem(hand);
     if (Prep.isValid(heldItem) && machine != null && machine.isValidUpgrade(heldItem)) {
       InventorySlot upgradeSlot = machine.getInventory().getSlot(EnergyLogic.CAPSLOT);
-      ItemStack heldUpgrade = entityPlayer.isCreative() ? heldItem.copy() : heldItem.splitStack(1);
-      heldUpgrade.setCount(1);
 
-      ItemStack temp = upgradeSlot.get();
-      if (Prep.isInvalid(temp)) {
-        upgradeSlot.set(heldUpgrade);
-        entityPlayer.inventory.markDirty();
+      ItemStack currentCap = upgradeSlot.get();
+      if (Prep.isInvalid(currentCap)) {
+        upgradeSlot.set(ItemTools.oneOf(entityPlayer, heldItem));
         return true;
-      } else if (!ItemStack.areItemsEqual(heldItem, temp)) {
-        upgradeSlot.set(heldUpgrade);
-        entityPlayer.inventory.markDirty();
-        if (!entityPlayer.inventory.addItemStackToInventory(temp)) {
-          entityPlayer.dropItem(temp, true);
+      } else if (!ItemStack.areItemsEqual(heldItem, currentCap)) {
+        upgradeSlot.set(ItemTools.oneOf(entityPlayer, heldItem));
+        if (!entityPlayer.inventory.addItemStackToInventory(currentCap)) {
+          entityPlayer.dropItem(currentCap, true);
         }
         return true;
       }
