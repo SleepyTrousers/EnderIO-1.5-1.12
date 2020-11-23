@@ -8,6 +8,7 @@ import crazypants.enderio.base.xp.XpUtil;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindFieldException;
@@ -37,6 +38,7 @@ public class PlayerXPFixHandler {
     return !errored;
   }
 
+  @SubscribeEvent
   public static void onPlayerTick(PlayerTickEvent event) {
     try {
       if (!errored && event.phase == Phase.START && event.player instanceof EntityPlayerMP
