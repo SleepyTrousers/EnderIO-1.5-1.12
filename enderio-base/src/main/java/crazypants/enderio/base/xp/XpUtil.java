@@ -2,6 +2,7 @@ package crazypants.enderio.base.xp;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.handler.PlayerXPFixHandler;
 import crazypants.enderio.util.MathUtil;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -91,7 +92,7 @@ public class XpUtil {
    * @return The amount of XP a player needs to get from level 0 to the given level
    */
   public static int getExperienceForLevel(int level) {
-    if (level <= 0) {
+    if (level < 0) {
       throw new ArithmeticException("level underflow");
     }
     return Math.toIntExact(calculateXPfromLevel(level));
@@ -103,7 +104,7 @@ public class XpUtil {
    * @return The amount of XP a player needs to get from level 0 to the given level
    */
   public static long getExperienceForLevelL(int level) {
-    if (level <= 0) {
+    if (level < 0) {
       throw new ArithmeticException("level underflow");
     }
     if (level > MAX_LEVEL_LONG) {
@@ -194,7 +195,9 @@ public class XpUtil {
 
   /**
    * Gets the total amount of XP a player has, calculating it from their level and XP bar. Note that the player object has the field
-   * {@link EntityPlayer#experienceTotal} that should already contain this number.
+   * {@link EntityPlayer#experienceTotal} that should already contain this number. There's just one issue with that---Minecraft uses level+exp more often than
+   * total and there's a math error. For example, adding 91 XP points gives 91 points in experienceTotal (that's exactly 7 levels), but 6 levels and 99.999994%
+   * on levels+exp. The HUD will then display 6 levels and a full bar and the enchanting table will read 6 levels.
    * 
    * @param player
    *          the player
@@ -203,7 +206,8 @@ public class XpUtil {
    *           if the total experience of the player would overflow an int (very unexpected)
    */
   public static int getPlayerXP(@Nonnull EntityPlayer player) {
-    return Math.addExact(getExperienceForLevel(player.experienceLevel), (int) (player.experience * player.xpBarCap()));
+    return PlayerXPFixHandler.isActive() ? player.experienceTotal
+        : Math.addExact(getExperienceForLevel(player.experienceLevel), (int) (player.experience * player.xpBarCap()));
   }
 
   /**
