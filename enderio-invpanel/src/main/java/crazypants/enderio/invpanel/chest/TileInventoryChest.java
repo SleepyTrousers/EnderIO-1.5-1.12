@@ -104,13 +104,12 @@ public abstract class TileInventoryChest extends AbstractCapabilityMachineEntity
   private boolean lastState = false;
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
+  protected void processTasks(boolean redstoneCheck) {
     getEnergy().useEnergy();
     if (lastState != hasPower()) {
       lastState = hasPower();
-      return true;
+      updateClients = true;
     }
-    return false;
   }
 
   public int getComparatorInputOverride() {

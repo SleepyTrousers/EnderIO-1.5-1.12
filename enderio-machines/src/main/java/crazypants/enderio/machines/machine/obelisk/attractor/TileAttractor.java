@@ -129,10 +129,10 @@ public class TileAttractor extends AbstractMobObeliskEntity {
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
+  protected void processTasks(boolean redstoneCheck) {
     if (!redstoneCheck || !hasPower() || !canWork()) {
       untrackAll();
-      return false;
+      return;
     }
     usePower();
 
@@ -147,8 +147,6 @@ public class TileAttractor extends AbstractMobObeliskEntity {
     if (tracking.size() < AttractorConfig.maxMobsAttracted.get() && shouldDoWorkThisTick(20, 5)) {
       collectEntities();
     }
-
-    return false;
   }
 
   @Override

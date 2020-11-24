@@ -64,7 +64,7 @@ public class TileRelocatorObelisk extends AbstractSpawningObeliskEntity {
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
+  protected void processTasks(boolean redstoneCheck) {
     if (!relocationQueue.isEmpty()) {
       AxisAlignedBB targetBB = new AxisAlignedBB(getPos(), getPos().add(1, 1, 1)).expand(4, 1, 4);
       Iterator<EntityLivingBase> iterator = relocationQueue.keySet().iterator();
@@ -100,7 +100,7 @@ public class TileRelocatorObelisk extends AbstractSpawningObeliskEntity {
         }
       }
     }
-    return super.processTasks(redstoneCheck);
+    super.processTasks(redstoneCheck);
   }
 
   @Override

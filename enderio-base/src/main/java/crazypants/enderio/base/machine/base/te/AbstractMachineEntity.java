@@ -253,7 +253,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IMa
       }
 
       Prof.next(getWorld(), "tasks");
-      updateClients |= processTasks(redstoneCheckPassed);
+      processTasks(redstoneCheckPassed);
 
       if (updateClients) {
         Prof.next(getWorld(), "clientNotification");
@@ -359,7 +359,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio implements IMa
     return outputQueue;
   }
 
-  protected abstract boolean processTasks(boolean redstoneCheck);
+  protected abstract void processTasks(boolean redstoneCheck);
 
   protected @Nonnull RecipeLevel getMachineLevel() {
     return RecipeLevel.IGNORE;

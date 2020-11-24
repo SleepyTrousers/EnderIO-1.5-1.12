@@ -121,9 +121,9 @@ public abstract class TileBuffer extends AbstractPowerConsumerEntity implements 
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
+  protected void processTasks(boolean redstoneCheck) {
     if (!redstoneCheck || getEnergyStored() <= 0 || !tryToUsePower()) {
-      return false;
+      return;
     }
     if (dist == null) {
       dist = new PowerDistributor(getPos());
@@ -132,7 +132,6 @@ public abstract class TileBuffer extends AbstractPowerConsumerEntity implements 
     if (!isCreative()) {
       setEnergyStored(getEnergyStored() - transmitted);
     }
-    return false;
   }
 
   @Override

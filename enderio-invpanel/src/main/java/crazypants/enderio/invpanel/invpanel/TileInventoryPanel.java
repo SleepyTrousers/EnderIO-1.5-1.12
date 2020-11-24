@@ -293,8 +293,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
-    return false;
+  protected void processTasks(boolean redstoneCheck) {
   }
 
   public int getGuiSortMode() {

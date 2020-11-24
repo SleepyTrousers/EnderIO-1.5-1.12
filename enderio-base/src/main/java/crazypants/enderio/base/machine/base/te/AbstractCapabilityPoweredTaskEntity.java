@@ -10,6 +10,7 @@ import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.api.capacitor.ICapacitorKey;
+import crazypants.enderio.base.config.config.MachineConfig;
 import crazypants.enderio.base.machine.interfaces.IPoweredTask;
 import crazypants.enderio.base.machine.task.PoweredTask;
 import crazypants.enderio.base.machine.task.PoweredTaskProgress;
@@ -83,24 +84,23 @@ public abstract class AbstractCapabilityPoweredTaskEntity extends AbstractCapabi
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneChecksPassed) {
+  protected void processTasks(boolean redstoneChecksPassed) {
 
     if (!redstoneChecksPassed) {
-      return false;
+      return;
     }
 
-    boolean requiresClientSync = false;
     // Process any current items
-    requiresClientSync |= checkProgress(redstoneChecksPassed);
+    checkProgress(redstoneChecksPassed);
 
     if (currentTask != null || !hasPower() || !hasInputStacks()) {
-      return requiresClientSync;
+      return;
     }
 
     if (startFailed) {
       ticksSinceCheckedRecipe++;
-      if (ticksSinceCheckedRecipe < 20) {
-        return false;
+      if (ticksSinceCheckedRecipe < MachineConfig.sleepBetweenFailedTries.get()) {
+        return;
       }
     }
     ticksSinceCheckedRecipe = 0;
@@ -123,13 +123,11 @@ public abstract class AbstractCapabilityPoweredTaskEntity extends AbstractCapabi
     } else {
       startFailed = true;
     }
-
-    return requiresClientSync;
   }
 
-  protected boolean checkProgress(boolean redstoneChecksPassed) {
+  protected void checkProgress(boolean redstoneChecksPassed) {
     if (currentTask == null || !hasPower()) {
-      return false;
+      return;
     }
     if (redstoneChecksPassed && !currentTask.isComplete()) {
       getEnergy().useEnergy();
@@ -140,10 +138,9 @@ public abstract class AbstractCapabilityPoweredTaskEntity extends AbstractCapabi
     // then check if we are done
     if (currentTask.isComplete()) {
       taskComplete();
-      return false;
     }
 
-    return false;
+    return;
   }
 
   protected void taskComplete() {
@@ -379,11 +376,17 @@ public abstract class AbstractCapabilityPoweredTaskEntity extends AbstractCapabi
 
   // task machines need to return a valid constant from MachineRecipeRegistry
   @Override
-  @Nonnull
-  public abstract String getMachineName();
+  public abstract @Nonnull String getMachineName();
 
   protected boolean shouldDoubleTick(@Nonnull IPoweredTask task, int usedEnergy) {
     return false;
+  }
+
+  @Override
+  public void markDirty() {
+    super.markDirty();
+    startFailed = false; // TODO: There should be a better callback for input slots to notify the TE of changes, see
+                         // crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity.setInventorySlotContents()
   }
 
 }

@@ -51,33 +51,33 @@ public class TileCreativeSpawner extends AbstractCapabilityMachineEntity
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
+  protected void processTasks(boolean redstoneCheck) {
     if (!redstoneCheck || getInventory().getSlot(SLOT.VIAL).isEmpty()) {
-      return false;
+      return;
     }
     if (!shouldDoWorkThisTick(20)) {
-      return false;
+      return;
     }
     InventorySlot slot = getInventory().getSlot(SLOT.PATTERN);
     if (slot.isEmpty()) {
       if (!shouldDoWorkThisTick(60 * 20)) {
-        return false;
+        return;
       }
       if (SpawnerConfig.homeZoneEnabled.get()
           && !logic.isAreaClear(SpawnerConfig.homeZoneSize.get(), SpawnerConfig.homeZoneSize.get(), SpawnerConfig.homeZoneLimit.get())) {
-        return false;
+        return;
       }
     } else {
       InventorySlot slot2 = getInventory().getSlot(SLOT.OFFERING);
       if (slot2.get().getCount() < slot.get().getCount()) {
-        return false;
+        return;
       }
       if (!logic.isAreaClear()) {
-        return false;
+        return;
       }
       if (SpawnerConfig.homeZoneEnabled.get()
           && !logic.isAreaClear(SpawnerConfig.homeZoneSize.get(), SpawnerConfig.homeZoneSize.get(), SpawnerConfig.homeZoneLimit.get())) {
-        return false;
+        return;
       }
       slot2.get().shrink(slot.get().getCount());
       markDirty();
@@ -85,7 +85,6 @@ public class TileCreativeSpawner extends AbstractCapabilityMachineEntity
     for (int i = 0; i < SpawnerConfig.poweredSpawnerSpawnCount.get(); ++i) {
       logic.trySpawnEntity();
     }
-    return false;
   }
 
   @Override

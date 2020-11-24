@@ -54,12 +54,11 @@ public class TileExperienceObelisk extends AbstractInventoryMachineEntity implem
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
+  protected void processTasks(boolean redstoneCheck) {
     if (xpCont.isDirty()) {
       PacketHandler.sendToAllAround(new PacketExperienceContainer(this), this);
       xpCont.setDirty(false);
     }
-    return false;
   }
 
   @Override

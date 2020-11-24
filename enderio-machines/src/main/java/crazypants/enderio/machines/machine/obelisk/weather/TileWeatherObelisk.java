@@ -244,15 +244,13 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
-    boolean res = false;
-
+  protected void processTasks(boolean redstoneCheck) {
     if (!redstoneCheck) {
       if (canBeActive) {
         canBeActive = false;
-        res = true;
+        updateClients = true;
       }
-      return res;
+      return;
     } else {
       canBeActive = true;
 
@@ -274,7 +272,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
           e.setPosition(getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5);
           world.spawnEntity(e);
           stopTask();
-          res = true;
+          updateClients = true;
         }
         // we have a very smooth block animation, so all clients need very detailed progress data
         // TODO: check if this is really needed for the WeatherObelisk
@@ -286,8 +284,6 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity implements I
       PacketHandler.sendToAllAround(new PacketWeatherTank(this), this);
       tanksDirty = false;
     }
-
-    return res;
   }
 
   /**

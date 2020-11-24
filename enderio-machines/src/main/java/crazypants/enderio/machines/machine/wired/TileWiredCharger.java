@@ -107,9 +107,9 @@ public class TileWiredCharger extends AbstractPowerConsumerEntity implements ILe
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
+  protected void processTasks(boolean redstoneCheck) {
     if (!redstoneCheck || getEnergyStored() <= 0) {
-      return false;
+      return;
     }
 
     ItemStack stack = getStackInSlot(getSlotDefinition().minInputSlot);
@@ -122,7 +122,7 @@ public class TileWiredCharger extends AbstractPowerConsumerEntity implements ILe
           if (used > 0) {
             usePower(used);
             progress = chargable.getEnergyStored() / (float) chargable.getMaxEnergyStored();
-            return false;
+            return;
           }
         }
         // not charged
@@ -134,7 +134,6 @@ public class TileWiredCharger extends AbstractPowerConsumerEntity implements ILe
     }
 
     progress = 0f;
-    return false;
   }
 
   @Store(NBTAction.CLIENT)

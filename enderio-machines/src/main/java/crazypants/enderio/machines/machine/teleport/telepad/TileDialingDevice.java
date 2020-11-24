@@ -54,7 +54,7 @@ public class TileDialingDevice extends AbstractCapabilityMachineEntity implement
   }
 
   @Override
-  public boolean processTasks(boolean redstoneCheck) {
+  public void processTasks(boolean redstoneCheck) {
     getEnergy().useEnergy();
 
     if (!getInventory().getSlot("INPUT").isEmpty() && getInventory().getSlot("OUTPUT").isEmpty()
@@ -68,8 +68,6 @@ public class TileDialingDevice extends AbstractCapabilityMachineEntity implement
       getInventory().getSlot("INPUT").clear();
       getInventory().getSlot("OUTPUT").set(stack);
     }
-
-    return false;
   }
 
   public void addTarget(TelepadTarget newTarg) {

@@ -90,16 +90,15 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IPaint
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneChecksPassed) {
-    boolean res = super.processTasks(redstoneChecksPassed);
+  protected void processTasks(boolean redstoneChecksPassed) {
+    super.processTasks(redstoneChecksPassed);
     if (!redstoneChecksPassed) {
-      return res;
+      return;
     }
 
     // NB: Fluid done synchronously
     processPower();
     processItems();
-    return res;
   }
 
   @Override

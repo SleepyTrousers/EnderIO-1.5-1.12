@@ -135,7 +135,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
+  protected void processTasks(boolean redstoneCheck) {
 
     updateArmSwingProgress();
 
@@ -150,15 +150,15 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     }
 
     if (!redstoneCheck) {
-      return false;
+      return;
     }
 
     if (tank.getFluidAmount() < getActivationAmount()) {
-      return false;
+      return;
     }
 
     if (!hasSword || TicProxy.isBroken(getWeapon())) {
-      return false;
+      return;
     }
 
     if (doMending()) {
@@ -174,7 +174,7 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
     if (atackera.getTicksSinceLastSwing() < atackera.getCooldownPeriod()) {
       // System.out.println("Cannot attack yet, it's only been " + atackera.getTicksSinceLastSwing() + " tick(s) but the cooldown is "
       // + atackera.getCooldownPeriod() + " ticks. The attack would be limited to " + attackera.getCooledAttackStrength(0.5F) + " effectiveness.");
-      return false;
+      return;
     }
     // System.out.println("Can attack now, it's been " + atackera.getTicksSinceLastSwing() + " tick(s) and the cooldown is " + atackera.getCooldownPeriod()
     // + " ticks. The attack will be limited to " + attackera.getCooledAttackStrength(0.5F) + " effectiveness.");
@@ -212,10 +212,9 @@ public class TileKillerJoe extends AbstractInventoryMachineEntity implements ITa
         atackera.resetCooldown();
         useNutrient();
         swingWeapon();
-        return false;
+        return;
       }
     }
-    return false;
   }
 
   int getActivationAmount() {

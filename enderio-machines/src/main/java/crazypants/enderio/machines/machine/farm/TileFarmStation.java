@@ -228,7 +228,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
   }
 
   @Override
-  protected boolean checkProgress(boolean redstoneChecksPassed) {
+  protected void checkProgress(boolean redstoneChecksPassed) {
     if (shouldDoWorkThisTick(1 * 60 * 20)) {
       clearNotification(false);
     }
@@ -253,7 +253,6 @@ public class TileFarmStation extends AbstractPoweredTaskEntity implements IPaint
     if (sendNotification) {
       sendNotification();
     }
-    return false;
   }
 
   private IFarmer farmerCache;

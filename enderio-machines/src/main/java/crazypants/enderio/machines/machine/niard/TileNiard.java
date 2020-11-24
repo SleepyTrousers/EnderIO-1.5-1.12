@@ -72,7 +72,7 @@ public class TileNiard extends AbstractCapabilityMachineEntity implements ITankA
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
+  protected void processTasks(boolean redstoneCheck) {
     if (getEnergy().hasCapacitor() && canTick(redstoneCheck)) {
       doTick();
     }
@@ -80,7 +80,7 @@ public class TileNiard extends AbstractCapabilityMachineEntity implements ITankA
       PacketHandler.sendToAllAround(new PacketNiardTank(this), this);
       tanksDirty = false;
     }
-    return super.processTasks(redstoneCheck);
+    super.processTasks(redstoneCheck);
   }
 
   protected boolean canTick(boolean redstoneChecksPassed) {

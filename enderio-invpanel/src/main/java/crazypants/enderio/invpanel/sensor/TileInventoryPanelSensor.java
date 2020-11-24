@@ -65,13 +65,13 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
   }
 
   @Override
-  protected boolean checkProgress(boolean redstoneChecksPassed) {
+  protected void checkProgress(boolean redstoneChecksPassed) {
     usePower();
     if (slowstart > 0) {
       // give the network a while to form after the chunk has loaded to prevent
       // bogus readings (all zeros)
       slowstart--;
-      return false;
+      return;
     }
 
     if (shouldDoWorkThisTick(10)) {
@@ -92,8 +92,6 @@ public class TileInventoryPanelSensor extends AbstractPoweredTaskEntity implemen
         setCurrentSignal(0);
       }
     }
-
-    return false;
   }
 
   private void updateRedstone(int invHasCount) {

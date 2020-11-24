@@ -92,15 +92,15 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
 
   // tick goes in here
   @Override
-  protected boolean checkProgress(boolean redstoneChecksPassed) {
+  protected void checkProgress(boolean redstoneChecksPassed) {
     usePower();
     if (!advanced && !engineControlEnabled) {
-      return false;
+      return;
     }
     if (slowstart > 0) {
       // give the network a while to form after the chunk has loaded to prevent bogus readings (all zeros)
       slowstart--;
-      return false;
+      return;
     }
     NetworkPowerManager pm = getPowerManager();
     if (pm != null) {
@@ -131,7 +131,6 @@ public class TilePowerMonitor extends AbstractPoweredTaskEntity implements IPain
     if (advanced && shouldDoWorkThisTick(iconUpdateRate / 10)) {
       PacketHandler.sendToAllAround(PacketPowerMonitorGraph.sendUpdate(this, stats.length - 1), this);
     }
-    return false;
   }
 
   private double getPercentFull(NetworkPowerManager pm) {

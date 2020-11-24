@@ -138,21 +138,19 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
-    boolean res = false;
-
+  protected void processTasks(boolean redstoneCheck) {
     if (!redstoneCheck) {
       if (active) {
         active = false;
-        res = true;
+        updateClients = true;
       }
-      return res;
+      return;
     } else {
 
       boolean isActive = generateEnergy();
       if (isActive != active) {
         active = isActive;
-        res = true;
+        updateClients = true;
       }
 
       if (getEnergyStored() >= getMaxEnergyStored()) {
@@ -166,8 +164,6 @@ public class TileZombieGenerator extends AbstractGeneratorEntity implements ITan
       PacketHandler.sendToAllAround(new PacketNutrientTank(this), this);
       tanksDirty = false;
     }
-
-    return res;
   }
 
   private boolean generateEnergy() {

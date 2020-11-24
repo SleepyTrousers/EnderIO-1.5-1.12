@@ -193,8 +193,8 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
-    return false; // never called
+  protected void processTasks(boolean redstoneCheck) {
+    // never called
   }
 
   @Override
