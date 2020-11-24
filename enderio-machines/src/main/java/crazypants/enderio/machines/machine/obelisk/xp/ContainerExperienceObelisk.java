@@ -32,10 +32,22 @@ public class ContainerExperienceObelisk extends Container {
     return inv.isUseableByPlayer(playerIn);
   }
 
+  /*
+   * Note that creative adds/removed levels relative to the obelisk while survival works relative to the player's level.
+   */
+
   @RemoteCall
   public void doAddXP(int levels) {
     try {
-      inv.getContainer().givePlayerXp(player, MathHelper.clamp(levels, 0, 10000 /* Random value higher than max levels player can have */));
+      if (player.capabilities.isCreativeMode) {
+        int containerLevel = inv.getContainer().getExperienceLevel();
+        int targetLevel = Math.max(0, containerLevel - levels);
+        int diffxp = XpUtil.getExperienceForLevel(containerLevel) - XpUtil.getExperienceForLevel(targetLevel);
+        inv.getContainer().removeExperience(diffxp);
+        XpUtil.addPlayerXP(player, diffxp);
+      } else {
+        inv.getContainer().givePlayerXp(player, MathHelper.clamp(levels, 0, 10000 /* Random value higher than max levels player can have */));
+      }
     } catch (XpUtil.TooManyXPLevelsException e) {
       player.sendStatusMessage(Lang.GUI_TOO_MANY_LEVELS.toChatServer(), true);
     }
@@ -44,11 +56,14 @@ public class ContainerExperienceObelisk extends Container {
 
   @RemoteCall
   public void doDrainXP(int levels) {
-    int level = MathHelper.clamp(Minecraft.getMinecraft().player.experienceLevel - levels, 0, Minecraft.getMinecraft().player.experienceLevel);
     if (player.capabilities.isCreativeMode) {
-      inv.getContainer().addExperience(XpUtil.getExperienceForLevel(level));
+      int containerLevel = inv.getContainer().getExperienceLevel();
+      int targetLevel = Math.min(containerLevel + levels, XpUtil.getLevelForExperience(inv.getContainer().getMaximumExperience()));
+      int diffxp = XpUtil.getExperienceForLevel(targetLevel) - XpUtil.getExperienceForLevel(containerLevel);
+      inv.getContainer().addExperience(diffxp);
     } else {
       try {
+        int level = MathHelper.clamp(Minecraft.getMinecraft().player.experienceLevel - levels, 0, Minecraft.getMinecraft().player.experienceLevel);
         inv.getContainer().drainPlayerXpToReachPlayerLevel(player, level);
       } catch (XpUtil.TooManyXPLevelsException e) {
         player.sendStatusMessage(Lang.GUI_TOO_MANY_LEVELS.toChatServer(), true);

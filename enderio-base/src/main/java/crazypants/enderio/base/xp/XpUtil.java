@@ -208,16 +208,17 @@ public class XpUtil {
    *           if the total experience of the player would overflow an int (very unexpected)
    */
   public static int getPlayerXP(@Nonnull EntityPlayer player) throws TooManyXPLevelsException {
-
     try {
-      return Math.addExact(getExperienceForLevel(player.experienceLevel), (int) (player.experience * player.xpBarCap()));
+      return player.capabilities.isCreativeMode ? Integer.MAX_VALUE / 2
+          : Math.addExact(getExperienceForLevel(player.experienceLevel), (int) (player.experience * player.xpBarCap()));
     } catch (ArithmeticException e) {
       throw new TooManyXPLevelsException();
     }
   }
 
   public static long getPlayerXPL(@Nonnull EntityPlayer player) {
-    return Math.addExact(getExperienceForLevelL(player.experienceLevel), (long) (player.experience * player.xpBarCap()));
+    return player.capabilities.isCreativeMode ? Integer.MAX_VALUE / 2
+        : Math.addExact(getExperienceForLevelL(player.experienceLevel), (long) (player.experience * player.xpBarCap()));
   }
 
   /**

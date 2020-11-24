@@ -15,6 +15,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -37,7 +38,7 @@ public class ExperienceContainer extends FluidTank {
     maxXp = Math.min(maxStored, XpUtil.liquidToExperience(Integer.MAX_VALUE)); // about 4902 levels
   }
 
-  public int getMaximumExperiance() {
+  public int getMaximumExperience() {
     return maxXp;
   }
 
@@ -67,15 +68,20 @@ public class ExperienceContainer extends FluidTank {
   }
 
   public int addExperience(int xpToAdd) {
-    int j = maxXp - experienceTotal;
-    if (xpToAdd > j) {
-      xpToAdd = j;
-    }
-
-    experienceTotal += xpToAdd;
+    int j = MathHelper.clamp(xpToAdd, 0, maxXp - experienceTotal);
+    experienceTotal += j;
     xpDirty = true;
     onContentsChanged();
-    return xpToAdd;
+    return j;
+  }
+
+  public int removeExperience(int xpToRemove) {
+    int j = MathHelper.clamp(xpToRemove, 0, experienceTotal);
+    experienceTotal -= j;
+    xpDirty = true;
+    onContentsChanged();
+    return j;
+
   }
 
   private int getXpBarCapacity() {
@@ -98,12 +104,7 @@ public class ExperienceContainer extends FluidTank {
     int nextLevelXP = XpUtil.getExperienceForLevel(player.experienceLevel + 1);
     int requiredXP = nextLevelXP - currentXP;
 
-    requiredXP = Math.min(experienceTotal, requiredXP);
-    XpUtil.addPlayerXP(player, requiredXP);
-
-    int newXp = experienceTotal - requiredXP;
-    experienceTotal = 0;
-    addExperience(newXp);
+    XpUtil.addPlayerXP(player, removeExperience(requiredXP));
   }
 
   public void drainPlayerXpToReachContainerLevel(@Nonnull EntityPlayer player, int level) throws TooManyXPLevelsException {
@@ -176,7 +177,7 @@ public class ExperienceContainer extends FluidTank {
     }
     // need to do these calcs in XP instead of fluid space to avoid type overflows
     int xp = XpUtil.liquidToExperience(resource.amount);
-    int xpSpace = getMaximumExperiance() - getExperienceTotal();
+    int xpSpace = getMaximumExperience() - getExperienceTotal();
     int canFillXP = Math.min(xp, xpSpace);
     if (canFillXP <= 0) {
       return 0;
