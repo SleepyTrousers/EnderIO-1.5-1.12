@@ -2,7 +2,6 @@ package crazypants.enderio.base.xp;
 
 import javax.annotation.Nonnull;
 
-import crazypants.enderio.base.handler.PlayerXPFixHandler;
 import crazypants.enderio.util.MathUtil;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -206,8 +205,7 @@ public class XpUtil {
    *           if the total experience of the player would overflow an int (very unexpected)
    */
   public static int getPlayerXP(@Nonnull EntityPlayer player) {
-    return PlayerXPFixHandler.isActive() ? player.experienceTotal
-        : Math.addExact(getExperienceForLevel(player.experienceLevel), (int) (player.experience * player.xpBarCap()));
+    return Math.addExact(getExperienceForLevel(player.experienceLevel), (int) (player.experience * player.xpBarCap()));
   }
 
   /**

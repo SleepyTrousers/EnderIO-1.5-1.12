@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import com.mojang.authlib.GameProfile;
 
 import crazypants.enderio.base.Log;
-import crazypants.enderio.base.handler.PlayerXPFixHandler;
 import crazypants.enderio.base.xp.XpUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
@@ -60,7 +59,7 @@ class Xptest {
         return null;
       }
     };
-    PlayerXPFixHandler.setErrored(true);
+    // PlayerXPFixHandler.setErrored(true);
   }
 
   @Test
@@ -117,8 +116,9 @@ class Xptest {
 
   }
 
-  @Test
+  // @Test
   void testRisingPlayerWithFix() {
+    // fix has been deleted because vanilla xp handling is just a big mess
     EntityPlayer player = new EntityPlayer(world, profile) {
 
       @Override
@@ -142,19 +142,19 @@ class Xptest {
             + player.xpBarCap() + " exp*barcap:" + (player.experience * player.xpBarCap()) + " (int)exp*barcap:"
             + ((int) (player.experience * player.xpBarCap())) + " XPtot:" + player.experienceTotal);
       }
-      PlayerXPFixHandler.recalcPlayerXP(event);
-      if (Log.isInDev()) {
-        System.out.println("XP:" + XpUtil.getPlayerXP(player) + " Level:" + player.experienceLevel + " exp:" + player.experience + " barCap:"
-            + player.xpBarCap() + " exp*barcap:" + (player.experience * player.xpBarCap()) + " (int)exp*barcap:"
-            + ((int) (player.experience * player.xpBarCap())) + " XPtot:" + player.experienceTotal);
-      }
+      // PlayerXPFixHandler.recalcPlayerXP(event);
+      // if (Log.isInDev()) {
+      // System.out.println("XP:" + XpUtil.getPlayerXP(player) + " Level:" + player.experienceLevel + " exp:" + player.experience + " barCap:"
+      // + player.xpBarCap() + " exp*barcap:" + (player.experience * player.xpBarCap()) + " (int)exp*barcap:"
+      // + ((int) (player.experience * player.xpBarCap())) + " XPtot:" + player.experienceTotal);
+      // }
 
       // vanilla method still has rounding error on the remaining XP points
       assertTrue(i == XpUtil.getPlayerXP(player) || (i - 1) == XpUtil.getPlayerXP(player));
       assertEquals(i, player.experienceTotal);
-      PlayerXPFixHandler.setErrored(false); // allow getPlayerXP to use experienceTotal
-      assertEquals(i, XpUtil.getPlayerXP(player));
-      PlayerXPFixHandler.setErrored(true);
+      // PlayerXPFixHandler.setErrored(false); // allow getPlayerXP to use experienceTotal
+      // assertEquals(i, XpUtil.getPlayerXP(player));
+      // PlayerXPFixHandler.setErrored(true);
     }
 
   }
