@@ -9,6 +9,7 @@ import info.loenwind.processor.RemoteCall;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.util.math.MathHelper;
 
 @RemoteCall
 public class ContainerExperienceObelisk extends Container {
@@ -32,13 +33,13 @@ public class ContainerExperienceObelisk extends Container {
 
   @RemoteCall
   public void doAddXP(int levels) {
-    inv.getContainer().givePlayerXp(player, levels);
+    inv.getContainer().givePlayerXp(player, MathHelper.clamp(levels, 0, 10000 /* Random value higher than max levels player can have */));
     PacketHandler.sendToAllAround(new PacketExperienceContainer(inv), inv);
   }
 
   @RemoteCall
   public void doDrainXP(int levels) {
-    int level = Minecraft.getMinecraft().player.experienceLevel - levels;
+    int level = MathHelper.clamp(Minecraft.getMinecraft().player.experienceLevel - levels, 0, Minecraft.getMinecraft().player.experienceLevel);
     if (player.capabilities.isCreativeMode) {
       inv.getContainer().addExperience(XpUtil.getExperienceForLevel(level));
     } else {
@@ -47,14 +48,17 @@ public class ContainerExperienceObelisk extends Container {
     PacketHandler.sendToAllAround(new PacketExperienceContainer(inv), inv);
   }
 
-  @RemoteCall
-  public void doRemoveXP(int level) {
-    if (player.capabilities.isCreativeMode) {
-      inv.getContainer().addExperience(XpUtil.getExperienceForLevel(level));
-    } else {
-      inv.getContainer().drainPlayerXpToReachContainerLevel(player, level);
-    }
-    PacketHandler.sendToAllAround(new PacketExperienceContainer(inv), inv);
-  }
+  // TODO: HL: Find out why this is unused before deleting it completely. I do not like finding unused code like this, it smells like a bug that it's not
+  // called...
+
+  // @RemoteCall
+  // public void doRemoveXP(int level) {
+  // if (player.capabilities.isCreativeMode) {
+  // inv.getContainer().addExperience(XpUtil.getExperienceForLevel(level));
+  // } else {
+  // inv.getContainer().drainPlayerXpToReachContainerLevel(player, level);
+  // }
+  // PacketHandler.sendToAllAround(new PacketExperienceContainer(inv), inv);
+  // }
 
 }

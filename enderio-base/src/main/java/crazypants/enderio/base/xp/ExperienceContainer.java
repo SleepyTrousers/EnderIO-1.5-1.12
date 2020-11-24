@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.enderio.core.api.common.util.ITankAccess;
 import com.enderio.core.common.util.FluidUtil;
 
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.fluid.Fluids;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -105,25 +106,33 @@ public class ExperienceContainer extends FluidTank {
   }
 
   public void drainPlayerXpToReachContainerLevel(@Nonnull EntityPlayer player, int level) {
-    int targetXP = XpUtil.getExperienceForLevel(level);
-    int requiredXP = targetXP - experienceTotal;
-    if (requiredXP <= 0) {
-      return;
+    if (level >= 0 && level <= XpUtil.getMaxLevelsStorable()) {
+      int targetXP = XpUtil.getExperienceForLevel(level);
+      int requiredXP = targetXP - experienceTotal;
+      if (requiredXP <= 0) {
+        return;
+      }
+      int drainXP = Math.min(requiredXP, XpUtil.getPlayerXP(player));
+      addExperience(drainXP);
+      XpUtil.addPlayerXP(player, -drainXP);
+    } else {
+      Log.info("Invalid Call to drainPlayerXpToReachContainerLevel(), target level of ", level, " is out of range.");
     }
-    int drainXP = Math.min(requiredXP, XpUtil.getPlayerXP(player));
-    addExperience(drainXP);
-    XpUtil.addPlayerXP(player, -drainXP);
   }
 
   public void drainPlayerXpToReachPlayerLevel(@Nonnull EntityPlayer player, int level) {
-    int targetXP = XpUtil.getExperienceForLevel(level);
-    int drainXP = XpUtil.getPlayerXP(player) - targetXP;
-    if (drainXP <= 0) {
-      return;
-    }
-    drainXP = addExperience(drainXP);
-    if (drainXP > 0) {
-      XpUtil.addPlayerXP(player, -drainXP);
+    if (level >= 0 && level <= XpUtil.getMaxLevelsStorable()) {
+      int targetXP = XpUtil.getExperienceForLevel(level);
+      int drainXP = XpUtil.getPlayerXP(player) - targetXP;
+      if (drainXP <= 0) {
+        return;
+      }
+      drainXP = addExperience(drainXP);
+      if (drainXP > 0) {
+        XpUtil.addPlayerXP(player, -drainXP);
+      }
+    } else {
+      Log.info("Invalid Call to drainPlayerXpToReachPlayerLevel(), target level of ", level, " is out of range.");
     }
   }
 
