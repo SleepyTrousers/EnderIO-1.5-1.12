@@ -10,6 +10,7 @@ import com.enderio.core.common.fluid.IFluidWrapper;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.fluid.Fluids;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.xp.XpUtil;
 import net.minecraft.block.Block;
@@ -75,42 +76,49 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
   }
 
   public static boolean tranferFromBlockToPlayer(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
-    IFluidWrapper wrapper = FluidWrapper.wrap(world, pos, side);
-    if (wrapper != null) {
-      FluidStack availableFluid = wrapper.getAvailableFluid();
-      if (availableFluid != null && availableFluid.getFluid() == Fluids.XP_JUICE.getFluid() && availableFluid.amount > 0) {
-        int currentXP = XpUtil.getPlayerXP(player);
-        int nextLevelXP = XpUtil.getExperienceForLevel(player.experienceLevel + 1);
-        int requiredXP = nextLevelXP - currentXP;
-        int fluidVolume = XpUtil.experienceToLiquid(requiredXP);
-        FluidStack fs = new FluidStack(Fluids.XP_JUICE.getFluid(), fluidVolume);
-        FluidStack res = wrapper.drain(fs);
-        if (res != null && res.amount > 0) {
-          int xpToGive = XpUtil.liquidToExperience(res.amount);
-          XpUtil.addPlayerXP(player, xpToGive);
-          return true;
+    try {
+      IFluidWrapper wrapper = FluidWrapper.wrap(world, pos, side);
+      if (wrapper != null) {
+        FluidStack availableFluid = wrapper.getAvailableFluid();
+        if (availableFluid != null && availableFluid.getFluid() == Fluids.XP_JUICE.getFluid() && availableFluid.amount > 0) {
+          int currentXP = XpUtil.getPlayerXP(player);
+          int nextLevelXP = XpUtil.getExperienceForLevel(player.experienceLevel + 1);
+          int requiredXP = nextLevelXP - currentXP;
+          int fluidVolume = XpUtil.experienceToLiquid(requiredXP);
+          FluidStack fs = new FluidStack(Fluids.XP_JUICE.getFluid(), fluidVolume);
+          FluidStack res = wrapper.drain(fs);
+          if (res != null && res.amount > 0) {
+            int xpToGive = XpUtil.liquidToExperience(res.amount);
+            XpUtil.addPlayerXP(player, xpToGive);
+            return true;
+          }
         }
       }
+    } catch (XpUtil.TooManyXPLevelsException e) {
+      player.sendStatusMessage(Lang.GUI_TOO_MANY_LEVELS.toChatServer(), true);
     }
     return false;
   }
 
   public static boolean tranferFromPlayerToBlock(@Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
-
-    if (player.experienceTotal <= 0) {
-      return false;
-    }
-
-    IFluidWrapper wrapper = FluidWrapper.wrap(world, pos, side);
-    if (wrapper != null) {
-      int fluidVolume = XpUtil.experienceToLiquid(XpUtil.getPlayerXP(player));
-      FluidStack fs = new FluidStack(Fluids.XP_JUICE.getFluid(), fluidVolume);
-      int takenVolume = wrapper.fill(fs);
-      if (takenVolume > 0) {
-        int xpToTake = XpUtil.liquidToExperience(takenVolume);
-        XpUtil.addPlayerXP(player, -xpToTake);
-        return true;
+    try {
+      if (player.experienceTotal <= 0) {
+        return false;
       }
+
+      IFluidWrapper wrapper = FluidWrapper.wrap(world, pos, side);
+      if (wrapper != null) {
+        int fluidVolume = XpUtil.experienceToLiquid(XpUtil.getPlayerXP(player));
+        FluidStack fs = new FluidStack(Fluids.XP_JUICE.getFluid(), fluidVolume);
+        int takenVolume = wrapper.fill(fs);
+        if (takenVolume > 0) {
+          int xpToTake = XpUtil.liquidToExperience(takenVolume);
+          XpUtil.addPlayerXP(player, -xpToTake);
+          return true;
+        }
+      }
+    } catch (XpUtil.TooManyXPLevelsException e) {
+      player.sendStatusMessage(Lang.GUI_TOO_MANY_LEVELS.toChatServer(), true);
     }
     return false;
   }

@@ -21,7 +21,6 @@ import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.render.IHaveRenderers;
-import crazypants.enderio.base.xp.XpUtil;
 import crazypants.enderio.util.NbtValue;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -232,8 +231,7 @@ public final class ItemUpgrades extends Item implements IHaveRenderers, IAdvance
             if (!playerIn.capabilities.isCreativeMode) {
               // Note: This is much more expensive than using a tank recipe. It takes the number of levels off the top of the player's levels, whereas the tank
               // recipe calculates the levels from 0. This is on purpose. The easy way is expensive, the hard one is cheap.
-              int drainXP = XpUtil.getExperienceForLevel(levels) - XpUtil.getExperienceForLevel(levels - levelCost);
-              XpUtil.addPlayerXP(playerIn, -drainXP);
+              playerIn.addExperienceLevel(-levelCost);
             }
             setEnabled(stack, true);
             playerIn.sendStatusMessage(Lang.DSU_GUI_ACTIVATED.toChatServer(), true);

@@ -10,6 +10,7 @@ import com.enderio.core.common.util.FluidUtil;
 
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.fluid.Fluids;
+import crazypants.enderio.base.xp.XpUtil.TooManyXPLevelsException;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -86,13 +87,13 @@ public class ExperienceContainer extends FluidTank {
     return result;
   }
 
-  public void givePlayerXp(@Nonnull EntityPlayer player, int levels) {
+  public void givePlayerXp(@Nonnull EntityPlayer player, int levels) throws TooManyXPLevelsException {
     for (int i = 0; i < levels && experienceTotal > 0; i++) {
       givePlayerXpLevel(player);
     }
   }
 
-  public void givePlayerXpLevel(@Nonnull EntityPlayer player) {
+  public void givePlayerXpLevel(@Nonnull EntityPlayer player) throws TooManyXPLevelsException {
     int currentXP = XpUtil.getPlayerXP(player);
     int nextLevelXP = XpUtil.getExperienceForLevel(player.experienceLevel + 1);
     int requiredXP = nextLevelXP - currentXP;
@@ -105,7 +106,7 @@ public class ExperienceContainer extends FluidTank {
     addExperience(newXp);
   }
 
-  public void drainPlayerXpToReachContainerLevel(@Nonnull EntityPlayer player, int level) {
+  public void drainPlayerXpToReachContainerLevel(@Nonnull EntityPlayer player, int level) throws TooManyXPLevelsException {
     if (level >= 0 && level <= XpUtil.getMaxLevelsStorable()) {
       int targetXP = XpUtil.getExperienceForLevel(level);
       int requiredXP = targetXP - experienceTotal;
@@ -120,7 +121,7 @@ public class ExperienceContainer extends FluidTank {
     }
   }
 
-  public void drainPlayerXpToReachPlayerLevel(@Nonnull EntityPlayer player, int level) {
+  public void drainPlayerXpToReachPlayerLevel(@Nonnull EntityPlayer player, int level) throws TooManyXPLevelsException {
     if (level >= 0 && level <= XpUtil.getMaxLevelsStorable()) {
       int targetXP = XpUtil.getExperienceForLevel(level);
       int drainXP = XpUtil.getPlayerXP(player) - targetXP;

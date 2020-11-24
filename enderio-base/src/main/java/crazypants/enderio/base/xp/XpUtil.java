@@ -75,12 +75,15 @@ public class XpUtil {
   private static final int MAX_LEVEL_LONG = 1431655782;
 
   /**
-   * The highest level that can be converted into experience points that can be stored as an {@link Long}.
+   * The highest level that can be converted into experience points that can be stored as an {@link Integer}.
    */
   public static int getMaxLevelsStorable() {
     return MAX_LEVEL_INT;
   }
 
+  /**
+   * The highest level that can be converted into experience points that can be stored as an {@link Long}.
+   */
   public static int getMaxLevelsStorableL() {
     return MAX_LEVEL_LONG;
   }
@@ -204,8 +207,17 @@ public class XpUtil {
    * @throws ArithmeticException
    *           if the total experience of the player would overflow an int (very unexpected)
    */
-  public static int getPlayerXP(@Nonnull EntityPlayer player) {
-    return Math.addExact(getExperienceForLevel(player.experienceLevel), (int) (player.experience * player.xpBarCap()));
+  public static int getPlayerXP(@Nonnull EntityPlayer player) throws TooManyXPLevelsException {
+
+    try {
+      return Math.addExact(getExperienceForLevel(player.experienceLevel), (int) (player.experience * player.xpBarCap()));
+    } catch (ArithmeticException e) {
+      throw new TooManyXPLevelsException();
+    }
+  }
+
+  public static long getPlayerXPL(@Nonnull EntityPlayer player) {
+    return Math.addExact(getExperienceForLevelL(player.experienceLevel), (long) (player.experience * player.xpBarCap()));
   }
 
   /**
@@ -219,12 +231,16 @@ public class XpUtil {
    * @throws ArithmeticException
    *           if the total experience of the player would overflow an int
    */
-  public static void addPlayerXP(@Nonnull EntityPlayer player, int amount) {
+  public static void addPlayerXP(@Nonnull EntityPlayer player, int amount) throws TooManyXPLevelsException {
     int experience = Math.max(0, Math.addExact(getPlayerXP(player), amount));
     player.experienceTotal = experience;
     player.experienceLevel = getLevelForExperience(experience);
     int expForLevel = getExperienceForLevel(player.experienceLevel);
     player.experience = (float) (experience - expForLevel) / (float) getXpBarCapacity(player.experienceLevel);
+  }
+
+  public static class TooManyXPLevelsException extends Exception {
+    private static final long serialVersionUID = -3819421185545900261L;
   }
 
 }

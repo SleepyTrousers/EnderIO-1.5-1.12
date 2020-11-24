@@ -47,7 +47,7 @@ public class GuiSoulBinder extends GuiInventoryMachineBase<TileSoulBinder> imple
   protected void actionPerformed(@Nonnull GuiButton b) throws IOException {
     super.actionPerformed(b);
     if (b.id == PLAYER_XP_ID) {
-      int xp = XpUtil.getPlayerXP(Minecraft.getMinecraft().player);
+      long xp = XpUtil.getPlayerXPL(Minecraft.getMinecraft().player);
       if (xp > 0 || Minecraft.getMinecraft().player.capabilities.isCreativeMode) {
         doDrainXP(getTileEntity().getCurrentlyRequiredLevel());
         SoundUtil.playClientSoundFX(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, getTileEntity());

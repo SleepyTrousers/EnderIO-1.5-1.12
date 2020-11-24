@@ -233,6 +233,8 @@ public enum Lang implements ILang {
   GUI_TRAVEL_OUT_OF_RANGE(".gui.travel_accessable.outofrange"),
   GUI_TRAVEL_INVALID_TARGET(".gui.travel_accessable.invalidtarget"),
 
+  GUI_TOO_MANY_LEVELS(".gui.too_many_levels"),
+
   ;
 
   private final @Nonnull String key;

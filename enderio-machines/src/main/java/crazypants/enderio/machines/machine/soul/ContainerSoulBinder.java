@@ -9,6 +9,7 @@ import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
 import com.enderio.core.client.gui.widget.GhostSlot;
 
 import crazypants.enderio.base.init.ModObject;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.machine.gui.AbstractMachineContainer;
 import crazypants.enderio.base.xp.PacketExperienceContainer;
 import crazypants.enderio.base.xp.XpUtil;
@@ -70,7 +71,11 @@ public class ContainerSoulBinder extends AbstractMachineContainer<TileSoulBinder
       getTe().getContainer().addExperience(XpUtil.getExperienceForLevel(level));
       return new PacketExperienceContainer(getTe());
     } else {
-      getTe().getContainer().drainPlayerXpToReachContainerLevel(player, level);
+      try {
+        getTe().getContainer().drainPlayerXpToReachContainerLevel(player, level);
+      } catch (XpUtil.TooManyXPLevelsException e) {
+        player.sendStatusMessage(Lang.GUI_TOO_MANY_LEVELS.toChatServer(), true);
+      }
       return new PacketExperienceContainer(getTe());
     }
   }

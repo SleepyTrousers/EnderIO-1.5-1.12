@@ -1530,3 +1530,5 @@ enderio.gui.travel_accessable.skip.obstructed=Skipped private anchor
 enderio.gui.travel_accessable.unauthorized=You are not allowed to access this block
 enderio.gui.travel_accessable.outofrange=Destination out of range
 enderio.gui.travel_accessable.invalidtarget=Destination is obstructed
+
+enderio.gui.too_many_levels=You have more than 21862 levels, that's too much XP

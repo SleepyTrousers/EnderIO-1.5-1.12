@@ -2,6 +2,7 @@ package crazypants.enderio.machines.machine.obelisk.xp;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.xp.PacketExperienceContainer;
 import crazypants.enderio.base.xp.XpUtil;
 import crazypants.enderio.machines.network.PacketHandler;
@@ -33,7 +34,11 @@ public class ContainerExperienceObelisk extends Container {
 
   @RemoteCall
   public void doAddXP(int levels) {
-    inv.getContainer().givePlayerXp(player, MathHelper.clamp(levels, 0, 10000 /* Random value higher than max levels player can have */));
+    try {
+      inv.getContainer().givePlayerXp(player, MathHelper.clamp(levels, 0, 10000 /* Random value higher than max levels player can have */));
+    } catch (XpUtil.TooManyXPLevelsException e) {
+      player.sendStatusMessage(Lang.GUI_TOO_MANY_LEVELS.toChatServer(), true);
+    }
     PacketHandler.sendToAllAround(new PacketExperienceContainer(inv), inv);
   }
 
@@ -43,7 +48,11 @@ public class ContainerExperienceObelisk extends Container {
     if (player.capabilities.isCreativeMode) {
       inv.getContainer().addExperience(XpUtil.getExperienceForLevel(level));
     } else {
-      inv.getContainer().drainPlayerXpToReachPlayerLevel(player, level);
+      try {
+        inv.getContainer().drainPlayerXpToReachPlayerLevel(player, level);
+      } catch (XpUtil.TooManyXPLevelsException e) {
+        player.sendStatusMessage(Lang.GUI_TOO_MANY_LEVELS.toChatServer(), true);
+      }
     }
     PacketHandler.sendToAllAround(new PacketExperienceContainer(inv), inv);
   }

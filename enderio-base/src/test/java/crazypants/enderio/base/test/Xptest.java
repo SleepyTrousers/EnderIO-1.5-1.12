@@ -18,6 +18,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -77,7 +78,7 @@ class Xptest {
       }
     };
 
-    assertEquals(0, XpUtil.getPlayerXP(player));
+    assertEquals(0, (int) assertDoesNotThrow(() -> XpUtil.getPlayerXP(player)));
   }
 
   @Test
@@ -100,8 +101,8 @@ class Xptest {
     while (i++ < 1000) {
       player.addExperience(1);
       if (Log.isInDev()) {
-        System.out.println("XP:" + XpUtil.getPlayerXP(player) + " Level:" + player.experienceLevel + " exp:" + player.experience + " barCap:"
-            + player.xpBarCap() + " exp*barcap:" + (player.experience * player.xpBarCap()) + " (int)exp*barcap:"
+        System.out.println("XP:" + assertDoesNotThrow(() -> XpUtil.getPlayerXP(player)) + " Level:" + player.experienceLevel + " exp:" + player.experience
+            + " barCap:" + player.xpBarCap() + " exp*barcap:" + (player.experience * player.xpBarCap()) + " (int)exp*barcap:"
             + ((int) (player.experience * player.xpBarCap())) + " XPtot:" + player.experienceTotal);
       }
       if (i == 91 || i == 178 || i == 233 || i == 520) {
@@ -110,8 +111,36 @@ class Xptest {
       if (i == 159 || i == 232 || i == 478) {
         offset = 0;
       }
-      assertEquals(i - offset, XpUtil.getPlayerXP(player));
+      assertEquals(i - offset, (int) assertDoesNotThrow(() -> XpUtil.getPlayerXP(player)));
       assertEquals(i, player.experienceTotal);
+    }
+
+  }
+
+  @Test
+  void testShootingStarPlayer() {
+    EntityPlayer player = new EntityPlayer(world, profile) {
+
+      @Override
+      public boolean isSpectator() {
+        return false;
+      }
+
+      @Override
+      public boolean isCreative() {
+        return false;
+      }
+    };
+
+    int i = 0;
+    int prev = 0;
+    while (i++ < XpUtil.getMaxLevelsStorable()) {
+      player.addExperienceLevel(1);
+
+      int xp = assertDoesNotThrow(() -> XpUtil.getPlayerXP(player), "Level: " + i);
+      assertTrue(xp > prev);
+      prev = xp;
+      assertEquals(i, player.experienceLevel);
     }
 
   }
@@ -138,8 +167,8 @@ class Xptest {
     while (i++ < 1000) {
       player.addExperience(1);
       if (Log.isInDev()) {
-        System.out.println("XP:" + XpUtil.getPlayerXP(player) + " Level:" + player.experienceLevel + " exp:" + player.experience + " barCap:"
-            + player.xpBarCap() + " exp*barcap:" + (player.experience * player.xpBarCap()) + " (int)exp*barcap:"
+        System.out.println("XP:" + assertDoesNotThrow(() -> XpUtil.getPlayerXP(player)) + " Level:" + player.experienceLevel + " exp:" + player.experience
+            + " barCap:" + player.xpBarCap() + " exp*barcap:" + (player.experience * player.xpBarCap()) + " (int)exp*barcap:"
             + ((int) (player.experience * player.xpBarCap())) + " XPtot:" + player.experienceTotal);
       }
       // PlayerXPFixHandler.recalcPlayerXP(event);
@@ -150,7 +179,7 @@ class Xptest {
       // }
 
       // vanilla method still has rounding error on the remaining XP points
-      assertTrue(i == XpUtil.getPlayerXP(player) || (i - 1) == XpUtil.getPlayerXP(player));
+      assertTrue(i == assertDoesNotThrow(() -> XpUtil.getPlayerXP(player)) || (i - 1) == assertDoesNotThrow(() -> XpUtil.getPlayerXP(player)));
       assertEquals(i, player.experienceTotal);
       // PlayerXPFixHandler.setErrored(false); // allow getPlayerXP to use experienceTotal
       // assertEquals(i, XpUtil.getPlayerXP(player));
@@ -175,7 +204,7 @@ class Xptest {
     };
     player.experienceLevel++;
 
-    assertEquals(7, XpUtil.getPlayerXP(player));
+    assertEquals(7, (int) assertDoesNotThrow(() -> XpUtil.getPlayerXP(player)));
   }
 
 }
