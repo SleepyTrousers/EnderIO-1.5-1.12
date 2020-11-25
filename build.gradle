@@ -85,6 +85,11 @@ allprojects {
     else
         project.ext.include_in_combjar = project.include_in_combjar != 'false'
 
+    if (!project.hasProperty('publish_api'))
+         project.ext.publish_api = true
+    else
+        project.ext.publish_api = project.publish_api != 'false'
+
     project.ext.include_in_combjar = project.ext.include_in_combjar && project.ext.include_in_build
 
     // Eclipse needs this for some reason
@@ -336,11 +341,13 @@ subprojects {
 
     // Assembly an API jar
     task apiJar(type: Jar) {
+    	enabled = project.ext.publish_api
         classifier = 'api'
 
         from sourceSets.main.output.classesDirs
-
-        include 'crazypants/enderio/api/**/*'
+        include 'crazypants/enderio/api/**/*.class'
+        from sourceSets.main.java
+        include 'crazypants/enderio/api/**/*.java'
     }
 
     // Assemble a source jar
@@ -439,7 +446,8 @@ task combApiJar(type: Jar) {
     classifier 'api'
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     combjarprojects.each { subproject ->
-        from zipTree(subproject.apiJar.getArchivePath()).asFileTree
+    	if (subproject.apiJar.enabled)
+	   	    from zipTree(subproject.apiJar.getArchivePath()).asFileTree
     }
 }
 
@@ -533,7 +541,7 @@ tasks.curseforge.enabled = project.hasProperty('curseforge_key')
 gradle.taskGraph.whenReady {
     def tasksToDisable = [
         'build', 'compileJava', 'assemble', 'sourceJar',
-        'check', 'reobfJar', 'signJar'
+        'check', 'reobfJar', 'signJar', 'apiJar', 'curseforge'
     ]
 
     gradle.taskGraph.allTasks.each {
