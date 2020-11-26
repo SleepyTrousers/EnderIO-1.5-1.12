@@ -134,7 +134,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     if (!(nextRecipe instanceof ISoulBinderRecipe)) {
       return 0;
     }
-    return ((ISoulBinderRecipe) nextRecipe).getExperienceRequired() - getContainer().getExperienceTotal();
+    return ((ISoulBinderRecipe) nextRecipe).getExperienceRequired() - getContainer().getExperienceTotalIntLimited();
   }
 
   public int getCurrentlyRequiredLevel() {
@@ -217,10 +217,10 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     if (currentTask == null) {
       IMachineRecipe nextRecipe = getNextRecipe();
       if (nextRecipe instanceof ISoulBinderRecipe) {
-        return Math.max(0, getContainer().getExperienceTotal() - ((ISoulBinderRecipe) nextRecipe).getExperienceRequired());
+        return Math.max(0, getContainer().getExperienceTotalIntLimited() - ((ISoulBinderRecipe) nextRecipe).getExperienceRequired());
       }
     }
-    return getContainer().getExperienceTotal();
+    return getContainer().getExperienceTotalIntLimited();
   }
 
   @Override

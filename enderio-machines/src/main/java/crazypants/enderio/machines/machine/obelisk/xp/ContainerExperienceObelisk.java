@@ -42,11 +42,11 @@ public class ContainerExperienceObelisk extends Container {
       if (player.capabilities.isCreativeMode) {
         int containerLevel = inv.getContainer().getExperienceLevel();
         int targetLevel = Math.max(0, containerLevel - levels);
-        int diffxp = XpUtil.getExperienceForLevel(containerLevel) - XpUtil.getExperienceForLevel(targetLevel);
+        long diffxp = XpUtil.getExperienceForLevelL(containerLevel) - XpUtil.getExperienceForLevelL(targetLevel);
         inv.getContainer().removeExperience(diffxp);
         XpUtil.addPlayerXP(player, diffxp);
       } else {
-        inv.getContainer().givePlayerXp(player, MathHelper.clamp(levels, 0, 10000 /* Random value higher than max levels player can have */));
+        inv.getContainer().givePlayerXp(player, Math.max(levels, 0));
       }
     } catch (XpUtil.TooManyXPLevelsException e) {
       player.sendStatusMessage(Lang.GUI_TOO_MANY_LEVELS.toChatServer(), true);
@@ -59,7 +59,7 @@ public class ContainerExperienceObelisk extends Container {
     if (player.capabilities.isCreativeMode) {
       int containerLevel = inv.getContainer().getExperienceLevel();
       int targetLevel = Math.min(containerLevel + levels, XpUtil.getLevelForExperience(inv.getContainer().getMaximumExperience()));
-      int diffxp = XpUtil.getExperienceForLevel(targetLevel) - XpUtil.getExperienceForLevel(containerLevel);
+      long diffxp = XpUtil.getExperienceForLevelL(targetLevel) - XpUtil.getExperienceForLevelL(containerLevel);
       inv.getContainer().addExperience(diffxp);
     } else {
       try {

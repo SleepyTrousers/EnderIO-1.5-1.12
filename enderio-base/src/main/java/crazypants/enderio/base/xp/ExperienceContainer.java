@@ -11,11 +11,13 @@ import com.enderio.core.common.util.FluidUtil;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.fluid.Fluids;
 import crazypants.enderio.base.xp.XpUtil.TooManyXPLevelsException;
+import crazypants.enderio.util.MathUtil;
+import info.loenwind.autoconfig.factory.IValue;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -25,32 +27,56 @@ public class ExperienceContainer extends FluidTank {
   // Note: We extend FluidTank instead of implementing IFluidTank because it has
   // some methods we need.
 
-  private int experienceTotal;
+  public static final long MAX_XP_POINTS = XpUtil.liquidToExperience(Long.MAX_VALUE);
+
+  // public/non-final for unit tests only
+  public static @Nonnull IValue<Fluid> XP = Fluids.XP_JUICE::getFluid;
+
+  private long experienceTotal;
   private boolean xpDirty;
-  private final int maxXp;
+  private final long maxXp;
 
   public ExperienceContainer() {
-    this(Integer.MAX_VALUE);
+    this(Long.MAX_VALUE);
   }
 
-  public ExperienceContainer(int maxStored) {
+  public ExperienceContainer(long maxStored) {
     super(null, 0);
-    maxXp = Math.min(maxStored, XpUtil.liquidToExperience(Integer.MAX_VALUE)); // about 4902 levels
+    maxXp = Math.min(maxStored, MAX_XP_POINTS); // about 71,582,789 levels
   }
 
-  public int getMaximumExperience() {
+  /**
+   * @return Number of XP points that can be stored stored.
+   */
+  public long getMaximumExperience() {
     return maxXp;
   }
 
+  /**
+   * @return Number of levels in the tank (see also {@link EntityPlayer#experienceLevel}).
+   */
   public int getExperienceLevel() {
     return XpUtil.getLevelForExperience(experienceTotal);
   }
 
+  /**
+   * @return Percentage of next level reached in tank (see also {@link EntityPlayer#experience}).
+   */
   public float getExperience() {
-    return (experienceTotal - XpUtil.getExperienceForLevel(getExperienceLevel())) / (float) getXpBarCapacity();
+    return (experienceTotal - XpUtil.getExperienceForLevelL(getExperienceLevel())) / (float) getXpBarCapacity();
   }
 
-  public int getExperienceTotal() {
+  /**
+   * @return Number of XP points stored. Amounts above {@link Integer#MAX_VALUE} will be limited to that.
+   */
+  public int getExperienceTotalIntLimited() {
+    return MathUtil.limit(experienceTotal);
+  }
+
+  /**
+   * @return Number of XP points stored.
+   */
+  public long getExperienceTotal() {
     return experienceTotal;
   }
 
@@ -68,7 +94,11 @@ public class ExperienceContainer extends FluidTank {
   }
 
   public int addExperience(int xpToAdd) {
-    int j = MathHelper.clamp(xpToAdd, 0, maxXp - experienceTotal);
+    return MathUtil.limit(addExperience((long) xpToAdd));
+  }
+
+  public long addExperience(long xpToAdd) {
+    long j = MathUtil.clamp(xpToAdd, 0, maxXp - experienceTotal);
     experienceTotal += j;
     xpDirty = true;
     onContentsChanged();
@@ -76,7 +106,11 @@ public class ExperienceContainer extends FluidTank {
   }
 
   public int removeExperience(int xpToRemove) {
-    int j = MathHelper.clamp(xpToRemove, 0, experienceTotal);
+    return MathUtil.limit(removeExperience((long) xpToRemove));
+  }
+
+  public long removeExperience(long xpToRemove) {
+    long j = MathUtil.clamp(xpToRemove, 0, experienceTotal);
     experienceTotal -= j;
     xpDirty = true;
     onContentsChanged();
@@ -100,21 +134,21 @@ public class ExperienceContainer extends FluidTank {
   }
 
   public void givePlayerXpLevel(@Nonnull EntityPlayer player) throws TooManyXPLevelsException {
-    int currentXP = XpUtil.getPlayerXP(player);
-    int nextLevelXP = XpUtil.getExperienceForLevel(player.experienceLevel + 1);
-    int requiredXP = nextLevelXP - currentXP;
+    long currentXP = XpUtil.getPlayerXPL(player);
+    long nextLevelXP = XpUtil.getExperienceForLevelL(player.experienceLevel + 1);
+    long requiredXP = nextLevelXP - currentXP;
 
     XpUtil.addPlayerXP(player, removeExperience(requiredXP));
   }
 
   public void drainPlayerXpToReachContainerLevel(@Nonnull EntityPlayer player, int level) throws TooManyXPLevelsException {
     if (level >= 0 && level <= XpUtil.getMaxLevelsStorable()) {
-      int targetXP = XpUtil.getExperienceForLevel(level);
-      int requiredXP = targetXP - experienceTotal;
+      long targetXP = XpUtil.getExperienceForLevelL(level);
+      long requiredXP = targetXP - experienceTotal;
       if (requiredXP <= 0) {
         return;
       }
-      int drainXP = Math.min(requiredXP, XpUtil.getPlayerXP(player));
+      long drainXP = Math.min(requiredXP, XpUtil.getPlayerXPL(player));
       addExperience(drainXP);
       XpUtil.addPlayerXP(player, -drainXP);
     } else {
@@ -124,8 +158,8 @@ public class ExperienceContainer extends FluidTank {
 
   public void drainPlayerXpToReachPlayerLevel(@Nonnull EntityPlayer player, int level) throws TooManyXPLevelsException {
     if (level >= 0 && level <= XpUtil.getMaxLevelsStorable()) {
-      int targetXP = XpUtil.getExperienceForLevel(level);
-      int drainXP = XpUtil.getPlayerXP(player) - targetXP;
+      long targetXP = XpUtil.getExperienceForLevelL(level);
+      long drainXP = XpUtil.getPlayerXPL(player) - targetXP;
       if (drainXP <= 0) {
         return;
       }
@@ -146,23 +180,23 @@ public class ExperienceContainer extends FluidTank {
   }
 
   public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-    int available = getFluidAmount();
-    int toDrain = Math.min(available, maxDrain);
-    final int xpAskedToExtract = XpUtil.liquidToExperience(toDrain);
+    long available = getFluidAmountL();
+    long toDrain = Math.min(available, maxDrain);
+    final long xpAskedToExtract = XpUtil.liquidToExperience(toDrain);
     // only return multiples of 1 XP (20mB) to avoid duping XP when being asked
     // for low values (like 10mB/t)
-    final int fluidToExtract = XpUtil.experienceToLiquid(xpAskedToExtract);
-    final int xpToExtract = XpUtil.liquidToExperience(fluidToExtract);
+    final int fluidToExtract = MathUtil.limit(XpUtil.experienceToLiquid(xpAskedToExtract)); // limit to fluidstack int
+    final long xpToExtract = XpUtil.liquidToExperience(fluidToExtract);
     if (doDrain) {
-      int newXp = experienceTotal - xpToExtract;
+      long newXp = experienceTotal - xpToExtract;
       experienceTotal = 0;
       addExperience(newXp);
     }
-    return new FluidStack(Fluids.XP_JUICE.getFluid(), fluidToExtract);
+    return new FluidStack(XP.get(), fluidToExtract);
   }
 
   public boolean canFill(EnumFacing from, Fluid fluidIn) {
-    return canFill() && fluidIn != null && FluidUtil.areFluidsTheSame(fluidIn, Fluids.XP_JUICE.getFluid());
+    return canFill() && fluidIn != null && FluidUtil.areFluidsTheSame(fluidIn, XP.get());
   }
 
   public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
@@ -176,62 +210,81 @@ public class ExperienceContainer extends FluidTank {
       return 0;
     }
     // need to do these calcs in XP instead of fluid space to avoid type overflows
-    int xp = XpUtil.liquidToExperience(resource.amount);
-    int xpSpace = getMaximumExperience() - getExperienceTotal();
-    int canFillXP = Math.min(xp, xpSpace);
+    long xp = XpUtil.liquidToExperience((long) resource.amount);
+    long xpSpace = getMaximumExperience() - getExperienceTotal();
+    long canFillXP = Math.min(xp, xpSpace);
     if (canFillXP <= 0) {
       return 0;
     }
     if (doFill) {
       addExperience(canFillXP);
     }
-    return XpUtil.experienceToLiquid(canFillXP);
+    return MathUtil.limit(XpUtil.experienceToLiquid(canFillXP)); // safe, cannot be bigger than int input
   }
 
   public boolean canDrain(EnumFacing from, Fluid fluidIn) {
-    return fluidIn != null && FluidUtil.areFluidsTheSame(fluidIn, Fluids.XP_JUICE.getFluid());
+    return fluidIn != null && FluidUtil.areFluidsTheSame(fluidIn, XP.get());
   }
 
   public @Nonnull FluidTankInfo[] getTankInfo(EnumFacing from) {
-    return new FluidTankInfo[] { new FluidTankInfo(new FluidStack(Fluids.XP_JUICE.getFluid(), getFluidAmount()), getCapacity()) };
+    return new FluidTankInfo[] { new FluidTankInfo(new FluidStack(XP.get(), getFluidAmount()), getCapacity()) };
   }
 
   @Override
+  @Deprecated
   public int getCapacity() {
-    if (maxXp == Integer.MAX_VALUE) {
-      return Integer.MAX_VALUE;
+    return MathUtil.limit(getCapacityL());
+  }
+
+  public long getCapacityL() {
+    if (maxXp == Long.MAX_VALUE) {
+      return Long.MAX_VALUE;
     }
     return XpUtil.experienceToLiquid(maxXp);
   }
 
   @Override
+  @Deprecated
   public int getFluidAmount() {
+    return MathUtil.limit(getFluidAmountL());
+  }
+
+  public long getFluidAmountL() {
     return XpUtil.experienceToLiquid(experienceTotal);
   }
 
   @Override
   public @Nonnull FluidTank readFromNBT(NBTTagCompound nbtRoot) {
-    experienceTotal = nbtRoot.getInteger("experienceTotal");
+    if (nbtRoot.hasKey("xp", Constants.NBT.TAG_LONG)) {
+      experienceTotal = nbtRoot.getLong("experienceTotal");
+    } else if (nbtRoot.hasKey("experienceTotal", Constants.NBT.TAG_INT)) {
+      // TODO 1.16: Remove compat
+      experienceTotal = nbtRoot.getInteger("experienceTotal");
+    } else {
+      experienceTotal = 0L;
+    }
     return this;
   }
 
   @Override
   public NBTTagCompound writeToNBT(NBTTagCompound nbtRoot) {
-    nbtRoot.setInteger("experienceTotal", experienceTotal);
+    nbtRoot.setLong("xp", experienceTotal);
+    // TODO Q2 2021 for 1.12, 1.16: Remove compat
+    nbtRoot.setInteger("experienceTotal", getExperienceTotalIntLimited());
     return nbtRoot;
   }
 
   public void toBytes(ByteBuf buf) {
-    buf.writeInt(experienceTotal);
+    buf.writeLong(experienceTotal);
   }
 
   public void fromBytes(ByteBuf buf) {
-    experienceTotal = buf.readInt();
+    experienceTotal = buf.readLong();
   }
 
   @Override
   public @Nonnull FluidStack getFluid() {
-    return new FluidStack(Fluids.XP_JUICE.getFluid(), getFluidAmount());
+    return new FluidStack(XP.get(), getFluidAmount());
   }
 
   @Override
@@ -258,8 +311,8 @@ public class ExperienceContainer extends FluidTank {
   public void setFluid(@Nullable FluidStack fluid) {
     experienceTotal = 0;
     if (fluid != null && fluid.getFluid() != null) {
-      if (Fluids.XP_JUICE.getFluid() == fluid.getFluid()) {
-        addExperience(XpUtil.liquidToExperience(fluid.amount));
+      if (XP.get() == fluid.getFluid()) {
+        addExperience(XpUtil.liquidToExperience((long) fluid.amount));
       } else {
         throw new InvalidParameterException(fluid.getFluid() + " is no XP juice");
       }
@@ -280,6 +333,16 @@ public class ExperienceContainer extends FluidTank {
     } else if (tile != null) {
       tile.markDirty();
     }
+  }
+
+  @Override
+  public boolean canFillFluidType(FluidStack resource) {
+    return canFill() && resource != null && resource.getFluid() != null && FluidUtil.areFluidsTheSame(resource.getFluid(), XP.get());
+  }
+
+  @Override
+  public boolean canDrainFluidType(@Nullable FluidStack resource) {
+    return canFill() && resource != null && resource.getFluid() != null && FluidUtil.areFluidsTheSame(resource.getFluid(), XP.get());
   }
 
 }

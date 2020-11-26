@@ -187,13 +187,13 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
     } else if (b == pp) {
       doDrainXP(10);
     } else if (b == ppp) {
-      doDrainXP(5000);
+      doDrainXP(XpUtil.getMaxLevelsStorableL());
     } else if (b == m) {
       doAddXP(1);
     } else if (b == mm) {
       doAddXP(10);
     } else if (b == mmm) {
-      doAddXP(5000);
+      doAddXP(XpUtil.getMaxLevelsStorableL());
     }
   }
 
