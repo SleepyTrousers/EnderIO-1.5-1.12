@@ -178,6 +178,10 @@ public class XpUtil {
     return getLevelFromExp(experience);
   }
 
+  /**
+   * Variant of {@link #getLevelForExperience(long)} for unit tests only. This checks its result and if it is wrong, will output debug info t0 stdout and thrown
+   * an {@link ArithmeticException}.
+   */
   public static int getLevelForExperienceWithChecks(long experience) {
     int guess = getLevelFromExp(experience);
 
