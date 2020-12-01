@@ -1,7 +1,5 @@
 package crazypants.enderio.machines.machine.slicensplice;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NNList;
@@ -16,7 +14,7 @@ import crazypants.enderio.base.recipe.IManyToOneRecipe;
 import crazypants.enderio.base.recipe.IRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
-import crazypants.enderio.base.recipe.ManyToOneMachineRecipe;
+import crazypants.enderio.base.recipe.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.machines.config.config.SliceAndSpliceConfig;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
@@ -160,55 +158,34 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
       return currentStackInSlot.isItemEqual(itemstack);
     }
 
-    int numSlotsFilled = 0;
-    for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
-      if (i >= 0 && i < inventory.length && i != axeIndex && i != shearsIndex) {
-        if (Prep.isValid(getStackInSlot(i))) {
-          numSlotsFilled++;
-        }
-      }
-    }
-    List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineLevel(), getMachineName(),
-        MachineRecipeInput.create(slot, itemstack));
-
-    return isValidInputForAlloyRecipe(slot, itemstack, numSlotsFilled, recipes);
-  }
-
-  private boolean isValidInputForAlloyRecipe(int slot, ItemStack itemstack, int numSlotsFilled, List<IMachineRecipe> recipes) {
-    ItemStack[] resultInv = new ItemStack[slotDefinition.getNumInputSlots()];
-    for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
-      if (i >= 0 && i < inventory.length && i != axeIndex && i != shearsIndex) {
-        if (i == slot) {
-          resultInv[i] = itemstack;
+    if (SliceAndSpliceRecipeManager.getInstance().isValidInput(getMachineLevel(), MachineRecipeInput.create(slot, itemstack))) {
+      ItemStack[] resultInv = new ItemStack[slotDefinition.getNumInputSlots()];
+      for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
+        if (i != axeIndex && i != shearsIndex) {
+          resultInv[i] = i == slot ? itemstack : inventory[i];
         } else {
-          resultInv[i] = inventory[i];
+          resultInv[i] = Prep.getEmpty();
         }
       }
-    }
 
-    for (IMachineRecipe recipe : recipes) {
-      if (recipe instanceof ManyToOneMachineRecipe) {
-        for (IManyToOneRecipe oneRecipe : ((ManyToOneMachineRecipe) recipe).getRecipesThatHaveTheseAsValidRecipeComponents(resultInv)) {
-          boolean valid = true;
-          for (int i = 0; valid && i < resultInv.length; i++) {
-            // skip Tool slots and empty slots
-            final ItemStack resultInvI = resultInv[i];
-            if (resultInvI == null || resultInvI.isEmpty())
-              continue;
-            // check if the current item set is valid for this recipe
-            for (IRecipeInput ri : oneRecipe.getInputs()) {
-              if (ri.getSlotNumber() != i)
-                continue;
-              if (!ri.isInput(resultInvI))
-                valid = false;
-              break;
-            }
+      RECIPES: for (IManyToOneRecipe oneRecipe : SliceAndSpliceRecipeManager.getInstance()
+          .getRecipesThatHaveTheseAsValidRecipeComponents(new NNList<>(resultInv))) {
+        boolean valid = true;
+        SLOTS: for (int i = 0; valid && i < resultInv.length; i++) {
+          // skip Tool slots and empty slots
+          final ItemStack resultInvI = resultInv[i];
+          if (resultInvI == null || resultInvI.isEmpty())
+            continue SLOTS;
+          // check if the current item set is valid for this recipe
+          INPUTS: for (IRecipeInput ri : oneRecipe.getInputs()) {
+            if (ri.getSlotNumber() != i)
+              continue INPUTS;
+            if (!ri.isInput(resultInvI))
+              continue RECIPES;
+            continue SLOTS;
           }
-          // Invalid, check the next recipe
-          if (!valid)
-            continue;
-          return true;
         }
+        return true;
       }
     }
     return false;

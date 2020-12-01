@@ -170,7 +170,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     MachineRecipeInput newInput = new MachineRecipeInput(slot, item);
     int otherSlot = slot == 0 ? 1 : 0;
     if (Prep.isInvalid(getStackInSlot(otherSlot))) {
-      return !MachineRecipeRegistry.instance.getRecipesForInput(getMachineLevel(), getMachineName(), newInput).isEmpty();
+      return MachineRecipeRegistry.instance.getRecipeForInput(getMachineLevel(), getMachineName(), newInput) != null;
     } else {
       NNList<MachineRecipeInput> inputs = new NNList<>(newInput, new MachineRecipeInput(otherSlot, getStackInSlot(otherSlot)));
       return MachineRecipeRegistry.instance.getRecipeForInputs(getMachineLevel(), getMachineName(), inputs) != null;

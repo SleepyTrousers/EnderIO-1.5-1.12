@@ -105,8 +105,7 @@ public class TileEnchanter extends AbstractMachineEntity implements ISidedInvent
     if (stack.isEmpty()) {
       return false;
     }
-    return !MachineRecipeRegistry.instance.getRecipesForInput(getMachineLevel(), MachineRecipeRegistry.ENCHANTER, new MachineRecipeInput(slot, stack))
-        .isEmpty();
+    return MachineRecipeRegistry.instance.getRecipeForInput(getMachineLevel(), MachineRecipeRegistry.ENCHANTER, new MachineRecipeInput(slot, stack)) != null;
   }
 
   @Override

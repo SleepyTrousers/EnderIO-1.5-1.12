@@ -36,6 +36,9 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
   // which produces ten RF per tick of burn time
   private static final int RF_PER_ITEM = TileEntityFurnace.getItemBurnTime(new ItemStack(Items.COAL, 1, 0)) * 10 / 8;
 
+  protected VanillaSmeltingRecipe() {
+  }
+
   @Override
   public @Nonnull String getUid() {
     return "VanillaSmeltingRecipe";
@@ -115,10 +118,14 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
 
   @Override
   public boolean isValidInput(@Nonnull RecipeLevel machineLevel, @Nonnull MachineRecipeInput input) {
+    return isValidInput(machineLevel, input.item);
+  }
+
+  public boolean isValidInput(@Nonnull RecipeLevel machineLevel, @Nonnull ItemStack input) {
     if (!machineLevel.canMake(RECIPE_LEVEL)) {
       return false;
     }
-    ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(input.item);
+    ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(input);
     return Prep.isValid(itemstack);
   }
 

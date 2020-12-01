@@ -92,14 +92,13 @@ public class MachineRecipeRegistry {
     return null;
   }
 
-  public @Nonnull NNList<IMachineRecipe> getRecipesForInput(@Nonnull RecipeLevel machineLevel, @Nonnull String machineName, @Nonnull MachineRecipeInput input) {
-    NNList<IMachineRecipe> result = new NNList<IMachineRecipe>();
+  public IMachineRecipe getRecipeForInput(@Nonnull RecipeLevel machineLevel, @Nonnull String machineName, @Nonnull MachineRecipeInput input) {
     for (IMachineRecipe recipe : getRecipesForMachine(machineName).values()) {
       if (recipe.isValidInput(machineLevel, input)) {
-        result.add(recipe);
+        return recipe;
       }
     }
-    return result;
+    return null;
   }
 
 }

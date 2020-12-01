@@ -2,6 +2,7 @@ package crazypants.enderio.util;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,8 +26,16 @@ public final class FuncUtil {
     return source == null ? defaultValue : getter.apply(source);
   }
 
+  public static <F, E> E runIf(@Nullable F source, FunctionNN<F, E> getter, Supplier<E> defaultValue) {
+    return source == null ? defaultValue.get() : getter.apply(source);
+  }
+
   public static @Nonnull <F, E> E runIfNN(@Nullable F source, FunctionNN<F, E> getter, @Nonnull E defaultValue) {
     return NullHelper.first(source == null ? null : getter.apply(source), defaultValue);
+  }
+
+  public static @Nonnull <F, E> E runIfNN(@Nullable F source, FunctionNN<F, E> getter, @Nonnull Supplier<E> defaultValue) {
+    return NullHelper.first(source == null ? null : getter.apply(source), defaultValue.get());
   }
 
   public static <F> void doIf(@Nullable F source, Consumer<F> setter) {
