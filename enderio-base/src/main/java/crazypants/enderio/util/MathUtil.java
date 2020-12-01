@@ -79,4 +79,9 @@ public final class MathUtil {
     return (level * level + level) / 2l;
   }
 
+  public static int limit(long l) {
+    // assert(l > 0);
+    return (l & 0xFFFFFFFF80000000L) != 0 ? Integer.MAX_VALUE : (int) l;
+  }
+
 }

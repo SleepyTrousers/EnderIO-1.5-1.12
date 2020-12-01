@@ -112,7 +112,7 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
+  protected void processTasks(boolean redstoneCheck) {
     super.processTasks(redstoneCheck);
     if (heat > 0) {
       heat = Math.max(0, heat - LavaGenConfig.heatLossPassive.get());
@@ -147,8 +147,6 @@ public class TileLavaGenerator extends AbstractCapabilityGeneratorEntity impleme
     }
 
     transmitEnergy();
-
-    return false;
   }
 
   private void doGenOutput() {

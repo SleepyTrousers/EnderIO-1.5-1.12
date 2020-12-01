@@ -91,7 +91,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneChecksPassed) {
+  protected void processTasks(boolean redstoneChecksPassed) {
     if (xpCont.isDirty()) {
       PacketHandler.sendToAllAround(new PacketExperienceContainer(this), this);
       xpCont.setDirty(false);
@@ -100,7 +100,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
       // we have a very smooth block animation, so all clients need very detailed progress data
       PacketHandler.INSTANCE.sendToAllAround(getProgressPacket(), this);
     }
-    return super.processTasks(redstoneChecksPassed);
+    super.processTasks(redstoneChecksPassed);
   }
 
   @Override
@@ -134,7 +134,7 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     if (!(nextRecipe instanceof ISoulBinderRecipe)) {
       return 0;
     }
-    return ((ISoulBinderRecipe) nextRecipe).getExperienceRequired() - getContainer().getExperienceTotal();
+    return ((ISoulBinderRecipe) nextRecipe).getExperienceRequired() - getContainer().getExperienceTotalIntLimited();
   }
 
   public int getCurrentlyRequiredLevel() {
@@ -217,10 +217,10 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
     if (currentTask == null) {
       IMachineRecipe nextRecipe = getNextRecipe();
       if (nextRecipe instanceof ISoulBinderRecipe) {
-        return Math.max(0, getContainer().getExperienceTotal() - ((ISoulBinderRecipe) nextRecipe).getExperienceRequired());
+        return Math.max(0, getContainer().getExperienceTotalIntLimited() - ((ISoulBinderRecipe) nextRecipe).getExperienceRequired());
       }
     }
-    return getContainer().getExperienceTotal();
+    return getContainer().getExperienceTotalIntLimited();
   }
 
   @Override

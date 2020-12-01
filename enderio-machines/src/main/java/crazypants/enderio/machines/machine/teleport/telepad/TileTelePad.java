@@ -179,9 +179,9 @@ public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgress
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
+  protected void processTasks(boolean redstoneCheck) {
     if (!isMaster()) {
-      return false;
+      return;
     }
 
     if (target.getDimension() == Integer.MIN_VALUE) {
@@ -221,8 +221,6 @@ public class TileTelePad extends TileTravelAnchor implements ITelePad, IProgress
       coordsChanged = false;
       PacketHandler.sendToAllAround(new PacketSetTarget(this, target), this);
     }
-
-    return false;
   }
 
   @Override

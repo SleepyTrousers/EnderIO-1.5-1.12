@@ -169,13 +169,12 @@ public class TileVat extends AbstractPoweredTaskEntity implements ITankAccess.IE
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneChecksPassed) {
-    boolean res = super.processTasks(redstoneChecksPassed);
+  protected void processTasks(boolean redstoneChecksPassed) {
+    super.processTasks(redstoneChecksPassed);
     if (tanksDirty && shouldDoWorkThisTick(10)) {
       PacketHandler.sendToAllAround(new PacketTanks(this), this);
       tanksDirty = false;
     }
-    return res;
   }
 
   @Override

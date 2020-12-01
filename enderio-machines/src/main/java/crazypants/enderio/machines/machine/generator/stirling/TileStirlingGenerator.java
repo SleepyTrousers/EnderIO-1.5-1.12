@@ -146,8 +146,7 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
-    boolean needsUpdate = false;
+  protected void processTasks(boolean redstoneCheck) {
     boolean sendBurnTimePacket = false;
 
     if (burnTime > 0) {
@@ -176,16 +175,16 @@ public class TileStirlingGenerator extends AbstractGeneratorEntity implements IP
             }
           }
           markDirty();
-          needsUpdate = true;
+          updateClients = true;
         }
       }
     }
 
-    if (!needsUpdate && sendBurnTimePacket) {
+    if (!updateClients && sendBurnTimePacket) {
       PacketHandler.sendToAllAround(new PacketBurnTime(this), this);
     }
 
-    return needsUpdate;
+    return;
   }
 
   public static float getEnergyMultiplier(@Nonnull ICapacitorData capacitorType) {

@@ -14,8 +14,8 @@ public abstract class AbstractSpawningObeliskEntity extends AbstractMobObeliskEn
   @Override
   public abstract @Nonnull String getMachineName();
 
-  public AbstractSpawningObeliskEntity(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved,
-      @Nonnull ICapacitorKey maxEnergyStored, @Nonnull ICapacitorKey maxEnergyUsed) {
+  public AbstractSpawningObeliskEntity(@Nonnull SlotDefinition slotDefinition, @Nonnull ICapacitorKey maxEnergyRecieved, @Nonnull ICapacitorKey maxEnergyStored,
+      @Nonnull ICapacitorKey maxEnergyUsed) {
     super(slotDefinition, maxEnergyRecieved, maxEnergyStored, maxEnergyUsed);
   }
 
@@ -27,7 +27,7 @@ public abstract class AbstractSpawningObeliskEntity extends AbstractMobObeliskEn
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
+  protected void processTasks(boolean redstoneCheck) {
     if (redstoneCheck && hasPower() && canWork()) {
       if (!registered) {
         SpawningObeliskController.instance.registerGuard(this);
@@ -35,7 +35,6 @@ public abstract class AbstractSpawningObeliskEntity extends AbstractMobObeliskEn
       }
       usePower();
     }
-    return false;
   }
 
 }

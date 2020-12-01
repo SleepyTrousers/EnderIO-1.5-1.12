@@ -168,7 +168,7 @@ class TOPData {
 
     if (tileEntity instanceof IHaveExperience) {
       ExperienceContainer experienceContainer = ((IHaveExperience) tileEntity).getContainer();
-      hasXP = experienceContainer.getMaximumExperiance() > 0;
+      hasXP = experienceContainer.getMaximumExperience() > 0;
       experienceLevel = experienceContainer.getExperienceLevel();
       xpBarScaled = experienceContainer.getXpBarScaled(100);
     }

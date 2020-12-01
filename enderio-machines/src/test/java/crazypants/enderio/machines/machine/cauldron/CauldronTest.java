@@ -1,7 +1,5 @@
 package crazypants.enderio.machines.machine.cauldron;
 
-import org.junit.jupiter.api.Test;
-
 import net.minecraft.util.math.MathHelper;
 
 public class CauldronTest {
@@ -62,7 +60,7 @@ public class CauldronTest {
     }
   }
 
-  @Test
+  // @Test
   void test1() {
     float in1 = 1f, in2 = 1;
     int water = 500;

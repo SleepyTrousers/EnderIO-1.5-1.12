@@ -191,7 +191,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
+  protected void processTasks(boolean redstoneCheck) {
     processItems(redstoneCheck);
     int filledLevel = getFilledLevel();
     if (lastUpdateLevel != filledLevel) {
@@ -204,7 +204,7 @@ public class TileTank extends AbstractInventoryMachineEntity implements ITankAcc
       updateLight();
       tankDirty = false;
     }
-    return false;
+    return;
   }
 
   public void updateLight() {

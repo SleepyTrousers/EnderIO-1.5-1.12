@@ -115,7 +115,7 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
+  protected void processTasks(boolean redstoneCheck) {
     ticksSinceLastCraft++;
 
     // process buffered container items
@@ -138,7 +138,7 @@ public class TileCrafter extends AbstractCapabilityMachineEntity implements IPai
     if (redstoneCheck) {
       getEnergy().useEnergy();
     }
-    return super.processTasks(redstoneCheck);
+    super.processTasks(redstoneCheck);
   }
 
   protected int getGuiEnergyUse() {

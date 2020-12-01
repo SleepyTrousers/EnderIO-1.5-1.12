@@ -41,11 +41,10 @@ public class TileInhibitorObelisk extends AbstractRangedObeliskEntity {
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
+  protected void processTasks(boolean redstoneCheck) {
     if (redstoneCheck) {
       usePower();
     }
-    return false;
   }
 
   @Override

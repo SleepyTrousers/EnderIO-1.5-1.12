@@ -78,7 +78,7 @@ public class Smelting extends AbstractCrafting {
             final ItemStack smeltingResult = FurnaceRecipes.instance().getSmeltingResult(stack);
             if (Prep.isValid(smeltingResult)) {
               if (result.getItem() != smeltingResult.getItem() || result.getCount() != smeltingResult.getCount()) {
-                Log.error("Cannot add smelting recipe " + recipeName + " (" + stack + " => " + result + ") because another mod already has registered a recipe "
+                Log.info("Cannot add smelting recipe " + recipeName + " (" + stack + " => " + result + ") because another mod already has registered a recipe "
                     + stack + " => " + smeltingResult + ".");
               } else {
                 Log.debug(

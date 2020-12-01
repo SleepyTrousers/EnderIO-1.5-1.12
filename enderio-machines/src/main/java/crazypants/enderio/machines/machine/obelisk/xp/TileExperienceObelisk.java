@@ -30,7 +30,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 public class TileExperienceObelisk extends AbstractInventoryMachineEntity implements IHaveExperience, ITankAccess {
 
   @Store
-  private final @Nonnull ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(XPObeliskConfig.maxLevels.get()));
+  private final @Nonnull ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevelL(XPObeliskConfig.maxLevels.get()));
 
   public TileExperienceObelisk() {
     super(new SlotDefinition(0, 0, 0));
@@ -54,12 +54,11 @@ public class TileExperienceObelisk extends AbstractInventoryMachineEntity implem
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
-    if (xpCont.isDirty()) {
+  protected void processTasks(boolean redstoneCheck) {
+    if (xpCont.isDirty() && shouldDoWorkThisTick(20 * 10)) {
       PacketHandler.sendToAllAround(new PacketExperienceContainer(this), this);
       xpCont.setDirty(false);
     }
-    return false;
   }
 
   @Override
@@ -67,7 +66,7 @@ public class TileExperienceObelisk extends AbstractInventoryMachineEntity implem
     if (super.doPull(dir)) {
       return true;
     }
-    if (dir != null && xpCont.getFluidAmount() < xpCont.getCapacity()) {
+    if (dir != null && xpCont.getFluidAmountL() < xpCont.getCapacityL()) {
       if (FluidWrapper.transfer(world, getPos().offset(dir), dir.getOpposite(), xpCont, ExperienceConfig.maxIO.get()) > 0) {
         setTanksDirty();
         return true;
@@ -81,7 +80,7 @@ public class TileExperienceObelisk extends AbstractInventoryMachineEntity implem
     if (super.doPush(dir)) {
       return true;
     }
-    if (dir != null && xpCont.getFluidAmount() > 0) {
+    if (dir != null && xpCont.getFluidAmountL() > 0) {
       if (FluidWrapper.transfer(xpCont, world, getPos().offset(dir), dir.getOpposite(), ExperienceConfig.maxIO.get()) > 0) {
         setTanksDirty();
         return true;

@@ -168,15 +168,13 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneChecksPassed) {
-    boolean res = false;
-
+  protected void processTasks(boolean redstoneChecksPassed) {
     if (!redstoneChecksPassed) {
       if (active) {
         active = false;
-        res = true;
+        updateClients = true;
       }
-      return res;
+      return;
     } else {
 
       int lastGenerated = generated;
@@ -184,7 +182,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
       boolean isActive = generateEnergy();
       if (isActive != active) {
         active = isActive;
-        res = true;
+        updateClients = true;
       }
       if (lastGenerated != generated) {
         generatedDirty = true;
@@ -204,10 +202,8 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
 
     if (generatedDirty && shouldDoWorkThisTick(10)) {
       generatedDirty = false;
-      res = true;
+      updateClients = true;
     }
-
-    return res;
   }
 
   private boolean transmitEnergy() {

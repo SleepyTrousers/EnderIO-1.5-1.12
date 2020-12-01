@@ -28,6 +28,7 @@ public final class BaseConfig {
     InfinityConfig.F.getClass();
     IntegrationConfig.F.getClass();
     ItemConfig.F.getClass();
+    MachineConfig.F.getClass();
     RecipeConfig.F.getClass();
     BrokenSpawnerConfig.F.getClass();
     TeleportConfig.F.getClass();

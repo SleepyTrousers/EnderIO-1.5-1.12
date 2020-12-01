@@ -108,11 +108,10 @@ public class TileVacuumChest extends AbstractCapabilityMachineEntity
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
+  protected void processTasks(boolean redstoneCheck) {
     if (isActive()) {
       doHoover();
     }
-    return false;
   }
 
   @Override

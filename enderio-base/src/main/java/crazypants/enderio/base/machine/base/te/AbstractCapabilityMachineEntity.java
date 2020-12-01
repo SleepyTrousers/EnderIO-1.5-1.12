@@ -172,9 +172,8 @@ public abstract class AbstractCapabilityMachineEntity extends AbstractMachineEnt
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
+  protected void processTasks(boolean redstoneCheck) {
     getEnergyLogic().processTasks(redstoneCheck);
-    return false;
   }
 
   /////////////////////////////////////////////////////////////////////////

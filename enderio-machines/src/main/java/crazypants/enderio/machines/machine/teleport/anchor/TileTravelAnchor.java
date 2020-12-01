@@ -221,8 +221,7 @@ public class TileTravelAnchor extends AbstractCapabilityMachineEntity implements
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
-    return false;
+  protected void processTasks(boolean redstoneCheck) {
   }
 
   @Override

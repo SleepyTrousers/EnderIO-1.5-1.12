@@ -39,6 +39,9 @@ if (ext.user != null) {
     }
 }
 
+def release = System.getenv("RELEASE") != null &&
+              !System.getenv("RELEASE").equalsIgnoreCase("false")
+
 // Configure all projects
 allprojects {
     apply plugin: 'net.minecraftforge.gradle.forge'
@@ -81,6 +84,11 @@ allprojects {
          project.ext.include_in_combjar = true
     else
         project.ext.include_in_combjar = project.include_in_combjar != 'false'
+
+    if (!project.hasProperty('publish_api'))
+         project.ext.publish_api = true
+    else
+        project.ext.publish_api = project.publish_api != 'false'
 
     project.ext.include_in_combjar = project.ext.include_in_combjar && project.ext.include_in_build
 
@@ -241,11 +249,24 @@ allprojects {
       }
     }
 
-    if (project.curse_projectId?.trim())
+	// this needs to be here for cursegradle.addArtifact to be able to reference it
+	task recipeJar(type: Jar, dependsOn: jar) {
+	    classifier = 'recipes'
+	    extension = 'zip'
+	    enabled = rootProject == project
+	
+	    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	}
+
+
+	// Note that subprojects inherit this ID, so check that it's not an inherited value if we don't want it to be published with the same ID as the
+	// top-level project. Which wouldn't work as it would generate duplicate tasks.
+    if (project.curse_projectId?.trim() && (rootProject == project || rootProject.curse_projectId != project.curse_projectId))
         curseforge {
-            if (project.hasProperty('curseforge_key')) {
-                apiKey = project.curseforge_key
+            options {
+            	debug = !release
             }
+            apiKey = project.hasProperty('curseforge_key') ? project.curseforge_key : ""
 
             def build_number = System.getenv('BUILD_NUMBER') == null ? '0' : System.getenv('BUILD_NUMBER')
             def changelog_content = System.getenv('CHANGELOG') != null && !System.getenv('CHANGELOG').equals('none') ? System.getenv('CHANGELOG') : ''
@@ -264,6 +285,9 @@ allprojects {
                     String display_addon = project.hasProperty('curse_display_name') ? project.curse_display_name : "Ender IO";
                     displayName = "${display_addon} - ${version}"
                 }
+				if (rootProject == project) {
+					addArtifact(recipeJar)
+				}
 
                 relations {
                     if (project.hasProperty('curse_optional_libraries'))
@@ -273,7 +297,10 @@ allprojects {
                 }
 
                 afterEvaluate {
+                	// no, addArtifact() will not work in here
+
 //     Work around https://github.com/matthewprenger/CurseGradle/issues/20
+//     TODO: This only works for the root project.
                     gameVersionStrings.remove('Java 9')
 // (1) Work around cursegradle setting dependencies for the curseforgeXXX tasks to :subproject:jar and :reobfJar -> force :subproject:reobfJar instead.
 // (2) Depend on rmKeyStore instead of reobfJar so the signed jar is uploaded.
@@ -314,11 +341,13 @@ subprojects {
 
     // Assembly an API jar
     task apiJar(type: Jar) {
+    	enabled = project.ext.publish_api
         classifier = 'api'
 
         from sourceSets.main.output.classesDirs
-
-        include 'crazypants/enderio/api/**/*'
+        include 'crazypants/enderio/api/**/*.class'
+        from sourceSets.main.java
+        include 'crazypants/enderio/api/**/*.java'
     }
 
     // Assemble a source jar
@@ -397,19 +426,14 @@ sourceJar {
     }
 }
 
-task recipeJar(type: Jar, dependsOn: jar) {
-    classifier = 'recipes'
-    extension = 'zip'
-
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    combjarprojects.each { subproject ->
-        from subproject.sourceSets.main.output.resourcesDir, {
-		    include 'assets/enderio/config/recipes/*.xml'
-		    include 'assets/enderio/config/recipes/*.xsd'
-	    }
+// recipeJar real content. must be here so it can use combjarprojects
+combjarprojects.each { subproject ->
+    recipeJar.from subproject.sourceSets.main.output.resourcesDir, {
+	    include 'assets/enderio/config/recipes/*.xml'
+	    include 'assets/enderio/config/recipes/*.xsd'
     }
 }
-    
+
 // Copy all the jars to `libs`
 task copyJars(type: Copy, dependsOn: subprojects.tasks['signJar']) {
     from buildprojects.collect { it.tasks.withType(Jar) }
@@ -422,7 +446,8 @@ task combApiJar(type: Jar) {
     classifier 'api'
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     combjarprojects.each { subproject ->
-        from zipTree(subproject.apiJar.getArchivePath()).asFileTree
+    	if (subproject.apiJar.enabled)
+	   	    from zipTree(subproject.apiJar.getArchivePath()).asFileTree
     }
 }
 
@@ -438,9 +463,6 @@ eclipseFactorypath.dependsOn cleanEclipseFactorypath, eclipseJdtApt, eclipseJdt 
 
 
 apply plugin: 'maven-publish'
-
-def release = System.getenv("RELEASE") != null &&
-              !System.getenv("RELEASE").equalsIgnoreCase("false")
 
 publishing {
     tasks.publish.dependsOn 'build'
@@ -472,6 +494,14 @@ publishing {
     }
 
     repositories {
+    	if (project.hasProperty('mavendir')) println "maven_publish: mavendir is set"
+    	if (project.hasProperty('maven2_url')) println "maven_publish: maven2_url is set (and ignored)"
+    	if (project.hasProperty('maven2_user')) println "maven_publish: maven2_user is set"
+    	if (project.hasProperty('maven2_pass')) println "maven_publish: maven2_pass is set"
+    	if (System.getenv('MAVEN_GITHUB_USER') != null) println "maven_publish: MAVEN_GITHUB_USER is set"
+    	if (System.getenv('MAVEN_GITHUB_TOKEN') != null) println "maven_publish: MAVEN_GITHUB_TOKEN is set"
+    	if (release) println "maven_publish: release is set"
+
         def pub_github = System.getenv('MAVEN_GITHUB_USER') != null && System.getenv('MAVEN_GITHUB_TOKEN') != null
         if (pub_github) {
             maven {
@@ -482,19 +512,22 @@ publishing {
                 }
             }
         }
-        def pub_maven = release && project.hasProperty('maven2_url')
+//        def pub_maven = release && (project.hasProperty('mavendir') || project.hasProperty('maven2_url'))
+        def pub_maven = release && project.hasProperty('mavendir')
         if (pub_maven) {
-            if (project.hasProperty('maven2_user') && project.hasProperty('maven2_pass')) {
-                maven {
-                    url maven2_url
-                    credentials {
-                        username maven2_user
-                        password maven2_pass
-                    }
-                }
-            } else {
-                maven { url maven2_url }
-            }
+//	        if (project.hasProperty('mavendir')) {
+	            maven { url mavendir }
+//	        } else if (project.hasProperty('maven2_user') && project.hasProperty('maven2_pass')) {
+//                maven {
+//                    url maven2_url
+//                    credentials {
+//                        username maven2_user
+//                        password maven2_pass
+//                    }
+//                }
+//            } else {
+//                maven { url maven2_url }
+//            }
         }
         if (!pub_github && !pub_maven) {
             mavenLocal()
@@ -502,13 +535,13 @@ publishing {
     }
 }
 
-tasks.curseforge.enabled = release && project.hasProperty('curseforge_key')
+tasks.curseforge.enabled = project.hasProperty('curseforge_key')
 
 // Part of the temporary fix for not compiling modules
 gradle.taskGraph.whenReady {
     def tasksToDisable = [
         'build', 'compileJava', 'assemble', 'sourceJar',
-        'check', 'reobfJar', 'signJar'
+        'check', 'reobfJar', 'signJar', 'apiJar', 'curseforge'
     ]
 
     gradle.taskGraph.allTasks.each {
@@ -605,4 +638,3 @@ def resolveOption(Project project, String option, boolean defaultValue = false) 
 
     return sourceValue == 'true' || sourceValue == true || sourceValue == 1
 }
-

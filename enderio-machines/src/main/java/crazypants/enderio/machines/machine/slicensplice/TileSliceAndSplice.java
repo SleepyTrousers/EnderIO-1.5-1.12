@@ -80,11 +80,10 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity implements IPa
   }
 
   @Override
-  protected boolean checkProgress(boolean redstoneChecksPassed) {
-    if (!hasTools()) {
-      return false;
+  protected void checkProgress(boolean redstoneChecksPassed) {
+    if (hasTools()) {
+      super.checkProgress(redstoneChecksPassed);
     }
-    return super.checkProgress(redstoneChecksPassed);
   }
 
   private boolean hasTools() {

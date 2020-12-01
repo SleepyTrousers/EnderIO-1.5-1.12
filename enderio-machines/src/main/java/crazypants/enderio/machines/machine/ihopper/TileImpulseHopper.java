@@ -117,7 +117,7 @@ public class TileImpulseHopper extends AbstractCapabilityMachineEntity {
   }
 
   @Override
-  protected boolean processTasks(boolean redstoneCheck) {
+  protected void processTasks(boolean redstoneCheck) {
     if (shouldDoWorkThisTick() && redstoneCheck) {
       if (getEnergy().useEnergy()) {
         // (1) Check if we can do a copy operation
@@ -130,13 +130,13 @@ public class TileImpulseHopper extends AbstractCapabilityMachineEntity {
               neededPower += getGhostSlotContents(slot).getCount();
             } else {
               // We cannot, one of the preconditions is false
-              return false;
+              return;
             }
           }
         }
         // (2) Abort if there is nothing to copy or we don't have enough power
         if (!doSomething || getEnergy().getMaxUsage(CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM) * neededPower > getEnergy().getEnergyStored()) {
-          return false;
+          return;
         }
         // (3) Do the copy. Skip all the checks done above
         for (int slot = 0; slot < SLOTS; slot++) {
@@ -167,12 +167,9 @@ public class TileImpulseHopper extends AbstractCapabilityMachineEntity {
           getEnergy().useEnergy(CapacitorKey.IMPULSE_HOPPER_POWER_USE_PER_ITEM);
         }
         // playSound();
-        return super.processTasks(redstoneCheck);
-      } else {
-        return false;
+        super.processTasks(redstoneCheck);
       }
     }
-    return false;
   }
 
   private boolean shouldDoWorkThisTick() {

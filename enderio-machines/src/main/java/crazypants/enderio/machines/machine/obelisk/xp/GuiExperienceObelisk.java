@@ -43,7 +43,7 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
     p = new IconButton(this, 800, x, y, IconEIO.SINGLE_PLUS) {
       @Override
       public boolean isEnabled() {
-        return super.isEnabled() && XpUtil.getPlayerXP(Minecraft.getMinecraft().player) >= XpUtil.getExperienceForLevel(1);
+        return super.isEnabled() && XpUtil.getPlayerXPL(Minecraft.getMinecraft().player) >= XpUtil.getExperienceForLevel(1);
       }
     };
     p.setSize(bw, bw);
@@ -54,7 +54,7 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
         if (text.size() == 3) {
           text.remove(2);
         }
-        if (XpUtil.getPlayerXP(Minecraft.getMinecraft().player) <= 0) {
+        if (XpUtil.getPlayerXPL(Minecraft.getMinecraft().player) <= 0) {
           text.add(Lang.GUI_XP_STORE_EMPTY.get());
         }
       };
@@ -64,7 +64,7 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
     pp = new IconButton(this, 801, x, y, IconEIO.DOUBLE_PLUS) {
       @Override
       public boolean isEnabled() {
-        return super.isEnabled() && XpUtil.getPlayerXP(Minecraft.getMinecraft().player) >= XpUtil.getExperienceForLevel(10);
+        return super.isEnabled() && XpUtil.getPlayerXPL(Minecraft.getMinecraft().player) >= XpUtil.getExperienceForLevel(10);
       }
     };
     pp.setSize(bw, bw);
@@ -75,7 +75,7 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
         if (text.size() == 3) {
           text.remove(2);
         }
-        if (XpUtil.getPlayerXP(Minecraft.getMinecraft().player) <= 0) {
+        if (XpUtil.getPlayerXPL(Minecraft.getMinecraft().player) <= 0) {
           text.add(Lang.GUI_XP_STORE_EMPTY.get());
         }
       };
@@ -85,7 +85,7 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
     ppp = new IconButton(this, 802, x, y, IconEIO.TRIPLE_PLUS) {
       @Override
       public boolean isEnabled() {
-        return super.isEnabled() && XpUtil.getPlayerXP(Minecraft.getMinecraft().player) > 0;
+        return super.isEnabled() && XpUtil.getPlayerXPL(Minecraft.getMinecraft().player) > 0;
       }
     };
     ppp.setSize(bw, bw);
@@ -96,7 +96,7 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
         if (text.size() == 3) {
           text.remove(2);
         }
-        if (XpUtil.getPlayerXP(Minecraft.getMinecraft().player) <= 0) {
+        if (XpUtil.getPlayerXPL(Minecraft.getMinecraft().player) <= 0) {
           text.add(Lang.GUI_XP_STORE_EMPTY.get());
         }
       };
@@ -161,7 +161,7 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
           text.set(2, Lang.GUI_XP_RETR_EMPTY.get());
         } else {
           text.set(2, Lang.GUI_XP_RETR_ALL_3
-              .get(XpUtil.getLevelForExperience(getTileEntity().getContainer().getExperienceTotal() + XpUtil.getPlayerXP(Minecraft.getMinecraft().player))));
+              .get(XpUtil.getLevelForExperience(getTileEntity().getContainer().getExperienceTotal() + XpUtil.getPlayerXPL(Minecraft.getMinecraft().player))));
         }
       }
     });
@@ -187,13 +187,13 @@ public class GuiExperienceObelisk extends GuiMachineBase<TileExperienceObelisk> 
     } else if (b == pp) {
       doDrainXP(10);
     } else if (b == ppp) {
-      doDrainXP(5000);
+      doDrainXP(XpUtil.getMaxLevelsStorableL());
     } else if (b == m) {
       doAddXP(1);
     } else if (b == mm) {
       doAddXP(10);
     } else if (b == mmm) {
-      doAddXP(5000);
+      doAddXP(XpUtil.getMaxLevelsStorableL());
     }
   }
 
