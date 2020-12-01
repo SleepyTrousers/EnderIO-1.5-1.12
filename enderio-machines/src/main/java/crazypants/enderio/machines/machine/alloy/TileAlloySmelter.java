@@ -4,11 +4,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
-import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.capacitor.ICapacitorData;
 import crazypants.enderio.api.capacitor.ICapacitorKey;
-import crazypants.enderio.base.Log;
 import crazypants.enderio.base.capacitor.CapacitorHelper;
 import crazypants.enderio.base.machine.baselegacy.AbstractPoweredTaskEntity;
 import crazypants.enderio.base.machine.baselegacy.SlotDefinition;
@@ -17,12 +15,9 @@ import crazypants.enderio.base.machine.modes.IoMode;
 import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.recipe.IMachineRecipe;
 import crazypants.enderio.base.recipe.MachineLevel;
-import crazypants.enderio.base.recipe.MachineRecipeInput;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
-import crazypants.enderio.base.recipe.ManyToOneMachineRecipe;
 import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
-import crazypants.enderio.base.recipe.alloysmelter.VanillaSmeltingRecipe;
 import crazypants.enderio.machines.config.config.AlloySmelterConfig;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
@@ -140,10 +135,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     return operatingProfile.canSwitchProfiles() ? mode : operatingProfile.getOperatingMode();
   }
 
-  public void setMode(OperatingMode mode) {
-    if (mode == null) {
-      mode = OperatingMode.ALL;
-    }
+  public void setMode(@Nonnull OperatingMode mode) {
     if (this.mode != mode) {
       this.mode = mode;
       updateClients = true;
@@ -152,31 +144,14 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
 
   @Override
   protected IMachineRecipe canStartNextTask(long nextSeed) {
-    if (getMode() == OperatingMode.FURNACE) {
-      VanillaSmeltingRecipe vr = AlloyRecipeManager.getInstance().getVanillaRecipe();
-      if (vr.isRecipe(getMachineLevel(), getRecipeInputs())) {
-        final IPoweredTask task = createTask(vr, nextSeed);
-        if (task == null) {
-          return null;
-        }
-        IMachineRecipe.ResultStack[] res = task.getCompletedResult();
-        if (res.length == 0) {
-          return null;
-        }
-        return canInsertResult(nextSeed, vr) ? vr : null;
-      }
-      return null;
+    IMachineRecipe nextRecipe = null;
+    if (getMode().doAlloyRecipes() && AlloyRecipeManager.getInstance().getRecipeForInputs(getMachineLevel(), getRecipeInputs()) != null) {
+      nextRecipe = AlloyRecipeManager.getInstance();
     }
-
-    IMachineRecipe nextRecipe = getNextRecipe();
-    if (getMode() == OperatingMode.ALLOY && nextRecipe instanceof VanillaSmeltingRecipe) {
-      nextRecipe = null;
+    if (nextRecipe == null && getMode().doFurnaceRecipes() && AlloyRecipeManager.getVanillaRecipe().isRecipe(getMachineLevel(), getRecipeInputs())) {
+      nextRecipe = AlloyRecipeManager.getVanillaRecipe();
     }
-    if (nextRecipe == null) {
-      return null; // no template
-    }
-    // make sure we have room for the next output
-    return canInsertResult(nextSeed, nextRecipe) ? nextRecipe : null;
+    return nextRecipe != null && canInsertResult(nextSeed, nextRecipe) ? nextRecipe : null;
   }
 
   @Override
@@ -185,90 +160,32 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
       return false;
     }
 
-    // We will assume anything that is in a slot is valid, so just return whether the new input can be stacked with the current one
-    ItemStack currentStackInSlot = NullHelper.first(inventory[slot], Prep.getEmpty());
-    if (Prep.isValid(currentStackInSlot)) {
-      return currentStackInSlot.isItemEqual(itemstack);
+    // We will assume anything that is in a slot is valid, so just return if the new input can be stacked with the current one
+    if (getStackInSlot(slot).isItemEqual(itemstack)) {
+      return true;
     }
 
-    int numSlotsFilled = 0;
-    for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
-      ItemStack currentStackType = getStackInSlot(i);
-      if (Prep.isValid(currentStackType)) {
-        numSlotsFilled++;
+    if (getMode().doAlloyRecipes()) {
+      NNList<ItemStack> input = new NNList<>();
+      for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
+        input.add(i == slot ? itemstack : inventory[i]);
+      }
+      if (AlloyRecipeManager.getInstance().isValidRecipeComponents(getMachineLevel(), input)) {
+        return true;
       }
     }
-    NNList<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(getMachineLevel(), getMachineName(),
-        MachineRecipeInput.create(slot, itemstack));
 
-    if (getMode() == OperatingMode.FURNACE) {
-      return isValidInputForFurnaceRecipe(itemstack, numSlotsFilled, recipes);
-    } else if (getMode() == OperatingMode.ALLOY) {
-      return isValidInputForAlloyRecipe(slot, itemstack, numSlotsFilled, recipes);
-    }
-    return isValidInputForFurnaceRecipe(itemstack, numSlotsFilled, recipes) || isValidInputForAlloyRecipe(slot, itemstack, numSlotsFilled, recipes);
-  }
-
-  private boolean isValidInputForAlloyRecipe(int slot, @Nonnull ItemStack itemstack, int numSlotsFilled, NNList<IMachineRecipe> recipes) {
-    if (numSlotsFilled == 0) {
-      return containsAlloyRecipe(recipes);
-    }
-    for (IMachineRecipe recipe : recipes) {
-      if (!(recipe instanceof VanillaSmeltingRecipe)) {
-
-        if (recipe instanceof ManyToOneMachineRecipe) {
-          ItemStack[] resultInv = new ItemStack[slotDefinition.getNumInputSlots()];
-          for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
-            if (i >= 0 && i < inventory.length) {
-              if (i == slot) {
-                resultInv[i] = itemstack;
-              } else {
-                resultInv[i] = inventory[i];
-              }
-            }
-          }
-          if (((ManyToOneMachineRecipe) recipe).isValidRecipeComponents(resultInv)) {
-            return true;
-          }
-
-        } else {
-          Log.warn("TileAlloySmelter.isMachineItemValidForSlot: A non alloy recipe was returned for the alloy smelter");
-          return true;
+    if (getMode().doFurnaceRecipes()) {
+      for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
+        if (i != slot && Prep.isValid(getStackInSlot(i)) && !getStackInSlot(i).isItemEqual(itemstack)) {
+          return false;
         }
       }
-    }
-    return false;
-  }
-
-  private boolean isValidInputForFurnaceRecipe(@Nonnull ItemStack itemstack, int numSlotsFilled, NNList<IMachineRecipe> recipes) {
-    return containsFurnaceRecipe(recipes) && (numSlotsFilled == 0 || isItemAlreadyInASlot(itemstack));
-  }
-
-  private boolean isItemAlreadyInASlot(@Nonnull ItemStack itemstack) {
-    for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
-      ItemStack currentStackType = getStackInSlot(i);
-      if (Prep.isValid(currentStackType)) {
-        return currentStackType.isItemEqual(itemstack);
-      }
-    }
-    return false;
-  }
-
-  private boolean containsFurnaceRecipe(NNList<IMachineRecipe> recipes) {
-    for (IMachineRecipe rec : recipes) {
-      if (rec instanceof VanillaSmeltingRecipe) {
+      if (AlloyRecipeManager.getVanillaRecipe().isValidInput(getMachineLevel(), itemstack)) {
         return true;
       }
     }
-    return false;
-  }
 
-  private boolean containsAlloyRecipe(NNList<IMachineRecipe> recipes) {
-    for (IMachineRecipe rec : recipes) {
-      if (!(rec instanceof VanillaSmeltingRecipe)) {
-        return true;
-      }
-    }
     return false;
   }
 

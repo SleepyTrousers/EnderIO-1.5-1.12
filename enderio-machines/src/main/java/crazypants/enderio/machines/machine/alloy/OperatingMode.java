@@ -26,4 +26,13 @@ public enum OperatingMode {
     }
     return NullHelper.first(values()[nextOrd], ALL);
   }
+
+  public boolean doAlloyRecipes() {
+    return this != FURNACE;
+  }
+
+  public boolean doFurnaceRecipes() {
+    return this != ALLOY;
+  }
+
 }

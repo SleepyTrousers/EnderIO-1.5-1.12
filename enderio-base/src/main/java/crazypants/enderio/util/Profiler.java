@@ -1,14 +1,16 @@
 package crazypants.enderio.util;
 
-import java.util.Map.Entry;
+import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.enderio.core.common.util.NNList;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 
 public class Profiler {
 
-  public static final Profiler instance = new Profiler();
+  public static final Profiler instance = new Profiler(false);
 
   private static class Data {
     long time = 0, count = 0;
@@ -16,7 +18,11 @@ public class Profiler {
 
   private ConcurrentHashMap<String, Data> profiler = new ConcurrentHashMap<String, Data>();
   private long lastProfiled = 0;
-  private boolean on = false;
+  private final boolean on;
+
+  public Profiler(boolean on) {
+    this.on = on;
+  }
 
   public long start() {
     return on ? System.nanoTime() : Long.MAX_VALUE;
@@ -40,9 +46,12 @@ public class Profiler {
         data.count++;
         if (EnderIO.proxy.getTickCount() > lastProfiled) {
           lastProfiled = EnderIO.proxy.getTickCount() + 200;
-          for (Entry<String, Data> e : profiler.entrySet()) {
-            long avg = e.getValue().time / e.getValue().count;
-            Log.info(e.getKey() + ": " + avg + " ns avg over " + e.getValue().count + " calls");
+          NNList<String> keys = new NNList<>(profiler.keySet());
+          Collections.sort(keys, (a, b) -> a.compareTo(b));
+          for (String key : keys) {
+            Data value = profiler.get(key);
+            long avg = value.time / value.count;
+            Log.info(key + ": " + avg + " ns avg over " + value.count + " calls");
           }
         }
       } catch (Throwable t) {

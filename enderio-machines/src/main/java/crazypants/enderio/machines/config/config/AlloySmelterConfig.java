@@ -1,5 +1,7 @@
 package crazypants.enderio.machines.config.config;
 
+import javax.annotation.Nonnull;
+
 import crazypants.enderio.machines.config.Config;
 import crazypants.enderio.machines.machine.alloy.OperatingProfile;
 import info.loenwind.autoconfig.factory.IValue;
@@ -16,13 +18,13 @@ public final class AlloySmelterConfig {
     FURNACE_ONLY(OperatingProfile.FURNACE_ONLY),
     AUTO(OperatingProfile.AUTO);
 
-    private final OperatingProfile profile;
+    private final @Nonnull OperatingProfile profile;
 
     private Profile(OperatingProfile profile) {
       this.profile = profile;
     }
 
-    public OperatingProfile get() {
+    public @Nonnull OperatingProfile get() {
       return profile;
     }
   }
@@ -36,7 +38,8 @@ public final class AlloySmelterConfig {
   public static final IValue<Profile> profileEnhancedAlloy = F.make("profileEnhancedAlloy", Profile.AUTO, //
       "Operating profile for the Enhanced Alloy Smelter. Restaring the game is needed for a change to be reflected in JEI.").sync();
 
-  public static final IValue<Boolean> respectsGravity = F.make("respectsGravitySimple", true,
-      "If true, the Simple Alloy Smelter will respect gravity and fall like an anvil when not attached to a block.").sync();
+  public static final IValue<Boolean> respectsGravity = F
+      .make("respectsGravitySimple", true, "If true, the Simple Alloy Smelter will respect gravity and fall like an anvil when not attached to a block.")
+      .sync();
 
 }
