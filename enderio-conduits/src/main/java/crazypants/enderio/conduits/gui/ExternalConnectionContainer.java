@@ -197,7 +197,7 @@ public class ExternalConnectionContainer extends ContainerEnderCap<InventoryUpgr
       IFilterHolder<?> filterHolder = currentCon.getInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
       int param1 = dir.ordinal();
       if (filterHolder != null) {
-        filterHolder.getFilter(filterIndex, param1).openGui(player, filterHolder.getFilterStack(filterIndex, param1), getTileEntityNN().getBundleworld(),
+        filterHolder.getFilter(filterIndex, param1).openGui(player, filterHolder.getFilterStack(filterIndex, EnumFacing.getFront(param1)), getTileEntityNN().getBundleworld(),
             getTileEntityNN().getPos(), dir, filterIndex);
       }
     }

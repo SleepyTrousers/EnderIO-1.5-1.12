@@ -804,7 +804,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       if (conduit.hasInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param))) {
         IFilterHolder<IFilter> filterHolder = conduit.getInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, EnumFacing.getFront(param));
         if (filterHolder != null && (filterHolder.getInputFilterIndex() == filterIndex || filterHolder.getOutputFilterIndex() == filterIndex)) {
-          filterHolder.setFilter(filterIndex, param, filter);
+          filterHolder.setFilter(filterIndex, EnumFacing.getFront(param), filter);
         }
       }
     }

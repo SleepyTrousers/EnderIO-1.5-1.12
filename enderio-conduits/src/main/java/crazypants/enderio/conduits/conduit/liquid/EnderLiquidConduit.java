@@ -589,11 +589,11 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
 
   @Override
   @Nonnull
-  public ItemStack getFilterStack(int filterIndex, int param1) {
+  public ItemStack getFilterStack(int filterIndex, EnumFacing side) {
     if (filterIndex == FilterGuiUtil.INDEX_INPUT_FLUID) {
-      return getFilterStack(EnumFacing.getFront(param1), true);
+      return getFilterStack(side, true);
     } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT_FLUID) {
-      return getFilterStack(EnumFacing.getFront(param1), false);
+      return getFilterStack(side, false);
     }
     return ItemStack.EMPTY;
   }
@@ -609,20 +609,20 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
   }
 
   @Override
-  public void setFilter(int filterIndex, int param1, @Nonnull IFluidFilter filter) {
+  public void setFilter(int filterIndex, EnumFacing side, @Nonnull IFluidFilter filter) {
     if (filterIndex == FilterGuiUtil.INDEX_INPUT_FLUID) {
-      setFilter(EnumFacing.getFront(param1), filter, true);
+      setFilter(side, filter, true);
     } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT_FLUID) {
-      setFilter(EnumFacing.getFront(param1), filter, false);
+      setFilter(side, filter, false);
     }
   }
 
   @Override
-  public void setFilterStack(int filterIndex, int param1, @Nonnull ItemStack stack) {
+  public void setFilterStack(int filterIndex, EnumFacing side, @Nonnull ItemStack stack) {
     if (filterIndex == FilterGuiUtil.INDEX_INPUT_FLUID) {
-      setFilterStack(EnumFacing.getFront(param1), stack, true);
+      setFilterStack(side, stack, true);
     } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT_FLUID) {
-      setFilterStack(EnumFacing.getFront(param1), stack, false);
+      setFilterStack(side, stack, false);
     }
   }
 
