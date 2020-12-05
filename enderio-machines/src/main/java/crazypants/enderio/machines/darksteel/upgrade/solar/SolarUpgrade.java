@@ -18,6 +18,7 @@ import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgradeManage
 import crazypants.enderio.base.power.PowerHandlerUtil;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.SolarConfig;
+import crazypants.enderio.machines.machine.solar.ISolarType;
 import crazypants.enderio.machines.machine.solar.SolarType;
 import crazypants.enderio.machines.machine.solar.TileSolarPanel;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -50,7 +51,7 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
   private final @Nonnull SolarType type;
 
   public SolarUpgrade(@Nonnull SolarType type) {
-    super(EnderIOMachines.MODID, UPGRADE_NAME, type.ordinal(), NAME + type.ordinal(), type::getUpgradeLevelCost);
+    super(EnderIOMachines.MODID, UPGRADE_NAME, ISolarType.getMetaFromType(type), NAME + ISolarType.getMetaFromType(type), type::getUpgradeLevelCost);
     this.type = type;
   }
 
@@ -73,7 +74,7 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
   }
 
   public int getLevel() {
-    return type.ordinal();
+    return ISolarType.getMetaFromType(type);
   }
 
   @Override

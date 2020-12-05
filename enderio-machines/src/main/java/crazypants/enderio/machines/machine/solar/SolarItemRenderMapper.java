@@ -31,7 +31,7 @@ public class SolarItemRenderMapper implements IRenderMapper.IItemRenderMapper.II
   public List<Pair<IBlockState, ItemStack>> mapItemRender(@Nonnull Block block, @Nonnull ItemStack stack, @Nonnull ItemQuadCollector itemQuadCollector) {
     List<Pair<IBlockState, ItemStack>> states = new ArrayList<Pair<IBlockState, ItemStack>>();
     IBlockState defaultState = block.getDefaultState();
-    SolarType bankType = SolarType.getTypeFromMeta(stack.getItemDamage());
+    ISolarType bankType = ISolarType.getTypeFromMeta(stack.getItemDamage());
     defaultState = defaultState.withProperty(SolarType.KIND, bankType);
 
     states.add(Pair.of(defaultState.withProperty(RENDER, EnumMergingBlockRenderMode.sides), (ItemStack) null));

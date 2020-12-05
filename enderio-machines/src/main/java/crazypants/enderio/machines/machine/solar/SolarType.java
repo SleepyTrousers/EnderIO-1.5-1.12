@@ -5,72 +5,71 @@ import java.util.Locale;
 import javax.annotation.Nonnull;
 
 import com.enderio.core.common.util.NullHelper;
+import com.enderio.core.common.vecmath.Vector3d;
 
+import crazypants.enderio.base.init.RegisterModObject;
+import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.SolarConfig;
-import crazypants.enderio.machines.init.MachineObject;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IStringSerializable;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public enum SolarType implements IStringSerializable {
+@EventBusSubscriber(modid = EnderIOMachines.MODID)
+public class SolarType implements ISolarType {
+  // Note: This is not an Enum because Enums implement Comparable, which conflicts with the
+  // Comparable already on the interface forced onto us by Property
 
-  SIMPLE(".simple"),
-  NORMAL(""),
-  ADVANCED(".advanced"),
-  VIBRANT(".vibrant");
-
-  public static final @Nonnull PropertyEnum<SolarType> KIND = PropertyEnum.<SolarType> create("kind", SolarType.class);
-
-  private final @Nonnull String unlocalisedName;
-
-  private SolarType(@Nonnull String unlocalisedName) {
-    this.unlocalisedName = unlocalisedName;
+  @SubscribeEvent
+  public static void registerRegistry(@Nonnull RegisterModObject event) {
+    // we need to classload early so ISolarType.KIND is filled before it is used in the
+    // Block registration
   }
 
-  public boolean connectTo(@Nonnull SolarType other) {
-    return this == other;
+  public static final @Nonnull SolarType SIMPLE = new SolarType("SIMPLE", ".simple");
+  public static final @Nonnull SolarType NORMAL = new SolarType("NORMAL", "");
+  public static final @Nonnull SolarType ADVANCED = new SolarType("ADVANCED", ".advanced");
+  public static final @Nonnull SolarType VIBRANT = new SolarType("VIBRANT", ".vibrant") {
+    @Override
+    public boolean hasParticles() {
+      return true;
+    }
+
+    @Override
+    public @Nonnull Vector3d getParticleColor() {
+      return new Vector3d(0x47 / 255d, 0x9f / 255d, 0xa3 / 255d);
+    }
+  };
+
+  private final @Nonnull String name, unlocalisedName;
+
+  private SolarType(@Nonnull String name, @Nonnull String unlocalisedName) {
+    this.name = NullHelper.notnullJ(name.toLowerCase(Locale.ENGLISH), "String.toLowerCase()");
+    this.unlocalisedName = unlocalisedName;
+    KIND.addValue(this);
   }
 
   @Override
   public @Nonnull String getName() {
-    return NullHelper.notnullJ(name().toLowerCase(Locale.ENGLISH), "String.toLowerCase()");
+    return name;
   }
 
-  public static @Nonnull SolarType getTypeFromMeta(int meta) {
-    return NullHelper.notnullJ(values()[meta >= 0 && meta < values().length ? meta : 0], "Enum.values()");
-  }
-
-  public static int getMetaFromType(@Nonnull SolarType solarType) {
-    return solarType.ordinal();
-  }
-
+  @Override
   public @Nonnull String getUnlocalisedName() {
     return unlocalisedName;
   }
 
+  @Override
   public int getRfperTick() {
-    return SolarConfig.blockGen.get(this.ordinal()).get();
+    return SolarConfig.blockGen.get(ISolarType.getMetaFromType(this)).get();
   }
 
+  @Override
   public int getRfperSecond() {
-    return SolarConfig.upgradeGen.get(this.ordinal()).get();
+    return SolarConfig.upgradeGen.get(ISolarType.getMetaFromType(this)).get();
   }
 
+  @Override
   public int getUpgradeLevelCost() {
-    return SolarConfig.upgradeCost.get(this.ordinal()).get();
-  }
-
-  public @Nonnull IBlockState getBlockState() {
-    return MachineObject.block_solar_panel.getBlockNN().getDefaultState().withProperty(KIND, this);
-  }
-
-  public @Nonnull ItemStack getItemStack(int size) {
-    return new ItemStack(MachineObject.block_solar_panel.getItemNN(), size, this.ordinal());
-  }
-
-  public @Nonnull ItemStack getItemStack() {
-    return getItemStack(1);
+    return SolarConfig.upgradeCost.get(ISolarType.getMetaFromType(this)).get();
   }
 
 }

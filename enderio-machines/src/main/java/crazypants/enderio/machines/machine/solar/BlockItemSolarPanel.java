@@ -15,6 +15,12 @@ import crazypants.enderio.base.lang.LangPower;
 import crazypants.enderio.machines.lang.Lang;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumFacing.Axis;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class BlockItemSolarPanel extends ItemEIO implements IAdvancedTooltipProvider, IResourceTooltipProvider {
 
@@ -28,7 +34,7 @@ public class BlockItemSolarPanel extends ItemEIO implements IAdvancedTooltipProv
   @Override
   public @Nonnull String getUnlocalizedName(@Nonnull ItemStack par1ItemStack) {
     int meta = par1ItemStack.getMetadata();
-    SolarType type = SolarType.getTypeFromMeta(meta);
+    ISolarType type = ISolarType.getTypeFromMeta(meta);
     return super.getUnlocalizedName(par1ItemStack) + type.getUnlocalisedName();
   }
 
@@ -49,13 +55,23 @@ public class BlockItemSolarPanel extends ItemEIO implements IAdvancedTooltipProv
   @Override
   public void addDetailedEntries(@Nonnull ItemStack itemstack, @Nullable EntityPlayer entityplayer, @Nonnull List<String> list, boolean flag) {
     SpecialTooltipHandler.addDetailedTooltipFromResources(list, itemstack);
-    int prod = SolarType.getTypeFromMeta(itemstack.getMetadata()).getRfperTick();
+    int prod = ISolarType.getTypeFromMeta(itemstack.getMetadata()).getRfperTick();
     list.add(Lang.SOLAR_MAXOUTPUT.get(LangPower.RFt(prod)));
   }
 
   @Override
   public @Nonnull String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
     return super.getUnlocalizedName(itemStack);
+  }
+
+  @Override
+  public @Nonnull EnumActionResult onItemUse(@Nonnull EntityPlayer player, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull EnumHand hand,
+      @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ) {
+    if (facing.getAxis() == Axis.Y && worldIn.getBlockState(pos).getBlock() == this.block) {
+      // prevent panels being placed above/below existing panels
+      return EnumActionResult.FAIL;
+    }
+    return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
   }
 
 }

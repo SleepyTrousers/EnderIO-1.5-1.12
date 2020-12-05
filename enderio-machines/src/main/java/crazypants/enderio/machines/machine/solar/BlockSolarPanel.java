@@ -6,7 +6,8 @@ import javax.annotation.Nonnull;
 
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.NNList;
-import com.enderio.core.common.util.NNList.Callback;
+import com.enderio.core.common.util.NullHelper;
+import com.enderio.core.common.vecmath.Vector3d;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
@@ -72,12 +73,12 @@ public class BlockSolarPanel extends BlockEio<TileSolarPanel> implements IResour
 
   @Override
   public @Nonnull IBlockState getStateFromMeta(int meta) {
-    return getDefaultState().withProperty(SolarType.KIND, SolarType.getTypeFromMeta(meta));
+    return getDefaultState().withProperty(SolarType.KIND, ISolarType.getTypeFromMeta(meta));
   }
 
   @Override
   public int getMetaFromState(@Nonnull IBlockState state) {
-    return SolarType.getMetaFromType(state.getValue(SolarType.KIND));
+    return ISolarType.getMetaFromType(state.getValue(SolarType.KIND));
   }
 
   @Override
@@ -141,29 +142,26 @@ public class BlockSolarPanel extends BlockEio<TileSolarPanel> implements IResour
   @Override
   @SideOnly(Side.CLIENT)
   public void getSubBlocks(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
-    NNList.of(SolarType.class).apply(new Callback<SolarType>() {
-      @Override
-      public void apply(@Nonnull SolarType solarType) {
-        list.add(new ItemStack(BlockSolarPanel.this, 1, SolarType.getMetaFromType(solarType)));
-      }
-    });
+    ISolarType.KIND.getOrderedValues().stream()
+        .forEach(solarType -> list.add(new ItemStack(BlockSolarPanel.this, 1, ISolarType.getMetaFromType(NullHelper.notnull(solarType, "solarType")))));
   }
 
   @Override
   @Nonnull
   public NNList<ItemStack> getSubItems() {
-    return getSubItems(this, SolarType.values().length - 1);
+    return getSubItems(this, ISolarType.KIND.getOrderedValues().size() - 1);
   }
 
   @Override
   @SideOnly(Side.CLIENT)
   public void randomDisplayTick(@Nonnull IBlockState state, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rand) {
-    if (PersonalConfig.machineParticlesEnabled.get() && state.getValue(SolarType.KIND) == SolarType.VIBRANT && TileSolarPanel.isPowered(world, pos)
+    if (PersonalConfig.machineParticlesEnabled.get() && state.getValue(SolarType.KIND).hasParticles() && TileSolarPanel.isPowered(world, pos)
         && TileSolarPanel.calculateLocalLightRatio(world, pos, TileSolarPanel.calculateLightRatio(world)) / 3 > rand.nextFloat()) {
       double d0 = pos.getX() + 0.5D + (Math.random() - 0.5D) * 0.5D;
       double d1 = pos.getY() + BLOCK_HEIGHT;
       double d2 = pos.getZ() + 0.5D + (Math.random() - 0.5D) * 0.5D;
-      world.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1, d2, 0x47 / 255d, 0x9f / 255d, 0xa3 / 255d);
+      Vector3d color = state.getValue(SolarType.KIND).getParticleColor();
+      world.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1, d2, color.x, color.y, color.z);
     }
   }
 
