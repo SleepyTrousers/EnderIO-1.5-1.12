@@ -37,7 +37,6 @@ import crazypants.enderio.base.integration.railcraft.RailcraftUtil;
 import crazypants.enderio.base.material.recipes.MaterialOredicts;
 import crazypants.enderio.base.network.PacketHandler;
 import crazypants.enderio.base.paint.PaintSourceValidator;
-import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
 import crazypants.enderio.base.recipe.sagmill.SagMillRecipeManager;
 import crazypants.enderio.base.recipe.slicensplice.SliceAndSpliceRecipeManager;
 import crazypants.enderio.base.recipe.spawner.EntityDataRegistry;
@@ -189,7 +188,6 @@ public class EnderIO implements IEnderIOAddon {
     ModObjectRegistry.init(event);
 
     SagMillRecipeManager.getInstance().create();
-    AlloyRecipeManager.getInstance().create();
     SliceAndSpliceRecipeManager.getInstance().create();
     VatRecipeManager.getInstance().create();
     PaintSourceValidator.instance.loadConfig();

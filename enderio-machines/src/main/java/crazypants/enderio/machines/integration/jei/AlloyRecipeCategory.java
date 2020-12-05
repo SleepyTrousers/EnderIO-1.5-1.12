@@ -17,6 +17,7 @@ import crazypants.enderio.base.recipe.IManyToOneRecipe;
 import crazypants.enderio.base.recipe.IRecipe;
 import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
+import crazypants.enderio.base.recipe.alloysmelter.VanillaSmeltingRecipe;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.AlloySmelterConfig;
 import crazypants.enderio.machines.config.config.PersonalConfig;
@@ -153,7 +154,7 @@ public class AlloyRecipeCategory extends BlankRecipeCategory<AlloyRecipeCategory
       }
     }
     if (PersonalConfig.enableAlloySmelterFurnaceJEIRecipes.get()) {
-      for (IRecipe rec : AlloyRecipeManager.getInstance().getVanillaRecipe().getAllRecipes()) {
+      for (IRecipe rec : VanillaSmeltingRecipe.getInstance().getAllRecipes()) {
         result.add(new AlloyRecipeWrapper(rec));
       }
     }

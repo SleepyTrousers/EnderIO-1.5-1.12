@@ -18,6 +18,7 @@ import crazypants.enderio.base.recipe.MachineLevel;
 import crazypants.enderio.base.recipe.MachineRecipeRegistry;
 import crazypants.enderio.base.recipe.RecipeLevel;
 import crazypants.enderio.base.recipe.alloysmelter.AlloyRecipeManager;
+import crazypants.enderio.base.recipe.alloysmelter.VanillaSmeltingRecipe;
 import crazypants.enderio.machines.config.config.AlloySmelterConfig;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
@@ -148,8 +149,8 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
     if (getMode().doAlloyRecipes() && AlloyRecipeManager.getInstance().getRecipeForInputs(getMachineLevel(), getRecipeInputs()) != null) {
       nextRecipe = AlloyRecipeManager.getInstance();
     }
-    if (nextRecipe == null && getMode().doFurnaceRecipes() && AlloyRecipeManager.getVanillaRecipe().isRecipe(getMachineLevel(), getRecipeInputs())) {
-      nextRecipe = AlloyRecipeManager.getVanillaRecipe();
+    if (nextRecipe == null && getMode().doFurnaceRecipes() && VanillaSmeltingRecipe.getInstance().isRecipe(getMachineLevel(), getRecipeInputs())) {
+      nextRecipe = VanillaSmeltingRecipe.getInstance();
     }
     return nextRecipe != null && canInsertResult(nextSeed, nextRecipe) ? nextRecipe : null;
   }
@@ -181,7 +182,7 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity implements IPain
           return false;
         }
       }
-      if (AlloyRecipeManager.getVanillaRecipe().isValidInput(getMachineLevel(), itemstack)) {
+      if (VanillaSmeltingRecipe.getInstance().isValidInput(getMachineLevel(), itemstack)) {
         return true;
       }
     }

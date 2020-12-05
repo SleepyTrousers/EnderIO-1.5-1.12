@@ -6,11 +6,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.NNList;
+import com.enderio.core.common.util.NNList.NNIterator;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.util.stackable.Things;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.config.RecipeConfig;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.integration.tic.TicProxy;
 import crazypants.enderio.base.recipe.AbstractMachineRecipe;
 import crazypants.enderio.base.recipe.BasicManyToOneRecipe;
@@ -27,16 +30,18 @@ import crazypants.enderio.base.recipe.RecipeOutput;
 import crazypants.enderio.base.recipe.lookup.TriItemLookup;
 import crazypants.enderio.util.Prep;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
+@EventBusSubscriber(modid = EnderIO.MODID)
 public class AlloyRecipeManager extends AbstractMachineRecipe {
 
   private static final @Nonnull String NAME = "Alloy Smelter";
 
   private static final @Nonnull AlloyRecipeManager instance = new AlloyRecipeManager();
-  private static final @Nonnull VanillaSmeltingRecipe vanillaRecipe = new VanillaSmeltingRecipe();
 
-  private final @Nonnull TriItemLookup<IManyToOneRecipe> lookup = new TriItemLookup<>();
+  private @Nonnull TriItemLookup<IManyToOneRecipe> lookup = new TriItemLookup<>();
 
   public static AlloyRecipeManager getInstance() {
     return instance;
@@ -45,13 +50,9 @@ public class AlloyRecipeManager extends AbstractMachineRecipe {
   private AlloyRecipeManager() {
   }
 
-  public static @Nonnull VanillaSmeltingRecipe getVanillaRecipe() {
-    return vanillaRecipe;
-  }
-
-  public void create() {
-    MachineRecipeRegistry.instance.registerRecipe(this);
-    MachineRecipeRegistry.instance.registerRecipe(vanillaRecipe);
+  @SubscribeEvent
+  public static void create(EnderIOLifecycleEvent.PostInit.Pre event) {
+    MachineRecipeRegistry.instance.registerRecipe(instance);
   }
 
   public void addRecipe(boolean prohibitDupes, @Nonnull NNList<IRecipeInput> input, @Nonnull ItemStack output, int energyCost, float xpChance,
@@ -157,7 +158,11 @@ public class AlloyRecipeManager extends AbstractMachineRecipe {
 
   private void addRecipe(@Nonnull IManyToOneRecipe recipe) {
     dupeCheckRecipe(recipe);
+    addRecipeToLookup(lookup, recipe);
+    addJEIIntegration(recipe);
+  }
 
+  private static void addRecipeToLookup(@Nonnull TriItemLookup<IManyToOneRecipe> lookup, @Nonnull IManyToOneRecipe recipe) {
     NNList<List<ItemStack>> list = recipe.getInputStackAlternatives();
     if (list.size() == 3) {
       for (ItemStack i0 : list.get(0)) {
@@ -184,13 +189,11 @@ public class AlloyRecipeManager extends AbstractMachineRecipe {
         lookup.addRecipe(recipe, i0.getItem());
       }
     }
-
-    addJEIIntegration(recipe);
   }
 
   // Note:
   // * Recipes that require input de-duplication are generally not well suited for the smeltery
-  // * Synthetic recipe are copies of some mater recipe that was already added
+  // * Synthetic recipe are copies of some master recipe that was already added
   // * Recipes with only one input don't alloy well ;)
   private void addJEIIntegration(@Nonnull IManyToOneRecipe recipe) {
     if (recipe.getInputs().length >= 2 && !recipe.isDedupeInput() && !recipe.isSynthetic()) {
@@ -323,6 +326,17 @@ public class AlloyRecipeManager extends AbstractMachineRecipe {
       result.add(recipe);
     }
     return result;
+  }
+
+  /**
+   * Rebuilds the internal recipe lookup tree. This should be called when the {@link Things} used in the recipes have changed so the item lists are re-read.
+   */
+  public void rebuild() {
+    TriItemLookup<IManyToOneRecipe> newLookup = new TriItemLookup<>();
+    for (NNIterator<IManyToOneRecipe> iterator = lookup.iterator(); iterator.hasNext();) {
+      addRecipeToLookup(newLookup, iterator.next());
+    }
+    lookup = newLookup;
   }
 
   @Override
