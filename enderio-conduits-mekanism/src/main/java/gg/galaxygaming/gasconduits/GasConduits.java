@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 import java.util.Map;
 
 @Mod(modid = GasConduitsConstants.MOD_ID, name = GasConduitsConstants.MOD_NAME, version = GasConduitsConstants.VERSION,
-        dependencies = GasConduitsConstants.DEPENDENCIES, acceptedMinecraftVersions = GasConduitsConstants.MC_VERSION)
+        dependencies = GasConduits.DEPENDENCIES, acceptedMinecraftVersions = GasConduitsConstants.MC_VERSION)
 @Mod.EventBusSubscriber(modid = GasConduitsConstants.MOD_ID)
 public class GasConduits implements IEnderIOAddon {
 
@@ -46,6 +46,9 @@ public class GasConduits implements IEnderIOAddon {
          */
         return modList.keySet().contains(GasConduitsConstants.MOD_ID) && GasConduitsConstants.VERSION.equals(modList.get(GasConduitsConstants.MOD_ID));
     }
+
+    private static final @Nonnull String DEFAULT_DEPENDENCIES = "after:" + crazypants.enderio.base.EnderIO.MODID;
+    public static final @Nonnull String DEPENDENCIES = DEFAULT_DEPENDENCIES;
 
     public static Logger logger;
 

@@ -1,5 +1,5 @@
 dependencies {
-    deobfCompile "curse.maven:mekanism-268560:2835175"
+    deobfCompile "curse.maven:mekanism-268560:${mekanism_maven_version}"
 
     compile project(":enderio-base")
     compile project(":enderio-conduits")
