@@ -127,10 +127,10 @@ public class Soulbinding extends AbstractCrafting {
         entityFilter = name -> name != null && !EntityDataRegistry.getInstance().isBlackListedForSpawning(name);
         break;
       case MONSTERS:
-        entityFilter = name -> FuncUtil.runIf(FuncUtil.runIf(name, n -> EntityList.getClass(n)), eclass -> IMob.class.isAssignableFrom(eclass), false);
+        entityFilter = name -> FuncUtil.runIfOr(FuncUtil.runIf(name, n -> EntityList.getClass(n)), eclass -> IMob.class.isAssignableFrom(eclass), false);
         break;
       case ANIMALS:
-        entityFilter = name -> FuncUtil.runIf(FuncUtil.runIf(name, n -> EntityList.getClass(n)),
+        entityFilter = name -> FuncUtil.runIfOr(FuncUtil.runIf(name, n -> EntityList.getClass(n)),
             eclass -> IAnimals.class.isAssignableFrom(eclass) && !IMob.class.isAssignableFrom(eclass), false);
         break;
       default:

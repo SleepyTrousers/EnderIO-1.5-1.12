@@ -187,8 +187,8 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
 
   @Override
   public int getBlockTint(@Nonnull IBlockState state, @Nullable IBlockAccess world, @Nullable BlockPos pos, int tintIndex) {
-    return (tintIndex > 0 && world != null && pos != null) ? FuncUtil.runIf(getTileEntitySafe(world, pos),
-        te -> FuncUtil.runIf(te.getColor(), color -> PersonalConfig.candyColors.get() ? color.getColorValue() : MapColor.getBlockColor(color).colorValue, -1),
+    return (tintIndex > 0 && world != null && pos != null) ? FuncUtil.runIfOr(getTileEntitySafe(world, pos),
+        te -> FuncUtil.runIfOr(te.getColor(), color -> PersonalConfig.candyColors.get() ? color.getColorValue() : MapColor.getBlockColor(color).colorValue, -1),
         -1) : -1;
   }
 

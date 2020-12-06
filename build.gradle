@@ -352,6 +352,7 @@ subprojects {
 
     // Assemble a source jar
     task sourcesJar(type: Jar) {
+    	enabled = false
         classifier = 'sources'
         from sourceSets.main.java
     }

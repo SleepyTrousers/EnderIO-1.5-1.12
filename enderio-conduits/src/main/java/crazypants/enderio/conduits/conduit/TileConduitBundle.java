@@ -145,7 +145,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
 
   @Override
   public int getInternalRedstoneSignalForColor(@Nonnull DyeColor col, @Nonnull EnumFacing dir) {
-    return FuncUtil.runIf(getConduit(IRedstoneConduit.class), con -> con.isProvidingWeakPower(dir.getOpposite()), 0);
+    return FuncUtil.runIfOr(getConduit(IRedstoneConduit.class), con -> con.isProvidingWeakPower(dir.getOpposite()), 0);
   }
 
   @Override

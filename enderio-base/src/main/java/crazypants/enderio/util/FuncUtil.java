@@ -22,19 +22,19 @@ public final class FuncUtil {
     return source == null ? null : getter.apply(source);
   }
 
-  public static <F, E> E runIf(@Nullable F source, FunctionNN<F, E> getter, E defaultValue) {
+  public static <F, E> E runIfOr(@Nullable F source, FunctionNN<F, E> getter, E defaultValue) {
     return source == null ? defaultValue : getter.apply(source);
   }
 
-  public static <F, E> E runIf(@Nullable F source, FunctionNN<F, E> getter, Supplier<E> defaultValue) {
+  public static <F, E> E runIfOrSup(@Nullable F source, FunctionNN<F, E> getter, Supplier<E> defaultValue) {
     return source == null ? defaultValue.get() : getter.apply(source);
   }
 
-  public static @Nonnull <F, E> E runIfNN(@Nullable F source, FunctionNN<F, E> getter, @Nonnull E defaultValue) {
+  public static @Nonnull <F, E> E runIfOrNN(@Nullable F source, FunctionNN<F, E> getter, @Nonnull E defaultValue) {
     return NullHelper.first(source == null ? null : getter.apply(source), defaultValue);
   }
 
-  public static @Nonnull <F, E> E runIfNN(@Nullable F source, FunctionNN<F, E> getter, @Nonnull Supplier<E> defaultValue) {
+  public static @Nonnull <F, E> E runIfOrSupNN(@Nullable F source, FunctionNN<F, E> getter, @Nonnull Supplier<E> defaultValue) {
     return NullHelper.first(source == null ? null : getter.apply(source), defaultValue.get());
   }
 

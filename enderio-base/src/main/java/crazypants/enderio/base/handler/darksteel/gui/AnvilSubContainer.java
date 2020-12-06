@@ -368,19 +368,19 @@ public class AnvilSubContainer {
     }
 
     if (player.capabilities.isCreativeMode) {
-      return FuncUtil.runIfNN(parent.block, BlockDarkSteelAnvil::getUseEvent, 1030);
+      return FuncUtil.runIfOrNN(parent.block, BlockDarkSteelAnvil::getUseEvent, 1030);
     }
 
     IBlockState iblockstate = parent.target.read();
 
     if (iblockstate.getBlock() == Blocks.AIR) {
-      return FuncUtil.runIfNN(parent.block, BlockDarkSteelAnvil::getUseEvent, 1030);
+      return FuncUtil.runIfOrNN(parent.block, BlockDarkSteelAnvil::getUseEvent, 1030);
     }
 
     float breakChance = ForgeHooks.onAnvilRepair(player, stack, inputSlots.getStackInSlot(0), inputSlots.getStackInSlot(1));
     breakChance /= 0.12f; // normalize vanilla standard chance to 1.0
 
-    float damageChance = FuncUtil.runIfNN(parent.block, BlockDarkSteelAnvil::getDamageChance, 1f);
+    float damageChance = FuncUtil.runIfOrNN(parent.block, BlockDarkSteelAnvil::getDamageChance, 1f);
 
     if (player.getRNG().nextFloat() < (breakChance * damageChance)) {
       int l = iblockstate.getValue(BlockAnvil.DAMAGE) + 1;
@@ -391,13 +391,13 @@ public class AnvilSubContainer {
         } else {
           parent.target.write(Blocks.AIR.getDefaultState());
         }
-        return FuncUtil.runIfNN(parent.block, BlockDarkSteelAnvil::getBreakEvent, 1029);
+        return FuncUtil.runIfOrNN(parent.block, BlockDarkSteelAnvil::getBreakEvent, 1029);
       } else {
         parent.target.write(iblockstate.withProperty(BlockAnvil.DAMAGE, l));
-        return FuncUtil.runIfNN(parent.block, BlockDarkSteelAnvil::getUseEvent, 1030);
+        return FuncUtil.runIfOrNN(parent.block, BlockDarkSteelAnvil::getUseEvent, 1030);
       }
     } else {
-      return FuncUtil.runIfNN(parent.block, BlockDarkSteelAnvil::getUseEvent, 1030);
+      return FuncUtil.runIfOrNN(parent.block, BlockDarkSteelAnvil::getUseEvent, 1030);
     }
 
   }

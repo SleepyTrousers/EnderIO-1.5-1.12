@@ -36,7 +36,7 @@ public class SagMillMachineRecipe extends AbstractMachineRecipe {
 
   @Override
   public @Nonnull RecipeBonusType getBonusType(@Nonnull NNList<MachineRecipeInput> inputs) {
-    return FuncUtil.runIf(getRecipeForInputs(RecipeLevel.IGNORE, inputs), recipe -> recipe.getBonusType(), RecipeBonusType.NONE);
+    return FuncUtil.runIfOr(getRecipeForInputs(RecipeLevel.IGNORE, inputs), recipe -> recipe.getBonusType(), RecipeBonusType.NONE);
   }
 
 }

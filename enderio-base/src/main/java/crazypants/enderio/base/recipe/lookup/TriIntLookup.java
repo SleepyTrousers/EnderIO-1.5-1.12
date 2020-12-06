@@ -48,11 +48,11 @@ public class TriIntLookup<REC, LOB1, LOB2, LOB3> {
   }
 
   public @Nonnull NNList<REC> getRecipes(@Nonnull LOB1 key1, @Nonnull LOB2 key2, @Nonnull LOB3 key3) {
-    return FuncUtil.runIfNN(root.getNext(key1), r2 -> FuncUtil.runIf(r2.getNext(key2), r3 -> r3.getRecipes(key3)), () -> NNList.emptyList());
+    return FuncUtil.runIfOrSupNN(root.getNext(key1), r2 -> FuncUtil.runIf(r2.getNext(key2), r3 -> r3.getRecipes(key3)), () -> NNList.emptyList());
   }
 
   public @Nonnull NNList<REC> getRecipes(@Nonnull LOB1 key1, @Nonnull LOB2 key2) {
-    return FuncUtil.runIfNN(root.getNext(key1), r2 -> r2.getRecipes(key2), () -> NNList.emptyList());
+    return FuncUtil.runIfOrSupNN(root.getNext(key1), r2 -> r2.getRecipes(key2), () -> NNList.emptyList());
   }
 
   public @Nonnull NNList<REC> getRecipes(@Nonnull LOB1 key1) {

@@ -25,7 +25,7 @@ public class ItemRecipeNode<REC, CHL extends IRecipeNode<?, ?, ?>> implements IR
 
   @Override
   public @Nonnull NNList<REC> getRecipes(@Nonnull Item key) {
-    return FuncUtil.runIfNN(map.get(Item.getIdFromItem(key)), p -> p.getLeft(), NNList.emptyList());
+    return FuncUtil.runIfOrNN(map.get(Item.getIdFromItem(key)), p -> p.getLeft(), NNList.emptyList());
   }
 
   public CHL getNext(@Nonnull Item key) {
