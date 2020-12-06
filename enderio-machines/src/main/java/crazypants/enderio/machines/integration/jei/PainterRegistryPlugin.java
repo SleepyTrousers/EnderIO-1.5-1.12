@@ -72,7 +72,7 @@ public class PainterRegistryPlugin implements IRecipeRegistryPlugin {
   PainterRegistryPlugin(@Nonnull IModRegistry registry) {
     ingredientRegistry = registry.getIngredientRegistry();
     Collection<ItemStack> validItems = ingredientRegistry.getAllIngredients(ItemStack.class);
-    Map<String, IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForMachine(MachineRecipeRegistry.PAINTER);
+    Map<String, ? extends IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForMachine(MachineRecipeRegistry.PAINTER);
 
     ITEM: for (ItemStack itemStack : validItems) {
       if (itemStack != null) {
@@ -108,7 +108,7 @@ public class PainterRegistryPlugin implements IRecipeRegistryPlugin {
     staticRecipes = buildStaticRecipes();
   }
 
-  private boolean isValidPaint(Map<String, IMachineRecipe> recipes, ItemStack itemStack) {
+  private boolean isValidPaint(Map<String, ? extends IMachineRecipe> recipes, ItemStack itemStack) {
     if (itemStack != null) {
       if (contains(VALID_PAINTS, itemStack)) {
         return true;
@@ -157,7 +157,7 @@ public class PainterRegistryPlugin implements IRecipeRegistryPlugin {
         stack.setCount(1);
         List<PainterRecipeWrapper> list1 = new ArrayList<>();
         List<PainterRecipeWrapper> list2 = new ArrayList<>();
-        Map<String, IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForMachine(MachineRecipeRegistry.PAINTER);
+        Map<String, ? extends IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForMachine(MachineRecipeRegistry.PAINTER);
         if (focus.getMode() == Mode.INPUT) {
 
           if (contains(VALID_TARGETS, stack)) {
@@ -232,7 +232,7 @@ public class PainterRegistryPlugin implements IRecipeRegistryPlugin {
 
   private @Nonnull List<PainterRecipeWrapper> buildStaticRecipes() {
     List<PainterRecipeWrapper> list = new ArrayList<>();
-    Map<String, IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForMachine(MachineRecipeRegistry.PAINTER);
+    Map<String, ? extends IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForMachine(MachineRecipeRegistry.PAINTER);
 
     for (IMachineRecipe rec : recipes.values()) {
       if (rec instanceof AbstractPainterTemplate<?>) {

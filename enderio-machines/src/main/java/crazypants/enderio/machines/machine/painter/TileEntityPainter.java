@@ -35,7 +35,7 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements IPai
     ItemStack paint = i == 0 ? getStackInSlot(1) : itemStack;
     ItemStack targt = i == 0 ? itemStack : getStackInSlot(0);
 
-    Map<String, IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForMachine(getMachineName());
+    Map<String, ? extends IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForMachine(getMachineName());
     for (IMachineRecipe rec : recipes.values()) {
       if (rec instanceof AbstractPainterTemplate<?>) {
         AbstractPainterTemplate<?> temp = (AbstractPainterTemplate<?>) rec;
