@@ -428,8 +428,8 @@ sourceJar {
     }
 }
 
-// recipeJar real content. must be here so it can use combjarprojects
-combjarprojects.each { subproject ->
+// recipeJar real content. must be here so it can use buildprojects
+buildprojects.each { subproject ->
     recipeJar.from subproject.sourceSets.main.output.resourcesDir, {
 	    include 'assets/enderio/config/recipes/*.xml'
 	    include 'assets/enderio/config/recipes/*.xsd'
