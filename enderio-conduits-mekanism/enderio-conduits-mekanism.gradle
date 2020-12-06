@@ -1,0 +1,6 @@
+dependencies {
+    deobfCompile "curse.maven:mekanism-268560:2835175"
+
+    compile project(":enderio-base")
+    compile project(":enderio-conduits")
+}

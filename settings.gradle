@@ -1,4 +1,4 @@
-include ':enderio-base', ':enderio-machines', ':enderio-conduits', ':enderio-invpanel', ':enderio-integration-tic', ':enderio-integration-forestry', ':enderio-integration-thaumcraft', ':enderio-conduits-refinedstorage', ':enderio-conduits-opencomputers', ':enderio-conduits-appliedenergistics', ':enderio-addons', ':enderio-zoo', ':enderio-endergy', 'ap'
+include ':enderio-base', ':enderio-machines', ':enderio-conduits', ':enderio-invpanel', ':enderio-integration-tic', ':enderio-integration-forestry', ':enderio-integration-thaumcraft', ':enderio-conduits-refinedstorage', ':enderio-conduits-opencomputers', ':enderio-conduits-appliedenergistics', ':enderio-addons', ':enderio-zoo', ':enderio-endergy', 'ap', ':enderio-conduits-mekanism'
 
 rootProject.name = 'EnderIO'
 
