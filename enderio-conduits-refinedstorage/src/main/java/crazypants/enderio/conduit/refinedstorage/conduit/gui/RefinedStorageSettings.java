@@ -68,7 +68,7 @@ public class RefinedStorageSettings extends BaseSettingsPanel {
       doOpenFilterGui(RefinedStorageConduit.INDEX_OUTPUT_REFINED_STROAGE);
       return;
     } else if (guiButton.id == ID_EXTRACT_FILTER_OPTIONS) {
-      doOpenFilterGui(RefinedStorageConduit.INDEX_INPUT_REFINED_STORAGE);
+      doOpenFilterGui(RefinedStorageConduit.INDEX_INPUT_REFINED_STROAGE);
       return;
     }
   }

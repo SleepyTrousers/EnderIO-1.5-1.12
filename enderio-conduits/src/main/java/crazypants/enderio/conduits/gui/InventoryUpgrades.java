@@ -42,9 +42,9 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
     case 0:
       return upgradeHolder != null ? upgradeHolder.getUpgradeStack(dir.ordinal()) : ItemStack.EMPTY;
     case 2:
-      return filterHolder != null ? filterHolder.getFilterStack(filterHolder.getInputFilterIndex(), dir.ordinal()) : ItemStack.EMPTY;
+      return filterHolder != null ? filterHolder.getFilterStack(filterHolder.getInputFilterIndex(), dir) : ItemStack.EMPTY;
     case 3:
-      return filterHolder != null ? filterHolder.getFilterStack(filterHolder.getOutputFilterIndex(), dir.ordinal()) : ItemStack.EMPTY;
+      return filterHolder != null ? filterHolder.getFilterStack(filterHolder.getOutputFilterIndex(), dir) : ItemStack.EMPTY;
     default:
       return ItemStack.EMPTY;
     }
@@ -95,12 +95,12 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
       break;
     case 2:
       if (filterHolder != null) {
-        filterHolder.setFilterStack(filterHolder.getInputFilterIndex(), dir.ordinal(), stack);
+        filterHolder.setFilterStack(filterHolder.getInputFilterIndex(), dir, stack);
       }
       break;
     case 3:
       if (filterHolder != null) {
-        filterHolder.setFilterStack(filterHolder.getOutputFilterIndex(), dir.ordinal(), stack);
+        filterHolder.setFilterStack(filterHolder.getOutputFilterIndex(), dir, stack);
       }
       break;
     }

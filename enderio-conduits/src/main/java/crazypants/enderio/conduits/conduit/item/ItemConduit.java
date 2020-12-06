@@ -801,11 +801,11 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
   }
 
   @Override
-  public void setFilter(int filterId, int param1, @Nonnull IItemFilter filter) {
+  public void setFilter(int filterId, EnumFacing side, @Nonnull IItemFilter filter) {
     if (filterId == FilterGuiUtil.INDEX_INPUT_ITEM) {
-      setInputFilter(EnumFacing.getFront(param1), filter);
+      setInputFilter(side, filter);
     } else if (filterId == FilterGuiUtil.INDEX_OUTPUT_ITEM) {
-      setOutputFilter(EnumFacing.getFront(param1), filter);
+      setOutputFilter(side, filter);
     }
   }
 
@@ -821,21 +821,21 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
 
   @Override
   @Nonnull
-  public ItemStack getFilterStack(int filterIndex, int param1) {
+  public ItemStack getFilterStack(int filterIndex, EnumFacing side) {
     if (filterIndex == FilterGuiUtil.INDEX_INPUT_ITEM) {
-      return getInputFilterUpgrade(EnumFacing.getFront(param1));
+      return getInputFilterUpgrade(side);
     } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT_ITEM) {
-      return getOutputFilterUpgrade(EnumFacing.getFront(param1));
+      return getOutputFilterUpgrade(side);
     }
     return ItemStack.EMPTY;
   }
 
   @Override
-  public void setFilterStack(int filterIndex, int param1, @Nonnull ItemStack stack) {
+  public void setFilterStack(int filterIndex, EnumFacing side, @Nonnull ItemStack stack) {
     if (filterIndex == FilterGuiUtil.INDEX_INPUT_ITEM) {
-      setInputFilterUpgrade(EnumFacing.getFront(param1), stack);
+      setInputFilterUpgrade(side, stack);
     } else if (filterIndex == FilterGuiUtil.INDEX_OUTPUT_ITEM) {
-      setOutputFilterUpgrade(EnumFacing.getFront(param1), stack);
+      setOutputFilterUpgrade(side, stack);
     }
   }
 

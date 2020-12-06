@@ -76,9 +76,9 @@ public class PacketConduitFilter<T extends IConduit> extends AbstractConduitPack
         IFilterHolder<IFilter> filterHolder = conduit.getInternalCapability(CapabilityFilterHolder.FILTER_HOLDER_CAPABILITY, dir);
         if (filterHolder != null) {
           if (isInput) {
-            filterHolder.setFilter(filterHolder.getInputFilterIndex(), dir.ordinal(), filter);
+            filterHolder.setFilter(filterHolder.getInputFilterIndex(), dir, filter);
           } else {
-            filterHolder.setFilter(filterHolder.getOutputFilterIndex(), dir.ordinal(), filter);
+            filterHolder.setFilter(filterHolder.getOutputFilterIndex(), dir, filter);
           }
         }
       }

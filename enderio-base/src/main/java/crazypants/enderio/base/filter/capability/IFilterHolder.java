@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import crazypants.enderio.base.filter.IFilter;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.IItemHandler;
 
 /**
@@ -31,12 +32,12 @@ public interface IFilterHolder<T extends IFilter> {
    * 
    * @param filterIndex
    *          The id of the filter location
-   * @param param1
+   * @param side
    *          Useful extra parameter for things that cannot be expressed simply by the filter index
    * @param filter
    *          The filter to set it to
    */
-  void setFilter(int filterIndex, int param1, @Nonnull T filter);
+  void setFilter(int filterIndex, EnumFacing side, @Nonnull T filter);
 
   /**
    * Used by the existing item filter to get the inventory it is connected to
@@ -53,9 +54,9 @@ public interface IFilterHolder<T extends IFilter> {
   }
 
   @Nonnull
-  ItemStack getFilterStack(int filterIndex, int param1);
+  ItemStack getFilterStack(int filterIndex, EnumFacing side);
 
-  void setFilterStack(int filterIndex, int param1, @Nonnull ItemStack stack);
+  void setFilterStack(int filterIndex, EnumFacing side, @Nonnull ItemStack stack);
 
   int getInputFilterIndex();
 

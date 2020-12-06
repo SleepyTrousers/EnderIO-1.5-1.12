@@ -97,4 +97,11 @@ public class FilterRegistry {
     return loadFilterFromByteBuf(className, buf);
   }
 
+  public static IFilter readFilterFromStack(@Nonnull ItemStack stack) {
+    if (isFilterSet(stack)) {
+      return loadFilterFromNbt(NbtValue.FILTER.getTag(stack));
+    }
+    return getFilterForUpgrade(stack);
+  }
+
 }

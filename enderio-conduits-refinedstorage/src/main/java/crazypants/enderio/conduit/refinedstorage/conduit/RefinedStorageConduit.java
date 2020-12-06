@@ -469,31 +469,31 @@ public class RefinedStorageConduit extends AbstractConduit implements IRefinedSt
   }
 
   @Override
-  public void setFilter(int filterId, int param1, @Nonnull IFilter filter) {
+  public void setFilter(int filterId, EnumFacing side, @Nonnull IFilter filter) {
     if (filterId == getInputFilterIndex()) {
-      setInputFilter(EnumFacing.getFront(param1), filter);
+      setInputFilter(side, filter);
     } else if (filterId == getOutputFilterIndex()) {
-      setOutputFilter(EnumFacing.getFront(param1), filter);
+      setOutputFilter(side, filter);
     }
   }
 
   @Override
   @Nonnull
-  public ItemStack getFilterStack(int filterIndex, int param1) {
+  public ItemStack getFilterStack(int filterIndex, EnumFacing side) {
     if (filterIndex == getInputFilterIndex()) {
-      return getInputFilterUpgrade(EnumFacing.getFront(param1));
+      return getInputFilterUpgrade(side);
     } else if (filterIndex == getOutputFilterIndex()) {
-      return getOutputFilterUpgrade(EnumFacing.getFront(param1));
+      return getOutputFilterUpgrade(side);
     }
     return ItemStack.EMPTY;
   }
 
   @Override
-  public void setFilterStack(int filterIndex, int param1, @Nonnull ItemStack stack) {
+  public void setFilterStack(int filterIndex, EnumFacing side, @Nonnull ItemStack stack) {
     if (filterIndex == getInputFilterIndex()) {
-      setInputFilterUpgrade(EnumFacing.getFront(param1), stack);
+      setInputFilterUpgrade(side, stack);
     } else if (filterIndex == getOutputFilterIndex()) {
-      setOutputFilterUpgrade(EnumFacing.getFront(param1), stack);
+      setOutputFilterUpgrade(side, stack);
     }
   }
 
