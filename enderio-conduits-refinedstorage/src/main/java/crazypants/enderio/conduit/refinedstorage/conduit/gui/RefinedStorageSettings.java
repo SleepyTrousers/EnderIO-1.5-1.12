@@ -65,10 +65,10 @@ public class RefinedStorageSettings extends BaseSettingsPanel {
   public void actionPerformed(@Nonnull GuiButton guiButton) {
     super.actionPerformed(guiButton);
     if (guiButton.id == ID_INSERT_FILTER_OPTIONS) {
-      doOpenFilterGui(RefinedStorageConduit.INDEX_INPUT_REFINED_STORAGE);
+      doOpenFilterGui(RefinedStorageConduit.INDEX_OUTPUT_REFINED_STORAGE);
       return;
     } else if (guiButton.id == ID_EXTRACT_FILTER_OPTIONS) {
-      doOpenFilterGui(RefinedStorageConduit.INDEX_OUTPUT_REFINED_STROAGE);
+      doOpenFilterGui(RefinedStorageConduit.INDEX_INPUT_REFINED_STORAGE);
       return;
     }
   }
