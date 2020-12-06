@@ -1,0 +1,10 @@
+[
+  {
+    "modid": "gasconduits",
+    "name": "GasConduits",
+    "description": "EnderIO styled Gas Conduits for Mekanism Gas",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "authorList": ["pupnewfster"]
+  }
+]

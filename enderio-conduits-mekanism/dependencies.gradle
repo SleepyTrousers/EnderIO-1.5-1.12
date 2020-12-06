@@ -1,0 +1,14 @@
+modDependencies {
+    forge { requireAfter(forge_version) }
+    endercore { requireAfter(endercore_version) }
+    jei { loadAfter(jei_version) }
+    mekanism { loadAfter(mekanism_version)}
+
+}
+
+def localDependencies = [ project(':enderio-base'), project(':enderio-conduits') ]
+localDependencies.each { dep ->
+    modDependencies {
+        "${dep.module_mod_id}" { requireAfter(dep.version) }
+    }
+}

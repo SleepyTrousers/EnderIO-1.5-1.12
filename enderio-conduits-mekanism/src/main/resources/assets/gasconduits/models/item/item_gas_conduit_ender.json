@@ -1,0 +1,6 @@
+{
+    "parent": "enderio:item/item_conduit_base_2",
+    "textures": {
+        "all": "gasconduits:blocks/gas_conduit_core"
+    }
+}

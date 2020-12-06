@@ -112,6 +112,7 @@ allprojects {
         maven { url = "https://maven.latmod.com" } // FTBLib
         maven { url = "http://maven.covers1624.net/" } // CoFHCore
         maven { url = "http://cc.crzd.me/maven/" } // ComputerCraft
+        maven { url = "https://www.cursemaven.com" } // Mekanism
         //maven { url = "https://repo.raoulvdberge.com/" } // Refined Storage (new)
         //maven { url = "https://repo.refinedmods.com/" } // Refined Storage (double-plus new)
         //maven { url = "https://maven.hypherionmc.me/" } // Refined Storage (double-plus-plus new)
