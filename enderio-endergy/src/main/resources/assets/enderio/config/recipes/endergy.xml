@@ -76,6 +76,42 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
+  <recipe name="Compressed Solar Panel - Crystalline" required="true">
+    <dependency mod="enderiomachines" />
+    <crafting>
+      <grid>
+        <item name="SOLAR_4" /><item name="SOLAR_4"/><item name="SOLAR_4" />
+        <item name="SOLAR_4"/><item name="enderio:item_capacitor_crystalline"/><item name="SOLAR_4"/>
+        <item name="SOLAR_4" /><item name="SOLAR_4"/><item name="SOLAR_4" />
+      </grid>
+      <output name="SOLAR_5"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Concentrated Solar Panel - Melodic" required="true">
+    <dependency mod="enderiomachines" />
+    <crafting>
+      <grid>
+        <item name="SOLAR_5" /><item name="SOLAR_5"/><item name="SOLAR_5" />
+        <item name="SOLAR_5"/><item name="enderio:item_capacitor_melodic"/><item name="SOLAR_5"/>
+        <item name="SOLAR_5" /><item name="SOLAR_5"/><item name="SOLAR_5" />
+      </grid>
+      <output name="SOLAR_6"/>
+    </crafting>
+  </recipe>
+
+  <recipe name="Ultimate Solar Panel - Stellar" required="true">
+    <dependency mod="enderiomachines" />
+    <crafting>
+      <grid>
+        <item name="SOLAR_6" /><item name="SOLAR_6"/><item name="SOLAR_6" />
+        <item name="SOLAR_6"/><item name="enderio:item_capacitor_stellar"/><item name="SOLAR_6"/>
+        <item name="SOLAR_6" /><item name="SOLAR_6"/><item name="SOLAR_6" />
+      </grid>
+      <output name="SOLAR_7"/>
+    </crafting>
+  </recipe>
+
   <recipe name="Capacitor Crystalline" required="true">
     <crafting>
       <grid>

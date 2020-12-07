@@ -10,6 +10,7 @@ import com.enderio.core.common.vecmath.Vector3d;
 import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.machines.EnderIOMachines;
 import crazypants.enderio.machines.config.config.SolarConfig;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -38,13 +39,57 @@ public class SolarType implements ISolarType {
       return new Vector3d(0x47 / 255d, 0x9f / 255d, 0xa3 / 255d);
     }
   };
+  public static final @Nonnull SolarType COMPRESSED = new SolarType("COMPRESSED", ".compressed") {
+    @Override
+    public boolean hasParticles() {
+      return true;
+    }
+
+    @Override
+    public @Nonnull Vector3d getParticleColor() {
+      return new Vector3d(0xd5 / 255d, 0x5a / 255d, 0x5a / 255d);
+    }
+  };
+  public static final @Nonnull SolarType CONCENTRATED = new SolarType("CONCENTRATED", ".concentrated") {
+    @Override
+    public boolean hasParticles() {
+      return true;
+    }
+
+    @Override
+    public @Nonnull Vector3d getParticleColor() {
+      return new Vector3d(0x01 / 255d, 0x01 / 255d, 0x01 / 255d);
+    }
+  };
+  public static final @Nonnull SolarType ULTIMATE = new SolarType("ULTIMATE", ".ultimate") {
+    @Override
+    public boolean hasParticles() {
+      return true;
+    }
+
+    @Override
+    public @Nonnull Vector3d getParticleColor() {
+      return new Vector3d(0xff / 255d, 0xff / 255d, 0xff / 255d);
+    }
+  };
+
+  static {
+    KIND.addValue(SIMPLE);
+    KIND.addValue(NORMAL);
+    KIND.addValue(ADVANCED);
+    KIND.addValue(VIBRANT);
+    if (Loader.isModLoaded("enderioendergy")) {
+      KIND.addValue(COMPRESSED);
+      KIND.addValue(CONCENTRATED);
+      KIND.addValue(ULTIMATE);
+    }
+  }
 
   private final @Nonnull String name, unlocalisedName;
 
   private SolarType(@Nonnull String name, @Nonnull String unlocalisedName) {
     this.name = NullHelper.notnullJ(name.toLowerCase(Locale.ENGLISH), "String.toLowerCase()");
     this.unlocalisedName = unlocalisedName;
-    KIND.addValue(this);
   }
 
   @Override

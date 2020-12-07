@@ -273,6 +273,9 @@ tile.block_solar_panel.simple.name=Simple Photovoltaic Cell
 tile.block_solar_panel.name=Photovoltaic Cell
 tile.block_solar_panel.advanced.name=Advanced Photovoltaic Cell
 tile.block_solar_panel.vibrant.name=Vibrant Photovoltaic Cell
+tile.block_solar_panel.compressed.name=Crystalline Photovoltaic Cell
+tile.block_solar_panel.concentrated.name=Melodic Photovoltaic Cell
+tile.block_solar_panel.ultimate.name=Stellar Photovoltaic Cell
 tile.block_solar_panel.tooltip.common.line1=Solar Power!
 tile.block_solar_panel.tooltip.detailed.line1=Produces power during daylight hours
 tile.block_solar_panel.tooltip.detailed.line2=Must have a clear line of sight to the sky
@@ -433,6 +436,15 @@ enderio.darksteel.upgrade.solar_2.tooltip.detailed.line1=Generates power from th
 
 enderio.darksteel.upgrade.solar_3.name=Solar III
 enderio.darksteel.upgrade.solar_3.tooltip.detailed.line1=Generates power from the sun.
+
+enderio.darksteel.upgrade.solar_4.name=Solar IV
+enderio.darksteel.upgrade.solar_4.tooltip.detailed.line1=Generates power from the sun.
+
+enderio.darksteel.upgrade.solar_5.name=Solar V
+enderio.darksteel.upgrade.solar_5.tooltip.detailed.line1=Generates power from the sun.
+
+enderio.darksteel.upgrade.solar_6.name=Solar VI
+enderio.darksteel.upgrade.solar_6.tooltip.detailed.line1=Generates power from the sun.
 
 enderio.config.capacitor=Capacitor Values
 enderio.config.client=Client Settings

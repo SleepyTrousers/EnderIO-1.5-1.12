@@ -29,6 +29,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -43,8 +44,14 @@ public class SolarUpgrade extends AbstractUpgrade implements IHasPlayerRenderer 
   public static final @Nonnull NNList<SolarUpgrade> INSTANCES = new NNList<>( //
       new SolarUpgrade(SolarType.SIMPLE), new SolarUpgrade(SolarType.NORMAL), new SolarUpgrade(SolarType.ADVANCED), new SolarUpgrade(SolarType.VIBRANT));
 
+  @SuppressWarnings("unused")
   @SubscribeEvent
   public static void registerDarkSteelUpgrades(@Nonnull RegistryEvent.Register<IDarkSteelUpgrade> event) {
+    if (Loader.isModLoaded("enderioendergy") && false /* TODO: Make textures for the upgrades */) {
+      INSTANCES.add(new SolarUpgrade(SolarType.COMPRESSED));
+      INSTANCES.add(new SolarUpgrade(SolarType.CONCENTRATED));
+      INSTANCES.add(new SolarUpgrade(SolarType.ULTIMATE));
+    }
     INSTANCES.apply(event.getRegistry()::register);
   }
 

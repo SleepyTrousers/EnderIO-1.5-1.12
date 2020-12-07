@@ -18,7 +18,13 @@ public final class SolarConfig {
       F.make("darkSteelSolar2Gen", 80, //
           "Energy generated per SECOND by the Solar II upgrade. Split between all equipped DS armors.").setMin(1).sync(),
       F.make("darkSteelSolar3Gen", 160, //
-          "Energy generated per SECOND by the Solar III upgrade. Split between all equipped DS armors.").setMin(1).sync());
+          "Energy generated per SECOND by the Solar III upgrade. Split between all equipped DS armors.").setMin(1).sync(),
+      F.make("darkSteelSolar4Gen", 160 * 6, //
+          "Energy generated per SECOND by the Solar IV upgrade (Endergy). Split between all equipped DS armors.").setMin(1).sync(),
+      F.make("darkSteelSolar5Gen", 160 * 6 * 6, //
+          "Energy generated per SECOND by the Solar V upgrade (Endergy). Split between all equipped DS armors.").setMin(1).sync(),
+      F.make("darkSteelSolar6Gen", 160 * 6 * 6 * 6, //
+          "Energy generated per SECOND by the Solar VI upgrade (Endergy). Split between all equipped DS armors.").setMin(1).sync());
 
   public static final NNList<IValue<Integer>> upgradeCost = new NNList<>(//
       F.make("darkSteelSolar0Cost", 4, //
@@ -28,7 +34,13 @@ public final class SolarConfig {
       F.make("darkSteelSolar2Cost", 16, //
           "Cost in XP levels of the Solar II upgrade.").setMin(1).sync(),
       F.make("darkSteelSolar3Cost", 24, //
-          "Cost in XP levels of the Solar III upgrade.").setMin(1).sync());
+          "Cost in XP levels of the Solar III upgrade.").setMin(1).sync(),
+      F.make("darkSteelSolar4Cost", 28, //
+          "Cost in XP levels of the Solar IV upgrade (Endergy).").setMin(1).sync(),
+      F.make("darkSteelSolar5Cost", 32, //
+          "Cost in XP levels of the Solar V upgrade (Endergy).").setMin(1).sync(),
+      F.make("darkSteelSolar6Cost", 36, //
+          "Cost in XP levels of the Solar VI upgrade (Endergy).").setMin(1).sync());
 
   public static final IValue<Boolean> helmetChargeOthers = F.make("helmetChargeOthers", true, //
       "If enabled allows the solar upgrade to charge non-darksteel armors that the player is wearing.").sync();
@@ -41,7 +53,13 @@ public final class SolarConfig {
       F.make("solarPanel2Gen", 80, //
           "Energy generated per TICK by Advanced Photovoltaic Panels.").setMin(1).sync(),
       F.make("solarPanel3Gen", 160, //
-          "Energy generated per TICK by Vibrant Photovoltaic Panels.").setMin(1).sync());
+          "Energy generated per TICK by Vibrant Photovoltaic Panels.").setMin(1).sync(),
+      F.make("solarPanel4Gen", 160 * 6, //
+          "Energy generated per TICK by Compressed Photovoltaic Panels (Endergy).").setMin(1).sync(),
+      F.make("solarPanel5Gen", 160 * 6 * 6, //
+          "Energy generated per TICK by Concentrated Photovoltaic Panels (Endergy).").setMin(1).sync(),
+      F.make("solarPanel6Gen", 160 * 6 * 6 * 6, //
+          "Energy generated per TICK by Ultimate Photovoltaic Panels (Endergy).").setMin(1).sync());
 
   public static final IValue<Boolean> canSolarTypesJoin = F.make("canSolarTypesJoin", false, //
       "When enabled Photovoltaic Panels of different kinds can join together as a multi-block").sync();

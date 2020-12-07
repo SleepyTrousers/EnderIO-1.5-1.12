@@ -8,11 +8,14 @@
   },
   "variants":{
     "kind":{
-      "simple":   { "textures": { "side": "enderio:blocks/solar_panel_simple_side", "top": "enderio:blocks/solar_panel_simple_top" } },
-      "normal":   { "textures": { "side": "enderio:blocks/solar_panel_normal_side", "top": "enderio:blocks/solar_panel_normal_top" } },
-      "advanced": { "textures": { "side": "enderio:blocks/solar_panel_advanced_side", "top": "enderio:blocks/solar_panel_advanced_top" } },
-      "vibrant":  { "textures": { "side": "enderio:blocks/solar_panel_vibrant_side", "top": "enderio:blocks/solar_panel_vibrant_top" } }
-      },
+      "simple":       { "textures": { "side": "enderio:blocks/solar_panel_simple_side",       "top": "enderio:blocks/solar_panel_simple_top" } },
+      "normal":       { "textures": { "side": "enderio:blocks/solar_panel_normal_side",       "top": "enderio:blocks/solar_panel_normal_top" } },
+      "advanced":     { "textures": { "side": "enderio:blocks/solar_panel_advanced_side",     "top": "enderio:blocks/solar_panel_advanced_top" } },
+      "vibrant":      { "textures": { "side": "enderio:blocks/solar_panel_vibrant_side",      "top": "enderio:blocks/solar_panel_vibrant_top" } },
+      "compressed":   { "textures": { "side": "enderio:blocks/solar_panel_compressed_side",   "top": "enderio:blocks/solar_panel_compressed_top" } },
+      "concentrated": { "textures": { "side": "enderio:blocks/solar_panel_concentrated_side", "top": "enderio:blocks/solar_panel_concentrated_top" } },
+      "ultimate":     { "textures": { "side": "enderio:blocks/solar_panel_ultimate_side",     "top": "enderio:blocks/solar_panel_ultimate_top" } }
+    },
     "render":{
       "auto":{ "model":"enderio:null" },
       
