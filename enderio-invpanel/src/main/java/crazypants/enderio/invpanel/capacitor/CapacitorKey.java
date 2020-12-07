@@ -20,10 +20,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @EventBusSubscriber(modid = EnderIOInvPanel.MODID)
 public enum CapacitorKey implements ICapacitorKey {
 
-  INV_CHEST_ENERGY_INTAKE(InvpanelObject.blockInventoryChestTiny, CapacitorKeyType.ENERGY_INTAKE, "intake"),
-  INV_CHEST_ENERGY_BUFFER(InvpanelObject.blockInventoryChestTiny, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
-  INV_CHEST_ENERGY_USE(InvpanelObject.blockInventoryChestTiny, CapacitorKeyType.ENERGY_USE, "use"),
-
   INV_SENSOR_ENERGY_INTAKE(InvpanelObject.blockInventoryPanelSensor, CapacitorKeyType.ENERGY_INTAKE, "intake"),
   INV_SENSOR_ENERGY_BUFFER(InvpanelObject.blockInventoryPanelSensor, CapacitorKeyType.ENERGY_BUFFER, "buffer"),
   INV_SENSOR_ENERGY_USE(InvpanelObject.blockInventoryPanelSensor, CapacitorKeyType.ENERGY_USE, "use"),
@@ -89,10 +85,6 @@ public enum CapacitorKey implements ICapacitorKey {
       throw new UnconfiguredCapKeyException(
           "CapacitorKey " + getRegistryName() + " has not been configured. This should not be possible and may be caused by a 3rd-party addon mod.");
     }
-  }
-
-  public final ICapacitorKey setRegistryName(String name) {
-    throw new IllegalStateException("Attempted to set registry name with existing registry name! New: " + name + " Old: " + getRegistryName());
   }
 
   @Override

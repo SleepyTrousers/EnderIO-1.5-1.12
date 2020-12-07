@@ -15,6 +15,7 @@ import crazypants.enderio.base.paint.IPaintable;
 import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.ISmartRenderAwareBlock;
+import crazypants.enderio.util.FuncUtil;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiScreen;
@@ -30,7 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest>
     implements IResourceTooltipProvider, ISmartRenderAwareBlock, IPaintable.IBlockPaintableBlock, IPaintable.IWrenchHideablePaint {
 
-  public static BlockInventoryChest create_simple(@Nonnull IModObject mo) {
+  public static @Nonnull BlockInventoryChest create_simple(@Nonnull IModObject mo) {
     BlockInventoryChest res = new BlockInventoryChest(mo) {
       @Override
       @SideOnly(Side.CLIENT)
@@ -48,7 +49,7 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
     return res;
   }
 
-  public static BlockInventoryChest create_enhanced(@Nonnull IModObject mo) {
+  public static @Nonnull BlockInventoryChest create_enhanced(@Nonnull IModObject mo) {
     BlockInventoryChest res = new BlockInventoryChest(mo) {
       @Override
       @SideOnly(Side.CLIENT)
@@ -66,8 +67,7 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
     return res;
   }
 
-  @Nonnull
-  public static BlockInventoryChest create(@Nonnull IModObject mo) {
+  public static @Nonnull BlockInventoryChest create(@Nonnull IModObject mo) {
     BlockInventoryChest res = new BlockInventoryChest(mo);
     res.init();
     return res;
@@ -82,7 +82,7 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
   @Override
   protected void setBlockStateWrapperCache(@Nonnull IBlockStateWrapper blockStateWrapper, @Nonnull IBlockAccess world, @Nonnull BlockPos pos,
       @Nonnull TileInventoryChest tileEntity) {
- }
+  }
 
   // NO GUI
 
@@ -119,11 +119,7 @@ public class BlockInventoryChest extends AbstractMachineBlock<TileInventoryChest
 
   @Override
   public int getComparatorInputOverride(@Nonnull IBlockState blockStateIn, @Nonnull World worldIn, @Nonnull BlockPos pos) {
-    TileInventoryChest te = getTileEntitySafe(worldIn, pos);
-    if (te != null) {
-      return te.getComparatorInputOverride();
-    }
-    return 0;
+    return FuncUtil.runIfOr(getTileEntitySafe(worldIn, pos), TileInventoryChest::getComparatorInputOverride, 0);
   }
 
 }

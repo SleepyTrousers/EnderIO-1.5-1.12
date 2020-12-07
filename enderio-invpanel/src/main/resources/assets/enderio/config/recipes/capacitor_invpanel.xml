@@ -11,16 +11,59 @@ a file in the 'user' folder.
 
 You can also disable all built-in recipes with the setting "loadCoreRecipes"
 in the Ender IO config file, so that only your files in the 'user' folder will
-be loaded. Please be advised that all capacitor definitions are absolutely needed,
-so you will have to copy those over into a 'user' file for the game to load.
+be loaded.
 
 More information on the syntax can be found in the recipes.xsd file. An
 XML editor will display that as tooltips when editing this file.
 
  -->
-  <capacitor key="enderio:block_inventory_chest_tiny/intake" base="80" scaler="POWER" />
-  <capacitor key="enderio:block_inventory_chest_tiny/buffer" base="100000" scaler="POWER" />
-  <capacitor key="enderio:block_inventory_chest_tiny/use" base="20" scaler="POWER" />
+
+  <!-- Inventory Chests don't take capacitors, so we use scaler=FIXED here. -->
+
+  <capacitor key="enderio:block_inventory_chest_tiny/intake" base="10" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_tiny/buffer" base="100000" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_tiny/use" base="1" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_tiny/size" base="81" scaler="FIXED" />
+
+  <capacitor key="enderio:block_inventory_chest_small/intake" base="10" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_small/buffer" base="100000" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_small/use" base="1" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_small/size" base="108" scaler="FIXED" />
+
+  <capacitor key="enderio:block_inventory_chest_medium/intake" base="10" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_medium/buffer" base="100000" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_medium/use" base="1" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_medium/size" base="135" scaler="FIXED" />
+
+  <capacitor key="enderio:block_inventory_chest_big/intake" base="10" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_big/buffer" base="100000" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_big/use" base="2" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_big/size" base="162" scaler="FIXED" />
+
+  <capacitor key="enderio:block_inventory_chest_large/intake" base="10" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_large/buffer" base="100000" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_large/use" base="2" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_large/size" base="216" scaler="FIXED" />
+
+  <capacitor key="enderio:block_inventory_chest_huge/intake" base="10" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_huge/buffer" base="100000" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_huge/use" base="2" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_huge/size" base="270" scaler="FIXED" />
+
+  <capacitor key="enderio:block_inventory_chest_enormous/intake" base="10" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_enormous/buffer" base="100000" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_enormous/use" base="3" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_enormous/size" base="351" scaler="FIXED" />
+
+  <capacitor key="enderio:block_inventory_chest_warehouse/intake" base="10" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_warehouse/buffer" base="100000" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_warehouse/use" base="4" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_warehouse/size" base="432" scaler="FIXED" />
+
+  <capacitor key="enderio:block_inventory_chest_warehouse13/intake" base="10" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_warehouse13/buffer" base="100000" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_warehouse13/use" base="5" scaler="FIXED" />
+  <capacitor key="enderio:block_inventory_chest_warehouse13/size" base="540" scaler="FIXED" />
 
   <capacitor key="enderio:block_inventory_panel_sensor/intake" base="20" scaler="FIXED" />
   <capacitor key="enderio:block_inventory_panel_sensor/buffer" base="10000" scaler="FIXED" />

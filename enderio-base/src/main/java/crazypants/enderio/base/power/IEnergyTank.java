@@ -30,8 +30,18 @@ public interface IEnergyTank extends IEnergyStorage, IPowerBarData {
 
   boolean updateCapacitorFromSlot(@Nonnull InventorySlot slot);
 
+  /**
+   * Tries to use the energy given be the "use" capacitor key.
+   * 
+   * @return <code>true</code> if the energy was used
+   */
   boolean useEnergy();
 
+  /**
+   * Tries to use the energy given be the given capacitor key.
+   * 
+   * @return <code>true</code> if the energy was used
+   */
   boolean useEnergy(@Nonnull ICapacitorKey key);
 
 }

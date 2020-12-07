@@ -12,7 +12,6 @@ import crazypants.enderio.base.machine.base.te.EnergyLogic;
 import crazypants.enderio.base.machine.base.te.ICap;
 import crazypants.enderio.base.machine.interfaces.IHasFillLevel;
 import crazypants.enderio.base.paint.IPaintable;
-import crazypants.enderio.invpanel.capacitor.CapacitorKey;
 import crazypants.enderio.util.Prep;
 import info.loenwind.autosave.annotations.Storable;
 import net.minecraft.item.ItemStack;
@@ -84,15 +83,15 @@ public abstract class TileInventoryChest extends AbstractCapabilityMachineEntity
     }
   }
 
-  private final EnumChestSize size;
+  private final @Nonnull EnumChestSize size;
 
   private TileInventoryChest(@Nonnull EnumChestSize size) {
-    super(null, CapacitorKey.INV_CHEST_ENERGY_INTAKE, CapacitorKey.INV_CHEST_ENERGY_BUFFER, CapacitorKey.INV_CHEST_ENERGY_USE);
+    super(null, size.getIntake(), size.getBuffer(), size.getUse());
     this.size = size;
     for (int i = 0; i < size.getSlots(); i++) {
       getInventory().add(EnderInventory.Type.INOUT, "slot" + i, new InventorySlot());
     }
-    getInventory().getSlot(EnergyLogic.CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.ENDER_CAPACITOR.ordinal()));
+    getInventory().getSlot(EnergyLogic.CAPSLOT).set(new ItemStack(ModObject.itemBasicCapacitor.getItemNN(), 1, DefaultCapacitorData.BASIC_CAPACITOR.ordinal()));
     addICap(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facingIn -> hasPower() ? ICap.NEXT : ICap.DENY);
   }
 
@@ -105,17 +104,14 @@ public abstract class TileInventoryChest extends AbstractCapabilityMachineEntity
 
   @Override
   protected void processTasks(boolean redstoneCheck) {
-    getEnergy().useEnergy();
-    if (lastState != hasPower()) {
-      lastState = hasPower();
+    boolean hasPower = getEnergy().useEnergy();
+    if (lastState != hasPower) {
+      lastState = hasPower;
       updateClients = true;
     }
   }
 
   public int getComparatorInputOverride() {
-    if (size == null) {
-      return 0;
-    }
     int count = 0;
     for (InventorySlot slot : getInventory().getView(EnderInventory.Type.INOUT)) {
       if (Prep.isValid(slot.getStackInSlot(0))) {

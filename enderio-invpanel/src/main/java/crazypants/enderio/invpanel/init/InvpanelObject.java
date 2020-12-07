@@ -10,7 +10,6 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.IModTileEntity;
-import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.init.IModObjectBase;
 import crazypants.enderio.base.init.ModObjectRegistry;
 import crazypants.enderio.base.init.RegisterModObject;
@@ -112,7 +111,6 @@ public enum InvpanelObject implements IModObjectBase {
 
   @Override
   public final @Nonnull <B extends Block> B apply(@Nonnull B blockIn) {
-    blockIn.setCreativeTab(EnderIOTab.tabEnderIOInvpanel);
     return IModObjectBase.super.apply(blockIn);
   }
 
