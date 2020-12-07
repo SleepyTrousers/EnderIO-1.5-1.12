@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.enderio.core.common.util.DyeColor;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -40,6 +41,12 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   public static final String ICON_INSERT_KEY = "enderio:liquidConduitAdvancedOutput";
   public static final String ICON_IN_OUT_KEY = "enderio:liquidConduitAdvancedInOut";
 
+  public static final String ICON_KEY_INPUT = "enderio:itemConduitInput";
+  public static final String ICON_KEY_OUTPUT = "enderio:itemConduitOutput";
+  public static final String ICON_KEY_IN_OUT_BG = "enderio:itemConduitIoConnector";
+  public static final String ICON_KEY_IN_OUT_OUT = "enderio:itemConduitInOut_Out";
+  public static final String ICON_KEY_IN_OUT_IN = "enderio:itemConduitInOut_In";
+
   static final Map<String, IIcon> ICONS = new HashMap<String, IIcon>();
 
   @SideOnly(Side.CLIENT)
@@ -53,6 +60,12 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
         ICONS.put(ICON_EXTRACT_KEY, register.registerIcon(ICON_EXTRACT_KEY));
         ICONS.put(ICON_INSERT_KEY, register.registerIcon(ICON_INSERT_KEY));
         ICONS.put(ICON_IN_OUT_KEY, register.registerIcon(ICON_IN_OUT_KEY));
+
+        ICONS.put(ICON_KEY_INPUT, register.registerIcon(ICON_KEY_INPUT));
+        ICONS.put(ICON_KEY_OUTPUT, register.registerIcon(ICON_KEY_OUTPUT));
+        ICONS.put(ICON_KEY_IN_OUT_OUT, register.registerIcon(ICON_KEY_IN_OUT_OUT));
+        ICONS.put(ICON_KEY_IN_OUT_IN, register.registerIcon(ICON_KEY_IN_OUT_IN));
+        ICONS.put(ICON_KEY_IN_OUT_BG, register.registerIcon(ICON_KEY_IN_OUT_BG));
       }
 
       @Override
@@ -68,6 +81,9 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
 
   private final EnumMap<ForgeDirection, FluidFilter> outputFilters = new EnumMap<ForgeDirection, FluidFilter>(ForgeDirection.class);
   private final EnumMap<ForgeDirection, FluidFilter> inputFilters = new EnumMap<ForgeDirection, FluidFilter>(ForgeDirection.class);
+
+  protected final EnumMap<ForgeDirection, DyeColor> outputColors = new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
+  protected final EnumMap<ForgeDirection, DyeColor> inputColors = new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
 
   @Override
   public ItemStack createItem() {
@@ -165,17 +181,21 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   }
 
   public IIcon getTextureForInputMode() {
-    return ICONS.get(ICON_EXTRACT_KEY);
+    return ICONS.get(ICON_KEY_INPUT);
   }
 
   public IIcon getTextureForOutputMode() {
-    return ICONS.get(ICON_INSERT_KEY);
+    return ICONS.get(ICON_KEY_OUTPUT);
   }
 
-  public IIcon getTextureForInOutMode() {
-    return ICONS.get(ICON_IN_OUT_KEY);
+
+  public IIcon getTextureForInOutMode(boolean input) {
+    return input ? ICONS.get(ICON_KEY_IN_OUT_IN) : ICONS.get(ICON_KEY_IN_OUT_OUT);
   }
 
+  public IIcon getTextureForInOutBackground() {
+    return ICONS.get(ICON_KEY_IN_OUT_BG);
+  }
   @Override
   public IIcon getTransmitionTextureForState(CollidableComponent component) {
     return null;
@@ -298,10 +318,54 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
     }
     return network.getTankInfo(this, from);
   }
+  //@Override
+  public DyeColor getInputColor(ForgeDirection dir) {
+    DyeColor result = inputColors.get(dir);
+    if(result == null) {
+      return DyeColor.GREEN;
+    }
+    return result;
+  }
+
+  //@Override
+  public DyeColor getOutputColor(ForgeDirection dir) {
+    DyeColor result = outputColors.get(dir);
+    if(result == null) {
+      return DyeColor.GREEN;
+    }
+    return result;
+  }
+  //@Override
+  public void setInputColor(ForgeDirection dir, DyeColor col) {
+    inputColors.put(dir, col);
+    if(network != null) {
+      network.notifyNetworkOfUpdate();
+    }
+    setClientStateDirty();
+    collidablesDirty = true;
+  }
+
+  //@Override
+  public void setOutputColor(ForgeDirection dir, DyeColor col) {
+    outputColors.put(dir, col);
+    if(network != null) {
+      network.notifyNetworkOfUpdate();
+    }
+    setClientStateDirty();
+    collidablesDirty = true;
+  }
   
   @Override
   protected void readTypeSettings(ForgeDirection dir, NBTTagCompound dataRoot) {
     super.readTypeSettings(dir, dataRoot);
+
+    if (dataRoot.hasKey("inputColor")) {
+      setInputColor(dir, DyeColor.values()[dataRoot.getShort("inputColor")]);
+    }
+    if (dataRoot.hasKey("outputColor")) {
+      setOutputColor(dir, DyeColor.values()[dataRoot.getShort("outputColor")]);
+    }
+
     if (dataRoot.hasKey("outputFilters")) {
       FluidFilter out = new FluidFilter();
       out.readFromNBT(dataRoot.getCompoundTag("outputFilters"));
@@ -317,6 +381,10 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   @Override
   protected void writeTypeSettingsToNbt(ForgeDirection dir, NBTTagCompound dataRoot) {
     super.writeTypeSettingsToNbt(dir, dataRoot);
+
+    dataRoot.setShort("inputColor", (short)getInputColor(dir).ordinal());
+    dataRoot.setShort("outputColor", (short)getOutputColor(dir).ordinal());
+
     FluidFilter out = outputFilters.get(dir);
     if (out != null) {
       NBTTagCompound outTag = new NBTTagCompound();
@@ -329,6 +397,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
       in.writeToNBT(inTag);
       dataRoot.setTag("inputFilters", inTag);
     }
+
   }
 
   @Override
@@ -354,6 +423,19 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
         }
       }
     }
+    for (Entry<ForgeDirection, DyeColor> entry : inputColors.entrySet()) {
+      if(entry.getValue() != null) {
+        short ord = (short) entry.getValue().ordinal();
+        nbtRoot.setShort("inSC." + entry.getKey().name(), ord);
+      }
+    }
+
+    for (Entry<ForgeDirection, DyeColor> entry : outputColors.entrySet()) {
+      if(entry.getValue() != null) {
+        short ord = (short) entry.getValue().ordinal();
+        nbtRoot.setShort("outSC." + entry.getKey().name(), ord);
+      }
+    }
   }
 
   @Override
@@ -377,6 +459,22 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
         f.readFromNBT(filterTag);
         if(!f.isEmpty()) {
           outputFilters.put(dir, f);
+        }
+      }
+
+      key = "inSC." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        short ord = nbtRoot.getShort(key);
+        if(ord >= 0 && ord < DyeColor.values().length) {
+          inputColors.put(dir, DyeColor.values()[ord]);
+        }
+      }
+
+      key = "outSC." + dir.name();
+      if(nbtRoot.hasKey(key)) {
+        short ord = nbtRoot.getShort(key);
+        if(ord >= 0 && ord < DyeColor.values().length) {
+          outputColors.put(dir, DyeColor.values()[ord]);
         }
       }
     }

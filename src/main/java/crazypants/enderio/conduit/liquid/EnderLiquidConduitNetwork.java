@@ -94,7 +94,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
       //TODO: Only change starting pos of iterator is doFill is true so a false then true returns the same
 
       for (NetworkTank target : getIteratorForTank(tank)) {
-        if(!target.equals(tank) && target.acceptsOuput && target.isValid() && matchedFilter(resource, target.con, target.conDir, false)) {
+        if(!target.equals(tank) && target.con.getOutputColor(target.conDir).equals(tank.con.getInputColor(tank.conDir)) && target.acceptsOuput && target.isValid() && matchedFilter(resource, target.con, target.conDir, false)) {
           int vol = target.externalTank.fill(target.tankDir, resource.copy(), doFill);
           remaining -= vol;
           filled += vol;
