@@ -9,13 +9,11 @@ import org.apache.commons.lang3.tuple.Triple;
 import com.enderio.core.common.mixin.SimpleMixinLoader;
 import com.enderio.core.common.util.NNList;
 
-import appeng.api.networking.IGridHost;
 import crazypants.enderio.api.addon.IEnderIOAddon;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.recipes.RecipeFactory;
 import crazypants.enderio.base.init.RegisterModObject;
 import crazypants.enderio.conduit.me.init.ConduitAppliedEnergisticsObject;
-import crazypants.enderio.conduits.conduit.TileConduitBundle;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -70,8 +68,6 @@ public class EnderIOConduitsAppliedEnergistics implements IEnderIOAddon {
   @EventHandler
   public static void init(FMLInitializationEvent event) {
     if (MEUtil.isMEEnabled()) {
-      // Sanity checking
-      System.out.println("Mixin successful? " + IGridHost.class.isAssignableFrom(TileConduitBundle.class));
     }
   }
 
