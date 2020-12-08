@@ -77,6 +77,7 @@ public class ItemRecipeNode<REC, CHL extends IRecipeNode<?, ?, ?>> implements IR
         }
         next = i1.next();
         if (!seen.contains(next)) {
+          seen.add(next);
           return;
         }
       }
