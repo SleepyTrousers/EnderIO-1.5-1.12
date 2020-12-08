@@ -23,11 +23,11 @@ public final class DarkSteelConfig {
 
   public static final NNList<IValue<Integer>> miningLevel = new NNList<>( //
       F_MATS_DS.make("miningLevel", 4, //
-          "Mining level for tools made out of Dark Steel. (highest vanilla level is 3, highest TiC level is 4 by default)").setRange(0, 10).sync(),
+          "Mining level for tools made out of Dark Steel. (highest vanilla level is 3, highest TiC level is 4 by default)").setMin(0).sync(),
       F_MATS_ES.make("miningLevel", 5, //
-          "Mining level for tools made out of End Steel. (highest vanilla level is 3, highest TiC level is 4 by default)").setRange(0, 10).sync(),
+          "Mining level for tools made out of End Steel. (highest vanilla level is 3, highest TiC level is 4 by default)").setMin(0).sync(),
       F_MATS_ST.make("miningLevel", 8, //
-          "Mining level for tools made out of Stellar Alloy. (highest vanilla level is 3, highest TiC level is 4 by default)").setRange(0, 10).sync());
+          "Mining level for tools made out of Stellar Alloy. (highest vanilla level is 3, highest TiC level is 4 by default)").setMin(0).sync());
 
   public static final IValueFactory F_PICKAXE = F_DARK_STEEL.section(".pickaxe");
 
@@ -203,6 +203,7 @@ public final class DarkSteelConfig {
     COL5(5),
     COL7(7),
     COL9(9);
+
     public final int cols;
 
     private COLS(int cols) {
