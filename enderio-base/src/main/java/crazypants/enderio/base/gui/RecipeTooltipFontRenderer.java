@@ -9,14 +9,20 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Nonnull;
 
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -25,20 +31,20 @@ import net.minecraft.util.ResourceLocation;
  * <p>
  * To use this in a GUI:
  * <ul>
- * <li>The GUI must be a subclass if {@link GuiContainerBaseEIO}.
  * <li>Add a field of the type RecipeTooltipFontRenderer to your class. <br>
  * <code>final @Nonnull RecipeTooltipFontRenderer rtfr;</code>
  * <li>Initialize that field in your constructor. <br>
- * <code>rtfr = new RecipeTooltipFontRenderer(this);</code>
+ * <code>rtfr = new RecipeTooltipFontRenderer();</code>
  * <li>Override getFontRenderer() to return it. <br>
  * <code>@Override<br>public @Nonnull FontRenderer getFontRenderer() {<br>return rtfr;<br>}</code>
  * <li>Register your recipe(s) with the font renderer. <br>
  * <code>rtfr.registerRecipe("abc123", new NNList<>(...));</code><br>
  * The ID can be any string, it is fine to replace already registered recipes. The NNList should have up to 9 ItemStacks for the 9 slots of the crafting grid
  * (in reading order).
- * <li>Add 6(!) lines to any tooltip that is part of your GUI. The first one has {@link #RECIPE_ID} followed directly by the ID you used to register the recipe
- * to be rendered followed by {@link #RECIPE_END}. The other 5 have {@link #RECIPE}, those only provide enough space for the recipe to be rendered. Both types
- * of lines can have extra text which is rendered to the right of the recipe grid (even if it was in front of the marker).
+ * <li>Manual way: Add 6(!) lines to any tooltip that is part of your GUI. The first one has {@link #RECIPE_ID} followed directly by the ID you used to register
+ * the recipe to be rendered followed by {@link #RECIPE_END}. The other 5 have {@link #RECIPE}, those only provide enough space for the recipe to be rendered.
+ * Both types of lines can have extra text which is rendered to the right of the recipe grid (even if it was in front of the marker).
+ * <li>Single-use way: Add the result of addRecipe() to your tooltip lines.
  * </ul>
  */
 public class RecipeTooltipFontRenderer extends FontRenderer {
@@ -66,34 +72,52 @@ public class RecipeTooltipFontRenderer extends FontRenderer {
       new Point(S1, S3), new Point(S2, S3), new Point(S3, S3) //
   );
 
-  protected final @Nonnull GuiContainerBaseEIO<?> gui;
   protected final @Nonnull Map<String, NNList<ItemStack>> recipes = new HashMap<>();
 
-  @SuppressWarnings("null")
-  public RecipeTooltipFontRenderer(@Nonnull GuiContainerBaseEIO<?> gui) {
+  private static final @Nonnull RecipeTooltipFontRenderer instance = new RecipeTooltipFontRenderer();
+
+  public static @Nonnull RecipeTooltipFontRenderer getInstance() {
+    return instance;
+  }
+
+  protected RecipeTooltipFontRenderer() {
     super(Minecraft.getMinecraft().gameSettings, new ResourceLocation("textures/font/ascii.png"), Minecraft.getMinecraft().renderEngine, false);
-    if (Minecraft.getMinecraft().gameSettings.language != null) {
+    if (NullHelper.untrust(Minecraft.getMinecraft().gameSettings.language) != null) {
       setUnicodeFlag(Minecraft.getMinecraft().isUnicode());
       setBidiFlag(Minecraft.getMinecraft().getLanguageManager().isCurrentLanguageBidirectional());
     }
-    onResourceManagerReload(null);
-    // This renderer should not be kept around for longer than a GUI is open, so we don't need to register it for
-    // resource manager reloads.
-    this.gui = gui;
+    ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(this);
+    onResourceManagerReload(Minecraft.getMinecraft().getResourceManager());
   }
 
-  public void registerRecipe(String id, @Nonnull NNList<ItemStack> recipe) {
+  public @Nonnull NNList<String> registerRecipe(@Nonnull String id, @Nonnull NNList<ItemStack> recipe) {
     recipes.put(id, recipe);
+    return makeRecipeLines(id);
+  }
+
+  public @Nonnull NNList<String> makeRecipeLines(@Nonnull String id) {
+    NNList<String> result = new NNList<>();
+    result.add(RECIPE_ID + id + RECIPE_END);
+    result.add(RECIPE);
+    result.add(RECIPE);
+    result.add(RECIPE);
+    result.add(RECIPE);
+    result.add(RECIPE);
+    return result;
   }
 
   @Override
   public int getStringWidth(@Nonnull String text) {
     final Matcher match = PATTERN.matcher(text);
     if (match.find()) {
-      final int width = super.getStringWidth(match.replaceFirst(""));
+      final int width = super.getStringWidth(withoutMatch(match));
       return FULL_WIDTH + (width > 0 ? width + 2 : 0);
     }
     return super.getStringWidth(text);
+  }
+
+  private @Nonnull String withoutMatch(final Matcher match) {
+    return NullHelper.first(match.replaceFirst(""), "");
   }
 
   @Override
@@ -117,7 +141,7 @@ public class RecipeTooltipFontRenderer extends FontRenderer {
       if (id != null && !id.isEmpty()) {
         drawRecipeAt((int) x, (int) y, id, color);
       }
-      return super.drawStringWithShadow(match.replaceFirst(""), x + FULL_WIDTH + 2, y, color);
+      return super.drawStringWithShadow(withoutMatch(match), x + FULL_WIDTH + 2, y, color);
     } else {
       return super.drawStringWithShadow(text, x, y, color);
     }
@@ -125,14 +149,12 @@ public class RecipeTooltipFontRenderer extends FontRenderer {
 
   @SuppressWarnings("null")
   protected void drawRecipeAt(int x, int y, @Nonnull String id, int color) {
-    float old = gui.setZLevel(300.0F);
-    gui.drawGradientRect(x + 0 * WIDTH, y + 0 * WIDTH, x + 3 * WIDTH + BORDER, y + 3 * WIDTH + BORDER, color & 0xFF7F7F7F, color & 0xFF7F7F7F);
+    drawRectangle(300, x + 0 * WIDTH, y + 0 * WIDTH, x + 3 * WIDTH + BORDER, y + 3 * WIDTH + BORDER, color & 0xFF7F7F7F);
 
     for (int r = 0; r < 4; r++) {
-      gui.drawGradientRect(x + 0 * WIDTH, y + r * WIDTH, x + 3 * WIDTH + BORDER, y + r * WIDTH + BORDER, color, color);
-      gui.drawGradientRect(x + r * WIDTH, y + 0 * WIDTH, x + r * WIDTH + BORDER, y + 3 * WIDTH + BORDER, color, color);
+      drawRectangle(300, x + 0 * WIDTH, y + r * WIDTH, x + 3 * WIDTH + BORDER, y + r * WIDTH + BORDER, color);
+      drawRectangle(300, x + r * WIDTH, y + 0 * WIDTH, x + r * WIDTH + BORDER, y + 3 * WIDTH + BORDER, color);
     }
-    gui.setZLevel(old);
 
     GlStateManager.enableLighting();
     GlStateManager.enableDepth();
@@ -140,19 +162,45 @@ public class RecipeTooltipFontRenderer extends FontRenderer {
     GlStateManager.enableRescaleNormal();
 
     final RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
-    old = renderItem.zLevel;
+    float old = renderItem.zLevel;
     renderItem.zLevel = 400;
     int pos = 0;
     for (ItemStack stack : NullHelper.first(recipes.get(id), NNList.<ItemStack> emptyList())) {
       Point point = LOCS.get(pos++);
-      gui.drawFakeItemStack(x + point.x, y + point.y, stack);
+      renderItem.renderItemAndEffectIntoGUI(stack, x + point.x, y + point.y);
+      GlStateManager.enableAlpha();
     }
     renderItem.zLevel = old;
-    
+
     GlStateManager.disableRescaleNormal();
     RenderHelper.disableStandardItemLighting();
     GlStateManager.disableLighting();
     GlStateManager.disableDepth();
+  }
+
+  protected void drawRectangle(double zLevel, int left, int top, int right, int bottom, int color) {
+    float a = (color >> 24 & 255) / 255.0F;
+    float r = (color >> 16 & 255) / 255.0F;
+    float g = (color >> 8 & 255) / 255.0F;
+    float b = (color & 255) / 255.0F;
+    GlStateManager.disableTexture2D();
+    GlStateManager.enableBlend();
+    GlStateManager.disableAlpha();
+    GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE,
+        GlStateManager.DestFactor.ZERO);
+    GlStateManager.shadeModel(GL11.GL_SMOOTH);
+    Tessellator tessellator = Tessellator.getInstance();
+    BufferBuilder bufferbuilder = tessellator.getBuffer();
+    bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
+    bufferbuilder.pos(right, top, zLevel).color(r, g, b, a).endVertex();
+    bufferbuilder.pos(left, top, zLevel).color(r, g, b, a).endVertex();
+    bufferbuilder.pos(left, bottom, zLevel).color(r, g, b, a).endVertex();
+    bufferbuilder.pos(right, bottom, zLevel).color(r, g, b, a).endVertex();
+    tessellator.draw();
+    GlStateManager.shadeModel(GL11.GL_FLAT);
+    GlStateManager.disableBlend();
+    GlStateManager.enableAlpha();
+    GlStateManager.enableTexture2D();
   }
 
 }

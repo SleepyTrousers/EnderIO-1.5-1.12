@@ -129,7 +129,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     redstoneButton.visible = false;
     configB.visible = false;
 
-    rtfr = new RecipeTooltipFontRenderer(this);
+    rtfr = RecipeTooltipFontRenderer.getInstance();
 
     this.ghostSlotHandler = new GhostSlotHandler() {
       @Override
@@ -492,7 +492,6 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     if (JeiAccessor.isJeiRuntimeAvailable() && btnSync.isSelected()) {
       updateFromJEI();
     }
-
 
     view.setDatabase(getDatabase());
 
