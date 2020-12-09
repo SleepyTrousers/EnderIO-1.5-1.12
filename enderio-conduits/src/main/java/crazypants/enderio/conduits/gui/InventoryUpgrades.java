@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.conduit.IConduit;
 import crazypants.enderio.base.conduit.item.ItemFunctionUpgrade;
 import crazypants.enderio.base.filter.IFilter;
@@ -123,7 +125,7 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
 
   private boolean isFilterUpgradeAccepted(@Nonnull ItemStack stack, IConduit con, boolean isInput) {
     if (con instanceof IFilterHolder) {
-      return ((IFilterHolder) con).isFilterUpgradeAccepted(stack, isInput);
+      return ((IFilterHolder<?>) con).isFilterUpgradeAccepted(stack, isInput);
     }
     return false;
   }
@@ -142,11 +144,11 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
 
   @Override
   public int getSlotLimit(int slot) {
-    return slot == 0 ? upgradeHolder.getUpgradeSlotLimit() : 1;
+    return slot == 0 && upgradeHolder != null ? upgradeHolder.getUpgradeSlotLimit() : 1;
   }
 
   public int getSlotLimit(int slot, @Nonnull ItemStack stack) {
-    return slot == 0 ? upgradeHolder.getUpgradeSlotLimit(stack) : getSlotLimit(slot);
+    return slot == 0 && upgradeHolder != null ? upgradeHolder.getUpgradeSlotLimit(stack) : getSlotLimit(slot);
   }
 
   @Override
@@ -155,7 +157,7 @@ public class InventoryUpgrades implements IItemHandlerModifiable {
   }
 
   public @Nonnull List<String> getFunctionUpgradeToolTipText() {
-    return upgradeHolder.getFunctionUpgradeToolTipText(dir);
+    return upgradeHolder == null ? NNList.emptyList() : upgradeHolder.getFunctionUpgradeToolTipText(dir);
   }
 
 }
