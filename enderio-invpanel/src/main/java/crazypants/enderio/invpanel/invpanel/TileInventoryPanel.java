@@ -313,7 +313,7 @@ public class TileInventoryPanel extends AbstractInventoryMachineEntity implement
     this.guiSortMode = sortMode;
     this.guiFilterString = filterString;
     this.guiSync = sync;
-    if (!world.isRemote) {
+    if (world != null && !world.isRemote) {
       PacketHandler.INSTANCE.sendToDimension(new PacketGuiSettingsUpdated(this), world.provider.getDimension());
       markDirty();
     }
