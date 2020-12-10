@@ -1198,7 +1198,10 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Holy Dust, Batman" required="true">
     <sagmilling energy="5000">
       <input name="itemClayedGlowstone"/>
-      <output name="enderio:block_holy_fog" amount="2" chance="0.8"/>
+      <!-- Note: The "old" holy fog is still around. It has a much smaller area and doesn't use a TE to store its data.
+                 You can switch this recipe if you run into performance issues with the new one. -->
+<!--  <output name="enderio:block_holy_fog" amount="2" chance="0.8"/> -->
+      <output name="enderio:block_holier_fog" amount="1" chance="0.8"/>
       <output name="dustGlowstone" chance="0.1"/>
       <output name="oredict:itemClay" chance="0.1"/>
     </sagmilling>

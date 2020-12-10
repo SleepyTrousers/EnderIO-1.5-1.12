@@ -232,7 +232,7 @@ public abstract class TileEntityEio extends TileEntityBase {
    * CAPABILITIES
    *************************************/
 
-  private final @Nonnull ICap.List iCaps = new ICap.List((capability, facingIn) -> super.getCapability(capability, facingIn));
+  private final @Nonnull ICap.List iCaps = new ICap.List(super::getCapability);
 
   public final void addICap(@Nonnull ICap iCap) {
     iCaps.add(iCap);
@@ -243,8 +243,8 @@ public abstract class TileEntityEio extends TileEntityBase {
   }
 
   @Override
-  public final boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing1) {
-    return getCapability(capability, facing1) != null;
+  public final boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facingIn) {
+    return getCapability(capability, facingIn) != null;
   }
 
   @SuppressWarnings("unchecked")

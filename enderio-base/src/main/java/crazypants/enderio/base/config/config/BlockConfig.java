@@ -56,4 +56,10 @@ public final class BlockConfig {
   public static final IValue<Float> dsaMaxDrop = DSA.make("maxDrop", 1f, //
       "Maximum amount of materials that will drop when recycling a broken Dark Steel Anvil. (0 = nothing, 1 = everything)").setRange(0, 1).sync();
 
+  public static final IValueFactoryEIO HOLY = F.section(".holy_fog");
+
+  public static final IValue<Integer> holyQuanta = DSA.make("maxQuanty", 16 * 8, //
+      "Qanta of a source block of Holier Fog. Equates to the number of blocks that can be covered if the Holier Fog flows maximally.")
+      .setRange(16, 16 * 16 * 16).sync();
+
 }

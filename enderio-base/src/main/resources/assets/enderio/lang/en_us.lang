@@ -391,11 +391,13 @@ tile.block_infinity_fog.tooltip.detailed.line1=When Grains of Infinity are groun
 tile.block_infinity_fog.tooltip.detailed.line2=Released into the air it forms a volatile dust cloud. Touching it is unhealthy at the least. And when the dust settles, it may leave some nasty things behind.
 tile.block_infinity_fog.tooltip.detailed.line3=§6Has a chance of spawning §lEndermen§r§6 and other monsters.
 
-tile.block_holy_fog.name=Glowstone Nano-Particles
-tile.block_holy_fog.tooltip.common.line1=(PM2.5)
-tile.block_holy_fog.tooltip.detailed.line1=Grinding down glowstone into ultra-fine particles allows the dust to hang in the air forever.
-tile.block_holy_fog.tooltip.detailed.line2=One hand-full of nano-particles can cover up to 16 blocks.
-tile.block_holy_fog.tooltip.detailed.line3=Has a chance of hurting the §lUndead§r§6.
+tile.block_holy_fog.name=Glowstone Nano-Particles (old)
+
+tile.block_holier_fog.name=Glowstone Nano-Particles
+tile.block_holier_fog.tooltip.common.line1=(PM2.5)
+tile.block_holier_fog.tooltip.detailed.line1=Grinding down glowstone into ultra-fine particles allows the dust to hang in the air forever.
+tile.block_holier_fog.tooltip.detailed.line2=One hand-full of nano-particles can cover a wide area.
+tile.block_holier_fog.tooltip.detailed.line3=Has a chance of hurting the §lUndead§r§6. Will be washed out by fluids and rain.
 
 tile.block_infinity_0.name=Infinity Dust Block
 tile.block_infinity_0.tooltip.common.line1=Not quite solid

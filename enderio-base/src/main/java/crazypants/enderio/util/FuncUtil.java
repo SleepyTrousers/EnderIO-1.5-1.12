@@ -38,7 +38,7 @@ public final class FuncUtil {
     return NullHelper.first(source == null ? null : getter.apply(source), defaultValue.get());
   }
 
-  public static <F> void doIf(@Nullable F source, Consumer<F> setter) {
+  public static <F> void doIf(@Nullable F source, Consumer<@Nonnull F> setter) {
     if (source != null) {
       setter.accept(source);
     }

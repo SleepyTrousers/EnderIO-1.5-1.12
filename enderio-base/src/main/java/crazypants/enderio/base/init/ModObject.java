@@ -26,6 +26,7 @@ import crazypants.enderio.base.block.darksteel.trapdoor.BlockDarkSteelTrapDoor;
 import crazypants.enderio.base.block.decoration.BlockDecoration;
 import crazypants.enderio.base.block.decoration.BlockDecorationFacing;
 import crazypants.enderio.base.block.detector.BlockDetector;
+import crazypants.enderio.base.block.holy.BlockHolierFog;
 import crazypants.enderio.base.block.holy.BlockHolyFog;
 import crazypants.enderio.base.block.infinity.BlockInfinity;
 import crazypants.enderio.base.block.infinity.BlockInfinityFog;
@@ -126,6 +127,7 @@ public enum ModObject implements IModObjectBase {
   block_infinity_fog(BlockInfinityFog::create),
   block_infinity(BlockInfinity::create),
   block_holy_fog(BlockHolyFog::create),
+  block_holier_fog(BlockHolierFog::create),
 
   // Blocks
   blockColdFire(BlockColdFire::create),
