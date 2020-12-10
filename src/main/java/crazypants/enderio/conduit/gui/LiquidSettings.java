@@ -5,6 +5,8 @@ import java.awt.Rectangle;
 import java.util.Collections;
 import java.util.List;
 
+import com.enderio.core.client.gui.button.ToggleButton;
+import crazypants.enderio.conduit.packet.PacketRoundRobinMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -41,11 +43,13 @@ public class LiquidSettings extends BaseSettingsPanel {
   static final int ID_REDSTONE_BUTTON = GuiExternalConnection.nextButtonId();
 
   private static final int ID_COLOR_BUTTON = GuiExternalConnection.nextButtonId();
+  private static final int ID_ROUND_ROBIN_BUTTON = GuiExternalConnection.nextButtonId();
   private static final int ID_WHITELIST = GuiExternalConnection.nextButtonId();
 
   private static final int NEXT_FILTER_ID = 989322;
 
   private final RedstoneModeButton rsB;
+  private final ToggleButton roundRobinB;
   private final ColorButton colorB;
 
   private static final String autoExtractStr = EnderIO.lang.localize("gui.conduit.fluid.autoExtract");
@@ -112,6 +116,16 @@ public class LiquidSettings extends BaseSettingsPanel {
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
     colorB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.redstone.signalColor"));
     colorB.setColorIndex(conduit.getExtractionSignalColor(gui.getDir()).ordinal());
+
+    if (isEnder) {
+      x += rsB.getWidth() + gap;
+      roundRobinB = new ToggleButton(gui, ID_ROUND_ROBIN_BUTTON, x, y, IconEIO.ROUND_ROBIN_OFF, IconEIO.ROUND_ROBIN);
+      roundRobinB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.roundRobinEnabled"));
+      roundRobinB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.roundRobinDisabled"));
+      roundRobinB.setPaintSelectedBorder(false);
+    } else {
+      roundRobinB = null;
+    }
   }
 
   private void addFilterTooltips() {
@@ -134,14 +148,26 @@ public class LiquidSettings extends BaseSettingsPanel {
     } else if(guiButton.id == NEXT_FILTER_ID) {
       inOutShowIn = !inOutShowIn;
       if(isInput()) {
+        if (isEnder) {
+          roundRobinB.onGuiInit();
+        }
         rsB.onGuiInit();
         colorB.onGuiInit();
       } else {
+        if (isEnder) {
+          roundRobinB.detach();
+        }
         rsB.detach();
         colorB.detach();
       }
       if(isFilterVisible()) {
         updateWhiteListButton(eConduit.getFilter(gui.getDir(), isInput()));
+      }
+    } else if(guiButton.id == ID_ROUND_ROBIN_BUTTON) {
+      if (isEnder && isInput()) {
+        final boolean selected = roundRobinB.isSelected();
+        eConduit.setRoundRobin(gui.getDir(), selected);
+        PacketHandler.INSTANCE.sendToServer(new PacketRoundRobinMode(eConduit, gui.getDir()));
       }
     }
   }
@@ -209,6 +235,11 @@ public class LiquidSettings extends BaseSettingsPanel {
       return;
     }
 
+    if(isInput()) {
+      roundRobinB.onGuiInit();
+      roundRobinB.setSelected(eConduit.isRoundRobin(gui.getDir()));
+    }
+
     if(isFilterVisible()) {
       gui.getContainer().setInventorySlotsVisible(true);
       addFilterTooltips();
@@ -241,6 +272,7 @@ public class LiquidSettings extends BaseSettingsPanel {
     rsB.detach();
     colorB.detach();
     if(isEnder) {
+      roundRobinB.detach();
       gui.getContainer().setInventorySlotsVisible(false);
       if(filterToolTips != null) {
         for (GuiToolTip tt : filterToolTips) {

@@ -1,11 +1,14 @@
 package crazypants.enderio.conduit.liquid;
 
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.common.util.BlockCoord;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.*;
+import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -17,20 +20,11 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
-import com.enderio.core.client.render.IconUtil;
-import com.enderio.core.common.util.BlockCoord;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.RaytraceResult;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.tool.ToolUtil;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class EnderLiquidConduit extends AbstractLiquidConduit {
 
@@ -68,7 +62,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
 
   private final EnumMap<ForgeDirection, FluidFilter> outputFilters = new EnumMap<ForgeDirection, FluidFilter>(ForgeDirection.class);
   private final EnumMap<ForgeDirection, FluidFilter> inputFilters = new EnumMap<ForgeDirection, FluidFilter>(ForgeDirection.class);
-
+  private int roundRobin = 0;
   @Override
   public ItemStack createItem() {
     return new ItemStack(EnderIO.itemLiquidConduit, 1, 2);
@@ -302,6 +296,11 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   @Override
   protected void readTypeSettings(ForgeDirection dir, NBTTagCompound dataRoot) {
     super.readTypeSettings(dir, dataRoot);
+    if(dataRoot.hasKey("roundRobin")) {
+      setRoundRobin(dir, dataRoot.getBoolean("roundRobin"));
+    } else {
+      setRoundRobin(dir, true);
+    }
     if (dataRoot.hasKey("outputFilters")) {
       FluidFilter out = new FluidFilter();
       out.readFromNBT(dataRoot.getCompoundTag("outputFilters"));
@@ -317,6 +316,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   @Override
   protected void writeTypeSettingsToNbt(ForgeDirection dir, NBTTagCompound dataRoot) {
     super.writeTypeSettingsToNbt(dir, dataRoot);
+    dataRoot.setBoolean("roundRobin", isRoundRobin(dir));
     FluidFilter out = outputFilters.get(dir);
     if (out != null) {
       NBTTagCompound outTag = new NBTTagCompound();
@@ -334,6 +334,7 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   @Override
   public void writeToNBT(NBTTagCompound nbtRoot) {
     super.writeToNBT(nbtRoot);
+    nbtRoot.setInteger("roundRobin", roundRobin);
     for (Entry<ForgeDirection, FluidFilter> entry : inputFilters.entrySet()) {
       if(entry.getValue() != null) {
         FluidFilter f = entry.getValue();
@@ -359,6 +360,11 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
   @Override
   public void readFromNBT(NBTTagCompound nbtRoot, short nbtVersion) {
     super.readFromNBT(nbtRoot, nbtVersion);
+    if(nbtRoot.hasKey("roundRobin")) {
+      roundRobin = nbtRoot.getInteger("roundRobin");
+    } else {
+      roundRobin = 0b111111;
+    }
     for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
       String key = "inFilts." + dir.name();
       if(nbtRoot.hasKey(key)) {
@@ -383,4 +389,14 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
 
   }
 
+  public boolean isRoundRobin(ForgeDirection dir) {
+    return (roundRobin & dir.flag) != 0;
+  }
+
+  public void setRoundRobin(ForgeDirection dir, boolean roundRobin) {
+    if (roundRobin)
+      this.roundRobin |= dir.flag;
+    else
+      this.roundRobin &= ~dir.flag;
+  }
 }
