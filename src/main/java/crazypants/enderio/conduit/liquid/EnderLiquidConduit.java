@@ -9,6 +9,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.*;
 import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.item.ItemConduit;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.tool.ToolUtil;
 
@@ -33,15 +34,12 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
 
   public static final String ICON_KEY = "enderio:liquidConduitEnder";
   public static final String ICON_CORE_KEY = "enderio:liquidConduitCoreEnder";
-  public static final String ICON_EXTRACT_KEY = "enderio:liquidConduitAdvancedInput";
-  public static final String ICON_INSERT_KEY = "enderio:liquidConduitAdvancedOutput";
-  public static final String ICON_IN_OUT_KEY = "enderio:liquidConduitAdvancedInOut";
 
-  public static final String ICON_KEY_INPUT = "enderio:itemConduitInput";
-  public static final String ICON_KEY_OUTPUT = "enderio:itemConduitOutput";
-  public static final String ICON_KEY_IN_OUT_BG = "enderio:itemConduitIoConnector";
-  public static final String ICON_KEY_IN_OUT_OUT = "enderio:itemConduitInOut_Out";
-  public static final String ICON_KEY_IN_OUT_IN = "enderio:itemConduitInOut_In";
+  public static final String ICON_KEY_INPUT = ItemConduit.ICON_KEY_INPUT;
+  public static final String ICON_KEY_OUTPUT = ItemConduit.ICON_KEY_OUTPUT;
+  public static final String ICON_KEY_IN_OUT_BG = ItemConduit.ICON_KEY_IN_OUT_BG;
+  public static final String ICON_KEY_IN_OUT_OUT = ItemConduit.ICON_KEY_IN_OUT_OUT;
+  public static final String ICON_KEY_IN_OUT_IN = ItemConduit.ICON_KEY_IN_OUT_IN;
 
   static final Map<String, IIcon> ICONS = new HashMap<String, IIcon>();
 
@@ -53,9 +51,6 @@ public class EnderLiquidConduit extends AbstractLiquidConduit {
       public void registerIcons(IIconRegister register) {
         ICONS.put(ICON_KEY, register.registerIcon(ICON_KEY));
         ICONS.put(ICON_CORE_KEY, register.registerIcon(ICON_CORE_KEY));
-        ICONS.put(ICON_EXTRACT_KEY, register.registerIcon(ICON_EXTRACT_KEY));
-        ICONS.put(ICON_INSERT_KEY, register.registerIcon(ICON_INSERT_KEY));
-        ICONS.put(ICON_IN_OUT_KEY, register.registerIcon(ICON_IN_OUT_KEY));
 
         ICONS.put(ICON_KEY_INPUT, register.registerIcon(ICON_KEY_INPUT));
         ICONS.put(ICON_KEY_OUTPUT, register.registerIcon(ICON_KEY_OUTPUT));
