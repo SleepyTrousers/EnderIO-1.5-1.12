@@ -71,8 +71,13 @@ public class ServerTickHandler {
 
   @SubscribeEvent
   public static void onWorldTick(@Nonnull TickEvent.WorldTickEvent event) {
+    if (event.world.isRemote) {
+      throw new RuntimeException(
+          "TickEvent.WorldTickEvent was fired for a client world. This should not happen, some mod is messing with things it has no clue about.");
+    }
     final Profiler profiler = event.world.profiler.profilingEnabled ? event.world.profiler : null;
-    Prof.start(profiler, "WorldTickEvent_" + event.world.provider.getDimension() + "_" + event.phase);
+    Prof.start(profiler, "WorldTickEvent_" + event.phase);
+    Prof.start(profiler, "Dim" + event.world.provider.getDimension());
     worldListeners.computeIfAbsent((WorldServer) event.world, k -> new IdentityHashMap<>()).forEach((listener, name) -> {
       Prof.start(profiler, NullHelper.first(name, "(unnamed)"));
       if (event.phase == Phase.START) {
@@ -82,7 +87,7 @@ public class ServerTickHandler {
       }
       Prof.stop(profiler);
     });
-    Prof.stop(profiler);
+    Prof.stop(profiler, 2);
   }
 
   @SubscribeEvent
