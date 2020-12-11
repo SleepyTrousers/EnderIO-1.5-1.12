@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ender IO Discord
+    url: https://discord.gg/sgYk3Jr
+    about: The right place for asking quesions and getting support
+  - name: Check recent changes
+    url: https://ci.tterrag.com/job/EnderIO-Modules/job/EnderIO-Hourly/changes
+    about: Please check that your issue hasn't been fixed recently before reporting it
