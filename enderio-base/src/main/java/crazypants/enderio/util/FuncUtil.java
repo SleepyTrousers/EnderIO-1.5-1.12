@@ -11,10 +11,19 @@ import com.enderio.core.common.util.NullHelper;
 
 public final class FuncUtil {
 
+  @FunctionalInterface
   public interface FunctionNN<T, R> extends Function<T, R> {
 
     @Override
     R apply(@SuppressWarnings("null") @Nonnull T t);
+
+  }
+
+  @FunctionalInterface
+  public interface ConsumerNN<T> extends Consumer<T> {
+
+    @Override
+    void accept(@SuppressWarnings("null") @Nonnull T t);
 
   }
 
@@ -38,7 +47,7 @@ public final class FuncUtil {
     return NullHelper.first(source == null ? null : getter.apply(source), defaultValue.get());
   }
 
-  public static <F> void doIf(@Nullable F source, Consumer<@Nonnull F> setter) {
+  public static <F> void doIf(@Nullable F source, ConsumerNN<F> setter) {
     if (source != null) {
       setter.accept(source);
     }
