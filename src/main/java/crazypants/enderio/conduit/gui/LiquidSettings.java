@@ -187,12 +187,13 @@ public class LiquidSettings extends BaseSettingsPanel {
 
         DyeColor col = DyeColor.values()[channelB.getColorIndex()];
 
-        if(isInput()) {
+        if (isInput()) {
           eConduit.setInputColor(gui.getDir(), col);
-        } else  {
+        } else {
           eConduit.setOutputColor(gui.getDir(), col);
         }
         setConduitChannel(col);
+      }
     } else if(guiButton.id == ID_ROUND_ROBIN_BUTTON) {
       if (isEnder && isInput()) {
         final boolean selected = roundRobinB.isSelected();
