@@ -7,7 +7,6 @@ import crazypants.enderio.base.xp.PacketExperienceContainer;
 import crazypants.enderio.base.xp.XpUtil;
 import crazypants.enderio.machines.network.PacketHandler;
 import info.loenwind.processor.RemoteCall;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.math.MathHelper;
@@ -63,7 +62,7 @@ public class ContainerExperienceObelisk extends Container {
       inv.getContainer().addExperience(diffxp);
     } else {
       try {
-        int level = MathHelper.clamp(Minecraft.getMinecraft().player.experienceLevel - levels, 0, Minecraft.getMinecraft().player.experienceLevel);
+        int level = MathHelper.clamp(player.experienceLevel - levels, 0, player.experienceLevel);
         inv.getContainer().drainPlayerXpToReachPlayerLevel(player, level);
       } catch (XpUtil.TooManyXPLevelsException e) {
         player.sendStatusMessage(Lang.GUI_TOO_MANY_LEVELS.toChatServer(), true);
