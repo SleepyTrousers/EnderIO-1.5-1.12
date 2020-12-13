@@ -131,7 +131,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
       TankIterator iterator;
       for (iterator = getIteratorForTank(tank).start(); iterator.hasNext(); ) {
         NetworkTank target = iterator.next();
-        if (!target.equals(tank) && target.acceptsOuput && target.isValid() && matchedFilter(resource, target.con, target.conDir, false)) {
+        if (!target.equals(tank) && target.con.getOutputColor(target.conDir).equals(tank.con.getInputColor(tank.conDir)) && target.acceptsOuput && target.isValid() && matchedFilter(resource, target.con, target.conDir, false)) {
           int vol = target.externalTank.fill(target.tankDir, resource.copy(), doFill);
           remaining -= vol;
           filled += vol;

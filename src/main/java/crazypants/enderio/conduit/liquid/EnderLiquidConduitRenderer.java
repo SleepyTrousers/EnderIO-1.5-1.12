@@ -1,6 +1,9 @@
 package crazypants.enderio.conduit.liquid;
 
+import com.enderio.core.common.util.DyeColor;
+import crazypants.enderio.conduit.item.IItemConduit;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -26,19 +29,42 @@ public class EnderLiquidConduitRenderer extends DefaultConduitRenderer {
   public void renderEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x, double y, double z, float partialTick,
       float worldLight, RenderBlocks rb) {
     super.renderEntity(conduitBundleRenderer, te, conduit, x, y, z, partialTick, worldLight, rb);
+
     EnderLiquidConduit pc = (EnderLiquidConduit) conduit;
     for (ForgeDirection dir : conduit.getExternalConnections()) {
-      IIcon tex = null;
+      DyeColor inChannel = null;
+      DyeColor outChannel = null;
+      IIcon inTex = null;
+      IIcon outTex = null;
+      boolean render = true;
       if(conduit.getConnectionMode(dir) == ConnectionMode.INPUT) {
-        tex = pc.getTextureForInputMode();
+        inTex = pc.getTextureForInputMode();
+        inChannel = pc.getInputColor(dir);
       } else if(conduit.getConnectionMode(dir) == ConnectionMode.OUTPUT) {
-        tex = pc.getTextureForOutputMode();
+        outTex = pc.getTextureForOutputMode();
+        outChannel = pc.getOutputColor(dir);
       } else if(conduit.getConnectionMode(dir) == ConnectionMode.IN_OUT) {
-        tex = pc.getTextureForInOutMode();
+        inTex = pc.getTextureForInOutMode(true);
+        outTex = pc.getTextureForInOutMode(false);
+        inChannel = pc.getInputColor(dir);
+        outChannel = pc.getOutputColor(dir);
+      } else {
+        render = false;
       }
-      if(tex != null) {
+      if(render && !rb.hasOverrideBlockTexture()) {
         Offset offset = te.getOffset(ILiquidConduit.class, dir);
-        ConnectionModeGeometry.renderModeConnector(dir, offset, tex, true);
+        ConnectionModeGeometry.renderModeConnector(dir, offset, pc.getTextureForInOutBackground(), true);
+
+        if(inChannel != null) {
+          Tessellator.instance.setColorOpaque_I(inChannel.getColor());
+          ConnectionModeGeometry.renderModeConnector(dir, offset, inTex, false);
+        }
+        if(outChannel != null) {
+          Tessellator.instance.setColorOpaque_I(outChannel.getColor());
+          ConnectionModeGeometry.renderModeConnector(dir, offset, outTex, false);
+        }
+
+        Tessellator.instance.setColorOpaque_F(1f, 1f, 1f);
       }
     }
   }
