@@ -79,8 +79,10 @@ public class LiquidSettings extends BaseSettingsPanel {
       eConduit = (EnderLiquidConduit) con;
       isEnder = true;
 
-      int x = gui.getXSize() - 20;
+
+      int x = 52;
       int y = customTop;
+
 
       inOutNextB = MultiIconButton.createRightArrowButton(gui, NEXT_FILTER_ID, x, y);
 
@@ -94,7 +96,7 @@ public class LiquidSettings extends BaseSettingsPanel {
       gui.getContainer().setInventorySlotsVisible(false);
     }
 
-    int x = gap + gui.getFontRenderer().getStringWidth(autoExtractStr) + gap * 2;
+    int x = 66;
     int y = customTop;
 
     if(isEnder)
@@ -102,7 +104,7 @@ public class LiquidSettings extends BaseSettingsPanel {
       channelB = new ColorButton(gui, ID_CHANNEL, x, y);
       channelB.setColorIndex(0);
       channelB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.item.channel"));
-      x += channelB.getWidth() + 4;
+      x += channelB.getWidth() + gap;
     }
 
     rsB = new RedstoneModeButton(gui, ID_REDSTONE_BUTTON, x, y, new IRedstoneModeControlable() {
@@ -276,11 +278,15 @@ public class LiquidSettings extends BaseSettingsPanel {
       return;
     }
 
-    channelB.onGuiInit();
-    if(isInput()){
-      channelB.setColorIndex(eConduit.getInputColor(gui.getDir()).ordinal());
+    if(conduit.getConnectionMode(gui.getDir()) == ConnectionMode.DISABLED) {
+      channelB.detach();
     } else {
-      channelB.setColorIndex(eConduit.getOutputColor(gui.getDir()).ordinal());
+      channelB.onGuiInit();
+      if (isInput()) {
+        channelB.setColorIndex(eConduit.getInputColor(gui.getDir()).ordinal());
+      } else {
+        channelB.setColorIndex(eConduit.getOutputColor(gui.getDir()).ordinal());
+      }
     }
     if(isInput()) {
       roundRobinB.onGuiInit();
@@ -337,19 +343,16 @@ public class LiquidSettings extends BaseSettingsPanel {
   @Override
   protected void renderCustomOptions(int top, float par1, int par2, int par3) {
     boolean isInput = isInput();
-    if(isInput) {
-      int x = gui.getGuiLeft() + gap + gui.getFontRenderer().getStringWidth(autoExtractStr) + gap + 2;
-      int y = top;
-      gui.getFontRenderer().drawString(autoExtractStr, left, y, ColorUtil.getRGB(Color.DARK_GRAY));
-    }
     if(isEnder && isFilterVisible()) {
-
+      String inOutStr = EnderIO.lang.localize("gui.conduit.ioMode.output");
       if(conduit.getConnectionMode(gui.getDir()) == ConnectionMode.IN_OUT) {
-        String inOutStr = inOutShowIn ? EnderIO.lang.localize("gui.conduit.ioMode.input") : EnderIO.lang.localize("gui.conduit.ioMode.output");
-        int x = gui.getGuiLeft() + gui.getXSize() - 20 - 5 - gui.getFontRenderer().getStringWidth(inOutStr);
-        int y = top;
-        gui.getFontRenderer().drawString(inOutStr, x, y, ColorUtil.getRGB(Color.DARK_GRAY));
+        inOutStr = inOutShowIn ? EnderIO.lang.localize("gui.conduit.ioMode.input") : EnderIO.lang.localize("gui.conduit.ioMode.output");
+      } else if(conduit.getConnectionMode(gui.getDir()) == ConnectionMode.INPUT){
+        inOutStr = EnderIO.lang.localize("gui.conduit.ioMode.input");
       }
+      int x = left;
+      int y = top;
+      gui.getFontRenderer().drawString(inOutStr, x, y, ColorUtil.getRGB(Color.DARK_GRAY));
 
       GL11.glColor3f(1, 1, 1);
       gui.bindGuiTexture(1);
@@ -357,8 +360,8 @@ public class LiquidSettings extends BaseSettingsPanel {
 
       FontRenderer fr = gui.getFontRenderer();
       int sw = fr.getStringWidth(filterStr);
-      int x = (gui.width / 2) - sw / 2;
-      int y = top + 20;
+      x = (gui.width / 2) - sw / 2;
+      y = top + 20;
       fr.drawString(filterStr, x, y, ColorUtil.getRGB(Color.DARK_GRAY));
 
       x = gui.getGuiLeft() + filterX;

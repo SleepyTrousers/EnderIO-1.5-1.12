@@ -128,7 +128,7 @@ public class ItemSettings extends BaseSettingsPanel {
       }
     };
 
-    x += channelB.getWidth() + 4;
+    x += channelB.getWidth() + gap;
     priLeft = x - 8;
 
     rsB = new RedstoneModeButton(gui, ID_REDSTONE_BUTTON, x, y, new IRedstoneModeControlable() {
@@ -149,18 +149,18 @@ public class ItemSettings extends BaseSettingsPanel {
       }
     });
 
-    x += rsB.getWidth() + 4;
+    x += rsB.getWidth() + gap;
     colorB = new ColorButton(gui, ID_COLOR_BUTTON, x, y);
     colorB.setColorIndex(itemConduit.getExtractionSignalColor(gui.getDir()).ordinal());
     colorB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.item.sigCol"));
 
-    x += 4 + colorB.getWidth();
+    x += gap + colorB.getWidth();
     roundRobinB = new ToggleButton(gui, ID_ROUND_ROBIN, x, y, IconEIO.ROUND_ROBIN_OFF, IconEIO.ROUND_ROBIN);
     roundRobinB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.roundRobinEnabled"));
     roundRobinB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.roundRobinDisabled"));
     roundRobinB.setPaintSelectedBorder(false);
 
-    x += 4 + roundRobinB.getWidth();
+    x += gap + roundRobinB.getWidth();
     loopB = new ToggleButton(gui, ID_LOOP, x, y, IconEIO.LOOP_OFF, IconEIO.LOOP);
     loopB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.selfFeedEnabled"));
     loopB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.selfFeedDisabled"));
