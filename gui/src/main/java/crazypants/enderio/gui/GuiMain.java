@@ -25,7 +25,8 @@ public class GuiMain {
       // System.out.println(ValueRepository.OREDICTS.getDescription("ballDarkSteel").get(0));
     } else {
       System.out.println("Manual jar start detected");
-      run("-"); // "/Users/micaja/git/EnderIO/run/config/enderio");
+      // run("/Users/micaja/git/EnderIO/run/config/enderio");
+      run("-");
     }
   }
 

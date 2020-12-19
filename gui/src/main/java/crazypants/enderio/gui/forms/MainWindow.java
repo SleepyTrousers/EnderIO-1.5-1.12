@@ -6,8 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.annotation.Nonnull;
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 
 import crazypants.enderio.gui.forms.actions.LoadCoreRecipes;
 import crazypants.enderio.gui.forms.actions.LoadDataFile;
-import crazypants.enderio.gui.forms.actions.SelectGameFolder;
+import crazypants.enderio.gui.gamedata.GameLocation;
 import net.miginfocom.swing.MigLayout;
 
 public class MainWindow {
@@ -30,7 +30,7 @@ public class MainWindow {
   final JFileChooser fc = new JFileChooser();
   private JLabel labelInstallationFolder;
   private JLabel labelCoreRecipes;
-  private final Action actionSelectInstallation = new SwingActionSelectInstallation();
+  private SwingActionSelectInstallation actionSelectInstallation;
 
   /**
    * Launch the application.
@@ -43,7 +43,7 @@ public class MainWindow {
           MainWindow window = new MainWindow();
           window.frame.setVisible(true);
           if (datafile != null) {
-            EventQueue.invokeLater(new SelectGameFolder(window, datafile));
+            EventQueue.invokeLater(() -> window.actionSelectInstallation.load(new File(datafile)));
           }
         } catch (Exception e) {
           e.printStackTrace();
@@ -65,6 +65,7 @@ public class MainWindow {
   private void initialize() {
     System.setProperty("apple.laf.useScreenMenuBar", "true");
     fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+    actionSelectInstallation = new SwingActionSelectInstallation();
 
     frame = new JFrame();
     frame.setBounds(100, 100, 925, 366);
@@ -83,7 +84,7 @@ public class MainWindow {
       }
     });
 
-    JButton btnNewButton = new JButton("Select Minecraft Installation");
+    JButton btnNewButton = new JButton();
     btnNewButton.setAction(actionSelectInstallation);
     btnNewButton.setToolTipText("Select the Minecraft client installation to edit recipes for. It must contain\nEnder IO and must have run at least once.");
     mainPanel.add(btnNewButton, "cell 1 1");
@@ -150,7 +151,7 @@ public class MainWindow {
     JMenu menuFile = new JMenu("File");
     menuBar.add(menuFile);
 
-    JMenuItem mntmNewMenuItem = new JMenuItem("Select Minecraft Installation...");
+    JMenuItem mntmNewMenuItem = new JMenuItem();
     mntmNewMenuItem.setAction(actionSelectInstallation);
     menuFile.add(mntmNewMenuItem);
 
@@ -183,20 +184,28 @@ public class MainWindow {
     private static final long serialVersionUID = 780982506472999421L;
 
     public SwingActionSelectInstallation() {
-      putValue(NAME, "SwingActionSelectInstallation");
-      putValue(SHORT_DESCRIPTION, "Some short description");
+      putValue(NAME, "Select Minecraft Installation...");
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
       fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-      int returnVal = fc.showOpenDialog(frame);
-
-      if (returnVal == JFileChooser.APPROVE_OPTION) {
+      if (fc.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
         File file = fc.getSelectedFile();
-        EventQueue.invokeLater(new SelectGameFolder(MainWindow.this, file.toString()));
+        if (file != null) {
+          EventQueue.invokeLater(() -> load(file));
+        }
+      }
+    }
+
+    protected void load(@Nonnull File file) {
+      GameLocation.setFile(file);
+      if (GameLocation.isValid()) {
+        getLabelInstallationFolder().setText(GameLocation.getGAME().toString());
+      } else {
+        getLabelInstallationFolder().setText(file + " is not a valid Minecraft installation");
       }
     }
   }
+
 }
