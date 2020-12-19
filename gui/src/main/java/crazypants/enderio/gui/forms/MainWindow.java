@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -20,8 +21,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-import crazypants.enderio.gui.forms.actions.LoadCoreRecipes;
 import crazypants.enderio.gui.gamedata.GameLocation;
+import crazypants.enderio.gui.gamedata.RecipeHolder;
 import crazypants.enderio.gui.gamedata.ValueRepository;
 import net.miginfocom.swing.MigLayout;
 
@@ -40,6 +41,7 @@ public class MainWindow {
   private JLabel labelCoreRecipes;
   private SwingActionSelectInstallation actionSelectInstallation;
   private final Action actionLoadDataFile = new SwingActionLoadDataFile();
+  private final Action actionLoadCoreRecipes = new SwingActionLoadCoreRecipes();
 
   /**
    * Launch the application.
@@ -102,13 +104,8 @@ public class MainWindow {
     labelDataFile = new JLabel("No Data File Loaded");
     mainPanel.add(labelDataFile, "cell 3 3");
 
-    JButton btnLoadCore = new JButton("Load Core Recipes");
-    btnLoadCore.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        EventQueue.invokeLater(new LoadCoreRecipes(MainWindow.this));
-      }
-    });
+    JButton btnLoadCore = new JButton();
+    btnLoadCore.setAction(actionLoadCoreRecipes);
     btnLoadCore.setToolTipText("When Ender IO core recipes are loaded, they can be viewed,\ndisabled and replaced. This is optional but recommended.");
     mainPanel.add(btnLoadCore, "cell 1 5");
 
@@ -144,6 +141,11 @@ public class MainWindow {
     mainPanel.add(btnNewButton_6, "cell 4 8");
 
     JButton btnNewButton_7 = new JButton("Save User Recipe File");
+    btnNewButton_7.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        crazypants.enderio.gui.forms.ThingsDialog.main(null);
+      }
+    });
     mainPanel.add(btnNewButton_7, "cell 1 9");
 
     RecipeList coreRecipeList = new RecipeList(() -> {
@@ -163,11 +165,12 @@ public class MainWindow {
     mntmNewMenuItem.setAction(actionSelectInstallation);
     menuFile.add(mntmNewMenuItem);
 
-    JMenuItem mntmNewMenuItem_1 = new JMenuItem("Load Data File");
+    JMenuItem mntmNewMenuItem_1 = new JMenuItem();
     mntmNewMenuItem_1.setAction(actionLoadDataFile);
     menuFile.add(mntmNewMenuItem_1);
 
-    JMenuItem mntmNewMenuItem_2 = new JMenuItem("Load Core Recipes");
+    JMenuItem mntmNewMenuItem_2 = new JMenuItem();
+    mntmNewMenuItem_2.setAction(actionLoadCoreRecipes);
     menuFile.add(mntmNewMenuItem_2);
 
   }
@@ -232,6 +235,23 @@ public class MainWindow {
         }
       });
 
+    }
+  }
+
+  private class SwingActionLoadCoreRecipes extends AbstractAction {
+    private static final long serialVersionUID = -1659127751450751243L;
+
+    public SwingActionLoadCoreRecipes() {
+      putValue(NAME, "Load Core Recipes");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      List<String> errors = RecipeHolder.readCore();
+      getLabelCoreRecipes().setText("Loaded " + RecipeHolder.CORE.getRecipes().getRecipes().size() + " core recipes");
+      if (!errors.isEmpty()) {
+        // TODO
+      }
     }
   }
 }

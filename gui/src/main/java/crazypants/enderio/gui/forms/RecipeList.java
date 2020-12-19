@@ -22,6 +22,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
 
+import crazypants.enderio.gui.forms.actions.TableColumnAdjuster;
 import crazypants.enderio.gui.forms.models.RecipeTableModel;
 import crazypants.enderio.gui.gamedata.RecipeHolder;
 
