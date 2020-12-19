@@ -1,6 +1,12 @@
 package crazypants.enderio.base.integration.jei.energy;
 
+import javax.annotation.Nonnull;
+
+import mezz.jei.api.recipe.IIngredientType;
+
 public class EnergyIngredient {
+
+  public static final @Nonnull IIngredientType<EnergyIngredient> ENERGY = () -> EnergyIngredient.class;
 
   private final int amount;
   private final boolean hasAmount, isPerTick;
