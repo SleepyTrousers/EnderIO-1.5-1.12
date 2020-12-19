@@ -41,10 +41,6 @@ public class Recipes implements IRecipeRoot {
   @Override
   public boolean setElement(@Nonnull StaxFactory factory, @Nonnull String name, @Nonnull StartElement startElement)
       throws InvalidRecipeConfigException, XMLStreamException {
-    if ("alias".equals(name)) {
-      factory.skip(startElement);
-      return true;
-    }
     AbstractConditional element = get(name);
     if (element != null) {
       addRecipe(element, factory, startElement);
@@ -79,7 +75,7 @@ public class Recipes implements IRecipeRoot {
   private static final Map<String, Class<? extends AbstractConditional>> MAPPING = new HashMap<>();
 
   static {
-    register(Recipe.class, Grindingball.class, Capacitor.class);
+    register(Recipe.class, Grindingball.class, Capacitor.class, Alias.class);
   }
 
   public static void register(String tagname, Class<? extends AbstractConditional> clazz) {

@@ -1,5 +1,7 @@
 package crazypants.enderio.gui.gamedata;
 
+import java.awt.EventQueue;
+import java.util.ArrayList;
 import java.util.List;
 
 import crazypants.enderio.gui.xml.Recipes;
@@ -18,11 +20,22 @@ public class RecipeHolder {
     for (ResourceLocation corefile : ValueRepository.COREFILES.getAllResourceLocations()) {
       recipeReader.readCoreFile(CORE.core, "recipes", corefile);
     }
+    CORE.fireCallbacks();
     return recipeReader.getErrors();
   }
 
   public Recipes getRecipes() {
     return core;
+  }
+
+  private List<Runnable> callbacks = new ArrayList<>();
+
+  private void fireCallbacks() {
+    callbacks.forEach(r -> EventQueue.invokeLater(r));
+  }
+
+  public void registerCallback(Runnable callback) {
+    callbacks.add(callback);
   }
 
 }

@@ -12,10 +12,6 @@ public class Grindingball extends AbstractConditional {
 
   private @Nonnull Optional<String> name = empty();
 
-  private boolean required;
-
-  private boolean disabled;
-
   private @Nonnull Optional<Item> item = empty();
 
   private float grinding = 1f, chance = 1f, power = 1f;
@@ -134,22 +130,6 @@ public class Grindingball extends AbstractConditional {
   @Nonnull
   public ElementList getSubElements() {
     return super.getSubElements().add(item);
-  }
-
-  public boolean isRequired() {
-    return required;
-  }
-
-  public void setRequired(boolean required) {
-    this.required = required;
-  }
-
-  public boolean isDisabled() {
-    return disabled;
-  }
-
-  public void setDisabled(boolean disabled) {
-    this.disabled = disabled;
   }
 
   public @Nonnull Optional<Item> getItem() {

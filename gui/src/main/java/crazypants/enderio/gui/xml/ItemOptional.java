@@ -70,20 +70,6 @@ public class ItemOptional implements IRecipeConfigElement {
     return name.equals(other.name);
   }
 
-  // @Override
-  // public String toString() {
-  // StringBuilder builder = new StringBuilder();
-  // builder.append("<item ");
-  // if (potion.isPresent()) {
-  // builder.append("potion='");
-  // builder.append(potion);
-  // builder.append("' ");
-  // }
-  // builder.append(name);
-  // builder.append("/>");
-  // return builder.toString();
-  // }
-
   @Override
   public void write(@Nonnull IXMLBuilder parent) {
     parent.child("item").attribute("potion", potion, true).attribute("name", name.getName(), true).attribute("nbt", name.getNbt(), true);

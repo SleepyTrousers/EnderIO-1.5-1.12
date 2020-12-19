@@ -13,10 +13,6 @@ public class Capacitor extends AbstractConditional {
 
   private @Nonnull Optional<ResourceLocation> key = empty();
 
-  private boolean required;
-
-  private boolean disabled;
-
   private int base = Integer.MIN_VALUE;
 
   private @Nonnull Optional<Scaler> scaler = empty();
@@ -133,22 +129,6 @@ public class Capacitor extends AbstractConditional {
 
   public void setKey(@Nonnull Optional<ResourceLocation> key) {
     this.key = key;
-  }
-
-  public boolean isRequired() {
-    return required;
-  }
-
-  public void setRequired(boolean required) {
-    this.required = required;
-  }
-
-  public boolean isDisabled() {
-    return disabled;
-  }
-
-  public void setDisabled(boolean disabled) {
-    this.disabled = disabled;
   }
 
   public int getBase() {

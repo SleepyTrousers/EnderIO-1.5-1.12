@@ -19,10 +19,6 @@ public class Recipe extends AbstractConditional {
 
   private @Nonnull Optional<String> name = empty();
 
-  private boolean required;
-
-  private boolean disabled;
-
   private final @Nonnull List<AbstractConditional> craftings = new ArrayList<AbstractConditional>();
 
   private @Nonnull Optional<String> levelName = empty();
@@ -101,7 +97,9 @@ public class Recipe extends AbstractConditional {
       craftings.add(factory.read(element, startElement));
       return true;
     }
-    return super.setElement(factory, name, startElement);
+    factory.skip(startElement);
+    return true;
+    // return super.setElement(factory, name, startElement);
   }
 
   // @Override
@@ -193,22 +191,6 @@ public class Recipe extends AbstractConditional {
       }
     }
     return "other";
-  }
-
-  public boolean isRequired() {
-    return required;
-  }
-
-  public void setRequired(boolean required) {
-    this.required = required;
-  }
-
-  public boolean isDisabled() {
-    return disabled;
-  }
-
-  public void setDisabled(boolean disabled) {
-    this.disabled = disabled;
   }
 
   public @Nonnull Optional<String> getLevelName() {

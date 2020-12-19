@@ -5,9 +5,12 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -18,19 +21,25 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import crazypants.enderio.gui.forms.actions.LoadCoreRecipes;
-import crazypants.enderio.gui.forms.actions.LoadDataFile;
 import crazypants.enderio.gui.gamedata.GameLocation;
+import crazypants.enderio.gui.gamedata.ValueRepository;
 import net.miginfocom.swing.MigLayout;
 
 public class MainWindow {
 
   private JFrame frame;
+
+  public JFrame getFrame() {
+    return frame;
+  }
+
   private JButton btnLoadData;
   private JLabel labelDataFile;
   final JFileChooser fc = new JFileChooser();
   private JLabel labelInstallationFolder;
   private JLabel labelCoreRecipes;
   private SwingActionSelectInstallation actionSelectInstallation;
+  private final Action actionLoadDataFile = new SwingActionLoadDataFile();
 
   /**
    * Launch the application.
@@ -76,13 +85,8 @@ public class MainWindow {
     frame.getContentPane().add(mainPanel, "mainPanel");
     mainPanel.setLayout(new MigLayout("", "[][][][grow][][grow]", "[][][][][][][][][][grow]"));
 
-    btnLoadData = new JButton("Load Data File");
-    btnLoadData.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        EventQueue.invokeLater(new LoadDataFile(MainWindow.this));
-      }
-    });
+    btnLoadData = new JButton();
+    btnLoadData.setAction(actionLoadDataFile);
 
     JButton btnNewButton = new JButton();
     btnNewButton.setAction(actionSelectInstallation);
@@ -142,7 +146,11 @@ public class MainWindow {
     JButton btnNewButton_7 = new JButton("Save User Recipe File");
     mainPanel.add(btnNewButton_7, "cell 1 9");
 
-    RecipeList coreRecipeList = new RecipeList();
+    RecipeList coreRecipeList = new RecipeList(() -> {
+      CardLayout cl = (CardLayout) (frame.getContentPane().getLayout());
+      cl.show(frame.getContentPane(), "mainPanel");
+
+    });
     frame.getContentPane().add(coreRecipeList, "coreRecipeList");
 
     JMenuBar menuBar = new JMenuBar();
@@ -156,23 +164,12 @@ public class MainWindow {
     menuFile.add(mntmNewMenuItem);
 
     JMenuItem mntmNewMenuItem_1 = new JMenuItem("Load Data File");
+    mntmNewMenuItem_1.setAction(actionLoadDataFile);
     menuFile.add(mntmNewMenuItem_1);
 
     JMenuItem mntmNewMenuItem_2 = new JMenuItem("Load Core Recipes");
     menuFile.add(mntmNewMenuItem_2);
 
-  }
-
-  public JButton getBtnLoadData() {
-    return btnLoadData;
-  }
-
-  public JLabel getLabelDataFile() {
-    return labelDataFile;
-  }
-
-  public JLabel getLabelInstallationFolder() {
-    return labelInstallationFolder;
   }
 
   public JLabel getLabelCoreRecipes() {
@@ -190,7 +187,7 @@ public class MainWindow {
     @Override
     public void actionPerformed(ActionEvent e) {
       fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-      if (fc.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
+      if (fc.showOpenDialog(getFrame()) == JFileChooser.APPROVE_OPTION) {
         File file = fc.getSelectedFile();
         if (file != null) {
           EventQueue.invokeLater(() -> load(file));
@@ -201,11 +198,40 @@ public class MainWindow {
     protected void load(@Nonnull File file) {
       GameLocation.setFile(file);
       if (GameLocation.isValid()) {
-        getLabelInstallationFolder().setText(GameLocation.getGAME().toString());
+        labelInstallationFolder.setText(GameLocation.getGAME().toString());
       } else {
-        getLabelInstallationFolder().setText(file + " is not a valid Minecraft installation");
+        labelInstallationFolder.setText(file + " is not a valid Minecraft installation");
       }
     }
   }
 
+  private class SwingActionLoadDataFile extends AbstractAction {
+
+    private static final long serialVersionUID = -1055763974932578774L;
+
+    public SwingActionLoadDataFile() {
+      putValue(NAME, "Load Data File");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      EventQueue.invokeLater(() -> {
+        String error = ValueRepository.read();
+        if (error != null) {
+          labelDataFile.setText("Error Loading Data File");
+          labelDataFile.setToolTipText(error);
+        } else {
+          Map<String, Integer> counts = ValueRepository.getCounts();
+          if (counts.isEmpty()) {
+            labelDataFile.setText("No Data File Loaded");
+            labelDataFile.setToolTipText(null);
+          } else {
+            labelDataFile.setText("Loaded " + GameLocation.getDATA().toString());
+            labelDataFile.setToolTipText(counts.entrySet().stream().map(entry -> entry.getKey() + ": " + entry.getValue()).collect(Collectors.joining(", ")));
+          }
+        }
+      });
+
+    }
+  }
 }

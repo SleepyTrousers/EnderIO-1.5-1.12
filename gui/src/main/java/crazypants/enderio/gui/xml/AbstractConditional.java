@@ -53,6 +53,10 @@ public abstract class AbstractConditional implements IRecipeConfigElement {
 
   private @Nullable String source;
 
+  protected boolean required;
+
+  protected boolean disabled;
+
   @Override
   public void setSource(@Nonnull String source) {
     this.source = source;
@@ -76,5 +80,21 @@ public abstract class AbstractConditional implements IRecipeConfigElement {
     IXMLBuilder ƒ = parent.child("!--");
     configReferences.forEach(c -> c.write(ƒ));
     dependencies.forEach(c -> c.write(ƒ));
+  }
+
+  public boolean isRequired() {
+    return required;
+  }
+
+  public void setRequired(boolean required) {
+    this.required = required;
+  }
+
+  public boolean isDisabled() {
+    return disabled;
+  }
+
+  public void setDisabled(boolean disabled) {
+    this.disabled = disabled;
   }
 }

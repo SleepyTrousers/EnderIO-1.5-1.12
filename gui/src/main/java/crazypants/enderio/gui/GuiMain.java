@@ -20,13 +20,14 @@ public class GuiMain {
       } else {
         MainWindow.main(args[0]);
       }
+      System.out.println("Done");
       // ValueRepository.setFile(new File(args[0]));
       // ValueRepository.read();
       // System.out.println(ValueRepository.OREDICTS.getDescription("ballDarkSteel").get(0));
     } else {
       System.out.println("Manual jar start detected");
-      // run("/Users/micaja/git/EnderIO/run/config/enderio");
-      run("-");
+      run("/Users/micaja/git/EnderIO/run/config/enderio");
+      // run("-");
     }
   }
 

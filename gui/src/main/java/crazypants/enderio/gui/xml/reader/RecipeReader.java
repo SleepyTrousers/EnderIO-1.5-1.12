@@ -25,7 +25,7 @@ public class RecipeReader {
     if (userFL.exists()) {
       try {
         try (InputStream userFileStream = userFL.exists() ? new FileInputStream(userFL) : null;) {
-          readStax(target, rootElement, userFileStream, "recipe file '" + userFL.toString() + "'");
+          readStax(target, rootElement, userFileStream, userFL.getName());
           return true;
         }
       } catch (XMLStreamException | IOException e) {
@@ -48,7 +48,7 @@ public class RecipeReader {
 
     try {
       try (InputStream coreFileStream = getResource(coreRL)) {
-        readStax(target, rootElement, coreFileStream, "core recipe file '" + fileName + "'");
+        readStax(target, rootElement, coreFileStream, fileName.getResourcePath() + ".xml");
         return true;
       }
     } catch (IOException | XMLStreamException e) {
