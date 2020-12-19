@@ -51,10 +51,7 @@ public class JeiPlugin implements IModPlugin {
 
   @Override
   public void register(@Nonnull IModRegistry registry) {
-    ProgressManager.ProgressBar bar = ProgressManager.push("Ender IO", 7, true);
-
-    bar.step("Dark Steel Upgrades");
-    // DarkSteelUpgradeRecipeCategory.register(registry);
+    ProgressManager.ProgressBar bar = ProgressManager.push("Ender IO", 6, true);
 
     bar.step("Dark Steel Identities");
     DescriptionRecipeCategory.register(registry);
@@ -114,7 +111,7 @@ public class JeiPlugin implements IModPlugin {
 
   @Override
   public void registerIngredients(@Nonnull IModIngredientRegistration ingredientRegistration) {
-    ingredientRegistration.register(EnergyIngredient.class, Collections.singletonList(new EnergyIngredient()), new EnergyIngredientHelper(),
+    ingredientRegistration.register(EnergyIngredient.ENERGY, Collections.singletonList(new EnergyIngredient()), new EnergyIngredientHelper(),
         EnergyIngredientRenderer.INSTANCE);
   }
 

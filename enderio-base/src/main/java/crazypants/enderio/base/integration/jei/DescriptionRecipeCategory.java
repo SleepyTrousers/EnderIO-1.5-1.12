@@ -18,7 +18,6 @@ import com.enderio.core.common.util.NNList.Callback;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.api.upgrades.IDarkSteelItem;
 import crazypants.enderio.api.upgrades.IDarkSteelUpgrade;
-import crazypants.enderio.base.Log;
 import crazypants.enderio.base.handler.darksteel.DarkSteelTooltipManager;
 import crazypants.enderio.base.handler.darksteel.Rules;
 import crazypants.enderio.base.handler.darksteel.UpgradeRegistry;
@@ -53,7 +52,6 @@ public class DescriptionRecipeCategory {
     items.apply(new Callback<ItemStack>() {
       @Override
       public void apply(@Nonnull ItemStack itemStack) {
-        Log.debug(itemStack);
         NNList<String> allTooltips = SpecialTooltipHandler.getAllTooltips(itemStack);
         if (!allTooltips.isEmpty()) {
           allTooltips.add(0, TextFormatting.WHITE.toString() + TextFormatting.BOLD + itemStack.getDisplayName() + TextFormatting.RESET);
@@ -65,7 +63,6 @@ public class DescriptionRecipeCategory {
 
     dsitems.forEach(item -> {
       if (item instanceof Item) { // keep null and casting warnings happy
-        Log.debug(item);
         ItemStack itemStack = new ItemStack((Item) item);
         NNList<String> allTooltips;
         try {
