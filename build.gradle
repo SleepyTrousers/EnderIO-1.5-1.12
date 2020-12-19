@@ -44,7 +44,9 @@ def release = System.getenv("RELEASE") != null &&
 
 // Configure all projects
 allprojects {
-    apply plugin: 'net.minecraftforge.gradle.forge'
+	configure(allprojects - project(':gui')) {
+    	apply plugin: 'net.minecraftforge.gradle.forge'
+    }
     apply plugin: 'net.intellisun.moddependencies'
     apply plugin: 'org.junit.platform.gradle.plugin'
     apply plugin: 'net.ltgt.apt-eclipse'
@@ -128,28 +130,34 @@ allprojects {
       platformVersion '1.0.3'
       enableStandardTestTask true
     }
+    
+    def skipDeps = project.hasProperty('no_mc_dependencies') && project.getProperty('no_mc_dependencies').equalsIgnoreCase('true')
 
     def localEnderCore = project.hasProperty('use_local_ender_core') && project.getProperty('use_local_ender_core').equalsIgnoreCase('true')
 
     // Common dependencies for all modules
     dependencies {
-        // Remote / local endercore
-        if (!localEnderCore || gradle.startParameter.taskNames.contains("runClient")) {
-            deobfCompile "com.enderio.core:EnderCore:${endercore_version}"
-        }
-
-        // All jars in the '<module>/lib' directory
-        compile fileTree(dir: "lib", include: '*.jar')
-
-        // All jars in the '<root>/lib' directory
-        compile fileTree(dir: "${project.rootDir}/lib", include: '*.jar')
+    	if (!skipDeps) {
+	        // Remote / local endercore
+	        if (!localEnderCore || gradle.startParameter.taskNames.contains("runClient")) {
+	            deobfCompile "com.enderio.core:EnderCore:${endercore_version}"
+	        }
+	
+	        // All jars in the '<module>/lib' directory
+	        compile fileTree(dir: "lib", include: '*.jar')
+	
+	        // All jars in the '<root>/lib' directory
+	        compile fileTree(dir: "${project.rootDir}/lib", include: '*.jar')
+		} else {
+			compile group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.2'
+		}
 
         testImplementation     "org.junit.jupiter:junit-jupiter-api:5.2.0"
         testCompile("org.junit.jupiter:junit-jupiter-api:5.2.0")
         testCompile("org.junit.platform:junit-platform-launcher:1.1.0")
         testRuntime("org.junit.jupiter:junit-jupiter-engine:5.2.0")
 
-        if (project.name != 'ap') {
+        if (!skipDeps && project.name != 'ap') {
             annotationProcessor project(':ap')
             compile project(':ap')
         }
@@ -242,7 +250,7 @@ allprojects {
                 e.entryAttributes['annotationpath'] = localEnderCore ? '/EnderCore/externalannotations' : null
               }
             }
-            if (localEnderCore) {
+            if (!skipDeps && localEnderCore) {
               entries.add(new ProjectDependency("/EnderCore"))
             }
           }
@@ -383,7 +391,10 @@ jar.doFirst {
 
     def mcmod = ""
     combjarprojects.each { subproject ->
-        mcmod += new File(subproject.sourceSets.main.output.resourcesDir, 'mcmod.info').text
+    	def modinfo = new File(subproject.sourceSets.main.output.resourcesDir, 'mcmod.info')
+    	if (modinfo.exists()) {
+	        mcmod += new File(subproject.sourceSets.main.output.resourcesDir, 'mcmod.info').text
+	    }
     }
     new File(project.sourceSets.main.output.resourcesDir, "mcmod.info") << mcmod.replaceAll(/\]\s*\[/, ',')
 
@@ -418,6 +429,9 @@ jar {
                 "ContainedDeps": combjarprojects.collect { it.configurations.embed.collect { it.getName() }}.flatten().join(' ')
             ])
         }
+    }
+    manifest {
+        attributes 'Main-Class': 'crazypants.enderio.gui.GuiMain'
     }
 }
 

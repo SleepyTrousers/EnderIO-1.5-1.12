@@ -34,6 +34,7 @@ import crazypants.enderio.base.config.recipes.xml.Aliases;
 import crazypants.enderio.base.config.recipes.xml.Capacitors;
 import crazypants.enderio.base.config.recipes.xml.Recipes;
 import crazypants.enderio.base.recipe.RecipeLevel;
+import crazypants.enderio.gui.gamedata.ValueRepository;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.ProgressManager;
@@ -146,6 +147,7 @@ public final class RecipeLoader {
          */
         config = readCoreFile(RecipeConfig.loadCoreRecipes.get() ? new Recipes() : new Capacitors(), NullHelper.first(triple.getMiddle(), recipeFactory),
             RECIPES_ROOT + "/" + triple.getRight()).addRecipes(config, Overrides.DENY);
+        ValueRepository.COREFILES.addValue(NullHelper.first(triple.getMiddle(), recipeFactory).getDomain() + ":" + triple.getRight(), null);
       }
       ProgressManager.pop(bar2);
     } catch (InvalidRecipeConfigException e) {

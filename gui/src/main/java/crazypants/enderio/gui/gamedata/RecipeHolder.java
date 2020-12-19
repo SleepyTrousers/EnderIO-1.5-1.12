@@ -1,0 +1,28 @@
+package crazypants.enderio.gui.gamedata;
+
+import java.util.List;
+
+import crazypants.enderio.gui.xml.Recipes;
+import crazypants.enderio.gui.xml.ResourceLocation;
+import crazypants.enderio.gui.xml.reader.RecipeReader;
+
+public class RecipeHolder {
+
+  public static final RecipeHolder CORE = new RecipeHolder();
+
+  private Recipes core = new Recipes();
+
+  public static List<String> readCore() {
+    CORE.core = new Recipes();
+    RecipeReader recipeReader = new RecipeReader();
+    for (ResourceLocation corefile : ValueRepository.COREFILES.getAllResourceLocations()) {
+      recipeReader.readCoreFile(CORE.core, "recipes", corefile);
+    }
+    return recipeReader.getErrors();
+  }
+
+  public Recipes getRecipes() {
+    return core;
+  }
+
+}

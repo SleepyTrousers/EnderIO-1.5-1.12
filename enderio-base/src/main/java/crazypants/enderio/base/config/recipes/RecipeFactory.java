@@ -60,7 +60,7 @@ public class RecipeFactory {
   }
 
   public void placeXSD(String folderName) {
-    final ResourceLocation xsdRL = new ResourceLocation(domain, "config/recipes/recipes.xsd");
+    final ResourceLocation xsdRL = new ResourceLocation(getDomain(), "config/recipes/recipes.xsd");
     final File xsdFL = new File(configDirectory, folderName + "/recipes.xsd");
     copyCore_dontMakeShittyCoreModsPlease_thisIncludesShittyMixins(xsdRL, xsdFL);
   }
@@ -85,7 +85,7 @@ public class RecipeFactory {
   }
 
   public <T extends IRecipeRoot> T readCoreFile(T target, String rootElement, String fileName) throws IOException, XMLStreamException {
-    final ResourceLocation coreRL = new ResourceLocation(domain, ASSETS_FOLDER_CONFIG + fileName);
+    final ResourceLocation coreRL = new ResourceLocation(getDomain(), ASSETS_FOLDER_CONFIG + fileName);
 
     Log.debug("Reading core recipe file " + fileName);
     try (InputStream coreFileStream = getResource(coreRL)) {
@@ -108,7 +108,7 @@ public class RecipeFactory {
   }
 
   public void copyCore(String fileName, @Nullable String fallback) {
-    final ResourceLocation coreRL = new ResourceLocation(domain, ASSETS_FOLDER_CONFIG + fileName);
+    final ResourceLocation coreRL = new ResourceLocation(getDomain(), ASSETS_FOLDER_CONFIG + fileName);
     final File coreFL = new File(configDirectory, fileName);
     if (!copyCore_dontMakeShittyCoreModsPlease_thisIncludesShittyMixins(coreRL, coreFL) && fallback != null) {
       copyCore(fallback, null);
@@ -239,6 +239,10 @@ public class RecipeFactory {
       e.printStackTrace();
       return false;
     }
+  }
+
+  public String getDomain() {
+    return domain;
   }
 
 }

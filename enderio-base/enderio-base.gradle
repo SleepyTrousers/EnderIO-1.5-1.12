@@ -20,4 +20,5 @@ dependencies {
     	compile "info.loenwind.autoconfig:AutoConfig:${minecraft_version}-${autoconfig_version}"
     	embed "info.loenwind.autoconfig:AutoConfig:${minecraft_version}-${autoconfig_version}"
   	}
+  	compile project(":gui")
 }

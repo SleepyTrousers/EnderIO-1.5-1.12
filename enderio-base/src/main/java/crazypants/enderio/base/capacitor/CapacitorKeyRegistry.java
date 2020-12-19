@@ -108,4 +108,8 @@ public class CapacitorKeyRegistry {
     Log.debug("Removed server config overrides for capacitor keys");
   }
 
+  public static Iterable<ICapacitorKey> getAllKeys() {
+    return REGISTRY;
+  }
+
 }

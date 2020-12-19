@@ -1,0 +1,9 @@
+plugins {
+    id 'java-library'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'crazypants.enderio.gui.GuiMain'
+    }
+}
