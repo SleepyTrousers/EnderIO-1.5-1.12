@@ -5,6 +5,8 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 
+import crazypants.enderio.gui.gamedata.AliasRepository;
+
 public class Alias extends AbstractConditional {
 
   private @Nonnull Optional<String> name = empty();
@@ -25,6 +27,15 @@ public class Alias extends AbstractConditional {
     if (item.isEmpty()) {
       throw new InvalidRecipeConfigException("Missing item");
     }
+  }
+
+  @Override
+  @Nonnull
+  public Object readResolve() throws XMLStreamException {
+    if (name.isPresent()) {
+      AliasRepository.addValue(get(name));
+    }
+    return super.readResolve();
   }
 
   @Override

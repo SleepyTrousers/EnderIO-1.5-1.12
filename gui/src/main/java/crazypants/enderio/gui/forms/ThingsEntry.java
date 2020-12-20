@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
 import crazypants.enderio.gui.forms.actions.AutoCompletion;
+import crazypants.enderio.gui.gamedata.AliasRepository;
 import crazypants.enderio.gui.gamedata.ValueRepository;
 
 public final class ThingsEntry extends JPanel {
@@ -45,12 +46,26 @@ public final class ThingsEntry extends JPanel {
   private final CardLayout cardLayout = new CardLayout(0, 0);
   private final JComboBox<String> comboItem = new JComboBox<>();
   private final JComboBox<String> comboOreDict = new JComboBox<>();
-  private final JComboBox<?> comboAlias = new JComboBox<Object>();
+  private final JComboBox<String> comboAlias = new JComboBox<>();
   private final JTextField textFreetext = new JTextField();
   private final JButton btnDelete = new JButton();
   private final JPanel panelLeft = new JPanel();
   private final JButton btnUp = new JButton();
   private final JButton btnDown = new JButton();
+
+  private Runnable doUp, doDown, doDel;
+
+  public void setDoUp(Runnable doUp) {
+    this.doUp = doUp;
+  }
+
+  public void setDoDown(Runnable doDown) {
+    this.doDown = doDown;
+  }
+
+  public void setDoDel(Runnable doDel) {
+    this.doDel = doDel;
+  }
 
   public ThingsEntry(JScrollPane scrollPane) {
     this.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -75,10 +90,14 @@ public final class ThingsEntry extends JPanel {
     comboOreDict.setModel(new DefaultComboBoxModel<>(ValueRepository.OREDICTS.getAllValues().toArray(new String[0])));
     AutoCompletion.enable(comboOreDict);
 
-    // TODO: alias model
+    comboAlias.setModel(new DefaultComboBoxModel<>(AliasRepository.getCore().toArray(new String[0])));
     AutoCompletion.enable(comboAlias);
 
     textFreetext.setColumns(10);
+
+    btnDelete.addActionListener(unused -> doDel.run());
+    btnUp.addActionListener(unused -> doUp.run());
+    btnDown.addActionListener(unused -> doDown.run());
 
     btnDelete.setIcon(new ImageIcon(MainWindow.class.getResource("/javax/swing/plaf/metal/icons/ocean/paletteClose.gif")));
     btnUp.setIcon(new ImageIcon(ThingsDialog.class.getResource("/javax/swing/plaf/metal/icons/sortUp.png")));
@@ -100,6 +119,58 @@ public final class ThingsEntry extends JPanel {
     panelEntryArea.add(comboOreDict, Types.OREDICT.toString());
     panelEntryArea.add(comboAlias, Types.ALIAS.toString());
     panelEntryArea.add(textFreetext, Types.CUSTOM.toString());
+  }
+
+  public boolean isEmpty() {
+    return getRawEntry().isEmpty();
+  }
+
+  public String getEntry() {
+    return (comboPlusMinus.getSelectedIndex() == 0 ? "" : "-") + getRawEntry();
+  }
+
+  private String getRawEntry() {
+    switch (Types.values()[comboType.getSelectedIndex()]) {
+    case ALIAS:
+      return comboAlias.getSelectedItem().toString();
+    case CUSTOM:
+      return textFreetext.getText();
+    case ITEM:
+      return comboItem.getSelectedItem().toString();
+    case OREDICT:
+      return comboOreDict.getSelectedItem().toString();
+    default:
+      return "";
+    }
+  }
+
+  public enum Position {
+    FIRST,
+    MIDDLE,
+    LAST,
+    SINGLE;
+
+    protected boolean hasUp() {
+      return this != FIRST && this != SINGLE;
+    }
+
+    protected boolean hasDown() {
+      return this != LAST && this != SINGLE;
+    }
+
+    protected boolean hasDel() {
+      return this != SINGLE;
+    }
+
+    public static Position compute(int idx, int size) {
+      return size == 1 ? SINGLE : idx == 0 ? FIRST : idx == size - 1 ? LAST : MIDDLE;
+    }
+  }
+
+  public void setPosition(Position position) {
+    btnUp.setEnabled(position.hasUp() && doUp != null);
+    btnDown.setEnabled(position.hasDown() && doDown != null);
+    btnDelete.setEnabled(position.hasDel() && doDel != null);
   }
 
 }

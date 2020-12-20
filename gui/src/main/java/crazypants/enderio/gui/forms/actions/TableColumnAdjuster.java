@@ -1,4 +1,4 @@
-package crazypants.enderio.gui.forms;
+package crazypants.enderio.gui.forms.actions;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;

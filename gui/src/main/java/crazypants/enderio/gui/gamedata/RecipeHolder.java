@@ -16,6 +16,7 @@ public class RecipeHolder {
 
   public static List<String> readCore() {
     CORE.core = new Recipes();
+    AliasRepository.startDoingCore();
     RecipeReader recipeReader = new RecipeReader();
     for (ResourceLocation corefile : ValueRepository.COREFILES.getAllResourceLocations()) {
       recipeReader.readCoreFile(CORE.core, "recipes", corefile);

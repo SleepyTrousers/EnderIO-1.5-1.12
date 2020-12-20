@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -12,15 +14,18 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
+import crazypants.enderio.gui.forms.ThingsEntry.Position;
+
 public class ThingsDialog extends JDialog {
 
+  private static final long serialVersionUID = -5665046007268630990L;
+
   private final JPanel contentPanel = new JPanel();
-  JScrollPane scrollPane;
-  private JPanel panelEntry_0;
-  private JPanel panelEntry_1;
-  private JPanel panelEntry_2;
-  private JPanel panelEntry_3;
-  private JPanel panelViewport;
+  private final JScrollPane scrollPane;
+  private final JPanel panelViewport;
+  private final JButton btnAdd;
+
+  private List<ThingsEntry> entries = new ArrayList<>();
 
   /**
    * Launch the application.
@@ -54,19 +59,17 @@ public class ThingsDialog extends JDialog {
     scrollPane.setViewportView(panelViewport);
     panelViewport.setLayout(null);
 
-    panelEntry_0 = new ThingsEntry(scrollPane);
-    panelEntry_0.setBounds(5, 5, 421, 63);
-    panelViewport.add(panelEntry_0);
+    for (int i = 0; i < 6; i++) {
+      addEntry();
+    }
 
-    panelEntry_1 = new ThingsEntry(scrollPane);
-    panelEntry_1.setBounds(254, 5, 421, 63);
-    panelViewport.add(panelEntry_1);
-    panelEntry_2 = new ThingsEntry(scrollPane);
-    panelEntry_2.setBounds(503, 5, 421, 63);
-    panelViewport.add(panelEntry_2);
-    panelEntry_3 = new ThingsEntry(scrollPane);
-    panelEntry_3.setBounds(752, 5, 421, 63);
-    panelViewport.add(panelEntry_3);
+    btnAdd = new JButton("Add");
+    btnAdd.addActionListener(unused -> {
+      addEntry();
+      validate();
+      repaint();
+    });
+    panelViewport.add(btnAdd);
 
     JPanel buttonPane = new JPanel();
     buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -81,6 +84,43 @@ public class ThingsDialog extends JDialog {
     buttonPane.add(cancelButton);
   }
 
+  protected void addEntry() {
+    ThingsEntry entry = new ThingsEntry(scrollPane);
+    entry.setBounds(5, 5, 421, 63);
+    panelViewport.add(entry);
+    entry.setDoDel(() -> {
+      entries.remove(entry);
+      panelViewport.remove(entry);
+      validate();
+      repaint();
+    });
+    entry.setDoUp(() -> {
+      int idx = entries.indexOf(entry);
+      entries.remove(idx);
+      entries.add(idx - 1, entry);
+      panelViewport.removeAll();
+      for (ThingsEntry e : entries) {
+        panelViewport.add(e);
+      }
+      panelViewport.add(btnAdd);
+      validate();
+      repaint();
+    });
+    entry.setDoDown(() -> {
+      int idx = entries.indexOf(entry);
+      entries.remove(idx);
+      entries.add(idx + 1, entry);
+      panelViewport.removeAll();
+      for (ThingsEntry e : entries) {
+        panelViewport.add(e);
+      }
+      panelViewport.add(btnAdd);
+      validate();
+      repaint();
+    });
+    entries.add(entry);
+  }
+
   @Override
   public void validate() {
     reflow();
@@ -88,12 +128,21 @@ public class ThingsDialog extends JDialog {
   }
 
   private void reflow() {
-    int h = panelEntry_0.getHeight();
-    int w = Math.max(300, scrollPane.getViewport().getExtentSize().width - 10);
-    panelEntry_0.setBounds(5, 0 * h + 1 * 5, w, h);
-    panelEntry_1.setBounds(5, 1 * h + 2 * 5, w, h);
-    panelEntry_2.setBounds(5, 2 * h + 3 * 5, w, h);
-    panelEntry_3.setBounds(5, 3 * h + 4 * 5, w, h);
-    panelViewport.setPreferredSize(new Dimension(w + 10, 4 * h + 5 * 5));
+    if (!entries.isEmpty()) {
+      int h = entries.get(0).getHeight();
+      int w = Math.max(300, scrollPane.getViewport().getExtentSize().width - 10);
+      int idx = 0;
+      for (ThingsEntry entry : entries) {
+        entry.setPosition(Position.compute(idx, entries.size()));
+        entry.setBounds(5, idx * (h + 5) + 5, w, h);
+        idx++;
+      }
+      int yMax = entries.size() * (h + 5) + 5;
+      btnAdd.setBounds(5, yMax, btnAdd.getPreferredSize().width, btnAdd.getPreferredSize().height);
+      // btnAdd.setBounds(5, yMax, w, h);
+      yMax += btnAdd.getHeight() + 5;
+      panelViewport.setPreferredSize(new Dimension(w + 10, yMax));
+    }
   }
+
 }
