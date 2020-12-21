@@ -34,6 +34,14 @@ public class NameField {
       this.negative = negative;
     }
 
+    public boolean isEmpty() {
+      return value.isEmpty();
+    }
+
+    @Override
+    public String toString() {
+      return (negative ? "-" : "") + value;
+    }
   }
 
   private final @Nonnull List<NameValue> names = new ArrayList<>();
@@ -115,6 +123,14 @@ public class NameField {
     } else if (!nbt.equals(other.nbt))
       return false;
     return true;
+  }
+
+  public List<NameValue> getNames() {
+    return names;
+  }
+
+  public void clear() {
+    names.clear();
   }
 
 }

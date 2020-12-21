@@ -5,6 +5,7 @@ import java.awt.CardLayout;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.annotation.Nonnull;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,6 +18,7 @@ import javax.swing.border.BevelBorder;
 import crazypants.enderio.gui.forms.actions.AutoCompletion;
 import crazypants.enderio.gui.gamedata.AliasRepository;
 import crazypants.enderio.gui.gamedata.ValueRepository;
+import crazypants.enderio.gui.xml.NameField.NameValue;
 
 public final class ThingsEntry extends JPanel {
 
@@ -84,13 +86,22 @@ public final class ThingsEntry extends JPanel {
       panelEntryArea.getComponent(selectedIndex).requestFocusInWindow();
     });
 
-    comboItem.setModel(new DefaultComboBoxModel<>(ValueRepository.ITEMS.getAllValues().toArray(new String[0])));
+    DefaultComboBoxModel<String> modelItem = new DefaultComboBoxModel<>(ValueRepository.ITEMS.getAllValues().toArray(new String[0]));
+    modelItem.insertElementAt("", 0);
+    comboItem.setModel(modelItem);
+    comboItem.setSelectedIndex(0);
     AutoCompletion.enable(comboItem);
 
-    comboOreDict.setModel(new DefaultComboBoxModel<>(ValueRepository.OREDICTS.getAllValues().toArray(new String[0])));
+    DefaultComboBoxModel<String> modelOreDict = new DefaultComboBoxModel<>(ValueRepository.OREDICTS.getAllValues().toArray(new String[0]));
+    modelOreDict.insertElementAt("", 0);
+    comboOreDict.setModel(modelOreDict);
+    comboOreDict.setSelectedIndex(0);
     AutoCompletion.enable(comboOreDict);
 
-    comboAlias.setModel(new DefaultComboBoxModel<>(AliasRepository.getCore().toArray(new String[0])));
+    DefaultComboBoxModel<String> modelAlias = new DefaultComboBoxModel<>(AliasRepository.getCore().toArray(new String[0]));
+    modelAlias.insertElementAt("", 0);
+    comboAlias.setModel(modelAlias);
+    comboAlias.setSelectedIndex(0);
     AutoCompletion.enable(comboAlias);
 
     textFreetext.setColumns(10);
@@ -125,7 +136,7 @@ public final class ThingsEntry extends JPanel {
     return getRawEntry().isEmpty();
   }
 
-  public String getEntry() {
+  public @Nonnull String getEntry() {
     return (comboPlusMinus.getSelectedIndex() == 0 ? "" : "-") + getRawEntry();
   }
 
@@ -171,6 +182,32 @@ public final class ThingsEntry extends JPanel {
     btnUp.setEnabled(position.hasUp() && doUp != null);
     btnDown.setEnabled(position.hasDown() && doDown != null);
     btnDelete.setEnabled(position.hasDel() && doDel != null);
+  }
+
+  public void setEntry(NameValue name) {
+    comboPlusMinus.setSelectedIndex(name.isNegative() ? 1 : 0);
+    comboItem.setSelectedIndex(0);
+    comboOreDict.setSelectedIndex(0);
+    comboAlias.setSelectedIndex(0);
+    textFreetext.setText("");
+    String value = name.getValue();
+    if (AliasRepository.getCore().contains(value)) {
+      comboAlias.setSelectedItem(value);
+      comboType.setSelectedIndex(Types.ALIAS.ordinal());
+      cardLayout.show(panelEntryArea, Types.ALIAS.toString());
+    } else if (ValueRepository.OREDICTS.getAllValues().contains(value)) {
+      comboOreDict.setSelectedItem(value);
+      comboType.setSelectedIndex(Types.OREDICT.ordinal());
+      cardLayout.show(panelEntryArea, Types.OREDICT.toString());
+    } else if (ValueRepository.ITEMS.getAllValues().contains(value)) {
+      comboItem.setSelectedItem(value);
+      comboType.setSelectedIndex(Types.ITEM.ordinal());
+      cardLayout.show(panelEntryArea, Types.ITEM.toString());
+    } else {
+      textFreetext.setText(value);
+      comboType.setSelectedIndex(Types.CUSTOM.ordinal());
+      cardLayout.show(panelEntryArea, Types.CUSTOM.toString());
+    }
   }
 
 }

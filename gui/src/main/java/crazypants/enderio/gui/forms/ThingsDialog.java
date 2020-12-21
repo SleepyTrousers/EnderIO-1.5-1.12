@@ -7,14 +7,21 @@ import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import crazypants.enderio.gui.forms.ThingsEntry.Position;
+import crazypants.enderio.gui.gamedata.RecipeHolder;
+import crazypants.enderio.gui.xml.AbstractConditional;
+import crazypants.enderio.gui.xml.Alias;
+import crazypants.enderio.gui.xml.NameField;
+import crazypants.enderio.gui.xml.NameField.NameValue;
 
 public class ThingsDialog extends JDialog {
 
@@ -26,6 +33,7 @@ public class ThingsDialog extends JDialog {
   private final JButton btnAdd;
 
   private List<ThingsEntry> entries = new ArrayList<>();
+  private JTextField textField;
 
   /**
    * Launch the application.
@@ -34,6 +42,12 @@ public class ThingsDialog extends JDialog {
     try {
       ThingsDialog dialog = new ThingsDialog();
       dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+      for (AbstractConditional r : RecipeHolder.CORE.getRecipes().getRecipes()) {
+        if (r instanceof Alias) {
+          dialog.setValue(((Alias) r).getItem());
+          break;
+        }
+      }
       dialog.setVisible(true);
     } catch (Exception e) {
       e.printStackTrace();
@@ -50,30 +64,40 @@ public class ThingsDialog extends JDialog {
     getContentPane().add(contentPanel, BorderLayout.CENTER);
     contentPanel.setLayout(new CardLayout(0, 0));
     scrollPane = new JScrollPane();
-    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-    scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    scrollPane.setBorder(BorderFactory.createEmptyBorder());
     contentPanel.add(scrollPane, "name_603792603466633");
-    JPanel panelHeader = new JPanel();
-    scrollPane.setColumnHeaderView(panelHeader);
     panelViewport = new JPanel();
     scrollPane.setViewportView(panelViewport);
     panelViewport.setLayout(null);
 
-    for (int i = 0; i < 6; i++) {
-      addEntry();
-    }
-
     btnAdd = new JButton("Add");
     btnAdd.addActionListener(unused -> {
       addEntry();
-      validate();
-      repaint();
+      resfreshEntries();
     });
-    panelViewport.add(btnAdd);
+    resfreshEntries();
+
+    JPanel bottomPane = new JPanel();
+    bottomPane.setLayout(new BorderLayout());
+    getContentPane().add(bottomPane, BorderLayout.SOUTH);
+
+    JPanel nbtPane = new JPanel();
+    nbtPane.setLayout(new BorderLayout());
+    nbtPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+    bottomPane.add(nbtPane, BorderLayout.NORTH);
+
+    JLabel nbtLabel = new JLabel("nbt:");
+    nbtPane.add(nbtLabel, BorderLayout.WEST);
+
+    textField = new JTextField();
+    nbtPane.add(textField, BorderLayout.CENTER);
+    textField.setColumns(10);
+
+    // edit
 
     JPanel buttonPane = new JPanel();
     buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-    getContentPane().add(buttonPane, BorderLayout.SOUTH);
+    bottomPane.add(buttonPane, BorderLayout.SOUTH);
 
     JButton okButton = new JButton("OK");
     okButton.setActionCommand("OK");
@@ -84,47 +108,53 @@ public class ThingsDialog extends JDialog {
     buttonPane.add(cancelButton);
   }
 
-  protected void addEntry() {
+  protected ThingsEntry addEntry() {
     ThingsEntry entry = new ThingsEntry(scrollPane);
     entry.setBounds(5, 5, 421, 63);
-    panelViewport.add(entry);
     entry.setDoDel(() -> {
       entries.remove(entry);
-      panelViewport.remove(entry);
-      validate();
-      repaint();
+      resfreshEntries();
     });
     entry.setDoUp(() -> {
       int idx = entries.indexOf(entry);
       entries.remove(idx);
       entries.add(idx - 1, entry);
-      panelViewport.removeAll();
-      for (ThingsEntry e : entries) {
-        panelViewport.add(e);
-      }
-      panelViewport.add(btnAdd);
-      validate();
-      repaint();
+      resfreshEntries();
     });
     entry.setDoDown(() -> {
       int idx = entries.indexOf(entry);
       entries.remove(idx);
       entries.add(idx + 1, entry);
-      panelViewport.removeAll();
-      for (ThingsEntry e : entries) {
-        panelViewport.add(e);
-      }
-      panelViewport.add(btnAdd);
-      validate();
-      repaint();
+      resfreshEntries();
     });
     entries.add(entry);
+    return entry;
+  }
+
+  protected void resfreshEntries() {
+    if (entries.isEmpty()) {
+      addEntry(); // never be completely empty
+    }
+    panelViewport.removeAll();
+    for (ThingsEntry e : entries) {
+      panelViewport.add(e);
+    }
+    panelViewport.add(btnAdd);
+    btnAdd.requestFocusInWindow();
+    validate();
+    repaint();
   }
 
   @Override
   public void validate() {
+    int w = scrollPane.getViewport().getExtentSize().width;
     reflow();
     super.validate();
+    if (scrollPane.getViewport().getExtentSize().width != w) {
+      // vertical scrollbar got added/removed
+      reflow();
+      super.validate();
+    }
   }
 
   private void reflow() {
@@ -138,11 +168,31 @@ public class ThingsDialog extends JDialog {
         idx++;
       }
       int yMax = entries.size() * (h + 5) + 5;
-      btnAdd.setBounds(5, yMax, btnAdd.getPreferredSize().width, btnAdd.getPreferredSize().height);
-      // btnAdd.setBounds(5, yMax, w, h);
+      // btnAdd.setBounds(5, yMax, btnAdd.getPreferredSize().width, btnAdd.getPreferredSize().height); // normal button size
+      btnAdd.setBounds(5, yMax, w, h);
       yMax += btnAdd.getHeight() + 5;
       panelViewport.setPreferredSize(new Dimension(w + 10, yMax));
     }
   }
 
+  public void setValue(NameField nf) {
+    entries.clear();
+    for (NameValue name : nf.getNames()) {
+      if (!name.isEmpty()) {
+        addEntry().setEntry(name);
+      }
+    }
+    addEntry(); // always have an empty one at the end
+    resfreshEntries();
+  }
+
+  public NameField getValue() {
+    NameField result = new NameField();
+    for (ThingsEntry entry : entries) {
+      if (!entry.isEmpty()) {
+        result.add(entry.getEntry());
+      }
+    }
+    return result;
+  }
 }

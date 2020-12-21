@@ -52,4 +52,12 @@ public class Alias extends AbstractConditional {
     return super.setAttribute(factory, name, value);
   }
 
+  public @Nonnull NameField getItem() {
+    return item;
+  }
+
+  public void setItem(@Nonnull NameField item) {
+    this.item = item;
+  }
+
 }
