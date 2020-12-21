@@ -143,7 +143,13 @@ public class MainWindow {
     JButton btnNewButton_7 = new JButton("Save User Recipe File");
     btnNewButton_7.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        crazypants.enderio.gui.forms.ThingsDialog.main(null);
+        // ThingsDialog d = new ThingsDialog(frame, "THINGSDIAlog");
+        // d.setVisible(true);
+        // if (d.wasClosedWithSuccess()) {
+        // System.out.println(d.getValue().getName());
+        // }
+        crazypants.enderio.gui.forms.TestDummy.main(null);
+        // crazypants.enderio.gui.forms.ThingsDialog.main(null);
       }
     });
     mainPanel.add(btnNewButton_7, "cell 1 9");

@@ -42,19 +42,34 @@ public class NameField {
     public String toString() {
       return (negative ? "-" : "") + value;
     }
+
+    public @Nonnull NameValue copy() {
+      return new NameValue(negative, value);
+    }
   }
 
   private final @Nonnull List<NameValue> names = new ArrayList<>();
   private String nbt;
 
+  public @Nonnull NameField copy() {
+    NameField result = new NameField();
+    result.nbt = nbt;
+    for (NameValue value : names) {
+      result.names.add(value.copy());
+    }
+    return result;
+  }
+
   public @Nonnull NameField add(@Nonnull String name) {
-    for (String split : name.split(",\\s*")) {
-      if (split.startsWith("-")) {
-        names.add(new NameValue(true, split.substring(1)));
-      } else if (split.startsWith("+")) {
-        names.add(new NameValue(false, split.substring(1)));
-      } else {
-        names.add(new NameValue(false, split));
+    if (!name.isEmpty()) {
+      for (String split : name.split(",\\s*")) {
+        if (split.startsWith("-")) {
+          names.add(new NameValue(true, split.substring(1)));
+        } else if (split.startsWith("+")) {
+          names.add(new NameValue(false, split.substring(1)));
+        } else {
+          names.add(new NameValue(false, split));
+        }
       }
     }
     return this;

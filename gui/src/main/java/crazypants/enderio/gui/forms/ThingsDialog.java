@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,13 +28,14 @@ public class ThingsDialog extends JDialog {
 
   private static final long serialVersionUID = -5665046007268630990L;
 
-  private final JPanel contentPanel = new JPanel();
-  private final JScrollPane scrollPane;
-  private final JPanel panelViewport;
-  private final JButton btnAdd;
+  private JPanel contentPanel = new JPanel();
+  private JScrollPane scrollPane;
+  private JPanel panelViewport;
+  private JButton btnAdd;
 
   private List<ThingsEntry> entries = new ArrayList<>();
   private JTextField textField;
+  private boolean closedWithSuccess = false;
 
   /**
    * Launch the application.
@@ -57,7 +59,16 @@ public class ThingsDialog extends JDialog {
   /**
    * Create the dialog.
    */
+  public ThingsDialog(Frame owner, String title) {
+    super(owner, title, true);
+    init();
+  }
+
   public ThingsDialog() {
+    init();
+  }
+
+  private void init() {
     setBounds(100, 100, 468, 712);
     getContentPane().setLayout(new BorderLayout());
     contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -101,11 +112,22 @@ public class ThingsDialog extends JDialog {
 
     JButton okButton = new JButton("OK");
     okButton.setActionCommand("OK");
+    okButton.addActionListener(unused -> close(true));
     buttonPane.add(okButton);
     getRootPane().setDefaultButton(okButton);
     JButton cancelButton = new JButton("Cancel");
     cancelButton.setActionCommand("Cancel");
+    cancelButton.addActionListener(unused -> close(false));
     buttonPane.add(cancelButton);
+  }
+
+  private void close(boolean success) {
+    closedWithSuccess = success;
+    setVisible(false);
+  }
+
+  public boolean wasClosedWithSuccess() {
+    return closedWithSuccess;
   }
 
   protected ThingsEntry addEntry() {

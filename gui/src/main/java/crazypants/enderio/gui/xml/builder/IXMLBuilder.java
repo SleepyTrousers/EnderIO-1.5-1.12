@@ -75,6 +75,9 @@ public interface IXMLBuilder {
     return this;
   }
 
+  @Nonnull
+  String writeXML();
+
   // ------------------------------------------ //
 
   interface Impl extends IXMLBuilder {
@@ -86,6 +89,7 @@ public interface IXMLBuilder {
 
     final static @Nonnull String NEWLINE = "\n";
     final static @Nonnull String ROOT = "<>";
+    final static @Nonnull String SINGLE = "<<>>";
 
     @Nonnull
     List<String> getComments();
@@ -102,11 +106,19 @@ public interface IXMLBuilder {
     @Nonnull
     String getIndent();
 
-    default String writeXML() {
+    @Override
+    default @Nonnull String writeXML() {
       StringBuilder builder = new StringBuilder();
-      if (ROOT.equals(getIndent())) {
+      if (ROOT.equals(getTagname())) {
         builder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
         builder.append(NEWLINE);
+        for (IXMLBuilder child : getChildren()) {
+          builder.append(child);
+        }
+      } else if (SINGLE.equals(getTagname())) {
+        for (IXMLBuilder child : getChildren()) {
+          builder.append(child);
+        }
       } else {
         for (String comment : getComments()) {
           builder.append(getIndent());

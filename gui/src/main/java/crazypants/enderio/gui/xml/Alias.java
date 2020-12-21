@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import javax.xml.stream.XMLStreamException;
 
 import crazypants.enderio.gui.gamedata.AliasRepository;
+import crazypants.enderio.gui.xml.builder.IXMLBuilder;
 
 public class Alias extends AbstractConditional {
 
@@ -58,6 +59,15 @@ public class Alias extends AbstractConditional {
 
   public void setItem(@Nonnull NameField item) {
     this.item = item;
+  }
+
+  public void setName(String name) {
+    this.name = ofString(name);
+  }
+
+  @Override
+  public void write(@Nonnull IXMLBuilder parent) {
+    parent.child("alias").superCall(super::write).attribute("name", name).attribute("item", item.getName());
   }
 
 }

@@ -2,6 +2,7 @@ package crazypants.enderio.gui.xml;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -97,4 +98,11 @@ public abstract class AbstractConditional implements IRecipeConfigElement {
   public void setDisabled(boolean disabled) {
     this.disabled = disabled;
   }
+
+  public String getConditionDisplay() {
+    String r1 = configReferences.stream().map(cr -> cr.toString()).collect(Collectors.joining(", "));
+    String r2 = dependencies.stream().map(cr -> cr.toString()).collect(Collectors.joining(", "));
+    return r1.isEmpty() && r2.isEmpty() ? "" : r1.isEmpty() ? r2 : (r1 + ", " + r2);
+  }
+
 }

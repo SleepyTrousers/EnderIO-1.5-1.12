@@ -32,4 +32,10 @@ public class XMLBuilderWrapper implements IXMLBuilder {
     return wrapped.toString();
   }
 
+  @Override
+  @Nonnull
+  public String writeXML() {
+    return wrapped.writeXML();
+  }
+
 }

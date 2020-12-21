@@ -34,10 +34,12 @@ public class ValueRepository {
     VALUES.put(valueType, new LinkedHashMap<>());
   }
 
+  @SuppressWarnings("null")
   public @Nonnull List<String> getAllValues() {
     return VALUES.get(valueType).keySet().stream().collect(Collectors.toList());
   }
 
+  @SuppressWarnings("null")
   public @Nonnull List<ResourceLocation> getAllResourceLocations() {
     return VALUES.get(valueType).keySet().stream().map(ResourceLocation::new).collect(Collectors.toList());
   }

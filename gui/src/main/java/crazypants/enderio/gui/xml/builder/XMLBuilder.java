@@ -24,6 +24,10 @@ public class XMLBuilder implements IXMLBuilder.Impl {
     return new XMLBuilder(ROOT, ROOT);
   }
 
+  public static @Nonnull IXMLBuilder single() {
+    return new XMLBuilder(ROOT, SINGLE);
+  }
+
   @Override
   public @Nonnull IXMLBuilder attribute(@Nonnull String key, @Nonnull String value, String defaultValue) {
     if (!value.isEmpty()) {
