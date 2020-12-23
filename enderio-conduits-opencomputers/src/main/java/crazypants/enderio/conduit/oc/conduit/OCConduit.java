@@ -491,11 +491,13 @@ public class OCConduit extends AbstractConduit implements IOCConduit {
   @Override
   @Method(modid = "opencomputersapi|network")
   public void onConnect(Node node) {
+    connectionsDirty = true;
   }
 
   @Override
   @Method(modid = "opencomputersapi|network")
   public void onDisconnect(Node node) {
+    connectionsDirty = true;
   }
 
   @Override
