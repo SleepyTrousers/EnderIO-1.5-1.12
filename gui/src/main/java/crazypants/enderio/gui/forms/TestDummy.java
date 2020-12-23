@@ -22,9 +22,18 @@ public class TestDummy extends JDialog {
    */
   public static void main(String[] args) {
     try {
-      TestDummy dialog = new TestDummy();
-      dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-      dialog.setVisible(true);
+
+      // AliasEditDialog aliasPanel = new AliasEditDialog(null, "Alias", null, true);
+      for (AbstractConditional r : RecipeHolder.CORE.getRecipes().getRecipes()) {
+        if (r instanceof Alias) {
+          AliasEditDialog aliasPanel = new AliasEditDialog(null, "Alias", (Alias) r, true);
+          aliasPanel.setVisible(true);
+          return;
+          // aliasPanel.setElement(((Alias) r));
+          // break;
+        }
+      }
+      // aliasPanel.setVisible(true);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -56,14 +65,14 @@ public class TestDummy extends JDialog {
       }
     }
 
-    AliasPanel aliasPanel = new AliasPanel();
-    for (AbstractConditional r : RecipeHolder.CORE.getRecipes().getRecipes()) {
-      if (r instanceof Alias) {
-        aliasPanel.setAlias(((Alias) r));
-        break;
-      }
-    }
-    contentPanel.add(aliasPanel);
+    // AliasEditDialog aliasPanel = new AliasEditDialog();
+    // for (AbstractConditional r : RecipeHolder.CORE.getRecipes().getRecipes()) {
+    // if (r instanceof Alias) {
+    // aliasPanel.setElement(((Alias) r));
+    // break;
+    // }
+    // }
+    // contentPanel.add(aliasPanel);
 
   }
 

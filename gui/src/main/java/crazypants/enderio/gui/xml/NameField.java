@@ -5,8 +5,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
 
-public class NameField {
+import crazypants.enderio.gui.xml.builder.IXMLBuilder;
+
+public class NameField implements IRecipeConfigElement {
 
   public static class NameValue {
 
@@ -46,6 +50,7 @@ public class NameField {
     public @Nonnull NameValue copy() {
       return new NameValue(negative, value);
     }
+
   }
 
   private final @Nonnull List<NameValue> names = new ArrayList<>();
@@ -104,6 +109,7 @@ public class NameField {
     return builder.toString();
   }
 
+  @Override
   public @Nonnull String getName() {
     return "" + String.join(", ", names.stream().map(n -> n.toString()).collect(Collectors.toList()));
   }
@@ -146,6 +152,34 @@ public class NameField {
 
   public void clear() {
     names.clear();
+  }
+
+  @Override
+  public void validate() throws InvalidRecipeConfigException {
+    if (isEmpty()) {
+      throw new InvalidRecipeConfigException("element cannot be empty");
+    }
+  }
+
+  @Override
+  public boolean setAttribute(@Nonnull StaxFactory factory, @Nonnull String name, @Nonnull String value)
+      throws InvalidRecipeConfigException, XMLStreamException {
+    return false;
+  }
+
+  @Override
+  public boolean setElement(@Nonnull StaxFactory factory, @Nonnull String name, @Nonnull StartElement startElement)
+      throws InvalidRecipeConfigException, XMLStreamException {
+    return false;
+  }
+
+  // only for GUI preview
+  @Override
+  public void write(@Nonnull IXMLBuilder parent) {
+    IXMLBuilder ƒ = parent.child("").attribute("value", getName());
+    if (hasNbt()) {
+      ƒ.attribute("nbt", getNbt());
+    }
   }
 
 }
