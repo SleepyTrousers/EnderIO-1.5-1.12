@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -40,8 +40,8 @@ public class MainWindow {
   private JLabel labelInstallationFolder;
   private JLabel labelCoreRecipes;
   private SwingActionSelectInstallation actionSelectInstallation;
-  private final Action actionLoadDataFile = new SwingActionLoadDataFile();
-  private final Action actionLoadCoreRecipes = new SwingActionLoadCoreRecipes();
+  private final SwingActionLoadDataFile actionLoadDataFile = new SwingActionLoadDataFile();
+  private final SwingActionLoadCoreRecipes actionLoadCoreRecipes = new SwingActionLoadCoreRecipes();
 
   /**
    * Launch the application.
@@ -53,9 +53,11 @@ public class MainWindow {
         try {
           MainWindow window = new MainWindow();
           window.frame.setVisible(true);
-          if (datafile != null) {
-            EventQueue.invokeLater(() -> window.actionSelectInstallation.load(new File(datafile)));
-          }
+          EventQueue.invokeLater(() -> window.actionSelectInstallation.load(new File(datafile != null ? datafile : System.getProperty("user.dir")), () -> {
+            window.actionLoadDataFile.load(() -> {
+              window.actionLoadCoreRecipes.actionPerformed(null);
+            });
+          }));
         } catch (Exception e) {
           e.printStackTrace();
         }
@@ -199,15 +201,18 @@ public class MainWindow {
       if (fc.showOpenDialog(getFrame()) == JFileChooser.APPROVE_OPTION) {
         File file = fc.getSelectedFile();
         if (file != null) {
-          EventQueue.invokeLater(() -> load(file));
+          EventQueue.invokeLater(() -> load(file, null));
         }
       }
     }
 
-    protected void load(@Nonnull File file) {
+    protected void load(@Nonnull File file, @Nullable Runnable onSuccess) {
       GameLocation.setFile(file);
       if (GameLocation.isValid()) {
         labelInstallationFolder.setText(GameLocation.getGAME().toString());
+        if (onSuccess != null) {
+          onSuccess.run();
+        }
       } else {
         labelInstallationFolder.setText(file + " is not a valid Minecraft installation");
       }
@@ -224,6 +229,10 @@ public class MainWindow {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+      load(null);
+    }
+
+    private void load(@Nullable Runnable onSuccess) {
       EventQueue.invokeLater(() -> {
         String error = ValueRepository.read();
         if (error != null) {
@@ -237,10 +246,12 @@ public class MainWindow {
           } else {
             labelDataFile.setText("Loaded " + GameLocation.getDATA().toString());
             labelDataFile.setToolTipText(counts.entrySet().stream().map(entry -> entry.getKey() + ": " + entry.getValue()).collect(Collectors.joining(", ")));
+            if (onSuccess != null) {
+              onSuccess.run();
+            }
           }
         }
       });
-
     }
   }
 

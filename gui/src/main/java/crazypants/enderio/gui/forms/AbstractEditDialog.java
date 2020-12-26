@@ -3,6 +3,7 @@ package crazypants.enderio.gui.forms;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dialog;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 
@@ -23,7 +24,7 @@ public abstract class AbstractEditDialog<T extends IRecipeConfigElement> extends
 
   private static final long serialVersionUID = 2722085591062402965L;
 
-  private final @Nonnull JPanel contentPanel = new JPanel();
+  private @Nonnull JPanel contentPanel = new JPanel();
   private boolean closedWithSuccess = false;
   protected final boolean editable;
 
@@ -32,13 +33,30 @@ public abstract class AbstractEditDialog<T extends IRecipeConfigElement> extends
   private JTextPane errorPane;
 
   public AbstractEditDialog() {
-    this(null, "Testing", null, true);
+    this((Frame) null, "Testing", null, true);
+  }
+
+  public AbstractEditDialog(@Nullable Dialog owner, @Nonnull String title, @Nullable T element, boolean editable) {
+    super(owner, title, true);
+    this.element = makeEmptyElement(element);
+    this.editable = editable;
+    init();
+    if (element != null) {
+      setElement(element);
+    }
   }
 
   public AbstractEditDialog(@Nullable Frame owner, @Nonnull String title, @Nullable T element, boolean editable) {
     super(owner, title, true);
     this.element = makeEmptyElement(element);
     this.editable = editable;
+    init();
+    if (element != null) {
+      setElement(element);
+    }
+  }
+
+  private void init() {
     setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
     setBounds(100, 100, 450, 300);
     getContentPane().setLayout(new BorderLayout());
@@ -85,10 +103,6 @@ public abstract class AbstractEditDialog<T extends IRecipeConfigElement> extends
       closeButton.addActionListener(unused -> close(false));
       buttonPane.add(closeButton);
       getRootPane().setDefaultButton(closeButton);
-    }
-
-    if (element != null) {
-      setElement(element);
     }
   }
 

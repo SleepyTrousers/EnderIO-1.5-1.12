@@ -53,10 +53,12 @@ public class Recipes implements IRecipeRoot {
   protected <T extends AbstractConditional> void addRecipe(T element, StaxFactory factory, StartElement startElement)
       throws InvalidRecipeConfigException, XMLStreamException {
     final AbstractConditional recipe = factory.read(element, startElement);
-    for (AbstractConditional existingRecipe : recipes) {
-      if (existingRecipe.getName().equals(recipe.getName())) {
-        throw new InvalidRecipeConfigException(
-            "Duplicate recipe '" + recipe.getName() + "'. A recipe with the same name was already read from " + existingRecipe.getSource());
+    if (!recipe.supportsDuplicates()) {
+      for (AbstractConditional existingRecipe : recipes) {
+        if (existingRecipe.getName().equals(recipe.getName())) {
+          throw new InvalidRecipeConfigException(
+              "Duplicate recipe '" + recipe.getName() + "'. A recipe with the same name was already read from " + existingRecipe.getSource());
+        }
       }
     }
     recipes.add(recipe);

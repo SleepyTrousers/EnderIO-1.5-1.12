@@ -83,4 +83,12 @@ public interface IRecipeConfigElement {
 
   void write(@Nonnull IXMLBuilder parent);
 
+  /**
+   * Can this element coexist with another one that has the same name?
+   * <p>
+   * Usually they cannot as recipes are indexed by name, but there are some exceptions, e.g. aliases.
+   */
+  default boolean supportsDuplicates() {
+    return false;
+  }
 }

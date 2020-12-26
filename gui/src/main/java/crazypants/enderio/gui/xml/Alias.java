@@ -70,4 +70,9 @@ public class Alias extends AbstractConditional {
     parent.child("alias").superCall(super::write).attribute("name", name).attribute("item", item.getName());
   }
 
+  @Override
+  public boolean supportsDuplicates() {
+    return true;
+  }
+
 }

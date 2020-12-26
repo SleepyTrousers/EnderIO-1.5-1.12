@@ -26,7 +26,7 @@ public class TestDummy extends JDialog {
       // AliasEditDialog aliasPanel = new AliasEditDialog(null, "Alias", null, true);
       for (AbstractConditional r : RecipeHolder.CORE.getRecipes().getRecipes()) {
         if (r instanceof Alias) {
-          AliasEditDialog aliasPanel = new AliasEditDialog(null, "Alias", (Alias) r, true);
+          AliasEditDialog aliasPanel = new AliasEditDialog(null, "Alias", (Alias) r, false);
           aliasPanel.setVisible(true);
           return;
           // aliasPanel.setElement(((Alias) r));

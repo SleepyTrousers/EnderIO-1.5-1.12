@@ -1,13 +1,14 @@
 package crazypants.enderio.gui.forms;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
+import java.awt.Dialog;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -24,29 +25,26 @@ import crazypants.enderio.gui.xml.Alias;
 import crazypants.enderio.gui.xml.NameField;
 import crazypants.enderio.gui.xml.NameField.NameValue;
 
-public class ThingsDialog extends JDialog {
+public class ThingsDialog extends AbstractEditDialog<NameField> {
 
   private static final long serialVersionUID = -5665046007268630990L;
 
-  private JPanel contentPanel = new JPanel();
+  private List<ThingsEntry> entries;
+  private JTextField textFieldNbt;
   private JScrollPane scrollPane;
-  private JPanel panelViewport;
   private JButton btnAdd;
-
-  private List<ThingsEntry> entries = new ArrayList<>();
-  private JTextField textField;
-  private boolean closedWithSuccess = false;
+  private JPanel panelViewport;
 
   /**
    * Launch the application.
    */
   public static void main(String[] args) {
     try {
-      ThingsDialog dialog = new ThingsDialog();
+      ThingsDialog dialog = new ThingsDialog((Frame) null, "Test", null, true);
       dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
       for (AbstractConditional r : RecipeHolder.CORE.getRecipes().getRecipes()) {
         if (r instanceof Alias) {
-          dialog.setValue(((Alias) r).getItem());
+          dialog.setElement(((Alias) r).getItem());
           break;
         }
       }
@@ -56,82 +54,54 @@ public class ThingsDialog extends JDialog {
     }
   }
 
-  /**
-   * Create the dialog.
-   */
-  public ThingsDialog(Frame owner, String title) {
-    super(owner, title, true);
-    init();
+  public ThingsDialog(@Nullable Dialog owner, @Nonnull String title, @Nullable NameField element, boolean editable) {
+    super(owner, title, element, editable);
   }
 
-  public ThingsDialog() {
-    init();
+  public ThingsDialog(@Nullable Frame owner, @Nonnull String title, @Nullable NameField element, boolean editable) {
+    super(owner, title, element, editable);
   }
 
-  private void init() {
-    setBounds(100, 100, 468, 712);
-    getContentPane().setLayout(new BorderLayout());
-    contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-    getContentPane().add(contentPanel, BorderLayout.CENTER);
-    contentPanel.setLayout(new CardLayout(0, 0));
+  @Override
+  protected @Nonnull JPanel makePanel() {
+    entries = new ArrayList<>();
+
+    JPanel panel = new JPanel();
+    panel.setLayout(new BorderLayout());
+
     scrollPane = new JScrollPane();
     scrollPane.setBorder(BorderFactory.createEmptyBorder());
-    contentPanel.add(scrollPane, "name_603792603466633");
     panelViewport = new JPanel();
     scrollPane.setViewportView(panelViewport);
     panelViewport.setLayout(null);
+    panel.add(scrollPane, BorderLayout.CENTER);
 
-    btnAdd = new JButton("Add");
-    btnAdd.addActionListener(unused -> {
-      addEntry();
-      resfreshEntries();
-    });
+    if (editable) {
+      btnAdd = new JButton("Add");
+      btnAdd.addActionListener(unused -> {
+        addEntry();
+        resfreshEntries();
+      });
+    }
     resfreshEntries();
-
-    JPanel bottomPane = new JPanel();
-    bottomPane.setLayout(new BorderLayout());
-    getContentPane().add(bottomPane, BorderLayout.SOUTH);
 
     JPanel nbtPane = new JPanel();
     nbtPane.setLayout(new BorderLayout());
     nbtPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-    bottomPane.add(nbtPane, BorderLayout.NORTH);
+    panel.add(nbtPane, BorderLayout.SOUTH);
 
     JLabel nbtLabel = new JLabel("nbt:");
     nbtPane.add(nbtLabel, BorderLayout.WEST);
 
-    textField = new JTextField();
-    nbtPane.add(textField, BorderLayout.CENTER);
-    textField.setColumns(10);
+    textFieldNbt = new JTextField();
+    nbtPane.add(textFieldNbt, BorderLayout.CENTER);
+    textFieldNbt.setEnabled(editable);
 
-    // edit
-
-    JPanel buttonPane = new JPanel();
-    buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-    bottomPane.add(buttonPane, BorderLayout.SOUTH);
-
-    JButton okButton = new JButton("OK");
-    okButton.setActionCommand("OK");
-    okButton.addActionListener(unused -> close(true));
-    buttonPane.add(okButton);
-    getRootPane().setDefaultButton(okButton);
-    JButton cancelButton = new JButton("Cancel");
-    cancelButton.setActionCommand("Cancel");
-    cancelButton.addActionListener(unused -> close(false));
-    buttonPane.add(cancelButton);
-  }
-
-  private void close(boolean success) {
-    closedWithSuccess = success;
-    setVisible(false);
-  }
-
-  public boolean wasClosedWithSuccess() {
-    return closedWithSuccess;
+    return panel;
   }
 
   protected ThingsEntry addEntry() {
-    ThingsEntry entry = new ThingsEntry(scrollPane);
+    ThingsEntry entry = new ThingsEntry(scrollPane, editable);
     entry.setBounds(5, 5, 421, 63);
     entry.setDoDel(() -> {
       entries.remove(entry);
@@ -154,15 +124,17 @@ public class ThingsDialog extends JDialog {
   }
 
   protected void resfreshEntries() {
-    if (entries.isEmpty()) {
+    if (editable && entries.isEmpty()) {
       addEntry(); // never be completely empty
     }
     panelViewport.removeAll();
     for (ThingsEntry e : entries) {
       panelViewport.add(e);
     }
-    panelViewport.add(btnAdd);
-    btnAdd.requestFocusInWindow();
+    if (btnAdd != null) {
+      panelViewport.add(btnAdd);
+      btnAdd.requestFocusInWindow();
+    }
     validate();
     repaint();
   }
@@ -190,25 +162,31 @@ public class ThingsDialog extends JDialog {
         idx++;
       }
       int yMax = entries.size() * (h + 5) + 5;
-      // btnAdd.setBounds(5, yMax, btnAdd.getPreferredSize().width, btnAdd.getPreferredSize().height); // normal button size
-      btnAdd.setBounds(5, yMax, w, h);
-      yMax += btnAdd.getHeight() + 5;
+      if (btnAdd != null) {
+        // btnAdd.setBounds(5, yMax, btnAdd.getPreferredSize().width, btnAdd.getPreferredSize().height); // normal button size
+        btnAdd.setBounds(5, yMax, w, h);
+        yMax += btnAdd.getHeight() + 5;
+      }
       panelViewport.setPreferredSize(new Dimension(w + 10, yMax));
     }
   }
 
-  public void setValue(NameField nf) {
+  @Override
+  public void setElement(@Nonnull NameField element) {
     entries.clear();
-    for (NameValue name : nf.getNames()) {
+    for (NameValue name : element.getNames()) {
       if (!name.isEmpty()) {
         addEntry().setEntry(name);
       }
     }
-    addEntry(); // always have an empty one at the end
+    if (editable) {
+      addEntry(); // always have an empty one at the end
+    }
     resfreshEntries();
   }
 
-  public NameField getValue() {
+  @Override
+  public @Nonnull NameField getElement() {
     NameField result = new NameField();
     for (ThingsEntry entry : entries) {
       if (!entry.isEmpty()) {
@@ -217,4 +195,11 @@ public class ThingsDialog extends JDialog {
     }
     return result;
   }
+
+  @Override
+  @Nonnull
+  NameField makeEmptyElement(@Nullable NameField inputElement) {
+    return new NameField();
+  }
+
 }

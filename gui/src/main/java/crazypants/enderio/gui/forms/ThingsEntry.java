@@ -69,7 +69,7 @@ public final class ThingsEntry extends JPanel {
     this.doDel = doDel;
   }
 
-  public ThingsEntry(JScrollPane scrollPane) {
+  public ThingsEntry(JScrollPane scrollPane, boolean editable) {
     this.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 
     this.setLayout(new BorderLayout());
@@ -78,6 +78,7 @@ public final class ThingsEntry extends JPanel {
     panelLeft.setLayout(new BorderLayout());
 
     comboPlusMinus.setModel(new DefaultComboBoxModel<>(new String[] { "Include", "Exclude" }));
+    comboPlusMinus.setEnabled(editable);
 
     comboType.setModel(new DefaultComboBoxModel<>(Types.getTexts()));
     comboType.addActionListener(e -> {
@@ -85,42 +86,49 @@ public final class ThingsEntry extends JPanel {
       cardLayout.show(panelEntryArea, Types.values()[selectedIndex].toString());
       panelEntryArea.getComponent(selectedIndex).requestFocusInWindow();
     });
+    comboType.setEnabled(editable);
 
     DefaultComboBoxModel<String> modelItem = new DefaultComboBoxModel<>(ValueRepository.ITEMS.getAllValues().toArray(new String[0]));
     modelItem.insertElementAt("", 0);
     comboItem.setModel(modelItem);
     comboItem.setSelectedIndex(0);
+    comboItem.setEnabled(editable);
     AutoCompletion.enable(comboItem);
 
     DefaultComboBoxModel<String> modelOreDict = new DefaultComboBoxModel<>(ValueRepository.OREDICTS.getAllValues().toArray(new String[0]));
     modelOreDict.insertElementAt("", 0);
     comboOreDict.setModel(modelOreDict);
     comboOreDict.setSelectedIndex(0);
+    comboOreDict.setEnabled(editable);
     AutoCompletion.enable(comboOreDict);
 
     DefaultComboBoxModel<String> modelAlias = new DefaultComboBoxModel<>(AliasRepository.getCore().toArray(new String[0]));
     modelAlias.insertElementAt("", 0);
     comboAlias.setModel(modelAlias);
     comboAlias.setSelectedIndex(0);
+    comboAlias.setEnabled(editable);
     AutoCompletion.enable(comboAlias);
 
     textFreetext.setColumns(10);
+    textFreetext.setEnabled(editable);
 
-    btnDelete.addActionListener(unused -> doDel.run());
-    btnUp.addActionListener(unused -> doUp.run());
-    btnDown.addActionListener(unused -> doDown.run());
+    if (editable) {
+      btnDelete.addActionListener(unused -> doDel.run());
+      btnUp.addActionListener(unused -> doUp.run());
+      btnDown.addActionListener(unused -> doDown.run());
 
-    btnDelete.setIcon(new ImageIcon(MainWindow.class.getResource("/javax/swing/plaf/metal/icons/ocean/paletteClose.gif")));
-    btnUp.setIcon(new ImageIcon(ThingsDialog.class.getResource("/javax/swing/plaf/metal/icons/sortUp.png")));
-    btnDown.setIcon(new ImageIcon(ThingsDialog.class.getResource("/javax/swing/plaf/metal/icons/sortDown.png")));
+      btnDelete.setIcon(new ImageIcon(MainWindow.class.getResource("/javax/swing/plaf/metal/icons/ocean/paletteClose.gif")));
+      btnUp.setIcon(new ImageIcon(ThingsDialog.class.getResource("/javax/swing/plaf/metal/icons/sortUp.png")));
+      btnDown.setIcon(new ImageIcon(ThingsDialog.class.getResource("/javax/swing/plaf/metal/icons/sortDown.png")));
 
-    // Structure
-    this.add(panelLeft, BorderLayout.WEST);
+      // Structure
+      this.add(btnDelete, BorderLayout.EAST);
+
+      panelLeft.add(btnUp, BorderLayout.NORTH);
+      panelLeft.add(btnDown, BorderLayout.SOUTH);
+      this.add(panelLeft, BorderLayout.WEST);
+    }
     this.add(panelInner, BorderLayout.CENTER);
-    this.add(btnDelete, BorderLayout.EAST);
-
-    panelLeft.add(btnUp, BorderLayout.NORTH);
-    panelLeft.add(btnDown, BorderLayout.SOUTH);
 
     panelInner.add(comboPlusMinus, BorderLayout.WEST);
     panelInner.add(comboType, BorderLayout.CENTER);

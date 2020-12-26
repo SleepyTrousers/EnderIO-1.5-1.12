@@ -1,6 +1,5 @@
 package crazypants.enderio.gui.forms;
 
-import java.awt.Container;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,14 +36,6 @@ public class AliasEditDialog extends AbstractEditDialog<Alias> {
     return alias;
   }
 
-  private Frame findFrame(Container p) {
-    if (p == null || p instanceof Frame) {
-      return (Frame) p;
-    } else {
-      return findFrame(p.getParent());
-    }
-  }
-
   public AliasEditDialog(@Nullable Frame owner, @Nonnull String title, @Nullable Alias element, boolean editable) {
     super(owner, title, element, editable);
   }
@@ -79,11 +70,10 @@ public class AliasEditDialog extends AbstractEditDialog<Alias> {
     btnNewButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        ThingsDialog dialog = new ThingsDialog(findFrame(getParent()), "Alias: " + getElement().getName());
-        dialog.setValue(getElement().getItem());
+        ThingsDialog dialog = new ThingsDialog(AliasEditDialog.this, "Alias: " + getElement().getName(), getElement().getItem(), editable);
         dialog.setVisible(true);
         if (editable && dialog.wasClosedWithSuccess()) {
-          getElement().setItem(dialog.getValue().copy());
+          getElement().setItem(dialog.getElement().copy());
           textValue.setText(getElement().getItem().getName());
         }
       }

@@ -7,3 +7,8 @@ jar {
         attributes 'Main-Class': 'crazypants.enderio.gui.GuiMain'
     }
 }
+
+dependencies {
+	implementation fileTree(dir: "lib", include: '*.jar')
+}
+

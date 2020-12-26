@@ -430,6 +430,11 @@ jar {
             ])
         }
     }
+    combjarprojects.each { subproject ->
+	    from { // TODO: It would be nice to be able to pull this from some config --------v
+	        subproject.configurations.runtimeClasspath.findAll { it.name.equals('miglayout15-swing.jar') }.collect { zipTree(it) }
+	    }
+    }
     manifest {
         attributes 'Main-Class': 'crazypants.enderio.gui.GuiMain'
     }
