@@ -243,6 +243,48 @@ XML editor will display that as tooltips when editing this file.
       <item name="enderio:block_dark_fused_quartz:*" show="false" />
       <item name="enderio:block_dark_fused_glass:*" show="false" />
 
+      <item name="enderio:block_holy_fused_quartz:*" show="false" />
+      <item name="enderio:block_holy_fused_glass:*" show="false" />
+      <item name="enderio:block_holy_enlightened_fused_quartz:*" show="false" />
+      <item name="enderio:block_holy_enlightened_fused_glass:*" show="false" />
+      <item name="enderio:block_holy_dark_fused_quartz:*" show="false" />
+      <item name="enderio:block_holy_dark_fused_glass:*" show="false" />
+
+      <item name="enderio:block_unholy_fused_quartz:*" show="false" />
+      <item name="enderio:block_unholy_fused_glass:*" show="false" />
+      <item name="enderio:block_unholy_enlightened_fused_quartz:*" show="false" />
+      <item name="enderio:block_unholy_enlightened_fused_glass:*" show="false" />
+      <item name="enderio:block_unholy_dark_fused_quartz:*" show="false" />
+      <item name="enderio:block_unholy_dark_fused_glass:*" show="false" />
+
+      <item name="enderio:block_pasture_fused_quartz:*" show="false" />
+      <item name="enderio:block_pasture_fused_glass:*" show="false" />
+      <item name="enderio:block_pasture_enlightened_fused_quartz:*" show="false" />
+      <item name="enderio:block_pasture_enlightened_fused_glass:*" show="false" />
+      <item name="enderio:block_pasture_dark_fused_quartz:*" show="false" />
+      <item name="enderio:block_pasture_dark_fused_glass:*" show="false" />
+
+      <item name="enderio:block_not_holy_fused_quartz:*" show="false" />
+      <item name="enderio:block_not_holy_fused_glass:*" show="false" />
+      <item name="enderio:block_not_holy_enlightened_fused_quartz:*" show="false" />
+      <item name="enderio:block_not_holy_enlightened_fused_glass:*" show="false" />
+      <item name="enderio:block_not_holy_dark_fused_quartz:*" show="false" />
+      <item name="enderio:block_not_holy_dark_fused_glass:*" show="false" />
+
+      <item name="enderio:block_not_unholy_fused_quartz:*" show="false" />
+      <item name="enderio:block_not_unholy_fused_glass:*" show="false" />
+      <item name="enderio:block_not_unholy_enlightened_fused_quartz:*" show="false" />
+      <item name="enderio:block_not_unholy_enlightened_fused_glass:*" show="false" />
+      <item name="enderio:block_not_unholy_dark_fused_quartz:*" show="false" />
+      <item name="enderio:block_not_unholy_dark_fused_glass:*" show="false" />
+
+      <item name="enderio:block_not_pasture_fused_quartz:*" show="false" />
+      <item name="enderio:block_not_pasture_fused_glass:*" show="false" />
+      <item name="enderio:block_not_pasture_enlightened_fused_quartz:*" show="false" />
+      <item name="enderio:block_not_pasture_enlightened_fused_glass:*" show="false" />
+      <item name="enderio:block_not_pasture_dark_fused_quartz:*" show="false" />
+      <item name="enderio:block_not_pasture_dark_fused_glass:*" show="false" />
+
       <item name="enderio:item_soul_vial:0" show="false" /><!-- empty -->
       <item name="enderio:item_soul_vial:1" show="false" /><!-- filled -->
 

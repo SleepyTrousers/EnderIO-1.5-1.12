@@ -728,7 +728,6 @@ public class ItemConduit extends AbstractConduit implements IItemConduit, IFilte
 
   @Override
   public void invalidate() {
-    super.invalidate();
     if (network != null) {
       final BlockPos pos = getBundle().getEntity().getPos();
       for (EnumFacing direction : externalConnections) {

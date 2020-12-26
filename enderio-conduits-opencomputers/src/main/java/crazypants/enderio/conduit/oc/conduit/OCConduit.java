@@ -36,6 +36,7 @@ import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduits.render.BlockStateWrapperConduitBundle.ConduitCacheKey;
 import crazypants.enderio.conduits.render.ConduitTexture;
+import crazypants.enderio.util.FuncUtil;
 import li.cil.oc.api.network.Environment;
 import li.cil.oc.api.network.Message;
 import li.cil.oc.api.network.Node;
@@ -491,11 +492,13 @@ public class OCConduit extends AbstractConduit implements IOCConduit {
   @Override
   @Method(modid = "opencomputersapi|network")
   public void onConnect(Node node) {
+    connectionsDirty = true;
   }
 
   @Override
   @Method(modid = "opencomputersapi|network")
   public void onDisconnect(Node node) {
+    connectionsDirty = true;
   }
 
   @Override
@@ -582,6 +585,11 @@ public class OCConduit extends AbstractConduit implements IOCConduit {
   @Override
   public void clearNetwork() {
     this.network = null;
+  }
+
+  @Override
+  public void invalidate() {
+    FuncUtil.doIf(network, OCConduitNetwork::destroyNetwork);
   }
 
 }

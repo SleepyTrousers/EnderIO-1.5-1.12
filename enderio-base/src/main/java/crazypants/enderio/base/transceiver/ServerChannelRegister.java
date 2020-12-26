@@ -72,6 +72,16 @@ public class ServerChannelRegister extends ChannelRegister implements ICapabilit
     });
   }
 
+  @SubscribeEvent
+  public static void onServerAboutToStart(EnderIOLifecycleEvent.ServerAboutToStart.Pre event) {
+    instance.reset();
+  }
+
+  @SubscribeEvent
+  public static void onServerStopped(EnderIOLifecycleEvent.ServerStopped.Pre event) {
+    instance.reset();
+  }
+
   @Override
   public NBTBase serializeNBT() {
     NBTTagCompound nbt = new NBTTagCompound();

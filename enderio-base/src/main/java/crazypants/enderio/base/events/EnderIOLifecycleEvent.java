@@ -73,4 +73,28 @@ public abstract class EnderIOLifecycleEvent extends Event {
 
   }
 
+  public abstract static class ServerAboutToStart extends EnderIOLifecycleEvent {
+
+    public static class Pre extends ServerAboutToStart {
+
+    }
+
+    public static class Post extends ServerAboutToStart {
+
+    }
+
+  }
+
+  public abstract static class ServerStopped extends EnderIOLifecycleEvent {
+
+    public static class Pre extends ServerStopped {
+
+    }
+
+    public static class Post extends ServerStopped {
+
+    }
+
+  }
+
 }

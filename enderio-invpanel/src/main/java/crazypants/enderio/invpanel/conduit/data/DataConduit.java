@@ -168,7 +168,6 @@ public class DataConduit extends AbstractConduit implements IDataConduit {
 
   @Override
   public void invalidate() {
-    super.invalidate();
     if (network != null) {
       for (EnumFacing dir : EnumFacing.VALUES) {
         network.removeSource(sources.get(dir));

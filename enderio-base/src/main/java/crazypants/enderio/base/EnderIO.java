@@ -28,7 +28,6 @@ import crazypants.enderio.base.diagnostics.ProfilerAntiReactor;
 import crazypants.enderio.base.diagnostics.ProfilerDebugger;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.fluid.FluidFuelRegister;
-import crazypants.enderio.base.handler.ServerTickHandler;
 import crazypants.enderio.base.init.CommonProxy;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.init.ModObjectRegistry;
@@ -43,7 +42,6 @@ import crazypants.enderio.base.recipe.spawner.EntityDataRegistry;
 import crazypants.enderio.base.recipe.vat.VatRecipeManager;
 import crazypants.enderio.base.scheduler.Celeb;
 import crazypants.enderio.base.scheduler.Scheduler;
-import crazypants.enderio.base.transceiver.ServerChannelRegister;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.crash.ICrashReportDetail;
@@ -153,6 +151,7 @@ public class EnderIO implements IEnderIOAddon {
   @EventHandler
   public void onImc(@Nonnull IMCEvent event) {
     Log.debug("PHASE IMC START");
+
     processImc(event.getMessages());
 
     /*
@@ -216,13 +215,24 @@ public class EnderIO implements IEnderIOAddon {
 
   @EventHandler
   public void serverStopped(@Nonnull FMLServerStoppedEvent event) {
-    ServerTickHandler.flush();
-    ServerChannelRegister.instance.reset();
+    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.ServerStopped.Pre());
+    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.ServerStopped.Post());
   }
 
   @EventHandler
   public static void onServerStart(FMLServerAboutToStartEvent event) {
-    ServerChannelRegister.instance.reset();
+    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.ServerAboutToStart.Pre());
+    if (DiagnosticsConfig.debugProfilerTracer.get()) {
+      ProfilerDebugger.init(event);
+    } else if (DiagnosticsConfig.debugProfilerAntiNuclearActivist.get()) {
+      ProfilerAntiReactor.init(event);
+    }
+    if (PermissionAPI.getPermissionHandler() == DefaultPermissionHandler.INSTANCE) {
+      Log.info("Permission Handler is: (default)");
+    } else {
+      Log.info("Permission Handler is: " + PermissionAPI.getPermissionHandler());
+    }
+    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.ServerAboutToStart.Post());
   }
 
   void processImc(ImmutableList<IMCMessage> messages) {
@@ -288,20 +298,6 @@ public class EnderIO implements IEnderIOAddon {
 
   public static @Nonnull Config getConfigHandler() {
     return NullHelper.notnull(configHandler, "Cannot access config before preInit phase");
-  }
-
-  @EventHandler
-  public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
-    if (DiagnosticsConfig.debugProfilerTracer.get()) {
-      ProfilerDebugger.init(event);
-    } else if (DiagnosticsConfig.debugProfilerAntiNuclearActivist.get()) {
-      ProfilerAntiReactor.init(event);
-    }
-    if (PermissionAPI.getPermissionHandler() == DefaultPermissionHandler.INSTANCE) {
-      Log.info("Permission Handler is: (default)");
-    } else {
-      Log.info("Permission Handler is: " + PermissionAPI.getPermissionHandler());
-    }
   }
 
   @Override

@@ -676,6 +676,7 @@ public abstract class AbstractConduit implements IServerConduit, IClientConduit.
 
   @Override
   public void invalidate() {
+    // TODO: 1.13: Make abstract unless something goes in here
   }
 
   @Override
