@@ -10,6 +10,7 @@ import java.util.Locale;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,14 +18,21 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.plaf.UIResource;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import crazypants.enderio.gui.forms.actions.TableColumnAdjuster;
 import crazypants.enderio.gui.forms.models.RecipeTableModel;
 import crazypants.enderio.gui.gamedata.RecipeHolder;
+import crazypants.enderio.gui.xml.AbstractConditional;
+import crazypants.enderio.gui.xml.Alias;
 
 public class RecipeList extends JPanel {
 
@@ -44,10 +52,13 @@ public class RecipeList extends JPanel {
     setBorder(new EmptyBorder(5, 5, 5, 5));
     setLayout(new BorderLayout(0, 0));
 
-    table = new JTable(new RecipeTableModel(RecipeHolder.CORE));
+    RecipeTableModel model = new RecipeTableModel(RecipeHolder.CORE);
+    table = new JTable(model);
     table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     table.setFillsViewportHeight(true);
     table.setAutoCreateRowSorter(true);
+
+    table.setDefaultRenderer(Boolean.class, new TriStateRenderer());
 
     TableColumnAdjuster tca = new TableColumnAdjuster(table);
     tca.setGrowingColumn(NAME_COLUMN);
@@ -73,6 +84,13 @@ public class RecipeList extends JPanel {
 
     JButton btnNewButton_10 = new JButton("Show details");
     panelBottom.add(btnNewButton_10);
+    btnNewButton_10.addActionListener(unused -> {
+      int row = table.getSelectedRow();
+      AbstractConditional recipe = model.getRecipeInRow(row);
+      if (recipe != null) {
+        showRecipe(recipe);
+      }
+    });
 
     JPanel panelTop = new JPanel();
     add(panelTop, BorderLayout.NORTH);
@@ -142,6 +160,13 @@ public class RecipeList extends JPanel {
 
   }
 
+  private void showRecipe(AbstractConditional recipe) {
+    if (recipe instanceof Alias) {
+      AliasEditDialog aliasPanel = new AliasEditDialog(null, "Alias", (Alias) recipe, false);
+      aliasPanel.setVisible(true);
+    }
+  }
+
   public boolean setFilter(String pattern) {
     if (pattern == null || pattern.isEmpty()) {
       ((TableRowSorter<?>) table.getRowSorter()).setRowFilter(null);
@@ -174,6 +199,47 @@ public class RecipeList extends JPanel {
     protected boolean include(Entry<? extends Object, ? extends Object> value, int index) {
       return value.getStringValue(index).toLowerCase(Locale.ENGLISH).contains(pattern);
     }
+  }
+
+  // copied from javax.swing.JTable.BooleanRenderer because it's not visible...
+  static class TriStateRenderer extends JCheckBox implements TableCellRenderer, UIResource {
+
+    private static final long serialVersionUID = 6876894290934531311L;
+
+    private static final Border noFocusBorder = new EmptyBorder(1, 1, 1, 1);
+
+    private final DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
+
+    public TriStateRenderer() {
+      setHorizontalAlignment(JLabel.CENTER);
+      setBorderPainted(true);
+      dtcr.setHorizontalAlignment(JLabel.CENTER);
+    }
+
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+      if (value == null) {
+        return dtcr.getTableCellRendererComponent(table, "n/a", isSelected, hasFocus, row, column);
+      }
+
+      if (isSelected) {
+        setForeground(table.getSelectionForeground());
+        setBackground(table.getSelectionBackground());
+      } else {
+        setForeground(table.getForeground());
+        setBackground(table.getBackground());
+      }
+      setSelected((((Boolean) value).booleanValue()));
+
+      if (hasFocus) {
+        setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
+      } else {
+        setBorder(noFocusBorder);
+      }
+
+      return this;
+    }
+
   }
 
 }

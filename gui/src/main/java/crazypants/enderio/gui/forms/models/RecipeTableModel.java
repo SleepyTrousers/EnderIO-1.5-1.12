@@ -1,5 +1,6 @@
 package crazypants.enderio.gui.forms.models;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.swing.table.AbstractTableModel;
@@ -54,9 +55,9 @@ public class RecipeTableModel extends AbstractTableModel {
     case 2:
       return recipe.getName();
     case 3:
-      return recipe instanceof Alias ? false : recipe.isRequired();
+      return recipe instanceof Alias ? null : recipe.isRequired();
     case 4:
-      return recipe instanceof Alias ? false : recipe.isDisabled();
+      return recipe instanceof Alias ? null : recipe.isDisabled();
     default:
       break;
     }
@@ -94,6 +95,14 @@ public class RecipeTableModel extends AbstractTableModel {
     default:
       return "Other";
     }
+  }
+
+  public AbstractConditional getRecipeInRow(int row) {
+    List<AbstractConditional> recipes = holder.getRecipes().getRecipes();
+    if (row > 0 && row < recipes.size()) {
+      return recipes.get(row);
+    }
+    return null;
   }
 
 }
