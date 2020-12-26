@@ -13,6 +13,7 @@ import com.google.common.collect.ImmutableSet;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.DiagnosticsConfig;
 import crazypants.enderio.base.diagnostics.Prof;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -64,7 +65,8 @@ public class ServerTickHandler {
     worldListeners.forEach((k, v) -> v.remove(listener));
   }
 
-  public static void flush() {
+  @SubscribeEvent
+  public static void flush(EnderIOLifecycleEvent.ServerStopped.Post event) {
     listeners.clear();
     worldListeners.clear();
   }
