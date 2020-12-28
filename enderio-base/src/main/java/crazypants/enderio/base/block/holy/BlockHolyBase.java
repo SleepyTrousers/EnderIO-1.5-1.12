@@ -66,6 +66,7 @@ public abstract class BlockHolyBase extends BlockEio<TileEntityEio> implements I
     initDefaultState();
     setShape(mkShape(BlockFaceShape.UNDEFINED));
     setLightLevel(1);
+    setTickRandomly(true);
   }
 
   protected abstract void setQuanta(@Nonnull World world, @Nonnull BlockPos pos, int quanta, int delay);
@@ -291,20 +292,20 @@ public abstract class BlockHolyBase extends BlockEio<TileEntityEio> implements I
   protected abstract int getMaxQuanta();
 
   @Override
-  public void onEntityCollidedWithBlock(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Entity entityIn) {
-    if (!worldIn.isRemote && entityIn instanceof EntityLivingBase && ((EntityLivingBase) entityIn).getCreatureAttribute() == EnumCreatureAttribute.UNDEAD
-        && RANDOM.nextFloat() < 0.05f) {
+  public void onEntityCollidedWithBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Entity entityIn) {
+    if (!world.isRemote && entityIn instanceof EntityLivingBase && ((EntityLivingBase) entityIn).getCreatureAttribute() == EnumCreatureAttribute.UNDEAD
+        && world.rand.nextFloat() < 0.05f) {
       entityIn.attackEntityFrom(DamageSource.HOT_FLOOR, 1.0F);
     }
   }
 
   @SideOnly(Side.CLIENT)
   @Override
-  public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random rnd) {
+  public void randomDisplayTick(@Nonnull IBlockState bs, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull Random random) {
     final int quanta = getQuanta(world, pos, bs)
         + (Minecraft.getMinecraft().player.getHeldItemMainhand().getItem() == ModObjectRegistry.getItem(ModObjectRegistry.getModObjectNN(this)) ? 20 : 0);
-    if (rnd.nextFloat() < ((quanta >= getMaxQuanta() ? 1f : quanta > 10 ? 0.01f : 0.001f) * quanta)) {
-      makeParticle(world, pos, rnd);
+    if (random.nextFloat() < ((quanta >= getMaxQuanta() ? 1f : quanta > 10 ? 0.01f : 0.001f) * quanta)) {
+      makeParticle(world, pos, random);
     }
   }
 
@@ -319,10 +320,16 @@ public abstract class BlockHolyBase extends BlockEio<TileEntityEio> implements I
   }
 
   @Override
-  public void fillWithRain(@Nonnull World world, @Nonnull BlockPos pos) {
-    if (RANDOM.nextFloat() < .1f) {
-      setQuanta(world, pos, 0, 0);
+  public void randomTick(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Random random) {
+    if (world.isRainingAt(pos) && random.nextFloat() < .1f) {
+      setQuanta(world, pos, (int) (getQuanta(world, pos, state) * random.nextFloat()), 0);
     }
+  }
+
+  @Override
+  public void fillWithRain(@Nonnull World world, @Nonnull BlockPos pos) {
+    // will never be called for us because we are an air block
+    // see randomTick() instead
   }
 
 }
