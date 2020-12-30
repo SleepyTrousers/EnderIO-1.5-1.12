@@ -71,7 +71,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Inventory Chest, Small" required="true">
-    <crafting>
+    <crafting upgrade="true">
       <grid size="3x3">
         <item /><item name="SIMPLE_CHASSIPARTS" /><item />
         <item name="SIMPLE_CHASSIPARTS" /><item name="chestWood" /><item name="SIMPLE_CHASSIPARTS" />
@@ -82,7 +82,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Inventory Chest, Medium" required="true">
-    <crafting>
+    <crafting upgrade="true">
       <grid size="3x3">
         <item /><item name="SIMPLE_CHASSIPARTS" /><item />
         <item name="SIMPLE_CHASSIPARTS" /><item name="chestWood" /><item name="SIMPLE_CHASSIPARTS" />
@@ -93,7 +93,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Inventory Chest, Big" required="true">
-    <crafting>
+    <crafting upgrade="true">
       <grid size="2x3">
         <item /><item name="REMOTE_AWARENESS_UPGRADE" />
         <item name="chestWood" /><item name="CHASSIS" />
@@ -104,7 +104,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Inventory Chest, Large" required="true">
-    <crafting>
+    <crafting upgrade="true">
       <grid size="3x2">
         <item name="CHASSIPARTS" /><item name="CHASSIPARTS" /><item name="CHASSIPARTS" />
         <item name="chestWood" /><item name="enderio:block_inventory_chest_big"/><item name="chestWood" />
@@ -114,7 +114,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Inventory Chest, Huge" required="true">
-    <crafting>
+    <crafting upgrade="true">
       <grid size="3x2">
         <item name="CHASSIPARTS" /><item name="CHASSIPARTS" /><item name="CHASSIPARTS" />
         <item name="chestWood" /><item name="enderio:block_inventory_chest_large"/><item name="chestWood" />
@@ -124,7 +124,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Inventory Chest, Enormous" required="true">
-    <crafting>
+    <crafting upgrade="true">
       <grid size="3x3">
         <item /><item name="REMOTE_AWARENESS_UPGRADE" /><item />
         <item name="chestWood" /><item name="ENHANCED_CHASSIS" /><item name="chestWood" />
@@ -135,7 +135,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Inventory Chest, Warehouse" required="true">
-    <crafting>
+    <crafting upgrade="true">
       <grid size="3x3">
         <item /><item name="ENHANCED_CHASSIPARTS" /><item />
         <item name="ENHANCED_CHASSIPARTS" /><item name="chestWood" /><item name="ENHANCED_CHASSIPARTS" />
@@ -146,7 +146,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Inventory Chest, Warehouse 13" required="true">
-    <crafting>
+    <crafting upgrade="true">
       <grid size="3x3">
         <item /><item name="ENHANCED_CHASSIPARTS" /><item />
         <item name="ENHANCED_CHASSIPARTS" /><item name="chestWood" /><item name="ENHANCED_CHASSIPARTS" />
