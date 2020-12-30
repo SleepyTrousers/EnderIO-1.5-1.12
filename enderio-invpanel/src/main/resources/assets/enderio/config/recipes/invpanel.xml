@@ -168,7 +168,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Advanced Inventory Panel Remote" required="true">
-    <crafting>
+    <crafting upgrade="true">
       <grid size="3x3">
         <item/><item/><item name="PPP_DARK_STEEL" />
         <item name="PPP_DARK_STEEL" /><item name="enderio:item_inventory_remote:0" /><item name="PPP_DARK_STEEL" />
@@ -179,7 +179,7 @@ XML editor will display that as tooltips when editing this file.
   </recipe>
 
   <recipe name="Ender Inventory Panel Remote" required="true">
-    <crafting>
+    <crafting upgrade="true">
       <grid size="3x3">
         <item/><item/><item name="PPP_SOULARIUM" />
         <item name="PPP_SOULARIUM" /><item name="enderio:item_inventory_remote:1" /><item name="PPP_SOULARIUM" />
