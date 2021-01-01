@@ -48,6 +48,150 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Inventory Panel Coloring white" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_inventory_panel" /><item name="dyeWhite" />
+      </shapeless>
+      <output name="enderio:block_inventory_panel" nbt='{"enderio:data":{color:0}}' />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Panel Coloring orange" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_inventory_panel" /><item name="dyeOrange" />
+      </shapeless>
+      <output name="enderio:block_inventory_panel" nbt='{"enderio:data":{color:1}}' />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Panel Coloring magenta" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_inventory_panel" /><item name="dyeMagenta" />
+      </shapeless>
+      <output name="enderio:block_inventory_panel" nbt='{"enderio:data":{color:2}}' />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Panel Coloring light_blue" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_inventory_panel" /><item name="dyeLightBlue" />
+      </shapeless>
+      <output name="enderio:block_inventory_panel" nbt='{"enderio:data":{color:3}}' />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Panel Coloring yellow" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_inventory_panel" /><item name="dyeYellow" />
+      </shapeless>
+      <output name="enderio:block_inventory_panel" nbt='{"enderio:data":{color:4}}' />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Panel Coloring lime" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_inventory_panel" /><item name="dyeLime" />
+      </shapeless>
+      <output name="enderio:block_inventory_panel" nbt='{"enderio:data":{color:5}}' />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Panel Coloring pink" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_inventory_panel" /><item name="dyePink" />
+      </shapeless>
+      <output name="enderio:block_inventory_panel" nbt='{"enderio:data":{color:6}}' />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Panel Coloring gray" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_inventory_panel" /><item name="dyeGray" />
+      </shapeless>
+      <output name="enderio:block_inventory_panel" nbt='{"enderio:data":{color:7}}' />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Panel Coloring silver" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_inventory_panel" /><item name="dyeLightGray" />
+      </shapeless>
+      <output name="enderio:block_inventory_panel" nbt='{"enderio:data":{color:8}}' />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Panel Coloring cyan" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_inventory_panel" /><item name="dyeCyan" />
+      </shapeless>
+      <output name="enderio:block_inventory_panel" nbt='{"enderio:data":{color:9}}' />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Panel Coloring purple" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_inventory_panel" /><item name="dyePurple" />
+      </shapeless>
+      <output name="enderio:block_inventory_panel" nbt='{"enderio:data":{color:10}}' />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Panel Coloring blue" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_inventory_panel" /><item name="dyeBlue" />
+      </shapeless>
+      <output name="enderio:block_inventory_panel" nbt='{"enderio:data":{color:11}}' />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Panel Coloring brown" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_inventory_panel" /><item name="dyeBrown" />
+      </shapeless>
+      <output name="enderio:block_inventory_panel" nbt='{"enderio:data":{color:12}}' />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Panel Coloring green" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_inventory_panel" /><item name="dyeGreen" />
+      </shapeless>
+      <output name="enderio:block_inventory_panel" nbt='{"enderio:data":{color:13}}' />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Panel Coloring red" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_inventory_panel" /><item name="dyeRed" />
+      </shapeless>
+      <output name="enderio:block_inventory_panel" nbt='{"enderio:data":{color:14}}' />
+    </crafting>
+  </recipe>
+
+  <recipe name="Inventory Panel Coloring black" required="true">
+    <crafting>
+      <shapeless>
+        <item name="enderio:block_inventory_panel" /><item name="dyeBlack" />
+      </shapeless>
+      <output name="enderio:block_inventory_panel" nbt='{"enderio:data":{color:15}}' />
+    </crafting>
+  </recipe>
+
   <recipe name="Inventory Panel Sensor" required="true">
     <crafting>
       <grid size="3x3">

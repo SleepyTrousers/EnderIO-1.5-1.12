@@ -243,13 +243,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
     btnSort = new IconButton(this, ID_SORT, 233, 27, getSortOrderIcon()) {
       @Override
-      public boolean mousePressed(@Nonnull Minecraft mc1, int xIn, int yIn) {
-        return mousePressedButton(mc1, xIn, yIn, 0);
-      }
-
-      @Override
       public boolean mousePressedButton(@Nonnull Minecraft mc1, int xIn, int yIn, int button) {
-        if (button <= 1 && super.checkMousePress(mc1, xIn, yIn)) {
+        if (button <= 1 && checkMousePress(mc1, xIn, yIn)) {
           toggleSortOrder(button == 0);
           return true;
         }

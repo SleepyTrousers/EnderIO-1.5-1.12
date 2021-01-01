@@ -16,11 +16,15 @@ import crazypants.enderio.base.render.IBlockStateWrapper;
 import crazypants.enderio.base.render.IRenderMapper;
 import crazypants.enderio.base.render.IRenderMapper.IItemRenderMapper;
 import crazypants.enderio.base.render.ITintedBlock;
+import crazypants.enderio.base.render.ITintedItem;
 import crazypants.enderio.base.render.property.EnumRenderMode6;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import crazypants.enderio.invpanel.config.InvpanelConfig;
 import crazypants.enderio.invpanel.init.InvpanelObject;
 import crazypants.enderio.util.FuncUtil;
+import crazypants.enderio.util.NbtValue;
+import info.loenwind.autosave.Reader;
+import info.loenwind.autosave.Writer;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.properties.IProperty;
@@ -31,6 +35,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -41,7 +46,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel> implements ITintedBlock {
+public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel> implements ITintedBlock, ITintedItem {
 
   private static final float BLOCK_SIZE = 4f / 16f;
 
@@ -199,6 +204,16 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
           col -> FuncUtil.doIf(getTileEntitySafe(world, pos), te -> te.setColor(EnumDyeColor.byDyeDamage(col.ordinal()))));
     }
     super.onBlockClicked(world, pos, player);
+  }
+
+  // {"enderio:data":{color:14}}
+
+  @Override
+  public int getItemTint(@Nonnull ItemStack stack, int tintIndex) {
+    return (tintIndex > 0 && NbtValue.DATAROOT.hasTag(stack))
+        ? FuncUtil.runIfOr(Reader.readField(NbtValue.DATAROOT.getTag(stack), EnumDyeColor.class, "color", null),
+            color -> PersonalConfig.candyColors.get() ? color.getColorValue() : MapColor.getBlockColor(color).colorValue, -1)
+        : -1;
   }
 
 }
