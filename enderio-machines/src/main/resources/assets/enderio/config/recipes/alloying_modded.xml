@@ -32,7 +32,8 @@ XML editor will display that as tooltips when editing this file.
   <recipe name="Alloy: Steel" required="false">
     <alloying energy="10000" exp="0">
       <input name="ingotIron"/>
-      <input name="dustCoal" amount="4"/>
+      <input name="minecraft:coal:0" amount="2"/>
+      <input name="dustCoal" amount="2"/>
       <output name="ingotSteel"/>
     </alloying>
   </recipe>

@@ -29,6 +29,14 @@ XML editor will display that as tooltips when editing this file.
     </alloying>
   </recipe>
 
+  <recipe name="Alloy: Electrical Steel, Variant" required="false">
+    <alloying energy="10000" exp="0.4">
+      <input name="ingotSteel"/>
+      <input name="itemSilicon"/>
+      <output name="ingotElectricalSteel"/>
+    </alloying>
+  </recipe>
+
   <recipe name="Alloy: Energetic Alloy" required="true">
     <alloying energy="10000" exp="0.7">
       <input name="dustRedstone"/>
