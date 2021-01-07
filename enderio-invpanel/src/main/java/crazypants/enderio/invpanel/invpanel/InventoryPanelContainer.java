@@ -377,19 +377,24 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
       tmpStack.setTagCompound(entry.getNbt());
       maxStackSize = Math.min(maxStackSize, tmpStack.getMaxStackSize());
 
-      if (!targetStack.isEmpty() && targetStack.getCount() > 0) {
+      if (!targetStack.isEmpty()) {
         if (!ItemUtil.areStackMergable(tmpStack, targetStack)) {
           return;
         }
+        count = Math.min(count, maxStackSize - targetStack.getCount());
       } else {
-        targetStack = tmpStack.copy();
+        count = Math.min(count, maxStackSize);
       }
 
-      count = Math.min(count, maxStackSize);
       if (count > 0) {
         int extracted = db.extractItems(entry, count, te);
         if (extracted > 0) {
-          targetStack.setCount(extracted);
+          if (!targetStack.isEmpty()) {
+            targetStack.grow(extracted);
+          } else {
+            targetStack = tmpStack.copy();
+            targetStack.setCount(extracted);
+          }
 
           // TODO Debug stuff
           // if (DebugCommand.SERVER.isEnabled(player)) {
