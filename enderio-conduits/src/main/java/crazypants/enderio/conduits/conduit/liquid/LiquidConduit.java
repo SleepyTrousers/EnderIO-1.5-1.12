@@ -58,26 +58,19 @@ public class LiquidConduit extends AbstractTankConduit {
 
   private EnumFacing startPushDir = EnumFacing.DOWN;
 
-  // private final Set<BlockPos> filledFromThisTick = new HashSet<BlockPos>();
-
-  private long ticksSinceFailedExtract = 0;
-
   @Override
   public void updateEntity(@Nonnull World world) {
     super.updateEntity(world);
     if (world.isRemote) {
       return;
     }
-    // filledFromThisTick.clear();
-    updateStartPushDir();
-    doExtract();
 
     if (stateDirty) {
       getBundle().dirty();
       stateDirty = false;
       lastSyncRatio = tank.getFilledRatio();
 
-    } else if ((lastSyncRatio != tank.getFilledRatio() && world.getTotalWorldTime() % 2 == 0)) {
+    } else if (world.getTotalWorldTime() % 4 == 0 && lastSyncRatio != tank.getFilledRatio()) {
 
       // need to send a custom packet as we don't want want to trigger a full chunk update, just
       // need to get the required values to the entity renderer
@@ -88,44 +81,34 @@ public class LiquidConduit extends AbstractTankConduit {
     }
   }
 
-  private void doExtract() {
-    if (!hasExtractableMode()) {
-      return;
-    }
+  @Override
+  protected void doExtract() {
+    updateStartPushDir();
+    super.doExtract();
+  }
 
-    // assume failure, reset to 0 if we do extract
-    ticksSinceFailedExtract++;
-    if (ticksSinceFailedExtract > 9 && ticksSinceFailedExtract % 10 != 0) {
-      // after 10 ticks of failing, only check every 10 ticks
-      return;
-    }
-
-    for (EnumFacing dir : externalConnections) {
-      if (autoExtractForDir(dir)) {
-
-        IFluidWrapper extTank = getExternalHandler(dir);
-        if (extTank != null) {
-
-          FluidStack couldDrain = extTank.getAvailableFluid();
-          if (couldDrain != null && couldDrain.amount > 0 && canFill(dir, couldDrain)) {
-            couldDrain = couldDrain.copy();
-            if (couldDrain.amount > ConduitConfig.fluid_tier1_extractRate.get()) {
-              couldDrain.amount = ConduitConfig.fluid_tier1_extractRate.get();
-            }
-            int used = pushLiquid(dir, couldDrain, true, network == null ? -1 : network.getNextPushToken());
-            if (used > 0) {
-              couldDrain.amount = used;
-              extTank.drain(couldDrain);
-              if (network != null && network.getFluidType() == null) {
-                network.setFluidType(couldDrain);
-              }
-              ticksSinceFailedExtract = 0;
-            }
+  @Override
+  protected boolean doExtract(@Nonnull EnumFacing dir) {
+    IFluidWrapper extTank = getExternalHandler(dir);
+    if (extTank != null) {
+      FluidStack couldDrain = extTank.getAvailableFluid();
+      if (couldDrain != null && couldDrain.amount > 0 && canFill(dir, couldDrain)) {
+        couldDrain = couldDrain.copy();
+        if (couldDrain.amount > ConduitConfig.fluid_tier1_extractRate.get()) {
+          couldDrain.amount = ConduitConfig.fluid_tier1_extractRate.get();
+        }
+        int used = pushLiquid(dir, couldDrain, true, network == null ? -1 : network.getNextPushToken());
+        if (used > 0) {
+          couldDrain.amount = used;
+          extTank.drain(couldDrain);
+          if (network != null && network.getFluidType() == null) {
+            network.setFluidType(couldDrain);
           }
+          return true;
         }
       }
     }
-
+    return false;
   }
 
   // --------------- Fluid Capability ------------

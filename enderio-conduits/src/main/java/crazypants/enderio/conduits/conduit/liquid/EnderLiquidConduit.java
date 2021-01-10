@@ -57,7 +57,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -293,37 +292,8 @@ public class EnderLiquidConduit extends AbstractLiquidConduit implements IFilter
   }
 
   @Override
-  public void updateEntity(@Nonnull World world) {
-    super.updateEntity(world);
-    if (world.isRemote) {
-      return;
-    }
-    doExtract();
-  }
-
-  private void doExtract() {
-    if (!hasExtractableMode()) {
-      return;
-    }
-    if (network == null) {
-      return;
-    }
-
-    // assume failure, reset to 0 if we do extract
-    ticksSinceFailedExtract++;
-    if (ticksSinceFailedExtract > 25 && ticksSinceFailedExtract % 10 != 0) {
-      // after 25 ticks of failing, only check every 10 ticks
-      return;
-    }
-
-    for (EnumFacing dir : externalConnections) {
-      if (autoExtractForDir(dir)) {
-        if (network.extractFrom(this, dir)) {
-          ticksSinceFailedExtract = 0;
-        }
-      }
-    }
-
+  protected boolean doExtract(@Nonnull EnumFacing dir) {
+    return network.extractFrom(this, dir);
   }
 
   // ---------- Fluid Capability -----------------

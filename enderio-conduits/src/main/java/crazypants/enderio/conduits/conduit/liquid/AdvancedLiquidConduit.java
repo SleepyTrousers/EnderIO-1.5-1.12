@@ -54,8 +54,6 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
 
   private AdvancedLiquidConduitNetwork network;
 
-  private long ticksSinceFailedExtract = 0;
-
   public AdvancedLiquidConduit() {
     updateTank();
   }
@@ -63,40 +61,15 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
   @Override
   public void updateEntity(@Nonnull World world) {
     super.updateEntity(world);
-    if (world.isRemote) {
-      return;
-    }
-    doExtract();
-    if (stateDirty) {
+    if (!world.isRemote && stateDirty) {
       getBundle().dirty();
       stateDirty = false;
     }
   }
 
-  private void doExtract() {
-    // Extraction can happen on extract mode or in/out mode
-    if (!hasExtractableMode()) {
-      return;
-    }
-    if (network == null) {
-      return;
-    }
-
-    // assume failure, reset to 0 if we do extract
-    ticksSinceFailedExtract++;
-    if (ticksSinceFailedExtract > 25 && ticksSinceFailedExtract % 10 != 0) {
-      // after 25 ticks of failing, only check every 10 ticks
-      return;
-    }
-
-    for (EnumFacing dir : externalConnections) {
-      if (autoExtractForDir(dir)) {
-        if (network.extractFrom(this, dir, ConduitConfig.fluid_tier2_extractRate.get())) {
-          ticksSinceFailedExtract = 0;
-        }
-      }
-    }
-
+  @Override
+  protected boolean doExtract(@Nonnull EnumFacing dir) {
+    return network.extractFrom(this, dir, ConduitConfig.fluid_tier2_extractRate.get());
   }
 
   @Override

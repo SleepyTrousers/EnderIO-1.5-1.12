@@ -229,7 +229,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle, 
       final ConduitCacheKey oldHashCode = new ConduitCacheKey(), newHashCode = new ConduitCacheKey();
       makeConduitHashCode(getClientConduits(), oldHashCode);
       makeConduitHashCode(temp, newHashCode);
-      if (hasWorld() && getWorld().isRemote && oldHashCode.hashCode() != newHashCode.hashCode()) {
+      if (oldHashCode.hashCode() != newHashCode.hashCode()) {
         clientUpdated = true;
       }
       clientConduits = temp; // switch over atomically to avoid threading issues

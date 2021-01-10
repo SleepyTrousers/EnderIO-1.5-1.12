@@ -25,6 +25,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -38,6 +39,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
 
   protected final EnumMap<EnumFacing, RedstoneControlMode> extractionModes = new EnumMap<EnumFacing, RedstoneControlMode>(EnumFacing.class);
   protected final EnumMap<EnumFacing, DyeColor> extractionColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
+  private int ticksSinceFailedExtract;
 
   public static IFluidWrapper getExternalFluidHandler(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
     if (world.getTileEntity(pos) instanceof IConduitBundle) {
@@ -109,12 +111,17 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
     return true;
   }
 
+  /**
+   * Checks if the given direction is configured for input ({@link #canExtractFromDir(EnumFacing)} and its redstone control allows it to operate.
+   * <p>
+   * Note that it does not check if there actually is an external connection on the given side!
+   * 
+   * @param dir
+   *          The side to check
+   * @return <code>true</code> if we can extract from that side
+   */
   protected boolean autoExtractForDir(@Nonnull EnumFacing dir) {
-    if (!canExtractFromDir(dir)) {
-      return false;
-    }
-    RedstoneControlMode mode = getExtractionRedstoneMode(dir);
-    return ConduitUtil.isRedstoneControlModeMet(this, mode, getExtractionSignalColor(dir), dir);
+    return canExtractFromDir(dir) && ConduitUtil.isRedstoneControlModeMet(this, getExtractionRedstoneMode(dir), getExtractionSignalColor(dir), dir);
   }
 
   @Override
@@ -127,9 +134,51 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
     return getConnectionMode(dir).acceptsOutput() && !autoExtractForDir(dir);
   }
 
+  /**
+   * Checks if this conduit has any external connection it can pull stuff from. This does not check for redstone control, only for existence of a connection and
+   * the mode that is set.
+   * 
+   * @return <code>true</code> if there are any external connections with {@link ConnectionMode#acceptsInput()} <code>== true</code>
+   */
   protected boolean hasExtractableMode() {
-    return supportsConnectionMode(ConnectionMode.INPUT) || supportsConnectionMode(ConnectionMode.IN_OUT);
+    if (hasExternalConnections()) {
+      for (EnumFacing side : getExternalConnections()) {
+        if (side != null && canExtractFromDir(side)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
+
+  @Override
+  public void updateEntity(@Nonnull World world) {
+    super.updateEntity(world);
+    if (!world.isRemote) {
+      doExtract();
+    }
+  }
+
+  protected void doExtract() {
+
+    if (!hasExtractableMode() || getNetwork() == null) {
+      return;
+    }
+
+    if ((ticksSinceFailedExtract++ & 0b1111) != 0) {
+      // only check every 16 ticks, but counter gets reset on successful extraction
+      // failure modes are: redstone control, empty source tank, no target tank, full target tank
+      return;
+    }
+
+    for (EnumFacing dir : getExternalConnections()) {
+      if (dir != null && autoExtractForDir(dir) && doExtract(dir)) {
+        ticksSinceFailedExtract = 0;
+      }
+    }
+  }
+
+  protected abstract boolean doExtract(@Nonnull EnumFacing dir);
 
   @Override
   protected void readTypeSettings(@Nonnull EnumFacing dir, @Nonnull NBTTagCompound dataRoot) {
