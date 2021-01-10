@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 
 import org.lwjgl.opengl.GL11;
 
+import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.render.RenderUtil;
@@ -103,7 +104,15 @@ public abstract class GuiContainerBaseEIO<O> extends GuiContainerBase implements
    */
   public List<Rectangle> getBlockingAreas() {
     // return a new object every time so equals() actually checks the contents
-    return new ArrayList<Rectangle>(tabAreas);
+    ArrayList<Rectangle> result = new ArrayList<Rectangle>(tabAreas);
+    for (IGuiOverlay overlay : overlays) {
+      if (overlay.isVisible()) {
+        Rectangle bounds = new Rectangle(overlay.getBounds());
+        bounds.translate(guiLeft, guiTop);
+        result.add(bounds);
+      }
+    }
+    return result;
   }
 
   /**
