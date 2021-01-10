@@ -269,7 +269,7 @@ public class ExistingItemFilterGui extends AbstractFilterGui {
 
     @Override
     public boolean isMouseInBounds(int mouseX, int mouseY) {
-      return getBounds().contains(mouseX, mouseY);
+      return getBounds().contains(mouseX - guiLeft, mouseY - guiTop);
     }
 
     @Override
