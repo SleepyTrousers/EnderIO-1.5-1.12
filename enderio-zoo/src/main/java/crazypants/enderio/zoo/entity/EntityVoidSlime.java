@@ -13,6 +13,7 @@ import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.base.Predicate;
 
+import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import crazypants.enderio.base.loot.EntityLootHelper;
 import crazypants.enderio.base.render.ranged.InfinityParticle;
@@ -21,6 +22,8 @@ import crazypants.enderio.zoo.config.ZooConfig;
 import crazypants.enderio.zoo.entity.render.RenderVoidSlime;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
@@ -29,8 +32,8 @@ import net.minecraft.entity.monster.EntityMagmaCube;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
@@ -45,8 +48,12 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToAccessFieldException;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -205,7 +212,7 @@ public class EntityVoidSlime extends EntityMagmaCube implements IEnderZooEntity.
   private void onLivingUpdateServer() {
     if (actionDelay-- <= 0) {
       for (EntityPlayer player : getClosestPlayers(ZooConfig.voidSlimeRange.get())) {
-        player.addPotionEffect(new BlindEffect());
+        player.addPotionEffect(new BlindEffect()); // TODO: Add distance as amplifier
       }
       actionDelay = (int) (20 * (.5f + .5f * rand.nextFloat()));
     }
@@ -262,15 +269,20 @@ public class EntityVoidSlime extends EntityMagmaCube implements IEnderZooEntity.
    */
   private class BlindEffect extends PotionEffect {
 
+    // TODO: change class to static and use a List to keep track of blindness sources
+    // TODO 2: Probably not needed if we combine effects properly
+
     private boolean combined = false;
 
     public BlindEffect() {
-      super(MobEffects.BLINDNESS, 100, 0, true, false);
+      super(/* MobEffects.BLINDNESS */BLIND_POTION, 100, 0, true, false);
     }
 
     @Override
     public boolean onUpdate(@Nonnull EntityLivingBase entityplayer) {
       if (combined || (!dead && entityplayer.getDistanceSq(posX, posY, posZ) < ZooConfig.voidSlimeRange.get() * ZooConfig.voidSlimeRange.get())) {
+        // TODO: Adjust amplifier based on distance(s)
+        // TODO 2: See if this gets propagated to the client properly if we do it here
         return super.onUpdate(entityplayer);
       } else {
         return false;
@@ -279,11 +291,85 @@ public class EntityVoidSlime extends EntityMagmaCube implements IEnderZooEntity.
 
     @Override
     public void combine(@Nonnull PotionEffect other) {
-      if (!(other instanceof BlindEffect)) {
+      if (!(other instanceof BlindEffect)) { // TODO: throw this out, we're no longer using vanilla blindness
         // we got combined with a normal blindness effect. this means we should no longer vanish when the player gets out of range.
         combined = true;
       }
-      super.combine(other);
+      super.combine(other); // TODO: use our own merging code that allows the amplifier to go down and tracks both sources
+    }
+
+  }
+
+  @SubscribeEvent
+  public static void registerPotions(Register<Potion> event) {
+    event.getRegistry().register(BLIND_POTION);
+  }
+
+  @SubscribeEvent
+  @SideOnly(Side.CLIENT)
+  public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+    if (applied && event.phase == Phase.END && event.player.world.isRemote && event.player == Minecraft.getMinecraft().player
+        && event.player.getActivePotionEffect(BLIND_POTION) == null && Minecraft.getMinecraft().entityRenderer.isShaderActive()) { // TODO: extract for
+                                                                                                                                   // performEffect() to re-use
+                                                                                                                                   // when switching between
+                                                                                                                                   // shaders
+      applied = false;
+      try {
+        Object shaderGroup = ObfuscationReflectionHelper.getPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, "field_147707_d");
+        if (shaderGroup instanceof ShaderGroup) {
+          Object shaderGroupName = ObfuscationReflectionHelper.getPrivateValue(ShaderGroup.class, (ShaderGroup) shaderGroup, "field_148034_c");
+          if (SHADER_RL.toString().equals(shaderGroupName)) {
+            Minecraft.getMinecraft().entityRenderer.stopUseShader();
+          }
+        }
+      } catch (UnableToAccessFieldException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  private static final @Nonnull ResourceLocation SHADER_RL = new ResourceLocation("minecraft", "shaders/post/invert.json");
+  private static final @Nonnull BlindPotion BLIND_POTION = new BlindPotion();
+  private static boolean applied = false;
+
+  private static class BlindPotion extends Potion {
+
+    protected BlindPotion() {
+      super(true, 0);
+      setPotionName("potion.enderio.void_blindness");
+      setRegistryName(EnderIO.DOMAIN, "void_blindness");
+    }
+
+    @Override
+    public boolean isReady(int duration, int amplifier) {
+      return !EnderIO.proxy.isDedicatedServer();
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void performEffect(@Nonnull EntityLivingBase entityLivingBaseIn, int amplifier) {
+      if (entityLivingBaseIn.world.isRemote && entityLivingBaseIn == Minecraft.getMinecraft().player) {
+        EntityRenderer renderer = Minecraft.getMinecraft().entityRenderer;
+        if (!renderer.isShaderActive()) {
+          renderer.loadShader(SHADER_RL); // TODO: use different shaders based on distance (amplifier)
+          applied = true;
+        }
+      }
+    }
+
+    @Override
+    public boolean shouldRender(@Nonnull PotionEffect effect) {
+      return false;
+    }
+
+    @Override
+    public boolean shouldRenderHUD(@Nonnull PotionEffect effect) {
+      return false;
+    }
+
+    @Override
+    public boolean shouldRenderInvText(@Nonnull PotionEffect effect) {
+      return false;
     }
 
   }
