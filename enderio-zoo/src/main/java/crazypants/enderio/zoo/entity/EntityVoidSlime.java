@@ -2,13 +2,16 @@ package crazypants.enderio.zoo.entity;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.NNList;
 import com.enderio.core.common.util.NullHelper;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.google.common.base.Predicate;
@@ -31,8 +34,11 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityMagmaCube;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.network.play.server.SPacketEntityEffect;
+import net.minecraft.network.play.server.SPacketRemoveEntityEffect;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -211,8 +217,8 @@ public class EntityVoidSlime extends EntityMagmaCube implements IEnderZooEntity.
 
   private void onLivingUpdateServer() {
     if (actionDelay-- <= 0) {
-      for (EntityPlayer player : getClosestPlayers(ZooConfig.voidSlimeRange.get())) {
-        player.addPotionEffect(new BlindEffect()); // TODO: Add distance as amplifier
+      for (EntityPlayer player : getClosestPlayers(getMaxDistSq())) {
+        player.addPotionEffect(new BlindEffect(distanceSq2Byte(player.getDistanceSq(posX, posY, posZ))));
       }
       actionDelay = (int) (20 * (.5f + .5f * rand.nextFloat()));
     }
@@ -246,13 +252,12 @@ public class EntityVoidSlime extends EntityMagmaCube implements IEnderZooEntity.
   /**
    * Get a list of all players in range. Derived from {@link World#getClosestPlayer(double, double, double, double, Predicate)}.
    */
-  public List<EntityPlayer> getClosestPlayers(double distance) {
+  public List<EntityPlayer> getClosestPlayers(double distanceSq) {
     List<EntityPlayer> entityplayers = null;
-    final double distanceSq = distance * distance;
 
     for (EntityPlayer entityplayer : world.playerEntities) {
       if (EntitySelectors.NOT_SPECTATING.apply(entityplayer)) {
-        if ((distance < 0.0D || entityplayer.getDistanceSq(posX, posY, posZ) < distanceSq)) {
+        if (entityplayer.getDistanceSq(posX, posY, posZ) < distanceSq) {
           if (entityplayers == null) {
             entityplayers = new ArrayList<>();
           }
@@ -265,37 +270,73 @@ public class EntityVoidSlime extends EntityMagmaCube implements IEnderZooEntity.
   }
 
   /**
-   * Server-side subclass that keeps track of the originating mob and suicides when that mob is too far away or dies.
+   * Server-side (logical side) subclass that keeps track of the originating mob and suicides when that mob is too far away or dies.
    */
   private class BlindEffect extends PotionEffect {
 
-    // TODO: change class to static and use a List to keep track of blindness sources
-    // TODO 2: Probably not needed if we combine effects properly
+    private final Set<EntityVoidSlime> tracking = new HashSet<>();
 
-    private boolean combined = false;
+    private int distance;
 
-    public BlindEffect() {
-      super(/* MobEffects.BLINDNESS */BLIND_POTION, 100, 0, true, false);
+    public BlindEffect(int distance) {
+      super(BLIND_POTION, 100, 0, true, false);
+      this.distance = distance;
+      tracking.add(EntityVoidSlime.this);
     }
 
     @Override
-    public boolean onUpdate(@Nonnull EntityLivingBase entityplayer) {
-      if (combined || (!dead && entityplayer.getDistanceSq(posX, posY, posZ) < ZooConfig.voidSlimeRange.get() * ZooConfig.voidSlimeRange.get())) {
-        // TODO: Adjust amplifier based on distance(s)
-        // TODO 2: See if this gets propagated to the client properly if we do it here
-        return super.onUpdate(entityplayer);
-      } else {
+    public int getAmplifier() {
+      // Note: This is what will be but into the SPacketEntityEffect so the client will get a nice normal PotionEffect with the distance as amplifier
+      return distance;
+    }
+
+    @Override
+    public boolean onUpdate(@Nonnull EntityLivingBase player) {
+      if (!(player instanceof EntityPlayerMP)) {
+        // should be impossible
         return false;
       }
+      // find the distance to the closest slime
+      int dist = Integer.MAX_VALUE;
+      for (Iterator<EntityVoidSlime> itr = tracking.iterator(); itr.hasNext();) {
+        EntityVoidSlime next = itr.next();
+        if (next.isDead || next.dead) {
+          // and remove dead ones
+          itr.remove();
+        } else {
+          int d = distanceSq2Byte(player.getDistanceSq(posX, posY, posZ));
+          if (d < 0) {
+            // and those that are too far away
+            itr.remove();
+          } else {
+            dist = Math.min(dist, d);
+          }
+        }
+      }
+      if (dist >= DISTS.length) {
+        // no more slimes alive or in range
+        return false;
+      }
+      if (dist != distance) {
+        if (dist < distance) {
+          // sending a potion update packet with a lower amplifier to the client has no effect (see super.combine()), so we first need to
+          // tell the client to delete its current poten effect, then send a new one
+          ((EntityPlayerMP) player).connection.sendPacket(new SPacketRemoveEntityEffect(((EntityPlayerMP) player).getEntityId(), getPotion()));
+        }
+        distance = dist;
+        // force an update to be sent to the client, that doesn't happen by itself
+        ((EntityPlayerMP) player).connection.sendPacket(new SPacketEntityEffect(((EntityPlayerMP) player).getEntityId(), this));
+      }
+      return true;
     }
 
     @Override
     public void combine(@Nonnull PotionEffect other) {
-      if (!(other instanceof BlindEffect)) { // TODO: throw this out, we're no longer using vanilla blindness
-        // we got combined with a normal blindness effect. this means we should no longer vanish when the player gets out of range.
-        combined = true;
+      if (other instanceof BlindEffect) {
+        // in theory we could calculate distances in here...but we have no way of contacting the player from here and we need to do that to lower the
+        // distance (see above). So we just put the additional tracked slimes into our list and wait for onUpdate() to find them
+        tracking.addAll(((BlindEffect) other).tracking);
       }
-      super.combine(other); // TODO: use our own merging code that allows the amplifier to go down and tracks both sources
     }
 
   }
@@ -308,29 +349,61 @@ public class EntityVoidSlime extends EntityMagmaCube implements IEnderZooEntity.
   @SubscribeEvent
   @SideOnly(Side.CLIENT)
   public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-    if (applied && event.phase == Phase.END && event.player.world.isRemote && event.player == Minecraft.getMinecraft().player
-        && event.player.getActivePotionEffect(BLIND_POTION) == null && Minecraft.getMinecraft().entityRenderer.isShaderActive()) { // TODO: extract for
-                                                                                                                                   // performEffect() to re-use
-                                                                                                                                   // when switching between
-                                                                                                                                   // shaders
-      applied = false;
-      try {
-        Object shaderGroup = ObfuscationReflectionHelper.getPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, "field_147707_d");
-        if (shaderGroup instanceof ShaderGroup) {
-          Object shaderGroupName = ObfuscationReflectionHelper.getPrivateValue(ShaderGroup.class, (ShaderGroup) shaderGroup, "field_148034_c");
-          if (SHADER_RL.toString().equals(shaderGroupName)) {
-            Minecraft.getMinecraft().entityRenderer.stopUseShader();
-          }
-        }
-      } catch (UnableToAccessFieldException e) {
-        e.printStackTrace();
-      }
+    if (applied >= 0 && event.phase == Phase.END && event.player.world.isRemote && event.player == Minecraft.getMinecraft().player
+        && event.player.getActivePotionEffect(BLIND_POTION) == null && Minecraft.getMinecraft().entityRenderer.isShaderActive()) {
+      applied = -1;
+      removeShader();
     }
   }
 
-  private static final @Nonnull ResourceLocation SHADER_RL = new ResourceLocation("minecraft", "shaders/post/invert.json");
+  @SideOnly(Side.CLIENT)
+  private static void removeShader() {
+    try {
+      Object shaderGroup = ObfuscationReflectionHelper.getPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, "field_147707_d");
+      if (shaderGroup instanceof ShaderGroup) {
+        Object shaderGroupName = ObfuscationReflectionHelper.getPrivateValue(ShaderGroup.class, (ShaderGroup) shaderGroup, "field_148034_c");
+        for (ResourceLocation rl : SHADER_RL) { // don't trust 'applied'
+          if (rl.toString().equals(shaderGroupName)) {
+            Minecraft.getMinecraft().entityRenderer.stopUseShader();
+            return;
+          }
+        }
+      }
+    } catch (UnableToAccessFieldException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private static double[] DISTS = { 0.25, 0.5, 0.75, 1, 2, 4 };
+  private static final @Nonnull NNList<ResourceLocation> SHADER_RL = new NNList<>( //
+      new ResourceLocation("minecraft", "shaders/post/invert.json"), new ResourceLocation("minecraft", "shaders/post/spider.json"),
+      new ResourceLocation("minecraft", "shaders/post/creeper.json"), new ResourceLocation("minecraft", "shaders/post/invert.json"),
+      new ResourceLocation("minecraft", "shaders/post/spider.json"), new ResourceLocation("minecraft", "shaders/post/creeper.json"));
   private static final @Nonnull BlindPotion BLIND_POTION = new BlindPotion();
-  private static boolean applied = false;
+  private static int applied = -1; // array index of the currently applied shader
+
+  /**
+   * @return The radius (squared) of the effect volume around a void slime
+   */
+  private static double getMaxDistSq() {
+    double d = ZooConfig.voidSlimeRange.get() * DISTS[DISTS.length - 1];
+    return d * d * 3;
+  }
+
+  /**
+   * Converts a distance (squared) into an index in the shader list. -1 if the distance is bigger than the effect sphere.
+   */
+  private static int distanceSq2Byte(double d) {
+    int ref = ZooConfig.voidSlimeRange.get();
+    for (int i = 0; i < DISTS.length; i++) {
+      double f = DISTS[i] * ref;
+      double refd = f * f * 3;
+      if (d < refd) {
+        return i;
+      }
+    }
+    return -1;
+  }
 
   private static class BlindPotion extends Potion {
 
@@ -342,7 +415,7 @@ public class EntityVoidSlime extends EntityMagmaCube implements IEnderZooEntity.
 
     @Override
     public boolean isReady(int duration, int amplifier) {
-      return !EnderIO.proxy.isDedicatedServer();
+      return !EnderIO.proxy.isDedicatedServer(); // integrated server goes to isRemote check in performEffect()
     }
 
     @Override
@@ -350,9 +423,12 @@ public class EntityVoidSlime extends EntityMagmaCube implements IEnderZooEntity.
     public void performEffect(@Nonnull EntityLivingBase entityLivingBaseIn, int amplifier) {
       if (entityLivingBaseIn.world.isRemote && entityLivingBaseIn == Minecraft.getMinecraft().player) {
         EntityRenderer renderer = Minecraft.getMinecraft().entityRenderer;
+        if (applied != amplifier && renderer.isShaderActive()) {
+          removeShader();
+        }
         if (!renderer.isShaderActive()) {
-          renderer.loadShader(SHADER_RL); // TODO: use different shaders based on distance (amplifier)
-          applied = true;
+          renderer.loadShader(SHADER_RL.get(amplifier));
+          applied = amplifier;
         }
       }
     }
