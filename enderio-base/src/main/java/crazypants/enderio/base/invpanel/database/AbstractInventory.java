@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import crazypants.enderio.base.EnderIO;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 
 public abstract class AbstractInventory {
   static final SlotKey[] NO_SLOTS = new SlotKey[0];
@@ -46,7 +47,7 @@ public abstract class AbstractInventory {
    * Finish the inventory scan and reset the timer.
    */
   public void markScanned() {
-    nextScan = EnderIO.proxy.getServerTickCount() + Math.max(Math.min(1 + (slotKeys.length + 8) / 9, 20 * 60), 30);
+    nextScan = EnderIO.proxy.getServerTickCount() + MathHelper.clamp(1 + (slotKeys.length + 8) / 9, 30, 60 * 20);
     if (taggingbias > 50) {
       nextScan += 2 * 60 * 20; // 2m
     } else if (taggingbias > 5) {
