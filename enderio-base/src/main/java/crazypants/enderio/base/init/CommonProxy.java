@@ -78,4 +78,8 @@ public class CommonProxy {
     return false;
   }
 
+  public boolean hasOptifine() {
+    return false;
+  }
+
 }

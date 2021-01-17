@@ -7,7 +7,6 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.config.config.BaseConfig;
 import crazypants.enderio.base.events.EnderIOLifecycleEvent;
 import net.minecraftforge.common.config.Property;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.StartupQuery;
@@ -22,7 +21,7 @@ public class ModInterferenceWarner {
     try {
       warn(() -> Loader.isModLoaded("spongeforge"), "SpongeForge is known for causing issues with Forge mods.\n\n"
           + "If you run into any issue with a Forge mod,\nfirst try uninstalling SpongeForge before you contact the mod author.", "spongeForgeConfirmed");
-      warn(() -> FMLClientHandler.instance().hasOptifine(), "Optifine is known for causing issues with mods.\n\n"
+      warn(() -> EnderIO.proxy.hasOptifine(), "Optifine is known for causing issues with mods.\n\n"
           + "If you run into any rendering issues,\nfirst try uninstalling Optifine before you contact the mod author.", "optifineConfirmed");
     } catch (StartupQuery.AbortedException e) {
       // User pressed "no", this is as high as we need to back out

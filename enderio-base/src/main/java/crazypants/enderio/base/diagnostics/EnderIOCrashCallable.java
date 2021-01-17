@@ -8,19 +8,17 @@ import java.util.List;
 import crazypants.enderio.api.EnderIOAPIProps;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ICrashCallable;
 import net.minecraftforge.fml.common.ModAPIManager;
 import net.minecraftforge.fml.common.ModContainer;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.server.FMLServerHandler;
 
 public class EnderIOCrashCallable implements ICrashCallable {
 
   private List<String> collectData() {
     List<String> result = new ArrayList<String>();
-    if (FMLCommonHandler.instance().getSide() == Side.CLIENT && FMLClientHandler.instance().hasOptifine()) {
+    if (EnderIO.proxy.hasOptifine()) {
       result.add(" * Optifine is installed. This is NOT supported.");
     }
     if (EnderIO.proxy != null && EnderIO.proxy.isDedicatedServer()) {

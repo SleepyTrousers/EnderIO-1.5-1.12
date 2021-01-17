@@ -33,6 +33,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -145,6 +146,11 @@ public class ClientProxy extends CommonProxy {
   @Override
   public boolean isGamePaused() {
     return Minecraft.getMinecraft().isSingleplayer() && Minecraft.getMinecraft().isGamePaused();
+  }
+
+  @Override
+  public boolean hasOptifine() {
+    return FMLClientHandler.instance().hasOptifine();
   }
 
 }
