@@ -51,7 +51,6 @@ public class TooltipHandlerBurnTime implements ITooltipCallback {
 
   @Override
   public boolean shouldHandleItem(ItemStack item) {
-    if (!Thread.currentThread().getName().startsWith("Client Thread")) return false;
     int time = TileEntityFurnace.getItemBurnTime(item);
     return time > 0 || isStirlingGen(item);
   }
