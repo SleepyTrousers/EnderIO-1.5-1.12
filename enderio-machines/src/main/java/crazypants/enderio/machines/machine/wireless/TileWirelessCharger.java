@@ -69,14 +69,15 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowered
   }
 
   @Override
-  public boolean chargeItems(NonNullList<ItemStack> items) {
+  public boolean chargeItems(NonNullList<ItemStack> stacks) {
     boolean chargedItem = false;
     int available = Math.min(CapacitorKey.WIRELESS_POWER_OUTPUT.getDefault(), storedEnergyRF);
-    for (int i = 0, end = items.size(); i < end && available > 0; i++) {
-      ItemStack item = items.get(i);
-      if (!item.isEmpty()) {
-        IEnergyStorage chargable = PowerHandlerUtil.getCapability(item, null);
-        if (chargable != null && item.getCount() == 1) {
+    for (int i = 0, end = stacks.size(); i < end && available > 0; i++) {
+      ItemStack stack = stacks.get(i);
+      if (!stack.isEmpty() && stack.getCount() == 1 && !(stack.getItem() instanceof IWirelessCharger.ExcludedItem)
+          || ((IWirelessCharger.ExcludedItem) stack.getItem()).shouldChargeWirelessly(stack)) {
+        IEnergyStorage chargable = PowerHandlerUtil.getCapability(stack, null);
+        if (chargable != null) {
           int max = chargable.getMaxEnergyStored();
           int cur = chargable.getEnergyStored();
           int canUse = Math.min(available, max - cur);

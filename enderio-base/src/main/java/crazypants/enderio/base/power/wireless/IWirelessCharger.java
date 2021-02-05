@@ -47,4 +47,14 @@ public interface IWirelessCharger {
     private static final long serialVersionUID = 2001446847785302704L;
   }
 
+  /**
+   * Interface for items that should not be charged
+   *
+   */
+  public interface ExcludedItem {
+
+    boolean shouldChargeWirelessly(@Nonnull ItemStack stack);
+
+  }
+
 }

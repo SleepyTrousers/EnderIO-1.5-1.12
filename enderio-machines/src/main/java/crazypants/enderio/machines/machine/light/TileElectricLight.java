@@ -25,6 +25,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.Constants.BlockFlags;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 import static crazypants.enderio.base.capacitor.CapacitorKey.LEGACY_ENERGY_INTAKE;
@@ -105,7 +106,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPoweredTi
     }
 
     final boolean isActive = world.getBlockState(pos).getValue(BlockElectricLight.ACTIVE);
-    boolean shouldActive = (world.isBlockPowered(pos) ^ isInverted()) && (!requiresPower() || hasPower());
+    final boolean shouldActive = (world.isBlockPowered(pos) ^ isInverted()) && (!requiresPower() || hasPower());
 
     if (requiresPower()) {
       if (init) {
@@ -132,7 +133,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPoweredTi
   }
 
   private void executeWirelessCharging() {
-    if (energyStoredRF < getMaxEnergyStored()) {
+    if (energyStoredRF < getMaxEnergyStored() / 2) {
       if (chargedLocation == null) {
         chargedLocation = new WirelessChargedLocation(this);
       }
@@ -143,7 +144,7 @@ public class TileElectricLight extends TileEntityEio implements ILegacyPoweredTi
   private void setBlockstateAndNodes(boolean isActivated) {
     IBlockState bs = world.getBlockState(pos);
     IBlockState bsnew = bs.withProperty(BlockElectricLight.ACTIVE, isActivated);
-    world.setBlockState(pos, bsnew, 2);
+    world.setBlockState(pos, bsnew, BlockFlags.SEND_TO_CLIENTS);
 
     if (requiresPower()) {
       for (BlockPos ln : lightNodes) {
