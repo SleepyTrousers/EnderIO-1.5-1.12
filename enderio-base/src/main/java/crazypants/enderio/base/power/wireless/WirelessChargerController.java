@@ -2,9 +2,12 @@ package crazypants.enderio.base.power.wireless;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -16,6 +19,7 @@ import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
+import crazypants.enderio.base.power.wireless.IWirelessCharger.SelfDestructionException;
 import crazypants.enderio.util.Prep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -48,14 +52,27 @@ public final class WirelessChargerController {
     chargePlayersItems(NullHelper.notnullF(event.player, "TickEvent.PlayerTickEvent without player"));
   }
 
-  public static @Nonnull Collection<IWirelessCharger> getChargers(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Collection<IWirelessCharger> res) {
+  public static @Nonnull List<IWirelessCharger> getChargers(@Nonnull World world, @Nonnull BlockPos pos) {
     final Collection<BlockPos> chargers = getChargers(world);
+    if (chargers.isEmpty()) {
+      return Collections.emptyList();
+    }
+    final List<IWirelessCharger> res = new ArrayList<>();
     for (Iterator<BlockPos> iterator = chargers.iterator(); iterator.hasNext();) {
       BlockPos chargerPos = iterator.next();
       IWirelessCharger charger = chargerPos != null ? BlockEnder.getAnyTileEntitySafe(world, chargerPos, IWirelessCharger.class) : null;
       if (charger != null) {
-        if (charger.isActive() && charger.getRange().contains(pos)) {
-          res.add(charger);
+        try {
+          if (charger.isActive() && charger.getRange().contains(pos)) {
+            res.add(charger);
+          }
+        } catch (SelfDestructionException e) {
+          try {
+            iterator.remove();
+          } catch (ConcurrentModificationException e1) {
+            // NOP
+          }
+          return getChargers(world, pos);
         }
       } else {
         iterator.remove();
@@ -65,7 +82,7 @@ public final class WirelessChargerController {
   }
 
   private static void chargePlayersItems(@Nonnull EntityPlayer player) {
-    for (IWirelessCharger charger : getChargers(player.world, BlockCoord.get(player), new ArrayList<>())) {
+    for (IWirelessCharger charger : getChargers(player.world, BlockCoord.get(player))) {
       if (charger != null && chargePlayersItems(player, charger) && charger.forceSingle()) {
         return;
       }

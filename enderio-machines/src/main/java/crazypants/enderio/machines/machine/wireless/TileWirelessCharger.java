@@ -154,7 +154,7 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowered
 
   @Override
   @Nonnull
-  public BoundingBox getRange() {
+  public BoundingBox getRange() throws SelfDestructionException {
     if (this.isInvalid()) {
       Log.error("TileEntity " + this + " at " + pos + " is invalid but was not invalidated. This should not be possible!");
       return bb;
@@ -166,7 +166,7 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowered
             + "). This should not be possible unless the world was severly corrupted!");
         world.removeTileEntity(pos);
         world.createExplosion(null, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, 1, false);
-        return bb;
+        throw new SelfDestructionException();
       }
       blockState = actualState;
       bb = ((BlockNormalWirelessCharger) actualState.getBlock()).getChargingStrength(actualState, pos);
@@ -198,7 +198,11 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowered
   @Override
   @Nonnull
   public BoundingBox getBounds() {
-    return getRange();
+    try {
+      return getRange();
+    } catch (SelfDestructionException e) {
+      return bb;
+    }
   }
 
   @Override

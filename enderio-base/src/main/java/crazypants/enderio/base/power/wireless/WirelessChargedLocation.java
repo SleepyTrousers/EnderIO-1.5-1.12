@@ -1,6 +1,5 @@
 package crazypants.enderio.base.power.wireless;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -24,8 +23,7 @@ public class WirelessChargedLocation implements Comparator<IWirelessCharger> {
   }
 
   private @Nonnull List<IWirelessCharger> getChargers() {
-    List<IWirelessCharger> chargers = new ArrayList<>();
-    WirelessChargerController.getChargers(te.getWorld(), te.getPos(), chargers);
+    List<IWirelessCharger> chargers = WirelessChargerController.getChargers(te.getWorld(), te.getPos());
     if (chargers.size() > 1) {
       chargers.sort(this);
     }

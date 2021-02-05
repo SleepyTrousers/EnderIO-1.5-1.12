@@ -15,7 +15,7 @@ public interface IWirelessCharger {
   World getworld();
 
   @Nonnull
-  BoundingBox getRange();
+  BoundingBox getRange() throws SelfDestructionException;
 
   boolean chargeItems(NonNullList<ItemStack> items);
 
@@ -37,4 +37,14 @@ public interface IWirelessCharger {
    * It is not expected that this value differs between chargers, it's here to allow the config value to propagate from machines to base.
    */
   boolean forceSingle();
+
+  /**
+   * Messaging exception that tells the calling code that the charger should be (and potentially already has been!) removed from the list of chargers.
+   * <p>
+   * This is needed to allow modifications of the charger list while it is iterated over.
+   */
+  public static class SelfDestructionException extends Exception {
+    private static final long serialVersionUID = 2001446847785302704L;
+  }
+
 }
