@@ -28,7 +28,7 @@ enderio.gui.ranged.hideRange=範囲を非表示
 enderio.gui.ranged.range=範囲：%s
 
 enderio.gui.stirling_generator.output=発電中：%s
-enderio.gui.stirling_generator.efficiency=燃焼効率：%s％
+enderio.gui.stirling_generator.efficiency=燃焼効率：%s%%
 enderio.gui.stirling_generator.upgradeslot=アップグレードスロット
 enderio.gui.stirling_generator.upgrades={0}：{2}{1,number,#.#}x{3} 効率上昇
 enderio.gui.stirling_generator.remaining=残り {0,number,percent}|{1,choice,0#|0<{1} 分 }{2,number} 秒|{3,number,#,###} µI
@@ -220,6 +220,8 @@ tile.block_attractor_obelisk.name=魅惑のオベリスク
 tile.block_attractor_obelisk.tooltip.detailed.line1=Mob を引き寄せる。
 tile.block_attractor_obelisk.tooltip.detailed.line2=内部に魂を配置すると、対象となる Mob を指定可能。
 
+enderio.status.attractor_obelisk.unknown_mob=魅惑のオベリスク（%s）：%s の引き寄せ方が不明です
+
 tile.block_aversion_obelisk.name=憎悪のオベリスク
 tile.block_aversion_obelisk.tooltip.detailed.line1=効果範囲内での Mob のスポーンを阻止。
 
@@ -271,6 +273,9 @@ tile.block_solar_panel.simple.name=簡易型太陽電池
 tile.block_solar_panel.name=太陽電池
 tile.block_solar_panel.advanced.name=改良型太陽電池
 tile.block_solar_panel.vibrant.name=ヴァイブラント太陽電池
+tile.block_solar_panel.compressed.name=結晶性太陽電池
+tile.block_solar_panel.concentrated.name=メロディック太陽電池
+tile.block_solar_panel.ultimate.name=ステラ太陽電池
 tile.block_solar_panel.tooltip.common.line1=Solar Power!
 tile.block_solar_panel.tooltip.detailed.line1=日中に電力を発電。
 tile.block_solar_panel.tooltip.detailed.line2=上空に遮るものがあると発電不可。
@@ -387,7 +392,7 @@ tile.block_niard.tooltip.detailed.line2=このアイテム（The Niard）の改�
 # green=Farming Station area, red=Stirling Generator power generation, mobby=spawner speedup,
 # crushed=sag mill speed, cleancut=slice'n'splice speed, tight=soul binder speed, aa=painter,
 # wet=vat, kaboom=combustion gen power gen, fatman=codename for the atomic bomb that was
-# detonated over Nagasaki 
+# detonated over Nagasaki
 enderio.loot.capacitor.smelting=焼けた%s
 enderio.loot.capacitor.area=大きな%s
 enderio.loot.capacitor.green=栽培家の%s
@@ -401,7 +406,7 @@ enderio.loot.capacitor.wet=料理用の%s
 enderio.loot.capacitor.kaboom=短気な%s
 enderio.loot.capacitor.fatman=原子力的%s
 
-enderio.jei.sagmill.outputchance=副産確率：{0,choice,0#'<1'|0<{0,number}}％
+enderio.jei.sagmill.outputchance=副産確率：{0,choice,0#'<1'|0<{0,number}}%%
 enderio.jei.sagmill.outputchance.ball=%s（粉砕ボールにより変動）
 enderio.jei.sagmill.nomains=レシピにより副産無効化中。100
 enderio.jei.combustion_generator.range.line1=発電量はコンデンサと発電機のグレードに依存
@@ -412,10 +417,8 @@ enderio.jei.stirling_generator.range.line1=実際の発電量は、コンデン�
 enderio.jei.stirling_generator.range.line2=
 enderio.jei.stirling_generator.notSimple.line1=この燃料は、簡易型スターリング発電機では使用できない。
 enderio.jei.stirling_generator.notSimple.line2=
-enderio.jei.alloy_smelter.notSimple.line1=このレシピは、簡易型合金精錬機では扱えない。
-enderio.jei.alloy_smelter.notSimple.line2=
 enderio.jei.grinding_ball.main.line1=粉砕したアイテムを確率で増加させる。
-enderio.jei.grinding_ball.bonus.line1=副産確率を増加させるが、１００％を上回る、すなわち個数が増加することはない。
+enderio.jei.grinding_ball.bonus.line1=副産確率を増加させるが、１００%%を上回る、すなわち個数が増加することはない。
 enderio.jei.grinding_ball.bonus.line2=元の確率 * 副産確率（この値）で計算される。
 enderio.jei.grinding_ball.power.line1=稼働時の消費電力に影響を与え、粉砕速度も伴って増減する。
 enderio.jei.recipe=レシピ："%s"
@@ -434,6 +437,14 @@ enderio.darksteel.upgrade.solar_2.tooltip.detailed.line1=太陽光から発電�
 enderio.darksteel.upgrade.solar_3.name=ソーラー Ⅲ
 enderio.darksteel.upgrade.solar_3.tooltip.detailed.line1=太陽光から発電。
 
+enderio.darksteel.upgrade.solar_4.name=ソーラー Ⅳ
+enderio.darksteel.upgrade.solar_4.tooltip.detailed.line1=太陽光から発電。
+
+enderio.darksteel.upgrade.solar_5.name=ソーラー Ⅴ
+enderio.darksteel.upgrade.solar_5.tooltip.detailed.line1=太陽光から発電。
+
+enderio.darksteel.upgrade.solar_6.name=ソーラー Ⅵ
+enderio.darksteel.upgrade.solar_6.tooltip.detailed.line1=太陽光から発電。
 enderio.config.capacitor=コンデンサの値
 enderio.config.client=クライアント設定
 

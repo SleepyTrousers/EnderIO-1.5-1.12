@@ -1,0 +1,29 @@
+#PARSE_ESCAPES
+# ^ having this in the first line allows us to use "\uXXXX" escapes in this file
+
+enderio.item_gas_conduit.name=ガス導管
+enderio.item_gas_conduit_advanced.name=加圧式ガス導管
+enderio.item_gas_conduit_ender.name=エンダーガス導管
+gasconduits.item_gas_conduit.locked_type=ガスの種類を %s にロックしました
+gasconduits.item_gas_conduit.unlocked_type=ガスの種類のロックを解除しました
+gasconduits.item_gas_conduit.locked_waila=%s にロック中
+
+gasconduits.gas.millibuckets_tick=mB/t
+gasconduits.item_gas_conduit.tooltip.max_extract=最大搬出：
+gasconduits.item_gas_conduit.tooltip.max_io=最大入出力：
+
+
+gasconduits.gas.millibuckets_tick=mB/t
+
+gasconduits.gui.gas_auto_extract=自動搬出
+gasconduits.gui.gas_filter=ガスフィルター
+gasconduits.gui.gas_whitelist=ホワイトリスト
+gasconduits.gui.gas_blacklist=ブラックリスト
+
+
+
+gasconduits.gui.conduit_gas.header=ガス導管
+gasconduits.config.condit.gas=ガス導管
+
+
+item.item_gas_filter.name=ガスフィルター

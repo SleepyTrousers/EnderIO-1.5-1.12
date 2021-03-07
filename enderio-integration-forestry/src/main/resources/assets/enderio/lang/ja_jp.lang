@@ -26,3 +26,7 @@ enderio.darksteel.upgrade.apiarist_armor.feet.tooltip.detailed.line1=蜂の攻�
 enderio.config.items.darksteel.upgrades.forestry=Forestry アップグレード
 
 item.item_species_item_filter.name=品種アイテムフィルター
+
+enderio.gui.conduit.item.species.primary_icon=上段でフィルタリング
+enderio.gui.conduit.item.species.secondary_icon=下段でフィルタリング
+enderio.gui.conduit.item.species.both_icon=両方でフィルタリング

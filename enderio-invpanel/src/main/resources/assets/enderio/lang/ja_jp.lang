@@ -1,10 +1,11 @@
 // Inv Panel
 tile.block_inventory_panel.name=インベントリパネル
 tile.block_inventory_panel.tooltip.basic.line1=ストレージの遠隔操作とクラフトが可能。
-tile.block_inventory_panel.tooltip.detailed.line1=遠隔認識アップグレードが搭載されたアイテム導管に
+tile.block_inventory_panel.tooltip.detailed.line1=データまたはアイテムの導管に
 tile.block_inventory_panel.tooltip.detailed.line2=接続されたストレージへのアクセスが可能。
 tile.block_inventory_panel.tooltip.detailed.line3=稼働には栄養蒸留液が必要。
 tile.block_inventory_panel.tooltip.detailed.line4=クラフト枠が付属。
+tile.block_inventory_panel.tooltip.detailed.line5=染料で Shift クリックすると着色可能。
 
 enderio.item_data_conduit.name=データ導管
 
@@ -13,7 +14,8 @@ enderio.gui.inventorypanel.header.crafting=クラフト枠
 enderio.gui.inventorypanel.header.return=返送物置き場
 enderio.gui.inventorypanel.header.storage=保存物置き場
 enderio.gui.inventorypanel.info.filter=<アイテム検索>
-enderio.gui.inventorypanel.info.offline=<オフライン>
+enderio.gui.inventorypanel.info.offline=<燃料不足>
+enderio.gui.inventorypanel.info.noconnection=<接続なし>
 enderio.gui.inventorypanel.tooltip.return.line1=アイテムの返送場所。
 enderio.gui.inventorypanel.tooltip.return.line2=ここに置かれたアイテムは
 enderio.gui.inventorypanel.tooltip.return.line3=アイテム導管へ輸送されるが、
@@ -54,10 +56,13 @@ enderio.gui.inventorypanel.tooltip.addrecipe.line5=Shift 左クリックでク�
 enderio.gui.inventorypanel.tooltip.addrecipe.line6=必要なアイテムを可能な限り配置。
 enderio.gui.inventorypanel.tooltip.addrecipe.line7=登録レシピは右クリックで削除可能。
 enderio.gui.inventorypanel.tooltip.sync=NEI/JEI と同期
-enderio.gui.inventorypanel.tooltip.sync.nei=NEI と同期
 enderio.gui.inventorypanel.tooltip.sync.jei=JEI と同期
 enderio.gui.inventorypanel.tooltip.sync.jei.line1=検索窓に入力した文字を反映
 enderio.gui.inventorypanel.tooltip.sync.jei.line2=JEI の検索窓に入力した文字を非反映
+enderio.gui.inventorypanel.tooltip.recipe.store=クリックでレシピ保存
+enderio.gui.inventorypanel.tooltip.recipe.load=クリックでレシピ読み込み
+enderio.gui.inventorypanel.tooltip.recipe.loadstacks=Shift クリックでレシピ読み込み（スタック）
+enderio.gui.inventorypanel.tooltip.recipe.delete=Ctrl + Shift 右クリックでレシピ削除
 
 // Sensor
 tile.block_inventory_panel_sensor.name=インベントリセンサー
@@ -85,12 +90,12 @@ item.item_inventory_remote_basic.tooltip.detailed.line2=パネルを Shift 右�
 item.item_inventory_remote_basic.tooltip.detailed.line3=稼働には{FLUIDNAME}と電力が必要。
 
 item.item_inventory_remote_advanced.name=遠隔型強化インベントリパネル
-item.item_inventory_remote_advanced.tooltip.detailed.line1=同じディメンション内のどこからでもインベントリパネルにアクセスが可能。
+item.item_inventory_remote_advanced.tooltip.detailed.line1=同じディメンション内のどこからでもインベントリパネルにアクセスが可能（要チャンクロード）。
 item.item_inventory_remote_advanced.tooltip.detailed.line2=パネルを Shift 右クリックすると登録が可能。
 item.item_inventory_remote_advanced.tooltip.detailed.line3=稼働には{FLUIDNAME}と電力が必要。
 
 item.item_inventory_remote_ender.name=遠隔型エンダーインベントリパネル
-item.item_inventory_remote_ender.tooltip.detailed.line1=どこからでもインベントリパネルへのアクセスが可能。
+item.item_inventory_remote_ender.tooltip.detailed.line1=どこからでもインベントリパネルへのアクセスが可能（要チャンクロード）。
 item.item_inventory_remote_ender.tooltip.detailed.line2=パネルを Shift 右クリックすると登録が可能。
 item.item_inventory_remote_ender.tooltip.detailed.line3=稼働には{FLUIDNAME}と電力が必要。
 
