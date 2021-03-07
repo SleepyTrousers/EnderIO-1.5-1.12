@@ -26,6 +26,7 @@ import crazypants.enderio.base.block.darksteel.trapdoor.BlockDarkSteelTrapDoor;
 import crazypants.enderio.base.block.decoration.BlockDecoration;
 import crazypants.enderio.base.block.decoration.BlockDecorationFacing;
 import crazypants.enderio.base.block.detector.BlockDetector;
+import crazypants.enderio.base.block.grave.BlockGrave;
 import crazypants.enderio.base.block.holy.BlockHolierFog;
 import crazypants.enderio.base.block.holy.BlockHolyFog;
 import crazypants.enderio.base.block.infinity.BlockInfinity;
@@ -328,6 +329,8 @@ public enum ModObject implements IModObjectBase {
 
   // upgrades
   itemDarkSteelUpgrade(ItemUpgrades::create),
+
+  blockDeathPouch(BlockGrave::create, ModTileEntity.TileGrave),
 
   item_owl_egg(ItemOwlEgg::create),
 

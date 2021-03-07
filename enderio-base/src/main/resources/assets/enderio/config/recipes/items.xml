@@ -992,4 +992,40 @@ XML editor will display that as tooltips when editing this file.
     </crafting>
   </recipe>
 
+  <recipe name="Death Urn, unfired" required="true">
+    <crafting>
+      <dependency item="exnihilo:porcelain"/>
+      <grid size="3x3">
+        <item name="exnihilo:porcelain"/><item name="POWDER_PULSATING" /><item name="exnihilo:porcelain" />
+        <item name="exnihilo:porcelain" /><item /><item name="exnihilo:porcelain" />
+        <item name="exnihilo:porcelain"/><item name="exnihilo:porcelain" /><item name="exnihilo:porcelain" />
+      </grid>
+      <output name="itemDeathUrnUnfired" />
+    </crafting>
+    <crafting>
+      <dependency item="exnihilo:porcelain" reverse="true"/>
+      <grid size="3x3">
+        <item name="itemClay"/><item name="POWDER_PULSATING" /><item name="itemClay" />
+        <item name="itemClay" /><item /><item name="itemClay" />
+        <item name="itemClay"/><item name="itemClay" /><item name="itemClay" />
+      </grid>
+      <output name="itemDeathUrnUnfired" />
+    </crafting>
+  </recipe>
+
+  <recipe name="Death Urn" required="true">
+    <smelting exp="0">
+      <dependency item="exnihilo:porcelain"/>
+      <input name="itemDeathUrnUnfired"/>
+      <output name="enderio:block_death_pouch"/>
+    </smelting>
+    <alloying energy="10000">
+      <dependency item="exnihilo:porcelain" reverse="true"/>
+      <input name="itemDeathUrnUnfired"/>
+      <input name="minecraft:dye:15" amount="7"/>
+      <output name="enderio:block_death_pouch"/>
+    </alloying>
+  </recipe>
+
+
 </enderio:recipes>

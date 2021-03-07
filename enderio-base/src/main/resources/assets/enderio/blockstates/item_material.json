@@ -523,6 +523,11 @@
         "textures": {
           "layer0": "enderio:items/item_material_token_player"
         }
+      },
+      "death_urn_unfired": {
+        "textures": {
+          "layer0": "enderio:items/item_material_death_urn_unfired"
+        }
       }
     }
   }

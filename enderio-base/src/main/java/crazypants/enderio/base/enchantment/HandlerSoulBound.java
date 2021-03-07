@@ -4,10 +4,14 @@ import java.util.ListIterator;
 
 import javax.annotation.Nonnull;
 
+import com.enderio.core.common.BlockEnder;
+import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
+import crazypants.enderio.base.block.grave.TileGrave;
+import crazypants.enderio.base.config.config.ItemConfig;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.integration.galacticraft.GalacticraftUtil;
@@ -23,6 +27,7 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -106,22 +111,81 @@ public class HandlerSoulBound {
    */
   @SubscribeEvent(priority = EventPriority.LOWEST)
   public static void onPlayerDeathLate(PlayerDropsEvent evt) {
-    if (evt.getEntityPlayer() == null || evt.getEntityPlayer() instanceof FakePlayer || evt.isCanceled()) {
+    final EntityPlayer player = evt.getEntityPlayer();
+    if (player == null || player instanceof FakePlayer || evt.isCanceled()) {
       return;
     }
-    if (evt.getEntityPlayer().world.getGameRules().getBoolean(KEEP_INVENTORY)) {
+    if (player.world.getGameRules().getBoolean(KEEP_INVENTORY)) {
       return;
     }
 
-    Log.debug("Running onPlayerDeathLate logic for " + evt.getEntityPlayer().getName());
+    Log.debug("Running onPlayerDeathLate logic for " + player.getName());
 
+    EntityItem deathPouch = null;
+    boolean lookForPouch = !ItemConfig.dpFree.get() && !ItemConfig.dpDisabled.get();
     ListIterator<EntityItem> iter = evt.getDrops().listIterator();
     while (iter.hasNext()) {
       EntityItem ei = iter.next();
       ItemStack item = ei.getItem();
       if (isSoulBound(item)) {
-        if (addToPlayerInventory(evt.getEntityPlayer(), item)) {
+        if (addToPlayerInventory(player, item)) {
           iter.remove();
+        }
+      } else if (lookForPouch && deathPouch == null && ModObject.blockDeathPouch.getItemNN() == item.getItem()) {
+        deathPouch = ei;
+        iter.remove();
+      }
+    }
+
+    if ((deathPouch != null || ItemConfig.dpFree.get()) && !ItemConfig.dpDisabled.get()) {
+      BlockPos pos = BlockCoord.get(player);
+      if (!player.world.isAirBlock(pos)) {
+        for (BlockPos p : BlockPos.getAllInBoxMutable(pos.add(0, -5, 0), pos.add(0, 5, 0))) {
+          if (p != null && player.world.isAirBlock(p)) {
+            pos = p.toImmutable();
+            break;
+          }
+        }
+      }
+      if (!player.world.isAirBlock(pos)) {
+        for (BlockPos p : BlockPos.getAllInBoxMutable(pos.add(-5, -5, -5), pos.add(5, 5, 5))) {
+          if (p != null && player.world.isAirBlock(p)) {
+            pos = p.toImmutable();
+            break;
+          }
+        }
+      }
+      while (!player.world.isAirBlock(pos) && pos.getY() <= 255) {
+        pos = pos.up();
+      }
+      while (!player.world.isAirBlock(pos) && pos.getY() > 0) {
+        pos = pos.down();
+      }
+      if (!player.world.isAirBlock(pos)) {
+        if (deathPouch != null) {
+          evt.getDrops().add(deathPouch);
+        }
+        return;
+      }
+      while (player.world.isAirBlock(pos.down()) && pos.getY() > 0) {
+        pos = pos.down();
+      }
+      player.world.setBlockState(pos, ModObject.blockDeathPouch.getBlockNN().getDefaultState());
+      Log.info("Placed grave for " + player.getName() + " at " + pos);
+      TileGrave te = BlockEnder.getAnyTileEntity(player.world, pos, TileGrave.class);
+      if (te != null) {
+        te.setOwner(player);
+        if (deathPouch != null && deathPouch.getItem().getCount() > 1) {
+          deathPouch.getItem().shrink(1);
+          evt.getDrops().add(0, deathPouch);
+        }
+        iter = evt.getDrops().listIterator();
+        while (iter.hasNext()) {
+          EntityItem ei = iter.next();
+          ItemStack item = ei.getItem();
+          if (te.mergeOutput(item)) {
+            iter.remove();
+          }
         }
       }
     }

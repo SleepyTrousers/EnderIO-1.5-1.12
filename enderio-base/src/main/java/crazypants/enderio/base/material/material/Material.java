@@ -122,6 +122,8 @@ public enum Material {
   TOKEN_MONSTER("tokenMonster", true),
   TOKEN_PLAYER("tokenPlayer", true),
 
+  DEATH_URN_UNFIRED("deathUrnUnfired"),
+
   ;
 
   public final boolean hasEffect;

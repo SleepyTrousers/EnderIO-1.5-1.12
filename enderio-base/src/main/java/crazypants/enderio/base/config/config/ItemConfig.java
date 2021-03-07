@@ -78,4 +78,15 @@ public class ItemConfig {
   public static final IValue<Integer> rodOfReturnRfPerTick = ROD.make("energyPerTick", 35000, //
       "Amount of energy used by the Rod of Return each tick it is used.").setRange(1, 1000).sync();
 
+  public static final IValueFactory DP = F.section(".deathpouch");
+
+  public static final IValue<Boolean> dpUse = DP.make("consumeDeathUrnOnUse", true, //
+      "Determine if the Death Urn is used up when activated.").sync();
+  public static final IValue<Boolean> dpFree = DP.make("freeGraves", false, //
+      "Determine if a Death Urn item is needed to create a grave. Don't forget to disable the item recipe when you enable this.").sync();
+  public static final IValue<Boolean> dpDisabled = DP.make("disableDeathUrn", false, //
+      "Disables the Death Urn completely. Don't forget to disable the item recipe when you enable this.").sync();
+  public static final IValue<Boolean> dpPrivate = DP.make("protectedGraves", true, //
+      "Determine if a Death Urn can be looted by everone or only by the owner. Creative mode players can loot them always.").sync();
+
 }
