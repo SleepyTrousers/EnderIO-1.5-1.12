@@ -1,0 +1,10 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "enderio:block_enderman_skull_base"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}]
+  }
+}

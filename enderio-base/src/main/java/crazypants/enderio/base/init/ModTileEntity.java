@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.util.NullHelper;
 
 import crazypants.enderio.base.EnderIO;
+import crazypants.enderio.base.block.grave.TileGrave;
 import crazypants.enderio.base.block.painted.TileEntityPaintedBlock;
 import crazypants.enderio.base.block.painted.TileEntityTwicePaintedBlock;
 import crazypants.enderio.base.block.painted.TilePaintedPressurePlate;
@@ -22,6 +23,7 @@ public enum ModTileEntity implements IModTileEntityBase {
   TileEntityPaintedBlock(TileEntityPaintedBlock.class),
   TilePaintedPressurePlate(TilePaintedPressurePlate.class),
   TileEndermanSkull(TileEndermanSkull.class),
+  TileGrave(TileGrave.class),
 
   ;
 
