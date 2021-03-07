@@ -3,11 +3,13 @@ package crazypants.enderio.base.block.grave;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.inventory.EnderInventory;
 
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.ItemEIO;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.render.IHaveTESR;
 import crazypants.enderio.base.render.ITESRItemBlock;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
@@ -29,7 +31,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockGrave extends BlockEio<TileGrave> implements IHaveTESR, ITESRItemBlock {
+public class BlockGrave extends BlockEio<TileGrave> implements IResourceTooltipProvider, IHaveTESR, ITESRItemBlock {
 
   public static BlockGrave create(@Nonnull IModObject modObject) {
     BlockGrave res = new BlockGrave(modObject);
@@ -59,6 +61,17 @@ public class BlockGrave extends BlockEio<TileGrave> implements IHaveTESR, ITESRI
           @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ) {
         return EnumActionResult.FAIL;
       }
+
+      @Override
+      public @Nonnull String getUnlocalizedName() {
+        return BlockGrave.this.getUnlocalizedName().replace("tile", "item");
+      }
+
+      @Override
+      public @Nonnull String getUnlocalizedName(@Nonnull ItemStack stack) {
+        return getUnlocalizedName();
+      }
+
     });
   };
 
@@ -109,7 +122,7 @@ public class BlockGrave extends BlockEio<TileGrave> implements IHaveTESR, ITESRI
         }
         world.setBlockToAir(pos);
       } else {
-        // TODO: send message "not owner"
+        player.sendStatusMessage(Lang.GUI_GRAVE_NOT_OWNER.toChatServer(), true);
       }
     }
     return true;
@@ -128,6 +141,12 @@ public class BlockGrave extends BlockEio<TileGrave> implements IHaveTESR, ITESRI
   @Override
   protected boolean canBeWrenched() {
     return false;
+  }
+
+  @Override
+  @Nonnull
+  public String getUnlocalizedNameForTooltip(@Nonnull ItemStack itemStack) {
+    return itemStack.getUnlocalizedName();
   }
 
 }

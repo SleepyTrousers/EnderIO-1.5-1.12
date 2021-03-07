@@ -678,6 +678,10 @@ tile.block_self_resetting_lever30i.name=Inverted Self-resetting Lever (30 second
 tile.block_self_resetting_lever60i.name=Inverted Self-resetting Lever (1 Minute)
 tile.block_self_resetting_lever300i.name=Inverted Self-resetting Lever (5 Minutes)
 
+tile.block_death_pouch.name=Dead Player
+item.block_death_pouch.name=Death Pouch
+item.block_death_pouch.tooltip.detailed=Collects your items on death but gets used up. Must be in your inventory to work
+enderio.gui.block_death_pouch.not_owner=This is not your stuff!
 
 enderio.machine.tooltip.configured=%s (Configured)
 enderio.machine.tooltip.upgrade=Machine Upgrade
