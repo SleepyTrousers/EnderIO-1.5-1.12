@@ -11,6 +11,7 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.block.grave.TileGrave;
+import crazypants.enderio.base.config.config.ItemConfig;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.integration.galacticraft.GalacticraftUtil;
@@ -110,66 +111,71 @@ public class HandlerSoulBound {
    */
   @SubscribeEvent(priority = EventPriority.LOWEST)
   public static void onPlayerDeathLate(PlayerDropsEvent evt) {
-    if (evt.getEntityPlayer() == null || evt.getEntityPlayer() instanceof FakePlayer || evt.isCanceled()) {
+    final EntityPlayer player = evt.getEntityPlayer();
+    if (player == null || player instanceof FakePlayer || evt.isCanceled()) {
       return;
     }
-    if (evt.getEntityPlayer().world.getGameRules().getBoolean(KEEP_INVENTORY)) {
+    if (player.world.getGameRules().getBoolean(KEEP_INVENTORY)) {
       return;
     }
 
-    Log.debug("Running onPlayerDeathLate logic for " + evt.getEntityPlayer().getName());
+    Log.debug("Running onPlayerDeathLate logic for " + player.getName());
 
     EntityItem deathPouch = null;
+    boolean lookForPouch = !ItemConfig.dpFree.get() && !ItemConfig.dpDisabled.get();
     ListIterator<EntityItem> iter = evt.getDrops().listIterator();
     while (iter.hasNext()) {
       EntityItem ei = iter.next();
       ItemStack item = ei.getItem();
       if (isSoulBound(item)) {
-        if (addToPlayerInventory(evt.getEntityPlayer(), item)) {
+        if (addToPlayerInventory(player, item)) {
           iter.remove();
         }
-      } else if (deathPouch == null && ModObject.blockDeathPouch.getItemNN() == item.getItem()) {
+      } else if (lookForPouch && deathPouch == null && ModObject.blockDeathPouch.getItemNN() == item.getItem()) {
         deathPouch = ei;
         iter.remove();
       }
     }
 
-    if (deathPouch != null) {
-      BlockPos pos = BlockCoord.get(evt.getEntityPlayer());
-      if (!evt.getEntityPlayer().world.isAirBlock(pos)) {
+    if ((deathPouch != null || ItemConfig.dpFree.get()) && !ItemConfig.dpDisabled.get()) {
+      BlockPos pos = BlockCoord.get(player);
+      if (!player.world.isAirBlock(pos)) {
         for (BlockPos p : BlockPos.getAllInBoxMutable(pos.add(0, -5, 0), pos.add(0, 5, 0))) {
-          if (p != null && evt.getEntityPlayer().world.isAirBlock(p)) {
+          if (p != null && player.world.isAirBlock(p)) {
             pos = p.toImmutable();
             break;
           }
         }
       }
-      if (!evt.getEntityPlayer().world.isAirBlock(pos)) {
+      if (!player.world.isAirBlock(pos)) {
         for (BlockPos p : BlockPos.getAllInBoxMutable(pos.add(-5, -5, -5), pos.add(5, 5, 5))) {
-          if (p != null && evt.getEntityPlayer().world.isAirBlock(p)) {
+          if (p != null && player.world.isAirBlock(p)) {
             pos = p.toImmutable();
             break;
           }
         }
       }
-      while (!evt.getEntityPlayer().world.isAirBlock(pos) && pos.getY() <= 255) {
+      while (!player.world.isAirBlock(pos) && pos.getY() <= 255) {
         pos = pos.up();
       }
-      while (!evt.getEntityPlayer().world.isAirBlock(pos) && pos.getY() > 0) {
+      while (!player.world.isAirBlock(pos) && pos.getY() > 0) {
         pos = pos.down();
       }
-      if (!evt.getEntityPlayer().world.isAirBlock(pos)) {
-        evt.getDrops().add(deathPouch);
+      if (!player.world.isAirBlock(pos)) {
+        if (deathPouch != null) {
+          evt.getDrops().add(deathPouch);
+        }
         return;
       }
-      while (evt.getEntityPlayer().world.isAirBlock(pos.down()) && pos.getY() > 0) {
+      while (player.world.isAirBlock(pos.down()) && pos.getY() > 0) {
         pos = pos.down();
       }
-      evt.getEntityPlayer().world.setBlockState(pos, ModObject.blockDeathPouch.getBlockNN().getDefaultState());
-      TileGrave te = BlockEnder.getAnyTileEntity(evt.getEntityPlayer().world, pos, TileGrave.class);
+      player.world.setBlockState(pos, ModObject.blockDeathPouch.getBlockNN().getDefaultState());
+      Log.info("Placed grave for " + player.getName() + " at " + pos);
+      TileGrave te = BlockEnder.getAnyTileEntity(player.world, pos, TileGrave.class);
       if (te != null) {
-        te.setOwner(evt.getEntityPlayer());
-        if (deathPouch.getItem().getCount() > 1) {
+        te.setOwner(player);
+        if (deathPouch != null && deathPouch.getItem().getCount() > 1) {
           deathPouch.getItem().shrink(1);
           evt.getDrops().add(0, deathPouch);
         }

@@ -1,7 +1,10 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "enderio:block_enderman_skull_base"
+    "model": "enderio:item_generated",
+    "textures": {
+      "layer0": "enderio:items/item_death_pouch"
+    }
   },
   "variants": {
     "normal": [{}],

@@ -9,14 +9,13 @@ import com.enderio.core.common.inventory.EnderInventory;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.ItemEIO;
+import crazypants.enderio.base.config.config.ItemConfig;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.render.IHaveTESR;
-import crazypants.enderio.base.render.ITESRItemBlock;
 import crazypants.enderio.base.render.registry.SmartModelAttacher;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumBlockRenderType;
@@ -26,12 +25,11 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockGrave extends BlockEio<TileGrave> implements IResourceTooltipProvider, IHaveTESR, ITESRItemBlock {
+public class BlockGrave extends BlockEio<TileGrave> implements IResourceTooltipProvider, IHaveTESR {
 
   public static BlockGrave create(@Nonnull IModObject modObject) {
     BlockGrave res = new BlockGrave(modObject);
@@ -55,7 +53,7 @@ public class BlockGrave extends BlockEio<TileGrave> implements IResourceTooltipP
 
   @Override
   public @Nullable ItemEIO createBlockItem(@Nonnull IModObject modObject) {
-    return modObject.apply(new ItemEIO(this) {
+    return (ItemEIO) modObject.apply(new ItemEIO(this) {
       @Override
       public @Nonnull EnumActionResult onItemUse(@Nonnull EntityPlayer player, @Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull EnumHand hand,
           @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ) {
@@ -72,14 +70,13 @@ public class BlockGrave extends BlockEio<TileGrave> implements IResourceTooltipP
         return getUnlocalizedName();
       }
 
-    });
+    }).setMaxStackSize(16);
   };
 
   @Override
   @SideOnly(Side.CLIENT)
   public void bindTileEntitySpecialRenderer() {
     ClientRegistry.bindTileEntitySpecialRenderer(TileGrave.class, new TESRGrave(this));
-    ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(this), 0, TileGrave.class);
   }
 
   @Override
@@ -112,7 +109,7 @@ public class BlockGrave extends BlockEio<TileGrave> implements IResourceTooltipP
     }
     if (!world.isRemote) {
       TileGrave te = getTileEntity(world, pos);
-      if (te != null && (te.getOwner().equals(player.getGameProfile()) || player.isCreative())) {
+      if (te != null && (te.getOwner().equals(player.getGameProfile()) || player.isCreative() || !ItemConfig.dpPrivate.get())) {
         EnderInventory inventory = te.getInventory();
         for (int slot = 0; slot < inventory.getSlots(); slot++) {
           final ItemStack stack = inventory.getStackInSlot(slot).copy();

@@ -10,12 +10,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySkullRenderer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 
 public class TESRGrave extends ManagedTESR<TileGrave> {
-
-  private static final @Nonnull ResourceLocation ITEM_TEXTURES = new ResourceLocation("textures/entity/skeleton/skeleton.png"); // TODO
 
   public TESRGrave(Block block) {
     super(block);
@@ -28,16 +24,6 @@ public class TESRGrave extends ManagedTESR<TileGrave> {
     GlStateManager.disableDepth();
     RenderUtil.drawBillboardedText(new Vector3f(0.5, .75, 0.5), te.getOwner().getPlayerName(), 0.25f);
     GlStateManager.enableDepth();
-  }
-
-  @Override
-  protected void renderItem() {
-    GlStateManager.pushMatrix();
-    GlStateManager.disableCull();
-    bindTexture(ITEM_TEXTURES);
-    TileEntitySkullRenderer.instance.renderSkull(0.0F, 0.0F, 0.0F, EnumFacing.UP, 180.0F, -1, null, -1, 0.0F);
-    GlStateManager.enableCull();
-    GlStateManager.popMatrix();
   }
 
 }

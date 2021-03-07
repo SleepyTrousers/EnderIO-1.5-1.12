@@ -310,6 +310,8 @@ item.item_material.black_paper.name=Black Paper
 item.item_material.token_animal.name=Animal Token
 item.item_material.token_monster.name=Monster Token
 item.item_material.token_player.name=Player Token
+item.item_material.death_urn_unfired.name=Unfired Death Urn
+item.item_material.death_urn_unfired.tooltip.detailed=Needs to be fired to be useful
 
 item.item_alloy_endergy_ingot_crude_steel.name=Crude Steel Ingot
 item.item_alloy_endergy_ingot_crystalline_alloy.name=Crystalline Alloy Ingot
@@ -679,9 +681,10 @@ tile.block_self_resetting_lever60i.name=Inverted Self-resetting Lever (1 Minute)
 tile.block_self_resetting_lever300i.name=Inverted Self-resetting Lever (5 Minutes)
 
 tile.block_death_pouch.name=Dead Player
-item.block_death_pouch.name=Death Pouch
+item.block_death_pouch.name=Death Urn
 item.block_death_pouch.tooltip.detailed=Collects your items on death but gets used up. Must be in your inventory to work
 enderio.gui.block_death_pouch.not_owner=This is not your stuff!
+
 
 enderio.machine.tooltip.configured=%s (Configured)
 enderio.machine.tooltip.upgrade=Machine Upgrade
