@@ -13,11 +13,10 @@ public class NetworkTank {
   final @Nonnull EnderLiquidConduit con;
   final @Nonnull EnumFacing conDir;
   final IFluidWrapper externalTank;
-  final @Nonnull EnumFacing tankDir;
   final @Nonnull BlockPos conduitLoc;
   final boolean acceptsOuput;
-  final DyeColor inputColor;
-  final DyeColor outputColor;
+  final @Nonnull DyeColor inputColor;
+  final @Nonnull DyeColor outputColor;
   final int priority;
   final boolean roundRobin;
   final boolean selfFeed;
@@ -27,8 +26,7 @@ public class NetworkTank {
     this.con = con;
     this.conDir = conDir;
     conduitLoc = con.getBundle().getLocation();
-    tankDir = conDir.getOpposite();
-    externalTank = AbstractLiquidConduit.getExternalFluidHandler(con.getBundle().getBundleworld(), conduitLoc.offset(conDir), tankDir);
+    externalTank = con.getExternalHandler(conDir);
     acceptsOuput = con.getConnectionMode(conDir).acceptsOutput();
     inputColor = con.getOutputColor(conDir);
     outputColor = con.getInputColor(conDir);

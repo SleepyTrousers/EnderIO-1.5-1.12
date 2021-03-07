@@ -3,7 +3,6 @@ package crazypants.enderio.conduits.conduit.liquid;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -123,10 +122,8 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
 
     List<LocatedFluidHandler> externals = new ArrayList<LocatedFluidHandler>();
     for (AbstractTankConduit con : getConduits()) {
-      Set<EnumFacing> extCons = con.getExternalConnections();
-
-      for (EnumFacing dir : extCons) {
-        if (con.canOutputToDir(dir)) {
+      for (EnumFacing dir : con.getExternalConnections()) {
+        if (dir != null && con.canOutputToDir(dir)) {
           IFluidWrapper externalTank = con.getExternalHandler(dir);
           if (externalTank != null) {
             externals.add(new LocatedFluidHandler(externalTank, con.getBundle().getLocation().offset(dir), dir.getOpposite()));
@@ -222,7 +219,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
     int numRequests = 0;
     // Then to external connections
     for (EnumFacing dir : con.getExternalConnections()) {
-      if (con.canOutputToDir(dir)) {
+      if (dir != null && con.canOutputToDir(dir)) {
         IFluidWrapper extCon = con.getExternalHandler(dir);
         if (extCon != null) {
           int amount = extCon.offer(available.copy());
@@ -241,7 +238,7 @@ public class LiquidConduitNetwork extends AbstractTankConduitNetwork<LiquidCondu
       FluidStack requestSource = available.copy();
       requestSource.amount = amountPerRequest;
       for (EnumFacing dir : con.getExternalConnections()) {
-        if (con.canOutputToDir(dir)) {
+        if (dir != null && con.canOutputToDir(dir)) {
           IFluidWrapper extCon = con.getExternalHandler(dir);
           if (extCon != null) {
             int amount = extCon.fill(requestSource.copy());

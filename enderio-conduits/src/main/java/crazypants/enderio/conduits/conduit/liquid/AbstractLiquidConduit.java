@@ -22,6 +22,7 @@ import crazypants.enderio.conduits.conduit.AbstractConduit;
 import crazypants.enderio.conduits.gui.LiquidSettings;
 import crazypants.enderio.util.EnumReader;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -41,24 +42,19 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
   protected final EnumMap<EnumFacing, DyeColor> extractionColors = new EnumMap<EnumFacing, DyeColor>(EnumFacing.class);
   private int ticksSinceFailedExtract;
 
-  public static IFluidWrapper getExternalFluidHandler(@Nonnull IBlockAccess world, @Nonnull BlockPos pos, @Nonnull EnumFacing side) {
-    if (world.getTileEntity(pos) instanceof IConduitBundle) {
+  public @Nullable IFluidWrapper getExternalHandler(@Nonnull EnumFacing direction) {
+    IBlockAccess world = getBundle().getBundleworld();
+    BlockPos pos = getBundle().getLocation().offset(direction);
+    TileEntity tileEntity = world.getTileEntity(pos);
+    if (tileEntity instanceof IConduitBundle) {
       return null;
     }
-    return FluidWrapper.wrap(world, pos, side);
-  }
-
-  public IFluidWrapper getExternalHandler(@Nonnull EnumFacing direction) {
-    return getExternalFluidHandler(getBundle().getBundleworld(), getBundle().getLocation().offset(direction), direction.getOpposite());
+    return FluidWrapper.wrap(tileEntity, direction.getOpposite());
   }
 
   @Override
   public boolean canConnectToExternal(@Nonnull EnumFacing direction, boolean ignoreDisabled) {
-    IFluidWrapper h = getExternalHandler(direction);
-    if (h == null) {
-      return false;
-    }
-    return true;
+    return getExternalHandler(direction) != null;
   }
 
   @Override

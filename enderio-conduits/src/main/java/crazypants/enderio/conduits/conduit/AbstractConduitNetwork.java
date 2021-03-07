@@ -11,6 +11,8 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.enderio.core.common.util.NNList;
+
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.conduit.ConduitUtil;
@@ -21,6 +23,7 @@ import crazypants.enderio.base.conduit.IConduitNetwork;
 import crazypants.enderio.base.conduit.IServerConduit;
 import crazypants.enderio.base.diagnostics.ConduitNeighborUpdateTracker;
 import crazypants.enderio.base.handler.ServerTickHandler;
+import crazypants.enderio.util.Neighbours;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -35,7 +38,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 //I=base type, I is the base class of the implementations accepted by the network 
 public abstract class AbstractConduitNetwork<T extends IServerConduit, I extends T> implements IConduitNetwork<T, I> {
 
-  private final @Nonnull List<I> conduits = new ArrayList<I>();
+  private final @Nonnull NNList<I> conduits = new NNList<>();
   private long lastConduitListCheck = -1L; // server tick of the last time a full check on the conduit list was run. Used to limit the full check to once per
                                            // tick.
 
@@ -212,7 +215,7 @@ public abstract class AbstractConduitNetwork<T extends IServerConduit, I extends
 
   @Override
   @Nonnull
-  public List<I> getConduits() {
+  public NNList<I> getConduits() {
     return conduits;
   }
 
@@ -242,15 +245,14 @@ public abstract class AbstractConduitNetwork<T extends IServerConduit, I extends
 
           // don't notify other conduits and don't notify the same block twice
           EnumSet<EnumFacing> sidesToNotify = EnumSet.noneOf(EnumFacing.class);
+          Neighbours offset = new Neighbours(pos);
           for (EnumFacing side : WEDUNS) {
-            if (side != null) {
-              final BlockPos offset = pos.offset(side);
-              if (con.containsExternalConnection(side) && !notified.contains(offset) && world.isBlockLoaded(offset)) {
-                IBlockState blockState = world.getBlockState(offset);
-                if (blockState.getBlock() != blockType && blockState.getBlock() != Blocks.AIR) {
-                  sidesToNotify.add(side);
-                  notified.add(offset);
-                }
+            offset.setOffset(side);
+            if (con.containsExternalConnection(offset.getOffset()) && !notified.contains(offset) && world.isBlockLoaded(offset)) {
+              IBlockState blockState = world.getBlockState(offset);
+              if (blockState.getBlock() != blockType && blockState.getBlock() != Blocks.AIR) {
+                sidesToNotify.add(side);
+                notified.add(offset.toImmutable());
               }
             }
           }
@@ -264,7 +266,7 @@ public abstract class AbstractConduitNetwork<T extends IServerConduit, I extends
             if (!canceled) {
               for (EnumFacing side : sidesToNotify) {
                 if (side != null) {
-                  final BlockPos offset = pos.offset(side);
+                  offset.setOffset(side);
                   tracker.start("World.notifyNeighborsOfStateChange() from " + pos + " to " + offset + " (" + world.getBlockState(offset) + ")");
                   world.neighborChanged(offset, blockType, pos);
                   tracker.stop();
