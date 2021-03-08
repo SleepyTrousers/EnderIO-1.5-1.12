@@ -310,6 +310,8 @@ item.item_material.black_paper.name=黒紙
 item.item_material.token_animal.name=動物の証
 item.item_material.token_monster.name=モンスターの証
 item.item_material.token_player.name=プレイヤーの証
+item.item_material.death_urn_unfired.name=未焼成の死の甕
+item.item_material.death_urn_unfired.tooltip.detailed=使うには焼く必要がある。
 
 item.item_alloy_endergy_ingot_crude_steel.name=粗鋼インゴット
 item.item_alloy_endergy_ingot_crystalline_alloy.name=結晶性合金インゴット
@@ -677,6 +679,11 @@ tile.block_self_resetting_lever10i.name=セルフリセットレバー（１０�
 tile.block_self_resetting_lever30i.name=セルフリセットレバー（３０秒・反転）
 tile.block_self_resetting_lever60i.name=セルフリセットレバー（１分・反転）
 tile.block_self_resetting_lever300i.name=セルフリセットレバー（５分・反転）
+
+tile.block_death_pouch.name=死んだプレイヤー
+item.block_death_pouch.name=死の甕
+item.block_death_pouch.tooltip.detailed=死亡時、甕を消費して所持アイテムをその場に保持。インベントリに持っておく必要がある。
+enderio.gui.block_death_pouch.not_owner=自分のものではない
 
 
 enderio.machine.tooltip.configured=%s（設定済み）
