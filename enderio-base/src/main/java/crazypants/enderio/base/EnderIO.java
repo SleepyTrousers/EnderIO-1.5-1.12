@@ -64,6 +64,7 @@ import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 import net.minecraftforge.fml.common.network.NetworkCheckHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -220,7 +221,7 @@ public class EnderIO implements IEnderIOAddon {
   }
 
   @EventHandler
-  public static void onServerStart(FMLServerAboutToStartEvent event) {
+  public static void onServerStart(@Nonnull FMLServerAboutToStartEvent event) {
     MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.ServerAboutToStart.Pre());
     if (DiagnosticsConfig.debugProfilerTracer.get()) {
       ProfilerDebugger.init(event);
@@ -233,6 +234,11 @@ public class EnderIO implements IEnderIOAddon {
       Log.info("Permission Handler is: " + PermissionAPI.getPermissionHandler());
     }
     MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.ServerAboutToStart.Post());
+  }
+
+  @EventHandler
+  public static void onServerStarting(@Nonnull FMLServerStartingEvent event) {
+    MinecraftForge.EVENT_BUS.post(EnderIOLifecycleEvent.ServerStarting.get(event));
   }
 
   void processImc(ImmutableList<IMCMessage> messages) {

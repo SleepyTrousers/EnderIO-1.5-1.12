@@ -2,7 +2,9 @@ package crazypants.enderio.base.events;
 
 import javax.annotation.Nonnull;
 
+import crazypants.enderio.base.EnderIO;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 public abstract class EnderIOLifecycleEvent extends Event {
@@ -92,6 +94,40 @@ public abstract class EnderIOLifecycleEvent extends Event {
     }
 
     public static class Post extends ServerStopped {
+
+    }
+
+  }
+
+  public abstract static class ServerStarting extends EnderIOLifecycleEvent {
+
+    private final @Nonnull FMLServerStartingEvent event;
+
+    public @Nonnull FMLServerStartingEvent getEvent() {
+      return event;
+    }
+
+    private ServerStarting(@Nonnull FMLServerStartingEvent event) {
+      this.event = event;
+    }
+
+    public static ServerStarting get(@Nonnull FMLServerStartingEvent event) {
+      return EnderIO.proxy.isDedicatedServer() ? new Dedicated(event) : new Integrated(event);
+    }
+
+    public static class Dedicated extends ServerStarting {
+
+      private Dedicated(@Nonnull FMLServerStartingEvent event) {
+        super(event);
+      }
+
+    }
+
+    public static class Integrated extends ServerStarting {
+
+      private Integrated(@Nonnull FMLServerStartingEvent event) {
+        super(event);
+      }
 
     }
 
