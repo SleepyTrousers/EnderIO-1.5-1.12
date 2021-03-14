@@ -1541,3 +1541,21 @@ enderio.gui.travel_accessable.outofrange=Destination out of range
 enderio.gui.travel_accessable.invalidtarget=Destination is obstructed
 
 enderio.gui.too_many_levels=You have more than 21862 levels, that's too much XP
+
+enderio.command.config.help.0=The config command allows you to manipulate the Ender IO configuration on a dedicated server. This is not intended as a primary way of configuring Ender IO. For that, you should start a singleplayer game and use the configuration GUI, then upload the config files to the server.
+enderio.command.config.help.1=This command acts on the raw config values as they are stored in the config file. That means you can enter invalid values, just like you can with the file. An just as with those, invalid values will silently be ignored here, too.
+enderio.command.config.help.2=When you set a config value, it will first be held in memory. You need to manually save it with the save command to have it written into the config file.
+enderio.command.config.help.3=The configuration contains 3 kinds of values: Ones that are synced to clients when they connect, ones that are client-only, and ones that must be set to the same value on both manually. Only the first kind can be safely changed with this command-but clients must reconnect for the sync to happen.
+enderio.command.config.help.4=We recommand that you always run a "config get" on a config value before changing it. This will display the comment which also contains information on possible values. Also, the "list" command can be used to search for sections. Just ender a partial name.
+enderio.command.config.help.more=More with /enderio config help %s
+enderio.command.config.saved=Ender IO Configuration saved
+enderio.command.config.error.section=No such section
+enderio.command.config.error.key=No such key
+enderio.command.config.error.value=Invalid value. Possible: %s
+enderio.command.config.warn.clientvalue=Setting this value on the server probably has no effect
+enderio.command.config.warn.reconnect=Players need to reconnect to experience the change
+enderio.command.config.warn.notsynced=This value must ALSO be set on the clients, it is NOT synced"
+enderio.command.config.warn.unchecked=Restrictions on possible values may apply
+enderio.command.config.warn.save=You need to save the config for this change to persist
+
+
