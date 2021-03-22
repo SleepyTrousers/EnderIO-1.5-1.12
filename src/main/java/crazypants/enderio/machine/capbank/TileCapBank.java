@@ -409,7 +409,7 @@ public class TileCapBank extends TileEntityEio implements IInternalPowerReceiver
   @Override
   @SideOnly(Side.CLIENT)
   public AxisAlignedBB getRenderBoundingBox() {
-    if(!type.isMultiblock() || !(network instanceof CapBankClientNetwork)) {
+    if(!getType().isMultiblock() || !(network instanceof CapBankClientNetwork)) {
       return super.getRenderBoundingBox();
     }
 
