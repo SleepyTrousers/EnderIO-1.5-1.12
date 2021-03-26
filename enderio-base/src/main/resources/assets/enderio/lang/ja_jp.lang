@@ -1541,3 +1541,19 @@ enderio.gui.travel_accessable.outofrange=目的地は範囲外です
 enderio.gui.travel_accessable.invalidtarget=目的地は塞がれています
 
 enderio.gui.too_many_levels=レベル２１８６２以上となる所持経験値量では多すぎます
+
+enderio.command.config.help.0=config コマンドは、マルチプレイサーバーの Ender IO の設定を行うものであり、個々のプレイヤー用の設定としては意図されていません。プレイヤー側が設定を行いたい場合、Forge の Mod 設定から行い、その config ファイルをサーバー側にも適用する必要があります
+enderio.command.config.help.1=このコマンドは、config ファイルに保存されている値を直接書き換えます。そのため、ファイルを直接編集する場合のように無効な値を設定することもできますが、その値は無視されます
+enderio.command.config.help.2=値を設定すると、保存はされずメモリに保持されます。保存は「/enderio config save」コマンドを使用することで行えます
+enderio.command.config.help.3=設定の値には、接続時にクライアント側に同期されるもの、クライアントのみで使用できるもの、クライアント側とサーバー側で同じ値にしなければならないものの、３種類があります。このコマンドで安全に変更できるものは１番目のものですが、変更後に同期を行うにはクライアント側が再接続する必要があります
+enderio.command.config.help.4=値を変更する前に、「/enderio config get」コマンドの実行を推奨します。このコマンドは、各設定の設定可能な値等の情報を確認できます。また、「/enderio config list」コマンドでセクション検索もできます
+enderio.command.config.help.more=「/enderio config help %s」でさらに表示
+enderio.command.config.saved=Ender IO の設定を保存しました
+enderio.command.config.error.section=そのセクションはありません
+enderio.command.config.error.key=そのキーはありません
+enderio.command.config.error.value=無効な値です。使用可能な値：%s
+enderio.command.config.warn.clientvalue=この値をサーバー側に設定をしても、おそらく効果はありません
+enderio.command.config.warn.reconnect=プレイヤー側は、設定を適用させるために再接続が必要です
+enderio.command.config.warn.notsynced=この値は同期されないため、クライアント側でも手動で設定してもらう必要があります
+enderio.command.config.warn.unchecked=設定可能な値に制限がある場合があります
+enderio.command.config.warn.save=この変更を適用するには、設定を保存する必要があります

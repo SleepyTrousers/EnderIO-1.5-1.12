@@ -376,7 +376,7 @@ tile.block_crafter.name=クラフト装置
 
 tile.block_simple_crafter.name=簡易型クラフト装置
 
-tile.block_lava_generator.name=溶岩熱交換器
+tile.block_lava_generator.name=溶岩熱交換機
 tile.block_lava_generator.tooltip.detailed.line1=溶岩を冷却することで発電。
 tile.block_lava_generator.tooltip.detailed.line2=過熱に注意。
 tile.block_lava_generator.tooltip.detailed.line3=周囲に冷たい液体や氷を設置することで冷却可能。
@@ -384,7 +384,7 @@ enderio.gui.lavagen.heat=熱量
 
 tile.block_niard.name=排水装置
 tile.block_niard.tooltip.detailed.line1=液体を周囲に放流。
-tile.block_niard.tooltip.detailed.line2=このアイテム（The Niard）の改名提案を Discord にて受け付けています。採用された場合は、このツールチップの場所に名前を掲載します。
+tile.block_niard.tooltip.detailed.line2=このアイテム（The Niard）の新しい英語での名称を Discord にて募集中。採用された場合は、このツールチップの場所に名前を掲載します。
 
 
 # Types. smelting=Alloy Smelter Speed,
