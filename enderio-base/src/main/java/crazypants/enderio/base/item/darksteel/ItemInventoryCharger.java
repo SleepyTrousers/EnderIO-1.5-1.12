@@ -16,6 +16,7 @@ import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.EnderIOTab;
 import crazypants.enderio.base.capacitor.CapacitorKey;
 import crazypants.enderio.base.handler.darksteel.DarkSteelTooltipManager;
+import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.item.darksteel.attributes.EquipmentData;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade;
 import crazypants.enderio.base.item.darksteel.upgrade.energy.EnergyUpgrade.EnergyUpgradeHolder;
@@ -29,6 +30,7 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -119,16 +121,20 @@ public class ItemInventoryCharger extends Item implements IAdvancedTooltipProvid
     if (NbtValue.ENABLED.getBoolean(stack)) {
       EnergyUpgradeHolder eu = EnergyUpgradeManager.loadFromItem(stack);
       if (eu != null && eu.getEnergy() > 0) {
-        for (int i : rangeLimited ? SlotNeighborHelper.getSlotNeighors(slot) : SlotNeighborHelper.getAllSlots()) {
-          // for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-          ItemStack stackInSlot = player.inventory.getStackInSlot(i);
-          if (!(stackInSlot.getItem() instanceof ItemInventoryCharger) && Prep.isValid(stackInSlot)) {
-            IEnergyStorage cap = PowerHandlerUtil.getCapability(stackInSlot, null);
-            if (cap != null && cap.canReceive() && cap.getEnergyStored() < cap.getMaxEnergyStored()) {
-              int added = cap.receiveEnergy(eu.extractEnergy(eu.getEnergy(), true), false);
-              if (added > 0) {
-                eu.extractEnergy(added, false);
-                eu.writeToItem();
+        for (int i : rangeLimited ? SlotNeighborHelper.getSlotNeighbors(slot) : SlotNeighborHelper.getAllSlots()) {
+          if (chargeSingleItem(eu, player.inventory.getStackInSlot(i)) && eu.getEnergy() <= 0) {
+            return;
+          }
+        }
+        if (!rangeLimited) {
+          IInventory baubles = BaublesUtil.instance().getBaubles(player);
+          if (baubles != null) {
+            stack = baubles.getStackInSlot(slot);
+            if (Prep.isValid(stack)) {
+              // mustn't change the item that is in the slot or Baubles will ignore the change
+              stack = stack.copy();
+              if (chargeSingleItem(eu, stack)) {
+                baubles.setInventorySlotContents(slot, stack);
                 if (eu.getEnergy() <= 0) {
                   return;
                 }
@@ -138,6 +144,30 @@ public class ItemInventoryCharger extends Item implements IAdvancedTooltipProvid
         }
       }
     }
+  }
+
+  /**
+   * Tries to charge the given item
+   * 
+   * @param eu
+   *          the energy source
+   * @param stackInSlot
+   *          the item to charge (may be empty)
+   * @return <code>true</code> if the got charged, <code>false</code> otherwise
+   */
+  private boolean chargeSingleItem(EnergyUpgradeHolder eu, ItemStack stackInSlot) {
+    if (!(stackInSlot.getItem() instanceof ItemInventoryCharger) && Prep.isValid(stackInSlot)) {
+      IEnergyStorage cap = PowerHandlerUtil.getCapability(stackInSlot, null);
+      if (cap != null && cap.canReceive() && cap.getEnergyStored() < cap.getMaxEnergyStored()) {
+        int added = cap.receiveEnergy(eu.extractEnergy(eu.getEnergy(), true), false);
+        if (added > 0) {
+          eu.extractEnergy(added, false);
+          eu.writeToItem();
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   @Override

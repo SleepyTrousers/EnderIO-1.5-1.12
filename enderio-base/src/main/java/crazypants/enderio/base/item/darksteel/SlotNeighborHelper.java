@@ -49,7 +49,7 @@ public class SlotNeighborHelper {
     }
   }
 
-  public static @Nonnull int[] getSlotNeighors(int slot) {
+  public static @Nonnull int[] getSlotNeighbors(int slot) {
     return NullHelper.notnull(MAP[MathHelper.clamp(slot, 0, 40)], "Internal data error");
   }
 
