@@ -107,16 +107,18 @@ allprojects {
         maven { url = "http://files.minecraftforge.net/maven" }
         maven { url = "http://maven.cil.li/" } // OpenComputers
         maven { url = "http://maven.ic2.player.to" }
-        //maven { url = "http://maven.mcmoddev.com" } // ???, dead as of 2021-01-10
-        maven { url = "https://mmdmaven.blamejared.com" } // temp replacement for ^
+        maven { url = "https://maven.mcmoddev.com" } // ???, dead as of 2021-01-10, back as of 2021-05-24
+        //maven { url = "https://mmdmaven.blamejared.com" } // temp replacement for ^
+        maven { url = "https://maven.blamejared.com" } // temp replacement for ^
         maven { url = "http://mod-buildcraft.com/maven/" }
         maven { url = "https://maven.latmod.com" } // FTBLib
         maven { url = "http://maven.covers1624.net/" } // CoFHCore
-        maven { url = "http://cc.crzd.me/maven/" } // ComputerCraft
+        //maven { url = "http://cc.crzd.me/maven/" } // ComputerCraft, dead as of 2021-05-24
         maven { url = "https://www.cursemaven.com" } // Mekanism
         //maven { url = "https://repo.raoulvdberge.com/" } // Refined Storage (new)
         //maven { url = "https://repo.refinedmods.com/" } // Refined Storage (double-plus new)
-        //maven { url = "https://maven.hypherionmc.me/" } // Refined Storage (double-plus-plus new)
+        maven { url = "https://maven.hypherionmc.me/" } // our backups for vanished sources
+        // maven { url = "https://modmaven.dev/" } // appeng etc. but mostly 1.16 stuff
         mavenLocal()
     }
     
