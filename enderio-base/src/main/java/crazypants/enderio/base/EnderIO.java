@@ -61,6 +61,7 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.common.event.FMLModIdMappingEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
@@ -239,6 +240,11 @@ public class EnderIO implements IEnderIOAddon {
   @EventHandler
   public static void onServerStarting(@Nonnull FMLServerStartingEvent event) {
     MinecraftForge.EVENT_BUS.post(EnderIOLifecycleEvent.ServerStarting.get(event));
+  }
+
+  @EventHandler
+  public static void onServerStarting(@Nonnull FMLModIdMappingEvent event) {
+    MinecraftForge.EVENT_BUS.post(new EnderIOLifecycleEvent.ModIdMappingEvent());
   }
 
   void processImc(ImmutableList<IMCMessage> messages) {

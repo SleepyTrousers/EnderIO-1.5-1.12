@@ -55,6 +55,12 @@ public class AlloyRecipeManager extends AbstractMachineRecipe {
     MachineRecipeRegistry.instance.registerRecipe(instance);
   }
 
+  @SubscribeEvent
+  public static void remap(EnderIOLifecycleEvent.ModIdMappingEvent event) {
+    Log.debug("Rebuilding recipe lookup table");
+    Log.debug("Recipe lookup table has been rebuilt with ", instance.rebuild(), " primary entries");
+  }
+
   public void addRecipe(boolean prohibitDupes, @Nonnull NNList<IRecipeInput> input, @Nonnull ItemStack output, int energyCost, float xpChance,
       @Nonnull RecipeLevel recipeLevel) {
     Recipe recipe = new Recipe(new RecipeOutput(output, 1, xpChance), energyCost, RecipeBonusType.NONE, recipeLevel, input.toArray(new IRecipeInput[0]));
@@ -331,12 +337,15 @@ public class AlloyRecipeManager extends AbstractMachineRecipe {
   /**
    * Rebuilds the internal recipe lookup tree. This should be called when the {@link Things} used in the recipes have changed so the item lists are re-read.
    */
-  public void rebuild() {
+  public int rebuild() {
+    int count = 0;
     TriItemLookup<IManyToOneRecipe> newLookup = new TriItemLookup<>();
     for (NNIterator<IManyToOneRecipe> iterator = lookup.iterator(); iterator.hasNext();) {
       addRecipeToLookup(newLookup, iterator.next());
+      count++;
     }
     lookup = newLookup;
+    return count;
   }
 
   @Override
