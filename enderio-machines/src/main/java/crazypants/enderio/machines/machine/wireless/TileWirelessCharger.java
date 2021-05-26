@@ -74,8 +74,7 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowered
     int available = Math.min(CapacitorKey.WIRELESS_POWER_OUTPUT.getDefault(), storedEnergyRF);
     for (int i = 0, end = stacks.size(); i < end && available > 0; i++) {
       ItemStack stack = stacks.get(i);
-      if (!stack.isEmpty() && stack.getCount() == 1 && !(stack.getItem() instanceof IWirelessCharger.ExcludedItem)
-          || ((IWirelessCharger.ExcludedItem) stack.getItem()).shouldChargeWirelessly(stack)) {
+      if (stack.getCount() == 1 && shouldChargeWirelessly(stack)) {
         IEnergyStorage chargable = PowerHandlerUtil.getCapability(stack, null);
         if (chargable != null) {
           int max = chargable.getMaxEnergyStored();
@@ -93,6 +92,10 @@ public class TileWirelessCharger extends TileEntityEio implements ILegacyPowered
       }
     }
     return chargedItem;
+  }
+
+  private static boolean shouldChargeWirelessly(ItemStack stack) {
+    return !(stack.getItem() instanceof IWirelessCharger.ExcludedItem) || ((IWirelessCharger.ExcludedItem) stack.getItem()).shouldChargeWirelessly(stack);
   }
 
   @Override
