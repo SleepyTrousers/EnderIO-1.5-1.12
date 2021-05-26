@@ -129,14 +129,16 @@ public class ItemInventoryCharger extends Item implements IAdvancedTooltipProvid
         if (!rangeLimited) {
           IInventory baubles = BaublesUtil.instance().getBaubles(player);
           if (baubles != null) {
-            stack = baubles.getStackInSlot(slot);
-            if (Prep.isValid(stack)) {
-              // mustn't change the item that is in the slot or Baubles will ignore the change
-              stack = stack.copy();
-              if (chargeSingleItem(eu, stack)) {
-                baubles.setInventorySlotContents(slot, stack);
-                if (eu.getEnergy() <= 0) {
-                  return;
+            for (int i = 0; i < baubles.getSizeInventory(); i++) {
+              ItemStack toCharge = baubles.getStackInSlot(i);
+              if (Prep.isValid(toCharge)) {
+                // mustn't change the item that is in the slot or Baubles will ignore the change
+                toCharge = toCharge.copy();
+                if (chargeSingleItem(eu, toCharge)) {
+                  baubles.setInventorySlotContents(i, toCharge);
+                  if (eu.getEnergy() <= 0) {
+                    return;
+                  }
                 }
               }
             }
