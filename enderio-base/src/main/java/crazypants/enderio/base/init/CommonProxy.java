@@ -7,6 +7,7 @@ import com.enderio.core.common.vecmath.Vector4f;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.diagnostics.EnderIOCrashCallable;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent.ServerStarting;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -15,6 +16,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 public class CommonProxy {
 
@@ -80,6 +82,10 @@ public class CommonProxy {
 
   public boolean hasOptifine() {
     return false;
+  }
+
+  public ServerStarting getServerStartingEvent(@Nonnull FMLServerStartingEvent event) {
+    return new ServerStarting.Dedicated(event);
   }
 
 }

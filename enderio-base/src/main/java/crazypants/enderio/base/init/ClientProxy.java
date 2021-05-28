@@ -14,6 +14,7 @@ import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.diagnostics.EnderIOCrashCallable;
+import crazypants.enderio.base.events.EnderIOLifecycleEvent.ServerStarting;
 import crazypants.enderio.base.render.ICustomSubItems;
 import crazypants.enderio.base.render.IDefaultRenderers;
 import crazypants.enderio.base.render.IHaveRenderers;
@@ -35,6 +36,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -151,6 +153,11 @@ public class ClientProxy extends CommonProxy {
   @Override
   public boolean hasOptifine() {
     return FMLClientHandler.instance().hasOptifine();
+  }
+
+  @Override
+  public ServerStarting getServerStartingEvent(@Nonnull FMLServerStartingEvent event) {
+    return new ServerStarting.Integrated(event);
   }
 
 }

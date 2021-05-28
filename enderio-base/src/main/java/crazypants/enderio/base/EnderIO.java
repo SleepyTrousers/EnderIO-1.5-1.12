@@ -239,7 +239,7 @@ public class EnderIO implements IEnderIOAddon {
 
   @EventHandler
   public static void onServerStarting(@Nonnull FMLServerStartingEvent event) {
-    MinecraftForge.EVENT_BUS.post(EnderIOLifecycleEvent.ServerStarting.get(event));
+    MinecraftForge.EVENT_BUS.post(proxy.getServerStartingEvent(event));
   }
 
   @EventHandler
