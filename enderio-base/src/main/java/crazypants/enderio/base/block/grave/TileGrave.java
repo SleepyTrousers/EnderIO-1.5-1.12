@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import com.enderio.core.common.inventory.EnderInventory;
 import com.enderio.core.common.inventory.InventorySlot;
 
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.machine.base.te.AbstractCapabilityMachineEntity;
 import crazypants.enderio.base.machine.modes.RedstoneControlMode;
 import info.loenwind.autosave.annotations.Storable;
@@ -44,6 +45,7 @@ public class TileGrave extends AbstractCapabilityMachineEntity {
       };
       renderDummy.setPlayerProfile(getOwner().getAsGameProfile());
       renderDummy.setSkullRotation(world.rand.nextInt(16));
+      Log.info("Created RenderDummy for player " + getOwner().getPlayerName() + " UUID=" + getOwner().getUUIDString());
     }
     return renderDummy;
   }

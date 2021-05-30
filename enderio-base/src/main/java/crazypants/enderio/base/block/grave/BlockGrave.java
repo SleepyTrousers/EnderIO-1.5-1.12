@@ -9,6 +9,7 @@ import com.enderio.core.common.inventory.EnderInventory;
 import crazypants.enderio.api.IModObject;
 import crazypants.enderio.base.BlockEio;
 import crazypants.enderio.base.ItemEIO;
+import crazypants.enderio.base.Log;
 import crazypants.enderio.base.config.config.ItemConfig;
 import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.base.render.IHaveTESR;
@@ -105,6 +106,7 @@ public class BlockGrave extends BlockEio<TileGrave> implements IResourceTooltipP
   public boolean onBlockActivated(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull EntityPlayer player, @Nonnull EnumHand hand,
       @Nonnull EnumFacing side, float hitX, float hitY, float hitZ) {
     if (player.isSneaking()) {
+      Log.info("Owner data: " + getTileEntity(world, pos).getOwner());
       return false;
     }
     if (!world.isRemote) {
