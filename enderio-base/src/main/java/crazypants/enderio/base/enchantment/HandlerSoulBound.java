@@ -15,6 +15,7 @@ import crazypants.enderio.base.config.config.ItemConfig;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
 import crazypants.enderio.base.integration.galacticraft.GalacticraftUtil;
+import crazypants.enderio.base.lang.Lang;
 import crazypants.enderio.util.Prep;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -187,6 +188,7 @@ public class HandlerSoulBound {
             iter.remove();
           }
         }
+        player.sendMessage(Lang.GUI_GRAVE_PLACED.toChatServer(pos.getX(), pos.getY(), pos.getZ()));
       }
     }
 
