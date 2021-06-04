@@ -236,6 +236,7 @@ public enum Lang implements ILang {
   GUI_TOO_MANY_LEVELS(".gui.too_many_levels"),
 
   GUI_GRAVE_NOT_OWNER(".gui.block_death_pouch.not_owner"),
+  GUI_GRAVE_PLACED(".gui.block_death_pouch.placed"),
 
   ;
 
