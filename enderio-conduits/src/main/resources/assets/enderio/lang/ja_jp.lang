@@ -80,7 +80,7 @@ enderio.gui.power_monitor.engine_control=エンジン制御
 enderio.gui.power_monitor.emit=Emit
 enderio.gui.power_monitor.engine_section1=ストレージが以下より少ない際に信号を
 enderio.gui.power_monitor.engine_section2=出力：
-enderio.gui.power_monitor.engine_section3=％
+enderio.gui.power_monitor.engine_section3=%%
 enderio.gui.power_monitor.engine_section4=ストレージが以下の割合以上で停止：
 enderio.gui.power_monitor.engine_section5=
 enderio.gui.power_monitor.of=/
@@ -175,7 +175,7 @@ enderio.gui.liquid_filter=フィルター
 enderio.gui.liquid_whitelist=ホワイトリスト
 enderio.gui.liquid_blacklist=ブラックリスト
 enderio.gui.liquid_function_upgrade.details=出力量：
-enderio.gui.liquid_function_upgrade.details2=一度に %s％ / %s
+enderio.gui.liquid_function_upgrade.details2=一度に %s%% / %s
 
 enderio.gui.redstone_signal_strength=強信号
 

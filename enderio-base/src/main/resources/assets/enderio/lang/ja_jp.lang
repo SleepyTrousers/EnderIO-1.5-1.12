@@ -80,12 +80,7 @@ item.item_conduit_facade.transparent.hardened.tooltip.detailed.line1=透過：�
 item.item_conduit_facade.transparent.hardened.tooltip.detailed.line2=強化：破壊や爆発に耐性を持つ
 
 item.item_conduit_probe.name=導管調査機
-item.item_conduit_probe.tooltip.detailed.line1=調査モードで導管を右クリックすると
-item.item_conduit_probe.tooltip.detailed.line2=ネットワーク内の詳細を表示。
-item.item_conduit_probe.tooltip.detailed.line3=コピー・ペーストモードで導管を
-item.item_conduit_probe.tooltip.detailed.line4=Shift 右クリックすると接続設定のコピーが可能。
-item.item_conduit_probe.tooltip.detailed.line5=コピー内容は右クリックでペーストが可能。
-item.item_conduit_probe.tooltip.detailed.line6=マウスホイールか「Y」キーでモードを変更。
+item.item_conduit_probe.tooltip.detailed=調査モードで導管を右クリックすると|ネットワーク内の詳細を表示。|コピー・ペーストモードで導管を|Shift 右クリックすると接続設定のコピーが可能。|コピー内容は右クリックでペーストが可能。|マウスホイールか「Y」キーでモードを変更。
 
 item.item_coord_selector.name=座標指定機
 item.item_coord_selector.tooltip.detailed.line1=ブロックの座標を紙に印刷。
@@ -315,6 +310,8 @@ item.item_material.black_paper.name=黒紙
 item.item_material.token_animal.name=動物の証
 item.item_material.token_monster.name=モンスターの証
 item.item_material.token_player.name=プレイヤーの証
+item.item_material.death_urn_unfired.name=未焼成の死の甕
+item.item_material.death_urn_unfired.tooltip.detailed=使うには焼く必要がある。
 
 item.item_alloy_endergy_ingot_crude_steel.name=粗鋼インゴット
 item.item_alloy_endergy_ingot_crystalline_alloy.name=結晶性合金インゴット
@@ -396,11 +393,13 @@ tile.block_infinity_fog.tooltip.detailed.line1=インフィニティの粒が破
 tile.block_infinity_fog.tooltip.detailed.line2=空気中に放出されれば、即座に粉塵雲を形成し蔓延してしまう。形態は非常に不規則。触れることは、少なくとも健康に害を及ぼす危険があり、その影響は計り知れない。
 tile.block_infinity_fog.tooltip.detailed.line3=粉が降り積もろうものなら、その地は悪に侵されるであろう。§6§lエンダーマン§r§6を中心としたモンスターが現れ始めたらそれが最後だ。
 
-tile.block_holy_fog.name=グロウストーンナノ粒子
-tile.block_holy_fog.tooltip.common.line1=（PM2.5）
-tile.block_holy_fog.tooltip.detailed.line1=グロウストーンをナノレベルにまで粉砕することで、永続的に空中に存在させることが可能となる。
-tile.block_holy_fog.tooltip.detailed.line2=片手一杯の量で１６ブロックの範囲を覆う。
-tile.block_holy_fog.tooltip.detailed.line3=§lアンデッド§rに対して有効な場合がある。
+tile.block_holy_fog.name=グロウストーンナノ粒子（旧）
+
+tile.block_holier_fog.name=グロウストーンナノ粒子
+tile.block_holier_fog.tooltip.common.line1=（PM2.5）
+tile.block_holier_fog.tooltip.detailed.line1=グロウストーンをナノレベルにまで粉砕することで、永続的に空中に存在させることが可能となる。
+tile.block_holier_fog.tooltip.detailed.line2=片手一杯の量で広範囲を覆う。
+tile.block_holier_fog.tooltip.detailed.line3=§lアンデッド§rに対して有効な場合があるが、液体や雨に当たると流れてしまう。
 
 tile.block_infinity_0.name=インフィニティダストブロック
 tile.block_infinity_0.tooltip.common.line1=今にも崩れそうだ。
@@ -646,6 +645,7 @@ tile.block_painted_packed_ice_solid.name=塗装した氷塊
 tile.block_painted_slab.name=塗装したハーフブロック
 tile.block_painted_stair.name=塗装した階段
 tile.block_painted_stone.name=塗装した丸石
+tile.block_painted_sand.name=塗装した砂
 tile.block_painted_stone_double_slab.name=塗装した石のハーフブロック
 tile.block_painted_stone_fence.name=塗装した石のフェンス
 tile.block_painted_stone_slab.name=塗装した石のハーフブロック
@@ -680,6 +680,11 @@ tile.block_self_resetting_lever30i.name=セルフリセットレバー（３０�
 tile.block_self_resetting_lever60i.name=セルフリセットレバー（１分・反転）
 tile.block_self_resetting_lever300i.name=セルフリセットレバー（５分・反転）
 
+tile.block_death_pouch.name=死んだプレイヤー
+item.block_death_pouch.name=死の甕
+item.block_death_pouch.tooltip.detailed=死亡時、甕を消費して所持アイテムをその場に保持。インベントリに持っておく必要がある。
+enderio.gui.block_death_pouch.not_owner=自分のものではない
+
 
 enderio.machine.tooltip.configured=%s（設定済み）
 enderio.machine.tooltip.upgrade=マシンアップグレード
@@ -689,19 +694,19 @@ enderio.block.tooltip.blastResistant=爆発耐性
 enderio.block.tooltip.lightEmitter=発光
 enderio.block.tooltip.lightBlocker=遮光
 
-enderio.block.tooltip.allowPlayers=Not solid for players
-enderio.block.tooltip.allowMonsters=Not solid for monsters
-enderio.block.tooltip.allowAnimals=Not solid for animals
-enderio.block.tooltip.disallowPlayers=Solid only for players
-enderio.block.tooltip.disallowMonsters=Solid only for monsters
-enderio.block.tooltip.disallowAnimals=Solid only for animals
+enderio.block.tooltip.allowPlayers=プレイヤー通過可
+enderio.block.tooltip.allowMonsters=モンスター通過可
+enderio.block.tooltip.allowAnimals=動物通過可
+enderio.block.tooltip.disallowPlayers=プレイヤーのみ通過不可
+enderio.block.tooltip.disallowMonsters=モンスターのみ通過不可
+enderio.block.tooltip.disallowAnimals=動物のみ通過不可
 
 
 enderio.grindingball.tooltip.line1=%s準自生粉砕機の粉砕用ボール
-enderio.grindingball.tooltip.line2=%s出力：%s％
-enderio.grindingball.tooltip.line3=%s副産出力：%s％
-enderio.grindingball.tooltip.line4=%s消費電力：%s％
-enderio.grindingball.gui.durability=残量：%s％
+enderio.grindingball.tooltip.line2=%s出力：%s%%
+enderio.grindingball.tooltip.line3=%s副産出力：%s%%
+enderio.grindingball.tooltip.line4=%s消費電力：%s%%
+enderio.grindingball.gui.durability=残量：%s%%
 
 enderio.gui.permission.denied=アクセス権がありません
 
@@ -723,7 +728,7 @@ enderio.config.personal.tooltip=案ずるな、口は堅い方だ
 #enderio.config.anchor=トラベルアンカー
 #enderio.config.anchor.tooltip=どこまでも続く
 #enderio.config.staff=トラベルスタッフ
-#enderio.config.staff.tooltip=いいか、使い方をちゃんと守るんだ 顔が吹っ飛ぶぞ
+#enderio.config.staff.tooltip=いいか、使い方をちゃんと守るんだ 顔だけ飛ぶぞ
 enderio.config.darksteel=ダークスチール
 enderio.config.darksteel.tooltip=スチールと§oダーク§r§eスチールは全くの別物だとなんども・・・
 enderio.config.aesthetic=外観設定
@@ -838,7 +843,7 @@ enderio.power.format.details=エネルギーの単位
 
 enderio.temperature.format.deg_c=%s ℃
 
-enderio.format.percent_efficiency=効率：%s％
+enderio.format.percent_efficiency=効率：%s%%
 
 enderio.fluid.millibucket.format=%s mB
 enderio.fluid.millibucket.format.name=%s mB / %s
@@ -884,8 +889,8 @@ enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=スプーンがあれば�
 enderio.darksteel.upgrade.hoe.name=フォーク
 enderio.darksteel.upgrade.hoe.tooltip.detailed.line1=フォークがあれば、耕すのに苦労しないだろう。
 
-enderio.darksteel.upgrade.tnt.enabled=爆破を起動しました
-enderio.darksteel.upgrade.tnt.disabled=爆破を停止しました
+enderio.darksteel.upgrade.tnt.0.enabled=爆破を起動しました
+enderio.darksteel.upgrade.tnt.0.disabled=爆破を停止しました
 
 enderio.darksteel.upgrade.tnt.0.name=爆破 Ⅰ
 enderio.darksteel.upgrade.tnt.0.tooltip.detailed.line1=ツルハシに爆発性を加え、採掘時に周囲のブロックを巻き込む。
@@ -924,9 +929,6 @@ enderio.darksteel.upgrade.anvil.1.tooltip.detailed.line2=ホットキーまた�
 enderio.darksteel.upgrade.anvil.2.name=携帯金床
 enderio.darksteel.upgrade.anvil.2.tooltip.detailed.line1=金床同様の機能が扱え、全アイテムのアップグレード着脱が可能になる。
 enderio.darksteel.upgrade.anvil.2.tooltip.detailed.line2=ホットキーまたはアップグレードを持って Shift 右クリックすることで GUI を開く。
-
-enderio.darksteel.upgrade.step_assist.name=ステップアシスト
-enderio.darksteel.upgrade.step_assist.tooltip.detailed.line1=ブロックを階段のように乗り越えられるようになる。
 
 item.item_dark_steel_upgrade.name=ダークスチールアップグレードの型
 item.item_dark_steel_upgrade.with=ダークスチールアップグレード（%s）
@@ -1021,13 +1023,15 @@ enderio.darksteel.upgrade.thaumaturge_robes.legs.tooltip.detailed.line1=Vis 軽�
 enderio.darksteel.upgrade.thaumaturge_robes.feet.name=魔道士のブーツ
 enderio.darksteel.upgrade.thaumaturge_robes.feet.tooltip.detailed.line1=Vis 軽減：2%
 
-enderio.darksteel.upgrade.jump.enabled=跳躍を起動しました
-enderio.darksteel.upgrade.jump.disabled=跳躍を停止しました
-
 enderio.darksteel.upgrade.jump_one.name=跳躍
 enderio.darksteel.upgrade.jump_one.tooltip.detailed.line1=段差超えが可能になり、ジャンプ力が増加。
-enderio.darksteel.upgrade.stepAssist.enabled=ステップアシストを起動しました
-enderio.darksteel.upgrade.stepAssist.disabled=ステップアシストを停止しました
+enderio.darksteel.upgrade.jump_one.enabled=跳躍を起動しました
+enderio.darksteel.upgrade.jump_one.disabled=跳躍を停止しました
+
+enderio.darksteel.upgrade.step_assist.name=ステップアシスト
+enderio.darksteel.upgrade.step_assist.tooltip.detailed.line1=ブロックを階段のように乗り越えられるようになる。
+enderio.darksteel.upgrade.step_assist.enabled=ステップアシストを起動しました
+enderio.darksteel.upgrade.step_assist.disabled=ステップアシストを停止しました
 
 enderio.gui.step_assis_unavailable=ステップアシストは他の Mod により制限されている可能性があります
 
@@ -1041,8 +1045,8 @@ enderio.darksteel.upgrade.jump_three.tooltip.detailed.line2=三段ジャンプ�
 
 enderio.darksteel.upgrade.speed_one.name=俊足
 enderio.darksteel.upgrade.speed_one.tooltip.detailed.line1=移動速度が増加。
-enderio.darksteel.upgrade.speed.enabled=俊足を起動しました
-enderio.darksteel.upgrade.speed.disabled=俊足を停止しました
+enderio.darksteel.upgrade.speed_one.enabled=俊足を起動しました
+enderio.darksteel.upgrade.speed_one.disabled=俊足を停止しました
 
 enderio.darksteel.upgrade.speed_two.name=俊足 Ⅱ
 enderio.darksteel.upgrade.speed_two.tooltip.detailed.line1=移動速度が増加。
@@ -1057,6 +1061,8 @@ enderio.darksteel.upgrade.nightVision.enabled=暗視を起動しました
 enderio.darksteel.upgrade.nightVision.disabled=暗視を停止しました
 
 enderio.darksteel.upgrade.top.name=The One Probe
+enderio.darksteel.upgrade.top.enabled=The One Probe を起動しました
+enderio.darksteel.upgrade.top.disabled=The One Probe を停止しました
 
 # These are used for the "The One Probe" integration
 enderio.top.action.header.pre=§e
@@ -1174,7 +1180,7 @@ enderio.item_item_filter_upgrade.clear_config_warning=%sフィルターの設定
 
 enderio.gui.generic.max=最大発電・消費電力：%s
 enderio.gui.generic.loss=減衰：%s
-enderio.gui.generic.progress=進捗状況：%s ％
+enderio.gui.generic.progress=進捗状況：%s%%
 enderio.gui.generic.ioMode.overlay.tooltip=搬入出設定
 enderio.gui.generic.ioMode.overlay.tooltip.visible.line1=搬入出設定
 enderio.gui.generic.ioMode.overlay.tooltip.visible.line2=Shift クリックすると
@@ -1288,7 +1294,7 @@ enderio.loot.capacitor.entry.3=強いてこれを言い表すなら、「%s」�
 enderio.loot.capacitor.entry.4=強いてこれを言い表すなら、「%s」という名前にするのが精一杯だろう。
 enderio.loot.capacitor.entry.5=この「%s」は修繕屋ランドルフのものだ。安易に捨てることは許されないだろう。
 enderio.loot.capacitor.entry.6=この「%s」は元修繕屋ランドルフのものだ。捨てても問題ないだろう。
-enderio.loot.capacitor.entry.7=「%s」から Capacitor 1 への無償アップグレードが可能になりました。OK を押すか、キャンセルしてください。
+enderio.loot.capacitor.entry.7=「%s」から Capacitor１への無償アップグレードが可能になりました。OK を押すか、キャンセルしてください。
 enderio.loot.capacitor.entry.8=この「%s」を別の機械に入れて、どう機能するのか探るといい。Google 先生に頼るのも悪くないだろう。
 
 enderio.loot.capacitor.title.count=24
@@ -1315,12 +1321,12 @@ enderio.loot.capacitor.title.19=物体
 enderio.loot.capacitor.title.20=何か
 enderio.loot.capacitor.title.21=つまらない物
 enderio.loot.capacitor.title.22=助けて！ゲームに閉じ込められちゃったの！
-enderio.loot.capacitor.title.23=助けて！ゲーム工場に閉じ込められちゃったの！                                                         
+enderio.loot.capacitor.title.23=助けて！ゲーム工場に閉じ込められちゃったの！
 
 enderio.keybind.inventory=防具収納の開閉
 enderio.keybind.inventory.none_equipped=収納可能な防具を装備していません
 enderio.keybind.dsu=ダークスチールアップグレードインベントリの開閉
-enderio.keybind.glidertoggle=グライダー/エリトラの切り替え
+enderio.keybind.glidertoggle=グライダー/エリトラ
 enderio.keybind.soundlocator=音響探知
 enderio.keybind.nightvision=暗視
 enderio.keybind.gogglesofrevealing=洞察の眼鏡
@@ -1328,16 +1334,23 @@ enderio.keybind.stepassist=ステップアシスト
 enderio.keybind.speed=俊足
 enderio.keybind.jump=跳躍
 enderio.keybind.tnt=爆破
-enderio.keybind.top=The One Probe の切り替え（ヘルメットアップグレード）
+enderio.keybind.top=The One Probe（ヘルメットアップグレード）
 enderio.keybind.yetawrenchmode=イェタレンチのモード切り替え
 enderio.keybind.magnet=電磁石の切り替え
-enderio.keybind.fovplus=カメラのズームアウト
-enderio.keybind.fovminus=カメラのズームイン
-enderio.keybind.fovplusfast=カメラの高速ズームアウト
-enderio.keybind.fovminusfast=カメラの高速ズームイン
-enderio.keybind.fovreset=カメラのズームリセット
+enderio.keybind.fovplus=ズームアウト
+enderio.keybind.fovminus=ズームイン
+enderio.keybind.fovplusfast=高速ズームアウト
+enderio.keybind.fovminusfast=高速ズームイン
+enderio.keybind.fovreset=ズームリセット
+enderio.keybind.fovunreset=ズームの差し戻し（リセットの取り消し）
+enderio.keybind.fovstore=ズーム率の保存
+enderio.keybind.fovrecall=ズーム率の復元
+
+enderio.keybind.zoom.stored=ズーム率を保存しました
+
 key.category.darksteelarmor=ダークスチール防具
 key.category.tools=Ender IO 道具
+key.category.camera=カメラ操作
 
 enderio.gui.probe.copied=導管の設定をコピーしました
 enderio.gui.probe.pasted=導管の設定をペーストしました
@@ -1375,12 +1388,12 @@ enderio.advancement.gear.g5_vibrant_gear.desc=ヴァイブラントバイメタ�
 
 # Filters
 enderio.gui.item_filter.damage.disabled=耐久消耗無視
-enderio.gui.item_filter.damage.damage_00_25=２５％以下耐久消耗
-enderio.gui.item_filter.damage.damage_25_00=２６％以上耐久消耗
-enderio.gui.item_filter.damage.damage_00_50=５０％以下耐久消耗
-enderio.gui.item_filter.damage.damage_50_00=５１％以上耐久消耗
-enderio.gui.item_filter.damage.damage_00_75=７５％以下耐久消耗
-enderio.gui.item_filter.damage.damage_75_00=７６％以上耐久消耗
+enderio.gui.item_filter.damage.damage_00_25=２５%%以下耐久消耗
+enderio.gui.item_filter.damage.damage_25_00=２６%%以上耐久消耗
+enderio.gui.item_filter.damage.damage_00_50=５０%%以下耐久消耗
+enderio.gui.item_filter.damage.damage_50_00=５１%%以上耐久消耗
+enderio.gui.item_filter.damage.damage_00_75=７５%%以下耐久消耗
+enderio.gui.item_filter.damage.damage_75_00=７６%%以上耐久消耗
 enderio.gui.item_filter.damage.damage_00_00=耐久消耗なし
 enderio.gui.item_filter.damage.damage_01_00=耐久消耗あり
 enderio.gui.item_filter.damage.damage_yes=耐久消耗する
@@ -1497,7 +1510,7 @@ entity.enderio.enderio.owl_egg.name=フクロウの卵
 entity.enderio.primed_charge.name=着火した爆薬
 entity.enderio.enderio.primed_charge.name=着火した爆薬
 
-enderio.tooltip.inventory_charger.need_upgrade=§4エネルギークリスタルが設置されていません
+enderio.tooltip.inventory_charger.need_upgrade=§4エンパワーアップグレードが適用されていません
 enderio.tooltip.inventory_charger.enabled=アイテム充電器を起動しました
 enderio.tooltip.inventory_charger.disabled=アイテム充電器を停止しました
 
@@ -1514,3 +1527,33 @@ enderio.network.bad_config=エラー：Ender IO 設定の "%s.%s" の値は接�
 enderio.network.autosync.connected=§4§l以下の値はサーバー側で固定されています。\u000a§e%s
 enderio.network.autosync.offline=%s\u000a§o以上の値はサーバー側と同様に設定してください。
 enderio.network.manusync=%s\u000a§o以上の値はサーバー側で固定されています。
+
+enderio.jei.notSimple.line1=このレシピは簡易型機械では
+enderio.jei.notSimple.line2=扱えない。
+enderio.jei.notNormal.line1=このレシピは簡易型および
+enderio.jei.notNormal.line2=通常型の機械では扱えない。
+
+enderio.gui.travel_accessable.skip.locked=ロックされたアンカーをスキップしました
+enderio.gui.travel_accessable.skip.private=塞がれたアンカーをスキップしました
+enderio.gui.travel_accessable.skip.obstructed=非公開アンカーをスキップしました
+enderio.gui.travel_accessable.unauthorized=このブロックへのアクセスは許可されていません
+enderio.gui.travel_accessable.outofrange=目的地は範囲外です
+enderio.gui.travel_accessable.invalidtarget=目的地は塞がれています
+
+enderio.gui.too_many_levels=レベル２１８６２以上となる所持経験値量では多すぎます
+
+enderio.command.config.help.0=config コマンドは、マルチプレイサーバーの Ender IO の設定を行うものであり、個々のプレイヤー用の設定としては意図されていません。プレイヤー側が設定を行いたい場合、Forge の Mod 設定から行い、その config ファイルをサーバー側にも適用する必要があります
+enderio.command.config.help.1=このコマンドは、config ファイルに保存されている値を直接書き換えます。そのため、ファイルを直接編集する場合のように無効な値を設定することもできますが、その値は無視されます
+enderio.command.config.help.2=値を設定すると、保存はされずメモリに保持されます。保存は「/enderio config save」コマンドを使用することで行えます
+enderio.command.config.help.3=設定の値には、接続時にクライアント側に同期されるもの、クライアントのみで使用できるもの、クライアント側とサーバー側で同じ値にしなければならないものの、３種類があります。このコマンドで安全に変更できるものは１番目のものですが、変更後に同期を行うにはクライアント側が再接続する必要があります
+enderio.command.config.help.4=値を変更する前に、「/enderio config get」コマンドの実行を推奨します。このコマンドは、各設定の設定可能な値等の情報を確認できます。また、「/enderio config list」コマンドでセクション検索もできます
+enderio.command.config.help.more=「/enderio config help %s」でさらに表示
+enderio.command.config.saved=Ender IO の設定を保存しました
+enderio.command.config.error.section=そのセクションはありません
+enderio.command.config.error.key=そのキーはありません
+enderio.command.config.error.value=無効な値です。使用可能な値：%s
+enderio.command.config.warn.clientvalue=この値をサーバー側に設定をしても、おそらく効果はありません
+enderio.command.config.warn.reconnect=プレイヤー側は、設定を適用させるために再接続が必要です
+enderio.command.config.warn.notsynced=この値は同期されないため、クライアント側でも手動で設定してもらう必要があります
+enderio.command.config.warn.unchecked=設定可能な値に制限がある場合があります
+enderio.command.config.warn.save=この変更を適用するには、設定を保存する必要があります
