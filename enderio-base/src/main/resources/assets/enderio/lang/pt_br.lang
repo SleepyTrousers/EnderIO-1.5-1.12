@@ -1,0 +1,71 @@
+#PARSE_ESCAPES
+# ^ having this in the first line allows us to use "\uXXXX" escapes in this file
+
+#***  Ender IO *****#
+
+# Translators, check your ".guess" file to see which keys your
+# language is missing and which keys it has that do not exist anymore.
+
+# Names for the creative tabs
+itemGroup.enderio.machines=Maquinas do EnderIO
+itemGroup.enderio.items=Items do EnderIO
+itemGroup.enderio.materials=Materiais do EnderIO
+itemGroup.enderio.main=Blocos do EnderIO
+itemGroup.enderio.mobs=Almas do EnderIO
+itemGroup.enderio.conduits=Conduites do EnderIO
+itemGroup.enderio.invpanel=Painel de Inventário do EnderIO
+
+item.item_alloy_ball_conductive_iron.name=Esfera de Moeção de Conductive Iron
+item.item_alloy_ball_dark_steel.name=Esfera de Moeção Dark Steel
+item.item_alloy_ball_electrical_steel.name=Esfera de Moeção Electrical Steel
+item.item_alloy_ball_energetic_alloy.name=Esfera de Moeção Energetic Alloy
+item.item_alloy_ball_pulsating_iron.name=Esfera de Moeção Pulsating Iron
+item.item_alloy_ball_redstone_alloy.name=Esfera de Moeção Redstone Alloy
+item.item_alloy_ball_soularium.name=Esfera de Moeção Soularium
+item.item_alloy_ball_vibrant_alloy.name=Esfera de Moeção Vibrant Alloy
+item.item_alloy_ball_end_steel.name=Esfera de Moeção End Steel
+item.item_alloy_ball_construction_alloy.name=Esfera de Moeção Iron Alloy
+
+item.item_basic_capacitor.activated.name=Capacitor de Duas Camadas
+item.item_basic_capacitor.basic.name=Capacitor Básico
+item.item_basic_capacitor.ender.name=Capacitor Octadic
+enderio.activated.name=Capacitor de Duas Camadas
+enderio.ender.name=Capacitor Octadic
+
+item.item_broken_spawner.name=Spawner Quebrado
+item.item_broken_spawner.tooltip.detailed.line1=Combine com um Spawner Energizado
+item.item_broken_spawner.tooltip.detailed.line2=em uma bigorna para configurar o tipo
+
+item.item_cold_fire_igniter.tooltip.detailed.line1=permite colocar Cold Fire.
+item.item_cold_fire_igniter.tooltip.detailed.line2=Cold Fire não se espalha por outros blocos.
+
+item.item_conduit_facade.tooltip.detailed.line1=Pintado em uma Painting Machine
+item.item_conduit_facade.tooltip.detailed.line2=R-Click em um conduit para aplicar
+item.item_conduit_facade.tooltip.detailed.line3=Fica escondido quando uma chave ou conduite
+item.item_conduit_facade.tooltip.detailed.line4=está equipado
+
+item.item_conduit_facade.hardened.tooltip.detailed.line1=Hardened: Resistente a quebra e explosões
+
+item.item_conduit_facade.transparent.tooltip.detailed.line1=Transparent: Esconde o conduite quando aplicado em um bloco não sólido
+
+item.item_conduit_facade.transparent.hardened.tooltip.detailed.line1=Transparent: Esconde o conduite quando aplicado em um bloco não sólido
+item.item_conduit_facade.transparent.hardened.tooltip.detailed.line2=Hardened: Resistente a quebra e explosões
+
+item.item_conduit_probe.tooltip.detailed=No modo probe R-Click em um conduite para mostrar detalhes sobre suas redes|No modo de copiar e colar Shift-R-Click para copiar as configurações do grupo de conduites|R-Click para cola-las|Use Shift-Mouse Wheel ou 'Y' to trocar de modo
+
+item.item_coord_selector.name=Coordinate Selector
+item.item_coord_selector.tooltip.detailed.line1=Exibe as Coordenadas de um bloco
+item.item_coord_selector.tooltip.detailed.line2=Clique com o botão direito em um bloco para selecionar
+item.item_coord_selector.tooltip.detailed.line3=o bloco adjacente a esse lado.
+item.item_coord_selector.tooltip.detailed.line4=Shift right click em um bloco
+item.item_coord_selector.tooltip.detailed.line5=para seleciona-lo.
+item.item_coord_selector.tooltip.detailed.line6=Pode ser selecionado a distancia.
+
+item.item_dark_steel_sword.name=The Ender
+item.item_dark_steel_sword.tooltip.detailed.line1=Aumenta o Drop de Cabeças e Ender Pesrl
+item.item_dark_steel_sword.tooltip.detailed.line2=Quando carregada: Endermen não podem se teletransportar depois de atingidos, Dano e Velocidade extras
+
+item.item_dark_steel_pickaxe.name=Dark Pick
+item.item_dark_steel_pickaxe.tooltip.effPowered=%s+%s Eficiencia quando carregados
+item.item_dark_steel_pickaxe.tooltip.effObs=%s+%s Efficiency quebrando obsidians
+item.item_dark_steel_pickaxe.tooltip.cost=%s     (Custo %s)
