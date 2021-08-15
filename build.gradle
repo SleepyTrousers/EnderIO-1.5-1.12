@@ -4,7 +4,7 @@ buildscript {
         mavenCentral()
         maven {
             name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            url = "https://maven.minecraftforge.net/"
         }
         maven {
             url "https://plugins.gradle.org/m2/"
@@ -104,7 +104,7 @@ allprojects {
         maven { url = "http://maven.tterrag.com" }
         maven { url = "http://maven2.tterrag.com" }
         maven { url = "http://dvs1.progwml6.com/files/maven" }
-        maven { url = "http://files.minecraftforge.net/maven" }
+        maven { url = "https://maven.minecraftforge.net" }
         maven { url = "http://maven.cil.li/" } // OpenComputers
         maven { url = "http://maven.ic2.player.to" }
         maven { url = "https://maven.mcmoddev.com" } // ???, dead as of 2021-01-10, back as of 2021-05-24

@@ -55,3 +55,6 @@ enderio-base/\.checkstyle
 
 **/Corel Auto-Preserve/
 
+## EnderCore lib
+
+/lib/EnderCore*deobf.jar
