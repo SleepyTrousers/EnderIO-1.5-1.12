@@ -1,16 +1,16 @@
 package crazypants.enderio.conduit.item.filter;
 
+import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.common.network.NetworkUtil;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.gui.item.BasicItemFilterGui;
 import crazypants.enderio.conduit.gui.item.IItemFilterGui;
 import crazypants.enderio.conduit.gui.item.ItemConduitFilterContainer;
 import crazypants.enderio.conduit.item.IItemConduit;
+import crazypants.enderio.conduit.item.NetworkedInventory;
 import io.netty.buffer.ByteBuf;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -19,12 +19,9 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 
-import com.enderio.core.client.gui.widget.GhostSlot;
-import com.enderio.core.common.network.NetworkUtil;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.conduit.item.NetworkedInventory;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ItemFilter implements IInventory, IItemFilter {
 
@@ -93,43 +90,60 @@ public class ItemFilter implements IInventory, IItemFilter {
     return doesItemPassFilter(item);
   }
 
+  @SuppressWarnings("SimplifiableConditionalExpression")
   public boolean doesItemPassFilter(ItemStack item) {
-    if(!isValid()) {
-      return true;
+    boolean allow = isValid();
+
+    if(allow) {
+      allow = itemMatched(item);
     }
-    boolean matched = itemMatched(item);
-    return isBlacklist ? !matched : matched;
+
+    return isBlacklist ? !allow : allow;
   }
 
   private boolean itemMatched(ItemStack item) {
     if(item == null) {
       return false;
     }
-    boolean doFuzzy = false;
-    boolean fuzzyValue = false;
-    if(fuzzyMode != FuzzyMode.DISABLED && item.getItem().isDamageable()) {
-      doFuzzy = true;
-      fuzzyValue = fuzzyMode.compare(item);
+
+    boolean checkDamage = fuzzyMode != FuzzyMode.DISABLED;
+    boolean damageMatched = false;
+    if(checkDamage && item.getItem().isDamageable()) {
+      damageMatched = fuzzyMode.compare(item);
     }
+
+    if(isItemListEmpty()) {
+      if (checkDamage) {
+        return damageMatched;
+      } else {
+        return false;
+      }
+    }
+
     boolean matched = false;
-    int i = 0;
-    for (ItemStack it : items) {
-      if(it != null && Item.getIdFromItem(item.getItem()) == Item.getIdFromItem(it.getItem())) {
+
+    for (int i = 0; i < items.length; i++) {
+      ItemStack it = items[i];
+
+      if (it != null && Item.getIdFromItem(item.getItem()) == Item.getIdFromItem(it.getItem())) {
         matched = true;
-        boolean fuzzyOk = doFuzzy && fuzzyMode.compare(it) == fuzzyValue;
-        if(matchMeta && !fuzzyOk && item.getItemDamage() != it.getItemDamage()) {
+
+        if(checkDamage && !damageMatched) {
           matched = false;
-        } else if(matchNBT && !isNBTMatch(item, it)) {
+        } else if (matchMeta && item.getItemDamage() != it.getItemDamage()) {
+          matched = false;
+        }else if (matchNBT && !isNBTMatch(item, it)) {
           matched = false;
         }
       }
-      if(!matched && useOreDict && isOreDicMatch(i, item)) {
+
+      if (!matched && useOreDict && isOreDicMatch(i, item)) {
         matched = true;
       }
-      if(matched) {
+
+      if (matched) {
         break;
       }
-      i++;
     }
     return matched;
   }
@@ -184,12 +198,21 @@ public class ItemFilter implements IInventory, IItemFilter {
 
   @Override
   public boolean isValid() {
+    //allows fuzzy mode to be not dependent from filter items
+    if(fuzzyMode != FuzzyMode.DISABLED) {
+      return true;
+    }
+
+    return !isItemListEmpty();
+  }
+
+  private boolean isItemListEmpty() {
     for (ItemStack item : items) {
-      if(item != null) {
-        return true;
+      if (item != null) {
+        return false;
       }
     }
-    return false;
+    return true;
   }
 
   public boolean isBlacklist() {

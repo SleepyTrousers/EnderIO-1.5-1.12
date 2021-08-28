@@ -1,20 +1,16 @@
 package crazypants.enderio.conduit.gui.item;
 
-import net.minecraft.client.gui.GuiButton;
-
-import org.lwjgl.opengl.GL11;
-
-import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.gui.button.CycleButton;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.filter.FuzzyMode;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
+import net.minecraft.client.gui.GuiButton;
+import org.lwjgl.opengl.GL11;
 
 public class BasicItemFilterGui implements IItemFilterGui {
     
@@ -66,7 +62,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
     int x = butLeft;
     int y = yOffset + 1;
     whiteListB = new IconButton(gui, ID_WHITELIST + buttonIdOffset, x, y, IconEIO.FILTER_WHITELIST);
-    whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
+    whiteListB.setToolTip(getWhitelistTooltips(false));
 
     x += 20;
     useMetaB = new ToggleButton(gui, ID_META + buttonIdOffset, x, y, IconEIO.FILTER_META_OFF, IconEIO.FILTER_META);
@@ -135,15 +131,13 @@ public class BasicItemFilterGui implements IItemFilterGui {
     useMetaB.setSelected(activeFilter.isMatchMeta());
 
     whiteListB.onGuiInit();
+    whiteListB.setToolTip(getWhitelistTooltips(activeFilter.isBlacklist()));
     if(activeFilter.isBlacklist()) {
       whiteListB.setIcon(IconEIO.FILTER_BLACKLIST);
-      whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.blacklist"));
     } else {
       whiteListB.setIcon(IconEIO.FILTER_WHITELIST);
-      whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
     }
   }
-  
   
   @Override
   public void actionPerformed(GuiButton guiButton) {
@@ -193,5 +187,20 @@ public class BasicItemFilterGui implements IItemFilterGui {
       gui.drawTexturedModalRect(gui.getGuiLeft() + xOffset, gui.getGuiTop() + yOffset + 20, 0, 238, 18 * 5, 18);
     }
   }
-  
+
+  private String[] getWhitelistTooltips(boolean isBlacklist) {
+    if(isBlacklist) {
+      return new String[]{
+              EnderIO.lang.localize("gui.conduit.item.blacklist"),
+              EnderIO.lang.localize("gui.conduit.item.blacklist.tooltip.0"),
+              EnderIO.lang.localize("gui.conduit.item.blacklist.tooltip.1")
+      };
+    } else {
+      return new String[]{
+              EnderIO.lang.localize("gui.conduit.item.whitelist"),
+              EnderIO.lang.localize("gui.conduit.item.whitelist.tooltip.0"),
+              EnderIO.lang.localize("gui.conduit.item.whitelist.tooltip.1")
+      };
+    }
+  }
 }
