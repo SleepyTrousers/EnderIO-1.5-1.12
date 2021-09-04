@@ -92,11 +92,7 @@ public class ItemFilter implements IInventory, IItemFilter {
 
   @SuppressWarnings("SimplifiableConditionalExpression")
   public boolean doesItemPassFilter(ItemStack item) {
-    boolean allow = isValid();
-
-    if(allow) {
-      allow = itemMatched(item);
-    }
+    boolean allow = isValid() && itemMatched(item);
 
     return isBlacklist ? !allow : allow;
   }
