@@ -1,16 +1,15 @@
 package crazypants.enderio.conduit.item.filter;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-
-import net.minecraft.item.ItemStack;
-
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.CycleButton;
-
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 public enum FuzzyMode implements CycleButton.ICycleEnum {
   DISABLED(IconEIO.FILTER_FUZZY_DISABLED) {
@@ -63,7 +62,13 @@ public enum FuzzyMode implements CycleButton.ICycleEnum {
 
   @Override
   public List<String> getTooltipLines() {
-    return Collections.singletonList(EnderIO.lang.localize("gui.conduit.item.fuzzy.".concat(name().toLowerCase(Locale.US))));
+    return Arrays.asList(
+            EnderIO.lang.localize("gui.conduit.item.fuzzy.".concat(name().toLowerCase(Locale.US))),
+            EnumChatFormatting.GRAY + EnderIO.lang.localize("gui.conduit.item.fuzzy.tooltip.0"),
+            EnumChatFormatting.GRAY + EnderIO.lang.localize("gui.conduit.item.fuzzy.tooltip.1"),
+            EnumChatFormatting.GRAY + EnderIO.lang.localize("gui.conduit.item.fuzzy.tooltip.2",
+                    EnderIO.lang.localize("gui.conduit.item.whitelist"))
+            );
   }
 
 }
