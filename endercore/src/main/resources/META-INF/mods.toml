@@ -1,0 +1,34 @@
+modLoader="javafml" #mandatory
+loaderVersion="[37,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+issueTrackerURL="http://my.issue.tracker/" #optional
+license="CC0"
+
+[[mods]] #mandatory
+modId="endercore" #mandatory
+version="${file.jarVersion}" #mandatory
+displayName="EnderCore" #mandatory
+#updateJSONURL="http://ci.tterrag.com/job/EnderCore" #optional
+displayURL="http://enderio.com" #optional
+logoFile="examplemod.png" #optional
+credits="" #optional
+authors="tterrag, CrazyPants, HenryLoenwind, Rover656, HypherionSA" #optional
+description="Library mod used by EnderIO, EnderZoo, and others"
+
+[[dependencies.endercore]] #optional
+# the modid of the dependency
+modId="forge" #mandatory
+# Does this dependency have to exist - if not, ordering below must be specified
+mandatory=true #mandatory
+# The version range of the dependency
+versionRange="[37,)" #mandatory
+# An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+ordering="NONE"
+# Side this dependency is applied on - BOTH, CLIENT or SERVER
+side="BOTH"
+# Here's another dependency
+[[dependencies.endercore]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.17.1]"
+ordering="NONE"
+side="BOTH"

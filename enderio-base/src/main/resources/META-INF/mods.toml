@@ -1,0 +1,12 @@
+modLoader="javafml" #mandatory
+loaderVersion="[37,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+license="CC0"
+
+[[mods]]
+modId="enderio"
+version="${file.jarVersion}"
+displayName="Ender IO"
+authors="CrazyPants, tterrag, HenryLoenwind, MatthiasM, CyanideX, EpicSquid, Rover656, HypherionSA"
+description="Compact conduits, painted things and all sorts of stuff and bling."
+displayURL="http://enderio.com/"
+logoFile="logo.png"

@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "com.enderio.core.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "refmap": "endercore.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "minVersion": "0.8"
+}

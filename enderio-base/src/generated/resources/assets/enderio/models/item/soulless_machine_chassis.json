@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "enderio:item/soulless_machine_chassis"
+  }
+}

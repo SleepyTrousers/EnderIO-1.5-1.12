@@ -1,0 +1,9 @@
+include ':endercore';
+include ':enderio-base'//, ':enderio-machines', ':enderio-conduits', ':enderio-invpanel', ':enderio-integration-tic', ':enderio-integration-forestry', ':enderio-integration-thaumcraft', ':enderio-conduits-refinedstorage', ':enderio-conduits-opencomputers', ':enderio-conduits-appliedenergistics', ':enderio-addons', ':enderio-zoo', ':enderio-endergy', 'ap', ':enderio-conduits-mekanism', ':enderio-addons'
+
+rootProject.name = 'EnderIO'
+
+rootProject.children.each { project ->
+    String fileBaseName = project.name.toLowerCase()
+    project.buildFileName = "${fileBaseName}.gradle"
+}

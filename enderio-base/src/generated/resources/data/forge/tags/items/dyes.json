@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "enderio:organic_green_dye",
+    "enderio:organic_brown_dye",
+    "enderio:organic_black_dye",
+    "enderio:industrial_dye_blend",
+    "enderio:soul_attuned_dye_blend",
+    "enderio:enhanced_dye_blend"
+  ]
+}

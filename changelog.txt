@@ -1,0 +1,423 @@
+Build: 1.17.1-37.0.70 - Sun Sep 19 23:36:14 GMT 2021
+	sciwhiz12:
+		Move ItemStack#forgeInit call earlier to allow earlier capability queries (#8096)
+
+=========
+Build: 1.17.1-37.0.69 - Sun Sep 19 02:42:47 GMT 2021
+	sciwhiz12:
+		Remove incorrect FallingBlock patch (#8092)
+		
+		The patch accidentally replaces the minimum build height (set by the
+		dimension via e.g. datapacks) with 0, causing falling blocks placed
+		below Y level 0 to never fall.
+		
+		Fixes #8091
+
+=========
+Build: 1.17.1-37.0.68 - Sat Sep 18 21:58:41 GMT 2021
+	sciwhiz12:
+		Fix inverted hooks for PermissionsChangedEvent (#8089)
+		
+		Because IEventBus#post returns true on cancellation and the patched-in
+		hooks inverts the return of the ForgeHooks method, if the player
+		whose permission level is being changed is online and the event is not
+		cancelled, the permission change _is_ cancelled.
+		
+		The fix is inverting the patched-in hooks and the default return value
+		of the ForgeHooks method, so that the permission change is cancelled
+		only if the player is online, the event is fired, and the event is cancelled.
+		
+		Fixes #8088
+
+=========
+Build: 1.17.1-37.0.67 - Fri Sep 17 20:26:19 GMT 2021
+	oriondevelopment:
+		Add the missing patch for ItemStack for last build. (#8085)
+
+=========
+Build: 1.17.1-37.0.66 - Fri Sep 17 18:23:28 GMT 2021
+	oriondevelopment:
+		Support Lazy capabilities on itemstacks, for better ItemStack copy performance. (#7945)
+
+=========
+Build: 1.17.1-37.0.65 - Fri Sep 17 00:11:21 GMT 2021
+	gigaherz:
+		Fix EntityJoinWorldEvent not firing as expected: (#8033)
+		
+		- Fix entities loaded from disk not getting the event.
+		- Fix vehicles with passengers getting the event twice.
+
+=========
+Build: 1.17.1-37.0.64 - Thu Sep 16 23:54:41 GMT 2021
+	sciwhiz12:
+		Re-add patch to release buffer in custom payload packet (#8042)
+
+	noeppi-noeppi:
+		Propagate all arguments passed to the server start scripts to the game (#8060)
+
+=========
+Build: 1.17.1-37.0.62 - Thu Sep 16 23:37:31 GMT 2021
+	ichttt:
+		Remove old Log4j thread cache invalidation (#8068)
+
+=========
+Build: 1.17.1-37.0.61 - Wed Sep 15 19:09:18 GMT 2021
+	lexmanos:
+		Fix pick-block for items that map to multiple blocks. Closes #8080
+
+=========
+Build: 1.17.1-37.0.60 - Tue Sep 14 23:54:46 GMT 2021
+	gigaherz:
+		Update nashorn to 15.3, which fixes crashing when run on Java 17.
+		Please note that due to https://bugs.mojang.com/browse/MCL-18306, the vanilla launcher will not let you use Java 17 yet without workarounds.
+
+=========
+Build: 1.17.1-37.0.59 - Sun Sep 12 05:20:54 GMT 2021
+	sizableshrimp:
+		Add mixin full release to install list. (#8076)
+
+=========
+Build: 1.17.1-37.0.58 - Wed Sep 08 20:22:44 GMT 2021
+	sciwhiz12:
+		Add new tool action for shield blocking, replacing `IForgeItem#isShield` (#8055)
+
+=========
+Build: 1.17.1-37.0.57 - Wed Sep 08 18:36:16 GMT 2021
+	sciwhiz12:
+		Add workaround for pairs of `'` being stripped (#8050)
+		
+		Fixes #7396, where if a translated string with balanced pairs of single
+		quote characters passes through ForgeI18n, the quotes are stripped
+		because of ExtendedMessageFormat. This is most notable in languages
+		where `'` is used frequently, like Canadian French from the bug report.
+		
+		Note that unbalanced pairs cause an IllegalArgumentException in
+		ExtendedMessageFormat, which means the message is not affected.
+
+=========
+Build: 1.17.1-37.0.56 - Wed Sep 08 18:20:26 GMT 2021
+	sciwhiz12:
+		Re-add missing patch for IForgeItem#getEquipmentSlot (#8041)
+
+=========
+Build: 1.17.1-37.0.55 - Wed Sep 08 17:39:41 GMT 2021
+	mysticdrew:
+		Added PlayerPermissionChangedEvent(#8023)
+
+=========
+Build: 1.17.1-37.0.54 - Wed Sep 08 17:22:41 GMT 2021
+	davidqf555:
+		Changed Monster Requirement to Mob in RangedBowAttackGoal (#7960)
+
+=========
+Build: 1.17.1-37.0.53 - Thu Sep 02 21:24:11 GMT 2021
+	noeppi-noeppi:
+		Add shebang to run.sh in server files (#8058)
+
+=========
+Build: 1.17.1-37.0.52 - Thu Sep 02 17:45:20 GMT 2021
+	lexmanos:
+		Fix incorrect parameter being sent to AbstractContainerScreen#getSlotColor.
+
+=========
+Build: 1.17.1-37.0.51 - Wed Sep 01 14:26:47 GMT 2021
+	sciwhiz12:
+		Patch ModSorter to include forge mod in forgeAndMC list (#8043)
+
+=========
+Build: 1.17.1-37.0.50 - Tue Aug 31 15:51:55 GMT 2021
+	pupnewfster:
+		Fix GuiUtils#drawContinuousTexturedBox making assumptions about what shader is currently active, and fix buttons and header not showing on LoadingErrorScreen (#8022)
+
+=========
+Build: 1.17.1-37.0.49 - Tue Aug 31 14:57:25 GMT 2021
+	ititus:
+		Fix ScrollPanel render calls and usage (#8012)
+
+=========
+Build: 1.17.1-37.0.48 - Tue Aug 31 09:33:44 GMT 2021
+	sciwhiz12:
+		Fix all layers of ItemLayerModel being fullbright (#8039)
+		
+		Fixes #8007
+
+=========
+Build: 1.17.1-37.0.47 - Mon Aug 30 23:04:51 GMT 2021
+	cyborgmas:
+		Cleanup Tag Loading, this migrates thins to more of a vanilla style.  (#7898)
+
+=========
+Build: 1.17.1-37.0.46 - Mon Aug 30 20:42:53 GMT 2021
+	cech12:
+		Add Shears ToolActions (#7997)
+		
+		Make shear interactions extend to subclasses
+		Add Shears actions for beehive harvesting, pumpkin carving and trip wire disarming
+
+=========
+Build: 1.17.1-37.0.45 - Fri Aug 27 20:44:42 GMT 2021
+	sizableshrimp:
+		Fix broken fmlonly installer and promote it to page gen (#8029)
+		
+		Update gradle wrapper to 7.2
+
+=========
+Build: 1.17.1-37.0.44 - Mon Aug 23 17:52:30 GMT 2021
+	cyborgmas:
+		Minor resource pack related fixes (#7884)
+
+=========
+Build: 1.17.1-37.0.43 - Sun Aug 22 01:30:31 GMT 2021
+	lexmanos:
+		Fix misaligned patch causing monsters to not spawn in nether fortresses correctly.
+
+=========
+Build: 1.17.1-37.0.42 - Fri Aug 20 19:38:58 GMT 2021
+	diesieben07:
+		Add RegisterCapabilitiesEvent (#8021)
+
+=========
+Build: 1.17.1-37.0.41 - Thu Aug 19 21:31:20 GMT 2021
+	commoble:
+		Move static ITEM_TIER_ORDERING_JSON resourcelocation declaration from anonymous class into outer class to work around eclipse compiler error. (#8018)
+
+=========
+Build: 1.17.1-37.0.40 - Thu Aug 19 05:44:39 GMT 2021
+	sizableshrimp:
+		Fix entities not spawning in structures (#8020)
+		
+		This affects swamp huts, pillager outposts, ocean monuments, and nether fortresses
+
+=========
+Build: 1.17.1-37.0.39 - Wed Aug 18 20:49:43 GMT 2021
+	commoble:
+		Add support for forge's "remove" list to tag datagenerators (#7911)
+
+=========
+Build: 1.17.1-37.0.38 - Wed Aug 18 20:05:33 GMT 2021
+	sirttas:
+		Add hook to allow items to customize the attack sweep range. (#7981)
+
+=========
+Build: 1.17.1-37.0.37 - Wed Aug 18 19:46:48 GMT 2021
+	git:
+		Track the active mod within DeferredWorkQueue (#7973)
+
+=========
+Build: 1.17.1-37.0.36 - Wed Aug 18 09:16:16 GMT 2021
+	28724985+strikerrocker:
+		Allow to check spawner block entity in events (#7941)
+
+=========
+Build: 1.17.1-37.0.35 - Wed Aug 18 05:02:56 GMT 2021
+	cyborgmas:
+		Remove neutral mob patches as the bug was fixed upstream. (#8001)
+
+=========
+Build: 1.17.1-37.0.34 - Sun Aug 15 14:18:49 GMT 2021
+	malte0811:
+		Ensure that all render targets in a PostChain use the same format (#7978)
+		
+		closes #6995
+
+=========
+Build: 1.17.1-37.0.33 - Thu Aug 12 08:44:46 GMT 2021
+	sizableshrimp:
+		Fix update checker to use runtime minecraft version (#8000)
+
+=========
+Build: 1.17.1-37.0.32 - Wed Aug 11 01:53:28 GMT 2021
+	67878524+vemerion:
+		Correct incorrect arguments for render hand event (#7987)
+
+=========
+Build: 1.17.1-37.0.31 - Tue Aug 10 22:45:23 GMT 2021
+	gigaherz:
+		Redesign the tool system to rely on the new vanilla tags. (#7970)
+		
+		Changed:
+		- ToolType is replaced with ToolAction, which can selectively represent which actions are supported by an item.
+		- Added a canPerformAction method to query ToolActions.
+		- Renamed canHarvestBlock to isCorrectToolForDrops to match vanilla.
+		- Added TierSortingRegistry, which can be used to add custom tiers and supports sorting between vanilla or with other mods.
+		
+		How to use:
+		
+		For the breaking system there's 2 methods:
+		- getDestroySpeed decides if an item *can* mine the block fast. Override if you have multiple tags or your item isn't a DiggerItem.
+		- isCorrectToolForDrops decides if an item will get drops. Returning false will also slow down mining, regardless of getDestroySpeed. Override if you have type-dependant tiers or your item isn't a DiggerItem.
+		
+		For the tier system mods can just call `TierSortingRegistry.registerTier(tier, "name", List.of(lesser tiers), List.of(better tiers));` to register their tiers.
+		There's helper methods to query tiers such as TierSortingRegsitry.isCorrectTierForDrops.
+		
+		The ToolActions solve 2 problems:
+		1. distinguishing which kind of digger an item can be
+		2. querying if the item can perform specific secondary actions.
+		Any item can override `canPerformAction` to customize which actions it performs.
+
+=========
+Build: 1.17.1-37.0.30 - Tue Aug 10 20:11:07 GMT 2021
+	lexmanos:
+		Fixed reference to registryAccess in dimension fix, and marked for removal in next MC version. Closes #7961
+
+=========
+Build: 1.17.1-37.0.29 - Tue Aug 10 07:11:36 GMT 2021
+	lexmanos:
+		Bump BootStrapLauncher, and make sure Capability providers call parent revive.
+
+=========
+Build: 1.17.1-37.0.28 - Mon Aug 09 19:09:40 GMT 2021
+	sirttas:
+		Fix custom ingredients not being read correctly over the network. (#7980)
+
+=========
+Build: 1.17.1-37.0.27 - Fri Aug 06 17:18:27 GMT 2021
+	djbake101:
+		Add a OnDatapackSyncEvent, useful as a notification for modders to send extra data to the client (#7912)
+
+=========
+Build: 1.17.1-37.0.26 - Fri Aug 06 16:42:42 GMT 2021
+	choonster:
+		Add access transformer to make Features.Decorators class public (#7974)
+
+=========
+Build: 1.17.1-37.0.25 - Wed Aug 04 08:44:11 GMT 2021
+	lexmanos:
+		Fix NullPointerException in DetercorRailBlock patch.
+
+=========
+Build: 1.17.1-37.0.24 - Wed Aug 04 08:08:36 GMT 2021
+	lexmanos:
+		Add forceSystemNanoTime config option to the client.
+		Normally glfwGetTime is used, but in some cases it may have performance issues.
+
+	lexmanos:
+		Remove entity.remove(keepData) functions because Mojang changed entity removal mechanics.
+		If a modder wishes to use the capabilities from a invalid entity. They must manually call reviveCaps/invalidateCaps themselves.
+
+=========
+Build: 1.17.1-37.0.22 - Mon Aug 02 22:47:24 GMT 2021
+	hycrafthd:
+		Rename potion registry fields to match the mojang names (#7939)
+
+=========
+Build: 1.17.1-37.0.21 - Mon Aug 02 21:58:21 GMT 2021
+	bl4ckscor33:
+		Fix patch issue that removed SimpleWaterloggedBlock from BaseRailBlock (#7937)
+
+=========
+Build: 1.17.1-37.0.20 - Mon Aug 02 21:34:56 GMT 2021
+	strikerrocker:
+		Fix EntityInteractSpecific Event not being fired in server (#7936)
+
+=========
+Build: 1.17.1-37.0.19 - Sun Aug 01 23:00:34 GMT 2021
+	championash5357:
+		Add BlockEntityRenderer registering to RegisterRenderers (#7975)
+
+=========
+Build: 1.17.1-37.0.18 - Sun Aug 01 05:02:57 GMT 2021
+	daemonumbra:
+		Fix installer issue with spaces in paths. (#7972)
+
+=========
+Build: 1.17.1-37.0.17 - Sat Jul 31 00:54:01 GMT 2021
+	35673674+alcatrazescapee:
+		Remove unused config entries. (#7954)
+
+=========
+Build: 1.17.1-37.0.16 - Sat Jul 31 00:43:09 GMT 2021
+	35673674+alcatrazescapee:
+		Re-add call to Ingredient#invalidateAll() (#7953)
+
+=========
+Build: 1.17.1-37.0.15 - Fri Jul 30 02:10:51 GMT 2021
+	gigaherz:
+		Introduce RegisterShadersEvent to register shaders with the proper timing (runs every client resource reload).
+		Fix ShaderInstance to allow resourcelocations with namespaces as input.
+		Fix shader parsing to respect resource domains.
+		Fix ForgeRenderTypes to use the right shader in each situation.
+		Add custom forge shader for unlit translucent entity rendering, equivalent to the vanilla entity translucent shader.
+
+	daemonumbra:
+		Remove Generic from ProjectileImpactEvent (#7959)
+		
+		Generification of this event was half-done and has been aborted, leaving the generic parameter in place just creates confusion and crashes
+
+=========
+Build: 1.17.1-37.0.13 - Wed Jul 28 05:43:57 GMT 2021
+	sizableshrimp:
+		Fix userdev mod deps on the classpath (#7919)
+
+=========
+Build: 1.17.1-37.0.12 - Mon Jul 26 22:22:53 GMT 2021
+	ititus:
+		Fix typo in FluidBlockWrapper (#7931)
+
+=========
+Build: 1.17.1-37.0.11 - Mon Jul 26 21:24:39 GMT 2021
+	lexmanos:
+		Fix rounding related errors with small entity pathfinding. Closes #7730
+
+=========
+Build: 1.17.1-37.0.10 - Mon Jul 26 08:55:12 GMT 2021
+	eerussianguy:
+		Add modder-friendly way to edit the boat model / texture in custom boats (#7897)
+
+=========
+Build: 1.17.1-37.0.9 - Sun Jul 25 20:48:45 GMT 2021
+	commoble:
+		Fix EntityRendererEventsTest crashing dedicated server when running forge_test_server in forgedev (#7930)
+
+=========
+Build: 1.17.1-37.0.8 - Sun Jul 25 10:08:29 GMT 2021
+	gigaherz:
+		Added RegisterClientReloadListenersEvent which lets you register reload listeners with appropriate timing.
+		Added new entity rendering events.
+		- EntityRenderersEvent.RegisterLayerDefinitions: Used to register layer definitions for entity models.
+		- EntityRenderersEvent.RegisterRenderers: Used to register entity renderers.
+		- EntityRenderersEvent.AddLayers: Called during resource reload after all renderers have been constructed and it's safe to add layers.
+		Removed RenderingRegistry, which is now not necessary.
+		Removed a few unused things.
+		Fixes #7920
+
+=========
+Build: 1.17.1-37.0.7 - Sat Jul 24 18:19:07 GMT 2021
+	cyborgmas:
+		remove old direct GL call (#7907)
+
+	supermartijn642:
+		Pass the 'includeName' flag to the ItemTossEvent (#7894)
+
+=========
+Build: 1.17.1-37.0.5 - Sat Jul 24 14:42:12 GMT 2021
+	supermartijn642:
+		Expose RenderStateShard inner classes (#7895)
+		
+		In 1.17, all of the inner classes of `RenderStateShard` (`RenderStateShard.OverlayStateShard`, `RenderStateShard.WriteMaskStateShard`, etc.) have been changed to protected. These classes are needed however to create new `RenderType.CompositeRenderType`'s using `RenderType.CompositeState.CompositeStateBuilder`.
+		Since these are protected inner classes, their constructors also can't be directly be obtained using `ObfuscationReflectionHelper`.
+		
+		Currently, any mod using custom `RenderType`'s will have to either:
+		- add their own access transformer for the inner classes, or
+		- extend `RenderStateShard` to access `RenderStateShard`'s inner classes, and extend `RenderType` to access `RenderType.CompositeRenderType`
+		
+		This PR changes the visibility of `RenderStateShard`'s inner classes to public in Forge's `accesstransformer.cfg`.
+
+	cyborgmas:
+		1.17 Fix InitGuiEvent (#7906)
+
+=========
+Build: 1.17.1-37.0.3 - Sat Jul 24 14:30:37 GMT 2021
+	cyborgmas:
+		added back attribute patches (#7886)
+
+=========
+Build: 1.17.1-37.0.2 - Sat Jul 24 00:26:10 GMT 2021
+	lexmanos:
+		Bump SecureJarHandler, and fix life cycle event's deferred work being on the incorrect thread/boot classloader.
+
+=========
+Build: 1.17.1-37.0.1 - Thu Jul 22 21:52:37 GMT 2021
+	lexmanos:
+		Bump SecureJarHandler to fix package meta issue. Closes #7881
+		Fix version.json having duplicate libraries.
