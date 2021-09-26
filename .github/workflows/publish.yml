@@ -1,0 +1,31 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Publish to Maven
+
+on:
+  push:
+    branches: [ '1.17.x' ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 16
+        uses: actions/setup-java@v2
+        with:
+          java-version: '16'
+          distribution: 'adopt'
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      - name: Publish packages
+        run: gradle publish
+        env:
+          MAVEN_USERNAME: ${{ secrets.NERDTHINGS_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.NERDTHINGS_TOKEN }}
