@@ -280,14 +280,14 @@ String getVersionString(Project proj) {
 }
 
 String getPrettyName(Project proj) {
-    def project_base_name = rootProject.name
+    def project_base_name = proj.name
     if (proj.hasProperty('module_name'))
         project_base_name += "-${proj.module_name}"
     return project_base_name
 }
 
 String getArchiveBaseName(Project proj) {
-    return getPrettyName(proj) + "-${project.minecraft_version}"
+    return getPrettyName(proj) + "-${rootProject.minecraft_version}"
 }
 
 String getModId(Project proj) {
