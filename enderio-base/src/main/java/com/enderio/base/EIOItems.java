@@ -1,8 +1,10 @@
 package com.enderio.base;
 
 import com.enderio.base.common.item.EnderfaceItem;
+import com.enderio.base.common.item.GearItem;
 import com.enderio.base.common.item.MaterialItem;
 import com.enderio.base.common.util.ItemModelUtils;
+import com.enderio.base.data.model.item.EnderItemModel;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.util.NonNullLazyValue;
@@ -185,27 +187,27 @@ public class EIOItems {
 
     // region Gears
 
-    public static final ItemEntry<MaterialItem> GEAR_WOOD = materialItem("wood_gear")
+    public static final ItemEntry<GearItem> GEAR_WOOD = gearItem("wood_gear")
         .lang("Wooden Gear")
         .register();
 
-    public static final ItemEntry<MaterialItem> GEAR_STONE = materialItem("stone_gear")
+    public static final ItemEntry<GearItem> GEAR_STONE = gearItem("stone_gear")
         .lang("Stone Compound Gear")
         .register();
 
-    public static final ItemEntry<MaterialItem> GEAR_IRON = materialItem("iron_gear")
+    public static final ItemEntry<GearItem> GEAR_IRON = gearItem("iron_gear")
         .lang("Infinity Bimetal Gear")
         .register();
 
-    public static final ItemEntry<MaterialItem> GEAR_ENERGIZED = materialItem("energized_gear")
+    public static final ItemEntry<GearItem> GEAR_ENERGIZED = gearItem("energized_gear")
         .lang("Energized Bimetal Gear")
         .register();
 
-    public static final ItemEntry<MaterialItem> GEAR_VIBRANT = materialItem("vibrant_gear")
+    public static final ItemEntry<GearItem> GEAR_VIBRANT = gearItem("vibrant_gear")
         .lang("Vibrant Bimetal Gear")
         .register();
 
-    public static final ItemEntry<MaterialItem> GEAR_DARK_STEEL = materialItem("dark_bimetal_gear")
+    public static final ItemEntry<GearItem> GEAR_DARK_STEEL = gearItem("dark_bimetal_gear")
         .lang("Dark Bimetal Gear")
         .register();
 
@@ -293,6 +295,13 @@ public class EIOItems {
     private static ItemBuilder<MaterialItem, Registrate> materialItem(String name) {
         return REGISTRATE
             .item(name, props -> new MaterialItem(props, false))
+            .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.MATERIALS));
+    }
+    
+    private static ItemBuilder<GearItem, Registrate> gearItem(String name) {
+        return REGISTRATE
+            .item(name, props -> new GearItem(props, false))
+            .model((c,p) -> EnderItemModel.gearModel(p, c.getEntry()))
             .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.MATERIALS));
     }
 
