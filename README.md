@@ -19,9 +19,9 @@
     ·
     <a href="https://discord.gg/sgYk3Jr">Discord</a>
     ·
-    <a href="https://github.com/Rover656/EnderIO-Rewrite/issues">Report Bug</a>
+    <a href="https://github.com/Rover656/EnderIO-Rewrite/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D+Short+problem+description">Report Bug</a>
     ·
-    <a href="https://github.com/Rover656/EnderIO-Rewrite/issues">Request Feature</a>
+    <a href="https://github.com/Rover656/EnderIO-Rewrite/issues/new?assignees=&labels=&template=feature_request.md&title=">Request Feature</a>
   </p>
 </p>
 
