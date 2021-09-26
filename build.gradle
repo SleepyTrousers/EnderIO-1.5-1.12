@@ -164,6 +164,7 @@ subprojects {
 
     // Example for how to get properties into the manifest for reading at runtime.
     jar {
+        destinationDirectory.set(file("$rootDir/build/libs"))
         manifest {
             attributes([
                     "Specification-Title"     : "examplemod",
@@ -175,6 +176,12 @@ subprojects {
                     "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
             ])
         }
+    }
+
+    jar.finalizedBy('reobfJar')
+
+    clean {
+        delete "$rootDir/build/libs"
     }
 
 //    shadowJar {
@@ -196,14 +203,26 @@ subprojects {
         publications {
             mavenJava(MavenPublication) {
                 artifact jar
+                artifactId = getArchiveBaseName(project)
             }
         }
         repositories {
-            maven {
-                url "https://maven.nerdthings.dev"
-                credentials {
-                    username = System.getenv("MAVEN_USERNAME")
-                    password = System.getenv("MAVEN_PASSWORD")
+            def pubHypherion = System.getenv('MAVEN_URL') != null
+            if (pubHypherion) {
+                maven {
+                    url System.getenv('MAVEN_URL')
+                    credentials {
+                        username System.getenv('MAVEN_USER')
+                        password System.getenv('MAVEN_PASS')
+                    }
+                }
+            } else {
+                maven {
+                    url "https://maven.nerdthings.dev"
+                    credentials {
+                        username = System.getenv("MAVEN_USERNAME")
+                        password = System.getenv("MAVEN_PASSWORD")
+                    }
                 }
             }
         }
@@ -261,14 +280,14 @@ String getVersionString(Project proj) {
 }
 
 String getPrettyName(Project proj) {
-    def project_base_name = proj.name
+    def project_base_name = rootProject.name
     if (proj.hasProperty('module_name'))
         project_base_name += "-${proj.module_name}"
     return project_base_name
 }
 
 String getArchiveBaseName(Project proj) {
-    return getPrettyName(proj) + "-${rootProject.minecraft_version}"
+    return getPrettyName(proj) + "-${project.minecraft_version}"
 }
 
 String getModId(Project proj) {
