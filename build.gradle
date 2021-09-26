@@ -280,10 +280,9 @@ String getVersionString(Project proj) {
 }
 
 String getPrettyName(Project proj) {
-    def project_base_name = proj.name
     if (proj.hasProperty('module_name'))
-        project_base_name += "-${proj.module_name}"
-    return project_base_name
+        return rootProject.name + "-${proj.module_name}"
+    return proj.name
 }
 
 String getArchiveBaseName(Project proj) {
