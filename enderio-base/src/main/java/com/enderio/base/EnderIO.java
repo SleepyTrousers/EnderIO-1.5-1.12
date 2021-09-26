@@ -1,16 +1,17 @@
 package com.enderio.base;
 
+import javax.annotation.Nonnull;
+
 import com.enderio.base.data.recipe.standard.StandardRecipes;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.util.NonNullLazyValue;
+
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
-
-import javax.annotation.Nonnull;
 
 @Mod(EnderIO.MODID)
 public class EnderIO {
@@ -21,6 +22,7 @@ public class EnderIO {
 
     public EnderIO() {
         EIOItems.register();
+        EIOEnchantments.register();
 
         IEventBus modEventBus = FMLJavaModLoadingContext
             .get()

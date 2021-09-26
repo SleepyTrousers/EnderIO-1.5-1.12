@@ -7,6 +7,7 @@ import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.util.NonNullLazyValue;
 import com.tterrag.registrate.util.entry.ItemEntry;
+
 import net.minecraftforge.common.Tags;
 
 @SuppressWarnings("unused")
