@@ -24,34 +24,44 @@ public class AutoSmeltHandler {
 
     @SubscribeEvent
     public static void handleBlockBreak(BlockEvent.BreakEvent event) {
-        if (!event.getWorld().isClientSide() && EnchantmentHelper
-                .getItemEnchantmentLevel(EIOEnchantments.AUTO_SMELT.get(), event.getPlayer().getMainHandItem()) > 0) { // Checks
-                                                                                                                       // if
-                                                                                                                       // running
-                                                                                                                       // on
-                                                                                                                       // server
-                                                                                                                       // and
-                                                                                                                       // enchant
-                                                                                                                       // is
-                                                                                                                       // on
-                                                                                                                       // tool
+        // Checks if running on server and enchant is on tool
+        if (!event
+            .getWorld()
+            .isClientSide() && EnchantmentHelper.getItemEnchantmentLevel(EIOEnchantments.AUTO_SMELT.get(), event
+            .getPlayer()
+            .getMainHandItem()) > 0) {
             ServerLevel serverWorld = ((ServerLevel) event.getWorld()); // Casts IWorld to ServerWorld
             LootContext.Builder lootcontext$builder = (new LootContext.Builder(serverWorld)
-                    .withRandom(serverWorld.random)
-                    .withParameter(LootContextParams.ORIGIN,
-                            new Vec3(event.getPos().getX(), event.getPos().getY(), event.getPos().getZ()))
-                    .withParameter(LootContextParams.TOOL, event.getPlayer().getMainHandItem())); // Makes lootcontext
-                                                                                                  // to calculate drops
-            List<ItemStack> drops = event.getState().getDrops(lootcontext$builder); // Calculates drops
+                .withRandom(serverWorld.random)
+                .withParameter(LootContextParams.ORIGIN, new Vec3(event
+                    .getPos()
+                    .getX(), event
+                    .getPos()
+                    .getY(), event
+                    .getPos()
+                    .getZ()))
+                .withParameter(LootContextParams.TOOL, event
+                    .getPlayer()
+                    .getMainHandItem())); // Makes lootcontext
+            // to calculate drops
+            List<ItemStack> drops = event
+                .getState()
+                .getDrops(lootcontext$builder); // Calculates drops
             for (ItemStack item : drops) { // Iteration
-                ItemStack stack = serverWorld.getRecipeManager()
-                        .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(item), serverWorld)
-                        .map((r) -> r.assemble(new SimpleContainer(item))).filter(itemStack -> !itemStack.isEmpty())
-                        .map(itemStack -> ItemHandlerHelper.copyStackWithSize(itemStack,
-                                item.getCount() * itemStack.getCount()))
-                        .orElse(item); // Recipe as var
-                Containers.dropItemStack(event.getPlayer().level, event.getPos().getX(), event.getPos().getY(),
-                        event.getPos().getZ(), stack);
+                ItemStack stack = serverWorld
+                    .getRecipeManager()
+                    .getRecipeFor(RecipeType.SMELTING, new SimpleContainer(item), serverWorld)
+                    .map((r) -> r.assemble(new SimpleContainer(item)))
+                    .filter(itemStack -> !itemStack.isEmpty())
+                    .map(itemStack -> ItemHandlerHelper.copyStackWithSize(itemStack, item.getCount() * itemStack.getCount()))
+                    .orElse(item); // Recipe as var
+                Containers.dropItemStack(event.getPlayer().level, event
+                    .getPos()
+                    .getX(), event
+                    .getPos()
+                    .getY(), event
+                    .getPos()
+                    .getZ(), stack);
             }
             event.getPlayer().level.removeBlock(event.getPos(), false); // Breaks block
             event.setResult(Event.Result.DENY);

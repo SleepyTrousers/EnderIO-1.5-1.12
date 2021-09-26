@@ -35,5 +35,4 @@ public class AutoSmeltEnchantment extends EIOBaseEnchantment {
     protected boolean checkCompatibility(@Nonnull Enchantment pOther) {
         return super.checkCompatibility(pOther) && pOther != Enchantments.SILK_TOUCH;
     }
-
 }

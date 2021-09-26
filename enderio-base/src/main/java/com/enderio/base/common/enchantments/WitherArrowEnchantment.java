@@ -11,8 +11,7 @@ public class WitherArrowEnchantment extends EIOBaseEnchantment {
 
     //TODO config rarity?
     public WitherArrowEnchantment() {
-        super(Rarity.UNCOMMON, EIOEnchantmentCategories.ARROW, new EquipmentSlot[] { EquipmentSlot.MAINHAND },
-                () -> true);
+        super(Rarity.UNCOMMON, EIOEnchantmentCategories.ARROW, new EquipmentSlot[] { EquipmentSlot.MAINHAND }, () -> true);
     }
 
     @Override
@@ -33,8 +32,9 @@ public class WitherArrowEnchantment extends EIOBaseEnchantment {
 
     @Override
     public void doPostAttack(LivingEntity pAttacker, Entity pTarget, int pLevel) {
-        if (pTarget instanceof LivingEntity target
-                && EnchantmentHelper.getEnchantments(pAttacker.getMainHandItem()).containsKey(this)) {
+        if (pTarget instanceof LivingEntity target && EnchantmentHelper
+            .getEnchantments(pAttacker.getMainHandItem())
+            .containsKey(this)) {
             target.addEffect(new MobEffectInstance(MobEffects.WITHER, 200));
         }
     }

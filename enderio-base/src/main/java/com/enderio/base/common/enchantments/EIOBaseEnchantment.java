@@ -10,11 +10,11 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class EIOBaseEnchantment extends Enchantment {
+
     private EnchantmentCategory category;
     protected final @Nonnull Supplier<Boolean> enableFlag;
 
-    public EIOBaseEnchantment(Rarity pRarity, EnchantmentCategory pCategory, EquipmentSlot[] pApplicableSlots,
-            @Nonnull Supplier<Boolean> flag) {
+    public EIOBaseEnchantment(Rarity pRarity, EnchantmentCategory pCategory, EquipmentSlot[] pApplicableSlots, @Nonnull Supplier<Boolean> flag) {
         super(pRarity, pCategory, pApplicableSlots);
         this.category = pCategory;
         this.enableFlag = flag;

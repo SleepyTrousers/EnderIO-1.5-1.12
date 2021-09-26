@@ -9,11 +9,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class RepellentEnchantment extends EIOBaseEnchantment {
-
     //TODO config rarity?
     public RepellentEnchantment() {
-        super(Rarity.VERY_RARE, EnchantmentCategory.ARMOR,
-                new EquipmentSlot[] { EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET }, () -> true);
+        super(Rarity.VERY_RARE, EnchantmentCategory.ARMOR, new EquipmentSlot[] { EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET }, () -> true);
     }
 
     //TODO config?
@@ -48,10 +46,14 @@ public class RepellentEnchantment extends EIOBaseEnchantment {
     @Override
     public void doPostHurt(LivingEntity pUser, Entity pAttacker, int pLevel) {
         if (pUser instanceof Player && pAttacker instanceof LivingEntity attacker) {
-            if (pUser.getRandom().nextFloat() < getChance(pLevel)) {
+            if (pUser
+                .getRandom()
+                .nextFloat() < getChance(pLevel)) {
                 if (pAttacker instanceof Player) {
                     TeleportUtils.randomTeleport(attacker, getRange(pLevel));
-                } else if (pUser.getRandom().nextFloat() < .75F) { // non player repel config?
+                } else if (pUser
+                    .getRandom()
+                    .nextFloat() < .75F) { // non player repel config?
                     TeleportUtils.randomTeleport(attacker, getRange(pLevel));
                 }
             }

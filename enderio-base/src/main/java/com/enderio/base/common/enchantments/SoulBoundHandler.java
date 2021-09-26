@@ -23,15 +23,20 @@ public class SoulBoundHandler {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void deathHandler(LivingDropsEvent event) {
+        // TODO: Integration with EnderIO graves system.
         if (event.getEntityLiving() == null || event.getEntityLiving() instanceof FakePlayer || event.isCanceled()) {
             return;
         }
-        if (event.getEntityLiving().level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
+        if (event.getEntityLiving().level
+            .getGameRules()
+            .getBoolean(GameRules.RULE_KEEPINVENTORY)) {
             return;
         }
         ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
-        if (event.getEntityLiving()instanceof Player player) {
-            Iterator<ItemEntity> iter = event.getDrops().iterator();
+        if (event.getEntityLiving() instanceof Player player) {
+            Iterator<ItemEntity> iter = event
+                .getDrops()
+                .iterator();
             while (iter.hasNext()) {
                 ItemEntity ei = iter.next();
                 ItemStack item = ei.getItem();
@@ -51,10 +56,16 @@ public class SoulBoundHandler {
 
     public static void reviveHandler(RespawnEvent event) {
 
-        if (!event.getOldPlayer().isDeadOrDying()) {
+        if (!event
+            .getOldPlayer()
+            .isDeadOrDying()) {
             return;
         }
-        event.getOldPlayer().getInventory().items.forEach((item -> event.getNewPlayer().addItem(item)));
+        event
+            .getOldPlayer()
+            .getInventory().items.forEach((item -> event
+                .getNewPlayer()
+                .addItem(item)));
     }
 
     public static boolean isSoulBound(ItemStack item) {

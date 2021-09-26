@@ -26,5 +26,4 @@ public class SoulBoundEnchantment extends EIOBaseEnchantment {
     public int getMinCost(int pLevel) {
         return 16;
     }
-
 }

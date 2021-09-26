@@ -8,8 +8,7 @@ public class XPBoostEnchantment extends EIOBaseEnchantment {
 
     //TODO config
     public XPBoostEnchantment() {
-        super(Rarity.COMMON, EIOEnchantmentCategories.XPBOOST,
-                new EquipmentSlot[] { EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND }, () -> true);
+        super(Rarity.COMMON, EIOEnchantmentCategories.XPBOOST, new EquipmentSlot[] { EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND }, () -> true);
     }
 
     @Override
