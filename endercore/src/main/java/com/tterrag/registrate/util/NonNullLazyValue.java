@@ -5,7 +5,7 @@ import com.tterrag.registrate.util.nullness.NonnullType;
 
 import net.minecraft.util.LazyLoadedValue;
 
-public class NonNullLazyValue<T> extends LazyLoadedValue<T> implements NonNullSupplier<T> {
+public class NonNullLazyValue<T> extends LazyValue<T> implements NonNullSupplier<T> {
 
     public NonNullLazyValue(NonNullSupplier<T> supplier) {
         super(supplier);
@@ -13,6 +13,6 @@ public class NonNullLazyValue<T> extends LazyLoadedValue<T> implements NonNullSu
 
     @Override
     public @NonnullType T get() {
-        return super.get();
+        return super.getValue();
     }
 }
