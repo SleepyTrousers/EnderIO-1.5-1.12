@@ -10,3 +10,10 @@ authors="CrazyPants, tterrag, HenryLoenwind, MatthiasM, CyanideX, EpicSquid, Rov
 description="Compact conduits, painted things and all sorts of stuff and bling."
 displayURL="http://enderio.com/"
 logoFile="logo.png"
+
+[[dependencies.enderio]]
+modId="endercore"
+mandatory=true
+versionRange="[6.0,)"
+ordering="AFTER"
+side="BOTH"
