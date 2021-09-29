@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "enderio:item/end_steel_machine_chassis"
-  }
+  "parent": "enderio:block/end_steel_machine_chassis"
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "enderio:block/tinted_cube_all",
+  "textures": {
+    "all": "enderio:block/fused_quartz"
+  }
+}

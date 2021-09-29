@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top",
+  "textures": {
+    "bottom": "enderio:block/dark_steel_door_bottom",
+    "top": "enderio:block/dark_steel_door_top"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_glass_pane_side",
+  "textures": {
+    "pane": "enderio:block/dark_steel_bars",
+    "edge": "enderio:block/dark_steel_bars"
+  }
+}

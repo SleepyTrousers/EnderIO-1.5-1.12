@@ -1,6 +1,6 @@
 package com.enderio.base.common.enchantments;
 
-import com.enderio.base.common.util.TeleportUtils;
+import com.enderio.core.common.util.TeleportUtils;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;

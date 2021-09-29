@@ -6,6 +6,7 @@
   "mixins": [
   ],
   "client": [
+    "client.ItemRendererMixin"
   ],
   "minVersion": "0.8"
 }

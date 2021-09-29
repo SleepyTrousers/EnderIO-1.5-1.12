@@ -1,0 +1,9 @@
+{
+  "type": "enderio:broken_spawner",
+  "conditions": [
+    {
+      "condition": "block_state_property",
+      "block":"minecraft:spawner"
+    }
+  ]
+}

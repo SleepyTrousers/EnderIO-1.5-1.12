@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "enderio:item/simple_machine_chassis"
-  }
+  "parent": "enderio:block/simple_machine_chassis"
 }

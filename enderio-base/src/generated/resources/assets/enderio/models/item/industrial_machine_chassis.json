@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "enderio:item/industrial_machine_chassis"
-  }
+  "parent": "enderio:block/industrial_machine_chassis"
 }
