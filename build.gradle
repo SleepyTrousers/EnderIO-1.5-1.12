@@ -42,10 +42,14 @@ subprojects {
     println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
     minecraft {
 //        mappings channel: 'official', version: "${minecraft_version}"
-        mappings channel: 'parchment', version: "${mappings_version}-${minecraft_version}"
 
-        // TODO: Discuss: Do we still want to avoid ATs?
-        // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
+        if (project.hasProperty("transformer")) {
+            mappings channel: 'parchment', version: "${mappings_version}-${minecraft_version}"
+            println("Found accessTransformer for ${project.name}: ${project.transformer}")
+            accessTransformer = file(project.transformer)
+        } else {
+            mappings channel: 'parchment', version: "${mappings_version}-${minecraft_version}"
+        }
 
         // Default run configurations.
         runs {
@@ -138,10 +142,6 @@ subprojects {
         mavenLocal()
     }
 
-//    configurations {
-//        shade.extendsFrom library
-//    }
-
     dependencies {
         minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
@@ -178,10 +178,11 @@ subprojects {
         }
     }
 
-    //jar.finalizedBy('reobfJar')
+    // region Tasks
 
-    clean {
+    task cleanJars {
         delete "$rootDir/build/libs"
+        delete "$buildDir/libs"
     }
 
 //    shadowJar {
@@ -193,7 +194,6 @@ subprojects {
 //        shadowJar {}
 //    }
 
-    // However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
     if (project.hasProperty("releaseBuild") && project.releaseBuild == true) {
         jar.finalizedBy('reobfJar')
     }
@@ -228,6 +228,7 @@ subprojects {
         }
     }
 
+    // endregion
 }
 
 // region Versioning
