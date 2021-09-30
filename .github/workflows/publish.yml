@@ -27,5 +27,5 @@ jobs:
       - name: Publish packages
         run: gradle publish
         env:
-          MAVEN_USERNAME: ${{ secrets.NERDTHINGS_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.NERDTHINGS_TOKEN }}
+          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_TOKEN }}
