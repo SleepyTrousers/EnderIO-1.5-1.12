@@ -4,7 +4,6 @@ import com.enderio.base.EnderIO;
 import com.enderio.base.common.item.food.EnderiosItem;
 import com.enderio.base.common.item.spawner.BrokenSpawnerItem;
 import com.enderio.base.common.util.ItemModelUtils;
-import com.enderio.base.data.model.item.EnderItemModel;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.util.NonNullLazyValue;
@@ -255,7 +254,7 @@ public class EIOItems {
     private static ItemBuilder<GearItem, Registrate> gearItem(String name) {
         return REGISTRATE
             .item(name, props -> new GearItem(props, false))
-            .model((c, p) -> EnderItemModel.gearModel(p, c.getEntry()))
+            .model((c, p) -> ItemModelUtils.gearItem(c,p))
             .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.MAIN));
     }
 

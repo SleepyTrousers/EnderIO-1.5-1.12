@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import com.enderio.base.EIOEnchantments;
 import com.google.common.base.Throwables;
 
 import net.minecraft.core.BlockPos;

@@ -2,8 +2,6 @@ package com.enderio.base.common.enchantments;
 
 import java.util.List;
 
-import com.enderio.base.EIOEnchantments;
-
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
