@@ -12,6 +12,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+      MAVEN_PASSWORD: ${{ secrets.MAVEN_TOKEN }}
 
     steps:
       - uses: actions/checkout@v2
@@ -26,6 +29,3 @@ jobs:
         run: chmod +x ./gradlew
       - name: Publish packages
         run: gradle publish
-        env:
-          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.MAVEN_TOKEN }}
