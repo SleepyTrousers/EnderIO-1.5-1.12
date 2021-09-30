@@ -3,7 +3,7 @@ package com.enderio.base.client.renderers;
 import java.util.Map;
 
 import com.enderio.base.common.blockentity.GraveBlockEntity;
-import com.enderio.base.common.util.EIOCapabilityManager;
+import com.enderio.base.common.capability.EIOCapabilities;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
@@ -37,7 +37,7 @@ public class GraveRenderer implements BlockEntityRenderer<BlockEntity>{
         Direction direction = null;//TODO if we make the grave rotatable
         SkullModelBase skullmodelbase = new SkullModel(this.context.bakeLayer(ModelLayers.PLAYER_HEAD));
         RenderType[] rendertype = new RenderType[] {RenderType.entityCutoutNoCull(DefaultPlayerSkin.getDefaultSkin())};// other way?
-        grave.getCapability(EIOCapabilityManager.OWNER).ifPresent((cap) -> {
+        grave.getCapability(EIOCapabilities.OWNER).ifPresent((cap) -> {
             if (cap.getUUID() != null) {
                 rendertype[0] = getRenderType(pBlockEntity.getLevel().getPlayerByUUID(cap.getUUID()));
             }

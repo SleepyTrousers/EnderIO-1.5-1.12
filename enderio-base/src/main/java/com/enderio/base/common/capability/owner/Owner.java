@@ -1,4 +1,4 @@
-package com.enderio.base.common.util;
+package com.enderio.base.common.capability.owner;
 
 import java.util.UUID;
 

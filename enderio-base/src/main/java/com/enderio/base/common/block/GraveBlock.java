@@ -2,7 +2,7 @@ package com.enderio.base.common.block;
 
 import com.enderio.base.common.blockentity.EIOBlockEntities;
 import com.enderio.base.common.blockentity.GraveBlockEntity;
-import com.enderio.base.common.util.EIOCapabilityManager;
+import com.enderio.base.common.capability.EIOCapabilities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Containers;
@@ -29,7 +29,7 @@ public class GraveBlock extends Block implements EntityBlock{
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         BlockEntity be = pLevel.getBlockEntity(pPos);
         if (be instanceof GraveBlockEntity grave) {
-            grave.getCapability(EIOCapabilityManager.OWNER, pHit.getDirection()).ifPresent(owner -> {
+            grave.getCapability(EIOCapabilities.OWNER, pHit.getDirection()).ifPresent(owner -> {
                 if (pPlayer.getUUID().equals(owner.getUUID()) || owner.getUUID() == null) {
                     grave.getItems().forEach(item ->{
                         if (!pPlayer.addItem(item)) {
@@ -55,7 +55,7 @@ public class GraveBlock extends Block implements EntityBlock{
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
         if (pLevel.getBlockEntity(pPos) instanceof GraveBlockEntity grave) {
-            grave.getCapability(EIOCapabilityManager.OWNER).ifPresent(owner -> owner.setUUID(pPlacer.getUUID()));
+            grave.getCapability(EIOCapabilities.OWNER).ifPresent(owner -> owner.setUUID(pPlacer.getUUID()));
         }
     }
 }

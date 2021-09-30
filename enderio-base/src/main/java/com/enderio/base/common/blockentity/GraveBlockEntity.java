@@ -2,9 +2,9 @@ package com.enderio.base.common.blockentity;
 
 import java.util.Collection;
 
-import com.enderio.base.common.util.EIOCapabilityManager;
-import com.enderio.base.common.util.IOwner;
-import com.enderio.base.common.util.Owner;
+import com.enderio.base.common.capability.EIOCapabilities;
+import com.enderio.base.common.capability.owner.IOwner;
+import com.enderio.base.common.capability.owner.Owner;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -51,7 +51,7 @@ public class GraveBlockEntity extends BlockEntity{
     
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-        if (cap == EIOCapabilityManager.OWNER) {
+        if (cap == EIOCapabilities.OWNER) {
             return this.ownerLazy.cast();
         }
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
