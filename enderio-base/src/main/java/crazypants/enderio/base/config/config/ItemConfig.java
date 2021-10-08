@@ -87,6 +87,6 @@ public class ItemConfig {
   public static final IValue<Boolean> dpDisabled = DP.make("disableDeathUrn", false, //
       "Disables the Death Urn completely. Don't forget to disable the item recipe when you enable this.").sync();
   public static final IValue<Boolean> dpPrivate = DP.make("protectedGraves", true, //
-      "Determine if a Death Urn can be looted by everone or only by the owner. Creative mode players can loot them always.").sync();
+      "Determine if a Death Urn can be looted by everyone or only by the owner. Creative mode players can loot them always.").sync();
 
 }

@@ -23,6 +23,10 @@ public final class BlockConfig {
   public static final IValue<Float> darkSteelLadderSpeedBoost = F.make("darkSteelLadderSpeedBoost", 0.06f, //
       "Speed boost, in blocks per tick, that the DS ladder gives over the vanilla ladder.").setRange(0, 0.6).sync();
 
+  public static final IValue<int[]> graveOffset = F.make("graveOffset", new int[] { 0, 0, 0 }, //
+      "Add an offset to the Grave spawn position, to account for things like Travelers Backpack"
+  ).sync();
+
   public static final IValueFactoryEIO GLASS = F.section(".glass");
 
   public static final IValue<Boolean> clearGlassConnectToFusedQuartz = GLASS.make("clearGlassConnectToFusedQuartz", false, //

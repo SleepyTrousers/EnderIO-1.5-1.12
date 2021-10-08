@@ -11,6 +11,7 @@ import com.enderio.core.common.util.NullHelper;
 import crazypants.enderio.base.EnderIO;
 import crazypants.enderio.base.Log;
 import crazypants.enderio.base.block.grave.TileGrave;
+import crazypants.enderio.base.config.config.BlockConfig;
 import crazypants.enderio.base.config.config.ItemConfig;
 import crazypants.enderio.base.init.ModObject;
 import crazypants.enderio.base.integration.baubles.BaublesUtil;
@@ -46,7 +47,7 @@ public class HandlerSoulBound {
 
   /*
    * This is called the moment the player dies and drops his stuff.
-   * 
+   *
    * We go early, so we can get our items before other mods put them into some grave. Also remove them from the list so they won't get duped. If the inventory
    * overflows, e.g. because everything there and the armor is soulbound, let the remainder be dropped/graved.
    */
@@ -171,6 +172,10 @@ public class HandlerSoulBound {
       while (player.world.isAirBlock(pos.down()) && pos.getY() > 0) {
         pos = pos.down();
       }
+
+      int[] graveOffset = BlockConfig.graveOffset.get();
+      pos = pos.add(graveOffset[0], graveOffset[1], graveOffset[2]);
+
       player.world.setBlockState(pos, ModObject.blockDeathPouch.getBlockNN().getDefaultState());
       Log.info("Placed grave for " + player.getName() + " at " + pos);
       TileGrave te = BlockEnder.getAnyTileEntity(player.world, pos, TileGrave.class);
@@ -196,7 +201,7 @@ public class HandlerSoulBound {
 
   /*
    * This is called when the user presses the "respawn" button. The original inventory would be empty, but onPlayerDeath() above placed items in it.
-   * 
+   *
    * Note: Without other death-modifying mods, the content of the old inventory would always fit into the new one (both being empty but for soulbound items in
    * the old one) and the old one would be discarded just after this method. But better play it safe and assume that an overflow is possible and that another
    * mod may move stuff out of the old inventory, too.
