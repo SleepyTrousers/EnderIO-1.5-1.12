@@ -4,7 +4,7 @@ buildscript {
         mavenCentral()
         maven {
             name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            url = "https://files.minecraftforge.net/maven"
         }
         maven {
             url "https://plugins.gradle.org/m2/"
@@ -100,28 +100,22 @@ allprojects {
 
     repositories {
         mavenCentral()
-        //maven { url = "http://tehnut.info/maven" }
-        maven { url = "http://maven.tterrag.com" }
-        maven { url = "http://maven2.tterrag.com" }
-        maven { url = "http://dvs1.progwml6.com/files/maven" }
-        maven { url = "http://files.minecraftforge.net/maven" }
-        maven { url = "http://maven.cil.li/" } // OpenComputers
-        maven { url = "http://maven.ic2.player.to" }
+        maven { url = "https://maven.tterrag.com" }
+        maven { url = "https://dvs1.progwml6.com/files/maven" }
+        maven { url = "https://maven.cil.li/" } // OpenComputers
+        maven { url = "https://maven.ic2.player.to" }
         maven { url = "https://maven.mcmoddev.com" } // ???, dead as of 2021-01-10, back as of 2021-05-24
-        //maven { url = "https://mmdmaven.blamejared.com" } // temp replacement for ^
         maven { url = "https://maven.blamejared.com" } // temp replacement for ^
-        maven { url = "http://mod-buildcraft.com/maven/" }
+        maven { url = "https://mod-buildcraft.com/maven/" }
         maven { url = "https://maven.latmod.com" } // FTBLib
-        maven { url = "http://maven.covers1624.net/" } // CoFHCore
-        //maven { url = "http://cc.crzd.me/maven/" } // ComputerCraft, dead as of 2021-05-24
+        maven { url = "https://maven.covers1624.net/" } // CoFHCore
         maven { url = "https://www.cursemaven.com" } // Mekanism
-        //maven { url = "https://repo.raoulvdberge.com/" } // Refined Storage (new)
         //maven { url = "https://repo.refinedmods.com/" } // Refined Storage (double-plus new)
-        maven { url = "https://maven.hypherionmc.me/" } // our backups for vanished sources
+        maven { url = "https://maven.hypherionmc.me/releases" } // our backups for vanished sources
         // maven { url = "https://modmaven.dev/" } // appeng etc. but mostly 1.16 stuff
         mavenLocal()
     }
-    
+
     configurations {
         // configuration that holds jars to embed inside the jar
         embed
@@ -204,7 +198,7 @@ allprojects {
 			def outputFile = new File(resdir, "${baseFilename}.pdf")
 			com.vladsch.flexmark.pdf.converter.PdfConverterExtension.exportToPdf(outputFile.path,
 				"<html><head></head><body><div style='white-space:pre-wrap; font-family:monospace;'>" +
-				groovy.xml.XmlUtil.escapeXml(inputFile.text) + 
+				groovy.xml.XmlUtil.escapeXml(inputFile.text) +
 				"</div></body></html>", "", new com.vladsch.flexmark.util.options.MutableDataSet())
 		}
 	}
@@ -258,7 +252,7 @@ allprojects {
 	    classifier = 'recipes'
 	    extension = 'zip'
 	    enabled = rootProject == project
-	
+
 	    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 	}
 
