@@ -20,3 +20,11 @@ Below sounds are used under [CC BY 3.0](https://creativecommons.org/licenses/by/
 - https://freesound.org/people/LiamG_SFX/
 - https://freesound.org/people/kuchenanderung1/
 - https://freesound.org/people/170048@virtualwindow.co.za/
+
+### How to compile
+
+1. Clone this repository.
+2. Download the matching EnderCore deobf jar from https://maven.tterrag.com/ and place it in `lib`.
+3. Duplicate `user.properties.example` and rename it to `user.properties` in the root folder of this repository.
+4. `./gradlew setupDecompWorkspace`
+5. `./gradlew build`

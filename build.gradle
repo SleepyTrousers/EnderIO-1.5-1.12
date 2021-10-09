@@ -4,7 +4,7 @@ buildscript {
         mavenCentral()
         maven {
             name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            url = "https://maven.minecraftforge.net/"
         }
         maven {
             url "https://plugins.gradle.org/m2/"
@@ -104,7 +104,7 @@ allprojects {
         maven { url = "http://maven.tterrag.com" }
         maven { url = "http://maven2.tterrag.com" }
         maven { url = "http://dvs1.progwml6.com/files/maven" }
-        maven { url = "http://files.minecraftforge.net/maven" }
+        maven { url = "https://maven.minecraftforge.net" }
         maven { url = "http://maven.cil.li/" } // OpenComputers
         maven { url = "http://maven.ic2.player.to" }
         maven { url = "https://maven.mcmoddev.com" } // ???, dead as of 2021-01-10, back as of 2021-05-24
@@ -117,7 +117,7 @@ allprojects {
         maven { url = "https://www.cursemaven.com" } // Mekanism
         //maven { url = "https://repo.raoulvdberge.com/" } // Refined Storage (new)
         //maven { url = "https://repo.refinedmods.com/" } // Refined Storage (double-plus new)
-        maven { url = "https://maven.hypherionmc.me/" } // our backups for vanished sources
+        maven { url = "https://maven.hypherionmc.me/releases" } // our backups for vanished sources
         // maven { url = "https://modmaven.dev/" } // appeng etc. but mostly 1.16 stuff
         mavenLocal()
     }
