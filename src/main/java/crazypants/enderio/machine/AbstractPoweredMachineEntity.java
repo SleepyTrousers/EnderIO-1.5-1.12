@@ -14,15 +14,15 @@ import crazypants.enderio.network.PacketHandler;
 public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity implements IInternalPoweredTile {
 
   // Power
-  private Capacitors capacitorType = Capacitors.BASIC_CAPACITOR;
-  private ICapacitor capacitor = Capacitors.BASIC_CAPACITOR.capacitor;
+  private Capacitors capacitorType;
+  private ICapacitor capacitor;
 
-  private int storedEnergyRF = 0;
+  private int storedEnergyRF;
   protected float lastSyncPowerStored = -1;
 
   protected AbstractPoweredMachineEntity(SlotDefinition slotDefinition) {
     super(slotDefinition);
-    setCapacitor(Capacitors.BASIC_CAPACITOR);
+    capacitorType = Capacitors.BASIC_CAPACITOR;
   }
 
   @Override
@@ -40,7 +40,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
       return;
     }
     boolean powerChanged = (lastSyncPowerStored != storedEnergyRF && shouldDoWorkThisTick(5));
-    if(powerChanged) {
+    if (powerChanged) {
       lastSyncPowerStored = storedEnergyRF;
       PacketHandler.sendToAllAround(new PacketPowerStorage(this), this);
     }
@@ -55,7 +55,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
 
   @Override
   public int getMaxEnergyRecieved(ForgeDirection dir) {
-    if(isSideDisabled(dir.ordinal())) {
+    if (isSideDisabled(dir.ordinal())) {
       return 0;
     }
     return getCapacitor().getMaxEnergyReceived();
@@ -93,18 +93,16 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
 
   public ICapacitor getCapacitor() {
 
-	  if(capacitor != null) {
-		    return capacitor;
-	  }
+    if (capacitor != null) {
+      return capacitor;
+    } else if (capacitorType == Capacitors.TOTEMIC_CAPACITOR) {
+      ItemStack contents = inventory[slotDefinition.minUpgradeSlot];
+      if (contents != null && contents.getItem() == EnderIO.itemBasicCapacitor) {
+        return EnderIO.itemBasicCapacitor.getCapacitor(contents);
+      }
+    }
 
-	  else if(capacitorType == Capacitors.TOTEMIC_CAPACITOR) {
-        ItemStack contents = inventory[slotDefinition.minUpgradeSlot];
-        if(contents != null && contents.getItem() == EnderIO.itemBasicCapacitor) {
-        	return EnderIO.itemBasicCapacitor.getCapacitor(contents);
-        }
-	  }
-
-	  return capacitorType.capacitor;
+    return capacitorType.capacitor;
 
   }
 
@@ -122,15 +120,13 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   public void setCapacitor(Capacitors capacitorType) {
     this.capacitorType = capacitorType;
 
-    if(capacitorType == Capacitors.TOTEMIC_CAPACITOR) {
-        ItemStack contents = inventory[slotDefinition.minUpgradeSlot];
-        if(contents != null && contents.getItem() == EnderIO.itemBasicCapacitor) {
-        	setCapacitor(EnderIO.itemBasicCapacitor.getCapacitor(contents));
-        }
-    }
-
-    else {
-    	this.capacitor = capacitorType.capacitor;
+    if (capacitorType == Capacitors.TOTEMIC_CAPACITOR) {
+      ItemStack contents = inventory[slotDefinition.minUpgradeSlot];
+      if (contents != null && contents.getItem() == EnderIO.itemBasicCapacitor) {
+        setCapacitor(EnderIO.itemBasicCapacitor.getCapacitor(contents));
+      }
+    } else {
+      this.capacitor = capacitorType.capacitor;
     }
 
     onCapacitorTypeChange();
@@ -148,7 +144,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   @Override
   public void setInventorySlotContents(int slot, ItemStack contents) {
     super.setInventorySlotContents(slot, contents);
-    if(slotDefinition.isUpgradeSlot(slot)) {
+    if (slotDefinition.isUpgradeSlot(slot)) {
       updateCapacitorFromSlot();
     }
   }
@@ -156,19 +152,19 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   @Override
   public ItemStack decrStackSize(int fromSlot, int amount) {
     ItemStack res = super.decrStackSize(fromSlot, amount);
-    if(slotDefinition.isUpgradeSlot(fromSlot)) {
+    if (slotDefinition.isUpgradeSlot(fromSlot)) {
       updateCapacitorFromSlot();
     }
     return res;
   }
 
   private void updateCapacitorFromSlot() {
-    if(slotDefinition.getNumUpgradeSlots() <= 0) {
+    if (slotDefinition.getNumUpgradeSlots() <= 0) {
       setCapacitor(Capacitors.BASIC_CAPACITOR);
       return;
     }
     ItemStack contents = inventory[slotDefinition.minUpgradeSlot];
-    if(contents == null || contents.getItem() != EnderIO.itemBasicCapacitor) {
+    if (contents == null || contents.getItem() != EnderIO.itemBasicCapacitor) {
       setCapacitor(Capacitors.BASIC_CAPACITOR);
     } else {
       setCapacitor(Capacitors.values()[contents.getItemDamage()]);
@@ -183,54 +179,7 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
   @Override
   public void readCommon(NBTTagCompound nbtRoot) {
     super.readCommon(nbtRoot);
-    handleCapacitorLoading(nbtRoot);
-    handleStoredEnergyLoading(nbtRoot);
-  }
-
-  /**
-   * Write state common to both block and item
-   */
-  @Override
-  public void writeCommon(NBTTagCompound nbtRoot) {
-    super.writeCommon(nbtRoot);
-
-    //Write Energy
-    nbtRoot.setInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY, storedEnergyRF);
-    //Write Capacitor Type DEPRECATED
-    nbtRoot.setShort("capacitorType", (short) capacitorType.ordinal());
-    //Write Actual Capacitor
-    writeCap(nbtRoot);
-  }
-
-  private static final String CAPACITOR_TAG_STRING = "internalCapacitor";
-
-  private void writeCap(NBTTagCompound nbtRoot) {
-    NBTTagCompound cap = new NBTTagCompound();
-    cap.setInteger("MaxEnergyStored", capacitor.getMaxEnergyStored());
-    cap.setInteger("MaxEnergyExtracted", capacitor.getMaxEnergyExtracted());
-    cap.setInteger("MaxEnergyReceived", capacitor.getMaxEnergyReceived());
-    cap.setInteger("Tier", capacitor.getTier());
-    nbtRoot.setTag(CAPACITOR_TAG_STRING, cap);
-  }
-
-  private void readCap(NBTTagCompound nbtRoot) {
-    NBTTagCompound cap = nbtRoot.getCompoundTag(CAPACITOR_TAG_STRING);
-    setCapacitor(new BasicCapacitor(
-            cap.getInteger("Tier"),
-            cap.getInteger("MaxEnergyReceived"),
-            cap.getInteger("MaxEnergyStored"),
-            cap.getInteger("MaxEnergyExtracted")
-    ));
-  }
-
-  private void handleCapacitorLoading(NBTTagCompound nbtRoot){
-    if (nbtRoot.hasKey(CAPACITOR_TAG_STRING))
-      readCap(nbtRoot);
-    else  //Read Capacitor Type DEPRECATED
-      setCapacitor(Capacitors.values()[nbtRoot.getShort("capacitorType")]);
-  }
-
-  private void handleStoredEnergyLoading(NBTTagCompound nbtRoot){
+    setCapacitor(Capacitors.values()[nbtRoot.getShort("capacitorType")]);
     int energy;
     if (nbtRoot.hasKey("storedEnergy")) {
       float storedEnergyMJ = nbtRoot.getFloat("storedEnergy");
@@ -239,5 +188,15 @@ public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity
       energy = nbtRoot.getInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY);
     }
     setEnergyStored(energy);
+  }
+
+  /**
+   * Write state common to both block and item
+   */
+  @Override
+  public void writeCommon(NBTTagCompound nbtRoot) {
+    super.writeCommon(nbtRoot);
+    nbtRoot.setInteger(PowerHandlerUtil.STORED_ENERGY_NBT_KEY, storedEnergyRF);
+    nbtRoot.setShort("capacitorType", (short) capacitorType.ordinal());
   }
 }

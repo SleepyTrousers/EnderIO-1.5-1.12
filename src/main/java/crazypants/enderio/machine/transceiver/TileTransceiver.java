@@ -48,6 +48,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   private final SetMultimap<ChannelType, Channel> sendChannels = MultimapBuilder.enumKeys(ChannelType.class).hashSetValues().build();
   private final SetMultimap<ChannelType, Channel> recieveChannels = MultimapBuilder.enumKeys(ChannelType.class).hashSetValues().build();
 
+  private final ICapacitor capacitor = new BasicCapacitor(0, Config.transceiverMaxIoRF * 2, 500000, Config.transceiverMaxIoRF);
   private boolean sendChannelsDirty = false;
   private boolean recieveChannelsDirty = false;
   private boolean registered = false;
@@ -73,7 +74,6 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
 
     sendItemFilter = new ItemFilter(true);
     recieveItemFilter = new ItemFilter(true);
-    setCapacitor(new BasicCapacitor(0,Config.transceiverMaxIoRF * 2, 500000, Config.transceiverMaxIoRF));
   }
 
   public EnderRailController getRailController() {
@@ -158,6 +158,12 @@ public class TileTransceiver extends AbstractPoweredTaskEntity implements IFluid
   @Override
   public boolean isActive() {
     return hasPower();
+  }
+
+
+  @Override
+  public ICapacitor getCapacitor() {
+    return capacitor;
   }
 
   @Override
