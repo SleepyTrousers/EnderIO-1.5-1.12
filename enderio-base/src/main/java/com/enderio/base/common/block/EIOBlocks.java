@@ -13,13 +13,13 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.IronBarsBlock;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraftforge.client.model.generators.BlockModelProvider;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
 
 @SuppressWarnings("unused")
 public class EIOBlocks {
@@ -117,6 +117,32 @@ public class EIOBlocks {
         .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("block/end_steel_bars")))
         .build()
         .register();
+
+
+    public static final BlockEntry<DarkSteelPressurePlateBlock> DARK_STEEL_PRESSURE_PLATE = makePlate();
+
+    private static BlockEntry<DarkSteelPressurePlateBlock> makePlate() {
+        BlockBuilder<DarkSteelPressurePlateBlock, Registrate> bb = REGISTRATE.block("dark_steel_pressure_plate", Material.METAL, DarkSteelPressurePlateBlock::new);
+        bb = bb.properties(props -> props.sound(SoundType.METAL).color(MaterialColor.METAL));
+
+        bb.blockstate((ctx, prov) -> {
+
+            BlockModelProvider modProv = prov.models();
+            ModelFile dm = modProv.withExistingParent(ctx.getName() + "_down", prov.mcLoc("block/pressure_plate_down")).texture("texture", prov.modLoc("block/block_dark_steel_pressure_plate"));
+            ModelFile um = modProv.withExistingParent(ctx.getName() + "_up", prov.mcLoc("block/pressure_plate_up")).texture("texture", prov.modLoc("block/block_dark_steel_pressure_plate"));
+
+            VariantBlockStateBuilder vb = prov.getVariantBuilder(ctx.get());
+            vb.partialState().with(PressurePlateBlock.POWERED, true).addModels(new ConfiguredModel(dm));
+            vb.partialState().with(PressurePlateBlock.POWERED, false).addModels(new ConfiguredModel(um));
+        });
+
+        var itemBuilder = bb.item();
+        itemBuilder.model((ctx, prov) -> prov.withExistingParent(ctx.getName(), prov.modLoc("block/dark_steel_pressure_plate_up")));
+        itemBuilder.group(() -> EIOCreativeTabs.BLOCKS);
+        bb = itemBuilder.build();
+
+        return bb.register();
+    }
 
     // endregion
 
