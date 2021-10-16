@@ -118,37 +118,25 @@ public class EIOBlocks {
         .build()
         .register();
 
-    public static final BlockEntry<EIOPressurePlateBlock> DARK_STEEL_PRESSURE_PLATE = plateBlock("dark_steel_pressure_plate",
+    // endregion
+
+    // region Pressure Plates
+
+    public static final BlockEntry<EIOPressurePlateBlock> DARK_STEEL_PRESSURE_PLATE = pressurePlateBlock("dark_steel_pressure_plate",
         new ResourceLocation("enderio", "block/block_dark_steel_pressure_plate"), EIOPressurePlateBlock.PLAYER, false);
 
-    public static final BlockEntry<EIOPressurePlateBlock> DARK_STEEL_PRESSURE_PLATE_SILENT = plateBlock("dark_steel_pressure_plate_silent",
+    public static final BlockEntry<EIOPressurePlateBlock> DARK_STEEL_PRESSURE_PLATE_SILENT = pressurePlateBlock("silent_dark_steel_pressure_plate",
         new ResourceLocation("enderio", "block/block_dark_steel_pressure_plate"), EIOPressurePlateBlock.PLAYER, true);
 
-    public static final BlockEntry<EIOPressurePlateBlock> SOULARIUM_PRESSURE_PLATE = plateBlock("soularium_pressure_plate",
+    public static final BlockEntry<EIOPressurePlateBlock> SOULARIUM_PRESSURE_PLATE = pressurePlateBlock("soularium_pressure_plate",
         new ResourceLocation("enderio", "block/block_soularium_pressure_plate"), EIOPressurePlateBlock.HOSTILE_MOB, false);
 
-    public static final BlockEntry<EIOPressurePlateBlock> SOULARIUM_PRESSURE_PLATE_SILENT = plateBlock("soularium_pressure_plate_silent",
+    public static final BlockEntry<EIOPressurePlateBlock> SOULARIUM_PRESSURE_PLATE_SILENT = pressurePlateBlock("silent_soularium_pressure_plate",
         new ResourceLocation("enderio", "block/block_soularium_pressure_plate"), EIOPressurePlateBlock.HOSTILE_MOB, true);
 
+    private static BlockEntry<EIOPressurePlateBlock> pressurePlateBlock(String name, ResourceLocation texture, EIOPressurePlateBlock.Detector type, boolean silent) {
 
-    public static final BlockEntry<EIOPressurePlateBlock> WOOD_PRESSURE_PLATE_SILENT = plateBlock("wood_pressure_plate_silent", Material.WOOD,
-        new ResourceLocation("block/oak_planks"), PressurePlateBlock.Sensitivity.MOBS, null, true);
-
-    private static BlockEntry<EIOPressurePlateBlock> plateBlock(String name, ResourceLocation texture, EIOPressurePlateBlock.DetectorType type, boolean silent) {
-        return plateBlock(name, Material.METAL, texture,type, silent);
-    }
-
-    private static BlockEntry<EIOPressurePlateBlock> plateBlock(String name, Material material, ResourceLocation texture, EIOPressurePlateBlock.DetectorType type, boolean silent) {
-        return plateBlock(name,material,texture, PressurePlateBlock.Sensitivity.MOBS, type,silent);
-    }
-
-    private static BlockEntry<EIOPressurePlateBlock> plateBlock(String name, Material material, ResourceLocation texture, PressurePlateBlock.Sensitivity sensitivity, EIOPressurePlateBlock.DetectorType type, boolean silent) {
-        BlockBuilder<EIOPressurePlateBlock, Registrate> bb = REGISTRATE.block(name, material,
-            (props) -> new EIOPressurePlateBlock(props, sensitivity, type, silent));
-
-        bb = bb.properties(props -> props
-            .sound(SoundType.METAL)
-            .color(MaterialColor.METAL));
+        BlockBuilder<EIOPressurePlateBlock, Registrate> bb = REGISTRATE.block(name, Material.METAL, (props) -> new EIOPressurePlateBlock(props, type, silent));
 
         bb.blockstate((ctx, prov) -> {
 
@@ -157,7 +145,7 @@ public class EIOBlocks {
                 .withExistingParent(ctx.getName() + "_down", prov.mcLoc("block/pressure_plate_down"))
                 .texture("texture", texture);
             ModelFile um = modProv
-                .withExistingParent(ctx.getName() + "_up", prov.mcLoc("block/pressure_plate_up"))
+                .withExistingParent(ctx.getName() , prov.mcLoc("block/pressure_plate_up"))
                 .texture("texture", texture);
 
             VariantBlockStateBuilder vb = prov.getVariantBuilder(ctx.get());
@@ -171,10 +159,39 @@ public class EIOBlocks {
                 .addModels(new ConfiguredModel(um));
         });
 
-        var itemBuilder = bb.item();
-        //itemBuilder.model((ctx, prov) -> prov.withExistingParent(ctx.getName(), prov.modLoc("block/dark_steel_pressure_plate_up")));
-        itemBuilder.model((ctx, prov) -> prov.withExistingParent(ctx.getName(), prov.modLoc("block/" + name + "_up")));
+        bb = bb.item().group(() -> EIOCreativeTabs.BLOCKS).build();
+        return bb.register();
+    }
 
+    public static final BlockEntry<SilentPressurePlateBlock> SILENT_OAK_PRESSURE_PLATE = silentPressurePlateBlock((PressurePlateBlock)Blocks.OAK_PRESSURE_PLATE, "oak");
+
+    public static final BlockEntry<SilentPressurePlateBlock> SILENT_STONE_PRESSURE_PLATE = silentPressurePlateBlock((PressurePlateBlock)Blocks.STONE_PRESSURE_PLATE, "stone");
+
+    private static BlockEntry<SilentPressurePlateBlock> silentPressurePlateBlock(PressurePlateBlock block, String materialName) {
+
+        BlockBuilder<SilentPressurePlateBlock, Registrate> bb = REGISTRATE.block("silent_" + materialName + "_pressure_plate",
+            (props) -> new SilentPressurePlateBlock(props, block));
+
+        ResourceLocation upModelLoc = new ResourceLocation(materialName + "_pressure_plate");
+
+        bb.blockstate((ctx, prov) -> {
+
+            ModelFile um = prov.models().getExistingFile(upModelLoc);
+            ModelFile dm = prov.models().getExistingFile(new ResourceLocation(materialName + "_pressure_plate_down"));
+
+            VariantBlockStateBuilder vb = prov.getVariantBuilder(ctx.get());
+            vb
+                .partialState()
+                .with(PressurePlateBlock.POWERED, true)
+                .addModels(new ConfiguredModel(dm));
+            vb
+                .partialState()
+                .with(PressurePlateBlock.POWERED, false)
+                .addModels(new ConfiguredModel(um));
+        });
+
+        var itemBuilder = bb.item();
+        itemBuilder.model((ctx, prov) -> prov.withExistingParent(ctx.getName(), upModelLoc));
         itemBuilder.group(() -> EIOCreativeTabs.BLOCKS);
         bb = itemBuilder.build();
 
@@ -287,7 +304,7 @@ public class EIOBlocks {
 
     //misc Region
 
-    public static final BlockEntry<GraveBlock> GRAVE = REGISTRATE.block("grave", Material.STONE,(p) -> new GraveBlock(p))
+    public static final BlockEntry<GraveBlock> GRAVE = REGISTRATE.block("grave", Material.STONE, GraveBlock::new)
             .properties(props -> props
                     .strength(-1.0F, 3600000.0F)
                     .noDrops()
