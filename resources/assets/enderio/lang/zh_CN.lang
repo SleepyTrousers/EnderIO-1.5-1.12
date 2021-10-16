@@ -933,16 +933,16 @@ enderio.darksteel.upgrade.gogglesOfRevealing.disabled=魔法隐藏在了普通�
 enderio.darksteel.upgrade.naturalistEye.name=自然之眼
 enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=显示已授粉的树叶
 
-enderio.darksteel.upgrade.apiaristArmor.helmet.name=养蜂人之帽
+enderio.darksteel.upgrade.apiaristArmor.helmet.name=养蜂员之帽
 enderio.darksteel.upgrade.apiaristArmor.helmet.tooltip.detailed.line1=提供保护以减少蜜蜂的伤害
 
-enderio.darksteel.upgrade.apiaristArmor.chestplate.name=养蜂人之衣
+enderio.darksteel.upgrade.apiaristArmor.chestplate.name=养蜂员之衣
 enderio.darksteel.upgrade.apiaristArmor.chestplate.tooltip.detailed.line1=提供保护以减少蜜蜂的伤害
 
-enderio.darksteel.upgrade.apiaristArmor.leggings.name=养蜂人之裤
+enderio.darksteel.upgrade.apiaristArmor.leggings.name=养蜂员之裤
 enderio.darksteel.upgrade.apiaristArmor.leggings.tooltip.detailed.line1=提供保护以减少蜜蜂的伤害
 
-enderio.darksteel.upgrade.apiaristArmor.boots.name=养蜂人之鞋
+enderio.darksteel.upgrade.apiaristArmor.boots.name=养蜂员之鞋
 enderio.darksteel.upgrade.apiaristArmor.boots.tooltip.detailed.line1=提供保护以减少蜜蜂的伤害
 
 item.itemGliderWing.name=滑翔翼
@@ -1035,7 +1035,7 @@ enderio.gui.machine.ioMode.disabled=禁用
 enderio.gui.machine.ioMode.pullPush=推 / 拉
 enderio.gui.machine.ioMode.pullPush.colored=%s推 %s/ %s拉
 enderio.gui.machine.ioMode=模式: %s
-enderio.gui.machine.poweredspawner.capture=收获
+enderio.gui.machine.poweredspawner.capture=捕获
 enderio.gui.machine.poweredspawner.spawn=生成
 enderio.gui.machine.receivefilter=接收过滤
 enderio.gui.machine.sendfilter=发送过滤
@@ -1182,7 +1182,11 @@ enderio.gui.conduit.item.channel=频道
 enderio.gui.conduit.item.ignoreMetaData=忽略Meta数据
 enderio.gui.conduit.item.matchMetaData=匹配Meta数据
 enderio.gui.conduit.item.whitelist=白名单
+enderio.gui.conduit.item.whitelist.tooltip.0=当没有标记任何物品时，
+enderio.gui.conduit.item.whitelist.tooltip.1=阻止所有物品通过
 enderio.gui.conduit.item.blacklist=黑名单
+enderio.gui.conduit.item.blacklist.tooltip.0=当没有标记任何物品时，
+enderio.gui.conduit.item.blacklist.tooltip.1=允许所有物品通过
 enderio.gui.conduit.item.stickyEnabled=粘滞模式开启.选定的物品只会被传送到这个或别的粘滞输出.
 enderio.gui.conduit.item.stickyDisbaled=粘滞模式关闭
 enderio.gui.conduit.item.ignoreNBT=忽略NBT数据
@@ -1195,11 +1199,14 @@ enderio.gui.conduit.item.roundRobinEnabled=循环启用
 enderio.gui.conduit.item.roundRobinDisabled=循环禁用
 enderio.gui.conduit.item.priority=优先级
 
-enderio.gui.conduit.item.fuzzy.disabled=模糊模式禁用
-enderio.gui.conduit.item.fuzzy.fuzzy_25=对 25% 损伤进行模糊比对
-enderio.gui.conduit.item.fuzzy.fuzzy_50=对 50% 损伤进行模糊比对
-enderio.gui.conduit.item.fuzzy.fuzzy_75=对 75% 损伤进行模糊比对
-enderio.gui.conduit.item.fuzzy.fuzzy_99=对任何损伤均进行模糊比对
+enderio.gui.conduit.item.fuzzy.disabled=耐久模式：禁用
+enderio.gui.conduit.item.fuzzy.fuzzy_25=耐久模式：耐久低于75%
+enderio.gui.conduit.item.fuzzy.fuzzy_50=耐久模式：耐久低于50%
+enderio.gui.conduit.item.fuzzy.fuzzy_75=耐久模式：耐久低于25%
+enderio.gui.conduit.item.fuzzy.fuzzy_99=耐久模式：非满耐久
+enderio.gui.conduit.item.fuzzy.tooltip.0=没有标记时也可正常工作
+enderio.gui.conduit.item.fuzzy.tooltip.1=在这种情况下，它的逻辑
+enderio.gui.conduit.item.fuzzy.tooltip.2=由 %s 按钮控制
 
 enderio.gui.conduit.item.filterupgrade=插入物品过滤器
 enderio.gui.conduit.item.speedupgrade=插入物品管道速度提升/降低升级
