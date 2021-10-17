@@ -214,7 +214,7 @@ subprojects {
                     url System.getenv('MAVEN_URL')
                     credentials {
                         username System.getenv('MAVEN_USER')
-                        password System.getenv('MAVEN_PASS')
+                        password System.getenv('MAVEN_PASS_2')
                     }
                 }
             //} else {
