@@ -5,7 +5,7 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
+import crazypants.enderio.conduit.liquid.AbstractEnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.FluidFilter;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.packet.AbstractConduitPacket;
@@ -24,7 +24,7 @@ public class PacketFluidChannel extends AbstractConduitPacket<ILiquidConduit> im
   public PacketFluidChannel() {
   }
 
-  public PacketFluidChannel(EnderLiquidConduit eConduit, ForgeDirection dir, boolean isInput, DyeColor channel) {
+  public PacketFluidChannel(AbstractEnderLiquidConduit eConduit, ForgeDirection dir, boolean isInput, DyeColor channel) {
     super(eConduit.getBundle().getEntity(), ConTypeEnum.FLUID);
     this.dir = dir;
     this.isInput = isInput;
@@ -50,10 +50,10 @@ public class PacketFluidChannel extends AbstractConduitPacket<ILiquidConduit> im
   @Override
   public IMessage onMessage(PacketFluidChannel message, MessageContext ctx) {
     ILiquidConduit conduit = message.getTileCasted(ctx);
-    if(! (conduit instanceof EnderLiquidConduit)) {
+    if(! (conduit instanceof AbstractEnderLiquidConduit)) {
       return null;
     }    
-    EnderLiquidConduit eCon = (EnderLiquidConduit)conduit;
+    AbstractEnderLiquidConduit eCon = (AbstractEnderLiquidConduit)conduit;
 
     if(message.isInput)
       eCon.setInputColor(message.dir, message.channel);

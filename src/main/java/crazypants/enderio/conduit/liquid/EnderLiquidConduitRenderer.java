@@ -18,7 +18,7 @@ public class EnderLiquidConduitRenderer extends DefaultConduitRenderer {
 
   @Override
   public boolean isRendererForConduit(IConduit conduit) {
-    if(conduit instanceof EnderLiquidConduit) {      
+    if(conduit instanceof AbstractEnderLiquidConduit) {
       return true;
     }
     return false;
@@ -30,7 +30,7 @@ public class EnderLiquidConduitRenderer extends DefaultConduitRenderer {
       float worldLight, RenderBlocks rb) {
     super.renderEntity(conduitBundleRenderer, te, conduit, x, y, z, partialTick, worldLight, rb);
 
-    EnderLiquidConduit pc = (EnderLiquidConduit) conduit;
+    AbstractEnderLiquidConduit pc = (AbstractEnderLiquidConduit) conduit;
     for (ForgeDirection dir : conduit.getExternalConnections()) {
       DyeColor inChannel = null;
       DyeColor outChannel = null;

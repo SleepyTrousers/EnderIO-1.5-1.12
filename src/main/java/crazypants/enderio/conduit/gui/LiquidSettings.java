@@ -28,7 +28,7 @@ import com.enderio.core.common.util.DyeColor;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
+import crazypants.enderio.conduit.liquid.AbstractEnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.FluidFilter;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
@@ -60,7 +60,7 @@ public class LiquidSettings extends BaseSettingsPanel {
 
   private final ILiquidConduit conduit;
 
-  private EnderLiquidConduit eConduit;
+  private AbstractEnderLiquidConduit eConduit;
   private boolean isEnder;
   private static final int filterX = 59;
   private static final int filterY = 63;
@@ -75,8 +75,8 @@ public class LiquidSettings extends BaseSettingsPanel {
     super(IconEIO.WRENCH_OVERLAY_FLUID, EnderIO.lang.localize("itemLiquidConduit.name"), gui, con);
 
     conduit = (ILiquidConduit) con;
-    if(con instanceof EnderLiquidConduit) {
-      eConduit = (EnderLiquidConduit) con;
+    if(con instanceof AbstractEnderLiquidConduit) {
+      eConduit = (AbstractEnderLiquidConduit) con;
       isEnder = true;
 
 

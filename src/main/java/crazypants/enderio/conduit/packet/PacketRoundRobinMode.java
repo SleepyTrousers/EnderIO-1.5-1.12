@@ -3,7 +3,7 @@ package crazypants.enderio.conduit.packet;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
+import crazypants.enderio.conduit.liquid.AbstractEnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -15,7 +15,7 @@ public class PacketRoundRobinMode extends AbstractConduitPacket<ILiquidConduit> 
     public PacketRoundRobinMode() {
     }
 
-    public PacketRoundRobinMode(EnderLiquidConduit eConduit, ForgeDirection dir) {
+    public PacketRoundRobinMode(AbstractEnderLiquidConduit eConduit, ForgeDirection dir) {
         super(eConduit.getBundle().getEntity(), ConTypeEnum.FLUID);
         this.dir = dir;
         roundRobin = eConduit.isRoundRobin(dir);
@@ -38,8 +38,8 @@ public class PacketRoundRobinMode extends AbstractConduitPacket<ILiquidConduit> 
     @Override
     public IMessage onMessage(PacketRoundRobinMode message, MessageContext ctx) {
         final ILiquidConduit conduit = message.getTileCasted(ctx);
-        if (conduit instanceof EnderLiquidConduit) {
-            ((EnderLiquidConduit) conduit).setRoundRobin(message.dir, message.roundRobin);
+        if (conduit instanceof AbstractEnderLiquidConduit) {
+            ((AbstractEnderLiquidConduit) conduit).setRoundRobin(message.dir, message.roundRobin);
             message.getWorld(ctx).markBlockForUpdate(message.x, message.y, message.z);
         }
         return null;

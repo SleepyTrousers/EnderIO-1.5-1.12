@@ -4,16 +4,15 @@ import com.enderio.core.client.render.IconUtil;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-public class EnderLiquidConduit extends AbstractEnderLiquidConduit {
+public class AdvancedEnderLiquidConduit extends AbstractEnderLiquidConduit {
 
-  public static final Type TYPE = Type.ENDER;
-  public static final String ICON_KEY = "enderio:liquidConduitEnder";
-  public static final String ICON_CORE_KEY = "enderio:liquidConduitCoreEnder";
+  public static final Type TYPE = Type.ADVANCED;
+  public static final String ICON_KEY = "enderio:liquidConduitAdvancedEnder";
+  public static final String ICON_CORE_KEY = "enderio:liquidConduitCoreAdvancedEnder";
 
   static IIcon iconKey;
   static IIcon iconCoreKey;
@@ -53,6 +52,6 @@ public class EnderLiquidConduit extends AbstractEnderLiquidConduit {
 
   @Override
   public ItemStack createItem() {
-    return new ItemStack(EnderIO.itemLiquidConduit, 1, 2);
+    return new ItemStack(EnderIO.itemLiquidConduit, 1, 3);
   }
 }

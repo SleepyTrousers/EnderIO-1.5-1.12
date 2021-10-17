@@ -22,8 +22,8 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
   private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
     new ItemConduitSubtype(ModObject.itemLiquidConduit.name(), "enderio:itemLiquidConduit"),
     new ItemConduitSubtype(ModObject.itemLiquidConduit.name() + "Advanced", "enderio:itemLiquidConduitAdvanced"),
-    new ItemConduitSubtype(ModObject.itemLiquidConduit.name() + "Ender", "enderio:itemLiquidConduitEnder")
-
+    new ItemConduitSubtype(ModObject.itemLiquidConduit.name() + "Ender", "enderio:itemLiquidConduitEnder"),
+    new ItemConduitSubtype(ModObject.itemLiquidConduit.name() + "AdvancedEnder", "enderio:itemLiquidConduitAdvancedEnder")
   };
 
   public static ItemLiquidConduit create() {
@@ -47,6 +47,8 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
       return new AdvancedLiquidConduit();
     } else if(stack.getItemDamage() == 2) {
       return new EnderLiquidConduit();
+    } else if(stack.getItemDamage() == 3) {
+      return new AdvancedEnderLiquidConduit();
     }
     return new LiquidConduit();
   }
@@ -74,9 +76,12 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
     } else if(itemstack.getItemDamage() == 1){
       extractRate = Config.advancedFluidConduitExtractRate;
       maxIo = Config.advancedFluidConduitMaxIoRate;
-    } else {
+    } else if(itemstack.getItemDamage() == 2){
       extractRate = Config.enderFluidConduitExtractRate;
       maxIo = Config.enderFluidConduitMaxIoRate;
+    } else {
+      extractRate = Config.advancedEnderFluidConduitExtractRate;
+      maxIo = Config.advancedEnderFluidConduitMaxIoRate;
     }
     String mbt = " " + EnderIO.lang.localize("fluid.millibucketsTick");
     list.add(EnderIO.lang.localize("itemLiquidConduit.tooltip.maxExtract") + " " + extractRate + mbt);
@@ -84,7 +89,7 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
 
     if(itemstack.getItemDamage() == 0) {
       SpecialTooltipHandler.addDetailedTooltipFromResources(list, "enderio.itemLiquidConduit");
-    } else if(itemstack.getItemDamage() == 2) {
+    } else if(itemstack.getItemDamage() == 2 || itemstack.getItemDamage() == 3) {
       SpecialTooltipHandler.addDetailedTooltipFromResources(list, "enderio.itemLiquidConduitEnder");      
     }
 
