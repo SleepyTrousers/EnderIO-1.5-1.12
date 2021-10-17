@@ -208,6 +208,7 @@ subprojects {
         }
         repositories {
             def pubHypherion = System.getenv('MAVEN_URL') != null
+            println(System.getenv('MAVEN_USER') + " - " + System.getenv('MAVEN_PASS'))
             //if (pubHypherion) {
                 maven {
                     url System.getenv('MAVEN_URL')
