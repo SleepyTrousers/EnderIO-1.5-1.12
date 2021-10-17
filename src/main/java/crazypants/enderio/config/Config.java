@@ -119,6 +119,8 @@ public final class Config {
 
   public static boolean itemConduitUsePhyscialDistance = false;
 
+  public static int advancedEnderFluidConduitExtractRate = 1000;
+  public static int advancedEnderFluidConduitMaxIoRate = 4000;
   public static int enderFluidConduitExtractRate = 200;
   public static int enderFluidConduitMaxIoRate = 800;
   public static int advancedFluidConduitExtractRate = 100;
@@ -710,6 +712,12 @@ public final class Config {
 
     enderFluidConduitMaxIoRate = config.get(sectionEfficiency.name, "enderFluidConduitMaxIoRate", enderFluidConduitMaxIoRate,
         "Number of millibuckets per tick that can pass through a single connection to an ender fluid conduit.").getInt(enderFluidConduitMaxIoRate);
+
+    advancedEnderFluidConduitExtractRate = config.get(sectionEfficiency.name, "advancedEnderFluidConduitExtractRate", advancedEnderFluidConduitExtractRate,
+        "Number of millibuckets per tick extracted by advanced ender fluid conduits auto extracting").getInt(advancedEnderFluidConduitExtractRate);
+
+    advancedEnderFluidConduitMaxIoRate = config.get(sectionEfficiency.name, "advancedEnderFluidConduitMaxIoRate", advancedEnderFluidConduitMaxIoRate,
+        "Number of millibuckets per tick that can pass through a single connection to an advanced ender fluid conduit.").getInt(advancedEnderFluidConduitMaxIoRate);
 
     gasConduitExtractRate = config.get(sectionEfficiency.name, "gasConduitExtractRate", gasConduitExtractRate,
         "Amount of gas per tick extracted by gas conduits auto extracting").getInt(gasConduitExtractRate);

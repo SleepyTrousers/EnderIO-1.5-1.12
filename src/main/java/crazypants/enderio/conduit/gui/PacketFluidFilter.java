@@ -7,7 +7,7 @@ import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
+import crazypants.enderio.conduit.liquid.AbstractEnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.FluidFilter;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.packet.AbstractConduitPacket;
@@ -22,7 +22,7 @@ public class PacketFluidFilter extends AbstractConduitPacket<ILiquidConduit> imp
   public PacketFluidFilter() {    
   }
   
-  public PacketFluidFilter(EnderLiquidConduit eConduit, ForgeDirection dir, FluidFilter filter, boolean isInput) {
+  public PacketFluidFilter(AbstractEnderLiquidConduit eConduit, ForgeDirection dir, FluidFilter filter, boolean isInput) {
     super(eConduit.getBundle().getEntity(), ConTypeEnum.FLUID);
     this.dir = dir;
     this.filter = filter;
@@ -52,10 +52,10 @@ public class PacketFluidFilter extends AbstractConduitPacket<ILiquidConduit> imp
   @Override
   public IMessage onMessage(PacketFluidFilter message, MessageContext ctx) {
     ILiquidConduit conduit = message.getTileCasted(ctx);
-    if(! (conduit instanceof EnderLiquidConduit)) {
+    if(! (conduit instanceof AbstractEnderLiquidConduit)) {
       return null;
     }    
-    EnderLiquidConduit eCon = (EnderLiquidConduit)conduit;
+    AbstractEnderLiquidConduit eCon = (AbstractEnderLiquidConduit)conduit;
     eCon.setFilter(message.dir, message.filter, message.isInput);
     message.getWorld(ctx).markBlockForUpdate(message.x, message.y, message.z);
     return null;

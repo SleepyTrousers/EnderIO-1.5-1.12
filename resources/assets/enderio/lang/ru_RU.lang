@@ -40,6 +40,7 @@ enderio.itemRedstoneConduitInsulated.name=Изолированная красн�
 enderio.itemLiquidConduit.name=Жидкостная труба
 enderio.itemLiquidConduitAdvanced.name=Жидкостная труба высокого давления
 enderio.itemLiquidConduitEnder.name=Жидкостная труба Края
+enderio.itemLiquidConduitAdvancedEnder.name=Advanced Ender Fluid Conduit
 enderio.itemLiquidConduit.lockedType=Тип жидкости установлен на
 enderio.itemLiquidConduit.unlockedType=Тип жидкости не установлен
 enderio.itemLiquidConduit.lockedWaila=Установленная жидкость 

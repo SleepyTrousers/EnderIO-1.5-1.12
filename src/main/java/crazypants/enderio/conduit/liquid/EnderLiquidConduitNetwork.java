@@ -13,7 +13,7 @@ import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.config.Config;
 
-public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit, EnderLiquidConduit> {
+public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit, AbstractEnderLiquidConduit> {
   private class TankIterator implements Iterator<NetworkTank> {
     private int index = -1;
     private int currentCount = 0;
@@ -54,8 +54,33 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     }
   }
 
-  public static final int MAX_EXTRACT_PER_TICK = Config.enderFluidConduitExtractRate;
-  public static final int MAX_IO_PER_TICK = Config.enderFluidConduitMaxIoRate;
+  public static int getMaxExtractPerTick(AbstractEnderLiquidConduit.Type type) {
+    switch (type) {
+      case ENDER:
+        return Config.enderFluidConduitExtractRate;
+
+      case ADVANCED:
+        return Config.advancedEnderFluidConduitExtractRate;
+
+      default:
+        throw new IllegalArgumentException("Unrecognized ender fluid conduit type: " + type);
+    }
+  }
+
+  public static int getMaxIoPerTick(AbstractEnderLiquidConduit.Type type) {
+    switch (type) {
+      case ENDER:
+        return Config.enderFluidConduitMaxIoRate;
+
+      case ADVANCED:
+        return Config.advancedEnderFluidConduitMaxIoRate;
+
+      default:
+        throw new IllegalArgumentException("Unrecognized ender fluid conduit type: " + type);
+    }
+  }
+
+  private final AbstractEnderLiquidConduit.Type type;
 
   List<NetworkTank> tanks = new ArrayList<NetworkTank>();
   Map<NetworkTankKey, NetworkTank> tankMap = new HashMap<NetworkTankKey, NetworkTank>();
@@ -64,11 +89,12 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
   boolean filling;
 
-  public EnderLiquidConduitNetwork() {
-    super(EnderLiquidConduit.class, ILiquidConduit.class);
+  public EnderLiquidConduitNetwork(AbstractEnderLiquidConduit.Type type) {
+    super(AbstractEnderLiquidConduit.class, ILiquidConduit.class);
+    this.type = type;
   }
 
-  public void connectionChanged(EnderLiquidConduit con, ForgeDirection conDir) {
+  public void connectionChanged(AbstractEnderLiquidConduit con, ForgeDirection conDir) {
     NetworkTankKey key = new NetworkTankKey(con, conDir);
     NetworkTank tank = new NetworkTank(con, conDir);
     tanks.remove(tank); // remove old tank, NB: =/hash is only calced on location and dir
@@ -77,12 +103,12 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     tankMap.put(key, tank);
   }
 
-  public boolean extractFrom(EnderLiquidConduit con, ForgeDirection conDir) {
+  public boolean extractFrom(AbstractEnderLiquidConduit con, ForgeDirection conDir) {
     NetworkTank tank = getTank(con, conDir);
     if(tank == null || !tank.isValid()) {
       return false;
     }
-    FluidStack drained = tank.externalTank.drain(conDir.getOpposite(), MAX_EXTRACT_PER_TICK, false);
+    FluidStack drained = tank.externalTank.drain(conDir.getOpposite(), getMaxExtractPerTick(type), false);
     if(drained == null || drained.amount <= 0 || !matchedFilter(drained, con, conDir, true)) {
       return false;
     }
@@ -95,17 +121,17 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
       return false;
     }
     //    if(drained.amount != amountAccepted) {
-    //      Log.warn("EnderLiquidConduit.extractFrom: Extracted fluid volume is not equal to inserted volume. Drained=" + drained.amount + " filled="
+    //      Log.warn("AbstractEnderLiquidConduit.extractFrom: Extracted fluid volume is not equal to inserted volume. Drained=" + drained.amount + " filled="
     //          + amountAccepted + " Fluid: " + drained + " Accepted=" + amountAccepted);
     //    }
     return true;
   }
 
-  private NetworkTank getTank(EnderLiquidConduit con, ForgeDirection conDir) {
+  private NetworkTank getTank(AbstractEnderLiquidConduit con, ForgeDirection conDir) {
     return tankMap.get(new NetworkTankKey(con, conDir));
   }
 
-  public int fillFrom(EnderLiquidConduit con, ForgeDirection conDir, FluidStack resource, boolean doFill) {
+  public int fillFrom(AbstractEnderLiquidConduit con, ForgeDirection conDir, FluidStack resource, boolean doFill) {
     return fillFrom(getTank(con, conDir), resource, doFill);
   }
 
@@ -123,7 +149,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
         return 0;
       }
       resource = resource.copy();
-      resource.amount = Math.min(resource.amount, MAX_IO_PER_TICK);
+      resource.amount = Math.min(resource.amount, getMaxIoPerTick(type));
       int filled = 0;
       int remaining = resource.amount;
       //TODO: Only change starting pos of iterator is doFill is true so a false then true returns the same
@@ -150,7 +176,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     }
   }
 
-  private boolean matchedFilter(FluidStack drained, EnderLiquidConduit con, ForgeDirection conDir, boolean isInput) {
+  private boolean matchedFilter(FluidStack drained, AbstractEnderLiquidConduit con, ForgeDirection conDir, boolean isInput) {
     if(drained == null || con == null || conDir == null) {
       return false;
     }
@@ -173,7 +199,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     return res;
   }
 
-  public FluidTankInfo[] getTankInfo(EnderLiquidConduit con, ForgeDirection conDir) {
+  public FluidTankInfo[] getTankInfo(AbstractEnderLiquidConduit con, ForgeDirection conDir) {
     List<FluidTankInfo> res = new ArrayList<FluidTankInfo>(tanks.size());
     NetworkTank tank = getTank(con, conDir);
     for (NetworkTank target : tanks) {
@@ -194,7 +220,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     ForgeDirection conDir;
     BlockCoord conduitLoc;
 
-    public NetworkTankKey(EnderLiquidConduit con, ForgeDirection conDir) {
+    public NetworkTankKey(AbstractEnderLiquidConduit con, ForgeDirection conDir) {
       this(con.getLocation(), conDir);
     }
 
@@ -241,14 +267,14 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
 
   static class NetworkTank {
 
-    EnderLiquidConduit con;
+    AbstractEnderLiquidConduit con;
     ForgeDirection conDir;
     IFluidHandler externalTank;
     ForgeDirection tankDir;
     BlockCoord conduitLoc;
     boolean acceptsOuput;
 
-    public NetworkTank(EnderLiquidConduit con, ForgeDirection conDir) {
+    public NetworkTank(AbstractEnderLiquidConduit con, ForgeDirection conDir) {
       this.con = con;
       this.conDir = conDir;
       conduitLoc = con.getLocation();

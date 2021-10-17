@@ -66,6 +66,7 @@ public class ConduitRecipes {
     addShaped(new ItemStack(EnderIO.itemLiquidConduit, numConduits, 0), "bbb", "###", "bbb", 'b', binder, '#', fusedGlass);
     addShaped(new ItemStack(EnderIO.itemLiquidConduit, numConduits, 1), "bbb", "###", "bbb", 'b', binder, '#', fusedQuartz);
     addShaped(new ItemStack(EnderIO.itemLiquidConduit, numConduits, 2), "bbb", "#p#", "bbb", 'b', binder, '#', fusedQuartz, 'p', phasedGold);
+    addShaped(new ItemStack(EnderIO.itemLiquidConduit, numConduits, 3), "bpb", "#p#", "bpb", 'b', binder, '#', fusedQuartz, 'p', phasedGold);
     addShaped(new ItemStack(EnderIO.itemRedstoneConduit, numConduits, 0), "###", '#', redstoneAlloy);
     addShaped(new ItemStack(EnderIO.itemRedstoneConduit, 1, 1), "lbl", "bcb", "lbl", 'b', binder, 'c', redstoneConduit, 'l', Blocks.lever);
     addShaped(new ItemStack(EnderIO.itemRedstoneConduit, numConduits, 2), "bbb", "###", "bbb", 'b', binder, '#', redstoneAlloy);

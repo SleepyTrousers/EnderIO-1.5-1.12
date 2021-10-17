@@ -34,6 +34,7 @@ enderio.itemRedstoneConduitInsulated.name=Odizolované ruditové vedení
 enderio.itemLiquidConduit.name=Tekutinové vedení
 enderio.itemLiquidConduitAdvanced.name=Natlakované tekutinové vedení
 enderio.itemLiquidConduitEnder.name=Enderové tekutinové vedení
+enderio.itemLiquidConduitAdvancedEnder.name=Advanced Ender Fluid Conduit
 enderio.itemLiquidConduit.lockedType=Typ tekutiny uzamknut na
 enderio.itemLiquidConduit.unlockedType=Typ tekutiny uzamknut na
 

@@ -40,6 +40,7 @@ enderio.itemRedstoneConduitInsulated.name=Isolierte Redstone-Leitung
 enderio.itemLiquidConduit.name=Flüssigkeitsleitung
 enderio.itemLiquidConduitAdvanced.name=Flüssigkeitsdruckleitung
 enderio.itemLiquidConduitEnder.name=Ender-Flüssigkeitsleitung
+enderio.itemLiquidConduitAdvancedEnder.name=Advanced Ender Fluid Conduit
 enderio.itemLiquidConduit.lockedType.name=Flüssigkeitstyp gebunden an
 enderio.itemLiquidConduit.unlockedType.name=Flüssigkeitstyp nicht mehr gebunden
 enderio.itemLiquidConduit.lockedWaila=Festgelegt auf

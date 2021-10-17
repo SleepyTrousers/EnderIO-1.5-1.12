@@ -53,6 +53,7 @@ enderio.itemRedstoneConduitInsulated.name=绝缘红石导管
 enderio.itemLiquidConduit.name=液体导管
 enderio.itemLiquidConduitAdvanced.name=高压液体导管
 enderio.itemLiquidConduitEnder.name=末影液体导管
+enderio.itemLiquidConduitAdvancedEnder.name=Advanced Ender Fluid Conduit
 enderio.itemLiquidConduit.lockedType=液体种类锁定为
 enderio.itemLiquidConduit.unlockedType=液体种类解锁
 enderio.itemLiquidConduit.lockedWaila=锁定为

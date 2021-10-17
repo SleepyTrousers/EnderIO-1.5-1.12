@@ -36,6 +36,7 @@ enderio.itemRedstoneConduitInsulated.name=Conduto de Redstone Isolado
 enderio.itemLiquidConduit.name=Conduto de Fluidos
 enderio.itemLiquidConduitAdvanced.name=Conduto de Fluidos Pressurizado
 enderio.itemLiquidConduitEnder.name=Conduto de Fluidos do Fim 
+enderio.itemLiquidConduitAdvancedEnder.name=Advanced Ender Fluid Conduit
 enderio.itemLiquidConduit.lockedType=Tipo de fluido trancado para
 enderio.itemLiquidConduit.unlockedType=Tipo de fluido destrancado
 enderio.itemLiquidConduit.lockedWaila=Trancado para 
