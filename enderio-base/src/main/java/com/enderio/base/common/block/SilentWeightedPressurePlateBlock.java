@@ -3,24 +3,23 @@ package com.enderio.base.common.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.PressurePlateBlock;
+import net.minecraft.world.level.block.WeightedPressurePlateBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
-public class SilentPressurePlateBlock extends PressurePlateBlock {
+public class SilentWeightedPressurePlateBlock extends WeightedPressurePlateBlock {
 
-
-    public SilentPressurePlateBlock(PressurePlateBlock wrapped) {
-        super(getSensitivity(wrapped), BlockBehaviour.Properties.copy(wrapped));
+    public SilentWeightedPressurePlateBlock(WeightedPressurePlateBlock from) {
+        super(getWeight(from),  BlockBehaviour.Properties.copy(from));
     }
 
-    private static Sensitivity getSensitivity(PressurePlateBlock from) {
-        Sensitivity result = null;
+    private static int getWeight(WeightedPressurePlateBlock from) {
         try {
-            result = ObfuscationReflectionHelper.getPrivateValue(PressurePlateBlock.class, from, "sensitivity");
+            return ObfuscationReflectionHelper.getPrivateValue(WeightedPressurePlateBlock.class, from, "maxWeight");
         } catch (Exception e) {
             //TODO: Log
+            return 15;
         }
-        return result == null ? Sensitivity.EVERYTHING : result;
     }
 
     @Override

@@ -9,7 +9,6 @@ import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.NonNullLazyValue;
 import com.tterrag.registrate.util.entry.BlockEntry;
-
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -20,6 +19,8 @@ import net.minecraftforge.client.model.generators.BlockModelProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
+
+import java.util.Objects;
 
 @SuppressWarnings("unused")
 public class EIOBlocks {
@@ -125,13 +126,13 @@ public class EIOBlocks {
     public static final BlockEntry<EIOPressurePlateBlock> DARK_STEEL_PRESSURE_PLATE = pressurePlateBlock("dark_steel_pressure_plate",
         new ResourceLocation("enderio", "block/block_dark_steel_pressure_plate"), EIOPressurePlateBlock.PLAYER, false);
 
-    public static final BlockEntry<EIOPressurePlateBlock> DARK_STEEL_PRESSURE_PLATE_SILENT = pressurePlateBlock("silent_dark_steel_pressure_plate",
+    public static final BlockEntry<EIOPressurePlateBlock> SILENT_DARK_STEEL_PRESSURE_PLATE = pressurePlateBlock("silent_dark_steel_pressure_plate",
         new ResourceLocation("enderio", "block/block_dark_steel_pressure_plate"), EIOPressurePlateBlock.PLAYER, true);
 
     public static final BlockEntry<EIOPressurePlateBlock> SOULARIUM_PRESSURE_PLATE = pressurePlateBlock("soularium_pressure_plate",
         new ResourceLocation("enderio", "block/block_soularium_pressure_plate"), EIOPressurePlateBlock.HOSTILE_MOB, false);
 
-    public static final BlockEntry<EIOPressurePlateBlock> SOULARIUM_PRESSURE_PLATE_SILENT = pressurePlateBlock("silent_soularium_pressure_plate",
+    public static final BlockEntry<EIOPressurePlateBlock> SILENT_SOULARIUM_PRESSURE_PLATE = pressurePlateBlock("silent_soularium_pressure_plate",
         new ResourceLocation("enderio", "block/block_soularium_pressure_plate"), EIOPressurePlateBlock.HOSTILE_MOB, true);
 
     private static BlockEntry<EIOPressurePlateBlock> pressurePlateBlock(String name, ResourceLocation texture, EIOPressurePlateBlock.Detector type, boolean silent) {
@@ -163,31 +164,28 @@ public class EIOBlocks {
         return bb.register();
     }
 
-    public static final BlockEntry<SilentPressurePlateBlock> SILENT_OAK_PRESSURE_PLATE = silentPressurePlateBlock((PressurePlateBlock)Blocks.OAK_PRESSURE_PLATE, "oak");
+    public static final BlockEntry<SilentPressurePlateBlock> SILENT_OAK_PRESSURE_PLATE = silentPressurePlateBlock((PressurePlateBlock)Blocks.OAK_PRESSURE_PLATE);
 
-    public static final BlockEntry<SilentPressurePlateBlock> SILENT_STONE_PRESSURE_PLATE = silentPressurePlateBlock((PressurePlateBlock)Blocks.STONE_PRESSURE_PLATE, "stone");
+    public static final BlockEntry<SilentPressurePlateBlock> SILENT_STONE_PRESSURE_PLATE = silentPressurePlateBlock((PressurePlateBlock)Blocks.STONE_PRESSURE_PLATE);
 
-    private static BlockEntry<SilentPressurePlateBlock> silentPressurePlateBlock(PressurePlateBlock block, String materialName) {
+    private static BlockEntry<SilentPressurePlateBlock> silentPressurePlateBlock(PressurePlateBlock block) {
 
-        BlockBuilder<SilentPressurePlateBlock, Registrate> bb = REGISTRATE.block("silent_" + materialName + "_pressure_plate",
-            (props) -> new SilentPressurePlateBlock(props, block));
+        ResourceLocation upModelLoc = Objects.requireNonNull(block.getRegistryName());
+        ResourceLocation downModelLoc = new ResourceLocation(upModelLoc.getNamespace(), upModelLoc.getPath() + "_down");
 
-        ResourceLocation upModelLoc = new ResourceLocation(materialName + "_pressure_plate");
+        BlockBuilder<SilentPressurePlateBlock, Registrate> bb = REGISTRATE.block("silent_" + upModelLoc.getPath(),
+            (props) -> new SilentPressurePlateBlock(block));
 
         bb.blockstate((ctx, prov) -> {
-
-            ModelFile um = prov.models().getExistingFile(upModelLoc);
-            ModelFile dm = prov.models().getExistingFile(new ResourceLocation(materialName + "_pressure_plate_down"));
-
             VariantBlockStateBuilder vb = prov.getVariantBuilder(ctx.get());
             vb
                 .partialState()
                 .with(PressurePlateBlock.POWERED, true)
-                .addModels(new ConfiguredModel(dm));
+                .addModels(new ConfiguredModel(prov.models().getExistingFile(downModelLoc)));
             vb
                 .partialState()
                 .with(PressurePlateBlock.POWERED, false)
-                .addModels(new ConfiguredModel(um));
+                .addModels(new ConfiguredModel(prov.models().getExistingFile(upModelLoc)));
         });
 
         var itemBuilder = bb.item();
@@ -197,6 +195,33 @@ public class EIOBlocks {
 
         return bb.register();
     }
+
+    public static final BlockEntry<SilentWeightedPressurePlateBlock> SILENT_HEAVY_WEIGHTED_PRESSURE_PLATE = silentWeightedPressurePlateBlockBlock((WeightedPressurePlateBlock)Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
+
+    public static final BlockEntry<SilentWeightedPressurePlateBlock> SILENT_LIGHT_WEIGHTED_PRESSURE_PLATE = silentWeightedPressurePlateBlockBlock((WeightedPressurePlateBlock)Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE);
+
+    private static BlockEntry<SilentWeightedPressurePlateBlock> silentWeightedPressurePlateBlockBlock(WeightedPressurePlateBlock block) {
+        ResourceLocation upModelLoc = Objects.requireNonNull(block.getRegistryName());
+        ResourceLocation downModelLoc = new ResourceLocation(upModelLoc.getNamespace(), upModelLoc.getPath() + "_down");
+
+        BlockBuilder<SilentWeightedPressurePlateBlock, Registrate> bb = REGISTRATE.block("silent_" + upModelLoc.getPath(),
+            (props) -> new SilentWeightedPressurePlateBlock(block));
+
+        bb.blockstate((ctx, prov) -> prov.getVariantBuilder(ctx.get()).forAllStates(blockState -> {
+            if(blockState.getValue(WeightedPressurePlateBlock.POWER) == 0) {
+                return new ConfiguredModel[] {new ConfiguredModel(prov.models().getExistingFile(upModelLoc))};
+            }
+            return new ConfiguredModel[] {new ConfiguredModel(prov.models().getExistingFile(downModelLoc))};
+        }));
+
+        var itemBuilder = bb.item();
+        itemBuilder.model((ctx, prov) -> prov.withExistingParent(ctx.getName(), upModelLoc));
+        itemBuilder.group(() -> EIOCreativeTabs.BLOCKS);
+        bb = itemBuilder.build();
+
+        return bb.register();
+    }
+
 
     // endregion
 

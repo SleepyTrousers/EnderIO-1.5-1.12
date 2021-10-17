@@ -29,7 +29,7 @@ public class BlockRecipes extends RecipeProvider {
             .save(recipeConsumer);
 
         ShapedRecipeBuilder
-            .shaped(EIOBlocks.DARK_STEEL_PRESSURE_PLATE_SILENT
+            .shaped(EIOBlocks.SILENT_DARK_STEEL_PRESSURE_PLATE
                 .get()
                 .asItem())
             .define('W', Items.WHITE_WOOL)
@@ -49,7 +49,7 @@ public class BlockRecipes extends RecipeProvider {
             .save(recipeConsumer);
 
         ShapedRecipeBuilder
-            .shaped(EIOBlocks.SOULARIUM_PRESSURE_PLATE_SILENT
+            .shaped(EIOBlocks.SILENT_SOULARIUM_PRESSURE_PLATE
                 .get()
                 .asItem())
             .define('W', Items.WHITE_WOOL)
