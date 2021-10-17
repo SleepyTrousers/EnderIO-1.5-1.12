@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/pressure_plate_up",
+  "textures": {
+    "texture": "enderio:block/block_soularium_pressure_plate"
+  }
+}
