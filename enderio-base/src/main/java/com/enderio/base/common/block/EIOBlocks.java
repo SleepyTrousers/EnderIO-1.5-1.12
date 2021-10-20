@@ -10,15 +10,14 @@ import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.NonNullLazyValue;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraftforge.client.model.generators.BlockModelProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
+import net.minecraftforge.client.model.generators.*;
 
 import java.util.Objects;
 
@@ -284,11 +283,35 @@ public class EIOBlocks {
     public static final BlockEntry<SilentPressurePlateBlock> SILENT_POLISHED_BLACKSTONE_PRESSURE_PLATE = silentPressurePlateBlock(
         (PressurePlateBlock) Blocks.POLISHED_BLACKSTONE_PRESSURE_PLATE);
 
-    public static final BlockEntry<SilentWeightedPressurePlateBlock> SILENT_HEAVY_WEIGHTED_PRESSURE_PLATE = silentWeightedPressurePlateBlockBlock(
+    public static final BlockEntry<SilentWeightedPressurePlateBlock> SILENT_HEAVY_WEIGHTED_PRESSURE_PLATE = silentWeightedPressurePlateBlock(
         (WeightedPressurePlateBlock) Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE);
 
-    public static final BlockEntry<SilentWeightedPressurePlateBlock> SILENT_LIGHT_WEIGHTED_PRESSURE_PLATE = silentWeightedPressurePlateBlockBlock(
+    public static final BlockEntry<SilentWeightedPressurePlateBlock> SILENT_LIGHT_WEIGHTED_PRESSURE_PLATE = silentWeightedPressurePlateBlock(
         (WeightedPressurePlateBlock) Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE);
+
+    // endregion
+
+    // region resetting levers
+
+    public static final BlockEntry<ResettingLeverBlock> RESETTING_LEVER_FIVE = resettingLeverBlock("resetting_lever_five",5, false);
+
+    public static final BlockEntry<ResettingLeverBlock> RESETTING_LEVER_FIVE_INV = resettingLeverBlock("resetting_lever_five_inv",5, true);
+
+    public static final BlockEntry<ResettingLeverBlock> RESETTING_LEVER_TEN = resettingLeverBlock("resetting_lever_ten",10, false);
+
+    public static final BlockEntry<ResettingLeverBlock> RESETTING_LEVER_TEN_INV = resettingLeverBlock("resetting_lever_ten_inv",10, true);
+
+    public static final BlockEntry<ResettingLeverBlock> RESETTING_LEVER_THIRTY = resettingLeverBlock("resetting_lever_thirty",30, false);
+
+    public static final BlockEntry<ResettingLeverBlock> RESETTING_LEVER_THIRTY_INV = resettingLeverBlock("resetting_lever_thirty_inv",30, true);
+
+    public static final BlockEntry<ResettingLeverBlock> RESETTING_LEVER_SIXTY = resettingLeverBlock("resetting_lever_sixty",60, false);
+
+    public static final BlockEntry<ResettingLeverBlock> RESETTING_LEVER_SIXTY_INV = resettingLeverBlock("resetting_lever_sixty_inv",60, true);
+
+    public static final BlockEntry<ResettingLeverBlock> RESETTING_LEVER_THREE_HUNDRED = resettingLeverBlock("resetting_lever_three_hundred",300, false);
+
+    public static final BlockEntry<ResettingLeverBlock> RESETTING_LEVER_THREE_HUNDRED_INV = resettingLeverBlock("resetting_lever_three_hundred_inv",300, true);
 
     // endregion
 
@@ -376,7 +399,7 @@ public class EIOBlocks {
 
         return bb.register();
     }
-    private static BlockEntry<SilentWeightedPressurePlateBlock> silentWeightedPressurePlateBlockBlock(WeightedPressurePlateBlock block) {
+    private static BlockEntry<SilentWeightedPressurePlateBlock> silentWeightedPressurePlateBlock(WeightedPressurePlateBlock block) {
         ResourceLocation upModelLoc = Objects.requireNonNull(block.getRegistryName());
         ResourceLocation downModelLoc = new ResourceLocation(upModelLoc.getNamespace(), upModelLoc.getPath() + "_down");
 
@@ -395,6 +418,38 @@ public class EIOBlocks {
         itemBuilder.group(() -> EIOCreativeTabs.BLOCKS);
         bb = itemBuilder.build();
 
+        return bb.register();
+    }
+
+    private static BlockEntry<ResettingLeverBlock> resettingLeverBlock(String name, int duration, boolean inverted) {
+
+        BlockBuilder<ResettingLeverBlock, Registrate> bb = REGISTRATE.block(name, (props) -> new ResettingLeverBlock(duration, inverted));
+        String durLab = "(" + (duration >= 60 ? duration / 60 : duration) + " " + (duration == 60 ? "minute" : duration > 60 ? "minutes" : "seconds") + ")";
+        bb.lang("Resetting Lever " + (inverted ? "Inverted " : "") +  durLab);
+
+        bb.blockstate((ctx, prov) -> {
+
+            BlockModelProvider modProv = prov.models();
+            ModelFile.ExistingModelFile baseModel = modProv.getExistingFile(prov.mcLoc("block/lever"));
+            ModelFile.ExistingModelFile onModel = modProv.getExistingFile(prov.mcLoc("block/lever_on"));
+
+            VariantBlockStateBuilder vb = prov.getVariantBuilder(ctx.get());
+
+            vb.forAllStates(blockState -> {
+                ModelFile.ExistingModelFile model = blockState.getValue(ResettingLeverBlock.POWERED) ? onModel : baseModel;
+                int rotationX = blockState.getValue(LeverBlock.FACE) == AttachFace.CEILING ? 180 : blockState.getValue(LeverBlock.FACE) == AttachFace.WALL ? 90 : 0;
+                Direction f = blockState.getValue(LeverBlock.FACING);
+                int rotationY = f.get2DDataValue() * 90;
+                if(blockState.getValue(LeverBlock.FACE) != AttachFace.CEILING) {
+                    rotationY = (rotationY + 180) % 360;
+                }
+                return new ConfiguredModel[] {new ConfiguredModel(model, rotationX, rotationY, false)};
+            });
+        });
+
+        var ib = bb.item().group(() -> EIOCreativeTabs.BLOCKS);
+        ib.model((ctx, prov) -> prov.withExistingParent(ctx.getName(), prov.mcLoc("item/lever")));
+        bb = ib.build();
         return bb.register();
     }
 
