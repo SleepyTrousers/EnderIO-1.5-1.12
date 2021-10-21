@@ -168,9 +168,9 @@ public abstract class AbstractEnderLiquidConduit extends AbstractLiquidConduit {
   @Override
   public IIcon getTextureForState(CollidableComponent component) {
     if(component.dir == ForgeDirection.UNKNOWN) {
-      return getIconKey();
+      return getIconCoreKey();
     }
-    return getIconCoreKey();
+    return getIconKey();
   }
 
   public IIcon getTextureForInputMode() {
