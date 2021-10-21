@@ -7,16 +7,16 @@
   ],
   "key": {
     "B": {
-      "item": "minecraft:iron_bars"
+      "item": "enderio:end_steel_bars"
     },
     "G": {
       "item": "enderio:grains_of_infinity"
     },
     "I": {
-      "tag": "forge:ingots/iron"
+      "item": "enderio:end_steel_ingot"
     }
   },
   "result": {
-    "item": "enderio:simple_machine_chassis"
+    "item": "enderio:end_steel_machine_chassis"
   }
 }

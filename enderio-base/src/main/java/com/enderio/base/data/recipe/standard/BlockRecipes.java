@@ -14,6 +14,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.Tags;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -28,6 +29,113 @@ public class BlockRecipes extends RecipeProvider {
     protected void buildCraftingRecipes(@Nonnull Consumer<FinishedRecipe> recipeConsumer) {
         addPressurePlateRecipes(recipeConsumer);
         addLeverRecipes(recipeConsumer);
+        addMetalBlockRecipes(recipeConsumer);
+        addChassisRecipes(recipeConsumer);
+        addConstructionBlockRecipes(recipeConsumer);
+    }
+
+    private void addConstructionBlockRecipes(Consumer<FinishedRecipe> recipeConsumer) {
+
+        ShapedRecipeBuilder
+            .shaped(EIOBlocks.DARK_STEEL_LADDER
+                .get(), 12)
+            .define('I', EIOItems.DARK_STEEL_INGOT.get())
+            .pattern(" I ")
+            .pattern(" I ")
+            .pattern(" I ")
+            .unlockedBy("has_ingredient", InventoryChangeTrigger.TriggerInstance.hasItems(EIOItems.DARK_STEEL_INGOT.get()))
+            .save(recipeConsumer);
+
+        ShapedRecipeBuilder
+            .shaped(EIOBlocks.DARK_STEEL_BARS
+                .get(), 16)
+            .define('I', EIOItems.DARK_STEEL_INGOT.get())
+            .pattern("III")
+            .pattern("III")
+            .unlockedBy("has_ingredient", InventoryChangeTrigger.TriggerInstance.hasItems(EIOItems.DARK_STEEL_INGOT.get()))
+            .save(recipeConsumer);
+
+        ShapedRecipeBuilder
+            .shaped(EIOBlocks.DARK_STEEL_TRAPDOOR
+                .get(), 1)
+            .define('I', EIOItems.DARK_STEEL_INGOT.get())
+            .pattern("II")
+            .pattern("II")
+            .unlockedBy("has_ingredient", InventoryChangeTrigger.TriggerInstance.hasItems(EIOItems.DARK_STEEL_INGOT.get()))
+            .save(recipeConsumer);
+
+        ShapedRecipeBuilder
+            .shaped(EIOBlocks.DARK_STEEL_DOOR
+                .get(), 3)
+            .define('I', EIOItems.DARK_STEEL_INGOT.get())
+            .pattern("II")
+            .pattern("II")
+            .pattern("II")
+            .unlockedBy("has_ingredient", InventoryChangeTrigger.TriggerInstance.hasItems(EIOItems.DARK_STEEL_INGOT.get()))
+            .save(recipeConsumer);
+
+
+        ShapedRecipeBuilder
+            .shaped(EIOBlocks.END_STEEL_BARS
+                .get(), 12)
+            .define('I', EIOItems.END_STEEL_INGOT.get())
+            .pattern("III")
+            .pattern("III")
+            .unlockedBy("has_ingredient", InventoryChangeTrigger.TriggerInstance.hasItems(EIOItems.END_STEEL_INGOT.get()))
+            .save(recipeConsumer);
+    }
+
+    private void addChassisRecipes(Consumer<FinishedRecipe> recipeConsumer) {
+
+        ShapedRecipeBuilder
+            .shaped(EIOBlocks.SIMPLE_MACHINE_CHASSIS
+                .get())
+            .define('B', Blocks.IRON_BARS)
+            .define('G', EIOItems.GRAINS_OF_INFINITY.get())
+            .define('I', Tags.Items.INGOTS_IRON)
+            .pattern("BIB")
+            .pattern("IGI")
+            .pattern("BIB")
+            .unlockedBy("has_ingredient", InventoryChangeTrigger.TriggerInstance.hasItems(EIOItems.GRAINS_OF_INFINITY.get()))
+            .save(recipeConsumer);
+
+        ShapedRecipeBuilder
+            .shaped(EIOBlocks.END_STEEL_MACHINE_CHASSIS
+                .get())
+            .define('B', EIOBlocks.END_STEEL_BARS.get())
+            .define('G', EIOItems.GRAINS_OF_INFINITY.get())
+            .define('I', EIOItems.END_STEEL_INGOT.get())
+            .pattern("BIB")
+            .pattern("IGI")
+            .pattern("BIB")
+            .unlockedBy("has_ingredient", InventoryChangeTrigger.TriggerInstance.hasItems(EIOItems.END_STEEL_INGOT.get()))
+            .save(recipeConsumer);
+
+    }
+
+    private void addMetalBlockRecipes(Consumer<FinishedRecipe> recipeConsumer) {
+        addMetalBlockRecipe(recipeConsumer, EIOBlocks.ELECTRICAL_STEEL_BLOCK, EIOItems.ELECTRICAL_STEEL_INGOT.get());
+        addMetalBlockRecipe(recipeConsumer, EIOBlocks.ENERGETIC_ALLOY_BLOCK, EIOItems.ENERGETIC_ALLOY_INGOT.get());
+        addMetalBlockRecipe(recipeConsumer, EIOBlocks.VIBRANT_ALLOY_BLOCK, EIOItems.VIBRANT_ALLOY_INGOT.get());
+        addMetalBlockRecipe(recipeConsumer, EIOBlocks.REDSTONE_ALLOY_BLOCK, EIOItems.REDSTONE_ALLOY_INGOT.get());
+        addMetalBlockRecipe(recipeConsumer, EIOBlocks.CONDUCTIVE_IRON_BLOCK, EIOItems.CONDUCTIVE_IRON_INGOT.get());
+        addMetalBlockRecipe(recipeConsumer, EIOBlocks.PULSATING_IRON_BLOCK, EIOItems.PULSATING_IRON_INGOT.get());
+        addMetalBlockRecipe(recipeConsumer, EIOBlocks.DARK_STEEL_BLOCK, EIOItems.DARK_STEEL_INGOT.get());
+        addMetalBlockRecipe(recipeConsumer, EIOBlocks.SOULARIUM_BLOCK, EIOItems.SOULARIUM_INGOT.get());
+        addMetalBlockRecipe(recipeConsumer, EIOBlocks.END_STEEL_BLOCK, EIOItems.END_STEEL_INGOT.get());
+        addMetalBlockRecipe(recipeConsumer, EIOBlocks.CONSTRUCTION_ALLOY_BLOCK, EIOItems.CONSTRUCTION_ALLOY_INGOT.get());
+    }
+
+    private void addMetalBlockRecipe(@Nonnull Consumer<FinishedRecipe> recipeConsumer, BlockEntry<? extends Block> result, ItemLike ingredient) {
+        ShapedRecipeBuilder
+            .shaped(result
+                .get())
+            .define('#', ingredient)
+            .pattern("###")
+            .pattern("###")
+            .pattern("###")
+            .unlockedBy("has_ingredient", InventoryChangeTrigger.TriggerInstance.hasItems(ingredient))
+            .save(recipeConsumer);
     }
 
     private void addPressurePlateRecipes(@Nonnull Consumer<FinishedRecipe> recipeConsumer) {

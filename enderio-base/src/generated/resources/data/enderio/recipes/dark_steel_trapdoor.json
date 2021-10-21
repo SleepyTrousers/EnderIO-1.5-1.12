@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "II",
+    "II"
+  ],
+  "key": {
+    "I": {
+      "item": "enderio:dark_steel_ingot"
+    }
+  },
+  "result": {
+    "item": "enderio:dark_steel_trapdoor"
+  }
+}

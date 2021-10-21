@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    " I ",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "item": "enderio:dark_steel_ingot"
+    }
+  },
+  "result": {
+    "item": "enderio:dark_steel_ladder",
+    "count": 12
+  }
+}

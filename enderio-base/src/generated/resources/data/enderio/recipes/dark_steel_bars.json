@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "enderio:dark_steel_ingot"
+    }
+  },
+  "result": {
+    "item": "enderio:dark_steel_bars",
+    "count": 16
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "enderio:conductive_iron_ingot"
+    }
+  },
+  "result": {
+    "item": "enderio:conductive_iron_block"
+  }
+}
