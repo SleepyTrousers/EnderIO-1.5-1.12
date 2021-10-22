@@ -118,6 +118,19 @@ public class EIOBlocks {
         .build()
         .register();
 
+    public static final BlockEntry<ReinforcedObsidianBlock> REINFORCED_OBSIDIAN = REGISTRATE
+        .block("reinforced_obsidian_block", Material.STONE, ReinforcedObsidianBlock::new)
+        .properties(props -> props
+        .sound(SoundType.STONE)
+        .strength(50, 2000)
+        .requiresCorrectToolForDrops()
+        .color(MaterialColor.COLOR_BLACK))
+        .tag(BlockTags.WITHER_IMMUNE)
+        .item()
+            .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.BLOCKS))
+        .build()
+        .register();
+
     // endregion
 
     // region Fused Quartz/Glass

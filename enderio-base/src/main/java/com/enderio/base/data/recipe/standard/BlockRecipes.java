@@ -83,6 +83,18 @@ public class BlockRecipes extends RecipeProvider {
             .pattern("III")
             .unlockedBy("has_ingredient", InventoryChangeTrigger.TriggerInstance.hasItems(EIOItems.END_STEEL_INGOT.get()))
             .save(recipeConsumer);
+
+        ShapedRecipeBuilder
+            .shaped(EIOBlocks.REINFORCED_OBSIDIAN
+                .get())
+            .define('B', EIOBlocks.DARK_STEEL_BARS.get())
+            .define('G', EIOItems.GRAINS_OF_INFINITY.get())
+            .define('O', Blocks.OBSIDIAN)
+            .pattern("GBG")
+            .pattern("BOB")
+            .pattern("GBG")
+            .unlockedBy("has_ingredient", InventoryChangeTrigger.TriggerInstance.hasItems(EIOItems.GRAINS_OF_INFINITY.get()))
+            .save(recipeConsumer);
     }
 
     private void addChassisRecipes(Consumer<FinishedRecipe> recipeConsumer) {
