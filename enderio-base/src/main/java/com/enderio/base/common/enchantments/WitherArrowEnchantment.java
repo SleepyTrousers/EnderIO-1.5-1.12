@@ -32,9 +32,7 @@ public class WitherArrowEnchantment extends EIOBaseEnchantment {
 
     @Override
     public void doPostAttack(LivingEntity pAttacker, Entity pTarget, int pLevel) {
-        if (pTarget instanceof LivingEntity target && EnchantmentHelper
-            .getEnchantments(pAttacker.getMainHandItem())
-            .containsKey(this)) {
+        if (pTarget instanceof LivingEntity target && EnchantmentHelper.getEnchantments(pAttacker.getMainHandItem()).containsKey(this)) {
             target.addEffect(new MobEffectInstance(MobEffects.WITHER, 200));
         }
     }

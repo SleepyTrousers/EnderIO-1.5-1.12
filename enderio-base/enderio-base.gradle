@@ -5,3 +5,5 @@ minecraft {
 dependencies {
     implementation project(':endercore')
 }
+
+sourceSets.main.resources { srcDir '../EnderIO-Art' }

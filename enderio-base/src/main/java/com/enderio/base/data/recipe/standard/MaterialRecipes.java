@@ -20,7 +20,8 @@ public class MaterialRecipes extends RecipeProvider {
 
     @Override
     protected void buildCraftingRecipes(@Nonnull Consumer<FinishedRecipe> recipeConsumer) {
-        ShapedRecipeBuilder.shaped(EIOBlocks.SIMPLE_MACHINE_CHASSIS.get().asItem())
+        ShapedRecipeBuilder
+            .shaped(EIOBlocks.SIMPLE_MACHINE_CHASSIS.get().asItem())
             .pattern("BIB")
             .pattern("IGI")
             .pattern("BIB")

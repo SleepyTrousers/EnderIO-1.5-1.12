@@ -1,6 +1,0 @@
-{
-  "parent": "enderio:block/tinted_cube_all",
-  "textures": {
-    "all": "enderio:block/clear_glass"
-  }
-}

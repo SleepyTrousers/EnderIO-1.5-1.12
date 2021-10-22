@@ -1,0 +1,9 @@
+dependencies {
+    rootProject.subprojects.each { project ->
+        if (project.name != "enderio-monolith") {
+            implementation(project)
+        }
+    }
+}
+
+// TODO: Once forge supports jar-in-jar try using that.

@@ -64,9 +64,7 @@ public class EIOItems {
 
     public static final ItemEntry<MaterialItem> ZOMBIE_ELECTRODE = materialItem("zombie_electrode").register();
 
-    public static final ItemEntry<MaterialItem> ZOMBIE_CONTROLLER = materialItem("zombie_controller")
-        .lang("Z-Logic Controller")
-        .register();
+    public static final ItemEntry<MaterialItem> ZOMBIE_CONTROLLER = materialItem("zombie_controller").lang("Z-Logic Controller").register();
 
     public static final ItemEntry<MaterialItem> FRANKEN_ZOMBIE = materialItemGlinted("franken_zombie")
         .lang("Frank'N'Zombie")
@@ -99,9 +97,7 @@ public class EIOItems {
 
     // region Powders and Fragments
 
-    public static final ItemEntry<MaterialItem> GRAINS_OF_INFINITY = materialItem("grains_of_infinity")
-        .lang("Grains of Infinity")
-        .register();
+    public static final ItemEntry<MaterialItem> GRAINS_OF_INFINITY = materialItem("grains_of_infinity").lang("Grains of Infinity").register();
 
     public static final ItemEntry<MaterialItem> FLOUR = materialItem("flour").register();
     public static final ItemEntry<MaterialItem> CONDUIT_BINDER_COMPOSITE = materialItem("conduit_binder_composite").register();
@@ -117,21 +113,13 @@ public class EIOItems {
     public static final ItemEntry<MaterialItem> LAPIS_LAZULI_POWDER = materialItem("lapis_lazuli_powder").register();
     public static final ItemEntry<MaterialItem> QUARTZ_POWDER = materialItem("quartz_powder").register();
 
-    public static final ItemEntry<MaterialItem> PRECIENT_POWDER = materialItemGlinted("precient_powder")
-        .lang("Grains of Prescience")
-        .register();
+    public static final ItemEntry<MaterialItem> PRECIENT_POWDER = materialItemGlinted("precient_powder").lang("Grains of Prescience").register();
 
-    public static final ItemEntry<MaterialItem> VIBRANT_POWDER = materialItemGlinted("vibrant_powder")
-        .lang("Grains of Vibrancy")
-        .register();
+    public static final ItemEntry<MaterialItem> VIBRANT_POWDER = materialItemGlinted("vibrant_powder").lang("Grains of Vibrancy").register();
 
-    public static final ItemEntry<MaterialItem> PULSATING_POWDER = materialItemGlinted("pulsating_powder")
-        .lang("Grains of Piezallity")
-        .register();
+    public static final ItemEntry<MaterialItem> PULSATING_POWDER = materialItemGlinted("pulsating_powder").lang("Grains of Piezallity").register();
 
-    public static final ItemEntry<MaterialItem> ENDER_CRYSTAL_POWDER = materialItemGlinted("ender_crystal_powder")
-        .lang("Grains of the End")
-        .register();
+    public static final ItemEntry<MaterialItem> ENDER_CRYSTAL_POWDER = materialItemGlinted("ender_crystal_powder").lang("Grains of the End").register();
 
     public static final ItemEntry<MaterialItem> PHOTOVOLTAIC_COMPOSITE = materialItem("photovoltaic_composite").register();
     public static final ItemEntry<MaterialItem> SOUL_POWDER = materialItem("soul_powder").register();
@@ -145,57 +133,33 @@ public class EIOItems {
 
     // region Gears
 
-    public static final ItemEntry<GearItem> GEAR_WOOD = gearItem("wood_gear")
-        .lang("Wooden Gear")
-        .register();
+    public static final ItemEntry<GearItem> GEAR_WOOD = gearItem("wood_gear").lang("Wooden Gear").register();
 
-    public static final ItemEntry<GearItem> GEAR_STONE = gearItem("stone_gear")
-        .lang("Stone Compound Gear")
-        .register();
+    public static final ItemEntry<GearItem> GEAR_STONE = gearItem("stone_gear").lang("Stone Compound Gear").register();
 
-    public static final ItemEntry<GearItem> GEAR_IRON = gearItem("iron_gear")
-        .lang("Infinity Bimetal Gear")
-        .register();
+    public static final ItemEntry<GearItem> GEAR_IRON = gearItem("iron_gear").lang("Infinity Bimetal Gear").register();
 
-    public static final ItemEntry<GearItem> GEAR_ENERGIZED = gearItem("energized_gear")
-        .lang("Energized Bimetal Gear")
-        .register();
+    public static final ItemEntry<GearItem> GEAR_ENERGIZED = gearItem("energized_gear").lang("Energized Bimetal Gear").register();
 
-    public static final ItemEntry<GearItem> GEAR_VIBRANT = gearItem("vibrant_gear")
-        .lang("Vibrant Bimetal Gear")
-        .register();
+    public static final ItemEntry<GearItem> GEAR_VIBRANT = gearItem("vibrant_gear").lang("Vibrant Bimetal Gear").register();
 
-    public static final ItemEntry<GearItem> GEAR_DARK_STEEL = gearItem("dark_bimetal_gear")
-        .lang("Dark Bimetal Gear")
-        .register();
+    public static final ItemEntry<GearItem> GEAR_DARK_STEEL = gearItem("dark_bimetal_gear").lang("Dark Bimetal Gear").register();
 
     // endregion
 
     // region Dyes
 
-    public static final ItemEntry<MaterialItem> DYE_GREEN = materialItem("organic_green_dye")
-        .tag(Tags.Items.DYES_GREEN, Tags.Items.DYES)
-        .register();
+    public static final ItemEntry<MaterialItem> DYE_GREEN = materialItem("organic_green_dye").tag(Tags.Items.DYES_GREEN, Tags.Items.DYES).register();
 
-    public static final ItemEntry<MaterialItem> DYE_BROWN = materialItem("organic_brown_dye")
-        .tag(Tags.Items.DYES_BROWN, Tags.Items.DYES)
-        .register();
+    public static final ItemEntry<MaterialItem> DYE_BROWN = materialItem("organic_brown_dye").tag(Tags.Items.DYES_BROWN, Tags.Items.DYES).register();
 
-    public static final ItemEntry<MaterialItem> DYE_BLACK = materialItem("organic_black_dye")
-        .tag(Tags.Items.DYES_BLACK, Tags.Items.DYES)
-        .register();
+    public static final ItemEntry<MaterialItem> DYE_BLACK = materialItem("organic_black_dye").tag(Tags.Items.DYES_BLACK, Tags.Items.DYES).register();
 
-    public static final ItemEntry<MaterialItem> DYE_INDUSTRIAL_BLEND = materialItem("industrial_dye_blend")
-        .tag(Tags.Items.DYES)
-        .register();
+    public static final ItemEntry<MaterialItem> DYE_INDUSTRIAL_BLEND = materialItem("industrial_dye_blend").tag(Tags.Items.DYES).register();
 
-    public static final ItemEntry<MaterialItem> DYE_SOUL_ATTUNED_BLEND = materialItem("soul_attuned_dye_blend")
-        .tag(Tags.Items.DYES)
-        .register();
+    public static final ItemEntry<MaterialItem> DYE_SOUL_ATTUNED_BLEND = materialItem("soul_attuned_dye_blend").tag(Tags.Items.DYES).register();
 
-    public static final ItemEntry<MaterialItem> DYE_ENHANCED_BLEND = materialItem("enhanced_dye_blend")
-        .tag(Tags.Items.DYES)
-        .register();
+    public static final ItemEntry<MaterialItem> DYE_ENHANCED_BLEND = materialItem("enhanced_dye_blend").tag(Tags.Items.DYES).register();
 
     // endregion
 
@@ -204,20 +168,14 @@ public class EIOItems {
     public static ItemEntry<MaterialItem> INFINITY_ROD = materialItem("infinity_rod").register();
 
     public static ItemEntry<MaterialItem> PHOTOVOLTAIC_PLATE = materialItem("photovoltaic_plate")
-        .model((ctx, prov) -> prov
-            .withExistingParent(prov.name(ctx), prov.mcLoc("block/pressure_plate_up"))
-            .texture("texture", prov.itemTexture(ctx)))
+        .model((ctx, prov) -> prov.withExistingParent(prov.name(ctx), prov.mcLoc("block/pressure_plate_up")).texture("texture", prov.itemTexture(ctx)))
         .register();
 
     public static ItemEntry<MaterialItem> NUTRITIOUS_STICK = materialItem("nutritious_stick").register();
 
-    public static ItemEntry<MaterialItem> PLANT_MATTER_GREEN = materialItem("plant_matter_green")
-        .lang("Clippings and Trimmings")
-        .register();
+    public static ItemEntry<MaterialItem> PLANT_MATTER_GREEN = materialItem("plant_matter_green").lang("Clippings and Trimmings").register();
 
-    public static ItemEntry<MaterialItem> PLANT_MATTER_BROWN = materialItem("plant_matter_brown")
-        .lang("Twigs and Prunings")
-        .register();
+    public static ItemEntry<MaterialItem> PLANT_MATTER_BROWN = materialItem("plant_matter_brown").lang("Twigs and Prunings").register();
 
     public static ItemEntry<MaterialItem> GLIDER_WING = materialItem("glider_wing").register();
     public static ItemEntry<MaterialItem> GLIDER_WINGS = materialItem("glider_wings").register();
@@ -246,15 +204,13 @@ public class EIOItems {
     // region Builders
 
     private static ItemBuilder<MaterialItem, Registrate> materialItem(String name) {
-        return REGISTRATE
-            .item(name, props -> new MaterialItem(props, false))
-            .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.MAIN));
+        return REGISTRATE.item(name, props -> new MaterialItem(props, false)).group(new NonNullLazyValue<>(() -> EIOCreativeTabs.MAIN));
     }
 
     private static ItemBuilder<GearItem, Registrate> gearItem(String name) {
         return REGISTRATE
             .item(name, props -> new GearItem(props, false))
-            .model((c, p) -> ItemModelUtils.gearItem(c,p))
+            .model((c, p) -> ItemModelUtils.gearItem(c, p))
             .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.MAIN));
     }
 
@@ -264,9 +220,7 @@ public class EIOItems {
     //  }
 
     private static ItemBuilder<MaterialItem, Registrate> materialItemGlinted(String name) {
-        return REGISTRATE
-            .item(name, props -> new MaterialItem(props, true))
-            .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.MAIN));
+        return REGISTRATE.item(name, props -> new MaterialItem(props, true)).group(new NonNullLazyValue<>(() -> EIOCreativeTabs.MAIN));
     }
 
     // endregion
@@ -306,16 +260,11 @@ public class EIOItems {
     // region Helpers
 
     public static <T extends Item> ItemEntry<T> dumbItem(String name, NonNullFunction<Item.Properties, T> factory) {
-        return REGISTRATE
-            .item(name, factory)
-            .register();
+        return REGISTRATE.item(name, factory).register();
     }
 
     public static <T extends Item> ItemEntry<T> groupedItem(String name, NonNullFunction<Item.Properties, T> factory, NonNullSupplier<CreativeModeTab> tab) {
-        return REGISTRATE
-            .item(name, factory)
-            .group(tab)
-            .register();
+        return REGISTRATE.item(name, factory).group(tab).register();
     }
 
     // endregion

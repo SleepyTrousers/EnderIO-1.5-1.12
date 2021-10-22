@@ -141,10 +141,7 @@ public class SoulVialItem extends Item {
             double spawnZ = spawnPos.getZ() + face.getStepZ() + 0.5;
 
             // Get a random rotation for the entity.
-            float rotation = Mth.wrapDegrees(pContext
-                .getLevel()
-                .getRandom()
-                .nextFloat() * 360.0f);
+            float rotation = Mth.wrapDegrees(pContext.getLevel().getRandom().nextFloat() * 360.0f);
 
             // noinspection ConstantConditions - the itemstack tag will not be null, its deal with in getEntityType.
             Optional<Entity> entity = EntityType.create(itemStack.getTag(), pContext.getLevel());
@@ -152,9 +149,7 @@ public class SoulVialItem extends Item {
             entity.ifPresent(ent -> {
                 ent.setPos(spawnX, spawnY, spawnZ);
                 ent.setYRot(rotation);
-                pContext
-                    .getLevel()
-                    .addFreshEntity(ent);
+                pContext.getLevel().addFreshEntity(ent);
             });
 
             // Empty the soul vial.

@@ -33,9 +33,6 @@ public class EntityCaptureUtils {
     }
 
     public static boolean isBlacklistedBoss(Entity entity) {
-        return EntityUtil
-            .getEntityType(entity)
-            .map(entityType -> EntityUtil.isBoss(entity) && !"minecraft".equals(entityType.getNamespace()))
-            .orElse(false);
+        return EntityUtil.getEntityType(entity).map(entityType -> EntityUtil.isBoss(entity) && !"minecraft".equals(entityType.getNamespace())).orElse(false);
     }
 }

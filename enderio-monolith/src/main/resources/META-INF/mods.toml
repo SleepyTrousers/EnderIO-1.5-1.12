@@ -1,0 +1,33 @@
+modLoader="javafml" #mandatory
+loaderVersion="[37,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+license="CC0"
+
+[[mods]]
+modId="enderiomonolith"
+version="${file.jarVersion}"
+displayName="Ender IO Monolith"
+authors="CrazyPants, tterrag, HenryLoenwind, MatthiasM, CyanideX, EpicSquid, Rover656, HypherionSA, agnor99, Ferri Arnus"
+description="A monolithic jar build containing all of EnderIO."
+displayURL="http://enderio.com/"
+logoFile="logo.png"
+
+[[dependencies.enderiomonolith]]
+modId="enderio"
+mandatory=true
+versionRange="[6.0,)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.enderiomonolith]]
+modId="enderiodecoration"
+mandatory=true
+versionRange="[6.0,)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.enderiomonolith]]
+modId="enderiomachines"
+mandatory=true
+versionRange="[6.0,)"
+ordering="AFTER"
+side="BOTH"

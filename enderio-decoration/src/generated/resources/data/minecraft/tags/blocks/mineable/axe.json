@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "enderio:painted_fence",
+    "enderio:painted_fence_gate",
+    "enderio:painted_stairs",
+    "enderio:painted_crafting_table",
+    "enderio:painted_trapdoor",
+    "enderio:painted_wooden_pressure_plate",
+    "enderio:painted_slab"
+  ]
+}

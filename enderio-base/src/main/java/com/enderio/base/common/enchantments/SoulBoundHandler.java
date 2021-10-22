@@ -28,7 +28,7 @@ public class SoulBoundHandler {
             return;
         }
         ArrayList<ItemStack> soulitems = new ArrayList<ItemStack>();
-        if (event.getEntityLiving()instanceof Player player) {
+        if (event.getEntityLiving() instanceof Player player) {
             Iterator<ItemEntity> iter = event.getDrops().iterator();
             while (iter.hasNext()) {
                 ItemEntity ei = iter.next();
@@ -60,5 +60,5 @@ public class SoulBoundHandler {
     public static boolean isSoulBound(ItemStack item) {
         return EnchantmentHelper.getItemEnchantmentLevel(EIOEnchantments.SOULBOUND.get(), item) > 0;
     }
-    
+
 }

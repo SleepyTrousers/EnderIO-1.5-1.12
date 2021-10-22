@@ -46,14 +46,10 @@ public class RepellentEnchantment extends EIOBaseEnchantment {
     @Override
     public void doPostHurt(LivingEntity pUser, Entity pAttacker, int pLevel) {
         if (pUser instanceof Player && pAttacker instanceof LivingEntity attacker) {
-            if (pUser
-                .getRandom()
-                .nextFloat() < getChance(pLevel)) {
+            if (pUser.getRandom().nextFloat() < getChance(pLevel)) {
                 if (pAttacker instanceof Player) {
                     TeleportUtils.randomTeleport(attacker, getRange(pLevel));
-                } else if (pUser
-                    .getRandom()
-                    .nextFloat() < .75F) { // non player repel config?
+                } else if (pUser.getRandom().nextFloat() < .75F) { // non player repel config?
                     TeleportUtils.randomTeleport(attacker, getRange(pLevel));
                 }
             }

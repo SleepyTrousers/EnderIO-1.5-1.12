@@ -39,10 +39,7 @@ public class FusedQuartzBlock extends AbstractGlassBlock {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, @Nonnull List<Component> pTooltip, TooltipFlag pFlag) {
-        super.appendHoverText(pStack,
-            pLevel,
-            pTooltip,
-            pFlag);
+        super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
 
         // TODO: Translations
         if (explosionResistant)

@@ -22,15 +22,13 @@ public class EIOCreativeTabs extends CreativeModeTab {
     public EIOCreativeTabs(String name, Supplier<Item> itemIcon) {
         super("enderio." + name);
         this.itemIcon = itemIcon;
-        EnderIO
-            .registrate()
-            .addLang("itemGroup", new ResourceLocation(EnderIO.DOMAIN, name), getEnglish(name));
+        EnderIO.registrate().addLang("itemGroup", new ResourceLocation(EnderIO.DOMAIN, name), getEnglish(name));
     }
 
     protected String getEnglish(String name) {
-        if (name.equals("main")) return "EnderIO";
-        return "EnderIO " + name.substring(0, 1)
-            .toUpperCase(Locale.ENGLISH) + name.substring(1);
+        if (name.equals("main"))
+            return "EnderIO";
+        return "EnderIO " + name.substring(0, 1).toUpperCase(Locale.ENGLISH) + name.substring(1);
     }
 
     @Override

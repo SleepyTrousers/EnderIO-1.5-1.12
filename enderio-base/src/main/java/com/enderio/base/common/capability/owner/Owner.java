@@ -1,40 +1,50 @@
 package com.enderio.base.common.capability.owner;
 
-import java.util.UUID;
-
+import com.mojang.authlib.GameProfile;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.world.level.block.entity.SkullBlockEntity;
 
-public class Owner implements IOwner{
-    private UUID uuid;
-    
+public class Owner implements IOwner {
+    private GameProfile owner;
+
     public Owner() {
-        
-    }
-    
-    @Override
-    public UUID getUUID() {
-        return this.uuid;
+
     }
 
     @Override
-    public void setUUID(UUID uuid) {
-        this.uuid = uuid;
+    public GameProfile getProfile() {
+        return owner;
     }
 
+    @Override
+    public void setProfile(GameProfile profile, ProfileSetCallback callback) {
+        synchronized (this) {
+            owner = profile;
+        }
+
+        // Perform update.
+        SkullBlockEntity.updateGameprofile(owner, (p_155747_) -> {
+            owner = p_155747_;
+            callback.profileSet(owner);
+        });
+    }
 
     @Override
     public CompoundTag serializeNBT() {
-        CompoundTag nbt = new CompoundTag();
-        nbt.putUUID("owner", uuid);
-        return nbt;
+        CompoundTag tag = new CompoundTag();
+        if (owner != null) {
+            CompoundTag ownerTag = new CompoundTag();
+            NbtUtils.writeGameProfile(ownerTag, owner);
+            tag.put("Owner", ownerTag);
+        }
+        return tag;
     }
-    
+
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        try {
-            this.uuid = nbt.getUUID("owner");
-        }catch (Exception e) {
-            //null uuid
+        if (nbt.contains("Owner")) {
+            owner = NbtUtils.readGameProfile(nbt.getCompound("Owner"));
         }
     }
 }

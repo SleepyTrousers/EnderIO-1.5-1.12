@@ -1,0 +1,13 @@
+{
+  "block.enderio.painted_crafting_table": "\u01DD\u05DFq\u0250\u27D8 bu\u0131\u0287\u025F\u0250\u0279\u0186 p\u01DD\u0287u\u0131\u0250\u0500",
+  "block.enderio.painted_fence": "\u01DD\u0254u\u01DD\u2132 p\u01DD\u0287u\u0131\u0250\u0500",
+  "block.enderio.painted_fence_gate": "\u01DD\u0287\u0250\u2141 \u01DD\u0254u\u01DD\u2132 p\u01DD\u0287u\u0131\u0250\u0500",
+  "block.enderio.painted_glowstone": "\u01DDuo\u0287s\u028Do\u05DF\u2141 p\u01DD\u0287u\u0131\u0250\u0500",
+  "block.enderio.painted_redstone_block": "\u029E\u0254o\u05DF\u15FA \u01DDuo\u0287sp\u01DD\u1D1A p\u01DD\u0287u\u0131\u0250\u0500",
+  "block.enderio.painted_sand": "pu\u0250S p\u01DD\u0287u\u0131\u0250\u0500",
+  "block.enderio.painted_slab": "q\u0250\u05DFS p\u01DD\u0287u\u0131\u0250\u0500",
+  "block.enderio.painted_stairs": "s\u0279\u0131\u0250\u0287S p\u01DD\u0287u\u0131\u0250\u0500",
+  "block.enderio.painted_trapdoor": "\u0279oopd\u0250\u0279\u27D8 p\u01DD\u0287u\u0131\u0250\u0500",
+  "block.enderio.painted_wooden_pressure_plate": "\u01DD\u0287\u0250\u05DF\u0500 \u01DD\u0279nss\u01DD\u0279\u0500 u\u01DDpooM p\u01DD\u0287u\u0131\u0250\u0500",
+  "entity.enderio.painted_sand": "pu\u0250S p\u01DD\u0287u\u0131\u0250\u0500"
+}

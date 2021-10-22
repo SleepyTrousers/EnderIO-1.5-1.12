@@ -16,35 +16,17 @@ import java.util.function.Predicate;
 public enum GlassCollisionPredicate {
     NONE(ctx -> false, null),
 
-    PLAYERS_PASS(ctx -> ctx
-        .getEntity()
-        .map(ent -> ent instanceof Player)
-        .orElse(false), "Not solid to players"),
+    PLAYERS_PASS(ctx -> ctx.getEntity().map(ent -> ent instanceof Player).orElse(false), "Not solid to players"),
 
-    PLAYERS_BLOCK(ctx -> ctx
-        .getEntity()
-        .map(ent -> !(ent instanceof Player))
-        .orElse(true), "Only solid to players"),
+    PLAYERS_BLOCK(ctx -> ctx.getEntity().map(ent -> !(ent instanceof Player)).orElse(true), "Only solid to players"),
 
-    MOBS_PASS(ctx -> ctx
-        .getEntity()
-        .map(ent -> ent instanceof Mob)
-        .orElse(false), "Not solid to monsters"),
+    MOBS_PASS(ctx -> ctx.getEntity().map(ent -> ent instanceof Mob).orElse(false), "Not solid to monsters"),
 
-    MOBS_BLOCK(ctx -> ctx
-        .getEntity()
-        .map(ent -> !(ent instanceof Mob))
-        .orElse(true), "Only solid to monsters"),
+    MOBS_BLOCK(ctx -> ctx.getEntity().map(ent -> !(ent instanceof Mob)).orElse(true), "Only solid to monsters"),
 
-    ANIMALS_PASS(ctx -> ctx
-        .getEntity()
-        .map(ent -> ent instanceof Animal)
-        .orElse(false), "Not solid to animals"),
+    ANIMALS_PASS(ctx -> ctx.getEntity().map(ent -> ent instanceof Animal).orElse(false), "Not solid to animals"),
 
-    ANIMALS_BLOCK(ctx -> ctx
-        .getEntity()
-        .map(ent -> !(ent instanceof Animal))
-        .orElse(true), "Only solid to animals");
+    ANIMALS_BLOCK(ctx -> ctx.getEntity().map(ent -> !(ent instanceof Animal)).orElse(true), "Only solid to animals");
 
     private final Predicate<EntityCollisionContext> predicate;
     private final @Nullable String description;

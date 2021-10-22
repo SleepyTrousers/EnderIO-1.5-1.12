@@ -1,5 +1,6 @@
 include ':endercore';
-include ':enderio-base'//, ':enderio-machines', ':enderio-conduits', ':enderio-invpanel', ':enderio-integration-tic', ':enderio-integration-forestry', ':enderio-integration-thaumcraft', ':enderio-conduits-refinedstorage', ':enderio-conduits-opencomputers', ':enderio-conduits-appliedenergistics', ':enderio-addons', ':enderio-zoo', ':enderio-endergy', 'ap', ':enderio-conduits-mekanism', ':enderio-addons'
+include ':enderio-base', ':enderio-decoration', ':enderio-machines'; //':enderio-conduits', ':enderio-invpanel', ':enderio-integration-tic', ':enderio-integration-forestry', ':enderio-integration-thaumcraft', ':enderio-conduits-refinedstorage', ':enderio-conduits-opencomputers', ':enderio-conduits-appliedenergistics', ':enderio-addons', ':enderio-zoo', ':enderio-endergy', 'ap', ':enderio-conduits-mekanism', ':enderio-addons'
+include ':enderio-monolith'
 
 rootProject.name = 'EnderIO'
 

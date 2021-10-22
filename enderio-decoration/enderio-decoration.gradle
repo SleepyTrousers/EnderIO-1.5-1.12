@@ -1,0 +1,8 @@
+minecraft {
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+}
+
+dependencies {
+    implementation project(':endercore')
+    implementation project(':enderio-base')
+}

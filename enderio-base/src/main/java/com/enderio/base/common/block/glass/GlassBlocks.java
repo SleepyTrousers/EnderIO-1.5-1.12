@@ -36,8 +36,8 @@ public class GlassBlocks {
      * @param blocksLight
      * @param explosionResistant
      */
-    public GlassBlocks(Registrate registrate, String name, String english, GlassCollisionPredicate collisionPredicate, boolean emitsLight,
-        boolean blocksLight, boolean explosionResistant) {
+    public GlassBlocks(Registrate registrate, String name, String english, GlassCollisionPredicate collisionPredicate, boolean emitsLight, boolean blocksLight,
+        boolean explosionResistant) {
         this.collisionPredicate = collisionPredicate;
         this.emitsLight = emitsLight;
         this.blocksLight = blocksLight;
@@ -63,19 +63,23 @@ public class GlassBlocks {
     }
 
     private static ResourceLocation getModelFile(String name) {
-        return name.contains("clear_glass") ? new ResourceLocation(EnderIO.DOMAIN, "block/clear_glass") : new ResourceLocation(EnderIO.DOMAIN, "block/fused_quartz");
+        return name.contains("clear_glass") ?
+            EnderIO.loc("block/clear_glass") :
+            EnderIO.loc("block/fused_quartz");
     }
 
     // Dirty dirty. TODO: Just access transforms for these in Blocks??
     private static boolean never(BlockState p_50806_, BlockGetter p_50807_, BlockPos p_50808_) {
         return false;
     }
+
     private static boolean never(BlockState p_50779_, BlockGetter p_50780_, BlockPos p_50781_, EntityType<?> p_50782_) {
         return false;
     }
 
     /**
      * Register a non-colored glass
+     *
      * @param registrate
      * @param name
      * @param english
@@ -106,6 +110,7 @@ public class GlassBlocks {
 
     /**
      * Register a colored glass.
+     *
      * @param registrate
      * @param name
      * @param english

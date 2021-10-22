@@ -32,29 +32,19 @@ public class EnderIO {
     public EnderIO() {
         EIOBlocks.register();
         EIOItems.register();
+        EIOBlocks.register();
         EIOBlockEntities.register();
         EIOEnchantments.register();
-        
 
-        IEventBus modEventBus = FMLJavaModLoadingContext
-            .get()
-            .getModEventBus();
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         // Run datagen after registrate is finished.
         modEventBus.addListener(EventPriority.LOWEST, this::gatherData);
-        modEventBus.addListener(this::ModelLoaders);
-        modEventBus.addListener(this::registerBERS);
-        
+
     }
 
-    //TODO Move to an other location
-    public void ModelLoaders(ModelRegistryEvent event) {
-        ModelLoader.addSpecialModel(new ResourceLocation(MODID,"item/wood_gear_helper"));
-        ModelLoader.addSpecialModel(new ResourceLocation(MODID,"item/stone_gear_helper"));
-        ModelLoader.addSpecialModel(new ResourceLocation(MODID,"item/iron_gear_helper"));
-        ModelLoader.addSpecialModel(new ResourceLocation(MODID,"item/energized_gear_helper"));
-        ModelLoader.addSpecialModel(new ResourceLocation(MODID,"item/vibrant_gear_helper"));
-        ModelLoader.addSpecialModel(new ResourceLocation(MODID,"item/dark_bimetal_gear_helper"));
+    public static ResourceLocation loc(String path) {
+        return new ResourceLocation(DOMAIN, path);
     }
 
     public void gatherData(GatherDataEvent event) {
@@ -64,10 +54,6 @@ public class EnderIO {
         }
     }
 
-    public void registerBERS(RegisterRenderers event) {
-        event.registerBlockEntityRenderer(EIOBlockEntities.GRAVE.get(), GraveRenderer::new);
-    }
-    
     public static Registrate registrate() {
         return REGISTRATE.get();
     }

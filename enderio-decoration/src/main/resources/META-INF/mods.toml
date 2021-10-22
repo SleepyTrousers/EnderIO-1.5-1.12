@@ -1,0 +1,19 @@
+modLoader="javafml" #mandatory
+loaderVersion="[37,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+license="CC0"
+
+[[mods]]
+modId="enderiodecoration"
+version="${file.jarVersion}"
+displayName="Ender IO Decoration"
+authors="CrazyPants, tterrag, HenryLoenwind, MatthiasM, CyanideX, EpicSquid, Rover656, HypherionSA, agnor99, Ferri Arnus"
+description="Decorative blocks powered by Ender IO."
+displayURL="http://enderio.com/"
+logoFile="logo.png"
+
+[[dependencies.enderiodecoration]]
+modId="enderio"
+mandatory=true
+versionRange="[6.0,)"
+ordering="AFTER"
+side="BOTH"

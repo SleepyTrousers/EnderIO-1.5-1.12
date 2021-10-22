@@ -36,9 +36,7 @@ public class XPBoostHandler {
     @SubscribeEvent
     public static void handleEntityKill(LivingDeathEvent event) {
         LivingEntity entity = event.getEntityLiving();
-        Entity killer = event
-            .getSource()
-            .getDirectEntity();
+        Entity killer = event.getSource().getDirectEntity();
 
         if (!entity.level.isClientSide && killer != null) {
             if (killer instanceof Player player) {
@@ -56,9 +54,7 @@ public class XPBoostHandler {
     @SubscribeEvent
     public static void handleArrowFire(EntityJoinWorldEvent event) {
         if (event.getEntity() instanceof Arrow arrow) {
-            arrow
-                .getPersistentData()
-                .putInt(NBT_KEY, getXPBoostLevel(arrow.getOwner()));
+            arrow.getPersistentData().putInt(NBT_KEY, getXPBoostLevel(arrow.getOwner()));
         }
     }
 
@@ -70,12 +66,8 @@ public class XPBoostHandler {
             final @Nonnull BlockState state = event.getState();
             final @Nonnull Level world = (Level) event.getWorld();
             final @Nonnull BlockPos pos = event.getPos();
-            final int fortune = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, event
-                .getPlayer()
-                .getMainHandItem());
-            final int xp = state
-                .getBlock()
-                .getExpDrop(state, world, pos, fortune, 0);
+            final int fortune = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, event.getPlayer().getMainHandItem());
+            final int xp = state.getBlock().getExpDrop(state, world, pos, fortune, 0);
             if (xp > 0) {
                 world.addFreshEntity(new ExperienceOrb(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, getXPBoost(xp, level)));
             }

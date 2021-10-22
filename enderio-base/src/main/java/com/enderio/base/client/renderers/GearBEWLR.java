@@ -31,10 +31,13 @@ public class GearBEWLR extends BlockEntityWithoutLevelRenderer {
         if (mc == null) {
             return;
         }
-        BakedModel model = mc.getModelManager().getModel(new ResourceLocation(EnderIO.MODID, "item/" + pStack.getItem().getRegistryName().getPath().toString() + "_helper"));
+        BakedModel model = mc
+            .getModelManager()
+            .getModel(EnderIO.loc("item/" + pStack.getItem().getRegistryName().getPath().toString() + "_helper"));
         pPoseStack.pushPose();
         if (tpr != 0) {
-            PoseStackHelper.rotateAroundPivot(pPoseStack, new Vector3f(0.5F, 0.5F, 0F), Vector3f.ZP, (360.0F / tpr) * (mc.player.clientLevel.getGameTime() % tpr), true); // rotates the item 360/tpr degrees each tick
+            PoseStackHelper.rotateAroundPivot(pPoseStack, new Vector3f(0.5F, 0.5F, 0F), Vector3f.ZP,
+                (360.0F / tpr) * (mc.player.clientLevel.getGameTime() % tpr), true); // rotates the item 360/tpr degrees each tick
         }
         mc.getItemRenderer().renderModelLists(model, pStack, pPackedLight, pOverlay, pPoseStack, pBuffer.getBuffer(RenderType.cutout()));
         pPoseStack.popPose();
