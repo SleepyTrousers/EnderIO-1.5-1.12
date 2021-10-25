@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "enderio:dark_steel_ladder",
+    "enderio:dark_steel_bars",
+    "enderio:dark_steel_door",
+    "enderio:dark_steel_trapdoor",
+    "enderio:end_steel_bars",
+    "enderio:infinity_crystal_block"
+  ]
+}

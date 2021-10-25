@@ -4,20 +4,34 @@ import com.enderio.base.EnderIO;
 import com.enderio.base.common.block.glass.GlassBlocks;
 import com.enderio.base.common.block.glass.GlassCollisionPredicate;
 import com.enderio.base.common.item.EIOCreativeTabs;
+import com.enderio.base.common.item.EIOItems;
 import com.enderio.base.data.model.block.BlockStateUtils;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.BlockBuilder;
+import com.tterrag.registrate.providers.loot.RegistrateBlockLootTables;
 import com.tterrag.registrate.util.NonNullLazyValue;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraftforge.client.model.generators.*;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.predicates.MatchTool;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraftforge.client.model.generators.BlockModelProvider;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
 
 import java.util.Objects;
 
@@ -69,6 +83,8 @@ public class EIOBlocks {
             .texture("texture", prov.blockTexture(ctx.get()))))
         .addLayer(() -> RenderType::cutoutMipped)
         .tag(BlockTags.CLIMBABLE)
+        .tag(BlockTags.NEEDS_IRON_TOOL)
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE)
         .item()
         .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("block/dark_steel_ladder")))
         .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.BLOCKS))
@@ -80,6 +96,8 @@ public class EIOBlocks {
         .properties(props -> props.strength(5.0f, 1000.0f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion())
         .blockstate(BlockStateUtils::paneBlock)
         .addLayer(() -> RenderType::cutoutMipped)
+        .tag(BlockTags.NEEDS_IRON_TOOL)
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE)
         .item()
         .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.BLOCKS))
         .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("block/dark_steel_bars")))
@@ -92,6 +110,8 @@ public class EIOBlocks {
         .properties(props -> props.strength(5.0f, 2000.0f).sound(SoundType.METAL).noOcclusion())
         .blockstate((ctx, prov) -> prov.doorBlock(ctx.get(), prov.modLoc("block/dark_steel_door_bottom"), prov.modLoc("block/dark_steel_door_top")))
         .addLayer(() -> RenderType::cutout)
+        .tag(BlockTags.NEEDS_IRON_TOOL)
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE)
         .item()
         .model((ctx, prov) -> prov.generated(ctx))
         .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.BLOCKS))
@@ -103,6 +123,8 @@ public class EIOBlocks {
         .properties(props -> props.strength(5.0f, 2000.0f).sound(SoundType.METAL).noOcclusion())
         .blockstate((ctx, prov) -> prov.trapdoorBlock(ctx.get(), prov.modLoc("block/dark_steel_trapdoor"), true))
         .addLayer(() -> RenderType::cutout)
+        .tag(BlockTags.NEEDS_IRON_TOOL)
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE)
         .item()
         .model((ctx, prov) -> prov.withExistingParent(ctx.getName(), prov.modLoc("block/dark_steel_trapdoor_bottom")))
         .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.BLOCKS))
@@ -112,7 +134,10 @@ public class EIOBlocks {
     public static final BlockEntry<IronBarsBlock> END_STEEL_BARS = REGISTRATE
         .block("end_steel_bars", IronBarsBlock::new)
         .blockstate(BlockStateUtils::paneBlock)
+        .properties(props -> props.strength(5.0f, 1000.0f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion())
         .addLayer(() -> RenderType::cutoutMipped)
+        .tag(BlockTags.NEEDS_IRON_TOOL)
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE)
         .item()
         .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.BLOCKS))
         .model((ctx, prov) -> prov.generated(ctx, prov.modLoc("block/end_steel_bars")))
@@ -123,6 +148,8 @@ public class EIOBlocks {
         .block("reinforced_obsidian_block", Material.STONE, ReinforcedObsidianBlock::new)
         .properties(props -> props.sound(SoundType.STONE).strength(50, 2000).requiresCorrectToolForDrops().color(MaterialColor.COLOR_BLACK))
         .tag(BlockTags.WITHER_IMMUNE)
+        .tag(BlockTags.NEEDS_DIAMOND_TOOL)
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE)
         .item()
         .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.BLOCKS))
         .build()
@@ -132,7 +159,6 @@ public class EIOBlocks {
 
     // region Fused Quartz/Glass
 
-    // TODO: Keep the important ones (the ones for recipes in here, maybe just keeping fused and quite clear, move the special ones to decor?)
     public static final GlassBlocks FUSED_QUARTZ = new GlassBlocks(REGISTRATE, "fused_quartz", "Fused Quartz", GlassCollisionPredicate.NONE, false, false,
         true);
     public static final GlassBlocks ENLIGHTENED_FUSED_QUARTZ = new GlassBlocks(REGISTRATE, "fused_quartz_e", "Enlightened Fused Quartz",
@@ -238,6 +264,8 @@ public class EIOBlocks {
     public static final BlockEntry<AmethystBlock> INFINITY_CRYSTAL = REGISTRATE
         .block("infinity_crystal_block", Material.AMETHYST, AmethystBlock::new)
         .properties(props -> props.strength(1.5F).sound(SoundType.AMETHYST).requiresCorrectToolForDrops())
+        .tag(BlockTags.NEEDS_IRON_TOOL)
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE)
         .item()
         .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.BLOCKS))
         .build()
@@ -245,7 +273,7 @@ public class EIOBlocks {
 
     public static final BlockEntry<BuddingInfinityCrystalBlock> BUDDING_INFINITY_CRYSTAL = REGISTRATE
         .block("budding_infinity_crystal", Material.AMETHYST, BuddingInfinityCrystalBlock::new)
-        .properties(props -> props.strength(1.5F).sound(SoundType.AMETHYST).requiresCorrectToolForDrops().randomTicks())
+        .properties(props -> props.noDrops().strength(1.5F).sound(SoundType.AMETHYST).requiresCorrectToolForDrops().randomTicks())
         .item()
         .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.BLOCKS))
         .build()
@@ -255,17 +283,31 @@ public class EIOBlocks {
         .block("infinity_crystal_cluster", Material.AMETHYST, props -> new AmethystClusterBlock(7, 3, props))
         .blockstate((ctx, prov) -> prov.directionalBlock(ctx.get(), prov.models().cross(ctx.getName(), prov.modLoc("block/" + ctx.getName()))))
         .addLayer(() -> RenderType::cutout)
-        .properties(props -> props.noOcclusion().randomTicks().sound(SoundType.AMETHYST_CLUSTER).lightLevel((state) -> 5))
+        .properties(props -> props.noOcclusion().randomTicks().sound(SoundType.AMETHYST_CLUSTER).strength(1.5f).lightLevel((state) -> 5))
+        .loot(EIOBlocks::createInfinityCrystalDrops)
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE)
         .item()
         .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.BLOCKS))
         .build()
         .register();
+
+    private static void createInfinityCrystalDrops(RegistrateBlockLootTables lootTables, AmethystClusterBlock block) {
+        LootTable.Builder t = RegistrateBlockLootTables.createSilkTouchDispatchTable(block, LootItem
+            .lootTableItem(EIOItems.INFINITY_CRYSTAL.get())
+            .apply(SetItemCountFunction.setCount(ConstantValue.exactly(4.0F)))
+            .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))
+            .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(ItemTags.CLUSTER_MAX_HARVESTABLES)))
+            .otherwise(RegistrateBlockLootTables.applyExplosionDecay(block,
+                LootItem.lootTableItem(EIOItems.INFINITY_CRYSTAL.get()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(2.0F))))));
+        lootTables.add(block, t);
+    }
 
     public static final BlockEntry<AmethystClusterBlock> LARGE_INFINITY_BUD = REGISTRATE
         .block("large_infinity_bud", Material.AMETHYST, props -> new AmethystClusterBlock(5, 3, props))
         .blockstate((ctx, prov) -> prov.directionalBlock(ctx.get(), prov.models().cross(ctx.getName(), prov.modLoc("block/" + ctx.getName()))))
         .addLayer(() -> RenderType::cutout)
         .properties(props -> props.noOcclusion().randomTicks().sound(SoundType.AMETHYST_CLUSTER).lightLevel((state) -> 4))
+        .loot(RegistrateBlockLootTables::dropWhenSilkTouch)
         .item()
         .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.BLOCKS)) // TODO: Take away...
         .build()
@@ -276,6 +318,7 @@ public class EIOBlocks {
         .blockstate((ctx, prov) -> prov.directionalBlock(ctx.get(), prov.models().cross(ctx.getName(), prov.modLoc("block/" + ctx.getName()))))
         .addLayer(() -> RenderType::cutout)
         .properties(props -> props.noOcclusion().randomTicks().sound(SoundType.AMETHYST_CLUSTER).lightLevel((state) -> 2))
+        .loot(RegistrateBlockLootTables::dropWhenSilkTouch)
         .item()
         .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.BLOCKS)) // TODO: Take away...
         .build()
@@ -286,6 +329,7 @@ public class EIOBlocks {
         .blockstate((ctx, prov) -> prov.directionalBlock(ctx.get(), prov.models().cross(ctx.getName(), prov.modLoc("block/" + ctx.getName()))))
         .addLayer(() -> RenderType::cutout)
         .properties(props -> props.noOcclusion().randomTicks().sound(SoundType.AMETHYST_CLUSTER).lightLevel((state) -> 1))
+        .loot(RegistrateBlockLootTables::dropWhenSilkTouch)
         .item()
         .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.BLOCKS)) // TODO: Take away...
         .build()
@@ -390,7 +434,13 @@ public class EIOBlocks {
     private static BlockBuilder<Block, Registrate> metalBlock(String name) {
         return REGISTRATE
             .block(name, Material.METAL, Block::new)
-            .properties(props -> props.sound(SoundType.METAL).color(MaterialColor.METAL))
+            .properties(props -> props
+                .sound(SoundType.METAL)
+                .color(MaterialColor.METAL)
+                .strength(5, 6)
+                .requiresCorrectToolForDrops())
+            .tag(BlockTags.NEEDS_STONE_TOOL)
+            .tag(BlockTags.MINEABLE_WITH_PICKAXE)
             .item()
             .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.BLOCKS))
             .build();
@@ -400,7 +450,13 @@ public class EIOBlocks {
         return REGISTRATE
             .block(name, Material.METAL, Block::new)
             .addLayer(() -> RenderType::cutout)
-            .properties(props -> props.noOcclusion().sound(SoundType.METAL).color(MaterialColor.METAL))
+            .properties(props -> props
+                .noOcclusion()
+                .sound(SoundType.METAL)
+                .color(MaterialColor.METAL)
+                .strength(5, 6))
+            .tag(BlockTags.NEEDS_STONE_TOOL)
+            .tag(BlockTags.MINEABLE_WITH_PICKAXE)
             .item()
             .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.BLOCKS))
             .build();
@@ -409,7 +465,8 @@ public class EIOBlocks {
     private static BlockEntry<EIOPressurePlateBlock> pressurePlateBlock(String name, ResourceLocation texture, EIOPressurePlateBlock.Detector type,
         boolean silent) {
 
-        BlockBuilder<EIOPressurePlateBlock, Registrate> bb = REGISTRATE.block(name, Material.METAL, (props) -> new EIOPressurePlateBlock(props, type, silent));
+        BlockBuilder<EIOPressurePlateBlock, Registrate> bb = REGISTRATE.block(name, Material.METAL,
+            (props) -> new EIOPressurePlateBlock(props.strength(5, 6), type, silent));
 
         bb.blockstate((ctx, prov) -> {
 
@@ -421,18 +478,21 @@ public class EIOBlocks {
             vb.partialState().with(PressurePlateBlock.POWERED, true).addModels(new ConfiguredModel(dm));
             vb.partialState().with(PressurePlateBlock.POWERED, false).addModels(new ConfiguredModel(um));
         });
-
-        bb = bb.item().group(() -> EIOCreativeTabs.BLOCKS).build();
+        bb.tag(BlockTags.NEEDS_STONE_TOOL)
+            .tag(BlockTags.MINEABLE_WITH_PICKAXE)
+            .item()
+            .group(() -> EIOCreativeTabs.BLOCKS)
+            .build();
         return bb.register();
     }
 
-    private static BlockEntry<SilentPressurePlateBlock> silentPressurePlateBlock(PressurePlateBlock block) {
-
+    private static BlockEntry<SilentPressurePlateBlock> silentPressurePlateBlock(final PressurePlateBlock block) {
         ResourceLocation upModelLoc = Objects.requireNonNull(block.getRegistryName());
         ResourceLocation downModelLoc = new ResourceLocation(upModelLoc.getNamespace(), upModelLoc.getPath() + "_down");
 
         BlockBuilder<SilentPressurePlateBlock, Registrate> bb = REGISTRATE.block("silent_" + upModelLoc.getPath(),
-            (props) -> new SilentPressurePlateBlock(block));
+            block.getStateDefinition().any().getMaterial(), (props) -> new SilentPressurePlateBlock(block));
+        bb.tag(BlockTags.MINEABLE_WITH_PICKAXE);
 
         bb.blockstate((ctx, prov) -> {
             VariantBlockStateBuilder vb = prov.getVariantBuilder(ctx.get());
@@ -461,6 +521,7 @@ public class EIOBlocks {
             }
             return new ConfiguredModel[] { new ConfiguredModel(prov.models().getExistingFile(downModelLoc)) };
         }));
+        bb.tag(BlockTags.MINEABLE_WITH_PICKAXE);
 
         var itemBuilder = bb.item();
         itemBuilder.model((ctx, prov) -> prov.withExistingParent(ctx.getName(), upModelLoc));
