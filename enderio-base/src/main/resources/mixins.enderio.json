@@ -6,6 +6,7 @@
   "mixins": [
   ],
   "client": [
+    "client.EnergyBarMixin"
   ],
   "minVersion": "0.8"
 }

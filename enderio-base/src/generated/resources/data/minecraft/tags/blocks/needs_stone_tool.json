@@ -1,0 +1,25 @@
+{
+  "replace": false,
+  "values": [
+    "enderio:electrical_steel_block",
+    "enderio:energetic_alloy_block",
+    "enderio:vibrant_alloy_block",
+    "enderio:redstone_alloy_block",
+    "enderio:conductive_iron_block",
+    "enderio:pulsating_iron_block",
+    "enderio:dark_steel_block",
+    "enderio:soularium_block",
+    "enderio:end_steel_block",
+    "enderio:construction_alloy_block",
+    "enderio:simple_machine_chassis",
+    "enderio:industrial_machine_chassis",
+    "enderio:end_steel_machine_chassis",
+    "enderio:soul_machine_chassis",
+    "enderio:enhanced_machine_chassis",
+    "enderio:soulless_machine_chassis",
+    "enderio:dark_steel_pressure_plate",
+    "enderio:silent_dark_steel_pressure_plate",
+    "enderio:soularium_pressure_plate",
+    "enderio:silent_soularium_pressure_plate"
+  ]
+}

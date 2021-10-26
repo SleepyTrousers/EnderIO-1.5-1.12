@@ -1,6 +1,14 @@
 package com.enderio.base.common.block;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.LadderBlock;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class DarkSteelLadderBlock extends LadderBlock {
 
@@ -8,5 +16,10 @@ public class DarkSteelLadderBlock extends LadderBlock {
         super(p_54345_);
     }
 
-    //Still here for adding textdata
+    @Override
+    public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
+        super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
+        // TODO: Translation
+        pTooltip.add(new TextComponent("Faster than regular ladders."));
+    }
 }

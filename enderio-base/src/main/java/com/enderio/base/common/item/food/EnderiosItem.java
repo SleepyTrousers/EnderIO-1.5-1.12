@@ -22,6 +22,4 @@ public class EnderiosItem extends BowlFoodItem {
         TeleportUtils.randomTeleport(pEntityLiving, 16.0f); // TODO: Config
         return itemStack;
     }
-
-    // TODO: Teleportation behaviours.
 }

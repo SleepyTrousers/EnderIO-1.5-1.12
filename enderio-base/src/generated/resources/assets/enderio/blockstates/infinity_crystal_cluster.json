@@ -1,0 +1,56 @@
+{
+  "variants": {
+    "facing=down,waterlogged=false": {
+      "model": "enderio:block/infinity_crystal_cluster",
+      "x": 180
+    },
+    "facing=up,waterlogged=false": {
+      "model": "enderio:block/infinity_crystal_cluster"
+    },
+    "facing=north,waterlogged=false": {
+      "model": "enderio:block/infinity_crystal_cluster",
+      "x": 90
+    },
+    "facing=south,waterlogged=false": {
+      "model": "enderio:block/infinity_crystal_cluster",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west,waterlogged=false": {
+      "model": "enderio:block/infinity_crystal_cluster",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east,waterlogged=false": {
+      "model": "enderio:block/infinity_crystal_cluster",
+      "x": 90,
+      "y": 90
+    },
+    "facing=down,waterlogged=true": {
+      "model": "enderio:block/infinity_crystal_cluster",
+      "x": 180
+    },
+    "facing=up,waterlogged=true": {
+      "model": "enderio:block/infinity_crystal_cluster"
+    },
+    "facing=north,waterlogged=true": {
+      "model": "enderio:block/infinity_crystal_cluster",
+      "x": 90
+    },
+    "facing=south,waterlogged=true": {
+      "model": "enderio:block/infinity_crystal_cluster",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west,waterlogged=true": {
+      "model": "enderio:block/infinity_crystal_cluster",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east,waterlogged=true": {
+      "model": "enderio:block/infinity_crystal_cluster",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

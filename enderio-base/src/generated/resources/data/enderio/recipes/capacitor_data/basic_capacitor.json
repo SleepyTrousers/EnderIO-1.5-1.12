@@ -1,0 +1,19 @@
+{
+  "type": "enderio:capacitor_data",
+  "capacitor": {
+    "item": "enderio:basic_capacitor"
+  },
+  "data": {
+    "specializations": [
+      {
+        "type": "all_production_speed",
+        "value": 1.0
+      },
+      {
+        "type": "all_energy_consuption",
+        "value": 1.0
+      }
+    ],
+    "base": 0.0
+  }
+}

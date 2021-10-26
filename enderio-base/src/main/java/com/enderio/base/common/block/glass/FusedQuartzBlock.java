@@ -38,7 +38,7 @@ public class FusedQuartzBlock extends AbstractGlassBlock {
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, @Nonnull List<Component> pTooltip, TooltipFlag pFlag) {
+    public void appendHoverText(@Nonnull ItemStack pStack, @Nullable BlockGetter pLevel, @Nonnull List<Component> pTooltip, @Nonnull TooltipFlag pFlag) {
         super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
 
         // TODO: Translations

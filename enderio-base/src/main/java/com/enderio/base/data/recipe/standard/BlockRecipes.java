@@ -37,8 +37,7 @@ public class BlockRecipes extends RecipeProvider {
     private void addConstructionBlockRecipes(Consumer<FinishedRecipe> recipeConsumer) {
 
         ShapedRecipeBuilder
-            .shaped(EIOBlocks.DARK_STEEL_LADDER
-                .get(), 12)
+            .shaped(EIOBlocks.DARK_STEEL_LADDER.get(), 12)
             .define('I', EIOItems.DARK_STEEL_INGOT.get())
             .pattern(" I ")
             .pattern(" I ")
@@ -47,8 +46,7 @@ public class BlockRecipes extends RecipeProvider {
             .save(recipeConsumer);
 
         ShapedRecipeBuilder
-            .shaped(EIOBlocks.DARK_STEEL_BARS
-                .get(), 16)
+            .shaped(EIOBlocks.DARK_STEEL_BARS.get(), 16)
             .define('I', EIOItems.DARK_STEEL_INGOT.get())
             .pattern("III")
             .pattern("III")
@@ -56,8 +54,7 @@ public class BlockRecipes extends RecipeProvider {
             .save(recipeConsumer);
 
         ShapedRecipeBuilder
-            .shaped(EIOBlocks.DARK_STEEL_TRAPDOOR
-                .get(), 1)
+            .shaped(EIOBlocks.DARK_STEEL_TRAPDOOR.get(), 1)
             .define('I', EIOItems.DARK_STEEL_INGOT.get())
             .pattern("II")
             .pattern("II")
@@ -65,8 +62,7 @@ public class BlockRecipes extends RecipeProvider {
             .save(recipeConsumer);
 
         ShapedRecipeBuilder
-            .shaped(EIOBlocks.DARK_STEEL_DOOR
-                .get(), 3)
+            .shaped(EIOBlocks.DARK_STEEL_DOOR.get(), 3)
             .define('I', EIOItems.DARK_STEEL_INGOT.get())
             .pattern("II")
             .pattern("II")
@@ -74,10 +70,8 @@ public class BlockRecipes extends RecipeProvider {
             .unlockedBy("has_ingredient", InventoryChangeTrigger.TriggerInstance.hasItems(EIOItems.DARK_STEEL_INGOT.get()))
             .save(recipeConsumer);
 
-
         ShapedRecipeBuilder
-            .shaped(EIOBlocks.END_STEEL_BARS
-                .get(), 12)
+            .shaped(EIOBlocks.END_STEEL_BARS.get(), 12)
             .define('I', EIOItems.END_STEEL_INGOT.get())
             .pattern("III")
             .pattern("III")
@@ -85,8 +79,7 @@ public class BlockRecipes extends RecipeProvider {
             .save(recipeConsumer);
 
         ShapedRecipeBuilder
-            .shaped(EIOBlocks.REINFORCED_OBSIDIAN
-                .get())
+            .shaped(EIOBlocks.REINFORCED_OBSIDIAN.get())
             .define('B', EIOBlocks.DARK_STEEL_BARS.get())
             .define('G', EIOItems.GRAINS_OF_INFINITY.get())
             .define('O', Blocks.OBSIDIAN)
@@ -100,8 +93,7 @@ public class BlockRecipes extends RecipeProvider {
     private void addChassisRecipes(Consumer<FinishedRecipe> recipeConsumer) {
 
         ShapedRecipeBuilder
-            .shaped(EIOBlocks.SIMPLE_MACHINE_CHASSIS
-                .get())
+            .shaped(EIOBlocks.SIMPLE_MACHINE_CHASSIS.get())
             .define('B', Blocks.IRON_BARS)
             .define('G', EIOItems.GRAINS_OF_INFINITY.get())
             .define('I', Tags.Items.INGOTS_IRON)
@@ -112,8 +104,7 @@ public class BlockRecipes extends RecipeProvider {
             .save(recipeConsumer);
 
         ShapedRecipeBuilder
-            .shaped(EIOBlocks.END_STEEL_MACHINE_CHASSIS
-                .get())
+            .shaped(EIOBlocks.END_STEEL_MACHINE_CHASSIS.get())
             .define('B', EIOBlocks.END_STEEL_BARS.get())
             .define('G', EIOItems.GRAINS_OF_INFINITY.get())
             .define('I', EIOItems.END_STEEL_INGOT.get())
@@ -140,8 +131,7 @@ public class BlockRecipes extends RecipeProvider {
 
     private void addMetalBlockRecipe(@Nonnull Consumer<FinishedRecipe> recipeConsumer, BlockEntry<? extends Block> result, ItemLike ingredient) {
         ShapedRecipeBuilder
-            .shaped(result
-                .get())
+            .shaped(result.get())
             .define('#', ingredient)
             .pattern("###")
             .pattern("###")
@@ -175,9 +165,7 @@ public class BlockRecipes extends RecipeProvider {
 
     private void addPressurePlateRecipe(@Nonnull Consumer<FinishedRecipe> recipeConsumer, BlockEntry<? extends Block> result, ItemLike ingredient) {
         ShapedRecipeBuilder
-            .shaped(result
-                .get()
-                .asItem())
+            .shaped(result.get().asItem())
             .define('#', ingredient)
             .pattern("##")
             .unlockedBy("has_ingredient", InventoryChangeTrigger.TriggerInstance.hasItems(ingredient))
@@ -186,9 +174,7 @@ public class BlockRecipes extends RecipeProvider {
 
     private void addSilentPressurePlateRecipe(@Nonnull Consumer<FinishedRecipe> recipeConsumer, BlockEntry<? extends Block> result, ItemLike ingredient) {
         ShapedRecipeBuilder
-            .shaped(result
-                .get()
-                .asItem())
+            .shaped(result.get().asItem())
             .define('W', ItemTags.WOOL)
             .define('P', ingredient)
             .pattern("W")

@@ -73,16 +73,16 @@ public class GraveBlockEntity extends BlockEntity {
 
     @Override
     public void load(CompoundTag pTag) {
-        owner.deserializeNBT(pTag.getCompound("owner"));
-        itemHandler.deserializeNBT(pTag.getCompound("inv"));
+        owner.deserializeNBT(pTag.getCompound(owner.getSerializedName()));
+        itemHandler.deserializeNBT(pTag.getCompound("Items"));
         super.load(pTag);
     }
 
     @Nonnull
     @Override
     public CompoundTag save(CompoundTag pTag) {
-        pTag.put("owner", owner.serializeNBT());
-        pTag.put("inv", itemHandler.serializeNBT());
+        pTag.put(owner.getSerializedName(), owner.serializeNBT());
+        pTag.put("Items", itemHandler.serializeNBT());
         return super.save(pTag);
     }
 
