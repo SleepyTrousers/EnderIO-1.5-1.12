@@ -1,10 +1,11 @@
-package com.enderio.base.common.item.spawner;
+package com.enderio.base.common.loot;
 
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import com.enderio.base.EnderIO;
+import com.enderio.base.common.item.spawner.BrokenSpawnerItem;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 

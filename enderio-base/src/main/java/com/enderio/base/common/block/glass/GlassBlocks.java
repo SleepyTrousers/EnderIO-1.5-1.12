@@ -27,14 +27,6 @@ public class GlassBlocks {
 
     /**
      * Create the entire color family for this configuration of fused glass.
-     *
-     * @param registrate
-     * @param name
-     * @param english
-     * @param collisionPredicate
-     * @param emitsLight
-     * @param blocksLight
-     * @param explosionResistant
      */
     public GlassBlocks(Registrate registrate, String name, String english, GlassCollisionPredicate collisionPredicate, boolean emitsLight, boolean blocksLight,
         boolean explosionResistant) {
@@ -63,9 +55,7 @@ public class GlassBlocks {
     }
 
     private static ResourceLocation getModelFile(String name) {
-        return name.contains("clear_glass") ?
-            EnderIO.loc("block/clear_glass") :
-            EnderIO.loc("block/fused_quartz");
+        return name.contains("clear_glass") ? EnderIO.loc("block/clear_glass") : EnderIO.loc("block/fused_quartz");
     }
 
     // Dirty dirty. TODO: Just access transforms for these in Blocks??
@@ -79,11 +69,6 @@ public class GlassBlocks {
 
     /**
      * Register a non-colored glass
-     *
-     * @param registrate
-     * @param name
-     * @param english
-     * @return
      */
     private BlockEntry<FusedQuartzBlock> register(Registrate registrate, String name, String english) {
         return registrate
@@ -106,16 +91,8 @@ public class GlassBlocks {
             .register();
     }
 
-    // MAJOR TODO: Trim the number of models down significantly; should only need two.
-
     /**
      * Register a colored glass.
-     *
-     * @param registrate
-     * @param name
-     * @param english
-     * @param color
-     * @return
      */
     private BlockEntry<FusedQuartzBlock> register(Registrate registrate, String name, String english, DyeColor color) {
         return registrate

@@ -1,0 +1,19 @@
+{
+  "type": "enderio:capacitor_data",
+  "capacitor": {
+    "item": "enderio:octadic_capacitor"
+  },
+  "data": {
+    "specializations": [
+      {
+        "type": "all_production_speed",
+        "value": 4.0
+      },
+      {
+        "type": "all_energy_consuption",
+        "value": 4.0
+      }
+    ],
+    "base": 0.0
+  }
+}

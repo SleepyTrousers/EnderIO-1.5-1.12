@@ -72,7 +72,6 @@ public class EIOBlocks {
 
     // region Dark Steel Building Blocks
 
-    // TODO: FASTER THAN REGULAR LADDERS TOOLTIP
     public static final BlockEntry<DarkSteelLadderBlock> DARK_STEEL_LADDER = REGISTRATE
         .block("dark_steel_ladder", Material.METAL, DarkSteelLadderBlock::new)
         .properties(props -> props.strength(0.4f).requiresCorrectToolForDrops().sound(SoundType.METAL).noOcclusion())

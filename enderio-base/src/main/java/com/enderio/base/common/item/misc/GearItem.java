@@ -1,9 +1,10 @@
-package com.enderio.base.common.item;
+package com.enderio.base.common.item.misc;
 
 import java.util.function.Consumer;
 
 import com.enderio.base.client.renderers.GearBEWLR;
 
+import com.enderio.base.common.item.misc.MaterialItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.common.util.NonNullLazy;

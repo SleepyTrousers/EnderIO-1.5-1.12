@@ -1,16 +1,26 @@
 package com.enderio.base.common.item;
 
 import com.enderio.base.EnderIO;
+import com.enderio.base.common.capability.capacitors.ICapacitorData;
+import com.enderio.base.common.item.capacitors.LootCapacitorItem;
 import com.enderio.base.common.item.food.EnderiosItem;
+import com.enderio.base.common.item.misc.EnderfaceItem;
+import com.enderio.base.common.item.misc.GearItem;
+import com.enderio.base.common.item.misc.MaterialItem;
 import com.enderio.base.common.item.spawner.BrokenSpawnerItem;
-import com.enderio.base.common.util.ItemModelUtils;
+import com.enderio.base.common.item.tool.LevitationStaffItem;
+import com.enderio.base.common.item.tool.SoulVialItem;
+import com.enderio.base.common.item.tool.electromagnet.ElectromagnetItem;
+import com.enderio.base.data.model.item.ItemModelUtils;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.util.NonNullLazyValue;
 import com.tterrag.registrate.util.entry.ItemEntry;
-
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.Tags;
@@ -82,6 +92,56 @@ public class EIOItems {
 
     // endregion
 
+    // region capacitors
+
+    public static final ItemEntry<Item> BASIC_CAPACITOR = REGISTRATE
+        .item("basic_capacitor", Item::new)
+        .properties(p -> p.stacksTo(1))
+        .group(() -> EIOCreativeTabs.MAIN)
+        .register();
+
+    public static final ItemEntry<Item> DOUBLE_LAYER_CAPACITOR = REGISTRATE
+        .item("double_layer_capacitor", Item::new)
+        .properties(p -> p.stacksTo(1))
+        .group(() -> EIOCreativeTabs.MAIN)
+        .register();
+
+    public static final ItemEntry<Item> OCTADIC_CAPACITOR = REGISTRATE
+        .item("octadic_capacitor", Item::new)
+        .properties(p -> p.stacksTo(1))
+        .group(() -> EIOCreativeTabs.MAIN)
+        .register();
+
+    public static final ItemEntry<LootCapacitorItem> LOOT_CAPACITOR = REGISTRATE
+        .item("loot_capacitor", LootCapacitorItem::new)
+        .properties(p -> p.stacksTo(1))
+        .register();
+
+    // endregion
+
+    // region capacitor text
+
+    // TODO: Move language related things to a dedicated location, like EIOLang
+
+    public static final TranslatableComponent ALL_ENERGY_CONSUMPSTION = capacitorDescriptionBuilder("type", ICapacitorData.ALL_ENERGY_CONSUMPSTION, "Leaky");
+    public static final TranslatableComponent ALL_PRODUCTION_SPEED = capacitorDescriptionBuilder("type", ICapacitorData.ALL_PRODUCTION_SPEED, "Fast");
+    public static final TranslatableComponent ALLOY_ENERGY_CONSUMPSTION = capacitorDescriptionBuilder("type", ICapacitorData.ALLOY_ENERGY_CONSUMPSTION,
+        "Melted");
+    public static final TranslatableComponent ALLOY_PRODUCTION_SPEED = capacitorDescriptionBuilder("type", ICapacitorData.ALLOY_PRODUCTION_SPEED, "Smelting");
+
+    public static final TranslatableComponent DUD = capacitorDescriptionBuilder("base", "0", "Capacitor Dud");
+    public static final TranslatableComponent GOOD = capacitorDescriptionBuilder("base", "1", "Good Capacitor");
+    public static final TranslatableComponent ENHANCED = capacitorDescriptionBuilder("base", "2", "Enhanced Capacitor");
+    public static final TranslatableComponent WONDER = capacitorDescriptionBuilder("base", "3", "Wonder Capacitor");
+
+    public static final TranslatableComponent FLAVOR0 = capacitorDescriptionBuilder("flavor", "0", "An attached note describes this as \"%1$s %2$s %3$s\"");
+    public static final TranslatableComponent FLAVOR1 = capacitorDescriptionBuilder("flavor", "1",
+        "You can decipher ancient runes that translate roughly as \"%1$s %2$s %3$s\". Odd...");
+
+    public static final TranslatableComponent FAILED = capacitorDescriptionBuilder("grade", "0", "Failed");
+    public static final TranslatableComponent INCREDIBLY = capacitorDescriptionBuilder("grade", "4", "Incredibly");
+    public static final TranslatableComponent UNSTABLE = capacitorDescriptionBuilder("grade", "5", "Unstable");
+
     // endregion
 
     // region Crystals
@@ -113,11 +173,11 @@ public class EIOItems {
     public static final ItemEntry<MaterialItem> IRON_POWDER = materialItem("iron_powder").register();
     public static final ItemEntry<MaterialItem> GOLD_POWDER = materialItem("gold_powder").register();
     public static final ItemEntry<MaterialItem> COPPER_POWDER = materialItem("copper_powder").register();
-    public static final ItemEntry<MaterialItem> TIN_POWDER = materialItem("tin_powder").register(); // TODO: tin ingot tag depend
+    public static final ItemEntry<MaterialItem> TIN_POWDER = materialItem("tin_powder").register(); // TODO: hide if tin isn't present
     public static final ItemEntry<MaterialItem> ENDER_PEARL_POWDER = materialItem("ender_pearl_powder").register();
     public static final ItemEntry<MaterialItem> OBSIDIAN_POWDER = materialItem("obsidian_powder").register();
-    public static final ItemEntry<MaterialItem> ARDITE_POWDER = materialItem("ardite_powder").register(); // TODO: ardite ore tag depend
-    public static final ItemEntry<MaterialItem> COBALT_POWDER = materialItem("cobalt_powder").register(); // TODO: cobalt ore tag depend
+    public static final ItemEntry<MaterialItem> ARDITE_POWDER = materialItem("ardite_powder").register(); // TODO: hide if ardite isnt present
+    public static final ItemEntry<MaterialItem> COBALT_POWDER = materialItem("cobalt_powder").register(); // TODO: hide if cobalt isnt present
     public static final ItemEntry<MaterialItem> LAPIS_LAZULI_POWDER = materialItem("lapis_lazuli_powder").register();
     public static final ItemEntry<MaterialItem> QUARTZ_POWDER = materialItem("quartz_powder").register();
 
@@ -248,6 +308,28 @@ public class EIOItems {
         .lang("\"Enderios\"")
         .properties(props -> props.stacksTo(1))
         .register();
+
+    // endregion
+
+    // region Tools
+
+    public static ItemEntry<LevitationStaffItem> LEVITATION_STAFF = REGISTRATE
+        .item("staff_of_levity", LevitationStaffItem::new)
+        .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.GEAR))
+        .register();
+
+    public static ItemEntry<ElectromagnetItem> ELECTROMAGNET = REGISTRATE
+        .item("electromagnet", ElectromagnetItem::new)
+        .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.GEAR))
+        .register();
+
+    // endregion
+
+    // region description
+
+    public static TranslatableComponent capacitorDescriptionBuilder(String type, String value, String description) {
+        return REGISTRATE.addLang("description", new ResourceLocation(EnderIO.DOMAIN, "capacitor." + type + "." + value), description);
+    }
 
     // endregion
 

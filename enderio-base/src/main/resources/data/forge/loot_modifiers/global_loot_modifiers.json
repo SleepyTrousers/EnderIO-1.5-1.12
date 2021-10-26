@@ -1,6 +1,7 @@
 {
   "replace": false,
   "entries":[
-    "enderio:broken_spawner"
+    "enderio:broken_spawner",
+    "enderio:capacitor_loot"
   ]
 }

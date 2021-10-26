@@ -1,10 +1,12 @@
-package com.enderio.base.common.item;
+package com.enderio.base.common.item.misc;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
+import javax.annotation.Nonnull;
+
 public class MaterialItem extends Item {
-    private boolean hasGlint;
+    private final boolean hasGlint;
 
     public MaterialItem(Properties props, boolean hasGlint) {
         super(props);
@@ -12,7 +14,7 @@ public class MaterialItem extends Item {
     }
 
     @Override
-    public boolean isFoil(ItemStack itemStack) {
+    public boolean isFoil(@Nonnull ItemStack itemStack) {
         return hasGlint;
     }
 }

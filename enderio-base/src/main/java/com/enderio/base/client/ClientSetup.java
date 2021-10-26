@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientSetup {
-    
+
     @SubscribeEvent
     public static void customModelLoaders(ModelRegistryEvent event) {
         ModelLoader.addSpecialModel(EnderIO.loc("item/wood_gear_helper"));

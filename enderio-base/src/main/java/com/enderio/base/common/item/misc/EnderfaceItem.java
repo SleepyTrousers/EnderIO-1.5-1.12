@@ -1,4 +1,4 @@
-package com.enderio.base.common.item;
+package com.enderio.base.common.item.misc;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;

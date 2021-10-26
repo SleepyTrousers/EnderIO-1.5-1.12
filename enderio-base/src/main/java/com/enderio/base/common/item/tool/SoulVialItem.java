@@ -1,6 +1,13 @@
-package com.enderio.base.common.item;
+package com.enderio.base.common.item.tool;
 
+import com.enderio.base.common.capability.EIOCapabilities;
+import com.enderio.base.common.capability.entity.EntityStorage;
+import com.enderio.base.common.capability.entity.IEntityStorage;
+import com.enderio.base.common.item.EIOCreativeTabs;
+import com.enderio.base.common.item.EIOItems;
 import com.enderio.base.common.util.EntityCaptureUtils;
+import com.enderio.core.common.capability.IMultiCapabilityItem;
+import com.enderio.core.common.capability.MultiCapabilityProvider;
 import com.enderio.core.common.util.EntityUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,6 +30,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -31,7 +39,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public class SoulVialItem extends Item {
+public class SoulVialItem extends Item implements IMultiCapabilityItem {
     public SoulVialItem(Properties pProperties) {
         super(pProperties);
     }
@@ -91,7 +99,7 @@ public class SoulVialItem extends Item {
 
             // Create a filled vial and put the entity's NBT inside.
             ItemStack filledVial = new ItemStack(EIOItems.FILLED_SOUL_VIAL.get());
-            filledVial.setTag(pInteractionTarget.serializeNBT());
+            setEntityNBT(filledVial, pInteractionTarget.serializeNBT());
 
             // Consume a soul vial
             ItemStack hand = pPlayer.getItemInHand(pUsedHand);
@@ -141,15 +149,23 @@ public class SoulVialItem extends Item {
             double spawnZ = spawnPos.getZ() + face.getStepZ() + 0.5;
 
             // Get a random rotation for the entity.
-            float rotation = Mth.wrapDegrees(pContext.getLevel().getRandom().nextFloat() * 360.0f);
+            float rotation = Mth.wrapDegrees(pContext
+                .getLevel()
+                .getRandom()
+                .nextFloat() * 360.0f);
 
-            // noinspection ConstantConditions - the itemstack tag will not be null, its deal with in getEntityType.
-            Optional<Entity> entity = EntityType.create(itemStack.getTag(), pContext.getLevel());
+            // Try to get the entity NBT from the item.
+            getEntityNBT(itemStack).ifPresent(entityTag -> {
+                Optional<Entity> entity = EntityType.create(entityTag, pContext.getLevel());
 
-            entity.ifPresent(ent -> {
-                ent.setPos(spawnX, spawnY, spawnZ);
-                ent.setYRot(rotation);
-                pContext.getLevel().addFreshEntity(ent);
+                // Position the entity and add it.
+                entity.ifPresent(ent -> {
+                    ent.setPos(spawnX, spawnY, spawnZ);
+                    ent.setYRot(rotation);
+                    pContext
+                        .getLevel()
+                        .addFreshEntity(ent);
+                });
             });
 
             // Empty the soul vial.
@@ -188,16 +204,40 @@ public class SoulVialItem extends Item {
     // region Entity Storage
 
     public static Optional<ResourceLocation> getEntityType(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag != null && tag.contains("id")) {
-            return Optional.of(new ResourceLocation(tag.getString("id")));
-        }
-        return Optional.empty();
+        return stack
+            .getCapability(EIOCapabilities.ENTITY_STORAGE)
+            .map(IEntityStorage::getEntityType)
+            .orElse(Optional.empty());
+    }
+
+    public static Optional<CompoundTag> getEntityNBT(ItemStack stack) {
+        return stack
+            .getCapability(EIOCapabilities.ENTITY_STORAGE)
+            .map(IEntityStorage::getEntityNBT)
+            .orElse(Optional.empty());
     }
 
     private static void setEntityType(ItemStack stack, ResourceLocation entityType) {
-        CompoundTag tag = stack.getOrCreateTag();
-        tag.putString("id", entityType.toString());
+        stack
+            .getCapability(EIOCapabilities.ENTITY_STORAGE)
+            .ifPresent(storage -> {
+                storage.setEntityType(entityType);
+            });
+    }
+
+    private static void setEntityNBT(ItemStack stack, CompoundTag entity) {
+        stack
+            .getCapability(EIOCapabilities.ENTITY_STORAGE)
+            .ifPresent(storage -> {
+                storage.setEntityNBT(entity);
+            });
+    }
+
+    @Nullable
+    @Override
+    public MultiCapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt, MultiCapabilityProvider provider) {
+        provider.addSerialized(EIOCapabilities.ENTITY_STORAGE, LazyOptional.of(EntityStorage::new));
+        return provider;
     }
 
     // endregion

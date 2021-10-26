@@ -1,22 +1,30 @@
 package com.enderio.base.data.model.item;
 
 import com.enderio.base.EnderIO;
-import com.enderio.base.common.item.GearItem;
-
+import com.tterrag.registrate.providers.DataGenContext;
+import com.tterrag.registrate.providers.RegistrateItemModelProvider;
+import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ModelBuilder.Perspective;
 import net.minecraftforge.client.model.generators.ModelFile;
 
-public class EnderItemModel {
+public class ItemModelUtils {
+    public static ItemModelBuilder fakeBlockModel(DataGenContext<Item, ? extends Item> ctx, RegistrateItemModelProvider prov) {
+        return prov.withExistingParent(prov.name(ctx), prov.mcLoc("block/cube_all")).texture("all", prov.itemTexture(ctx));
+    }
 
-    // Datagen for gears
-    public static void gearModel(ItemModelProvider provider, GearItem gear) {
+    public static ItemModelBuilder mimicItem(DataGenContext<Item, ? extends Item> ctx, ItemEntry<? extends Item> item, RegistrateItemModelProvider prov) {
+        return prov.generated(ctx, prov.itemTexture(item));
+    }
+
+    public static void gearItem(DataGenContext<Item, ? extends Item> ctx, RegistrateItemModelProvider prov) {
         // json so the BEWLR is used + perspectives
 
         // @formatter:off
-        provider
-            .getBuilder(gear.getRegistryName().getPath().toString())
+        prov
+            .getBuilder(ctx.get().getRegistryName().getPath().toString())
             .parent((new ModelFile.UncheckedModelFile("builtin/entity")))
             .transforms()
             .transform(Perspective.GROUND).rotation(0, 0, 0).translation(0, 2, 0).scale(0.5F, 0.5F, 0.5F).end()
@@ -28,10 +36,9 @@ public class EnderItemModel {
         // @formatter:on
 
         // json with the actual model
-        provider
-            .getBuilder(gear.getRegistryName().getPath().toString() + "_helper")
+        prov
+            .getBuilder(ctx.get().getRegistryName().getPath().toString() + "_helper")
             .parent(new ModelFile.UncheckedModelFile("item/generated"))
-            .texture("layer0", new ResourceLocation(EnderIO.MODID, "item/" + gear.getRegistryName().getPath().toString()));
+            .texture("layer0", EnderIO.loc("item/" + ctx.get().getRegistryName().getPath().toString()));
     }
-
 }

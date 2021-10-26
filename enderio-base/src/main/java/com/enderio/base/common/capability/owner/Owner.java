@@ -8,9 +8,7 @@ import net.minecraft.world.level.block.entity.SkullBlockEntity;
 public class Owner implements IOwner {
     private GameProfile owner;
 
-    public Owner() {
-
-    }
+    public Owner() {}
 
     @Override
     public GameProfile getProfile() {
