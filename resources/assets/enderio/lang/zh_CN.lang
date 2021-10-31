@@ -50,12 +50,12 @@ enderio.itemRedstoneConduit.name=红石导管
 enderio.itemRedstoneConduitSwitch.name=导管开关
 enderio.itemRedstoneConduitInsulated.name=绝缘红石导管
 
-enderio.itemLiquidConduit.name=液体导管
-enderio.itemLiquidConduitAdvanced.name=高压液体导管
-enderio.itemLiquidConduitEnder.name=末影液体导管
-enderio.itemLiquidConduitAdvancedEnder.name=Advanced Ender Fluid Conduit
-enderio.itemLiquidConduit.lockedType=液体种类锁定为
-enderio.itemLiquidConduit.unlockedType=液体种类解锁
+enderio.itemLiquidConduit.name=流体导管
+enderio.itemLiquidConduitAdvanced.name=高压流体导管
+enderio.itemLiquidConduitEnder.name=末影流体导管
+enderio.itemLiquidConduitAdvancedEnder.name=高压末影流体导管
+enderio.itemLiquidConduit.lockedType=流体种类锁定为
+enderio.itemLiquidConduit.unlockedType=流体种类解锁
 enderio.itemLiquidConduit.lockedWaila=锁定为
 
 enderio.itemLiquidConduit.tooltip.maxExtract=最大提取:
@@ -65,7 +65,7 @@ enderio.itemLiquidConduit.tooltip.detailed.line2=流量取决于流体
 enderio.itemLiquidConduit.tooltip.detailed.line3=黏性
 
 enderio.itemLiquidConduitEnder.tooltip.detailed.line1=流体即时远距离传送
-enderio.itemLiquidConduitEnder.tooltip.detailed.line2=允许多种液体
+enderio.itemLiquidConduitEnder.tooltip.detailed.line2=允许多种流体
 enderio.itemLiquidConduitEnder.tooltip.detailed.line3=同时被传送
 
 enderio.itemItemConduit.name=物品导管
@@ -493,7 +493,7 @@ tile.blockEnchanter.tooltip.detailed.line2=来制作附魔书
 tile.blockEnchanter.tooltip.detailed.line3=附魔书创造!
 
 tile.blockCombustionGenerator.name=燃烧发电机
-tile.blockCombustionGenerator.tooltip.detailed.line1=燃烧液体燃料产生能量
+tile.blockCombustionGenerator.tooltip.detailed.line1=燃烧流体燃料产生能量
 tile.blockCombustionGenerator.tooltip.detailed.line2=需要冷却剂 (比如水)
 tile.blockCombustionGenerator.tooltip.detailed.line3=输出能量取决于燃料
 
@@ -518,7 +518,7 @@ tile.blockKillerJoe.tooltip.detailed.line1=当你提供一把剑和营养精华
 tile.blockKillerJoe.tooltip.detailed.line2=液时,这台机器就会自动攻
 tile.blockKillerJoe.tooltip.detailed.line3=击附近的生物
 tile.blockKillerJoe.tooltip.detailed.line4=经验能以液态XP的形式
-tile.blockKillerJoe.tooltip.detailed.line5=用液体管道抽出
+tile.blockKillerJoe.tooltip.detailed.line5=用流体管道抽出
 
 enderio.killerJoe.fuelTank=营养液槽
 enderio.killerJoe.giveXp.tooltip=吸收XP
@@ -548,7 +548,7 @@ tile.blockTank.name=流体箱
 tile.blockTank.advanced.name=高压流体箱
 tile.blockTank.tooltip.detailed.line1=便携式流体箱
 tile.blockTank.tooltip.detailed.line2=可用于清空或
-tile.blockTank.tooltip.detailed.line3=注满液体容器
+tile.blockTank.tooltip.detailed.line3=注满流体容器
 enderio.tank.tank=流体箱
 enderio.tooltip.none=空
 enderio.tooltip.fluidStored=存有流体
@@ -560,7 +560,7 @@ enderio.gui.void.mode.always=持续
 enderio.gui.void.mode.always.desc=空白物品栏接受所有物品
 
 enderio.gui.void.mode.if_not_container=非容器
-enderio.gui.void.mode.if_not_container.desc=空白物品栏接受所有物品除了液体容器
+enderio.gui.void.mode.if_not_container.desc=空白物品栏接受所有物品除了流体容器
 
 enderio.gui.void.mode.never=从不
 enderio.gui.void.mode.never.desc=空白物品栏不接受任何物品
@@ -1106,7 +1106,7 @@ enderio.gui.trans.addChannel=添加频道
 enderio.gui.trans.deleteChannel=删除频道
 enderio.gui.trans.activateChannel=开启频道
 enderio.gui.trans.powerMode=能量模式
-enderio.gui.trans.fluidMode=液体模式
+enderio.gui.trans.fluidMode=流体模式
 enderio.gui.trans.itemMode=物品模式
 enderio.gui.trans.publicHeading=公共
 enderio.gui.trans.privateHeading=私有
