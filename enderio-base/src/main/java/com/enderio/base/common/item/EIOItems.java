@@ -10,7 +10,7 @@ import com.enderio.base.common.item.misc.MaterialItem;
 import com.enderio.base.common.item.spawner.BrokenSpawnerItem;
 import com.enderio.base.common.item.tool.LevitationStaffItem;
 import com.enderio.base.common.item.tool.SoulVialItem;
-import com.enderio.base.common.item.tool.electromagnet.ElectromagnetItem;
+import com.enderio.base.common.item.tool.ElectromagnetItem;
 import com.enderio.base.data.model.item.ItemModelUtils;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.ItemBuilder;
@@ -276,7 +276,7 @@ public class EIOItems {
     private static ItemBuilder<GearItem, Registrate> gearItem(String name) {
         return REGISTRATE
             .item(name, props -> new GearItem(props, false))
-            .model((c, p) -> ItemModelUtils.gearItem(c, p))
+            .model(ItemModelUtils::gearItem)
             .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.MAIN));
     }
 
