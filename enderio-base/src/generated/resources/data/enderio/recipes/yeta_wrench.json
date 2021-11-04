@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "I I",
+    " G ",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "item": "enderio:electrical_steel_ingot"
+    },
+    "G": {
+      "item": "enderio:stone_gear"
+    }
+  },
+  "result": {
+    "item": "enderio:yeta_wrench"
+  }
+}

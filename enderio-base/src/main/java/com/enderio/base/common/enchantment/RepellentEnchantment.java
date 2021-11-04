@@ -1,4 +1,4 @@
-package com.enderio.base.common.enchantments;
+package com.enderio.base.common.enchantment;
 
 import com.enderio.core.common.util.TeleportUtils;
 

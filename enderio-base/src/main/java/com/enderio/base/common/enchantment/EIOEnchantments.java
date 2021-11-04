@@ -1,4 +1,4 @@
-package com.enderio.base.common.enchantments;
+package com.enderio.base.common.enchantment;
 
 import java.util.ArrayList;
 import java.util.List;

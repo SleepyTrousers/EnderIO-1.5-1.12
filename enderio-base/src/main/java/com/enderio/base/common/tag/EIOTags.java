@@ -10,16 +10,18 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags.IOptionalNamedTag;
 
 public class EIOTags {
-    
+
     public static void init() {
         Items.init();
         Blocks.init();
     }
-    
+
     public static class Items {
-        
+
         private static void init() {}
-        
+    
+        public static final IOptionalNamedTag<Item> WRENCH = ItemTags.createOptional(new ResourceLocation("forge", "tools/wrench"));
+
         public static final IOptionalNamedTag<Item> DUSTS_LAPIS = ItemTags.createOptional(new ResourceLocation("forge", "dusts/lapis"));
         public static final IOptionalNamedTag<Item> DUSTS_COAL = ItemTags.createOptional(new ResourceLocation("forge", "dusts/coal"));
         public static final IOptionalNamedTag<Item> DUSTS_IRON = ItemTags.createOptional(new ResourceLocation("forge", "dusts/iron"));
@@ -42,15 +44,15 @@ public class EIOTags {
 
         public static final IOptionalNamedTag<Item> FUSED_QUARTZ = ItemTags.createOptional(new ResourceLocation(EnderIO.MODID, "fused_quartz"));
         public static final IOptionalNamedTag<Item> CLEAR_GLASS = ItemTags.createOptional(new ResourceLocation(EnderIO.MODID, "clear_glass"));
-        
+
     }
-    
+
     public static class Blocks {
-        
+
         private static void init() {}
-        
+
         public static final IOptionalNamedTag<Block> FUSED_QUARTZ = BlockTags.createOptional(new ResourceLocation(EnderIO.MODID, "fused_quartz"));
         public static final IOptionalNamedTag<Block> CLEAR_GLASS = BlockTags.createOptional(new ResourceLocation(EnderIO.MODID, "clear_glass"));
-       
+
     }
 }

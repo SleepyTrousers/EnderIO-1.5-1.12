@@ -1,7 +1,7 @@
 package com.enderio.base.client;
 
 import com.enderio.base.EnderIO;
-import com.enderio.base.client.renderers.GraveRenderer;
+import com.enderio.base.client.renderer.GraveRenderer;
 import com.enderio.base.common.blockentity.EIOBlockEntities;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;

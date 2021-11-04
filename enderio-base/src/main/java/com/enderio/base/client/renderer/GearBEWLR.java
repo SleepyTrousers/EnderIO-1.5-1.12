@@ -1,4 +1,4 @@
-package com.enderio.base.client.renderers;
+package com.enderio.base.client.renderer;
 
 import com.enderio.base.EnderIO;
 import com.enderio.core.common.util.PoseStackHelper;

@@ -1,4 +1,4 @@
-package com.enderio.base.client.renderers;
+package com.enderio.base.client.renderer;
 
 import java.util.Map;
 import java.util.Objects;

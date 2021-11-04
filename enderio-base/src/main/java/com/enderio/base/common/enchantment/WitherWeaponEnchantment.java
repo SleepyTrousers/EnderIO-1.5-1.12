@@ -1,4 +1,4 @@
-package com.enderio.base.common.enchantments;
+package com.enderio.base.common.enchantment;
 
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;

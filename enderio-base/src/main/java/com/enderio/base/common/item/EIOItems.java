@@ -8,6 +8,9 @@ import com.enderio.base.common.item.misc.EnderfaceItem;
 import com.enderio.base.common.item.misc.GearItem;
 import com.enderio.base.common.item.misc.MaterialItem;
 import com.enderio.base.common.item.spawner.BrokenSpawnerItem;
+import com.enderio.base.common.item.tool.CoordinateSelectorItem;
+import com.enderio.base.common.item.tool.YetaWrenchItem;
+import com.enderio.base.common.tag.EIOTags;
 import com.enderio.base.common.item.tool.LevitationStaffItem;
 import com.enderio.base.common.item.tool.SoulVialItem;
 import com.enderio.base.common.item.tool.ElectromagnetItem;
@@ -312,7 +315,26 @@ public class EIOItems {
 
     // endregion
 
+
     // region Tools
+    public static ItemEntry<YetaWrenchItem> YETA_WRENCH = REGISTRATE
+        .item("yeta_wrench", YetaWrenchItem::new)
+        .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.GEAR))
+        .properties(props -> props.stacksTo(1))
+        .tag(EIOTags.Items.WRENCH)
+        .register();
+
+    public static ItemEntry<LocationPrintoutItem> LOCATION_PRINTOUT = REGISTRATE
+        .item("location_printout", LocationPrintoutItem::new)
+        .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.GEAR))
+        .properties(props -> props.stacksTo(1))
+        .register();
+
+    public static ItemEntry<CoordinateSelectorItem> COORDINATE_SELECTOR = REGISTRATE
+        .item("coordinate_selector", CoordinateSelectorItem::new)
+        .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.GEAR))
+        .properties(props -> props.stacksTo(1))
+        .register();
 
     public static ItemEntry<LevitationStaffItem> LEVITATION_STAFF = REGISTRATE
         .item("staff_of_levity", LevitationStaffItem::new)
@@ -343,6 +365,7 @@ public class EIOItems {
     public static ItemEntry<EnderfaceItem> CREATIVE_ICON_CONDUITS = dumbItem("enderface_conduits", EnderfaceItem::new);
     public static ItemEntry<EnderfaceItem> CREATIVE_ICON_MOBS = dumbItem("enderface_mobs", EnderfaceItem::new);
     public static ItemEntry<EnderfaceItem> CREATIVE_ICON_INVPANEL = dumbItem("enderface_invpanel", EnderfaceItem::new);
+
 
     // endregion
 

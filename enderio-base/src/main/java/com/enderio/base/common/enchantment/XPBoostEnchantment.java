@@ -1,4 +1,4 @@
-package com.enderio.base.common.enchantments;
+package com.enderio.base.common.enchantment;
 
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;

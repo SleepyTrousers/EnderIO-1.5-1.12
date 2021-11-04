@@ -1,12 +1,9 @@
-package com.enderio.base.common.enchantments;
-
-import java.util.function.Predicate;
+package com.enderio.base.common.enchantment;
 
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.FishingRodItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
