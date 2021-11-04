@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "enderio:vibrant_crystal"
+    ]
+  },
+  "criteria": {
+    "has_ingredien": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "enderio:vibrant_alloy_nugget"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "enderio:vibrant_crystal"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ingredien",
+      "has_the_recipe"
+    ]
+  ]
+}

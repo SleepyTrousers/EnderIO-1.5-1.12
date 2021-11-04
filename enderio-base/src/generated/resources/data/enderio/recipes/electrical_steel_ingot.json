@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "enderio:electrical_steel_block"
+    }
+  ],
+  "result": {
+    "item": "enderio:electrical_steel_ingot",
+    "count": 9
+  }
+}

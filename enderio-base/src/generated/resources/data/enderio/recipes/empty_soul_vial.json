@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "Q Q",
+    " Q "
+  ],
+  "key": {
+    "S": {
+      "item": "enderio:soularium_ingot"
+    },
+    "Q": {
+      "tag": "enderio:fused_quartz"
+    }
+  },
+  "result": {
+    "item": "enderio:empty_soul_vial"
+  }
+}

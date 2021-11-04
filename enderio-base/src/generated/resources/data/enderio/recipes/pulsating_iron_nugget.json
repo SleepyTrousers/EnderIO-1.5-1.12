@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "enderio:pulsating_iron_ingot"
+    }
+  ],
+  "result": {
+    "item": "enderio:pulsating_iron_nugget",
+    "count": 9
+  }
+}

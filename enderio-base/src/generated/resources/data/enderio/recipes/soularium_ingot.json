@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "enderio:soularium_block"
+    }
+  ],
+  "result": {
+    "item": "enderio:soularium_ingot",
+    "count": 9
+  }
+}

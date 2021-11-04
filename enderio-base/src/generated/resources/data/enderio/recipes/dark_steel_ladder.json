@@ -1,13 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " I ",
-    " I ",
-    " I "
+    "I",
+    "I",
+    "I"
   ],
   "key": {
     "I": {
-      "item": "enderio:dark_steel_ingot"
+      "item": "enderio:dark_steel_bars"
     }
   },
   "result": {

@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:dusts/coal",
+    "#forge:dusts/lapis",
+    "#forge:dusts/quartz",
+    "#forge:dusts/iron",
+    "#forge:dusts/gold",
+    "#forge:dusts/copper",
+    "#forge:dusts/tin",
+    "#forge:dusts/ender",
+    "#forge:dusts/obsidian",
+    "#forge:dusts/ardite",
+    "#forge:dusts/cobalt"
+  ]
+}

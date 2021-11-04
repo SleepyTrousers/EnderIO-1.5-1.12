@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "enderio:dark_steel_block"
+    }
+  ],
+  "result": {
+    "item": "enderio:dark_steel_ingot",
+    "count": 9
+  }
+}

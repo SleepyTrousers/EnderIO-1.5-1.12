@@ -1,11 +1,11 @@
 package com.enderio.base.data.recipe.standard;
 
+import java.util.function.Consumer;
+
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
-
-import java.util.function.Consumer;
 
 public class StandardRecipes {
 

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "enderio:end_steel_ingot"
+    }
+  ],
+  "result": {
+    "item": "enderio:end_steel_nugget",
+    "count": 9
+  }
+}
