@@ -9,6 +9,7 @@ import com.enderio.base.common.util.EntityCaptureUtils;
 import com.enderio.core.common.capability.IMultiCapabilityItem;
 import com.enderio.core.common.capability.MultiCapabilityProvider;
 import com.enderio.core.common.util.EntityUtil;
+import com.enderio.core.common.util.TooltipUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -58,7 +59,7 @@ public class SoulVialItem extends Item implements IMultiCapabilityItem {
 
         // Add entity information
         getEntityType(pStack).ifPresent(entityType -> {
-            pTooltipComponents.add(new TranslatableComponent(EntityUtil.getEntityDescriptionId(entityType)));
+            pTooltipComponents.add(TooltipUtil.style(new TranslatableComponent(EntityUtil.getEntityDescriptionId(entityType))));
             // TODO: Also add health data
         });
     }

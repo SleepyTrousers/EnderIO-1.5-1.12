@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.enderio.base.EnderIO;
+import com.enderio.core.common.util.TooltipUtil;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.EnchantmentBuilder;
 import com.tterrag.registrate.util.entry.RegistryEntry;
@@ -76,7 +77,7 @@ public class EIOEnchantments {
     }
 
     private static Component descriptionBuilder(String enchantmentname, String description) {
-        return REGISTRATE.addLang("description", new ResourceLocation(EnderIO.DOMAIN, "enchantment." + enchantmentname), description).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY);
+        return TooltipUtil.style(REGISTRATE.addLang("description", new ResourceLocation(EnderIO.DOMAIN, "enchantment." + enchantmentname), description));
     }
     
     private static void addTooltip(ItemTooltipEvent event, Map<Enchantment, Integer> enchantments, List<Component> toolTip, Enchantment enchantment, Component component) {
