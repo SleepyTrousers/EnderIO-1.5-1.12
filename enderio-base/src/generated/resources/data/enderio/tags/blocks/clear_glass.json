@@ -1,0 +1,26 @@
+{
+  "replace": false,
+  "values": [
+    "enderio:clear_glass",
+    "enderio:enlightened_clear_glass",
+    "enderio:dark_clear_glass",
+    "enderio:clear_glass_p",
+    "enderio:clear_glass_ep",
+    "enderio:clear_glass_dp",
+    "enderio:clear_glass_m",
+    "enderio:clear_glass_em",
+    "enderio:clear_glass_dm",
+    "enderio:clear_glass_a",
+    "enderio:clear_glass_ea",
+    "enderio:clear_glass_da",
+    "enderio:clear_glass_np",
+    "enderio:clear_glass_enp",
+    "enderio:clear_glass_dnp",
+    "enderio:clear_glass_nm",
+    "enderio:clear_glass_enm",
+    "enderio:clear_glass_dnm",
+    "enderio:clear_glass_na",
+    "enderio:clear_glass_ena",
+    "enderio:clear_glass_dna"
+  ]
+}

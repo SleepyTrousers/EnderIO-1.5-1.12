@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " P ",
+    "VEV",
+    " P "
+  ],
+  "key": {
+    "P": {
+      "item": "enderio:pulsating_crystal"
+    },
+    "V": {
+      "item": "enderio:vibrant_crystal"
+    },
+    "E": {
+      "item": "enderio:ender_crystal"
+    }
+  },
+  "result": {
+    "item": "enderio:weather_crystal"
+  }
+}

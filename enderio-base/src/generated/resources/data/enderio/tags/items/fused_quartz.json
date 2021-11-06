@@ -1,0 +1,26 @@
+{
+  "replace": false,
+  "values": [
+    "enderio:fused_quartz",
+    "enderio:fused_quartz_e",
+    "enderio:fused_quartz_d",
+    "enderio:fused_quartz_p",
+    "enderio:fused_quartz_ep",
+    "enderio:fused_quartz_dp",
+    "enderio:fused_quartz_m",
+    "enderio:fused_quartz_em",
+    "enderio:fused_quartz_dm",
+    "enderio:fused_quartz_a",
+    "enderio:fused_quartz_ea",
+    "enderio:fused_quartz_da",
+    "enderio:fused_quartz_np",
+    "enderio:fused_quartz_enp",
+    "enderio:fused_quartz_dnp",
+    "enderio:fused_quartz_nm",
+    "enderio:fused_quartz_enm",
+    "enderio:fused_quartz_dnm",
+    "enderio:fused_quartz_na",
+    "enderio:fused_quartz_ena",
+    "enderio:fused_quartz_dna"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "enderio:construction_alloy_block"
+    }
+  ],
+  "result": {
+    "item": "enderio:construction_alloy_ingot",
+    "count": 9
+  }
+}

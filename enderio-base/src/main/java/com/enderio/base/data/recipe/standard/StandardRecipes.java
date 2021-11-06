@@ -1,17 +1,18 @@
 package com.enderio.base.data.recipe.standard;
 
+import java.util.function.Consumer;
+
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
-
-import java.util.function.Consumer;
 
 public class StandardRecipes {
 
     public static void generate(DataGenerator dataGenerator) {
         dataGenerator.addProvider(new MaterialRecipes(dataGenerator));
         dataGenerator.addProvider(new BlockRecipes(dataGenerator));
+        dataGenerator.addProvider(new ItemRecipes(dataGenerator));
         dataGenerator.addProvider(new CapacitorDataRecipeGenerator(dataGenerator));
     }
 

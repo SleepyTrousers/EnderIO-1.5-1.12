@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "NIN",
+    "IGI",
+    "NIN"
+  ],
+  "key": {
+    "N": {
+      "item": "enderio:dark_steel_nugget"
+    },
+    "I": {
+      "item": "enderio:dark_steel_ingot"
+    },
+    "G": {
+      "item": "enderio:energized_gear"
+    }
+  },
+  "result": {
+    "item": "enderio:dark_bimetal_gear"
+  }
+}

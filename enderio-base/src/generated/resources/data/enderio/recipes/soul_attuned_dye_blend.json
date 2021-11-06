@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SQS",
+    "QBQ",
+    "SQS"
+  ],
+  "key": {
+    "Q": {
+      "tag": "forge:dusts/quartz"
+    },
+    "B": {
+      "item": "enderio:organic_black_dye"
+    },
+    "S": {
+      "item": "enderio:soul_powder"
+    }
+  },
+  "result": {
+    "item": "enderio:soul_attuned_dye_blend"
+  }
+}

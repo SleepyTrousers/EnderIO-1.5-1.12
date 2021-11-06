@@ -1,0 +1,58 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "enderio:industrial_dye_blend"
+    ]
+  },
+  "criteria": {
+    "has_ingredient_black": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "enderio:organic_black_dye"
+            ]
+          }
+        ]
+      }
+    },
+    "has_ingredient_green": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "enderio:organic_green_dye"
+            ]
+          }
+        ]
+      }
+    },
+    "has_ingredient_lapis": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dusts/lapis"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "enderio:industrial_dye_blend"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_ingredient_black",
+      "has_ingredient_green",
+      "has_ingredient_lapis",
+      "has_the_recipe"
+    ]
+  ]
+}

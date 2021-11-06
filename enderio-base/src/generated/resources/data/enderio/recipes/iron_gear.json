@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "NIN",
+    "IGI",
+    "NIN"
+  ],
+  "key": {
+    "N": {
+      "tag": "forge:nuggets/iron"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "G": {
+      "item": "enderio:grains_of_infinity"
+    }
+  },
+  "result": {
+    "item": "enderio:iron_gear"
+  }
+}

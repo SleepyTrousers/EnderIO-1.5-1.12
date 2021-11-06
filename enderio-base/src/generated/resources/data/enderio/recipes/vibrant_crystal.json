@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    "PDP",
+    "PPP"
+  ],
+  "key": {
+    "P": {
+      "item": "enderio:vibrant_alloy_nugget"
+    },
+    "D": {
+      "tag": "forge:gems/emerald"
+    }
+  },
+  "result": {
+    "item": "enderio:vibrant_crystal"
+  }
+}

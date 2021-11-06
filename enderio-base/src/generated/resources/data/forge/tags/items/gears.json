@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:gears/wood",
+    "#forge:gears/stone",
+    "#forge:gears/stone",
+    "#forge:gears/vibrant",
+    "#forge:gears/energized",
+    "#forge:gears/dark_steel"
+  ]
+}

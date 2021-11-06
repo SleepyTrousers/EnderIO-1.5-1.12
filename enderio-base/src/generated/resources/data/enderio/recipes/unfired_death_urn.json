@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CPC",
+    "C C",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:clay_ball"
+    },
+    "P": {
+      "item": "enderio:pulsating_powder"
+    }
+  },
+  "result": {
+    "item": "enderio:unfired_death_urn"
+  }
+}
