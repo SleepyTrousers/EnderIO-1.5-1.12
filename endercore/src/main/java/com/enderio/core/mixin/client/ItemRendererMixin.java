@@ -16,8 +16,8 @@ public class ItemRendererMixin {
     @Inject(at = @At("RETURN"), method = "renderGuiItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V")
     public void renderGuiItemDecorations(Font pFr, ItemStack pStack, int pXPosition, int pYPosition, @Nullable String pText, CallbackInfo callbackInfo) {
         if (!pStack.isEmpty()) {
-            if (pStack.getItem() instanceof IItemOverlayRender) {
-                ((IItemOverlayRender) pStack.getItem()).renderOverlay(pStack, pXPosition, pYPosition);
+            if (pStack.getItem() instanceof IItemOverlayRender item) {
+                item.renderOverlay(pStack, pXPosition, pYPosition);
             }
         }
     }

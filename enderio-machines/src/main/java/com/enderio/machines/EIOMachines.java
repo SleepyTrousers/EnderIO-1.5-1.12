@@ -1,7 +1,7 @@
 package com.enderio.machines;
 
 import com.enderio.machines.common.block.MachBlocks;
-import com.enderio.machines.common.blockentity.MachBlockEntities;
+import com.enderio.machines.common.blockentity.MachinesBlockEntities;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.util.NonNullLazyValue;
 import net.minecraftforge.fml.common.Mod;
@@ -15,7 +15,7 @@ public class EIOMachines {
 
     public EIOMachines() {
         MachBlocks.register();
-        MachBlockEntities.register();
+        MachinesBlockEntities.register();
     }
 
     public static Registrate registrate() {

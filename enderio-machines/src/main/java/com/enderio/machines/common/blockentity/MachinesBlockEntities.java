@@ -6,7 +6,7 @@ import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.TileEntityBuilder;
 import com.tterrag.registrate.util.entry.TileEntityEntry;
 
-public class MachBlockEntities {
+public class MachinesBlockEntities {
     private static final Registrate REGISTRATE = EIOMachines.registrate();
 
     public static final TileEntityEntry<SimpleSmelterBlockEntity> SMELTER = REGISTRATE
