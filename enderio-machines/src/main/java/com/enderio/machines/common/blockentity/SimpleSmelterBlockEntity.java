@@ -1,7 +1,11 @@
 package com.enderio.machines.common.blockentity;
 
+import com.enderio.machines.common.blockentity.data.sidecontrol.item.ItemHandlerMaster;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -24,6 +28,11 @@ public class SimpleSmelterBlockEntity extends AbstractMachineBlockEntity {
         super(pType, pWorldPosition, pBlockState);
     }
 
+    @Override
+    public ItemHandlerMaster getItemHandlerMaster() {
+        return null;
+    }
+
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
@@ -43,5 +52,10 @@ public class SimpleSmelterBlockEntity extends AbstractMachineBlockEntity {
                 return false;
             }
         };
+    }
+
+    @Nullable
+    public AbstractContainerMenu createMenu(int pContainerId, Inventory pInventory, Player pPlayer) {
+        return null;
     }
 }

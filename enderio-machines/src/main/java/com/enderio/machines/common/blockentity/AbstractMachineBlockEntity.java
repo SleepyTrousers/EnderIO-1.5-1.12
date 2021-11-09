@@ -6,11 +6,19 @@ import com.enderio.core.common.blockentity.sync.NBTSerializableDataSlot;
 import com.enderio.core.common.blockentity.sync.SyncMode;
 import com.enderio.machines.common.blockentity.data.RedstoneControl;
 import com.enderio.machines.common.blockentity.data.sidecontrol.IOConfig;
+import com.enderio.machines.common.blockentity.data.sidecontrol.item.ItemHandlerMaster;
+import com.enderio.machines.common.menu.MachineMenu;
+import com.tterrag.registrate.util.entry.ContainerEntry;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -23,15 +31,19 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
+import javax.annotation.Nullable;
+
 import static net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 import java.util.EnumMap;
 import java.util.Optional;
 
-public abstract class AbstractMachineBlockEntity extends SyncedBlockEntity {
+public abstract class AbstractMachineBlockEntity extends SyncedBlockEntity implements MenuProvider {
 
     private final IOConfig config = new IOConfig();
 
+    @Getter
+    @Setter
     private RedstoneControl redstoneControl = RedstoneControl.ALWAYS_ACTIVE;
 
     private final EnumMap<Direction, LazyOptional<IItemHandler>> itemHandlerCache = new EnumMap<>(Direction.class);
@@ -40,12 +52,15 @@ public abstract class AbstractMachineBlockEntity extends SyncedBlockEntity {
 
     public AbstractMachineBlockEntity(BlockEntityType<?> pType, BlockPos pWorldPosition, BlockState pBlockState) {
         super(pType, pWorldPosition, pBlockState);
-        addDataSlot(new NBTSerializableDataSlot<>(() -> config, SyncMode.RENDER));
+        add2WayDataSlot(new EnumDataSlot<>(this::getRedstoneControl, this::setRedstoneControl, SyncMode.GUI));
+        add2WayDataSlot(new NBTSerializableDataSlot<>(() -> config, SyncMode.RENDER));
     }
 
     public final IOConfig getConfig() {
         return this.config;
     }
+
+    public abstract ItemHandlerMaster getItemHandlerMaster();
 
     public void updateCache() {
         itemHandlerCache.clear();
@@ -162,5 +177,10 @@ public abstract class AbstractMachineBlockEntity extends SyncedBlockEntity {
     public void load(CompoundTag pTag) {
         config.deserializeNBT(pTag.getCompound("io_config"));
         super.load(pTag);
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return getBlockState().getBlock().getName();
     }
 }

@@ -4,9 +4,15 @@ import com.enderio.core.common.blockentity.sync.FluidStackDataSlot;
 import com.enderio.core.common.blockentity.sync.SyncMode;
 import com.enderio.machines.common.blockentity.data.sidecontrol.fluid.FluidTankMaster;
 import com.enderio.machines.common.blockentity.data.sidecontrol.item.ItemHandlerMaster;
+import com.enderio.machines.common.menu.FluidTankMenu;
+import com.enderio.machines.common.menu.MachineMenus;
+import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -31,12 +37,13 @@ import java.util.Optional;
 public class FluidTankBlockEntity extends AbstractMachineBlockEntity {
 
     private FluidTankMaster fluidTank = new FluidTankMaster(16 * FluidAttributes.BUCKET_VOLUME, getConfig());
+    @Getter
     private ItemHandlerMaster itemHandlerMaster = new ItemHandlerMaster(getConfig(), 4, List.of(0,2), List.of(1,3));
 
 
     public FluidTankBlockEntity(BlockEntityType<?> pType, BlockPos pWorldPosition, BlockState pBlockState) {
         super(pType, pWorldPosition, pBlockState);
-        addDataSlot(new FluidStackDataSlot(() -> fluidTank.getFluidInTank(0), SyncMode.RENDER));
+        addDataSlot(new FluidStackDataSlot(() -> fluidTank.getFluidInTank(0), fluidTank::setFluid, SyncMode.RENDER));
         itemHandlerMaster.addPredicate(0, itemStack ->
             (itemStack.getItem() instanceof BucketItem bucketItem && bucketItem.getFluid() != Fluids.EMPTY && !(bucketItem instanceof MobBucketItem))
                 || (!(itemStack.getItem() instanceof BucketItem) && itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent()));
@@ -147,5 +154,10 @@ public class FluidTankBlockEntity extends AbstractMachineBlockEntity {
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return LazyOptional.of(() -> itemHandlerMaster).cast();
         return super.getCapability(cap);
+    }
+
+    @Nullable
+    public AbstractContainerMenu createMenu(int pContainerId, Inventory pInventory, Player pPlayer) {
+        return new FluidTankMenu(this, pInventory, pContainerId);
     }
 }

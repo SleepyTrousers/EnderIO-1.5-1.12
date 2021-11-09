@@ -8,9 +8,9 @@ import java.util.function.Supplier;
 
 public class FluidStackDataSlot extends EnderDataSlot<FluidStack> {
 
-    public FluidStackDataSlot(Supplier<FluidStack> getter, SyncMode syncMode) {
+    public FluidStackDataSlot(Supplier<FluidStack> getter, Consumer<FluidStack> setter, SyncMode syncMode) {
         //This can be null, because I override the only usage of the setter
-        super(getter, null, syncMode);
+        super(getter, setter, syncMode);
     }
 
     @Override

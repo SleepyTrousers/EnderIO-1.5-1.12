@@ -5,8 +5,10 @@ import com.enderio.machines.common.block.MachineBlocks;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.TileEntityBuilder;
 import com.tterrag.registrate.util.entry.TileEntityEntry;
+import lombok.experimental.UtilityClass;
 
-public class MachinesBlockEntities {
+@UtilityClass
+public class MachineBlockEntities {
     private static final Registrate REGISTRATE = EIOMachines.registrate();
 
     public static final TileEntityEntry<SimpleSmelterBlockEntity> SMELTER = REGISTRATE

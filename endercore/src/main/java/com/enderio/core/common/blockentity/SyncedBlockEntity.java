@@ -108,6 +108,11 @@ public abstract class SyncedBlockEntity extends BlockEntity {
         clientDecidingDataSlots.add(slot);
     }
 
+    public void add2WayDataSlot(EnderDataSlot<?> slot) {
+        addDataSlot(slot);
+        addClientDecidingDataSlot(slot);
+    }
+
     /**
      * Sync the BlockEntity to all tracking players.
      */
