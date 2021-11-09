@@ -2,32 +2,38 @@ package com.enderio.base.common.network;
 
 import com.enderio.base.EnderIO;
 import com.enderio.base.common.network.packet.UpdateCoordinateSelectionNameMenuPacket;
+import com.enderio.core.common.network.ClientToServerMenuPacket;
+import com.enderio.core.common.network.EnderNetwork;
+import com.enderio.core.common.network.Packet;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fmllegacy.network.NetworkRegistry;
 import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
 
-public class EIOPackets {
+public class EIOPackets extends EnderNetwork {
 
     private EIOPackets() {}
 
+    public static EIOPackets NETWORK = new EIOPackets();
+
     private static final String PROTOCOL_VERSION = "1.0";
-    public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
-        EnderIO.loc("network"),
-        () -> PROTOCOL_VERSION,
-        PROTOCOL_VERSION::equals,
-        PROTOCOL_VERSION::equals);
 
-    private static int index = 0;
-
-    private static int getAndUpdateIndex() {
-        return index++;
+    @Override
+    public ResourceLocation channelName() {
+        return EnderIO.loc("network");
     }
 
-    public static void register() {
-        registerMessage(new UpdateCoordinateSelectionNameMenuPacket.Handler(), UpdateCoordinateSelectionNameMenuPacket.class);
+    @Override
+    public String getProtocolVersion() {
+        return PROTOCOL_VERSION;
     }
 
-    public static <MSG extends Packet> void registerMessage(Packet.PacketHandler<MSG> handler, Class<MSG> packetClass) {
-        INSTANCE.registerMessage(getAndUpdateIndex(), packetClass, handler::to, handler::of, handler, handler.getDirection());
+    public static EIOPackets getNetwork() {
+        return NETWORK;
+    }
+
+    @Override
+    protected void registerMessages() {
+        registerMessage(new ClientToServerMenuPacket.Handler<>(UpdateCoordinateSelectionNameMenuPacket::new), UpdateCoordinateSelectionNameMenuPacket.class);
     }
 }

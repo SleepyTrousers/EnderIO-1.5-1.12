@@ -39,6 +39,9 @@ public abstract class SyncedBlockEntity extends BlockEntity {
     @Getter
     private final List<EnderDataSlot<?>> dataSlots = new ArrayList<>();
 
+    @Getter
+    private final List<EnderDataSlot<?>> clientDecidingDataSlots = new ArrayList<>();
+
     public SyncedBlockEntity(BlockEntityType<?> pType, BlockPos pWorldPosition, BlockState pBlockState) {
         super(pType, pWorldPosition, pBlockState);
     }
@@ -69,17 +72,14 @@ public abstract class SyncedBlockEntity extends BlockEntity {
         ListTag listNBT = new ListTag();
         for (int i = 0; i < dataSlots.size(); i++) {
             EnderDataSlot<?> dataSlot = dataSlots.get(i);
-            if (dataSlot.getSyncMode() != mode)
-                continue;
+            if (dataSlot.getSyncMode() == mode) {
+                Optional<CompoundTag> optionalNBT = fullUpdate ? Optional.of(dataSlot.toFullNBT()) : dataSlot.toOptionalNBT();
 
-            Optional<CompoundTag> optionalNBT = fullUpdate ?
-                Optional.of(dataSlot.toFullNBT()) :
-                dataSlot.toOptionalNBT();
-
-            if (optionalNBT.isPresent()) {
-                CompoundTag elementNBT = optionalNBT.get();
-                elementNBT.putInt("dataSlotIndex", i);
-                listNBT.add(elementNBT);
+                if (optionalNBT.isPresent()) {
+                    CompoundTag elementNBT = optionalNBT.get();
+                    elementNBT.putInt("dataSlotIndex", i);
+                    listNBT.add(elementNBT);
+                }
             }
         }
         if (listNBT.isEmpty())
@@ -102,6 +102,10 @@ public abstract class SyncedBlockEntity extends BlockEntity {
 
     public void addDataSlot(EnderDataSlot<?> slot) {
         dataSlots.add(slot);
+    }
+
+    public void addClientDecidingDataSlot(EnderDataSlot<?> slot) {
+        clientDecidingDataSlots.add(slot);
     }
 
     /**

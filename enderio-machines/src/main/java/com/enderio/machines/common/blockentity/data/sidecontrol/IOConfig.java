@@ -1,4 +1,4 @@
-package com.enderio.machines.common.sidecontrol;
+package com.enderio.machines.common.blockentity.data.sidecontrol;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

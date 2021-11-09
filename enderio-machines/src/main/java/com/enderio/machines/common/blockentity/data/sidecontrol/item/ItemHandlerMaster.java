@@ -1,10 +1,8 @@
-package com.enderio.machines.common.sidecontrol.item;
+package com.enderio.machines.common.blockentity.data.sidecontrol.item;
 
-import com.enderio.machines.common.sidecontrol.IOConfig;
-import com.enderio.machines.common.sidecontrol.fluid.SidedFluidHandlerAccess;
+import com.enderio.machines.common.blockentity.data.sidecontrol.IOConfig;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;

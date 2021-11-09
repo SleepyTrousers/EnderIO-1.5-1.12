@@ -39,7 +39,7 @@ public class EnderIO {
         EIOEnchantments.register();
         EIOTags.init();
         EIOMenus.register();
-        EIOPackets.register();
+        EIOPackets.getNetwork();
         EIOLang.register();
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

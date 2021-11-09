@@ -1,4 +1,4 @@
-package com.enderio.base.common.network;
+package com.enderio.core.common.network;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fmllegacy.network.NetworkDirection;
@@ -27,17 +27,21 @@ public interface Packet {
             if (msg.isValid(context.get())) {
                 ctx.enqueueWork(() -> msg.handle(ctx));
             } else {
-                String sender;
-                if (ctx.getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
-                    sender = "the server";
-                } else {
-                    sender = ctx.getSender().getName().getContents() + " with IP-Address " + ctx.getSender().getIpAddress();
-                }
-                LogManager.getLogger().warn("invalid packet received from {}", sender);
+                logPacketError(ctx, "didn't pass check and is invalid", msg);
             }
             context.get().setPacketHandled(true);
         }
 
         public abstract Optional<NetworkDirection> getDirection();
+    }
+
+    static void logPacketError(NetworkEvent.Context context, String error, Packet packet) {
+        String sender;
+        if (context.getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
+            sender = "the server";
+        } else {
+            sender = context.getSender().getName().getContents() + " with IP-Address " + context.getSender().getIpAddress();
+        }
+        LogManager.getLogger().warn("Packet {} from {}: {}", packet.getClass(),sender, error);
     }
 }

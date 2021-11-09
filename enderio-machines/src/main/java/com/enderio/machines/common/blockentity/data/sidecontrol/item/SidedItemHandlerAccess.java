@@ -1,4 +1,4 @@
-package com.enderio.machines.common.sidecontrol.item;
+package com.enderio.machines.common.blockentity.data.sidecontrol.item;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;

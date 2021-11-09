@@ -2,9 +2,8 @@ package com.enderio.machines.common.blockentity;
 
 import com.enderio.core.common.blockentity.sync.FluidStackDataSlot;
 import com.enderio.core.common.blockentity.sync.SyncMode;
-import com.enderio.machines.common.sidecontrol.fluid.FluidTankMaster;
-import com.enderio.machines.common.sidecontrol.item.ItemHandlerMaster;
-import net.minecraft.advancements.critereon.FilledBucketTrigger;
+import com.enderio.machines.common.blockentity.data.sidecontrol.fluid.FluidTankMaster;
+import com.enderio.machines.common.blockentity.data.sidecontrol.item.ItemHandlerMaster;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

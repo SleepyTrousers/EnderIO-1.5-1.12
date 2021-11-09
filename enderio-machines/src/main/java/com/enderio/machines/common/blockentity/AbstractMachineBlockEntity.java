@@ -1,9 +1,13 @@
 package com.enderio.machines.common.blockentity;
 
 import com.enderio.core.common.blockentity.SyncedBlockEntity;
+import com.enderio.core.common.blockentity.sync.EnumDataSlot;
 import com.enderio.core.common.blockentity.sync.NBTSerializableDataSlot;
 import com.enderio.core.common.blockentity.sync.SyncMode;
-import com.enderio.machines.common.sidecontrol.IOConfig;
+import com.enderio.machines.common.blockentity.data.RedstoneControl;
+import com.enderio.machines.common.blockentity.data.sidecontrol.IOConfig;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -11,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.ConduitBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
@@ -29,13 +32,14 @@ public abstract class AbstractMachineBlockEntity extends SyncedBlockEntity {
 
     private final IOConfig config = new IOConfig();
 
+    private RedstoneControl redstoneControl = RedstoneControl.ALWAYS_ACTIVE;
+
     private final EnumMap<Direction, LazyOptional<IItemHandler>> itemHandlerCache = new EnumMap<>(Direction.class);
     private final EnumMap<Direction, LazyOptional<IFluidHandler>> fluidHandlerCache = new EnumMap<>(Direction.class);
     private boolean isCacheDirty = false;
 
     public AbstractMachineBlockEntity(BlockEntityType<?> pType, BlockPos pWorldPosition, BlockState pBlockState) {
         super(pType, pWorldPosition, pBlockState);
-        //TODO: Overlay Renderer
         addDataSlot(new NBTSerializableDataSlot<>(() -> config, SyncMode.RENDER));
     }
 
@@ -94,7 +98,8 @@ public abstract class AbstractMachineBlockEntity extends SyncedBlockEntity {
     }
 
     public boolean isAction() {
-        return level.getGameTime()%5 == 0;
+        return level.getGameTime() % 5 == 0
+            && redstoneControl.isActive(level.hasNeighborSignal(worldPosition));
     }
 
     private void moveFluids(Direction direction) {
@@ -134,14 +139,14 @@ public abstract class AbstractMachineBlockEntity extends SyncedBlockEntity {
             if (shouldStop)
                 break;
             ItemStack extracted = from.extractItem(i, 1, true);
-            if (extracted.isEmpty())
-                continue;
-            for (int j = 0; j < to.getSlots(); j++) {
-                ItemStack inserted = to.insertItem(j, extracted, false);
-                if (inserted.isEmpty()) {
-                    from.extractItem(i, 1, false);
-                    shouldStop = true;
-                    break;
+            if (!extracted.isEmpty()) {
+                for (int j = 0; j < to.getSlots(); j++) {
+                    ItemStack inserted = to.insertItem(j, extracted, false);
+                    if (inserted.isEmpty()) {
+                        from.extractItem(i, 1, false);
+                        shouldStop = true;
+                        break;
+                    }
                 }
             }
         }

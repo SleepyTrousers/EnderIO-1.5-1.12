@@ -1,5 +1,6 @@
 package com.enderio.core;
 
+import com.enderio.core.common.network.EnderNetwork;
 import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nonnull;
@@ -13,6 +14,6 @@ public class EnderCore {
     public static final Logger LOGGER = LogManager.getLogManager().getLogger(MODID);
 
     public EnderCore() {
-
+        EnderNetwork.getNetwork();
     }
 }

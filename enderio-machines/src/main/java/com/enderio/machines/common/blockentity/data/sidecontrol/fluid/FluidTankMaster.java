@@ -1,6 +1,6 @@
-package com.enderio.machines.common.sidecontrol.fluid;
+package com.enderio.machines.common.blockentity.data.sidecontrol.fluid;
 
-import com.enderio.machines.common.sidecontrol.IOConfig;
+import com.enderio.machines.common.blockentity.data.sidecontrol.IOConfig;
 import net.minecraft.core.Direction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 

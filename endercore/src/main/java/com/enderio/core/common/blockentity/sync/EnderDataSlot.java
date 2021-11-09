@@ -27,10 +27,15 @@ public abstract class EnderDataSlot<T> {
         CompoundTag newNBT = toFullNBT();
         if (newNBT.equals(previousValue))
             return Optional.empty();
-        previousValue = newNBT;
+        //copy to prevent mismatched by adding the dataSlotIndex
+        previousValue = newNBT.copy();
         return Optional.of(newNBT);
     }
 
+    /**
+     * Make sure to always retain a valid state, even when this method throws an Exception and only throw an Exception if invalid data is sent, as Clients can have full control over incoming data
+     * @param tag
+     */
     public void handleNBT(CompoundTag tag) {
         setter.accept(fromNBT(tag));
     }

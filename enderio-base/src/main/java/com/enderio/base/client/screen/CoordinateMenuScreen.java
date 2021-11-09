@@ -72,6 +72,6 @@ public class CoordinateMenuScreen extends EIOScreen<CoordinateMenu> {
 
 
     private void onNameChanged(String name) {
-        EIOPackets.INSTANCE.sendToServer(new UpdateCoordinateSelectionNameMenuPacket(getMenu().containerId, name));
+        EIOPackets.getNetwork().getNetworkChannel().sendToServer(new UpdateCoordinateSelectionNameMenuPacket(getMenu().containerId, name));
     }
 }
