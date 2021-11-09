@@ -20,6 +20,7 @@ public class ItemHandlerMaster extends ItemStackHandler {
     private List<Integer> onlyOutputs;
 
     private Map<Integer, Predicate<ItemStack>> inputPredicates = new HashMap<>();
+    private boolean isForceMode = false;
 
     public ItemHandlerMaster(IOConfig config, int size) {
         this(config, size, new ArrayList<>(), new ArrayList<>());
@@ -48,9 +49,16 @@ public class ItemHandlerMaster extends ItemStackHandler {
         return super.insertItem(slot, stack, simulate);
     }
 
+    public ItemStack forceInsertItem(int slot, @Nonnull ItemStack stack) {
+        isForceMode = true;
+        ItemStack returnValue = super.insertItem(slot, stack, false);
+        isForceMode = false;
+        return returnValue;
+    }
+
     @Override
     public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-        return inputPredicates.getOrDefault(slot, itemStack -> true).test(stack);
+        return isForceMode || inputPredicates.getOrDefault(slot, itemStack -> true).test(stack);
     }
 
     @Nonnull

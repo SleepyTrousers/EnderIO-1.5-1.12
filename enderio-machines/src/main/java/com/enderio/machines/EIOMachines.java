@@ -1,6 +1,6 @@
 package com.enderio.machines;
 
-import com.enderio.machines.common.block.MachBlocks;
+import com.enderio.machines.common.block.MachineBlocks;
 import com.enderio.machines.common.blockentity.MachinesBlockEntities;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.util.NonNullLazyValue;
@@ -14,7 +14,7 @@ public class EIOMachines {
     private static final NonNullLazyValue<Registrate> REGISTRATE = new NonNullLazyValue<>(() -> Registrate.create(DOMAIN));
 
     public EIOMachines() {
-        MachBlocks.register();
+        MachineBlocks.register();
         MachinesBlockEntities.register();
     }
 

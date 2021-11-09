@@ -8,8 +8,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.ConduitBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
@@ -71,6 +73,10 @@ public abstract class AbstractMachineBlockEntity extends SyncedBlockEntity {
         isCacheDirty = true;
     }
 
+
+    public static void tick(Level pLevel, BlockPos pPos, BlockState pState, AbstractMachineBlockEntity pBlockEntity) {
+        pBlockEntity.tick();
+    }
     @Override
     public void tick() {
         if (isCacheDirty) {
@@ -97,18 +103,19 @@ public abstract class AbstractMachineBlockEntity extends SyncedBlockEntity {
             if (otherFluid.isPresent()) {
                 FluidStack stack = fluidHandler.drain(100, FluidAction.SIMULATE);
                 if (stack.isEmpty()) {
-                    moveFluids(otherFluid.get(), fluidHandler);
+                    moveFluids(otherFluid.get(), fluidHandler, 100);
                 } else {
-                    moveFluids(fluidHandler, otherFluid.get());
+                    moveFluids(fluidHandler, otherFluid.get(), 100);
                 }
             }
         });
     }
-    private void moveFluids(IFluidHandler from, IFluidHandler to) {
-        FluidStack stack = from.drain(100, FluidAction.SIMULATE);
+    public int moveFluids(IFluidHandler from, IFluidHandler to, int maxDrain) {
+        FluidStack stack = from.drain(maxDrain, FluidAction.SIMULATE);
         int filled = to.fill(stack, FluidAction.EXECUTE);
         stack.setAmount(filled);
         from.drain(stack, FluidAction.EXECUTE);
+        return filled;
     }
 
     private void moveItems(Direction direction) {

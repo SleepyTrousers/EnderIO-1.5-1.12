@@ -13,6 +13,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -59,11 +60,11 @@ public abstract class SyncedBlockEntity extends BlockEntity {
 
     /**
      * create the ClientBoundBlockEntityDataPacket for this BlockEntity
-     * @param completeUpdate if this packet should send all information (this is used for players who started tracking this BlockEntity)
+     * @param fullUpdate if this packet should send all information (this is used for players who started tracking this BlockEntity)
      * @return the UpdatePacket
      */
     @Nullable
-    public ClientboundBlockEntityDataPacket createUpdatePacket(boolean completeUpdate, SyncMode mode) {
+    public ClientboundBlockEntityDataPacket createUpdatePacket(boolean fullUpdate, SyncMode mode) {
         CompoundTag nbt = new CompoundTag();
         ListTag listNBT = new ListTag();
         for (int i = 0; i < dataSlots.size(); i++) {
@@ -71,7 +72,7 @@ public abstract class SyncedBlockEntity extends BlockEntity {
             if (dataSlot.getSyncMode() != mode)
                 continue;
 
-            Optional<CompoundTag> optionalNBT = completeUpdate ?
+            Optional<CompoundTag> optionalNBT = fullUpdate ?
                 Optional.of(dataSlot.toFullNBT()) :
                 dataSlot.toOptionalNBT();
 
@@ -136,7 +137,6 @@ public abstract class SyncedBlockEntity extends BlockEntity {
      */
     @CallOnly(LogicalSide.SERVER)
     private Stream<ServerPlayer> getTrackingPlayers() {
-        LevelChunk chunk = level.getChunkAt(worldPosition);
-        return ((ServerChunkCache)level.getChunkSource()).chunkMap.getPlayers(chunk.getPos(), false);
+        return ((ServerChunkCache)level.getChunkSource()).chunkMap.getPlayers(new ChunkPos(worldPosition), false);
     }
 }

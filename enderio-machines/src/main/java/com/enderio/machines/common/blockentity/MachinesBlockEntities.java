@@ -1,7 +1,7 @@
 package com.enderio.machines.common.blockentity;
 
 import com.enderio.machines.EIOMachines;
-import com.enderio.machines.common.block.MachBlocks;
+import com.enderio.machines.common.block.MachineBlocks;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.TileEntityBuilder;
 import com.tterrag.registrate.util.entry.TileEntityEntry;
@@ -12,7 +12,13 @@ public class MachinesBlockEntities {
     public static final TileEntityEntry<SimpleSmelterBlockEntity> SMELTER = REGISTRATE
         .tileEntity("smelter",
             (TileEntityBuilder.BlockEntityFactory<SimpleSmelterBlockEntity>) (pos, state, type) -> new SimpleSmelterBlockEntity(type, pos, state))
-        .validBlocks(MachBlocks.SIMPLE_POWERED_FURNACE)
+        .validBlocks(MachineBlocks.SIMPLE_POWERED_FURNACE)
+        .register();
+
+    public static final TileEntityEntry<FluidTankBlockEntity> FLUID_TANK = REGISTRATE
+        .tileEntity("fluid_tank",
+            (TileEntityBuilder.BlockEntityFactory<FluidTankBlockEntity>) (pos, state, type) -> new FluidTankBlockEntity(type, pos, state))
+        .validBlocks(MachineBlocks.FLUID_TANK)
         .register();
 
     public static void register() {}

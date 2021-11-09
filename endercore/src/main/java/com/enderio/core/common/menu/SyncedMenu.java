@@ -25,7 +25,7 @@ public abstract class SyncedMenu<T extends SyncedBlockEntity> extends AbstractCo
     @Override
     public void broadcastChanges() {
         super.broadcastChanges();
-       sync(false);
+        sync(false);
     }
 
     @Override

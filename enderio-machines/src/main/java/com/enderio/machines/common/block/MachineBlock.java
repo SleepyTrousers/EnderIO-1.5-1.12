@@ -1,6 +1,8 @@
 package com.enderio.machines.common.block;
 
 import com.enderio.machines.common.blockentity.AbstractMachineBlockEntity;
+import com.tterrag.registrate.util.entry.BlockEntry;
+import com.tterrag.registrate.util.entry.TileEntityEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
@@ -8,7 +10,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
@@ -16,10 +22,22 @@ import java.util.function.BiFunction;
 
 public class MachineBlock extends BaseEntityBlock {
     private BiFunction<BlockPos, BlockState, AbstractMachineBlockEntity> beFactory;
+    private TileEntityEntry<? extends AbstractMachineBlockEntity> blockEntityType;
 
-    public MachineBlock(Properties p_49795_, BiFunction<BlockPos, BlockState, AbstractMachineBlockEntity> beFactory) {
+    public MachineBlock(Properties p_49795_, TileEntityEntry<? extends AbstractMachineBlockEntity> blockEntityType) {
         super(p_49795_);
-        this.beFactory = beFactory;
+        this.blockEntityType = blockEntityType;
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState pState) {
+        return RenderShape.MODEL;
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+        return createTickerHelper(pBlockEntityType, blockEntityType.get(), AbstractMachineBlockEntity::tick);
     }
 
     @Override
@@ -44,6 +62,6 @@ public class MachineBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return beFactory.apply(pPos, pState);
+        return blockEntityType.create(pPos, pState);
     }
 }
