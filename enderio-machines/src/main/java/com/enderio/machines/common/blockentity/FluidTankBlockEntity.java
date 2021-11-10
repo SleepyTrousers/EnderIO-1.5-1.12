@@ -36,6 +36,7 @@ import java.util.Optional;
 
 public class FluidTankBlockEntity extends AbstractMachineBlockEntity {
 
+    @Getter
     private FluidTankMaster fluidTank = new FluidTankMaster(16 * FluidAttributes.BUCKET_VOLUME, getConfig());
     @Getter
     private ItemHandlerMaster itemHandlerMaster = new ItemHandlerMaster(getConfig(), 4, List.of(0,2), List.of(1,3));

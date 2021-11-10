@@ -113,7 +113,7 @@ public abstract class AbstractMachineBlockEntity extends SyncedBlockEntity imple
     }
 
     public boolean isAction() {
-        return level.getGameTime() % 5 == 0
+        return !level.isClientSide && level.getGameTime() % 5 == 0
             && redstoneControl.isActive(level.hasNeighborSignal(worldPosition));
     }
 

@@ -16,6 +16,12 @@ public class FluidTankScreen extends EIOScreen<FluidTankMenu> {
     }
 
     @Override
+    protected void init() {
+        super.init();
+        addRenderableWidget(new FluidStackWidget(this, getMenu().getBlockEntity()::getFluidTank, 80 + leftPos, 21 + topPos, 16, 47));
+    }
+
+    @Override
     protected ResourceLocation getBackgroundImage() {
         return BG_TEXTURE;
     }
