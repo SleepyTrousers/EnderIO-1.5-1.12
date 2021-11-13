@@ -121,7 +121,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     for (int i = 0; i < items.length; i++) {
       ItemStack it = items[i];
 
-      if (it != null && Item.getIdFromItem(item.getItem()) == Item.getIdFromItem(it.getItem())) {
+      if (it != null && item.getItem() == it.getItem()) {
         matched = true;
 
         if(checkDamage && !damageMatched) {
