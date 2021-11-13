@@ -5,6 +5,7 @@ import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -12,10 +13,13 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.item.ItemConduit;
+import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.tool.ToolUtil;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -29,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Supplier;
 
 public abstract class AbstractEnderLiquidConduit extends AbstractLiquidConduit {
 
@@ -62,7 +67,41 @@ public abstract class AbstractEnderLiquidConduit extends AbstractLiquidConduit {
   }
 
   public enum Type {
-    ENDER, ADVANCED;
+    ENDER(
+        () -> Config.enderFluidConduitExtractRate,
+        () -> Config.enderFluidConduitMaxIoRate),
+
+    CRYSTALLINE(
+        () -> Config.crystallineEnderFluidConduitExtractRate,
+        () -> Config.crystallineEnderFluidConduitMaxIoRate),
+
+    CRYSTALLINE_PINK_SLIME(
+        () -> Config.crystallinePinkSlimeEnderFluidConduitExtractRate,
+        () -> Config.crystallinePinkSlimeEnderFluidConduitMaxIoRate),
+
+    MELODIC(
+        () -> Config.melodicEnderFluidConduitExtractRate,
+        () -> Config.melodicEnderFluidConduitMaxIoRate),
+
+    STELLAR(
+        () -> Config.stellarEnderFluidConduitExtractRate,
+        () -> Config.stellarEnderFluidConduitMaxIoRate);
+
+    private final Supplier<Integer> getMaxExtractPerTick;
+    private final Supplier<Integer> getMaxIoPerTick;
+
+    Type(Supplier<Integer> getMaxExtractPerTick, Supplier<Integer> getMaxIoPerTick) {
+      this.getMaxExtractPerTick = getMaxExtractPerTick;
+      this.getMaxIoPerTick = getMaxIoPerTick;
+    }
+
+    public int getMaxExtractPerTick() {
+      return getMaxExtractPerTick.get();
+    }
+
+    public int getMaxIoPerTick() {
+      return getMaxIoPerTick.get();
+    }
   }
 
   private EnderLiquidConduitNetwork network;
@@ -77,6 +116,7 @@ public abstract class AbstractEnderLiquidConduit extends AbstractLiquidConduit {
   private int roundRobin = 0;
 
   public abstract Type getType();
+  public abstract int getMetadata();
   protected abstract IIcon getIconKey();
   protected abstract IIcon getIconCoreKey();
 
@@ -126,6 +166,11 @@ public abstract class AbstractEnderLiquidConduit extends AbstractLiquidConduit {
       return true;
     }
     return false;
+  }
+
+  @Override
+  public ItemStack createItem() {
+    return new ItemStack(EnderIO.itemLiquidConduit, 1, getMetadata());
   }
 
   @Override

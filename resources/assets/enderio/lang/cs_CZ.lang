@@ -34,7 +34,12 @@ enderio.itemRedstoneConduitInsulated.name=Odizolované ruditové vedení
 enderio.itemLiquidConduit.name=Tekutinové vedení
 enderio.itemLiquidConduitAdvanced.name=Natlakované tekutinové vedení
 enderio.itemLiquidConduitEnder.name=Enderové tekutinové vedení
-enderio.itemLiquidConduitAdvancedEnder.name=Advanced Ender Fluid Conduit
+# BEGIN needs translation
+enderio.itemLiquidConduitCrystallineEnder.name=Crystalline Ender Fluid Conduit
+enderio.itemLiquidConduitCrystallinePinkSlimeEnder.name=Crystalline Pink Slime Ender Fluid Conduit
+enderio.itemLiquidConduitMelodicEnder.name=Melodic Ender Fluid Conduit
+enderio.itemLiquidConduitStellarEnder.name=Stellar Ender Fluid Conduit
+# END needs translation
 enderio.itemLiquidConduit.lockedType=Typ tekutiny uzamknut na
 enderio.itemLiquidConduit.unlockedType=Typ tekutiny uzamknut na
 

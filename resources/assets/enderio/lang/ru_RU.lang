@@ -40,7 +40,12 @@ enderio.itemRedstoneConduitInsulated.name=Изолированная красн�
 enderio.itemLiquidConduit.name=Жидкостная труба
 enderio.itemLiquidConduitAdvanced.name=Жидкостная труба высокого давления
 enderio.itemLiquidConduitEnder.name=Жидкостная труба Края
-enderio.itemLiquidConduitAdvancedEnder.name=Advanced Ender Fluid Conduit
+# BEGIN needs translation
+enderio.itemLiquidConduitCrystallineEnder.name=Crystalline Ender Fluid Conduit
+enderio.itemLiquidConduitCrystallinePinkSlimeEnder.name=Crystalline Pink Slime Ender Fluid Conduit
+enderio.itemLiquidConduitMelodicEnder.name=Melodic Ender Fluid Conduit
+enderio.itemLiquidConduitStellarEnder.name=Stellar Ender Fluid Conduit
+# END needs translation
 enderio.itemLiquidConduit.lockedType=Тип жидкости установлен на
 enderio.itemLiquidConduit.unlockedType=Тип жидкости не установлен
 enderio.itemLiquidConduit.lockedWaila=Установленная жидкость 

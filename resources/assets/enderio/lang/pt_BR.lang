@@ -36,7 +36,12 @@ enderio.itemRedstoneConduitInsulated.name=Conduto de Redstone Isolado
 enderio.itemLiquidConduit.name=Conduto de Fluidos
 enderio.itemLiquidConduitAdvanced.name=Conduto de Fluidos Pressurizado
 enderio.itemLiquidConduitEnder.name=Conduto de Fluidos do Fim 
-enderio.itemLiquidConduitAdvancedEnder.name=Advanced Ender Fluid Conduit
+# BEGIN needs translation
+enderio.itemLiquidConduitCrystallineEnder.name=Crystalline Ender Fluid Conduit
+enderio.itemLiquidConduitCrystallinePinkSlimeEnder.name=Crystalline Pink Slime Ender Fluid Conduit
+enderio.itemLiquidConduitMelodicEnder.name=Melodic Ender Fluid Conduit
+enderio.itemLiquidConduitStellarEnder.name=Stellar Ender Fluid Conduit
+# END needs translation
 enderio.itemLiquidConduit.lockedType=Tipo de fluido trancado para
 enderio.itemLiquidConduit.unlockedType=Tipo de fluido destrancado
 enderio.itemLiquidConduit.lockedWaila=Trancado para 

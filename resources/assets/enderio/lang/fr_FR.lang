@@ -15,12 +15,12 @@ tile.blockEnderIo.tooltip.detailed.line2=aux blocs proches
 tile.blockEnderIo.tooltip.detailed.line3=Utilisé avec les Ancres de Voyage
 tile.blockEnderIo.tooltip.detailed.line4=ou le Bâton de Voyage
 
-enderio.itemEnderface=Masque d'Ender
+enderio.itemEnderface.name=Masque d'Ender
 
 //Conduits
 enderio.blockConduitBundle=Faisceau de Conduits
 enderio.blockConduitFacade=Façade
-enderio.itemConduitFacade=Façade
+item.enderio.itemConduitFacade.name=Façade
 item.enderio.itemConduitFacade.hardened.name=Façade Renforcée
 enderio.item.itemConduitFacade.tooltip.notpainted=Non Peinte
 item.enderio.itemConduitFacade.tooltip.detailed.line1=Peinte dans la Machine à enduction
@@ -29,18 +29,23 @@ item.enderio.itemConduitFacade.tooltip.detailed.line3=Invisible si Clé ou condu
 item.enderio.itemConduitFacade.tooltip.detailed.line4=en main
 item.enderio.itemConduitFacade.hardened.tooltip=Renforcée : Résiste à la casse et aux explosions
 
-enderio.itemPowerConduit=Conduit d'énergie
-enderio.itemPowerConduitEnhanced=Conduit d'énergie Amélioré
-enderio.itemPowerConduitEnder=Conduit d'énergie de l'Ender
+enderio.itemPowerConduit.name=Conduit d'énergie
+enderio.itemPowerConduitEnhanced.name=Conduit d'énergie Amélioré
+enderio.itemPowerConduitEnder.name=Conduit d'énergie de l'Ender
 
-enderio.itemRedstoneConduit=Conduit de Redstone
-enderio.itemRedstoneConduitSwitch=Interrupteur Redstone
-enderio.itemRedstoneConduitInsulated=Conduit de Redstone isolé
+enderio.itemRedstoneConduit.name=Conduit de Redstone
+enderio.itemRedstoneConduitSwitch.name=Interrupteur Redstone
+enderio.itemRedstoneConduitInsulated.name=Conduit de Redstone isolé
 
-enderio.itemLiquidConduit=Conduit pour fluides
+enderio.itemLiquidConduit.name=Conduit pour fluides
 enderio.itemLiquidConduitAdvanced.name=Conduit pour fluides préssurisé
 enderio.itemLiquidConduitEnder.name=Conduit pour fluides de l'Ender
-enderio.itemLiquidConduitAdvancedEnder.name=Advanced Ender Fluid Conduit
+# BEGIN needs translation
+enderio.itemLiquidConduitCrystallineEnder.name=Crystalline Ender Fluid Conduit
+enderio.itemLiquidConduitCrystallinePinkSlimeEnder.name=Crystalline Pink Slime Ender Fluid Conduit
+enderio.itemLiquidConduitMelodicEnder.name=Melodic Ender Fluid Conduit
+enderio.itemLiquidConduitStellarEnder.name=Stellar Ender Fluid Conduit
+# END needs translation
 enderio.itemLiquidConduit.lockedType=Type de fluide verrouillé sur
 enderio.itemLiquidConduit.unlockedType=Type de fluide déverrouillé
 enderio.itemLiquidConduit.lockedWaila=Verrouillé sur
@@ -55,7 +60,7 @@ enderio.itemLiquidConduitEnder.tooltip.detailed.line1=Téléportation du fluide 
 enderio.itemLiquidConduitEnder.tooltip.detailed.line2=permet de transporter plusieurs
 enderio.itemLiquidConduitEnder.tooltip.detailed.line3=fluides en même temps
 
-enderio.itemItemConduit=Conduit pour objets
+enderio.itemItemConduit.name=Conduit pour objets
 
 enderio.filterUpgradeBasic.name=Filtre d'objets basique
 enderio.filterUpgradeAdvanced.name=Filtre d'objets avancé

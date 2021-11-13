@@ -40,16 +40,21 @@ enderio.itemRedstoneConduitInsulated.name=Isolierte Redstone-Leitung
 enderio.itemLiquidConduit.name=Flüssigkeitsleitung
 enderio.itemLiquidConduitAdvanced.name=Flüssigkeitsdruckleitung
 enderio.itemLiquidConduitEnder.name=Ender-Flüssigkeitsleitung
-enderio.itemLiquidConduitAdvancedEnder.name=Advanced Ender Fluid Conduit
-enderio.itemLiquidConduit.lockedType.name=Flüssigkeitstyp gebunden an
-enderio.itemLiquidConduit.unlockedType.name=Flüssigkeitstyp nicht mehr gebunden
+# BEGIN needs translation
+enderio.itemLiquidConduitCrystallineEnder.name=Crystalline Ender Fluid Conduit
+enderio.itemLiquidConduitCrystallinePinkSlimeEnder.name=Crystalline Pink Slime Ender Fluid Conduit
+enderio.itemLiquidConduitMelodicEnder.name=Melodic Ender Fluid Conduit
+enderio.itemLiquidConduitStellarEnder.name=Stellar Ender Fluid Conduit
+# END needs translation
+enderio.itemLiquidConduit.lockedType=Flüssigkeitstyp gebunden an
+enderio.itemLiquidConduit.unlockedType=Flüssigkeitstyp nicht mehr gebunden
 enderio.itemLiquidConduit.lockedWaila=Festgelegt auf
 
 enderio.itemLiquidConduit.tooltip.maxExtract=Max. Extraktion:
 enderio.itemLiquidConduit.tooltip.maxIo=Max-IO:
-enderio.itemLiquidConduit.tooltip.tooltip.detailed.line1=Flüssigkeiten werden nicht aufwärts fließen
-enderio.itemLiquidConduit.tooltip.tooltip.detailed.line2=Fließrate abhängig von Viskosität
-enderio.itemLiquidConduit.tooltip.tooltip.detailed.line3=der Flüssigkeit
+enderio.itemLiquidConduit.tooltip.detailed.line1=Flüssigkeiten werden nicht aufwärts fließen
+enderio.itemLiquidConduit.tooltip.detailed.line2=Fließrate abhängig von Viskosität
+enderio.itemLiquidConduit.tooltip.detailed.line3=der Flüssigkeit
 
 enderio.itemLiquidConduitEnder.tooltip.detailed.line1=Sofortiger Flüssigkeitsteleport
 enderio.itemLiquidConduitEnder.tooltip.detailed.line2=Ermöglicht es, verschiedene Flüssigkeiten
