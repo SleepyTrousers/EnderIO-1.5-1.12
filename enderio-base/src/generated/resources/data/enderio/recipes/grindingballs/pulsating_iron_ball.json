@@ -1,0 +1,10 @@
+{
+  "type": "enderio:grindingball",
+  "grindingball": {
+    "item": "enderio:pulsating_iron_ball"
+  },
+  "grinding": 1.0,
+  "chance": 1.85,
+  "power": 1.0,
+  "durability": 100000
+}

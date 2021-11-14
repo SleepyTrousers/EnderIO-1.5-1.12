@@ -97,10 +97,10 @@ public class GrindingballRecipe implements IGrindingballRecipe{
         @Override
         public GrindingballRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
             Ingredient grindingball = Ingredient.fromJson(pSerializedRecipe.getAsJsonObject("grindingball"));
-            float grinding = pSerializedRecipe.getAsJsonObject("grinding").getAsFloat();
-            float chance = pSerializedRecipe.getAsJsonObject("chance").getAsFloat();
-            float power = pSerializedRecipe.getAsJsonObject("power").getAsFloat();
-            int durability = pSerializedRecipe.getAsJsonObject("durability").getAsInt();
+            float grinding = pSerializedRecipe.get("grinding").getAsFloat();
+            float chance = pSerializedRecipe.get("chance").getAsFloat();
+            float power = pSerializedRecipe.get("power").getAsFloat();
+            int durability = pSerializedRecipe.get("durability").getAsInt();
             return new GrindingballRecipe(pRecipeId, grindingball, grinding, chance, power, durability);
         }
 

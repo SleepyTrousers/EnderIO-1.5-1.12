@@ -1,0 +1,10 @@
+{
+  "type": "enderio:grindingball",
+  "grindingball": {
+    "item": "enderio:dark_steel_ball"
+  },
+  "grinding": 1.35,
+  "chance": 2.0,
+  "power": 0.7,
+  "durability": 125000
+}
