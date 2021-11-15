@@ -1,6 +1,8 @@
 package crazypants.enderio.conduit.liquid;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -31,6 +33,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
   protected int numEmptyEvents = 0;
   protected boolean fluidTypeLocked = false;
   private int lastLightValue;
+  protected final Set<BlockCoord> filledFromThisTick = new HashSet<>();
 
   @Override
   public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
@@ -191,6 +194,7 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
 
   @Override
   public void updateEntity(World world) {
+    filledFromThisTick.clear();
     int lightValue = getLightValue();
     if(lastLightValue != lightValue) {
       BlockCoord bc = getLocation();
