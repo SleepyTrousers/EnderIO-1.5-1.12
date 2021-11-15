@@ -59,10 +59,7 @@ public abstract class SyncedMenu<T extends SyncedBlockEntity> extends AbstractCo
         }
     }
 
-    /**
-     * Call if you want to update the server
-     */
-    public void requestClientToServerSync() {
+    public void clientTick() {
         ListTag listNBT = new ListTag();
         for (int i = 0; i < clientToServerSlots.size(); i++) {
             Optional<CompoundTag> optionalNBT = clientToServerSlots.get(0).toOptionalNBT();

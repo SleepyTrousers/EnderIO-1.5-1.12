@@ -33,6 +33,12 @@ public class SyncClientToServerMenuPacket extends ClientToServerMenuPacket<Synce
     }
 
     @Override
+    protected void write(FriendlyByteBuf writeInto) {
+        super.write(writeInto);
+        writeInto.writeNbt(data);
+    }
+
+    @Override
     public void handle(NetworkEvent.Context context) {
         ListTag list = data.getList("list", Constants.NBT.TAG_COMPOUND);
         List<EnderDataSlot<?>> clientToServerSlots = getMenu(context).getClientToServerSlots();

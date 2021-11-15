@@ -170,12 +170,14 @@ public abstract class AbstractMachineBlockEntity extends SyncedBlockEntity imple
     @Override
     public CompoundTag save(CompoundTag pTag) {
         pTag.put("io_config", config.serializeNBT());
+        pTag.putInt("redstone", redstoneControl.ordinal());
         return super.save(pTag);
     }
 
     @Override
     public void load(CompoundTag pTag) {
         config.deserializeNBT(pTag.getCompound("io_config"));
+        redstoneControl = RedstoneControl.values()[pTag.getInt("redstone")];
         super.load(pTag);
     }
 

@@ -32,7 +32,7 @@ public abstract class ClientToServerMenuPacket<Menu extends AbstractContainerMen
             AbstractContainerMenu menu = context.getSender().containerMenu;
             if (menu != null) {
                 return menu.containerId == containerID
-                    && menu.getClass() == menuClass;
+                    && menuClass.isAssignableFrom(menu.getClass());
             }
         }
         return false;
