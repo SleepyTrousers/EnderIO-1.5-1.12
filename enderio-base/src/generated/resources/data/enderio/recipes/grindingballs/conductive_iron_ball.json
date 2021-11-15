@@ -1,0 +1,10 @@
+{
+  "type": "enderio:grindingball",
+  "grindingball": {
+    "item": "enderio:conductive_iron_ball"
+  },
+  "grinding": 1.35,
+  "chance": 1.0,
+  "power": 1.0,
+  "durability": 40000
+}

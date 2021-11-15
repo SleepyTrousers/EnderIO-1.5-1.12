@@ -14,6 +14,7 @@ public class StandardRecipes {
         dataGenerator.addProvider(new BlockRecipes(dataGenerator));
         dataGenerator.addProvider(new ItemRecipes(dataGenerator));
         dataGenerator.addProvider(new CapacitorDataRecipeGenerator(dataGenerator));
+        dataGenerator.addProvider(new GrindingballRecipeGenerator(dataGenerator));
     }
 
     public static void saveRecipe(RecipeBuilder recipe, String variant, Consumer<FinishedRecipe> recipeConsumer) {

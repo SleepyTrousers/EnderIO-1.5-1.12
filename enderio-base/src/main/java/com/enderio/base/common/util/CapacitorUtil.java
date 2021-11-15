@@ -7,8 +7,8 @@ import java.util.Random;
 
 import com.enderio.base.common.capability.EIOCapabilities;
 import com.enderio.base.common.capability.capacitors.ICapacitorData;
-import com.enderio.base.common.recipe.CapacitorDataRecipe;
 import com.enderio.base.common.recipe.EIORecipes;
+import com.enderio.base.common.recipe.capacitor.CapacitorDataRecipe;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

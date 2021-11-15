@@ -1,4 +1,4 @@
-package com.enderio.base.common.recipe;
+package com.enderio.base.common.recipe.capacitor;
 
 import com.google.gson.JsonObject;
 import net.minecraft.world.Container;

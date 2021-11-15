@@ -1,0 +1,10 @@
+{
+  "type": "enderio:grindingball",
+  "grindingball": {
+    "item": "enderio:soularium_ball"
+  },
+  "grinding": 1.2,
+  "chance": 2.15,
+  "power": 0.9,
+  "durability": 80000
+}
