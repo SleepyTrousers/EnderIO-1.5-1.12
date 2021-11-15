@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "III",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "item": "enderio:soularium_ingot"
+    }
+  },
+  "result": {
+    "item": "enderio:soularium_ball",
+    "count": 24
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "III",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "item": "enderio:conductive_iron_ingot"
+    }
+  },
+  "result": {
+    "item": "enderio:conductive_iron_ball",
+    "count": 24
+  }
+}
