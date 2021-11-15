@@ -239,6 +239,15 @@ public class AdvancedLiquidConduit extends AbstractTankConduit {
     if(network == null || !getConnectionMode(from).acceptsInput()) {
       return 0;
     }
+
+    // Guard against things that continuously call fill!
+    if(filledFromThisTick.contains(getLocation().getLocation(from))) {
+      return 0;
+    }
+    if(doFill) {
+      filledFromThisTick.add(getLocation().getLocation(from));
+    }
+
     return network.fill(from, resource, doFill);
   }
 

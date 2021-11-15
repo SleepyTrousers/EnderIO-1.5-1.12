@@ -26,9 +26,11 @@ import net.minecraftforge.fluids.FluidTankInfo;
 
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 public abstract class AbstractEnderLiquidConduit extends AbstractLiquidConduit {
 
@@ -39,7 +41,8 @@ public abstract class AbstractEnderLiquidConduit extends AbstractLiquidConduit {
   public static final String ICON_KEY_IN_OUT_IN = ItemConduit.ICON_KEY_IN_OUT_IN;
 
   static final Map<String, IIcon> ICONS = new HashMap<String, IIcon>();
-
+  private final Set<BlockCoord> filledFromThisTick = new HashSet<>();
+  
   @SideOnly(Side.CLIENT)
   public static void initIcons() {
     IconUtil.addIconProvider(new IconUtil.IIconProvider() {
@@ -242,6 +245,7 @@ public abstract class AbstractEnderLiquidConduit extends AbstractLiquidConduit {
   @Override
   public void updateEntity(World world) {
     super.updateEntity(world);
+    filledFromThisTick.clear();
     if(world.isRemote) {
       return;
     }
@@ -281,6 +285,15 @@ public abstract class AbstractEnderLiquidConduit extends AbstractLiquidConduit {
     if(network == null || !getConnectionMode(from).acceptsInput()) {
       return 0;
     }
+    
+    // Guard against things that continuously call fill!
+    if(filledFromThisTick.contains(getLocation().getLocation(from))) {
+      return 0;
+    }
+    if(doFill) {
+      filledFromThisTick.add(getLocation().getLocation(from));
+    }
+    
     return network.fillFrom(this, from, resource, doFill);
   }
 

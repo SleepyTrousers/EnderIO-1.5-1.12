@@ -83,8 +83,6 @@ public class LiquidConduit extends AbstractTankConduit {
 
   private ForgeDirection startPushDir = ForgeDirection.DOWN;
 
-  private final Set<BlockCoord> filledFromThisTick = new HashSet<BlockCoord>();
-
   private long ticksSinceFailedExtract = 0;
 
   @Override
@@ -170,9 +168,7 @@ public class LiquidConduit extends AbstractTankConduit {
       return 0;
     }
 
-    // Note: This is just a guard against mekansims pipes that will continuously
-    // call
-    // fill on us if we push liquid to them.
+  // Guard against things that continuously call fill!
     if(filledFromThisTick.contains(getLocation().getLocation(from))) {
       return 0;
     }
