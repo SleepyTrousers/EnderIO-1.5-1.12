@@ -4,11 +4,9 @@ import com.enderio.core.common.blockentity.SyncedBlockEntity;
 import com.enderio.core.common.blockentity.sync.EnumDataSlot;
 import com.enderio.core.common.blockentity.sync.NBTSerializableDataSlot;
 import com.enderio.core.common.blockentity.sync.SyncMode;
-import com.enderio.machines.common.blockentity.data.RedstoneControl;
+import com.enderio.base.common.blockentity.RedstoneControl;
 import com.enderio.machines.common.blockentity.data.sidecontrol.IOConfig;
 import com.enderio.machines.common.blockentity.data.sidecontrol.item.ItemHandlerMaster;
-import com.enderio.machines.common.menu.MachineMenu;
-import com.tterrag.registrate.util.entry.ContainerEntry;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.core.BlockPos;
@@ -16,9 +14,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -30,8 +25,6 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-
-import javax.annotation.Nullable;
 
 import static net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 

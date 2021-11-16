@@ -98,9 +98,8 @@ public class EnumIconWidget<T extends Enum<T> & IIcon> extends AbstractWidget im
                 minTop = Math.min(minTop, value.y);
                 maxLeft = Math.max(maxLeft, value.x + value.getWidth());
                 maxTop = Math.max(maxTop, value.y + value.getHeight());
-                addedOn.renderSimpleArea(pPoseStack, minLeft - 3, minTop - 3, maxLeft + 3, maxTop + 3);
             }
-
+            addedOn.renderSimpleArea(pPoseStack, minLeft - 3, minTop - 3, maxLeft + 3, maxTop + 3);
         }
         addedOn.renderIconBackground(pPoseStack, x, y, icon);
         addedOn.renderIcon(pPoseStack, x + 1, y + 1, icon);
@@ -142,8 +141,8 @@ public class EnumIconWidget<T extends Enum<T> & IIcon> extends AbstractWidget im
             if (getter.get() != value) {
                 addedOn.renderIconBackground(pPoseStack, x, y, value);
             } else {
-                fill(pPoseStack, x, y, x + width, y + height, 0xFF0020FF); //TODO: Client Config
-                fill(pPoseStack, x + 1, y + 1, x + width - 1, y + height - 1, 0xFF8B8B8B);
+                addedOn.fill(pPoseStack, x, y, x + width, y + height, 0xFF0020FF); //TODO: Client Config
+                addedOn.fill(pPoseStack, x + 1, y + 1, x + width - 1, y + height - 1, 0xFF8B8B8B);
             }
             if (isMouseOver(pMouseX, pMouseY)) {
                 Component tooltip = value.getTooltip();
