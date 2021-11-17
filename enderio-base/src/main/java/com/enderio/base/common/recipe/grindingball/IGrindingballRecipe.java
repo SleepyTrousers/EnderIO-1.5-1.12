@@ -1,9 +1,9 @@
 package com.enderio.base.common.recipe.grindingball;
 
+import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
 
-public interface IGrindingballRecipe extends Recipe<RecipeWrapper>{
+public interface IGrindingballRecipe extends Recipe<Container>{
 
     public float getGrinding();
     

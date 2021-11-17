@@ -7,11 +7,11 @@ import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 public class GrindingballRecipe implements IGrindingballRecipe{
     private ResourceLocation id;
@@ -31,12 +31,12 @@ public class GrindingballRecipe implements IGrindingballRecipe{
     }
     
     @Override
-    public boolean matches(RecipeWrapper pContainer, Level pLevel) {
+    public boolean matches(Container pContainer, Level pLevel) {
         return this.grindingball.test(pContainer.getItem(0));
     }
 
     @Override
-    public ItemStack assemble(RecipeWrapper pContainer) {
+    public ItemStack assemble(Container pContainer) {
         return this.getResultItem();
     }
 
@@ -56,7 +56,7 @@ public class GrindingballRecipe implements IGrindingballRecipe{
     }
 
     @Override
-    public DataGenSerializer<GrindingballRecipe, RecipeWrapper> getSerializer() {
+    public DataGenSerializer<GrindingballRecipe, Container> getSerializer() {
         return EIORecipes.Serializer.GRINDINGBALL.get();
     }
 
@@ -92,7 +92,7 @@ public class GrindingballRecipe implements IGrindingballRecipe{
         return durability;
     }
 
-    public static class Serializer extends DataGenSerializer<GrindingballRecipe, RecipeWrapper> {
+    public static class Serializer extends DataGenSerializer<GrindingballRecipe, Container> {
 
         @Override
         public GrindingballRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
