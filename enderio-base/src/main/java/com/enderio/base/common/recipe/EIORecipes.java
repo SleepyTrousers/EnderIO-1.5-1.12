@@ -40,7 +40,7 @@ public class EIORecipes {
         private Types() {}
 
         public static RecipeType<CapacitorDataRecipe> CAPACITOR_DATA = RecipeType.register(EnderIO.DOMAIN + ":capacitor_data");
-        public static RecipeType<CapacitorDataRecipe> GRINDINGBALL = RecipeType.register(EnderIO.DOMAIN + ":grindingball");
+        public static RecipeType<GrindingballRecipe> GRINDINGBALL = RecipeType.register(EnderIO.DOMAIN + ":grindingball");
 
         public static void register() {}
     }
