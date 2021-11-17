@@ -3,7 +3,6 @@ package com.enderio.machines.common.recipe;
 import java.util.Optional;
 
 import com.enderio.base.common.recipe.DataGenSerializer;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import net.minecraft.ResourceLocationException;
@@ -15,9 +14,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 
@@ -25,13 +22,15 @@ public class EnchanterRecipe implements IEnchanterRecipe{
     private ResourceLocation id;
     private Enchantment enchantment;
     private int level;
-    private NonNullList<Ingredient> ingredients;
+    private Ingredient ingredient;
+    private int amountPerLevel;
 
-    public EnchanterRecipe(ResourceLocation id, NonNullList<Ingredient> ingredients, Enchantment enchantment, int level) {
+    public EnchanterRecipe(ResourceLocation id, Ingredient ingredient, Enchantment enchantment, int amountPerLevel, int levelModifier) {
         this.id = id;
-        this.ingredients = ingredients;
+        this.ingredient = ingredient;
         this.enchantment = enchantment;
-        this.level = level;
+        this.amountPerLevel = amountPerLevel;
+        this.level = levelModifier;
     }
 
     @Override
@@ -40,22 +39,72 @@ public class EnchanterRecipe implements IEnchanterRecipe{
     }
     
     @Override
-    public int getLevel() {
+    public int getLevelModifier() {
         return level;
     }
+    
+    public int getLevelCost(Container container) {
+        int level = getEnchantmentLevel(container.getItem(1).getCount());
+        return getEnchantCost(level);
+    }
+    
+    public int getAmountPerLevel() {
+        return amountPerLevel;
+    }
+    
+    public int getEnchantmentLevel(int amount) {
+        return Math.min(amount / amountPerLevel, enchantment.getMaxLevel());
+    }
+    
+    public int getLapizForLevel(int level) {
+        int res = enchantment.getMaxLevel() == 1 ? 5 : level;
+        return (int) Math.max(1, Math.round(res * 1)); //TODO config
+    }
+    
+    public int getAmount(Container container) {
+        if (matches(container, null)) {
+            return Math.round(((float)container.getItem(1).getCount()) / (float)amountPerLevel);
+        }
+        return 0;
+    }
+    
+    public int getEnchantCost(int level) {
+        level = Math.min(level, enchantment.getMaxLevel());
+        int cost = getRawXPCostForLevel(level);
+        if (level < enchantment.getMaxLevel()) {
+            // min cost of half the next levels XP cause books combined in anvil
+            int nextCost = getEnchantCost(level + 1);
+            cost = Math.max(nextCost / 2, cost);
+        }
+        return Math.max(1, cost);
+    }
+    
+    private int getRawXPCostForLevel(int level) {
+        double min = Math.max(1, enchantment.getMinCost(level));
+        min *= level;
+        int cost = (int) Math.round(min * 1); //TODO global scaling
+        cost += 1; //TODO base cost
+        return cost;
+      }
 
     @Override
     public boolean matches(Container pContainer, Level pLevel) {
-        if(pContainer.getItem(0).is(Items.WRITABLE_BOOK) && ingredients.get(0).test(pContainer.getItem(1)) && ingredients.get(1).test(pContainer.getItem(2))) {
-            return true;
+        if(!pContainer.getItem(0).is(Items.WRITABLE_BOOK)) {
+            return false;
         }
-        return false;
+        if(!ingredient.test(pContainer.getItem(1)) || pContainer.getItem(1).getCount() < amountPerLevel) {
+           return false; 
+        }
+        if(!pContainer.getItem(2).is(Items.LAPIS_LAZULI) || pContainer.getItem(2).getCount() < getLapizForLevel(getEnchantmentLevel(pContainer.getItem(1).getCount()))) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public ItemStack assemble(Container pContainer) {
         ItemStack result = new ItemStack(Items.ENCHANTED_BOOK);
-        result.enchant(enchantment, 1);
+        result.enchant(enchantment, getEnchantmentLevel(pContainer.getItem(2).getCount()));
         return result;
     }
 
@@ -75,7 +124,7 @@ public class EnchanterRecipe implements IEnchanterRecipe{
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public DataGenSerializer<EnchanterRecipe, Container> getSerializer() {
         return MachineRecipes.Serializer.ENCHANTING.get();
     }
 
@@ -86,6 +135,8 @@ public class EnchanterRecipe implements IEnchanterRecipe{
     
     @Override
     public NonNullList<Ingredient> getIngredients() {
+        NonNullList<Ingredient> ingredients = NonNullList.create();
+        ingredients.add(ingredient);
         return ingredients;
     }
     
@@ -93,60 +144,39 @@ public class EnchanterRecipe implements IEnchanterRecipe{
 
         @Override
         public EnchanterRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
-            NonNullList<Ingredient> nonnulllist = itemsFromJson(pSerializedRecipe.get("ingredients").getAsJsonArray());
+            Ingredient ingredient = Ingredient.fromJson(pSerializedRecipe.get("ingredient").getAsJsonObject());
             Optional<Enchantment> enchantment = Registry.ENCHANTMENT.getOptional(new ResourceLocation(pSerializedRecipe.get("enchantment").getAsString()));
             if (enchantment.isEmpty()) {
                 throw new ResourceLocationException("The enchantment in " + pRecipeId.toString() + " does not exist");
             }
-            int level = pSerializedRecipe.get("levels").getAsInt();
-            return new EnchanterRecipe(pRecipeId, nonnulllist, enchantment.get(), level);
+            int amount = pSerializedRecipe.get("amount").getAsInt();
+            int level = pSerializedRecipe.get("level").getAsInt();
+            return new EnchanterRecipe(pRecipeId, ingredient, enchantment.get(), amount, level);
         }
 
         @Override
         public EnchanterRecipe fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf pBuffer) {
-            int i = pBuffer.readVarInt();
-            NonNullList<Ingredient> nonnulllist = NonNullList.withSize(i, Ingredient.EMPTY);
-            for(int j = 0; j < nonnulllist.size(); ++j) {
-                nonnulllist.set(j, Ingredient.of(pBuffer.readItem()));
-            }
+            Ingredient ingredient = Ingredient.fromNetwork(pBuffer);
             Enchantment enchantment = Registry.ENCHANTMENT.get(pBuffer.readResourceLocation());
+            int amount = pBuffer.readInt();
             int level = pBuffer.readInt();
-            return new EnchanterRecipe(pRecipeId, nonnulllist, enchantment, level);
+            return new EnchanterRecipe(pRecipeId, ingredient, enchantment, amount, level);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf pBuffer, EnchanterRecipe pRecipe) {
-            pBuffer.writeVarInt(pRecipe.ingredients.size());
-            for(Ingredient ingredient : pRecipe.ingredients) {
-                pBuffer.writeItemStack(ingredient.getItems()[0], false);
-            }
+           pRecipe.ingredient.toNetwork(pBuffer);
            pBuffer.writeResourceLocation(pRecipe.enchantment.getRegistryName());
+           pBuffer.writeInt(pRecipe.amountPerLevel);
            pBuffer.writeInt(pRecipe.level);
         }
 
         @Override
         public void toJson(EnchanterRecipe recipe, JsonObject json) {
-            JsonArray jsonarray = new JsonArray();
-            for(Ingredient ingredient : recipe.ingredients) {
-               jsonarray.add(ingredient.toJson());
-            }
-            json.add("ingredients", jsonarray);
+            json.add("ingredient", recipe.ingredient.toJson());
             json.addProperty("enchantment", recipe.enchantment.getRegistryName().toString());
-            json.addProperty("levels", recipe.level);
-        }
-        
-        private static NonNullList<Ingredient> itemsFromJson(JsonArray pIngredientArray) {
-            NonNullList<Ingredient> nonnulllist = NonNullList.withSize(2, Ingredient.of(ItemStack.EMPTY));
-            for(int i = 0; i < pIngredientArray.size(); ++i) {
-                Ingredient ingredient = Ingredient.of(ShapedRecipe.itemStackFromJson(pIngredientArray.get(i).getAsJsonObject()));
-                if (!ingredient.isEmpty()) {
-                    nonnulllist.set(i,ingredient);
-                }
-            }
-            
-            return nonnulllist;
-        }
-        
+            json.addProperty("amount", recipe.amountPerLevel);
+            json.addProperty("level", recipe.level);
+        }    
     }
-
 }
