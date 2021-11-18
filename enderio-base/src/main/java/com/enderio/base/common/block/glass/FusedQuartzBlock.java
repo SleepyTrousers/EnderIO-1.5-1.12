@@ -1,5 +1,6 @@
 package com.enderio.base.common.block.glass;
 
+import com.enderio.base.config.base.BaseConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -63,7 +64,7 @@ public class FusedQuartzBlock extends AbstractGlassBlock {
 
     @Override
     public float getExplosionResistance() {
-        return explosionResistant ? 1200.0f : super.getExplosionResistance(); // TODO: Config for the level of explosion resistance
+        return explosionResistant ? BaseConfig.COMMON.BLOCKS.EXPLOSION_RESISTANCE.get() : super.getExplosionResistance();
     }
 
     @Nonnull
