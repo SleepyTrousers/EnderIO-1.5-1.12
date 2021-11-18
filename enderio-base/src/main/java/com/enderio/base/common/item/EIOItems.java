@@ -15,11 +15,7 @@ import com.enderio.base.common.item.misc.EnderfaceItem;
 import com.enderio.base.common.item.misc.GearItem;
 import com.enderio.base.common.item.misc.MaterialItem;
 import com.enderio.base.common.item.spawner.BrokenSpawnerItem;
-import com.enderio.base.common.item.tool.CoordinateSelectorItem;
-import com.enderio.base.common.item.tool.ElectromagnetItem;
-import com.enderio.base.common.item.tool.LevitationStaffItem;
-import com.enderio.base.common.item.tool.SoulVialItem;
-import com.enderio.base.common.item.tool.YetaWrenchItem;
+import com.enderio.base.common.item.tool.*;
 import com.enderio.base.common.tag.EIOTags;
 import com.enderio.base.data.model.item.ItemModelUtils;
 import com.tterrag.registrate.Registrate;
@@ -283,9 +279,9 @@ public class EIOItems {
         .register();
 
     // endregion
-    
+
     // region GrindingBalls
-    
+
     public static ItemEntry<MaterialItem> SOULARIUM_BALL = materialItem("soularium_ball").register();
 
     public static ItemEntry<MaterialItem> CONDUCTIVE_IRON_BALL = materialItem("conductive_iron_ball").register();
@@ -297,7 +293,7 @@ public class EIOItems {
     public static ItemEntry<MaterialItem> REDSTONE_ALLOY_BALL = materialItem("redstone_alloy_ball").register();
 
     public static ItemEntry<MaterialItem> ENERGETIC_ALLOY_BALL = materialItem("energetic_alloy_ball").register();
-    
+
     public static ItemEntry<MaterialItem> VIBRANT_ALLOY_BALL = materialItem("vibrant_alloy_ball").register();
 
     public static ItemEntry<MaterialItem> ELECTRICAL_STEEL_BALL = materialItem("electrical_steel_ball").register();
