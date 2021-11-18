@@ -5,8 +5,17 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class EnergyUtil {
+
+    public static int getMaxEnergyStored(ItemStack stack) {
+        return stack.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::getMaxEnergyStored).orElse(0);
+    }
+
     public static int getEnergyStored(ItemStack stack) {
         return stack.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::getEnergyStored).orElse(0);
+    }
+
+    public static boolean hasEnergy(ItemStack stack, int amount) {
+        return stack.getCapability(CapabilityEnergy.ENERGY).map(storage -> storage.getEnergyStored() >= amount).orElse(false);
     }
 
     public static void setFull(ItemStack stack) {
