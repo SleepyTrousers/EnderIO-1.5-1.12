@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "III",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "item": "enderio:redstone_alloy_ingot"
+    }
+  },
+  "result": {
+    "item": "enderio:redstone_alloy_ball",
+    "count": 24
+  }
+}

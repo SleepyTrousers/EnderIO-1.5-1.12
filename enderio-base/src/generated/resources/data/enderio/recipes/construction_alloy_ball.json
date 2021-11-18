@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "III",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "item": "enderio:construction_alloy_ball"
+    }
+  },
+  "result": {
+    "item": "enderio:construction_alloy_ball",
+    "count": 24
+  }
+}

@@ -227,6 +227,16 @@ public class MaterialRecipes extends RecipeProvider {
             .unlockedBy("has_ingredient", InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(ItemTags.LOGS).build()))
             .save(recipeConsumer);
         
+        grindingBall(recipeConsumer, EIOItems.DARK_STEEL_BALL.get(), EIOItems.DARK_STEEL_INGOT.get());
+        grindingBall(recipeConsumer, EIOItems.SOULARIUM_BALL.get(), EIOItems.SOULARIUM_INGOT.get());
+        grindingBall(recipeConsumer, EIOItems.CONDUCTIVE_IRON_BALL.get(), EIOItems.CONDUCTIVE_IRON_INGOT.get());
+        grindingBall(recipeConsumer, EIOItems.PULSATING_IRON_BALL.get(), EIOItems.PULSATING_IRON_INGOT.get());
+        grindingBall(recipeConsumer, EIOItems.CONSTRUCTION_ALLOY_BALL.get(), EIOItems.CONSTRUCTION_ALLOY_BALL.get());
+        grindingBall(recipeConsumer, EIOItems.REDSTONE_ALLOY_BALL.get(), EIOItems.REDSTONE_ALLOY_INGOT.get());
+        grindingBall(recipeConsumer, EIOItems.ENERGETIC_ALLOY_BALL.get(), EIOItems.ENERGETIC_ALLOY_INGOT.get());
+        grindingBall(recipeConsumer, EIOItems.VIBRANT_ALLOY_BALL.get(), EIOItems.VIBRANT_ALLOY_INGOT.get());
+        grindingBall(recipeConsumer, EIOItems.ELECTRICAL_STEEL_BALL.get(), EIOItems.ELECTRICAL_STEEL_INGOT.get());
+        grindingBall(recipeConsumer, EIOItems.END_STEEL_BALL.get(), EIOItems.END_STEEL_INGOT.get());
     }
 
     private void blockToIngots(Consumer<FinishedRecipe> recipeConsumer, Item ingot, Block block) {
@@ -265,6 +275,16 @@ public class MaterialRecipes extends RecipeProvider {
             .define('I', cross)
             .define('G', inputGear)
             .unlockedBy("has_ingredient", InventoryChangeTrigger.TriggerInstance.hasItems(inputGear))
+            .save(recipeConsumer);
+    }
+    
+    private void grindingBall(Consumer<FinishedRecipe> recipeConsumer, Item result, ItemLike input) {
+        ShapedRecipeBuilder.shaped(result, 24)
+            .pattern(" I ")
+            .pattern("III")
+            .pattern(" I ")
+            .define('I', input)
+            .unlockedBy("has_ingredient", InventoryChangeTrigger.TriggerInstance.hasItems(input))
             .save(recipeConsumer);
     }
     
