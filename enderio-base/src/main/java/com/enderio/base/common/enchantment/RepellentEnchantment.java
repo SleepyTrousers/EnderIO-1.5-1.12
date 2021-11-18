@@ -1,5 +1,6 @@
 package com.enderio.base.common.enchantment;
 
+import com.enderio.base.config.base.BaseConfig;
 import com.enderio.core.common.util.TeleportUtils;
 
 import net.minecraft.world.entity.Entity;
@@ -9,47 +10,41 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class RepellentEnchantment extends EIOBaseEnchantment {
-    //TODO config rarity?
     public RepellentEnchantment() {
-        super(Rarity.VERY_RARE, EnchantmentCategory.ARMOR, new EquipmentSlot[] { EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET }, () -> true);
+        super(BaseConfig.COMMON.ENCHANTMENTS.REPELLENT_RARITY.get(), EnchantmentCategory.ARMOR,
+            new EquipmentSlot[] { EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET }, () -> true);
     }
 
-    //TODO config?
     @Override
     public int getMaxLevel() {
-        return 4;
+        return BaseConfig.COMMON.ENCHANTMENTS.REPELLENT_MAX_LEVEL.get();
     }
 
-    //TODO config?
     @Override
     public int getMaxCost(int pLevel) {
-        return 10 + 10 * pLevel;
+        return BaseConfig.COMMON.ENCHANTMENTS.REPELLENT_MAX_COST_BASE.get() + BaseConfig.COMMON.ENCHANTMENTS.REPELLENT_MAX_COST_MULT.get() * pLevel;
     }
 
-    //TODO config
     @Override
     public int getMinCost(int pLevel) {
-        return 10 + 5 * pLevel;
+        return BaseConfig.COMMON.ENCHANTMENTS.REPELLENT_MIN_COST_BASE.get() + BaseConfig.COMMON.ENCHANTMENTS.REPELLENT_MIN_COST_MULT.get() * pLevel;
     }
 
-    //TODO config?
     private float getChance(int level) {
-        return 0.35F + 0.1F * level;
+        return BaseConfig.COMMON.ENCHANTMENTS.REPELLENT_CHANCE_BASE.get() + BaseConfig.COMMON.ENCHANTMENTS.REPELLENT_CHANCE_MULT.get() * level;
     }
 
-    //TODO config?
     private double getRange(int level) {
-        return 8D + 8D * level;
+        return BaseConfig.COMMON.ENCHANTMENTS.REPELLENT_RANGE_BASE.get() + BaseConfig.COMMON.ENCHANTMENTS.REPELLENT_RANGE_MULT.get() * level;
     }
 
-    //TODO config non player mobs?
     @Override
     public void doPostHurt(LivingEntity pUser, Entity pAttacker, int pLevel) {
         if (pUser instanceof Player && pAttacker instanceof LivingEntity attacker) {
             if (pUser.getRandom().nextFloat() < getChance(pLevel)) {
                 if (pAttacker instanceof Player) {
                     TeleportUtils.randomTeleport(attacker, getRange(pLevel));
-                } else if (pUser.getRandom().nextFloat() < .75F) { // non player repel config?
+                } else if (pUser.getRandom().nextFloat() < BaseConfig.COMMON.ENCHANTMENTS.REPELLENT_NON_PLAYER_CHANCE.get()) {
                     TeleportUtils.randomTeleport(attacker, getRange(pLevel));
                 }
             }

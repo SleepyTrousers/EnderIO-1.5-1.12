@@ -1,5 +1,6 @@
 package com.enderio.base.common.block;
 
+import com.enderio.base.config.base.BaseConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.MoverType;
@@ -20,9 +21,9 @@ public class DarkSteelLadderHandler {
             if (player.onClimbable() && player.level.getBlockState(player.blockPosition()).is(EIOBlocks.DARK_STEEL_LADDER.get())) {
                 if (!Minecraft.getInstance().options.keyShift.isDown()) {
                     if (Minecraft.getInstance().options.keyUp.isDown()) {
-                        player.move(MoverType.SELF, new Vec3(0,0.15f,0));
+                        player.move(MoverType.SELF, new Vec3(0, BaseConfig.COMMON.BLOCKS.DARK_STEEL_LADDER_BOOST.get(),0));
                     } else {
-                        player.move(MoverType.SELF, new Vec3(0,-0.15f,0));
+                        player.move(MoverType.SELF, new Vec3(0,-BaseConfig.COMMON.BLOCKS.DARK_STEEL_LADDER_BOOST.get(),0));
                     }
                 }
             }
