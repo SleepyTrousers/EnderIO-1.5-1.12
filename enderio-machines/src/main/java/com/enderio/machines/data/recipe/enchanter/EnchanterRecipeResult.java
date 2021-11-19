@@ -15,7 +15,7 @@ public class EnchanterRecipeResult implements FinishedRecipe{
     private ResourceLocation id;
 
     public EnchanterRecipeResult(EnchanterRecipe recipe, String name) {
-        this(recipe, new ResourceLocation(EIOMachines.DOMAIN, "enchanting/+"+name));
+        this(recipe, new ResourceLocation(EIOMachines.DOMAIN, "enchanting/"+name));
     }
     
     public EnchanterRecipeResult(EnchanterRecipe recipe, ResourceLocation id) {
