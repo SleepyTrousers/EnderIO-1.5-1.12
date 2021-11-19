@@ -63,7 +63,7 @@ public class EnchanterRecipe implements IEnchanterRecipe{
     
     public int getAmount(Container container) {
         if (matches(container, null)) {
-            return Math.round(((float)container.getItem(1).getCount()) / (float)amountPerLevel);
+            return getEnchantmentLevel(container.getItem(1).getCount()) * this.amountPerLevel;
         }
         return 0;
     }
@@ -104,7 +104,7 @@ public class EnchanterRecipe implements IEnchanterRecipe{
     @Override
     public ItemStack assemble(Container pContainer) {
         ItemStack result = new ItemStack(Items.ENCHANTED_BOOK);
-        result.enchant(enchantment, getEnchantmentLevel(pContainer.getItem(2).getCount()));
+        result.enchant(enchantment, getEnchantmentLevel(pContainer.getItem(1).getCount()));
         return result;
     }
 

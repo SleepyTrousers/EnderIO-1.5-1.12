@@ -1,10 +1,10 @@
 package com.enderio.machines;
 
-import com.enderio.base.data.recipe.standard.StandardRecipes;
 import com.enderio.machines.common.block.MachineBlocks;
 import com.enderio.machines.common.blockentity.MachineBlockEntities;
 import com.enderio.machines.common.menu.MachineMenus;
 import com.enderio.machines.common.recipe.MachineRecipes;
+import com.enderio.machines.data.recipe.MachineRecipeGenerator;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.util.NonNullLazyValue;
 
@@ -38,7 +38,7 @@ public class EIOMachines {
     public void gatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
         if (event.includeServer()) {
-            StandardRecipes.generate(generator);
+            MachineRecipeGenerator.generate(generator);
         }
     }
 
