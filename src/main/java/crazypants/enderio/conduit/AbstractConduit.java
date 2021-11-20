@@ -33,13 +33,16 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.ItemConduitNetwork;
-import crazypants.enderio.conduit.liquid.AdvancedEnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.AdvancedLiquidConduit;
 import crazypants.enderio.conduit.liquid.AdvancedLiquidConduitNetwork;
+import crazypants.enderio.conduit.liquid.CrystallineEnderLiquidConduit;
+import crazypants.enderio.conduit.liquid.CrystallinePinkSlimeEnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.EnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.EnderLiquidConduitNetwork;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.liquid.LiquidConduitNetwork;
+import crazypants.enderio.conduit.liquid.MelodicEnderLiquidConduit;
+import crazypants.enderio.conduit.liquid.StellarEnderLiquidConduit;
 import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.me.MEConduitNetwork;
 import crazypants.enderio.conduit.oc.IOCConduit;
@@ -633,8 +636,14 @@ public abstract class AbstractConduit implements IConduit {
       return new RedstoneConduitNetwork();
     } else if (IPowerConduit.class.isAssignableFrom(type)) {
       return new PowerConduitNetwork();
-    } else if (AdvancedEnderLiquidConduit.class.isAssignableFrom(type)) {
-      return new EnderLiquidConduitNetwork(AdvancedEnderLiquidConduit.TYPE);
+    } else if (StellarEnderLiquidConduit.class.isAssignableFrom(type)) {
+      return new EnderLiquidConduitNetwork(StellarEnderLiquidConduit.TYPE);
+    } else if (MelodicEnderLiquidConduit.class.isAssignableFrom(type)) {
+      return new EnderLiquidConduitNetwork(MelodicEnderLiquidConduit.TYPE);
+    } else if (CrystallinePinkSlimeEnderLiquidConduit.class.isAssignableFrom(type)) {
+      return new EnderLiquidConduitNetwork(CrystallinePinkSlimeEnderLiquidConduit.TYPE);
+    } else if (CrystallineEnderLiquidConduit.class.isAssignableFrom(type)) {
+      return new EnderLiquidConduitNetwork(CrystallineEnderLiquidConduit.TYPE);
     } else if (EnderLiquidConduit.class.isAssignableFrom(type)) {
       return new EnderLiquidConduitNetwork(EnderLiquidConduit.TYPE);
     } else if (AdvancedLiquidConduit.class.isAssignableFrom(type)) {

@@ -34,7 +34,12 @@ enderio.itemRedstoneConduitInsulated.name=絕緣紅石導管
 enderio.itemLiquidConduit.name=液體導管
 enderio.itemLiquidConduitAdvanced.name=加壓液體導管
 enderio.itemLiquidConduitEnder.name=終界液體導管
-enderio.itemLiquidConduitAdvancedEnder.name=Advanced Ender Fluid Conduit
+# BEGIN needs translation
+enderio.itemLiquidConduitCrystallineEnder.name=Crystalline Ender Fluid Conduit
+enderio.itemLiquidConduitCrystallinePinkSlimeEnder.name=Crystalline Pink Slime Ender Fluid Conduit
+enderio.itemLiquidConduitMelodicEnder.name=Melodic Ender Fluid Conduit
+enderio.itemLiquidConduitStellarEnder.name=Stellar Ender Fluid Conduit
+# END needs translation
 enderio.itemLiquidConduit.lockedType=液體種類鎖定為
 enderio.itemLiquidConduit.unlockedType=液體種類解鎖 
 

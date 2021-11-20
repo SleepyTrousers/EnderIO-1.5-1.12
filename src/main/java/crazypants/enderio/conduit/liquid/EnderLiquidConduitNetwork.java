@@ -11,7 +11,6 @@ import com.enderio.core.common.util.BlockCoord;
 
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.enderio.config.Config;
 
 public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit, AbstractEnderLiquidConduit> {
   private class TankIterator implements Iterator<NetworkTank> {
@@ -54,32 +53,6 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     }
   }
 
-  public static int getMaxExtractPerTick(AbstractEnderLiquidConduit.Type type) {
-    switch (type) {
-      case ENDER:
-        return Config.enderFluidConduitExtractRate;
-
-      case ADVANCED:
-        return Config.advancedEnderFluidConduitExtractRate;
-
-      default:
-        throw new IllegalArgumentException("Unrecognized ender fluid conduit type: " + type);
-    }
-  }
-
-  public static int getMaxIoPerTick(AbstractEnderLiquidConduit.Type type) {
-    switch (type) {
-      case ENDER:
-        return Config.enderFluidConduitMaxIoRate;
-
-      case ADVANCED:
-        return Config.advancedEnderFluidConduitMaxIoRate;
-
-      default:
-        throw new IllegalArgumentException("Unrecognized ender fluid conduit type: " + type);
-    }
-  }
-
   private final AbstractEnderLiquidConduit.Type type;
 
   List<NetworkTank> tanks = new ArrayList<NetworkTank>();
@@ -108,7 +81,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     if(tank == null || !tank.isValid()) {
       return false;
     }
-    FluidStack drained = tank.externalTank.drain(conDir.getOpposite(), getMaxExtractPerTick(type), false);
+    FluidStack drained = tank.externalTank.drain(conDir.getOpposite(), type.getMaxExtractPerTick(), false);
     if(drained == null || drained.amount <= 0 || !matchedFilter(drained, con, conDir, true)) {
       return false;
     }
@@ -149,7 +122,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
         return 0;
       }
       resource = resource.copy();
-      resource.amount = Math.min(resource.amount, getMaxIoPerTick(type));
+      resource.amount = Math.min(resource.amount, type.getMaxIoPerTick());
       int filled = 0;
       int remaining = resource.amount;
       //TODO: Only change starting pos of iterator is doFill is true so a false then true returns the same

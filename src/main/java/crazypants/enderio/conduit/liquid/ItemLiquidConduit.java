@@ -23,7 +23,10 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
     new ItemConduitSubtype(ModObject.itemLiquidConduit.name(), "enderio:itemLiquidConduit"),
     new ItemConduitSubtype(ModObject.itemLiquidConduit.name() + "Advanced", "enderio:itemLiquidConduitAdvanced"),
     new ItemConduitSubtype(ModObject.itemLiquidConduit.name() + "Ender", "enderio:itemLiquidConduitEnder"),
-    new ItemConduitSubtype(ModObject.itemLiquidConduit.name() + "AdvancedEnder", "enderio:itemLiquidConduitAdvancedEnder")
+    new ItemConduitSubtype(ModObject.itemLiquidConduit.name() + "CrystallineEnder", "enderio:itemLiquidConduitCrystallineEnder"),
+    new ItemConduitSubtype(ModObject.itemLiquidConduit.name() + "CrystallinePinkSlimeEnder", "enderio:itemLiquidConduitCrystallinePinkSlimeEnder"),
+    new ItemConduitSubtype(ModObject.itemLiquidConduit.name() + "MelodicEnder", "enderio:itemLiquidConduitMelodicEnder"),
+    new ItemConduitSubtype(ModObject.itemLiquidConduit.name() + "StellarEnder", "enderio:itemLiquidConduitStellarEnder")
   };
 
   public static ItemLiquidConduit create() {
@@ -43,14 +46,24 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
 
   @Override
   public IConduit createConduit(ItemStack stack, EntityPlayer player) {
-    if(stack.getItemDamage() == 1) {
-      return new AdvancedLiquidConduit();
-    } else if(stack.getItemDamage() == 2) {
-      return new EnderLiquidConduit();
-    } else if(stack.getItemDamage() == 3) {
-      return new AdvancedEnderLiquidConduit();
+    switch (stack.getItemDamage()) {
+      case 0:
+        return new LiquidConduit();
+      case 1:
+        return new AdvancedLiquidConduit();
+      case EnderLiquidConduit.METADATA:
+        return new EnderLiquidConduit();
+      case CrystallineEnderLiquidConduit.METADATA:
+        return new CrystallineEnderLiquidConduit();
+      case CrystallinePinkSlimeEnderLiquidConduit.METADATA:
+        return new CrystallinePinkSlimeEnderLiquidConduit();
+      case MelodicEnderLiquidConduit.METADATA:
+        return new MelodicEnderLiquidConduit();
+      case StellarEnderLiquidConduit.METADATA:
+        return new StellarEnderLiquidConduit();
+      default:
+        throw new IllegalArgumentException("Unrecognized ender fluid conduit type: " + stack.getItemDamage());
     }
-    return new LiquidConduit();
   }
 
   @Override
@@ -70,26 +83,53 @@ public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedT
     int extractRate;
     int maxIo;
 
-    if(itemstack.getItemDamage() == 0) {
-      extractRate = Config.fluidConduitExtractRate;
-      maxIo = Config.fluidConduitMaxIoRate;
-    } else if(itemstack.getItemDamage() == 1){
-      extractRate = Config.advancedFluidConduitExtractRate;
-      maxIo = Config.advancedFluidConduitMaxIoRate;
-    } else if(itemstack.getItemDamage() == 2){
-      extractRate = Config.enderFluidConduitExtractRate;
-      maxIo = Config.enderFluidConduitMaxIoRate;
-    } else {
-      extractRate = Config.advancedEnderFluidConduitExtractRate;
-      maxIo = Config.advancedEnderFluidConduitMaxIoRate;
+    switch (itemstack.getItemDamage()) {
+      case 0:
+        extractRate = Config.fluidConduitExtractRate;
+        maxIo = Config.fluidConduitMaxIoRate;
+        break;
+
+      case 1:
+        extractRate = Config.advancedFluidConduitExtractRate;
+        maxIo = Config.advancedFluidConduitMaxIoRate;
+        break;
+
+      case EnderLiquidConduit.METADATA:
+        extractRate = EnderLiquidConduit.TYPE.getMaxExtractPerTick();
+        maxIo = EnderLiquidConduit.TYPE.getMaxIoPerTick();
+        break;
+
+      case CrystallineEnderLiquidConduit.METADATA:
+        extractRate = CrystallineEnderLiquidConduit.TYPE.getMaxExtractPerTick();
+        maxIo = CrystallineEnderLiquidConduit.TYPE.getMaxIoPerTick();
+        break;
+
+      case CrystallinePinkSlimeEnderLiquidConduit.METADATA:
+        extractRate = CrystallinePinkSlimeEnderLiquidConduit.TYPE.getMaxExtractPerTick();
+        maxIo = CrystallinePinkSlimeEnderLiquidConduit.TYPE.getMaxIoPerTick();
+        break;
+
+      case MelodicEnderLiquidConduit.METADATA:
+        extractRate = MelodicEnderLiquidConduit.TYPE.getMaxExtractPerTick();
+        maxIo = MelodicEnderLiquidConduit.TYPE.getMaxIoPerTick();
+        break;
+
+      case StellarEnderLiquidConduit.METADATA:
+        extractRate = StellarEnderLiquidConduit.TYPE.getMaxExtractPerTick();
+        maxIo = StellarEnderLiquidConduit.TYPE.getMaxIoPerTick();
+        break;
+
+      default:
+        throw new IllegalArgumentException("Unrecognized ender fluid conduit type: " + itemstack.getItemDamage());
     }
+
     String mbt = " " + EnderIO.lang.localize("fluid.millibucketsTick");
     list.add(EnderIO.lang.localize("itemLiquidConduit.tooltip.maxExtract") + " " + extractRate + mbt);
     list.add(EnderIO.lang.localize("itemLiquidConduit.tooltip.maxIo") + " " + maxIo + mbt);
 
     if(itemstack.getItemDamage() == 0) {
       SpecialTooltipHandler.addDetailedTooltipFromResources(list, "enderio.itemLiquidConduit");
-    } else if(itemstack.getItemDamage() == 2 || itemstack.getItemDamage() == 3) {
+    } else if(itemstack.getItemDamage() > 1) {
       SpecialTooltipHandler.addDetailedTooltipFromResources(list, "enderio.itemLiquidConduitEnder");      
     }
 

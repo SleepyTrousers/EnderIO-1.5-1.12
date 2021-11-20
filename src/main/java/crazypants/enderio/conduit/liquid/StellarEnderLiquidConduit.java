@@ -7,12 +7,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 
-public class EnderLiquidConduit extends AbstractEnderLiquidConduit {
+public class StellarEnderLiquidConduit extends AbstractEnderLiquidConduit {
 
-  public static final Type TYPE = Type.ENDER;
-  public static final int METADATA = 2;
-  public static final String ICON_KEY = "enderio:liquidConduitEnder";
-  public static final String ICON_CORE_KEY = "enderio:liquidConduitCoreEnder";
+  public static final Type TYPE = Type.STELLAR;
+  public static final int METADATA = 6;
+  public static final String ICON_KEY = "enderio:liquidConduitStellarEnder";
+  public static final String ICON_CORE_KEY = "enderio:liquidConduitCoreStellarEnder";
 
   static IIcon iconKey;
   static IIcon iconCoreKey;

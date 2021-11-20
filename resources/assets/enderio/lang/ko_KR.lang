@@ -36,7 +36,12 @@ enderio.itemRedstoneConduitInsulated.name=절연 레드스톤 컨두잇
 enderio.itemLiquidConduit.name=액체 컨두잇
 enderio.itemLiquidConduitAdvanced.name=가압식 액체 컨두잇
 enderio.itemLiquidConduitEnder.name=엔더식 액체 컨두잇
-enderio.itemLiquidConduitAdvancedEnder.name=Advanced Ender Fluid Conduit
+# BEGIN needs translation
+enderio.itemLiquidConduitCrystallineEnder.name=Crystalline Ender Fluid Conduit
+enderio.itemLiquidConduitCrystallinePinkSlimeEnder.name=Crystalline Pink Slime Ender Fluid Conduit
+enderio.itemLiquidConduitMelodicEnder.name=Melodic Ender Fluid Conduit
+enderio.itemLiquidConduitStellarEnder.name=Stellar Ender Fluid Conduit
+# END needs translation
 enderio.itemLiquidConduit.lockedType=액체 종류 제한
 enderio.itemLiquidConduit.unlockedType=액체 종류 제한 해제
 
