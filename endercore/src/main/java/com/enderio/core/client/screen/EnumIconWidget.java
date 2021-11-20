@@ -7,7 +7,6 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,10 +16,12 @@ import java.util.function.Supplier;
 
 public class EnumIconWidget<T extends Enum<T> & IIcon> extends AbstractWidget implements IFullScreenListener, IMultiWidget {
 
-    private Supplier<T> getter;
-    private Consumer<T> setter;
+    private final Supplier<T> getter;
+    private final Consumer<T> setter;
 
-    private Map<T, SelectionWidget> icons = new HashMap<>();
+    private final Map<T, SelectionWidget> icons = new HashMap<>();
+
+    private final Vector2i expandTopLeft, expandBottomRight;
 
     private static final int ELEMENTS_IN_ROW = 5;
     private static final int SPACE_BETWEEN_ELEMENTS = 3;
@@ -43,6 +44,17 @@ public class EnumIconWidget<T extends Enum<T> & IIcon> extends AbstractWidget im
             widget.visible = false;
             icons.put(value, widget);
         }
+
+        Vector2i topLeft = Vector2i.MAX;
+        Vector2i bottomRight = Vector2i.MIN;
+        for (SelectionWidget widget : icons.values()) {
+            topLeft = topLeft.withX(Math.min(topLeft.getX(), widget.x));
+            topLeft = topLeft.withY(Math.min(topLeft.getY(), widget.y));
+            bottomRight = bottomRight.withX(Math.max(bottomRight.getX(), widget.x + widget.getWidth()));
+            bottomRight = bottomRight.withY(Math.max(bottomRight.getY(), widget.y + widget.getHeight()));
+        }
+        expandTopLeft = topLeft.expand(-SPACE_BETWEEN_ELEMENTS);
+        expandBottomRight = bottomRight.expand(SPACE_BETWEEN_ELEMENTS);
         this.addedOn = addedOn;
     }
 
@@ -96,20 +108,10 @@ public class EnumIconWidget<T extends Enum<T> & IIcon> extends AbstractWidget im
         T icon = getter.get();
 
         if (isExpanded) {
-            int minLeft = Integer.MAX_VALUE;
-            int minTop = Integer.MAX_VALUE;
-            int maxLeft = Integer.MIN_VALUE;
-            int maxTop = Integer.MIN_VALUE;
-            for (SelectionWidget value : icons.values()) {
-                minLeft = Math.min(minLeft, value.x);
-                minTop = Math.min(minTop, value.y);
-                maxLeft = Math.max(maxLeft, value.x + value.getWidth());
-                maxTop = Math.max(maxTop, value.y + value.getHeight());
-            }
-            addedOn.renderSimpleArea(pPoseStack, minLeft - 3, minTop - 3, maxLeft + 3, maxTop + 3);
+            addedOn.renderSimpleArea(pPoseStack, expandTopLeft, expandBottomRight);
         }
-        addedOn.renderIconBackground(pPoseStack, x, y, icon);
-        addedOn.renderIcon(pPoseStack, x + 1, y + 1, icon);
+        addedOn.renderIconBackground(pPoseStack, new Vector2i(x, y), icon);
+        addedOn.renderIcon(pPoseStack, new Vector2i(x, y).expand(1), icon);
     }
 
     @Override
@@ -117,7 +119,13 @@ public class EnumIconWidget<T extends Enum<T> & IIcon> extends AbstractWidget im
 
     @Override
     public void onGlobalClick(double mouseX, double mouseY) {
-        //icons.values().forEach(icon -> icon.visible = false);
+        if (isExpanded &&
+            !(expandTopLeft.getX() <= mouseX && expandBottomRight.getX() >= mouseX
+            && expandTopLeft.getY() <= mouseY && expandBottomRight.getY() >= mouseY
+            || isMouseOver(mouseX, mouseY))) {
+            icons.values().forEach(icon -> icon.visible = false);
+            isExpanded = false;
+        }
     }
 
     @Override
@@ -146,7 +154,7 @@ public class EnumIconWidget<T extends Enum<T> & IIcon> extends AbstractWidget im
         @Override
         public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTicks) {
             if (getter.get() != value) {
-                addedOn.renderIconBackground(pPoseStack, x, y, value);
+                addedOn.renderIconBackground(pPoseStack, new Vector2i(x, y), value);
             } else {
                 addedOn.fill(pPoseStack, x, y, x + width, y + height, 0xFF0020FF); //TODO: Client Config
                 addedOn.fill(pPoseStack, x + 1, y + 1, x + width - 1, y + height - 1, 0xFF8B8B8B);
@@ -157,7 +165,7 @@ public class EnumIconWidget<T extends Enum<T> & IIcon> extends AbstractWidget im
                     addedOn.renderTooltip(pPoseStack, tooltip, pMouseX, pMouseY);
                 }
             }
-            addedOn.renderIcon(pPoseStack, x + 1, y + 1, value);
+            addedOn.renderIcon(pPoseStack, new Vector2i(x, y).expand(1), value);
         }
     }
 }

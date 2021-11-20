@@ -110,24 +110,22 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
         }
     }
 
-    public void renderIcon(PoseStack pPoseStack, int x, int y, IIcon icon) {
+    public void renderIcon(PoseStack pPoseStack, Vector2i pos, IIcon icon) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, icon.getTextureLocation());
-        blit(pPoseStack, x, y, icon.getTexturePosition().getX(), icon.getTexturePosition().getY(), icon.getIconSize().getX(),  icon.getIconSize().getY(), icon.getTextureSize().getX(), icon.getTextureSize().getY());
+        blit(pPoseStack, pos.getX(), pos.getY(), icon.getTexturePosition().getX(), icon.getTexturePosition().getY(), icon.getIconSize().getX(),  icon.getIconSize().getY(), icon.getTextureSize().getX(), icon.getTextureSize().getY());
     }
 
-    public void renderSimpleArea(PoseStack pPoseStack, int x, int y, int x2, int y2) {
-        fill(pPoseStack, x, y, x2, y2, 0xFF8B8B8B);
-        fill(pPoseStack, x, y, x2 - 1, y2 - 1, 0xFF373737);
-        fill(pPoseStack, x + 1, y + 1, x2, y2, 0xFFFFFFFF);
-        fill(pPoseStack, x + 1, y + 1, x2 - 1, y2 - 1, 0xFF8B8B8B);
+    public void renderSimpleArea(PoseStack pPoseStack, Vector2i pos, Vector2i pos2) {
+        fill(pPoseStack, pos.getX(), pos.getY(), pos2.getX(), pos2.getY(), 0xFF8B8B8B);
+        fill(pPoseStack, pos.getX(), pos.getY(), pos2.getX() - 1, pos2.getY() - 1, 0xFF373737);
+        fill(pPoseStack, pos.getX() + 1, pos.getY() + 1, pos2.getX(), pos2.getY(), 0xFFFFFFFF);
+        fill(pPoseStack, pos.getX() + 1, pos.getY() + 1, pos2.getX() - 1, pos2.getY() - 1, 0xFF8B8B8B);
     }
 
-    public void renderIconBackground(PoseStack pPoseStack, int x, int y, IIcon icon) {
-        int width = icon.getIconSize().getX() + 2;
-        int height = icon.getIconSize().getY() + 2;
-        renderSimpleArea(pPoseStack, x, y, x + width, y + height);
+    public void renderIconBackground(PoseStack pPoseStack, Vector2i pos, IIcon icon) {
+        renderSimpleArea(pPoseStack, pos , pos.add(icon.getIconSize()).expand(2));
     }
 
     protected abstract ResourceLocation getBackgroundImage();
