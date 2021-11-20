@@ -1,5 +1,6 @@
 package com.enderio.core.client.screen;
 
+import com.enderio.core.common.util.Vector2i;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -31,14 +32,14 @@ public class EnumIconWidget<T extends Enum<T> & IIcon> extends AbstractWidget im
     private final EIOScreen addedOn;
 
     public EnumIconWidget(EIOScreen addedOn, int pX, int pY, Supplier<T> getter, Consumer<T> setter) {
-        super(pX, pY, getter.get().getIconSize().getLeft(), getter.get().getIconSize().getRight(), TextComponent.EMPTY);
+        super(pX, pY, getter.get().getIconSize().getX(), getter.get().getIconSize().getY(), TextComponent.EMPTY);
         this.getter = getter;
         this.setter = setter;
         T[] values = (T[])(getter.get().getClass().getEnumConstants());
         for (int i = 0; i < values.length; i++) {
             T value = values[i];
-            Pair<Integer, Integer> pos = calculatePosition(value, values.length, i);
-            SelectionWidget widget = new SelectionWidget(pos.getLeft() + pX + value.getIconSize().getLeft() / 2 + 5, pos.getRight() + pY, value);
+            Vector2i pos = calculatePosition(value, values.length, i);
+            SelectionWidget widget = new SelectionWidget(pos.getX() + pX + value.getIconSize().getX() / 2 + 5, pos.getY() + pY, value);
             widget.visible = false;
             icons.put(value, widget);
         }
@@ -72,14 +73,14 @@ public class EnumIconWidget<T extends Enum<T> & IIcon> extends AbstractWidget im
         setter.accept(values[index%values.length]);
     }
 
-    private Pair<Integer, Integer> calculatePosition(T icon, int amount, int index) {
+    private Vector2i calculatePosition(T icon, int amount, int index) {
         int maxColumns = Math.min(amount, ELEMENTS_IN_ROW);
         int column = getColumn(index);
         int row = getRow(index);
-        int maxWidth = maxColumns * (icon.getIconSize().getLeft() + 2) + (maxColumns - 1) * SPACE_BETWEEN_ELEMENTS;
-        int x = -maxWidth / 2 + column * (icon.getIconSize().getLeft() + 2) + (column - 1) * SPACE_BETWEEN_ELEMENTS;
-        int y = icon.getIconSize().getRight() + 5 + SPACE_BETWEEN_ELEMENTS + row * (icon.getIconSize().getRight() + 2) + (row - 1) * SPACE_BETWEEN_ELEMENTS;
-        return Pair.of(x, y);
+        int maxWidth = maxColumns * (icon.getIconSize().getX() + 2) + (maxColumns - 1) * SPACE_BETWEEN_ELEMENTS;
+        int x = -maxWidth / 2 + column * (icon.getIconSize().getX() + 2) + (column - 1) * SPACE_BETWEEN_ELEMENTS;
+        int y = icon.getIconSize().getY() + 5 + SPACE_BETWEEN_ELEMENTS + row * (icon.getIconSize().getY() + 2) + (row - 1) * SPACE_BETWEEN_ELEMENTS;
+        return new Vector2i(x, y);
     }
 
     private static int getColumn(int index) {
@@ -129,7 +130,7 @@ public class EnumIconWidget<T extends Enum<T> & IIcon> extends AbstractWidget im
         private final T value;
 
         public SelectionWidget(int pX, int pY, T value) {
-            super(pX, pY, value.getIconSize().getLeft() + 2, value.getIconSize().getRight() + 2, value.getTooltip());
+            super(pX, pY, value.getIconSize().getX() + 2, value.getIconSize().getY() + 2, value.getTooltip());
             this.value = value;
         }
 

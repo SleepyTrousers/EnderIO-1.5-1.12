@@ -1,17 +1,16 @@
 package com.enderio.core.client.screen;
 
+import com.enderio.core.common.util.Vector2i;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ClientboundMoveEntityPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -33,8 +32,8 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
     protected EIOScreen(T pMenu, Inventory pPlayerInventory, Component pTitle, boolean renderLabels) {
         super(pMenu, pPlayerInventory, pTitle);
         this.renderLabels = renderLabels;
-        this.imageWidth = getBackgroundImageSize().getLeft();
-        this.imageHeight = getBackgroundImageSize().getRight();
+        this.imageWidth = getBackgroundImageSize().getX();
+        this.imageHeight = getBackgroundImageSize().getY();
     }
 
     @Override
@@ -115,7 +114,7 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, icon.getTextureLocation());
-        blit(pPoseStack, x, y, icon.getTexturePosition().getLeft(), icon.getTexturePosition().getRight(), icon.getIconSize().getLeft(),  icon.getIconSize().getRight(), icon.getTextureSize().getRight(), icon.getTextureSize().getRight());
+        blit(pPoseStack, x, y, icon.getTexturePosition().getX(), icon.getTexturePosition().getY(), icon.getIconSize().getX(),  icon.getIconSize().getY(), icon.getTextureSize().getX(), icon.getTextureSize().getY());
     }
 
     public void renderSimpleArea(PoseStack pPoseStack, int x, int y, int x2, int y2) {
@@ -126,14 +125,14 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
     }
 
     public void renderIconBackground(PoseStack pPoseStack, int x, int y, IIcon icon) {
-        int width = icon.getIconSize().getLeft() + 2;
-        int height = icon.getIconSize().getRight() + 2;
+        int width = icon.getIconSize().getX() + 2;
+        int height = icon.getIconSize().getY() + 2;
         renderSimpleArea(pPoseStack, x, y, x + width, y + height);
     }
 
     protected abstract ResourceLocation getBackgroundImage();
 
-    protected abstract Pair<Integer, Integer> getBackgroundImageSize();
+    protected abstract Vector2i getBackgroundImageSize();
 
     @Override
     protected <U extends GuiEventListener & NarratableEntry> U addWidget(U guiEventListener) {

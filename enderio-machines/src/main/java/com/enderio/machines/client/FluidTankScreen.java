@@ -3,6 +3,7 @@ package com.enderio.machines.client;
 import com.enderio.base.EnderIO;
 import com.enderio.core.client.screen.EIOScreen;
 import com.enderio.core.client.screen.EnumIconWidget;
+import com.enderio.core.common.util.Vector2i;
 import com.enderio.machines.common.menu.FluidTankMenu;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.network.chat.Component;
@@ -29,8 +30,8 @@ public class FluidTankScreen extends EIOScreen<FluidTankMenu> {
     }
 
     @Override
-    protected Pair<Integer, Integer> getBackgroundImageSize() {
-        return Pair.of(176, 166);
+    protected Vector2i getBackgroundImageSize() {
+        return new Vector2i(176, 166);
     }
 
     @Override
