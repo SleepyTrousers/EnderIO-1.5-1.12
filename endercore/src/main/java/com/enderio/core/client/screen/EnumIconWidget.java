@@ -1,5 +1,6 @@
 package com.enderio.core.client.screen;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -51,9 +52,14 @@ public class EnumIconWidget<T extends Enum<T> & IIcon> extends AbstractWidget im
     }
 
     @Override
+    protected boolean isValidClickButton(int pButton) {
+        return pButton == InputConstants.MOUSE_BUTTON_LEFT || pButton == InputConstants.MOUSE_BUTTON_RIGHT;
+    }
+
+    @Override
     public void onClick(double pMouseX, double pMouseY) {
         if (isExpanded) {
-            selectNext(mouseButton != 1);
+            selectNext(mouseButton != InputConstants.MOUSE_BUTTON_RIGHT);
         } else {
             isExpanded = true;
             icons.values().forEach(icon -> icon.visible = true);
@@ -62,7 +68,7 @@ public class EnumIconWidget<T extends Enum<T> & IIcon> extends AbstractWidget im
 
     private void selectNext(boolean isForward) {
         T[] values = (T[])(getter.get().getClass().getEnumConstants());
-        int index = getter.get().ordinal() + (isForward ? 1 : -1);
+        int index = getter.get().ordinal() + (isForward ? 1 : -1) + values.length;
         setter.accept(values[index%values.length]);
     }
 
