@@ -3,6 +3,7 @@ package com.enderio.core.client.screen;
 import com.enderio.core.common.util.Vector2i;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import lombok.RequiredArgsConstructor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
@@ -14,7 +15,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +25,8 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
 
     private final boolean renderLabels;
     private final List<EditBox> editBoxList = new ArrayList<>();
+
+    private final List<LateTooltipData> tooltips = new ArrayList<>();
 
     protected EIOScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         this(pMenu, pPlayerInventory, pTitle, false);
@@ -49,6 +51,14 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
         }
     }
 
+    @Override
+    public void render(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
+        super.render(pMatrixStack, pMouseX, pMouseY, pPartialTicks);
+        for (LateTooltipData tooltip : tooltips) {
+            renderTooltip(tooltip.poseStack, tooltip.text, tooltip.mouseX, tooltip.mouseY);
+        }
+    }
+
     /**
      * This method is not renderBg, because of some gradle weirdness. For reference: https://github.com/Rover656/EnderIO-Rewrite/pull/25
      * @param pPoseStack
@@ -57,6 +67,7 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
      * @param pMouseY
      */
     protected final void renderGradleWeirdnessBackground(PoseStack pPoseStack, float pPartialTicks, int pMouseX, int pMouseY) {
+        tooltips.clear();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, getBackgroundImage());
@@ -155,5 +166,17 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
         if (guiEventListener instanceof EditBox editBox) {
             editBoxList.remove(editBox);
         }
+    }
+
+    public void renderTooltipAfterEverything(PoseStack pPoseStack, Component pText, int pMouseX, int pMouseY) {
+        tooltips.add(new LateTooltipData(pPoseStack, pText, pMouseX, pMouseY));
+    }
+
+    @RequiredArgsConstructor
+    private static class LateTooltipData {
+        private final PoseStack poseStack;
+        private final Component text;
+        private final int mouseX;
+        private final int mouseY;
     }
 }

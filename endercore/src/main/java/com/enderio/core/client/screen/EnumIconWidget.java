@@ -3,8 +3,11 @@ package com.enderio.core.client.screen;
 import com.enderio.core.common.util.Vector2i;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 
@@ -156,16 +159,17 @@ public class EnumIconWidget<T extends Enum<T> & IIcon> extends AbstractWidget im
             if (getter.get() != value) {
                 addedOn.renderIconBackground(pPoseStack, new Vector2i(x, y), value);
             } else {
-                addedOn.fill(pPoseStack, x, y, x + width, y + height, 0xFF0020FF); //TODO: Client Config
-                addedOn.fill(pPoseStack, x + 1, y + 1, x + width - 1, y + height - 1, 0xFF8B8B8B);
+                GuiComponent.fill(pPoseStack, x, y, x + width, y + height, 0xFF0020FF); //TODO: Client Config
+                GuiComponent.fill(pPoseStack, x + 1, y + 1, x + width - 1, y + height - 1, 0xFF8B8B8B);
             }
+            addedOn.renderIcon(pPoseStack, new Vector2i(x, y).expand(1), value);
+
             if (isMouseOver(pMouseX, pMouseY)) {
                 Component tooltip = value.getTooltip();
                 if (tooltip != TextComponent.EMPTY) {
-                    addedOn.renderTooltip(pPoseStack, tooltip, pMouseX, pMouseY);
+                    addedOn.renderTooltipAfterEverything(pPoseStack, tooltip, pMouseX, pMouseY);
                 }
             }
-            addedOn.renderIcon(pPoseStack, new Vector2i(x, y).expand(1), value);
         }
     }
 }
