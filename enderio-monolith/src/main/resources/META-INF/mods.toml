@@ -14,20 +14,20 @@ logoFile="logo.png"
 [[dependencies.enderiomonolith]]
 modId="enderio"
 mandatory=true
-versionRange="[6.0,)"
+versionRange="[5.0,)"
 ordering="AFTER"
 side="BOTH"
 
 [[dependencies.enderiomonolith]]
 modId="enderiodecoration"
 mandatory=true
-versionRange="[6.0,)"
+versionRange="[5.0,)"
 ordering="AFTER"
 side="BOTH"
 
 [[dependencies.enderiomonolith]]
 modId="enderiomachines"
 mandatory=true
-versionRange="[6.0,)"
+versionRange="[5.0,)"
 ordering="AFTER"
 side="BOTH"
