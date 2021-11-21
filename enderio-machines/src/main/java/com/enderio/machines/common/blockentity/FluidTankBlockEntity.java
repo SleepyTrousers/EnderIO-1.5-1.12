@@ -47,7 +47,7 @@ public class FluidTankBlockEntity extends AbstractMachineBlockEntity {
         super(pType, pWorldPosition, pBlockState);
         addDataSlot(new FluidStackDataSlot(() -> fluidTank.getFluidInTank(0), fluidTank::setFluid, SyncMode.RENDER));
         itemHandlerMaster.addPredicate(0, itemStack ->
-            (itemStack.getItem() instanceof BucketItem bucketItem && bucketItem.getFluid() != Fluids.EMPTY && (bucketItem instanceof MobBucketItem == false))
+            (itemStack.getItem() instanceof BucketItem bucketItem && bucketItem.getFluid() != Fluids.EMPTY && (bucketItem instanceof MobBucketItem == false)) //Eclipse doesn't like it otherwise
                 || (!(itemStack.getItem() instanceof BucketItem) && itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent()));
         itemHandlerMaster.addPredicate(2, itemStack ->
             itemStack.getItem() == Items.BUCKET

@@ -1,5 +1,8 @@
 package com.enderio.base.common.item;
 
+import java.util.List;
+import java.util.Objects;
+
 import com.enderio.base.EnderIO;
 import com.enderio.base.common.capability.capacitors.ICapacitorData;
 import com.enderio.base.common.item.capacitors.LootCapacitorItem;
@@ -15,7 +18,11 @@ import com.enderio.base.common.item.misc.EnderfaceItem;
 import com.enderio.base.common.item.misc.GearItem;
 import com.enderio.base.common.item.misc.MaterialItem;
 import com.enderio.base.common.item.spawner.BrokenSpawnerItem;
-import com.enderio.base.common.item.tool.*;
+import com.enderio.base.common.item.tool.CoordinateSelectorItem;
+import com.enderio.base.common.item.tool.ElectromagnetItem;
+import com.enderio.base.common.item.tool.LevitationStaffItem;
+import com.enderio.base.common.item.tool.SoulVialItem;
+import com.enderio.base.common.item.tool.YetaWrenchItem;
 import com.enderio.base.common.tag.EIOTags;
 import com.enderio.base.data.model.item.ItemModelUtils;
 import com.tterrag.registrate.Registrate;
@@ -24,6 +31,7 @@ import com.tterrag.registrate.util.NonNullLazyValue;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -34,9 +42,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.ForgeTier;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.TierSortingRegistry;
-
-import java.util.List;
-import java.util.Objects;
 
 @SuppressWarnings("unused")
 public class EIOItems {
@@ -277,30 +282,6 @@ public class EIOItems {
         .model(ItemModelUtils::fakeBlockModel)
         .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.MAIN))
         .register();
-
-    // endregion
-
-    // region GrindingBalls
-
-    public static ItemEntry<MaterialItem> SOULARIUM_BALL = materialItem("soularium_ball").register();
-
-    public static ItemEntry<MaterialItem> CONDUCTIVE_IRON_BALL = materialItem("conductive_iron_ball").register();
-
-    public static ItemEntry<MaterialItem> PULSATING_IRON_BALL = materialItem("pulsating_iron_ball").register();
-
-    public static ItemEntry<MaterialItem> CONSTRUCTION_ALLOY_BALL = materialItem("construction_alloy_ball").register();
-
-    public static ItemEntry<MaterialItem> REDSTONE_ALLOY_BALL = materialItem("redstone_alloy_ball").register();
-
-    public static ItemEntry<MaterialItem> ENERGETIC_ALLOY_BALL = materialItem("energetic_alloy_ball").register();
-
-    public static ItemEntry<MaterialItem> VIBRANT_ALLOY_BALL = materialItem("vibrant_alloy_ball").register();
-
-    public static ItemEntry<MaterialItem> ELECTRICAL_STEEL_BALL = materialItem("electrical_steel_ball").register();
-
-    public static ItemEntry<MaterialItem> DARK_STEEL_BALL = materialItem("dark_steel_ball").register();
-
-    public static ItemEntry<MaterialItem> END_STEEL_BALL = materialItem("end_steel_ball").register();
 
     // endregion
 
