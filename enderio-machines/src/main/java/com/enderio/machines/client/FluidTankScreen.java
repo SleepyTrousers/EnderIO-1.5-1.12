@@ -18,17 +18,11 @@ public class FluidTankScreen extends EIOScreen<FluidTankMenu> {
         super(pMenu, pPlayerInventory, pTitle);
     }
 
-    private ColorControl color = ColorControl.GREEN;
     @Override
     protected void init() {
         super.init();
         addRenderableWidget(new FluidStackWidget(this, getMenu().getBlockEntity()::getFluidTank, 80 + leftPos, 21 + topPos, 16, 47));
         addRenderableWidget(new EnumIconWidget<>(this, leftPos + imageWidth - 8 - 12, topPos + 6, () -> menu.getBlockEntity().getRedstoneControl(), control -> menu.getBlockEntity().setRedstoneControl(control)));
-        addRenderableWidget(new EnumIconWidget<>(this, leftPos + imageWidth - 8 - 12, topPos + 44, () -> color, this::setColor));
-    }
-
-    public void setColor(ColorControl color) {
-        this.color = color;
     }
 
     @Override
