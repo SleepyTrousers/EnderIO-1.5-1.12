@@ -37,14 +37,6 @@ public interface IEnderScreen {
          addTooltip(new LateTooltipData(pPoseStack, pText, pMouseX, pMouseY));
     }
 
-    /**
-     * schedule a gui push to prevent multiple EnumIconWidgets interfering with one another:
-     * If 2 EnumIconWidgets exist and the second one is expanded. On a click on the first one this will happen:
-     * The
-     * @param screen
-     */
-    void scheduleGuiPush(Screen screen);
-
     void addTooltip(LateTooltipData data);
 
     @RequiredArgsConstructor

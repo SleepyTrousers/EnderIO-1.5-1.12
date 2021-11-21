@@ -3,21 +3,17 @@ package com.enderio.core.client.screen;
 import com.enderio.core.common.util.Vector2i;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import lombok.RequiredArgsConstructor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,9 +25,6 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
     private final List<EditBox> editBoxList = new ArrayList<>();
 
     private final List<LateTooltipData> tooltips = new ArrayList<>();
-
-    @Nullable
-    private Screen scheduledGuiPush;
 
     protected EIOScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         this(pMenu, pPlayerInventory, pTitle, false);
@@ -59,6 +52,7 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
     @Override
     public void render(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
         super.render(pMatrixStack, pMouseX, pMouseY, pPartialTicks);
+        this.renderTooltip(pMatrixStack, pMouseX, pMouseY);
         for (LateTooltipData tooltip : tooltips) {
             renderTooltip(tooltip.getPoseStack(), tooltip.getText(), tooltip.getMouseX(), tooltip.getMouseY());
         }
@@ -108,10 +102,7 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
                 fullScreenListener.onGlobalClick(pMouseX, pMouseY);
             }
         }
-        boolean returnValue = super.mouseClicked(pMouseX, pMouseY, pButton);
-        if (scheduledGuiPush != null)
-            Minecraft.getInstance().pushGuiLayer(scheduledGuiPush);
-        return returnValue;
+        return super.mouseClicked(pMouseX, pMouseY, pButton);
     }
 
     @Override
@@ -153,10 +144,5 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
     @Override
     public void addTooltip(LateTooltipData data) {
         tooltips.add(data);
-    }
-
-    @Override
-    public void scheduleGuiPush(Screen screen) {
-        scheduledGuiPush = screen;
     }
 }

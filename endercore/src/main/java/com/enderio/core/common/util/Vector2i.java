@@ -38,5 +38,4 @@ public final class Vector2i {
     public Vector2i withY(int y) {
         return new Vector2i(this.x, y);
     }
-
 }

@@ -3,7 +3,11 @@ package com.enderio.base.common.blockentity;
 import com.enderio.base.EnderIO;
 import com.enderio.core.client.screen.IIcon;
 import com.enderio.core.common.util.Vector2i;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+
+import java.util.Locale;
 
 public enum ColorControl implements IIcon {
     GREEN(),
@@ -23,7 +27,7 @@ public enum ColorControl implements IIcon {
     BLACK(),
     RED();
 
-    private static final ResourceLocation TEXTURE = EnderIO.loc("textures/gui/icons/redstone_control.png");
+    private static final ResourceLocation TEXTURE = EnderIO.loc("textures/gui/icons/color_control.png");
     private static final Vector2i SIZE = new Vector2i(12, 12);
     private final Vector2i pos;
 
@@ -34,6 +38,11 @@ public enum ColorControl implements IIcon {
     @Override
     public ResourceLocation getTextureLocation() {
         return TEXTURE;
+    }
+
+    @Override
+    public Component getTooltip() {
+        return new TextComponent(name().toLowerCase(Locale.ROOT).replace('_', ' '));
     }
 
     @Override

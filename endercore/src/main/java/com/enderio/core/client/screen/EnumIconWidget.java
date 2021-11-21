@@ -162,12 +162,10 @@ public class EnumIconWidget<T extends Enum<T> & IIcon, U extends Screen & IEnder
             return super.mouseClicked(pMouseX, pMouseY, pButton);
         }
 
-        /**
-         * Empty because a scheduledGuiPush can't happen here
-         * @param screen
-         */
         @Override
-        public void scheduleGuiPush(Screen screen) {}
+        public boolean isPauseScreen() {
+            return false;
+        }
 
         @Override
         public void addTooltip(LateTooltipData data) {
