@@ -1,5 +1,6 @@
 package com.enderio.base.common.block;
 
+import com.enderio.base.config.base.BaseConfig;
 import com.mojang.math.Vector3f;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,9 +26,7 @@ public class ReinforcedObsidianBlock extends Block {
 
     @Override
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, Random pRandom) {
-        //TODO: PresonalConfig
-//        if (PersonalConfig.machineParticlesEnabled.get() && rand.nextFloat() < .25f) {
-        if (RAND.nextFloat() < .25f) {
+        if (BaseConfig.CLIENT.MACHINE_PARTICLES.get() && pRandom.nextFloat() < .25f) {
             Direction face = Direction.getRandom(RAND);
             BlockPos spawnPos = pPos.relative(face, 1);
             if (!pLevel.getBlockState(spawnPos).isSolidRender(pLevel, spawnPos)) {

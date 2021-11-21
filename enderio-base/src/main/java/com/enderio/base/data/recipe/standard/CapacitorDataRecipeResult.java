@@ -1,7 +1,7 @@
 package com.enderio.base.data.recipe.standard;
 
 import com.enderio.base.EnderIO;
-import com.enderio.base.common.recipe.CapacitorDataRecipe;
+import com.enderio.base.common.recipe.capacitor.CapacitorDataRecipe;
 import com.google.gson.JsonObject;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;

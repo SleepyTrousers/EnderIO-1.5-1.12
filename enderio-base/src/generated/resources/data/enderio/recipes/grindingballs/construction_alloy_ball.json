@@ -1,0 +1,10 @@
+{
+  "type": "enderio:grindingball",
+  "grindingball": {
+    "item": "enderio:construction_alloy_ball"
+  },
+  "grinding": 1.0,
+  "chance": 0.33,
+  "power": 0.25,
+  "durability": 12000
+}

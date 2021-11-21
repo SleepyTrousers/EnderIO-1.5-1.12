@@ -1,5 +1,6 @@
 package com.enderio.base.common.enchantment;
 
+import com.enderio.base.config.base.BaseConfig;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -10,9 +11,8 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 public class WitherWeaponEnchantment extends EIOBaseEnchantment {
 
-    //TODO config rarity?
     public WitherWeaponEnchantment() {
-        super(Rarity.UNCOMMON, EnchantmentCategory.WEAPON, new EquipmentSlot[] { EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND }, () -> true);
+        super(BaseConfig.COMMON.ENCHANTMENTS.WITHER_WEAPON_RARITY.get(), EnchantmentCategory.WEAPON, new EquipmentSlot[] { EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND }, () -> true);
     }
 
     @Override
@@ -20,15 +20,13 @@ public class WitherWeaponEnchantment extends EIOBaseEnchantment {
         return 1;
     }
 
-    //TODO config?
     @Override
     public int getMaxCost(int pLevel) {
-        return 100;
+        return BaseConfig.COMMON.ENCHANTMENTS.WITHER_WEAPON_MAX_COST.get();
     }
 
-    //TODO config?
     public int getMinCost(int pLevel) {
-        return 1;
+        return BaseConfig.COMMON.ENCHANTMENTS.WITHER_WEAPON_MIN_COST.get();
     }
 
     @Override

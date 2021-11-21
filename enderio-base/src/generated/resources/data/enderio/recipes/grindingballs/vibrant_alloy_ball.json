@@ -1,0 +1,10 @@
+{
+  "type": "enderio:grindingball",
+  "grindingball": {
+    "item": "enderio:vibrant_alloy_ball"
+  },
+  "grinding": 1.75,
+  "chance": 1.35,
+  "power": 1.13,
+  "durability": 80000
+}

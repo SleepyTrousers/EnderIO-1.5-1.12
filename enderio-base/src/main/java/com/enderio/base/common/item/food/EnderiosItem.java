@@ -1,5 +1,6 @@
 package com.enderio.base.common.item.food;
 
+import com.enderio.base.config.base.BaseConfig;
 import com.enderio.core.common.util.TeleportUtils;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.food.FoodProperties;
@@ -19,7 +20,9 @@ public class EnderiosItem extends BowlFoodItem {
     @Override
     public ItemStack finishUsingItem(@Nonnull ItemStack pStack, @Nonnull Level pLevel, @Nonnull LivingEntity pEntityLiving) {
         ItemStack itemStack = super.finishUsingItem(pStack, pLevel, pEntityLiving);
-        TeleportUtils.randomTeleport(pEntityLiving, 16.0f); // TODO: Config
+        if (pEntityLiving.getRandom().nextFloat() < BaseConfig.COMMON.ITEMS.ENDERIOS_CHANCE.get()) {
+            TeleportUtils.randomTeleport(pEntityLiving, BaseConfig.COMMON.ITEMS.ENDERIOS_RANGE.get());
+        }
         return itemStack;
     }
 }

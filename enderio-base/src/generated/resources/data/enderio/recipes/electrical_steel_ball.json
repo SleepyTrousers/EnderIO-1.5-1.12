@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "III",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "item": "enderio:electrical_steel_ingot"
+    }
+  },
+  "result": {
+    "item": "enderio:electrical_steel_ball",
+    "count": 24
+  }
+}
