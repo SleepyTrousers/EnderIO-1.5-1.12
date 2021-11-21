@@ -3,12 +3,15 @@ package com.enderio.core.common.util;
 import lombok.Getter;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import javax.annotation.concurrent.Immutable;
 
 @Getter
 @AllArgsConstructor
 @EqualsAndHashCode
 @Immutable
+@ToString
 public final class Vector2i {
     private final int x;
     private final int y;
@@ -35,4 +38,5 @@ public final class Vector2i {
     public Vector2i withY(int y) {
         return new Vector2i(this.x, y);
     }
+
 }

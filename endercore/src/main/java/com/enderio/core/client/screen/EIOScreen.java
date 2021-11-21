@@ -9,6 +9,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -16,17 +17,21 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class EIOScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
+public abstract class EIOScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> implements IEnderScreen {
 
     private final boolean renderLabels;
     private final List<EditBox> editBoxList = new ArrayList<>();
 
     private final List<LateTooltipData> tooltips = new ArrayList<>();
+
+    @Nullable
+    private Screen scheduledGuiPush;
 
     protected EIOScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         this(pMenu, pPlayerInventory, pTitle, false);
@@ -55,7 +60,7 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
     public void render(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
         super.render(pMatrixStack, pMouseX, pMouseY, pPartialTicks);
         for (LateTooltipData tooltip : tooltips) {
-            renderTooltip(tooltip.poseStack, tooltip.text, tooltip.mouseX, tooltip.mouseY);
+            renderTooltip(tooltip.getPoseStack(), tooltip.getText(), tooltip.getMouseX(), tooltip.getMouseY());
         }
     }
 
@@ -103,7 +108,10 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
                 fullScreenListener.onGlobalClick(pMouseX, pMouseY);
             }
         }
-        return super.mouseClicked(pMouseX, pMouseY, pButton);
+        boolean returnValue = super.mouseClicked(pMouseX, pMouseY, pButton);
+        if (scheduledGuiPush != null)
+            Minecraft.getInstance().pushGuiLayer(scheduledGuiPush);
+        return returnValue;
     }
 
     @Override
@@ -121,24 +129,6 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
         }
     }
 
-    public void renderIcon(PoseStack pPoseStack, Vector2i pos, IIcon icon) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, icon.getTextureLocation());
-        blit(pPoseStack, pos.getX(), pos.getY(), icon.getTexturePosition().getX(), icon.getTexturePosition().getY(), icon.getIconSize().getX(),  icon.getIconSize().getY(), icon.getTextureSize().getX(), icon.getTextureSize().getY());
-    }
-
-    public void renderSimpleArea(PoseStack pPoseStack, Vector2i pos, Vector2i pos2) {
-        fill(pPoseStack, pos.getX(), pos.getY(), pos2.getX(), pos2.getY(), 0xFF8B8B8B);
-        fill(pPoseStack, pos.getX(), pos.getY(), pos2.getX() - 1, pos2.getY() - 1, 0xFF373737);
-        fill(pPoseStack, pos.getX() + 1, pos.getY() + 1, pos2.getX(), pos2.getY(), 0xFFFFFFFF);
-        fill(pPoseStack, pos.getX() + 1, pos.getY() + 1, pos2.getX() - 1, pos2.getY() - 1, 0xFF8B8B8B);
-    }
-
-    public void renderIconBackground(PoseStack pPoseStack, Vector2i pos, IIcon icon) {
-        renderSimpleArea(pPoseStack, pos , pos.add(icon.getIconSize()).expand(2));
-    }
-
     protected abstract ResourceLocation getBackgroundImage();
 
     protected abstract Vector2i getBackgroundImageSize();
@@ -148,14 +138,6 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
         if (guiEventListener instanceof EditBox editBox) {
             editBoxList.add(editBox);
             Minecraft.getInstance().keyboardHandler.setSendRepeatsToGui(true);
-        }
-        if (guiEventListener instanceof IMultiWidget multiWidget) {
-            for (AbstractWidget otherWidget : multiWidget.getOtherWidgets()) {
-                addWidget(otherWidget);
-                if (renderables.contains(guiEventListener)) {
-                    addRenderableOnly(otherWidget);
-                }
-            }
         }
         return super.addWidget(guiEventListener);
     }
@@ -168,15 +150,13 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
         }
     }
 
-    public void renderTooltipAfterEverything(PoseStack pPoseStack, Component pText, int pMouseX, int pMouseY) {
-        tooltips.add(new LateTooltipData(pPoseStack, pText, pMouseX, pMouseY));
+    @Override
+    public void addTooltip(LateTooltipData data) {
+        tooltips.add(data);
     }
 
-    @RequiredArgsConstructor
-    private static class LateTooltipData {
-        private final PoseStack poseStack;
-        private final Component text;
-        private final int mouseX;
-        private final int mouseY;
+    @Override
+    public void scheduleGuiPush(Screen screen) {
+        scheduledGuiPush = screen;
     }
 }
