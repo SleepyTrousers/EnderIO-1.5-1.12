@@ -1,10 +1,9 @@
 package com.enderio.machines.client;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.enderio.base.EnderIO;
 import com.enderio.core.client.screen.EIOScreen;
 import com.enderio.core.client.screen.EnumIconWidget;
+import com.enderio.core.common.util.Vector2i;
 import com.enderio.machines.common.menu.EnchanterMenu;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -31,8 +30,8 @@ public class EnchanterScreen extends EIOScreen<EnchanterMenu>{
     }
 
     @Override
-    protected Pair<Integer, Integer> getBackgroundImageSize() {
-        return Pair.of(176, 166);
+    protected Vector2i getBackgroundImageSize() {
+        return new Vector2i(176, 166);
     }
     
     @Override

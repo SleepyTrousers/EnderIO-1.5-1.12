@@ -1,11 +1,17 @@
 package com.enderio.machines.common.blockentity;
 
+import java.util.List;
+import java.util.Optional;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.blockentity.sync.FluidStackDataSlot;
 import com.enderio.core.common.blockentity.sync.SyncMode;
 import com.enderio.machines.common.blockentity.data.sidecontrol.fluid.FluidTankMaster;
 import com.enderio.machines.common.blockentity.data.sidecontrol.item.ItemHandlerMaster;
 import com.enderio.machines.common.menu.FluidTankMenu;
-import com.enderio.machines.common.menu.MachineMenus;
+
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,11 +35,6 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Optional;
-
 public class FluidTankBlockEntity extends AbstractMachineBlockEntity {
 
     @Getter
@@ -46,7 +47,7 @@ public class FluidTankBlockEntity extends AbstractMachineBlockEntity {
         super(pType, pWorldPosition, pBlockState);
         addDataSlot(new FluidStackDataSlot(() -> fluidTank.getFluidInTank(0), fluidTank::setFluid, SyncMode.RENDER));
         itemHandlerMaster.addPredicate(0, itemStack ->
-            (itemStack.getItem() instanceof BucketItem bucketItem && bucketItem.getFluid() != Fluids.EMPTY && !(bucketItem instanceof MobBucketItem))
+            (itemStack.getItem() instanceof BucketItem bucketItem && bucketItem.getFluid() != Fluids.EMPTY && (bucketItem instanceof MobBucketItem == false))
                 || (!(itemStack.getItem() instanceof BucketItem) && itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent()));
         itemHandlerMaster.addPredicate(2, itemStack ->
             itemStack.getItem() == Items.BUCKET

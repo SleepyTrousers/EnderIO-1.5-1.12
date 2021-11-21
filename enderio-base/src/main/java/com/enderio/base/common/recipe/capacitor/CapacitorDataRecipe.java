@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import com.enderio.base.common.capability.capacitors.ICapacitorData;
+import com.enderio.base.common.recipe.DataGenSerializer;
 import com.enderio.base.common.recipe.EIORecipes;
 import com.enderio.base.common.recipe.EIORecipes.Serializer;
 import com.enderio.base.common.recipe.EIORecipes.Types;
