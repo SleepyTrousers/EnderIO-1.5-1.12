@@ -1,5 +1,6 @@
 package com.enderio.base.common.block.glass;
 
+import com.enderio.core.common.util.TooltipUtil;
 import com.enderio.base.config.base.BaseConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -44,12 +45,12 @@ public class FusedQuartzBlock extends AbstractGlassBlock {
 
         // TODO: Translations
         if (explosionResistant)
-            pTooltip.add(new TextComponent("Blast resistant"));
+            pTooltip.add(TooltipUtil.style(new TextComponent("Blast resistant")));
         if (emitsLight)
-            pTooltip.add(new TextComponent("Emits light"));
+            pTooltip.add(TooltipUtil.style(new TextComponent("Emits light")));
         if (blocksLight)
-            pTooltip.add(new TextComponent("Blocks light"));
-        collisionPredicate.getDescription().ifPresent(desc -> pTooltip.add(new TextComponent(desc)));
+            pTooltip.add(TooltipUtil.style(new TextComponent("Blocks light")));
+        collisionPredicate.getDescription().ifPresent(desc -> pTooltip.add(TooltipUtil.style(new TextComponent(desc))));
     }
 
     @Override

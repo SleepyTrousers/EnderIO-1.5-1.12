@@ -14,6 +14,6 @@ logoFile="logo.png"
 [[dependencies.enderiomachines]]
 modId="enderio"
 mandatory=true
-versionRange="[6.0,)"
+versionRange="[5.0,)"
 ordering="AFTER"
 side="BOTH"

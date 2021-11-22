@@ -1,8 +1,10 @@
 package com.enderio.core.client.screen;
 
+import com.enderio.core.common.util.Vector2i;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
@@ -12,17 +14,17 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import org.apache.commons.lang3.tuple.Pair;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class EIOScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
+public abstract class EIOScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> implements IEnderScreen {
 
     private final boolean renderLabels;
     private final List<EditBox> editBoxList = new ArrayList<>();
+
+    private final List<LateTooltipData> tooltips = new ArrayList<>();
 
     protected EIOScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         this(pMenu, pPlayerInventory, pTitle, false);
@@ -30,8 +32,8 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
     protected EIOScreen(T pMenu, Inventory pPlayerInventory, Component pTitle, boolean renderLabels) {
         super(pMenu, pPlayerInventory, pTitle);
         this.renderLabels = renderLabels;
-        this.imageWidth = getBackgroundImageSize().getLeft();
-        this.imageHeight = getBackgroundImageSize().getRight();
+        this.imageWidth = getBackgroundImageSize().getX();
+        this.imageHeight = getBackgroundImageSize().getY();
     }
 
     @Override
@@ -47,6 +49,16 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
         }
     }
 
+    @Override
+    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTicks) {
+        renderBackground(pPoseStack);
+        super.render(pPoseStack, pMouseX, pMouseY, pPartialTicks);
+        this.renderTooltip(pPoseStack, pMouseX, pMouseY);
+        for (LateTooltipData tooltip : tooltips) {
+            renderTooltip(tooltip.getPoseStack(), tooltip.getText(), tooltip.getMouseX(), tooltip.getMouseY());
+        }
+    }
+
     /**
      * This method is not renderBg, because of some gradle weirdness. For reference: https://github.com/Rover656/EnderIO-Rewrite/pull/25
      * @param pPoseStack
@@ -55,6 +67,7 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
      * @param pMouseY
      */
     protected final void renderGradleWeirdnessBackground(PoseStack pPoseStack, float pPartialTicks, int pMouseX, int pMouseY) {
+        tooltips.clear();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, getBackgroundImage());
@@ -84,6 +97,16 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
     }
 
     @Override
+    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
+        for (GuiEventListener widget: children()) {
+            if (widget instanceof AbstractWidget abstractWidget && abstractWidget.isActive() && widget instanceof IFullScreenListener fullScreenListener) {
+                fullScreenListener.onGlobalClick(pMouseX, pMouseY);
+            }
+        }
+        return super.mouseClicked(pMouseX, pMouseY, pButton);
+    }
+
+    @Override
     protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
         if (renderLabels) {
             super.renderLabels(pPoseStack, pMouseX, pMouseY);
@@ -100,7 +123,7 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
 
     protected abstract ResourceLocation getBackgroundImage();
 
-    protected abstract Pair<Integer, Integer> getBackgroundImageSize();
+    protected abstract Vector2i getBackgroundImageSize();
 
     @Override
     protected <U extends GuiEventListener & NarratableEntry> U addWidget(U guiEventListener) {
@@ -117,5 +140,10 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
         if (guiEventListener instanceof EditBox editBox) {
             editBoxList.remove(editBox);
         }
+    }
+
+    @Override
+    public void addTooltip(LateTooltipData data) {
+        tooltips.add(data);
     }
 }

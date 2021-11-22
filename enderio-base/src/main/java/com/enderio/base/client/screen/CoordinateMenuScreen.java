@@ -5,10 +5,12 @@ import com.enderio.base.common.menu.CoordinateMenu;
 import com.enderio.base.common.network.EIOPackets;
 import com.enderio.base.common.network.packet.UpdateCoordinateSelectionNameMenuPacket;
 import com.enderio.core.client.screen.EIOScreen;
+import com.enderio.core.common.util.Vector2i;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +21,7 @@ import org.apache.commons.lang3.tuple.Pair;
 public class CoordinateMenuScreen extends EIOScreen<CoordinateMenu> {
 
 
-    private static final Pair<Integer, Integer> BG_SIZE = new ImmutablePair<>(176,116);
+    private static final Vector2i BG_SIZE = new Vector2i(176,116);
     private static final ResourceLocation BG_TEXTURE = new ResourceLocation(EnderIO.DOMAIN, "textures/gui/40/location_printout.png");
 
     public CoordinateMenuScreen(CoordinateMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
@@ -66,12 +68,12 @@ public class CoordinateMenuScreen extends EIOScreen<CoordinateMenu> {
     }
 
     @Override
-    protected Pair<Integer, Integer> getBackgroundImageSize() {
+    protected Vector2i getBackgroundImageSize() {
         return BG_SIZE;
     }
 
 
     private void onNameChanged(String name) {
-        EIOPackets.INSTANCE.sendToServer(new UpdateCoordinateSelectionNameMenuPacket(getMenu().containerId, name));
+        EIOPackets.getNetwork().getNetworkChannel().sendToServer(new UpdateCoordinateSelectionNameMenuPacket(getMenu().containerId, name));
     }
 }
