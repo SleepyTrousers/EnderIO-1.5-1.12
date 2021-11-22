@@ -20,7 +20,7 @@ public class EmpoweredUpgrade implements IDarkSteelUpgrade {
 
     private static final Map<Integer,Supplier<EmpoweredUpgrade>> UPGRADES = new HashMap<>();
 
-    //TODO: Config All the things
+    //TODO: HOUSEKEEPING: After #39 Config All the things
     public static final Supplier<EmpoweredUpgrade> TIER_0_FACTORY = () -> new EmpoweredUpgrade(0,100000, 0.5f);
     public static final Supplier<EmpoweredUpgrade> TIER_1_FACTORY = () -> new EmpoweredUpgrade(1,150000, 0.6f);
     public static final Supplier<EmpoweredUpgrade> TIER_2_FACTORY = () -> new EmpoweredUpgrade(2,250000, 0.7f);
@@ -42,10 +42,10 @@ public class EmpoweredUpgrade implements IDarkSteelUpgrade {
 
     private static final Random RANDOM = new Random();
 
-    //TODO: Config
+    //TODO: HOUSEKEEPING: After #39 Config
     private int speedBoostWhenPowered = 2;
 
-    //TODO: Config
+    //TODO: HOUSEKEEPING: After #39 Config
     private int powerUsePerDamagePoint = 750;
 
     private int level;

@@ -43,7 +43,7 @@ public class ElectromagnetItem extends PoweredToggledItem {
     }
 
     private boolean isBlackListed(ItemEntity entity) {
-        //TODO: Config
+        //TODO: HOUSEKEEPING: Config
         return false;
     }
 

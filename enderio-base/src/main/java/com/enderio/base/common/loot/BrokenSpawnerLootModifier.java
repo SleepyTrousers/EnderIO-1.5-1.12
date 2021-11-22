@@ -41,7 +41,7 @@ public class BrokenSpawnerLootModifier extends LootModifier {
         BlockEntity entity = context.getParam(LootContextParams.BLOCK_ENTITY);
         if (entity instanceof SpawnerBlockEntity spawnerBlockEntity) {
             if (context.getRandom().nextFloat() < BaseConfig.COMMON.BLOCKS.BROKEN_SPAWNER_DROP_CHANCE.get()) {
-                // TODO: Tool blacklists
+                // TODO: HOUSEKEEPING: Tool blacklists
                 BaseSpawner spawner = spawnerBlockEntity.getSpawner();
                 ItemStack brokenSpawner = BrokenSpawnerItem.forType(spawner.getEntityId(context.getLevel(), entity.getBlockPos()));
                 return Lists.newArrayList(brokenSpawner);

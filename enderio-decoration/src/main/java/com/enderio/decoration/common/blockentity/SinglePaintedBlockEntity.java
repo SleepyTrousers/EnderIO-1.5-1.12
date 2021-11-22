@@ -74,7 +74,7 @@ public class SinglePaintedBlockEntity extends BlockEntity implements IPaintableB
         return nbt;
     }
 
-    // TODO: This should probably be converted to a capability.
+    // TODO: HOUSEKEEPING?: This should probably be converted to a capability.
     protected void readPaint(CompoundTag tag) {
         if (tag.contains("paint")) {
             paint = PaintUtils.getBlockFromRL(tag.getString("paint"));

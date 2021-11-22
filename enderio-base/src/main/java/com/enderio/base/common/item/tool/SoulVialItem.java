@@ -5,6 +5,7 @@ import com.enderio.base.common.capability.entity.EntityStorage;
 import com.enderio.base.common.capability.entity.IEntityStorage;
 import com.enderio.base.common.item.EIOCreativeTabs;
 import com.enderio.base.common.item.EIOItems;
+import com.enderio.base.common.lang.EIOLang;
 import com.enderio.base.common.util.EntityCaptureUtils;
 import com.enderio.core.common.capability.IMultiCapabilityItem;
 import com.enderio.core.common.capability.MultiCapabilityProvider;
@@ -60,7 +61,7 @@ public class SoulVialItem extends Item implements IMultiCapabilityItem {
         // Add entity information
         getEntityType(pStack).ifPresent(entityType -> {
             pTooltipComponents.add(TooltipUtil.style(new TranslatableComponent(EntityUtil.getEntityDescriptionId(entityType))));
-            // TODO: Also add health data
+            // TODO: HOUSEKEEPING?: Also add health data
         });
     }
 
@@ -80,21 +81,20 @@ public class SoulVialItem extends Item implements IMultiCapabilityItem {
         if (getEntityType(pStack).isEmpty()) {
             // Don't allow bottled player.
             if (pInteractionTarget instanceof Player) {
-                // TODO: Language keys
-                pPlayer.displayClientMessage(new TextComponent("You cannot put player in a bottle"), true);
+                pPlayer.displayClientMessage(EIOLang.SOUL_VIAL_ERROR_PLAYER, true);
                 return InteractionResult.FAIL;
             }
 
             // Get the entity type and verify it isn't blacklisted
             // TODO: maybe make the method give a rejection reason so we can give accurate status messages?
             if (!EntityCaptureUtils.canCapture(pInteractionTarget)) {
-                pPlayer.displayClientMessage(new TextComponent("This entity cannot be captured"), true);
+                pPlayer.displayClientMessage(EIOLang.SOUL_VIAL_ERROR_FAILED, true);
                 return InteractionResult.FAIL;
             }
 
             // No dead mobs.
             if (!pInteractionTarget.isAlive()) {
-                pPlayer.displayClientMessage(new TextComponent("Cannot capture dead mob"), true);
+                pPlayer.displayClientMessage(EIOLang.SOUL_VIAL_ERROR_DEAD, true);
                 return InteractionResult.FAIL;
             }
 

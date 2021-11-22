@@ -40,7 +40,7 @@ public class EIOEnchantments {
         .lang("Soulbound")
         .register();
 
-    //TODO should crossbow and bow be handled as different enchant classes for the sake of levels/costs?
+    // TODO: HOUSEKEEPING: Rename these to something better, and split bow and crossbow into separate enchantments.
     public static final RegistryEntry<WitherArrowEnchantment> WITHER_ARROW = enchantmentBuilder("wither_arrow", new WitherArrowEnchantment())
         .lang("Wither Arrows")
         .register();

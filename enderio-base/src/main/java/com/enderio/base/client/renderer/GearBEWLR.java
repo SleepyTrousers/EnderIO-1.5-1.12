@@ -19,7 +19,7 @@ import net.minecraft.world.item.ItemStack;
 public class GearBEWLR extends BlockEntityWithoutLevelRenderer {
 
     public static final GearBEWLR INSTANCE = new GearBEWLR(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
-    private float tpr = 120; //TODO config ticks per rotation
+    private float tpr = 120; // TODO: HOUSEKEEPING: config ticks per rotation
 
     public GearBEWLR(BlockEntityRenderDispatcher pBlockEntityRenderDispatcher, EntityModelSet pEntityModelSet) {
         super(pBlockEntityRenderDispatcher, pEntityModelSet);

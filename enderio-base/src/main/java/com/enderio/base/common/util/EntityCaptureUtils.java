@@ -28,7 +28,7 @@ public class EntityCaptureUtils {
     }
 
     public static boolean canCapture(Entity entity) {
-        // TODO: Config for capture blacklist.
+        // TODO: HOUSEKEEPING: Config for capture blacklist.
         return !isBlacklistedBoss(entity);
     }
 

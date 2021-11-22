@@ -14,7 +14,7 @@ public class BlocksConfig {
 
         builder.push("brokenSpawner");
         BROKEN_SPAWNER_DROP_CHANCE = builder.comment("The chance of a spawner dropping a broken spawner.").define("dropChance", 1.0f);
-        // TODO: Tool blacklist
+        // TODO: HOUSEKEEPING: Tool blacklist
         builder.pop();
 
         EXPLOSION_RESISTANCE = builder.comment("The explosion resistance of explosion resistant blocks.").define("explosionResistance", 1200.0f);

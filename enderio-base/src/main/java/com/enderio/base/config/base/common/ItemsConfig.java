@@ -27,7 +27,7 @@ public class ItemsConfig {
         ELECTROMAGNET_MAX_ENERGY = builder.define("maxEnergy", 100000);
         ELECTROMAGNET_RANGE = builder.define("range", 5);
         ELECTROMAGNET_MAX_ITEMS = builder.define("maxItems", 20);
-        // TODO: Item blacklist
+        // TODO: HOUSEKEEPING: Item blacklist
         builder.pop();
 
         builder.push("levitationstaff");

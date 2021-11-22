@@ -27,11 +27,11 @@ public class CapacitorLootModifier extends LootModifier {
     /**
      * The minimum base value
      */
-    private float min;
+    private final float min;
     /**
      * The maximum base value
      */
-    private float max;
+    private final float max;
 
     /**
      * Constructs a LootModifier.

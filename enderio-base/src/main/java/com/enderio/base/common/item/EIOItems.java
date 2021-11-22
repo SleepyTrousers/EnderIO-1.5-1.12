@@ -133,31 +133,6 @@ public class EIOItems {
 
     // endregion
 
-    // region capacitor text
-
-    // TODO: Move language related things to a dedicated location, like EIOLang
-
-    public static final TranslatableComponent ALL_ENERGY_CONSUMPSTION = capacitorDescriptionBuilder("type", ICapacitorData.ALL_ENERGY_CONSUMPSTION, "Leaky");
-    public static final TranslatableComponent ALL_PRODUCTION_SPEED = capacitorDescriptionBuilder("type", ICapacitorData.ALL_PRODUCTION_SPEED, "Fast");
-    public static final TranslatableComponent ALLOY_ENERGY_CONSUMPSTION = capacitorDescriptionBuilder("type", ICapacitorData.ALLOY_ENERGY_CONSUMPSTION,
-        "Melted");
-    public static final TranslatableComponent ALLOY_PRODUCTION_SPEED = capacitorDescriptionBuilder("type", ICapacitorData.ALLOY_PRODUCTION_SPEED, "Smelting");
-
-    public static final TranslatableComponent DUD = capacitorDescriptionBuilder("base", "0", "Capacitor Dud");
-    public static final TranslatableComponent GOOD = capacitorDescriptionBuilder("base", "1", "Good Capacitor");
-    public static final TranslatableComponent ENHANCED = capacitorDescriptionBuilder("base", "2", "Enhanced Capacitor");
-    public static final TranslatableComponent WONDER = capacitorDescriptionBuilder("base", "3", "Wonder Capacitor");
-
-    public static final TranslatableComponent FLAVOR0 = capacitorDescriptionBuilder("flavor", "0", "An attached note describes this as \"%1$s %2$s %3$s\"");
-    public static final TranslatableComponent FLAVOR1 = capacitorDescriptionBuilder("flavor", "1",
-        "You can decipher ancient runes that translate roughly as \"%1$s %2$s %3$s\". Odd...");
-
-    public static final TranslatableComponent FAILED = capacitorDescriptionBuilder("grade", "0", "Failed");
-    public static final TranslatableComponent INCREDIBLY = capacitorDescriptionBuilder("grade", "4", "Incredibly");
-    public static final TranslatableComponent UNSTABLE = capacitorDescriptionBuilder("grade", "5", "Unstable");
-
-    // endregion
-
     // region Crystals
 
     public static final ItemEntry<MaterialItem> PULSATING_CRYSTAL = materialItemGlinted("pulsating_crystal").register();

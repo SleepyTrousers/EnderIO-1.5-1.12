@@ -946,5 +946,18 @@
   "itemGroup.enderio.gear": "EnderIO Gear",
   "itemGroup.enderio.machines": "EnderIO Machines",
   "itemGroup.enderio.main": "EnderIO",
-  "itemGroup.enderio.souls": "EnderIO Souls"
+  "itemGroup.enderio.souls": "EnderIO Souls",
+  "message.enderio.soul_vial.error_dead": "Cannot capture a dead mob!",
+  "message.enderio.soul_vial.error_failed": "This entity cannot be captured.",
+  "message.enderio.soul_vial.error_player": "You cannot put player in a bottle!",
+  "tooltip.enderio.block.blast_resistant": "Blast resistant",
+  "tooltip.enderio.collision.animals_block": "Only solid to animals",
+  "tooltip.enderio.collision.animals_pass": "Not solid to animals",
+  "tooltip.enderio.collision.mobs_block": "Only solid to monsters",
+  "tooltip.enderio.collision.mobs_pass": "Not solid to monsters",
+  "tooltip.enderio.collision.players_block": "Only solid to players",
+  "tooltip.enderio.collision.players_pass": "Not solid to players",
+  "tooltip.enderio.dark_steel_ladder.faster": "Faster than regular ladders",
+  "tooltip.enderio.fused_quartz.blocks_light": "Blocks light",
+  "tooltip.enderio.fused_quartz.emits_light": "Emits light"
 }

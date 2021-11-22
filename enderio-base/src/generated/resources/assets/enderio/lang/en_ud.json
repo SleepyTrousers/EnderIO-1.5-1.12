@@ -946,5 +946,18 @@
   "itemGroup.enderio.gear": "\u0279\u0250\u01DD\u2141 OI\u0279\u01DDpu\u018E",
   "itemGroup.enderio.machines": "s\u01DDu\u0131\u0265\u0254\u0250W OI\u0279\u01DDpu\u018E",
   "itemGroup.enderio.main": "OI\u0279\u01DDpu\u018E",
-  "itemGroup.enderio.souls": "s\u05DFnoS OI\u0279\u01DDpu\u018E"
+  "itemGroup.enderio.souls": "s\u05DFnoS OI\u0279\u01DDpu\u018E",
+  "message.enderio.soul_vial.error_dead": "\u00A1qo\u026F p\u0250\u01DDp \u0250 \u01DD\u0279n\u0287d\u0250\u0254 \u0287ouu\u0250\u0186",
+  "message.enderio.soul_vial.error_failed": "\u02D9p\u01DD\u0279n\u0287d\u0250\u0254 \u01DDq \u0287ouu\u0250\u0254 \u028E\u0287\u0131\u0287u\u01DD s\u0131\u0265\u27D8",
+  "message.enderio.soul_vial.error_player": "\u00A1\u01DD\u05DF\u0287\u0287oq \u0250 u\u0131 \u0279\u01DD\u028E\u0250\u05DFd \u0287nd \u0287ouu\u0250\u0254 no\u028E",
+  "tooltip.enderio.block.blast_resistant": "\u0287u\u0250\u0287s\u0131s\u01DD\u0279 \u0287s\u0250\u05DF\u15FA",
+  "tooltip.enderio.collision.animals_block": "s\u05DF\u0250\u026F\u0131u\u0250 o\u0287 p\u0131\u05DFos \u028E\u05DFuO",
+  "tooltip.enderio.collision.animals_pass": "s\u05DF\u0250\u026F\u0131u\u0250 o\u0287 p\u0131\u05DFos \u0287oN",
+  "tooltip.enderio.collision.mobs_block": "s\u0279\u01DD\u0287suo\u026F o\u0287 p\u0131\u05DFos \u028E\u05DFuO",
+  "tooltip.enderio.collision.mobs_pass": "s\u0279\u01DD\u0287suo\u026F o\u0287 p\u0131\u05DFos \u0287oN",
+  "tooltip.enderio.collision.players_block": "s\u0279\u01DD\u028E\u0250\u05DFd o\u0287 p\u0131\u05DFos \u028E\u05DFuO",
+  "tooltip.enderio.collision.players_pass": "s\u0279\u01DD\u028E\u0250\u05DFd o\u0287 p\u0131\u05DFos \u0287oN",
+  "tooltip.enderio.dark_steel_ladder.faster": "s\u0279\u01DDpp\u0250\u05DF \u0279\u0250\u05DFnb\u01DD\u0279 u\u0250\u0265\u0287 \u0279\u01DD\u0287s\u0250\u2132",
+  "tooltip.enderio.fused_quartz.blocks_light": "\u0287\u0265b\u0131\u05DF s\u029E\u0254o\u05DF\u15FA",
+  "tooltip.enderio.fused_quartz.emits_light": "\u0287\u0265b\u0131\u05DF s\u0287\u0131\u026F\u018E"
 }

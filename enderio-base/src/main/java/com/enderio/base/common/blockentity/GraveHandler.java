@@ -25,7 +25,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 @EventBusSubscriber
 public class GraveHandler {
 
-    //TODO implementation with other mods and config?
+    // TODO implementation with other mods and config?
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void GraveDeath(LivingDropsEvent event) {
         if (event.getEntityLiving() == null || event.getEntityLiving() instanceof FakePlayer || event.isCanceled()) {

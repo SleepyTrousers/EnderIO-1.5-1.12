@@ -26,13 +26,13 @@ import java.util.List;
 //TODO: Use dual duration / energy bar
 public class DarkSteelPickaxeItem extends PickaxeItem implements IDarkSteelItem {
 
-    //TODO: Config
+    //TODO: HOUSEKEEPING: After #39 Config
     private int obsianBreakPowerUse = 50;
 
-    //TODO: Config
+    //TODO: HOUSEKEEPING: After #39 Config
     private int speedBoostWhenObsidian = 50;
 
-    //TODO: Config
+    //TODO: HOUSEKEEPING: After #39 Config
     private int useObsidianBreakSpeedAtHardness = 50;
 
     public DarkSteelPickaxeItem(Properties pProperties) {

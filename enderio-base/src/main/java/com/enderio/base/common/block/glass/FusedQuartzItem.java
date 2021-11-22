@@ -12,6 +12,6 @@ public class FusedQuartzItem extends BlockItem implements IItemOverlayRender {
 
     @Override
     public void renderOverlay(ItemStack pStack, int pXPosition, int pYPosition) {
-        // TODO: Icons
+        // TODO: Icons, maybe doable once #29 is merged
     }
 }

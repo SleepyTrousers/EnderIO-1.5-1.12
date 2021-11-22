@@ -82,7 +82,7 @@ public class CapacitorData implements ICapacitorData {
         return this.specializations;
     }
 
-    //TODO more flavor text
+    // TODO more flavor text
     @Override
     public int getFlavor() {
         if (this.flavor == -1) {
