@@ -53,6 +53,7 @@ public abstract class SyncedBlockEntity extends BlockEntity {
         if (!level.isClientSide) {
             sync();
         }
+        setChanged();
     }
 
     @Nullable

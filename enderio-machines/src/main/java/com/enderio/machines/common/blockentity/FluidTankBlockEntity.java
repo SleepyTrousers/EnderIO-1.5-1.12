@@ -69,7 +69,7 @@ public class FluidTankBlockEntity extends AbstractMachineBlockEntity {
 
     @Override
     public void tick() {
-        if (isAction()) {
+        if (isTickAction()) {
             fillInternal();
             drainInternal();
         }

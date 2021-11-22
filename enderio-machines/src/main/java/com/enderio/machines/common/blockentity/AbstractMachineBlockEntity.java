@@ -60,6 +60,7 @@ public abstract class AbstractMachineBlockEntity extends SyncedBlockEntity imple
         fluidHandlerCache.clear();
         for (Direction direction: Direction.values()) {
             BlockEntity neighbor = level.getBlockEntity(worldPosition.relative(direction));
+
             if (neighbor != null) {
                 itemHandlerCache.put(direction, addInvalidationListener(neighbor.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction.getOpposite())));
                 fluidHandlerCache.put(direction, addInvalidationListener(neighbor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction.getOpposite())));
@@ -81,10 +82,10 @@ public abstract class AbstractMachineBlockEntity extends SyncedBlockEntity imple
             capability.addListener(this::markCacheDirty);
         return capability;
     }
+
     private <T> void markCacheDirty(LazyOptional<T> capability) {
         isCacheDirty = true;
     }
-
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, AbstractMachineBlockEntity pBlockEntity) {
         pBlockEntity.tick();
@@ -94,7 +95,7 @@ public abstract class AbstractMachineBlockEntity extends SyncedBlockEntity imple
         if (isCacheDirty) {
             updateCache();
         }
-        if (isAction()) {
+        if (isTickAction()) {
             for (Direction direction : Direction.values()) {
                 if (config.getIO(direction).canForce()) {
                     moveItems(direction);
@@ -106,8 +107,13 @@ public abstract class AbstractMachineBlockEntity extends SyncedBlockEntity imple
     }
 
     public boolean isAction() {
-        return !level.isClientSide && level.getGameTime() % 5 == 0
+        return !level.isClientSide
             && redstoneControl.isActive(level.hasNeighborSignal(worldPosition));
+    }
+
+    public boolean isTickAction() {
+        return isAction()
+            && level.getGameTime() % 5 == 0;
     }
 
     private void moveFluids(Direction direction) {
@@ -134,6 +140,7 @@ public abstract class AbstractMachineBlockEntity extends SyncedBlockEntity imple
     private void moveItems(Direction direction) {
         getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction).resolve().ifPresent(itemHandler -> {
             Optional<IItemHandler> otherItem = itemHandlerCache.get(direction).resolve();
+
             if (otherItem.isPresent()) {
                 moveItems(itemHandler, otherItem.get());
                 moveItems(otherItem.get(), itemHandler);
@@ -142,18 +149,14 @@ public abstract class AbstractMachineBlockEntity extends SyncedBlockEntity imple
     }
 
     private void moveItems(IItemHandler from, IItemHandler to) {
-        boolean shouldStop = false;
         for (int i = 0; i < from.getSlots(); i++) {
-            if (shouldStop)
-                break;
             ItemStack extracted = from.extractItem(i, 1, true);
             if (!extracted.isEmpty()) {
                 for (int j = 0; j < to.getSlots(); j++) {
                     ItemStack inserted = to.insertItem(j, extracted, false);
                     if (inserted.isEmpty()) {
                         from.extractItem(i, 1, false);
-                        shouldStop = true;
-                        break;
+                        return;
                     }
                 }
             }

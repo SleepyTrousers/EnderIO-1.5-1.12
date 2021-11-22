@@ -37,7 +37,6 @@ public class FluidStackWidget extends AbstractWidget {
     public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTicks) {
         Minecraft minecraft = Minecraft.getInstance();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
         FluidTank fluidTank = getFluid.get();
@@ -75,6 +74,8 @@ public class FluidStackWidget extends AbstractWidget {
                         blit(pPoseStack, x, y + notDrawingHeight, displayOn.getBlitOffset(), sprite.getU0()*atlasWidth, sprite.getV0()*atlasHeight + notDrawingHeight, sprite.getWidth(), drawingHeight, atlasHeight, atlasWidth);
                         pPoseStack.translate(0,-16, 0);
                     }
+
+                    RenderSystem.setShaderColor(1, 1, 1, 1);
                     pPoseStack.popPose();
                 }
             }
