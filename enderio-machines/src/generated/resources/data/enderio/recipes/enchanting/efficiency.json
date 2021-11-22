@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:redstone"
+  },
+  "enchantment": "minecraft:efficiency",
+  "amount": 12,
+  "level": 1
+}

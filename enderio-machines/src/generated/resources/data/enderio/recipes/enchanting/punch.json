@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:string"
+  },
+  "enchantment": "minecraft:punch",
+  "amount": 1,
+  "level": 1
+}

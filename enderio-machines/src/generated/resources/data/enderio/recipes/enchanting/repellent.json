@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:ender_pearl"
+  },
+  "enchantment": "enderio:repellent",
+  "amount": 4,
+  "level": 2
+}

@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:lily_pad"
+  },
+  "enchantment": "minecraft:aqua_affinity",
+  "amount": 1,
+  "level": 1
+}

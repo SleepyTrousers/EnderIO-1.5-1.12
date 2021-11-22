@@ -22,6 +22,12 @@ public class MachineBlockEntities {
             (TileEntityBuilder.BlockEntityFactory<FluidTankBlockEntity>) (pos, state, type) -> new FluidTankBlockEntity(type, pos, state))
         .validBlocks(MachineBlocks.FLUID_TANK)
         .register();
+    
+    public static final TileEntityEntry<EnchanterBlockEntity> ENCHANTER = REGISTRATE
+        .tileEntity("enchanter",
+            (TileEntityBuilder.BlockEntityFactory<EnchanterBlockEntity>) (pos, state, type) -> new EnchanterBlockEntity(type, pos, state))
+        .validBlocks(MachineBlocks.ENCHANTER)
+        .register();
 
     public static void register() {}
 }

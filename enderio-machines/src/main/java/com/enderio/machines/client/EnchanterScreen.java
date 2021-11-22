@@ -33,12 +33,6 @@ public class EnchanterScreen extends EIOScreen<EnchanterMenu>{
     protected Vector2i getBackgroundImageSize() {
         return new Vector2i(176, 166);
     }
-    
-    @Override
-    public void render(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
-        super.render(pMatrixStack, pMouseX, pMouseY, pPartialTicks);
-        renderTooltip(pMatrixStack, pMouseX, pMouseY);
-    }
 
     @Override
     protected void renderBg(PoseStack pPoseStack, float pPartialTicks, int pMouseX, int pMouseY) {

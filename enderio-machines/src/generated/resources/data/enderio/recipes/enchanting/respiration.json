@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:glass_bottle"
+  },
+  "enchantment": "minecraft:respiration",
+  "amount": 1,
+  "level": 1
+}

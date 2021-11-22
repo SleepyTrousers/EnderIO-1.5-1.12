@@ -1,21 +1,24 @@
 package com.enderio.core.common.menu;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.blockentity.SyncedBlockEntity;
 import com.enderio.core.common.blockentity.sync.EnderDataSlot;
 import com.enderio.core.common.blockentity.sync.SyncMode;
 import com.enderio.core.common.network.EnderNetwork;
 import com.enderio.core.common.network.packet.SyncClientToServerMenuPacket;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import net.minecraft.world.inventory.Slot;
 
 public abstract class SyncedMenu<T extends SyncedBlockEntity> extends AbstractContainerMenu {
 
@@ -79,5 +82,17 @@ public abstract class SyncedMenu<T extends SyncedBlockEntity> extends AbstractCo
 
     public List<EnderDataSlot<?>> getClientToServerSlots() {
         return clientToServerSlots;
+    }
+    
+    public void addInventorySlots() {
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 9; x++) {
+                this.addSlot(new Slot(inventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18));
+            }
+        }
+
+        for (int x = 0; x < 9; x++) {
+            this.addSlot(new Slot(inventory, x, 8 + x * 18, 142));
+        }
     }
 }

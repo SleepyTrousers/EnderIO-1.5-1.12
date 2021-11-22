@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "enderio:dark_steel_ingot"
+  },
+  "enchantment": "minecraft:protection",
+  "amount": 16,
+  "level": 1
+}

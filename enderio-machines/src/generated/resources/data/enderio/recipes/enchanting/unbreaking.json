@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:obsidian"
+  },
+  "enchantment": "minecraft:unbreaking",
+  "amount": 1,
+  "level": 1
+}

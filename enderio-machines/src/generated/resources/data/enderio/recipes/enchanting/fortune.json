@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:emerald"
+  },
+  "enchantment": "minecraft:fortune",
+  "amount": 1,
+  "level": 1
+}

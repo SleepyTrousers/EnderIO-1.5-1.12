@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:prismarine_shard"
+  },
+  "enchantment": "minecraft:depth_strider",
+  "amount": 1,
+  "level": 1
+}

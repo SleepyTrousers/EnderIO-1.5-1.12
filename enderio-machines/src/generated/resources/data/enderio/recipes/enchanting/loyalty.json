@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:lead"
+  },
+  "enchantment": "minecraft:loyalty",
+  "amount": 1,
+  "level": 1
+}

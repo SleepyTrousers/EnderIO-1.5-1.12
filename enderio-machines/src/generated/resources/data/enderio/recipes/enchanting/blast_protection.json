@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:gunpowder"
+  },
+  "enchantment": "minecraft:blast_protection",
+  "amount": 16,
+  "level": 1
+}

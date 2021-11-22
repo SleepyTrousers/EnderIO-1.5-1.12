@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "tag": "minecraft:fishes"
+  },
+  "enchantment": "minecraft:lure",
+  "amount": 1,
+  "level": 1
+}

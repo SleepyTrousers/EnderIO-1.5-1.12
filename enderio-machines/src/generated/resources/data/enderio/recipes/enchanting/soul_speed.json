@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:soul_soil"
+  },
+  "enchantment": "minecraft:soul_speed",
+  "amount": 16,
+  "level": 1
+}

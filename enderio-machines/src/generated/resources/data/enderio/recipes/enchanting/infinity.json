@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "enderio:grains_of_infinity"
+  },
+  "enchantment": "minecraft:infinity",
+  "amount": 1,
+  "level": 1
+}

@@ -18,5 +18,5 @@ public interface IEnchanterRecipe extends Recipe<Container>{
     
     int getEnchantmentLevel(int amount);
     
-    int getLapizForLevel(int level);
+    int getLapisForLevel(int level);
 }

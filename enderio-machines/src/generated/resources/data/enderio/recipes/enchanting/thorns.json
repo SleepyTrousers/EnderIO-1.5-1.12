@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:rose_bush"
+  },
+  "enchantment": "minecraft:thorns",
+  "amount": 4,
+  "level": 1
+}

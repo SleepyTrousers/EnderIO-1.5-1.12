@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:spider_eye"
+  },
+  "enchantment": "minecraft:bane_of_arthropods",
+  "amount": 12,
+  "level": 1
+}

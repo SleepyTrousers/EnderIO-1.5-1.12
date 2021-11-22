@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:iron_ingot"
+  },
+  "enchantment": "minecraft:sweeping",
+  "amount": 8,
+  "level": 1
+}

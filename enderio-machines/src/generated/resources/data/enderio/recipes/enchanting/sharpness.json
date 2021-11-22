@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:quartz"
+  },
+  "enchantment": "minecraft:sharpness",
+  "amount": 12,
+  "level": 1
+}

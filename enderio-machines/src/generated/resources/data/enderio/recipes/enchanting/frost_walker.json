@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:ice"
+  },
+  "enchantment": "minecraft:frost_walker",
+  "amount": 16,
+  "level": 1
+}

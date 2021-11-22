@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:lapis_lazuli"
+  },
+  "enchantment": "minecraft:luck_of_the_sea",
+  "amount": 1,
+  "level": 1
+}

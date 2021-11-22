@@ -27,5 +27,12 @@ public class MachineBlocks {
         .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.MACHINES))
         .build()
         .register();
+    public static final BlockEntry<MachineBlock> ENCHANTER = REGISTRATE
+        .block("enchanter", props -> new MachineBlock(props, MachineBlockEntities.ENCHANTER))
+        .properties(props -> props.strength(2.5f,8))
+        .item()
+        .group(new NonNullLazyValue<>(() -> EIOCreativeTabs.MACHINES))
+        .build()
+        .register();
     public static void register() {}
 }

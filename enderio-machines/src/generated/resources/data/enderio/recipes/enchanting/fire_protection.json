@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:blaze_powder"
+  },
+  "enchantment": "minecraft:fire_protection",
+  "amount": 16,
+  "level": 1
+}

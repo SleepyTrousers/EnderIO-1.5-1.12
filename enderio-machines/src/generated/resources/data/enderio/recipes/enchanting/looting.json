@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:skeleton_skull"
+  },
+  "enchantment": "minecraft:looting",
+  "amount": 1,
+  "level": 1
+}

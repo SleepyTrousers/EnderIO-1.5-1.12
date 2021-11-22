@@ -1,14 +1,15 @@
 package com.enderio.machines.common.menu;
 
+import javax.annotation.Nullable;
+
 import com.enderio.core.common.menu.SyncedMenu;
 import com.enderio.machines.common.blockentity.AbstractMachineBlockEntity;
+
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-
-import javax.annotation.Nullable;
 
 public abstract class MachineMenu<T extends AbstractMachineBlockEntity> extends SyncedMenu<T> {
 

@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:leather"
+  },
+  "enchantment": "minecraft:projectile_protection",
+  "amount": 16,
+  "level": 1
+}

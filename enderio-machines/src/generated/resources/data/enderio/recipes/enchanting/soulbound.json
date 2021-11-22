@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "enderio:ender_crystal"
+  },
+  "enchantment": "enderio:soulbound",
+  "amount": 1,
+  "level": 1
+}

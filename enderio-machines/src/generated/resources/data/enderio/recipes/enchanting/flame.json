@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:netherrack"
+  },
+  "enchantment": "minecraft:flame",
+  "amount": 1,
+  "level": 1
+}

@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:blaze_rod"
+  },
+  "enchantment": "minecraft:fire_aspect",
+  "amount": 8,
+  "level": 1
+}

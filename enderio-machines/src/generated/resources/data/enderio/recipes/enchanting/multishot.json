@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:arrow"
+  },
+  "enchantment": "minecraft:multishot",
+  "amount": 16,
+  "level": 1
+}

@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:flint"
+  },
+  "enchantment": "minecraft:power",
+  "amount": 12,
+  "level": 1
+}

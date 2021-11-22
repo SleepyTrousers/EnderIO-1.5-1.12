@@ -14,7 +14,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -36,7 +35,7 @@ public class EnchanterMenu extends MachineMenu<EnchanterBlockEntity>{
                     Optional<IEnchanterRecipe> recipe = level.getRecipeManager().getRecipeFor(MachineRecipes.Types.ENCHANTING, new RecipeWrapper(blockEntity.getItemHandlerMaster()), level);
                     if (recipe.isPresent() && (pPlayer.experienceLevel > recipe.get().getLevelModifier() || pPlayer.isCreative())) {
                         int amount = recipe.get().getAmount(new RecipeWrapper(blockEntity.getItemHandlerMaster()));
-                        int lapizForLevel = recipe.get().getLapizForLevel(recipe.get().getEnchantmentLevel(blockEntity.getItemHandlerMaster().getStackInSlot(1).getCount()));
+                        int lapizForLevel = recipe.get().getLapisForLevel(recipe.get().getEnchantmentLevel(blockEntity.getItemHandlerMaster().getStackInSlot(1).getCount()));
                         pPlayer.experienceLevel -= recipe.get().getLevelCost(new RecipeWrapper(blockEntity.getItemHandlerMaster()));
                         blockEntity.getItemHandlerMaster().getStackInSlot(0).shrink(1);
                         blockEntity.getItemHandlerMaster().getStackInSlot(1).shrink(amount);
@@ -48,22 +47,14 @@ public class EnchanterMenu extends MachineMenu<EnchanterBlockEntity>{
                 @Override
                 public boolean mayPickup(Player playerIn) {
                     Optional<IEnchanterRecipe> recipe = level.getRecipeManager().getRecipeFor(MachineRecipes.Types.ENCHANTING, new RecipeWrapper(blockEntity.getItemHandlerMaster()), level);
-                    if (recipe.isPresent() && (playerIn.experienceLevel > recipe.get().getLevelCost(new RecipeWrapper(blockEntity.getItemHandlerMaster())) || playerIn.isCreative())) {
+                    if (recipe.isPresent() && (playerIn.experienceLevel > recipe.get().getLevelCost(new RecipeWrapper(blockEntity.getItemHandlerMaster())) || playerIn.isCreative()) && blockEntity.isAction()) {
                         return super.mayPickup(playerIn);
                     }
                     return false;
                 }
             });
         }
-        for (int y = 0; y < 3; y++) {
-            for (int x = 0; x < 9; x++) {
-                this.addSlot(new Slot(inventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18));
-            }
-        }
-
-        for (int x = 0; x < 9; x++) {
-            this.addSlot(new Slot(inventory, x, 8 + x * 18, 142));
-        }
+        addInventorySlots();
     }
 
     public static EnchanterMenu factory(@Nullable MenuType<EnchanterMenu> pMenuType, int pContainerId, Inventory inventory, FriendlyByteBuf buf) {
@@ -73,10 +64,4 @@ public class EnchanterMenu extends MachineMenu<EnchanterBlockEntity>{
         LogManager.getLogger().warn("couldn't find BlockEntity");
         return new EnchanterMenu(null, inventory, pContainerId);
     }
-    
-    @Override
-    public boolean stillValid(Player pPlayer) {
-        return getBlockEntity() != null;
-    }
-
 }

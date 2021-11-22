@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:piston"
+  },
+  "enchantment": "minecraft:knockback",
+  "amount": 1,
+  "level": 1
+}

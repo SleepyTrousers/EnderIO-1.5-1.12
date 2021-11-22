@@ -3,12 +3,12 @@ package com.enderio.machines.common.blockentity;
 import java.util.List;
 import java.util.Optional;
 
+import com.enderio.base.common.blockentity.RedstoneControl;
 import com.enderio.machines.common.blockentity.data.sidecontrol.item.ItemHandlerMaster;
 import com.enderio.machines.common.menu.EnchanterMenu;
 import com.enderio.machines.common.recipe.IEnchanterRecipe;
 import com.enderio.machines.common.recipe.MachineRecipes;
 
-import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,7 +21,6 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 public class EnchanterBlockEntity extends AbstractMachineBlockEntity{
 
-    @Getter
     private ItemHandlerMaster itemHandlerMaster = new ItemHandlerMaster(getConfig(), 4, List.of(0,1,2), List.of(3)) {
         protected void onContentsChanged(int slot) {
             if (slot != 3) {
@@ -35,7 +34,18 @@ public class EnchanterBlockEntity extends AbstractMachineBlockEntity{
             }
             setChanged();
         };
+        
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            if (slot == 3 && !isAction()) {
+                return ItemStack.EMPTY;
+            }
+            return super.extractItem(slot, amount, simulate);
+        };
     };
+    
+    public EnchanterBlockEntity(BlockEntityType<?> pType, BlockPos pWorldPosition, BlockState pBlockState) {
+        super(pType, pWorldPosition, pBlockState);
+    }
     
     @Override
     public CompoundTag save(CompoundTag pTag) {
@@ -48,13 +58,21 @@ public class EnchanterBlockEntity extends AbstractMachineBlockEntity{
         super.load(pTag);
         itemHandlerMaster.deserializeNBT(pTag.getCompound("Items"));
     }
-    
-    public EnchanterBlockEntity(BlockEntityType<?> pType, BlockPos pWorldPosition, BlockState pBlockState) {
-        super(pType, pWorldPosition, pBlockState);
-    }
 
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pInventory, Player pPlayer) {
         return new EnchanterMenu(this, pInventory, pContainerId);
     }
+
+    @Override
+    public ItemHandlerMaster getItemHandlerMaster() {
+        return itemHandlerMaster;
+    }
+    
+    @Override
+    public void setRedstoneControl(RedstoneControl redstoneControl) {
+        setChanged();
+        super.setRedstoneControl(redstoneControl);
+    }
+    
 }

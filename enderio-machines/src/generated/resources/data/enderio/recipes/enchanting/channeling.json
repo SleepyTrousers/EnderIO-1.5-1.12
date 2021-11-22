@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:lightning_rod"
+  },
+  "enchantment": "minecraft:channeling",
+  "amount": 1,
+  "level": 1
+}

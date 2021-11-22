@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "enderio:withering_powder"
+  },
+  "enchantment": "enderio:wither_weapon",
+  "amount": 4,
+  "level": 1
+}

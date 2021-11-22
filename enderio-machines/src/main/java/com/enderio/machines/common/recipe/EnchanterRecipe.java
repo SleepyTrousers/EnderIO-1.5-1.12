@@ -56,7 +56,7 @@ public class EnchanterRecipe implements IEnchanterRecipe{
         return Math.min(amount / amountPerLevel, enchantment.getMaxLevel());
     }
     
-    public int getLapizForLevel(int level) {
+    public int getLapisForLevel(int level) {
         int res = enchantment.getMaxLevel() == 1 ? 5 : level;
         return (int) Math.max(1, Math.round(res * 1)); //TODO config
     }
@@ -89,13 +89,13 @@ public class EnchanterRecipe implements IEnchanterRecipe{
 
     @Override
     public boolean matches(Container pContainer, Level pLevel) {
-        if(!pContainer.getItem(0).is(Items.WRITABLE_BOOK)) {
+        if (!pContainer.getItem(0).is(Items.WRITABLE_BOOK)) {
             return false;
         }
-        if(!ingredient.test(pContainer.getItem(1)) || pContainer.getItem(1).getCount() < amountPerLevel) {
+        if (!ingredient.test(pContainer.getItem(1)) || pContainer.getItem(1).getCount() < amountPerLevel) {
            return false; 
         }
-        if(!pContainer.getItem(2).is(Items.LAPIS_LAZULI) || pContainer.getItem(2).getCount() < getLapizForLevel(getEnchantmentLevel(pContainer.getItem(1).getCount()))) {
+        if (!pContainer.getItem(2).is(Items.LAPIS_LAZULI) || pContainer.getItem(2).getCount() < getLapisForLevel(getEnchantmentLevel(pContainer.getItem(1).getCount()))) {
             return false;
         }
         return true;

@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:rotten_flesh"
+  },
+  "enchantment": "minecraft:smite",
+  "amount": 12,
+  "level": 1
+}

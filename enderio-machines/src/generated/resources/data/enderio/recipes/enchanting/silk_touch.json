@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:slime_ball"
+  },
+  "enchantment": "minecraft:silk_touch",
+  "amount": 1,
+  "level": 1
+}

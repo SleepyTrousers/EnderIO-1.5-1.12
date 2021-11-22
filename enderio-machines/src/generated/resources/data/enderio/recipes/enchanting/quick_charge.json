@@ -1,0 +1,9 @@
+{
+  "type": "enderio:enchanting",
+  "ingredient": {
+    "item": "minecraft:sugar"
+  },
+  "enchantment": "minecraft:quick_charge",
+  "amount": 16,
+  "level": 1
+}
