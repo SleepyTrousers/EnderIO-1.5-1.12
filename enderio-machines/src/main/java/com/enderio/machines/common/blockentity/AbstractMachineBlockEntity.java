@@ -7,13 +7,12 @@ import com.enderio.core.common.blockentity.sync.SyncMode;
 import com.enderio.base.common.blockentity.RedstoneControl;
 import com.enderio.machines.common.blockentity.data.sidecontrol.IOConfig;
 import com.enderio.machines.common.blockentity.data.sidecontrol.item.ItemHandlerMaster;
-import lombok.Getter;
-import lombok.Setter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -35,8 +34,6 @@ public abstract class AbstractMachineBlockEntity extends SyncedBlockEntity imple
 
     private final IOConfig config = new IOConfig();
 
-    @Getter
-    @Setter
     private RedstoneControl redstoneControl = RedstoneControl.ALWAYS_ACTIVE;
 
     private final EnumMap<Direction, LazyOptional<IItemHandler>> itemHandlerCache = new EnumMap<>(Direction.class);
@@ -180,5 +177,19 @@ public abstract class AbstractMachineBlockEntity extends SyncedBlockEntity imple
     @Override
     public Component getDisplayName() {
         return getBlockState().getBlock().getName();
+    }
+
+    public boolean stillValid(Player pPlayer) {
+        if (this.level.getBlockEntity(this.worldPosition) != this)
+            return false;
+        return pPlayer.distanceToSqr(this.worldPosition.getX() + 0.5D, this.worldPosition.getY() + 0.5D, this.worldPosition.getZ() + 0.5D) <= 64.0D;
+    }
+
+    public RedstoneControl getRedstoneControl() {
+        return redstoneControl;
+    }
+
+    public void setRedstoneControl(RedstoneControl redstoneControl) {
+        this.redstoneControl = redstoneControl;
     }
 }

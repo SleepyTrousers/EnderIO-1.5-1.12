@@ -5,7 +5,6 @@ import com.enderio.core.common.blockentity.sync.EnderDataSlot;
 import com.enderio.core.common.blockentity.sync.SyncMode;
 import com.enderio.core.common.network.EnderNetwork;
 import com.enderio.core.common.network.packet.SyncClientToServerMenuPacket;
-import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,12 +19,10 @@ import java.util.Optional;
 
 public abstract class SyncedMenu<T extends SyncedBlockEntity> extends AbstractContainerMenu {
 
-    @Getter
     @Nullable
     private final T blockEntity;
     private final Inventory inventory;
 
-    @Getter
     private final List<EnderDataSlot<?>> clientToServerSlots = new ArrayList<>();
 
     protected SyncedMenu(@Nullable T blockEntity, Inventory inventory, @Nullable MenuType<?> pMenuType, int pContainerId) {
@@ -73,5 +70,14 @@ public abstract class SyncedMenu<T extends SyncedBlockEntity> extends AbstractCo
         if (!listNBT.isEmpty()) {
             EnderNetwork.getNetwork().getNetworkChannel().sendToServer(new SyncClientToServerMenuPacket(containerId, listNBT));
         }
+    }
+
+    @Nullable
+    public T getBlockEntity() {
+        return blockEntity;
+    }
+
+    public List<EnderDataSlot<?>> getClientToServerSlots() {
+        return clientToServerSlots;
     }
 }

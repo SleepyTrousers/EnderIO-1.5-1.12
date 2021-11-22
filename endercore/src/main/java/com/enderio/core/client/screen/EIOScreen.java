@@ -50,9 +50,10 @@ public abstract class EIOScreen<T extends AbstractContainerMenu> extends Abstrac
     }
 
     @Override
-    public void render(PoseStack pMatrixStack, int pMouseX, int pMouseY, float pPartialTicks) {
-        super.render(pMatrixStack, pMouseX, pMouseY, pPartialTicks);
-        this.renderTooltip(pMatrixStack, pMouseX, pMouseY);
+    public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTicks) {
+        renderBackground(pPoseStack);
+        super.render(pPoseStack, pMouseX, pMouseY, pPartialTicks);
+        this.renderTooltip(pPoseStack, pMouseX, pMouseY);
         for (LateTooltipData tooltip : tooltips) {
             renderTooltip(tooltip.getPoseStack(), tooltip.getText(), tooltip.getMouseX(), tooltip.getMouseY());
         }

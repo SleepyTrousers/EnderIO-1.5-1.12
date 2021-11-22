@@ -3,8 +3,6 @@ package com.enderio.core.client.screen;
 import com.enderio.core.common.util.Vector2i;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -39,12 +37,33 @@ public interface IEnderScreen {
 
     void addTooltip(LateTooltipData data);
 
-    @RequiredArgsConstructor
-    @Getter
     class LateTooltipData {
         private final PoseStack poseStack;
         private final Component text;
         private final int mouseX;
         private final int mouseY;
+
+        LateTooltipData(PoseStack poseStack, Component text, int mouseX, int mouseY) {
+            this.poseStack = poseStack;
+            this.text = text;
+            this.mouseX = mouseX;
+            this.mouseY = mouseY;
+        }
+
+        public PoseStack getPoseStack() {
+            return poseStack;
+        }
+
+        public Component getText() {
+            return text;
+        }
+
+        public int getMouseX() {
+            return mouseX;
+        }
+
+        public int getMouseY() {
+            return mouseY;
+        }
     }
 }

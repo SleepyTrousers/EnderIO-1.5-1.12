@@ -3,7 +3,6 @@ package com.enderio.core.common.blockentity;
 import com.enderio.core.common.blockentity.sync.EnderDataSlot;
 import com.enderio.core.common.blockentity.sync.SyncMode;
 import com.enderio.core.common.util.CallOnly;
-import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -17,7 +16,6 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.LogicalSide;
 
@@ -36,10 +34,8 @@ public abstract class SyncedBlockEntity extends BlockEntity {
      */
     private final List<UUID> lastSyncedToPlayers = new ArrayList<>();
 
-    @Getter
     private final List<EnderDataSlot<?>> dataSlots = new ArrayList<>();
 
-    @Getter
     private final List<EnderDataSlot<?>> clientDecidingDataSlots = new ArrayList<>();
 
     public SyncedBlockEntity(BlockEntityType<?> pType, BlockPos pWorldPosition, BlockState pBlockState) {
@@ -148,5 +144,13 @@ public abstract class SyncedBlockEntity extends BlockEntity {
     @CallOnly(LogicalSide.SERVER)
     private Stream<ServerPlayer> getTrackingPlayers() {
         return ((ServerChunkCache)level.getChunkSource()).chunkMap.getPlayers(new ChunkPos(worldPosition), false);
+    }
+
+    public List<EnderDataSlot<?>> getDataSlots() {
+        return dataSlots;
+    }
+
+    public List<EnderDataSlot<?>> getClientDecidingDataSlots() {
+        return clientDecidingDataSlots;
     }
 }

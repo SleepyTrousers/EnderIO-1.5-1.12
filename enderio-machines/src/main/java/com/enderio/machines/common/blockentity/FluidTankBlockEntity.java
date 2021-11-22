@@ -1,18 +1,10 @@
 package com.enderio.machines.common.blockentity;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.enderio.core.common.blockentity.sync.FluidStackDataSlot;
 import com.enderio.core.common.blockentity.sync.SyncMode;
 import com.enderio.machines.common.blockentity.data.sidecontrol.fluid.FluidTankMaster;
 import com.enderio.machines.common.blockentity.data.sidecontrol.item.ItemHandlerMaster;
 import com.enderio.machines.common.menu.FluidTankMenu;
-
-import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -35,11 +27,14 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.CapabilityItemHandler;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Optional;
+
 public class FluidTankBlockEntity extends AbstractMachineBlockEntity {
 
-    @Getter
     private FluidTankMaster fluidTank = new FluidTankMaster(16 * FluidAttributes.BUCKET_VOLUME, getConfig());
-    @Getter
     private ItemHandlerMaster itemHandlerMaster = new ItemHandlerMaster(getConfig(), 4, List.of(0,2), List.of(1,3));
 
 
@@ -47,7 +42,7 @@ public class FluidTankBlockEntity extends AbstractMachineBlockEntity {
         super(pType, pWorldPosition, pBlockState);
         addDataSlot(new FluidStackDataSlot(() -> fluidTank.getFluidInTank(0), fluidTank::setFluid, SyncMode.RENDER));
         itemHandlerMaster.addPredicate(0, itemStack ->
-            (itemStack.getItem() instanceof BucketItem bucketItem && bucketItem.getFluid() != Fluids.EMPTY && (bucketItem instanceof MobBucketItem == false)) //Eclipse doesn't like it otherwise
+            (itemStack.getItem() instanceof BucketItem bucketItem && bucketItem.getFluid() != Fluids.EMPTY && !(bucketItem instanceof MobBucketItem))
                 || (!(itemStack.getItem() instanceof BucketItem) && itemStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent()));
         itemHandlerMaster.addPredicate(2, itemStack ->
             itemStack.getItem() == Items.BUCKET
@@ -161,5 +156,14 @@ public class FluidTankBlockEntity extends AbstractMachineBlockEntity {
     @Nullable
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pInventory, Player pPlayer) {
         return new FluidTankMenu(this, pInventory, pContainerId);
+    }
+
+    public FluidTankMaster getFluidTank() {
+        return fluidTank;
+    }
+
+    @Override
+    public ItemHandlerMaster getItemHandlerMaster() {
+        return itemHandlerMaster;
     }
 }

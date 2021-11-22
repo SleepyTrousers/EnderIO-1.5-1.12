@@ -66,6 +66,7 @@ public abstract class ClientToServerMenuPacket<Menu extends AbstractContainerMen
     }
 
     protected void handleWrongPlayer(NetworkEvent.Context context) {
-        //TODO: handle Packet Message
+        //TODO: This method is called when a ClientPlayer sent invalid data to the server which can not be explained by a desync, but could be malicious intend or a version difference.
+        // Currently there is no procedure to kick the player, or log that the player has sent invalid data. This should never happen using a unmodified mod on server or client
     }
 }

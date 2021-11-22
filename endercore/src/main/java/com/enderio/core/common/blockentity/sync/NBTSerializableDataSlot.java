@@ -13,12 +13,11 @@ public class NBTSerializableDataSlot<T extends INBTSerializable<CompoundTag>> ex
     private final Callback setterCallback;
 
     public NBTSerializableDataSlot(Supplier<T> getter, SyncMode syncMode) {
-        //I can put null here, because I override the single usage of the setter
         this(getter, syncMode, () -> {});
     }
 
     public NBTSerializableDataSlot(Supplier<T> getter, SyncMode syncMode, Callback setterCallback) {
-        //I can put null here, because I override the single usage of the setter
+        //I can put null here, because I override the only usage of the setter
         super(getter, null, syncMode);
         this.setterCallback = setterCallback;
     }

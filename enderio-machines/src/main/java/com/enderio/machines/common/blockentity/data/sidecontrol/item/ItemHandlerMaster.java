@@ -1,13 +1,16 @@
 package com.enderio.machines.common.blockentity.data.sidecontrol.item;
 
 import com.enderio.machines.common.blockentity.data.sidecontrol.IOConfig;
-import lombok.Getter;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.function.Predicate;
 
 public class ItemHandlerMaster extends ItemStackHandler {
@@ -15,9 +18,7 @@ public class ItemHandlerMaster extends ItemStackHandler {
     private final EnumMap<Direction, SidedItemHandlerAccess> access = new EnumMap(Direction.class);
     private final IOConfig config;
 
-    @Getter
     private List<Integer> onlyInputs;
-    @Getter
     private List<Integer> onlyOutputs;
 
     private Map<Integer, Predicate<ItemStack>> inputPredicates = new HashMap<>();
@@ -84,5 +85,13 @@ public class ItemHandlerMaster extends ItemStackHandler {
 
     public IOConfig getConfig() {
         return config;
+    }
+
+    public List<Integer> getOnlyInputs() {
+        return onlyInputs;
+    }
+
+    public List<Integer> getOnlyOutputs() {
+        return onlyOutputs;
     }
 }

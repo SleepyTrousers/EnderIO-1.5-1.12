@@ -18,8 +18,8 @@ public abstract class MachineMenu<T extends AbstractMachineBlockEntity> extends 
 
     @Override
     public boolean stillValid(Player pPlayer) {
-        //TODO do something
-        return true;
+        return getBlockEntity() != null
+            && getBlockEntity().stillValid(pPlayer);
     }
 
     public ItemStack quickMoveStack(Player pPlayer, int pIndex) {

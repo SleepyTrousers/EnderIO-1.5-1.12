@@ -1,27 +1,32 @@
 package com.enderio.core.common.blockentity.sync;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.Accessors;
 import net.minecraft.nbt.CompoundTag;
 
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@RequiredArgsConstructor
 public abstract class EnderDataSlot<T> {
-    @Getter(AccessLevel.PROTECTED)
-    @Accessors(fluent = true)
     private final Supplier<T> getter;
     private final Consumer<T> setter;
 
-    @Getter
     private final SyncMode syncMode;
 
     CompoundTag previousValue = new CompoundTag();
 
+    public EnderDataSlot(Supplier<T> getter, Consumer<T> setter, SyncMode mode) {
+        this.getter = getter;
+        this.setter = setter;
+        this.syncMode = mode;
+    }
+
+    public SyncMode getSyncMode() {
+        return syncMode;
+    }
+
+    protected Supplier<T> getter() {
+        return getter;
+    }
 
     public Optional<CompoundTag> toOptionalNBT() {
         CompoundTag newNBT = toFullNBT();

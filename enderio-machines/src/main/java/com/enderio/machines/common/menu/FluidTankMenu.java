@@ -40,9 +40,4 @@ public class FluidTankMenu extends MachineMenu<FluidTankBlockEntity> {
         return new FluidTankMenu(null, inventory, pContainerId);
 
     }
-
-    @Override
-    public boolean stillValid(Player pPlayer) {
-        return getBlockEntity() != null;
-    }
 }
