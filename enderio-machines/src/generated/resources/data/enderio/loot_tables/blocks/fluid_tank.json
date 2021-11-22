@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_nbt",
+              "source": "block_entity",
+              "ops": [
+                {
+                  "source": "",
+                  "target": "BlockEntityTag",
+                  "op": "replace"
+                }
+              ]
+            }
+          ],
+          "name": "enderio:fluid_tank"
+        }
+      ]
+    }
+  ]
+}
