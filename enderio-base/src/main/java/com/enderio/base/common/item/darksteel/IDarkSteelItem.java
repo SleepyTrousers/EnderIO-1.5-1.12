@@ -12,6 +12,8 @@ import com.enderio.core.common.capability.IMultiCapabilityItem;
 import com.enderio.core.common.capability.INamedNBTSerializable;
 import com.enderio.core.common.capability.MultiCapabilityProvider;
 import com.enderio.core.common.util.EnergyUtil;
+import com.enderio.core.common.util.TooltipUtil;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -63,27 +65,35 @@ public interface IDarkSteelItem extends IMultiCapabilityItem, IItemOverlayRender
     }
 
     default void addUpgradeHoverTest(ItemStack pStack, List<Component> pTooltipComponents) {
-
         //TODO: Only show when shift is held down
+        // TODO: Move this bit into IEnergyBar
         if (DarkSteelUpgradeable.hasUpgrade(pStack, EmpoweredUpgrade.NAME)) {
             String energy = EnergyUtil.getEnergyStored(pStack) + "/" + EnergyUtil.getMaxEnergyStored(pStack);
             pTooltipComponents.add(new TranslatableComponent(EIOLang.ENERGY_AMOUNT.getKey(), energy));
         }
 
+        // Display installed upgrades
         var upgrades = DarkSteelUpgradeable.getUpgrades(pStack);
         upgrades
             .stream()
             .sorted(Comparator.comparing(INamedNBTSerializable::getSerializedName))
-            .forEach(upgrade -> pTooltipComponents.add(upgrade.getDisplayName()));
+            .forEach(upgrade -> {
+                pTooltipComponents.add(upgrade.getDisplayName());
+                if (TooltipUtil.showExtended()) {
+                    // TODO: Upgrade descriptions
+                }
+            });
+
+        // Show shift hint
+        TooltipUtil.showShiftHint(pTooltipComponents);
 
         var availUpgrades = DarkSteelUpgradeable.getUpgradesThatCanBeAppliedAtTheMoment(pStack);
-        if(!availUpgrades.isEmpty()) {
-            pTooltipComponents.add(TextComponent.EMPTY);
+        if(!availUpgrades.isEmpty() && TooltipUtil.showExtended()) {
             pTooltipComponents.add(EIOLang.DS_UPGRADE_AVAILABLE);
             availUpgrades
                 .stream()
                 .sorted(Comparator.comparing(INamedNBTSerializable::getSerializedName))
-                .forEach(upgrade -> pTooltipComponents.add(upgrade.getDisplayName()));
+                .forEach(upgrade -> pTooltipComponents.add(new TextComponent("  ").append(upgrade.getDisplayName()).withStyle(ChatFormatting.ITALIC)));
         }
     }
 
