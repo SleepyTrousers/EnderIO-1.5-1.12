@@ -128,6 +128,9 @@ public abstract class AbstractMachineBlockEntity extends SyncedBlockEntity imple
     }
     public int moveFluids(IFluidHandler from, IFluidHandler to, int maxDrain) {
         FluidStack stack = from.drain(maxDrain, FluidAction.SIMULATE);
+        if(stack.isEmpty()) {
+            return 0;
+        }
         int filled = to.fill(stack, FluidAction.EXECUTE);
         stack.setAmount(filled);
         from.drain(stack, FluidAction.EXECUTE);
