@@ -81,7 +81,7 @@ repositories {
 }
 
 dependencies {
-    // TODO: Release an API package
+    // TODO: We may release an API package
     
     runtimeOnly fg.deobf("com.enderio:enderio-base:<VERSION>")
 }

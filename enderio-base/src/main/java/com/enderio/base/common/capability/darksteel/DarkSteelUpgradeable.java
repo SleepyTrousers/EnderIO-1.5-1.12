@@ -34,6 +34,7 @@ public class DarkSteelUpgradeable implements IDarkSteelUpgradable {
         return cap.flatMap(upgradeCap -> upgradeCap.getUpgradeAs(upgrade, as));
     }
 
+    // TODO: The method name is quite long - review?
     public static Collection<IDarkSteelUpgrade> getUpgradesThatCanBeAppliedAtTheMoment(ItemStack itemStack) {
         return itemStack.getCapability(EIOCapabilities.DARK_STEEL_UPGRADABLE).map(IDarkSteelUpgradable::getUpgradesThatCanBeAppliedAtTheMoment).orElse(Collections.emptyList());
     }

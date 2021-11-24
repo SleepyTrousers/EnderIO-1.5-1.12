@@ -35,7 +35,7 @@ public class GraveHandler {
             return;
         }
         if (event.getEntityLiving() instanceof Player player) {
-            if (player.isCreative()) {return;}
+            if (player.isCreative()) return;
             MutableBlockPos pos = new MutableBlockPos(player.getBlockX(), player.getBlockY(), player.getBlockZ());
             BlockPlaceContext pUseContext = new BlockPlaceContext(player, InteractionHand.MAIN_HAND, new ItemStack(EIOBlocks.GRAVE.get()),
                 new BlockHitResult(Vec3.atCenterOf(pos), Direction.NORTH, pos, true));

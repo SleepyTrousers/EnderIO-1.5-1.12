@@ -17,6 +17,7 @@ public class EnderiosItem extends BowlFoodItem {
         super(pProperties.food(properties));
     }
 
+    @Nonnull
     @Override
     public ItemStack finishUsingItem(@Nonnull ItemStack pStack, @Nonnull Level pLevel, @Nonnull LivingEntity pEntityLiving) {
         ItemStack itemStack = super.finishUsingItem(pStack, pLevel, pEntityLiving);

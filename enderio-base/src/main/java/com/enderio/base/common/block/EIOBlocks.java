@@ -344,7 +344,7 @@ public class EIOBlocks {
         .blockstate((con, prov) -> prov.simpleBlock(con.get(), prov.models().getExistingFile(EnderIO.loc("block/grave"))))
         .addLayer(() -> RenderType::cutout)
         .item()
-        .group(() -> EIOCreativeTabs.BLOCKS)
+//        .group(() -> EIOCreativeTabs.BLOCKS) // TODO: Is this supposed to be acquired?
         .build()
         .register();
 

@@ -4,6 +4,7 @@ import com.enderio.base.common.blockentity.EIOBlockEntities;
 import com.enderio.base.common.blockentity.GraveBlockEntity;
 import com.enderio.base.common.capability.EIOCapabilities;
 
+import com.enderio.base.common.lang.EIOLang;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TextComponent;
@@ -41,7 +42,7 @@ public class GraveBlock extends Block implements EntityBlock {
                     pLevel.removeBlock(grave.getBlockPos(), false);
                     pLevel.removeBlockEntity(grave.getBlockPos());
                 } else {
-                    pPlayer.sendMessage(new TextComponent("This grave is not yours! You cannot open it."), Util.NIL_UUID);
+                    pPlayer.sendMessage(EIOLang.GRAVE_WRONG_OWNER, Util.NIL_UUID);
                 }
             });
         }
