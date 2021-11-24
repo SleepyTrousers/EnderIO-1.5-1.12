@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "II ",
+    "IS ",
+    " S "
+  ],
+  "key": {
+    "I": {
+      "item": "enderio:dark_steel_ingot"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "enderio:dark_steel_axe"
+  }
+}

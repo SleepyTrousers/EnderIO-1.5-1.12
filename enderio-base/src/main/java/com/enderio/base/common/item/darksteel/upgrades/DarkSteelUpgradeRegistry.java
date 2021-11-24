@@ -2,6 +2,7 @@ package com.enderio.base.common.item.darksteel.upgrades;
 
 import com.enderio.base.EnderIO;
 import com.enderio.base.common.capability.darksteel.IDarkSteelUpgrade;
+import com.enderio.base.common.item.darksteel.upgrades.direct.DirectUpgrade;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
@@ -21,6 +22,7 @@ public final class DarkSteelUpgradeRegistry {
         INST.registerUpgrade(EmpoweredUpgrade::new);
         INST.registerUpgrade(SpoonUpgrade::new);
         INST.registerUpgrade(ForkUpgrade::new);
+        INST.registerUpgrade(DirectUpgrade::new);
     }
 
     public static DarkSteelUpgradeRegistry instance() {return INST; }

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "enderio:dark_steel_upgrade_blank"
+    },
+    {
+      "item": "minecraft:diamond_hoe"
+    }
+  ],
+  "result": {
+    "item": "enderio:dark_steel_upgrade_fork"
+  }
+}

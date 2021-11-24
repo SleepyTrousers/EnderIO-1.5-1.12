@@ -6,6 +6,8 @@ import net.minecraftforge.common.extensions.IForgeItem;
 import net.minecraftforge.energy.CapabilityEnergy;
 import org.spongepowered.asm.mixin.Mixin;
 
+import static com.enderio.base.client.renderer.DarkSteelDurabilityRenderer.ENERGY_BAR_RGB;
+
 /**
  * This mixin attaches to any item implementing {@link IEnergyBar}.
  *
@@ -31,6 +33,6 @@ public interface EnergyBarMixin extends IForgeItem {
 
     @Override
     default int getRGBDurabilityForDisplay(ItemStack stack) {
-        return 0x00B168E4; // A nice purple
+        return ENERGY_BAR_RGB; // A nice purple
     }
 }

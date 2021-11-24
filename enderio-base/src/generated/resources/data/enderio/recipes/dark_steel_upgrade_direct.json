@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "NIN",
+    "IEI",
+    "NBN"
+  ],
+  "key": {
+    "I": {
+      "item": "enderio:vibrant_alloy_ingot"
+    },
+    "N": {
+      "item": "enderio:vibrant_alloy_nugget"
+    },
+    "E": {
+      "item": "minecraft:ender_pearl"
+    },
+    "B": {
+      "item": "enderio:dark_steel_upgrade_blank"
+    }
+  },
+  "result": {
+    "item": "enderio:dark_steel_upgrade_direct"
+  }
+}
