@@ -78,7 +78,7 @@ public class ExistingItemFilter implements IItemFilter {
       matched = existingId != -1 && existingId == OreDictionary.getOreID(toInsert);
     }
     if(!matched) {
-      matched = Item.getIdFromItem(toInsert.getItem()) == Item.getIdFromItem(existing.getItem());
+      matched = toInsert.getItem() == existing.getItem();
       if(matched && matchMeta) {
         matched = toInsert.getItemDamage() == existing.getItemDamage();
       }
