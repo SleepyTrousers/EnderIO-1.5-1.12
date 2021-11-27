@@ -4,7 +4,7 @@ buildscript {
         maven { url = "https://jitpack.io" }
         maven { url = "https://gregtech.overminddl1.com/" }
     }
-    dependencies { classpath 'com.github.GTNewHorizons:ForgeGradle:stable-2021-11-20' }
+    dependencies { classpath 'com.github.GTNewHorizons:ForgeGradle:1.2.4' }
 }
 plugins {
     id 'idea'
