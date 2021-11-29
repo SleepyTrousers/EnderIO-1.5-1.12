@@ -2,7 +2,7 @@
 
 //Power
 enderio.power.rf=RF
-enderio.power.tmb=t/mB
+enderio.power.tmb=t/L
 enderio.power.tick=/t
 enderio.power.maxOutput=Salida máx.
 enderio.power.generates=Genera
@@ -142,11 +142,11 @@ fluid.eio.xpjuice=XP Líquida
 tile.fluid.eio.xpjuice.name=XP Líquida
 item.bucketXpjuice.name=Cubo de XP
 
-enderio.fluid.millibucket.abr=mB
+enderio.fluid.millibucket.abr=L
 
 enderio.fuel.tooltip.heading=Detalles del Combustible
 enderio.fuel.tooltip.burnTime=tiempo de combustión {0,number}
-enderio.fluid.millibucketsTick=mB/t
+enderio.fluid.millibucketsTick=L/t
 enderio.coolant.tooltip.heading=Refrigerante
 enderio.coolant.tooltip.degreesPerBucket=Grados por Cubo
 enderio.gas.gasTick=Gas/t

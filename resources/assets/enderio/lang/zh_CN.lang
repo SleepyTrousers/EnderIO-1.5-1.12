@@ -2,7 +2,7 @@
 
 //Power
 enderio.power.rf=RF
-enderio.power.tmb=t/mB
+enderio.power.tmb=t/L
 enderio.power.tick=/t
 enderio.power.maxOutput=最大输出
 enderio.power.generates=产能
@@ -207,11 +207,11 @@ fluid.eio.xpjuice=液态XP
 tile.fluid.eio.xpjuice.name=液态XP
 item.bucketXpjuice.name=桶装液态XP
 
-enderio.fluid.millibucket.abr=mB
+enderio.fluid.millibucket.abr=L
 
 enderio.fuel.tooltip.heading=燃料详情
 enderio.fuel.tooltip.burnTime=燃烧时间 {0,number}
-enderio.fluid.millibucketsTick=mB/t
+enderio.fluid.millibucketsTick=L/t
 enderio.coolant.tooltip.heading=冷却剂
 enderio.coolant.tooltip.degreesPerBucket=度每桶
 enderio.gas.gasTick=气体每t

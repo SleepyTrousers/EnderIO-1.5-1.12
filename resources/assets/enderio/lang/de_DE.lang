@@ -2,7 +2,7 @@
 
 //Power
 enderio.power.rf=RF
-enderio.power.tmb=t/mB
+enderio.power.tmb=t/L
 enderio.power.tick=/t
 enderio.power.maxOutput=Max. Output
 enderio.power.generates=Generiert
@@ -168,11 +168,11 @@ fluid.eio.xpjuice=Flüssige XP
 tile.fluid.eio.xpjuice.name=Flüssige XP
 item.bucketXpjuice.name=XP-Eimer
 
-enderio.fluid.millibucket.abr=mB
+enderio.fluid.millibucket.abr=L
 
 enderio.fuel.tooltip.heading=Treibstoffdetails
 enderio.fuel.tooltip.burnTime=Brenndauer {0,number}
-enderio.fluid.millibucketsTick=mB/t
+enderio.fluid.millibucketsTick=L/t
 enderio.coolant.tooltip.heading=Kühlmittel
 enderio.coolant.tooltip.degreesPerBucket=° pro Eimer
 enderio.gas.gasTick=Gas/t

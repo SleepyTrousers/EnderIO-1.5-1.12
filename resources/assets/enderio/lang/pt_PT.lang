@@ -138,11 +138,11 @@ tile.fluid.eio.xpjuice.name=XP em Líquido
 item.bucketXpjuice.name=Balde de XP
 
 
-enderio.fluid.millibucket.abr=mB
+enderio.fluid.millibucket.abr=L
 
 enderio.fuel.tooltip.heading=Detalhes do Combustível
 enderio.fuel.tooltip.burnTime=tempo de queima {0,number}
-enderio.fluid.millibucketsTick=mB/t
+enderio.fluid.millibucketsTick=L/t
 enderio.coolant.tooltip.heading=Refrigerante
 enderio.coolant.tooltip.degreesPerBucket=Graus por balde
 enderio.gas.gasTick=Gas/t

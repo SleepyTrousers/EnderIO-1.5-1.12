@@ -2,7 +2,7 @@
 
 //Power
 enderio.power.rf=RF
-enderio.power.tmb=тик/мВ
+enderio.power.tmb=тик/Л
 enderio.power.tick=/тик
 enderio.power.maxOutput=Макс. выход
 enderio.power.generates=Генерирует
@@ -168,11 +168,11 @@ fluid.eio.xpjuice=Жидкий опыт
 tile.fluid.eio.xpjuice.name=Жидкий опыт
 item.bucketXpjuice.name=Ведро опыта
 
-enderio.fluid.millibucket.abr=мВ
+enderio.fluid.millibucket.abr=Л
 
 enderio.fuel.tooltip.heading=Информация о топливе
 enderio.fuel.tooltip.burnTime=время горения {0,number}
-enderio.fluid.millibucketsTick=мВ/тик
+enderio.fluid.millibucketsTick=Л/тик
 enderio.coolant.tooltip.heading=Хладагент
 enderio.coolant.tooltip.degreesPerBucket=Градус за ведро
 enderio.gas.gasTick=Газ/тик

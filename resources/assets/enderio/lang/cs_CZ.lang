@@ -115,11 +115,11 @@ fluid.eio.xpjuice=Tekuté XP
 item.bucketXpjuice.name=Kbelík tekutých XP
 
 
-enderio.fluid.millibucket.abr=mB
+enderio.fluid.millibucket.abr=L
 
 enderio.fuel.tooltip.heading=Detaily paliva
 enderio.fuel.tooltip.burnTime=spalovací čas {0,number}
-enderio.fluid.millibucketsTick=mB/t
+enderio.fluid.millibucketsTick=L/t
 enderio.gas.gasTick=Plyn/t
 
 

@@ -1,8 +1,8 @@
-//***  Ender IO *****//
+#***  Ender IO *****
 
 //Power
 enderio.power.rf=RF
-enderio.power.tmb=t/mB
+enderio.power.tmb=t/L
 enderio.power.tick=/t
 enderio.power.maxOutput=Max Output
 enderio.power.generates=Generates
@@ -205,11 +205,11 @@ fluid.eio.xpjuice=Liquid XP
 tile.fluid.eio.xpjuice.name=Liquid XP
 item.bucketXpjuice.name=XP Bucket
 
-enderio.fluid.millibucket.abr=mB
+enderio.fluid.millibucket.abr=L
 
 enderio.fuel.tooltip.heading=Fuel Details
 enderio.fuel.tooltip.burnTime=burn time {0,number}
-enderio.fluid.millibucketsTick=mB/t
+enderio.fluid.millibucketsTick=L/t
 enderio.coolant.tooltip.heading=Coolant
 enderio.coolant.tooltip.degreesPerBucket=Deg per bucket
 enderio.gas.gasTick=Gas/t
@@ -1233,7 +1233,7 @@ enderio.gui.conduit.gas.autoExtract=Auto Extract
 enderio.gui.weather.task.clear=Clear Weather
 enderio.gui.weather.task.rain=Rainy Weather
 enderio.gui.weather.task.storm=Thunderstorm
-enderio.gui.weather.requiredfluid=Required Fluid: %s mB
+enderio.gui.weather.requiredfluid=Required Fluid: %s L
 enderio.weatherObelisk.fuelTank=Barometric Flux Tank
 
 //Enchants

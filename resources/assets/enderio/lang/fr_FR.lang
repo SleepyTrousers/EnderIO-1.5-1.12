@@ -148,11 +148,11 @@ fluid.eio.xpjuice=Exp. Liquide
 tile.fluid.eio.xpjuice.name=Exp. Liquide
 item.bucketXpjuice.name=Sceau d'Exp. Liquide
 
-enderio.fluid.millibucket.abr=mB
+enderio.fluid.millibucket.abr=L
 
 enderio.fuel.tooltip.heading=Détails du carburant
 enderio.fuel.tooltip.burnTime=temps de combustion {0,number}
-enderio.fluid.millibucketsTick=mB/t
+enderio.fluid.millibucketsTick=L/t
 enderio.coolant.tooltip.heading=Liquide de refroidissement
 enderio.coolant.tooltip.degreesPerBucket=Degrés par sceau
 enderio.gas.gasTick=Gaz/t

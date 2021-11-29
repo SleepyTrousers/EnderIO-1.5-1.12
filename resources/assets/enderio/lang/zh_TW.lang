@@ -123,11 +123,11 @@ tile.fluid.eio.xpjuice.name=液態XP
 item.bucketXpjuice.name=桶裝液態XP
 
 
-enderio.fluid.millibucket.abr=mB
+enderio.fluid.millibucket.abr=L
 
 enderio.fuel.tooltip.heading=燃料詳情
 enderio.fuel.tooltip.burnTime=燃燒時間 {0,number}
-enderio.fluid.millibucketsTick=mB/t
+enderio.fluid.millibucketsTick=L/t
 coolant.tooltip.heading=冷卻劑
 enderio.fuel.tooltip.degreesPerBucket=每單位一桶
 enderio.gas.gasTick=Gas/t
