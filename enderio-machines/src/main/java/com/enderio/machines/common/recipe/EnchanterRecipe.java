@@ -21,7 +21,7 @@ import net.minecraft.world.level.Level;
 public class EnchanterRecipe implements IEnchanterRecipe{
     private ResourceLocation id;
     private Enchantment enchantment;
-    private int level;
+    private int levelmodifier;
     private Ingredient ingredient;
     private int amountPerLevel;
 
@@ -30,7 +30,7 @@ public class EnchanterRecipe implements IEnchanterRecipe{
         this.ingredient = ingredient;
         this.enchantment = enchantment;
         this.amountPerLevel = amountPerLevel;
-        this.level = levelModifier;
+        this.levelmodifier = levelModifier;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class EnchanterRecipe implements IEnchanterRecipe{
     
     @Override
     public int getLevelModifier() {
-        return level;
+        return levelmodifier;
     }
     
     public int getLevelCost(Container container) {
@@ -81,7 +81,7 @@ public class EnchanterRecipe implements IEnchanterRecipe{
     
     private int getRawXPCostForLevel(int level) {
         double min = Math.max(1, enchantment.getMinCost(level));
-        min *= level;
+        min *= levelmodifier;
         int cost = (int) Math.round(min * 1); //TODO global scaling
         cost += 1; //TODO base cost
         return cost;
@@ -168,7 +168,7 @@ public class EnchanterRecipe implements IEnchanterRecipe{
            pRecipe.ingredient.toNetwork(pBuffer);
            pBuffer.writeResourceLocation(pRecipe.enchantment.getRegistryName());
            pBuffer.writeInt(pRecipe.amountPerLevel);
-           pBuffer.writeInt(pRecipe.level);
+           pBuffer.writeInt(pRecipe.levelmodifier);
         }
 
         @Override
@@ -176,7 +176,7 @@ public class EnchanterRecipe implements IEnchanterRecipe{
             json.add("ingredient", recipe.ingredient.toJson());
             json.addProperty("enchantment", recipe.enchantment.getRegistryName().toString());
             json.addProperty("amount", recipe.amountPerLevel);
-            json.addProperty("level", recipe.level);
+            json.addProperty("level", recipe.levelmodifier);
         }    
     }
 }

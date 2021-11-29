@@ -33,10 +33,10 @@ public class EnchanterMenu extends MachineMenu<EnchanterBlockEntity>{
                 @Override
                 public void onTake(Player pPlayer, ItemStack pStack) {
                     Optional<IEnchanterRecipe> recipe = level.getRecipeManager().getRecipeFor(MachineRecipes.Types.ENCHANTING, new RecipeWrapper(blockEntity.getItemHandlerMaster()), level);
-                    if (recipe.isPresent() && (pPlayer.experienceLevel > recipe.get().getLevelModifier() || pPlayer.isCreative())) {
+                    if (recipe.isPresent() && (pPlayer.experienceLevel > recipe.get().getLevelCost(new RecipeWrapper(blockEntity.getItemHandlerMaster())) || pPlayer.isCreative())) {
                         int amount = recipe.get().getAmount(new RecipeWrapper(blockEntity.getItemHandlerMaster()));
                         int lapizForLevel = recipe.get().getLapisForLevel(recipe.get().getEnchantmentLevel(blockEntity.getItemHandlerMaster().getStackInSlot(1).getCount()));
-                        pPlayer.experienceLevel -= recipe.get().getLevelCost(new RecipeWrapper(blockEntity.getItemHandlerMaster()));
+                        pPlayer.giveExperienceLevels(-recipe.get().getLevelCost(new RecipeWrapper(blockEntity.getItemHandlerMaster())));
                         blockEntity.getItemHandlerMaster().getStackInSlot(0).shrink(1);
                         blockEntity.getItemHandlerMaster().getStackInSlot(1).shrink(amount);
                         blockEntity.getItemHandlerMaster().getStackInSlot(2).shrink(lapizForLevel);
@@ -63,5 +63,13 @@ public class EnchanterMenu extends MachineMenu<EnchanterBlockEntity>{
             return new EnchanterMenu(castBlockEntity, inventory, pContainerId);
         LogManager.getLogger().warn("couldn't find BlockEntity");
         return new EnchanterMenu(null, inventory, pContainerId);
+    }
+    
+    public int getCurrentCost() {
+        Optional<IEnchanterRecipe> recipe = level.getRecipeManager().getRecipeFor(MachineRecipes.Types.ENCHANTING, new RecipeWrapper(this.getBlockEntity().getItemHandlerMaster()), level);
+        if (recipe.isPresent()) {
+            return recipe.get().getLevelCost(new RecipeWrapper(this.getBlockEntity().getItemHandlerMaster()));
+        }
+        return -1;
     }
 }
