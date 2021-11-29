@@ -1,11 +1,11 @@
-//***  Ender IO *****//
+#***  Ender IO ***#
 
-//Power
+#Power
 enderio.power.rf=RF
 enderio.power.tick=/t
 enderio.power.maxOutput=最大輸出
 
-//Ender IO / Enderface
+#Ender IO / Enderface
 tile.blockEnderIo.name=終界接口
 tile.blockEnderIo.tooltip.detailed.line1=允許遠程訪問附近的
 tile.blockEnderIo.tooltip.detailed.line2=方塊
@@ -14,7 +14,7 @@ tile.blockEnderIo.tooltip.detailed.line4=旅行權杖
 
 item.enderio.itemEnderface.name=終界面板
 
-//Conduits
+#Conduits
 enderio.blockConduitBundle=導管接口
 enderio.blockConduitFacade=導管框架
 item.enderio.itemConduitFacade.name=導管框架
@@ -89,7 +89,7 @@ enderio.itemGasConduit.tooltip.detailed.line1=傳送和通用機械兼容的氣�
 enderio.itemMEConduit.name=ME導管
 enderio.itemMEConduitDense.name=緻密ME導管
 
-//Materials
+#Materials
 enderio.itemMaterial.name=材料
 enderio.silicon.name=硅
 enderio.conduitBinder.name=導管粘合劑
@@ -104,7 +104,7 @@ enderio.blastResistant=防爆
 enderio.lightEmitter=發光
 enderio.tooltip.isBeaconBase=可用于當作信標底座
 
-//Fluids
+#Fluids
 fluid.nutrient_distillation=營養精華液
 tile.fluid.nutrient_distillation.name=營養精華液
 item.bucketNutrient_distillation.name=桶裝營養精華液
@@ -123,17 +123,16 @@ tile.fluid.eio.xpjuice.name=液態XP
 item.bucketXpjuice.name=桶裝液態XP
 
 
-enderio.fluid.millibucket.abr=mB
+enderio.fluid.millibucket.abr=L
 
 enderio.fuel.tooltip.heading=燃料詳情
 enderio.fuel.tooltip.burnTime=燃燒時間 {0,number}
-enderio.fluid.millibucketsTick=mB/t
-coolant.tooltip.heading=冷卻劑
-enderio.fuel.tooltip.degreesPerBucket=每單位一桶
+enderio.fluid.millibucketsTick=L/t
+enderio.coolant.tooltip.heading=冷卻劑
+enderio.coolant.tooltip.degreesPerBucket=每單位一桶
 enderio.gas.gasTick=Gas/t
 
-
-//Materials
+#Materials
 enderio.itemMachinePart.name=機器零件
 enderio.machineChassi.name=機器框架
 enderio.basicGear.name=基礎齒輪
@@ -148,9 +147,9 @@ enderio.darkGrindingBall.tooltip.detailed.line3=額外輸出
 enderio.darkGrindingBall.tooltip.detailed.line4=功率降低
 
 tile.blockReinforcedObsidian.name=強化黑曜石
-+tile.blockReinforcedObsidian.tooltip.common.line1=能抵擋凋零
+tile.blockReinforcedObsidian.tooltip.common.line1=能抵擋凋零
 
-//Quartz / Glass
+#Quartz / Glass
 tile.blockFusedQuartz.name=石英玻璃
 enderio.blockFusedQuartz.fusedQuartz.name=石英玻璃
 enderio.blockFusedQuartz.fusedGlass.name=純凈玻璃
@@ -160,7 +159,7 @@ enderio.blockFusedQuartz.enlightenedFusedGlass.name=螢光純凈玻璃
 item.enderio.itemFusedQuartzFrame.name=石英玻璃框
 enderio.itemPowderIngot=粉和粒
 
-//Alloys
+#Alloys
 enderio.itemAlloy.name=合金錠
 enderio.electricalSteel.name=磁鋼錠
 enderio.energeticAlloy.name=充能合金錠
@@ -183,7 +182,7 @@ tile.enderio.vibrantNugget.name=脈沖合金粒塊
 tile.enderio.darkSteel.name=玄鋼塊
 tile.enderio.soularium.name=魂金塊
 
-//Powder / Ingot
+#Powder / Ingot
 enderio.powderCoal.name=煤粉
 enderio.powderIron.name=鐵粉
 enderio.powderGold.name=金粉
@@ -192,7 +191,7 @@ enderio.powderTin.name=錫粉
 enderio.powderEnder.name=終界珍珠粉
 enderio.ingotEnderiumBase.name=Enderium Base
 
-//Capacitors
+#Capacitors
 enderio.itemBasicCapacitor.name=電容
 enderio.basicCapacitor.name=基礎電容
 enderio.activatedCapacitor.name=雙層電容
@@ -203,7 +202,7 @@ enderio.machine.tooltip.upgrade.tooltip.detailed.line1=增加機器能量存儲�
 enderio.machine.tooltip.upgrade.tooltip.detailed.line2=速度/范圍
 enderio.machine.tooltip.clearConfig=這會清除所有存儲的數據!
 
-//Machines
+#Machines
 tile.blockStirlingGenerator.name=斯特林發電機
 tile.blockStirlingGenerator.tooltip.detailed.line1=燃燒固體燃料產生能量
 tile.blockStirlingGenerator.tooltip.detailed.line2=可通過添加電容器升級
@@ -318,7 +317,7 @@ enderio.trans.item=物品
 enderio.trans.fluid=流體
 enderio.trans.rail=軌
 
-enderio.trans.recieving=接收
+enderio.trans.receiving=接收
 enderio.trans.sending=發送
 
 tile.blockPowerMonitor.name=能量監控器
@@ -335,7 +334,7 @@ tile.blockVat.tooltip.detailed.line1=用于生產終界接口中的流體
 tile.blockEnchanter.name=附魔器
 tile.blockEnchanter.tooltip.detailed.line1=使用XP讓物品與
 tile.blockEnchanter.tooltip.detailed.line2=一個書與筆結合
-tile.blockEnchanter.tooltip.detailed.line2=來制作附魔書
+tile.blockEnchanter.tooltip.detailed.line3=來制作附魔書
 
 tile.blockCombustionGenerator.name=燃燒發電機
 tile.blockCombustionGenerator.tooltip.detailed.line1=燃燒液體燃料產生能量
@@ -430,7 +429,7 @@ tile.blockExperienceObelisk.tooltip.detailed.line3=相鄰的水箱內
 
 enderio.machine.tooltip.configured=(已配置)
 
-//Blocks
+#Blocks
 tile.blockDarkSteelPressurePlate.name=玄鋼壓力板
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line1=只能被玩家啟用
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line2=可在粉刷機內粉刷,
@@ -452,7 +451,7 @@ tile.blockDarkSteelAnvil.tooltip.detailed.line2=更加結實耐用
 tile.blockDarkSteelLadder.name=玄鐵階梯
 tile.blockDarkSteelLadder.tooltip.common.line1=比普通階梯快
 
-//Travel
+#Travel
 tile.blockTravelAnchor.name=旅行錨
 tile.blockTravelAnchor.tooltip.detailed.line1=允許在錨點之間傳送
 tile.blockTravelAnchor.tooltip.detailed.line2=站在一個錨上, 看著
@@ -472,7 +471,7 @@ item.itemTravelStaff.tooltip.detailed.line4=<shift><右擊>
 item.itemTravelStaff.tooltip.detailed.line5=可短距離傳送玩家
 enderio.itemTravelStaff.notEnoughPower=能量不足
 
-//Painter
+#Painter
 tile.blockPainter.name=粉刷機
 enderio.blockPainter.paintedWith=粉刷:
 tile.blockPaintedFence.name=粉刷柵欄
@@ -492,7 +491,7 @@ tile.blockPainter.tooltip.detailed.line4=玻璃框, 螢石, 地毯
 tile.blockPainter.tooltip.detailed.line5=深色壓力板
 tile.blockPainter.tooltip.detailed.line6=旅行錨
 
-//Items
+#Items
 item.itemYetaWrench.name=以太扳手
 item.itemYetaWrench.tooltip.detailed.line1=手持時隱藏導管框架
 item.itemYetaWrench.tooltip.detailed.line2=右擊可立即
@@ -534,7 +533,7 @@ skullEnderResonator.name=終界諧振器
 
 item.itemSpawnEggEnderIO.name=生成
 
-//Dark Steel
+#Dark Steel
 item.darkSteel_helmet.name=玄鋼頭盔
 item.darkSteel_chestplate.name=玄鋼胸甲
 item.darkSteel_leggings.name=玄鋼護腿
@@ -542,9 +541,6 @@ item.darkSteel_boots.name=玄鋼靴子
 item.darkSteel_sword.name=終結之劍
 item.darkSteel_pickaxe.name=玄鋼鏟
 item.darkSteel_axe.name=玄鋼斧
-
-enderio.item.tooltip.showDetails=<按住Shift>
-enderio.item.darkSteel.tooltip.durability=耐久度:
 
 enderio.item.darkSteel_pickaxe.tooltip.effPowered=充能后的效率
 enderio.item.darkSteel_pickaxe.tooltip.effObs=採集黑曜石的效率
@@ -645,7 +641,7 @@ enderio.darksteel.upgrade.solar_one.tooltip.detailed.line1=太陽能發電產生
 enderio.darksteel.upgrade.solar_two.name=太陽能 II
 enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1=太陽能發電產生能源.
 
-//------GUI
+#------GUI
 
 enderio.gui.enabled=啟用
 enderio.gui.disabled=停用
@@ -653,7 +649,7 @@ enderio.gui.send=發送
 enderio.gui.receive=接收
 enderio.gui.sendReceive=發送和接收
 
-//Redstone controls
+#Redstone controls
 enderio.gui.tooltip.redstoneControlMode=紅石模式
 enderio.gui.tooltip.redstoneControlMode.ignore=始終工作
 enderio.gui.tooltip.redstoneControlMode.on=收到信號工作
@@ -677,7 +673,7 @@ enderio.gui.machine.side.up=上
 enderio.gui.machine.side.down=下
 
 
-//Power Monitor
+#Power Monitor
 enderio.gui.powerMonitor.engineControl=引擎控制
 enderio.gui.powerMonitor.emit=發送
 enderio.gui.powerMonitor.engineSection1=輸出信號條件:當存儲
@@ -692,7 +688,7 @@ enderio.gui.powerMonitor.monHeading3=機器緩衝
 enderio.gui.powerMonitor.monHeading4=5秒平均輸出
 enderio.gui.powerMonitor.monHeading5=5秒平均輸入
 
-//MJ Reader
+#MJ Reader
 enderio.gui.mjReader.networkHeading=能量網
 enderio.gui.mjReader.conduitBuffer=內部緩衝
 enderio.gui.mjReader.requestRange=每刻請求范圍
@@ -711,7 +707,7 @@ enderio.gui.mjReader.receiveItems=合法的接收對象:
 enderio.gui.mjReader.receiveItem1=可以接收
 enderio.gui.mjReader.receiveItem2=從:
 
-//CapactorBank
+#CapactorBank
 enderio.gui.capBank.inputRs=輸入紅石控制
 enderio.gui.capBank.outputRs=輸出紅石控制
 enderio.gui.capBank.maxIo=最大流量
@@ -720,7 +716,7 @@ enderio.gui.capBank.maxOutput=最大輸出
 enderio.gui.capBank.inputMode=輸入模式
 enderio.gui.capBank.outputMode=輸出模式
 
-//Transceiver
+#Transceiver
 enderio.gui.trans.publicChannel=公共頻道
 enderio.gui.trans.privateChannel=私人頻道
 enderio.gui.trans.addChannel=添加頻道
@@ -732,28 +728,28 @@ enderio.gui.trans.itemMode=物品模式
 enderio.gui.trans.publicHeading=公共
 enderio.gui.trans.privateHeading=私有
 
-//Alloy Smelter
+#Alloy Smelter
 enderio.gui.alloy.mode.heading=熔爐模式
 enderio.gui.alloy.mode.all=全部燒煉
 enderio.gui.alloy.mode.alloy=僅限合金
 enderio.gui.alloy.mode.furnace=僅限熔爐
 
-//Vat
+#Vat
 enderio.vat.outputTank=輸出槽
 enderio.vat.inputTank=輸入槽
 enderio.gui.machine.vat.dump.1=導出輸入槽
 enderio.gui.machine.vat.dump.2=導出輸出槽
 
-//Combustion Gen
+#Combustion Gen
 enderio.combustionGenerator.coolantTank=冷卻劑
 enderio.combustionGenerator.fuelTank=燃料
 enderio.combustionGenerator.output=產能速率:
 
-//Stirling Gen
+#Stirling Gen
 enderio.stirlingGenerator.output=產能速率:
 enderio.stirlingGenerator.burnRate=燃燒速率:
 
-//Travel Blocks
+#Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=只有
 enderio.gui.travelAccessable.privateBlock2=才能改變該方塊的設置.
 enderio.gui.travelAccessable.public=公共
@@ -763,11 +759,11 @@ enderio.gui.travelAccessable.unauthorised=你沒有訪問該方塊的權限.
 enderio.gui.travelAccessable.enterCode=需要訪問密碼
 enderio.gui.travelAccessable.ok=已賦權
 
-//Spawn Gurad
+#Spawn Gurad
 enderio.gui.spawnGurad.showRange=顯示范圍
 enderio.gui.spawnGurad.range=范圍:
 
-//conduits
+#conduits
 enderio.gui.conduit.ioMode=模式
 enderio.gui.conduit.ioMode.inOut=輸入圖/輸出
 enderio.gui.conduit.ioMode.input=提取
@@ -806,10 +802,10 @@ enderio.gui.conduit.fluid.filter=過濾器
 
 enderio.gui.conduit.gas.autoExtract=自動提取
 
-//Enchants
+#Enchants
 enchantment.enderio.soulBound=靈魂綁定
 
-//Configuration
+#Configuration
 enderio.config.title=終界接口配置文件
 
 enderio.config.power=能量設置
@@ -852,4 +848,403 @@ enderio.config.fluid=流體設置
 enderio.config.fluid.tooltip=純凈的液態能量!
 
 enderio.config.spawner=電動刷怪籠設置
-enderio.config.spawner.tooltip=我已經想不出什麼有趣的提示文本了.
+enderio.config.spawner.tooltip=我已經想不出什麼有趣的提示文本了.enderio.power.tmb=t/L
+enderio.power.generates=Generates
+enderio.power.generation_rate=at
+item.enderio.itemConduitFacade.hardened.name=Hardened Conduit Facade
+enderio.item.itemConduitFacade.tooltip.notpainted=Not Painted
+item.enderio.itemConduitFacade.hardened.tooltip=Hardened: Resists breaking and explosions
+enderio.itemPowerConduitEndergyCrude.name=Clay Compound Energy Conduit
+enderio.itemPowerConduitEndergyIron.name=Iron Energy Conduit
+enderio.itemPowerConduitEndergyAluminum.name=Aluminum Energy Conduit
+enderio.itemPowerConduitEndergyGold.name=Gold Energy Conduit
+enderio.itemPowerConduitEndergyCopper.name=Copper Energy Conduit
+enderio.itemPowerConduitEndergySilver.name=Silver Energy Conduit
+enderio.itemPowerConduitEndergyElectrum.name=Electrum Energy Conduit
+enderio.itemPowerConduitEndergyEnergeticSilver.name=Energetic Silver Energy Conduit
+enderio.itemPowerConduitEndergyCrystalline.name=Crystalline Energy Conduit
+enderio.itemPowerConduitEndergyCrystallinePinkSlime.name=Crystalline Pink Slime Energy Conduit
+enderio.itemPowerConduitEndergyMelodic.name=Melodic Energy Conduit
+enderio.itemPowerConduitEndergyStellar.name=Stellar Energy Conduit
+enderio.itemLiquidConduit.lockedWaila=Locked to
+enderio.filterUpgradeBig.name=Big Item Filter
+enderio.filterUpgradeBigAdvanced.name=Big Advanced Item Filter
+item.itemExistingItemFilter.tooltip.detailed.line3=Right click while sneaking
+item.itemExistingItemFilter.tooltip.detailed.line4=on an inventory to add the
+item.itemExistingItemFilter.tooltip.detailed.line5=content to the snapshot
+enderio.item.itemExistingItemFilter.filterUpdated=New items have been added to the snapshot
+enderio.item.itemExistingItemFilter.filterNotUpdated=The snapshot already covers all items in the inventory
+item.itemPowerItemFilter.name=Chargeable Item Filter
+item.itemPowerItemFilter.tooltip.basic.line1=Upgrade for item conduits
+item.itemPowerItemFilter.tooltip.detailed.line1=Filters chargeable items based on
+item.itemPowerItemFilter.tooltip.detailed.line2=how much RF they have stored
+item.itemExtractSpeedDowngrade.name=Item Conduit Speed Downgrade
+item.itemExtractSpeedDowngrade.tooltip.basic.line1=Downgrade for item conduits
+item.itemExtractSpeedDowngrade.tooltip.detailed.line1=Reduces speed to 1
+item.itemExtractSpeedDowngrade.tooltip.detailed.line2=item per extraction
+item.itemInventoryPanelUpgrade.name=Remote Awareness Upgrade
+item.itemInventoryPanelUpgrade.tooltip.basic.line1=Inventory Panel Remote Awareness
+item.itemInventoryPanelUpgrade.tooltip.detailed.line1=Function upgrade for item conduits
+item.itemInventoryPanelUpgrade.tooltip.detailed.line2=Allows Inventory Panels attached
+item.itemInventoryPanelUpgrade.tooltip.detailed.line3=to this network to see and extract
+item.itemInventoryPanelUpgrade.tooltip.detailed.line4=items from this inventory independent
+item.itemInventoryPanelUpgrade.tooltip.detailed.line5=of the conduit mode.
+item.itemInventoryPanelUpgrade.tooltip.detailed.line6=(No need to set the conduit to extract)
+enderio.itemMEConduit.channelsUsed={0,number} of {1,number} Channels
+enderio.itemOCConduit.name=Network Conduit (OC)
+entity.witherSkeleton.name=Wither Skeleton
+tile.blockSoulariumBars.name=Soularium Bars
+tile.blockEndSteelBars.name=End Steel Bars
+enderio.lightBlocker=Blocks Light
+enderio.dustWheat.name=Flour
+enderio.itemEnderios.name="Enderios"
+enderio.itemEnderios.tooltip.common.line1=Part of a balanced breakfast!
+enderio.itemEnderios.tooltip.detailed.line1=Not actually healthy. Contains 253g of sugar, 53g of fat,
+enderio.itemEnderios.tooltip.detailed.line2=and 394g of ender dust.
+enderio.itemEnderios.tooltip.detailed.line3=Side effects of ender dust include: nausea, dizziness, confusion,
+enderio.itemEnderios.tooltip.detailed.line4=and random teleporting.
+fluid.liquid_sunshine=Liquid Sunshine
+tile.fluid.liquid_sunshine.name=Liquid Sunshine
+item.bucketLiquid_sunshine.name=Liquid Sunshine Bucket
+fluid.cloud_seed=Cloud Seed
+tile.fluid.cloud_seed.name=Cloud Seed
+item.bucketCloud_seed.name=Cloud Seed Bucket
+fluid.cloud_seed_concentrated=Concentrated Cloud Seed
+tile.fluid.cloud_seed_concentrated.name=Concentrated Cloud Seed
+item.bucketCloud_seed_concentrated.name=Concentrated Cloud Seed Bucket
+fluid.ender_distillation=Dew of the Void
+tile.fluid.ender_distillation.name=Dew of the Void
+item.bucketEnder_distillation.name=Dew of the Void Bucket
+fluid.vapor_of_levity=Vapor of Levity
+tile.fluid.vapor_of_levity.name=Vapor of Levity
+item.bucketVapor_of_levity.name=Vapor of Levity Bucket
+enderio.soulMachineChassi.name=Soul Machine Chassis
+enderio.endSteelMachineChassi.name=End Steel Chassis
+enderio.weatherCrystal.name=Weather Crystal
+enderio.electricalGrindingBall.name=Electrical Steel Ball
+enderio.energeticGrindingBall.name=Energetic Alloy Ball
+enderio.vibrantGrindingBall.name=Vibrant Alloy Ball
+enderio.redstoneGrindingBall.name=Redstone Alloy Ball
+enderio.conductiveGrindingBall.name=Conductive Iron Ball
+enderio.pulsatingGrindingBall.name=Pulsating Iron Ball
+enderio.soulariumGrindingBall.name=Soularium Ball
+enderio.endSteelGrindingBall.name=End Steel Ball
+enderio.darkSteelRod.name=Dark Steel Rod
+enderio.blockFusedQuartz.darkFusedQuartz.name=Dark Fused Quartz
+enderio.blockFusedQuartz.darkFusedGlass.name=Dark Clear Glass
+enderio.endSteel.name=End Steel
+enderio.endSteelNugget.name=End Steel Nugget
+enderio.crudeSteel.name=Clay Compound
+enderio.crystallineAlloy.name=Crystalline Alloy
+enderio.melodicAlloy.name=Melodic Alloy
+enderio.stellarAlloy.name=Stellar Alloy
+enderio.crystallinePinkSlime.name=Crystalline Pink Slime
+enderio.energeticSilver.name=Energetic Silver
+enderio.vividAlloy.name=Vivid Alloy
+enderio.crudeSteelGrindingBall.name=Clay Compound Grinding Ball
+enderio.crystallineAlloyGrindingBall.name=Crystalline Alloy Grinding Ball
+enderio.melodicAlloyGrindingBall.name=Melodic Alloy Grinding Ball
+enderio.stellarAlloyGrindingBall.name=Stellar Alloy Grinding Ball
+enderio.crystallinePinkSlimeGrindingBall.name=Crystalline Pink Slime Grinding Ball
+enderio.energeticSilverGrindingBall.name=Energetic Silver Grinding Ball
+enderio.vividAlloyGrindingBall.name=Vivid Alloy Grinding Ball
+enderio.precientCrystal.name=Precient Crystal
+enderio.pulsatingPowder.name=Grains of Piezallity
+enderio.vibrantPowder.name=Grains of Vibrancy
+enderio.enderCrystalPowder.name=Grains of the End
+enderio.precientPowder.name=Grains of Prescience
+enderio.electricalSteel_ball.name=Electrical Steel Ball
+enderio.energeticAlloy_ball.name=Energetic Alloy Ball
+enderio.phasedGold_ball.name=Vibrant Alloy Ball
+enderio.redstoneAlloy_ball.name=Redstone Alloy Ball
+enderio.conductiveIron_ball.name=Conductive Iron Ball
+enderio.phasedIron_ball.name=Pulsating Iron Ball
+enderio.vibrantNugget_ball.name=Vibrant Alloy Nugget Ball
+enderio.darkSteel_ball.name=Dark Steel Ball
+enderio.soularium_ball.name=Soularium Ball
+enderio.endSteel_ball.name=End Steel Ball
+tile.enderio.endSteel.name=End Steel Block
+tile.enderio.crudeSteel.name=Clay Compound Block
+tile.enderio.crystallineAlloy.name=Crystalline Alloy Block
+tile.enderio.melodicAlloy.name=Melodic Alloy Block
+tile.enderio.stellarAlloy.name=Stellar Alloy Block
+tile.enderio.crystallinePinkSlime.name=Crystalline Pink Slime Block
+tile.enderio.energeticSilver.name=Energetic Silver Block
+tile.enderio.vividAlloy.name=Vivid Alloy Block
+enderio.powderObsidian.name=Obsidian Powder
+enderio.crystallineCapacitor.name=Crystalline Capacitor
+enderio.melodicCapacitor.name=Melodic Capacitor
+enderio.stellarCapacitor.name=Stellar Capacitor
+enderio.silverCapacitor.name=Silver Capacitor
+enderio.endergeticCapacitor.name=Endergetic Capacitor
+enderio.endergisedCapacitor.name=Endergised Capacitor
+enderio.totemicCapacitor.name=Totemic Capacitor
+tile.blockSolarPanel.vibrant.name=Vibrant Photovoltaic Cell
+tile.blockSolarPanel.tooltip.common.line1=Solar Power!
+enderio.tooltip.sunlightBlocked=Sky Blocked!
+tile.blockCapBank.tooltip.hasItems={0,number,integer} {0,choice,1#item|1<items} in inventory
+enderio.capbank.iodisplay.stable=I/O
+enderio.capbank.iodisplay.gain=In
+enderio.capbank.iodisplay.loss=Out
+enderio.capbank.iodisplay.input=Input
+enderio.capbank.iodisplay.output=Output
+enderio.gui.fluid.minReq=%s Required for activation
+tile.blockFrankenzombieGenerator.name=Frank'N'Zombie Generator
+tile.blockFrankenzombieGenerator.tooltip.detailed.line1=Consumes Nutrient Distillation
+tile.blockFrankenzombieGenerator.tooltip.detailed.line2=to generate even more power
+enderio.frankenzombieGenerator.fuelTank=Nutrient Tank
+tile.blockEnderGenerator.name=Ender Generator
+tile.blockEnderGenerator.tooltip.detailed.line1=Consumes Dew of the Void
+tile.blockEnderGenerator.tooltip.detailed.line2=to generate power
+enderio.enderGenerator.fuelTank=Void Tank
+enderio.farm.gui.baseUse=Base Use:
+enderio.gui.tooltip.voidslot=Void Slot
+enderio.gui.void.mode=Void Mode
+enderio.gui.void.mode.always=Always
+enderio.gui.void.mode.always.desc=Void slot accepts all items
+enderio.gui.void.mode.if_not_container=If Not Container
+enderio.gui.void.mode.if_not_container.desc=Void slot accepts all items that are not fluid containers
+enderio.gui.void.mode.never=Never
+enderio.gui.void.mode.never.desc=Void slot does not accept items
+enderio.tile.blockPoweredSpawner.tooltip.none=None
+tile.blockWeatherObelisk.name=Weather Obelisk
+tile.blockWeatherObelisk.tooltip.detailed.line1=Changes the current weather
+tile.blockWeatherObelisk.tooltip.detailed.line2=Requires a lot of power and
+tile.blockWeatherObelisk.tooltip.detailed.line3=a catalyst item
+tile.blockBuffer.item.name=Item Buffer
+tile.blockBuffer.power.name=Power Buffer
+tile.blockBuffer.omni.name=Omni Buffer
+tile.blockBuffer.creative.name=Creative Buffer
+tile.blockInventoryPanel.name=Inventory Panel
+tile.blockInventoryPanel.tooltip.basic.line1=Remote access and crafting
+tile.blockInventoryPanel.tooltip.detailed.line1=Allows remote access to inventories via
+tile.blockInventoryPanel.tooltip.detailed.line2=Remote Awareness Upgrades in item conduits.
+tile.blockInventoryPanel.tooltip.detailed.line3=Uses Nutrient Distillation for power.
+tile.blockInventoryPanel.tooltip.detailed.line4=Offers a persistent crafting grid.
+enderio.gui.inventorypanel.header.crafting=Crafting grid
+enderio.gui.inventorypanel.header.return=Return area
+enderio.gui.inventorypanel.header.storage=Storage area
+enderio.gui.inventorypanel.info.filter=<filter by name>
+enderio.gui.inventorypanel.info.offline=<OFFLINE>
+enderio.gui.inventorypanel.tooltip.return.line1=Item return area
+enderio.gui.inventorypanel.tooltip.return.line2=Items placed here can be extracted
+enderio.gui.inventorypanel.tooltip.return.line3=by an item conduit, but will not be
+enderio.gui.inventorypanel.tooltip.return.line4=used for crafting.
+enderio.gui.inventorypanel.tooltip.return.line5=Click to change into storage area.
+enderio.gui.inventorypanel.tooltip.storage.line1=Item storage area
+enderio.gui.inventorypanel.tooltip.storage.line2=Small temporary item storage area.
+enderio.gui.inventorypanel.tooltip.storage.line3=Click to change into return area
+enderio.gui.inventorypanel.tooltip.filterslot.line1=Filter card slot
+enderio.gui.inventorypanel.tooltip.filterslot.line2=Place configured item filters in
+enderio.gui.inventorypanel.tooltip.filterslot.line3=here to select which items to show.
+enderio.gui.inventorypanel.tooltip.sort.name_down.line1=Sort items by name
+enderio.gui.inventorypanel.tooltip.sort.name_up.line1=Sort items by name
+enderio.gui.inventorypanel.tooltip.sort.name_up.line2=Starting at the end of the alphabet
+enderio.gui.inventorypanel.tooltip.sort.mod_down.line1=Sort items by mod ID
+enderio.gui.inventorypanel.tooltip.sort.mod_down.line2=Items from the same mod are sorted by name
+enderio.gui.inventorypanel.tooltip.sort.mod_up.line1=Sort items by mod ID
+enderio.gui.inventorypanel.tooltip.sort.mod_up.line2=Items from the same mod are sorted by name
+enderio.gui.inventorypanel.tooltip.sort.mod_up.line3=Starting at the end of the alphabet
+enderio.gui.inventorypanel.tooltip.sort.count_down.line1=Sort items by their quantity
+enderio.gui.inventorypanel.tooltip.sort.count_down.line2=Starting with the highest quantity
+enderio.gui.inventorypanel.tooltip.sort.count_up.line1=Sort items by their quantity
+enderio.gui.inventorypanel.tooltip.sort.count_up.line2=Starting with the lonely ones
+enderio.gui.inventorypanel.tooltip.refill.line1=Refills the crafting grid
+enderio.gui.inventorypanel.tooltip.refill.line2=A normal click puts items
+enderio.gui.inventorypanel.tooltip.refill.line3=for one crafting opperations,
+enderio.gui.inventorypanel.tooltip.refill.line4=while a shift click tries to
+enderio.gui.inventorypanel.tooltip.refill.line5=fill the crafting grid.
+enderio.gui.inventorypanel.tooltip.setrecipe.line1=Learn the current crafting recipe
+enderio.gui.inventorypanel.tooltip.setrecipe.line2=Allows the refilling for the
+enderio.gui.inventorypanel.tooltip.setrecipe.line3=current recipe from the network.
+enderio.gui.inventorypanel.tooltip.clear.line1=Clear crafting grid
+enderio.gui.inventorypanel.tooltip.clear.line2=Moves all items to the return area
+enderio.gui.inventorypanel.tooltip.fuelTank=Nutrient Tank
+enderio.gui.inventorypanel.tooltip.itemsstored=Items Stored: %s
+enderio.gui.inventorypanel.tooltip.addrecipe.line1=Store the current crafting recipe
+enderio.gui.inventorypanel.tooltip.addrecipe.line2=A maximum of 6 recipes can be stored.
+enderio.gui.inventorypanel.tooltip.addrecipe.line3=Left clicking a stored recipe will try to put
+enderio.gui.inventorypanel.tooltip.addrecipe.line4=items for one crafting operation into the grid.
+enderio.gui.inventorypanel.tooltip.addrecipe.line5=Shift left clicking tries to fill the crafting
+enderio.gui.inventorypanel.tooltip.addrecipe.line6=grid to the maximum.
+enderio.gui.inventorypanel.tooltip.addrecipe.line7=Right click a stored recipe to delete it.
+enderio.gui.inventorypanel.tooltip.sync=NEI Sync
+tile.blockTelePad.name=Telepad Block
+tile.blockTelePad.tooltip.detailed.line1=Uses power to teleport entities
+tile.blockTelePad.tooltip.detailed.line2=to a specific position and dimension.
+tile.blockTelePad.tooltip.detailed.line3=Must be placed in a 3x1x3 multiblock.
+enderio.gui.telepad.teleport=Teleport!
+item.itemCoordSelector.name=Coordinate Selector
+item.itemCoordSelector.tooltip.detailed.line1=Stores coordinates of a block.
+item.itemCoordSelector.tooltip.detailed.line2=Right click at block to select
+item.itemCoordSelector.tooltip.detailed.line3=the block adjacent on that side.
+item.itemCoordSelector.tooltip.detailed.line4=Shift right click at a block to
+item.itemCoordSelector.tooltip.detailed.line5=select that specific block.
+item.itemCoordSelector.tooltip.detailed.line6=Can select from a distance.
+enderio.itemCoordSelector.chat.newCoords=New Coords: %s
+enderio.itemCoordSelector.chat.setCoords=Set Coords: %s
+enderio.itemCoordSelector.chat.newDimension=New Dimension: %s%s
+enderio.itemCoordSelector.chat.setDimension=Set Dimension: %s%s
+enderio.item.itemSoulVessel.tooltip.health=Health:
+enderio.item.itemSoulVessel.tooltip.fluidname=Fluid Name:
+enderio.item.itemSoulVessel.tooltip.color=Color:
+enderio.item.itemSoulVessel.tooltip.empty=Empty
+skullSentientEnder.name=Sentient Ender
+skullSkeletalContractor.name=Skeletal Contractor
+skullGuardianDiode.name=Guardian Diode
+item.darkSteel_shears.name=Dark Shears
+item.endSteel_helmet.name=End Steel Helm
+item.endSteel_chestplate.name=End Steel Plate
+item.endSteel_leggings.name=End Steel Leggings
+item.endSteel_boots.name=End Steel Boots
+item.endSteel_sword.name=The Ender MKII
+item.endSteel_pickaxe.name=End Steel Pick
+item.endSteel_axe.name=End Steel Axe
+item.stellar_helmet.name=Stellar Helm
+item.stellar_chestplate.name=Stellar Plate
+item.stellar_leggings.name=Stellar Leggings
+item.stellar_boots.name=Stellar Boots
+item.stellar_sword.name=The Ender MKIV
+item.stellar_pickaxe.name=Stellar Pick
+item.stellar_axe.name=Stellar Axe
+enderio.item.darkSteel.tooltip.lvs=lvs
+enderio.item.darkSteel_pickaxe.tooltip.cost=cost
+enderio.item.endSteel_pickaxe.tooltip.effPowered=Efficiency when powered
+enderio.item.endSteel_pickaxe.tooltip.effObs=Efficiency breaking obsidian
+enderio.item.endSteel_pickaxe.tooltip.cost=cost
+enderio.item.stellar_pickaxe.tooltip.effPowered=Efficiency when powered
+enderio.item.stellar_pickaxe.tooltip.effObs=Efficiency breaking obsidian
+enderio.item.stellar_pickaxe.tooltip.cost=cost
+enderio.item.endSteel_axe.tooltip.multiHarvest=Sneak to harvest multiple logs
+enderio.item.stellar_axe.tooltip.multiHarvest=Sneak to harvest multiple logs
+enderio.item.darkSteel_shears.tooltip.multiHarvest=Shears multiple blocks/sheep when empowered
+enderio.item.endSteel_sword.tooltip.line1=Increased skull and ender pearl drops
+enderio.item.endSteel_sword.tooltip.line2=Endermen can't teleport once hit
+enderio.item.endSteel_sword.tooltip.line3=+2 Damage when Powered
+enderio.item.stellar_sword.tooltip.line1=Increased skull and ender pearl drops
+enderio.item.stellar_sword.tooltip.line2=Endermen can't teleport once hit
+enderio.item.stellar_sword.tooltip.line3=+2 Damage when Powered
+enderio.item.endSteel_armor.tooltip.line1=Diamond+ level protection
+enderio.item.endSteel_armor.tooltip.line2=when powered
+enderio.item.stellar_armor.tooltip.line1=Diamond+ level protection
+enderio.item.stellar_armor.tooltip.line2=when powered
+enderio.item.endSteel_boots.tooltip.line1=Fall damage negated
+enderio.item.endSteel_boots.tooltip.line2=when powered
+enderio.item.stellar_boots.tooltip.line1=Fall damage negated
+enderio.item.stellar_boots.tooltip.line2=when powered
+enderio.darksteel.upgrade.empowered_five.name=Empowered V
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line1=Power: $P
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line2=$D% damage absorbed
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line3=by power
+enderio.darksteel.upgrade.gogglesOfRevealing.enabled=Magic is being revealed
+enderio.darksteel.upgrade.gogglesOfRevealing.disabled=Magic is hidden from plain sight
+enderio.darksteel.upgrade.naturalistEye.name=Naturalist's Eye
+enderio.darksteel.upgrade.naturalistEye.tooltip.detailed.line1=Shows pollinated tree leaves
+enderio.darksteel.upgrade.apiaristArmor.helmet.name=Apiarist's Hat
+enderio.darksteel.upgrade.apiaristArmor.helmet.tooltip.detailed.line1=Protection against bees
+enderio.darksteel.upgrade.apiaristArmor.chestplate.name=Apiarist's Shirt
+enderio.darksteel.upgrade.apiaristArmor.chestplate.tooltip.detailed.line1=Protection against bees
+enderio.darksteel.upgrade.apiaristArmor.leggings.name=Apiarist's Pants
+enderio.darksteel.upgrade.apiaristArmor.leggings.tooltip.detailed.line1=Protection against bees
+enderio.darksteel.upgrade.apiaristArmor.boots.name=Apiarist's Shoes
+enderio.darksteel.upgrade.apiaristArmor.boots.tooltip.detailed.line1=Protection against bees
+enderio.darksteel.upgrade.jump.enabled=Jump Enabled
+enderio.darksteel.upgrade.jump.disabled=Jump Disabled
+enderio.darksteel.upgrade.solar_three.name=Solar III
+enderio.darksteel.upgrade.solar_three.tooltip.detailed.line1=Generates power from the sun.
+enderio.gui.simple.in=Max In:
+enderio.gui.simple.out=Max Out:
+enderio.gui.available=Available
+enderio.gui.max=Max:
+enderio.gui.progress=Progress {0,number}%
+enderio.gui.machine.button.storelevel=Store 1
+enderio.gui.machine.tooltip.storelevel=level of player XP
+enderio.gui.machine.button.storelevels=Store 10
+enderio.gui.machine.tooltip.storelevels=levels of player XP
+enderio.gui.machine.button.storeall=Store all
+enderio.gui.machine.tooltip.storeall=player XP
+enderio.gui.machine.button.retrievelevel=Retrieve 1
+enderio.gui.machine.tooltip.retrievelevel=player XP level
+enderio.gui.machine.button.retrievelevels=Retrieve 10
+enderio.gui.machine.tooltip.retrievelevels=player XP levels
+enderio.gui.machine.button.retrieveall=Retrieve all
+enderio.gui.machine.tooltip.retrieveall=player XP levels
+enderio.gui.machine.ioMode.overlay.tooltip.visible.line1=Shift click to reset all sides
+enderio.gui.machine.ioMode.overlay.tooltip.visible.line2=to their default setting
+enderio.gui.machine.poweredspawner.capture=Capture
+enderio.gui.machine.poweredspawner.spawn=Spawn
+enderio.gui.machine.receivefilter=Receive Filter
+enderio.gui.machine.sendfilter=Send Filter
+enderio.gui.machine.sendReceivebuffer=Send/Receive Buffer
+enderio.gui.machine.localbuffer=Local Buffer
+enderio.gui.machine.upkeep=Upkeep:
+enderio.gui.machine.bufferingstacks=Buffering item stacks
+enderio.gui.machine.bufferingsingle=Buffering single items
+enderio.gui.machine.percraft=Per Craft
+enderio.gui.powerMonitor.noNetworkError=No conduit network attached. The Power Monitor needs to be attached to a conduit network to read data from.
+enderio.gui.vacuum.range=Suction Strength
+enderio.gui.vacuum.header.chest=Vacuum Chest
+enderio.gui.vacuum.header.filter=Item Filter
+enderio.gui.vacuum.header.range=Range
+enderio.stirlingGenerator.upgradeslot=Upgrade slot
+enderio.stirlingGenerator.upgrades={0} gives {2}{1,number,#.#}x{3} efficiency
+enderio.stirlingGenerator.remaining=Remaining {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
+enderio.gui.travelAccessable.skipLocked=Skipped locked anchor, use targeted teleport.
+enderio.gui.travelAccessable.skipObstructed=Skipped obstructed anchor.
+enderio.gui.travelAccessable.skipPrivate=Skipped private anchor.
+enderio.gui.telepad.configure.travel=Travel Settings
+enderio.gui.telepad.configure.telepad=Telepad Settings
+enderio.gui.telepad.blocked=Teleport Blocked!
+enderio.gui.spawnGurad.hideRange=Hide Range
+enderio.gui.conduit.button.clear=Clear
+enderio.gui.conduit.button.merge=Merge
+enderio.gui.conduit.button.show=Show
+enderio.gui.conduit.button.snap=Snapshot
+enderio.gui.conduit.item.whitelist.tooltip.0=If item list is empty, no item
+enderio.gui.conduit.item.whitelist.tooltip.1=will be allowed to pass
+enderio.gui.conduit.item.blacklist.tooltip.0=If item list is empty, all items
+enderio.gui.conduit.item.blacklist.tooltip.1=will be allowed to pass
+enderio.gui.conduit.item.fuzzy.disabled=Damage Mode: Disabled
+enderio.gui.conduit.item.fuzzy.fuzzy_25=Damage Mode: Damaged by 25% or more
+enderio.gui.conduit.item.fuzzy.fuzzy_50=Damage Mode: Damaged by 50% or more
+enderio.gui.conduit.item.fuzzy.fuzzy_75=Damage Mode: Damaged by 75% or more
+enderio.gui.conduit.item.fuzzy.fuzzy_99=Damage Mode: Damaged at least once
+enderio.gui.conduit.item.fuzzy.tooltip.0=Can work without items in the filter
+enderio.gui.conduit.item.fuzzy.tooltip.1=In this case its logic can be
+enderio.gui.conduit.item.fuzzy.tooltip.2=controlled by %s button
+enderio.gui.conduit.item.filterupgrade=Insert Item Filter
+enderio.gui.conduit.item.speedupgrade=Insert Item Conduit Speed Upgrades/Downgrade
+enderio.gui.conduit.item.speedupgrade2=Max upgrades is 15; Max downgrades is 1
+enderio.gui.conduit.item.functionupgrade.line1=Possible function upgrades:
+enderio.gui.conduit.fluid.whitelist=Whitelist
+enderio.gui.conduit.fluid.blacklist=Blacklist
+enderio.gui.weather.task.clear=Clear Weather
+enderio.gui.weather.task.rain=Rainy Weather
+enderio.gui.weather.task.storm=Thunderstorm
+enderio.gui.weather.requiredfluid=Required Fluid: %s L
+enderio.weatherObelisk.fuelTank=Barometric Flux Tank
+description.enchantment.enderio.soulBound=Prevents item from being lost on death
+enderio.category.darksteelarmor=Dark Steel Armor
+enderio.category.tools=Tools
+enderio.keybind.glidertoggle=Glider Toggle
+enderio.keybind.gogglesofrevealing=Goggles of Revealing
+enderio.keybind.nightvision=Night Vision
+enderio.keybind.soundlocator=Sound Locator
+enderio.keybind.speed=Speed
+enderio.keybind.jump=Jump
+enderio.keybind.stepassist=Step Assist
+enderio.keybind.yetawrenchmode=Yeta Wrench Mode
+enderio.keybind.magnet=Toggle Electromagnet
+enderio.nei.alloysmelter=Alloy Smelter
+enderio.nei.enchanter=Enchanter
+enderio.nei.sagmill=SAG Mill
+enderio.nei.sagmill.outputchance=Chance: {0,choice,0#'<1'|0<{0,number}}%
+enderio.nei.slicensplice=Slice'N'Splice
+enderio.nei.soulbinder=Soul Binder
+enderio.nei.vat=Vat
+enderio.tooltip.burntime=Burn Time:
+enderio.tooltip.oredict=Ore Dictionary:
+enderio.tooltip.meta=Meta:
+enderio.tooltip.uid=UID:
+enderio.tooltip.anvilupgrades=Anvil Upgrades:
+enderio.waila.config.hiddenfacades=Sneaky Facades

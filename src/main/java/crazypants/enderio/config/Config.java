@@ -702,46 +702,46 @@ public final class Config {
         "The range of the wireless charger").getInt(wirelessChargerRange);
 
     fluidConduitExtractRate = config.get(sectionEfficiency.name, "fluidConduitExtractRate", fluidConduitExtractRate,
-        "Number of millibuckets per tick extracted by a fluid conduits auto extracting").getInt(fluidConduitExtractRate);
+        "Number of liters per tick extracted by a fluid conduits auto extracting").getInt(fluidConduitExtractRate);
 
     fluidConduitMaxIoRate = config.get(sectionEfficiency.name, "fluidConduitMaxIoRate", fluidConduitMaxIoRate,
-        "Number of millibuckets per tick that can pass through a single connection to a fluid conduit.").getInt(fluidConduitMaxIoRate);
+        "Number of liters per tick that can pass through a single connection to a fluid conduit.").getInt(fluidConduitMaxIoRate);
 
     advancedFluidConduitExtractRate = config.get(sectionEfficiency.name, "advancedFluidConduitExtractRate", advancedFluidConduitExtractRate,
-        "Number of millibuckets per tick extracted by pressurized fluid conduits auto extracting").getInt(advancedFluidConduitExtractRate);
+        "Number of liters per tick extracted by pressurized fluid conduits auto extracting").getInt(advancedFluidConduitExtractRate);
 
     advancedFluidConduitMaxIoRate = config.get(sectionEfficiency.name, "advancedFluidConduitMaxIoRate", advancedFluidConduitMaxIoRate,
-        "Number of millibuckets per tick that can pass through a single connection to an pressurized fluid conduit.").getInt(advancedFluidConduitMaxIoRate);
+        "Number of liters per tick that can pass through a single connection to an pressurized fluid conduit.").getInt(advancedFluidConduitMaxIoRate);
 
     enderFluidConduitExtractRate = config.get(sectionEfficiency.name, "enderFluidConduitExtractRate", enderFluidConduitExtractRate,
-        "Number of millibuckets per tick extracted by ender fluid conduits auto extracting").getInt(enderFluidConduitExtractRate);
+        "Number of liters per tick extracted by ender fluid conduits auto extracting").getInt(enderFluidConduitExtractRate);
 
     enderFluidConduitMaxIoRate = config.get(sectionEfficiency.name, "enderFluidConduitMaxIoRate", enderFluidConduitMaxIoRate,
-        "Number of millibuckets per tick that can pass through a single connection to an ender fluid conduit.").getInt(enderFluidConduitMaxIoRate);
+        "Number of liters per tick that can pass through a single connection to an ender fluid conduit.").getInt(enderFluidConduitMaxIoRate);
 
     crystallineEnderFluidConduitExtractRate = config.get(sectionEfficiency.name, "crystallineEnderFluidConduitExtractRate", crystallineEnderFluidConduitExtractRate,
-        "Number of millibuckets per tick extracted by crystalline ender fluid conduits auto extracting").getInt(crystallineEnderFluidConduitExtractRate);
+        "Number of liters per tick extracted by crystalline ender fluid conduits auto extracting").getInt(crystallineEnderFluidConduitExtractRate);
 
     crystallineEnderFluidConduitMaxIoRate = config.get(sectionEfficiency.name, "crystallineEnderFluidConduitMaxIoRate", crystallineEnderFluidConduitMaxIoRate,
-        "Number of millibuckets per tick that can pass through a single connection to a crystalline ender fluid conduit.").getInt(crystallineEnderFluidConduitMaxIoRate);
+        "Number of liters per tick that can pass through a single connection to a crystalline ender fluid conduit.").getInt(crystallineEnderFluidConduitMaxIoRate);
 
     crystallinePinkSlimeEnderFluidConduitExtractRate = config.get(sectionEfficiency.name, "crystallinePinkSlimeEnderFluidConduitExtractRate", crystallinePinkSlimeEnderFluidConduitExtractRate,
-        "Number of millibuckets per tick extracted by crystalline pink slime ender fluid conduits auto extracting").getInt(crystallinePinkSlimeEnderFluidConduitExtractRate);
+        "Number of liters per tick extracted by crystalline pink slime ender fluid conduits auto extracting").getInt(crystallinePinkSlimeEnderFluidConduitExtractRate);
 
     crystallinePinkSlimeEnderFluidConduitMaxIoRate = config.get(sectionEfficiency.name, "crystallinePinkSlimeEnderFluidConduitMaxIoRate", crystallinePinkSlimeEnderFluidConduitMaxIoRate,
-        "Number of millibuckets per tick that can pass through a single connection to a crystalline pink slime ender fluid conduit.").getInt(crystallinePinkSlimeEnderFluidConduitMaxIoRate);
+        "Number of liters per tick that can pass through a single connection to a crystalline pink slime ender fluid conduit.").getInt(crystallinePinkSlimeEnderFluidConduitMaxIoRate);
 
     melodicEnderFluidConduitExtractRate = config.get(sectionEfficiency.name, "melodicEnderFluidConduitExtractRate", melodicEnderFluidConduitExtractRate,
-        "Number of millibuckets per tick extracted by melodic ender fluid conduits auto extracting").getInt(melodicEnderFluidConduitExtractRate);
+        "Number of liters per tick extracted by melodic ender fluid conduits auto extracting").getInt(melodicEnderFluidConduitExtractRate);
 
     melodicEnderFluidConduitMaxIoRate = config.get(sectionEfficiency.name, "melodicEnderFluidConduitMaxIoRate", melodicEnderFluidConduitMaxIoRate,
-        "Number of millibuckets per tick that can pass through a single connection to a melodic ender fluid conduit.").getInt(melodicEnderFluidConduitMaxIoRate);
+        "Number of liters per tick that can pass through a single connection to a melodic ender fluid conduit.").getInt(melodicEnderFluidConduitMaxIoRate);
 
     stellarEnderFluidConduitExtractRate = config.get(sectionEfficiency.name, "stellarEnderFluidConduitExtractRate", stellarEnderFluidConduitExtractRate,
-        "Number of millibuckets per tick extracted by stellar ender fluid conduits auto extracting").getInt(stellarEnderFluidConduitExtractRate);
+        "Number of liters per tick extracted by stellar ender fluid conduits auto extracting").getInt(stellarEnderFluidConduitExtractRate);
 
     stellarEnderFluidConduitMaxIoRate = config.get(sectionEfficiency.name, "stellarEnderFluidConduitMaxIoRate", stellarEnderFluidConduitMaxIoRate,
-        "Number of millibuckets per tick that can pass through a single connection to a stellar ender fluid conduit.").getInt(stellarEnderFluidConduitMaxIoRate);
+        "Number of liters per tick that can pass through a single connection to a stellar ender fluid conduit.").getInt(stellarEnderFluidConduitMaxIoRate);
 
     gasConduitExtractRate = config.get(sectionEfficiency.name, "gasConduitExtractRate", gasConduitExtractRate,
         "Amount of gas per tick extracted by gas conduits auto extracting").getInt(gasConduitExtractRate);
@@ -753,7 +753,7 @@ public final class Config {
         "Use TheKazador's alternative model for the Dimensional Transceiver")
         .getBoolean(false);
     transceiverEnergyLoss = config.get(sectionPower.name, "transceiverEnergyLoss", transceiverEnergyLoss,
-        "Amount of energy lost when transfered by Dimensional Transceiver; 0 is no loss, 1 is 100% loss").getDouble(transceiverEnergyLoss);
+        "Amount of energy lost when transferred by Dimensional Transceiver; 0 is no loss, 1 is 100% loss").getDouble(transceiverEnergyLoss);
     transceiverUpkeepCostRF = config.get(sectionPower.name, "transceiverUpkeepCostRF", transceiverUpkeepCostRF,
         "Number of RF/t required to keep a Dimensional Transceiver connection open").getInt(transceiverUpkeepCostRF);
     transceiverMaxIoRF = config.get(sectionPower.name, "transceiverMaxIoRF", transceiverMaxIoRF,

@@ -1,14 +1,14 @@
-//***  Ender IO *****//
+#***  Ender IO ***#
 
-//Power
+#Power
 enderio.power.rf=RF
-enderio.power.tmb=тик/мВ
+enderio.power.tmb=тик/Л
 enderio.power.tick=/тик
 enderio.power.maxOutput=Макс. выход
 enderio.power.generates=Генерирует
 enderio.power.generation_rate=на скорости
 
-//Ender IO / Enderface
+#Ender IO / Enderface
 tile.blockEnderIo.name=Интерфейс Края
 tile.blockEnderIo.tooltip.detailed.line1=Даёт удалённый доступ к ближайшим
 tile.blockEnderIo.tooltip.detailed.line2=блокам
@@ -17,7 +17,7 @@ tile.blockEnderIo.tooltip.detailed.line4=с посохом путешестви�
 
 item.enderio.itemEnderface.name=Лицо Края
 
-//Conduits
+#Conduits
 enderio.blockConduitBundle=Связка труб
 enderio.blockConduitFacade=Фасад для труб
 item.enderio.itemConduitFacade.name=Фасад для труб
@@ -123,10 +123,10 @@ enderio.itemMEConduit.channelsUsed=Каналы: {0,number} из {1,number}
 
 enderio.itemOCConduit.name=Системная труба (OC)
 
-//Entity
+#Entity
 entity.witherSkeleton.name=Скелет-иссушитель
 
-//Materials
+#Materials
 enderio.itemMaterial.name=Материалы
 enderio.silicon.name=Кремний
 enderio.conduitBinder.name=Связующий элемент труб
@@ -150,7 +150,7 @@ enderio.itemEnderios.tooltip.detailed.line2=и 394г пыли Края.
 enderio.itemEnderios.tooltip.detailed.line3=Побочные эффекты пыли Края: тошнота, головокружение, смятение 
 enderio.itemEnderios.tooltip.detailed.line4=и случайная телепортация.
 
-//Fluids
+#Fluids
 fluid.nutrient_distillation=Питательный дистиллят
 tile.fluid.nutrient_distillation.name=Питательный дистиллят
 item.bucketNutrient_distillation.name=Ведро питательного дистиллята
@@ -168,16 +168,16 @@ fluid.eio.xpjuice=Жидкий опыт
 tile.fluid.eio.xpjuice.name=Жидкий опыт
 item.bucketXpjuice.name=Ведро опыта
 
-enderio.fluid.millibucket.abr=мВ
+enderio.fluid.millibucket.abr=Л
 
 enderio.fuel.tooltip.heading=Информация о топливе
 enderio.fuel.tooltip.burnTime=время горения {0,number}
-enderio.fluid.millibucketsTick=мВ/тик
+enderio.fluid.millibucketsTick=Л/тик
 enderio.coolant.tooltip.heading=Хладагент
 enderio.coolant.tooltip.degreesPerBucket=Градус за ведро
 enderio.gas.gasTick=Газ/тик
 
-//Materials
+#Materials
 enderio.itemMachinePart.name=Детали механизма
 enderio.machineChassi.name=Корпус механизма
 enderio.basicGear.name=Основная шестерня
@@ -195,7 +195,7 @@ enderio.darkGrindingBall.tooltip.detailed.line4=Снижение мощност�
 tile.blockReinforcedObsidian.name=Укреплённый обсидиан
 tile.blockReinforcedObsidian.tooltip.common.line1=Защищён от иссушителей
 
-//Quartz / Glass
+#Quartz / Glass
 tile.blockFusedQuartz.name=Расплавленный кварц
 enderio.blockFusedQuartz.fusedQuartz.name=Расплавленный кварц
 enderio.blockFusedQuartz.fusedGlass.name=Почти прозрачное стекло
@@ -207,7 +207,7 @@ enderio.blockFusedQuartz.darkFusedGlass.name=Тёмное прозрачное �
 item.enderio.itemFusedQuartzFrame.name=Рамка из расплавленного кварца
 enderio.itemPowderIngot=Порошки и слитки
 
-//Alloys
+#Alloys
 enderio.itemAlloy.name=Сплав
 enderio.electricalSteel.name=Наэлектризованная сталь
 enderio.energeticAlloy.name=Энергетический сплав
@@ -230,7 +230,7 @@ tile.enderio.vibrantNugget.name=Блок самородка вибрирующе
 tile.enderio.darkSteel.name=Блок тёмной стали
 tile.enderio.soularium.name=Блок соулария
 
-//Powder / Ingot
+#Powder / Ingot
 enderio.powderCoal.name=Угольный порошок
 enderio.powderIron.name=Железный порошок
 enderio.powderGold.name=Золотой порошок
@@ -240,7 +240,7 @@ enderio.powderEnder.name=Порошок из жемчуга Края
 enderio.powderObsidian.name=Обсидиановый порошок
 enderio.ingotEnderiumBase.name=Основа Края
 
-//Capacitors
+#Capacitors
 enderio.itemBasicCapacitor.name=Конденсатор
 enderio.basicCapacitor.name=Основной конденсатор
 enderio.activatedCapacitor.name=Двухслойный конденсатор
@@ -251,7 +251,7 @@ enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Увеличивает х
 enderio.machine.tooltip.upgrade.tooltip.detailed.line2=скорость / радиус механизмов
 enderio.machine.tooltip.clearConfig=Это очистит всю хранящуюся информацию!
 
-//Machines
+#Machines
 tile.blockStirlingGenerator.name=Генератор Стирлинга
 tile.blockStirlingGenerator.tooltip.detailed.line1=Сжигает твёрдое топливо для производства энергии
 tile.blockStirlingGenerator.tooltip.detailed.line2=Может быть улучшен, чтобы увеличить выход
@@ -565,7 +565,7 @@ enderio.gui.inventorypanel.tooltip.sync=Синхронизация с NEI
 
 enderio.machine.tooltip.configured=(Настроен)
 
-//Blocks
+#Blocks
 tile.blockDarkSteelPressurePlate.name=Тёмная нажимная пластина
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line1=Активируется только игроками
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line2=Может быть покрашена в покрасочном механизме,
@@ -587,7 +587,7 @@ tile.blockDarkSteelAnvil.tooltip.detailed.line2=обычной наковаль�
 tile.blockDarkSteelLadder.name=Лестница из тёмной стали
 tile.blockDarkSteelLadder.tooltip.common.line1=Быстрее обычных лестниц
 
-//Travel
+#Travel
 tile.blockTravelAnchor.name=Якорь путешествия
 tile.blockTravelAnchor.tooltip.detailed.line1=Позволяет телепортироваться между якорями
 tile.blockTravelAnchor.tooltip.detailed.line2=Встаньте на один якорь, посмотрите
@@ -625,7 +625,7 @@ enderio.itemCoordSelector.chat.setCoords=Выбранные координаты
 enderio.itemCoordSelector.chat.newDimension=Новое измерение: %s%s
 enderio.itemCoordSelector.chat.setDimension=Выбранное измерение: %s%s
 
-//Painter
+#Painter
 tile.blockPainter.name=Покрасочный механизм
 enderio.blockPainter.paintedWith=Покрашено в:
 tile.blockPaintedFence.name=Покрашенный забор
@@ -645,7 +645,7 @@ tile.blockPainter.tooltip.detailed.line4=стеклянных рамок, све
 tile.blockPainter.tooltip.detailed.line5=тёмных нажимных пластин,
 tile.blockPainter.tooltip.detailed.line6=якорей путешествия
 
-//Items
+#Items
 item.itemYetaWrench.name=Гаечный ключ Yeta
 item.itemYetaWrench.tooltip.detailed.line1=Скрывает фасады труб, когда в руке
 item.itemYetaWrench.tooltip.detailed.line2=Shift-ПКМ, чтобы моментально демонтировать
@@ -692,7 +692,7 @@ skullSentientEnder.name=Разумный Край
 
 item.itemSpawnEggEnderIO.name=Призвать существо - 
 
-//Dark Steel
+#Dark Steel
 item.darkSteel_helmet.name=Тёмный шлем
 item.darkSteel_chestplate.name=Тёмная кираса
 item.darkSteel_leggings.name=Тёмные поножи
@@ -825,7 +825,7 @@ enderio.darksteel.upgrade.solar_one.tooltip.detailed.line1=Генерирует 
 enderio.darksteel.upgrade.solar_two.name=Солнечная батарея II
 enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1==Генерирует энергию от солнца.
 
-//------GUI
+#------GUI
 
 enderio.gui.simple.in=Макс. вход:
 enderio.gui.simple.out=Макс. выход:
@@ -839,7 +839,7 @@ enderio.gui.receive=Получать
 enderio.gui.send=Отправлять
 enderio.gui.sendReceive=Отправлять и получать
 
-//Redstone controls
+#Redstone controls
 enderio.gui.tooltip.redstoneControlMode=Режим красного камня
 enderio.gui.tooltip.redstoneControlMode.ignore=Всегда активен
 enderio.gui.tooltip.redstoneControlMode.on=Активен по сигналу
@@ -887,7 +887,7 @@ enderio.gui.machine.side.up=Верх
 enderio.gui.machine.side.down=Низ
 
 
-//Power Monitor
+#Power Monitor
 enderio.gui.powerMonitor.engineControl=Управление двигателем
 enderio.gui.powerMonitor.emit=Подавать сигнал
 enderio.gui.powerMonitor.engineSection1=Подать сигнал, если хранилище заполнено меньше
@@ -903,7 +903,7 @@ enderio.gui.powerMonitor.monHeading4=Средний выход за 5 секун
 enderio.gui.powerMonitor.monHeading5=Средний вход за 5 секунд
 enderio.gui.powerMonitor.noNetworkError=Нет соединения с сетью. Индикатор мощности должен быть подключён к сети для считывания информации.
 
-//MJ Reader
+#MJ Reader
 enderio.gui.mjReader.networkHeading=Силовая сеть
 enderio.gui.mjReader.conduitBuffer=Встроенный буфер
 enderio.gui.mjReader.requestRange=Диапазон запросов за тик
@@ -922,7 +922,7 @@ enderio.gui.mjReader.receiveItems=Может получать предметы �
 enderio.gui.mjReader.receiveItem1=Может получать
 enderio.gui.mjReader.receiveItem2=от:
 
-//CapactorBank
+#CapactorBank
 enderio.gui.capBank.inputRs=Режим красного камня на входе
 enderio.gui.capBank.outputRs=Режим красного камня на выходе
 enderio.gui.capBank.maxIo=Макс. вход/выход
@@ -931,7 +931,7 @@ enderio.gui.capBank.maxOutput=Макс. выход
 enderio.gui.capBank.inputMode=Вход
 enderio.gui.capBank.outputMode=Выход
 
-//Transceiver
+#Transceiver
 enderio.gui.trans.publicChannel=Общедоступный канал
 enderio.gui.trans.privateChannel=Частный канал
 enderio.gui.trans.addChannel=Добавить канал
@@ -943,37 +943,37 @@ enderio.gui.trans.itemMode=Режим предметов
 enderio.gui.trans.publicHeading=Общедоступный
 enderio.gui.trans.privateHeading=Частный
 
-//Alloy Smelter
+#Alloy Smelter
 enderio.gui.alloy.mode.heading=Режим печи
 enderio.gui.alloy.mode.all=Выплавка всех материалов
 enderio.gui.alloy.mode.alloy=Только сплавы
 enderio.gui.alloy.mode.furnace=Только обычные рецепты
 
-//Vacuum chest
+#Vacuum chest
 enderio.gui.vacuum.range=Сила всасывания
 enderio.gui.vacuum.header.chest=Вакуумный сундук
 enderio.gui.vacuum.header.filter=Предметный фильтр
 enderio.gui.vacuum.header.range=Дальность
 
-//Vat
+#Vat
 enderio.vat.outputTank=Выход чана
 enderio.vat.inputTank=Вход чана
 enderio.gui.machine.vat.dump.1=Сбросить резервуар входа
 enderio.gui.machine.vat.dump.2=Сбросить резервуар выхода
 
-//Combustion Gen
+#Combustion Gen
 enderio.combustionGenerator.coolantTank=Охладитель
 enderio.combustionGenerator.fuelTank=Топливо
 enderio.combustionGenerator.output=Генерирует:
 
-//Stirling Gen
+#Stirling Gen
 enderio.stirlingGenerator.output=Генерирование:
 enderio.stirlingGenerator.burnRate=Скорость сгорания:
 enderio.stirlingGenerator.upgradeslot=Слот улучшения
 enderio.stirlingGenerator.upgrades={0} даёт {2}{1,number,#.#}x{3} эффективности
 enderio.stirlingGenerator.remaining=Осталось {0,number,percent}|{1,choice,0#|0<{1}m }{2,number}s|{3,number,#,###} RF
 
-//Travel Blocks
+#Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=Только
 enderio.gui.travelAccessable.privateBlock2=может управлять настройками этого блока.
 enderio.gui.travelAccessable.public=Общедоступный
@@ -990,12 +990,12 @@ enderio.gui.telepad.configure.travel=Настройки путешествий
 enderio.gui.telepad.configure.telepad=Настройки телепорта
 enderio.gui.telepad.blocked=Телепорт заблокирован!
 
-//Spawn Gurad [sic]
+#Spawn Gurad [sic]
 enderio.gui.spawnGurad.showRange=Показать дальность
 enderio.gui.spawnGurad.hideRange=Спрятать дальность
 enderio.gui.spawnGurad.range=Дальность:
 
-//conduits
+#conduits
 enderio.gui.conduit.ioMode=Режим
 enderio.gui.conduit.ioMode.inOut=Вход / Выход
 enderio.gui.conduit.ioMode.input=Извлекать
@@ -1058,17 +1058,16 @@ enderio.gui.conduit.fluid.blacklist=Чёрный список
 
 enderio.gui.conduit.gas.autoExtract=Авто-извлечение
 
-//Weather
+#Weather
 enderio.gui.weather.task.clear=Ясная погода
 enderio.gui.weather.task.rain=Дождливая погода
 enderio.gui.weather.task.storm=Гроза
-enderio.gui.weather.requireditem=Требуется предмет: %s
 
-//Enchants
+#Enchants
 enchantment.enderio.soulBound=Печать души
 description.enchantment.enderio.soulBound=Предотвращает потерю предмета из инвентаря после смерти
 
-//Configuration
+#Configuration
 enderio.config.title=Конфигурация Ender IO
 
 enderio.config.power=Настройки энергии
@@ -1113,7 +1112,7 @@ enderio.config.fluid.tooltip=Чистая энергия жидкостей!
 enderio.config.spawner=Настройки электрического спаунера
 enderio.config.spawner.tooltip=У меня закончились остроумные подсказки.
 
-//Keybinds/Waila/NEI/Tooltips
+#Keybinds/Waila/NEI/Tooltips
 enderio.category.darksteelarmor=Броня из тёмной стали
 enderio.category.tools=Инструменты
 enderio.keybind.glidertoggle=Переключить планер

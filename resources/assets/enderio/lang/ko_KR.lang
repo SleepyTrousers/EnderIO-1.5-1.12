@@ -1,13 +1,13 @@
-//***  Ender IO *****//
-//Korean Localization text 한국어 현지화 텍스트
-//NOTE: detailed.line이 붙은 경우, 이어진 글을 뜻합니다. 말뜻이 이어지도록 해석해 주시기 바랍니다.
+#***  Ender IO ***#
+#Korean Localization text 한국어 현지화 텍스트
+#NOTE: detailed.line이 붙은 경우, 이어진 글을 뜻합니다. 말뜻이 이어지도록 해석해 주시기 바랍니다.
 
-//Power
+#Power
 enderio.power.rf=RF
 enderio.power.tick=/t
 enderio.power.maxOutput=최대 출력
 
-//Ender IO / Enderface
+#Ender IO / Enderface
 tile.blockEnderIo.name=엔더 IO
 tile.blockEnderIo.tooltip.detailed.line1=근처의 블럭들에 대한
 tile.blockEnderIo.tooltip.detailed.line2=원격 접근을 허용합니다.
@@ -16,7 +16,7 @@ tile.blockEnderIo.tooltip.detailed.line4=함께 사용할 수 있습니다.
 
 item.enderio.itemEnderface.name=엔더 얼굴
 
-//Conduits
+#Conduits
 enderio.blockConduitBundle=컨두잇 묶음
 enderio.blockConduitFacade=컨두잇 덮개
 item.enderio.itemConduitFacade.name=컨두잇 덮개
@@ -91,7 +91,7 @@ enderio.itemGasConduit.tooltip.detailed.line1=메탈러지 호환 기체 전송
 enderio.itemMEConduit.name=ME 컨두잇
 enderio.itemMEConduitDense.name=밀집된 ME 컨두잇
 
-//Materials
+#Materials
 enderio.itemMaterial.name=자원
 enderio.silicon.name=실리콘
 enderio.conduitBinder.name=컨두잇 접합제
@@ -106,7 +106,7 @@ enderio.blastResistant=폭발 저항
 enderio.lightEmitter=빛을 발합니다.
 enderio.tooltip.isBeaconBase=신호기에 사용 가능
 
-//Fluids
+#Fluids
 fluid.nutrient_distillation=영양 증류액
 tile.fluid.nutrient_distillation.name=영양 증류액
 item.bucketNutrient_distillation.name=영양 증류액 양동이
@@ -125,17 +125,17 @@ tile.fluid.eio.xpjuice.name=액체 XP
 item.bucketXpjuice.name=XP 양동이
 
 
-enderio.fluid.millibucket.abr=mB
+enderio.fluid.millibucket.abr=L
 
 enderio.fuel.tooltip.heading=연료 세부사항
 enderio.fuel.tooltip.burnTime=연료 소모시간 {0,number}
-enderio.fluid.millibucketsTick=mB/t
-coolant.tooltip.heading=냉각제
-enderio.fuel.tooltip.degreesPerBucket=양동이당 온도
+enderio.fluid.millibucketsTick=L/t
+enderio.coolant.tooltip.heading=냉각제
+enderio.coolant.tooltip.degreesPerBucket=양동이당 온도
 enderio.gas.gasTick=Gas/t
 
 
-//Materials
+#Materials
 enderio.itemMachinePart.name=기계 부품
 enderio.machineChassi.name=기계 틀
 enderio.basicGear.name=기본 톱니바퀴
@@ -152,7 +152,7 @@ enderio.darkGrindingBall.tooltip.detailed.line4=전력 절감
 tile.blockReinforcedObsidian.name=강화 흑요석
 tile.blockReinforcedObsidian.tooltip.common.line1=위더에 내성을 가지고 있습니다.
 
-//Quartz / Glass
+#Quartz / Glass
 tile.blockFusedQuartz.name=재결정 석영
 enderio.blockFusedQuartz.fusedQuartz.name=재결정 석영
 enderio.blockFusedQuartz.fusedGlass.name=투명한 유리
@@ -162,7 +162,7 @@ enderio.blockFusedQuartz.enlightenedFusedGlass.name=고급 투명한 유리
 item.enderio.itemFusedQuartzFrame.name=재결정 석영 틀
 enderio.itemPowderIngot=분말 & 주괴
 
-//Alloys
+#Alloys
 enderio.itemAlloy.name=합금
 enderio.electricalSteel.name=전기강
 enderio.energeticAlloy.name=활동성 합금
@@ -185,7 +185,7 @@ tile.enderio.vibrantNugget.name=진동성 조각 블럭
 tile.enderio.darkSteel.name=흑강 블럭
 tile.enderio.soularium.name=소울라륨 블럭
 
-//Powder / Ingot
+#Powder / Ingot
 enderio.powderCoal.name=석탄 분말
 enderio.powderIron.name=철 분말
 enderio.powderGold.name=금 분말
@@ -193,7 +193,7 @@ enderio.powderCopper.name=구리 분말
 enderio.powderTin.name=주석 분말
 enderio.powderEnder.name=엔더 분말
 
-//Capacitors
+#Capacitors
 enderio.itemBasicCapacitor.name=축전지
 enderio.basicCapacitor.name=기본 축전지
 enderio.activatedCapacitor.name=이중 축전지
@@ -204,7 +204,7 @@ enderio.machine.tooltip.upgrade.tooltip.detailed.line1=기계의 에너지 저�
 enderio.machine.tooltip.upgrade.tooltip.detailed.line2=작업 속도, 작동 범위를 높여줍니다.
 enderio.machine.tooltip.clearConfig=모든 정보가 초기화됨니다!
 
-//Machines
+#Machines
 tile.blockStirlingGenerator.name=스털링식 화력 발전기
 tile.blockStirlingGenerator.tooltip.detailed.line1=고체 연료를 태와 전력을 만들어냅니다.
 tile.blockStirlingGenerator.tooltip.detailed.line2=축전기를 넣어 효율을 높이고
@@ -323,7 +323,7 @@ tile.blockVat.tooltip.detailed.line1=엔더 IO 유체들을 양조하기 위한 
 tile.blockEnchanter.name=마법 부여기
 tile.blockEnchanter.tooltip.detailed.line1=액체 경헙치로 아이템을 합치고
 tile.blockEnchanter.tooltip.detailed.line2=책과 깃펜을 사용해
-tile.blockEnchanter.tooltip.detailed.line2=마법이 부여된 책을 만들어냅니다.
+tile.blockEnchanter.tooltip.detailed.line3=마법이 부여된 책을 만들어냅니다.
 
 tile.blockCombustionGenerator.name=연소 발전기
 tile.blockCombustionGenerator.tooltip.detailed.line1=액체 연료를 연소시켜 전력을 만들어냅니다.
@@ -412,15 +412,13 @@ tile.blockSpawnGuard.tooltip.detailed.line1=작동 범위 안에서
 tile.blockSpawnGuard.tooltip.detailed.line2=설정된 몹의 스폰을 막습니다.
 
 tile.blockExperienceObelisk.name=경험의 오벨리스크
-tile.blockExperienceObelisk.tooltip.detailed.line1=유체 탱크 위에 설치할 시
-tile.blockExperienceObelisk.tooltip.detailed.line2=우클릭으로 저장된 경험치를 꺼낼 수 있습니다.
-tile.blockExperienceObelisk.tooltip.detailed.line3=빈 손으로 앉아서 우클릭해
-tile.blockExperienceObelisk.tooltip.detailed.line4=플레이어의 경험치를 탱크로 빼낼 수 있습니다.
-tile.blockExperienceObelisk.tooltip.detailed.line5=좌클릭해 1레벨만큼의 경험치를 꺼낼 수 있습니다.
+tile.blockExperienceObelisk.tooltip.detailed.line1=매장 체험
+tile.blockExperienceObelisk.tooltip.detailed.line2=액체 XP를 출력할 수 있습니다
+tile.blockExperienceObelisk.tooltip.detailed.line3=인접한 탱크
 
 enderio.machine.tooltip.configured=(설정됨)
 
-//Blocks
+#Blocks
 tile.blockDarkSteelPressurePlate.name=흑강 감압판
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line1=플레이어에게만 반응합니다.
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line2=채색기에서 채색할 수 있습니다.
@@ -439,7 +437,7 @@ tile.blockDarkSteelAnvil.tooltip.common.line1=내구도가 높습니다.
 tile.blockDarkSteelAnvil.tooltip.detailed.line1=바닐라의 모루보다
 tile.blockDarkSteelAnvil.tooltip.detailed.line2=오래 사용 가능합니다.
 
-//Travel
+#Travel
 tile.blockTravelAnchor.name=여행자의 닻
 tile.blockTravelAnchor.tooltip.detailed.line1=근처에 있는 다른 여행자의 닻으로 텔레포트 가능합니다.
 tile.blockTravelAnchor.tooltip.detailed.line2=한 개의 닻에 서서 다른 닻을 보고
@@ -459,7 +457,7 @@ item.itemTravelStaff.tooltip.detailed.line4=앉은 체로 우클릭하면
 item.itemTravelStaff.tooltip.detailed.line5=플레이어를 단거리 텔레포트시킵니다.
 enderio.itemTravelStaff.notEnoughPower=전력이 모자랍니다!
 
-//Painter
+#Painter
 tile.blockPainter.name=채색기
 enderio.blockPainter.paintedWith=채색된 블럭:
 tile.blockPaintedFence.name=채색된 울타리
@@ -479,7 +477,7 @@ tile.blockPainter.tooltip.detailed.line4=유리 틀, 발광석, 카펫,
 tile.blockPainter.tooltip.detailed.line5=흑강 감압판,
 tile.blockPainter.tooltip.detailed.line6=여행자의 닻
 
-//Items
+#Items
 item.itemYetaWrench.name=예타 렌치
 item.itemYetaWrench.tooltip.detailed.line1=손에 쥘 시 컨두잇 덮개가 투명해집니다.
 item.itemYetaWrench.tooltip.detailed.line2=앉은 채로 우클릭해
@@ -521,7 +519,7 @@ skullEnderResonator.name=엔더 공명기
 
 item.itemSpawnEggEnderIO.name=스폰
 
-//Dark Steel
+#Dark Steel
 item.darkSteel_helmet.name=암흑의 투구
 item.darkSteel_chestplate.name=암흑의 흉패
 item.darkSteel_leggings.name=암흑의 바지
@@ -623,7 +621,7 @@ enderio.darksteel.upgrade.nightVision.name=Night Vision
 enderio.darksteel.upgrade.nightVision.enabled=Night Vision Enabled
 enderio.darksteel.upgrade.nightVision.disabled=Night Vision Disabled
 
-//------GUI
+#------GUI
 
 enderio.gui.enabled=활성화
 enderio.gui.disabled=비활성화
@@ -631,7 +629,7 @@ enderio.gui.send=발신
 enderio.gui.receive=수신
 enderio.gui.sendReceive=수신 & 발신
 
-//Redstone controls
+#Redstone controls
 enderio.gui.tooltip.redstoneControlMode=레드스톤 모드
 enderio.gui.tooltip.redstoneControlMode.ignore=언제나 활성화
 enderio.gui.tooltip.redstoneControlMode.on=신호가 있으면 활성화
@@ -655,7 +653,7 @@ enderio.gui.machine.side.up=위
 enderio.gui.machine.side.down=아래
 
 
-//Power Monitor
+#Power Monitor
 enderio.gui.powerMonitor.engineControl=엔진 설정
 enderio.gui.powerMonitor.emit=Emit
 enderio.gui.powerMonitor.engineSection1=Emit signal when storage less
@@ -670,7 +668,7 @@ enderio.gui.powerMonitor.monHeading3=Machine Buffers
 enderio.gui.powerMonitor.monHeading4=Average output over 5 seconds
 enderio.gui.powerMonitor.monHeading5=Average input over 5 seconds
 
-//MJ Reader
+#MJ Reader
 enderio.gui.mjReader.networkHeading=Power Network
 enderio.gui.mjReader.conduitBuffer=Internal Buffer
 enderio.gui.mjReader.requestRange=Per tick request range
@@ -689,7 +687,7 @@ enderio.gui.mjReader.receiveItems=Can receive items from:
 enderio.gui.mjReader.receiveItem1=Can receive
 enderio.gui.mjReader.receiveItem2=from:
 
-//CapactorBank
+#CapactorBank
 enderio.gui.capBank.inputRs=Input Redstone Mode
 enderio.gui.capBank.outputRs=Output Redstone Mode
 enderio.gui.capBank.maxIo=Max I/O
@@ -698,7 +696,7 @@ enderio.gui.capBank.maxOutput=Max Output
 enderio.gui.capBank.inputMode=Input
 enderio.gui.capBank.outputMode=Output
 
-//Transceiver
+#Transceiver
 enderio.gui.trans.publicChannel=Public Channel
 enderio.gui.trans.privateChannel=Private Channel
 enderio.gui.trans.addChannel=Add Channel
@@ -710,28 +708,28 @@ enderio.gui.trans.itemMode=Item Mode
 enderio.gui.trans.publicHeading=Public
 enderio.gui.trans.privateHeading=Private
 
-//Alloy Smelter
+#Alloy Smelter
 enderio.gui.alloy.mode.heading=Furnace Mode
 enderio.gui.alloy.mode.all=All Smelting
 enderio.gui.alloy.mode.alloy=Alloys Only
 enderio.gui.alloy.mode.furnace=Furnace Only
 
-//Vat
+#Vat
 enderio.vat.outputTank=Output Tank
 enderio.vat.inputTank=Input Tank
 enderio.gui.machine.vat.dump.1=Dump Input Tank
 enderio.gui.machine.vat.dump.2=Dump Output Tank
 
-//Combustion Gen
+#Combustion Gen
 enderio.combustionGenerator.coolantTank=Coolant
 enderio.combustionGenerator.fuelTank=Fuel
 enderio.combustionGenerator.output=Generating:
 
-//Stirling Gen
+#Stirling Gen
 enderio.stirlingGenerator.output=Generating:
 enderio.stirlingGenerator.burnRate=Burn Rate:
 
-//Travel Blocks
+#Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=Only
 enderio.gui.travelAccessable.privateBlock2=may change this blocks settings.
 enderio.gui.travelAccessable.public=Public
@@ -741,11 +739,11 @@ enderio.gui.travelAccessable.unauthorised=You are not allowed to access this blo
 enderio.gui.travelAccessable.enterCode=Access Code Required
 enderio.gui.travelAccessable.ok=Authorise
 
-//Spawn Gurad
+#Spawn Gurad
 enderio.gui.spawnGurad.showRange=Show Range
 enderio.gui.spawnGurad.range=Range:
 
-//conduits
+#conduits
 enderio.gui.conduit.ioMode=Mode
 enderio.gui.conduit.ioMode.inOut=In / Out
 enderio.gui.conduit.ioMode.input=Extract
@@ -785,7 +783,7 @@ enderio.gui.conduit.fluid.filter=Filter
 enderio.gui.conduit.gas.autoExtract=Auto Extract
 
 
-//Configuration
+#Configuration
 enderio.config.title=Ender IO Configuration
 
 enderio.config.power=Power Settings
