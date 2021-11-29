@@ -130,8 +130,8 @@ enderio.fluid.millibucket.abr=L
 enderio.fuel.tooltip.heading=연료 세부사항
 enderio.fuel.tooltip.burnTime=연료 소모시간 {0,number}
 enderio.fluid.millibucketsTick=L/t
-coolant.tooltip.heading=냉각제
-enderio.fuel.tooltip.degreesPerBucket=양동이당 온도
+enderio.coolant.tooltip.heading=냉각제
+enderio.coolant.tooltip.degreesPerBucket=양동이당 온도
 enderio.gas.gasTick=Gas/t
 
 
@@ -323,7 +323,7 @@ tile.blockVat.tooltip.detailed.line1=엔더 IO 유체들을 양조하기 위한 
 tile.blockEnchanter.name=마법 부여기
 tile.blockEnchanter.tooltip.detailed.line1=액체 경헙치로 아이템을 합치고
 tile.blockEnchanter.tooltip.detailed.line2=책과 깃펜을 사용해
-tile.blockEnchanter.tooltip.detailed.line2=마법이 부여된 책을 만들어냅니다.
+tile.blockEnchanter.tooltip.detailed.line3=마법이 부여된 책을 만들어냅니다.
 
 tile.blockCombustionGenerator.name=연소 발전기
 tile.blockCombustionGenerator.tooltip.detailed.line1=액체 연료를 연소시켜 전력을 만들어냅니다.

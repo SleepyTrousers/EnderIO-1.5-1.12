@@ -390,7 +390,7 @@ tile.blockVat.tooltip.detailed.line1=Damit braut man EnderIO-Flüssigkeiten
 tile.blockEnchanter.name=Verzauberer
 tile.blockEnchanter.tooltip.detailed.line1=Verwendet XP, um Items zu kombinieren
 tile.blockEnchanter.tooltip.detailed.line2=sowie Buch und Feder, um
-tile.blockEnchanter.tooltip.detailed.line2=Verzauberte Bücher zu kreieren
+tile.blockEnchanter.tooltip.detailed.line3=Verzauberte Bücher zu kreieren
 
 tile.blockCombustionGenerator.name=Verbrennungsgenerator
 tile.blockCombustionGenerator.tooltip.detailed.line1=Verbrennt flüssige Brennstoffe zur Energieerzeugung
@@ -1055,7 +1055,6 @@ enderio.gui.conduit.gas.autoExtract=Auto-Extraktion
 enderio.gui.weather.task.clear=Klares Wetter
 enderio.gui.weather.task.rain=Regnerisches Wetter
 enderio.gui.weather.task.storm=Gewitter
-enderio.gui.weather.requireditem=Benötigtes Item: %s
 
 #Enchants
 enchantment.enderio.soulBound=Seelengebunden

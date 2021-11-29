@@ -924,7 +924,6 @@ enderio.gui.conduit.gas.autoExtract=Auto-Extracción
 enderio.gui.weather.task.clear=Clima Despejado
 enderio.gui.weather.task.rain=Clima Lluvioso
 enderio.gui.weather.task.storm=Tormenta
-enderio.gui.weather.requireditem=Objetos necesarios: %s
 
 #Enchants
 enchantment.enderio.soulBound=Ligado al Alma

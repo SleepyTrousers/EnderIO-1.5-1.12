@@ -292,7 +292,7 @@ tile.blockVat.tooltip.detailed.line1=Použita k vaření EnderIO tekutin
 tile.blockEnchanter.name=Očarovávač
 tile.blockEnchanter.tooltip.detailed.line1=Využívá XP pro zkombinování předmětů
 tile.blockEnchanter.tooltip.detailed.line2=a knihy s perem pro
-tile.blockEnchanter.tooltip.detailed.line2=vytvoření očarovaných knih
+tile.blockEnchanter.tooltip.detailed.line3=vytvoření očarovaných knih
 
 tile.blockCombustionGenerator.name=Spalovací generátor
 tile.blockCombustionGenerator.tooltip.detailed.line1=Spaluje tekuté palivo pro generování energie
@@ -491,9 +491,6 @@ item.darkSteel_boots.name=Tmavé boty
 item.darkSteel_sword.name=Tmavý meč
 item.darkSteel_pickaxe.name=Tmavý krumpáč
 item.darkSteel_axe.name=Tmavá sekera
-
-enderio.item.tooltip.showDetails=<Podrž Shift>
-enderio.item.darkSteel.tooltip.durability=Výdrž:
 
 enderio.item.darkSteel_pickaxe.tooltip.effPowered=Efektivita při napájení
 enderio.item.darkSteel_pickaxe.tooltip.effObs=Efektivita ničení obsidianu
@@ -790,8 +787,3 @@ enderio.config.fluid.tooltip=Čistá tekutá energie!
 
 enderio.config.spawner=Nastavení poháněných spawnerů
 enderio.config.spawner.tooltip=Už jsem vyčerpal všechny vtipné nápovědy.
-
-
-#Mobs
-entity.EnderIO.Enderminy.name=Endermánek
-entity.EnderIO.EnderCreeper.name=Teleportační Creeper

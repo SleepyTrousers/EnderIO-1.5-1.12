@@ -1062,7 +1062,6 @@ enderio.gui.conduit.gas.autoExtract=Авто-извлечение
 enderio.gui.weather.task.clear=Ясная погода
 enderio.gui.weather.task.rain=Дождливая погода
 enderio.gui.weather.task.storm=Гроза
-enderio.gui.weather.requireditem=Требуется предмет: %s
 
 #Enchants
 enchantment.enderio.soulBound=Печать души
