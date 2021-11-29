@@ -352,7 +352,7 @@ tile.blockVat.tooltip.detailed.line1=Usado para fermentar fluidos do EnderIO
 tile.blockEnchanter.name=Encantador
 tile.blockEnchanter.tooltip.detailed.line1=Usa XP para combinar itens
 tile.blockEnchanter.tooltip.detailed.line2=e uma pena e livro para
-tile.blockEnchanter.tooltip.detailed.line2=criar livros encantados
+tile.blockEnchanter.tooltip.detailed.line3=criar livros encantados
 
 tile.blockCombustionGenerator.name=Gerador a Combustão
 tile.blockCombustionGenerator.tooltip.detailed.line1=Queima combustível líquido para gerar energia
