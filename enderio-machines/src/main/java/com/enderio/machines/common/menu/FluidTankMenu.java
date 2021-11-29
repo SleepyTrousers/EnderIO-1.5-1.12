@@ -21,7 +21,7 @@ public class FluidTankMenu extends MachineMenu<FluidTankBlockEntity> {
             addSlot(new MachineSlot(blockEntity.getItemHandlerMaster(), 2, 116, 21));
             addSlot(new MachineSlot(blockEntity.getItemHandlerMaster(), 3, 116, 52));
         }
-        addInventorySlots();
+        addInventorySlots(8,84);
     }
 
     public static FluidTankMenu factory(@Nullable MenuType<FluidTankMenu> pMenuType, int pContainerId, Inventory inventory, FriendlyByteBuf buf) {

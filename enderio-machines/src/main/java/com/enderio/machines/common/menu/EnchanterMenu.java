@@ -54,7 +54,7 @@ public class EnchanterMenu extends MachineMenu<EnchanterBlockEntity>{
                 }
             });
         }
-        addInventorySlots();
+        addInventorySlots(8,84);
     }
 
     public static EnchanterMenu factory(@Nullable MenuType<EnchanterMenu> pMenuType, int pContainerId, Inventory inventory, FriendlyByteBuf buf) {
