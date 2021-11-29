@@ -412,11 +412,9 @@ tile.blockSpawnGuard.tooltip.detailed.line1=작동 범위 안에서
 tile.blockSpawnGuard.tooltip.detailed.line2=설정된 몹의 스폰을 막습니다.
 
 tile.blockExperienceObelisk.name=경험의 오벨리스크
-tile.blockExperienceObelisk.tooltip.detailed.line1=유체 탱크 위에 설치할 시
-tile.blockExperienceObelisk.tooltip.detailed.line2=우클릭으로 저장된 경험치를 꺼낼 수 있습니다.
-tile.blockExperienceObelisk.tooltip.detailed.line3=빈 손으로 앉아서 우클릭해
-tile.blockExperienceObelisk.tooltip.detailed.line4=플레이어의 경험치를 탱크로 빼낼 수 있습니다.
-tile.blockExperienceObelisk.tooltip.detailed.line5=좌클릭해 1레벨만큼의 경험치를 꺼낼 수 있습니다.
+tile.blockExperienceObelisk.tooltip.detailed.line1=매장 체험
+tile.blockExperienceObelisk.tooltip.detailed.line2=액체 XP를 출력할 수 있습니다
+tile.blockExperienceObelisk.tooltip.detailed.line3=인접한 탱크
 
 enderio.machine.tooltip.configured=(설정됨)
 
