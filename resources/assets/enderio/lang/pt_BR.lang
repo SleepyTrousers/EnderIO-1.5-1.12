@@ -1,13 +1,13 @@
-//***  Ender IO *****//
+#***  Ender IO ***#
 
-//Power
+#Power
 enderio.power.rf=RF
 enderio.power.tick=/t
 enderio.power.maxOutput=Saída Máxima
 enderio.power.generates=Gera
 enderio.power.generation_rate=a 
 
-//Ender IO / Enderface
+#Ender IO / Enderface
 tile.blockEnderIo.name=IO do Fim
 tile.blockEnderIo.tooltip.detailed.line1=Permite acesso remoto a blocos
 tile.blockEnderIo.tooltip.detailed.line2=próximos
@@ -16,7 +16,7 @@ tile.blockEnderIo.tooltip.detailed.line4=o Cajado da Viagem
 
 item.enderio.itemEnderface.name=Interfim
 
-//Conduits
+#Conduits
 enderio.blockConduitBundle=Conjunto de Condutos
 enderio.blockConduitFacade=Fachada de Condutos
 item.enderio.itemConduitFacade.name=Fachada de Condutos
@@ -74,7 +74,7 @@ item.itemExistingItemFilter.tooltip.detailed.line2=já estão no inventário
 item.itemExistingItemFilter.tooltip.detailed.line3=Clique direito enquanto agachado
 item.itemExistingItemFilter.tooltip.detailed.line4=em um inventário para adicionar o
 item.itemExistingItemFilter.tooltip.detailed.line5=o conteúdo ao snapshot
- 
+
 enderio.item.itemExistingItemFilter.filterUpdated=Novos itens foram adicionados ao snapshot
 enderio.item.itemExistingItemFilter.filterNotUpdated=O snapshot já cobre todos os itens no inventário
 
@@ -101,10 +101,10 @@ enderio.itemGasConduit.tooltip.detailed.line1=Transfere gases compatíveis com o
 enderio.itemMEConduit.name=Conduto ME
 enderio.itemMEConduitDense.name=Conduto ME Denso
 
-//Entity 
+#Entity 
 entity.witherSkeleton.name=Esqueleto Wither
 
-//Materials
+#Materials
 enderio.itemMaterial.name=Materiais
 enderio.silicon.name=Silício
 enderio.conduitBinder.name=Capa de Conduto
@@ -119,7 +119,7 @@ enderio.blastResistant=Resistente a Explosões
 enderio.lightEmitter=Emite Luz
 enderio.tooltip.isBeaconBase=Pode ser usado como base de um sinalizador
 
-//Fluids
+#Fluids
 fluid.nutrient_distillation=Destilado de Nutrientes
 tile.fluid.nutrient_distillation.name=Destilado de Nutrientes
 item.bucketNutrient_distillation.name=Balde de Destilado de Nutrientes
@@ -137,7 +137,6 @@ fluid.eio.xpjuice=XP em Líquido
 tile.fluid.eio.xpjuice.name=XP em Líquido
 item.bucketXpjuice.name=Balde de XP
 
-
 enderio.fluid.millibucket.abr=L
 
 enderio.fuel.tooltip.heading=Detalhes do Combustível
@@ -147,8 +146,7 @@ enderio.coolant.tooltip.heading=Refrigerante
 enderio.coolant.tooltip.degreesPerBucket=Graus por balde
 enderio.gas.gasTick=Gas/t
 
-
-//Materials
+#Materials
 enderio.itemMachinePart.name=Partes de Máquina
 enderio.machineChassi.name=Chassi de Máquina
 enderio.basicGear.name=Engrenagem Básica
@@ -165,7 +163,7 @@ enderio.darkGrindingBall.tooltip.detailed.line4=Redução de Poder
 tile.blockReinforcedObsidian.name=Obsidiana Reforçada
 tile.blockReinforcedObsidian.tooltip.common.line1=Á Prova De Wither
 
-//Quartz / Glass
+#Quartz / Glass
 tile.blockFusedQuartz.name=Quartzo Fundido
 enderio.blockFusedQuartz.fusedQuartz.name=Quartzo Fundido
 enderio.blockFusedQuartz.fusedGlass.name=Vidro Bem Transparente
@@ -175,7 +173,7 @@ enderio.blockFusedQuartz.enlightenedFusedGlass.name=Vidro Transparente Iluminado
 item.enderio.itemFusedQuartzFrame.name=Armação de Quartzo Fundido
 enderio.itemPowderIngot=Pós e Barras
 
-//Alloys
+#Alloys
 enderio.itemAlloy.name=Liga
 enderio.electricalSteel.name=Aço Elétrico
 enderio.energeticAlloy.name=Liga Energética
@@ -198,7 +196,7 @@ tile.enderio.vibrantNugget.name=Bloco de Pepitas Vibrantes
 tile.enderio.darkSteel.name=Bloco de Aço Negro
 tile.enderio.soularium.name=Bloco de Almário
 
-//Powder / Ingot
+#Powder / Ingot
 enderio.powderCoal.name=Pó de Carvão
 enderio.powderIron.name=Pó de Ferro
 enderio.powderGold.name=Pó de Ouro
@@ -208,7 +206,7 @@ enderio.powderEnder.name=Pó de Pérola do Fim
 
 enderio.ingotEnderiumBase.name=Base de Enderium
 
-//Capacitors
+#Capacitors
 enderio.itemBasicCapacitor.name=Capacitor
 enderio.basicCapacitor.name=Capacitor Básico
 enderio.activatedCapacitor.name=Capacitor de Dupla Camada
@@ -219,7 +217,7 @@ enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Aumenta o armazenamento d
 enderio.machine.tooltip.upgrade.tooltip.detailed.line2=velocidade / alcance das máquinas
 enderio.machine.tooltip.clearConfig=Isso vai limpar qualquer configuração feita!
 
-//Machines
+#Machines
 tile.blockStirlingGenerator.name=Gerador de Stirling
 tile.blockStirlingGenerator.tooltip.detailed.line1=Queima combustível sólido para gerar energia
 tile.blockStirlingGenerator.tooltip.detailed.line2=Pode ser melhorado para aumentar a saída
@@ -454,7 +452,7 @@ tile.blockBuffer.creative.name=Buffer Criativo
 
 enderio.machine.tooltip.configured=(Configurado)
 
-//Blocks
+#Blocks
 tile.blockDarkSteelPressurePlate.name=Placa de Pressão Negra
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line1=Apenas ativada por jogadores
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line2=Pode ser pintada na máquina de pintura,
@@ -476,7 +474,7 @@ tile.blockDarkSteelAnvil.tooltip.detailed.line2=a bigorna vanilla
 tile.blockDarkSteelLadder.name=Escadas de Aço Negro
 tile.blockDarkSteelLadder.tooltip.common.line1=Mais rápida que escadas comuns
 
-//Travel
+#Travel
 tile.blockTravelAnchor.name=Ãncora de Viagem
 tile.blockTravelAnchor.tooltip.detailed.line1=Permite teletransporte entre âncoras
 tile.blockTravelAnchor.tooltip.detailed.line2=Fique de pé em uma Âncora, olhe
@@ -496,7 +494,7 @@ item.itemTravelStaff.tooltip.detailed.line4=Shift-Clique direito vai teletranspo
 item.itemTravelStaff.tooltip.detailed.line5=o jogador uma curta distância
 enderio.itemTravelStaff.notEnoughPower=Sem energia suficiente
 
-//Painter
+#Painter
 tile.blockPainter.name=Máquina de Pintura
 enderio.blockPainter.paintedWith=Pintado com:
 tile.blockPaintedFence.name=Cerca Pintada
@@ -516,7 +514,7 @@ tile.blockPainter.tooltip.detailed.line4=Armações de Vidro, Pedra Luminosa, Ta
 tile.blockPainter.tooltip.detailed.line5=Placas de Pressão de Aço Negro,
 tile.blockPainter.tooltip.detailed.line6=Âncoras de Viagem
 
-//Items
+#Items
 item.itemYetaWrench.name=Chave Yeta
 item.itemYetaWrench.tooltip.detailed.line1=Esconde fachadas de conduto quando segurada,
 item.itemYetaWrench.tooltip.detailed.line2=Shift-Clique direito para quebrar máquinas
@@ -560,7 +558,7 @@ skullEnderResonator.name=Ressoador do Fim
 
 item.itemSpawnEggEnderIO.name=Invoca
 
-//Dark Steel
+#Dark Steel
 item.darkSteel_helmet.name=Elmo Negro
 item.darkSteel_chestplate.name=Peitoral Negro
 item.darkSteel_leggings.name=Perneiras Negras
@@ -671,7 +669,7 @@ enderio.darksteel.upgrade.solar_one.tooltip.detailed.line1=Gera energia do sol.
 enderio.darksteel.upgrade.solar_two.name=Solar II
 enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1=Gera energia do sol.
 
-//------GUI
+#------GUI
 
 enderio.gui.simple.in=Entrada Máxima: 
 enderio.gui.simple.out=Saída Máxima: 
@@ -681,7 +679,7 @@ enderio.gui.send=Enviar
 enderio.gui.receive=Receber
 enderio.gui.sendReceive=Enviar & Receber
 
-//Redstone controls
+#Redstone controls
 enderio.gui.tooltip.redstoneControlMode=Modo de Redstone
 enderio.gui.tooltip.redstoneControlMode.ignore=Sempre ativo
 enderio.gui.tooltip.redstoneControlMode.on=Ativo com sinal
@@ -705,7 +703,7 @@ enderio.gui.machine.side.up=Cima
 enderio.gui.machine.side.down=Baixo
 
 
-//Power Monitor
+#Power Monitor
 enderio.gui.powerMonitor.engineControl=Controle de Motores
 enderio.gui.powerMonitor.emit=Emitir
 enderio.gui.powerMonitor.engineSection1=Emitir sinal quando o armazenamento
@@ -720,7 +718,7 @@ enderio.gui.powerMonitor.monHeading3=Buffer das Máquinas
 enderio.gui.powerMonitor.monHeading4=Saída média em 5 segundos
 enderio.gui.powerMonitor.monHeading5=Entrada média em 5 segundos
 
-//MJ Reader
+#MJ Reader
 enderio.gui.mjReader.networkHeading=Rede de Energia
 enderio.gui.mjReader.conduitBuffer=Buffer Interno
 enderio.gui.mjReader.requestRange=Alcance de pedido por tick
@@ -739,7 +737,7 @@ enderio.gui.mjReader.receiveItems=Pode receber itens de:
 enderio.gui.mjReader.receiveItem1=Pode receber
 enderio.gui.mjReader.receiveItem2=de:
 
-//CapactorBank
+#CapactorBank
 enderio.gui.capBank.inputRs=Entrada Redstone Mode
 enderio.gui.capBank.outputRs=Saída Redstone Mode
 enderio.gui.capBank.maxIo=I/O Máximo
@@ -748,7 +746,7 @@ enderio.gui.capBank.maxOutput=Saída Máxima
 enderio.gui.capBank.inputMode=Entrada
 enderio.gui.capBank.outputMode=Saída
 
-//Transceiver
+#Transceiver
 enderio.gui.trans.publicChannel=Canal Público
 enderio.gui.trans.privateChannel=Canal Privado
 enderio.gui.trans.addChannel=Adicionar Canal
@@ -760,28 +758,28 @@ enderio.gui.trans.itemMode=Modo Item
 enderio.gui.trans.publicHeading=Público
 enderio.gui.trans.privateHeading=Privado
 
-//Alloy Smelter
+#Alloy Smelter
 enderio.gui.alloy.mode.heading=Modo Fornalha
 enderio.gui.alloy.mode.all=Qualquer Modo
 enderio.gui.alloy.mode.alloy=Apenas Ligas
 enderio.gui.alloy.mode.furnace=Apenas Fornalha
 
-//Vat
+#Vat
 enderio.vat.outputTank=Tanque de Saída
 enderio.vat.inputTank=Tanque de Entrada
 enderio.gui.machine.vat.dump.1=Despejar no Tanque de Entrada
 enderio.gui.machine.vat.dump.2=Despejar no Tanque de Saída
 
-//Combustion Gen
+#Combustion Gen
 enderio.combustionGenerator.coolantTank=Refrigerante
 enderio.combustionGenerator.fuelTank=Combustível
 enderio.combustionGenerator.output=Gerando:
 
-//Stirling Gen
+#Stirling Gen
 enderio.stirlingGenerator.output=Gerando:
 enderio.stirlingGenerator.burnRate=Taxa de Queima:
 
-//Travel Blocks
+#Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=Apenas
 enderio.gui.travelAccessable.privateBlock2=pode mudar as configurações desse bloco
 enderio.gui.travelAccessable.public=Público
@@ -791,11 +789,11 @@ enderio.gui.travelAccessable.unauthorised=Você não tem permissão para acessar
 enderio.gui.travelAccessable.enterCode=Código de Acesso Requerido
 enderio.gui.travelAccessable.ok=Autorizar
 
-//Spawn Gurad
+#Spawn Gurad
 enderio.gui.spawnGurad.showRange=Mostrar Alcance
 enderio.gui.spawnGurad.range=Alcance:
 
-//conduits
+#conduits
 enderio.gui.conduit.ioMode=Modo
 enderio.gui.conduit.ioMode.inOut=Entrada / Saída
 enderio.gui.conduit.ioMode.input=Extrair
@@ -834,11 +832,11 @@ enderio.gui.conduit.fluid.filter=Filtro
 
 enderio.gui.conduit.gas.autoExtract=Auto Extrair
 
-//Enchants
+#Enchants
 enchantment.enderio.soulBound=Vínculo da Alma
 description.enchantment.enderio.soulBound=Esse encantamento previne o item de ser perdido na morte
 
-//Configuration
+#Configuration
 enderio.config.title=Configurações do Ender IO
 
 enderio.config.power=Configurações de Energia

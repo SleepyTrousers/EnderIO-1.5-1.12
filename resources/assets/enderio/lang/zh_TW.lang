@@ -1,11 +1,11 @@
-//***  Ender IO *****//
+#***  Ender IO ***#
 
-//Power
+#Power
 enderio.power.rf=RF
 enderio.power.tick=/t
 enderio.power.maxOutput=最大輸出
 
-//Ender IO / Enderface
+#Ender IO / Enderface
 tile.blockEnderIo.name=終界接口
 tile.blockEnderIo.tooltip.detailed.line1=允許遠程訪問附近的
 tile.blockEnderIo.tooltip.detailed.line2=方塊
@@ -14,7 +14,7 @@ tile.blockEnderIo.tooltip.detailed.line4=旅行權杖
 
 item.enderio.itemEnderface.name=終界面板
 
-//Conduits
+#Conduits
 enderio.blockConduitBundle=導管接口
 enderio.blockConduitFacade=導管框架
 item.enderio.itemConduitFacade.name=導管框架
@@ -89,7 +89,7 @@ enderio.itemGasConduit.tooltip.detailed.line1=傳送和通用機械兼容的氣�
 enderio.itemMEConduit.name=ME導管
 enderio.itemMEConduitDense.name=緻密ME導管
 
-//Materials
+#Materials
 enderio.itemMaterial.name=材料
 enderio.silicon.name=硅
 enderio.conduitBinder.name=導管粘合劑
@@ -104,7 +104,7 @@ enderio.blastResistant=防爆
 enderio.lightEmitter=發光
 enderio.tooltip.isBeaconBase=可用于當作信標底座
 
-//Fluids
+#Fluids
 fluid.nutrient_distillation=營養精華液
 tile.fluid.nutrient_distillation.name=營養精華液
 item.bucketNutrient_distillation.name=桶裝營養精華液
@@ -133,7 +133,7 @@ enderio.fuel.tooltip.degreesPerBucket=每單位一桶
 enderio.gas.gasTick=Gas/t
 
 
-//Materials
+#Materials
 enderio.itemMachinePart.name=機器零件
 enderio.machineChassi.name=機器框架
 enderio.basicGear.name=基礎齒輪
@@ -150,7 +150,7 @@ enderio.darkGrindingBall.tooltip.detailed.line4=功率降低
 tile.blockReinforcedObsidian.name=強化黑曜石
 +tile.blockReinforcedObsidian.tooltip.common.line1=能抵擋凋零
 
-//Quartz / Glass
+#Quartz / Glass
 tile.blockFusedQuartz.name=石英玻璃
 enderio.blockFusedQuartz.fusedQuartz.name=石英玻璃
 enderio.blockFusedQuartz.fusedGlass.name=純凈玻璃
@@ -160,7 +160,7 @@ enderio.blockFusedQuartz.enlightenedFusedGlass.name=螢光純凈玻璃
 item.enderio.itemFusedQuartzFrame.name=石英玻璃框
 enderio.itemPowderIngot=粉和粒
 
-//Alloys
+#Alloys
 enderio.itemAlloy.name=合金錠
 enderio.electricalSteel.name=磁鋼錠
 enderio.energeticAlloy.name=充能合金錠
@@ -183,7 +183,7 @@ tile.enderio.vibrantNugget.name=脈沖合金粒塊
 tile.enderio.darkSteel.name=玄鋼塊
 tile.enderio.soularium.name=魂金塊
 
-//Powder / Ingot
+#Powder / Ingot
 enderio.powderCoal.name=煤粉
 enderio.powderIron.name=鐵粉
 enderio.powderGold.name=金粉
@@ -192,7 +192,7 @@ enderio.powderTin.name=錫粉
 enderio.powderEnder.name=終界珍珠粉
 enderio.ingotEnderiumBase.name=Enderium Base
 
-//Capacitors
+#Capacitors
 enderio.itemBasicCapacitor.name=電容
 enderio.basicCapacitor.name=基礎電容
 enderio.activatedCapacitor.name=雙層電容
@@ -203,7 +203,7 @@ enderio.machine.tooltip.upgrade.tooltip.detailed.line1=增加機器能量存儲�
 enderio.machine.tooltip.upgrade.tooltip.detailed.line2=速度/范圍
 enderio.machine.tooltip.clearConfig=這會清除所有存儲的數據!
 
-//Machines
+#Machines
 tile.blockStirlingGenerator.name=斯特林發電機
 tile.blockStirlingGenerator.tooltip.detailed.line1=燃燒固體燃料產生能量
 tile.blockStirlingGenerator.tooltip.detailed.line2=可通過添加電容器升級
@@ -430,7 +430,7 @@ tile.blockExperienceObelisk.tooltip.detailed.line3=相鄰的水箱內
 
 enderio.machine.tooltip.configured=(已配置)
 
-//Blocks
+#Blocks
 tile.blockDarkSteelPressurePlate.name=玄鋼壓力板
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line1=只能被玩家啟用
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line2=可在粉刷機內粉刷,
@@ -452,7 +452,7 @@ tile.blockDarkSteelAnvil.tooltip.detailed.line2=更加結實耐用
 tile.blockDarkSteelLadder.name=玄鐵階梯
 tile.blockDarkSteelLadder.tooltip.common.line1=比普通階梯快
 
-//Travel
+#Travel
 tile.blockTravelAnchor.name=旅行錨
 tile.blockTravelAnchor.tooltip.detailed.line1=允許在錨點之間傳送
 tile.blockTravelAnchor.tooltip.detailed.line2=站在一個錨上, 看著
@@ -472,7 +472,7 @@ item.itemTravelStaff.tooltip.detailed.line4=<shift><右擊>
 item.itemTravelStaff.tooltip.detailed.line5=可短距離傳送玩家
 enderio.itemTravelStaff.notEnoughPower=能量不足
 
-//Painter
+#Painter
 tile.blockPainter.name=粉刷機
 enderio.blockPainter.paintedWith=粉刷:
 tile.blockPaintedFence.name=粉刷柵欄
@@ -492,7 +492,7 @@ tile.blockPainter.tooltip.detailed.line4=玻璃框, 螢石, 地毯
 tile.blockPainter.tooltip.detailed.line5=深色壓力板
 tile.blockPainter.tooltip.detailed.line6=旅行錨
 
-//Items
+#Items
 item.itemYetaWrench.name=以太扳手
 item.itemYetaWrench.tooltip.detailed.line1=手持時隱藏導管框架
 item.itemYetaWrench.tooltip.detailed.line2=右擊可立即
@@ -534,7 +534,7 @@ skullEnderResonator.name=終界諧振器
 
 item.itemSpawnEggEnderIO.name=生成
 
-//Dark Steel
+#Dark Steel
 item.darkSteel_helmet.name=玄鋼頭盔
 item.darkSteel_chestplate.name=玄鋼胸甲
 item.darkSteel_leggings.name=玄鋼護腿
@@ -645,7 +645,7 @@ enderio.darksteel.upgrade.solar_one.tooltip.detailed.line1=太陽能發電產生
 enderio.darksteel.upgrade.solar_two.name=太陽能 II
 enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1=太陽能發電產生能源.
 
-//------GUI
+#------GUI
 
 enderio.gui.enabled=啟用
 enderio.gui.disabled=停用
@@ -653,7 +653,7 @@ enderio.gui.send=發送
 enderio.gui.receive=接收
 enderio.gui.sendReceive=發送和接收
 
-//Redstone controls
+#Redstone controls
 enderio.gui.tooltip.redstoneControlMode=紅石模式
 enderio.gui.tooltip.redstoneControlMode.ignore=始終工作
 enderio.gui.tooltip.redstoneControlMode.on=收到信號工作
@@ -677,7 +677,7 @@ enderio.gui.machine.side.up=上
 enderio.gui.machine.side.down=下
 
 
-//Power Monitor
+#Power Monitor
 enderio.gui.powerMonitor.engineControl=引擎控制
 enderio.gui.powerMonitor.emit=發送
 enderio.gui.powerMonitor.engineSection1=輸出信號條件:當存儲
@@ -692,7 +692,7 @@ enderio.gui.powerMonitor.monHeading3=機器緩衝
 enderio.gui.powerMonitor.monHeading4=5秒平均輸出
 enderio.gui.powerMonitor.monHeading5=5秒平均輸入
 
-//MJ Reader
+#MJ Reader
 enderio.gui.mjReader.networkHeading=能量網
 enderio.gui.mjReader.conduitBuffer=內部緩衝
 enderio.gui.mjReader.requestRange=每刻請求范圍
@@ -711,7 +711,7 @@ enderio.gui.mjReader.receiveItems=合法的接收對象:
 enderio.gui.mjReader.receiveItem1=可以接收
 enderio.gui.mjReader.receiveItem2=從:
 
-//CapactorBank
+#CapactorBank
 enderio.gui.capBank.inputRs=輸入紅石控制
 enderio.gui.capBank.outputRs=輸出紅石控制
 enderio.gui.capBank.maxIo=最大流量
@@ -720,7 +720,7 @@ enderio.gui.capBank.maxOutput=最大輸出
 enderio.gui.capBank.inputMode=輸入模式
 enderio.gui.capBank.outputMode=輸出模式
 
-//Transceiver
+#Transceiver
 enderio.gui.trans.publicChannel=公共頻道
 enderio.gui.trans.privateChannel=私人頻道
 enderio.gui.trans.addChannel=添加頻道
@@ -732,28 +732,28 @@ enderio.gui.trans.itemMode=物品模式
 enderio.gui.trans.publicHeading=公共
 enderio.gui.trans.privateHeading=私有
 
-//Alloy Smelter
+#Alloy Smelter
 enderio.gui.alloy.mode.heading=熔爐模式
 enderio.gui.alloy.mode.all=全部燒煉
 enderio.gui.alloy.mode.alloy=僅限合金
 enderio.gui.alloy.mode.furnace=僅限熔爐
 
-//Vat
+#Vat
 enderio.vat.outputTank=輸出槽
 enderio.vat.inputTank=輸入槽
 enderio.gui.machine.vat.dump.1=導出輸入槽
 enderio.gui.machine.vat.dump.2=導出輸出槽
 
-//Combustion Gen
+#Combustion Gen
 enderio.combustionGenerator.coolantTank=冷卻劑
 enderio.combustionGenerator.fuelTank=燃料
 enderio.combustionGenerator.output=產能速率:
 
-//Stirling Gen
+#Stirling Gen
 enderio.stirlingGenerator.output=產能速率:
 enderio.stirlingGenerator.burnRate=燃燒速率:
 
-//Travel Blocks
+#Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=只有
 enderio.gui.travelAccessable.privateBlock2=才能改變該方塊的設置.
 enderio.gui.travelAccessable.public=公共
@@ -763,11 +763,11 @@ enderio.gui.travelAccessable.unauthorised=你沒有訪問該方塊的權限.
 enderio.gui.travelAccessable.enterCode=需要訪問密碼
 enderio.gui.travelAccessable.ok=已賦權
 
-//Spawn Gurad
+#Spawn Gurad
 enderio.gui.spawnGurad.showRange=顯示范圍
 enderio.gui.spawnGurad.range=范圍:
 
-//conduits
+#conduits
 enderio.gui.conduit.ioMode=模式
 enderio.gui.conduit.ioMode.inOut=輸入圖/輸出
 enderio.gui.conduit.ioMode.input=提取
@@ -806,10 +806,10 @@ enderio.gui.conduit.fluid.filter=過濾器
 
 enderio.gui.conduit.gas.autoExtract=自動提取
 
-//Enchants
+#Enchants
 enchantment.enderio.soulBound=靈魂綁定
 
-//Configuration
+#Configuration
 enderio.config.title=終界接口配置文件
 
 enderio.config.power=能量設置

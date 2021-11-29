@@ -1,11 +1,11 @@
-//***  Ender IO *****//
+#***  Ender IO ***#
 
-//Power
+#Power
 enderio.power.rf=RF
 enderio.power.tick=/t
 enderio.power.maxOutput=Maximální výstup
 
-//Ender IO / Enderface
+#Ender IO / Enderface
 tile.blockEnderIo.name=Ender IO
 tile.blockEnderIo.tooltip.detailed.line1=Zpřístupňuje vzdálený přístup k
 tile.blockEnderIo.tooltip.detailed.line2=blokům poblíž
@@ -14,7 +14,7 @@ tile.blockEnderIo.tooltip.detailed.line4=Tyčí cestování
 
 item.enderio.itemEnderface.name=Enderová tvář
 
-//Conduits
+#Conduits
 enderio.blockConduitBundle=Svazek vedení
 enderio.blockConduitFacade=Fasáda vedení
 item.enderio.itemConduitFacade.name=Fasáda vedení
@@ -86,7 +86,7 @@ enderio.itemGasConduit.tooltip.maxExtract=Maximální extrakce:
 enderio.itemGasConduit.tooltip.maxIo=Maximální IO:
 enderio.itemGasConduit.tooltip.detailed.line1=Přesouvá plyny kompatibilní s Mekanism módem
 
-//Materials
+#Materials
 enderio.itemMaterial.name=Materiály
 enderio.silicon.name=Křemík
 enderio.conduitBinder.name=Vazač vedení
@@ -101,7 +101,7 @@ enderio.blastResistant=Výbuchu odolné
 enderio.lightEmitter=Vysílá světlo
 enderio.tooltip.isBeaconBase=Může být použito jako základ majáku
 
-//Fluids
+#Fluids
 fluid.nutrient_distillation=Destilované živity
 item.bucketNutrient_distillation.name=Kbelík destilovaných živin
 
@@ -123,7 +123,7 @@ enderio.fluid.millibucketsTick=L/t
 enderio.gas.gasTick=Plyn/t
 
 
-//Materials
+#Materials
 enderio.itemMachinePart.name=Kousky stroje
 enderio.machineChassi.name=Podvozek stroje
 enderio.basicGear.name=Běžné kolečko
@@ -140,7 +140,7 @@ enderio.darkGrindingBall.tooltip.detailed.line4=Snížení energie
 tile.blockReinforcedObsidian.name=Zesílený obsidian
 tile.blockReinforcedObsidian.tooltip.common.line1=Odolný Witherovi
 
-//Quartz / Glass
+#Quartz / Glass
 tile.blockFusedQuartz.name=Tavený křemen
 enderio.blockFusedQuartz.fusedQuartz.name=Tavený křemen
 enderio.blockFusedQuartz.fusedGlass.name=Poměrně čisté sklo
@@ -150,7 +150,7 @@ enderio.blockFusedQuartz.enlightenedFusedGlass.name=Osvícené čisté sklo
 item.enderio.itemFusedQuartzFrame.name=Tavený křemenný rám
 enderio.itemPowderIngot=Prášky & Cihličky
 
-//Alloys
+#Alloys
 enderio.itemAlloy.name=Slitina
 enderio.electricalSteel.name=Elektrická ocel
 enderio.energeticAlloy.name=Energetická slitina
@@ -173,7 +173,7 @@ tile.enderio.vibrantNugget.name=Blok z vibrující hrudky
 tile.enderio.darkSteel.name=Blok z tmavé oceli
 tile.enderio.soularium.name=Blok ze soulária
 
-//Powder / Ingot
+#Powder / Ingot
 enderio.powderCoal.name=Uhelný prášek
 enderio.powderIron.name=Železný prášek
 enderio.powderGold.name=Zlatý prášek
@@ -181,7 +181,7 @@ enderio.powderCopper.name=Měděný prášek
 enderio.powderTin.name=Cínový prášek
 enderio.powderEnder.name=Ender perlový prášek
 
-//Capacitors
+#Capacitors
 enderio.itemBasicCapacitor.name=Kondenzátor
 enderio.basicCapacitor.name=Běžný kondenzátor
 enderio.activatedCapacitor.name=Dvou-vrstvový kondenzátor
@@ -192,7 +192,7 @@ enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Zvýší úložiště ene
 enderio.machine.tooltip.upgrade.tooltip.detailed.line2=rychlost / dosah stroje
 enderio.machine.tooltip.clearConfig=Toto promaže všechny uložené informace!
 
-//Machines
+#Machines
 tile.blockStirlingGenerator.name=Stirlingův generátor
 tile.blockStirlingGenerator.tooltip.detailed.line1=Spaluje pevné palivo pro výrobu energie
 tile.blockStirlingGenerator.tooltip.detailed.line2=Může být vylepšený pro zvýšení výkonu
@@ -389,7 +389,7 @@ tile.blockExperienceObelisk.tooltip.detailed.line5=Klikni levým tlačítkem pro
 
 enderio.machine.tooltip.configured=(Nastaveno)
 
-//Blocks
+#Blocks
 tile.blockDarkSteelPressurePlate.name=Tmavá nášlapná deska
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line1=Aktivovatelná pouze hráči
 tile.blockDarkSteelPressurePlate.tooltip.detailed.line2=Může být obarvena v barvicím stroji,
@@ -402,7 +402,7 @@ tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line3=neviditelné při
 tile.blockDarkSteelPressurePlate.silent.tooltip.detailed.line4=Čisté sklo
 
 
-//Travel
+#Travel
 tile.blockTravelAnchor.name=Cestovní kotva
 tile.blockTravelAnchor.tooltip.detailed.line1=Umožňuje teleportaci mezi kotvami
 tile.blockTravelAnchor.tooltip.detailed.line2=Stůj na jedné kotvě, dívej se na
@@ -422,7 +422,7 @@ item.itemTravelStaff.tooltip.detailed.line4=Klinutí pravám tlačítkem se Shif
 item.itemTravelStaff.tooltip.detailed.line5=hráče na krátkou vzdálenost
 enderio.itemTravelStaff.notEnoughPower=Nedostatečná energie
 
-//Painter
+#Painter
 tile.blockPainter.name=Barvící stroj
 enderio.blockPainter.paintedWith=Obarveno s:
 tile.blockPaintedFence.name=Obarvený plot
@@ -442,7 +442,7 @@ tile.blockPainter.tooltip.detailed.line4=skleněných rámů, světlitu, koberce
 tile.blockPainter.tooltip.detailed.line5=nášlapných desek z tmavé oceli,
 tile.blockPainter.tooltip.detailed.line6=cestovních kotev
 
-//Items
+#Items
 item.itemYetaWrench.name=Yeta klíč
 item.itemYetaWrench.tooltip.detailed.line1=Při držení skryje fasády vedení
 item.itemYetaWrench.tooltip.detailed.line2=Klikni pravým tlačítkem se Shiftem pro okamžité
@@ -483,7 +483,7 @@ skullZombieFrankenstien.name=Frankenstein
 
 item.itemSpawnEggEnderIO.name=Spawn
 
-//Dark Steel
+#Dark Steel
 item.darkSteel_helmet.name=Tmavá helma
 item.darkSteel_chestplate.name=Tmavá košile
 item.darkSteel_leggings.name=Tmavé kalhoty
@@ -588,7 +588,7 @@ enderio.darksteel.upgrade.nightVision.name=Noční vidění
 enderio.darksteel.upgrade.nightVision.enabled=Noční vidění povoleno
 enderio.darksteel.upgrade.nightVision.disabled=Noční vidění zakázáno
 
-//------GUI
+#------GUI
 
 enderio.gui.enabled=Povoleno
 enderio.gui.disabled=Zakázáno
@@ -596,7 +596,7 @@ enderio.gui.send=Posílat
 enderio.gui.receive=Přijímat
 enderio.gui.sendReceive=Posílat & Přijímat
 
-//Redstone controls
+#Redstone controls
 enderio.gui.tooltip.redstoneControlMode=Ruditový mód
 enderio.gui.tooltip.redstoneControlMode.ignore=Vždy aktivní
 enderio.gui.tooltip.redstoneControlMode.on=Aktivní se signálem
@@ -620,7 +620,7 @@ enderio.gui.machine.side.up=Nahoru
 enderio.gui.machine.side.down=Dolu
 
 
-//Power Monitor
+#Power Monitor
 enderio.gui.powerMonitor.engineControl=Ovládání motoru
 enderio.gui.powerMonitor.emit=Vysílat
 enderio.gui.powerMonitor.engineSection1=Vyšle signál když je úložiště nižší
@@ -635,7 +635,7 @@ enderio.gui.powerMonitor.monHeading3=Vyrovnávací paměti stroje
 enderio.gui.powerMonitor.monHeading4=Průměrný výstup za 5 sekund
 enderio.gui.powerMonitor.monHeading5=Průměrný vstup za 5 sekund
 
-//MJ Reader
+#MJ Reader
 enderio.gui.mjReader.networkHeading=Síť energie
 enderio.gui.mjReader.conduitBuffer=Vnitřní vyrovnávací paměť
 enderio.gui.mjReader.requestRange=Požadovaný dosah za tik
@@ -654,7 +654,7 @@ enderio.gui.mjReader.receiveItems=Může přijmout předměty z:
 enderio.gui.mjReader.receiveItem1=Může přijmout
 enderio.gui.mjReader.receiveItem2=z:
 
-//CapactorBank
+#CapactorBank
 enderio.gui.capBank.inputRs=Vstupní ruditový mód
 enderio.gui.capBank.outputRs=Výstupní ruditový mód
 enderio.gui.capBank.maxIo=Maximální I/O
@@ -663,7 +663,7 @@ enderio.gui.capBank.maxOutput=Maximální výstuo
 enderio.gui.capBank.inputMode=Vstup
 enderio.gui.capBank.outputMode=Výstup
 
-//Transceiver
+#Transceiver
 enderio.gui.trans.publicChannel=Veřejný kanál
 enderio.gui.trans.privateChannel=Soukromý kanál
 enderio.gui.trans.addChannel=Přidat kanál
@@ -675,26 +675,26 @@ enderio.gui.trans.itemMode=Mód předmětů
 enderio.gui.trans.publicHeading=Veřejný
 enderio.gui.trans.privateHeading=Soukromý
 
-//Alloy Smelter
+#Alloy Smelter
 enderio.gui.alloy.mode.heading=Mód pece
 enderio.gui.alloy.mode.all=Pečení všeho
 enderio.gui.alloy.mode.alloy=Pouze slitiny
 enderio.gui.alloy.mode.furnace=Pouze pec
 
-//Vat
+#Vat
 enderio.vat.outputTank=Výstupní nádrž
 enderio.vat.inputTank=Vstupní nádrž
 
-//Combustion Gen
+#Combustion Gen
 enderio.combustionGenerator.coolantTank=Chladič
 enderio.combustionGenerator.fuelTank=Palivo
 enderio.combustionGenerator.output=Generuje:
 
-//Stirling Gen
+#Stirling Gen
 enderio.stirlingGenerator.output=Generuje:
 enderio.stirlingGenerator.burnRate=Hodnota spalování:
 
-//Travel Blocks
+#Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=Pouze
 enderio.gui.travelAccessable.privateBlock2=může změnit nastavení tohoto bloku.
 enderio.gui.travelAccessable.public=Veřejné
@@ -704,11 +704,11 @@ enderio.gui.travelAccessable.unauthorised=Nemáš přístup k tomuto bloku.
 enderio.gui.travelAccessable.enterCode=Potřebný přístupový kód
 enderio.gui.travelAccessable.ok=Autorizace
 
-//Spawn Gurad
+#Spawn Gurad
 enderio.gui.spawnGurad.showRange=Zobrazit vzdálenost
 enderio.gui.spawnGurad.range=Vzdálenost:
 
-//conduits
+#conduits
 enderio.gui.conduit.ioMode=Mód
 enderio.gui.conduit.ioMode.inOut=Dovnitř / Ven
 enderio.gui.conduit.ioMode.input=Extrakce
@@ -746,7 +746,7 @@ enderio.gui.conduit.fluid.filter=Filtr
 enderio.gui.conduit.gas.autoExtract=Automatická extrakce
 
 
-//Configuration
+#Configuration
 enderio.config.title=Ender IO nastavení
 
 enderio.config.power=Nastavení energie
@@ -792,6 +792,6 @@ enderio.config.spawner=Nastavení poháněných spawnerů
 enderio.config.spawner.tooltip=Už jsem vyčerpal všechny vtipné nápovědy.
 
 
-//Mobs
+#Mobs
 entity.EnderIO.Enderminy.name=Endermánek
 entity.EnderIO.EnderCreeper.name=Teleportační Creeper

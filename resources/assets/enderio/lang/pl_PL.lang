@@ -1,16 +1,16 @@
-//*** Ender IO *****//
+#*** Ender IO ***#
 
-//Power
+#Power
 enderio.power.mj=MJ
 enderio.power.rf=RF
 enderio.power.tick=/t
 enderio.power.maxOutput=Maksymalny przepływ
 
-//Ender IO / Enderface
+#Ender IO / Enderface
 enderio.blockEnderIo=Ender IO
 item.enderio.itemEnderface.name=Twarz Endera
 
-//Conduits
+#Conduits
 enderio.blockConduitBundle=Wiązka przewodów
 enderio.blockConduitFacade=Fasada przewodu
 item.enderio.itemConduitFacade.name=Fasada przewodu
@@ -33,14 +33,14 @@ enderio.itemItemConduitEmpowered.name=Ulepszony przewód przedmiotów
 
 enderio.itemMeConduit.name=Przewód ME
 
-//Materials
+#Materials
 enderio.itemMaterial.name=Materiały
 enderio.silicon.name=Silikon
 enderio.conduitBinder.name=Izolator przewodów
 enderio.binderComposite.name=Kompozyt izolatora
 enderio.phasedIronNugget.name=Bryłka pulsacyjnego żelaza
 
-//Crafting components
+#Crafting components
 enderio.itemMachinePart.name=Części maszyny
 enderio.machineChassi.name=Szkielet maszyny
 enderio.basicGear.name=Zębatka
@@ -48,7 +48,7 @@ enderio.pulsatingCrystal.name=Kryształ pulsacyjny
 enderio.vibrantCrystal.name=Kryształ wibracyjny
 
 
-//Quartz / Glass
+#Quartz / Glass
 enderio.blockFusedQuartz=Skondensowany kwarc
 enderio.blockFusedQuartz.fusedQuartz.name=Skondensowany kwarc
 enderio.blockFusedQuartz.fusedGlass.name=Skondensowane szkło
@@ -56,7 +56,7 @@ enderio.blockFusedQuartz.fusedGlass.name=Skondensowane szkło
 item.enderio.itemFusedQuartzFrame.name=Skondensowana rama kwarcowa
 enderio.itemPowderIngot=Proszki i sztabki
 
-//Alloys
+#Alloys
 enderio.itemAlloy.name=Stop
 enderio.electricalSteel.name=Stal elektryczna
 enderio.energeticAlloy.name=Stop energetyczny
@@ -66,7 +66,7 @@ enderio.conductiveIron.name=Przewodzące żelazo
 enderio.phasedIron.name=Żelazo pulsacyjne 
 enderio.vibrantNugget.name=Bryłka wibracyjnego stopu
 
-//Powder / Ingot
+#Powder / Ingot
 enderio.powderCoal.name=Sproszkowany węgiel
 enderio.powderIron.name=Sproszkowane żelazo
 enderio.powderGold.name=Sproszkowane złoto
@@ -74,13 +74,13 @@ enderio.powderCopper.name=Sproszkowana miedź
 enderio.powderTin.name=Sproszkowana cyna
 enderio.powderEnder.name=Sproszkowana perła kresu
 
-//Capacitors
+#Capacitors
 enderio.itemBasicCapacitor.name=Kondensator
 enderio.basicCapacitor.name=Kondensator
 enderio.activatedCapacitor.name=Dwuwarstwowy kondensator
 enderio.enderCapacitor.name=Ośmiowarstwowy kondensator
 
-//Machines
+#Machines
 tile.enderio.blockStirlingGenerator.name=Generator Stirlinga
 tile.enderio.blockReservoir.name=Zbiornik
 tile.enderio.blockAlloySmelter.name=Piec stopów
@@ -92,14 +92,14 @@ tile.enderio.blockCrusher.name=Rozdrabniarka
 tile.enderio.blockHyperCube.name=Międzywymiarowy odbiornik
 tile.enderio.blockPowerMonitor.name=Ekran energetyczny
 
-//Travel
+#Travel
 tile.enderio.blockTravelPlatform.name=Blok podróży
 enderio.blockTravelPlatform.invalidTarget=Cel zablokowany
 enderio.blockTravelPlatform.outOfRange=Cel poza zasięgiem
 item.enderio.itemTravelStaff.name=Berło podróży
 enderio.itemTravelStaff.notEnoughPower=Za mało energii
 
-//Painter
+#Painter
 tile.enderio.blockPainter.name=Maszyna do malowania
 enderio.blockPainter.paintedWith=Pomalowana:
 enderio.blockCustomFence=Pomalowany płot
@@ -109,7 +109,7 @@ enderio.blockCustomStair=Pomalowane schody
 enderio.blockCustomSlab=Pomalowany półblok
 enderio.blockCustomDoubleSlab=Pomalowany półblok
 
-//Items
+#Items
 item.enderio.itemYetaWrench.name=Klucz Yeta
 item.enderio.itemMJReader.name=Miernik energetyczny
 
@@ -119,7 +119,7 @@ enderio.itemEnderface.destroyed=Blok EnderIO został zniszczony.
 enderio.itemEnderface.noSync=Twarz Endera nie została zsynchronizowana z EnderIO.
 
 
-//------GUI
+#------GUI
 enderio.color.black=Czarny
 enderio.color.red=Czerwony
 enderio.color.green=Zielony
@@ -143,14 +143,14 @@ enderio.gui.send=Wysyłaj
 enderio.gui.receive=Odbieraj
 enderio.gui.sendReceive=Wysyłaj i odbieraj
 
-//Redstone controls
+#Redstone controls
 enderio.gui.tooltip.redstoneControlMode=Tryb włącznika
 enderio.gui.tooltip.redstoneControlMode.ignore=Włączony
 enderio.gui.tooltip.redstoneControlMode.on=Włączony z sygnałem
 enderio.gui.tooltip.redstoneControlMode.off=Włączony bez sygnału
 enderio.gui.tooltip.redstoneControlMode.never=Wyłączony
 
-//Power Monitor
+#Power Monitor
 enderio.gui.powerMonitor.engineControl=Kontroluj energię
 enderio.gui.powerMonitor.emit=Emituj
 enderio.gui.powerMonitor.engineSection1=Emituj sygnał, gdy jest mniej energii
@@ -165,7 +165,7 @@ enderio.gui.powerMonitor.monHeading3=Energia w maszynach:
 enderio.gui.powerMonitor.monHeading4=Średni ubytek w ciągu 5 sekund:
 enderio.gui.powerMonitor.monHeading5=Średni przyrost w ciągu 5 sekund:
 
-//MJ Reader
+#MJ Reader
 enderio.gui.mjReader.networkHeading=Sieć energetyczna
 enderio.gui.mjReader.conduitBuffer=Bufor wewnętrzny
 enderio.gui.mjReader.requestRange=Szacowany pobór na tick
@@ -184,14 +184,14 @@ enderio.gui.mjReader.receiveItems=Może otrzymać rzeczy z:
 enderio.gui.mjReader.receiveItem1=Przyjmie
 enderio.gui.mjReader.receiveItem2=z:
 
-//CapactorBank
+#CapactorBank
 enderio.gui.capBank.inputRs=Włącznik przyrostu energii
 enderio.gui.capBank.outputRs=Włącznik ubytku energii
 enderio.gui.capBank.maxIo=Maksymalne wej./wyj.
 enderio.gui.capBank.maxInput=Wejście
 enderio.gui.capBank.maxOutput=Wyjście
 
-//Transceiver
+#Transceiver
 enderio.gui.trans.publicChannel=Publiczny kanał
 enderio.gui.trans.privateChannel=Prywatny kanał
 enderio.gui.trans.addChannel=Dodaj kanał
@@ -203,13 +203,13 @@ enderio.gui.trans.itemMode=Tryb przedmiotów
 enderio.gui.trans.publicHeading=Publiczne kanały:
 enderio.gui.trans.privateHeading=Prywatne kanały:
 
-//Alloy Smelter
+#Alloy Smelter
 enderio.gui.alloy.mode.heading=Tryb pieca
 enderio.gui.alloy.mode.all=Przetapiaj wszystko
 enderio.gui.alloy.mode.alloy=Tylko stopy
 enderio.gui.alloy.mode.furnace=Tylko jak zwykły piec
 
-//Travel Blocks
+#Travel Blocks
 enderio.gui.travelAccessable.privateBlock1=Można
 enderio.gui.travelAccessable.privateBlock2=zmienić tylko te ustawienia.
 enderio.gui.travelAccessable.public=Publiczny
@@ -219,7 +219,7 @@ enderio.gui.travelAccessable.unauthorised=Nie masz dostępu do tego bloku.
 enderio.gui.travelAccessable.enterCode=Podaj hasło
 enderio.gui.travelAccessable.ok=Autoryzuj
 
-//conduits
+#conduits
 enderio.gui.conduit.ioMode=Tryb
 enderio.gui.conduit.ioMode.inOut=Wej./Wyj.
 enderio.gui.conduit.ioMode.input=Wejście
