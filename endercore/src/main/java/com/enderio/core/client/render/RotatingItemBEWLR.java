@@ -13,6 +13,10 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.common.util.NonNullLazy;
+
+import java.util.function.Consumer;
 
 public class RotatingItemBEWLR extends BlockEntityWithoutLevelRenderer {
 
