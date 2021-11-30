@@ -103,10 +103,12 @@ public class EIOLang {
         "Makes the item shimmer as if it was enchanted.\nThat's all.\nReally.\nNothing more.\nYes, it is useless.\nI know.");
     public static final Component SOULBOUND_DESC = enchantmentDescription("soulbound",
         "Prevents item from being lost on death.\nNote: Most gravestone mods are stupid and prevent this from working!");
-    public static final Component WITHER_ARROW_DESC = enchantmentDescription("wither_bow",
-        "Applies withering to the target\nApplies to ranged weapons");
-    public static final Component WITHER_WEAPON_DESC = enchantmentDescription("wither_weapon",
-        "Applies withering to the target\nApplies to melee weapons");
+    public static final Component WITHERING_BLADE_DESC = enchantmentDescription("withering_blade",
+        "Applies wither to the target\nApplies to bladed weapons");
+    public static final Component WITHERING_ARROW_DESC = enchantmentDescription("withering_arrow",
+        "Applies wither to the target\nApplies to bows.");
+    public static final Component WITHERING_BOLT_DESC = enchantmentDescription("withering_bolt",
+        "Applies wither to the target\nApplies to crossbows.");
     public static final Component XP_BOOST_DESC = enchantmentDescription("xp_boost", "Extra XP from mobs and blocks");
 
     private static Component enchantmentDescription(String enchantmentname, String description) {

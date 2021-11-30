@@ -31,6 +31,8 @@ public interface IEntityStorage extends INamedNBTSerializable<Tag> {
     @Nonnull
     Optional<CompoundTag> getEntityNBT();
 
+    float getEntityMaxHealth();
+
     /**
      * Set the stored entity type.
      */
@@ -40,4 +42,6 @@ public interface IEntityStorage extends INamedNBTSerializable<Tag> {
      * Set the entity NBT.
      */
     void setEntityNBT(CompoundTag nbt);
+
+    void setEntityMaxHealth(float maxHealth);
 }

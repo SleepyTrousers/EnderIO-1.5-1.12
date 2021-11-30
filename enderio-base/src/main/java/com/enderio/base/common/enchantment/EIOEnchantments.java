@@ -6,14 +6,11 @@ import java.util.Map;
 
 import com.enderio.base.EnderIO;
 import com.enderio.base.common.lang.EIOLang;
-import com.enderio.core.common.util.TooltipUtil;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.EnchantmentBuilder;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -41,13 +38,16 @@ public class EIOEnchantments {
         .lang("Soulbound")
         .register();
 
-    // TODO: HOUSEKEEPING: Rename these to something better, and split bow and crossbow into separate enchantments.
-    public static final RegistryEntry<WitherArrowEnchantment> WITHER_ARROW = enchantmentBuilder("wither_arrow", new WitherArrowEnchantment())
-        .lang("Wither Arrows")
+    public static final RegistryEntry<WitherBladeEnchantment> WITHERING_BLADE = enchantmentBuilder("withering_blade", new WitherBladeEnchantment())
+        .lang("Withering Blade")
         .register();
 
-    public static final RegistryEntry<WitherWeaponEnchantment> WITHER_WEAPON = enchantmentBuilder("wither_weapon", new WitherWeaponEnchantment())
-        .lang("Wither Weapon")
+    public static final RegistryEntry<WitherArrowEnchantment> WITHERING_ARROW = enchantmentBuilder("withering_arrow", new WitherArrowEnchantment())
+        .lang("Withering Arrow")
+        .register();
+
+    public static final RegistryEntry<WitherArrowEnchantment> WITHERING_BOLT = enchantmentBuilder("withering_bolt", new WitherArrowEnchantment())
+        .lang("Withering bolt")
         .register();
 
     public static final RegistryEntry<XPBoostEnchantment> XP_BOOST = enchantmentBuilder("xp_boost", new XPBoostEnchantment()).lang("XP Boost").register();
@@ -82,8 +82,9 @@ public class EIOEnchantments {
             addTooltip(event, enchantments, toolTip, REPELLENT.get(), EIOLang.REPELLENT_DESC);
             addTooltip(event, enchantments, toolTip, SHIMMER.get(), EIOLang.SHIMMER_DESC);
             addTooltip(event, enchantments, toolTip, SOULBOUND.get(), EIOLang.SOULBOUND_DESC);
-            addTooltip(event, enchantments, toolTip, WITHER_ARROW.get(), EIOLang.WITHER_ARROW_DESC);
-            addTooltip(event, enchantments, toolTip, WITHER_WEAPON.get(), EIOLang.WITHER_WEAPON_DESC);
+            addTooltip(event, enchantments, toolTip, WITHERING_BLADE.get(), EIOLang.WITHERING_BLADE_DESC);
+            addTooltip(event, enchantments, toolTip, WITHERING_ARROW.get(), EIOLang.WITHERING_ARROW_DESC);
+            addTooltip(event, enchantments, toolTip, WITHERING_BOLT.get(), EIOLang.WITHERING_BOLT_DESC);
             addTooltip(event, enchantments, toolTip, XP_BOOST.get(), EIOLang.XP_BOOST_DESC);
         }
     }

@@ -8,10 +8,9 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
-public class WitherArrowEnchantment extends EIOBaseEnchantment {
-
-    public WitherArrowEnchantment() {
-        super(BaseConfig.COMMON.ENCHANTMENTS.WITHERING_ARROW_RARITY.get(), EIOEnchantmentCategories.ARROW, new EquipmentSlot[] { EquipmentSlot.MAINHAND }, () -> true);
+public class WitherBoltEnchantment extends EIOBaseEnchantment {
+    public WitherBoltEnchantment() {
+        super(BaseConfig.COMMON.ENCHANTMENTS.WITHERING_BOLT_RARITY.get(), EIOEnchantmentCategories.BOLT, new EquipmentSlot[] { EquipmentSlot.MAINHAND }, () -> true);
     }
 
     @Override
@@ -21,12 +20,12 @@ public class WitherArrowEnchantment extends EIOBaseEnchantment {
 
     @Override
     public int getMaxCost(int pLevel) {
-        return BaseConfig.COMMON.ENCHANTMENTS.WITHERING_ARROW_MAX_COST.get();
+        return BaseConfig.COMMON.ENCHANTMENTS.WITHERING_BOLT_MAX_COST.get();
     }
 
     @Override
     public int getMinCost(int pLevel) {
-        return BaseConfig.COMMON.ENCHANTMENTS.WITHERING_ARROW_MIN_COST.get();
+        return BaseConfig.COMMON.ENCHANTMENTS.WITHERING_BOLT_MIN_COST.get();
     }
 
     @Override

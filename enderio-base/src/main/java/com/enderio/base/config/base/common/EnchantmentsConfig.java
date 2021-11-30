@@ -28,13 +28,17 @@ public class EnchantmentsConfig {
     public final ForgeConfigSpec.ConfigValue<Integer> SOUL_BOUND_MAX_COST;
     public final ForgeConfigSpec.ConfigValue<Integer> SOUL_BOUND_MIN_COST;
 
-    public final ForgeConfigSpec.ConfigValue<Enchantment.Rarity> WITHER_ARROW_RARITY;
-    public final ForgeConfigSpec.ConfigValue<Integer> WITHER_ARROW_MAX_COST;
-    public final ForgeConfigSpec.ConfigValue<Integer> WITHER_ARROW_MIN_COST;
+    public final ForgeConfigSpec.ConfigValue<Enchantment.Rarity> WITHERING_BLADE_RARITY;
+    public final ForgeConfigSpec.ConfigValue<Integer> WITHERING_BLADE_MAX_COST;
+    public final ForgeConfigSpec.ConfigValue<Integer> WITHERING_BLADE_MIN_COST;
 
-    public final ForgeConfigSpec.ConfigValue<Enchantment.Rarity> WITHER_WEAPON_RARITY;
-    public final ForgeConfigSpec.ConfigValue<Integer> WITHER_WEAPON_MAX_COST;
-    public final ForgeConfigSpec.ConfigValue<Integer> WITHER_WEAPON_MIN_COST;
+    public final ForgeConfigSpec.ConfigValue<Enchantment.Rarity> WITHERING_ARROW_RARITY;
+    public final ForgeConfigSpec.ConfigValue<Integer> WITHERING_ARROW_MAX_COST;
+    public final ForgeConfigSpec.ConfigValue<Integer> WITHERING_ARROW_MIN_COST;
+
+    public final ForgeConfigSpec.ConfigValue<Enchantment.Rarity> WITHERING_BOLT_RARITY;
+    public final ForgeConfigSpec.ConfigValue<Integer> WITHERING_BOLT_MAX_COST;
+    public final ForgeConfigSpec.ConfigValue<Integer> WITHERING_BOLT_MIN_COST;
 
     public final ForgeConfigSpec.ConfigValue<Enchantment.Rarity> XP_BOOST_RARITY;
     public final ForgeConfigSpec.ConfigValue<Integer> XP_BOOST_MAX_COST_BASE;
@@ -77,16 +81,23 @@ public class EnchantmentsConfig {
         SOUL_BOUND_MIN_COST = builder.define("minCost", 16);
         builder.pop();
 
-        builder.push("witherArrow");
-        WITHER_ARROW_RARITY = builder.define("rarity", Enchantment.Rarity.UNCOMMON);
-        WITHER_ARROW_MAX_COST = builder.define("maxCost", 50);
-        WITHER_ARROW_MIN_COST = builder.define("minCost", 20);
+        builder.push("witheringBlade");
+        WITHERING_BLADE_RARITY = builder.define("rarity", Enchantment.Rarity.UNCOMMON);
+        WITHERING_BLADE_MAX_COST = builder.define("maxCost", 100);
+        WITHERING_BLADE_MIN_COST = builder.define("minCost", 1);
         builder.pop();
 
-        builder.push("witherWeapon");
-        WITHER_WEAPON_RARITY = builder.define("rarity", Enchantment.Rarity.UNCOMMON);
-        WITHER_WEAPON_MAX_COST = builder.define("maxCost", 100);
-        WITHER_WEAPON_MIN_COST = builder.define("minCost", 1);
+        builder.push("witheringArrow");
+        WITHERING_ARROW_RARITY = builder.define("rarity", Enchantment.Rarity.UNCOMMON);
+        WITHERING_ARROW_MAX_COST = builder.define("maxCost", 100);
+        WITHERING_ARROW_MIN_COST = builder.define("minCost", 1);
+        builder.pop();
+
+        // TODO: DEFAULTS FOR CROSSBOW ENCHANTMENTS
+        builder.push("witheringBolt");
+        WITHERING_BOLT_RARITY = builder.define("rarity", Enchantment.Rarity.UNCOMMON);
+        WITHERING_BOLT_MAX_COST = builder.define("maxCost", 100);
+        WITHERING_BOLT_MIN_COST = builder.define("minCost", 1);
         builder.pop();
 
         builder.push("xpBoost");

@@ -8,13 +8,14 @@ import javax.annotation.Nonnull;
 import java.util.Optional;
 
 public class EntityStorage implements IEntityStorage {
-    private CompoundTag tag = new CompoundTag();
+    private CompoundTag entityTag = new CompoundTag();
+    private float maxHealth;
 
     @Nonnull
     @Override
     public Optional<ResourceLocation> getEntityType() {
-        if (tag != null && tag.contains("id")) {
-            return Optional.of(new ResourceLocation(tag.getString("id")));
+        if (entityTag != null && entityTag.contains("id")) {
+            return Optional.of(new ResourceLocation(entityTag.getString("id")));
         }
         return Optional.empty();
     }
@@ -22,34 +23,49 @@ public class EntityStorage implements IEntityStorage {
     @Nonnull
     @Override
     public Optional<CompoundTag> getEntityNBT() {
-        if (tag != null)
-            return Optional.of(tag);
+        if (entityTag != null)
+            return Optional.of(entityTag);
         return Optional.empty();
     }
 
     @Override
+    public float getEntityMaxHealth() {
+        return maxHealth;
+    }
+
+    @Override
     public void setEntityType(ResourceLocation entityType) {
-        tag = new CompoundTag();
-        tag.putString("id", entityType.toString());
+        entityTag = new CompoundTag();
+        entityTag.putString("id", entityType.toString());
     }
 
     @Override
     public void setEntityNBT(CompoundTag nbt) {
-        tag = nbt;
+        entityTag = nbt;
     }
 
     public void empty() {
-        tag = new CompoundTag();
+        entityTag = new CompoundTag();
     }
 
     @Override
     public Tag serializeNBT() {
-        return tag;
+        var compound = new CompoundTag();
+        compound.put("Entity", entityTag);
+        compound.putFloat("MaxHealth", maxHealth);
+        return compound;
     }
 
     @Override
     public void deserializeNBT(Tag nbt) {
-        if (nbt instanceof CompoundTag compoundTag)
-            tag = compoundTag;
+        if (nbt instanceof CompoundTag compoundTag) {
+            entityTag = compoundTag.getCompound("Entity");
+            maxHealth = compoundTag.getFloat("MaxHealth");
+        }
+    }
+
+    @Override
+    public void setEntityMaxHealth(float maxHealth) {
+        this.maxHealth = maxHealth;
     }
 }

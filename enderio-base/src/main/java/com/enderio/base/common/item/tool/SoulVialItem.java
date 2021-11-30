@@ -25,8 +25,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
-import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -38,6 +36,7 @@ import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.tools.Tool;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -61,9 +60,11 @@ public class SoulVialItem extends Item implements IMultiCapabilityItem {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
 
         // Add entity information
+
         getEntityType(pStack).ifPresent(entityType -> {
 
             pTooltipComponents.add(TooltipUtil.style(new TranslatableComponent(EntityUtil.getEntityDescriptionId(entityType))));
+
             // TODO: HOUSEKEEPING?: Also add health data
         });
     }
@@ -103,7 +104,7 @@ public class SoulVialItem extends Item implements IMultiCapabilityItem {
 
             // Create a filled vial and put the entity's NBT inside.
             ItemStack filledVial = new ItemStack(EIOItems.FILLED_SOUL_VIAL.get());
-            setEntityNBT(filledVial, pInteractionTarget.serializeNBT());
+            setEntityData(filledVial, pInteractionTarget);
 
             // Consume a soul vial
             ItemStack hand = pPlayer.getItemInHand(pUsedHand);
@@ -229,11 +230,12 @@ public class SoulVialItem extends Item implements IMultiCapabilityItem {
             });
     }
 
-    private static void setEntityNBT(ItemStack stack, CompoundTag entity) {
+    private static void setEntityData(ItemStack stack, LivingEntity entity) {
         stack
             .getCapability(EIOCapabilities.ENTITY_STORAGE)
             .ifPresent(storage -> {
-                storage.setEntityNBT(entity);
+                storage.setEntityNBT(entity.serializeNBT());
+                storage.setEntityMaxHealth(entity.getMaxHealth());
             });
     }
 
