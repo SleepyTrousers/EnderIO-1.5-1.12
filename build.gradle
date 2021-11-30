@@ -199,23 +199,23 @@ subprojects {
         }
         repositories {
             def pubHypherion = System.getenv('MAVEN_URL') != null
-            
+
             //if (pubHypherion) {
-                maven {
-                    url System.getenv('MAVEN_URL')
-                    credentials {
-                        username System.getenv('MAVEN_USER')
-                        password System.getenv('MAVEN_PASS_2')
-                    }
+            maven {
+                url System.getenv('MAVEN_URL')
+                credentials {
+                    username System.getenv('MAVEN_USER')
+                    password System.getenv('MAVEN_PASS_2')
                 }
+            }
             //} else {
-                maven {
-                    url "https://maven.nerdthings.dev/snapshots"
-                    credentials {
-                        username = System.getenv("MAVEN_USERNAME")
-                        password = System.getenv("MAVEN_PASSWORD")
-                    }
+            maven {
+                url "https://maven.nerdthings.dev/snapshots"
+                credentials {
+                    username = System.getenv("MAVEN_USERNAME")
+                    password = System.getenv("MAVEN_PASSWORD")
                 }
+            }
             //}
         }
     }
@@ -263,11 +263,12 @@ String getVersionString(Project proj) {
     if (!build_server) {
         try {
             version_hash = "git rev-parse --short HEAD".execute().text.trim()
-        } catch (all) { }
+        } catch (all) {
+        }
     }
 
     def version_base = "${proj.version_major}.${proj.version_minor}.${version_patch_lc}"
-    def version_parts = ([ version_base, version_classifier, version_hash ]).findAll { p -> p != '' }
+    def version_parts = ([version_base, version_classifier, version_hash]).findAll { p -> p != '' }
 
     return String.join('-', version_parts)
 }
