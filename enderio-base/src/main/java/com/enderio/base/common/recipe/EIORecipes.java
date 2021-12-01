@@ -3,7 +3,6 @@ package com.enderio.base.common.recipe;
 import com.enderio.base.EnderIO;
 import com.enderio.base.common.recipe.capacitor.CapacitorDataRecipe;
 import com.enderio.base.common.recipe.grindingball.GrindingballRecipe;
-
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.eventbus.api.IEventBus;

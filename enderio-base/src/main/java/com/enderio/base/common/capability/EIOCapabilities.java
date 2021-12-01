@@ -7,8 +7,10 @@ import com.enderio.base.common.capability.entity.IEntityStorage;
 import com.enderio.base.common.capability.location.ICoordinateSelectionHolder;
 import com.enderio.base.common.capability.owner.IOwner;
 import com.enderio.base.common.capability.toggled.IToggled;
-
-import net.minecraftforge.common.capabilities.*;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 

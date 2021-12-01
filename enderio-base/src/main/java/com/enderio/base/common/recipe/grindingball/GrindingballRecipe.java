@@ -3,7 +3,6 @@ package com.enderio.base.common.recipe.grindingball;
 import com.enderio.base.common.recipe.EIORecipes;
 import com.enderio.base.common.recipe.capacitor.DataGenSerializer;
 import com.google.gson.JsonObject;
-
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;

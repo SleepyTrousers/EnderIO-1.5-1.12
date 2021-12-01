@@ -1,21 +1,20 @@
 package com.enderio.base.common.enchantment;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import com.enderio.base.EnderIO;
 import com.enderio.base.common.lang.EIOLang;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.EnchantmentBuilder;
 import com.tterrag.registrate.util.entry.RegistryEntry;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("unused")
 @EventBusSubscriber

@@ -3,10 +3,7 @@ package com.enderio.base.common.blockentity;
 import com.enderio.base.EnderIO;
 import com.enderio.base.common.block.EIOBlocks;
 import com.tterrag.registrate.Registrate;
-import com.tterrag.registrate.builders.TileEntityBuilder;
 import com.tterrag.registrate.util.entry.TileEntityEntry;
-
-import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class EIOBlockEntities {

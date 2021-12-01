@@ -1,11 +1,9 @@
 package com.enderio.base.common.capability.capacitors;
 
-import java.util.Map;
-
 import com.enderio.core.common.capability.INamedNBTSerializable;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraftforge.common.util.INBTSerializable;
+
+import java.util.Map;
 
 /**
  * interface for storing capacitor data

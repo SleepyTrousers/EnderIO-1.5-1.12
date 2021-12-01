@@ -1,10 +1,10 @@
 package com.enderio.base.common.item;
 
 import com.enderio.base.common.capability.EIOCapabilities;
+import com.enderio.base.common.capability.location.CoordinateSelection;
 import com.enderio.base.common.capability.location.CoordinateSelectionHolder;
 import com.enderio.base.common.capability.location.ICoordinateSelectionHolder;
 import com.enderio.base.common.menu.CoordinateMenu;
-import com.enderio.base.common.capability.location.CoordinateSelection;
 import com.enderio.core.common.capability.IMultiCapabilityItem;
 import com.enderio.core.common.capability.MultiCapabilityProvider;
 import net.minecraft.ChatFormatting;

@@ -1,10 +1,10 @@
 package com.enderio.machines.common.blockentity;
 
+import com.enderio.base.common.blockentity.RedstoneControl;
 import com.enderio.core.common.blockentity.SyncedBlockEntity;
 import com.enderio.core.common.blockentity.sync.EnumDataSlot;
 import com.enderio.core.common.blockentity.sync.NBTSerializableDataSlot;
 import com.enderio.core.common.blockentity.sync.SyncMode;
-import com.enderio.base.common.blockentity.RedstoneControl;
 import com.enderio.machines.common.blockentity.data.sidecontrol.IOConfig;
 import com.enderio.machines.common.blockentity.data.sidecontrol.item.ItemHandlerMaster;
 import net.minecraft.core.BlockPos;
@@ -25,10 +25,10 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-import static net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-
 import java.util.EnumMap;
 import java.util.Optional;
+
+import static net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public abstract class AbstractMachineBlockEntity extends SyncedBlockEntity implements MenuProvider {
 

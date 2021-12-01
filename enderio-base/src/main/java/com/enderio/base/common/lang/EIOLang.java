@@ -4,9 +4,9 @@ import com.enderio.base.EnderIO;
 import com.enderio.base.common.capability.capacitors.ICapacitorData;
 import com.enderio.core.common.util.TooltipUtil;
 import com.tterrag.registrate.Registrate;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 public class EIOLang {

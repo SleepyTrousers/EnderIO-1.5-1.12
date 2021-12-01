@@ -1,10 +1,10 @@
 package com.enderio.base.common.item.spawner;
 
 import com.enderio.base.common.capability.EIOCapabilities;
-import com.enderio.base.common.item.EIOCreativeTabs;
-import com.enderio.base.common.item.EIOItems;
 import com.enderio.base.common.capability.entity.EntityStorage;
 import com.enderio.base.common.capability.entity.IEntityStorage;
+import com.enderio.base.common.item.EIOCreativeTabs;
+import com.enderio.base.common.item.EIOItems;
 import com.enderio.base.common.util.EntityCaptureUtils;
 import com.enderio.core.common.capability.IMultiCapabilityItem;
 import com.enderio.core.common.capability.MultiCapabilityProvider;

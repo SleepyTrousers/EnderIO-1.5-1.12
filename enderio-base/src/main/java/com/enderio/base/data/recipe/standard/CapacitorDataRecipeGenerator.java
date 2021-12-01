@@ -4,7 +4,6 @@ import com.enderio.base.common.capability.capacitors.CapacitorData;
 import com.enderio.base.common.capability.capacitors.ICapacitorData;
 import com.enderio.base.common.item.EIOItems;
 import com.enderio.base.common.recipe.capacitor.CapacitorDataRecipe;
-
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;

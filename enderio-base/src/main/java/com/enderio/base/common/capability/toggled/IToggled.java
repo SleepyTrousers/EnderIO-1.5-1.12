@@ -2,9 +2,6 @@ package com.enderio.base.common.capability.toggled;
 
 import com.enderio.core.common.capability.INamedNBTSerializable;
 import net.minecraft.nbt.Tag;
-import net.minecraftforge.common.util.INBTSerializable;
-
-import javax.annotation.Nonnull;
 
 /**
  * Defines something that can be toggled, like an item.

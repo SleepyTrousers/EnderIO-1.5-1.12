@@ -1,21 +1,20 @@
 package com.enderio.base.common.util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-
 import com.enderio.base.common.capability.EIOCapabilities;
 import com.enderio.base.common.capability.capacitors.ICapacitorData;
 import com.enderio.base.common.recipe.EIORecipes;
 import com.enderio.base.common.recipe.capacitor.CapacitorDataRecipe;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.LazyOptional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 /**
  * Helper class for Capacitors

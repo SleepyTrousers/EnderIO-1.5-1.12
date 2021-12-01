@@ -1,12 +1,6 @@
 package com.enderio.base.common.enchantment;
 
-import java.lang.reflect.Method;
-import java.util.Map;
-
-import javax.annotation.Nonnull;
-
 import com.google.common.base.Throwables;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
@@ -27,6 +21,10 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
+
+import javax.annotation.Nonnull;
+import java.lang.reflect.Method;
+import java.util.Map;
 
 @EventBusSubscriber
 public class XPBoostHandler {

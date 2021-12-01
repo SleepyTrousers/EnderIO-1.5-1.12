@@ -1,7 +1,5 @@
 package com.enderio.base.common.enchantment;
 
-import java.util.List;
-
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
@@ -16,6 +14,8 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.items.ItemHandlerHelper;
+
+import java.util.List;
 
 @EventBusSubscriber
 public class AutoSmeltHandler {

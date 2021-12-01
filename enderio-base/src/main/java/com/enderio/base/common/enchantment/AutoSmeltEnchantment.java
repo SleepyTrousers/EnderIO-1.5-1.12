@@ -1,12 +1,12 @@
 package com.enderio.base.common.enchantment;
 
-import javax.annotation.Nonnull;
-
 import com.enderio.base.config.base.BaseConfig;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
+
+import javax.annotation.Nonnull;
 
 public class AutoSmeltEnchantment extends EIOBaseEnchantment {
 

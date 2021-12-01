@@ -1,7 +1,6 @@
 package com.enderio.machines.client;
 
 import com.enderio.base.EnderIO;
-import com.enderio.base.common.blockentity.ColorControl;
 import com.enderio.core.client.screen.EIOScreen;
 import com.enderio.core.client.screen.EnumIconWidget;
 import com.enderio.core.common.util.Vector2i;
@@ -10,7 +9,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import org.apache.commons.lang3.tuple.Pair;
 
 public class FluidTankScreen extends EIOScreen<FluidTankMenu> {
     private static final ResourceLocation BG_TEXTURE = new ResourceLocation(EnderIO.DOMAIN, "textures/gui/tank.png");

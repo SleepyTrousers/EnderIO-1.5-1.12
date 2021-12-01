@@ -1,14 +1,9 @@
 package com.enderio.base.data.recipe.standard;
 
-import java.util.function.Consumer;
-
-import javax.annotation.Nonnull;
-
 import com.enderio.base.EnderIO;
 import com.enderio.base.common.block.EIOBlocks;
 import com.enderio.base.common.item.EIOItems;
 import com.enderio.base.common.tag.EIOTags;
-
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.DataGenerator;
@@ -24,6 +19,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
+
+import javax.annotation.Nonnull;
+import java.util.function.Consumer;
 
 public class MaterialRecipes extends RecipeProvider {
     public MaterialRecipes(DataGenerator pGenerator) {

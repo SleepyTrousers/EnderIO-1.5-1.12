@@ -2,7 +2,6 @@ package com.enderio.base.data.recipe.standard;
 
 import com.enderio.base.EnderIO;
 import com.enderio.base.common.tag.EIOTags;
-
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;

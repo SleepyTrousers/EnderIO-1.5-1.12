@@ -1,8 +1,5 @@
 package com.enderio.base.common.enchantment;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -14,6 +11,9 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 //TODO testing against graves and other mods
 @EventBusSubscriber

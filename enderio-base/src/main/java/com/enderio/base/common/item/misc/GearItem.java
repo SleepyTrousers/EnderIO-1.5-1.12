@@ -1,11 +1,10 @@
 package com.enderio.base.common.item.misc;
 
-import java.util.function.Consumer;
-
 import com.enderio.core.client.render.IRotatingItem;
 import net.minecraftforge.client.IItemRenderProperties;
 
 import javax.annotation.Nonnull;
+import java.util.function.Consumer;
 
 public class GearItem extends MaterialItem implements IRotatingItem {
 

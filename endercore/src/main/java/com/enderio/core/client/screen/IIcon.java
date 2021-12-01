@@ -4,7 +4,6 @@ import com.enderio.core.common.util.Vector2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
-import org.apache.commons.lang3.tuple.Pair;
 
 public interface IIcon {
     Vector2i DEFAULT_TEXTURE_SIZE = new Vector2i(256, 256);

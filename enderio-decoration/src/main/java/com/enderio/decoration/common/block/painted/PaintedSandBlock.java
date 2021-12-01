@@ -1,6 +1,5 @@
 package com.enderio.decoration.common.block.painted;
 
-import com.enderio.base.common.blockentity.EIOBlockEntities;
 import com.enderio.decoration.common.blockentity.DecorBlockEntities;
 import com.enderio.decoration.common.blockentity.SinglePaintedBlockEntity;
 import com.enderio.decoration.common.entity.PaintedSandEntity;

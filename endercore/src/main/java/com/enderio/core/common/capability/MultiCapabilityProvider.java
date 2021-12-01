@@ -1,7 +1,6 @@
 package com.enderio.core.common.capability;
 
 import com.enderio.core.EnderCore;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;

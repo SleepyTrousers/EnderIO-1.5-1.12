@@ -1,11 +1,8 @@
 package com.enderio.base.common.blockentity;
 
-import java.util.Collection;
-
 import com.enderio.base.common.capability.EIOCapabilities;
 import com.enderio.base.common.capability.owner.IOwner;
 import com.enderio.base.common.capability.owner.Owner;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -25,6 +22,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collection;
 
 public class GraveBlockEntity extends BlockEntity {
     private final Owner owner = new Owner();

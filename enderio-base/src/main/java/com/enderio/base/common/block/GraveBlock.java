@@ -3,11 +3,9 @@ package com.enderio.base.common.block;
 import com.enderio.base.common.blockentity.EIOBlockEntities;
 import com.enderio.base.common.blockentity.GraveBlockEntity;
 import com.enderio.base.common.capability.EIOCapabilities;
-
 import com.enderio.base.common.lang.EIOLang;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;

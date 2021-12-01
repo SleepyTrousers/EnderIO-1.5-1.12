@@ -1,13 +1,12 @@
 package com.enderio.base.common.enchantment;
 
-import java.util.function.Supplier;
-
-import javax.annotation.Nonnull;
-
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
+
+import javax.annotation.Nonnull;
+import java.util.function.Supplier;
 
 public class EIOBaseEnchantment extends Enchantment {
 

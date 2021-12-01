@@ -1,16 +1,15 @@
 package com.enderio.base.data.recipe.standard;
 
-import java.util.function.Consumer;
-
 import com.enderio.base.common.item.EIOItems;
 import com.enderio.base.common.recipe.grindingball.GrindingballRecipe;
-
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+
+import java.util.function.Consumer;
 
 public class GrindingballRecipeGenerator extends RecipeProvider {
 

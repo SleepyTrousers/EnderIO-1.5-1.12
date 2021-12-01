@@ -3,7 +3,6 @@ package com.enderio.base.common.capability.owner;
 import com.enderio.core.common.capability.INamedNBTSerializable;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.common.util.INBTSerializable;
 
 /**
  * A capability holding a game profile declaring the owner of something.

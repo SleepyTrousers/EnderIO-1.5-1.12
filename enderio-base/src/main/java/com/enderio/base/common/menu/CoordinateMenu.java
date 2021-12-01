@@ -1,8 +1,8 @@
 package com.enderio.base.common.menu;
 
+import com.enderio.base.common.capability.location.CoordinateSelection;
 import com.enderio.base.common.item.EIOItems;
 import com.enderio.base.common.item.LocationPrintoutItem;
-import com.enderio.base.common.capability.location.CoordinateSelection;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.TextComponent;

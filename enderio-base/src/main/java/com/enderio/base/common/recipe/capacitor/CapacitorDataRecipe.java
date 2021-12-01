@@ -1,19 +1,19 @@
 package com.enderio.base.common.recipe.capacitor;
 
+import com.enderio.base.common.capability.capacitors.CapacitorData;
+import com.enderio.base.common.capability.capacitors.ICapacitorData;
+import com.enderio.base.common.recipe.EIORecipes;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import com.enderio.base.common.capability.capacitors.ICapacitorData;
-import com.enderio.base.common.recipe.EIORecipes;
-import com.enderio.base.common.recipe.EIORecipes.Serializer;
-import com.enderio.base.common.recipe.EIORecipes.Types;
-import com.enderio.base.common.capability.capacitors.CapacitorData;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

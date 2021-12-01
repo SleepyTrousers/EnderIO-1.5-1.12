@@ -5,8 +5,6 @@ import net.minecraft.nbt.ByteTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 
-import javax.annotation.Nonnull;
-
 public class Toggled implements IToggled {
 
     public static boolean isEnabled(ItemStack itemStack) {
