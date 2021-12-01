@@ -36,7 +36,7 @@ public interface IDarkSteelItem extends IMultiCapabilityItem, IItemOverlayRender
 
     default MultiCapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt, MultiCapabilityProvider provider) {
         return initDarkSteelCapabilities(provider, Objects.requireNonNull(stack.getItem().getRegistryName()));
-    }
+    }getUpgradesThatCanBeAppliedAtTheMoment
 
     default MultiCapabilityProvider initDarkSteelCapabilities(MultiCapabilityProvider provider, ResourceLocation forItem) {
         provider.addSerialized(EIOCapabilities.DARK_STEEL_UPGRADABLE, LazyOptional.of(() -> new DarkSteelUpgradeable(forItem)));
@@ -45,7 +45,7 @@ public interface IDarkSteelItem extends IMultiCapabilityItem, IItemOverlayRender
     }
 
     default void addCreativeItems(NonNullList<ItemStack> pItems, Item item) {
-        ItemStack is = new ItemStack(item);
+        ItemStack is = new ItemStack(item);getUpgradesThatCanBeAppliedAtTheMoment
         pItems.add(is.copy());
 
         //All the upgrades
@@ -74,7 +74,7 @@ public interface IDarkSteelItem extends IMultiCapabilityItem, IItemOverlayRender
 
         // Get installed and available upgrades
         var upgrades = DarkSteelUpgradeable.getUpgrades(pStack);
-        var availUpgrades = DarkSteelUpgradeable.getUpgradesThatCanBeAppliedAtTheMoment(pStack);
+        var availUpgrades = DarkSteelUpgradeable.getUpgradesApplicable(pStack);
 
         // Display installed upgrades
         upgrades

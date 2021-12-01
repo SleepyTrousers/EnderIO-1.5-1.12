@@ -46,6 +46,9 @@ public class EIOTags {
         public static final IOptionalNamedTag<Item> FUSED_QUARTZ = ItemTags.createOptional(new ResourceLocation(EnderIO.MODID, "fused_quartz"));
         public static final IOptionalNamedTag<Item> CLEAR_GLASS = ItemTags.createOptional(new ResourceLocation(EnderIO.MODID, "clear_glass"));
 
+        public static final IOptionalNamedTag<Item> BROKEN_SPAWNER_BLACKLIST = ItemTags.createOptional(new ResourceLocation(EnderIO.MODID, "blacklists/broken_spawner"));
+        public static final IOptionalNamedTag<Item> ELECTROMAGNET_BLACKLIST = ItemTags.createOptional(new ResourceLocation(EnderIO.MODID, "blacklists/electromagnet"));
+
     }
 
     public static class Blocks {

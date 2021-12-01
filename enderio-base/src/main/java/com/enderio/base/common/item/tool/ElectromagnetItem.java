@@ -1,5 +1,6 @@
 package com.enderio.base.common.item.tool;
 
+import com.enderio.base.common.tag.EIOTags;
 import com.enderio.base.config.base.BaseConfig;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
@@ -42,14 +43,13 @@ public class ElectromagnetItem extends PoweredToggledItem {
         return BaseConfig.COMMON.ITEMS.ELECTROMAGNET_MAX_ITEMS.get();
     }
 
-    private boolean isBlackListed(ItemEntity entity) {
-        //TODO: HOUSEKEEPING: Config
-        return false;
+    private boolean isBlacklisted(ItemEntity entity) {
+        return entity.getItem().is(EIOTags.Items.ELECTROMAGNET_BLACKLIST);
     }
 
     private boolean isMagnetable(Entity entity) {
         if (entity instanceof ItemEntity itemEntity) {
-            return !isBlackListed(itemEntity);
+            return !isBlacklisted(itemEntity);
         }
         return entity instanceof ExperienceOrb;
     }

@@ -34,9 +34,8 @@ public class DarkSteelUpgradeable implements IDarkSteelUpgradable {
         return cap.flatMap(upgradeCap -> upgradeCap.getUpgradeAs(upgrade, as));
     }
 
-    // TODO: The method name is quite long - review?
-    public static Collection<IDarkSteelUpgrade> getUpgradesThatCanBeAppliedAtTheMoment(ItemStack itemStack) {
-        return itemStack.getCapability(EIOCapabilities.DARK_STEEL_UPGRADABLE).map(IDarkSteelUpgradable::getUpgradesThatCanBeAppliedAtTheMoment).orElse(Collections.emptyList());
+    public static Collection<IDarkSteelUpgrade> getUpgradesApplicable(ItemStack itemStack) {
+        return itemStack.getCapability(EIOCapabilities.DARK_STEEL_UPGRADABLE).map(IDarkSteelUpgradable::getUpgradesApplicable).orElse(Collections.emptyList());
     }
 
     public static Collection<IDarkSteelUpgrade> getAllPossibleUpgrades(ItemStack itemStack) {
@@ -114,7 +113,7 @@ public class DarkSteelUpgradeable implements IDarkSteelUpgradable {
     }
 
     @Override
-    public Collection<IDarkSteelUpgrade> getUpgradesThatCanBeAppliedAtTheMoment() {
+    public Collection<IDarkSteelUpgrade> getUpgradesApplicable() {
         if(upgrades.isEmpty()) {
             return List.of(EmpoweredUpgrade.TIER_0_FACTORY.get());
         }

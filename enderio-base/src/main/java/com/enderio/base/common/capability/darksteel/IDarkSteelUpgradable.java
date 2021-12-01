@@ -47,7 +47,7 @@ public interface IDarkSteelUpgradable extends INamedNBTSerializable<Tag> {
      * Returns the list of upgrades that will return true from {@link #canApplyUpgrade(IDarkSteelUpgrade)}
      * @return the upgrades that can be applied
      */
-    Collection<IDarkSteelUpgrade> getUpgradesThatCanBeAppliedAtTheMoment();
+    Collection<IDarkSteelUpgrade> getUpgradesApplicable();
 
     /**
      * Returns all upgrades that can ever be applied to this upgradable
