@@ -176,13 +176,13 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
-@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "after:endercore;after:MineFactoryReloaded;after:Waila@[1.5.8,);after:Thaumcraft;after:appliedenergistics2@[rv2-beta-8,)", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
+@Mod(modid = MODID, name = MOD_NAME, version = VERSION, dependencies = "after:endercore;after:MineFactoryReloaded;after:Forestry;after:Waila@[1.5.8,);after:Thaumcraft;after:appliedenergistics2@[rv2-beta-8,)", guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
 public class EnderIO {
 
   public static final String MODID = "EnderIO";
   public static final String DOMAIN = MODID.toLowerCase(Locale.US);
   public static final String MOD_NAME = "Ender IO";
-  public static final String VERSION = "@VERSION@";
+  public static final String VERSION = "GRADLETOKEN_VERSION";
 
   @Instance(MODID)
   public static EnderIO instance;

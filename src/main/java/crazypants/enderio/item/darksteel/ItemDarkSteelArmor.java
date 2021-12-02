@@ -310,6 +310,11 @@ public class ItemDarkSteelArmor extends ItemArmor implements IEnergyContainerIte
   // Forestry
 
   @Override
+  public boolean protectEntity(EntityLivingBase entity, ItemStack armor, String cause, boolean doProtect) {
+    return ApiaristArmorUpgrade.loadFromItem(armor) != null;
+  }
+
+  @Override
   @Method(modid = "Forestry")
   public boolean protectPlayer(EntityPlayer player, ItemStack armor, String cause, boolean doProtect) {
     return ApiaristArmorUpgrade.loadFromItem(armor) != null;

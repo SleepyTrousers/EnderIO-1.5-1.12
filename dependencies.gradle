@@ -1,0 +1,48 @@
+// Add your dependencies here
+
+dependencies {
+    compile("com.github.GTNewHorizons:EnderCore:master-SNAPSHOT:dev")
+    compile("com.github.GTNewHorizons:ForestryMC:master-SNAPSHOT:dev")
+
+    compile("curse.maven:cofh-lib-220333:2388748")
+    compile("cglib:cglib-nodep:3.1")
+
+    compileOnly("com.github.GTNewHorizons:waila:master-SNAPSHOT:api") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:master-SNAPSHOT:api") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:Baubles:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:Railcraft:master-SNAPSHOT:api") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:StorageDrawers:master-SNAPSHOT:api") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:Chisel:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+
+    compileOnly("curse.maven:minefactory-reloaded-66672:2366150") {
+        transitive = false
+    }
+    compileOnly("curse.maven:computercraft-67504:2269339") {  // https://www.curseforge.com/minecraft/mc-mods/computercraft/files/2269339
+        transitive = false
+    }
+    compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") {
+        transitive = false
+    }
+    compileOnly("li.cil.oc:OpenComputers:MC1.7.10-1.7.5.1356:api") {
+        transitive = false
+    }
+    compileOnly("curse.maven:mekanism-268560:2475797") {  // https://www.curseforge.com/minecraft/mc-mods/mekanism/files/2475797
+        transitive = false
+    }
+    compileOnly("curse.maven:ee3-65509:2305023") {  // https://www.curseforge.com/minecraft/mc-mods/ee3/files/2305023
+        transitive = false
+    }
+    compileOnly files("dependencies/immibis-microblocks-59.1.2.jar")
+}

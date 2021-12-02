@@ -1,7 +1,9 @@
 package crazypants.util;
 
 import cofh.api.block.IBlockAppearance;
+import cpw.mods.fml.common.Optional;
 
-public interface IFacade extends info.jbcs.minecraft.chisel.api.IFacade, com.cricketcraft.chisel.api.IFacade, IBlockAppearance {
+@Optional.Interface(modid = "chisel", iface = "com.cricketcraft.chisel.api.IFacade")
+public interface IFacade extends com.cricketcraft.chisel.api.IFacade, IBlockAppearance {
   // :(
 }
