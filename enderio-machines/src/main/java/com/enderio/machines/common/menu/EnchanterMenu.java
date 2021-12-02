@@ -24,8 +24,8 @@ public class EnchanterMenu extends MachineMenu<EnchanterBlockEntity>{
 
     public EnchanterMenu(EnchanterBlockEntity blockEntity, Inventory inventory, int pContainerId) {
         super(blockEntity, inventory, MachineMenus.ENCHANTER.get(), pContainerId);
-        this.level = blockEntity.getLevel();
         if (blockEntity != null) {
+            this.level = blockEntity.getLevel();
             addSlot(new MachineSlot(blockEntity.getItemHandlerMaster(), 0, 16, 35));
             addSlot(new MachineSlot(blockEntity.getItemHandlerMaster(), 1, 65, 35));
             addSlot(new MachineSlot(blockEntity.getItemHandlerMaster(), 2, 85, 35));
@@ -66,9 +66,11 @@ public class EnchanterMenu extends MachineMenu<EnchanterBlockEntity>{
     }
     
     public int getCurrentCost() {
-        Optional<IEnchanterRecipe> recipe = level.getRecipeManager().getRecipeFor(MachineRecipes.Types.ENCHANTING, new RecipeWrapper(this.getBlockEntity().getItemHandlerMaster()), level);
-        if (recipe.isPresent()) {
-            return recipe.get().getLevelCost(new RecipeWrapper(this.getBlockEntity().getItemHandlerMaster()));
+        if (level != null) {
+            Optional<IEnchanterRecipe> recipe = level.getRecipeManager().getRecipeFor(MachineRecipes.Types.ENCHANTING, new RecipeWrapper(this.getBlockEntity().getItemHandlerMaster()), level);
+            if (recipe.isPresent()) {
+                return recipe.get().getLevelCost(new RecipeWrapper(this.getBlockEntity().getItemHandlerMaster()));
+            }
         }
         return -1;
     }
