@@ -28,7 +28,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Setup the workspace
-      run: ./gradlew setupCIWorkspace
+      run: ./gradlew setupDecompWorkspace
     
     - name: Build the mod
       run: ./gradlew build
