@@ -5,7 +5,7 @@ dependencies {
     compile("com.github.GTNewHorizons:ForestryMC:master-SNAPSHOT:dev")
 
     compile("curse.maven:cofh-lib-220333:2388748")
-    compile("cglib:cglib-nodep:3.1")
+    shadowImplementation("cglib:cglib-nodep:3.3.0")
 
     compileOnly("com.github.GTNewHorizons:waila:master-SNAPSHOT:api") {
         transitive = false
