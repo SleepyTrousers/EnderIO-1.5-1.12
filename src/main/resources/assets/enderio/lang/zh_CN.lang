@@ -53,12 +53,10 @@ enderio.itemRedstoneConduitInsulated.name=绝缘红石导管
 enderio.itemLiquidConduit.name=流体导管
 enderio.itemLiquidConduitAdvanced.name=高压流体导管
 enderio.itemLiquidConduitEnder.name=末影流体导管
-# BEGIN needs translation
-enderio.itemLiquidConduitCrystallineEnder.name=Crystalline Ender Fluid Conduit
-enderio.itemLiquidConduitCrystallinePinkSlimeEnder.name=Crystalline Pink Slime Ender Fluid Conduit
-enderio.itemLiquidConduitMelodicEnder.name=Melodic Ender Fluid Conduit
-enderio.itemLiquidConduitStellarEnder.name=Stellar Ender Fluid Conduit
-# END needs translation
+enderio.itemLiquidConduitCrystallineEnder.name=晶化合金末影流体导管
+enderio.itemLiquidConduitCrystallinePinkSlimeEnder.name=晶化粉红史莱姆末影流体导管
+enderio.itemLiquidConduitMelodicEnder.name=旋律合金末影流体导管
+enderio.itemLiquidConduitStellarEnder.name=恒星合金末影流体导管
 enderio.itemLiquidConduit.lockedType=流体种类锁定为
 enderio.itemLiquidConduit.unlockedType=流体种类解锁
 enderio.itemLiquidConduit.lockedWaila=锁定为
@@ -1235,7 +1233,7 @@ enderio.gui.conduit.gas.autoExtract=自动提取
 enderio.gui.weather.task.clear=清除天气
 enderio.gui.weather.task.rain=雨天
 enderio.gui.weather.task.storm=雷暴天气
-enderio.gui.weather.requiredfluid=需要流体: %s mB
+enderio.gui.weather.requiredfluid=需要流体: %s L
 enderio.weatherObelisk.fuelTank=大气通量仓
 
 #Enchants
