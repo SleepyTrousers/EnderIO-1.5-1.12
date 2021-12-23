@@ -284,6 +284,9 @@ public class ConduitUtil {
     if (nbtVersion == 0 && "crazypants.enderio.conduit.liquid.LiquidConduit".equals(typeName)) {
       Log.debug("ConduitUtil.readConduitFromNBT: Converted pre 0.7.3 fluid conduit to advanced fluid conduit.");
       typeName = "crazypants.enderio.conduit.liquid.AdvancedLiquidConduit";
+    } else if ("crazypants.enderio.conduit.liquid.AdvancedEnderLiquidConduit".equals(typeName)) {
+      Log.debug("ConduitUtil.readConduitFromNBT: Converted advanced ender fluid conduit to crystalline ender fluid conduit.");
+      typeName = "crazypants.enderio.conduit.liquid.CrystallineEnderLiquidConduit";
     }
     IConduit result;
     try {
