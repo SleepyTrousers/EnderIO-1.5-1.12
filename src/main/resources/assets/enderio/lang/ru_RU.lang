@@ -30,9 +30,9 @@ item.enderio.itemConduitFacade.tooltip.detailed.line3=Скрыт, когда г�
 item.enderio.itemConduitFacade.tooltip.detailed.line4=экипированы
 item.enderio.itemConduitFacade.hardened.tooltip=Упрочнён: Выдерживает удары и взрывы
 
-enderio.itemPowerConduit.name=Энергетическая труба
-enderio.itemPowerConduitEnhanced.name=Улучшенная энергетическая труба
-enderio.itemPowerConduitEnder.name=Энергетическая труба Края
+enderio.itemPowerConduit.name=Энергопровод из проводящего железа
+enderio.itemPowerConduitEnhanced.name=Энергопровод из энергетического сплава
+enderio.itemPowerConduitEnder.name=Энергопровод из вибрирующего сплава
 
 
 enderio.itemPowerConduitEndergyCrude.name=Энергопровод из глинистого состава
@@ -81,7 +81,7 @@ enderio.filterUpgradeAdvanced.name=Продвинутый предметный �
 enderio.itemConduitFilterUpgrade=Улучшение для предметных труб
 enderio.filterUpgradeBigAdvanced.name=Большой и расширенный предметный фильтр
 enderio.filterUpgradeBig.name=Большой предметный фильтр
-enderio.itemConduitFilterUpgrade=Upgrade for item conduits
+enderio.itemConduitFilterUpgrade=Улучшение для предметных труб
 enderio.itemConduitFilterUpgrade.configured=Настроенный
 enderio.itemConduitFilterUpgrade.clearConfigMethod=Положите в сетку создания, чтобы очистить
 enderio.itemConduitFilterUpgrade.clearConfigWarning=Это очистит все сохранённые настройки фильтра!
@@ -228,6 +228,17 @@ enderio.weatherCrystal.name=Погодный кристалл
 enderio.soulMachineChassi.name=Корпус механизма из призрачного сплава
 enderio.endSteelMachineChassi.name=Корпус механизма из стали Края
 
+#Balls
+enderio.electricalSteel_ball.name=Шарик наэлектризованной стали
+enderio.energeticAlloy_ball.name=Шарик энергетического сплава
+enderio.phasedGold_ball.name=Шарик вибрирующего сплава
+enderio.redstoneAlloy_ball.name=Шарик сплава красного камня
+enderio.conductiveIron_ball.name=Шарик проводящего железа
+enderio.phasedIron_ball.name=Шарик пульсирующего железа
+enderio.vibrantNugget_ball.name=Шарик вибрирующего сплава
+enderio.darkSteel_ball.name=Шарик тёмной стали
+enderio.soularium_ball.name=Шарик призрачного сплава
+enderio.endSteel_ball.name=Шарик стали Края
 
 enderio.darkGrindingBall.name=Шарик тёмной стали
 enderio.electricalGrindingBall.name=Шарик наэлектризованной стали
@@ -878,29 +889,34 @@ enderio.item.endSteel_boots.tooltip.line2=если есть питание
 enderio.item.stellar_boots.tooltip.line1=Урон от падения поглощается,
 enderio.item.stellar_boots.tooltip.line2=если есть питание
 
-enderio.darksteel.upgrade.empowered_one.name=Усиление
+enderio.darksteel.upgrade.empowered_one.name=Усиление I
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Энергия: $P
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=Поглощается $D% урона
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=энергией
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=Поглощается $D% урона,
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=если есть питание
 
 enderio.darksteel.upgrade.empowered_two.name=Усиление II
 enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=Энергия: $P
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=Поглощается $D% урона
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=энергией
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=Поглощается $D% урона,
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=если есть питание
 
 enderio.darksteel.upgrade.empowered_three.name=Усиление III
 enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=Энергия: $P
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=Поглощается $D% урона
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=энергией
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=Поглощается $D% урона,
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=если есть питание
 
 enderio.darksteel.upgrade.empowered_four.name=Усиление IV
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Энергия: $P
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=Поглощается $D% урона
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=энергией
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=Поглощается $D% урона,
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=если есть питание
+
+enderio.darksteel.upgrade.empowered_five.name=Усиление V
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line1=Энергия: $P
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line2=Поглощается $D% урона,
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line3=если есть питание
 
 enderio.darksteel.upgrade.travel.name=Путешествие
-enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Зажмите shift и нажмите ПКМ, для телепорта или
-enderio.darksteel.upgrade.travel.tooltip.detailed.line2=активируйте якорь путешествия, или Ender IO
+enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Зажмите shift и нажмите ПКМ, для телепорта. 
+enderio.darksteel.upgrade.travel.tooltip.detailed.line2=Так же можно телепортироваться на якоря путешествия.
 
 enderio.darksteel.upgrade.spoon.name=Ложка
 enderio.darksteel.upgrade.spoon.tooltip.detailed.line1=Кому нужна лопата, когда
@@ -971,16 +987,18 @@ enderio.darksteel.upgrade.speed_three.tooltip.detailed.line1=Увеличива�
 
 enderio.darksteel.upgrade.swim.name=Ласты
 
-enderio.darksteel.upgrade.nightVision.name=Ночное видение
-enderio.darksteel.upgrade.nightVision.enabled=Ночное видение включено
-enderio.darksteel.upgrade.nightVision.disabled=Ночное видение выключено
+enderio.darksteel.upgrade.nightVision.name=Ночное зрение
+enderio.darksteel.upgrade.nightVision.enabled=Ночное зрение включено
+enderio.darksteel.upgrade.nightVision.disabled=Ночное зрение выключено
 
 enderio.darksteel.upgrade.solar_one.name=Солнечная батарея I
-enderio.darksteel.upgrade.solar_one.tooltip.detailed.line1=Генерирует энергию от солнца.
+enderio.darksteel.upgrade.solar_one.tooltip.detailed.line1=Генерирует энергию от солнечных лучей.
 
 enderio.darksteel.upgrade.solar_two.name=Солнечная батарея II
-enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1==Генерирует энергию от солнца.
+enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1==Генерирует энергию от солнечных лучей.
 
+enderio.darksteel.upgrade.solar_three.name=Солнечная батарея III
+enderio.darksteel.upgrade.solar_three.tooltip.detailed.line1=Генерирует энергию от солнечных лучей.
 #------GUI
 
 enderio.gui.simple.in=Макс. вход:
