@@ -1,5 +1,6 @@
 #***  Ender IO ***#
 
+
 #Power
 enderio.power.rf=RF
 enderio.power.tmb=тик/Л
@@ -33,6 +34,20 @@ enderio.itemPowerConduit.name=Энергетическая труба
 enderio.itemPowerConduitEnhanced.name=Улучшенная энергетическая труба
 enderio.itemPowerConduitEnder.name=Энергетическая труба Края
 
+
+enderio.itemPowerConduitEndergyCrude.name=Энергопровод из глинистого состава
+enderio.itemPowerConduitEndergyIron.name=Энергопровод из железа
+enderio.itemPowerConduitEndergyAluminum.name=Энергопровод из алюминия
+enderio.itemPowerConduitEndergyGold.name=Энергопровод из золота
+enderio.itemPowerConduitEndergyCopper.name=Энергопровод из меди 
+enderio.itemPowerConduitEndergySilver.name=Энергопровод из серебра 
+enderio.itemPowerConduitEndergyElectrum.name=Энергопровод из электрума 
+enderio.itemPowerConduitEndergyEnergeticSilver.name=Энергопровод из энергетического серебра 
+enderio.itemPowerConduitEndergyCrystalline.name=Энергопровод из кристалического сплава
+enderio.itemPowerConduitEndergyCrystallinePinkSlime.name=Энергопровод из кристаллической розовой слизи
+enderio.itemPowerConduitEndergyMelodic.name=Энергопровод из мелодичного сплава
+enderio.itemPowerConduitEndergyStellar.name=Энергопровод из звёздного сплава
+
 enderio.itemRedstoneConduit.name=Красная труба
 enderio.itemRedstoneConduitSwitch.name=Переключатель труб
 enderio.itemRedstoneConduitInsulated.name=Изолированная красная труба
@@ -40,12 +55,11 @@ enderio.itemRedstoneConduitInsulated.name=Изолированная красн�
 enderio.itemLiquidConduit.name=Жидкостная труба
 enderio.itemLiquidConduitAdvanced.name=Жидкостная труба высокого давления
 enderio.itemLiquidConduitEnder.name=Жидкостная труба Края
-# BEGIN needs translation
-enderio.itemLiquidConduitCrystallineEnder.name=Crystalline Ender Fluid Conduit
-enderio.itemLiquidConduitCrystallinePinkSlimeEnder.name=Crystalline Pink Slime Ender Fluid Conduit
-enderio.itemLiquidConduitMelodicEnder.name=Melodic Ender Fluid Conduit
-enderio.itemLiquidConduitStellarEnder.name=Stellar Ender Fluid Conduit
-# END needs translation
+enderio.itemLiquidConduitCrystallineEnder.name=Жидкостная труба из кристалического сплава
+enderio.itemLiquidConduitCrystallinePinkSlimeEnder.name=Жидкостная труба из кристаллической розовой слизи
+enderio.itemLiquidConduitMelodicEnder.name=Жидкостная труба из мелодичного сплава
+enderio.itemLiquidConduitStellarEnder.name=Жидкостная труба из звёздного сплава
+
 enderio.itemLiquidConduit.lockedType=Тип жидкости установлен на
 enderio.itemLiquidConduit.unlockedType=Тип жидкости не установлен
 enderio.itemLiquidConduit.lockedWaila=Установленная жидкость 
@@ -65,7 +79,9 @@ enderio.itemItemConduit.name=Предметная труба
 enderio.filterUpgradeBasic.name=Основной предметный фильтр
 enderio.filterUpgradeAdvanced.name=Продвинутый предметный фильтр
 enderio.itemConduitFilterUpgrade=Улучшение для предметных труб
-
+enderio.filterUpgradeBigAdvanced.name=Большой и расширенный предметный фильтр
+enderio.filterUpgradeBig.name=Большой предметный фильтр
+enderio.itemConduitFilterUpgrade=Upgrade for item conduits
 enderio.itemConduitFilterUpgrade.configured=Настроенный
 enderio.itemConduitFilterUpgrade.clearConfigMethod=Положите в сетку создания, чтобы очистить
 enderio.itemConduitFilterUpgrade.clearConfigWarning=Это очистит все сохранённые настройки фильтра!
@@ -133,6 +149,8 @@ enderio.conduitBinder.name=Связующий элемент труб
 enderio.binderComposite.name=Составной связующий элемент
 enderio.phasedIronNugget.name=Пульсирующий железный самородок
 tile.blockDarkIronBars.name=Решётка из тёмного железа
+tile.blockSoulariumBars.name=Решётка из призрачного сплава
+tile.blockEndSteelBars.name=Решётка из стали Края
 tile.blockEndermanSkull.name=Череп странника Края
 tile.blockEndermanSkull.base.name=Голова странника Края
 tile.blockEndermanSkull.reanimated.name=Реанимированная голова странника Края
@@ -168,6 +186,27 @@ fluid.eio.xpjuice=Жидкий опыт
 tile.fluid.eio.xpjuice.name=Жидкий опыт
 item.bucketXpjuice.name=Ведро опыта
 
+fluid.liquid_sunshine=Жидкий солнечный свет
+tile.fluid.liquid_sunshine.name=Солнечный свет
+item.bucketLiquid_sunshine.name=Ведро жидкого солнечного света
+
+fluid.cloud_seed=Облако семян
+tile.fluid.cloud_seed.name=Облако семян
+item.bucketCloud_seed.name=Ведро c облаком семян
+
+
+fluid.cloud_seed_concentrated=Концентрированное облако семян
+tile.fluid.cloud_seed_concentrated.name=Концентрированное облако семян
+item.bucketCloud_seed_concentrated.name=Ведро c концентрированным облаком семян
+
+fluid.ender_distillation=Роса пустоты
+tile.fluid.ender_distillation.name=Роса пустоты
+item.bucketEnder_distillation.name=Ведро росы пустоты
+
+fluid.vapor_of_levity=Пар лёгкости
+tile.fluid.vapor_of_levity.name=Пар лёгкости
+item.bucketVapor_of_levity.name=Ведро пара лёгкости
+
 enderio.fluid.millibucket.abr=Л
 
 enderio.fuel.tooltip.heading=Информация о топливе
@@ -186,11 +225,26 @@ enderio.vibrantCrystal.name=Вибрирующий кристалл
 enderio.enderCrystal.name=Кристалл Края
 enderio.attractorCrystal.name=Привлекающий кристалл
 enderio.weatherCrystal.name=Погодный кристалл
+enderio.soulMachineChassi.name=Корпус механизма из призрачного сплава
+enderio.endSteelMachineChassi.name=Корпус механизма из стали Края
+
+
 enderio.darkGrindingBall.name=Шарик тёмной стали
+enderio.electricalGrindingBall.name=Шарик наэлектризованной стали
+enderio.energeticGrindingBall.name=Шарик энергетического сплава
+enderio.vibrantGrindingBall.name=Шарик вибрирующего сплава
+enderio.redstoneGrindingBall.name=Шарик сплава из красного камня
+enderio.conductiveGrindingBall.name=Шарик проводящего железа
+enderio.pulsatingGrindingBall.name=Шарик пульсирующего железа
+enderio.soulariumGrindingBall.name=Шарик призрачного сплава
+enderio.endSteelGrindingBall.name=Шарик стали Края
+
+
 enderio.darkGrindingBall.tooltip.detailed.line1=Измельчающий шарик для дробилки
 enderio.darkGrindingBall.tooltip.detailed.line2=Основной выход
 enderio.darkGrindingBall.tooltip.detailed.line3=Бонусный выход
 enderio.darkGrindingBall.tooltip.detailed.line4=Снижение мощности
+enderio.darkSteelRod.name=Стержень из тёмной стали
 
 tile.blockReinforcedObsidian.name=Укреплённый обсидиан
 tile.blockReinforcedObsidian.tooltip.common.line1=Защищён от иссушителей
@@ -217,7 +271,31 @@ enderio.conductiveIron.name=Проводящее железо
 enderio.phasedIron.name=Пульсирующее железо
 enderio.vibrantNugget.name=Самородок вибрирующего сплава
 enderio.darkSteel.name=Тёмная сталь
-enderio.soularium.name=Соуларий
+enderio.soularium.name=Призрачный сплав
+enderio.endSteel.name=Сталь Края
+enderio.endSteelNugget.name=Самородок стали Края
+
+enderio.crudeSteel.name=Состав глины
+enderio.crystallineAlloy.name=Кристаллический сплав
+enderio.melodicAlloy.name=Мелодичный сплав
+enderio.stellarAlloy.name=Звёздный сплав
+enderio.crystallinePinkSlime.name=Кристаллическая розовая слизь
+enderio.energeticSilver.name=Энергетическое серебро
+enderio.vividAlloy.name=Яркий сплав
+
+enderio.crudeSteelGrindingBall.name=Шлифовальный шар из глинистого состава
+enderio.crystallineAlloyGrindingBall.name=Шлифовальный шар из кристаллического сплава
+enderio.melodicAlloyGrindingBall.name=Шлифовальный шар из мелодичного сплава
+enderio.stellarAlloyGrindingBall.name=Шлифовальный шар из звёздного сплава
+enderio.crystallinePinkSlimeGrindingBall.name=Шлифовальный шар из кристаллической розовой слизи
+enderio.energeticSilverGrindingBall.name=Энергетический серебряный шлифовальный шар
+enderio.vividAlloyGrindingBall.name=Шлифовальный шар из яркого сплава
+
+enderio.precientCrystal.name=Древний кристалл
+enderio.pulsatingPowder.name=Пыль пульсирующего сплава
+enderio.vibrantPowder.name=Пыль вибрирующего сплава
+enderio.enderCrystalPowder.name=Пыль кристалла Края
+enderio.precientPowder.name=Пыль древнего кристалла
 
 tile.blockIngotStorage.name=Хранилище слитков
 tile.enderio.electricalSteel.name=Блок наэлектризованной стали
@@ -228,7 +306,17 @@ tile.enderio.conductiveIron.name=Блок проводящего железа
 tile.enderio.phasedIron.name=Блок пульсирующего железа
 tile.enderio.vibrantNugget.name=Блок самородка вибрирующего сплава
 tile.enderio.darkSteel.name=Блок тёмной стали
-tile.enderio.soularium.name=Блок соулария
+tile.enderio.soularium.name=Блок призрачного сплава
+tile.enderio.endSteel.name=Блок стали Края
+
+tile.enderio.crudeSteel.name=Блок глинистого состава
+tile.enderio.crystallineAlloy.name=Блок кристаллического сплава
+tile.enderio.melodicAlloy.name=Блок из мелодичного сплава
+tile.enderio.stellarAlloy.name=Блок звёздного сплава
+tile.enderio.crystallinePinkSlime.name=Блок из кристаллической розовой слизи
+tile.enderio.energeticSilver.name=Блок энергетического серебра
+tile.enderio.vividAlloy.name=Блок яркого сплава
+
 
 #Powder / Ingot
 enderio.powderCoal.name=Угольный порошок
@@ -245,6 +333,13 @@ enderio.itemBasicCapacitor.name=Конденсатор
 enderio.basicCapacitor.name=Основной конденсатор
 enderio.activatedCapacitor.name=Двухслойный конденсатор
 enderio.enderCapacitor.name=Восьмислойный конденсатор
+enderio.crystallineCapacitor.name=Кристаллический конденсатор
+enderio.melodicCapacitor.name=Мелодичный конденсатор
+enderio.stellarCapacitor.name=Звёздный конденсатор
+enderio.silverCapacitor.name=Серебряный конденсатор
+enderio.endergeticCapacitor.name=Эндергетический конденсатор
+enderio.endergisedCapacitor.name=Сияющий конденсатор
+enderio.totemicCapacitor.name=Тотемный конденсатор
 
 enderio.machine.tooltip.upgrade=Улучшение механизма
 enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Увеличивает хранилище энергии и
@@ -272,12 +367,12 @@ tile.blockAlloySmelter.tooltip.detailed.line3=питающаяся энерги�
 tile.blockAlloySmelter.tooltip.detailed.line4=Добавьте конденсаторы, чтобы увеличить
 tile.blockAlloySmelter.tooltip.detailed.line5=скорость и хранилище энергии
 
-tile.blockSolarPanel.name=Фотовольтовая ячейка
-tile.blockSolarPanel.advanced.name=Продвинутая фотовольтовая ячейка
+tile.blockSolarPanel.name=Фотовольтовая панель
+tile.blockSolarPanel.advanced.name=Продвинутая фотовольтовая панель
+tile.blockSolarPanel.vibrant.name=Вибрирующая фотовольтовая панель
 tile.blockSolarPanel.tooltip.common.line1=Солнечная энергия!
 tile.blockSolarPanel.tooltip.detailed.line1=Производит энергию в светлое время суток
-tile.blockSolarPanel.tooltip.detailed.line2=Должна иметь чистое пространство
-tile.blockSolarPanel.tooltip.detailed.line3=к небу
+tile.blockSolarPanel.tooltip.detailed.line2=Должна видеть небо
 enderio.maxSolorProduction=Макс. выход
 enderio.tooltip.efficiency=Эффективность
 enderio.tooltip.sunlightBlocked=Небо закрыто!
@@ -402,6 +497,17 @@ tile.blockZombieGenerator.tooltip.detailed.line1=Потребляет питат
 tile.blockZombieGenerator.tooltip.detailed.line2=для производства энергии
 enderio.zombieGenerator.fuelTank=Питательный резервуар
 enderio.gui.fluid.minReq=Для активации требуется: %s
+
+tile.blockFrankenzombieGenerator.name=Генератор Frank'N'Zombie
+tile.blockFrankenzombieGenerator.tooltip.detailed.line1=Потребляет питательный дистиллят
+tile.blockFrankenzombieGenerator.tooltip.detailed.line2=для производства энергии
+enderio.frankenzombieGenerator.fuelTank=Резервуар для питательных веществ
+
+tile.blockEnderGenerator.name=Генератор Края
+tile.blockEnderGenerator.tooltip.detailed.line1=Потребляет росу пустоты
+tile.blockEnderGenerator.tooltip.detailed.line2=для производства энергии
+enderio.enderGenerator.fuelTank=Резервуар пустоты
+
 
 tile.blockKillerJoe.name=Киллер Джо
 tile.blockKillerJoe.tooltip.detailed.line1=Атакует ближайших существ, если
@@ -689,6 +795,8 @@ skullZombieController.name=Зомби-контроллер
 skullZombieFrankenstien.name=Зомби Фрэнк
 skullEnderResonator.name=Резонатор Края
 skullSentientEnder.name=Разумный Край
+skullSkeletalContractor.name=Скелетный подрядчик
+skullGuardianDiode.name=Диод охраны
 
 item.itemSpawnEggEnderIO.name=Призвать существо - 
 
@@ -697,10 +805,28 @@ item.darkSteel_helmet.name=Тёмный шлем
 item.darkSteel_chestplate.name=Тёмная кираса
 item.darkSteel_leggings.name=Тёмные поножи
 item.darkSteel_boots.name=Тёмные ботинки
-item.darkSteel_sword.name=Край
+item.darkSteel_sword.name=Тёмный меч
 item.darkSteel_pickaxe.name=Тёмная кирка
 item.darkSteel_axe.name=Тёмный топор
 item.darkSteel_shears.name=Тёмные ножницы
+
+#End Steel
+item.endSteel_helmet.name=Шлем из стали Края
+item.endSteel_chestplate.name=Кираса из стали Края
+item.endSteel_leggings.name=Поножи из стали Края
+item.endSteel_boots.name=Ботинки из стали Края
+item.endSteel_sword.name=Меч из стали Края
+item.endSteel_pickaxe.name=Кирка из стали Края
+item.endSteel_axe.name=Топор из стали Края
+
+#Stellar
+item.stellar_helmet.name=Шлем из звёздного сплава
+item.stellar_chestplate.name=Кираса из звёздного сплава
+item.stellar_leggings.name=Поножи из звёздного сплава
+item.stellar_boots.name=Ботинки из звёздного сплава
+item.stellar_sword.name=Меч из звёздного сплава
+item.stellar_pickaxe.name=Кирка из звёздного сплава
+item.stellar_axe.name=Топор из звёздного сплава
 
 enderio.item.darkSteel.tooltip.lvs=уровней
 
@@ -708,19 +834,49 @@ enderio.item.darkSteel_pickaxe.tooltip.effPowered=Эффективность п�
 enderio.item.darkSteel_pickaxe.tooltip.effObs=Эффективность уничтожения обсидиана
 enderio.item.darkSteel_pickaxe.tooltip.cost=стоит
 
+enderio.item.endSteel_pickaxe.tooltip.effPowered=Эффективность при питании
+enderio.item.endSteel_pickaxe.tooltip.effObs=Эффективность уничтожения обсидиана
+enderio.item.endSteel_pickaxe.tooltip.cost=стоит
+
+enderio.item.stellar_pickaxe.tooltip.effPowered=Эффективность при питании
+enderio.item.stellar_pickaxe.tooltip.effObs=Эффективность уничтожения обсидиана
+enderio.item.stellar_pickaxe.tooltip.cost=стоит
+
 enderio.item.darkSteel_axe.tooltip.multiHarvest=Присядьте, чтобы срубить несколько брёвен
+enderio.item.endSteel_axe.tooltip.multiHarvest=Присядьте, чтобы срубить несколько брёвен
+enderio.item.stellar_axe.tooltip.multiHarvest=Присядьте, чтобы срубить несколько брёвен
 
 enderio.item.darkSteel_shears.tooltip.multiHarvest=Стригут несколько блоков/овец, если запитаны
 
 enderio.item.darkSteel_sword.tooltip.line1=Увеличено выпадение черепов и жемчуга Края.
 enderio.item.darkSteel_sword.tooltip.line2=Странник Края не может телепортироваться после удара.
-enderio.item.darkSteel_sword.tooltip.line3=+1 Урон, при питании
+enderio.item.darkSteel_sword.tooltip.line3=+1 урон, если меч запитан
+
+enderio.item.endSteel_sword.tooltip.line1=Увеличено выпадение черепов и жемчуга Края.
+enderio.item.endSteel_sword.tooltip.line2=Странник Края не может телепортироваться после удара.
+enderio.item.endSteel_sword.tooltip.line3=+2 урона, если меч запитан
+
+enderio.item.stellar_sword.tooltip.line1=Увеличено выпадение черепов и жемчуга Края.
+enderio.item.stellar_sword.tooltip.line2=Странник Края не может телепортироваться после удара.
+enderio.item.stellar_sword.tooltip.line3=+2 урона, если меч запитан
 
 enderio.item.darkSteel_armor.tooltip.line1=Алмазный уровень защиты,
 enderio.item.darkSteel_armor.tooltip.line2=если есть питание
 
+enderio.item.endSteel_armor.tooltip.line1=Алмазный+ уровень защиты,
+enderio.item.endSteel_armor.tooltip.line2=если есть питание
+
+enderio.item.stellar_armor.tooltip.line1=Алмазный+ уровень защиты,
+enderio.item.stellar_armor.tooltip.line2=если есть питание
+
 enderio.item.darkSteel_boots.tooltip.line1=Урон от падения поглощается,
 enderio.item.darkSteel_boots.tooltip.line2=если есть питание
+
+enderio.item.endSteel_boots.tooltip.line1=Урон от падения поглощается,
+enderio.item.endSteel_boots.tooltip.line2=если есть питание
+
+enderio.item.stellar_boots.tooltip.line1=Урон от падения поглощается,
+enderio.item.stellar_boots.tooltip.line2=если есть питание
 
 enderio.darksteel.upgrade.empowered_one.name=Усиление
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Энергия: $P
@@ -1015,10 +1171,10 @@ enderio.gui.conduit.item.channel=Канал
 enderio.gui.conduit.item.ignoreMetaData=Игнорировать метаданные
 enderio.gui.conduit.item.matchMetaData=Соблюдать метаданные
 enderio.gui.conduit.item.whitelist=Белый список
-enderio.gui.conduit.item.whitelist.tooltip.0=Если список предметов пуст, ни один
+enderio.gui.conduit.item.whitelist.tooltip.0=Если список предметов пуст, то ни один
 enderio.gui.conduit.item.whitelist.tooltip.1=предмет не будет принят
 enderio.gui.conduit.item.blacklist=Чёрный список
-enderio.gui.conduit.item.blacklist.tooltip.0=Если список предметов пуст,
+enderio.gui.conduit.item.blacklist.tooltip.0=Если список предметов пуст, то
 enderio.gui.conduit.item.blacklist.tooltip.1=все предметы будут приняты
 enderio.gui.conduit.item.stickyEnabled=Включён "липкий" режим|Выбранные предметы будут|отправляться только на этот|или другие "липкие" выходы.
 enderio.gui.conduit.item.stickyDisbaled="Липкий" режим выключен
@@ -1062,6 +1218,7 @@ enderio.gui.conduit.gas.autoExtract=Авто-извлечение
 enderio.gui.weather.task.clear=Ясная погода
 enderio.gui.weather.task.rain=Дождливая погода
 enderio.gui.weather.task.storm=Гроза
+enderio.gui.weather.requireditem=Требуется предмет: %s
 
 #Enchants
 enchantment.enderio.soulBound=Печать души
@@ -1128,7 +1285,7 @@ enderio.nei.alloysmelter=Завод сплавов
 enderio.nei.enchanter=Зачарователь
 enderio.nei.sagmill=Дробитель
 enderio.nei.sagmill.outputchance=Шанс: {0,choice,0#'<1'|0<{0,number}}%
-enderio.nei.slicensplice=«Отрубатель и сращиватель»
+enderio.nei.slicensplice=Отрубатель и сращиватель
 enderio.nei.soulbinder=Связыватель душ
 enderio.nei.vat=Чан
 enderio.tooltip.burntime=Время горения:
