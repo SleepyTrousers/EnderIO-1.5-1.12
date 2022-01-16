@@ -1023,12 +1023,14 @@ enderio.gui.machine.button.storelevels=Store 10
 enderio.gui.machine.tooltip.storelevels=levels of player XP
 enderio.gui.machine.button.storeall=Store all
 enderio.gui.machine.tooltip.storeall=player XP
+
 enderio.gui.machine.button.retrievelevel=Retrieve 1
 enderio.gui.machine.tooltip.retrievelevel=player XP level
 enderio.gui.machine.button.retrievelevels=Retrieve 10
 enderio.gui.machine.tooltip.retrievelevels=player XP levels
 enderio.gui.machine.button.retrieveall=Retrieve all
 enderio.gui.machine.tooltip.retrieveall=player XP levels
+
 enderio.gui.machine.ioMode.overlay.tooltip=Configure IO
 enderio.gui.machine.ioMode.overlay.tooltip.visible.line1=Shift click to reset all sides
 enderio.gui.machine.ioMode.overlay.tooltip.visible.line2=to their default setting
