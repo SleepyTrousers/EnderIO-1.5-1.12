@@ -2,6 +2,7 @@
 
 dependencies {
     compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.1:dev")
+    compile("com.github.GTNewHorizons:CodeChickenCore:1.1.3:dev")
     compile("com.github.GTNewHorizons:EnderCore:0.2.6:dev")
     compile("com.github.GTNewHorizons:ForestryMC:4.4.4:dev")
     compile("com.github.GTNewHorizons:NotEnoughItems:2.1.22-GTNH:dev") 
