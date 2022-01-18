@@ -1,10 +1,12 @@
 // Add your dependencies here
 
 dependencies {
+    compile("com.github.GTNewHorizons:CodeChickenLib:1.1.5.1:dev")
     compile("com.github.GTNewHorizons:EnderCore:0.2.6:dev")
     compile("com.github.GTNewHorizons:ForestryMC:4.4.4:dev")
     compile("com.github.GTNewHorizons:NotEnoughItems:2.1.22-GTNH:dev") 
     compile("curse.maven:cofh-lib-220333:2388748")
+    compile("com.mod-buildcraft:buildcraft:7.1.23:dev")
     shadowImplementation("cglib:cglib-nodep:3.3.0")
 
     compileOnly("com.github.GTNewHorizons:waila:1.5.18:api") {
