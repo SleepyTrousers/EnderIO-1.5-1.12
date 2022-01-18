@@ -2,6 +2,10 @@
 
 repositories {
     maven {
+        name = "GTNH Maven"
+        url = "http://jenkins.usrv.eu:8081/nexus/content/groups/public/"
+    }
+    maven {
         name = "ic2"
         url = "http://maven.ic2.player.to/"
         metadataSources {
