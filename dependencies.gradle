@@ -7,7 +7,7 @@ dependencies {
     compile("com.github.GTNewHorizons:ForestryMC:4.4.5:dev")
     compile("com.github.GTNewHorizons:NotEnoughItems:2.2.5-GTNH:dev") 
     compile("curse.maven:cofh-lib-220333:2388748")
-    compile("com.github.GTNewHorizons:BuildCraft:7.1.25:dev")
+    compile("com.github.GTNewHorizons:BuildCraft:7.1.26:dev")
     shadowImplementation("cglib:cglib-nodep:3.3.0")
 
     compileOnly("com.github.GTNewHorizons:waila:1.5.18:api") {
