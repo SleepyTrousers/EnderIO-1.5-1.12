@@ -1,8 +1,5 @@
 package crazypants.enderio.machine.farm;
 
-import java.util.Iterator;
-import java.util.regex.Pattern;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -38,7 +35,9 @@ public final class FarmersRegistry {
     addIC2();
     addThaumcraft();
     addFlowers();
-    ForestryFarmer.init();
+    if (Loader.isModLoaded("Forestry")) {
+        ForestryFarmer.init();
+    }
 
     FarmersCommune.joinCommune(new StemFarmer(Blocks.reeds, new ItemStack(Items.reeds)));
     FarmersCommune.joinCommune(new StemFarmer(Blocks.cactus, new ItemStack(Blocks.cactus)));
