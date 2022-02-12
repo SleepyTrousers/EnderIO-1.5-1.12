@@ -1,4 +1,4 @@
-//version: 1644510936
+//version: 1644612407
 /*
 DO NOT CHANGE THIS FILE!
 
@@ -6,7 +6,7 @@ Also, you may replace this file at any time if there is an update available.
 Please check https://github.com/GTNewHorizons/ExampleMod1.7.10/blob/main/build.gradle for updates.
 */
 
-import org.gradle.internal.logging.text.StyledTextOutput 
+import org.gradle.internal.logging.text.StyledTextOutput
 import org.gradle.internal.logging.text.StyledTextOutputFactory
 import org.gradle.internal.logging.text.StyledTextOutput.Style
 
@@ -45,18 +45,20 @@ plugins {
     id 'eclipse'
     id 'scala'
     id 'maven-publish'
-    id('org.jetbrains.kotlin.jvm') version ('1.6.10') apply false
-    id('org.ajoberstar.grgit') version('4.1.1')
-    id('com.github.johnrengelman.shadow') version('4.0.4')
-    id('com.palantir.git-version') version('0.13.0') apply false
-    id('de.undercouch.download') version('5.0.1')
+    id 'org.jetbrains.kotlin.jvm'        version '1.5.30' apply false
+    id 'org.jetbrains.kotlin.kapt'       version '1.5.30' apply false
+    id 'org.ajoberstar.grgit'            version '4.1.1'
+    id 'com.github.johnrengelman.shadow' version '4.0.4'
+    id 'com.palantir.git-version'        version '0.13.0' apply false
+    id 'de.undercouch.download'          version '5.0.1'
+    id 'com.github.gmazzo.buildconfig'   version '3.0.3' apply false
 }
 
 if (project.file('.git/HEAD').isFile()) {
     apply plugin: 'com.palantir.git-version'
 }
 
-def out = services.get(StyledTextOutputFactory).create("an-output")
+def out = services.get(StyledTextOutputFactory).create('an-output')
 
 apply plugin: 'forge'
 
@@ -186,14 +188,16 @@ try {
 catch (Exception e) {
     out.style(Style.Failure).text(
         'This mod must be version controlled by Git AND the repository must provide at least one tag,\n' +
-        'or the VERSION override must be set! ').style(Style.SuccessHeader).text('(Do NOT download from GitHub using the ZIP option, instead\n' + 
+        'or the VERSION override must be set! ').style(Style.SuccessHeader).text('(Do NOT download from GitHub using the ZIP option, instead\n' +
         'clone the repository, see ').style(Style.Info).text('https://gtnh.miraheze.org/wiki/Development').style(Style.SuccessHeader).println(' for details.)'
     )
     versionOverride = 'NO-GIT-TAG-SET'
     identifiedVersion = versionOverride
 }
 version = minecraftVersion + '-' + identifiedVersion
-String modVersion = identifiedVersion
+ext {
+    modVersion = identifiedVersion
+}
 
 if( identifiedVersion.equals(versionOverride) ) {
     out.style(Style.Failure).text('Override version to ').style(Style.Identifier).text(modVersion).style(Style.Failure).println('!\7')
@@ -206,7 +210,6 @@ if(project.hasProperty("customArchiveBaseName") && customArchiveBaseName) {
 else {
     archivesBaseName = modId
 }
-
 
 def arguments = []
 def jvmArguments = []
@@ -221,8 +224,8 @@ if(usesMixins.toBoolean()) {
 }
 
 minecraft {
-    version = minecraftVersion + "-" + forgeVersion + "-" + minecraftVersion
-    runDir = "run"
+    version = minecraftVersion + '-' + forgeVersion + '-' + minecraftVersion
+    runDir = 'run'
 
     if (replaceGradleTokenInFile) {
         replaceIn replaceGradleTokenInFile
@@ -255,8 +258,8 @@ minecraft {
     }
 }
 
-if(file("addon.gradle").exists()) {
-    apply from: "addon.gradle"
+if(file('addon.gradle').exists()) {
+    apply from: 'addon.gradle'
 }
 
 apply from: 'repositories.gradle'
@@ -304,7 +307,7 @@ dependencies {
 
 apply from: 'dependencies.gradle'
 
-def mixingConfigRefMap = "mixins." + modId + ".refmap.json"
+def mixingConfigRefMap = 'mixins.' + modId + '.refmap.json'
 def refMap = "${tasks.compileJava.temporaryDir}" + File.separator + mixingConfigRefMap
 def mixinSrg = "${tasks.reobf.temporaryDir}" + File.separator + "mixins.srg"
 
@@ -408,12 +411,11 @@ tasks.withType(JavaExec).configureEach {
     )
 }
 
-processResources
-{
+processResources {
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
-    
+
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
@@ -540,7 +542,7 @@ artifacts {
     }
 }
 
-// The gradle metadata includes all of the additional deps that we disabled from POM generation (including forgeBin with no groupID), 
+// The gradle metadata includes all of the additional deps that we disabled from POM generation (including forgeBin with no groupID),
 // and isn't strictly needed with the POM so just disable it.
 tasks.withType(GenerateModuleMetadata) {
     enabled = false
@@ -565,17 +567,17 @@ publishing {
             artifactId = System.getenv("ARTIFACT_ID") ?: project.name
             // Using the identified version, not project.version as it has the prepended 1.7.10
             version = System.getenv("RELEASE_VERSION") ?: identifiedVersion
-            
+
             // remove extra garbage from who knows where
             pom.withXml {
                 def badPomGroup = ['net.minecraft', 'com.google.code.findbugs', 'org.ow2.asm', 'com.typesafe.akka', 'com.typesafe', 'org.scala-lang',
                                    'org.scala-lang.plugins', 'net.sf.jopt-simple', 'lzma', 'com.mojang', 'org.apache.commons', 'org.apache.httpcomponents',
-                                   'commons-logging', 'java3d', 'net.sf.trove4j', 'com.ibm.icu', 'com.paulscode', 'io.netty', 'com.google.guava', 
-                                   'commons-io', 'commons-codec', 'net.java.jinput', 'net.java.jutils', 'com.google.code.gson', 'org.apache.logging.log4j', 
-                                   'org.lwjgl.lwjgl', 'tv.twitch', '']
+                                   'commons-logging', 'java3d', 'net.sf.trove4j', 'com.ibm.icu', 'com.paulscode', 'io.netty', 'com.google.guava',
+                                   'commons-io', 'commons-codec', 'net.java.jinput', 'net.java.jutils', 'com.google.code.gson', 'org.apache.logging.log4j',
+                                   'org.lwjgl.lwjgl', 'tv.twitch', 'org.jetbrains.kotlin', '']
                 Node pomNode = asNode()
                 pomNode.dependencies.'*'.findAll() {
-                    badPomGroup.contains(it.groupId.text()) 
+                    badPomGroup.contains(it.groupId.text())
                 }.each() {
                     it.parent().remove(it)
                 }
@@ -688,7 +690,7 @@ def deobf(String sourceURL, String fileName) {
     String bon2File  = bon2Dir + "/BON2-2.5.0.jar"
     String obfFile = cacheDir + "modules-2/files-2.1/" + fileName + ".jar"
     String deobfFile = cacheDir + "modules-2/files-2.1/" + fileName + "-deobf.jar"
-    
+
     if(file(deobfFile).exists()) {
         return files(deobfFile)
     }
