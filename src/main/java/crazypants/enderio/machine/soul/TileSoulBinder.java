@@ -43,6 +43,35 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
   private static final BasicCapacitor CAP_THREE = new BasicCapacitor(0,POWER_PER_TICK_THREE * 2,
       Capacitors.ENDER_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_THREE);
 
+  public static final int  POWER_PER_TICK_FOUR = Config.soulBinderLevelFourPowerPerTickRF;
+  private static final BasicCapacitor CAP_FOUR = new BasicCapacitor(0,POWER_PER_TICK_FOUR * 2,
+          Capacitors.CRYSTALLINE_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_FOUR);
+
+  public static final int  POWER_PER_TICK_FIVE = Config.soulBinderLevelFivePowerPerTickRF;
+  private static final BasicCapacitor CAP_FIVE = new BasicCapacitor(0,POWER_PER_TICK_FIVE * 2,
+          Capacitors.MELODIC_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_FIVE);
+
+  public static final int  POWER_PER_TICK_SIX = Config.soulBinderLevelSixPowerPerTickRF;
+  private static final BasicCapacitor CAP_SIX = new BasicCapacitor(0,POWER_PER_TICK_SIX * 2,
+          Capacitors.STELLAR_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_SIX);
+
+  public static final int  POWER_PER_TICK_SEVEN = Config.soulBinderLevelSevenPowerPerTickRF;
+  private static final BasicCapacitor CAP_SEVEN = new BasicCapacitor(0,POWER_PER_TICK_SEVEN * 2,
+          Capacitors.TOTEMIC_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_SEVEN);
+
+  public static final int  POWER_PER_TICK_EIGHT = Config.soulBinderLevelEightPowerPerTickRF;
+  private static final BasicCapacitor CAP_EIGHT = new BasicCapacitor(0,POWER_PER_TICK_EIGHT * 2,
+          Capacitors.SILVER_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_EIGHT);
+
+  public static final int  POWER_PER_TICK_NINE = Config.soulBinderLevelNinePowerPerTickRF;
+  private static final BasicCapacitor CAP_NINE = new BasicCapacitor(0,POWER_PER_TICK_NINE * 2,
+          Capacitors.ENDERGETIC_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_NINE);
+
+  public static final int  POWER_PER_TICK_TEN = Config.soulBinderLevelTenPowerPerTickRF;
+  private static final BasicCapacitor CAP_TEN = new BasicCapacitor(0,POWER_PER_TICK_TEN * 2,
+          Capacitors.ENDERGISED_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_TEN);
+
+
   private final ExperienceContainer xpCont = new ExperienceContainer(XpUtil.getExperienceForLevel(Config.soulBinderMaxXpLevel));
 
   public TileSoulBinder() {
@@ -170,18 +199,25 @@ public class TileSoulBinder extends AbstractPoweredTaskEntity implements IHaveEx
       setCapacitor(CAP_THREE);
       break;
 	case CRYSTALLINE_CAPACITOR:
-		break;
-	case ENDERGETIC_CAPACITOR:
-		break;
-	case ENDERGISED_CAPACITOR:
+      setCapacitor(CAP_FOUR);
 		break;
 	case MELODIC_CAPACITOR:
-		break;
-	case SILVER_CAPACITOR:
+      setCapacitor(CAP_FIVE);
 		break;
 	case STELLAR_CAPACITOR:
+      setCapacitor(CAP_SIX);
 		break;
 	case TOTEMIC_CAPACITOR:
+      setCapacitor(CAP_SEVEN);
+		break;
+	case SILVER_CAPACITOR:
+      setCapacitor(CAP_EIGHT);
+		break;
+	case ENDERGETIC_CAPACITOR:
+      setCapacitor(CAP_NINE);
+		break;
+	case ENDERGISED_CAPACITOR:
+      setCapacitor(CAP_TEN);
 		break;
 	default:
 		break;

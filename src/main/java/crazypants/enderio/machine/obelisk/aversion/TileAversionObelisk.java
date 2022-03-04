@@ -70,16 +70,20 @@ public class TileAversionObelisk extends AbstractPowerConsumerEntity implements 
 
   @Override
   public void onCapacitorTypeChange() {
-    switch (getCapacitorType()) {
-    case BASIC_CAPACITOR:
+    switch (getCapacitor().getTier()) {
+    case 1:
     	range = Config.spawnGuardRangeLevelOne;
     	powerPerTick = Config.spawnGuardPowerPerTickLevelOne;
     	break;
-    case ACTIVATED_CAPACITOR:
+    case 2:
       range = Config.spawnGuardRangeLevelTwo;
       powerPerTick = Config.spawnGuardPowerPerTickLevelTwo;
       break;
-    case ENDER_CAPACITOR:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
       range = Config.spawnGuardRangeLevelThree;
       powerPerTick = Config.spawnGuardPowerPerTickLevelThree;
       break;

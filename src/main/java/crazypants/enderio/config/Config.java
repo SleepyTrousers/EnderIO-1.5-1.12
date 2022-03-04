@@ -386,6 +386,13 @@ public final class Config {
   public static int poweredSpawnerLevelOnePowerPerTickRF = 160;
   public static int poweredSpawnerLevelTwoPowerPerTickRF = 500;
   public static int poweredSpawnerLevelThreePowerPerTickRF = 1500;
+  public static int poweredSpawnerLevelFourPowerPerTickRF = 4500;
+  public static int poweredSpawnerLevelFivePowerPerTickRF = 2000;
+  public static int poweredSpawnerLevelSixPowerPerTickRF = 1000;
+  public static int poweredSpawnerLevelSevenPowerPerTickRF = 500;
+  public static int poweredSpawnerLevelEightPowerPerTickRF = 160;
+  public static int poweredSpawnerLevelNinePowerPerTickRF = 500;
+  public static int poweredSpawnerLevelTenPowerPerTickRF = 1500;
   public static int poweredSpawnerMaxPlayerDistance = 0;
   public static int poweredSpawnerDespawnTimeSeconds = 120;
   public static int poweredSpawnerSpawnCount = 4;
@@ -439,6 +446,13 @@ public final class Config {
   public static int soulBinderLevelOnePowerPerTickRF = 500;
   public static int soulBinderLevelTwoPowerPerTickRF = 1000;
   public static int soulBinderLevelThreePowerPerTickRF = 2000;
+  public static int soulBinderLevelFourPowerPerTickRF = 4000;
+  public static int soulBinderLevelFivePowerPerTickRF = 8000;
+  public static int soulBinderLevelSixPowerPerTickRF = 16000;
+  public static int soulBinderLevelSevenPowerPerTickRF = 32000;
+  public static int soulBinderLevelEightPowerPerTickRF = 500;
+  public static int soulBinderLevelNinePowerPerTickRF = 1000;
+  public static int soulBinderLevelTenPowerPerTickRF = 2000;
   public static int soulBinderBrokenSpawnerRF = 2500000;
   public static int soulBinderBrokenSpawnerLevels = 15;
   public static int soulBinderReanimationRF = 100000;
@@ -463,6 +477,13 @@ public final class Config {
   public static int sliceAndSpliceLevelOnePowerPerTickRF = 80;
   public static int sliceAndSpliceLevelTwoPowerPerTickRF = 160;
   public static int sliceAndSpliceLevelThreePowerPerTickRF = 320;
+  public static int sliceAndSpliceLevelFourPowerPerTickRF = 640;
+  public static int sliceAndSpliceLevelFivePowerPerTickRF = 1280;
+  public static int sliceAndSpliceLevelSixPowerPerTickRF = 2560;
+  public static int sliceAndSpliceLevelSevenPowerPerTickRF = 5120;
+  public static int sliceAndSpliceLevelEightPowerPerTickRF = 80;
+  public static int sliceAndSpliceLevelNinePowerPerTickRF = 160;
+  public static int sliceAndSpliceLevelTenPowerPerTickRF = 320;
 
   public static boolean soulBinderRequiresEndermanSkull = true;
 
@@ -1231,6 +1252,27 @@ public final class Config {
     poweredSpawnerLevelThreePowerPerTickRF = config.get(sectionSpawner.name, "poweredSpawnerLevelThreePowerPerTickRF",
         poweredSpawnerLevelThreePowerPerTickRF,
         "RF per tick for a level 3 spawner").getInt(poweredSpawnerLevelThreePowerPerTickRF);
+    poweredSpawnerLevelFourPowerPerTickRF = config.get(sectionSpawner.name, "poweredSpawnerLevelFourPowerPerTickRF",
+        poweredSpawnerLevelFourPowerPerTickRF,
+        "RF per tick for a level 4 spawner").getInt(poweredSpawnerLevelFourPowerPerTickRF);
+    poweredSpawnerLevelFivePowerPerTickRF = config.get(sectionSpawner.name, "poweredSpawnerLevelFivePowerPerTickRF",
+        poweredSpawnerLevelFivePowerPerTickRF,
+        "RF per tick for a level 5 spawner").getInt(poweredSpawnerLevelFivePowerPerTickRF);
+    poweredSpawnerLevelSixPowerPerTickRF = config.get(sectionSpawner.name, "poweredSpawnerLevelSixPowerPerTickRF",
+        poweredSpawnerLevelSixPowerPerTickRF,
+        "RF per tick for a level 6 spawner").getInt(poweredSpawnerLevelSixPowerPerTickRF);
+    poweredSpawnerLevelSevenPowerPerTickRF = config.get(sectionSpawner.name, "poweredSpawnerLevelSevenPowerPerTickRF",
+        poweredSpawnerLevelSevenPowerPerTickRF,
+        "RF per tick for a level 7 spawner").getInt(poweredSpawnerLevelSevenPowerPerTickRF);
+    poweredSpawnerLevelEightPowerPerTickRF = config.get(sectionSpawner.name, "poweredSpawnerLevelEightPowerPerTickRF",
+            poweredSpawnerLevelEightPowerPerTickRF,
+            "RF per tick for a level 1 spawner").getInt(poweredSpawnerLevelEightPowerPerTickRF);
+    poweredSpawnerLevelNinePowerPerTickRF = config.get(sectionSpawner.name, "poweredSpawnerLevelNinePowerPerTickRF",
+            poweredSpawnerLevelNinePowerPerTickRF,
+            "RF per tick for a level 2 spawner").getInt(poweredSpawnerLevelNinePowerPerTickRF);
+    poweredSpawnerLevelTenPowerPerTickRF = config.get(sectionSpawner.name, "poweredSpawnerLevelTenPowerPerTickRF",
+            poweredSpawnerLevelTenPowerPerTickRF,
+            "RF per tick for a level 3 spawner").getInt(poweredSpawnerLevelTenPowerPerTickRF);
     poweredSpawnerMaxPlayerDistance = config.get(sectionSpawner.name, "poweredSpawnerMaxPlayerDistance", poweredSpawnerMaxPlayerDistance,
         "Max distance of the closest player for the spawner to be active. A zero value will remove the player check").getInt(poweredSpawnerMaxPlayerDistance);
     poweredSpawnerDespawnTimeSeconds = config.get(sectionSpawner.name, "poweredSpawnerDespawnTimeSeconds" , poweredSpawnerDespawnTimeSeconds,
@@ -1303,9 +1345,23 @@ public final class Config {
     soulBinderLevelOnePowerPerTickRF = config.get(sectionSoulBinder.name, "soulBinderLevelOnePowerPerTickRF", soulBinderLevelOnePowerPerTickRF,
         "The number of RF/t consumed by an unupgraded soul binder.").getInt(soulBinderLevelOnePowerPerTickRF);
     soulBinderLevelTwoPowerPerTickRF = config.get(sectionSoulBinder.name, "soulBinderLevelTwoPowerPerTickRF", soulBinderLevelTwoPowerPerTickRF,
-        "The number of RF/t consumed by a soul binder with a double layer capacitor upgrade.").getInt(soulBinderLevelTwoPowerPerTickRF);
+        "The number of RF/t consumed by a soul binder with a double layer capacitor or a endergetic capacitor upgrade.").getInt(soulBinderLevelTwoPowerPerTickRF);
     soulBinderLevelThreePowerPerTickRF = config.get(sectionSoulBinder.name, "soulBinderLevelThreePowerPerTickRF", soulBinderLevelThreePowerPerTickRF,
-        "The number of RF/t consumed by a soul binder with an octadic capacitor upgrade.").getInt(soulBinderLevelThreePowerPerTickRF);
+        "The number of RF/t consumed by a soul binder with an octadic capacitor or a endergised upgrade.").getInt(soulBinderLevelThreePowerPerTickRF);
+    soulBinderLevelFourPowerPerTickRF = config.get(sectionSoulBinder.name, "soulBinderLevelFourPowerPerTickRF", soulBinderLevelFourPowerPerTickRF,
+            "The number of RF/t consumed by a soul binder with an crystalline capacitor upgrade.").getInt(soulBinderLevelFourPowerPerTickRF);
+    soulBinderLevelFivePowerPerTickRF = config.get(sectionSoulBinder.name, "soulBinderLevelFivePowerPerTickRF", soulBinderLevelFivePowerPerTickRF,
+            "The number of RF/t consumed by a soul binder with an melodic capacitor upgrade.").getInt(soulBinderLevelFivePowerPerTickRF);
+    soulBinderLevelSixPowerPerTickRF = config.get(sectionSoulBinder.name, "soulBinderLevelSixPowerPerTickRF", soulBinderLevelSixPowerPerTickRF,
+            "The number of RF/t consumed by a soul binder with an stellar capacitor upgrade.").getInt(soulBinderLevelSixPowerPerTickRF);
+    soulBinderLevelSevenPowerPerTickRF = config.get(sectionSoulBinder.name, "soulBinderLevelSevenPowerPerTickRF", soulBinderLevelSevenPowerPerTickRF,
+            "The number of RF/t consumed by a soul binder with an totemic capacitor upgrade.").getInt(soulBinderLevelSevenPowerPerTickRF);
+    soulBinderLevelEightPowerPerTickRF = config.get(sectionSoulBinder.name, "soulBinderLevelEightPowerPerTickRF", soulBinderLevelEightPowerPerTickRF,
+            "The number of RF/t consumed by a soul binder with an silver capacitor upgrade.").getInt(soulBinderLevelEightPowerPerTickRF);
+    soulBinderLevelNinePowerPerTickRF = config.get(sectionSoulBinder.name, "soulBinderLevelNinePowerPerTickRF", soulBinderLevelNinePowerPerTickRF,
+            "The number of RF/t consumed by a soul binder with an endergetic capacitor upgrade.").getInt(soulBinderLevelNinePowerPerTickRF);
+    soulBinderLevelTenPowerPerTickRF = config.get(sectionSoulBinder.name, "soulBinderLevelTenPowerPerTickRF", soulBinderLevelTenPowerPerTickRF,
+            "The number of RF/t consumed by a soul binder with an endergised capacitor upgrade.").getInt(soulBinderLevelTenPowerPerTickRF);
     soulBinderBrokenSpawnerRF = config.get(sectionSoulBinder.name, "soulBinderBrokenSpawnerRF", soulBinderBrokenSpawnerRF,
         "The number of RF required to change the type of a broken spawner.").getInt(soulBinderBrokenSpawnerRF);
     soulBinderReanimationRF = config.get(sectionSoulBinder.name, "soulBinderReanimationRF", soulBinderReanimationRF,
@@ -1341,6 +1397,21 @@ public final class Config {
         "The number of RF/t consumed by a Slice'N'Splice with a double layer capacitor upgrade.").getInt(sliceAndSpliceLevelTwoPowerPerTickRF);
     sliceAndSpliceLevelThreePowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelThreePowerPerTickRF", sliceAndSpliceLevelThreePowerPerTickRF,
         "The number of RF/t consumed by a Slice'N'Splice with an octadic capacitor upgrade.").getInt(sliceAndSpliceLevelThreePowerPerTickRF);
+    sliceAndSpliceLevelFourPowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelFourPowerPerTickRF", sliceAndSpliceLevelFourPowerPerTickRF,
+            "The number of RF/t consumed by a Slice'N'Splice with an crystalline capacitor upgrade.").getInt(sliceAndSpliceLevelFourPowerPerTickRF);
+    sliceAndSpliceLevelFivePowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelFivePowerPerTickRF", sliceAndSpliceLevelFivePowerPerTickRF,
+            "The number of RF/t consumed by a Slice'N'Splice with an melodic capacitor upgrade.").getInt(sliceAndSpliceLevelFivePowerPerTickRF);
+    sliceAndSpliceLevelSixPowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelSixPowerPerTickRF", sliceAndSpliceLevelSixPowerPerTickRF,
+            "The number of RF/t consumed by a Slice'N'Splice with an stellar capacitor upgrade.").getInt(sliceAndSpliceLevelSixPowerPerTickRF);
+    sliceAndSpliceLevelSevenPowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelSevenPowerPerTickRF", sliceAndSpliceLevelSevenPowerPerTickRF,
+            "The number of RF/t consumed by a Slice'N'Splice with an totemic capacitor upgrade.").getInt(sliceAndSpliceLevelSevenPowerPerTickRF);
+    sliceAndSpliceLevelEightPowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelEightPowerPerTickRF", sliceAndSpliceLevelEightPowerPerTickRF,
+            "The number of RF/t consumed by a Slice'N'Splice with an silver capacitor upgrade.").getInt(sliceAndSpliceLevelEightPowerPerTickRF);
+    sliceAndSpliceLevelNinePowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelNinePowerPerTickRF", sliceAndSpliceLevelNinePowerPerTickRF,
+            "The number of RF/t consumed by a Slice'N'Splice with an endergetic capacitor upgrade.").getInt(sliceAndSpliceLevelNinePowerPerTickRF);
+    sliceAndSpliceLevelTenPowerPerTickRF = config.get(sectionPower.name, "sliceAndSpliceLevelTenPowerPerTickRF", sliceAndSpliceLevelTenPowerPerTickRF,
+            "The number of RF/t consumed by a Slice'N'Splice with an endergised capacitor upgrade.").getInt(sliceAndSpliceLevelTenPowerPerTickRF);
+
 
     attractorRangeLevelOne = config.get(sectionAttractor.name, "attractorRangeLevelOne", attractorRangeLevelOne,
         "The range of the mob attractor with no upgrades").getInt(attractorRangeLevelOne);

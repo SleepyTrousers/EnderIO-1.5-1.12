@@ -92,16 +92,20 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
 
   @Override
   public void onCapacitorTypeChange() {
-    switch (getCapacitorType()) {
-    case ACTIVATED_CAPACITOR:
+    switch (getCapacitor().getTier()) {
+    case 2:
       range = Config.attractorRangeLevelTwo;
       powerPerTick = Config.attractorPowerPerTickLevelTwo;
       break;
-    case ENDER_CAPACITOR:
+    case 3:
+      case 4:
+      case 5:
+      case 6:
+      case 7:
       range = Config.attractorRangeLevelThree;
       powerPerTick = Config.attractorPowerPerTickLevelThree;
       break;
-    case BASIC_CAPACITOR:
+    case 1:
     default:
       range = Config.attractorRangeLevelOne;
       powerPerTick = Config.attractorPowerPerTickLevelOne;
