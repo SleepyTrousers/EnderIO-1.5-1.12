@@ -41,9 +41,9 @@ public class TooltipHandlerFluid implements ITooltipCallback {
       } else {
         IFluidCoolant coolant = FluidFuelRegister.instance.getCoolant(fluid);
         if (coolant != null) {
-          list.add(EnderIO.lang.localize("enderio.coolant.tooltip.heading"));
+          list.add(EnderIO.lang.localize("coolant.tooltip.heading"));
           list.add(EnumChatFormatting.ITALIC + " " + PowerDisplayUtil.formatPowerFloat(coolant.getDegreesCoolingPerMB(100) * 1000) + " "
-              + EnderIO.lang.localize("enderio.coolant.tooltip.degreesPerBucket"));
+              + EnderIO.lang.localize("coolant.tooltip.degreesPerBucket"));
         }
       }
     }    
