@@ -196,7 +196,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     if(inventory[upg] == null) {
       return 0;
     } else {
-      return Config.farmBonusSize * EnderIO.itemBasicCapacitor.getCapacitor(inventory[upg]).getTier();
+      return Config.farmBonusSize * (EnderIO.itemBasicCapacitor.getCapacitor(inventory[upg]).getTier()-1);
     }
   }
 
