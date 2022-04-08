@@ -13,7 +13,7 @@ import crazypants.util.UserIdent;
 
 public interface ITravelAccessable {
 
-  public enum AccessMode {
+  enum AccessMode {
     PUBLIC,
     PRIVATE,
     PROTECTED
@@ -53,8 +53,22 @@ public interface ITravelAccessable {
 
   void setPlacedBy(EntityPlayer player);
 
-  public void clearAuthorisedUsers();
+  void clearAuthorisedUsers();
 
-  public BlockCoord getLocation();
+  BlockCoord getLocation();
+
+  /**
+   * Is this block a travel target for the staff or a travel anchor?
+   */
+  default boolean isTravelSource() {
+    return true;
+  }
+
+  default boolean isVisible() {
+    return true;
+  }
+
+  default void setVisible(boolean visible) {
+  }
 
 }

@@ -123,7 +123,10 @@ public enum IconEIO implements IWidgetIcon {
   SORT_SIZE_DOWN(224, 240, SORT_DIR_DOWN),
   SORT_SIZE_UP(224, 240, SORT_DIR_UP),
   SORT_MOD_DOWN(240, 240, SORT_DIR_DOWN),
-  SORT_MOD_UP(240, 240, SORT_DIR_UP);
+  SORT_MOD_UP(240, 240, SORT_DIR_UP),
+
+  VISIBLE_NO(224, 160),
+  VISIBLE_YES(240, 160);
 
   // Texture size is actually 512 but everything is aligned to a 256 grid
   private static final int TEX_SIZE = 256;

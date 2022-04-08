@@ -1158,6 +1158,9 @@ enderio.gui.travelAccessable.ok=Authorise
 enderio.gui.travelAccessable.skipLocked=Skipped locked anchor, use targeted teleport.
 enderio.gui.travelAccessable.skipObstructed=Skipped obstructed anchor.
 enderio.gui.travelAccessable.skipPrivate=Skipped private anchor.
+enderio.gui.travelAccessable.tooltip.visible=Visibility
+enderio.gui.travelAccessable.tooltip.visible.desc1=When off, you cannot see this block through other blocks.
+enderio.gui.travelAccessable.tooltip.visible.desc2=Handy for use as elevators.
 
 enderio.gui.telepad.configure.travel=Travel Settings
 enderio.gui.telepad.configure.telepad=Telepad Settings

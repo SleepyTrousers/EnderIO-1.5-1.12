@@ -2,6 +2,9 @@ package crazypants.enderio.teleport;
 
 import java.awt.Color;
 
+import com.enderio.core.client.gui.button.ToggleButton;
+import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.teleport.packet.PacketVisibility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -29,18 +32,23 @@ public class GuiTravelAccessable extends GuiContainerBaseEIO {
   private static final int ID_PUBLIC = 0;
   private static final int ID_PRIVATE = 1;
   private static final int ID_PROTECTED = 2;
+  private static final int ID_VISIBLE = -1;
 
-  private CheckBox publicCB;
-  private CheckBox privateCB;
-  private CheckBox protectedCB;
+  private final CheckBox publicCB;
+  private final CheckBox privateCB;
+  private final CheckBox protectedCB;
+  private final ToggleButton visibleCB;
 
-  private TextFieldEnder tf;
+  private final TextFieldEnder tf;
 
-  private String publicStr;
-  private String privateStr;
-  private String protectedStr;
+  private final String publicStr;
+  private final String privateStr;
+  private final String protectedStr;
+  private final String visibleStr;
+  private final String visibleDesc1Str;
+  private final String visibleDesc2Str;
 
-  private ITravelAccessable te;
+  private final ITravelAccessable te;
   private int col0x;
   private int col1x;
   private int col2x;
@@ -59,6 +67,9 @@ public class GuiTravelAccessable extends GuiContainerBaseEIO {
     publicStr = EnderIO.lang.localize("gui.travelAccessable.public");
     privateStr = EnderIO.lang.localize("gui.travelAccessable.private");
     protectedStr = EnderIO.lang.localize("gui.travelAccessable.protected");
+    visibleStr = EnderIO.lang.localize("gui.travelAccessable.tooltip.visible");
+    visibleDesc1Str = EnderIO.lang.localize("gui.travelAccessable.tooltip.visible.desc1");
+    visibleDesc2Str = EnderIO.lang.localize("gui.travelAccessable.tooltip.visible.desc2");
 
     FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
 
@@ -84,6 +95,10 @@ public class GuiTravelAccessable extends GuiContainerBaseEIO {
     publicCB = new CheckBox(this, ID_PUBLIC, x, y);
     publicCB.setSelected(te.getAccessMode() == AccessMode.PUBLIC);
 
+    visibleCB = new ToggleButton(this, ID_VISIBLE, 150, 10, IconEIO.VISIBLE_NO, IconEIO.VISIBLE_YES);
+    visibleCB.setSelected(te.isVisible());
+    visibleCB.setToolTip(visibleStr, visibleDesc1Str, visibleDesc2Str);
+
     ySize = 185;
     
     textFields.add(tf);
@@ -91,16 +106,24 @@ public class GuiTravelAccessable extends GuiContainerBaseEIO {
 
   @Override
   protected void actionPerformed(GuiButton b) {
-    privateCB.setSelected(b.id == ID_PRIVATE);
-    protectedCB.setSelected(b.id == ID_PROTECTED);
-    publicCB.setSelected(b.id == ID_PUBLIC);
+    if (b.id >= 0) {
+      privateCB.setSelected(b.id == ID_PRIVATE);
+      protectedCB.setSelected(b.id == ID_PROTECTED);
+      publicCB.setSelected(b.id == ID_PUBLIC);
 
-    AccessMode curMode = b.id == ID_PRIVATE ? AccessMode.PRIVATE : b.id == ID_PROTECTED ? AccessMode.PROTECTED : AccessMode.PUBLIC;
-    te.setAccessMode(curMode);
+      AccessMode curMode = b.id == ID_PRIVATE ? AccessMode.PRIVATE : b.id == ID_PROTECTED ? AccessMode.PROTECTED : AccessMode.PUBLIC;
+      te.setAccessMode(curMode);
+      BlockCoord bc = te.getLocation();
+      PacketAccessMode p = new PacketAccessMode(bc.x, bc.y, bc.z, curMode);
+      PacketHandler.INSTANCE.sendToServer(p);
+    } else if (b == visibleCB) {
+      boolean visible = visibleCB.isSelected();
+      te.setVisible(visible);
+      BlockCoord bc = te.getLocation();
+      PacketVisibility p = new PacketVisibility(bc.x, bc.y, bc.z, visible);
+      PacketHandler.INSTANCE.sendToServer(p);
+    }
 
-    BlockCoord bc = te.getLocation();
-    PacketAccessMode p = new PacketAccessMode(bc.x, bc.y, bc.z, curMode);
-    PacketHandler.INSTANCE.sendToServer(p);
   }
 
   @Override
@@ -112,6 +135,7 @@ public class GuiTravelAccessable extends GuiContainerBaseEIO {
     publicCB.onGuiInit();
     privateCB.onGuiInit();
     protectedCB.onGuiInit();
+    visibleCB.onGuiInit();
 
     tf.setMaxStringLength(32);
     tf.setFocused(true);

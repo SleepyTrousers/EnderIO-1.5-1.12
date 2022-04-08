@@ -63,7 +63,7 @@ public class TravelController {
 
   private int delayTimer = 0;
 
-  private int timer = Config.travelAnchorCooldown;
+  private final int timer = Config.travelAnchorCooldown;
 
   private boolean tempJump;
 
@@ -307,23 +307,25 @@ public class TravelController {
       if((input.jump && !wasJumping && onBlock && selectedCoord != null && delayTimer == 0)
           || (input.sneak && !wasSneaking && onBlock && selectedCoord != null && delayTimer == 0 && Config.travelAnchorSneak)) {
 
-        onInput(player);
-        delayTimer = timer;
+        if (onInput(player)) {
+          delayTimer = timer;
+        }
       }
       // If there is no selected coordinate and the input is jump, go up
       if(input.jump && !wasJumping && onBlock && selectedCoord == null && delayTimer == 0) {
 
         updateVerticalTarget(player, 1);
-        onInput(player);
-        delayTimer = timer;
-
+        if (onInput(player)) {
+          delayTimer = timer;
+        }
       }
 
       // If there is no selected coordinate and the input is sneak, go down
       if(input.sneak && !wasSneaking && onBlock && selectedCoord == null && delayTimer == 0) {
         updateVerticalTarget(player, -1);
-        onInput(player);
-        delayTimer = timer;
+        if (onInput(player)) {
+          delayTimer = timer;
+        }
       }
 
       if(delayTimer != 0) {
@@ -604,12 +606,12 @@ public class TravelController {
   }
 
   @SideOnly(Side.CLIENT)
-  private void onInput(EntityClientPlayerMP player) {
+  private boolean onInput(EntityClientPlayerMP player) {
 
     MovementInput input = player.movementInput;
     BlockCoord target = TravelController.instance.selectedCoord;
     if(target == null) {
-      return;
+      return false;
     }
 
     TileEntity te = player.worldObj.getTileEntity(target.x, target.y, target.z);
@@ -618,12 +620,13 @@ public class TravelController {
       if(ta.getRequiresPassword(player)) {
         PacketOpenAuthGui p = new PacketOpenAuthGui(target.x, target.y, target.z);
         PacketHandler.INSTANCE.sendToServer(p);
-        return;
+        return false;
       }
     }
 
     if(isTargetEnderIO()) {
       openEnderIO(null, player.worldObj, player);
+      return true;
     } else if(Config.travelAnchorEnabled && travelToSelectedTarget(player, TravelSource.BLOCK, false)) {
       input.jump = false;
       try {
@@ -631,8 +634,9 @@ public class TravelController {
       } catch (Exception e) {
         //ignore
       }
+      return true;
     }
-
+    return false;
   }
 
   public double getScaleForCandidate(Vector3d loc) {
@@ -720,8 +724,11 @@ public class TravelController {
       int x = MathHelper.floor_double(player.posX);
       int y = MathHelper.floor_double(player.boundingBox.minY) - 1;
       int z = MathHelper.floor_double(player.posZ);
-      if(world.getBlock(x, y, z) == EnderIO.blockTravelPlatform) {
-        return new BlockCoord(x, y, z);
+      TileEntity tileEntity = world.getTileEntity(x, y, z);
+      if(tileEntity instanceof ITravelAccessable) {
+        if (((ITravelAccessable) tileEntity).isTravelSource()) {
+          return new BlockCoord(x, y, z);
+        }
       }
     }
     return null;

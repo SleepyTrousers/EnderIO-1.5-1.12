@@ -419,6 +419,17 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     return this;
   }
 
+  /* ITravelAccessable */
+  @Override
+  public boolean isTravelSource() {
+    return isMaster() && inNetwork();
+  }
+
+  @Override
+  public boolean isVisible() {
+    return super.isVisible() && isTravelSource();
+  }
+
   /* ITelePad */
 
   @Override

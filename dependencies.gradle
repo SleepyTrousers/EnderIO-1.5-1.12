@@ -13,7 +13,7 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:Baubles:1.0.1.14:dev') {transitive = false}
     compileOnly('com.github.GTNewHorizons:Railcraft:9.13.6:api') {transitive = false}
     compileOnly('com.github.GTNewHorizons:StorageDrawers:1.11.13-GTNH:api') {transitive = false}
-    compileOnly('com.github.GTNewHorizons:Chisel:2.10.8-GTNH:dev') {transitive = false}
+    compile('com.github.GTNewHorizons:Chisel:2.10.8-GTNH:dev') {transitive = false}
     compileOnly('com.github.GTNewHorizons:OpenComputers:1.7.5.25-GTNH:api') {transitive = false}
     compileOnly('curse.maven:minefactory-reloaded-66672:2366150') // https://www.curseforge.com/minecraft/mc-mods/minefactory-reloaded/files/2366150
     compileOnly('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev')

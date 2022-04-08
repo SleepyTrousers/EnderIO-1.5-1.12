@@ -54,6 +54,10 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
 
     ITravelAccessable ta = (ITravelAccessable) tileentity;
 
+    if (!ta.isVisible()) {
+      return;
+    }
+
     BlockCoord onBlock = TravelController.instance.onBlockCoord;
     if(onBlock != null && onBlock.equals(ta.getLocation())) {
       return;

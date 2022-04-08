@@ -44,13 +44,23 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
 
   private List<UserIdent> authorisedUsers = new ArrayList<UserIdent>();
 
+  private boolean visible = true;
+
+  private boolean isAuthorisedUser(UserIdent ident) {
+    return authorisedUsers.contains(ident);
+  }
+
+  private boolean isOwnerUser(UserIdent ident) {
+    return owner.equals(ident);
+  }
+
   @Override
   public boolean canBlockBeAccessed(EntityPlayer playerName) {
     if(accessMode == AccessMode.PUBLIC) {
       return true;
     }
     // Covers protected and private access modes
-    return owner.equals(playerName.getGameProfile()) || authorisedUsers.contains(playerName.getGameProfile());
+    return isOwnerUser(UserIdent.create(playerName.getGameProfile())) || isAuthorisedUser(UserIdent.create(playerName.getGameProfile()));
 
   }
 
@@ -81,7 +91,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   @Override
   public boolean getRequiresPassword(EntityPlayer playerName) {
     return getAccessMode() == AccessMode.PROTECTED && !canUiBeAccessed(playerName)
-        && !authorisedUsers.contains(PlayerUtil.getPlayerUUID(playerName.getGameProfile().getName()));
+      && !isAuthorisedUser(UserIdent.create(playerName.getGameProfile()));
   }
 
   @Override
@@ -95,7 +105,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
 
   @Override
   public boolean canUiBeAccessed(EntityPlayer playerName) {
-    return owner.equals(playerName.getGameProfile());
+    return isOwnerUser(UserIdent.create(playerName.getGameProfile()));
   }
 
   @Override
@@ -103,7 +113,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
     if(accessMode != AccessMode.PRIVATE) {
       return true;
     }
-    return owner.equals(playerName.getGameProfile());
+    return isOwnerUser(UserIdent.create(playerName.getGameProfile()));
   }
 
   @Override
@@ -210,6 +220,11 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
       //keep behavior the same for blocks placed prior to this update
       accessMode = AccessMode.PUBLIC;
     }
+    if (root.hasKey("visible")) {
+      visible = root.getBoolean("visible");
+    } else {
+      visible = true;
+    }
     if (root.hasKey("placedBy")) {
       owner = UserIdent.create(root.getString("placedBy"));
     } else {
@@ -264,6 +279,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   @Override
   protected void writeCustomNBT(NBTTagCompound root) {
     root.setShort("accessMode", (short) accessMode.ordinal());
+    root.setBoolean("visible", visible);
     owner.saveToNbt(root, "owner");
     for (int i = 0; i < password.length; i++) {
       ItemStack stack = password[i];
@@ -307,5 +323,15 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
   @Override
   public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
     readCustomNBT(pkt.func_148857_g());
+  }
+
+  @Override
+  public boolean isVisible() {
+    return visible;
+  }
+
+  @Override
+  public void setVisible(boolean visible) {
+    this.visible = visible;
   }
 }

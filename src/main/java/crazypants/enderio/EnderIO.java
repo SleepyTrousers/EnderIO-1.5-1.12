@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Locale;
 
 import com.enderio.core.common.Lang;
-import com.enderio.core.common.network.MessageTileNBT;
 import com.enderio.core.common.util.EntityUtil;
 import com.google.common.collect.ImmutableList;
 
@@ -591,7 +590,6 @@ public class EnderIO {
 
     instance = this;
 
-    PacketHandler.INSTANCE.registerMessage(MessageTileNBT.class, MessageTileNBT.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketRedstoneMode.class, PacketRedstoneMode.class, PacketHandler.nextID(), Side.SERVER);
 
     NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);

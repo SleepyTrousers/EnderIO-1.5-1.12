@@ -2,6 +2,7 @@ package crazypants.enderio.teleport.anchor;
 
 import javax.annotation.Nullable;
 
+import crazypants.enderio.teleport.packet.PacketVisibility;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -62,6 +63,7 @@ public class BlockTravelAnchor extends BlockEio implements IGuiHandler, ITileEnt
     PacketHandler.INSTANCE.registerMessage(PacketDrainStaff.class, PacketDrainStaff.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketOpenAuthGui.class, PacketOpenAuthGui.class, PacketHandler.nextID(), Side.SERVER);
     PacketHandler.INSTANCE.registerMessage(PacketPassword.Handler.class, PacketPassword.class, PacketHandler.nextID(), Side.SERVER);
+    PacketHandler.INSTANCE.registerMessage(PacketVisibility.class, PacketVisibility.class, PacketHandler.nextID(), Side.SERVER);
 
     BlockTravelAnchor result = new BlockTravelAnchor();
     result.init();
