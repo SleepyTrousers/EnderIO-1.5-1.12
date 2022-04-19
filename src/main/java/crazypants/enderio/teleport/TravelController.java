@@ -71,6 +71,8 @@ public class TravelController {
 
   private boolean showTargets = false;
 
+  private boolean insufficientPower;
+
   public BlockCoord onBlockCoord;
 
   public BlockCoord selectedCoord;
@@ -335,6 +337,7 @@ public class TravelController {
       wasJumping = tempJump;
       wasSneaking = tempSneak;
       candidates.clear();
+      insufficientPower = false;
     }
   }
 
@@ -436,7 +439,11 @@ public class TravelController {
     requiredPower = (int) (getDistance(player, coord) * source.getPowerCostPerBlockTraveledRF());
     int canUsePower = getEnergyInTravelItem(staff);
     if(requiredPower > canUsePower) {
-      player.addChatComponentMessage(new ChatComponentTranslation("enderio.itemTravelStaff.notEnoughPower"));
+      // make sure chat is sent only once per trial
+      if (!insufficientPower) {
+        player.addChatComponentMessage(new ChatComponentTranslation("enderio.itemTravelStaff.notEnoughPower"));
+        insufficientPower = true;
+      }
       return -1;
     }
     return requiredPower;
