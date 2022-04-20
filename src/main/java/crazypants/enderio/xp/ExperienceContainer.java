@@ -29,7 +29,8 @@ public class ExperienceContainer extends FluidTank {
   
   public ExperienceContainer(int maxStored) {
     super(null, 0);
-    maxXp = maxStored;
+    // enforce overflow-safe value
+    maxXp = Math.min(maxStored, XpUtil.liquidToExperience(Integer.MAX_VALUE));
   }
   
   public int getMaximumExperiance() {    
