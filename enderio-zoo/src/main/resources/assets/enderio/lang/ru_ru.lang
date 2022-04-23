@@ -1,13 +1,12 @@
-
-entity.enderiozoo.enderminy.name=Карлик Края
-entity.enderiozoo.concussioncreeper.name=Оглушающий крипер
-entity.enderiozoo.fallenknight.name=Падший рыцарь
-entity.enderiozoo.fallenmount.name=Падший конь
-entity.enderiozoo.witherwitch.name=Ведьма-иссушитель
-entity.enderiozoo.withercat.name=Кот-иссушитель
-entity.enderiozoo.direwolf.name=Ужасный волк
-entity.enderiozoo.direslime.name=Ужасный слизь
+entity.enderiozoo.enderminy.name=Эндермини
+entity.enderiozoo.concussioncreeper.name=Ударный крипер
+entity.enderiozoo.fallenknight.name=Павший рыцарь
+entity.enderiozoo.fallenmount.name=Павший боевой конь
+entity.enderiozoo.witherwitch.name=Визер-ведьма
+entity.enderiozoo.withercat.name=Визер-кот
+entity.enderiozoo.direwolf.name=Зловещий волк
+entity.enderiozoo.direslime.name=Слизневая земля
 entity.enderiozoo.owl.name=Сова
-entity.enderiozoo.lovechild.name=Зараженный зомби Края
-entity.enderiozoo.epicsquid.name=Эпический спрут
-
+entity.enderiozoo.lovechild.name=Заражённый эндер зомби
+entity.enderiozoo.epicsquid.name=Потрясающий спрут
+entity.enderiozoo.voidslime.name=Бесконечный рассадник
