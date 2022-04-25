@@ -161,6 +161,7 @@ public final class Config {
       "Thaumcraft:blockWarded"
   };
   public static float travelAnchorZoomScale = 0.2f;
+  public static boolean travelStaffSearchOptimize = true;
 
   public static int enderIoRange = 8;
   public static boolean enderIoMeAccessEnabled = true;
@@ -870,6 +871,11 @@ public final class Config {
         "Lists the blocks that cannot be teleported through in the form 'modID:blockName'");
     travelAnchorZoomScale = config.getFloat("travelAnchorZoomScale", sectionStaff.name, travelAnchorZoomScale, 0, 1,
         "Set the max zoomed size of a travel anchor as an aprox. percentage of screen height");
+    travelStaffSearchOptimize = config.get(sectionStaff.name, "travelStaffSearchOptimize", travelStaffSearchOptimize,
+            "If set to true: blinking by travel staff has reduced search branch. " +
+            "You can now teleport onto the roof. " +
+            "This config is experimental, so if you encounter any strange behavior, please report to GTNH developer.")
+        .getBoolean(travelStaffSearchOptimize);
 
 
     enderIoRange = config.get(sectionEfficiency.name, "enderIoRange", enderIoRange,

@@ -213,14 +213,16 @@ public class TravelController {
   }
 
   private boolean doBlinkAround(EntityPlayer player, Vector3d sample, boolean conserveMomentum) {
-    if(doBlink(player, new BlockCoord((int) Math.floor(sample.x), (int) Math.floor(sample.y) - 1, (int) Math.floor(sample.z)), conserveMomentum)) {
-      return true;
-    }
     if(doBlink(player, new BlockCoord((int) Math.floor(sample.x), (int) Math.floor(sample.y), (int) Math.floor(sample.z)), conserveMomentum)) {
       return true;
     }
     if(doBlink(player, new BlockCoord((int) Math.floor(sample.x), (int) Math.floor(sample.y) + 1, (int) Math.floor(sample.z)), conserveMomentum)) {
       return true;
+    }
+    if (!Config.travelStaffSearchOptimize) {
+      if (doBlink(player, new BlockCoord((int) Math.floor(sample.x), (int) Math.floor(sample.y) - 1, (int) Math.floor(sample.z)), conserveMomentum)) {
+        return true;
+      }
     }
     return false;
   }
