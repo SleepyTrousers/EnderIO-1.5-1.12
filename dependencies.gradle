@@ -19,6 +19,6 @@ dependencies {
     compileOnly('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev')
     compileOnly('curse.maven:ee3-65509:2305023') // https://www.curseforge.com/minecraft/mc-mods/ee3/files/2305023
     compileOnly(deobf('https://media.forgecdn.net/files/2269/339/ComputerCraft1.75.jar')) // https://www.curseforge.com/minecraft/mc-mods/computercraft/files/2269339
-    compileOnly(deobf('https://s3.amazonaws.com/aidancbrady/mekanism/281-recommended/Mekanism-1.7.10-9.1.0.281.jar')) // https://aidancbrady.com/mekanism/download/
+    compileOnly(deobf('https://media.forgecdn.net/files/2426/270/Mekanism-1.7.10-9.1.0.281.jar')) // https://aidancbrady.com/mekanism/download/
     compileOnly(deobf('https://immibis.com/mcmoddl/files/immibis-microblocks-59.1.2.jar'))
 }
