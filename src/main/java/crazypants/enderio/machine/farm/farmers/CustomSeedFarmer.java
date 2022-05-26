@@ -3,6 +3,7 @@ package crazypants.enderio.machine.farm.farmers;
 import java.util.ArrayList;
 import java.util.List;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
@@ -41,7 +42,11 @@ public class CustomSeedFarmer implements IFarmerJoe {
     this.grownBlockMeta = grownBlockMeta;
     this.seeds = seeds;
     FarmStationContainer.slotItemsSeeds.add(seeds);
-    addTilledBlock(Blocks.farmland);   
+    addTilledBlock(Blocks.farmland);
+    Block ztonesSoil = GameRegistry.findBlock("Ztones", "cleanDirt");
+    if (ztonesSoil != null) {
+      addTilledBlock(ztonesSoil);
+    }
   }
   
   public void addTilledBlock(Block block) {
