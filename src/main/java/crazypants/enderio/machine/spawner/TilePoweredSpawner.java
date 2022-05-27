@@ -25,44 +25,34 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
   public static final int MAX_SPAWN_DELAY_BASE = Config.poweredSpawnerMaxDelayTicks;
 
   public static final int POWER_PER_TICK_ONE = Config.poweredSpawnerLevelOnePowerPerTickRF;
-  private static final BasicCapacitor CAP_ONE = new BasicCapacitor(0, (int) (POWER_PER_TICK_ONE * 1.25),
-          Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyStored());
+  private static final BasicCapacitor CAP_ONE = new BasicCapacitor(Capacitors.BASIC_CAPACITOR.capacitor.getTier(), (int) (POWER_PER_TICK_ONE * 1.25), Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyStored());
 
   public static final int POWER_PER_TICK_TWO = Config.poweredSpawnerLevelTwoPowerPerTickRF;
-  private static final BasicCapacitor CAP_TWO = new BasicCapacitor(0,(int) (POWER_PER_TICK_TWO * 1.25),
-      Capacitors.ACTIVATED_CAPACITOR.capacitor.getMaxEnergyStored());
+  private static final BasicCapacitor CAP_TWO = new BasicCapacitor(Capacitors.ACTIVATED_CAPACITOR.capacitor.getTier(), (int) (POWER_PER_TICK_TWO * 1.25), Capacitors.ACTIVATED_CAPACITOR.capacitor.getMaxEnergyStored());
 
   public static final int POWER_PER_TICK_THREE = Config.poweredSpawnerLevelThreePowerPerTickRF;
-  private static final BasicCapacitor CAP_THREE = new BasicCapacitor(0,(int) (POWER_PER_TICK_THREE * 1.25),
-      Capacitors.ENDER_CAPACITOR.capacitor.getMaxEnergyStored());
+  private static final BasicCapacitor CAP_THREE = new BasicCapacitor(Capacitors.ENDER_CAPACITOR.capacitor.getTier(), (int) (POWER_PER_TICK_THREE * 1.25), Capacitors.ENDER_CAPACITOR.capacitor.getMaxEnergyStored());
 
   public static final int POWER_PER_TICK_FOUR = Config.poweredSpawnerLevelFourPowerPerTickRF;
-  private static final BasicCapacitor CAP_FOUR = new BasicCapacitor(0,(int) (POWER_PER_TICK_FOUR * 1.25),
-          Capacitors.CRYSTALLINE_CAPACITOR.capacitor.getMaxEnergyStored());
+  private static final BasicCapacitor CAP_FOUR = new BasicCapacitor(Capacitors.CRYSTALLINE_CAPACITOR.capacitor.getTier(), (int) (POWER_PER_TICK_FOUR * 1.25), Capacitors.CRYSTALLINE_CAPACITOR.capacitor.getMaxEnergyStored());
 
   public static final int POWER_PER_TICK_FIVE = Config.poweredSpawnerLevelFivePowerPerTickRF;
-  private static final BasicCapacitor CAP_FIVE = new BasicCapacitor(0,(int) (POWER_PER_TICK_FIVE * 1.25),
-          Capacitors.MELODIC_CAPACITOR.capacitor.getMaxEnergyStored());
+  private static final BasicCapacitor CAP_FIVE = new BasicCapacitor(Capacitors.MELODIC_CAPACITOR.capacitor.getTier(), (int) (POWER_PER_TICK_FIVE * 1.25), Capacitors.MELODIC_CAPACITOR.capacitor.getMaxEnergyStored());
 
   public static final int POWER_PER_TICK_SIX = Config.poweredSpawnerLevelSixPowerPerTickRF;
-  private static final BasicCapacitor CAP_SIX = new BasicCapacitor(0,(int) (POWER_PER_TICK_SIX * 1.25),
-          Capacitors.STELLAR_CAPACITOR.capacitor.getMaxEnergyStored());
+  private static final BasicCapacitor CAP_SIX = new BasicCapacitor(Capacitors.STELLAR_CAPACITOR.capacitor.getTier(), (int) (POWER_PER_TICK_SIX * 1.25), Capacitors.STELLAR_CAPACITOR.capacitor.getMaxEnergyStored());
 
   public static final int POWER_PER_TICK_SEVEN = Config.poweredSpawnerLevelSevenPowerPerTickRF;
-  private static final BasicCapacitor CAP_SEVEN = new BasicCapacitor(0,(int) (POWER_PER_TICK_SEVEN * 1.25),
-          Capacitors.TOTEMIC_CAPACITOR.capacitor.getMaxEnergyStored());
+  private static final BasicCapacitor CAP_SEVEN = new BasicCapacitor(Capacitors.TOTEMIC_CAPACITOR.capacitor.getTier(), (int) (POWER_PER_TICK_SEVEN * 1.25), Capacitors.TOTEMIC_CAPACITOR.capacitor.getMaxEnergyStored());
 
   public static final int POWER_PER_TICK_EIGHT = Config.poweredSpawnerLevelEightPowerPerTickRF;
-  private static final BasicCapacitor CAP_EIGHT = new BasicCapacitor(0,(int) (POWER_PER_TICK_EIGHT * 1.25),
-          Capacitors.SILVER_CAPACITOR.capacitor.getMaxEnergyStored());
+  private static final BasicCapacitor CAP_EIGHT = new BasicCapacitor(Capacitors.SILVER_CAPACITOR.capacitor.getTier(), (int) (POWER_PER_TICK_EIGHT * 1.25), Capacitors.SILVER_CAPACITOR.capacitor.getMaxEnergyStored());
 
   public static final int POWER_PER_TICK_NINE = Config.poweredSpawnerLevelNinePowerPerTickRF;
-  private static final BasicCapacitor CAP_NINE = new BasicCapacitor(0,(int) (POWER_PER_TICK_NINE * 1.25),
-          Capacitors.ENDERGETIC_CAPACITOR.capacitor.getMaxEnergyStored());
+  private static final BasicCapacitor CAP_NINE = new BasicCapacitor(Capacitors.ENDERGETIC_CAPACITOR.capacitor.getTier(), (int) (POWER_PER_TICK_NINE * 1.25), Capacitors.ENDERGETIC_CAPACITOR.capacitor.getMaxEnergyStored());
 
   public static final int POWER_PER_TICK_TEN = Config.poweredSpawnerLevelTenPowerPerTickRF;
-  private static final BasicCapacitor CAP_TEN = new BasicCapacitor(0,(int) (POWER_PER_TICK_TEN * 1.25),
-          Capacitors.ENDERGISED_CAPACITOR.capacitor.getMaxEnergyStored());
+  private static final BasicCapacitor CAP_TEN = new BasicCapacitor(Capacitors.ENDERGISED_CAPACITOR.capacitor.getTier(), (int) (POWER_PER_TICK_TEN * 1.25), Capacitors.ENDERGISED_CAPACITOR.capacitor.getMaxEnergyStored());
 
   public static final int MIN_PLAYER_DISTANCE = Config.poweredSpawnerMaxPlayerDistance;
   public static final boolean USE_VANILLA_SPAWN_CHECKS = Config.poweredSpawnerUseVanillaSpawChecks;
@@ -158,7 +148,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
       break;
     }
     double multiplier = PoweredSpawnerConfig.getInstance().getCostMultiplierFor(getEntityName());
-    setCapacitor(new BasicCapacitor((int) (refCap.getMaxEnergyExtracted() * multiplier), refCap.getMaxEnergyStored()));
+    setCapacitor(new BasicCapacitor(refCap.getTier(), (int) (refCap.getMaxEnergyExtracted() * multiplier), refCap.getMaxEnergyStored()));
     powerUsePerTick = (int) Math.ceil(basePowerUse * multiplier);
     forceClientUpdate = true;
   }
