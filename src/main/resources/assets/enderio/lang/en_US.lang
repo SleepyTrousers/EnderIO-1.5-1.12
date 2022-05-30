@@ -1243,7 +1243,7 @@ enderio.weatherObelisk.fuelTank=Barometric Flux Tank
 
 #Enchants
 enchantment.enderio.soulBound=Soulbound
-description.enchantment.enderio.soulBound=Prevents item from being lost on death
+description.enchantment.enderio.soulBound=When the player dies the item/tool/armor will be kept in the inventory and not drop on the ground.
 
 #Configuration
 enderio.config.title=Ender IO Configuration
