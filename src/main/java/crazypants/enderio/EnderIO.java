@@ -29,6 +29,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -172,6 +173,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -828,9 +830,16 @@ public class EnderIO {
     ServerChannelRegister.load();
   }
 
+  @SubscribeEvent
+  public void worldSaved(WorldEvent.Save event) {
+    // Only save together with the overworld, because this gets called for every dimension separately
+    if (event.world.provider != null && event.world.provider.dimensionId == 0) {
+      ServerChannelRegister.store();
+    }
+  }
+
   @EventHandler
   public void serverStopped(FMLServerStoppedEvent event) {
     HyperCubeRegister.unload();
-    ServerChannelRegister.store();
   }
 }
