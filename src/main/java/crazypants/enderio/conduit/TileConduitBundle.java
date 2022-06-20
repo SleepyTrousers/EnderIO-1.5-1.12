@@ -55,6 +55,8 @@ import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.geom.Offsets;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
+import crazypants.enderio.conduit.liquid.AbstractTankConduit;
+import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.oc.IOCConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
@@ -164,11 +166,15 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     facadeMeta = nbtRoot.getInteger("facadeMeta");
 
     if(worldObj != null && worldObj.isRemote) {
-      if (conduits.size() == 1 && conduits.get(0) instanceof IItemConduit) {
+	  boolean stableConduit = true;
+	  for(IConduit iConduit: conduits) {
+	    if ((iConduit instanceof IRedstoneConduit) || (iConduit instanceof AbstractTankConduit)) stableConduit = false;
+	  }
+      if (stableConduit) {
         boolean itemConduitClientUpdated = false;
         for (Object o : Minecraft.getMinecraft().theWorld.playerEntities) {
           Entity e = ((Entity) o);
-          if (e.getDistanceSq(this.xCoord, yCoord, zCoord) < 36) {
+          if (e.getDistanceSq(this.xCoord, yCoord, zCoord) < 25) {
             itemConduitClientUpdated = true;
             break;
           }
