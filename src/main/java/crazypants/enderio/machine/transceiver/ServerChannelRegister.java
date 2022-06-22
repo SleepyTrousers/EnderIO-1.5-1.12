@@ -130,7 +130,6 @@ public class ServerChannelRegister extends ChannelRegister {
         return;
       }
     }
-    Log.info("ServerChannelRegister: Dimensional Transceiver data saved to " + dataFile.getAbsolutePath());
   }
 
   private static boolean createFolderAndWriteFile(ListMultimap<ChannelType, Channel> channels, File dataFile) {
@@ -305,7 +304,7 @@ public class ServerChannelRegister extends ChannelRegister {
     return 0;
   }
 
-  //Item 
+  //Item
 
   public void sendItem(TileTransceiver from, Set<Channel> channels, int slot, ItemStack contents) {
     if(!from.hasPower()) {
@@ -332,7 +331,7 @@ public class ServerChannelRegister extends ChannelRegister {
     if(!to.getReceiveItemFilter().doesItemPassFilter(null, contents)) {
       return contents;
     }
-    //try merging into existing stacks    
+    //try merging into existing stacks
 
     boolean sendComplete = false; // Only allow 1 stack per item type
     for (int i = sd.minOutputSlot; i <= sd.maxOutputSlot && !sendComplete; i++) {
