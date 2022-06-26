@@ -287,7 +287,7 @@ public class ItemFilter implements IInventory, IItemFilter {
   @SideOnly(Side.CLIENT)
   public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
     ItemConduitFilterContainer cont = new ItemConduitFilterContainer(itemConduit, gui.getDir(), isInput);
-    BasicItemFilterGui basicItemFilterGui = new BasicItemFilterGui(gui, cont, !isInput);
+    BasicItemFilterGui basicItemFilterGui = new BasicItemFilterGui(gui, cont, !isInput, isInput);
     basicItemFilterGui.createFilterSlots();
     return basicItemFilterGui;
   }
@@ -450,6 +450,11 @@ public class ItemFilter implements IInventory, IItemFilter {
 //    return "ItemFilter [isBlacklist=" + isBlacklist + ", matchMeta=" + matchMeta + ", matchNBT=" + matchNBT + ", useOreDict=" + useOreDict + ", sticky="
 //        + sticky + ", items=" + Arrays.toString(items) + ", oreIds=" + Arrays.toString(oreIds) + ", isAdvanced=" + isAdvanced + "]";
     return "ItemFilter [isAdvanced=" + isAdvanced + ", items=" + Arrays.toString(items)  + "]";
+  }
+
+  @Override
+  public String getUnlocalizedName() {
+    return isAdvanced ? "enderio.gui.advanced_item_filter" : "gui.basic_item_filter";
   }
 
   class ItemFilterGhostSlot extends GhostSlot {

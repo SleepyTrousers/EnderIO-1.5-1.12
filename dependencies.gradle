@@ -1,7 +1,7 @@
 // Add your dependencies here
 
 dependencies {
-    compile('com.github.GTNewHorizons:EnderCore:0.2.6:dev')
+    compile('com.github.GTNewHorizons:EnderCore:0.2.9:dev')
     compile('com.github.GTNewHorizons:ForestryMC:4.4.6:dev')
     compile('com.github.GTNewHorizons:NotEnoughItems:2.2.15-GTNH:dev')
     compile('com.github.GTNewHorizons:BuildCraft:7.1.27:dev')

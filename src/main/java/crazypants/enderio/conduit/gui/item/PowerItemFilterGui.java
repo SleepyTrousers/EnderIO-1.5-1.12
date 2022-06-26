@@ -1,5 +1,6 @@
 package crazypants.enderio.conduit.gui.item;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 
 import com.enderio.core.client.gui.button.ToggleButton;
@@ -42,11 +43,10 @@ public class PowerItemFilterGui implements IItemFilterGui {
       filter = (PowerItemFilter) itemConduit.getOutputFilter(gui.getDir());
     }
 
-    int butLeft = 37;
+    int butLeft = isInput ? 5 : 106;
     int x = butLeft;
-    int y = 68;
+    int y = 96 + 24;
 
-    x += 20;
     stickyB = new ToggleButton(gui, ID_STICKY, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
     String[] lines = EnderIO.lang.localizeList("gui.conduit.item.stickyEnabled");
     stickyB.setSelectedToolTip(lines);
@@ -59,6 +59,20 @@ public class PowerItemFilterGui implements IItemFilterGui {
 
   @Override
   public void mouseClicked(int x, int y, int par3) {
+    x += gui.getGuiLeft();
+    y += gui.getGuiTop();
+    if(par3 == 1) {
+      Minecraft mc = Minecraft.getMinecraft();
+      if (modeB.mousePressed(mc, x, y)) {
+        modeB.func_146113_a(mc.getSoundHandler());
+        filter.setMode(filter.getMode().prev());
+        sendFilterChange();
+      } else if (levelB.mousePressed(mc, x, y)) {
+        levelB.func_146113_a(mc.getSoundHandler());
+        filter.setLevel((filter.getLevel() + PowerItemFilter.MAX_LEVEL) % (PowerItemFilter.MAX_LEVEL + 1));
+        sendFilterChange();
+      }
+    }
   }
 
   @Override
@@ -68,8 +82,8 @@ public class PowerItemFilterGui implements IItemFilterGui {
       stickyB.setSelected(filter.isSticky());
     }
 
-    int x0 = gui.getGuiLeft() + 80;
-    int y0 = gui.getGuiTop() + 65;
+    int x0 = gui.getGuiLeft() + (isInput ? 5 : 106);
+    int y0 = gui.getGuiTop() + 96;
     int x1 = x0 + 45;
 
     modeB.xPosition = x0;
@@ -95,13 +109,13 @@ public class PowerItemFilterGui implements IItemFilterGui {
 
   @Override
   public void actionPerformed(GuiButton guiButton) {
-    if(guiButton.id == ID_STICKY) {
+    if(guiButton == stickyB) {
       filter.setSticky(stickyB.isSelected());
       sendFilterChange();
-    } else if(guiButton.id == ID_MORE) {
+    } else if(guiButton == modeB) {
       filter.setMode(filter.getMode().next());
       sendFilterChange();
-    } else if(guiButton.id == ID_LEVEL) {
+    } else if(guiButton == levelB) {
       filter.setLevel((filter.getLevel() + 1) % (PowerItemFilter.MAX_LEVEL + 1));
       sendFilterChange();
     }

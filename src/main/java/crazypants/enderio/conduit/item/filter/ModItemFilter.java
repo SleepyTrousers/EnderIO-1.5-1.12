@@ -163,4 +163,8 @@ public class ModItemFilter implements IItemFilter {
     readFromNBT(tag);
   }
 
+  @Override
+  public String getUnlocalizedName() {
+    return "gui.mod_item_filter";
+  }
 }

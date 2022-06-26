@@ -44,11 +44,11 @@ public class BigItemFilterGui implements IItemFilterGui {
   private int xOffset;
   private int yOffset;
 
-  public BigItemFilterGui(GuiContainerBaseEIO gui, IItemFilterContainer filterContainer, boolean isStickyModeAvailable) {
-    this(gui, filterContainer, isStickyModeAvailable, 32, 48, 0);
+  public BigItemFilterGui(GuiContainerBaseEIO gui, IItemFilterContainer filterContainer, boolean isStickyModeAvailable, boolean isInput) {
+    this(gui, filterContainer, isStickyModeAvailable, isInput, isInput ? 6 : 104, 96, isInput ? 0 : 256);
   }
 
-  public BigItemFilterGui(GuiContainerBaseEIO gui, IItemFilterContainer filterContainer, boolean isStickyModeAvailable,
+  public BigItemFilterGui(GuiContainerBaseEIO gui, IItemFilterContainer filterContainer, boolean isStickyModeAvailable, boolean isInput,
       int xOffset, int yOffset,
       int buttonIdOffset) {
     this.gui = gui;
@@ -62,38 +62,45 @@ public class BigItemFilterGui implements IItemFilterGui {
 
     isAdvanced = filter.isAdvanced();
 
-    int butLeft = xOffset + 92+ 54;
+    int butLeft = xOffset;
     int x = butLeft;
-    int y = yOffset + 40;
+    int y = yOffset - 8;
     whiteListB = new IconButton(gui, ID_WHITELIST + buttonIdOffset, x, y, IconEIO.FILTER_WHITELIST);
     whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
 
-    y -= 20;
+    x += 16;
     useMetaB = new ToggleButton(gui, ID_META + buttonIdOffset, x, y, IconEIO.FILTER_META_OFF, IconEIO.FILTER_META);
     useMetaB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.matchMetaData"));
     useMetaB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.ignoreMetaData"));
     useMetaB.setPaintSelectedBorder(false);
 
-    y -= 20;
+    x += 16;
     useOreDictB = new ToggleButton(gui, ID_ORE_DICT + buttonIdOffset, x, y, IconEIO.FILTER_ORE_DICT_OFF, IconEIO.FILTER_ORE_DICT);
     useOreDictB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.oreDicEnabled"));
     useOreDictB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.oreDicDisabled"));
     useOreDictB.setPaintSelectedBorder(false);
 
-    y -= 20;
+    x += 16;
     useNbtB = new ToggleButton(gui, ID_NBT + buttonIdOffset, x, y, IconEIO.FILTER_NBT_OFF, IconEIO.FILTER_NBT);
     useNbtB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.matchNBT"));
     useNbtB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.ignoreNBT"));
     useNbtB.setPaintSelectedBorder(false);
 
-    y -= 20;
+    x += 16;
     fuzzyB = new CycleButton(gui, ID_FUZZY + buttonIdOffset, x, y, FuzzyMode.class);
 
-    x -= 20;
+    x += 16;
     stickyB = new ToggleButton(gui, ID_STICKY + buttonIdOffset, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
     stickyB.setSelectedToolTip(EnderIO.lang.localizeList("gui.conduit.item.stickyEnabled"));
     stickyB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.stickyDisbaled"));
     stickyB.setPaintSelectedBorder(false);
+
+    this.yOffset += 8;
+    if (isInput) {
+      this.xOffset -= 50;
+    } else {
+      //
+    }
   }
 
   public void createFilterSlots() {
@@ -189,10 +196,10 @@ public class BigItemFilterGui implements IItemFilterGui {
 
     gui.drawTexturedModalRect(gui.getGuiLeft() + xOffset + 54, gui.getGuiTop() + yOffset, 0, 238, 18 * 5, 18);
     gui.drawTexturedModalRect(gui.getGuiLeft() + xOffset, gui.getGuiTop() + yOffset, 0, 238, 18 * 5, 18);
-    gui.drawTexturedModalRect(gui.getGuiLeft() + xOffset + 54, gui.getGuiTop() + yOffset + 20, 0, 238, 18 * 5, 18);
-    gui.drawTexturedModalRect(gui.getGuiLeft() + xOffset, gui.getGuiTop() + yOffset + 20, 0, 238, 18 * 5, 18);
-    gui.drawTexturedModalRect(gui.getGuiLeft() + xOffset + 54, gui.getGuiTop() + yOffset + 40, 0, 238, 18 * 5, 18);
-    gui.drawTexturedModalRect(gui.getGuiLeft() + xOffset, gui.getGuiTop() + yOffset + 40, 0, 238, 18 * 5, 18);
+    gui.drawTexturedModalRect(gui.getGuiLeft() + xOffset + 54, gui.getGuiTop() + yOffset + 18, 0, 238, 18 * 5, 18);
+    gui.drawTexturedModalRect(gui.getGuiLeft() + xOffset, gui.getGuiTop() + yOffset + 18, 0, 238, 18 * 5, 18);
+    gui.drawTexturedModalRect(gui.getGuiLeft() + xOffset + 54, gui.getGuiTop() + yOffset + 36, 0, 238, 18 * 5, 18);
+    gui.drawTexturedModalRect(gui.getGuiLeft() + xOffset, gui.getGuiTop() + yOffset + 36, 0, 238, 18 * 5, 18);
   }
 
 }

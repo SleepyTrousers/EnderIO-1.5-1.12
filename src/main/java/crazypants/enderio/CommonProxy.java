@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -44,7 +45,7 @@ public class CommonProxy {
   public void loadIcons() {
     ;
   }
-  
+
   public void load() {
     FMLCommonHandler.instance().bus().register(tickTimer);
   }
@@ -66,6 +67,13 @@ public class CommonProxy {
   }
 
   protected void onClientTick() {
+  }
+
+  private static final String TEXTURE_PATH = ":textures/gui/23/";
+  private static final String TEXTURE_EXT = ".png";
+
+  public ResourceLocation getGuiTexture(String name) {
+    return new ResourceLocation(EnderIO.DOMAIN + TEXTURE_PATH + name + TEXTURE_EXT);
   }
 
   public final class TickTimer {

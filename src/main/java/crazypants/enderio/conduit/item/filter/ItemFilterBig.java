@@ -32,7 +32,7 @@ public class ItemFilterBig extends ItemFilter {
   @SideOnly(Side.CLIENT)
   public IItemFilterGui getGui(GuiExternalConnection gui, IItemConduit itemConduit, boolean isInput) {
     ItemConduitFilterContainer cont = new ItemConduitFilterContainer(itemConduit, gui.getDir(), isInput);
-    BigItemFilterGui bigItemFilterGui = new BigItemFilterGui(gui, cont, !isInput);
+    BigItemFilterGui bigItemFilterGui = new BigItemFilterGui(gui, cont, !isInput, isInput);
     bigItemFilterGui.createFilterSlots();
     return bigItemFilterGui;
   }
@@ -46,7 +46,7 @@ public class ItemFilterBig extends ItemFilter {
     for (int row = 0; row < numRows; ++row) {
       for (int col = 0; col < 8; ++col) {
         int x = leftX + col * 18;
-        int y = topY + row * 20;
+        int y = topY + row * 18;
         slots.add(new ItemFilterGhostSlot(index, x, y, cb));
         index++;
       }
@@ -66,4 +66,8 @@ public class ItemFilterBig extends ItemFilter {
     return "Big"+super.toString();
   }
 
+  @Override
+  public String getUnlocalizedName() {
+    return isAdvanced() ? "gui.big_advanced_item_filter" : "gui.big_item_filter";
+  }
 }

@@ -47,4 +47,8 @@ public interface IItemFilter {
 
   int getSlotCount();
 
+  default String getUnlocalizedName() {
+    return "gui.basic_item_filter";
+  }
+
 }

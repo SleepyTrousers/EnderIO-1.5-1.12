@@ -1,4 +1,4 @@
-//version: 1652851397
+//version: 1655755555
 /*
 DO NOT CHANGE THIS FILE!
 
@@ -12,7 +12,12 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.internal.logging.text.StyledTextOutput.Style
 import org.gradle.internal.logging.text.StyledTextOutputFactory
 
+import java.nio.file.Files
+import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
+import java.util.zip.ZipEntry
+import java.util.zip.ZipInputStream
+import java.util.zip.ZipOutputStream
 
 buildscript {
     repositories {
@@ -105,6 +110,9 @@ checkPropertyExists("developmentEnvironmentUserName")
 
 boolean noPublishedSources = project.findProperty("noPublishedSources") ? project.noPublishedSources.toBoolean() : false
 boolean usesMixinDebug = project.findProperty('usesMixinDebug') ?: project.usesMixins.toBoolean()
+String channel = project.findProperty('channel') ? project.channel : 'stable'
+String mappingsVersion = project.findProperty('mappingsVersion') ? project.mappingsVersion : '12'
+String remoteMappings = project.findProperty('remoteMappings') ? project.remoteMappings : 'https://raw.githubusercontent.com/MinecraftForge/FML/1.7.10/conf/'
 
 String javaSourceDir = "src/main/java/"
 String scalaSourceDir = "src/main/scala/"
@@ -669,7 +677,103 @@ configure(updateBuildScript) {
     description = 'Updates the build script to the latest version'
 }
 
-// Deobfuscation
+// Parameter Deobfuscation
+
+task deobfParams {
+    doLast {
+
+        String mcpDir = "$project.gradle.gradleUserHomeDir/caches/minecraft/de/oceanlabs/mcp/mcp_$channel/$mappingsVersion"
+        String mcpZIP = "$mcpDir/mcp_$channel-$mappingsVersion-${minecraftVersion}.zip"
+        String paramsCSV = "$mcpDir/params.csv"
+
+        download.run {
+            src "https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp_$channel/$mappingsVersion-$minecraftVersion/mcp_$channel-$mappingsVersion-${minecraftVersion}.zip"
+            dest mcpZIP
+            overwrite false
+        }
+
+        if(!file(paramsCSV).exists()) {
+            println("Extracting MCP archive ...")
+            unzip(mcpZIP, mcpDir)
+        }
+
+        println("Parsing params.csv ...")
+        Map<String, String> params = new HashMap<>()
+        Files.lines(Paths.get(paramsCSV)).forEach{line -> 
+            String[] cells = line.split(",")
+            if(cells.length > 2 && cells[0].matches("p_i?\\d+_\\d+_")) {
+                params.put(cells[0], cells[1])
+            }
+        }
+
+        out.style(Style.Success).println("Modified ${replaceParams(file("$projectDir/src/main/java"), params)} files!")
+        out.style(Style.Failure).println("Don't forget to verify that the code still works as before!\n It could be broken due to duplicate variables existing now\n or parameters taking priority over other variables.")
+    }
+}
+
+static int replaceParams(File file, Map<String, String> params) {
+    int fileCount = 0
+
+    if(file.isDirectory()) {
+        for(File f : file.listFiles()) {
+            fileCount += replaceParams(f, params)
+        }
+        return fileCount
+    }
+    println("Visiting ${file.getName()} ...")
+    try {
+        String content = new String(Files.readAllBytes(file.toPath()))
+        int hash = content.hashCode()
+        params.forEach{key, value ->
+            content = content.replaceAll(key, value)
+        }
+        if(hash != content.hashCode()) {
+            Files.write(file.toPath(), content.getBytes("UTF-8"))
+            return 1
+        }
+    } catch(Exception e) {
+        e.printStackTrace()
+    }
+    return 0
+}
+
+// Credit: bitsnaps (https://gist.github.com/bitsnaps/00947f2dce66f4bbdabc67d7e7b33681)
+static unzip(String zipFileName, String outputDir) {
+    byte[] buffer = new byte[16384]
+    ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFileName))
+    ZipEntry zipEntry = zis.getNextEntry()
+    while (zipEntry != null) {
+         File newFile = new File(outputDir + File.separator, zipEntry.name)
+         if (zipEntry.isDirectory()) {
+             if (!newFile.isDirectory() && !newFile.mkdirs()) {
+                 throw new IOException("Failed to create directory $newFile")
+             }
+         } else {
+             // fix for Windows-created archives
+             File parent = newFile.parentFile
+             if (!parent.isDirectory() && !parent.mkdirs()) {
+                 throw new IOException("Failed to create directory $parent")
+             }
+             // write file content
+             FileOutputStream fos = new FileOutputStream(newFile)
+             int len = 0
+             while ((len = zis.read(buffer)) > 0) {
+                 fos.write(buffer, 0, len)
+             }
+             fos.close()
+         }
+     zipEntry = zis.getNextEntry()
+     }
+    zis.closeEntry()
+    zis.close()
+}
+
+configure(deobfParams) {
+    group = 'forgegradle'
+    description = 'Rename all obfuscated parameter names inherited from Minecraft classes'
+}
+
+// Dependency Deobfuscation
 
 def deobf(String sourceURL) {
     try {
@@ -682,7 +786,7 @@ def deobf(String sourceURL) {
             fileName = fileName.substring(lastSlash + 1)
         }
         //get rid of extension:
-        if(fileName.endsWith(".jar")) {
+        if(fileName.endsWith(".jar") || fileName.endsWith(".litemod")) {
             fileName = fileName.substring(0, fileName.lastIndexOf("."))
         }
 
@@ -694,26 +798,40 @@ def deobf(String sourceURL) {
         Collections.reverse(parts)
         hostName = String.join(".", parts)
 
-        return deobf(sourceURL, hostName + "/" + fileName)
+        return deobf(sourceURL, "$hostName/$fileName")
     } catch(Exception e) {
-        return deobf(sourceURL, "deobf/" + String.valueOf(sourceURL.hashCode()))
+        return deobf(sourceURL, "deobf/${sourceURL.hashCode()}")
     }
 }
 
 // The method above is to be preferred. Use this method if the filename is not at the end of the URL.
-def deobf(String sourceURL, String fileName) {
-    String cacheDir = System.getProperty("user.home") + "/.gradle/caches/"
-    String bon2Dir = cacheDir + "forge_gradle/deobf"
-    String bon2File  = bon2Dir + "/BON2-2.5.0.jar"
-    String obfFile = cacheDir + "modules-2/files-2.1/" + fileName + ".jar"
-    String deobfFile = cacheDir + "modules-2/files-2.1/" + fileName + "-deobf.jar"
+def deobf(String sourceURL, String rawFileName) {
+    String bon2Version = "2.5.1"
+    String fileName = URLDecoder.decode(rawFileName, "UTF-8")
+    String cacheDir = "$project.gradle.gradleUserHomeDir/caches"
+    String bon2Dir = "$cacheDir/forge_gradle/deobf"
+    String bon2File = "$bon2Dir/BON2-${bon2Version}.jar"
+    String obfFile = "$cacheDir/modules-2/files-2.1/${fileName}.jar"
+    String deobfFile = "$cacheDir/modules-2/files-2.1/${fileName}-deobf.jar"
 
     if(file(deobfFile).exists()) {
         return files(deobfFile)
     }
 
+    String mappingsVer
+    if(remoteMappings) {
+        String id = "${forgeVersion.split("\\.")[3]}-$minecraftVersion"
+        String mappingsZIP = "$cacheDir/forge_gradle/maven_downloader/de/oceanlabs/mcp/mcp_snapshot_nodoc/$id/mcp_snapshot_nodoc-${id}.zip"
+
+        zipMappings(mappingsZIP, remoteMappings, bon2Dir)
+        
+        mappingsVer = "snapshot_$id"
+    } else {
+        mappingsVer = "${channel}_$mappingsVersion"
+    }
+
     download.run {
-        src 'https://github.com/GTNewHorizons/BON2/releases/download/2.5.0/BON2-2.5.0.CUSTOM-all.jar'
+        src "http://jenkins.usrv.eu:8081/nexus/content/repositories/releases/com/github/parker8283/BON2/$bon2Version-CUSTOM/BON2-$bon2Version-CUSTOM-all.jar"
         dest bon2File
         quiet true
         overwrite false
@@ -727,12 +845,46 @@ def deobf(String sourceURL, String fileName) {
     }
 
     exec {
-        commandLine 'java', '-jar', bon2File, '--inputJar', obfFile, '--outputJar', deobfFile, '--mcVer', '1.7.10', '--mappingsVer', 'stable_12', '--notch'
+        commandLine 'java', '-jar', bon2File, '--inputJar', obfFile, '--outputJar', deobfFile, '--mcVer', minecraftVersion, '--mappingsVer', mappingsVer, '--notch'
         workingDir bon2Dir
-        standardOutput = new ByteArrayOutputStream()
+        standardOutput = new FileOutputStream("${deobfFile}.log")
     }
 
     return files(deobfFile)
+}
+
+def zipMappings(String zipPath, String url, String bon2Dir) {
+    File zipFile = new File(zipPath)
+    if(zipFile.exists()) {
+        return
+    }
+
+    String fieldsCache = "$bon2Dir/data/fields.csv"
+    String methodsCache = "$bon2Dir/data/methods.csv"
+
+    download.run {
+        src "${url}fields.csv"
+        dest fieldsCache
+        quiet true
+    }
+    download.run {
+        src "${url}methods.csv"
+        dest methodsCache
+        quiet true
+    }
+
+    zipFile.getParentFile().mkdirs()
+    ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile))
+
+    zos.putNextEntry(new ZipEntry("fields.csv"))
+    Files.copy(Paths.get(fieldsCache), zos)
+    zos.closeEntry()
+
+    zos.putNextEntry(new ZipEntry("methods.csv"))
+    Files.copy(Paths.get(methodsCache), zos)
+    zos.closeEntry()
+
+    zos.close()
 }
 
 // Helper methods

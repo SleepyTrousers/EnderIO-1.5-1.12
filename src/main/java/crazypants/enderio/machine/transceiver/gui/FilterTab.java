@@ -36,9 +36,9 @@ public class FilterTab implements ITabPanel {
   FilterTab(GuiTransceiver parent) {
     this.parent = parent;
     container = parent.getContainer();
-    sendGui = new BasicItemFilterGui(parent, new FilterContainer(parent.getTransciever(), true), false, container.getFilterOffset().x,
+    sendGui = new BasicItemFilterGui(parent, new FilterContainer(parent.getTransciever(), true), false, true, container.getFilterOffset().x,
         container.getFilterOffset().y, 0);
-    recGui = new BasicItemFilterGui(parent, new FilterContainer(parent.getTransciever(), false), false, container.getFilterOffset().x,
+    recGui = new BasicItemFilterGui(parent, new FilterContainer(parent.getTransciever(), false), false, false, container.getFilterOffset().x,
         container.getFilterOffset().y, 20);
 
     sendRecB = MultiIconButton.createRightArrowButton(parent, 8888, container.getFilterOffset().x + 79, container.getFilterOffset().y - 20);

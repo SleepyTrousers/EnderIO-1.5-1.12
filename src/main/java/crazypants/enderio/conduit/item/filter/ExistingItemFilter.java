@@ -108,7 +108,7 @@ public class ExistingItemFilter implements IItemFilter {
   public int getSlotCount() {
     return 0;
   }
-  
+
   public void setSnapshot(NetworkedInventory ni) {
     snapshot = new ArrayList<ItemStack>();
     mergeSnapshot(ni);
@@ -201,7 +201,7 @@ public class ExistingItemFilter implements IItemFilter {
   @Override
   public void readFromNBT(NBTTagCompound nbtRoot) {
     readSettingsFromNBT(nbtRoot);
-    
+
     if(nbtRoot.hasKey("snapshot")) {
       snapshot = new ArrayList<ItemStack>();
       NBTTagList itemList = (NBTTagList)nbtRoot.getTag("snapshot");
@@ -212,7 +212,7 @@ public class ExistingItemFilter implements IItemFilter {
           snapshot.add(itemStack);
         }
       }
-      
+
     } else {
       snapshot = null;
     }
@@ -229,9 +229,9 @@ public class ExistingItemFilter implements IItemFilter {
   @Override
   public void writeToNBT(NBTTagCompound nbtRoot) {
     writeSettingToNBT(nbtRoot);
-    
+
     if(snapshot != null) {
-      
+
       NBTTagList itemList = new NBTTagList();
       for (ItemStack item : snapshot) {
         if(item != null) {
@@ -241,7 +241,7 @@ public class ExistingItemFilter implements IItemFilter {
         }
       }
       nbtRoot.setTag("snapshot", itemList);
-      
+
     }
   }
 
@@ -289,4 +289,8 @@ public class ExistingItemFilter implements IItemFilter {
 
   }
 
+  @Override
+  public String getUnlocalizedName() {
+    return "gui.existing_item_filter";
+  }
 }

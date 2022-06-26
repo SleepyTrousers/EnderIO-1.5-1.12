@@ -36,6 +36,11 @@ public class PowerItemFilter implements IItemFilter {
       CmpMode[] values = values();
       return values[(ordinal() + 1) % values.length];
     }
+
+    public CmpMode prev() {
+      CmpMode[] values = values();
+      return values[(ordinal() - 1 + values.length) % values.length];
+    }
   }
 
   public static final int MAX_LEVEL = 4;
@@ -149,5 +154,10 @@ public class PowerItemFilter implements IItemFilter {
   public void readFromByteBuf(ByteBuf buf) {
     NBTTagCompound settingsTag = NetworkUtil.readNBTTagCompound(buf);
     readSettingsFromNBT(settingsTag);
+  }
+
+  @Override
+  public String getUnlocalizedName() {
+    return "gui.power_item_filter";
   }
 }

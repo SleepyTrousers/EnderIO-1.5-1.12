@@ -142,7 +142,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     if (MicroblocksUtil.supportMicroblocks() && IM__addHitEffects(world, target, effectRenderer)) {
       return true;
     }
-    
+
     IIcon tex = null;
 
     TileConduitBundle cb = (TileConduitBundle) world.getTileEntity(target.blockX, target.blockY, target.blockZ);
@@ -263,7 +263,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
     return getPickBlock(target, world, x, y, z, null);
   }
-  
+
   @Override
   public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
     ItemStack ret = null;
@@ -532,7 +532,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
         drop.addAll(con.getDrops());
       }
     }
-    
+
     BlockCoord bc = te.getLocation();
     ConduitUtil.playBreakSound(Block.soundTypeMetal, te.getWorld(), bc.x, bc.y, bc.z);
 
@@ -699,7 +699,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     if (MicroblocksUtil.supportMicroblocks() && hasMicroblocks(bundle)) {
       return false;
     }
-    
+
     // Add facade
     if(player.isSneaking()) {
       return false;
@@ -724,7 +724,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
         Util.dropItems(world, fac, x, y, z, false);
       }
     }
-    
+
     bundle.setFacadeId(facadeID);
     bundle.setFacadeMetadata(facadeMeta);
     bundle.setFacadeType(FacadeType.values()[facadeType]);
@@ -817,7 +817,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
   @Override
   public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb, @SuppressWarnings("rawtypes") List arraylist,
       Entity par7Entity) {
-    
+
     if (MicroblocksUtil.supportMicroblocks()) {
       IM__addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, par7Entity);
     }
@@ -1097,7 +1097,7 @@ public class BlockConduitBundle extends BlockEio implements IGuiHandler, IFacade
     IConduitBundle bundle = (IConduitBundle) te;
     return bundle.getConduit(IRedstoneConduit.class);
   }
-  
+
   public ItemStack getMicroblockPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
     return IMultipartSystem.instance.hook_getPickBlock(target, world, x, y, z, player);
   }

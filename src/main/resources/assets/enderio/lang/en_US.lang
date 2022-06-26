@@ -1171,6 +1171,83 @@ enderio.gui.spawnGurad.showRange=Show Range
 enderio.gui.spawnGurad.hideRange=Hide Range
 enderio.gui.spawnGurad.range=Range:
 
+# Filters
+enderio.gui.item_filter.damage.disabled=Ignore Damage
+enderio.gui.item_filter.damage.damage_00_25=Up to 25% Damaged
+enderio.gui.item_filter.damage.damage_25_00=More than 25% Damaged
+enderio.gui.item_filter.damage.damage_00_50=Up to 50% Damaged
+enderio.gui.item_filter.damage.damage_50_00=More than 50% Damaged
+enderio.gui.item_filter.damage.damage_00_75=Up to 75% Damaged
+enderio.gui.item_filter.damage.damage_75_00=More than 75% Damaged
+enderio.gui.item_filter.damage.damage_00_00=Not Damaged
+enderio.gui.item_filter.damage.damage_01_00=Damaged
+enderio.gui.item_filter.damage.damage_yes=Can be Damaged
+enderio.gui.item_filter.damage.damage_not=Cannot be Damaged
+
+enderio.gui.edit_item_filter=Edit Filter Settings
+enderio.gui.item_filter.close=Close Filter
+enderio.gui.item_filter.close2=Go back to previous inventory
+
+enderio.gui.item_filter.whitelist=Whitelist
+enderio.gui.item_filter.blacklist=Blacklist
+enderio.gui.item_filter.match_meta=Match Metadata
+enderio.gui.item_filter.ignore_meta=Ignore Metadata
+enderio.gui.item_filter.sticky_enabled=Sticky Mode Enabled
+enderio.gui.item_filter.sticky_enabled2=Selected items will only be sent to this or other sticky outputs
+enderio.gui.item_filter.sticky_disabled=Sticky Mode Disabled
+enderio.gui.item_filter.ore_dic_enabled=Ore Dictionary Enabled
+enderio.gui.item_filter.ore_dic_disabled=Ore Dictionary Disabled
+enderio.gui.item_filter.match_nbt=Match NBT
+enderio.gui.item_filter.ignore_nbt=Ignore NBT
+
+enderio.gui.existing.item_filter.snapshot=Snapshot
+enderio.gui.existing.item_filter.merge=Merge
+enderio.gui.existing.item_filter.clear=Clear
+enderio.gui.existing.item_filter.show=Show
+enderio.gui.existing.item_filter.snapshot2=Optional: If no snapshot is set, the inventory content will be used as filter
+enderio.gui.existing.item_filter.merge2=Merge the current snapshot with a new one
+enderio.gui.existing.item_filter.clear2=Clear the snapshot
+enderio.gui.existing.item_filter.show2=Show the current snapshot
+enderio.item.item_existing_item_filter.filter_not_updated=Filter not updated
+enderio.item.item_existing_item_filter.filter_updated=Filter updated
+
+enderio.gui.basic_item_filter=Basic Item Filter
+enderio.gui.advanced_item_filter=Advanced Item Filter
+enderio.gui.limited_item_filter=Limited Item Filter
+enderio.gui.big_item_filter=Big Item Filter
+# Note big_advanced_item_filter doesn't have enough space for the full name
+enderio.gui.big_advanced_item_filter=Filter
+enderio.gui.existing_item_filter=Existing Item Filter
+enderio.gui.mod_item_filter=Mod Item Filter
+enderio.gui.power_item_filter=Power Item Filter
+enderio.gui.species_item_filter=Species Item Filter
+enderio.gui.soul_filter_normal=Soul Item Filter
+enderio.gui.soul_filter_big=Big Soul Item Filter
+enderio.gui.enchantment_filter_normal=Enchantment Item Filter
+enderio.gui.enchantment_filter_big=Big Enchantment Item Filter
+
+enderio.gui.fluid_filter=Basic Fluid Filter
+
+enderio.gui.redstone_filter.and=Redstone AND Filter
+enderio.gui.redstone_filter.or=Redstone OR Filter
+enderio.gui.redstone_filter.nor=Redstone NOR Filter
+enderio.gui.redstone_filter.nand=Redstone NAND Filter
+enderio.gui.redstone_filter.xor=Redstone XOR Filter
+enderio.gui.redstone_filter.xnor=Redstone XNOR Filter
+enderio.gui.redstone_filter.counting=Redstone Counting Filter
+enderio.gui.redstone_filter.timer=Redstone Timer Filter
+
+enderio.gui.mod.item_filter.delete=Delete
+enderio.gui.mod.item_filter.slot=Input Slot
+
+enderio.gui.power.item_filter.compare=Comparison Mode
+enderio.gui.power.item_filter.percent=Power Percentage
+
+enderio.gui.redstone_filter.signal_color=Redstone Signal Color
+enderio.gui.redstone_filter.input_signal=Input Signal
+enderio.gui.redstone_filter.count=Count
+enderio.gui.redstone_filter.time=Time
+
 #conduits
 enderio.gui.conduit.ioMode=Mode
 enderio.gui.conduit.ioMode.inOut=In / Out
