@@ -81,6 +81,31 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
     if(tank == null || !tank.isValid()) {
       return false;
     }
+
+    if(tank.externalTank.getTankInfo(conDir.getOpposite()) != null) {
+      for (FluidTankInfo tankInfo : tank.externalTank.getTankInfo(conDir.getOpposite())) {
+        if(tankInfo == null || tankInfo.fluid == null) {
+          continue;
+        }
+        FluidStack tryDrain = tankInfo.fluid.copy();
+        tryDrain.amount = type.getMaxExtractPerTick();
+        FluidStack drained = tank.externalTank.drain(conDir.getOpposite(), tryDrain, false);
+        if(drained == null || drained.amount <= 0 || !matchedFilter(drained, con, conDir, true) || !tryDrain.isFluidEqual(drained)) {
+          continue;
+        }
+        int amountAccepted = fillFrom(tank, drained.copy(), true);
+        if(amountAccepted <= 0) {
+          continue;
+        }
+        tryDrain.amount = amountAccepted;
+        drained = tank.externalTank.drain(conDir.getOpposite(), tryDrain, true);
+        if(drained == null || drained.amount <= 0) {
+          continue;
+        }
+        return true;
+      }
+    }
+
     FluidStack drained = tank.externalTank.drain(conDir.getOpposite(), type.getMaxExtractPerTick(), false);
     if(drained == null || drained.amount <= 0 || !matchedFilter(drained, con, conDir, true)) {
       return false;
@@ -90,14 +115,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
       return false;
     }
     drained = tank.externalTank.drain(conDir.getOpposite(), amountAccepted, true);
-    if(drained == null || drained.amount <= 0) {
-      return false;
-    }
-    //    if(drained.amount != amountAccepted) {
-    //      Log.warn("AbstractEnderLiquidConduit.extractFrom: Extracted fluid volume is not equal to inserted volume. Drained=" + drained.amount + " filled="
-    //          + amountAccepted + " Fluid: " + drained + " Accepted=" + amountAccepted);
-    //    }
-    return true;
+    return drained != null && drained.amount > 0;
   }
 
   private NetworkTank getTank(AbstractEnderLiquidConduit con, ForgeDirection conDir) {
