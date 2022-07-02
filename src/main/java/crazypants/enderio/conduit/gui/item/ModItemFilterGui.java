@@ -48,7 +48,7 @@ public class ModItemFilterGui implements IItemFilterGui {
     this.itemConduit = itemConduit;
     this.isInput = isInput;
 
-    int butLeft = isInput ? 5 : 106;
+    int butLeft = isInput ? 106 : 5;
     int x = butLeft;
     int y = 96;
 

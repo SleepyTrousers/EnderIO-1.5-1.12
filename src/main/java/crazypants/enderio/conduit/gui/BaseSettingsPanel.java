@@ -117,14 +117,14 @@ public class BaseSettingsPanel implements ITabPanel {
     filterExtractUpgradeTooltip = new GuiToolTip(new Rectangle(rightColumn, 70, 18, 18),  EnderIO.lang.localize("gui.conduit.item.filterupgrade")) {
       @Override
       public boolean shouldDraw() {
-        return !gui.getContainer().hasFilterUpgrades(false) && super.shouldDraw();
+        return !gui.getContainer().hasFilterUpgrades(true) && super.shouldDraw();
       }
     };
 
     filterInsertUpgradeTooltip = new GuiToolTip(new Rectangle(leftColumn, 70, 18, 18), EnderIO.lang.localize("gui.conduit.item.filterupgrade")) {
       @Override
       public boolean shouldDraw() {
-        return !gui.getContainer().hasFilterUpgrades(true) && super.shouldDraw();
+        return !gui.getContainer().hasFilterUpgrades(false) && super.shouldDraw();
       }
     };
 

@@ -45,7 +45,7 @@ public class BigItemFilterGui implements IItemFilterGui {
   private int yOffset;
 
   public BigItemFilterGui(GuiContainerBaseEIO gui, IItemFilterContainer filterContainer, boolean isStickyModeAvailable, boolean isInput) {
-    this(gui, filterContainer, isStickyModeAvailable, isInput, isInput ? 6 : 104, 96, isInput ? 0 : 256);
+    this(gui, filterContainer, isStickyModeAvailable, isInput, isInput ? 104 : 6, 96, isInput ? 0 : 256);
   }
 
   public BigItemFilterGui(GuiContainerBaseEIO gui, IItemFilterContainer filterContainer, boolean isStickyModeAvailable, boolean isInput,
@@ -96,10 +96,8 @@ public class BigItemFilterGui implements IItemFilterGui {
     stickyB.setPaintSelectedBorder(false);
 
     this.yOffset += 8;
-    if (isInput) {
+    if (!isInput) {
       this.xOffset -= 50;
-    } else {
-      //
     }
   }
 

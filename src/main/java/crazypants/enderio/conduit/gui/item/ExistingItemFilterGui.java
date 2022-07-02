@@ -72,7 +72,7 @@ public class ExistingItemFilterGui implements IItemFilterGui {
       filter = (ExistingItemFilter) itemConduit.getOutputFilter(gui.getDir());
     }
 
-    int butLeft = isInput ? 6 : 104;
+    int butLeft = isInput ? 104 : 6;
     int x = butLeft;
     int y = 96;
 
@@ -147,7 +147,7 @@ public class ExistingItemFilterGui implements IItemFilterGui {
       whiteListB.setToolTip(EnderIO.lang.localize("gui.conduit.item.whitelist"));
     }
 
-    int butLeft = gui.getGuiLeft() + (isInput ? 5 : 104);
+    int butLeft = gui.getGuiLeft() + (isInput ? 104 : 5);
     int x = butLeft;
     int y = gui.getGuiTop() + 96 + 20;
 

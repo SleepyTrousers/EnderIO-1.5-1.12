@@ -43,7 +43,7 @@ public class BasicItemFilterGui implements IItemFilterGui {
   private boolean isInput;
 
   public BasicItemFilterGui(GuiContainerBaseEIO gui, IItemFilterContainer filterContainer, boolean isStickyModeAvailable, boolean isInput) {
-    this(gui, filterContainer, isStickyModeAvailable, isInput, isInput ? 6 : 104, 96, isInput ? 0 : 256);
+    this(gui, filterContainer, isStickyModeAvailable, isInput, isInput ? 104 : 6, 96, isInput ? 0 : 256);
   }
 
   public BasicItemFilterGui(GuiContainerBaseEIO gui, IItemFilterContainer filterContainer, boolean isStickyModeAvailable,

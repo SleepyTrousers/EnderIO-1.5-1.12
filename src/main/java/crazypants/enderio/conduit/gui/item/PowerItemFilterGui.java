@@ -43,7 +43,7 @@ public class PowerItemFilterGui implements IItemFilterGui {
       filter = (PowerItemFilter) itemConduit.getOutputFilter(gui.getDir());
     }
 
-    int butLeft = isInput ? 5 : 106;
+    int butLeft = isInput ? 106 : 5;
     int x = butLeft;
     int y = 96 + 24;
 
@@ -82,7 +82,7 @@ public class PowerItemFilterGui implements IItemFilterGui {
       stickyB.setSelected(filter.isSticky());
     }
 
-    int x0 = gui.getGuiLeft() + (isInput ? 5 : 106);
+    int x0 = gui.getGuiLeft() + (isInput ? 106 : 5);
     int y0 = gui.getGuiTop() + 96;
     int x1 = x0 + 45;
 

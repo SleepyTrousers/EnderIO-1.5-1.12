@@ -213,15 +213,11 @@ public class LiquidSettings extends BaseSettingsPanel {
   }
 
   @Override
-  public void mouseClicked(int x, int y, int par3) {
-
+  public void mouseClicked(int x, int y, int button) {
     if(!isFilterVisible()) {
       return;
     }
     ItemStack st = Minecraft.getMinecraft().thePlayer.inventory.getItemStack();
-    if (st == null && par3 == 0) {
-      return;
-    }
     setFilterFromItem(x, y, st);
   }
 

@@ -139,19 +139,37 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
     return false;
   }
 
-  @Override
-  protected void mouseClicked(int x, int y, int par3) {
-    // handle out-of-bounds ghost slots
+  /**
+   * Returns true when slots outside of standard gui bounds are clicked to prevent
+   * setting ghost filters dropping items on the ground.
+   */
+  private boolean handleOobClick(int x, int y, int button) {
     boolean outOfBounds = x < guiLeft || y < guiTop || x >= guiLeft + xSize || y >= guiTop + ySize;
     boolean hasItem = playerInv.getItemStack() != null;
     if (outOfBounds && hasItem && !getGhostSlots().isEmpty()) {
       GhostSlot slot = getGhostSlot(x, y);
       if (slot != null) {
-        ghostSlotClicked(slot, x, y, par3);
-        return;
+        ghostSlotClicked(slot, x, y, button);
+        return true;
       }
     }
-    super.mouseClicked(x, y, par3);
+    return false;
+  }
+
+  @Override
+  protected void mouseMovedOrUp(int x, int y, int button) {
+    if (handleOobClick(x, y, button)) {
+      return;
+    }
+    super.mouseMovedOrUp(x, y, button);
+  }
+
+  @Override
+  protected void mouseClicked(int x, int y, int button) {
+    // handle out-of-bounds ghost slots
+    if (handleOobClick(x, y, button)) {
+      return;
+    }
 
     int tabLeftX = xSize;
     int tabRightX = tabLeftX + 22;
@@ -171,8 +189,8 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
         return;
       }
     }
-    tabs.get(activeTab).mouseClicked(x, y, par3);
-
+    tabs.get(activeTab).mouseClicked(x, y, button);
+    super.mouseClicked(x + guiLeft, y + guiTop, button);
   }
 
   public void setSize(int x, int y) {

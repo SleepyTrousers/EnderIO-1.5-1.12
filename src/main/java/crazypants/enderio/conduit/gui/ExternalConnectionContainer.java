@@ -58,13 +58,13 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
     int y;
 
     if (itemConduit != null) {
-      x = 113;
+      x = 23;
       y = 71;
       slotOutputFilterUpgrades = addSlotToContainer(new FilterSlot(getInv(), 3, x, y));
       slotLocations.add(new Point(x, y));
       bgSlots.add(new GhostBackgroundItemSlot(EnderIO.itemBasicFilterUpgrade, slotOutputFilterUpgrades));
 
-      x = 23;
+      x = 113;
       y = 71;
       slotInputFilterUpgrades = addSlotToContainer(new FilterSlot(getInv(), 2, x, y));
       slotLocations.add(new Point(x, y));
