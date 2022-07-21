@@ -2,12 +2,11 @@ package crazypants.enderio.power;
 
 public interface ICapacitor {
 
-  int getMaxEnergyReceived();
+    int getMaxEnergyReceived();
 
-  int getMaxEnergyStored();
+    int getMaxEnergyStored();
 
-  int getMaxEnergyExtracted();
+    int getMaxEnergyExtracted();
 
-  int getTier();
-
+    int getTier();
 }

@@ -5,12 +5,11 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 class TankNeighbour {
 
-  final IFluidHandler container;
-  final ForgeDirection fillFromDir;
+    final IFluidHandler container;
+    final ForgeDirection fillFromDir;
 
-  TankNeighbour(IFluidHandler container, ForgeDirection fillFromDir) {
-    this.container = container;
-    this.fillFromDir = fillFromDir;
-  }
-
+    TankNeighbour(IFluidHandler container, ForgeDirection fillFromDir) {
+        this.container = container;
+        this.fillFromDir = fillFromDir;
+    }
 }

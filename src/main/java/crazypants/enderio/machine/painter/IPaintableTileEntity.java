@@ -4,12 +4,11 @@ import net.minecraft.block.Block;
 
 public interface IPaintableTileEntity {
 
-  void setSourceBlockMetadata(int sourceBlockMetadata);
+    void setSourceBlockMetadata(int sourceBlockMetadata);
 
-  int getSourceBlockMetadata();
+    int getSourceBlockMetadata();
 
-  void setSourceBlock(Block sourceBlock);
+    void setSourceBlock(Block sourceBlock);
 
-  Block getSourceBlock();
-
+    Block getSourceBlock();
 }

@@ -1,85 +1,82 @@
 package crazypants.enderio.conduit.item;
 
+import cofh.api.transport.IItemDuct;
+import com.enderio.core.common.util.DyeColor;
+import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.IExtractor;
+import crazypants.enderio.conduit.item.filter.IItemFilter;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
-import cofh.api.transport.IItemDuct;
-
-import com.enderio.core.common.util.DyeColor;
-
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.IExtractor;
-import crazypants.enderio.conduit.item.filter.IItemFilter;
 
 public interface IItemConduit extends IConduit, IItemDuct, IExtractor {
 
-  IIcon getTextureForInputMode();
+    IIcon getTextureForInputMode();
 
-  IIcon getTextureForOutputMode();
+    IIcon getTextureForOutputMode();
 
-  IIcon getTextureForInOutMode(boolean inputComponent);
+    IIcon getTextureForInOutMode(boolean inputComponent);
 
-  IIcon getTextureForInOutBackground();
+    IIcon getTextureForInOutBackground();
 
-  IIcon getEnderIcon();
+    IIcon getEnderIcon();
 
-  IInventory getExternalInventory(ForgeDirection direction);
+    IInventory getExternalInventory(ForgeDirection direction);
 
-  int getMaximumExtracted(ForgeDirection direction);
+    int getMaximumExtracted(ForgeDirection direction);
 
-  float getTickTimePerItem(ForgeDirection direction);
+    float getTickTimePerItem(ForgeDirection direction);
 
-  void itemsExtracted(int numInserted, int slot);
-  
-  void setInputFilterUpgrade(ForgeDirection dir, ItemStack stack);
+    void itemsExtracted(int numInserted, int slot);
 
-  void setOutputFilterUpgrade(ForgeDirection dir, ItemStack stack);
+    void setInputFilterUpgrade(ForgeDirection dir, ItemStack stack);
 
-  ItemStack getInputFilterUpgrade(ForgeDirection dir);
+    void setOutputFilterUpgrade(ForgeDirection dir, ItemStack stack);
 
-  ItemStack getOutputFilterUpgrade(ForgeDirection dir);  
+    ItemStack getInputFilterUpgrade(ForgeDirection dir);
 
-  void setInputFilter(ForgeDirection dir, IItemFilter filter);
+    ItemStack getOutputFilterUpgrade(ForgeDirection dir);
 
-  void setOutputFilter(ForgeDirection dir, IItemFilter filter);
+    void setInputFilter(ForgeDirection dir, IItemFilter filter);
 
-  IItemFilter getInputFilter(ForgeDirection dir);
+    void setOutputFilter(ForgeDirection dir, IItemFilter filter);
 
-  IItemFilter getOutputFilter(ForgeDirection dir);
-  
-  void setSpeedUpgrade(ForgeDirection dir, ItemStack upgrade);
-  
-  ItemStack getSpeedUpgrade(ForgeDirection dir);
+    IItemFilter getInputFilter(ForgeDirection dir);
 
-  void setFunctionUpgrade(ForgeDirection dir, ItemStack upgrade);
+    IItemFilter getOutputFilter(ForgeDirection dir);
 
-  ItemStack getFunctionUpgrade(ForgeDirection dir);
+    void setSpeedUpgrade(ForgeDirection dir, ItemStack upgrade);
 
-  boolean hasInventoryPanelUpgrade(ForgeDirection dir);
+    ItemStack getSpeedUpgrade(ForgeDirection dir);
 
-  int getOutputPriority(ForgeDirection dir);
-  
-  void setOutputPriority(ForgeDirection dir, int priority);
+    void setFunctionUpgrade(ForgeDirection dir, ItemStack upgrade);
 
-  int getMetaData();
+    ItemStack getFunctionUpgrade(ForgeDirection dir);
 
-  boolean isExtractionRedstoneConditionMet(ForgeDirection dir);
+    boolean hasInventoryPanelUpgrade(ForgeDirection dir);
 
-  boolean isSelfFeedEnabled(ForgeDirection dir);
+    int getOutputPriority(ForgeDirection dir);
 
-  void setSelfFeedEnabled(ForgeDirection dir, boolean enabled);
-  
-  boolean isRoundRobinEnabled(ForgeDirection dir);
-  
-  void setRoundRobinEnabled(ForgeDirection dir, boolean enabled);
+    void setOutputPriority(ForgeDirection dir, int priority);
 
-  DyeColor getInputColor(ForgeDirection dir);
+    int getMetaData();
 
-  DyeColor getOutputColor(ForgeDirection dir);
+    boolean isExtractionRedstoneConditionMet(ForgeDirection dir);
 
-  void setInputColor(ForgeDirection dir, DyeColor col);
+    boolean isSelfFeedEnabled(ForgeDirection dir);
 
-  void setOutputColor(ForgeDirection dir, DyeColor col);
+    void setSelfFeedEnabled(ForgeDirection dir, boolean enabled);
 
+    boolean isRoundRobinEnabled(ForgeDirection dir);
+
+    void setRoundRobinEnabled(ForgeDirection dir, boolean enabled);
+
+    DyeColor getInputColor(ForgeDirection dir);
+
+    DyeColor getOutputColor(ForgeDirection dir);
+
+    void setInputColor(ForgeDirection dir, DyeColor col);
+
+    void setOutputColor(ForgeDirection dir, DyeColor col);
 }

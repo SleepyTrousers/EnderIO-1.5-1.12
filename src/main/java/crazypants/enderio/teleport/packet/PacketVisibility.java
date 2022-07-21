@@ -42,7 +42,7 @@ public class PacketVisibility implements IMessage, IMessageHandler<PacketVisibil
     public IMessage onMessage(PacketVisibility message, MessageContext ctx) {
         EntityPlayer player = ctx.getServerHandler().playerEntity;
         TileEntity te = player.worldObj.getTileEntity(message.x, message.y, message.z);
-        if(te instanceof ITravelAccessable) {
+        if (te instanceof ITravelAccessable) {
             ((ITravelAccessable) te).setVisible(message.visible);
             player.worldObj.markBlockForUpdate(message.x, message.y, message.z);
             player.worldObj.markTileEntityChunkModified(message.x, message.y, message.z, te);

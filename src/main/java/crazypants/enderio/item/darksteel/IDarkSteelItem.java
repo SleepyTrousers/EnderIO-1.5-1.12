@@ -2,14 +2,9 @@ package crazypants.enderio.item.darksteel;
 
 public interface IDarkSteelItem {
 
-  int getIngotsRequiredForFullRepair();
+    int getIngotsRequiredForFullRepair();
 
-  public interface IEndSteelItem extends IDarkSteelItem {
+    public interface IEndSteelItem extends IDarkSteelItem {}
 
-  }
-
-  public interface IStellarItem extends IEndSteelItem {
-
-  }
-
+    public interface IStellarItem extends IEndSteelItem {}
 }

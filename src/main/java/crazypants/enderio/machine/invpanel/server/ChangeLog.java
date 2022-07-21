@@ -2,10 +2,9 @@ package crazypants.enderio.machine.invpanel.server;
 
 public interface ChangeLog {
 
-  void entryChanged(ItemEntry entry);
+    void entryChanged(ItemEntry entry);
 
-  void databaseReset();
+    void databaseReset();
 
-  void sendChangeLog();
-
+    void sendChangeLog();
 }

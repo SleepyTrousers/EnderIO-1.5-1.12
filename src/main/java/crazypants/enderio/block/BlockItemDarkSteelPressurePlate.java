@@ -5,13 +5,12 @@ import net.minecraft.item.ItemBlockWithMetadata;
 
 public class BlockItemDarkSteelPressurePlate extends ItemBlockWithMetadata {
 
-  public BlockItemDarkSteelPressurePlate(Block block) {
-    super(block, block);
-  }
+    public BlockItemDarkSteelPressurePlate(Block block) {
+        super(block, block);
+    }
 
-  @Override
-  public int getMetadata(int p_77647_1_) {
-    return 0;
-  }
-
+    @Override
+    public int getMetadata(int p_77647_1_) {
+        return 0;
+    }
 }

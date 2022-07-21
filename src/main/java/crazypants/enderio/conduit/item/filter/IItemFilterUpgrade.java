@@ -4,6 +4,5 @@ import net.minecraft.item.ItemStack;
 
 public interface IItemFilterUpgrade {
 
-  IItemFilter createFilterFromStack(ItemStack stack);
-
+    IItemFilter createFilterFromStack(ItemStack stack);
 }

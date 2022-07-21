@@ -1,9 +1,11 @@
 package crazypants.enderio.conduit;
 
+import com.enderio.core.common.util.BlockCoord;
+import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
+import crazypants.enderio.conduit.geom.CollidableComponent;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -13,134 +15,128 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.enderio.core.common.util.BlockCoord;
-
-import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-
 public interface IConduit {
 
-  // Base functionality
-  Class<? extends IConduit> getBaseConduitType();
+    // Base functionality
+    Class<? extends IConduit> getBaseConduitType();
 
-  ItemStack createItem();
-  
-  List<ItemStack> getDrops();
+    ItemStack createItem();
 
-  int getLightValue();
+    List<ItemStack> getDrops();
 
-  boolean isActive();
+    int getLightValue();
 
-  void setActive(boolean active);
+    boolean isActive();
 
-  void writeToNBT(NBTTagCompound conduitBody);
+    void setActive(boolean active);
 
-  void readFromNBT(NBTTagCompound conduitBody, short nbtVersion);
+    void writeToNBT(NBTTagCompound conduitBody);
 
-  // Container
+    void readFromNBT(NBTTagCompound conduitBody, short nbtVersion);
 
-  void setBundle(IConduitBundle tileConduitBundle);
+    // Container
 
-  IConduitBundle getBundle();
+    void setBundle(IConduitBundle tileConduitBundle);
 
-  void onAddedToBundle();
+    IConduitBundle getBundle();
 
-  void onRemovedFromBundle();
+    void onAddedToBundle();
 
-  BlockCoord getLocation();
+    void onRemovedFromBundle();
 
-  // Conections
-  boolean hasConnections();
+    BlockCoord getLocation();
 
-  boolean hasExternalConnections();
+    // Conections
+    boolean hasConnections();
 
-  boolean hasConduitConnections();
+    boolean hasExternalConnections();
 
-  // Conduit Connections
+    boolean hasConduitConnections();
 
-  boolean canConnectToConduit(ForgeDirection direction, IConduit conduit);
+    // Conduit Connections
 
-  Set<ForgeDirection> getConduitConnections();
+    boolean canConnectToConduit(ForgeDirection direction, IConduit conduit);
 
-  boolean containsConduitConnection(ForgeDirection dir);
+    Set<ForgeDirection> getConduitConnections();
 
-  void conduitConnectionAdded(ForgeDirection fromDirection);
+    boolean containsConduitConnection(ForgeDirection dir);
 
-  void conduitConnectionRemoved(ForgeDirection fromDirection);
+    void conduitConnectionAdded(ForgeDirection fromDirection);
 
-  void connectionsChanged();
+    void conduitConnectionRemoved(ForgeDirection fromDirection);
 
-  AbstractConduitNetwork<?, ?> getNetwork();
+    void connectionsChanged();
 
-  boolean setNetwork(AbstractConduitNetwork<?, ?> network);
+    AbstractConduitNetwork<?, ?> getNetwork();
 
-  // External Connections
+    boolean setNetwork(AbstractConduitNetwork<?, ?> network);
 
-  boolean canConnectToExternal(ForgeDirection direction, boolean ignoreConnectionMode);
+    // External Connections
 
-  Set<ForgeDirection> getExternalConnections();
+    boolean canConnectToExternal(ForgeDirection direction, boolean ignoreConnectionMode);
 
-  boolean containsExternalConnection(ForgeDirection dir);
+    Set<ForgeDirection> getExternalConnections();
 
-  void externalConnectionAdded(ForgeDirection fromDirection);
+    boolean containsExternalConnection(ForgeDirection dir);
 
-  void externalConnectionRemoved(ForgeDirection fromDirection);
+    void externalConnectionAdded(ForgeDirection fromDirection);
 
-  boolean isConnectedTo(ForgeDirection dir);
+    void externalConnectionRemoved(ForgeDirection fromDirection);
 
-  ConnectionMode getConnectionMode(ForgeDirection dir);
+    boolean isConnectedTo(ForgeDirection dir);
 
-  void setConnectionMode(ForgeDirection dir, ConnectionMode mode);
+    ConnectionMode getConnectionMode(ForgeDirection dir);
 
-  boolean hasConnectionMode(ConnectionMode mode);
+    void setConnectionMode(ForgeDirection dir, ConnectionMode mode);
 
-  ConnectionMode getNextConnectionMode(ForgeDirection dir);
+    boolean hasConnectionMode(ConnectionMode mode);
 
-  ConnectionMode getPreviousConnectionMode(ForgeDirection dir);
+    ConnectionMode getNextConnectionMode(ForgeDirection dir);
 
-  // rendering, only needed us default rendering is used
+    ConnectionMode getPreviousConnectionMode(ForgeDirection dir);
 
-  IIcon getTextureForState(CollidableComponent component);
+    // rendering, only needed us default rendering is used
 
-  IIcon getTransmitionTextureForState(CollidableComponent component);
+    IIcon getTextureForState(CollidableComponent component);
 
-  float getTransmitionGeometryScale();
+    IIcon getTransmitionTextureForState(CollidableComponent component);
 
-  float getSelfIlluminationForState(CollidableComponent component);
+    float getTransmitionGeometryScale();
 
-  // geometry
+    float getSelfIlluminationForState(CollidableComponent component);
 
-  boolean haveCollidablesChangedSinceLastCall();
+    // geometry
 
-  Collection<CollidableComponent> getCollidableComponents();
+    boolean haveCollidablesChangedSinceLastCall();
 
-  Collection<CollidableComponent> createCollidables(CacheKey key);
+    Collection<CollidableComponent> getCollidableComponents();
 
-  Class<? extends IConduit> getCollidableType();
+    Collection<CollidableComponent> createCollidables(CacheKey key);
 
-  // Actions
+    Class<? extends IConduit> getCollidableType();
 
-  boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all);
+    // Actions
 
-  void onChunkUnload(World worldObj);
+    boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all);
 
-  void updateEntity(World worldObj);
+    void onChunkUnload(World worldObj);
 
-  boolean onNeighborBlockChange(Block blockId);
-  
-  boolean onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ);
+    void updateEntity(World worldObj);
 
-  //For Copy/Paste of connection settings
-  boolean writeConnectionSettingsToNBT(ForgeDirection dir, NBTTagCompound nbt);
+    boolean onNeighborBlockChange(Block blockId);
 
-  boolean readConduitSettingsFromNBT(ForgeDirection dir, NBTTagCompound nbt);
-  
-  public AbstractConduitNetwork<?, ?> createNetworkForType();
+    boolean onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ);
 
-  /**
-   * Should the texture of the conduit connectors be mirrored around the conduit
-   * node?
-   */
-  boolean shouldMirrorTexture();
+    // For Copy/Paste of connection settings
+    boolean writeConnectionSettingsToNBT(ForgeDirection dir, NBTTagCompound nbt);
 
+    boolean readConduitSettingsFromNBT(ForgeDirection dir, NBTTagCompound nbt);
+
+    public AbstractConduitNetwork<?, ?> createNetworkForType();
+
+    /**
+     * Should the texture of the conduit connectors be mirrored around the conduit
+     * node?
+     */
+    boolean shouldMirrorTexture();
 }

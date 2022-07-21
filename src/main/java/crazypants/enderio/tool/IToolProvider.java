@@ -1,10 +1,9 @@
 package crazypants.enderio.tool;
 
-import net.minecraft.item.ItemStack;
 import crazypants.enderio.api.tool.ITool;
+import net.minecraft.item.ItemStack;
 
 public interface IToolProvider {
 
-  ITool getTool(ItemStack stack);
-
+    ITool getTool(ItemStack stack);
 }

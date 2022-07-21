@@ -1,32 +1,30 @@
 package crazypants.enderio.machine;
 
-import javax.annotation.Nullable;
-
-import net.minecraft.nbt.NBTTagCompound;
 import crazypants.enderio.machine.IMachineRecipe.ResultStack;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
+import javax.annotation.Nullable;
+import net.minecraft.nbt.NBTTagCompound;
 
 public interface IPoweredTask {
 
-  void update(float availableEnergy);
+    void update(float availableEnergy);
 
-  boolean isComplete();
+    boolean isComplete();
 
-  float getProgress();
+    float getProgress();
 
-  ResultStack[] getCompletedResult();
+    ResultStack[] getCompletedResult();
 
-  float getRequiredEnergy();
+    float getRequiredEnergy();
 
-  float getChance();
+    float getChance();
 
-  RecipeBonusType getBonusType();
+    RecipeBonusType getBonusType();
 
-  void writeToNBT(NBTTagCompound nbtRoot);
+    void writeToNBT(NBTTagCompound nbtRoot);
 
-  @Nullable
-  IMachineRecipe getRecipe();
+    @Nullable
+    IMachineRecipe getRecipe();
 
-  public abstract MachineRecipeInput[] getInputs();
-
+    public abstract MachineRecipeInput[] getInputs();
 }

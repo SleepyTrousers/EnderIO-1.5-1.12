@@ -1,73 +1,78 @@
 package crazypants.enderio.machine.obelisk.xp;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.entity.player.EntityPlayer;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class PacketXpTransferEffects implements IMessage, IMessageHandler<PacketXpTransferEffects, IMessage> {
 
-  boolean swing;
-  double x;
-  double y;
-  double z;
+    boolean swing;
+    double x;
+    double y;
+    double z;
 
-  public PacketXpTransferEffects(boolean swing, double x, double y, double z) {
-    this.swing = swing;
-    this.x = x;
-    this.y = y;
-    this.z = z;
-  }
-
-  public PacketXpTransferEffects() {
-  }
-
-  @Override
-  public void toBytes(ByteBuf buf) {
-    buf.writeBoolean(swing);
-    buf.writeDouble(x);
-    buf.writeDouble(y);
-    buf.writeDouble(z);
-  }
-
-  @Override
-  public void fromBytes(ByteBuf buf) {
-    swing = buf.readBoolean();
-    x = buf.readDouble();
-    y = buf.readDouble();
-    z = buf.readDouble();
-  }
-
-  @Override
-  public IMessage onMessage(PacketXpTransferEffects message, MessageContext ctx) {
-    EntityPlayer player = EnderIO.proxy.getClientPlayer();
-    if(player != null) {
-      int particleCount = 1;
-      if(message.swing) {
-        player.swingItem();
-        particleCount = 5;
-      }      
-
-      for (int i = 0; i < particleCount; i++) {
-        
-        float xOffset = 0.1F - player.worldObj.rand.nextFloat() * 0.2F;
-        float yOffset = 0.1F - player.worldObj.rand.nextFloat() * 0.2F;
-        float zOffset = 0.1F - player.worldObj.rand.nextFloat() * 0.2F;  
-        
-        EntityFX fx = Minecraft.getMinecraft().renderGlobal.doSpawnParticle("spell", 
-            message.x + xOffset, message.y + yOffset, message.z + zOffset, 0.0D, 0.0D, 0.0D);
-        if(fx != null) {
-          fx.setRBGColorF(0.2f, 0.8f, 0.2f);
-          fx.motionY *= 0.5f;
-        }
-      }
-
+    public PacketXpTransferEffects(boolean swing, double x, double y, double z) {
+        this.swing = swing;
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
-    return null;
-  }
 
+    public PacketXpTransferEffects() {}
+
+    @Override
+    public void toBytes(ByteBuf buf) {
+        buf.writeBoolean(swing);
+        buf.writeDouble(x);
+        buf.writeDouble(y);
+        buf.writeDouble(z);
+    }
+
+    @Override
+    public void fromBytes(ByteBuf buf) {
+        swing = buf.readBoolean();
+        x = buf.readDouble();
+        y = buf.readDouble();
+        z = buf.readDouble();
+    }
+
+    @Override
+    public IMessage onMessage(PacketXpTransferEffects message, MessageContext ctx) {
+        EntityPlayer player = EnderIO.proxy.getClientPlayer();
+        if (player != null) {
+            int particleCount = 1;
+            if (message.swing) {
+                player.swingItem();
+                particleCount = 5;
+            }
+
+            for (int i = 0; i < particleCount; i++) {
+
+                float xOffset = 0.1F - player.worldObj.rand.nextFloat() * 0.2F;
+                float yOffset = 0.1F - player.worldObj.rand.nextFloat() * 0.2F;
+                float zOffset = 0.1F - player.worldObj.rand.nextFloat() * 0.2F;
+
+                EntityFX fx = Minecraft.getMinecraft()
+                        .renderGlobal
+                        .doSpawnParticle(
+                                "spell",
+                                message.x + xOffset,
+                                message.y + yOffset,
+                                message.z + zOffset,
+                                0.0D,
+                                0.0D,
+                                0.0D);
+                if (fx != null) {
+                    fx.setRBGColorF(0.2f, 0.8f, 0.2f);
+                    fx.motionY *= 0.5f;
+                }
+            }
+        }
+        return null;
+    }
 }

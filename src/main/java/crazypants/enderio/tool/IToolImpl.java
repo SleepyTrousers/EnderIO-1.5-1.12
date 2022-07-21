@@ -1,13 +1,11 @@
 package crazypants.enderio.tool;
 
-import java.lang.reflect.Method;
-
 import crazypants.enderio.api.tool.ITool;
+import java.lang.reflect.Method;
 
 public interface IToolImpl {
 
-  Class<?> getInterface();
+    Class<?> getInterface();
 
-  Object handleMethod(ITool yetaWrench, Method method, Object[] args);
-
+    Object handleMethod(ITool yetaWrench, Method method, Object[] args);
 }

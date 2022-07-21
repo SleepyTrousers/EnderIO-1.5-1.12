@@ -4,8 +4,7 @@ import net.minecraftforge.fluids.Fluid;
 
 public interface IFluidCoolant {
 
-  Fluid getFluid();
+    Fluid getFluid();
 
-  float getDegreesCoolingPerMB(float heat);
-  
+    float getDegreesCoolingPerMB(float heat);
 }

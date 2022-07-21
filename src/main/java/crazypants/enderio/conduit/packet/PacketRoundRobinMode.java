@@ -8,12 +8,12 @@ import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class PacketRoundRobinMode extends AbstractConduitPacket<ILiquidConduit> implements IMessageHandler<PacketRoundRobinMode, IMessage> {
+public class PacketRoundRobinMode extends AbstractConduitPacket<ILiquidConduit>
+        implements IMessageHandler<PacketRoundRobinMode, IMessage> {
     private ForgeDirection dir;
     private boolean roundRobin;
 
-    public PacketRoundRobinMode() {
-    }
+    public PacketRoundRobinMode() {}
 
     public PacketRoundRobinMode(AbstractEnderLiquidConduit eConduit, ForgeDirection dir) {
         super(eConduit.getBundle().getEntity(), ConTypeEnum.FLUID);

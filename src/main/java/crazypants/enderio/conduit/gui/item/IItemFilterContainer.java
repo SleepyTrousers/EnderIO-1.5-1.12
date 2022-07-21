@@ -4,8 +4,7 @@ import crazypants.enderio.conduit.item.filter.ItemFilter;
 
 public interface IItemFilterContainer {
 
-  ItemFilter getItemFilter();
+    ItemFilter getItemFilter();
 
-  void onFilterChanged();
-
+    void onFilterChanged();
 }

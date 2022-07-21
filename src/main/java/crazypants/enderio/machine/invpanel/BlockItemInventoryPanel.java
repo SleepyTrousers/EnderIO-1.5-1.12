@@ -9,25 +9,35 @@ import net.minecraft.world.World;
 
 public class BlockItemInventoryPanel extends ItemBlock {
 
-  public BlockItemInventoryPanel(Block b) {
-    super(b);
-  }
-
-  @Override
-  public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
-    if(!super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata)) {
-      return false;
+    public BlockItemInventoryPanel(Block b) {
+        super(b);
     }
-    TileEntity te = world.getTileEntity(x, y, z);
-    if(te instanceof TileInventoryPanel) {
-      TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
-      teInvPanel.setFacing((short) side);
-      teInvPanel.readFromItemStack(stack);
-      if(!world.isRemote) {
-        world.markBlockForUpdate(x, y, z);
-      }
-    }
-    return true;
-  }
 
+    @Override
+    public boolean placeBlockAt(
+            ItemStack stack,
+            EntityPlayer player,
+            World world,
+            int x,
+            int y,
+            int z,
+            int side,
+            float hitX,
+            float hitY,
+            float hitZ,
+            int metadata) {
+        if (!super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata)) {
+            return false;
+        }
+        TileEntity te = world.getTileEntity(x, y, z);
+        if (te instanceof TileInventoryPanel) {
+            TileInventoryPanel teInvPanel = (TileInventoryPanel) te;
+            teInvPanel.setFacing((short) side);
+            teInvPanel.readFromItemStack(stack);
+            if (!world.isRemote) {
+                world.markBlockForUpdate(x, y, z);
+            }
+        }
+        return true;
+    }
 }

@@ -1,87 +1,82 @@
 package crazypants.enderio.machine.capbank.network;
 
-import java.util.Collection;
-
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.power.IPowerStorage;
+import java.util.Collection;
 
 public interface ICapBankNetwork extends IPowerStorage {
 
-  //------ Network
+    // ------ Network
 
-  int getId();
+    int getId();
 
-  void addMember(TileCapBank cap);
+    void addMember(TileCapBank cap);
 
-  Collection<TileCapBank> getMembers();
+    Collection<TileCapBank> getMembers();
 
-  void destroyNetwork();
+    void destroyNetwork();
 
-  NetworkState getState();
+    NetworkState getState();
 
-  void onUpdateEntity(TileCapBank tileCapBank);
+    void onUpdateEntity(TileCapBank tileCapBank);
 
+    // ------ Energy
 
-  //------ Energy
+    @Override
+    long getEnergyStoredL();
 
-  @Override
-  long getEnergyStoredL();
+    @Override
+    void addEnergy(int energy);
 
-  @Override
-  void addEnergy(int energy);
+    int receiveEnergy(int maxReceive, boolean simulate);
 
-  int receiveEnergy(int maxReceive, boolean simulate);
+    @Override
+    long getMaxEnergyStoredL();
 
-  @Override
-  long getMaxEnergyStoredL();
+    int getMaxIO();
 
-  int getMaxIO();
+    @Override
+    int getMaxOutput();
 
-  @Override
-  int getMaxOutput();
+    void setMaxOutput(int max);
 
-  void setMaxOutput(int max);
+    @Override
+    int getMaxInput();
 
-  @Override
-  int getMaxInput();
+    void setMaxInput(int max);
 
-  void setMaxInput(int max);
+    float getAverageChangePerTick();
 
-  float getAverageChangePerTick();
+    float getAverageInputPerTick();
 
-  float getAverageInputPerTick();
+    float getAverageOutputPerTick();
 
-  float getAverageOutputPerTick();
+    void removeReceptors(Collection<EnergyReceptor> receptors);
 
-  void removeReceptors(Collection<EnergyReceptor> receptors);
+    void addReceptors(Collection<EnergyReceptor> receptors);
 
-  void addReceptors(Collection<EnergyReceptor> receptors);
+    // ------ Inventory
 
+    InventoryImpl getInventory();
 
-  //------ Inventory
+    // ------ Redstone
 
-  InventoryImpl getInventory();
+    void setOutputControlMode(RedstoneControlMode outputControlMode);
 
+    RedstoneControlMode getOutputControlMode();
 
-  //------ Redstone
+    void setInputControlMode(RedstoneControlMode inputControlMode);
 
-  void setOutputControlMode(RedstoneControlMode outputControlMode);
+    RedstoneControlMode getInputControlMode();
 
-  RedstoneControlMode getOutputControlMode();
+    void updateRedstoneSignal(TileCapBank tileCapBank, boolean recievingSignal);
 
-  void setInputControlMode(RedstoneControlMode inputControlMode);
+    boolean isOutputEnabled();
 
-  RedstoneControlMode getInputControlMode();
+    boolean isInputEnabled();
 
-  void updateRedstoneSignal(TileCapBank tileCapBank, boolean recievingSignal);
+    // ------- rendering info caching
 
-  boolean isOutputEnabled();
-
-  boolean isInputEnabled();
-
-  //------- rendering info caching
-
-  void invalidateDisplayInfoCache();
-
+    void invalidateDisplayInfoCache();
 }

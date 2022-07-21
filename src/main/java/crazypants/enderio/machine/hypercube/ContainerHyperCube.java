@@ -5,9 +5,8 @@ import net.minecraft.inventory.Container;
 
 public class ContainerHyperCube extends Container {
 
-  @Override
-  public boolean canInteractWith(EntityPlayer arg0) {
-    return true;
-  }
-
+    @Override
+    public boolean canInteractWith(EntityPlayer arg0) {
+        return true;
+    }
 }

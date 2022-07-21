@@ -5,14 +5,14 @@ import crazypants.enderio.config.Config;
 
 public class MEUtil {
 
-  private static boolean useCheckPerformed = false;
-  private static boolean isMeConduitEnabled = false;
+    private static boolean useCheckPerformed = false;
+    private static boolean isMeConduitEnabled = false;
 
-  public static boolean isMEEnabled() {
-    if(!useCheckPerformed) {
-      isMeConduitEnabled = Loader.isModLoaded("appliedenergistics2") && Config.enableMEConduits;
-      useCheckPerformed = true;
+    public static boolean isMEEnabled() {
+        if (!useCheckPerformed) {
+            isMeConduitEnabled = Loader.isModLoaded("appliedenergistics2") && Config.enableMEConduits;
+            useCheckPerformed = true;
+        }
+        return isMeConduitEnabled;
     }
-    return isMeConduitEnabled;
-  }
 }

@@ -4,9 +4,9 @@ import net.minecraftforge.fluids.Fluid;
 
 public interface IFluidFuel {
 
-  Fluid getFluid();
+    Fluid getFluid();
 
-  int getTotalBurningTime();
+    int getTotalBurningTime();
 
-  int getPowerPerCycle();
+    int getPowerPerCycle();
 }

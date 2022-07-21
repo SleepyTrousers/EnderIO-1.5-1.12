@@ -1,42 +1,39 @@
 package crazypants.enderio.conduit.redstone;
 
+import com.enderio.core.common.util.DyeColor;
+import crazypants.enderio.conduit.IConduit;
 import java.util.Set;
-
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.enderio.core.common.util.DyeColor;
-
-import crazypants.enderio.conduit.IConduit;
-
 public interface IRedstoneConduit extends IConduit {
 
-  public static final String KEY_CONDUIT_ICON = "enderio:redstoneConduit";
-  public static final String KEY_TRANSMISSION_ICON = "enderio:redstoneConduitTransmission";
-  public static final String KEY_CORE_OFF_ICON = "enderio:redstoneConduitCoreOff";
-  public static final String KEY_CORE_ON_ICON = "enderio:redstoneConduitCoreOn";
+    public static final String KEY_CONDUIT_ICON = "enderio:redstoneConduit";
+    public static final String KEY_TRANSMISSION_ICON = "enderio:redstoneConduitTransmission";
+    public static final String KEY_CORE_OFF_ICON = "enderio:redstoneConduitCoreOff";
+    public static final String KEY_CORE_ON_ICON = "enderio:redstoneConduitCoreOn";
 
-  // External redstone interface
+    // External redstone interface
 
-  int isProvidingStrongPower(ForgeDirection toDirection);
+    int isProvidingStrongPower(ForgeDirection toDirection);
 
-  int isProvidingWeakPower(ForgeDirection toDirection);
+    int isProvidingWeakPower(ForgeDirection toDirection);
 
-  Set<Signal> getNetworkInputs();
+    Set<Signal> getNetworkInputs();
 
-  Set<Signal> getNetworkInputs(ForgeDirection side);
+    Set<Signal> getNetworkInputs(ForgeDirection side);
 
-  Set<Signal> getNetworkOutputs(ForgeDirection side);
+    Set<Signal> getNetworkOutputs(ForgeDirection side);
 
-  DyeColor getSignalColor(ForgeDirection dir);
+    DyeColor getSignalColor(ForgeDirection dir);
 
-  void updateNetwork();
+    void updateNetwork();
 
-  // MFR RedNet
+    // MFR RedNet
 
-  int[] getOutputValues(World world, int x, int y, int z, ForgeDirection side);
+    int[] getOutputValues(World world, int x, int y, int z, ForgeDirection side);
 
-  int getOutputValue(World world, int x, int y, int z, ForgeDirection side, int subnet);
+    int getOutputValue(World world, int x, int y, int z, ForgeDirection side, int subnet);
 
-  void onInputsChanged(World world, int x, int y, int z, ForgeDirection side, int[] inputValues);
+    void onInputsChanged(World world, int x, int y, int z, ForgeDirection side, int[] inputValues);
 }

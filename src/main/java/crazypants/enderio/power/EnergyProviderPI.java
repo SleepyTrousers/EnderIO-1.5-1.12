@@ -1,68 +1,67 @@
 package crazypants.enderio.power;
 
-import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyProvider;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class EnergyProviderPI implements IPowerInterface {
-  
-  private IEnergyProvider rfPower;
 
-  public EnergyProviderPI(IEnergyProvider powerReceptor) {
-    rfPower = powerReceptor;
-  }
+    private IEnergyProvider rfPower;
 
-  @Override
-  public Object getDelegate() {
-    return rfPower;
-  }
-
-  @Override
-  public boolean canConduitConnect(ForgeDirection direction) {
-    if(rfPower != null && direction != null) {
-      return rfPower.canConnectEnergy(direction.getOpposite());
+    public EnergyProviderPI(IEnergyProvider powerReceptor) {
+        rfPower = powerReceptor;
     }
-    return false;
-  }
 
-  @Override
-  public int getEnergyStored(ForgeDirection dir) {
-    if(rfPower != null && dir != null) {
-      return rfPower.getEnergyStored(dir);
+    @Override
+    public Object getDelegate() {
+        return rfPower;
     }
-    return 0;
-  }
 
-  @Override
-  public int getMaxEnergyStored(ForgeDirection dir) {
-    if(rfPower != null && dir != null) {
-      return rfPower.getMaxEnergyStored(dir);
+    @Override
+    public boolean canConduitConnect(ForgeDirection direction) {
+        if (rfPower != null && direction != null) {
+            return rfPower.canConnectEnergy(direction.getOpposite());
+        }
+        return false;
     }
-    return 0;
-  }
 
-  @Override
-  public int getPowerRequest(ForgeDirection dir) {
-    return 0;
-  }
-  
-  @Override
-  public int getMinEnergyReceived(ForgeDirection dir) {
-    return 0;
-  }
+    @Override
+    public int getEnergyStored(ForgeDirection dir) {
+        if (rfPower != null && dir != null) {
+            return rfPower.getEnergyStored(dir);
+        }
+        return 0;
+    }
 
-  @Override
-  public int recieveEnergy(ForgeDirection opposite, int canOffer) {
-    return 0;
-  }
+    @Override
+    public int getMaxEnergyStored(ForgeDirection dir) {
+        if (rfPower != null && dir != null) {
+            return rfPower.getMaxEnergyStored(dir);
+        }
+        return 0;
+    }
 
-  @Override
-  public boolean isOutputOnly() {
-    return true;
-  }
+    @Override
+    public int getPowerRequest(ForgeDirection dir) {
+        return 0;
+    }
 
-  @Override
-  public boolean isInputOnly() {
-    return false;
-  }
+    @Override
+    public int getMinEnergyReceived(ForgeDirection dir) {
+        return 0;
+    }
 
+    @Override
+    public int recieveEnergy(ForgeDirection opposite, int canOffer) {
+        return 0;
+    }
+
+    @Override
+    public boolean isOutputOnly() {
+        return true;
+    }
+
+    @Override
+    public boolean isInputOnly() {
+        return false;
+    }
 }

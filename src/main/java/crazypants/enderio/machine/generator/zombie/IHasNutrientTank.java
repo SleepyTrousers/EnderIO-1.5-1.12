@@ -4,6 +4,5 @@ import crazypants.enderio.tool.SmartTank;
 
 public interface IHasNutrientTank {
 
-  SmartTank getNutrientTank();
-
+    SmartTank getNutrientTank();
 }

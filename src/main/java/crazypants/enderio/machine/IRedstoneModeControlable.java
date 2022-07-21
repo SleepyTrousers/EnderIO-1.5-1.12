@@ -2,8 +2,7 @@ package crazypants.enderio.machine;
 
 public interface IRedstoneModeControlable {
 
-  RedstoneControlMode getRedstoneControlMode();
+    RedstoneControlMode getRedstoneControlMode();
 
-  void setRedstoneControlMode(RedstoneControlMode mode);
-
+    void setRedstoneControlMode(RedstoneControlMode mode);
 }

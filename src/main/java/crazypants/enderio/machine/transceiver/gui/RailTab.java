@@ -4,9 +4,7 @@ import crazypants.enderio.machine.transceiver.ChannelType;
 
 public class RailTab extends ChannelTab {
 
-  public RailTab(GuiTransceiver guiTransceiver, ChannelType type) {
-    super(guiTransceiver, type);
-    
-  }
-
+    public RailTab(GuiTransceiver guiTransceiver, ChannelType type) {
+        super(guiTransceiver, type);
+    }
 }

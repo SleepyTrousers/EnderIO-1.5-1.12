@@ -4,10 +4,9 @@ import com.enderio.core.common.util.BlockCoord;
 
 public interface IPowerContainer {
 
-  int getEnergyStored();
+    int getEnergyStored();
 
-  void setEnergyStored(int storedEnergy);
+    void setEnergyStored(int storedEnergy);
 
-  BlockCoord getLocation();
-
+    BlockCoord getLocation();
 }

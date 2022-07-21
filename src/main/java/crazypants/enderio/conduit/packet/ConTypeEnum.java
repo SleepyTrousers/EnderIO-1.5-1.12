@@ -10,32 +10,31 @@ import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 
 public enum ConTypeEnum {
+    POWER(IPowerConduit.class),
+    FLUID(ILiquidConduit.class),
+    ITEM(IItemConduit.class),
+    REDSTONE(IRedstoneConduit.class),
+    GAS(IGasConduit.class),
+    ME(IMEConduit.class),
+    OC(IOCConduit.class);
 
-  POWER(IPowerConduit.class),
-  FLUID(ILiquidConduit.class),
-  ITEM(IItemConduit.class),
-  REDSTONE(IRedstoneConduit.class),
-  GAS(IGasConduit.class),
-  ME(IMEConduit.class),
-  OC(IOCConduit.class);
+    final Class<? extends IConduit> baseType;
 
-  final Class<? extends IConduit> baseType;
-
-  private ConTypeEnum(Class<? extends IConduit> baseType) {
-    this.baseType = baseType;
-  }
-
-  public Class<? extends IConduit> getBaseType() {
-    return baseType;
-  }
-
-  public static ConTypeEnum get(IConduit con) {
-    Class<? extends IConduit> from = con.getBaseConduitType();
-    for (ConTypeEnum ct : ConTypeEnum.values()) {
-      if (ct.getBaseType() == from) {
-        return ct;
-      }
+    private ConTypeEnum(Class<? extends IConduit> baseType) {
+        this.baseType = baseType;
     }
-    return null;
-  }
+
+    public Class<? extends IConduit> getBaseType() {
+        return baseType;
+    }
+
+    public static ConTypeEnum get(IConduit con) {
+        Class<? extends IConduit> from = con.getBaseConduitType();
+        for (ConTypeEnum ct : ConTypeEnum.values()) {
+            if (ct.getBaseType() == from) {
+                return ct;
+            }
+        }
+        return null;
+    }
 }

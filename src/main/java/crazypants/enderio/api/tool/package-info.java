@@ -3,4 +3,3 @@ package crazypants.enderio.api.tool;
 
 import cpw.mods.fml.common.API;
 import crazypants.enderio.api.EnderIOAPIProps;
-

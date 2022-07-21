@@ -10,267 +10,267 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
-//We're not going to use this anymore
+// We're not going to use this anymore
 @Deprecated
 public class CombustionGeneratorModel extends ModelBase {
-  //fields
-  ModelRenderer Engine;
-  ModelRenderer Chamber1;
-  ModelRenderer Chamber2;
-  ModelRenderer Tesla1;
-  ModelRenderer Tesla2;
-  ModelRenderer Tesla3;
-  ModelRenderer Tesla4;
-  ModelRenderer Tesla5;
-  ModelRenderer Tesla6;
-  ModelRenderer Base;
-  ModelRenderer Base6;
-  ModelRenderer Base5;
-  ModelRenderer Base1;
-  ModelRenderer Base4;
-  ModelRenderer Base2;
-  ModelRenderer Base3;
-  ModelRenderer Support1;
-  ModelRenderer Chimney4;
-  ModelRenderer Support2;
-  ModelRenderer Chimney3;
-  ModelRenderer Support3;
-  ModelRenderer Chimney2;
-  ModelRenderer Support4;
-  ModelRenderer Chimney1;
-  ModelRenderer Chimney;
+    // fields
+    ModelRenderer Engine;
+    ModelRenderer Chamber1;
+    ModelRenderer Chamber2;
+    ModelRenderer Tesla1;
+    ModelRenderer Tesla2;
+    ModelRenderer Tesla3;
+    ModelRenderer Tesla4;
+    ModelRenderer Tesla5;
+    ModelRenderer Tesla6;
+    ModelRenderer Base;
+    ModelRenderer Base6;
+    ModelRenderer Base5;
+    ModelRenderer Base1;
+    ModelRenderer Base4;
+    ModelRenderer Base2;
+    ModelRenderer Base3;
+    ModelRenderer Support1;
+    ModelRenderer Chimney4;
+    ModelRenderer Support2;
+    ModelRenderer Chimney3;
+    ModelRenderer Support3;
+    ModelRenderer Chimney2;
+    ModelRenderer Support4;
+    ModelRenderer Chimney1;
+    ModelRenderer Chimney;
 
-  public CombustionGeneratorModel() {
-    textureWidth = 128;
-    textureHeight = 128;
+    public CombustionGeneratorModel() {
+        textureWidth = 128;
+        textureHeight = 128;
 
-    Engine = new ModelRenderer(this, 0, 32);
-    Engine.addBox(-7.5F, 0F, -7.5F, 15, 4, 15);
-    Engine.setRotationPoint(0F, 12F, 0F);
-    Engine.setTextureSize(256, 256);
-    Engine.mirror = true;
-    setRotation(Engine, 0F, 0F, 0F);
+        Engine = new ModelRenderer(this, 0, 32);
+        Engine.addBox(-7.5F, 0F, -7.5F, 15, 4, 15);
+        Engine.setRotationPoint(0F, 12F, 0F);
+        Engine.setTextureSize(256, 256);
+        Engine.mirror = true;
+        setRotation(Engine, 0F, 0F, 0F);
 
-    Chamber1 = new ModelRenderer(this, 0, 76);
-    Chamber1.mirror = true;
-    Chamber1.addBox(0F, -9F, -8F, 8, 9, 16);
-    Chamber1.setRotationPoint(8F, 13F, 0F);
-    Chamber1.setTextureSize(256, 256);
-    Chamber1.mirror = true;
-    setRotation(Chamber1, 0F, 0F, -1.466077F);
-    Chamber1.mirror = false;
+        Chamber1 = new ModelRenderer(this, 0, 76);
+        Chamber1.mirror = true;
+        Chamber1.addBox(0F, -9F, -8F, 8, 9, 16);
+        Chamber1.setRotationPoint(8F, 13F, 0F);
+        Chamber1.setTextureSize(256, 256);
+        Chamber1.mirror = true;
+        setRotation(Chamber1, 0F, 0F, -1.466077F);
+        Chamber1.mirror = false;
 
-    Chamber2 = new ModelRenderer(this, 0, 52);
-    Chamber2.mirror = true;
-    Chamber2.addBox(0F, -8F, -8F, 9, 8, 16);
-    Chamber2.setRotationPoint(-8F, 13F, 0F);
-    Chamber2.setTextureSize(256, 256);
-    Chamber2.mirror = true;
-    setRotation(Chamber2, 0F, 0F, -0.122173F);
-    Chamber2.mirror = false;
+        Chamber2 = new ModelRenderer(this, 0, 52);
+        Chamber2.mirror = true;
+        Chamber2.addBox(0F, -8F, -8F, 9, 8, 16);
+        Chamber2.setRotationPoint(-8F, 13F, 0F);
+        Chamber2.setTextureSize(256, 256);
+        Chamber2.mirror = true;
+        setRotation(Chamber2, 0F, 0F, -0.122173F);
+        Chamber2.mirror = false;
 
-    Tesla1 = new ModelRenderer(this, 34, 52);
-    Tesla1.addBox(-1F, -4F, -1F, 2, 5, 2);
-    Tesla1.setRotationPoint(5F, 4F, 5F);
-    Tesla1.setTextureSize(256, 256);
-    Tesla1.mirror = true;
-    setRotation(Tesla1, 0F, 0F, 0.1570796F);
+        Tesla1 = new ModelRenderer(this, 34, 52);
+        Tesla1.addBox(-1F, -4F, -1F, 2, 5, 2);
+        Tesla1.setRotationPoint(5F, 4F, 5F);
+        Tesla1.setTextureSize(256, 256);
+        Tesla1.mirror = true;
+        setRotation(Tesla1, 0F, 0F, 0.1570796F);
 
-    Tesla2 = new ModelRenderer(this, 34, 52);
-    Tesla2.addBox(-1F, -4F, -1F, 2, 5, 2);
-    Tesla2.setRotationPoint(5F, 4F, -5F);
-    Tesla2.setTextureSize(256, 256);
-    Tesla2.mirror = true;
-    setRotation(Tesla2, 0F, 0F, 0.1570796F);
+        Tesla2 = new ModelRenderer(this, 34, 52);
+        Tesla2.addBox(-1F, -4F, -1F, 2, 5, 2);
+        Tesla2.setRotationPoint(5F, 4F, -5F);
+        Tesla2.setTextureSize(256, 256);
+        Tesla2.mirror = true;
+        setRotation(Tesla2, 0F, 0F, 0.1570796F);
 
-    Tesla3 = new ModelRenderer(this, 34, 52);
-    Tesla3.addBox(-1F, -4F, -1F, 2, 5, 2);
-    Tesla3.setRotationPoint(5F, 4F, 0F);
-    Tesla3.setTextureSize(256, 256);
-    Tesla3.mirror = true;
-    setRotation(Tesla3, 0F, 0F, 0.1570796F);
-    Tesla4 = new ModelRenderer(this, 34, 52);
-    Tesla4.addBox(-1F, -4F, -1F, 2, 5, 2);
-    Tesla4.setRotationPoint(-5F, 4F, -5F);
-    Tesla4.setTextureSize(256, 256);
-    Tesla4.mirror = true;
-    setRotation(Tesla4, 0F, 0F, -0.1570796F);
-    Tesla5 = new ModelRenderer(this, 34, 52);
-    Tesla5.addBox(-1F, -4F, -1F, 2, 5, 2);
-    Tesla5.setRotationPoint(-5F, 4F, 5F);
-    Tesla5.setTextureSize(256, 256);
-    Tesla5.mirror = true;
-    setRotation(Tesla5, 0F, 0F, -0.1570796F);
-    Tesla6 = new ModelRenderer(this, 34, 52);
-    Tesla6.addBox(-1F, -4F, -1F, 2, 5, 2);
-    Tesla6.setRotationPoint(-5F, 4F, 0F);
-    Tesla6.setTextureSize(256, 256);
-    Tesla6.mirror = true;
-    setRotation(Tesla6, 0F, 0F, -0.1570796F);
-    Base = new ModelRenderer(this, 0, 0);
-    Base.addBox(-8F, -4F, -8F, 16, 4, 15);
-    Base.setRotationPoint(0F, 24F, 1F);
-    Base.setTextureSize(256, 256);
-    Base.mirror = true;
-    setRotation(Base, 0F, 0F, 0F);
+        Tesla3 = new ModelRenderer(this, 34, 52);
+        Tesla3.addBox(-1F, -4F, -1F, 2, 5, 2);
+        Tesla3.setRotationPoint(5F, 4F, 0F);
+        Tesla3.setTextureSize(256, 256);
+        Tesla3.mirror = true;
+        setRotation(Tesla3, 0F, 0F, 0.1570796F);
+        Tesla4 = new ModelRenderer(this, 34, 52);
+        Tesla4.addBox(-1F, -4F, -1F, 2, 5, 2);
+        Tesla4.setRotationPoint(-5F, 4F, -5F);
+        Tesla4.setTextureSize(256, 256);
+        Tesla4.mirror = true;
+        setRotation(Tesla4, 0F, 0F, -0.1570796F);
+        Tesla5 = new ModelRenderer(this, 34, 52);
+        Tesla5.addBox(-1F, -4F, -1F, 2, 5, 2);
+        Tesla5.setRotationPoint(-5F, 4F, 5F);
+        Tesla5.setTextureSize(256, 256);
+        Tesla5.mirror = true;
+        setRotation(Tesla5, 0F, 0F, -0.1570796F);
+        Tesla6 = new ModelRenderer(this, 34, 52);
+        Tesla6.addBox(-1F, -4F, -1F, 2, 5, 2);
+        Tesla6.setRotationPoint(-5F, 4F, 0F);
+        Tesla6.setTextureSize(256, 256);
+        Tesla6.mirror = true;
+        setRotation(Tesla6, 0F, 0F, -0.1570796F);
+        Base = new ModelRenderer(this, 0, 0);
+        Base.addBox(-8F, -4F, -8F, 16, 4, 15);
+        Base.setRotationPoint(0F, 24F, 1F);
+        Base.setTextureSize(256, 256);
+        Base.mirror = true;
+        setRotation(Base, 0F, 0F, 0F);
 
-    Base6 = new ModelRenderer(this, 48, 4);
-    Base6.mirror = true;
-    Base6.addBox(-1F, -2F, -1F, 1, 2, 1);
-    Base6.setRotationPoint(2F, 23F, -7F);
-    Base6.setTextureSize(256, 256);
-    Base6.mirror = true;
-    setRotation(Base6, 0F, 0F, 0F);
-    Base6.mirror = false;
+        Base6 = new ModelRenderer(this, 48, 4);
+        Base6.mirror = true;
+        Base6.addBox(-1F, -2F, -1F, 1, 2, 1);
+        Base6.setRotationPoint(2F, 23F, -7F);
+        Base6.setTextureSize(256, 256);
+        Base6.mirror = true;
+        setRotation(Base6, 0F, 0F, 0F);
+        Base6.mirror = false;
 
-    Base5 = new ModelRenderer(this, 48, 4);
-    Base5.mirror = true;
-    Base5.addBox(-1F, -2F, -1F, 1, 2, 1);
-    Base5.setRotationPoint(-1F, 23F, -7F);
-    Base5.setTextureSize(256, 256);
-    Base5.mirror = true;
-    setRotation(Base5, 0F, 0F, 0F);
-    Base5.mirror = false;
+        Base5 = new ModelRenderer(this, 48, 4);
+        Base5.mirror = true;
+        Base5.addBox(-1F, -2F, -1F, 1, 2, 1);
+        Base5.setRotationPoint(-1F, 23F, -7F);
+        Base5.setTextureSize(256, 256);
+        Base5.mirror = true;
+        setRotation(Base5, 0F, 0F, 0F);
+        Base5.mirror = false;
 
-    Base1 = new ModelRenderer(this, 0, 0);
-    Base1.addBox(-2F, -4F, -1F, 4, 4, 1);
-    Base1.setRotationPoint(-6F, 24F, -7F);
-    Base1.setTextureSize(256, 256);
-    Base1.mirror = true;
-    setRotation(Base1, 0F, 0F, 0F);
+        Base1 = new ModelRenderer(this, 0, 0);
+        Base1.addBox(-2F, -4F, -1F, 4, 4, 1);
+        Base1.setRotationPoint(-6F, 24F, -7F);
+        Base1.setTextureSize(256, 256);
+        Base1.mirror = true;
+        setRotation(Base1, 0F, 0F, 0F);
 
-    Base4 = new ModelRenderer(this, 48, 0);
-    Base4.mirror = true;
-    Base4.addBox(-4F, -1F, -1F, 8, 1, 1);
-    Base4.setRotationPoint(0F, 24F, -7F);
-    Base4.setTextureSize(256, 256);
-    Base4.mirror = true;
-    setRotation(Base4, 0F, 0F, 0F);
-    Base4.mirror = false;
+        Base4 = new ModelRenderer(this, 48, 0);
+        Base4.mirror = true;
+        Base4.addBox(-4F, -1F, -1F, 8, 1, 1);
+        Base4.setRotationPoint(0F, 24F, -7F);
+        Base4.setTextureSize(256, 256);
+        Base4.mirror = true;
+        setRotation(Base4, 0F, 0F, 0F);
+        Base4.mirror = false;
 
-    Base2 = new ModelRenderer(this, 0, 0);
-    Base2.addBox(-2F, -4F, -1F, 4, 4, 1);
-    Base2.setRotationPoint(6F, 24F, -7F);
-    Base2.setTextureSize(256, 256);
-    Base2.mirror = true;
-    setRotation(Base2, 0F, 0F, 0F);
+        Base2 = new ModelRenderer(this, 0, 0);
+        Base2.addBox(-2F, -4F, -1F, 4, 4, 1);
+        Base2.setRotationPoint(6F, 24F, -7F);
+        Base2.setTextureSize(256, 256);
+        Base2.mirror = true;
+        setRotation(Base2, 0F, 0F, 0F);
 
-    Base3 = new ModelRenderer(this, 48, 0);
-    Base3.mirror = true;
-    Base3.addBox(-4F, -1F, -1F, 8, 1, 1);
-    Base3.setRotationPoint(0F, 21F, -7F);
-    Base3.setTextureSize(256, 256);
-    Base3.mirror = true;
-    setRotation(Base3, 0F, 0F, 0F);
-    Base3.mirror = false;
+        Base3 = new ModelRenderer(this, 48, 0);
+        Base3.mirror = true;
+        Base3.addBox(-4F, -1F, -1F, 8, 1, 1);
+        Base3.setRotationPoint(0F, 21F, -7F);
+        Base3.setTextureSize(256, 256);
+        Base3.mirror = true;
+        setRotation(Base3, 0F, 0F, 0F);
+        Base3.mirror = false;
 
-    Support1 = new ModelRenderer(this, 0, 5);
-    Support1.addBox(-1F, -4F, -1F, 2, 4, 2);
-    Support1.setRotationPoint(-7F, 20F, -7F);
-    Support1.setTextureSize(256, 256);
-    Support1.mirror = true;
-    setRotation(Support1, 0F, 0F, 0F);
+        Support1 = new ModelRenderer(this, 0, 5);
+        Support1.addBox(-1F, -4F, -1F, 2, 4, 2);
+        Support1.setRotationPoint(-7F, 20F, -7F);
+        Support1.setTextureSize(256, 256);
+        Support1.mirror = true;
+        setRotation(Support1, 0F, 0F, 0F);
 
-    Chimney4 = new ModelRenderer(this, 25, 20);
-    Chimney4.mirror = true;
-    Chimney4.addBox(-3F, -4F, -1F, 6, 4, 1);
-    Chimney4.setRotationPoint(-4F, 20F, 0F);
-    Chimney4.setTextureSize(256, 256);
-    Chimney4.mirror = true;
-    setRotation(Chimney4, 0F, 1.570796F, 0F);
-    Chimney4.mirror = false;
+        Chimney4 = new ModelRenderer(this, 25, 20);
+        Chimney4.mirror = true;
+        Chimney4.addBox(-3F, -4F, -1F, 6, 4, 1);
+        Chimney4.setRotationPoint(-4F, 20F, 0F);
+        Chimney4.setTextureSize(256, 256);
+        Chimney4.mirror = true;
+        setRotation(Chimney4, 0F, 1.570796F, 0F);
+        Chimney4.mirror = false;
 
-    Support2 = new ModelRenderer(this, 0, 5);
-    Support2.addBox(-1F, -4F, -1F, 2, 4, 2);
-    Support2.setRotationPoint(7F, 20F, -7F);
-    Support2.setTextureSize(256, 256);
-    Support2.mirror = true;
-    setRotation(Support2, 0F, 0F, 0F);
+        Support2 = new ModelRenderer(this, 0, 5);
+        Support2.addBox(-1F, -4F, -1F, 2, 4, 2);
+        Support2.setRotationPoint(7F, 20F, -7F);
+        Support2.setTextureSize(256, 256);
+        Support2.mirror = true;
+        setRotation(Support2, 0F, 0F, 0F);
 
-    Chimney3 = new ModelRenderer(this, 25, 20);
-    Chimney3.mirror = true;
-    Chimney3.addBox(-3F, -4F, 0F, 6, 4, 1);
-    Chimney3.setRotationPoint(4F, 20F, 0F);
-    Chimney3.setTextureSize(256, 256);
-    Chimney3.mirror = true;
-    setRotation(Chimney3, 0F, 1.570796F, 0F);
-    Chimney3.mirror = false;
+        Chimney3 = new ModelRenderer(this, 25, 20);
+        Chimney3.mirror = true;
+        Chimney3.addBox(-3F, -4F, 0F, 6, 4, 1);
+        Chimney3.setRotationPoint(4F, 20F, 0F);
+        Chimney3.setTextureSize(256, 256);
+        Chimney3.mirror = true;
+        setRotation(Chimney3, 0F, 1.570796F, 0F);
+        Chimney3.mirror = false;
 
-    Support3 = new ModelRenderer(this, 0, 5);
-    Support3.addBox(-1F, -4F, -1F, 2, 4, 2);
-    Support3.setRotationPoint(-7F, 20F, 7F);
-    Support3.setTextureSize(256, 256);
-    Support3.mirror = true;
-    setRotation(Support3, 0F, 0F, 0F);
+        Support3 = new ModelRenderer(this, 0, 5);
+        Support3.addBox(-1F, -4F, -1F, 2, 4, 2);
+        Support3.setRotationPoint(-7F, 20F, 7F);
+        Support3.setTextureSize(256, 256);
+        Support3.mirror = true;
+        setRotation(Support3, 0F, 0F, 0F);
 
-    Chimney2 = new ModelRenderer(this, 25, 20);
-    Chimney2.addBox(-3F, -4F, 0F, 6, 4, 1);
-    Chimney2.setRotationPoint(0F, 20F, 4F);
-    Chimney2.setTextureSize(256, 256);
-    Chimney2.mirror = true;
-    setRotation(Chimney2, 0F, 0F, 0F);
+        Chimney2 = new ModelRenderer(this, 25, 20);
+        Chimney2.addBox(-3F, -4F, 0F, 6, 4, 1);
+        Chimney2.setRotationPoint(0F, 20F, 4F);
+        Chimney2.setTextureSize(256, 256);
+        Chimney2.mirror = true;
+        setRotation(Chimney2, 0F, 0F, 0F);
 
-    Support4 = new ModelRenderer(this, 0, 5);
-    Support4.addBox(-1F, -4F, -1F, 2, 4, 2);
-    Support4.setRotationPoint(7F, 20F, 7F);
-    Support4.setTextureSize(256, 256);
-    Support4.mirror = true;
-    setRotation(Support4, 0F, 0F, 0F);
+        Support4 = new ModelRenderer(this, 0, 5);
+        Support4.addBox(-1F, -4F, -1F, 2, 4, 2);
+        Support4.setRotationPoint(7F, 20F, 7F);
+        Support4.setTextureSize(256, 256);
+        Support4.mirror = true;
+        setRotation(Support4, 0F, 0F, 0F);
 
-    Chimney1 = new ModelRenderer(this, 25, 20);
-    Chimney1.addBox(-3F, -4F, -1F, 6, 4, 1);
-    Chimney1.setRotationPoint(0F, 20F, -4F);
-    Chimney1.setTextureSize(256, 256);
-    Chimney1.mirror = true;
-    setRotation(Chimney1, 0F, 0F, 0F);
+        Chimney1 = new ModelRenderer(this, 25, 20);
+        Chimney1.addBox(-3F, -4F, -1F, 6, 4, 1);
+        Chimney1.setRotationPoint(0F, 20F, -4F);
+        Chimney1.setTextureSize(256, 256);
+        Chimney1.mirror = true;
+        setRotation(Chimney1, 0F, 0F, 0F);
 
-    Chimney = new ModelRenderer(this, 0, 20);
-    Chimney.addBox(-4F, -4F, -4F, 8, 4, 8);
-    Chimney.setRotationPoint(0F, 20F, 0F);
-    Chimney.setTextureSize(256, 256);
-    Chimney.mirror = true;
-    setRotation(Chimney, 0F, 0F, 0F);
-  }
+        Chimney = new ModelRenderer(this, 0, 20);
+        Chimney.addBox(-4F, -4F, -4F, 8, 4, 8);
+        Chimney.setRotationPoint(0F, 20F, 0F);
+        Chimney.setTextureSize(256, 256);
+        Chimney.mirror = true;
+        setRotation(Chimney, 0F, 0F, 0F);
+    }
 
-  public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-    super.render(entity, f, f1, f2, f3, f4, f5);
-    setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    Engine.render(f5);
-    Chamber1.render(f5);
-    Chamber2.render(f5);
-    Tesla1.render(f5);
-    Tesla2.render(f5);
-    Tesla3.render(f5);
-    Tesla4.render(f5);
-    Tesla5.render(f5);
-    Tesla6.render(f5);
-    Base.render(f5);
-    Base6.render(f5);
-    Base5.render(f5);
-    Base1.render(f5);
-    Base4.render(f5);
-    Base2.render(f5);
-    Base3.render(f5);
-    Support1.render(f5);
-    Chimney4.render(f5);
-    Support2.render(f5);
-    Chimney3.render(f5);
-    Support3.render(f5);
-    Chimney2.render(f5);
-    Support4.render(f5);
-    Chimney1.render(f5);
-    Chimney.render(f5);
-  }
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+        super.render(entity, f, f1, f2, f3, f4, f5);
+        setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        Engine.render(f5);
+        Chamber1.render(f5);
+        Chamber2.render(f5);
+        Tesla1.render(f5);
+        Tesla2.render(f5);
+        Tesla3.render(f5);
+        Tesla4.render(f5);
+        Tesla5.render(f5);
+        Tesla6.render(f5);
+        Base.render(f5);
+        Base6.render(f5);
+        Base5.render(f5);
+        Base1.render(f5);
+        Base4.render(f5);
+        Base2.render(f5);
+        Base3.render(f5);
+        Support1.render(f5);
+        Chimney4.render(f5);
+        Support2.render(f5);
+        Chimney3.render(f5);
+        Support3.render(f5);
+        Chimney2.render(f5);
+        Support4.render(f5);
+        Chimney1.render(f5);
+        Chimney.render(f5);
+    }
 
-  private void setRotation(ModelRenderer model, float x, float y, float z) {
-    model.rotateAngleX = x;
-    model.rotateAngleY = y;
-    model.rotateAngleZ = z;
-  }
+    private void setRotation(ModelRenderer model, float x, float y, float z) {
+        model.rotateAngleX = x;
+        model.rotateAngleY = y;
+        model.rotateAngleZ = z;
+    }
 
-  //  public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
-  //  {
-  //    super.setRotationAngles(f, f1, f2, f3, f4, f5);
-  //  }
+    //  public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
+    //  {
+    //    super.setRotationAngles(f, f1, f2, f3, f4, f5);
+    //  }
 
 }

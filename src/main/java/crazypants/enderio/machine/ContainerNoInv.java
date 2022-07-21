@@ -6,16 +6,15 @@ import net.minecraft.inventory.IInventory;
 
 public class ContainerNoInv extends Container {
 
-  private IInventory inv;
-  
-  public ContainerNoInv(IInventory inv) {
-    super();
-    this.inv = inv;
-  }
+    private IInventory inv;
 
-  @Override
-  public boolean canInteractWith(EntityPlayer player) {
-    return inv.isUseableByPlayer(player);
-  }
+    public ContainerNoInv(IInventory inv) {
+        super();
+        this.inv = inv;
+    }
 
+    @Override
+    public boolean canInteractWith(EntityPlayer player) {
+        return inv.isUseableByPlayer(player);
+    }
 }

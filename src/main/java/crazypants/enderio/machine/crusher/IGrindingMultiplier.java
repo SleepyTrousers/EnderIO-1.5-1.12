@@ -2,20 +2,19 @@ package crazypants.enderio.machine.crusher;
 
 public interface IGrindingMultiplier {
 
-  void setDurationMJ(int durationMJ);
+    void setDurationMJ(int durationMJ);
 
-  int getDurationMJ();
+    int getDurationMJ();
 
-  void setGrindingMultiplier(float grindingMultiplier);
+    void setGrindingMultiplier(float grindingMultiplier);
 
-  void setPowerMultiplier(float powerMultiplier);
+    void setPowerMultiplier(float powerMultiplier);
 
-  void setChanceMultiplier(float chanceMultiplier);
+    void setChanceMultiplier(float chanceMultiplier);
 
-  float getPowerMultiplier();
+    float getPowerMultiplier();
 
-  float getChanceMultiplier();
+    float getChanceMultiplier();
 
-  float getGrindingMultiplier();
-
+    float getGrindingMultiplier();
 }
