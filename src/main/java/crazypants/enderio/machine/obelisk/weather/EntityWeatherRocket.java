@@ -3,17 +3,19 @@ package crazypants.enderio.machine.obelisk.weather;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFireworkSparkFX;
 import net.minecraft.entity.item.EntityFireworkRocket;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
+import net.minecraft.world.WorldServer;
 
 public class EntityWeatherRocket extends EntityFireworkRocket {
 
   private static final int DATA_ID = 24;
-  
+
   private static final int MAX_AGE = 70;
 
   public EntityWeatherRocket(World world) {
@@ -32,7 +34,7 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
     this.getDataWatcher().addObject(DATA_ID, 0);
     this.getDataWatcher().setObjectWatched(DATA_ID);
   }
-  
+
   @Override
   public void onEntityUpdate() {
     super.onEntityUpdate();
@@ -40,23 +42,29 @@ public class EntityWeatherRocket extends EntityFireworkRocket {
       doEffect();
     }
   }
-  
+
   @Override
   public void moveEntity(double p_70091_1_, double p_70091_3_, double p_70091_5_) {
     super.moveEntity(p_70091_1_, p_70091_3_, p_70091_5_);
   }
-  
+
   @Override
   public void setDead() {
     super.setDead();
+
     WeatherTask task = WeatherTask.values()[getDataWatcher().getWatchableObjectInt(DATA_ID)];
-    task.complete(worldObj);
+    MinecraftServer server = MinecraftServer.getServer();
+
+    if(server != null && server.worldServers.length > 0) {
+      WorldServer worldserver = server.worldServers[0];
+      task.complete(worldserver);
+    }
   }
-  
+
   @Override
   public void handleHealthUpdate(byte p_70103_1_) {
   }
-  
+
   @SideOnly(Side.CLIENT)
   private void doEffect() {
     String s1 = "fireworks.largeBlast";
