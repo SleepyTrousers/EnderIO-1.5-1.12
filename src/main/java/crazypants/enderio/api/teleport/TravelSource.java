@@ -2,6 +2,9 @@ package crazypants.enderio.api.teleport;
 
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
+import crazypants.enderio.teleport.TravelController;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 
 public enum TravelSource {
     BLOCK() {
@@ -39,7 +42,15 @@ public enum TravelSource {
     }
 
     public static int getMaxDistanceSq() {
-        return STAFF.getMaxDistanceTravelledSq();
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+
+        if (player == null) {
+            return 0;
+        }
+
+        return TravelController.instance.isTravelItemActive(player)
+                ? TravelSource.STAFF.getMaxDistanceTravelledSq()
+                : TravelSource.BLOCK.getMaxDistanceTravelledSq();
     }
 
     public final String sound;
