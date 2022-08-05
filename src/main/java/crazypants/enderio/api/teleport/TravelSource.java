@@ -1,5 +1,7 @@
 package crazypants.enderio.api.teleport;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.teleport.TravelController;
@@ -41,6 +43,7 @@ public enum TravelSource {
         return STAFF.getMaxDistanceTravelledSq();
     }
 
+    @SideOnly(Side.CLIENT)
     public static int getMaxDistanceSq() {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
