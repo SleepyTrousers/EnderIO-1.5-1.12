@@ -80,8 +80,7 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
         Minecraft.getMinecraft().entityRenderer.disableLightmap(0);
 
         RenderUtil.bindBlockTexture();
-        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-        GL11.glPushAttrib(GL11.GL_LIGHTING_BIT);
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_LIGHTING_BIT);
 
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 
@@ -115,7 +114,6 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
 
         renderLabel(tileentity, x, y, z, ta, sf);
 
-        GL11.glPopAttrib();
         GL11.glPopAttrib();
 
         Minecraft.getMinecraft().entityRenderer.enableLightmap(0);
