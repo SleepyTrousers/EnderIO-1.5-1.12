@@ -8,11 +8,11 @@ Issues can be reported to the [GTNH tracker](https://github.com/GTNewHorizons/GT
 All code (excluding the bundled APIs from other mods, which are covered by their respective licenses) were released without restriction into the public domain under the CC0 1.0 license (http://creativecommons.org/publicdomain/zero/1.0/legalcode) FAQ (https://wiki.creativecommons.org/CC0_FAQ).
 Do what you want with it, as long as you smile while doing so.
 
-###GTNH Modifications:
+### GTNH Modifications:
 
 LGPL v3.0 or later. Feel free to use our changes, just give back any changes you make to the community as well!
 
-###Sound Credits
+### Sound Credits
 
 Most sound attributed under Creative Commons Attribution 3.0 Unported (CC BY 3.0)
 

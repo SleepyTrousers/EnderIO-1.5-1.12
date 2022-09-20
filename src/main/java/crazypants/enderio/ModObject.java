@@ -120,7 +120,9 @@ public enum ModObject {
 
     blockEnderRail,
 
-    itemEnderFood;
+    itemEnderFood,
+
+    itemInfiniteTravelStaff;
 
     public final String unlocalisedName;
 

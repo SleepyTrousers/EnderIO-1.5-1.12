@@ -150,6 +150,7 @@ import crazypants.enderio.material.endergy.ItemAlloyEndergy;
 import crazypants.enderio.material.endergy.ItemGrindingBallEndergy;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.rail.BlockEnderRail;
+import crazypants.enderio.teleport.ItemInfiniteTravelStaff;
 import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.TeleportRecipes;
 import crazypants.enderio.teleport.TravelController;
@@ -228,6 +229,7 @@ public class EnderIO {
     public static BlockTelePad blockTelePad;
     public static ItemCoordSelector itemCoordSelector;
     public static ItemTravelStaff itemTravelStaff;
+    public static ItemInfiniteTravelStaff itemInfiniteTravelStaff;
 
     // Painter
     public static BlockPainter blockPainter;
@@ -479,6 +481,7 @@ public class EnderIO {
         itemYetaWench = ItemYetaWrench.create();
         itemEnderface = ItemEnderface.create();
         itemTravelStaff = ItemTravelStaff.create();
+        itemInfiniteTravelStaff = ItemInfiniteTravelStaff.create();
         itemConduitProbe = ItemConduitProbe.create();
 
         itemXpTransfer = ItemXpTransfer.create();
