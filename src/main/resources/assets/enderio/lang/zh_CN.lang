@@ -136,7 +136,7 @@ enderio.itemMEConduit.channelsUsed=第{0,number}频道, 共{1,number}频道
 enderio.itemOCConduit.name=网络导管(OC)
 
 #Entity
-entity.witherSkeleton.name=凋零骷髅
+entity.witherSkeleton.name=凋灵骷髅
 
 #Materials
 enderio.itemMaterial.name=材料
@@ -243,7 +243,7 @@ enderio.darkGrindingBall.tooltip.detailed.line4=功率降低
 enderio.darkSteelRod.name=玄钢杆
 
 tile.blockReinforcedObsidian.name=强化黑曜石
-tile.blockReinforcedObsidian.tooltip.common.line1=能抵挡凋零
+tile.blockReinforcedObsidian.tooltip.common.line1=能抵挡凋灵
 
 #Quartz / Glass
 tile.blockFusedQuartz.name=石英玻璃
@@ -1023,12 +1023,14 @@ enderio.gui.machine.button.storelevels=储存10级
 enderio.gui.machine.tooltip.storelevels=玩家XP
 enderio.gui.machine.button.storeall=储存玩家
 enderio.gui.machine.tooltip.storeall=全部XP
+
 enderio.gui.machine.button.retrievelevel=取出1级
 enderio.gui.machine.tooltip.retrievelevel=玩家XP等级
 enderio.gui.machine.button.retrievelevels=取出10级
 enderio.gui.machine.tooltip.retrievelevels=玩家XP等级
 enderio.gui.machine.button.retrieveall=取出全部
 enderio.gui.machine.tooltip.retrieveall=玩家XP等级
+
 enderio.gui.machine.ioMode.overlay.tooltip=配置IO
 enderio.gui.machine.ioMode.overlay.tooltip.visible.line1=Shift点击会重置各面
 enderio.gui.machine.ioMode.overlay.tooltip.visible.line2=至默认设置
@@ -1156,6 +1158,9 @@ enderio.gui.travelAccessable.ok=已授权
 enderio.gui.travelAccessable.skipLocked=跳过锁定锚, 使用定向传送.
 enderio.gui.travelAccessable.skipObstructed=跳过不通畅锚.
 enderio.gui.travelAccessable.skipPrivate=跳过私有锚.
+enderio.gui.travelAccessable.tooltip.visible=可见性
+enderio.gui.travelAccessable.tooltip.visible.desc1=关闭时,无法透过其他方块看到此方块.
+enderio.gui.travelAccessable.tooltip.visible.desc2=用作电梯时比较实用.
 
 enderio.gui.telepad.configure.travel=旅行设置
 enderio.gui.telepad.configure.telepad=传送台设置
@@ -1165,6 +1170,83 @@ enderio.gui.telepad.blocked=传送锁定!
 enderio.gui.spawnGurad.showRange=显示范围
 enderio.gui.spawnGurad.hideRange=隐藏范围
 enderio.gui.spawnGurad.range=范围:
+
+# Filters
+enderio.gui.item_filter.damage.disabled=忽略耐久
+enderio.gui.item_filter.damage.damage_00_25=至多25%耐久损失
+enderio.gui.item_filter.damage.damage_25_00=超过25%耐久损失
+enderio.gui.item_filter.damage.damage_00_50=至多50%耐久损失
+enderio.gui.item_filter.damage.damage_50_00=超过50%耐久损失
+enderio.gui.item_filter.damage.damage_00_75=至多75%耐久损失
+enderio.gui.item_filter.damage.damage_75_00=超过75%耐久损失
+enderio.gui.item_filter.damage.damage_00_00=无耐久损失
+enderio.gui.item_filter.damage.damage_01_00=有耐久损失
+enderio.gui.item_filter.damage.damage_yes=可以损失耐久
+enderio.gui.item_filter.damage.damage_not=无法损失耐久
+
+enderio.gui.edit_item_filter=编辑过滤器设置
+enderio.gui.item_filter.close=关闭过滤器
+enderio.gui.item_filter.close2=返回上一个库存
+
+enderio.gui.item_filter.whitelist=白名单
+enderio.gui.item_filter.blacklist=黑名单
+enderio.gui.item_filter.match_meta=匹配Meta数据
+enderio.gui.item_filter.ignore_meta=忽略Meta数据
+enderio.gui.item_filter.sticky_enabled=启用粘滞模式
+enderio.gui.item_filter.sticky_enabled2=选中的物品只会被送往粘滞输出端
+enderio.gui.item_filter.sticky_disabled=禁用粘滞模式
+enderio.gui.item_filter.ore_dic_enabled=启用矿物辞典
+enderio.gui.item_filter.ore_dic_disabled=禁用矿物辞典
+enderio.gui.item_filter.match_nbt=匹配NBT
+enderio.gui.item_filter.ignore_nbt=忽略NBT
+
+enderio.gui.existing.item_filter.snapshot=快照
+enderio.gui.existing.item_filter.merge=合并
+enderio.gui.existing.item_filter.clear=清除
+enderio.gui.existing.item_filter.show=显示
+enderio.gui.existing.item_filter.snapshot2=可选：如果还未设置快照,库存内容将被作为过滤内容
+enderio.gui.existing.item_filter.merge2=将一个新的快照合并到当前快照
+enderio.gui.existing.item_filter.clear2=清除快照
+enderio.gui.existing.item_filter.show2=显示当前快照
+enderio.item.item_existing_item_filter.filter_not_updated=过滤器未更新
+enderio.item.item_existing_item_filter.filter_updated=过滤器已更新
+
+enderio.gui.basic_item_filter=基础物品过滤器
+enderio.gui.advanced_item_filter=高级物品过滤器
+enderio.gui.limited_item_filter=限制物品过滤器
+enderio.gui.big_item_filter=大型物品过滤器
+# Note big_advanced_item_filter doesn't have enough space for the full name
+enderio.gui.big_advanced_item_filter=高级大型物品过滤器
+enderio.gui.existing_item_filter=现有物品过滤器
+enderio.gui.mod_item_filter=模组物品过滤器
+enderio.gui.power_item_filter=充能物品过滤器
+enderio.gui.species_item_filter=物种物品过滤器
+enderio.gui.soul_filter_normal=灵魂物品过滤器
+enderio.gui.soul_filter_big=大型灵魂物品过滤器
+enderio.gui.enchantment_filter_normal=附魔物品过滤器
+enderio.gui.enchantment_filter_big=大型附魔物品过滤器
+
+enderio.gui.fluid_filter=基础流体过滤器
+
+enderio.gui.redstone_filter.and=与门红石过滤器
+enderio.gui.redstone_filter.or=或门红石过滤器
+enderio.gui.redstone_filter.nor=或非门红石过滤器
+enderio.gui.redstone_filter.nand=与非门红石过滤器
+enderio.gui.redstone_filter.xor=异或门红石过滤器
+enderio.gui.redstone_filter.xnor=同或门红石过滤器
+enderio.gui.redstone_filter.counting=计次红石过滤器
+enderio.gui.redstone_filter.timer=计时红石过滤器
+
+enderio.gui.mod.item_filter.delete=删除
+enderio.gui.mod.item_filter.slot=输入槽
+
+enderio.gui.power.item_filter.compare=比较模式
+enderio.gui.power.item_filter.percent=充能百分比
+
+enderio.gui.redstone_filter.signal_color=红石信号颜色
+enderio.gui.redstone_filter.input_signal=输入信号
+enderio.gui.redstone_filter.count=计数
+enderio.gui.redstone_filter.time=计时
 
 #conduits
 enderio.gui.conduit.ioMode=模式
@@ -1238,7 +1320,7 @@ enderio.weatherObelisk.fuelTank=大气通量仓
 
 #Enchants
 enchantment.enderio.soulBound=灵魂绑定
-description.enchantment.enderio.soulBound=该附魔使物品免于死亡掉落
+description.enchantment.enderio.soulBound=附魔有灵魂绑定的物品/工具/装备在玩家死亡后仍然留在物品栏中,不会掉落.
 
 #Configuration
 enderio.config.title=末影接口配置文件
@@ -1310,4 +1392,3 @@ enderio.tooltip.meta=Meta:
 enderio.tooltip.uid=UID:
 enderio.tooltip.anvilupgrades=铁砧升级:
 enderio.waila.config.hiddenfacades=隐形栅栏
-
