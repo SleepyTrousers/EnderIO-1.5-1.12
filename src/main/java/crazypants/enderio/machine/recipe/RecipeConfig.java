@@ -136,14 +136,8 @@ public class RecipeConfig {
                 }
                 for (RecipeElement recipe : group.recipes.values()) {
                     if (recipe.isValid()) {
-                        if (modifyGroup.recipes.containsKey(recipe.name)) {
-                            Log.debug("Replacing core recipe " + recipe.name + "  with user defined recipe.");
-                        } else {
-                            Log.debug("Added user defined recipe " + recipe.name);
-                        }
                         modifyGroup.addRecipe(recipe);
                     } else {
-                        Log.debug("Removed recipe " + recipe.name + " due to user config.");
                         modifyGroup.recipes.remove(recipe.name);
                     }
                 }
