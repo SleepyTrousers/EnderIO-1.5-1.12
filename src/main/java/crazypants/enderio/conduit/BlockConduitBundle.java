@@ -167,7 +167,11 @@ public class BlockConduitBundle extends BlockEio
 
         IIcon tex = null;
 
-        TileConduitBundle cb = (TileConduitBundle) world.getTileEntity(target.blockX, target.blockY, target.blockZ);
+        TileEntity cbe = world.getTileEntity(target.blockX, target.blockY, target.blockZ);
+        if (!(cbe instanceof TileConduitBundle)) {
+            return false;
+        }
+        TileConduitBundle cb = (TileConduitBundle) cbe;
         if (ConduitUtil.isSolidFacadeRendered(cb, Minecraft.getMinecraft().thePlayer)) {
             if (cb.getFacadeId() != null) {
                 tex = cb.getFacadeId().getIcon(target.sideHit, cb.getFacadeMetadata());
@@ -258,7 +262,7 @@ public class BlockConduitBundle extends BlockEio
             World world = EnderIO.proxy.getClientWorld();
             BlockCoord bc = new BlockCoord(snd.getXPosF(), snd.getYPosF(), snd.getZPosF());
             TileEntity te = bc.getTileEntity(world);
-            if (te != null && te instanceof TileConduitBundle && ((TileConduitBundle) te).hasFacade()) {
+            if (te instanceof TileConduitBundle && ((TileConduitBundle) te).hasFacade()) {
                 Block facade = getFacade(world, bc.x, bc.y, bc.z, -1);
                 ConduitUtil.playHitSound(facade.stepSound, world, bc.x, bc.y, bc.z);
             } else {
@@ -275,7 +279,7 @@ public class BlockConduitBundle extends BlockEio
         if ("EnderIO:silence.step".equals(path) && world.isRemote) {
             BlockCoord bc = new BlockCoord(event.entity.posX, event.entity.posY - 2, event.entity.posZ);
             TileEntity te = bc.getTileEntity(world);
-            if (te != null && te instanceof TileConduitBundle && ((TileConduitBundle) te).hasFacade()) {
+            if (te instanceof TileConduitBundle && ((TileConduitBundle) te).hasFacade()) {
                 Block facade = getFacade(world, bc.x, bc.y, bc.z, -1);
                 ConduitUtil.playStepSound(facade.stepSound, world, bc.x, bc.y, bc.z);
             } else {
@@ -306,7 +310,11 @@ public class BlockConduitBundle extends BlockEio
         }
         if (ret == null && target != null && target.hitInfo instanceof CollidableComponent) {
             CollidableComponent cc = (CollidableComponent) target.hitInfo;
-            TileConduitBundle bundle = (TileConduitBundle) world.getTileEntity(x, y, z);
+            TileEntity te = world.getTileEntity(x, y, z);
+            if (!(te instanceof TileConduitBundle)) {
+                return null;
+            }
+            TileConduitBundle bundle = (TileConduitBundle) te;
             IConduit conduit = bundle.getConduit(cc.conduitType);
             if (conduit != null) {
                 ret = conduit.createItem();
@@ -410,8 +418,10 @@ public class BlockConduitBundle extends BlockEio
 
     @Override
     public float getBlockHardness(World world, int x, int y, int z) {
-        IConduitBundle te = (IConduitBundle) world.getTileEntity(x, y, z);
-        return te != null && te.getFacadeType() == FacadeType.HARDENED ? blockHardness * 10 : blockHardness;
+        TileEntity te = world.getTileEntity(x, y, z);
+        return te instanceof IConduitBundle && ((IConduitBundle) te).getFacadeType() == FacadeType.HARDENED
+                ? blockHardness * 10
+                : blockHardness;
     }
 
     @Override
@@ -425,8 +435,10 @@ public class BlockConduitBundle extends BlockEio
             double explosionY,
             double explosionZ) {
         float resist = getExplosionResistance(par1Entity);
-        IConduitBundle te = (IConduitBundle) world.getTileEntity(x, y, z);
-        return te != null && te.getFacadeType() == FacadeType.HARDENED ? resist * 10 : resist;
+        TileEntity te = world.getTileEntity(x, y, z);
+        return te instanceof IConduitBundle && ((IConduitBundle) te).getFacadeType() == FacadeType.HARDENED
+                ? resist * 10
+                : resist;
     }
 
     @SubscribeEvent
@@ -485,10 +497,11 @@ public class BlockConduitBundle extends BlockEio
 
     @Override
     public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
-        IConduitBundle te = (IConduitBundle) world.getTileEntity(x, y, z);
-        if (te == null) {
+        TileEntity rte = world.getTileEntity(x, y, z);
+        if (!(rte instanceof IConduitBundle)) {
             return true;
         }
+        IConduitBundle te = (IConduitBundle) rte;
 
         boolean breakBlock = true;
         List<ItemStack> drop = new ArrayList<ItemStack>();
@@ -609,10 +622,11 @@ public class BlockConduitBundle extends BlockEio
     public boolean onBlockActivated(
             World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9) {
 
-        IConduitBundle bundle = (IConduitBundle) world.getTileEntity(x, y, z);
-        if (bundle == null) {
+        TileEntity te = world.getTileEntity(x, y, z);
+        if (!(te instanceof IConduitBundle)) {
             return false;
         }
+        IConduitBundle bundle = (IConduitBundle) te;
 
         ItemStack stack = player.getCurrentEquippedItem();
         if (stack != null && stack.getItem() == EnderIO.itemConduitFacade) {
@@ -805,10 +819,11 @@ public class BlockConduitBundle extends BlockEio
 
     @Override
     public boolean tryRotateFacade(World world, int x, int y, int z, ForgeDirection axis) {
-        IConduitBundle bundle = (IConduitBundle) world.getTileEntity(x, y, z);
-        if (bundle == null) {
+        TileEntity te = world.getTileEntity(x, y, z);
+        if (!(te instanceof IConduitBundle)) {
             return false;
         }
+        IConduitBundle bundle = (IConduitBundle) te;
 
         int oldMeta = bundle.getFacadeMetadata();
         int newMeta = PainterUtil.rotateFacadeMetadata(bundle.getFacadeId(), oldMeta, axis);
