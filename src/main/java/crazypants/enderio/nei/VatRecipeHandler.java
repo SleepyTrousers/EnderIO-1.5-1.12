@@ -189,12 +189,12 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
     }
 
     @Override
-    public List<String> handleItemTooltip(GuiRecipe gui, ItemStack stack, List<String> currenttip, int recipeIndex) {
+    public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack stack, List<String> currenttip, int recipeIndex) {
         return currenttip;
     }
 
     @Override
-    public List<String> handleTooltip(GuiRecipe gui, List<String> currenttip, int recipeIndex) {
+    public List<String> handleTooltip(GuiRecipe<?> gui, List<String> currenttip, int recipeIndex) {
         InnerVatRecipe rec = (InnerVatRecipe) arecipes.get(recipeIndex);
         Point pos = GuiDraw.getMousePosition();
         Point offset = gui.getRecipePosition(recipeIndex);

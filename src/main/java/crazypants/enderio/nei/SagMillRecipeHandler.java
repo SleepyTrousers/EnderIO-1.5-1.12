@@ -124,7 +124,7 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
     }
 
     @Override
-    public List<String> handleItemTooltip(GuiRecipe gui, ItemStack stack, List<String> currenttip, int recipeIndex) {
+    public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack stack, List<String> currenttip, int recipeIndex) {
         MillRecipe recipe = (MillRecipe) arecipes.get(recipeIndex);
         float chance = recipe.getChanceForOutput(stack);
         if (chance > 0 && chance < 1) {

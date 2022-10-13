@@ -44,6 +44,10 @@ public class CustomSeedFarmer implements IFarmerJoe {
         if (ztonesSoil != null) {
             addTilledBlock(ztonesSoil);
         }
+        Block rtSoil = GameRegistry.findBlock("RandomThings", "fertilizedDirt_tilled");
+        if (rtSoil != null) {
+            addTilledBlock(rtSoil);
+        }
     }
 
     public void addTilledBlock(Block block) {
