@@ -164,7 +164,7 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
             int maxLevel = recipe.getEnchantment().getMaxLevel();
             if (maxLevel > 1) {
                 int level = cycle % maxLevel + 1;
-                input.get(1).item.stackSize *= level;
+                input.get(1).item.stackSize = recipe.getItemsPerLevel() * level;
             }
             return input;
         }
