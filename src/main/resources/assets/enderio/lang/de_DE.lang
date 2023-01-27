@@ -1107,7 +1107,7 @@ enderio.config.spawner.tooltip=Mir sind die geistreichen Tooltips ausgegangen
 
 #Keybinds/Waila/NEI/Tooltips
 enderio.category.darksteelarmor=Dunkelstahlrüstung
-enderio.category.tools=Werkzeuge
+enderio.category.tools=EnderIO - Werkzeuge
 enderio.keybind.glidertoggle=Gleiterschaltung
 enderio.keybind.gogglesofrevealing=Brille der Enthüllung
 enderio.keybind.nightvision=Nachtsicht

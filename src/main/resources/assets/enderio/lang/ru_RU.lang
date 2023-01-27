@@ -1289,7 +1289,7 @@ enderio.config.spawner.tooltip=У меня закончились остроум
 
 #Keybinds/Waila/NEI/Tooltips
 enderio.category.darksteelarmor=Броня из тёмной стали
-enderio.category.tools=Инструменты
+enderio.category.tools=EnderIO - Инструменты
 enderio.keybind.glidertoggle=Переключить планер
 enderio.keybind.gogglesofrevealing=Очки откровения
 enderio.keybind.nightvision=Ночное зрение

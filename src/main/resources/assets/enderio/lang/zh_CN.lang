@@ -1369,7 +1369,7 @@ enderio.config.spawner.tooltip=我已经想不出什么有趣的提示文本了.
 
 #Keybinds/Waila/NEI/Tooltips
 enderio.category.darksteelarmor=玄铁护甲
-enderio.category.tools=工具
+enderio.category.tools=EnderIO - 工具
 enderio.keybind.glidertoggle=滑翔开关
 enderio.keybind.gogglesofrevealing=揭示护目镜
 enderio.keybind.nightvision=夜视

@@ -55,22 +55,22 @@ public class KeyTracker {
     public KeyTracker() {
         glideKey = new KeyBinding(
                 EnderIO.lang.localize("keybind.glidertoggle"),
-                Keyboard.KEY_G,
+                Keyboard.KEY_NONE,
                 EnderIO.lang.localize("category.darksteelarmor"));
         ClientRegistry.registerKeyBinding(glideKey);
         soundDetectorKey = new KeyBinding(
                 EnderIO.lang.localize("keybind.soundlocator"),
-                Keyboard.KEY_L,
+                Keyboard.KEY_NONE,
                 EnderIO.lang.localize("category.darksteelarmor"));
         ClientRegistry.registerKeyBinding(soundDetectorKey);
         nightVisionKey = new KeyBinding(
                 EnderIO.lang.localize("keybind.nightvision"),
-                Keyboard.KEY_P,
+                Keyboard.KEY_NONE,
                 EnderIO.lang.localize("category.darksteelarmor"));
         ClientRegistry.registerKeyBinding(nightVisionKey);
         gogglesKey = new KeyBinding(
                 EnderIO.lang.localize("keybind.gogglesofrevealing"),
-                Keyboard.KEY_R,
+                Keyboard.KEY_NONE,
                 EnderIO.lang.localize("category.darksteelarmor"));
         ClientRegistry.registerKeyBinding(gogglesKey);
 
@@ -94,12 +94,12 @@ public class KeyTracker {
 
         yetaWrenchMode = new KeyBinding(
                 EnderIO.lang.localize("keybind.yetawrenchmode"),
-                Keyboard.KEY_Y,
+                Keyboard.KEY_NONE,
                 EnderIO.lang.localize("category.tools"));
         ClientRegistry.registerKeyBinding(yetaWrenchMode);
 
         magnetKey = new KeyBinding(
-                EnderIO.lang.localize("keybind.magnet"), Keyboard.CHAR_NONE, EnderIO.lang.localize("category.tools"));
+                EnderIO.lang.localize("keybind.magnet"), Keyboard.KEY_NONE, EnderIO.lang.localize("category.tools"));
         ClientRegistry.registerKeyBinding(magnetKey);
     }
 
@@ -155,38 +155,38 @@ public class KeyTracker {
     }
 
     private void handleJump() {
-        if (!JumpUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
-            return;
-        }
         if (jumpKey.isPressed()) {
+            if (!JumpUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
+                return;
+            }
             toggleDarkSteelController(Type.JUMP, "darksteel.upgrade.jump");
         }
     }
 
     private void handleSpeed() {
-        if (!SpeedUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
-            return;
-        }
         if (speedKey.isPressed()) {
+            if (!SpeedUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
+                return;
+            }
             toggleDarkSteelController(Type.SPEED, "darksteel.upgrade.speed");
         }
     }
 
     private void handleStepAssist() {
-        if (!JumpUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
-            return;
-        }
         if (stepAssistKey.isPressed()) {
+            if (!JumpUpgrade.isEquipped(Minecraft.getMinecraft().thePlayer)) {
+                return;
+            }
             toggleDarkSteelController(Type.STEP_ASSIST, "darksteel.upgrade.stepAssist");
         }
     }
 
     private void handleGoggles() {
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        if (!GogglesOfRevealingUpgrade.isUpgradeEquipped(player)) {
-            return;
-        }
         if (gogglesKey.isPressed()) {
+            EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+            if (!GogglesOfRevealingUpgrade.isUpgradeEquipped(player)) {
+                return;
+            }
             boolean isActive = !DarkSteelItems.itemDarkSteelHelmet.isGogglesUgradeActive();
             sendEnabledChatMessage("darksteel.upgrade.gogglesOfRevealing", isActive);
             DarkSteelItems.itemDarkSteelHelmet.setGogglesUgradeActive(isActive);
@@ -235,20 +235,18 @@ public class KeyTracker {
     }
 
     private void handleGlide() {
-        if (!DarkSteelController.instance.isGliderUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
-            return;
-        }
-        if (glideKey.isPressed()) {
+        if (glideKey.isPressed()
+                && DarkSteelController.instance.isGliderUpgradeEquipped(Minecraft.getMinecraft().thePlayer)) {
             toggleDarkSteelController(Type.GLIDE, "darksteel.upgrade.glider");
         }
     }
 
     private void handleNightVision() {
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        if (!DarkSteelController.instance.isNightVisionUpgradeOrEnchEquipped(player)) {
-            return;
-        }
         if (nightVisionKey.isPressed()) {
+            EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+            if (!DarkSteelController.instance.isNightVisionUpgradeOrEnchEquipped(player)) {
+                return;
+            }
             boolean isActive = !DarkSteelController.instance.isNightVisionActive();
             if (isActive) {
                 player.worldObj.playSound(
@@ -276,10 +274,7 @@ public class KeyTracker {
     public boolean isSoundDetectorUpgradeEquipped(EntityClientPlayerMP player) {
         ItemStack helmet = player.getEquipmentInSlot(4);
         SoundDetectorUpgrade upgrade = SoundDetectorUpgrade.loadFromItem(helmet);
-        if (upgrade == null) {
-            return false;
-        }
-        return true;
+        return upgrade != null;
     }
 
     public KeyBinding getYetaWrenchMode() {

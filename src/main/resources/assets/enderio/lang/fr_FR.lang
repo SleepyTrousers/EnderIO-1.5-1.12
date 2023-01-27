@@ -993,7 +993,7 @@ enderio.config.spawner.tooltip=Je suis a cours d'infobulles marrantes.
 
 #Keybinds/Waila/NEI/Tooltips
 enderio.category.darksteelarmor=Armure d'Acier Sombre
-enderio.category.tools=Outils
+enderio.category.tools=EnderIO - Outils
 enderio.keybind.glidertoggle=Mode Planeur
 enderio.keybind.gogglesofrevealing=Lunettes de Révélation
 enderio.keybind.nightvision=Vision Nocturne

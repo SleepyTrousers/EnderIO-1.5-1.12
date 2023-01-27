@@ -1375,7 +1375,7 @@ enderio.config.spawner.tooltip=I ran out of witty tooltips.
 
 #Keybinds/Waila/NEI/Tooltips
 enderio.category.darksteelarmor=Dark Steel Armor
-enderio.category.tools=Tools
+enderio.category.tools=EnderIO - Tools
 enderio.keybind.glidertoggle=Glider Toggle
 enderio.keybind.gogglesofrevealing=Goggles of Revealing
 enderio.keybind.nightvision=Night Vision

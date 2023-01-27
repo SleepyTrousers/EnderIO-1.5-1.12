@@ -978,7 +978,7 @@ enderio.config.spawner.tooltip=Me he quedado sin descripciones ingeniosas.
 
 #Keybinds/Waila/NEI/Tooltips
 enderio.category.darksteelarmor=Armadura de Acero Oscuro
-enderio.category.tools=Herramientas
+enderio.category.tools=EnderIO - Herramientas
 enderio.keybind.glidertoggle=Activar/Desactivar Planeador
 enderio.keybind.gogglesofrevealing=Gafas de Revelación
 enderio.keybind.nightvision=Visión Nocturna
