@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
+import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import java.util.List;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -14,15 +15,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class ItemInfiniteTravelStaff extends ItemTravelStaff {
+public class ItemTeleportStaff extends ItemTravelStaff {
 
-    protected ItemInfiniteTravelStaff() {
+    protected ItemTeleportStaff() {
         super();
-        setUnlocalizedName(ModObject.itemInfiniteTravelStaff.name());
+        setUnlocalizedName(ModObject.itemTeleportStaff.name());
     }
 
-    public static ItemInfiniteTravelStaff create() {
-        ItemInfiniteTravelStaff result = new ItemInfiniteTravelStaff();
+    public static ItemTeleportStaff create() {
+        ItemTeleportStaff result = new ItemTeleportStaff();
         result.init();
         return result;
     }
@@ -31,12 +32,12 @@ public class ItemInfiniteTravelStaff extends ItemTravelStaff {
         if (ep == null || ep.getCurrentEquippedItem() == null) {
             return false;
         }
-        return ep.getCurrentEquippedItem().getItem() == EnderIO.itemInfiniteTravelStaff;
+        return ep.getCurrentEquippedItem().getItem() == EnderIO.itemTeleportStaff;
     }
 
     @Override
     protected void init() {
-        GameRegistry.registerItem(this, ModObject.itemInfiniteTravelStaff.unlocalisedName);
+        GameRegistry.registerItem(this, ModObject.itemTeleportStaff.unlocalisedName);
     }
 
     @Override
@@ -47,12 +48,32 @@ public class ItemInfiniteTravelStaff extends ItemTravelStaff {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister IIconRegister) {
-        itemIcon = IIconRegister.registerIcon("enderio:itemInfiniteTravelStaff");
+        itemIcon = IIconRegister.registerIcon("enderio:itemTeleportStaff");
+    }
+
+    @Override
+    public ItemStack onItemRightClick(ItemStack equipped, World world, EntityPlayer player) {
+        if (world.isRemote) {
+            if (player.isSneaking()) {
+                TravelController.instance.activateTravelAccessable(
+                        equipped, world, player, TravelSource.TELEPORT_STAFF);
+            } else {
+                TravelController.instance.doTeleport(player);
+            }
+        }
+        player.swingItem();
+        return equipped;
+    }
+
+    @Override
+    public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
+        // Don't allow extracting energy.
+        return 0;
     }
 
     @Override
     public void extractInternal(ItemStack item, int powerUse) {
-        return;
+        // Do nothing, as we have infinite energy.
     }
 
     @Override
@@ -79,11 +100,5 @@ public class ItemInfiniteTravelStaff extends ItemTravelStaff {
     @Override
     public boolean isActive(EntityPlayer ep, ItemStack equipped) {
         return isEquipped(ep);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean isFull3D() {
-        return true;
     }
 }

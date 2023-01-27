@@ -65,9 +65,11 @@ public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {
 
         Vector3d eye = Util.getEyePositionEio(Minecraft.getMinecraft().thePlayer);
         Vector3d loc = new Vector3d(tileentity.xCoord + 0.5, tileentity.yCoord + 0.5, tileentity.zCoord + 0.5);
-        double maxDistance = TravelController.instance.isTravelItemActive(Minecraft.getMinecraft().thePlayer)
-                ? TravelSource.STAFF.getMaxDistanceTravelledSq()
-                : TravelSource.BLOCK.getMaxDistanceTravelledSq();
+        double maxDistance = TravelSource.BLOCK.getMaxDistanceTravelledSq();
+        TravelSource source = TravelController.instance.getTravelItemTravelSource(Minecraft.getMinecraft().thePlayer);
+        if (source != null) {
+            maxDistance = source.getMaxDistanceTravelledSq();
+        }
         if (eye.distanceSquared(loc) > maxDistance) {
             return;
         }

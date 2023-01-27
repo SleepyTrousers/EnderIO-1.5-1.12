@@ -26,6 +26,7 @@ import crazypants.enderio.teleport.GuiTravelAuth;
 import crazypants.enderio.teleport.packet.PacketAccessMode;
 import crazypants.enderio.teleport.packet.PacketDrainStaff;
 import crazypants.enderio.teleport.packet.PacketLabel;
+import crazypants.enderio.teleport.packet.PacketLongDistanceTravelEvent;
 import crazypants.enderio.teleport.packet.PacketOpenAuthGui;
 import crazypants.enderio.teleport.packet.PacketPassword;
 import crazypants.enderio.teleport.packet.PacketTravelEvent;
@@ -60,6 +61,11 @@ public class BlockTravelAnchor extends BlockEio
                 PacketLabel.class, PacketLabel.class, PacketHandler.nextID(), Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
                 PacketTravelEvent.class, PacketTravelEvent.class, PacketHandler.nextID(), Side.SERVER);
+        PacketHandler.INSTANCE.registerMessage(
+                PacketLongDistanceTravelEvent.class,
+                PacketLongDistanceTravelEvent.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
                 PacketDrainStaff.class, PacketDrainStaff.class, PacketHandler.nextID(), Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(

@@ -243,6 +243,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
         }
         this.master = this;
         this.isMaster = true;
+        TravelController.instance.travelDestinations.add(getLocation());
         return true;
     }
 
@@ -260,6 +261,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
                 telepad.updateNeighborTEs();
             }
         }
+        TravelController.instance.travelDestinations.remove(getLocation());
     }
 
     private List<BlockCoord> getSurroundingCoords() {
@@ -693,7 +695,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
     @Override
     public boolean canSeeBlock(EntityPlayer playerName) {
-        return isMaster() && inNetwork();
+        return isTravelSource();
     }
 
     /* IInternalPowerReceiver */

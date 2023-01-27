@@ -6,6 +6,7 @@ import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.machine.painter.IPaintableTileEntity;
+import crazypants.enderio.teleport.TravelController;
 import crazypants.util.UserIdent;
 import java.util.ArrayList;
 import java.util.List;
@@ -328,5 +329,25 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
     @Override
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    @Override
+    public void validate() {
+        super.validate();
+        if (isTravelSource()) {
+            TravelController.instance.travelDestinations.add(getLocation());
+        }
+    }
+
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        TravelController.instance.travelDestinations.remove(getLocation());
+    }
+
+    @Override
+    public void onChunkUnload() {
+        super.onChunkUnload();
+        TravelController.instance.travelDestinations.remove(getLocation());
     }
 }

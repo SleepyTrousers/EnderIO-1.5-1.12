@@ -46,7 +46,7 @@ public class TelePadSpecialRenderer extends TravelEntitySpecialRenderer {
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float p_147500_8_) {
         TileTelePad tp = (TileTelePad) te;
-        if (tp.isMaster() && tp.inNetwork()) {
+        if (tp.isTravelSource()) {
             TravelController.instance.addCandidate(tp.getLocation());
             {
                 GL11.glPushMatrix();

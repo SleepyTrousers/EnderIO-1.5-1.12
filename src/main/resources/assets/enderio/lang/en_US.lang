@@ -726,12 +726,12 @@ item.itemTravelStaff.tooltip.detailed.line4=Shift-R-Click will teleport the
 item.itemTravelStaff.tooltip.detailed.line5=player a short distance
 enderio.itemTravelStaff.notEnoughPower=Not enough power
 
-item.itemInfiniteTravelStaff.name=Creative Staff of Traveling
-item.itemInfiniteTravelStaff.tooltip.detailed.line1=When held Travel Anchors and EnderIO
-item.itemInfiniteTravelStaff.tooltip.detailed.line2=blocks become visible and can be
-item.itemInfiniteTravelStaff.tooltip.detailed.line3=activated by R-Click
-item.itemInfiniteTravelStaff.tooltip.detailed.line4=Shift-R-Click will teleport the
-item.itemInfiniteTravelStaff.tooltip.detailed.line5=player a short distance
+item.itemTeleportStaff.name=Staff of Teleportation
+item.itemTeleportStaff.tooltip.detailed.line1=R-Click to teleport wherever you are looking
+item.itemTeleportStaff.tooltip.detailed.line2=Shift-R-Click to teleport to Travel Anchors
+item.itemTeleportStaff.tooltip.detailed.line3=R-Click on a nearby block to try to teleport
+item.itemTeleportStaff.tooltip.detailed.line4=to the other side
+
 item.itemCoordSelector.name=Coordinate Selector
 item.itemCoordSelector.tooltip.detailed.line1=Stores coordinates of a block.
 item.itemCoordSelector.tooltip.detailed.line2=Right click at block to select

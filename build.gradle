@@ -1,4 +1,4 @@
-//version: 1671313514
+//version: 1674409054
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -144,6 +144,7 @@ propertyDefaultIfUnset("modrinthProjectId", "")
 propertyDefaultIfUnset("modrinthRelations", "")
 propertyDefaultIfUnset("curseForgeProjectId", "")
 propertyDefaultIfUnset("curseForgeRelations", "")
+propertyDefaultIfUnset("minimizeShadowedDependencies", true)
 
 String javaSourceDir = "src/main/java/"
 String scalaSourceDir = "src/main/scala/"
@@ -319,9 +320,17 @@ if (file('addon.gradle').exists()) {
 apply from: 'repositories.gradle'
 
 configurations {
-    implementation.extendsFrom(shadowImplementation)  // TODO: remove after all uses are refactored
-    implementation.extendsFrom(shadowCompile)
-    implementation.extendsFrom(shadeCompile)
+    // TODO: remove Compile after all uses are refactored to Implementation
+    for (config in [
+                shadowImplementation,
+                shadowCompile,
+                shadeCompile
+            ]) {
+        compileClasspath.extendsFrom(config)
+        runtimeClasspath.extendsFrom(config)
+        testCompileClasspath.extendsFrom(config)
+        testRuntimeClasspath.extendsFrom(config)
+    }
 }
 
 repositories {
@@ -350,7 +359,8 @@ dependencies {
         annotationProcessor('com.google.code.gson:gson:2.8.6')
         annotationProcessor('com.gtnewhorizon:gtnhmixins:2.1.3:processor')
         if (usesMixinDebug.toBoolean()) {
-            runtimeOnly('org.jetbrains:intellij-fernflower:1.2.1.16')
+            runtimeClasspath('org.jetbrains:intellij-fernflower:1.2.1.16')
+            testRuntimeClasspath('org.jetbrains:intellij-fernflower:1.2.1.16')
         }
     }
     if (usesMixins.toBoolean() || forceEnableMixins.toBoolean()) {
@@ -406,7 +416,9 @@ shadowJar {
         attributes(getManifestAttributes())
     }
 
-    minimize()  // This will only allow shading for actually used classes
+    if (minimizeShadowedDependencies.toBoolean()) {
+        minimize()  // This will only allow shading for actually used classes
+    }
     configurations = [
         project.configurations.shadowImplementation,
         project.configurations.shadowCompile
@@ -549,7 +561,9 @@ task shadowDevJar(type: ShadowJar) {
         attributes(getManifestAttributes())
     }
 
-    minimize()  // This will only allow shading for actually used classes
+    if (minimizeShadowedDependencies.toBoolean()) {
+        minimize()  // This will only allow shading for actually used classes
+    }
     configurations = [
         project.configurations.shadowImplementation,
         project.configurations.shadowCompile

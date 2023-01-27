@@ -157,6 +157,15 @@ public final class Config {
     public static float travelAnchorZoomScale = 0.2f;
     public static boolean travelStaffSearchOptimize = true;
 
+    /** The max distance for travelling to a Travel Anchor. */
+    public static int teleportStaffMaxDistance = 2048;
+    /** The max distance for travelling to player look. */
+    public static int teleportStaffMaxBlinkDistance = 512;
+    /**
+     * The distance travelled when no block is found within {@link #teleportStaffMaxBlinkDistance}.
+     */
+    public static int teleportStaffFailedBlinkDistance = 64;
+
     public static int enderIoRange = 8;
     public static boolean enderIoMeAccessEnabled = true;
 
@@ -1180,6 +1189,27 @@ public final class Config {
                                 + "You can now teleport onto the roof. "
                                 + "This config is experimental, so if you encounter any strange behavior, please report to GTNH developer.")
                 .getBoolean(travelStaffSearchOptimize);
+
+        teleportStaffMaxDistance = config.get(
+                        sectionStaff.name,
+                        "teleportStaffMaxDistance",
+                        teleportStaffMaxDistance,
+                        "Max number of blocks teleported when travelling to a Travel Anchor.")
+                .getInt(teleportStaffMaxDistance);
+
+        teleportStaffMaxBlinkDistance = config.get(
+                        sectionStaff.name,
+                        "teleportStaffMaxBlinkDistance",
+                        teleportStaffMaxBlinkDistance,
+                        "Max number of blocks teleported when travelling to player look.")
+                .getInt(teleportStaffMaxBlinkDistance);
+
+        teleportStaffFailedBlinkDistance = config.get(
+                        sectionStaff.name,
+                        "teleportStaffFailedBlinkDistance",
+                        teleportStaffFailedBlinkDistance,
+                        "Number of blocks teleported when no block is being looked at.")
+                .getInt(teleportStaffFailedBlinkDistance);
 
         enderIoRange = config.get(
                         sectionEfficiency.name,

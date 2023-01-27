@@ -17,6 +17,7 @@ import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
@@ -24,6 +25,7 @@ import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.api.IMC;
 import crazypants.enderio.block.BlockDarkSteelAnvil;
@@ -150,7 +152,7 @@ import crazypants.enderio.material.endergy.ItemAlloyEndergy;
 import crazypants.enderio.material.endergy.ItemGrindingBallEndergy;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.rail.BlockEnderRail;
-import crazypants.enderio.teleport.ItemInfiniteTravelStaff;
+import crazypants.enderio.teleport.ItemTeleportStaff;
 import crazypants.enderio.teleport.ItemTravelStaff;
 import crazypants.enderio.teleport.TeleportRecipes;
 import crazypants.enderio.teleport.TravelController;
@@ -229,7 +231,7 @@ public class EnderIO {
     public static BlockTelePad blockTelePad;
     public static ItemCoordSelector itemCoordSelector;
     public static ItemTravelStaff itemTravelStaff;
-    public static ItemInfiniteTravelStaff itemInfiniteTravelStaff;
+    public static ItemTeleportStaff itemTeleportStaff;
 
     // Painter
     public static BlockPainter blockPainter;
@@ -481,7 +483,7 @@ public class EnderIO {
         itemYetaWench = ItemYetaWrench.create();
         itemEnderface = ItemEnderface.create();
         itemTravelStaff = ItemTravelStaff.create();
-        itemInfiniteTravelStaff = ItemInfiniteTravelStaff.create();
+        itemTeleportStaff = ItemTeleportStaff.create();
         itemConduitProbe = ItemConduitProbe.create();
 
         itemXpTransfer = ItemXpTransfer.create();
@@ -882,5 +884,15 @@ public class EnderIO {
     @EventHandler
     public void serverStopped(FMLServerStoppedEvent event) {
         HyperCubeRegister.unload();
+    }
+
+    @EventHandler
+    public void remap(FMLMissingMappingsEvent event) {
+        for (FMLMissingMappingsEvent.MissingMapping missingMapping : event.getAll()) {
+            if (missingMapping.type == GameRegistry.Type.ITEM
+                    && missingMapping.name.equals("EnderIO:itemInfiniteTravelStaff")) {
+                missingMapping.remap(itemTeleportStaff);
+            }
+        }
     }
 }
