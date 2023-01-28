@@ -309,13 +309,15 @@ public class TravelController {
 
         // Map of distance to coordinate for eligible travel destinations (within angle).
         Map<Double, BlockCoord> distanceMap = new TreeMap<>();
-        boolean outOfRange = false;
+        // Limit the max distance at which we'll display an out of range message.
+        // Otherwise, you could trigger the message for any travel anchor on the entire server.
+        double maxMessageDistance = 1.25 * source.getMaxDistanceTravelled();
+        boolean displayOutOfRangeMessage = false;
         for (BlockCoord p : travelDestinations) {
             Vector3d block = new Vector3d(p.x + 0.5, p.y + 0.5, p.z + 0.5);
             block.sub(eye);
             double distance = block.length();
-            if (distance > source.getMaxDistanceTravelled()) {
-                outOfRange = true;
+            if (distance > maxMessageDistance) {
                 continue;
             }
             block.normalize();
@@ -323,11 +325,15 @@ public class TravelController {
             double angle = Math.acos(look.dot(block));
             // Roughly 5 degrees
             if (angle < 0.087) {
-                distanceMap.put(distance, p);
+                if (distance > source.getMaxDistanceTravelled()) {
+                    displayOutOfRangeMessage = true;
+                } else {
+                    distanceMap.put(distance, p);
+                }
             }
         }
 
-        if (outOfRange && distanceMap.isEmpty()) {
+        if (displayOutOfRangeMessage && distanceMap.isEmpty()) {
             player.addChatComponentMessage(new ChatComponentTranslation("enderio.blockTravelPlatform.outOfRange"));
         }
 
