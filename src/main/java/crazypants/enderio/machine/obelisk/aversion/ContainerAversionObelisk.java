@@ -1,9 +1,10 @@
 package crazypants.enderio.machine.obelisk.aversion;
 
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerAversionObelisk extends AbstractMachineContainer<TileAversionObelisk> {
 
@@ -20,6 +21,7 @@ public class ContainerAversionObelisk extends AbstractMachineContainer<TileAvers
             for (int col = 0; col < 4; col++) {
                 final int index = (row * 4) + col;
                 addSlotToContainer(new Slot(getInv(), index, x, y) {
+
                     @Override
                     public boolean isItemValid(ItemStack itemStack) {
                         return getInv().isItemValidForSlot(index, itemStack);

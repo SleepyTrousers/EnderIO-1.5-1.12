@@ -1,5 +1,27 @@
 package crazypants.enderio.conduit.render;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.CubeRenderer;
 import com.enderio.core.client.render.IconUtil;
@@ -7,6 +29,7 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.IBlockAccessWrapper;
 import com.google.common.collect.Lists;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -26,25 +49,6 @@ import crazypants.enderio.conduit.geom.ConduitConnectorType;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.config.Config;
 import crazypants.util.RenderPassHelper;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 @SideOnly(Side.CLIENT)
 public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
@@ -66,8 +70,8 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
                 if (renderer.isDynamic()) {
                     if (brightness == -1) {
                         BlockCoord loc = bundle.getLocation();
-                        brightness =
-                                bundle.getEntity().getWorldObj().getLightBrightnessForSkyBlocks(loc.x, loc.y, loc.z, 0);
+                        brightness = bundle.getEntity().getWorldObj()
+                                .getLightBrightnessForSkyBlocks(loc.x, loc.y, loc.z, 0);
 
                         RenderUtil.bindBlockTexture();
 
@@ -97,8 +101,8 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
     }
 
     @Override
-    public boolean renderWorldBlock(
-            IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks rb) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+            RenderBlocks rb) {
 
         int pass = RenderPassHelper.getBlockRenderPass();
         if (pass == 1) {
@@ -124,8 +128,7 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         if (renderConduit && (pass == 0 || rb.overrideBlockTexture != null)) {
             BlockCoord loc = bundle.getLocation();
             float brightness;
-            if (!Config.updateLightingWhenHidingFacades
-                    && bundle.hasFacade()
+            if (!Config.updateLightingWhenHidingFacades && bundle.hasFacade()
                     && ConduitUtil.isFacadeHidden(bundle, player)) {
                 brightness = 15 << 20 | 15 << 4;
             } else {
@@ -138,8 +141,8 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         return renderedFacade || (bundle.hasFacade() && !bundle.getFacadeId().isOpaqueCube());
     }
 
-    private boolean renderFacade(
-            int x, int y, int z, int pass, RenderBlocks rb, IConduitBundle bundle, EntityClientPlayerMP player) {
+    private boolean renderFacade(int x, int y, int z, int pass, RenderBlocks rb, IConduitBundle bundle,
+            EntityClientPlayerMP player) {
         boolean res = false;
         if (bundle.hasFacade()) {
             res = true;
@@ -186,8 +189,8 @@ public class ConduitBundleRenderer extends TileEntitySpecialRenderer implements 
         return res;
     }
 
-    public void renderConduits(
-            IConduitBundle bundle, double x, double y, double z, float partialTick, float brightness, RenderBlocks rb) {
+    public void renderConduits(IConduitBundle bundle, double x, double y, double z, float partialTick, float brightness,
+            RenderBlocks rb) {
 
         Tessellator tessellator = Tessellator.instance;
         tessellator.setColorOpaque_F(1, 1, 1);

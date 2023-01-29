@@ -1,20 +1,23 @@
 package crazypants.util;
 
-import baubles.api.BaublesApi;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.relauncher.Side;
-import crazypants.enderio.Log;
 import java.lang.reflect.Field;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 
+import baubles.api.BaublesApi;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.relauncher.Side;
+import crazypants.enderio.Log;
+
 public class BaublesUtil {
 
     public static enum WhoAmI {
+
         SPCLIENT,
         MPCLIENT,
         SPSERVER,

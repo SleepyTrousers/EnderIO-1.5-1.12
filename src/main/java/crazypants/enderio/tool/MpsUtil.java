@@ -1,6 +1,7 @@
 package crazypants.enderio.tool;
 
 import java.lang.reflect.Method;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -50,8 +51,7 @@ public class MpsUtil {
             if (res instanceof Boolean) {
                 return ((Boolean) res).booleanValue();
             }
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
         return false;
     }
 }

@@ -1,9 +1,10 @@
 package crazypants.enderio.machine.generator;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import crazypants.enderio.machine.AbstractPoweredMachineEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.IInternalPowerProvider;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class AbstractGeneratorEntity extends AbstractPoweredMachineEntity implements IInternalPowerProvider {
 

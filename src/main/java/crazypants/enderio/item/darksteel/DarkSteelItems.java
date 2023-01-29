@@ -1,14 +1,15 @@
 package crazypants.enderio.item.darksteel;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.ItemMagnet;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.ChestGenHooks;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.ItemMagnet;
 
 public class DarkSteelItems {
 
@@ -82,8 +83,7 @@ public class DarkSteelItems {
             case 0:
                 return item == itemDarkSteelHelmet || item == itemEndSteelHelmet || item == itemStellarHelmet;
             case 1:
-                return item == itemDarkSteelChestplate
-                        || item == itemEndSteelChestplate
+                return item == itemDarkSteelChestplate || item == itemEndSteelChestplate
                         || item == itemStellarChestplate;
             case 2:
                 return item == itemDarkSteelLeggings || item == itemEndSteelLeggings || item == itemStellarLeggings;

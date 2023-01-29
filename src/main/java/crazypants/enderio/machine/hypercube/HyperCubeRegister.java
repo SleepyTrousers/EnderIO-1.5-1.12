@@ -1,6 +1,5 @@
 package crazypants.enderio.machine.hypercube;
 
-import crazypants.enderio.Log;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,7 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
 import net.minecraftforge.common.DimensionManager;
+
+import crazypants.enderio.Log;
 
 public class HyperCubeRegister {
 

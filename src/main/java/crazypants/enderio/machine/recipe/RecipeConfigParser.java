@@ -1,19 +1,14 @@
 package crazypants.enderio.machine.recipe;
 
-import com.enderio.core.common.util.OreDictionaryHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.Log;
-import crazypants.enderio.machine.crusher.CrusherRecipeManager;
-import crazypants.enderio.machine.recipe.RecipeConfig.RecipeElement;
-import crazypants.enderio.machine.recipe.RecipeConfig.RecipeGroup;
-import crazypants.enderio.material.OreDictionaryPreferences;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.StringReader;
 import java.util.Locale;
+
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,6 +17,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+
 import org.apache.commons.io.IOUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -29,6 +25,15 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
+
+import com.enderio.core.common.util.OreDictionaryHelper;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.Log;
+import crazypants.enderio.machine.crusher.CrusherRecipeManager;
+import crazypants.enderio.machine.recipe.RecipeConfig.RecipeElement;
+import crazypants.enderio.machine.recipe.RecipeConfig.RecipeGroup;
+import crazypants.enderio.material.OreDictionaryPreferences;
 
 public class RecipeConfigParser extends DefaultHandler {
 
@@ -224,8 +229,10 @@ public class RecipeConfigParser extends DefaultHandler {
 
         if (ELEMENT_RECIPE_GROUP.equals(localName)) {
             if (recipeGroup != null) {
-                Log.warn(LP + "Recipe group " + recipeGroup.getName()
-                        + " not closed before encountering a new recipe group.");
+                Log.warn(
+                        LP + "Recipe group "
+                                + recipeGroup.getName()
+                                + " not closed before encountering a new recipe group.");
             }
             recipeGroup = root.createRecipeGroup(attributes.getValue(AT_NAME));
             recipeGroup.setEnabled(getBooleanValue(AT_ENABLED, attributes, true));
@@ -325,8 +332,7 @@ public class RecipeConfigParser extends DefaultHandler {
 
     // TODO: What a hack!
     private boolean isElementRoot(String str) {
-        return "AlloySmelterRecipes".equals(str)
-                || "SAGMillRecipes".equals(str)
+        return "AlloySmelterRecipes".equals(str) || "SAGMillRecipes".equals(str)
                 || "VatRecipes".equals(str)
                 || "SliceAndSpliceRecipes".equals(str);
     }
@@ -435,7 +441,10 @@ public class RecipeConfigParser extends DefaultHandler {
             return null;
         }
         return new RecipeInput(
-                res, useMeta, getFloatValue(AT_MULTIPLIER, attributes, 1), getIntValue(AT_SLOT, attributes, -1));
+                res,
+                useMeta,
+                getFloatValue(AT_MULTIPLIER, attributes, 1),
+                getIntValue(AT_SLOT, attributes, -1));
     }
 
     public static boolean getBooleanValue(String qName, Attributes attributes, boolean def) {
@@ -451,8 +460,11 @@ public class RecipeConfigParser extends DefaultHandler {
         try {
             return Integer.parseInt(getStringValue(qName, attributes, def + ""));
         } catch (Exception e) {
-            Log.warn(LP + "Could not parse a valid int for attribute " + qName + " with value "
-                    + getStringValue(qName, attributes, null));
+            Log.warn(
+                    LP + "Could not parse a valid int for attribute "
+                            + qName
+                            + " with value "
+                            + getStringValue(qName, attributes, null));
             return def;
         }
     }
@@ -461,8 +473,11 @@ public class RecipeConfigParser extends DefaultHandler {
         try {
             return Float.parseFloat(getStringValue(qName, attributes, def + ""));
         } catch (Exception e) {
-            Log.warn(LP + "Could not parse a valid float for attribute " + qName + " with value "
-                    + getStringValue(qName, attributes, null));
+            Log.warn(
+                    LP + "Could not parse a valid float for attribute "
+                            + qName
+                            + " with value "
+                            + getStringValue(qName, attributes, null));
             return def;
         }
     }

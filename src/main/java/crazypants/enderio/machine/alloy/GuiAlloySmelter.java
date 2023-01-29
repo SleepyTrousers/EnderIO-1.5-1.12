@@ -1,18 +1,22 @@
 package crazypants.enderio.machine.alloy;
 
+import java.awt.Rectangle;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.IIcon;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.IIconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector4f;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.alloy.TileAlloySmelter.Mode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
-import java.awt.Rectangle;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.IIcon;
-import org.lwjgl.opengl.GL11;
 
 public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
 
@@ -24,12 +28,18 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
     public GuiAlloySmelter(InventoryPlayer par1InventoryPlayer, TileAlloySmelter furnaceInventory) {
         super(furnaceInventory, new ContainerAlloySmelter(par1InventoryPlayer, furnaceInventory), "alloySmelter");
 
-        vanillaFurnaceButton =
-                new IIconButton(getFontRenderer(), SMELT_MODE_BUTTON_ID, 0, 0, null, RenderUtil.BLOCK_TEX);
+        vanillaFurnaceButton = new IIconButton(
+                getFontRenderer(),
+                SMELT_MODE_BUTTON_ID,
+                0,
+                0,
+                null,
+                RenderUtil.BLOCK_TEX);
         vanillaFurnaceButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
 
-        vanillaFurnaceTooltip =
-                new GuiToolTip(new Rectangle(xSize - 5 - BUTTON_SIZE, 62, BUTTON_SIZE, BUTTON_SIZE), (String[]) null);
+        vanillaFurnaceTooltip = new GuiToolTip(
+                new Rectangle(xSize - 5 - BUTTON_SIZE, 62, BUTTON_SIZE, BUTTON_SIZE),
+                (String[]) null);
 
         addProgressTooltip(55, 35, 14, 14);
         addProgressTooltip(103, 35, 14, 14);
@@ -80,13 +90,12 @@ public class GuiAlloySmelter extends GuiPoweredMachineBase<TileAlloySmelter> {
             unlocText = "gui.alloy.mode.furnace";
         }
         vanillaFurnaceButton.setIcon(icon);
-        vanillaFurnaceTooltip.setToolTipText(
-                EnderIO.lang.localize("gui.alloy.mode.heading"), EnderIO.lang.localize(unlocText));
+        vanillaFurnaceTooltip
+                .setToolTipText(EnderIO.lang.localize("gui.alloy.mode.heading"), EnderIO.lang.localize(unlocText));
     }
 
     /**
-     * Draw the background layer for the GuiContainer (everything behind the
-     * items)
+     * Draw the background layer for the GuiContainer (everything behind the items)
      */
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {

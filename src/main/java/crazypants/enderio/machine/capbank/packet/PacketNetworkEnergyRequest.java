@@ -12,8 +12,8 @@ public class PacketNetworkEnergyRequest extends PacketCapBank<PacketNetworkEnerg
     }
 
     @Override
-    protected PacketNetworkEnergyResponse handleMessage(
-            TileCapBank te, PacketNetworkEnergyRequest message, MessageContext ctx) {
+    protected PacketNetworkEnergyResponse handleMessage(TileCapBank te, PacketNetworkEnergyRequest message,
+            MessageContext ctx) {
         if (te.getNetwork() != null) {
             return new PacketNetworkEnergyResponse(te.getNetwork());
         }

@@ -4,6 +4,7 @@ import java.text.Collator;
 import java.util.Comparator;
 
 class NameComparator implements Comparator<ItemEntry> {
+
     protected final Collator collator;
 
     NameComparator(Collator collator) {

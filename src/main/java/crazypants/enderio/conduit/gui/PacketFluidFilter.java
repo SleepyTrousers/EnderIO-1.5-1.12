@@ -1,5 +1,8 @@
 package crazypants.enderio.conduit.gui;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
@@ -10,8 +13,6 @@ import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.packet.AbstractConduitPacket;
 import crazypants.enderio.conduit.packet.ConTypeEnum;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class PacketFluidFilter extends AbstractConduitPacket<ILiquidConduit>
         implements IMessageHandler<PacketFluidFilter, IMessage> {
@@ -22,8 +23,8 @@ public class PacketFluidFilter extends AbstractConduitPacket<ILiquidConduit>
 
     public PacketFluidFilter() {}
 
-    public PacketFluidFilter(
-            AbstractEnderLiquidConduit eConduit, ForgeDirection dir, FluidFilter filter, boolean isInput) {
+    public PacketFluidFilter(AbstractEnderLiquidConduit eConduit, ForgeDirection dir, FluidFilter filter,
+            boolean isInput) {
         super(eConduit.getBundle().getEntity(), ConTypeEnum.FLUID);
         this.dir = dir;
         this.filter = filter;

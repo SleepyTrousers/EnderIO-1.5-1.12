@@ -1,13 +1,16 @@
 package crazypants.enderio.conduit.item;
 
 public enum SpeedUpgrade {
+
     UPGRADE("enderio:extractSpeedUpgrade", "item.itemExtractSpeedUpgrade", 15) {
+
         @Override
         public int getMaximumExtracted(int stackSize) {
             return BASE_MAX_EXTRACTED + Math.min(stackSize, maxStackSize) * 4;
         }
     },
     DOWNGRADE("enderio:extractSpeedDowngrade", "item.itemExtractSpeedDowngrade", 1) {
+
         @Override
         public int getMaximumExtracted(int stackSize) {
             return 1;

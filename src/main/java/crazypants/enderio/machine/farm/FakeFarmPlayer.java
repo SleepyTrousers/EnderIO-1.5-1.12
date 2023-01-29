@@ -1,9 +1,7 @@
 package crazypants.enderio.machine.farm;
 
-import com.mojang.authlib.GameProfile;
-import cpw.mods.fml.common.FMLCommonHandler;
-import crazypants.enderio.Log;
 import java.util.UUID;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -14,6 +12,11 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+
+import com.mojang.authlib.GameProfile;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+import crazypants.enderio.Log;
 
 /**
  * This is not in the FakePlayer hierarchy for reasons.
@@ -88,8 +91,9 @@ public class FakeFarmPlayer extends EntityPlayerMP {
 
     @Override
     public void setWorld(World p_70029_1_) {
-        Log.warn("Ender IO Farming station fake player is being transfered to world '" + p_70029_1_
-                + "'. Trying to reject transfer. Call stack follows:");
+        Log.warn(
+                "Ender IO Farming station fake player is being transfered to world '" + p_70029_1_
+                        + "'. Trying to reject transfer. Call stack follows:");
         Thread.dumpStack();
     }
 }

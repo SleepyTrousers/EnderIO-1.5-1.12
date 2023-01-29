@@ -1,13 +1,15 @@
 package crazypants.enderio.machine.invpanel.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+
 import codechicken.nei.LayoutManager;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.api.DefaultOverlayRenderer;
 import codechicken.nei.api.IRecipeOverlayRenderer;
 import cpw.mods.fml.common.Optional;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.item.ItemStack;
 
 public class CraftingHelperNEI extends CraftingHelper {
 
@@ -29,15 +31,17 @@ public class CraftingHelperNEI extends CraftingHelper {
                 for (int x = 0; x < 3; x++) {
                     ItemStack[] ingredient = ingredients[y * 3 + x];
                     if (ingredient != null) {
-                        list.add(new PositionedStack(
-                                ingredient,
-                                InventoryPanelNEIOverlayHandler.NEI_OFFSET_X + x * 18,
-                                InventoryPanelNEIOverlayHandler.NEI_OFFSET_Y + y * 18));
+                        list.add(
+                                new PositionedStack(
+                                        ingredient,
+                                        InventoryPanelNEIOverlayHandler.NEI_OFFSET_X + x * 18,
+                                        InventoryPanelNEIOverlayHandler.NEI_OFFSET_Y + y * 18));
                     }
                 }
             }
-            LayoutManager.overlayRenderer =
-                    new DefaultOverlayRenderer(list, InventoryPanelNEIOverlayHandler.positioner);
+            LayoutManager.overlayRenderer = new DefaultOverlayRenderer(
+                    list,
+                    InventoryPanelNEIOverlayHandler.positioner);
         }
     }
 

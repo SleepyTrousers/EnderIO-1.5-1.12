@@ -1,15 +1,17 @@
 package crazypants.enderio.machine.crusher;
 
-import crazypants.enderio.Log;
-import crazypants.enderio.machine.recipe.CustomTagHandler;
-import crazypants.enderio.machine.recipe.RecipeConfigParser;
-import crazypants.enderio.machine.recipe.RecipeInput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+
+import crazypants.enderio.Log;
+import crazypants.enderio.machine.recipe.CustomTagHandler;
+import crazypants.enderio.machine.recipe.RecipeConfigParser;
+import crazypants.enderio.machine.recipe.RecipeInput;
 
 public class GrindingBallTagHandler implements CustomTagHandler {
 
@@ -46,8 +48,9 @@ public class GrindingBallTagHandler implements CustomTagHandler {
         if (BALL_ROOT.equals(localName)) {
             id = RecipeConfigParser.getStringValue(AT_ID, attributes, null);
             if (id == null) {
-                Log.warn("GrindingBallTagHandler: grinding ball specified without the '" + AT_ID
-                        + "' attribute. It will be ignored.");
+                Log.warn(
+                        "GrindingBallTagHandler: grinding ball specified without the '" + AT_ID
+                                + "' attribute. It will be ignored.");
                 processStack = false;
                 return true;
             }
@@ -87,8 +90,9 @@ public class GrindingBallTagHandler implements CustomTagHandler {
                 boolean remove = RecipeConfigParser.getBooleanValue(AT_REMOVE, attributes, false);
                 if (remove) {
                     excludes.remove(ri);
-                    Log.info("Removed grinding ball exclude for "
-                            + ri.getInput().getDisplayName() + " due to user config.");
+                    Log.info(
+                            "Removed grinding ball exclude for " + ri.getInput().getDisplayName()
+                                    + " due to user config.");
                 } else {
                     excludes.add(ri);
                 }

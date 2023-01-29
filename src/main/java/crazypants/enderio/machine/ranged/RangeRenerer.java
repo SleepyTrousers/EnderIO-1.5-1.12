@@ -1,15 +1,18 @@
 package crazypants.enderio.machine.ranged;
 
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderEntity;
+import net.minecraft.entity.Entity;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.CubeRenderer;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.client.render.RenderUtil;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderEntity;
-import net.minecraft.entity.Entity;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class RangeRenerer extends RenderEntity {

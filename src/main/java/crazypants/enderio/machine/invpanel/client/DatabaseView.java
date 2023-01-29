@@ -1,23 +1,22 @@
 package crazypants.enderio.machine.invpanel.client;
 
-import crazypants.enderio.conduit.item.filter.IItemFilter;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Locale;
+
 import net.minecraft.client.Minecraft;
+
+import crazypants.enderio.conduit.item.filter.IItemFilter;
 
 public class DatabaseView {
 
     public static final Locale LOCALE;
 
     static {
-        String languageCode = Minecraft.getMinecraft()
-                .getLanguageManager()
-                .getCurrentLanguage()
-                .getLanguageCode();
+        String languageCode = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getLanguageCode();
         int idx = languageCode.indexOf('_');
         if (idx > 0) {
             String lang = languageCode.substring(0, idx);

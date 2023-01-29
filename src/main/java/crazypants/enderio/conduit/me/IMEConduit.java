@@ -1,8 +1,10 @@
 package crazypants.enderio.conduit.me;
 
-import crazypants.enderio.conduit.IConduit;
 import java.util.EnumSet;
+
 import net.minecraftforge.common.util.ForgeDirection;
+
+import crazypants.enderio.conduit.IConduit;
 
 public interface IMEConduit extends IConduit {
 

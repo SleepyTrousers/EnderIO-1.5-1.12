@@ -1,19 +1,22 @@
 package crazypants.enderio.teleport;
 
-import com.enderio.core.client.gui.widget.GhostSlot;
-import com.enderio.core.common.ContainerEnder;
-import com.enderio.core.common.TileEntityEnder;
-import crazypants.enderio.api.teleport.ITravelAccessable;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.teleport.packet.PacketPassword;
 import java.awt.Point;
 import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.common.ContainerEnder;
+import com.enderio.core.common.TileEntityEnder;
+
+import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.teleport.packet.PacketPassword;
 
 public class ContainerTravelAccessable extends ContainerEnder<IInventory> {
 

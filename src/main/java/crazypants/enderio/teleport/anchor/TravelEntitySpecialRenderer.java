@@ -1,19 +1,5 @@
 package crazypants.enderio.teleport.anchor;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.CubeRenderer;
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.Util;
-import com.enderio.core.common.vecmath.Vector3d;
-import com.enderio.core.common.vecmath.Vector3f;
-import com.enderio.core.common.vecmath.Vector4f;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.api.teleport.ITravelAccessable;
-import crazypants.enderio.api.teleport.TravelSource;
-import crazypants.enderio.teleport.TravelController;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -23,9 +9,26 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.Util;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector3f;
+import com.enderio.core.common.vecmath.Vector4f;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.teleport.TravelController;
 
 @SideOnly(Side.CLIENT)
 public class TravelEntitySpecialRenderer extends TileEntitySpecialRenderer {

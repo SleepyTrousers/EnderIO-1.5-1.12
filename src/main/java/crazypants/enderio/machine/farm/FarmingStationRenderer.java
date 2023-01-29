@@ -1,9 +1,5 @@
 package crazypants.enderio.machine.farm;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.CubeRenderer;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.TechneMachineRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -12,6 +8,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.TechneMachineRenderer;
+
 public class FarmingStationRenderer extends TechneMachineRenderer<TileFarmStation> {
 
     public FarmingStationRenderer() {
@@ -19,8 +21,8 @@ public class FarmingStationRenderer extends TechneMachineRenderer<TileFarmStatio
     }
 
     @Override
-    public boolean renderWorldBlock(
-            IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+            RenderBlocks renderer) {
         IIcon override = renderer.overrideBlockTexture;
 
         if (world != null) {

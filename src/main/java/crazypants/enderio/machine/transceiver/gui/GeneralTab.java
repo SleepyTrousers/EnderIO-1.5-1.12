@@ -1,22 +1,26 @@
 package crazypants.enderio.machine.transceiver.gui;
 
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.List;
+
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.PacketItemBuffer;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import java.awt.Color;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.List;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import org.lwjgl.opengl.GL11;
 
 public class GeneralTab implements ITabPanel {
 
@@ -38,22 +42,22 @@ public class GeneralTab implements ITabPanel {
         bufferSizeB.setUnselectedToolTip(EnderIO.lang.localize("gui.machine.bufferingsingle"));
         bufferSizeB.setSelected(parent.getTransciever().isBufferStacks());
 
-        sendPowerBarTT =
-                new GuiToolTip(
-                        new Rectangle(
-                                parent.getPowerX() + SEND_BAR_OFFSET,
-                                parent.getPowerY(),
-                                parent.getPowerWidth(),
-                                parent.getPowerHeight()),
-                        "") {
-                    @Override
-                    protected void updateText() {
-                        text.clear();
-                        if (parent.renderPowerBar()) {
-                            updateSendPowerBarTooltip(text);
-                        }
-                    }
-                };
+        sendPowerBarTT = new GuiToolTip(
+                new Rectangle(
+                        parent.getPowerX() + SEND_BAR_OFFSET,
+                        parent.getPowerY(),
+                        parent.getPowerWidth(),
+                        parent.getPowerHeight()),
+                "") {
+
+            @Override
+            protected void updateText() {
+                text.clear();
+                if (parent.renderPowerBar()) {
+                    updateSendPowerBarTooltip(text);
+                }
+            }
+        };
         parent.addToolTip(sendPowerBarTT);
     }
 
@@ -127,7 +131,12 @@ public class GeneralTab implements ITabPanel {
         int fillY = y + 1 + parent.getPowerHeight() - fillHeight;
         x += 1;
         parent.drawTexturedModalRect(
-                x, fillY, parent.getPowerU(), parent.getPowerV(), parent.getPowerWidth(), fillHeight);
+                x,
+                fillY,
+                parent.getPowerU(),
+                parent.getPowerV(),
+                parent.getPowerWidth(),
+                fillHeight);
 
         fillHeight = Math.max(0, totalPixelHeight - maxHeight);
         fillY = y + 1 + parent.getPowerHeight() - fillHeight;
@@ -142,8 +151,9 @@ public class GeneralTab implements ITabPanel {
 
     public void updatePowerBarTooltip(List<String> text) {
         text.add(EnderIO.lang.localize("gui.machine.localbuffer"));
-        text.add(EnderIO.lang.localize("gui.machine.upkeep") + " "
-                + PowerDisplayUtil.formatPowerPerTick(parent.getPowerOutputValue()));
+        text.add(
+                EnderIO.lang.localize("gui.machine.upkeep") + " "
+                        + PowerDisplayUtil.formatPowerPerTick(parent.getPowerOutputValue()));
         int maxEnergy = parent.getTransciever().getCapacitor().getMaxEnergyStored() / 2;
         int energyStored = Math.min(parent.getTransciever().getEnergyStored(), maxEnergy);
         text.add(PowerDisplayUtil.formatStoredPower(energyStored, maxEnergy));
@@ -151,8 +161,9 @@ public class GeneralTab implements ITabPanel {
 
     private void updateSendPowerBarTooltip(List<String> text) {
         text.add(EnderIO.lang.localize("gui.machine.sendReceivebuffer"));
-        text.add(EnderIO.lang.localize("itemGasConduit.tooltip.maxIo") + " "
-                + PowerDisplayUtil.formatPowerPerTick(Config.transceiverMaxIoRF));
+        text.add(
+                EnderIO.lang.localize("itemGasConduit.tooltip.maxIo") + " "
+                        + PowerDisplayUtil.formatPowerPerTick(Config.transceiverMaxIoRF));
         int maxEnergy = parent.getTransciever().getCapacitor().getMaxEnergyStored() / 2;
         int energyStored = Math.max(0, parent.getTransciever().getEnergyStored() - maxEnergy);
         text.add(PowerDisplayUtil.formatStoredPower(energyStored, maxEnergy));

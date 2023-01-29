@@ -1,15 +1,5 @@
 package crazypants.enderio.enderface;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.api.teleport.ITravelAccessable;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,12 +9,27 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.api.teleport.ITravelAccessable;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
+
 public class BlockEnderIO extends BlockEio implements IResourceTooltipProvider {
 
     public static BlockEnderIO create() {
 
         PacketHandler.INSTANCE.registerMessage(
-                PacketOpenServerGUI.class, PacketOpenServerGUI.class, PacketHandler.nextID(), Side.SERVER);
+                PacketOpenServerGUI.class,
+                PacketOpenServerGUI.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
                 PacketLockClientContainer.Handler.class,
                 PacketLockClientContainer.class,

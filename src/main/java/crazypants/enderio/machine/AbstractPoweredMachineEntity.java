@@ -1,13 +1,15 @@
 package crazypants.enderio.machine;
 
-import com.enderio.core.common.vecmath.VecmathUtil;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.vecmath.VecmathUtil;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.power.*;
 
 public abstract class AbstractPoweredMachineEntity extends AbstractMachineEntity implements IInternalPoweredTile {
 

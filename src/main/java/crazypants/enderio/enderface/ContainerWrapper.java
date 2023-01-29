@@ -40,8 +40,8 @@ public class ContainerWrapper extends net.minecraft.inventory.Container {
     }
 
     @Override
-    public net.minecraft.item.ItemStack slotClick(
-            int arg0, int arg1, int arg2, net.minecraft.entity.player.EntityPlayer arg3) {
+    public net.minecraft.item.ItemStack slotClick(int arg0, int arg1, int arg2,
+            net.minecraft.entity.player.EntityPlayer arg3) {
         return wrapped.slotClick(arg0, arg1, arg2, arg3);
     }
 

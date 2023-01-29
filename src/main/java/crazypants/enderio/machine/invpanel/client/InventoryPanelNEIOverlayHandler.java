@@ -1,5 +1,11 @@
 package crazypants.enderio.machine.invpanel.client;
 
+import java.util.List;
+
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+
 import codechicken.nei.OffsetPositioner;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.api.DefaultOverlayRenderer;
@@ -8,10 +14,6 @@ import codechicken.nei.api.IStackPositioner;
 import codechicken.nei.recipe.IRecipeHandler;
 import crazypants.enderio.machine.invpanel.GuiInventoryPanel;
 import crazypants.enderio.machine.invpanel.InventoryPanelContainer;
-import java.util.List;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 
 public class InventoryPanelNEIOverlayHandler implements IOverlayHandler {
 
@@ -21,8 +23,9 @@ public class InventoryPanelNEIOverlayHandler implements IOverlayHandler {
     private static final int CRAFTING_GRID_OFFSET_X = InventoryPanelContainer.CRAFTING_GRID_X - NEI_OFFSET_X;
     private static final int CRAFTING_GRID_OFFSET_Y = InventoryPanelContainer.CRAFTING_GRID_Y - NEI_OFFSET_Y;
 
-    public static final IStackPositioner positioner =
-            new OffsetPositioner(CRAFTING_GRID_OFFSET_X, CRAFTING_GRID_OFFSET_Y);
+    public static final IStackPositioner positioner = new OffsetPositioner(
+            CRAFTING_GRID_OFFSET_X,
+            CRAFTING_GRID_OFFSET_Y);
 
     @Override
     public void overlayRecipe(GuiContainer gui, IRecipeHandler recipe, int recipeIndex, boolean shift) {

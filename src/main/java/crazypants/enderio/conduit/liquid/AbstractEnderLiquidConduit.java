@@ -1,8 +1,29 @@
 package crazypants.enderio.conduit.liquid;
 
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.function.Supplier;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -16,24 +37,6 @@ import crazypants.enderio.conduit.item.ItemConduit;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.tool.ToolUtil;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.function.Supplier;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 
 public abstract class AbstractEnderLiquidConduit extends AbstractLiquidConduit {
 
@@ -67,14 +70,13 @@ public abstract class AbstractEnderLiquidConduit extends AbstractLiquidConduit {
     }
 
     public enum Type {
+
         ENDER(() -> Config.enderFluidConduitExtractRate, () -> Config.enderFluidConduitMaxIoRate),
 
-        CRYSTALLINE(
-                () -> Config.crystallineEnderFluidConduitExtractRate,
+        CRYSTALLINE(() -> Config.crystallineEnderFluidConduitExtractRate,
                 () -> Config.crystallineEnderFluidConduitMaxIoRate),
 
-        CRYSTALLINE_PINK_SLIME(
-                () -> Config.crystallinePinkSlimeEnderFluidConduitExtractRate,
+        CRYSTALLINE_PINK_SLIME(() -> Config.crystallinePinkSlimeEnderFluidConduitExtractRate,
                 () -> Config.crystallinePinkSlimeEnderFluidConduitMaxIoRate),
 
         MELODIC(() -> Config.melodicEnderFluidConduitExtractRate, () -> Config.melodicEnderFluidConduitMaxIoRate),
@@ -101,15 +103,15 @@ public abstract class AbstractEnderLiquidConduit extends AbstractLiquidConduit {
     private EnderLiquidConduitNetwork network;
     private int ticksSinceFailedExtract;
 
-    private final EnumMap<ForgeDirection, FluidFilter> outputFilters =
-            new EnumMap<ForgeDirection, FluidFilter>(ForgeDirection.class);
-    private final EnumMap<ForgeDirection, FluidFilter> inputFilters =
-            new EnumMap<ForgeDirection, FluidFilter>(ForgeDirection.class);
+    private final EnumMap<ForgeDirection, FluidFilter> outputFilters = new EnumMap<ForgeDirection, FluidFilter>(
+            ForgeDirection.class);
+    private final EnumMap<ForgeDirection, FluidFilter> inputFilters = new EnumMap<ForgeDirection, FluidFilter>(
+            ForgeDirection.class);
 
-    protected final EnumMap<ForgeDirection, DyeColor> outputColors =
-            new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
-    protected final EnumMap<ForgeDirection, DyeColor> inputColors =
-            new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, DyeColor> outputColors = new EnumMap<ForgeDirection, DyeColor>(
+            ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, DyeColor> inputColors = new EnumMap<ForgeDirection, DyeColor>(
+            ForgeDirection.class);
 
     private int roundRobin = 0;
 
@@ -145,7 +147,11 @@ public abstract class AbstractEnderLiquidConduit extends AbstractLiquidConduit {
 
                         BlockCoord loc = getLocation().getLocation(faceHit);
                         ILiquidConduit n = ConduitUtil.getConduit(
-                                getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, ILiquidConduit.class);
+                                getBundle().getEntity().getWorldObj(),
+                                loc.x,
+                                loc.y,
+                                loc.z,
+                                ILiquidConduit.class);
                         if (n == null) {
                             return false;
                         }
@@ -369,6 +375,7 @@ public abstract class AbstractEnderLiquidConduit extends AbstractLiquidConduit {
         }
         return network.getTankInfo(this, from);
     }
+
     // @Override
     public DyeColor getInputColor(ForgeDirection dir) {
         DyeColor result = inputColors.get(dir);
@@ -386,6 +393,7 @@ public abstract class AbstractEnderLiquidConduit extends AbstractLiquidConduit {
         }
         return result;
     }
+
     // @Override
     public void setInputColor(ForgeDirection dir, DyeColor col) {
         inputColors.put(dir, col);

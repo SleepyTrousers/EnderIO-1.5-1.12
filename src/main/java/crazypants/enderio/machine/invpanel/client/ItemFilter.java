@@ -1,10 +1,11 @@
 package crazypants.enderio.machine.invpanel.client;
 
-import crazypants.enderio.conduit.item.filter.IItemFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.regex.Pattern;
+
+import crazypants.enderio.conduit.item.filter.IItemFilter;
 
 public abstract class ItemFilter {
 
@@ -40,6 +41,7 @@ public abstract class ItemFilter {
     }
 
     static class AndFilter extends ItemFilter {
+
         final ItemFilter[] list;
 
         AndFilter(ItemFilter[] list) {
@@ -63,6 +65,7 @@ public abstract class ItemFilter {
     }
 
     static class ModFilter extends ItemFilter {
+
         final String text;
         final Locale locale;
 
@@ -83,6 +86,7 @@ public abstract class ItemFilter {
     }
 
     static class NameFilter extends ItemFilter {
+
         final String text;
         final Locale locale;
 
@@ -103,6 +107,7 @@ public abstract class ItemFilter {
     }
 
     static class CardFilter extends ItemFilter {
+
         final IItemFilter filter;
 
         CardFilter(IItemFilter filter) {

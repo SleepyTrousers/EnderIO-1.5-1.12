@@ -1,13 +1,16 @@
 package crazypants.enderio.machine.spawner;
 
-import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
-import com.enderio.core.client.gui.widget.GhostSlot;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import java.util.List;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerPoweredSpawner extends AbstractMachineContainer<TilePoweredSpawner> {
 
@@ -21,12 +24,14 @@ public class ContainerPoweredSpawner extends AbstractMachineContainer<TilePowere
     @Override
     protected void addMachineSlots(InventoryPlayer playerInv) {
         slotInput = addSlotToContainer(new Slot(getInv(), 0, 54, 42) {
+
             @Override
             public boolean isItemValid(ItemStack itemStack) {
                 return getInv().isItemValidForSlot(0, itemStack);
             }
         });
         slotOutput = addSlotToContainer(new Slot(getInv(), 1, 105, 42) {
+
             @Override
             public boolean isItemValid(ItemStack itemStack) {
                 return false;
@@ -35,8 +40,9 @@ public class ContainerPoweredSpawner extends AbstractMachineContainer<TilePowere
     }
 
     public void createGhostSlots(List<GhostSlot> slots) {
-        final GhostBackgroundItemSlot ghostBackgroundItemSlot =
-                new GhostBackgroundItemSlot(EnderIO.itemSoulVessel, slotInput);
+        final GhostBackgroundItemSlot ghostBackgroundItemSlot = new GhostBackgroundItemSlot(
+                EnderIO.itemSoulVessel,
+                slotInput);
         ghostBackgroundItemSlot.y = 42;
         slots.add(ghostBackgroundItemSlot);
     }

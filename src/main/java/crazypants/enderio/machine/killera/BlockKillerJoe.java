@@ -1,5 +1,12 @@
 package crazypants.enderio.machine.killera;
 
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.GuiHandler;
@@ -8,12 +15,6 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.xp.PacketExperianceContainer;
 import crazypants.enderio.xp.PacketGivePlayerXP;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 
 /**
  * Name proudly created by Xaw4
@@ -23,8 +24,8 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
     static final String USERNAME = "KillerJoe";
 
     public static BlockKillerJoe create() {
-        PacketHandler.INSTANCE.registerMessage(
-                PacketSwing.class, PacketSwing.class, PacketHandler.nextID(), Side.CLIENT);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketSwing.class, PacketSwing.class, PacketHandler.nextID(), Side.CLIENT);
         PacketGivePlayerXP.register();
         PacketExperianceContainer.register();
 
@@ -40,15 +41,8 @@ public class BlockKillerJoe extends AbstractMachineBlock<TileKillerJoe> {
     }
 
     @Override
-    public float getExplosionResistance(
-            Entity par1Entity,
-            World world,
-            int x,
-            int y,
-            int z,
-            double explosionX,
-            double explosionY,
-            double explosionZ) {
+    public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX,
+            double explosionY, double explosionZ) {
         return 2000;
     }
 

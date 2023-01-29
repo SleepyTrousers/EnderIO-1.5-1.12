@@ -1,5 +1,10 @@
 package crazypants.enderio.conduit.power.endergy;
 
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -10,9 +15,6 @@ import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.ItemPowerConduit;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.ICapacitor;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 
 public class ItemPowerConduitEndergy extends ItemPowerConduit {
 
@@ -20,26 +22,36 @@ public class ItemPowerConduitEndergy extends ItemPowerConduit {
     private static String POSTFIX;
 
     static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-        new ItemConduitSubtype(ModObject.itemPowerConduitEndergy.name() + "Crude", "enderio:itemPowerConduitCrude"),
-        new ItemConduitSubtype(ModObject.itemPowerConduitEndergy.name() + "Iron", "enderio:itemPowerConduitIron"),
-        new ItemConduitSubtype(
-                ModObject.itemPowerConduitEndergy.name() + "Aluminum", "enderio:itemPowerConduitAluminum"),
-        new ItemConduitSubtype(ModObject.itemPowerConduitEndergy.name() + "Gold", "enderio:itemPowerConduitGold"),
-        new ItemConduitSubtype(ModObject.itemPowerConduitEndergy.name() + "Copper", "enderio:itemPowerConduitCopper"),
-        new ItemConduitSubtype(ModObject.itemPowerConduitEndergy.name() + "Silver", "enderio:itemPowerConduitSilver"),
-        new ItemConduitSubtype(
-                ModObject.itemPowerConduitEndergy.name() + "Electrum", "enderio:itemPowerConduitElectrum"),
-        new ItemConduitSubtype(
-                ModObject.itemPowerConduitEndergy.name() + "EnergeticSilver",
-                "enderio:itemPowerConduitEnergeticSilver"),
-        new ItemConduitSubtype(
-                ModObject.itemPowerConduitEndergy.name() + "Crystalline", "enderio:itemPowerConduitCrystalline"),
-        new ItemConduitSubtype(
-                ModObject.itemPowerConduitEndergy.name() + "CrystallinePinkSlime",
-                "enderio:itemPowerConduitCrystallinePinkSlime"),
-        new ItemConduitSubtype(ModObject.itemPowerConduitEndergy.name() + "Melodic", "enderio:itemPowerConduitMelodic"),
-        new ItemConduitSubtype(ModObject.itemPowerConduitEndergy.name() + "Stellar", "enderio:itemPowerConduitStellar"),
-    };
+            new ItemConduitSubtype(ModObject.itemPowerConduitEndergy.name() + "Crude", "enderio:itemPowerConduitCrude"),
+            new ItemConduitSubtype(ModObject.itemPowerConduitEndergy.name() + "Iron", "enderio:itemPowerConduitIron"),
+            new ItemConduitSubtype(
+                    ModObject.itemPowerConduitEndergy.name() + "Aluminum",
+                    "enderio:itemPowerConduitAluminum"),
+            new ItemConduitSubtype(ModObject.itemPowerConduitEndergy.name() + "Gold", "enderio:itemPowerConduitGold"),
+            new ItemConduitSubtype(
+                    ModObject.itemPowerConduitEndergy.name() + "Copper",
+                    "enderio:itemPowerConduitCopper"),
+            new ItemConduitSubtype(
+                    ModObject.itemPowerConduitEndergy.name() + "Silver",
+                    "enderio:itemPowerConduitSilver"),
+            new ItemConduitSubtype(
+                    ModObject.itemPowerConduitEndergy.name() + "Electrum",
+                    "enderio:itemPowerConduitElectrum"),
+            new ItemConduitSubtype(
+                    ModObject.itemPowerConduitEndergy.name() + "EnergeticSilver",
+                    "enderio:itemPowerConduitEnergeticSilver"),
+            new ItemConduitSubtype(
+                    ModObject.itemPowerConduitEndergy.name() + "Crystalline",
+                    "enderio:itemPowerConduitCrystalline"),
+            new ItemConduitSubtype(
+                    ModObject.itemPowerConduitEndergy.name() + "CrystallinePinkSlime",
+                    "enderio:itemPowerConduitCrystallinePinkSlime"),
+            new ItemConduitSubtype(
+                    ModObject.itemPowerConduitEndergy.name() + "Melodic",
+                    "enderio:itemPowerConduitMelodic"),
+            new ItemConduitSubtype(
+                    ModObject.itemPowerConduitEndergy.name() + "Stellar",
+                    "enderio:itemPowerConduitStellar"), };
 
     public static ItemPowerConduitEndergy create() {
         ItemPowerConduitEndergy result = new ItemPowerConduitEndergy();

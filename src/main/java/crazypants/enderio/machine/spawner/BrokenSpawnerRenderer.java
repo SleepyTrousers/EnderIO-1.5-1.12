@@ -1,11 +1,13 @@
 package crazypants.enderio.machine.spawner;
 
-import crazypants.enderio.EnderIO;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
+
+import crazypants.enderio.EnderIO;
 
 public class BrokenSpawnerRenderer implements IItemRenderer {
 

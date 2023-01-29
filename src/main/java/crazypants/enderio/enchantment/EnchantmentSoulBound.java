@@ -1,12 +1,7 @@
 package crazypants.enderio.enchantment;
 
-import com.enderio.core.api.common.enchant.IAdvancedEnchant;
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.config.Config;
-import crazypants.util.GalacticraftUtil;
 import java.util.ListIterator;
+
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnumEnchantmentType;
@@ -21,6 +16,14 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+
+import com.enderio.core.api.common.enchant.IAdvancedEnchant;
+
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
+import crazypants.util.GalacticraftUtil;
 
 public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchant {
 
@@ -54,12 +57,9 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
     }
 
     /*
-     * This is called the moment the player dies and drops his stuff.
-     *
-     * We go early, so we can get our items before other mods put them into some
-     * grave. Also remove them from the list so they won't get duped. If the
-     * inventory overflows, e.g. because everything there and the armor is
-     * soulbound, let the remainder be dropped/graved.
+     * This is called the moment the player dies and drops his stuff. We go early, so we can get our items before other
+     * mods put them into some grave. Also remove them from the list so they won't get duped. If the inventory
+     * overflows, e.g. because everything there and the armor is soulbound, let the remainder be dropped/graved.
      */
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onPlayerDeath(PlayerDropsEvent evt) {
@@ -85,17 +85,11 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
         // wait for that because gravestone mods also listen to this event. So we have
         // to fetch Baubles items ourselves here.
         // For the same reason we cannot put the items into Baubles slots.
-        /*IInventory baubles = BaublesUtil.instance().getBaubles(evt.entityPlayer);
-        if (baubles != null) {
-          for (int i = 0; i < baubles.getSizeInventory(); i++) {
-            ItemStack item = baubles.getStackInSlot(i);
-            if(isSoulBound(item)) {
-              if (addToPlayerInventory(evt.entityPlayer, item)) {
-                baubles.setInventorySlotContents(i, null);
-              }
-            }
-          }
-        }*/
+        /*
+         * IInventory baubles = BaublesUtil.instance().getBaubles(evt.entityPlayer); if (baubles != null) { for (int i =
+         * 0; i < baubles.getSizeInventory(); i++) { ItemStack item = baubles.getStackInSlot(i); if(isSoulBound(item)) {
+         * if (addToPlayerInventory(evt.entityPlayer, item)) { baubles.setInventorySlotContents(i, null); } } } }
+         */
 
         // Galacticraft. Again we are too early for those items. We just dump the
         // stuff into the normal inventory to not have to keep a separate list.
@@ -115,14 +109,11 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
     }
 
     /*
-     * This is called when the user presses the "respawn" button. The original
-     * inventory would be empty, but onPlayerDeath() above placed items in it.
-     *
-     * Note: Without other death-modifying mods, the content of the old inventory
-     * would always fit into the new one (both being empty but for soulbound items
-     * in the old one) and the old one would be discarded just after this method.
-     * But better play it safe and assume that an overflow is possible and that
-     * another mod may move stuff out of the old inventory, too.
+     * This is called when the user presses the "respawn" button. The original inventory would be empty, but
+     * onPlayerDeath() above placed items in it. Note: Without other death-modifying mods, the content of the old
+     * inventory would always fit into the new one (both being empty but for soulbound items in the old one) and the old
+     * one would be discarded just after this method. But better play it safe and assume that an overflow is possible
+     * and that another mod may move stuff out of the old inventory, too.
      */
     @SubscribeEvent
     public void onPlayerClone(PlayerEvent.Clone evt) {
@@ -183,6 +174,6 @@ public class EnchantmentSoulBound extends Enchantment implements IAdvancedEnchan
 
     @Override
     public String[] getTooltipDetails(ItemStack stack) {
-        return new String[] {EnderIO.lang.localizeExact("description.enchantment.enderio.soulBound")};
+        return new String[] { EnderIO.lang.localizeExact("description.enchantment.enderio.soulBound") };
     }
 }

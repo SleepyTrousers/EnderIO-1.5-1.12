@@ -1,8 +1,25 @@
 package crazypants.enderio.teleport.anchor;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.TileEntityEnder;
 import com.enderio.core.common.util.ChatUtil;
+
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -33,20 +50,6 @@ import crazypants.enderio.teleport.packet.PacketTravelEvent;
 import crazypants.enderio.teleport.packet.PacketVisibility;
 import crazypants.util.IFacade;
 import crazypants.util.UserIdent;
-import javax.annotation.Nullable;
-import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockTravelAnchor extends BlockEio
         implements IGuiHandler, ITileEntityProvider, IResourceTooltipProvider, IFacade {
@@ -55,33 +58,36 @@ public class BlockTravelAnchor extends BlockEio
 
     public static BlockTravelAnchor create() {
 
-        PacketHandler.INSTANCE.registerMessage(
-                PacketAccessMode.class, PacketAccessMode.class, PacketHandler.nextID(), Side.SERVER);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketLabel.class, PacketLabel.class, PacketHandler.nextID(), Side.SERVER);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketTravelEvent.class, PacketTravelEvent.class, PacketHandler.nextID(), Side.SERVER);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketAccessMode.class, PacketAccessMode.class, PacketHandler.nextID(), Side.SERVER);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketLabel.class, PacketLabel.class, PacketHandler.nextID(), Side.SERVER);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketTravelEvent.class, PacketTravelEvent.class, PacketHandler.nextID(), Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
                 PacketLongDistanceTravelEvent.class,
                 PacketLongDistanceTravelEvent.class,
                 PacketHandler.nextID(),
                 Side.SERVER);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketDrainStaff.class, PacketDrainStaff.class, PacketHandler.nextID(), Side.SERVER);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketOpenAuthGui.class, PacketOpenAuthGui.class, PacketHandler.nextID(), Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
-                PacketDrainStaff.class, PacketDrainStaff.class, PacketHandler.nextID(), Side.SERVER);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketOpenAuthGui.class, PacketOpenAuthGui.class, PacketHandler.nextID(), Side.SERVER);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketPassword.Handler.class, PacketPassword.class, PacketHandler.nextID(), Side.SERVER);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketVisibility.class, PacketVisibility.class, PacketHandler.nextID(), Side.SERVER);
+                PacketPassword.Handler.class,
+                PacketPassword.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketVisibility.class, PacketVisibility.class, PacketHandler.nextID(), Side.SERVER);
 
         BlockTravelAnchor result = new BlockTravelAnchor();
         result.init();
 
         EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_ACCESSABLE, result);
         EnderIO.guiHandler.registerGuiHandler(GuiHandler.GUI_ID_TRAVEL_AUTH, result);
-        MachineRecipeRegistry.instance.registerRecipe(
-                ModObject.blockPainter.unlocalisedName, result.new PainterTemplate());
+        MachineRecipeRegistry.instance
+                .registerRecipe(ModObject.blockPainter.unlocalisedName, result.new PainterTemplate());
 
         return result;
     }
@@ -159,8 +165,11 @@ public class BlockTravelAnchor extends BlockEio
         if (!player.isSneaking()) {
             ChatUtil.sendNoSpam(
                     player,
-                    EnderIO.lang.localize("gui.travelAccessable.privateBlock1") + " " + EnumChatFormatting.RED
-                            + owner.getPlayerName() + EnumChatFormatting.WHITE + " "
+                    EnderIO.lang.localize("gui.travelAccessable.privateBlock1") + " "
+                            + EnumChatFormatting.RED
+                            + owner.getPlayerName()
+                            + EnumChatFormatting.WHITE
+                            + " "
                             + EnderIO.lang.localize("gui.travelAccessable.privateBlock2"));
         }
     }
@@ -261,10 +270,10 @@ public class BlockTravelAnchor extends BlockEio
             if (paintSource == null) {
                 return new ResultStack[0];
             }
-            return new ResultStack[] {
-                new ResultStack(createItemStackForSourceBlock(
-                        Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage()))
-            };
+            return new ResultStack[] { new ResultStack(
+                    createItemStackForSourceBlock(
+                            Block.getBlockFromItem(paintSource.getItem()),
+                            paintSource.getItemDamage())) };
         }
     }
 

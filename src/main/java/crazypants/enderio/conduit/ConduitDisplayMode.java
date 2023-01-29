@@ -2,20 +2,24 @@ package crazypants.enderio.conduit;
 
 import static crazypants.enderio.gui.IconEIO.*;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
+
 import crazypants.enderio.api.tool.IConduitControl;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
-import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class ConduitDisplayMode {
 
@@ -48,18 +52,14 @@ public class ConduitDisplayMode {
     private String overrideName = null;
 
     /**
-     * Use this constructor if you have custom display logic, it will use
-     * {@code IConduit.class} as the conduitType, and the passed name as the
-     * override name.
+     * Use this constructor if you have custom display logic, it will use {@code IConduit.class} as the conduitType, and
+     * the passed name as the override name.
      *
      * @see #ConduitDisplayMode(Class, IWidgetIcon, IWidgetIcon)
      *
-     * @param name
-     *          The override name.
-     * @param widgetSelected
-     *          The widget to render when this type is selected.
-     * @param widgetUnselected
-     *          The widget to render when this type is unselected.
+     * @param name             The override name.
+     * @param widgetSelected   The widget to render when this type is selected.
+     * @param widgetUnselected The widget to render when this type is unselected.
      */
     public ConduitDisplayMode(String name, IWidgetIcon widgetSelected, IWidgetIcon widgetUnselected) {
         this(IConduit.class, widgetSelected, widgetUnselected);
@@ -67,20 +67,16 @@ public class ConduitDisplayMode {
     }
 
     /**
-     * Creates a new display mode for any {@link IConduitControl} wrench. Contains
-     * data about which conduit type this is for, and the icons to render while
-     * holding the wrench. wrench.
+     * Creates a new display mode for any {@link IConduitControl} wrench. Contains data about which conduit type this is
+     * for, and the icons to render while holding the wrench. wrench.
      *
-     * @param conduitType
-     *          The base class for your conduit type, typically an interface (e.g.
-     *          {@code IPowerConduit}).
-     * @param widgetSelected
-     *          The widget to render when this type is selected.
-     * @param widgetUnselected
-     *          The widget to render when this type is unselected.
+     * @param conduitType      The base class for your conduit type, typically an interface (e.g.
+     *                         {@code IPowerConduit}).
+     * @param widgetSelected   The widget to render when this type is selected.
+     * @param widgetUnselected The widget to render when this type is unselected.
      */
-    public ConduitDisplayMode(
-            @Nonnull Class<? extends IConduit> conduitType, IWidgetIcon widgetSelected, IWidgetIcon widgetUnselected) {
+    public ConduitDisplayMode(@Nonnull Class<? extends IConduit> conduitType, IWidgetIcon widgetSelected,
+            IWidgetIcon widgetUnselected) {
         this.conduitType = conduitType;
         this.widgetSelected = widgetSelected;
         this.widgetUnselected = widgetUnselected;
@@ -107,11 +103,9 @@ public class ConduitDisplayMode {
     }
 
     /**
-     * The name is null by default, and will use the simple class name of the
-     * conduit type.
+     * The name is null by default, and will use the simple class name of the conduit type.
      *
-     * @param name
-     *          The override name to set.
+     * @param name The override name to set.
      */
     public void setName(@Nullable String name) {
         this.overrideName = name;
@@ -195,6 +189,7 @@ public class ConduitDisplayMode {
 
     public static Iterable<ConduitDisplayMode> getRenderableModes() {
         return FluentIterable.from(registrar).filter(new Predicate<ConduitDisplayMode>() {
+
             @Override
             public boolean apply(ConduitDisplayMode input) {
                 return input != ALL && input != NONE;

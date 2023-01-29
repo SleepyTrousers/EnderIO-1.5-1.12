@@ -1,14 +1,17 @@
 package crazypants.enderio.machine.crafter;
 
-import com.enderio.core.client.gui.widget.GhostSlot;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
-import crazypants.enderio.network.PacketHandler;
 import java.awt.Point;
 import java.util.List;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import com.enderio.core.client.gui.widget.GhostSlot;
+
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.network.PacketHandler;
 
 public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> {
 
@@ -58,6 +61,7 @@ public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> {
             }
         }
         addSlotToContainer(new Slot(getInv(), 9, 172, 34) {
+
             @Override
             public boolean isItemValid(ItemStack itemStack) {
                 return false;
@@ -83,6 +87,7 @@ public class ContainerCrafter extends AbstractMachineContainer<TileCrafter> {
     }
 
     private class DummySlot extends GhostSlot {
+
         private final int slotIndex;
 
         public DummySlot(int slotIndex, int x, int y) {

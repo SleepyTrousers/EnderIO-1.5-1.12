@@ -1,10 +1,12 @@
 package crazypants.enderio.machine.transceiver.render;
 
-import com.enderio.core.client.render.RenderUtil;
-import crazypants.enderio.machine.transceiver.TileTransceiver;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.RenderUtil;
+import crazypants.enderio.machine.transceiver.TileTransceiver;
 
 public class TransceiverModelAlt extends ModelBase implements IModel {
 

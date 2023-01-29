@@ -1,12 +1,14 @@
 package crazypants.enderio.gui;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.inventory.Container;
+import net.minecraft.util.ResourceLocation;
+
 import com.enderio.core.client.gui.GuiContainerBase;
 import com.enderio.core.client.render.RenderUtil;
 import crazypants.enderio.EnderIO;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.inventory.Container;
-import net.minecraft.util.ResourceLocation;
 
 public abstract class GuiContainerBaseEIO extends GuiContainerBase {
 

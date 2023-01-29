@@ -5,6 +5,11 @@ import static crazypants.enderio.material.Alloy.*;
 import static crazypants.enderio.material.Material.*;
 import static crazypants.util.RecipeUtil.*;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.item.FunctionUpgrade;
@@ -19,10 +24,6 @@ import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.MachinePart;
 import crazypants.enderio.material.Material;
 import crazypants.enderio.power.Capacitors;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
 
 public class MachineRecipes {
 
@@ -36,8 +37,10 @@ public class MachineRecipes {
         String machineChassi = MachinePart.MACHINE_CHASSI.oreDict;
         ItemStack fusedQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, 0);
         ItemStack enlightedQuartz = new ItemStack(EnderIO.blockFusedQuartz, 1, 2);
-        ItemStack zombieController =
-                new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_CONTROLLER.ordinal());
+        ItemStack zombieController = new ItemStack(
+                EnderIO.itemFrankenSkull,
+                1,
+                FrankenSkull.ZOMBIE_CONTROLLER.ordinal());
         ItemStack frankenZombie = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.FRANKEN_ZOMBIE.ordinal());
         ItemStack enderRes = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ENDER_RESONATOR.ordinal());
         ItemStack sentientEnder = new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.SENTIENT_ENDER.ordinal());
@@ -305,23 +308,45 @@ public class MachineRecipes {
 
         // capacitor bank
 
-        ItemStack capBank1 =
-                BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.SIMPLE), 0);
+        ItemStack capBank1 = BlockItemCapBank
+                .createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.SIMPLE), 0);
         addShaped(capBank1, "bcb", "cmc", "bcb", 'b', "ingotIron", 'c', capacitor, 'm', "blockRedstone");
-        ItemStack capBank2 =
-                BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.ACTIVATED), 0);
+        ItemStack capBank2 = BlockItemCapBank
+                .createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.ACTIVATED), 0);
         addShaped(capBank2, "bcb", "cmc", "bcb", 'b', electricalSteel, 'c', capacitor2, 'm', "blockRedstone");
-        ItemStack capBank3 =
-                BlockItemCapBank.createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.VIBRANT), 0);
+        ItemStack capBank3 = BlockItemCapBank
+                .createItemStackWithPower(CapBankType.getMetaFromType(CapBankType.VIBRANT), 0);
         addShaped(capBank3, "bcb", "cmc", "bcb", 'b', electricalSteel, 'c', capacitor3, 'm', vibCry);
 
         ConvertOldRecipe convertRecipe = new ConvertOldRecipe();
         GameRegistry.addRecipe(convertRecipe);
 
-        GameRegistry.addRecipe(new UpgradeCapBankRecipe(
-                capBank2, "eee", "bcb", "eee", 'e', energeticAlloy, 'b', capBank1, 'c', capacitor2));
-        GameRegistry.addRecipe(new UpgradeCapBankRecipe(
-                capBank3, "vov", "NcN", "vov", 'v', phasedGold, 'o', capacitor3, 'N', capBank2, 'c', vibCry));
+        GameRegistry.addRecipe(
+                new UpgradeCapBankRecipe(
+                        capBank2,
+                        "eee",
+                        "bcb",
+                        "eee",
+                        'e',
+                        energeticAlloy,
+                        'b',
+                        capBank1,
+                        'c',
+                        capacitor2));
+        GameRegistry.addRecipe(
+                new UpgradeCapBankRecipe(
+                        capBank3,
+                        "vov",
+                        "NcN",
+                        "vov",
+                        'v',
+                        phasedGold,
+                        'o',
+                        capacitor3,
+                        'N',
+                        capBank2,
+                        'c',
+                        vibCry));
 
         // painter
         ItemStack painter = new ItemStack(EnderIO.blockPainter, 1, 0);
@@ -600,8 +625,10 @@ public class MachineRecipes {
 
         // Aversion
         ItemStack aversion = new ItemStack(EnderIO.blockSpawnGuard);
-        ItemStack tormentedEnderman =
-                new ItemStack(EnderIO.blockEndermanSkull, 1, BlockEndermanSkull.SkullType.TORMENTED.ordinal());
+        ItemStack tormentedEnderman = new ItemStack(
+                EnderIO.blockEndermanSkull,
+                1,
+                BlockEndermanSkull.SkullType.TORMENTED.ordinal());
         addShaped(
                 aversion,
                 " c ",
@@ -643,14 +670,22 @@ public class MachineRecipes {
         GameRegistry.addRecipe(inst);
 
         // wireless light
-        ItemStack poweredLamp =
-                new ItemStack(EnderIO.blockElectricLight, 1, BlockItemElectricLight.Type.ELECTRIC.ordinal());
-        ItemStack poweredLampInv =
-                new ItemStack(EnderIO.blockElectricLight, 1, BlockItemElectricLight.Type.ELECTRIC_INV.ordinal());
-        ItemStack wirelessLamp =
-                new ItemStack(EnderIO.blockElectricLight, 1, BlockItemElectricLight.Type.WIRELESS.ordinal());
-        ItemStack wirelessLampInv =
-                new ItemStack(EnderIO.blockElectricLight, 1, BlockItemElectricLight.Type.WIRELESS_INV.ordinal());
+        ItemStack poweredLamp = new ItemStack(
+                EnderIO.blockElectricLight,
+                1,
+                BlockItemElectricLight.Type.ELECTRIC.ordinal());
+        ItemStack poweredLampInv = new ItemStack(
+                EnderIO.blockElectricLight,
+                1,
+                BlockItemElectricLight.Type.ELECTRIC_INV.ordinal());
+        ItemStack wirelessLamp = new ItemStack(
+                EnderIO.blockElectricLight,
+                1,
+                BlockItemElectricLight.Type.WIRELESS.ordinal());
+        ItemStack wirelessLampInv = new ItemStack(
+                EnderIO.blockElectricLight,
+                1,
+                BlockItemElectricLight.Type.WIRELESS_INV.ordinal());
         addShapeless(wirelessLamp, poweredLamp, enderRes);
         addShapeless(wirelessLamp, wirelessLampInv, Blocks.redstone_torch);
         addShapeless(wirelessLampInv, poweredLampInv, enderRes);
@@ -659,7 +694,18 @@ public class MachineRecipes {
         // inventory panel
         ItemStack awareness = new ItemStack(EnderIO.itemFunctionUpgrade, 1, FunctionUpgrade.INVENTORY_PANEL.ordinal());
         addShaped(
-                awareness, "bsb", "ses", "bib", 'b', binder, 's', silicon, 'e', Items.ender_eye, 'i', electricalSteel);
+                awareness,
+                "bsb",
+                "ses",
+                "bib",
+                'b',
+                binder,
+                's',
+                silicon,
+                'e',
+                Items.ender_eye,
+                'i',
+                electricalSteel);
         ItemStack invPanel = new ItemStack(EnderIO.blockInventoryPanel);
         addShaped(
                 invPanel,

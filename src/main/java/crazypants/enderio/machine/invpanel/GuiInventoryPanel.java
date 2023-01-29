@@ -1,6 +1,24 @@
 package crazypants.enderio.machine.invpanel;
 
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
 import codechicken.nei.LayoutManager;
+
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
@@ -12,6 +30,7 @@ import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.ItemUtil;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -27,20 +46,6 @@ import crazypants.enderio.machine.invpanel.client.ItemEntry;
 import crazypants.enderio.machine.invpanel.client.SortOrder;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.SmartTank;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
@@ -122,6 +127,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
         setText(tfFilter, te.getGuiFilterString());
         btnSort = new IconButton(this, ID_SORT, 24 + 233, 27, getSortOrderIcon()) {
+
             @Override
             public boolean mousePressed(Minecraft mc, int x, int y) {
                 return mousePressedButton(mc, x, y, 0);
@@ -139,7 +145,13 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
         scrollbar = new VScrollbar(this, 24 + 215, 27, 90);
         btnClear = new MultiIconButton(
-                this, ID_CLEAR, 24 + 65, 60, EnderWidget.X_BUT, EnderWidget.X_BUT_PRESSED, EnderWidget.X_BUT_HOVER);
+                this,
+                ID_CLEAR,
+                24 + 65,
+                60,
+                EnderWidget.X_BUT,
+                EnderWidget.X_BUT_PRESSED,
+                EnderWidget.X_BUT_HOVER);
 
         textFields.add(tfFilter);
 
@@ -154,6 +166,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
         SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.return.line");
         addToolTip(new GuiToolTip(btnReturnArea, list) {
+
             @Override
             public boolean shouldDraw() {
                 return super.shouldDraw() && !getTileEntity().isExtractionDisabled();
@@ -163,6 +176,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         list.clear();
         SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.storage.line");
         addToolTip(new GuiToolTip(btnReturnArea, list) {
+
             @Override
             public boolean shouldDraw() {
                 return super.shouldDraw() && getTileEntity().isExtractionDisabled();
@@ -174,8 +188,12 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         addToolTip(
                 new GuiToolTip(
                         new Rectangle(
-                                InventoryPanelContainer.FILTER_SLOT_X, InventoryPanelContainer.FILTER_SLOT_Y, 16, 16),
+                                InventoryPanelContainer.FILTER_SLOT_X,
+                                InventoryPanelContainer.FILTER_SLOT_Y,
+                                16,
+                                16),
                         list) {
+
                     @Override
                     public boolean shouldDraw() {
                         return !getContainer().getSlotFilter().getHasStack() && super.shouldDraw();
@@ -192,6 +210,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
         SpecialTooltipHandler.addTooltipFromResources(list, "enderio.gui.inventorypanel.tooltip.setrecipe.line");
         ttSetReceipe = new GuiToolTip(btnRefill, list) {
+
             @Override
             public boolean shouldDraw() {
                 return super.shouldDraw() && getContainer().hasCraftingRecipe();
@@ -205,6 +224,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
 
         if (!Config.inventoryPanelFree) {
             addToolTip(new GuiToolTip(new Rectangle(36, 133, 16, 47), "") {
+
                 @Override
                 protected void updateText() {
                     text.clear();
@@ -441,9 +461,10 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     @Override
     public void drawHoveringText(List list, int mouseX, int mouseY, FontRenderer font) {
         if (ghostSlotTooltipStacksize >= 1000) {
-            list.add(EnumChatFormatting.WHITE
-                    + EnderIO.lang.localize(
-                            "gui.inventorypanel.tooltip.itemsstored", Integer.toString(ghostSlotTooltipStacksize)));
+            list.add(
+                    EnumChatFormatting.WHITE + EnderIO.lang.localize(
+                            "gui.inventorypanel.tooltip.itemsstored",
+                            Integer.toString(ghostSlotTooltipStacksize)));
         }
         super.drawHoveringText(list, mouseX, mouseY, font);
     }
@@ -493,7 +514,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
         SpecialTooltipHandler.addTooltipFromResources(
                 list,
                 "enderio.gui.inventorypanel.tooltip.sort." + order.name().toLowerCase(Locale.US)
-                        + (view.isSortOrderInverted() ? "_up" : "_down") + ".line");
+                        + (view.isSortOrderInverted() ? "_up" : "_down")
+                        + ".line");
         btnSort.setIcon(getSortOrderIcon());
         btnSort.setToolTip(list.toArray(new String[list.size()]));
     }
@@ -590,8 +612,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
                     if (invSlot.stack != null && invSlot.entry != null && db != null) {
                         ItemStack itemStack = mc.thePlayer.inventory.getItemStack();
                         if (itemStack == null || ItemUtil.areStackMergable(itemStack, invSlot.stack)) {
-                            PacketHandler.INSTANCE.sendToServer(
-                                    new PacketFetchItem(db.getGeneration(), invSlot.entry, -1, 1));
+                            PacketHandler.INSTANCE
+                                    .sendToServer(new PacketFetchItem(db.getGeneration(), invSlot.entry, -1, 1));
                         }
                     }
                 }
@@ -632,8 +654,8 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
                     return;
                 }
 
-                PacketHandler.INSTANCE.sendToServer(
-                        new PacketFetchItem(db.getGeneration(), invSlot.entry, targetSlot, count));
+                PacketHandler.INSTANCE
+                        .sendToServer(new PacketFetchItem(db.getGeneration(), invSlot.entry, targetSlot, count));
             }
         } else if (slot instanceof RecipeSlot) {
             RecipeSlot recipeSlot = (RecipeSlot) slot;
@@ -648,6 +670,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     }
 
     class InvSlot extends GhostSlot {
+
         ItemEntry entry;
         ItemStack stack;
 
@@ -665,6 +688,7 @@ public class GuiInventoryPanel extends GuiMachineBase<TileInventoryPanel> {
     }
 
     class RecipeSlot extends GhostSlot {
+
         final int index;
 
         RecipeSlot(int index, int x, int y) {

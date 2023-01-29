@@ -1,7 +1,8 @@
 package crazypants.enderio.machine.capbank.render;
 
-import crazypants.enderio.machine.capbank.TileCapBank;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import crazypants.enderio.machine.capbank.TileCapBank;
 
 public interface IInfoRenderer {
 

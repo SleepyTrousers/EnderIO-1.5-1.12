@@ -1,6 +1,7 @@
 package crazypants.enderio;
 
 public enum ModObject {
+
     // Enderface
     blockEnderIo,
     itemEnderface,

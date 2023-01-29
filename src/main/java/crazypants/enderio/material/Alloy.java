@@ -1,12 +1,16 @@
 package crazypants.enderio.material;
 
-import crazypants.enderio.EnderIO;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.item.ItemStack;
+
 import org.apache.commons.lang3.StringUtils;
 
+import crazypants.enderio.EnderIO;
+
 public enum Alloy {
+
     ELECTRICAL_STEEL("electricalSteel", 6.0f),
     ENERGETIC_ALLOY("energeticAlloy", 7.0f),
     PHASED_GOLD("phasedGold", 4.0f, "vibrantAlloy"),

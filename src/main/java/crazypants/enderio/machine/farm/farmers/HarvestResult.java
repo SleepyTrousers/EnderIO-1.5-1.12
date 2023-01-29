@@ -1,9 +1,11 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import com.enderio.core.common.util.BlockCoord;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.entity.item.EntityItem;
+
+import com.enderio.core.common.util.BlockCoord;
 
 public class HarvestResult implements IHarvestResult {
 

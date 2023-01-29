@@ -1,16 +1,5 @@
 package crazypants.enderio.machine.invpanel;
 
-import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
-import com.enderio.core.client.gui.widget.GhostSlot;
-import com.enderio.core.common.util.ItemUtil;
-import cpw.mods.fml.common.FMLCommonHandler;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.Log;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
-import crazypants.enderio.machine.invpanel.server.ChangeLog;
-import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
-import crazypants.enderio.machine.invpanel.server.ItemEntry;
-import crazypants.enderio.network.PacketHandler;
 import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -33,6 +23,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
+
+import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.common.util.ItemUtil;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.machine.invpanel.server.ChangeLog;
+import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
+import crazypants.enderio.machine.invpanel.server.ItemEntry;
+import crazypants.enderio.network.PacketHandler;
 
 public class InventoryPanelContainer extends AbstractMachineContainer<TileInventoryPanel> implements ChangeLog {
 
@@ -80,12 +83,12 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
                         TileInventoryPanel.SLOT_CRAFTING_RESULT,
                         CRAFTING_GRID_X + 59,
                         CRAFTING_GRID_Y + 18) {
+
                     @Override
                     public void onPickupFromSlot(EntityPlayer player, ItemStack p_82870_2_) {
                         FMLCommonHandler.instance().firePlayerCraftingEvent(player, p_82870_2_, getInv());
-                        for (int i = TileInventoryPanel.SLOT_CRAFTING_START;
-                                i < TileInventoryPanel.SLOT_CRAFTING_RESULT;
-                                i++) {
+                        for (int i = TileInventoryPanel.SLOT_CRAFTING_START; i
+                                < TileInventoryPanel.SLOT_CRAFTING_RESULT; i++) {
                             ItemStack itemstack = getInv().getStackInSlot(i);
                             if (itemstack == null) continue;
 
@@ -93,8 +96,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
                             if (!itemstack.getItem().hasContainerItem(itemstack)) continue;
 
                             ItemStack containerIS = itemstack.getItem().getContainerItem(itemstack);
-                            if (containerIS != null
-                                    && containerIS.isItemStackDamageable()
+                            if (containerIS != null && containerIS.isItemStackDamageable()
                                     && containerIS.getItemDamage() > containerIS.getMaxDamage()) {
                                 MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, containerIS));
                             } else {
@@ -131,6 +133,7 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
 
         slotFilter = addSlotToContainer(
                 new Slot(getInv(), TileInventoryPanel.SLOT_VIEW_FILTER, FILTER_SLOT_X, FILTER_SLOT_Y) {
+
                     @Override
                     public int getSlotStackLimit() {
                         return 1;
@@ -233,22 +236,21 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
 
     @Override
     public void onCraftMatrixChanged(IInventory inv) {
-        InventoryCrafting tmp = new InventoryCrafting(
-                new Container() {
-                    @Override
-                    public boolean canInteractWith(EntityPlayer ep) {
-                        return false;
-                    }
-                },
-                3,
-                3);
+        InventoryCrafting tmp = new InventoryCrafting(new Container() {
+
+            @Override
+            public boolean canInteractWith(EntityPlayer ep) {
+                return false;
+            }
+        }, 3, 3);
 
         for (int i = 0; i < 9; i++) {
             tmp.setInventorySlotContents(i, getInv().getStackInSlot(i));
         }
 
         getInv().setInventorySlotContents(
-                        9, CraftingManager.getInstance().findMatchingRecipe(tmp, getInv().getWorldObj()));
+                9,
+                CraftingManager.getInstance().findMatchingRecipe(tmp, getInv().getWorldObj()));
 
         checkCraftingRecipes();
     }
@@ -410,9 +412,12 @@ public class InventoryPanelContainer extends AbstractMachineContainer<TileInvent
 
             ItemStack tmpStack = new ItemStack(entry.getItem(), 0, entry.meta);
 
-            Log.info("Loading item from ID " + entry.itemID + ". Result: "
-                    + Item.itemRegistry.getNameForObject(tmpStack.getItem()) + "  side: "
-                    + FMLCommonHandler.instance().getEffectiveSide());
+            Log.info(
+                    "Loading item from ID " + entry.itemID
+                            + ". Result: "
+                            + Item.itemRegistry.getNameForObject(tmpStack.getItem())
+                            + "  side: "
+                            + FMLCommonHandler.instance().getEffectiveSide());
 
             tmpStack.stackTagCompound = entry.nbt;
             maxStackSize = Math.min(maxStackSize, tmpStack.getMaxStackSize());

@@ -29,12 +29,7 @@ public class SlotDefinition {
         this.maxUpgradeSlot = minUpgradeSlot;
     }
 
-    public SlotDefinition(
-            int minInputSlot,
-            int maxInputSlot,
-            int minOutputSlot,
-            int maxOutputSlot,
-            int minUpgradeSlot,
+    public SlotDefinition(int minInputSlot, int maxInputSlot, int minOutputSlot, int maxOutputSlot, int minUpgradeSlot,
             int maxUpgradeSlot) {
         this.minInputSlot = minInputSlot;
         this.maxInputSlot = maxInputSlot;
@@ -107,8 +102,19 @@ public class SlotDefinition {
 
     @Override
     public String toString() {
-        return "SlotDefinition [minUpgradeSlot=" + minUpgradeSlot + ", maxUpgradeSlot=" + maxUpgradeSlot
-                + ", minInputSlot=" + minInputSlot + ", maxInputSlot=" + maxInputSlot + ", minOutputSlot="
-                + minOutputSlot + ", maxOutputSlot=" + maxOutputSlot + ", nunSlots=" + getNumSlots() + " ]";
+        return "SlotDefinition [minUpgradeSlot=" + minUpgradeSlot
+                + ", maxUpgradeSlot="
+                + maxUpgradeSlot
+                + ", minInputSlot="
+                + minInputSlot
+                + ", maxInputSlot="
+                + maxInputSlot
+                + ", minOutputSlot="
+                + minOutputSlot
+                + ", maxOutputSlot="
+                + maxOutputSlot
+                + ", nunSlots="
+                + getNumSlots()
+                + " ]";
     }
 }

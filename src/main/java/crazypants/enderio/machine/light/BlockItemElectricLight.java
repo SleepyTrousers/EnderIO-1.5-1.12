@@ -1,10 +1,7 @@
 package crazypants.enderio.machine.light;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIOTab;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,9 +13,16 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIOTab;
+
 public class BlockItemElectricLight extends ItemBlockWithMetadata implements IResourceTooltipProvider {
 
     public enum Type {
+
         ELECTRIC("item.itemElectricLight", false, true, false),
         ELECTRIC_INV("item.itemElectricLightInverted", true, true, false),
         BASIC("item.itemLight", false, false, false),
@@ -52,7 +56,7 @@ public class BlockItemElectricLight extends ItemBlockWithMetadata implements IRe
     }
 
     @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         for (Type type : Type.values()) {
@@ -61,18 +65,8 @@ public class BlockItemElectricLight extends ItemBlockWithMetadata implements IRe
     }
 
     @Override
-    public boolean placeBlockAt(
-            ItemStack stack,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float hitX,
-            float hitY,
-            float hitZ,
-            int metadata) {
+    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float hitX, float hitY, float hitZ, int metadata) {
         if (!world.setBlock(x, y, z, field_150939_a, 0, 3)) {
             return false;
         }

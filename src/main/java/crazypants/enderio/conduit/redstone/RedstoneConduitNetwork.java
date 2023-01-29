@@ -1,19 +1,22 @@
 package crazypants.enderio.conduit.redstone;
 
-import com.enderio.core.common.util.BlockCoord;
-import com.google.common.collect.Sets;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.IConduitBundle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.google.common.collect.Sets;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.AbstractConduitNetwork;
+import crazypants.enderio.conduit.IConduitBundle;
 
 public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneConduit, IRedstoneConduit> {
 
@@ -147,13 +150,7 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
         StringBuilder sb = new StringBuilder();
         for (IRedstoneConduit con : conduits) {
             TileEntity te = con.getBundle().getEntity();
-            sb.append("<")
-                    .append(te.xCoord)
-                    .append(",")
-                    .append(te.yCoord)
-                    .append(",")
-                    .append(te.zCoord)
-                    .append(">");
+            sb.append("<").append(te.xCoord).append(",").append(te.yCoord).append(",").append(te.zCoord).append(">");
         }
         return sb.toString();
     }
@@ -214,9 +211,8 @@ public class RedstoneConduitNetwork extends AbstractConduitNetwork<IRedstoneCond
     }
 
     /**
-     * This is a bit of a hack...avoids the network searching for inputs from
-     * unloaded chunks by only filtering out the invalid signals from the unloaded
-     * chunk.
+     * This is a bit of a hack...avoids the network searching for inputs from unloaded chunks by only filtering out the
+     * invalid signals from the unloaded chunk.
      *
      * @param conduits
      * @param oldSignals

@@ -1,17 +1,20 @@
 package crazypants.enderio.machine.spawner;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import crazypants.enderio.Log;
-import crazypants.util.IoUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import net.minecraft.nbt.NBTTagCompound;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import crazypants.enderio.Log;
+import crazypants.util.IoUtil;
 
 public class PoweredSpawnerConfig {
 
@@ -69,13 +72,15 @@ public class PoweredSpawnerConfig {
                     blackList.add(s);
                 }
             } else {
-                Log.warn("No black list for powered spawner found in "
-                        + IoUtil.getConfigFile(CORE_FILE_NAME).getAbsolutePath());
+                Log.warn(
+                        "No black list for powered spawner found in "
+                                + IoUtil.getConfigFile(CORE_FILE_NAME).getAbsolutePath());
             }
 
         } catch (Exception e) {
-            Log.error("Could not load Powered Spawner costs from "
-                    + IoUtil.getConfigFile(CORE_FILE_NAME).getAbsolutePath());
+            Log.error(
+                    "Could not load Powered Spawner costs from "
+                            + IoUtil.getConfigFile(CORE_FILE_NAME).getAbsolutePath());
             e.printStackTrace();
         }
 
@@ -101,8 +106,9 @@ public class PoweredSpawnerConfig {
             }
 
         } catch (Exception e) {
-            Log.error("Could not load user defined Powered Spawner costs from "
-                    + IoUtil.getConfigFile(USER_FILE_NAME).getAbsolutePath());
+            Log.error(
+                    "Could not load user defined Powered Spawner costs from "
+                            + IoUtil.getConfigFile(USER_FILE_NAME).getAbsolutePath());
             e.printStackTrace();
         }
     }

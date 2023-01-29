@@ -1,10 +1,12 @@
 package crazypants.enderio.machine.capbank;
 
-import crazypants.enderio.config.Config;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
+
+import crazypants.enderio.config.Config;
 
 public class CapBankType {
 
@@ -108,17 +110,8 @@ public class CapBankType {
     private final String outputIcon;
     private final String lockedIcon;
 
-    public CapBankType(
-            String uid,
-            String unlocalizedName,
-            int maxIO,
-            int maxStored,
-            boolean isMultiblock,
-            boolean isCreative,
-            String icon,
-            String borderIcon,
-            String inputIcon,
-            String outputIcon,
+    public CapBankType(String uid, String unlocalizedName, int maxIO, int maxStored, boolean isMultiblock,
+            boolean isCreative, String icon, String borderIcon, String inputIcon, String outputIcon,
             String lockedIcon) {
         this.uid = uid;
         this.unlocalizedName = unlocalizedName;

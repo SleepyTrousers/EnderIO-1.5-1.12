@@ -1,14 +1,16 @@
 package crazypants.enderio.machine.painter;
 
-import com.enderio.core.client.render.RenderUtil;
-import crazypants.enderio.EnderIO;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.RenderUtil;
+import crazypants.enderio.EnderIO;
 
 public class PaintedItemRenderer implements IItemRenderer {
 

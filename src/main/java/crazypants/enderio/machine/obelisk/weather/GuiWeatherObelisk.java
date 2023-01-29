@@ -1,21 +1,25 @@
 package crazypants.enderio.machine.obelisk.weather;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.obelisk.weather.TileWeatherObelisk.WeatherTask;
 import crazypants.enderio.network.PacketHandler;
-import java.awt.Color;
-import java.awt.Rectangle;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import org.lwjgl.opengl.GL11;
 
 public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk> {
 
@@ -97,9 +101,16 @@ public class GuiWeatherObelisk extends GuiPoweredMachineBase<TileWeatherObelisk>
             int barHeight = getProgressScaled(ContainerWeatherObelisk.MAX_SCALE);
             Color color = getTileEntity().getActiveTask().color;
             GL11.glColor3f(
-                    (float) color.getRed() / 255f, (float) color.getGreen() / 255f, (float) color.getBlue() / 255f);
+                    (float) color.getRed() / 255f,
+                    (float) color.getGreen() / 255f,
+                    (float) color.getBlue() / 255f);
             this.drawTexturedModalRect(
-                    getGuiLeft() + 81, getGuiTop() + 58 - barHeight, getXSize(), 32 - barHeight, 12, barHeight);
+                    getGuiLeft() + 81,
+                    getGuiTop() + 58 - barHeight,
+                    getXSize(),
+                    32 - barHeight,
+                    12,
+                    barHeight);
         }
         super.drawGuiContainerBackgroundLayer(par1, par2, par3);
     }

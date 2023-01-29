@@ -1,15 +1,18 @@
 package crazypants.enderio.machine.buffer;
 
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.RenderUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
-import org.lwjgl.opengl.GL11;
 
 public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
 
@@ -149,9 +152,11 @@ public class GuiBuffer extends GuiPoweredMachineBase<TileBuffer> {
         super.drawGuiContainerBackgroundLayer(par1, par2, par3);
 
         String invName = EnderIO.lang.localizeExact(getTileEntity().getInventoryName() + ".name");
-        getFontRenderer()
-                .drawStringWithShadow(
-                        invName, sx + (xSize / 2) - (getFontRenderer().getStringWidth(invName) / 2), sy + 4, 0xFFFFFF);
+        getFontRenderer().drawStringWithShadow(
+                invName,
+                sx + (xSize / 2) - (getFontRenderer().getStringWidth(invName) / 2),
+                sy + 4,
+                0xFFFFFF);
 
         if (getTileEntity().hasPower()) {
             sx += isFull() ? 19 : 57;

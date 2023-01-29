@@ -1,8 +1,27 @@
 package crazypants.enderio.rail;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRail;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.MetadataUtil;
 import com.enderio.core.common.util.RoundRobinIterator;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -17,22 +36,6 @@ import crazypants.enderio.machine.transceiver.ServerChannelRegister;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.ToolUtil;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRail;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockEnderRail extends BlockRail implements IResourceTooltipProvider {
 
@@ -59,7 +62,10 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
 
     public static BlockEnderRail create() {
         PacketHandler.INSTANCE.registerMessage(
-                PacketTeleportEffects.class, PacketTeleportEffects.class, PacketHandler.nextID(), Side.CLIENT);
+                PacketTeleportEffects.class,
+                PacketTeleportEffects.class,
+                PacketHandler.nextID(),
+                Side.CLIENT);
         BlockEnderRail res = new BlockEnderRail();
         res.init();
 
@@ -109,8 +115,8 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
     }
 
     @Override
-    public boolean onBlockActivated(
-            World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7,
+            float par8, float par9) {
         if (ToolUtil.isToolEquipped(player)) {
             if (!world.isRemote) {
                 int meta = world.getBlockMetadata(x, y, z);
@@ -261,8 +267,8 @@ public class BlockEnderRail extends BlockRail implements IResourceTooltipProvide
         if (sender.getWorldObj().provider.dimensionId != reciever.getWorldObj().provider.dimensionId) {
             powerRequired = Config.enderRailPowerRequireCrossDimensions;
         } else {
-            powerRequired +=
-                    sender.getLocation().getDist(reciever.getLocation()) * Config.enderRailPowerRequiredPerBlock;
+            powerRequired += sender.getLocation().getDist(reciever.getLocation())
+                    * Config.enderRailPowerRequiredPerBlock;
             if (Config.enderRailCapSameDimensionPowerAtCrossDimensionCost) {
                 powerRequired = Math.min(powerRequired, Config.enderRailPowerRequireCrossDimensions);
             }

@@ -3,6 +3,7 @@ package crazypants.enderio.conduit;
 import crazypants.enderio.EnderIO;
 
 public enum ConnectionMode {
+
     IN_OUT("gui.conduit.ioMode.inOut"),
     INPUT("gui.conduit.ioMode.input"),
     OUTPUT("gui.conduit.ioMode.output"),

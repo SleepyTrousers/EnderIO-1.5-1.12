@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.alloy;
 
-import com.enderio.core.common.util.Util;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -9,6 +7,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
+
+import com.enderio.core.common.util.Util;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySmelter> {
 
@@ -22,18 +23,21 @@ public class ContainerAlloySmelter extends AbstractMachineContainer<TileAlloySme
     @Override
     protected void addMachineSlots(InventoryPlayer playerInv) {
         addSlotToContainer(new Slot(getInv(), 0, 54, 17) {
+
             @Override
             public boolean isItemValid(ItemStack itemStack) {
                 return getInv().isItemValidForSlot(0, itemStack);
             }
         });
         addSlotToContainer(new Slot(getInv(), 1, 79, 7) {
+
             @Override
             public boolean isItemValid(ItemStack itemStack) {
                 return getInv().isItemValidForSlot(1, itemStack);
             }
         });
         addSlotToContainer(new Slot(getInv(), 2, 103, 17) {
+
             @Override
             public boolean isItemValid(ItemStack itemStack) {
                 return getInv().isItemValidForSlot(2, itemStack);

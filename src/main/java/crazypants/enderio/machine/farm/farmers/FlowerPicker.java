@@ -1,14 +1,17 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.machine.farm.FarmStationContainer;
-import crazypants.enderio.machine.farm.TileFarmStation;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.machine.farm.FarmStationContainer;
+import crazypants.enderio.machine.farm.TileFarmStation;
 
 public class FlowerPicker implements IFarmerJoe {
 

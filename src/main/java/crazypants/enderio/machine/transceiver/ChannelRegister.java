@@ -1,13 +1,14 @@
 package crazypants.enderio.machine.transceiver;
 
+import java.util.Set;
+
 import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.SetMultimap;
-import java.util.Set;
 
 public class ChannelRegister {
 
-    protected SetMultimap<ChannelType, Channel> channels =
-            MultimapBuilder.enumKeys(ChannelType.class).hashSetValues().build();
+    protected SetMultimap<ChannelType, Channel> channels = MultimapBuilder.enumKeys(ChannelType.class).hashSetValues()
+            .build();
 
     public Set<Channel> getChannelsForType(ChannelType type) {
         return channels.get(type);

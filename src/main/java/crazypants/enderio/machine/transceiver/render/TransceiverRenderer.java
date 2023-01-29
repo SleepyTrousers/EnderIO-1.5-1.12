@@ -1,15 +1,5 @@
 package crazypants.enderio.machine.transceiver.render;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.CubeRenderer;
-import com.enderio.core.client.render.CustomRenderBlocks;
-import com.enderio.core.client.render.RenderUtil;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.transceiver.TileTransceiver;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -19,8 +9,21 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.CustomRenderBlocks;
+import com.enderio.core.client.render.RenderUtil;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.transceiver.TileTransceiver;
 
 @SideOnly(Side.CLIENT)
 public class TransceiverRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
@@ -175,24 +178,24 @@ public class TransceiverRenderer extends TileEntitySpecialRenderer implements II
         GL11.glPopMatrix();
     }
 
-    //  private class OverlayRenderer implements IRenderFace {
+    // private class OverlayRenderer implements IRenderFace {
     //
-    //    @Override
-    //    public void renderFace(CustomRenderBlocks rb, ForgeDirection face, Block par1Block, double x, double y, double
+    // @Override
+    // public void renderFace(CustomRenderBlocks rb, ForgeDirection face, Block par1Block, double x, double y, double
     // z, IIcon texture, List<Vertex> refVertices,
-    //        boolean translateToXyz) {
+    // boolean translateToXyz) {
     //
-    //      ccr.getCustomRenderBlocks().doDefaultRenderFace(face,par1Block,x,y,z,texture);
-    //      if(curEnt != null && par1Block instanceof AbstractMachineBlock) {
-    //        IoMode mode = curEnt.getIoMode(face);
-    //        IIcon tex = ((AbstractMachineBlock)par1Block).getOverlayIconForMode(mode);
-    //        if(tex != null) {
-    //          ccr.getCustomRenderBlocks().doDefaultRenderFace(face,par1Block,x,y,z, tex);
-    //        }
-    //      }
+    // ccr.getCustomRenderBlocks().doDefaultRenderFace(face,par1Block,x,y,z,texture);
+    // if(curEnt != null && par1Block instanceof AbstractMachineBlock) {
+    // IoMode mode = curEnt.getIoMode(face);
+    // IIcon tex = ((AbstractMachineBlock)par1Block).getOverlayIconForMode(mode);
+    // if(tex != null) {
+    // ccr.getCustomRenderBlocks().doDefaultRenderFace(face,par1Block,x,y,z, tex);
+    // }
+    // }
     //
-    //    }
+    // }
     //
-    //  }
+    // }
 
 }

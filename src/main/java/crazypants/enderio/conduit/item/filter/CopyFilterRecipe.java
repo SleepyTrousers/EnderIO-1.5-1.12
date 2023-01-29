@@ -1,6 +1,5 @@
 package crazypants.enderio.conduit.item.filter;
 
-import crazypants.enderio.conduit.item.FilterRegister;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -8,11 +7,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
 
+import crazypants.enderio.conduit.item.FilterRegister;
+
 public class CopyFilterRecipe implements IRecipe {
 
     static {
         RecipeSorter.register(
-                "EnderIO:copyFilter", CopyFilterRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
+                "EnderIO:copyFilter",
+                CopyFilterRecipe.class,
+                Category.SHAPELESS,
+                "after:minecraft:shapeless");
     }
 
     private ItemStack output;
@@ -48,9 +52,8 @@ public class CopyFilterRecipe implements IRecipe {
     }
 
     private boolean isSameTypeOrNull(ItemStack matchOrNull, ItemStack checkStack) {
-        return matchOrNull == null
-                || (matchOrNull.getItem() == checkStack.getItem()
-                        && matchOrNull.getItemDamage() == checkStack.getItemDamage());
+        return matchOrNull == null || (matchOrNull.getItem() == checkStack.getItem()
+                && matchOrNull.getItemDamage() == checkStack.getItemDamage());
     }
 
     @Override

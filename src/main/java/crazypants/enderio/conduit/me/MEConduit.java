@@ -1,13 +1,27 @@
 package crazypants.enderio.conduit.me;
 
+import java.util.EnumSet;
+import java.util.List;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import appeng.api.AEApi;
 import appeng.api.networking.IGridConnection;
 import appeng.api.networking.IGridHost;
 import appeng.api.networking.IGridNode;
 import appeng.api.parts.IPart;
 import appeng.api.parts.IPartHost;
+
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
+
 import cpw.mods.fml.common.Optional.Method;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
@@ -20,16 +34,6 @@ import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.TileConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.tool.ToolUtil;
-import java.util.EnumSet;
-import java.util.List;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class MEConduit extends AbstractConduit implements IMEConduit {
 
@@ -154,8 +158,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
                 return true;
             }
             String name = part.getClass().getSimpleName();
-            return "PartP2PTunnelME".equals(name)
-                    || "PartQuartzFiber".endsWith(name)
+            return "PartP2PTunnelME".equals(name) || "PartQuartzFiber".endsWith(name)
                     || "PartToggleBus".equals(name)
                     || "PartInvertedToggleBus".equals(name);
         } else if (te instanceof IGridHost) {
@@ -285,8 +288,7 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     @Override
     public void onAddedToBundle() {
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-            TileEntity te =
-                    getLocation().getLocation(dir).getTileEntity(getBundle().getWorld());
+            TileEntity te = getLocation().getLocation(dir).getTileEntity(getBundle().getWorld());
             if (te instanceof TileConduitBundle) {
                 IMEConduit cond = ((TileConduitBundle) te).getConduit(IMEConduit.class);
                 if (cond != null) {

@@ -1,7 +1,13 @@
 package crazypants.enderio.conduit.liquid;
 
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -10,26 +16,27 @@ import crazypants.enderio.conduit.AbstractItemConduit;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
 import crazypants.enderio.config.Config;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 
 public class ItemLiquidConduit extends AbstractItemConduit implements IAdvancedTooltipProvider {
 
     private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-        new ItemConduitSubtype(ModObject.itemLiquidConduit.name(), "enderio:itemLiquidConduit"),
-        new ItemConduitSubtype(ModObject.itemLiquidConduit.name() + "Advanced", "enderio:itemLiquidConduitAdvanced"),
-        new ItemConduitSubtype(ModObject.itemLiquidConduit.name() + "Ender", "enderio:itemLiquidConduitEnder"),
-        new ItemConduitSubtype(
-                ModObject.itemLiquidConduit.name() + "CrystallineEnder", "enderio:itemLiquidConduitCrystallineEnder"),
-        new ItemConduitSubtype(
-                ModObject.itemLiquidConduit.name() + "CrystallinePinkSlimeEnder",
-                "enderio:itemLiquidConduitCrystallinePinkSlimeEnder"),
-        new ItemConduitSubtype(
-                ModObject.itemLiquidConduit.name() + "MelodicEnder", "enderio:itemLiquidConduitMelodicEnder"),
-        new ItemConduitSubtype(
-                ModObject.itemLiquidConduit.name() + "StellarEnder", "enderio:itemLiquidConduitStellarEnder")
-    };
+            new ItemConduitSubtype(ModObject.itemLiquidConduit.name(), "enderio:itemLiquidConduit"),
+            new ItemConduitSubtype(
+                    ModObject.itemLiquidConduit.name() + "Advanced",
+                    "enderio:itemLiquidConduitAdvanced"),
+            new ItemConduitSubtype(ModObject.itemLiquidConduit.name() + "Ender", "enderio:itemLiquidConduitEnder"),
+            new ItemConduitSubtype(
+                    ModObject.itemLiquidConduit.name() + "CrystallineEnder",
+                    "enderio:itemLiquidConduitCrystallineEnder"),
+            new ItemConduitSubtype(
+                    ModObject.itemLiquidConduit.name() + "CrystallinePinkSlimeEnder",
+                    "enderio:itemLiquidConduitCrystallinePinkSlimeEnder"),
+            new ItemConduitSubtype(
+                    ModObject.itemLiquidConduit.name() + "MelodicEnder",
+                    "enderio:itemLiquidConduitMelodicEnder"),
+            new ItemConduitSubtype(
+                    ModObject.itemLiquidConduit.name() + "StellarEnder",
+                    "enderio:itemLiquidConduitStellarEnder") };
 
     public static ItemLiquidConduit create() {
         ItemLiquidConduit result = new ItemLiquidConduit();

@@ -1,16 +1,9 @@
 package crazypants.enderio.machine.solar;
 
-import cofh.api.energy.EnergyStorage;
-import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.power.IInternalPowerProvider;
-import crazypants.enderio.power.IPowerInterface;
-import crazypants.enderio.power.PowerHandlerUtil;
-import crazypants.enderio.waila.IWailaNBTProvider;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -20,6 +13,17 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import cofh.api.energy.EnergyStorage;
+
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.power.IInternalPowerProvider;
+import crazypants.enderio.power.IPowerInterface;
+import crazypants.enderio.power.PowerHandlerUtil;
+import crazypants.enderio.waila.IWailaNBTProvider;
 
 public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowerProvider, IWailaNBTProvider {
 
@@ -228,6 +232,7 @@ public class TileEntitySolarPanel extends TileEntityEio implements IInternalPowe
     }
 
     static class Receptor {
+
         IPowerInterface receptor;
         ForgeDirection fromDir;
 

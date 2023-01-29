@@ -1,12 +1,15 @@
 package crazypants.enderio.machine.solar;
 
-import cofh.api.energy.EnergyStorage;
-import com.google.common.collect.Lists;
 import java.util.EnumSet;
 import java.util.List;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import cofh.api.energy.EnergyStorage;
+
+import com.google.common.collect.Lists;
 
 public class SolarPanelNetwork {
 
@@ -17,8 +20,8 @@ public class SolarPanelNetwork {
 
     public static final int ENERGY_PER = 10000;
 
-    public static final EnumSet<ForgeDirection> VALID_CONS =
-            EnumSet.of(ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST);
+    public static final EnumSet<ForgeDirection> VALID_CONS = EnumSet
+            .of(ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST);
 
     public SolarPanelNetwork() {
         panels = Lists.newArrayList();
@@ -86,8 +89,7 @@ public class SolarPanelNetwork {
     }
 
     /**
-     * Actually destroys all references to this network, creating an invalid
-     * network for each panel on this current one.
+     * Actually destroys all references to this network, creating an invalid network for each panel on this current one.
      */
     void destroyNetwork() {
         for (TileEntitySolarPanel te : panels) {
@@ -97,8 +99,7 @@ public class SolarPanelNetwork {
     }
 
     /**
-     * Does nothing but clear this network, other panels may still hold a
-     * reference to this network.
+     * Does nothing but clear this network, other panels may still hold a reference to this network.
      */
     private void invalidate() {
         panels.clear();

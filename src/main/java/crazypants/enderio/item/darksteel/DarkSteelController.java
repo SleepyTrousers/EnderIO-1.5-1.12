@@ -1,11 +1,40 @@
 package crazypants.enderio.item.darksteel;
 
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.particle.EntityReddustFX;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovementInput;
+import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+
+import org.lwjgl.opengl.GL11;
+
 import cofh.api.energy.IEnergyContainerItem;
+
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4d;
 import com.mojang.authlib.GameProfile;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
@@ -25,55 +54,50 @@ import crazypants.enderio.item.darksteel.upgrade.SpeedUpgrade;
 import crazypants.enderio.item.darksteel.upgrade.SwimUpgrade;
 import crazypants.enderio.machine.solar.TileEntitySolarPanel;
 import crazypants.enderio.network.PacketHandler;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.particle.EntityReddustFX;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovementInput;
-import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import org.lwjgl.opengl.GL11;
 
 public class DarkSteelController {
 
     public static final DarkSteelController instance = new DarkSteelController();
 
     private final AttributeModifier[] walkModifiers = new AttributeModifier[] {
-        new AttributeModifier(
-                new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.WALK_MULTIPLIERS[0], 1),
-        new AttributeModifier(
-                new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.WALK_MULTIPLIERS[1], 1),
-        new AttributeModifier(
-                new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.WALK_MULTIPLIERS[2], 1),
-    };
+            new AttributeModifier(
+                    new UUID(12879874982l, 320981923),
+                    "generic.movementSpeed",
+                    SpeedUpgrade.WALK_MULTIPLIERS[0],
+                    1),
+            new AttributeModifier(
+                    new UUID(12879874982l, 320981923),
+                    "generic.movementSpeed",
+                    SpeedUpgrade.WALK_MULTIPLIERS[1],
+                    1),
+            new AttributeModifier(
+                    new UUID(12879874982l, 320981923),
+                    "generic.movementSpeed",
+                    SpeedUpgrade.WALK_MULTIPLIERS[2],
+                    1), };
 
     private final AttributeModifier[] sprintModifiers = new AttributeModifier[] {
-        new AttributeModifier(
-                new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[0], 1),
-        new AttributeModifier(
-                new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[1], 1),
-        new AttributeModifier(
-                new UUID(12879874982l, 320981923), "generic.movementSpeed", SpeedUpgrade.SPRINT_MULTIPLIERS[2], 1),
-    };
+            new AttributeModifier(
+                    new UUID(12879874982l, 320981923),
+                    "generic.movementSpeed",
+                    SpeedUpgrade.SPRINT_MULTIPLIERS[0],
+                    1),
+            new AttributeModifier(
+                    new UUID(12879874982l, 320981923),
+                    "generic.movementSpeed",
+                    SpeedUpgrade.SPRINT_MULTIPLIERS[1],
+                    1),
+            new AttributeModifier(
+                    new UUID(12879874982l, 320981923),
+                    "generic.movementSpeed",
+                    SpeedUpgrade.SPRINT_MULTIPLIERS[2],
+                    1), };
 
-    private final AttributeModifier swordDamageModifierPowered =
-            new AttributeModifier(new UUID(63242325, 320981923), "Weapon modifier", 2, 0);
+    private final AttributeModifier swordDamageModifierPowered = new AttributeModifier(
+            new UUID(63242325, 320981923),
+            "Weapon modifier",
+            2,
+            0);
 
     private boolean wasJumping;
     private int jumpCount;
@@ -93,9 +117,15 @@ public class DarkSteelController {
                 PacketHandler.nextID(),
                 Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
-                PacketUpgradeState.class, PacketUpgradeState.class, PacketHandler.nextID(), Side.SERVER);
+                PacketUpgradeState.class,
+                PacketUpgradeState.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
-                PacketUpgradeState.class, PacketUpgradeState.class, PacketHandler.nextID(), Side.CLIENT);
+                PacketUpgradeState.class,
+                PacketUpgradeState.class,
+                PacketHandler.nextID(),
+                Side.CLIENT);
     }
 
     private EnumSet<Type> getActiveSet(EntityPlayer player) {
@@ -175,8 +205,8 @@ public class DarkSteelController {
             return;
         }
 
-        int RFperSecond = Math.round((float) upgrade.getRFPerSec()
-                * TileEntitySolarPanel.calculateLightRatio(
+        int RFperSecond = Math.round(
+                (float) upgrade.getRFPerSec() * TileEntitySolarPanel.calculateLightRatio(
                         player.worldObj,
                         MathHelper.floor_double(player.posX),
                         MathHelper.floor_double(player.posY + 1),
@@ -193,10 +223,8 @@ public class DarkSteelController {
 
             for (int i = 0; i < 4 && toAdd > 0; i++) {
                 ItemStack stack = player.inventory.armorInventory[nextIndex];
-                if (stack != null
-                        && (EnergyUpgrade.loadFromItem(stack) != null
-                                || (Config.darkSteelSolarChargeOthers
-                                        && stack.getItem() instanceof IEnergyContainerItem))) {
+                if (stack != null && (EnergyUpgrade.loadFromItem(stack) != null
+                        || (Config.darkSteelSolarChargeOthers && stack.getItem() instanceof IEnergyContainerItem))) {
                     toAdd -= ((IEnergyContainerItem) stack.getItem()).receiveEnergy(stack, toAdd, false);
                 }
                 nextIndex = (nextIndex + 1) % 4;
@@ -272,8 +300,8 @@ public class DarkSteelController {
 
     private void updateSword(EntityPlayer player) {
         if (ItemDarkSteelSword.isEquipped(player)) {
-            IAttributeInstance attackInst =
-                    player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.attackDamage);
+            IAttributeInstance attackInst = player.getAttributeMap()
+                    .getAttributeInstance(SharedMonsterAttributes.attackDamage);
             attackInst.removeModifier(swordDamageModifierPowered);
 
             ItemStack sword = player.getCurrentEquippedItem();
@@ -289,8 +317,8 @@ public class DarkSteelController {
             return;
         }
 
-        IAttributeInstance moveInst =
-                player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed);
+        IAttributeInstance moveInst = player.getAttributeMap()
+                .getAttributeInstance(SharedMonsterAttributes.movementSpeed);
         if (moveInst.getModifier(walkModifiers[0].getID()) != null) {
             moveInst.removeModifier(walkModifiers[0]); // any will so as they all have the same UID
         } else if (moveInst.getModifier(sprintModifiers[0].getID()) != null) {
@@ -299,14 +327,13 @@ public class DarkSteelController {
 
         ItemStack leggings = player.getEquipmentInSlot(2);
         SpeedUpgrade speedUpgrade = SpeedUpgrade.loadFromItem(leggings);
-        if (leggings != null
-                && DarkSteelItems.isArmorPart(leggings.getItem(), 2)
+        if (leggings != null && DarkSteelItems.isArmorPart(leggings.getItem(), 2)
                 && speedUpgrade != null
                 && isSpeedActive(player)) {
 
             double horzMovement = Math.abs(player.distanceWalkedModified - player.prevDistanceWalkedModified);
-            double costModifier =
-                    player.isSprinting() ? Config.darkSteelSprintPowerCost : Config.darkSteelWalkPowerCost;
+            double costModifier = player.isSprinting() ? Config.darkSteelSprintPowerCost
+                    : Config.darkSteelWalkPowerCost;
             costModifier = costModifier + (costModifier * speedUpgrade.getWalkMultiplier());
             int cost = (int) (horzMovement * costModifier);
             int totalEnergy = getPlayerEnergy(player, DarkSteelItems.itemDarkSteelLeggings);
@@ -338,8 +365,7 @@ public class DarkSteelController {
         }
 
         JumpUpgrade jumpUpgrade = JumpUpgrade.loadFromItem(boots);
-        if (jumpUpgrade != null
-                && boots != null
+        if (jumpUpgrade != null && boots != null
                 && DarkSteelItems.isArmorPart(boots.getItem(), 3)
                 && isStepAssistActive(player)) {
             player.stepHeight = 1.0023F;
@@ -397,7 +423,9 @@ public class DarkSteelController {
             for (PacketUpgradeState.Type type : PacketUpgradeState.Type.values()) {
                 PacketHandler.sendTo(
                         new PacketUpgradeState(
-                                type, isActive((EntityPlayer) event.target, type), event.target.getEntityId()),
+                                type,
+                                isActive((EntityPlayer) event.target, type),
+                                event.target.getEntityId()),
                         (EntityPlayerMP) event.entityPlayer);
             }
         }
@@ -446,8 +474,8 @@ public class DarkSteelController {
                 + (player.rotationYawHead - player.prevRotationYawHead) * event.partialRenderTick;
         float yawOffset = player.prevRenderYawOffset
                 + (player.renderYawOffset - player.prevRenderYawOffset) * event.partialRenderTick;
-        float pitch =
-                player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * event.partialRenderTick;
+        float pitch = player.prevRotationPitch
+                + (player.rotationPitch - player.prevRotationPitch) * event.partialRenderTick;
 
         GL11.glPushMatrix();
         if (player.isSneaking()) {

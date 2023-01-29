@@ -1,19 +1,23 @@
 package crazypants.enderio.machine.capbank.render;
 
-import com.enderio.core.client.render.ColorUtil;
-import com.enderio.core.client.render.RenderUtil;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.capbank.TileCapBank;
-import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
 import java.util.Locale;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.capbank.TileCapBank;
+import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
 
 public class IoDisplay implements IInfoRenderer {
 
@@ -36,9 +40,11 @@ public class IoDisplay implements IInfoRenderer {
         boolean selfIlum = true;
         int brightness = 0;
         if (!selfIlum) {
-            brightness = cb.getWorldObj()
-                    .getLightBrightnessForSkyBlocks(
-                            cb.xCoord + dir.offsetX, cb.yCoord + dir.offsetY, cb.zCoord + dir.offsetZ, 0);
+            brightness = cb.getWorldObj().getLightBrightnessForSkyBlocks(
+                    cb.xCoord + dir.offsetX,
+                    cb.yCoord + dir.offsetY,
+                    cb.zCoord + dir.offsetZ,
+                    0);
             int l1 = brightness % 65536;
             int l2 = brightness / 65536;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, l1, l2);
@@ -218,6 +224,7 @@ public class IoDisplay implements IInfoRenderer {
     }
 
     static enum HeadingText {
+
         STABLE(ColorUtil.getRGB(0, 0, 0)),
         GAIN(ColorUtil.getRGB(0, 0.25f, 0)),
         LOSS(ColorUtil.getRGB(0.25f, 0, 0)),

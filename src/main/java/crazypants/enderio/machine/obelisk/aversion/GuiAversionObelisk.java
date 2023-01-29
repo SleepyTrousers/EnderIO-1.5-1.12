@@ -1,17 +1,21 @@
 package crazypants.enderio.machine.obelisk.aversion;
 
+import java.awt.Color;
+import java.util.List;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.google.common.collect.Lists;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import java.awt.Color;
-import java.util.List;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.opengl.GL11;
 
 public class GuiAversionObelisk extends GuiPoweredMachineBase<TileAversionObelisk> {
 
@@ -26,10 +30,12 @@ public class GuiAversionObelisk extends GuiPoweredMachineBase<TileAversionObelis
         showRangeB = new ToggleButton(this, RANGE_ID, x, 44, IconEIO.PLUS, IconEIO.MINUS);
         showRangeB.setSize(BUTTON_SIZE, BUTTON_SIZE);
         addToolTip(new GuiToolTip(showRangeB.getBounds(), "null") {
+
             @Override
             public List<String> getToolTipText() {
-                return Lists.newArrayList(EnderIO.lang.localize(
-                        showRangeB.isSelected() ? "gui.spawnGurad.hideRange" : "gui.spawnGurad.showRange"));
+                return Lists.newArrayList(
+                        EnderIO.lang.localize(
+                                showRangeB.isSelected() ? "gui.spawnGurad.hideRange" : "gui.spawnGurad.showRange"));
             }
         });
     }

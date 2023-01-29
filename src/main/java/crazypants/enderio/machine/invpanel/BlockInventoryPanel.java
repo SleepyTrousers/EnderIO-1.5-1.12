@@ -1,15 +1,7 @@
 package crazypants.enderio.machine.invpanel;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.ClientProxy;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.network.PacketHandler;
 import java.util.Random;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -19,25 +11,41 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.ClientProxy;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.network.PacketHandler;
+
 public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel> {
 
     private static final float BLOCK_SIZE = 3f / 16f;
 
     public static BlockInventoryPanel create() {
+        PacketHandler.INSTANCE
+                .registerMessage(PacketItemInfo.class, PacketItemInfo.class, PacketHandler.nextID(), Side.CLIENT);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketItemList.class, PacketItemList.class, PacketHandler.nextID(), Side.CLIENT);
         PacketHandler.INSTANCE.registerMessage(
-                PacketItemInfo.class, PacketItemInfo.class, PacketHandler.nextID(), Side.CLIENT);
+                PacketRequestMissingItems.class,
+                PacketRequestMissingItems.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketFetchItem.class, PacketFetchItem.class, PacketHandler.nextID(), Side.SERVER);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketMoveItems.class, PacketMoveItems.class, PacketHandler.nextID(), Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
-                PacketItemList.class, PacketItemList.class, PacketHandler.nextID(), Side.CLIENT);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketRequestMissingItems.class, PacketRequestMissingItems.class, PacketHandler.nextID(), Side.SERVER);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketFetchItem.class, PacketFetchItem.class, PacketHandler.nextID(), Side.SERVER);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketMoveItems.class, PacketMoveItems.class, PacketHandler.nextID(), Side.SERVER);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketDatabaseReset.class, PacketDatabaseReset.class, PacketHandler.nextID(), Side.CLIENT);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketGuiSettings.class, PacketGuiSettings.class, PacketHandler.nextID(), Side.SERVER);
+                PacketDatabaseReset.class,
+                PacketDatabaseReset.class,
+                PacketHandler.nextID(),
+                Side.CLIENT);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketGuiSettings.class, PacketGuiSettings.class, PacketHandler.nextID(), Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
                 PacketStoredCraftingRecipe.class,
                 PacketStoredCraftingRecipe.class,
@@ -172,15 +180,15 @@ public class BlockInventoryPanel extends AbstractMachineBlock<TileInventoryPanel
         return "enderio:invPanelFrontOff";
     }
 
-    //  @Override
-    //  protected String getTopIconKey(boolean active) {
-    //    return "enderio:invPanelSide";
-    //  }
+    // @Override
+    // protected String getTopIconKey(boolean active) {
+    // return "enderio:invPanelSide";
+    // }
     //
-    //  @Override
-    //  protected String getSideIconKey(boolean active) {
-    //    return "enderio:invPanelSide";
-    //  }
+    // @Override
+    // protected String getSideIconKey(boolean active) {
+    // return "enderio:invPanelSide";
+    // }
 
     @Override
     @SideOnly(Side.CLIENT)

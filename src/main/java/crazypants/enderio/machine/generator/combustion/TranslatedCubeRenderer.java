@@ -1,5 +1,13 @@
 package crazypants.enderio.machine.generator.combustion;
 
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.api.client.render.IRenderFace;
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
@@ -9,12 +17,6 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
-import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TranslatedCubeRenderer {
 
@@ -24,8 +26,8 @@ public class TranslatedCubeRenderer {
 
     private CustomCubeRenderer ccr = new CustomCubeRenderer();
 
-    public void renderBoundingBox(
-            int x, int y, int z, Block block, BoundingBox bb, VertexTransform vt, boolean enableLighting) {
+    public void renderBoundingBox(int x, int y, int z, Block block, BoundingBox bb, VertexTransform vt,
+            boolean enableLighting) {
         renderBoundingBox(x, y, z, block, bb, vt, null, enableLighting);
     }
 
@@ -33,20 +35,13 @@ public class TranslatedCubeRenderer {
         renderBoundingBox(x, y, z, block, bb, vt, null);
     }
 
-    public void renderBoundingBox(
-            int x, int y, int z, Block block, BoundingBox bb, VertexTransform vt, IIcon overrideTexture) {
+    public void renderBoundingBox(int x, int y, int z, Block block, BoundingBox bb, VertexTransform vt,
+            IIcon overrideTexture) {
         renderBoundingBox(x, y, z, block, bb, vt, overrideTexture, true);
     }
 
-    public void renderBoundingBox(
-            int x,
-            int y,
-            int z,
-            Block block,
-            BoundingBox bb,
-            VertexTransform vt,
-            IIcon overrideTexture,
-            boolean doLighting) {
+    public void renderBoundingBox(int x, int y, int z, Block block, BoundingBox bb, VertexTransform vt,
+            IIcon overrideTexture, boolean doLighting) {
         block.setBlockBounds(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ);
         xformRenderer.xform = vt;
         xformRenderer.enableLighting = doLighting;
@@ -62,16 +57,8 @@ public class TranslatedCubeRenderer {
         boolean enableLighting = true;
 
         @Override
-        public void renderFace(
-                CustomRenderBlocks rb,
-                ForgeDirection face,
-                Block par1Block,
-                double x,
-                double y,
-                double z,
-                IIcon texture,
-                List<Vertex> refVertices,
-                boolean translateToXyz) {
+        public void renderFace(CustomRenderBlocks rb, ForgeDirection face, Block par1Block, double x, double y,
+                double z, IIcon texture, List<Vertex> refVertices, boolean translateToXyz) {
             if (xform != null) {
                 Vector3d xyz = new Vector3d(x, y, z);
                 for (Vertex v : refVertices) {

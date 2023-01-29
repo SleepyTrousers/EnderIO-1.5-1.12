@@ -1,14 +1,15 @@
 package crazypants.enderio.machine.light;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.CubeRenderer;
-import com.enderio.core.client.render.RenderUtil;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.RenderUtil;
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {
 
@@ -27,8 +28,8 @@ public class ElectricLightRenderer implements ISimpleBlockRenderingHandler {
     }
 
     @Override
-    public boolean renderWorldBlock(
-            IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+            RenderBlocks renderer) {
         block.setBlockBoundsBasedOnState(world, x, y, z);
         BoundingBox bb = new BoundingBox(
                 block.getBlockBoundsMinX(),

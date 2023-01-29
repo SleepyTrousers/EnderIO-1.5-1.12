@@ -1,9 +1,10 @@
 package crazypants.enderio.machine.obelisk.weather;
 
-import crazypants.enderio.machine.obelisk.ObeliskRenderer;
-import crazypants.enderio.machine.obelisk.ObeliskSpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import crazypants.enderio.machine.obelisk.ObeliskRenderer;
+import crazypants.enderio.machine.obelisk.ObeliskSpecialRenderer;
 
 public class WeatherObeliskSpecialRenderer extends ObeliskSpecialRenderer<TileWeatherObelisk> {
 

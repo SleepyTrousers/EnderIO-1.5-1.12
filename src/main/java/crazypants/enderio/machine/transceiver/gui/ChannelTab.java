@@ -1,5 +1,13 @@
 package crazypants.enderio.machine.transceiver.gui;
 
+import java.awt.Color;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
+
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.api.client.gui.ListSelectionListener;
 import com.enderio.core.client.gui.button.IconButton;
@@ -8,6 +16,7 @@ import com.enderio.core.client.gui.widget.GuiScrollableList;
 import com.enderio.core.client.render.ColorUtil;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.transceiver.Channel;
@@ -18,11 +27,6 @@ import crazypants.enderio.machine.transceiver.PacketSendRecieveChannel;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.UserIdent;
-import java.awt.Color;
-import javax.annotation.Nullable;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
 
 public class ChannelTab implements ITabPanel {
 
@@ -62,8 +66,13 @@ public class ChannelTab implements ITabPanel {
         addButton.setToolTip(EnderIO.lang.localize("gui.trans.addChannel"));
         addButton.enabled = false;
 
-        privateButton =
-                new ToggleButton(parent, PRIVATE_BUTTON_ID, 118, 12, IconEIO.LOCK_UNLOCKED, IconEIO.LOCK_LOCKED);
+        privateButton = new ToggleButton(
+                parent,
+                PRIVATE_BUTTON_ID,
+                118,
+                12,
+                IconEIO.LOCK_UNLOCKED,
+                IconEIO.LOCK_LOCKED);
         privateButton.setSelectedToolTip(EnderIO.lang.localize("gui.trans.privateChannel"));
         privateButton.setUnselectedToolTip(EnderIO.lang.localize("gui.trans.publicChannel"));
 
@@ -72,8 +81,8 @@ public class ChannelTab implements ITabPanel {
         int x = 7;
         int y = 48;
         channelList = new GuiChannelList(parent, w, h, x, y);
-        channelList.setChannels(
-                ClientChannelRegister.instance.getChannelsForType(type), Predicates.<Channel>alwaysTrue());
+        channelList
+                .setChannels(ClientChannelRegister.instance.getChannelsForType(type), Predicates.<Channel>alwaysTrue());
         channelList.setShowSelectionBox(true);
         channelList.setScrollButtonIds(100, 101);
 
@@ -81,12 +90,11 @@ public class ChannelTab implements ITabPanel {
         deleteChannelB.setToolTip(EnderIO.lang.localize("gui.trans.deleteChannel"));
 
         Predicate<Channel> predicate = new Predicate<Channel>() {
+
             @Override
             public boolean apply(@Nullable Channel input) {
                 return input != null
-                        && (input.isPublic()
-                                || input.getUser()
-                                        .equals(EnderIO.proxy.getClientPlayer().getGameProfile())
+                        && (input.isPublic() || input.getUser().equals(EnderIO.proxy.getClientPlayer().getGameProfile())
                                 || input.getUser() == UserIdent.nobody);
             }
         };
@@ -200,15 +208,27 @@ public class ChannelTab implements ITabPanel {
         int x = left + 59;
         int y = top + 36;
         parent.drawCenteredString(
-                parent.getFontRenderer(), EnderIO.lang.localize("gui.available"), x, y, ColorUtil.getRGB(Color.white));
+                parent.getFontRenderer(),
+                EnderIO.lang.localize("gui.available"),
+                x,
+                y,
+                ColorUtil.getRGB(Color.white));
 
         x = left + 199;
         parent.drawCenteredString(
-                parent.getFontRenderer(), EnderIO.lang.localize("gui.send"), x, y, ColorUtil.getRGB(Color.white));
+                parent.getFontRenderer(),
+                EnderIO.lang.localize("gui.send"),
+                x,
+                y,
+                ColorUtil.getRGB(Color.white));
 
         y += 56;
         parent.drawCenteredString(
-                parent.getFontRenderer(), EnderIO.lang.localize("gui.receive"), x, y, ColorUtil.getRGB(Color.white));
+                parent.getFontRenderer(),
+                EnderIO.lang.localize("gui.receive"),
+                x,
+                y,
+                ColorUtil.getRGB(Color.white));
     }
 
     @Override
@@ -266,8 +286,7 @@ public class ChannelTab implements ITabPanel {
         }
         Channel c;
         if (privateButton.isSelected()) {
-            c = new Channel(
-                    newChannelTF.getText(), Minecraft.getMinecraft().thePlayer.getGameProfile(), type);
+            c = new Channel(newChannelTF.getText(), Minecraft.getMinecraft().thePlayer.getGameProfile(), type);
         } else {
             c = new Channel(newChannelTF.getText(), type);
         }

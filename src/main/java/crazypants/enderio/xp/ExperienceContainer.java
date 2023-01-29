@@ -1,8 +1,7 @@
 package crazypants.enderio.xp;
 
-import crazypants.enderio.EnderIO;
-import io.netty.buffer.ByteBuf;
 import java.security.InvalidParameterException;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -10,6 +9,9 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
+
+import crazypants.enderio.EnderIO;
+import io.netty.buffer.ByteBuf;
 
 public class ExperienceContainer extends FluidTank {
     // Note: We extend FluidTank instead of implementing IFluidTank because it has
@@ -194,8 +196,7 @@ public class ExperienceContainer extends FluidTank {
             return new FluidTankInfo[0];
         }
         return new FluidTankInfo[] {
-            new FluidTankInfo(new FluidStack(EnderIO.fluidXpJuice, getFluidAmount()), getCapacity())
-        };
+                new FluidTankInfo(new FluidStack(EnderIO.fluidXpJuice, getFluidAmount()), getCapacity()) };
     }
 
     @Override

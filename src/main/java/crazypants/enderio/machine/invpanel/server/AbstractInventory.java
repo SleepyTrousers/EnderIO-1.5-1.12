@@ -3,6 +3,7 @@ package crazypants.enderio.machine.invpanel.server;
 import net.minecraft.item.ItemStack;
 
 abstract class AbstractInventory {
+
     static final SlotKey[] NO_SLOTS = new SlotKey[0];
     SlotKey[] slotKeys = NO_SLOTS;
 

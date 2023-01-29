@@ -1,8 +1,30 @@
 package crazypants.enderio.item.darksteel;
 
+import java.util.Iterator;
+import java.util.List;
+
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.ISpecialArmor;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.EnumHelper;
+
+import thaumcraft.api.IGoggles;
+import thaumcraft.api.IVisDiscountGear;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.nodes.IRevealer;
 import cofh.api.energy.IEnergyContainerItem;
+
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.common.util.ItemUtil;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
@@ -20,61 +42,27 @@ import crazypants.enderio.item.darksteel.upgrade.NaturalistEyeUpgrade;
 import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
 import forestry.api.apiculture.IArmorApiarist;
 import forestry.api.core.IArmorNaturalist;
-import java.util.Iterator;
-import java.util.List;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.ISpecialArmor;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.EnumHelper;
-import thaumcraft.api.IGoggles;
-import thaumcraft.api.IVisDiscountGear;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.nodes.IRevealer;
 
-@InterfaceList({
-    @Interface(iface = "thaumcraft.api.IGoggles", modid = "Thaumcraft"),
-    @Interface(iface = "thaumcraft.api.IVisDiscountGear", modid = "Thaumcraft"),
-    @Interface(iface = "thaumcraft.api.nodes.IRevealer", modid = "Thaumcraft"),
-    @Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = "Forestry"),
-    @Interface(iface = "forestry.api.core.IArmorNaturalist", modid = "Forestry")
-})
+@InterfaceList({ @Interface(iface = "thaumcraft.api.IGoggles", modid = "Thaumcraft"),
+        @Interface(iface = "thaumcraft.api.IVisDiscountGear", modid = "Thaumcraft"),
+        @Interface(iface = "thaumcraft.api.nodes.IRevealer", modid = "Thaumcraft"),
+        @Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = "Forestry"),
+        @Interface(iface = "forestry.api.core.IArmorNaturalist", modid = "Forestry") })
 public class ItemDarkSteelArmor extends ItemArmor
-        implements IEnergyContainerItem,
-                ISpecialArmor,
-                IAdvancedTooltipProvider,
-                IDarkSteelItem,
-                IGoggles,
-                IRevealer,
-                IVisDiscountGear,
-                IArmorApiarist,
-                IArmorNaturalist {
+        implements IEnergyContainerItem, ISpecialArmor, IAdvancedTooltipProvider, IDarkSteelItem, IGoggles, IRevealer,
+        IVisDiscountGear, IArmorApiarist, IArmorNaturalist {
 
-    public static final ArmorMaterial MATERIAL =
-            EnumHelper.addArmorMaterial("darkSteel", 35, new int[] {2, 6, 5, 2}, 15);
+    public static final ArmorMaterial MATERIAL = EnumHelper
+            .addArmorMaterial("darkSteel", 35, new int[] { 2, 6, 5, 2 }, 15);
 
-    public static final int[] CAPACITY = new int[] {
-        Config.darkSteelPowerStorageBase,
-        Config.darkSteelPowerStorageBase,
-        Config.darkSteelPowerStorageBase * 2,
-        Config.darkSteelPowerStorageBase * 2
-    };
+    public static final int[] CAPACITY = new int[] { Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase,
+            Config.darkSteelPowerStorageBase * 2, Config.darkSteelPowerStorageBase * 2 };
 
-    public static final int[] RF_PER_DAMAGE_POINT = new int[] {
-        Config.darkSteelPowerStorageBase,
-        Config.darkSteelPowerStorageBase,
-        Config.darkSteelPowerStorageBase * 2,
-        Config.darkSteelPowerStorageBase * 2
-    };
+    public static final int[] RF_PER_DAMAGE_POINT = new int[] { Config.darkSteelPowerStorageBase,
+            Config.darkSteelPowerStorageBase, Config.darkSteelPowerStorageBase * 2,
+            Config.darkSteelPowerStorageBase * 2 };
 
-    public static final String[] NAMES = new String[] {"helmet", "chestplate", "leggings", "boots"};
+    public static final String[] NAMES = new String[] { "helmet", "chestplate", "leggings", "boots" };
 
     boolean gogglesUgradeActive = true;
 
@@ -138,7 +126,7 @@ public class ItemDarkSteelArmor extends ItemArmor
         GameRegistry.registerItem(this, getUnlocalizedName());
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
@@ -223,13 +211,13 @@ public class ItemDarkSteelArmor extends ItemArmor
     }
 
     @Override
-    public ArmorProperties getProperties(
-            EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
+    public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage,
+            int slot) {
         if (source.isUnblockable()) {
             return new ArmorProperties(0, 0, armor.getMaxDamage() + 1 - armor.getItemDamage());
         }
-        double damageRatio =
-                damageReduceAmount + (getEnergyStored(armor) > 0 ? getPoweredProtectionIncrease(3 - slot) : 0);
+        double damageRatio = damageReduceAmount
+                + (getEnergyStored(armor) > 0 ? getPoweredProtectionIncrease(3 - slot) : 0);
         damageRatio /= 25D;
         ArmorProperties ap = new ArmorProperties(0, damageRatio, armor.getMaxDamage() + 1 - armor.getItemDamage());
         return ap;

@@ -1,15 +1,7 @@
 package crazypants.enderio.item;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.google.common.collect.Lists;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
 import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -20,7 +12,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.google.common.collect.Lists;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
 
 public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider {
 
@@ -82,6 +86,7 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider 
     }
 
     public enum EnderFood {
+
         ENDERIOS("itemEnderios", 10, 0.8f);
 
         public final String unlocalisedName;
@@ -128,7 +133,7 @@ public class ItemEnderFood extends ItemFood implements IResourceTooltipProvider 
         setHasSubtypes(true);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
         for (EnderFood f : EnderFood.VALUES) {

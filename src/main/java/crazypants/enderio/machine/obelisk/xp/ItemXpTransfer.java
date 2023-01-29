@@ -1,17 +1,5 @@
 package crazypants.enderio.machine.obelisk.xp;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.util.Util;
-import com.enderio.core.common.vecmath.Vector3d;
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.xp.XpUtil;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -23,11 +11,28 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.util.Util;
+import com.enderio.core.common.vecmath.Vector3d;
+
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.xp.XpUtil;
+
 public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
 
     public static ItemXpTransfer create() {
         PacketHandler.INSTANCE.registerMessage(
-                PacketXpTransferEffects.class, PacketXpTransferEffects.class, PacketHandler.nextID(), Side.CLIENT);
+                PacketXpTransferEffects.class,
+                PacketXpTransferEffects.class,
+                PacketHandler.nextID(),
+                Side.CLIENT);
 
         ItemXpTransfer result = new ItemXpTransfer();
         result.init();
@@ -42,17 +47,8 @@ public class ItemXpTransfer extends Item implements IResourceTooltipProvider {
     }
 
     @Override
-    public boolean onItemUseFirst(
-            ItemStack stack,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float hitX,
-            float hitY,
-            float hitZ) {
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float hitX, float hitY, float hitZ) {
         return onActivated(player, world, x, y, z, side);
     }
 

@@ -1,14 +1,16 @@
 package crazypants.enderio.teleport.packet;
 
+import net.minecraft.item.ItemStack;
+
 import com.enderio.core.common.TileEntityEnder;
 import com.enderio.core.common.network.MessageTileEntity;
+
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.item.ItemStack;
 
 public class PacketPassword extends MessageTileEntity<TileEntityEnder> {
 

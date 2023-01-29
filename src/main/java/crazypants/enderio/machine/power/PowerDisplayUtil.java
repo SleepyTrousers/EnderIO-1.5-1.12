@@ -1,14 +1,16 @@
 package crazypants.enderio.machine.power;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+
+import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.item.ItemStack;
+
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.item.ItemStack;
 
 public class PowerDisplayUtil {
 
@@ -54,8 +56,11 @@ public class PowerDisplayUtil {
 
         IEnergyContainerItem ci = (IEnergyContainerItem) item.getItem();
         return EnderIO.lang.localize("item.tooltip.power") + " "
-                + PowerDisplayUtil.formatPower(ci.getEnergyStored(item)) + "/"
-                + PowerDisplayUtil.formatPower(ci.getMaxEnergyStored(item)) + " " + PowerDisplayUtil.abrevation();
+                + PowerDisplayUtil.formatPower(ci.getEnergyStored(item))
+                + "/"
+                + PowerDisplayUtil.formatPower(ci.getMaxEnergyStored(item))
+                + " "
+                + PowerDisplayUtil.abrevation();
     }
 
     public static String formatPowerPerTick(int powerPerTick) {

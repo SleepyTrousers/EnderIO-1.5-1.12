@@ -1,24 +1,28 @@
 package crazypants.enderio.conduit.gui;
 
+import java.awt.*;
+import java.util.ArrayList;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.util.ResourceLocation;
+
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.CheckBox;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.client.render.ColorUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.item.FunctionUpgrade;
 import crazypants.enderio.conduit.packet.PacketConnectionMode;
 import crazypants.enderio.network.PacketHandler;
-import java.awt.*;
-import java.util.ArrayList;
-import javax.annotation.Nonnull;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.util.ResourceLocation;
 
 public class BaseSettingsPanel implements ITabPanel {
 
@@ -67,20 +71,13 @@ public class BaseSettingsPanel implements ITabPanel {
     protected @Nonnull GuiToolTip filterExtractUpgradeTooltip;
     protected @Nonnull GuiToolTip filterInsertUpgradeTooltip;
 
-    protected BaseSettingsPanel(
-            @Nonnull IWidgetIcon icon,
-            @Nonnull String typeName,
-            @Nonnull GuiExternalConnection gui,
+    protected BaseSettingsPanel(@Nonnull IWidgetIcon icon, @Nonnull String typeName, @Nonnull GuiExternalConnection gui,
             @Nonnull IConduit con) {
         this(icon, typeName, gui, con, "externalConduitConnection");
     }
 
-    protected BaseSettingsPanel(
-            @Nonnull IWidgetIcon icon,
-            @Nonnull String typeName,
-            @Nonnull GuiExternalConnection gui,
-            @Nonnull IConduit con,
-            @Nonnull String texture) {
+    protected BaseSettingsPanel(@Nonnull IWidgetIcon icon, @Nonnull String typeName, @Nonnull GuiExternalConnection gui,
+            @Nonnull IConduit con, @Nonnull String texture) {
         this.icon = icon;
         this.typeName = typeName;
         this.gui = gui;
@@ -113,51 +110,51 @@ public class BaseSettingsPanel implements ITabPanel {
 
         x = rightColumn + 18 + 1;
 
-        filterExtractUpgradeTooltip =
-                new GuiToolTip(
-                        new Rectangle(rightColumn, 70, 18, 18),
-                        EnderIO.lang.localize("gui.conduit.item.filterupgrade")) {
-                    @Override
-                    public boolean shouldDraw() {
-                        return !gui.getContainer().hasFilterUpgrades(true) && super.shouldDraw();
-                    }
-                };
+        filterExtractUpgradeTooltip = new GuiToolTip(
+                new Rectangle(rightColumn, 70, 18, 18),
+                EnderIO.lang.localize("gui.conduit.item.filterupgrade")) {
 
-        filterInsertUpgradeTooltip =
-                new GuiToolTip(
-                        new Rectangle(leftColumn, 70, 18, 18),
-                        EnderIO.lang.localize("gui.conduit.item.filterupgrade")) {
-                    @Override
-                    public boolean shouldDraw() {
-                        return !gui.getContainer().hasFilterUpgrades(false) && super.shouldDraw();
-                    }
-                };
+            @Override
+            public boolean shouldDraw() {
+                return !gui.getContainer().hasFilterUpgrades(true) && super.shouldDraw();
+            }
+        };
 
-        speedUpgradeTooltip =
-                new GuiToolTip(
-                        new Rectangle(rightColumn + 18, customTop + 43, 18, 18),
-                        EnderIO.lang.localize("gui.conduit.item.speedupgrade"),
-                        EnderIO.lang.localize("gui.conduit.item.speedupgrade2")) {
-                    @Override
-                    public boolean shouldDraw() {
-                        return !gui.getContainer().hasSpeedUpgrades() && super.shouldDraw();
-                    }
-                };
+        filterInsertUpgradeTooltip = new GuiToolTip(
+                new Rectangle(leftColumn, 70, 18, 18),
+                EnderIO.lang.localize("gui.conduit.item.filterupgrade")) {
+
+            @Override
+            public boolean shouldDraw() {
+                return !gui.getContainer().hasFilterUpgrades(false) && super.shouldDraw();
+            }
+        };
+
+        speedUpgradeTooltip = new GuiToolTip(
+                new Rectangle(rightColumn + 18, customTop + 43, 18, 18),
+                EnderIO.lang.localize("gui.conduit.item.speedupgrade"),
+                EnderIO.lang.localize("gui.conduit.item.speedupgrade2")) {
+
+            @Override
+            public boolean shouldDraw() {
+                return !gui.getContainer().hasSpeedUpgrades() && super.shouldDraw();
+            }
+        };
 
         ArrayList<String> funcUpgradeTips = new ArrayList<String>();
         SpecialTooltipHandler.addTooltipFromResources(funcUpgradeTips, "enderio.gui.conduit.item.functionupgrade.line");
         for (FunctionUpgrade upgrade : FunctionUpgrade.values()) {
             funcUpgradeTips.add(EnderIO.lang.localizeExact(upgrade.unlocName.concat(".name")));
         }
-        functionUpgradeTooltip =
-                new GuiToolTip(
-                        new Rectangle(rightColumn + 36, customTop + 43, 18, 18),
-                        funcUpgradeTips.toArray(new String[0])) {
-                    @Override
-                    public boolean shouldDraw() {
-                        return !gui.getContainer().hasFunctionUpgrades() && super.shouldDraw();
-                    }
-                };
+        functionUpgradeTooltip = new GuiToolTip(
+                new Rectangle(rightColumn + 36, customTop + 43, 18, 18),
+                funcUpgradeTips.toArray(new String[0])) {
+
+            @Override
+            public boolean shouldDraw() {
+                return !gui.getContainer().hasFunctionUpgrades() && super.shouldDraw();
+            }
+        };
 
         gui.getContainer().setInoutSlotsVisible(false, false);
     }

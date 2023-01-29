@@ -1,5 +1,10 @@
 package crazypants.enderio.machine.alloy;
 
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
@@ -9,13 +14,11 @@ import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
-import java.util.List;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class TileAlloySmelter extends AbstractPoweredTaskEntity {
 
     public static enum Mode {
+
         ALL,
         ALLOY,
         FURNACE;
@@ -106,8 +109,8 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
                 }
             }
         }
-        List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(
-                getMachineName(), MachineRecipeInput.create(slot, itemstack));
+        List<IMachineRecipe> recipes = MachineRecipeRegistry.instance
+                .getRecipesForInput(getMachineName(), MachineRecipeInput.create(slot, itemstack));
 
         if (mode == Mode.FURNACE) {
             return isValidInputForFurnaceRecipe(itemstack, numSlotsFilled, recipes);
@@ -118,8 +121,8 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
                 || isValidInputForAlloyRecipe(slot, itemstack, numSlotsFilled, recipes);
     }
 
-    private boolean isValidInputForAlloyRecipe(
-            int slot, ItemStack itemstack, int numSlotsFilled, List<IMachineRecipe> recipes) {
+    private boolean isValidInputForAlloyRecipe(int slot, ItemStack itemstack, int numSlotsFilled,
+            List<IMachineRecipe> recipes) {
         if (numSlotsFilled == 0) {
             return containsAlloyRecipe(recipes);
         }
@@ -151,8 +154,8 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
         return false;
     }
 
-    private boolean isValidInputForFurnaceRecipe(
-            ItemStack itemstack, int numSlotsFilled, List<IMachineRecipe> recipes) {
+    private boolean isValidInputForFurnaceRecipe(ItemStack itemstack, int numSlotsFilled,
+            List<IMachineRecipe> recipes) {
         if (numSlotsFilled == 0) {
             return containsFurnaceRecipe(recipes);
         }
@@ -161,9 +164,8 @@ public class TileAlloySmelter extends AbstractPoweredTaskEntity {
 
     private boolean isItemAlreadyInASlot(ItemStack itemstack) {
         ItemStack currentStackType = null;
-        for (int i = slotDefinition.getMinInputSlot();
-                i <= slotDefinition.getMaxInputSlot() && currentStackType == null;
-                i++) {
+        for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot()
+                && currentStackType == null; i++) {
             currentStackType = inventory[i];
             if (currentStackType != null && currentStackType.isItemEqual(itemstack)) {
                 return true;

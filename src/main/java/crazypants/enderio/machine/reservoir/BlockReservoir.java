@@ -1,15 +1,5 @@
 package crazypants.enderio.machine.reservoir;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.FluidUtil;
-import com.enderio.core.common.vecmath.Vector3d;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.reservoir.TileReservoir.Pos;
-import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -22,6 +12,18 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.vecmath.Vector3d;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.reservoir.TileReservoir.Pos;
+import crazypants.enderio.tool.ToolUtil;
+
 public class BlockReservoir extends BlockEio implements IResourceTooltipProvider {
 
     public static BlockReservoir create() {
@@ -31,6 +33,7 @@ public class BlockReservoir extends BlockEio implements IResourceTooltipProvider
     }
 
     private static enum MbFace {
+
         TL("reservoirMbTl"),
         TR("reservoirMbTr"),
         BL("reservoirMbBl"),
@@ -56,12 +59,11 @@ public class BlockReservoir extends BlockEio implements IResourceTooltipProvider
     }
 
     @Override
-    public boolean onBlockActivated(
-            World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7, float par8, float par9) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int par6, float par7,
+            float par8, float par9) {
         TileEntity te;
 
-        if (!entityPlayer.isSneaking()
-                && entityPlayer.inventory.getCurrentItem() != null
+        if (!entityPlayer.isSneaking() && entityPlayer.inventory.getCurrentItem() != null
                 && (te = world.getTileEntity(x, y, z)) instanceof TileReservoir) {
             TileReservoir tank = ((TileReservoir) te).getController();
             if (ToolUtil.isToolEquipped(entityPlayer) && tank.isMultiblock()) {

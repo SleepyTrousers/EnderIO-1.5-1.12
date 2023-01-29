@@ -1,15 +1,18 @@
 package crazypants.enderio.conduit.gas;
 
-import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.conduit.IConduit;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
 import mekanism.api.gas.GasStack;
 import mekanism.api.gas.IGasHandler;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+import crazypants.enderio.conduit.IConduit;
 
 public class GasConduitNetwork extends AbstractGasTankConduitNetwork<GasConduit> {
 
@@ -77,11 +80,8 @@ public class GasConduitNetwork extends AbstractGasTankConduitNetwork<GasConduit>
                 }
                 con.getTank().setGas(f);
                 BlockCoord bc = con.getLocation();
-                con.getBundle()
-                        .getEntity()
-                        .getWorldObj()
-                        .markTileEntityChunkModified(
-                                bc.x, bc.y, bc.z, con.getBundle().getEntity());
+                con.getBundle().getEntity().getWorldObj()
+                        .markTileEntityChunkModified(bc.x, bc.y, bc.z, con.getBundle().getEntity());
             }
         }
     }
@@ -154,8 +154,7 @@ public class GasConduitNetwork extends AbstractGasTankConduitNetwork<GasConduit>
     }
 
     public GasStack drain(ForgeDirection from, GasStack resource, boolean doDrain) {
-        if (resource == null
-                || tank.isEmpty()
+        if (resource == null || tank.isEmpty()
                 || !tank.containsValidGas()
                 || !GasConduitNetwork.areGassCompatable(getGasType(), resource)) {
             return null;
@@ -206,11 +205,11 @@ public class GasConduitNetwork extends AbstractGasTankConduitNetwork<GasConduit>
             GasStack couldDrain = gasType.copy();
             couldDrain.amount = maxExtract;
 
-            //      GasStack drained = extTank.drain(dir.getOpposite(), couldDrain, true);
-            //      if(drained == null || drained.amount <= 0) {
-            //        return false;
-            //      }
-            //      tank.addAmount(drained.amount);
+            // GasStack drained = extTank.drain(dir.getOpposite(), couldDrain, true);
+            // if(drained == null || drained.amount <= 0) {
+            // return false;
+            // }
+            // tank.addAmount(drained.amount);
 
             // Have to use this 'double handle' approach to work around an issue with TiC
             GasStack drained = extTank.drawGas(dir.getOpposite(), maxExtract);

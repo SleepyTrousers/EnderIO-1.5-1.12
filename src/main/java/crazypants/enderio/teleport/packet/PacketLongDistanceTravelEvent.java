@@ -1,8 +1,18 @@
 package crazypants.enderio.teleport.packet;
 
+import java.util.Optional;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.S12PacketEntityVelocity;
+import net.minecraftforge.common.MinecraftForge;
+
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -11,13 +21,6 @@ import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.teleport.TravelController;
 import io.netty.buffer.ByteBuf;
-import java.util.Optional;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.S12PacketEntityVelocity;
-import net.minecraftforge.common.MinecraftForge;
 
 public class PacketLongDistanceTravelEvent
         implements IMessage, IMessageHandler<PacketLongDistanceTravelEvent, IMessage> {
@@ -50,8 +53,7 @@ public class PacketLongDistanceTravelEvent
 
     @Override
     public IMessage onMessage(PacketLongDistanceTravelEvent message, MessageContext ctx) {
-        Entity toTp = message.entityId == -1
-                ? ctx.getServerHandler().playerEntity
+        Entity toTp = message.entityId == -1 ? ctx.getServerHandler().playerEntity
                 : ctx.getServerHandler().playerEntity.worldObj.getEntityByID(message.entityId);
 
         TravelSource source = TravelSource.values()[message.source];
@@ -100,13 +102,15 @@ public class PacketLongDistanceTravelEvent
         if (player != null) {
             if (conserveMotion) {
                 Vector3d velocityVex = Util.getLookVecEio(player);
-                S12PacketEntityVelocity p =
-                        new S12PacketEntityVelocity(toTp.getEntityId(), velocityVex.x, velocityVex.y, velocityVex.z);
+                S12PacketEntityVelocity p = new S12PacketEntityVelocity(
+                        toTp.getEntityId(),
+                        velocityVex.x,
+                        velocityVex.y,
+                        velocityVex.z);
                 ((EntityPlayerMP) player).playerNetServerHandler.sendPacket(p);
             }
 
-            if (powerUse > 0
-                    && player.getCurrentEquippedItem() != null
+            if (powerUse > 0 && player.getCurrentEquippedItem() != null
                     && player.getCurrentEquippedItem().getItem() instanceof IItemOfTravel) {
                 ItemStack item = player.getCurrentEquippedItem().copy();
                 ((IItemOfTravel) item.getItem()).extractInternal(item, powerUse);

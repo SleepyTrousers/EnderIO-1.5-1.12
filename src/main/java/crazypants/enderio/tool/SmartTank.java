@@ -1,11 +1,12 @@
 package crazypants.enderio.tool;
 
-import com.google.common.base.Strings;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+
+import com.google.common.base.Strings;
 
 public class SmartTank extends FluidTank {
 
@@ -66,8 +67,7 @@ public class SmartTank extends FluidTank {
         if (fluid != null) {
             return fluid.isFluidEqual(resource);
         } else if (restriction != null) {
-            return resource.getFluid() != null
-                    && restriction.getID() == resource.getFluid().getID();
+            return resource.getFluid() != null && restriction.getID() == resource.getFluid().getID();
         } else {
             return true;
         }

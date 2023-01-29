@@ -1,14 +1,16 @@
 package crazypants.enderio.machine.transceiver.gui;
 
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
-import crazypants.enderio.machine.transceiver.TileTransceiver;
 import java.awt.Point;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
+import crazypants.enderio.machine.transceiver.TileTransceiver;
 
 public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiver> {
 
@@ -32,6 +34,7 @@ public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiv
         int i;
         for (i = 0; i < 8; i++) {
             addSlotToContainer(new Slot(getInv(), i, 0, 0) {
+
                 @Override
                 public boolean isItemValid(ItemStack itemstack) {
                     return getInv().isItemValidForSlot(getSlotIndex(), itemstack);
@@ -41,6 +44,7 @@ public class ContainerTransceiver extends AbstractMachineContainer<TileTransceiv
         }
         for (; i < 16; i++) {
             addSlotToContainer(new Slot(getInv(), i, 0, 0) {
+
                 @Override
                 public boolean isItemValid(ItemStack p_75214_1_) {
                     return false;

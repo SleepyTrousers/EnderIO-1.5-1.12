@@ -1,12 +1,13 @@
 package crazypants.enderio.machine.wireless;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 
 public class PacketStoredEnergy implements IMessage, IMessageHandler<PacketStoredEnergy, IMessage> {
 
@@ -51,7 +52,12 @@ public class PacketStoredEnergy implements IMessage, IMessageHandler<PacketStore
             me.storedEnergyRF = message.storedEnergy;
             if (doRender) {
                 player.worldObj.markBlockRangeForRenderUpdate(
-                        message.x, message.y, message.z, message.x, message.y, message.z);
+                        message.x,
+                        message.y,
+                        message.z,
+                        message.x,
+                        message.y,
+                        message.z);
             }
         }
         return null;

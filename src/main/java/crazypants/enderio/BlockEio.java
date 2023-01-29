@@ -1,14 +1,16 @@
 package crazypants.enderio;
 
-import com.enderio.core.common.BlockEnder;
-import crazypants.enderio.api.tool.ITool;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.tool.ToolUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.BlockEnder;
+
+import crazypants.enderio.api.tool.ITool;
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.tool.ToolUtil;
 
 public abstract class BlockEio extends BlockEnder {
 
@@ -23,8 +25,8 @@ public abstract class BlockEio extends BlockEnder {
     }
 
     @Override
-    public boolean onBlockActivated(
-            World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7,
+            float par8, float par9) {
 
         if (shouldWrench(world, x, y, z, entityPlayer, side)
                 && ToolUtil.breakBlockWithTool(this, world, x, y, z, entityPlayer)) {
@@ -33,8 +35,7 @@ public abstract class BlockEio extends BlockEnder {
         TileEntity te = world.getTileEntity(x, y, z);
 
         ITool tool = ToolUtil.getEquippedTool(entityPlayer);
-        if (tool != null
-                && !entityPlayer.isSneaking()
+        if (tool != null && !entityPlayer.isSneaking()
                 && tool.canUse(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z)) {
             if (te instanceof AbstractMachineEntity) {
                 ((AbstractMachineEntity) te).toggleIoModeForFace(ForgeDirection.getOrientation(side));

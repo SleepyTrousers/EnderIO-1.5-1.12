@@ -2,17 +2,20 @@ package crazypants.enderio.machine.painter;
 
 import static crazypants.enderio.machine.MachineRecipeInput.getInputForSlot;
 
+import java.util.Collections;
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
 import com.enderio.core.common.util.Util;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
-import java.util.Collections;
-import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public abstract class BasicPainterTemplate implements IMachineRecipe {
 
@@ -48,7 +51,7 @@ public abstract class BasicPainterTemplate implements IMachineRecipe {
         }
         ItemStack result = new ItemStack(getResultId(target), 1, target.getItemDamage());
         PainterUtil.setSourceBlock(result, Util.getBlockFromItemId(paintSource), paintSource.getItemDamage());
-        return new ResultStack[] {new ResultStack(result)};
+        return new ResultStack[] { new ResultStack(result) };
     }
 
     public ItemStack getTarget(MachineRecipeInput... inputs) {

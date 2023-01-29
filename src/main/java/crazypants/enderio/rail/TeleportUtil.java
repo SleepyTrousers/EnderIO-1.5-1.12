@@ -1,11 +1,8 @@
 package crazypants.enderio.rail;
 
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.transceiver.TileTransceiver;
-import crazypants.enderio.network.PacketHandler;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityMinecart;
@@ -16,10 +13,15 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.transceiver.TileTransceiver;
+import crazypants.enderio.network.PacketHandler;
+
 public class TeleportUtil {
 
-    public static List<Entity> createEntitiesForReciever(
-            EntityMinecart cart, TileTransceiver sender, TileTransceiver reciever) {
+    public static List<Entity> createEntitiesForReciever(EntityMinecart cart, TileTransceiver sender,
+            TileTransceiver reciever) {
         int toDimension = reciever.getWorldObj().provider.dimensionId;
         int toX = reciever.xCoord;
         int toY = reciever.yCoord + 1;
@@ -27,8 +29,8 @@ public class TeleportUtil {
 
         MinecraftServer minecraftserver = MinecraftServer.getServer();
         WorldServer worldserver1 = minecraftserver.worldServerForDimension(toDimension);
-        EntityMinecart newCart =
-                (EntityMinecart) EntityList.createEntityByName(EntityList.getEntityString(cart), worldserver1);
+        EntityMinecart newCart = (EntityMinecart) EntityList
+                .createEntityByName(EntityList.getEntityString(cart), worldserver1);
         if (newCart == null) {
             return null;
         }
@@ -94,63 +96,63 @@ public class TeleportUtil {
         }
     }
 
-    //  public static void teleportPlayer(WorldServer teleportTo, EntityPlayerMP player, int dimension, ChunkCoordinates
+    // public static void teleportPlayer(WorldServer teleportTo, EntityPlayerMP player, int dimension, ChunkCoordinates
     // spawn) {
-    //    WorldServer originalWorld = (WorldServer) player.worldObj;
-    //    if(player.ridingEntity != null) {
-    //      player.mountEntity(null);
-    //    }
-    //    boolean changeDimension = originalWorld != teleportTo;
+    // WorldServer originalWorld = (WorldServer) player.worldObj;
+    // if(player.ridingEntity != null) {
+    // player.mountEntity(null);
+    // }
+    // boolean changeDimension = originalWorld != teleportTo;
     //
-    //    player.closeScreen();
-    //    player.setLocationAndAngles(spawn.posX + 0.5D, spawn.posY, spawn.posZ + 0.5D, player.rotationYaw,
+    // player.closeScreen();
+    // player.setLocationAndAngles(spawn.posX + 0.5D, spawn.posY, spawn.posZ + 0.5D, player.rotationYaw,
     // player.rotationPitch);
     //
-    //    if(changeDimension) {
-    //      player.dimension = dimension;
-    //      player.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension,
+    // if(changeDimension) {
+    // player.dimension = dimension;
+    // player.playerNetServerHandler.sendPacket(new S07PacketRespawn(player.dimension,
     // player.worldObj.difficultySetting, teleportTo.getWorldInfo()
-    //          .getTerrainType(), player.theItemInWorldManager.getGameType()));
-    //      removePlayerFromWorld(originalWorld, player);
-    //      teleportTo.spawnEntityInWorld(player);
-    //      player.setWorld(teleportTo);
-    //      player.mcServer.getConfigurationManager().func_72375_a(player, teleportTo);
-    //      player.theItemInWorldManager.setWorld((WorldServer) teleportTo);
-    //      player.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(player, (WorldServer) teleportTo);
-    //      player.mcServer.getConfigurationManager().syncPlayerInventory(player);
-    //      Iterator iter = player.getActivePotionEffects().iterator();
-    //      while (iter.hasNext()) {
-    //        PotionEffect effect = (PotionEffect) iter.next();
-    //        player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), effect));
-    //      }
-    //      player.playerNetServerHandler.sendPacket(new S1FPacketSetExperience(player.experience,
+    // .getTerrainType(), player.theItemInWorldManager.getGameType()));
+    // removePlayerFromWorld(originalWorld, player);
+    // teleportTo.spawnEntityInWorld(player);
+    // player.setWorld(teleportTo);
+    // player.mcServer.getConfigurationManager().func_72375_a(player, teleportTo);
+    // player.theItemInWorldManager.setWorld((WorldServer) teleportTo);
+    // player.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(player, (WorldServer) teleportTo);
+    // player.mcServer.getConfigurationManager().syncPlayerInventory(player);
+    // Iterator iter = player.getActivePotionEffects().iterator();
+    // while (iter.hasNext()) {
+    // PotionEffect effect = (PotionEffect) iter.next();
+    // player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), effect));
+    // }
+    // player.playerNetServerHandler.sendPacket(new S1FPacketSetExperience(player.experience,
     // player.experienceTotal, player.experienceLevel));
     //
-    //    } else {
-    //      teleportTo.theChunkProviderServer.loadChunk(spawn.posX >> 4, spawn.posZ >> 4);
-    //    }
+    // } else {
+    // teleportTo.theChunkProviderServer.loadChunk(spawn.posX >> 4, spawn.posZ >> 4);
+    // }
     //
-    //    player.playerNetServerHandler.setPlayerLocation(spawn.posX + 0.5D, spawn.posY, spawn.posZ + 0.5D,
+    // player.playerNetServerHandler.setPlayerLocation(spawn.posX + 0.5D, spawn.posY, spawn.posZ + 0.5D,
     // player.rotationYaw, player.rotationPitch);
-    //    player.motionX = 0;
-    //    player.motionY = 0;
-    //    player.motionZ = 0;
-    //    teleportTo.updateEntityWithOptionalForce(player, false);
-    //  }
+    // player.motionX = 0;
+    // player.motionY = 0;
+    // player.motionZ = 0;
+    // teleportTo.updateEntityWithOptionalForce(player, false);
+    // }
     //
-    //  private static void removePlayerFromWorld(WorldServer world, EntityPlayerMP player) {
-    //    world.removePlayerEntityDangerously(player);
-    ////    world.getPlayerManager().removePlayer(player);
-    ////    world.playerEntities.remove(player);
-    ////    world.updateAllPlayersSleepingFlag();
-    ////    int cx = player.chunkCoordX;
-    ////    int cy = player.chunkCoordZ;
-    ////    if((player.addedToChunk) && (world.getChunkProvider().chunkExists(cx, cy))) {
-    ////      world.getChunkFromChunkCoords(cx, cy).removeEntity(player);
-    ////      world.getChunkFromChunkCoords(cx, cy).isModified = true;
-    ////    }
-    ////    world.loadedEntityList.remove(player);
-    ////    world.getEntityTracker().removeEntityFromAllTrackingPlayers(player);
-    //  }
+    // private static void removePlayerFromWorld(WorldServer world, EntityPlayerMP player) {
+    // world.removePlayerEntityDangerously(player);
+    //// world.getPlayerManager().removePlayer(player);
+    //// world.playerEntities.remove(player);
+    //// world.updateAllPlayersSleepingFlag();
+    //// int cx = player.chunkCoordX;
+    //// int cy = player.chunkCoordZ;
+    //// if((player.addedToChunk) && (world.getChunkProvider().chunkExists(cx, cy))) {
+    //// world.getChunkFromChunkCoords(cx, cy).removeEntity(player);
+    //// world.getChunkFromChunkCoords(cx, cy).isModified = true;
+    //// }
+    //// world.loadedEntityList.remove(player);
+    //// world.getEntityTracker().removeEntityFromAllTrackingPlayers(player);
+    // }
 
 }

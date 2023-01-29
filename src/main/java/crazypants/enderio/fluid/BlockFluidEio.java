@@ -1,10 +1,7 @@
 package crazypants.enderio.fluid;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.config.Config;
 import java.util.Random;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -19,7 +16,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
+
 import org.apache.commons.lang3.StringUtils;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.config.Config;
 
 public class BlockFluidEio extends BlockFluidClassic {
 
@@ -162,7 +165,7 @@ public class BlockFluidEio extends BlockFluidClassic {
 
     public static class VapourOfLevity extends BlockFluidEio {
 
-        private static final int[] COLORS = {0x0c82d0, 0x90c8ec, 0x5174ed, 0x0d2f65, 0x4accee};
+        private static final int[] COLORS = { 0x0c82d0, 0x90c8ec, 0x5174ed, 0x0d2f65, 0x4accee };
 
         protected VapourOfLevity(Fluid fluid, Material material, int fogColor) {
             super(fluid, material);
@@ -181,7 +184,13 @@ public class BlockFluidEio extends BlockFluidClassic {
             if (rand.nextFloat() < .5f) {
                 int col = COLORS[rand.nextInt(COLORS.length)];
                 world.spawnParticle(
-                        "reddust", x, y, z, (col >> 16 & 255) / 255d, (col >> 8 & 255) / 255d, (col & 255) / 255d);
+                        "reddust",
+                        x,
+                        y,
+                        z,
+                        (col >> 16 & 255) / 255d,
+                        (col >> 8 & 255) / 255d,
+                        (col & 255) / 255d);
             }
         }
     }
@@ -217,10 +226,8 @@ public class BlockFluidEio extends BlockFluidClassic {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
-        icons = new IIcon[] {
-            iconRegister.registerIcon("enderio:" + fluidName + "_still"),
-            iconRegister.registerIcon("enderio:" + fluidName + "_flow")
-        };
+        icons = new IIcon[] { iconRegister.registerIcon("enderio:" + fluidName + "_still"),
+                iconRegister.registerIcon("enderio:" + fluidName + "_flow") };
 
         fluid.setIcons(icons[0], icons[1]);
     }

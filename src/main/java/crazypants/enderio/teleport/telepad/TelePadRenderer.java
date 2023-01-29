@@ -1,13 +1,8 @@
 package crazypants.enderio.teleport.telepad;
 
-import com.enderio.core.client.render.CubeRenderer;
-import com.enderio.core.client.render.TechneModelRenderer;
-import com.enderio.core.client.render.TechneUtil;
-import com.enderio.core.common.util.BlockCoord;
-import com.google.common.collect.Lists;
-import crazypants.enderio.EnderIO;
 import java.util.Collection;
 import java.util.Map;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -15,6 +10,13 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.obj.GroupObject;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.TechneModelRenderer;
+import com.enderio.core.client.render.TechneUtil;
+import com.enderio.core.common.util.BlockCoord;
+import com.google.common.collect.Lists;
+import crazypants.enderio.EnderIO;
 
 public class TelePadRenderer extends TechneModelRenderer {
 
@@ -48,8 +50,8 @@ public class TelePadRenderer extends TechneModelRenderer {
     }
 
     @Override
-    public boolean renderWorldBlock(
-            IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+            RenderBlocks renderer) {
         TileTelePad te = (TileTelePad) world.getTileEntity(x, y, z);
         boolean ret = true;
         if (te.inNetwork()) {

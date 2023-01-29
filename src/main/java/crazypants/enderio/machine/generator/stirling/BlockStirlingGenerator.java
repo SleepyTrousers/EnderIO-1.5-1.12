@@ -1,22 +1,24 @@
 package crazypants.enderio.machine.generator.stirling;
 
+import java.util.Random;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.network.PacketHandler;
-import java.util.Random;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirlingGenerator> {
 
     public static BlockStirlingGenerator create() {
 
-        PacketHandler.INSTANCE.registerMessage(
-                PacketBurnTime.class, PacketBurnTime.class, PacketHandler.nextID(), Side.CLIENT);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketBurnTime.class, PacketBurnTime.class, PacketHandler.nextID(), Side.CLIENT);
 
         BlockStirlingGenerator gen = new BlockStirlingGenerator();
         gen.init();
@@ -30,7 +32,8 @@ public class BlockStirlingGenerator extends AbstractMachineBlock<TileEntityStirl
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         return new StirlingGeneratorContainer(
-                player.inventory, (TileEntityStirlingGenerator) world.getTileEntity(x, y, z));
+                player.inventory,
+                (TileEntityStirlingGenerator) world.getTileEntity(x, y, z));
     }
 
     @Override

@@ -1,9 +1,11 @@
 package crazypants.enderio.machine.buffer;
 
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import java.awt.Point;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
+
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
 
 public class ContainerBuffer extends AbstractMachineContainer<TileBuffer> {
 

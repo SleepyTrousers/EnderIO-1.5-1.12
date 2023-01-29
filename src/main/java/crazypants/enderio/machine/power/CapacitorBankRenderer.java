@@ -1,19 +1,8 @@
 package crazypants.enderio.machine.power;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.CubeRenderer;
-import com.enderio.core.client.render.IconUtil;
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.vecmath.Vector2f;
-import com.enderio.core.common.vecmath.Vector4d;
-import com.enderio.core.common.vecmath.Vertex;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.power.PowerHandlerUtil;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -23,13 +12,28 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.vecmath.Vector2f;
+import com.enderio.core.common.vecmath.Vector4d;
+import com.enderio.core.common.vecmath.Vertex;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.power.PowerHandlerUtil;
 
 @SideOnly(Side.CLIENT)
 public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
 
     private static final BlockCoord DEFAULT_BC = new BlockCoord(0, 0, 0);
-    private static final BlockCoord[] DEFAULT_MB = new BlockCoord[] {DEFAULT_BC};
+    private static final BlockCoord[] DEFAULT_MB = new BlockCoord[] { DEFAULT_BC };
     private static final double PIXEL_SIZE = 1 / 16d;
 
     // ------------------------- Item renderer
@@ -93,11 +97,14 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
             brightness = new float[6];
             for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
                 brightness[dir.ordinal()] = RenderUtil.claculateTotalBrightnessForLocation(
-                        te.getWorldObj(), te.xCoord + dir.offsetX, te.yCoord + dir.offsetY, te.zCoord + dir.offsetZ);
+                        te.getWorldObj(),
+                        te.xCoord + dir.offsetX,
+                        te.yCoord + dir.offsetY,
+                        te.zCoord + dir.offsetZ);
                 maxBrightness = Math.max(brightness[dir.ordinal()], maxBrightness);
             }
         } else {
-            brightness = new float[] {1, 1, 1, 1, 1, 1};
+            brightness = new float[] { 1, 1, 1, 1, 1, 1 };
             maxBrightness = 1;
         }
 
@@ -141,7 +148,16 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
         }
         for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
             RenderUtil.renderConnectedTextureFace(
-                    blockAccess, EnderIO.blockCapacitorBank, x, y, z, face, texture, blockAccess == null, false, false);
+                    blockAccess,
+                    EnderIO.blockCapacitorBank,
+                    x,
+                    y,
+                    z,
+                    face,
+                    texture,
+                    blockAccess == null,
+                    false,
+                    false);
         }
     }
 
@@ -179,8 +195,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
         if (gb.vInfo.verticalHeight == 1) {
             totalPixels = VPos.SINGLE_BLOCK.numFillPixels;
         } else {
-            totalPixels = VPos.BOTTOM.numFillPixels
-                    + VPos.TOP.numFillPixels
+            totalPixels = VPos.BOTTOM.numFillPixels + VPos.TOP.numFillPixels
                     + (VPos.MIDDLE.numFillPixels * (gb.vInfo.verticalHeight - 2));
         }
 
@@ -208,8 +223,8 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
         Tessellator tes = Tessellator.instance;
         tes.setNormal(gb.face.offsetX, gb.face.offsetY, gb.face.offsetZ);
         Vector2f u = gb.getMinMaxU(icon);
-        List<com.enderio.core.common.vecmath.Vertex> corners =
-                gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), maxV);
+        List<com.enderio.core.common.vecmath.Vertex> corners = gb.bb
+                .getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), maxV);
         for (Vertex coord : corners) {
             if (coord.uv != null) {
                 tes.addVertexWithUV(coord.x(), Math.min(coord.y(), maxY), coord.z(), coord.u(), coord.v());
@@ -236,6 +251,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     // ------------ Inner Classes
 
     enum VPos {
+
         SINGLE_BLOCK(0, 10, 3),
         BOTTOM(0.5f, 13, 3),
         MIDDLE(0.75f, 16, 0),
@@ -253,6 +269,7 @@ public class CapacitorBankRenderer extends TileEntitySpecialRenderer implements 
     }
 
     static class VInfo {
+
         VPos pos;
         int verticalHeight;
         int index;

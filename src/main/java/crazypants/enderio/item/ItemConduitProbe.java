@@ -1,18 +1,8 @@
 package crazypants.enderio.item;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.util.ChatUtil;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.api.tool.IHideFacades;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.network.PacketHandler;
 import java.text.NumberFormat;
 import java.util.Collection;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -22,6 +12,19 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.util.ChatUtil;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.api.tool.IHideFacades;
+import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.network.PacketHandler;
+
 public class ItemConduitProbe extends Item implements IResourceTooltipProvider, IHideFacades {
 
     private static final NumberFormat NF = NumberFormat.getIntegerInstance();
@@ -29,17 +32,23 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
     public static ItemConduitProbe create() {
 
         PacketHandler.INSTANCE.registerMessage(
-                PacketConduitProbe.class, PacketConduitProbe.class, PacketHandler.nextID(), Side.SERVER);
+                PacketConduitProbe.class,
+                PacketConduitProbe.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
-                PacketConduitProbeMode.class, PacketConduitProbeMode.class, PacketHandler.nextID(), Side.SERVER);
+                PacketConduitProbeMode.class,
+                PacketConduitProbeMode.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
 
         ItemConduitProbe result = new ItemConduitProbe();
         result.init();
         return result;
     }
 
-    public static boolean copyPasteSettings(
-            EntityPlayer player, ItemStack stack, IConduitBundle bundle, ForgeDirection dir) {
+    public static boolean copyPasteSettings(EntityPlayer player, ItemStack stack, IConduitBundle bundle,
+            ForgeDirection dir) {
         boolean isCopy = player.isSneaking();
         boolean clearedData = false;
         NBTTagCompound nbt = stack.stackTagCompound;
@@ -81,17 +90,8 @@ public class ItemConduitProbe extends Item implements IResourceTooltipProvider, 
     }
 
     @Override
-    public boolean onItemUse(
-            ItemStack itemStack,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float par8,
-            float par9,
-            float par10) {
+    public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float par8, float par9, float par10) {
 
         TileEntity te = world.getTileEntity(x, y, z);
         if (!(te instanceof IConduitBundle)) {

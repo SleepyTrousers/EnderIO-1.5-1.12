@@ -16,12 +16,8 @@ public class TeleporterEIO extends Teleporter {
     }
 
     @Override
-    public boolean placeInExistingPortal(
-            Entity p_placeInExistingPortal_1_,
-            double p_placeInExistingPortal_2_,
-            double p_placeInExistingPortal_4_,
-            double p_placeInExistingPortal_6_,
-            float p_placeInExistingPortal_8_) {
+    public boolean placeInExistingPortal(Entity p_placeInExistingPortal_1_, double p_placeInExistingPortal_2_,
+            double p_placeInExistingPortal_4_, double p_placeInExistingPortal_6_, float p_placeInExistingPortal_8_) {
         return true;
     }
 

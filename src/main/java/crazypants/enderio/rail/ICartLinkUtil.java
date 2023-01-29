@@ -1,6 +1,7 @@
 package crazypants.enderio.rail;
 
 import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.world.World;

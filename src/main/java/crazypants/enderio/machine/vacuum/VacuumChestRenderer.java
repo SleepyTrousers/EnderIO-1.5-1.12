@@ -1,9 +1,5 @@
 package crazypants.enderio.machine.vacuum;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.CubeRenderer;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import crazypants.enderio.EnderIO;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -12,6 +8,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import crazypants.enderio.EnderIO;
 
 public class VacuumChestRenderer implements ISimpleBlockRenderingHandler, IItemRenderer {
 
@@ -24,8 +26,8 @@ public class VacuumChestRenderer implements ISimpleBlockRenderingHandler, IItemR
     }
 
     @Override
-    public boolean renderWorldBlock(
-            IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+            RenderBlocks renderer) {
         IIcon override = renderer.overrideBlockTexture;
 
         double size = 0.4;

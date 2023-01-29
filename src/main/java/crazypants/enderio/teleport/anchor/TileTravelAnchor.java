@@ -1,5 +1,19 @@
 package crazypants.enderio.teleport.anchor;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.TileEntityEio;
@@ -8,17 +22,6 @@ import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.machine.painter.IPaintableTileEntity;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.util.UserIdent;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import javax.annotation.Nonnull;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 
 public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable, IPaintableTileEntity {
 
@@ -86,8 +89,7 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
 
     @Override
     public boolean getRequiresPassword(EntityPlayer playerName) {
-        return getAccessMode() == AccessMode.PROTECTED
-                && !canUiBeAccessed(playerName)
+        return getAccessMode() == AccessMode.PROTECTED && !canUiBeAccessed(playerName)
                 && !isAuthorisedUser(UserIdent.create(playerName.getGameProfile()));
     }
 

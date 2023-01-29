@@ -1,11 +1,12 @@
 package crazypants.enderio.machine.capbank.network;
 
-import cofh.api.energy.IEnergyContainerItem;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.capbank.TileCapBank;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+
+import cofh.api.energy.IEnergyContainerItem;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.capbank.TileCapBank;
 
 public class InventoryImpl implements IInventory {
 

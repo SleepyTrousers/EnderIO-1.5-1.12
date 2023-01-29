@@ -1,20 +1,10 @@
 package crazypants.enderio.enderface;
 
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.vecmath.Camera;
-import com.enderio.core.common.vecmath.Matrix4d;
-import com.enderio.core.common.vecmath.VecmathUtil;
-import com.enderio.core.common.vecmath.Vector3d;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.teleport.TravelController;
-import crazypants.util.RenderPassHelper;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -31,10 +21,24 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.vecmath.Camera;
+import com.enderio.core.common.vecmath.Matrix4d;
+import com.enderio.core.common.vecmath.VecmathUtil;
+import com.enderio.core.common.vecmath.Vector3d;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.teleport.TravelController;
+import crazypants.util.RenderPassHelper;
 
 public class GuiEnderface extends GuiScreen {
 
@@ -567,6 +571,7 @@ public class GuiEnderface extends GuiScreen {
     }
 
     static class ViewableBlocks {
+
         BlockCoord bc;
         Block block;
 

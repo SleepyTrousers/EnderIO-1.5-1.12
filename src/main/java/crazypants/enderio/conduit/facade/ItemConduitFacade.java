@@ -1,9 +1,22 @@
 package crazypants.enderio.conduit.facade;
 
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.util.Util;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,20 +32,11 @@ import crazypants.enderio.machine.painter.BasicPainterTemplate;
 import crazypants.enderio.machine.painter.IPaintedBlock;
 import crazypants.enderio.machine.painter.PaintSourceValidator;
 import crazypants.enderio.machine.painter.PainterUtil;
-import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider, IResourceTooltipProvider {
 
     public static enum FacadeType {
+
         BASIC,
         HARDENED;
 
@@ -61,7 +65,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
         GameRegistry.registerItem(this, ModObject.itemConduitFacade.unlocalisedName);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs p_150895_2_, List list) {
@@ -105,17 +109,8 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     }
 
     @Override
-    public boolean onItemUse(
-            ItemStack itemStack,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float par8,
-            float par9,
-            float par10) {
+    public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float par8, float par9, float par10) {
 
         if (world.isRemote) {
             return true;
@@ -145,16 +140,15 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
             } else {
                 Block block = world.getBlock(placeX, placeY, placeZ);
                 if (block == EnderIO.blockConduitBundle) {
-                    ((BlockConduitBundle) block)
-                            .handleFacadeClick(
-                                    world,
-                                    placeX,
-                                    placeY,
-                                    placeZ,
-                                    player,
-                                    dir.getOpposite().ordinal(),
-                                    (IConduitBundle) world.getTileEntity(placeX, placeY, placeZ),
-                                    itemStack);
+                    ((BlockConduitBundle) block).handleFacadeClick(
+                            world,
+                            placeX,
+                            placeY,
+                            placeZ,
+                            player,
+                            dir.getOpposite().ordinal(),
+                            (IConduitBundle) world.getTileEntity(placeX, placeY, placeZ),
+                            itemStack);
                 }
             }
         }
@@ -194,7 +188,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
     @SideOnly(Side.CLIENT)
     public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {}
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
@@ -205,7 +199,7 @@ public class ItemConduitFacade extends Item implements IAdvancedTooltipProvider,
         }
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void addDetailedEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {

@@ -1,13 +1,10 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.farm.FarmStationContainer;
-import crazypants.enderio.machine.farm.TileFarmStation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
@@ -17,6 +14,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.farm.FarmStationContainer;
+import crazypants.enderio.machine.farm.TileFarmStation;
 
 public class TreeFarmer implements IFarmerJoe {
 
@@ -87,8 +90,7 @@ public class TreeFarmer implements IFarmerJoe {
     protected boolean canPlant(World worldObj, BlockCoord bc) {
         Block ground = worldObj.getBlock(bc.x, bc.y - 1, bc.z);
         IPlantable plantable = (IPlantable) sapling;
-        if (sapling.canPlaceBlockAt(worldObj, bc.x, bc.y, bc.z)
-                && sapling.canBlockStay(worldObj, bc.x, bc.y, bc.z)
+        if (sapling.canPlaceBlockAt(worldObj, bc.x, bc.y, bc.z) && sapling.canBlockStay(worldObj, bc.x, bc.y, bc.z)
                 && ground.canSustainPlant(worldObj, bc.x, bc.y - 1, bc.z, ForgeDirection.UP, plantable)) {
             return true;
         }
@@ -134,8 +136,7 @@ public class TreeFarmer implements IFarmerJoe {
             boolean wasAxed = false;
             boolean wasWood = isWood(blk);
 
-            if (blk instanceof IShearable
-                    && hasShears
+            if (blk instanceof IShearable && hasShears
                     && ((shearCount / res.harvestedBlocks.size() + noShearingPercentage) < 100)) {
                 drops = ((IShearable) blk).onSheared(null, farm.getWorldObj(), coord.x, coord.y, coord.z, 0);
                 wasSheared = true;
@@ -162,8 +163,13 @@ public class TreeFarmer implements IFarmerJoe {
                 int leaveMeta = farm.getBlockMeta(coord);
                 if (TreeHarvestUtil.canDropApples(blk, leaveMeta)) {
                     if (farm.getWorldObj().rand.nextInt(200) == 0) {
-                        res.drops.add(new EntityItem(
-                                farm.getWorldObj(), bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, new ItemStack(Items.apple)));
+                        res.drops.add(
+                                new EntityItem(
+                                        farm.getWorldObj(),
+                                        bc.x + 0.5,
+                                        bc.y + 0.5,
+                                        bc.z + 0.5,
+                                        new ItemStack(Items.apple)));
                     }
                 }
             }

@@ -1,12 +1,13 @@
 package crazypants.enderio.fluid;
 
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+
 import buildcraft.api.fuels.BuildcraftFuelRegistry;
 import buildcraft.api.fuels.ICoolant;
 import buildcraft.api.fuels.IFuel;
 import crazypants.enderio.fluid.FluidFuelRegister.CoolantImpl;
 import crazypants.enderio.fluid.FluidFuelRegister.FuelImpl;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 
 public class BuildCraftFluidRegister implements IFluidRegister {
 

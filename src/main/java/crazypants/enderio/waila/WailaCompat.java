@@ -2,9 +2,37 @@ package crazypants.enderio.waila;
 
 import static crazypants.enderio.waila.IWailaInfoProvider.*;
 
+import java.text.MessageFormat;
+import java.util.List;
+import java.util.Locale;
+
+import mcp.mobius.waila.api.ITaggedList;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.IWailaDataProvider;
+import mcp.mobius.waila.api.IWailaRegistrar;
+import mcp.mobius.waila.api.impl.ConfigHandler;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldSettings;
+import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
 import crazypants.enderio.BlockEio;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
@@ -22,34 +50,11 @@ import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.util.IFacade;
-import java.text.MessageFormat;
-import java.util.List;
-import java.util.Locale;
-import mcp.mobius.waila.api.ITaggedList;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import mcp.mobius.waila.api.IWailaDataProvider;
-import mcp.mobius.waila.api.IWailaRegistrar;
-import mcp.mobius.waila.api.impl.ConfigHandler;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldSettings;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 public class WailaCompat implements IWailaDataProvider {
 
     private class WailaWorldWrapper extends World {
+
         private final World wrapped;
 
         private WailaWorldWrapper(World wrapped) {
@@ -139,9 +144,8 @@ public class WailaCompat implements IWailaDataProvider {
         if (config.getConfig("facades.hidden")) {
             if (accessor.getBlock() instanceof IFacade) {
                 // If facades are hidden, we need to ignore it
-                if (accessor.getTileEntity() instanceof IConduitBundle
-                        && ConduitUtil.isFacadeHidden(
-                                (IConduitBundle) accessor.getTileEntity(), accessor.getPlayer())) {
+                if (accessor.getTileEntity() instanceof IConduitBundle && ConduitUtil
+                        .isFacadeHidden((IConduitBundle) accessor.getTileEntity(), accessor.getPlayer())) {
                     return null;
                 }
                 IFacade bundle = (IFacade) accessor.getBlock();
@@ -163,28 +167,27 @@ public class WailaCompat implements IWailaDataProvider {
                 }
             }
         } else if (accessor.getBlock() instanceof BlockDarkSteelAnvil) {
-            return accessor.getBlock()
-                    .getPickBlock(
-                            accessor.getPosition(),
-                            accessor.getWorld(),
-                            accessor.getPosition().blockX,
-                            accessor.getPosition().blockY,
-                            accessor.getPosition().blockZ,
-                            accessor.getPlayer());
+            return accessor.getBlock().getPickBlock(
+                    accessor.getPosition(),
+                    accessor.getWorld(),
+                    accessor.getPosition().blockX,
+                    accessor.getPosition().blockY,
+                    accessor.getPosition().blockZ,
+                    accessor.getPlayer());
         }
         return null;
     }
 
     @Override
-    public List<String> getWailaHead(
-            ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+    public List<String> getWailaHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+            IWailaConfigHandler config) {
         return currenttip;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<String> getWailaBody(
-            ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+    public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+            IWailaConfigHandler config) {
 
         _accessor = accessor;
 
@@ -203,15 +206,15 @@ public class WailaCompat implements IWailaDataProvider {
             IIoConfigurable machine = (IIoConfigurable) te;
             ForgeDirection side = accessor.getSide();
             IoMode mode = machine.getIoMode(side);
-            currenttip.add(EnumChatFormatting.YELLOW
-                    + EnderIO.lang.localize(
+            currenttip.add(
+                    EnumChatFormatting.YELLOW + EnderIO.lang.localize(
                             "gui.machine.side",
                             EnumChatFormatting.WHITE
-                                    + EnderIO.lang.localize(
-                                            "gui.machine.side." + side.name().toLowerCase(Locale.US))));
+                                    + EnderIO.lang.localize("gui.machine.side." + side.name().toLowerCase(Locale.US))));
             if (!(te instanceof TileInventoryPanel)) {
-                currenttip.add(EnumChatFormatting.YELLOW
-                        + EnderIO.lang.localize("gui.machine.ioMode", mode.colorLocalisedName()));
+                currenttip.add(
+                        EnumChatFormatting.YELLOW
+                                + EnderIO.lang.localize("gui.machine.ioMode", mode.colorLocalisedName()));
             }
         }
 
@@ -240,8 +243,8 @@ public class WailaCompat implements IWailaDataProvider {
                     adv.addBasicEntries(itemStack, player, currenttip, false);
                 }
             } else if (block instanceof IResourceTooltipProvider) {
-                SpecialTooltipHandler.INSTANCE.addInformation(
-                        (IResourceTooltipProvider) block, itemStack, player, currenttip);
+                SpecialTooltipHandler.INSTANCE
+                        .addInformation((IResourceTooltipProvider) block, itemStack, player, currenttip);
             }
 
             if (currenttip.size() > 0) {
@@ -251,14 +254,14 @@ public class WailaCompat implements IWailaDataProvider {
             info.getWailaInfo(currenttip, player, world, pos.blockX, pos.blockY, pos.blockZ);
         } else {
             if (block instanceof IAdvancedTooltipProvider) {
-                SpecialTooltipHandler.INSTANCE.addInformation(
-                        (IAdvancedTooltipProvider) block, itemStack, player, currenttip, false);
+                SpecialTooltipHandler.INSTANCE
+                        .addInformation((IAdvancedTooltipProvider) block, itemStack, player, currenttip, false);
             } else if (item instanceof IAdvancedTooltipProvider) {
-                SpecialTooltipHandler.INSTANCE.addInformation(
-                        (IAdvancedTooltipProvider) item, itemStack, player, currenttip, false);
+                SpecialTooltipHandler.INSTANCE
+                        .addInformation((IAdvancedTooltipProvider) item, itemStack, player, currenttip, false);
             } else if (block instanceof IResourceTooltipProvider) {
-                SpecialTooltipHandler.INSTANCE.addInformation(
-                        (IResourceTooltipProvider) block, itemStack, player, currenttip);
+                SpecialTooltipHandler.INSTANCE
+                        .addInformation((IResourceTooltipProvider) block, itemStack, player, currenttip);
             }
         }
 
@@ -277,15 +280,16 @@ public class WailaCompat implements IWailaDataProvider {
                 int stored = accessor.getNBTData().getInteger("storedEnergyRF");
                 int max = accessor.getNBTData().getInteger("maxStoredRF");
 
-                currenttip.add(String.format(
-                        "%s%s%s / %s%s%s %s",
-                        EnumChatFormatting.WHITE,
-                        PowerDisplayUtil.formatPower(stored),
-                        EnumChatFormatting.RESET,
-                        EnumChatFormatting.WHITE,
-                        PowerDisplayUtil.formatPower(max),
-                        EnumChatFormatting.RESET,
-                        PowerDisplayUtil.abrevation()));
+                currenttip.add(
+                        String.format(
+                                "%s%s%s / %s%s%s %s",
+                                EnumChatFormatting.WHITE,
+                                PowerDisplayUtil.formatPower(stored),
+                                EnumChatFormatting.RESET,
+                                EnumChatFormatting.WHITE,
+                                PowerDisplayUtil.formatPower(max),
+                                EnumChatFormatting.RESET,
+                                PowerDisplayUtil.abrevation()));
             }
         }
 
@@ -302,15 +306,16 @@ public class WailaCompat implements IWailaDataProvider {
             if (nbtRoot.hasKey("storedEnergyRF")) {
                 int stored = nbtRoot.getInteger("storedEnergyRF");
                 int max = nbtRoot.getInteger("maxStoredRF");
-                currenttip.add(String.format(
-                        "%s%s%s / %s%s%s %s",
-                        EnumChatFormatting.WHITE,
-                        PowerDisplayUtil.formatPower(stored),
-                        EnumChatFormatting.RESET,
-                        EnumChatFormatting.WHITE,
-                        PowerDisplayUtil.formatPower(max),
-                        EnumChatFormatting.RESET,
-                        PowerDisplayUtil.abrevation()));
+                currenttip.add(
+                        String.format(
+                                "%s%s%s / %s%s%s %s",
+                                EnumChatFormatting.WHITE,
+                                PowerDisplayUtil.formatPower(stored),
+                                EnumChatFormatting.RESET,
+                                EnumChatFormatting.WHITE,
+                                PowerDisplayUtil.formatPower(max),
+                                EnumChatFormatting.RESET,
+                                PowerDisplayUtil.abrevation()));
             }
 
         } else if (itemStack.getItem() == EnderIO.itemLiquidConduit) {
@@ -323,19 +328,25 @@ public class WailaCompat implements IWailaDataProvider {
                 int fluidAmount = fluid.amount;
                 if (fluidAmount > 0) {
                     // NOTE: using PowerDisplayUtil.formatPower here to handle the non breaking space issue
-                    currenttip.add(String.format(
-                            "%s%s%s%s %s%s%s %s",
-                            lockedStr,
-                            EnumChatFormatting.WHITE,
-                            fluidName,
-                            EnumChatFormatting.RESET,
-                            EnumChatFormatting.WHITE,
-                            PowerDisplayUtil.formatPower(fluidAmount),
-                            EnumChatFormatting.RESET,
-                            Fluids.MB()));
+                    currenttip.add(
+                            String.format(
+                                    "%s%s%s%s %s%s%s %s",
+                                    lockedStr,
+                                    EnumChatFormatting.WHITE,
+                                    fluidName,
+                                    EnumChatFormatting.RESET,
+                                    EnumChatFormatting.WHITE,
+                                    PowerDisplayUtil.formatPower(fluidAmount),
+                                    EnumChatFormatting.RESET,
+                                    Fluids.MB()));
                 } else if (fluidTypeLocked) {
-                    currenttip.add(String.format(
-                            "%s%s%s%s", lockedStr, EnumChatFormatting.WHITE, fluidName, EnumChatFormatting.RESET));
+                    currenttip.add(
+                            String.format(
+                                    "%s%s%s%s",
+                                    lockedStr,
+                                    EnumChatFormatting.WHITE,
+                                    fluidName,
+                                    EnumChatFormatting.RESET));
                 }
             }
 
@@ -344,21 +355,24 @@ public class WailaCompat implements IWailaDataProvider {
             if (nbtRoot.hasKey("isDense")) {
                 boolean isDense = nbtRoot.getBoolean("isDense");
                 int channelsInUse = nbtRoot.getInteger("channelsInUse");
-                currenttip.add(MessageFormat.format(
-                        EnderIO.lang.localize("itemMEConduit.channelsUsed"), channelsInUse, isDense ? 32 : 8));
+                currenttip.add(
+                        MessageFormat.format(
+                                EnderIO.lang.localize("itemMEConduit.channelsUsed"),
+                                channelsInUse,
+                                isDense ? 32 : 8));
             }
         }
     }
 
     @Override
-    public List<String> getWailaTail(
-            ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+    public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+            IWailaConfigHandler config) {
         return currenttip;
     }
 
     @Override
-    public NBTTagCompound getNBTData(
-            EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x, int y, int z) {
+    public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x,
+            int y, int z) {
         if (te instanceof IWailaNBTProvider) {
             ((IWailaNBTProvider) te).getData(tag);
         }

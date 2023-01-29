@@ -1,17 +1,18 @@
 package crazypants.enderio.conduit.geom;
 
-import crazypants.enderio.conduit.IConduit;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
 import net.minecraftforge.common.util.ForgeDirection;
+
+import crazypants.enderio.conduit.IConduit;
 
 public class CollidableCache {
 
     public static final CollidableCache instance = new CollidableCache();
 
-    private final Map<CacheKey, Collection<CollidableComponent>> cache =
-            new HashMap<CollidableCache.CacheKey, Collection<CollidableComponent>>();
+    private final Map<CacheKey, Collection<CollidableComponent>> cache = new HashMap<CollidableCache.CacheKey, Collection<CollidableComponent>>();
 
     public CacheKey createKey(Class<? extends IConduit> baseType, Offset offset, ForgeDirection dir, boolean isStub) {
         return new CacheKey(baseType, offset, dir, isStub);

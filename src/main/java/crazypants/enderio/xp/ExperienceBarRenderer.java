@@ -1,12 +1,14 @@
 package crazypants.enderio.xp;
 
-import com.enderio.core.client.render.ColorUtil;
-import com.enderio.core.client.render.RenderUtil;
-import crazypants.enderio.gui.IconEIO;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
+import crazypants.enderio.gui.IconEIO;
 
 public class ExperienceBarRenderer {
 

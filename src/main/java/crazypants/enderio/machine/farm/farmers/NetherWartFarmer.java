@@ -1,13 +1,14 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.machine.farm.TileFarmStation;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+import crazypants.enderio.machine.farm.TileFarmStation;
 
 public class NetherWartFarmer extends CustomSeedFarmer {
 

@@ -1,15 +1,7 @@
 package crazypants.enderio.machine.solar;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.waila.IWailaInfoProvider;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -22,6 +14,17 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.waila.IWailaInfoProvider;
 
 public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvider, IWailaInfoProvider {
 
@@ -156,14 +159,8 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
 
     @SuppressWarnings("rawtypes")
     @Override
-    public void addCollisionBoxesToList(
-            World par1World,
-            int par2,
-            int par3,
-            int par4,
-            AxisAlignedBB par5AxisAlignedBB,
-            List par6List,
-            Entity par7Entity) {
+    public void addCollisionBoxesToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB,
+            List par6List, Entity par7Entity) {
         setBlockBoundsBasedOnState(par1World, par2, par3, par4);
         super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
     }
@@ -182,13 +179,13 @@ public class BlockSolarPanel extends BlockEio implements IResourceTooltipProvide
             if (!solar.canSeeSun()) {
                 tooltip.add(EnumChatFormatting.RED + EnderIO.lang.localize("tooltip.sunlightBlocked"));
             } else {
-                tooltip.add(String.format(
-                        "%s : %s%.0f%%",
-                        EnumChatFormatting.WHITE
-                                + EnderIO.lang.localize("tooltip.efficiency")
-                                + EnumChatFormatting.RESET,
-                        EnumChatFormatting.WHITE,
-                        efficiency * 100));
+                tooltip.add(
+                        String.format(
+                                "%s : %s%.0f%%",
+                                EnumChatFormatting.WHITE + EnderIO.lang.localize("tooltip.efficiency")
+                                        + EnumChatFormatting.RESET,
+                                EnumChatFormatting.WHITE,
+                                efficiency * 100));
             }
         }
     }

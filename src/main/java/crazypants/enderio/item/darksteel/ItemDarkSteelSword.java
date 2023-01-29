@@ -1,23 +1,7 @@
 package crazypants.enderio.item.darksteel;
 
-import cofh.api.energy.IEnergyContainerItem;
-import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.common.util.ItemUtil;
-import com.enderio.core.common.util.Util;
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.api.teleport.IItemOfTravel;
-import crazypants.enderio.api.teleport.TravelSource;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
-import crazypants.enderio.teleport.TravelController;
 import java.util.List;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -40,13 +24,33 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
+import cofh.api.energy.IEnergyContainerItem;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.Util;
+
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.api.teleport.IItemOfTravel;
+import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
+import crazypants.enderio.teleport.TravelController;
+
 public class ItemDarkSteelSword extends ItemSword
         implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
 
     private static final String ENDERZOO_ENDERMINY = "enderzoo.Enderminy";
 
-    static final ToolMaterial MATERIAL =
-            EnumHelper.addToolMaterial("darkSteel", Config.darkSteelPickMinesTiCArdite ? 5 : 3, 1561, 7, 2, 25);
+    static final ToolMaterial MATERIAL = EnumHelper
+            .addToolMaterial("darkSteel", Config.darkSteelPickMinesTiCArdite ? 5 : 3, 1561, 7, 2, 25);
 
     public static boolean isEquipped(EntityPlayer player) {
         if (player == null) {
@@ -166,13 +170,14 @@ public class ItemDarkSteelSword extends ItemSword
                 }
                 int toDrop = numPearls - existing;
                 if (toDrop > 0) {
-                    evt.drops.add(Util.createDrop(
-                            player.worldObj,
-                            new ItemStack(Items.ender_pearl, toDrop, 0),
-                            evt.entityLiving.posX,
-                            evt.entityLiving.posY,
-                            evt.entityLiving.posZ,
-                            false));
+                    evt.drops.add(
+                            Util.createDrop(
+                                    player.worldObj,
+                                    new ItemStack(Items.ender_pearl, toDrop, 0),
+                                    evt.entityLiving.posX,
+                                    evt.entityLiving.posY,
+                                    evt.entityLiving.posZ,
+                                    false));
                 }
             }
         }
@@ -181,8 +186,13 @@ public class ItemDarkSteelSword extends ItemSword
     protected void dropSkull(LivingDropsEvent evt, EntityPlayer player) {
         ItemStack skull = getSkullForEntity(evt.entityLiving);
         if (skull != null && !containsDrop(evt, skull)) {
-            evt.drops.add(Util.createEntityItem(
-                    player.worldObj, skull, evt.entityLiving.posX, evt.entityLiving.posY, evt.entityLiving.posZ));
+            evt.drops.add(
+                    Util.createEntityItem(
+                            player.worldObj,
+                            skull,
+                            evt.entityLiving.posX,
+                            evt.entityLiving.posY,
+                            evt.entityLiving.posZ));
         }
     }
 
@@ -196,8 +206,7 @@ public class ItemDarkSteelSword extends ItemSword
             return false;
         }
 
-        boolean isCleaver = "tconstruct.items.tools.Cleaver"
-                .equals(equipped.getItem().getClass().getName());
+        boolean isCleaver = "tconstruct.items.tools.Cleaver".equals(equipped.getItem().getClass().getName());
         boolean hasBeheading = infiToolRoot.hasKey("Beheading");
         if (!isCleaver && !hasBeheading) {
             // Use default behavior if it is not a cleaver and doesn't have beheading
@@ -254,8 +263,7 @@ public class ItemDarkSteelSword extends ItemSword
 
     private boolean containsDrop(LivingDropsEvent evt, ItemStack skull) {
         for (EntityItem ei : evt.drops) {
-            if (ei != null
-                    && ei.getEntityItem() != null
+            if (ei != null && ei.getEntityItem() != null
                     && ei.getEntityItem().getItem() == skull.getItem()
                     && ei.getEntityItem().getItemDamage() == skull.getItemDamage()) {
                 return true;
@@ -405,8 +413,7 @@ public class ItemDarkSteelSword extends ItemSword
             if (ticksSinceBlink < 0) {
                 lastBlickTick = -1;
             }
-            if (Config.travelStaffBlinkEnabled
-                    && world.isRemote
+            if (Config.travelStaffBlinkEnabled && world.isRemote
                     && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
                 if (TravelController.instance.doBlink(stack, player)) {
                     player.swingItem();

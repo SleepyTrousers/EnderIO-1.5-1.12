@@ -3,9 +3,11 @@ package crazypants.enderio.material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+
 import org.apache.commons.lang3.StringUtils;
 
 public enum MachinePart {
+
     MACHINE_CHASSI("machineChassi"),
     BASIC_GEAR("basicGear"),
     SOUL_MACHINE_CHASSIS("soulMachineChassi"),

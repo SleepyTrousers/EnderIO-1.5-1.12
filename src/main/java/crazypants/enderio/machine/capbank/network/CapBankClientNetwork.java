@@ -1,6 +1,16 @@
 package crazypants.enderio.machine.capbank.network;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.CapBankType;
@@ -10,13 +20,6 @@ import crazypants.enderio.machine.capbank.packet.PacketNetworkEnergyRequest;
 import crazypants.enderio.machine.capbank.packet.PacketNetworkStateRequest;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IPowerStorage;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class CapBankClientNetwork implements ICapBankNetwork {
 
@@ -403,6 +406,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     }
 
     public static final class DisplayInfoKey {
+
         final int x;
         final int y;
         final int z;
@@ -436,6 +440,7 @@ public class CapBankClientNetwork implements ICapBankNetwork {
     }
 
     public static class IOInfo {
+
         public final int width;
         public final int height;
 

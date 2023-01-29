@@ -1,10 +1,30 @@
 package crazypants.enderio.machine.capbank;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import cofh.api.energy.IEnergyContainerItem;
+
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.EntityUtil;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -25,22 +45,6 @@ import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PowerHandlerUtil;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileCapBank extends TileEntityEio
         implements IInternalPowerReceiver, IInventory, IIoConfigurable, IPowerStorage {
@@ -674,10 +678,10 @@ public class TileCapBank extends TileEntityEio
         return network.receiveEnergy(maxReceive, simulate);
     }
 
-    //  @Override
-    //  public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-    //    return 0;
-    //  }
+    // @Override
+    // public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+    // return 0;
+    // }
 
     @Override
     public int getMaxEnergyStored(ForgeDirection from) {
@@ -824,8 +828,7 @@ public class TileCapBank extends TileEntityEio
         if (faceModes != null) {
             nbtRoot.setByte("hasFaces", (byte) 1);
             for (Entry<ForgeDirection, IoMode> e : faceModes.entrySet()) {
-                nbtRoot.setShort(
-                        "face" + e.getKey().ordinal(), (short) e.getValue().ordinal());
+                nbtRoot.setShort("face" + e.getKey().ordinal(), (short) e.getValue().ordinal());
             }
         }
 
@@ -834,8 +837,7 @@ public class TileCapBank extends TileEntityEio
             nbtRoot.setByte("hasDisplayTypes", (byte) 1);
             for (Entry<ForgeDirection, InfoDisplayType> e : faceDisplayTypes.entrySet()) {
                 if (e.getValue() != InfoDisplayType.NONE) {
-                    nbtRoot.setShort("faceDisplay" + e.getKey().ordinal(), (short)
-                            e.getValue().ordinal());
+                    nbtRoot.setShort("faceDisplay" + e.getKey().ordinal(), (short) e.getValue().ordinal());
                 }
             }
         }

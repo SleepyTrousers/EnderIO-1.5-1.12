@@ -5,15 +5,16 @@ import static crazypants.enderio.material.Material.VIBRANT_CYSTAL;
 import static crazypants.enderio.material.endergy.AlloyEndergy.*;
 import static crazypants.util.RecipeUtil.addShaped;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.MachinePart;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class ItemRecipes {
 
@@ -57,7 +58,14 @@ public class ItemRecipes {
                 'd',
                 diode);
         addShaped(
-                DarkSteelItems.itemEndSteelLeggings.createItemStack(), "sss", "sds", "s s", 's', endSteel, 'd', diode);
+                DarkSteelItems.itemEndSteelLeggings.createItemStack(),
+                "sss",
+                "sds",
+                "s s",
+                's',
+                endSteel,
+                'd',
+                diode);
         addShaped(DarkSteelItems.itemEndSteelBoots.createItemStack(), "s s", "sds", 's', endSteel, 'd', diode);
 
         // Stellar
@@ -95,15 +103,16 @@ public class ItemRecipes {
         GameRegistry.addShapedRecipe(dsppSilent, "p", "w", 'p', dspp, 'w', Blocks.wool);
 
         // Soul Vessel
-        GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(EnderIO.itemSoulVessel),
-                " s ",
-                "q q",
-                " q ",
-                's',
-                soularium,
-                'q',
-                new ItemStack(EnderIO.blockFusedQuartz, 1, 0)));
+        GameRegistry.addRecipe(
+                new ShapedOreRecipe(
+                        new ItemStack(EnderIO.itemSoulVessel),
+                        " s ",
+                        "q q",
+                        " q ",
+                        's',
+                        soularium,
+                        'q',
+                        new ItemStack(EnderIO.blockFusedQuartz, 1, 0)));
 
         // XP Rod
         addShaped(new ItemStack(EnderIO.itemXpTransfer), "  s", " v ", "s  ", 's', soularium, 'v', enAlloy);

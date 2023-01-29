@@ -1,11 +1,9 @@
 package crazypants.enderio.conduit;
 
-import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
-import crazypants.enderio.conduit.geom.CollidableComponent;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -14,6 +12,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
+import crazypants.enderio.conduit.geom.CollidableComponent;
 
 public interface IConduit {
 
@@ -135,8 +138,7 @@ public interface IConduit {
     public AbstractConduitNetwork<?, ?> createNetworkForType();
 
     /**
-     * Should the texture of the conduit connectors be mirrored around the conduit
-     * node?
+     * Should the texture of the conduit connectors be mirrored around the conduit node?
      */
     boolean shouldMirrorTexture();
 }

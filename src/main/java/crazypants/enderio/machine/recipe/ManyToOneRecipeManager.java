@@ -1,13 +1,16 @@
 package crazypants.enderio.machine.recipe;
 
-import com.enderio.core.common.util.Util;
-import crazypants.enderio.Log;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.MachineRecipeInput;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.item.ItemStack;
+
+import com.enderio.core.common.util.Util;
+
+import crazypants.enderio.Log;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.MachineRecipeInput;
 
 public class ManyToOneRecipeManager {
 
@@ -104,16 +107,20 @@ public class ManyToOneRecipeManager {
                 RecipeOutput out3 = new RecipeOutput(out.getOutput(), out.getChance(), out.getExperiance());
                 out3.getOutput().stackSize *= 3;
 
-                recipes.add(new BasicManyToOneRecipe(
-                        new Recipe(out3, er * 3, bns, new RecipeInput[] {in.copy(), in.copy(), in.copy()})));
-                recipes.add(new BasicManyToOneRecipe(
-                        new Recipe(out3, er * 3, bns, new RecipeInput[] {in.copy(), in2.copy()})));
-                recipes.add(new BasicManyToOneRecipe(
-                        new Recipe(out3, er * 3, bns, new RecipeInput[] {in2.copy(), in.copy()})));
-                recipes.add(new BasicManyToOneRecipe(
-                        new Recipe(out2, er * 2, bns, new RecipeInput[] {in.copy(), in.copy()})));
-                recipes.add(new BasicManyToOneRecipe(new Recipe(out3, er * 3, bns, new RecipeInput[] {in3.copy()})));
-                recipes.add(new BasicManyToOneRecipe(new Recipe(out2, er * 2, bns, new RecipeInput[] {in2.copy()})));
+                recipes.add(
+                        new BasicManyToOneRecipe(
+                                new Recipe(out3, er * 3, bns, new RecipeInput[] { in.copy(), in.copy(), in.copy() })));
+                recipes.add(
+                        new BasicManyToOneRecipe(
+                                new Recipe(out3, er * 3, bns, new RecipeInput[] { in.copy(), in2.copy() })));
+                recipes.add(
+                        new BasicManyToOneRecipe(
+                                new Recipe(out3, er * 3, bns, new RecipeInput[] { in2.copy(), in.copy() })));
+                recipes.add(
+                        new BasicManyToOneRecipe(
+                                new Recipe(out2, er * 2, bns, new RecipeInput[] { in.copy(), in.copy() })));
+                recipes.add(new BasicManyToOneRecipe(new Recipe(out3, er * 3, bns, new RecipeInput[] { in3.copy() })));
+                recipes.add(new BasicManyToOneRecipe(new Recipe(out2, er * 2, bns, new RecipeInput[] { in2.copy() })));
                 recipes.add(new BasicManyToOneRecipe(rec));
                 Log.info("Created 6 synthetic recipes for " + in.getInput() + " => " + out.getOutput());
             } else {

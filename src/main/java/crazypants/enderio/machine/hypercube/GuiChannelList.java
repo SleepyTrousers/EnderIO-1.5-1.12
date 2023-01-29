@@ -1,13 +1,15 @@
 package crazypants.enderio.machine.hypercube;
 
-import com.enderio.core.client.gui.widget.GuiScrollableList;
-import com.enderio.core.client.render.ColorUtil;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
+
+import com.enderio.core.client.gui.widget.GuiScrollableList;
+import com.enderio.core.client.render.ColorUtil;
 
 public class GuiChannelList extends GuiScrollableList<Channel> {
 

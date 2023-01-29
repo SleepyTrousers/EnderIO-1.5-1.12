@@ -1,17 +1,5 @@
 package crazypants.enderio.machine.generator.combustion;
 
-import com.enderio.core.api.common.util.ITankAccess;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.FluidUtil;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.fluid.FluidFuelRegister;
-import crazypants.enderio.fluid.IFluidCoolant;
-import crazypants.enderio.fluid.IFluidFuel;
-import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.PowerDistributor;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,6 +10,20 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.FluidUtil;
+
+import crazypants.enderio.ModObject;
+import crazypants.enderio.fluid.FluidFuelRegister;
+import crazypants.enderio.fluid.IFluidCoolant;
+import crazypants.enderio.fluid.IFluidFuel;
+import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.power.PowerDistributor;
 
 public class TileCombustionGenerator extends AbstractGeneratorEntity implements IFluidHandler, ITankAccess {
 
@@ -275,8 +277,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
         if (getFuelTank().getFluidAmount() <= 0) {
             return 0;
         }
-        return getNumTicksPerMbFuel(
-                FluidFuelRegister.instance.getFuel(getFuelTank().getFluid().getFluid()));
+        return getNumTicksPerMbFuel(FluidFuelRegister.instance.getFuel(getFuelTank().getFluid().getFluid()));
     }
 
     public int getNumTicksPerMbCoolant() {
@@ -329,7 +330,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
         if (isSideDisabled(from.ordinal())) {
             return new FluidTankInfo[0];
         }
-        return new FluidTankInfo[] {getCoolantTank().getInfo(), getFuelTank().getInfo()};
+        return new FluidTankInfo[] { getCoolantTank().getInfo(), getFuelTank().getInfo() };
     }
 
     @Override
@@ -435,7 +436,7 @@ public class TileCombustionGenerator extends AbstractGeneratorEntity implements 
     @Override
     public FluidTank[] getOutputTanks() {
         return new FluidTank[] {
-            /* coolantTank, fuelTank */
+                /* coolantTank, fuelTank */
         };
     }
 

@@ -1,12 +1,14 @@
 package crazypants.enderio.item.darksteel.upgrade;
 
+import java.util.stream.Stream;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.material.Material;
-import java.util.stream.Stream;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class TravelUpgrade extends AbstractUpgrade {
 
@@ -43,15 +45,14 @@ public class TravelUpgrade extends AbstractUpgrade {
     public boolean canAddToItem(ItemStack stack) {
         if (stack == null) return false;
         if (Stream.of(
-                        DarkSteelItems.itemDarkSteelSword,
-                        DarkSteelItems.itemEndSteelSword,
-                        DarkSteelItems.itemStellarSword,
-                        DarkSteelItems.itemDarkSteelPickaxe,
-                        DarkSteelItems.itemEndSteelPickaxe,
-                        DarkSteelItems.itemStellarPickaxe,
-                        DarkSteelItems.itemEndSteelAxe,
-                        DarkSteelItems.itemStellarAxe)
-                .anyMatch(item -> stack.getItem() == item)) {
+                DarkSteelItems.itemDarkSteelSword,
+                DarkSteelItems.itemEndSteelSword,
+                DarkSteelItems.itemStellarSword,
+                DarkSteelItems.itemDarkSteelPickaxe,
+                DarkSteelItems.itemEndSteelPickaxe,
+                DarkSteelItems.itemStellarPickaxe,
+                DarkSteelItems.itemEndSteelAxe,
+                DarkSteelItems.itemStellarAxe).anyMatch(item -> stack.getItem() == item)) {
             return EnergyUpgrade.itemHasAnyPowerUpgrade(stack) && loadFromItem(stack) == null;
         }
         return false;

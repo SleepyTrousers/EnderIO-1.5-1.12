@@ -1,11 +1,10 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.machine.farm.TileFarmStation;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStem;
 import net.minecraft.block.IGrowable;
@@ -16,6 +15,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+import crazypants.enderio.machine.farm.TileFarmStation;
 
 public class PlantableFarmer implements IFarmerJoe {
 
@@ -74,27 +76,27 @@ public class PlantableFarmer implements IFarmerJoe {
         return false;
     }
 
-    //  From BlockBush, as a reference
-    //  @Override
-    //  public EnumPlantType getPlantType(IBlockAccess world, int x, int y, int z)
-    //  {
-    //      if (this == Blocks.wheat)          return Crop;
-    //      if (this == Blocks.carrots)        return Crop;
-    //      if (this == Blocks.potatoes)       return Crop;
-    //      if (this == Blocks.melon_stem)     return Crop;
-    //      if (this == Blocks.pumpkin_stem)   return Crop;
-    //      if (this == Blocks.deadbush)       return Desert;
-    //      if (this == Blocks.waterlily)      return Water;
-    //      if (this == Blocks.red_mushroom)   return Cave;
-    //      if (this == Blocks.brown_mushroom) return Cave;
-    //      if (this == Blocks.nether_wart)    return Nether;
-    //      if (this == Blocks.sapling)        return Plains;
-    //      if (this == Blocks.tallgrass)      return Plains;
-    //      if (this == Blocks.double_plant)   return Plains;
-    //      if (this == Blocks.red_flower)     return Plains;
-    //      if (this == Blocks.yellow_flower)  return Plains;
-    //      return Plains;
-    //  }
+    // From BlockBush, as a reference
+    // @Override
+    // public EnumPlantType getPlantType(IBlockAccess world, int x, int y, int z)
+    // {
+    // if (this == Blocks.wheat) return Crop;
+    // if (this == Blocks.carrots) return Crop;
+    // if (this == Blocks.potatoes) return Crop;
+    // if (this == Blocks.melon_stem) return Crop;
+    // if (this == Blocks.pumpkin_stem) return Crop;
+    // if (this == Blocks.deadbush) return Desert;
+    // if (this == Blocks.waterlily) return Water;
+    // if (this == Blocks.red_mushroom) return Cave;
+    // if (this == Blocks.brown_mushroom) return Cave;
+    // if (this == Blocks.nether_wart) return Nether;
+    // if (this == Blocks.sapling) return Plains;
+    // if (this == Blocks.tallgrass) return Plains;
+    // if (this == Blocks.double_plant) return Plains;
+    // if (this == Blocks.red_flower) return Plains;
+    // if (this == Blocks.yellow_flower) return Plains;
+    // return Plains;
+    // }
 
     protected boolean plantFromInventory(TileFarmStation farm, BlockCoord bc, IPlantable plantable) {
         World worldObj = farm.getWorldObj();
@@ -116,8 +118,7 @@ public class PlantableFarmer implements IFarmerJoe {
     protected boolean canPlant(World worldObj, BlockCoord bc, IPlantable plantable) {
         Block target = plantable.getPlant(null, 0, 0, 0);
         Block ground = worldObj.getBlock(bc.x, bc.y - 1, bc.z);
-        if (target != null
-                && target.canPlaceBlockAt(worldObj, bc.x, bc.y, bc.z)
+        if (target != null && target.canPlaceBlockAt(worldObj, bc.x, bc.y, bc.z)
                 && target.canBlockStay(worldObj, bc.x, bc.y, bc.z)
                 && ground.canSustainPlant(worldObj, bc.x, bc.y - 1, bc.z, ForgeDirection.UP, plantable)) {
             return true;

@@ -1,6 +1,9 @@
 package crazypants.enderio.conduit.gui;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.common.util.DyeColor;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -9,7 +12,6 @@ import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import crazypants.enderio.conduit.packet.AbstractConduitPacket;
 import crazypants.enderio.conduit.packet.ConTypeEnum;
 import io.netty.buffer.ByteBuf;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class PacketFluidChannel extends AbstractConduitPacket<ILiquidConduit>
         implements IMessageHandler<PacketFluidChannel, IMessage> {
@@ -21,8 +23,8 @@ public class PacketFluidChannel extends AbstractConduitPacket<ILiquidConduit>
 
     public PacketFluidChannel() {}
 
-    public PacketFluidChannel(
-            AbstractEnderLiquidConduit eConduit, ForgeDirection dir, boolean isInput, DyeColor channel) {
+    public PacketFluidChannel(AbstractEnderLiquidConduit eConduit, ForgeDirection dir, boolean isInput,
+            DyeColor channel) {
         super(eConduit.getBundle().getEntity(), ConTypeEnum.FLUID);
         this.dir = dir;
         this.isInput = isInput;

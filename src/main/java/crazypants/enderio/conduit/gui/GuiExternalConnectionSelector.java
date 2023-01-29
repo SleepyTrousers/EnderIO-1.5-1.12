@@ -1,17 +1,10 @@
 package crazypants.enderio.conduit.gui;
 
-import com.enderio.core.client.render.ColorUtil;
-import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
-import crazypants.enderio.network.PacketHandler;
 import java.awt.Color;
 import java.awt.Point;
 import java.util.HashSet;
 import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -20,6 +13,16 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
+import crazypants.enderio.network.PacketHandler;
 
 public class GuiExternalConnectionSelector extends GuiScreen {
 

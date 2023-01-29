@@ -1,12 +1,14 @@
 package crazypants.enderio.machine;
 
-import crazypants.enderio.machine.IMachineRecipe.ResultStack;
-import crazypants.enderio.machine.recipe.RecipeBonusType;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.MathHelper;
+
+import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import crazypants.enderio.machine.recipe.RecipeBonusType;
 
 public class PoweredTask implements IPoweredTask {
 
@@ -91,7 +93,8 @@ public class PoweredTask implements IPoweredTask {
         this.inputs = inputs;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see crazypants.enderio.machine.IPoweredTask#getRequiredEnergy()
      */
     @Override
@@ -103,7 +106,8 @@ public class PoweredTask implements IPoweredTask {
         this.requiredEnergy = requiredEnergy;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see crazypants.enderio.machine.IPoweredTask#getChance()
      */
     @Override
@@ -120,7 +124,8 @@ public class PoweredTask implements IPoweredTask {
         return bonusType;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see crazypants.enderio.machine.IPoweredTask#writeToNBT(net.minecraft.nbt.NBTTagCompound)
      */
     @Override

@@ -1,10 +1,12 @@
 package crazypants.enderio.machine.invpanel.server;
 
-import com.jaquadro.minecraft.storagedrawers.api.storage.IDrawer;
-import com.jaquadro.minecraft.storagedrawers.api.storage.IDrawerGroup;
 import net.minecraft.item.ItemStack;
 
+import com.jaquadro.minecraft.storagedrawers.api.storage.IDrawer;
+import com.jaquadro.minecraft.storagedrawers.api.storage.IDrawerGroup;
+
 public class DrawerGroupInventory extends AbstractInventory {
+
     final IDrawerGroup dg;
 
     public DrawerGroupInventory(IDrawerGroup dg) {
@@ -25,8 +27,7 @@ public class DrawerGroupInventory extends AbstractInventory {
             IDrawer drawer = dg.getDrawer(i);
             ItemStack stack;
             int quantity;
-            if (drawer != null
-                    && (quantity = drawer.getStoredItemCount()) > 0
+            if (drawer != null && (quantity = drawer.getStoredItemCount()) > 0
                     && (stack = drawer.getStoredItemPrototype()) != null
                     && drawer.canItemBeExtracted(stack)) {
                 updateSlot(db, i, stack, quantity);

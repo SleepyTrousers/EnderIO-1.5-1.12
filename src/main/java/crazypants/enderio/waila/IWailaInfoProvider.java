@@ -1,9 +1,11 @@
 package crazypants.enderio.waila;
 
-import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 
 public interface IWailaInfoProvider {
 
@@ -14,6 +16,7 @@ public interface IWailaInfoProvider {
 
     /**
      * Adds the block's info to the WAILA information
+     * 
      * @param tooltip - current list of strings in the WAILA body
      * @param world
      * @param x
@@ -28,8 +31,9 @@ public interface IWailaInfoProvider {
      * Unneded if your block doesn't implement {@link IAdvancedTooltipProvider}
      *
      * @return Bits enabled corresponding to the tooltip sections you want displayed.
-     * <p>
-     * Should be returned in the format bit | otherbit (ex. <code> BIT_BASIC | BIT_COMMON</code>). Return <code>ALL_BITS</code> to show all, or 0 to show none.
+     *         <p>
+     *         Should be returned in the format bit | otherbit (ex. <code> BIT_BASIC | BIT_COMMON</code>). Return
+     *         <code>ALL_BITS</code> to show all, or 0 to show none.
      */
     public int getDefaultDisplayMask(World world, int x, int y, int z);
 }

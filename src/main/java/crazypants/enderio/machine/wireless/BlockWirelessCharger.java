@@ -1,12 +1,5 @@
 package crazypants.enderio.machine.wireless;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.TileEntityEnder;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.network.PacketHandler;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -16,12 +9,24 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.TileEntityEnder;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.network.PacketHandler;
+
 public class BlockWirelessCharger extends BlockEio implements IResourceTooltipProvider /* IGuiHandler */ {
 
     public static BlockWirelessCharger create() {
 
         PacketHandler.INSTANCE.registerMessage(
-                PacketStoredEnergy.class, PacketStoredEnergy.class, PacketHandler.nextID(), Side.CLIENT);
+                PacketStoredEnergy.class,
+                PacketStoredEnergy.class,
+                PacketHandler.nextID(),
+                Side.CLIENT);
 
         BlockWirelessCharger res = new BlockWirelessCharger();
         res.init();
@@ -82,23 +87,23 @@ public class BlockWirelessCharger extends BlockEio implements IResourceTooltipPr
         return false;
     }
 
-    //  @Override
-    //  public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    //    TileEntity te = world.getTileEntity(x, y, z);
-    //    if(te instanceof TileWire) {
-    //      return new ContainerVacuumChest(player, player.inventory, (TileVacuumChest) te);
-    //    }
-    //    return null;
-    //  }
+    // @Override
+    // public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    // TileEntity te = world.getTileEntity(x, y, z);
+    // if(te instanceof TileWire) {
+    // return new ContainerVacuumChest(player, player.inventory, (TileVacuumChest) te);
+    // }
+    // return null;
+    // }
     //
-    //  @Override
-    //  public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-    //    TileEntity te = world.getTileEntity(x, y, z);
-    //    if(te instanceof TileVacuumChest) {
-    //      return new GuiVacuumChest(player, player.inventory, (TileVacuumChest) te);
-    //    }
-    //    return null;
-    //  }
+    // @Override
+    // public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    // TileEntity te = world.getTileEntity(x, y, z);
+    // if(te instanceof TileVacuumChest) {
+    // return new GuiVacuumChest(player, player.inventory, (TileVacuumChest) te);
+    // }
+    // return null;
+    // }
 
     @Override
     public String getUnlocalizedNameForTooltip(ItemStack itemStack) {

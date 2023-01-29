@@ -1,17 +1,5 @@
 package crazypants.enderio.machine.generator.zombie;
 
-import com.enderio.core.api.common.util.ITankAccess;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.FluidUtil;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.PowerDistributor;
-import crazypants.enderio.tool.SmartTank;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,6 +11,20 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.FluidUtil;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.power.PowerDistributor;
+import crazypants.enderio.tool.SmartTank;
 
 public class TileZombieGenerator extends AbstractGeneratorEntity
         implements IFluidHandler, ITankAccess, IHasNutrientTank {
@@ -181,8 +183,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity
 
         // once full, don't start again until we have drained 10 seconds worth of power to prevent
         // flickering on and off constantly when powering a machine that draws less than this produces
-        if (inPause
-                && getEnergyStored() >= (getMaxEnergyStored() - (getOutputPerTick() * 200))
+        if (inPause && getEnergyStored() >= (getMaxEnergyStored() - (getOutputPerTick() * 200))
                 && getEnergyStored() > (getMaxEnergyStored() / 8)) {
             return false;
         }
@@ -249,7 +250,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        return new FluidTankInfo[] {fuelTank.getInfo()};
+        return new FluidTankInfo[] { fuelTank.getInfo() };
     }
 
     public int getFluidStored(ForgeDirection from) {
@@ -302,7 +303,7 @@ public class TileZombieGenerator extends AbstractGeneratorEntity
     @Override
     public FluidTank[] getOutputTanks() {
         return new FluidTank[] {
-            /* fuelTank */
+                /* fuelTank */
         };
     }
 

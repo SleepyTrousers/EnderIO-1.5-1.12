@@ -1,31 +1,9 @@
 package crazypants.enderio.teleport.telepad;
 
-import cofh.api.energy.EnergyStorage;
-import com.enderio.core.api.common.util.IProgressTile;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.Util;
-import com.google.common.base.Throwables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Queues;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.api.teleport.ITelePad;
-import crazypants.enderio.api.teleport.TravelSource;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.MachineSound;
-import crazypants.enderio.machine.PacketPowerStorage;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.IInternalPowerReceiver;
-import crazypants.enderio.rail.TeleporterEIO;
-import crazypants.enderio.teleport.TravelController;
-import crazypants.enderio.teleport.anchor.TileTravelAnchor;
-import crazypants.enderio.teleport.packet.PacketTravelEvent;
-import crazypants.enderio.teleport.telepad.PacketTeleport.Type;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Queue;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,13 +23,41 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cofh.api.energy.EnergyStorage;
+
+import com.enderio.core.api.common.util.IProgressTile;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.Util;
+import com.google.common.base.Throwables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Queues;
+
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.api.teleport.ITelePad;
+import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.MachineSound;
+import crazypants.enderio.machine.PacketPowerStorage;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.power.IInternalPowerReceiver;
+import crazypants.enderio.rail.TeleporterEIO;
+import crazypants.enderio.teleport.TravelController;
+import crazypants.enderio.teleport.anchor.TileTravelAnchor;
+import crazypants.enderio.teleport.packet.PacketTravelEvent;
+import crazypants.enderio.teleport.telepad.PacketTeleport.Type;
+
 public class TileTelePad extends TileTravelAnchor implements IInternalPowerReceiver, ITelePad, IProgressTile {
 
     private boolean inNetwork;
     private boolean isMaster;
 
-    private EnergyStorage energy =
-            new EnergyStorage(Config.telepadPowerStorageRF, Config.telepadPowerPerTickRF, Config.telepadPowerPerTickRF);
+    private EnergyStorage energy = new EnergyStorage(
+            Config.telepadPowerStorageRF,
+            Config.telepadPowerPerTickRF,
+            Config.telepadPowerPerTickRF);
 
     private TileTelePad master = null;
 
@@ -140,7 +146,11 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
                 coordsChanged = false;
                 PacketHandler.sendToAllAround(
                         new PacketUpdateCoords(
-                                master, master.getX(), master.getY(), master.getZ(), master.getTargetDim()),
+                                master,
+                                master.getX(),
+                                master.getY(),
+                                master.getZ(),
+                                master.getTargetDim()),
                         master);
             }
         }
@@ -314,14 +324,14 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
     @Override
     public Packet getDescriptionPacket() {
         S35PacketUpdateTileEntity pkt = (S35PacketUpdateTileEntity) super.getDescriptionPacket();
-        //    pkt.func_148857_g().setBoolean("inNetwork", inNetwork);
+        // pkt.func_148857_g().setBoolean("inNetwork", inNetwork);
         return pkt;
     }
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
-        //    this.inNetwork = pkt.func_148857_g().getBoolean("inNetwork");
+        // this.inNetwork = pkt.func_148857_g().getBoolean("inNetwork");
     }
 
     @Override
@@ -742,11 +752,8 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
 
     @Override
     public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-        return inNetwork() && master != null
-                ? master == this
-                        ? energy.receiveEnergy(maxReceive, simulate)
-                        : master.receiveEnergy(from, maxReceive, simulate)
-                : 0;
+        return inNetwork() && master != null ? master == this ? energy.receiveEnergy(maxReceive, simulate)
+                : master.receiveEnergy(from, maxReceive, simulate) : 0;
     }
 
     @Override

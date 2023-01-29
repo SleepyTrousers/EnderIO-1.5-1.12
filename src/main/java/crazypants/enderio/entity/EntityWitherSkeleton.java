@@ -1,8 +1,7 @@
 package crazypants.enderio.entity;
 
-import com.enderio.core.common.util.EntityUtil;
-import cpw.mods.fml.common.registry.GameRegistry;
 import java.util.Calendar;
+
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
@@ -17,7 +16,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
+import com.enderio.core.common.util.EntityUtil;
+import cpw.mods.fml.common.registry.GameRegistry;
+
 public class EntityWitherSkeleton extends EntitySkeleton {
+
     public EntityWitherSkeleton(World world) {
         super(world);
     }
@@ -49,7 +52,8 @@ public class EntityWitherSkeleton extends EntitySkeleton {
 
             if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31 && this.rand.nextFloat() < 0.25F) {
                 this.setCurrentItemOrArmor(
-                        4, new ItemStack(this.rand.nextFloat() < 0.1F ? Blocks.lit_pumpkin : Blocks.pumpkin));
+                        4,
+                        new ItemStack(this.rand.nextFloat() < 0.1F ? Blocks.lit_pumpkin : Blocks.pumpkin));
                 this.equipmentDropChances[4] = 0.0F;
             }
         }
@@ -70,14 +74,17 @@ public class EntityWitherSkeleton extends EntitySkeleton {
             ItemStack stack = player.getCurrentEquippedItem();
             if (stack != null && stack.hasTagCompound()) {
                 Item cleaver = GameRegistry.findItem("TConstruct", "cleaver");
-                int beheading =
-                        stack.getTagCompound().getCompoundTag("InfiTool").getInteger("Beheading");
+                int beheading = stack.getTagCompound().getCompoundTag("InfiTool").getInteger("Beheading");
                 if (stack.getItem() == cleaver) {
                     beheading += 2;
                 }
                 if (beheading > 0 && worldObj.rand.nextInt(100) < beheading * 10) {
                     EntityUtil.spawnItemInWorldWithRandomMotion(
-                            worldObj, new ItemStack(Items.skull, 1, 1), posX, posY, posZ);
+                            worldObj,
+                            new ItemStack(Items.skull, 1, 1),
+                            posX,
+                            posY,
+                            posZ);
                 }
             }
         }
@@ -87,7 +94,11 @@ public class EntityWitherSkeleton extends EntitySkeleton {
                 Item necroticBone = GameRegistry.findItem("TConstruct", "materials");
                 if (necroticBone != null) {
                     EntityUtil.spawnItemInWorldWithRandomMotion(
-                            worldObj, new ItemStack(necroticBone, 1, 8), posX, posY, posZ);
+                            worldObj,
+                            new ItemStack(necroticBone, 1, 8),
+                            posX,
+                            posY,
+                            posZ);
                 }
             }
         }

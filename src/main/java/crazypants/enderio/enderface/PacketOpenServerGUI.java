@@ -1,13 +1,14 @@
 package crazypants.enderio.enderface;
 
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
+import net.minecraft.util.Vec3;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.network.PacketHandler;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.Container;
-import net.minecraft.util.Vec3;
 
 public class PacketOpenServerGUI implements IMessage, IMessageHandler<PacketOpenServerGUI, IMessage> {
 

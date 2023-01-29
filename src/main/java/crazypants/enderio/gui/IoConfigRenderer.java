@@ -1,31 +1,12 @@
 package crazypants.enderio.gui;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.ColorUtil;
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.IBlockAccessWrapper;
-import com.enderio.core.common.vecmath.Camera;
-import com.enderio.core.common.vecmath.Matrix4d;
-import com.enderio.core.common.vecmath.VecmathUtil;
-import com.enderio.core.common.vecmath.Vector3d;
-import com.enderio.core.common.vecmath.Vector4f;
-import com.enderio.core.common.vecmath.Vertex;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.IIoConfigurable;
-import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.PacketIoMode;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.teleport.TravelController;
-import crazypants.util.RenderPassHelper;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -40,11 +21,34 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.IBlockAccessWrapper;
+import com.enderio.core.common.vecmath.Camera;
+import com.enderio.core.common.vecmath.Matrix4d;
+import com.enderio.core.common.vecmath.VecmathUtil;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector4f;
+import com.enderio.core.common.vecmath.Vertex;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.IIoConfigurable;
+import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.PacketIoMode;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.teleport.TravelController;
+import crazypants.util.RenderPassHelper;
 
 public class IoConfigRenderer {
 
@@ -252,7 +256,11 @@ public class IoConfigRenderer {
 
         IIcon icon = EnderIO.blockAlloySmelter.selectedFaceIcon;
         List<Vertex> corners = bb.getCornersWithUvForFace(
-                selection.face, icon.getMinU(), icon.getMaxU(), icon.getMinV(), icon.getMaxV());
+                selection.face,
+                icon.getMinU(),
+                icon.getMaxU(),
+                icon.getMinV(),
+                icon.getMaxV());
 
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDisable(GL11.GL_LIGHTING);
@@ -300,7 +308,12 @@ public class IoConfigRenderer {
 
         if (mx >= x && mx <= x + IconEIO.IO_WHATSIT.width && my >= y && my <= y + IconEIO.IO_WHATSIT.height) {
             RenderUtil.renderQuad2D(
-                    x, y, 0, IconEIO.IO_WHATSIT.width, IconEIO.IO_WHATSIT.height, new Vector4f(0.4f, 0.4f, 0.4f, 0.6f));
+                    x,
+                    y,
+                    0,
+                    IconEIO.IO_WHATSIT.width,
+                    IconEIO.IO_WHATSIT.height,
+                    new Vector4f(0.4f, 0.4f, 0.4f, 0.6f));
             inNeigButBounds = true;
         } else {
             inNeigButBounds = false;
@@ -311,7 +324,7 @@ public class IoConfigRenderer {
 
         if (selection != null) {
             IconEIO ioIcon = null;
-            //    INPUT
+            // INPUT
             IoMode mode = selection.config.getIoMode(selection.face);
             if (mode == IoMode.PULL) {
                 ioIcon = IconEIO.INPUT;

@@ -1,19 +1,21 @@
 package crazypants.enderio.machine.power;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.vecmath.Vector2f;
 import com.enderio.core.common.vecmath.Vector4d;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 
 class GaugeBounds {
 
     private static final BlockCoord DEFAULT_BC = new BlockCoord(0, 0, 0);
-    private static final BlockCoord[] DEFAULT_MB = new BlockCoord[] {DEFAULT_BC};
+    private static final BlockCoord[] DEFAULT_MB = new BlockCoord[] { DEFAULT_BC };
 
     static List<GaugeBounds> calculateGaugeBounds(BlockCoord me, BlockCoord[] mbIn) {
 
@@ -127,6 +129,7 @@ class GaugeBounds {
     }
 
     enum VPos {
+
         SINGLE_BLOCK(0, 10, 3),
         BOTTOM(0.5f, 13, 3),
         MIDDLE(0.75f, 16, 0),
@@ -144,6 +147,7 @@ class GaugeBounds {
     }
 
     static class VInfo {
+
         VPos pos;
         int verticalHeight;
         int index;

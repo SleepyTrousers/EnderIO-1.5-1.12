@@ -1,19 +1,10 @@
 package crazypants.enderio.machine;
 
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.InventoryWrapper;
-import com.enderio.core.common.util.ItemUtil;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.api.redstone.IRedstoneConnectable;
-import crazypants.enderio.config.Config;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -25,6 +16,18 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.InventoryWrapper;
+import com.enderio.core.common.util.ItemUtil;
+
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import crazypants.enderio.config.Config;
 
 public abstract class AbstractMachineEntity extends TileEntityEio
         implements ISidedInventory, IMachine, IRedstoneModeControlable, IRedstoneConnectable, IIoConfigurable {
@@ -164,8 +167,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
     @Override
     public final boolean isItemValidForSlot(int i, ItemStack itemstack) {
         if (slotDefinition.isUpgradeSlot(i)) {
-            return itemstack != null
-                    && itemstack.getItem() == EnderIO.itemBasicCapacitor
+            return itemstack != null && itemstack.getItem() == EnderIO.itemBasicCapacitor
                     && itemstack.getItemDamage() > 0;
         }
         return isMachineItemValidForSlot(i, itemstack);
@@ -225,7 +227,12 @@ public abstract class AbstractMachineEntity extends TileEntityEio
             if (shouldPlaySound()) {
                 if (sound == null) {
                     sound = new MachineSound(
-                            soundRes, xCoord + 0.5f, yCoord + 0.5f, zCoord + 0.5f, getVolume(), getPitch());
+                            soundRes,
+                            xCoord + 0.5f,
+                            yCoord + 0.5f,
+                            zCoord + 0.5f,
+                            getVolume(),
+                            getPitch());
                     FMLClientHandler.instance().getClient().getSoundHandler().playSound(sound);
                 }
             } else if (sound != null) {
@@ -366,8 +373,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
 
         boolean hasSpace = false;
         for (int slot = slotDefinition.minInputSlot; slot <= slotDefinition.maxInputSlot && !hasSpace; slot++) {
-            hasSpace = inventory[slot] == null
-                    ? true
+            hasSpace = inventory[slot] == null ? true
                     : inventory[slot].stackSize
                             < Math.min(inventory[slot].getMaxStackSize(), getInventoryStackLimit(slot));
         }
@@ -407,8 +413,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
         for (int i = 0; i < targetSlots.length; i++) {
             int tSlot = targetSlots[i];
             ItemStack targetStack = target.getStackInSlot(tSlot);
-            if (targetStack != null
-                    && target.canExtractItem(i, targetStack, side.getOpposite().ordinal())) {
+            if (targetStack != null && target.canExtractItem(i, targetStack, side.getOpposite().ordinal())) {
                 int res = ItemUtil.doInsertItem(this, targetStack, side);
                 if (res > 0) {
                     targetStack = targetStack.copy();
@@ -525,8 +530,7 @@ public abstract class AbstractMachineEntity extends TileEntityEio
         if (faceModes != null) {
             nbtRoot.setByte("hasFaces", (byte) 1);
             for (Entry<ForgeDirection, IoMode> e : faceModes.entrySet()) {
-                nbtRoot.setShort(
-                        "face" + e.getKey().ordinal(), (short) e.getValue().ordinal());
+                nbtRoot.setShort("face" + e.getKey().ordinal(), (short) e.getValue().ordinal());
             }
         }
     }

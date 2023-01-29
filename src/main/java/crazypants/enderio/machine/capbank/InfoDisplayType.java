@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.capbank;
 
 public enum InfoDisplayType {
+
     NONE,
     LEVEL_BAR,
     IO;

@@ -1,7 +1,26 @@
 package crazypants.enderio;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.MinecraftForge;
+
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.client.render.IconUtil;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -132,22 +151,6 @@ import crazypants.enderio.teleport.telepad.TelePadRenderer;
 import crazypants.enderio.teleport.telepad.TelePadSpecialRenderer;
 import crazypants.enderio.teleport.telepad.TeleportEntityRenderHandler;
 import crazypants.enderio.teleport.telepad.TileTelePad;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.common.MinecraftForge;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -280,7 +283,8 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(defaultObeliskRenderer);
 
         ObeliskSpecialRenderer<TileAttractor> attRen = new ObeliskSpecialRenderer<TileAttractor>(
-                new ItemStack(EnderIO.itemMaterial, 1, Material.ATTRACTOR_CRYSTAL.ordinal()), defaultObeliskRenderer);
+                new ItemStack(EnderIO.itemMaterial, 1, Material.ATTRACTOR_CRYSTAL.ordinal()),
+                defaultObeliskRenderer);
         ClientRegistry.bindTileEntitySpecialRenderer(TileAttractor.class, attRen);
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockAttractor), attRen);
 
@@ -289,18 +293,21 @@ public class ClientProxy extends CommonProxy {
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockSpawnGuard), sgr);
 
         ObeliskSpecialRenderer<TileExperienceObelisk> eor = new ObeliskSpecialRenderer<TileExperienceObelisk>(
-                new ItemStack(EnderIO.itemXpTransfer), defaultObeliskRenderer);
+                new ItemStack(EnderIO.itemXpTransfer),
+                defaultObeliskRenderer);
         ClientRegistry.bindTileEntitySpecialRenderer(TileExperienceObelisk.class, eor);
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockExperianceOblisk), eor);
 
-        ObeliskSpecialRenderer<TileWeatherObelisk> twr =
-                new WeatherObeliskSpecialRenderer(new ItemStack(Items.fireworks), defaultObeliskRenderer);
+        ObeliskSpecialRenderer<TileWeatherObelisk> twr = new WeatherObeliskSpecialRenderer(
+                new ItemStack(Items.fireworks),
+                defaultObeliskRenderer);
         ClientRegistry.bindTileEntitySpecialRenderer(TileWeatherObelisk.class, twr);
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockWeatherObelisk), twr);
 
         BlockCombustionGenerator.renderId = RenderingRegistry.getNextAvailableRenderId();
         TechneMachineRenderer<TileCombustionGenerator> cr = new TechneMachineRenderer<TileCombustionGenerator>(
-                EnderIO.blockCombustionGenerator, "models/combustionGen");
+                EnderIO.blockCombustionGenerator,
+                "models/combustionGen");
         RenderingRegistry.registerBlockHandler(cr);
 
         ZombieGeneratorRenderer zgr = new ZombieGeneratorRenderer();
@@ -369,8 +376,8 @@ public class ClientProxy extends CommonProxy {
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockTravelPlatform), pir);
 
         BlockPaintedGlowstone.renderId = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(
-                new PaintedBlockRenderer(BlockPaintedGlowstone.renderId, Blocks.glowstone));
+        RenderingRegistry
+                .registerBlockHandler(new PaintedBlockRenderer(BlockPaintedGlowstone.renderId, Blocks.glowstone));
 
         BlockTravelAnchor.renderId = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(
@@ -414,8 +421,8 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEnderIO.class, eior);
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockEnderIo), eior);
 
-        ClientRegistry.bindTileEntitySpecialRenderer(
-                TileReservoir.class, new ReservoirRenderer(EnderIO.blockReservoir));
+        ClientRegistry
+                .bindTileEntitySpecialRenderer(TileReservoir.class, new ReservoirRenderer(EnderIO.blockReservoir));
         ClientRegistry.bindTileEntitySpecialRenderer(TileTank.class, new TankFluidRenderer());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(EnderIO.blockTank), new TankItemRenderer());
 

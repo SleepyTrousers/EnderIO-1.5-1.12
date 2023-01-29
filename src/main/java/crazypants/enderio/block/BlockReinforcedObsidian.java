@@ -1,11 +1,7 @@
 package crazypants.enderio.block;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.waila.IWailaInfoProvider;
 import java.util.List;
+
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -14,6 +10,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.waila.IWailaInfoProvider;
 
 public class BlockReinforcedObsidian extends BlockEio implements IResourceTooltipProvider, IWailaInfoProvider {
 

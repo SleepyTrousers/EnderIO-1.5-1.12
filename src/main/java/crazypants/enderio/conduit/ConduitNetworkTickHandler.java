@@ -1,17 +1,19 @@
 package crazypants.enderio.conduit;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 
 public class ConduitNetworkTickHandler {
 
     public static final ConduitNetworkTickHandler instance = new ConduitNetworkTickHandler();
 
     public static interface TickListener {
+
         public void tickStart(TickEvent.ServerTickEvent evt);
 
         public void tickEnd(TickEvent.ServerTickEvent evt);
@@ -19,8 +21,7 @@ public class ConduitNetworkTickHandler {
 
     private final List<TickListener> listeners = new ArrayList<TickListener>();
 
-    private final IdentityHashMap<AbstractConduitNetwork<?, ?>, Boolean> networks =
-            new IdentityHashMap<AbstractConduitNetwork<?, ?>, Boolean>();
+    private final IdentityHashMap<AbstractConduitNetwork<?, ?>, Boolean> networks = new IdentityHashMap<AbstractConduitNetwork<?, ?>, Boolean>();
 
     public void addListener(TickListener listener) {
         listeners.add(listener);

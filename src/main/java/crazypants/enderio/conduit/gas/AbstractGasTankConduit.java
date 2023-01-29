@@ -1,18 +1,22 @@
 package crazypants.enderio.conduit.gas;
 
+import java.util.List;
+
+import mekanism.api.gas.GasStack;
+import mekanism.api.gas.IGasHandler;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.common.util.BlockCoord;
+
 import cpw.mods.fml.common.Optional.Method;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.tool.ToolUtil;
-import java.util.List;
-import mekanism.api.gas.GasStack;
-import mekanism.api.gas.IGasHandler;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class AbstractGasTankConduit extends AbstractGasConduit {
 
@@ -44,7 +48,11 @@ public abstract class AbstractGasTankConduit extends AbstractGasConduit {
 
                         BlockCoord loc = getLocation().getLocation(faceHit);
                         IGasConduit n = ConduitUtil.getConduit(
-                                getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, IGasConduit.class);
+                                getBundle().getEntity().getWorldObj(),
+                                loc.x,
+                                loc.y,
+                                loc.z,
+                                IGasConduit.class);
                         if (n == null) {
                             return false;
                         }

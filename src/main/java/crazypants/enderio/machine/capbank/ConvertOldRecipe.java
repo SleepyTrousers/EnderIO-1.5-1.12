@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.capbank;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -9,6 +7,9 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.power.PowerHandlerUtil;
 
 public class ConvertOldRecipe implements IRecipe {
 

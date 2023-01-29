@@ -1,15 +1,18 @@
 package crazypants.enderio.machine.painter;
 
-import com.enderio.core.common.util.ItemUtil;
-import com.enderio.core.common.util.Util;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.recipe.RecipeInput;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.Util;
+
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.recipe.RecipeInput;
 
 public class PaintSourceValidator {
 
@@ -37,8 +40,7 @@ public class PaintSourceValidator {
             return false;
         }
 
-        return block.isOpaqueCube()
-                || (block.getMaterial().isOpaque() && block.renderAsNormalBlock())
+        return block.isOpaqueCube() || (block.getMaterial().isOpaque() && block.renderAsNormalBlock())
                 || block == Blocks.glass;
     }
 

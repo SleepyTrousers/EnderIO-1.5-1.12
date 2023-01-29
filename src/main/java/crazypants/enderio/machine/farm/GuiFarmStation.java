@@ -1,19 +1,22 @@
 package crazypants.enderio.machine.farm;
 
-import com.enderio.core.client.gui.button.IconButton;
-import com.enderio.core.client.gui.button.ToggleButton;
-import com.enderio.core.client.render.ColorUtil;
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.vecmath.Vector4f;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.gui.button.IconButton;
+import com.enderio.core.client.gui.button.ToggleButton;
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.Vector4f;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 
 public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
 
@@ -54,7 +57,12 @@ public class GuiFarmStation extends GuiPoweredMachineBase<TileFarmStation> {
                     Slot slot = inventorySlots.getSlot(i);
                     GL11.glEnable(GL11.GL_BLEND);
                     RenderUtil.renderQuad2D(
-                            slot.xDisplayPosition, slot.yDisplayPosition, 0, 16, 16, new Vector4f(0, 0, 0, 0.5));
+                            slot.xDisplayPosition,
+                            slot.yDisplayPosition,
+                            0,
+                            16,
+                            16,
+                            new Vector4f(0, 0, 0, 0.5));
                 }
             }
         }

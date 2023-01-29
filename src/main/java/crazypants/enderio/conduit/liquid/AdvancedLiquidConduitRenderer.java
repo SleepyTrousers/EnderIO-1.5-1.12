@@ -2,10 +2,19 @@ package crazypants.enderio.conduit.liquid;
 
 import static com.enderio.core.client.render.CubeRenderer.addVecWithUV;
 
+import java.util.List;
+
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vertex;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
@@ -15,12 +24,6 @@ import crazypants.enderio.conduit.geom.ConnectionModeGeometry;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
-import java.util.List;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
 
@@ -30,16 +33,8 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
     }
 
     @Override
-    public void renderEntity(
-            ConduitBundleRenderer conduitBundleRenderer,
-            IConduitBundle te,
-            IConduit conduit,
-            double x,
-            double y,
-            double z,
-            float partialTick,
-            float worldLight,
-            RenderBlocks rb) {
+    public void renderEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x,
+            double y, double z, float partialTick, float worldLight, RenderBlocks rb) {
         super.renderEntity(conduitBundleRenderer, te, conduit, x, y, z, partialTick, worldLight, rb);
 
         if (!conduit.hasConnectionMode(ConnectionMode.INPUT) && !conduit.hasConnectionMode(ConnectionMode.OUTPUT)) {
@@ -96,8 +91,8 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
                         vDir = RenderUtil.getUDirForFace(d);
                     } else if ((component.dir == ForgeDirection.NORTH || component.dir == ForgeDirection.SOUTH)
                             && d.offsetY != 0) {
-                        vDir = RenderUtil.getUDirForFace(d);
-                    }
+                                vDir = RenderUtil.getUDirForFace(d);
+                            }
 
                     float minU = texture.getMinU();
                     float maxU = texture.getMaxU();
@@ -127,7 +122,11 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
             if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
                 tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
                 List<Vertex> corners = component.bound.getCornersWithUvForFace(
-                        component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
+                        component.dir,
+                        tex.getMinU(),
+                        tex.getMaxU(),
+                        tex.getMinV(),
+                        tex.getMaxV());
                 Tessellator tessellator = Tessellator.instance;
                 for (Vertex c : corners) {
                     addVecWithUV(c.xyz, c.uv.x, c.uv.y);
@@ -157,7 +156,7 @@ public class AdvancedLiquidConduitRenderer extends DefaultConduitRenderer {
     }
 
     private int[] getClosest(ForgeDirection edge, List<Vertex> vertices) {
-        int[] res = new int[] {-1, -1};
+        int[] res = new int[] { -1, -1 };
         boolean highest = edge.offsetX > 0 || edge.offsetY > 0 || edge.offsetZ > 0;
         double minMax = highest ? -Double.MAX_VALUE : Double.MAX_VALUE;
         int index = 0;

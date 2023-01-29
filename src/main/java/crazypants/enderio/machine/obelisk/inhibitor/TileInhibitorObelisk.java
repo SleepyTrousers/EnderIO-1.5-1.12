@@ -1,11 +1,12 @@
 package crazypants.enderio.machine.obelisk.inhibitor;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.ranged.IRanged;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 public class TileInhibitorObelisk extends AbstractPowerConsumerEntity implements IRanged {
 

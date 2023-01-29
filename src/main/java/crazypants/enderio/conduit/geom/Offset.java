@@ -8,6 +8,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * @author brad
  */
 public enum Offset {
+
     NONE(0, 0, 0),
     UP(ForgeDirection.UP),
     DOWN(ForgeDirection.DOWN),

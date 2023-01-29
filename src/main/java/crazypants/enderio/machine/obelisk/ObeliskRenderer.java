@@ -1,5 +1,14 @@
 package crazypants.enderio.machine.obelisk;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.CubeRenderer;
@@ -9,13 +18,6 @@ import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector3f;
 import com.enderio.core.common.vecmath.Vertex;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.opengl.GL11;
 
 public class ObeliskRenderer implements ISimpleBlockRenderingHandler {
 
@@ -26,10 +28,10 @@ public class ObeliskRenderer implements ISimpleBlockRenderingHandler {
     private static final float WIDTH = 18f / 32f * WIDE_PINCH;
     private static final float HEIGHT = 0.475f;
 
-    private static final BoundingBox bb1 =
-            BoundingBox.UNIT_CUBE.scale(WIDTH, HEIGHT, 1).translate(0, -0.5f + HEIGHT / 2, 0);
-    private static final BoundingBox bb2 =
-            BoundingBox.UNIT_CUBE.scale(1, HEIGHT, WIDTH).translate(0, -0.5f + HEIGHT / 2, 0);
+    private static final BoundingBox bb1 = BoundingBox.UNIT_CUBE.scale(WIDTH, HEIGHT, 1)
+            .translate(0, -0.5f + HEIGHT / 2, 0);
+    private static final BoundingBox bb2 = BoundingBox.UNIT_CUBE.scale(1, HEIGHT, WIDTH)
+            .translate(0, -0.5f + HEIGHT / 2, 0);
 
     private static final int BOTTOM = ForgeDirection.DOWN.ordinal();
     private static final int TOP = ForgeDirection.UP.ordinal();
@@ -46,8 +48,8 @@ public class ObeliskRenderer implements ISimpleBlockRenderingHandler {
     }
 
     @Override
-    public boolean renderWorldBlock(
-            IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+            RenderBlocks renderer) {
 
         IIcon[] icons;
         if (world != null) { // block

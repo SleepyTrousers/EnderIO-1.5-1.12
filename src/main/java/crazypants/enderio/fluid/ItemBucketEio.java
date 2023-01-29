@@ -1,7 +1,5 @@
 package crazypants.enderio.fluid;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.EnderIOTab;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -9,7 +7,11 @@ import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+
 import org.apache.commons.lang3.StringUtils;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.EnderIOTab;
 
 public class ItemBucketEio extends ItemBucket {
 

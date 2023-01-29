@@ -1,9 +1,27 @@
 package crazypants.enderio.machine.capbank.render;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.render.ConnectedTextureRenderer;
 import com.enderio.core.client.render.CubeRenderer;
 import com.enderio.core.client.render.CustomCubeRenderer;
 import com.enderio.core.client.render.RenderUtil;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -16,20 +34,6 @@ import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import crazypants.enderio.machine.capbank.render.FillGauge.GaugeInfo;
 import crazypants.enderio.machine.capbank.render.FillGauge.GaugeKey;
 import crazypants.enderio.power.PowerHandlerUtil;
-import java.util.HashMap;
-import java.util.Map;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class CapBankRenderer extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler, IItemRenderer {
@@ -54,8 +58,8 @@ public class CapBankRenderer extends TileEntitySpecialRenderer implements ISimpl
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {}
 
     @Override
-    public boolean renderWorldBlock(
-            IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+            RenderBlocks renderer) {
 
         int meta = world.getBlockMetadata(x, y, z);
         meta = MathHelper.clamp_int(meta, 0, CapBankType.types().size() - 1);
@@ -125,8 +129,8 @@ public class CapBankRenderer extends TileEntitySpecialRenderer implements ISimpl
         GaugeInfo gi = new GaugeInfo(1, 0);
         GaugeKey key = new GaugeKey(ForgeDirection.SOUTH, FillGauge.Type.SINGLE);
         fillGaugeRenderer.doRender(nw, RenderUtil.BRIGHTNESS_MAX, gi, key);
-        //    key = new GaugeKey(ForgeDirection.EAST, FillGauge.Type.SINGLE);
-        //    fillGaugeRenderer.doRender(nw, RenderUtil.BRIGHTNESS_MAX, gi, key);
+        // key = new GaugeKey(ForgeDirection.EAST, FillGauge.Type.SINGLE);
+        // fillGaugeRenderer.doRender(nw, RenderUtil.BRIGHTNESS_MAX, gi, key);
         tes.addTranslation(0, 0.1f, 0);
     }
 
@@ -134,7 +138,16 @@ public class CapBankRenderer extends TileEntitySpecialRenderer implements ISimpl
         IIcon texture = EnderIO.blockCapBank.getBorderIcon(0, meta);
         for (ForgeDirection face : ForgeDirection.VALID_DIRECTIONS) {
             RenderUtil.renderConnectedTextureFace(
-                    blockAccess, EnderIO.blockCapBank, x, y, z, face, texture, blockAccess == null, false, false);
+                    blockAccess,
+                    EnderIO.blockCapBank,
+                    x,
+                    y,
+                    z,
+                    face,
+                    texture,
+                    blockAccess == null,
+                    false,
+                    false);
         }
     }
 

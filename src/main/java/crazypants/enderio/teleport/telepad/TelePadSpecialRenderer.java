@@ -1,22 +1,26 @@
 package crazypants.enderio.teleport.telepad;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.CubeRenderer;
-import com.enderio.core.client.render.IconUtil;
-import com.enderio.core.client.render.TechneUtil;
-import com.google.common.collect.Lists;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.teleport.TravelController;
-import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.obj.GroupObject;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.client.render.TechneUtil;
+import com.google.common.collect.Lists;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.teleport.TravelController;
+import crazypants.enderio.teleport.anchor.TravelEntitySpecialRenderer;
 
 public class TelePadSpecialRenderer extends TravelEntitySpecialRenderer {
 
@@ -58,7 +62,10 @@ public class TelePadSpecialRenderer extends TravelEntitySpecialRenderer {
                 for (int i = 0; i < 3; i++) {
                     GL11.glPushMatrix();
                     GL11.glRotatef(
-                            tp.bladeRots[i] + rand.nextInt(360) + (tp.spinSpeed * p_147500_8_ * (i + 20)), 0, 1, 0);
+                            tp.bladeRots[i] + rand.nextInt(360) + (tp.spinSpeed * p_147500_8_ * (i + 20)),
+                            0,
+                            1,
+                            0);
                     render(blades.get(i), te, tes);
                     GL11.glPopMatrix();
                 }

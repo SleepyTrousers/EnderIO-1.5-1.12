@@ -1,6 +1,16 @@
 package crazypants.enderio.item;
 
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.common.util.ChatUtil;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -19,13 +29,6 @@ import crazypants.enderio.power.EnergyHandlerPI;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.IInternalPoweredTile;
 import io.netty.buffer.ByteBuf;
-import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class PacketConduitProbe implements IMessage, IMessageHandler<PacketConduitProbe, IMessage> {
 
@@ -43,10 +46,8 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
     private static final String ITEM_NO_CONNECTIONS = EnderIO.lang.localize("gui.mjReader.itemNoConnections");
 
     private static final String ENERGY_CONDUIT = EnderIO.lang.localize("itemPowerConduit");
-    private static final String REQUEST_RANGE = " " + EnderIO.lang.localize("gui.mjReader.requestRange") + ": ";
-    ;
-    private static final String CUR_REQUEST = " " + EnderIO.lang.localize("gui.mjReader.currentRequest") + ": ";
-    ;
+    private static final String REQUEST_RANGE = " " + EnderIO.lang.localize("gui.mjReader.requestRange") + ": ";;
+    private static final String CUR_REQUEST = " " + EnderIO.lang.localize("gui.mjReader.currentRequest") + ": ";;
 
     public static boolean canCreatePacket(World world, int x, int y, int z) {
         Block block = world.getBlock(x, y, z);
@@ -186,8 +187,8 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
                         sb.append(input.getDisplayName());
                     }
                     sb.append(" ");
-                    List<String> targets =
-                            icn.getTargetsForExtraction(conduit.getLocation().getLocation(dir), conduit, input);
+                    List<String> targets = icn
+                            .getTargetsForExtraction(conduit.getLocation().getLocation(dir), conduit, input);
                     if (targets.isEmpty()) {
                         sb.append(" ");
                         sb.append(EnderIO.lang.localize("gui.mjReader.noOutputs"));
@@ -307,8 +308,8 @@ public class PacketConduitProbe implements IMessage, IMessageHandler<PacketCondu
         ChatUtil.sendNoSpam(player, lines);
     }
 
-    private void sendPowerReciptorInfo(
-            EntityPlayer player, Block block, int stored, int maxStored, int minRec, int maxRec, int request) {
+    private void sendPowerReciptorInfo(EntityPlayer player, Block block, int stored, int maxStored, int minRec,
+            int maxRec, int request) {
         String color = "\u00A7a ";
         StringBuilder sb = new StringBuilder();
         sb.append(color);

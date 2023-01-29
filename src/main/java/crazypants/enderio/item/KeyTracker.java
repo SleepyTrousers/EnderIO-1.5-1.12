@@ -2,7 +2,17 @@ package crazypants.enderio.item;
 
 import static crazypants.enderio.item.darksteel.DarkSteelItems.itemMagnet;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+
+import org.lwjgl.input.Keyboard;
+
 import com.enderio.core.common.util.ChatUtil;
+
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
@@ -22,13 +32,6 @@ import crazypants.enderio.item.darksteel.upgrade.SpeedUpgrade;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.thaumcraft.GogglesOfRevealingUpgrade;
 import crazypants.util.BaublesUtil;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import org.lwjgl.input.Keyboard;
 
 public class KeyTracker {
 
@@ -99,7 +102,9 @@ public class KeyTracker {
         ClientRegistry.registerKeyBinding(yetaWrenchMode);
 
         magnetKey = new KeyBinding(
-                EnderIO.lang.localize("keybind.magnet"), Keyboard.KEY_NONE, EnderIO.lang.localize("category.tools"));
+                EnderIO.lang.localize("keybind.magnet"),
+                Keyboard.KEY_NONE,
+                EnderIO.lang.localize("category.tools"));
         ClientRegistry.registerKeyBinding(magnetKey);
     }
 

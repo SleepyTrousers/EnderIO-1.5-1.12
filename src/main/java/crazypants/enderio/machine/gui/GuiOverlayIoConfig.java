@@ -1,22 +1,25 @@
 package crazypants.enderio.machine.gui;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
+
 import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.gui.IoConfigRenderer;
 import crazypants.enderio.gui.IoConfigRenderer.SelectedFace;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.IoMode;
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
 
 public class GuiOverlayIoConfig implements IGuiOverlay {
 
@@ -56,7 +59,10 @@ public class GuiOverlayIoConfig implements IGuiOverlay {
         };
         renderer.init();
         bounds = new Rectangle(
-                screen.getOverlayOffsetX() + 5, screen.getYSize() - height - 5, screen.getXSize() - 10, height);
+                screen.getOverlayOffsetX() + 5,
+                screen.getYSize() - height - 5,
+                screen.getXSize() - 10,
+                height);
     }
 
     protected String getLabelForMode(IoMode mode) {

@@ -3,26 +3,30 @@ package crazypants.enderio.machine.monitor;
 import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPower;
 import static crazypants.enderio.machine.power.PowerDisplayUtil.formatPowerFloat;
 
-import com.enderio.core.client.gui.button.CheckBox;
-import com.enderio.core.client.gui.widget.GuiToolTip;
-import com.enderio.core.client.gui.widget.TextFieldEnder;
-import com.enderio.core.client.render.ColorUtil;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.GuiContainerBaseEIO;
-import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.ContainerNoInv;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.network.PacketHandler;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.text.NumberFormat;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.gui.button.CheckBox;
+import com.enderio.core.client.gui.widget.GuiToolTip;
+import com.enderio.core.client.gui.widget.TextFieldEnder;
+import com.enderio.core.client.render.ColorUtil;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
+import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.machine.ContainerNoInv;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.network.PacketHandler;
 
 public class GuiPowerMonitor extends GuiContainerBaseEIO {
 
@@ -96,8 +100,11 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
             @Override
             protected void updateText() {
                 text.clear();
-                text.add(formatPower(te.getEnergyStored()) + "/" + formatPower(te.getMaxEnergyStored()) + " "
-                        + PowerDisplayUtil.abrevation());
+                text.add(
+                        formatPower(te.getEnergyStored()) + "/"
+                                + formatPower(te.getMaxEnergyStored())
+                                + " "
+                                + PowerDisplayUtil.abrevation());
             }
         });
 
@@ -190,8 +197,7 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
     }
 
     private void checkForModifications() {
-        if (enabledB.isSelected() != te.engineControlEnabled
-                || getInt(startTF) != te.asPercentInt(te.startLevel)
+        if (enabledB.isSelected() != te.engineControlEnabled || getInt(startTF) != te.asPercentInt(te.startLevel)
                 || getInt(endTF) != te.asPercentInt(te.stopLevel)) {
 
             te.engineControlEnabled = enabledB.isSelected();
@@ -227,7 +233,11 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
         if (isRedstoneMode) {
             IconEIO.map.render(IconEIO.ACTIVE_TAB, sx + 200, sy + 30 + SPACING, true);
             itemRender.renderItemIntoGUI(
-                    fontRendererObj, mc.renderEngine, new ItemStack(Items.redstone), sx + 201, sy + 30 + SPACING + 3);
+                    fontRendererObj,
+                    mc.renderEngine,
+                    new ItemStack(Items.redstone),
+                    sx + 201,
+                    sy + 30 + SPACING + 3);
 
             GL11.glDisable(GL11.GL_LIGHTING);
 
@@ -249,8 +259,8 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
                 rgb = ColorUtil.getRGB(Color.darkGray);
                 enabledB.drawButton(mc, guiLeft, guiTop);
             } else {
-                //      rgb = ColorUtil.getRGB(Color.blue);
-                //      rgb = ColorUtil.getRGB(0, 18, 127);
+                // rgb = ColorUtil.getRGB(Color.blue);
+                // rgb = ColorUtil.getRGB(0, 18, 127);
                 rgb = ColorUtil.getRGB(Color.black);
             }
 
@@ -289,7 +299,11 @@ public class GuiPowerMonitor extends GuiContainerBaseEIO {
         } else {
             IconEIO.map.render(IconEIO.INACTIVE_TAB, sx + 200, sy + 30 + SPACING, true);
             itemRender.renderItemIntoGUI(
-                    fontRendererObj, mc.renderEngine, new ItemStack(Items.redstone), sx + 201, sy + 30 + SPACING + 3);
+                    fontRendererObj,
+                    mc.renderEngine,
+                    new ItemStack(Items.redstone),
+                    sx + 201,
+                    sy + 30 + SPACING + 3);
         }
     }
 

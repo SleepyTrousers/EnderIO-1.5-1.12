@@ -1,15 +1,18 @@
 package crazypants.enderio.item.darksteel.upgrade;
 
-import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.enderio.core.common.util.ItemUtil;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.util.ItemUtil;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 
 public abstract class AbstractUpgrade implements IDarkSteelUpgrade {
 

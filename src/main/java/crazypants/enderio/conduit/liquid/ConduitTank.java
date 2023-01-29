@@ -1,11 +1,12 @@
 package crazypants.enderio.conduit.liquid;
 
-import crazypants.enderio.conduit.ConduitUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
+
+import crazypants.enderio.conduit.ConduitUtil;
 
 public class ConduitTank implements IFluidTank {
 

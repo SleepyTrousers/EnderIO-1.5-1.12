@@ -1,9 +1,7 @@
 package crazypants.enderio.machine.farm;
 
-import com.enderio.core.common.util.BlockCoord;
-import com.google.common.collect.Lists;
-import cpw.mods.fml.common.registry.GameRegistry;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -14,11 +12,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.enderio.core.common.util.BlockCoord;
+import com.google.common.collect.Lists;
+import cpw.mods.fml.common.registry.GameRegistry;
+
 public enum Fertilizer {
 
     /**
-     * Not a fertilizer. Using this handler class any item can be "used" as a
-     * fertilizer. Meaning, fertilizing will always fail.
+     * Not a fertilizer. Using this handler class any item can be "used" as a fertilizer. Meaning, fertilizing will
+     * always fail.
      */
     NONE((ItemStack) null) {
 
@@ -115,9 +117,8 @@ public enum Fertilizer {
     }
 
     /**
-     * Returns the singleton instance for the fertilizer that was given as
-     * parameter. If the given item is no fertilizer, it will return an instance
-     * of Fertilizer.None.
+     * Returns the singleton instance for the fertilizer that was given as parameter. If the given item is no
+     * fertilizer, it will return an instance of Fertilizer.None.
      *
      */
     public static Fertilizer getInstance(ItemStack stack) {
@@ -141,12 +142,10 @@ public enum Fertilizer {
     }
 
     /**
-     * Tries to apply the given item on the given block using the type-specific
-     * method. SFX is played on success.
+     * Tries to apply the given item on the given block using the type-specific method. SFX is played on success.
      *
-     * If the item was successfully applied, the stacksize will be decreased if
-     * appropriate. The caller will need to check for stacksize 0 and null the
-     * inventory slot if needed.
+     * If the item was successfully applied, the stacksize will be decreased if appropriate. The caller will need to
+     * check for stacksize 0 and null the inventory slot if needed.
      *
      * @param stack
      * @param player

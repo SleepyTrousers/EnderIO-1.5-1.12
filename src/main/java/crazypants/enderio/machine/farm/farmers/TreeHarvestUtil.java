@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.machine.farm.TileFarmStation;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockNewLeaf;
@@ -9,11 +7,13 @@ import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.common.util.BlockCoord;
+import crazypants.enderio.machine.farm.TileFarmStation;
+
 public class TreeHarvestUtil {
 
     public static boolean canDropApples(Block block, int meta) {
-        return (block instanceof BlockOldLeaf && (meta == 0 || meta == 8))
-                || // oak
+        return (block instanceof BlockOldLeaf && (meta == 0 || meta == 8)) || // oak
                 (block instanceof BlockNewLeaf && (meta == 1 || meta == 9)); // giant oak
     }
 
@@ -110,6 +110,7 @@ public class TreeHarvestUtil {
     }
 
     private static final class HarvestTarget extends BaseHarvestTarget {
+
         private final int woodMeta;
 
         HarvestTarget(Block wood, int woodMeta) {
@@ -123,6 +124,7 @@ public class TreeHarvestUtil {
     }
 
     private static class BaseHarvestTarget {
+
         private final Block wood;
 
         BaseHarvestTarget(Block wood) {

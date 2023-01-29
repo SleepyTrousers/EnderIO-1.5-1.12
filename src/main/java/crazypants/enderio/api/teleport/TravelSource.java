@@ -1,21 +1,25 @@
 package crazypants.enderio.api.teleport;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.teleport.TravelController;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
 
 public enum TravelSource {
+
     BLOCK() {
+
         @Override
         public int getMaxDistanceTravelled() {
             return Config.travelAnchorMaxDistance;
         }
     },
     STAFF() {
+
         @Override
         public int getMaxDistanceTravelled() {
             return Config.travelStaffMaxDistance;
@@ -27,6 +31,7 @@ public enum TravelSource {
         }
     },
     STAFF_BLINK() {
+
         @Override
         public int getMaxDistanceTravelled() {
             return Config.travelStaffMaxBlinkDistance;
@@ -39,6 +44,7 @@ public enum TravelSource {
     },
 
     TELEPORT_STAFF() {
+
         @Override
         public int getMaxDistanceTravelled() {
             return Config.teleportStaffMaxDistance;
@@ -50,6 +56,7 @@ public enum TravelSource {
         }
     },
     TELEPORT_STAFF_BLINK() {
+
         @Override
         public int getMaxDistanceTravelled() {
             return Config.teleportStaffMaxBlinkDistance;

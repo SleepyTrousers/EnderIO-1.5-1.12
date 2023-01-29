@@ -1,21 +1,10 @@
 package crazypants.enderio.machine.capbank.render;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.ForgeDirectionOffsets;
-import com.enderio.core.common.vecmath.Vector3d;
-import com.enderio.core.common.vecmath.Vector4f;
-import com.enderio.core.common.vecmath.Vertex;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.capbank.CapBankType;
-import crazypants.enderio.machine.capbank.InfoDisplayType;
-import crazypants.enderio.machine.capbank.TileCapBank;
-import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
@@ -23,6 +12,20 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.ForgeDirectionOffsets;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector4f;
+import com.enderio.core.common.vecmath.Vertex;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.capbank.CapBankType;
+import crazypants.enderio.machine.capbank.InfoDisplayType;
+import crazypants.enderio.machine.capbank.TileCapBank;
+import crazypants.enderio.machine.capbank.network.CapBankClientNetwork;
 
 public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener {
 
@@ -59,9 +62,11 @@ public class FillGauge implements IInfoRenderer, IResourceManagerReloadListener 
             nw.requestPowerUpdate(cb, 20);
         }
 
-        int brightness = cb.getWorldObj()
-                .getLightBrightnessForSkyBlocks(
-                        cb.xCoord + dir.offsetX, cb.yCoord + dir.offsetY, cb.zCoord + dir.offsetZ, 0);
+        int brightness = cb.getWorldObj().getLightBrightnessForSkyBlocks(
+                cb.xCoord + dir.offsetX,
+                cb.yCoord + dir.offsetY,
+                cb.zCoord + dir.offsetZ,
+                0);
         GaugeInfo info = getGaugeInfo(cb, dir);
         GaugeKey key = new GaugeKey(dir, info.type);
         doRender(nw, brightness, info, key);

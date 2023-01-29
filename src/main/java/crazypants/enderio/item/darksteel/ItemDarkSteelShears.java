@@ -1,22 +1,10 @@
 package crazypants.enderio.item.darksteel;
 
-import cofh.api.energy.IEnergyContainerItem;
-import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.ItemUtil;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
-import crazypants.enderio.machine.farm.farmers.HarvestResult;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.creativetab.CreativeTabs;
@@ -31,6 +19,22 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+
+import cofh.api.energy.IEnergyContainerItem;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.ItemUtil;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.machine.farm.farmers.HarvestResult;
 
 public class ItemDarkSteelShears extends ItemShears
         implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem {
@@ -120,19 +124,15 @@ public class ItemDarkSteelShears extends ItemShears
             BlockCoord bc = new BlockCoord(x, y, z);
             HarvestResult res = new HarvestResult(null, bc);
 
-            for (int dx = -Config.darkSteelShearsBlockAreaBoostWhenPowered;
-                    dx <= Config.darkSteelShearsBlockAreaBoostWhenPowered;
-                    dx++) {
-                for (int dy = -Config.darkSteelShearsBlockAreaBoostWhenPowered;
-                        dy <= Config.darkSteelShearsBlockAreaBoostWhenPowered;
-                        dy++) {
-                    for (int dz = -Config.darkSteelShearsBlockAreaBoostWhenPowered;
-                            dz <= Config.darkSteelShearsBlockAreaBoostWhenPowered;
-                            dz++) {
+            for (int dx = -Config.darkSteelShearsBlockAreaBoostWhenPowered; dx
+                    <= Config.darkSteelShearsBlockAreaBoostWhenPowered; dx++) {
+                for (int dy = -Config.darkSteelShearsBlockAreaBoostWhenPowered; dy
+                        <= Config.darkSteelShearsBlockAreaBoostWhenPowered; dy++) {
+                    for (int dz = -Config.darkSteelShearsBlockAreaBoostWhenPowered; dz
+                            <= Config.darkSteelShearsBlockAreaBoostWhenPowered; dz++) {
                         Block block2 = player.worldObj.getBlock(x + dx, y + dy, z + dz);
-                        if (block2 instanceof IShearable
-                                && ((IShearable) block2)
-                                        .isShearable(itemstack, player.worldObj, x + dx, y + dy, z + dz)) {
+                        if (block2 instanceof IShearable && ((IShearable) block2)
+                                .isShearable(itemstack, player.worldObj, x + dx, y + dy, z + dz)) {
                             res.getHarvestedBlocks().add(new BlockCoord(x + dx, y + dy, z + dz));
                         }
                     }
@@ -156,12 +156,11 @@ public class ItemDarkSteelShears extends ItemShears
     }
 
     IEntitySelector selectShearable = new IEntitySelector() {
+
         @Override
         public boolean isEntityApplicable(Entity entity) {
-            return entity instanceof IShearable
-                    && ((IShearable) entity)
-                            .isShearable(
-                                    null, entity.worldObj, (int) entity.posX, (int) entity.posY, (int) entity.posZ);
+            return entity instanceof IShearable && ((IShearable) entity)
+                    .isShearable(null, entity.worldObj, (int) entity.posX, (int) entity.posY, (int) entity.posZ);
         }
     };
 
@@ -286,8 +285,11 @@ public class ItemDarkSteelShears extends ItemShears
         }
         if (EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
             list.add(EnderIO.lang.localize("item." + name + "_shears.tooltip.multiHarvest"));
-            list.add(EnumChatFormatting.WHITE + "+" + Config.darkSteelShearsEffeciencyBoostWhenPowered + " "
-                    + EnderIO.lang.localize("item." + name + "_pickaxe.tooltip.effPowered"));
+            list.add(
+                    EnumChatFormatting.WHITE + "+"
+                            + Config.darkSteelShearsEffeciencyBoostWhenPowered
+                            + " "
+                            + EnderIO.lang.localize("item." + name + "_pickaxe.tooltip.effPowered"));
         }
         DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
     }

@@ -36,7 +36,12 @@ public class RedstoneSwitchBounds {
         float distance = Math.max(0.25f, conduitScale * 0.3f);
 
         BoundingBox bb = new BoundingBox(
-                0.5 - halfWidth, 0.5 - halfHeight, 0.5 - halfDepth, 0.5 + halfWidth, 0.5 + halfHeight, 0.5 + halfDepth);
+                0.5 - halfWidth,
+                0.5 - halfHeight,
+                0.5 - halfDepth,
+                0.5 + halfWidth,
+                0.5 + halfHeight,
+                0.5 + halfDepth);
         switchBounds = bb.translate(0, 0, distance);
 
         float connectorHalfWidth = (float) Math.max(0.015, conduitScale * 0.05);

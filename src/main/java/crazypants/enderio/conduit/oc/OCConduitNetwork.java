@@ -1,15 +1,18 @@
 package crazypants.enderio.conduit.oc;
 
-import com.enderio.core.common.util.DyeColor;
-import cpw.mods.fml.common.Optional.Interface;
-import cpw.mods.fml.common.Optional.Method;
-import crazypants.enderio.conduit.AbstractConduitNetwork;
 import li.cil.oc.api.Network;
 import li.cil.oc.api.network.ManagedEnvironment;
 import li.cil.oc.api.network.Message;
 import li.cil.oc.api.network.Node;
 import li.cil.oc.api.network.Visibility;
+
 import net.minecraft.nbt.NBTTagCompound;
+
+import com.enderio.core.common.util.DyeColor;
+
+import cpw.mods.fml.common.Optional.Interface;
+import cpw.mods.fml.common.Optional.Method;
+import crazypants.enderio.conduit.AbstractConduitNetwork;
 
 @Interface(iface = "li.cil.oc.api.network.ManagedEnvironment", modid = "OpenComputersAPI|Network")
 public class OCConduitNetwork extends AbstractConduitNetwork<IOCConduit, IOCConduit> implements ManagedEnvironment {

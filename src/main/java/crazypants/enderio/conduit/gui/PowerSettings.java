@@ -1,7 +1,10 @@
 package crazypants.enderio.conduit.gui;
 
+import net.minecraft.client.gui.GuiButton;
+
 import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.common.util.DyeColor;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.packet.PacketExtractMode;
@@ -11,7 +14,6 @@ import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.client.gui.GuiButton;
 
 public class PowerSettings extends BaseSettingsPanel {
 

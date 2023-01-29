@@ -1,8 +1,5 @@
 package crazypants.enderio.conduit.item.filter;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.item.FilterRegister;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -12,11 +9,18 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.item.FilterRegister;
+
 public class ClearFilterRecipe implements IRecipe {
 
     static {
         RecipeSorter.register(
-                "EnderIO:clearFilter", ClearFilterRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
+                "EnderIO:clearFilter",
+                ClearFilterRecipe.class,
+                Category.SHAPELESS,
+                "after:minecraft:shapeless");
     }
 
     private ItemStack output;
@@ -64,9 +68,9 @@ public class ClearFilterRecipe implements IRecipe {
     @SubscribeEvent
     public void onTooltip(ItemTooltipEvent event) {
         if (this.output != null && ItemStack.areItemStacksEqual(output, event.itemStack)) {
-            event.toolTip.add(EnumChatFormatting.RED.toString()
-                    + EnumChatFormatting.ITALIC
-                    + EnderIO.lang.localize("itemConduitFilterUpgrade.clearConfigWarning"));
+            event.toolTip.add(
+                    EnumChatFormatting.RED.toString() + EnumChatFormatting.ITALIC
+                            + EnderIO.lang.localize("itemConduitFilterUpgrade.clearConfigWarning"));
         }
     }
 }

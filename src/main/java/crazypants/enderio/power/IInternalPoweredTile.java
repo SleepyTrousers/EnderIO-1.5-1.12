@@ -1,7 +1,8 @@
 package crazypants.enderio.power;
 
-import cofh.api.energy.IEnergyConnection;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import cofh.api.energy.IEnergyConnection;
 
 // IEnergyHandler,
 public interface IInternalPoweredTile extends IPowerContainer, IEnergyConnection {

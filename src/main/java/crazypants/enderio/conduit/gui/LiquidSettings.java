@@ -1,5 +1,19 @@
 package crazypants.enderio.conduit.gui;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.util.Collections;
+import java.util.List;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
@@ -7,6 +21,7 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.DyeColor;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
@@ -20,17 +35,6 @@ import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.util.Collections;
-import java.util.List;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.opengl.GL11;
 
 public class LiquidSettings extends BaseSettingsPanel {
 
@@ -135,8 +139,13 @@ public class LiquidSettings extends BaseSettingsPanel {
 
         if (isEnder) {
             x += rsB.getWidth();
-            roundRobinB =
-                    new ToggleButton(gui, ID_ROUND_ROBIN_BUTTON, x, y, IconEIO.ROUND_ROBIN_OFF, IconEIO.ROUND_ROBIN);
+            roundRobinB = new ToggleButton(
+                    gui,
+                    ID_ROUND_ROBIN_BUTTON,
+                    x,
+                    y,
+                    IconEIO.ROUND_ROBIN_OFF,
+                    IconEIO.ROUND_ROBIN);
             roundRobinB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.roundRobinEnabled"));
             roundRobinB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.roundRobinDisabled"));
             roundRobinB.setPaintSelectedBorder(false);

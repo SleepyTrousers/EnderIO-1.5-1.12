@@ -1,10 +1,24 @@
 package crazypants.enderio.item;
 
+import java.util.List;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import cofh.api.energy.ItemEnergyContainer;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
 import com.enderio.core.common.util.ItemUtil;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.Optional.Method;
@@ -17,16 +31,6 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.util.BaublesUtil;
-import java.util.List;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles|API")
 public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipProvider, IBauble {
@@ -108,7 +112,9 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
     public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
         super.addInformation(itemStack, par2EntityPlayer, list, par4);
         String str = PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/"
-                + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack)) + " " + PowerDisplayUtil.abrevation();
+                + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack))
+                + " "
+                + PowerDisplayUtil.abrevation();
         list.add(str);
     }
 
@@ -194,8 +200,7 @@ public class ItemMagnet extends ItemEnergyContainer implements IResourceTooltipP
 
     @Override
     public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
-        if (player instanceof EntityPlayer
-                && isActive(itemstack)
+        if (player instanceof EntityPlayer && isActive(itemstack)
                 && hasPower(itemstack)
                 && ((EntityPlayer) player).getHealth() > 0f) {
             controller.doHoover((EntityPlayer) player);

@@ -1,18 +1,22 @@
 package crazypants.enderio.machine.invpanel.client;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+
 import com.enderio.core.common.util.ItemUtil;
+
 import crazypants.enderio.machine.invpanel.GuiInventoryPanel;
 import crazypants.enderio.machine.invpanel.InventoryPanelContainer;
 import crazypants.enderio.machine.invpanel.PacketFetchItem;
 import crazypants.enderio.machine.invpanel.StoredCraftingRecipe;
 import crazypants.enderio.network.PacketHandler;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 
 public class CraftingHelper {
+
     final ItemStack[][] ingredients;
 
     protected CraftingHelper(ItemStack[][] ingredients) {
@@ -24,7 +28,7 @@ public class CraftingHelper {
         for (int idx = 0; idx < 9; idx++) {
             ItemStack stack = recipe.get(idx);
             if (stack != null) {
-                ingredients[idx] = new ItemStack[] {stack};
+                ingredients[idx] = new ItemStack[] { stack };
             }
         }
         return new CraftingHelperNEI(ingredients);
@@ -42,7 +46,7 @@ public class CraftingHelper {
             if (stack != null) {
                 stack = stack.copy();
                 stack.stackSize = 1;
-                ingredients[idx] = new ItemStack[] {stack};
+                ingredients[idx] = new ItemStack[] { stack };
                 count++;
             }
         }
@@ -102,8 +106,8 @@ public class CraftingHelper {
                     int maxStackSize = candidate.stack.getMaxStackSize();
                     currentAmount = Math.max(currentAmount, current);
                     if (candidate.stack.isStackable() && maxStackSize > 1) {
-                        targetAmount =
-                                Math.min(targetAmount, current + Math.min(maxStackSize, candidate.getAvailable()));
+                        targetAmount = Math
+                                .min(targetAmount, current + Math.min(maxStackSize, candidate.getAvailable()));
                     }
                 }
             }
@@ -120,7 +124,10 @@ public class CraftingHelper {
                             break;
                         }
                         if (container.moveItems(
-                                srcSlot.slotNumber, slot.slotNumber, slot.slotNumber + 1, targetAmount - current)) {
+                                srcSlot.slotNumber,
+                                slot.slotNumber,
+                                slot.slotNumber + 1,
+                                targetAmount - current)) {
                             slotsToProcess &= ~mask;
                             madeProgress = true;
                         }
@@ -157,8 +164,8 @@ public class CraftingHelper {
         return false;
     }
 
-    private Candidate findAllCandidates(
-            ItemStack[] pstack, GuiInventoryPanel gui, InventoryDatabaseClient db, Candidate[] candidates) {
+    private Candidate findAllCandidates(ItemStack[] pstack, GuiInventoryPanel gui, InventoryDatabaseClient db,
+            Candidate[] candidates) {
         Candidate bestInventory = null;
         Candidate bestNetwork = null;
         for (ItemStack istack : pstack) {
@@ -181,8 +188,8 @@ public class CraftingHelper {
         }
     }
 
-    private Candidate findCandidates(
-            ItemStack stack, GuiInventoryPanel gui, InventoryDatabaseClient db, Candidate[] candidates) {
+    private Candidate findCandidates(ItemStack stack, GuiInventoryPanel gui, InventoryDatabaseClient db,
+            Candidate[] candidates) {
         for (Candidate candidate : candidates) {
             if (candidate != null && ItemUtil.areStackMergable(candidate.stack, stack)) {
                 return candidate;
@@ -215,6 +222,7 @@ public class CraftingHelper {
     }
 
     static class Candidate {
+
         final ItemStack stack;
         final ArrayList<Slot> sourceSlots = new ArrayList<Slot>();
         ItemEntry entry;

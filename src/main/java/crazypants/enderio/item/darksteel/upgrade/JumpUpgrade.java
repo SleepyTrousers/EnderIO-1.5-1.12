@@ -1,11 +1,12 @@
 package crazypants.enderio.item.darksteel.upgrade;
 
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
 
 public class JumpUpgrade extends AbstractUpgrade {
 
@@ -13,12 +14,18 @@ public class JumpUpgrade extends AbstractUpgrade {
 
     private static String UPGRADE_NAME = "jumpBoost";
 
-    public static JumpUpgrade JUMP_ONE =
-            new JumpUpgrade("enderio.darksteel.upgrade.jump_one", 1, Config.darkSteelJumpOneCost);
-    public static JumpUpgrade JUMP_TWO =
-            new JumpUpgrade("enderio.darksteel.upgrade.jump_two", 2, Config.darkSteelJumpTwoCost);
-    public static JumpUpgrade JUMP_THREE =
-            new JumpUpgrade("enderio.darksteel.upgrade.jump_three", 3, Config.darkSteelJumpThreeCost);
+    public static JumpUpgrade JUMP_ONE = new JumpUpgrade(
+            "enderio.darksteel.upgrade.jump_one",
+            1,
+            Config.darkSteelJumpOneCost);
+    public static JumpUpgrade JUMP_TWO = new JumpUpgrade(
+            "enderio.darksteel.upgrade.jump_two",
+            2,
+            Config.darkSteelJumpTwoCost);
+    public static JumpUpgrade JUMP_THREE = new JumpUpgrade(
+            "enderio.darksteel.upgrade.jump_three",
+            3,
+            Config.darkSteelJumpThreeCost);
 
     private short level;
 
@@ -52,8 +59,7 @@ public class JumpUpgrade extends AbstractUpgrade {
 
     @Override
     public boolean canAddToItem(ItemStack stack) {
-        if (stack == null
-                || !DarkSteelItems.isArmorPart(stack.getItem(), 3)
+        if (stack == null || !DarkSteelItems.isArmorPart(stack.getItem(), 3)
                 || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
             return false;
         }

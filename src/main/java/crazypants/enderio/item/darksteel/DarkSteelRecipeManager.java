@@ -1,7 +1,21 @@
 package crazypants.enderio.item.darksteel;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.event.AnvilUpdateEvent;
+
 import com.enderio.core.common.util.OreDictionaryHelper;
 import com.google.common.collect.ImmutableList;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.EnderIO;
@@ -23,17 +37,6 @@ import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
 import crazypants.enderio.material.Alloy;
 import crazypants.enderio.material.endergy.AlloyEndergy;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.event.AnvilUpdateEvent;
 
 public class DarkSteelRecipeManager {
 
@@ -85,13 +88,14 @@ public class DarkSteelRecipeManager {
             handleRepair(evt);
         } else if (evt.left.getItem() instanceof IEndSteelItem
                 && OreDictionaryHelper.hasName(evt.right, Alloy.END_STEEL.getOreIngot())) {
-            handleRepair(evt);
-        } else if (evt.left.getItem() instanceof IDarkSteelItem
-                && OreDictionaryHelper.hasName(evt.right, Alloy.DARK_STEEL.getOreIngot())) {
-            handleRepair(evt);
-        } else {
-            handleUpgrade(evt);
-        }
+                    handleRepair(evt);
+                } else
+            if (evt.left.getItem() instanceof IDarkSteelItem
+                    && OreDictionaryHelper.hasName(evt.right, Alloy.DARK_STEEL.getOreIngot())) {
+                        handleRepair(evt);
+                    } else {
+                        handleUpgrade(evt);
+                    }
     }
 
     private void handleRepair(AnvilUpdateEvent evt) {
@@ -207,10 +211,20 @@ public class DarkSteelRecipeManager {
         if (!applyableUpgrades.isEmpty()) {
             list.add(EnumChatFormatting.YELLOW + EnderIO.lang.localize("tooltip.anvilupgrades") + " ");
             for (IDarkSteelUpgrade up : applyableUpgrades) {
-                list.add(EnumChatFormatting.DARK_AQUA + "" + ""
-                        + EnderIO.lang.localizeExact(up.getUnlocalizedName() + ".name") + ": ");
-                list.add(EnumChatFormatting.DARK_AQUA + "" + EnumChatFormatting.ITALIC + "  " + up.getUpgradeItemName()
-                        + " + " + up.getLevelCost() + " " + EnderIO.lang.localize("item.darkSteel.tooltip.lvs"));
+                list.add(
+                        EnumChatFormatting.DARK_AQUA + ""
+                                + ""
+                                + EnderIO.lang.localizeExact(up.getUnlocalizedName() + ".name")
+                                + ": ");
+                list.add(
+                        EnumChatFormatting.DARK_AQUA + ""
+                                + EnumChatFormatting.ITALIC
+                                + "  "
+                                + up.getUpgradeItemName()
+                                + " + "
+                                + up.getLevelCost()
+                                + " "
+                                + EnderIO.lang.localize("item.darkSteel.tooltip.lvs"));
             }
         }
     }

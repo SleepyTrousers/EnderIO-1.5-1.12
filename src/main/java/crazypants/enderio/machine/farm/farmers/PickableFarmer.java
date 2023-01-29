@@ -1,14 +1,16 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.machine.farm.TileFarmStation;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import com.enderio.core.common.util.BlockCoord;
+import crazypants.enderio.machine.farm.TileFarmStation;
 
 public class PickableFarmer extends CustomSeedFarmer {
 
@@ -36,8 +38,8 @@ public class PickableFarmer extends CustomSeedFarmer {
         }
         EntityPlayerMP player = farm.getFakePlayer();
         World world = farm.getWorldObj();
-        player.theItemInWorldManager.activateBlockOrUseItem(
-                player, player.worldObj, null, bc.x, bc.y, bc.z, 0, 0, 0, 0);
+        player.theItemInWorldManager
+                .activateBlockOrUseItem(player, player.worldObj, null, bc.x, bc.y, bc.z, 0, 0, 0, 0);
 
         List<EntityItem> drops = new ArrayList<EntityItem>();
 

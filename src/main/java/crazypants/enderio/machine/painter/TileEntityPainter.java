@@ -1,19 +1,21 @@
 package crazypants.enderio.machine.painter;
 
+import java.util.List;
+import java.util.Map;
+
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.SlotDefinition;
-import java.util.List;
-import java.util.Map;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
 
 public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISidedInventory {
 
-    //  private static final short MAX_POWER_USE_PER_TICK = 6;
+    // private static final short MAX_POWER_USE_PER_TICK = 6;
 
     public TileEntityPainter() {
         // 0 = input slot, 1 = paint source, 2 = output slot
@@ -41,8 +43,8 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISid
             return false;
         }
         if (i == 0) {
-            List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(
-                    getMachineName(), MachineRecipeInput.create(i, itemStack));
+            List<IMachineRecipe> recipes = MachineRecipeRegistry.instance
+                    .getRecipesForInput(getMachineName(), MachineRecipeInput.create(i, itemStack));
             if (inventory[1] == null) {
                 return !recipes.isEmpty();
             } else {
@@ -70,10 +72,9 @@ public class TileEntityPainter extends AbstractPoweredTaskEntity implements ISid
             return PaintSourceValidator.instance.isValidSourceDefault(itemStack);
         }
         return MachineRecipeRegistry.instance.getRecipeForInputs(
-                        getMachineName(),
-                        i == 0 ? MachineRecipeInput.create(0, itemStack) : targetInput(),
-                        i == 1 ? MachineRecipeInput.create(1, itemStack) : paintSource())
-                != null;
+                getMachineName(),
+                i == 0 ? MachineRecipeInput.create(0, itemStack) : targetInput(),
+                i == 1 ? MachineRecipeInput.create(1, itemStack) : paintSource()) != null;
     }
 
     @Override

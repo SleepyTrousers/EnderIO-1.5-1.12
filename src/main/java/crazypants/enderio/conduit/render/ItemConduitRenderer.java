@@ -1,12 +1,14 @@
 package crazypants.enderio.conduit.render;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.CubeRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
 
 public class ItemConduitRenderer implements IItemRenderer {
 
@@ -19,8 +21,7 @@ public class ItemConduitRenderer implements IItemRenderer {
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return type == ItemRenderType.ENTITY
-                || type == ItemRenderType.EQUIPPED
+        return type == ItemRenderType.ENTITY || type == ItemRenderType.EQUIPPED
                 || type == ItemRenderType.INVENTORY
                 || type == ItemRenderType.EQUIPPED_FIRST_PERSON;
     }

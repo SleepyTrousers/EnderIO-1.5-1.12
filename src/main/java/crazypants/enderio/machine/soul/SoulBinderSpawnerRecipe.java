@@ -1,6 +1,12 @@
 package crazypants.enderio.machine.soul;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+
 import com.enderio.core.common.util.EntityUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -9,9 +15,6 @@ import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.machine.spawner.PoweredSpawnerConfig;
 import crazypants.enderio.xp.XpUtil;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.item.ItemStack;
 
 public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecipe {
 
@@ -79,7 +82,7 @@ public class SoulBinderSpawnerRecipe implements IMachineRecipe, ISoulBinderRecip
             return new ResultStack[0];
         }
         ItemStack soulVessel = new ItemStack(EnderIO.itemSoulVessel);
-        return new ResultStack[] {new ResultStack(soulVessel), new ResultStack(spawner)};
+        return new ResultStack[] { new ResultStack(soulVessel), new ResultStack(spawner) };
     }
 
     @Override

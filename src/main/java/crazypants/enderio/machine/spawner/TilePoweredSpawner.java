@@ -1,5 +1,13 @@
 package crazypants.enderio.machine.spawner;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -11,13 +19,6 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 
 public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
@@ -178,8 +179,11 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
                 break;
         }
         double multiplier = PoweredSpawnerConfig.getInstance().getCostMultiplierFor(getEntityName());
-        setCapacitor(new BasicCapacitor(
-                refCap.getTier(), (int) (refCap.getMaxEnergyExtracted() * multiplier), refCap.getMaxEnergyStored()));
+        setCapacitor(
+                new BasicCapacitor(
+                        refCap.getTier(),
+                        (int) (refCap.getMaxEnergyExtracted() * multiplier),
+                        refCap.getMaxEnergyStored()));
         powerUsePerTick = (int) Math.ceil(basePowerUse * multiplier);
         forceClientUpdate = true;
     }
@@ -284,10 +288,9 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
         int ticksDelay;
         if (isSpawnMode) {
-            ticksDelay = TilePoweredSpawner.MIN_SPAWN_DELAY_BASE
-                    + (int) Math.round(
-                            (TilePoweredSpawner.MAX_SPAWN_DELAY_BASE - TilePoweredSpawner.MIN_SPAWN_DELAY_BASE)
-                                    * Math.random());
+            ticksDelay = TilePoweredSpawner.MIN_SPAWN_DELAY_BASE + (int) Math.round(
+                    (TilePoweredSpawner.MAX_SPAWN_DELAY_BASE - TilePoweredSpawner.MIN_SPAWN_DELAY_BASE)
+                            * Math.random());
         } else {
             ticksDelay = TilePoweredSpawner.MAX_SPAWN_DELAY_BASE
                     - ((TilePoweredSpawner.MAX_SPAWN_DELAY_BASE - TilePoweredSpawner.MIN_SPAWN_DELAY_BASE) / 2);
@@ -300,8 +303,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
     protected boolean canSpawnEntity(EntityLiving entityliving) {
         boolean spaceClear = worldObj.checkNoEntityCollision(entityliving.boundingBox)
-                && worldObj.getCollidingBoundingBoxes(entityliving, entityliving.boundingBox)
-                        .isEmpty()
+                && worldObj.getCollidingBoundingBoxes(entityliving, entityliving.boundingBox).isEmpty()
                 && (!worldObj.isAnyLiquid(entityliving.boundingBox)
                         || entityliving.isCreatureType(EnumCreatureType.waterCreature, false));
         if (spaceClear && USE_VANILLA_SPAWN_CHECKS) {
@@ -313,8 +315,7 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
     Entity createEntity(boolean forceAlive) {
         Entity ent = EntityList.createEntityByName(getEntityName(), worldObj);
-        if (forceAlive
-                && MIN_PLAYER_DISTANCE <= 0
+        if (forceAlive && MIN_PLAYER_DISTANCE <= 0
                 && Config.poweredSpawnerDespawnTimeSeconds > 0
                 && ent instanceof EntityLiving) {
             ent.getEntityData()
@@ -334,14 +335,14 @@ public class TilePoweredSpawner extends AbstractPoweredTaskEntity {
 
         if (Config.poweredSpawnerMaxNearbyEntities > 0) {
             int nearbyEntities = worldObj.getEntitiesWithinAABB(
-                            entity.getClass(),
-                            AxisAlignedBB.getBoundingBox(
-                                    xCoord - spawnRange * 2,
-                                    yCoord - 4,
-                                    zCoord - spawnRange * 2,
-                                    xCoord + spawnRange * 2,
-                                    yCoord + 4,
-                                    zCoord + spawnRange * 2))
+                    entity.getClass(),
+                    AxisAlignedBB.getBoundingBox(
+                            xCoord - spawnRange * 2,
+                            yCoord - 4,
+                            zCoord - spawnRange * 2,
+                            xCoord + spawnRange * 2,
+                            yCoord + 4,
+                            zCoord + spawnRange * 2))
                     .size();
 
             if (nearbyEntities >= Config.poweredSpawnerMaxNearbyEntities) {

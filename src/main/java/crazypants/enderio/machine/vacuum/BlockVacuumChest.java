@@ -1,15 +1,5 @@
 package crazypants.enderio.machine.vacuum;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.TileEntityEnder;
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.relauncher.Side;
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.api.redstone.IRedstoneConnectable;
-import crazypants.enderio.network.PacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,11 +9,23 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.TileEntityEnder;
+
+import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.relauncher.Side;
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.api.redstone.IRedstoneConnectable;
+import crazypants.enderio.network.PacketHandler;
+
 public class BlockVacuumChest extends BlockEio implements IGuiHandler, IResourceTooltipProvider, IRedstoneConnectable {
 
     public static BlockVacuumChest create() {
-        PacketHandler.INSTANCE.registerMessage(
-                PacketVaccumChest.class, PacketVaccumChest.class, PacketHandler.nextID(), Side.SERVER);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketVaccumChest.class, PacketVaccumChest.class, PacketHandler.nextID(), Side.SERVER);
         BlockVacuumChest res = new BlockVacuumChest();
         res.init();
         return res;

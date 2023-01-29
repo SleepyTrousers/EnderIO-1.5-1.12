@@ -1,13 +1,7 @@
 package crazypants.enderio.machine.spawner;
 
-import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,10 +10,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+
 public class ItemBrokenSpawner extends Item {
 
-    private static final String[] CREATIVE_TYPES =
-            new String[] {"Skeleton", "Zombie", "Spider", "CaveSpider", "Blaze", "Enderman", "Chicken"};
+    private static final String[] CREATIVE_TYPES = new String[] { "Skeleton", "Zombie", "Spider", "CaveSpider", "Blaze",
+            "Enderman", "Chicken" };
 
     public static String getMobTypeFromStack(ItemStack stack) {
         if (stack == null || stack.stackTagCompound == null || !stack.stackTagCompound.hasKey("mobType")) {
@@ -68,7 +71,7 @@ public class ItemBrokenSpawner extends Item {
     }
 
     @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         for (String mobType : CREATIVE_TYPES) {

@@ -1,9 +1,11 @@
 package crazypants.enderio.machine.recipe;
 
-import crazypants.enderio.machine.MachineRecipeInput;
 import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+
+import crazypants.enderio.machine.MachineRecipeInput;
 
 public interface IRecipe {
 
@@ -21,9 +23,9 @@ public interface IRecipe {
 
     RecipeBonusType getBonusType();
 
-    //  boolean isInputForRecipe(List<ItemStack> test);
+    // boolean isInputForRecipe(List<ItemStack> test);
     //
-    //  boolean isInputForRecipe(List<ItemStack> test, List<FluidStack> testFluids);
+    // boolean isInputForRecipe(List<ItemStack> test, List<FluidStack> testFluids);
 
     boolean isInputForRecipe(MachineRecipeInput... inputs);
 

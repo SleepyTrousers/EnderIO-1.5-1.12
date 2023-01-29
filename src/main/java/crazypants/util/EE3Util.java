@@ -5,8 +5,20 @@ import static crazypants.enderio.material.Material.CONDUIT_BINDER;
 import static crazypants.enderio.material.Material.PHASED_IRON_NUGGET;
 import static crazypants.enderio.material.Material.SILICON;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.pahimar.ee3.api.exchange.EnergyValueRegistryProxy;
 import com.pahimar.ee3.api.exchange.RecipeRegistryProxy;
+
 import cpw.mods.fml.common.Loader;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
@@ -15,15 +27,6 @@ import crazypants.enderio.machine.recipe.Recipe;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.material.MachinePart;
 import crazypants.enderio.material.PowderIngot;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class EE3Util {
 
@@ -77,18 +80,16 @@ public class EE3Util {
     /**
      * Registers various recipes with EE3.
      * <p>
-     * Some of them are ManyToMany recipes (e.g. SAG Mill), others are vanilla
-     * crafting recipes that fail in EE3 because of too much oreDicting. Those
-     * ones could be removed after EE3 fixes that.
+     * Some of them are ManyToMany recipes (e.g. SAG Mill), others are vanilla crafting recipes that fail in EE3 because
+     * of too much oreDicting. Those ones could be removed after EE3 fixes that.
      * <p>
-     * This does not take into account changes the user may have done in the
-     * recipe xml files. Those are ManyToMany, they contain chances, and they
-     * don't usually sum up nicely (e.g. coal ore (emc 32) => 8*coal (emc 32) plus
-     * a chance of coal and coal dust). It is not unreasonable to require the user
-     * to also change emc values after changing the recipes for our core items.
+     * This does not take into account changes the user may have done in the recipe xml files. Those are ManyToMany,
+     * they contain chances, and they don't usually sum up nicely (e.g. coal ore (emc 32) => 8*coal (emc 32) plus a
+     * chance of coal and coal dust). It is not unreasonable to require the user to also change emc values after
+     * changing the recipes for our core items.
      * <p>
-     * This also ignores OreDict, as it is only about the emc values. For those,
-     * the base vanilla items are the best source.
+     * This also ignores OreDict, as it is only about the emc values. For those, the base vanilla items are the best
+     * source.
      */
     public static void registerMiscRecipes() {
         if (IS_EE3_LOADED) {

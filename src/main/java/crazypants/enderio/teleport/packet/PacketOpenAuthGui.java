@@ -35,15 +35,13 @@ public class PacketOpenAuthGui implements IMessage, IMessageHandler<PacketOpenAu
     }
 
     public IMessage onMessage(PacketOpenAuthGui message, cpw.mods.fml.common.network.simpleimpl.MessageContext ctx) {
-        ctx.getServerHandler()
-                .playerEntity
-                .openGui(
-                        EnderIO.instance,
-                        GuiHandler.GUI_ID_TRAVEL_AUTH,
-                        ctx.getServerHandler().playerEntity.worldObj,
-                        message.x,
-                        message.y,
-                        message.z);
+        ctx.getServerHandler().playerEntity.openGui(
+                EnderIO.instance,
+                GuiHandler.GUI_ID_TRAVEL_AUTH,
+                ctx.getServerHandler().playerEntity.worldObj,
+                message.x,
+                message.y,
+                message.z);
         return null;
     }
 }

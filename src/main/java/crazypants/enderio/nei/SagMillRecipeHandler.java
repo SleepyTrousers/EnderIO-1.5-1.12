@@ -1,10 +1,26 @@
 package crazypants.enderio.nei;
 
+import java.awt.Rectangle;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+
+import org.lwjgl.opengl.GL11;
+
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+
 import com.enderio.core.client.render.EnderWidget;
+
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.crusher.CrusherRecipeManager;
 import crazypants.enderio.machine.crusher.GrindingBall;
@@ -13,17 +29,6 @@ import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.recipe.Recipe;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
-import java.awt.Rectangle;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import org.lwjgl.opengl.GL11;
 
 public class SagMillRecipeHandler extends TemplateRecipeHandler {
 
@@ -55,8 +60,11 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadTransferRects() {
-        transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(
-                new Rectangle(149, 32, 16, 16), "EnderIOSagMill", new Object[0]));
+        transferRects.add(
+                new TemplateRecipeHandler.RecipeTransferRect(
+                        new Rectangle(149, 32, 16, 16),
+                        "EnderIOSagMill",
+                        new Object[0]));
     }
 
     @Override
@@ -66,8 +74,11 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
         List<MillRecipe> toAdd = new ArrayList<MillRecipe>();
         for (Recipe recipe : recipes) {
             if (recipe.hasOuput(result)) {
-                MillRecipe res =
-                        new MillRecipe(result, recipe.getEnergyRequired(), recipe.getInputs()[0], recipe.getOutputs());
+                MillRecipe res = new MillRecipe(
+                        result,
+                        recipe.getEnergyRequired(),
+                        recipe.getInputs()[0],
+                        recipe.getOutputs());
                 toAdd.add(res);
             }
         }
@@ -129,9 +140,9 @@ public class SagMillRecipeHandler extends TemplateRecipeHandler {
         float chance = recipe.getChanceForOutput(stack);
         if (chance > 0 && chance < 1) {
             int chanceInt = (int) (chance * 100);
-            currenttip.add(EnumChatFormatting.GRAY
-                    + MessageFormat.format(
-                            StatCollector.translateToLocal("enderio.nei.sagmill.outputchance"), chanceInt));
+            currenttip.add(
+                    EnumChatFormatting.GRAY + MessageFormat
+                            .format(StatCollector.translateToLocal("enderio.nei.sagmill.outputchance"), chanceInt));
         }
         return currenttip;
     }

@@ -3,16 +3,9 @@ package crazypants.enderio.item;
 import static crazypants.enderio.item.darksteel.DarkSteelItems.itemMagnet;
 import static crazypants.util.BotaniaUtil.hasSolegnoliaAround;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.PacketMagnetState.SlotType;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.util.BaublesUtil;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -26,11 +19,20 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.PacketMagnetState.SlotType;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.util.BaublesUtil;
+
 public class MagnetController {
 
     public MagnetController() {
-        PacketHandler.INSTANCE.registerMessage(
-                PacketMagnetState.class, PacketMagnetState.class, PacketHandler.nextID(), Side.SERVER);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketMagnetState.class, PacketMagnetState.class, PacketHandler.nextID(), Side.SERVER);
     }
 
     @SubscribeEvent
@@ -145,9 +147,7 @@ public class MagnetController {
                             if (entity instanceof EntityItem && entity.boundingBox.intersectsWith(bb)) {
                                 gotOne = !hasSolegnoliaAround(entity);
                                 if (gotOne && !blacklist.isEmpty()) {
-                                    final Item item = ((EntityItem) entity)
-                                            .getEntityItem()
-                                            .getItem();
+                                    final Item item = ((EntityItem) entity).getEntityItem().getItem();
                                     for (Item blacklisted : blacklist) {
                                         if (blacklisted == item) {
                                             gotOne = false;
@@ -178,6 +178,7 @@ public class MagnetController {
     }
 
     private static class ActiveMagnet {
+
         ItemStack item;
         int slot;
 
@@ -204,8 +205,7 @@ public class MagnetController {
                 }
                 break;
         }
-        if (stack == null
-                || stack.getItem() == null
+        if (stack == null || stack.getItem() == null
                 || stack.getItem() != itemMagnet
                 || ItemMagnet.isActive(stack) == isActive) {
             return;

@@ -1,15 +1,17 @@
 package crazypants.enderio.item;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.IconEIO;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.common.MinecraftForge;
+
 import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.gui.IconEIO;
 
 public class ConduitProbeOverlayRenderer {
 

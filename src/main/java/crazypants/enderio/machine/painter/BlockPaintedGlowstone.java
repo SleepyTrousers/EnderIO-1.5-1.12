@@ -1,20 +1,8 @@
 package crazypants.enderio.machine.painter;
 
-import com.enderio.core.common.TileEntityEnder;
-import com.enderio.core.common.util.Util;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.item.IRotatableFacade;
-import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.util.IFacade;
 import java.util.List;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -34,6 +22,21 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+
+import com.enderio.core.common.TileEntityEnder;
+import com.enderio.core.common.util.Util;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.item.IRotatableFacade;
+import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.util.IFacade;
 
 public class BlockPaintedGlowstone extends BlockEio
         implements ITileEntityProvider, IPaintedBlock, IFacade, IRotatableFacade {
@@ -60,10 +63,11 @@ public class BlockPaintedGlowstone extends BlockEio
 
     @Override
     protected void init() {
-        GameRegistry.registerBlock(
-                this, BlockItemPaintedGlowstone.class, ModObject.blockPaintedGlowstone.unlocalisedName);
+        GameRegistry
+                .registerBlock(this, BlockItemPaintedGlowstone.class, ModObject.blockPaintedGlowstone.unlocalisedName);
         GameRegistry.registerTileEntity(
-                TileEntityPaintedBlock.class, ModObject.blockPaintedGlowstone.unlocalisedName + "TileEntity");
+                TileEntityPaintedBlock.class,
+                ModObject.blockPaintedGlowstone.unlocalisedName + "TileEntity");
         MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
     }
 
@@ -73,7 +77,7 @@ public class BlockPaintedGlowstone extends BlockEio
         return result;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, List list) {
@@ -98,8 +102,8 @@ public class BlockPaintedGlowstone extends BlockEio
     public boolean addHitEffects(World world, MovingObjectPosition target, EffectRenderer effectRenderer) {
         IIcon tex = null;
 
-        TileEntityPaintedBlock cb =
-                (TileEntityPaintedBlock) world.getTileEntity(target.blockX, target.blockY, target.blockZ);
+        TileEntityPaintedBlock cb = (TileEntityPaintedBlock) world
+                .getTileEntity(target.blockX, target.blockY, target.blockZ);
         Block b = cb.getSourceBlock();
         if (b != null) {
             tex = b.getIcon(ForgeDirection.NORTH.ordinal(), cb.getSourceBlockMetadata());
@@ -125,8 +129,16 @@ public class BlockPaintedGlowstone extends BlockEio
                     double d2 = z + (l1 + 0.5D) / b0;
                     int i2 = rand.nextInt(6);
                     EntityDiggingFX fx = new EntityDiggingFX(
-                                    world, d0, d1, d2, d0 - x - 0.5D, d1 - y - 0.5D, d2 - z - 0.5D, this, i2, 0)
-                            .applyColourMultiplier(x, y, z);
+                            world,
+                            d0,
+                            d1,
+                            d2,
+                            d0 - x - 0.5D,
+                            d1 - y - 0.5D,
+                            d2 - z - 0.5D,
+                            this,
+                            i2,
+                            0).applyColourMultiplier(x, y, z);
                     fx.setParticleIcon(tex);
                     effectRenderer.addEffect(fx);
                 }
@@ -136,19 +148,16 @@ public class BlockPaintedGlowstone extends BlockEio
     }
 
     @SideOnly(Side.CLIENT)
-    private void addBlockHitEffects(
-            World world, EffectRenderer effectRenderer, int x, int y, int z, int side, IIcon tex) {
+    private void addBlockHitEffects(World world, EffectRenderer effectRenderer, int x, int y, int z, int side,
+            IIcon tex) {
         float f = 0.1F;
-        double d0 = x
-                + rand.nextDouble() * (getBlockBoundsMaxX() - getBlockBoundsMinX() - f * 2.0F)
+        double d0 = x + rand.nextDouble() * (getBlockBoundsMaxX() - getBlockBoundsMinX() - f * 2.0F)
                 + f
                 + getBlockBoundsMinX();
-        double d1 = y
-                + rand.nextDouble() * (getBlockBoundsMaxY() - getBlockBoundsMinY() - f * 2.0F)
+        double d1 = y + rand.nextDouble() * (getBlockBoundsMaxY() - getBlockBoundsMinY() - f * 2.0F)
                 + f
                 + getBlockBoundsMinY();
-        double d2 = z
-                + rand.nextDouble() * (getBlockBoundsMaxZ() - getBlockBoundsMinZ() - f * 2.0F)
+        double d2 = z + rand.nextDouble() * (getBlockBoundsMaxZ() - getBlockBoundsMinZ() - f * 2.0F)
                 + f
                 + getBlockBoundsMinZ();
         if (side == 0) {
@@ -249,8 +258,7 @@ public class BlockPaintedGlowstone extends BlockEio
 
         @Override
         public boolean isValidPaintSource(ItemStack paintSource) {
-            return super.isValidPaintSource(paintSource)
-                    && Util.getBlockFromItemId(paintSource).isOpaqueCube();
+            return super.isValidPaintSource(paintSource) && Util.getBlockFromItemId(paintSource).isOpaqueCube();
         }
 
         @Override
@@ -265,19 +273,18 @@ public class BlockPaintedGlowstone extends BlockEio
                 stack.stackTagCompound = new NBTTagCompound();
                 String tagName = "wasPainted";
                 stack.stackTagCompound.setBoolean(tagName, true);
-                return new ResultStack[] {new ResultStack(stack)};
+                return new ResultStack[] { new ResultStack(stack) };
             }
 
-            return new ResultStack[] {
-                new ResultStack(createItemStackForSourceBlock(
-                        Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage()))
-            };
+            return new ResultStack[] { new ResultStack(
+                    createItemStackForSourceBlock(
+                            Block.getBlockFromItem(paintSource.getItem()),
+                            paintSource.getItemDamage())) };
         }
 
         @SubscribeEvent
         public void onTooltip(ItemTooltipEvent event) {
-            if (event.itemStack != null
-                    && Block.getBlockFromItem(event.itemStack.getItem()) == Blocks.glowstone
+            if (event.itemStack != null && Block.getBlockFromItem(event.itemStack.getItem()) == Blocks.glowstone
                     && event.itemStack.stackTagCompound != null) {
                 if (event.itemStack.stackTagCompound.getBoolean("wasPainted")) {
                     event.toolTip.add(EnderIO.lang.localize("painter.tooltip.wasPainted"));

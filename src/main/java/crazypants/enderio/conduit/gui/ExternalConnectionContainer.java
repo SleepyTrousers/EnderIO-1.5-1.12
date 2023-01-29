@@ -1,20 +1,10 @@
 package crazypants.enderio.conduit.gui;
 
-import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
-import com.enderio.core.client.gui.widget.GhostSlot;
-import com.enderio.core.common.ContainerEnder;
-import com.enderio.core.common.util.ItemUtil;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.conduit.gui.item.InventoryUpgrades;
-import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.SpeedUpgrade;
-import crazypants.enderio.conduit.item.filter.IItemFilter;
-import crazypants.enderio.network.PacketHandler;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -22,6 +12,19 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.common.ContainerEnder;
+import com.enderio.core.common.util.ItemUtil;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.gui.item.InventoryUpgrades;
+import crazypants.enderio.conduit.item.IItemConduit;
+import crazypants.enderio.conduit.item.SpeedUpgrade;
+import crazypants.enderio.conduit.item.filter.IItemFilter;
+import crazypants.enderio.network.PacketHandler;
 
 public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrades> {
 
@@ -70,6 +73,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
             x = 131;
             y = 71;
             slotSpeedUpgrades = addSlotToContainer(new Slot(getInv(), 0, x, y) {
+
                 @Override
                 public boolean isItemValid(ItemStack par1ItemStack) {
                     return getInv().isItemValidForSlot(0, par1ItemStack);
@@ -86,6 +90,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
             x = 149;
             y = 71;
             slotFunctionUpgrades = addSlotToContainer(new Slot(getInv(), 1, x, y) {
+
                 @Override
                 public boolean isItemValid(ItemStack par1ItemStack) {
                     return getInv().isItemValidForSlot(1, par1ItemStack);
@@ -241,9 +246,8 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
 
             boolean merged = false;
             if (slotIndex < outputFilterUpgradeSlot) {
-                for (int targetSlotIdx = outputFilterUpgradeSlot;
-                        targetSlotIdx <= functionUpgradeSlot;
-                        targetSlotIdx++) {
+                for (int targetSlotIdx = outputFilterUpgradeSlot; targetSlotIdx
+                        <= functionUpgradeSlot; targetSlotIdx++) {
                     Slot targetSlot = (Slot) inventorySlots.get(targetSlotIdx);
                     if (targetSlot.xDisplayPosition >= 0 && mergeItemStackSpecial(origStack, targetSlot)) {
                         merged = true;
@@ -277,6 +281,7 @@ public class ExternalConnectionContainer extends ContainerEnder<InventoryUpgrade
     }
 
     private class FilterSlot extends Slot {
+
         public FilterSlot(IInventory par1iInventory, int par2, int par3, int par4) {
             super(par1iInventory, par2, par3, par4);
         }

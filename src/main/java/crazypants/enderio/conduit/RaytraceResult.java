@@ -1,12 +1,14 @@
 package crazypants.enderio.conduit;
 
-import crazypants.enderio.conduit.geom.CollidableComponent;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
+
+import crazypants.enderio.conduit.geom.CollidableComponent;
 
 public class RaytraceResult {
 
@@ -32,6 +34,7 @@ public class RaytraceResult {
             return;
         }
         Collections.sort(toSort, new Comparator<RaytraceResult>() {
+
             @Override
             public int compare(RaytraceResult o1, RaytraceResult o2) {
                 return Double.compare(o1.getDistanceTo(origin), o2.getDistanceTo(origin));

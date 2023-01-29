@@ -1,13 +1,5 @@
 package crazypants.enderio.machine.generator.stirling;
 
-import com.enderio.core.api.common.util.IProgressTile;
-import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.PowerDistributor;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -16,6 +8,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.api.common.util.IProgressTile;
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.generator.AbstractGeneratorEntity;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.power.PowerDistributor;
 
 public class TileEntityStirlingGenerator extends AbstractGeneratorEntity implements ISidedInventory, IProgressTile {
 
@@ -50,7 +52,7 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
 
     @Override
     public int[] getAccessibleSlotsFromSide(int var1) {
-        return new int[] {0};
+        return new int[] { 0 };
     }
 
     @Override
@@ -188,8 +190,8 @@ public class TileEntityStirlingGenerator extends AbstractGeneratorEntity impleme
     }
 
     public float getBurnTimeMultiplier() {
-        int tier =
-                MathHelper.clamp_int(getCapacitor().getTier(), 1, Config.stirlingGeneratorBurnTimeMultipliers.length);
+        int tier = MathHelper
+                .clamp_int(getCapacitor().getTier(), 1, Config.stirlingGeneratorBurnTimeMultipliers.length);
         return (float) Config.stirlingGeneratorBurnTimeMultipliers[tier - 1];
     }
 

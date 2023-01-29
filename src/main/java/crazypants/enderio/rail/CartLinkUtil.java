@@ -1,12 +1,14 @@
 package crazypants.enderio.rail;
 
-import cpw.mods.fml.common.Loader;
 import java.util.Collections;
 import java.util.List;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import cpw.mods.fml.common.Loader;
 
 public class CartLinkUtil implements ICartLinkUtil {
 

@@ -1,12 +1,5 @@
 package crazypants.enderio.machine.reservoir;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.CubeRenderer;
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.vecmath.Vector3d;
-import com.enderio.core.common.vecmath.Vector3f;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -18,7 +11,17 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector3f;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ReservoirRenderer extends TileEntitySpecialRenderer implements IResourceManagerReloadListener {
@@ -52,7 +55,10 @@ public class ReservoirRenderer extends TileEntitySpecialRenderer implements IRes
         }
 
         float val = RenderUtil.claculateTotalBrightnessForLocation(
-                tileentity.getWorldObj(), tileentity.xCoord, tileentity.yCoord, tileentity.zCoord);
+                tileentity.getWorldObj(),
+                tileentity.xCoord,
+                tileentity.yCoord,
+                tileentity.zCoord);
         Minecraft.getMinecraft().entityRenderer.disableLightmap(0);
 
         GL11.glPushMatrix();

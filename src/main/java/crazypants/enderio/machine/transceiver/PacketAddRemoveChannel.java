@@ -1,13 +1,15 @@
 package crazypants.enderio.machine.transceiver;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.enderio.core.common.network.NetworkUtil;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.network.PacketHandler;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class PacketAddRemoveChannel implements IMessage, IMessageHandler<PacketAddRemoveChannel, IMessage> {
 
@@ -38,8 +40,8 @@ public class PacketAddRemoveChannel implements IMessage, IMessageHandler<PacketA
 
     @Override
     public IMessage onMessage(PacketAddRemoveChannel message, MessageContext ctx) {
-        ChannelRegister register =
-                ctx.side == Side.CLIENT ? ClientChannelRegister.instance : ServerChannelRegister.instance;
+        ChannelRegister register = ctx.side == Side.CLIENT ? ClientChannelRegister.instance
+                : ServerChannelRegister.instance;
         if (message.isAdd) {
             register.addChannel(message.channel);
         } else {

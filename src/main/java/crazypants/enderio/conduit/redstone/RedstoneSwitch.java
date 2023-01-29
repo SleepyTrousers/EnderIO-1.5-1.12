@@ -1,19 +1,8 @@
 package crazypants.enderio.conduit.redstone;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.IconUtil;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.DyeColor;
-import com.enderio.core.common.vecmath.Vector3d;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.RaytraceResult;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
-import crazypants.enderio.conduit.geom.Offset;
 import java.util.List;
 import java.util.Set;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,6 +10,20 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.vecmath.Vector3d;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.RaytraceResult;
+import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
+import crazypants.enderio.conduit.geom.Offset;
 
 public class RedstoneSwitch extends RedstoneConduit {
 
@@ -97,8 +100,12 @@ public class RedstoneSwitch extends RedstoneConduit {
         BoundingBox[] aabb = RedstoneSwitchBounds.getInstance().getAABB();
 
         for (BoundingBox bb : aabb) {
-            result.add(new CollidableComponent(
-                    IRedstoneConduit.class, bb.translate(trans), ForgeDirection.UNKNOWN, SWITCH_TAG));
+            result.add(
+                    new CollidableComponent(
+                            IRedstoneConduit.class,
+                            bb.translate(trans),
+                            ForgeDirection.UNKNOWN,
+                            SWITCH_TAG));
         }
 
         return result;
@@ -106,8 +113,7 @@ public class RedstoneSwitch extends RedstoneConduit {
 
     @Override
     public boolean onBlockActivated(EntityPlayer player, RaytraceResult res, List<RaytraceResult> all) {
-        if (res != null
-                && res.component != null
+        if (res != null && res.component != null
                 && res.component.data != null
                 && res.component.data.equals(SWITCH_TAG)) {
             toggleSwitch();

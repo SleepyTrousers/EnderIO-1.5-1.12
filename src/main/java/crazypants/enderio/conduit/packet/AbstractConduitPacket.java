@@ -1,11 +1,12 @@
 package crazypants.enderio.conduit.packet;
 
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
 public class AbstractConduitPacket<T extends IConduit> extends AbstractConduitBundlePacket {
 

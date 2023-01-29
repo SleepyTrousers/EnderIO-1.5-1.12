@@ -1,24 +1,8 @@
 package crazypants.enderio.item.darksteel;
 
-import cofh.api.energy.IEnergyContainerItem;
-import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.common.util.ItemUtil;
-import com.google.common.collect.Sets;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.api.teleport.IItemOfTravel;
-import crazypants.enderio.api.teleport.TravelSource;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.SpoonUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.teleport.TravelController;
 import java.util.List;
 import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -33,6 +17,26 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
+
+import cofh.api.energy.IEnergyContainerItem;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.common.util.ItemUtil;
+import com.google.common.collect.Sets;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.api.teleport.IItemOfTravel;
+import crazypants.enderio.api.teleport.TravelSource;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.SpoonUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.TravelUpgrade;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.teleport.TravelController;
 
 public class ItemDarkSteelPickaxe extends ItemPickaxe
         implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem, IItemOfTravel {
@@ -103,8 +107,8 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe
     }
 
     @Override
-    public boolean onBlockDestroyed(
-            ItemStack item, World world, Block block, int x, int y, int z, EntityLivingBase entLiving) {
+    public boolean onBlockDestroyed(ItemStack item, World world, Block block, int x, int y, int z,
+            EntityLivingBase entLiving) {
         if (block.getBlockHardness(world, x, y, z) != 0.0D) {
             if (useObsidianEffeciency(item, block)) {
                 extractEnergy(item, Config.darkSteelPickPowerUseObsidian, false);
@@ -114,17 +118,8 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe
     }
 
     @Override
-    public boolean onItemUse(
-            ItemStack item,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float par8,
-            float par9,
-            float par10) {
+    public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side,
+            float par8, float par9, float par10) {
         if (!isTravelUpgradeActive(player, item) && world.isRemote) {
             return doRightClickItemPlace(player, world, x, y, z, side, par8, par9, par10);
         }
@@ -132,18 +127,16 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe
     }
 
     @SideOnly(Side.CLIENT)
-    static boolean doRightClickItemPlace(
-            EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
+    static boolean doRightClickItemPlace(EntityPlayer player, World world, int x, int y, int z, int side, float par8,
+            float par9, float par10) {
         int current = player.inventory.currentItem;
         int slot = current == 0 && Config.slotZeroPlacesEight ? 8 : current + 1;
-        if (slot < 9
-                && player.inventory.mainInventory[slot] != null
+        if (slot < 9 && player.inventory.mainInventory[slot] != null
                 && !(player.inventory.mainInventory[slot].getItem() instanceof IDarkSteelItem)) {
             /*
-             * this will not work with buckets unless we don't switch back to
-             * the current item (the pick); there's probably some client <->
-             * server event thing going on with buckets, so our item-switch
-             * within the same tick would be a problem.
+             * this will not work with buckets unless we don't switch back to the current item (the pick); there's
+             * probably some client <-> server event thing going on with buckets, so our item-switch within the same
+             * tick would be a problem.
              */
             player.inventory.currentItem = slot;
             Minecraft mc = Minecraft.getMinecraft();
@@ -232,9 +225,8 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe
             useObsidianSpeed = block == Blocks.obsidian;
             if (!useObsidianSpeed && Config.darkSteelPickApplyObsidianEffeciencyAtHardess > 0) {
                 try {
-                    useObsidianSpeed = (block != null
-                            && block.getBlockHardness(null, -1, -1, -1)
-                                    >= Config.darkSteelPickApplyObsidianEffeciencyAtHardess);
+                    useObsidianSpeed = (block != null && block.getBlockHardness(null, -1, -1, -1)
+                            >= Config.darkSteelPickApplyObsidianEffeciencyAtHardess);
                 } catch (Exception e) {
                     // given we are passing in a null world to getBlockHardness it is possible this could cause an NPE,
                     // so just ignore it
@@ -302,14 +294,26 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe
             list.add(str);
         }
         if (EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
-            list.add(EnumChatFormatting.WHITE + "+" + Config.darkSteelPickEffeciencyBoostWhenPowered + " "
-                    + EnderIO.lang.localize("item." + name + "_pickaxe.tooltip.effPowered"));
-            list.add(EnumChatFormatting.WHITE + "+" + Config.darkSteelPickEffeciencyObsidian + " "
-                    + EnderIO.lang.localize("item." + name + "_pickaxe.tooltip.effObs") + " ");
-            list.add(EnumChatFormatting.WHITE + "     " + "("
-                    + EnderIO.lang.localize("item." + name + "_pickaxe.tooltip.cost") + " "
-                    + PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian) + " "
-                    + PowerDisplayUtil.abrevation() + ")");
+            list.add(
+                    EnumChatFormatting.WHITE + "+"
+                            + Config.darkSteelPickEffeciencyBoostWhenPowered
+                            + " "
+                            + EnderIO.lang.localize("item." + name + "_pickaxe.tooltip.effPowered"));
+            list.add(
+                    EnumChatFormatting.WHITE + "+"
+                            + Config.darkSteelPickEffeciencyObsidian
+                            + " "
+                            + EnderIO.lang.localize("item." + name + "_pickaxe.tooltip.effObs")
+                            + " ");
+            list.add(
+                    EnumChatFormatting.WHITE + "     "
+                            + "("
+                            + EnderIO.lang.localize("item." + name + "_pickaxe.tooltip.cost")
+                            + " "
+                            + PowerDisplayUtil.formatPower(Config.darkSteelPickPowerUseObsidian)
+                            + " "
+                            + PowerDisplayUtil.abrevation()
+                            + ")");
         }
         DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
     }
@@ -346,8 +350,7 @@ public class ItemDarkSteelPickaxe extends ItemPickaxe
             if (ticksSinceBlink < 0) {
                 lastBlickTick = -1;
             }
-            if (Config.travelStaffBlinkEnabled
-                    && world.isRemote
+            if (Config.travelStaffBlinkEnabled && world.isRemote
                     && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
                 if (TravelController.instance.doBlink(stack, player)) {
                     player.swingItem();

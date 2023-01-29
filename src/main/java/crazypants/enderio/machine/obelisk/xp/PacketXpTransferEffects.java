@@ -1,13 +1,14 @@
 package crazypants.enderio.machine.obelisk.xp;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
+import net.minecraft.entity.player.EntityPlayer;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.entity.player.EntityPlayer;
 
 public class PacketXpTransferEffects implements IMessage, IMessageHandler<PacketXpTransferEffects, IMessage> {
 
@@ -57,16 +58,14 @@ public class PacketXpTransferEffects implements IMessage, IMessageHandler<Packet
                 float yOffset = 0.1F - player.worldObj.rand.nextFloat() * 0.2F;
                 float zOffset = 0.1F - player.worldObj.rand.nextFloat() * 0.2F;
 
-                EntityFX fx = Minecraft.getMinecraft()
-                        .renderGlobal
-                        .doSpawnParticle(
-                                "spell",
-                                message.x + xOffset,
-                                message.y + yOffset,
-                                message.z + zOffset,
-                                0.0D,
-                                0.0D,
-                                0.0D);
+                EntityFX fx = Minecraft.getMinecraft().renderGlobal.doSpawnParticle(
+                        "spell",
+                        message.x + xOffset,
+                        message.y + yOffset,
+                        message.z + zOffset,
+                        0.0D,
+                        0.0D,
+                        0.0D);
                 if (fx != null) {
                     fx.setRBGColorF(0.2f, 0.8f, 0.2f);
                     fx.motionY *= 0.5f;

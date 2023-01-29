@@ -1,15 +1,17 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import com.enderio.core.common.util.BlockCoord;
-import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.machine.farm.FarmStationContainer;
-import crazypants.enderio.machine.farm.TileFarmStation;
-import crazypants.enderio.machine.farm.TileFarmStation.ToolType;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import com.enderio.core.common.util.BlockCoord;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.machine.farm.FarmStationContainer;
+import crazypants.enderio.machine.farm.TileFarmStation;
+import crazypants.enderio.machine.farm.TileFarmStation.ToolType;
 
 public class RubberTreeFarmerIC2 extends TreeFarmer {
 
@@ -30,8 +32,7 @@ public class RubberTreeFarmerIC2 extends TreeFarmer {
     }
 
     public boolean isValid() {
-        return woods != null
-                && woods.length > 0
+        return woods != null && woods.length > 0
                 && sapling != null
                 && saplingItem != null
                 && treeTap != null

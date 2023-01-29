@@ -1,11 +1,13 @@
 package crazypants.enderio.conduit.redstone;
 
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.IIcon;
+
 import com.enderio.core.client.render.CubeRenderer;
+
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
 
 public class InsulatedRedstoneConduitRenderer extends DefaultConduitRenderer {
 
@@ -19,9 +21,7 @@ public class InsulatedRedstoneConduitRenderer extends DefaultConduitRenderer {
         if (IInsulatedRedstoneConduit.COLOR_CONTROLLER_ID.equals(component.data)) {
             if (conduit.containsExternalConnection(component.dir)
                     && !((IInsulatedRedstoneConduit) conduit).isSpecialConnection(component.dir)) {
-                int c = ((IInsulatedRedstoneConduit) conduit)
-                        .getSignalColor(component.dir)
-                        .getColor();
+                int c = ((IInsulatedRedstoneConduit) conduit).getSignalColor(component.dir).getColor();
                 Tessellator tessellator = Tessellator.instance;
                 tessellator.setColorOpaque_I(c);
                 CubeRenderer.render(component.bound, tex);

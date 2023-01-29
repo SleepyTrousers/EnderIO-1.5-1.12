@@ -1,14 +1,16 @@
 package crazypants.enderio.teleport.packet;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 
 public class PacketVisibility implements IMessage, IMessageHandler<PacketVisibility, IMessage> {
+
     int x, y, z;
     boolean visible;
 

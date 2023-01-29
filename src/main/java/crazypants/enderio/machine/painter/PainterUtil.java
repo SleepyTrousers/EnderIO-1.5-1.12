@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.painter;
 
-import com.google.common.base.Strings;
-import crazypants.enderio.EnderIO;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.init.Blocks;
@@ -9,6 +7,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.google.common.base.Strings;
+import crazypants.enderio.EnderIO;
 
 public final class PainterUtil {
 

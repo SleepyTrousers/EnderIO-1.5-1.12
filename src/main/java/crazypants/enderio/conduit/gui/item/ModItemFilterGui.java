@@ -1,20 +1,24 @@
 package crazypants.enderio.conduit.gui.item;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.item.ItemStack;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.render.ColorUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.filter.ModItemFilter;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.network.PacketHandler;
-import java.awt.Color;
-import java.awt.Rectangle;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.item.ItemStack;
-import org.lwjgl.opengl.GL11;
 
 public class ModItemFilterGui implements IItemFilterGui {
 
@@ -57,11 +61,8 @@ public class ModItemFilterGui implements IItemFilterGui {
         tfTextureX = 120;
         tfTextureY = 214;
 
-        inputBounds = new Rectangle[] {
-            new Rectangle(inputOffsetX, y, 16, 16),
-            new Rectangle(inputOffsetX, y + 18, 16, 16),
-            new Rectangle(inputOffsetX, y + 36, 16, 16)
-        };
+        inputBounds = new Rectangle[] { new Rectangle(inputOffsetX, y, 16, 16),
+                new Rectangle(inputOffsetX, y + 18, 16, 16), new Rectangle(inputOffsetX, y + 36, 16, 16) };
 
         deleteButs = new IconButton[inputBounds.length];
         for (int i = 0; i < deleteButs.length; i++) {
@@ -121,7 +122,12 @@ public class ModItemFilterGui implements IItemFilterGui {
             gui.drawTexturedModalRect(gui.getGuiLeft() + r.x - 1, gui.getGuiTop() + r.y - 1, 24, 214, 18, 18);
             // text box
             gui.drawTexturedModalRect(
-                    gui.getGuiLeft() + r.x + 38, gui.getGuiTop() + r.y - 1, tfTextureX, tfTextureY, tfWidth, 18);
+                    gui.getGuiLeft() + r.x + 38,
+                    gui.getGuiTop() + r.y - 1,
+                    tfTextureX,
+                    tfTextureY,
+                    tfWidth,
+                    18);
         }
 
         FontRenderer fr = Minecraft.getMinecraft().fontRenderer;

@@ -1,5 +1,16 @@
 package crazypants.enderio.machine.alloy;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.tileentity.TileEntityFurnace;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.IMachineRecipe;
 import crazypants.enderio.machine.MachineRecipeInput;
@@ -9,15 +20,6 @@ import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
 import crazypants.enderio.material.OreDictionaryPreferences;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.tileentity.TileEntityFurnace;
 
 public class VanillaSmeltingRecipe implements IMachineRecipe {
 
@@ -114,7 +116,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
         ItemStack result = output.copy();
         result.stackSize = stackSize;
         result.stackSize = result.stackSize * getNumInputs(inputs);
-        return new ResultStack[] {new ResultStack(result)};
+        return new ResultStack[] { new ResultStack(result) };
     }
 
     @Override
@@ -155,8 +157,7 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
         int consumed = 0;
         List<MachineRecipeInput> result = new ArrayList<MachineRecipeInput>();
         for (MachineRecipeInput ri : inputs) {
-            if (isValidInput(new MachineRecipeInput(ri.slotNumber, ri.item))
-                    && consumed < 3
+            if (isValidInput(new MachineRecipeInput(ri.slotNumber, ri.item)) && consumed < 3
                     && ri != null
                     && ri.item != null) {
                 int available = ri.item.stackSize;
@@ -182,8 +183,12 @@ public class VanillaSmeltingRecipe implements IMachineRecipe {
         for (Entry<ItemStack, ItemStack> entry : metaList.entrySet()) {
             ItemStack output = entry.getValue();
             output = OreDictionaryPreferences.instance.getPreferred(output).copy();
-            result.add(new Recipe(
-                    new RecipeInput(entry.getKey()), RF_PER_ITEM, RecipeBonusType.NONE, new RecipeOutput(output)));
+            result.add(
+                    new Recipe(
+                            new RecipeInput(entry.getKey()),
+                            RF_PER_ITEM,
+                            RecipeBonusType.NONE,
+                            new RecipeOutput(output)));
         }
         return result;
     }

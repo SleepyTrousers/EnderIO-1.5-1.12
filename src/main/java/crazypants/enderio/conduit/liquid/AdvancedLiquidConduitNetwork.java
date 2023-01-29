@@ -1,16 +1,18 @@
 package crazypants.enderio.conduit.liquid;
 
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.FluidUtil;
-import crazypants.enderio.conduit.IConduit;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.FluidUtil;
+import crazypants.enderio.conduit.IConduit;
 
 public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<AdvancedLiquidConduit> {
 
@@ -86,11 +88,8 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
                 }
                 con.getTank().setLiquid(f);
                 BlockCoord bc = con.getLocation();
-                con.getBundle()
-                        .getEntity()
-                        .getWorldObj()
-                        .markTileEntityChunkModified(
-                                bc.x, bc.y, bc.z, con.getBundle().getEntity());
+                con.getBundle().getEntity().getWorldObj()
+                        .markTileEntityChunkModified(bc.x, bc.y, bc.z, con.getBundle().getEntity());
             }
         }
     }
@@ -172,8 +171,7 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
     }
 
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-        if (resource == null
-                || tank.isEmpty()
+        if (resource == null || tank.isEmpty()
                 || !tank.containsValidLiquid()
                 || !LiquidConduitNetwork.areFluidsCompatable(getFluidType(), resource)) {
             return null;
@@ -237,11 +235,11 @@ public class AdvancedLiquidConduitNetwork extends AbstractTankConduitNetwork<Adv
                 return false;
             }
 
-            //      FluidStack drained = extTank.drain(dir.getOpposite(), couldDrain, true);
-            //      if(drained == null || drained.amount <= 0) {
-            //        return false;
-            //      }
-            //      tank.addAmount(drained.amount);
+            // FluidStack drained = extTank.drain(dir.getOpposite(), couldDrain, true);
+            // if(drained == null || drained.amount <= 0) {
+            // return false;
+            // }
+            // tank.addAmount(drained.amount);
 
             // Have to use this 'double handle' approach to work around an issue with TiC
             FluidStack drained = extTank.drain(dir.getOpposite(), maxExtract, false);

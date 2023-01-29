@@ -1,21 +1,11 @@
 package crazypants.enderio.nei;
 
-import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.PositionedStack;
-import codechicken.nei.recipe.TemplateRecipeHandler;
-import com.enderio.core.client.render.EnderWidget;
-import crazypants.enderio.gui.GuiContainerBaseEIO;
-import crazypants.enderio.gui.IconEIO;
-import crazypants.enderio.machine.enchanter.EnchanterRecipe;
-import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
-import crazypants.enderio.machine.enchanter.GuiEnchanter;
-import crazypants.enderio.machine.enchanter.TileEnchanter;
-import crazypants.enderio.machine.recipe.RecipeInput;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.Enchantment;
@@ -24,6 +14,20 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+
+import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.TemplateRecipeHandler;
+
+import com.enderio.core.client.render.EnderWidget;
+
+import crazypants.enderio.gui.GuiContainerBaseEIO;
+import crazypants.enderio.gui.IconEIO;
+import crazypants.enderio.machine.enchanter.EnchanterRecipe;
+import crazypants.enderio.machine.enchanter.EnchanterRecipeManager;
+import crazypants.enderio.machine.enchanter.GuiEnchanter;
+import crazypants.enderio.machine.enchanter.TileEnchanter;
+import crazypants.enderio.machine.recipe.RecipeInput;
 
 public class EnchanterRecipeHandler extends TemplateRecipeHandler {
 
@@ -49,8 +53,11 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadTransferRects() {
-        transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(
-                new Rectangle(149, -3, 16, 16), "EIOEnchanter", new Object[0]));
+        transferRects.add(
+                new TemplateRecipeHandler.RecipeTransferRect(
+                        new Rectangle(149, -3, 16, 16),
+                        "EIOEnchanter",
+                        new Object[0]));
     }
 
     @Override
@@ -67,8 +74,7 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
                 if (ench != null && ench.getName() != null) {
 
                     for (EnchanterRecipe recipe : recipes) {
-                        if (recipe.isValid()
-                                && recipe.getEnchantment().getName().equals(ench.getName())) {
+                        if (recipe.isValid() && recipe.getEnchantment().getName().equals(ench.getName())) {
                             EnchanterRecipeNEI rec = new EnchanterRecipeNEI(recipe);
                             arecipes.add(rec);
                         }
@@ -122,7 +128,7 @@ public class EnchanterRecipeHandler extends TemplateRecipeHandler {
 
         int cost = TileEnchanter.getEnchantmentCost(recipe.recipe, level);
         if (cost > 0) {
-            String s = I18n.format("container.repair.cost", new Object[] {cost});
+            String s = I18n.format("container.repair.cost", new Object[] { cost });
             GuiDraw.drawStringC(s, 83, 46, 0x80FF20);
         }
 

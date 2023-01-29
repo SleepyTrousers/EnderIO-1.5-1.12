@@ -1,19 +1,7 @@
 package crazypants.enderio.machine.tank;
 
-import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.ClientProxy;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
-import crazypants.enderio.network.PacketHandler;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -29,13 +17,31 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.ClientProxy;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
+import crazypants.enderio.network.PacketHandler;
+
 public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvancedTooltipProvider {
 
     public static BlockTank create() {
+        PacketHandler.INSTANCE
+                .registerMessage(PacketTankFluid.class, PacketTankFluid.class, PacketHandler.nextID(), Side.CLIENT);
         PacketHandler.INSTANCE.registerMessage(
-                PacketTankFluid.class, PacketTankFluid.class, PacketHandler.nextID(), Side.CLIENT);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketTankVoidMode.class, PacketTankVoidMode.class, PacketHandler.nextID(), Side.SERVER);
+                PacketTankVoidMode.class,
+                PacketTankVoidMode.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
         BlockTank res = new BlockTank();
         res.init();
         return res;
@@ -59,7 +65,7 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
         return par1;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs p_149666_2_, List list) {
@@ -168,15 +174,8 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     public void addCommonEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {}
 
     @Override
-    public float getExplosionResistance(
-            Entity par1Entity,
-            World world,
-            int x,
-            int y,
-            int z,
-            double explosionX,
-            double explosionY,
-            double explosionZ) {
+    public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX,
+            double explosionY, double explosionZ) {
         int meta = world.getBlockMetadata(x, y, z);
         meta = MathHelper.clamp_int(meta, 0, 1);
         if (meta == 1) {
@@ -204,11 +203,15 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
     @SideOnly(Side.CLIENT)
     public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
         if (itemstack.stackTagCompound != null && itemstack.stackTagCompound.hasKey("tankContents")) {
-            FluidStack fl = FluidStack.loadFluidStackFromNBT(
-                    (NBTTagCompound) itemstack.stackTagCompound.getTag("tankContents"));
+            FluidStack fl = FluidStack
+                    .loadFluidStackFromNBT((NBTTagCompound) itemstack.stackTagCompound.getTag("tankContents"));
             if (fl != null && fl.getFluid() != null) {
-                String str = fl.amount + " " + EnderIO.lang.localize("fluid.millibucket.abr") + " "
-                        + PowerDisplayUtil.ofStr() + " " + fl.getFluid().getLocalizedName();
+                String str = fl.amount + " "
+                        + EnderIO.lang.localize("fluid.millibucket.abr")
+                        + " "
+                        + PowerDisplayUtil.ofStr()
+                        + " "
+                        + fl.getFluid().getLocalizedName();
                 list.add(str);
             }
         }
@@ -235,18 +238,18 @@ public class BlockTank extends AbstractMachineBlock<TileTank> implements IAdvanc
         if (te instanceof TileTank) {
             TileTank tank = (TileTank) te;
             FluidStack stored = tank.tank.getFluid();
-            String fluid = stored == null
-                    ? EnderIO.lang.localize("tooltip.none")
+            String fluid = stored == null ? EnderIO.lang.localize("tooltip.none")
                     : stored.getFluid().getLocalizedName(stored);
             int amount = stored == null ? 0 : stored.amount;
 
-            tooltip.add(String.format(
-                    "%s%s : %s (%d %s)",
-                    EnumChatFormatting.WHITE,
-                    EnderIO.lang.localize("tooltip.fluidStored"),
-                    fluid,
-                    amount,
-                    EnderIO.lang.localize("fluid.millibucket.abr")));
+            tooltip.add(
+                    String.format(
+                            "%s%s : %s (%d %s)",
+                            EnumChatFormatting.WHITE,
+                            EnderIO.lang.localize("tooltip.fluidStored"),
+                            fluid,
+                            amount,
+                            EnderIO.lang.localize("fluid.millibucket.abr")));
         }
     }
 }

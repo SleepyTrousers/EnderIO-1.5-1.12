@@ -1,11 +1,21 @@
 package crazypants.enderio.conduit.gui.item;
 
+import java.awt.*;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.common.util.DyeColor;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
@@ -21,11 +31,6 @@ import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.network.PacketHandler;
-import java.awt.*;
-import javax.annotation.Nonnull;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import org.lwjgl.opengl.GL11;
 
 public class ItemSettings extends BaseSettingsPanel {
 
@@ -101,6 +106,7 @@ public class ItemSettings extends BaseSettingsPanel {
         colorB.setToolTipHeading(EnderIO.lang.localize("gui.conduit.item.channel"));
 
         rsB = new RedstoneModeButton(gui, ID_REDSTONE_BUTTON, x, y, new IRedstoneModeControlable() {
+
             @Override
             public void setRedstoneControlMode(RedstoneControlMode mode) {
                 RedstoneControlMode curMode = getRedstoneControlMode();
@@ -121,6 +127,7 @@ public class ItemSettings extends BaseSettingsPanel {
         priDownB = MultiIconButton.createMinusButton(gui, ID_PRIORITY_DOWN, x, y + 8);
 
         FilterChangeListener fcl = new FilterChangeListener() {
+
             @Override
             public void onFilterChanged() {
                 if (insertFilterGui != null) {

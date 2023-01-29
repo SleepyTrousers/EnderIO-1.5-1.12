@@ -1,10 +1,30 @@
 package crazypants.enderio.conduit.redstone;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import powercrystals.minefactoryreloaded.api.rednet.IRedNetOutputNode;
+
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.relauncher.Side;
@@ -16,22 +36,6 @@ import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import dan200.computercraft.api.ComputerCraftAPI;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import powercrystals.minefactoryreloaded.api.rednet.IRedNetOutputNode;
 
 public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit {
 
@@ -116,9 +120,8 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
 
     protected boolean acceptSignalsForDir(ForgeDirection dir) {
         BlockCoord loc = getLocation().getLocation(dir);
-        return ConduitUtil.getConduit(
-                        getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, IRedstoneConduit.class)
-                == null;
+        return ConduitUtil
+                .getConduit(getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, IRedstoneConduit.class) == null;
     }
 
     @Override
@@ -157,7 +160,12 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
                             if (bundledInput[subnet] > 1) { // force signal strength reduction to avoid cycles
                                 int color = convertColorForRedNet(subnet);
                                 Signal signal = new Signal(
-                                        loc.x, loc.y, loc.z, dir, bundledInput[subnet] - 1, DyeColor.fromIndex(color));
+                                        loc.x,
+                                        loc.y,
+                                        loc.z,
+                                        dir,
+                                        bundledInput[subnet] - 1,
+                                        DyeColor.fromIndex(color));
                                 res.add(signal);
                             }
                         }
@@ -262,8 +270,8 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
     @Method(modid = "ComputerCraft")
     protected int getComputerCraftBundledPowerLevel(ForgeDirection dir) {
         BlockCoord loc = getLocation().getLocation(dir);
-        return ComputerCraftAPI.getBundledRedstoneOutput(
-                getBundle().getWorld(), loc.x, loc.y, loc.z, dir.getOpposite().ordinal());
+        return ComputerCraftAPI
+                .getBundledRedstoneOutput(getBundle().getWorld(), loc.x, loc.y, loc.z, dir.getOpposite().ordinal());
     }
 
     @Override
@@ -370,8 +378,7 @@ public class RedstoneConduit extends AbstractConduit implements IRedstoneConduit
             // Store external inputs to allow regenerating the global list of signals
             // in getNetworkInputs. This is required for RedNet cables to work, e.g.
             if (newInput > 1) { // force signal strength reduction to avoid cycles
-                externalSignals
-                        .get(side.ordinal())
+                externalSignals.get(side.ordinal())
                         .add(new Signal(loc.x, loc.y, loc.z, side, newInput - 1, DyeColor.fromIndex(color)));
             }
         }

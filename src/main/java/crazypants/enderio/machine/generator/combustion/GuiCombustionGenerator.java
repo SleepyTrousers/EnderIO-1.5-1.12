@@ -1,18 +1,22 @@
 package crazypants.enderio.machine.generator.combustion;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.entity.player.InventoryPlayer;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import java.awt.Color;
-import java.awt.Rectangle;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.opengl.GL11;
 
 public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustionGenerator> {
 
@@ -26,8 +30,7 @@ public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustion
                 text.clear();
                 String heading = EnderIO.lang.localize("combustionGenerator.coolantTank");
                 if (getTileEntity().getCoolantTank().getFluid() != null) {
-                    heading +=
-                            ": " + getTileEntity().getCoolantTank().getFluid().getLocalizedName();
+                    heading += ": " + getTileEntity().getCoolantTank().getFluid().getLocalizedName();
                 }
                 text.add(heading);
                 text.add(Fluids.toCapactityString(getTileEntity().getCoolantTank()));
@@ -83,11 +86,17 @@ public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustion
         if (gen.isActive()) {
             output = gen.getGeneratedLastTick();
         }
-        String txt = EnderIO.lang.localize("combustionGenerator.output") + " " + PowerDisplayUtil.formatPower(output)
-                + " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
+        String txt = EnderIO.lang.localize("combustionGenerator.output") + " "
+                + PowerDisplayUtil.formatPower(output)
+                + " "
+                + PowerDisplayUtil.abrevation()
+                + PowerDisplayUtil.perTickStr();
         int sw = fr.getStringWidth(txt);
         fr.drawStringWithShadow(
-                txt, guiLeft + xSize / 2 - sw / 2, guiTop + fr.FONT_HEIGHT / 2 + 3, ColorUtil.getRGB(Color.WHITE));
+                txt,
+                guiLeft + xSize / 2 - sw / 2,
+                guiTop + fr.FONT_HEIGHT / 2 + 3,
+                ColorUtil.getRGB(Color.WHITE));
 
         int x = guiLeft + 48;
         int y = guiTop + 21;
@@ -108,7 +117,10 @@ public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustion
                 txt = gen.getNumTicksPerMbCoolant() + " " + EnderIO.lang.localize("power.tmb");
                 sw = fr.getStringWidth(txt);
                 fr.drawStringWithShadow(
-                        txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 47, ColorUtil.getRGB(Color.WHITE));
+                        txt,
+                        x - sw / 2 + 7,
+                        y + fr.FONT_HEIGHT / 2 + 47,
+                        ColorUtil.getRGB(Color.WHITE));
             }
 
             x = guiLeft + 72;
@@ -147,7 +159,10 @@ public class GuiCombustionGenerator extends GuiPoweredMachineBase<TileCombustion
                 txt = gen.getNumTicksPerMbFuel() + " " + EnderIO.lang.localize("power.tmb");
                 sw = fr.getStringWidth(txt);
                 fr.drawStringWithShadow(
-                        txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 47, ColorUtil.getRGB(Color.WHITE));
+                        txt,
+                        x - sw / 2 + 7,
+                        y + fr.FONT_HEIGHT / 2 + 47,
+                        ColorUtil.getRGB(Color.WHITE));
             }
 
             // center tank

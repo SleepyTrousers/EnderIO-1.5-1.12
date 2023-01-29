@@ -1,18 +1,21 @@
 package crazypants.enderio.conduit.power;
 
-import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.power.IPowerInterface;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.conduit.AbstractConduitNetwork;
+import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.power.IPowerInterface;
 
 public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, IPowerConduit> {
 
@@ -57,7 +60,12 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
             if (pr != null) {
                 TileEntity te = con.getBundle().getEntity();
                 powerReceptorAdded(
-                        con, dir, te.xCoord + dir.offsetX, te.yCoord + dir.offsetY, te.zCoord + dir.offsetZ, pr);
+                        con,
+                        dir,
+                        te.xCoord + dir.offsetX,
+                        te.yCoord + dir.offsetY,
+                        te.zCoord + dir.offsetZ,
+                        pr);
             }
         }
         if (powerManager != null) {
@@ -65,8 +73,8 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
         }
     }
 
-    public void powerReceptorAdded(
-            IPowerConduit powerConduit, ForgeDirection direction, int x, int y, int z, IPowerInterface powerReceptor) {
+    public void powerReceptorAdded(IPowerConduit powerConduit, ForgeDirection direction, int x, int y, int z,
+            IPowerInterface powerReceptor) {
         if (powerReceptor == null) {
             return;
         }
@@ -113,8 +121,8 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
 
         IPowerInterface powerInterface;
 
-        public ReceptorEntry(
-                IPowerInterface powerReceptor, BlockCoord coord, IPowerConduit emmiter, ForgeDirection direction) {
+        public ReceptorEntry(IPowerInterface powerReceptor, BlockCoord coord, IPowerConduit emmiter,
+                ForgeDirection direction) {
             powerInterface = powerReceptor;
             this.coord = coord;
             this.emmiter = emmiter;
@@ -123,6 +131,7 @@ public class PowerConduitNetwork extends AbstractConduitNetwork<IPowerConduit, I
     }
 
     private static class ReceptorKey {
+
         BlockCoord coord;
         ForgeDirection direction;
 

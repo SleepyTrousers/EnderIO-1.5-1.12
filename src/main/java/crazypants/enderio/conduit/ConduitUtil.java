@@ -1,7 +1,27 @@
 package crazypants.enderio.conduit;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+
+import net.minecraft.block.Block.SoundType;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -18,34 +38,17 @@ import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.Signal;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.tool.ToolUtil;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import net.minecraft.block.Block.SoundType;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class ConduitUtil {
 
     public static final Random RANDOM = new Random();
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public static void ensureValidNetwork(IConduit conduit) {
         TileEntity te = conduit.getBundle().getEntity();
         World world = te.getWorldObj();
-        Collection<? extends IConduit> connections =
-                ConduitUtil.getConnectedConduits(world, te.xCoord, te.yCoord, te.zCoord, conduit.getBaseConduitType());
+        Collection<? extends IConduit> connections = ConduitUtil
+                .getConnectedConduits(world, te.xCoord, te.yCoord, te.zCoord, conduit.getBaseConduitType());
 
         if (reuseNetwork(conduit, connections, world)) {
             return;
@@ -56,7 +59,7 @@ public class ConduitUtil {
         return;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private static boolean reuseNetwork(IConduit con, Collection<? extends IConduit> connections, World world) {
         AbstractConduitNetwork network = null;
         for (IConduit conduit : connections) {
@@ -80,16 +83,16 @@ public class ConduitUtil {
     public static <T extends IConduit> void disconectConduits(T con, ForgeDirection connDir) {
         con.conduitConnectionRemoved(connDir);
         BlockCoord loc = con.getLocation().getLocation(connDir);
-        IConduit neighbour = ConduitUtil.getConduit(
-                con.getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, con.getBaseConduitType());
+        IConduit neighbour = ConduitUtil
+                .getConduit(con.getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, con.getBaseConduitType());
         if (neighbour != null) {
             neighbour.conduitConnectionRemoved(connDir.getOpposite());
             if (neighbour.getNetwork() != null) {
                 neighbour.getNetwork().destroyNetwork();
             }
         }
-        if (con.getNetwork()
-                != null) { // this should have been destroyed when destroying the neighbours network but lets just make
+        if (con.getNetwork() != null) { // this should have been destroyed when destroying the neighbours network but
+                                        // lets just make
             // sure
             con.getNetwork().destroyNetwork();
         }
@@ -101,10 +104,9 @@ public class ConduitUtil {
 
     public static <T extends IConduit> boolean joinConduits(T con, ForgeDirection faceHit) {
         BlockCoord loc = con.getLocation().getLocation(faceHit);
-        IConduit neighbour = ConduitUtil.getConduit(
-                con.getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, con.getBaseConduitType());
-        if (neighbour != null
-                && con.canConnectToConduit(faceHit, neighbour)
+        IConduit neighbour = ConduitUtil
+                .getConduit(con.getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, con.getBaseConduitType());
+        if (neighbour != null && con.canConnectToConduit(faceHit, neighbour)
                 && neighbour.canConnectToConduit(faceHit.getOpposite(), con)) {
             con.conduitConnectionAdded(faceHit);
             neighbour.conduitConnectionAdded(faceHit.getOpposite());
@@ -240,12 +242,12 @@ public class ConduitUtil {
     }
 
     public static <T extends IConduit> T getConduit(World world, TileEntity te, ForgeDirection dir, Class<T> type) {
-        return ConduitUtil.getConduit(
-                world, te.xCoord + dir.offsetX, te.yCoord + dir.offsetY, te.zCoord + dir.offsetZ, type);
+        return ConduitUtil
+                .getConduit(world, te.xCoord + dir.offsetX, te.yCoord + dir.offsetY, te.zCoord + dir.offsetZ, type);
     }
 
-    public static <T extends IConduit> Collection<T> getConnectedConduits(
-            World world, int x, int y, int z, Class<T> type) {
+    public static <T extends IConduit> Collection<T> getConnectedConduits(World world, int x, int y, int z,
+            Class<T> type) {
         TileEntity te = world.getTileEntity(x, y, z);
         if (!(te instanceof IConduitBundle)) {
             return Collections.emptyList();
@@ -318,8 +320,8 @@ public class ConduitUtil {
         int signalStrength = getInternalSignalForColor(bundle, col);
         if (signalStrength < 15 && DyeColor.RED == col && bundle != null && bundle.getEntity() != null) {
             TileEntity te = bundle.getEntity();
-            signalStrength = Math.max(
-                    signalStrength, te.getWorldObj().getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord));
+            signalStrength = Math
+                    .max(signalStrength, te.getWorldObj().getStrongestIndirectPower(te.xCoord, te.yCoord, te.zCoord));
         }
         return RedstoneControlMode.isConditionMet(mode, signalStrength);
     }
@@ -373,8 +375,7 @@ public class ConduitUtil {
         if (cons.size() == 1) {
             player.openGui(
                     EnderIO.instance,
-                    GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE
-                            + cons.iterator().next().ordinal(),
+                    GuiHandler.GUI_ID_EXTERNAL_CONNECTION_BASE + cons.iterator().next().ordinal(),
                     world,
                     x,
                     y,
@@ -399,8 +400,7 @@ public class ConduitUtil {
     }
 
     private static void playClientBreakSound(SoundType snd) {
-        FMLClientHandler.instance()
-                .getClientPlayerEntity()
+        FMLClientHandler.instance().getClientPlayerEntity()
                 .playSound(snd.getBreakSound(), (snd.getVolume() + 1.0F) / 2.0F, snd.getPitch() * 0.8F);
     }
 
@@ -419,8 +419,7 @@ public class ConduitUtil {
     }
 
     private static void playClientHitSound(SoundType snd) {
-        FMLClientHandler.instance()
-                .getClientPlayerEntity()
+        FMLClientHandler.instance().getClientPlayerEntity()
                 .playSound(snd.getStepResourcePath(), (snd.getVolume() + 1.0F) / 8.0F, snd.getPitch() * 0.5F);
     }
 
@@ -439,8 +438,7 @@ public class ConduitUtil {
     }
 
     private static void playClientStepSound(SoundType snd) {
-        FMLClientHandler.instance()
-                .getClientPlayerEntity()
+        FMLClientHandler.instance().getClientPlayerEntity()
                 .playSound(snd.getStepResourcePath(), (snd.getVolume() + 1.0F) / 8.0F, snd.getPitch());
     }
 
@@ -459,8 +457,7 @@ public class ConduitUtil {
     }
 
     private static void playClientPlaceSound(SoundType snd) {
-        FMLClientHandler.instance()
-                .getClientPlayerEntity()
+        FMLClientHandler.instance().getClientPlayerEntity()
                 .playSound(snd.func_150496_b(), (snd.getVolume() + 1.0F) / 8.0F, snd.getPitch());
     }
 }

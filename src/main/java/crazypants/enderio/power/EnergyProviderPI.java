@@ -1,7 +1,8 @@
 package crazypants.enderio.power;
 
-import cofh.api.energy.IEnergyProvider;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import cofh.api.energy.IEnergyProvider;
 
 public class EnergyProviderPI implements IPowerInterface {
 

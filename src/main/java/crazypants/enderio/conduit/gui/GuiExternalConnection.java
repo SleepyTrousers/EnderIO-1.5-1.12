@@ -1,9 +1,26 @@
 package crazypants.enderio.conduit.gui;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.client.render.RenderUtil;
+
 import cpw.mods.fml.common.Optional;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -16,19 +33,6 @@ import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.opengl.GL11;
 
 public class GuiExternalConnection extends GuiContainerBaseEIO {
 
@@ -46,8 +50,7 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
         return id;
     }
 
-    private static final Map<Class<? extends IConduit>, Integer> TAB_ORDER =
-            new HashMap<Class<? extends IConduit>, Integer>();
+    private static final Map<Class<? extends IConduit>, Integer> TAB_ORDER = new HashMap<Class<? extends IConduit>, Integer>();
 
     static {
         TAB_ORDER.put(IItemConduit.class, 0);
@@ -135,8 +138,8 @@ public class GuiExternalConnection extends GuiContainerBaseEIO {
     }
 
     /**
-     * Returns true when slots outside of standard gui bounds are clicked to prevent
-     * setting ghost filters dropping items on the ground.
+     * Returns true when slots outside of standard gui bounds are clicked to prevent setting ghost filters dropping
+     * items on the ground.
      */
     private boolean handleOobClick(int x, int y, int button) {
         boolean outOfBounds = x < guiLeft || y < guiTop || x >= guiLeft + xSize || y >= guiTop + ySize;

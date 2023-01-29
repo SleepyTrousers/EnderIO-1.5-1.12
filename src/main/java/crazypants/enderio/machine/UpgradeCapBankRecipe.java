@@ -1,11 +1,12 @@
 package crazypants.enderio.machine;
 
-import crazypants.enderio.power.PowerHandlerUtil;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
+import crazypants.enderio.power.PowerHandlerUtil;
 
 public class UpgradeCapBankRecipe extends ShapedOreRecipe {
 

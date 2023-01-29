@@ -1,15 +1,18 @@
 package crazypants.enderio.machine.gui;
 
+import java.util.ArrayList;
+
+import org.lwjgl.input.Keyboard;
+
 import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.IIoConfigurable;
 import crazypants.enderio.machine.PacketIoMode;
 import crazypants.enderio.network.PacketHandler;
-import java.util.ArrayList;
-import org.lwjgl.input.Keyboard;
 
 public class GuiButtonIoConfig extends ToggleButton {
 
@@ -17,8 +20,8 @@ public class GuiButtonIoConfig extends ToggleButton {
     private final GuiOverlayIoConfig configOverlay;
 
     @SuppressWarnings("LeakingThisInConstructor")
-    public GuiButtonIoConfig(
-            IGuiScreen gui, int id, int x, int y, IIoConfigurable config, GuiOverlayIoConfig configOverlay) {
+    public GuiButtonIoConfig(IGuiScreen gui, int id, int x, int y, IIoConfigurable config,
+            GuiOverlayIoConfig configOverlay) {
         super(gui, id, x, y, IconEIO.IO_CONFIG_UP, IconEIO.IO_CONFIG_DOWN);
         this.config = config;
         this.configOverlay = configOverlay;

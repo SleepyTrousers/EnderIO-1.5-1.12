@@ -1,10 +1,12 @@
 package crazypants.enderio.tool;
 
-import buildcraft.api.tools.IToolWrench;
-import crazypants.enderio.api.tool.ITool;
 import java.lang.reflect.Method;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+
+import buildcraft.api.tools.IToolWrench;
+import crazypants.enderio.api.tool.ITool;
 
 public class BuildCraftToolProvider implements IToolProvider, IToolImpl {
 

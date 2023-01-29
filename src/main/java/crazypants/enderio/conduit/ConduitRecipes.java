@@ -6,6 +6,13 @@ import static crazypants.enderio.material.Material.*;
 import static crazypants.enderio.material.endergy.AlloyEndergy.*;
 import static crazypants.util.RecipeUtil.addShaped;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+
 import appeng.api.AEApi;
 import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -26,12 +33,6 @@ import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.material.BlockFusedQuartz;
 import crazypants.enderio.material.FrankenSkull;
 import crazypants.enderio.material.Material;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class ConduitRecipes {
 
@@ -59,10 +60,14 @@ public class ConduitRecipes {
 
         String binder = CONDUIT_BINDER.oreDict;
 
-        ItemStack zombieController =
-                new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.ZOMBIE_CONTROLLER.ordinal());
-        ItemStack skeletalContractor =
-                new ItemStack(EnderIO.itemFrankenSkull, 1, FrankenSkull.SKELETAL_CONTRACTOR.ordinal());
+        ItemStack zombieController = new ItemStack(
+                EnderIO.itemFrankenSkull,
+                1,
+                FrankenSkull.ZOMBIE_CONTROLLER.ordinal());
+        ItemStack skeletalContractor = new ItemStack(
+                EnderIO.itemFrankenSkull,
+                1,
+                FrankenSkull.SKELETAL_CONTRACTOR.ordinal());
 
         // Recipes
         addShaped(
@@ -72,15 +77,16 @@ public class ConduitRecipes {
                 "bbb",
                 'b',
                 binder);
-        GameRegistry.addRecipe(new ShapedOreRecipe(
-                new ItemStack(EnderIO.itemConduitFacade, 1, FacadeType.HARDENED.ordinal()),
-                " o ",
-                "oFo",
-                " o ",
-                'F',
-                EnderIO.itemConduitFacade,
-                'o',
-                "dustObsidian"));
+        GameRegistry.addRecipe(
+                new ShapedOreRecipe(
+                        new ItemStack(EnderIO.itemConduitFacade, 1, FacadeType.HARDENED.ordinal()),
+                        " o ",
+                        "oFo",
+                        " o ",
+                        'F',
+                        EnderIO.itemConduitFacade,
+                        'o',
+                        "dustObsidian"));
 
         int numConduits = Config.numConduitsPerRecipe;
         addShaped(
@@ -245,8 +251,7 @@ public class ConduitRecipes {
                     "ingotGold");
             lastTier = new ItemStack(EnderIO.itemPowerConduitEndergy, 1, 3);
 
-            if (OreDictionary.doesOreNameExist("ingotCopper")
-                    && OreDictionary.getOres("ingotCopper").size() > 0) {
+            if (OreDictionary.doesOreNameExist("ingotCopper") && OreDictionary.getOres("ingotCopper").size() > 0) {
                 addShaped(
                         new ItemStack(EnderIO.itemPowerConduitEndergy, numConduits, 4),
                         "b#b",
@@ -553,8 +558,8 @@ public class ConduitRecipes {
         ItemStack itemConduit = new ItemStack(EnderIO.itemItemConduit, numConduits, 0);
         addShaped(itemConduit, "bbb", "###", "bbb", 'b', binder, '#', phasedIronNugget);
 
-        MachineRecipeRegistry.instance.registerRecipe(
-                blockPainter.unlocalisedName, EnderIO.itemConduitFacade.new FacadePainterRecipe());
+        MachineRecipeRegistry.instance
+                .registerRecipe(blockPainter.unlocalisedName, EnderIO.itemConduitFacade.new FacadePainterRecipe());
 
         // Filter Recipes
         ItemStack basicFilter = new ItemStack(EnderIO.itemBasicFilterUpgrade, 1, 0);
@@ -669,8 +674,7 @@ public class ConduitRecipes {
         String fluix = "crystalFluix";
         String pureFluix = "crystalPureFluix";
 
-        ItemStack quartzFiber =
-                AEApi.instance().parts().partQuartzFiber.stack(1).copy();
+        ItemStack quartzFiber = AEApi.instance().parts().partQuartzFiber.stack(1).copy();
         ItemStack conduitBinder = new ItemStack(EnderIO.itemMaterial, 1, Material.CONDUIT_BINDER.ordinal());
         ItemStack res = new ItemStack(EnderIO.itemMEConduit, Config.numConduitsPerRecipe / 2);
 

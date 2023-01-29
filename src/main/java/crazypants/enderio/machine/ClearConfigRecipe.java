@@ -1,7 +1,5 @@
 package crazypants.enderio.machine;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import crazypants.enderio.EnderIO;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -13,11 +11,17 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import crazypants.enderio.EnderIO;
+
 public class ClearConfigRecipe implements IRecipe {
 
     static {
         RecipeSorter.register(
-                "EnderIO:clearConfig", ClearConfigRecipe.class, Category.SHAPELESS, "after:minecraft:shapeless");
+                "EnderIO:clearConfig",
+                ClearConfigRecipe.class,
+                Category.SHAPELESS,
+                "after:minecraft:shapeless");
     }
 
     private ItemStack output;
@@ -66,9 +70,9 @@ public class ClearConfigRecipe implements IRecipe {
     @SubscribeEvent
     public void onTooltip(ItemTooltipEvent event) {
         if (output != null && ItemStack.areItemStacksEqual(output, event.itemStack)) {
-            event.toolTip.add(EnumChatFormatting.RED.toString()
-                    + EnumChatFormatting.ITALIC
-                    + EnderIO.lang.localize("machine.tooltip.clearConfig"));
+            event.toolTip.add(
+                    EnumChatFormatting.RED.toString() + EnumChatFormatting.ITALIC
+                            + EnderIO.lang.localize("machine.tooltip.clearConfig"));
         }
     }
 }

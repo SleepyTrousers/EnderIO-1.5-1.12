@@ -1,10 +1,12 @@
 package crazypants.enderio.machine.recipe;
 
-import crazypants.enderio.machine.IMachineRecipe;
-import crazypants.enderio.machine.MachineRecipeInput;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.item.ItemStack;
+
+import crazypants.enderio.machine.IMachineRecipe;
+import crazypants.enderio.machine.MachineRecipeInput;
 
 public abstract class AbstractMachineRecipe implements IMachineRecipe {
 
@@ -59,12 +61,11 @@ public abstract class AbstractMachineRecipe implements IMachineRecipe {
         return result;
     }
 
-    protected boolean consume(
-            RecipeInput required, MachineRecipeInput available, List<MachineRecipeInput> consumedInputs) {
+    protected boolean consume(RecipeInput required, MachineRecipeInput available,
+            List<MachineRecipeInput> consumedInputs) {
 
         if (required.isInput(available.fluid)) {
-            consumedInputs.add(new MachineRecipeInput(
-                    available.slotNumber, required.getFluidInput().copy()));
+            consumedInputs.add(new MachineRecipeInput(available.slotNumber, required.getFluidInput().copy()));
             return true;
         }
 

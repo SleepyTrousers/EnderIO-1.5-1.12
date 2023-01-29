@@ -1,8 +1,23 @@
 package crazypants.enderio.machine.power;
 
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.InventoryPlayer;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
@@ -13,17 +28,6 @@ import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.gui.GuiOverlayIoConfig;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.network.PacketHandler;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.opengl.GL11;
 
 public class GuiCapacitorBank extends GuiContainerBaseEIO {
 
@@ -69,8 +73,9 @@ public class GuiCapacitorBank extends GuiContainerBaseEIO {
             protected void updateText() {
                 text.clear();
                 text.add(PowerDisplayUtil.formatPower(capBank.getEnergyStored()) + " " + PowerDisplayUtil.ofStr());
-                text.add(PowerDisplayUtil.formatPower(capBank.getMaxEnergyStored()) + " "
-                        + PowerDisplayUtil.abrevation());
+                text.add(
+                        PowerDisplayUtil.formatPower(capBank.getMaxEnergyStored()) + " "
+                                + PowerDisplayUtil.abrevation());
             }
         });
 
@@ -271,8 +276,11 @@ public class GuiCapacitorBank extends GuiContainerBaseEIO {
 
         int midX = sx + xSize / 2;
 
-        String str = EnderIO.lang.localize("gui.capBank.maxIo") + " " + PowerDisplayUtil.formatPower(capBank.getMaxIO())
-                + " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
+        String str = EnderIO.lang.localize("gui.capBank.maxIo") + " "
+                + PowerDisplayUtil.formatPower(capBank.getMaxIO())
+                + " "
+                + PowerDisplayUtil.abrevation()
+                + PowerDisplayUtil.perTickStr();
         FontRenderer fontRenderer = getFontRenderer();
         int swid = fontRenderer.getStringWidth(str);
         int x = midX - swid / 2;

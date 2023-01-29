@@ -1,8 +1,43 @@
 package crazypants.enderio.conduit;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+
+import mods.immibis.core.api.multipart.IMultipartRenderingBlockMarker;
+import mods.immibis.core.api.multipart.IMultipartSystem;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.ISound;
+import net.minecraft.client.particle.EffectRenderer;
+import net.minecraft.client.particle.EntityDiggingFX;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.client.event.sound.PlaySoundSourceEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
+
+import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
+import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Util;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.Optional.Interface;
@@ -38,41 +73,14 @@ import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.util.IFacade;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import mods.immibis.core.api.multipart.IMultipartRenderingBlockMarker;
-import mods.immibis.core.api.multipart.IMultipartSystem;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.ISound;
-import net.minecraft.client.particle.EffectRenderer;
-import net.minecraft.client.particle.EntityDiggingFX;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.client.event.sound.PlaySoundSourceEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
-import powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode;
-import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
 
 @Optional.InterfaceList({
-    @Interface(iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode", modid = "MineFactoryReloaded"),
-    @Interface(iface = "mods.immibis.core.api.multipart.IMultipartRenderingBlockMarker", modid = "ImmibisMicroblocks")
-})
+        @Interface(
+                iface = "powercrystals.minefactoryreloaded.api.rednet.IRedNetOmniNode",
+                modid = "MineFactoryReloaded"),
+        @Interface(
+                iface = "mods.immibis.core.api.multipart.IMultipartRenderingBlockMarker",
+                modid = "ImmibisMicroblocks") })
 public class BlockConduitBundle extends BlockEio
         implements IGuiHandler, IFacade, IRotatableFacade, IRedNetOmniNode, IMultipartRenderingBlockMarker {
 
@@ -84,25 +92,37 @@ public class BlockConduitBundle extends BlockEio
         MinecraftForge.EVENT_BUS.register(ConduitNetworkTickHandler.instance);
         FMLCommonHandler.instance().bus().register(ConduitNetworkTickHandler.instance);
 
+        PacketHandler.INSTANCE
+                .registerMessage(PacketFluidLevel.class, PacketFluidLevel.class, PacketHandler.nextID(), Side.CLIENT);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketExtractMode.class, PacketExtractMode.class, PacketHandler.nextID(), Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
-                PacketFluidLevel.class, PacketFluidLevel.class, PacketHandler.nextID(), Side.CLIENT);
+                PacketConnectionMode.class,
+                PacketConnectionMode.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
-                PacketExtractMode.class, PacketExtractMode.class, PacketHandler.nextID(), Side.SERVER);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketConnectionMode.class, PacketConnectionMode.class, PacketHandler.nextID(), Side.SERVER);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketItemConduitFilter.class, PacketItemConduitFilter.class, PacketHandler.nextID(), Side.SERVER);
+                PacketItemConduitFilter.class,
+                PacketItemConduitFilter.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
                 PacketExistingItemFilterSnapshot.class,
                 PacketExistingItemFilterSnapshot.class,
                 PacketHandler.nextID(),
                 Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
-                PacketModItemFilter.class, PacketModItemFilter.class, PacketHandler.nextID(), Side.SERVER);
+                PacketModItemFilter.class,
+                PacketModItemFilter.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketFluidFilter.class, PacketFluidFilter.class, PacketHandler.nextID(), Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
-                PacketFluidFilter.class, PacketFluidFilter.class, PacketHandler.nextID(), Side.SERVER);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketFluidChannel.class, PacketFluidChannel.class, PacketHandler.nextID(), Side.SERVER);
+                PacketFluidChannel.class,
+                PacketFluidChannel.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
                 PacketRedstoneConduitSignalColor.class,
                 PacketRedstoneConduitSignalColor.class,
@@ -114,16 +134,25 @@ public class BlockConduitBundle extends BlockEio
                 PacketHandler.nextID(),
                 Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
-                PacketOpenConduitUI.class, PacketOpenConduitUI.class, PacketHandler.nextID(), Side.SERVER);
+                PacketOpenConduitUI.class,
+                PacketOpenConduitUI.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
-                PacketSlotVisibility.class, PacketSlotVisibility.class, PacketHandler.nextID(), Side.SERVER);
+                PacketSlotVisibility.class,
+                PacketSlotVisibility.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
                 PacketOCConduitSignalColor.class,
                 PacketOCConduitSignalColor.class,
                 PacketHandler.nextID(),
                 Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
-                PacketRoundRobinMode.class, PacketRoundRobinMode.class, PacketHandler.nextID(), Side.SERVER);
+                PacketRoundRobinMode.class,
+                PacketRoundRobinMode.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
 
         BlockConduitBundle result = new BlockConduitBundle();
         result.init();
@@ -146,6 +175,7 @@ public class BlockConduitBundle extends BlockEio
         setResistance(10.0f);
         setCreativeTab(null);
         this.stepSound = new SoundType("silence", 0, 0) {
+
             @Override
             public String getBreakSound() {
                 return "EnderIO:" + soundName + ".dig";
@@ -208,8 +238,16 @@ public class BlockConduitBundle extends BlockEio
                     double d2 = z + (l1 + 0.5D) / b0;
                     int i2 = rand.nextInt(6);
                     EntityDiggingFX fx = new EntityDiggingFX(
-                                    world, d0, d1, d2, d0 - x - 0.5D, d1 - y - 0.5D, d2 - z - 0.5D, this, i2, 0)
-                            .applyColourMultiplier(x, y, z);
+                            world,
+                            d0,
+                            d1,
+                            d2,
+                            d0 - x - 0.5D,
+                            d1 - y - 0.5D,
+                            d2 - z - 0.5D,
+                            this,
+                            i2,
+                            0).applyColourMultiplier(x, y, z);
                     fx.setParticleIcon(tex);
                     effectRenderer.addEffect(fx);
                 }
@@ -219,19 +257,16 @@ public class BlockConduitBundle extends BlockEio
     }
 
     @SideOnly(Side.CLIENT)
-    private void addBlockHitEffects(
-            World world, EffectRenderer effectRenderer, int x, int y, int z, int side, IIcon tex) {
+    private void addBlockHitEffects(World world, EffectRenderer effectRenderer, int x, int y, int z, int side,
+            IIcon tex) {
         float f = 0.1F;
-        double d0 = x
-                + rand.nextDouble() * (getBlockBoundsMaxX() - getBlockBoundsMinX() - f * 2.0F)
+        double d0 = x + rand.nextDouble() * (getBlockBoundsMaxX() - getBlockBoundsMinX() - f * 2.0F)
                 + f
                 + getBlockBoundsMinX();
-        double d1 = y
-                + rand.nextDouble() * (getBlockBoundsMaxY() - getBlockBoundsMinY() - f * 2.0F)
+        double d1 = y + rand.nextDouble() * (getBlockBoundsMaxY() - getBlockBoundsMinY() - f * 2.0F)
                 + f
                 + getBlockBoundsMinY();
-        double d2 = z
-                + rand.nextDouble() * (getBlockBoundsMaxZ() - getBlockBoundsMinZ() - f * 2.0F)
+        double d2 = z + rand.nextDouble() * (getBlockBoundsMaxZ() - getBlockBoundsMinZ() - f * 2.0F)
                 + f
                 + getBlockBoundsMinZ();
         if (side == 0) {
@@ -425,15 +460,8 @@ public class BlockConduitBundle extends BlockEio
     }
 
     @Override
-    public float getExplosionResistance(
-            Entity par1Entity,
-            World world,
-            int x,
-            int y,
-            int z,
-            double explosionX,
-            double explosionY,
-            double explosionZ) {
+    public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX,
+            double explosionY, double explosionZ) {
         float resist = getExplosionResistance(par1Entity);
         TileEntity te = world.getTileEntity(x, y, z);
         return te instanceof IConduitBundle && ((IConduitBundle) te).getFacadeType() == FacadeType.HARDENED
@@ -507,8 +535,7 @@ public class BlockConduitBundle extends BlockEio
         List<ItemStack> drop = new ArrayList<ItemStack>();
         if (ConduitUtil.isSolidFacadeRendered(te, player)) {
             breakBlock = false;
-            ItemStack fac = new ItemStack(
-                    EnderIO.itemConduitFacade, 1, te.getFacadeType().ordinal());
+            ItemStack fac = new ItemStack(EnderIO.itemConduitFacade, 1, te.getFacadeType().ordinal());
             PainterUtil.setSourceBlock(fac, te.getFacadeId(), te.getFacadeMetadata());
             drop.add(fac);
             ConduitUtil.playBreakSound(te.getFacadeId().stepSound, world, x, y, z);
@@ -566,8 +593,7 @@ public class BlockConduitBundle extends BlockEio
             List<IConduit> cons = new ArrayList<IConduit>(te.getConduits());
             boolean droppedUnconected = false;
             for (IConduit con : cons) {
-                if (con.getConduitConnections().isEmpty()
-                        && con.getExternalConnections().isEmpty()
+                if (con.getConduitConnections().isEmpty() && con.getExternalConnections().isEmpty()
                         && ConduitUtil.renderConduit(player, con)) {
                     te.removeConduit(con);
                     drop.addAll(con.getDrops());
@@ -619,8 +645,8 @@ public class BlockConduitBundle extends BlockEio
     }
 
     @Override
-    public boolean onBlockActivated(
-            World world, int x, int y, int z, EntityPlayer player, int side, float par7, float par8, float par9) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float par7,
+            float par8, float par9) {
 
         TileEntity te = world.getTileEntity(x, y, z);
         if (!(te instanceof IConduitBundle)) {
@@ -712,8 +738,7 @@ public class BlockConduitBundle extends BlockEio
             }
         } else {
             IConduit closestConduit = bundle.getConduit(closest.component.conduitType);
-            if (closestConduit != null
-                    && ConduitUtil.renderConduit(player, closestConduit)
+            if (closestConduit != null && ConduitUtil.renderConduit(player, closestConduit)
                     && closestConduit.onBlockActivated(player, closest, all)) {
                 bundle.getEntity().markDirty();
                 return true;
@@ -736,8 +761,8 @@ public class BlockConduitBundle extends BlockEio
         return false;
     }
 
-    private boolean handleConduitProbeClick(
-            World world, int x, int y, int z, EntityPlayer player, IConduitBundle bundle, ItemStack stack) {
+    private boolean handleConduitProbeClick(World world, int x, int y, int z, EntityPlayer player,
+            IConduitBundle bundle, ItemStack stack) {
         if (stack.getItemDamage() != 1) {
             return false; // not in copy paste mode
         }
@@ -748,8 +773,8 @@ public class BlockConduitBundle extends BlockEio
         return ItemConduitProbe.copyPasteSettings(player, stack, bundle, rr.component.dir);
     }
 
-    private boolean handleConduitClick(
-            World world, int x, int y, int z, EntityPlayer player, IConduitBundle bundle, ItemStack stack) {
+    private boolean handleConduitClick(World world, int x, int y, int z, EntityPlayer player, IConduitBundle bundle,
+            ItemStack stack) {
         IConduitItem equipped = (IConduitItem) stack.getItem();
         if (!bundle.hasType(equipped.getBaseConduitType())) {
             if (!world.isRemote) {
@@ -764,8 +789,8 @@ public class BlockConduitBundle extends BlockEio
         return false;
     }
 
-    public boolean handleFacadeClick(
-            World world, int x, int y, int z, EntityPlayer player, int side, IConduitBundle bundle, ItemStack stack) {
+    public boolean handleFacadeClick(World world, int x, int y, int z, EntityPlayer player, int side,
+            IConduitBundle bundle, ItemStack stack) {
         if (MicroblocksUtil.supportMicroblocks() && hasMicroblocks(bundle)) {
             return false;
         }
@@ -790,8 +815,7 @@ public class BlockConduitBundle extends BlockEio
                 return false;
             }
             if (!world.isRemote && !player.capabilities.isCreativeMode) {
-                ItemStack fac = new ItemStack(
-                        EnderIO.itemConduitFacade, 1, bundle.getFacadeType().ordinal());
+                ItemStack fac = new ItemStack(EnderIO.itemConduitFacade, 1, bundle.getFacadeType().ordinal());
                 PainterUtil.setSourceBlock(fac, bundle.getFacadeId(), bundle.getFacadeMetadata());
                 Util.dropItems(world, fac, x, y, z, false);
             }
@@ -812,8 +836,7 @@ public class BlockConduitBundle extends BlockEio
     }
 
     private boolean facadeEquals(IConduitBundle bundle, Block facadeID, int facadeMeta, int facadeType) {
-        return bundle.getFacadeId().equals(facadeID)
-                && bundle.getFacadeMetadata() == facadeMeta
+        return bundle.getFacadeId().equals(facadeID) && bundle.getFacadeMetadata() == facadeMeta
                 && bundle.getFacadeType().ordinal() == facadeType;
     }
 
@@ -895,14 +918,8 @@ public class BlockConduitBundle extends BlockEio
     }
 
     @Override
-    public void addCollisionBoxesToList(
-            World world,
-            int x,
-            int y,
-            int z,
-            AxisAlignedBB axisalignedbb,
-            @SuppressWarnings("rawtypes") List arraylist,
-            Entity par7Entity) {
+    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB axisalignedbb,
+            @SuppressWarnings("rawtypes") List arraylist, Entity par7Entity) {
 
         if (MicroblocksUtil.supportMicroblocks()) {
             IM__addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, par7Entity);
@@ -921,7 +938,12 @@ public class BlockConduitBundle extends BlockEio
             Collection<CollidableComponent> bounds = con.getCollidableComponents();
             for (CollidableComponent bnd : bounds) {
                 setBlockBounds(
-                        bnd.bound.minX, bnd.bound.minY, bnd.bound.minZ, bnd.bound.maxX, bnd.bound.maxY, bnd.bound.maxZ);
+                        bnd.bound.minX,
+                        bnd.bound.minY,
+                        bnd.bound.minZ,
+                        bnd.bound.maxX,
+                        bnd.bound.maxY,
+                        bnd.bound.maxZ);
                 super.addCollisionBoxesToList(world, x, y, z, axisalignedbb, arraylist, par7Entity);
             }
 
@@ -962,8 +984,7 @@ public class BlockConduitBundle extends BlockEio
             // This is an ugly special case, TODO fix this
             for (RaytraceResult hit : results) {
                 IInsulatedRedstoneConduit cond = con.getConduit(IInsulatedRedstoneConduit.class);
-                if (cond != null
-                        && hit.component != null
+                if (cond != null && hit.component != null
                         && cond.getExternalConnections().contains(hit.component.dir)
                         && !cond.isSpecialConnection(hit.component.dir)
                         && hit.component.data == InsulatedRedstoneConduit.COLOR_CONTROLLER_ID) {
@@ -998,7 +1019,12 @@ public class BlockConduitBundle extends BlockEio
         }
 
         return AxisAlignedBB.getBoundingBox(
-                x + minBB.minX, y + minBB.minY, z + minBB.minZ, x + minBB.maxX, y + minBB.maxY, z + minBB.maxZ);
+                x + minBB.minX,
+                y + minBB.minY,
+                z + minBB.minZ,
+                x + minBB.maxX,
+                y + minBB.maxY,
+                z + minBB.maxZ);
     }
 
     @Override
@@ -1044,8 +1070,8 @@ public class BlockConduitBundle extends BlockEio
         return doRayTraceAll(world, x, y, z, origin, direction, entityPlayer);
     }
 
-    private RaytraceResult doRayTrace(
-            World world, int x, int y, int z, Vec3 origin, Vec3 direction, EntityPlayer entityPlayer) {
+    private RaytraceResult doRayTrace(World world, int x, int y, int z, Vec3 origin, Vec3 direction,
+            EntityPlayer entityPlayer) {
         List<RaytraceResult> allHits = doRayTraceAll(world, x, y, z, origin, direction, entityPlayer);
         if (allHits == null) {
             return null;
@@ -1053,8 +1079,8 @@ public class BlockConduitBundle extends BlockEio
         return RaytraceResult.getClosestHit(origin, allHits);
     }
 
-    protected List<RaytraceResult> doRayTraceAll(
-            World world, int x, int y, int z, Vec3 origin, Vec3 direction, EntityPlayer player) {
+    protected List<RaytraceResult> doRayTraceAll(World world, int x, int y, int z, Vec3 origin, Vec3 direction,
+            EntityPlayer player) {
 
         TileEntity te = world.getTileEntity(x, y, z);
         if (!(te instanceof IConduitBundle)) {
@@ -1071,13 +1097,15 @@ public class BlockConduitBundle extends BlockEio
             setBlockBounds(0, 0, 0, 1, 1, 1);
             MovingObjectPosition hitPos = super.collisionRayTrace(world, x, y, z, origin, direction);
             if (hitPos != null) {
-                hits.add(new RaytraceResult(
-                        new CollidableComponent(null, BoundingBox.UNIT_CUBE, ForgeDirection.UNKNOWN, null), hitPos));
+                hits.add(
+                        new RaytraceResult(
+                                new CollidableComponent(null, BoundingBox.UNIT_CUBE, ForgeDirection.UNKNOWN, null),
+                                hitPos));
             }
         } else {
             ConduitDisplayMode mode = ConduitUtil.getDisplayMode(player);
-            Collection<CollidableComponent> components =
-                    new ArrayList<CollidableComponent>(bundle.getCollidableComponents());
+            Collection<CollidableComponent> components = new ArrayList<CollidableComponent>(
+                    bundle.getCollidableComponents());
             for (CollidableComponent component : components) {
                 if ((component.conduitType != null || mode == ConduitDisplayMode.ALL)
                         && ConduitUtil.renderConduit(player, component.conduitType)) {
@@ -1203,8 +1231,8 @@ public class BlockConduitBundle extends BlockEio
         return bundle.getConduit(IRedstoneConduit.class);
     }
 
-    public ItemStack getMicroblockPickBlock(
-            MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
+    public ItemStack getMicroblockPickBlock(MovingObjectPosition target, World world, int x, int y, int z,
+            EntityPlayer player) {
         return IMultipartSystem.instance.hook_getPickBlock(target, world, x, y, z, player);
     }
 
@@ -1224,19 +1252,19 @@ public class BlockConduitBundle extends BlockEio
         return IMultipartSystem.instance.hook_addHitEffects(worldObj, target, effectRenderer);
     }
 
-    private MovingObjectPosition IM__collisionRayTrace(
-            MovingObjectPosition cur, World world, int x, int y, int z, Vec3 src, Vec3 dst) {
+    private MovingObjectPosition IM__collisionRayTrace(MovingObjectPosition cur, World world, int x, int y, int z,
+            Vec3 src, Vec3 dst) {
         return IMultipartSystem.instance.hook_collisionRayTrace(cur, world, x, y, z, src, dst);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    private void IM__addCollisionBoxesToList(
-            World world, int x, int y, int z, AxisAlignedBB mask, List list, Entity entity) {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    private void IM__addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB mask, List list,
+            Entity entity) {
         IMultipartSystem.instance.hook_addCollisionBoxesToList(world, x, y, z, mask, list, entity);
     }
 
-    private ArrayList<ItemStack> IM__getDrops(
-            List<ItemStack> cur, World world, int x, int y, int z, int metadata, int fortune) {
+    private ArrayList<ItemStack> IM__getDrops(List<ItemStack> cur, World world, int x, int y, int z, int metadata,
+            int fortune) {
         return IMultipartSystem.instance.hook_getDrops(cur, world, x, y, z, metadata, fortune);
     }
 

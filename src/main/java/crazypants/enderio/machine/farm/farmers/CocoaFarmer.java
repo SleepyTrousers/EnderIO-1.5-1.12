@@ -1,8 +1,5 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.farm.TileFarmStation;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.init.Blocks;
@@ -12,7 +9,13 @@ import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.farm.TileFarmStation;
+
 public class CocoaFarmer extends CustomSeedFarmer {
+
     public CocoaFarmer() {
         super(Blocks.cocoa, new ItemStack(Items.dye, 1, 3));
         this.requiresFarmland = false;

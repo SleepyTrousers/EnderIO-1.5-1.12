@@ -1,21 +1,23 @@
 package crazypants.enderio.conduit.facade;
 
-import com.enderio.core.client.render.RenderUtil;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.painter.PainterUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.RenderUtil;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.painter.PainterUtil;
 
 public class FacadeRenderer implements IItemRenderer {
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return type == ItemRenderType.ENTITY
-                || type == ItemRenderType.EQUIPPED
+        return type == ItemRenderType.ENTITY || type == ItemRenderType.EQUIPPED
                 || type == ItemRenderType.INVENTORY
                 || type == ItemRenderType.EQUIPPED_FIRST_PERSON;
     }

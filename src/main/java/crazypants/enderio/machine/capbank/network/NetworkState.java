@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.capbank.network;
 
 import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import io.netty.buffer.ByteBuf;
@@ -18,16 +19,8 @@ public class NetworkState {
     private final float averageInput;
     private final float averageOutput;
 
-    public NetworkState(
-            long energyStored,
-            long maxEnergyStored,
-            int maxIO,
-            int maxInput,
-            int maxOutput,
-            RedstoneControlMode inputMode,
-            RedstoneControlMode outputMode,
-            BlockCoord invImplLoc,
-            float averageInput,
+    public NetworkState(long energyStored, long maxEnergyStored, int maxIO, int maxInput, int maxOutput,
+            RedstoneControlMode inputMode, RedstoneControlMode outputMode, BlockCoord invImplLoc, float averageInput,
             float averageOutput) {
         this.energyStored = energyStored;
         this.maxEnergyStored = maxEnergyStored;
@@ -131,7 +124,15 @@ public class NetworkState {
 
     @Override
     public String toString() {
-        return "NetworkClientState [energyStored=" + energyStored + ", maxEnergyStored=" + maxEnergyStored + ", maxIO="
-                + maxIO + ", maxInput=" + maxInput + ", maxOutput=" + maxOutput + "]";
+        return "NetworkClientState [energyStored=" + energyStored
+                + ", maxEnergyStored="
+                + maxEnergyStored
+                + ", maxIO="
+                + maxIO
+                + ", maxInput="
+                + maxInput
+                + ", maxOutput="
+                + maxOutput
+                + "]";
     }
 }

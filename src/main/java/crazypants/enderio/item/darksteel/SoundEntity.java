@@ -1,11 +1,12 @@
 package crazypants.enderio.item.darksteel;
 
-import com.enderio.core.common.vecmath.Vector3d;
-import crazypants.enderio.config.Config;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+
+import com.enderio.core.common.vecmath.Vector3d;
+import crazypants.enderio.config.Config;
 
 public class SoundEntity extends Entity {
 

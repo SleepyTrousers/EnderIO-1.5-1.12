@@ -1,23 +1,8 @@
 package crazypants.enderio.block;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.util.Util;
-import com.google.common.collect.Lists;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.machine.painter.BasicPainterTemplate;
-import crazypants.enderio.machine.painter.IPaintedBlock;
-import crazypants.enderio.machine.painter.PaintSourceValidator;
-import crazypants.enderio.machine.painter.PainterUtil;
-import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.block.ITileEntityProvider;
@@ -32,6 +17,24 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.util.Util;
+import com.google.common.collect.Lists;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.machine.painter.BasicPainterTemplate;
+import crazypants.enderio.machine.painter.IPaintedBlock;
+import crazypants.enderio.machine.painter.PaintSourceValidator;
+import crazypants.enderio.machine.painter.PainterUtil;
+import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
 
 public class BlockDarkSteelPressurePlate extends BlockPressurePlate
         implements IResourceTooltipProvider, ITileEntityProvider, IPaintedBlock {
@@ -52,12 +55,14 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate
 
     protected void init() {
         GameRegistry.registerBlock(
-                this, BlockItemDarkSteelPressurePlate.class, ModObject.blockDarkSteelPressurePlate.unlocalisedName);
+                this,
+                BlockItemDarkSteelPressurePlate.class,
+                ModObject.blockDarkSteelPressurePlate.unlocalisedName);
         GameRegistry.registerTileEntity(
                 TileEntityDarkSteelPressurePlate.class,
                 ModObject.blockDarkSteelPressurePlate.unlocalisedName + "TileEntity");
-        MachineRecipeRegistry.instance.registerRecipe(
-                ModObject.blockPainter.unlocalisedName, new PainterTemplate(this));
+        MachineRecipeRegistry.instance
+                .registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate(this));
     }
 
     @Override
@@ -143,7 +148,7 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate
         return super.colorMultiplier(world, x, y, z);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item arg0, CreativeTabs arg1, List items) {
@@ -210,9 +215,10 @@ public class BlockDarkSteelPressurePlate extends BlockPressurePlate
             }
             ItemStack target = MachineRecipeInput.getInputForSlot(0, inputs);
             ItemStack resultStack = createItemStackForSourceBlock(
-                    Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage());
+                    Block.getBlockFromItem(paintSource.getItem()),
+                    paintSource.getItemDamage());
             resultStack.setItemDamage(target.getItemDamage());
-            return new ResultStack[] {new ResultStack(resultStack)};
+            return new ResultStack[] { new ResultStack(resultStack) };
         }
 
         public static ItemStack createItemStackForSourceBlock(Block block, int damage) {

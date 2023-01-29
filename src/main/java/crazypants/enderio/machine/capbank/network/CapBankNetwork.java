@@ -1,8 +1,21 @@
 package crazypants.enderio.machine.capbank.network;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import cofh.api.energy.IEnergyContainerItem;
+
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.RoundRobinIterator;
+
 import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler;
 import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
@@ -18,15 +31,6 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PerTickIntAverageCalculator;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class CapBankNetwork implements ICapBankNetwork {
 
@@ -101,7 +105,7 @@ public class CapBankNetwork implements ICapBankNetwork {
             return;
         }
         Set<TileCapBank> work = new HashSet<TileCapBank>();
-        for (; ; ) {
+        for (;;) {
             ICapBankNetwork network = cap.getNetwork();
             if (network != this) {
                 if (network != null) {
@@ -280,8 +284,7 @@ public class CapBankNetwork implements ICapBankNetwork {
         // Can only send to power conduits if we are in push mode or the conduit is in pull mode
         // With default setting interaction between conduits and Cap Banks is handled by NetworkPowerManager
         IPowerConduit con = next.getConduit();
-        if (con != null
-                && next.getMode() == IoMode.NONE
+        if (con != null && next.getMode() == IoMode.NONE
                 && con.getConnectionMode(next.getDir().getOpposite()) == ConnectionMode.IN_OUT) {
             return 0;
         }
@@ -300,8 +303,7 @@ public class CapBankNetwork implements ICapBankNetwork {
         boolean chargedItem = false;
         int available = getEnergyAvailableForTick(getMaxIO());
         for (ItemStack item : items) {
-            if (item != null
-                    && available > 0
+            if (item != null && available > 0
                     && item.stackSize == 1
                     && item.getItem() instanceof IEnergyContainerItem) {
                 IEnergyContainerItem chargable = (IEnergyContainerItem) item.getItem();

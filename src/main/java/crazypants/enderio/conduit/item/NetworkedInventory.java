@@ -1,18 +1,11 @@
 package crazypants.enderio.conduit.item;
 
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.InventoryWrapper;
-import com.enderio.core.common.util.ItemUtil;
-import com.enderio.core.common.util.RoundRobinIterator;
-import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.enderio.conduit.item.filter.IItemFilter;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -21,6 +14,16 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.InventoryWrapper;
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.RoundRobinIterator;
+
+import crazypants.enderio.conduit.ConnectionMode;
+import crazypants.enderio.conduit.item.filter.IItemFilter;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.invpanel.TileInventoryPanel;
 
 public class NetworkedInventory {
 
@@ -47,8 +50,8 @@ public class NetworkedInventory {
     World world;
     ItemConduitNetwork network;
 
-    NetworkedInventory(
-            ItemConduitNetwork network, IInventory inv, IItemConduit con, ForgeDirection conDir, BlockCoord location) {
+    NetworkedInventory(ItemConduitNetwork network, IInventory inv, IItemConduit con, ForgeDirection conDir,
+            BlockCoord location) {
         this.network = network;
         inventorySide = conDir.getOpposite().ordinal();
 
@@ -97,8 +100,7 @@ public class NetworkedInventory {
     }
 
     boolean isSticky() {
-        return con.getOutputFilter(conDir) != null
-                && con.getOutputFilter(conDir).isValid()
+        return con.getOutputFilter(conDir) != null && con.getOutputFilter(conDir).isValid()
                 && con.getOutputFilter(conDir).isSticky();
     }
 
@@ -291,8 +293,7 @@ public class NetworkedInventory {
         List<Target> result = new ArrayList<NetworkedInventory.Target>();
 
         for (NetworkedInventory other : network.inventories) {
-            if ((con.isSelfFeedEnabled(conDir) || (other != this))
-                    && other.canInsert()
+            if ((con.isSelfFeedEnabled(conDir) || (other != this)) && other.canInsert()
                     && con.getInputColor(conDir) == other.con.getOutputColor(other.conDir)) {
 
                 if (Config.itemConduitUsePhyscialDistance) {
@@ -319,8 +320,8 @@ public class NetworkedInventory {
         }
     }
 
-    private void calculateDistances(
-            List<Target> targets, Map<BlockCoord, Integer> visited, List<BlockCoord> steps, int distance) {
+    private void calculateDistances(List<Target> targets, Map<BlockCoord, Integer> visited, List<BlockCoord> steps,
+            int distance) {
         if (steps == null || steps.isEmpty()) {
             return;
         }
@@ -405,6 +406,7 @@ public class NetworkedInventory {
     }
 
     static class Target implements Comparable<Target> {
+
         NetworkedInventory inv;
         int distance;
         boolean stickyInput;

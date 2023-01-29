@@ -1,6 +1,13 @@
 package crazypants.enderio.machine.buffer;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPowerConsumerEntity;
 import crazypants.enderio.machine.IoMode;
@@ -9,11 +16,6 @@ import crazypants.enderio.machine.painter.IPaintableTileEntity;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.PowerDistributor;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintableTileEntity, IInternalPowerHandler {
 
@@ -85,15 +87,13 @@ public class TileBuffer extends AbstractPowerConsumerEntity implements IPaintabl
 
     @Override
     public boolean canInsertItem(int slot, ItemStack var2, int side) {
-        return hasInventory()
-                && getIoMode(ForgeDirection.VALID_DIRECTIONS[side]).canRecieveInput()
+        return hasInventory() && getIoMode(ForgeDirection.VALID_DIRECTIONS[side]).canRecieveInput()
                 && isMachineItemValidForSlot(slot, var2);
     }
 
     @Override
     public boolean canExtractItem(int slot, ItemStack itemstack, int side) {
-        return hasInventory()
-                && getIoMode(ForgeDirection.VALID_DIRECTIONS[side]).canOutput()
+        return hasInventory() && getIoMode(ForgeDirection.VALID_DIRECTIONS[side]).canOutput()
                 && canExtractItem(slot, itemstack);
     }
 

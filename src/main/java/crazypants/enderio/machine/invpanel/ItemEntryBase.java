@@ -34,8 +34,7 @@ public class ItemEntryBase {
     }
 
     boolean equals(int itemID, int meta, NBTTagCompound nbt) {
-        return this.itemID == itemID
-                && this.meta == meta
+        return this.itemID == itemID && this.meta == meta
                 && ((this.nbt == nbt) || (this.nbt != null && this.nbt.equals(nbt)));
     }
 
@@ -45,7 +44,16 @@ public class ItemEntryBase {
 
     @Override
     public String toString() {
-        return "ItemEntryBase{" + "dbID=" + dbID + ", hash=" + hash + ", itemID=" + itemID + ", meta=" + meta + ", nbt="
-                + nbt + '}';
+        return "ItemEntryBase{" + "dbID="
+                + dbID
+                + ", hash="
+                + hash
+                + ", itemID="
+                + itemID
+                + ", meta="
+                + meta
+                + ", nbt="
+                + nbt
+                + '}';
     }
 }

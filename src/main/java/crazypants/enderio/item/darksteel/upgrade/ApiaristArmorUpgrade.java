@@ -1,20 +1,20 @@
 package crazypants.enderio.item.darksteel.upgrade;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.item.darksteel.DarkSteelItems;
 import crazypants.enderio.item.darksteel.ItemDarkSteelArmor;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class ApiaristArmorUpgrade extends AbstractUpgrade {
 
     private static String UPGRADE_NAME = "apiaristArmor";
 
-    private static final String forestryItemNames[] = {
-        "apiaristHelmet", "apiaristChest", "apiaristLegs", "apiaristBoots"
-    };
+    private static final String forestryItemNames[] = { "apiaristHelmet", "apiaristChest", "apiaristLegs",
+            "apiaristBoots" };
 
     public static final ApiaristArmorUpgrade HELMET = new ApiaristArmorUpgrade(0);
     public static final ApiaristArmorUpgrade CHEST = new ApiaristArmorUpgrade(1);

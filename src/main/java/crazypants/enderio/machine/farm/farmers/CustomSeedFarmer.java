@@ -1,11 +1,8 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import com.enderio.core.common.util.BlockCoord;
-import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.machine.farm.FarmStationContainer;
-import crazypants.enderio.machine.farm.TileFarmStation;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
@@ -13,6 +10,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.machine.farm.FarmStationContainer;
+import crazypants.enderio.machine.farm.TileFarmStation;
 
 public class CustomSeedFarmer implements IFarmerJoe {
 
@@ -161,8 +164,7 @@ public class CustomSeedFarmer implements IFarmerJoe {
 
         if (removed) {
             if (!plant(farm, worldObj, bc)) {
-                result.add(new EntityItem(
-                        worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, getSeeds().copy()));
+                result.add(new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, getSeeds().copy()));
                 worldObj.setBlock(bc.x, bc.y, bc.z, Blocks.air, 0, 1 | 2);
             }
         } else {
@@ -206,8 +208,7 @@ public class CustomSeedFarmer implements IFarmerJoe {
         Block target = getPlantedBlock();
         Block ground = worldObj.getBlock(bc.x, bc.y - 1, bc.z);
         IPlantable plantable = (IPlantable) getPlantedBlock();
-        if (target.canPlaceBlockAt(worldObj, bc.x, bc.y, bc.z)
-                && target.canBlockStay(worldObj, bc.x, bc.y, bc.z)
+        if (target.canPlaceBlockAt(worldObj, bc.x, bc.y, bc.z) && target.canBlockStay(worldObj, bc.x, bc.y, bc.z)
                 && (ground.canSustainPlant(worldObj, bc.x, bc.y - 1, bc.z, ForgeDirection.UP, plantable)
                         || ignoreSustainCheck)) {
             return true;

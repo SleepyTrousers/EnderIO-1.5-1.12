@@ -1,7 +1,8 @@
 package crazypants.enderio.conduit.geom;
 
-import crazypants.enderio.conduit.IConduit;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import crazypants.enderio.conduit.IConduit;
 
 public final class GeometryKey {
 

@@ -1,6 +1,12 @@
 package crazypants.enderio.conduit.item;
 
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.common.util.DyeColor;
+
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -8,10 +14,6 @@ import crazypants.enderio.conduit.geom.ConnectionModeGeometry;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class ItemConduitRenderer extends DefaultConduitRenderer {
 
@@ -24,16 +26,8 @@ public class ItemConduitRenderer extends DefaultConduitRenderer {
     }
 
     @Override
-    public void renderEntity(
-            ConduitBundleRenderer conduitBundleRenderer,
-            IConduitBundle te,
-            IConduit conduit,
-            double x,
-            double y,
-            double z,
-            float partialTick,
-            float worldLight,
-            RenderBlocks rb) {
+    public void renderEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x,
+            double y, double z, float partialTick, float worldLight, RenderBlocks rb) {
         super.renderEntity(conduitBundleRenderer, te, conduit, x, y, z, partialTick, worldLight, rb);
 
         IItemConduit pc = (IItemConduit) conduit;

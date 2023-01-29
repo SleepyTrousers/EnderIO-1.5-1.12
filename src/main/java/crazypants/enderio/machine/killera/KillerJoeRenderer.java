@@ -1,13 +1,5 @@
 package crazypants.enderio.machine.killera;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.CubeRenderer;
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.ForgeDirectionOffsets;
-import com.enderio.core.common.vecmath.Vector3d;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.machine.generator.zombie.ModelZombieJar;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -22,7 +14,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidTank;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.ForgeDirectionOffsets;
+import com.enderio.core.common.vecmath.Vector3d;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.machine.generator.zombie.ModelZombieJar;
 
 @SideOnly(Side.CLIENT)
 public class KillerJoeRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
@@ -98,7 +101,14 @@ public class KillerJoeRenderer extends TileEntitySpecialRenderer implements IIte
         float minV = icon.getMinV();
         float maxV = icon.getMaxV();
         ItemRenderer.renderItemIn2D(
-                Tessellator.instance, maxU, minV, minU, maxV, icon.getIconWidth(), icon.getIconHeight(), f9);
+                Tessellator.instance,
+                maxU,
+                minV,
+                minU,
+                maxV,
+                icon.getIconWidth(),
+                icon.getIconHeight(),
+                f9);
 
         GL11.glPopMatrix();
         GL11.glPopMatrix();

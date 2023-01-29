@@ -2,14 +2,8 @@ package crazypants.enderio.machine.reservoir;
 
 import static net.minecraftforge.fluids.FluidContainerRegistry.BUCKET_VOLUME;
 
-import com.enderio.core.api.common.util.ITankAccess;
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.vecmath.Vector3f;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.tool.SmartTank;
 import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -21,9 +15,19 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.vecmath.Vector3f;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.tool.SmartTank;
+
 public class TileReservoir extends TileEntityEio implements IFluidHandler, ITankAccess {
 
     enum Pos {
+
         TL(true, false),
         TR(true, true),
         BL(false, false),
@@ -172,7 +176,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
     }
 
     private FluidTankInfo[] doGetTankInfo(ForgeDirection from) {
-        return new FluidTankInfo[] {tank.getInfo()};
+        return new FluidTankInfo[] { tank.getInfo() };
     }
 
     public void setAutoEject(boolean autoEject) {
@@ -680,7 +684,7 @@ public class TileReservoir extends TileEntityEio implements IFluidHandler, ITank
 
     @Override
     public FluidTank[] getOutputTanks() {
-        return new FluidTank[] {getController().tank};
+        return new FluidTank[] { getController().tank };
     }
 
     @Override

@@ -1,9 +1,11 @@
 package crazypants.enderio.machine.capbank.network;
 
-import crazypants.enderio.machine.capbank.TileCapBank;
 import java.util.HashMap;
 import java.util.Map;
+
 import net.minecraft.world.World;
+
+import crazypants.enderio.machine.capbank.TileCapBank;
 
 public class ClientNetworkManager {
 

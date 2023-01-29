@@ -1,14 +1,11 @@
 package crazypants.enderio.tool;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.Log;
-import crazypants.enderio.api.tool.ITool;
-import crazypants.enderio.item.ItemYetaWrench;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -16,6 +13,11 @@ import net.minecraft.world.World;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
+import crazypants.enderio.api.tool.ITool;
+import crazypants.enderio.item.ItemYetaWrench;
 
 public class ToolUtil {
 
@@ -33,8 +35,7 @@ public class ToolUtil {
 
     public static boolean breakBlockWithTool(Block block, World world, int x, int y, int z, EntityPlayer entityPlayer) {
         ITool tool = ToolUtil.getEquippedTool(entityPlayer);
-        if (tool != null
-                && entityPlayer.isSneaking()
+        if (tool != null && entityPlayer.isSneaking()
                 && tool.canUse(entityPlayer.getCurrentEquippedItem(), entityPlayer, x, y, z)) {
             if (block.removedByPlayer(world, entityPlayer, x, y, z, true)) {
                 block.harvestBlock(world, entityPlayer, x, y, z, world.getBlockMetadata(x, y, z));
@@ -60,8 +61,7 @@ public class ToolUtil {
     private ToolUtil() {
 
         try {
-            Object obj = Class.forName("crazypants.enderio.tool.BuildCraftToolProvider")
-                    .newInstance();
+            Object obj = Class.forName("crazypants.enderio.tool.BuildCraftToolProvider").newInstance();
             toolProviders.add((IToolProvider) obj);
             toolImpls.add((IToolImpl) obj);
         } catch (Exception e) {

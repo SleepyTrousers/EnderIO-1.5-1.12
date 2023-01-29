@@ -1,14 +1,5 @@
 package crazypants.enderio.block;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.client.gui.GuiRepair;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -19,9 +10,20 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
+import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+
 public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipProvider {
 
-    private static final String[] anvilIconNames = new String[] {"anvil_0", "anvil_1", "anvil_2"};
+    private static final String[] anvilIconNames = new String[] { "anvil_0", "anvil_1", "anvil_2" };
 
     @SideOnly(Side.CLIENT)
     private IIcon[] anvilIcons;
@@ -65,8 +67,8 @@ public class BlockDarkSteelAnvil extends BlockAnvil implements IResourceTooltipP
     }
 
     @Override
-    public boolean onBlockActivated(
-            World w, int x, int y, int z, EntityPlayer p, int side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World w, int x, int y, int z, EntityPlayer p, int side, float hitX, float hitY,
+            float hitZ) {
         p.openGui(EnderIO.instance, GuiHandler.GUI_ID_ANVIL, w, x, y, z);
         return true;
     }

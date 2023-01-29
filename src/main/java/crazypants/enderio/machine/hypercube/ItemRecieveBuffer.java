@@ -1,13 +1,14 @@
 package crazypants.enderio.machine.hypercube;
 
-import com.enderio.core.common.util.ArrayInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.enderio.core.common.util.ArrayInventory;
+
 public class ItemRecieveBuffer extends ArrayInventory implements ISidedInventory {
 
-    private static final int[] ALL_SLOTS = new int[] {0, 1, 2, 3, 4, 5};
+    private static final int[] ALL_SLOTS = new int[] { 0, 1, 2, 3, 4, 5 };
     private boolean recieveEnabled;
 
     TileHyperCube hc;

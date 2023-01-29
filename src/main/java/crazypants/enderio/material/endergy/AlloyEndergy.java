@@ -1,12 +1,16 @@
 package crazypants.enderio.material.endergy;
 
-import crazypants.enderio.EnderIO;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.item.ItemStack;
+
 import org.apache.commons.lang3.StringUtils;
 
+import crazypants.enderio.EnderIO;
+
 public enum AlloyEndergy {
+
     CRUDE_STEEL("crudeSteel", 2.0f),
     CRYSTALLINE_ALLOY("crystallineAlloy", 6.0f),
     MELODIC_ALLOY("melodicAlloy", 5.0f),

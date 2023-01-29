@@ -13,8 +13,8 @@ public class PacketNetworkStateRequest extends PacketCapBank<PacketNetworkStateR
     }
 
     @Override
-    protected PacketNetworkStateResponse handleMessage(
-            TileCapBank te, PacketNetworkStateRequest message, MessageContext ctx) {
+    protected PacketNetworkStateResponse handleMessage(TileCapBank te, PacketNetworkStateRequest message,
+            MessageContext ctx) {
         ICapBankNetwork network = te.getNetwork();
         return network == null ? null : new PacketNetworkStateResponse(network);
     }

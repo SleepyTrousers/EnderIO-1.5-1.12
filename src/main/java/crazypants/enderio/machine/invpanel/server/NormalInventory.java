@@ -1,10 +1,12 @@
 package crazypants.enderio.machine.invpanel.server;
 
-import crazypants.enderio.conduit.item.NetworkedInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 
+import crazypants.enderio.conduit.item.NetworkedInventory;
+
 class NormalInventory extends AbstractInventory {
+
     final NetworkedInventory ni;
 
     NormalInventory(NetworkedInventory ni) {

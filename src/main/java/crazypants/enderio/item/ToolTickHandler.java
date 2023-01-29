@@ -1,17 +1,18 @@
 package crazypants.enderio.item;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.api.tool.IConduitControl;
-import crazypants.enderio.conduit.ConduitDisplayMode;
-import crazypants.enderio.network.PacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.MouseEvent;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.api.tool.IConduitControl;
+import crazypants.enderio.conduit.ConduitDisplayMode;
+import crazypants.enderio.network.PacketHandler;
 
 @SideOnly(Side.CLIENT)
 public class ToolTickHandler {

@@ -1,8 +1,10 @@
 package crazypants.util;
 
-import crazypants.enderio.Log;
 import java.lang.reflect.Method;
+
 import net.minecraft.entity.Entity;
+
+import crazypants.enderio.Log;
 
 public class BotaniaUtil {
 

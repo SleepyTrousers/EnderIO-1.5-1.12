@@ -1,20 +1,21 @@
 package crazypants.enderio.conduit.redstone;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractItemConduit;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 
 public class ItemRedstoneConduit extends AbstractItemConduit {
 
     private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-        new ItemConduitSubtype(ModObject.itemRedstoneConduit.name(), "enderio:itemRedstoneConduit"),
-        new ItemConduitSubtype(ModObject.itemRedstoneConduit.name() + "Switch", "enderio:itemRedstoneSwitch"),
-        new ItemConduitSubtype(
-                ModObject.itemRedstoneConduit.name() + "Insulated", "enderio:itemRedstoneInsulatedConduit")
-    };
+            new ItemConduitSubtype(ModObject.itemRedstoneConduit.name(), "enderio:itemRedstoneConduit"),
+            new ItemConduitSubtype(ModObject.itemRedstoneConduit.name() + "Switch", "enderio:itemRedstoneSwitch"),
+            new ItemConduitSubtype(
+                    ModObject.itemRedstoneConduit.name() + "Insulated",
+                    "enderio:itemRedstoneInsulatedConduit") };
 
     public static ItemRedstoneConduit create() {
         ItemRedstoneConduit result = new ItemRedstoneConduit();

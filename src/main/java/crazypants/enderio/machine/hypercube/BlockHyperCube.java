@@ -1,23 +1,9 @@
 package crazypants.enderio.machine.hypercube;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.util.PlayerUtil;
-import com.enderio.core.common.util.Util;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
-import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.PowerHandlerUtil;
 import java.text.NumberFormat;
 import java.util.Random;
 import java.util.UUID;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -33,22 +19,45 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.util.PlayerUtil;
+import com.enderio.core.common.util.Util;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
+import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.power.PowerHandlerUtil;
+
 public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTooltipProvider {
 
     static final NumberFormat NF = NumberFormat.getIntegerInstance();
 
     public static BlockHyperCube create() {
 
+        PacketHandler.INSTANCE
+                .registerMessage(PacketChannelList.class, PacketChannelList.class, PacketHandler.nextID(), Side.CLIENT);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketClientState.class, PacketClientState.class, PacketHandler.nextID(), Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
-                PacketChannelList.class, PacketChannelList.class, PacketHandler.nextID(), Side.CLIENT);
+                PacketAddRemoveChannel.class,
+                PacketAddRemoveChannel.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
-                PacketClientState.class, PacketClientState.class, PacketHandler.nextID(), Side.SERVER);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketAddRemoveChannel.class, PacketAddRemoveChannel.class, PacketHandler.nextID(), Side.SERVER);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketAddRemoveChannel.class, PacketAddRemoveChannel.class, PacketHandler.nextID(), Side.CLIENT);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketStoredPower.class, PacketStoredPower.class, PacketHandler.nextID(), Side.CLIENT);
+                PacketAddRemoveChannel.class,
+                PacketAddRemoveChannel.class,
+                PacketHandler.nextID(),
+                Side.CLIENT);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketStoredPower.class, PacketStoredPower.class, PacketHandler.nextID(), Side.CLIENT);
 
         BlockHyperCube result = new BlockHyperCube();
         result.init();
@@ -148,8 +157,7 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
             itemStack.setTagCompound(tag);
         }
         for (SubChannel sc : SubChannel.values()) {
-            tag.setShort("sendRecieve" + sc.ordinal(), (short)
-                    hc.getModeForChannel(sc).ordinal());
+            tag.setShort("sendRecieve" + sc.ordinal(), (short) hc.getModeForChannel(sc).ordinal());
         }
     }
 
@@ -219,8 +227,7 @@ public class BlockHyperCube extends BlockEio implements IGuiHandler, IResourceTo
             TileHyperCube cb = (TileHyperCube) te;
             cb.setEnergyStored(PowerHandlerUtil.getStoredEnergyForItem(stack));
             if (player instanceof EntityPlayerMP) {
-                cb.setOwner(PlayerUtil.getPlayerUUID(
-                        ((EntityPlayerMP) player).getGameProfile().getName()));
+                cb.setOwner(PlayerUtil.getPlayerUUID(((EntityPlayerMP) player).getGameProfile().getName()));
             }
             cb.setChannel(getChannelFromItem(stack));
             setIoOnTransciever(cb, stack);

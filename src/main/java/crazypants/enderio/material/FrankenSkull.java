@@ -1,6 +1,7 @@
 package crazypants.enderio.material;
 
 public enum FrankenSkull {
+
     ZOMBIE_ELECTRODE("skullZombieElectrode", false),
     ZOMBIE_CONTROLLER("skullZombieController", false),
     FRANKEN_ZOMBIE("skullZombieFrankenstien", "enderio:skullZombieController", true),

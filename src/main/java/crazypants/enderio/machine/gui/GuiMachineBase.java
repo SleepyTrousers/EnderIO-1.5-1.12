@@ -1,5 +1,16 @@
 package crazypants.enderio.machine.gui;
 
+import java.awt.Rectangle;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.api.common.util.IProgressTile;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.widget.GuiToolTip;
@@ -7,6 +18,7 @@ import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector4f;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
@@ -15,14 +27,6 @@ import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.SlotDefinition;
-import java.awt.Rectangle;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
-import org.lwjgl.opengl.GL11;
 
 public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends GuiContainerBaseEIO {
 
@@ -119,8 +123,8 @@ public abstract class GuiMachineBase<T extends AbstractMachineEntity> extends Gu
                     renderSlotHighlight(invSlot, PULL_COLOR);
                 } else if ((mode == IoMode.PUSH || mode == IoMode.PUSH_PULL)
                         && slotDef.isOutputSlot(invSlot.getSlotIndex())) {
-                    renderSlotHighlight(invSlot, PUSH_COLOR);
-                }
+                            renderSlotHighlight(invSlot, PUSH_COLOR);
+                        }
             }
         }
     }

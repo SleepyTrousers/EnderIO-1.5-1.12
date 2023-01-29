@@ -1,17 +1,7 @@
 package crazypants.enderio.machine.obelisk.weather;
 
-import com.enderio.core.api.common.util.IProgressTile;
-import com.enderio.core.api.common.util.ITankAccess;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractPowerConsumerEntity;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.power.Capacitors;
-import crazypants.enderio.power.ICapacitor;
 import java.awt.Color;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
@@ -26,11 +16,26 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.enderio.core.api.common.util.IProgressTile;
+import com.enderio.core.api.common.util.ITankAccess;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.AbstractPowerConsumerEntity;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.power.Capacitors;
+import crazypants.enderio.power.ICapacitor;
+
 public class TileWeatherObelisk extends AbstractPowerConsumerEntity
         implements IProgressTile, IFluidHandler, ITankAccess {
 
     public enum WeatherTask {
+
         CLEAR(Color.YELLOW) {
+
             @Override
             void complete(World world) {
                 rain(world, false);
@@ -38,6 +43,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity
             }
         },
         RAIN(new Color(120, 120, 255)) {
+
             @Override
             void complete(World world) {
                 rain(world, true);
@@ -45,6 +51,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity
             }
         },
         STORM(Color.DARK_GRAY) {
+
             @Override
             void complete(World world) {
                 rain(world, true);
@@ -173,13 +180,18 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity
             Block b = getBlockType();
             double yi = yCoord + b.getBlockBoundsMaxY() - 0.1;
             double offset = 0.3;
-            Minecraft.getMinecraft()
-                    .effectRenderer
-                    .addEffect(new EntityFluidLoadingFX(
-                            worldObj, xCoord + offset + correction, yi, zCoord + offset + correction, xf, yf, zf, c));
-            Minecraft.getMinecraft()
-                    .effectRenderer
-                    .addEffect(new EntityFluidLoadingFX(
+            Minecraft.getMinecraft().effectRenderer.addEffect(
+                    new EntityFluidLoadingFX(
+                            worldObj,
+                            xCoord + offset + correction,
+                            yi,
+                            zCoord + offset + correction,
+                            xf,
+                            yf,
+                            zf,
+                            c));
+            Minecraft.getMinecraft().effectRenderer.addEffect(
+                    new EntityFluidLoadingFX(
                             worldObj,
                             xCoord + (1 - offset) + correction,
                             yi,
@@ -188,9 +200,8 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity
                             yf,
                             zf,
                             c));
-            Minecraft.getMinecraft()
-                    .effectRenderer
-                    .addEffect(new EntityFluidLoadingFX(
+            Minecraft.getMinecraft().effectRenderer.addEffect(
+                    new EntityFluidLoadingFX(
                             worldObj,
                             xCoord + (1 - offset) + correction,
                             yi,
@@ -199,9 +210,8 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity
                             yf,
                             zf,
                             c));
-            Minecraft.getMinecraft()
-                    .effectRenderer
-                    .addEffect(new EntityFluidLoadingFX(
+            Minecraft.getMinecraft().effectRenderer.addEffect(
+                    new EntityFluidLoadingFX(
                             worldObj,
                             xCoord + offset + correction,
                             yi,
@@ -259,16 +269,13 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity
     }
 
     /**
-     * If the task can be started based on the current inventory. Does not take
-     * into account the world's weather state.
+     * If the task can be started based on the current inventory. Does not take into account the world's weather state.
      *
-     * @param task
-     *          The task to check
+     * @param task The task to check
      * @return True if the task can be started with the item in the inventory.
      */
     public boolean canStartTask(WeatherTask task) {
-        return getActiveTask() == null
-                && !WeatherTask.worldIsState(task, worldObj)
+        return getActiveTask() == null && !WeatherTask.worldIsState(task, worldObj)
                 && getStackInSlot(0) != null
                 && inputTank.getFluidAmount() >= 1000;
     }
@@ -314,8 +321,7 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity
     }
 
     private boolean isValidFluid(Fluid f) {
-        return f == EnderIO.fluidLiquidSunshine
-                || f == EnderIO.fluidCloudSeed
+        return f == EnderIO.fluidLiquidSunshine || f == EnderIO.fluidCloudSeed
                 || f == EnderIO.fluidCloudSeedConcentrated;
     }
 
@@ -374,6 +380,6 @@ public class TileWeatherObelisk extends AbstractPowerConsumerEntity
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        return new FluidTankInfo[] {inputTank.getInfo()};
+        return new FluidTankInfo[] { inputTank.getInfo() };
     }
 }

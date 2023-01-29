@@ -1,19 +1,22 @@
 package crazypants.enderio.machine.obelisk.inhibitor;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+
 import com.enderio.core.common.util.BlockCoord;
 import com.google.common.collect.Maps;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import crazypants.enderio.GuiHandler;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
-import java.util.Map;
-import java.util.Map.Entry;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 
 public class BlockInhibitorObelisk extends BlockObeliskAbstract<TileInhibitorObelisk> {
 

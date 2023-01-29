@@ -1,7 +1,19 @@
 package crazypants.enderio.teleport;
 
+import java.util.List;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+
 import cofh.api.energy.ItemEnergyContainer;
+
 import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -12,14 +24,6 @@ import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TravelSource;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import java.util.List;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
 public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTravel, IResourceTooltipProvider {
 
@@ -69,8 +73,7 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
             if (ticksSinceBlink < 0) {
                 lastBlickTick = -1;
             }
-            if (Config.travelStaffBlinkEnabled
-                    && world.isRemote
+            if (Config.travelStaffBlinkEnabled && world.isRemote
                     && ticksSinceBlink >= Config.travelStaffBlinkPauseTicks) {
                 if (TravelController.instance.doBlink(equipped, player)) {
                     player.swingItem();
@@ -92,7 +95,9 @@ public class ItemTravelStaff extends ItemEnergyContainer implements IItemOfTrave
     public void addInformation(ItemStack itemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
         super.addInformation(itemStack, par2EntityPlayer, list, par4);
         String str = PowerDisplayUtil.formatPower(getEnergyStored(itemStack)) + "/"
-                + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack)) + " " + PowerDisplayUtil.abrevation();
+                + PowerDisplayUtil.formatPower(getMaxEnergyStored(itemStack))
+                + " "
+                + PowerDisplayUtil.abrevation();
         list.add(str);
     }
 

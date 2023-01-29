@@ -53,8 +53,8 @@ public class FakeNetHandlerPlayServer extends NetHandlerPlayServer {
     public void processPlayer(C03PacketPlayer p_147347_1_) {}
 
     @Override
-    public void setPlayerLocation(
-            double p_147364_1_, double p_147364_3_, double p_147364_5_, float p_147364_7_, float p_147364_8_) {}
+    public void setPlayerLocation(double p_147364_1_, double p_147364_3_, double p_147364_5_, float p_147364_7_,
+            float p_147364_8_) {}
 
     @Override
     public void processPlayerDigging(C07PacketPlayerDigging p_147345_1_) {}

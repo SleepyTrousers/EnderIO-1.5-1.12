@@ -1,5 +1,10 @@
 package crazypants.enderio.conduit.geom;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraftforge.common.util.ForgeDirection;
+
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.gas.IGasConduit;
 import crazypants.enderio.conduit.item.IItemConduit;
@@ -8,9 +13,6 @@ import crazypants.enderio.conduit.me.IMEConduit;
 import crazypants.enderio.conduit.oc.IOCConduit;
 import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
-import java.util.HashMap;
-import java.util.Map;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class Offsets {
 

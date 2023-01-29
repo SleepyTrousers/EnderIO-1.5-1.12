@@ -1,14 +1,7 @@
 package crazypants.enderio.material;
 
-import com.enderio.core.common.util.BlockCoord;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -23,6 +16,16 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.common.util.BlockCoord;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
+
 public class BlockFusedQuartz extends BlockEio {
 
     public static int renderId;
@@ -30,54 +33,22 @@ public class BlockFusedQuartz extends BlockEio {
     private static final Type[] metaMapping = new Type[16];
 
     public enum Type {
-        FUSED_QUARTZ(
-                "fusedQuartz",
-                "enderio:fusedQuartz",
-                "enderio:fusedQuartzFrame",
-                "enderio:fusedQuartzItem",
-                false,
-                true,
-                0),
-        GLASS(
-                "fusedGlass",
-                "enderio:fusedGlass",
+
+        FUSED_QUARTZ("fusedQuartz", "enderio:fusedQuartz", "enderio:fusedQuartzFrame", "enderio:fusedQuartzItem", false,
+                true, 0),
+        GLASS("fusedGlass", "enderio:fusedGlass",
                 Config.clearGlassSameTexture ? "enderio:fusedQuartzFrame" : "enderio:fusedGlassFrame",
-                "enderio:fusedGlassItem",
-                false,
-                false,
-                0),
-        ENLIGHTENED_FUSED_QUARTZ(
-                "enlightenedFusedQuartz",
-                "enderio:fusedQuartz",
-                "enderio:fusedQuartzFrame",
-                "enderio:fusedQuartzItem",
-                true,
-                true,
-                0),
-        ENLIGHTENED_GLASS(
-                "enlightenedFusedGlass",
-                "enderio:fusedGlass",
+                "enderio:fusedGlassItem", false, false, 0),
+        ENLIGHTENED_FUSED_QUARTZ("enlightenedFusedQuartz", "enderio:fusedQuartz", "enderio:fusedQuartzFrame",
+                "enderio:fusedQuartzItem", true, true, 0),
+        ENLIGHTENED_GLASS("enlightenedFusedGlass", "enderio:fusedGlass",
                 Config.clearGlassSameTexture ? "enderio:fusedQuartzFrame" : "enderio:fusedGlassFrame",
-                "enderio:fusedGlassItem",
-                true,
-                false,
-                0),
-        DARK_FUSED_QUARTZ(
-                "darkFusedQuartz",
-                "enderio:fusedQuartz",
-                "enderio:fusedQuartzFrame",
-                "enderio:fusedQuartzItem",
-                false,
-                true,
-                255),
-        DARK_GLASS(
-                "darkFusedGlass",
-                "enderio:fusedGlass",
+                "enderio:fusedGlassItem", true, false, 0),
+        DARK_FUSED_QUARTZ("darkFusedQuartz", "enderio:fusedQuartz", "enderio:fusedQuartzFrame",
+                "enderio:fusedQuartzItem", false, true, 255),
+        DARK_GLASS("darkFusedGlass", "enderio:fusedGlass",
                 Config.clearGlassSameTexture ? "enderio:fusedQuartzFrame" : "enderio:fusedGlassFrame",
-                "enderio:fusedGlassItem",
-                false,
-                false,
-                255);
+                "enderio:fusedGlassItem", false, false, 255);
 
         final String unlocalisedName;
         final String blockIcon;
@@ -88,14 +59,8 @@ public class BlockFusedQuartz extends BlockEio {
         final int lightOpacity;
         int connectedTextureMask;
 
-        private Type(
-                String unlocalisedName,
-                String blockIcon,
-                String frameIcon,
-                String itemIcon,
-                boolean enlightened,
-                boolean blastResistance,
-                int lightOpacity) {
+        private Type(String unlocalisedName, String blockIcon, String frameIcon, String itemIcon, boolean enlightened,
+                boolean blastResistance, int lightOpacity) {
             this.unlocalisedName = unlocalisedName;
             this.frameIcon = frameIcon;
             this.blockIcon = blockIcon;
@@ -159,15 +124,8 @@ public class BlockFusedQuartz extends BlockEio {
     }
 
     @Override
-    public float getExplosionResistance(
-            Entity par1Entity,
-            World world,
-            int x,
-            int y,
-            int z,
-            double explosionX,
-            double explosionY,
-            double explosionZ) {
+    public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX,
+            double explosionY, double explosionZ) {
         int meta = world.getBlockMetadata(x, y, z);
         Type type = Type.byMeta(meta);
         if (type.blastResistance) {
@@ -193,17 +151,17 @@ public class BlockFusedQuartz extends BlockEio {
     }
 
     // TODO:1.7 this makes it go splat
-    //  @Override
-    //  @SideOnly(Side.CLIENT)
-    //  public int getRenderBlockPass() {
-    //    return 1;
-    //  }
+    // @Override
+    // @SideOnly(Side.CLIENT)
+    // public int getRenderBlockPass() {
+    // return 1;
+    // }
     //
-    //  @Override
-    //  public boolean canRenderInPass(int pass) {
-    //    FusedQuartzRenderer.renderPass = pass;
-    //    return true;
-    //  }
+    // @Override
+    // public boolean canRenderInPass(int pass) {
+    // FusedQuartzRenderer.renderPass = pass;
+    // return true;
+    // }
 
     @Override
     public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
@@ -250,8 +208,8 @@ public class BlockFusedQuartz extends BlockEio {
     }
 
     @Override
-    public boolean isBlockSolid(
-            IBlockAccess p_149747_1_, int p_149747_2_, int p_149747_3_, int p_149747_4_, int p_149747_5_) {
+    public boolean isBlockSolid(IBlockAccess p_149747_1_, int p_149747_2_, int p_149747_3_, int p_149747_4_,
+            int p_149747_5_) {
         return true;
     }
 

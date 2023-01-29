@@ -1,17 +1,19 @@
 package crazypants.enderio.machine.slicensplice;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
 import java.util.Random;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.AbstractMachineBlock;
 
 public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice> {
 
@@ -99,8 +101,8 @@ public class BlockSliceAndSplice extends AbstractMachineBlock<TileSliceAndSplice
                     vx += front == ForgeDirection.WEST ? -v : v;
                 }
 
-                EntityFX fx =
-                        Minecraft.getMinecraft().renderGlobal.doSpawnParticle("smoke", px, y + 0.5, pz, vx, 0, vz);
+                EntityFX fx = Minecraft.getMinecraft().renderGlobal
+                        .doSpawnParticle("smoke", px, y + 0.5, pz, vx, 0, vz);
                 if (fx != null) {
                     fx.setRBGColorF(
                             0.3f + (rand.nextFloat() * 0.1f),

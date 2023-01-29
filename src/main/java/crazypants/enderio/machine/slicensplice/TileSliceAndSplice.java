@@ -1,5 +1,14 @@
 package crazypants.enderio.machine.slicensplice;
 
+import java.util.List;
+
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemShears;
+import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.common.util.FakePlayerFactory;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractPoweredTaskEntity;
@@ -10,19 +19,15 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
-import java.util.List;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemAxe;
-import net.minecraft.item.ItemShears;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.common.util.FakePlayerFactory;
 
 public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
 
     public static final int POWER_PER_TICK_ONE = Config.sliceAndSpliceLevelOnePowerPerTickRF;
     private static final BasicCapacitor CAP_ONE = new BasicCapacitor(
-            0, POWER_PER_TICK_ONE * 2, Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_ONE);
+            0,
+            POWER_PER_TICK_ONE * 2,
+            Capacitors.BASIC_CAPACITOR.capacitor.getMaxEnergyStored(),
+            POWER_PER_TICK_ONE);
 
     public static final int POWER_PER_TICK_TWO = Config.sliceAndSpliceLevelTwoPowerPerTickRF;
     private static final BasicCapacitor CAP_TWO = new BasicCapacitor(
@@ -47,11 +52,17 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
 
     public static final int POWER_PER_TICK_FIVE = Config.sliceAndSpliceLevelFivePowerPerTickRF;
     private static final BasicCapacitor CAP_FIVE = new BasicCapacitor(
-            0, POWER_PER_TICK_FIVE * 2, Capacitors.ENDER_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_FIVE);
+            0,
+            POWER_PER_TICK_FIVE * 2,
+            Capacitors.ENDER_CAPACITOR.capacitor.getMaxEnergyStored(),
+            POWER_PER_TICK_FIVE);
 
     public static final int POWER_PER_TICK_SIX = Config.sliceAndSpliceLevelSixPowerPerTickRF;
     private static final BasicCapacitor CAP_SIX = new BasicCapacitor(
-            0, POWER_PER_TICK_SIX * 2, Capacitors.STELLAR_CAPACITOR.capacitor.getMaxEnergyStored(), POWER_PER_TICK_SIX);
+            0,
+            POWER_PER_TICK_SIX * 2,
+            Capacitors.STELLAR_CAPACITOR.capacitor.getMaxEnergyStored(),
+            POWER_PER_TICK_SIX);
 
     public static final int POWER_PER_TICK_SEVEN = Config.sliceAndSpliceLevelSevenPowerPerTickRF;
     private static final BasicCapacitor CAP_SEVEN = new BasicCapacitor(
@@ -171,8 +182,8 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
 
     private EntityLivingBase getFakePlayer() {
         if (fakePlayer == null) {
-            fakePlayer = FakePlayerFactory.getMinecraft(
-                    MinecraftServer.getServer().worldServerForDimension(worldObj.provider.dimensionId));
+            fakePlayer = FakePlayerFactory
+                    .getMinecraft(MinecraftServer.getServer().worldServerForDimension(worldObj.provider.dimensionId));
         }
         return fakePlayer;
     }
@@ -215,16 +226,16 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
                 }
             }
         }
-        List<IMachineRecipe> recipes = MachineRecipeRegistry.instance.getRecipesForInput(
-                getMachineName(), MachineRecipeInput.create(slot, itemstack));
+        List<IMachineRecipe> recipes = MachineRecipeRegistry.instance
+                .getRecipesForInput(getMachineName(), MachineRecipeInput.create(slot, itemstack));
         if (numSlotsFilled == 0 && !recipes.isEmpty()) {
             return true;
         }
         return isValidInputForAlloyRecipe(slot, itemstack, numSlotsFilled, recipes);
     }
 
-    private boolean isValidInputForAlloyRecipe(
-            int slot, ItemStack itemstack, int numSlotsFilled, List<IMachineRecipe> recipes) {
+    private boolean isValidInputForAlloyRecipe(int slot, ItemStack itemstack, int numSlotsFilled,
+            List<IMachineRecipe> recipes) {
 
         ItemStack[] resultInv = new ItemStack[slotDefinition.getNumInputSlots()];
         for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot(); i++) {
@@ -249,9 +260,8 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
 
     private boolean isItemAlreadyInASlot(ItemStack itemstack) {
         ItemStack currentStackType = null;
-        for (int i = slotDefinition.getMinInputSlot();
-                i <= slotDefinition.getMaxInputSlot() && currentStackType == null;
-                i++) {
+        for (int i = slotDefinition.getMinInputSlot(); i <= slotDefinition.getMaxInputSlot()
+                && currentStackType == null; i++) {
             currentStackType = inventory[i];
             if (currentStackType != null && currentStackType.isItemEqual(itemstack)) {
                 return true;

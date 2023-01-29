@@ -7,13 +7,8 @@ public class BasicSoulBinderRecipe extends AbstractSoulBinderRecipe {
     private ItemStack inputStack;
     private ItemStack outputStack;
 
-    public BasicSoulBinderRecipe(
-            ItemStack inputStack,
-            ItemStack outputStack,
-            int energyRequired,
-            int xpRequired,
-            String uid,
-            String... entityNames) {
+    public BasicSoulBinderRecipe(ItemStack inputStack, ItemStack outputStack, int energyRequired, int xpRequired,
+            String uid, String... entityNames) {
         super(energyRequired, xpRequired, uid, entityNames);
         this.inputStack = inputStack.copy();
         this.outputStack = outputStack.copy();

@@ -20,7 +20,10 @@ public class GrindingMultiplierNBT implements IGrindingMultiplier {
     public static GrindingMultiplierNBT readFromNBT(NBTTagCompound nbtRoot) {
         if (nbtRoot.hasKey(CM) && nbtRoot.hasKey(PM) && nbtRoot.hasKey(GM) && nbtRoot.hasKey(DMJ)) {
             return new GrindingMultiplierNBT(
-                    nbtRoot.getFloat(CM), nbtRoot.getFloat(PM), nbtRoot.getFloat(GM), nbtRoot.getInteger(DMJ));
+                    nbtRoot.getFloat(CM),
+                    nbtRoot.getFloat(PM),
+                    nbtRoot.getFloat(GM),
+                    nbtRoot.getInteger(DMJ));
         }
         return null;
     }
@@ -34,8 +37,8 @@ public class GrindingMultiplierNBT implements IGrindingMultiplier {
         }
     }
 
-    protected GrindingMultiplierNBT(
-            float chanceMultiplier, float powerMultiplier, float grindingMultiplier, int durationMJ) {
+    protected GrindingMultiplierNBT(float chanceMultiplier, float powerMultiplier, float grindingMultiplier,
+            int durationMJ) {
         this.chanceMultiplier = chanceMultiplier;
         this.powerMultiplier = powerMultiplier;
         this.grindingMultiplier = grindingMultiplier;

@@ -4,7 +4,9 @@ public interface IDarkSteelItem {
 
     int getIngotsRequiredForFullRepair();
 
-    public interface IEndSteelItem extends IDarkSteelItem {}
+    public interface IEndSteelItem extends IDarkSteelItem {
+    }
 
-    public interface IStellarItem extends IEndSteelItem {}
+    public interface IStellarItem extends IEndSteelItem {
+    }
 }

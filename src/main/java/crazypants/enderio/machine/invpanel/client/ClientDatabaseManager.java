@@ -1,10 +1,11 @@
 package crazypants.enderio.machine.invpanel.client;
 
+import java.util.HashMap;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
 import crazypants.enderio.Log;
-import java.util.HashMap;
 
 public class ClientDatabaseManager {
 
@@ -14,8 +15,7 @@ public class ClientDatabaseManager {
         FMLCommonHandler.instance().bus().register(this);
     }
 
-    private final HashMap<Integer, InventoryDatabaseClient> dbRegistry =
-            new HashMap<Integer, InventoryDatabaseClient>();
+    private final HashMap<Integer, InventoryDatabaseClient> dbRegistry = new HashMap<Integer, InventoryDatabaseClient>();
 
     public InventoryDatabaseClient getOrCreateDatabase(int generation) {
         InventoryDatabaseClient db = dbRegistry.get(generation);

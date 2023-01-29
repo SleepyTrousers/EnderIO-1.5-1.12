@@ -1,5 +1,8 @@
 package crazypants.enderio.conduit.me;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+
 import appeng.api.AEApi;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.AbstractItemConduit;
@@ -7,15 +10,12 @@ import crazypants.enderio.conduit.ConduitDisplayMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
 import crazypants.enderio.gui.IconEIO;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 
 public class ItemMEConduit extends AbstractItemConduit {
 
     private static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-        new ItemConduitSubtype(ModObject.itemMEConduit.name(), "enderio:itemMeConduit"),
-        new ItemConduitSubtype(ModObject.itemMEConduit.name() + "Dense", "enderio:itemMeConduitDense")
-    };
+            new ItemConduitSubtype(ModObject.itemMEConduit.name(), "enderio:itemMeConduit"),
+            new ItemConduitSubtype(ModObject.itemMEConduit.name() + "Dense", "enderio:itemMeConduitDense") };
 
     public static ItemMEConduit create() {
         ItemMEConduit result = new ItemMEConduit();

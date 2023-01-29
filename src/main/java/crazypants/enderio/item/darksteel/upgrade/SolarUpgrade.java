@@ -2,19 +2,22 @@ package crazypants.enderio.item.darksteel.upgrade;
 
 import static org.lwjgl.opengl.GL11.glDepthMask;
 
-import com.enderio.core.client.render.RenderUtil;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.RenderUtil;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
 
 public class SolarUpgrade extends AbstractUpgrade {
 
@@ -22,12 +25,18 @@ public class SolarUpgrade extends AbstractUpgrade {
 
     private static final String UPGRADE_NAME = "speedBoost";
 
-    public static final SolarUpgrade SOLAR_ONE =
-            new SolarUpgrade("enderio.darksteel.upgrade.solar_one", (byte) 1, Config.darkSteelSolarOneCost);
-    public static final SolarUpgrade SOLAR_TWO =
-            new SolarUpgrade("enderio.darksteel.upgrade.solar_two", (byte) 2, Config.darkSteelSolarTwoCost);
-    public static final SolarUpgrade SOLAR_THREE =
-            new SolarUpgrade("enderio.darksteel.upgrade.solar_three", (byte) 3, Config.darkSteelSolarThreeCost);
+    public static final SolarUpgrade SOLAR_ONE = new SolarUpgrade(
+            "enderio.darksteel.upgrade.solar_one",
+            (byte) 1,
+            Config.darkSteelSolarOneCost);
+    public static final SolarUpgrade SOLAR_TWO = new SolarUpgrade(
+            "enderio.darksteel.upgrade.solar_two",
+            (byte) 2,
+            Config.darkSteelSolarTwoCost);
+    public static final SolarUpgrade SOLAR_THREE = new SolarUpgrade(
+            "enderio.darksteel.upgrade.solar_three",
+            (byte) 3,
+            Config.darkSteelSolarThreeCost);
 
     private Render render;
 
@@ -62,8 +71,7 @@ public class SolarUpgrade extends AbstractUpgrade {
 
     @Override
     public boolean canAddToItem(ItemStack stack) {
-        if (stack == null
-                || !DarkSteelItems.isArmorPart(stack.getItem(), 0)
+        if (stack == null || !DarkSteelItems.isArmorPart(stack.getItem(), 0)
                 || !EnergyUpgrade.itemHasAnyPowerUpgrade(stack)) {
             return false;
         }

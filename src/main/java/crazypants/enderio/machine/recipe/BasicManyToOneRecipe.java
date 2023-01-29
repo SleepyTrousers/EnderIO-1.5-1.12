@@ -1,13 +1,15 @@
 package crazypants.enderio.machine.recipe;
 
-import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.util.EE3Util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+
+import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.util.EE3Util;
 
 public class BasicManyToOneRecipe implements IManyToOneRecipe {
 

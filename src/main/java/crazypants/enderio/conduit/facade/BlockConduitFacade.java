@@ -1,11 +1,5 @@
 package crazypants.enderio.conduit.facade;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.machine.painter.IPaintedBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -14,6 +8,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.machine.painter.IPaintedBlock;
 
 public class BlockConduitFacade extends BlockEio implements IPaintedBlock {
 
@@ -78,8 +79,7 @@ public class BlockConduitFacade extends BlockEio implements IPaintedBlock {
         if (blockOverride != null) {
             try { // work around for Issue #589
                 return blockOverride.colorMultiplier(par1IBlockAccess, par2, par3, par4);
-            } catch (Exception e) {
-            }
+            } catch (Exception e) {}
         }
         return super.colorMultiplier(par1IBlockAccess, par2, par3, par4);
     }

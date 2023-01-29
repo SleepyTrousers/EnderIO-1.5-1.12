@@ -1,13 +1,7 @@
 package crazypants.enderio.machine.vat;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.network.PacketHandler;
 import java.util.Random;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntitySmokeFX;
@@ -19,17 +13,25 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.network.PacketHandler;
+
 public class BlockVat extends AbstractMachineBlock<TileVat> {
 
     public static int renderId;
 
     public static BlockVat create() {
-        PacketHandler.INSTANCE.registerMessage(
-                PacketTanks.class, PacketTanks.class, PacketHandler.nextID(), Side.CLIENT);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketVatProgress.class, PacketVatProgress.class, PacketHandler.nextID(), Side.CLIENT);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketDumpTank.class, PacketDumpTank.class, PacketHandler.nextID(), Side.SERVER);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketTanks.class, PacketTanks.class, PacketHandler.nextID(), Side.CLIENT);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketVatProgress.class, PacketVatProgress.class, PacketHandler.nextID(), Side.CLIENT);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketDumpTank.class, PacketDumpTank.class, PacketHandler.nextID(), Side.SERVER);
         BlockVat res = new BlockVat();
         res.init();
         return res;
@@ -127,8 +129,8 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(
-            IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {
+    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_,
+            int p_149646_5_) {
         return true;
     }
 
@@ -159,7 +161,9 @@ public class BlockVat extends AbstractMachineBlock<TileVat> {
                 EffectRenderer er = Minecraft.getMinecraft().effectRenderer;
                 EntitySmokeFX fx = new EntitySmokeFX(world, pX, pY, pZ, 1, 1, 1);
                 fx.setRBGColorF(
-                        1 - (rand.nextFloat() * 0.2f), 1 - (rand.nextFloat() * 0.1f), 1 - (rand.nextFloat() * 0.2f));
+                        1 - (rand.nextFloat() * 0.2f),
+                        1 - (rand.nextFloat() * 0.1f),
+                        1 - (rand.nextFloat() * 0.2f));
                 fx.setVelocity(velX, -0.06, velZ);
                 er.addEffect(fx);
             }

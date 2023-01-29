@@ -1,18 +1,21 @@
 package crazypants.enderio.rail;
 
-import com.enderio.core.common.vecmath.Vector3d;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+
 import mods.railcraft.api.carts.CartTools;
 import mods.railcraft.api.carts.ILinkageManager;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.vecmath.Vector3d;
 
 public class RailcraftLinkUtil implements ICartLinkUtil {
 
@@ -24,8 +27,7 @@ public class RailcraftLinkUtil implements ICartLinkUtil {
 
         try {
             directionalClass = Class.forName("mods.railcraft.common.carts.IDirectionalCart");
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
     }
 
     @Override
@@ -134,9 +136,7 @@ public class RailcraftLinkUtil implements ICartLinkUtil {
             return;
         }
         data.setLong(timeKey, curTime);
-        data.setString(
-                prefix + "Link",
-                linkedCart == null ? "null" : linkedCart.getPersistentID().toString());
+        data.setString(prefix + "Link", linkedCart == null ? "null" : linkedCart.getPersistentID().toString());
     }
 
     public UUID getLinkA(EntityMinecart cart) {

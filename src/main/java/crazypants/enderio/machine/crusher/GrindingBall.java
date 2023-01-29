@@ -1,7 +1,8 @@
 package crazypants.enderio.machine.crusher;
 
-import crazypants.enderio.machine.recipe.RecipeInput;
 import net.minecraft.item.ItemStack;
+
+import crazypants.enderio.machine.recipe.RecipeInput;
 
 public class GrindingBall extends RecipeInput implements IGrindingMultiplier {
 

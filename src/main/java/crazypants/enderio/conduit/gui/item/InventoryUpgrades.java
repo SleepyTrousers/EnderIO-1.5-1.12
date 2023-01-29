@@ -1,12 +1,13 @@
 package crazypants.enderio.conduit.gui.item;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.item.IItemConduit;
-import crazypants.enderio.conduit.item.filter.IItemFilterUpgrade;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.item.IItemConduit;
+import crazypants.enderio.conduit.item.filter.IItemFilterUpgrade;
 
 public class InventoryUpgrades implements IInventory {
 

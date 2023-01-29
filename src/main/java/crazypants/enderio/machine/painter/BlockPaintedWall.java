@@ -1,14 +1,8 @@
 package crazypants.enderio.machine.painter;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.MachineRecipeRegistry;
 import java.util.List;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockWall;
 import net.minecraft.block.ITileEntityProvider;
@@ -26,6 +20,14 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.MachineRecipeRegistry;
 
 public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, IPaintedBlock {
 
@@ -48,7 +50,8 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
     private void init() {
         GameRegistry.registerBlock(this, BlockItemPaintedWall.class, ModObject.blockPaintedWall.unlocalisedName);
         GameRegistry.registerTileEntity(
-                TileEntityPaintedBlock.class, ModObject.blockPaintedWall.unlocalisedName + "TileEntity");
+                TileEntityPaintedBlock.class,
+                ModObject.blockPaintedWall.unlocalisedName + "TileEntity");
         MachineRecipeRegistry.instance.registerRecipe(ModObject.blockPainter.unlocalisedName, new PainterTemplate());
     }
 
@@ -58,7 +61,7 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
         return result;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, List list) {
@@ -70,8 +73,8 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
     public boolean addHitEffects(World world, MovingObjectPosition target, EffectRenderer effectRenderer) {
         IIcon tex = null;
 
-        TileEntityPaintedBlock cb =
-                (TileEntityPaintedBlock) world.getTileEntity(target.blockX, target.blockY, target.blockZ);
+        TileEntityPaintedBlock cb = (TileEntityPaintedBlock) world
+                .getTileEntity(target.blockX, target.blockY, target.blockZ);
         Block b = cb.getSourceBlock();
         if (b != null) {
             tex = b.getIcon(ForgeDirection.NORTH.ordinal(), cb.getSourceBlockMetadata());
@@ -97,8 +100,16 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
                     double d2 = z + (l1 + 0.5D) / b0;
                     int i2 = rand.nextInt(6);
                     EntityDiggingFX fx = new EntityDiggingFX(
-                                    world, d0, d1, d2, d0 - x - 0.5D, d1 - y - 0.5D, d2 - z - 0.5D, this, i2, 0)
-                            .applyColourMultiplier(x, y, z);
+                            world,
+                            d0,
+                            d1,
+                            d2,
+                            d0 - x - 0.5D,
+                            d1 - y - 0.5D,
+                            d2 - z - 0.5D,
+                            this,
+                            i2,
+                            0).applyColourMultiplier(x, y, z);
                     fx.setParticleIcon(tex);
                     effectRenderer.addEffect(fx);
                 }
@@ -108,19 +119,16 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
     }
 
     @SideOnly(Side.CLIENT)
-    private void addBlockHitEffects(
-            World world, EffectRenderer effectRenderer, int x, int y, int z, int side, IIcon tex) {
+    private void addBlockHitEffects(World world, EffectRenderer effectRenderer, int x, int y, int z, int side,
+            IIcon tex) {
         float f = 0.1F;
-        double d0 = x
-                + rand.nextDouble() * (getBlockBoundsMaxX() - getBlockBoundsMinX() - f * 2.0F)
+        double d0 = x + rand.nextDouble() * (getBlockBoundsMaxX() - getBlockBoundsMinX() - f * 2.0F)
                 + f
                 + getBlockBoundsMinX();
-        double d1 = y
-                + rand.nextDouble() * (getBlockBoundsMaxY() - getBlockBoundsMinY() - f * 2.0F)
+        double d1 = y + rand.nextDouble() * (getBlockBoundsMaxY() - getBlockBoundsMinY() - f * 2.0F)
                 + f
                 + getBlockBoundsMinY();
-        double d2 = z
-                + rand.nextDouble() * (getBlockBoundsMaxZ() - getBlockBoundsMinZ() - f * 2.0F)
+        double d2 = z + rand.nextDouble() * (getBlockBoundsMaxZ() - getBlockBoundsMinZ() - f * 2.0F)
                 + f
                 + getBlockBoundsMinZ();
         if (side == 0) {
@@ -263,10 +271,10 @@ public class BlockPaintedWall extends BlockWall implements ITileEntityProvider, 
         @Override
         public ResultStack[] getCompletedResult(float chance, MachineRecipeInput... inputs) {
             ItemStack paintSource = MachineRecipeInput.getInputForSlot(1, inputs);
-            return new ResultStack[] {
-                new ResultStack(createItemStackForSourceBlock(
-                        Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage()))
-            };
+            return new ResultStack[] { new ResultStack(
+                    createItemStackForSourceBlock(
+                            Block.getBlockFromItem(paintSource.getItem()),
+                            paintSource.getItemDamage())) };
         }
     }
 }

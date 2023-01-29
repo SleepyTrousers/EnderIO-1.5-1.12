@@ -1,14 +1,7 @@
 package crazypants.enderio.conduit.item.filter;
 
-import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.item.FilterRegister;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,6 +10,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
+
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.item.FilterRegister;
 
 public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
 
@@ -79,7 +82,7 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
     }
 
     @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         for (int j = 0; j < 2; ++j) {
@@ -96,8 +99,9 @@ public class ItemBasicItemFilter extends Item implements IItemFilterUpgrade {
                 SpecialTooltipHandler.addShowDetailsTooltip(par3List);
             } else {
                 par3List.add(EnumChatFormatting.ITALIC + EnderIO.lang.localize("itemConduitFilterUpgrade.configured"));
-                par3List.add(EnumChatFormatting.ITALIC
-                        + EnderIO.lang.localize("itemConduitFilterUpgrade.clearConfigMethod"));
+                par3List.add(
+                        EnumChatFormatting.ITALIC
+                                + EnderIO.lang.localize("itemConduitFilterUpgrade.clearConfigMethod"));
             }
         } else {
             par3List.add(EnderIO.lang.localize("itemConduitFilterUpgrade"));

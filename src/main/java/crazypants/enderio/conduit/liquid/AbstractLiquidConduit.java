@@ -1,19 +1,10 @@
 package crazypants.enderio.conduit.liquid;
 
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.DyeColor;
-import com.enderio.core.common.util.FluidUtil;
-import crazypants.enderio.conduit.AbstractConduit;
-import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.machine.reservoir.TileReservoir;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -21,12 +12,24 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.util.FluidUtil;
+
+import crazypants.enderio.conduit.AbstractConduit;
+import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.conduit.ConnectionMode;
+import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.machine.reservoir.TileReservoir;
+
 public abstract class AbstractLiquidConduit extends AbstractConduit implements ILiquidConduit {
 
-    protected final EnumMap<ForgeDirection, RedstoneControlMode> extractionModes =
-            new EnumMap<ForgeDirection, RedstoneControlMode>(ForgeDirection.class);
-    protected final EnumMap<ForgeDirection, DyeColor> extractionColors =
-            new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, RedstoneControlMode> extractionModes = new EnumMap<ForgeDirection, RedstoneControlMode>(
+            ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, DyeColor> extractionColors = new EnumMap<ForgeDirection, DyeColor>(
+            ForgeDirection.class);
 
     protected final Map<ForgeDirection, Integer> externalRedstoneSignals = new HashMap<ForgeDirection, Integer>();
     protected boolean redstoneStateDirty = true;
@@ -37,8 +40,7 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
     }
 
     public IFluidHandler getExternalHandler(ForgeDirection direction) {
-        IFluidHandler con =
-                getExternalFluidHandler(getBundle().getWorld(), getLocation().getLocation(direction));
+        IFluidHandler con = getExternalFluidHandler(getBundle().getWorld(), getLocation().getLocation(direction));
         return (con != null && !(con instanceof IConduitBundle)) ? con : null;
     }
 
@@ -56,11 +58,11 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
         // it causes issues with not conecting to empty tanks such as dim. trans +
         // BC fluid pipes, so I am removing it for now.
 
-        //    FluidTankInfo[] info = h.getTankInfo(direction.getOpposite());
-        //    if(info == null) {
-        //      return false;
-        //    }
-        //    return  info.length > 0;
+        // FluidTankInfo[] info = h.getTankInfo(direction.getOpposite());
+        // if(info == null) {
+        // return false;
+        // }
+        // return info.length > 0;
         return true;
     }
 
@@ -194,10 +196,8 @@ public abstract class AbstractLiquidConduit extends AbstractConduit implements I
 
     @Override
     protected void writeTypeSettingsToNbt(ForgeDirection dir, NBTTagCompound dataRoot) {
-        dataRoot.setShort(
-                "extractionSignalColor", (short) getExtractionSignalColor(dir).ordinal());
-        dataRoot.setShort(
-                "extractionRedstoneMode", (short) getExtractionRedstoneMode(dir).ordinal());
+        dataRoot.setShort("extractionSignalColor", (short) getExtractionSignalColor(dir).ordinal());
+        dataRoot.setShort("extractionRedstoneMode", (short) getExtractionRedstoneMode(dir).ordinal());
     }
 
     @Override

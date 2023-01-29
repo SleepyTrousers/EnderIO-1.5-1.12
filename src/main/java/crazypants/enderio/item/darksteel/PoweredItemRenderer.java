@@ -1,17 +1,21 @@
 package crazypants.enderio.item.darksteel;
 
-import cofh.api.energy.IEnergyContainerItem;
-import com.enderio.core.client.render.ColorUtil;
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.vecmath.Vector4f;
-import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 import java.awt.Color;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
+
+import cofh.api.energy.IEnergyContainerItem;
+
+import com.enderio.core.client.render.ColorUtil;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.vecmath.Vector4f;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
 
 public class PoweredItemRenderer implements IItemRenderer {
 

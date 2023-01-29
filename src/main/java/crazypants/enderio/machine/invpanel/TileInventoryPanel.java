@@ -1,6 +1,20 @@
 package crazypants.enderio.machine.invpanel;
 
+import java.util.ArrayList;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
+
 import com.enderio.core.api.common.util.ITankAccess;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.TileConduitBundle;
@@ -19,17 +33,6 @@ import crazypants.enderio.machine.invpanel.client.InventoryDatabaseClient;
 import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.tool.SmartTank;
-import java.util.ArrayList;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileInventoryPanel extends AbstractMachineEntity implements IFluidHandler, ITankAccess, IHasNutrientTank {
 
@@ -165,8 +168,8 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
 
         ItemConduitNetwork icn = null;
 
-        TileEntity te =
-                worldObj.getTileEntity(xCoord + backside.offsetX, yCoord + backside.offsetY, zCoord + backside.offsetZ);
+        TileEntity te = worldObj
+                .getTileEntity(xCoord + backside.offsetX, yCoord + backside.offsetY, zCoord + backside.offsetZ);
         if (te instanceof TileConduitBundle) {
             TileConduitBundle teCB = (TileConduitBundle) te;
             ItemConduit conduit = teCB.getConduit(ItemConduit.class);
@@ -259,8 +262,8 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
 
     public void addStoredCraftingRecipe(StoredCraftingRecipe recipe) {
         if (worldObj != null && worldObj.isRemote) {
-            PacketHandler.INSTANCE.sendToServer(
-                    new PacketStoredCraftingRecipe(PacketStoredCraftingRecipe.ACTION_ADD, 0, recipe));
+            PacketHandler.INSTANCE
+                    .sendToServer(new PacketStoredCraftingRecipe(PacketStoredCraftingRecipe.ACTION_ADD, 0, recipe));
         } else {
             storedCraftingRecipes.add(recipe);
             markDirty();
@@ -290,13 +293,15 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
             } else if (this.extractionDisabled != extractionDisabled) {
                 this.extractionDisabled = extractionDisabled;
                 PacketHandler.INSTANCE.sendToDimension(
-                        new PacketUpdateExtractionDisabled(this, extractionDisabled), worldObj.provider.dimensionId);
+                        new PacketUpdateExtractionDisabled(this, extractionDisabled),
+                        worldObj.provider.dimensionId);
             }
         }
     }
 
     /**
      * This is called by PacketUpdateExtractionDisabled on the client side
+     * 
      * @param extractionDisabled if extraction is disabled
      */
     void updateExtractionDisabled(boolean extractionDisabled) {
@@ -336,9 +341,8 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
         storedCraftingRecipes.clear();
         NBTTagList recipesNBT = (NBTTagList) nbtRoot.getTag("craftingRecipes");
         if (recipesNBT != null) {
-            for (int idx = 0;
-                    idx < recipesNBT.tagCount() && storedCraftingRecipes.size() < MAX_STORED_CRAFTING_RECIPES;
-                    idx++) {
+            for (int idx = 0; idx < recipesNBT.tagCount()
+                    && storedCraftingRecipes.size() < MAX_STORED_CRAFTING_RECIPES; idx++) {
                 NBTTagCompound recipeNBT = recipesNBT.getCompoundTagAt(idx);
                 StoredCraftingRecipe recipe = new StoredCraftingRecipe();
                 if (recipe.readFromNBT(recipeNBT)) {
@@ -422,7 +426,7 @@ public class TileInventoryPanel extends AbstractMachineEntity implements IFluidH
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
         if (from == getIODirection()) {
-            return new FluidTankInfo[] {fuelTank.getInfo()};
+            return new FluidTankInfo[] { fuelTank.getInfo() };
         } else {
             return new FluidTankInfo[0];
         }

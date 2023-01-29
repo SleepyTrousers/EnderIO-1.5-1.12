@@ -1,8 +1,17 @@
 package crazypants.enderio.machine.transceiver.gui;
 
+import java.awt.Color;
+import java.awt.Point;
+
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.api.client.gui.ITabPanel;
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.render.ColorUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gui.item.BasicItemFilterGui;
 import crazypants.enderio.conduit.gui.item.IItemFilterContainer;
@@ -11,11 +20,6 @@ import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.transceiver.PacketItemFilter;
 import crazypants.enderio.machine.transceiver.TileTransceiver;
 import crazypants.enderio.network.PacketHandler;
-import java.awt.Color;
-import java.awt.Point;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import org.lwjgl.opengl.GL11;
 
 public class FilterTab implements ITabPanel {
 
@@ -49,7 +53,10 @@ public class FilterTab implements ITabPanel {
                 20);
 
         sendRecB = MultiIconButton.createRightArrowButton(
-                parent, 8888, container.getFilterOffset().x + 79, container.getFilterOffset().y - 20);
+                parent,
+                8888,
+                container.getFilterOffset().x + 79,
+                container.getFilterOffset().y - 20);
         sendRecB.setSize(10, 16);
     }
 

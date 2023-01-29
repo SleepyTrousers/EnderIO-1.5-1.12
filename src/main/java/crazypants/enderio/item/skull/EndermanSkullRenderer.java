@@ -1,12 +1,5 @@
 package crazypants.enderio.item.skull;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.CubeRenderer;
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.client.render.VertexRotation;
-import com.enderio.core.common.vecmath.Vector3d;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import crazypants.enderio.EnderIO;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -16,7 +9,17 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.client.render.VertexRotation;
+import com.enderio.core.common.vecmath.Vector3d;
+
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import crazypants.enderio.EnderIO;
 
 public class EndermanSkullRenderer implements ISimpleBlockRenderingHandler, IItemRenderer {
 
@@ -30,8 +33,8 @@ public class EndermanSkullRenderer implements ISimpleBlockRenderingHandler, IIte
     }
 
     @Override
-    public boolean renderWorldBlock(
-            IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+            RenderBlocks renderer) {
         int meta = 0;
         if (world != null) {
             meta = world.getBlockMetadata(x, y, z);
@@ -39,8 +42,8 @@ public class EndermanSkullRenderer implements ISimpleBlockRenderingHandler, IIte
         return renderWorldBlock(world, x, y, z, block, modelId, renderer, meta);
     }
 
-    public boolean renderWorldBlock(
-            IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer, int meta) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+            RenderBlocks renderer, int meta) {
         Tessellator tes = Tessellator.instance;
         tes.addTranslation(x, y, z);
         tes.setColorOpaque_F(1, 1, 1);
@@ -155,7 +158,14 @@ public class EndermanSkullRenderer implements ISimpleBlockRenderingHandler, IIte
         GL11.glTranslatef(xTrans, yTrans, zTrans);
         RenderUtil.bindBlockTexture();
         renderWorldBlock(
-                null, 0, 0, 0, EnderIO.blockEndermanSkull, getRenderId(), (RenderBlocks) data[0], item.getItemDamage());
+                null,
+                0,
+                0,
+                0,
+                EnderIO.blockEndermanSkull,
+                getRenderId(),
+                (RenderBlocks) data[0],
+                item.getItemDamage());
 
         Tessellator.instance.draw();
         GL11.glPopMatrix();

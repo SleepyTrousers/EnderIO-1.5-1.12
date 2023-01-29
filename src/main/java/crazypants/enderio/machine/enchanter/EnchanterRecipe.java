@@ -1,8 +1,9 @@
 package crazypants.enderio.machine.enchanter;
 
-import crazypants.enderio.machine.recipe.RecipeInput;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
+
+import crazypants.enderio.machine.recipe.RecipeInput;
 
 public class EnchanterRecipe {
 

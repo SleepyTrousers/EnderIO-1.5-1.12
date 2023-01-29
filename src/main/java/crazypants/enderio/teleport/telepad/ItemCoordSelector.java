@@ -1,17 +1,7 @@
 package crazypants.enderio.teleport.telepad;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.Util;
-import com.enderio.core.common.vecmath.Vector3d;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.api.teleport.ITelePad;
-import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 import java.util.List;
+
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,6 +16,19 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.Util;
+import com.enderio.core.common.vecmath.Vector3d;
+
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.api.teleport.ITelePad;
+import crazypants.enderio.teleport.anchor.BlockTravelAnchor;
 
 public class ItemCoordSelector extends Item implements IResourceTooltipProvider {
 
@@ -56,7 +59,7 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
         stack.stackTagCompound.setBoolean("default", true);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean p_77624_4_) {
         if (!stack.stackTagCompound.getBoolean("default")) {
@@ -74,17 +77,8 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
     }
 
     @Override
-    public boolean onItemUseFirst(
-            ItemStack stack,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float hitX,
-            float hitY,
-            float hitZ) {
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float hitX, float hitY, float hitZ) {
 
         if (!rayTraceCoords(stack, world, player)) {
             return false;
@@ -110,8 +104,9 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
                         tp.setCoords(bc);
                     }
                     if (!world.isRemote) {
-                        player.addChatMessage(new ChatComponentText(
-                                EnderIO.lang.localize("itemCoordSelector.chat.setCoords", bc.chatString())));
+                        player.addChatMessage(
+                                new ChatComponentText(
+                                        EnderIO.lang.localize("itemCoordSelector.chat.setCoords", bc.chatString())));
                     }
                 }
 
@@ -122,10 +117,12 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
                         tp.setTargetDim(dim);
                     }
                     if (!world.isRemote) {
-                        player.addChatMessage(new ChatComponentText(EnderIO.lang.localize(
-                                "itemCoordSelector.chat.setDimension",
-                                EnumChatFormatting.GREEN.toString(),
-                                Integer.toString(dim))));
+                        player.addChatMessage(
+                                new ChatComponentText(
+                                        EnderIO.lang.localize(
+                                                "itemCoordSelector.chat.setDimension",
+                                                EnumChatFormatting.GREEN.toString(),
+                                                Integer.toString(dim))));
                     }
                 }
 
@@ -188,19 +185,10 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
         return changed;
     }
 
-    private void sendItemUsePacket(
-            ItemStack stack,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float hitX,
-            float hitY,
-            float hitZ) {
-        NetHandlerPlayClient netClientHandler =
-                (NetHandlerPlayClient) FMLClientHandler.instance().getClientPlayHandler();
+    private void sendItemUsePacket(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float hitX, float hitY, float hitZ) {
+        NetHandlerPlayClient netClientHandler = (NetHandlerPlayClient) FMLClientHandler.instance()
+                .getClientPlayHandler();
         netClientHandler.addToSendQueue(
                 new C08PacketPlayerBlockPlacement(x, y, z, side, player.inventory.getCurrentItem(), hitX, hitY, hitZ));
     }
@@ -214,10 +202,12 @@ public class ItemCoordSelector extends Item implements IResourceTooltipProvider 
 
     private void onDimensionChanged(EntityPlayer player, int dim) {
         if (!player.worldObj.isRemote) {
-            player.addChatMessage(new ChatComponentText(EnderIO.lang.localize(
-                    "itemCoordSelector.chat.newDimension",
-                    EnumChatFormatting.GREEN.toString(),
-                    Integer.toString(dim))));
+            player.addChatMessage(
+                    new ChatComponentText(
+                            EnderIO.lang.localize(
+                                    "itemCoordSelector.chat.newDimension",
+                                    EnumChatFormatting.GREEN.toString(),
+                                    Integer.toString(dim))));
         }
     }
 

@@ -1,6 +1,20 @@
 package crazypants.enderio.machine.transceiver;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
+import java.util.Set;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+
 import com.enderio.core.common.util.Util;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -12,37 +26,35 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.transceiver.gui.ContainerTransceiver;
 import crazypants.enderio.machine.transceiver.gui.GuiTransceiver;
 import crazypants.enderio.network.PacketHandler;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
-import java.util.Set;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 
 public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
 
     public static BlockTransceiver create() {
 
         PacketHandler.INSTANCE.registerMessage(
-                PacketSendRecieveChannel.class, PacketSendRecieveChannel.class, PacketHandler.nextID(), Side.SERVER);
+                PacketSendRecieveChannel.class,
+                PacketSendRecieveChannel.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
-                PacketAddRemoveChannel.class, PacketAddRemoveChannel.class, PacketHandler.nextID(), Side.SERVER);
+                PacketAddRemoveChannel.class,
+                PacketAddRemoveChannel.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
-                PacketAddRemoveChannel.class, PacketAddRemoveChannel.class, PacketHandler.nextID(), Side.CLIENT);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketChannelList.class, PacketChannelList.class, PacketHandler.nextID(), Side.CLIENT);
+                PacketAddRemoveChannel.class,
+                PacketAddRemoveChannel.class,
+                PacketHandler.nextID(),
+                Side.CLIENT);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketChannelList.class, PacketChannelList.class, PacketHandler.nextID(), Side.CLIENT);
         PacketHandler.INSTANCE.registerMessage(
                 PacketSendRecieveChannelList.class,
                 PacketSendRecieveChannelList.class,
                 PacketHandler.nextID(),
                 Side.CLIENT);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketItemFilter.class, PacketItemFilter.class, PacketHandler.nextID(), Side.SERVER);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketItemFilter.class, PacketItemFilter.class, PacketHandler.nextID(), Side.SERVER);
 
         ConnectionHandler ch = new ConnectionHandler();
         FMLCommonHandler.instance().bus().register(ch);
@@ -144,24 +156,27 @@ public class BlockTransceiver extends AbstractMachineBlock<TileTransceiver> {
                     continue;
                 }
 
-                tooltip.add(EnumChatFormatting.WHITE
-                        + EnderIO.lang.localize("trans." + type.name().toLowerCase(Locale.US)));
+                tooltip.add(
+                        EnumChatFormatting.WHITE
+                                + EnderIO.lang.localize("trans." + type.name().toLowerCase(Locale.US)));
 
                 if (!isEmpty(recieve)) {
-                    tooltip.add(String.format(
-                            "%s%s " + Util.TAB + ": %s%s",
-                            Util.TAB,
-                            EnderIO.lang.localize("trans.receiving"),
-                            Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE,
-                            recieve));
+                    tooltip.add(
+                            String.format(
+                                    "%s%s " + Util.TAB + ": %s%s",
+                                    Util.TAB,
+                                    EnderIO.lang.localize("trans.receiving"),
+                                    Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE,
+                                    recieve));
                 }
                 if (!isEmpty(send)) {
-                    tooltip.add(String.format(
-                            "%s%s " + Util.TAB + ": %s%s",
-                            Util.TAB,
-                            EnderIO.lang.localize("trans.sending"),
-                            Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE,
-                            send));
+                    tooltip.add(
+                            String.format(
+                                    "%s%s " + Util.TAB + ": %s%s",
+                                    Util.TAB,
+                                    EnderIO.lang.localize("trans.sending"),
+                                    Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE,
+                                    send));
                 }
             }
         }

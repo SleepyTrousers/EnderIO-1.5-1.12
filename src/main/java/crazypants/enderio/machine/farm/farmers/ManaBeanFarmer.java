@@ -1,11 +1,13 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import com.enderio.core.common.util.BlockCoord;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import com.enderio.core.common.util.BlockCoord;
+
 public class ManaBeanFarmer extends CustomSeedFarmer {
+
     public ManaBeanFarmer(Block block, ItemStack stack) {
         super(block, stack);
         this.requiresFarmland = false;

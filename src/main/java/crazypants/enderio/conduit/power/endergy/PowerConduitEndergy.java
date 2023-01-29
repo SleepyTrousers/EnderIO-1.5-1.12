@@ -2,10 +2,30 @@ package crazypants.enderio.conduit.power.endergy;
 
 import static crazypants.enderio.config.Config.powerConduitEndergyTiers;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.DyeColor;
 import com.enderio.core.common.vecmath.Vector3d;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -27,23 +47,6 @@ import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.tool.ToolUtil;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class PowerConduitEndergy extends PowerConduit {
 
@@ -51,37 +54,18 @@ public class PowerConduitEndergy extends PowerConduit {
 
     private static ICapacitor[] capacitors;
 
-    static final String[] POSTFIX = new String[] {
-        "Crude",
-        "Iron",
-        "Aluminum",
-        "Gold",
-        "Copper",
-        "Silver",
-        "Electrum",
-        "EnergeticSilver",
-        "Crystalline",
-        "CrystallinePinkSlime",
-        "Melodic",
-        "Stellar"
-    };
+    static final String[] POSTFIX = new String[] { "Crude", "Iron", "Aluminum", "Gold", "Copper", "Silver", "Electrum",
+            "EnergeticSilver", "Crystalline", "CrystallinePinkSlime", "Melodic", "Stellar" };
 
     static ICapacitor[] getCapacitors() {
         if (capacitors == null) {
-            capacitors = new BasicCapacitor[] {
-                new BasicCapacitor(powerConduitEndergyTiers[0]),
-                new BasicCapacitor(powerConduitEndergyTiers[1]),
-                new BasicCapacitor(powerConduitEndergyTiers[2]),
-                new BasicCapacitor(powerConduitEndergyTiers[3]),
-                new BasicCapacitor(powerConduitEndergyTiers[4]),
-                new BasicCapacitor(powerConduitEndergyTiers[5]),
-                new BasicCapacitor(powerConduitEndergyTiers[6]),
-                new BasicCapacitor(powerConduitEndergyTiers[7]),
-                new BasicCapacitor(powerConduitEndergyTiers[8]),
-                new BasicCapacitor(powerConduitEndergyTiers[9]),
-                new BasicCapacitor(powerConduitEndergyTiers[10]),
-                new BasicCapacitor(powerConduitEndergyTiers[11])
-            };
+            capacitors = new BasicCapacitor[] { new BasicCapacitor(powerConduitEndergyTiers[0]),
+                    new BasicCapacitor(powerConduitEndergyTiers[1]), new BasicCapacitor(powerConduitEndergyTiers[2]),
+                    new BasicCapacitor(powerConduitEndergyTiers[3]), new BasicCapacitor(powerConduitEndergyTiers[4]),
+                    new BasicCapacitor(powerConduitEndergyTiers[5]), new BasicCapacitor(powerConduitEndergyTiers[6]),
+                    new BasicCapacitor(powerConduitEndergyTiers[7]), new BasicCapacitor(powerConduitEndergyTiers[8]),
+                    new BasicCapacitor(powerConduitEndergyTiers[9]), new BasicCapacitor(powerConduitEndergyTiers[10]),
+                    new BasicCapacitor(powerConduitEndergyTiers[11]) };
         }
         return capacitors;
     }
@@ -126,10 +110,10 @@ public class PowerConduitEndergy extends PowerConduit {
 
     private int subtype;
 
-    protected final EnumMap<ForgeDirection, RedstoneControlMode> rsModes =
-            new EnumMap<ForgeDirection, RedstoneControlMode>(ForgeDirection.class);
-    protected final EnumMap<ForgeDirection, DyeColor> rsColors =
-            new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, RedstoneControlMode> rsModes = new EnumMap<ForgeDirection, RedstoneControlMode>(
+            ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, DyeColor> rsColors = new EnumMap<ForgeDirection, DyeColor>(
+            ForgeDirection.class);
 
     protected EnumMap<ForgeDirection, Long> recievedTicks;
 
@@ -232,10 +216,8 @@ public class PowerConduitEndergy extends PowerConduit {
 
     @Override
     protected void writeTypeSettingsToNbt(ForgeDirection dir, NBTTagCompound dataRoot) {
-        dataRoot.setShort(
-                "extractionSignalColor", (short) getExtractionSignalColor(dir).ordinal());
-        dataRoot.setShort(
-                "extractionRedstoneMode", (short) getExtractionRedstoneMode(dir).ordinal());
+        dataRoot.setShort("extractionSignalColor", (short) getExtractionSignalColor(dir).ordinal());
+        dataRoot.setShort("extractionRedstoneMode", (short) getExtractionRedstoneMode(dir).ordinal());
     }
 
     @Override
@@ -363,8 +345,7 @@ public class PowerConduitEndergy extends PowerConduit {
     }
 
     private boolean recievedRfThisTick(ForgeDirection dir) {
-        if (recievedTicks == null
-                || dir == null
+        if (recievedTicks == null || dir == null
                 || recievedTicks.get(dir) == null
                 || getBundle() == null
                 || getBundle().getWorld() == null) {
@@ -489,7 +470,9 @@ public class PowerConduitEndergy extends PowerConduit {
         if (network != null) {
             TileEntity te = bundle.getEntity();
             network.powerReceptorRemoved(
-                    te.xCoord + direction.offsetX, te.yCoord + direction.offsetY, te.zCoord + direction.offsetZ);
+                    te.xCoord + direction.offsetX,
+                    te.yCoord + direction.offsetY,
+                    te.zCoord + direction.offsetZ);
         }
     }
 
@@ -501,7 +484,9 @@ public class PowerConduitEndergy extends PowerConduit {
             return null;
         }
         TileEntity test = world.getTileEntity(
-                te.xCoord + direction.offsetX, te.yCoord + direction.offsetY, te.zCoord + direction.offsetZ);
+                te.xCoord + direction.offsetX,
+                te.yCoord + direction.offsetY,
+                te.zCoord + direction.offsetZ);
         if (test == null) {
             return null;
         }

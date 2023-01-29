@@ -1,15 +1,17 @@
 package crazypants.enderio.conduit.packet;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.conduit.liquid.AbstractEnderLiquidConduit;
 import crazypants.enderio.conduit.liquid.ILiquidConduit;
 import io.netty.buffer.ByteBuf;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class PacketRoundRobinMode extends AbstractConduitPacket<ILiquidConduit>
         implements IMessageHandler<PacketRoundRobinMode, IMessage> {
+
     private ForgeDirection dir;
     private boolean roundRobin;
 

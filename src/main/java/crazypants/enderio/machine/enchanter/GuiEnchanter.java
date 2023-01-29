@@ -1,14 +1,17 @@
 package crazypants.enderio.machine.enchanter;
 
-import com.enderio.core.client.gui.button.IconButton;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.gui.GuiContainerBaseEIO;
-import crazypants.enderio.gui.IconEIO;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.gui.button.IconButton;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.gui.GuiContainerBaseEIO;
+import crazypants.enderio.gui.IconEIO;
 
 public class GuiEnchanter extends GuiContainerBaseEIO {
 
@@ -58,7 +61,7 @@ public class GuiEnchanter extends GuiContainerBaseEIO {
                 bindGuiTexture();
                 drawTexturedModalRect(sx + 99, sy + 33, 176, 0, 28, 21);
             }
-            String s = I18n.format("container.repair.cost", new Object[] {Integer.valueOf(curCost)});
+            String s = I18n.format("container.repair.cost", new Object[] { Integer.valueOf(curCost) });
             drawCenteredString(Minecraft.getMinecraft().fontRenderer, s, sx + xSize / 2, sy + 57, col);
         }
     }

@@ -1,5 +1,11 @@
 package crazypants.enderio.machine;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.api.client.render.VertexTransform;
 import com.enderio.core.client.render.CustomCubeRenderer;
 import com.enderio.core.client.render.TechneModelRenderer;
@@ -8,11 +14,6 @@ import com.enderio.core.client.render.VertexRotationFacing;
 import com.enderio.core.client.render.VertexTransformComposite;
 import com.google.common.collect.ObjectArrays;
 import crazypants.enderio.EnderIO;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TechneMachineRenderer<T extends AbstractMachineEntity> extends TechneModelRenderer {
 
@@ -47,8 +48,8 @@ public class TechneMachineRenderer<T extends AbstractMachineEntity> extends Tech
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean renderWorldBlock(
-            IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+            RenderBlocks renderer) {
         T te = (T) world.getTileEntity(x, y, z);
         if (te != null) {
             setFacingDir(te.getFacingDir());

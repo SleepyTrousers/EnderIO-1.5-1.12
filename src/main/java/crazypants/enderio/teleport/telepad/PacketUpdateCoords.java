@@ -2,6 +2,7 @@ package crazypants.enderio.teleport.telepad;
 
 import com.enderio.core.common.network.MessageTileEntity;
 import com.enderio.core.common.util.BlockCoord;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -49,8 +50,8 @@ public class PacketUpdateCoords extends MessageTileEntity<TileTelePad>
 
     @Override
     public IMessage onMessage(PacketUpdateCoords message, MessageContext ctx) {
-        TileTelePad te =
-                message.getTileEntity(ctx.side.isClient() ? EnderIO.proxy.getClientWorld() : message.getWorld(ctx));
+        TileTelePad te = message
+                .getTileEntity(ctx.side.isClient() ? EnderIO.proxy.getClientWorld() : message.getWorld(ctx));
         if (te != null) {
             te.setX(message.targetX);
             te.setY(message.targetY);

@@ -1,12 +1,14 @@
 package crazypants.enderio.conduit.redstone;
 
-import crazypants.enderio.conduit.IConduitBundle;
-import dan200.computercraft.api.ComputerCraftAPI;
-import dan200.computercraft.api.redstone.IBundledRedstoneProvider;
 import java.util.Set;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import crazypants.enderio.conduit.IConduitBundle;
+import dan200.computercraft.api.ComputerCraftAPI;
+import dan200.computercraft.api.redstone.IBundledRedstoneProvider;
 
 public class ConduitBundledRedstoneProvider implements IBundledRedstoneProvider {
 

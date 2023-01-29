@@ -1,10 +1,34 @@
 package crazypants.enderio.machine.capbank;
 
+import java.text.MessageFormat;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
 import com.enderio.core.client.handlers.SpecialTooltipHandler;
 import com.enderio.core.common.TileEntityEnder;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
+
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -30,27 +54,6 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.PowerHandlerUtil;
 import crazypants.enderio.tool.ToolUtil;
 import crazypants.enderio.waila.IWailaInfoProvider;
-import java.text.MessageFormat;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockCapBank extends BlockEio
         implements IGuiHandler, IAdvancedTooltipProvider, IWailaInfoProvider, IRedstoneConnectable {
@@ -65,11 +68,20 @@ public class BlockCapBank extends BlockEio
                 PacketHandler.nextID(),
                 Side.CLIENT);
         PacketHandler.INSTANCE.registerMessage(
-                PacketNetworkStateRequest.class, PacketNetworkStateRequest.class, PacketHandler.nextID(), Side.SERVER);
+                PacketNetworkStateRequest.class,
+                PacketNetworkStateRequest.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
-                PacketNetworkIdRequest.class, PacketNetworkIdRequest.class, PacketHandler.nextID(), Side.SERVER);
+                PacketNetworkIdRequest.class,
+                PacketNetworkIdRequest.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
         PacketHandler.INSTANCE.registerMessage(
-                PacketNetworkIdResponse.class, PacketNetworkIdResponse.class, PacketHandler.nextID(), Side.CLIENT);
+                PacketNetworkIdResponse.class,
+                PacketNetworkIdResponse.class,
+                PacketHandler.nextID(),
+                Side.CLIENT);
         PacketHandler.INSTANCE.registerMessage(
                 PacketNetworkEnergyRequest.class,
                 PacketNetworkEnergyRequest.class,
@@ -80,8 +92,8 @@ public class BlockCapBank extends BlockEio
                 PacketNetworkEnergyResponse.class,
                 PacketHandler.nextID(),
                 Side.CLIENT);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketGuiChange.class, PacketGuiChange.class, PacketHandler.nextID(), Side.SERVER);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketGuiChange.class, PacketGuiChange.class, PacketHandler.nextID(), Side.SERVER);
 
         BlockCapBank res = new BlockCapBank();
         res.init();
@@ -155,9 +167,10 @@ public class BlockCapBank extends BlockEio
     @Override
     @SideOnly(Side.CLIENT)
     public void addBasicEntries(ItemStack itemstack, EntityPlayer entityplayer, List list, boolean flag) {
-        list.add(PowerDisplayUtil.formatStoredPower(
-                PowerHandlerUtil.getStoredEnergyForItem(itemstack),
-                CapBankType.getTypeFromMeta(itemstack.getItemDamage()).getMaxEnergyStored()));
+        list.add(
+                PowerDisplayUtil.formatStoredPower(
+                        PowerHandlerUtil.getStoredEnergyForItem(itemstack),
+                        CapBankType.getTypeFromMeta(itemstack.getItemDamage()).getMaxEnergyStored()));
         if (itemstack.stackTagCompound != null && itemstack.stackTagCompound.hasKey("Items")) {
             NBTTagList itemList = (NBTTagList) itemstack.stackTagCompound.getTag("Items");
             String msg = EnderIO.lang.localizeExact("tile.blockCapBank.tooltip.hasItems");
@@ -172,8 +185,8 @@ public class BlockCapBank extends BlockEio
     }
 
     @Override
-    public boolean onBlockActivated(
-            World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7, float par8, float par9) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer entityPlayer, int side, float par7,
+            float par8, float par9) {
 
         TileEntity te = world.getTileEntity(x, y, z);
         if (!(te instanceof TileCapBank)) {
@@ -327,9 +340,9 @@ public class BlockCapBank extends BlockEio
             return blockIcons[0];
         }
 
-        //    if(true) {
-        //      return IconUtil.blankTexture;
-        //    }
+        // if(true) {
+        // return IconUtil.blankTexture;
+        // }
 
         TileCapBank cb = (TileCapBank) te;
         ForgeDirection face = ForgeDirection.values()[side];
@@ -418,8 +431,7 @@ public class BlockCapBank extends BlockEio
         boolean modifiedDisplayType = false;
         if (capBank != null) {
             for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
-                if (dir.offsetY == 0
-                        && capBank.getDisplayType(dir) == InfoDisplayType.LEVEL_BAR
+                if (dir.offsetY == 0 && capBank.getDisplayType(dir) == InfoDisplayType.LEVEL_BAR
                         && capBank.getType() == cb.getType()) {
                     cb.setDisplayType(dir, InfoDisplayType.LEVEL_BAR);
                     modifiedDisplayType = true;
@@ -541,40 +553,45 @@ public class BlockCapBank extends BlockEio
 
                 if (SpecialTooltipHandler.showAdvancedTooltips()) {
                     String format = Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE;
-                    String suffix =
-                            Util.TAB + Util.ALIGNRIGHT + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
-                    tooltip.add(String.format(
-                            "%s : %s%s%s",
-                            EnderIO.lang.localize("capbank.maxIO"),
-                            format,
-                            PowerDisplayUtil.formatPower(nw.getMaxIO()),
-                            suffix));
-                    tooltip.add(String.format(
-                            "%s : %s%s%s",
-                            EnderIO.lang.localize("capbank.maxIn"),
-                            format,
-                            PowerDisplayUtil.formatPower(nw.getMaxInput()),
-                            suffix));
-                    tooltip.add(String.format(
-                            "%s : %s%s%s",
-                            EnderIO.lang.localize("capbank.maxOut"),
-                            format,
-                            PowerDisplayUtil.formatPower(nw.getMaxOutput()),
-                            suffix));
+                    String suffix = Util.TAB + Util.ALIGNRIGHT
+                            + PowerDisplayUtil.abrevation()
+                            + PowerDisplayUtil.perTickStr();
+                    tooltip.add(
+                            String.format(
+                                    "%s : %s%s%s",
+                                    EnderIO.lang.localize("capbank.maxIO"),
+                                    format,
+                                    PowerDisplayUtil.formatPower(nw.getMaxIO()),
+                                    suffix));
+                    tooltip.add(
+                            String.format(
+                                    "%s : %s%s%s",
+                                    EnderIO.lang.localize("capbank.maxIn"),
+                                    format,
+                                    PowerDisplayUtil.formatPower(nw.getMaxInput()),
+                                    suffix));
+                    tooltip.add(
+                            String.format(
+                                    "%s : %s%s%s",
+                                    EnderIO.lang.localize("capbank.maxOut"),
+                                    format,
+                                    PowerDisplayUtil.formatPower(nw.getMaxOutput()),
+                                    suffix));
                     tooltip.add("");
                 }
 
                 long stored = nw.getEnergyStoredL();
                 long max = nw.getMaxEnergyStoredL();
-                tooltip.add(String.format(
-                        "%s%s%s / %s%s%s %s",
-                        EnumChatFormatting.WHITE,
-                        PowerDisplayUtil.formatPower(stored),
-                        EnumChatFormatting.RESET,
-                        EnumChatFormatting.WHITE,
-                        PowerDisplayUtil.formatPower(max),
-                        EnumChatFormatting.RESET,
-                        PowerDisplayUtil.abrevation()));
+                tooltip.add(
+                        String.format(
+                                "%s%s%s / %s%s%s %s",
+                                EnumChatFormatting.WHITE,
+                                PowerDisplayUtil.formatPower(stored),
+                                EnumChatFormatting.RESET,
+                                EnumChatFormatting.WHITE,
+                                PowerDisplayUtil.formatPower(max),
+                                EnumChatFormatting.RESET,
+                                PowerDisplayUtil.abrevation()));
 
                 int change = Math.round(nw.getAverageChangePerTick());
                 String color = EnumChatFormatting.WHITE.toString();
@@ -583,9 +600,12 @@ public class BlockCapBank extends BlockEio
                 } else if (change < 0) {
                     color = EnumChatFormatting.RED.toString();
                 }
-                tooltip.add(String.format(
-                        "%s%s%s",
-                        color, PowerDisplayUtil.formatPowerPerTick(change), " " + EnumChatFormatting.RESET.toString()));
+                tooltip.add(
+                        String.format(
+                                "%s%s%s",
+                                color,
+                                PowerDisplayUtil.formatPowerPerTick(change),
+                                " " + EnumChatFormatting.RESET.toString()));
             }
         }
     }

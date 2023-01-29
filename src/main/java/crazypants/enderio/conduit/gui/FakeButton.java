@@ -1,11 +1,14 @@
 package crazypants.enderio.conduit.gui;
 
+import javax.annotation.Nonnull;
+
+import net.minecraft.client.Minecraft;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.TooltipButton;
-import javax.annotation.Nonnull;
-import net.minecraft.client.Minecraft;
-import org.lwjgl.opengl.GL11;
 
 public class FakeButton extends TooltipButton {
 
@@ -61,15 +64,14 @@ public class FakeButton extends TooltipButton {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            icon.getMap()
-                    .render(
-                            icon,
-                            xPosition + marginX,
-                            yPosition + marginY,
-                            width - 2 * marginX,
-                            height - 2 * marginY,
-                            0,
-                            true);
+            icon.getMap().render(
+                    icon,
+                    xPosition + marginX,
+                    yPosition + marginY,
+                    width - 2 * marginX,
+                    height - 2 * marginY,
+                    0,
+                    true);
             GL11.glPopAttrib();
         }
     }

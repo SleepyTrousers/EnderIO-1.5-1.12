@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.invpanel.server;
 
 public final class SlotKey {
+
     final AbstractInventory inv;
     final int slot;
     final ItemEntry item;

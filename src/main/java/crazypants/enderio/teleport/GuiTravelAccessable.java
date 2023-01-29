@@ -1,10 +1,21 @@
 package crazypants.enderio.teleport;
 
+import java.awt.Color;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.world.World;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.CheckBox;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.api.teleport.ITravelAccessable;
 import crazypants.enderio.api.teleport.ITravelAccessable.AccessMode;
@@ -14,13 +25,6 @@ import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.teleport.packet.PacketAccessMode;
 import crazypants.enderio.teleport.packet.PacketLabel;
 import crazypants.enderio.teleport.packet.PacketVisibility;
-import java.awt.Color;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.world.World;
-import org.lwjgl.opengl.GL11;
 
 public class GuiTravelAccessable extends GuiContainerBaseEIO {
 
@@ -106,8 +110,7 @@ public class GuiTravelAccessable extends GuiContainerBaseEIO {
             protectedCB.setSelected(b.id == ID_PROTECTED);
             publicCB.setSelected(b.id == ID_PUBLIC);
 
-            AccessMode curMode = b.id == ID_PRIVATE
-                    ? AccessMode.PRIVATE
+            AccessMode curMode = b.id == ID_PRIVATE ? AccessMode.PRIVATE
                     : b.id == ID_PROTECTED ? AccessMode.PROTECTED : AccessMode.PUBLIC;
             te.setAccessMode(curMode);
             BlockCoord bc = te.getLocation();

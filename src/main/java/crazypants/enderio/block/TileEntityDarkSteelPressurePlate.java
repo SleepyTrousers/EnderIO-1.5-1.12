@@ -1,7 +1,8 @@
 package crazypants.enderio.block;
 
-import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
 import net.minecraft.nbt.NBTTagCompound;
+
+import crazypants.enderio.machine.painter.TileEntityPaintedBlock;
 
 public class TileEntityDarkSteelPressurePlate extends TileEntityPaintedBlock {
 

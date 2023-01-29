@@ -1,11 +1,14 @@
 package crazypants.enderio.machine.painter;
 
+import net.minecraft.entity.player.InventoryPlayer;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.common.vecmath.Vector4f;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GuiPainter extends GuiPoweredMachineBase<TileEntityPainter> {
@@ -17,8 +20,7 @@ public class GuiPainter extends GuiPoweredMachineBase<TileEntityPainter> {
     }
 
     /**
-     * Draw the background layer for the GuiContainer (everything behind the
-     * items)
+     * Draw the background layer for the GuiContainer (everything behind the items)
      */
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {

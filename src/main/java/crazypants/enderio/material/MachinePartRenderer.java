@@ -1,7 +1,5 @@
 package crazypants.enderio.material;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.Log;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -9,7 +7,11 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.Log;
 
 public class MachinePartRenderer implements IItemRenderer {
 
@@ -22,8 +24,7 @@ public class MachinePartRenderer implements IItemRenderer {
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
         if (item != null && item.getItemDamage() != MachinePart.BASIC_GEAR.ordinal()) {
-            return type == ItemRenderType.ENTITY
-                    || type == ItemRenderType.EQUIPPED
+            return type == ItemRenderType.ENTITY || type == ItemRenderType.EQUIPPED
                     || type == ItemRenderType.INVENTORY
                     || type == ItemRenderType.EQUIPPED_FIRST_PERSON;
         } else {

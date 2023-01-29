@@ -1,8 +1,47 @@
 package crazypants.enderio.conduit;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import li.cil.oc.api.network.*;
+import li.cil.oc.api.network.Message;
+import li.cil.oc.api.network.Node;
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasStack;
+import mods.immibis.microblocks.api.EnumPartClass;
+import mods.immibis.microblocks.api.EnumPosition;
+import mods.immibis.microblocks.api.IMicroblockCoverSystem;
+import mods.immibis.microblocks.api.IMicroblockSystem;
+import mods.immibis.microblocks.api.MicroblockAPIUtils;
+import mods.immibis.microblocks.api.Part;
+import mods.immibis.microblocks.api.PartType;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+
 import appeng.api.networking.IGridNode;
 import appeng.api.util.AECableType;
+
 import com.enderio.core.client.render.BoundingBox;
+
 import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -25,40 +64,6 @@ import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.InsulatedRedstoneConduit;
 import crazypants.enderio.config.Config;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import li.cil.oc.api.network.*;
-import li.cil.oc.api.network.Message;
-import li.cil.oc.api.network.Node;
-import mekanism.api.gas.Gas;
-import mekanism.api.gas.GasStack;
-import mods.immibis.microblocks.api.EnumPartClass;
-import mods.immibis.microblocks.api.EnumPosition;
-import mods.immibis.microblocks.api.IMicroblockCoverSystem;
-import mods.immibis.microblocks.api.IMicroblockSystem;
-import mods.immibis.microblocks.api.MicroblockAPIUtils;
-import mods.immibis.microblocks.api.Part;
-import mods.immibis.microblocks.api.PartType;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 
 public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
@@ -104,8 +109,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
 
     @Override
     public boolean shouldRenderInPass(int arg0) {
-        if (facadeId != null
-                && facadeId.isOpaqueCube()
+        if (facadeId != null && facadeId.isOpaqueCube()
                 && !ConduitUtil.isFacadeHidden(this, EnderIO.proxy.getClientPlayer())) {
             return false;
         }
@@ -334,8 +338,8 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
                 markForUpdate = true;
             }
         } else { // can do the else as only need to update once
-            ConduitDisplayMode curMode = ConduitDisplayMode.getDisplayMode(
-                    EnderIO.proxy.getClientPlayer().getCurrentEquippedItem());
+            ConduitDisplayMode curMode = ConduitDisplayMode
+                    .getDisplayMode(EnderIO.proxy.getClientPlayer().getCurrentEquippedItem());
             if (curMode != lastMode) {
                 markForUpdate = true;
                 lastMode = curMode;
@@ -583,8 +587,11 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
             }
             if (bb != null) {
                 bb = bb.scale(1.05, 1.05, 1.05);
-                CollidableComponent cc =
-                        new CollidableComponent(null, bb, ForgeDirection.UNKNOWN, ConduitConnectorType.INTERNAL);
+                CollidableComponent cc = new CollidableComponent(
+                        null,
+                        bb,
+                        ForgeDirection.UNKNOWN,
+                        ConduitConnectorType.INTERNAL);
                 result.add(cc);
                 cachedConnectors.add(cc);
             }
@@ -605,7 +612,10 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
                     if (bb.getArea() > area * 1.5f) {
                         bb = bb.scale(1.05, 1.05, 1.05);
                         CollidableComponent cc = new CollidableComponent(
-                                null, bb, ForgeDirection.UNKNOWN, ConduitConnectorType.INTERNAL);
+                                null,
+                                bb,
+                                ForgeDirection.UNKNOWN,
+                                ConduitConnectorType.INTERNAL);
                         result.add(cc);
                         cachedConnectors.add(cc);
                     }
@@ -626,8 +636,11 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
         }
 
         if (conBB != null) {
-            CollidableComponent cc =
-                    new CollidableComponent(null, conBB, ForgeDirection.UNKNOWN, ConduitConnectorType.INTERNAL);
+            CollidableComponent cc = new CollidableComponent(
+                    null,
+                    conBB,
+                    ForgeDirection.UNKNOWN,
+                    ConduitConnectorType.INTERNAL);
             result.add(cc);
             cachedConnectors.add(cc);
         }
@@ -659,23 +672,34 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
         Class<? extends IConduit> type = con.getCollidableType();
         if (con.hasConnections()) {
             for (ForgeDirection dir : con.getExternalConnections()) {
-                result.addAll(cc.getCollidables(
-                        cc.createKey(type, getOffset(con.getBaseConduitType(), dir), ForgeDirection.UNKNOWN, false),
-                        con));
+                result.addAll(
+                        cc.getCollidables(
+                                cc.createKey(
+                                        type,
+                                        getOffset(con.getBaseConduitType(), dir),
+                                        ForgeDirection.UNKNOWN,
+                                        false),
+                                con));
             }
             for (ForgeDirection dir : con.getConduitConnections()) {
-                result.addAll(cc.getCollidables(
-                        cc.createKey(type, getOffset(con.getBaseConduitType(), dir), ForgeDirection.UNKNOWN, false),
-                        con));
+                result.addAll(
+                        cc.getCollidables(
+                                cc.createKey(
+                                        type,
+                                        getOffset(con.getBaseConduitType(), dir),
+                                        ForgeDirection.UNKNOWN,
+                                        false),
+                                con));
             }
         } else {
-            result.addAll(cc.getCollidables(
-                    cc.createKey(
-                            type,
-                            getOffset(con.getBaseConduitType(), ForgeDirection.UNKNOWN),
-                            ForgeDirection.UNKNOWN,
-                            false),
-                    con));
+            result.addAll(
+                    cc.getCollidables(
+                            cc.createKey(
+                                    type,
+                                    getOffset(con.getBaseConduitType(), ForgeDirection.UNKNOWN),
+                                    ForgeDirection.UNKNOWN,
+                                    false),
+                            con));
         }
     }
 
@@ -1029,8 +1053,7 @@ public class TileConduitBundle extends TileEntityEio implements IConduitBundle {
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
         if (covers != null) {
-            ((IMicroblockCoverSystem) covers)
-                    .readDescriptionBytes(pkt.func_148857_g().getByteArray("C"), 0);
+            ((IMicroblockCoverSystem) covers).readDescriptionBytes(pkt.func_148857_g().getByteArray("C"), 0);
         }
     }
 

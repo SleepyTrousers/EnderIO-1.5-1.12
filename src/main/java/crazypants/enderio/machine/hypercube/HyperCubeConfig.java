@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.hypercube;
 
-import com.enderio.core.common.util.PlayerUtil;
-import crazypants.enderio.Log;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -15,7 +13,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.UUID;
+
 import org.apache.commons.io.IOUtils;
+
+import com.enderio.core.common.util.PlayerUtil;
+import crazypants.enderio.Log;
 
 public class HyperCubeConfig {
 

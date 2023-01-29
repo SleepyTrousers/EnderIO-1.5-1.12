@@ -1,12 +1,14 @@
 package crazypants.enderio.machine.recipe;
 
-import crazypants.enderio.machine.MachineRecipeInput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+
+import crazypants.enderio.machine.MachineRecipeInput;
 
 public class Recipe implements IRecipe {
 
@@ -16,11 +18,11 @@ public class Recipe implements IRecipe {
     private final RecipeBonusType bonusType;
 
     public Recipe(RecipeOutput output, int energyRequired, RecipeBonusType bonusType, RecipeInput... input) {
-        this(input, new RecipeOutput[] {output}, energyRequired, bonusType);
+        this(input, new RecipeOutput[] { output }, energyRequired, bonusType);
     }
 
     public Recipe(RecipeInput input, int energyRequired, RecipeBonusType bonusType, RecipeOutput... output) {
-        this(new RecipeInput[] {input}, output, energyRequired, bonusType);
+        this(new RecipeInput[] { input }, output, energyRequired, bonusType);
     }
 
     public Recipe(RecipeInput[] input, RecipeOutput[] output, int energyRequired, RecipeBonusType bonusType) {
@@ -176,7 +178,7 @@ public class Recipe implements IRecipe {
 
     @Override
     public String toString() {
-        return "Recipe [input=" + Arrays.toString(inputs) + ", output=" + Arrays.toString(outputs) + ", energyRequired="
-                + energyRequired + "]";
+        return "Recipe [input=" + Arrays
+                .toString(inputs) + ", output=" + Arrays.toString(outputs) + ", energyRequired=" + energyRequired + "]";
     }
 }

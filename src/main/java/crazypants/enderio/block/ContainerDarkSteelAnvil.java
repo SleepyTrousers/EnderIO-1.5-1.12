@@ -1,9 +1,7 @@
 package crazypants.enderio.block;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.config.Config;
 import java.lang.reflect.Field;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ContainerRepair;
@@ -12,18 +10,22 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.ReflectionHelper;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.config.Config;
+
 public class ContainerDarkSteelAnvil extends ContainerRepair {
 
     private int x, y, z;
 
     private final Field _outputSlot = ReflectionHelper.findField(ContainerRepair.class, "outputSlot", "field_82852_f");
     private final Field _inputSlots = ReflectionHelper.findField(ContainerRepair.class, "inputSlots", "field_82853_g");
-    private final Field _materialCost = ReflectionHelper.findField(
-            ContainerRepair.class, "materialCost", "stackSizeToBeUsedInRepair", "field_82856_l");
+    private final Field _materialCost = ReflectionHelper
+            .findField(ContainerRepair.class, "materialCost", "stackSizeToBeUsedInRepair", "field_82856_l");
 
     @SuppressWarnings("unchecked")
-    public ContainerDarkSteelAnvil(
-            InventoryPlayer playerInv, final World world, final int x, final int y, final int z, EntityPlayer player) {
+    public ContainerDarkSteelAnvil(InventoryPlayer playerInv, final World world, final int x, final int y, final int z,
+            EntityPlayer player) {
         super(playerInv, world, x, y, z, player);
 
         final IInventory outputSlot, inputSlots;
@@ -49,7 +51,7 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
 
             public boolean canTakeStack(EntityPlayer stack) {
                 return (stack.capabilities.isCreativeMode
-                                || stack.experienceLevel >= ContainerDarkSteelAnvil.this.maximumCost)
+                        || stack.experienceLevel >= ContainerDarkSteelAnvil.this.maximumCost)
                         && ContainerDarkSteelAnvil.this.maximumCost > 0
                         && this.getHasStack();
             }
@@ -76,8 +78,7 @@ public class ContainerDarkSteelAnvil extends ContainerRepair {
 
                 ContainerDarkSteelAnvil.this.maximumCost = 0;
 
-                if (!player.capabilities.isCreativeMode
-                        && !world.isRemote
+                if (!player.capabilities.isCreativeMode && !world.isRemote
                         && world.getBlock(x, y, z) == EnderIO.blockDarkSteelAnvil
                         && player.getRNG().nextFloat() < Config.darkSteelAnvilDamageChance) {
                     int i1 = world.getBlockMetadata(x, y, z);

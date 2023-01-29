@@ -2,19 +2,22 @@ package crazypants.enderio.item.darksteel.upgrade;
 
 import static org.lwjgl.opengl.GL11.glDepthMask;
 
-import com.enderio.core.client.render.RenderUtil;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.DarkSteelController;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.RenderUtil;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.DarkSteelController;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
 
 public class GliderUpgrade extends AbstractUpgrade {
 

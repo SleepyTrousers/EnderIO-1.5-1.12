@@ -1,7 +1,15 @@
 package crazypants.enderio.teleport.packet;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.S12PacketEntityVelocity;
+import net.minecraftforge.common.MinecraftForge;
+
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.Vector3d;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -9,12 +17,6 @@ import crazypants.enderio.api.teleport.IItemOfTravel;
 import crazypants.enderio.api.teleport.TeleportEntityEvent;
 import crazypants.enderio.api.teleport.TravelSource;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.S12PacketEntityVelocity;
-import net.minecraftforge.common.MinecraftForge;
 
 public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravelEvent, IMessage> {
 
@@ -28,8 +30,8 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
 
     public PacketTravelEvent() {}
 
-    public PacketTravelEvent(
-            Entity entity, int x, int y, int z, int powerUse, boolean conserveMotion, TravelSource source) {
+    public PacketTravelEvent(Entity entity, int x, int y, int z, int powerUse, boolean conserveMotion,
+            TravelSource source) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -63,8 +65,7 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
 
     @Override
     public IMessage onMessage(PacketTravelEvent message, MessageContext ctx) {
-        Entity toTp = message.entityId == -1
-                ? ctx.getServerHandler().playerEntity
+        Entity toTp = message.entityId == -1 ? ctx.getServerHandler().playerEntity
                 : ctx.getServerHandler().playerEntity.worldObj.getEntityByID(message.entityId);
 
         int x = message.x, y = message.y, z = message.z;
@@ -76,8 +77,8 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
         return null;
     }
 
-    public static boolean doServerTeleport(
-            Entity toTp, int x, int y, int z, int powerUse, boolean conserveMotion, TravelSource source) {
+    public static boolean doServerTeleport(Entity toTp, int x, int y, int z, int powerUse, boolean conserveMotion,
+            TravelSource source) {
         EntityPlayer player = toTp instanceof EntityPlayer ? (EntityPlayer) toTp : null;
 
         TeleportEntityEvent evt = new TeleportEntityEvent(toTp, source, x, y, z);
@@ -104,13 +105,15 @@ public class PacketTravelEvent implements IMessage, IMessageHandler<PacketTravel
         if (player != null) {
             if (conserveMotion) {
                 Vector3d velocityVex = Util.getLookVecEio(player);
-                S12PacketEntityVelocity p =
-                        new S12PacketEntityVelocity(toTp.getEntityId(), velocityVex.x, velocityVex.y, velocityVex.z);
+                S12PacketEntityVelocity p = new S12PacketEntityVelocity(
+                        toTp.getEntityId(),
+                        velocityVex.x,
+                        velocityVex.y,
+                        velocityVex.z);
                 ((EntityPlayerMP) player).playerNetServerHandler.sendPacket(p);
             }
 
-            if (powerUse > 0
-                    && player.getCurrentEquippedItem() != null
+            if (powerUse > 0 && player.getCurrentEquippedItem() != null
                     && player.getCurrentEquippedItem().getItem() instanceof IItemOfTravel) {
                 ItemStack item = player.getCurrentEquippedItem().copy();
                 ((IItemOfTravel) item.getItem()).extractInternal(item, powerUse);

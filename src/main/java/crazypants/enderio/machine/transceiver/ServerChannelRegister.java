@@ -1,15 +1,5 @@
 package crazypants.enderio.machine.transceiver;
 
-import com.enderio.core.common.util.ItemUtil;
-import com.enderio.core.common.util.RoundRobinIterator;
-import com.google.common.collect.ListMultimap;
-import com.google.common.collect.MultimapBuilder;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import crazypants.enderio.Log;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.util.UserIdent;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -24,13 +14,27 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+
 import org.apache.commons.io.FileUtils;
+
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.RoundRobinIterator;
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.MultimapBuilder;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+
+import crazypants.enderio.Log;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.util.UserIdent;
 
 public class ServerChannelRegister extends ChannelRegister {
 
@@ -93,8 +97,10 @@ public class ServerChannelRegister extends ChannelRegister {
             reader.endArray();
             reader.close();
         } catch (Exception e) {
-            Log.error("Could not read Dimensional Transceiver channels from "
-                    + getDataFile().getAbsolutePath() + " : " + e);
+            Log.error(
+                    "Could not read Dimensional Transceiver channels from " + getDataFile().getAbsolutePath()
+                            + " : "
+                            + e);
         }
     }
 
@@ -117,13 +123,17 @@ public class ServerChannelRegister extends ChannelRegister {
         File dataFile = getDataFile();
         if (!createFolderAndWriteFile(channels, dataFile)) {
             dataFile = getFallbackDataFile();
-            Log.error("ServerChannelRegister: Attempting to write Dimensional Transceiver data to fallback location: "
-                    + dataFile.getAbsolutePath());
+            Log.error(
+                    "ServerChannelRegister: Attempting to write Dimensional Transceiver data to fallback location: "
+                            + dataFile.getAbsolutePath());
             try {
                 writeFile(copyChannels(), dataFile);
             } catch (Exception e) {
-                Log.error("ServerChannelRegister: Could not write Dimensional Transceiver data fallback location "
-                        + dataFile.getAbsolutePath() + " channels not saved: " + e.getMessage());
+                Log.error(
+                        "ServerChannelRegister: Could not write Dimensional Transceiver data fallback location "
+                                + dataFile.getAbsolutePath()
+                                + " channels not saved: "
+                                + e.getMessage());
                 return;
             }
         }
@@ -136,8 +146,11 @@ public class ServerChannelRegister extends ChannelRegister {
             writeFile(channels, dataFile);
             return true;
         } catch (Exception e) {
-            Log.error("ServerChannelRegister: Could not write Dimensional Transceiver channels to "
-                    + dataFile.getAbsolutePath() + " : " + e);
+            Log.error(
+                    "ServerChannelRegister: Could not write Dimensional Transceiver channels to "
+                            + dataFile.getAbsolutePath()
+                            + " : "
+                            + e);
             return false;
         }
     }
@@ -183,8 +196,7 @@ public class ServerChannelRegister extends ChannelRegister {
 
     private static ListMultimap<ChannelType, Channel> copyChannels() {
         // NB: deep copy not needed as all types are immuatble
-        ListMultimap<ChannelType, Channel> copy =
-                MultimapBuilder.enumKeys(ChannelType.class).arrayListValues().build();
+        ListMultimap<ChannelType, Channel> copy = MultimapBuilder.enumKeys(ChannelType.class).arrayListValues().build();
         for (Entry<ChannelType, Channel> entry : instance.channels.entries()) {
             copy.put(entry.getKey(), entry.getValue());
         }
@@ -194,8 +206,7 @@ public class ServerChannelRegister extends ChannelRegister {
     // -----------------------------------------------------------------------------------------------
 
     private final List<TileTransceiver> transceivers = new ArrayList<TileTransceiver>();
-    private Map<Channel, RoundRobinIterator<TileTransceiver>> iterators =
-            new HashMap<Channel, RoundRobinIterator<TileTransceiver>>();
+    private Map<Channel, RoundRobinIterator<TileTransceiver>> iterators = new HashMap<Channel, RoundRobinIterator<TileTransceiver>>();
 
     private ServerChannelRegister() {}
 
@@ -314,8 +325,7 @@ public class ServerChannelRegister extends ChannelRegister {
         for (Channel channel : channels) {
             RoundRobinIterator<TileTransceiver> iter = getIterator(channel);
             for (TileTransceiver trans : iter) {
-                if (trans != from
-                        && trans.getRecieveChannels(ChannelType.ITEM).contains(channel)
+                if (trans != from && trans.getRecieveChannels(ChannelType.ITEM).contains(channel)
                         && trans.getRedstoneChecksPassed()) {
                     contents = sendItem(from, slot, contents, trans);
                     if (contents == null) {

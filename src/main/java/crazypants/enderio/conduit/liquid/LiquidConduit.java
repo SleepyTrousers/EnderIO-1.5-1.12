@@ -1,20 +1,8 @@
 package crazypants.enderio.conduit.liquid;
 
-import com.enderio.core.client.render.IconUtil;
-import com.enderio.core.common.util.BlockCoord;
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.network.PacketHandler;
 import java.util.HashMap;
 import java.util.Map;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -26,6 +14,21 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.common.util.BlockCoord;
+
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.AbstractConduitNetwork;
+import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.conduit.ConnectionMode;
+import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.network.PacketHandler;
 
 public class LiquidConduit extends AbstractTankConduit {
 
@@ -97,10 +100,11 @@ public class LiquidConduit extends AbstractTankConduit {
         } else if ((lastSyncRatio != tank.getFilledRatio() && world.getTotalWorldTime() % 2 == 0)) {
 
             // need to send a custom packet as we don't want want to trigger a full chunk update, just
-            // need to get the required  values to the entity renderer
+            // need to get the required values to the entity renderer
             BlockCoord loc = getLocation();
             PacketHandler.INSTANCE.sendToAllAround(
-                    new PacketFluidLevel(this), new TargetPoint(world.provider.dimensionId, loc.x, loc.y, loc.z, 64));
+                    new PacketFluidLevel(this),
+                    new TargetPoint(world.provider.dimensionId, loc.x, loc.y, loc.z, 64));
             lastSyncRatio = tank.getFilledRatio();
         }
     }
@@ -217,8 +221,7 @@ public class LiquidConduit extends AbstractTankConduit {
         ForgeDirection newVal = getNextDir(startPushDir);
         boolean foundNewStart = false;
         while (newVal != startPushDir && !foundNewStart) {
-            foundNewStart = getConduitConnections().contains(newVal)
-                    || getExternalConnections().contains(newVal);
+            foundNewStart = getConduitConnections().contains(newVal) || getExternalConnections().contains(newVal);
             newVal = getNextDir(newVal);
         }
         startPushDir = newVal;
@@ -310,8 +313,7 @@ public class LiquidConduit extends AbstractTankConduit {
 
     @Override
     public boolean canDrain(ForgeDirection from, Fluid fluid) {
-        if (getConnectionMode(from) == ConnectionMode.INPUT
-                || getConnectionMode(from) == ConnectionMode.DISABLED
+        if (getConnectionMode(from) == ConnectionMode.INPUT || getConnectionMode(from) == ConnectionMode.DISABLED
                 || tank.getFluid() == null
                 || fluid == null) {
             return false;
@@ -321,7 +323,7 @@ public class LiquidConduit extends AbstractTankConduit {
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        return new FluidTankInfo[] {tank.getInfo()};
+        return new FluidTankInfo[] { tank.getInfo() };
     }
 
     // -----------------------------
@@ -389,9 +391,9 @@ public class LiquidConduit extends AbstractTankConduit {
         if (getConnectionMode(component.dir) == ConnectionMode.OUTPUT) {
             return ICONS.get(getFluidType() == null ? ICON_EMPTY_INSERT_KEY : ICON_INSERT_KEY);
         }
-        //    if(getFluidType() == null) {
-        //      return ICONS.get(ICON_EMPTY_KEY);
-        //    }
+        // if(getFluidType() == null) {
+        // return ICONS.get(ICON_EMPTY_KEY);
+        // }
         return fluidTypeLocked ? ICONS.get(ICON_KEY_LOCKED) : ICONS.get(ICON_KEY);
     }
 
@@ -410,8 +412,7 @@ public class LiquidConduit extends AbstractTankConduit {
 
     @Override
     protected void updateTank() {
-        int totalConnections =
-                getConduitConnections().size() + getExternalConnections().size();
+        int totalConnections = getConduitConnections().size() + getExternalConnections().size();
         tank.setCapacity(totalConnections * VOLUME_PER_CONNECTION);
     }
 

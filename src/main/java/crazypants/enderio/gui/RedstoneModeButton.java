@@ -3,6 +3,7 @@ package crazypants.enderio.gui;
 import com.enderio.core.api.client.gui.IGuiScreen;
 import com.enderio.core.client.gui.button.CycleButton;
 import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.IRedstoneModeControlable;
 import crazypants.enderio.machine.PacketRedstoneMode;

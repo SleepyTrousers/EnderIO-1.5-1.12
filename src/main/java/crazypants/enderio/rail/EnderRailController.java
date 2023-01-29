@@ -1,11 +1,5 @@
 package crazypants.enderio.rail;
 
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.EntityUtil;
-import com.enderio.core.common.util.ForgeDirectionOffsets;
-import com.enderio.core.common.vecmath.Vector3d;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.transceiver.TileTransceiver;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -14,6 +8,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 import java.util.UUID;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -28,6 +23,14 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.EntityUtil;
+import com.enderio.core.common.util.ForgeDirectionOffsets;
+import com.enderio.core.common.vecmath.Vector3d;
+
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.transceiver.TileTransceiver;
 
 public class EnderRailController {
 
@@ -126,8 +129,7 @@ public class EnderRailController {
     }
 
     private void setCartDirection(EntityMinecart cart) {
-        int meta = transciever
-                .getWorldObj()
+        int meta = transciever.getWorldObj()
                 .getBlockMetadata(transciever.xCoord, transciever.yCoord + 1, transciever.zCoord);
         ForgeDirection dir = BlockEnderRail.getDirection(meta);
         CartLinkUtil.instance.setCartDirection(cart, dir);
@@ -167,12 +169,16 @@ public class EnderRailController {
 
     public List<EntityMinecart> getMinecartsOnTrack() {
         return getMinecartsAt(
-                transciever.getWorldObj(), transciever.xCoord, transciever.yCoord + 1, transciever.zCoord);
+                transciever.getWorldObj(),
+                transciever.xCoord,
+                transciever.yCoord + 1,
+                transciever.zCoord);
     }
 
     public static List<EntityMinecart> getMinecartsAt(World world, int x, int y, int z) {
         List entities = world.getEntitiesWithinAABB(
-                EntityMinecart.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1));
+                EntityMinecart.class,
+                AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1));
         List<EntityMinecart> carts = new ArrayList<EntityMinecart>();
         for (Object o : entities) {
             EntityMinecart cart = (EntityMinecart) o;
@@ -293,9 +299,9 @@ public class EnderRailController {
         entity.motionX = 0;
         entity.motionY = 0;
         entity.motionZ = 0;
-        //    if(entity instanceof EntityMinecart) {
-        //      entity.posY -= 0.3;
-        //    }
+        // if(entity instanceof EntityMinecart) {
+        // entity.posY -= 0.3;
+        // }
         entity.prevPosX = entity.posX;
         entity.prevPosY = entity.posY;
         entity.prevPosZ = entity.posZ;
@@ -313,6 +319,7 @@ public class EnderRailController {
     }
 
     private class PlayerTpInfo {
+
         String playerName;
         UUID cartId;
         int attemptsRemaining;

@@ -1,9 +1,5 @@
 package crazypants.enderio.machine.painter;
 
-import com.enderio.core.client.render.CubeRenderer;
-import com.enderio.core.client.render.IconUtil;
-import com.enderio.core.common.util.BlockCoord;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -11,6 +7,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.common.util.BlockCoord;
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class PaintedBlockRenderer implements ISimpleBlockRenderingHandler {
 
@@ -78,20 +79,15 @@ public class PaintedBlockRenderer implements ISimpleBlockRenderingHandler {
     }
 
     /*
-     * If a non-solid block is painted with a solid block, the renderer would
-     * think it didn't need to render faces of adjacent blocks that touch it
-     * because it only sees the paint.
-     *
-     * This detects this case, so the renderer can be told to just render all
-     * faces, even if it thinks it could save some quads.
+     * If a non-solid block is painted with a solid block, the renderer would think it didn't need to render faces of
+     * adjacent blocks that touch it because it only sees the paint. This detects this case, so the renderer can be told
+     * to just render all faces, even if it thinks it could save some quads.
      */
     private boolean nonSolidPaintedBlockAround(BlockCoord bc, IBlockAccess reality, IBlockAccess fake) {
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             BlockCoord toTest = bc.getLocation(dir);
-            if (toTest.y >= 0
-                    && toTest.y <= 255
-                    && toTest.getBlock(reality).isOpaqueCube()
-                            != toTest.getBlock(fake).isOpaqueCube()) {
+            if (toTest.y >= 0 && toTest.y <= 255
+                    && toTest.getBlock(reality).isOpaqueCube() != toTest.getBlock(fake).isOpaqueCube()) {
                 return true;
             }
         }

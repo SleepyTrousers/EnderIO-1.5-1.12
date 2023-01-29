@@ -1,16 +1,19 @@
 package crazypants.enderio.conduit.gui.item;
 
+import net.minecraft.client.gui.GuiButton;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.CycleButton;
 import com.enderio.core.client.gui.button.IconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.filter.FuzzyMode;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
-import net.minecraft.client.gui.GuiButton;
-import org.lwjgl.opengl.GL11;
 
 public class BigItemFilterGui implements IItemFilterGui {
 
@@ -40,22 +43,13 @@ public class BigItemFilterGui implements IItemFilterGui {
     private int xOffset;
     private int yOffset;
 
-    public BigItemFilterGui(
-            GuiContainerBaseEIO gui,
-            IItemFilterContainer filterContainer,
-            boolean isStickyModeAvailable,
-            boolean isInput) {
+    public BigItemFilterGui(GuiContainerBaseEIO gui, IItemFilterContainer filterContainer,
+            boolean isStickyModeAvailable, boolean isInput) {
         this(gui, filterContainer, isStickyModeAvailable, isInput, isInput ? 104 : 6, 96, isInput ? 0 : 256);
     }
 
-    public BigItemFilterGui(
-            GuiContainerBaseEIO gui,
-            IItemFilterContainer filterContainer,
-            boolean isStickyModeAvailable,
-            boolean isInput,
-            int xOffset,
-            int yOffset,
-            int buttonIdOffset) {
+    public BigItemFilterGui(GuiContainerBaseEIO gui, IItemFilterContainer filterContainer,
+            boolean isStickyModeAvailable, boolean isInput, int xOffset, int yOffset, int buttonIdOffset) {
         this.gui = gui;
         this.isStickyModeAvailable = isStickyModeAvailable;
         this.filterContainer = filterContainer;
@@ -81,7 +75,12 @@ public class BigItemFilterGui implements IItemFilterGui {
 
         x += 16;
         useOreDictB = new ToggleButton(
-                gui, ID_ORE_DICT + buttonIdOffset, x, y, IconEIO.FILTER_ORE_DICT_OFF, IconEIO.FILTER_ORE_DICT);
+                gui,
+                ID_ORE_DICT + buttonIdOffset,
+                x,
+                y,
+                IconEIO.FILTER_ORE_DICT_OFF,
+                IconEIO.FILTER_ORE_DICT);
         useOreDictB.setSelectedToolTip(EnderIO.lang.localize("gui.conduit.item.oreDicEnabled"));
         useOreDictB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.oreDicDisabled"));
         useOreDictB.setPaintSelectedBorder(false);
@@ -97,7 +96,12 @@ public class BigItemFilterGui implements IItemFilterGui {
 
         x += 16;
         stickyB = new ToggleButton(
-                gui, ID_STICKY + buttonIdOffset, x, y, IconEIO.FILTER_STICKY_OFF, IconEIO.FILTER_STICKY);
+                gui,
+                ID_STICKY + buttonIdOffset,
+                x,
+                y,
+                IconEIO.FILTER_STICKY_OFF,
+                IconEIO.FILTER_STICKY);
         stickyB.setSelectedToolTip(EnderIO.lang.localizeList("gui.conduit.item.stickyEnabled"));
         stickyB.setUnselectedToolTip(EnderIO.lang.localize("gui.conduit.item.stickyDisbaled"));
         stickyB.setPaintSelectedBorder(false);
@@ -110,6 +114,7 @@ public class BigItemFilterGui implements IItemFilterGui {
 
     public void createFilterSlots() {
         filter.createGhostSlots(gui.getGhostSlots(), xOffset + 1, yOffset + 1, new Runnable() {
+
             @Override
             public void run() {
                 sendFilterChange();

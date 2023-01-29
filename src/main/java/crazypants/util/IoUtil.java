@@ -1,12 +1,14 @@
 package crazypants.util;
 
-import crazypants.enderio.config.Config;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+
 import org.apache.commons.io.IOUtils;
+
+import crazypants.enderio.config.Config;
 
 public class IoUtil {
 
@@ -44,18 +46,18 @@ public class IoUtil {
         return IOUtils.toString(in);
     }
 
-    //  public static void writeTextFileToConfig(String fileName, String contents) throws IOException {
-    //    writeTextFile(prependConfigPath(fileName), contents);
-    //  }
+    // public static void writeTextFileToConfig(String fileName, String contents) throws IOException {
+    // writeTextFile(prependConfigPath(fileName), contents);
+    // }
     //
-    //  public static void writeTextFile(String fileName, String contents) throws IOException {
-    //    BufferedWriter writer = null;
-    //    try {
-    //      writer = new BufferedWriter(new FileWriter(fileName, false));
-    //      writer.write(contents);
-    //    } finally {
-    //      IOUtils.closeQuietly(writer);
-    //    }
-    //  }
+    // public static void writeTextFile(String fileName, String contents) throws IOException {
+    // BufferedWriter writer = null;
+    // try {
+    // writer = new BufferedWriter(new FileWriter(fileName, false));
+    // writer.write(contents);
+    // } finally {
+    // IOUtils.closeQuietly(writer);
+    // }
+    // }
 
 }

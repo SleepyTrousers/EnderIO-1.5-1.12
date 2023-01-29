@@ -1,5 +1,7 @@
 package crazypants.enderio.conduit.gui.item;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
@@ -9,7 +11,6 @@ import crazypants.enderio.conduit.item.filter.ModItemFilter;
 import crazypants.enderio.conduit.packet.AbstractConduitPacket;
 import crazypants.enderio.conduit.packet.ConTypeEnum;
 import io.netty.buffer.ByteBuf;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class PacketModItemFilter extends AbstractConduitPacket<IItemConduit>
         implements IMessageHandler<PacketModItemFilter, IMessage> {

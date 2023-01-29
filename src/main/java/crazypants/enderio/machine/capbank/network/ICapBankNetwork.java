@@ -1,9 +1,10 @@
 package crazypants.enderio.machine.capbank.network;
 
+import java.util.Collection;
+
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.capbank.TileCapBank;
 import crazypants.enderio.power.IPowerStorage;
-import java.util.Collection;
 
 public interface ICapBankNetwork extends IPowerStorage {
 

@@ -1,16 +1,5 @@
 package crazypants.enderio.machine.obelisk.xp;
 
-import com.enderio.core.api.common.util.ITankAccess;
-import com.enderio.core.common.util.FluidUtil;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.xp.ExperienceContainer;
-import crazypants.enderio.xp.IHaveExperience;
-import crazypants.enderio.xp.PacketExperianceContainer;
-import crazypants.enderio.xp.XpUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -20,11 +9,24 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.common.util.FluidUtil;
+
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.xp.ExperienceContainer;
+import crazypants.enderio.xp.IHaveExperience;
+import crazypants.enderio.xp.PacketExperianceContainer;
+import crazypants.enderio.xp.XpUtil;
+
 public class TileExperienceObelisk extends AbstractMachineEntity
         implements IFluidHandler, IHaveExperience, ITankAccess {
 
-    private ExperienceContainer xpCont =
-            new ExperienceContainer(XpUtil.getExperienceForLevel(Config.xpObeliskMaxXpLevel));
+    private ExperienceContainer xpCont = new ExperienceContainer(
+            XpUtil.getExperienceForLevel(Config.xpObeliskMaxXpLevel));
 
     public TileExperienceObelisk() {
         super(new SlotDefinition(0, 0, 0));
@@ -122,7 +124,7 @@ public class TileExperienceObelisk extends AbstractMachineEntity
 
     @Override
     public FluidTank[] getOutputTanks() {
-        return new FluidTank[] {xpCont};
+        return new FluidTank[] { xpCont };
     }
 
     @Override

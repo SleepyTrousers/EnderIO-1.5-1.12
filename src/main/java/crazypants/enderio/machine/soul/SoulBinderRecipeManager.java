@@ -1,13 +1,14 @@
 package crazypants.enderio.machine.soul;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.MachineRecipeRegistry;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class SoulBinderRecipeManager {
 
@@ -25,18 +26,18 @@ public class SoulBinderRecipeManager {
     }
 
     public void addDefaultRecipes() {
-        MachineRecipeRegistry.instance.registerRecipe(
-                ModObject.blockSoulBinder.unlocalisedName, SoulBinderSpawnerRecipe.instance);
-        MachineRecipeRegistry.instance.registerRecipe(
-                ModObject.blockSoulBinder.unlocalisedName, SoulBinderReanimationRecipe.instance);
-        MachineRecipeRegistry.instance.registerRecipe(
-                ModObject.blockSoulBinder.unlocalisedName, SoulBinderSentientRecipe.instance);
-        MachineRecipeRegistry.instance.registerRecipe(
-                ModObject.blockSoulBinder.unlocalisedName, SoulBinderEnderCystalRecipe.instance);
-        MachineRecipeRegistry.instance.registerRecipe(
-                ModObject.blockSoulBinder.unlocalisedName, SoulBinderAttractorCystalRecipe.instance);
-        MachineRecipeRegistry.instance.registerRecipe(
-                ModObject.blockSoulBinder.unlocalisedName, SoulBinderPrecientCystalRecipe.instance);
+        MachineRecipeRegistry.instance
+                .registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderSpawnerRecipe.instance);
+        MachineRecipeRegistry.instance
+                .registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderReanimationRecipe.instance);
+        MachineRecipeRegistry.instance
+                .registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderSentientRecipe.instance);
+        MachineRecipeRegistry.instance
+                .registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderEnderCystalRecipe.instance);
+        MachineRecipeRegistry.instance
+                .registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderAttractorCystalRecipe.instance);
+        MachineRecipeRegistry.instance
+                .registerRecipe(ModObject.blockSoulBinder.unlocalisedName, SoulBinderPrecientCystalRecipe.instance);
 
         // Ender Rail
         if (Config.transceiverEnabled && Config.enderRailEnabled) {
@@ -54,22 +55,22 @@ public class SoulBinderRecipeManager {
 
     // Example of how to add a recipe:
     //
-    //  NBTTagCompound root = new NBTTagCompound();
-    //  root.setString(SoulBinderRecipeManager.KEY_RECIPE_UID, "diamondToWood");
-    //  root.setInteger(SoulBinderRecipeManager.KEY_REQUIRED_ENERGY, 50000);
-    //  root.setInteger(SoulBinderRecipeManager.KEY_REQUIRED_XP, 7);
-    //  root.setString(SoulBinderRecipeManager.KEY_SOUL_TYPES, "Zombie|SpecialMobs.SpecialZombie|Villager");
-    //  ItemStack is = new ItemStack(Items.diamond);
-    //  NBTTagCompound stackRoot = new NBTTagCompound();
-    //  is.writeToNBT(stackRoot);
-    //  root.setTag(SoulBinderRecipeManager.KEY_INPUT_STACK, stackRoot);
-    //  is = new ItemStack(Blocks.planks);
-    //  stackRoot = new NBTTagCompound();
-    //  is.writeToNBT(stackRoot);
-    //  root.setTag(SoulBinderRecipeManager.KEY_OUTPUT_STACK, stackRoot);
+    // NBTTagCompound root = new NBTTagCompound();
+    // root.setString(SoulBinderRecipeManager.KEY_RECIPE_UID, "diamondToWood");
+    // root.setInteger(SoulBinderRecipeManager.KEY_REQUIRED_ENERGY, 50000);
+    // root.setInteger(SoulBinderRecipeManager.KEY_REQUIRED_XP, 7);
+    // root.setString(SoulBinderRecipeManager.KEY_SOUL_TYPES, "Zombie|SpecialMobs.SpecialZombie|Villager");
+    // ItemStack is = new ItemStack(Items.diamond);
+    // NBTTagCompound stackRoot = new NBTTagCompound();
+    // is.writeToNBT(stackRoot);
+    // root.setTag(SoulBinderRecipeManager.KEY_INPUT_STACK, stackRoot);
+    // is = new ItemStack(Blocks.planks);
+    // stackRoot = new NBTTagCompound();
+    // is.writeToNBT(stackRoot);
+    // root.setTag(SoulBinderRecipeManager.KEY_OUTPUT_STACK, stackRoot);
     //
-    //  SoulBinderRecipeManager.getInstance().addRecipeFromNBT(root);
-    //  FMLInterModComms.sendMessage("EnderIO",  "recipe:soulbinder", root);
+    // SoulBinderRecipeManager.getInstance().addRecipeFromNBT(root);
+    // FMLInterModComms.sendMessage("EnderIO", "recipe:soulbinder", root);
 
     // @formatter:off
     /**
@@ -145,7 +146,12 @@ public class SoulBinderRecipeManager {
             String[] entityNames = str.split("\\|");
 
             BasicSoulBinderRecipe recipe = new BasicSoulBinderRecipe(
-                    inputStack, outputStack, energyRequired, xpLevelsRequired, recipeUid, entityNames);
+                    inputStack,
+                    outputStack,
+                    energyRequired,
+                    xpLevelsRequired,
+                    recipeUid,
+                    entityNames);
 
             MachineRecipeRegistry.instance.registerRecipe(ModObject.blockSoulBinder.unlocalisedName, recipe);
 

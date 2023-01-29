@@ -1,31 +1,11 @@
 package crazypants.enderio.machine.spawner;
 
-import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.Util;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.Log;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.MachineRecipeRegistry;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.waila.IWailaInfoProvider;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.block.BlockMobSpawner;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -44,6 +24,29 @@ import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.Util;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
+import cpw.mods.fml.relauncher.ReflectionHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.Log;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.MachineRecipeRegistry;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.waila.IWailaInfoProvider;
 
 public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner> implements IAdvancedTooltipProvider {
 
@@ -105,8 +108,8 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
         }
 
         try {
-            fieldpersistenceRequired =
-                    ReflectionHelper.findField(EntityLiving.class, "field_82179_bU", "persistenceRequired");
+            fieldpersistenceRequired = ReflectionHelper
+                    .findField(EntityLiving.class, "field_82179_bU", "persistenceRequired");
         } catch (Exception e) {
             Log.error("BlockPoweredSpawner: Could not find field: persistenceRequired");
         }
@@ -117,8 +120,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
     @SubscribeEvent
     public void onBreakEvent(BlockEvent.BreakEvent evt) {
         if (evt.block instanceof BlockMobSpawner) {
-            if (evt.getPlayer() != null
-                    && !evt.getPlayer().capabilities.isCreativeMode
+            if (evt.getPlayer() != null && !evt.getPlayer().capabilities.isCreativeMode
                     && !evt.getPlayer().worldObj.isRemote
                     && !evt.isCanceled()) {
                 TileEntity tile = evt.getPlayer().worldObj.getTileEntity(evt.x, evt.y, evt.z);
@@ -175,8 +177,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
                     for (Object object : evt.world.loadedTileEntityList) {
                         if (object instanceof TileEntityMobSpawner) {
                             TileEntityMobSpawner spawner = (TileEntityMobSpawner) object;
-                            if (spawner.getWorldObj() == evt.world
-                                    && spawner.xCoord == evt.x
+                            if (spawner.getWorldObj() == evt.world && spawner.xCoord == evt.x
                                     && spawner.yCoord == evt.y
                                     && spawner.zCoord == evt.z) {
                                 // Bingo!
@@ -206,8 +207,7 @@ public class BlockPoweredSpawner extends AbstractMachineBlock<TilePoweredSpawner
 
     @SubscribeEvent
     public void handleAnvilEvent(AnvilUpdateEvent evt) {
-        if (evt.left == null
-                || evt.left.stackSize != 1
+        if (evt.left == null || evt.left.stackSize != 1
                 || evt.left.getItem() != Item.getItemFromBlock(EnderIO.blockPoweredSpawner)
                 || evt.right == null
                 || ItemBrokenSpawner.getMobTypeFromStack(evt.right) == null) {

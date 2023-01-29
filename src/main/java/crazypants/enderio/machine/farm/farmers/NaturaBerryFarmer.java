@@ -1,13 +1,16 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.farm.TileFarmStation;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.farm.TileFarmStation;
 
 public class NaturaBerryFarmer extends PickableFarmer {
 
@@ -33,9 +36,8 @@ public class NaturaBerryFarmer extends PickableFarmer {
             meta = farm.getBlockMeta(checkBlock);
             block = farm.getBlock(checkBlock);
 
-            if (super.canHarvest(
-                    farm, bc, block,
-                    meta)) { // redundant check because our canHarvest checks all 5 blocks so a bush may be invalid in
+            if (super.canHarvest(farm, bc, block, meta)) { // redundant check because our canHarvest checks all 5 blocks
+                                                           // so a bush may be invalid in
                 // the stack of 5
                 IHarvestResult blockRes = super.harvestBlock(farm, checkBlock, block, meta);
 
@@ -60,8 +62,7 @@ public class NaturaBerryFarmer extends PickableFarmer {
 
     @Override
     public boolean canHarvest(TileFarmStation farm, BlockCoord bc, Block block, int meta) {
-        if (!Config.farmEssenceBerriesEnabled
-                && "tile.ore.berries.two".equals(block.getUnlocalizedName())
+        if (!Config.farmEssenceBerriesEnabled && "tile.ore.berries.two".equals(block.getUnlocalizedName())
                 && meta == grownBlockMeta) {
             return false;
         }

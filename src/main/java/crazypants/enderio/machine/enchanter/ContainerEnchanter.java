@@ -1,15 +1,17 @@
 package crazypants.enderio.machine.enchanter;
 
-import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
-import com.enderio.core.client.gui.widget.GhostSlot;
-import com.enderio.core.common.ContainerEnder;
 import java.util.List;
+
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
+import com.enderio.core.common.ContainerEnder;
 
 public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
 
@@ -73,8 +75,7 @@ public class ContainerEnchanter extends ContainerEnder<TileEnchanter> {
                 EnchantmentData enchData = te.getCurrentEnchantmentData();
                 EnchanterRecipe recipe = te.getCurrentEnchantmentRecipe();
                 ItemStack curStack = te.getStackInSlot(1);
-                if (recipe == null
-                        || enchData == null
+                if (recipe == null || enchData == null
                         || curStack == null
                         || enchData.enchantmentLevel >= curStack.stackSize) {
                     te.setInventorySlotContents(1, (ItemStack) null);

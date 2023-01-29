@@ -1,9 +1,11 @@
 package crazypants.enderio.teleport.telepad;
 
-import com.enderio.core.common.ContainerEnder;
 import java.awt.Point;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
+
+import com.enderio.core.common.ContainerEnder;
 
 public class ContainerTelePad extends ContainerEnder<IInventory> {
 

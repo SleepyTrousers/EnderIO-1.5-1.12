@@ -1,7 +1,8 @@
 package crazypants.enderio.fluid;
 
-import crazypants.enderio.EnderIO;
 import net.minecraftforge.fluids.IFluidTank;
+
+import crazypants.enderio.EnderIO;
 
 public class Fluids {
 

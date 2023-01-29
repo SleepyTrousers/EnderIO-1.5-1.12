@@ -1,6 +1,10 @@
 package crazypants.enderio.conduit.gui.item;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+
 import com.enderio.core.client.gui.button.ToggleButton;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
 import crazypants.enderio.conduit.item.IItemConduit;
@@ -8,8 +12,6 @@ import crazypants.enderio.conduit.item.filter.PowerItemFilter;
 import crazypants.enderio.conduit.packet.PacketItemConduitFilter;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.network.PacketHandler;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
 
 public class PowerItemFilterGui implements IItemFilterGui {
 
@@ -145,11 +147,11 @@ public class PowerItemFilterGui implements IItemFilterGui {
 
     @Override
     public void renderCustomOptions(int top, float par1, int par2, int par3) {
-        //    GL11.glColor3f(1, 1, 1);
-        //    RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
-        //    gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 68, 0, 238, 18 * 5, 18);
-        //    if(filter.isAdvanced()) {
-        //      gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 86, 0, 238, 18 * 5, 18);
-        //    }
+        // GL11.glColor3f(1, 1, 1);
+        // RenderUtil.bindTexture("enderio:textures/gui/itemFilter.png");
+        // gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 68, 0, 238, 18 * 5, 18);
+        // if(filter.isAdvanced()) {
+        // gui.drawTexturedModalRect(gui.getGuiLeft() + 32, gui.getGuiTop() + 86, 0, 238, 18 * 5, 18);
+        // }
     }
 }

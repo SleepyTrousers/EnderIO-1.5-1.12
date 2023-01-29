@@ -1,8 +1,9 @@
 package crazypants.enderio.machine;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class AbstractPowerConsumerEntity extends AbstractPoweredMachineEntity
         implements IInternalPowerReceiver {

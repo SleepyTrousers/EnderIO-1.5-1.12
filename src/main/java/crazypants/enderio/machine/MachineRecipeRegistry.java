@@ -11,8 +11,7 @@ public class MachineRecipeRegistry {
 
     public static final MachineRecipeRegistry instance = new MachineRecipeRegistry();
 
-    private final Map<String, Map<String, IMachineRecipe>> machineRecipes =
-            new HashMap<String, Map<String, IMachineRecipe>>();
+    private final Map<String, Map<String, IMachineRecipe>> machineRecipes = new HashMap<String, Map<String, IMachineRecipe>>();
 
     public void registerRecipe(String machine, IMachineRecipe recipe) {
         getRecipesForMachine(machine).put(recipe.getUid(), recipe);

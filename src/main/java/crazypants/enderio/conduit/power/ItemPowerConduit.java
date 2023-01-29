@@ -1,5 +1,10 @@
 package crazypants.enderio.conduit.power;
 
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -9,9 +14,6 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.ItemConduitSubtype;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.power.ICapacitor;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 
 public class ItemPowerConduit extends AbstractItemConduit {
 
@@ -19,10 +21,9 @@ public class ItemPowerConduit extends AbstractItemConduit {
     private static String POSTFIX;
 
     static ItemConduitSubtype[] subtypes = new ItemConduitSubtype[] {
-        new ItemConduitSubtype(ModObject.itemPowerConduit.name(), "enderio:itemPowerConduit"),
-        new ItemConduitSubtype(ModObject.itemPowerConduit.name() + "Enhanced", "enderio:itemPowerConduitEnhanced"),
-        new ItemConduitSubtype(ModObject.itemPowerConduit.name() + "Ender", "enderio:itemPowerConduitEnder"),
-    };
+            new ItemConduitSubtype(ModObject.itemPowerConduit.name(), "enderio:itemPowerConduit"),
+            new ItemConduitSubtype(ModObject.itemPowerConduit.name() + "Enhanced", "enderio:itemPowerConduitEnhanced"),
+            new ItemConduitSubtype(ModObject.itemPowerConduit.name() + "Ender", "enderio:itemPowerConduitEnder"), };
 
     public static ItemPowerConduit create() {
         ItemPowerConduit result = new ItemPowerConduit();

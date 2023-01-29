@@ -6,8 +6,7 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 
 /**
- * Syncs some configs that are only used clientside, but must use the serverside
- * value for balance purposes.
+ * Syncs some configs that are only used clientside, but must use the serverside value for balance purposes.
  */
 public class PacketConfigSync implements IMessage, IMessageHandler<PacketConfigSync, IMessage> {
 

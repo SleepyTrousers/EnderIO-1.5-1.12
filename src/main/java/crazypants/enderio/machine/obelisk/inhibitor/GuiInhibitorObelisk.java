@@ -1,11 +1,15 @@
 package crazypants.enderio.machine.obelisk.inhibitor;
 
+import java.awt.Color;
+
+import net.minecraft.inventory.Container;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.render.ColorUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import java.awt.Color;
-import net.minecraft.inventory.Container;
-import org.lwjgl.opengl.GL11;
 
 public class GuiInhibitorObelisk extends GuiPoweredMachineBase<TileInhibitorObelisk> {
 

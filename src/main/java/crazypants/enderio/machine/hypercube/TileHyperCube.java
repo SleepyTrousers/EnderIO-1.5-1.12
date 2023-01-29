@@ -1,25 +1,12 @@
 package crazypants.enderio.machine.hypercube;
 
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.ItemUtil;
-import com.enderio.core.common.util.PlayerUtil;
-import com.enderio.core.common.vecmath.VecmathUtil;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.IRedstoneModeControlable;
-import crazypants.enderio.machine.RedstoneControlMode;
-import crazypants.enderio.power.BasicCapacitor;
-import crazypants.enderio.power.IInternalPowerHandler;
-import crazypants.enderio.power.IPowerInterface;
-import crazypants.enderio.power.PowerHandlerUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.UUID;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -33,6 +20,22 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.PlayerUtil;
+import com.enderio.core.common.vecmath.VecmathUtil;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.IRedstoneModeControlable;
+import crazypants.enderio.machine.RedstoneControlMode;
+import crazypants.enderio.power.BasicCapacitor;
+import crazypants.enderio.power.IInternalPowerHandler;
+import crazypants.enderio.power.IPowerInterface;
+import crazypants.enderio.power.PowerHandlerUtil;
+
 public class TileHyperCube extends TileEntityEio
         implements IInternalPowerHandler, IFluidHandler, ISidedInventory, IRedstoneModeControlable {
 
@@ -43,6 +46,7 @@ public class TileHyperCube extends TileEntityEio
     private static final float MILLIBUCKET_TRANSMISSION_COST = Config.transceiverBucketTransmissionCostRF / 1000F;
 
     public static enum IoMode {
+
         SEND("gui.send"),
         RECIEVE("gui.receive"),
         BOTH("gui.sendReceive"),
@@ -120,8 +124,8 @@ public class TileHyperCube extends TileEntityEio
 
     private float milliBucketsTransfered = 0;
 
-    private EnumMap<SubChannel, IoMode> ioModes =
-            new EnumMap<TileHyperCube.SubChannel, TileHyperCube.IoMode>(SubChannel.class);
+    private EnumMap<SubChannel, IoMode> ioModes = new EnumMap<TileHyperCube.SubChannel, TileHyperCube.IoMode>(
+            SubChannel.class);
 
     private ItemRecieveBuffer recieveBuffer;
 
@@ -168,8 +172,8 @@ public class TileHyperCube extends TileEntityEio
     }
 
     int getEnergyStoredScaled(int scale) {
-        return (int)
-                VecmathUtil.clamp(Math.round(scale * ((double) getEnergyStored() / getMaxEnergyStored())), 0, scale);
+        return (int) VecmathUtil
+                .clamp(Math.round(scale * ((double) getEnergyStored() / getMaxEnergyStored())), 0, scale);
     }
 
     public void onBreakBlock() {
@@ -577,7 +581,7 @@ public class TileHyperCube extends TileEntityEio
             }
         }
         if (res.isEmpty()) {
-            return new FluidTankInfo[] {new FluidTankInfo(null, 0)};
+            return new FluidTankInfo[] { new FluidTankInfo(null, 0) };
         } else {
             return res.toArray(new FluidTankInfo[res.size()]);
         }
@@ -852,6 +856,7 @@ public class TileHyperCube extends TileEntityEio
     }
 
     static class Receptor {
+
         IPowerInterface receptor;
         ForgeDirection fromDir;
 
@@ -862,6 +867,7 @@ public class TileHyperCube extends TileEntityEio
     }
 
     static class NetworkFluidHandler {
+
         final TileHyperCube node;
         final IFluidHandler handler;
         final ForgeDirection dir;

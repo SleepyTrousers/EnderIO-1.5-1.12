@@ -1,25 +1,30 @@
 package crazypants.enderio.nei;
 
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.oredict.OreDictionary;
+
+import org.lwjgl.opengl.GL11;
+
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.ItemList;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+
 import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.common.util.ItemUtil;
+
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.alloy.AlloyRecipeManager;
 import crazypants.enderio.machine.alloy.GuiAlloySmelter;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.RecipeInput;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.oredict.OreDictionary;
-import org.lwjgl.opengl.GL11;
 
 public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
 
@@ -45,8 +50,11 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadTransferRects() {
-        transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(
-                new Rectangle(149, 32, 16, 16), "EnderIOAlloySmelter", new Object[0]));
+        transferRects.add(
+                new TemplateRecipeHandler.RecipeTransferRect(
+                        new Rectangle(149, 32, 16, 16),
+                        "EnderIOAlloySmelter",
+                        new Object[0]));
     }
 
     @Override
@@ -56,8 +64,7 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
             return;
         }
 
-        List<IRecipe> recipes =
-                new ArrayList<IRecipe>(AlloyRecipeManager.getInstance().getRecipes());
+        List<IRecipe> recipes = new ArrayList<IRecipe>(AlloyRecipeManager.getInstance().getRecipes());
         recipes.addAll(AlloyRecipeManager.getInstance().getVanillaRecipe().getAllRecipes());
         for (IRecipe recipe : recipes) {
             ItemStack output = recipe.getOutputs()[0].getOutput();
@@ -71,8 +78,7 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals("EnderIOAlloySmelter") && getClass() == AlloySmelterRecipeHandler.class) {
-            List<IRecipe> recipes =
-                    new ArrayList<IRecipe>(AlloyRecipeManager.getInstance().getRecipes());
+            List<IRecipe> recipes = new ArrayList<IRecipe>(AlloyRecipeManager.getInstance().getRecipes());
             recipes.addAll(AlloyRecipeManager.getInstance().getVanillaRecipe().getAllRecipes());
             for (IRecipe recipe : recipes) {
                 ItemStack output = recipe.getOutputs()[0].getOutput();
@@ -86,8 +92,7 @@ public class AlloySmelterRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadUsageRecipes(ItemStack ingredient) {
-        List<IRecipe> recipes =
-                new ArrayList<IRecipe>(AlloyRecipeManager.getInstance().getRecipes());
+        List<IRecipe> recipes = new ArrayList<IRecipe>(AlloyRecipeManager.getInstance().getRecipes());
         recipes.addAll(AlloyRecipeManager.getInstance().getVanillaRecipe().getAllRecipes());
         for (IRecipe recipe : recipes) {
             if (recipe.isValidInput(0, ingredient)) {

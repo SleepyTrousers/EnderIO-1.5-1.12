@@ -1,17 +1,20 @@
 package crazypants.enderio.gui;
 
+import java.util.List;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityFurnace;
+
 import com.enderio.core.client.handlers.SpecialTooltipHandler.ITooltipCallback;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.generator.stirling.StirlingGeneratorContainer;
 import crazypants.enderio.machine.generator.stirling.TileEntityStirlingGenerator;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import java.util.List;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityFurnace;
 
 public class TooltipHandlerBurnTime implements ITooltipCallback {
 

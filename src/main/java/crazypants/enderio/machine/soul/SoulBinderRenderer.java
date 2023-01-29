@@ -1,12 +1,5 @@
 package crazypants.enderio.machine.soul;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.CubeRenderer;
-import com.enderio.core.client.render.IconUtil;
-import com.enderio.core.common.util.ForgeDirectionOffsets;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import crazypants.enderio.ClientProxy;
-import crazypants.enderio.EnderIO;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -14,7 +7,17 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.common.util.ForgeDirectionOffsets;
+
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import crazypants.enderio.ClientProxy;
+import crazypants.enderio.EnderIO;
 
 public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
 
@@ -34,8 +37,8 @@ public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
     }
 
     @Override
-    public boolean renderWorldBlock(
-            IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+            RenderBlocks renderer) {
 
         IIcon soulariumIcon = EnderIO.blockSoulFuser.getIcon(ForgeDirection.EAST.ordinal(), 0);
         override = renderer.overrideBlockTexture;
@@ -74,8 +77,7 @@ public class SoulBinderRenderer implements ISimpleBlockRenderingHandler {
         } else {
             TileSoulBinder sb = (TileSoulBinder) world.getTileEntity(x, y, z);
             facing = sb.facing;
-            endermanIcon = sb.isActive()
-                    ? EnderIO.blockSoulFuser.endermanSkullIconOn
+            endermanIcon = sb.isActive() ? EnderIO.blockSoulFuser.endermanSkullIconOn
                     : EnderIO.blockSoulFuser.endermanSkullIcon;
         }
 

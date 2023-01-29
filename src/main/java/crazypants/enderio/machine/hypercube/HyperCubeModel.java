@@ -1,11 +1,13 @@
 package crazypants.enderio.machine.hypercube;
 
-import com.enderio.core.client.render.RenderUtil;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.RenderUtil;
 
 public class HyperCubeModel extends ModelBase implements IModel {
 

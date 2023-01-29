@@ -1,12 +1,7 @@
 package crazypants.enderio.machine.tank;
 
-import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.tool.SmartTank;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,6 +13,14 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidContainerItem;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.tool.SmartTank;
 
 public class BlockItemTank extends ItemBlockWithMetadata implements IAdvancedTooltipProvider, IFluidContainerItem {
 
@@ -44,7 +47,7 @@ public class BlockItemTank extends ItemBlockWithMetadata implements IAdvancedToo
     }
 
     @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         ItemStack stack = new ItemStack(this, 1, 0);

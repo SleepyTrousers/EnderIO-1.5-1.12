@@ -1,10 +1,33 @@
 package crazypants.enderio.conduit.redstone;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import cofh.api.tileentity.IRedstoneControl;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -18,25 +41,6 @@ import crazypants.enderio.conduit.geom.CollidableCache.CacheKey;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.tool.ToolUtil;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsulatedRedstoneConduit {
 
@@ -111,8 +115,9 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
             Class<?> clz = Class.forName(className);
             addConnectableInterface(clz, connectable);
         } catch (Exception e) {
-            Log.warn("InsulatedRedstoneConduit: An attempt was made to register " + className
-                    + " as connectable but it could not be loaded");
+            Log.warn(
+                    "InsulatedRedstoneConduit: An attempt was made to register " + className
+                            + " as connectable but it could not be loaded");
         }
     }
 
@@ -129,8 +134,8 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
             CONNECTABLE_CLASSES = new HashMap<Class<?>, Boolean>();
             CONNECTABLE_CLASSES.put(IRedstoneControl.class, false);
             try {
-                Class<?> conInterface =
-                        Class.forName("powercrystals.minefactoryreloaded.api.rednet.connectivity.IRedNetConnection");
+                Class<?> conInterface = Class
+                        .forName("powercrystals.minefactoryreloaded.api.rednet.connectivity.IRedNetConnection");
                 CONNECTABLE_CLASSES.put(conInterface, false);
             } catch (Throwable e) {
                 // NO-OP
@@ -170,8 +175,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
                     boolean colorHit = false;
                     if (all != null && containsExternalConnection(connDir)) {
                         for (RaytraceResult rtr : all) {
-                            if (rtr != null
-                                    && rtr.component != null
+                            if (rtr != null && rtr.component != null
                                     && COLOR_CONTROLLER_ID.equals(rtr.component.data)) {
                                 colorHit = true;
                             }
@@ -187,8 +191,8 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
                         BlockCoord loc = getLocation().getLocation(faceHit);
                         Block id = world.getBlock(loc.x, loc.y, loc.z);
                         if (id == EnderIO.blockConduitBundle) {
-                            IRedstoneConduit neighbour =
-                                    ConduitUtil.getConduit(world, loc.x, loc.y, loc.z, IRedstoneConduit.class);
+                            IRedstoneConduit neighbour = ConduitUtil
+                                    .getConduit(world, loc.x, loc.y, loc.z, IRedstoneConduit.class);
                             if (neighbour != null
                                     && neighbour.getConnectionMode(faceHit.getOpposite()) == ConnectionMode.DISABLED) {
                                 neighbour.setConnectionMode(faceHit.getOpposite(), ConnectionMode.NOT_SET);
@@ -210,7 +214,11 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
                     } else if (containsConduitConnection(connDir)) {
                         BlockCoord loc = getLocation().getLocation(connDir);
                         IRedstoneConduit neighbour = ConduitUtil.getConduit(
-                                getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, IRedstoneConduit.class);
+                                getBundle().getEntity().getWorldObj(),
+                                loc.x,
+                                loc.y,
+                                loc.z,
+                                IRedstoneConduit.class);
                         if (neighbour != null) {
                             if (network != null) {
                                 network.destroyNetwork();
@@ -507,8 +515,7 @@ public class InsulatedRedstoneConduit extends RedstoneConduit implements IInsula
 
     @Override
     public IIcon getTransmitionTextureForState(CollidableComponent component) {
-        return isActive()
-                ? RedstoneConduit.ICONS.get(KEY_TRANSMISSION_ICON)
+        return isActive() ? RedstoneConduit.ICONS.get(KEY_TRANSMISSION_ICON)
                 : RedstoneConduit.ICONS.get(KEY_CONDUIT_ICON);
     }
 

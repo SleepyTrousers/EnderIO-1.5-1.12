@@ -4,9 +4,27 @@ import static crazypants.enderio.EnderIO.MODID;
 import static crazypants.enderio.EnderIO.MOD_NAME;
 import static crazypants.enderio.EnderIO.VERSION;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Locale;
+
+import net.minecraft.block.material.Material;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+
 import com.enderio.core.common.Lang;
 import com.enderio.core.common.util.EntityUtil;
 import com.google.common.collect.ImmutableList;
+
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -162,28 +180,12 @@ import crazypants.enderio.teleport.telepad.ItemCoordSelector;
 import crazypants.enderio.thaumcraft.ThaumcraftCompat;
 import crazypants.enderio.tool.EnderIOCrashCallable;
 import crazypants.util.EE3Util;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Locale;
-import net.minecraft.block.material.Material;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 
 @Mod(
         modid = MODID,
         name = MOD_NAME,
         version = VERSION,
-        dependencies =
-                "after:endercore;after:MineFactoryReloaded;after:Forestry;after:Waila@[1.5.8,);after:Thaumcraft;after:appliedenergistics2@[rv2-beta-8,);after:chisel",
+        dependencies = "after:endercore;after:MineFactoryReloaded;after:Forestry;after:Waila@[1.5.8,);after:Thaumcraft;after:appliedenergistics2@[rv2-beta-8,);after:chisel",
         guiFactory = "crazypants.enderio.config.ConfigFactoryEIO")
 public class EnderIO {
 
@@ -518,11 +520,14 @@ public class EnderIO {
         Fluid f = new Fluid(Fluids.NUTRIENT_DISTILLATION).setDensity(1500).setViscosity(3000);
         FluidRegistry.registerFluid(f);
         fluidNutrientDistillation = FluidRegistry.getFluid(f.getName());
-        blockNutrientDistillation =
-                BlockFluidEio.NutrientDistillation.create(fluidNutrientDistillation, Material.water);
+        blockNutrientDistillation = BlockFluidEio.NutrientDistillation
+                .create(fluidNutrientDistillation, Material.water);
 
         PacketHandler.INSTANCE.registerMessage(
-                PacketNutrientTank.class, PacketNutrientTank.class, PacketHandler.nextID(), Side.CLIENT);
+                PacketNutrientTank.class,
+                PacketNutrientTank.class,
+                PacketHandler.nextID(),
+                Side.CLIENT);
 
         f = new Fluid(Fluids.HOOTCH).setDensity(900).setViscosity(1000);
         FluidRegistry.registerFluid(f);
@@ -545,9 +550,7 @@ public class EnderIO {
                 Fluids.ROCKET_FUEL + "@"
                         + (Config.rocketFuelPowerPerCycleRF / 10 * Config.rocketFuelPowerTotalBurnTime));
 
-        f = new Fluid(Fluids.FIRE_WATER)
-                .setDensity(900)
-                .setViscosity(1000)
+        f = new Fluid(Fluids.FIRE_WATER).setDensity(900).setViscosity(1000)
                 .setTemperature(FluidRegistry.LAVA.getTemperature() * 2);
         FluidRegistry.registerFluid(f);
         fluidFireWater = FluidRegistry.getFluid(f.getName());
@@ -571,22 +574,15 @@ public class EnderIO {
         f = new Fluid(Fluids.CLOUD_SEED_CONCENTRATED).setDensity(1000).setViscosity(1200);
         FluidRegistry.registerFluid(f);
         fluidCloudSeedConcentrated = FluidRegistry.getFluid(f.getName());
-        blockCloudSeedConcentrated =
-                BlockFluidEio.CloudSeedConcentrated.create(fluidCloudSeedConcentrated, Material.water);
+        blockCloudSeedConcentrated = BlockFluidEio.CloudSeedConcentrated
+                .create(fluidCloudSeedConcentrated, Material.water);
 
-        f = new Fluid(Fluids.ENDER_DISTILLATION)
-                .setDensity(200)
-                .setViscosity(1000)
-                .setTemperature(175);
+        f = new Fluid(Fluids.ENDER_DISTILLATION).setDensity(200).setViscosity(1000).setTemperature(175);
         FluidRegistry.registerFluid(f);
         fluidEnderDistillation = FluidRegistry.getFluid(f.getName());
         blockEnderDistillation = BlockFluidEio.create(fluidEnderDistillation, Material.water);
 
-        f = new Fluid(Fluids.VAPOR_OF_LEVITY)
-                .setDensity(-10)
-                .setViscosity(100)
-                .setTemperature(5)
-                .setGaseous(true);
+        f = new Fluid(Fluids.VAPOR_OF_LEVITY).setDensity(-10).setViscosity(100).setTemperature(5).setGaseous(true);
         FluidRegistry.registerFluid(f);
         fluidVapourOfLevity = FluidRegistry.getFluid(f.getName());
         blockVapourOfLevity = BlockFluidEio.VapourOfLevity.create(fluidVapourOfLevity, Material.water);
@@ -594,10 +590,7 @@ public class EnderIO {
 
         if (!Loader.isModLoaded("OpenBlocks")) {
             Log.info("XP Juice registered by Ender IO.");
-            fluidXpJuice = new Fluid(Config.xpJuiceName)
-                    .setLuminosity(10)
-                    .setDensity(800)
-                    .setViscosity(1500)
+            fluidXpJuice = new Fluid(Config.xpJuiceName).setLuminosity(10).setDensity(800).setViscosity(1500)
                     .setUnlocalizedName("eio.xpjuice");
             FluidRegistry.registerFluid(fluidXpJuice);
             itemBucketXpJuice = ItemBucketEio.create(fluidXpJuice);
@@ -624,16 +617,22 @@ public class EnderIO {
         instance = this;
 
         PacketHandler.INSTANCE.registerMessage(
-                PacketRedstoneMode.class, PacketRedstoneMode.class, PacketHandler.nextID(), Side.SERVER);
+                PacketRedstoneMode.class,
+                PacketRedstoneMode.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, guiHandler);
         MinecraftForge.EVENT_BUS.register(this);
 
         // Register Custom Dungeon Loot here
         if (Config.lootDarkSteel) {
-            ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST)
-                    .addItem(new WeightedRandomChestContent(
-                            new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal()), 1, 3, 15));
+            ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST).addItem(
+                    new WeightedRandomChestContent(
+                            new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal()),
+                            1,
+                            3,
+                            15));
         }
 
         if (Config.lootItemConduitProbe) {
@@ -657,33 +656,48 @@ public class EnderIO {
         }
 
         if (Config.lootElectricSteel) {
-            ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH)
-                    .addItem(new WeightedRandomChestContent(
-                            new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal()), 2, 6, 20));
+            ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
+                    new WeightedRandomChestContent(
+                            new ItemStack(EnderIO.itemAlloy, 1, Alloy.ELECTRICAL_STEEL.ordinal()),
+                            2,
+                            6,
+                            20));
         }
 
         if (Config.lootRedstoneAlloy) {
-            ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH)
-                    .addItem(new WeightedRandomChestContent(
-                            new ItemStack(EnderIO.itemAlloy, 1, Alloy.REDSTONE_ALLOY.ordinal()), 3, 6, 35));
+            ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
+                    new WeightedRandomChestContent(
+                            new ItemStack(EnderIO.itemAlloy, 1, Alloy.REDSTONE_ALLOY.ordinal()),
+                            3,
+                            6,
+                            35));
         }
 
         if (Config.lootDarkSteel) {
-            ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH)
-                    .addItem(new WeightedRandomChestContent(
-                            new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal()), 3, 6, 35));
+            ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
+                    new WeightedRandomChestContent(
+                            new ItemStack(EnderIO.itemAlloy, 1, Alloy.DARK_STEEL.ordinal()),
+                            3,
+                            6,
+                            35));
         }
 
         if (Config.lootPhasedIron) {
-            ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH)
-                    .addItem(new WeightedRandomChestContent(
-                            new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_IRON.ordinal()), 1, 2, 10));
+            ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
+                    new WeightedRandomChestContent(
+                            new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_IRON.ordinal()),
+                            1,
+                            2,
+                            10));
         }
 
         if (Config.lootPhasedGold) {
-            ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH)
-                    .addItem(new WeightedRandomChestContent(
-                            new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_GOLD.ordinal()), 1, 2, 5));
+            ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH).addItem(
+                    new WeightedRandomChestContent(
+                            new ItemStack(EnderIO.itemAlloy, 1, Alloy.PHASED_GOLD.ordinal()),
+                            1,
+                            2,
+                            5));
         }
 
         if (Config.lootTravelStaff) {
@@ -770,8 +784,8 @@ public class EnderIO {
 
     @EventHandler
     public void loadComplete(FMLLoadCompleteEvent event) {
-        processImc(FMLInterModComms.fetchRuntimeMessages(
-                this)); // Some mods send IMCs during PostInit, so we catch them here.
+        processImc(FMLInterModComms.fetchRuntimeMessages(this)); // Some mods send IMCs during PostInit, so we catch
+                                                                 // them here.
     }
 
     private static String getXPJuiceName() {
@@ -780,8 +794,7 @@ public class EnderIO {
         try {
             Field getField = Class.forName("openblocks.Config").getField("xpFluidId");
             openBlocksXPJuiceName = (String) getField.get(null);
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
 
         if (openBlocksXPJuiceName != null && !Config.xpJuiceName.equals(openBlocksXPJuiceName)) {
             Log.info("Overwriting XP Juice name with '" + openBlocksXPJuiceName + "' taken from OpenBlocks' config");

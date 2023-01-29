@@ -1,10 +1,12 @@
 package crazypants.enderio.machine;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.ConnectionMode;
 import net.minecraft.util.EnumChatFormatting;
 
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.ConnectionMode;
+
 public enum IoMode {
+
     NONE("gui.machine.ioMode.none"),
     PULL("gui.machine.ioMode.pull"),
     PUSH("gui.machine.ioMode.push"),

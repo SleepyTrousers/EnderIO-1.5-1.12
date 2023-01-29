@@ -1,9 +1,11 @@
 package crazypants.enderio.machine.invpanel.server;
 
 import net.minecraft.item.ItemStack;
+
 import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
 
 class DSUInventory extends AbstractInventory {
+
     final IDeepStorageUnit dsu;
 
     DSUInventory(IDeepStorageUnit dsu) {

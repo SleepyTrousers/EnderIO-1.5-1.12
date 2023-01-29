@@ -1,5 +1,16 @@
 package crazypants.enderio.machine.vacuum;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.MultiIconButton;
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GhostSlot;
@@ -7,20 +18,13 @@ import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
 import crazypants.enderio.network.PacketHandler;
-import java.awt.Color;
-import java.awt.Rectangle;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import org.lwjgl.opengl.GL11;
 
 public class GuiVacuumChest extends GuiContainerBaseEIO {
 
@@ -94,6 +98,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
         headerInventory = EnderIO.lang.localizeExact("container.inventory");
 
         ((ContainerVacuumChest) inventorySlots).setFilterChangedCB(new Runnable() {
+
             @Override
             public void run() {
                 filterChanged();
@@ -127,16 +132,16 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
             case ID_WHITELIST:
                 itemFilter = te.getItemFilter();
                 if (itemFilter != null) {
-                    PacketHandler.INSTANCE.sendToServer(
-                            PacketVaccumChest.setFilterBlacklist(te, !itemFilter.isBlacklist()));
+                    PacketHandler.INSTANCE
+                            .sendToServer(PacketVaccumChest.setFilterBlacklist(te, !itemFilter.isBlacklist()));
                     updateButtons();
                 }
                 break;
             case ID_MATCHMETA:
                 itemFilter = te.getItemFilter();
                 if (itemFilter != null) {
-                    PacketHandler.INSTANCE.sendToServer(
-                            PacketVaccumChest.setFilterMatchMeta(te, !itemFilter.isMatchMeta()));
+                    PacketHandler.INSTANCE
+                            .sendToServer(PacketVaccumChest.setFilterMatchMeta(te, !itemFilter.isMatchMeta()));
                     updateButtons();
                 }
                 break;
@@ -196,6 +201,7 @@ public class GuiVacuumChest extends GuiContainerBaseEIO {
     }
 
     class FilterGhostSlot extends GhostSlot {
+
         final int slot;
 
         FilterGhostSlot(int slot, int x, int y) {

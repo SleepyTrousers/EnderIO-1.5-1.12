@@ -1,7 +1,7 @@
 package crazypants.enderio.machine.invpanel;
 
-import com.enderio.core.common.util.ItemUtil;
 import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
@@ -9,6 +9,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
+
+import com.enderio.core.common.util.ItemUtil;
 
 public class StoredCraftingRecipe {
 
@@ -89,15 +91,13 @@ public class StoredCraftingRecipe {
     }
 
     private void findCraftingResult(TileInventoryPanel te) {
-        InventoryCrafting tmp = new InventoryCrafting(
-                new Container() {
-                    @Override
-                    public boolean canInteractWith(EntityPlayer ep) {
-                        return false;
-                    }
-                },
-                3,
-                3);
+        InventoryCrafting tmp = new InventoryCrafting(new Container() {
+
+            @Override
+            public boolean canInteractWith(EntityPlayer ep) {
+                return false;
+            }
+        }, 3, 3);
 
         for (int i = 0; i < 9; i++) {
             tmp.setInventorySlotContents(i, slots[i]);

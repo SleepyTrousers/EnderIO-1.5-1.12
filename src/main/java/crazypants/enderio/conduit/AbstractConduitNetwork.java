@@ -3,6 +3,7 @@ package crazypants.enderio.conduit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -47,8 +48,8 @@ public abstract class AbstractConduitNetwork<T extends IConduit, I extends T> {
         if (conduit != null && implClass.isAssignableFrom(conduit.getClass()) && conduit.setNetwork(this)) {
             addConduit(implClass.cast(conduit));
             TileEntity te = tile.getEntity();
-            Collection<T> connections =
-                    ConduitUtil.getConnectedConduits(world, te.xCoord, te.yCoord, te.zCoord, getBaseConduitType());
+            Collection<T> connections = ConduitUtil
+                    .getConnectedConduits(world, te.xCoord, te.yCoord, te.zCoord, getBaseConduitType());
             for (T con : connections) {
                 if (con.getNetwork() == null) {
                     setNetwork(world, con.getBundle());

@@ -1,12 +1,13 @@
 package crazypants.enderio.item;
 
+import net.minecraft.item.ItemStack;
+
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.conduit.ConduitDisplayMode;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.item.ItemStack;
 
 public class YetaWrenchPacketProcessor implements IMessage, IMessageHandler<YetaWrenchPacketProcessor, IMessage> {
 

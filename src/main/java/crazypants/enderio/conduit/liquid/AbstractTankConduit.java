@@ -1,16 +1,9 @@
 package crazypants.enderio.conduit.liquid;
 
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.ChatUtil;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.enderio.conduit.RaytraceResult;
-import crazypants.enderio.tool.ToolUtil;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,6 +13,16 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.ChatUtil;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.AbstractConduitNetwork;
+import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.conduit.ConnectionMode;
+import crazypants.enderio.conduit.RaytraceResult;
+import crazypants.enderio.tool.ToolUtil;
 
 public abstract class AbstractTankConduit extends AbstractLiquidConduit {
 
@@ -55,7 +58,11 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
 
                         BlockCoord loc = getLocation().getLocation(faceHit);
                         ILiquidConduit n = ConduitUtil.getConduit(
-                                getBundle().getEntity().getWorldObj(), loc.x, loc.y, loc.z, ILiquidConduit.class);
+                                getBundle().getEntity().getWorldObj(),
+                                loc.x,
+                                loc.y,
+                                loc.z,
+                                ILiquidConduit.class);
                         if (n == null) {
                             return false;
                         }
@@ -117,10 +124,8 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
             FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(player.getCurrentEquippedItem());
             if (fluid != null) {
                 if (!getBundle().getEntity().getWorldObj().isRemote) {
-                    if (network != null
-                            && (network.getFluidType() == null
-                                    || network.getTotalVolume() < 500
-                                    || LiquidConduitNetwork.areFluidsCompatable(getFluidType(), fluid))) {
+                    if (network != null && (network.getFluidType() == null || network.getTotalVolume() < 500
+                            || LiquidConduitNetwork.areFluidsCompatable(getFluidType(), fluid))) {
                         network.setFluidType(fluid);
                         network.setFluidTypeLocked(true);
                         ChatUtil.sendNoSpamUnloc(
@@ -145,8 +150,8 @@ public abstract class AbstractTankConduit extends AbstractLiquidConduit {
         this.fluidTypeLocked = fluidTypeLocked;
         stateDirty = true;
 
-        //    BlockCoord l = getLocation();
-        //    getBundle().getEntity().worldObj.markTileEntityChunkModified(l.x, l.y, l.z, getBundle().getEntity());
+        // BlockCoord l = getLocation();
+        // getBundle().getEntity().worldObj.markTileEntityChunkModified(l.x, l.y, l.z, getBundle().getEntity());
     }
 
     private void setFluidTypeOnNetwork(AbstractTankConduit con, FluidStack type) {

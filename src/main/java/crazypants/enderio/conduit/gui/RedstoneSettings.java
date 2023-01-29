@@ -1,9 +1,14 @@
 package crazypants.enderio.conduit.gui;
 
+import java.awt.Color;
+
+import net.minecraft.client.gui.GuiButton;
+
 import com.enderio.core.client.gui.button.CheckBox;
 import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.common.util.DyeColor;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.packet.PacketRedstoneConduitOutputStrength;
@@ -11,8 +16,6 @@ import crazypants.enderio.conduit.packet.PacketRedstoneConduitSignalColor;
 import crazypants.enderio.conduit.redstone.IInsulatedRedstoneConduit;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.network.PacketHandler;
-import java.awt.Color;
-import net.minecraft.client.gui.GuiButton;
 
 public class RedstoneSettings extends BaseSettingsPanel {
 

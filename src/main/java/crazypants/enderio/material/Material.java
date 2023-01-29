@@ -1,12 +1,15 @@
 package crazypants.enderio.material;
 
-import crazypants.enderio.EnderIO;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+
 import org.apache.commons.lang3.StringUtils;
 
+import crazypants.enderio.EnderIO;
+
 public enum Material {
+
     SILICON("silicon"),
     CONDUIT_BINDER("conduitBinder"),
     BINDER_COMPOSITE("binderComposite"),

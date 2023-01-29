@@ -1,9 +1,23 @@
 package crazypants.enderio.machine.capbank;
 
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.EnumChatFormatting;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.vecmath.VecmathUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.RedstoneModeButton;
@@ -18,16 +32,6 @@ import crazypants.enderio.machine.gui.GuiOverlayIoConfig;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.EnumChatFormatting;
-import org.lwjgl.opengl.GL11;
 
 public class GuiCapBank extends GuiContainerBaseEIO {
 
@@ -85,8 +89,11 @@ public class GuiCapBank extends GuiContainerBaseEIO {
             protected void updateText() {
                 text.clear();
                 text.add(PowerDisplayUtil.formatPower(network.getEnergyStoredL()) + " " + PowerDisplayUtil.ofStr());
-                text.add(EnumChatFormatting.WHITE + PowerDisplayUtil.formatPower(network.getMaxEnergyStoredL()) + " "
-                        + EnumChatFormatting.GRAY + PowerDisplayUtil.abrevation());
+                text.add(
+                        EnumChatFormatting.WHITE + PowerDisplayUtil.formatPower(network.getMaxEnergyStoredL())
+                                + " "
+                                + EnumChatFormatting.GRAY
+                                + PowerDisplayUtil.abrevation());
 
                 float change = network.getAverageChangePerTick();
                 String color = EnumChatFormatting.WHITE.toString();
@@ -95,11 +102,12 @@ public class GuiCapBank extends GuiContainerBaseEIO {
                 } else if (change < 0) {
                     color = EnumChatFormatting.RED.toString();
                 }
-                text.add(String.format(
-                        "%s%s%s" + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr(),
-                        color,
-                        PowerDisplayUtil.formatPower(Math.round(change)),
-                        " " + EnumChatFormatting.GRAY.toString()));
+                text.add(
+                        String.format(
+                                "%s%s%s" + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr(),
+                                color,
+                                PowerDisplayUtil.formatPower(Math.round(change)),
+                                " " + EnumChatFormatting.GRAY.toString()));
             }
         });
 
@@ -147,6 +155,7 @@ public class GuiCapBank extends GuiContainerBaseEIO {
         }
 
         configOverlay = new GuiOverlayIoConfig(coords) {
+
             @Override
             protected String getLabelForMode(IoMode mode) {
                 if (mode == IoMode.PUSH) {
@@ -255,8 +264,11 @@ public class GuiCapBank extends GuiContainerBaseEIO {
 
         int midX = sx + xSize / 2;
 
-        String str = EnderIO.lang.localize("gui.capBank.maxIo") + " " + PowerDisplayUtil.formatPower(network.getMaxIO())
-                + " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
+        String str = EnderIO.lang.localize("gui.capBank.maxIo") + " "
+                + PowerDisplayUtil.formatPower(network.getMaxIO())
+                + " "
+                + PowerDisplayUtil.abrevation()
+                + PowerDisplayUtil.perTickStr();
         FontRenderer fontRenderer = getFontRenderer();
         int swid = fontRenderer.getStringWidth(str);
         int x = midX - swid / 2;

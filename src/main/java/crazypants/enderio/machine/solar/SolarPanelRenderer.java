@@ -1,14 +1,7 @@
 package crazypants.enderio.machine.solar;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.ConnectedTextureRenderer;
-import com.enderio.core.client.render.CubeRenderer;
-import com.enderio.core.client.render.CustomCubeRenderer;
-import com.enderio.core.client.render.IconUtil;
-import com.enderio.core.client.render.RenderUtil;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import crazypants.enderio.EnderIO;
 import java.util.EnumSet;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -16,7 +9,18 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.ConnectedTextureRenderer;
+import com.enderio.core.client.render.CubeRenderer;
+import com.enderio.core.client.render.CustomCubeRenderer;
+import com.enderio.core.client.render.IconUtil;
+import com.enderio.core.client.render.RenderUtil;
+
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import crazypants.enderio.EnderIO;
 
 public class SolarPanelRenderer implements ISimpleBlockRenderingHandler {
 
@@ -56,8 +60,8 @@ public class SolarPanelRenderer implements ISimpleBlockRenderingHandler {
     }
 
     @Override
-    public boolean renderWorldBlock(
-            IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+            RenderBlocks renderer) {
         renderer.renderStandardBlock(block, x, y, z);
         Tessellator.instance.addTranslation(0, 0.0001f, 0);
         int meta = world.getBlockMetadata(x, y, z);

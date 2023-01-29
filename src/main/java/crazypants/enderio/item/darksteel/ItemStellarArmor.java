@@ -1,21 +1,23 @@
 package crazypants.enderio.item.darksteel;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.item.darksteel.IDarkSteelItem.IStellarItem;
-import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
-import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
 import java.util.Iterator;
 import java.util.List;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.item.darksteel.IDarkSteelItem.IStellarItem;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.item.darksteel.upgrade.IDarkSteelUpgrade;
+
 public class ItemStellarArmor extends ItemDarkSteelArmor implements IStellarItem {
 
-    public static final ArmorMaterial MATERIAL =
-            EnumHelper.addArmorMaterial("stellarAlloy", 75, new int[] {8, 14, 18, 7}, 25);
+    public static final ArmorMaterial MATERIAL = EnumHelper
+            .addArmorMaterial("stellarAlloy", 75, new int[] { 8, 14, 18, 7 }, 25);
 
     public ItemStellarArmor(int armorType) {
         super(MATERIAL, "stellar", armorType);
@@ -55,7 +57,7 @@ public class ItemStellarArmor extends ItemDarkSteelArmor implements IStellarItem
         return 0;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {

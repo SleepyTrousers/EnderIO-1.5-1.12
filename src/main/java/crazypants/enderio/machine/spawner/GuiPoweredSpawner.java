@@ -1,16 +1,20 @@
 package crazypants.enderio.machine.spawner;
 
-import com.enderio.core.client.gui.button.MultiIconButton;
-import com.enderio.core.client.render.ColorUtil;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import crazypants.enderio.network.PacketHandler;
 import java.awt.Color;
 import java.awt.Rectangle;
+
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.gui.button.MultiIconButton;
+import com.enderio.core.client.render.ColorUtil;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
+import crazypants.enderio.network.PacketHandler;
 
 public class GuiPoweredSpawner extends GuiPoweredMachineBase<TilePoweredSpawner> {
 

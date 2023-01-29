@@ -1,5 +1,11 @@
 package crazypants.enderio.machine.alloy;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+
 import crazypants.enderio.Log;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.MachineRecipeRegistry;
@@ -8,10 +14,6 @@ import crazypants.enderio.machine.recipe.ManyToOneMachineRecipe;
 import crazypants.enderio.machine.recipe.ManyToOneRecipeManager;
 import crazypants.enderio.machine.recipe.RecipeConfigParser;
 import crazypants.enderio.machine.recipe.RecipeInput;
-import java.util.ArrayList;
-import java.util.List;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 
 public class AlloyRecipeManager extends ManyToOneRecipeManager {
 

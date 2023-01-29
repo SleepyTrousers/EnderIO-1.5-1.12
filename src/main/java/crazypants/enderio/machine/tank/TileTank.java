@@ -1,17 +1,5 @@
 package crazypants.enderio.machine.tank;
 
-import com.enderio.core.api.common.util.ITankAccess;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.FluidUtil;
-import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
-import com.enderio.core.common.util.ItemUtil;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.tank.GuiTank.VoidMode;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.tool.ArrayMappingTool;
-import crazypants.enderio.tool.SmartTank;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,6 +13,20 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.util.FluidUtil.FluidAndStackResult;
+import com.enderio.core.common.util.ItemUtil;
+
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.tank.GuiTank.VoidMode;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.tool.ArrayMappingTool;
+import crazypants.enderio.tool.SmartTank;
 
 public class TileTank extends AbstractMachineEntity implements IFluidHandler, ITankAccess {
 
@@ -177,8 +179,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
 
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return canFill(from)
-                && fluid != null
+        return canFill(from) && fluid != null
                 && (tank.getFluidAmount() > 0 && tank.getFluid().getFluidID() == fluid.getID()
                         || tank.getFluidAmount() == 0);
     }
@@ -200,7 +201,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        return new FluidTankInfo[] {new FluidTankInfo(tank)};
+        return new FluidTankInfo[] { new FluidTankInfo(tank) };
     }
 
     private int getFilledLevel() {
@@ -230,9 +231,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
 
     @Override
     protected boolean isMachineItemValidForSlot(int i, ItemStack item) {
-        if (canVoidItems()
-                && voidMode == VoidMode.ALWAYS
-                && i < getSlotDefinition().getMaxInputSlot()) {
+        if (canVoidItems() && voidMode == VoidMode.ALWAYS && i < getSlotDefinition().getMaxInputSlot()) {
             return false;
         }
         if (i == 0) {
@@ -321,8 +320,8 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
     }
 
     private boolean fillEmptyContainer() {
-        FluidAndStackResult fill = FluidUtil.tryFillContainer(
-                inventory[getSlotDefinition().getMinInputSlot() + 1], getOutputTanks()[0].getFluid());
+        FluidAndStackResult fill = FluidUtil
+                .tryFillContainer(inventory[getSlotDefinition().getMinInputSlot() + 1], getOutputTanks()[0].getFluid());
         if (fill.result.fluidStack == null) {
             return false;
         }
@@ -330,8 +329,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
         int slot = getSlotDefinition().getMaxOutputSlot();
 
         if (inventory[slot] != null) {
-            if (inventory[slot].isStackable()
-                    && ItemUtil.areStackMergable(inventory[slot], fill.result.itemStack)
+            if (inventory[slot].isStackable() && ItemUtil.areStackMergable(inventory[slot], fill.result.itemStack)
                     && inventory[slot].stackSize < inventory[slot].getMaxStackSize()) {
                 fill.result.itemStack.stackSize += inventory[slot].stackSize;
             } else {
@@ -349,8 +347,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
     }
 
     private boolean drainFullContainer() {
-        FluidAndStackResult fill =
-                FluidUtil.tryDrainContainer(inventory[getSlotDefinition().getMinInputSlot()], this);
+        FluidAndStackResult fill = FluidUtil.tryDrainContainer(inventory[getSlotDefinition().getMinInputSlot()], this);
         if (fill.result.fluidStack == null) {
             return false;
         }
@@ -358,8 +355,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
         int slot = getSlotDefinition().getMinOutputSlot();
 
         if (inventory[slot] != null && fill.result.itemStack != null) {
-            if (inventory[slot].isStackable()
-                    && ItemUtil.areStackMergable(inventory[slot], fill.result.itemStack)
+            if (inventory[slot].isStackable() && ItemUtil.areStackMergable(inventory[slot], fill.result.itemStack)
                     && inventory[slot].stackSize < inventory[slot].getMaxStackSize()) {
                 fill.result.itemStack.stackSize += inventory[slot].stackSize;
             } else {
@@ -437,7 +433,7 @@ public class TileTank extends AbstractMachineEntity implements IFluidHandler, IT
 
     @Override
     public FluidTank[] getOutputTanks() {
-        return new FluidTank[] {tank};
+        return new FluidTank[] { tank };
     }
 
     @Override

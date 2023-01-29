@@ -1,13 +1,17 @@
 package crazypants.enderio.machine.gui;
 
-import com.enderio.core.client.gui.widget.GuiToolTip;
-import crazypants.enderio.machine.AbstractPoweredMachineEntity;
-import crazypants.enderio.machine.power.PowerDisplayUtil;
 import java.awt.Rectangle;
 import java.util.List;
+
 import net.minecraft.inventory.Container;
 import net.minecraft.util.StatCollector;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.gui.widget.GuiToolTip;
+
+import crazypants.enderio.machine.AbstractPoweredMachineEntity;
+import crazypants.enderio.machine.power.PowerDisplayUtil;
 
 public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEntity> extends GuiMachineBase<T> {
 
@@ -42,10 +46,15 @@ public abstract class GuiPoweredMachineBase<T extends AbstractPoweredMachineEnti
     }
 
     protected void updatePowerBarTooltip(List<String> text) {
-        text.add(getPowerOutputLabel() + " " + PowerDisplayUtil.formatPower(getPowerOutputValue()) + " "
-                + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr());
-        text.add(PowerDisplayUtil.formatStoredPower(
-                getTileEntity().getEnergyStored(), getTileEntity().getMaxEnergyStored()));
+        text.add(
+                getPowerOutputLabel() + " "
+                        + PowerDisplayUtil.formatPower(getPowerOutputValue())
+                        + " "
+                        + PowerDisplayUtil.abrevation()
+                        + PowerDisplayUtil.perTickStr());
+        text.add(
+                PowerDisplayUtil
+                        .formatStoredPower(getTileEntity().getEnergyStored(), getTileEntity().getMaxEnergyStored()));
     }
 
     public void renderPowerBar(int k, int l) {

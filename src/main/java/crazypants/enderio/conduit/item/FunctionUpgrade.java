@@ -1,6 +1,7 @@
 package crazypants.enderio.conduit.item;
 
 public enum FunctionUpgrade {
+
     INVENTORY_PANEL("enderio:inventoryPanelUpgrade", "item.itemInventoryPanelUpgrade", 1);
 
     public final String iconName;

@@ -1,15 +1,17 @@
 package crazypants.enderio.machine.vat;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.enderio.core.common.network.MessageTileEntity;
 import com.enderio.core.common.network.NetworkUtil;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.EnderIO;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class PacketTanks extends MessageTileEntity<TileVat> implements IMessageHandler<PacketTanks, IMessage> {
 
@@ -46,8 +48,8 @@ public class PacketTanks extends MessageTileEntity<TileVat> implements IMessageH
 
     @Override
     public IMessage onMessage(PacketTanks message, MessageContext ctx) {
-        EntityPlayer player =
-                ctx.side == Side.SERVER ? ctx.getServerHandler().playerEntity : EnderIO.proxy.getClientPlayer();
+        EntityPlayer player = ctx.side == Side.SERVER ? ctx.getServerHandler().playerEntity
+                : EnderIO.proxy.getClientPlayer();
         TileVat tile = message.getTileEntity(player.worldObj);
         if (tile == null) {
             return null;

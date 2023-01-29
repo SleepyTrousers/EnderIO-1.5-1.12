@@ -1,33 +1,9 @@
 package crazypants.enderio.machine.killera;
 
-import com.enderio.core.api.common.util.ITankAccess;
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.FluidUtil;
-import com.enderio.core.common.util.ForgeDirectionOffsets;
-import com.enderio.core.common.vecmath.Vector3d;
-import com.google.common.collect.Sets;
-import com.mojang.authlib.GameProfile;
-import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.FakePlayerEIO;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.generator.zombie.IHasNutrientTank;
-import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
-import crazypants.enderio.machine.wireless.WirelessChargedLocation;
-import crazypants.enderio.network.PacketHandler;
-import crazypants.enderio.tool.SmartTank;
-import crazypants.enderio.xp.ExperienceContainer;
-import crazypants.enderio.xp.IHaveExperience;
-import crazypants.enderio.xp.PacketExperianceContainer;
-import crazypants.enderio.xp.XpUtil;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -51,6 +27,33 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.FluidUtil;
+import com.enderio.core.common.util.ForgeDirectionOffsets;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.google.common.collect.Sets;
+import com.mojang.authlib.GameProfile;
+
+import cpw.mods.fml.common.eventhandler.Event.Result;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.FakePlayerEIO;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.generator.zombie.IHasNutrientTank;
+import crazypants.enderio.machine.generator.zombie.PacketNutrientTank;
+import crazypants.enderio.machine.wireless.WirelessChargedLocation;
+import crazypants.enderio.network.PacketHandler;
+import crazypants.enderio.tool.SmartTank;
+import crazypants.enderio.xp.ExperienceContainer;
+import crazypants.enderio.xp.IHaveExperience;
+import crazypants.enderio.xp.PacketExperianceContainer;
+import crazypants.enderio.xp.XpUtil;
 
 public class TileKillerJoe extends AbstractMachineEntity
         implements IFluidHandler, IEntitySelector, IHaveExperience, ITankAccess, IHasNutrientTank {
@@ -81,8 +84,9 @@ public class TileKillerJoe extends AbstractMachineEntity
 
     protected WirelessChargedLocation chargedLocation;
 
-    final SmartTank fuelTank =
-            new SmartTank(EnderIO.fluidNutrientDistillation, FluidContainerRegistry.BUCKET_VOLUME * 2);
+    final SmartTank fuelTank = new SmartTank(
+            EnderIO.fluidNutrientDistillation,
+            FluidContainerRegistry.BUCKET_VOLUME * 2);
 
     int lastFluidLevelUpdate;
 
@@ -96,8 +100,8 @@ public class TileKillerJoe extends AbstractMachineEntity
 
     private float prevSwingProgress;
 
-    private final ExperienceContainer xpCon =
-            new ExperienceContainer(XpUtil.getExperienceForLevel(Config.killerJoeMaxXpLevel));
+    private final ExperienceContainer xpCon = new ExperienceContainer(
+            XpUtil.getExperienceForLevel(Config.killerJoeMaxXpLevel));
 
     private boolean hadSword;
 
@@ -202,8 +206,7 @@ public class TileKillerJoe extends AbstractMachineEntity
                         continue; // Ignore players in creative, can't damage them;
                     }
                     boolean togglePvp = false;
-                    if (ent instanceof EntityPlayer
-                            && !MinecraftServer.getServer().isPVPEnabled()) {
+                    if (ent instanceof EntityPlayer && !MinecraftServer.getServer().isPVPEnabled()) {
                         if (Config.killerPvPoffDisablesSwing) {
                             continue;
                         } else if (Config.killerPvPoffIsIgnored) {
@@ -249,12 +252,12 @@ public class TileKillerJoe extends AbstractMachineEntity
         Vec3 entPos = Vec3.createVectorHelper(ent.posX, ent.posY + (double) ent.getEyeHeight(), ent.posZ);
         for (int facing : frontFaceAndSides) {
             if (this.worldObj.rayTraceBlocks(
-                            Vec3.createVectorHelper(
-                                    this.xCoord + faceMidPoints[facing][0],
-                                    this.yCoord + faceMidPoints[facing][1],
-                                    this.zCoord + faceMidPoints[facing][2]),
-                            entPos)
-                    == null) return true;
+                    Vec3.createVectorHelper(
+                            this.xCoord + faceMidPoints[facing][0],
+                            this.yCoord + faceMidPoints[facing][1],
+                            this.zCoord + faceMidPoints[facing][2]),
+                    entPos) == null)
+                return true;
         }
         return false;
     }
@@ -262,21 +265,14 @@ public class TileKillerJoe extends AbstractMachineEntity
     @Override
     public void setFacing(short facing) {
         super.setFacing(facing);
-        frontFaceAndSides = new int[] {
-            this.facing, ForgeDirection.ROTATION_MATRIX[0][this.facing], ForgeDirection.ROTATION_MATRIX[1][this.facing]
-        };
+        frontFaceAndSides = new int[] { this.facing, ForgeDirection.ROTATION_MATRIX[0][this.facing],
+                ForgeDirection.ROTATION_MATRIX[1][this.facing] };
     }
 
-    private static final double[][] faceMidPoints = new double[][] {
-        {0.5D, 0.0D, 0.5D},
-        {0.5D, 1.0D, 0.5D},
-        {0.5D, 0.5D, 0.0D},
-        {0.5D, 0.5D, 1.0D},
-        {0.0D, 0.5D, 0.5D},
-        {1.0D, 0.5D, 0.5D}
-    };
+    private static final double[][] faceMidPoints = new double[][] { { 0.5D, 0.0D, 0.5D }, { 0.5D, 1.0D, 0.5D },
+            { 0.5D, 0.5D, 0.0D }, { 0.5D, 0.5D, 1.0D }, { 0.0D, 0.5D, 0.5D }, { 1.0D, 0.5D, 0.5D } };
 
-    // -------------------------------  XP
+    // ------------------------------- XP
 
     public ExperienceContainer getXpContainer() {
         return xpCon;
@@ -441,7 +437,7 @@ public class TileKillerJoe extends AbstractMachineEntity
         return hooverBounds;
     }
 
-    // -------------------------------  Fluid Stuff
+    // ------------------------------- Fluid Stuff
 
     private void useNutrient() {
         fuelTank.drain(Config.killerJoeNutrientUsePerAttackMb, true);
@@ -451,30 +447,30 @@ public class TileKillerJoe extends AbstractMachineEntity
     @Override
     protected boolean doPull(ForgeDirection dir) {
         boolean res = super.doPull(dir);
-        //    BlockCoord loc = getLocation().getLocation(dir);
-        //    IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
-        //    if(target != null) {
-        //      FluidTankInfo[] infos = target.getTankInfo(dir.getOpposite());
-        //      if(infos != null) {
-        //        for (FluidTankInfo info : infos) {
-        //          if(info.fluid != null && info.fluid.amount > 0) {
-        //            if(canFill(dir, info.fluid.getFluid())) {
-        //              FluidStack canPull = info.fluid.copy();
-        //              canPull.amount = Math.min(IO_MB_TICK, canPull.amount);
-        //              FluidStack drained = target.drain(dir.getOpposite(), canPull, false);
-        //              if(drained != null && drained.amount > 0) {
-        //                int filled = fill(dir, drained, false);
-        //                if(filled > 0) {
-        //                  drained = target.drain(dir.getOpposite(), filled, true);
-        //                  fill(dir, drained, true);
-        //                  return res;
-        //                }
-        //              }
-        //            }
-        //          }
-        //        }
-        //      }
-        //    }
+        // BlockCoord loc = getLocation().getLocation(dir);
+        // IFluidHandler target = FluidUtil.getFluidHandler(worldObj, loc);
+        // if(target != null) {
+        // FluidTankInfo[] infos = target.getTankInfo(dir.getOpposite());
+        // if(infos != null) {
+        // for (FluidTankInfo info : infos) {
+        // if(info.fluid != null && info.fluid.amount > 0) {
+        // if(canFill(dir, info.fluid.getFluid())) {
+        // FluidStack canPull = info.fluid.copy();
+        // canPull.amount = Math.min(IO_MB_TICK, canPull.amount);
+        // FluidStack drained = target.drain(dir.getOpposite(), canPull, false);
+        // if(drained != null && drained.amount > 0) {
+        // int filled = fill(dir, drained, false);
+        // if(filled > 0) {
+        // drained = target.drain(dir.getOpposite(), filled, true);
+        // fill(dir, drained, true);
+        // return res;
+        // }
+        // }
+        // }
+        // }
+        // }
+        // }
+        // }
         FluidUtil.doPull(this, dir, IO_MB_TICK);
         return res;
     }
@@ -512,7 +508,7 @@ public class TileKillerJoe extends AbstractMachineEntity
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        return new FluidTankInfo[] {fuelTank.getInfo()};
+        return new FluidTankInfo[] { fuelTank.getInfo() };
     }
 
     @Override
@@ -530,7 +526,7 @@ public class TileKillerJoe extends AbstractMachineEntity
         return xpCon.canDrain(from, fluid);
     }
 
-    // -------------------------------  Save / Load
+    // ------------------------------- Save / Load
 
     @Override
     public void readCommon(NBTTagCompound nbtRoot) {
@@ -585,15 +581,14 @@ public class TileKillerJoe extends AbstractMachineEntity
             return fuelTank;
         }
         /*
-         * if (forFluidType != null && forFluidType.getFluid() ==
-         * EnderIO.fluidXpJuice) { return xpCon; }
+         * if (forFluidType != null && forFluidType.getFluid() == EnderIO.fluidXpJuice) { return xpCon; }
          */
         return null;
     }
 
     @Override
     public FluidTank[] getOutputTanks() {
-        return new FluidTank[] {xpCon /* , fuelTank */};
+        return new FluidTank[] { xpCon /* , fuelTank */ };
     }
 
     @Override

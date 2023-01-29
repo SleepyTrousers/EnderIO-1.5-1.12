@@ -1,5 +1,16 @@
 package crazypants.enderio.machine.power;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.api.client.render.IRenderFace;
 import com.enderio.core.client.render.ConnectedTextureRenderer;
 import com.enderio.core.client.render.CustomCubeRenderer;
@@ -13,23 +24,15 @@ import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector4d;
 import com.enderio.core.common.vecmath.Vector4f;
 import com.enderio.core.common.vecmath.Vertex;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.machine.power.GaugeBounds.VPos;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
 
     private static final BlockCoord DEFAULT_BC = new BlockCoord(0, 0, 0);
-    private static final BlockCoord[] DEFAULT_MB = new BlockCoord[] {DEFAULT_BC};
+    private static final BlockCoord[] DEFAULT_MB = new BlockCoord[] { DEFAULT_BC };
     private static final double PIXEL_SIZE = 1 / 16d;
 
     private final List<IRenderFace> renderers = new ArrayList<IRenderFace>(2);
@@ -49,8 +52,8 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {}
 
     @Override
-    public boolean renderWorldBlock(
-            IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
+            RenderBlocks renderer) {
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileCapacitorBank) {
             TileCapacitorBank cb = ((TileCapacitorBank) te);
@@ -81,16 +84,8 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
     private class GaugueRenderer implements IRenderFace {
 
         @Override
-        public void renderFace(
-                CustomRenderBlocks rb,
-                ForgeDirection face,
-                Block par1Block,
-                double x,
-                double y,
-                double z,
-                IIcon texture,
-                List<Vertex> refVertices,
-                boolean translateToXyz) {
+        public void renderFace(CustomRenderBlocks rb, ForgeDirection face, Block par1Block, double x, double y,
+                double z, IIcon texture, List<Vertex> refVertices, boolean translateToXyz) {
             // Gauge
             TileEntity te = rb.blockAccess.getTileEntity((int) x, (int) y, (int) z);
             if (!(te instanceof TileCapacitorBank)) {
@@ -157,8 +152,8 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
             return res;
         }
 
-        private void renderGaugeOnFace(
-                GaugeBounds gb, IIcon icon, List<Vertex> vertices, double x, double y, double z) {
+        private void renderGaugeOnFace(GaugeBounds gb, IIcon icon, List<Vertex> vertices, double x, double y,
+                double z) {
             Tessellator tes = Tessellator.instance;
             Vector2f u = gb.getMinMaxU(icon);
             List<Vertex> corners = gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), icon.getMaxV());
@@ -187,15 +182,14 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
             }
         }
 
-        private void renderFillBarOnFace(
-                GaugeBounds gb, IIcon icon, double filledRatio, List<Vertex> vertices, double x, double y, double z) {
+        private void renderFillBarOnFace(GaugeBounds gb, IIcon icon, double filledRatio, List<Vertex> vertices,
+                double x, double y, double z) {
 
             int totalPixels;
             if (gb.vInfo.verticalHeight == 1) {
                 totalPixels = VPos.SINGLE_BLOCK.numFillPixels;
             } else {
-                totalPixels = VPos.BOTTOM.numFillPixels
-                        + VPos.TOP.numFillPixels
+                totalPixels = VPos.BOTTOM.numFillPixels + VPos.TOP.numFillPixels
                         + (VPos.MIDDLE.numFillPixels * (gb.vInfo.verticalHeight - 2));
             }
 
@@ -222,8 +216,8 @@ public class CapBankRenderer2 implements ISimpleBlockRenderingHandler {
 
             Tessellator tes = Tessellator.instance;
             Vector2f u = gb.getMinMaxU(icon);
-            List<com.enderio.core.common.vecmath.Vertex> corners =
-                    gb.bb.getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), maxV);
+            List<com.enderio.core.common.vecmath.Vertex> corners = gb.bb
+                    .getCornersWithUvForFace(gb.face, u.x, u.y, icon.getMinV(), maxV);
             for (Vertex coord : corners) {
                 coord.xyz.add(ForgeDirectionOffsets.offsetScaled(gb.face, 0.002f));
 

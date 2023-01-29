@@ -1,7 +1,20 @@
 package crazypants.enderio.conduit.gas;
 
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import mekanism.api.gas.IGasHandler;
+
+import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
+
 import cpw.mods.fml.common.Optional.Method;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.ConduitUtil;
@@ -10,30 +23,20 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.reservoir.TileReservoir;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import mekanism.api.gas.IGasHandler;
-import net.minecraft.block.Block;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class AbstractGasConduit extends AbstractConduit implements IGasConduit {
 
-    protected final EnumMap<ForgeDirection, RedstoneControlMode> extractionModes =
-            new EnumMap<ForgeDirection, RedstoneControlMode>(ForgeDirection.class);
-    protected final EnumMap<ForgeDirection, DyeColor> extractionColors =
-            new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, RedstoneControlMode> extractionModes = new EnumMap<ForgeDirection, RedstoneControlMode>(
+            ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, DyeColor> extractionColors = new EnumMap<ForgeDirection, DyeColor>(
+            ForgeDirection.class);
 
     protected final Map<ForgeDirection, Integer> externalRedstoneSignals = new HashMap<ForgeDirection, Integer>();
     protected boolean redstoneStateDirty = true;
 
     @Method(modid = GasUtil.API_NAME)
     public IGasHandler getExternalHandler(ForgeDirection direction) {
-        IGasHandler con = GasUtil.getExternalGasHandler(
-                getBundle().getWorld(), getLocation().getLocation(direction));
+        IGasHandler con = GasUtil.getExternalGasHandler(getBundle().getWorld(), getLocation().getLocation(direction));
         return (con != null && !(con instanceof IConduitBundle)) ? con : null;
     }
 

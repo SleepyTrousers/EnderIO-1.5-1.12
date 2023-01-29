@@ -1,5 +1,8 @@
 package crazypants.enderio.nei;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
+
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import crazypants.enderio.EnderIO;
@@ -8,8 +11,6 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.invpanel.GuiInventoryPanel;
 import crazypants.enderio.machine.invpanel.client.InventoryPanelNEIOverlayHandler;
 import crazypants.enderio.machine.painter.PainterUtil;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class NEIEnderIOConfig implements IConfigureNEI {
 

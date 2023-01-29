@@ -1,20 +1,23 @@
 package crazypants.enderio.item.darksteel;
 
-import com.enderio.core.common.util.Util;
-import com.enderio.core.common.vecmath.Vector3d;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.config.Config;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.client.event.sound.PlaySoundSourceEvent;
 import net.minecraftforge.event.entity.PlaySoundAtEntityEvent;
+
+import com.enderio.core.common.util.Util;
+import com.enderio.core.common.vecmath.Vector3d;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.config.Config;
 
 public class SoundDetector {
 
@@ -33,8 +36,7 @@ public class SoundDetector {
 
     @SubscribeEvent
     public void onSound(PlaySoundAtEntityEvent evt) {
-        if (enabled
-                && evt.entity != null
+        if (enabled && evt.entity != null
                 && evt.entity != Minecraft.getMinecraft().thePlayer
                 && soundQueue.size() < MAX_ENTITIES) {
             soundQueue.offer(new SoundSource(evt.entity, evt.volume));
@@ -44,8 +46,12 @@ public class SoundDetector {
     @SubscribeEvent
     public void onSound(PlaySoundSourceEvent evt) {
         if (enabled && soundQueue.size() < MAX_ENTITIES) {
-            soundQueue.offer(new SoundSource(
-                    evt.sound.getXPosF(), evt.sound.getYPosF(), evt.sound.getZPosF(), evt.sound.getVolume()));
+            soundQueue.offer(
+                    new SoundSource(
+                            evt.sound.getXPosF(),
+                            evt.sound.getYPosF(),
+                            evt.sound.getZPosF(),
+                            evt.sound.getVolume()));
         }
     }
 

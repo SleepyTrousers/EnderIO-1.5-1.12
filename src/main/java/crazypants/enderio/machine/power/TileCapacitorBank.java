@@ -1,9 +1,28 @@
 package crazypants.enderio.machine.power;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import cofh.api.energy.IEnergyContainerItem;
+
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.Util;
 import com.enderio.core.common.vecmath.VecmathUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -20,27 +39,13 @@ import crazypants.enderio.power.IInternalPoweredTile;
 import crazypants.enderio.power.IPowerInterface;
 import crazypants.enderio.power.IPowerStorage;
 import crazypants.enderio.power.PowerHandlerUtil;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Map.Entry;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileCapacitorBank extends TileEntityEio
         implements IInternalPowerHandler, IInventory, IIoConfigurable, IPowerStorage {
 
-    static final BasicCapacitor BASE_CAP =
-            new BasicCapacitor(Config.capacitorBankMaxIoRF, Config.capacitorBankMaxStorageRF);
+    static final BasicCapacitor BASE_CAP = new BasicCapacitor(
+            Config.capacitorBankMaxIoRF,
+            Config.capacitorBankMaxStorageRF);
 
     private static final int MAX_SIZE = Integer.MAX_VALUE / Config.capacitorBankMaxStorageRF;
 
@@ -359,8 +364,7 @@ public class TileCapacitorBank extends TileEntityEio
             Receptor receptor = receptorIterator.next();
             IPowerInterface powerInterface = receptor.receptor;
             IoMode mode = receptor.mode;
-            if (powerInterface != null
-                    && mode != IoMode.PULL
+            if (powerInterface != null && mode != IoMode.PULL
                     && mode != IoMode.DISABLED
                     && powerInterface.getMinEnergyReceived(receptor.fromDir.getOpposite()) <= canTransmit) {
                 double used;
@@ -1124,8 +1128,7 @@ public class TileCapacitorBank extends TileEntityEio
         if (faceModes != null) {
             nbtRoot.setByte("hasFaces", (byte) 1);
             for (Entry<ForgeDirection, IoMode> e : faceModes.entrySet()) {
-                nbtRoot.setShort(
-                        "face" + e.getKey().ordinal(), (short) e.getValue().ordinal());
+                nbtRoot.setShort("face" + e.getKey().ordinal(), (short) e.getValue().ordinal());
             }
         }
 
@@ -1136,6 +1139,7 @@ public class TileCapacitorBank extends TileEntityEio
     }
 
     static class Receptor {
+
         IPowerInterface receptor;
         ForgeDirection fromDir;
         IoMode mode;

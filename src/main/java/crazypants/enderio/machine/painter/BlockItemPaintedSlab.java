@@ -1,16 +1,18 @@
 package crazypants.enderio.machine.painter;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemSlab;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
 
 public class BlockItemPaintedSlab extends ItemSlab {
 
@@ -36,17 +38,8 @@ public class BlockItemPaintedSlab extends ItemSlab {
     }
 
     @Override
-    public boolean onItemUse(
-            ItemStack par1ItemStack,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float par8,
-            float par9,
-            float par10) {
+    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float par8, float par9, float par10) {
 
         if (this.isFullBlock) {
             return super.onItemUse(par1ItemStack, player, world, x, y, z, side, par8, par9, par10);
@@ -60,8 +53,7 @@ public class BlockItemPaintedSlab extends ItemSlab {
             int k1 = j1 & 7;
             boolean flag = (j1 & 8) != 0;
 
-            if ((side == 1 && !flag || side == 0 && flag)
-                    && i1 == EnderIO.blockPaintedSlab
+            if ((side == 1 && !flag || side == 0 && flag) && i1 == EnderIO.blockPaintedSlab
                     && k1 == par1ItemStack.getItemDamage()) {
 
                 if (world.checkNoEntityCollision(
@@ -109,8 +101,8 @@ public class BlockItemPaintedSlab extends ItemSlab {
         }
     }
 
-    private boolean mergeWithTopSlab(
-            ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World world, int x, int y, int z, int side) {
+    private boolean mergeWithTopSlab(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World world, int x, int y,
+            int z, int side) {
         if (side == 0) {
             --y;
         } else if (side == 1) {
@@ -137,7 +129,7 @@ public class BlockItemPaintedSlab extends ItemSlab {
             }
 
             if (world.checkNoEntityCollision(
-                            EnderIO.blockPaintedDoubleSlab.getCollisionBoundingBoxFromPool(world, x, y, z))
+                    EnderIO.blockPaintedDoubleSlab.getCollisionBoundingBoxFromPool(world, x, y, z))
                     && world.setBlock(x, y, z, EnderIO.blockPaintedDoubleSlab, k1, 3)) {
 
                 te = world.getTileEntity(x, y, z);

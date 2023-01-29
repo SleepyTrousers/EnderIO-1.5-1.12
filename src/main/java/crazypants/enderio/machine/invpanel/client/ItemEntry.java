@@ -1,14 +1,17 @@
 package crazypants.enderio.machine.invpanel.client;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.machine.invpanel.ItemEntryBase;
 import java.util.Locale;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.machine.invpanel.ItemEntryBase;
+
 public class ItemEntry extends ItemEntryBase {
+
     String name;
     String modId;
     String lowerCaseLocName;

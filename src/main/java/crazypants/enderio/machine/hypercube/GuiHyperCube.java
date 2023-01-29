@@ -1,5 +1,15 @@
 package crazypants.enderio.machine.hypercube;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.util.List;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.api.client.gui.IGuiOverlay;
 import com.enderio.core.api.client.gui.ListSelectionListener;
 import com.enderio.core.client.gui.button.IconButton;
@@ -10,6 +20,7 @@ import com.enderio.core.client.gui.widget.TextFieldEnder;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.PlayerUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
@@ -18,13 +29,6 @@ import crazypants.enderio.machine.hypercube.TileHyperCube.IoMode;
 import crazypants.enderio.machine.hypercube.TileHyperCube.SubChannel;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import java.awt.Color;
-import java.awt.Rectangle;
-import java.util.List;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import org.lwjgl.opengl.GL11;
 
 public class GuiHyperCube extends GuiContainerBaseEIO {
 
@@ -84,9 +88,11 @@ public class GuiHyperCube extends GuiContainerBaseEIO {
             @Override
             protected void updateText() {
                 text.clear();
-                text.add(PowerDisplayUtil.formatPower(cube.getEnergyStored()) + " / "
-                        + PowerDisplayUtil.formatPower(cube.getMaxEnergyStored()) + " "
-                        + PowerDisplayUtil.abrevation());
+                text.add(
+                        PowerDisplayUtil.formatPower(cube.getEnergyStored()) + " / "
+                                + PowerDisplayUtil.formatPower(cube.getMaxEnergyStored())
+                                + " "
+                                + PowerDisplayUtil.abrevation());
             }
         });
 
@@ -268,10 +274,7 @@ public class GuiHyperCube extends GuiContainerBaseEIO {
             if (privateButton.isSelected()) {
                 c = new Channel(
                         newChannelTF.getText(),
-                        PlayerUtil.getPlayerUUID(Minecraft.getMinecraft()
-                                .thePlayer
-                                .getGameProfile()
-                                .getName()));
+                        PlayerUtil.getPlayerUUID(Minecraft.getMinecraft().thePlayer.getGameProfile().getName()));
             } else {
                 c = new Channel(newChannelTF.getText(), null);
             }
@@ -286,15 +289,13 @@ public class GuiHyperCube extends GuiContainerBaseEIO {
             }
 
         } else if (par1GuiButton.id == SELECT_PUBLIC_BUTTON_ID || par1GuiButton.id == SELECT_PRIVATE_BUTTON_ID) {
-            Channel c = (par1GuiButton.id == SELECT_PUBLIC_BUTTON_ID)
-                    ? publicChannelList.getSelectedElement()
+            Channel c = (par1GuiButton.id == SELECT_PUBLIC_BUTTON_ID) ? publicChannelList.getSelectedElement()
                     : privateChannelList.getSelectedElement();
             if (c != null) {
                 setActiveChannel(c);
             }
         } else if (par1GuiButton.id == DELETE_PRIVATE_BUTTON_ID || par1GuiButton.id == DELETE_PUBLIC_BUTTON_ID) {
-            Channel c = (par1GuiButton.id == DELETE_PUBLIC_BUTTON_ID)
-                    ? publicChannelList.getSelectedElement()
+            Channel c = (par1GuiButton.id == DELETE_PUBLIC_BUTTON_ID) ? publicChannelList.getSelectedElement()
                     : privateChannelList.getSelectedElement();
             if (c != null) {
                 if (c.equals(cube.getChannel())) {

@@ -1,7 +1,8 @@
 package crazypants.enderio.conduit.liquid;
 
-import crazypants.enderio.conduit.AbstractConduitNetwork;
 import net.minecraftforge.fluids.FluidStack;
+
+import crazypants.enderio.conduit.AbstractConduitNetwork;
 
 public class AbstractTankConduitNetwork<T extends AbstractTankConduit>
         extends AbstractConduitNetwork<ILiquidConduit, T> {

@@ -1,9 +1,10 @@
 package crazypants.enderio.machine.farm.farmers;
 
-import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.machine.farm.TileFarmStation;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+
+import com.enderio.core.common.util.BlockCoord;
+import crazypants.enderio.machine.farm.TileFarmStation;
 
 public interface IFarmerJoe {
 

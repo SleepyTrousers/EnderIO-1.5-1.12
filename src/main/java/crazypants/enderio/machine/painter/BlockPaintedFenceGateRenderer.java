@@ -1,13 +1,14 @@
 package crazypants.enderio.machine.painter;
 
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import crazypants.enderio.EnderIO;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockFenceGate;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.IBlockAccess;
+
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import crazypants.enderio.EnderIO;
 
 public class BlockPaintedFenceGateRenderer implements ISimpleBlockRenderingHandler {
 
@@ -27,8 +28,8 @@ public class BlockPaintedFenceGateRenderer implements ISimpleBlockRenderingHandl
     }
 
     @Override
-    public boolean renderWorldBlock(
-            IBlockAccess blockAccess, int par2, int par3, int par4, Block block, int modelId, RenderBlocks rb) {
+    public boolean renderWorldBlock(IBlockAccess blockAccess, int par2, int par3, int par4, Block block, int modelId,
+            RenderBlocks rb) {
 
         BlockFenceGate par1BlockFenceGate = (BlockFenceGate) block;
 
@@ -43,17 +44,13 @@ public class BlockPaintedFenceGateRenderer implements ISimpleBlockRenderingHandl
         float f4 = 0.3125F;
         float f5 = 1.0F;
 
-        if ((i1 == 2 || i1 == 0)
-                        && rb.blockAccess.getBlock(par2 - 1, par3, par4) == Blocks.cobblestone_wall
-                        && rb.blockAccess.getBlock(par2 + 1, par3, par4) == Blocks.cobblestone_wall
-                || (i1 == 3 || i1 == 1)
-                        && rb.blockAccess.getBlock(par2, par3, par4 - 1) == Blocks.cobblestone_wall
+        if ((i1 == 2 || i1 == 0) && rb.blockAccess.getBlock(par2 - 1, par3, par4) == Blocks.cobblestone_wall
+                && rb.blockAccess.getBlock(par2 + 1, par3, par4) == Blocks.cobblestone_wall
+                || (i1 == 3 || i1 == 1) && rb.blockAccess.getBlock(par2, par3, par4 - 1) == Blocks.cobblestone_wall
                         && rb.blockAccess.getBlock(par2, par3, par4 + 1) == Blocks.cobblestone_wall
-                || (i1 == 2 || i1 == 0)
-                        && rb.blockAccess.getBlock(par2 - 1, par3, par4) == EnderIO.blockPaintedWall
+                || (i1 == 2 || i1 == 0) && rb.blockAccess.getBlock(par2 - 1, par3, par4) == EnderIO.blockPaintedWall
                         && rb.blockAccess.getBlock(par2 + 1, par3, par4) == EnderIO.blockPaintedWall
-                || (i1 == 3 || i1 == 1)
-                        && rb.blockAccess.getBlock(par2, par3, par4 - 1) == EnderIO.blockPaintedWall
+                || (i1 == 3 || i1 == 1) && rb.blockAccess.getBlock(par2, par3, par4 - 1) == EnderIO.blockPaintedWall
                         && rb.blockAccess.getBlock(par2, par3, par4 + 1) == EnderIO.blockPaintedWall) {
             f -= 0.1875F;
             f1 -= 0.1875F;

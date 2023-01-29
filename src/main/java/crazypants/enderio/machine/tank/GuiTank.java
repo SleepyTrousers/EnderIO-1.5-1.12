@@ -1,27 +1,32 @@
 package crazypants.enderio.machine.tank;
 
+import java.awt.Rectangle;
+import java.util.List;
+import java.util.Locale;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.api.client.render.IWidgetIcon;
 import com.enderio.core.client.gui.button.CycleButton;
 import com.enderio.core.client.gui.button.CycleButton.ICycleEnum;
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.RenderUtil;
 import com.google.common.collect.Lists;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.gui.GuiMachineBase;
 import crazypants.enderio.network.PacketHandler;
-import java.awt.Rectangle;
-import java.util.List;
-import java.util.Locale;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
-import org.lwjgl.opengl.GL11;
 
 public class GuiTank extends GuiMachineBase<TileTank> {
 
     public enum VoidMode implements ICycleEnum {
+
         ALWAYS(IconEIO.TICK),
         IF_NOT_CONTAINER(IconEIO.ITEM_SINGLE),
         NEVER(IconEIO.CROSS);
@@ -67,6 +72,7 @@ public class GuiTank extends GuiMachineBase<TileTank> {
         });
 
         addToolTip(new GuiToolTip(new Rectangle(14, 35, 18, 18), EnderIO.lang.localize("gui.tooltip.voidslot")) {
+
             public boolean shouldDraw() {
                 return super.shouldDraw() && getTileEntity().canVoidItems();
             }

@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.recipe;
 
-import crazypants.enderio.Log;
-import crazypants.enderio.config.Config;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,15 +14,20 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.item.ItemStack;
+
 import org.apache.commons.io.IOUtils;
+
+import crazypants.enderio.Log;
+import crazypants.enderio.config.Config;
 
 public class RecipeConfig {
 
     // ---------------------------------------------- Loading ------------
 
-    public static RecipeConfig loadRecipeConfig(
-            String coreFileName, String customFileName, CustomTagHandler customHandler) {
+    public static RecipeConfig loadRecipeConfig(String coreFileName, String customFileName,
+            CustomTagHandler customHandler) {
         File coreFile = new File(Config.configDirectory, coreFileName);
 
         String defaultVals = null;
@@ -349,8 +352,16 @@ public class RecipeConfig {
 
         @Override
         public String toString() {
-            return "Recipe [" + (invalidated ? "INVALID " : "") + "input=" + inputs + ", outputs=" + outputs
-                    + ", energyRequired=" + energyRequired + ", bonusType=" + bonusType + "]";
+            return "Recipe [" + (invalidated ? "INVALID " : "")
+                    + "input="
+                    + inputs
+                    + ", outputs="
+                    + outputs
+                    + ", energyRequired="
+                    + energyRequired
+                    + ", bonusType="
+                    + bonusType
+                    + "]";
         }
     }
 }

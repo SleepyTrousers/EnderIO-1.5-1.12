@@ -1,8 +1,9 @@
 package crazypants.enderio.enchantment;
 
+import net.minecraft.enchantment.Enchantment;
+
 import crazypants.enderio.Log;
 import crazypants.enderio.config.Config;
-import net.minecraft.enchantment.Enchantment;
 
 public class Enchantments {
 

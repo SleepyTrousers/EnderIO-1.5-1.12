@@ -1,7 +1,19 @@
 package crazypants.enderio.conduit.item.filter;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.oredict.OreDictionary;
+
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
@@ -11,15 +23,6 @@ import crazypants.enderio.conduit.gui.item.ItemConduitFilterContainer;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 import io.netty.buffer.ByteBuf;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemFilter implements IInventory, IItemFilter {
 
@@ -431,8 +434,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     }
 
     public boolean isDefault() {
-        return !isAdvanced
-                && !isValid()
+        return !isAdvanced && !isValid()
                 && isBlacklist == DEFAULT_BLACKLIST
                 && matchMeta == DEFAULT_META
                 && matchNBT == DEFAULT_MBT
@@ -442,9 +444,9 @@ public class ItemFilter implements IInventory, IItemFilter {
 
     @Override
     public String toString() {
-        //    return "ItemFilter [isBlacklist=" + isBlacklist + ", matchMeta=" + matchMeta + ", matchNBT=" + matchNBT +
+        // return "ItemFilter [isBlacklist=" + isBlacklist + ", matchMeta=" + matchMeta + ", matchNBT=" + matchNBT +
         // ", useOreDict=" + useOreDict + ", sticky="
-        //        + sticky + ", items=" + Arrays.toString(items) + ", oreIds=" + Arrays.toString(oreIds) + ",
+        // + sticky + ", items=" + Arrays.toString(items) + ", oreIds=" + Arrays.toString(oreIds) + ",
         // isAdvanced=" + isAdvanced + "]";
         return "ItemFilter [isAdvanced=" + isAdvanced + ", items=" + Arrays.toString(items) + "]";
     }
@@ -455,6 +457,7 @@ public class ItemFilter implements IInventory, IItemFilter {
     }
 
     class ItemFilterGhostSlot extends GhostSlot {
+
         private final int slot;
         private final Runnable cb;
 

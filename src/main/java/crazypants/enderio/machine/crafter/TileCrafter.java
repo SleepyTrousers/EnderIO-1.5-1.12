@@ -1,7 +1,23 @@
 package crazypants.enderio.machine.crafter;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.FakePlayer;
+
 import com.enderio.core.common.util.ItemUtil;
 import com.mojang.authlib.GameProfile;
+
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.config.Config;
@@ -12,19 +28,6 @@ import crazypants.enderio.machine.SlotDefinition;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.power.Capacitors;
 import crazypants.enderio.power.ICapacitor;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.FakePlayer;
 
 public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuffer {
 
@@ -91,9 +94,9 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
                     iter.remove();
                 } else if (ItemUtil.areStackMergable(inventory[9], stack)
                         && inventory[9].stackSize + stack.stackSize <= inventory[9].getMaxStackSize()) {
-                    inventory[9].stackSize += stack.stackSize;
-                    iter.remove();
-                }
+                            inventory[9].stackSize += stack.stackSize;
+                            iter.remove();
+                        }
             }
             return false;
         }
@@ -145,16 +148,14 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
     private boolean craftRecipe() {
 
         // (1) Find the items to craft with and put a copy into a temp crafting grid;
-        //     also record what was used to destroy it later
-        InventoryCrafting inv = new InventoryCrafting(
-                new Container() {
-                    @Override
-                    public boolean canInteractWith(EntityPlayer var1) {
-                        return false;
-                    }
-                },
-                3,
-                3);
+        // also record what was used to destroy it later
+        InventoryCrafting inv = new InventoryCrafting(new Container() {
+
+            @Override
+            public boolean canInteractWith(EntityPlayer var1) {
+                return false;
+            }
+        }, 3, 3);
 
         int[] usedItems = new int[9];
 
@@ -162,8 +163,7 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
             ItemStack req = craftingGrid.getStackInSlot(j);
             if (req != null) {
                 for (int i = 0; i < 9; i++) {
-                    if (inventory[i] != null
-                            && inventory[i].stackSize > usedItems[i]
+                    if (inventory[i] != null && inventory[i].stackSize > usedItems[i]
                             && compareDamageable(inventory[i], req)) {
                         req = null;
                         usedItems[i]++;
@@ -349,16 +349,13 @@ public class TileCrafter extends AbstractPowerConsumerEntity implements IItemBuf
     }
 
     public void updateCraftingOutput() {
-        InventoryCrafting inv = new InventoryCrafting(
-                new Container() {
+        InventoryCrafting inv = new InventoryCrafting(new Container() {
 
-                    @Override
-                    public boolean canInteractWith(EntityPlayer var1) {
-                        return false;
-                    }
-                },
-                3,
-                3);
+            @Override
+            public boolean canInteractWith(EntityPlayer var1) {
+                return false;
+            }
+        }, 3, 3);
 
         for (int i = 0; i < 9; i++) {
             inv.setInventorySlotContents(i, craftingGrid.getStackInSlot(i));

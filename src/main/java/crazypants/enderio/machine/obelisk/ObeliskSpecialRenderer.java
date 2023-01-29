@@ -2,11 +2,8 @@ package crazypants.enderio.machine.obelisk;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import com.enderio.core.client.render.RenderUtil;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
 import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -21,7 +18,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Timer;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.RenderUtil;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
 
 @SideOnly(Side.CLIENT)
 public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpecialRenderer implements IItemRenderer {
@@ -74,7 +78,10 @@ public class ObeliskSpecialRenderer<T extends TileEntity> extends TileEntitySpec
         }
 
         blockRen.renderInventoryBlock(
-                Block.getBlockFromItem(item.getItem()), item.getItemDamage(), 0, (RenderBlocks) data[0]);
+                Block.getBlockFromItem(item.getItem()),
+                item.getItemDamage(),
+                0,
+                (RenderBlocks) data[0]);
         Timer t = RenderUtil.getTimer();
         renderItemStack(null, Minecraft.getMinecraft().theWorld, 0, 0, 0, t == null ? 0 : t.renderPartialTicks);
         GL11.glPopMatrix();

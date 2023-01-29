@@ -1,13 +1,14 @@
 package crazypants.enderio.power;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import crazypants.enderio.machine.capbank.TileCapBank;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class PowerHandlerUtil {
 
@@ -51,8 +52,8 @@ public class PowerHandlerUtil {
         item.setTagCompound(tag);
     }
 
-    public static int recieveInternal(
-            IInternalPoweredTile target, int maxReceive, ForgeDirection from, boolean simulate) {
+    public static int recieveInternal(IInternalPoweredTile target, int maxReceive, ForgeDirection from,
+            boolean simulate) {
         int result = Math.min(target.getMaxEnergyRecieved(from), maxReceive);
         result = Math.min(target.getMaxEnergyStored() - target.getEnergyStored(), result);
         result = Math.max(0, result);

@@ -1,9 +1,8 @@
 package crazypants.enderio.fluid;
 
-import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import java.util.HashMap;
 import java.util.Map;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -12,6 +11,9 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
+
+import cpw.mods.fml.common.eventhandler.Event.Result;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class BucketHandler {
 
@@ -53,32 +55,32 @@ public class BucketHandler {
         }
     }
 
-    //  @SubscribeEvent
-    //  public void addFuelTooltip(ItemTooltipEvent evt) {
-    //    ItemStack stack = evt.itemStack;
-    //    if(stack == null) {
-    //      return;
-    //    }
+    // @SubscribeEvent
+    // public void addFuelTooltip(ItemTooltipEvent evt) {
+    // ItemStack stack = evt.itemStack;
+    // if(stack == null) {
+    // return;
+    // }
     //
-    //    if(Config.addFuelTooltipsToAllFluidContainers || stack.getItem() instanceof ItemBucketEio) {
-    //      FluidStack fluidStack = FluidContainerRegistry.getFluidForFilledItem(stack);
-    //      if(fluidStack == null) {
-    //        return;
-    //      }
-    //      addTooltipForFluid(evt.toolTip, fluidStack.getFluid());
-    //    }
-    //  }
+    // if(Config.addFuelTooltipsToAllFluidContainers || stack.getItem() instanceof ItemBucketEio) {
+    // FluidStack fluidStack = FluidContainerRegistry.getFluidForFilledItem(stack);
+    // if(fluidStack == null) {
+    // return;
+    // }
+    // addTooltipForFluid(evt.toolTip, fluidStack.getFluid());
+    // }
+    // }
     //
-    //  protected void addTooltipForFluid(List list, Fluid fluid) {
-    //    if(fluid != null) {
-    //      Fuel fuel = IronEngineFuel.getFuelForFluid(fluid);
-    //      if(fuel != null) {
-    //        list.add(EnderIO.lang.localize("fuel.tooltip.heading"));
-    //        list.add(EnumChatFormatting.ITALIC + " " + PowerDisplayUtil.formatPowerPerTick(fuel.powerPerCycle));
-    //        list.add(EnumChatFormatting.ITALIC + " " + fuel.totalBurningTime + " " +
+    // protected void addTooltipForFluid(List list, Fluid fluid) {
+    // if(fluid != null) {
+    // Fuel fuel = IronEngineFuel.getFuelForFluid(fluid);
+    // if(fuel != null) {
+    // list.add(EnderIO.lang.localize("fuel.tooltip.heading"));
+    // list.add(EnumChatFormatting.ITALIC + " " + PowerDisplayUtil.formatPowerPerTick(fuel.powerPerCycle));
+    // list.add(EnumChatFormatting.ITALIC + " " + fuel.totalBurningTime + " " +
     // EnderIO.lang.localize("fuel.tooltip.burnTime"));
-    //      }
-    //    }
-    //  }
+    // }
+    // }
+    // }
 
 }

@@ -1,12 +1,13 @@
 package crazypants.enderio.conduit.power;
 
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IExtractor;
 import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.IPowerInterface;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public interface IPowerConduit extends IConduit, IInternalPowerHandler, IExtractor {
 

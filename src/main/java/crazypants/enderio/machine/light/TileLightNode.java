@@ -1,9 +1,10 @@
 package crazypants.enderio.machine.light;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.TileEntityEio;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.TileEntityEio;
 
 public class TileLightNode extends TileEntityEio {
 
@@ -62,8 +63,19 @@ public class TileLightNode extends TileEntityEio {
 
     @Override
     public String toString() {
-        return "TileLightNode [parentX=" + parentX + ", parentY=" + parentY + ", parentZ=" + parentZ + ",  xCoord="
-                + xCoord + ", yCoord=" + yCoord + ", zCoord=" + zCoord + ", tileEntityInvalid=" + tileEntityInvalid
+        return "TileLightNode [parentX=" + parentX
+                + ", parentY="
+                + parentY
+                + ", parentZ="
+                + parentZ
+                + ",  xCoord="
+                + xCoord
+                + ", yCoord="
+                + yCoord
+                + ", zCoord="
+                + zCoord
+                + ", tileEntityInvalid="
+                + tileEntityInvalid
                 + "]";
     }
 }

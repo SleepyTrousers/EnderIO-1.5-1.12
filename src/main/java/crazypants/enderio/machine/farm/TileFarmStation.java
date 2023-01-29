@@ -1,6 +1,25 @@
 package crazypants.enderio.machine.farm;
 
+import java.util.BitSet;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemShears;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.common.util.BlockCoord;
+
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
@@ -16,28 +35,15 @@ import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.BasicCapacitor;
 import crazypants.enderio.tool.ArrayMappingTool;
-import java.util.BitSet;
-import javax.annotation.Nonnull;
-import net.minecraft.block.Block;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemShears;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.EnumSkyBlock;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileFarmStation extends AbstractPoweredTaskEntity {
 
     private static final int TICKS_PER_WORK = 20;
 
     public enum ToolType {
+
         HOE {
+
             @Override
             boolean match(ItemStack item) {
                 for (ItemStack stack : Config.farmHoes) {
@@ -50,24 +56,28 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
         },
 
         AXE {
+
             @Override
             boolean match(ItemStack item) {
                 return item.getItem().getHarvestLevel(item, "axe") >= 0;
             }
         },
         TREETAP {
+
             @Override
             boolean match(ItemStack item) {
                 return item.getItem().getClass() == RubberTreeFarmerIC2.treeTap;
             }
         },
         SHEARS {
+
             @Override
             boolean match(ItemStack item) {
                 return item.getItem() instanceof ItemShears;
             }
         },
         NONE {
+
             @Override
             boolean match(ItemStack item) {
                 return false;
@@ -82,8 +92,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
         }
 
         private boolean isBrokenTinkerTool(ItemStack item) {
-            return item.hasTagCompound()
-                    && item.getTagCompound().hasKey("InfiTool")
+            return item.hasTagCompound() && item.getTagCompound().hasKey("InfiTool")
                     && item.getTagCompound().getCompoundTag("InfiTool").getBoolean("Broken");
         }
 
@@ -197,8 +206,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
         if (inventory[upg] == null) {
             return 0;
         } else {
-            return Config.farmBonusSize
-                    * (EnderIO.itemBasicCapacitor.getCapacitor(inventory[upg]).getTier() - 1);
+            return Config.farmBonusSize * (EnderIO.itemBasicCapacitor.getCapacitor(inventory[upg]).getTier() - 1);
         }
     }
 
@@ -413,8 +421,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
 
         BlockCoord bc = null;
         int infiniteLoop = 20;
-        while (bc == null
-                || bc.equals(getLocation())
+        while (bc == null || bc.equals(getLocation())
                 || !worldObj.getChunkProvider().chunkExists(bc.x >> 4, bc.z >> 4)) {
             if (infiniteLoop-- <= 0) {
                 return;
@@ -451,8 +458,8 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
             IHarvestResult harvest = FarmersCommune.instance.harvestBlock(this, bc, block, meta);
             if (harvest != null && harvest.getDrops() != null) {
                 PacketFarmAction pkt = new PacketFarmAction(harvest.getHarvestedBlocks());
-                PacketHandler.INSTANCE.sendToAllAround(
-                        pkt, new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
+                PacketHandler.INSTANCE
+                        .sendToAllAround(pkt, new TargetPoint(worldObj.provider.dimensionId, bc.x, bc.y, bc.z, 64));
                 for (EntityItem ei : harvest.getDrops()) {
                     if (ei != null) {
                         insertHarvestDrop(ei, bc);
@@ -528,18 +535,14 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
     }
 
     /*
-     * Returns a fuzzy boolean:
-     *
-     * <=0 - break no leaves for saplings
-     *  50 - break half the leaves for saplings
-     *  90 - break 90% of the leaves for saplings
+     * Returns a fuzzy boolean: <=0 - break no leaves for saplings 50 - break half the leaves for saplings 90 - break
+     * 90% of the leaves for saplings
      */
     public int isLowOnSaplings(BlockCoord bc) {
         int slot = getSupplySlotForCoord(bc);
         ItemStack inv = inventory[slot];
 
-        return 90
-                * (Config.farmSaplingReserveAmount - (inv == null ? 0 : inv.stackSize))
+        return 90 * (Config.farmSaplingReserveAmount - (inv == null ? 0 : inv.stackSize))
                 / Config.farmSaplingReserveAmount;
     }
 
@@ -656,7 +659,7 @@ public class TileFarmStation extends AbstractPoweredTaskEntity {
             return origSize;
         }
 
-        ResultStack[] in = new ResultStack[] {new ResultStack(stack)};
+        ResultStack[] in = new ResultStack[] { new ResultStack(stack) };
         mergeResults(in);
         return origSize - (in[0].item == null ? 0 : in[0].item.stackSize);
     }

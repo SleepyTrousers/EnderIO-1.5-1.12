@@ -1,6 +1,30 @@
 package crazypants.enderio.conduit;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import mods.immibis.microblocks.api.EnumPartClass;
+import mods.immibis.microblocks.api.EnumPosition;
+import mods.immibis.microblocks.api.IMicroblockCoverSystem;
+import mods.immibis.microblocks.api.Part;
+
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.common.util.BlockCoord;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.gas.GasConduitNetwork;
 import crazypants.enderio.conduit.gas.IGasConduit;
@@ -28,26 +52,6 @@ import crazypants.enderio.conduit.power.IPowerConduit;
 import crazypants.enderio.conduit.power.PowerConduitNetwork;
 import crazypants.enderio.conduit.redstone.IRedstoneConduit;
 import crazypants.enderio.conduit.redstone.RedstoneConduitNetwork;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import mods.immibis.microblocks.api.EnumPartClass;
-import mods.immibis.microblocks.api.EnumPosition;
-import mods.immibis.microblocks.api.IMicroblockCoverSystem;
-import mods.immibis.microblocks.api.Part;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class AbstractConduit implements IConduit {
 
@@ -69,8 +73,8 @@ public abstract class AbstractConduit implements IConduit {
 
     protected List<CollidableComponent> collidables;
 
-    protected final EnumMap<ForgeDirection, ConnectionMode> conectionModes =
-            new EnumMap<ForgeDirection, ConnectionMode>(ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, ConnectionMode> conectionModes = new EnumMap<ForgeDirection, ConnectionMode>(
+            ForgeDirection.class);
 
     protected boolean collidablesDirty = true;
 
@@ -275,8 +279,7 @@ public abstract class AbstractConduit implements IConduit {
         covers = conduit.getBundle().getCoverSystem();
         for (Part part : covers.getAllParts()) {
             if (part.type.getPartClass() == EnumPartClass.Panel) {
-                return part.pos
-                        == EnumPosition.getFacePosition(direction.getOpposite().ordinal());
+                return part.pos == EnumPosition.getFacePosition(direction.getOpposite().ordinal());
             }
         }
         return false;
@@ -580,11 +583,13 @@ public abstract class AbstractConduit implements IConduit {
 
     @Override
     public Collection<CollidableComponent> createCollidables(CacheKey key) {
-        return Collections.singletonList(new CollidableComponent(
-                getCollidableType(),
-                ConduitGeometryUtil.instance.getBoundingBox(getBaseConduitType(), key.dir, key.isStub, key.offset),
-                key.dir,
-                null));
+        return Collections.singletonList(
+                new CollidableComponent(
+                        getCollidableType(),
+                        ConduitGeometryUtil.instance
+                                .getBoundingBox(getBaseConduitType(), key.dir, key.isStub, key.offset),
+                        key.dir,
+                        null));
     }
 
     @Override
@@ -623,7 +628,8 @@ public abstract class AbstractConduit implements IConduit {
         Class<? extends IConduit> type = getCollidableType();
         if (isConnectedTo(dir) && getConnectionMode(dir) != ConnectionMode.DISABLED) {
             return cc.getCollidables(
-                    cc.createKey(type, getBundle().getOffset(getBaseConduitType(), dir), dir, renderStub(dir)), this);
+                    cc.createKey(type, getBundle().getOffset(getBaseConduitType(), dir), dir, renderStub(dir)),
+                    this);
         }
         return null;
     }

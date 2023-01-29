@@ -1,7 +1,8 @@
 package crazypants.enderio.tool;
 
-import crazypants.enderio.api.tool.ITool;
 import java.lang.reflect.Method;
+
+import crazypants.enderio.api.tool.ITool;
 
 public interface IToolImpl {
 

@@ -3,6 +3,7 @@ package crazypants.enderio.material;
 import static com.enderio.core.common.util.OreDictionaryHelper.*;
 
 public enum PowderIngot {
+
     POWDER_COAL("powderCoal", null, "dustCoal"), //
     POWDER_IRON("powderIron", null, "dustIron"), //
     POWDER_GOLD("powderGold", null, "dustGold"), //
@@ -29,8 +30,8 @@ public enum PowderIngot {
     public final boolean reverseDependency;
     public boolean ignoreRuntimeDependencyCheck = false;
 
-    private PowderIngot(
-            String unlocalisedName, String oreDictDependancy, String oreDictName, boolean reverseDependency) {
+    private PowderIngot(String unlocalisedName, String oreDictDependancy, String oreDictName,
+            boolean reverseDependency) {
         this.unlocalisedName = "enderio." + unlocalisedName;
         iconKey = "enderio:" + unlocalisedName;
         this.oreDictName = oreDictName;

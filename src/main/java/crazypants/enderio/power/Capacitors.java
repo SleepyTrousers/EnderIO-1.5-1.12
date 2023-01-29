@@ -1,9 +1,11 @@
 package crazypants.enderio.power;
 
-import crazypants.enderio.EnderIO;
 import net.minecraft.item.ItemStack;
 
+import crazypants.enderio.EnderIO;
+
 public enum Capacitors {
+
     BASIC_CAPACITOR(new BasicCapacitor(1, 80, 100000, 20), "basicCapacitor", "Basic"),
 
     ACTIVATED_CAPACITOR(new BasicCapacitor(2, 240, 200000, 60), "activatedCapacitor", "Advanced"),

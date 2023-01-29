@@ -13,6 +13,7 @@ import net.minecraft.entity.Entity;
 // We're not going to use this anymore
 @Deprecated
 public class CombustionGeneratorModel extends ModelBase {
+
     // fields
     ModelRenderer Engine;
     ModelRenderer Chamber1;
@@ -268,9 +269,9 @@ public class CombustionGeneratorModel extends ModelBase {
         model.rotateAngleZ = z;
     }
 
-    //  public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
-    //  {
-    //    super.setRotationAngles(f, f1, f2, f3, f4, f5);
-    //  }
+    // public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
+    // {
+    // super.setRotationAngles(f, f1, f2, f3, f4, f5);
+    // }
 
 }

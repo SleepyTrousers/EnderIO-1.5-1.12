@@ -1,10 +1,5 @@
 package crazypants.enderio.machine.enchanter;
 
-import crazypants.enderio.Log;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.recipe.RecipeConfig;
-import crazypants.enderio.machine.recipe.RecipeConfigParser;
-import crazypants.enderio.machine.recipe.RecipeInput;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,9 +12,12 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
 import net.minecraft.enchantment.Enchantment;
+
 import org.apache.commons.io.IOUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -27,6 +25,12 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
+
+import crazypants.enderio.Log;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.recipe.RecipeConfig;
+import crazypants.enderio.machine.recipe.RecipeConfigParser;
+import crazypants.enderio.machine.recipe.RecipeInput;
 
 public class EnchanterRecipeParser extends DefaultHandler {
 
@@ -89,8 +93,7 @@ public class EnchanterRecipeParser extends DefaultHandler {
         ListIterator<EnchanterRecipe> iter = recipes.listIterator();
         while (iter.hasNext()) {
             EnchanterRecipe rec = iter.next();
-            if (rec != null
-                    && rec.getEnchantment() != null
+            if (rec != null && rec.getEnchantment() != null
                     && rec.getEnchantment().getName().equals(enchantment.getName())) {
                 Log.info("Replacing enchater recipe based on user config for enchantment " + enchantment.getName());
                 iter.remove();
@@ -181,12 +184,14 @@ public class EnchanterRecipeParser extends DefaultHandler {
             curEnchantment = EnchanterRecipe.getEnchantmentFromName(attributes.getValue(AT_NAME));
             curLevelCost = RecipeConfigParser.getIntValue(AT_LEVEL, attributes, -1);
             if (curLevelCost == -1) {
-                Log.warn("Cost per level not found for enchantment with name " + attributes.getValue(AT_NAME)
-                        + " when parsing enchanter recipes.");
+                Log.warn(
+                        "Cost per level not found for enchantment with name " + attributes.getValue(AT_NAME)
+                                + " when parsing enchanter recipes.");
                 curEnchantment = null;
             } else if (curEnchantment == null) {
-                Log.warn("Could not find enchantment with name " + attributes.getValue(AT_NAME)
-                        + " when parsing enchanter recipes.");
+                Log.warn(
+                        "Could not find enchantment with name " + attributes.getValue(AT_NAME)
+                                + " when parsing enchanter recipes.");
                 enchantmentFound = false;
             } else {
                 enchantmentFound = true;
@@ -197,8 +202,9 @@ public class EnchanterRecipeParser extends DefaultHandler {
                     Log.error("EnchanterRecipeParser: Encontered an item stack outside an enchantment element.");
                 }
             } else if (curInput != null) {
-                Log.error("EnchanterRecipeParser: Multiple input stacks found within the enchantment tag for "
-                        + curEnchantment.getName());
+                Log.error(
+                        "EnchanterRecipeParser: Multiple input stacks found within the enchantment tag for "
+                                + curEnchantment.getName());
             } else {
                 curInput = RecipeConfigParser.getItemStack(attributes);
             }

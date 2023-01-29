@@ -1,5 +1,14 @@
 package crazypants.enderio.machine.generator.combustion;
 
+import java.util.Random;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.GuiHandler;
@@ -8,13 +17,6 @@ import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.network.PacketHandler;
-import java.util.Random;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustionGenerator> {
 
@@ -24,7 +26,10 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
 
     public static BlockCombustionGenerator create() {
         PacketHandler.INSTANCE.registerMessage(
-                PacketCombustionTank.class, PacketCombustionTank.class, PacketHandler.nextID(), Side.CLIENT);
+                PacketCombustionTank.class,
+                PacketCombustionTank.class,
+                PacketHandler.nextID(),
+                Side.CLIENT);
 
         BlockCombustionGenerator gen = new BlockCombustionGenerator();
         gen.init();
@@ -92,8 +97,7 @@ public class BlockCombustionGenerator extends AbstractMachineBlock<TileCombustio
         if (face.offsetY == 0 || mode == IoMode.NONE) {
             return super.getOverlayIconForMode(tile, face, mode);
         }
-        return mode == IoMode.PULL
-                ? face.offsetY == 0 ? overlayPullSides : overlayPullTopBottom
+        return mode == IoMode.PULL ? face.offsetY == 0 ? overlayPullSides : overlayPullTopBottom
                 : overlayDisabledNoCenter;
     }
 

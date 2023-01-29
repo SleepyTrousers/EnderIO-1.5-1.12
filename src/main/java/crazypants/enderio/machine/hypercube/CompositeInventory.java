@@ -1,14 +1,16 @@
 package crazypants.enderio.machine.hypercube;
 
-import com.enderio.core.common.util.InventoryWrapper;
-import crazypants.enderio.ModObject;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.InventoryWrapper;
+import crazypants.enderio.ModObject;
 
 public class CompositeInventory implements ISidedInventory {
 
@@ -184,6 +186,7 @@ public class CompositeInventory implements ISidedInventory {
     }
 
     private static class InvEntry {
+
         IInventory origInv;
         ISidedInventory inv;
         int startIndex;

@@ -1,8 +1,15 @@
 package crazypants.enderio.conduit.item.filter;
 
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import cofh.api.energy.IEnergyContainerItem;
+
 import com.enderio.core.client.gui.widget.GhostSlot;
 import com.enderio.core.common.network.NetworkUtil;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
@@ -11,9 +18,6 @@ import crazypants.enderio.conduit.gui.item.PowerItemFilterGui;
 import crazypants.enderio.conduit.item.IItemConduit;
 import crazypants.enderio.conduit.item.NetworkedInventory;
 import io.netty.buffer.ByteBuf;
-import java.util.List;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 /**
  *
@@ -22,6 +26,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class PowerItemFilter implements IItemFilter {
 
     public enum CmpMode {
+
         LESS,
         LESS_EQUAL,
         EQUAL,

@@ -1,22 +1,26 @@
 package crazypants.enderio.material;
 
-import crazypants.enderio.Log;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.recipe.RecipeConfig;
-import crazypants.enderio.machine.recipe.RecipeConfigParser;
-import crazypants.enderio.machine.recipe.RecipeInput;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
+
+import crazypants.enderio.Log;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.recipe.RecipeConfig;
+import crazypants.enderio.machine.recipe.RecipeConfigParser;
+import crazypants.enderio.machine.recipe.RecipeInput;
 
 public final class OreDictionaryPreferenceParser extends DefaultHandler {
 
@@ -126,9 +130,12 @@ public final class OreDictionaryPreferenceParser extends DefaultHandler {
                 if (matched) {
                     prefs.setPreference(oreDictName, prefStack);
                 } else {
-                    Log.warn("OreDictionaryPreferenceParser: Attempted to register " + prefStack
-                            + " as the preffered output for " + oreDictName
-                            + " but it is not registered in the OreDictionary as " + oreDictName);
+                    Log.warn(
+                            "OreDictionaryPreferenceParser: Attempted to register " + prefStack
+                                    + " as the preffered output for "
+                                    + oreDictName
+                                    + " but it is not registered in the OreDictionary as "
+                                    + oreDictName);
                 }
             }
             oreDictName = null;

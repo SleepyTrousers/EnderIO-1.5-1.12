@@ -1,16 +1,21 @@
 package crazypants.enderio.conduit.liquid;
 
-import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.ConnectionMode;
 import java.util.*;
+
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.conduit.AbstractConduitNetwork;
+import crazypants.enderio.conduit.ConnectionMode;
+
 public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidConduit, AbstractEnderLiquidConduit> {
+
     private class TankIterator implements Iterator<NetworkTank> {
+
         private int index = -1;
         private int currentCount = 0;
 
@@ -84,8 +89,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
                 FluidStack tryDrain = tankInfo.fluid.copy();
                 tryDrain.amount = type.getMaxExtractPerTick();
                 FluidStack drained = tank.externalTank.drain(conDir.getOpposite(), tryDrain, false);
-                if (drained == null
-                        || drained.amount <= 0
+                if (drained == null || drained.amount <= 0
                         || !matchedFilter(drained, con, conDir, true)
                         || !tryDrain.isFluidEqual(drained)) {
                     continue;
@@ -143,7 +147,7 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
             // TODO: Only change starting pos of iterator is doFill is true so a false then true returns the same
 
             TankIterator iterator;
-            for (iterator = getIteratorForTank(tank).start(); iterator.hasNext(); ) {
+            for (iterator = getIteratorForTank(tank).start(); iterator.hasNext();) {
                 NetworkTank target = iterator.next();
                 if (!target.equals(tank)
                         && target.con.getOutputColor(target.conDir).equals(tank.con.getInputColor(tank.conDir))
@@ -167,8 +171,8 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
         }
     }
 
-    private boolean matchedFilter(
-            FluidStack drained, AbstractEnderLiquidConduit con, ForgeDirection conDir, boolean isInput) {
+    private boolean matchedFilter(FluidStack drained, AbstractEnderLiquidConduit con, ForgeDirection conDir,
+            boolean isInput) {
         if (drained == null || con == null || conDir == null) {
             return false;
         }
@@ -270,8 +274,8 @@ public class EnderLiquidConduitNetwork extends AbstractConduitNetwork<ILiquidCon
             this.conDir = conDir;
             conduitLoc = con.getLocation();
             tankDir = conDir.getOpposite();
-            externalTank = AbstractLiquidConduit.getExternalFluidHandler(
-                    con.getBundle().getWorld(), conduitLoc.getLocation(conDir));
+            externalTank = AbstractLiquidConduit
+                    .getExternalFluidHandler(con.getBundle().getWorld(), conduitLoc.getLocation(conDir));
             acceptsOuput = con.getConnectionMode(conDir).acceptsOutput();
         }
 

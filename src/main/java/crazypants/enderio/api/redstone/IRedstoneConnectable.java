@@ -4,8 +4,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 /**
- * Implement this on your Block or TileEntity to control whether insulated
- * restone conduits will automatically connect to your block.
+ * Implement this on your Block or TileEntity to control whether insulated restone conduits will automatically connect
+ * to your block.
  * <p>
  * Implementing on both is not recommended and will likely not work as expected.
  */

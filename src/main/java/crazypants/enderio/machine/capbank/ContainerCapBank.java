@@ -1,12 +1,7 @@
 package crazypants.enderio.machine.capbank;
 
-import com.enderio.core.common.ContainerEnder;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.machine.capbank.network.InventoryImpl;
-import crazypants.util.BaublesUtil;
-import crazypants.util.ShadowInventory;
 import java.awt.Point;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -14,6 +9,14 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+
+import com.enderio.core.common.ContainerEnder;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.machine.capbank.network.InventoryImpl;
+import crazypants.util.BaublesUtil;
+import crazypants.util.ShadowInventory;
 
 public class ContainerCapBank extends ContainerEnder<TileCapBank> {
 
@@ -89,6 +92,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
         if (hasBaublesSlots()) {
             for (int i = 0; i < baubles.getSizeInventory(); i++) {
                 addSlotToContainer(new Slot(baubles, i, -15 + armorOffset, 84 + i * 18) {
+
                     @Override
                     public boolean isItemValid(ItemStack par1ItemStack) {
                         return inventory.isItemValidForSlot(getSlotIndex(), par1ItemStack);
@@ -135,10 +139,9 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
                 // merge from machine input slots to inventory
                 if (!mergeItemStackIntoArmor(entityPlayer, origStack, slotIndex)
                         && /*
-                            * !(baubles != null && mergeItemStack(origStack,
-                            * startBaublesSlot, endBaublesSlot, false)) &&
-                            */ !mergeItemStack(
-                                origStack, startPlayerSlot, endHotBarSlot, false)) {
+                            * !(baubles != null && mergeItemStack(origStack, startBaublesSlot, endBaublesSlot, false))
+                            * &&
+                            */ !mergeItemStack(origStack, startPlayerSlot, endHotBarSlot, false)) {
                     return null;
                 }
 
@@ -150,19 +153,17 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
                         if (slotIndex <= endPlayerSlot) {
                             if (
                             /*
-                             * !(baubles != null && mergeItemStack(origStack,
-                             * startBaublesSlot, endBaublesSlot, false)) &&
-                             */ !mergeItemStack(
-                                    origStack, startHotBarSlot, endHotBarSlot, false)) {
+                             * !(baubles != null && mergeItemStack(origStack, startBaublesSlot, endBaublesSlot, false))
+                             * &&
+                             */ !mergeItemStack(origStack, startHotBarSlot, endHotBarSlot, false)) {
                                 return null;
                             }
                         } else if (slotIndex >= startHotBarSlot && slotIndex <= endHotBarSlot) {
                             if (
                             /*
-                             * !(baubles != null && mergeItemStack(origStack,
-                             * startBaublesSlot, endBaublesSlot, false)) &&
-                             */ !mergeItemStack(
-                                    origStack, startPlayerSlot, endPlayerSlot, false)) {
+                             * !(baubles != null && mergeItemStack(origStack, startBaublesSlot, endBaublesSlot, false))
+                             * &&
+                             */ !mergeItemStack(origStack, startPlayerSlot, endPlayerSlot, false)) {
                                 return null;
                             }
                         } else if (slotIndex >= startBaublesSlot && slotIndex <= endBaublesSlot) {
@@ -209,6 +210,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
     }
 
     private static class SlotImpl extends Slot {
+
         public SlotImpl(IInventory inv, int idx, int x, int y) {
             super(inv, idx, x, y);
         }
@@ -220,8 +222,7 @@ public class ContainerCapBank extends ContainerEnder<TileCapBank> {
     }
 
     /**
-     * called when the content of slots is synced from the server to the client
-     * (packet 30)
+     * called when the content of slots is synced from the server to the client (packet 30)
      */
     @Override
     @SideOnly(Side.CLIENT)

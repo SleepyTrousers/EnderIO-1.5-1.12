@@ -1,10 +1,13 @@
 package crazypants.enderio.machine.crusher;
 
+import java.awt.Rectangle;
+
+import net.minecraft.entity.player.InventoryPlayer;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
-import java.awt.Rectangle;
-import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.opengl.GL11;
 
 public class GuiCrusher extends GuiPoweredMachineBase<TileCrusher> {
 
@@ -23,8 +26,7 @@ public class GuiCrusher extends GuiPoweredMachineBase<TileCrusher> {
     }
 
     /**
-     * Draw the background layer for the GuiContainer (everything behind the
-     * items)
+     * Draw the background layer for the GuiContainer (everything behind the items)
      */
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {

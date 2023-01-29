@@ -1,11 +1,5 @@
 package crazypants.enderio.conduit.power;
 
-import crazypants.enderio.Log;
-import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.power.IPowerInterface;
-import crazypants.enderio.power.IPowerStorage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,9 +7,17 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
+
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import crazypants.enderio.Log;
+import crazypants.enderio.conduit.ConnectionMode;
+import crazypants.enderio.conduit.power.PowerConduitNetwork.ReceptorEntry;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.power.IPowerInterface;
+import crazypants.enderio.power.IPowerStorage;
 
 public class NetworkPowerManager {
 
@@ -497,8 +499,8 @@ public class NetworkPowerManager {
         IPowerConduit emmiter;
         ForgeDirection direction;
 
-        private CapBankSupplyEntry(
-                IPowerStorage capBank, int available, int canFill, IPowerConduit emmiter, ForgeDirection direction) {
+        private CapBankSupplyEntry(IPowerStorage capBank, int available, int canFill, IPowerConduit emmiter,
+                ForgeDirection direction) {
             this.capBank = capBank;
             canExtract = available;
             this.canFill = canFill;

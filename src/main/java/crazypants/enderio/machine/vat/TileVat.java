@@ -1,16 +1,5 @@
 package crazypants.enderio.machine.vat;
 
-import com.enderio.core.api.common.util.ITankAccess;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.FluidUtil;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractPoweredTaskEntity;
-import crazypants.enderio.machine.IMachineRecipe.ResultStack;
-import crazypants.enderio.machine.IPoweredTask;
-import crazypants.enderio.machine.MachineRecipeInput;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.network.PacketHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -20,6 +9,19 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import com.enderio.core.api.common.util.ITankAccess;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.FluidUtil;
+
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.AbstractPoweredTaskEntity;
+import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import crazypants.enderio.machine.IPoweredTask;
+import crazypants.enderio.machine.MachineRecipeInput;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.network.PacketHandler;
 
 public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler, ITankAccess {
 
@@ -233,8 +235,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
             return false;
         }
         if (fluid == null
-                || (inputTank.getFluid() != null
-                        && inputTank.getFluid().getFluid().getID() != fluid.getID())) {
+                || (inputTank.getFluid() != null && inputTank.getFluid().getFluid().getID() != fluid.getID())) {
             return false;
         }
 
@@ -259,7 +260,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
         if (isSideDisabled(from.ordinal())) {
             return new FluidTankInfo[0];
         }
-        return new FluidTankInfo[] {inputTank.getInfo(), outputTank.getInfo()};
+        return new FluidTankInfo[] { inputTank.getInfo(), outputTank.getInfo() };
     }
 
     @Override
@@ -335,7 +336,7 @@ public class TileVat extends AbstractPoweredTaskEntity implements IFluidHandler,
 
     @Override
     public FluidTank[] getOutputTanks() {
-        return new FluidTank[] {outputTank /* , inputTank */};
+        return new FluidTank[] { outputTank /* , inputTank */ };
     }
 
     @Override

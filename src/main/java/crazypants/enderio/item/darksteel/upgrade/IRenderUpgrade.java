@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderPlayerEvent;
+
 import org.lwjgl.opengl.GL11;
 
 public interface IRenderUpgrade {
@@ -12,8 +13,7 @@ public interface IRenderUpgrade {
 
     /**
      * A few helper methods for rendering. Credit to Vazkii, used from Botania.
-     * {@link #translateToHeadLevel(EntityPlayer)} edited to remove sneaking
-     * translation.
+     * {@link #translateToHeadLevel(EntityPlayer)} edited to remove sneaking translation.
      */
     public static class Helper {
 
@@ -27,7 +27,9 @@ public interface IRenderUpgrade {
 
         public static void translateToHeadLevel(EntityPlayer player) {
             GL11.glTranslated(
-                    0, (player != Minecraft.getMinecraft().thePlayer ? 1.7F : 0) - player.getDefaultEyeHeight(), 0);
+                    0,
+                    (player != Minecraft.getMinecraft().thePlayer ? 1.7F : 0) - player.getDefaultEyeHeight(),
+                    0);
         }
     }
 }

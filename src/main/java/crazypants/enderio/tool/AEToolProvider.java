@@ -1,10 +1,12 @@
 package crazypants.enderio.tool;
 
-import appeng.api.implementations.items.IAEWrench;
-import crazypants.enderio.api.tool.ITool;
 import java.lang.reflect.Method;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+
+import appeng.api.implementations.items.IAEWrench;
+import crazypants.enderio.api.tool.ITool;
 
 public class AEToolProvider implements IToolProvider, IToolImpl {
 

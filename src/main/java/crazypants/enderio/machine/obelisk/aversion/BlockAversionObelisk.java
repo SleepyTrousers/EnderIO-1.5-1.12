@@ -1,11 +1,12 @@
 package crazypants.enderio.machine.obelisk.aversion;
 
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.obelisk.BlockObeliskAbstract;
 
 public class BlockAversionObelisk extends BlockObeliskAbstract<TileAversionObelisk> {
 

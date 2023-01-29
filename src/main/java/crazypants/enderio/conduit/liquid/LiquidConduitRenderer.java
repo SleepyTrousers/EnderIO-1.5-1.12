@@ -2,26 +2,13 @@ package crazypants.enderio.conduit.liquid;
 
 import static com.enderio.core.client.render.CubeRenderer.*;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.util.ForgeDirectionOffsets;
-import com.enderio.core.common.vecmath.Vector2f;
-import com.enderio.core.common.vecmath.Vector3d;
-import com.enderio.core.common.vecmath.Vector3f;
-import com.enderio.core.common.vecmath.Vertex;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.conduit.render.ConduitBundleRenderer;
-import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
+
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.resources.IResourceManager;
@@ -30,6 +17,22 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.client.render.RenderUtil;
+import com.enderio.core.common.util.ForgeDirectionOffsets;
+import com.enderio.core.common.vecmath.Vector2f;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.enderio.core.common.vecmath.Vector3f;
+import com.enderio.core.common.vecmath.Vertex;
+
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.ConnectionMode;
+import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.conduit.render.ConduitBundleRenderer;
+import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 
 public class LiquidConduitRenderer extends DefaultConduitRenderer implements IResourceManagerReloadListener {
 
@@ -58,16 +61,8 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     }
 
     @Override
-    public void renderEntity(
-            ConduitBundleRenderer conduitBundleRenderer,
-            IConduitBundle te,
-            IConduit conduit,
-            double x,
-            double y,
-            double z,
-            float partialTick,
-            float worldLight,
-            RenderBlocks rb) {
+    public void renderEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x,
+            double y, double z, float partialTick, float worldLight, RenderBlocks rb) {
         calculateRatios((LiquidConduit) conduit);
         super.renderEntity(conduitBundleRenderer, te, conduit, x, y, z, partialTick, worldLight, rb);
     }
@@ -87,13 +82,19 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
 
         } else {
             drawSection(
-                    component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
+                    component.bound,
+                    tex.getMinU(),
+                    tex.getMaxU(),
+                    tex.getMinV(),
+                    tex.getMaxV(),
+                    component.dir,
+                    true);
         }
 
         if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
             tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
-            List<Vertex> corners = component.bound.getCornersWithUvForFace(
-                    component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
+            List<Vertex> corners = component.bound
+                    .getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
             for (Vertex c : corners) {
                 addVecWithUV(c.xyz, c.uv.x, c.uv.y);
             }
@@ -109,19 +110,21 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
         renderFluidOutline(component, fluid, 1, 13f / 16f);
     }
 
-    public static void renderFluidOutline(
-            CollidableComponent component, FluidStack fluid, double scaleFactor, float outlineWidth) {
-        for (CachableRenderStatement elem :
-                computeFluidOutlineToCache(component, fluid.getFluid(), scaleFactor, outlineWidth)) {
+    public static void renderFluidOutline(CollidableComponent component, FluidStack fluid, double scaleFactor,
+            float outlineWidth) {
+        for (CachableRenderStatement elem : computeFluidOutlineToCache(
+                component,
+                fluid.getFluid(),
+                scaleFactor,
+                outlineWidth)) {
             elem.execute();
         }
     }
 
-    private static Map<CollidableComponent, Map<Fluid, List<CachableRenderStatement>>> cache =
-            new WeakHashMap<CollidableComponent, Map<Fluid, List<CachableRenderStatement>>>();
+    private static Map<CollidableComponent, Map<Fluid, List<CachableRenderStatement>>> cache = new WeakHashMap<CollidableComponent, Map<Fluid, List<CachableRenderStatement>>>();
 
-    public static List<CachableRenderStatement> computeFluidOutlineToCache(
-            CollidableComponent component, Fluid fluid, double scaleFactor, float outlineWidth) {
+    public static List<CachableRenderStatement> computeFluidOutlineToCache(CollidableComponent component, Fluid fluid,
+            double scaleFactor, float outlineWidth) {
 
         Map<Fluid, List<CachableRenderStatement>> cache0 = cache.get(component);
         if (cache0 == null) {
@@ -185,8 +188,13 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
 
                             RenderUtil.getUvForCorner(uv, corner, 0, 0, 0, face, texture);
 
-                            data.add(new CachableRenderStatement.AddVertexWithUV(
-                                    corner.x, corner.y, corner.z, uv.x, uv.y));
+                            data.add(
+                                    new CachableRenderStatement.AddVertexWithUV(
+                                            corner.x,
+                                            corner.y,
+                                            corner.z,
+                                            uv.x,
+                                            uv.y));
                         }
                     }
                 }
@@ -196,9 +204,11 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     }
 
     private interface CachableRenderStatement {
+
         void execute();
 
         static class SetNormal implements CachableRenderStatement {
+
             private final float x, y, z;
 
             private SetNormal(float x, float y, float z) {
@@ -214,6 +224,7 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
         }
 
         static class AddVertexWithUV implements CachableRenderStatement {
+
             private final double x, y, z, u, v;
 
             private AddVertexWithUV(double x, double y, double z, double u, double v) {
@@ -242,15 +253,8 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
     }
 
     @Override
-    public void renderDynamicEntity(
-            ConduitBundleRenderer conduitBundleRenderer,
-            IConduitBundle te,
-            IConduit conduit,
-            double x,
-            double y,
-            double z,
-            float partialTick,
-            float worldLight) {
+    public void renderDynamicEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit,
+            double x, double y, double z, float partialTick, float worldLight) {
 
         if (((LiquidConduit) conduit).getTank().getFilledRatio() <= 0) {
             return;
@@ -273,7 +277,13 @@ public class LiquidConduitRenderer extends DefaultConduitRenderer implements IRe
                     BoundingBox[] cubes = toCubes(component.bound);
                     for (BoundingBox cube : cubes) {
                         drawSection(
-                                cube, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
+                                cube,
+                                tex.getMinU(),
+                                tex.getMaxU(),
+                                tex.getMinV(),
+                                tex.getMaxV(),
+                                component.dir,
+                                true);
                     }
                 }
             }

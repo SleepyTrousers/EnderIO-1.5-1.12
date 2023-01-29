@@ -1,17 +1,11 @@
 package crazypants.enderio.machine.farm;
 
-import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
-import com.enderio.core.client.gui.widget.GhostSlot;
-import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
-import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
-import crazypants.enderio.machine.gui.AbstractMachineContainer;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -19,14 +13,22 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import com.enderio.core.client.gui.widget.GhostBackgroundItemSlot;
+import com.enderio.core.client.gui.widget.GhostSlot;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
+import crazypants.enderio.machine.farm.farmers.RubberTreeFarmerIC2;
+import crazypants.enderio.machine.gui.AbstractMachineContainer;
+
 public class FarmStationContainer extends AbstractMachineContainer<TileFarmStation> {
 
     // TODO: This is a mess. Someone should make some nice, hand-selected lists of
     // what to put in here.
 
-    private static final Item[] slotItems1 = {
-        Items.wooden_hoe, Items.stone_hoe, Items.iron_hoe, Items.golden_hoe, Items.diamond_hoe
-    };
+    private static final Item[] slotItems1 = { Items.wooden_hoe, Items.stone_hoe, Items.iron_hoe, Items.golden_hoe,
+            Items.diamond_hoe };
     private static final List<ItemStack> slotItemsStacks1 = new ArrayList<ItemStack>();
 
     static {
@@ -36,17 +38,12 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
         slotItemsStacks1.addAll(Config.farmHoes);
     }
 
-    private static final Item[] slotItems2 = {
-        Items.wooden_axe,
-        Items.stone_axe,
-        Items.iron_axe,
-        Items.golden_axe,
-        Items.diamond_axe,
-        DarkSteelItems.itemDarkSteelAxe
-    };
+    private static final Item[] slotItems2 = { Items.wooden_axe, Items.stone_axe, Items.iron_axe, Items.golden_axe,
+            Items.diamond_axe, DarkSteelItems.itemDarkSteelAxe };
     private static final Item[] slotItems3 = RubberTreeFarmerIC2.treeTap != null
-            ? new Item[] {Items.shears, DarkSteelItems.itemDarkSteelShears, GameRegistry.findItem("IC2", "itemTreetap")}
-            : new Item[] {Items.shears, DarkSteelItems.itemDarkSteelShears};
+            ? new Item[] { Items.shears, DarkSteelItems.itemDarkSteelShears,
+                    GameRegistry.findItem("IC2", "itemTreetap") }
+            : new Item[] { Items.shears, DarkSteelItems.itemDarkSteelShears };
     public static final List<ItemStack> slotItemsSeeds = new ArrayList<ItemStack>();
 
     static {
@@ -90,23 +87,14 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
     private static final int TWO = 1 * SLOT_SIZE;
     private static final int THREE = 2 * SLOT_SIZE;
 
-    private static final Point[] points = new Point[] {
-        new Point(COL_TOOLS + ONE, ROW_TOOLS),
-        new Point(COL_TOOLS + TWO, ROW_TOOLS),
-        new Point(COL_TOOLS + THREE, ROW_TOOLS),
-        new Point(COL_FERTILIZER + ONE, ROW_TOOLS),
-        new Point(COL_FERTILIZER + TWO, ROW_TOOLS),
-        new Point(COL_INPUT + ONE, ROW_IO + ONE),
-        new Point(COL_INPUT + TWO, ROW_IO + ONE),
-        new Point(COL_INPUT + ONE, ROW_IO + TWO),
-        new Point(COL_INPUT + TWO, ROW_IO + TWO),
-        new Point(COL_OUTPUT + ONE, ROW_IO + ONE),
-        new Point(COL_OUTPUT + TWO, ROW_IO + ONE),
-        new Point(COL_OUTPUT + THREE, ROW_IO + ONE),
-        new Point(COL_OUTPUT + ONE, ROW_IO + TWO),
-        new Point(COL_OUTPUT + TWO, ROW_IO + TWO),
-        new Point(COL_OUTPUT + THREE, ROW_IO + TWO),
-    };
+    private static final Point[] points = new Point[] { new Point(COL_TOOLS + ONE, ROW_TOOLS),
+            new Point(COL_TOOLS + TWO, ROW_TOOLS), new Point(COL_TOOLS + THREE, ROW_TOOLS),
+            new Point(COL_FERTILIZER + ONE, ROW_TOOLS), new Point(COL_FERTILIZER + TWO, ROW_TOOLS),
+            new Point(COL_INPUT + ONE, ROW_IO + ONE), new Point(COL_INPUT + TWO, ROW_IO + ONE),
+            new Point(COL_INPUT + ONE, ROW_IO + TWO), new Point(COL_INPUT + TWO, ROW_IO + TWO),
+            new Point(COL_OUTPUT + ONE, ROW_IO + ONE), new Point(COL_OUTPUT + TWO, ROW_IO + ONE),
+            new Point(COL_OUTPUT + THREE, ROW_IO + ONE), new Point(COL_OUTPUT + ONE, ROW_IO + TWO),
+            new Point(COL_OUTPUT + TWO, ROW_IO + TWO), new Point(COL_OUTPUT + THREE, ROW_IO + TWO), };
 
     public FarmStationContainer(InventoryPlayer inventory, TileFarmStation te) {
         super(inventory, te);
@@ -119,6 +107,7 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
             final int slot = i;
             i++;
             addSlotToContainer(new Slot(getInv(), slot, p.x, p.y) {
+
                 @Override
                 public boolean isItemValid(ItemStack itemStack) {
                     return getInv().isItemValidForSlot(slot, itemStack);
@@ -148,24 +137,39 @@ public class FarmStationContainer extends AbstractMachineContainer<TileFarmStati
         clean(slotItemsSeeds);
         clean(slotItemsProduce);
 
-        slots.add(new GhostBackgroundItemSlot(
-                slotItemsStacks1.get(rand.nextInt(slotItemsStacks1.size())), points[0].x, points[0].y));
+        slots.add(
+                new GhostBackgroundItemSlot(
+                        slotItemsStacks1.get(rand.nextInt(slotItemsStacks1.size())),
+                        points[0].x,
+                        points[0].y));
         slots.add(new GhostBackgroundItemSlot(slotItems2[rand.nextInt(slotItems2.length)], points[1].x, points[1].y));
         slots.add(new GhostBackgroundItemSlot(slotItems3[rand.nextInt(slotItems3.length)], points[2].x, points[2].y));
 
-        slots.add(new GhostBackgroundItemSlot(
-                slotItemsFertilizer.get(rand.nextInt(slotItemsFertilizer.size())), points[3].x, points[3].y));
-        slots.add(new GhostBackgroundItemSlot(
-                slotItemsFertilizer.get(rand.nextInt(slotItemsFertilizer.size())), points[4].x, points[4].y));
+        slots.add(
+                new GhostBackgroundItemSlot(
+                        slotItemsFertilizer.get(rand.nextInt(slotItemsFertilizer.size())),
+                        points[3].x,
+                        points[3].y));
+        slots.add(
+                new GhostBackgroundItemSlot(
+                        slotItemsFertilizer.get(rand.nextInt(slotItemsFertilizer.size())),
+                        points[4].x,
+                        points[4].y));
 
         for (int i = 0; i < 4; i++) {
-            slots.add(new GhostBackgroundItemSlot(
-                    slotItemsSeeds.get(rand.nextInt(slotItemsSeeds.size())), points[5 + i].x, points[5 + i].y));
+            slots.add(
+                    new GhostBackgroundItemSlot(
+                            slotItemsSeeds.get(rand.nextInt(slotItemsSeeds.size())),
+                            points[5 + i].x,
+                            points[5 + i].y));
         }
 
         for (int i = 0; i < 6; i++) {
-            slots.add(new GhostBackgroundItemSlot(
-                    slotItemsProduce.get(rand.nextInt(slotItemsProduce.size())), points[9 + i].x, points[9 + i].y));
+            slots.add(
+                    new GhostBackgroundItemSlot(
+                            slotItemsProduce.get(rand.nextInt(slotItemsProduce.size())),
+                            points[9 + i].x,
+                            points[9 + i].y));
         }
     }
 

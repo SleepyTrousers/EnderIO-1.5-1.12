@@ -1,12 +1,13 @@
 package crazypants.enderio.item.darksteel;
 
+import net.minecraft.entity.player.EntityPlayer;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.network.PacketHandler;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
 
 public class PacketUpgradeState implements IMessage, IMessageHandler<PacketUpgradeState, IMessage> {
 
@@ -49,10 +50,9 @@ public class PacketUpgradeState implements IMessage, IMessageHandler<PacketUpgra
 
     @Override
     public IMessage onMessage(PacketUpgradeState message, MessageContext ctx) {
-        EntityPlayer player = (EntityPlayer)
-                (ctx.side.isClient()
-                        ? EnderIO.proxy.getClientWorld().getEntityByID(message.entityID)
-                        : ctx.getServerHandler().playerEntity);
+        EntityPlayer player = (EntityPlayer) (ctx.side.isClient()
+                ? EnderIO.proxy.getClientWorld().getEntityByID(message.entityID)
+                : ctx.getServerHandler().playerEntity);
         if (player != null) {
             DarkSteelController.instance.setActive(player, message.type, message.isActive);
             if (ctx.side.isServer()) {

@@ -1,13 +1,7 @@
 package crazypants.enderio.machine.farm;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.GuiHandler;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.machine.AbstractMachineBlock;
-import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.network.PacketHandler;
 import java.util.Random;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -17,15 +11,29 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.GuiHandler;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.machine.AbstractMachineBlock;
+import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.network.PacketHandler;
+
 public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
 
     public static BlockFarmStation create() {
+        PacketHandler.INSTANCE
+                .registerMessage(PacketFarmAction.class, PacketFarmAction.class, PacketHandler.nextID(), Side.CLIENT);
         PacketHandler.INSTANCE.registerMessage(
-                PacketFarmAction.class, PacketFarmAction.class, PacketHandler.nextID(), Side.CLIENT);
+                PacketUpdateNotification.class,
+                PacketUpdateNotification.class,
+                PacketHandler.nextID(),
+                Side.CLIENT);
         PacketHandler.INSTANCE.registerMessage(
-                PacketUpdateNotification.class, PacketUpdateNotification.class, PacketHandler.nextID(), Side.CLIENT);
-        PacketHandler.INSTANCE.registerMessage(
-                PacketFarmLockedSlot.class, PacketFarmLockedSlot.class, PacketHandler.nextID(), Side.SERVER);
+                PacketFarmLockedSlot.class,
+                PacketFarmLockedSlot.class,
+                PacketHandler.nextID(),
+                Side.SERVER);
         BlockFarmStation result = new BlockFarmStation();
         result.init();
         return result;
@@ -102,8 +110,8 @@ public class BlockFarmStation extends AbstractMachineBlock<TileFarmStation> {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(
-            IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {
+    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_,
+            int p_149646_5_) {
         return true;
     }
 

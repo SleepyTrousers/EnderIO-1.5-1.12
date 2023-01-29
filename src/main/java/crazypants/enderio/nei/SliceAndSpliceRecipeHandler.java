@@ -1,9 +1,23 @@
 package crazypants.enderio.nei;
 
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+
+import org.lwjgl.opengl.GL11;
+
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+
 import com.enderio.core.client.render.EnderWidget;
+
 import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -12,15 +26,6 @@ import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.slicensplice.ContainerSliceAndSplice;
 import crazypants.enderio.machine.slicensplice.GuiSliceAndSplice;
 import crazypants.enderio.machine.slicensplice.SliceAndSpliceRecipeManager;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
-import org.lwjgl.opengl.GL11;
 
 public class SliceAndSpliceRecipeHandler extends TemplateRecipeHandler {
 
@@ -46,8 +51,11 @@ public class SliceAndSpliceRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadTransferRects() {
-        transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(
-                new Rectangle(149, 32, 16, 16), "EnderIOSliceAndSplice", new Object[0]));
+        transferRects.add(
+                new TemplateRecipeHandler.RecipeTransferRect(
+                        new Rectangle(149, 32, 16, 16),
+                        "EnderIOSliceAndSplice",
+                        new Object[0]));
     }
 
     @Override
@@ -57,8 +65,7 @@ public class SliceAndSpliceRecipeHandler extends TemplateRecipeHandler {
             return;
         }
 
-        List<IRecipe> recipes =
-                new ArrayList<IRecipe>(SliceAndSpliceRecipeManager.getInstance().getRecipes());
+        List<IRecipe> recipes = new ArrayList<IRecipe>(SliceAndSpliceRecipeManager.getInstance().getRecipes());
         for (IRecipe recipe : recipes) {
             ItemStack output = recipe.getOutputs()[0].getOutput();
             if (result.getItem() == output.getItem() && result.getItemDamage() == output.getItemDamage()) {
@@ -71,8 +78,7 @@ public class SliceAndSpliceRecipeHandler extends TemplateRecipeHandler {
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals("EnderIOSliceAndSplice") && getClass() == SliceAndSpliceRecipeHandler.class) {
-            List<IRecipe> recipes = new ArrayList<IRecipe>(
-                    SliceAndSpliceRecipeManager.getInstance().getRecipes());
+            List<IRecipe> recipes = new ArrayList<IRecipe>(SliceAndSpliceRecipeManager.getInstance().getRecipes());
             for (IRecipe recipe : recipes) {
                 SliceAndSpliceRecipe res = new SliceAndSpliceRecipe(recipe);
                 arecipes.add(res);
@@ -84,8 +90,7 @@ public class SliceAndSpliceRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadUsageRecipes(ItemStack ingredient) {
-        List<IRecipe> recipes =
-                new ArrayList<IRecipe>(SliceAndSpliceRecipeManager.getInstance().getRecipes());
+        List<IRecipe> recipes = new ArrayList<IRecipe>(SliceAndSpliceRecipeManager.getInstance().getRecipes());
         for (IRecipe recipe : recipes) {
             if (recipe.isValidInput(0, ingredient)) {
                 SliceAndSpliceRecipe res = new SliceAndSpliceRecipe(recipe);

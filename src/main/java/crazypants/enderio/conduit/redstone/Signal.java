@@ -1,7 +1,8 @@
 package crazypants.enderio.conduit.redstone;
 
-import com.enderio.core.common.util.DyeColor;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.DyeColor;
 
 public class Signal {
 
@@ -69,7 +70,17 @@ public class Signal {
 
     @Override
     public String toString() {
-        return "Signal [x=" + x + " y=" + y + " z=" + z + " side= " + dir + " strength=" + strength + " color=" + color
+        return "Signal [x=" + x
+                + " y="
+                + y
+                + " z="
+                + z
+                + " side= "
+                + dir
+                + " strength="
+                + strength
+                + " color="
+                + color
                 + "]";
     }
 }

@@ -1,6 +1,9 @@
 package crazypants.enderio.conduit.item.filter;
 
+import java.util.List;
+
 import com.enderio.core.client.gui.widget.GhostSlot;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.conduit.gui.GuiExternalConnection;
@@ -8,7 +11,6 @@ import crazypants.enderio.conduit.gui.item.BigItemFilterGui;
 import crazypants.enderio.conduit.gui.item.IItemFilterGui;
 import crazypants.enderio.conduit.gui.item.ItemConduitFilterContainer;
 import crazypants.enderio.conduit.item.IItemConduit;
-import java.util.List;
 
 public class ItemFilterBig extends ItemFilter {
 
@@ -57,9 +59,9 @@ public class ItemFilterBig extends ItemFilter {
 
     @Override
     public String toString() {
-        //    return "ItemFilter [isBlacklist=" + isBlacklist + ", matchMeta=" + matchMeta + ", matchNBT=" + matchNBT +
+        // return "ItemFilter [isBlacklist=" + isBlacklist + ", matchMeta=" + matchMeta + ", matchNBT=" + matchNBT +
         // ", useOreDict=" + useOreDict + ", sticky="
-        //        + sticky + ", items=" + Arrays.toString(items) + ", oreIds=" + Arrays.toString(oreIds) + ",
+        // + sticky + ", items=" + Arrays.toString(items) + ", oreIds=" + Arrays.toString(oreIds) + ",
         // isAdvanced=" + isAdvanced + "]";
         return "Big" + super.toString();
     }

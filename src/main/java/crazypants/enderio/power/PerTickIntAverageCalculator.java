@@ -22,7 +22,7 @@ public class PerTickIntAverageCalculator {
             return 0;
         }
         float totalPower = lastSecondTotal;
-        for (int idx = writeIndex, cnt = writeSize; cnt-- > 0; ) {
+        for (int idx = writeIndex, cnt = writeSize; cnt-- > 0;) {
             totalPower += secondsCache[idx];
             if (++idx == secondsCache.length) {
                 idx = 0;

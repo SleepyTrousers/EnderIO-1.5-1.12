@@ -1,18 +1,21 @@
 package crazypants.enderio.machine.gui;
 
-import com.enderio.core.api.common.util.IProgressTile;
-import com.enderio.core.common.ContainerEnder;
-import com.enderio.core.common.util.Util;
-import crazypants.enderio.machine.AbstractMachineEntity;
-import crazypants.enderio.machine.SlotDefinition;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import com.enderio.core.api.common.util.IProgressTile;
+import com.enderio.core.common.ContainerEnder;
+import com.enderio.core.common.util.Util;
+
+import crazypants.enderio.machine.AbstractMachineEntity;
+import crazypants.enderio.machine.SlotDefinition;
 
 public abstract class AbstractMachineContainer<T extends AbstractMachineEntity> extends ContainerEnder<T> {
 
@@ -28,23 +31,22 @@ public abstract class AbstractMachineContainer<T extends AbstractMachineEntity> 
 
         final T te = getInv();
         if (te.getSlotDefinition().getNumUpgradeSlots() == 1) {
-            upgradeSlot =
-                    new Slot(
-                            te,
-                            te.getSlotDefinition().getMinUpgradeSlot(),
-                            getUpgradeOffset().x,
-                            getUpgradeOffset().y) {
+            upgradeSlot = new Slot(
+                    te,
+                    te.getSlotDefinition().getMinUpgradeSlot(),
+                    getUpgradeOffset().x,
+                    getUpgradeOffset().y) {
 
-                        @Override
-                        public int getSlotStackLimit() {
-                            return 1;
-                        }
+                @Override
+                public int getSlotStackLimit() {
+                    return 1;
+                }
 
-                        @Override
-                        public boolean isItemValid(ItemStack itemStack) {
-                            return te.isItemValidForSlot(te.getSlotDefinition().getMinUpgradeSlot(), itemStack);
-                        }
-                    };
+                @Override
+                public boolean isItemValid(ItemStack itemStack) {
+                    return te.isItemValidForSlot(te.getSlotDefinition().getMinUpgradeSlot(), itemStack);
+                }
+            };
             addSlotToContainer(upgradeSlot);
         }
     }
@@ -64,8 +66,8 @@ public abstract class AbstractMachineContainer<T extends AbstractMachineEntity> 
     }
 
     /**
-     * ATTN: Do not access any non-static field from this method. Your object has
-     * not yet been constructed when it is called!
+     * ATTN: Do not access any non-static field from this method. Your object has not yet been constructed when it is
+     * called!
      */
     protected abstract void addMachineSlots(InventoryPlayer playerInv);
 
@@ -184,6 +186,7 @@ public abstract class AbstractMachineContainer<T extends AbstractMachineEntity> 
     }
 
     public static class SlotRange {
+
         final int start;
         final int end;
         final boolean reverse;

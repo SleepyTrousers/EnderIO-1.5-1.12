@@ -1,7 +1,5 @@
 package crazypants.enderio.machine.power;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -10,6 +8,9 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ContainerCapacitorBank extends Container {
 
@@ -20,6 +21,7 @@ public class ContainerCapacitorBank extends Container {
         tileEntity = te;
         int armorOffset = 21;
         addSlotToContainer(new Slot(tileEntity, 0, 59 + armorOffset, 59) {
+
             @Override
             public boolean isItemValid(ItemStack itemStack) {
                 return tileEntity.isItemValidForSlot(0, itemStack);
@@ -27,6 +29,7 @@ public class ContainerCapacitorBank extends Container {
         });
 
         addSlotToContainer(new Slot(tileEntity, 1, 79 + armorOffset, 59) {
+
             @Override
             public boolean isItemValid(ItemStack itemStack) {
                 return tileEntity.isItemValidForSlot(1, itemStack);
@@ -34,6 +37,7 @@ public class ContainerCapacitorBank extends Container {
         });
 
         addSlotToContainer(new Slot(tileEntity, 2, 99 + armorOffset, 59) {
+
             @Override
             public boolean isItemValid(ItemStack itemStack) {
                 return tileEntity.isItemValidForSlot(2, itemStack);
@@ -41,6 +45,7 @@ public class ContainerCapacitorBank extends Container {
         });
 
         addSlotToContainer(new Slot(tileEntity, 3, 119 + armorOffset, 59) {
+
             @Override
             public boolean isItemValid(ItemStack itemStack) {
                 return tileEntity.isItemValidForSlot(3, itemStack);

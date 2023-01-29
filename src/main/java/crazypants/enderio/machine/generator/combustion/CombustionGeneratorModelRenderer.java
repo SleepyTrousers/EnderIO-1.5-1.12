@@ -1,8 +1,5 @@
 package crazypants.enderio.machine.generator.combustion;
 
-import com.enderio.core.client.render.RenderUtil;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -12,7 +9,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.RenderUtil;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 @Deprecated
@@ -27,9 +30,9 @@ public class CombustionGeneratorModelRenderer extends TileEntitySpecialRenderer 
 
         World world = te.getWorldObj();
         TileCombustionGenerator gen = (TileCombustionGenerator) te;
-        //    GL11.glEnable(GL11.GL_LIGHTING);
-        //    GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        //    GL11.glDisable(GL11.GL_CULL_FACE);
+        // GL11.glEnable(GL11.GL_LIGHTING);
+        // GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        // GL11.glDisable(GL11.GL_CULL_FACE);
 
         float f = world.getBlockLightValue(te.xCoord, te.yCoord, te.zCoord);
         int l = world.getLightBrightnessForSkyBlocks(te.xCoord, te.yCoord, te.zCoord, 0);
@@ -80,25 +83,25 @@ public class CombustionGeneratorModelRenderer extends TileEntitySpecialRenderer 
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        //    if(true) {
-        //      switch (type) {
-        //      case ENTITY:
-        //        renderItem(0f, 0f, 0f);
-        //        return;
-        //      case EQUIPPED:
-        //      case EQUIPPED_FIRST_PERSON:
-        //        renderItem(0f, 1f, 1f);
-        //        return;
-        //      case INVENTORY:
-        //        renderItem(0f, 0f, 0f);
-        //        return;
-        //      default:
-        //        renderItem(0f, 0f, 0f);
-        //        return;
-        //      }
-        //    } else {
+        // if(true) {
+        // switch (type) {
+        // case ENTITY:
+        // renderItem(0f, 0f, 0f);
+        // return;
+        // case EQUIPPED:
+        // case EQUIPPED_FIRST_PERSON:
+        // renderItem(0f, 1f, 1f);
+        // return;
+        // case INVENTORY:
+        // renderItem(0f, 0f, 0f);
+        // return;
+        // default:
+        // renderItem(0f, 0f, 0f);
+        // return;
+        // }
+        // } else {
         renderItem(0, 0, 0);
-        //    }
+        // }
     }
 
     private void renderItem(float x, float y, float z) {

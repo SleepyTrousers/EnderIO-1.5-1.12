@@ -1,11 +1,12 @@
 package crazypants.enderio.material;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
 import net.minecraft.block.BlockPane;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.oredict.OreDictionary;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
 
 public class BlockDarkSteelBars extends BlockPane {
 

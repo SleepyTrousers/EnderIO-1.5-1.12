@@ -1,14 +1,16 @@
 package crazypants.enderio.xp;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+
 import com.enderio.core.common.network.MessageTileEntity;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.network.PacketHandler;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 
 public class PacketDrainPlayerXP extends MessageTileEntity<TileEntity>
         implements IMessageHandler<PacketDrainPlayerXP, IMessage> {
@@ -18,7 +20,10 @@ public class PacketDrainPlayerXP extends MessageTileEntity<TileEntity>
     public static void register() {
         if (!isRegistered) {
             PacketHandler.INSTANCE.registerMessage(
-                    PacketDrainPlayerXP.class, PacketDrainPlayerXP.class, PacketHandler.nextID(), Side.SERVER);
+                    PacketDrainPlayerXP.class,
+                    PacketDrainPlayerXP.class,
+                    PacketHandler.nextID(),
+                    Side.SERVER);
             isRegistered = true;
         }
     }

@@ -1,14 +1,16 @@
 package crazypants.enderio.machine.farm;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import com.enderio.core.common.util.BlockCoord;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import crazypants.util.ClientUtil;
 import io.netty.buffer.ByteBuf;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class PacketFarmAction implements IMessage, IMessageHandler<PacketFarmAction, IMessage> {
 

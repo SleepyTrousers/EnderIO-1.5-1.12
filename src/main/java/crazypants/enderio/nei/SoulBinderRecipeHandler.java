@@ -1,9 +1,24 @@
 package crazypants.enderio.nei;
 
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
+
+import org.lwjgl.opengl.GL11;
+
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+
 import com.enderio.core.client.render.EnderWidget;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.gui.GuiContainerBaseEIO;
@@ -13,16 +28,6 @@ import crazypants.enderio.machine.MachineRecipeRegistry;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.machine.soul.GuiSoulBinder;
 import crazypants.enderio.machine.soul.ISoulBinderRecipe;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
-import org.lwjgl.opengl.GL11;
 
 public class SoulBinderRecipeHandler extends TemplateRecipeHandler {
 
@@ -48,8 +53,11 @@ public class SoulBinderRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadTransferRects() {
-        transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(
-                new Rectangle(149, 32, 16, 16), "EnderIOSoulBinder", new Object[0]));
+        transferRects.add(
+                new TemplateRecipeHandler.RecipeTransferRect(
+                        new Rectangle(149, 32, 16, 16),
+                        "EnderIOSoulBinder",
+                        new Object[0]));
     }
 
     @Override
@@ -58,8 +66,8 @@ public class SoulBinderRecipeHandler extends TemplateRecipeHandler {
             return;
         }
 
-        Map<String, IMachineRecipe> recipes =
-                MachineRecipeRegistry.instance.getRecipesForMachine(ModObject.blockSoulBinder.unlocalisedName);
+        Map<String, IMachineRecipe> recipes = MachineRecipeRegistry.instance
+                .getRecipesForMachine(ModObject.blockSoulBinder.unlocalisedName);
         if (recipes.isEmpty()) {
             return;
         }
@@ -77,8 +85,8 @@ public class SoulBinderRecipeHandler extends TemplateRecipeHandler {
     public void loadCraftingRecipes(String outputId, Object... results) {
 
         if (outputId.equals("EnderIOSoulBinder") && getClass() == SoulBinderRecipeHandler.class) {
-            Map<String, IMachineRecipe> recipes =
-                    MachineRecipeRegistry.instance.getRecipesForMachine(ModObject.blockSoulBinder.unlocalisedName);
+            Map<String, IMachineRecipe> recipes = MachineRecipeRegistry.instance
+                    .getRecipesForMachine(ModObject.blockSoulBinder.unlocalisedName);
             if (recipes.isEmpty()) {
                 return;
             }
@@ -99,8 +107,8 @@ public class SoulBinderRecipeHandler extends TemplateRecipeHandler {
             return;
         }
 
-        Map<String, IMachineRecipe> recipes =
-                MachineRecipeRegistry.instance.getRecipesForMachine(ModObject.blockSoulBinder.unlocalisedName);
+        Map<String, IMachineRecipe> recipes = MachineRecipeRegistry.instance
+                .getRecipesForMachine(ModObject.blockSoulBinder.unlocalisedName);
         if (recipes.isEmpty()) {
             return;
         }
@@ -132,7 +140,7 @@ public class SoulBinderRecipeHandler extends TemplateRecipeHandler {
 
         int cost = recipe.getExperience();
         if (cost > 0) {
-            String s = I18n.format("container.repair.cost", new Object[] {Integer.valueOf(cost)});
+            String s = I18n.format("container.repair.cost", new Object[] { Integer.valueOf(cost) });
             GuiDraw.drawStringC(s, 83, 55, 0x80FF20);
         }
 
@@ -186,8 +194,8 @@ public class SoulBinderRecipeHandler extends TemplateRecipeHandler {
                     recipe.getSupportedSouls());
         }
 
-        public SoulBinderRecipeNEI(
-                ItemStack inputStack, ItemStack result, int energy, int experience, List<String> list) {
+        public SoulBinderRecipeNEI(ItemStack inputStack, ItemStack result, int energy, int experience,
+                List<String> list) {
 
             int yOff = 11;
             int xOff = 11;

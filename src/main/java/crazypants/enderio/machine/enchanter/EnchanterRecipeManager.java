@@ -1,9 +1,11 @@
 package crazypants.enderio.machine.enchanter;
 
-import crazypants.enderio.Log;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.item.ItemStack;
+
+import crazypants.enderio.Log;
 
 public class EnchanterRecipeManager {
 

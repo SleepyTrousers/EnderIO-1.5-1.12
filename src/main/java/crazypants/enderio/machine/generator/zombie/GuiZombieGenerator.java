@@ -1,19 +1,23 @@
 package crazypants.enderio.machine.generator.zombie;
 
+import java.awt.Color;
+import java.awt.Rectangle;
+
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.entity.player.InventoryPlayer;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.widget.GuiToolTip;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.client.render.RenderUtil;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.fluid.Fluids;
 import crazypants.enderio.machine.IoMode;
 import crazypants.enderio.machine.generator.zombie.TileZombieGenerator.TileEnderGenerator;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
-import java.awt.Color;
-import java.awt.Rectangle;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.opengl.GL11;
 
 public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerator> {
 
@@ -69,11 +73,17 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
         if (gen.isActive()) {
             output = gen.getOutputPerTick();
         }
-        String txt = EnderIO.lang.localize("combustionGenerator.output") + " " + PowerDisplayUtil.formatPower(output)
-                + " " + PowerDisplayUtil.abrevation() + PowerDisplayUtil.perTickStr();
+        String txt = EnderIO.lang.localize("combustionGenerator.output") + " "
+                + PowerDisplayUtil.formatPower(output)
+                + " "
+                + PowerDisplayUtil.abrevation()
+                + PowerDisplayUtil.perTickStr();
         int sw = fr.getStringWidth(txt);
         fr.drawStringWithShadow(
-                txt, guiLeft + xSize / 2 - sw / 2, guiTop + fr.FONT_HEIGHT / 2 + 3, ColorUtil.getRGB(Color.WHITE));
+                txt,
+                guiLeft + xSize / 2 - sw / 2,
+                guiTop + fr.FONT_HEIGHT / 2 + 3,
+                ColorUtil.getRGB(Color.WHITE));
 
         int x = guiLeft + 80;
         int y = guiTop + 21;
@@ -93,7 +103,10 @@ public class GuiZombieGenerator extends GuiPoweredMachineBase<TileZombieGenerato
                 txt = gen.tickPerBucketOfFuel / 1000 + " " + EnderIO.lang.localize("power.tmb");
                 sw = fr.getStringWidth(txt);
                 fr.drawStringWithShadow(
-                        txt, x - sw / 2 + 7, y + fr.FONT_HEIGHT / 2 + 46, ColorUtil.getRGB(Color.WHITE));
+                        txt,
+                        x - sw / 2 + 7,
+                        y + fr.FONT_HEIGHT / 2 + 46,
+                        ColorUtil.getRGB(Color.WHITE));
             }
         }
 

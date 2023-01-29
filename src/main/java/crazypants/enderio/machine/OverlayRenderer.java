@@ -1,5 +1,13 @@
 package crazypants.enderio.machine;
 
+import java.util.List;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.api.client.render.IRenderFace;
 import com.enderio.core.client.render.CustomCubeRenderer;
 import com.enderio.core.client.render.CustomRenderBlocks;
@@ -8,12 +16,6 @@ import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.ForgeDirectionOffsets;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vertex;
-import java.util.List;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class OverlayRenderer implements IRenderFace {
 
@@ -26,16 +28,8 @@ public class OverlayRenderer implements IRenderFace {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void renderFace(
-            CustomRenderBlocks rb,
-            ForgeDirection face,
-            Block par1Block,
-            double x,
-            double y,
-            double z,
-            IIcon texture,
-            List<Vertex> refVertices,
-            boolean translateToXyz) {
+    public void renderFace(CustomRenderBlocks rb, ForgeDirection face, Block par1Block, double x, double y, double z,
+            IIcon texture, List<Vertex> refVertices, boolean translateToXyz) {
 
         if (te != null && par1Block instanceof AbstractMachineBlock) {
             BlockCoord bc = new BlockCoord(x, y, z);

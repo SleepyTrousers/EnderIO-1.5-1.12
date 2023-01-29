@@ -1,15 +1,18 @@
 package crazypants.enderio.machine;
 
-import com.enderio.core.api.common.util.IProgressTile;
-import crazypants.enderio.machine.IMachineRecipe.ResultStack;
-import crazypants.enderio.power.IInternalPowerReceiver;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.api.common.util.IProgressTile;
+
+import crazypants.enderio.machine.IMachineRecipe.ResultStack;
+import crazypants.enderio.power.IInternalPowerReceiver;
 
 public abstract class AbstractPoweredTaskEntity extends AbstractPowerConsumerEntity
         implements IInternalPowerReceiver, IProgressTile {

@@ -1,16 +1,19 @@
 package crazypants.enderio.conduit.gui;
 
+import java.awt.Color;
+
+import net.minecraft.client.gui.GuiButton;
+
 import com.enderio.core.client.gui.button.ColorButton;
 import com.enderio.core.client.render.ColorUtil;
 import com.enderio.core.common.util.DyeColor;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.oc.IOCConduit;
 import crazypants.enderio.conduit.packet.PacketOCConduitSignalColor;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.network.PacketHandler;
-import java.awt.Color;
-import net.minecraft.client.gui.GuiButton;
 
 public class OCSettings extends BaseSettingsPanel {
 

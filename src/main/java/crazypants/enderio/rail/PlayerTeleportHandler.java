@@ -1,17 +1,20 @@
 package crazypants.enderio.rail;
 
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.EntityUtil;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.machine.transceiver.TileTransceiver;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.EntityUtil;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.machine.transceiver.TileTransceiver;
 
 public class PlayerTeleportHandler {
 
@@ -65,7 +68,9 @@ public class PlayerTeleportHandler {
                 foundSpot = collides == null || collides.isEmpty();
                 if (!foundSpot) {
                     playerToTP.setPosition(
-                            startPos.x + 0.5 + (xOffset * i), startPos.y, startPos.z + 0.5 + (zOffset * i));
+                            startPos.x + 0.5 + (xOffset * i),
+                            startPos.y,
+                            startPos.z + 0.5 + (zOffset * i));
                     collides = EntityUtil.getCollidingBlockGeometry(reciever.getWorldObj(), playerToTP);
                     foundSpot = collides == null || collides.isEmpty();
                 }
@@ -74,16 +79,15 @@ public class PlayerTeleportHandler {
                 // If not space each side will have to spawn on the track
                 playerToTP.setPosition(startPos.x + 0.5, startPos.y, startPos.z + 0.5);
             }
-            //      ChunkCoordinates spawn = new ChunkCoordinates((int) playerToTP.posX, (int) playerToTP.posY, (int)
+            // ChunkCoordinates spawn = new ChunkCoordinates((int) playerToTP.posX, (int) playerToTP.posY, (int)
             // playerToTP.posZ);
-            //      TeleportUtil.teleportPlayer((WorldServer) reciever.getWorldObj(), playerToTP, toDim, spawn);
+            // TeleportUtil.teleportPlayer((WorldServer) reciever.getWorldObj(), playerToTP, toDim, spawn);
 
             reciever.getRailController().onPlayerTeleported(playerToTP, playerToMount);
-            playerToTP
-                    .mcServer
-                    .getConfigurationManager()
-                    .transferPlayerToDimension(
-                            playerToTP, toDim, new TeleporterEIO(playerToTP.mcServer.worldServerForDimension(toDim)));
+            playerToTP.mcServer.getConfigurationManager().transferPlayerToDimension(
+                    playerToTP,
+                    toDim,
+                    new TeleporterEIO(playerToTP.mcServer.worldServerForDimension(toDim)));
         }
     }
 }

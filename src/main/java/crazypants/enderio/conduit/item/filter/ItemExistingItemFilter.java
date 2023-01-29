@@ -1,17 +1,7 @@
 package crazypants.enderio.conduit.item.filter;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.client.handlers.SpecialTooltipHandler;
-import com.enderio.core.common.util.ChatUtil;
-import com.enderio.core.common.util.ItemUtil;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.conduit.item.FilterRegister;
 import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -20,6 +10,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.client.handlers.SpecialTooltipHandler;
+import com.enderio.core.common.util.ChatUtil;
+import com.enderio.core.common.util.ItemUtil;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.conduit.item.FilterRegister;
 
 public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, IResourceTooltipProvider {
 
@@ -51,17 +54,8 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
     }
 
     @Override
-    public boolean onItemUse(
-            ItemStack item,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float par8,
-            float par9,
-            float par10) {
+    public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side,
+            float par8, float par9, float par10) {
         if (world.isRemote) {
             return true;
         }
@@ -99,8 +93,9 @@ public class ItemExistingItemFilter extends Item implements IItemFilterUpgrade, 
         if (FilterRegister.isFilterSet(par1ItemStack)) {
             if (SpecialTooltipHandler.showAdvancedTooltips()) {
                 par3List.add(EnumChatFormatting.ITALIC + EnderIO.lang.localize("itemConduitFilterUpgrade.configured"));
-                par3List.add(EnumChatFormatting.ITALIC
-                        + EnderIO.lang.localize("itemConduitFilterUpgrade.clearConfigMethod"));
+                par3List.add(
+                        EnumChatFormatting.ITALIC
+                                + EnderIO.lang.localize("itemConduitFilterUpgrade.clearConfigMethod"));
             }
         }
     }

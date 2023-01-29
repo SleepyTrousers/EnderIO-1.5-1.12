@@ -2,6 +2,7 @@ package crazypants.enderio.conduit.redstone;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class SignalSource {
@@ -78,9 +79,9 @@ public class SignalSource {
     public static Set<SignalSource> fromIntArray(int[] enc) {
         Set<SignalSource> result = new HashSet<SignalSource>();
         for (int i = 0; i < enc.length; i += 5) {
-            //      Signal sig = new Signal(enc[i], enc[i + 1], enc[i + 2], enc[i + 3], ForgeDirection.UNKNOWN,14,
+            // Signal sig = new Signal(enc[i], enc[i + 1], enc[i + 2], enc[i + 3], ForgeDirection.UNKNOWN,14,
             // SignalColor.values()[enc[i + 4]]);
-            //      result.add(new SignalSource(sig, ForgeDirection.values()[enc[i + 4]]));
+            // result.add(new SignalSource(sig, ForgeDirection.values()[enc[i + 4]]));
         }
         return result;
     }

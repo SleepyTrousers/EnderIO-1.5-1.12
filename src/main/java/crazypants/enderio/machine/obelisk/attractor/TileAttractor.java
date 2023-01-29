@@ -1,25 +1,11 @@
 package crazypants.enderio.machine.obelisk.attractor;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.vecmath.Vector3d;
-import com.mojang.authlib.GameProfile;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.machine.AbstractPowerConsumerEntity;
-import crazypants.enderio.machine.FakePlayerEIO;
-import crazypants.enderio.machine.SlotDefinition;
-import crazypants.enderio.machine.ranged.IRanged;
-import crazypants.enderio.machine.ranged.RangeEntity;
-import crazypants.enderio.power.BasicCapacitor;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -39,6 +25,23 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
+
+import com.enderio.core.client.render.BoundingBox;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.vecmath.Vector3d;
+import com.mojang.authlib.GameProfile;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.machine.AbstractPowerConsumerEntity;
+import crazypants.enderio.machine.FakePlayerEIO;
+import crazypants.enderio.machine.SlotDefinition;
+import crazypants.enderio.machine.ranged.IRanged;
+import crazypants.enderio.machine.ranged.RangeEntity;
+import crazypants.enderio.power.BasicCapacitor;
 
 public class TileAttractor extends AbstractPowerConsumerEntity implements IRanged {
 
@@ -314,8 +317,8 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
             ent.faceEntity(getTarget(), 10.0F, 20.0F);
             return true;
         } else if (ent instanceof EntitySilverfish) {
-            PathEntity pathentity =
-                    worldObj.getPathEntityToEntity(ent, getTarget(), getRange(), true, false, false, true);
+            PathEntity pathentity = worldObj
+                    .getPathEntityToEntity(ent, getTarget(), getRange(), true, false, false, true);
             ((EntityCreature) ent).setPathToEntity(pathentity);
             return true;
         } else if (ent instanceof EntityBlaze) {
@@ -336,8 +339,8 @@ public class TileAttractor extends AbstractPowerConsumerEntity implements IRange
                 return;
             }
             EntitySilverfish sf = (EntitySilverfish) ent;
-            PathEntity pathentity =
-                    worldObj.getPathEntityToEntity(ent, getTarget(), getRange(), true, false, false, true);
+            PathEntity pathentity = worldObj
+                    .getPathEntityToEntity(ent, getTarget(), getRange(), true, false, false, true);
             sf.setPathToEntity(pathentity);
         } else if (ent instanceof EntityBlaze) {
             EntityBlaze mob = (EntityBlaze) ent;

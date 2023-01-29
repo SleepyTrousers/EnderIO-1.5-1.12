@@ -2,20 +2,24 @@ package crazypants.enderio.machine.vat;
 
 import static crazypants.util.EE3Util.registerRecipe;
 
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.apache.commons.lang3.NotImplementedException;
+
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+
 import crazypants.enderio.Log;
 import crazypants.enderio.machine.MachineRecipeInput;
 import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.RecipeBonusType;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.recipe.RecipeOutput;
-import java.util.List;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.NotImplementedException;
 
 public class VatRecipe implements IRecipe {
 
@@ -64,8 +68,8 @@ public class VatRecipe implements IRecipe {
                                         float im = r0.getMulitplier() * r1.getMulitplier();
                                         inputFluidStack = r2.getFluidInput().copy();
                                         inputFluidStack.amount = Math.round(FluidContainerRegistry.BUCKET_VOLUME * im);
-                                        outputFluidStack.amount = Math.round(
-                                                im * r2.getMulitplier() * FluidContainerRegistry.BUCKET_VOLUME);
+                                        outputFluidStack.amount = Math
+                                                .round(im * r2.getMulitplier() * FluidContainerRegistry.BUCKET_VOLUME);
                                         inputFluidStacks.put(r0, r1, inputFluidStack.copy());
                                         outputFluidStacks.put(r0, r1, outputFluidStack.copy());
                                         registerRecipe(
@@ -87,12 +91,11 @@ public class VatRecipe implements IRecipe {
                                 float im = r0.getMulitplier();
                                 inputFluidStack = r2.getFluidInput().copy();
                                 inputFluidStack.amount = Math.round(FluidContainerRegistry.BUCKET_VOLUME * im);
-                                outputFluidStack.amount =
-                                        Math.round(im * r2.getMulitplier() * FluidContainerRegistry.BUCKET_VOLUME);
+                                outputFluidStack.amount = Math
+                                        .round(im * r2.getMulitplier() * FluidContainerRegistry.BUCKET_VOLUME);
                                 inputFluidStacks.put(r0, r0, inputFluidStack.copy());
                                 outputFluidStacks.put(r0, r0, outputFluidStack.copy());
-                                registerRecipe(
-                                        outputFluidStack.copy(), r0.getInput().copy(), inputFluidStack.copy());
+                                registerRecipe(outputFluidStack.copy(), r0.getInput().copy(), inputFluidStack.copy());
                             }
                         }
                     }
@@ -104,12 +107,11 @@ public class VatRecipe implements IRecipe {
             }
         }
 
-        output = new RecipeOutput[] {new RecipeOutput(outputFluidStack)};
+        output = new RecipeOutput[] { new RecipeOutput(outputFluidStack) };
         energyRequired = recipe.getEnergyRequired();
 
         this.inputStacks = recipe.getInputStacks();
-        valid = inputFluidStack != null
-                && inputStacks != null
+        valid = inputFluidStack != null && inputStacks != null
                 && !inputStacks.isEmpty()
                 && inputStacks.size() > 0
                 && outputFluidStack != null;
@@ -176,6 +178,7 @@ public class VatRecipe implements IRecipe {
     }
 
     private static class RecipeMatch {
+
         RecipeInput r0, r1;
         FluidStack in, out;
 

@@ -1,14 +1,15 @@
 package crazypants.enderio.machine.wireless;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import cofh.api.energy.IEnergyContainerItem;
 import crazypants.enderio.TileEntityEio;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.enderio.power.IInternalPowerReceiver;
 import crazypants.enderio.power.PowerHandlerUtil;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileWirelessCharger extends TileEntityEio implements IInternalPowerReceiver, IWirelessCharger {
 
@@ -43,8 +44,7 @@ public class TileWirelessCharger extends TileEntityEio implements IInternalPower
             registered = true;
         }
 
-        if ((lastPowerUpdate == -1)
-                || (lastPowerUpdate == 0 && storedEnergyRF > 0)
+        if ((lastPowerUpdate == -1) || (lastPowerUpdate == 0 && storedEnergyRF > 0)
                 || (lastPowerUpdate > 0 && storedEnergyRF == 0)
                 || (lastPowerUpdate != storedEnergyRF && shouldDoWorkThisTick(20))) {
             lastPowerUpdate = storedEnergyRF;

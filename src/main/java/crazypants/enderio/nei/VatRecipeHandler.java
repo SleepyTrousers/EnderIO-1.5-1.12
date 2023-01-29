@@ -1,14 +1,29 @@
 package crazypants.enderio.nei;
 
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.lwjgl.opengl.GL11;
+
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+
 import com.enderio.core.client.render.EnderWidget;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.util.FluidUtil;
+
 import crazypants.enderio.gui.GuiContainerBaseEIO;
 import crazypants.enderio.gui.IconEIO;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
@@ -16,16 +31,6 @@ import crazypants.enderio.machine.recipe.IRecipe;
 import crazypants.enderio.machine.recipe.RecipeInput;
 import crazypants.enderio.machine.vat.GuiVat;
 import crazypants.enderio.machine.vat.VatRecipeManager;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import org.lwjgl.opengl.GL11;
 
 public class VatRecipeHandler extends TemplateRecipeHandler {
 
@@ -60,8 +65,11 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadTransferRects() {
-        transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(
-                new Rectangle(149, 32, 16, 16), "EnderIOVat", new Object[0]));
+        transferRects.add(
+                new TemplateRecipeHandler.RecipeTransferRect(
+                        new Rectangle(149, 32, 16, 16),
+                        "EnderIOVat",
+                        new Object[0]));
     }
 
     @Override
@@ -177,8 +185,8 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
         Fluid outputFluid = rec.result.getFluid();
         List<PositionedStack> stacks = rec.getIngredients();
         for (PositionedStack ps : stacks) {
-            float mult =
-                    VatRecipeManager.getInstance().getMultiplierForInput(rec.inFluid.getFluid(), ps.item, outputFluid);
+            float mult = VatRecipeManager.getInstance()
+                    .getMultiplierForInput(rec.inFluid.getFluid(), ps.item, outputFluid);
             String str = "x" + mult;
             GuiDraw.drawStringC(str, ps.relx + 8, ps.rely + 19, 0x808080, false);
         }
@@ -198,8 +206,9 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
         InnerVatRecipe rec = (InnerVatRecipe) arecipes.get(recipeIndex);
         Point pos = GuiDraw.getMousePosition();
         Point offset = gui.getRecipePosition(recipeIndex);
-        Point relMouse =
-                new Point(pos.x - ((gui.width - 176) / 2) - offset.x, pos.y - ((gui.height - 166) / 2) - offset.y);
+        Point relMouse = new Point(
+                pos.x - ((gui.width - 176) / 2) - offset.x,
+                pos.y - ((gui.height - 166) / 2) - offset.y);
 
         if (inTankBounds.contains(relMouse) || outTankBounds.contains(relMouse)) {
             if (inTankBounds.contains(relMouse)) {
@@ -233,8 +242,9 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
         InnerVatRecipe rec = (InnerVatRecipe) arecipes.get(recipeIndex);
         Point pos = GuiDraw.getMousePosition();
         Point offset = gui.getRecipePosition(recipeIndex);
-        Point relMouse =
-                new Point(pos.x - ((gui.width - 176) / 2) - offset.x, pos.y - ((gui.height - 166) / 2) - offset.y);
+        Point relMouse = new Point(
+                pos.x - ((gui.width - 176) / 2) - offset.x,
+                pos.y - ((gui.height - 166) / 2) - offset.y);
 
         if (inTankBounds.contains(relMouse)) {
             transferFluidTank(rec.inFluid, usage);
@@ -247,11 +257,11 @@ public class VatRecipeHandler extends TemplateRecipeHandler {
     private boolean transferFluidTank(FluidStack tank, boolean usage) {
         if (tank != null && tank.amount > 0) {
             if (usage) {
-                if (!GuiUsageRecipe.openRecipeGui("liquid", new Object[] {tank.copy()})) {
+                if (!GuiUsageRecipe.openRecipeGui("liquid", new Object[] { tank.copy() })) {
                     return false;
                 }
             } else {
-                if (!GuiCraftingRecipe.openRecipeGui("liquid", new Object[] {tank.copy()})) {
+                if (!GuiCraftingRecipe.openRecipeGui("liquid", new Object[] { tank.copy() })) {
                     return false;
                 }
             }

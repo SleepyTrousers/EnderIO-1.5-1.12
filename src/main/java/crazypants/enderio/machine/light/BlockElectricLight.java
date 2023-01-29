@@ -1,13 +1,5 @@
 package crazypants.enderio.machine.light;
 
-import com.enderio.core.common.TileEntityEnder;
-import com.enderio.core.common.vecmath.Vector3f;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.BlockEio;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.api.redstone.IRedstoneConnectable;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
@@ -17,6 +9,16 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.TileEntityEnder;
+import com.enderio.core.common.vecmath.Vector3f;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.BlockEio;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.api.redstone.IRedstoneConnectable;
 
 public class BlockElectricLight extends BlockEio implements IRedstoneConnectable {
 
@@ -47,7 +49,8 @@ public class BlockElectricLight extends BlockEio implements IRedstoneConnectable
     protected void init() {
         GameRegistry.registerBlock(this, BlockItemElectricLight.class, ModObject.blockElectricLight.unlocalisedName);
         GameRegistry.registerTileEntity(
-                TileElectricLight.class, ModObject.blockElectricLight.unlocalisedName + "TileEntity");
+                TileElectricLight.class,
+                ModObject.blockElectricLight.unlocalisedName + "TileEntity");
     }
 
     @Override

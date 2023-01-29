@@ -3,18 +3,21 @@ package crazypants.enderio.conduit.render;
 import static com.enderio.core.common.util.ForgeDirectionOffsets.offsetScaled;
 import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
 
+import java.util.List;
+
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.common.vecmath.Matrix4d;
 import com.enderio.core.common.vecmath.Vector2f;
 import com.enderio.core.common.vecmath.Vector3d;
 import com.enderio.core.common.vecmath.Vector3f;
 import com.enderio.core.common.vecmath.Vertex;
+
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.conduit.geom.Offsets;
 import crazypants.enderio.conduit.geom.Offsets.Axis;
-import java.util.List;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class RoundedSegmentRenderer {
 
@@ -66,8 +69,8 @@ public class RoundedSegmentRenderer {
         createSegmentsForDirections(segments, circ, halfLength, refCoords);
     }
 
-    private static void createSegmentsForDirections(
-            Vertex[][] segments, double circ, double halfLength, Vertex[] refCoords) {
+    private static void createSegmentsForDirections(Vertex[][] segments, double circ, double halfLength,
+            Vertex[] refCoords) {
         for (Vertex coord : refCoords) {
             coord.xyz.x = coord.xyz.x * circ;
             coord.xyz.y = coord.xyz.y * circ;
@@ -80,28 +83,28 @@ public class RoundedSegmentRenderer {
 
         rotMat.makeRotationY(Math.PI);
         rotMat.setTranslation(REF_TRANS);
-        segments[ForgeDirection.NORTH.ordinal()] =
-                xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.NORTH, halfLength));
+        segments[ForgeDirection.NORTH
+                .ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.NORTH, halfLength));
 
         rotMat.makeRotationY(Math.PI / 2);
         rotMat.setTranslation(REF_TRANS);
-        segments[ForgeDirection.EAST.ordinal()] =
-                xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.EAST, halfLength));
+        segments[ForgeDirection.EAST
+                .ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.EAST, halfLength));
 
         rotMat.makeRotationY(-Math.PI / 2);
         rotMat.setTranslation(REF_TRANS);
-        segments[ForgeDirection.WEST.ordinal()] =
-                xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.WEST, halfLength));
+        segments[ForgeDirection.WEST
+                .ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.WEST, halfLength));
 
         rotMat.makeRotationX(-Math.PI / 2);
         rotMat.setTranslation(REF_TRANS);
-        segments[ForgeDirection.UP.ordinal()] =
-                xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.UP, halfLength));
+        segments[ForgeDirection.UP
+                .ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.UP, halfLength));
 
         rotMat.makeRotationX(Math.PI / 2);
         rotMat.setTranslation(REF_TRANS);
-        segments[ForgeDirection.DOWN.ordinal()] =
-                xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.DOWN, halfLength));
+        segments[ForgeDirection.DOWN
+                .ordinal()] = xformCoords(refCoords, rotMat, offsetScaled(ForgeDirection.DOWN, halfLength));
     }
 
     private static Vertex[] xformCoords(Vertex[] refCoords, Matrix4d rotMat, Vector3d trans) {
@@ -124,8 +127,8 @@ public class RoundedSegmentRenderer {
         return res;
     }
 
-    public static Vertex[] createUnitCrossSection(
-            double xOffset, double yOffset, double zOffset, int numCoords, int u) {
+    public static Vertex[] createUnitCrossSection(double xOffset, double yOffset, double zOffset, int numCoords,
+            int u) {
 
         Vertex[] crossSection = new Vertex[numCoords];
 
@@ -143,8 +146,8 @@ public class RoundedSegmentRenderer {
         return crossSection;
     }
 
-    public static void renderSegment(
-            ForgeDirection dir, BoundingBox bounds, float minU, float maxU, float minV, float maxV, boolean isStub) {
+    public static void renderSegment(ForgeDirection dir, BoundingBox bounds, float minU, float maxU, float minV,
+            float maxV, boolean isStub) {
         float uScale = maxU - minU;
         float vScale = maxV - minV;
 

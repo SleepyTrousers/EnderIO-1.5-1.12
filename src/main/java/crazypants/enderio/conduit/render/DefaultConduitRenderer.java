@@ -3,20 +3,23 @@ package crazypants.enderio.conduit.render;
 import static com.enderio.core.client.render.CubeRenderer.*;
 import static net.minecraftforge.common.util.ForgeDirection.*;
 
+import java.util.Collection;
+import java.util.List;
+
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.RenderUtil;
 import com.enderio.core.common.vecmath.Vertex;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
-import java.util.Collection;
-import java.util.List;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class DefaultConduitRenderer implements ConduitRenderer {
 
@@ -28,16 +31,8 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     }
 
     @Override
-    public void renderEntity(
-            ConduitBundleRenderer conduitBundleRenderer,
-            IConduitBundle te,
-            IConduit conduit,
-            double x,
-            double y,
-            double z,
-            float partialTick,
-            float worldLight,
-            RenderBlocks rb) {
+    public void renderEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit conduit, double x,
+            double y, double z, float partialTick, float worldLight, RenderBlocks rb) {
 
         Collection<CollidableComponent> components = conduit.getCollidableComponents();
         Tessellator tessellator = Tessellator.instance;
@@ -67,15 +62,8 @@ public class DefaultConduitRenderer implements ConduitRenderer {
     }
 
     @Override
-    public void renderDynamicEntity(
-            ConduitBundleRenderer conduitBundleRenderer,
-            IConduitBundle te,
-            IConduit con,
-            double x,
-            double y,
-            double z,
-            float partialTick,
-            float worldLight) {}
+    public void renderDynamicEntity(ConduitBundleRenderer conduitBundleRenderer, IConduitBundle te, IConduit con,
+            double x, double y, double z, float partialTick, float worldLight) {}
 
     protected void renderConduit(IIcon tex, IConduit conduit, CollidableComponent component, float brightness) {
 
@@ -101,7 +89,11 @@ public class DefaultConduitRenderer implements ConduitRenderer {
             if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED) {
                 tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
                 List<Vertex> corners = component.bound.getCornersWithUvForFace(
-                        component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
+                        component.dir,
+                        tex.getMinU(),
+                        tex.getMaxU(),
+                        tex.getMinV(),
+                        tex.getMaxV());
                 Tessellator tessellator = Tessellator.instance;
                 for (Vertex c : corners) {
                     addVecWithUV(c.xyz, c.uv.x, c.uv.y);
@@ -110,14 +102,20 @@ public class DefaultConduitRenderer implements ConduitRenderer {
 
         } else {
             drawSection(
-                    component.bound, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV(), component.dir, true);
+                    component.bound,
+                    tex.getMinU(),
+                    tex.getMaxU(),
+                    tex.getMinV(),
+                    tex.getMaxV(),
+                    component.dir,
+                    true);
         }
     }
 
     protected void renderTransmission(IConduit conduit, IIcon tex, CollidableComponent component, float selfIllum) {
-        //    RoundedSegmentRenderer.renderSegment(component.dir, component.bound, tex.getMinU(), tex.getMaxU(),
+        // RoundedSegmentRenderer.renderSegment(component.dir, component.bound, tex.getMinU(), tex.getMaxU(),
         // tex.getMinV(), tex.getMaxV(),
-        //        conduit.getConectionMode(component.dir) == ConnectionMode.DISABLED);
+        // conduit.getConectionMode(component.dir) == ConnectionMode.DISABLED);
 
         float scaleFactor = 0.6f;
         float xLen = Math.abs(component.dir.offsetX) == 1 ? 1 : scaleFactor;
@@ -137,26 +135,13 @@ public class DefaultConduitRenderer implements ConduitRenderer {
         return dir == NORTH || dir == SOUTH || dir == EAST || dir == WEST || dir == UP || dir == DOWN;
     }
 
-    protected void drawSection(
-            BoundingBox bound,
-            float minU,
-            float maxU,
-            float minV,
-            float maxV,
-            ForgeDirection dir,
+    protected void drawSection(BoundingBox bound, float minU, float maxU, float minV, float maxV, ForgeDirection dir,
             boolean isTransmission) {
         drawSection(bound, minU, maxU, minV, maxV, dir, isTransmission, true);
     }
 
-    protected void drawSection(
-            BoundingBox bound,
-            float minU,
-            float maxU,
-            float minV,
-            float maxV,
-            ForgeDirection dir,
-            boolean isTransmission,
-            boolean mirrorTexture) {
+    protected void drawSection(BoundingBox bound, float minU, float maxU, float minV, float maxV, ForgeDirection dir,
+            boolean isTransmission, boolean mirrorTexture) {
 
         Tessellator tessellator = Tessellator.instance;
 
@@ -357,7 +342,7 @@ public class DefaultConduitRenderer implements ConduitRenderer {
             }
         }
 
-        return new BoundingBox[] {bb};
+        return new BoundingBox[] { bb };
     }
 
     @Override

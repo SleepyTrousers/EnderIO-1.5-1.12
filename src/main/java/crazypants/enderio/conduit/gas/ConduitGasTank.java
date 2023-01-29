@@ -1,9 +1,11 @@
 package crazypants.enderio.conduit.gas;
 
-import cpw.mods.fml.common.Optional.Method;
 import mekanism.api.gas.GasStack;
 import mekanism.api.gas.GasTank;
+
 import net.minecraft.nbt.NBTTagCompound;
+
+import cpw.mods.fml.common.Optional.Method;
 
 public class ConduitGasTank extends GasTank {
 

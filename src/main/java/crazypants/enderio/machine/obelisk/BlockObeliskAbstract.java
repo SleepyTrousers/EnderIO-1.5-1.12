@@ -1,14 +1,16 @@
 package crazypants.enderio.machine.obelisk;
 
+import java.util.Random;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
+import net.minecraft.world.World;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.ModObject;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.AbstractMachineEntity;
-import java.util.Random;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.world.World;
 
 public abstract class BlockObeliskAbstract<T extends AbstractMachineEntity> extends AbstractMachineBlock<T> {
 
@@ -79,10 +81,14 @@ public abstract class BlockObeliskAbstract<T extends AbstractMachineEntity> exte
                 float yOffset = -0.1F + rand.nextFloat() * 0.2F;
                 float zOffset = -0.2F - rand.nextFloat() * 0.6F;
 
-                EntityFX fx = Minecraft.getMinecraft()
-                        .renderGlobal
-                        .doSpawnParticle(
-                                "spell", startX + xOffset, startY + yOffset, startZ + zOffset, 0.0D, 0.0D, 0.0D);
+                EntityFX fx = Minecraft.getMinecraft().renderGlobal.doSpawnParticle(
+                        "spell",
+                        startX + xOffset,
+                        startY + yOffset,
+                        startZ + zOffset,
+                        0.0D,
+                        0.0D,
+                        0.0D);
                 if (fx != null) {
                     fx.setRBGColorF(0.2f, 0.2f, 0.8f);
                     fx.motionY *= 0.5f;

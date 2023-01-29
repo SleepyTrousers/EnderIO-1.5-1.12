@@ -1,17 +1,8 @@
 package crazypants.enderio.item;
 
-import com.enderio.core.api.client.gui.IResourceTooltipProvider;
-import com.enderio.core.common.util.DyeColor;
-import com.enderio.core.common.util.EntityUtil;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
-import crazypants.enderio.config.Config;
 import java.util.ArrayList;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockWall;
@@ -35,6 +26,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+
+import com.enderio.core.api.client.gui.IResourceTooltipProvider;
+import com.enderio.core.common.util.DyeColor;
+import com.enderio.core.common.util.EntityUtil;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
+import crazypants.enderio.config.Config;
 
 public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
 
@@ -97,17 +100,8 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
     }
 
     @Override
-    public boolean onItemUse(
-            ItemStack itemstack,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float xOffset,
-            float yOffset,
-            float zOffset) {
+    public boolean onItemUse(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float xOffset, float yOffset, float zOffset) {
 
         if (world.isRemote) {
             return true;
@@ -397,8 +391,9 @@ public class ItemSoulVessel extends Item implements IResourceTooltipProvider {
             if (fluidName != null) {
                 Fluid fluid = FluidRegistry.getFluid(fluidName);
                 if (fluid != null) {
-                    par3List.add(EnderIO.lang.localize("item.itemSoulVessel.tooltip.fluidname") + " "
-                            + fluid.getLocalizedName());
+                    par3List.add(
+                            EnderIO.lang.localize("item.itemSoulVessel.tooltip.fluidname") + " "
+                                    + fluid.getLocalizedName());
                 }
             }
 

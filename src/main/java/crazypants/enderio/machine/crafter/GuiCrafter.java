@@ -1,7 +1,17 @@
 package crazypants.enderio.machine.crafter;
 
+import java.util.List;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+
+import org.lwjgl.opengl.GL11;
+
 import com.enderio.core.client.gui.button.ToggleButton;
 import com.enderio.core.client.gui.widget.GhostSlot;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.gui.IconEIO;
@@ -9,12 +19,6 @@ import crazypants.enderio.machine.PacketItemBuffer;
 import crazypants.enderio.machine.gui.GuiPoweredMachineBase;
 import crazypants.enderio.machine.power.PowerDisplayUtil;
 import crazypants.enderio.network.PacketHandler;
-import java.util.List;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import org.lwjgl.opengl.GL11;
 
 public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter> {
 
@@ -85,8 +89,11 @@ public class GuiCrafter extends GuiPoweredMachineBase<TileCrafter> {
 
     @Override
     protected void updatePowerBarTooltip(List<String> text) {
-        text.add(PowerDisplayUtil.formatPower(Config.crafterRfPerCraft) + " " + PowerDisplayUtil.abrevation() + " "
-                + EnderIO.lang.localize("gui.machine.percraft"));
+        text.add(
+                PowerDisplayUtil.formatPower(Config.crafterRfPerCraft) + " "
+                        + PowerDisplayUtil.abrevation()
+                        + " "
+                        + EnderIO.lang.localize("gui.machine.percraft"));
         super.updatePowerBarTooltip(text);
     }
 

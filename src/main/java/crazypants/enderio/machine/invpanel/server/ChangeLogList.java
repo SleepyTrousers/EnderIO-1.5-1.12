@@ -3,6 +3,7 @@ package crazypants.enderio.machine.invpanel.server;
 import java.util.ArrayList;
 
 final class ChangeLogList implements ChangeLog {
+
     final ArrayList<ChangeLog> clList;
 
     public ChangeLogList(ChangeLog cl0, ChangeLog cl1) {

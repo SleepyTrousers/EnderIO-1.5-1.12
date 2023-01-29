@@ -1,9 +1,35 @@
 package crazypants.enderio.conduit.oc;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import li.cil.oc.api.network.Environment;
+import li.cil.oc.api.network.Message;
+import li.cil.oc.api.network.Node;
+import li.cil.oc.api.network.SidedEnvironment;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.enderio.core.client.render.BoundingBox;
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
+
 import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,28 +45,6 @@ import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.conduit.geom.ConduitGeometryUtil;
 import crazypants.enderio.config.Config;
 import crazypants.enderio.tool.ToolUtil;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import li.cil.oc.api.network.Environment;
-import li.cil.oc.api.network.Message;
-import li.cil.oc.api.network.Node;
-import li.cil.oc.api.network.SidedEnvironment;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class OCConduit extends AbstractConduit implements IOCConduit {
 
@@ -230,7 +234,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit {
                 return EnumChatFormatting.DARK_RED;
             case CYAN:
                 return EnumChatFormatting.DARK_AQUA;
-                // return EnumChatFormatting.AQUA;
+            // return EnumChatFormatting.AQUA;
             case GRAY:
                 return EnumChatFormatting.DARK_GRAY;
             case GREEN:
@@ -301,8 +305,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit {
                     ForgeDirection faceHit = ForgeDirection.getOrientation(res.movingObjectPosition.sideHit);
                     if (all != null && containsExternalConnection(connDir)) {
                         for (RaytraceResult rtr : all) {
-                            if (rtr != null
-                                    && rtr.component != null
+                            if (rtr != null && rtr.component != null
                                     && COLOR_CONTROLLER_ID.equals(rtr.component.data)) {
                                 setSignalColor(connDir, DyeColor.getNext(getSignalColor(connDir)));
                                 return true;
@@ -391,13 +394,11 @@ public class OCConduit extends AbstractConduit implements IOCConduit {
     }
 
     /**
-     * This will disconnect a node from our network unless it has another
-     * connection to our network. This only works if all the node's blocks are
-     * adjacent to us. Connecting 2 ManagedEnvironments at different locations
-     * won't work well.
+     * This will disconnect a node from our network unless it has another connection to our network. This only works if
+     * all the node's blocks are adjacent to us. Connecting 2 ManagedEnvironments at different locations won't work
+     * well.
      *
-     * @param other
-     *          The node to disconnect from us
+     * @param other The node to disconnect from us
      */
     private void disconnectNode(Node other, DyeColor color) {
 
@@ -452,8 +453,8 @@ public class OCConduit extends AbstractConduit implements IOCConduit {
                         if (!connTo.equals(getLocation())) {
                             TileEntity connToTe = connTo.getTileEntity(world);
                             if (connToTe instanceof SidedEnvironment) {
-                                stayConnected =
-                                        ((SidedEnvironment) connToTe).sidedNode(direction.getOpposite()) == node(color);
+                                stayConnected = ((SidedEnvironment) connToTe).sidedNode(direction.getOpposite())
+                                        == node(color);
                             } else if (connToTe instanceof Environment) {
                                 stayConnected = ((Environment) connToTe).node() == node(color);
                             }
@@ -492,8 +493,7 @@ public class OCConduit extends AbstractConduit implements IOCConduit {
 
     @Override
     public boolean canConnectToExternal(ForgeDirection direction, boolean ignoreConnectionMode) {
-        TileEntity te =
-                getLocation().getLocation(direction).getTileEntity(getBundle().getWorld());
+        TileEntity te = getLocation().getLocation(direction).getTileEntity(getBundle().getWorld());
         if (te instanceof SidedEnvironment) {
             if (getBundle().getWorld().isRemote) {
                 return ((SidedEnvironment) te).canConnect(direction.getOpposite());

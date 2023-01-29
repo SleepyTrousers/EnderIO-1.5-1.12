@@ -1,23 +1,10 @@
 package crazypants.enderio.item.darksteel;
 
-import cofh.api.energy.IEnergyContainerItem;
-import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.ItemUtil;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
-import crazypants.enderio.machine.farm.farmers.HarvestResult;
-import crazypants.enderio.machine.farm.farmers.TreeHarvestUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -36,6 +23,23 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.oredict.OreDictionary;
+
+import cofh.api.energy.IEnergyContainerItem;
+
+import com.enderio.core.api.client.gui.IAdvancedTooltipProvider;
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.ItemUtil;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.upgrade.EnergyUpgrade;
+import crazypants.enderio.machine.farm.farmers.HarvestResult;
+import crazypants.enderio.machine.farm.farmers.TreeHarvestUtil;
 
 public class ItemDarkSteelAxe extends ItemAxe
         implements IEnergyContainerItem, IAdvancedTooltipProvider, IDarkSteelItem {
@@ -167,8 +171,13 @@ public class ItemDarkSteelAxe extends ItemAxe
                             new EntityItem(worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, stack.copy()));
                     if (TreeHarvestUtil.canDropApples(block, meta)) {
                         if (worldObj.rand.nextInt(200) == 0) {
-                            worldObj.spawnEntityInWorld(new EntityItem(
-                                    worldObj, bc.x + 0.5, bc.y + 0.5, bc.z + 0.5, new ItemStack(Items.apple)));
+                            worldObj.spawnEntityInWorld(
+                                    new EntityItem(
+                                            worldObj,
+                                            bc.x + 0.5,
+                                            bc.y + 0.5,
+                                            bc.z + 0.5,
+                                            new ItemStack(Items.apple)));
                         }
                     } else if (block == refBlock) { // other wise leaves
                         extractEnergy(held, Config.darkSteelAxePowerUsePerDamagePointMultiHarvest, false);
@@ -193,17 +202,8 @@ public class ItemDarkSteelAxe extends ItemAxe
     }
 
     @Override
-    public boolean onItemUse(
-            ItemStack item,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float par8,
-            float par9,
-            float par10) {
+    public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side,
+            float par8, float par9, float par10) {
         if (world.isRemote) {
             return ItemDarkSteelPickaxe.doRightClickItemPlace(player, world, x, y, z, side, par8, par9, par10);
         }
@@ -308,8 +308,11 @@ public class ItemDarkSteelAxe extends ItemAxe
         }
         if (EnergyUpgrade.itemHasAnyPowerUpgrade(itemstack)) {
             list.add(EnderIO.lang.localize("item." + name + "_axe.tooltip.multiHarvest"));
-            list.add(EnumChatFormatting.WHITE + "+" + Config.darkSteelAxeEffeciencyBoostWhenPowered + " "
-                    + EnderIO.lang.localize("item." + name + "_pickaxe.tooltip.effPowered"));
+            list.add(
+                    EnumChatFormatting.WHITE + "+"
+                            + Config.darkSteelAxeEffeciencyBoostWhenPowered
+                            + " "
+                            + EnderIO.lang.localize("item." + name + "_pickaxe.tooltip.effPowered"));
         }
         DarkSteelRecipeManager.instance.addAdvancedTooltipEntries(itemstack, entityplayer, list, flag);
     }

@@ -1,20 +1,22 @@
 package crazypants.enderio.machine.capbank.network;
 
-import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.machine.capbank.TileCapBank;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+import crazypants.enderio.machine.capbank.TileCapBank;
 
 public class NetworkUtil {
 
     private static AtomicInteger nextID = new AtomicInteger(0);
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public static void ensureValidNetwork(TileCapBank cap) {
         World world = cap.getWorldObj();
         Collection<TileCapBank> neighbours = getNeigbours(cap);

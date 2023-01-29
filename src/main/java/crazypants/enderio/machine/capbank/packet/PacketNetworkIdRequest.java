@@ -12,8 +12,8 @@ public class PacketNetworkIdRequest extends PacketCapBank<PacketNetworkIdRequest
     }
 
     @Override
-    protected PacketNetworkIdResponse handleMessage(
-            TileCapBank te, PacketNetworkIdRequest message, MessageContext ctx) {
+    protected PacketNetworkIdResponse handleMessage(TileCapBank te, PacketNetworkIdRequest message,
+            MessageContext ctx) {
         if (te.getNetwork() != null) {
             return new PacketNetworkIdResponse(te);
         }

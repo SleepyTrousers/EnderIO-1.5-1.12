@@ -2,14 +2,16 @@ package crazypants.enderio.teleport.telepad;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import com.enderio.core.client.render.RenderUtil;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderLivingEvent;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.RenderUtil;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class TeleportEntityRenderHandler {
 

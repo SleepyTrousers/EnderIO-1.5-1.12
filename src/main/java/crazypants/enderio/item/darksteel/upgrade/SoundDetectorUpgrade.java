@@ -1,10 +1,11 @@
 package crazypants.enderio.item.darksteel.upgrade;
 
-import crazypants.enderio.config.Config;
-import crazypants.enderio.item.darksteel.DarkSteelItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import crazypants.enderio.config.Config;
+import crazypants.enderio.item.darksteel.DarkSteelItems;
 
 public class SoundDetectorUpgrade extends AbstractUpgrade {
 

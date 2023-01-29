@@ -1,13 +1,14 @@
 package crazypants.enderio.machine;
 
-import com.enderio.core.common.util.BlockCoord;
-import com.mojang.authlib.GameProfile;
-import crazypants.enderio.machine.farm.FakeNetHandlerPlayServer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.mojang.authlib.GameProfile;
+import crazypants.enderio.machine.farm.FakeNetHandlerPlayServer;
 
 public class FakePlayerEIO extends FakePlayer {
 

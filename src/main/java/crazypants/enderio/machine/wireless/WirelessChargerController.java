@@ -1,20 +1,23 @@
 package crazypants.enderio.machine.wireless;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+
 import com.enderio.core.common.util.BlockCoord;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import crazypants.enderio.config.Config;
 import crazypants.util.BaublesUtil;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 
 public class WirelessChargerController {
 
@@ -28,8 +31,7 @@ public class WirelessChargerController {
         MinecraftForge.EVENT_BUS.register(WirelessChargerController.instance);
     }
 
-    private final Map<Integer, Map<BlockCoord, IWirelessCharger>> perWorldChargers =
-            new HashMap<Integer, Map<BlockCoord, IWirelessCharger>>();
+    private final Map<Integer, Map<BlockCoord, IWirelessCharger>> perWorldChargers = new HashMap<Integer, Map<BlockCoord, IWirelessCharger>>();
     private int changeCount;
 
     private WirelessChargerController() {}

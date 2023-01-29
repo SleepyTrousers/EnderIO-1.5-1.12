@@ -1,9 +1,29 @@
 package crazypants.enderio.conduit.item;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import cofh.api.inventory.IInventoryConnection;
+
 import com.enderio.core.client.render.IconUtil;
 import com.enderio.core.common.util.BlockCoord;
 import com.enderio.core.common.util.DyeColor;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
@@ -18,22 +38,6 @@ import crazypants.enderio.conduit.item.filter.ItemFilter;
 import crazypants.enderio.item.PacketConduitProbe;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.tool.ToolUtil;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class ItemConduit extends AbstractConduit implements IItemConduit {
 
@@ -84,37 +88,37 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
     ItemConduitNetwork network;
 
-    protected final EnumMap<ForgeDirection, RedstoneControlMode> extractionModes =
-            new EnumMap<ForgeDirection, RedstoneControlMode>(ForgeDirection.class);
-    protected final EnumMap<ForgeDirection, DyeColor> extractionColors =
-            new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, RedstoneControlMode> extractionModes = new EnumMap<ForgeDirection, RedstoneControlMode>(
+            ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, DyeColor> extractionColors = new EnumMap<ForgeDirection, DyeColor>(
+            ForgeDirection.class);
 
-    protected final EnumMap<ForgeDirection, IItemFilter> outputFilters =
-            new EnumMap<ForgeDirection, IItemFilter>(ForgeDirection.class);
-    protected final EnumMap<ForgeDirection, IItemFilter> inputFilters =
-            new EnumMap<ForgeDirection, IItemFilter>(ForgeDirection.class);
-    protected final EnumMap<ForgeDirection, ItemStack> outputFilterUpgrades =
-            new EnumMap<ForgeDirection, ItemStack>(ForgeDirection.class);
-    protected final EnumMap<ForgeDirection, ItemStack> inputFilterUpgrades =
-            new EnumMap<ForgeDirection, ItemStack>(ForgeDirection.class);
-    protected final EnumMap<ForgeDirection, ItemStack> speedUpgrades =
-            new EnumMap<ForgeDirection, ItemStack>(ForgeDirection.class);
-    protected final EnumMap<ForgeDirection, ItemStack> functionUpgrades =
-            new EnumMap<ForgeDirection, ItemStack>(ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, IItemFilter> outputFilters = new EnumMap<ForgeDirection, IItemFilter>(
+            ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, IItemFilter> inputFilters = new EnumMap<ForgeDirection, IItemFilter>(
+            ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, ItemStack> outputFilterUpgrades = new EnumMap<ForgeDirection, ItemStack>(
+            ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, ItemStack> inputFilterUpgrades = new EnumMap<ForgeDirection, ItemStack>(
+            ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, ItemStack> speedUpgrades = new EnumMap<ForgeDirection, ItemStack>(
+            ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, ItemStack> functionUpgrades = new EnumMap<ForgeDirection, ItemStack>(
+            ForgeDirection.class);
 
-    protected final EnumMap<ForgeDirection, Boolean> selfFeed =
-            new EnumMap<ForgeDirection, Boolean>(ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, Boolean> selfFeed = new EnumMap<ForgeDirection, Boolean>(
+            ForgeDirection.class);
 
-    protected final EnumMap<ForgeDirection, Boolean> roundRobin =
-            new EnumMap<ForgeDirection, Boolean>(ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, Boolean> roundRobin = new EnumMap<ForgeDirection, Boolean>(
+            ForgeDirection.class);
 
-    protected final EnumMap<ForgeDirection, Integer> priority =
-            new EnumMap<ForgeDirection, Integer>(ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, Integer> priority = new EnumMap<ForgeDirection, Integer>(
+            ForgeDirection.class);
 
-    protected final EnumMap<ForgeDirection, DyeColor> outputColors =
-            new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
-    protected final EnumMap<ForgeDirection, DyeColor> inputColors =
-            new EnumMap<ForgeDirection, DyeColor>(ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, DyeColor> outputColors = new EnumMap<ForgeDirection, DyeColor>(
+            ForgeDirection.class);
+    protected final EnumMap<ForgeDirection, DyeColor> inputColors = new EnumMap<ForgeDirection, DyeColor>(
+            ForgeDirection.class);
 
     private int metaData;
 
@@ -172,10 +176,8 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
 
     @Override
     protected void writeTypeSettingsToNbt(ForgeDirection dir, NBTTagCompound dataRoot) {
-        dataRoot.setShort(
-                "extractionSignalColor", (short) getExtractionSignalColor(dir).ordinal());
-        dataRoot.setShort(
-                "extractionRedstoneMode", (short) getExtractionRedstoneMode(dir).ordinal());
+        dataRoot.setShort("extractionSignalColor", (short) getExtractionSignalColor(dir).ordinal());
+        dataRoot.setShort("extractionRedstoneMode", (short) getExtractionRedstoneMode(dir).ordinal());
         dataRoot.setShort("inputColor", (short) getInputColor(dir).ordinal());
         dataRoot.setShort("outputColor", (short) getOutputColor(dir).ordinal());
         dataRoot.setBoolean("selfFeed", isSelfFeedEnabled(dir));
@@ -183,9 +185,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         dataRoot.setInteger("outputPriority", getOutputPriority(dir));
     }
 
-    protected void convertToItemUpgrades(
-            int filterMeta,
-            Map<ForgeDirection, ItemStack> converted,
+    protected void convertToItemUpgrades(int filterMeta, Map<ForgeDirection, ItemStack> converted,
             EnumMap<ForgeDirection, IItemFilter> sourceFilters) {
         for (Entry<ForgeDirection, IItemFilter> entry : sourceFilters.entrySet()) {
             if (entry.getValue() != null) {
@@ -505,7 +505,10 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         if (network != null) {
             TileEntity te = bundle.getEntity();
             network.inventoryRemoved(
-                    this, te.xCoord + direction.offsetX, te.yCoord + direction.offsetY, te.zCoord + direction.offsetZ);
+                    this,
+                    te.xCoord + direction.offsetX,
+                    te.yCoord + direction.offsetY,
+                    te.zCoord + direction.offsetZ);
         }
     }
 
@@ -591,8 +594,7 @@ public class ItemConduit extends AbstractConduit implements IItemConduit {
         else if (inv instanceof IInventoryConnection) {
             return ((IInventoryConnection) inv).canConnectInventory(direction.getOpposite()).canConnect;
         } else if (inv instanceof ISidedInventory) {
-            int[] slots = ((ISidedInventory) inv)
-                    .getAccessibleSlotsFromSide(direction.getOpposite().ordinal());
+            int[] slots = ((ISidedInventory) inv).getAccessibleSlotsFromSide(direction.getOpposite().ordinal());
             return slots != null && slots.length > 0;
         } else {
             return true;

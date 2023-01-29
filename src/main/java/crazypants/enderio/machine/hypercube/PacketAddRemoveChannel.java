@@ -1,6 +1,7 @@
 package crazypants.enderio.machine.hypercube;
 
 import com.enderio.core.common.util.PlayerUtil;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;

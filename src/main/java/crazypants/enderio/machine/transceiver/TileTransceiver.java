@@ -1,10 +1,29 @@
 package crazypants.enderio.machine.transceiver;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
+
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.ItemUtil;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.SetMultimap;
+
 import crazypants.enderio.ModObject;
 import crazypants.enderio.conduit.item.FilterRegister;
 import crazypants.enderio.conduit.item.filter.ItemFilter;
@@ -20,22 +39,6 @@ import crazypants.enderio.power.ICapacitor;
 import crazypants.enderio.power.IInternalPowerHandler;
 import crazypants.enderio.power.PowerDistributor;
 import crazypants.enderio.rail.EnderRailController;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileTransceiver extends AbstractPoweredTaskEntity
         implements IFluidHandler, IItemBuffer, IInternalPowerHandler {
@@ -43,13 +46,16 @@ public class TileTransceiver extends AbstractPoweredTaskEntity
     // Power will only be sent to other transceivers is the buffer is higher than this amount
     private static final float MIN_POWER_TO_SEND = 0.5f;
 
-    private final SetMultimap<ChannelType, Channel> sendChannels =
-            MultimapBuilder.enumKeys(ChannelType.class).hashSetValues().build();
-    private final SetMultimap<ChannelType, Channel> recieveChannels =
-            MultimapBuilder.enumKeys(ChannelType.class).hashSetValues().build();
+    private final SetMultimap<ChannelType, Channel> sendChannels = MultimapBuilder.enumKeys(ChannelType.class)
+            .hashSetValues().build();
+    private final SetMultimap<ChannelType, Channel> recieveChannels = MultimapBuilder.enumKeys(ChannelType.class)
+            .hashSetValues().build();
 
-    private final ICapacitor capacitor =
-            new BasicCapacitor(0, Config.transceiverMaxIoRF * 2, 500000, Config.transceiverMaxIoRF);
+    private final ICapacitor capacitor = new BasicCapacitor(
+            0,
+            Config.transceiverMaxIoRF * 2,
+            500000,
+            Config.transceiverMaxIoRF);
     private boolean sendChannelsDirty = false;
     private boolean recieveChannelsDirty = false;
     private boolean registered = false;
@@ -142,9 +148,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity
     private void removeUnregsiteredChannels(SetMultimap<ChannelType, Channel> chans) {
         List<Channel> toRemove = new ArrayList<Channel>();
         for (Channel chan : chans.values()) {
-            if (!ServerChannelRegister.instance
-                    .getChannelsForType(chan.getType())
-                    .contains(chan)) {
+            if (!ServerChannelRegister.instance.getChannelsForType(chan.getType()).contains(chan)) {
                 toRemove.add(chan);
             }
         }
@@ -383,7 +387,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity
         return hasChannel;
     }
 
-    // ----------------  Fluid Handling
+    // ---------------- Fluid Handling
 
     @Override
     public boolean canFill(ForgeDirection from, Fluid fluid) {
@@ -425,8 +429,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity
         }
         try {
             inFluidFill = true;
-            if (getSendChannels(ChannelType.FLUID).isEmpty()
-                    || !redstoneCheckPassed
+            if (getSendChannels(ChannelType.FLUID).isEmpty() || !redstoneCheckPassed
                     || !getIoMode(from).canRecieveInput()) {
                 return 0;
             }
@@ -480,8 +483,7 @@ public class TileTransceiver extends AbstractPoweredTaskEntity
             }
             Map<ForgeDirection, IFluidHandler> fluidHandlers = getNeighbouringFluidHandlers();
             for (Entry<ForgeDirection, IFluidHandler> entry : fluidHandlers.entrySet()) {
-                FluidTankInfo[] tanks =
-                        entry.getValue().getTankInfo(entry.getKey().getOpposite());
+                FluidTankInfo[] tanks = entry.getValue().getTankInfo(entry.getKey().getOpposite());
                 if (tanks != null) {
                     for (FluidTankInfo info : tanks) {
                         infos.add(info);

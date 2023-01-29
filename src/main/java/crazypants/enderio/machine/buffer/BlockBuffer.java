@@ -1,5 +1,16 @@
 package crazypants.enderio.machine.buffer;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,29 +25,19 @@ import crazypants.enderio.machine.painter.IPaintableTileEntity;
 import crazypants.enderio.machine.painter.PainterUtil;
 import crazypants.enderio.network.PacketHandler;
 import crazypants.util.IFacade;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFacade {
 
     public static BlockBuffer create() {
-        PacketHandler.INSTANCE.registerMessage(
-                PacketBufferIO.class, PacketBufferIO.class, PacketHandler.nextID(), Side.SERVER);
+        PacketHandler.INSTANCE
+                .registerMessage(PacketBufferIO.class, PacketBufferIO.class, PacketHandler.nextID(), Side.SERVER);
         BlockBuffer res = new BlockBuffer();
         res.init();
         return res;
     }
 
-    private static final String[] textureNames =
-            new String[] {"blockBufferItem", "blockBufferPower", "blockBufferOmni", "blockBufferCreative"};
+    private static final String[] textureNames = new String[] { "blockBufferItem", "blockBufferPower",
+            "blockBufferOmni", "blockBufferCreative" };
 
     @SideOnly(Side.CLIENT)
     private IIcon[] textures;
@@ -151,10 +152,11 @@ public class BlockBuffer extends AbstractMachineBlock<TileBuffer> implements IFa
             ItemStack target = MachineRecipeInput.getInputForSlot(0, inputs);
             target = target.copy();
             target.stackSize = 1;
-            return new ResultStack[] {
-                new ResultStack(createItemStackForSourceBlock(
-                        target, Block.getBlockFromItem(paintSource.getItem()), paintSource.getItemDamage()))
-            };
+            return new ResultStack[] { new ResultStack(
+                    createItemStackForSourceBlock(
+                            target,
+                            Block.getBlockFromItem(paintSource.getItem()),
+                            paintSource.getItemDamage())) };
         }
     }
 

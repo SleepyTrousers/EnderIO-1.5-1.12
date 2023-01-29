@@ -1,5 +1,17 @@
 package crazypants.enderio.machine.generator.zombie;
 
+import java.util.List;
+import java.util.Random;
+
+import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -9,16 +21,6 @@ import crazypants.enderio.config.Config;
 import crazypants.enderio.machine.AbstractMachineBlock;
 import crazypants.enderio.machine.generator.zombie.TileZombieGenerator.TileEnderGenerator;
 import crazypants.enderio.machine.generator.zombie.TileZombieGenerator.TileFrankenZombieGenerator;
-import java.util.List;
-import java.util.Random;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerator> {
 
@@ -158,8 +160,9 @@ public class BlockZombieGenerator extends AbstractMachineBlock<TileZombieGenerat
     public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity te = world.getTileEntity(x, y, z);
         if (te != null && te instanceof TileZombieGenerator) {
-            tooltip.add(((TileZombieGenerator) te).getFluidStored(ForgeDirection.UNKNOWN) + " "
-                    + EnderIO.lang.localize("fluid.millibucket.abr"));
+            tooltip.add(
+                    ((TileZombieGenerator) te).getFluidStored(ForgeDirection.UNKNOWN) + " "
+                            + EnderIO.lang.localize("fluid.millibucket.abr"));
         }
     }
 

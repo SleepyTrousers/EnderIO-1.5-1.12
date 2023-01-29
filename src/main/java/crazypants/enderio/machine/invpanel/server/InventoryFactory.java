@@ -1,11 +1,15 @@
 package crazypants.enderio.machine.invpanel.server;
 
+import java.util.ArrayList;
+
+import net.minecraft.inventory.ISidedInventory;
+
+import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
+
 import com.jaquadro.minecraft.storagedrawers.api.storage.IDrawerGroup;
+
 import cpw.mods.fml.common.Loader;
 import crazypants.enderio.conduit.item.NetworkedInventory;
-import java.util.ArrayList;
-import net.minecraft.inventory.ISidedInventory;
-import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
 
 public abstract class InventoryFactory {
 
@@ -32,6 +36,7 @@ public abstract class InventoryFactory {
     abstract AbstractInventory create(NetworkedInventory ni);
 
     static class DSUFactory extends InventoryFactory {
+
         @Override
         AbstractInventory create(NetworkedInventory ni) {
             ISidedInventory inv = ni.getInventory();
@@ -43,6 +48,7 @@ public abstract class InventoryFactory {
     }
 
     static class DrawerFactory extends InventoryFactory {
+
         @Override
         AbstractInventory create(NetworkedInventory ni) {
             ISidedInventory inv = ni.getInventory();

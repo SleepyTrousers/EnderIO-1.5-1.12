@@ -1,8 +1,5 @@
 package crazypants.enderio.machine.enchanter;
 
-import com.enderio.core.client.render.RenderUtil;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -12,7 +9,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.opengl.GL11;
+
+import com.enderio.core.client.render.RenderUtil;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class EnchanterModelRenderer extends TileEntitySpecialRenderer implements IItemRenderer {
@@ -46,7 +49,7 @@ public class EnchanterModelRenderer extends TileEntitySpecialRenderer implements
 
         GL11.glTranslatef(0.5F, 1.5f, 0.5F);
         GL11.glRotatef(180F, 1F, 0F, 0F);
-        //    GL11.glScalef(1.2f, 0.9f, 1.2f);
+        // GL11.glScalef(1.2f, 0.9f, 1.2f);
 
         ForgeDirection dir = ForgeDirection.getOrientation(facing);
         if (dir == ForgeDirection.SOUTH) {

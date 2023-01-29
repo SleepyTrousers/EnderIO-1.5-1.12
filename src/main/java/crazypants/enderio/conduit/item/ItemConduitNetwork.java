@@ -1,24 +1,26 @@
 package crazypants.enderio.conduit.item;
 
-import com.enderio.core.common.util.BlockCoord;
-import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.item.NetworkedInventory.Target;
-import crazypants.enderio.conduit.item.filter.IItemFilter;
-import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.enderio.core.common.util.BlockCoord;
+
+import crazypants.enderio.conduit.AbstractConduitNetwork;
+import crazypants.enderio.conduit.item.NetworkedInventory.Target;
+import crazypants.enderio.conduit.item.filter.IItemFilter;
+import crazypants.enderio.machine.invpanel.server.InventoryDatabaseServer;
+
 public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IItemConduit> {
 
     final List<NetworkedInventory> inventories = new ArrayList<NetworkedInventory>();
-    private final Map<BlockCoord, List<NetworkedInventory>> invMap =
-            new HashMap<BlockCoord, List<NetworkedInventory>>();
+    private final Map<BlockCoord, List<NetworkedInventory>> invMap = new HashMap<BlockCoord, List<NetworkedInventory>>();
 
     final Map<BlockCoord, IItemConduit> conMap = new HashMap<BlockCoord, IItemConduit>();
 
@@ -56,8 +58,8 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
         }
     }
 
-    public void inventoryAdded(
-            IItemConduit itemConduit, ForgeDirection direction, int x, int y, int z, IInventory externalInventory) {
+    public void inventoryAdded(IItemConduit itemConduit, ForgeDirection direction, int x, int y, int z,
+            IInventory externalInventory) {
         BlockCoord bc = new BlockCoord(x, y, z);
         NetworkedInventory inv = new NetworkedInventory(this, externalInventory, itemConduit, direction, bc);
         inventories.add(inv);
@@ -123,8 +125,7 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
     }
 
     public InventoryDatabaseServer getDatabase() {
-        check:
-        {
+        check: {
             if (database == null) {
                 database = new InventoryDatabaseServer(this);
             } else if (database.isCurrent()) {
@@ -186,8 +187,11 @@ public class ItemConduitNetwork extends AbstractConduitNetwork<IItemConduit, IIt
                     for (Target t : source.sendPriority) {
                         IItemFilter f = t.inv.con.getOutputFilter(t.inv.conDir);
                         if (input == null || f == null || f.doesItemPassFilter(t.inv, input)) {
-                            String s = t.inv.getLocalizedInventoryName() + " " + t.inv.location.chatString()
-                                    + " Distance [" + t.distance + "] ";
+                            String s = t.inv.getLocalizedInventoryName() + " "
+                                    + t.inv.location.chatString()
+                                    + " Distance ["
+                                    + t.distance
+                                    + "] ";
                             result.add(s);
                         }
                     }

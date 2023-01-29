@@ -1,10 +1,11 @@
 package crazypants.enderio.enderface;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.material.Alloy;
 import crazypants.util.RecipeUtil;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 public class EnderfaceRecipes {
 

@@ -1,14 +1,16 @@
 package crazypants.util;
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.IFluidHandler;
+
 import buildcraft.api.transport.IPipeTile;
 import buildcraft.api.transport.IPipeTile.PipeType;
+
 import com.enderio.core.api.common.util.IFluidReceptor;
 import com.enderio.core.api.common.util.IItemReceptor;
 import com.enderio.core.common.util.FluidUtil;
 import com.enderio.core.common.util.ItemUtil;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public class BuildcraftUtil implements IItemReceptor, IFluidReceptor {
 

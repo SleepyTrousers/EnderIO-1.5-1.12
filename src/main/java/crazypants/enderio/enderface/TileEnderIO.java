@@ -1,10 +1,11 @@
 package crazypants.enderio.enderface;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.teleport.TravelController;
 import crazypants.enderio.teleport.anchor.TileTravelAnchor;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class TileEnderIO extends TileTravelAnchor {
 

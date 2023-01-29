@@ -1,19 +1,12 @@
 package crazypants.enderio.conduit;
 
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.ItemUtil;
-import com.enderio.core.common.util.Util;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.EnderIOTab;
-import crazypants.enderio.ModObject;
 import java.util.List;
+
 import mods.immibis.microblocks.api.IMicroblockCoverSystem;
 import mods.immibis.microblocks.api.IMicroblockSupporterTile;
 import mods.immibis.microblocks.api.MicroblockAPIUtils;
 import mods.immibis.microblocks.api.Part;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -25,6 +18,17 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.enderio.core.common.util.BlockCoord;
+import com.enderio.core.common.util.ItemUtil;
+import com.enderio.core.common.util.Util;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.EnderIOTab;
+import crazypants.enderio.ModObject;
 
 public abstract class AbstractItemConduit extends Item implements IConduitItem {
 
@@ -59,17 +63,8 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
     }
 
     @Override
-    public boolean onItemUse(
-            ItemStack stack,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float hitX,
-            float hitY,
-            float hitZ) {
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float hitX, float hitY, float hitZ) {
         if (MicroblocksUtil.supportMicroblocks() && tryAddToMicroblocks(stack, player, world, x, y, z, side)) {
             return true;
         }
@@ -126,15 +121,15 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
         return false;
     }
 
-    private boolean tryAddToMicroblocks(
-            ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side) {
+    private boolean tryAddToMicroblocks(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
+            int side) {
         TileEntity te = world.getTileEntity(x, y, z);
         if (te != null && te.getClass().getName().equals("mods.immibis.microblocks.TileMicroblockContainer")) {
             IMicroblockCoverSystem covers = ((IMicroblockSupporterTile) te).getCoverSystem();
             world.setBlock(x, y, z, EnderIO.blockConduitBundle);
             EnderIO.blockConduitBundle.onBlockActivated(world, x, y, z, player, side, 0, 0, 0);
-            IMicroblockCoverSystem newCovers = MicroblockAPIUtils.createMicroblockCoverSystem(
-                    (IMicroblockSupporterTile) world.getTileEntity(x, y, z));
+            IMicroblockCoverSystem newCovers = MicroblockAPIUtils
+                    .createMicroblockCoverSystem((IMicroblockSupporterTile) world.getTileEntity(x, y, z));
             for (Part p : covers.getAllParts()) {
                 newCovers.addPart(p);
             }
@@ -145,17 +140,8 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
     }
 
     @Override
-    public boolean onItemUseFirst(
-            ItemStack stack,
-            EntityPlayer player,
-            World world,
-            int x,
-            int y,
-            int z,
-            int side,
-            float hitX,
-            float hitY,
-            float hitZ) {
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float hitX, float hitY, float hitZ) {
         // Conduit replacement
         if (player.isSneaking()) {
             return false;
@@ -210,7 +196,7 @@ public abstract class AbstractItemConduit extends Item implements IConduitItem {
     }
 
     @Override
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
         for (int j = 0; j < subtypes.length; ++j) {
