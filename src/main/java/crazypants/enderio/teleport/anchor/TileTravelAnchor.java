@@ -337,19 +337,19 @@ public class TileTravelAnchor extends TileEntityEio implements ITravelAccessable
     public void validate() {
         super.validate();
         if (isTravelSource()) {
-            TravelController.instance.travelDestinations.add(getLocation());
+            TravelController.instance.travelDestinations.put(worldObj.provider.dimensionId, getLocation());
         }
     }
 
     @Override
     public void invalidate() {
         super.invalidate();
-        TravelController.instance.travelDestinations.remove(getLocation());
+        TravelController.instance.travelDestinations.remove(worldObj.provider.dimensionId, getLocation());
     }
 
     @Override
     public void onChunkUnload() {
         super.onChunkUnload();
-        TravelController.instance.travelDestinations.remove(getLocation());
+        TravelController.instance.travelDestinations.remove(worldObj.provider.dimensionId, getLocation());
     }
 }

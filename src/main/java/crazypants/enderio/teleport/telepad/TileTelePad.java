@@ -253,7 +253,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
         }
         this.master = this;
         this.isMaster = true;
-        TravelController.instance.travelDestinations.add(getLocation());
+        TravelController.instance.travelDestinations.put(worldObj.provider.dimensionId, getLocation());
         return true;
     }
 
@@ -271,7 +271,7 @@ public class TileTelePad extends TileTravelAnchor implements IInternalPowerRecei
                 telepad.updateNeighborTEs();
             }
         }
-        TravelController.instance.travelDestinations.remove(getLocation());
+        TravelController.instance.travelDestinations.remove(worldObj.provider.dimensionId, getLocation());
     }
 
     private List<BlockCoord> getSurroundingCoords() {

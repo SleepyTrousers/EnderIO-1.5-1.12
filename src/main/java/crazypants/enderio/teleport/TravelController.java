@@ -2,12 +2,10 @@ package crazypants.enderio.teleport;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
-import java.util.Set;
 import java.util.TreeMap;
 
 import javax.annotation.Nullable;
@@ -37,6 +35,8 @@ import com.enderio.core.common.vecmath.Matrix4d;
 import com.enderio.core.common.vecmath.VecmathUtil;
 import com.enderio.core.common.vecmath.Vector2d;
 import com.enderio.core.common.vecmath.Vector3d;
+import com.google.common.collect.MultimapBuilder;
+import com.google.common.collect.SetMultimap;
 
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -64,13 +64,13 @@ public class TravelController {
     public static final TravelController instance = new TravelController();
 
     /**
-     * Server-side only list of valid travel destinations (travel anchors and active telepads).
+     * Server-side only set multimap of dimension ID to valid travel destinations (travel anchors and active telepads).
      *
      * <p>
      * This is used by {@code PacketLongDistanceTravelEvent} to try to find travel destinations that are out of client
      * render range.
      */
-    public Set<BlockCoord> travelDestinations = new HashSet<>();
+    public SetMultimap<Integer, BlockCoord> travelDestinations = MultimapBuilder.hashKeys().hashSetValues().build();
 
     private Random rand = new Random();
 
@@ -317,7 +317,7 @@ public class TravelController {
         // Otherwise, you could trigger the message for any travel anchor on the entire server.
         double maxMessageDistance = 1.25 * source.getMaxDistanceTravelled();
         boolean displayOutOfRangeMessage = false;
-        for (BlockCoord p : travelDestinations) {
+        for (BlockCoord p : travelDestinations.get(player.worldObj.provider.dimensionId)) {
             Vector3d block = new Vector3d(p.x + 0.5, p.y + 0.5, p.z + 0.5);
             block.sub(eye);
             double distance = block.length();
