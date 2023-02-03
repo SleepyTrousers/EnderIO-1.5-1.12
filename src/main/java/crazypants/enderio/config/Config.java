@@ -800,6 +800,13 @@ public final class Config {
                         maxPhotovoltaicAdvancedOutputRF,
                         "Maximum output in RF/t of the Advanced Photovoltaic Panels.")
                 .getInt(maxPhotovoltaicAdvancedOutputRF);
+        maxPhotovoltaicVibrantOutputRF = config
+                .get(
+                        sectionPower.name,
+                        "maxPhotovoltaicVibrantOutputRF",
+                        maxPhotovoltaicVibrantOutputRF,
+                        "Maximum output in RF/t of the Vibrant Photovoltaic Panels.")
+                .getInt(maxPhotovoltaicVibrantOutputRF);
 
         useAlternateBinderRecipe = config
                 .get(
