@@ -288,6 +288,10 @@ public final class Config {
     public static int maxPhotovoltaicAdvancedOutputRF = 40;
     public static int maxPhotovoltaicVibrantOutputRF = 160;
 
+    public static int photovoltaicCellCapacityRF = 10000;
+    public static int photovoltaicAdvancedCellCapacityRF = 10000;
+    public static int photovoltaicVibrantCellCapacityRF = 10000;
+
     public static int zombieGeneratorRfPerTick = 80;
     public static int zombieGeneratorTicksPerBucketFuel = 12000;
 
@@ -807,6 +811,26 @@ public final class Config {
                         maxPhotovoltaicVibrantOutputRF,
                         "Maximum output in RF/t of the Vibrant Photovoltaic Panels.")
                 .getInt(maxPhotovoltaicVibrantOutputRF);
+
+        photovoltaicCellCapacityRF = config.get(
+                sectionPower.name,
+                "photovoltaicCellCapacityRF",
+                photovoltaicCellCapacityRF,
+                "Maximum capacity in RF/t of the Photovoltaic Panels.").getInt(photovoltaicCellCapacityRF);
+        photovoltaicAdvancedCellCapacityRF = config
+                .get(
+                        sectionPower.name,
+                        "photovoltaicAdvancedCellCapacityRF",
+                        photovoltaicAdvancedCellCapacityRF,
+                        "Maximum capacity in RF/t of the Advanced Photovoltaic Panels.")
+                .getInt(photovoltaicAdvancedCellCapacityRF);
+        photovoltaicVibrantCellCapacityRF = config
+                .get(
+                        sectionPower.name,
+                        "photovoltaicVibrantCellCapacityRF",
+                        photovoltaicVibrantCellCapacityRF,
+                        "Maximum capacity in RF/t of the Vibrant Photovoltaic Panels.")
+                .getInt(photovoltaicVibrantCellCapacityRF);
 
         useAlternateBinderRecipe = config
                 .get(
