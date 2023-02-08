@@ -554,8 +554,8 @@ public class TravelController {
             return null;
         }
         ItemStack equipped = ep.getCurrentEquippedItem();
-        if (equipped.getItem() instanceof ItemTravelStaff) {
-            if (((ItemTravelStaff) equipped.getItem()).isActive(ep, equipped)) {
+        if (equipped.getItem() instanceof ItemTeleportStaff) {
+            if (((ItemTeleportStaff) equipped.getItem()).isActive(ep, equipped)) {
                 return TravelSource.TELEPORT_STAFF;
             }
         } else if (equipped.getItem() instanceof IItemOfTravel) {
