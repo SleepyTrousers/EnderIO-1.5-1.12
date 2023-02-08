@@ -301,7 +301,7 @@ public class WailaCompat implements IWailaDataProvider {
             return;
         }
 
-        if (itemStack.getItem() == EnderIO.itemPowerConduit) {
+        if (itemStack.getItem() == EnderIO.itemPowerConduit || itemStack.getItem() == EnderIO.itemPowerConduitEndergy) {
             NBTTagCompound nbtRoot = _accessor.getNBTData();
             if (nbtRoot.hasKey("storedEnergyRF")) {
                 int stored = nbtRoot.getInteger("storedEnergyRF");
