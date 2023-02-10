@@ -99,7 +99,7 @@ public class SolarPanelNetwork {
     private static int getCapacity(TileEntitySolarPanel panel, int panelsCount) {
         int capacity = ENERGY_PER;
 
-        if (panel != null) {
+        if (panel != null && panel.hasWorldObj()) {
             int meta = panel.getBlockMetadata();
             switch (meta) {
                 case 0: // Default
