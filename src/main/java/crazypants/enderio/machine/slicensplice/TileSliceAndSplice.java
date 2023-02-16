@@ -54,7 +54,7 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
     private static final BasicCapacitor CAP_FIVE = new BasicCapacitor(
             0,
             POWER_PER_TICK_FIVE * 2,
-            Capacitors.ENDER_CAPACITOR.capacitor.getMaxEnergyStored(),
+            Capacitors.MELODIC_CAPACITOR.capacitor.getMaxEnergyStored(),
             POWER_PER_TICK_FIVE);
 
     public static final int POWER_PER_TICK_SIX = Config.sliceAndSpliceLevelSixPowerPerTickRF;
@@ -135,13 +135,13 @@ public class TileSliceAndSplice extends AbstractPoweredTaskEntity {
                 setCapacitor(CAP_SEVEN);
                 break;
             case SILVER_CAPACITOR:
-                setCapacitor(CAP_ONE);
+                setCapacitor(CAP_EIGHT);
                 break;
             case ENDERGETIC_CAPACITOR:
-                setCapacitor(CAP_TWO);
+                setCapacitor(CAP_NINE);
                 break;
             case ENDERGISED_CAPACITOR:
-                setCapacitor(CAP_THREE);
+                setCapacitor(CAP_TEN);
                 break;
             default:
                 break;
