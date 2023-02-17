@@ -18,6 +18,7 @@ public class SolarPanelNetwork {
     private boolean empty = true;
 
     private EnergyStorage energy;
+    private boolean hasAppliedMaxEnergyConfig = false;
 
     public static final int ENERGY_PER = 10000;
 
@@ -96,7 +97,7 @@ public class SolarPanelNetwork {
         return capacity;
     }
 
-    private static int getCapacity(TileEntitySolarPanel panel, int panelsCount) {
+    private int getCapacity(TileEntitySolarPanel panel, int panelsCount) {
         int capacity = ENERGY_PER;
 
         if (panel != null && panel.hasWorldObj()) {
@@ -112,11 +113,18 @@ public class SolarPanelNetwork {
                     capacity = Config.photovoltaicVibrantCellCapacityRF;
                     break;
             }
+            hasAppliedMaxEnergyConfig = true;
         }
 
         capacity = capacity * panelsCount;
 
         return capacity;
+    }
+
+    private void updateEnergyIfNeeded() {
+        if (!hasAppliedMaxEnergyConfig) {
+            updateEnergy();
+        }
     }
 
     private void updateEnergy() {
@@ -155,6 +163,7 @@ public class SolarPanelNetwork {
     }
 
     public int setEnergyStored(int energy) {
+        updateEnergyIfNeeded();
         if (isValid()) {
             this.energy.setEnergyStored(energy);
         }
