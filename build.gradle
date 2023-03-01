@@ -1,4 +1,4 @@
-//version: 1676031737
+//version: 1677142954
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -20,6 +20,7 @@ import cpw.mods.fml.relauncher.Side
 import org.gradle.api.tasks.options.Option;
 import org.gradle.internal.logging.text.StyledTextOutput.Style
 import org.gradle.internal.logging.text.StyledTextOutputFactory
+import org.gradle.internal.xml.XmlTransformer
 import org.jetbrains.gradle.ext.*
 
 import java.nio.file.Files
@@ -31,7 +32,6 @@ import javax.inject.Inject
 
 buildscript {
     repositories {
-        mavenLocal()
         mavenCentral()
 
         maven {
@@ -52,6 +52,8 @@ buildscript {
             name 'Scala CI dependencies'
             url 'https://repo1.maven.org/maven2/'
         }
+
+        mavenLocal()
     }
 }
 plugins {
@@ -71,7 +73,7 @@ plugins {
     id 'com.diffplug.spotless' version '6.7.2' apply false
     id 'com.modrinth.minotaur' version '2.+' apply false
     id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
-    id 'com.gtnewhorizons.retrofuturagradle' version '1.1.6'
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.2.2'
 }
 boolean settingsupdated = verifySettingsGradle()
 settingsupdated = verifyGitAttributes() || settingsupdated
@@ -126,6 +128,9 @@ propertyDefaultIfUnset("gradleTokenGroupName", "")
 
 propertyDefaultIfUnset("enableModernJavaSyntax", false) // On by default for new projects only
 propertyDefaultIfUnset("enableGenericInjection", false) // On by default for new projects only
+
+// this is meant to be set using the user wide property file. by default we do nothing.
+propertyDefaultIfUnset("ideaOverrideBuildType", "") // Can be nothing, "gradle" or "idea"
 
 project.extensions.add(Blowdryer, "Blowdryer", Blowdryer) // Make blowdryer available in "apply from:" scripts
 if (!disableSpotless) {
@@ -249,12 +254,14 @@ if (apiPackage) {
 }
 
 if (accessTransformersFile) {
-    String targetFile = "src/main/resources/META-INF/" + accessTransformersFile
-    if (!getFile(targetFile).exists()) {
-        throw new GradleException("Could not resolve \"accessTransformersFile\"! Could not find " + targetFile)
+    for (atFile in accessTransformersFile.split(",")) {
+        String targetFile = "src/main/resources/META-INF/" + atFile.trim()
+        if (!getFile(targetFile).exists()) {
+            throw new GradleException("Could not resolve \"accessTransformersFile\"! Could not find " + targetFile)
+        }
+        tasks.deobfuscateMergedJarToSrg.accessTransformerFiles.from(targetFile)
+        tasks.srgifyBinpatchedJar.accessTransformerFiles.from(targetFile)
     }
-    tasks.deobfuscateMergedJarToSrg.accessTransformerFiles.from(targetFile)
-    tasks.srgifyBinpatchedJar.accessTransformerFiles.from(targetFile)
 } else {
     boolean atsFound = false
     for (File at : sourceSets.getByName("main").resources.files) {
@@ -382,6 +389,10 @@ minecraft {
         injectMissingGenerics.set(true)
     }
 
+    username = developmentEnvironmentUserName.toString()
+
+    lwjgl3Version = "3.3.2-SNAPSHOT"
+
     // Enable assertions in the current mod
     extraRunJvmArguments.add("-ea:${modGroup}")
 
@@ -455,8 +466,9 @@ repositories.configureEach { repo ->
 apply from: 'repositories.gradle'
 
 configurations {
+    runtimeClasspath.extendsFrom(runtimeOnlyNonPublishable)
+    testRuntimeClasspath.extendsFrom(runtimeOnlyNonPublishable)
     for (config in [compileClasspath, runtimeClasspath, testCompileClasspath, testRuntimeClasspath]) {
-        config.extendsFrom(runtimeOnlyNonPublishable)
         if (usesShadowedDependencies.toBoolean()) {
             config.extendsFrom(shadowImplementation)
             // TODO: remove Compile after all uses are refactored to Implementation
@@ -509,6 +521,13 @@ repositories {
             }
         }
     }
+    maven {
+        name 'sonatype'
+        url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        content {
+            includeGroup "org.lwjgl"
+        }
+    }
     if (includeWellKnownRepositories.toBoolean()) {
         maven {
             name "CurseMaven"
@@ -545,20 +564,20 @@ dependencies {
         annotationProcessor('org.ow2.asm:asm-debug-all:5.0.3')
         annotationProcessor('com.google.guava:guava:24.1.1-jre')
         annotationProcessor('com.google.code.gson:gson:2.8.6')
-        annotationProcessor('com.gtnewhorizon:gtnhmixins:2.1.12:processor')
+        annotationProcessor('com.gtnewhorizon:gtnhmixins:2.1.13:processor')
         if (usesMixinDebug.toBoolean()) {
             runtimeOnlyNonPublishable('org.jetbrains:intellij-fernflower:1.2.1.16')
         }
     }
     if (usesMixins.toBoolean() || forceEnableMixins.toBoolean()) {
-        implementation('com.gtnewhorizon:gtnhmixins:2.1.12')
+        implementation('com.gtnewhorizon:gtnhmixins:2.1.13')
     }
 }
 
 pluginManager.withPlugin('org.jetbrains.kotlin.kapt') {
     if (usesMixins.toBoolean()) {
         dependencies {
-            kapt('com.gtnewhorizon:gtnhmixins:2.1.12:processor')
+            kapt('com.gtnewhorizon:gtnhmixins:2.1.13:processor')
         }
     }
 }
@@ -667,17 +686,22 @@ ext.java17Toolchain = (JavaToolchainSpec spec) -> {
     spec.vendor.set(JvmVendorSpec.matching("jetbrains"))
 }
 
-ext.java17DependenciesCfg = configurations.create("java17Dependencies")
-ext.java17PatchDependenciesCfg = configurations.create("java17PatchDependencies")
+ext.java17DependenciesCfg = configurations.create("java17Dependencies") {
+    extendsFrom(configurations.getByName("runtimeClasspath")) // Ensure consistent transitive dependency resolution
+    canBeConsumed = false
+}
+ext.java17PatchDependenciesCfg = configurations.create("java17PatchDependencies") {
+    canBeConsumed = false
+}
 
 dependencies {
-    def lwjgl3ifyVersion = '1.1.21'
+    def lwjgl3ifyVersion = '1.1.28'
     def asmVersion = '9.4'
     if (modId != 'lwjgl3ify') {
         java17Dependencies("com.github.GTNewHorizons:lwjgl3ify:${lwjgl3ifyVersion}")
     }
     if (modId != 'hodgepodge') {
-        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.0.31')
+        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.0.35')
     }
 
     java17PatchDependencies('net.minecraft:launchwrapper:1.15') {transitive = false}
@@ -688,7 +712,7 @@ dependencies {
     java17PatchDependencies("org.ow2.asm:asm-util:${asmVersion}")
     java17PatchDependencies('org.ow2.asm:asm-deprecated:7.1')
     java17PatchDependencies("org.apache.commons:commons-lang3:3.12.0")
-    java17PatchDependencies("com.github.GTNewHorizons:lwjgl3ify:${lwjgl3ifyVersion}:forgePatches")
+    java17PatchDependencies("com.github.GTNewHorizons:lwjgl3ify:${lwjgl3ifyVersion}:forgePatches") {transitive = false}
 }
 
 ext.java17JvmArgs = [
@@ -750,8 +774,8 @@ public abstract class RunHotswappableMinecraftTask extends RunMinecraftTask {
     public boolean setEnableHotswap(boolean enable) { enableHotswap = enable }
 
     @Inject
-    public RunHotswappableMinecraftTask(Side side, String superTask) {
-        super(side)
+    public RunHotswappableMinecraftTask(Side side, String superTask, org.gradle.api.invocation.Gradle gradle) {
+        super(side, gradle)
 
         this.lwjglVersion = 3
         this.javaLauncher = project.javaToolchains.launcherFor(project.java17Toolchain)
@@ -782,6 +806,8 @@ runClient17Task.configure {
     description = "Runs the modded client using Java 17, lwjgl3ify and Hodgepodge"
     dependsOn(setupHotswapAgentTask, mcpTasks.launcherSources.classesTaskName, minecraftTasks.taskDownloadVanillaAssets, mcpTasks.taskPackagePatchedMc, 'jar')
     mainClass = "GradleStart"
+    username = minecraft.username
+    userUUID = minecraft.userUUID
 }
 
 def runServer17Task = tasks.register("runServer17", RunHotswappableMinecraftTask, Side.SERVER, "runServer")
@@ -828,7 +854,7 @@ if (usesShadowedDependencies.toBoolean()) {
     tasks.register('relocateShadowJar', ConfigureShadowRelocation) {
         target = tasks.shadowJar
         prefix = modGroup + ".shadow"
-        enabled = minimizeShadowedDependencies.toBoolean()
+        enabled = relocateShadowedDependencies.toBoolean()
     }
     tasks.named("shadowJar", ShadowJar).configure {
         manifest {
@@ -844,7 +870,7 @@ if (usesShadowedDependencies.toBoolean()) {
             project.configurations.shadeCompile
         ]
         archiveClassifier.set('dev')
-        if (minimizeShadowedDependencies.toBoolean()) {
+        if (relocateShadowedDependencies.toBoolean()) {
             dependsOn(relocateShadowJar)
         }
     }
@@ -905,6 +931,19 @@ idea {
     }
     project {
         settings {
+            if (ideaOverrideBuildType != "") {
+                delegateActions {
+                    if ("gradle".equalsIgnoreCase(ideaOverrideBuildType)) {
+                        delegateBuildRunToGradle = true
+                        testRunner = org.jetbrains.gradle.ext.ActionDelegationConfig.TestRunner.GRADLE
+                    } else if ("idea".equalsIgnoreCase(ideaOverrideBuildType)) {
+                        delegateBuildRunToGradle = false
+                        testRunner = org.jetbrains.gradle.ext.ActionDelegationConfig.TestRunner.PLATFORM
+                    } else {
+                        throw GradleScriptException('Accepted value for ideaOverrideBuildType is one of gradle or idea.')
+                    }
+                }
+            }
             runConfigurations {
                 "1. Run Client"(Gradle) {
                     taskNames = ["runClient"]
@@ -943,7 +982,7 @@ idea {
                 }
                 "Run Client (IJ Native)"(Application) {
                     mainClass = "GradleStart"
-                    moduleName = project.name + ".main"
+                    moduleName = project.name + ".ideVirtualMain"
                     afterEvaluate {
                         workingDirectory = tasks.runClient.workingDir.absolutePath
                         programParameters = tasks.runClient.calculateArgs(project).collect { '"' + it + '"' }.join(' ')
@@ -954,7 +993,7 @@ idea {
                 }
                 "Run Server (IJ Native)"(Application) {
                     mainClass = "GradleStartServer"
-                    moduleName = project.name + ".main"
+                    moduleName = project.name + ".ideVirtualMain"
                     afterEvaluate {
                         workingDirectory = tasks.runServer.workingDir.absolutePath
                         programParameters = tasks.runServer.calculateArgs(project).collect { '"' + it + '"' }.join(' ')
@@ -969,6 +1008,51 @@ idea {
                     moduleJavacAdditionalOptions = [
                         (project.name + ".main"): tasks.compileJava.options.compilerArgs.collect { '"' + it + '"' }.join(' ')
                     ]
+                }
+            }
+            withIDEADir { File ideaDir ->
+                if (!ideaDir.path.contains(".idea")) {
+                    // If an .ipr file exists, the project root directory is passed here instead of the .idea subdirectory
+                    ideaDir = new File(ideaDir, ".idea")
+                }
+                if (ideaDir.isDirectory()) {
+                    def miscFile = new File(ideaDir, "misc.xml")
+                    if (miscFile.isFile()) {
+                        boolean dirty = false
+                        def miscTransformer = new XmlTransformer()
+                        miscTransformer.addAction { root ->
+                            Node rootNode = root.asNode()
+                            def rootManager = rootNode
+                                .component.find { it.@name == 'ProjectRootManager' }
+                            if (!rootManager) {
+                                rootManager = rootNode.appendNode('component', ['name': 'ProjectRootManager', 'version': '2'])
+                                dirty = true
+                            }
+                            def output = rootManager.output
+                            if (!output) {
+                                output = rootManager.appendNode('output')
+                                dirty = true
+                            }
+                            if (!output.@url) {
+                                // Only modify the output url if it doesn't yet have one, or if the existing one is blank somehow.
+                                // This is a sensible default for most setups
+                                output.@url = 'file://$PROJECT_DIR$/build/ideaBuild'
+                                dirty = true
+                            }
+                        }
+                        def result = miscTransformer.transform(miscFile.text)
+                        if (dirty) {
+                            miscFile.write(result)
+                        }
+                    } else {
+                        miscFile.text = """<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectRootManager" version="2">
+    <output url="file://\$PROJECT_DIR\$/out" />
+  </component>
+</project>
+"""
+                    }
                 }
             }
         }
@@ -1118,9 +1202,20 @@ def addCurseForgeRelation(String type, String name) {
 }
 
 // Updating
+
+def buildscriptGradleVersion = "8.0.1"
+
+tasks.named('wrapper', Wrapper).configure {
+    gradleVersion = buildscriptGradleVersion
+}
+
 tasks.register('updateBuildScript') {
     group = 'GTNH Buildscript'
     description = 'Updates the build script to the latest version'
+
+    if (gradle.gradleVersion != buildscriptGradleVersion && !Boolean.getBoolean('DISABLE_BUILDSCRIPT_GRADLE_UPDATE')) {
+        dependsOn('wrapper')
+    }
 
     doLast {
         if (performBuildScriptUpdate()) return
@@ -1134,6 +1229,9 @@ if (!project.getGradle().startParameter.isOffline() && !Boolean.getBoolean('DISA
         performBuildScriptUpdate()
     } else {
         out.style(Style.SuccessHeader).println("Build script update available! Run 'gradle updateBuildScript'")
+        if (gradle.gradleVersion != buildscriptGradleVersion) {
+            out.style(Style.SuccessHeader).println("updateBuildScript can update gradle from ${gradle.gradleVersion} to ${buildscriptGradleVersion}\n")
+        }
     }
 }
 
