@@ -18,9 +18,5 @@ end_of_line = crlf
 [*.{dtd,json,info,mcmeta,md,sh,svg,xml,xsd,xsl,yaml,yml}]
 indent_size = 2
 
-[*.java]
-indent_size = 2
-ij_java_space_before_if_parentheses = false
-
 [*.lang]
 trim_trailing_whitespace = false
