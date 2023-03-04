@@ -206,6 +206,8 @@ public class EnderIO {
 
     public static final Lang lang = new Lang("enderio");
 
+    public static final boolean hasLwjgl3 = Loader.isModLoaded("lwjgl3ify");
+
     // Materials
     public static ItemCapacitor itemBasicCapacitor;
     public static ItemAlloy itemAlloy;

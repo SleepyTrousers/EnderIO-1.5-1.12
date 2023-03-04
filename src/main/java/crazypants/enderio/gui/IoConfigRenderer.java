@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -156,7 +157,11 @@ public class IoConfigRenderer {
             }
         }
 
-        distance -= Mouse.getEventDWheel() * 0.01;
+        int wheelD = Mouse.getEventDWheel();
+        if (!EnderIO.hasLwjgl3) {
+            wheelD = MathHelper.clamp_int(wheelD, -1, 1);
+        }
+        distance -= wheelD;
         distance = VecmathUtil.clamp(distance, 0.01, 200);
 
         long elapsed = System.currentTimeMillis() - initTime;

@@ -1,4 +1,4 @@
-//version: 1677142954
+//version: 1677938302
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -695,13 +695,13 @@ ext.java17PatchDependenciesCfg = configurations.create("java17PatchDependencies"
 }
 
 dependencies {
-    def lwjgl3ifyVersion = '1.1.28'
+    def lwjgl3ifyVersion = '1.1.35'
     def asmVersion = '9.4'
     if (modId != 'lwjgl3ify') {
         java17Dependencies("com.github.GTNewHorizons:lwjgl3ify:${lwjgl3ifyVersion}")
     }
     if (modId != 'hodgepodge') {
-        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.0.35')
+        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.0.40')
     }
 
     java17PatchDependencies('net.minecraft:launchwrapper:1.15') {transitive = false}
@@ -718,8 +718,8 @@ dependencies {
 ext.java17JvmArgs = [
     // Java 9+ support
     "--illegal-access=warn",
-    "-Dfile.encoding=UTF-8",
     "-Djava.security.manager=allow",
+    "-Dfile.encoding=UTF-8",
     "--add-opens", "java.base/jdk.internal.loader=ALL-UNNAMED",
     "--add-opens", "java.base/java.net=ALL-UNNAMED",
     "--add-opens", "java.base/java.nio=ALL-UNNAMED",
@@ -730,6 +730,7 @@ ext.java17JvmArgs = [
     "--add-opens", "java.base/java.util=ALL-UNNAMED",
     "--add-opens", "java.base/jdk.internal.reflect=ALL-UNNAMED",
     "--add-opens", "java.base/sun.nio.ch=ALL-UNNAMED",
+    "--add-opens", "jdk.naming.dns/com.sun.jndi.dns=ALL-UNNAMED,java.naming",
     "--add-opens", "java.desktop/sun.awt.image=ALL-UNNAMED",
     "--add-modules", "jdk.dynalink",
     "--add-opens", "jdk.dynalink/jdk.dynalink.beans=ALL-UNNAMED",
