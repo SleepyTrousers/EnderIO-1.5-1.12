@@ -33,6 +33,21 @@ enderio.itemPowerConduit.name=Energieleitung
 enderio.itemPowerConduitEnhanced.name=Verbesserte Energieleitung
 enderio.itemPowerConduitEnder.name=Ender-Energieleitung
 
+enderio.itemPowerConduitEndergyCrude.name=Lehm-Energieleitung
+enderio.itemPowerConduitEndergyIron.name=Eisen-Energieleitung
+enderio.itemPowerConduitEndergyAluminum.name=Aluminium-Energieleitung
+enderio.itemPowerConduitEndergyGold.name=Gold-Energieleitung
+enderio.itemPowerConduitEndergyCopper.name=Kupfer-Energieleitung
+enderio.itemPowerConduitEndergySilver.name=Silber-Energieleitung
+enderio.itemPowerConduitEndergyElectrum.name=Elektrum-Energieleitung
+enderio.itemPowerConduitEndergyEnergeticSilver.name=Elektrisches Silber-Energieleitung
+# BEGIN needs translation
+enderio.itemPowerConduitEndergyCrystalline.name=Crystalline Energy Conduit
+enderio.itemPowerConduitEndergyCrystallinePinkSlime.name=Crystalline Pink Slime Energy Conduit
+enderio.itemPowerConduitEndergyMelodic.name=Melodic Energy Conduit
+enderio.itemPowerConduitEndergyStellar.name=Stellar Energy Conduit
+# END needs translation
+
 enderio.itemRedstoneConduit.name=Redstone-Leitung
 enderio.itemRedstoneConduitSwitch.name=Leitungsschalter
 enderio.itemRedstoneConduitInsulated.name=Isolierte Redstone-Leitung
@@ -218,6 +233,42 @@ enderio.phasedIron.name=Pulsierendes Eisen
 enderio.vibrantNugget.name=Dynamischer Nugget
 enderio.darkSteel.name=Dunkelstahl
 enderio.soularium.name=Soularium
+enderio.endSteel.name=End-Stahl
+enderio.endSteelNugget.name=End-Stahl-Nugget
+
+enderio.crudeSteel.name=Lehmzusammensetzung
+enderio.crystallineAlloy.name=Kristallin-Legierung
+enderio.melodicAlloy.name=Melodische Legierung
+enderio.stellarAlloy.name=Hervorragende Legierung
+enderio.crystallinePinkSlime.name=Melodischer Rosa Schleim
+enderio.energeticSilver.name=Energetisches Silber
+enderio.vividAlloy.name=Lebendige Legierung
+
+enderio.crudeSteelGrindingBall.name=Mahlwerkkugel aus Lehmzusammensetzung
+enderio.crystallineAlloyGrindingBall.name=Mahlwerkkugel aus Kristallin-Legierung
+enderio.melodicAlloyGrindingBall.name=Mahlwerkkugel aus Melodischer Legierung
+enderio.stellarAlloyGrindingBall.name=Mahlwerkkugel aus Hervorragender Legierung
+enderio.crystallinePinkSlimeGrindingBall.name=Mahlwerkkugel aus Melodischem Rosa Schleim
+enderio.energeticSilverGrindingBall.name=Mahlwerkkugel aus Energetischem Silber
+enderio.vividAlloyGrindingBall.name=Mahlwerkkugel aus Lebendiger Legierung
+
+enderio.precientCrystal.name=Vorausschauender Kristall
+enderio.pulsatingPowder.name=Körner der Piezalität
+enderio.vibrantPowder.name=Körner der Lebendigkeit
+enderio.enderCrystalPowder.name=Körner des Ends
+enderio.precientPowder.name=Körner der Voraussicht
+
+#Balls
+enderio.electricalSteel_ball.name=Ball aus Elektrischem Stahl
+enderio.energeticAlloy_ball.name=Ball aus Energetisierter Ligierung
+enderio.phasedGold_ball.name=Ball aus Dynamischer Legierung
+enderio.redstoneAlloy_ball.name=Ball aus Redstone-Legierung
+enderio.conductiveIron_ball.name=Ball aus Leitendem Eisen
+enderio.phasedIron_ball.name=Ball aus Pulsierendem Eisen
+enderio.vibrantNugget_ball.name=Ball aus Dynamischen Nuggets
+enderio.darkSteel_ball.name=Ball aus Dunkelstahl
+enderio.soularium_ball.name=Ball aus Soularium
+enderio.endSteel_ball.name=Ball aus End-Stahl
 
 tile.blockIngotStorage.name=Barrenspeicher
 tile.enderio.electricalSteel.name=Block aus Elektrischem Stahl
@@ -245,6 +296,13 @@ enderio.itemBasicCapacitor.name=Kondensator
 enderio.basicCapacitor.name=Basiskondensator
 enderio.activatedCapacitor.name=Doppelschichtkondensator
 enderio.enderCapacitor.name=Oktadischer Kondensator
+enderio.crystallineCapacitor.name=Kristallin-Kondensator
+enderio.melodicCapacitor.name=Melodischer Kondensator
+enderio.stellarCapacitor.name=Hervorragende Kondensator
+enderio.silverCapacitor.name=Silber-Kondensator
+enderio.endergeticCapacitor.name=Energetischer Kondensator
+enderio.endergisedCapacitor.name=Energetisierter Kondensator
+enderio.totemicCapacitor.name=Totemischer Kondensator
 
 enderio.machine.tooltip.upgrade=Maschinen-Upgrade
 enderio.machine.tooltip.upgrade.tooltip.detailed.line1=Erhöht Energiespeicher sowie
@@ -402,6 +460,16 @@ tile.blockZombieGenerator.tooltip.detailed.line1=Konsumiert Nahrhaftes Destillat
 tile.blockZombieGenerator.tooltip.detailed.line2=um Energie zu erzeugen
 enderio.zombieGenerator.fuelTank=Nahrhafter Tank
 enderio.gui.fluid.minReq=%s benötigt für die Aktivierung
+
+tile.blockFrankenzombieGenerator.name=Frank'N'Zombie-Generator
+tile.blockFrankenzombieGenerator.tooltip.detailed.line1=Konsumiert Nahrhaftes Destillat,
+tile.blockFrankenzombieGenerator.tooltip.detailed.line2=um Energie zu erzeugen
+enderio.frankenzombieGenerator.fuelTank=Nahrhafter Tank
+
+tile.blockEnderGenerator.name=Ender-Generator
+tile.blockEnderGenerator.tooltip.detailed.line1=Konsumiert Tau des Voids,
+tile.blockEnderGenerator.tooltip.detailed.line2=um Energie zu erzeugen
+enderio.enderGenerator.fuelTank=Leere-Tank
 
 tile.blockKillerJoe.name=Killer Joe
 tile.blockKillerJoe.tooltip.detailed.line1=Attackiert nahe Mobs und Spieler,
@@ -613,6 +681,12 @@ item.itemTravelStaff.tooltip.detailed.line4=<shift><r-click> wird den Spieler ei
 item.itemTravelStaff.tooltip.detailed.line5=kurze Distanz teleportieren
 enderio.itemTravelStaff.notEnoughPower=Nicht genügend Energie
 
+item.itemTeleportStaff.name=Stab der Teleportation
+item.itemTeleportStaff.tooltip.detailed.line1=Rechtsklick, um zu teleportieren, wohin auch immer du schaust
+item.itemTeleportStaff.tooltip.detailed.line2=Shift-Rechtsklick, um zu Reiseankern zu telportieren
+item.itemTeleportStaff.tooltip.detailed.line3=Rechtsklick auf einen benachbarten Block, um zu versuchen
+item.itemTeleportStaff.tooltip.detailed.line4=zur anderen Seite zu teleportieren
+
 item.itemCoordSelector.name=Koordinatenselektor
 item.itemCoordSelector.tooltip.detailed.line1=Speichert die Koordinaten eines Blocks.
 item.itemCoordSelector.tooltip.detailed.line2=Rechts-Klick auf Block um den
@@ -689,6 +763,8 @@ skullZombieController.name=Z-Logik-Controller
 skullZombieFrankenstien.name=Frank'N'Zombie
 skullEnderResonator.name=Enderresonator
 skullSentientEnder.name=Empfindsamer Ender
+skullSkeletalContractor.name=Skelettunternehmer 
+skullGuardianDiode.name=Wächterdiode
 
 item.itemSpawnEggEnderIO.name=Spawn
 
@@ -702,19 +778,55 @@ item.darkSteel_pickaxe.name=Dunkelspitzhacke
 item.darkSteel_axe.name=Dunkelaxt
 item.darkSteel_shears.name=Dunkelschere
 
+#End Steel
+item.endSteel_helmet.name=Endstahl-Helm
+item.endSteel_chestplate.name=Endstahl-Brustpanzer
+item.endSteel_leggings.name=Endstahl-Beinschutz
+item.endSteel_boots.name=Endstahl-Stiefel
+item.endSteel_sword.name=Endstahl-Schwert
+item.endSteel_pickaxe.name=Endstahl-Spitzhacke
+item.endSteel_axe.name=Endstahl-Axt
+
+#Stellar
+item.stellar_helmet.name=Hervorragender Helm
+item.stellar_chestplate.name=Hervorragender Brustpanzer
+item.stellar_leggings.name=Hervorragender Beinschutz
+item.stellar_boots.name=Hervorragende Stiefel
+item.stellar_sword.name=Hervorragendes Schwert
+item.stellar_pickaxe.name=Hervorragende Spitzhacke
+item.stellar_axe.name=Hervorragende Axt
+
 enderio.item.darkSteel.tooltip.lvs=Level
 
 enderio.item.darkSteel_pickaxe.tooltip.effPowered=Effizienz, wenn aktiviert
 enderio.item.darkSteel_pickaxe.tooltip.effObs=Effizienz baut Obsidian ab
 enderio.item.darkSteel_pickaxe.tooltip.cost=Kosten
 
+enderio.item.endSteel_pickaxe.tooltip.effPowered=Effizienz, wenn aktiviert
+enderio.item.endSteel_pickaxe.tooltip.effObs=Effizienz baut Obsidian ab
+enderio.item.endSteel_pickaxe.tooltip.cost=Kosten
+
+enderio.item.stellar_pickaxe.tooltip.effPowered=Effizienz, wenn aktiviert
+enderio.item.stellar_pickaxe.tooltip.effObs=Effizienz baut Obsidian ab
+enderio.item.stellar_pickaxe.tooltip.cost=Kosten
+
 enderio.item.darkSteel_axe.tooltip.multiHarvest=Schleiche, um mehr Holz auf einmal abzubauen
+enderio.item.endSteel_axe.tooltip.multiHarvest=Schleiche, um mehr Holz auf einmal abzubauen
+enderio.item.stellar_axe.tooltip.multiHarvest=Schleiche, um mehr Holz auf einmal abzubauen
 
 enderio.item.darkSteel_shears.tooltip.multiHarvest=Schert mehrere Blöcke/Schafe wenn verstärkt
 
 enderio.item.darkSteel_sword.tooltip.line1=Erhöht Schädel- und Enderperlen-Drops.
 enderio.item.darkSteel_sword.tooltip.line2=Endermen können sich nach einem Treffer nicht mehr teleportieren.
-enderio.item.darkSteel_sword.tooltip.line3=+1 Schaden, wenn aktiviert
+enderio.item.darkSteel_sword.tooltip.line3=+2 Schaden, wenn aktiviert
+
+enderio.item.endSteel_sword.tooltip.line1=Erhöht Schädel- und Enderperlen-Drops
+enderio.item.endSteel_sword.tooltip.line2=Endermen können sich nach einem Treffer nicht mehr teleportieren.
+enderio.item.endSteel_sword.tooltip.line3=+2 Schaden, wenn aktiviert
+
+enderio.item.stellar_sword.tooltip.line1=Erhöht Schädel- und Enderperlen-Drops
+enderio.item.stellar_sword.tooltip.line2=Endermen können sich nach einem Treffer nicht mehr teleportieren.
+enderio.item.stellar_sword.tooltip.line3=+2 Schaden, wenn aktiviert
 
 enderio.item.darkSteel_armor.tooltip.line1=Schutz auf Diamant-Level,
 enderio.item.darkSteel_armor.tooltip.line2=wenn mit Energie versorgt
@@ -722,25 +834,42 @@ enderio.item.darkSteel_armor.tooltip.line2=wenn mit Energie versorgt
 enderio.item.darkSteel_boots.tooltip.line1=Negiert Fallschaden,
 enderio.item.darkSteel_boots.tooltip.line2=wenn mit Energie versorgt
 
+enderio.item.stellar_armor.tooltip.line1=Schutz auf Diamant-Level+,
+enderio.item.stellar_armor.tooltip.line2=wenn mit Energie versorgt
+
+enderio.item.darkSteel_boots.tooltip.line1=Fallschaden negiert,
+enderio.item.darkSteel_boots.tooltip.line2=wenn mit Energie versorgt
+
+enderio.item.endSteel_boots.tooltip.line1=Fallschaden negiert,
+enderio.item.endSteel_boots.tooltip.line2=wenn mit Energie versorgt
+
+enderio.item.stellar_boots.tooltip.line1=Fallschaden negiert,
+enderio.item.stellar_boots.tooltip.line2=wenn mit Energie versorgt
+
 enderio.darksteel.upgrade.empowered_one.name=Verstärkt
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line1=Energie: $P
-enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=Hälfte des Haltbarkeitsschadens
+enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line2=$D% des Haltbarkeitsschaden
 enderio.darksteel.upgrade.empowered_one.tooltip.detailed.line3=von Energie absorbiert
 
 enderio.darksteel.upgrade.empowered_two.name=Verstärkt II
 enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line1=Energie: $P
-enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=Hälfte des Haltbarkeitsschadens
+enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line2=$D% des Haltbarkeitsschaden
 enderio.darksteel.upgrade.empowered_two.tooltip.detailed.line3=von Energie absorbiert
 
 enderio.darksteel.upgrade.empowered_three.name=Verstärkt III
 enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line1=Energie: $P
-enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=Hälfte des Haltbarkeitsschadens
+enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line2=$D% des Haltbarkeitsschaden
 enderio.darksteel.upgrade.empowered_three.tooltip.detailed.line3=von Energie absorbiert
 
 enderio.darksteel.upgrade.empowered_four.name=Verstärkt IV
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line1=Energie: $P
-enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=Hälfte des Haltbarkeitsschadens
+enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line2=$D% des Haltbarkeitsschaden
 enderio.darksteel.upgrade.empowered_four.tooltip.detailed.line3=von Energie absorbiert
+
+enderio.darksteel.upgrade.empowered_five.name=Verstärkt V
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line1=Energie: $P
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line2=$D% des Haltbarkeitsschaden
+enderio.darksteel.upgrade.empowered_five.tooltip.detailed.line3=von Energie absorbiert
 
 enderio.darksteel.upgrade.travel.name=Reise
 enderio.darksteel.upgrade.travel.tooltip.detailed.line1=Halte Shift und Rechts-Klick zum Teleportieren,
@@ -824,6 +953,9 @@ enderio.darksteel.upgrade.solar_one.tooltip.detailed.line1=Generiert Energie aus
 
 enderio.darksteel.upgrade.solar_two.name=Solar II
 enderio.darksteel.upgrade.solar_two.tooltip.detailed.line1=Generiert Energie von der Sonne.
+
+enderio.darksteel.upgrade.solar_three.name=Solar III
+enderio.darksteel.upgrade.solar_three.tooltip.detailed.line1=Generiert Energie von der Sonne.
 
 #------GUI
 
@@ -985,6 +1117,9 @@ enderio.gui.travelAccessable.ok=Autorisieren
 enderio.gui.travelAccessable.skipLocked=Überspringe abgeschlossene Anker, benutzte gezielten Teleport.
 enderio.gui.travelAccessable.skipObstructed=Überspringe versperrte Anker.
 enderio.gui.travelAccessable.skipPrivate=Überspringe private Anker.
+enderio.gui.travelAccessable.tooltip.visible=Sicherbarkeit
+enderio.gui.travelAccessable.tooltip.visible.desc1=Wenn deaktiviert kannst du diesen Block von anderen Blöcken aus nicht sehen.
+enderio.gui.travelAccessable.tooltip.visible.desc2=Nützlich für Aufzüge.
 
 enderio.gui.telepad.configure.travel=Reiseeinstellungen
 enderio.gui.telepad.configure.telepad=Telepad-Einstellungen
