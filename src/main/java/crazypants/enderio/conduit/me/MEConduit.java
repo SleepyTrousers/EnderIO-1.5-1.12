@@ -311,9 +311,9 @@ public class MEConduit extends AbstractConduit implements IMEConduit {
     @Method(modid = "appliedenergistics2")
     public void onChunkUnload(World worldObj) {
         super.onChunkUnload(worldObj);
-        IConduitBundle bundle = getBundle();
-        if (bundle != null) {
-            bundle.setGridNode(null);
+        if (getNode() != null) {
+            getNode().destroy();
+            getBundle().setGridNode(null);
         }
     }
 
