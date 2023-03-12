@@ -41,12 +41,10 @@ enderio.itemPowerConduitEndergyCopper.name=Kupfer-Energieleitung
 enderio.itemPowerConduitEndergySilver.name=Silber-Energieleitung
 enderio.itemPowerConduitEndergyElectrum.name=Elektrum-Energieleitung
 enderio.itemPowerConduitEndergyEnergeticSilver.name=Elektrisches Silber-Energieleitung
-# BEGIN needs translation
-enderio.itemPowerConduitEndergyCrystalline.name=Crystalline Energy Conduit
-enderio.itemPowerConduitEndergyCrystallinePinkSlime.name=Crystalline Pink Slime Energy Conduit
-enderio.itemPowerConduitEndergyMelodic.name=Melodic Energy Conduit
-enderio.itemPowerConduitEndergyStellar.name=Stellar Energy Conduit
-# END needs translation
+enderio.itemPowerConduitEndergyCrystalline.name=Kristallin-Energieleitung
+enderio.itemPowerConduitEndergyCrystallinePinkSlime.name=Kristalliner Rosa Schleim Energieleitung
+enderio.itemPowerConduitEndergyMelodic.name=Melodische Energieleitung
+enderio.itemPowerConduitEndergyStellar.name=Hervorragende Energieleitung
 
 enderio.itemRedstoneConduit.name=Redstone-Leitung
 enderio.itemRedstoneConduitSwitch.name=Leitungsschalter
@@ -55,12 +53,10 @@ enderio.itemRedstoneConduitInsulated.name=Isolierte Redstone-Leitung
 enderio.itemLiquidConduit.name=Flüssigkeitsleitung
 enderio.itemLiquidConduitAdvanced.name=Flüssigkeitsdruckleitung
 enderio.itemLiquidConduitEnder.name=Ender-Flüssigkeitsleitung
-# BEGIN needs translation
-enderio.itemLiquidConduitCrystallineEnder.name=Crystalline Ender Fluid Conduit
-enderio.itemLiquidConduitCrystallinePinkSlimeEnder.name=Crystalline Pink Slime Ender Fluid Conduit
-enderio.itemLiquidConduitMelodicEnder.name=Melodic Ender Fluid Conduit
-enderio.itemLiquidConduitStellarEnder.name=Stellar Ender Fluid Conduit
-# END needs translation
+enderio.itemLiquidConduitCrystallineEnder.name=Kristallin-Flüssigkeitsdruckleitung
+enderio.itemLiquidConduitCrystallinePinkSlimeEnder.name=Kristalliner Rosa Schleim Flüssigkeitsdruckleitung
+enderio.itemLiquidConduitMelodicEnder.name=Melodische Flüssigkeitsdruckleitung
+enderio.itemLiquidConduitStellarEnder.name=Hervorragende Flüssigkeitsdruckleitung
 enderio.itemLiquidConduit.lockedType=Flüssigkeitstyp gebunden an
 enderio.itemLiquidConduit.unlockedType=Flüssigkeitstyp nicht mehr gebunden
 enderio.itemLiquidConduit.lockedWaila=Festgelegt auf
@@ -240,7 +236,7 @@ enderio.crudeSteel.name=Lehmzusammensetzung
 enderio.crystallineAlloy.name=Kristallin-Legierung
 enderio.melodicAlloy.name=Melodische Legierung
 enderio.stellarAlloy.name=Hervorragende Legierung
-enderio.crystallinePinkSlime.name=Melodischer Rosa Schleim
+enderio.crystallinePinkSlime.name=Kristalliner Rosa Schleim
 enderio.energeticSilver.name=Energetisches Silber
 enderio.vividAlloy.name=Lebendige Legierung
 
@@ -248,7 +244,7 @@ enderio.crudeSteelGrindingBall.name=Mahlwerkkugel aus Lehmzusammensetzung
 enderio.crystallineAlloyGrindingBall.name=Mahlwerkkugel aus Kristallin-Legierung
 enderio.melodicAlloyGrindingBall.name=Mahlwerkkugel aus Melodischer Legierung
 enderio.stellarAlloyGrindingBall.name=Mahlwerkkugel aus Hervorragender Legierung
-enderio.crystallinePinkSlimeGrindingBall.name=Mahlwerkkugel aus Melodischem Rosa Schleim
+enderio.crystallinePinkSlimeGrindingBall.name=Mahlwerkkugel aus Kristallinem Rosa Schleim
 enderio.energeticSilverGrindingBall.name=Mahlwerkkugel aus Energetischem Silber
 enderio.vividAlloyGrindingBall.name=Mahlwerkkugel aus Lebendiger Legierung
 
